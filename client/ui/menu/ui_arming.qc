@@ -98,7 +98,6 @@ void() menu_armingListener_onKeyUp={
               GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
               GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
               GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
-              GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
             }
           }
           else{
@@ -148,7 +147,6 @@ void() weaponDragListener={
             GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
             GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
             GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
-            GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
           }
         }
       }
@@ -259,16 +257,6 @@ void() weaponGroupPanelListener={
       CLIENT_MENU_nex_grp4 = CLIENT_MENU_nex_grp4 | found;
     }
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
-  }
-  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_E, WEPNGRP_SIZE_E, TRUE)){
-    found = listListener(WEPNGRP_ORG_E, cursorpos, WEPNGRP_SIZE_E, gui_percentToPixelRawVec('18.56 20'), WEPNGRP_CNT_E, 0);
-    found = WEPBITS[found];
-    if((CLIENT_MENU_nex_grp5 & found)){
-      CLIENT_MENU_nex_grp5 = CLIENT_MENU_nex_grp5 - (CLIENT_MENU_nex_grp5 & found);
-    }else{
-      CLIENT_MENU_nex_grp5 = CLIENT_MENU_nex_grp5 | found;
-    }
-    GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
   }
 };
 
@@ -657,7 +645,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
 };
 
 void(vector ofs) menu_arming_energydraw={
-  local float enmax, g1, g2, g3, g4, g5;
+  local float enmax, g1, g2, g3, g4;
   
   local float energyLabelLen;
   local vector energyLabelOrg;
@@ -696,11 +684,6 @@ void(vector ofs) menu_arming_energydraw={
     g4 = (GROUP_ENE_4 / enmax) * 100;
     gui_renderMeter(g4, ofs + gui_percentToPixelRawVec('47 111'), gui_percentToPixelRawVec('32 11'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g4), 1, 0, AXIS_H, 0);
     drawstring(ofs + gui_percentToPixelRawVec('86 111'), sprintf("%0.2f", GROUP_ENE_4), '12 12', gui_getColorForArmor(100 - g4), 1, 0);
-    
-  drawstring(ofs + gui_percentToPixelRawVec('6 138'), "Group 5", '12 12 0', '1 1 1', 1, 0);
-    g5 = (GROUP_ENE_5 / enmax) * 100;
-    gui_renderMeter(g5, ofs + gui_percentToPixelRawVec('47 138'), gui_percentToPixelRawVec('32 11'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g5), 1, 0, AXIS_H, 0);
-    drawstring(ofs + gui_percentToPixelRawVec('86 138'), sprintf("%0.2f", GROUP_ENE_5), '12 12', gui_getColorForArmor(100 - g5), 1, 0);
     
   drawfont = drawfont_prev;
     

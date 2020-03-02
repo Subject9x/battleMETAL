@@ -49,8 +49,6 @@ void() playerAttack={
         weaponGroup = weaponGroup | self.w_group3;
       if(self.button6)
         weaponGroup = weaponGroup | self.w_group4;
-      if(self.button7)
-        weaponGroup = weaponGroup | self.w_group5;
     }
   }
   oself = self;
@@ -221,12 +219,6 @@ void(float selector) mpls_groupFire={
       centerprint(self, "[Weapon Group 4]");
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group4;
-      break;
-    case 5:
-      self.aState = 5;
-      centerprint(self, "[Weapon Group 5]");
-      self.currentWeaponGroup = 0;
-      self.currentWeaponGroup = self.w_group5;
       break;
   }
 };

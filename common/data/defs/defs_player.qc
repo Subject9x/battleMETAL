@@ -49,7 +49,6 @@ Overview:
 .float w_group2;
 .float w_group3;
 .float w_group4;
-.float w_group5;
 //.float w_firemode;
 
 .float fall_dist; //distance fallen to trigger 'stumble'

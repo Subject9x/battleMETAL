@@ -84,7 +84,6 @@ float GROUP_ENE_1;
 float GROUP_ENE_2;
 float GROUP_ENE_3;
 float GROUP_ENE_4;
-float GROUP_ENE_5;
   
 //config buttons
 vector BTN_CFG_P;

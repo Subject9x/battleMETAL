@@ -512,7 +512,5 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
     GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
-    GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
   }
-
 };

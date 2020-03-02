@@ -473,9 +473,6 @@ void(string cmd, float tokens) client_setWeaponGroup={
     case 4:
       self.w_group4 = groupval;
       break;
-    case 5:
-      self.w_group5 = groupval;
-      break;
   }
 };
 

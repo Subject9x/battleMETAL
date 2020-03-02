@@ -29,8 +29,6 @@ entity controls_select_group1;
 entity controls_select_group2;
 entity controls_select_group3;
 entity controls_select_group4;
-entity controls_select_group5;
-entity controls_select_group5;
 entity controsl_select_fire_group;
 entity controsl_select_fire_chain;
 
@@ -269,8 +267,6 @@ void() m_controls_i={
   controls_select_group3 = inp_keybindfield('22 338', '14 14 0', txt_control_bind_sel_grp3, "Select Group 3:  ", "impulse 3", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   controls_select_group4 = inp_keybindfield('22 358', '14 14 0', txt_control_bind_sel_grp4, "Select Group 4:  ", "impulse 23", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-  
-  controls_select_group5 = inp_keybindfield('22 378', '14 14 0', txt_control_bind_sel_grp5, "Select Group 5:  ", "impulse 24", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   controsl_select_fire_group = inp_keybindfield('22 398', '14 14 0', txt_control_bind_fire_grp, "Toggle Group Fire:  ", "impulse 10", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
@@ -282,8 +278,6 @@ void() m_controls_i={
   controls_navs = inp_keybindfield('209 98', '14 14 0', txt_control_bind_nav, "Show Navs:  ", "impulse 9", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
   controls_objectives = inp_keybindfield('176 118', '14 14 0', txt_control_bind_obj, "Display Objectives:  ", "impulse 25", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
- 
-  //controls_repair = inp_keybindfield('175 138', '14 14 0', txt_control_bind_repair, "Engage Repair Bay:  ", "impulse 26", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   controls_chat_team = inp_keybindfield('210 158', '14 14 0', txt_control_bind_chat_team, "Chat Team:  ", "messagemode2", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
