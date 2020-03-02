@@ -22,7 +22,6 @@ entity controls_fire_group1;
 entity controls_fire_group2;
 entity controls_fire_group3;
 entity controls_fire_group4;
-entity controls_fire_group5;
 entity controls_group_next;
 entity controls_group_prev;
 entity controls_select_group1;
@@ -244,7 +243,7 @@ void() m_controls_i={
   //combat
   controls_target = inp_keybindfield('23 119', '14 14 0', txt_control_bind_target, "Acquire Target:  ", "impulse 7", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_fire_group = inp_keybindfield('11 139', '14 14 0', txt_control_bind_fire, "Fire Select Group:  ", "+button0", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_fire_group = inp_keybindfield('11 139', '14 14 0', txt_control_bind_fire, "Fire Select Group:  ", "+attack", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
    
   controls_fire_group1 = inp_keybindfield('32 159', '14 14 0', txt_control_bind_fire_grp1, "Fire Group 1:  ", "+button3", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
@@ -253,8 +252,6 @@ void() m_controls_i={
   controls_fire_group3 = inp_keybindfield('32 198', '14 14 0', txt_control_bind_fire_grp3, "Fire Group 3:  ", "+button5", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   controls_fire_group4 = inp_keybindfield('32 219', '14 14 0', txt_control_bind_fire_grp4, "Fire Group 4:  ", "+button6", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-  
-  controls_fire_group5 = inp_keybindfield('32 239', '14 14 0', txt_control_bind_fire_grp5, "Fire Group 5:  ", "+button7", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   controls_group_next = inp_keybindfield('0 258', '14 14 0', txt_control_bind_grp_nxt, "Next Weapon Group:  ", "impulse 4", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
