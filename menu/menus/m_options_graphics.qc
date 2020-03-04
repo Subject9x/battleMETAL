@@ -671,7 +671,7 @@ void() m_graphics_i={
   
   //resolution
   local float vid;
-  vid = menu_getvideo_modeid(VIEW_MAX);
+  vid = menu_getvideo_modeid();
   local string reso;
   reso = strcat(ftos(VIEW_ACT_x), " x ", ftos(VIEW_ACT_y) );
   graphics_resolution_lbl = lbl_text('150 102', '14 14 0', strzone(reso), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
