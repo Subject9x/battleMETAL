@@ -205,8 +205,8 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   
-  setproperty(VF_ORIGIN, pmove_org);
-  setproperty(VF_ANGLES, input_angles);
+  //setproperty(VF_ORIGIN, pmove_org);
+  //setproperty(VF_ANGLES, input_angles);
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
 	setproperty(VF_DRAWCROSSHAIR, 0);

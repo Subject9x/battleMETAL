@@ -42,6 +42,32 @@ void() player_makeVec={
   
 };
 
+float() customize_part_for_client ={
+  local vector chunkOfs;
+  if( other != self.owner ){
+    return FALSE;
+  } 
+  makevectors(other.angles);
+  chunkOfs = self.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - (other.cockpit.compOffset_z / 2)));
+  setorigin(self, chunkOfs);
+  self.viewmodelforclient = other;
+  return TRUE;
+};
+
+float() customize_wep_for_client={
+  local vector chunkOfs;
+  if( other != self.owner ){
+    return FALSE;
+  } 
+  makevectors(other.angles);
+  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - other.cockpit.compOffset_z));
+  self.wepFireOffset_z = self.wepFireOffsetCache_z - other.cockpit.compOffset_z;
+  self.compAltOffset_z = self.compAltOffsetCache_z - other.cockpit.compOffset_z;
+  self.viewmodelforclient = other;
+  setorigin(self, chunkOfs);
+  return TRUE;
+};
+
 void() player_makeMech={
   
   self.data_idx = self.nextVecChoice;
@@ -87,10 +113,23 @@ void() player_makeMech={
   self.hud_mode = cvar("cl_hud_sway");
   self.hud_ent = newmis;
   util_updateViewBob();
+
+
+  self.torsoCenter.customizeentityforclient = customize_part_for_client;
+  self.torsoLeft.customizeentityforclient = customize_part_for_client;
+  self.torsoRight.customizeentityforclient = customize_part_for_client;
+  self.armLeft.customizeentityforclient = customize_part_for_client;
+  self.armRight.customizeentityforclient = customize_part_for_client;
+  self.legs.customizeentityforclient = customize_part_for_client;
   
-  msg_entity = self;
-  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-  WriteEntity(MSG_ONE, self.cockpit);
+  local entity wep;
+  for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+    wep.customizeentityforclient = customize_wep_for_client;
+  }
+  
+  
+  self.view_ofs = '0 0 0';
+  self.view_ofs_z = self.cockpit.compOffset_y;
   self.stat_rdr_mode = 1;
   self.stat_rdr_rng = self.radar_range * 2;
 };

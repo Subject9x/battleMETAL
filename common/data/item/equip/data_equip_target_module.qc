@@ -72,6 +72,7 @@ void() target_module_upgrade_={
   if(lock < 0){
     lock = 0.01;
   }
+  self.wepFireOffsetCache = self.wepFireOffset;
   self.owner.w_firetime = lock;
 };
 

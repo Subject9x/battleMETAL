@@ -33,7 +33,7 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece.model = pathToModel;
   piece.compOffset = partOffset;
   piece.hitOffset = '0 0 0';
-  piece.compAltOffset = altOffsett;
+  piece.compAltOffset = piece.compAltOffsetCache = altOffsett;
   self.partSlot = piece;
   piece.owner = self;
 };

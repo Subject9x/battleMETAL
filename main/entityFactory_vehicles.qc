@@ -211,6 +211,7 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
         self.w_attack = SUB_Null; //remove upgrade function
       }
     }
+    self.wepFireOffsetCache = self.wepFireOffset;
     self.th_die = ctrl_die_weapon;
   self = parentEntity;
 };

@@ -21,6 +21,7 @@ Overview
 .float aState;
 .float state_2;
 .vector wepFireOffset;     //offset for proj. origin
+.vector wepFireOffsetCache; //cached offset for constant reference
 .float w_proj;       //pointer to projectile entity data
 .float w_firerate;
 .float w_currentammo;

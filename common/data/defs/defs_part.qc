@@ -17,6 +17,7 @@ Overview:
 #endif
 
 .vector compAltOffset;    //useful alt offset
+.vector compAltOffsetCache;    ///cached offset for constant reference
 .float partParentId;  //component id of PARENT
 .float partTypeId;    //component id
 .vector compOffset;
