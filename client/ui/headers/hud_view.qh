@@ -84,6 +84,10 @@ float HUD_UID_RAM_METER     = 19;
   float HUD_SHIELD_FLASH_RATE = 0.15;
   
   float HUD_ZOOM_ACTIVE;
+  
+  string HUD_SPRINT_ON = "[EVASION ON]";
+  string HUD_SPRINT_OFF = "!- EVASION OFFLINE -!";
+  string HUD_SPRINT_RAM = "[RAM-SHOCKS READY]";
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -175,6 +179,7 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram;
 void( entity box ) hud_renderHighlight;
 void() hud_renderHighlight_frame;
+void()hud_render_sprint;
 
 void() hud_render_info;
 
