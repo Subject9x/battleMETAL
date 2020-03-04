@@ -653,25 +653,25 @@ void() click_graphics_accept={
     cvar_set("vid_width", ftos(VID_NEXT_x));
     cvar_set("vid_height", ftos(VID_NEXT_y));
     cvar_set("vid_pixelheight", ftos(VID_NEXT_z));
-    
-    cvar_set("vid_conwidth", ftos(VID_CNEXT_x));
-    cvar_set("vid_conheight", ftos(VID_CNEXT_y));
+    cvar_set("vid_conwidth", ftos(max(VID_CNEXT_x, 640)));
+    cvar_set("vid_conheight",ftos(max(VID_CNEXT_y, 480)));
   }
   cvar_set("saved1", ftos(graphics_effects_lbl.len));
   cvar_set("saved2", ftos(graphics_gfx_lbl.len));
   
   cmd("saveconfig\n");
-  cmd("loadconfig\n");
   cmd("vid_restart\n");
+  cmd("loadconfig\n");
 };
 
 // ini function, called by '_f' function as a setup func
 void() m_graphics_i={
+
   graphics_title = lbl_img('10 25', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, (UI_FLAG_SIZE_IMG) );
   
   //resolution
   local float vid;
-  vid = menu_getvideo_modeid(VIEW_MAX); 
+  vid = menu_getvideo_modeid(VIEW_MAX);
   local string reso;
   reso = strcat(ftos(VIEW_ACT_x), " x ", ftos(VIEW_ACT_y) );
   graphics_resolution_lbl = lbl_text('150 102', '14 14 0', strzone(reso), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
