@@ -18,7 +18,7 @@ float IMP_RADAR = 8;  //toggle radar
 float IMP_GETNAV = 9;
 float IMP_FGROUP = 10; //toggle group fire
 float IMP_FCHAIN = 11; //toggle chain fire
-float IMP_SHIELD = 12; //toggle shield autocharge
+//-----------------12
 float IMP_SELECT_WEAPON1 = 13;
 float IMP_SELECT_WEAPON2 = 14;
 float IMP_SELECT_WEAPON3 = 15;
@@ -30,10 +30,9 @@ float IMP_SELECT_WEAPON8 = 20;
 float IMP_SELECT_WEAPON9 = 21;
 float IMP_FSINGLE = 22;
 float IMP_WGROUP4 = 23;
-float IMP_WGROUP5 = 24;
+//-----------------24
 float IMP_SHOWOBJ = 25;
 float IMP_ZOOM = 26;
 float IMP_SLIDE = 27;
-float IMP_SHIELDS = 28;
 
 void(float selector) mpls_groupFire;

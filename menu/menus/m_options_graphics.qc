@@ -395,17 +395,22 @@ void() click_graphics_aniso_more={
 void() click_graphics_aniso_less={
   local float sampl;
   sampl = graphics_aniso_lbl.len;
-  sampl = sampl * 0.5;
+  sampl = sampl / 2;
   if(sampl <= 1){
-    sampl = 16;
-    graphics_aniso_more.drawme = FALSE;
+    sampl = 1;
+    graphics_aniso_less.drawme = FALSE;
   }
-  if( !graphics_aa_more.drawme ){
-    graphics_aa_more.drawme = TRUE;
+  if( !graphics_aniso_more.drawme ){
+    graphics_aniso_more.drawme = TRUE;
   }
   graphics_aniso_lbl.len = sampl;
   strunzone(graphics_aniso_lbl.label); 
-  graphics_aniso_lbl.label = strzone(ftos(sampl));
+  if( sampl == 1 ){
+    graphics_aniso_lbl.label = strzone("OFF");
+  }
+  else{
+    graphics_aniso_lbl.label = strzone(ftos(sampl));
+  }
 };
 
 void() click_graphics_texture_quality_more={
@@ -648,24 +653,25 @@ void() click_graphics_accept={
     cvar_set("vid_width", ftos(VID_NEXT_x));
     cvar_set("vid_height", ftos(VID_NEXT_y));
     cvar_set("vid_pixelheight", ftos(VID_NEXT_z));
-    
-    cvar_set("vid_conwidth", ftos(VID_CNEXT_x));
-    cvar_set("vid_conheight", ftos(VID_CNEXT_y));
+    cvar_set("vid_conwidth", ftos(max(VID_CNEXT_x, 640)));
+    cvar_set("vid_conheight",ftos(max(VID_CNEXT_y, 480)));
   }
   cvar_set("saved1", ftos(graphics_effects_lbl.len));
   cvar_set("saved2", ftos(graphics_gfx_lbl.len));
   
   cmd("saveconfig\n");
   cmd("vid_restart\n");
+  cmd("loadconfig\n");
 };
 
 // ini function, called by '_f' function as a setup func
 void() m_graphics_i={
+
   graphics_title = lbl_img('10 25', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, (UI_FLAG_SIZE_IMG) );
   
   //resolution
   local float vid;
-  vid = menu_getvideo_modeid(VIEW_MAX); 
+  vid = menu_getvideo_modeid();
   local string reso;
   reso = strcat(ftos(VIEW_ACT_x), " x ", ftos(VIEW_ACT_y) );
   graphics_resolution_lbl = lbl_text('150 102', '14 14 0', strzone(reso), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
@@ -764,15 +770,20 @@ void() m_graphics_i={
   }
   
   //aniso
-  graphics_aniso_lbl = lbl_text('150 262', '14 14 0', strzone(ftos(cvar("gl_texture_anisotropy"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  if( cvar("gl_texture_anisotropy") == 1){
+    graphics_aniso_lbl = lbl_text('150 262', '14 14 0', strzone("OFF"), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  }
+  else{
+    graphics_aniso_lbl = lbl_text('150 262', '14 14 0', strzone(ftos(cvar("gl_texture_anisotropy"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  }
   graphics_aniso_lbl.len = cvar("gl_texture_anisotropy");
-  graphics_aniso_more = btn_img_callback('164 262 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_aniso_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_aniso_more = btn_img_callback('174 262 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_aniso_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_aniso_less = btn_img_callback('140 262 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_aniso_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(graphics_aniso_lbl.len == 32){
     graphics_aniso_more.drawme = FALSE;
   }
-  else if(graphics_aniso_lbl.len == 1){
+  else if(graphics_aniso_lbl.len == 2){
     graphics_aniso_less.drawme = FALSE;
   }
   

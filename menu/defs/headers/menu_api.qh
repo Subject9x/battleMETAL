@@ -77,7 +77,7 @@ void(float keynr, float ascii) menu_do_keybind;
 void(string bind_cmd) menu_keybind_change;
 //string(float keynr) menu_keybind_get;
 vector(string comd) menu_keybind_keyfor;
-float(vector vsize) menu_getvideo_modeid;
+float() menu_getvideo_modeid;
 string(float id) menu_getvideo_clean;
 
 string(float val) menu_float_bool;

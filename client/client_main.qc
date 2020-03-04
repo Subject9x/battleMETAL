@@ -279,36 +279,9 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
+      //Main HUD entry point
       data_hud_frame();
       
-      if(CLIENT_player_state == PLAYER_SPRINT_ON){
-        //TODO - refactor into HUD
-        drawfont_prev = drawfont;
-        drawfont = FONT_NUM_ROBOT_REGULAR;
-        local float slen;
-        local vector spos;
-        local string msg;
-        local vector msgClr;
-        if( cvar("cl_movespeedkey") > 1 ){
-          msg = "[EVASION ON]";
-          msgClr = CLR_DEF_RET_GETLOCK;
-          if( getstatf(STAT_RAM) >= getstatf(STAT_RAM_MAX) ){
-            msg = "[RAM-SHOCKS READY]";
-            msgClr = CLR_DEF_RED;
-          }
-        }
-        else{
-          msg = "!- EVASION OFFLINE -!";
-          msgClr = CLR_DEF_RED;
-        }
-         slen = stringwidth(msg, 0, '16 14 0');
-        slen = gui_percentXRaw(slen);
-        spos_x = VIEW_CTR_x - slen / 2;
-        spos_y = VIEW_CTR_y + gui_percentYRaw(56);
-        drawstring(spos, msg, '16 14 0', msgClr, max(HUD_ALPHA + 0.33, 0.8), 0);
-        drawfont_prev = drawfont;
-      }
-
       //HUD Highlight Boxes
       hud_renderHighlight_frame();
       
@@ -331,6 +304,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       }
     }
     if(UI_OBJECTIVE_ACTIVE){
+      //old PvP / co-op respawn state code. After death, this would tell the player to hit tab to spawn again.
       local float len;
       local vector og;
       local string mesg;
@@ -349,7 +323,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     }
   }
    
-  //sound system;
+  //HUD sound system
   snd_hud_vfx_frame();
  
   //menu system

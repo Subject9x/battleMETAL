@@ -677,8 +677,18 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);
       nofs_z = 0;
-      hud_renderShield(nofs, 0, val, aSize, FALSE, 0, '0 0', AXIS_H, FALSE);
+      
+      local vector meterSize, pos;
+      local vector meterColor;
+      
+      meterSize = gui_percentToPixelRawVec(mSize);
+      pos = gui_percentToPixelRawVec(nofs);
+      pos = gui_calcAlign(pos, algn);
+     
+      meterColor = CLR_DEF_ARM_DED;
+      gui_renderMeter(val, pos, aSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, AXIS_H, FALSE); 
     }
+    cs_unproject(vpos);
   }
 };
 
@@ -1107,7 +1117,7 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
 };
 
 /*
-
+  Renders HUD notification system messages, red text and dark gray background
 */
 void() hud_render_info={
   
@@ -1232,6 +1242,9 @@ void() hud_renderHighlight_frame={
   }
 };
 
+/*
+  Highlights a chosen section of the player's HUD
+*/
 void( entity box ) hud_renderHighlight={
   local vector bx_pos, bx_sz;
   local float x,y;
@@ -1246,7 +1259,9 @@ void( entity box ) hud_renderHighlight={
   drawpic( bx_pos, UI_DEF_BOX_256_THICK, bx_sz, box.drawcolor1, 0.75, 0);
 };
 
-
+/*
+  Renders the RAM-SHOCKS charge up meter and ram state for the player.
+*/
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram={
   local vector meterSize, label_org, ramPos;
   local vector ramColor;
@@ -1288,6 +1303,41 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   drawfont = drawfont_prev;
 
 };
+
+
+/*
+  Render Sprint STATE
+  
+*/
+void() hud_render_sprint={
+  local float slen;
+  local vector spos;
+  local string msg;
+  local vector msgClr;
+  if(CLIENT_player_state == PLAYER_SPRINT_ON){
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+    if( cvar("cl_movespeedkey") > 1 ){
+      msg = HUD_SPRINT_ON;
+      msgClr = CLR_DEF_RET_GETLOCK;
+      if( getstatf(STAT_RAM) >= getstatf(STAT_RAM_MAX) ){
+        msg = HUD_SPRINT_RAM;
+        msgClr = CLR_DEF_RED;
+      }
+    }
+    else{
+      msg = HUD_SPRINT_OFF;
+      msgClr = CLR_DEF_RED;
+    }
+    slen = stringwidth(msg, 0, '16 14 0');
+    slen = gui_percentXRaw(slen);
+    spos_x = VIEW_CTR_x - slen / 2;
+    spos_y = VIEW_CTR_y + gui_percentYRaw(56);
+    drawstring(spos, msg, '16 14 0', msgClr, max(HUD_ALPHA + 0.33, 0.8), 0);
+    drawfont_prev = drawfont;
+  }
+};
+
 
 /*
   Main API call for new text-based HUD system
@@ -1560,16 +1610,18 @@ void() data_hud_frame={
   hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
   
+  //ZOOM ACTIVE cleans up the HUD when the player is zooming in on an object by hiding
+  //various elements that would get in the way.
+  //these funcs can be moved out of this check as desired.
   if( !HUD_ZOOM_ACTIVE ){
     //repair sits above all
     hud_renderRepairValue();
     hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
     hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
     hud_event_frame();
+    hud_render_sprint();
+    hud_render_info();
   }
- 
-  hud_render_info();
-  
 };
 
 /*
