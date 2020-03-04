@@ -204,19 +204,24 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
   }
 };
 
+/*
+  Cosmetic death function, weapon entity is still 'active' on the server.
+*/
 void() ctrl_die_weapon={
   if(self.deadflag <= DEAD_NO){
-    te_missile_explode( self.origin, 1, '0.33 0.67 0.99', 1, 1);
+    te_missile_explode( self.origin, self.hardpointSize, '0.33 0.67 0.99', 1, 1);
     
-    if((self.currentWeaponGroup & self.w_group)){
+    if( (self.currentWeaponGroup & self.w_group) ){
       self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group);
       self.w_group = 0;
     }
     
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
-    self.effects = EF_NODRAW;
-    setsize(self, '0 0 0', '0 0 0');
+    self.effects = EF_NODRAW; 
+    self.movetype = MOVETYPE_NONE;
+    self.aiment = world;
+    setsize(self, '-0.25 -0.25 -0.25', '0.25 0.25 0.25');
     
     if( (self.damageType & DMG_MSC) ){
       //weapon is equip, run death func which undoes the module's upgrades
@@ -224,6 +229,27 @@ void() ctrl_die_weapon={
         self.item_remove_upgrade();      
       }
     }
+    //attempt to garbage collect AI
+    if( (self.owner.flags & FL_MONSTER) ){
+      self.partPrev.w_slot = self.w_slot; //take hard point out of rotation.
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.5;
+    }
+  }
+};
+
+/*
+  called to remove all hardpoints from a Unit, carefully.
+*/
+void() ctrl_weapon_remove_all={
+  local entity removeChain;
+  local entity nextWep;
+  //call remove() in list order, no going back from this.
+  removeChain = self.w_slot;
+  while(removeChain){
+    nextWep = removeChain.w_slot;
+    remove( removeChain );
+    removeChain = nextWep;
   }
 };
 

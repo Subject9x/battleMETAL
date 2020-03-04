@@ -9,8 +9,15 @@ Overview: ai unit
   Setup
     
 */
+
+/* quick garbage collect before rest of death funcs */
+void() ai_vec_dest_clean={
+  ctrl_unit_cleanup_tank();
+  self.think = ai_vec_dest_die1;
+  self.nextthink = time + 0.5;
+};
+
 void() ai_vec_dest_die={
-  local entity w_chain;
   local vector v;
   
   if( self.deadflag >= DEAD_DYING ){
@@ -34,17 +41,20 @@ void() ai_vec_dest_die={
   setorigin(self, self.origin - (v_up * self.maxs_z * 0.15) );
   droptofloor();
   
+  // run weapon death animation
+  local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
-    mech_player_compdie(w_chain);
+    ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.cockpit);
+  
+  ctrl_unit_part_death(self.cockpit);
   
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
 
-  self.think = ai_vec_dest_die1;
+  self.think = ai_vec_dest_clean;
   self.ai_action_time = time + 600;
 
   ai_alert_close( self.enemy );

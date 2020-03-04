@@ -91,7 +91,7 @@ void() data_projectile_missile_activeradar_touch={
 		return;
 	}
   self.touch = SUB_Null;
-  self.solid = SOLID_NOT
+  self.solid = SOLID_NOT;
   
   if( other == self.owner ){
     return;

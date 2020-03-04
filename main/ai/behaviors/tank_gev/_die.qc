@@ -9,6 +9,7 @@ Overview: ai unit
   Setup
     
 */
+
 void() ai_gev_die1={
   self.deadflag = DEAD_DEAD;
   
@@ -19,6 +20,13 @@ void() ai_gev_die1={
     self.ai_action_time = time + (random() * 7200);
     self.think = SUB_Remove;
   }
+  self.nextthink = time + 0.5;
+};
+
+/* quick garbage collect before rest of death funcs */
+void() ai_gev_die_clean={
+  ctrl_unit_cleanup_tank();
+  self.think = ai_gev_die1;
   self.nextthink = time + 0.5;
 };
 
@@ -44,7 +52,6 @@ void() ai_gev_touch_death={
 };
 
 void() ai_gev_die={
-  local entity w_chain;
   local vector v;
   local vector t;
   t = '0 0 0';
@@ -68,19 +75,22 @@ void() ai_gev_die={
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
  
+  // run weapon death animation
+  local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
-    mech_player_compdie(w_chain);
+    ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
   
-  mech_player_compdie(self.cockpit);
+  ctrl_unit_part_death(self.cockpit);
   
-  if( (self.flags & FL_TURRET) )
-    mech_player_compdie(self.torsoCenter);
-  
-  if( self.ai_node_recall )
+  if( (self.flags & FL_TURRET) ){
+    ctrl_unit_part_death(self.torsoCenter);
+  }
+  if( self.ai_node_recall ){
     remove(self.ai_node_recall);
+  }
   
   t_y = self.ideal_yaw;
   
@@ -103,8 +113,8 @@ void() ai_gev_die={
     self.gravity = 0.25;
   }
   self.attack_state = -1;
-  self.think = ai_gev_die1;
-  self.nextthink = time + 0.01;
+  self.think = ai_gev_die_clean;
+  self.nextthink = time + 0.1;
   self.ai_action_time = time + (random() * 500);
   self.attack_state = -1;
   self.touch = ai_gev_touch_death;

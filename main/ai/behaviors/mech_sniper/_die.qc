@@ -32,10 +32,11 @@ void() ai_mech_sniper_die={
   self.enemy = world;
   self.oldenemy = world;
   
+  //run weapon death animation
   local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
-    mech_player_compdie(w_chain);
+    ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
   
@@ -50,12 +51,12 @@ void() ai_mech_sniper_die={
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);
   droptofloor();
-  mech_player_compdie(self.torsoCenter);
-  mech_player_compdie(self.torsoLeft);
-  mech_player_compdie(self.torsoRight);
-  mech_player_compdie(self.armLeft);
-  mech_player_compdie(self.armRight);
-  mech_player_compdie(self.cockpit);
+  ctrl_unit_part_death(self.torsoCenter);
+  ctrl_unit_part_death(self.torsoLeft);
+  ctrl_unit_part_death(self.torsoRight);
+  ctrl_unit_part_death(self.armLeft);
+  ctrl_unit_part_death(self.armRight);
+  ctrl_unit_part_death(self.cockpit);
   
   ai_alert_close( self.enemy );
   
@@ -65,7 +66,7 @@ void() ai_mech_sniper_die={
 
 //explode
 void() ai_mech_sniper_die2={
-  mech_cleanupMech();
+  ctrl_unit_cleanup_tank();
   self.nextthink = time + 0.1;
   self.think = BecomeExplosion;
 };

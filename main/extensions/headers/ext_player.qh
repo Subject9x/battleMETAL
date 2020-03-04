@@ -3,17 +3,6 @@ battleMETAL
 Author: Peter Roohr
 Date: 9/7/2016
 Overview: 
-  head for mech management functions
+  any server-side needed extensions.
 */
-
 .float chainWeaponTimer;
-
-void() mech_clearWeaponGroups;
-
-void() mech_player_die;
-void() mech_player_cameradie;
-void(entity comp) mech_player_compdie;
-
-void() mech_cleanupMech;
-void() mech_player_removecamera;
-void(entity comp) mech_player_removecomp;
