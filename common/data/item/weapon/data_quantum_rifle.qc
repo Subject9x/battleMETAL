@@ -74,7 +74,7 @@ void() data_ini_attack_quantum_={
   hitMax = '25 25 25';
   hitMin = '-25 -25 -25';
   
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
   prtclRail_org = FIRE_ORIGIN + (v_forward * 2);
   prtclRail_end = FIRE_ORIGIN + (v_forward * 48);
   prtclSpark_org = FIRE_ORIGIN + (v_forward * 22);

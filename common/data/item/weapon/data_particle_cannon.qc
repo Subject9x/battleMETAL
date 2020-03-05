@@ -65,7 +65,7 @@ void() data_ini_attack_particle_cannon_={
   ctrl_weapon_updateAmmo( FALSE );
   
   client_send_particle( particleeffectnum("TE_PAC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
   
   client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_PAC_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
   

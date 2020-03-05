@@ -940,21 +940,20 @@ float(entity piece) csqc_updateCompStat={
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle={
   WriteByte( MSG_ALL, SVC_TEMPENTITY );
   WriteByte( MSG_ALL, TE_VFX_POINT );
-  WriteLong( MSG_ALL, particleEffectId );
+  WriteShort( MSG_ALL, particleEffectId );
   WriteCoord(MSG_ALL, particleOrg_x);
   WriteCoord(MSG_ALL, particleOrg_y);
   WriteCoord(MSG_ALL, particleOrg_z);
   WriteCoord(MSG_ALL, particleVel_x);
   WriteCoord(MSG_ALL, particleVel_y);
   WriteCoord(MSG_ALL, particleVel_z);
-  WriteLong(MSG_ALL, particleCount);
+  WriteShort(MSG_ALL, particleCount);
 };
 
 void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail={
   WriteByte( MSG_ALL, SVC_TEMPENTITY );
   WriteByte( MSG_ALL, TE_VFX_RAIL );
-  WriteLong( MSG_ALL, entityId );
-  WriteLong( MSG_ALL, particleEffectId );
+  WriteShort( MSG_ALL, particleEffectId );
   WriteCoord(MSG_ALL, particleOrg_x);
   WriteCoord(MSG_ALL, particleOrg_y);
   WriteCoord(MSG_ALL, particleOrg_z);

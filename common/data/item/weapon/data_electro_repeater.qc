@@ -62,7 +62,7 @@ void() data_ini_attack_electro_repeater_={
   }
   ctrl_weapon_updateAmmo( FALSE );
   
-  sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
   client_send_particle( particleeffectnum("TE_ESR_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
    
   local float shotCount;

@@ -95,7 +95,7 @@ void() data_ini_attack_missile_swarm_={
         NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
         NEWSHOT.w_isburst = time + 2; //use to track curving behavior
         setorigin(NEWSHOT, start);
-        sound (NEWSHOT, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
+        pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
         client_send_particle( particleeffectnum("TE_SWRM_MUZZLE"), self.origin, normalize( targs.origin - FIRE_ORIGIN ) * 3, 1);
         NEWSHOT = world;
       }

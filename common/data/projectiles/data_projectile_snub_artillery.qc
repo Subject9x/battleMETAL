@@ -46,7 +46,7 @@ void() data_projectile_snub_artillery_touch_={
     remove(self);
     return;
   }
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.8 0.5', self.damageValue / 7, ceil( random() * 3) );
+  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.8 0.5', min(self.damageValue / 7, 10) , ceil( random() * 3) );
   data_projectile_snub_artillery_radiusDamage();
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';

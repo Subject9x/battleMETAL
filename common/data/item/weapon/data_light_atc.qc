@@ -56,7 +56,7 @@ void() data_ini_attack_latc_={
   ctrl_weapon_updateAmmo( TRUE );
   
   client_send_particle( particleeffectnum("TE_ATC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
   
   if( vlen(FIRE_ENDPOINT - FIRE_ORIGIN) > 100 )
     client_send_particle( particleeffectnum("TE_ATC_TRACER"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1400, 1);

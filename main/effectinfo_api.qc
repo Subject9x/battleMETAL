@@ -231,7 +231,7 @@ void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
   demg = hitDmg / 10;
   vel = angl * demg;
   
-  client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, demg + total);
+  client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, max(demg + total, 24));
   pointsound( org, "sound/fx_shieldhit.ogg", 1, ATTN_NORM );
 };
 

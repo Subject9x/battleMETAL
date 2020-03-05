@@ -63,7 +63,7 @@ void() data_ini_attack_flak_={
 
   ctrl_weapon_updateAmmo( FALSE );
   
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
   client_send_particle( particleeffectnum("TE_FLK_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
   
   if( vlen(trace_endpos - FIRE_ORIGIN) > 100 ){

@@ -59,9 +59,10 @@ void() data_ini_attack_snub_artillery_={
   
   ctrl_weapon_make_projectile( -1 );
   if((FIRE_ENT.flags & FL_CLIENT)){
-    FIRE_ENT.punchangle_x = -2 + (crandom() * -6);
-    FIRE_ENT.punchangle_y = -3 + (crandom() * -6);
+    FIRE_ENT.punchangle_x = -1 + (crandom() * -2);
+    FIRE_ENT.punchangle_y = -1 + (crandom() * -2);
   }
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
 };
 #endif

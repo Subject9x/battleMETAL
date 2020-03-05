@@ -57,12 +57,12 @@ void() data_ini_attack_rockets_={
 
   ctrl_weapon_updateAmmo( FALSE );
    
-  self.owner.punchangle_x = -2 + crandom() * -2;
-  self.owner.punchangle_y = -3 + crandom() * -4;
+  self.owner.punchangle_x = -1 + crandom() * -1;
+  self.owner.punchangle_y = -1 + crandom() * -1;
   client_send_particle( particleeffectnum("TE_MIS_MUZZLE"), FIRE_ORIGIN + (v_forward * 1), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1);
   
   ctrl_weapon_make_projectile( 0.01 );
   
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
 };
 #endif

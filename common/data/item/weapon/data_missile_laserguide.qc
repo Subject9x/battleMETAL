@@ -61,7 +61,7 @@ void() data_ini_attack_missile_laserguide_={
   ctrl_weapon_make_projectile( 0.05 );
   
   lasOrg = FIRE_ORIGIN + (v_forward * 2.1) + (v_up * -0.5);
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
   client_send_particle( particleeffectnum("TE_LGM_MUZZLE"), FIRE_ORIGIN + (v_forward * 2) + (v_right * -0.65), normalize((FIRE_ORIGIN + v_up * 2) - FIRE_ORIGIN), 1);
   client_send_particle( particleeffectnum("TE_LGM_MUZZLE"), FIRE_ORIGIN + (v_forward * 2) + (v_right * 0.65), normalize((FIRE_ORIGIN + v_up * 2) - FIRE_ORIGIN), 1);
   client_send_particle( particleeffectnum("TE_LGM_MUZZLE"), FIRE_ORIGIN + (v_forward * 2) + (v_up * 1), normalize((FIRE_ORIGIN + v_up * 2) - FIRE_ORIGIN), 1);

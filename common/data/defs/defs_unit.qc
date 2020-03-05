@@ -64,3 +64,6 @@ Overview:
 .entity armRight;  //arms can be optional
 
 .float isActive;
+
+.float was_hit; //used for hit direction calculation mostly
+.float hitdir_buffer; //used for hit direction, is cleared every frame

@@ -105,7 +105,7 @@ void() map_particlecube_effect_touch={
     trigger = self;
     self = other.particleCube;
       //NOTE: if network-play is ever done, this will need to be pushed up to TE_ messaging and have the actual te_() call be done in csqc.
-      //self.drawonlytoclient = other;
+      self.drawonlytoclient = other;
       self.owner = other;
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;

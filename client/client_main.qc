@@ -467,10 +467,10 @@ float() CSQC_Parse_TempEntity =
       }
       return TRUE;
     case TE_VFX_POINT:
-      pointparticles( ReadLong(), te_read_vector() , te_read_vector(), ReadLong());
+      pointparticles( ReadShort(), te_read_vector() , te_read_vector(), ReadShort());
       return TRUE;
     case TE_VFX_RAIL:
-      trailparticles( entitybyindex(ReadLong()), ReadLong(), te_read_vector(), te_read_vector() );
+      trailparticles( world, ReadShort(), te_read_vector(), te_read_vector() );
       return TRUE;
   } 
 	return FALSE;

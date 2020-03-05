@@ -61,7 +61,7 @@ void() data_ini_attack_laser_={
 
   ctrl_weapon_updateAmmo( FALSE );
   
-  sound ( self, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
   client_send_particle( particleeffectnum("TE_LAS_MUZZLE"), self.origin, FIRE_ENT.angles, 1);
   client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_LAS_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
   

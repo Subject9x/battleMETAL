@@ -89,7 +89,7 @@ void() data_ini_attack_missile_activeradar_={
     NEWSHOT.w_isburst = time + 4; //use to track curving behavior
     setorigin(NEWSHOT, start);
     NEWSHOT = world;
-    sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
+    pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
     client_send_particle( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
   }
 };
