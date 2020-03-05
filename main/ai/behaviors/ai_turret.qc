@@ -22,6 +22,18 @@ void() temp_chunk_burn={
 	self.nextthink = time + 0.1;
 };
 
+void() ai_turret_clean={
+  ctrl_unit_remove_piece(self.cockpit);
+  ctrl_weapon_remove_all();
+  ctrl_unit_remove_piece(self.torsoLeft);
+  ctrl_unit_remove_piece(self.torsoRight);
+  ctrl_unit_remove_piece(self.torsoCenter);
+  
+  self.think = ai_turret_die_burn;
+  self.ai_action_time = time + 360;
+  self.nextthink = time + 0.1;
+};
+
 /*
   TH_DIE
 */
@@ -50,11 +62,12 @@ void() ai_turret_die={
   local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
-    mech_player_compdie(w_chain);
+    ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.cockpit);  
-  mech_player_compdie(self.torsoCenter);
+  
+  ctrl_unit_part_death(self.cockpit);  
+  ctrl_unit_part_death(self.torsoCenter);
   
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
@@ -64,10 +77,11 @@ void() ai_turret_die={
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
   te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 240, 0.67, 360); 
   
-  self.think = ai_turret_die_burn;
-  self.ai_action_time = time + 360;
-  
+
   ai_call_for_help( self.enemy );
+  self.think = ai_turret_clean;
+  self.nextthink = time + 0.75;
+  
 };
 
 void() ai_turret_die_burn={  

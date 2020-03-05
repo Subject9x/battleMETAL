@@ -9,8 +9,14 @@ Overview: ai unit
   Setup
     
 */
+
+void() ai_tank_sk_clean={
+  ctrl_unit_cleanup_tank();
+  self.think = ai_tank_sk_die1;
+  self.nextthink = time + 0.5;
+};
+
 void() ai_tank_sk_die={
-  local entity w_chain;
   local vector v;
   
   if( self.deadflag >= DEAD_DYING ){
@@ -37,15 +43,18 @@ void() ai_tank_sk_die={
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
 
+  // run weapon death animation
+  local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
-    mech_player_compdie(w_chain);
+    ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.cockpit);
-  mech_player_compdie(self.torsoLeft);
-  mech_player_compdie(self.torsoRight);
-  mech_player_compdie(self.torsoCenter);  
+  
+  ctrl_unit_part_death(self.cockpit);
+  ctrl_unit_part_death(self.torsoLeft);
+  ctrl_unit_part_death(self.torsoRight);
+  ctrl_unit_part_death(self.torsoCenter);  
 
   if( self.ai_node_recall ){
     remove(self.ai_node_recall);
@@ -70,7 +79,7 @@ void() ai_tank_sk_die={
       break;
   }
 
-  self.think = ai_tank_sk_die1;
+  self.think = ai_tank_sk_clean;
   self.nextthink = time + 0.1;
 };
 

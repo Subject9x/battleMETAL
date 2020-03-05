@@ -13,7 +13,6 @@ Overview: ai unit
   TH_DIE
 */ 
 void() ai_mech_sk_die={
-  local entity w_chain;
   
   if( self.deadflag >= DEAD_DYING ){
     return; //double play prevention
@@ -35,9 +34,11 @@ void() ai_mech_sk_die={
   setorigin(self, self.origin);
   droptofloor();
   
+  // run weapon death animation
+  local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
-    mech_player_compdie(w_chain);
+    ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
 
@@ -55,20 +56,20 @@ void() ai_mech_sk_die={
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);
   droptofloor();
-  mech_player_compdie(self.torsoCenter);
-  mech_player_compdie(self.torsoLeft);
-  mech_player_compdie(self.torsoRight);
-  mech_player_compdie(self.armLeft);
-  mech_player_compdie(self.armRight);
-  mech_player_compdie(self.cockpit);
+  ctrl_unit_part_death(self.torsoCenter);
+  ctrl_unit_part_death(self.torsoLeft);
+  ctrl_unit_part_death(self.torsoRight);
+  ctrl_unit_part_death(self.armLeft);
+  ctrl_unit_part_death(self.armRight);
+  ctrl_unit_part_death(self.cockpit);
   
   self.think = ai_mech_sk_die2;
-  self.nextthink = time + 2;
+  self.nextthink = time + 1;
 };
 
 //explode
 void() ai_mech_sk_die2={
-  mech_cleanupMech();
-  self.nextthink = time + 0.1;
-  self.think = SUB_Null;
+  ctrl_unit_cleanup_tank();
+  self.think = SUB_Remove;
+  self.nextthink = time + 1;
 };

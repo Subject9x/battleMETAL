@@ -90,6 +90,8 @@ void() data_projectile_missile_activeradar_touch={
     remove(self);
 		return;
 	}
+  self.touch = SUB_Null;
+  self.solid = SOLID_NOT;
   
   if( other == self.owner ){
     return;
@@ -98,12 +100,14 @@ void() data_projectile_missile_activeradar_touch={
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
-      remove(self);
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.1;
       return;
     }
   }
 
   makevectors(self.velocity);
   te_missile_explode(  self.origin + (v_up * -5), 1, '0.969 0.996 0.18', self.damageValue / 5, 1);
-  remove(self);
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
 };

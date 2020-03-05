@@ -297,8 +297,8 @@ void() ClientKill = {
 
   if(self.data_type == DATA_MECH){
     self.data_type = DATA_POBS;
-    mech_clearWeaponGroups();
-    mech_cleanupMech();
+    ctrl_unit_clean_wgroups();
+    ctrl_unit_cleanup_player();
   }
   self.solid = SOLID_CORPSE;
   self.alpha = 0;
@@ -328,9 +328,9 @@ void() ClientDisconnect = {
 	bprint (" has fled the field of battle!\n");
   
   if(self.data_type == DATA_MECH){
-    mech_player_die();
+    ctrl_mech_die_player();
     player_unmakeMech();
-    mech_cleanupMech();
+    ctrl_unit_cleanup_player();
   }
   //update client numbers
   CLIENTS = CLIENTS - 1;
