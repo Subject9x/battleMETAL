@@ -44,3 +44,6 @@ float TE_WEAPONS_ON = 112;
 float TE_REPAIRS_ON = 113;
 float TE_FIREMODE = 114;
 float TE_CLIENT_INFO_THIN = 115;
+
+float TE_VFX_POINT = 116;
+float TE_VFX_RAIL = 117;

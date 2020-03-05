@@ -59,7 +59,7 @@ void() data_ini_attack_rockets_={
    
   self.owner.punchangle_x = -2 + crandom() * -2;
   self.owner.punchangle_y = -3 + crandom() * -4;
-  pointparticles( particleeffectnum("TE_MIS_MUZZLE"), FIRE_ORIGIN + (v_forward * 1), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1);
+  client_send_particle( particleeffectnum("TE_MIS_MUZZLE"), FIRE_ORIGIN + (v_forward * 1), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1);
   
   ctrl_weapon_make_projectile( 0.01 );
   

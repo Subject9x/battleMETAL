@@ -64,10 +64,10 @@ void() data_ini_attack_particle_cannon_={
 
   ctrl_weapon_updateAmmo( FALSE );
   
-  pointparticles( particleeffectnum("TE_PAC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
+  client_send_particle( particleeffectnum("TE_PAC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   
-  trailparticles( world, particleeffectnum("TE_PAC_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
+  client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_PAC_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
   
   strikePoint = FIRE_ENDPOINT + (v_forward * -5);
   
@@ -77,11 +77,11 @@ void() data_ini_attack_particle_cannon_={
       if( trace_ent.shield < 0 ){
         trace_ent.shield = 0;
       }
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), strikePoint, '0 0 0', 1);
+      client_send_particle( particleeffectnum("TE_PAC_IMPACT_SHIELD"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+      client_send_particle( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), strikePoint, '0 0 0', 1);
     }
     else{
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"),strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+      client_send_particle( particleeffectnum("TE_PAC_IMPACT_ARMOR"),strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
     }
     thisTarget = trace_ent;
     oldShields = thisTarget.shield;
@@ -93,6 +93,6 @@ void() data_ini_attack_particle_cannon_={
     return;
   }
   
-  pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+  client_send_particle( particleeffectnum("TE_PAC_IMPACT_GROUND"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
 };
 #endif

@@ -63,26 +63,26 @@ void() data_ini_attack_electro_repeater_={
   ctrl_weapon_updateAmmo( FALSE );
   
   sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+  client_send_particle( particleeffectnum("TE_ESR_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
    
   local float shotCount;
   
   for(shotCount = DATA_ESR_BEAM_COUNT; shotCount > 0; shotCount = shotCount - 1){
     ctrl_weapon_fireOffset();
-    trailparticles( world, particleeffectnum("TE_ESR_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
+    client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_ESR_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT );
     if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
       continue;
     }
     if( trace_ent.takedamage ){
       t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
       if( trace_ent.shield > 0 ){
-        pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+        client_send_particle( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
       }
       else{
-         pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+         client_send_particle( particleeffectnum("TE_ESR_IMPACT_ARMOR"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
       }
     }
-    pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+    client_send_particle( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
   }
 };
 #endif

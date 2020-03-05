@@ -44,28 +44,28 @@ void() player_makeVec={
 
 float() customize_part_for_client ={
   local vector chunkOfs;
-  if( other == self.owner ){
-    makevectors(other.angles);
-    chunkOfs = self.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - (other.cockpit.compOffset_z / 2)));
-    setorigin(self, chunkOfs);
-    self.viewmodelforclient = other;
+  if( self.owner == other){
+    cons_logAFloat("self.owner.data_idx", self.owner.data_idx);
+    cons_logAFloat("other.data_idx", other.data_idx);
+    //makevectors(other.angles);
+    //chunkOfs = self.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - (other.cockpit.compOffset_z / 2)));
+    //setorigin(self, chunkOfs);
+    self.alpha = 0;
     return TRUE;
   } 
-  return FALSE;
 };
 
 float() customize_wep_for_client={
   local vector chunkOfs;
-  if( other == self.owner ){
-    makevectors(other.angles);
-    chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - other.cockpit.compOffset_z));
-    self.wepFireOffset_z = self.wepFireOffsetCache_z - other.cockpit.compOffset_z;
-    self.compAltOffset_z = self.compAltOffsetCache_z - other.cockpit.compOffset_z;
-    self.viewmodelforclient = other;
-    setorigin(self, chunkOfs);
+  if( self.owner == other ){
+    //makevectors(other.angles);
+    //chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - other.cockpit.compOffset_z));
+    //self.wepFireOffset_z = self.wepFireOffsetCache_z - other.cockpit.compOffset_z;
+    //self.compAltOffset_z = self.compAltOffsetCache_z - other.cockpit.compOffset_z;
+    //setorigin(self, chunkOfs);
+    self.alpha = 0;
     return TRUE;
-  } 
-  return FALSE;
+  }
 };
 
 void() player_makeMech={
@@ -113,25 +113,23 @@ void() player_makeMech={
   self.hud_mode = cvar("cl_hud_sway");
   self.hud_ent = newmis;
   util_updateViewBob();
-
-
-  self.torsoCenter.customizeentityforclient = customize_part_for_client;
-  self.torsoLeft.customizeentityforclient = customize_part_for_client;
-  self.torsoRight.customizeentityforclient = customize_part_for_client;
-  self.armLeft.customizeentityforclient = customize_part_for_client;
-  self.armRight.customizeentityforclient = customize_part_for_client;
-  self.legs.customizeentityforclient = customize_part_for_client;
-  
-  local entity wep;
-  for( wep = self.w_slot; wep != world; wep = wep.w_slot){
-    wep.customizeentityforclient = customize_wep_for_client;
-  }
-  
   
   self.view_ofs = '0 0 0';
   self.view_ofs_z = self.cockpit.compOffset_y;
   self.stat_rdr_mode = 1;
   self.stat_rdr_rng = self.radar_range * 2;
+  
+  //self.torsoCenter.nodrawtoclient = customize_part_for_client;
+  //self.torsoLeft.nodrawtoclient = customize_part_for_client;
+  //self.torsoRight.nodrawtoclient = customize_part_for_client;
+  //self.armLeft.nodrawtoclient = customize_part_for_client;
+  //self.armRight.nodrawtoclient = customize_part_for_client;
+  //self.legs.nodrawtoclient = customize_part_for_client;
+  
+  local entity wep;
+  for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+    //wep.nodrawtoclient = customize_wep_for_client;
+  }
 };
 
 void() player_unmakeMech={

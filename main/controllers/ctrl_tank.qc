@@ -59,19 +59,19 @@ void() ctrl_updateTank={
     if( hp <= 0.75){
       makevectors( self.angles );
       spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
+      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
     }
     else if( hp <= 0.5){
       makevectors( self.angles );
       spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 1);
+      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
+      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 1);
     }
     else if( hp <= 0.25){
       makevectors( self.angles );
       spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 1);
+      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
+      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 1);
     }
   }
 

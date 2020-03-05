@@ -67,6 +67,6 @@ void() data_ini_attack_emp_={
   }
   
   sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_EMP_MUZZLE"), FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
+  client_send_particle( particleeffectnum("TE_EMP_MUZZLE"), FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
 };
 #endif

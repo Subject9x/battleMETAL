@@ -54,7 +54,7 @@ void() data_projectile_plasma_burn_th={
   }
   
   t_damage(self.enemy, self, self.owner, self.damageValue, self.damageType, self.cockpit.origin, '0 0 0');
-  pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
+  client_send_particle( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   
   if(time > self.data_lifetime){
     remove(self);
@@ -78,7 +78,7 @@ void() data_projectile_plasma_touch={
     return;
   }
 
-  pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+  client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
   if(other.takedamage){
     if(other.shield > 0){
       t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
@@ -107,7 +107,7 @@ void() data_projectile_plasma_touch={
 
 void() data_projectile_plasma_think_={
   if( time > self.data_lifetime ){
-    pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+    client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
     self.touch = SUB_Null;
     self.think = SUB_Remove;
     self.nextthink = time + 0.05;

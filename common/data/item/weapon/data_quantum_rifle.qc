@@ -79,11 +79,12 @@ void() data_ini_attack_quantum_={
   prtclRail_end = FIRE_ORIGIN + (v_forward * 48);
   prtclSpark_org = FIRE_ORIGIN + (v_forward * 22);
   
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1);
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1);
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1);
-  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5));
-  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5));
+  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1 ) ;
+  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1) ;
+  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1) ;
+  
+  client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5) );
+  client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5) );
   
   if( trace_ent.takedamage ){
     hitZone = trace_ent.origin;

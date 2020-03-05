@@ -27,10 +27,10 @@ void() map_particle_debug_th={
   vdir = self.origin + (v_up * self.dest1_y) + (v_forward * self.dest1_z)+ (v_right * self.dest1_x);
   pvel = normalize( vdir - self.origin) * self.count4;
   if( self.count3 ){
-    trailparticles( self, particleeffectnum(self.vec_name), self.origin + (v_up * self.compOffset_y) + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x), pvel);
+   client_send_particle_rail( num_for_edict(self), particleeffectnum(self.vec_name), self.origin + (v_up * self.compOffset_y) + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x), pvel);
   }
   else{
-    pointparticles( particleeffectnum(self.vec_name), self.origin, pvel, self.count);
+    client_send_particle( particleeffectnum(self.vec_name), self.origin, pvel, self.count);
   }
   
   self.think = map_particle_debug_th;

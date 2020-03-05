@@ -62,8 +62,8 @@ void() data_ini_attack_laser_={
   ctrl_weapon_updateAmmo( FALSE );
   
   sound ( self, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_LAS_MUZZLE"), self.origin, FIRE_ENT.angles, 1);
-  trailparticles( world, particleeffectnum("TE_LAS_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
+  client_send_particle( particleeffectnum("TE_LAS_MUZZLE"), self.origin, FIRE_ENT.angles, 1);
+  client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_LAS_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
   
   if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
     return;
@@ -72,11 +72,11 @@ void() data_ini_attack_laser_={
   if( trace_ent.takedamage ){
     hit = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
     if( hit.shield <= 0 ){
-      pointparticles(particleeffectnum("TE_LAS_HIT"), FIRE_ENDPOINT , normalize( FIRE_ORIGIN - FIRE_ENDPOINT ), 1);
+      client_send_particle(particleeffectnum("TE_LAS_HIT"), FIRE_ENDPOINT , normalize( FIRE_ORIGIN - FIRE_ENDPOINT ), 1);
     }
     return;
   }
   
-  pointparticles(particleeffectnum("TE_LAS_DIRT"), FIRE_ENDPOINT , '0 0 0', 1);
+  client_send_particle(particleeffectnum("TE_LAS_DIRT"), FIRE_ENDPOINT , '0 0 0', 1);
 };
 #endif

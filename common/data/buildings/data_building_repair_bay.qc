@@ -60,9 +60,9 @@ void() hrepair_rep = [0, hrepair_rep]{
         end_repair = FALSE;
         makevectors(self.angles);
         fx = self.origin + (v_up * 75) + (v_forward * -24);
-        pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 3, 1);
-        pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
-        trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
+        client_send_particle( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 3, 1);
+        client_send_particle( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
+        client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
 
         fix.health = fix.health + (self.reloadRate * 2);
         self.reloadValue = self.reloadValue - (self.reloadRate * (self.trigger_field.vec_size * 1.25));

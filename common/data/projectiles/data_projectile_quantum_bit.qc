@@ -36,14 +36,14 @@ void() data_projectile_ini_quantum_bit_touch_={
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
-      pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+      client_send_particle( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
     }
     self.traileffectnum = 0;
     remove(self);
     return;
   }  
   
-  pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
+  client_send_particle( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
     self.traileffectnum = 0;
   remove(self);
 };

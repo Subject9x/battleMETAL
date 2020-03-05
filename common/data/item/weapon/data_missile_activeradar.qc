@@ -90,7 +90,7 @@ void() data_ini_attack_missile_activeradar_={
     setorigin(NEWSHOT, start);
     NEWSHOT = world;
     sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
-    pointparticles( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
+    client_send_particle( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
   }
 };
 #endif

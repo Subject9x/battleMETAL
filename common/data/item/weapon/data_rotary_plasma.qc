@@ -60,7 +60,7 @@ void() data_ini_attack_plasma_={
 
   ctrl_weapon_updateAmmo( TRUE );
    
-  pointparticles( particleeffectnum("TE_RPC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 2, 1);
+  client_send_particle( particleeffectnum("TE_RPC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 2, 1);
   
   ctrl_weapon_make_projectile( -1 );
   sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);

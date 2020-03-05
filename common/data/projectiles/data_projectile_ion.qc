@@ -92,7 +92,7 @@ void()data_projectile_ion_explode={
     }
     t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
   }
-  pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
+  client_send_particle( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
   remove(self);
 };
 
@@ -108,10 +108,10 @@ void() data_projectile_ion_touch={
   
   if(other.takedamage){
     if( other.shield > 0 ){
-      pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
+      client_send_particle( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
     }
     else{
-      pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
+      client_send_particle( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
     }
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     self.think = SUB_Remove;

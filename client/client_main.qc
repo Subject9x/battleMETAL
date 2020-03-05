@@ -466,6 +466,12 @@ float() CSQC_Parse_TempEntity =
         hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
       }
       return TRUE;
+    case TE_VFX_POINT:
+      pointparticles( ReadLong(), te_read_vector() , te_read_vector(), ReadLong());
+      return TRUE;
+    case TE_VFX_RAIL:
+      trailparticles( entitybyindex(ReadLong()), ReadLong(), te_read_vector(), te_read_vector() );
+      return TRUE;
   } 
 	return FALSE;
 };

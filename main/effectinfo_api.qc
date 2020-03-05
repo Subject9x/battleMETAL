@@ -56,7 +56,7 @@ entity( entity targetBuilding ) te_building_fire_start={
 void(vector org, float total) te_smoke={
   local vector smoke;
   smoke = te_apply_wind( org );
-  pointparticles(particleeffectnum("SMOKE_TEST"), org , normalize(smoke - org) * WINDDIR_z, total);
+  client_send_particle(particleeffectnum("SMOKE_TEST"), org , normalize(smoke - org) * WINDDIR_z, total);
 };
 
 /*
@@ -137,13 +137,13 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
       break;
   }
   
-  pointparticles( partcle, torg , dir * 2, total);
+  client_send_particle( partcle, torg , dir * 2, total);
 };
 
 void() te_flame_th={
   
   self.compAltOffset = te_apply_wind( self.origin );
-  pointparticles( particleeffectnum(self.vec_name), self.origin, normalize(self.compAltOffset - self.origin) * WINDDIR_z, self.count);
+  client_send_particle( particleeffectnum(self.vec_name), self.origin, normalize(self.compAltOffset - self.origin) * WINDDIR_z, self.count);
 
   self.think = te_flame_th;
   if( self.data_lifetime > 0 ){
@@ -231,7 +231,7 @@ void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
   demg = hitDmg / 10;
   vel = angl * demg;
   
-  pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, demg + total);
+  client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, demg + total);
   pointsound( org, "sound/fx_shieldhit.ogg", 1, ATTN_NORM );
 };
 
@@ -357,29 +357,29 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
 };
 
 void( vector org, vector setVelocity, float total ) te_field_rad={
-  pointparticles( particleeffectnum("TE_FIELD_RAD"), org, setVelocity,  total);
+  client_send_particle( particleeffectnum("TE_FIELD_RAD"), org, setVelocity,  total);
 };
 
 void( vector org, float total ) te_field_rad_light={
-  pointparticles( particleeffectnum("TE_FIELD_RAD_LIGHT"), org, '0 0 0',  total);
+  client_send_particle( particleeffectnum("TE_FIELD_RAD_LIGHT"), org, '0 0 0',  total);
 };
 
 void( vector org, vector setVelocity, float total ) te_field_mineral={
-  pointparticles( particleeffectnum("TE_FIELD_MINERAL"), org, setVelocity,  total);
+  client_send_particle( particleeffectnum("TE_FIELD_MINERAL"), org, setVelocity,  total);
 };
 
 void( vector org, float total ) te_field_mineral_light={
-  pointparticles( particleeffectnum("TE_FIELD_MINERAL_LIGHT"), org, '0 0 0',  total);
+  client_send_particle( particleeffectnum("TE_FIELD_MINERAL_LIGHT"), org, '0 0 0',  total);
 };
 
 void( vector particleOrg, vector particleEnd ) te_field_quantum={
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), particleOrg, normalize( particleEnd - particleOrg ), 1);
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), particleOrg, normalize( particleEnd - particleOrg ) * 30, 1);
-  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), particleOrg, particleEnd);
+  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE"), particleOrg, normalize( particleEnd - particleOrg ), 1);
+  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), particleOrg, normalize( particleEnd - particleOrg ) * 30, 1);
+  client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_QRFL_MUZZLE_RAIL"), particleOrg, particleEnd);
 };
 
 void( vector org, float total ) te_field_quantum_light={
-  pointparticles( particleeffectnum("TE_FIELD_QUANTUM_LIGHT"), org, '0 0 0',  total);
+  client_send_particle( particleeffectnum("TE_FIELD_QUANTUM_LIGHT"), org, '0 0 0',  total);
 };
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
@@ -403,7 +403,7 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
     return;
   }
   sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-  pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
+  client_send_particle( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
 };
 
 //HUD Sound Effects

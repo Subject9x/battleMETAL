@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
 Overview: header for player type factory
@@ -11,3 +11,6 @@ void() player_unmakeObserver;
 void() player_makeVec;
 void() player_makeMech;
 void() player_unmakeMech;
+
+float() customize_wep_for_client;
+float() customize_part_for_client;

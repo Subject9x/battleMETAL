@@ -64,10 +64,10 @@ void() data_ini_attack_flak_={
   ctrl_weapon_updateAmmo( FALSE );
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
+  client_send_particle( particleeffectnum("TE_FLK_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
   
   if( vlen(trace_endpos - FIRE_ORIGIN) > 100 ){
-    pointparticles( particleeffectnum("TE_FLK_TRACER"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1600, 1);
+    client_send_particle( particleeffectnum("TE_FLK_TRACER"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1600, 1);
   }
   
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){
@@ -76,7 +76,7 @@ void() data_ini_attack_flak_={
   
   if( !trace_ent.takedamage ){
     if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) ){
-      pointparticles( particleeffectnum("TE_FLK_DIRT"), FIRE_ENDPOINT + (v_up * 3) + (v_forward * -7), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 20, 1);
+      client_send_particle( particleeffectnum("TE_FLK_DIRT"), FIRE_ENDPOINT + (v_up * 3) + (v_forward * -7), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 20, 1);
     }
     return;
   }
@@ -96,7 +96,7 @@ void() data_ini_attack_flak_={
         
         shotpoint = trace_endpos + (v_forward * -32);
         shotDir = normalize(trace_endpos - shotpoint);
-        pointparticles( particleeffectnum("TE_FLK_IMPACT"), shotpoint, shotDir * 4, 1);
+        client_send_particle( particleeffectnum("TE_FLK_IMPACT"), shotpoint, shotDir * 4, 1);
         while(totes > 0){
           shrapDir = shotDir + (crandom()*DAT_FLAK_SHRAP_SPREAD_x*v_right) + (crandom()*DAT_FLAK_SHRAP_SPREAD_y*v_up);
           shrapPoint = shotpoint + shrapDir*DAT_FLAK_SHRAP_SPREAD_z;
