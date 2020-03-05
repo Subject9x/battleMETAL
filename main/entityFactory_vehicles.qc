@@ -87,8 +87,9 @@ void() build_unit_camera={
 
 void() build_unit_weapon_list={
   local entity weaponMount;
+  local entity prevWeapon;
   local float weaponCount;
-
+  prevWeapon = self;
   weaponMount = self.w_slot;
   if( weaponMount ){
     weaponCount = 1;
@@ -154,6 +155,8 @@ void() build_unit_weapon_list={
           break;
       }
       weaponCount = weaponCount + 1;
+      weaponMount.partPrev = prevWeapon;
+      prevWeapon = weaponMount;
       weaponMount = weaponMount.w_slot;
     }
   }
@@ -253,26 +256,31 @@ void() build_mech_unit={
   unitPartList = self;
   if( self.torsoRight ){
     build_mech_torsoRight();
+    self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
   }
   if( self.torsoLeft ){
     build_mech_torsoLeft();
+    self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
   }
   if( self.armRight ){
     build_mech_armRight();
+    self.armRight.partPrev = unitPartList;
     unitPartList.partNext = self.armRight;
     unitPartList = unitPartList.partNext;
   }
   if( self.armLeft ){
     build_mech_armLeft();
+    self.armLeft.partPrev = unitPartList;
     unitPartList.partNext = self.armLeft;
     unitPartList = unitPartList.partNext;
   }
   if( self.legs ){
     build_mech_legs();
+    self.legs.partPrev = unitPartList;
     unitPartList.partNext = self.legs;
     unitPartList = unitPartList.partNext;
   }
@@ -370,28 +378,33 @@ void() build_mech_bot={
   unitPartList.partNext = self.torsoCenter;
   unitPartList = unitPartList.partNext;
   
-  if( (self.torsoRight) ){
+  if( self.torsoRight ){
     build_mech_torsoRight();
+    self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
   }
-  if( (self.torsoLeft) ){
+  if( self.torsoLeft ){
     build_mech_torsoLeft();
+    self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
   }
-  if( (self.armLeft) ){
-    build_mech_armLeft();
-    unitPartList.partNext = self.armLeft;
+  if( self.armRight ){
+    build_mech_armRight();
+    self.armRight.partPrev = unitPartList;
+    unitPartList.partNext = self.armRight;
     unitPartList = unitPartList.partNext;
   }
-  if( (self.armRight) ){
-    build_mech_armRight();
-    unitPartList.partNext = self.armRight;
+  if( self.armLeft ){
+    build_mech_armLeft();
+    self.armLeft.partPrev = unitPartList;
+    unitPartList.partNext = self.armLeft;
     unitPartList = unitPartList.partNext;
   }
   if( (self.legs) ){
     build_mech_legs();
+    self.legs.partPrev = unitPartList;
     unitPartList.partNext = self.legs;
     unitPartList = unitPartList.partNext;
     self.legs.th_walk = bot_leg_walk1;
@@ -485,7 +498,6 @@ void() build_mech_armLeft={
   this = self;
   self = self.armLeft;
     build_unit_component( this );
-    self.partNext = this.torsoLeft;
   self = this;
 };
 
@@ -494,7 +506,6 @@ void() build_mech_armRight={
   this = self;
   self = self.armRight;
     build_unit_component( this );
-    self.partNext = this.torsoRight;
   self = this;
 };
 
@@ -564,17 +575,20 @@ void() build_vehicle_unit={
   if( (self.flags & FL_TURRET) && (self.torsoCenter) ){
     build_unit_turret();
     self.torsoCenter.yaw_speed = self.turret_yaw_speed;
+    self.torsoCenter.partPrev = unitPartList;
     unitPartList.partNext = self.torsoCenter;
     unitPartList = unitPartList.partNext;
   }
   
   if( (self.torsoRight) ){
     build_mech_torsoRight();
+    self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
   }
   if( (self.torsoLeft) ){
     build_mech_torsoLeft();
+    self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
   }

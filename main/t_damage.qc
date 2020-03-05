@@ -347,6 +347,9 @@ entity(vector point, entity trg) t_find_part={
   if( part.deadflag > DEAD_NO ){
     part = part.realowner;
   }
+  if( part == trg.torsoCenter ){
+    part = trg;
+  }
   return part;
 };
 

@@ -13,6 +13,7 @@ Overview:
 
 #ifndef CSQC
 .string modelPath;
+.entity partPrev;     //walk the chain
 .entity partNext;     //chain entity of next part in unit's part list
 #endif
 

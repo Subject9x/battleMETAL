@@ -40,15 +40,15 @@ void() ctrl_update_mechplayer={
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
         if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
           if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
           }
         }
       }
@@ -60,7 +60,7 @@ void() ctrl_update_mechplayer={
       }
       spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
       spark = te_apply_wind( spark );
-      pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+      pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
     }
   }
 };
@@ -98,15 +98,15 @@ void() ai_ctrl_update_mechplayer={
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 3 * WINDDIR_z, 1);
+        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
         if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 3 * WINDDIR_z, 1);
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 3 * WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
           if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 3 * WINDDIR_z, 1);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 3 * WINDDIR_z, 1);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
           }
         }
       }
@@ -118,7 +118,7 @@ void() ai_ctrl_update_mechplayer={
       }
       spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
       spark = te_apply_wind( spark );
-      pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+      pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 3 * WINDDIR_z, 1);
     }
   }
 };
@@ -243,6 +243,34 @@ void() ai_ctrl_updateCenterTorso={
   }
 };
 
+/*
+  Specific death function for the player.
+  Case: player disconnects.
+  Case: player is killed in combat.
+*/
+void() ctrl_mech_die_player={
+  local entity w_chain;
+
+  w_chain = self.w_slot;
+  while(w_chain){
+    ctrl_unit_part_death(w_chain);
+    w_chain = w_chain.w_slot;
+  }
+  ctrl_unit_part_death(self.torsoCenter);
+  ctrl_unit_part_death(self.torsoLeft);
+  ctrl_unit_part_death(self.torsoRight);
+  ctrl_unit_part_death(self.armLeft);
+  ctrl_unit_part_death(self.armRight);
+  
+  if( (self.flags & FL_CLIENT) ){
+    ctrl_unit_part_death(self.legs);
+  }
+};
+
+/*
+  This is the cosmetic aspect of a component being destroyed.
+  the actualy entity is not removed until later.
+*/  
 void() ctrl_component_die={
   local entity piece;
   local entity this;
@@ -254,27 +282,32 @@ void() ctrl_component_die={
     te_mech_piece_explode( piece, piece.origin, piece.angles, piece.owner.velocity, piece.model, piece.skin );
 
     self.deadflag = DEAD_DEAD;
-    self.effects = EF_NODRAW;
+    self.effects = EF_NODRAW; 
+    self.movetype = MOVETYPE_NONE;
+    self.aiment = world;
     self.health = 0;
     setorigin( self, self.origin );
     
     if( self.partTypeId == M_TOR_LEFT ){
       self.owner.armLeft.think = self.owner.armLeft.th_die;
-      self.owner.armLeft.nextthink = time + 0.05;
+      self.owner.armLeft.nextthink = time + 0.1;
       self.owner.armLeft.realowner = self.owner;
     }
     else if( self.partTypeId == M_TOR_RIGHT ){
       self.owner.armRight.think = self.owner.armRight.th_die;
-      self.owner.armRight.nextthink = time + 0.05;
+      self.owner.armRight.nextthink = time + 0.1;
       self.owner.armRight.realowner = self.owner;
     }
     
     c = self.owner.w_slot;
+    this = self;
     while(c){
-      if(c.partParentId == self.partTypeId){
-        c.think = c.th_die;
-        c.nextthink = time + 0.1;
-      }
+      self = c;
+        if(self.partParentId == this.partTypeId){
+          self.think = self.th_die;
+          self.nextthink = time + (random() * 0.5);
+        }
+      self = this;
       c = c.w_slot;
     }
     
@@ -304,17 +337,22 @@ void() ctrl_arm_die={
     te_mech_piece_explode( piece, piece.origin, piece.angles, piece.owner.velocity, piece.model, piece.skin );
 
     self.deadflag = DEAD_DEAD;
-    self.effects = EF_NODRAW;    
+    self.effects = EF_NODRAW;  
+    self.movetype = MOVETYPE_NONE;
+    self.aiment = world;
     self.health = 0;
     setsize(self, '0 0 0', '0 0 0');
     setorigin( self, self.origin );
-
+    
+    this = self;
     for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
-      if(c.partParentId != self.partTypeId){
-        continue;
-      }
-      c.think = c.th_die;
-      c.nextthink = time + 0.1;
+      self = c;
+        if(self.partParentId != this.partTypeId){
+          continue;
+        }
+        self.think = self.th_die;
+        self.nextthink = time + (random() * 0.5);
+      self = this;
     }
     
     if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
@@ -332,7 +370,7 @@ void() ctrl_arm_die={
   }
 };
 
-void() ctrlPlayerMechTouch={
+void() ctrl_player_mech_touch={
   local float dot;
   local entity dead;
   local vector vec;
@@ -378,7 +416,6 @@ void() ctrlPlayerMechTouch={
     self.ramCool = time + self.ramUp / 2;
     return;
   }
-  
 };
 
 void() ctrl_component_burn={

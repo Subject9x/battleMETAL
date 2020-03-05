@@ -41,14 +41,18 @@ void() playerAttack={
       weaponGroup = self.currentWeaponGroup;  
     }
     else{
-      if(self.button3)
+      if(self.button3){
         weaponGroup = weaponGroup | self.w_group1;
-      if(self.button4)
+      }
+      if(self.button4){
         weaponGroup = weaponGroup | self.w_group2;
-      if(self.button5)
+      }
+      if(self.button5){
         weaponGroup = weaponGroup | self.w_group3;
-      if(self.button6)
+      }
+      if(self.button6){
         weaponGroup = weaponGroup | self.w_group4;
+      }
     }
   }
   oself = self;
@@ -56,12 +60,23 @@ void() playerAttack={
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
-    if( (weaponGroup > 0) && ( (self.playerState == PLAYER_ACTIVE) || (self.playerState == PLAYER_SPRINT_ON) )){
-      if( (weaponGroup& wgrp) ){
-        if(wep_chain.w_state == READY){
-          self = wep_chain;
-            self.w_attack();
-          self = oself;
+    if( wep_chain.w_attack ){
+      if( (weaponGroup > 0) && ( (self.playerState == PLAYER_ACTIVE) || (self.playerState == PLAYER_SPRINT_ON) )){
+        if( (weaponGroup& wgrp) ){
+          if(wep_chain.w_state == READY){
+            self = wep_chain;
+              self.w_attack();
+            self = oself;
+          }
+        }
+        else{
+          if(wep_chain.w_isburst == TRUE){
+            if(wep_chain.w_state == READY){
+              self = wep_chain;
+                self.w_attack();
+              self = oself;
+            }
+          }
         }
       }
       else{
@@ -71,15 +86,6 @@ void() playerAttack={
               self.w_attack();
             self = oself;
           }
-        }
-      }
-    }
-    else{
-      if(wep_chain.w_isburst == TRUE){
-        if(wep_chain.w_state == READY){
-          self = wep_chain;
-            self.w_attack();
-          self = oself;
         }
       }
     }

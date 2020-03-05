@@ -73,7 +73,7 @@ void() player_makeMech={
   self.data_idx = self.nextVecChoice;
   
   initialize_data_mech_( self.nextVecChoice );
-  self.touch = ctrlPlayerMechTouch;
+  self.touch = ctrl_player_mech_touch;
   
   self.stat_rdr_mode = FALSE;
   self.stat_rdr_rng = self.radar_range;
@@ -164,5 +164,5 @@ void() player_unmakeMech={
   self.energy = 0;
   self.shield = 0;
   self.enemy = world;
-  mech_clearWeaponGroups();
+  ctrl_unit_clean_wgroups();
 };

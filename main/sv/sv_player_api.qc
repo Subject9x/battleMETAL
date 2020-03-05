@@ -317,8 +317,8 @@ void() PlayerDie={
 		return;
 	}
 	if(self.data_type == DATA_MECH){
-    mech_clearWeaponGroups();
-    mech_player_die();
+    ctrl_unit_clean_wgroups();
+    ctrl_mech_die_player();
     client_push_player_info();
     msg_entity = self;
     WriteByte( MSG_ONE, SVC_SETVIEWPORT );
@@ -331,9 +331,10 @@ void() PlayerDie={
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 	self.movetype = MOVETYPE_TOSS;
   setsize(self, '-4 -4 -4', '4 4 4');
-	
+	setorigin(self, self.origin);
+  
   if (self.velocity_z < 10){
-    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 100));
+    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
   }
   
 	self.angles_x = 0;
@@ -403,7 +404,7 @@ void() PlayerDeathThink={
 	
   //self.deadflag = DEAD_NO;
   player_unmakeMech();
-  mech_cleanupMech();
+  ctrl_unit_cleanup_player();
   player_makeObserver();
   if( cvar("deathmatch") || cvar("coop") ){
     spawnpoint_select();
