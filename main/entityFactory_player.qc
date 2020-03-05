@@ -44,28 +44,28 @@ void() player_makeVec={
 
 float() customize_part_for_client ={
   local vector chunkOfs;
-  if( other != self.owner ){
-    return FALSE;
+  if( other == self.owner ){
+    makevectors(other.angles);
+    chunkOfs = self.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - (other.cockpit.compOffset_z / 2)));
+    setorigin(self, chunkOfs);
+    self.viewmodelforclient = other;
+    return TRUE;
   } 
-  makevectors(other.angles);
-  chunkOfs = self.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - (other.cockpit.compOffset_z / 2)));
-  setorigin(self, chunkOfs);
-  self.viewmodelforclient = other;
-  return TRUE;
+  return FALSE;
 };
 
 float() customize_wep_for_client={
   local vector chunkOfs;
-  if( other != self.owner ){
-    return FALSE;
+  if( other == self.owner ){
+    makevectors(other.angles);
+    chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - other.cockpit.compOffset_z));
+    self.wepFireOffset_z = self.wepFireOffsetCache_z - other.cockpit.compOffset_z;
+    self.compAltOffset_z = self.compAltOffsetCache_z - other.cockpit.compOffset_z;
+    self.viewmodelforclient = other;
+    setorigin(self, chunkOfs);
+    return TRUE;
   } 
-  makevectors(other.angles);
-  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - other.cockpit.compOffset_z));
-  self.wepFireOffset_z = self.wepFireOffsetCache_z - other.cockpit.compOffset_z;
-  self.compAltOffset_z = self.compAltOffsetCache_z - other.cockpit.compOffset_z;
-  self.viewmodelforclient = other;
-  setorigin(self, chunkOfs);
-  return TRUE;
+  return FALSE;
 };
 
 void() player_makeMech={
