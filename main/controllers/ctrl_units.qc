@@ -77,13 +77,12 @@ void() ctrl_unit_cleanup_tank={
 */
 void( entity comp ) ctrl_unit_part_death={
   local entity parentSelf;
-  if( comp.th_die && comp.deadflag > DEAD_NO ){
+  if( comp.th_die && comp.deadflag >= DEAD_NO ){
     parentSelf = self;
     self = comp;
-      if( comp.model ){
-        if( (comp != world) && (comp.owner == self) ){
-          self.think = self.th_die;
-          self.nextthink = time + (random() * 0.5);
+      if( self.model ){
+        if( (self != world) && (self.owner == parentSelf) ){
+          self.th_die();
         }
       }
     self = parentSelf;
