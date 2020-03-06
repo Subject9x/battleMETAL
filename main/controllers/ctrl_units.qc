@@ -51,6 +51,7 @@ void() ctrl_unit_cleanup_player={
     self.stat_w8_id = -1;
     self.stat_w9_id = -1;
   }
+  remove(self.hud_ent);
 };
 
 void() ctrl_unit_cleanup_mech={

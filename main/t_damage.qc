@@ -259,7 +259,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if( dmgAmt <= 0 ){
     if( (trg.flags & FL_CLIENT) ){
-      trg.cockpit.dmg_save = ceil(trg.shield - dmg_amt);
+      trg.dmg_save = dmgAmt * 0.1;
     }
     te_shield_hit_high( dmg_point, normalize( dmg_point - inflictor.origin), dmg_amt, random() * dmg_amt);
     return trg;
@@ -268,11 +268,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   //ideally I'd love to use this feature, but it makes the cockpit .weaponmodel disappear and I don't feel like fixing
   //it right now. - Roohr
   if( (trg.flags & FL_CLIENT) ){
-    trg.dmg_take = trg.dmg_take + (dmgAmt / 200);
+    trg.dmg_take = trg.dmg_take + (dmgAmt * 0.05);
   }
   
-  sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons
-  
+  pointsound (dmgTrg.origin, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons  
   
   //the special hit-location calculator is only run for DATA_MECH units
   if( trg.data_type == DATA_MECH ){

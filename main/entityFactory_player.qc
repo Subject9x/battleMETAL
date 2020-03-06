@@ -44,28 +44,84 @@ void() player_makeVec={
 
 float() customize_part_for_client ={
   local vector chunkOfs;
-  if( self.owner == other){
-    cons_logAFloat("self.owner.data_idx", self.owner.data_idx);
-    cons_logAFloat("other.data_idx", other.data_idx);
-    //makevectors(other.angles);
-    //chunkOfs = self.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - (other.cockpit.compOffset_z / 2)));
-    //setorigin(self, chunkOfs);
-    self.alpha = 0;
-    return TRUE;
-  } 
+  if( self.owner != other ){
+    return FALSE;
+  }
+  makevectors(other.angles);
+  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - (other.cockpit.compOffset_z / 2)));
+  setorigin(self, chunkOfs);
+  return TRUE;
 };
 
 float() customize_wep_for_client={
   local vector chunkOfs;
-  if( self.owner == other ){
-    //makevectors(other.angles);
-    //chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - other.cockpit.compOffset_z));
-    //self.wepFireOffset_z = self.wepFireOffsetCache_z - other.cockpit.compOffset_z;
-    //self.compAltOffset_z = self.compAltOffsetCache_z - other.cockpit.compOffset_z;
-    //setorigin(self, chunkOfs);
-    self.alpha = 0;
-    return TRUE;
+  if( self.owner != other ){
+    return FALSE;
   }
+  makevectors(other.angles);
+  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - other.cockpit.compOffset_z));
+  self.wepFireOffset_z = self.wepFireOffsetCache_z - other.cockpit.compOffset_z;
+  self.compAltOffset_z = self.compAltOffsetCache_z - other.cockpit.compOffset_z;
+  setorigin(self, chunkOfs);
+  return TRUE;
+};
+
+void(entity mechPart, .entity hudPart) player_set_hud_chunk={
+  local entity newHudPart, ownerSelf;
+  local vector ofs;
+  ownerSelf = self;
+  newHudPart = spawn();
+  self = newHudPart;
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.viewmodelforclient = ownerSelf;
+  self.owner = ownerSelf;
+  self.alpha = 1;
+
+  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
+  setsize(self, '-1 -1 -1','1 1 1');
+  macro_set_model(mechPart.model, 0, 0)  
+  setorigin(self, mechPart.origin);
+  self.angles = mechPart.angles;
+  self.aiment = ownerSelf;
+  self.punchangle = mechPart.angles;
+  self.view_ofs = self.origin - ownerSelf.origin;
+  self.v_angle = self.angles - ownerSelf.angles;
+  
+  mechPart.nodrawtoclient = ownerSelf;
+  
+  self = ownerSelf; 
+  ownerSelf.hudPart = newHudPart;
+};
+
+void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
+  local entity newHudPart, ownerSelf;
+  local vector ofs;
+  ownerSelf = self;
+  newHudPart = spawn();
+  self = newHudPart;
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.viewmodelforclient = ownerSelf;
+  self.owner = ownerSelf;
+  self.alpha = 1;
+
+  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
+  setsize(self, '-1 -1 -1','1 1 1');
+  macro_set_model(wepThing.model, 0, 0)  
+  setorigin(self, wepThing.origin);
+  self.angles = wepThing.angles;
+  self.aiment = ownerSelf;
+  self.punchangle = wepThing.angles;
+  self.view_ofs = self.origin - ownerSelf.origin;
+  self.v_angle = self.angles - ownerSelf.angles;
+  
+  wepThing.nodrawtoclient = ownerSelf;
+  wepThing.customizeentityforclient = customize_wep_for_client;
+  
+  self = ownerSelf;
+  wepPointer.hudWeapon = newHudPart;
+  wepPointer = newHudPart;
 };
 
 void() player_makeMech={
@@ -118,17 +174,19 @@ void() player_makeMech={
   self.view_ofs_z = self.cockpit.compOffset_y;
   self.stat_rdr_mode = 1;
   self.stat_rdr_rng = self.radar_range * 2;
+
+  player_set_hud_chunk( self.torsoCenter, hudTorsoCenter);
+  player_set_hud_chunk( self.torsoLeft, hudTorsoLeft);
+  player_set_hud_chunk( self.torsoRight, hudTorsoRight);
+  player_set_hud_chunk( self.armLeft, hudArmLeft);
+  player_set_hud_chunk( self.armRight, hudArmRight);
+  self.legs.customizeentityforclient = customize_part_for_client;
   
-  //self.torsoCenter.nodrawtoclient = customize_part_for_client;
-  //self.torsoLeft.nodrawtoclient = customize_part_for_client;
-  //self.torsoRight.nodrawtoclient = customize_part_for_client;
-  //self.armLeft.nodrawtoclient = customize_part_for_client;
-  //self.armRight.nodrawtoclient = customize_part_for_client;
-  //self.legs.nodrawtoclient = customize_part_for_client;
-  
-  local entity wep;
+  local entity wep, hudWepStart;
+  hudWepStart = self;
+  wep = self.w_slot;
   for( wep = self.w_slot; wep != world; wep = wep.w_slot){
-    //wep.nodrawtoclient = customize_wep_for_client;
+    player_set_hud_weapon( wep, hudWepStart);
   }
 };
 

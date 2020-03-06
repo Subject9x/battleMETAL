@@ -14,3 +14,6 @@ void() player_unmakeMech;
 
 float() customize_wep_for_client;
 float() customize_part_for_client;
+
+void(entity mechPart, .entity hudPart) player_set_hud_chunk;
+void(entity wepThing, entity hudWep ) player_set_hud_weapon;

@@ -18,8 +18,9 @@ void() nav_point_touch={
   
   if(self.isActive == TRUE){
     //nav points are a player-only thing
-    if( !(other.flags & FL_CLIENT) )
+    if( !(other.flags & FL_CLIENT) ){
       return;
+    }
     if( other.faction == self.faction ){
       self.enemy = other;
       self.isActive = 2;
@@ -35,12 +36,12 @@ void() nav_point_touch={
       self.alpha = 0.2;
       self.colormod = '0.15 0.15 0.15';
       //multi_trigger();
-      if( (self.spawnflags & 2) )
+      if( (self.spawnflags & 2) ){
         self.isActive = 1;
-      
-      if( (self.spawnflags & 4) )
+      }
+      if( (self.spawnflags & 4) ){
         self.isActive = -1;
-        
+      }
       self.solid = SOLID_NOT;
     }
   }

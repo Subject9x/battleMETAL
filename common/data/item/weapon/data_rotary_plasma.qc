@@ -52,10 +52,6 @@ void() data_ini_plasma_={
 #ifndef CSQC
 void() data_ini_attack_plasma_={
 
-  if( !ctrl_weapon_checkEnergy() ){
-    return;
-  }
-
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( TRUE );

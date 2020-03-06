@@ -231,7 +231,7 @@ void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
   demg = hitDmg / 10;
   vel = angl * demg;
   
-  client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, max(demg + total, 24));
+  client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, max(demg + total, 16));
   pointsound( org, "sound/fx_shieldhit.ogg", 1, ATTN_NORM );
 };
 
@@ -294,9 +294,10 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   
   setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
   setorigin( explode, org);
-  te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
+  if( debrisCount > 0 ){
+    te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
+  }
   te_customflash( org, explodeSize * 50, 1, explodeColor); 
-  //pointparticles?
 };
 
 /*
@@ -402,7 +403,7 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
   if( !trace_ent.model ){
     return;
   }
-  sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+  pointsound (self.legs.origin, "sound/mech_stomp.ogg", 1, ATTN_NORM);
   client_send_particle( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
 };
 

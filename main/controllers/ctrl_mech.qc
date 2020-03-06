@@ -40,15 +40,15 @@ void() ctrl_update_mechplayer={
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2),0.5);
+        client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
         if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
-          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
+          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
           if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin)  * (WINDDIR_z/2), 0.5);
-            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
+            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin)  * (WINDDIR_z/2), 1);
+            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
           }
         }
       }
@@ -98,15 +98,15 @@ void() ai_ctrl_update_mechplayer={
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
+        client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
         if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
-          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
+          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
           if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
-            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
+            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
           }
         }
       }
@@ -118,7 +118,7 @@ void() ai_ctrl_update_mechplayer={
       }
       spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
       spark = te_apply_wind( spark );
-      client_send_particle( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 0.5);
+      client_send_particle( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
     }
   }
 };

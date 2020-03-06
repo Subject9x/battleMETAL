@@ -90,11 +90,11 @@ void() data_ini_monitor_={
   self.weaponmodel = "q3mdl/mechs/monitor/monitor_hud.md3";
   self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
   self.hud_rollangle = 2.25;
-  self.hud_bob = 0.03;
+  self.hud_bob = 0.01;
   self.hud_bob_cycle = 0.85;
   self.hud_bob_up = 0.5;
   self.hud_bob_model = 1;
-  self.hud_bob_side = 0.65;
+  self.hud_bob_side = 0.4;
   self.hud_bob_speed = 3.85;
   self.hud_bob_model_up = 0.15;
 //====================================

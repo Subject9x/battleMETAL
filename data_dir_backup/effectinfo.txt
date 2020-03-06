@@ -296,7 +296,7 @@ gravity -0.005
 
   //TE_LAS_HIT - SPARK
     effect TE_LAS_HIT
-    count 1
+    count 0.2
     type spark
     blend alpha
     orientation spark
@@ -305,12 +305,12 @@ gravity -0.005
     size 0.75 1.25
     alpha 256 512 256
     time 4 8
-    gravity 0.1
+    gravity 0.075
     originjitter 0.5 0.5 0.5
     velocityjitter 5 1 1
     velocitymultiplier 1
     stretchfactor 4
-    bounce 0.1
+    bounce 0.2
 
   //TE_LAS_HIT - RING
     effect TE_LAS_HIT
@@ -2035,9 +2035,9 @@ gravity -0.005
   originjitter 5 5 5
   velocityoffset 5 5 5
   velocityjitter 2 2 2
-  velocitymultiplier 15
+  velocitymultiplier 4
   gravity 0.25
-  stretchfactor 2
+  stretchfactor 1.5
   airfriction 4
   bounce 1
   
@@ -2068,7 +2068,7 @@ gravity -0.005
   originjitter 5 5 5
   velocityoffset 1 1 1
   velocityjitter 2 2 2
-  velocitymultiplier 10
+  velocitymultiplier 1
   gravity 0.25
   stretchfactor 2
   airfriction 4
@@ -2668,7 +2668,7 @@ velocitymultiplier 1
 
 //TE_DUST_DESERT==================================
 effect TE_DUST_DESERT
-count 1
+count 0.25
 type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50

@@ -244,12 +244,24 @@ void() ctrl_die_weapon={
 void() ctrl_weapon_remove_all={
   local entity removeChain;
   local entity nextWep;
+  local entity removeHudWeapon;
+  local entity nextHudWeapon;
   //call remove() in list order, no going back from this.
   removeChain = self.w_slot;
+  if( (self.flags & FL_CLIENT) ){
+    removeHudWeapon = self.hudWeapon;
+  }
   while(removeChain){
     nextWep = removeChain.w_slot;
     remove( removeChain );
     removeChain = nextWep;
+    if( (self.flags & FL_CLIENT) ){
+      nextHudWeapon = removeHudWeapon.hudWeapon;
+      if( removeHudWeapon ){
+        remove( removeHudWeapon );
+        removeHudWeapon = nextHudWeapon;
+      }
+    }
   }
 };
 

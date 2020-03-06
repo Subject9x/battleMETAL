@@ -9,6 +9,7 @@ Overview:
 	
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
+
 .entity w_slot;     //use this for teh linked list goodness
 .float data_type;
 
@@ -23,6 +24,14 @@ Overview:
 .string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
 .float hud_mode;  //sway mode
 .entity hud_ent;  //fixes sway mode set bug
+
+.entity hudTorsoCenter;
+.entity hudTorsoLeft;
+.entity hudTorsoRight;
+.entity hudArmLeft;
+.entity hudArmRight;
+
+.entity hudWeapon;  //used as list-id for hud weapon ents.
 
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 

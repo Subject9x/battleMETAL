@@ -43,7 +43,7 @@ void() data_projectile_missile_laserguide_touch={
     }
   }
   makevectors(self.velocity);
-  te_missile_explode(  self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
+  te_missile_explode(  self.origin + (v_up * -5),  1, '0.663 0.886 0.953', min(self.damageValue / 7, 10), 1);
 
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;

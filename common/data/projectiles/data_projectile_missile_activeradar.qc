@@ -107,7 +107,7 @@ void() data_projectile_missile_activeradar_touch={
   }
 
   makevectors(self.velocity);
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.969 0.996 0.18', self.damageValue / 5, 1);
+  te_missile_explode(  self.origin + (v_up * -5), 1, '0.969 0.996 0.18',  min(self.damageValue / 5, 10), 1);
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
 };

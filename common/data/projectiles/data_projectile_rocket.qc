@@ -39,7 +39,7 @@ void() data_prj_mis_touch={
     }
   }
   makevectors(self.angles);
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 5, 1);
+  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18',  min(self.damageValue / 7, 4), 1);
   
   remove(self);
 };
