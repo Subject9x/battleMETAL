@@ -311,6 +311,8 @@ void() navBarListener={
 void() mechAcceptButtonListener={
   local entity hardpoint;
   local float bit;
+  local string weaponsList;
+  local float totalHardpoints;
   
   if( menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ, FALSE) ){
     if( (LAUNCH_VALIDATION &  VALID_NODE) ){
@@ -324,12 +326,50 @@ void() mechAcceptButtonListener={
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
       
       bit = 1;
+      totalHardpoints = 1;
+      weaponsList = " ";
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
       while( hardpoint ){
-        cl_setweapon(bit, hardpoint.data_idx);
+        weaponsList = strcat(weaponsList, ftos(hardpoint.data_idx), " ");
+        //bind weapon data, reduce server traffic
+        switch(bit){
+          case WEAPON1:
+            CLIENT_stat_w1_id = hardpoint.data_idx;
+            break;
+          case WEAPON2:
+            CLIENT_stat_w2_id = hardpoint.data_idx;
+            break;
+          case WEAPON3:
+            CLIENT_stat_w3_id = hardpoint.data_idx;
+            break;
+          case WEAPON4:
+            CLIENT_stat_w4_id = hardpoint.data_idx;
+            break;
+          case WEAPON5:
+            CLIENT_stat_w5_id = hardpoint.data_idx;
+            break;
+          case WEAPON6:
+            CLIENT_stat_w6_id = hardpoint.data_idx;
+            break;
+          case WEAPON7:
+            CLIENT_stat_w7_id = hardpoint.data_idx;
+            break;
+          case WEAPON8:
+            CLIENT_stat_w8_id = hardpoint.data_idx;
+            break;
+          case WEAPON9:
+            CLIENT_stat_w9_id = hardpoint.data_idx;
+            break;
+        }
         bit = bit * 2;
         hardpoint = hardpoint.w_slot;
+        totalHardpoints = totalHardpoints + 1;  
       }
+      CLIENT_hardpoint_cnt = totalHardpoints;
+      CLIENT_energy_max = MECH_DATA_ENMAX;
+      CLIENT_shield_max = MECH_DATA_SHMAX;
+      
+      cl_setweapon(totalHardpoints, weaponsList);
     
       cl_setweapongroup(1, CLIENT_MENU_nex_grp1);
       cl_setweapongroup(2, CLIENT_MENU_nex_grp2);

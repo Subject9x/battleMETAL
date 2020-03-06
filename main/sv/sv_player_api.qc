@@ -133,10 +133,6 @@ void() PlayerPostThink = {
   }
   ButtonCommands();
   
-  self.stat_cofs_x = self.origin_x;
-  self.stat_cofs_y = self.origin_y;
-  self.stat_cofs_z = self.origin_z;
-  
   //Update Target information
   sv_updateTargetInfo();
   
@@ -186,9 +182,6 @@ void() PlayerPostThink = {
       self.compOffset = trace_endpos;
       //te_beam_esr(self.origin + (v_up * -4), trace_endpos);
     }
-    self.stat_cofs_x = self.origin_x;
-    self.stat_cofs_y = self.origin_y;
-    self.stat_cofs_z = self.origin_z;
   }
   //========================================  
 
@@ -252,14 +245,12 @@ void() PlayerPostThink = {
     }
   }
   
-  
   //after server processes everything, push data to client
   client_push_player_info();
  
 	if (!(self.flags & FL_ONGROUND)){
 		self.jump_flag = self.velocity_z;
   }
-
 };
 
 
@@ -299,11 +290,7 @@ void() PlayerPostThink_powerup={
       makevectors(self.v_angle);
       traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
       self.compOffset = trace_endpos;
-      //te_beam_esr(self.origin + (v_up * -4), trace_endpos);
     }
-    self.stat_cofs_x = self.origin_x;
-    self.stat_cofs_y = self.origin_y;
-    self.stat_cofs_z = self.origin_z;
   }
 
   //after server processes everything, push data to client

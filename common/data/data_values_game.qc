@@ -192,9 +192,12 @@ float RADAR_SWEEP = 2.5;
 .float playerState;
 .float stat_trg_sh;
 
-.float stat_cofs_x;
-.float stat_cofs_y;
-.float stat_cofs_z;
+.float stat_client_hp_torsoCenter;
+.float stat_client_hp_torsoLeft;
+.float stat_client_hp_torsoRight;
+.float stat_client_hp_armLeft;
+.float stat_client_hp_armRight;
+.float stat_client_hp_legs;
 
 .float stat_w1_id;
 .float stat_w2_id;
@@ -241,26 +244,23 @@ float RADAR_SWEEP = 2.5;
 .float stat_plr_rep;
 #endif
 //============================
-//     STAT CHANNELS         
+//     ADDSTAT SLOT NUMBERS        
 //============================
-//float STAT_OBS_FACTION = 32;
-
+//32;
 float STAT_ACCURACY = 33;
 float STAT_RAM = 34;
-
-float STAT_TARG_EID = 35;
-float STAT_VID = 36;
-
+float STAT_CLIENT_ENERGY = 35;
+float STAT_CLIENT_SHIELD = 36;
 float STAT_RAM_MAX = 37;
-//float STAT_CAM_ORG_Y = 38;
-//float STAT_CAM_ORG_Z = 39;
+//38;
+//39;
 
-float STAT_PLR_ORG_X = 40;
-float STAT_PLR_ORG_Y = 41;
-float STAT_PLR_ORG_Z = 42;
-float STAT_PLR_STT = 43;  //keep
+//40;
+//41;
+//42;
+//43;
 float STAT_PLAYER_DATA_TYPE = 44;
-float STAT_PLR_DIDX = 46;
+float STAT_PLR_DATA_IDX = 46;
 float STAT_PLR_RADMOD = 47;
 float STAT_PLR_HITDIR = 48;
 float STAT_PLR_RETDIST = 49;
@@ -279,39 +279,38 @@ float STAT_TRG_RT_HP = 64;
 float STAT_TRG_LA_HP = 65;
 float STAT_TRG_RA_HP = 66;
 
-float TRG_VEC_SIZ = 67;
-//float TRG_P_CLASS = 68;
+float STAT_CLIENT_HP_TORSOCENTER = 67;
+float STAT_CLIENT_HP_TORSOLEFT = 68;
+float STAT_CLIENT_HP_TORSORIGHT = 69;
+float STAT_CLIENT_HP_ARMLEFT = 70;
+float STAT_CLIENT_HP_ARMRIGHT = 71;
+float STAT_CLIENT_HP_LEGS = 72;
+//73;
+//74;
+//75;
+//76;
+//77;
 
-float STAT_WEP1_ID = 69;
-float STAT_WEP2_ID = 70;
-float STAT_WEP3_ID = 71;
-float STAT_WEP4_ID = 72;
-float STAT_WEP5_ID = 73;
-float STAT_WEP6_ID = 74;
-float STAT_WEP7_ID = 75;
-float STAT_WEP8_ID = 76;
-float STAT_WEP9_ID = 77;
-
-float STAT_WEP_STT = 78;
-float STAT_WEP_GRP = 79;
-float STAT_WEP_REL = 80;
-float STAT_NAV_DIR = 81;
+//78;
+//79;
+//80;
+//81;
 float STAT_RAM_VALUE = 82;
-float STAT_PLR_FIR = 83;
+//83;
 float STAT_LCK_STT = 84;
-float STAT_PLR_PTC = 85;
-//float ADDSTAT_TARGETSIZE = 86;
+//85;
+//86;
 float STAT_TRG_DDFLG = 87;
-//float STAT_TRG_ORGX = 88;
-//float STAT_TRG_ORGY = 89;
-//float STAT_TRG_ORGZ = 90;
+//88;
+//89;
+//90;
 
 float STAT_RAD_SWEEP = 91;
 float ADDSTAT_TARGETSIZE_X = 100;
 float ADDSTAT_TARGETSIZE_Y = 101;
 float ADDSTAT_TARGETSIZE_Z = 102;
 float STAT_PLR_REP = 103; //remaining repair delta
-float STAT_PLR_NAME = 104;
+//104;
 
 //============================
 //     LOCK STATES   

@@ -19,30 +19,26 @@ void() client_push_player_info={
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
   self.armorvalue = self.playerState;
+  
+  self.stat_client_hp_torsoCenter = csqc_updateCompStat(self);
+  self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
+  self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
+  self.stat_client_hp_armLeft = csqc_updateCompStat(self.armLeft);
+  self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
+  self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
+  
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_CLIENT_INFO );
 
   WriteByte( MSG_ONE, self.deadflag );
 
-  WriteCoord( MSG_ONE, self.origin_x );
-  WriteCoord( MSG_ONE, self.origin_y );
-  WriteCoord( MSG_ONE, self.origin_z );
-  
-  WriteLong( MSG_ONE, self.stat_rdr_rng );
+  WriteShort( MSG_ONE, self.stat_rdr_rng );
 
   WriteByte( MSG_ONE, self.data_type ); //sync integrity
   if(self.data_type == DATA_MECH){
-    WriteShort( MSG_ONE, (self.energy / self.energyMax) * 100 );
-    WriteShort( MSG_ONE, (self.shield / self.shieldMax) * 100 );
-    WriteByte( MSG_ONE, csqc_updateCompStat(self));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.legs));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.torsoLeft));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.torsoRight));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.armLeft));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.armRight));
-    
-    WriteByte( MSG_ONE, self.hardpoint_cnt );
+
+    //WriteByte( MSG_ONE, self.hardpoint_cnt );
     wep = self;
     weaponStateBit = 0;
     while( wep ){
@@ -97,12 +93,8 @@ void() client_push_player_info_thin={
   WriteByte( MSG_ONE, TE_CLIENT_INFO_THIN);
 
   WriteByte( MSG_ONE, self.deadflag );
-
-  WriteCoord( MSG_ONE, self.origin_x );
-  WriteCoord( MSG_ONE, self.origin_y );
-  WriteCoord( MSG_ONE, self.origin_z );
   
-  WriteByte( MSG_ONE, self.data_type ); //sync integrity
+  //WriteByte( MSG_ONE, self.data_type ); //sync integrity
 }
 void( entity targetClient ) server_push_player_info={
   local entity this;
@@ -518,41 +510,49 @@ commmand string: cmd mech setwep X Y
   Y = weapon data_idx id
 */
 void(string cmd, float tokens) client_setWeapon={
-  local float wslotid, new_id;
+  local float itr, new_id;
+  local float totalWeps;
   local entity oself;
-  oself = self;
-  wslotid = stof(argv(2));
-  new_id = stof(argv(3));
   
-  switch(wslotid){
-    case WEAPON1:
-      self.next_wepn1 = new_id;
-      break;
-    case WEAPON2:
-      self.next_wepn2 = new_id;
-      break;
-    case WEAPON3:
-      self.next_wepn3 = new_id;
-      break;
-    case WEAPON4:
-      self.next_wepn4 = new_id;
-      break;
-    case WEAPON5:
-      self.next_wepn5 = new_id;
-      break;
-    case WEAPON6:
-      self.next_wepn6 = new_id;
-      break;
-    case WEAPON7:
-      self.next_wepn7 = new_id;
-      break;
-    case WEAPON8:
-      self.next_wepn8 = new_id;
-      break;
-    case WEAPON9:
-      self.next_wepn9 = new_id;
-      break;
+  itr = 3;
+  for( totalWeps = 1; totalWeps < stof(argv(2)); totalWeps = totalWeps + 1){
+    new_id = stof(argv(itr));
+    cons_logAFloat("new_id", new_id); //DEBUG
+    cons_logAFloat("itr", itr); //DEBUG
+    cons_logAFloat("totalWeps", totalWeps); //DEBUG
+    switch(totalWeps){
+      case 1:
+        self.next_wepn1 = new_id;
+        break;
+      case 2:
+        self.next_wepn2 = new_id;
+        break;
+      case 3:
+        self.next_wepn3 = new_id;
+        break;
+      case 4:
+        self.next_wepn4 = new_id;
+        break;
+      case 5:
+        self.next_wepn5 = new_id;
+        break;
+      case 6:
+        self.next_wepn6 = new_id;
+        break;
+      case 7:
+        self.next_wepn7 = new_id;
+        break;
+      case 8:
+        self.next_wepn8 = new_id;
+        break;
+      case 9:
+        self.next_wepn9 = new_id;
+        break;
+    }
+    itr = itr + 1;
   }
+  
+
 };
 
 void(float track, float loop) client_playTrack={

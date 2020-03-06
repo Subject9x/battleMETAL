@@ -45,11 +45,13 @@ float CLIENT_stat_w7_id;
 float CLIENT_stat_w8_id;
 float CLIENT_stat_w9_id;
 
-vector CLIENT_entorg;
 float CLIENT_radar_range;
 
 float CLIENT_energy;
+float CLIENT_energy_max;
+
 float CLIENT_shield;
+float CLIENT_shield_max;
 
 float CLIENT_repair_value;
 

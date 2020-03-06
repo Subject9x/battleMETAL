@@ -14,10 +14,10 @@ void(float val) cl_set_movespeedkey={
   cvar_set("cl_movespeedkey", ftos(val));
 };
 
-void(float slot, float w_bit) cl_setweapon={
+void(float totalWeps, string wepList) cl_setweapon={
 
   local string cmd;
-  cmd = strcat("cmd mech setwep ", ftos(slot), " ", ftos(w_bit), "\n");
+  cmd = strcat("cmd mech setwep ", ftos(totalWeps), wepList, "\n");
   localcmd(cmd);
 };
 

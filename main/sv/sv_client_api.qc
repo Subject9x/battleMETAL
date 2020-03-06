@@ -59,9 +59,13 @@ void() ClientConnect = {
   self.shield = 0;
   self.shieldMax = 0;
   self.shieldRate = 0;
-  self.stat_cofs_x = 0;
-  self.stat_cofs_y = 0;
-  self.stat_cofs_z = 0;
+  
+  self.stat_client_hp_torsoCenter = 0;
+  self.stat_client_hp_torsoLeft = 0;
+  self.stat_client_hp_torsoRight = 0;
+  self.stat_client_hp_armLeft = 0;
+  self.stat_client_hp_armRight = 0;
+  self.stat_client_hp_legs = 0;
   
   self.stat_w1_id = -1;
   self.stat_w2_id = -1;

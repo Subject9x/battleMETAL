@@ -37,7 +37,7 @@ void() cl_particles_fogFrame;
 void() te_shield_think={
 
   self.alpha = self.alpha - 0.3;
-  self.angles = vectoangles( CLIENT_entorg - self.origin );
+  self.angles = vectoangles( getpropertyvec(VF_ORIGIN) - self.origin );
   
   self.think = te_shield_think;
   if( self.alpha <= 0 ){

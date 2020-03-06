@@ -26,50 +26,48 @@ void() mh_world_ini={
   MISSION_LOSSES_SURVEST = 0;
   MISSION_LOSSES_MILITAR = 0;
 
-  //oh my
+  //kept in numerical order for easy reference.
+  addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
+  
   addstat(STAT_RAM, AS_FLOAT, ramUp);
+  
+  addstat(STAT_CLIENT_ENERGY, AS_FLOAT, energy);
+  addstat(STAT_CLIENT_SHIELD, AS_FLOAT, shield);
+  
   addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
-  addstat( STAT_PLR_NAME, AS_STRING, netname);
-  addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);
-  addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);
-  addstat(STAT_PLR_ORG_Z, AS_FLOAT, stat_cofs_z);
-  addstat(STAT_PLR_DIDX, AS_INT, data_idx);
+  
   addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
+  addstat(STAT_PLR_DATA_IDX, AS_INT, data_idx);
   addstat(STAT_PLR_RADMOD, AS_INT, stat_rdr_mode);
-  addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
   addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);
   addstat(STAT_PLR_RETDIST, AS_INT, stat_ret_dist);
   
-  //Target stats
   addstat(STAT_TRG_ENT_ID, AS_INT, stat_trg_ent_id);
   addstat(STAT_TRG_DATATYPE, AS_INT, stat_trg_dat);
   addstat(STAT_TRG_DATAIDX, AS_INT, stat_trg_dataidx);
-  addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
-  
-  addstat(STAT_WEP1_ID, AS_INT, stat_w1_id);
-  addstat(STAT_WEP2_ID, AS_INT, stat_w2_id);
-  addstat(STAT_WEP3_ID, AS_INT, stat_w3_id);
-  addstat(STAT_WEP4_ID, AS_INT, stat_w4_id);
-  addstat(STAT_WEP5_ID, AS_INT, stat_w5_id);
-  addstat(STAT_WEP6_ID, AS_INT, stat_w6_id);
-  addstat(STAT_WEP7_ID, AS_INT, stat_w7_id);
-  addstat(STAT_WEP8_ID, AS_INT, stat_w8_id);
-  addstat(STAT_WEP9_ID, AS_INT, stat_w9_id);
-  
-  addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
+  addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
+    
+  addstat(STAT_CLIENT_HP_TORSOCENTER, AS_FLOAT, stat_client_hp_torsoCenter);
+  addstat(STAT_CLIENT_HP_TORSOLEFT, AS_FLOAT, stat_client_hp_torsoLeft);
+  addstat(STAT_CLIENT_HP_TORSORIGHT, AS_FLOAT, stat_client_hp_torsoRight);
+  addstat(STAT_CLIENT_HP_ARMLEFT, AS_FLOAT, stat_client_hp_armLeft);
+  addstat(STAT_CLIENT_HP_ARMRIGHT, AS_FLOAT, stat_client_hp_armRight);
+  addstat(STAT_CLIENT_HP_LEGS, AS_FLOAT, stat_client_hp_legs);
+    
+  addstat(STAT_RAM_VALUE, AS_FLOAT, ramTracker);
+  addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
   
-  addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
- 
+  addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
+
+  addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
   addstat(ADDSTAT_TARGETSIZE_X, AS_FLOAT, addStat_targetSize_x);
   addstat(ADDSTAT_TARGETSIZE_Y, AS_FLOAT, addStat_targetSize_y);
   addstat(ADDSTAT_TARGETSIZE_Z, AS_FLOAT, addStat_targetSize_z);
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
-  addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
-  
-  addstat(STAT_RAM_VALUE, AS_FLOAT, ramTracker);
+
 
   switch( world.worldtype ){
     case 1:

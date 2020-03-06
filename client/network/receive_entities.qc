@@ -27,15 +27,12 @@ void() client_get_info={
   //SVC_SETVIEW changes local_playerentum to Camera's Ent ID!
   //client = entitybyindex( getstati(STAT_PLR_ENT_ID) );
   CLIENT_player_deadflag = ReadByte();
-  CLIENT_entorg  = te_read_vector();
-  CLIENT_radar_range  = ReadLong();
+  CLIENT_radar_range  = ReadShort();
   CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
   CLIENT_repair_value = getstati(STAT_PLR_REP);
   
   localDataType = ReadByte();
   if( localDataType == DATA_MECH ){
-    CLIENT_energy = ReadShort();
-    CLIENT_shield = ReadShort();
     
     lastHealthCenter = CLIENT_health_center;
     lastHealthLegs = CLIENT_health_legs;
@@ -44,15 +41,8 @@ void() client_get_info={
     lastHealthArmLeft = CLIENT_health_arm_left;
     lastHealthArmRight = CLIENT_health_arm_right;
     
-    CLIENT_health_center = ReadByte(); 
-    CLIENT_health_legs = ReadByte(); 
-    CLIENT_health_torso_left = ReadByte(); 
-    CLIENT_health_torso_right = ReadByte(); 
-    CLIENT_health_arm_left = ReadByte(); 
-    CLIENT_health_arm_right = ReadByte();
-    
-    CLIENT_hardpoint_cnt = ReadByte();
-    wep = 0;
+    //CLIENT_hardpoint_cnt = ReadByte();
+    wep = 1;
     while( wep <= CLIENT_hardpoint_cnt ){
       wep = wep + 1;
       weaponDelta = ReadByte();
@@ -85,7 +75,6 @@ void() client_get_info={
 
 void() client_get_info_thin={
   CLIENT_player_deadflag = ReadByte();
-  CLIENT_entorg = te_read_vector();
   CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
 };
 
@@ -165,7 +154,7 @@ void() client_get_hud_highlight={
 void() receive_ent_bindData={
   local string name;
   
-  name = getstats( STAT_PLR_NAME );
+  name = cvar_string("_cl_name");
   
   CLIENT_flags = getstati( STAT_ROCKETS );
   
@@ -176,8 +165,23 @@ void() receive_ent_bindData={
     CLIENT_netname = strzone( name );
   }
   CLIENT_player_state = getstati( STAT_ARMOR );
-  CLIENT_data_idx = getstati(STAT_PLR_DIDX);
+  CLIENT_data_idx = getstati(STAT_PLR_DATA_IDX);
   CLIENT_faction = getstati( STAT_CELLS );
+  
+  if( getstatf(STAT_CLIENT_ENERGY) > 0 ){
+    CLIENT_energy = (getstatf(STAT_CLIENT_ENERGY) / CLIENT_energy_max) * 100;
+  }
+  else{
+    CLIENT_energy = 0;
+  }
+  if( getstatf(STAT_CLIENT_ENERGY) > 0 ){
+    CLIENT_shield = (getstatf(STAT_CLIENT_SHIELD) / CLIENT_shield_max) * 100;
+  }
+  else{
+    CLIENT_shield = 0;
+  }
+  
+  
   CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
   CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
   CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
@@ -189,18 +193,17 @@ void() receive_ent_bindData={
        
   CLIENT_target_datatype = getstati(STAT_TRG_DATATYPE);
   CLIENT_target_faction = getstati(STAT_TRG_FACTION);
+  
+  CLIENT_health_center = getstatf(STAT_CLIENT_HP_TORSOCENTER); 
+  CLIENT_health_legs = getstatf(STAT_CLIENT_HP_LEGS); 
+  CLIENT_health_torso_left = getstatf(STAT_CLIENT_HP_TORSOLEFT); 
+  CLIENT_health_torso_right = getstatf(STAT_CLIENT_HP_TORSORIGHT); 
+  CLIENT_health_arm_left = getstatf(STAT_CLIENT_HP_ARMLEFT); 
+  CLIENT_health_arm_right = getstatf(STAT_CLIENT_HP_ARMRIGHT);
+  
   //CLIENT_target_shield; 
   //CLIENT_stat_trg_ddflg;
     
-  CLIENT_stat_w1_id = getstati(STAT_WEP1_ID);
-  CLIENT_stat_w2_id = getstati(STAT_WEP2_ID);
-  CLIENT_stat_w3_id = getstati(STAT_WEP3_ID);
-  CLIENT_stat_w4_id = getstati(STAT_WEP4_ID);
-  CLIENT_stat_w5_id = getstati(STAT_WEP5_ID);
-  CLIENT_stat_w6_id = getstati(STAT_WEP6_ID);
-  CLIENT_stat_w7_id = getstati(STAT_WEP7_ID);
-  CLIENT_stat_w8_id = getstati(STAT_WEP8_ID);
-  CLIENT_stat_w9_id = getstati(STAT_WEP9_ID);
 };
 
 void() client_event_navpoint={
