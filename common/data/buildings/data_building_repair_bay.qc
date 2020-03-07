@@ -255,7 +255,7 @@ void() building_human_repair={
   repairNode.owner = this;
   this.cockpit = repairNode;
   self = repairNode;
-    util_setModel("q3mdl/testball.md3", repairNode.skin, 0) ;
+    util_setModel("q3mdl/testball.md3", repairNode.skin, EF_LOWPRECISION) ;
     util_setCollider(FALSE, SOLID_TRIGGER, MOVETYPE_NONE) ;
     util_setHealthArmor(0, 0, 0, 0) ;
   self = this;

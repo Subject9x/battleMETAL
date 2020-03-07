@@ -325,40 +325,53 @@ void() mechAcceptButtonListener={
       ui_data_load_hud( MECH_DATA_ID );
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
       
+      CLIENT_radar_range = MECH_DATA_RAD;
+      
       bit = 1;
       totalHardpoints = 1;
       weaponsList = " ";
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
+      CLIENT_weapon_state = 0;
       while( hardpoint ){
         weaponsList = strcat(weaponsList, ftos(hardpoint.data_idx), " ");
+        
         //bind weapon data, reduce server traffic
         switch(bit){
           case WEAPON1:
             CLIENT_stat_w1_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
           case WEAPON2:
             CLIENT_stat_w2_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
           case WEAPON3:
             CLIENT_stat_w3_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
           case WEAPON4:
             CLIENT_stat_w4_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
           case WEAPON5:
             CLIENT_stat_w5_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
           case WEAPON6:
             CLIENT_stat_w6_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
           case WEAPON7:
             CLIENT_stat_w7_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
           case WEAPON8:
             CLIENT_stat_w8_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
           case WEAPON9:
             CLIENT_stat_w9_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
         }
         bit = bit * 2;
@@ -366,17 +379,27 @@ void() mechAcceptButtonListener={
         totalHardpoints = totalHardpoints + 1;  
       }
       CLIENT_hardpoint_cnt = totalHardpoints;
-      CLIENT_energy_max = MECH_DATA_ENMAX;
-      CLIENT_shield_max = MECH_DATA_SHMAX;
+      CLIENT_stat_rdr_mode = CLIENT_stat_rdr_mode_prev = 1; //go active radar on spawn;
+      CLIENT_radar_range = MECH_DATA_RAD * 2; //go active on spawn
+      
+      CLIENT_health_center_prev = CLIENT_health_center = MECH_DATA_HPCT;
+      CLIENT_health_legs_prev = CLIENT_health_legs = MECH_DATA_HPLG;
+      CLIENT_health_torso_left_prev = CLIENT_health_torso_left = MECH_DATA_HPST;
+      CLIENT_health_torso_right_prev = CLIENT_health_torso_right = MECH_DATA_HPST;
+      CLIENT_health_arm_left_prev = CLIENT_health_arm_left = MECH_DATA_HPAR;
+      CLIENT_health_arm_right_prev = CLIENT_health_arm_right = MECH_DATA_HPAR; 
       
       cl_setweapon(totalHardpoints, weaponsList);
-    
       cl_setweapongroup(1, CLIENT_MENU_nex_grp1);
       cl_setweapongroup(2, CLIENT_MENU_nex_grp2);
       cl_setweapongroup(3, CLIENT_MENU_nex_grp3);
       cl_setweapongroup(4, CLIENT_MENU_nex_grp4);
       cl_spawnmech(); 
 
+      hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
+      //mark time gettime()?
+      //MISSION_TIME_START
+      
       CLIENT_MENU_nav_pnt = -1;
       MENU_ACTIVE = FALSE;
     }

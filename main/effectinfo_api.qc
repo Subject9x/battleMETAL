@@ -36,6 +36,7 @@ void(string gibname, float dm) ThrowGib =
 	new.nextthink = time + 10 + random()*10;
 	new.frame = 0;
 	new.flags = 0;
+  new.effects = new.effects | EF_LOWPRECISION;
 };
 
 entity( entity targetBuilding ) te_building_fire_start={
@@ -92,7 +93,7 @@ void( vector org, vector angl, vector vel, float total, float debrType) te_debri
     newmis.velocity_x = 100 * crandom();
     newmis.velocity_y = 100 * crandom();
     newmis.velocity_z = 50 + 100 * random();
-    newmis.effects = newmis.effects | EF_NOSHADOW;
+    newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
     newmis.movetype = MOVETYPE_BOUNCE;
     newmis.solid = SOLID_NOT;
     newmis.avelocity_x = random()*450;
@@ -231,7 +232,7 @@ void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
   demg = hitDmg / 10;
   vel = angl * demg;
   
-  client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, max(demg + total, 16));
+  client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, max(demg + total, 6));
   pointsound( org, "sound/fx_shieldhit.ogg", 1, ATTN_NORM );
 };
 
@@ -257,7 +258,7 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.data_lifetime = 10;
   explode.scale = 0.1 + (vecSize / 3);
   explode.alpha = 0.75;
-  explode.effects = explode.effects | EF_NOSHADOW;
+  explode.effects = explode.effects | (EF_NOSHADOW | EF_LOWPRECISION);
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
   te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22'); 
@@ -287,6 +288,7 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   explode.data_lifetime = 10;
   explode.scale = explodeSize;
   explode.alpha = 1;
+  explode.effects = explode.effects | ( EF_NOSHADOW | EF_LOWPRECISION);
   explode.avelocity = randomvec() * 300;
   if( explodeColor != '0 0 0' ){
     explode.color = explodeColor;
@@ -341,7 +343,7 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
     self.th_die = SUB_Remove;
     self.owner = notChunk.owner;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_BOUNCE);
-    util_setModel(modl, skinNum, 0);
+    util_setModel(modl, skinNum, EF_LOWPRECISION);
     setsize(self, '-4 -4 -4', '4 4 4');
     setorigin(self, notChunk.origin);
     self.touch = touch_mechPiece;
@@ -413,12 +415,6 @@ void() te_nav_reach={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_NAV_REACH );
-};
-
-void() te_targ_kill={
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_TARG_KILL );
 };
 
 void() te_mission_win={

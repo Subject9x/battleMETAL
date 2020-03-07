@@ -100,13 +100,10 @@ void() ImpulseCommands ={
   if(self.impulse == IMP_FGROUP){
     self.stat_plr_fir = FIRE_GROUP;
     self.currentWeaponGroup = 0;
-    client = self;
-    client_send_event_change_fire(client, 1);
   }
   if(self.impulse == IMP_FCHAIN){
     self.stat_plr_fir = FIRE_CHAIN;
     self.currentWeaponGroup = 1;
-    client_send_event_change_fire(client, 0);
   }
   
   if(self.impulse == IMP_WGROUP1){
@@ -155,10 +152,12 @@ void() ImpulseCommands ={
   
   if(self.impulse == IMP_RADAR){
     if( self.stat_rdr_mode == TRUE ){
+      //set to passive
       self.stat_rdr_mode = FALSE;
       self.stat_rdr_rng = self.radar_range;
     }
     else{
+      //set to active
       self.stat_rdr_mode = TRUE;
       if(self.stat_rdr_rng != self.radar_range * 2){
         self.stat_rdr_rng = self.radar_range * 2;

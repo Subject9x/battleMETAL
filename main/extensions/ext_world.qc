@@ -27,14 +27,16 @@ void() mh_world_ini={
   MISSION_LOSSES_MILITAR = 0;
 
   //kept in numerical order for easy reference.
+  addstat(STAT_PLAYER_DEADFLAG, AS_INT, deadflag);
   addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
   
   addstat(STAT_RAM, AS_FLOAT, ramUp);
   
-  addstat(STAT_CLIENT_ENERGY, AS_FLOAT, energy);
-  addstat(STAT_CLIENT_SHIELD, AS_FLOAT, shield);
+  addstat(STAT_CLIENT_ENERGY, AS_FLOAT, stat_client_energy);
+  addstat(STAT_CLIENT_SHIELD, AS_FLOAT, stat_client_shield);
   
   addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
+  addstat(STAT_PLAYER_WEAPONS_STATE, AS_INT, stat_player_weapons_state);
   
   addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
   addstat(STAT_PLR_DATA_IDX, AS_INT, data_idx);
@@ -49,6 +51,13 @@ void() mh_world_ini={
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
   addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
     
+  addstat(STAT_TARGET_HP_TORSOCENTER, AS_FLOAT, stat_target_hp_torsoCenter);
+  addstat(STAT_TARGET_HP_TORSOLEFT, AS_FLOAT, stat_target_hp_torsoLeft);
+  addstat(STAT_TARGET_HP_TORSORIGHT, AS_FLOAT, stat_target_hp_torsoRight);
+  addstat(STAT_TARGET_HP_ARMLEFT, AS_FLOAT, stat_target_hp_armLeft);
+  addstat(STAT_TARGET_HP_ARMRIGHT, AS_FLOAT, stat_target_hp_armRight);
+  addstat(STAT_TARGET_HP_LEGS, AS_FLOAT, stat_target_hp_legs);
+    
   addstat(STAT_CLIENT_HP_TORSOCENTER, AS_FLOAT, stat_client_hp_torsoCenter);
   addstat(STAT_CLIENT_HP_TORSOLEFT, AS_FLOAT, stat_client_hp_torsoLeft);
   addstat(STAT_CLIENT_HP_TORSORIGHT, AS_FLOAT, stat_client_hp_torsoRight);
@@ -56,10 +65,29 @@ void() mh_world_ini={
   addstat(STAT_CLIENT_HP_ARMRIGHT, AS_FLOAT, stat_client_hp_armRight);
   addstat(STAT_CLIENT_HP_LEGS, AS_FLOAT, stat_client_hp_legs);
     
+  addstat(STAT_TARGET_SHIELDS, AS_FLOAT, stat_target_shield);
+  addstat(STAT_TARGET_NAME, AS_STRING, stat_target_name);
+  addstat(STAT_TARGET_NAME, AS_STRING, stat_target_name);
+    
+  addstat(STAT_TARGET_ORIGINX, AS_FLOAT, stat_target_orgx);
+  addstat(STAT_TARGET_ORIGINY, AS_FLOAT, stat_target_orgy);
+  addstat(STAT_TARGET_ORIGINZ, AS_FLOAT, stat_target_orgz);
+  addstat(STAT_TARGET_SIZE, AS_INT, stat_target_size);
+    
   addstat(STAT_RAM_VALUE, AS_FLOAT, ramTracker);
   addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
   
   addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
+  
+  addstat(STAT_CLIENT_WEAPON1_RELOAD, AS_FLOAT, stat_w1_rel);
+  addstat(STAT_CLIENT_WEAPON2_RELOAD, AS_FLOAT, stat_w2_rel);
+  addstat(STAT_CLIENT_WEAPON3_RELOAD, AS_FLOAT, stat_w3_rel);
+  addstat(STAT_CLIENT_WEAPON4_RELOAD, AS_FLOAT, stat_w4_rel);
+  addstat(STAT_CLIENT_WEAPON5_RELOAD, AS_FLOAT, stat_w5_rel);
+  addstat(STAT_CLIENT_WEAPON6_RELOAD, AS_FLOAT, stat_w6_rel);
+  addstat(STAT_CLIENT_WEAPON7_RELOAD, AS_FLOAT, stat_w7_rel);
+  addstat(STAT_CLIENT_WEAPON8_RELOAD, AS_FLOAT, stat_w8_rel);
+  addstat(STAT_CLIENT_WEAPON9_RELOAD, AS_FLOAT, stat_w9_rel);
 
   addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
   addstat(ADDSTAT_TARGETSIZE_X, AS_FLOAT, addStat_targetSize_x);

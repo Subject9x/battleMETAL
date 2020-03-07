@@ -267,8 +267,8 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   //ideally I'd love to use this feature, but it makes the cockpit .weaponmodel disappear and I don't feel like fixing
   //it right now. - Roohr
-  if( (trg.flags & FL_CLIENT) ){
-    trg.dmg_take = trg.dmg_take + (dmgAmt * 0.05);
+  if( trg.dmg_take < 0.25){
+    trg.dmg_take = trg.dmg_take + random() * 3;
   }
   
   pointsound (dmgTrg.origin, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons  
@@ -435,16 +435,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
     }
     
     self.doobits = 0;
-    
-    if( (self.flags & FL_UNIT) || (self.data_type == DATA_BLD) ){      
-      local entity note;
-      for(note = findchainflags(flags, FL_CLIENT); note != world; note = note.chain){
-        if( note.enemy != self ){
-          continue;
-        }
-        client_send_hud_target_kill( note );
-      }
-    }
     self.th_die();
   self = thisOldSelf;
 };

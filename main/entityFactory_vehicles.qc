@@ -242,8 +242,7 @@ void() build_mech_unit={
   
   build_mech_torsoCenter();
   
-  self.energy = self.energyMax;
-  self.shield = self.shieldMax;
+
   self.health = self.max_health;
   self.evasionDrain = (4 - self.vec_size) / 6.7 + EVADE_DRAIN_PERCENT;
   self.shieldRateMod = 1.33; //unmodified here.
@@ -288,7 +287,8 @@ void() build_mech_unit={
   if( self.cockpit ){
     build_unit_camera();
   }
-  
+  self.energy = self.energyMax;
+  self.shield = self.shieldMax;
   self.doRadarSweep = radarSweepBasic;
   
   if( self.hardpoint_cnt > 0 ){

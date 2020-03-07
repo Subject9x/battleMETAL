@@ -15,7 +15,7 @@
 
   //TE_ESR_MUZZLE - LONG SPARKS
     effect TE_ESR_MUZZLE
-    count 2
+    count 1
     type spark
     blend alpha
     color 0x00BFFF 0xA9F5F2
@@ -33,7 +33,7 @@
    
   //TE_ESR_MUZZLE - SPARK PUFFS
     effect TE_ESR_MUZZLE
-    count 4
+    count 1.5
     type spark
     blend alpha
     color 0x81DAF5 0xA9D0F5
@@ -92,7 +92,7 @@
 
   //TE_ESR_RAIL - RAIL HEAT DISTORT
     effect TE_ESR_RAIL
-    count 8
+    count 4
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -128,7 +128,7 @@
 
   //TE_ESR_IMPACT_DIRT - LIGHTNING FRAG
     effect TE_ESR_IMPACT_DIRT
-    count 1
+    count 0.5
     type spark
     blend alpha
     orientation spark
@@ -167,7 +167,7 @@
   
   //TE_ESR_IMPACT_ARMOR - LIGHTNING FRAG
     effect TE_ESR_IMPACT_ARMOR
-    count 2
+    count 1
     type spark
     blend alpha
     orientation spark
@@ -207,7 +207,7 @@
   
   //TE_ESR_IMPACT_SHIELD - LIGHTNING FRAG
     effect TE_ESR_IMPACT_SHIELD
-    count 4
+    count 1
     type spark
     blend alpha
     color 0x08298A 0x8181F7
@@ -225,14 +225,14 @@
   
   //TE_ESR_IMPACT_SHIELD - SMOKE PUFF
     effect TE_ESR_IMPACT_SHIELD
-    count 1
+    countabsolute 1
     type smoke
     blend alpha
     color 0x08298A 0x8181F7
     tex 63 63
     size 2 4
     sizeincrease 1
-    alpha 256 512 256
+    alpha 185 370 256
     time 2 4
     originjitter 0.1 0.1 0.1
     velocitymultiplier 0
@@ -604,7 +604,7 @@ gravity -0.005
 
   //TE_ATC_MUZZLE - MORE SPARKS
     effect TE_ATC_MUZZLE
-    count 7
+    count 4
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -628,7 +628,7 @@ gravity -0.005
 
   //TE_ATC_DIRT - GRAVEL BITS
     effect TE_ATC_DIRT
-    count 5
+    count 2
     type alphastatic
     blend alpha
     orientation spark
@@ -939,7 +939,7 @@ gravity -0.005
     
   //TE_QRFL_MUZZLE_SPARK - BUBBLE
     effect TE_QRFL_MUZZLE_RAIL
-    count 2
+    count 1
     type smoke
     blend alpha
     color 0xB4045F 0xD0A9F5
@@ -955,7 +955,7 @@ gravity -0.005
     
   //TE_QRFL_MUZZLE_SPARK - HEAT DISTORT
     effect TE_QRFL_MUZZLE_RAIL
-    count 4
+    count 2
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -1002,7 +1002,7 @@ gravity -0.005
   
   //TE_QRFL_MUZZLE - SMOKE
     effect TE_QRFL_MUZZLE
-    count 7
+    count 3
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1083,7 +1083,7 @@ gravity -0.005
     
   //TE_QRFL_QBIT_IMPACT - NON-SHIELD - PURPLE BUBBLES
     effect TE_QRFL_QBIT_IMPACT
-    count 10
+    count 5
     type alphastatic
     blend alpha
     orientation spark
@@ -1170,7 +1170,7 @@ gravity -0.005
   
   //TE_EMP_TRAIL - SPARK CLOUD TRAIL
     effect TE_EMP_TRAIL
-    count 15
+    count 7
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1329,7 +1329,7 @@ gravity -0.005
   
   //TE_ION_TRAIL - SPARK CLOUD TRAIL
     effect TE_ION_TRAIL
-    count 15
+    count 7
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1497,7 +1497,7 @@ gravity -0.005
 
   //TE_MIS_MUZZLE - SPARKS
     effect TE_MIS_MUZZLE
-    count 10
+    count 5
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1729,7 +1729,7 @@ gravity -0.005
 
   //TE_SFGA_TRAIL - SPARKS
     effect TE_SFGA_TRAIL
-    count 10
+    count 5
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1767,7 +1767,7 @@ gravity -0.005
 //LG MISSILE EFFECTS==================================
   //TE_LGM_MUZZLE
     effect TE_LGM_MUZZLE
-    count 10
+    count 5
     type smoke
     blend alpha
     color 0xB43104 0x000000
@@ -1890,7 +1890,7 @@ gravity -0.005
     
   //TE_ARH_MUZZLE - SMOKE
     effect TE_ARH_MUZZLE
-    count 7
+    count 4
     type smoke
     blend alpha
     color 0x848484 0xBDBDBD
@@ -2000,7 +2000,7 @@ gravity -0.005
     
   //TE_SWRM_TRAIL - SMOKE
     effect TE_SWRM_TRAIL
-    count 7
+    count 3
     type smoke
     blend alpha
     color 0xF5D0A9 0xF2F5A9
@@ -2859,7 +2859,7 @@ velocitymultiplier 2
 
   //TE_REPAIR_RAIL - RAIL HEAT DISTORT
     effect TE_REPAIR_RAIL
-    count 8
+    count 4
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -2907,7 +2907,7 @@ velocitymultiplier 2
 //RADIATION FIELD===========================
   //TE_FIELD_RAD - glob
     effect TE_FIELD_RAD
-    count 8
+    count 4
     type alphastatic
     blend alpha
     color 0x40FF00 0xF7F8E0

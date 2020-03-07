@@ -235,6 +235,11 @@ void() ctrl_die_weapon={
       self.think = SUB_Remove;
       self.nextthink = time + 0.5;
     }
+    else{
+      if( (self.owner.stat_player_weapons_state & self.w_group) ){
+        self.owner.stat_player_weapons_state = self.owner.stat_player_weapons_state - self.w_group;
+      }
+    }
   }
 };
 

@@ -56,7 +56,7 @@ void() building_human_hangar_vehicle={
   self.use = multi_trigger;
   self.solid = SOLID_SLIDEBOX;
   util_setHealthArmor(500, 500, 1, 100) ;
-  util_setModel( "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3", self.skin, 0) ;
+  util_setModel( "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3", self.skin, EF_LOWPRECISION) ;
   setsize(self, '-72 -72 0', '72 72 48');
   self.movetype = MOVETYPE_NONE;
   

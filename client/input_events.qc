@@ -79,6 +79,34 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       HUD_ZOOM_ACTIVE = TRUE;
       return FALSE;
     }
+    else if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
+      //Toggle Radar
+      CLIENT_stat_rdr_mode = !CLIENT_stat_rdr_mode;
+      if(CLIENT_stat_rdr_mode_prev != CLIENT_stat_rdr_mode){
+        CLIENT_stat_rdr_mode_prev = CLIENT_stat_rdr_mode;
+        if(CLIENT_stat_rdr_mode){
+          hud_event_enqueue(HUD_EVENT_RADAR_ACTIVE, 1); 
+          CLIENT_radar_range = CLIENT_radar_range * 2;
+        }
+        else{
+          hud_event_enqueue(HUD_EVENT_RADAR_PASSIVE, 1); 
+          CLIENT_radar_range = CLIENT_radar_range / 2;
+        }
+      }
+      //return false here to make sure player choice gets up to server.
+      return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
+      //Toggle Group Fire
+      hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
+      return TRUE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
+      //Toggle Chain Fire
+      hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
+      
+      return TRUE;
+    }
   }
   else if(inputEventType == INPUT_EVENT_MOUSE_POS){
     if(MENU_ACTIVE){

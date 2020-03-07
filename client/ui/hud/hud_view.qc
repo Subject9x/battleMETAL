@@ -133,10 +133,14 @@ void(vector pos, float algn) hud_renderPitchIndicator={
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
   
-  pmax = HUD_PITCH_MAX * -1;
-  pmin = HUD_PITCH_MIN * -1;
+  //divide by 0 protection
+  pmax = min(HUD_PITCH_MAX * -1, -1);
+  pmin = max(HUD_PITCH_MIN * -1, 1);
 
   pcur = input_angles_x;
+  if( pcur == 0 ){
+    pcur = 1;
+  }
   if( pcur < 0 ){
     //min is up
     pcur = pcur * -1;
@@ -1511,7 +1515,7 @@ void() data_hud_frame={
           if( hasTarget){
             porg = UI_DATA_POS[uid]; 
             algn = UI_DATA_ALIGN[uid];
-            hud_renderTargetName(porg, CLIENT_w_icon, algn);
+            hud_renderTargetName(porg, CLIENT_target_name, algn);
           }
         }
         break;

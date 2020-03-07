@@ -12,49 +12,58 @@ Overview: client utility methods, pulled from client.qc
 */
 void() client_push_player_info={
   local entity wep;
-  local float enm;
+  local float wepItr;
   local float targShield;
-  local float weaponStateBit;
-  
+
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
   self.armorvalue = self.playerState;
-  
-  self.stat_client_hp_torsoCenter = csqc_updateCompStat(self);
-  self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
-  self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
-  self.stat_client_hp_armLeft = csqc_updateCompStat(self.armLeft);
-  self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
-  self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
-  
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_CLIENT_INFO );
-
-  WriteByte( MSG_ONE, self.deadflag );
-
-  WriteShort( MSG_ONE, self.stat_rdr_rng );
-
-  WriteByte( MSG_ONE, self.data_type ); //sync integrity
   if(self.data_type == DATA_MECH){
-
-    //WriteByte( MSG_ONE, self.hardpoint_cnt );
-    wep = self;
-    weaponStateBit = 0;
-    while( wep ){
-      wep = wep.w_slot;
-      if( wep.deadflag == DEAD_NO ){
-        weaponStateBit = weaponStateBit | wep.w_group;
-      }
-      WriteByte( MSG_ONE, wep.reloadValue );
-    }
-    WriteLong( MSG_ONE, weaponStateBit );
+    self.stat_client_energy = (self.energy / self.energyMax) * 100;
+    self.stat_client_shield = (self.shield / self.shieldMax) * 100;
+    self.stat_client_hp_torsoCenter = csqc_updateCompStat(self);
+    self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
+    self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
+    self.stat_client_hp_armLeft = csqc_updateCompStat(self.armLeft);
+    self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
+    self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
     
-    WriteLong( MSG_ONE, self.stat_trg_ent_id );
+    wepItr = 1;
+    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+      //why can't we iterate over entity fields again?
+      switch(wepItr){
+        case 1:
+          self.stat_w1_rel = wep.reloadValue;
+          break;
+        case 2:
+          self.stat_w2_rel = wep.reloadValue;
+          break;
+        case 3:
+          self.stat_w3_rel = wep.reloadValue;
+          break;
+        case 4:
+          self.stat_w4_rel = wep.reloadValue;
+          break;
+        case 5:
+          self.stat_w5_rel = wep.reloadValue;
+          break;
+        case 6:
+          self.stat_w6_rel = wep.reloadValue;
+          break;
+        case 7:
+          self.stat_w7_rel = wep.reloadValue;
+          break;
+        case 8:
+          self.stat_w8_rel = wep.reloadValue;
+          break;
+        case 9:
+          self.stat_w9_rel = wep.reloadValue;
+          break;
+      }
+      wepItr = wepItr + 1;
+    }
+    
     if( self.stat_trg_ent_id != 0 ){
-      WriteCoord( MSG_ONE, self.enemy.origin_x );
-      WriteCoord( MSG_ONE, self.enemy.origin_y );
-      WriteCoord( MSG_ONE, self.enemy.origin_z );
       //this is silly but precludes forcing the csqc to know the target's max shields
       targShield = self.enemy.shield;
       if( targShield <= 0 ){
@@ -63,23 +72,25 @@ void() client_push_player_info={
       else{
         targShield = (self.enemy.shield / self.enemy.shieldMax) * 100;
       } 
-      WriteByte( MSG_ONE, targShield );
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.legs));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.torsoLeft));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.torsoRight));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armLeft));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armRight));
-      WriteShort( MSG_ONE, self.enemy.maxs_z * 2 );
-      if( self.enemy.netname != "" ){
-        WriteString( MSG_ONE, self.enemy.netname );
-      }
-      else{
-        WriteString( MSG_ONE, self.enemy.vec_name );
-      }
+      self.stat_target_shield = targShield;
+      self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy);
+      self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torsoLeft);
+      self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torsoRight);
+      self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armLeft);
+      self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armRight);
+      self.stat_target_hp_legs = csqc_updateCompStat(self.enemy.legs);
+    }
+    else{
+      self.stat_target_hp_torsoCenter = 0;
+      self.stat_target_hp_torsoLeft = 0;
+      self.stat_target_hp_torsoRight = 0;
+      self.stat_target_hp_armLeft = 0;
+      self.stat_target_hp_armRight = 0;
+      self.stat_target_hp_legs = 0;
     }
   }
 };
+
 /*
   sends just player state and stuff
 */
@@ -87,14 +98,6 @@ void() client_push_player_info_thin={
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
   self.armorvalue = self.playerState;
-
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_CLIENT_INFO_THIN);
-
-  WriteByte( MSG_ONE, self.deadflag );
-  
-  //WriteByte( MSG_ONE, self.data_type ); //sync integrity
 }
 void( entity targetClient ) server_push_player_info={
   local entity this;
@@ -256,13 +259,6 @@ void() client_push_mapobjects={
   }
 };
 
-void( entity client ) client_send_critical_hit={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY);
-  WriteByte( MSG_ONE, TE_CRITICAL_HIT );
-  WriteByte( MSG_ONE, self.partTypeId);
-};
-
 /*
   Sends an AI voice sample to play for a specific client
   limiter = total copies of 'voiceMessage' that can sit in the voice queue.
@@ -282,28 +278,14 @@ void( entity client, float voiceGroup, float voiceId, float limiter) client_send
   limiter = total copies of 'voiceMessage' that can sit in the voice queue.
 */
 void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
-  WriteByte( MSG_ALL, SVC_TEMPENTITY);
-  WriteByte( MSG_ALL, TE_AI_VOICE );
-  WriteByte( MSG_ALL, voiceGroup);
-  WriteByte( MSG_ALL, voiceId);
-  WriteByte( MSG_ALL, limiter );
-  WriteLong( MSG_ALL, num_for_edict(self) );
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY);
+  WriteByte( MSG_BROADCAST, TE_AI_VOICE );
+  WriteByte( MSG_BROADCAST, voiceGroup);
+  WriteByte( MSG_BROADCAST, voiceId);
+  WriteByte( MSG_BROADCAST, limiter );
+  WriteLong( MSG_BROADCAST, num_for_edict(self) );
 };
 
-void( entity client ) client_send_hud_target_kill={
-  local entity notClient;
-  notClient = self;
-  self = client;
-    te_targ_kill();
-  self = notClient;
-};
-
-void(entity client ) client_send_event_powerup={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_POWERUP );
-  WriteLong( MSG_ONE, time );
-};
 
 void(entity client, float weaponsOnOff) client_send_event_weapons={
   msg_entity = client;
@@ -317,13 +299,6 @@ void(entity client, float weaponsOnOff) client_send_event_repairs={
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_REPAIRS_ON );
   WriteByte( MSG_ONE, weaponsOnOff );
-};
-
-void(entity client, float newFireMode) client_send_event_change_fire={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_FIREMODE );
-  WriteByte( MSG_ONE, newFireMode );
 };
 
 void(entity client, string theMessage, float messageLifetime) client_send_info_message={
@@ -492,6 +467,13 @@ void(float mode) client_sendGameMode={
   stuffcmd(self, cmd);
 };
 
+void(string targetName) client_sendTargetName={
+  local string cmd;
+  local string cmd;
+  cmd = strcat("mech target ", targetName,"\n");
+  stuffcmd(self, cmd);
+};
+
 /*
   client Mapping = client_event_mission_name();
 */
@@ -512,47 +494,54 @@ commmand string: cmd mech setwep X Y
 void(string cmd, float tokens) client_setWeapon={
   local float itr, new_id;
   local float totalWeps;
+  local float bitCount;
   local entity oself;
   
   itr = 3;
+  bitCount = 1;
   for( totalWeps = 1; totalWeps < stof(argv(2)); totalWeps = totalWeps + 1){
     new_id = stof(argv(itr));
-    cons_logAFloat("new_id", new_id); //DEBUG
-    cons_logAFloat("itr", itr); //DEBUG
-    cons_logAFloat("totalWeps", totalWeps); //DEBUG
     switch(totalWeps){
       case 1:
         self.next_wepn1 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 2:
         self.next_wepn2 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 3:
         self.next_wepn3 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 4:
         self.next_wepn4 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 5:
         self.next_wepn5 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 6:
         self.next_wepn6 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 7:
         self.next_wepn7 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 8:
         self.next_wepn8 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 9:
         self.next_wepn9 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
     }
     itr = itr + 1;
+    bitCount = bitCount * 2;
   }
-  
-
 };
 
 void(float track, float loop) client_playTrack={
@@ -938,26 +927,26 @@ float(entity piece) csqc_updateCompStat={
 };
 
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle={
-  WriteByte( MSG_ALL, SVC_TEMPENTITY );
-  WriteByte( MSG_ALL, TE_VFX_POINT );
-  WriteShort( MSG_ALL, particleEffectId );
-  WriteCoord(MSG_ALL, particleOrg_x);
-  WriteCoord(MSG_ALL, particleOrg_y);
-  WriteCoord(MSG_ALL, particleOrg_z);
-  WriteCoord(MSG_ALL, particleVel_x);
-  WriteCoord(MSG_ALL, particleVel_y);
-  WriteCoord(MSG_ALL, particleVel_z);
-  WriteShort(MSG_ALL, particleCount);
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_POINT );
+  WriteShort( MSG_BROADCAST, particleEffectId );
+  WriteCoord(MSG_BROADCAST, particleOrg_x);
+  WriteCoord(MSG_BROADCAST, particleOrg_y);
+  WriteCoord(MSG_BROADCAST, particleOrg_z);
+  WriteCoord(MSG_BROADCAST, particleVel_x);
+  WriteCoord(MSG_BROADCAST, particleVel_y);
+  WriteCoord(MSG_BROADCAST, particleVel_z);
+  WriteShort(MSG_BROADCAST, particleCount);
 };
 
 void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail={
-  WriteByte( MSG_ALL, SVC_TEMPENTITY );
-  WriteByte( MSG_ALL, TE_VFX_RAIL );
-  WriteShort( MSG_ALL, particleEffectId );
-  WriteCoord(MSG_ALL, particleOrg_x);
-  WriteCoord(MSG_ALL, particleOrg_y);
-  WriteCoord(MSG_ALL, particleOrg_z);
-  WriteCoord(MSG_ALL, particleEnd_x);
-  WriteCoord(MSG_ALL, particleEnd_y);
-  WriteCoord(MSG_ALL, particleEnd_z);
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_RAIL );
+  WriteShort( MSG_BROADCAST, particleEffectId );
+  WriteCoord(MSG_BROADCAST, particleOrg_x);
+  WriteCoord(MSG_BROADCAST, particleOrg_y);
+  WriteCoord(MSG_BROADCAST, particleOrg_z);
+  WriteCoord(MSG_BROADCAST, particleEnd_x);
+  WriteCoord(MSG_BROADCAST, particleEnd_y);
+  WriteCoord(MSG_BROADCAST, particleEnd_z);
 };

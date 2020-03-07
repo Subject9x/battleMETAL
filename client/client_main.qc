@@ -229,6 +229,9 @@ void(float w, float h, float menushown) CSQC_UpdateView =
 	// draw the main view
 	renderscene();
   
+  //get player data from server
+  client_get_info();
+  
   //alter fog settings if needed
   cl_particles_fogFrame();
   
@@ -273,9 +276,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     }
 
     //HUD SOUND SYSTEM LISTENERS
-    snd_hud_vfx_statelistener(CLIENT_player_state);
-    snd_hud_vfx_enelistener(CLIENT_energy);
-    snd_hud_vfx_toggleradar(CLIENT_stat_rdr_mode);
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
@@ -373,12 +373,6 @@ float() CSQC_Parse_TempEntity =
   id = ReadByte();
 
   switch( id ){
-    case TE_CLIENT_INFO:
-      client_get_info();
-      return TRUE;
-    case TE_CLIENT_INFO_THIN:
-      client_get_info_thin();
-      return TRUE;
     case TE_CLIENT_PING:
       client_get_contact();
       return TRUE;
@@ -412,9 +406,6 @@ float() CSQC_Parse_TempEntity =
     case TE_AI_VOICE:
       snd_hud_trnsmsn_addtoqueue(ReadByte(), ReadByte(), ReadByte(), ReadLong());
       return TRUE;
-    case TE_TARG_KILL:
-      hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
-      return TRUE;
     case TE_MISSION_NAME:
       client_event_mission_name( ReadString() );
       return TRUE;
@@ -424,15 +415,8 @@ float() CSQC_Parse_TempEntity =
     case TE_MSG_ENV_WARN:
       client_event_environment();
       return TRUE;
-    case TE_CRITICAL_HIT:
-      client_event_critical_hit( ReadByte() );
-      return TRUE;
     case TE_MAPKEY_DATA:
       client_event_get_mapkeyinfo( ReadByte(), ReadLong(), ReadLong(), ReadByte() ) ;
-      return TRUE;
-    case TE_POWERUP:
-      hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
-      MISSION_TIME_START = ReadLong();
       return TRUE;
     case TE_MSG_INFO:
       client_event_info_box( ReadString(), CLR_DEF_TXT_GRAY_SMOOTH, ReadLong(), '14 14 0');
@@ -451,16 +435,6 @@ float() CSQC_Parse_TempEntity =
       }
       else{
         hud_event_enqueue( HUD_EVENT_REPAIRS_OFF, 1) ;
-      }
-      return TRUE;
-    case TE_FIREMODE:
-      local float mode;
-      mode = ReadByte();
-      if( mode == 0 ){
-        hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
-      }
-      else if( mode == 1 ){
-        hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
       }
       return TRUE;
     case TE_VFX_POINT:
@@ -505,6 +479,9 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     else if(argv(1) == "unlock"){
       cl_unlock_stuff(s);
+    }
+    else if(argv(1) == "target"){
+      CLIENT_target_name = strzone(argv(2));
     }
   }
   else{

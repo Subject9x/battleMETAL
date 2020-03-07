@@ -24,8 +24,7 @@ void() player_makeObserver={
   }
   client_update_viewBob(0, 0, 0);
   client_update_modelBob(0, 0, 0, 0);
-  self.stat_wep_state = 0;
-  self.stat_wep_rel = 0;
+  self.stat_player_weapons_state = 0;
   self.view_ofs = '0 0 1';
 };
 
@@ -69,29 +68,8 @@ float() customize_wep_for_client={
 void(entity mechPart, .entity hudPart) player_set_hud_chunk={
   local entity newHudPart, ownerSelf;
   local vector ofs;
-  ownerSelf = self;
-  newHudPart = spawn();
-  self = newHudPart;
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_NOT;
-  self.viewmodelforclient = ownerSelf;
-  self.owner = ownerSelf;
-  self.alpha = 1;
-
-  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
-  setsize(self, '-1 -1 -1','1 1 1');
-  macro_set_model(mechPart.model, 0, 0)  
-  setorigin(self, mechPart.origin);
-  self.angles = mechPart.angles;
-  self.aiment = ownerSelf;
-  self.punchangle = mechPart.angles;
-  self.view_ofs = self.origin - ownerSelf.origin;
-  self.v_angle = self.angles - ownerSelf.angles;
-  
-  mechPart.nodrawtoclient = ownerSelf;
-  
-  self = ownerSelf; 
-  ownerSelf.hudPart = newHudPart;
+  ownerSelf = mechPart.owner;
+  mechPart.nodrawtoclient = self;
 };
 
 void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
@@ -100,26 +78,20 @@ void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
   ownerSelf = self;
   newHudPart = spawn();
   self = newHudPart;
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_NOT;
+  
+  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
+  setsize(self, '-1 -1 -1','1 1 1');
+  macro_set_model(wepThing.model, 0, 0)  
+  macro_set_offset(ownerSelf, self.compOffset)
+  
   self.viewmodelforclient = ownerSelf;
   self.owner = ownerSelf;
   self.alpha = 1;
-
-  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
-  setsize(self, '-1 -1 -1','1 1 1');
-  macro_set_model(wepThing.model, 0, 0)  
-  setorigin(self, wepThing.origin);
-  self.angles = wepThing.angles;
-  self.aiment = ownerSelf;
-  self.punchangle = wepThing.angles;
-  self.view_ofs = self.origin - ownerSelf.origin;
-  self.v_angle = self.angles - ownerSelf.angles;
+  
+  self = ownerSelf;
   
   wepThing.nodrawtoclient = ownerSelf;
   wepThing.customizeentityforclient = customize_wep_for_client;
-  
-  self = ownerSelf;
   wepPointer.hudWeapon = newHudPart;
   wepPointer = newHudPart;
 };
@@ -149,10 +121,8 @@ void() player_makeMech={
   
   client_push_player_info();
   client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
-
   
   client_update_viewPitch( self.pitchMin, self.pitchMax );
-  client_send_event_powerup( self );
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
   
   //TODO - refactor/refine - this allows for composited HUD modeling, and EF_NOGUNBOB allows for sub-component HUD parts to not shake.
@@ -175,17 +145,18 @@ void() player_makeMech={
   self.stat_rdr_mode = 1;
   self.stat_rdr_rng = self.radar_range * 2;
 
-  player_set_hud_chunk( self.torsoCenter, hudTorsoCenter);
-  player_set_hud_chunk( self.torsoLeft, hudTorsoLeft);
-  player_set_hud_chunk( self.torsoRight, hudTorsoRight);
-  player_set_hud_chunk( self.armLeft, hudArmLeft);
-  player_set_hud_chunk( self.armRight, hudArmRight);
-  self.legs.customizeentityforclient = customize_part_for_client;
-  
+  self.torsoCenter.exteriormodeltoclient = self;
+  self.torsoLeft.exteriormodeltoclient = self;
+  self.torsoRight.exteriormodeltoclient = self;
+  self.armLeft.exteriormodeltoclient = self;
+  self.armRight.exteriormodeltoclient = self;
+  self.legs.exteriormodeltoclient = self;
+
   local entity wep, hudWepStart;
   hudWepStart = self;
   wep = self.w_slot;
   for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+    wep.exteriormodeltoclient = self;
     player_set_hud_weapon( wep, hudWepStart);
   }
 };
@@ -209,8 +180,7 @@ void() player_unmakeMech={
   self.hitdir_buffer = 0;
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = 0;
-  self.stat_spr_x = 0;
-  self.stat_spr_y = 0;
+
   self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;

@@ -59,13 +59,22 @@ void() ClientConnect = {
   self.shield = 0;
   self.shieldMax = 0;
   self.shieldRate = 0;
+  self.stat_client_energy = 0;
+  self.stat_client_shield = 0;
   
-  self.stat_client_hp_torsoCenter = 0;
-  self.stat_client_hp_torsoLeft = 0;
-  self.stat_client_hp_torsoRight = 0;
-  self.stat_client_hp_armLeft = 0;
-  self.stat_client_hp_armRight = 0;
-  self.stat_client_hp_legs = 0;
+  self.stat_target_hp_torsoCenter = 0;
+  self.stat_target_hp_torsoLeft = 0;
+  self.stat_target_hp_torsoRight = 0;
+  self.stat_target_hp_armLeft = 0;
+  self.stat_target_hp_armRight = 0;
+  self.stat_target_hp_legs = 0;
+
+  self.stat_client_hp_torsoCenter = 1;
+  self.stat_client_hp_torsoLeft = 1;
+  self.stat_client_hp_torsoRight = 1;
+  self.stat_client_hp_armLeft = 1;
+  self.stat_client_hp_armRight = 1;
+  self.stat_client_hp_legs = 1;
   
   self.stat_w1_id = -1;
   self.stat_w2_id = -1;
@@ -83,11 +92,9 @@ void() ClientConnect = {
   self.w_group4 = 0;
   self.aState = 0;
   self.state_2 = 0;
-  self.stat_wep_state = 0;
-  self.stat_wep_rel = 0;
   
   self.stat_trg_dataidx = -1;
-  self.stat_trg_sh = -1;
+  self.stat_target_shield = -1;
   self.stat_trg_ddflg = -1;
   self.stat_trg_dist = -1;
   self.stat_trg_face = -1;
@@ -100,9 +107,7 @@ void() ClientConnect = {
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = 0;
   self.stat_rdr_rng = 0;
-  
-  self.stat_spr_x = 0;
-  self.stat_spr_y = 0;
+
   self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;
@@ -125,9 +130,13 @@ void() ClientConnect = {
   self.playerState = PLAYER_CONNECT;
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here
-  
+  self.stat_player_weapons_state = 0;
   self.stat_plr_rep = -1;
-  
+  self.stat_target_name = "";
+  self.stat_target_orgx = 0;
+  self.stat_target_orgy = 0;
+  self.stat_target_orgz = 0;
+
   if( world.animaticOnly == FALSE) {
     client_playTrack(3, TRUE);  //entering hangar menu
   }

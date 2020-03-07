@@ -96,6 +96,8 @@ void() radarSweepAdv={
 
 void() sv_getTarget={
   local entity src;
+  local string targName;
+  
   makevectors(self.v_angle);
   src = self;
   if(self.cockpit != world){
@@ -104,20 +106,28 @@ void() sv_getTarget={
 
   traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
   if( ai_valid_target(trace_ent) ){
-    if( ai_valid_target(trace_ent) ){
-      self.enemy = trace_ent;
-      if(self.stat_rdr_mode){
-        self.lock_timer = time + self.w_firetime;
-      }
-      else{
-        self.lock_timer = time + (self.w_firetime *1.75);
-      }
-      if( self.enemy.trigOnTarget ){
-        trigger_event( self.enemy, self.trigOnTarget );
-      }
-      else{
-        trigger_event( self, self.trigOnTarget );
-      }
+    if( (trace_ent.flags & FL_CLIENT) ){
+      targName = trace_ent.netname;
+    }
+    else{
+      targName = trace_ent.vec_name;
+    }
+    if( targName != "" ){
+      client_sendTargetName(targName);
+    }
+    
+    self.enemy = trace_ent;
+    if(self.stat_rdr_mode){
+      self.lock_timer = time + self.w_firetime;
+    }
+    else{
+      self.lock_timer = time + (self.w_firetime *1.75);
+    }
+    if( self.enemy.trigOnTarget ){
+      trigger_event( self.enemy, self.trigOnTarget );
+    }
+    else{
+      trigger_event( self, self.trigOnTarget );
     }
   }
   else{
@@ -139,12 +149,17 @@ void() sv_updateTargetInfo={
     self.addStat_targetSize_x = 0;
     self.addStat_targetSize_y = 0;
     self.addStat_targetSize_z = 0;
+    self.stat_target_orgx = 0;
+    self.stat_target_orgy = 0;
+    self.stat_target_orgz = 0;
+    self.stat_target_size = 0;
     if( (self.stat_lck_stt & LOCK_TARG_START)){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
     }
     if( (self.stat_lck_stt & LOCK_TARG_HAS)){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
     }
+    self.stat_target_name = "";
     return;
   }
   
@@ -165,6 +180,10 @@ void() sv_updateTargetInfo={
   self.addStat_targetSize_x = self.enemy.maxs_x;
   self.addStat_targetSize_y = self.enemy.maxs_y;
   self.addStat_targetSize_z = self.enemy.maxs_z;
+  self.stat_target_orgx = self.enemy.origin_x;
+  self.stat_target_orgy = self.enemy.origin_y;
+  self.stat_target_orgz = self.enemy.origin_z;
+  self.stat_target_size = self.enemy.maxs_z * 2;
   
   //can only lock-on to enemy units
   if( self.enemy.faction != self.faction ){
