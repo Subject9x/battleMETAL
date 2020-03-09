@@ -277,10 +277,7 @@ void() ctrl_component_die={
   local entity c;
   if( self.deadflag <= DEAD_NO ){
     piece = self;
-    
-    te_missile_explode( piece.origin, piece.owner.vec_size, '1 0.25 0.75', random() * (piece.vec_size * 1.5), 2); 
-    te_mech_piece_explode( piece, piece.origin, piece.angles, piece.owner.velocity, piece.model, piece.skin );
-
+  
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW; 
     self.movetype = MOVETYPE_NONE;
@@ -288,6 +285,8 @@ void() ctrl_component_die={
     self.health = 0;
     setorigin( self, self.origin );
     
+    client_send_mech_chunk( self.modelindex, self.owner.skin, self.owner.vec_size, self.origin, self.angles );
+  
     if( self.partTypeId == M_TOR_LEFT ){
       self.owner.armLeft.think = self.owner.armLeft.th_die;
       self.owner.armLeft.nextthink = time + 0.1;
@@ -329,9 +328,8 @@ void() ctrl_arm_die={
   local entity c;
   if( self.deadflag == DEAD_NO ){
     piece = self;
-    
-    te_missile_explode( piece.origin, piece.owner.vec_size, '1 0.25 0.75', random() * (piece.vec_size * 1.5), 2); 
-    te_mech_piece_explode( piece, piece.origin, piece.angles, piece.owner.velocity, piece.model, piece.skin );
+
+    client_send_mech_chunk( self.modelindex, self.owner.skin, self.owner.vec_size, self.origin, self.angles );
 
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;  
@@ -343,6 +341,9 @@ void() ctrl_arm_die={
     
     this = self;
     for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
+      if( c == world ){
+        continue;
+      }
       self = c;
         if(self.partParentId != this.partTypeId){
           continue;

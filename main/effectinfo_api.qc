@@ -64,7 +64,7 @@ void(vector org, float total) te_smoke={
   Creates a small flying smoking debris field
   mostly used for mech piece explosions
 */
-void( vector org, vector angl, vector vel, float total, float debrType) te_debris={
+void( vector org, vector angl, vector vel, float total, float debrType ) te_debris={
   local float totals;
   local string debrisMdl;
   local float trailNum;

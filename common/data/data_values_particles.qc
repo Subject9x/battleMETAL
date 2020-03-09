@@ -38,12 +38,14 @@ float TE_MSG_ENV_WARN = 107;
 
 //108;
 float TE_MAPKEY_DATA = 109;
-//110;
+
+float TE_VFX_EXPLODE = 110;
+
 float TE_MSG_INFO = 111;
 float TE_WEAPONS_ON = 112;
 float TE_REPAIRS_ON = 113;
-//114;
-//115;
 
+float TE_VFX_MECH = 114;
+float TE_VFX_WRECK = 115;
 float TE_VFX_POINT = 116;
 float TE_VFX_RAIL = 117;

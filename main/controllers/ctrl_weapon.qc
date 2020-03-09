@@ -209,7 +209,6 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
 */
 void() ctrl_die_weapon={
   if(self.deadflag <= DEAD_NO){
-    te_missile_explode( self.origin, self.hardpointSize, '0.33 0.67 0.99', 1, 1);
     
     if( (self.currentWeaponGroup & self.w_group) ){
       self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group);

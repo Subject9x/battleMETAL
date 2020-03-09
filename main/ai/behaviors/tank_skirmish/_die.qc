@@ -12,8 +12,13 @@ Overview: ai unit
 
 void() ai_tank_sk_clean={
   ctrl_unit_cleanup_tank();
-  self.think = ai_tank_sk_die1;
-  self.nextthink = time + 0.5;
+  client_send_wreck( self.modelindex, self.skin, 600, self.vec_size, self.origin, self.angles );
+  
+  self.modelindex = 0;
+  self.effects = self.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 1;  
 };
 
 void() ai_tank_sk_die={
@@ -62,22 +67,6 @@ void() ai_tank_sk_die={
   self.ai_action_time = time + 600;
 
   ai_alert_close( self.enemy );
-  
-  makevectors( self.angles );
-  v = self.origin + (v_up * 2);
-  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-  
-  switch( self.vec_size ){
-    case 2:
-      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 240, 0.5, 600); 
-      break;
-    case 3:
-      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 180, 0.75, 600); 
-      break;
-    default:
-      te_small_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 120, 1, 600); 
-      break;
-  }
 
   self.think = ai_tank_sk_clean;
   self.nextthink = time + 0.1;

@@ -26,6 +26,8 @@ void() data_projectile_ini_rocket_={
 };
 
 void() data_prj_mis_touch={
+  local float shieldHit;
+  
 	if ( pointcontents(self.origin) == CONTENT_SKY){
     remove(self);
 		return;
@@ -34,13 +36,16 @@ void() data_prj_mis_touch={
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
-      remove(self);
-      return;
+      shieldHit = TRUE;
+    }
+    else{
+      shieldHit = FALSE;
     }
   }
-  makevectors(self.angles);
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18',  min(self.damageValue / 7, 4), 1);
+  //makevectors(self.angles);
+  //te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18',  min(self.damageValue / 7, 4), 1);
   
+  client_send_missile_explode( self.origin, 1, '0.99 0.6 0.18', min(self.damageValue / 7, 3), 2, shieldHit);
   remove(self);
 };
 

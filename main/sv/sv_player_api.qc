@@ -307,9 +307,10 @@ void() PlayerDie={
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
     client_push_player_info();
-    msg_entity = self;
-    WriteByte( MSG_ONE, SVC_SETVIEWPORT );
-    WriteEntity( MSG_ONE, self );    
+    //DEBUG - these may no longer be needed
+    //msg_entity = self;
+    //WriteByte( MSG_ONE, SVC_SETVIEWPORT );
+    //WriteEntity( MSG_ONE, self );    
   }
   self.effects = 0;
   
@@ -358,6 +359,73 @@ void() PlayerDieEnd={
   self.think = PlayerDead;
   self.nextthink = time + 0.1;
 };
+
+void() PlayerDieNetwork={
+	if( self.deadflag ){
+		bprint("warning: PlayerDie called twice\n");
+		return;
+	}
+	if(self.data_type == DATA_MECH){
+    ctrl_unit_clean_wgroups();
+    ctrl_mech_die_player();
+    client_push_player_info();
+    //DEBUG - these may no longer be needed
+    //msg_entity = self;
+    //WriteByte( MSG_ONE, SVC_SETVIEWPORT );
+    //WriteEntity( MSG_ONE, self );    
+  }
+  self.effects = 0;
+  
+	self.deadflag = DEAD_DYING;
+	self.solid = SOLID_CORPSE;
+	self.flags = self.flags - (self.flags & FL_ONGROUND);
+	self.movetype = MOVETYPE_TOSS;
+  setsize(self, '-4 -4 -4', '4 4 4');
+	setorigin(self, self.origin);
+  
+  if (self.velocity_z < 10){
+    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
+  }
+  
+	self.angles_x = 0;
+	self.angles_z = 0;
+  self.angles_y = 0;
+  self.avelocity = '0 0 0';
+  
+  //update objectives on player death.
+  client_push_mapobjects();
+  if( MISSION_STATUS ){        
+    //only send unlocks if player won mission
+    //client_sendMissionUnlocks();
+    te_mission_win();
+  }
+  else{
+    te_mission_lose();
+  }
+
+  self.think = PlayerDieEnd;
+  self.nextthink = time + GAME_TIME_TO_DEBRIEF;
+};
+
+void() PlayerDieNetworkEnd={
+  self.movetype = MOVETYPE_NONE;
+  self.playerState = PLAYER_INTERMSN;
+  
+  client_sendEndMission(self, MISSION_STATUS );
+  client_push_player_info();
+  
+  
+  local entity start;
+  start = find(world, classname, "info_player_start");
+  if( start ){
+    setorigin( self, start.origin);
+  }
+  
+  self.think = PlayerDead;
+  self.nextthink = time + 0.1;
+};
+
+
 
 void() PlayerDead={
 	self.nextthink = -1;

@@ -37,8 +37,23 @@ void() player_unmakeObserver={
 };
 
 void() player_makeVec={
+  //<chuckle> oh we'll get here soon
+};
 
-  
+//creates the 3D hud boxes for the player
+//TODO - move me to clientside.
+void() player_setup_hudconsole={
+  newmis = spawn();
+  newmis.movetype = MOVETYPE_NONE;
+  newmis.solid = SOLID_NOT;
+  newmis.viewmodelforclient = self;
+  newmis.owner = self;
+  newmis.alpha = 1;
+  setmodel(newmis, self.hud_model);
+  setsize(newmis, '0 0 0', '0 0 0');
+  setorigin(newmis, '0 0 0');
+  newmis.frame = self.weaponframe;
+  self.hud_ent = newmis;
 };
 
 float() customize_part_for_client ={
@@ -47,18 +62,15 @@ float() customize_part_for_client ={
     return FALSE;
   }
   makevectors(other.angles);
-  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - (other.cockpit.compOffset_z / 2)));
+  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - fabs(other.cockpit.compOffset_z)));
   setorigin(self, chunkOfs);
   return TRUE;
 };
 
 float() customize_wep_for_client={
   local vector chunkOfs;
-  if( self.owner != other ){
-    return FALSE;
-  }
   makevectors(self.owner.angles);
-  chunkOfs = v.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - self.owner.cockpit.compOffset_z));
+  chunkOfs = self.owner.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - self.owner.cockpit.compOffset_z));
   self.wepFireOffset_z = self.wepFireOffsetCache_z - self.owner.cockpit.compOffset_z;
   self.compAltOffset_z = self.compAltOffsetCache_z - self.owner.cockpit.compOffset_z;
   setorigin(self, chunkOfs);
@@ -118,41 +130,47 @@ void() player_makeMech={
   
   client_update_viewPitch( self.pitchMin, self.pitchMax );
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
+
+  //configure player mech bits visibility
+  local entity wep, hudWepStart;
+  hudWepStart = self;
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    //non-network games can have more fun with player view
+    player_setup_hudconsole();
+    ///self.torsoCenter.customizeentityforclient = customize_part_for_client;
+    self.torsoCenter.exteriormodeltoclient = self;
+    self.torsoLeft.customizeentityforclient = customize_part_for_client;
+    self.torsoRight.customizeentityforclient = customize_part_for_client;
+    self.armLeft.customizeentityforclient = customize_part_for_client;
+    self.armRight.customizeentityforclient = customize_part_for_client;
+    self.legs.customizeentityforclient = customize_part_for_client;
+    
+    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+      wep.customizeentityforclient = customize_wep_for_client;
+    }
+  }
+  else{
+    //network games are too laggy to allow a player to see their own mech parts sadly
+    self.torsoCenter.exteriormodeltoclient = self;
+    self.torsoLeft.exteriormodeltoclient = self;
+    self.torsoRight.exteriormodeltoclient = self;
+    self.armLeft.exteriormodeltoclient = self;
+    self.armRight.exteriormodeltoclient = self;
+    self.legs.exteriormodeltoclient = self;
+    
+    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+      wep.exteriormodeltoclient = self;
+      player_set_hud_weapon( wep, hudWepStart);
+    }
+  }
   
-  //TODO - refactor/refine - this allows for composited HUD modeling, and EF_NOGUNBOB allows for sub-component HUD parts to not shake.
-  newmis = spawn();
-  newmis.movetype = MOVETYPE_NONE;
-  newmis.solid = SOLID_NOT;
-  newmis.viewmodelforclient = self;
-  newmis.owner = self;
-  newmis.alpha = 1;
-  setmodel(newmis, self.hud_model);
-  setsize(newmis, '0 0 0', '0 0 0');
-  setorigin(newmis, '0 0 0');
-  newmis.frame = self.weaponframe;
   self.hud_mode = cvar("cl_hud_sway");
-  self.hud_ent = newmis;
   util_updateViewBob();
   
   self.view_ofs = '0 0 0';
-  self.view_ofs_z = self.cockpit.compOffset_y;
-  self.stat_rdr_mode = 1;
+  self.view_ofs_z = self.cockpit.compOffset_y;  //set player view offset to where the cockpit ent is.
+  self.stat_rdr_mode = 1; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
-
-  self.torsoCenter.exteriormodeltoclient = self;
-  self.torsoLeft.exteriormodeltoclient = self;
-  self.torsoRight.exteriormodeltoclient = self;
-  self.armLeft.exteriormodeltoclient = self;
-  self.armRight.exteriormodeltoclient = self;
-  self.legs.exteriormodeltoclient = self;
-
-  local entity wep, hudWepStart;
-  hudWepStart = self;
-  wep = self.w_slot;
-  for( wep = self.w_slot; wep != world; wep = wep.w_slot){
-    wep.exteriormodeltoclient = self;
-    player_set_hud_weapon( wep, hudWepStart);
-  }
 };
 
 void() player_unmakeMech={

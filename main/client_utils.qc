@@ -146,6 +146,8 @@ void( entity targetClient ) client_push_hud_highlight={
   self = this;
 }; 
 
+//TODO - refactor navpoint 
+//events: 
 void( entity navpoint ) client_send_navpoint={
   local float nactive;
   
@@ -167,6 +169,7 @@ void( entity navpoint ) client_send_navpoint={
   WriteCoord( MSG_ONE, navpoint.origin_z);
 };
 
+//TODO - refactor objectives
 void( entity objective ) client_send_objective={
   if( objective.faction != self.faction ){
     return;
@@ -191,6 +194,7 @@ void( entity objective ) client_send_objective={
   }
 };
 
+//TODO - refactor 
 void( entity deploy ) client_send_deploypoint={
   msg_entity = self;
   local float nactive;
@@ -211,6 +215,7 @@ void( entity deploy ) client_send_deploypoint={
   WriteCoord( MSG_ONE, deploy.origin_z);
 };
 
+//TODO - refactor
 void( entity targetClient ) client_send_boundary_warning={
   local entity this;
   
@@ -389,7 +394,6 @@ void(string str, float tokens) client_ParseMechCommand={
         }
       }
     }
-    
     return;
   }
   
@@ -712,26 +716,26 @@ void(float p_min, float p_max) client_update_viewPitch={
 
 
 void() respawn={ 
-  if (coop){
+  if (  GAMETYPE == GAMEMODE_COOP ){
 		// make a copy of the dead body for appearances sake
     //CopyToBodyQue (self);
     //
 		// get the spawn parms as they were at level start
 		//setspawnparms (self);
-    if(self.data_type == DATA_MECH){
+    if(self.data_type == DATA_MECH ){
       player_unmakeMech();
       player_makeObserver();
     }
 		// respawn		
 		PutClientInServer ();
 	}
-	else if (deathmatch){
+	else if ( GAMETYPE == GAMEMODE_DM ){
 		// make a copy of the dead body for appearances sake
     //CopyToBodyQue (self);
 
 		// set default spawn parms
-		SetNewParms ();
-    if(self.data_type == DATA_MECH){
+		//SetNewParms ();
+    if(self.data_type == DATA_MECH ){
       player_unmakeMech();
       player_makeObserver();
     }
@@ -924,6 +928,62 @@ float(entity piece) csqc_updateCompStat={
     return perc;
   }
   return perc;
+};
+
+/*
+  Send wreckage entity to client, 
+  should cut down on workload of server, right?
+*/
+void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType, float onShield ) client_send_missile_explode={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_EXPLODE );
+ 
+  WriteCoord(MSG_BROADCAST, org_x);
+  WriteCoord(MSG_BROADCAST, org_y);
+  WriteCoord(MSG_BROADCAST, org_z);
+  
+  WriteByte( MSG_BROADCAST, explodeSize);
+  
+  WriteCoord(MSG_BROADCAST, explodeColor_x);
+  WriteCoord(MSG_BROADCAST, explodeColor_y);
+  WriteCoord(MSG_BROADCAST, explodeColor_z);
+  
+  WriteByte( MSG_BROADCAST, debrisCount);
+  WriteByte( MSG_BROADCAST, debrType );
+  WriteByte( MSG_BROADCAST, onShield );
+};
+
+void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) client_send_mech_chunk={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_MECH );
+  WriteByte( MSG_BROADCAST, modelIndex);
+  WriteByte( MSG_BROADCAST, skinNum);
+  WriteByte( MSG_BROADCAST, vecSize );
+  
+  WriteCoord(MSG_BROADCAST, entOrg_x);
+  WriteCoord(MSG_BROADCAST, entOrg_y);
+  WriteCoord(MSG_BROADCAST, entOrg_z);
+  
+  WriteAngle(MSG_BROADCAST, entAngl_x);
+  WriteAngle(MSG_BROADCAST, entAngl_y);
+  WriteAngle(MSG_BROADCAST, entAngl_z);
+};
+
+void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_WRECK );
+  WriteByte( MSG_BROADCAST, modelIndex);
+  WriteByte( MSG_BROADCAST, skinNum);
+  WriteByte( MSG_BROADCAST, lifetime);
+  WriteByte( MSG_BROADCAST, vecSize );
+  
+  WriteCoord(MSG_BROADCAST, entOrg_x);
+  WriteCoord(MSG_BROADCAST, entOrg_y);
+  WriteCoord(MSG_BROADCAST, entOrg_z);
+  
+  WriteAngle(MSG_BROADCAST, entAngl_x);
+  WriteAngle(MSG_BROADCAST, entAngl_y);
+  WriteAngle(MSG_BROADCAST, entAngl_z);
 };
 
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle={

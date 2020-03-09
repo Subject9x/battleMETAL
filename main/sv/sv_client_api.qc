@@ -90,8 +90,8 @@ void() ClientConnect = {
   self.w_group2 = 0;
   self.w_group3 = 0;
   self.w_group4 = 0;
-  self.aState = 0;
-  self.state_2 = 0;
+  self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
+  self.state_2 = 0; //unknown what this used to be 
   
   self.stat_trg_dataidx = -1;
   self.stat_target_shield = -1;
@@ -201,14 +201,11 @@ void() PutClientInServer = {
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
   
-  gamemode = cvar("gamemode");
-  
   client_sendMissionFileName();
-  client_sendGameMode(gamemode);
+  client_sendGameMode(cvar("gamemode"));
 
-  if( !cvar("coop") && !cvar("deathmatch") ){
-    client_sendGameMode(GAMEMODE_CAMPAIGN);
-    if(world.model == "maps/o1m1.bsp"){
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    if( world.model == "maps/o1m1.bsp"){
       //pre-populate default save file
       savefile_load( FALSE );
       if( FLAG_NEWGAME == TRUE ){
@@ -225,13 +222,11 @@ void() PutClientInServer = {
       }    
     }
   }
-  else if ( cvar("coop") && !cvar("deathmatch") ){
-    client_sendGameMode(GAMEMODE_COOP);
+  else if ( GAMETYPE == GAMEMODE_COOP ){
     mapfile_coop_load();
   }
   else{
     mapfile_pvp_load(self.faction);
-    client_sendGameMode(GAMEMODE_DM);
   }
 
   switch( self.data_type ){
@@ -245,7 +240,7 @@ void() PutClientInServer = {
       }
       client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
       
-      if(!coop && !deathmatch){
+      if( GAMEMODE_CAMPAIGN ){
         self.movetype = MOVETYPE_NONE;
         self.flags = self.flags - (self.flags & FL_FLY);
         client_update_moveSpeed(0, 0, 0, "0", 0);

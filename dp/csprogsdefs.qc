@@ -1543,6 +1543,12 @@ vector gettaginfo_up;
 float checkpvs(vector viewpos, entity viewee) = #240;
 
 //compatability with common/data stuff - Roohr
-float() crandom;
+float() crandom ={
+	return 2*(random() - 0.5);
+};
+
 void() SUB_Null={};
 void() SUB_Remove={remove(self);};
+
+.float gravity;
+.float scale;

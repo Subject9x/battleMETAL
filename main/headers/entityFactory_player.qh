@@ -12,6 +12,8 @@ void() player_makeVec;
 void() player_makeMech;
 void() player_unmakeMech;
 
+void() player_setup_hudconsole;
+
 float() customize_wep_for_client;
 float() customize_part_for_client;
 

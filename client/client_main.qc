@@ -438,10 +438,21 @@ float() CSQC_Parse_TempEntity =
       }
       return TRUE;
     case TE_VFX_POINT:
-      pointparticles( ReadShort(), te_read_vector() , te_read_vector(), ReadShort());
+      pointparticles( ReadShort(), te_read_vector(), te_read_vector(), ReadShort());
       return TRUE;
     case TE_VFX_RAIL:
       trailparticles( world, ReadShort(), te_read_vector(), te_read_vector() );
+      return TRUE;
+    case TE_VFX_WRECK:
+      //                 float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl
+      particle_vehicle_wreck( ReadByte(), ReadByte(), ReadByte(), ReadByte(), te_read_vector(), te_read_angle() ) ;
+      return TRUE;
+    case TE_VFX_MECH:
+      //                 float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl
+      particle_mech_chunk( ReadByte(), ReadByte(), ReadByte(), te_read_vector(), te_read_angle() ) ;
+      return TRUE;
+    case TE_VFX_EXPLODE:
+      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte(), ReadByte(), ReadByte() );
       return TRUE;
   } 
 	return FALSE;
@@ -505,6 +516,7 @@ void(string s) CSQC_Parse_StuffCmd =
 // if string is interesting, deal with it, otherwise pass it to print() to invoke the engine code.
 void(string s) CSQC_Parse_Print =
 {
+  cons_logAString("test s", s); //DEBUG
 	print(s);
 };
 

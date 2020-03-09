@@ -8,7 +8,19 @@ Overview:
   these functions are here for their abstraction level.
 */
 
-void() mh_world_ini={ 
+void() mh_world_ini={
+  if( cvar("coop") ){
+    GAMETYPE = GAMEMODE_COOP;
+  }
+  else if( cvar("deathmatch") ){ 
+    GAMETYPE = GAMEMODE_DM;
+  }
+  else{
+    GAMETYPE = GAMEMODE_CAMPAIGN;
+  } 
+  cvar_set("gamemode", ftos(GAMETYPE));
+
+
   registercvar("campaign", "0", 0); 
   registercvar("saveslot", "0", 1);
   registercvar("gamemode", "0", 0);
