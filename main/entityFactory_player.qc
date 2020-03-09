@@ -57,20 +57,14 @@ float() customize_wep_for_client={
   if( self.owner != other ){
     return FALSE;
   }
-  makevectors(other.angles);
-  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - other.cockpit.compOffset_z));
-  self.wepFireOffset_z = self.wepFireOffsetCache_z - other.cockpit.compOffset_z;
-  self.compAltOffset_z = self.compAltOffsetCache_z - other.cockpit.compOffset_z;
+  makevectors(self.owner.angles);
+  chunkOfs = v.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - self.owner.cockpit.compOffset_z));
+  self.wepFireOffset_z = self.wepFireOffsetCache_z - self.owner.cockpit.compOffset_z;
+  self.compAltOffset_z = self.compAltOffsetCache_z - self.owner.cockpit.compOffset_z;
   setorigin(self, chunkOfs);
   return TRUE;
 };
 
-void(entity mechPart, .entity hudPart) player_set_hud_chunk={
-  local entity newHudPart, ownerSelf;
-  local vector ofs;
-  ownerSelf = mechPart.owner;
-  mechPart.nodrawtoclient = self;
-};
 
 void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
   local entity newHudPart, ownerSelf;
