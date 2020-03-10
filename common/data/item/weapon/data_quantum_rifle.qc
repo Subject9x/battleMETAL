@@ -74,17 +74,7 @@ void() data_ini_attack_quantum_={
   hitMax = '25 25 25';
   hitMin = '-25 -25 -25';
   
-  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
-  prtclRail_org = FIRE_ORIGIN + (v_forward * 2);
-  prtclRail_end = FIRE_ORIGIN + (v_forward * 48);
-  prtclSpark_org = FIRE_ORIGIN + (v_forward * 22);
-  
-  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1 ) ;
-  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1) ;
-  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1) ;
-  
-  client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5) );
-  client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5) );
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT);
   
   if( trace_ent.takedamage ){
     hitZone = trace_ent.origin;

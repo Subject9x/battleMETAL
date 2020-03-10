@@ -55,14 +55,12 @@ void() data_ini_attack_snub_artillery_={
 
   ctrl_weapon_updateAmmo( FALSE );
    
-  client_send_particle( particleeffectnum("TE_SFGA_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 2, 1);
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT);
   
   ctrl_weapon_make_projectile( -1 );
   if((FIRE_ENT.flags & FL_CLIENT)){
     FIRE_ENT.punchangle_x = -1 + (crandom() * -2);
     FIRE_ENT.punchangle_y = -1 + (crandom() * -2);
   }
-  
-  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
 };
 #endif

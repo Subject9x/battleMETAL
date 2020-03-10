@@ -7,12 +7,12 @@ Overview:
     Electro-Static Repeater
       Range - Short
       Consumes Energy
-      High Damage
-      20rnd Burst
       hit scan
       Inaccurate
+      spin up and cooldown
 */
 float DATA_ESR_BEAM_COUNT = 3;
+float DATA_ESR_COOLDOWN_MAX = 2;
 
 #ifndef CSQC
 void() data_ini_attack_electro_repeater_;
@@ -58,33 +58,49 @@ void() data_ini_electro_repeater_={
 void() data_ini_attack_electro_repeater_={
   
   if( !ctrl_weapon_checkEnergy() ){
+    
     return;
   }
-  ctrl_weapon_updateAmmo( FALSE );
+  //ctrl_weapon_updateAmmo( FALSE );
   
-  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
-  client_send_particle( particleeffectnum("TE_ESR_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
-   
-  local float shotCount;
   
-  for(shotCount = DATA_ESR_BEAM_COUNT; shotCount > 0; shotCount = shotCount - 1){
-    ctrl_weapon_fireOffset();
-    client_send_particle_rail( num_for_edict(self.owner), particleeffectnum("TE_ESR_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT );
-    if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
-      continue;
-    }
-    if( trace_ent.takedamage ){
-      t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
-      if( trace_ent.shield > 0 ){
-        client_send_particle( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
-        return;
-      }
-      else{
-        client_send_particle( particleeffectnum("TE_ESR_IMPACT_ARMOR"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
-        return;
-      }
-    }
-    client_send_particle( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+  self.w_currentammo = self.w_currentammo - 1;
+  if(self.w_currentammo <= 0){
+    self.reloadValue = 0;
+    self.w_currentammo = self.w_clipsize;
+    self.w_state = RELOADING;
+    self.w_isburst = FALSE;
+    self.w_firetime = time + self.reloadMax;
+    self.count1 = time;
   }
+  else{
+    if( (FIRE_ENT.flags & FL_MONSTER) ){
+      self.w_firetime = time + (self.reloadRate / self.burstRate) * 1.67;
+    }
+    else{
+      self.w_firetime = time + self.reloadRate / self.burstRate;
+    }
+    self.w_state = RECOIL;
+    self.w_isburst = FALSE;
+  }
+  ctrl_weapon_fireOffset();
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT);
+
+  if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
+    return;
+  }
+  if( trace_ent.takedamage ){
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
+    if( trace_ent.shield > 0 ){
+      client_send_particle( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+      return;
+    }
+    else{
+      client_send_particle( particleeffectnum("TE_ESR_IMPACT_ARMOR"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+      return;
+    }
+  }
+  client_send_particle( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+
 };
 #endif

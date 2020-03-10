@@ -89,5 +89,16 @@ void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entA
 */
 void( float flashId, vector flashOrg, vector flashVel ) particle_muzzle_flash;
 void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_latc;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_emp;
 void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_las;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_mis;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_qrfl;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_rpc;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_pac;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_esr;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_mlg;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_marh;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_sfa;
 void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_flak;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_ion;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_swarm;

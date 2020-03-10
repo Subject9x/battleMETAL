@@ -55,10 +55,9 @@ void() data_ini_attack_plasma_={
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( TRUE );
-   
-  client_send_particle( particleeffectnum("TE_RPC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 2, 1);
+
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT);
   
   ctrl_weapon_make_projectile( -1 );
-  pointsound( self.origin, self.fire_sound, 1, ATTN_NORM);
 };
 #endif
