@@ -36,7 +36,7 @@ float TE_HAZARD_ARMOR = 105;
 float TE_MISSION_END = 106;
 float TE_MSG_ENV_WARN = 107;
 
-//108;
+float TE_MUZZLE_FLASH = 108;
 float TE_MAPKEY_DATA = 109;
 
 float TE_VFX_EXPLODE = 110;

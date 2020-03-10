@@ -277,16 +277,16 @@ void() ctrl_component_die={
   local entity c;
   if( self.deadflag <= DEAD_NO ){
     piece = self;
-  
+    
+    client_send_mech_chunk( self.modelindex, self.owner.skin, self.owner.vec_size, self.origin, self.angles );
+    
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW; 
     self.movetype = MOVETYPE_NONE;
     self.aiment = world;
     self.health = 0;
     setorigin( self, self.origin );
-    
-    client_send_mech_chunk( self.modelindex, self.owner.skin, self.owner.vec_size, self.origin, self.angles );
-  
+
     if( self.partTypeId == M_TOR_LEFT ){
       self.owner.armLeft.think = self.owner.armLeft.th_die;
       self.owner.armLeft.nextthink = time + 0.1;

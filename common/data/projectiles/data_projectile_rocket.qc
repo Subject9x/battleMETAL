@@ -42,9 +42,6 @@ void() data_prj_mis_touch={
       shieldHit = FALSE;
     }
   }
-  //makevectors(self.angles);
-  //te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18',  min(self.damageValue / 7, 4), 1);
-  
   client_send_missile_explode( self.origin, 1, '0.99 0.6 0.18', min(self.damageValue / 7, 3), 2, shieldHit);
   remove(self);
 };

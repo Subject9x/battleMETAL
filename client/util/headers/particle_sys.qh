@@ -83,3 +83,11 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
 */
 void() particle_mech_chunk_th;
 void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) particle_mech_chunk;
+
+/*
+  Muzzle flash
+*/
+void( float flashId, vector flashOrg, vector flashVel ) particle_muzzle_flash;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_latc;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_las;
+void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_flak;
