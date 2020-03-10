@@ -1012,7 +1012,7 @@ void( float entityId, float particleEffectId, vector particleOrg, vector particl
 };
 
 
-void( float wepId, vector flashOrg, vector flashVel ) client_send_muzzle_flash={
+void( float wepId, vector flashOrg, vector flashVel, float impactType ) client_send_muzzle_flash={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_MUZZLE_FLASH );
   WriteByte( MSG_BROADCAST, wepId );
@@ -1022,4 +1022,5 @@ void( float wepId, vector flashOrg, vector flashVel ) client_send_muzzle_flash={
   WriteCoord(MSG_BROADCAST, flashVel_x);
   WriteCoord(MSG_BROADCAST, flashVel_y);
   WriteCoord(MSG_BROADCAST, flashVel_z);
+  WriteByte( MSG_BROADCAST, impactType);
 };

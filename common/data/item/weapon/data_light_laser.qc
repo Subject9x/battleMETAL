@@ -52,6 +52,7 @@ void() data_ini_light_laser_={
 #ifndef CSQC
 void() data_ini_attack_laser_={
   local entity hit;
+  local float impactStyle;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -61,8 +62,6 @@ void() data_ini_attack_laser_={
 
   ctrl_weapon_updateAmmo( FALSE );
   
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT);
-  
   if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
     return;
   }
@@ -70,11 +69,13 @@ void() data_ini_attack_laser_={
   if( trace_ent.takedamage ){
     hit = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
     if( hit.shield <= 0 ){
-      client_send_particle(particleeffectnum("TE_LAS_HIT"), FIRE_ENDPOINT , normalize( FIRE_ORIGIN - FIRE_ENDPOINT ), 1);
+      impactStyle = 2;
     }
-    return;
   }
+  else{
+    impactStyle = 3;
+  }
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle );
   
-  client_send_particle(particleeffectnum("TE_LAS_DIRT"), FIRE_ENDPOINT , '0 0 0', 1);
 };
 #endif

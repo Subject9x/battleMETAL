@@ -61,6 +61,6 @@ void() data_ini_attack_missile_laserguide_={
   ctrl_weapon_make_projectile( 0.05 );
   
   lasOrg = FIRE_ORIGIN + (v_forward * 2.1) + (v_up * -0.5);
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, lasOrg );
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, lasOrg, 0);
 };
 #endif

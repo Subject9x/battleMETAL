@@ -96,7 +96,7 @@ void() data_ini_attack_missile_swarm_={
         NEWSHOT.w_isburst = time + 2; //use to track curving behavior
         setorigin(NEWSHOT, start);
         
-        client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, targs.origin );
+        client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, targs.origin, 0 );
         NEWSHOT = world;
       }
   }

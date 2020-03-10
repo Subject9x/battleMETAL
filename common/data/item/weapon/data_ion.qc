@@ -65,6 +65,6 @@ void() data_ini_attack_ion_={
   if( NEWSHOT ){
     NEWSHOT.w_firetime = time + 0.5;
   }
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, FIRE_ENDPOINT );
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, FIRE_ENDPOINT, 0);
 };
 #endif

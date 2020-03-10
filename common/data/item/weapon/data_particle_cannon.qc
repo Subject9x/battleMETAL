@@ -55,6 +55,7 @@ void() data_ini_attack_particle_cannon_={
   local vector strikePoint;
   local float oldShields;
   local entity thisTarget;
+  local float impactStyle;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -64,8 +65,7 @@ void() data_ini_attack_particle_cannon_={
 
   ctrl_weapon_updateAmmo( FALSE );
 
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT);
-  
+
   strikePoint = FIRE_ENDPOINT + (v_forward * -5);
   
   if( trace_ent.takedamage ){
@@ -74,11 +74,10 @@ void() data_ini_attack_particle_cannon_={
       if( trace_ent.shield < 0 ){
         trace_ent.shield = 0;
       }
-      client_send_particle( particleeffectnum("TE_PAC_IMPACT_SHIELD"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
-      client_send_particle( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), strikePoint, '0 0 0', 1);
+      impactStyle = 1;
     }
     else{
-      client_send_particle( particleeffectnum("TE_PAC_IMPACT_ARMOR"),strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+     impactStyle = 2;
     }
     thisTarget = trace_ent;
     oldShields = thisTarget.shield;
@@ -87,9 +86,10 @@ void() data_ini_attack_particle_cannon_={
     if( oldShields > 0 &&  thisTarget.deadflag <= DEAD_NO ){
       thisTarget.shield = oldShields;
     }
-    return;
   }
-  
-  client_send_particle( particleeffectnum("TE_PAC_IMPACT_GROUND"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+  else{
+    impactStyle = 3;
+  }
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
 };
 #endif

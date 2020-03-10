@@ -50,28 +50,31 @@ void() data_ini_light_atc_={
 
 #ifndef CSQC
 void() data_ini_attack_latc_={
-
+  local float impactStyle;
+  
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( TRUE );
 
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT );
-
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){
     return;
   }
-  if( !trace_ent.takedamage ){
-    if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) ){
-      client_send_particle( particleeffectnum("TE_ATC_DIRT"), FIRE_ENDPOINT + (v_up *1), normalize( (FIRE_ENDPOINT + (v_up *1)) - FIRE_ENDPOINT ) * 20, 1);
+  else{
+    if( !trace_ent.takedamage ){
+      if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) ){
+        impactStyle = 3;
+      }
     }
-    return;
-  }
-  
-  if( trace_ent ){
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_BAL, FIRE_ENDPOINT, '0 0 0');    
-    if( trace_ent.shield <= 0 ){
-      client_send_particle( particleeffectnum("TE_ATC_ARMOR"), FIRE_ENDPOINT + v_forward * -3, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 3);
+    else{
+      if( trace_ent ){
+        t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_BAL, FIRE_ENDPOINT, '0 0 0');    
+        if( trace_ent.shield <= 0 ){
+          impactStyle = 2;
+        }
+      }
     }
+    
   }
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);  
 };
 #endif

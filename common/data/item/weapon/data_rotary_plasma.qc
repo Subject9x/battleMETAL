@@ -56,7 +56,7 @@ void() data_ini_attack_plasma_={
 
   ctrl_weapon_updateAmmo( TRUE );
 
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT);
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
   
   ctrl_weapon_make_projectile( -1 );
 };

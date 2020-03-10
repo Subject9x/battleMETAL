@@ -76,7 +76,7 @@ void(float bob, float cycle, float up) client_update_viewBob;
 void(float bobmodel, float side, float bmod_speed, float bmod_up) client_update_modelBob;
 void(float p_max, float p_min) client_update_viewPitch;
 
-void( float wepId, vector flashOrg, vector flashVel ) client_send_muzzle_flash;
+void( float wepId, vector flashOrg, vector flashVel, float impactType  ) client_send_muzzle_flash;
 void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType, float onShield ) client_send_missile_explode;
 void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) client_send_mech_chunk;
 void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck;

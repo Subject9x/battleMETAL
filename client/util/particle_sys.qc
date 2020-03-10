@@ -310,82 +310,111 @@ void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entA
   particle_missile_explode( entOrg, vecSize, '0.33 0.67 0.99', random() * (vecSize * 1.5), 1, 0 );
 };
 
-void( float flashId, vector flashOrg, vector flashVel ) particle_muzzle_flash={
+void( float flashId, vector flashOrg, vector flashVel, float impactType ) particle_muzzle_flash={
   switch(flashId){
     case UID_ITEM_light_autocannon:
-      particle_muzzleflash_latc( flashOrg, flashVel );
+      particle_muzzleflash_latc( flashOrg, flashVel, impactType );
       break;
     case UID_ITEM_emp:
-      particle_muzzleflash_emp( flashOrg, flashVel ) ;
+      particle_muzzleflash_emp( flashOrg, flashVel, 0 ) ;
       break;
     case UID_ITEM_light_laser:
-      particle_muzzleflash_las( flashOrg, flashVel );
+      particle_muzzleflash_las( flashOrg, flashVel, impactType );
       break;
     case UID_ITEM_rocket_launcher:
-      particle_muzzleflash_mis( flashOrg, flashVel ) ;
+      particle_muzzleflash_mis( flashOrg, flashVel, 0 ) ;
       break;
     case UID_ITEM_quantum_rifle:
-      particle_muzzleflash_qrfl( flashOrg, flashVel ) ;
+      particle_muzzleflash_qrfl( flashOrg, flashVel, 0 ) ;
       break;
     case UID_ITEM_rotary_plasma:
-      particle_muzzleflash_rpc( flashOrg, flashVel ) ;
+      particle_muzzleflash_rpc( flashOrg, flashVel, 0 ) ;
       break;
     case UID_ITEM_particle_cannon:
-      particle_muzzleflash_pac( flashOrg, flashVel );
+      particle_muzzleflash_pac( flashOrg, flashVel, impactType );
       break;
     case UID_ITEM_electro_repeater:
-      particle_muzzleflash_esr( flashOrg, flashVel ) ;
+      particle_muzzleflash_esr( flashOrg, flashVel, impactType ) ;
       break;
     case UID_ITEM_missile_laserguide:
-      particle_muzzleflash_mlg( flashOrg, flashVel ) ;
+      particle_muzzleflash_mlg( flashOrg, flashVel, 0 ) ;
       break;
     case UID_ITEM_missile_activeradar:
-      particle_muzzleflash_marh( flashOrg, flashVel ) ;
+      particle_muzzleflash_marh( flashOrg, flashVel, 0 ) ;
       break;
     case UID_ITEM_snub_artillery:
-      particle_muzzleflash_sfa( flashOrg, flashVel ) ;
+      particle_muzzleflash_sfa( flashOrg, flashVel, 0 ) ;
       break;
     case UID_ITEM_flak:
-      particle_muzzleflash_flak( flashOrg, flashVel ) ;
+      particle_muzzleflash_flak( flashOrg, flashVel, impactType ) ;
       break;
     case UID_ITEM_ion_coil:
-      particle_muzzleflash_ion( flashOrg, flashVel ) ;
+      particle_muzzleflash_ion( flashOrg, flashVel, 0 ) ;
       break;
     case UID_ITEM_missile_swarm:
-      particle_muzzleflash_swarm( flashOrg, flashVel ) ;
+      particle_muzzleflash_swarm( flashOrg, flashVel, 0 ) ;
       break;
-  
   }
 };
 
 //Light Autocannon ID 1
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_latc={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_latc={
+  local vector ang;
+  local vector norm;
+  norm = normalize(muzzleVel - muzzleOrg);
+  ang = vectoangles(muzzleVel - muzzleOrg);
+  makevectors(ang);
   pointsound( muzzleOrg, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_ATC_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 4, 1);
-  pointparticles( particleeffectnum("TE_ATC_TRACER"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 1400, 1);
+  pointparticles( particleeffectnum("TE_ATC_MUZZLE"), muzzleOrg, norm * 4, 1);
+  pointparticles( particleeffectnum("TE_ATC_TRACER"), muzzleOrg, norm * 1400, 1);
+    switch(impactType){
+    default:
+      return;
+    case 1:
+      return;
+    case 2:
+      pointparticles( particleeffectnum("TE_ATC_ARMOR"), muzzleVel + v_forward * -3, norm * 4, 3);
+      break;
+    case 3:
+      pointparticles( particleeffectnum("TE_ATC_DIRT"), muzzleVel + (v_up *1), normalize( (muzzleVel + (v_up *1)) - muzzleVel ) * 20, 1);
+      break;
+  }
 };
 
 //EMP ID 2
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_emp={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_emp={
   pointsound( muzzleOrg, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_EMP_MUZZLE"), muzzleOrg, normalize( muzzleVel - muzzleOrg ) * 4, 1);
 }
 
 //Light Laser ID 3
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_las={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_las={
   pointsound( muzzleOrg, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_LAS_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleVel) * 2, 1);
   trailparticles( world, particleeffectnum("TE_LAS_RAIL"), muzzleOrg, muzzleVel );
+  
+  switch(impactType){
+    default:
+      return;
+    case 1:
+      return;
+    case 2:
+      pointparticles(particleeffectnum("TE_LAS_HIT"), muzzleVel, normalize( muzzleOrg - muzzleVel ), 1);
+      break;
+    case 3:
+      pointparticles(particleeffectnum("TE_LAS_DIRT"), muzzleVel , '0 0 0', 1);
+      break;
+  }
 };
 
 //Rocket Launcher ID 4
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_mis={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_mis={
   pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_MIS_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleVel), 1);
 };
 
 //Quantum Rifle ID 5
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_qrfl={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_qrfl={
   local vector ang;
   local vector prtclRail_org;
   local vector prtclRail_end;
@@ -406,27 +435,44 @@ void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_qrfl={
 };
 
 //Rotary Plasma ID 6
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_rpc={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_rpc={
   pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_RPC_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 2, 1);
 };
 
 //Particle Cannon ID 7
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_pac={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_pac={
   pointsound( muzzleOrg, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_PAC_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 4, 1);
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), muzzleOrg, muzzleVel );
 };
 
 //Electro Static ID 8
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_esr={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_esr={
+  local vector norm;
+  norm = normalize(muzzleVel - muzzleOrg);
+
   pointsound( muzzleOrg, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), muzzleOrg, normalize( muzzleVel - muzzleOrg ) * 1, 1);
+  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), muzzleOrg, norm * 1, 1);
   trailparticles( world, particleeffectnum("TE_ESR_RAIL"), muzzleOrg, muzzleVel );
+  switch(impactType){
+    default:
+      return;
+    case 1:
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), muzzleVel, norm * -2, 1);
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), muzzleVel, '0 0 0', 1);
+      break;
+    case 2:
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), muzzleVel, norm * -6, 1);
+      break;
+    case 3:
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), muzzleVel, norm * -4, 1);
+      break;
+  }
 };
 
 //Missile Laser Guide ID 9
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_mlg={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_mlg={
   local vector ang;
   ang = vectoangles(muzzleVel - muzzleOrg);
   makevectors(ang);
@@ -440,32 +486,51 @@ void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_mlg={
 };
 
 //Missile Active Radar ID 10
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_marh={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_marh={
   pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_ARH_MUZZLE"), muzzleOrg, vectoangles(muzzleVel - muzzleVel) * 1, 1);
 };
 
 //Snub Artillery ID 11
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_sfa={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_sfa={
   pointsound( muzzleOrg, "sound/weapons/fx_boom.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleVel) * 2, 1);
 };
 
 //Flak Cannon ID 12
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_flak={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_flak={  
+  local vector ang;
+  local vector norm;
+  
+  norm = normalize(muzzleVel - muzzleOrg);
+  ang = vectoangles(muzzleVel - muzzleOrg);
+  makevectors(ang);
   pointsound( muzzleOrg, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 4, 1);
-  pointparticles( particleeffectnum("TE_FLK_TRACER"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 1600, 1);
+  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), muzzleOrg, norm * 4, 1);
+  pointparticles( particleeffectnum("TE_FLK_TRACER"), muzzleOrg, norm * 1600, 1);
+  
+  switch(impactType){
+    default:
+      return;
+    case 1:
+      return;
+    case 2:
+      pointparticles( particleeffectnum("TE_FLK_IMPACT"), muzzleVel + (v_forward * -32), norm * 4, 1);
+      break;
+    case 3:
+      pointparticles( particleeffectnum("TE_FLK_DIRT"), muzzleVel + (v_up * 3) + (v_forward * -7), norm * 20, 1);
+      break;
+  }
 };
 
 //Ion Cannon ID 13
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_ion={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_ion={
   pointsound( muzzleOrg, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_ION_MUZZLE"), muzzleOrg, normalize( muzzleVel - muzzleOrg ) * 4, 1);
 }
 
 //Missile Swarm ID 14
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_swarm={
+void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_swarm={
   pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), muzzleOrg, normalize( muzzleVel - muzzleOrg ) * 3, 1);
 };

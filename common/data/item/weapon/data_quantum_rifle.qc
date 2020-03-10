@@ -74,7 +74,7 @@ void() data_ini_attack_quantum_={
   hitMax = '25 25 25';
   hitMin = '-25 -25 -25';
   
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT);
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
   
   if( trace_ent.takedamage ){
     hitZone = trace_ent.origin;

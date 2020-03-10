@@ -58,12 +58,11 @@ void() data_ini_flak_cannon_={
 void() data_ini_attack_flak_={
   local float totes;
   local float shieldDamage;
+  local float impactStyle;
   
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( FALSE );
-  
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT );
   
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){
     return;
@@ -71,38 +70,40 @@ void() data_ini_attack_flak_={
   
   if( !trace_ent.takedamage ){
     if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) ){
-      client_send_particle( particleeffectnum("TE_FLK_DIRT"), FIRE_ENDPOINT + (v_up * 3) + (v_forward * -7), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 20, 1);
+      impactStyle = 3;
     }
-    return;
   }
-  if(trace_ent && trace_ent != world){
-    totes = DAT_FLAK_SHRAP_TOTAL;
-    if(trace_ent.shield > 0){
-      shieldDamage = (self.damageValue * totes) / 2;
-      t_damage(trace_ent, self, self.owner, shieldDamage, self.damageType, trace_endpos, '0 0 0');
-      return;
-    }
-    else{
-      if( trace_ent.data_type == DATA_MECH ){
-        local vector shotpoint;
-        local vector shrapPoint;
-        local vector shotDir;
-        local vector shrapDir;
-        
-        shotpoint = trace_endpos + (v_forward * -32);
-        shotDir = normalize(trace_endpos - shotpoint);
-        client_send_particle( particleeffectnum("TE_FLK_IMPACT"), shotpoint, shotDir * 4, 1);
-        while(totes > 0){
-          shrapDir = shotDir + (crandom()*DAT_FLAK_SHRAP_SPREAD_x*v_right) + (crandom()*DAT_FLAK_SHRAP_SPREAD_y*v_up);
-          shrapPoint = shotpoint + shrapDir*DAT_FLAK_SHRAP_SPREAD_z;
-          traceline( shotpoint, shrapPoint, FALSE, self.owner);
-          t_damage(trace_ent, self, self.owner, self.damageValue, self.damageType, trace_endpos, '0 0 0');
-          totes = totes - 1;
-        }
-        return;
+  else{
+    if(trace_ent && trace_ent != world){
+      totes = DAT_FLAK_SHRAP_TOTAL;
+      if(trace_ent.shield > 0){
+        shieldDamage = (self.damageValue * totes) / 2;
+        t_damage(trace_ent, self, self.owner, shieldDamage, self.damageType, trace_endpos, '0 0 0');
       }
-      t_damage(trace_ent, self, self.owner, self.damageValue * totes, self.damageType, trace_endpos, '0 0 0');
+      else{
+        impactStyle = 2;
+        if( trace_ent.data_type == DATA_MECH ){
+          local vector shotpoint;
+          local vector shrapPoint;
+          local vector shotDir;
+          local vector shrapDir;
+          
+          shotpoint = trace_endpos + (v_forward * -32);
+          shotDir = normalize(trace_endpos - shotpoint);
+          while(totes > 0){
+            shrapDir = shotDir + (crandom()*DAT_FLAK_SHRAP_SPREAD_x*v_right) + (crandom()*DAT_FLAK_SHRAP_SPREAD_y*v_up);
+            shrapPoint = shotpoint + shrapDir*DAT_FLAK_SHRAP_SPREAD_z;
+            traceline( shotpoint, shrapPoint, FALSE, self.owner);
+            t_damage(trace_ent, self, self.owner, self.damageValue, self.damageType, trace_endpos, '0 0 0');
+            totes = totes - 1;
+          }
+        }
+        else{
+          t_damage(trace_ent, self, self.owner, self.damageValue * totes, self.damageType, trace_endpos, '0 0 0');
+        }
+      }
     }
   }
+   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
 };
 #endif

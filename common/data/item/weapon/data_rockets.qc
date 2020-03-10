@@ -62,6 +62,6 @@ void() data_ini_attack_rockets_={
 
   ctrl_weapon_make_projectile( 0.01 );
 
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + (v_forward * 1), FIRE_ENDPOINT);
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + (v_forward * 1), FIRE_ENDPOINT, 0);
 };
 #endif
