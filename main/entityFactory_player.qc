@@ -89,7 +89,7 @@ void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
   setsize(self, '-1 -1 -1','1 1 1');
   macro_set_model(wepThing.model, 0, 0)  
   makevectors(self.owner.angles);
-  ofs = self.owner.origin + (v_right * wepThing.compOffset_x) + (v_up * wepThing.compOffset_y) + (v_forward * (wepThing.compOffset_z - self.owner.cockpit.compOffset_z));
+  ofs = self.owner.origin + (v_right * wepThing.compOffset_x) + (v_up * (wepThing.compOffset_y * -2)) + (v_forward * (wepThing.compOffset_z - self.owner.cockpit.compOffset_z));
   setorigin(self, ofs);
   
   self.viewmodelforclient = ownerSelf;
