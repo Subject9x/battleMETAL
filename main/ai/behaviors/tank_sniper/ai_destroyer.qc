@@ -30,6 +30,8 @@ void() ai_vec_dest={
   self.touch = ai_touch;
 
   ai_setup_patrol();
+  //self.SendEntity = ctrl_send_spg;
+  //self.SendFlags |= SENDFLAG_MOVE;
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 

@@ -494,7 +494,7 @@ void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflas
 //Snub Artillery ID 11
 void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_sfa={
   pointsound( muzzleOrg, "sound/weapons/fx_boom.ogg", 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleVel) * 2, 1);
+  pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 2, 1);
 };
 
 //Flak Cannon ID 12

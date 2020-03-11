@@ -54,13 +54,13 @@ void() data_ini_attack_snub_artillery_={
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( FALSE );
-   
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
   
   ctrl_weapon_make_projectile( -1 );
   if((FIRE_ENT.flags & FL_CLIENT)){
     FIRE_ENT.punchangle_x = -1 + (crandom() * -2);
     FIRE_ENT.punchangle_y = -1 + (crandom() * -2);
   }
+  
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
 };
 #endif

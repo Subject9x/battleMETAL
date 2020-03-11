@@ -565,6 +565,7 @@ float(float event) CSQC_Event =
 //the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
+  sendent_handle_update( isnew );
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

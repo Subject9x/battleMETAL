@@ -2470,4 +2470,10 @@ float(string url, float id, string content_type, string delim, float buf, float 
   //no idea when this added,
   //use this with the 'particleeffectnum' system to have particles trail autonomically.
   //-Roohr (I dont take credit, just adding here)
+
+#define MSG_ENTITY 5
+.float(entity playerent, float changedflags) SendEntity;
+.float SendFlags;
+void(float buf, float fl) WriteFloat = #280;
+
  

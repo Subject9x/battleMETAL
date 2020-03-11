@@ -44,7 +44,7 @@ void() radarSweepBasic={
           continue;
         }
       }
-      client_push_radar_ping( blip );
+      //client_push_radar_ping( blip );
     }
   }
 };
@@ -90,7 +90,7 @@ void() radarSweepAdv={
         continue;
       }
     }
-    client_push_radar_ping( blip );
+    //client_push_radar_ping( blip );
   }
 };
 

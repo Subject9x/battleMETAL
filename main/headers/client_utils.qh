@@ -82,3 +82,6 @@ void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entA
 void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck;
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle;
 void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail;
+
+//sigh can't believe Im trying this again
+float client_send_monster( entity ePVEnt, float flChanged );

@@ -645,4 +645,5 @@ void() build_turret_unit={
       util_generateBuildingFoundation(self);
     }
   }
+  self.torsoCenter.effects = EF_NODRAW;
 };

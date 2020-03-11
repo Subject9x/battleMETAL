@@ -739,4 +739,7 @@ void() ai_turret={
   
   self.think = ai_turret_patrol1;
   self.nextthink = time + (random()*0.5); //spread out thinks
+  
+  self.SendEntity = ctrl_send_turret;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };

@@ -31,6 +31,8 @@ void() ai_tank_skirmish={
   self.touch = ai_touch;
   
   ai_setup_patrol();
+  //self.SendEntity = ctrl_send_tank;
+  //self.torsoCenter.effects = EF_NODRAW;
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 

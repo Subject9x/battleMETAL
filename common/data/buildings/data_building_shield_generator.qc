@@ -39,11 +39,11 @@ void() hshield_die8 = [8, hshield_die9]{
 void() hshield_die9 = [9, hshield_die10]{
   te_object_explode( '0.75 1 0.05' );
   self.deadflag = DEAD_DEAD;
-  local entity ruins;
-  ruins = spawn();
-  ruins.solid = SOLID_NOT;
-  ruins.movetype = MOVETYPE_NONE;
-  switch( self.vec_size ){
+  //local entity ruins;
+  //ruins = spawn();
+  //ruins.solid = SOLID_NOT;
+  //ruins.movetype = MOVETYPE_NONE;
+  /*switch( self.vec_size ){
     case 2:
       setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
       break;
@@ -53,16 +53,19 @@ void() hshield_die9 = [9, hshield_die10]{
     default:
       setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
       break;
-  }
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
-  ruins.vec_size = self.vec_size;
-  ruins.angles = self.angles;
-  ruins.armLeft = te_building_fire_start( ruins );
-  if( ruins.vec_size > 1 ){
-    ruins.armRight = te_building_fire_start( ruins );
-    ruins.torsoLeft = te_building_fire_start( ruins );
-  }  
+  }*/
+  //setsize(ruins, ruins.mins, ruins.maxs * 0.75);
+  //setorigin(ruins, self.origin);
+  //ruins.vec_size = self.vec_size;
+  //ruins.angles = self.angles;
+  //ruins.armLeft = te_building_fire_start( ruins );
+  //if( ruins.vec_size > 1 ){
+    //ruins.armRight = te_building_fire_start( ruins );
+    //ruins.torsoLeft = te_building_fire_start( ruins );
+  //}  
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  
 };
 void() hshield_die10 = [10, hshield_die11]{
   te_object_explode( '1 1 0.05' );};
@@ -198,4 +201,7 @@ void() building_human_shield={
   self.th_die = hshield_die;
   self.use = multi_trigger;
   hshield_th();
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };

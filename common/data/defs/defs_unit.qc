@@ -13,7 +13,6 @@ Overview:
 
 //SSQC only
 #ifndef CSQC
-.float shield;        //current amount of shields
 .float shieldHitDelay;//cool down before shield recharge begins
 
 .float accuracyMod;
@@ -33,6 +32,7 @@ Overview:
 .float energyMax;     //max amount
 .float energy;        //current amount
 .float energyRate;    //how much energy built per frame
+.float shield;        //current amount of shields
 .float shieldMax;     //max shields
 .float shieldRate;    //shield recharge rate
 .float shieldRateMod; //field for modules.

@@ -70,7 +70,7 @@ float() customize_part_for_client ={
 float() customize_wep_for_client={
   local vector chunkOfs;
   makevectors(self.owner.angles);
-  chunkOfs = self.owner.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - self.owner.cockpit.compOffset_z));
+  chunkOfs = self.owner.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - self.owner.cockpit.compOffset_z * 1.5));
   self.wepFireOffset_z = self.wepFireOffsetCache_z - self.owner.cockpit.compOffset_z;
   self.compAltOffset_z = self.compAltOffsetCache_z - self.owner.cockpit.compOffset_z;
   setorigin(self, chunkOfs);
@@ -88,7 +88,9 @@ void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
   macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
   setsize(self, '-1 -1 -1','1 1 1');
   macro_set_model(wepThing.model, 0, 0)  
-  macro_set_offset(ownerSelf, self.compOffset)
+  makevectors(self.owner.angles);
+  ofs = self.owner.origin + (v_right * wepThing.compOffset_x) + (v_up * wepThing.compOffset_y) + (v_forward * (wepThing.compOffset_z - self.owner.cockpit.compOffset_z));
+  setorigin(self, ofs);
   
   self.viewmodelforclient = ownerSelf;
   self.owner = ownerSelf;
@@ -97,7 +99,6 @@ void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
   self = ownerSelf;
   
   wepThing.nodrawtoclient = ownerSelf;
-  wepThing.customizeentityforclient = customize_wep_for_client;
   wepPointer.hudWeapon = newHudPart;
   wepPointer = newHudPart;
 };
@@ -130,15 +131,15 @@ void() player_makeMech={
   
   client_update_viewPitch( self.pitchMin, self.pitchMax );
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
-
+ 
+  player_setup_hudconsole();
   //configure player mech bits visibility
   local entity wep, hudWepStart;
   hudWepStart = self;
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
     //non-network games can have more fun with player view
-    player_setup_hudconsole();
-    ///self.torsoCenter.customizeentityforclient = customize_part_for_client;
     self.torsoCenter.exteriormodeltoclient = self;
+    self.torsoCenter.customizeentityforclient = customize_part_for_client;
     self.torsoLeft.customizeentityforclient = customize_part_for_client;
     self.torsoRight.customizeentityforclient = customize_part_for_client;
     self.armLeft.customizeentityforclient = customize_part_for_client;

@@ -109,17 +109,16 @@ void( entity targetClient ) server_push_player_info={
 
 void( entity radarPing ) client_push_radar_ping={
 
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_CLIENT_PING );
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_CLIENT_PING );
   
-  WriteCoord( MSG_ONE, radarPing.origin_x );
-  WriteCoord( MSG_ONE, radarPing.origin_y );
-  WriteCoord( MSG_ONE, radarPing.origin_z );
+  WriteCoord( MSG_BROADCAST, radarPing.origin_x );
+  WriteCoord( MSG_BROADCAST, radarPing.origin_y );
+  WriteCoord( MSG_BROADCAST, radarPing.origin_z );
   
-  WriteLong( MSG_ONE, vlen(self.origin - radarPing.origin) );
-  WriteByte( MSG_ONE, radarPing.data_type );
-  WriteByte( MSG_ONE, radarPing.faction );
+  //WriteLong( MSG_BROADCAST, vlen(self.origin - radarPing.origin) );
+  WriteByte( MSG_BROADCAST, radarPing.data_type );
+  WriteByte( MSG_BROADCAST, radarPing.faction );
 };
 
 void( entity targetClient ) client_push_hud_highlight={
@@ -365,7 +364,12 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   
   if(argv(1) == "nextmission"){
-    client_setMission(str, tokens);
+    if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+      client_setMission(str, tokens);
+    }
+    else{
+      respawn();
+    }
     return;
   }
   

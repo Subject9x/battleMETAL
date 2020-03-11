@@ -41,6 +41,7 @@ void() ai_turret_control={
       ChangeYaw(); 
       self.v_angle = self.angles;
     self = turretOwner;
+    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
   }
 };
 

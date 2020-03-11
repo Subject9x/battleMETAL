@@ -68,6 +68,9 @@ void() building_human_hangar={
   makevectors(self.angles);
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  
   self.think = building_human_hangar_th;
   self.nextthink = time + (random() * 0.1);
 };

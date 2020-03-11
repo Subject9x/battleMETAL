@@ -49,7 +49,7 @@ void() data_ini_trowel_={
 //MECH COMPONENTS====================
   self.model = "q3mdl/vecs/trowel/mdl_trowel_chas.md3";
   
-  //tank turret`
+  //tank turret
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', self, torsoCenter, '0 0 0'); 
   
   //camera location

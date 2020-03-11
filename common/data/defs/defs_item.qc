@@ -13,7 +13,6 @@ Overview
 
 //SSQC only
 #ifndef CSQC
-.float reloadValue;
 .void() w_attack;     //actual attack func
 .void() w_think;     //implementable update function
 .string fire_sound;
@@ -32,6 +31,7 @@ Overview
 .float ai_nextFireTime; //last time this WEAPON was fired.
 #endif
 
+.float reloadValue;
 .float reloadMax;
 .float reloadRate;
 .vector w_adj_ang;      //rotate weapon model face correctly

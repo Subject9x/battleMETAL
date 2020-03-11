@@ -136,6 +136,9 @@ void() building_human_fuel={
   self.th_die = hfuel_death1;
   self.use = multi_trigger;
   
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  
   self.think = building_human_fuel_th;
   self.nextthink = self.nextthink + random()*0.5;
 };

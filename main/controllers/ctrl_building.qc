@@ -98,3 +98,50 @@ void() building_burn={
     }
   }
 };
+
+float( entity dest, float changedflags ) ctrl_send_turret={
+  WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
+  WriteByte( MSG_ENTITY, changedflags );
+  if( (changedflags & SENDFLAG_TURRET) ){
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteCoord( MSG_ENTITY, self.angles_x );
+    WriteCoord( MSG_ENTITY, self.angles_y );
+    WriteCoord( MSG_ENTITY, self.angles_z );
+    
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.data_type );
+    
+  }
+  return TRUE;
+};
+
+float( entity dest, float changedflags ) ctrl_send_building={
+  WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
+  WriteByte( MSG_ENTITY, changedflags );
+  if( (changedflags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteCoord( MSG_ENTITY, self.angles_x );
+    WriteCoord( MSG_ENTITY, self.angles_y );
+    WriteCoord( MSG_ENTITY, self.angles_z );
+    
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.data_type );
+  }
+  return TRUE;
+};

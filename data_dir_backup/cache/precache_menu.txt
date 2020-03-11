@@ -1,10 +1,15 @@
 //menu image precaching
+gfx/hud/ret_lock.png
 //general purpose
 gfx/ui/box_512.png
+gfx/ui/box_256.png
 gfx/menu/btn_back.png
 gfx/menu/btn_accept.png
 gfx/hud/trg_pip_lft.png
 gfx/hud/trg_pip_rgt.png
+gfx/pause.png
+gfx/menu/quit_mission.png
+gfx/menu/exit_game.png
 
 //main menu images
 gfx/menu/main/main_title.png
@@ -12,6 +17,8 @@ gfx/menu/main/main_label.png
 gfx/menu/main/main_camp.png
 gfx/menu/main/main_multi.png
 gfx/menu/main/main_opt.png
+gfx/menu/main/main_help.png
+gfx/menu/main/main_credits.png
 gfx/menu/main/main_quit.png
 
 //singleplayer menu images
@@ -55,3 +62,31 @@ gfx/menu/options/options_gameplay.png
 
 //help/credits
 gfx/menu/help/credits_title.png
+gfx/menu/help/help_title.png
+gfx/menu/help/help_brief.png
+gfx/menu/help/help_hangar.png
+gfx/menu/help/help_arming.png
+gfx/menu/help/help_deploy.png
+
+//crosshairs
+gfx/hud/ret/crosshair1.png
+gfx/hud/ret/crosshair1_rhrz.png
+gfx/hud/ret/crosshair1_rvrt.png
+gfx/hud/ret/crosshair1_lock.png
+   
+gfx/hud/ret/crosshair2.png
+gfx/hud/ret/crosshair2_rhrz.png
+gfx/hud/ret/crosshair2_rvrt.png
+gfx/hud/ret/crosshair2_lock.png
+  
+gfx/hud/ret/crosshair3.png
+gfx/hud/ret/crosshair3_r.png
+gfx/hud/ret/crosshair3_lock.png
+gfx/hud/ret/crosshair3_hit.png
+  
+gfx/hud/ret/crosshair4_r.png
+gfx/hud/ret/crosshair4.png
+gfx/hud/ret/crosshair4_lock.png
+gfx/hud/ret/crosshair4_hit.png
+
+EOF

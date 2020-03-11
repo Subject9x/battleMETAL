@@ -64,7 +64,7 @@ void() building_guard_tower={
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
   macro_set_collider(DAMAGE_YES, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/towersmall/guardtower.obj", self.skin,0)
+  macro_set_model("q3mdl/testball.md3", self.skin,0)
   util_setHealthArmor(200, 200, 1, 100);
   setsize(self, '-22 -22 0', '22 22 40');
   self.shield = 0;
@@ -96,4 +96,6 @@ void() building_guard_tower={
     self.think = guard_tower_lightup;
     self.nextthink = time + 1;
   }
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };

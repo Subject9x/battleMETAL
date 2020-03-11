@@ -97,10 +97,13 @@ util/headers/input_events.qh
 data/headers/data_api.qh
 data/headers/ui_data.qh
 data/headers/msn_file.qh
+data/headers/data_buildings.qh
+data/headers/data_turrets.qh
 
 network/headers/client_globals.qh
 network/headers/server_localcmd.qh
 network/headers/receive_entities.qh
+network/headers/receive_sendent.qh
 
 //CSQC Menu System Headers
   ui/headers/gui_api.qh
@@ -128,6 +131,8 @@ data/data_system.qc
 data/data_api.qc
 data/ui_data.qc
 data/msn_file.qc
+data/data_buildings.qc
+data/data_turrets.qc
 
 ui/anim.qc
 ui/gui_api.qc
@@ -139,6 +144,7 @@ ui/hud/hud_system_event.qc
 //Client / Server CMD===
   network/server_localcmd.qc
   network/receive_entities.qc
+  network/receive_sendent.qc
 //========================
 
 //MENU SYSTEM============

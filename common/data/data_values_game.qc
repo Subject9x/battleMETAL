@@ -184,6 +184,33 @@ float AS_INT = 2;
 float AS_FLOAT_TRUNCATED = 2;
 float AS_FLOAT = 8;
 //============================
+//     SEND ENTITY SHARED
+//============================
+//SendTypes-------------------
+float SENDTYPE_PLAYER = 1;
+float SENDTYPE_TANK = 2;
+float SENDTYPE_SPG = 3;
+float SENDTYPE_GEV = 4;
+float SENDTYPE_MECH = 5;
+float SENDTYPE_TURRET = 6;
+float SENDTYPE_BUILD = 7;
+float SENDTYPE_CHUNK = 8; //Vehicle / Turret / Mech debris
+//SendFlags-------------------
+float SENDFLAG_MOVE = 1;  //update .origin and .angles of main piece 
+float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.
+float SENDFLAG_INI = 4; //unit is stood up by server
+float SENDFLAG_DEAD = 8; //marks as dead, run death anim.
+float SENDFLAG_CRIT = 16; //what component(s) blew off.
+float SENDFLAG_BURN = 32; //what is starting to burn.
+float SENDFLAG_NEWENT = 128;
+  //128 is hardcoded as isNew, dont change
+  //.modelindex
+  //.faction
+  //.data_type
+  //.data_idx
+
+
+//============================
 //     SHARED STATS         
 //============================
 float RADAR_SWEEP = 2.5;

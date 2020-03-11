@@ -306,7 +306,10 @@ void() building_repair_touch={
   client_send_event_repairs( self.owner.trigger_field, TRUE );
   self.touch = SUB_Null;
   self.attack_state = ST_WALK;
-  world_update_dlight( self, 1, '-1 -1 -1', 0, -1, '-1 -1 -1');            
+  world_update_dlight( self, 1, '-1 -1 -1', 0, -1, '-1 -1 -1');     
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;       
 };
 
 void() building_repair_node_think={

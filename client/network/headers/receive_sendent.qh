@@ -1,0 +1,26 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 3/10/2020
+Overview: 
+  Header for SendEntity functionality....sigh.
+  I don't even know if it's worth it to try this.
+*/
+
+//SendEntity
+.vector prevorigin;
+.vector lastorigin;
+.vector lastangle;
+.float lastupdate;
+.float prevupdate;
+
+float() predraw_tank;
+float() predraw_spg;
+
+void( float isNew ) sendent_handle_update;
+void( float isNew, float changeFlags ) sendent_handle_tank;
+void( float isNew, float changeFlags ) sendent_handle_spg;
+void( float isNew, float changeFlags) sendent_handle_gev;
+void( float isNew, float changeFlags) sendent_handle_turret;
+void( float isNew, float changeFlags) sendent_handle_building;
+

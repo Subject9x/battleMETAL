@@ -269,4 +269,7 @@ void() building_human_radar={
       }
     }
   }
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };

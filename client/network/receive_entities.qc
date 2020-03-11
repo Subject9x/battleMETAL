@@ -74,13 +74,24 @@ void() client_get_info_thin={
 */
 void() client_get_contact={
   local entity blip;
+  local vector org;
+  local float radRange;
+  local float datType;
+  local float fac;
+
+  //org = te_read_vector();
+  //radRange = vlen(pmove_org - org);
+  //datType = ReadByte();
+  //fac = ReadByte();
   
+  if( vlen(pmove_org - self.origin) > CLIENT_radar_range ){
+    return;
+  }
   blip = spawn();
-  
-  setorigin( blip, te_read_vector() );
-  blip.radar_range = ReadLong();
-  blip.data_type = ReadByte();
-  blip.faction = ReadByte();
+  setorigin( blip, self.origin );
+  blip.radar_range =  vlen(pmove_org - self.origin);
+  blip.data_type = self.data_type;
+  blip.faction = self.faction;
   
   blip.data_idx = -2; //hack
   //Radar 1 - settings
@@ -91,7 +102,7 @@ void() client_get_contact={
   //Radar 2 - settings
   blip.energy = time + 1.5;
   blip.hardpoint_cnt = 1; //alpha fade
-  blip.radar_time = 0.0025;
+  blip.radar_time = 0.00025;
   
 };
 
@@ -473,4 +484,15 @@ void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyFa
     //start chain
     mapKeyObject = newMapKey;
   }
+};
+
+//SendEntity
+float() predraw_tank={
+  local float frac;
+  self.prevorigin = self.origin;
+  frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
+  frac = bound(0, frac, 1);
+  self.origin = self.prevorigin + (self.lastorigin - self.prevorigin) * frac;
+  self.lastupdate = time;
+  self.prevupdate = frac;
 };

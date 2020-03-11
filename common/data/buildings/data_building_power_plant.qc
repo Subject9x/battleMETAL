@@ -11,9 +11,7 @@ Overview: data file for building
 void() hpower_die = [0, hpower_die1]{
   local entity head;
   self.solid = SOLID_NOT;
-  
-  self.deadflag = DEAD_DYING;
-  
+
   head = findradius(self.origin, 800);
   for( head = findradius(self.origin, 800); head != world; head = head.chain ){
     if( head.data_type == DATA_MECH ){
@@ -32,7 +30,20 @@ void() hpower_die = [0, hpower_die1]{
   }
 
   te_object_explode( '0.75 0.75 0.6' );
-  building_die();
+  if( self.deadflag > DEAD_NO){
+    return;
+  }
+  //fire triggers when dead
+  trigger_event( self.enemy, self.trigOnDeath );
+  
+  world_remove_dlight(self);
+  
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DEAD;
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
+  
+  building_die_removeFire();
 };
 void() hpower_die1 = [1, hpower_die2]{};
 void() hpower_die2 = [2, hpower_die3]{};
@@ -48,38 +59,15 @@ void() hpower_die8 = [8, hpower_die9]{
 void() hpower_die9 = [9, hpower_die10]{
   te_object_explode( '0.75 0.75 0.6' );
   te_object_explode( '0.75 0.75 0.6' );
-  self.deadflag = DEAD_DEAD;
-  local entity ruins;
-  ruins = spawn();
-  ruins.solid = SOLID_NOT;
-  ruins.movetype = MOVETYPE_NONE;
-  switch( self.vec_size ){
-    case 2:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
-      break;
-    case 3:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
-      break;
-    default:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
-      break;
-  }
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
-  ruins.vec_size = self.vec_size;
-  ruins.angles = self.angles;
-  ruins.armLeft = te_building_fire_start( ruins );
-  if( ruins.vec_size > 1 ){
-    ruins.armRight = te_building_fire_start( ruins );
-    ruins.torsoLeft = te_building_fire_start( ruins );
-  }  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 void() hpower_die10 = [10, hpower_die11]{
   te_object_explode( '0.75 0.75 0.6' );
   te_object_explode( '0.75 0.75 0.6' );};
-void() hpower_die11 = [11, BecomeExplosion]{
+void() hpower_die11 = [11, SUB_Null]{
   te_object_explode( '0.75 0.75 0.6' );
-  te_object_explode( '0.75 0.75 0.6' );};
+  te_object_explode( '0.75 0.75 0.6' );
+};
 
 void() hpower_th = [0, hpower_th]{
   if(self.energy < self.energyMax){
@@ -163,6 +151,9 @@ void() building_human_power={
   
   self.th_die = hpower_die;
   self.use = multi_trigger;
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   
   hpower_th();
 };
