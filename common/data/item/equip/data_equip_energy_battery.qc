@@ -31,6 +31,7 @@ void() data_ini_equip_energy_battery_={
   self.equipSize = 3;
   
   #ifdef CSQC
+    self.model = "q3mdl/weapons/e_enbat.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

@@ -9,23 +9,30 @@ Overview:
     follows player reticle
 */
 
+#ifndef CSQC
 void() data_projectile_missile_laserguide_touch;
 void() data_projectile_missile_laserguide_think;
 
+#endif CSQC
 void() data_projectile_ini_missile_laserguide_={
   self.classname = "missile";
-  self.touch = data_projectile_missile_laserguide_touch;
   self.data_velocity = 800;
-  self.model = "q3mdl/proj/mdl_proj_lgm.md3";
   self.data_lifetime = 2;
   
-  //cosmetics
-  self.effects = EF_NOSHADOW;
-  self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_LGM_TRAIL");
-  self.think = data_projectile_missile_laserguide_think;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_lgm.md3";
+    self.effects = EF_NOSHADOW;
+    self.modelflags = 0;
+    self.traileffectnum = particleeffectnum("TE_LGM_TRAIL");   
+  #endif 
+  
+  #ifndef CSQC
+    self.touch = data_projectile_missile_laserguide_touch;
+    self.think = data_projectile_missile_laserguide_think;  
+  #endif
 };
-
+#ifndef CSQC
 void() data_projectile_missile_laserguide_touch={
 	if (pointcontents(self.origin) == CONTENT_SKY){
 		remove(self);
@@ -101,5 +108,7 @@ void() data_projectile_missile_laserguide_think={
     self.nextthink = time + 0.2;
     self.think = data_projectile_missile_laserguide_think;
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
+#endif CSQC
 

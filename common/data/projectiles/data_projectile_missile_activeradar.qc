@@ -9,25 +9,31 @@ Overview:
     needs player lock-on to follow target.
 */
 
+#ifndef CSQC
 void() data_projectile_missile_activeradar_think;
 void() data_projectile_missile_activeradar_delay;
 void() data_projectile_missile_activeradar_touch;
 
+#endif CSQC
 void() data_projectile_ini_missile_active_radar_={
   self.classname = "missile";
-  //self.touch = data_projectile_missile_activeradar_touch;
   self.data_velocity = 650;
-  self.model = "q3mdl/proj/mdl_proj_marh.md3";
   self.data_lifetime = 8;
+  self.compOffset = '0 0 0';   
   
-  //cosmetics
-  self.effects = EF_NOSHADOW;
-  self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
-  self.compOffset = '0 0 0';
-  self.think = data_projectile_missile_activeradar_delay;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_marh.md3";
+    self.effects = EF_NOSHADOW;
+    self.modelflags = 0;
+    self.traileffectnum = particleeffectnum("TE_ARH_TRAIL"); 
+  #endif
+  
+  #ifndef CSQC
+    self.think = data_projectile_missile_activeradar_delay;  
+  #endif
 };
-
+#ifndef CSQC
 void() data_projectile_missile_activeradar_think={
 	local vector	dir, vtemp;
   
@@ -73,6 +79,7 @@ void() data_projectile_missile_activeradar_think={
   else{
     self.think = data_projectile_missile_activeradar_think;
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.nextthink = time + 0.3;
 };
 
@@ -81,6 +88,7 @@ void() data_projectile_missile_activeradar_delay={
   self.velocity = self.velocity * (self.data_velocity * 0.33);
   self.angles = vectoangles(self.velocity);
    
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.think = data_projectile_missile_activeradar_think; 
   self.nextthink = time + 1;
 };
@@ -111,3 +119,4 @@ void() data_projectile_missile_activeradar_touch={
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
 };
+#endif CSQC

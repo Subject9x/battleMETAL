@@ -47,6 +47,9 @@ void() data_ini_foslager_={
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 3;
+  weaponList = self;
+  
   self.model = "q3mdl/vecs/foslager/mdl_foslager_chas.md3";
   
   //tank turret

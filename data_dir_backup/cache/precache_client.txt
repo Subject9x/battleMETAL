@@ -1,4 +1,25 @@
-//models
+//TERRAIN
+
+//MODELS
+//buildings
+q3mdl/buildings/towersmall/guardtower.obj
+q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3
+q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3
+q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3
+q3mdl/buildings/power_plant/mdl_bld_h_power.md3
+q3mdl/buildings/radar/mdl_bld_h_radar.md3
+q3mdl/buildings/repair_bay/mdl_repair_bay.md3
+q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3
+
+q3mdl/buildings/turret_heavy/mdl_turret_heavy_base.obj
+q3mdl/buildings/turret_heavy/mdl_turret_heavy_turret.obj
+
+q3mdl/buildings/turret_light/mdl_bld_h_ltur_base.md3
+q3mdl/buildings/turret_light/mdl_bld_h_ltur.md3
+
+q3mdl/buildings/turret_missile/mdl_turret_missile_base.obj
+q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3
+
 //mech model
 q3mdl/testball.md3
 
@@ -14,6 +35,29 @@ q3mdl/mechs/matok/matok_hud.obj
 q3mdl/mechs/monitor/monitor_hud.md3
 q3mdl/mechs/monitor/monitor_hud.obj
 
+//weapons
+q3mdl/weapons/w_esr.md3
+q3mdl/weapons/w_emp.md3
+q3mdl/weapons/w_flk.md3
+q3mdl/weapons/w_ion.md3
+q3mdl/weapons/w_atc.md3
+q3mdl/weapons/w_laser.md3
+q3mdl/weapons/w_arh.md3
+q3mdl/weapons/w_lgm.md3
+q3mdl/weapons/w_swrm.md3
+q3mdl/weapons/w_pac.md3
+q3mdl/weapons/w_qrf.md3
+q3mdl/weapons/w_mis.md3
+q3mdl/weapons/w_rpc.md3
+q3mdl/weapons/w_sfga.md3
+q3mdl/weapons/e_enbat.md3
+q3mdl/weapons/e_recap.md3
+q3mdl/weapons/e_lsar.md3
+q3mdl/weapons/e_scap.md3
+q3mdl/weapons/e_hsem.md3
+q3mdl/weapons/e_atgm.md3
+q3mdl/weapons/e_atgm.md3
+
 //weapon projectiles
 q3mdl/proj/mdl_proj_swrm.md3
 q3mdl/proj/mdl_proj_lgm.md3
@@ -25,6 +69,9 @@ q3mdl/proj/mdl_proj_qrfl.md3
 q3mdl/proj/mdl_proj_emp.md3
 q3mdl/proj/mdl_proj_ion.md3
  
+q3mdl/map/ruins/ruin_medium.obj
+q3mdl/map/ruins/ruin_large.obj
+q3mdl/map/ruins/ruin_small.obj
 q3mdl/fx/debris1/mdl_debris_1.md3
 q3mdl/fx/debris2/mdl_debris_2.md3
 q3mdl/fx/debris3/mdl_debris_3.md3

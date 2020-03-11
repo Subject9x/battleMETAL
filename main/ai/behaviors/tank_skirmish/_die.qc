@@ -12,13 +12,11 @@ Overview: ai unit
 
 void() ai_tank_sk_clean={
   ctrl_unit_cleanup_tank();
-  client_send_wreck( self.modelindex, self.skin, 600, self.vec_size, self.origin, self.angles );
+ 
+  self.effects = self.effects | EF_LOWPRECISION;
   
-  self.modelindex = 0;
-  self.effects = self.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-  
-  self.think = SUB_Remove;
-  self.nextthink = time + 1;  
+  self.think = ai_tank_sk_die1;
+  self.nextthink = time + 0.25;  
 };
 
 void() ai_tank_sk_die={
@@ -32,10 +30,10 @@ void() ai_tank_sk_die={
   self.th_react = SUB_Null;
   self.th_pain = SUB_Null;
   self.th_missile = SUB_Null;
-  self.deadflag = DEAD_DYING;
+  self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  self.colormod = '0.33 0.33 0.33';
+  //self.colormod = '0.33 0.33 0.33'; ->CSQC
   self.attack_state = -1;
   self.enemy = world;
   self.maxs = self.maxs * 0.85;
@@ -68,14 +66,14 @@ void() ai_tank_sk_die={
 
   ai_alert_close( self.enemy );
 
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+
   self.think = ai_tank_sk_clean;
   self.nextthink = time + 0.1;
 };
 
 void() ai_tank_sk_die1={
-  self.deadflag = DEAD_DEAD;
-  te_smoke(self.origin, 1);
-  
+  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
   self.think = ai_tank_sk_die1;
   if ( time > self.ai_action_time ){
     self.think = SUB_Remove;

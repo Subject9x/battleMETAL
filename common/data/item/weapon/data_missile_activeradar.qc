@@ -32,9 +32,12 @@ void() data_ini_missile_activeradar_={
   self.equipSize = 3;
   
   #ifdef CSQC  
+  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.model = "q3mdl/weapons/w_arh.md3";
   self.abbrev = "MARH";
   self.description = "+ Requires <Active Radar> on. + Requires <Target Lock> on target. + Minimum Range of 300m.";
   self.icon = "gfx/ui/wep_icons/wi_marh.png";
+  setmodel(self, self.model);
   #endif
   
   #ifndef CSQC

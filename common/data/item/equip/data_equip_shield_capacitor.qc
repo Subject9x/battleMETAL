@@ -29,7 +29,8 @@ void() data_ini_equip_shield_capacitor_={
   self.techLevel = 3;
   self.equipSize = 2;
   
-  #ifdef CSQC    
+  #ifdef CSQC  
+    self.model = "q3mdl/weapons/e_scap.md3";  
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

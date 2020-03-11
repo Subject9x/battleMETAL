@@ -31,6 +31,7 @@ void() data_ini_equip_target_module_={
   self.equipSize = 1;
   
   #ifdef CSQC    
+    self.model = "q3mdl/weapons/e_atgm.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

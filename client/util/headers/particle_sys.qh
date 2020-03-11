@@ -59,6 +59,11 @@ vector() te_read_vector;
 vector() te_read_angle;
 
 /*
+  Networking of chunks?
+*/
+void( float isNew, float entFlags) sendent_handle_chunk;
+
+/*
   Debris chunks
 */
 void() particle_debris_th;

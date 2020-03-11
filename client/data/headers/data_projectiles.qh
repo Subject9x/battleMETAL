@@ -1,0 +1,12 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 03/10/2020
+Overview: 
+  CSQC-side ini function for synced projectiles.
+*/
+
+void( float dataID ) data_sync_new_projectile;
+
+
+

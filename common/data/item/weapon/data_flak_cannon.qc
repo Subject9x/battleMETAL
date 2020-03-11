@@ -36,10 +36,13 @@ void() data_ini_flak_cannon_={
   self.equipSize = 1;
   
   #ifdef CSQC
+  self.fire_sound = "sound/weapons/flak_fire.ogg";
+  self.model = "q3mdl/weapons/w_flk.md3";
   self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
   self.abbrev = "FLAK";
   self.description = "+ Instant-impact weapon. + Shotgun Damage pattern when Target has no <shields>. + 8 sub-munitions.";
   self.icon = "gfx/ui/wep_icons/wi_flak.png";
+  setmodel(self, self.model);
   #endif
   
   #ifndef CSQC

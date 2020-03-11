@@ -32,9 +32,12 @@ void() data_ini_ion_={
   self.equipSize = 2;
   
   #ifdef CSQC
+  self.fire_sound = "sound/weapons/emp_fire.ogg";
+  self.model = "q3mdl/weapons/w_ion.md3";
   self.abbrev = "ION";
   self.description = "+ Damages <shields> ONLY. + 3-Round burst. + Small proximity detonation.";
   self.icon = "gfx/ui/wep_icons/wi_ion.png";
+  setmodel(self, self.model);
   #endif
   
   #ifndef CSQC

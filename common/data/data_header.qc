@@ -27,6 +27,10 @@ entity weaponList;  //used by data functions to populate weapon lists for units
 void( float partId, string pathToModel, float maxHp, vector partOffset, entity parentPart, .entity partSlot, vector altOffsett ) data_ini_unitPiece_={
   local entity piece;
   piece = spawn();
+  #ifdef CSQC
+  piece.drawmask = MASK_NORMAL;
+  addentity(piece);
+  #endif
   piece.partTypeId = partId;
   piece.partParentId = parentPart.partTypeId;
   piece.max_health = piece.health = maxHp;
@@ -68,6 +72,10 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
   local entity notItem;
   if( self.hardpoint_cnt < 10){
     item = spawn();
+    #ifdef CSQC
+    item.drawmask = MASK_NORMAL;
+    addentity(item);
+    #endif
     notItem = self;
     self = item;
       self.data_idx = 0;

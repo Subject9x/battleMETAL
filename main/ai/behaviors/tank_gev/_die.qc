@@ -11,42 +11,29 @@ Overview: ai unit
 */
 
 void() ai_gev_die1={
-  self.deadflag = DEAD_DEAD;
-  
-  te_smoke(self.origin, 1) ;
-  
+  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.think = ai_gev_die1;
   if( time > self.ai_action_time ){
     self.ai_action_time = time + (random() * 7200);
     self.think = SUB_Remove;
   }
-  self.nextthink = time + 0.5;
+  self.nextthink = time + 0.1;
 };
 
 /* quick garbage collect before rest of death funcs */
 void() ai_gev_die_clean={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   ctrl_unit_cleanup_tank();
   self.think = ai_gev_die1;
-  self.nextthink = time + 0.5;
+  self.nextthink = time + 0.1;
 };
 
 void() ai_gev_touch_death={
   local vector vel;
   if( other == world ){
     self.movetype = MOVETYPE_NONE;
-    makevectors( self.angles );
-    vel = self.origin + (v_up * 2);
-    switch( self.vec_size ){
-      case 2:
-        te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 240, 0.5, 600); 
-        break;
-      case 3:
-        te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 180, 0.75, 600); 
-        break;
-      default:
-        te_small_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 120, 1, 600); 
-        break;
-    } 
+    self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     self.touch = SUB_Null;
   }
 };
@@ -64,10 +51,9 @@ void() ai_gev_die={
   self.th_react = SUB_Null;
   self.th_pain = SUB_Null;
   self.th_missile = SUB_Null;
-  self.deadflag = DEAD_DYING;
+  self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_BOUNCE;
   self.solid = SOLID_NOT;
-  self.colormod = '0.33 0.33 0.33'; 
   setsize(self, self.mins * 0.35, self.maxs * 0.35);
   setorigin(self, self.origin);
   self.enemy = world;
@@ -97,7 +83,7 @@ void() ai_gev_die={
   makevectors( self.angles );
 
   v = self.origin + (v_forward * 2) + (v_right * (crandom() * 3)) + (v_up * 3);
-  te_debris( self.origin, self.angles, normalize(v - self.origin) * 100, self.vec_size + (random() * 5), self.vec_size);
+ // te_debris( self.origin, self.angles, normalize(v - self.origin) * 100, self.vec_size + (random() * 5), self.vec_size);
   
   if( self.attack_state != ST_STAND ){
     self.velocity = normalize( v - self.origin);
@@ -119,4 +105,8 @@ void() ai_gev_die={
   self.attack_state = -1;
   self.touch = ai_gev_touch_death;
   ai_alert_close( self.enemy );
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };

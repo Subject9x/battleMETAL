@@ -31,9 +31,12 @@ void() data_ini_plasma_={
   self.equipSize = 2;
   
   #ifdef CSQC  
+  self.fire_sound = "sound/weapons/rpls_fire.ogg";
+  self.model = "q3mdl/weapons/w_rpc.md3";
   self.abbrev = "RPC";
   self.description = "+ Burst-Fires 6 sub-munitions. + Submunitions burn over time on unshielded targets.";
   self.icon = "gfx/ui/wep_icons/wi_rpc.png";
+  setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC

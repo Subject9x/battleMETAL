@@ -33,17 +33,89 @@ void( float isNew ) sendent_handle_update={
     case SENDTYPE_BUILD:
       sendent_handle_building( isNew, entFlags );
       break;
+    case SENDTYPE_CHUNK:
+      sendent_handle_chunk( isNew, entFlags );
+      break;
+    case SENDTYPE_PROJ:
+      sendent_handle_missile( isNew, entFlags );
+      break;
   }
   client_get_contact();
 };
 
 
 void( float isNew, float changeFlags ) sendent_handle_tank={
-  local float turretModelID;
-  local float turretFlag;
-  local entity turret;
   local vector turretAng;
-  if( (changeFlags & SENDFLAG_MOVE) ){
+  local entity this;
+  local entity weps;
+
+  if( changeFlags & SENDFLAG_MOVE ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+    
+    if( self.torsoCenter != world){
+      self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+    }
+    makevectors(self.angles);
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
+        weps.angles = self.angles;
+      }
+      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+    }
+  }
+  if( changeFlags & SENDFLAG_TURRET ){
+    turretAng = te_read_vector();
+    if( self.torsoCenter != world ){
+      self.torsoCenter.angles_x = turretAng_x;
+      self.torsoCenter.angles_y = turretAng_y;
+      self.torsoCenter.angles_z = turretAng_z;
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        if( weps.partParentId == M_TOR_CENTER ){
+          weps.angles = self.torsoCenter.angles;
+        }
+      }
+    }
+  }
+  if( changeFlags & SENDFLAG_DEAD ){
+    self.deadflag = ReadByte();
+    if( self.deadflag > DEAD_NO ){
+      makevectors(self.angles);
+      self.origin = self.origin + (v_up * -5);
+      self.colormod = '0.33 0.33 0.33';
+      if( self.torsoCenter != world ){
+        remove(self.torsoCenter);
+      }     
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        remove(weps);
+      }
+      self.deadflag = DEAD_DEAD;
+      if(self.vec_size == 1){
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_1");
+      }
+      else if( self.vec_size == 2){
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_2");
+      }
+      else{
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
+      }
+    }
+  }
+  if( changeFlags & SENDFLAG_CRIT ){
+    self.pcl_effectnum = ReadByte();
+  }
+  if( changeFlags & SENDFLAG_BURN ){
+    if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
+      makevectors(self.angles);
+      pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+    }
+  }
+  if( changeFlags & SENDFLAG_NEWENT ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
@@ -53,9 +125,147 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.angles_z = ReadCoord();
     setorigin(self, self.origin);
     
-    if( self.torsoCenter != world){
+    self.faction = ReadByte();
+    self.data_idx = ReadByte();
+    self.data_type = ReadByte();
+    self.skin =  self.faction - 1;
+    
+    self.drawmask = MASK_ENGINE;
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte();
+    
+    data_sync_new_vehicle( self.data_idx );
+    
+    this = self;
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      self = weps;
+        sendent_set_weapon();
+        initialize_data_item_(self.data_idx);
+        self.angles = this.angles;
+        self.owner = this;
+      self = this;
+    }
+  }
+};
+
+void( float isNew, float changeFlags) sendent_handle_spg={
+  local entity weps;
+  local entity this;
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+    setorigin(self, self.origin);
+    makevectors(self.angles);
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      weps.angles = self.angles;
+      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+    }
+  }
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+    if( self.deadflag > DEAD_NO ){
       makevectors(self.angles);
+      self.origin = self.origin + (v_up * -5);
+      self.colormod = '0.33 0.33 0.33';  
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        remove(weps);
+      }
+      self.deadflag = DEAD_DEAD;
+      if(self.vec_size == 1){
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_1");
+      }
+      else if( self.vec_size == 2){
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_2");
+      }
+      else{
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
+      }
+    }
+  }
+  if( changeFlags & SENDFLAG_CRIT ){
+    self.pcl_effectnum = ReadByte();
+  }
+  if( changeFlags & SENDFLAG_BURN ){
+    if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
+      makevectors(self.angles);
+      pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+    }
+  }
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+    setorigin(self, self.origin);
+    
+    self.faction = ReadByte();
+    self.data_idx = ReadByte();
+    self.data_type = ReadByte();
+    self.skin =  self.faction - 1;
+    
+    self.drawmask = MASK_ENGINE;
+    
+    data_sync_new_vehicle(self.data_idx);
+    
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte();
+
+    this = self;
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      self = weps;
+        sendent_set_weapon();
+        initialize_data_item_(self.data_idx);
+        self.angles = this.angles;
+        self.owner = this;
+      self = this;
+    }
+  }
+};
+
+void( float isNew, float changeFlags) sendent_handle_gev={
+  local vector turretAng;
+  local entity weps;
+  local entity this;
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+    makevectors(self.angles);
+    if( self.torsoCenter ){
       self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+    }
+    makevectors(self.angles);
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
+        weps.angles = self.angles;
+      }
+      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
     }
   }
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -64,88 +274,86 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       self.torsoCenter.angles_x = turretAng_x;
       self.torsoCenter.angles_y = turretAng_y;
       self.torsoCenter.angles_z = turretAng_z;
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        if( weps.partParentId == M_TOR_CENTER ){
+          weps.angles = self.angles;
+        }
+      }
     }
   }
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.faction = ReadByte();
-    self.data_idx = ReadByte();
-    self.data_type = ReadByte();
-    setmodelindex(self, ReadByte());
-    self.skin =  ReadByte();
-    self.drawmask = MASK_ENGINE;
-    turretFlag = ReadByte();
-    if( turretFlag  ){
-      turretModelID = ReadByte();
-      turret = spawn();
-      setmodelindex(turret, turretModelID);
-      turret.compOffset_x = ReadCoord();
-      turret.compOffset_y = ReadCoord();
-      turret.compOffset_z = ReadCoord();
-      turret.drawmask = MASK_NORMAL;
-      self.torsoCenter = turret;
-    }
-  }
-};
-
-void( float isNew, float changeFlags) sendent_handle_spg={
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
-    setorigin(self, self.origin);
-  }
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.faction = ReadByte();
-    self.data_idx = ReadByte();
-    self.data_type = ReadByte();
-    setmodelindex(self, ReadByte());
-    self.skin =  ReadByte();
-    self.drawmask = MASK_ENGINE;
-  }
-};
-
-void( float isNew, float changeFlags) sendent_handle_gev={
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
-    setorigin(self, self.origin);
-    if( self.torsoCenter ){
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+    if( self.deadflag > DEAD_NO ){
       makevectors(self.angles);
-      self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+      self.colormod = '0.33 0.33 0.33';  
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        remove(weps);
+      }
+      self.deadflag = DEAD_DEAD;
+      if(self.vec_size == 1){
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_1");
+      }
+      else if( self.vec_size == 2){
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_2");
+      }
+      else{
+        self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
+      }
     }
   }
-  if( (changeFlags & SENDFLAG_TURRET) ){
-    //self.torsoCenter.angles_x = ReadCoord();
-    //self.torsoCenter.angles_y = ReadCoord();
-    //self.torsoCenter.angles_z = ReadCoord();
+  if( changeFlags & SENDFLAG_CRIT ){
+    self.pcl_effectnum = ReadByte();
+  }
+  if( changeFlags & SENDFLAG_BURN ){
+    if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
+      makevectors(self.angles);
+      pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+    }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+    setorigin(self, self.origin);
+    
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.data_type = ReadByte();
-    setmodelindex(self, ReadByte());
-    self.skin =  ReadByte();
+    self.skin =  self.faction - 1;
     self.drawmask = MASK_ENGINE;
-    if( (self.flags & FL_TURRET) ){
-      //self.torsoCenter = spawn();
-      ///setmodelindex(self.torsoCenter, ReadByte());
-      //self.torsoCenter.compOffset_x = ReadCoord();
-      //self.torsoCenter.compOffset_y = ReadCoord();
-      //self.torsoCenter.compOffset_z = ReadCoord();
-      //self.torsoCenter.drawmask = MASK_NORMAL;
+    
+    data_sync_new_vehicle(self.data_idx);
+    
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte();
+    
+    this = self;
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      self = weps;
+        sendent_set_weapon();
+        initialize_data_item_(self.data_idx);
+        self.angles = this.angles;
+        self.owner = this;
+      self = this;
     }
   }
 };
 
 void( float isNew, float changeFlags) sendent_handle_turret={
   local vector turretAng;
+  local entity weps;
+  local entity this;
   if( (changeFlags & SENDFLAG_TURRET) ){
     turretAng = te_read_vector();
     if( self.torsoCenter != world ){
@@ -153,6 +361,27 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       self.torsoCenter.angles_y = turretAng_y;
       self.torsoCenter.angles_z = turretAng_z;
     }
+    makevectors(turretAng);
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      weps.angles = turretAng;
+      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+    }
+  }
+  if( (changeFlags & SENDFLAG_DEAD) ){ 
+    setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+    self.angles = self.angles;
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    if( self.torsoCenter ){
+      remove(self.torsoCenter);
+    }
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      remove(weps);
+    }
+  }
+  if( (changeFlags & SENDFLAG_INI) ){
+
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
     
@@ -168,11 +397,28 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.data_type = ReadByte();
-    
+
     data_sync_new_turret(self.data_idx);
     
     self.drawmask = MASK_ENGINE;
-    
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte();
+    this = self;
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      self = weps;
+        sendent_set_weapon();
+        initialize_data_item_(self.data_idx);
+        self.angles = this.angles;
+        self.owner = this;
+      self = this;
+    }
   }
 };
 
@@ -210,5 +456,75 @@ void( float isNew, float changeFlags) sendent_handle_building={
     data_sync_new_building(self.data_idx);
     
     self.drawmask = MASK_ENGINE;
+  }
+};
+
+
+void( float isNew, float changeFlags) sendent_handle_missile={
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+    if( self.traileffectnum > 0 ){
+      makevectors(self.angles);
+      pointparticles( self.traileffectnum, self.origin, normalize((self.origin + (v_forward * -4)) - self.origin), 1);
+    }
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+    setorigin(self, self.origin);
+    
+    self.data_idx = ReadByte();
+    data_sync_new_projectile(self.data_idx);
+    if( self.traileffectnum > 0 ){
+      makevectors(self.angles);
+      pointparticles( self.traileffectnum, self.origin, normalize((self.origin + (v_forward * -4)) - self.origin), 1);
+    }
+    setmodel(self, self.model);
+    self.drawmask = MASK_ENGINE;
+  }
+};
+
+void() sendent_set_weapon={
+  switch(self.w_group){
+     case WEAPON1:
+      self.data_idx = self.owner.next_wepn1;
+      return;
+     case WEAPON2:
+      self.data_idx = self.owner.next_wepn2;
+      return;
+     case WEAPON3:
+      self.data_idx = self.owner.next_wepn3;
+      return;
+     case WEAPON4:
+      self.data_idx = self.owner.next_wepn4;
+      return;
+     case WEAPON5:
+      self.data_idx = self.owner.next_wepn5;
+      return;
+     case WEAPON6:
+      self.data_idx = self.owner.next_wepn6;
+      return;
+     case WEAPON7:
+      self.data_idx = self.owner.next_wepn7;
+      return;
+     case WEAPON8:
+      self.data_idx = self.owner.next_wepn8;
+      return;
+     case WEAPON9:
+      self.data_idx = self.owner.next_wepn9;
+      return;
   }
 };

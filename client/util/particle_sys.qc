@@ -90,6 +90,38 @@ void() cl_particles_fogFrame={
   }
 };
 
+
+/*
+  Networking of chunks?
+*/
+void( float isNew, float entFlags) sendent_handle_chunk={
+  if( (entFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+  }
+  if( (entFlags & SENDFLAG_DEAD) ){
+    
+  }
+  if( (entFlags & SENDFLAG_NEWENT) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = ReadCoord();
+    self.angles_y = ReadCoord();
+    self.angles_z = ReadCoord();
+    setorigin(self, self.origin);
+    self.data_idx = ReadByte();
+    self.traileffectnum = ReadByte();
+  }
+  
+};
+
 /*
   Shifted particle events to the client as much as possible.
 */
@@ -436,7 +468,7 @@ void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflas
 
 //Rotary Plasma ID 6
 void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_rpc={
-  pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
+  pointsound( muzzleOrg, "sound/weapons/rpls_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_RPC_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 2, 1);
 };
 

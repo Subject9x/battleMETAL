@@ -9,24 +9,31 @@ Overview:
     follows player reticle
 */
 
+#ifndef CSQC
 void() data_projectile_missile_swarm_touch;
 void() data_projectile_missile_swarm_think;
 void() data_projectile_missile_swarm_delay;
 
+#endif CSQC
 void() data_projectile_ini_missile_swarm_={
   self.classname = "missile";
-  self.touch = data_projectile_missile_swarm_touch;
   self.data_velocity = 800;
-  self.model = "q3mdl/proj/mdl_proj_lgm.md3";
   self.data_lifetime = 3;
   
-  //cosmetics
-  self.effects = EF_NOSHADOW;
-  self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL");
-  self.think = data_projectile_missile_swarm_delay;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_lgm.md3";
+    self.effects = EF_NOSHADOW;
+    self.modelflags = 0;
+    self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL");   
+  #endif 
+  
+  #ifndef CSQC
+    self.think = data_projectile_missile_swarm_delay;
+    self.touch = data_projectile_missile_swarm_touch;  
+  #endif
 };
-
+#ifndef CSQC
 void() data_projectile_missile_swarm_touch={
 	if (pointcontents(self.origin) == CONTENT_SKY){
     remove(self);
@@ -80,9 +87,11 @@ void() data_projectile_missile_swarm_think={
     self.nextthink = time + 0.2;
     self.think = data_projectile_missile_swarm_think;
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 
 void() data_projectile_missile_swarm_delay={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.velocity = normalize( self.origin - self.compOffset);
   self.velocity = self.velocity * (self.data_velocity * 0.50);
   self.angles = vectoangles(self.velocity);
@@ -90,4 +99,5 @@ void() data_projectile_missile_swarm_delay={
   self.think = data_projectile_missile_swarm_think; 
   self.nextthink = time + 1;
 };
+#endif CSQC
 

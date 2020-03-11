@@ -33,9 +33,12 @@ void() data_ini_particle_cannon_={
   self.equipSize = 3;
   
   #ifdef CSQC
+  self.fire_sound = "sound/weapons/pac_fire.ogg";
+  self.model = "q3mdl/weapons/w_pac.md3";
   self.abbrev = "PAC";
   self.description = "+ Instant-impact weapon. + Damage ignores shields. + Target shields reduced by 15% of its max when hit.";
   self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
+  setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC

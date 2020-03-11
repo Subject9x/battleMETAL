@@ -45,6 +45,8 @@ void() data_ini_onnek_={
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 4;
+  weaponList = self;
   self.model = "q3mdl/vecs/onnek/onnek.md3";
   
   //camera location

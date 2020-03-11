@@ -32,9 +32,12 @@ void() data_ini_emp_={
   self.equipSize = 3;
   
   #ifdef CSQC
+  self.fire_sound = "sound/weapons/emp_fire.ogg";
+  self.model = "q3mdl/weapons/w_emp.md3";
   self.abbrev = "EMP";
   self.description = "+ Damages <shields> ONLY. + Small proximity detonation.";
   self.icon = "gfx/ui/wep_icons/wi_emp.png";
+  setmodel(self, self.model);
   #endif
   
   #ifndef CSQC

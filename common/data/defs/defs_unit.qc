@@ -63,6 +63,33 @@ Overview:
 .entity torsoRight;
 .entity armRight;  //arms can be optional
 
+//Server-side 'thin' unit data
+#ifndef CSQC
+.vector cockpitOffset;
+
+.vector torsoCenterOffset;
+.vector torsoCenterAngles;
+.float torsoCenterHealth;
+
+.vector torsoLeftOffset;
+.float torsoLeftHealth;
+
+.vector torsoRightOffset;
+.float torsoRightHealth;
+
+.vector armLeftOffset;
+.float armLeftHealth;
+
+.vector armRightOffset;
+.float armRightHealth;
+
+.vector legsOffset;
+.float torsoCenterHealth;
+
+.vector legAngles;
+
+#endif
+
 .float isActive;
 
 .float was_hit; //used for hit direction calculation mostly

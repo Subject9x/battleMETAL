@@ -99,6 +99,37 @@ void() building_burn={
   }
 };
 
+/*
+
+
+*/
+float( entity dest, float changedflags ) ctrl_send_chunk={
+  WriteByte( MSG_ENTITY, SENDTYPE_CHUNK );
+  WriteByte( MSG_ENTITY, changedflags );
+  
+  if( (changedflags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteCoord( MSG_ENTITY, self.angles_x );
+    WriteCoord( MSG_ENTITY, self.angles_y );
+    WriteCoord( MSG_ENTITY, self.angles_z );
+  }
+  if( (changedflags & SENDFLAG_DEAD) ){
+    
+  }
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteCoord( MSG_ENTITY, self.angles_x );
+    WriteCoord( MSG_ENTITY, self.angles_y );
+    WriteCoord( MSG_ENTITY, self.angles_z );
+    WriteByte( MSG_ENTITY, self.data_idx ); //chunk type
+    WriteByte( MSG_ENTITY, self.data_type );  //trail type
+  }
+};
+
 float( entity dest, float changedflags ) ctrl_send_turret={
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
   WriteByte( MSG_ENTITY, changedflags );
@@ -106,6 +137,13 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+  if( (changedflags & SENDFLAG_INI) ){
+  }
+  if( (changedflags & SENDFLAG_DEAD) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
   }
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -120,6 +158,15 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.data_type );
     
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
   }
   return TRUE;
 };

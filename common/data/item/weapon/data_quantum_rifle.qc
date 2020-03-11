@@ -35,10 +35,13 @@ void() data_ini_quantum_={
   self.equipSize = 1;
  
   #ifdef CSQC
+  self.fire_sound = "sound/weapons/qrfl_fire.ogg";
+  self.model = "q3mdl/weapons/w_qrf.md3";
   self.damageValue = (DAT_QRFL_QBITS * self.damageValue) / 3 + 15;
   self.abbrev = "QRF";
   self.description = "+ Instant-impact weapon. + Initial damage on-hit. + 8 sub-munitions. + sub-munitions home on impact spot.";
   self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
+  setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC

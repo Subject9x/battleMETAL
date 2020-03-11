@@ -57,21 +57,19 @@ void() ctrl_updateTank={
   if( self.deadflag <= DEAD_NO ){
     hp = self.health / self.max_health;
     if( hp <= 0.75){
-      makevectors( self.angles );
-      spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 0.5);
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
     }
     else if( hp <= 0.5){
-      makevectors( self.angles );
-      spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 0.5);
-      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 0.5);
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
     }
     else if( hp <= 0.25){
-      makevectors( self.angles );
-      spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 0.5);
-      client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 0.5);
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
     }
   }
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
@@ -80,7 +78,7 @@ void() ctrl_updateTank={
 float( entity dest, float changedflags ) ctrl_send_tank={
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
   WriteByte( MSG_ENTITY, changedflags );
-  if( (changedflags & SENDFLAG_MOVE) ){
+  if( changedflags & SENDFLAG_MOVE ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
@@ -88,27 +86,39 @@ float( entity dest, float changedflags ) ctrl_send_tank={
     WriteCoord( MSG_ENTITY, self.angles_y );
     WriteCoord( MSG_ENTITY, self.angles_z );
   }
-  if( (changedflags & SENDFLAG_TURRET) ){
+  if( changedflags & SENDFLAG_TURRET ){
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
   }
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( changedflags & SENDFLAG_DEAD ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( changedflags & SENDFLAG_CRIT ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
+  }
+  if( changedflags & SENDFLAG_NEWENT ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteCoord( MSG_ENTITY, self.angles_x );
+    WriteCoord( MSG_ENTITY, self.angles_y );
+    WriteCoord( MSG_ENTITY, self.angles_z );
+    
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, self.modelindex );
-    WriteByte( MSG_ENTITY, self.skin );
-    if( (self.flags & FL_TURRET) ){
-      WriteByte( MSG_ENTITY, 1);  //TURRET FLAG
-      WriteByte( MSG_ENTITY, self.torsoCenter.modelindex);
-      WriteCoord( MSG_ENTITY, self.torsoCenter.compOffset_x );
-      WriteCoord( MSG_ENTITY, self.torsoCenter.compOffset_y );
-      WriteCoord( MSG_ENTITY, self.torsoCenter.compOffset_z );
-    }
-    else{
-      WriteByte( MSG_ENTITY, 0);  //TURRET FLAG
-    }
+    
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
   }
   return TRUE;
 };
@@ -124,12 +134,34 @@ float( entity dest, float changedflags ) ctrl_send_spg={
     WriteCoord( MSG_ENTITY, self.angles_y );
     WriteCoord( MSG_ENTITY, self.angles_z );
   }
+  if( changedflags & SENDFLAG_DEAD ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( changedflags & SENDFLAG_CRIT ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
+  }
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteCoord( MSG_ENTITY, self.angles_x );
+    WriteCoord( MSG_ENTITY, self.angles_y );
+    WriteCoord( MSG_ENTITY, self.angles_z );
+    
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, self.modelindex );
-    WriteByte( MSG_ENTITY, self.skin );
+    
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
   }
   return TRUE;
 };
@@ -146,22 +178,38 @@ float( entity dest, float changedflags ) ctrl_send_gev={
     WriteCoord( MSG_ENTITY, self.angles_z );
   }
   if( (changedflags & SENDFLAG_TURRET) ){
-    //WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
-   // WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
-   // WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+  if( changedflags & SENDFLAG_DEAD ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( changedflags & SENDFLAG_CRIT ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteCoord( MSG_ENTITY, self.angles_x );
+    WriteCoord( MSG_ENTITY, self.angles_y );
+    WriteCoord( MSG_ENTITY, self.angles_z );
+    
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, self.modelindex );
-    WriteByte( MSG_ENTITY, self.skin );
-    if( (self.flags & FL_TURRET) ){
-     // WriteByte(MSG_ENTITY, self.torsoCenter.modelindex);
-      //WriteCoord( MSG_ENTITY, self.torsoCenter.compOffset_x );
-     // WriteCoord( MSG_ENTITY, self.torsoCenter.compOffset_y );
-     // WriteCoord( MSG_ENTITY, self.torsoCenter.compOffset_z );
-    }
+
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
   }
   return TRUE;
 };

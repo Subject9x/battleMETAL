@@ -54,6 +54,8 @@ void() data_ini_heavy_turret_={
 //=====================================
  
 //HARDPOINTS==========================
+  self.hardpoint_cnt = 4;
+  weaponList = self;
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-3.75 22 15', '0 0 0', 2, (DMG_EXP | DMG_ENE | DMG_MSC));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '3.75 22 15', '0 0 0', 2, (DMG_BAL | DMG_ENE | DMG_MSC));
   data_ini_unitHardpoint_3( M_TOR_CENTER, '3.75 26 0', '90 0 0', 3, DMG_MSC);

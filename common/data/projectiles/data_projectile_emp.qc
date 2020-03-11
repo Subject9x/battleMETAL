@@ -8,6 +8,7 @@ Overview:
       AoE radius.
       
 */
+#ifndef CSQC
 void() data_prj_emp_touch;
 void() data_projectile_emp_think_;
 void() data_prj_emp_explode;
@@ -15,24 +16,31 @@ void() data_prj_emp_explode;
 float DAT_PRJ_EMP_PROXYRAD    = 200;
 float DAT_PRJ_EMP_EXPRAD      = 300;
 
+#endif CSQC
 void() data_projectile_ini_emp_={
   self.classname = "missile";
-  self.touch = data_prj_emp_touch;
-  self.data_idx = 0;
   self.data_velocity = 1500;
-  self.model = "q3mdl/proj/mdl_proj_emp.md3";
   self.data_lifetime = 1.43;
   
-  //cosmetics
-  self.effects = (EF_ADDITIVE | EF_NOSHADOW);
-  self.modelflags = 0;
-  self.alpha = 0.75;
-  self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");
-  self.think = data_projectile_emp_think_;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_emp.md3";
+    self.effects = (EF_ADDITIVE | EF_NOSHADOW);
+    self.modelflags = 0;
+    self.alpha = 0.75;
+    self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");
+  #endif
+  
+  #ifndef CSQC
+    self.model = "q3mdl/testball.md3";
+    self.touch = data_prj_emp_touch;
+    self.think = data_projectile_emp_think_;
+  #endif CSQC
 };
-
+#ifndef CSQC
 void() data_projectile_emp_think_={
 
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   local float explode;
   explode = FALSE;
   if(time > self.w_firetime){
@@ -124,3 +132,4 @@ void() data_prj_emp_touch={
   self.nextthink = time + 0.01;
   self.think = data_prj_emp_explode;
 };
+#endif CSQC

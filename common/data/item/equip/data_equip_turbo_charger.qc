@@ -33,6 +33,7 @@ void() data_ini_equip_turbo_charger_={
   self.equipSize = 3;
   
   #ifdef CSQC    
+    self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

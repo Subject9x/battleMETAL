@@ -36,9 +36,12 @@ void() data_ini_electro_repeater_={
   self.equipSize = 2;
 
   #ifdef CSQC  
+  self.fire_sound = "sound/weapons/esr_fire.ogg";
+  self.model = "q3mdl/weapons/w_esr.md3";
   self.abbrev = "ESR";
   self.description = "+ 3 beams per trigger pull. + Instant-impact weapon. + Inaccurate.";
   self.icon = "gfx/ui/wep_icons/wi_esr.png";
+  setmodel(self, self.model);
   #endif
   
   #ifndef CSQC

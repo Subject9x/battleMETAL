@@ -278,7 +278,7 @@ void() ctrl_component_die={
   if( self.deadflag <= DEAD_NO ){
     piece = self;
     
-    client_send_mech_chunk( self.modelindex, self.owner.skin, self.owner.vec_size, self.origin, self.angles );
+    //client_send_mech_chunk( self.modelindex, self.owner.skin, self.owner.vec_size, self.origin, self.angles );
     
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW; 

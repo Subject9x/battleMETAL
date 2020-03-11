@@ -31,10 +31,13 @@ void() data_ini_rockets_={
   self.equipSize = 1;
   
   #ifdef CSQC
+  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.model = "q3mdl/weapons/w_mis.md3";
   self.abbrev = "RCK";
   //self.description = "+ Burst fires whole clip. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.description = "+ Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.icon = "gfx/ui/wep_icons/wi_rck.png";  
+  setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC

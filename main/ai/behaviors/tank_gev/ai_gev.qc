@@ -31,9 +31,11 @@ void() ai_gev={
   self.touch = ai_touch;
   
   ai_setup_patrol();
-  //self.SendEntity = ctrl_send_gev;
-  //self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+  
+  self.SendEntity = ctrl_send_gev;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 
 void() ai_gev_enter_patrol={

@@ -31,9 +31,14 @@ void() data_ini_light_atc_={
   self.equipSize = 1;
   
   #ifdef CSQC  
+  self.w_name = "Light Autocannon";
   self.abbrev = "ATC";
   self.description = "+ Instant-impact weapon. + 3-round burst.";
   self.icon = "gfx/ui/wep_icons/wi_atc.png";
+  self.model = "q3mdl/weapons/w_atc.md3";
+  self.fire_sound = "sound/weapons/atc_fire.ogg";
+  self.wepFireOffset = '0 0.5 5';
+  setmodel(self, self.model);
   #endif
   
   #ifndef CSQC  
@@ -42,9 +47,9 @@ void() data_ini_light_atc_={
   self.think = default_weapon_think;
   self.w_isburst = FALSE;
   self.burstRate = 1;
-  self.wepFireOffset = '0 0.5 5';
-  self.fire_sound = "sound/weapons/atc_fire.ogg";
-  self.model = "q3mdl/weapons/w_atc.md3";
+  self.wepFireOffset = '0 0.5 5'; //todo - move client side only
+  self.fire_sound = "sound/weapons/atc_fire.ogg"; //todo - move client side only
+  self.model = "q3mdl/weapons/w_atc.md3"; //todo - move client side only
   #endif
 };
 

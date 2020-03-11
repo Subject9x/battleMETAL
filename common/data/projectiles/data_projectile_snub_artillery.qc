@@ -8,26 +8,33 @@ Overview:
       AoE radius.
       
 */
+#ifndef CSQC
 float DAT_PRJ_SFGA_RAD        = 300;
 void() data_projectile_snub_artillery_radiusDamage;
 void() data_projectile_snub_artillery_touch_;
 
+#endif CSQC
 void() data_projectile_ini_snub_artillery_={
   self.classname = "missile";
   self.data_velocity = 1000;
-  self.model = "q3mdl/proj/mdl_proj_sfga.md3";
   self.data_lifetime = 8;
   
-  //cosmetics
-  self.effects = (EF_NOSHADOW);
-  self.modelflags = 0;
-  self.alpha = 1;
-  self.color =  '0.85 0.45 0.45';
-  self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_sfga.md3";
+    self.effects = EF_NOSHADOW;
+    self.modelflags = 0;
+    self.alpha = 1;
+    self.colormod =  '0.85 0.45 0.45';
+    self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
+  #endif
+    
+  #ifndef CSQC
   self.think = SUB_Null;
-  self.touch = data_projectile_snub_artillery_touch_;
+  self.touch = data_projectile_snub_artillery_touch_;    
+  #endif
 };
-
+#ifndef CSQC
 void() data_projectile_snub_artillery_touch_={
   
   if( pointcontents(self.origin) == CONTENT_SKY ){
@@ -71,3 +78,4 @@ void() data_projectile_snub_artillery_radiusDamage={
     t_damage(radiusTarg, self, self.owner, dmg_act, self.damageType, trace_endpos, '0 0 0');
   }
 };
+#endif CSQC

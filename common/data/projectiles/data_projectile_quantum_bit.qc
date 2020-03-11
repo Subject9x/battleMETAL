@@ -8,24 +8,30 @@ Overview:
     Explodes on touch
 */
 
+#ifndef CSQC
 void() data_projectile_ini_quantum_bit_touch_;
 
+#endif CSQC
 void() data_projectile_ini_quantum_bit_={
   self.classname = "missile";
-  self.touch = data_projectile_ini_quantum_bit_touch_;
-  self.data_idx = 0;
   self.data_velocity = 275;
-  self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
   self.data_lifetime = 4;
   
-  //cosmetics
-  self.effects = EF_NOSHADOW;
-  self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
-  self.think = SUB_Remove;
-  self.damageType = self.damageType | EFF_SHD;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
+    self.effects = EF_NOSHADOW;
+    self.modelflags = 0;
+    self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
+    self.damageType = self.damageType | EFF_SHD;      
+  #endif
+  
+  #ifndef CSQC
+    self.touch = data_projectile_ini_quantum_bit_touch_;
+    self.think = SUB_Remove;
+  #endif
 };
-
+#ifndef CSQC
 void() data_projectile_ini_quantum_bit_touch_={
 	if (pointcontents(self.origin) == CONTENT_SKY || pointcontents(self.origin) == CONTENT_SOLID){
     self.traileffectnum = 0;
@@ -47,3 +53,4 @@ void() data_projectile_ini_quantum_bit_touch_={
     self.traileffectnum = 0;
   remove(self);
 };
+#endif CSQC

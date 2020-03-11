@@ -555,13 +555,14 @@ void() build_vehicle_unit={
   hmaxs = self.maxs;
   hmins = self.mins;
   
+  //->CSQC
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
-  self.skin = self.faction - 1;
-  if( self.skin < 0 ){
-    self.skin = 0;
-  }
+  //self.skin = self.faction - 1;
+  //if( self.skin < 0 ){
+  //  self.skin = 0;
+ // }
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
-  macro_set_model(self.model, self.skin, 0)
+  macro_set_model("q3mdl/testball", 0, 0) //->CSQC for specifics
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
@@ -645,5 +646,4 @@ void() build_turret_unit={
       util_generateBuildingFoundation(self);
     }
   }
-  self.torsoCenter.effects = EF_NODRAW;
 };

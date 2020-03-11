@@ -1,5 +1,4 @@
 // called during level initialization, before first entities are received, only world is valid at this point
-// called during level initialization, before first entities are received, only world is valid at this point
 void() CSQC_Init =
 {
   local float i, cnt;
@@ -207,6 +206,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   
   //setproperty(VF_ORIGIN, pmove_org);
   //setproperty(VF_ANGLES, input_angles);
+  
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
 	setproperty(VF_DRAWCROSSHAIR, 0);
@@ -571,6 +571,13 @@ void(float isnew) CSQC_Ent_Update =
 // called when a network slot is emptied, you may choose to remove(self) or not
 void() CSQC_Ent_Remove =
 {
+  if( self.torsoCenter != world ){
+    remove(self.torsoCenter);
+  }
+  local entity weps;
+  for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+    remove(weps);
+  }
 	//if (self.t_remove)
 		//if (self.t_remove())
   remove(self);

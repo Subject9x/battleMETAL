@@ -24,6 +24,7 @@ void() data_ini_empty_weapon_={
   self.equipSize = 1;
   
   #ifdef CSQC  
+    self.model = "q3mdl/testball.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

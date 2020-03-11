@@ -23,4 +23,6 @@ void( float isNew, float changeFlags ) sendent_handle_spg;
 void( float isNew, float changeFlags) sendent_handle_gev;
 void( float isNew, float changeFlags) sendent_handle_turret;
 void( float isNew, float changeFlags) sendent_handle_building;
+void( float isNew, float changeFlags) sendent_handle_missile;
 
+void() sendent_set_weapon;

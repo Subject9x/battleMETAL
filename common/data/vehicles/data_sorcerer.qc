@@ -46,6 +46,8 @@ void() data_ini_sorcerer_={
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 2;
+  weaponList = self;
   self.model = "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3";
   
   //camera location

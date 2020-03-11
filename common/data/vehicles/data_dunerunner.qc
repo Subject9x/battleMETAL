@@ -47,6 +47,8 @@ void() data_ini_dunerunner_={
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 2;
+  weaponList = self;
   self.model = "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3";
   
   //tank turret

@@ -8,6 +8,7 @@ Overview:
     burns-over-time on unshielded targets.
 */
 
+#ifndef CSQC
 float data_projectile_plasma_burn_time = 0.67;
 
 void() data_projectile_plasma_touch;
@@ -15,21 +16,27 @@ void() data_projectile_plasma_burn_ini_;
 void() data_projectile_plasma_burn_th;
 void() data_projectile_plasma_think_;
 
+#endif CSQC
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
-  self.touch = data_projectile_plasma_touch;
   self.data_velocity = 1600;
-  self.model = "q3mdl/proj/mdl_proj_rpc.md3";
   self.data_lifetime = 0.649;
-  self.alpha = 0.85;
   
-  //cosmetics
-  self.effects = (EF_NOSHADOW | EF_ADDITIVE);
-  self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
-  self.think = data_projectile_plasma_think_;
+  #ifdef CSQC
+    //cosmetics
+    self.alpha = 0.85;
+    self.model = "q3mdl/proj/mdl_proj_rpc.md3";
+    self.effects = (EF_NOSHADOW | EF_ADDITIVE);
+    self.modelflags = 0;
+    self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");  
+  #endif
+  
+  #ifndef CSQC
+    self.touch = data_projectile_plasma_touch;
+    self.think = data_projectile_plasma_think_;    
+  #endif
 };
-
+#ifndef CSQC
 void() data_projectile_plasma_burn_ini_={
   self.aiment = self.cockpit;
   self.punchangle = self.cockpit.angles;
@@ -106,6 +113,7 @@ void() data_projectile_plasma_touch={
 };
 
 void() data_projectile_plasma_think_={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   if( time > self.data_lifetime ){
     client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
     self.touch = SUB_Null;
@@ -116,4 +124,5 @@ void() data_projectile_plasma_think_={
   self.think = data_projectile_plasma_think_;
   self.nextthink = time + 0.05;
 };
+#endif CSQC
 

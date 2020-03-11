@@ -47,6 +47,8 @@ void() data_ini_trowel_={
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 3;
+  weaponList = self;
   self.model = "q3mdl/vecs/trowel/mdl_trowel_chas.md3";
   
   //tank turret

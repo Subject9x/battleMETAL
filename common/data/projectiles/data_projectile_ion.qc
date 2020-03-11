@@ -8,6 +8,7 @@ Overview:
       AoE radius.
       
 */
+#ifndef CSQC
 void() data_projectile_ion_touch;
 void() data_projectile_ion_think_;
 void() data_projectile_ion_explode;
@@ -15,23 +16,30 @@ void() data_projectile_ion_explode;
 float DAT_PRJ_ION_PROXYRAD    = 200;
 float DAT_PRJ_ION_EXPRAD      = 300;
 
+#endif CSQC
 void() data_projectile_ini_ion_={
   self.classname = "missile";
-  self.touch = data_projectile_ion_touch;
   self.data_velocity = 4000;
-  self.model = "q3mdl/proj/mdl_proj_ion.md3";
   self.data_lifetime = 2.57;
   
-  //cosmetics
-  self.effects = (EF_ADDITIVE | EF_NOSHADOW);
-  self.modelflags = 0;
-  self.alpha = 0.75;
-  self.traileffectnum = particleeffectnum("TE_ION_TRAIL");
-  self.think = data_projectile_ion_think_;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_ion.md3";
+    self.effects = (EF_ADDITIVE | EF_NOSHADOW);
+    self.modelflags = 0;
+    self.alpha = 0.75;
+    self.traileffectnum = particleeffectnum("TE_ION_TRAIL");  
+  #endif
+    
+  #ifndef CSQC
+    self.think = data_projectile_ion_think_;
+    self.touch = data_projectile_ion_touch;
+  #endif
 };
-
+#ifndef CSQC
 void() data_projectile_ion_think_={
 
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   local float explode;
   explode = FALSE;
   if(time > self.w_firetime){
@@ -122,3 +130,4 @@ void() data_projectile_ion_touch={
   self.nextthink = time + 0.01;
   self.think = data_projectile_ion_explode;
 };
+#endif CSQC

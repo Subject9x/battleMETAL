@@ -30,9 +30,14 @@ void() ai_vec_dest={
   self.touch = ai_touch;
 
   ai_setup_patrol();
-  //self.SendEntity = ctrl_send_spg;
-  //self.SendFlags |= SENDFLAG_MOVE;
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+  
+  self.SendEntity = ctrl_send_spg;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;   
+  local entity wep;
+  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
+    wep.effects = EF_NODRAW;
+  } 
 };
 
 /*

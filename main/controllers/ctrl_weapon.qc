@@ -180,6 +180,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       self.damageType = theWeapon.damageType;
       self.damageValue = theWeapon.damageValue;
       theWeapon.data_ini_projectile();
+      self.data_idx = theWeapon.data_idx; //use weapon idx to sync to CSQC
       self.data_lifetime = time + self.data_lifetime;
       self.w_firetime = time + 0.5;
       self.velocity = normalize(FIRE_ENDPOINT - FIRE_ORIGIN);
@@ -192,9 +193,11 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
         self.nextthink = time + 0.1;
       }
       macro_set_collider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE)
-      macro_set_model(self.model, 0, 0)
+      macro_set_model( "q3mdl/testball", 0, 0)
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
+      self.SendEntity = te_send_missile;
+      self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self = theWeapon;
   }
   else{

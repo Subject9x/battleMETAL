@@ -12,6 +12,7 @@ data/defs_linker.qc
   ../common/data/defs/defs_unit.qc		    //all fields related specifically to unit data.
   ../common/data/defs/defs_part.qc		    //all fields related to unit sub components.
   ../common/data/defs/defs_item.qc		    //all fields related to items.
+  ../common/data/defs/defs_projectile.qc		    //all fields related to items.
 //================================
 
 //Common Game Data================
@@ -27,15 +28,15 @@ data/defs_linker.qc
   //---------------------------------
   
   //Projectiles--------------------
-  //../common/data/projectiles/data_projectile_emp.qc
-  //../common/data/projectiles/data_projectile_rocket.qc
-  //../common/data/projectiles/data_projectile_quantum_bit.qc
-  //../common/data/projectiles/data_projectile_plasma.qc
-  //../common/data/projectiles/data_projectile_snub_artillery.qc
-  //../common/data/projectiles/data_projectile_missile_laserguide.qc
-  //../common/data/projectiles/data_projectile_missile_activeradar.qc
-  //../common/data/projectiles/data_projectile_ion.qc
-  //../common/data/projectiles/data_projectile_missile_swarm.qc
+  ../common/data/projectiles/data_projectile_emp.qc
+  ../common/data/projectiles/data_projectile_rocket.qc
+  ../common/data/projectiles/data_projectile_quantum_bit.qc
+  ../common/data/projectiles/data_projectile_plasma.qc
+  ../common/data/projectiles/data_projectile_snub_artillery.qc
+  ../common/data/projectiles/data_projectile_missile_laserguide.qc
+  ../common/data/projectiles/data_projectile_missile_activeradar.qc
+  ../common/data/projectiles/data_projectile_ion.qc
+  ../common/data/projectiles/data_projectile_missile_swarm.qc
   //-------------------------------
   
   //Mechs--------------------------
@@ -99,6 +100,8 @@ data/headers/ui_data.qh
 data/headers/msn_file.qh
 data/headers/data_buildings.qh
 data/headers/data_turrets.qh
+data/headers/data_vehicles.qh
+data/headers/data_projectiles.qh
 
 network/headers/client_globals.qh
 network/headers/server_localcmd.qh
@@ -133,6 +136,8 @@ data/ui_data.qc
 data/msn_file.qc
 data/data_buildings.qc
 data/data_turrets.qc
+data/data_vehicles.qc
+data/data_projectiles.qc
 
 ui/anim.qc
 ui/gui_api.qc

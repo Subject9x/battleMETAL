@@ -8,23 +8,30 @@ Overview:
     Explodes on touch
 */
 
+#ifndef CSQC
 void() data_prj_mis_touch;
 void() data_projectile_rocket_think_;
 
+#endif CSQC
 void() data_projectile_ini_rocket_={
   self.classname = "missile";
-  self.touch = data_prj_mis_touch;
   self.data_velocity = 1300;
-  self.model = "q3mdl/proj/mdl_proj_mis.md3";
   self.data_lifetime = 0.56;
   
-  //cosmetics
-  self.effects = EF_NOSHADOW;
-  self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");
-  self.think = data_projectile_rocket_think_;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_mis.md3";
+    self.effects = EF_NOSHADOW;
+    self.modelflags = 0;
+    self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");    
+  #endif
+  
+  #ifndef CSQC
+    self.touch = data_prj_mis_touch;
+    self.think = data_projectile_rocket_think_;  
+  #endif
 };
-
+#ifndef CSQC
 void() data_prj_mis_touch={
   local float shieldHit;
   
@@ -47,6 +54,7 @@ void() data_prj_mis_touch={
 };
 
 void() data_projectile_rocket_think_={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.think = data_projectile_rocket_think_;
   self.nextthink = time + 0.05;
   if( time > self.data_lifetime ){
@@ -54,3 +62,4 @@ void() data_projectile_rocket_think_={
     self.nextthink = time + 0.01;
   }
 };
+#endif CSQC
