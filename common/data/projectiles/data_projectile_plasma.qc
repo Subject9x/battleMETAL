@@ -19,16 +19,17 @@ void() data_projectile_plasma_think_;
 #endif CSQC
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
-  self.data_velocity = 1600;
+  self.data_velocity = 1200;
   self.data_lifetime = 0.649;
   
   #ifdef CSQC
     //cosmetics
     self.alpha = 0.85;
     self.model = "q3mdl/proj/mdl_proj_rpc.md3";
-    self.effects = (EF_NOSHADOW | EF_ADDITIVE);
+    self.effects = EF_NOSHADOW | EF_ADDITIVE;
     self.modelflags = 0;
-    self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");  
+    self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
+    self.predraw_projectile = predraw_plasma;
   #endif
   
   #ifndef CSQC
@@ -122,7 +123,7 @@ void() data_projectile_plasma_think_={
     return;
   }
   self.think = data_projectile_plasma_think_;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + 0.01;
 };
 #endif CSQC
 

@@ -485,14 +485,3 @@ void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyFa
     mapKeyObject = newMapKey;
   }
 };
-
-//SendEntity
-float() predraw_tank={
-  local float frac;
-  self.prevorigin = self.origin;
-  frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
-  frac = bound(0, frac, 1);
-  self.origin = self.prevorigin + (self.lastorigin - self.prevorigin) * frac;
-  self.lastupdate = time;
-  self.prevupdate = frac;
-};

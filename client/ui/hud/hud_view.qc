@@ -336,20 +336,8 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('-3 0'), RADAR_VCENTER + radarLineLeft, CLR_DEF_WHITE, HUD_ALPHA, 0);
   drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('3 0'), RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
   
-  
-  blip = findchainfloat( data_idx, -2 );
-  while( blip ){
-    local entity kill;    
-    blip.hardpoint_cnt = blip.hardpoint_cnt - blip.radar_time ;
-    if( blip.hardpoint_cnt < 0 ){
-      blip.hardpoint_cnt = 0;
-    }
+  for( blip = findchainflags( flags, FL_UNIT ); blip != world; blip = blip.chain){
     hud_renderRadarContact( blip, plrFaction, radarRange );
-    kill = blip;
-    blip = blip.chain;
-    if( time > kill.energy ){
-      remove( kill );
-    }
   }
   nav = 0;
   while( nav <= 21 ){

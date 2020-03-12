@@ -15,6 +15,19 @@ data/defs_linker.qc
   ../common/data/defs/defs_projectile.qc		    //all fields related to items.
 //================================
 
+data/headers/data_api.qh
+data/headers/ui_data.qh
+data/headers/msn_file.qh
+data/headers/data_buildings.qh
+data/headers/data_turrets.qh
+data/headers/data_vehicles.qh
+data/headers/data_projectiles.qh
+
+network/headers/client_globals.qh
+network/headers/server_localcmd.qh
+network/headers/receive_entities.qh
+network/headers/receive_sendent.qh
+
 //Common Game Data================
   ../common/data/data_values_particles.qc
   ../common/ui/ui_color_constants.qc
@@ -94,19 +107,6 @@ data/defs_linker.qc
 //================================
 
 util/headers/input_events.qh
-
-data/headers/data_api.qh
-data/headers/ui_data.qh
-data/headers/msn_file.qh
-data/headers/data_buildings.qh
-data/headers/data_turrets.qh
-data/headers/data_vehicles.qh
-data/headers/data_projectiles.qh
-
-network/headers/client_globals.qh
-network/headers/server_localcmd.qh
-network/headers/receive_entities.qh
-network/headers/receive_sendent.qh
 
 //CSQC Menu System Headers
   ui/headers/gui_api.qh

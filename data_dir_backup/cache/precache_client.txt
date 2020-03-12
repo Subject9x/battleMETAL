@@ -35,6 +35,16 @@ q3mdl/mechs/matok/matok_hud.obj
 q3mdl/mechs/monitor/monitor_hud.md3
 q3mdl/mechs/monitor/monitor_hud.obj
 
+//vehicles
+q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3
+q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3
+q3mdl/vecs/foslager/mdl_foslager_chas.md3
+q3mdl/vecs/foslager/mdl_foslager_tur.md3
+q3mdl/vecs/onnek/onnek.md3
+q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3
+q3mdl/vecs/trowel/mdl_trowel_chas.md3
+q3mdl/vecs/trowel/mdl_trowel_tur.md3
+
 //weapons
 q3mdl/weapons/w_esr.md3
 q3mdl/weapons/w_emp.md3

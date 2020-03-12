@@ -19,7 +19,6 @@ float DATA_SWARM_MAX_TARGETS = 3;
 void() data_ini_missile_swarm_={
 
   self.data_idx = 14;  
-  self.w_name = "Missile - Swarm";
   
   self.w_clipsize = 3;
   self.reloadRate = 0.3;
@@ -33,25 +32,26 @@ void() data_ini_missile_swarm_={
   self.techLevel = 3;
   self.equipSize = 2;
 
+  self.spreadDefault = '0.07 0.07 0';
+  self.wepFireOffset = '0 0 2';
+  
   #ifdef CSQC
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_swrm.md3";
-  self.abbrev = "SWRM";
-  self.description = "+ Requires <Active Radar> to fire. + Fires 3 missiles at up to 3 targets each.";
-  self.icon = "gfx/ui/wep_icons/wi_swrm.png";  
-  setmodel(self, self.model);
+    self.w_name = "Missile - Swarm";
+    self.fire_sound = "sound/weapons/mis_fire.ogg";
+    self.model = "q3mdl/weapons/w_swrm.md3";
+    self.abbrev = "SWRM";
+    self.description = "+ Requires <Active Radar> to fire. + Fires 3 missiles at up to 3 targets each.";
+    self.icon = "gfx/ui/wep_icons/wi_swrm.png";  
+    setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC
-  self.spreadDefault = '0.07 0.07 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 1;
-  self.wepFireOffset = '0 0 2';
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_swrm.md3";
-  self.w_attack = data_ini_attack_missile_swarm_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_missile_swarm_;
+    self.w_isburst = FALSE;
+    self.burstRate = 1;
+    self.model = "q3mdl/weapons/w_swrm.md3";
+    self.w_attack = data_ini_attack_missile_swarm_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_missile_swarm_;
   #endif
 };
 

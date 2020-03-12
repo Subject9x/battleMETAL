@@ -15,7 +15,6 @@ void() shield_emitter_remove_;
 void() data_ini_equip_shield_emitter_={
 
   self.data_idx = UID_ITEM_shield_emitter;  
-  self.w_name = "Heavy Shield Emitter";
   
   self.w_clipsize = 1;
   self.reloadRate = 0;
@@ -30,6 +29,7 @@ void() data_ini_equip_shield_emitter_={
   self.equipSize = 2;
   
   #ifdef CSQC  
+    self.w_name = "Heavy Shield Emitter";
     self.model = "q3mdl/weapons/e_hsem.md3";  
     self.w_clipsize = -1;
     self.reloadRate = -1;
@@ -44,11 +44,11 @@ void() data_ini_equip_shield_emitter_={
   #endif
   
   #ifndef CSQC
-  self.item_remove_upgrade = shield_capacitor_remove_;
-  self.w_attack = shield_emitter_upgrade_;
-  self.think = SUB_Null;
-  self.w_isburst = FALSE;
-  self.model = "q3mdl/weapons/e_hsem.md3";
+    self.item_remove_upgrade = shield_capacitor_remove_;
+    self.w_attack = shield_emitter_upgrade_;
+    self.think = SUB_Null;
+    self.w_isburst = FALSE;
+    self.model = "q3mdl/weapons/e_hsem.md3";
   #endif
   
 };

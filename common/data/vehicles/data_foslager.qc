@@ -21,6 +21,7 @@ void() data_ini_foslager_={
  
   self.max_health = 233;
   setsize(self, '-22 -22 -8', '22 22 26');
+  self.flags = self.flags | FL_TURRET | FL_MONSTER | FL_UNIT;
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 400;

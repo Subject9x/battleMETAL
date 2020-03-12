@@ -17,7 +17,6 @@ void() data_ini_attack_laser_;
 void() data_ini_light_laser_={
   
   self.data_idx = 3;
-  self.w_name = "Light Laser";
   
   self.w_clipsize = 1;
   self.reloadRate = 0.95;
@@ -31,24 +30,25 @@ void() data_ini_light_laser_={
   self.techLevel = 1;
   self.equipSize = 1;
 
+  self.spreadDefault = '0.0075 0.0075 0';
+  self.wepFireOffset = '0 0 3.5'; 
+  
   #ifdef CSQC
-  self.fire_sound = "sound/weapons/laser_fire.ogg";
-  self.model = "q3mdl/weapons/w_laser.md3";
-  self.abbrev = "LAS";
-  self.description = "+ Instant-impact weapon. + Small damage bonus against <shields>.";
-  self.icon = "gfx/ui/wep_icons/wi_las.png";
-  setmodel(self, self.model);
+    self.w_name = "Light Laser";
+    self.fire_sound = "sound/weapons/laser_fire.ogg";
+    self.model = "q3mdl/weapons/w_laser.md3";
+    self.abbrev = "LAS";
+    self.description = "+ Instant-impact weapon. + Small damage bonus against <shields>.";
+    self.icon = "gfx/ui/wep_icons/wi_las.png";
+    setmodel(self, self.model);
   #endif
   
   #ifndef CSQC
-  self.spreadDefault = '0.0075 0.0075 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 0;
-  self.wepFireOffset = '0 0 3.5'; 
-  self.fire_sound = "sound/weapons/laser_fire.ogg";
-  self.model = "q3mdl/weapons/w_laser.md3";
-  self.think = default_weapon_think;
-  self.w_attack = data_ini_attack_laser_;
+    self.w_isburst = FALSE;
+    self.burstRate = 0;
+    self.model = "q3mdl/weapons/w_laser.md3";
+    self.think = default_weapon_think;
+    self.w_attack = data_ini_attack_laser_;
   #endif
 };
 

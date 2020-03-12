@@ -21,6 +21,7 @@ void() data_ini_sorcerer_={
  
   self.max_health = 285;
   setsize(self, '-22 -22 -11', '22 22 26');
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 300;

@@ -20,31 +20,23 @@ float( float isNew, float changedFlags ) te_send_missile={
   WriteByte( MSG_ENTITY, SENDTYPE_PROJ );
   WriteByte( MSG_ENTITY, changedFlags );
   
-  if( changedFlags & SENDFLAG_MOVE ){
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    
-    WriteCoord( MSG_ENTITY, self.angles_x );
-    WriteCoord( MSG_ENTITY, self.angles_y );
-    WriteCoord( MSG_ENTITY, self.angles_z );
-  }
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
   
+  WriteCoord( MSG_ENTITY, self.angles_x );
+  WriteCoord( MSG_ENTITY, self.angles_y );
+  WriteCoord( MSG_ENTITY, self.angles_z );
+  
+  WriteCoord( MSG_ENTITY, self.velocity_x );
+  WriteCoord( MSG_ENTITY, self.velocity_y );
+  WriteCoord( MSG_ENTITY, self.velocity_z );
+
   if( changedFlags & SENDFLAG_NEWENT ){
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    
-    WriteCoord( MSG_ENTITY, self.angles_x );
-    WriteCoord( MSG_ENTITY, self.angles_y );
-    WriteCoord( MSG_ENTITY, self.angles_z );
-    
     WriteByte( MSG_ENTITY, self.data_idx );
   }
   return TRUE;
 };
-
-
 
 //ported over from classice Quake C
 void(string gibname, float dm) ThrowGib =

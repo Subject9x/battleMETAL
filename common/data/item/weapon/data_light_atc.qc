@@ -16,7 +16,6 @@ void() data_ini_attack_latc_;
 void() data_ini_light_atc_={
 
   self.data_idx = 1;  
-  self.w_name = "Light Autocannon";
   
   self.w_clipsize = 3;
   self.reloadRate = 0.075;
@@ -30,26 +29,26 @@ void() data_ini_light_atc_={
   self.techLevel = 1;
   self.equipSize = 1;
   
+  self.spreadDefault = '0.025 0.025 0';
+  self.wepFireOffset = '0 0.5 5'; 
+  
   #ifdef CSQC  
-  self.w_name = "Light Autocannon";
-  self.abbrev = "ATC";
-  self.description = "+ Instant-impact weapon. + 3-round burst.";
-  self.icon = "gfx/ui/wep_icons/wi_atc.png";
-  self.model = "q3mdl/weapons/w_atc.md3";
-  self.fire_sound = "sound/weapons/atc_fire.ogg";
-  self.wepFireOffset = '0 0.5 5';
-  setmodel(self, self.model);
+    self.w_name = "Light Autocannon";
+    self.abbrev = "ATC";
+    self.description = "+ Instant-impact weapon. + 3-round burst.";
+    self.icon = "gfx/ui/wep_icons/wi_atc.png";
+    self.model = "q3mdl/weapons/w_atc.md3";
+    self.fire_sound = "sound/weapons/atc_fire.ogg";
+    self.wepFireOffset = '0 0.5 5';
+    setmodel(self, self.model);
   #endif
   
   #ifndef CSQC  
-  self.spreadDefault = '0.025 0.025 0';
-  self.w_attack = data_ini_attack_latc_;
-  self.think = default_weapon_think;
-  self.w_isburst = FALSE;
-  self.burstRate = 1;
-  self.wepFireOffset = '0 0.5 5'; //todo - move client side only
-  self.fire_sound = "sound/weapons/atc_fire.ogg"; //todo - move client side only
-  self.model = "q3mdl/weapons/w_atc.md3"; //todo - move client side only
+    self.w_attack = data_ini_attack_latc_;
+    self.think = default_weapon_think;
+    self.w_isburst = FALSE;
+    self.burstRate = 1;
+    self.model = "q3mdl/weapons/w_atc.md3"; //todo - move client side only
   #endif
 };
 

@@ -14,8 +14,7 @@ void() shield_capacitor_remove_;
 
 void() data_ini_equip_shield_capacitor_={
 
-  self.data_idx = UID_ITEM_shield_capacitor;  
-  self.w_name = "Shield Capacitor";
+  self.data_idx = UID_ITEM_shield_capacitor; 
   
   self.w_clipsize = 1;
   self.reloadRate = 0;
@@ -29,7 +28,8 @@ void() data_ini_equip_shield_capacitor_={
   self.techLevel = 3;
   self.equipSize = 2;
   
-  #ifdef CSQC  
+  #ifdef CSQC   
+    self.w_name = "Shield Capacitor";
     self.model = "q3mdl/weapons/e_scap.md3";  
     self.w_clipsize = -1;
     self.reloadRate = -1;
@@ -44,11 +44,11 @@ void() data_ini_equip_shield_capacitor_={
   #endif
   
   #ifndef CSQC
-  self.item_remove_upgrade = shield_capacitor_remove_;
-  self.w_attack = shield_capacitor_upgrade_;
-  self.think = SUB_Null;
-  self.w_isburst = FALSE;
-  self.model = "q3mdl/weapons/e_scap.md3";
+    self.item_remove_upgrade = shield_capacitor_remove_;
+    self.w_attack = shield_capacitor_upgrade_;
+    self.think = SUB_Null;
+    self.w_isburst = FALSE;
+    self.model = "q3mdl/weapons/e_scap.md3";
   #endif
 };
 

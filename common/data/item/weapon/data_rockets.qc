@@ -16,7 +16,6 @@ void() data_ini_attack_rockets_;
 void() data_ini_rockets_={
 
   self.data_idx = 4;  
-  self.w_name = "Rocket Launcher";
   
   self.w_clipsize = 1;
   self.reloadRate = 1;
@@ -30,26 +29,26 @@ void() data_ini_rockets_={
   self.techLevel = 1;
   self.equipSize = 1;
   
+  self.wepFireOffset = '0 0 3';
+  self.spreadDefault = '0.02 0.025 0';
+  
   #ifdef CSQC
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_mis.md3";
-  self.abbrev = "RCK";
-  //self.description = "+ Burst fires whole clip. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
-  self.description = "+ Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
-  self.icon = "gfx/ui/wep_icons/wi_rck.png";  
-  setmodel(self, self.model);
+    self.w_name = "Rocket Launcher";
+    self.fire_sound = "sound/weapons/mis_fire.ogg";
+    self.model = "q3mdl/weapons/w_mis.md3";
+    self.abbrev = "RCK";
+    self.description = "+ Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+    self.icon = "gfx/ui/wep_icons/wi_rck.png";  
+    setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC
-  self.spreadDefault = '0.02 0.025 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 1.75;
-  self.wepFireOffset = '0 0 3';
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_mis.md3";
-  self.w_attack = data_ini_attack_rockets_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_rocket_;
+    self.w_isburst = FALSE;
+    self.burstRate = 1.75;
+    self.model = "q3mdl/weapons/w_mis.md3";
+    self.w_attack = data_ini_attack_rockets_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_rocket_;
   #endif
 };
 

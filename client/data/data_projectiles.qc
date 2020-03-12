@@ -46,5 +46,11 @@ void( float dataID ) data_sync_new_projectile={
   }
 };
 
+float() predraw_plasma={
+  self.scale = self.scale + 0.075;
+  self.alpha = self.alpha - 0.025;
+  return TRUE;
+};
+
 
 

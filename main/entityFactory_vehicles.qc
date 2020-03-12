@@ -562,7 +562,7 @@ void() build_vehicle_unit={
   //  self.skin = 0;
  // }
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
-  macro_set_model("q3mdl/testball", 0, 0) //->CSQC for specifics
+  macro_set_model("q3mdl/testball.md3", 0, 0) //->CSQC for specifics
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;

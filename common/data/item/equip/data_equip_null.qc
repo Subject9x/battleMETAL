@@ -8,8 +8,7 @@ Overview:
 */
 void() data_ini_empty_weapon_={
 
-  self.data_idx = UID_ITEM_NULL;  
-  self.w_name = "-EMPTY-";
+  self.data_idx = UID_ITEM_NULL;
   
   self.w_clipsize = 0;
   self.reloadRate = 0;
@@ -24,6 +23,7 @@ void() data_ini_empty_weapon_={
   self.equipSize = 1;
   
   #ifdef CSQC  
+    self.w_name = "-EMPTY-";
     self.model = "q3mdl/testball.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
@@ -39,13 +39,12 @@ void() data_ini_empty_weapon_={
   #endif
   
   #ifndef CSQC  
-  self.spreadDefault = '0 0 0';
-  self.w_attack = SUB_Null;
-  self.think = SUB_Null;
-  self.w_isburst = FALSE;
-  self.burstRate = 1;
-  self.wepFireOffset = self.wepFireOffsetCache = '0 0 0 ';
-  self.fire_sound = "";
-  self.model = "";
+    self.spreadDefault = '0 0 0';
+    self.w_attack = SUB_Null;
+    self.think = SUB_Null;
+    self.w_isburst = FALSE;
+    self.burstRate = 1;
+    self.wepFireOffset = self.wepFireOffsetCache = '0 0 0 ';
+    self.model = "q3mdl/testball.md3";
   #endif
 };

@@ -16,7 +16,6 @@ void() energy_battery_remove_;
 void() data_ini_equip_energy_battery_={
 
   self.data_idx = UID_ITEM_energy_battery;  
-  self.w_name = "Energy Battery";
   
   self.w_clipsize = 1;
   self.reloadRate = 0;
@@ -31,6 +30,7 @@ void() data_ini_equip_energy_battery_={
   self.equipSize = 3;
   
   #ifdef CSQC
+    self.w_name = "Energy Battery";
     self.model = "q3mdl/weapons/e_enbat.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
@@ -45,11 +45,11 @@ void() data_ini_equip_energy_battery_={
   #endif
   
   #ifndef CSQC
-  self.think = SUB_Null;
-  self.w_attack = energy_battery_upgrade_;
-  self.item_remove_upgrade = energy_battery_remove_;
-  self.model = "q3mdl/weapons/e_enbat.md3";
-  self.w_isburst = FALSE;
+    self.think = SUB_Null;
+    self.w_attack = energy_battery_upgrade_;
+    self.item_remove_upgrade = energy_battery_remove_;
+    self.model = "q3mdl/weapons/e_enbat.md3";
+    self.w_isburst = FALSE;
   #endif
 };
 

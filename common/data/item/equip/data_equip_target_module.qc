@@ -15,8 +15,7 @@ void() target_module_remove_;
 
 void() data_ini_equip_target_module_={
 
-  self.data_idx = UID_ITEM_target_module;  
-  self.w_name = "Adv. Target Module";
+  self.data_idx = UID_ITEM_target_module; 
   
   self.w_clipsize = 1;
   self.reloadRate = 0;
@@ -30,7 +29,8 @@ void() data_ini_equip_target_module_={
   self.techLevel = 1;
   self.equipSize = 1;
   
-  #ifdef CSQC    
+  #ifdef CSQC   
+    self.w_name = "Adv. Target Module";  
     self.model = "q3mdl/weapons/e_atgm.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
@@ -45,12 +45,12 @@ void() data_ini_equip_target_module_={
   #endif
   
   #ifndef CSQC
-  self.spreadDefault = '0.25 0.20 0.25';  //upgrades Unit's accuracy
-  self.w_attack = target_module_upgrade_;
-  self.item_remove_upgrade = target_module_remove_;
-  self.think = SUB_Null;
-  self.w_isburst = FALSE;
-  self.model = "q3mdl/weapons/e_atgm.md3";
+    self.spreadDefault = '0.25 0.20 0.25';  //upgrades Unit's accuracy
+    self.w_attack = target_module_upgrade_;
+    self.item_remove_upgrade = target_module_remove_;
+    self.think = SUB_Null;
+    self.w_isburst = FALSE;
+    self.model = "q3mdl/weapons/e_atgm.md3";
   #endif
 
 };

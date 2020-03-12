@@ -17,7 +17,6 @@ void() data_ini_attack_missile_laserguide_;
 void() data_ini_missile_laserguide_={
 
   self.data_idx = 9;  
-  self.w_name = "Missile - Laser Guide";
   
   self.w_clipsize = 1;
   self.reloadRate = 0.22;
@@ -31,25 +30,26 @@ void() data_ini_missile_laserguide_={
   self.techLevel = 1;
   self.equipSize = 1;
 
+  self.spreadDefault = '0.03 0.03 0';
+  self.wepFireOffset = '0 0 2';
+  
   #ifdef CSQC
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_lgm.md3"; 
-  self.abbrev = "MLGD";
-  self.description = "+ Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
-  self.icon = "gfx/ui/wep_icons/wi_mlgd.png";  
-  setmodel(self, self.model);
+    self.w_name = "Missile - Laser Guide";  
+    self.fire_sound = "sound/weapons/mis_fire.ogg";
+    self.model = "q3mdl/weapons/w_lgm.md3"; 
+    self.abbrev = "MLGD";
+    self.description = "+ Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+    self.icon = "gfx/ui/wep_icons/wi_mlgd.png";  
+    setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC
-  self.spreadDefault = '0.03 0.03 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 1;
-  self.wepFireOffset = '0 0 2';
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_lgm.md3";  
-  self.w_attack = data_ini_attack_missile_laserguide_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_missile_laserguide_;
+    self.w_isburst = FALSE;
+    self.burstRate = 1;
+    self.model = "q3mdl/weapons/w_lgm.md3";  
+    self.w_attack = data_ini_attack_missile_laserguide_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_missile_laserguide_;
   #endif
 };
 

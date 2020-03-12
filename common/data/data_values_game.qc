@@ -197,15 +197,14 @@ float SENDTYPE_BUILD = 7;
 float SENDTYPE_CHUNK = 8; //Vehicle / Turret / Mech debris
 float SENDTYPE_PROJ = 9;  //projectiles - missiles, etc
 //SendFlags-------------------
-float SENDFLAG_ALL = 1;  //rarely use, sends 'everything'
-float SENDFLAG_MOVE = 2;  //update .origin and .angles of main piece 
-float SENDFLAG_TURRET = 4; //unit's turret entity has rotated angle.
-float SENDFLAG_INI = 8; //unit is stood up by server
-float SENDFLAG_DEAD = 16; //marks as dead, run death anim.
-float SENDFLAG_CRIT = 32; //what component(s) blew off.
-float SENDFLAG_BURN = 64; //what is starting to burn.
+float SENDFLAG_MOVE = 1;  //update .origin and .angles of main piece 
+float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.
+float SENDFLAG_VELOCITY = 4; //unit is stood up by server
+float SENDFLAG_DEAD = 8; //marks as dead, run death anim.
+float SENDFLAG_CRIT = 16; //what component(s) blew off.
+float SENDFLAG_BURN = 32; //what is starting to burn.
+float SENDFLAG_IMPACT = 64; //specifically missile strike on something.
 float SENDFLAG_NEWENT = 128;
-float SENDFLAG_IMPACT = 256; //specifically missile strike on something.
   //128 is hardcoded as isNew, dont change
   //.modelindex
   //.faction

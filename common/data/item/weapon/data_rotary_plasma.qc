@@ -16,7 +16,6 @@ void() data_ini_attack_plasma_;
 void() data_ini_plasma_={
 
   self.data_idx = 6;  
-  self.w_name = "Rotary Plasma Chamber";
   
   self.w_clipsize = 6;
   self.reloadRate = 0.18;
@@ -30,25 +29,26 @@ void() data_ini_plasma_={
   self.techLevel = 3;
   self.equipSize = 2;
   
+  self.wepFireOffset = '0 0 6';
+  self.spreadDefault = '0.015 0.015 0';
+  
   #ifdef CSQC  
-  self.fire_sound = "sound/weapons/rpls_fire.ogg";
-  self.model = "q3mdl/weapons/w_rpc.md3";
-  self.abbrev = "RPC";
-  self.description = "+ Burst-Fires 6 sub-munitions. + Submunitions burn over time on unshielded targets.";
-  self.icon = "gfx/ui/wep_icons/wi_rpc.png";
-  setmodel(self, self.model);
+    self.w_name = "Rotary Plasma Chamber";
+    self.fire_sound = "sound/weapons/rpls_fire.ogg";
+    self.model = "q3mdl/weapons/w_rpc.md3";
+    self.abbrev = "RPC";
+    self.description = "+ Burst-Fires 6 sub-munitions. + Submunitions burn over time on unshielded targets.";
+    self.icon = "gfx/ui/wep_icons/wi_rpc.png";
+    setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC
-  self.spreadDefault = '0.015 0.015 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 1.5;
-  self.wepFireOffset = '0 0 6';
-  self.fire_sound = "sound/weapons/rpls_fire.ogg";
-  self.model = "q3mdl/weapons/w_rpc.md3";
-  self.w_attack = data_ini_attack_plasma_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_plasma_;
+    self.w_isburst = FALSE;
+    self.burstRate = 1.5;
+    self.model = "q3mdl/weapons/w_rpc.md3";
+    self.w_attack = data_ini_attack_plasma_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_plasma_;
   #endif
 };
 

@@ -14,8 +14,7 @@ void() turbo_charger_remove_;
 
 void() data_ini_equip_turbo_charger_={
 
-  self.data_idx = UID_ITEM_turbo_charger;  
-  self.w_name = "Turbo Charger";
+  self.data_idx = UID_ITEM_turbo_charger; 
   
   self.w_clipsize = 1;
   self.reloadRate = 0;
@@ -32,7 +31,8 @@ void() data_ini_equip_turbo_charger_={
   self.techLevel = 2;
   self.equipSize = 3;
   
-  #ifdef CSQC    
+  #ifdef CSQC     
+    self.w_name = "Turbo Charger";
     self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
     self.w_clipsize = -1;
     self.reloadRate = -1;
@@ -47,12 +47,12 @@ void() data_ini_equip_turbo_charger_={
   #endif
   
   #ifndef CSQC
-  self.evasionDrain = 0.13;
-  self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
-  self.w_attack = turbo_charger_upgrade_;
-  self.think = SUB_Null;
-  self.item_remove_upgrade = turbo_charger_remove_;
-  self.w_isburst = FALSE; 
+    self.evasionDrain = 0.13;
+    self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
+    self.w_attack = turbo_charger_upgrade_;
+    self.think = SUB_Null;
+    self.item_remove_upgrade = turbo_charger_remove_;
+    self.w_isburst = FALSE; 
   #endif
 };
 

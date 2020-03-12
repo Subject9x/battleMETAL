@@ -18,9 +18,11 @@ void( float estate ) ai_turret_set_state={
 void() ai_turret_control={
   local entity turretOwner;
   local float ang;
+  local float oldAng;
   if( (self.torsoCenter) ){
     turretOwner = self;
     self = self.torsoCenter;
+      oldAng = self.angles_y;
       macro_set_offset(turretOwner, self.compOffset)
       switch( self.attack_state ){
         case TR_NORM:
@@ -41,7 +43,9 @@ void() ai_turret_control={
       ChangeYaw(); 
       self.v_angle = self.angles;
     self = turretOwner;
-    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+    if( self.angles_y != oldAng ){
+      self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+    }
   }
 };
 

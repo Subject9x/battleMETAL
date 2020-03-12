@@ -8,5 +8,7 @@ Overview:
 
 void( float dataID ) data_sync_new_projectile;
 
+.void() predraw_projectile; //called inside global predraw_missile()
 
+float() predraw_plasma;
 

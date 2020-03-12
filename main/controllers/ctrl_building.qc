@@ -138,8 +138,6 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
   }
-  if( (changedflags & SENDFLAG_INI) ){
-  }
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );

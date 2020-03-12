@@ -163,6 +163,9 @@ void		end_sys_fields;			// flag for structure dumping
 ==============================================================================
 */
 
+float servertime;
+float serverprevtime;
+
 // Additional OPTIONAL Fields and Globals
 float		intermission; // indicates intermission state (0 = normal, 1 = scores, 2 = finale text)
 

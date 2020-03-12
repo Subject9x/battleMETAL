@@ -63,6 +63,7 @@ void() ai_vec_dest_die={
   //te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
   
 
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
   self.nextthink = time + 0.1;
 };

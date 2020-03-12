@@ -21,7 +21,6 @@ void() data_ini_attack_electro_repeater_;
 void() data_ini_electro_repeater_={
   
   self.data_idx = 8;
-  self.w_name = "ESR";
   
   self.w_clipsize = 1;
   self.reloadRate = 0.23;
@@ -35,24 +34,25 @@ void() data_ini_electro_repeater_={
   self.techLevel = 2;
   self.equipSize = 2;
 
+  self.spreadDefault = '0.15 0.2 0';
+  self.wepFireOffset = '0 0 6'; 
+  
   #ifdef CSQC  
-  self.fire_sound = "sound/weapons/esr_fire.ogg";
-  self.model = "q3mdl/weapons/w_esr.md3";
-  self.abbrev = "ESR";
-  self.description = "+ 3 beams per trigger pull. + Instant-impact weapon. + Inaccurate.";
-  self.icon = "gfx/ui/wep_icons/wi_esr.png";
-  setmodel(self, self.model);
+    self.w_name = "Electro-Static Repeater";
+    self.fire_sound = "sound/weapons/esr_fire.ogg";
+    self.model = "q3mdl/weapons/w_esr.md3";
+    self.abbrev = "ESR";
+    self.description = "+ 3 beams per trigger pull. + Instant-impact weapon. + Inaccurate.";
+    self.icon = "gfx/ui/wep_icons/wi_esr.png";
+    setmodel(self, self.model);
   #endif
   
   #ifndef CSQC
-  self.spreadDefault = '0.15 0.2 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 0;
-  self.wepFireOffset = '0 0 6'; 
-  self.fire_sound = "sound/weapons/esr_fire.ogg";
-  self.model = "q3mdl/weapons/w_esr.md3";
-  self.think = default_weapon_think;
-  self.w_attack = data_ini_attack_electro_repeater_;
+    self.w_isburst = FALSE;
+    self.burstRate = 0;
+    self.model = "q3mdl/weapons/w_esr.md3";
+    self.think = default_weapon_think;
+    self.w_attack = data_ini_attack_electro_repeater_;
   #endif
   
 };

@@ -20,7 +20,6 @@ void() data_ini_attack_quantum_;
 void() data_ini_quantum_={
 
   self.data_idx = 5;  
-  self.w_name = "Quantum Rifle";
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
@@ -34,26 +33,27 @@ void() data_ini_quantum_={
   self.techLevel = 2;
   self.equipSize = 1;
  
+  self.spreadDefault = '0.005 0.005 0';
+  self.wepFireOffset = '0 0 2';
+  
   #ifdef CSQC
-  self.fire_sound = "sound/weapons/qrfl_fire.ogg";
-  self.model = "q3mdl/weapons/w_qrf.md3";
-  self.damageValue = (DAT_QRFL_QBITS * self.damageValue) / 3 + 15;
-  self.abbrev = "QRF";
-  self.description = "+ Instant-impact weapon. + Initial damage on-hit. + 8 sub-munitions. + sub-munitions home on impact spot.";
-  self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
-  setmodel(self, self.model);
+    self.w_name = "Quantum Rifle";
+    self.fire_sound = "sound/weapons/qrfl_fire.ogg";
+    self.model = "q3mdl/weapons/w_qrf.md3";
+    self.damageValue = (DAT_QRFL_QBITS * self.damageValue) / 3 + 15;
+    self.abbrev = "QRF";
+    self.description = "+ Instant-impact weapon. + Initial damage on-hit. + 8 sub-munitions. + sub-munitions home on impact spot.";
+    self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
+    setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC
-  self.spreadDefault = '0.005 0.005 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 0;
-  self.wepFireOffset = '0 0 2';
-  self.fire_sound = "sound/weapons/qrfl_fire.ogg";
-  self.model = "q3mdl/weapons/w_qrf.md3";
-  self.w_attack = data_ini_attack_quantum_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_quantum_bit_;
+    self.w_isburst = FALSE;
+    self.burstRate = 0;
+    self.model = "q3mdl/weapons/w_qrf.md3";
+    self.w_attack = data_ini_attack_quantum_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_quantum_bit_;
   #endif
 };
 

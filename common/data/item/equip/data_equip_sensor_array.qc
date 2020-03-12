@@ -16,7 +16,6 @@ void() sensor_array_remove_;
 void() data_ini_equip_sensor_array_={
 
   self.data_idx = UID_ITEM_large_sensors;  
-  self.w_name = "Large Sensor Array";
   
   self.w_clipsize = 1;
   self.reloadRate = 0;
@@ -31,6 +30,7 @@ void() data_ini_equip_sensor_array_={
   self.equipSize = 1;
   
   #ifdef CSQC
+    self.w_name = "Large Sensor Array";
     self.model = "q3mdl/weapons/e_lsar.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
@@ -45,11 +45,11 @@ void() data_ini_equip_sensor_array_={
   #endif
   
   #ifndef
-  self.item_remove_upgrade = sensor_array_remove_;
-  self.w_attack = sensor_array_upgrade_;
-  self.think = SUB_Null;
-  self.w_isburst = FALSE;
-  self.model = "q3mdl/weapons/e_lsar.md3";
+    self.item_remove_upgrade = sensor_array_remove_;
+    self.w_attack = sensor_array_upgrade_;
+    self.think = SUB_Null;
+    self.w_isburst = FALSE;
+    self.model = "q3mdl/weapons/e_lsar.md3";
   #endif
 };
 

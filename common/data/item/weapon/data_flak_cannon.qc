@@ -21,7 +21,6 @@ void() data_ini_attack_flak_;
 void() data_ini_flak_cannon_={
 
   self.data_idx = 12;  
-  self.w_name = "Flak Cannon";
   
   self.w_clipsize = 1;
   self.reloadRate = 0.6;
@@ -35,25 +34,26 @@ void() data_ini_flak_cannon_={
   self.techLevel = 1;
   self.equipSize = 1;
   
+  self.spreadDefault = '0.017 0.015 0';
+  self.wepFireOffset = '0 0 5';
+  
   #ifdef CSQC
-  self.fire_sound = "sound/weapons/flak_fire.ogg";
-  self.model = "q3mdl/weapons/w_flk.md3";
-  self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
-  self.abbrev = "FLAK";
-  self.description = "+ Instant-impact weapon. + Shotgun Damage pattern when Target has no <shields>. + 8 sub-munitions.";
-  self.icon = "gfx/ui/wep_icons/wi_flak.png";
-  setmodel(self, self.model);
+    self.w_name = "Flak Cannon";
+    self.fire_sound = "sound/weapons/flak_fire.ogg";
+    self.model = "q3mdl/weapons/w_flk.md3";
+    self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
+    self.abbrev = "FLAK";
+    self.description = "+ Instant-impact weapon. + Shotgun Damage pattern when Target has no <shields>. + 8 sub-munitions.";
+    self.icon = "gfx/ui/wep_icons/wi_flak.png";
+    setmodel(self, self.model);
   #endif
   
   #ifndef CSQC
-  self.spreadDefault = '0.017 0.015 0';
-  self.burstRate = 2;
-  self.w_isburst = FALSE;
-  self.wepFireOffset = '0 0 5';
-  self.fire_sound = "sound/weapons/flak_fire.ogg";
-  self.model = "q3mdl/weapons/w_flk.md3";
-  self.w_attack = data_ini_attack_flak_;
-  self.think = default_weapon_think;
+    self.burstRate = 2;
+    self.w_isburst = FALSE;
+    self.model = "q3mdl/weapons/w_flk.md3";
+    self.w_attack = data_ini_attack_flak_;
+    self.think = default_weapon_think;
   #endif
 };
 

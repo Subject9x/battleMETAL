@@ -60,6 +60,7 @@ void() ai_turret_die={
   self.mins_z = 0;
   setsize(self, self.mins, self.maxs);
   droptofloor();
+  self.solid = SOLID_NOT;
   
   local entity w_chain;
   w_chain = self.w_slot;

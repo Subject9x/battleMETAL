@@ -40,28 +40,22 @@ void( float isNew ) sendent_handle_update={
       sendent_handle_missile( isNew, entFlags );
       break;
   }
-  client_get_contact();
 };
-
 
 void( float isNew, float changeFlags ) sendent_handle_tank={
   local vector turretAng;
   local entity this;
   local entity weps;
-
+    
+  self.origin_x = ReadCoord();
+  self.origin_y = ReadCoord();
+  self.origin_z = ReadCoord();
+  
+  self.angles_x = ReadCoord();
+  self.angles_y = ReadCoord();
+  self.angles_z = ReadCoord();
+  
   if( changeFlags & SENDFLAG_MOVE ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
-    
-    if( self.torsoCenter != world){
-      self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
-    }
-    makevectors(self.angles);
     for(weps = self.w_slot; weps != world; weps = weps.w_slot){
       if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
         weps.angles = self.angles;
@@ -116,15 +110,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     }
   }
   if( changeFlags & SENDFLAG_NEWENT ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
-    setorigin(self, self.origin);
-    
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.data_type = ReadByte();
@@ -152,6 +137,9 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
         self.owner = this;
       self = this;
     }
+    self.predraw = predraw_tank;
+    setmodel(self, self.model);
+    setorigin(self, self.origin);
   }
 };
 
@@ -159,13 +147,14 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   local entity weps;
   local entity this;
   
+  self.origin_x = ReadCoord();
+  self.origin_y = ReadCoord();
+  self.origin_z = ReadCoord();
+  self.angles_x = ReadCoord();
+  self.angles_y = ReadCoord();
+  self.angles_z = ReadCoord();
+  
   if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
     setorigin(self, self.origin);
     makevectors(self.angles);
     for(weps = self.w_slot; weps != world; weps = weps.w_slot){
@@ -204,13 +193,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
     setorigin(self, self.origin);
     
     self.faction = ReadByte();
@@ -241,6 +223,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
         self.owner = this;
       self = this;
     }
+    self.predraw = predraw_spg;
   }
 };
 
@@ -249,13 +232,15 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   local entity weps;
   local entity this;
   
+  self.origin_x = ReadCoord();
+  self.origin_y = ReadCoord();
+  self.origin_z = ReadCoord();
+  self.angles_x = ReadCoord();
+  self.angles_y = ReadCoord();
+  self.angles_z = ReadCoord();
+  
   if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
+    setorigin(self, self.origin);
     makevectors(self.angles);
     if( self.torsoCenter ){
       self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
@@ -311,13 +296,6 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
     setorigin(self, self.origin);
     
     self.faction = ReadByte();
@@ -347,6 +325,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
         self.owner = this;
       self = this;
     }
+    self.predraw = predraw_tank;
   }
 };
 
@@ -380,9 +359,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       remove(weps);
     }
   }
-  if( (changeFlags & SENDFLAG_INI) ){
-
-  }
   if( (changeFlags & SENDFLAG_NEWENT) ){
     
     self.origin_x = ReadCoord();
@@ -392,7 +368,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.angles_x = ReadCoord();
     self.angles_y = ReadCoord();
     self.angles_z = ReadCoord();
-    setorigin(self, self.origin);
     
     self.faction = ReadByte();
     self.data_idx = ReadByte();
@@ -419,6 +394,8 @@ void( float isNew, float changeFlags) sendent_handle_turret={
         self.owner = this;
       self = this;
     }
+    setmodel(self, self.model);
+    setorigin(self, self.origin);
   }
 };
 
@@ -447,54 +424,105 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.angles_x = ReadCoord();
     self.angles_y = ReadCoord();
     self.angles_z = ReadCoord();
-    setorigin(self, self.origin);
     
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.data_type = ReadByte();
     
     data_sync_new_building(self.data_idx);
-    
+    setmodel(self, self.model);
+    setorigin(self, self.origin);
     self.drawmask = MASK_ENGINE;
   }
 };
 
-
 void( float isNew, float changeFlags) sendent_handle_missile={
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
-    if( self.traileffectnum > 0 ){
-      makevectors(self.angles);
-      pointparticles( self.traileffectnum, self.origin, normalize((self.origin + (v_forward * -4)) - self.origin), 1);
+  
+  self.origin_x = ReadCoord();
+  self.origin_y = ReadCoord();
+  self.origin_z = ReadCoord();
+  
+  self.angles_x = ReadCoord();
+  self.angles_y = ReadCoord();
+  self.angles_z = ReadCoord();
+
+  self.velocity_x = ReadCoord();
+  self.velocity_y = ReadCoord();
+  self.velocity_z = ReadCoord();
+ 
+  if( changeFlags & 128 ){
+    self.data_idx = ReadByte();
+    data_sync_new_projectile(self.data_idx);
+    setmodel(self, self.model);
+    setorigin(self, self.lastorigin);
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_missile;
+    self.alpha = 1;
+    self.scale = 1;
+  }
+};
+
+float() predraw_tank={
+  local float frac;
+  local entity weps;
+    local float frac;
+  local vector newpos;
+  local vector moved;
+
+	/*frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
+	frac = bound(0, frac, 100);
+	newpos = self.prevorigin + (self.lastorigin-self.prevorigin) * frac;
+	moved = newpos - self.origin;	//this is how much we've moved since the last render frame, note that it implies frametime.
+	self.origin = newpos;*/
+  
+  setorigin(self, self.origin);
+  if( self.deadflag == DEAD_NO ){
+    makevectors(self.angles);
+    if( self.torsoCenter != world ){
+      self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+      setorigin(self.torsoCenter, self.torsoCenter.origin);
+    }
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+      setorigin(weps, weps.origin);
     }
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
-    setorigin(self, self.origin);
-    
-    self.data_idx = ReadByte();
-    data_sync_new_projectile(self.data_idx);
-    if( self.traileffectnum > 0 ){
-      makevectors(self.angles);
-      pointparticles( self.traileffectnum, self.origin, normalize((self.origin + (v_forward * -4)) - self.origin), 1);
-    }
-    setmodel(self, self.model);
-    self.drawmask = MASK_ENGINE;
+  return TRUE;
+};
+float() predraw_spg={
+  local float frac;
+  
+  setorigin(self, self.origin);
+  return TRUE;
+};
+float() predraw_missile={
+  local float frac;
+  local vector newpos;
+  local vector moved;
+
+	/*frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
+	frac = bound(0, frac, 0.1);
+	newpos = self.prevorigin + (self.lastorigin - self.prevorigin) * frac;
+	moved = newpos - self.origin;	//this is how much we've moved since the last render frame, note that it implies frametime.
+	self.origin = newpos;*/
+  
+  setorigin(self, self.origin);
+  if( self.traileffectnum > 0 ){
+    makevectors(self.angles);
+    pointparticles( self.traileffectnum, self.origin, normalize(self.prevorigin - self.origin) * 2, 1);
   }
+  if( self.predraw_projectile ){
+    self.predraw_projectile();
+  }
+  return TRUE;
+};
+
+float() predraw_turret={
+  
+  
+
+  return TRUE;
 };
 
 void() sendent_set_weapon={

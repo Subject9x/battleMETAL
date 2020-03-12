@@ -190,14 +190,14 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
         self.nextthink = time + updateDelay;
       }
       else{
-        self.nextthink = time + 0.1;
+        self.nextthink = time + 0.01;
       }
       macro_set_collider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE)
-      macro_set_model( "q3mdl/testball", 0, 0)
+      setmodel(self, "q3mdl/testball.md3");
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
       self.SendEntity = te_send_missile;
-      self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+      self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_VELOCITY;
     self = theWeapon;
   }
   else{
