@@ -15,8 +15,32 @@ void() data_projectile_plasma_touch;
 void() data_projectile_plasma_burn_ini_;
 void() data_projectile_plasma_burn_th;
 void() data_projectile_plasma_think_;
-
 #endif CSQC
+
+#ifdef CSQC
+void() projectile_plasma_expl={
+  local vector hitColor;
+  local float hitBloom;
+  local float hitScale;
+  local float hitDebris;
+  
+  if( self.impactType == IMPACT_SKY ){
+    return;
+  }
+  
+  if( self.impactType == IMPACT_SHIELD ){
+    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.7, ATTN_NORM );
+  }
+  
+  if( self.impactType == IMPACT_ARMOR ){
+    pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
+  }
+  else{
+    pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+  }
+};
+#endif
+
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
   self.data_velocity = 1200;
@@ -27,9 +51,9 @@ void() data_projectile_ini_plasma_={
     self.alpha = 0.85;
     self.model = "q3mdl/proj/mdl_proj_rpc.md3";
     self.effects = EF_NOSHADOW | EF_ADDITIVE;
-    self.modelflags = 0;
     self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
     self.predraw_projectile = predraw_plasma;
+    self.pcl_explode = projectile_plasma_expl;
   #endif
   
   #ifndef CSQC
@@ -39,39 +63,48 @@ void() data_projectile_ini_plasma_={
 };
 #ifndef CSQC
 void() data_projectile_plasma_burn_ini_={
+  self.movetype = MOVETYPE_FOLLOW;
   self.aiment = self.cockpit;
   self.punchangle = self.cockpit.angles;
   self.view_ofs = self.origin - self.cockpit.origin;
   self.angles = self.cockpit.angles;
   self.v_angle = self.angles - self.cockpit.angles;
-  self.think = data_projectile_plasma_burn_th;
-  self.nextthink = time + 0.01;
   self.data_lifetime = time + data_projectile_plasma_burn_time;
   self.alpha = 0.75;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
+  self.impactType = IMPACT_ARMOR;
+  self.think = data_projectile_plasma_burn_th;
+  self.nextthink = time + 0.01;
 };
 
 void() data_projectile_plasma_burn_th={
+  
   if( self.enemy.deadflag > DEAD_NO || self.cockpit.deadflag > DEAD_NO ){
-    remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
     return;
   }
   
+  //todo - rebalance
   if( self.enemy.shield > 0 ){
-    remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
     return;
   }
   
   t_damage(self.enemy, self, self.owner, self.damageValue, self.damageType, self.cockpit.origin, '0 0 0');
-  client_send_particle( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   
   if(time > self.data_lifetime){
-    remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
     return;
   }
+  
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
+  self.impactType = IMPACT_ARMOR;
 
   self.think = data_projectile_plasma_burn_th;
   self.nextthink = time + 0.1;
-  
 };
 
 void() data_projectile_plasma_touch={
@@ -79,16 +112,19 @@ void() data_projectile_plasma_touch={
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+      
+  self.impactType = IMPACT_DIRT;
   if (pointcontents(self.origin) == CONTENT_SKY){  
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
-    return;
+    self.impactType = IMPACT_SKY;
   }
-
-  client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+  
+  //client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
   if(other.takedamage){
     if(other.shield > 0){
+      self.impactType = IMPACT_SHIELD;
       t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     }
     else{
@@ -101,16 +137,16 @@ void() data_projectile_plasma_touch={
       if( other != hit ){
         setorigin(self, self.origin);
       }
-      self.movetype = MOVETYPE_FOLLOW;
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
+      self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
       self.think = data_projectile_plasma_burn_ini_;
-      self.nextthink = time + 0.01;
+      self.nextthink = time + 0.05;
       return;
     }
 	}
   self.think = SUB_Remove;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.05;
 };
 
 void() data_projectile_plasma_think_={

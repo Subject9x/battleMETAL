@@ -34,6 +34,7 @@ float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust;
 void() cl_particles_fogFrame;
 
 //Particle data
+.void() pcl_explode;  //self implementing, whoo
 .float pcl_effectnum;
 .vector pcl_velocity;
 .float pcl_lifetime;
@@ -41,22 +42,16 @@ void() cl_particles_fogFrame;
 .float pcl_fadeout; //time when debris starts to fade out
 
 //===================================
-void() te_shield_think={
-
-  self.alpha = self.alpha - 0.3;
-  self.angles = vectoangles( getpropertyvec(VF_ORIGIN) - self.origin );
-  
-  self.think = te_shield_think;
-  if( self.alpha <= 0 ){
-    self.alpha = 0;
-    self.think = SUB_Remove;
-  }
-
-  self.nextthink = time + 0.01;
-};
 
 vector() te_read_vector;
 vector() te_read_angle;
+
+/*
+  Client-side explosion shell
+
+*/
+void() te_missile_explode_th;
+void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType, float bloom ) te_missile_explode;
 
 /*
   Networking of chunks?
@@ -92,22 +87,18 @@ void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entA
 /*
   Muzzle flash
 */
-//0 = none
-float IMPACT_SHIELD = 1;
-float IMPACT_ARMOR = 2;
-float IMPACT_DIRT = 3;
-void( float flashId, vector flashOrg, vector flashVel, float impactType ) particle_muzzle_flash;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_latc;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_emp;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_las;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_mis;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_qrfl;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_rpc;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_pac;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_esr;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_mlg;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_marh;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_sfa;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_flak;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_ion;
-void( vector muzzleOrg, vector muzzleVel, float impactType ) particle_muzzleflash_swarm;
+void( float flashId, vector flashOrg, vector flashVel, float impactStyle ) particle_muzzle_flash;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_latc;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_emp;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_las;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_mis;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_qrfl;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_rpc;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_pac;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_esr;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_mlg;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_marh;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_sfa;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_flak;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_ion;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_swarm;

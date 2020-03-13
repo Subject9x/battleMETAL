@@ -271,8 +271,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     trg.dmg_take = trg.dmg_take + random() * 3;
   }
   
-  pointsound (dmgTrg.origin, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons  
-  
   //the special hit-location calculator is only run for DATA_MECH units
   if( trg.data_type == DATA_MECH ){
     //filter out leg hits

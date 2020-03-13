@@ -15,6 +15,33 @@ void() data_projectile_snub_artillery_touch_;
 void() data_projectile_snub_artillery_th;
 #endif CSQC
 
+#ifdef CSQC
+void() projectile_sfga_expl={
+  local vector hitColor;
+  local float hitBloom;
+  local float hitScale;
+  local float hitDebris;
+  
+  if( self.impactType == IMPACT_SKY ){
+    return;
+  }
+  if( self.impactType == IMPACT_SHIELD ){
+    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.9, ATTN_NORM );
+    pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+    te_missile_explode( self.origin, 2, '0 0 1', 0, 0, -0.05 ); 
+  }
+  else if( self.impactType == IMPACT_ARMOR ){
+    pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
+    pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0, 0, 0.1 ); 
+  }
+  else{
+    pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
+    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', min(self.damageValue / 7, 10), ceil( random() * 3), 0.05 ); 
+  }
+};
+#endif
+
 void() data_projectile_ini_snub_artillery_={
   self.classname = "missile";
   self.data_velocity = 1000;
@@ -26,6 +53,7 @@ void() data_projectile_ini_snub_artillery_={
     self.effects = EF_NOSHADOW;
     self.colormod =  '0.85 0.45 0.45';
     self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
+    self.pcl_explode = projectile_sfga_expl;
   #endif
     
   #ifndef CSQC
@@ -35,7 +63,6 @@ void() data_projectile_ini_snub_artillery_={
 };
 
 #ifndef CSQC
-
 void() data_projectile_snub_artillery_th={
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.think = data_projectile_snub_artillery_th;
@@ -43,29 +70,35 @@ void() data_projectile_snub_artillery_th={
 };
 
 void() data_projectile_snub_artillery_touch_={
-  
-  if( pointcontents(self.origin) == CONTENT_SKY ){
-    remove(self);
-    return;
-  }
-  
-  makevectors(self.angles);
-  if( other.takedamage ){
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-    if( other.shield > 0){
-      client_send_particle( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
-    }else{
-      te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 7, 1);
-    }
-    remove(self);
-    return;
-  }
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.8 0.5', min(self.damageValue / 7, 10) , ceil( random() * 3) );
-  data_projectile_snub_artillery_radiusDamage();
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
   
-  remove(self);
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT;
+  self.impactType = IMPACT_DIRT;
+  if( pointcontents(self.origin) == CONTENT_SKY ){
+    self.impactType = IMPACT_SKY;
+  }
+  
+  if( other.takedamage ){
+    self.impactType = IMPACT_ARMOR;
+    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    if( other.shield > 0){
+      self.impactType = IMPACT_SHIELD;
+    }
+    else{
+      self.damageValue = self.damageValue * 0.5;
+      data_projectile_snub_artillery_radiusDamage();
+    }
+  }
+  else{
+    data_projectile_snub_artillery_radiusDamage();
+  }
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.05;
 };
 
 void() data_projectile_snub_artillery_radiusDamage={

@@ -519,7 +519,6 @@ void(string s) CSQC_Parse_StuffCmd =
 // if string is interesting, deal with it, otherwise pass it to print() to invoke the engine code.
 void(string s) CSQC_Parse_Print =
 {
-  cons_logAString("test s", s); //DEBUG
 	print(s);
 };
 

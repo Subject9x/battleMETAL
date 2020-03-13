@@ -10,8 +10,28 @@ Overview:
 
 #ifndef CSQC
 void() data_projectile_ini_quantum_bit_touch_;
-
 #endif CSQC
+
+#ifdef CSQC
+void() projectile_qbit_expl={
+  local vector hitColor;
+  local float hitBloom;
+  local float hitScale;
+  local float hitDebris;
+  
+  if( self.impactType == IMPACT_SKY ){
+    return;
+  }
+  if( self.impactType == IMPACT_SHIELD ){
+    pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
+  }
+  else if( self.impactType == IMPACT_ARMOR ){
+    pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
+  }
+};
+#endif
+
 void() data_projectile_ini_quantum_bit_={
   self.classname = "missile";
   self.data_velocity = 275;
@@ -21,9 +41,9 @@ void() data_projectile_ini_quantum_bit_={
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
     self.effects = EF_NOSHADOW;
-    self.modelflags = 0;
     self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
-    self.damageType = self.damageType | EFF_SHD;      
+    self.damageType = self.damageType | EFF_SHD;
+    self.pcl_explode = projectile_qbit_expl;
   #endif
   
   #ifndef CSQC
@@ -31,26 +51,28 @@ void() data_projectile_ini_quantum_bit_={
     self.think = SUB_Remove;
   #endif
 };
+
 #ifndef CSQC
 void() data_projectile_ini_quantum_bit_touch_={
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  self.impactType = IMPACT_DIRT;
 	if (pointcontents(self.origin) == CONTENT_SKY || pointcontents(self.origin) == CONTENT_SOLID){
-    self.traileffectnum = 0;
-    remove(self);
-		return;
+    self.impactType = IMPACT_SKY;
 	}
   
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    self.impactType = IMPACT_ARMOR;
     if( other.shield > 0 ){
-      client_send_particle( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+      self.impactType = IMPACT_SHIELD;
     }
-    self.traileffectnum = 0;
-    remove(self);
-    return;
   }  
   
-  client_send_particle( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
-    self.traileffectnum = 0;
-  remove(self);
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.05;
 };
 #endif CSQC

@@ -437,7 +437,8 @@ void( float isNew, float changeFlags) sendent_handle_building={
 };
 
 void( float isNew, float changeFlags) sendent_handle_missile={
-  
+  local float impactEvent;
+  self.prevorigin = self.origin;
   self.origin_x = ReadCoord();
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
@@ -450,11 +451,19 @@ void( float isNew, float changeFlags) sendent_handle_missile={
   self.velocity_y = ReadCoord();
   self.velocity_z = ReadCoord();
  
+  if( changeFlags & SENDFLAG_IMPACT ){
+    self.impactType = ReadByte();
+    self.damageValue = ReadByte();
+    if( self.pcl_explode ){
+      self.pcl_explode();
+    }
+  }
   if( changeFlags & 128 ){
     self.data_idx = ReadByte();
+    self.damageValue = ReadByte();
     data_sync_new_projectile(self.data_idx);
     setmodel(self, self.model);
-    setorigin(self, self.lastorigin);
+    setorigin(self, self.origin);
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_missile;
     self.alpha = 1;
@@ -510,7 +519,7 @@ float() predraw_missile={
   setorigin(self, self.origin);
   if( self.traileffectnum > 0 ){
     makevectors(self.angles);
-    pointparticles( self.traileffectnum, self.origin, normalize(self.prevorigin - self.origin) * 2, 1);
+    pointparticles( self.traileffectnum, self.origin, normalize(self.origin - self.prevorigin) * 2, 1);
   }
   if( self.predraw_projectile ){
     self.predraw_projectile();

@@ -13,8 +13,35 @@ Overview:
 void() data_projectile_missile_activeradar_think;
 void() data_projectile_missile_activeradar_delay;
 void() data_projectile_missile_activeradar_touch;
-
 #endif CSQC
+
+#ifdef CSQC
+void() projectile_marh_expl={
+  local vector hitColor;
+  local float hitBloom;
+  local float hitScale;
+  local float hitDebris;
+  if( self.impactType == IMPACT_SKY ){
+    return;
+  }
+  if( self.impactType == IMPACT_SHIELD ){
+    hitColor = '0 0.2 0.67';
+    hitBloom = -0.01;
+    hitScale = 0.5;
+    hitDebris = rint(random() * 3);
+    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
+  }
+  else{
+    hitColor = '0.969 0.996 0.18';
+    hitBloom = 0.01;
+    hitScale = 1;
+    hitDebris = min(self.damageValue / 7, 3);
+    pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
+  }
+  te_missile_explode( self.origin, hitScale, hitColor, hitDebris, 0, hitBloom ); 
+};
+#endif
+
 void() data_projectile_ini_missile_active_radar_={
   self.classname = "missile";
   self.data_velocity = 650;
@@ -26,7 +53,8 @@ void() data_projectile_ini_missile_active_radar_={
     self.model = "q3mdl/proj/mdl_proj_marh.md3";
     self.effects = EF_NOSHADOW;
     self.modelflags = 0;
-    self.traileffectnum = particleeffectnum("TE_ARH_TRAIL"); 
+    self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
+    self.pcl_explode = projectile_marh_expl;
   #endif
   
   #ifndef CSQC
@@ -94,29 +122,28 @@ void() data_projectile_missile_activeradar_delay={
 };
 
 void() data_projectile_missile_activeradar_touch={
-	if (pointcontents(self.origin) == CONTENT_SKY){
-    remove(self);
-		return;
-	}
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   
+	if (pointcontents(self.origin) == CONTENT_SKY){
+    self.impactType = IMPACT_SKY;
+	}
+   self.impactType = IMPACT_ARMOR;
   if( other == self.owner ){
     return;
   }
-
+  
+ 
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
-      self.think = SUB_Remove;
-      self.nextthink = time + 0.1;
-      return;
+      self.impactType = IMPACT_SHIELD;
     }
   }
 
-  makevectors(self.velocity);
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.969 0.996 0.18',  min(self.damageValue / 5, 10), 1);
   self.think = SUB_Remove;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.05;
 };
 #endif CSQC

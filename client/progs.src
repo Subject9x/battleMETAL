@@ -22,6 +22,7 @@ data/headers/data_buildings.qh
 data/headers/data_turrets.qh
 data/headers/data_vehicles.qh
 data/headers/data_projectiles.qh
+util/headers/particle_sys.qh
 
 network/headers/client_globals.qh
 network/headers/server_localcmd.qh
@@ -115,8 +116,6 @@ util/headers/input_events.qh
   ui/headers/hud_system_sound.qh
   ui/headers/hud_system_event.qh
 //================
-
-util/headers/particle_sys.qh
 
 //CSQC Menu Headers
   ui/menu/headers/ui_util.qh

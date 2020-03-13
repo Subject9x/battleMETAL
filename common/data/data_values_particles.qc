@@ -4,6 +4,13 @@ Author: Peter Roohr
 Date: 01/22/2017
 Overview: data def file for particles
 */
+
+//Projectil Impact Events
+float IMPACT_SKY = 0;
+float IMPACT_DIRT = 1;
+float IMPACT_SHIELD = 2;
+float IMPACT_ARMOR = 3;
+
 //ALERT: 70-75 are reserved, otherwise go nuts?
 //TE_ ID's
 float TE_CLIENT_INFO = 80;  //not a particle but here for completeness

@@ -65,10 +65,6 @@ void() data_ini_attack_quantum_={
   local vector hitMax;
   local vector rando;
 
-  local vector prtclRail_org;
-  local vector prtclRail_end;
-  local vector prtclSpark_org;
-
   ctrl_weapon_fireOffset();  
   
   ctrl_weapon_updateAmmo( FALSE );
@@ -77,15 +73,15 @@ void() data_ini_attack_quantum_={
   hitMax = '25 25 25';
   hitMin = '-25 -25 -25';
   
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
-  
   if( trace_ent.takedamage ){
     hitZone = trace_ent.origin;
     hitMax = trace_ent.maxs * 3;
     if( (self.owner.flags & FL_CLIENT) ){
-      t_damage(trace_ent, self, FIRE_ENT, 15, self.damageType, FIRE_ENDPOINT, '0 0 0');    
+      t_damage(trace_ent, self, FIRE_ENT, 15, self.damageType, FIRE_ENDPOINT, '0 0 0');
     }
   }
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
+  
   if( self.data_ini_projectile ){
     if( (self.owner.flags & FL_CLIENT) ){
       qbits = DAT_QRFL_QBITS;

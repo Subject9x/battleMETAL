@@ -78,7 +78,7 @@ void() data_ini_attack_missile_swarm_={
         if( !ai_check_face(targs, 0.7) || (targs == self.owner) ){
           continue;
         }
-        if( !(targs.flags & FL_MONSTER) || !(targs.flags & FL_CLIENT) ){
+        if( !(targs.flags & FL_UNIT) ){
           continue;
         }
         if( targs.faction == self.owner.faction){

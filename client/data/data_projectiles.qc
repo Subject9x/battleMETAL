@@ -47,8 +47,15 @@ void( float dataID ) data_sync_new_projectile={
 };
 
 float() predraw_plasma={
-  self.scale = self.scale + 0.075;
-  self.alpha = self.alpha - 0.025;
+  if( self.impactType == IMPACT_ARMOR ){
+    self.alpha = 0.33;
+    self.scale = 0.33;
+  }
+  else{
+    self.scale = self.scale + 0.075;
+    self.alpha = self.alpha - 0.025;
+    //todo - transition color tint to 'orange' over life time
+  }
   return TRUE;
 };
 
