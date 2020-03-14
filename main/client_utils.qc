@@ -145,29 +145,6 @@ void( entity targetClient ) client_push_hud_highlight={
   self = this;
 }; 
 
-//TODO - refactor navpoint 
-//events: 
-void( entity navpoint ) client_send_navpoint={
-  local float nactive;
-  
-  msg_entity = self;
-  
-  nactive = navpoint.isActive;
-  if( navpoint.faction != self.faction ){
-    nactive = FALSE;
-  }
-  
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_EVT_NAV );
-  
-  WriteByte( MSG_ONE, navpoint.data_idx);
-  WriteByte( MSG_ONE, nactive);
-  
-  WriteCoord( MSG_ONE, navpoint.origin_x);
-  WriteCoord( MSG_ONE, navpoint.origin_y);
-  WriteCoord( MSG_ONE, navpoint.origin_z);
-};
-
 //TODO - refactor objectives
 void( entity objective ) client_send_objective={
   if( objective.faction != self.faction ){
@@ -191,27 +168,6 @@ void( entity objective ) client_send_objective={
     WriteByte( MSG_ONE, objective.isActive); 
     WriteByte( MSG_ONE, objective.aState);
   }
-};
-
-//TODO - refactor 
-void( entity deploy ) client_send_deploypoint={
-  msg_entity = self;
-  local float nactive;
-  
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_EVT_DEP );
-  
-  WriteByte( MSG_ONE, deploy.data_idx);
-  
-  nactive = deploy.isActive;
-  if( deploy.faction != self.faction ){
-    nactive = FALSE;
-  }
-  WriteByte( MSG_ONE, nactive);
-  
-  WriteCoord( MSG_ONE, deploy.origin_x);
-  WriteCoord( MSG_ONE, deploy.origin_y);
-  WriteCoord( MSG_ONE, deploy.origin_z);
 };
 
 //TODO - refactor
@@ -251,11 +207,10 @@ void() client_push_mapobjects={
   for(obj = findchainflags( flags, FL_NODE ); obj != world; obj = obj.chain){
     switch( obj.data_type ){
       case DATA_DEPL:
-        //client_send_deploypoint( obj );
         obj.SendFlags = obj.SendFlags | SENDFLAG_NEWENT;
         break;
       case DATA_NAVP:
-        client_send_navpoint( obj );
+        obj.SendFlags = obj.SendFlags | SENDFLAG_NEWENT;
         break;
       case DATA_OBJT:
         client_send_objective( obj );

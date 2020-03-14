@@ -11,6 +11,7 @@ Overview:
     
 */
 
+float() predraw_navpoint;
 
 
 void( float isNew, float entFlags ) sendent_handle_map;

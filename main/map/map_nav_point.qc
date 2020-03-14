@@ -22,19 +22,12 @@ void() nav_point_touch={
       return;
     }
     if( other.faction == self.faction ){
+      self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
       self.enemy = other;
       self.isActive = 2;
-      this = self;
-      self = other;
-        client_send_navpoint( this );
-      self = this;
-      that = other;
-      
+
       // trigOnTarget is used specifically here to trigger an objective
-      trigger_event( that, self.target );
-      self.effects = self.effects - ( self.effects &(EF_DOUBLESIDED | EF_NOSHADOW | EF_FULLBRIGHT)); 
-      self.alpha = 0.2;
-      self.colormod = '0.15 0.15 0.15';
+      trigger_event( other, self.target );
       //multi_trigger();
       if( (self.spawnflags & 2) ){
         self.isActive = 1;
@@ -71,7 +64,9 @@ void() nav_point_use={
 void() map_nav_point_th={
 
   self.angles_y = anglemod(self.angles_y + 1);
-
+  self.SendEntity = send_nav_point;
+  self.pflags = self.pflags | PFLAGS_FULLDYNAMIC;
+  
   self.think = map_nav_point_th;
   self.nextthink = time + 0.1;
 };
@@ -102,16 +97,11 @@ void() map_nav_point={
 
   self.data_type = DATA_NAVP;
   
-  precache_model("q3mdl/map/nav_point.obj");
-  setmodel(self, "q3mdl/map/nav_point.obj");
-  
+  setmodel(self, "q3mdl/testball.md3");
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   self.movetype = MOVETYPE_FLY;
   droptofloor();
-  self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT); 
-  self.alpha = 0.33;
-  self.colormod = '0 1 0';
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
   self.use = nav_point_use;

@@ -22,7 +22,7 @@ void( float isNew, float entFlags ) sendent_handle_map={
   
   switch( self.data_type ){
     case DATA_NAVP:
-      
+      data_nav_point( isNew, entFlags );
       break;
     case DATA_OBJT:
     
@@ -36,7 +36,47 @@ void( float isNew, float entFlags ) sendent_handle_map={
   }
 };
 
+float() predraw_navpoint={
+  self.angles_y = anglemod(self.angles_y + 0.33);
+  return TRUE;
+};
+
 void( float isNew, float entFlags ) data_nav_point={
+  local float prevState, nexState;
+  self.faction = ReadByte();
+  self.isActive = ReadByte();
+  
+  prevState = NAVNAMES_ACTIVE[self.data_idx];
+  nexState = self.isActive;
+  NAVNAMES_ORG[self.data_idx] = self.origin;
+  
+  if( (prevState == TRUE) && (nexState == 2) ){
+    //previous state was 'active unvisit' and next state is 'active and visit'
+    //play sound
+    //
+    hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );  
+    self.alpha = 0.2;
+    self.colormod = '0.15 0.15 0.15';
+    self.effects = self.effects - ( self.effects & (EF_DOUBLESIDED | EF_NOSHADOW | EF_FULLBRIGHT)); 
+  }
+  if( (prevState == 2) && (nexState == 1) ){
+    //previous state was 'active and visit' and next state is 'active unvisit'
+    //ignore state change for this client
+    return;
+  }
+  NAVNAMES_ACTIVE[self.data_idx] = nexState;
+ 
+ 
+  if( isNew ){
+    self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
+    self.alpha = 0.33;
+    self.colormod = '0 1 0';
+    
+    precache_model("q3mdl/map/nav_point.obj");
+    setmodel(self, "q3mdl/map/nav_point.obj");
+  }
+  self.predraw = predraw_navpoint;
+  self.drawmask = MASK_ENGINE; 
 };
 
 void( float isNew, float entFlags ) data_objective={
@@ -65,7 +105,6 @@ void( float isNew, float entFlags ) data_deploy={
   setorigin(self, self.origin);
   
   self.drawmask = MASK_ENGINE;
-
 };
 
 void( float isNew, float entFlags ) data_map_object={

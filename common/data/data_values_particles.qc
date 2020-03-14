@@ -20,9 +20,9 @@ float TE_CLIENT_DMG = 83;  //not a particle but here for completeness
 float TE_UI_BOX = 84;      //not a particle but here for completeness
 
 float TE_HUD_SPARK = 90;
-//float TE_EVT_OBJ = 91; [OPEN FOR USE]!
-float TE_EVT_NAV = 92;
-float TE_EVT_DEP = 93;
+//91;
+//92;
+//93
 
 //SFX block
 float TE_OBJECTIVE_COMPLETE = 94;

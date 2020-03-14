@@ -39,9 +39,7 @@ void( entity targetClient ) client_send_boundary_warning;
 void( entity targetClient ) client_send_enviro_warning;
 
 void() client_push_mapobjects;
-void( entity navpoint ) client_send_navpoint;
 void( entity objective ) client_send_objective;
-void( entity deploy ) client_send_deploypoint;
 
 void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice;
 void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
