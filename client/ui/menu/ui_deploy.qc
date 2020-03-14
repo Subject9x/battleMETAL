@@ -59,16 +59,16 @@ void() navSelectListener={
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_MAP_ORG, gui_percentToPixelRawVec('380 380'), TRUE) ){
     local entity nav;
     nav = findchainfloat(data_type, DATA_DEPL);
-    while(nav){
-      if(nav.isActive){
-        if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.uequipSize, TRUE)){
-          CLIENT_MENU_nav_pnt = nav.nav_name;
-        }
-        else{
-          CLIENT_MENU_nav_pnt = -1;
-        }
+    for( nav = findchainfloat(data_type, DATA_DEPL); nav != world; nav = nav.chain){
+      if( !nav.isActive || nav.faction != CLIENT_faction ){
+        continue;
       }
-      nav = nav.chain;
+      if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.uequipSize, TRUE)){
+        CLIENT_MENU_nav_pnt = nav.nav_name;
+      }
+      else{
+        CLIENT_MENU_nav_pnt = -1;
+      }
     }
     if(CLIENT_MENU_nav_pnt > 0){
       if( !(LAUNCH_VALIDATION & VALID_NODE) ){
@@ -82,19 +82,18 @@ void() navSelectListener={
 };
 
 void() navListSelectListener={
+  local entity deploy;
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_NEXT_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
-    DEPLOY_POINT_ID = DEPLOY_POINT_ID + 1;
-    if(DEPLOY_POINT_ID > DEPLOY_POINT_END){
-      DEPLOY_POINT_ID = 0;
+    if( CLIENT_MENU_deploy.partNext != world ){
+      CLIENT_MENU_deploy = CLIENT_MENU_deploy.partNext;
     }
-    CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_PREV_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
-    DEPLOY_POINT_ID = DEPLOY_POINT_ID - 1;
-    if( DEPLOY_POINT_ID < 0 ){
-      DEPLOY_POINT_ID = DEPLOY_POINT_END;
+    if( CLIENT_MENU_deploy.partPrev != world ){
+      CLIENT_MENU_deploy = CLIENT_MENU_deploy.partPrev;
     }
-    CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
   if(CLIENT_MENU_nav_pnt > -1){
     if( !(LAUNCH_VALIDATION & VALID_NODE) ){
@@ -315,33 +314,38 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         drawfont = drawfont_prev;
       }
     }
-    local vector deployColor;
-    nactive = DEPLOY_POINTS_ACTIVE[itr];
-    if( nactive != FALSE ){
-      navorg = DEPLOY_POINTS_ORG[itr]; 
-      tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
-      if( nactive ){
-        deployColor = CLR_DEF_ARM_OK;
-      }
-      else{
-        deployColor = CLR_DEF_ARM_HALF;
-      }
-      if(CLIENT_MENU_nav_pnt == itr){
-        gui_renderTintImage(TRUE, nofs - gui_percentToPixelRawVec('6 6'), UI_DEF_REC_64, gui_percentToPixelRawVec('28 28'), CLR_DEF_GREEN, 0.85, 0);
-        CLIENT_MENU_nav_ui_org = tofs;
-        ui_renderSprite_DeployPoint( tofs, '16 16', CLR_DEF_GREEN, 1 ) ;
-      }
-      else{
-        gui_renderTintImage2((CLIENT_MENU_nav_pnt == itr), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
-      }
-      local vector lineOrg;
-      lineOrg = mpos + gui_percentToPixelRawVec('5 110');
-      drawline(1, lineOrg + gui_percentToPixelRawVec('0 1'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 1'), '0.85 0.85 0', 0.75, 0);
-      drawline(1, lineOrg + gui_percentToPixelRawVec('0 2'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 2'), '0.85 0.85 0', 0.75, 0);
-      drawline(1, lineOrg + gui_percentToPixelRawVec('0 3'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 3'), '0.85 0.85 0', 0.75, 0);
-      drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
-    }
     itr = itr + 1;
+  }
+  
+  //Render Deploy points
+  if( !CLIENT_MENU_deploy  ){
+    CLIENT_MENU_deploy = DEPLOY_POINTS;
+    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
+  }
+  local entity deploy;
+  for( deploy = DEPLOY_POINTS; deploy != world; deploy = deploy.partPrev ){
+    if( deploy.faction != CLIENT_faction ){
+      continue;
+    } 
+    if( deploy.isActive == FALSE ){
+      continue;
+    }
+    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, deploy.origin, iofs, gui_percentToPixelRawVec('380 380'));
+    
+    if( CLIENT_MENU_deploy.data_idx == deploy.data_idx ){
+      gui_renderTintImage(TRUE, nofs - gui_percentToPixelRawVec('6 6'), UI_DEF_REC_64, gui_percentToPixelRawVec('28 28'), CLR_DEF_GREEN, 0.85, 0);
+      CLIENT_MENU_nav_ui_org = tofs;
+      ui_renderSprite_DeployPoint( tofs, '16 16', CLR_DEF_GREEN, 1 ) ;
+    }
+    else{
+      gui_renderTintImage2((CLIENT_MENU_deploy.data_idx == deploy.data_idx), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
+    }
+    local vector lineOrg;
+    lineOrg = mpos + gui_percentToPixelRawVec('5 110');
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 1'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 1'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 2'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 2'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 3'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 3'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
   }
   
   mapKey = mapKeyObject;

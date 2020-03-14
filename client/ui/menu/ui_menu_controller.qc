@@ -279,29 +279,17 @@ void() navBarListener={
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025), TRUE)){
     //MENU - DEPLOY button
-    local float itr, idx;
-    
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
     }
     
-    itr = 0;
-    idx = 0;
-    while( itr < 33 ){
-      local float nactive;
-      nactive = DEPLOY_POINTS_ACTIVE[itr];
-      if( nactive == TRUE ){
-        DEPLOY_IDS[idx] = itr;
-        idx = idx + 1;
-      }
-      itr = itr + 1;
+    if( CLIENT_MENU_deploy == world ){
+      CLIENT_MENU_deploy = DEPLOY_POINTS;
+      CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
     }
     SPRITE_deploy_point_FRAME = 1;
-    //this does assume there's at least 1 deploy point on the map for the player...
-    DEPLOY_POINT_ID = 0;
-    DEPLOY_POINT_END = idx - 1;
     CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
-    CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+    
     if( CLIENT_MENU_nav_pnt != -1 ){
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
     }

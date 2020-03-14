@@ -437,13 +437,6 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
 };
 
 //HUD Sound Effects
-//make sure to scope self to target client
-void() te_nav_reach={
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_NAV_REACH );
-};
-
 void() te_mission_win={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );

@@ -213,7 +213,6 @@ void() client_event_navpoint={
   if( (prevState == TRUE) && (nexState == 2) ){
     //previous state was 'active unvisit' and next state is 'active and visit'
     //play sound
-    //te_nav_reach();
     hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );
   }
   if( (prevState == 2) && (nexState == 1) ){
@@ -222,18 +221,6 @@ void() client_event_navpoint={
     return;
   }
   NAVNAMES_ACTIVE[navid] = nexState;
-};
-
-void() client_event_deploypoint={
-  local float depid;
-  local float dead;
-  local vector deadend;
-  
-  depid = ReadByte();
-  dead = ReadByte();
-  deadend = te_read_vector();
-  //DEPLOY_POINTS_ACTIVE[depid] = ReadByte();
-  //DEPLOY_POINTS_ORG[depid] = te_read_vector();
 };
 
 void() client_event_objective_win={ 

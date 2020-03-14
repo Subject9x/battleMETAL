@@ -13,10 +13,7 @@ float FONT_NUM_ROBOT_MEDIUM;
 float FONT_NUM_DYSTOPIAN;
 float drawfont_prev;
 
-//so, 'state' for these things is tracked by the proper entry being non-zero
-//  ex: deploy point 5 is 'active' and for this player's faction if DEPLOY_POINTS_ORG[5] != '0 0 0'
-vector DEPLOY_POINTS_ORG[32]; //  server origins for all deploy points
-float DEPLOY_POINTS_ACTIVE[32];//  1 = active, 0 = hidden, -1 = inactive.
+entity DEPLOY_POINTS;  //SendEnt now provides the state data;
 
 float OBJECTIVES[32];         //  1 = active, 2 = complete, 0 = hidden, -1 = failed.
 

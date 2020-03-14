@@ -7,6 +7,9 @@ Overview:
   To that end, I've moved all the client-specific data to constants, ugly but necessary.
 */
 
+
+entity CLIENT_MENU_deploy;
+
 float CLIENT_currentWeaponGroup;
 
 float CLIENT_flags;

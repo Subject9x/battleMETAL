@@ -77,7 +77,6 @@ void(float trgArm) snd_hud_vfx_targkill;
 
 //TE SFX
 //SFX
-void() te_nav_reach;
 void() te_mission_win;
 void() te_mission_lose;
 void() te_msn_boundary;

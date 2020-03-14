@@ -29,7 +29,7 @@ float TE_OBJECTIVE_COMPLETE = 94;
 float TE_OBJECTIVE_FAILED = 95;
 float TE_MISSION_WIN = 96;
 float TE_MISSION_LOSE = 97;
-float TE_NAV_REACH = 98;
+//98;
 float TE_MSN_BOUND = 99;
 //======================
 

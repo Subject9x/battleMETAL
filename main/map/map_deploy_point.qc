@@ -63,21 +63,41 @@ void() map_deploy_point={
 }
 
 void() deploy_point_remote_use={
-
-};
-
-void() deploy_point_remote_query={
   local entity trg;
   if( self.target != "" ){
-    trg = find(world, classname, "map_deploy_point");
+    trg = find(world, targetname, self.target);
     if( trg ){
-      self.view_ofs = trg.origin;
+      if( trg.isActive ){
+        trg.isActive = FALSE;
+        return;
+      }
+      trg.isActive = TRUE;
     }
     else{
       cons_logAString("Map Error: ", "Remote Deploy Point has .target value but cannot find entity!"); 
     }
   }
-  
+  else{
+    if( self.isActive ){
+      self.isActive = FALSE;
+      return;
+    }
+    self.isActive = TRUE;
+  }
+};
+
+void() deploy_point_remote_query={
+  local entity trg;
+  if( self.target != "" ){
+    trg = find(world, targetname, self.target);
+    if( trg ){
+      self.view_ofs = trg.origin;
+      self.angles = trg.angles;
+    }
+    else{
+      cons_logAString("Map Error: ", "Remote Deploy Point has .target value but cannot find entity!"); 
+    }
+  }
   self.think = deploy_point_th;
   self.nextthink = time + 0.5;
 };

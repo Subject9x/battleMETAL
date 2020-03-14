@@ -391,9 +391,6 @@ float() CSQC_Parse_TempEntity =
     case TE_MISSION_LOSE:
       hud_event_enqueue( HUD_EVENT_MISSION_FAILED, 1) ;
       return TRUE;
-    case TE_NAV_REACH:
-      hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );
-      return TRUE;
     case TE_MSN_BOUND:
       client_event_boundary();
       return TRUE;

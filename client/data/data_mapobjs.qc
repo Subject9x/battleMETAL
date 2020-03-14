@@ -25,7 +25,7 @@ void( float isNew, float entFlags ) sendent_handle_map={
       data_nav_point( isNew, entFlags );
       break;
     case DATA_OBJT:
-    
+      data_objective( isNew, entFlags );
       break;
     case DATA_DEPL:
       data_deploy( isNew, entFlags );
@@ -57,7 +57,7 @@ void( float isNew, float entFlags ) data_nav_point={
     hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );  
     self.alpha = 0.2;
     self.colormod = '0.15 0.15 0.15';
-    self.effects = self.effects - ( self.effects & (EF_DOUBLESIDED | EF_NOSHADOW | EF_FULLBRIGHT)); 
+    self.effects = self.effects - ( self.effects & (EF_DOUBLESIDED | EF_NOSHADOW | EF_FULLBRIGHT | EF_NODEPTHTEST)); 
   }
   if( (prevState == 2) && (nexState == 1) ){
     //previous state was 'active and visit' and next state is 'active unvisit'
@@ -72,8 +72,14 @@ void( float isNew, float entFlags ) data_nav_point={
     self.alpha = 0.33;
     self.colormod = '0 1 0';
     
-    precache_model("q3mdl/map/nav_point.obj");
     setmodel(self, "q3mdl/map/nav_point.obj");
+    setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
+    setorigin( self, self.origin );                   // end up somewhere a player can reach
+    self.movetype = MOVETYPE_FLY;
+    droptofloor();
+    self.movetype = MOVETYPE_NONE;
+    self.solid = SOLID_TRIGGER;
+    setorigin(self, self.origin);
   }
   self.predraw = predraw_navpoint;
   self.drawmask = MASK_ENGINE; 
@@ -89,8 +95,15 @@ void( float isNew, float entFlags ) data_deploy={
   self.faction = ReadByte();
   self.isActive = ReadByte();
   
-  DEPLOY_POINTS_ACTIVE[self.data_idx] = self.isActive;
-  DEPLOY_POINTS_ORG[self.data_idx] = self.origin;
+  if( DEPLOY_POINTS ){
+    self.partPrev = DEPLOY_POINTS;
+    DEPLOY_POINTS.partNext = self;
+    DEPLOY_POINTS = self;
+  }
+  else{
+    //first deploy point received.
+    DEPLOY_POINTS = self;
+  }
   
   if( cvar("developer") ){
     self.alpha = 0.9;
