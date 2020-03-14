@@ -185,9 +185,6 @@ vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffs
   
   return objectUIOrg;
 };
-string(float navname) gui_getNavName={
-  return NAVNAMES[navname];
-};
 
 vector(float dmg_type) gui_colorForWeaponType={
   if((dmg_type & DMG_BAL)){

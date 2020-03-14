@@ -285,36 +285,26 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
   
-  renderColor  = CLR_DEF_GREEN - '0.1 0.1 0.1';
+  renderColor = CLR_DEF_GREEN - '0.1 0.1 0.1';
   
-  while( itr <= 32 ){
-    local vector navorg, nofs, tofs;
+  local entity nav;
+  for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
+    local vector nofs, tofs;
     local float nactive, nlen;
     local string navname;
+    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
     
-    if( itr <= 21 ){
-      nactive = NAVNAMES_ACTIVE[itr];
-      
-      if( nactive != FALSE ){
-        navorg = NAVNAMES_ORG[itr];
-        navname = NAVNAMES[itr];
-      
-        tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
-        
-        drawfont_prev = drawfont;
-        drawfont = FONT_NUM_ROBOT_REGULAR;
-        
-        nlen = stringwidth(navname, 0, '12 12 0');
-        nofs_x = nofs_x - gui_percentXRaw( (nlen/2) );
-        nofs_y = nofs_y - gui_percentYRaw(18);
-        gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
-        
-        drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
-        
-        drawfont = drawfont_prev;
-      }
-    }
-    itr = itr + 1;
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+    
+    nlen = stringwidth(navname, 0, '12 12 0');
+    nofs_x = nofs_x - gui_percentXRaw( (nlen/2) );
+    nofs_y = nofs_y - gui_percentYRaw(18);
+    gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
+    
+    drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
+    
+    drawfont = drawfont_prev;
   }
   
   //Render Deploy points

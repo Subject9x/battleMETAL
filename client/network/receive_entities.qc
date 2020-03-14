@@ -202,27 +202,6 @@ void() receive_ent_bindData={
   
 };
 
-void() client_event_navpoint={
-  local float navid, prevState, nexState;
-  
-  navid = ReadByte();
-  prevState = NAVNAMES_ACTIVE[navid];
-  nexState = ReadByte();
-  NAVNAMES_ORG[navid] = te_read_vector();
-  
-  if( (prevState == TRUE) && (nexState == 2) ){
-    //previous state was 'active unvisit' and next state is 'active and visit'
-    //play sound
-    hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );
-  }
-  if( (prevState == 2) && (nexState == 1) ){
-    //previous state was 'active and visit' and next state is 'active unvisit'
-    //ignore state change for this client
-    return;
-  }
-  NAVNAMES_ACTIVE[navid] = nexState;
-};
-
 void() client_event_objective_win={ 
   local float objectiveId, objectiveStatus, type;
   objectiveId = ReadByte();

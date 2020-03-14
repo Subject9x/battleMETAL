@@ -13,6 +13,8 @@ entity toolTip;
 vector cursorpos;
 vector cursorImageSize;
 
+entity MENU_NAV_LIST;
+
 float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 

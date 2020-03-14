@@ -108,8 +108,7 @@ void() CSQC_Init =
   tokenizebyseparator(mapname, "/", ".");
   MAP_NAME = argv(1);
   MAP_NAME = strzone(MAP_NAME);
-  
-  DEPLOY_CNT = 0;
+
   CFG_INDEX = 1;
   CFG_INDEX_PREV = CFG_INDEX;
 

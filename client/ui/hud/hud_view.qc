@@ -310,8 +310,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   local vector  map_size;
   local vector radarLineLeft, radarLineRight;
   local entity blip;
-  local float nav;
-  
+
   RADAR_ORG = radarOrg;
   
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
@@ -339,16 +338,16 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   for( blip = findchainflags( flags, FL_UNIT ); blip != world; blip = blip.chain){
     hud_renderRadarContact( blip, plrFaction, radarRange );
   }
-  nav = 0;
-  while( nav <= 21 ){
-    local float navState;
-    local vector navOrg;
-    navState = NAVNAMES_ACTIVE[nav];
-    navOrg = NAVNAMES_ORG[nav];
-    if( navState > FALSE ){
-      hud_renderRadarNav( navOrg, navState, radarRange );
+  
+  local entity nav;
+  for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
+    if( nav.faction != CLIENT_faction ){
+      continue;
     }
-    nav = nav + 1;
+    if( nav.isActive == FALSE ){
+      continue;
+    }
+    hud_renderRadarNav( nav.origin, nav.isActive, radarRange );
   }
 };
 
@@ -791,52 +790,52 @@ void() hud_renderNavOverlay={
 
   distThreshold = CLIENT_radar_range * 4;
   
-  itr = 0;
-  while( itr < 21 ){
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-
-    nactive = NAVNAMES_ACTIVE[itr];
-    navname = NAVNAMES[itr];
-    if( nactive > 0 ){
-      i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
-      nofs = NAVNAMES_ORG[itr];
-      nofs_z = nofs_z + gui_percentYRaw(14);
-      apos = cs_project(nofs);
-      tofs = apos;
-      if (apos_z >= 0) {
-        tofs_x -= stringwidth(navname, TRUE, '12 12') * 0.5; //align horizontally to centre
-        tofs_y = tofs_y - 24; //align vertically again
-        tofs_z = 0;
-        apos_z = 0;
-        iofs = apos;
-        i_sz_x = i_sz_x / 4;
-        i_sz_y = i_sz_y / 4;
-        iofs_x = iofs_x - (i_sz_x/2);
-        iofs_y = iofs_y - (i_sz_y/2);
-        
-        navDist = vlen( NAVNAMES_ORG[itr] - RADAR_ORG );
-        heat = (1 - ( navDist / distThreshold ));
-        if( heat < 0.33 ){
-          heat = 0.33;
-        }
-        
-        if( nactive == 2 ){
-          colr = CLR_DEF_TXT_NONSELECT;
-        }
-        else{
-          colr = CLR_DEF_WEP_INRANGE;
-          colr = colr * heat;
-        }
-        
-        drawstring(tofs, navname, '12 12', colr, 1, 0);
-        gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, 1, 0) ;
-      }
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+    
+  local entity nav;
+  for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
+    if( nav.faction != CLIENT_faction ){
+      continue;
     }
-    drawfont = drawfont_prev;
-  
-    itr = itr + 1;
+    if( nav.isActive == FALSE ){
+      continue;
+    }
+    i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
+    nofs = nav.origin;
+    nofs_z = nofs_z + gui_percentYRaw(14);
+    apos = cs_project(nofs);
+    tofs = apos;
+    if (apos_z >= 0) {
+      tofs_x -= stringwidth(navname, TRUE, '12 12') * 0.5; //align horizontally to centre
+      tofs_y = tofs_y - 24; //align vertically again
+      tofs_z = 0;
+      apos_z = 0;
+      iofs = apos;
+      i_sz_x = i_sz_x / 4;
+      i_sz_y = i_sz_y / 4;
+      iofs_x = iofs_x - (i_sz_x/2);
+      iofs_y = iofs_y - (i_sz_y/2);
+      
+      navDist = vlen( nav.origin - RADAR_ORG );
+      heat = (1 - ( navDist / distThreshold ));
+      if( heat < 0.33 ){
+        heat = 0.33;
+      }
+      if( nactive == 2 ){
+        colr = CLR_DEF_TXT_NONSELECT;
+      }
+      else{
+        colr = CLR_DEF_WEP_INRANGE;
+        colr = colr * heat;
+      }
+      
+      drawstring(tofs, navname, '12 12', colr, 1, 0);
+      gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, 1, 0) ;
+    }
   }
+  
+  drawfont = drawfont_prev;
 };
 
 /*

@@ -35,7 +35,6 @@ void() client_get_hud_highlight;
 
 void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyRiderValue ) client_event_get_mapkeyinfo;
 void( float criticalsType ) client_event_critical_hit;
-void() client_event_navpoint;
 void() client_event_objective_win;
 void() client_event_objective_fail;
 void() client_event_boundary;

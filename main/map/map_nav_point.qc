@@ -63,9 +63,8 @@ void() nav_point_use={
 
 void() map_nav_point_th={
 
-  self.angles_y = anglemod(self.angles_y + 1);
   self.SendEntity = send_nav_point;
-  self.pflags = self.pflags | PFLAGS_FULLDYNAMIC;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   
   self.think = map_nav_point_th;
   self.nextthink = time + 0.1;
@@ -94,19 +93,66 @@ OFF_AFTER_USE 4: deactivate after use
 void() map_nav_point={
 
   self.flags = self.flags | FL_NODE;
-
   self.data_type = DATA_NAVP;
+  self.isActive = TRUE;
   
   setmodel(self, "q3mdl/testball.md3");
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   self.movetype = MOVETYPE_FLY;
   droptofloor();
+  
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
   self.use = nav_point_use;
   self.touch = nav_point_touch;
-  self.isActive = TRUE;
   self.think = map_nav_point_th;
+  
+  self.nextthink = time + 0.1;
+};
+
+void() map_nav_point_remote_send={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+};
+
+void() map_nav_point_remote_query={
+  local entity trg;
+  if( self.data_idx != 0 ){
+    for( trg = findchainfloat(data_type, DATA_NAVP); trg != world; trg = trg.chain ){
+      if( trg.data_idx != self.data_idx ){
+        continue;
+      }
+      self.faction = trg.faction;
+      self.view_ofs = trg.origin;
+      self.isActive = trg.isActive;
+      self.think = map_nav_point_remote_send;
+      self.nextthink = time + 0.1;
+    } 
+  }
+  else{
+     cons_logAString("Map Error: ", "Remote Nav Point has .data_idx value but cannot find entity!"); 
+  }
+};
+
+/*QUAKED map_nav_point_remote (0.753 0.788 0.431) (-10 -10 -10) (10 10 10) - VISIT_PER_CLIENT OFF_AFTER_USE
+REMOTE: quirk in server code means not all ents are sent to the player on-connect IF
+they're not in the same BSP volume. IF nav points are not visible to [info_player_start]
+when player joins, they WILL NOT be visible for use. This sub-entity fixes the issue.
+
+USAGE: simply queries nav points for the right data_idx and pipes that info.
+
+-------- KEYS -------- 
+data_idx: <float>, each must be unique because this determines the 'name' of the nav point client-side
+
+*/
+void() map_nav_point_remote={
+  
+  setmodel(self, "q3mdl/testball.md3");
+  setsize( self, '-10 -10 -10', '10 10 10' ); 
+  setorigin( self, self.origin );
+  
+  self.SendEntity = send_nav_point;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.think = map_nav_point_remote_query;
   self.nextthink = time + 0.1;
 };
