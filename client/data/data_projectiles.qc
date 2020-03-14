@@ -50,6 +50,7 @@ float() predraw_missile={
   local float frac;
   local vector newpos;
   local vector moved;
+  local vector pclVel;
 
 	/*frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
 	frac = bound(0, frac, 0.1);
@@ -60,7 +61,7 @@ float() predraw_missile={
   setorigin(self, self.origin);
   if( self.traileffectnum > 0 ){
     makevectors(self.angles);
-    pointparticles( self.traileffectnum, self.origin, normalize(self.origin - self.prevorigin) * 2, 1);
+    trailparticles( self, self.traileffectnum, self.origin + (v_forward * -2 ), self.origin + (v_forward * -16 ));
   }
   if( self.predraw_projectile ){
     self.predraw_projectile();

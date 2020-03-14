@@ -453,7 +453,7 @@ void( float isNew, float changeFlags) sendent_handle_missile={
   self.velocity_x = ReadCoord();
   self.velocity_y = ReadCoord();
   self.velocity_z = ReadCoord();
- 
+  setorigin(self, self.origin);
   if( changeFlags & SENDFLAG_IMPACT ){
     self.impactType = ReadByte();
     self.damageValue = ReadByte();

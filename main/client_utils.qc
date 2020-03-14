@@ -797,7 +797,13 @@ void() spawnpoint_select={
     spot = SelectSpawnPoint();
   }
   
-  self.origin = self.oldorigin = spot.origin + '0 0 12';
+  //remote deploy point functionality
+  if( spot.classname == "map_deploy_point_remote" ){
+    self.origin = self.oldorigin = spot.view_ofs + '0 0 12';
+  }
+  else{
+    self.origin = self.oldorigin = spot.origin + '0 0 12';
+  }
   
   self.angles = spot.angles;
   
