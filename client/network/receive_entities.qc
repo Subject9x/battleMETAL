@@ -226,10 +226,14 @@ void() client_event_navpoint={
 
 void() client_event_deploypoint={
   local float depid;
+  local float dead;
+  local vector deadend;
   
   depid = ReadByte();
-  DEPLOY_POINTS_ACTIVE[depid] = ReadByte();
-  DEPLOY_POINTS_ORG[depid] = te_read_vector();
+  dead = ReadByte();
+  deadend = te_read_vector();
+  //DEPLOY_POINTS_ACTIVE[depid] = ReadByte();
+  //DEPLOY_POINTS_ORG[depid] = te_read_vector();
 };
 
 void() client_event_objective_win={ 

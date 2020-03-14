@@ -22,6 +22,7 @@ data/headers/data_buildings.qh
 data/headers/data_turrets.qh
 data/headers/data_vehicles.qh
 data/headers/data_projectiles.qh
+data/headers/data_mapobjs.qh
 util/headers/particle_sys.qh
 
 network/headers/client_globals.qh
@@ -137,6 +138,7 @@ data/data_buildings.qc
 data/data_turrets.qc
 data/data_vehicles.qc
 data/data_projectiles.qc
+data/data_mapobjs.qc
 
 ui/anim.qc
 ui/gui_api.qc

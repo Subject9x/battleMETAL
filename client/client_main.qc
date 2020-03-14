@@ -379,9 +379,11 @@ float() CSQC_Parse_TempEntity =
     case TE_UI_BOX:
       client_get_hud_highlight();
       return TRUE;
+    //TODO -> Nav Reach event should be clientside.
     case TE_EVT_NAV:
       client_event_navpoint();
       return TRUE;
+    //TODO -> Deploy Point to SendEntity
     case TE_EVT_DEP:
       client_event_deploypoint();
       return TRUE;
@@ -415,6 +417,7 @@ float() CSQC_Parse_TempEntity =
     case TE_MSG_ENV_WARN:
       client_event_environment();
       return TRUE;
+    //TODO -> MapKey Data to SendEntity
     case TE_MAPKEY_DATA:
       client_event_get_mapkeyinfo( ReadByte(), ReadLong(), ReadLong(), ReadByte() ) ;
       return TRUE;

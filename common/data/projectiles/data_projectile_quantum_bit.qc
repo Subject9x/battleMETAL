@@ -10,6 +10,7 @@ Overview:
 
 #ifndef CSQC
 void() data_projectile_ini_quantum_bit_touch_;
+void() data_projectile_quantum_bit_th;
 #endif CSQC
 
 #ifdef CSQC
@@ -23,11 +24,11 @@ void() projectile_qbit_expl={
     return;
   }
   if( self.impactType == IMPACT_SHIELD ){
-    pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+    pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity * 0.33, 1);
     pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
   }
   else if( self.impactType == IMPACT_ARMOR ){
-    pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
+    pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity * 0.33, 1);
   }
 };
 #endif
@@ -35,7 +36,7 @@ void() projectile_qbit_expl={
 void() data_projectile_ini_quantum_bit_={
   self.classname = "missile";
   self.data_velocity = 275;
-  self.data_lifetime = 4;
+  self.data_lifetime = 3;
   
   #ifdef CSQC
     //cosmetics
@@ -44,24 +45,35 @@ void() data_projectile_ini_quantum_bit_={
     self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
     self.damageType = self.damageType | EFF_SHD;
     self.pcl_explode = projectile_qbit_expl;
+    self.predraw_projectile = predraw_qbit;
   #endif
   
   #ifndef CSQC
     self.touch = data_projectile_ini_quantum_bit_touch_;
-    self.think = SUB_Remove;
+    self.think = data_projectile_quantum_bit_th;
   #endif
 };
 
 #ifndef CSQC
+void() data_projectile_quantum_bit_th={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.think = SUB_Remove;
+  if( time < self.data_lifetime ){
+    self.think = data_projectile_quantum_bit_th;
+  }
+  self.nextthink = time + 0.05;
+}
+
 void() data_projectile_ini_quantum_bit_touch_={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
   
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT;
   self.impactType = IMPACT_DIRT;
 	if (pointcontents(self.origin) == CONTENT_SKY || pointcontents(self.origin) == CONTENT_SOLID){
     self.impactType = IMPACT_SKY;
+    cons_logAFloat("hit sky", 1); //DEBUG
 	}
   
   if(other.takedamage){

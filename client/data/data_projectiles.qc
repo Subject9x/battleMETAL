@@ -46,6 +46,28 @@ void( float dataID ) data_sync_new_projectile={
   }
 };
 
+float() predraw_missile={
+  local float frac;
+  local vector newpos;
+  local vector moved;
+
+	/*frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
+	frac = bound(0, frac, 0.1);
+	newpos = self.prevorigin + (self.lastorigin - self.prevorigin) * frac;
+	moved = newpos - self.origin;	//this is how much we've moved since the last render frame, note that it implies frametime.
+	self.origin = newpos;*/
+  
+  setorigin(self, self.origin);
+  if( self.traileffectnum > 0 ){
+    makevectors(self.angles);
+    pointparticles( self.traileffectnum, self.origin, normalize(self.origin - self.prevorigin) * 2, 1);
+  }
+  if( self.predraw_projectile ){
+    self.predraw_projectile();
+  }
+  return TRUE;
+};
+
 float() predraw_plasma={
   if( self.impactType == IMPACT_ARMOR ){
     self.alpha = 0.33;
@@ -55,6 +77,16 @@ float() predraw_plasma={
     self.scale = self.scale + 0.075;
     self.alpha = self.alpha - 0.025;
     //todo - transition color tint to 'orange' over life time
+  }
+  return TRUE;
+};
+
+
+float() predraw_qbit={
+  self.alpha = self.alpha - 0.005;
+  if( self.alpha <= 0 ){
+    self.alpha = 0;
+    self.traileffectnum = 0;
   }
   return TRUE;
 };

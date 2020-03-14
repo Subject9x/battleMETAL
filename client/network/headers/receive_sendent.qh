@@ -16,7 +16,6 @@ Overview:
 
 float() predraw_tank;
 float() predraw_spg;
-float() predraw_missile;
 
 void( float isNew ) sendent_handle_update;
 void( float isNew, float changeFlags ) sendent_handle_tank;

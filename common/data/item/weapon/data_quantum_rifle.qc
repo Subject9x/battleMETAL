@@ -98,7 +98,7 @@ void() data_ini_attack_quantum_={
       if(pointcontents(rando) < CONTENT_EMPTY){
         continue;
       }
-      ctrl_weapon_make_projectile( 6 );
+      ctrl_weapon_make_projectile( -1 );
       NEWSHOT.velocity = normalize(hitZone - rando);
       NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
       NEWSHOT.angles = vectoangles(NEWSHOT.velocity);

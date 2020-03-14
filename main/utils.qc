@@ -527,14 +527,15 @@ void() BecomeExplosion={
 */
 void() util_MapDeveloperMarker={
   if( cvar("developer") ){
-    self.alpha = 0.9;
+    self.alpha = 1;
     self.scale = 1;
   }
   else{
     self.alpha = 0.01;
     self.scale = 0.01;
+    self.effects = self.effects | EF_NOSHADOW;
   }
-  self.effects = self.effects | EF_NOSHADOW;
+  setmodel(self, "q3mdl/testball.md3");
 };
 
 void() util_updateViewBob={

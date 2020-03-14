@@ -212,7 +212,6 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
 */
 void() ctrl_die_weapon={
   if(self.deadflag <= DEAD_NO){
-    
     if( (self.currentWeaponGroup & self.w_group) ){
       self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group);
       self.w_group = 0;

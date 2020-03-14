@@ -8,6 +8,7 @@ Overview:
 
 */
 
+
 void() deploy_point_use={
   if( self.isActive ){
     self.isActive = FALSE;
@@ -16,10 +17,17 @@ void() deploy_point_use={
   self.isActive = TRUE;
 };
 
+
 void() deploy_point_th={
   self.think = deploy_point_th;
   self.nextthink = time + 0.5;
 };
+
+void() deploy_point_ini={
+  self.think = deploy_point_th;
+  self.nextthink = time + 0.1;
+};
+
 
 /*QUAKED map_deploy_point (0.753 0.788 0.431) (-26 -26 -44) (26 26 28)
 Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
@@ -41,12 +49,15 @@ void() map_deploy_point={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.use = deploy_point_use;
-  self.think = deploy_point_th;
-  self.nextthink = time + 0.1;
   
   if( !(self.isActive) ){
     self.isActive = TRUE;
   }
+
+  self.SendEntity = send_deploy_point;
+  self.pflags = self.pflags | PFLAGS_FULLDYNAMIC;
   
   trigger_event( self, self.trigOnSpawn );
+  self.think = deploy_point_ini;
+  self.nextthink = time + 0.1;
 }

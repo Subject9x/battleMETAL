@@ -137,7 +137,7 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   Networking of chunks?
 */
 void( float isNew, float entFlags) sendent_handle_chunk={
-  if( (entFlags & SENDFLAG_MOVE) ){
+
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
@@ -145,7 +145,11 @@ void( float isNew, float entFlags) sendent_handle_chunk={
     self.angles_x = ReadCoord();
     self.angles_y = ReadCoord();
     self.angles_z = ReadCoord();
-  }
+    
+    self.velocity_x = ReadCoord();
+    self.velocity_y = ReadCoord();
+    self.velocity_z = ReadCoord();
+  
   if( (entFlags & SENDFLAG_DEAD) ){
     
   }
@@ -160,6 +164,7 @@ void( float isNew, float entFlags) sendent_handle_chunk={
     setorigin(self, self.origin);
     self.data_idx = ReadByte();
     self.traileffectnum = ReadByte();
+    
   }
   
 };

@@ -16,7 +16,7 @@ void( float isNew ) sendent_handle_update={
   
   entType = ReadByte();
   entFlags = ReadByte();
-
+  
   switch(entType){
     case SENDTYPE_TANK:
       sendent_handle_tank( isNew, entFlags );
@@ -38,6 +38,9 @@ void( float isNew ) sendent_handle_update={
       break;
     case SENDTYPE_PROJ:
       sendent_handle_missile( isNew, entFlags );
+      break;
+    case SENDTYPE_MAP:
+      sendent_handle_map( isNew, entFlags );
       break;
   }
 };
@@ -505,27 +508,7 @@ float() predraw_spg={
   setorigin(self, self.origin);
   return TRUE;
 };
-float() predraw_missile={
-  local float frac;
-  local vector newpos;
-  local vector moved;
 
-	/*frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
-	frac = bound(0, frac, 0.1);
-	newpos = self.prevorigin + (self.lastorigin - self.prevorigin) * frac;
-	moved = newpos - self.origin;	//this is how much we've moved since the last render frame, note that it implies frametime.
-	self.origin = newpos;*/
-  
-  setorigin(self, self.origin);
-  if( self.traileffectnum > 0 ){
-    makevectors(self.angles);
-    pointparticles( self.traileffectnum, self.origin, normalize(self.origin - self.prevorigin) * 2, 1);
-  }
-  if( self.predraw_projectile ){
-    self.predraw_projectile();
-  }
-  return TRUE;
-};
 
 float() predraw_turret={
   

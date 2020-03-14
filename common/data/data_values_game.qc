@@ -134,6 +134,24 @@ float DATA_WEAPON = 12;
 float DATA_INFO_START = 13;//used to send clientdata entity to csqc
 float DATA_INFO_COOP = 14;  //used as ID for info_start_coop
 float DATA_MAP_OBJ = 15; //meh, mostly for map objects (mapKeys :/ )
+
+//============================
+//     UNIT PART BITS          
+//============================
+//These should have been floats from the start
+//these are component id's (compid) for model pieces
+string MECH_PIECE    = "mech_piece";
+float M_UNIT        = 0;
+float M_CAMERA      = 1;
+float M_TOR_CENTER  = 2;
+float M_TOR_RIGHT   = 4;
+float M_TOR_LEFT    = 8;
+float M_LEGS        = 16;
+float M_LEG_L       = 32;
+float M_LEG_R       = 64;
+float M_ARM_LEFT    = 128;
+float M_ARM_RIGHT   = 256;
+float M_ITEM        = 512;
 //============================
 //     WEAPON SLOT BITS           
 //============================
@@ -196,6 +214,7 @@ float SENDTYPE_TURRET = 6;
 float SENDTYPE_BUILD = 7;
 float SENDTYPE_CHUNK = 8; //Vehicle / Turret / Mech debris
 float SENDTYPE_PROJ = 9;  //projectiles - missiles, etc
+float SENDTYPE_MAP = 10;
 //SendFlags-------------------
 float SENDFLAG_MOVE = 1;  //update .origin and .angles of main piece 
 float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.

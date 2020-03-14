@@ -251,7 +251,8 @@ void() client_push_mapobjects={
   for(obj = findchainflags( flags, FL_NODE ); obj != world; obj = obj.chain){
     switch( obj.data_type ){
       case DATA_DEPL:
-        client_send_deploypoint( obj );
+        //client_send_deploypoint( obj );
+        obj.SendFlags = obj.SendFlags | SENDFLAG_NEWENT;
         break;
       case DATA_NAVP:
         client_send_navpoint( obj );
@@ -477,7 +478,7 @@ void(float mode) client_sendGameMode={
 
 void(string targetName) client_sendTargetName={
   local string cmd;
-  local string cmd;
+  
   cmd = strcat("mech target ", targetName,"\n");
   stuffcmd(self, cmd);
 };
@@ -664,6 +665,8 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
 
 void(entity client ) client_send_mapKeyObjects={
   local entity objects;
+  
+  
 
   for(objects = findchainflags(spawnflags, IT_QUAD); objects != world; objects = objects.chain){
     msg_entity = client;
@@ -1016,7 +1019,7 @@ void( float entityId, float particleEffectId, vector particleOrg, vector particl
 };
 
 
-void( float wepId, vector flashOrg, vector flashVel, float impactType ) client_send_muzzle_flash={
+void( float wepId, vector flashOrg, vector flashVel, float impType ) client_send_muzzle_flash={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_MUZZLE_FLASH );
   WriteByte( MSG_BROADCAST, wepId );
@@ -1026,5 +1029,5 @@ void( float wepId, vector flashOrg, vector flashVel, float impactType ) client_s
   WriteCoord(MSG_BROADCAST, flashVel_x);
   WriteCoord(MSG_BROADCAST, flashVel_y);
   WriteCoord(MSG_BROADCAST, flashVel_z);
-  WriteByte( MSG_BROADCAST, impactType);
+  WriteByte( MSG_BROADCAST, impType);
 };
