@@ -204,6 +204,7 @@ float( float isNew, float changedFlags ) send_objective={
   
   WriteByte( MSG_ENTITY, self.faction );
   WriteByte( MSG_ENTITY, self.isActive );
+  WriteByte( MSG_ENTITY, self.aState );
   
   return TRUE;
 };

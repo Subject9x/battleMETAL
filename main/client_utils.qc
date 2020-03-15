@@ -107,20 +107,6 @@ void( entity targetClient ) server_push_player_info={
   self = this;
 };
 
-void( entity radarPing ) client_push_radar_ping={
-
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_CLIENT_PING );
-  
-  WriteCoord( MSG_BROADCAST, radarPing.origin_x );
-  WriteCoord( MSG_BROADCAST, radarPing.origin_y );
-  WriteCoord( MSG_BROADCAST, radarPing.origin_z );
-  
-  //WriteLong( MSG_BROADCAST, vlen(self.origin - radarPing.origin) );
-  WriteByte( MSG_BROADCAST, radarPing.data_type );
-  WriteByte( MSG_BROADCAST, radarPing.faction );
-};
-
 void( entity targetClient ) client_push_hud_highlight={
   local entity this;
   this = self;
@@ -145,30 +131,6 @@ void( entity targetClient ) client_push_hud_highlight={
   self = this;
 }; 
 
-//TODO - refactor objectives
-void( entity objective ) client_send_objective={
-  if( objective.faction != self.faction ){
-    return;
-  }
-  //MISSION WIN -> aState == 255
-  //MISSION FAIL -> aState == 254
-  if( objective.aState > 253 ){
-    return;
-  }
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  if( objective.isActive == OBJECTIVE_FAIL){
-    WriteByte( MSG_ONE, TE_OBJECTIVE_FAILED);  
-    WriteByte( MSG_ONE, objective.data_idx);
-    WriteByte( MSG_ONE, objective.isActive); 
-  }
-  else{
-    WriteByte( MSG_ONE, TE_OBJECTIVE_COMPLETE);  
-    WriteByte( MSG_ONE, objective.data_idx);
-    WriteByte( MSG_ONE, objective.isActive); 
-    WriteByte( MSG_ONE, objective.aState);
-  }
-};
 
 //TODO - refactor
 void( entity targetClient ) client_send_boundary_warning={
@@ -213,7 +175,7 @@ void() client_push_mapobjects={
         obj.SendFlags = obj.SendFlags | SENDFLAG_NEWENT;
         break;
       case DATA_OBJT:
-        client_send_objective( obj );
+        obj.SendFlags = obj.SendFlags | SENDFLAG_NEWENT;
         break;
     }
   }
@@ -315,6 +277,9 @@ void(string str, float tokens) client_ParseMechCommand={
   //changes player's .faction var
   if(argv(1) == "setfaction"){
     self.faction = stof( argv(2) );
+    if( self.data_type == DATA_MECH ){
+      client_update_faction();
+    }
     mapfile_pvp_load(self.faction);
     return;
   }
@@ -362,6 +327,31 @@ void(string str, float tokens) client_ParseMechCommand={
     return;
   }
 };  
+
+void() client_update_faction={
+  local float newSkinNum;
+  newSkinNum = self.faction - 1;
+  self.skin = newSkinNum;
+  
+  if( self.torsoCenter ){
+    self.torsoCenter.skin = newSkinNum;
+  }  
+  if( self.torsoLeft){
+    self.torsoLeft.skin = newSkinNum;
+  }  
+  if( self.torsoRight ){
+    self.torsoRight.skin = newSkinNum;
+  }  
+  if( self.armLeft ){
+    self.armLeft.skin = newSkinNum;
+  }  
+  if( self.armRight ){
+    self.armRight.skin = newSkinNum;
+  }  
+  if( self.legs ){
+    self.legs.skin = newSkinNum;
+  }
+};
 
 void(string cmd, float tokens) client_setMission={
   self.playerState = PLAYER_ACTIVE;
@@ -604,10 +594,10 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
   WriteShort( MSG_ONE, MISSION_TOTAL_MILITAR );
   switch( client.faction ){
     case FACTION_PSC:
-      WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
+      WriteShort( MSG_ONE, MISSION_LOSSES_PSC );
       break;
     case FACTION_SURVEST:
-      WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
+      WriteShort( MSG_ONE, MISSION_LOSSES_SURVEST );
       break;
     case FACTION_MILITAR:
       WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );

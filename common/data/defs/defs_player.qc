@@ -47,6 +47,8 @@ Overview:
 .float next_wepn8;
 .float next_wepn9;
 
+.float missionStatus; //moved to player level for network
+
 #ifndef CSQC
 .float nextVecChoice;
 .float i_reserve; //how many reserve points does the unit cost?

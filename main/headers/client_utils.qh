@@ -33,13 +33,11 @@ entity() spawnpoint_coop;
 void() client_push_player_info;
 void() client_push_player_info_thin;
 void( entity targetClient ) server_push_player_info; //simply wraps client_push_player_info()
-void( entity radarPing ) client_push_radar_ping;
 void( entity targetClient ) client_push_hud_highlight;
 void( entity targetClient ) client_send_boundary_warning;
 void( entity targetClient ) client_send_enviro_warning;
 
 void() client_push_mapobjects;
-void( entity objective ) client_send_objective;
 
 void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice;
 void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
@@ -80,6 +78,8 @@ void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entA
 void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck;
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle;
 void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail;
+
+void() client_update_faction;
 
 //sigh can't believe Im trying this again
 float client_send_monster( entity ePVEnt, float flChanged );

@@ -202,37 +202,6 @@ void() receive_ent_bindData={
   
 };
 
-void() client_event_objective_win={ 
-  local float objectiveId, objectiveStatus, type;
-  objectiveId = ReadByte();
-  objectiveStatus = ReadByte();
-  type = ReadByte();
-  OBJECTIVES[objectiveId] = objectiveStatus;
-
-  if( objectiveStatus != OBJECTIVE_WIN ){
-    return;
-  }  
-  switch( type ){
-    case 1:
-      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_PRIME, 1 ); 
-      break;
-    case 2:
-      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_SECOND, 1 ); 
-      break;
-    case 3:
-      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_SECOND, 1 ); 
-      break;
-  }
-};
-
-void() client_event_objective_fail={
-  local float objectiveId, objectiveStatus;
-  objectiveId = ReadByte();
-  objectiveStatus = ReadByte();
-  OBJECTIVES[objectiveId] = objectiveStatus;
-  hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1) ;
-};
-
 void() client_event_boundary={
   HUD_WARN_ON = ReadByte();
   HUD_WARN_DIR = ReadAngle();
@@ -415,7 +384,7 @@ void(float missionTime, float clientKills, float missonSuccessCheck, float pscTo
   
   MENU_DEBRIEF_total_losses = totalLosses;
   
-  if( MENU_DEBRIEF_status ){
+  if( MENU_DEBRIEF_status > 0 ){
     MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
   }
   else{

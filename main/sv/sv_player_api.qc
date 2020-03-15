@@ -307,10 +307,6 @@ void() PlayerDie={
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
     client_push_player_info();
-    //DEBUG - these may no longer be needed
-    //msg_entity = self;
-    //WriteByte( MSG_ONE, SVC_SETVIEWPORT );
-    //WriteEntity( MSG_ONE, self );    
   }
   self.effects = 0;
   

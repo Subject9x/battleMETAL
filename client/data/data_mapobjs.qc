@@ -96,9 +96,47 @@ void( float isNew, float entFlags ) data_nav_point={
 };
 
 void( float isNew, float entFlags ) data_objective={
+  local float prevState;
+  local float type;
+  
   self.faction = ReadByte();
+  
+  prevState = self.isActive;
   self.isActive = ReadByte();
+  OBJECTIVES[self.data_idx] = self.isActive;
+  
+  type = ReadByte();  // Primary, secondary, tertiary objective
 
+  if( isNew ){
+    setmodel(self, "q3mdl/testball.md3");
+    setorigin(self, self.origin);
+    self.alpha = 0.01;
+    self.drawmask = MASK_ENGINE;
+  }
+  else{
+    //objective has been won
+    if( self.faction == CLIENT_faction ){
+      if( (prevState == OBJECTIVE_ACTIVE) && (self.isActive == OBJECTIVE_WIN) ){
+        switch( type ){
+          case 1:
+            hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_PRIME, 1 ); 
+            break;
+          case 2:
+            hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_SECOND, 1 ); 
+            break;
+          case 3:
+            hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_SECOND, 1 ); 
+            break;
+        }
+        return;
+      }
+      //objective has been failed
+      if( (prevState == OBJECTIVE_ACTIVE) && (self.isActive == OBJECTIVE_FAIL) ){
+        hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1 ); 
+      }
+      return;
+    }
+  }
 };
 
 void( float isNew, float entFlags ) data_deploy={

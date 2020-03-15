@@ -14,7 +14,7 @@ float IMPACT_ARMOR = 3;
 //ALERT: 70-75 are reserved, otherwise go nuts?
 //TE_ ID's
 float TE_CLIENT_INFO = 80;  //not a particle but here for completeness
-float TE_CLIENT_PING = 81;  //not a particle but here for completeness
+//81;
 float TE_CLIENT_HIT = 82;  //not a particle but here for completeness
 float TE_CLIENT_DMG = 83;  //not a particle but here for completeness
 float TE_UI_BOX = 84;      //not a particle but here for completeness
@@ -25,8 +25,8 @@ float TE_HUD_SPARK = 90;
 //93
 
 //SFX block
-float TE_OBJECTIVE_COMPLETE = 94;
-float TE_OBJECTIVE_FAILED = 95;
+//94;
+//95;
 float TE_MISSION_WIN = 96;
 float TE_MISSION_LOSE = 97;
 //98;

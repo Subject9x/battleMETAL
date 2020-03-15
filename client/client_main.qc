@@ -372,23 +372,17 @@ float() CSQC_Parse_TempEntity =
   id = ReadByte();
 
   switch( id ){
-    case TE_CLIENT_PING:
-      client_get_contact();
-      return TRUE;
     case TE_UI_BOX:
       client_get_hud_highlight();
-      return TRUE;
-    case TE_OBJECTIVE_COMPLETE:
-      client_event_objective_win();
-      return TRUE;
-    case TE_OBJECTIVE_FAILED:
-      client_event_objective_fail();
       return TRUE;
     case TE_MISSION_WIN:
       hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1) ;
       return TRUE;
     case TE_MISSION_LOSE:
       hud_event_enqueue( HUD_EVENT_MISSION_FAILED, 1) ;
+      return TRUE;
+    case TE_MISSION_END:
+      client_event_debrief_active( ReadLong(), ReadLong(), ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
     case TE_MSN_BOUND:
       client_event_boundary();
@@ -398,9 +392,6 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_MISSION_NAME:
       client_event_mission_name( ReadString() );
-      return TRUE;
-    case TE_MISSION_END:
-      client_event_debrief_active( ReadLong(), ReadLong(), ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
     case TE_MSG_ENV_WARN:
       client_event_environment();

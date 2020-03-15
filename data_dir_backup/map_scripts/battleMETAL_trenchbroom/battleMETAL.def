@@ -1991,6 +1991,7 @@ OFF_AFTER_USE 4: deactivate after use
 
 
 
+
 /*QUAKED map_nav_point_remote (0.753 0.788 0.431) (-10 -10 -10) (10 10 10) - VISIT_PER_CLIENT OFF_AFTER_USE
 REMOTE: quirk in server code means not all ents are sent to the player on-connect IF
 they're not in the same BSP volume. IF nav points are not visible to [info_player_start]
@@ -2191,12 +2192,15 @@ REACTIVATE 4: reactivate after countdown
 REMOVE_FIRSTUSE 8: remove after first countdown
 */
 
-/*QUAKED map_objective (0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF ACTIVE_ONTOUCH MISSION_LOSE MISSION_WIN
+
+
+
+/*QUAKED map_objective (0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF ACTIVE_ONTOUCH
   An Objective a specific map object.
   Map Objectives are named triggers that are sent to the client for interaction.
   Map Objectives MUST map to an Objective ID in the Map's MSN File.
-  These objects don't have to be anywhere specifically, they mostly just help hold game
-  state
+  In order to sync these with clients; they should be placed in the same 'holding box' as 
+  [info_player_starts] to make sure the player PVS picks them up asap.
   
 -------- KEYS -------- 
 .data_idx = must match a number in the msn_file
@@ -2211,15 +2215,41 @@ REMOVE_FIRSTUSE 8: remove after first countdown
                   2 = secondary
                   3 = tertiary
 .count = only complete objective when count is hit;
-.trigOnDeath = fire this event when Objective is 'failed', isActive == -1;
-.map = next map if MISSION_WIN
-.mapFile = next map if MISSION_LOSE
+.target = <string> fire this trigger when object is 'won;, isActive == 2;
+.trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
 -------- SPAWNFLAGS --------
 START_OFF 1: 
 ACTIVE_ONTOUCH 2: allows player to touch, set mins and maxs
-MISSION_LOSE 4: when 'failed', fire-off end-mission logic
-MISSION_WIN 8: when 'complete' fire-off end-mission logic
 */
+
+
+
+
+
+/*QUAKED map_mission_end(0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF - MISSION_LOSE - TOUCH_ACTIVE TOUCH_FACTION
+End_Mission ends the entire mission for EVERY player / faction.
+It is the source of the "Mission Fail/Succeed" message that players see on their HUDs.
+Default is play "mission successful" message for faction-matching players.
+Odds are there'll be 2 of these per single player map, 1 success, 1 fail.
+
+-------- KEYS -------- 
+.isActive = <float> enum
+            0 = Inactive
+            1 = active
+.faction = <float> faction for this objective
+.count = <float> only complete objective when count is hit;
+.map = <string> "<mapname>.bsp" - map to play next.
+
+-------- SPAWNFLAGS --------
+START_OFF 1: starts disabled, and will need at least 1 trigger call to activate before being usable!
+MISSION_LOSE 4: play "mission failed" message for faction-matching players.
+TOUCH_ACTIVE 16: allows player to touch, set mins and maxs.
+TOUCH_FACTION 32: only register touch events when other is same faction.
+*/
+
+
+
+
 
 /*QUAKED map_unlock_items (0.753 0.788 0.431) (-32 -32 -64) (32 32 64) - ONTOUCH
   will provide unlocked mechs and items to player.
