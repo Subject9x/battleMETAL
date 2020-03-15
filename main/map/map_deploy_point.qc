@@ -24,6 +24,9 @@ void() deploy_point_th={
 };
 
 void() deploy_point_ini={
+  self.SendEntity = send_deploy_point;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  
   self.think = deploy_point_th;
   self.nextthink = time + 0.1;
 };
@@ -53,9 +56,6 @@ void() map_deploy_point={
   if( !(self.isActive) ){
     self.isActive = TRUE;
   }
-
-  self.SendEntity = send_deploy_point;
-  self.pflags = self.pflags | PFLAGS_FULLDYNAMIC;
   
   trigger_event( self, self.trigOnSpawn );
   self.think = deploy_point_ini;
@@ -86,20 +86,25 @@ void() deploy_point_remote_use={
   }
 };
 
+void() deploy_point_remote_send={
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+};
+
 void() deploy_point_remote_query={
-  local entity trg;
-  if( self.target != "" ){
-    trg = find(world, targetname, self.target);
-    if( trg ){
-      self.view_ofs = trg.origin;
-      self.angles = trg.angles;
-    }
-    else{
-      cons_logAString("Map Error: ", "Remote Deploy Point has .target value but cannot find entity!"); 
+  local entity remoteDeploy;
+  if( self.data_idx != 0 ){
+    for( remoteDeploy = findchainfloat(data_type, DATA_DEPL); remoteDeploy != world; remoteDeploy = remoteDeploy.chain ){
+      if( remoteDeploy.data_idx != self.data_idx ){
+        continue;
+      }
+      self.view_ofs = remoteDeploy.origin;
+      self.angles = remoteDeploy.angles;
+      self.isActive = remoteDeploy.isActive;
+      self.faction = remoteDeploy.faction;
+      self.think = deploy_point_remote_send;
+      self.nextthink = time + 0.1;
     }
   }
-  self.think = deploy_point_th;
-  self.nextthink = time + 0.5;
 };
 
 /*QUAKED map_deploy_point_remote (0.431 0.753 0.788) (-26 -26 -44) (26 26 28)
@@ -123,10 +128,14 @@ Deploy points can be tailored to specific factions, and can be activated/deactiv
 .trigOnSpawn = <string> [target] - map object to fire when this is created
 */
 void() map_deploy_point_remote={
-  map_deploy_point();
+  setmodel(self, "q3mdl/testball.md3");
+  setsize( self, '-10 -10 -10', '10 10 10' ); 
+  setorigin( self, self.origin );
+  
+  self.SendEntity = send_deploy_point;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   
   self.use = deploy_point_remote_use;
-  self.SendEntity = send_deploy_point_remote;
   self.think = deploy_point_remote_query;
   self.nextthink = time + 0.1;
 }

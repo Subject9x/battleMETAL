@@ -57,7 +57,6 @@ void() ctrl_component_burn;
 void() ctrl_component_drop;
 
 float( float isNew, float changedFlags ) send_deploy_point;
-float( float isNew, float changedFlags ) send_deploy_point_remote;
 float( float isNew, float changedFlags ) send_nav_point;
 float( float isNew, float changedFlags ) send_objective;
 

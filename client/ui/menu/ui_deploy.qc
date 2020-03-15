@@ -309,11 +309,11 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   
   //Render Deploy points
   if( !CLIENT_MENU_deploy  ){
-    CLIENT_MENU_deploy = DEPLOY_POINTS;
+    CLIENT_MENU_deploy = DEPLOYPOINT;
     CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
   local entity deploy;
-  for( deploy = DEPLOY_POINTS; deploy != world; deploy = deploy.partPrev ){
+  for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
     if( deploy.faction != CLIENT_faction ){
       continue;
     } 

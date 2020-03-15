@@ -264,9 +264,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     te_shield_hit_high( dmg_point, normalize( dmg_point - inflictor.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
-  
-  //ideally I'd love to use this feature, but it makes the cockpit .weaponmodel disappear and I don't feel like fixing
-  //it right now. - Roohr
+
   if( trg.dmg_take < 0.25){
     trg.dmg_take = trg.dmg_take + random() * 3;
   }

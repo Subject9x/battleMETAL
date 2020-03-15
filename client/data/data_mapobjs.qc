@@ -140,9 +140,12 @@ void( float isNew, float entFlags ) data_objective={
 };
 
 void( float isNew, float entFlags ) data_deploy={
+  local float prevState;
   self.faction = ReadByte();
-  self.isActive = ReadByte();
   
+  prevState = self.isActive;
+  self.isActive = ReadByte();
+
   if( isNew ){
     if( cvar("developer") ){
       self.alpha = 0.9;
@@ -163,8 +166,9 @@ void( float isNew, float entFlags ) data_deploy={
     else{
       //first deploy point received.
       DEPLOY_POINTS = self;
+      DEPLOYPOINT = self;
     }
-    self.drawmask = MASK_ENGINE;
+    self.drawmask = MASK_NORMAL;
   }
   
 };

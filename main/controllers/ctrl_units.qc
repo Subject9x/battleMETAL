@@ -132,28 +132,18 @@ float( float isNew, float changedFlags ) send_deploy_point={
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteByte( MSG_ENTITY, changedFlags );
   
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
+  if( self.data_type == DATA_DEPL ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+  }
+  else{
+    WriteCoord( MSG_ENTITY, self.view_ofs_x );
+    WriteCoord( MSG_ENTITY, self.view_ofs_y );
+    WriteCoord( MSG_ENTITY, self.view_ofs_z );
+  }
   
-  WriteByte( MSG_ENTITY, self.data_type );
-  WriteByte( MSG_ENTITY, self.data_idx );
-  
-  WriteByte( MSG_ENTITY, self.faction );
-  WriteByte( MSG_ENTITY, self.isActive );
-  
-  return TRUE;
-};
-
-float( float isNew, float changedFlags ) send_deploy_point_remote={
-  WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
-  
-  WriteCoord( MSG_ENTITY, self.view_ofs_x );
-  WriteCoord( MSG_ENTITY, self.view_ofs_y );
-  WriteCoord( MSG_ENTITY, self.view_ofs_z );
-  
-  WriteByte( MSG_ENTITY, self.data_type );
+  WriteByte( MSG_ENTITY, DATA_DEPL );
   WriteByte( MSG_ENTITY, self.data_idx );
   
   WriteByte( MSG_ENTITY, self.faction );

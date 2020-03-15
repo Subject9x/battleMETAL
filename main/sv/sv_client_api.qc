@@ -149,7 +149,6 @@ void() ClientConnect = {
   self.playerState = PLAYER_SPAWN;
   
   client_push_player_info();
-  client_send_mapKeyObjects( self );
   
   if (intermission_running){
     ExitIntermission();
@@ -164,7 +163,6 @@ responsible for configuring the player and spawning them into the level
 ============
 */
 void() PutClientInServer = {
-  local float gamemode;
   local entity spot;
   
   self.flags = FL_CLIENT;
@@ -231,6 +229,7 @@ void() PutClientInServer = {
 
   switch( self.data_type ){
     case DATA_POBS:
+      client_send_mapKeyObjects( self );
       player_makeObserver();
       
       client_push_mapobjects();
@@ -240,7 +239,7 @@ void() PutClientInServer = {
       }
       client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
       
-      if( GAMEMODE_CAMPAIGN ){
+      if( GAMETYPE == GAMEMODE_CAMPAIGN ){
         self.movetype = MOVETYPE_NONE;
         self.flags = self.flags - (self.flags & FL_FLY);
         client_update_moveSpeed(0, 0, 0, "0", 0);

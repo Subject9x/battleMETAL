@@ -31,7 +31,7 @@ void( float dataID ) data_sync_new_turret={
 void() data_turret_light={
   local vector offset;
   
-  data_ini_heavy_turret_();
+  data_ini_light_turret_();
   
   setmodel(self, self.model);
  

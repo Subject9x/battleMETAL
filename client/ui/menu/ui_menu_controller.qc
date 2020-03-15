@@ -284,7 +284,7 @@ void() navBarListener={
     }
     
     if( CLIENT_MENU_deploy == world ){
-      CLIENT_MENU_deploy = DEPLOY_POINTS;
+      CLIENT_MENU_deploy = DEPLOYPOINT;
       CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
     }
     SPRITE_deploy_point_FRAME = 1;

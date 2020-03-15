@@ -73,7 +73,6 @@ void() data_projectile_ini_quantum_bit_touch_={
   self.impactType = IMPACT_DIRT;
 	if (pointcontents(self.origin) == CONTENT_SKY || pointcontents(self.origin) == CONTENT_SOLID){
     self.impactType = IMPACT_SKY;
-    cons_logAFloat("hit sky", 1); //DEBUG
 	}
   
   if(other.takedamage){

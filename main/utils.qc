@@ -250,7 +250,6 @@ void(entity ent, vector pnt) util_chekPointToHitDir={
     return;
   }
   sideAngle = normVec * v_right;
-  //cons_logAFloat("sangle", sideAngle);  //DEBUG
   if( hitAngle < 0.7 && hitAngle > 0 ){
     //side shot
     if( sideAngle > 0.3 && sideAngle <= 0.6){

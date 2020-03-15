@@ -13,8 +13,6 @@ Overview:
   can affect the state of a navpoint.
 */
 void() nav_point_touch={
-  local entity this;
-  local entity that;
   
   if(self.isActive == TRUE){
     //nav points are a player-only thing
