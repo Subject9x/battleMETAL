@@ -8,8 +8,8 @@ Overview:
 */
 
 //SendEntity
-.vector prevorigin;
-.vector lastorigin;
+.vector origin2;
+.vector origin1;
 .vector lastangle;
 .float lastupdate;
 .float prevupdate;

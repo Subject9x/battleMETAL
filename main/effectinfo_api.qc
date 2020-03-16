@@ -40,6 +40,7 @@ float( float isNew, float changedFlags ) te_send_missile={
   if( changedFlags & SENDFLAG_NEWENT ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.damageValue );
+    WriteByte( MSG_ENTITY, self.movetype );
   }
   return TRUE;
 };

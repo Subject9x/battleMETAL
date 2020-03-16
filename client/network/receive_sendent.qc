@@ -58,6 +58,8 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   self.angles_y = ReadCoord();
   self.angles_z = ReadCoord();
   
+  self.flags = ReadByte();
+  
   if( changeFlags & SENDFLAG_MOVE ){
     for(weps = self.w_slot; weps != world; weps = weps.w_slot){
       if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
@@ -76,6 +78,9 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
         if( weps.partParentId == M_TOR_CENTER ){
           weps.angles = self.torsoCenter.angles;
         }
+        else{
+          weps.angles = self.angles;
+        }
       }
     }
   }
@@ -83,13 +88,16 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
       makevectors(self.angles);
-      self.origin = self.origin + (v_up * -5);
+      self.origin = self.origin + (v_up * -2);
       self.colormod = '0.33 0.33 0.33';
       if( self.torsoCenter != world ){
         remove(self.torsoCenter);
       }     
-      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      weps = self.w_slot;
+      while( weps ){
+        this = weps.w_slot;
         remove(weps);
+        weps = this;
       }
       self.deadflag = DEAD_DEAD;
       if(self.vec_size == 1){
@@ -129,20 +137,28 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
     
-    data_sync_new_vehicle( self.data_idx );
-    
-    this = self;
-    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-      self = weps;
-        sendent_set_weapon();
-        initialize_data_item_(self.data_idx);
-        self.angles = this.angles;
-        self.owner = this;
-      self = this;
+    if( isNew ){
+      data_sync_new_vehicle( self.data_idx );
+      this = self;
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        self = weps;
+          sendent_set_weapon();
+          initialize_data_item_(self.data_idx);
+          self.angles = this.angles;
+          self.owner = this;
+        self = this;
+      }
+      self.movetype = MOVETYPE_STEP;
+      self.solid = SOLID_SLIDEBOX;
+      setmodel(self, self.model);
+      setsize(self, self.mins, self.maxs);
+      self.predraw = predraw_tank;
+      self.frame2time = time + 0.05;
+      self.frame1time = time + 0.05;
+      self.origin2 = self.origin1;
+      self.origin1 = self.origin;
     }
-    self.predraw = predraw_tank;
-    setmodel(self, self.model);
-    setorigin(self, self.origin);
+    self.nextthink = time + 0.1;
   }
 };
 
@@ -157,6 +173,8 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   self.angles_y = ReadCoord();
   self.angles_z = ReadCoord();
   
+  self.flags = ReadByte();
+  
   if( (changeFlags & SENDFLAG_MOVE) ){
     setorigin(self, self.origin);
     makevectors(self.angles);
@@ -169,10 +187,13 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
       makevectors(self.angles);
-      self.origin = self.origin + (v_up * -5);
+      self.origin = self.origin + (v_up * -2);
       self.colormod = '0.33 0.33 0.33';  
-      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      weps = self.w_slot;
+      while( weps ){
+        this = weps.w_slot;
         remove(weps);
+        weps = this;
       }
       self.deadflag = DEAD_DEAD;
       if(self.vec_size == 1){
@@ -196,16 +217,9 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    setorigin(self, self.origin);
-    
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.data_type = ReadByte();
-    self.skin =  self.faction - 1;
-    
-    self.drawmask = MASK_ENGINE;
-    
-    data_sync_new_vehicle(self.data_idx);
     
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
@@ -217,16 +231,29 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
 
-    this = self;
-    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-      self = weps;
-        sendent_set_weapon();
-        initialize_data_item_(self.data_idx);
-        self.angles = this.angles;
-        self.owner = this;
-      self = this;
+    if( isNew ){
+      self.drawmask = MASK_ENGINE;
+      self.skin =  self.faction - 1;
+      data_sync_new_vehicle(self.data_idx);
+      this = self;
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        self = weps;
+          sendent_set_weapon();
+          initialize_data_item_(self.data_idx);
+          self.angles = this.angles;
+          self.owner = this;
+        self = this;
+      }
+      self.movetype = MOVETYPE_STEP;
+      self.solid = SOLID_SLIDEBOX;
+      setmodel(self, self.model);
+      setsize(self, self.mins, self.maxs);
+      self.predraw = predraw_spg;
+      self.frame2time = time + 0.05;
+      self.frame1time = time + 0.05;
+      self.origin2 = self.origin1;
+      self.origin1 = self.origin;
     }
-    self.predraw = predraw_spg;
   }
 };
 
@@ -241,6 +268,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   self.angles_x = ReadCoord();
   self.angles_y = ReadCoord();
   self.angles_z = ReadCoord();
+  self.flags = ReadByte();
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     setorigin(self, self.origin);
@@ -274,8 +302,12 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     if( self.deadflag > DEAD_NO ){
       makevectors(self.angles);
       self.colormod = '0.33 0.33 0.33';  
-      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+
+      weps = self.w_slot;
+      while( weps ){
+        this = weps.w_slot;
         remove(weps);
+        weps = this;
       }
       self.deadflag = DEAD_DEAD;
       if(self.vec_size == 1){
@@ -299,16 +331,11 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    setorigin(self, self.origin);
-    
+
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.data_type = ReadByte();
-    self.skin =  self.faction - 1;
-    self.drawmask = MASK_ENGINE;
-    
-    data_sync_new_vehicle(self.data_idx);
-    
+   
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
     self.next_wepn3 = ReadByte();
@@ -318,17 +345,29 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    
-    this = self;
-    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-      self = weps;
-        sendent_set_weapon();
-        initialize_data_item_(self.data_idx);
-        self.angles = this.angles;
-        self.owner = this;
-      self = this;
+    if( isNew ){
+      self.skin =  self.faction - 1;
+      self.drawmask = MASK_ENGINE;
+      data_sync_new_vehicle(self.data_idx);
+      this = self;
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        self = weps;
+          sendent_set_weapon();
+          initialize_data_item_(self.data_idx);
+          self.angles = this.angles;
+          self.owner = this;
+        self = this;
+      }
+      self.movetype = MOVETYPE_STEP;
+      self.solid = SOLID_SLIDEBOX;
+      setmodel(self, self.model);
+      setsize(self, self.mins, self.maxs);
+      self.predraw = predraw_tank;
+      self.frame2time = time + 0.05;
+      self.frame1time = time + 0.05;
+      self.origin2 = self.origin1;
+      self.origin1 = self.origin;
     }
-    self.predraw = predraw_tank;
   }
 };
 
@@ -358,8 +397,11 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     if( self.torsoCenter ){
       remove(self.torsoCenter);
     }
-    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+    weps = self.w_slot;
+    while( weps ){
+      this = weps.w_slot;
       remove(weps);
+      weps = this;
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
@@ -441,7 +483,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
 
 void( float isNew, float changeFlags) sendent_handle_missile={
   local float impactEvent;
-  self.prevorigin = self.origin;
+  
   self.origin_x = ReadCoord();
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
@@ -453,7 +495,7 @@ void( float isNew, float changeFlags) sendent_handle_missile={
   self.velocity_x = ReadCoord();
   self.velocity_y = ReadCoord();
   self.velocity_z = ReadCoord();
-  setorigin(self, self.origin);
+
   if( changeFlags & SENDFLAG_IMPACT ){
     self.impactType = ReadByte();
     self.damageValue = ReadByte();
@@ -464,48 +506,93 @@ void( float isNew, float changeFlags) sendent_handle_missile={
   if( changeFlags & 128 ){
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
-    data_sync_new_projectile(self.data_idx);
-    setmodel(self, self.model);
-    setorigin(self, self.origin);
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_missile;
-    self.alpha = 1;
-    self.scale = 1;
+    self.movetype = ReadByte();
+    
+    if( isNew ){
+      self.solid = SOLID_NOT;
+      data_sync_new_projectile(self.data_idx);
+      setmodel(self, self.model);
+      setsize(self, '0 0 0', '0 0 0');
+      self.origin2 = self.origin;
+      self.origin1 = self.origin;
+      setorigin(self, self.origin);
+      self.drawmask = MASK_NORMAL;
+      self.predraw = predraw_missile;
+      self.alpha = 1;
+      self.scale = 1;
+      self.nextthink = time + 0.1;
+    }
   }
 };
 
 float() predraw_tank={
-  local float frac;
   local entity weps;
-    local float frac;
-  local vector newpos;
-  local vector moved;
+  local vector saved;
+  if( self.nextthink != self.frame1time ){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    self.origin2 = self.origin1;
+		self.origin1 = self.origin;
+  }
+  self.lerpfrac = (time - self.frame2time) / (self.frame1time-self.frame2time);
+  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
 
-	/*frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
-	frac = bound(0, frac, 100);
-	newpos = self.prevorigin + (self.lastorigin-self.prevorigin) * frac;
-	moved = newpos - self.origin;	//this is how much we've moved since the last render frame, note that it implies frametime.
-	self.origin = newpos;*/
+  if( (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)) ){
+    saved = self.origin;
+    self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+    self.origin_z = saved_z;
+  }
+  else{
+    self.origin2 = self.origin1 = self.origin;
+  }
   
-  setorigin(self, self.origin);
   if( self.deadflag == DEAD_NO ){
     makevectors(self.angles);
     if( self.torsoCenter != world ){
       self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
-      setorigin(self.torsoCenter, self.torsoCenter.origin);
     }
     for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      if( weps.partParentId == M_TOR_CENTER ){
+        weps.angles = self.torsoCenter.angles;
+        makevectors(self.torsoCenter.angles);
+      }
+      else{
+        makevectors(self.angles);
+      }
       weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
-      setorigin(weps, weps.origin);
     }
   }
   
   return TRUE;
 };
 float() predraw_spg={
-  local float frac;
+  local entity weps;
+  local vector saved;
+
+  if( self.nextthink != self.frame1time ){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    self.origin2 = self.origin1;
+		self.origin1 = self.origin;
+  }
+  self.lerpfrac = (time - self.frame2time) / (self.frame1time-self.frame2time);
+  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+
+  if( (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)) ){
+    saved = self.origin;
+    self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+    self.origin_z = saved_z;
+  }
+  else{
+    self.origin2 = self.origin1 = self.origin;
+  }
   
-  setorigin(self, self.origin);
+  if( self.deadflag == DEAD_NO ){
+    makevectors(self.angles);
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+    }
+  }
   return TRUE;
 };
 

@@ -232,7 +232,9 @@ void() ctrl_die_weapon={
     }
     //attempt to garbage collect AI
     if( (self.owner.flags & FL_MONSTER) ){
-      self.partPrev.w_slot = self.w_slot; //take hard point out of rotation.
+      if( self.w_slot ){
+        self.partPrev.w_slot = self.w_slot; //take hard point out of rotation.
+      }
       self.think = SUB_Remove;
       self.nextthink = time + 0.5;
     }

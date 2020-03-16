@@ -131,14 +131,6 @@ void() CSQC_Init =
   HUD_DATA_weapon.drawmask = MASK_NORMAL;
   UI_HANGAR_DATA_mech_list.drawmask = MASK_NORMAL;
   
-  addentity(UI_HANGAR_DATA_mech);
-  addentity(UI_ARMING_DATA_item_a);
-  addentity(UI_ARMING_DATA_item_b);
-  addentity(UI_ARMING_DATA_item_list);
-  addentity(UI_ARMING_item_drag);
-  addentity(HUD_DATA_weapon);
-  addentity(UI_HANGAR_DATA_mech_list);
-  
   MOUSE_drag_timer = 0;
   HUD_SHIELD_FLASH_TIME = 0;
   HUD_SHIELD_FLASH_ON = FALSE;
@@ -474,28 +466,28 @@ void(string s) CSQC_Parse_StuffCmd =
   local float argc;
 
   argc = tokenize(s);
-  if(argv(0) == "mech"){
-    if(argv(1) == "missionFile"){
+  if(argv(0) == "m"){
+    if(argv(1) == "msn"){
       cl_get_msnfile( argv(2) );
     }
-    else if(argv(1) == "anm_file"){
+    else if(argv(1) == "anm"){
       cl_get_animfile( argv(2) );
     }
-    else if(argv(1) == "list_mechs"){
+    else if(argv(1) == "lms"){
       tokenizebyseparator(s, "[", "]");
       cl_get_mechs_all( argv(1) );
     }
-    else if(argv(1) == "list_items"){
+    else if(argv(1) == "lis"){
       tokenizebyseparator(s, "[", "]");
       cl_get_items_all( argv(1) );
     }
-    else if(argv(1) == "gamemode"){
+    else if(argv(1) == "mode"){
       cvar_set("gamemode", argv(2));
     }
-    else if(argv(1) == "unlock"){
+    else if(argv(1) == "unl"){
       cl_unlock_stuff(s);
     }
-    else if(argv(1) == "target"){
+    else if(argv(1) == "trg"){
       CLIENT_target_name = strzone(argv(2));
     }
   }
@@ -570,8 +562,12 @@ void() CSQC_Ent_Remove =
     remove(self.torsoCenter);
   }
   local entity weps;
-  for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+  local entity next;
+  weps = self.w_slot;
+  while( weps ){
+    next = weps.w_slot;
     remove(weps);
+    weps = next;
   }
 	//if (self.t_remove)
 		//if (self.t_remove())

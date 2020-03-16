@@ -202,7 +202,7 @@ float( float isNew, float changedFlags ) send_objective={
 
 float( float isNew, float changedFlags ) send_damage_zone={
   cons_logAFloat("SV()->send_damage_zone", 1);  //DEBUG
-  WriteByte( MSG_ENTITY, SENDTYPE_MAP );
+  /*WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteByte( MSG_ENTITY, changedFlags );
 
   WriteCoord( MSG_ENTITY, self.origin_x );
@@ -234,6 +234,6 @@ float( float isNew, float changedFlags ) send_damage_zone={
       WriteByte( MSG_ENTITY, self.modelindex );
     }
   }
-  return TRUE;
+  return TRUE;*/
 };
 

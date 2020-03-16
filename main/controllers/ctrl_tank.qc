@@ -78,13 +78,15 @@ void() ctrl_updateTank={
 float( entity dest, float changedflags ) ctrl_send_tank={
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
   WriteByte( MSG_ENTITY, changedflags );
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteCoord( MSG_ENTITY, self.angles_x );
-    WriteCoord( MSG_ENTITY, self.angles_y );
-    WriteCoord( MSG_ENTITY, self.angles_z );
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  WriteCoord( MSG_ENTITY, self.angles_x );
+  WriteCoord( MSG_ENTITY, self.angles_y );
+  WriteCoord( MSG_ENTITY, self.angles_z );
 
+  WriteByte( MSG_ENTITY, self.flags );
+    
   if( changedflags & SENDFLAG_TURRET ){
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
@@ -101,7 +103,6 @@ float( entity dest, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.data_type );
-    
     WriteByte( MSG_ENTITY, self.next_wepn1);
     WriteByte( MSG_ENTITY, self.next_wepn2);
     WriteByte( MSG_ENTITY, self.next_wepn3);
@@ -124,6 +125,7 @@ float( entity dest, float changedflags ) ctrl_send_spg={
   WriteCoord( MSG_ENTITY, self.angles_x );
   WriteCoord( MSG_ENTITY, self.angles_y );
   WriteCoord( MSG_ENTITY, self.angles_z );
+  WriteByte( MSG_ENTITY, self.flags );
 
   if( changedflags & SENDFLAG_DEAD ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -158,6 +160,7 @@ float( entity dest, float changedflags ) ctrl_send_gev={
   WriteCoord( MSG_ENTITY, self.angles_x );
   WriteCoord( MSG_ENTITY, self.angles_y );
   WriteCoord( MSG_ENTITY, self.angles_z );
+  WriteByte( MSG_ENTITY, self.flags );
 
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );

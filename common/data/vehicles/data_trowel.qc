@@ -67,4 +67,11 @@ void() data_ini_trowel_={
 //HUD DATA=============================
   //Unit is non-playable
 //====================================
+
+
+//CSQC Funcs===========================
+  #ifdef CSQC
+  //self.te_critical_hit 
+  #endif
+//====================================
 };

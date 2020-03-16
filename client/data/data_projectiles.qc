@@ -47,22 +47,17 @@ void( float dataID ) data_sync_new_projectile={
 };
 
 float() predraw_missile={
-  local float frac;
-  local vector newpos;
-  local vector moved;
-  local vector pclVel;
-
-	/*frac = (time - self.lastupdate) / (self.lastupdate - self.prevupdate);
-	frac = bound(0, frac, 0.1);
-	newpos = self.prevorigin + (self.lastorigin - self.prevorigin) * frac;
-	moved = newpos - self.origin;	//this is how much we've moved since the last render frame, note that it implies frametime.
-	self.origin = newpos;*/
-  
-  setorigin(self, self.origin);
-  if( self.traileffectnum > 0 ){
-    makevectors(self.angles);
-    trailparticles( self, self.traileffectnum, self.origin + (v_forward * -2 ), self.origin + (v_forward * -16 ));
+  if( self.nextthink != self.frame1time ){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
   }
+  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+
+  if( self.traileffectnum && self.origin2 != self.origin ){
+    trailparticles(self, self.traileffectnum, self.origin2, self.origin);
+    self.origin2 = self.origin;
+  }  
   if( self.predraw_projectile ){
     self.predraw_projectile();
   }
@@ -77,7 +72,6 @@ float() predraw_plasma={
   else{
     self.scale = self.scale + 0.075;
     self.alpha = self.alpha - 0.025;
-    //todo - transition color tint to 'orange' over life time
   }
   return TRUE;
 };

@@ -77,13 +77,17 @@ void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
   newHudPart = spawn();
   self = newHudPart;
   
-  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
+  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
   setsize(self, '-1 -1 -1','1 1 1');
   macro_set_model(wepThing.model, 0, 0)  
   makevectors(self.owner.angles);
   ofs = self.owner.origin + (v_right * wepThing.compOffset_x) + (v_up * (wepThing.compOffset_y * -2)) + (v_forward * (wepThing.compOffset_z - self.owner.cockpit.compOffset_z));
   setorigin(self, ofs);
-  
+  self.punchangle = ownerSelf.angles;
+  self.view_ofs = self.origin - ownerSelf.origin;
+  self.angles = ownerSelf.angles;
+  self.v_angle = self.angles - ownerSelf.angles; 
+
   self.viewmodelforclient = ownerSelf;
   self.owner = ownerSelf;
   self.alpha = 1;

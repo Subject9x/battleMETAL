@@ -1552,7 +1552,9 @@ float() crandom ={
 };
 
 void() SUB_Null={};
-void() SUB_Remove={remove(self);};
+void() SUB_Remove={
+  remove(self);
+};
 
 .float gravity;
 .float scale;
