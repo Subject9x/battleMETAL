@@ -5,6 +5,7 @@ void() CSQC_Init =
   registercvar("gamemode", "0");
   registercvar("gametype", "0");
   registercommand("fog");
+  registercvar("cl_hud_sway", "1");
 
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
@@ -122,6 +123,22 @@ void() CSQC_Init =
   HUD_DATA_weapon = spawn();
   UI_HANGAR_DATA_mech_list = spawn();
   
+  UI_HANGAR_DATA_mech.drawmask = MASK_NORMAL;
+  UI_ARMING_DATA_item_a.drawmask = MASK_NORMAL;
+  UI_ARMING_DATA_item_b.drawmask = MASK_NORMAL;
+  UI_ARMING_DATA_item_list.drawmask = MASK_NORMAL;
+  UI_ARMING_item_drag.drawmask = MASK_NORMAL;
+  HUD_DATA_weapon.drawmask = MASK_NORMAL;
+  UI_HANGAR_DATA_mech_list.drawmask = MASK_NORMAL;
+  
+  addentity(UI_HANGAR_DATA_mech);
+  addentity(UI_ARMING_DATA_item_a);
+  addentity(UI_ARMING_DATA_item_b);
+  addentity(UI_ARMING_DATA_item_list);
+  addentity(UI_ARMING_item_drag);
+  addentity(HUD_DATA_weapon);
+  addentity(UI_HANGAR_DATA_mech_list);
+  
   MOUSE_drag_timer = 0;
   HUD_SHIELD_FLASH_TIME = 0;
   HUD_SHIELD_FLASH_ON = FALSE;
@@ -139,6 +156,8 @@ void() CSQC_Init =
   loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, FALSE, FALSE);
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
   FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
+  
+  cl_set_hud_vars_obs();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -486,11 +505,6 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     else if( argv(0) == "cd" ){  
       cl_get_new_music( s ) ;
-    }
-    else if( argv(0) == "in_pitch_max" ){
-      HUD_PITCH_MAX = stof(argv(1));
-      HUD_PITCH_MIN = stof(argv(3));
-      localcmd(s);
     }
     else{
       localcmd(s);

@@ -99,13 +99,12 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     else if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
       //Toggle Group Fire
       hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
-      return TRUE;
+      return FALSE;
     }
     else if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
       //Toggle Chain Fire
       hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
-      
-      return TRUE;
+      return FALSE;
     }
   }
   else if(inputEventType == INPUT_EVENT_MOUSE_POS){
@@ -192,6 +191,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       HUD_ZOOM_ACTIVE = FALSE;
       return FALSE;
     }
+    
     return FALSE;
   } 
    

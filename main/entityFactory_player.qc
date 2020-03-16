@@ -16,14 +16,6 @@ void() player_makeObserver={
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
-  if( cvar("developer") ){
-    client_update_moveSpeed(800, 800, 500, "3", 0);
-  }
-  else{
-    client_update_moveSpeed(200, 200, 200, "3", 0);
-  }
-  client_update_viewBob(0, 0, 0);
-  client_update_modelBob(0, 0, 0, 0);
   self.stat_player_weapons_state = 0;
   self.view_ofs = '0 0 1';
 };
@@ -127,9 +119,7 @@ void() player_makeMech={
   self.playerState = PLAYER_POWERUP_BEGIN;
   
   client_push_player_info();
-  client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
   
-  client_update_viewPitch( self.pitchMin, self.pitchMax );
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
  
   player_setup_hudconsole();

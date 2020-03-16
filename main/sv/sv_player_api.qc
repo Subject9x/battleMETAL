@@ -61,7 +61,6 @@ void() PlayerPreThink = {
   if( !self.button8 ){
     if( self.playerState == PLAYER_SPRINT_ON ){
       self.playerState = PLAYER_ACTIVE;
-      client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
       if( time > self.ramCharge ){
         self.ramAngle_y = self.v_angle_y;
       }

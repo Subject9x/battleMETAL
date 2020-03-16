@@ -386,32 +386,6 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
   self = notChunk;
 };
 
-void( vector org, vector setVelocity, float total ) te_field_rad={
-  client_send_particle( particleeffectnum("TE_FIELD_RAD"), org, setVelocity,  total);
-};
-
-void( vector org, float total ) te_field_rad_light={
-  client_send_particle( particleeffectnum("TE_FIELD_RAD_LIGHT"), org, '0 0 0',  total);
-};
-
-void( vector org, vector setVelocity, float total ) te_field_mineral={
-  client_send_particle( particleeffectnum("TE_FIELD_MINERAL"), org, setVelocity,  total);
-};
-
-void( vector org, float total ) te_field_mineral_light={
-  client_send_particle( particleeffectnum("TE_FIELD_MINERAL_LIGHT"), org, '0 0 0',  total);
-};
-
-void( vector particleOrg, vector particleEnd ) te_field_quantum={
-  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE"), particleOrg, normalize( particleEnd - particleOrg ), 1);
-  client_send_particle( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), particleOrg, normalize( particleEnd - particleOrg ) * 30, 1);
-  client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_QRFL_MUZZLE_RAIL"), particleOrg, particleEnd);
-};
-
-void( vector org, float total ) te_field_quantum_light={
-  client_send_particle( particleeffectnum("TE_FIELD_QUANTUM_LIGHT"), org, '0 0 0',  total);
-};
-
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
   local vector fx, vel;
   local vector leftMin;

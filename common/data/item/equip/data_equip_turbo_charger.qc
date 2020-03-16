@@ -67,7 +67,7 @@ void() turbo_charger_upgrade_={
   if( (self.owner.flags & FL_CLIENT) ){
     module = self;
     self = module.owner;
-      client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, ftos(self.owner.data_speed_accel), self.owner.hud_rollangle);  
+      //client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, ftos(self.owner.data_speed_accel), self.owner.hud_rollangle);  
       self.ramUpMax = 4 - self.vec_size;
       self.ramUpMax = self.ramUpMax / 10;
       self.ramUpMax = self.data_speed_forward * self.ramUpMax;
@@ -84,7 +84,7 @@ void() turbo_charger_remove_={
   if( (self.owner.flags & FL_CLIENT) ){
     module = self;
     self = module.owner;
-      client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, ftos(self.owner.data_speed_accel), self.owner.hud_rollangle);  
+      //client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, ftos(self.owner.data_speed_accel), self.owner.hud_rollangle);  
       self.ramUpMax = 4 - self.vec_size;
       self.ramUpMax = self.ramUpMax / 10;
       self.ramUpMax = self.data_speed_forward * self.ramUpMax;

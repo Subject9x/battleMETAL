@@ -232,27 +232,27 @@ void(entity client, string theMessage, float messageLifetime) client_send_info_m
 };
 
 /*
-  client sends string 'cmd mech foo'
-  where foo is the command, first parm must be 'mech'
+  client sends string 'cmd m foo'
+  where foo is the command, first parm must be 'm'
   
-  so - 'cmd mech foo'
+  so - 'cmd m foo'
 */
 void(string str, float tokens) client_ParseMechCommand={
   
-  if(argv(1) == "setwep"){
+  if(argv(1) == "sw"){
     if(self.deadflag >= DEAD_NO){
       client_setWeapon(str, tokens);
     }
     return;
   }
   
-  if(argv(1) == "setmech"){
+  if(argv(1) == "sm"){
     self.vec_size = stof(argv(2));
     self.nextVecChoice = stof(argv(3));
     return;
   }
   
-  if(argv(1) == "spawn"){
+  if(argv(1) == "sp"){
     if(self.data_type == DATA_POBS){
       player_unmakeObserver();
       spawnpoint_select();
@@ -263,19 +263,19 @@ void(string str, float tokens) client_ParseMechCommand={
     return;
   }
   
-  if(argv(1) == "setgroup"){
+  if(argv(1) == "sg"){
     client_setWeaponGroup(str, tokens);
     return;
   }
   
   //
-  if(argv(1) == "setnav"){
+  if(argv(1) == "sn"){
     client_setNavPoint(str, tokens);
     return;
   }
   
   //changes player's .faction var
-  if(argv(1) == "setfaction"){
+  if(argv(1) == "fac"){
     self.faction = stof( argv(2) );
     if( self.data_type == DATA_MECH ){
       client_update_faction();
@@ -284,7 +284,7 @@ void(string str, float tokens) client_ParseMechCommand={
     return;
   }
   
-  if(argv(1) == "nextmission"){
+  if(argv(1) == "nxm"){
     if( GAMETYPE == GAMEMODE_CAMPAIGN ){
       client_setMission(str, tokens);
     }
@@ -300,7 +300,7 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   
   //player wants to skip an animatic
-  if( argv(1) == "exitanim" ){
+  if( argv(1) == "exan" ){
     self.count2 = 0;
     self.velocity = '0 0 0';
     self.avelocity = '0 0 0';
@@ -373,58 +373,45 @@ void(string cmd, float tokens) client_setMission={
     changelevel (mapname);
   }
 };
+
 /*
-  
+  Client set's their weapon groups on the server
 */
-void(string cmd, float tokens) client_setWeaponGroup={
-  local float groupnum, groupval;
-  groupnum = stof(argv(2));
-  groupval = stof(argv(3));
-  
-  switch(groupnum){
-    case 1:
-      self.w_group1 = groupval;
-      break;
-    case 2:
-      self.w_group2 = groupval;
-      break;
-    case 3:
-      self.w_group3 = groupval;
-      break;
-    case 4:
-      self.w_group4 = groupval;
-      break;
-  }
+void(string cmd, float tokens) client_setWeaponGroup={  
+  self.w_group1 = stof(argv(2));
+  self.w_group2 = stof(argv(3));
+  self.w_group3 = stof(argv(4));
+  self.w_group4 = stof(argv(5));
 };
 
 void(string mechs) client_sendAvailable_Mechs={
   local string cmd;
-  cmd = strcat("mech list_mechs [", mechs, "]\n");
+  cmd = strcat("m lms [", mechs, "]\n");
   stuffcmd(self, cmd);
 };
 
 void(string itms) client_sendAvailableItems={
   local string cmd;
-  cmd = strcat("mech list_items [", itms,"]\n");
+  cmd = strcat("m lis [", itms,"]\n");
   stuffcmd(self, cmd);
 };
 
 void() client_sendMissionUnlocks={
   local string cmd;
-  cmd = strcat("mech unlock mechs [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
+  cmd = strcat("m unl [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
   stuffcmd(self, cmd);
 };
 
 void(float mode) client_sendGameMode={
   local string cmd;
-  cmd = strcat("mech gamemode ", ftos(mode),"\n");
+  cmd = strcat("m mode ", ftos(mode),"\n");
   stuffcmd(self, cmd);
 };
 
 void(string targetName) client_sendTargetName={
   local string cmd;
   
-  cmd = strcat("mech target ", targetName,"\n");
+  cmd = strcat("m trg ", targetName,"\n");
   stuffcmd(self, cmd);
 };
 
@@ -519,13 +506,13 @@ void() client_sendMissionFileName={
     msnFile = world.missionFile;
   }
   
-  cmd = strcat("mech missionFile ", msnFile, "\n");
+  cmd = strcat("m msn ", msnFile, "\n");
   stuffcmd(self, cmd);
 };
 
 void(string fileName) client_sendAnimaticFileName={
   local string cmd;
-  cmd = strcat("mech anm_file ", fileName, "\n");
+  cmd = strcat("m anm ", fileName, "\n");
   stuffcmd(self, cmd);
 };
 
@@ -610,10 +597,8 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
 
 void(entity client ) client_send_mapKeyObjects={
   local entity objects;
-  
-  
 
-  for(objects = findchainflags(spawnflags, IT_QUAD); objects != world; objects = objects.chain){
+  /*for(objects = findchainflags(spawnflags, IT_QUAD); objects != world; objects = objects.chain){
     msg_entity = client;
     WriteByte( MSG_ONE, SVC_TEMPENTITY );
     WriteByte( MSG_ONE, TE_MAPKEY_DATA );
@@ -621,51 +606,8 @@ void(entity client ) client_send_mapKeyObjects={
     WriteLong( MSG_ONE, objects.origin_x );
     WriteLong( MSG_ONE, objects.origin_y );
     WriteByte( MSG_ONE, objects.faction);
-  }
+  }*/
 };
-
-void(float fwd, float side, float bck, string accel, float roll) client_update_moveSpeed={
-  local string comd;
-  
-  msg_entity = self;
-  comd = strcat("cl_forwardspeed ", ftos(fwd), "\n");
-  comd = strcat( comd, strcat("cl_sidespeed ", ftos(side), "\n") );
-  comd = strcat( comd, strcat("cl_backspeed ", ftos(bck), "\n") );
-  comd = strcat( comd, strcat("cl_movespeedkey ", accel, "\n") );
-  comd = strcat( comd, strcat("cl_rollangle ",  ftos(roll), "\n") );
-  
-  stuffcmd(self, comd);
-};
-
-void(float bob, float cycle, float up) client_update_viewBob={
-  local string comd;
-  
-  comd = strcat("cl_bob ", ftos(bob), " \n ");
-  comd = strcat(comd, "cl_bobcycle ",  ftos(cycle), " \n ");
-  comd = strcat(comd, "cl_bobup ",  ftos(up), " \n");
-  
-  stuffcmd(self, comd );
-};
-void(float bobmodel, float side, float bmod_speed, float bmod_up) client_update_modelBob={
-  local string comd;
-  
-  comd = strcat("cl_bobmodel ", ftos(bobmodel),  " \n ");
-  comd = strcat(comd, "cl_bobmodel_side ", ftos(side),  " \n ");
-  comd = strcat(comd, "cl_bobmodel_speed ", ftos(bmod_speed),  " \n");
-  comd = strcat(comd, "cl_bobmodel_up ", ftos(bmod_up), " \n");
-  
-  stuffcmd(self, comd );
-};
-
-void(float p_min, float p_max) client_update_viewPitch={
-  local string comd;
-  
-  comd = strcat("in_pitch_max ", ftos(p_max), " \n ");
-  comd = strcat(comd, "in_pitch_min ", ftos(p_min), " \n");
-  
-  stuffcmd(self, comd);
-};
-
 
 void() respawn={ 
   if (  GAMETYPE == GAMEMODE_COOP ){

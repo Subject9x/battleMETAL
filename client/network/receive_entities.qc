@@ -176,8 +176,20 @@ void() receive_ent_bindData={
   CLIENT_stat_trg_lg_hp = getstatf(STAT_TARGET_HP_LEGS);
   
   if( CLIENT_health_legs <= 0 && CLIENT_health_legs_prev > 0 ){
+    cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward / 2));
+    cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe / 2));
+    cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward / 2));
+      
     hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
   }
+  if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
+    //repair event
+    cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward));
+    cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe));
+    cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward));
+  }
+  
+  
   if( CLIENT_health_torso_left <= 0 && CLIENT_health_torso_left_prev > 0 ){
     hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
   }
@@ -423,4 +435,6 @@ void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyFa
     //start chain
     mapKeyObject = newMapKey;
   }
+  newMapKey.drawmask = MASK_NORMAL;
+  addentity(newMapKey);
 };

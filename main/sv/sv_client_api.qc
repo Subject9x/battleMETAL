@@ -18,7 +18,7 @@ Overview:
 void(string str) SV_ParseClientCommand={
   local float argc;
   argc = tokenize(str);
-  if(argv(0) == "mech"){
+  if(argv(0) == "m"){
     client_ParseMechCommand(str, argc);
   }
   else if( argv(0) == "savegame"){
@@ -242,9 +242,6 @@ void() PutClientInServer = {
       if( GAMETYPE == GAMEMODE_CAMPAIGN ){
         self.movetype = MOVETYPE_NONE;
         self.flags = self.flags - (self.flags & FL_FLY);
-        client_update_moveSpeed(0, 0, 0, "0", 0);
-        client_update_viewBob( 0, 0, 0 );
-        client_update_modelBob( 0, 0, 0, 0 );
         if( world.animaticOnly ){
           self.playerState = PLAYER_INTERMSN;
         }

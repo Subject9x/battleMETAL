@@ -19,7 +19,6 @@ void( float isNew, float entFlags ) sendent_handle_map={
   
   self.data_type = ReadByte();
   self.data_idx = ReadByte();
-  
   switch( self.data_type ){
     case DATA_NAVP:
       data_nav_point( isNew, entFlags );
@@ -173,6 +172,178 @@ void( float isNew, float entFlags ) data_deploy={
   
 };
 
-void( float isNew, float entFlags ) data_map_object={
+float() predraw_damage={
+  
+  return TRUE;
+};
 
+
+void() map_damage_zone_particles_shields={
+  local vector velocityOffset, particleOffset;
+  
+  velocityOffset = self.dest + (v_up * 16);
+  te_particlerain( self.absmin, self.absmax, normalize(velocityOffset - self.dest) * 50, floor(self.compAltOffset_x / self.count), 244); 
+
+  if( time > self.count1 ){
+    self.count1 = time + (random() * 0.5);
+    
+    particleOffset_x = crandom() * self.compAltOffset_x;
+    particleOffset_z = crandom() * self.compAltOffset_y;
+    particleOffset_y = random() * (self.compAltOffset_z * 0.25);
+    
+    particleOffset = self.dest + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
+    if( random() < 0.8){
+      te_field_mineral(particleOffset, normalize(velocityOffset - self.dest) * 25, 5);
+    }
+    
+    te_field_mineral_light(particleOffset, 1);
+    if( self.compAltOffset_x > 128){
+      te_field_mineral_light(particleOffset, 1);
+      if( self.compAltOffset_x > 256){
+        te_field_mineral_light(particleOffset, 1);
+        if( self.compAltOffset_x > 512){
+          te_field_mineral_light(particleOffset, 1);
+        }
+      }
+    }
+  }
+};
+
+void() map_damage_zone_particles_armor={
+  local vector velocityOffset, particleOffset;
+  
+  velocityOffset = self.dest + (v_up * 16);
+  te_particlecube( self.absmin, self.absmax, normalize(velocityOffset - self.dest) * 5, floor(self.compAltOffset_x / self.count), 176, FALSE, 1); 
+
+  if( time > self.count1 ){
+    self.count1 = time + (random() * 0.5);
+    
+    particleOffset_x = crandom() * self.compAltOffset_x;
+    particleOffset_z = crandom() * self.compAltOffset_y;
+    particleOffset_y = random() * (self.compAltOffset_z / 2);
+    
+    particleOffset = self.dest + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
+    if( random() < 0.2){
+      te_field_rad(particleOffset, normalize(velocityOffset - self.dest) * 4, 1);
+    }
+    te_field_rad_light(particleOffset, 1);
+    if( self.compAltOffset_x > 256){
+      te_field_rad_light(particleOffset, 1);
+      if( self.compAltOffset_x > 512){
+        te_field_rad_light(particleOffset, 1);
+        if( self.compAltOffset_x > 1024){
+          te_field_rad_light(particleOffset, 1);
+        }
+      }
+    }
+  }
+};
+
+void() map_damage_zone_particles_energy={
+  local vector velocityOffset, particleOrigin, particleOffset;
+  
+  velocityOffset = self.dest + (v_up * 2);
+  te_particlecube( self.absmin, self.absmax, '0 0 0', floor(self.compAltOffset_x / self.count), 128, FALSE, 10); 
+  
+  if( time > self.count1 ){
+    self.count1 = time + (random() * 0.5);
+    
+    particleOffset_x = crandom() * self.compAltOffset_x;
+    particleOffset_z = crandom() * self.compAltOffset_y;
+    particleOffset_y = random() * (self.compAltOffset_z / 2);
+    
+    particleOffset = self.dest + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
+    
+    if( random() <= 0.8 ){
+      particleOrigin_x = crandom() * self.compAltOffset_x;
+      particleOrigin_z = crandom() * self.compAltOffset_y;
+      particleOrigin_y = random() * self.compAltOffset_z;
+      particleOrigin = self.dest + (v_right * particleOrigin_x) + (v_forward * particleOrigin_z) + (v_up * particleOrigin_y);
+      te_field_quantum(particleOffset, particleOrigin);
+    }
+    
+    te_field_quantum_light(particleOffset, 1);
+    if( self.compAltOffset_x > 256){
+      te_field_quantum_light(particleOffset, 1);
+      if( self.compAltOffset_x > 512){
+        te_field_quantum_light(particleOffset, 1);
+        if( self.compAltOffset_x > 1024){
+          te_field_quantum_light(particleOffset, 1);
+        }
+      }
+    }
+  }
+};
+
+void() map_damage_zone_think={
+  
+  makevectors(self.angles);
+  if( (self.damageType & 1) )
+    map_damage_zone_particles_shields();
+  
+  if( (self.damageType & 2) )
+    map_damage_zone_particles_armor();
+  
+  if( (self.damageType & 4) )
+    map_damage_zone_particles_energy();
+  
+  if( (self.spawnflags & 8) ){
+    //spawnflags 8 = remove after first lifetime countdown
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.001;
+    return;
+  }
+  
+  if( (self.spawnflags & 4) ){
+    //reactivate damage zone after timer
+    self.think = map_damage_zone_cool;
+    self.nextthink = time + self.wait;
+    return;
+  }
+  
+  //otherwise do nothing else
+  self.think = map_damage_zone_think;
+  self.nextthink = time + 0.1;
+};
+
+void() map_damage_zone_cool={
+  self.isActive = TRUE;
+  if( (self.spawnflags & 2) ){
+    self.think = map_damage_zone_think;
+    self.nextthink = time + self.data_lifetime;
+  }
+};
+
+void( float isNew, float entFlags ) data_map_damage={
+  local vector min, max;
+  local float funcFlag;
+  self.mins = te_read_vector();
+  self.maxs = te_read_vector();
+  if( isNew ){
+    self.damageValue = ReadByte();
+    self.damageType = ReadByte();
+    self.spawnflags = ReadByte();
+    self.count = ReadByte();
+    self.count1 = ReadByte();
+    self.compAltOffset = te_read_vector();
+    
+    self.solid = SOLID_TRIGGER;
+    self.movetype = MOVETYPE_NONE;
+    self.alpha = 0.01;
+    self.colormod = '0 0 0';
+    
+    funcFlag = ReadByte();
+    if( funcFlag ){
+      setmodel( self, modelnameforindex(ReadByte()));
+      setsize(self, self.mins, self.maxs);
+    }
+    else{
+      setmodel(self, "q3mdl/testball.md3");
+      setsize(self, self.mins, self.maxs);
+    }
+    setorigin(self, self.origin);
+    self.think = map_damage_zone_think;
+    self.nextthink = time + 0.1;
+    self.drawmask = MASK_ENGINE;
+  }
 };

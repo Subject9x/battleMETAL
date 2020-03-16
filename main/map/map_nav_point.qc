@@ -47,6 +47,7 @@ void() nav_point_use={
   //nav point is inactive, activate
   if( !self.isActive ){
     trigger_event( activator, self.trigOnSpawn );
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self.isActive = TRUE;
     return;
   }
@@ -55,17 +56,25 @@ void() nav_point_use={
     //deactivate signal
     self.isActive = FALSE;
     trigger_event( other, self.trigOnDeath );
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     return;
   }
 };
 
+
 void() map_nav_point_th={
+  
+  self.think = map_nav_point_th;
+  self.nextthink = time + 0.1;
+};
+
+void() map_nav_point_ini={
 
   self.SendEntity = send_nav_point;
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   
   self.think = map_nav_point_th;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 1;
 };
 
 /*QUAKED map_nav_point (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
@@ -104,7 +113,7 @@ void() map_nav_point={
   self.solid = SOLID_TRIGGER;
   self.use = nav_point_use;
   self.touch = nav_point_touch;
-  self.think = map_nav_point_th;
+  self.think = map_nav_point_ini;
   
   self.nextthink = time + 0.1;
 };

@@ -90,6 +90,32 @@ void() cl_particles_fogFrame={
   }
 };
 
+void( vector org, vector setVelocity, float total ) te_field_rad={
+  pointparticles( particleeffectnum("TE_FIELD_RAD"), org, setVelocity,  total);
+};
+
+void( vector org, float total ) te_field_rad_light={
+  pointparticles( particleeffectnum("TE_FIELD_RAD_LIGHT"), org, '0 0 0',  total);
+};
+
+void( vector org, vector setVelocity, float total ) te_field_mineral={
+  pointparticles( particleeffectnum("TE_FIELD_MINERAL"), org, setVelocity,  total);
+};
+
+void( vector org, float total ) te_field_mineral_light={
+  pointparticles( particleeffectnum("TE_FIELD_MINERAL_LIGHT"), org, '0 0 0',  total);
+};
+
+void( vector particleOrg, vector particleEnd ) te_field_quantum={
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), particleOrg, normalize( particleEnd - particleOrg ), 1);
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), particleOrg, normalize( particleEnd - particleOrg ) * 30, 1);
+  trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), particleOrg, particleEnd);
+};
+
+void( vector org, float total ) te_field_quantum_light={
+  pointparticles( particleeffectnum("TE_FIELD_QUANTUM_LIGHT"), org, '0 0 0',  total);
+};
+
 /*
   Client-side explosion shell
 

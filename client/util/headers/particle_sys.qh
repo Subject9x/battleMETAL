@@ -41,10 +41,29 @@ void() cl_particles_fogFrame;
 .float pcl_count;
 .float pcl_fadeout; //time when debris starts to fade out
 
+.float wait;
+.float spawnflags;
+.float count;
+.float count1;
+.vector dest;
+
 //===================================
 
 vector() te_read_vector;
 vector() te_read_angle;
+
+
+//ported from effectinfo_api
+
+void( vector org, vector setVelocity, float total ) te_field_rad;
+void( vector org, float total ) te_field_rad_light;
+
+void( vector org, vector setVelocity, float total ) te_field_mineral;
+void( vector org, float total ) te_field_mineral_light;
+
+void( vector particleOrg, vector particleEnd ) te_field_quantum;
+void( vector org, float total ) te_field_quantum_light;
+
 
 /*
   Client-side explosion shell

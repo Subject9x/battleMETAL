@@ -197,7 +197,7 @@ void() ButtonCommands={
       if( self.playerState == PLAYER_ACTIVE ){
         self.ramAngle_y = self.v_angle_y;
         self.playerState = PLAYER_SPRINT_ON;
-        client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
+        //client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
       }
     }
   }
