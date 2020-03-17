@@ -62,15 +62,17 @@ void() data_projectile_ini_rocket_={
 
 #ifndef CSQC
 void() data_prj_mis_touch={
+  local float debris, debrisType;
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   
-	if ( pointcontents(self.origin) == CONTENT_SKY){
-    remove(self);
-		return;
-	}
   self.impactType = IMPACT_DIRT;
+  debris = rint(3 + random() * 5);
+	if ( pointcontents(self.origin) == CONTENT_SKY){
+    self.impactType = IMPACT_SKY;
+	}
+ 
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
@@ -78,8 +80,15 @@ void() data_prj_mis_touch={
     }
     else{
       self.impactType = IMPACT_ARMOR;
+      debris = rint(4 + random() * 6);
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
     }
+    debris = 0;
   }
+  if( debris > 0 ){
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, debrisType );
+  }
+  
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.think = SUB_Remove;
   self.nextthink = time + 0.05;

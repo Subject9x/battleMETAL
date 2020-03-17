@@ -99,7 +99,7 @@ void() te_building_fire_th={
   self.compAltOffset = te_apply_wind( self.origin );
   pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
   self.think = te_building_fire_th;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.1 + random() * 0.75;
 };
 
 entity( entity targetBuilding ) te_building_fire_start={
@@ -183,12 +183,7 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   
   setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
   setorigin( explode, org);
-  if( debrisCount > 0 ){
-    for(itr = debrisCount; itr > 0; itr = itr - 1){
-      vel = normalize( (org + '0 0 10') - org ) * 10; 
-      particle_debris( org, vel, debrType );
-    }
-  }
+
   te_customflash( org, explodeSize * 50, 1, explodeColor); 
 };
 
@@ -229,52 +224,6 @@ void( float isNew, float entFlags) sendent_handle_chunk={
 /*
   Shifted particle events to the client as much as possible.
 */
-/*
-  Debris - Generic call
-*/
-void() particle_debris_th={
-  remove(self);
-};
-void( vector org, vector vel, float chunkSize ) particle_debris={
-  local string debrisMdl;
-  local float trailNum;
-  local entity chunk;
-  switch( chunkSize ){
-    case 2:
-      debrisMdl = "q3mdl/fx/debris2/mdl_debris_2.md3";
-      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_MED");
-      break;
-    case 3:
-      debrisMdl = "q3mdl/fx/debris3/mdl_debris_3.md3";
-      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
-      break;
-    default:
-      debrisMdl = "q3mdl/fx/debris1/mdl_debris_1.md3";
-      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
-      break;
-  }
-
-  chunk = spawn();
-  chunk.classname = "chunk";
-  chunk.movetype = MOVETYPE_BOUNCE;
-  chunk.solid = SOLID_NOT;
-  setmodel (chunk, debrisMdl);
-  setsize (chunk, '0 0 0', '0 0 0');
-  setorigin(chunk, org);
-  chunk.velocity_x = 100 * crandom();
-  chunk.velocity_y = 100 * crandom();
-  chunk.velocity_z = 50 + 100 * random();
-  chunk.effects = chunk.effects | EF_NOSHADOW;
-  chunk.avelocity_x = random()*450;
-  chunk.avelocity_y = random()*450;
-  chunk.avelocity_z = random()*450;
-  chunk.think = SUB_Remove;
-  chunk.nextthink = time + random() * 5;
-  chunk.frame = 0;
-  chunk.flags = 0;
-  chunk.gravity = 0.15;
-  chunk.traileffectnum = trailNum;
-};
 
 /*
   Missile Explosion Shell
@@ -289,7 +238,7 @@ void() particle_missile_explode_th={
   self.nextthink = time + 0.01;
 };
 
-void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType, float onShield  ) particle_missile_explode={
+void( vector org, float explodeSize, vector explodeColor, float onShield  ) particle_missile_explode={
   local entity explode;
   local float chunks;
   local vector chunkVel;
@@ -319,14 +268,6 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   setorigin( explode, org);
   explode.drawmask = MASK_NORMAL;
   
-  if( debrisCount > 0  && onShield == TRUE){
-    for(chunks = rint( random() * (1 + explodeSize * 2)); chunks > 0; chunks = chunks - 1){
-      chunkVel_x = 100 * crandom();
-      chunkVel_y = 100 * crandom();
-      chunkVel_z = 50 + 100 * random();
-      particle_debris( org, chunkVel, 1 );
-    }
-  }
   te_customflash( org, explodeSize * 50, 1.5, explodeColor); 
 };
 
@@ -386,14 +327,6 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
     self.think = particle_vehicle_wreck_th;
     self.drawmask = MASK_NORMAL;
   self = this;
-  
-  //shoot out debris
-  for(chunks = rint( random() * (vecSize * 2)); chunks > 0; chunks = chunks - 1){
-    chunkVel_x = 100 * crandom();
-    chunkVel_y = 100 * crandom();
-    chunkVel_z = 50 + 100 * random();
-    particle_debris( wreck.origin, chunkVel, rint(random() * wreck.vec_size) );
-  }
 };
 
 /*
@@ -443,7 +376,7 @@ void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entA
   piece.think = particle_mech_chunk_th;
   piece.nextthink = time + 0.1;
   
-  particle_missile_explode( entOrg, vecSize, '0.33 0.67 0.99', random() * (vecSize * 1.5), 1, 0 );
+  particle_missile_explode( entOrg, vecSize, '0.33 0.67 0.99', 0 );
 };
 
 void( float flashId, vector flashOrg, vector flashVel, float impactStyle ) particle_muzzle_flash={

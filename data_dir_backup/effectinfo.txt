@@ -1930,13 +1930,13 @@ gravity -0.005
     
   //TE_ARH_TRAIL - SMOKE
     effect TE_ARH_TRAIL
-    count 3
+    count 1
     type smoke
     blend alpha
     color 0x848484 0xBDBDBD
     tex 8 15
     size 0.1 0.15
-    sizeincrease 0.25
+    sizeincrease 0.15
     alpha 64 96 16
     originjitter 0.1 0.1 0.1
     velocityjitter 1 1 1
@@ -2390,24 +2390,24 @@ velocitymultiplier 1
 //SMALL DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_SMALL - SMOKE
     effect TE_DEBRIS_TRAIL_SMALL
-    count 2
+    count 0.75
     type alphastatic
     blend alpha
-    color 0x151515 0x2E2E2E
+    color 0x2E2E2E 0x666666
     tex 8 15
-    size 0.45 1
-    sizeincrease 0.1
+    size 0.15 0.25
+    sizeincrease 0.05
     alpha 240 240 150
     time 1.75 2.2
     originjitter 0.2 0.2 0.2
     velocityjitter 1 1 3
-    gravity -0.025
+    gravity -0.015
     stretchfactor 4
     trailspacing 12
 
   //TE_DEBRIS_TRAIL_SMALL - SPARKS
     effect TE_DEBRIS_TRAIL_SMALL
-    count 2
+    count 1
     type spark
     blend alpha
     orientation spark
@@ -2436,7 +2436,7 @@ velocitymultiplier 1
 //MED DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_MED - SMOKE
     effect TE_DEBRIS_TRAIL_MED
-    count 3
+    count 1
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -2482,7 +2482,7 @@ velocitymultiplier 1
 //BIG DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_BIG - SMOKE
     effect TE_DEBRIS_TRAIL_BIG
-    count 3
+    count 2
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E

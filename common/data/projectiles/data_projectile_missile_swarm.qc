@@ -63,15 +63,18 @@ void() data_projectile_ini_missile_swarm_={
 };
 #ifndef CSQC
 void() data_projectile_missile_swarm_touch={
+  local float debris;
+  
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  
   self.impactType = IMPACT_DIRT;
+  debris = rint( 2 + random() * 4);
 	if (pointcontents(self.origin) == CONTENT_SKY){
     self.impactType = IMPACT_SKY;
+    debris = 0;
 	}
 
   if(other.takedamage){
@@ -80,6 +83,14 @@ void() data_projectile_missile_swarm_touch={
     if( other.shield > 0 ){
       self.impactType = IMPACT_SHIELD;
     }
+    else{
+      self.impactType = IMPACT_ARMOR;
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 3, 1 );
+    }
+    debris = 0;
+  }
+  if( debris > 0 ){
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
   }
   
   self.think = SUB_Remove;

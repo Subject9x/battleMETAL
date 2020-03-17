@@ -70,6 +70,8 @@ void() data_projectile_snub_artillery_th={
 };
 
 void() data_projectile_snub_artillery_touch_={
+  local float debris;
+  
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
@@ -78,8 +80,10 @@ void() data_projectile_snub_artillery_touch_={
   
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT;
   self.impactType = IMPACT_DIRT;
+  debris = rint(random() * 7);
   if( pointcontents(self.origin) == CONTENT_SKY ){
     self.impactType = IMPACT_SKY;
+    debris = 0;
   }
   
   if( other.takedamage ){
@@ -91,12 +95,19 @@ void() data_projectile_snub_artillery_touch_={
     else{
       self.damageValue = self.damageValue * 0.5;
       data_projectile_snub_artillery_radiusDamage();
+      debris = rint(random() * 4);
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 2 );
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 2, 1 );
     }
+    debris = 0;
   }
   else{
     data_projectile_snub_artillery_radiusDamage();
   }
-  
+  if( debris > 0 ){
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, rint(0.5 + random() * 2));
+    te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 1.25, rint(0.5 + random() * 2) );
+  }
   self.think = SUB_Remove;
   self.nextthink = time + 0.05;
 };

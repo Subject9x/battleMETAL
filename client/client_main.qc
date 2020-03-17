@@ -462,7 +462,7 @@ float() CSQC_Parse_TempEntity =
       particle_mech_chunk( ReadByte(), ReadByte(), ReadByte(), te_read_vector(), te_read_angle() ) ;
       return TRUE;
     case TE_VFX_EXPLODE:
-      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte(), ReadByte(), ReadByte() );
+      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
       return TRUE;
     case TE_MUZZLE_FLASH:
       particle_muzzle_flash( ReadByte(), te_read_vector(), te_read_vector(), ReadByte() ) ;

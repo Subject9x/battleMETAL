@@ -122,25 +122,35 @@ void() data_projectile_missile_activeradar_delay={
 };
 
 void() data_projectile_missile_activeradar_touch={
-  self.touch = SUB_Null;
-  self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  
-	if (pointcontents(self.origin) == CONTENT_SKY){
-    self.impactType = IMPACT_SKY;
-	}
-   self.impactType = IMPACT_ARMOR;
+  local float debris;
   if( other == self.owner ){
     return;
   }
   
+  self.touch = SUB_Null;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  debris = 0;
+	if (pointcontents(self.origin) == CONTENT_SKY){
+    self.impactType = IMPACT_SKY;
+    debris = 0;
+	}
  
   if(other.takedamage){
+    self.impactType = IMPACT_ARMOR;
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
       self.impactType = IMPACT_SHIELD;
     }
+    else{
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 6, 1 );
+    }
+    debris = 0;
+  }
+  if( debris > 0 ){
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, rint(random() * 3), 1 );
   }
 
   self.think = SUB_Remove;

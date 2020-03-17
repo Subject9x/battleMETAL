@@ -268,7 +268,8 @@ void() bot_leg_die3={
   self.deadflag = DEAD_DEAD;
   self.think = SUB_Remove;
   self.nextthink = time + 7200;
-  makevectors(self.angles);
+  //TODO - fixme
+  /*makevectors(self.angles);
   switch( self.vec_size ){
     case 2:
       te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, rint(self.vec_size / 2), 3800, self.vec_size / 20, 4800); 
@@ -279,7 +280,7 @@ void() bot_leg_die3={
     default:
       te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles, rint(self.vec_size / 2), 3800, self.vec_size / 20, 4800); 
       break;
-  }
+  }*/
 };
 
 void() player_movestart =

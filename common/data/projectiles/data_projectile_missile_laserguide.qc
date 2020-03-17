@@ -64,9 +64,12 @@ void() data_projectile_ini_missile_laserguide_={
 };
 #ifndef CSQC
 void() data_projectile_missile_laserguide_touch={
+  local float debris;
+  
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
+  
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   
 	if (pointcontents(self.origin) == CONTENT_SKY){
@@ -74,13 +77,21 @@ void() data_projectile_missile_laserguide_touch={
   }
   else{
     self.impactType = IMPACT_DIRT;
+    debris = 4;
     if(other.takedamage){
       t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
       self.impactType = IMPACT_ARMOR;
       if( other.shield > 0 ){
         self.impactType = IMPACT_SHIELD;
       }
+      else{
+        te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 3, 2 );
+      }
+      debris = 0;
     }
+  }
+  if( debris > 0 ){
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, 2 );
   }
 
   self.think = SUB_Remove;

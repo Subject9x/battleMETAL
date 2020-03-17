@@ -84,13 +84,6 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
 void( float isNew, float entFlags) sendent_handle_chunk;
 
 /*
-  Debris chunks
-*/
-void() particle_debris_th;
-
-void( vector org, vector vel, float chunkSize ) particle_debris;
-
-/*
   Wreck event is when a unit is destroyed in combat.
   We send this event, and the client handles the entire presentation of it as much as possible.
 */
@@ -101,7 +94,7 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
   When a missile explodes...
 */
 void() particle_missile_explode_th;
-void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType, float onShield ) particle_missile_explode;
+void( vector org, float explodeSize, vector explodeColor, float onShield ) particle_missile_explode;
 
 /*
   When a mech piece is blown off;

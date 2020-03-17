@@ -834,7 +834,7 @@ float(entity piece) csqc_updateCompStat={
   Send wreckage entity to client, 
   should cut down on workload of server, right?
 */
-void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType, float onShield ) client_send_missile_explode={
+void( vector org, float explodeSize, vector explodeColor, float onShield ) client_send_missile_explode={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_VFX_EXPLODE );
  
@@ -847,9 +847,7 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   WriteCoord(MSG_BROADCAST, explodeColor_x);
   WriteCoord(MSG_BROADCAST, explodeColor_y);
   WriteCoord(MSG_BROADCAST, explodeColor_z);
-  
-  WriteByte( MSG_BROADCAST, debrisCount);
-  WriteByte( MSG_BROADCAST, debrType );
+
   WriteByte( MSG_BROADCAST, onShield );
 };
 

@@ -106,7 +106,7 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
     setorigin(newmis, org);
     newmis.velocity_x = 100 * crandom();
     newmis.velocity_y = 100 * crandom();
-    newmis.velocity_z = 50 + 100 * random();
+    newmis.velocity_z = 75 + 100 * random();
     newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
     newmis.movetype = MOVETYPE_BOUNCE;
     newmis.solid = SOLID_NOT;
@@ -115,7 +115,61 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
     newmis.avelocity_z = random()*450;
     newmis.think = SUB_Remove;
     newmis.ltime = time;
-    newmis.nextthink = time + random() * 5;
+    newmis.nextthink = time + 1 + random() * 3;
+    newmis.frame = 0;
+    newmis.flags = 0;
+    newmis.gravity = 0.15;
+    newmis.traileffectnum = trailNum;
+    totals = totals - 1;
+  }
+};
+
+/*
+  Armor debris is a more spalling like effect where debris flies out
+  from impact point.
+*/
+void( vector org, vector angl, vector vel, float total, float debrType ) te_debris_armor={
+  local float totals;
+  local string debrisMdl;
+  local float trailNum;
+  local vector back;
+  
+  switch( debrType ){
+    case 2:
+      debrisMdl = "q3mdl/fx/debris2/mdl_debris_2.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_MED");
+      break;
+    case 3:
+      debrisMdl = "q3mdl/fx/debris3/mdl_debris_3.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
+      break;
+    default:
+      debrisMdl = "q3mdl/fx/debris1/mdl_debris_1.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
+      break;
+  }
+  makevectors(angl);
+  back = org + (v_forward * -10);
+  back = normalize(back - org);
+  
+  totals = total;
+  while( totals > 0 ){
+  	newmis = spawn();
+    setmodel (newmis, debrisMdl);
+    setsize (newmis, '0 0 0', '0 0 0');
+    setorigin(newmis, org);
+    newmis.velocity_x = (back_x * 400) + (random() * 200);
+    newmis.velocity_y = (back_y * 400) + (random() * 200);
+    newmis.velocity_z = (back_z + 50) + (random() * 50);
+    newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+    newmis.movetype = MOVETYPE_BOUNCE;
+    newmis.solid = SOLID_NOT;
+    newmis.avelocity_x = random()*650;
+    newmis.avelocity_y = random()*650;
+    newmis.avelocity_z = random()*650;
+    newmis.think = SUB_Remove;
+    newmis.ltime = time;
+    newmis.nextthink = time + random() * 0.33;
     newmis.frame = 0;
     newmis.flags = 0;
     newmis.gravity = 0.15;
@@ -174,70 +228,6 @@ void() te_flame_th={
   self.nextthink = time + self.count2;
 };
 
-void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_small_flame_start={
-  local entity fire;
-  
-  fire = spawn();
-  fire.classname = "TE_FIRE";
-  fire.w_firetime = ticrate;
-  fire.movetype = MOVETYPE_NONE;
-  fire.solid = SOLID_NOT;
-  fire.angles = angl;
-  fire.think = te_flame_th;
-  fire.nextthink = time + fire.w_firetime;
-  fire.count = total;
-  fire.vec_name = "TE_FIRE_1";
-  if( lifetime > 0 ){
-    fire.data_lifetime = time + lifetime;
-  }
-  if( ownerLifetime > 0){
-    fire.health = time + ownerLifetime;
-  }
-  setorigin( fire, org );
-};
-
-void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_med_flame_start={
-  local entity fire;
-  
-  fire = spawn();
-  fire.w_firetime = ticrate;
-  fire.movetype = MOVETYPE_NONE;
-  fire.solid = SOLID_NOT;
-  fire.angles = angl;
-  fire.think = te_flame_th;
-  fire.nextthink = time + fire.w_firetime;
-  fire.count = total;
-  fire.vec_name = "TE_FIRE_2";
-  if( lifetime > 0 ){
-    fire.data_lifetime = time + lifetime;
-  }
-  if( ownerLifetime > 0 ){
-    fire.health = time + ownerLifetime;
-  }
-  setorigin( fire, org );
-};
-
-void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_big_flame_start={
-  local entity fire;
-  
-  fire = spawn();
-  fire.w_firetime = ticrate;
-  fire.movetype = MOVETYPE_NONE;
-  fire.solid = SOLID_NOT;
-  fire.angles = angl;
-  fire.think = te_flame_th;
-  fire.nextthink = time + fire.w_firetime;
-  fire.count = total;
-  fire.vec_name = "TE_FIRE_3";
-  if( lifetime > 0 )
-    fire.data_lifetime = time + lifetime;
-  
-  if( ownerLifetime > 0 ){
-    fire.health = time + ownerLifetime;
-  }
-  setorigin( fire, org );
-};
-
 
 void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
   local vector vel;
@@ -291,29 +281,10 @@ void() te_missile_explode_th={
 
 void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType ) te_missile_explode={
   local entity explode;
- 
-  sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
- 
-  explode = spawn();
-  explode.movetype = MOVETYPE_NONE;
-  explode.solid = SOLID_NOT;
-  explode.think = te_shield_explode_th;
-  explode.nextthink = time + 0.05;
-  explode.data_lifetime = 10;
-  explode.scale = explodeSize;
-  explode.alpha = 1;
-  explode.effects = explode.effects | ( EF_NOSHADOW | EF_LOWPRECISION);
-  explode.avelocity = randomvec() * 300;
-  if( explodeColor != '0 0 0' ){
-    explode.color = explodeColor;
-  }
-  
-  setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
-  setorigin( explode, org);
+
   if( debrisCount > 0 ){
     te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
   }
-  te_customflash( org, explodeSize * 50, 1, explodeColor); 
 };
 
 /*
