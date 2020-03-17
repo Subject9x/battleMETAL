@@ -73,7 +73,7 @@ void() data_ini_attack_flak_={
   
   if( !trace_ent.takedamage ){
     if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) ){
-      impactStyle = 3;
+      impactStyle = IMPACT_DIRT;
     }
   }
   else{
@@ -82,9 +82,10 @@ void() data_ini_attack_flak_={
       if(trace_ent.shield > 0){
         shieldDamage = (self.damageValue * totes) / 2;
         t_damage(trace_ent, self, self.owner, shieldDamage, self.damageType, trace_endpos, '0 0 0');
+        impactStyle = IMPACT_SHIELD;
       }
       else{
-        impactStyle = 2;
+        impactStyle = IMPACT_ARMOR;
         if( trace_ent.data_type == DATA_MECH ){
           local vector shotpoint;
           local vector shrapPoint;
@@ -107,6 +108,6 @@ void() data_ini_attack_flak_={
       }
     }
   }
-   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
 };
 #endif

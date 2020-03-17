@@ -229,18 +229,6 @@ void() te_flame_th={
 };
 
 
-void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
-  local vector vel;
-  local float demg;
-  
-  demg = hitDmg / 10;
-  vel = angl * demg;
-  
-  client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, max(demg + total, 6));
-  pointsound( org, "sound/fx_shieldhit.ogg", 1, ATTN_NORM );
-};
-
-
 /*
   item is exploding, use its bbox size for area
 */

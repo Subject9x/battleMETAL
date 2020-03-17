@@ -583,7 +583,9 @@ void() CSQC_Ent_Remove =
   weps = self.w_slot;
   while( weps ){
     next = weps.w_slot;
-    remove(weps);
+    //remove(weps);
+    weps.think = SUB_Remove;
+    weps.nextthink = time + 0.1;
     weps = next;
   }
   if( self.data_type == DATA_BLD ){

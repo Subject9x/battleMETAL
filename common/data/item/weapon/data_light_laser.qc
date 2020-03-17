@@ -54,7 +54,6 @@ void() data_ini_light_laser_={
 
 #ifndef CSQC
 void() data_ini_attack_laser_={
-  local entity hit;
   local float impactStyle;
   
   if( !ctrl_weapon_checkEnergy() ){
@@ -70,13 +69,16 @@ void() data_ini_attack_laser_={
   }
   
   if( trace_ent.takedamage ){
-    hit = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
-    if( hit.shield <= 0 ){
-      impactStyle = 2;
+    if( trace_ent.shield <= 0 ){
+      impactStyle = IMPACT_ARMOR;
     }
+    else{
+      impactStyle = IMPACT_SHIELD;
+    }
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
   }
   else{
-    impactStyle = 3;
+    impactStyle = IMPACT_DIRT;
   }
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle );
   

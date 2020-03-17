@@ -62,10 +62,10 @@ void() data_ini_attack_electro_repeater_={
   local float impactStyle;
   
   if( !ctrl_weapon_checkEnergy() ){
-    
     return;
   }
-  //ctrl_weapon_updateAmmo( FALSE );
+  
+  ctrl_weapon_updateAmmo( FALSE );
   
   
   self.w_currentammo = self.w_currentammo - 1;
@@ -96,16 +96,16 @@ void() data_ini_attack_electro_repeater_={
   if( trace_ent.takedamage ){
     t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
     if( trace_ent.shield > 0 ){
-      impactStyle = 1;
+      impactStyle = IMPACT_SHIELD;
       client_send_particle( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
     }
     else{
-      impactStyle = 2;
+      impactStyle = IMPACT_ARMOR;
       client_send_particle( particleeffectnum("TE_ESR_IMPACT_ARMOR"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
     }
   }
   else{
-    impactStyle = 3;
+    impactStyle = IMPACT_DIRT;
     client_send_particle( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
   }
   

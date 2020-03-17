@@ -77,10 +77,10 @@ void() data_ini_attack_particle_cannon_={
       if( trace_ent.shield < 0 ){
         trace_ent.shield = 0;
       }
-      impactStyle = 1;
+      impactStyle = IMPACT_SHIELD;
     }
     else{
-     impactStyle = 2;
+     impactStyle = IMPACT_ARMOR;
     }
     thisTarget = trace_ent;
     oldShields = thisTarget.shield;
@@ -91,7 +91,7 @@ void() data_ini_attack_particle_cannon_={
     }
   }
   else{
-    impactStyle = 3;
+    impactStyle = IMPACT_DIRT;
   }
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
 };

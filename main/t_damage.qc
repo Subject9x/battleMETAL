@@ -259,10 +259,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   //}
   
   if( dmgAmt <= 0 ){
-    if( (trg.flags & FL_CLIENT) ){
-      trg.dmg_save = dmgAmt * 0.1;
-    }
-    te_shield_hit_high( dmg_point, normalize( dmg_point - inflictor.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
 

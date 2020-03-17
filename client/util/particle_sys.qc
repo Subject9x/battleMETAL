@@ -409,12 +409,14 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
   switch(impactStyle){
     default:
       return;
-    case 1:
+    case IMPACT_SHIELD:
+      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), muzzleVel, normalize(muzzleVel - muzzleOrg)* -2, random() * 2);
+      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
       return;
-    case 2:
+    case IMPACT_ARMOR:
       pointparticles(particleeffectnum("TE_LAS_HIT"), muzzleVel, normalize( muzzleOrg - muzzleVel ), 1);
       break;
-    case 3:
+    case IMPACT_DIRT:
       pointparticles(particleeffectnum("TE_LAS_DIRT"), muzzleVel , '0 0 0', 1);
       break;
   }
@@ -455,9 +457,27 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
 
 //Particle Cannon ID 7
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_pac={
+  local vector norm;
+  norm = normalize(muzzleVel - muzzleOrg);
   pointsound( muzzleOrg, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_PAC_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 4, 1);
+  pointparticles( particleeffectnum("TE_PAC_MUZZLE"), muzzleOrg, norm * 4, 1);
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), muzzleOrg, muzzleVel );
+  
+  switch(impactStyle){
+    default:
+      return;
+    case IMPACT_SHIELD:
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), muzzleVel, norm * -2, 1);
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), muzzleVel, '0 0 0', 1);
+      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
+      break;
+    case IMPACT_ARMOR:
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), muzzleVel, norm * -6, 1);
+      break;
+    case IMPACT_DIRT:
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), muzzleVel, norm * -4, 1);
+      break;
+  }
 };
 
 //Electro Static ID 8
@@ -471,15 +491,15 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
   switch(impactStyle){
     default:
       return;
-    case 1:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), muzzleVel, norm * -2, 1);
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), muzzleVel, '0 0 0', 1);
+    case IMPACT_SHIELD:
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), muzzleVel, norm * -2, 1);
+      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
       break;
-    case 2:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), muzzleVel, norm * -6, 1);
+    case IMPACT_ARMOR:
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), muzzleVel, norm * -6, 1);
       break;
-    case 3:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), muzzleVel, norm * -4, 1);
+    case IMPACT_DIRT:
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), muzzleVel, norm * -4, 1);
       break;
   }
 };
@@ -525,12 +545,14 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
   switch(impactStyle){
     default:
       return;
-    case 1:
+    case IMPACT_SHIELD:  
+      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), muzzleVel, norm * 2, random() * 2);
+      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
       return;
-    case 2:
+    case IMPACT_ARMOR:
       pointparticles( particleeffectnum("TE_FLK_IMPACT"), muzzleVel + (v_forward * -32), norm * 4, 1);
       break;
-    case 3:
+    case IMPACT_DIRT:
       pointparticles( particleeffectnum("TE_FLK_DIRT"), muzzleVel + (v_up * 3) + (v_forward * -7), norm * 20, 1);
       break;
   }

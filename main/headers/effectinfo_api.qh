@@ -22,7 +22,6 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
 
 void( vector org, vector angl, vector vel, float total) te_unit_dust;
 
-void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high;
 void( vector explodeColor ) te_object_explode;
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp;
