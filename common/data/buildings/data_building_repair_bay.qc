@@ -118,8 +118,6 @@ void() hrepair_die = [0, hrepair_die1]{
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_NOT;
-  building_die_removeFire();
-  
 };
 void() hrepair_die1 = [1, hrepair_die2]{
   te_object_explode( '0.75 0.75 0.6' );};
@@ -136,23 +134,7 @@ void() hrepair_die8 = [8, hrepair_die9]{};
 void() hrepair_die9 = [9, hrepair_die10]{
   te_object_explode( '0.75 0.75 0.6' );
   
-  self.deadflag = DEAD_DEAD;
-  local entity ruins;
-  ruins = spawn();
-  ruins.solid = SOLID_NOT;
-  ruins.movetype = MOVETYPE_NONE;
-
-  setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
-  ruins.vec_size = self.vec_size;
-  ruins.angles = self.angles;
-  ruins.angles_y = anglemod( 45 + crandom() * 125);
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
-  ruins.armLeft = te_building_fire_start( ruins );
-  if( ruins.vec_size > 1 ){
-    ruins.armRight = te_building_fire_start( ruins );
-    ruins.torsoLeft = te_building_fire_start( ruins );
-  }  
+  self.deadflag = DEAD_DEAD; 
 };
 void() hrepair_die10 = [10, hrepair_die11]{
   te_object_explode( '0.75 0.75 0.6' );};

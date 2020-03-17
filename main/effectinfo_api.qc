@@ -67,20 +67,6 @@ void(string gibname, float dm) ThrowGib =
   new.effects = new.effects | EF_LOWPRECISION;
 };
 
-entity( entity targetBuilding ) te_building_fire_start={
-  local entity fire;
-  fire = spawn();
-  fire.origin = util_pointNearBoxEdge( targetBuilding.origin, targetBuilding.angles, targetBuilding.mins, targetBuilding.maxs );
-  fire.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(targetBuilding.vec_size)));
-  fire.think = building_burn_th;
-  fire.nextthink = time + 0.1;
-  fire.angles = targetBuilding.angles;
-  fire.count = targetBuilding.vec_size + (1 / 3);
-  te_debris(fire.origin, targetBuilding.angles, '1 1 8', random() * (targetBuilding.vec_size * 6), targetBuilding.vec_size);
-  targetBuilding.color = targetBuilding.color - '0.1 0.1 0.1';
-  return fire;
-};
-
 //TE_SMOKE_TEST
 void(vector org, float total) te_smoke={
   local vector smoke;

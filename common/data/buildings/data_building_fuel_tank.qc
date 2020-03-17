@@ -22,8 +22,6 @@ void() hfuel_death1 = [1, hfuel_death2]{
   self.solid = SOLID_NOT;
   te_object_explode( '1 0.75 0' );
   
-  building_die_removeFire();
-  
 };
 void() hfuel_death2 = [2, hfuel_death3]{};
 void() hfuel_death3 = [3, hfuel_death4]{};
@@ -45,29 +43,6 @@ void() hfuel_death10 = [10, hfuel_death11]{
   local entity ruins;
   self.deadflag = DEAD_DEAD;
   self.solid = SOLID_NOT;
-  ruins = spawn();
-  ruins.solid = SOLID_NOT;
-  ruins.movetype = MOVETYPE_NONE;
-  switch( self.vec_size ){
-    case 2:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
-      break;
-    case 3:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
-      break;
-    default:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
-      break;
-  }
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
-  ruins.vec_size = self.vec_size;
-  ruins.angles = self.angles;
-  ruins.armLeft = te_building_fire_start( ruins );
-  if( ruins.vec_size > 1 ){
-    ruins.armRight = te_building_fire_start( ruins );
-    ruins.torsoLeft = te_building_fire_start( ruins );
-  }
 };
 void() hfuel_death11 = [11, hfuel_death12]{};
 void() hfuel_death12 = [12, SUB_Remove]{

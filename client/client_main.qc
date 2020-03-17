@@ -171,7 +171,7 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 // the most important function in CSQC...
 void(float w, float h, float menushown) CSQC_UpdateView =
 {
-
+  local entity scan;
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", "1");
@@ -235,6 +235,23 @@ void(float w, float h, float menushown) CSQC_UpdateView =
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
 	addentities( (MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
+  
+  scan = world;
+  while( (scan = nextent(scan)) ){
+    if( scan.classname == "chunk" ){					
+      if (scan.nextthink != scan.frame1time){
+        scan.frame2time = scan.frame1time;
+        scan.frame1time = scan.nextthink;
+        scan.origin2 = scan.origin1;
+        scan.origin1 = scan.origin;
+        scan.angle2 = self.angle1;
+        scan.angle1 = scan.angles_y;
+      }
+      scan.lerpfrac = (time - scan.frame2time) /(scan.frame1time-scan.frame2time);
+      scan.lerpfrac = 1-bound(0, scan.lerpfrac, 1);
+      addentity(scan);
+    }
+  }
   
 	// draw the main view
 	renderscene();
@@ -568,6 +585,21 @@ void() CSQC_Ent_Remove =
     next = weps.w_slot;
     remove(weps);
     weps = next;
+  }
+  if( self.data_type == DATA_BLD ){
+    if( self.effect1 ){
+      remove(self.effect1);
+    }
+  }
+  if( self.data_type == DATA_BLD ){
+    if( self.effect2 ){
+      remove(self.effect2);
+    }
+  }
+  if( self.data_type == DATA_BLD ){
+    if( self.effect3 ){
+      remove(self.effect3);
+    }
   }
 	//if (self.t_remove)
 		//if (self.t_remove())

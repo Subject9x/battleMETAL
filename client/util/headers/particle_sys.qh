@@ -34,6 +34,10 @@ float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust;
 void() cl_particles_fogFrame;
 
 //Particle data
+.entity effect1, effect2, effect3;
+
+.vector wind;
+
 .void() pcl_explode;  //self implementing, whoo
 .float pcl_effectnum;
 .vector pcl_velocity;
@@ -54,6 +58,8 @@ vector() te_read_angle;
 
 
 //ported from effectinfo_api
+void() te_building_fire_th;
+entity( entity targetBuilding ) te_building_fire_start;
 
 void( vector org, vector setVelocity, float total ) te_field_rad;
 void( vector org, float total ) te_field_rad_light;
@@ -121,3 +127,6 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_flak;
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_ion;
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_swarm;
+
+vector( vector startOrg ) te_apply_wind;
+vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge;

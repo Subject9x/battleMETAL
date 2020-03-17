@@ -157,8 +157,8 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       self.frame1time = time + 0.05;
       self.origin2 = self.origin1;
       self.origin1 = self.origin;
+      self.nextthink = time + 0.1;
     }
-    self.nextthink = time + 0.1;
   }
 };
 
@@ -253,6 +253,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       self.frame1time = time + 0.05;
       self.origin2 = self.origin1;
       self.origin1 = self.origin;
+      self.nextthink = time + 0.1;
     }
   }
 };
@@ -367,6 +368,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       self.frame1time = time + 0.05;
       self.origin2 = self.origin1;
       self.origin1 = self.origin;
+      self.nextthink = time + 0.1;
     }
   }
 };
@@ -394,6 +396,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+    self.colormod = '0.85 0.85 0.85';
     if( self.torsoCenter ){
       remove(self.torsoCenter);
     }
@@ -402,6 +405,22 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       this = weps.w_slot;
       remove(weps);
       weps = this;
+    }
+    te_missile_explode( self.origin, self.vec_size, '0.9 0.67 0.33',  rint(2 + random() * self.vec_size), 1, 0.01 ) ;
+  }
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    if( self.effect1 ){
+      if( self.effect2 ){
+        if( !self.effect3 ){
+          self.effect3 = te_building_fire_start( self );
+        }
+      }
+      else{
+        self.effect2 = te_building_fire_start( self );
+      }
+    }
+    else{
+      self.effect1 = te_building_fire_start( self );
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
@@ -447,19 +466,39 @@ void( float isNew, float changeFlags) sendent_handle_turret={
 void( float isNew, float changeFlags) sendent_handle_building={
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    switch( self.vec_size ){
-      case 2:
-        setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
-        break;
-      case 3:
-        setmodel(self, "q3mdl/map/ruins/ruin_large.obj");
-        break;
-      default:
-        setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
-        break;
+    if( self.deadflag > DEAD_NO ){
+      
+      makevectors(self.angles);
+      switch( self.vec_size ){
+        case 2:
+          setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
+          break;
+        case 3:
+          setmodel(self, "q3mdl/map/ruins/ruin_large.obj");
+          break;
+        default:
+          setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+          break;
+      }
+      setorigin(self, self.origin + (v_up * -10));
     }
   }
 
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    if( self.effect1 ){
+      if( self.effect2 ){
+        if( !self.effect3 ){
+          self.effect3 = te_building_fire_start( self );
+        }
+      }
+      else{
+        self.effect2 = te_building_fire_start( self );
+      }
+    }
+    else{
+      self.effect1 = te_building_fire_start( self );
+    }
+  }
   if( (changeFlags & SENDFLAG_NEWENT) ){
     
     self.origin_x = ReadCoord();
@@ -475,6 +514,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.data_type = ReadByte();
     
     data_sync_new_building(self.data_idx);
+    self.colormod = '1 1 1';
     setmodel(self, self.model);
     setorigin(self, self.origin);
     self.drawmask = MASK_ENGINE;
@@ -545,7 +585,7 @@ float() predraw_tank={
   else{
     self.origin2 = self.origin1 = self.origin;
   }
-  
+
   if( self.deadflag == DEAD_NO ){
     makevectors(self.angles);
     if( self.torsoCenter != world ){

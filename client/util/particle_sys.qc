@@ -90,6 +90,35 @@ void() cl_particles_fogFrame={
   }
 };
 
+void() te_building_fire_th={
+  if( self.owner.deadflag > DEAD_NO ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.5;
+    return;
+  }
+  self.compAltOffset = te_apply_wind( self.origin );
+  pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
+  self.think = te_building_fire_th;
+  self.nextthink = time + 1;
+};
+
+entity( entity targetBuilding ) te_building_fire_start={
+  local entity fire;
+  fire = spawn();
+  fire.origin = util_pointNearBoxEdge( targetBuilding.origin, targetBuilding.angles, targetBuilding.mins, targetBuilding.maxs );
+  fire.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(targetBuilding.vec_size)));
+  fire.think = te_building_fire_th;
+  fire.nextthink = time + 0.1;
+  fire.angles = targetBuilding.angles;
+  fire.count = targetBuilding.vec_size + (1 / 3);
+  //te_debris(fire.origin, targetBuilding.angles, '1 1 8', random() * (targetBuilding.vec_size * 6), targetBuilding.vec_size);
+  targetBuilding.colormod = targetBuilding.colormod - '0.1 0.1 0.1';
+  fire.owner = targetBuilding;
+  fire.drawmask = MASK_NORMAL;
+  return fire;
+};
+
+
 void( vector org, vector setVelocity, float total ) te_field_rad={
   pointparticles( particleeffectnum("TE_FIELD_RAD"), org, setVelocity,  total);
 };
@@ -131,7 +160,8 @@ void() te_missile_explode_th={
 };
 void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType, float bloom ) te_missile_explode={
   local entity explode;
-  
+  local float itr;
+  local vector vel;
   explode = spawn();
   explode.movetype = MOVETYPE_NONE;
   explode.solid = SOLID_NOT;
@@ -154,7 +184,10 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
   setorigin( explode, org);
   if( debrisCount > 0 ){
-    //te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
+    for(itr = debrisCount; itr > 0; itr = itr - 1){
+      vel = normalize( (org + '0 0 10') - org ) * 10; 
+      particle_debris( org, vel, debrType );
+    }
   }
   te_customflash( org, explodeSize * 50, 1, explodeColor); 
 };
@@ -190,9 +223,7 @@ void( float isNew, float entFlags) sendent_handle_chunk={
     setorigin(self, self.origin);
     self.data_idx = ReadByte();
     self.traileffectnum = ReadByte();
-    
   }
-  
 };
 
 /*
@@ -224,6 +255,9 @@ void( vector org, vector vel, float chunkSize ) particle_debris={
   }
 
   chunk = spawn();
+  chunk.classname = "chunk";
+  chunk.movetype = MOVETYPE_BOUNCE;
+  chunk.solid = SOLID_NOT;
   setmodel (chunk, debrisMdl);
   setsize (chunk, '0 0 0', '0 0 0');
   setorigin(chunk, org);
@@ -231,18 +265,15 @@ void( vector org, vector vel, float chunkSize ) particle_debris={
   chunk.velocity_y = 100 * crandom();
   chunk.velocity_z = 50 + 100 * random();
   chunk.effects = chunk.effects | EF_NOSHADOW;
-  chunk.movetype = MOVETYPE_BOUNCE;
-  chunk.solid = SOLID_NOT;
   chunk.avelocity_x = random()*450;
   chunk.avelocity_y = random()*450;
   chunk.avelocity_z = random()*450;
-  chunk.think = particle_debris_th;
+  chunk.think = SUB_Remove;
   chunk.nextthink = time + random() * 5;
   chunk.frame = 0;
   chunk.flags = 0;
   chunk.gravity = 0.15;
   chunk.traileffectnum = trailNum;
-  chunk.drawmask = MASK_NORMAL;
 };
 
 /*
@@ -638,4 +669,33 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_swarm={
   pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), muzzleOrg, normalize( muzzleVel - muzzleOrg ) * 3, 1);
+};
+
+vector( vector startOrg ) te_apply_wind={
+  local vector windVel;
+  
+  makevectors(world.wind);
+  windVel = startOrg + (v_up * 2) + (v_forward * (-1 * (2/2)) );
+  return windVel;
+};
+
+vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge={
+  local vector angl;
+  local vector newpos;
+  local float len;
+  local float hight;
+  
+  angl = entAng;
+  angl_y = anglemod(angl_y + 45 + random() * 270);
+
+  len = entMaxs_x * 0.67;
+  
+  hight = entMaxs_z * 0.65;
+  hight = hight + (random() * (entMaxs_z * 0.25));
+  
+  newpos = entOrg;
+  makevectors( angl );
+  newpos = newpos + (v_forward * len);
+  newpos = newpos + (v_up *  hight);
+  return newpos;
 };

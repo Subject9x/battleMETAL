@@ -38,9 +38,7 @@ void() touch_mechPiece;
 //Building entity controllers
 float( entity dest, float changedflags ) ctrl_send_turret;
 float( entity dest, float changedflags ) ctrl_send_building;
-void() building_burn_th;
 void() building_burn;
-void() building_die_removeFire;
 void() building_die;
 
 //Vehicle entity controllers

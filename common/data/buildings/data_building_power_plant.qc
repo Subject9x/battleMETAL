@@ -43,7 +43,6 @@ void() hpower_die = [0, hpower_die1]{
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
   
-  building_die_removeFire();
 };
 void() hpower_die1 = [1, hpower_die2]{};
 void() hpower_die2 = [2, hpower_die3]{};
