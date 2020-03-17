@@ -20,7 +20,6 @@ void() projectile_swarm_expl={
   local vector hitColor;
   local float hitBloom;
   local float hitScale;
-  local float hitDebris;
   
   if( self.impactType == IMPACT_SKY ){
     return;
@@ -29,17 +28,15 @@ void() projectile_swarm_expl={
     hitColor = '0 1.25 0.67';
     hitBloom = -0.01;
     hitScale = 0.5;
-    hitDebris = 0;
     pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
   }
   else{
     hitColor = '0.663 0.886 0.953';
     hitBloom = 0.01;
     hitScale = 1;
-    hitDebris = min(self.damageValue / 5, 3);
     pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
   }
-  te_missile_explode( self.origin, hitScale, hitColor, hitDebris, 0, hitBloom ); 
+  te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
 };
 #endif
 

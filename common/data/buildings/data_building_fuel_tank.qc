@@ -8,7 +8,7 @@ Overview: data file for building
   func: provides radar scanning to all friendly units in radius
 */
 
-//Death Animation
+//Death Animation - TODO - clientside
 void() hfuel_death1 = [1, hfuel_death2]{
   
   if( self.deadflag > DEAD_NO ){
@@ -47,7 +47,8 @@ void() hfuel_death10 = [10, hfuel_death11]{
 void() hfuel_death11 = [11, hfuel_death12]{};
 void() hfuel_death12 = [12, SUB_Remove]{
   makevectors( self.angles );
-  te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
+  //TODO - replace
+  //te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
   
   sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
 };

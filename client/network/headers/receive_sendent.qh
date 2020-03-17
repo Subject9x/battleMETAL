@@ -7,6 +7,9 @@ Overview:
   I don't even know if it's worth it to try this.
 */
 
+//globals
+float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
+
 //SendEntity
 .vector origin2;
 .vector origin1;
@@ -15,6 +18,8 @@ Overview:
 .vector lastangle;
 .float lastupdate;
 .float prevupdate;
+
+.float shieldExplodeCool;
 
 float() predraw_tank;
 float() predraw_spg;

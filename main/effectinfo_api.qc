@@ -241,52 +241,6 @@ void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
 };
 
 
-void() te_shield_explode_th={
-  self.alpha = self.alpha - 0.012;
-  self.scale = self.scale + 0.015;
-  self.think = te_shield_explode_th;
-  if( self.alpha < 0.01 ){
-    self.think = SUB_Remove;
-  }
-  self.nextthink = time + 0.01;
-};
-
-void( vector org, float vecSize ) te_shield_explode={
-  local entity explode;
- 
-  explode = spawn();
-  explode.movetype = MOVETYPE_NONE;
-  explode.solid = SOLID_NOT;
-  explode.think = te_shield_explode_th;
-  explode.nextthink = time + 0.05;
-  explode.data_lifetime = 10;
-  explode.scale = 0.1 + (vecSize / 3);
-  explode.alpha = 0.75;
-  explode.effects = explode.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-  setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
-  setorigin( explode, org);
-  te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22'); 
-  //pointparticles?
-};
-
-void() te_missile_explode_th={
-  self.alpha = self.alpha - 0.015;
-  self.scale = self.scale + 0.01;
-  self.think = te_shield_explode_th;
-  if( self.alpha < 0.01 ){
-    self.think = SUB_Remove;
-  }
-  self.nextthink = time + 0.01;
-};
-
-void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType ) te_missile_explode={
-  local entity explode;
-
-  if( debrisCount > 0 ){
-    te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
-  }
-};
-
 /*
   item is exploding, use its bbox size for area
 */
@@ -299,50 +253,83 @@ void( vector explodeColor ) te_object_explode={
   makevectors(self.angles);
   exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
   
-  te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
+  //TODO - Replace
+  //te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
 
 };
 
-void( entity source, vector org, vector angl, vector vel, string modl, float skinNum ) te_mech_piece_explode={
-  local entity notChunk;
-  local vector localVel;
-  notChunk = self;
+/*
+  When a part is blown off a mech
+*/
+void() te_vehicle_chunk_th={  
+  local vector wishvel;
+  //trail effect for desired time, then a half-life as post-burn
+  if( time > self.ai_action_time && self.traileffectnum ){
+    self.traileffectnum = 0;
+    self.ai_action_time = self.data_lifetime * 2;
+    self.think = SUB_Remove;
+    self.nextthink = time + self.ai_action_time;
+    return;
+  }
+  self.think = te_vehicle_chunk_th;
+  self.nextthink = time + random() * 0.5;
+  if( time > self.ai_action_time ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+  }
+};
+
+void( entity parent, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk={
+  local entity piece;
   
-  localVel = vel;
-  newmis = spawn();
-  self = newmis;
-    self.vec_size = notChunk.owner.vec_size;
-    self.angles = angl;
-    if(localVel_x > 0 || localVel_y > 0 ||localVel_z > 0){
-      self.velocity = vel + VelocityForDamage (100);
-      self.avelocity_x = random()*150;
-      self.avelocity_y = random()*150;
-      self.avelocity_z = random()*100;
-    }
-    else{
-      self.velocity = VelocityForDamage (100);
-      self.avelocity_x = random()*150;
-      self.avelocity_y = random()*150;
-      self.avelocity_z = random()*200;
-    }
-    self.th_die = SUB_Remove;
-    self.owner = notChunk.owner;
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_BOUNCE);
-    util_setModel(modl, skinNum, EF_LOWPRECISION);
-    setsize(self, '-4 -4 -4', '4 4 4');
-    setorigin(self, notChunk.origin);
-    self.touch = touch_mechPiece;
-    self.think = ctrl_component_burn;
-    self.traileffectnum = particleeffectnum("TE_MECHPIECE_DEAD_BURN");
-    self.nextthink = time + (random() * 1);
-    self.ai_action_time = time + (random() * (self.owner.vec_size * 120));
-    self.colormod = notChunk.colormod;
-    self.gravity = 0.67;
-    localVel = normalize(self.origin - self.owner.origin) * 10;
-    localVel_z = localVel_z + 50;
-    te_debris( self.origin, self.angles, normalize(self.origin - self.owner.origin) * 5, self.owner.vec_size * 2, self.owner.vec_size);
-  self = notChunk;
+  piece = spawn();
+  setmodel(piece, parent.model);
+  setsize (piece, '0 0 0', '0 0 0');
+  setorigin(piece, parent.origin);
+  if( wishAngl != '0 0 0' ){
+    piece.angles = wishAngl;
+  }
+  else{
+    piece.angles = parent.angles;
+  }
+  piece.skin = parent.skin;
+  piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+  piece.movetype = MOVETYPE_TOSS;
+  piece.solid = SOLID_NOT;
+  piece.frame = 0;
+  piece.flags = 0;
+  piece.colormod = '0.67 0.67 0.67';
+  piece.traileffectnum = trailnum;
+  if( wishVel != '0 0 0' ){
+    piece.velocity = wishVel;
+  }
+  else{
+    piece.velocity_x = 100 * crandom();
+    piece.velocity_y = 100 * crandom();
+    piece.velocity_z = 50 + 100 * random();
+  }
+  piece.avelocity_x = random()*100;
+  piece.avelocity_y = random()*100;
+  piece.avelocity_z = random()*150;
+  if( lifetime ){
+    piece.data_lifetime = lifetime;
+    piece.ai_action_time = time + lifetime;
+  }
+  else{
+    piece.data_lifetime = 30;
+    piece.ai_action_time = time + lifetime;
+  }
+  if( grav ){
+    piece.gravity = grav;
+  }
+  else{
+    piece.gravity = 0.67;
+  }
+  piece.think = te_vehicle_chunk_th;
+  piece.nextthink = time + 0.1;
+  
 };
+
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
   local vector fx, vel;

@@ -851,22 +851,6 @@ void( vector org, float explodeSize, vector explodeColor, float onShield ) clien
   WriteByte( MSG_BROADCAST, onShield );
 };
 
-void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) client_send_mech_chunk={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_VFX_MECH );
-  WriteByte( MSG_BROADCAST, modelIndex);
-  WriteByte( MSG_BROADCAST, skinNum);
-  WriteByte( MSG_BROADCAST, vecSize );
-  
-  WriteCoord(MSG_BROADCAST, entOrg_x);
-  WriteCoord(MSG_BROADCAST, entOrg_y);
-  WriteCoord(MSG_BROADCAST, entOrg_z);
-  
-  WriteAngle(MSG_BROADCAST, entAngl_x);
-  WriteAngle(MSG_BROADCAST, entAngl_y);
-  WriteAngle(MSG_BROADCAST, entAngl_z);
-};
-
 void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_VFX_WRECK );

@@ -49,37 +49,6 @@ void() building_burn={
   }
 };
 
-/*
-
-
-*/
-float( entity dest, float changedflags ) ctrl_send_chunk={
-  WriteByte( MSG_ENTITY, SENDTYPE_CHUNK );
-  WriteByte( MSG_ENTITY, changedflags );
-  
-  if( (changedflags & SENDFLAG_MOVE) ){
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteCoord( MSG_ENTITY, self.angles_x );
-    WriteCoord( MSG_ENTITY, self.angles_y );
-    WriteCoord( MSG_ENTITY, self.angles_z );
-  }
-  if( (changedflags & SENDFLAG_DEAD) ){
-    
-  }
-  if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteCoord( MSG_ENTITY, self.angles_x );
-    WriteCoord( MSG_ENTITY, self.angles_y );
-    WriteCoord( MSG_ENTITY, self.angles_z );
-    WriteByte( MSG_ENTITY, self.data_idx ); //chunk type
-    WriteByte( MSG_ENTITY, self.data_type );  //trail type
-  }
-};
-
 float( entity dest, float changedflags ) ctrl_send_turret={
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
   WriteByte( MSG_ENTITY, changedflags );
@@ -89,6 +58,7 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
   }
   if( (changedflags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );

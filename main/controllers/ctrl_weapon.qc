@@ -211,12 +211,13 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
   Cosmetic death function, weapon entity is still 'active' on the server.
 */
 void() ctrl_die_weapon={
+  local entity prev;
   if(self.deadflag <= DEAD_NO){
-    if( (self.currentWeaponGroup & self.w_group) ){
-      self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group);
+    if( (self.owner.currentWeaponGroup & self.w_group) ){
+      self.owner.currentWeaponGroup = self.owner.currentWeaponGroup - (self.owner.currentWeaponGroup & self.w_group);
       self.w_group = 0;
     }
-    
+    self.think = SUB_Null;
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW; 
@@ -233,10 +234,11 @@ void() ctrl_die_weapon={
     //attempt to garbage collect AI
     if( (self.owner.flags & FL_MONSTER) ){
       if( self.w_slot ){
-        self.partPrev.w_slot = self.w_slot; //take hard point out of rotation.
+        prev = self.partPrev;
+        prev.w_slot = self.w_slot; //take hard point out of rotation.
+        self.w_slot.partPrev = prev;
       }
-      self.think = SUB_Remove;
-      self.nextthink = time + 0.5;
+      remove(self);
     }
     else{
       if( (self.owner.stat_player_weapons_state & self.w_group) ){
@@ -259,14 +261,15 @@ void() ctrl_weapon_remove_all={
   if( (self.flags & FL_CLIENT) ){
     removeHudWeapon = self.hudWeapon;
   }
-  while(removeChain){
-    nextWep = removeChain.w_slot;
-    remove( removeChain );
-    removeChain = nextWep;
+  while( removeChain ){
+    removeChain.think = SUB_Remove;
+    removeChain.nextthink = time + 0.01;
+    removeChain = removeChain.w_slot;
     if( (self.flags & FL_CLIENT) ){
       nextHudWeapon = removeHudWeapon.hudWeapon;
-      if( removeHudWeapon ){
-        remove( removeHudWeapon );
+      if( removeHudWeapon ){        
+        removeHudWeapon.think = SUB_Remove;
+        removeHudWeapon.nextthink = time + 0.01;
         removeHudWeapon = nextHudWeapon;
       }
     }

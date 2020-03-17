@@ -111,7 +111,6 @@ entity( entity targetBuilding ) te_building_fire_start={
   fire.nextthink = time + 0.1;
   fire.angles = targetBuilding.angles;
   fire.count = targetBuilding.vec_size + (1 / 3);
-  //te_debris(fire.origin, targetBuilding.angles, '1 1 8', random() * (targetBuilding.vec_size * 6), targetBuilding.vec_size);
   targetBuilding.colormod = targetBuilding.colormod - '0.1 0.1 0.1';
   fire.owner = targetBuilding;
   fire.drawmask = MASK_NORMAL;
@@ -158,7 +157,7 @@ void() te_missile_explode_th={
   }
   self.nextthink = time + 0.01;
 };
-void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType, float bloom ) te_missile_explode={
+void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode={
   local entity explode;
   local float itr;
   local vector vel;
@@ -187,38 +186,33 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   te_customflash( org, explodeSize * 50, 1, explodeColor); 
 };
 
-/*
-  Networking of chunks?
-*/
-void( float isNew, float entFlags) sendent_handle_chunk={
+void() te_shield_explode_th={
+  self.alpha = self.alpha - 0.012;
+  self.scale = self.scale + 0.015;
+  self.think = te_shield_explode_th;
+  if( self.alpha < 0.01 ){
+    self.think = SUB_Remove;
+  }
+  self.nextthink = time + 0.01;
+};
 
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
-    
-    self.velocity_x = ReadCoord();
-    self.velocity_y = ReadCoord();
-    self.velocity_z = ReadCoord();
-  
-  if( (entFlags & SENDFLAG_DEAD) ){
-    
-  }
-  if( (entFlags & SENDFLAG_NEWENT) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = ReadCoord();
-    self.angles_y = ReadCoord();
-    self.angles_z = ReadCoord();
-    setorigin(self, self.origin);
-    self.data_idx = ReadByte();
-    self.traileffectnum = ReadByte();
-  }
+void( vector org, float vecSize ) te_shield_explode={
+  local entity explode;
+ 
+  explode = spawn();
+  explode.movetype = MOVETYPE_NONE;
+  explode.solid = SOLID_NOT;
+  explode.think = te_shield_explode_th;
+  explode.nextthink = time + 0.05;
+  explode.data_lifetime = 10;
+  explode.scale = 0.1 + (vecSize / 3);
+  explode.alpha = 0.75;
+  explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
+  setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
+  setorigin( explode, org);
+  te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22');
+  explode.drawmask = MASK_NORMAL;
+  //pointparticles?
 };
 
 /*
@@ -327,56 +321,6 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
     self.think = particle_vehicle_wreck_th;
     self.drawmask = MASK_NORMAL;
   self = this;
-};
-
-/*
-  When a part is blown off a mech
-*/
-void() particle_mech_chunk_th={
-  if( self.traileffectnum != -1 && time > self.pcl_fadeout ){
-    self.traileffectnum = -1;
-  }   
-  if( time < self.pcl_lifetime ){
-    self.think = particle_mech_chunk_th;
-    self.nextthink = time + (0.1 + (random() * 0.25));
-    return;
-  }
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.1;
-};
-
-void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) particle_mech_chunk={
-  local entity piece;
-  
-  pointsound( entOrg, "sound/fx_boom.ogg", 1, ATTN_NORM );
-  
-  piece = spawn();
-  piece.drawmask = MASK_NORMAL;
-  setmodelindex(piece, modelIndex);
-  setsize (piece, '0 0 0', '0 0 0');
-  setorigin(piece, entOrg);
-  piece.angles = entAngl;
-  piece.skin = skinNum;
-  piece.effects = piece.effects | EF_NOSHADOW;
-  piece.movetype = MOVETYPE_TOSS;
-  piece.solid = SOLID_NOT;
-  piece.frame = 0;
-  piece.flags = 0;
-  piece.colormod = '0.33 0.33 0.33';
-  piece.traileffectnum = particleeffectnum("TE_MECHPIECE_DEAD_BURN");
-  piece.pcl_lifetime = time + 180;
-  piece.pcl_fadeout = time + (30 + random() * 60);
-  piece.velocity_x = 100 * crandom();
-  piece.velocity_y = 100 * crandom();
-  piece.velocity_z = 200 + 100 * random();
-  piece.avelocity_x = random()*100;
-  piece.avelocity_y = random()*100;
-  piece.avelocity_z = random()*150;
-  piece.gravity = 0.67;
-  piece.think = particle_mech_chunk_th;
-  piece.nextthink = time + 0.1;
-  
-  particle_missile_explode( entOrg, vecSize, '0.33 0.67 0.99', 0 );
 };
 
 void( float flashId, vector flashOrg, vector flashVel, float impactStyle ) particle_muzzle_flash={

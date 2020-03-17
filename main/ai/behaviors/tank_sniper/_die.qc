@@ -19,7 +19,6 @@ void() ai_vec_dest_clean={
 };
 
 void() ai_vec_dest_die={
-  local vector v;
   
   if( self.deadflag >= DEAD_DYING ){
     return; //double play prevention
@@ -58,11 +57,8 @@ void() ai_vec_dest_die={
   self.ai_action_time = time + 600;
 
   ai_alert_close( self.enemy );
+  te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
   
-  v = self.origin + (v_up * 2);
-  //te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-  
-
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
   self.nextthink = time + 0.1;

@@ -20,8 +20,6 @@ void() ai_tank_sk_clean={
 };
 
 void() ai_tank_sk_die={
-  local vector v;
-  
   if( self.deadflag >= DEAD_DYING ){
     return; //double play prevention
   }
@@ -66,6 +64,7 @@ void() ai_tank_sk_die={
 
   ai_alert_close( self.enemy );
 
+  te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 
   self.think = ai_tank_sk_clean;

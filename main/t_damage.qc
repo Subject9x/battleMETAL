@@ -253,9 +253,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = notTarg;
   }
   
-  if( (prevShields > 0) && (trg.shield <= 0) ){
-    te_shield_explode( trg.origin, trg.vec_size + 1 );
-  }
+  //TODO - replace clientside
+  //if( (prevShields > 0) && (trg.shield <= 0) ){
+    //te_shield_explode( trg.origin, trg.vec_size + 1 );
+  //}
   
   if( dmgAmt <= 0 ){
     if( (trg.flags & FL_CLIENT) ){

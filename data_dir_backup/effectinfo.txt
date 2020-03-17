@@ -567,8 +567,8 @@ gravity -0.005
     orientation spark
     color 0x0D8D8D8 0xF2F2F2
     tex 40 40
-    size 0.75 0.75
-    alpha 256 256 64
+    size 3 3
+    alpha 768 768 0
     time 2 2
     velocitymultiplier 1
     
@@ -1442,7 +1442,7 @@ gravity -0.005
 //ROCKET POD EFFECTS==================================
   //TE_MIS_TRAIL - SMOKE
     effect TE_MIS_TRAIL
-    count 3
+    count 2
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -1458,7 +1458,7 @@ gravity -0.005
 
   //TE_MIS_TRAIL - SPARKS
     effect TE_MIS_TRAIL
-    count 2
+    count 1
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1890,7 +1890,7 @@ gravity -0.005
     
   //TE_ARH_MUZZLE - SMOKE
     effect TE_ARH_MUZZLE
-    count 4
+    count 3
     type smoke
     blend alpha
     color 0x848484 0xBDBDBD
@@ -2076,10 +2076,10 @@ gravity -0.005
   
   //TE_MECHPIECE_DEAD_BURN - Light
   effect TE_MECHPIECE_DEAD_BURN
-  lightradius 25
-  lightradiusfade 100
+  lightradius 15
+  lightradiusfade 50
   lightcolor 0.875 0.227 0.004
-  lightshadow 0.2
+  lightshadow 0.1
   notunderwater
   
   //TE_MECHPIECE_DEAD_BURN - Smoke

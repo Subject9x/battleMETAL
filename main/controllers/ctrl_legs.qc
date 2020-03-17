@@ -73,7 +73,8 @@ void() ctrl_dieLegs={
     return;
   }
 
-  te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
+  //TODO - Replace
+  //te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
 
   newLegs = spawn();
   newLegs.vec_size = self.owner.vec_size;

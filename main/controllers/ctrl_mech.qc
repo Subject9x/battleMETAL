@@ -99,16 +99,16 @@ void() ai_ctrl_update_mechplayer={
     if( piece.deadflag <= DEAD_NO ){
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
-        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+        //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+        //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
         if( hp < 0.5){
-          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
-          client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+          //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+          //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+          //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
           if( hp < 0.25){
-            spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
-            client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+            //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+            //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+            //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
           }
         }
       }
@@ -118,9 +118,9 @@ void() ai_ctrl_update_mechplayer={
       if( partParent.deadflag > DEAD_NO ){
         continue;
       }
-      spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-      spark = te_apply_wind( spark );
-      client_send_particle( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+      //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+      //spark = te_apply_wind( spark );
+      //client_send_particle( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
     }
   }
 };
@@ -279,8 +279,7 @@ void() ctrl_component_die={
   local entity c;
   if( self.deadflag <= DEAD_NO ){
     piece = self;
-    
-    //client_send_mech_chunk( self.modelindex, self.owner.skin, self.owner.vec_size, self.origin, self.angles );
+    te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
     
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW; 
@@ -329,9 +328,7 @@ void() ctrl_arm_die={
   local entity this;
   local entity c;
   if( self.deadflag == DEAD_NO ){
-    piece = self;
-
-    client_send_mech_chunk( self.modelindex, self.owner.skin, self.owner.vec_size, self.origin, self.angles );
+    te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
 
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;  

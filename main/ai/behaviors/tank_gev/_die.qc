@@ -39,10 +39,6 @@ void() ai_gev_touch_death={
 };
 
 void() ai_gev_die={
-  local vector v;
-  local vector t;
-  t = '0 0 0';
-  
   if( self.deadflag >= DEAD_DYING ){
     return; //double play prevention
   }
@@ -78,15 +74,10 @@ void() ai_gev_die={
     remove(self.ai_node_recall);
   }
   
-  t_y = self.ideal_yaw;
-  
   makevectors( self.angles );
-
-  v = self.origin + (v_forward * 2) + (v_right * (crandom() * 3)) + (v_up * 3);
- // te_debris( self.origin, self.angles, normalize(v - self.origin) * 100, self.vec_size + (random() * 5), self.vec_size);
   
   if( self.attack_state != ST_STAND ){
-    self.velocity = normalize( v - self.origin);
+    self.velocity = normalize( (self.origin + (v_forward * 5)) - self.origin);
     self.velocity = self.velocity * 200;
     self.gravity = 0.25;
     self.avelocity_x = crandom() * 150;
@@ -105,6 +96,7 @@ void() ai_gev_die={
   self.attack_state = -1;
   self.touch = ai_gev_touch_death;
   ai_alert_close( self.enemy );
+  te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
   
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.SendFlags = self.SendFlags | SENDFLAG_BURN;

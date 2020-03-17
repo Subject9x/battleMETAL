@@ -28,16 +28,16 @@ void() projectile_sfga_expl={
   if( self.impactType == IMPACT_SHIELD ){
     pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.9, ATTN_NORM );
     pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
-    te_missile_explode( self.origin, 2, '0 0 1', 0, 0, -0.05 ); 
+    te_missile_explode( self.origin, 2, '0 0 1', -0.05 ); 
   }
   else if( self.impactType == IMPACT_ARMOR ){
     pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
     pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
-    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0, 0, 0.1 ); 
+    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0.1 ); 
   }
   else{
     pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
-    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', min(self.damageValue / 7, 10), ceil( random() * 3), 0.05 ); 
+    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0.05 ); 
   }
 };
 #endif

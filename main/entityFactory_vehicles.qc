@@ -93,11 +93,8 @@ void() build_unit_weapon_list={
   weaponMount = self.w_slot;
   if( weaponMount ){
     weaponCount = 1;
-    unitPartList.partNext = weaponMount;  //should be last piece added to unit, now we add weapons
-    unitPartList = weaponMount;
     while( weaponMount ){
       weaponBuild = weaponMount;
-      unitPartList.partNext = weaponMount;
       switch( weaponCount ){
         case 1:
           build_unit_weapon( self.next_wepn1, self, stat_w1_id);

@@ -33,9 +33,6 @@ void( float isNew ) sendent_handle_update={
     case SENDTYPE_BUILD:
       sendent_handle_building( isNew, entFlags );
       break;
-    case SENDTYPE_CHUNK:
-      sendent_handle_chunk( isNew, entFlags );
-      break;
     case SENDTYPE_PROJ:
       sendent_handle_missile( isNew, entFlags );
       break;
@@ -46,10 +43,13 @@ void( float isNew ) sendent_handle_update={
 };
 
 void( float isNew, float changeFlags ) sendent_handle_tank={
+  local float prevShield;
   local vector turretAng;
   local entity this;
   local entity weps;
     
+  prevShield = self.shield;
+  
   self.origin_x = ReadCoord();
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
@@ -59,7 +59,15 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   self.angles_z = ReadCoord();
   
   self.flags = ReadByte();
+  self.shield = ReadByte();
   
+  //EVENT - SHIELD EXPLODE
+  if( self.shield <= 0 && prevShield > 0 ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
+    }
+  }
   if( changeFlags & SENDFLAG_MOVE ){
     for(weps = self.w_slot; weps != world; weps = weps.w_slot){
       if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
@@ -68,6 +76,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
     }
   }
+  //EVENT - TURRET ROTATES
   if( changeFlags & SENDFLAG_TURRET ){
     turretAng = te_read_vector();
     if( self.torsoCenter != world ){
@@ -84,6 +93,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       }
     }
   }
+  //EVENT - DEATH
   if( changeFlags & SENDFLAG_DEAD ){
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
@@ -109,17 +119,22 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       else{
         self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
       }
+      te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
     }
   }
+  //EVENT - CRITICAL HIT
   if( changeFlags & SENDFLAG_CRIT ){
     self.pcl_effectnum = ReadByte();
   }
+  //EVENT - DEAD AND BURNING
   if( changeFlags & SENDFLAG_BURN ){
     if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
       makevectors(self.angles);
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
     }
   }
+  //EVENT - NEW ENTITY
   if( changeFlags & SENDFLAG_NEWENT ){
     self.faction = ReadByte();
     self.data_idx = ReadByte();
@@ -163,18 +178,30 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
 };
 
 void( float isNew, float changeFlags) sendent_handle_spg={
+  local float prevShield;
   local entity weps;
   local entity this;
+  
+  prevShield = self.shield;
   
   self.origin_x = ReadCoord();
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
+  
   self.angles_x = ReadCoord();
   self.angles_y = ReadCoord();
   self.angles_z = ReadCoord();
   
   self.flags = ReadByte();
+  self.shield = ReadByte();
   
+  //Shield Explode event
+  if( self.shield <= 0 && prevShield > 0 ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
+    }
+  }
   if( (changeFlags & SENDFLAG_MOVE) ){
     setorigin(self, self.origin);
     makevectors(self.angles);
@@ -205,6 +232,8 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       else{
         self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
       }
+      te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
     }
   }
   if( changeFlags & SENDFLAG_CRIT ){
@@ -259,17 +288,31 @@ void( float isNew, float changeFlags) sendent_handle_spg={
 };
 
 void( float isNew, float changeFlags) sendent_handle_gev={
+  local float prevShield;
   local vector turretAng;
   local entity weps;
   local entity this;
   
+  prevShield = self.shield;
+  
   self.origin_x = ReadCoord();
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
+ 
   self.angles_x = ReadCoord();
   self.angles_y = ReadCoord();
   self.angles_z = ReadCoord();
+  
   self.flags = ReadByte();
+  self.shield = ReadByte();
+  
+  //Shield Explode event
+  if( self.shield <= 0 && prevShield > 0 ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
+    }
+  }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     setorigin(self, self.origin);
@@ -303,7 +346,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     if( self.deadflag > DEAD_NO ){
       makevectors(self.angles);
       self.colormod = '0.33 0.33 0.33';  
-
+      te_missile_explode( self.origin, self.vec_size, '0.9 0.67 0.33', 0.02 ) ;
       weps = self.w_slot;
       while( weps ){
         this = weps.w_slot;
@@ -320,6 +363,8 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       else{
         self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
       }
+      te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
     }
   }
   if( changeFlags & SENDFLAG_CRIT ){
@@ -391,22 +436,27 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     }
   }
   if( (changeFlags & SENDFLAG_DEAD) ){ 
-    setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+    self.deadflag = ReadByte();
     self.angles = self.angles;
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-    self.colormod = '0.85 0.85 0.85';
-    if( self.torsoCenter ){
-      remove(self.torsoCenter);
+    if( self.deadflag > DEAD_NO ){
+      setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+      self.colormod = '0.85 0.85 0.85';
+      if( self.torsoCenter ){
+        remove(self.torsoCenter);
+      }
+      weps = self.w_slot;
+      while( weps ){
+        this = weps.w_slot;
+        remove(weps);
+        weps = this;
+      }
+      makevectors(self.angles);
+      te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
+      pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
     }
-    weps = self.w_slot;
-    while( weps ){
-      this = weps.w_slot;
-      remove(weps);
-      weps = this;
-    }
-    te_missile_explode( self.origin, self.vec_size, '0.9 0.67 0.33',  rint(2 + random() * self.vec_size), 1, 0.01 ) ;
   }
   if( (changeFlags & SENDFLAG_CRIT) ){
     if( self.effect1 ){

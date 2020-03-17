@@ -86,6 +86,7 @@ float( entity dest, float changedflags ) ctrl_send_tank={
   WriteCoord( MSG_ENTITY, self.angles_z );
 
   WriteByte( MSG_ENTITY, self.flags );
+  WriteByte( MSG_ENTITY, self.shield );
     
   if( changedflags & SENDFLAG_TURRET ){
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
@@ -125,7 +126,9 @@ float( entity dest, float changedflags ) ctrl_send_spg={
   WriteCoord( MSG_ENTITY, self.angles_x );
   WriteCoord( MSG_ENTITY, self.angles_y );
   WriteCoord( MSG_ENTITY, self.angles_z );
+  
   WriteByte( MSG_ENTITY, self.flags );
+  WriteByte( MSG_ENTITY, self.shield );
 
   if( changedflags & SENDFLAG_DEAD ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -160,8 +163,10 @@ float( entity dest, float changedflags ) ctrl_send_gev={
   WriteCoord( MSG_ENTITY, self.angles_x );
   WriteCoord( MSG_ENTITY, self.angles_y );
   WriteCoord( MSG_ENTITY, self.angles_z );
+  
   WriteByte( MSG_ENTITY, self.flags );
-
+  WriteByte( MSG_ENTITY, self.shield );
+  
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
