@@ -68,8 +68,10 @@ void() data_ini_monitor_={
   //legs
   data_ini_legs_( "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0' );
   
+#ifndef CSQC
   //camera location
   data_ini_camera_( '0 18 8', self.torsoCenter );
+#endif
 //=====================================
  
 //HARDPOINT DATA======================
@@ -85,10 +87,13 @@ void() data_ini_monitor_={
 //=====================================
 
 //HUD Data=============================
-  self.pitchMax = 45;
-  self.pitchMin = -25;
+#ifndef CSQC
   self.weaponmodel = "q3mdl/mechs/monitor/monitor_hud.md3";
   self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
+#endif
+#ifdef CSQC
+  self.pitchMax = 45;
+  self.pitchMin = -25;
   self.hud_rollangle = 2.75;
   self.hud_bob = 0.05;
   self.hud_bob_cycle = 0.65;
@@ -100,10 +105,9 @@ void() data_ini_monitor_={
 //====================================
 
 //UI Data=============================
-  #ifdef CSQC
   self.abbrev = "MNT";
   self.description = "The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. | | The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. | | All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.";
   self.icon = "gfx/ui/mech_icons/icon_monitor.png";
-  #endif
+#endif
 //====================================
 };

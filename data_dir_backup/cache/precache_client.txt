@@ -87,6 +87,7 @@ q3mdl/fx/debris2/mdl_debris_2.md3
 q3mdl/fx/debris3/mdl_debris_3.md3
 q3mdl/fx/explosions/te_shield_explode.md3
 q3mdl/fx/explosions/te_missile_explode.md3
+q3mdl/map/nav_point.obj
 
 //CROSSHAIRS
 gfx/hud/ret/crosshair1.png

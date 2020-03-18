@@ -68,8 +68,10 @@ void() data_ini_matok_={
   //legs
   data_ini_legs_( "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0' );
   
+#ifndef CSQC
   //camera location
   data_ini_camera_( '0 15 7', self.torsoCenter);
+#endif
 //=====================================
  
 //HARDPOINT DATA======================
@@ -81,10 +83,13 @@ void() data_ini_matok_={
 //=====================================
 
 //HUD Data=============================
-  self.pitchMax = 55;
-  self.pitchMin = -45;
+#ifndef CSQC
   self.weaponmodel = "q3mdl/mechs/matok/matok_hud.md3";
   self.hud_model = "q3mdl/mechs/matok/matok_hud.obj";
+#endif
+#ifdef CSQC
+  self.pitchMax = 55;
+  self.pitchMin = -45;
   self.hud_rollangle = 3.25;
   self.hud_bob = 0.035;
   self.hud_bob_cycle = 0.5;
@@ -100,4 +105,5 @@ void() data_ini_matok_={
   self.description = "The MATOK was the second-generation combat mech that Federal Military churned out as the threat of AUTHOR was increasing. MATOKs are the main stay of Federal squadrons today, found in almost every  deployment and any combat. | | A dangerous generalist, the MATOK is design to engage targets head on with a slew of direct-fire power and large reactor recharge capacity. | | MATOK operators have to remember not to get surrounded though, the MATOK's defensive capabilities are not as strong as its offense. Its speed is also a problem against more agile targets.";
   self.icon = "gfx/ui/mech_icons/icon_matok.png";
 //====================================
+#endif
 };

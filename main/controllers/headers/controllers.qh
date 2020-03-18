@@ -35,6 +35,8 @@ void() ctrl_player_mech_touch;
 void() touch_mech;
 void() touch_mechPiece;
 
+float( float isNew, float changeFlags ) ctrl_send_mech_ai;
+
 //Building entity controllers
 float( entity dest, float changedflags ) ctrl_send_turret;
 float( entity dest, float changedflags ) ctrl_send_building;

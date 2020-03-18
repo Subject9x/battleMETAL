@@ -158,6 +158,9 @@ void() build_unit_weapon_list={
       weaponCount = weaponCount + 1;
       weaponMount.partPrev = prevWeapon;
       prevWeapon = weaponMount;
+      if( weaponMount.owner.flags & FL_MONSTER ){
+        weaponMount.effects = weaponMount.effects | EF_NODRAW;
+      }
       weaponMount = weaponMount.w_slot;
     }
   }
@@ -378,30 +381,35 @@ void() build_mech_bot={
   self.torsoCenter.yaw_speed = self.turret_yaw_speed;
   unitPartList.partNext = self.torsoCenter;
   unitPartList = unitPartList.partNext;
+  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   
   if( self.torsoRight ){
     build_mech_torsoRight();
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
+    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
   }
   if( self.torsoLeft ){
     build_mech_torsoLeft();
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
+    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
   }
   if( self.armRight ){
     build_mech_armRight();
     self.armRight.partPrev = unitPartList;
     unitPartList.partNext = self.armRight;
     unitPartList = unitPartList.partNext;
+    self.armRight.effects = self.armRight.effects | EF_NODRAW;
   }
   if( self.armLeft ){
     build_mech_armLeft();
     self.armLeft.partPrev = unitPartList;
     unitPartList.partNext = self.armLeft;
     unitPartList = unitPartList.partNext;
+    self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
   }
   if( (self.legs) ){
     build_mech_legs();

@@ -123,6 +123,7 @@ void() ai_ctrl_update_mechplayer={
       //client_send_particle( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
     }
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 
 void() ctrl_updateCenterTorso={
@@ -438,4 +439,59 @@ void() touch_mechPiece={
     self.touch = SUB_Null;
     return;
   }
+};
+
+
+float( float isNew, float changeFlags ) ctrl_send_mech_ai={
+  WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
+  WriteByte( MSG_ENTITY, changeFlags );
+
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  
+  WriteCoord( MSG_ENTITY, self.angles_x );
+  WriteCoord( MSG_ENTITY, self.angles_y );
+  WriteCoord( MSG_ENTITY, self.angles_z );
+
+  WriteByte( MSG_ENTITY, self.shield );
+
+  if( (changeFlags & SENDFLAG_MOVE) ){
+  
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
+  }
+  
+  if( (changeFlags & SENDFLAG_BURN) ){
+  
+  }
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.data_idx );
+
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+
+  return TRUE;
 };

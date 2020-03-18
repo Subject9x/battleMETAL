@@ -588,6 +588,23 @@ void() CSQC_Ent_Remove =
     weps.nextthink = time + 0.1;
     weps = next;
   }
+  if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
+    if( self.torsoCenter ){
+      remove(self.torsoCenter);
+    }
+    if( self.torsoLeft ){
+      remove(self.torsoLeft);
+    }
+    if( self.torsoRight ){
+      remove(self.torsoRight);
+    }
+    if( self.armLeft ){
+      remove(self.armLeft);
+    }
+    if( self.armRight ){
+      remove(self.armRight);
+    }
+  }
   if( self.data_type == DATA_BLD ){
     if( self.effect1 ){
       remove(self.effect1);

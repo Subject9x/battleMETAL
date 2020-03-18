@@ -68,8 +68,10 @@ void() data_ini_balaket_={
   //legs      
   data_ini_legs_( "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');
   
+#ifndef CSQC
   //camera location
   data_ini_camera_( '0 7 7', self.torsoCenter);
+#endif
 //=====================================
  
 //HARDPOINTS==========================
@@ -78,11 +80,15 @@ void() data_ini_balaket_={
   data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 //=====================================
 
+
 //HUD DATA=============================
-  self.pitchMax = 30; //pitch down limit
-  self.pitchMin = -35;//pitch up limit
+#ifndef CSQC
   self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.md3";
   self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
+#endif
+#ifdef CSQC
+  self.pitchMax = 30; //pitch down limit
+  self.pitchMin = -35;//pitch up limit
   self.hud_rollangle = 4;
   self.hud_bob = 0.03;
   self.hud_bob_cycle = 0.5;
@@ -94,10 +100,10 @@ void() data_ini_balaket_={
 //====================================
 
 //UI Data=============================
-  #ifdef CSQC
+
   self.abbrev = "BLK";
   self.description = "A primitive combat platform, BALAKETTs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. | | BALAKETT units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. | | They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
   self.icon = "gfx/ui/mech_icons/icon_balaket.png";
-  #endif
 //====================================
+#endif
 };

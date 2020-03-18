@@ -23,8 +23,10 @@ float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
 
 float() predraw_tank;
 float() predraw_spg;
+float() predraw_mech_ai;
 
 void( float isNew ) sendent_handle_update;
+void( float isNew, float changeFlags ) sendent_handle_mech_ai;
 void( float isNew, float changeFlags ) sendent_handle_tank;
 void( float isNew, float changeFlags ) sendent_handle_spg;
 void( float isNew, float changeFlags) sendent_handle_gev;

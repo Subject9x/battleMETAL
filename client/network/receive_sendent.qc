@@ -33,6 +33,9 @@ void( float isNew ) sendent_handle_update={
     case SENDTYPE_BUILD:
       sendent_handle_building( isNew, entFlags );
       break;
+    case SENDTYPE_MECH_AI:
+      sendent_handle_mech_ai( isNew, entFlags );
+      break;
     case SENDTYPE_PROJ:
       sendent_handle_missile( isNew, entFlags );
       break;
@@ -432,6 +435,118 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     }
   }
 };
+
+/*
+  SendEntity - MECH AI =====================================
+*/
+void( float isNew, float changeFlags ) sendent_handle_mech_ai={
+  local entity this;
+  local entity weps;
+  local float prevShield;
+  local vector turretAng;
+  prevShield = self.shield;
+  
+  self.origin_x = ReadCoord();
+  self.origin_y = ReadCoord();
+  self.origin_z = ReadCoord();
+  
+  self.angles_x = ReadCoord();
+  self.angles_y = ReadCoord();
+  self.angles_z = ReadCoord();
+  
+  self.shield = ReadByte();
+  //EVENT - SHIELD EXPLODE
+  if( self.shield <= 0 && prevShield > 0 ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
+    }
+  }
+  
+  //EVENT - MOVE
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      if( weps.partParentId == M_UNIT ){
+        weps.angles = self.angles;
+      }
+      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+    }
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    turretAng = te_read_vector();
+    if( self.torsoCenter ){  
+      self.torsoCenter.angles_x = turretAng_x;
+      self.torsoCenter.angles_y = turretAng_y;
+      self.torsoCenter.angles_z = turretAng_z;
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        if( weps.partParentId != M_UNIT ){
+          weps.angles = self.torsoCenter.angles;
+        }
+        else{
+          weps.angles = self.angles;
+        }
+      }
+    }
+  }
+
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    self.pcl_effectnum = ReadByte();
+  }
+  
+  if( (changeFlags & SENDFLAG_BURN) ){
+  
+  }
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+  }
+
+  if( (changeFlags & SENDFLAG_NEWENT) ){    
+    self.faction = ReadByte();
+    self.data_idx = ReadByte();
+   
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte();
+    
+    if( isNew ){    
+      self.skin =  self.faction - 1;
+      data_sync_new_mech_ai( self.data_idx );
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      self.drawmask = MASK_ENGINE;
+      self.data_type = DATA_MECH;
+      this = self;
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        self = weps;
+          sendent_set_weapon();
+          initialize_data_item_(self.data_idx);
+          self.angles = this.angles;
+          self.owner = this;
+        self = this;
+      }
+      self.movetype = MOVETYPE_STEP;
+      self.solid = SOLID_SLIDEBOX;
+      setmodel(self, "q3mdl/testball.md3");
+      setsize(self, self.mins, self.maxs);
+      self.predraw = predraw_mech_ai;
+      self.frame2time = time + 0.05;
+      self.frame1time = time + 0.05;
+      self.origin2 = self.origin1;
+      self.origin1 = self.origin;
+      self.nextthink = time + 0.1;
+    }
+  }
+};
+
+
+
 /*
   SendEntity - Turret =======================================
 */
@@ -726,6 +841,67 @@ float() predraw_turret={
 
   return TRUE;
 };
+
+float() predraw_mech_ai={
+  local entity weps;
+  local vector saved;
+  if( self.nextthink != self.frame1time ){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    self.origin2 = self.origin1;
+		self.origin1 = self.origin;
+  }
+  self.lerpfrac = (time - self.frame2time) / (self.frame1time-self.frame2time);
+  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+
+  if( (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)) ){
+    saved = self.origin;
+    self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+    self.origin_z = saved_z;
+  }
+  else{
+    self.origin2 = self.origin1 = self.origin;
+  }
+
+  if( self.deadflag == DEAD_NO ){
+    makevectors(self.angles);
+    if( self.torsoCenter != world ){
+      self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+    }
+    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+      if( weps.partParentId == M_TOR_CENTER ){
+        weps.angles = self.torsoCenter.angles;
+        makevectors(self.torsoCenter.angles);
+      }
+      else{
+        makevectors(self.angles);
+      }
+      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+    }
+    makevectors(self.torsoCenter.angles);
+    if( self.torsoLeft ){
+      self.torsoLeft.angles = self.torsoCenter.angles;
+      self.torsoLeft.origin = self.origin + (v_right * self.torsoLeft.compOffset_x) + (v_forward * self.torsoLeft.compOffset_z) + (v_up * self.torsoLeft.compOffset_y);self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+    }
+    if( self.torsoRight ){
+      self.torsoRight.angles = self.torsoCenter.angles;
+      self.torsoRight.origin = self.origin + (v_right * self.torsoRight.compOffset_x) + (v_forward * self.torsoRight.compOffset_z) + (v_up * self.torsoRight.compOffset_y);
+    }
+    if( self.armLeft ){
+      self.armLeft.angles = self.torsoCenter.angles;
+      self.armLeft.origin = self.origin + (v_right * self.armLeft.compOffset_x) + (v_forward * self.armLeft.compOffset_z) + (v_up * self.armLeft.compOffset_y);
+    }
+    if( self.armRight ){
+      self.armRight.angles = self.torsoCenter.angles;
+      self.armRight.origin = self.origin + (v_right * self.armRight.compOffset_x) + (v_forward * self.armRight.compOffset_z) + (v_up * self.armRight.compOffset_y);
+    }
+  }
+  
+  
+
+  return TRUE;
+};
+
 
 void() sendent_set_weapon={
   switch(self.w_group){

@@ -207,15 +207,16 @@ float AS_FLOAT = 8;
 //============================
 //SendTypes-------------------
 float SENDTYPE_PLAYER = 1;
-float SENDTYPE_TANK = 2;
-float SENDTYPE_SPG = 3;
-float SENDTYPE_GEV = 4;
-float SENDTYPE_MECH = 5;
-float SENDTYPE_TURRET = 6;
-float SENDTYPE_BUILD = 7;
-float SENDTYPE_CHUNK = 8; //Vehicle / Turret / Mech debris
-float SENDTYPE_PROJ = 9;  //projectiles - missiles, etc
-float SENDTYPE_MAP = 10;
+float SENDTYPE_MECH_AI = 2;
+float SENDTYPE_TANK = 3;
+float SENDTYPE_SPG = 4;
+float SENDTYPE_GEV = 5;
+float SENDTYPE_MECH = 6;
+float SENDTYPE_TURRET = 7;
+float SENDTYPE_BUILD = 8;
+float SENDTYPE_CHUNK = 9; //Vehicle / Turret / Mech debris
+float SENDTYPE_PROJ = 10;  //projectiles - missiles, etc
+float SENDTYPE_MAP = 11;
 //SendFlags-------------------
 float SENDFLAG_MOVE = 1;  //update .origin and .angles of main piece 
 float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.
