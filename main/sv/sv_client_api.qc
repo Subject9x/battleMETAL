@@ -177,7 +177,8 @@ void() PutClientInServer = {
   
   //DecodeLevelParms ();
 	self.attack_finished = time;
-	self.th_die = PlayerDie;
+  self.th_die = PlayerDie;
+  
   self.deadflag = DEAD_NO;
   
 // paustime is set by teleporters to keep the player from moving a while
@@ -221,9 +222,11 @@ void() PutClientInServer = {
     }
   }
   else if ( GAMETYPE == GAMEMODE_COOP ){
+    self.th_die = PlayerDieNetwork;
     mapfile_coop_load();
   }
   else{
+    self.th_die = PlayerDieNetwork;
     mapfile_pvp_load(self.faction);
   }
 

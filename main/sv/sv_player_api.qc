@@ -364,10 +364,6 @@ void() PlayerDieNetwork={
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
     client_push_player_info();
-    //DEBUG - these may no longer be needed
-    //msg_entity = self;
-    //WriteByte( MSG_ONE, SVC_SETVIEWPORT );
-    //WriteEntity( MSG_ONE, self );    
   }
   self.effects = 0;
   
@@ -387,6 +383,7 @@ void() PlayerDieNetwork={
   self.angles_y = 0;
   self.avelocity = '0 0 0';
   
+  /*
   //update objectives on player death.
   client_push_mapobjects();
   if( MISSION_STATUS ){        
@@ -396,7 +393,7 @@ void() PlayerDieNetwork={
   }
   else{
     te_mission_lose();
-  }
+  }*/
 
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
@@ -404,10 +401,11 @@ void() PlayerDieNetwork={
 
 void() PlayerDieNetworkEnd={
   self.movetype = MOVETYPE_NONE;
-  self.playerState = PLAYER_INTERMSN;
+  self.playerState = PLAYER_IN_MENU;
   
-  client_sendEndMission(self, MISSION_STATUS );
-  client_push_player_info();
+  
+  //client_sendEndMission(self, MISSION_STATUS );
+  //client_push_player_info();
   
   
   local entity start;
@@ -452,7 +450,7 @@ void() PlayerDeathThink={
 	self.button7 = 0;
   self.button8 = 0;
 	
-  //self.deadflag = DEAD_NO;
+  self.deadflag = DEAD_NO;
   player_unmakeMech();
   ctrl_unit_cleanup_player();
   player_makeObserver();

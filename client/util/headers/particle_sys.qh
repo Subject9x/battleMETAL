@@ -78,6 +78,7 @@ void() te_missile_explode_th;
 void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode;
 void() te_shield_explode_th;
 void( vector org, float vecSize ) te_shield_explode;
+void( vector explodeColor ) te_object_explode;
 
 /*
   Wreck event is when a unit is destroyed in combat.

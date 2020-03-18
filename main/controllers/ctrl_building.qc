@@ -52,6 +52,10 @@ void() building_burn={
 float( entity dest, float changedflags ) ctrl_send_turret={
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
   WriteByte( MSG_ENTITY, changedflags );
+      
+  if( (changedflags & SENDFLAG_MOVE) ){
+    WriteByte( MSG_ENTITY, self.shield );
+  }
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
     WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
@@ -59,9 +63,6 @@ float( entity dest, float changedflags ) ctrl_send_turret={
   }
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
   }
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -74,7 +75,6 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteByte( MSG_ENTITY, self.data_type );
     
     WriteByte( MSG_ENTITY, self.next_wepn1);
     WriteByte( MSG_ENTITY, self.next_wepn2);
@@ -106,7 +106,6 @@ float( entity dest, float changedflags ) ctrl_send_building={
     
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteByte( MSG_ENTITY, self.data_type );
   }
   return TRUE;
 };

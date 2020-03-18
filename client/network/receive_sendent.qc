@@ -41,7 +41,9 @@ void( float isNew ) sendent_handle_update={
       break;
   }
 };
-
+/*
+  SendEntity - Tank =======================================
+*/
 void( float isNew, float changeFlags ) sendent_handle_tank={
   local float prevShield;
   local vector turretAng;
@@ -57,8 +59,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   self.angles_x = ReadCoord();
   self.angles_y = ReadCoord();
   self.angles_z = ReadCoord();
-  
-  self.flags = ReadByte();
+
   self.shield = ReadByte();
   
   //EVENT - SHIELD EXPLODE
@@ -68,6 +69,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       self.shieldExplodeCool = time + self.vec_size;
     }
   }
+  //EVENT - UNIT MOVE
   if( changeFlags & SENDFLAG_MOVE ){
     for(weps = self.w_slot; weps != world; weps = weps.w_slot){
       if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
@@ -138,10 +140,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   if( changeFlags & SENDFLAG_NEWENT ){
     self.faction = ReadByte();
     self.data_idx = ReadByte();
-    self.data_type = ReadByte();
-    self.skin =  self.faction - 1;
-    
-    self.drawmask = MASK_ENGINE;
+
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
     self.next_wepn3 = ReadByte();
@@ -152,8 +151,12 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
     
-    if( isNew ){
+    if( isNew ){    
+      self.skin =  self.faction - 1;
       data_sync_new_vehicle( self.data_idx );
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      self.drawmask = MASK_ENGINE;
+      self.data_type = DATA_VEHC;
       this = self;
       for(weps = self.w_slot; weps != world; weps = weps.w_slot){
         self = weps;
@@ -177,6 +180,9 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   }
 };
 
+/*
+  SendEntity - SPG =======================================
+*/
 void( float isNew, float changeFlags) sendent_handle_spg={
   local float prevShield;
   local entity weps;
@@ -192,7 +198,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   self.angles_y = ReadCoord();
   self.angles_z = ReadCoord();
   
-  self.flags = ReadByte();
   self.shield = ReadByte();
   
   //Shield Explode event
@@ -202,14 +207,14 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       self.shieldExplodeCool = time + self.vec_size;
     }
   }
+  
   if( (changeFlags & SENDFLAG_MOVE) ){
-    setorigin(self, self.origin);
-    makevectors(self.angles);
     for(weps = self.w_slot; weps != world; weps = weps.w_slot){
       weps.angles = self.angles;
       weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
     }
   }
+  
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
@@ -236,19 +241,21 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
     }
   }
+  
   if( changeFlags & SENDFLAG_CRIT ){
     self.pcl_effectnum = ReadByte();
   }
+  
   if( changeFlags & SENDFLAG_BURN ){
     if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
       makevectors(self.angles);
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
     }
   }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.faction = ReadByte();
     self.data_idx = ReadByte();
-    self.data_type = ReadByte();
     
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
@@ -264,6 +271,8 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       self.drawmask = MASK_ENGINE;
       self.skin =  self.faction - 1;
       data_sync_new_vehicle(self.data_idx);
+      self.data_type = DATA_VEHC;
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       this = self;
       for(weps = self.w_slot; weps != world; weps = weps.w_slot){
         self = weps;
@@ -287,6 +296,9 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   }
 };
 
+/*
+  SendEntity - GEV =======================================
+*/
 void( float isNew, float changeFlags) sendent_handle_gev={
   local float prevShield;
   local vector turretAng;
@@ -303,7 +315,6 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   self.angles_y = ReadCoord();
   self.angles_z = ReadCoord();
   
-  self.flags = ReadByte();
   self.shield = ReadByte();
   
   //Shield Explode event
@@ -315,12 +326,10 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
-    setorigin(self, self.origin);
     makevectors(self.angles);
     if( self.torsoCenter ){
       self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
     }
-    makevectors(self.angles);
     for(weps = self.w_slot; weps != world; weps = weps.w_slot){
       if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
         weps.angles = self.angles;
@@ -328,6 +337,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
     }
   }
+  
   if( (changeFlags & SENDFLAG_TURRET) ){
     turretAng = te_read_vector();
     if( self.torsoCenter != world ){
@@ -341,6 +351,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       }
     }
   }
+  
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
@@ -367,20 +378,21 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
     }
   }
+  
   if( changeFlags & SENDFLAG_CRIT ){
     self.pcl_effectnum = ReadByte();
   }
+  
   if( changeFlags & SENDFLAG_BURN ){
     if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
       makevectors(self.angles);
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
     }
   }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
-
     self.faction = ReadByte();
     self.data_idx = ReadByte();
-    self.data_type = ReadByte();
    
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
@@ -391,10 +403,13 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
+    
     if( isNew ){
       self.skin =  self.faction - 1;
-      self.drawmask = MASK_ENGINE;
       data_sync_new_vehicle(self.data_idx);
+      self.drawmask = MASK_ENGINE;
+      self.data_type = DATA_VEHC;
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       this = self;
       for(weps = self.w_slot; weps != world; weps = weps.w_slot){
         self = weps;
@@ -417,11 +432,21 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     }
   }
 };
-
+/*
+  SendEntity - Turret =======================================
+*/
 void( float isNew, float changeFlags) sendent_handle_turret={
   local vector turretAng;
   local entity weps;
   local entity this;
+  local float prevShield;
+  
+  //EVENT - MOVE - for turrets, this means a general update tic.
+  prevShield = self.shield;
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.shield = ReadByte();
+  }
+  
   if( (changeFlags & SENDFLAG_TURRET) ){
     turretAng = te_read_vector();
     if( self.torsoCenter != world ){
@@ -437,13 +462,12 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   if( (changeFlags & SENDFLAG_DEAD) ){ 
     self.deadflag = ReadByte();
-    self.angles = self.angles;
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
     if( self.deadflag > DEAD_NO ){
+      makevectors(self.angles);
       setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
       self.colormod = '0.85 0.85 0.85';
+      traceline(self.origin, self.origin + (v_up * (self.maxs_z * -0.5)), FALSE, self);
+      setorigin(self, trace_endpos);
       if( self.torsoCenter ){
         remove(self.torsoCenter);
       }
@@ -453,7 +477,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
         remove(weps);
         weps = this;
       }
-      makevectors(self.angles);
       te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
       pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
     }
@@ -474,7 +497,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
@@ -485,11 +507,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     
     self.faction = ReadByte();
     self.data_idx = ReadByte();
-    self.data_type = ReadByte();
 
-    data_sync_new_turret(self.data_idx);
-    
-    self.drawmask = MASK_ENGINE;
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
     self.next_wepn3 = ReadByte();
@@ -499,20 +517,29 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    this = self;
-    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-      self = weps;
-        sendent_set_weapon();
-        initialize_data_item_(self.data_idx);
-        self.angles = this.angles;
-        self.owner = this;
-      self = this;
+    if( isNew ){
+      data_sync_new_turret(self.data_idx);
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      self.data_type = DATA_BLD;
+      self.colormod = '1 1 1';
+      self.drawmask = MASK_ENGINE;
+      this = self;
+      for(weps = self.w_slot; weps != world; weps = weps.w_slot){
+        self = weps;
+          sendent_set_weapon();
+          initialize_data_item_(self.data_idx);
+          self.angles = this.angles;
+          self.owner = this;
+        self = this;
+      }
+      setorigin( self, self.origin );
     }
-    setmodel(self, self.model);
-    setorigin(self, self.origin);
   }
 };
 
+/*
+  SendEntity - Building =======================================
+*/
 void( float isNew, float changeFlags) sendent_handle_building={
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
@@ -550,7 +577,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
@@ -561,16 +587,23 @@ void( float isNew, float changeFlags) sendent_handle_building={
     
     self.faction = ReadByte();
     self.data_idx = ReadByte();
-    self.data_type = ReadByte();
     
-    data_sync_new_building(self.data_idx);
-    self.colormod = '1 1 1';
-    setmodel(self, self.model);
-    setorigin(self, self.origin);
-    self.drawmask = MASK_ENGINE;
+    if( isNew ){
+      self.solid = SOLID_SLIDEBOX;
+      self.movetype = MOVETYPE_NONE;
+      data_sync_new_building(self.data_idx);
+      self.data_type = DATA_BLD;
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT); 
+      self.colormod = '1 1 1';
+      setorigin(self, self.origin);
+      self.drawmask = MASK_ENGINE;
+    }
   }
 };
 
+/*
+  SendEntity - Projectile ====================================
+*/
 void( float isNew, float changeFlags) sendent_handle_missile={
   local float impactEvent;
   

@@ -49,7 +49,6 @@ void( float dataID ) data_sync_new_building={
 
 void() data_building_radar={
   self.vec_name = "Listening Post";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
   setmodel(self, "q3mdl/buildings/radar/mdl_bld_h_radar.md3");
   self.max_health = 100;
@@ -62,7 +61,6 @@ void() data_building_radar={
 
 void() data_building_shield={
   self.vec_name = "Shield Generator";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3");
   self.max_health = 500;
@@ -77,7 +75,6 @@ void() data_building_shield={
 
 void() data_building_power={
   self.vec_name = "Power Generator";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/power_plant/mdl_bld_h_power.md3");
   self.max_health = 1200;
@@ -92,7 +89,6 @@ void() data_building_power={
 
 void() data_building_hangar_large={
   self.vec_name = "Large Hangar";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3");
   self.max_health = 800;
@@ -104,7 +100,6 @@ void() data_building_hangar_large={
 
 void() data_building_fuel={
   self.vec_name = "Fuel Tank";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3");
   self.max_health = 75;
@@ -116,7 +111,6 @@ void() data_building_fuel={
 
 void() data_building_repair={   
   self.vec_name = "Repair Bay";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/repair_bay/mdl_repair_bay.md3");
   self.max_health = 600;
@@ -138,7 +132,6 @@ void() data_building_repair={
 
 void() data_building_hangar_med={
   self.vec_name = "Vehicle Hangar";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3");
   self.max_health = 500;
@@ -150,7 +143,6 @@ void() data_building_hangar_med={
 
 void() data_building_guard={
   self.vec_name = "Guard Tower";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
   setmodel(self, "q3mdl/buildings/towersmall/guardtower.obj");
   self.max_health = 200;

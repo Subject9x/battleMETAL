@@ -336,6 +336,12 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('3 0'), RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   for( blip = findchainflags( flags, FL_UNIT ); blip != world; blip = blip.chain){
+    if( blip.deadflag > DEAD_NO ){
+      continue;
+    }
+    if( vlen(blip.origin - RADAR_ORG) > radarRange ){
+      continue;
+    }
     hud_renderRadarContact( blip, plrFaction, radarRange );
   }
   
@@ -358,7 +364,7 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   local vector hudorg;
   local float ang, entAngle, entAngleRadian, radDist;
 
-  radDist = blip.radar_range / radRange * 1.5;
+  radDist = vlen(blip.origin - RADAR_ORG) / radRange * 1.5;
   
   ang = vectoyaw(blip.origin - RADAR_ORG);
 
@@ -380,16 +386,16 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   if( draw ){
     switch( blip.data_type ){
       case DATA_BLD:
-        hud_RenderRadar_Building(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt );  
+        hud_RenderRadar_Building(hudorg, blip.vec_size, blip.faction, 0.85 );  
         break;
       case DATA_VEHC:
-        hud_RenderRadar_Vehc(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt);
+        hud_RenderRadar_Vehc(hudorg, blip.vec_size, blip.faction, 0.9);
         break;
       case DATA_MECH:
-        hud_RenderRadar_Mech(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt); 
+        hud_RenderRadar_Mech(hudorg, blip.vec_size, blip.faction, 1); 
         break;
       default:
-        drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+        drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0.67);
     }
   }
 };
@@ -868,40 +874,47 @@ void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
 /*
   RENDER A MECH ICON ON THE RADAR
 */
-void(vector post, float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Mech={
+void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Mech={
   local vector clr;
+  local vector blipSize;
   
   clr = CLR_DEF_IFF_ENEMY;
-  if(plr_fact == e_fact){
+  if(CLIENT_faction == e_fact){
     clr = CLR_DEF_IIF_FRIEND;
   }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
+  blipSize = e_size * '4 4 4';
+  drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
 };
 
 /*
   RENDER A VEHICLE ICON ON THE RADAR
 */
-void(vector post, float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Vehc={
+void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Vehc={
   local vector clr;
+  local vector blipSize;
   
   clr = CLR_DEF_IFF_ENEMY;
-  if(plr_fact == e_fact){
+  if(CLIENT_faction == e_fact){
     clr = CLR_DEF_IIF_FRIEND;
   }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_VEC,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
+  blipSize = e_size * '4 4 4';
+  
+  drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_VEC, gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
 };
 
 /*
   RENDER A BUILDING ICON ON THE RADAR
 */
-void(vector post,float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Building={
+void(vector post,float e_size, float e_fact, float e_alpha) hud_RenderRadar_Building={
   local vector clr;
+  local vector blipSize;
   
   clr = CLR_DEF_IFF_ENEMY_BLD;
-  if(plr_fact == e_fact){
+  if(CLIENT_faction == e_fact){
     clr = CLR_DEF_IIF_FRIEND_BLD;
   }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
+  blipSize = (e_size * 0.75) * '4 4 4';
+  drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
 };
 
 /*

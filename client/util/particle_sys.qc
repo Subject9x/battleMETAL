@@ -159,8 +159,7 @@ void() te_missile_explode_th={
 };
 void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode={
   local entity explode;
-  local float itr;
-  local vector vel;
+
   explode = spawn();
   explode.movetype = MOVETYPE_NONE;
   explode.solid = SOLID_NOT;
@@ -216,10 +215,6 @@ void( vector org, float vecSize ) te_shield_explode={
 };
 
 /*
-  Shifted particle events to the client as much as possible.
-*/
-
-/*
   Missile Explosion Shell
 */
 void() particle_missile_explode_th={
@@ -234,9 +229,7 @@ void() particle_missile_explode_th={
 
 void( vector org, float explodeSize, vector explodeColor, float onShield  ) particle_missile_explode={
   local entity explode;
-  local float chunks;
-  local vector chunkVel;
- 
+
   pointsound(org, "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
  
   explode = spawn();
@@ -266,6 +259,23 @@ void( vector org, float explodeSize, vector explodeColor, float onShield  ) part
 };
 
 
+/*
+  item is exploding, use its bbox size for area
+*/
+void( vector explodeColor ) te_object_explode={
+  local vector exp;
+  
+  exp_x = crandom() * (self.maxs_x * 2);
+  exp_y = crandom() * (self.maxs_y * 2);
+  exp_z = crandom() * (self.maxs_z * 2);
+  makevectors(self.angles);
+  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
+  
+  //TODO - Replace
+  //te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
+
+};
+
 
 /*
   Wreck event, ie a vehicle death
@@ -282,8 +292,6 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
   local entity wreck;
   local entity this;
   local float sizeAdjust;
-  local float chunks;
-  local vector chunkVel;
   
   pointsound( entOrg, "sound/fx_boom.ogg", 1, ATTN_NORM );
   
