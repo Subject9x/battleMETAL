@@ -21,7 +21,6 @@ void( float dataID ) data_sync_new_mech_ai={
   }
   makevectors(self.angles);
   if( self.torsoCenter ){
-    cons_logAString("set part", self.torsoCenter.model);  //DEBUG
     data_mech_setup_part( self.torsoCenter );
   }
   if( self.torsoLeft ){

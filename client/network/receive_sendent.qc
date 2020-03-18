@@ -444,6 +444,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local entity weps;
   local float prevShield;
   local vector turretAng;
+  local float prevCrits;
+  
   prevShield = self.shield;
   
   self.origin_x = ReadCoord();
@@ -490,8 +492,40 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
   }
 
+  //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.pcl_effectnum = ReadByte();
+    prevCrits = self.player_state;
+    self.player_state = ReadByte();
+    if( prevCrits != self.player_state ){
+      self.player_state = self.player_state - (self.player_state & prevCrits);
+      local vector boomOrg;
+      if( (self.player_state & M_TOR_LEFT) ){
+        te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        self.torsoLeft.think = SUB_Remove;
+        self.torsoLeft.nextthink = time + 0.1;
+      }
+      if( (self.player_state & M_TOR_RIGHT) ){
+        te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        self.torsoRight.think = SUB_Remove;
+        self.torsoRight.nextthink = time + 0.1;
+      }
+      if( (self.player_state & M_ARM_LEFT) ){
+        te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        self.armLeft.think = SUB_Remove;
+        self.armLeft.nextthink = time + 0.1;
+      }
+      if( (self.player_state & M_ARM_RIGHT) ){
+        te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        self.armRight.think = SUB_Remove;
+        self.armRight.nextthink = time + 0.1;
+      }
+      if( (self.player_state & M_LEGS) ){
+        te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        self.legs.think = SUB_Remove;
+        self.legs.nextthink = time + 0.1;
+      }
+      pointsound( self.origin, "sound/fx_boom.ogg", 0.7 + (random() * 0.3) , ATTN_NORM );
+    }
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
@@ -500,6 +534,12 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
+    if( self.deadflag > DEAD_NO ){
+      te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+      self.alpha = 0.001;
+      self.scale = 0.001;
+    }
   }
 
   if( (changeFlags & SENDFLAG_NEWENT) ){    

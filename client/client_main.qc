@@ -575,9 +575,6 @@ void(float isnew) CSQC_Ent_Update =
 // called when a network slot is emptied, you may choose to remove(self) or not
 void() CSQC_Ent_Remove =
 {
-  if( self.torsoCenter != world ){
-    remove(self.torsoCenter);
-  }
   local entity weps;
   local entity next;
   weps = self.w_slot;
@@ -588,21 +585,30 @@ void() CSQC_Ent_Remove =
     weps.nextthink = time + 0.1;
     weps = next;
   }
+  if( self.torsoCenter ){
+    self.torsoLeft.think = SUB_Remove;
+    self.torsoLeft.nextthink = time + 0.1;
+  }
   if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
-    if( self.torsoCenter ){
-      remove(self.torsoCenter);
-    }
     if( self.torsoLeft ){
-      remove(self.torsoLeft);
+      self.torsoLeft.think = SUB_Remove;
+      self.torsoLeft.nextthink = time + 0.1;
     }
     if( self.torsoRight ){
-      remove(self.torsoRight);
+      self.torsoRight.think = SUB_Remove;
+      self.torsoRight.nextthink = time + 0.1;
     }
     if( self.armLeft ){
-      remove(self.armLeft);
+      self.armLeft.think = SUB_Remove;
+      self.armLeft.nextthink = time + 0.1;
     }
     if( self.armRight ){
-      remove(self.armRight);
+      self.armRight.think = SUB_Remove;
+      self.armRight.nextthink = time + 0.1;
+    }
+    if( self.legs ){
+      self.legs.think = SUB_Remove;
+      self.legs.nextthink = time + 0.1;
     }
   }
   if( self.data_type == DATA_BLD ){
