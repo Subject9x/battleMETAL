@@ -142,17 +142,17 @@ float DATA_MAP_DMG = 16;
 //These should have been floats from the start
 //these are component id's (compid) for model pieces
 string MECH_PIECE    = "mech_piece";
-float M_UNIT        = 0;
-float M_CAMERA      = 1;
+float M_UNIT        = 1;
 float M_TOR_CENTER  = 2;
 float M_TOR_RIGHT   = 4;
 float M_TOR_LEFT    = 8;
-float M_LEGS        = 16;
-float M_LEG_L       = 32;
-float M_LEG_R       = 64;
-float M_ARM_LEFT    = 128;
-float M_ARM_RIGHT   = 256;
-float M_ITEM        = 512;
+float M_ARM_LEFT    = 16;
+float M_ARM_RIGHT   = 32;
+float M_LEGS        = 64;
+float M_CAMERA      = 128;
+float M_LEG_L       = 256;
+float M_LEG_R       = 512;
+float M_ITEM        = 1024;
 //============================
 //     WEAPON SLOT BITS           
 //============================

@@ -391,12 +391,14 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
     switch(impactStyle){
     default:
       return;
-    case 1:
+    case IMPACT_SHIELD:
+      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), muzzleVel, normalize(muzzleVel - muzzleOrg)* -2, random() * 2);
+      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
       return;
-    case 2:
+    case IMPACT_ARMOR:
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), muzzleVel + v_forward * -3, norm * 4, 3);
       break;
-    case 3:
+    case IMPACT_DIRT:
       pointparticles( particleeffectnum("TE_ATC_DIRT"), muzzleVel + (v_up *1), normalize( (muzzleVel + (v_up *1)) - muzzleVel ) * 20, 1);
       break;
   }

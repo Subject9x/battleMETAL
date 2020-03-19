@@ -68,6 +68,14 @@ void() ctrl_dieLegs={
         self.owner.data_speed_forward = self.owner.data_speed_forward / 2;
         self.owner.data_speed_strafe = self.owner.data_speed_strafe / 2;
         self.owner.data_speed_backward = self.owner.data_speed_backward / 2;
+        if( (self.owner.flags & FL_MONSTER) ){
+          if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
+            self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+          }
+          if( !(self.owner.damageValue & M_LEGS) ){
+            self.owner.damageValue = self.owner.damageValue | M_LEGS;
+          }
+        }
       }
     }
     return;

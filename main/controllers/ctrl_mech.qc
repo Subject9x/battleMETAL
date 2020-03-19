@@ -293,16 +293,17 @@ void() ctrl_component_die={
       self.owner.armLeft.think = self.owner.armLeft.th_die;
       self.owner.armLeft.nextthink = time + 0.1;
       self.owner.armLeft.realowner = self.owner;
-      self.owner.dmg_take = self.owner.dmg_take | M_TOR_LEFT;
+      self.owner.damageValue = self.owner.damageValue | (M_TOR_LEFT | M_ARM_LEFT);
     }
     else if( self.partTypeId == M_TOR_RIGHT ){
       self.owner.armRight.think = self.owner.armRight.th_die;
       self.owner.armRight.nextthink = time + 0.1;
       self.owner.armRight.realowner = self.owner;
-      self.owner.dmg_take = self.owner.dmg_take | M_TOR_RIGHT;
+      self.owner.damageValue = self.owner.damageValue | (M_TOR_RIGHT | M_ARM_RIGHT);
     }
-    
-    self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+    if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
+      self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+    }
     
     c = self.owner.w_slot;
     this = self;
@@ -335,13 +336,15 @@ void() ctrl_arm_die={
   if( self.deadflag == DEAD_NO ){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
   
-    if( self.partTypeId == M_ARM_LEFT ){
-      self.owner.dmg_take = self.owner.dmg_take | M_ARM_LEFT;
+    if( self.partTypeId == M_ARM_LEFT && !(self.owner.damageValue & M_ARM_LEFT) ){
+      self.owner.damageValue = self.owner.damageValue | M_ARM_LEFT;
     }
-    else{
-      self.owner.dmg_take = self.owner.dmg_take | M_ARM_RIGHT;
+    else if( self.partTypeId == M_ARM_RIGHT && !(self.owner.damageValue & M_ARM_LEFT) ){
+      self.owner.damageValue = self.owner.damageValue | M_ARM_RIGHT;
     }
-    self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+    if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
+      self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+    }
 
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;  
@@ -453,7 +456,6 @@ void() touch_mechPiece={
   }
 };
 
-
 float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
   WriteByte( MSG_ENTITY, changeFlags );
@@ -479,7 +481,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   }
 
   if( (changeFlags & SENDFLAG_CRIT) ){
-    WriteByte( MSG_ENTITY, self.dmg_take );
+    WriteByte( MSG_ENTITY, self.damageValue );
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
@@ -504,6 +506,5 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
   }
-
   return TRUE;
 };

@@ -444,7 +444,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local entity weps;
   local float prevShield;
   local vector turretAng;
-  local float prevCrits;
+  local float critical;
   
   prevShield = self.shield;
   
@@ -494,32 +494,30 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
 
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
-    prevCrits = self.player_state;
-    self.player_state = ReadByte();
-    if( prevCrits != self.player_state ){
-      self.player_state = self.player_state - (self.player_state & prevCrits);
-      local vector boomOrg;
-      if( (self.player_state & M_TOR_LEFT) ){
+    critical = ReadByte();
+    if( critical > 0 ){
+      cons_logAFloat("CS()->critical", critical); //DEBUG
+      if( (critical & M_TOR_LEFT) ){
         te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
         self.torsoLeft.think = SUB_Remove;
         self.torsoLeft.nextthink = time + 0.1;
       }
-      if( (self.player_state & M_TOR_RIGHT) ){
+      if( (critical & M_TOR_RIGHT) ){
         te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
         self.torsoRight.think = SUB_Remove;
         self.torsoRight.nextthink = time + 0.1;
       }
-      if( (self.player_state & M_ARM_LEFT) ){
+      if( (critical & M_ARM_LEFT) ){
         te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
         self.armLeft.think = SUB_Remove;
         self.armLeft.nextthink = time + 0.1;
       }
-      if( (self.player_state & M_ARM_RIGHT) ){
+      if( (critical & M_ARM_RIGHT) ){
         te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
         self.armRight.think = SUB_Remove;
         self.armRight.nextthink = time + 0.1;
       }
-      if( (self.player_state & M_LEGS) ){
+      if( (critical & M_LEGS) ){
         te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
         self.legs.think = SUB_Remove;
         self.legs.nextthink = time + 0.1;
@@ -539,6 +537,30 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
       self.alpha = 0.001;
       self.scale = 0.001;
+      if( self.torsoCenter ){
+        self.torsoCenter.think = SUB_Remove;
+        self.torsoCenter.nextthink = time + 0.1;
+      }
+      if( self.torsoLeft ){
+        self.torsoLeft.think = SUB_Remove;
+        self.torsoLeft.nextthink = time + 0.1;
+      }
+      if( self.torsoRight ){
+        self.torsoRight.think = SUB_Remove;
+        self.torsoRight.nextthink = time + 0.1;
+      }
+      if( self.armLeft ){
+        self.armLeft.think = SUB_Remove;
+        self.armLeft.nextthink = time + 0.1;
+      }
+      if( self.armRight ){
+        self.armRight.think = SUB_Remove;
+        self.armRight.nextthink = time + 0.1;
+      }
+      if( self.legs ){
+        self.legs.think = SUB_Remove;
+        self.legs.nextthink = time + 0.1;
+      }
     }
   }
 
