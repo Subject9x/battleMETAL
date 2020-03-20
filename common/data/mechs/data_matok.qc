@@ -41,15 +41,20 @@ void() data_ini_matok_={
   self.data_speed_strafe = 100;
   self.data_speed_backward = 90;
   self.data_speed_accel = 1.5;
-  #ifndef CSQC
+#ifndef CSQC
   self.yaw_speed = 3;    // AI-only 
   self.turret_yaw_speed = 3.5;// AI-only
   self.ai_angleLimits = '-125 125 0';
-  #endif
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
-  
+#ifdef CSQC
+  if( (self.flags & FL_MONSTER) ){
+    self.hardpoint_cnt = 5;
+    weaponList = self;
+  }
+#endif
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', '0 6 0' );
  
@@ -85,20 +90,11 @@ void() data_ini_matok_={
 #ifdef CSQC
   //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
   //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
-  if( (self.flags & FL_MONSTER) ){
-    data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
-    data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
-    data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  }
-  else{
-    data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
-    data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
-    data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  }
+  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
+  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
+  data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 #endif
 //=====================================
 

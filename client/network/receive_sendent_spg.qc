@@ -115,10 +115,10 @@ void( float isNew, float changeFlags) sendent_handle_spg={
 
     if( isNew ){
       self.skin =  self.faction - 1;
-      data_sync_new_vehicle(self.data_idx);
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-      self.drawmask = MASK_ENGINE;
       self.data_type = DATA_VEHC;
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      data_sync_new_vehicle(self.data_idx);
+      self.drawmask = MASK_ENGINE;
       
       sendent_setup_weapons();
       

@@ -41,15 +41,21 @@ void() data_ini_balaket_={
   self.data_speed_strafe = 175;
   self.data_speed_backward = 150;
   self.data_speed_accel = 1.5;
-  #ifndef CSQC
+#ifndef CSQC
   self.yaw_speed = 3.75;    // AI-only 
   self.turret_yaw_speed = 4.25;// AI-only
   self.ai_angleLimits = '-135 135 0';
-  #endif
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
-  
+#ifdef CSQC
+  if( (self.flags & FL_MONSTER) ){
+    self.hardpoint_cnt = 3;
+    weaponList = self;
+  }
+#endif
+
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );
  
@@ -83,14 +89,8 @@ void() data_ini_balaket_={
 #ifdef CSQC
   //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
   //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
-  if( (self.flags & FL_MONSTER) ){
-    data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 3.5', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 3.5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-  }
-  else{
-    data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-  }
+  data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 #endif
 //=====================================

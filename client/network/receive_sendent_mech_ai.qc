@@ -59,7 +59,6 @@ void() sendevent_mech_ai_die={
   EVENT - CRITICAL =====================================
 */
 void( float critical ) sendevent_mech_ai_crit={
-  cons_logAFloat("CS()->critical", critical); //DEBUG
   if( (critical & M_TOR_LEFT) ){
     te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.torsoLeft.think = SUB_Remove;
@@ -161,10 +160,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     
     if( isNew ){    
       self.skin =  self.faction - 1;
+      self.data_type = DATA_MECH;
       data_sync_new_mech_ai( self.data_idx );
       self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.drawmask = MASK_ENGINE;
-      self.data_type = DATA_MECH;
       
       sendent_setup_weapons();
       
@@ -174,14 +173,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.solid = SOLID_SLIDEBOX;
       setmodel(self, "q3mdl/testball.md3");
       setsize(self, self.mins, self.maxs);
+      setorigin(self, self.origin);
       self.predraw = predraw_mech_ai;
-      sendent_ini_interpolate();
-      self.armLeft.alpha = 0.33;  //DEBUG
-      cons_logAVector("armLeft", self.armLeft.compOffset);  //DEBUG
-      self.armRight.alpha = 0.33;  //DEBUG
-      self.torsoLeft.alpha = 0.33;  //DEBUG
-      self.torsoRight.alpha = 0.33;  //DEBUG
-      self.torsoCenter.alpha = 0.33;  //DEBUG
+      sendent_ini_interpolate(); 
     }
   }
 };
@@ -240,7 +234,7 @@ float() predraw_mech_ai={
       else{
         makevectors(self.torsoCenter.angles);
         saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
-        weps.origin = self.torsoCenter.origin + saved;
+        weps.origin = self.origin + saved;
       }
     }
   }

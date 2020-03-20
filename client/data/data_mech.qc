@@ -10,13 +10,13 @@ Overview:
 void( float dataID ) data_sync_new_mech_ai={
   switch( dataID ){
     case UID_MECH_balaket:
-      data_mech_balaket();
+      data_ini_balaket_();
       break;
     case UID_MECH_matok:
-      data_mech_matok();
+      data_ini_matok_();
       break;
     case UID_MECH_monitor:
-      data_mech_monitor();
+      data_ini_monitor_();
       break;
   }
   makevectors(self.angles);
@@ -39,16 +39,16 @@ void( float dataID ) data_sync_new_mech_ai={
 };
 
 void() data_mech_balaket={
-  data_ini_balaket_();
+  
 };
 
 void() data_mech_matok={
-  data_ini_matok_();
+  
 
 };
 
 void() data_mech_monitor={
-  data_ini_monitor_();
+  
 
 };
 
