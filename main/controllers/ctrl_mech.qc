@@ -268,6 +268,8 @@ void() ctrl_mech_die_player={
   if( (self.flags & FL_CLIENT) ){
     ctrl_unit_part_death(self.legs);
   }
+  self.alpha = 0.01;
+  self.scale = 0.01;
 };
 
 /*

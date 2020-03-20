@@ -3,7 +3,6 @@ void() CSQC_Init =
 {
   local float i, cnt;
   registercvar("gamemode", "0");
-  registercvar("gametype", "0");
   registercommand("fog");
   registercvar("cl_hud_sway", "1");
 

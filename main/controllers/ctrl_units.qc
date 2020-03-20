@@ -41,15 +41,15 @@ void() ctrl_unit_cleanup_player={
   
   if( (self.flags & FL_CLIENT) ){
     ctrl_unit_remove_cam(self.cockpit);
-    self.stat_w1_id = -1;
-    self.stat_w2_id = -1;
-    self.stat_w3_id = -1;
-    self.stat_w4_id = -1;
-    self.stat_w5_id = -1;
-    self.stat_w6_id = -1;
-    self.stat_w7_id = -1;
-    self.stat_w8_id = -1;
-    self.stat_w9_id = -1;
+    self.stat_w1_id = 0;
+    self.stat_w2_id = 0;
+    self.stat_w3_id = 0;
+    self.stat_w4_id = 0;
+    self.stat_w5_id = 0;
+    self.stat_w6_id = 0;
+    self.stat_w7_id = 0;
+    self.stat_w8_id = 0;
+    self.stat_w9_id = 0;
   }
   remove(self.hud_ent);
 };

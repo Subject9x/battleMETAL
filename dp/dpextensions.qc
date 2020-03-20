@@ -1226,7 +1226,7 @@ float(string url, float id, string content_type, string delim, float buf) uri_po
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //builtin definitions:
-float(string name, string value) registercvar = #93;
+float(string name, string value, float norm) registercvar = #93;
 //description:
 //adds a new console cvar to the server console (in singleplayer this is the player's console), the cvar exists until the mod is unloaded or the game quits.
 //NOTE: DP_CON_SET is much better.

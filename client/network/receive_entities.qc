@@ -189,18 +189,19 @@ void() receive_ent_bindData={
     cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward));
   }
   
-  
-  if( CLIENT_health_torso_left <= 0 && CLIENT_health_torso_left_prev > 0 ){
-    hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
-  }
-  if( CLIENT_health_torso_right <= 0 && CLIENT_health_torso_right_prev > 0 ){
-    hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
-  }
-  if( CLIENT_health_arm_left <= 0 && CLIENT_health_arm_left_prev > 0 ){
-    hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
-  }
-  if( CLIENT_health_arm_right <= 0 && CLIENT_health_arm_right_prev > 0 ){
-    hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
+  if( CLIENT_player_state > PLAYER_POWERUP_END ){
+    if( CLIENT_health_torso_left <= 0 && CLIENT_health_torso_left_prev > 0 ){
+      hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
+    }
+    if( CLIENT_health_torso_right <= 0 && CLIENT_health_torso_right_prev > 0 ){
+      hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
+    }
+    if( CLIENT_health_arm_left <= 0 && CLIENT_health_arm_left_prev > 0 ){
+      hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
+    }
+    if( CLIENT_health_arm_right <= 0 && CLIENT_health_arm_right_prev > 0 ){
+      hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
+    }
   }
 
   if( CLIENT_stat_trg_ent_id > 0 ){

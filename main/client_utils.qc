@@ -259,6 +259,10 @@ void(string str, float tokens) client_ParseMechCommand={
       player_makeMech();
       client_playTrack( world.sounds, TRUE );
       client_sendMissionName();
+      if( self.client_num < 1){
+        CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
+        self.client_num = CLIENTS;  //book keeping for multiplayer
+      }
     }
     return;
   }
@@ -285,12 +289,7 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   
   if(argv(1) == "nxm"){
-    if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-      client_setMission(str, tokens);
-    }
-    else{
-      respawn();
-    }
+    client_setMission(str, tokens);
     return;
   }
   
@@ -354,23 +353,41 @@ void() client_update_faction={
 };
 
 void(string cmd, float tokens) client_setMission={
-  self.playerState = PLAYER_ACTIVE;
-  self.view_ofs = '0 0 1';
-  if( argv(2) == "1" ){ 
-    //mission successful, next map
-    if( !world.ignoreSave ){
-      savefile_changemap(nextmap);
-      savefile_save();
+  //Single player
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    self.playerState = PLAYER_ACTIVE;
+    self.view_ofs = '0 0 1';
+    if( argv(2) == "1" ){ 
+      //mission successful, next map
+      if( !world.ignoreSave ){
+        savefile_changemap(nextmap);
+        savefile_save();
+      }
+      if( nextmap == "" ){
+        stuffcmd(self, "disconnect;togglemenu;cd play 2;demos;\n");
+        return;
+      }
+      changelevel (nextmap);  //possibly altered by map_objective objects.
     }
-    if( nextmap == "" ){
-      stuffcmd(self, "disconnect;togglemenu;cd play 2;\n");
-      return;
+    else{
+      //mission failed
+      changelevel (mapname);
     }
-    changelevel (nextmap);  //possibly altered by map_objective objects.
+    return;
   }
-  else{
-    //mission failed
-    changelevel (mapname);
+  
+  //Co-op
+  if( GAMETYPE == GAMEMODE_COOP ){
+    self.view_ofs = '0 0 1';
+    respawn();
+    return;
+  }
+  
+  //Deathmatch
+  if( GAMETYPE == GAMEMODE_DM ){
+    self.playerState = PLAYER_ACTIVE;
+    self.view_ofs = '0 0 1';
+  
   }
 };
 
@@ -620,6 +637,7 @@ void() respawn={
       player_unmakeMech();
       player_makeObserver();
     }
+    self.playerState = PLAYER_IN_MENU;
 		// respawn		
 		PutClientInServer ();
 	}
@@ -633,6 +651,7 @@ void() respawn={
       player_unmakeMech();
       player_makeObserver();
     }
+    self.playerState = PLAYER_IN_MENU;
 		// respawn		
 		PutClientInServer ();
 	}

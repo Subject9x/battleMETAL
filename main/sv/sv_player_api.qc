@@ -451,8 +451,8 @@ void() PlayerDeathThink={
   self.button8 = 0;
 	
   self.deadflag = DEAD_NO;
-  player_unmakeMech();
   ctrl_unit_cleanup_player();
+  player_unmakeMech();
   player_makeObserver();
   if( cvar("deathmatch") || cvar("coop") ){
     spawnpoint_select();

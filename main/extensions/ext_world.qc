@@ -24,7 +24,6 @@ void() mh_world_ini={
   registercvar("campaign", "0", 0); 
   registercvar("saveslot", "0", 1);
   registercvar("gamemode", "0", 0);
-  registercvar("gametype", "0", 0);
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
   registercvar("cl_hud_sway", "0", 1);

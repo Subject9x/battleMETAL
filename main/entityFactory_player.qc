@@ -197,5 +197,17 @@ void() player_unmakeMech={
   self.energy = 0;
   self.shield = 0;
   self.enemy = world;
+  
+  self.weaponmodel = "";
+  self.weaponframe = 0;
+  self.hud_ent.modelindex = 0;
+  self.hud_ent.effects = EF_NODRAW;
+  self.hud_ent.think = SUB_Remove;
+  self.hud_ent.nextthink = time + 0.01;
+  
+  if( self.particleCube != world){
+    self.particleCube.think = SUB_Remove;
+    self.particleCube.nextthink = time + 0.01;
+  }
   ctrl_unit_clean_wgroups();
 };

@@ -76,15 +76,15 @@ void() ClientConnect = {
   self.stat_client_hp_armRight = 1;
   self.stat_client_hp_legs = 1;
   
-  self.stat_w1_id = -1;
-  self.stat_w2_id = -1;
-  self.stat_w3_id = -1;
-  self.stat_w4_id = -1;
-  self.stat_w5_id = -1;
-  self.stat_w6_id = -1;
-  self.stat_w7_id = -1;
-  self.stat_w8_id = -1;
-  self.stat_w9_id = -1;
+  self.stat_w1_id = 0;
+  self.stat_w2_id = 0;
+  self.stat_w3_id = 0;
+  self.stat_w4_id = 0;
+  self.stat_w5_id = 0;
+  self.stat_w6_id = 0;
+  self.stat_w7_id = 0;
+  self.stat_w8_id = 0;
+  self.stat_w9_id = 0;
   
   self.w_group1 = 0;
   self.w_group2 = 0;
@@ -114,15 +114,16 @@ void() ClientConnect = {
   self.stat_plr_fir = FIRE_GROUP;
   self.stat_lck_stt = LOCK_NONE;
   
-  self.next_wepn1 = -1;
-  self.next_wepn2 = -1;
-  self.next_wepn3 = -1;
-  self.next_wepn4 = -1;
-  self.next_wepn5 = -1;
-  self.next_wepn6 = -1;
-  self.next_wepn7 = -1;
-  self.next_wepn8 = -1;
-  self.next_wepn9 = -1;
+  self.next_wepn1 = 0;
+  self.next_wepn2 = 0;
+  self.next_wepn3 = 0;
+  self.next_wepn4 = 0;
+  self.next_wepn5 = 0;
+  self.next_wepn6 = 0;
+  self.next_wepn7 = 0;
+  self.next_wepn8 = 0;
+  self.next_wepn9 = 0;
+  
   self.ramTracker = 1;
   self.ramUp = 1;
   self.ramUpMax = 1;
@@ -144,8 +145,6 @@ void() ClientConnect = {
     client_playTrack(world.sounds, TRUE);  //entering hangar menu
   }
   
-  CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
-  self.client_num = CLIENTS;  //book keeping for multiplayer
   self.playerState = PLAYER_SPAWN;
   
   client_push_player_info();
@@ -192,18 +191,19 @@ void() PutClientInServer = {
   }
 
   spot  = SelectSpawnPoint();
-  
-  self.faction = spot.faction;
   if( self.faction < 1 ){
     self.faction = FACTION_PSC;  //default to 1 to satisfy game code
   }
+  else{
+    self.faction = spot.faction;
+  }
+  
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
   
-  client_sendMissionFileName();
-  client_sendGameMode(cvar("gamemode"));
-
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    client_sendMissionFileName();
+    client_sendGameMode(cvar("gamemode"));
     if( world.model == "maps/o1m1.bsp"){
       //pre-populate default save file
       savefile_load( FALSE );
@@ -211,6 +211,8 @@ void() PutClientInServer = {
         savefile_default();
         savefile_load( FALSE );
       }
+      client_sendAvailable_Mechs(SAVE_MECHS_LIST);
+      client_sendAvailableItems(SAVE_ITEMS_ALL);
     }
     if( world.animaticOnly == FALSE ){
       if( world.itemOverrideFile != "" ){
@@ -222,6 +224,12 @@ void() PutClientInServer = {
     }
   }
   else if ( GAMETYPE == GAMEMODE_COOP ){
+    //using client num as lazy connection-check
+    if( self.client_num < 1 ){
+      client_sendMissionFileName();
+      client_sendGameMode(cvar("gamemode"));
+    }
+  
     self.th_die = PlayerDieNetwork;
     mapfile_coop_load();
   }
@@ -236,11 +244,9 @@ void() PutClientInServer = {
       player_makeObserver();
       
       client_push_mapobjects();
-      if( !coop && !deathmatch ){
-        client_sendAvailable_Mechs(SAVE_MECHS_LIST);
-        client_sendAvailableItems(SAVE_ITEMS_ALL);
+      if( self.client_num < 1 ){
+        client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);      
       }
-      client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
       
       if( GAMETYPE == GAMEMODE_CAMPAIGN ){
         self.movetype = MOVETYPE_NONE;
@@ -253,7 +259,12 @@ void() PutClientInServer = {
         }
       }
       else{
-        self.playerState = PLAYER_ACTIVE;
+        if( cvar("developer") ){
+          self.playerState = PLAYER_ACTIVE;
+        }
+        else{
+          self.playerState = PLAYER_IN_MENU;
+        }
       }
       self.power_timer = 0;
       break;
