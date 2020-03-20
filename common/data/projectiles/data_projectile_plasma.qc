@@ -29,10 +29,10 @@ void() projectile_plasma_expl={
   }
   
   if( self.impactType == IMPACT_SHIELD ){
-    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.7, ATTN_NORM );
+    pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), self.origin, normalize(self.velocity)* -2, random() * 2);
+    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.8 + (random() * 0.2), ATTN_NORM );
   }
-  
-  if( self.impactType == IMPACT_ARMOR ){
+  else if( self.impactType == IMPACT_ARMOR ){
     pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   }
   else{
@@ -128,6 +128,7 @@ void() data_projectile_plasma_touch={
       t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     }
     else{
+      self.impactType = IMPACT_ARMOR;
       hit = t_damage(other, self, self.owner, 0.01, self.damageType, self.origin, '0 0 0');
       self.enemy = other;
       self.cockpit = hit;

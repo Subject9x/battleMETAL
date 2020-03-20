@@ -81,7 +81,7 @@ void() data_vehicle_trowel = {
   setmodel(self, self.model);
 
   self.torsoCenter.drawmask = MASK_NORMAL;
-  setmodel(self.torsoCenter, "q3mdl/buildings/turret_heavy/mdl_turret_heavy_turret.obj");
+  setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
   self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);

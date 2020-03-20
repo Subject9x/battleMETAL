@@ -29,7 +29,6 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece = spawn();
   #ifdef CSQC
   piece.drawmask = MASK_NORMAL;
-  addentity(piece);
   #endif
   piece.partTypeId = partId;
   piece.partParentId = parentPart.partTypeId;
@@ -74,7 +73,6 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
     item = spawn();
     #ifdef CSQC
     item.drawmask = MASK_NORMAL;
-    addentity(item);
     #endif
     notItem = self;
     self = item;
@@ -86,8 +84,8 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
       self.owner = notItem;
       self.hardpointSize = newHardPointSizeVal;
       self.hardpointType = newHardPointTypeVal;
-      weaponList.w_slot = self;
     self = notItem;
+    weaponList.w_slot = item;
     weaponList = item;
     self.hardpoint_cnt = self.hardpoint_cnt + 1;
   }

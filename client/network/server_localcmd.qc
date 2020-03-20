@@ -216,7 +216,6 @@ void() cl_set_hud_vars_obs={
   cvar_set("cl_movespeedkey", "1.5");
   cvar_set("in_pitch_max", "90");
   cvar_set("in_pitch_min", "-90");
- 
 };
 
 /*

@@ -72,7 +72,7 @@ void() ctrl_updateTank={
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
     }
   }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
 float( entity dest, float changedflags ) ctrl_send_tank={
@@ -83,16 +83,16 @@ float( entity dest, float changedflags ) ctrl_send_tank={
   WriteCoord( MSG_ENTITY, self.origin_y );
   WriteCoord( MSG_ENTITY, self.origin_z );
   
-  WriteCoord( MSG_ENTITY, self.angles_x );
-  WriteCoord( MSG_ENTITY, self.angles_y );
-  WriteCoord( MSG_ENTITY, self.angles_z );
+  WriteAngle( MSG_ENTITY, self.angles_x );
+  WriteAngle( MSG_ENTITY, self.angles_y );
+  WriteAngle( MSG_ENTITY, self.angles_z );
 
   WriteByte( MSG_ENTITY, self.shield );
     
   if( changedflags & SENDFLAG_TURRET ){
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
   if( changedflags & SENDFLAG_DEAD ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -125,9 +125,9 @@ float( entity dest, float changedflags ) ctrl_send_spg={
   WriteCoord( MSG_ENTITY, self.origin_y );
   WriteCoord( MSG_ENTITY, self.origin_z );
   
-  WriteCoord( MSG_ENTITY, self.angles_x );
-  WriteCoord( MSG_ENTITY, self.angles_y );
-  WriteCoord( MSG_ENTITY, self.angles_z );
+  WriteAngle( MSG_ENTITY, self.angles_x );
+  WriteAngle( MSG_ENTITY, self.angles_y );
+  WriteAngle( MSG_ENTITY, self.angles_z );
   
   WriteByte( MSG_ENTITY, self.shield );
 
@@ -169,9 +169,9 @@ float( entity dest, float changedflags ) ctrl_send_gev={
   WriteByte( MSG_ENTITY, self.shield );
   
   if( (changedflags & SENDFLAG_TURRET) ){
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
   if( changedflags & SENDFLAG_DEAD ){
     WriteByte( MSG_ENTITY, self.deadflag );

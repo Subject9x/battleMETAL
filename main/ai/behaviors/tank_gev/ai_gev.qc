@@ -35,7 +35,7 @@ void() ai_gev={
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
   
   self.SendEntity = ctrl_send_gev;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
 void() ai_gev_enter_patrol={

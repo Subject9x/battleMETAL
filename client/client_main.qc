@@ -235,24 +235,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
 	addentities( (MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
-  
-  scan = world;
-  while( (scan = nextent(scan)) ){
-    if( scan.classname == "chunk" ){					
-      if (scan.nextthink != scan.frame1time){
-        scan.frame2time = scan.frame1time;
-        scan.frame1time = scan.nextthink;
-        scan.origin2 = scan.origin1;
-        scan.origin1 = scan.origin;
-        scan.angle2 = self.angle1;
-        scan.angle1 = scan.angles_y;
-      }
-      scan.lerpfrac = (time - scan.frame2time) /(scan.frame1time-scan.frame2time);
-      scan.lerpfrac = 1-bound(0, scan.lerpfrac, 1);
-      addentity(scan);
-    }
-  }
-  
+    
 	// draw the main view
 	renderscene();
   
@@ -287,10 +270,10 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   AVAILABLE_RESERVE = 0;
   if(CLIENT_player_state == PLAYER_SPAWN){
     localcmd(strcat("stopsound", "\n"));
+    cl_set_hud_vars_obs();
   }
   
   if(CLIENT_data_type == DATA_MECH){
-    
     if(MENU_ACTIVE){
       if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
         MENU_ACTIVE = FALSE;

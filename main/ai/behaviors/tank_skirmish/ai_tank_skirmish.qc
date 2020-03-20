@@ -35,7 +35,7 @@ void() ai_tank_skirmish={
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
   
   self.SendEntity = ctrl_send_tank;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
   
   local entity wep;
   for(wep = self.w_slot; wep != world; wep = wep.w_slot){

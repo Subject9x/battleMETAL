@@ -464,10 +464,11 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   WriteCoord( MSG_ENTITY, self.origin_y );
   WriteCoord( MSG_ENTITY, self.origin_z );
   
-  WriteCoord( MSG_ENTITY, self.angles_x );
-  WriteCoord( MSG_ENTITY, self.angles_y );
-  WriteCoord( MSG_ENTITY, self.angles_z );
+  WriteAngle( MSG_ENTITY, self.angles_x );
+  WriteAngle( MSG_ENTITY, self.angles_y );
+  WriteAngle( MSG_ENTITY, self.angles_z );
 
+  WriteByte( MSG_ENTITY, self.flags );
   WriteByte( MSG_ENTITY, self.shield );
 
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -475,9 +476,9 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_x );
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
 
   if( (changeFlags & SENDFLAG_CRIT) ){

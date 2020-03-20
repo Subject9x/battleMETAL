@@ -882,7 +882,7 @@ void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Mec
   if(CLIENT_faction == e_fact){
     clr = CLR_DEF_IIF_FRIEND;
   }
-  blipSize = e_size * '4 4 4';
+  blipSize = e_size * '5 5 5';
   drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
 };
 

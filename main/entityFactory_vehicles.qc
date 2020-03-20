@@ -588,6 +588,7 @@ void() build_vehicle_unit={
     self.torsoCenter.partPrev = unitPartList;
     unitPartList.partNext = self.torsoCenter;
     unitPartList = unitPartList.partNext;
+    self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   }
   
   if( (self.torsoRight) ){
@@ -595,12 +596,14 @@ void() build_vehicle_unit={
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
+    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
   }
   if( (self.torsoLeft) ){
     build_mech_torsoLeft();
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
+    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
   }
   if( (self.cockpit) ){
     build_unit_camera();

@@ -153,6 +153,12 @@ ui/hud/hud_system_event.qc
   network/server_localcmd.qc
   network/receive_entities.qc
   network/receive_sendent.qc
+  network/receive_sendent_tank.qc
+  network/receive_sendent_spg.qc
+  network/receive_sendent_gev.qc
+  network/receive_sendent_mech_ai.qc
+  network/receive_sendent_turret.qc
+  network/receive_sendent_building.qc
 //========================
 
 //MENU SYSTEM============
