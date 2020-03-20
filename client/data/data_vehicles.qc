@@ -79,7 +79,6 @@ void() data_vehicle_trowel = {
   data_ini_trowel_();
   
   setmodel(self, self.model);
-
   self.torsoCenter.drawmask = MASK_NORMAL;
   setmodel(self.torsoCenter, self.torsoCenter.model);
 

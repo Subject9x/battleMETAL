@@ -32,10 +32,8 @@ void() cl_spawnmech={
 void(float group1, float group2, float group3, float group4 ) cl_setweapongroup={
 
   local string cmd;
-  cmd = strcat("cmd m sg ",ftos(group1));
-  cmd = strcat(cmd, " ", ftos(group2));
-  cmd = strcat(cmd, " ", ftos(group3));
-  cmd = strcat(cmd, " ", ftos(group4), "\n");
+  cmd = strcat("cmd m sg ",ftos(group1), " ", ftos(group2), " ");
+  cmd = strcat(cmd,  ftos(group3), " ", ftos(group4), "\n");
   localcmd(cmd);
   
 };

@@ -147,15 +147,15 @@ void() unit_trowel_militar_gunner={
   switch( self.ai_rank ){
     default:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_particle_cannon, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons( UID_ITEM_rotary_plasma, UID_ITEM_particle_cannon, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_snub_artillery, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons( UID_ITEM_ion_coil, UID_ITEM_snub_artillery, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
-      ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_snub_artillery, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons( UID_ITEM_ion_coil, UID_ITEM_snub_artillery, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
   macro_ai_setup(ai_tank_skirmish)

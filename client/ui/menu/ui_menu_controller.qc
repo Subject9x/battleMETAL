@@ -366,6 +366,7 @@ void() mechAcceptButtonListener={
         hardpoint = hardpoint.w_slot;
         totalHardpoints = totalHardpoints + 1;  
       }
+      
       CLIENT_hardpoint_cnt = totalHardpoints;
       CLIENT_stat_rdr_mode = CLIENT_stat_rdr_mode_prev = 1; //go active radar on spawn;
       CLIENT_radar_range = MECH_DATA_RAD * 2; //go active on spawn

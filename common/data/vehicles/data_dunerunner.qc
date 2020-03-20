@@ -60,8 +60,16 @@ void() data_ini_dunerunner_={
 //=====================================
  
 //HARDPOINTS==========================
+#ifdef CSQC
+  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
+  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 -0.1 0.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 -0.1 0.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+#endif
+#ifndef CSQC
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 5.25 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 5.25 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+#endif
 //=====================================
 
 //HUD DATA=============================

@@ -274,13 +274,11 @@ float() ai_pilot_minrange={
   local float minrange;
   local float total;
   
-  weaponEnt = self.w_slot;
-  while( weaponEnt ){
+  for( weaponEnt = self.w_slot; weaponEnt != world; weaponEnt = weaponEnt.w_slot){
     if( weaponEnt.deadflag == DEAD_NO ){
       minrange = minrange + weaponEnt.w_range;
       total = total + 1;
     }
-    weaponEnt = weaponEnt.w_slot;
   }
   
   minrange = minrange / total;

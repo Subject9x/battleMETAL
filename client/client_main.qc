@@ -123,14 +123,6 @@ void() CSQC_Init =
   HUD_DATA_weapon = spawn();
   UI_HANGAR_DATA_mech_list = spawn();
   
-  UI_HANGAR_DATA_mech.drawmask = MASK_NORMAL;
-  UI_ARMING_DATA_item_a.drawmask = MASK_NORMAL;
-  UI_ARMING_DATA_item_b.drawmask = MASK_NORMAL;
-  UI_ARMING_DATA_item_list.drawmask = MASK_NORMAL;
-  UI_ARMING_item_drag.drawmask = MASK_NORMAL;
-  HUD_DATA_weapon.drawmask = MASK_NORMAL;
-  UI_HANGAR_DATA_mech_list.drawmask = MASK_NORMAL;
-  
   MOUSE_drag_timer = 0;
   HUD_SHIELD_FLASH_TIME = 0;
   HUD_SHIELD_FLASH_ON = FALSE;

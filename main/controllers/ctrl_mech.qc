@@ -123,7 +123,7 @@ void() ai_ctrl_update_mechplayer={
       //client_send_particle( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
     }
   }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
 void() ctrl_updateCenterTorso={

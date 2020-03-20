@@ -41,8 +41,7 @@ void() data_ini_missile_swarm_={
     self.model = "q3mdl/weapons/w_swrm.md3";
     self.abbrev = "SWRM";
     self.description = "+ Requires <Active Radar> to fire. + Fires 3 missiles at up to 3 targets each.";
-    self.icon = "gfx/ui/wep_icons/wi_swrm.png";  
-    setmodel(self, self.model);
+    self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
   #endif 
   
   #ifndef CSQC

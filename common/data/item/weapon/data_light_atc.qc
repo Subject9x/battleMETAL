@@ -40,7 +40,6 @@ void() data_ini_light_atc_={
     self.model = "q3mdl/weapons/w_atc.md3";
     self.fire_sound = "sound/weapons/atc_fire.ogg";
     self.wepFireOffset = '0 0.5 5';
-    setmodel(self, self.model);
   #endif
   
   #ifndef CSQC  

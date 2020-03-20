@@ -40,11 +40,11 @@ void() data_ini_foslager_={
   self.data_speed_strafe = 20;
   self.data_speed_backward = 15;
   self.data_speed_accel = 1;
-  #ifndef CSQC
-  self.yaw_speed = 3.5;    //AI-only 
-  self.turret_yaw_speed = 3.75;//AI-only
-  self.ai_angleLimits = '-160 160 0';
-  #endif
+#ifndef CSQC
+    self.yaw_speed = 3.5;    //AI-only 
+    self.turret_yaw_speed = 3.75;//AI-only
+    self.ai_angleLimits = '-160 160 0';
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
@@ -61,8 +61,16 @@ void() data_ini_foslager_={
 //=====================================
  
 //HARDPOINTS==========================
+#ifdef CSQC
+  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
+  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 0.75 5.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 1.25 6', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+#endif
+#ifndef CSQC
   data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 11 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 11.5 2.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+#endif
   data_ini_unitHardpoint_3( M_LEGS, '-1.5 6 9', '0 0 0', 1, (DMG_BAL | DMG_ENE));
 //=====================================
 

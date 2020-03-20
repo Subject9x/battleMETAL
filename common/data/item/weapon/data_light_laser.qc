@@ -40,7 +40,6 @@ void() data_ini_light_laser_={
     self.abbrev = "LAS";
     self.description = "+ Instant-impact weapon. + Small damage bonus against <shields>.";
     self.icon = "gfx/ui/wep_icons/wi_las.png";
-    setmodel(self, self.model);
   #endif
   
   #ifndef CSQC

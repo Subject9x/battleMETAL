@@ -87,15 +87,15 @@ void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
   itr = 1;
   mech_piece = mechEntity.w_slot;
   
-  while( mech_piece ){
-    next_hardpoint = mech_piece.w_slot;
-    remove(mech_piece);
+  while( mech_piece != world ){
+    mech_piece.think = SUB_Remove;
+    mech_piece.nextthink = time + 0.1;
     MECH_DATA_STOCK[itr] = 0;
     if( itr <= 5 ){
         MECH_DATA_GRPS[itr] = 0;
     }
     itr = itr + 1;
-    mech_piece = next_hardpoint;
+    mech_piece = mech_piece.w_slot;
   }
   
   if( mechEntity.legs ){

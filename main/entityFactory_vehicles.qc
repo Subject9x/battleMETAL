@@ -158,7 +158,7 @@ void() build_unit_weapon_list={
       weaponCount = weaponCount + 1;
       weaponMount.partPrev = prevWeapon;
       prevWeapon = weaponMount;
-      if( weaponMount.owner.flags & FL_MONSTER ){
+      if( (weaponMount.owner.flags & FL_MONSTER) ){
         weaponMount.effects = weaponMount.effects | EF_NODRAW;
       }
       weaponMount = weaponMount.w_slot;

@@ -27,9 +27,6 @@ entity weaponList;  //used by data functions to populate weapon lists for units
 void( float partId, string pathToModel, float maxHp, vector partOffset, entity parentPart, .entity partSlot, vector altOffsett ) data_ini_unitPiece_={
   local entity piece;
   piece = spawn();
-  #ifdef CSQC
-  piece.drawmask = MASK_NORMAL;
-  #endif
   piece.partTypeId = partId;
   piece.partParentId = parentPart.partTypeId;
   piece.max_health = piece.health = maxHp;
@@ -37,6 +34,12 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece.compOffset = partOffset;
   piece.hitOffset = '0 0 0';
   piece.compAltOffset = piece.compAltOffsetCache = altOffsett;
+  #ifdef CSQC
+    piece.drawmask = MASK_NORMAL;
+    if( (self.flags & FL_MONSTER) ){
+      addentity(piece);
+    }
+  #endif
   self.partSlot = piece;
   piece.owner = self;
 };
@@ -71,8 +74,12 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
   local entity notItem;
   if( self.hardpoint_cnt < 10){
     item = spawn();
+    weaponList.w_slot = item;
     #ifdef CSQC
-    item.drawmask = MASK_NORMAL;
+      item.drawmask = MASK_NORMAL;
+      if( (self.flags & FL_MONSTER) ){
+        addentity(item);
+      }
     #endif
     notItem = self;
     self = item;
@@ -85,7 +92,6 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
       self.hardpointSize = newHardPointSizeVal;
       self.hardpointType = newHardPointTypeVal;
     self = notItem;
-    weaponList.w_slot = item;
     weaponList = item;
     self.hardpoint_cnt = self.hardpoint_cnt + 1;
   }

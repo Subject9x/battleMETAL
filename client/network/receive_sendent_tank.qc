@@ -17,7 +17,7 @@ void() sendevent_tank_move={
   local entity weps;
   
   for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-    if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
+    if( weps.partParentId == M_LEGS ){
       weps.angles = self.angles;
     }
     else{
@@ -178,7 +178,18 @@ float() predraw_tank={
     makevectors(self.angles);
     if( self.torsoCenter != world ){
       self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
-      setorigin(self.torsoCenter, self.torsoCenter.origin);
+    }
+    for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
+      if( weps.partParentId == M_LEGS ){
+        makevectors(self.angles);
+        saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+        weps.origin = self.origin + saved ;
+      }
+      else{
+        makevectors(self.torsoCenter.angles);
+        saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+        weps.origin = self.torsoCenter.origin + saved;
+      }
     }
   }
   

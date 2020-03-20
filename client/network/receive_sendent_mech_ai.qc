@@ -176,6 +176,12 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       setsize(self, self.mins, self.maxs);
       self.predraw = predraw_mech_ai;
       sendent_ini_interpolate();
+      self.armLeft.alpha = 0.33;  //DEBUG
+      cons_logAVector("armLeft", self.armLeft.compOffset);  //DEBUG
+      self.armRight.alpha = 0.33;  //DEBUG
+      self.torsoLeft.alpha = 0.33;  //DEBUG
+      self.torsoRight.alpha = 0.33;  //DEBUG
+      self.torsoCenter.alpha = 0.33;  //DEBUG
     }
   }
 };
@@ -224,6 +230,18 @@ float() predraw_mech_ai={
     if( self.armRight ){
       self.armRight.angles = self.torsoCenter.angles;
       self.armRight.origin = self.origin + (v_right * self.armRight.compOffset_x) + (v_forward * self.armRight.compOffset_z) + (v_up * self.armRight.compOffset_y);
+    }
+    for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
+      if( weps.partParentId == M_LEGS ){
+        makevectors(self.angles);
+        saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+        weps.origin = self.origin + saved ;
+      }
+      else{
+        makevectors(self.torsoCenter.angles);
+        saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+        weps.origin = self.torsoCenter.origin + saved;
+      }
     }
   }
   

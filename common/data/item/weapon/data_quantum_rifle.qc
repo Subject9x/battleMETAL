@@ -44,7 +44,6 @@ void() data_ini_quantum_={
     self.abbrev = "QRF";
     self.description = "+ Instant-impact weapon. + Initial damage on-hit. + 8 sub-munitions. + sub-munitions home on impact spot.";
     self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
-    setmodel(self, self.model);
   #endif 
   
   #ifndef CSQC

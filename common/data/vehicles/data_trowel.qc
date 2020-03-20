@@ -39,11 +39,11 @@ void() data_ini_trowel_={
   self.data_speed_strafe = 10;
   self.data_speed_backward = 10;
   self.data_speed_accel = 1;
-  #ifndef CSQC
+#ifndef CSQC
   self.yaw_speed = 1;    //AI-only 
   self.turret_yaw_speed = 1.5;//AI-only
   self.ai_angleLimits = '-125 125 0';
-  #endif
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
@@ -59,19 +59,22 @@ void() data_ini_trowel_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.75 12 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.75 16.75 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '-3 -8 10.5', '-90 0 0', 3, (DMG_ENE | DMG_BAL));
+#ifdef CSQC
+  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
+  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 -1.5 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 3.25 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '1.75 2.75 -8', '-90 0 0', 3, (DMG_ENE | DMG_BAL));
+#endif
+#ifndef CSQC
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 12 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 16.75 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '3 -8 10.5', '-90 0 0', 3, (DMG_ENE | DMG_BAL));
+#endif
 //=====================================
 
 //HUD DATA=============================
   //Unit is non-playable
 //====================================
 
-
-//CSQC Funcs===========================
-  #ifdef CSQC
-  //self.te_critical_hit 
-  #endif
-//====================================
 };

@@ -66,7 +66,6 @@ q3mdl/weapons/e_lsar.md3
 q3mdl/weapons/e_scap.md3
 q3mdl/weapons/e_hsem.md3
 q3mdl/weapons/e_atgm.md3
-q3mdl/weapons/e_atgm.md3
 
 //weapon projectiles
 q3mdl/proj/mdl_proj_swrm.md3

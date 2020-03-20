@@ -40,7 +40,6 @@ void() data_ini_emp_={
     self.abbrev = "EMP";
     self.description = "+ Damages <shields> ONLY. + Small proximity detonation.";
     self.icon = "gfx/ui/wep_icons/wi_emp.png";
-    setmodel(self, self.model);
   #endif
   
   #ifndef CSQC

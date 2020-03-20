@@ -2126,7 +2126,7 @@ gravity -0.005
   color 0x04B486 0x81DAF5
   tex 26 31
   size 1 2
-  alpha 16 24 -96
+  alpha 24 32 -96
   time 1 1.1
   originjitter 0.2 0.2 0.2
   velocityjitter 1 1 1
@@ -2139,8 +2139,8 @@ gravity -0.005
   color 0x01DF3A 0x9AFE2E
   tex 33 33
   size 2 3
-  sizeincrease 1
-  alpha 96 128 120
+  sizeincrease 1.5
+  alpha 160 192 160
 
   //TE_SHIELD_HIT_HIGH - BLUE LIGHT
   effect TE_SHIELD_HIT_HIGH

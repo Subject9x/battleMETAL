@@ -45,7 +45,6 @@ void() data_ini_flak_cannon_={
     self.abbrev = "FLAK";
     self.description = "+ Instant-impact weapon. + Shotgun Damage pattern when Target has no <shields>. + 8 sub-munitions.";
     self.icon = "gfx/ui/wep_icons/wi_flak.png";
-    setmodel(self, self.model);
   #endif
   
   #ifndef CSQC

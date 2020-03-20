@@ -95,11 +95,10 @@ void( float isNew, float changeFlags) sendent_handle_missile={
 float() predraw_weapon={
   local vector ofs;
   local entity part;
-  makevectors(self.angles);
-  self.origin = self.owner.origin +(v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-  setorigin(self, self.origin);
+  //makevectors(self.angles);
+  //self.origin = self.owner.origin +(v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+  //setorigin(self, self.origin);
   return TRUE;
-  
 };
 
 float() predraw_turret={
@@ -147,9 +146,9 @@ void() sendent_ini_interpolate={
 void() sendent_setup_weapons={
   local entity this;
   local entity weps;
-  
   this = self;
-  for(weps = self.w_slot; weps.owner == this; weps = weps.w_slot){
+  weps = self.w_slot;
+  while( weps != world ){
     self = weps;
       sendent_set_weapon();
       initialize_data_item_(self.data_idx);
@@ -158,10 +157,17 @@ void() sendent_setup_weapons={
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
       setsize(self, '-1 -1 -1', '1 1 1');
-      makevectors(this.angles);
-      setorigin(self, this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
-      self.predraw = predraw_weapon;
+      setmodel(self, self.model);
+      if( self.partParentId == M_LEGS ){
+        makevectors(this.angles);
+        setorigin(self, this.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
+      }
+      else{
+        makevectors(this.torsoCenter.angles);
+        setorigin(self, this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
+      }
     self = this;
+    weps = weps.w_slot;
   }
 };
 
@@ -194,30 +200,30 @@ void() sendent_set_weapon={
   switch(self.w_group){
      case WEAPON1:
       self.data_idx = self.owner.next_wepn1;
-      return;
+      break;
      case WEAPON2:
       self.data_idx = self.owner.next_wepn2;
-      return;
+      break;
      case WEAPON3:
       self.data_idx = self.owner.next_wepn3;
-      return;
+      break;
      case WEAPON4:
       self.data_idx = self.owner.next_wepn4;
-      return;
+      break;
      case WEAPON5:
       self.data_idx = self.owner.next_wepn5;
-      return;
+      break;
      case WEAPON6:
       self.data_idx = self.owner.next_wepn6;
-      return;
+      break;
      case WEAPON7:
       self.data_idx = self.owner.next_wepn7;
-      return;
+      break;
      case WEAPON8:
       self.data_idx = self.owner.next_wepn8;
-      return;
+      break;
      case WEAPON9:
       self.data_idx = self.owner.next_wepn9;
-      return;
+      break;
   }
 };

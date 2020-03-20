@@ -39,8 +39,7 @@ void() data_ini_missile_laserguide_={
     self.model = "q3mdl/weapons/w_lgm.md3"; 
     self.abbrev = "MLGD";
     self.description = "+ Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
-    self.icon = "gfx/ui/wep_icons/wi_mlgd.png";  
-    setmodel(self, self.model);
+    self.icon = "gfx/ui/wep_icons/wi_mlgd.png"; 
   #endif 
   
   #ifndef CSQC

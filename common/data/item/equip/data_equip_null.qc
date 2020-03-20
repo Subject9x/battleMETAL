@@ -36,6 +36,8 @@ void() data_ini_empty_weapon_={
     self.abbrev = "NON";
     self.description = "+ this weapon slot is Empty.";
     self.icon = "gfx/ui/wep_icons/eqp_empty.png";
+    self.alpha = 0.01;
+    self.scale = 0.01;
   #endif
   
   #ifndef CSQC  
