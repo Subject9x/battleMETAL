@@ -733,10 +733,11 @@ gravity -0.005
     orientation spark
     color 0xFF8000 0xFE2E2E
     tex 40 40
-    size 0.75 0.75
-    alpha 256 256 64
-    time 2 2
-    velocitymultiplier 1
+    size 2 3
+    alpha 350 425 8
+    time 1.25 1.25
+    velocitymultiplier 3
+    stretchfactor 0.75
     
   //TE_FLK_MUZZLE - SMOKE
     effect TE_FLK_MUZZLE

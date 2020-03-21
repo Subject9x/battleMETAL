@@ -122,8 +122,10 @@ void() client_get_hud_highlight={
 
 void() receive_ent_bindData={
   local string name;
+  local float targetDeadFlagPrev;
   
   name = cvar_string("_cl_name");
+  targetDeadFlagPrev = CLIENT_stat_trg_ddflg;
   
   CLIENT_flags = getstati( STAT_ROCKETS );
   
@@ -167,7 +169,8 @@ void() receive_ent_bindData={
   CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
   CLIENT_target_datatype = getstati(STAT_TRG_DATATYPE);
   CLIENT_target_faction = getstati(STAT_TRG_FACTION);
-
+  CLIENT_stat_trg_ddflg = getstati(STAT_TRG_DDFLG);
+  
   CLIENT_stat_trg_ct_hp = getstatf(STAT_TARGET_HP_TORSOCENTER);
   CLIENT_stat_trg_lt_hp = getstatf(STAT_TARGET_HP_TORSOLEFT); 
   CLIENT_stat_trg_rt_hp = getstatf(STAT_TARGET_HP_TORSORIGHT); 
@@ -175,21 +178,7 @@ void() receive_ent_bindData={
   CLIENT_stat_trg_ra_hp = getstatf(STAT_TARGET_HP_ARMRIGHT);
   CLIENT_stat_trg_lg_hp = getstatf(STAT_TARGET_HP_LEGS);
   
-  if( CLIENT_health_legs <= 0 && CLIENT_health_legs_prev > 0 ){
-    cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward / 2));
-    cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe / 2));
-    cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward / 2));
-      
-    hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
-  }
-  if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
-    //repair event
-    cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward));
-    cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe));
-    cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward));
-  }
-  
-  if( CLIENT_player_state > PLAYER_POWERUP_END ){
+  if( CLIENT_player_state == PLAYER_ACTIVE || CLIENT_player_state == PLAYER_SPRINT_ON ){
     if( CLIENT_health_torso_left <= 0 && CLIENT_health_torso_left_prev > 0 ){
       hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
     }
@@ -202,9 +191,21 @@ void() receive_ent_bindData={
     if( CLIENT_health_arm_right <= 0 && CLIENT_health_arm_right_prev > 0 ){
       hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
     }
+    if( CLIENT_health_legs <= 0 && CLIENT_health_legs_prev > 0 ){
+      cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward / 2));
+      cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe / 2));
+      cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward / 2));
+      hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
+    }
+    if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
+      //repair event
+      cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward));
+      cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe));
+      cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward));
+    }
   }
 
-  if( CLIENT_stat_trg_ent_id > 0 ){
+  if( CLIENT_stat_trg_ddflg != DEAD_NO && targetDeadFlagPrev == DEAD_NO ){
     if( CLIENT_stat_trg_ct_hp <= 0 && CLIENT_target_health_prev > 0 ){
       hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
     }

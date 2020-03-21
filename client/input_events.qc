@@ -47,10 +47,12 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   if(inputEventType == INPUT_EVENT_KEYDOWN){
     if( (scanx == K_TAB) && (CLIENT_data_type == DATA_POBS) ){
       if( (CLIENT_player_state != PLAYER_INTERMSN) && MENU_ACTIVE ){
-        MENU_ACTIVE = FALSE;
-        CLIENT_MENU_menu_choice = 0;
-        setcursormode( 0 );
-        setpause( 0 );
+        if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
+          MENU_ACTIVE = FALSE;
+          CLIENT_MENU_menu_choice = 0;
+          setcursormode( 0 );
+          setpause( 0 );
+        }
       }
       else{
         if( CLIENT_player_state != PLAYER_INTERMSN ){

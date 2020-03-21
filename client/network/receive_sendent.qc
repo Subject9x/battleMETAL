@@ -101,13 +101,6 @@ float() predraw_weapon={
   return TRUE;
 };
 
-float() predraw_turret={
-  
-  
-
-  return TRUE;
-};
-
 /*
   EVENT - Shields are eliminated
 */

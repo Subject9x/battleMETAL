@@ -212,11 +212,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
 */
 void() ctrl_die_weapon={
   local entity prev;
-  if(self.deadflag <= DEAD_NO){
-    if( (self.owner.currentWeaponGroup & self.w_group) ){
-      self.owner.currentWeaponGroup = self.owner.currentWeaponGroup - (self.owner.currentWeaponGroup & self.w_group);
-      self.w_group = 0;
-    }
+  if(self.deadflag == DEAD_NO){
     self.think = SUB_Null;
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
@@ -242,8 +238,12 @@ void() ctrl_die_weapon={
     }
     else{
       if( (self.owner.stat_player_weapons_state & self.w_group) ){
-        self.owner.stat_player_weapons_state = self.owner.stat_player_weapons_state - self.w_group;
+        self.owner.stat_player_weapons_state = self.owner.stat_player_weapons_state - (self.owner.stat_player_weapons_state & self.w_group);
       }
+    }
+    if( (self.owner.currentWeaponGroup & self.w_group) ){
+      self.owner.currentWeaponGroup = self.owner.currentWeaponGroup - (self.owner.currentWeaponGroup & self.w_group);
+      self.w_group = 0;
     }
   }
 };

@@ -174,7 +174,7 @@ void() PutClientInServer = {
 	
   self.classname = "player";
   
-  //DecodeLevelParms ();
+  //DecodeLevelParms ();  //TODO - going to reactivate these soon.
 	self.attack_finished = time;
   self.th_die = PlayerDie;
   
@@ -211,8 +211,6 @@ void() PutClientInServer = {
         savefile_default();
         savefile_load( FALSE );
       }
-      client_sendAvailable_Mechs(SAVE_MECHS_LIST);
-      client_sendAvailableItems(SAVE_ITEMS_ALL);
     }
     if( world.animaticOnly == FALSE ){
       if( world.itemOverrideFile != "" ){
@@ -222,6 +220,9 @@ void() PutClientInServer = {
         savefile_load( FALSE );
       }    
     }
+    
+    client_sendAvailable_Mechs(SAVE_MECHS_LIST);
+    client_sendAvailableItems(SAVE_ITEMS_ALL);
   }
   else if ( GAMETYPE == GAMEMODE_COOP ){
     //using client num as lazy connection-check

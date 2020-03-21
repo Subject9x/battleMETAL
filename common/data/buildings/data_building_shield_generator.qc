@@ -174,7 +174,7 @@ void() building_human_shield={
   self.vec_size = 2;
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   
-  macro_set_model("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0)
+  macro_set_model("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, EF_LOWPRECISION)
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
   util_setHealthArmor(500, 500, 1, 100) ;
   setsize(self, '-48 -48 0', '48 48 32');

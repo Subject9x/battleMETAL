@@ -84,18 +84,25 @@ void() navSelectListener={
 void() navListSelectListener={
   local entity deploy;
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_NEXT_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
-    if( CLIENT_MENU_deploy.partNext != world ){
+    if( CLIENT_MENU_deploy.partNext == world ){
+      CLIENT_MENU_deploy = DEPLOYPOINT;
+    }
+    else{
       CLIENT_MENU_deploy = CLIENT_MENU_deploy.partNext;
     }
     CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_PREV_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
-    if( CLIENT_MENU_deploy.partPrev != world ){
+    if( CLIENT_MENU_deploy.partPrev == world ){
+      CLIENT_MENU_deploy = DEPLOY_POINTS;
+    }
+    else{
       CLIENT_MENU_deploy = CLIENT_MENU_deploy.partPrev;
     }
+    
     CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
-  if(CLIENT_MENU_nav_pnt > -1){
+  if(CLIENT_MENU_nav_pnt > 0){
     if( !(LAUNCH_VALIDATION & VALID_NODE) ){
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
     }
@@ -263,6 +270,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   local vector renderColor;
   local float itr, unavailableLen;
   local entity mapKey;
+  local vector nofs, tofs;
   
   itr = 0;
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(96));
@@ -285,11 +293,24 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
   
+  mapKey = mapKeyObject;
+  while( mapKey ){
+    nofs = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, iofs, gui_percentToPixelRawVec('380 380'));
+    switch( mapKey.data_type ){
+      case DATA_MAP_OBJ:
+        drawpic( nofs - gui_percentToPixelRawVec('8 8'), UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED, 1, 0);
+        break;
+      case DATA_BLD:
+        gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD + '0.15 0.15 0.15', 1, 0);
+        break;
+    }
+    mapKey = mapKey.w_slot;
+  }
+  
   renderColor = CLR_DEF_GREEN - '0.1 0.1 0.1';
   
   local entity nav;
   for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
-    local vector nofs, tofs;
     local float nactive, nlen;
     local string navname;
     tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
@@ -338,20 +359,6 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
   }
   
-  mapKey = mapKeyObject;
-  while( mapKey ){
-    nofs = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, iofs, gui_percentToPixelRawVec('380 380'));
-    switch( mapKey.data_type ){
-      case DATA_MAP_OBJ:
-        drawpic( nofs - gui_percentToPixelRawVec('8 8'), UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED, 1, 0);
-        break;
-      case DATA_BLD:
-        gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD + '0.15 0.15 0.15', 1, 0);
-        break;
-    }
-    mapKey = mapKey.w_slot;
-  }
-
   local vector helpOrg;
   helpOrg = mpos;
   helpOrg_x = helpOrg_x + gui_percentXRaw(405) - gui_percentXRaw(12);

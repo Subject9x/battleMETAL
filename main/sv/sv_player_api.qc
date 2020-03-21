@@ -26,7 +26,6 @@ void() PlayerPreThink = {
     return;
   }
   
-  
   if( self.playerState == PLAYER_INTERMSN ){
     client_push_player_info_thin();
   }
@@ -154,10 +153,11 @@ void() PlayerPostThink = {
     ctrl_update_mechplayer();
     
     local entity wep_chain;
-    wep_chain = self.w_slot;
-    while(wep_chain){
+    for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
+      if( wep_chain.owner != self ){
+        continue;
+      }
       ctrl_weapon_think(wep_chain);
-      wep_chain = wep_chain.w_slot;
     }
     client_updateWeaponReloads();
     
@@ -276,10 +276,11 @@ void() PlayerPostThink_powerup={
   ctrl_update_mechplayer();
   
   local entity wep_chain;
-  wep_chain = self.w_slot;
-  while(wep_chain){
+  for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
+    if( wep_chain.owner != self ){
+      continue;
+    }
     ctrl_weapon_think(wep_chain);
-    wep_chain = wep_chain.w_slot;
   }
   client_updateWeaponReloads();
 
@@ -361,9 +362,9 @@ void() PlayerDieNetwork={
 		return;
 	}
 	if(self.data_type == DATA_MECH){
+    client_push_player_info();
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
-    client_push_player_info();
   }
   self.effects = 0;
   
@@ -375,6 +376,8 @@ void() PlayerDieNetwork={
 	setorigin(self, self.origin);
   
   if (self.velocity_z < 10){
+    self.velocity_x = self.velocity_x + (crandom() * ((4 - self.vec_size) * 100));
+    self.velocity_y = self.velocity_y + (crandom() * ((4 - self.vec_size) * 100));
     self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
   }
   
@@ -403,7 +406,6 @@ void() PlayerDieNetworkEnd={
   self.movetype = MOVETYPE_NONE;
   self.playerState = PLAYER_IN_MENU;
   
-  
   //client_sendEndMission(self, MISSION_STATUS );
   //client_push_player_info();
   
@@ -420,7 +422,11 @@ void() PlayerDieNetworkEnd={
 
 
 
-void() PlayerDead={
+void() PlayerDead={  
+  ctrl_unit_cleanup_player();
+  player_unmakeMech();
+  player_makeObserver();
+  
 	self.nextthink = -1;
 	self.deadflag = DEAD_DEAD;
 };
@@ -451,9 +457,7 @@ void() PlayerDeathThink={
   self.button8 = 0;
 	
   self.deadflag = DEAD_NO;
-  ctrl_unit_cleanup_player();
-  player_unmakeMech();
-  player_makeObserver();
+
   if( cvar("deathmatch") || cvar("coop") ){
     spawnpoint_select();
     self.movetype = MOVETYPE_FLY;

@@ -64,7 +64,6 @@ void() ctrl_dieLegs={
     if( !(self.flags & FL_DISARMED) ){
       if( self.health <= 0 ){
         self.flags = self.flags | FL_DISARMED;
-        newLegs = self;
         self.owner.data_speed_forward = self.owner.data_speed_forward / 2;
         self.owner.data_speed_strafe = self.owner.data_speed_strafe / 2;
         self.owner.data_speed_backward = self.owner.data_speed_backward / 2;
@@ -80,18 +79,15 @@ void() ctrl_dieLegs={
     }
     return;
   }
-
-  //TODO - Replace
-  //te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
-
+  //create visible duplicate
   newLegs = spawn();
   newLegs.vec_size = self.owner.vec_size;
   newLegs.skin = self.skin;
   newLegs.angles = self.owner.angles;
-  newLegs.mins = self.compOffset;
-  newLegs.maxs = self.compAltOffset;
-  setorigin(newLegs, self.origin);
+  setsize(newLegs, self.compOffset, self.compAltOffset);
   setmodel(newLegs, self.model);
+  setorigin(newLegs, self.origin);
+  newLegs.frame = 3;
 
   if( (self.owner.flags & FL_CLIENT) ){
     newLegs.think = leg_die1;
@@ -107,6 +103,10 @@ void() ctrl_dieLegs={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.alpha = 0;
+  self.aiment = world;
+  self.owner = world;
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin( self, self.origin );
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
 };

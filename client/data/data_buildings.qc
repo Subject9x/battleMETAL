@@ -51,6 +51,7 @@ void() data_building_radar={
   self.vec_name = "Listening Post";
   self.vec_size = 1;
   setmodel(self, "q3mdl/buildings/radar/mdl_bld_h_radar.md3");
+  setsize(self, '-20 -20 0', '20 20 26');
   self.max_health = 100;
   self.shield = 0;
   self.shieldMax = 150;
@@ -63,6 +64,7 @@ void() data_building_shield={
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3");
+  setsize(self, '-48 -48 0', '48 48 32');
   self.max_health = 500;
   self.shield = 0;
   self.shieldMax = 500;
@@ -77,6 +79,7 @@ void() data_building_power={
   self.vec_name = "Power Generator";
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/power_plant/mdl_bld_h_power.md3");
+  setsize(self, '-75 -75 0', '75 75 26');
   self.max_health = 1200;
   self.shield = 0;
   self.shieldMax = 300;
@@ -91,6 +94,7 @@ void() data_building_hangar_large={
   self.vec_name = "Large Hangar";
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3");
+  setsize(self, '-68 -84 0', '68 84 88');
   self.max_health = 800;
   self.shield = 0;
   self.shieldMax = 300;
@@ -102,6 +106,7 @@ void() data_building_fuel={
   self.vec_name = "Fuel Tank";
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3");
+  setsize(self, '-40 -40 0', '40 40 64');
   self.max_health = 75;
   self.shield = 0;
   self.shieldMax = 150;
@@ -113,6 +118,7 @@ void() data_building_repair={
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/repair_bay/mdl_repair_bay.md3");
+  setsize(self, '-53 -53 0', '53 53 40');
   self.max_health = 600;
   self.shield = 0;
   self.shieldMax = 250;
@@ -134,6 +140,7 @@ void() data_building_hangar_med={
   self.vec_name = "Vehicle Hangar";
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3");
+  setsize(self, '-72 -72 0', '72 72 48');
   self.max_health = 500;
   self.shield = 0;
   self.shieldMax = 250;
@@ -145,9 +152,45 @@ void() data_building_guard={
   self.vec_name = "Guard Tower";
   self.vec_size = 1;
   setmodel(self, "q3mdl/buildings/towersmall/guardtower.obj");
+  setsize(self, '-22 -22 0', '22 22 40');
   self.max_health = 200;
   self.shield = 0;
   self.shieldMax = 50;
   self.shieldRate = 0.1;
   self.deadflag = DEAD_NO;
+};
+
+/*
+  ANIMATION - Death
+*/
+void() data_building_death1={
+  
+  if( self.frame > 12 ){
+    self.think = sendevent_building_die;
+    self.nextthink = time + 0.1;
+    return;
+  }
+  
+  te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
+  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  
+  self.frame = self.frame + 1;
+  self.think = data_building_death2;
+  self.nextthink = time + 0.1;
+};
+
+void() data_building_death2={ 
+  if( self.frame > 12 ){
+    self.think = sendevent_building_die;
+    self.nextthink = time + 0.1;
+    return;
+  }
+
+  self.frame = self.frame + 1;
+  self.think = data_building_death1;
+  self.nextthink = time + 0.1;
+};
+
+void() data_building_death_end={
+     
 };

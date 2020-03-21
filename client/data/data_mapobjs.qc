@@ -165,7 +165,7 @@ void( float isNew, float entFlags ) data_deploy={
     else{
       //first deploy point received.
       DEPLOY_POINTS = self;
-      DEPLOYPOINT = self;
+      DEPLOYPOINT = self; //first
     }
     self.drawmask = MASK_NORMAL;
   }

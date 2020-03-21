@@ -286,6 +286,9 @@ void() navBarListener={
     if( CLIENT_MENU_deploy == world ){
       CLIENT_MENU_deploy = DEPLOYPOINT;
       CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
+      if( !(LAUNCH_VALIDATION & VALID_NODE) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+      }
     }
     SPRITE_deploy_point_FRAME = 1;
     CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
@@ -313,8 +316,7 @@ void() mechAcceptButtonListener={
       ui_data_load_hud( MECH_DATA_ID );
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
       
-      CLIENT_radar_range = MECH_DATA_RAD;
-      
+
       bit = 1;
       totalHardpoints = 1;
       weaponsList = " ";
@@ -368,7 +370,7 @@ void() mechAcceptButtonListener={
       }
       
       CLIENT_hardpoint_cnt = totalHardpoints;
-      CLIENT_stat_rdr_mode = CLIENT_stat_rdr_mode_prev = 1; //go active radar on spawn;
+      CLIENT_stat_rdr_mode = CLIENT_stat_rdr_mode_prev = 1; //go active radar on spawn;      
       CLIENT_radar_range = MECH_DATA_RAD * 2; //go active on spawn
       
       CLIENT_health_center_prev = CLIENT_health_center = MECH_DATA_HPCT;
@@ -388,7 +390,6 @@ void() mechAcceptButtonListener={
       //mark time gettime()?
       //MISSION_TIME_START
       
-      CLIENT_MENU_nav_pnt = -1;
       MENU_ACTIVE = FALSE;
     }
   }

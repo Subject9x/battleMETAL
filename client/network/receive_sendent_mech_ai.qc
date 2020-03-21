@@ -27,9 +27,13 @@ void() sendevent_mech_ai_move={
   EVENT - DEATH =====================================
 */
 void() sendevent_mech_ai_die={
+  local entity weps;
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
   if( self.torsoCenter ){
+    self.torsoCenter.modelindex = 0;
+    self.torsoCenter.scale = 0.01;
+    self.torsoCenter.alpha = 0.01;
     self.torsoCenter.think = SUB_Remove;
     self.torsoCenter.nextthink = time + 0.1;
   }
@@ -53,12 +57,17 @@ void() sendevent_mech_ai_die={
     self.legs.think = SUB_Remove;
     self.legs.nextthink = time + 0.1;
   }
+  for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
+    weps.think = SUB_Remove;
+    weps.nextthink = time + 0.1;
+  }
 };
 
 /*
   EVENT - CRITICAL =====================================
 */
 void( float critical ) sendevent_mech_ai_crit={
+  local entity weps;
   if( (critical & M_TOR_LEFT) ){
     te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.torsoLeft.think = SUB_Remove;
@@ -84,6 +93,12 @@ void( float critical ) sendevent_mech_ai_crit={
     self.legs.think = SUB_Remove;
     self.legs.nextthink = time + 0.1;
   }
+  for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
+    if( (weps.partParentId & critical) ){
+      weps.think = SUB_Remove;
+      weps.nextthink = time + 0.1;
+    }
+  }
   pointsound( self.origin, "sound/fx_boom.ogg", 0.7 + (random() * 0.3) , ATTN_NORM );
 };
 
@@ -108,6 +123,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   self.angles_z = ReadAngle();
   
   self.flags = ReadByte();
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.shield = ReadByte();
   
   //Shield Explode event

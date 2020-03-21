@@ -195,7 +195,7 @@ void() building_human_repair={
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
   macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, 0)
+  macro_set_model("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, EF_LOWPRECISION)
   util_setHealthArmor(600, 600, 1, 100) ;
   setsize(self, '-53 -53 0', '53 53 40');
   self.shield = 0;

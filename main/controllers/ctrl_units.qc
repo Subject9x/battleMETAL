@@ -25,8 +25,9 @@ void() ctrl_unit_clean_wgroups={
   one-way execution, use carefully.
 */
 void() ctrl_unit_cleanup_player={
-  local entity w_chain, next, lstp;
-  
+  if( (self.flags & FL_CLIENT) ){
+    ctrl_unit_remove_cam(self.cockpit);
+  }
   ctrl_unit_remove_piece(self.torsoCenter);
   ctrl_unit_remove_piece(self.torsoLeft);
   ctrl_unit_remove_piece(self.torsoRight);
@@ -38,19 +39,6 @@ void() ctrl_unit_cleanup_player={
     ctrl_unit_remove_piece(self.legs);
   }
   ctrl_weapon_remove_all();
-  
-  if( (self.flags & FL_CLIENT) ){
-    ctrl_unit_remove_cam(self.cockpit);
-    self.stat_w1_id = 0;
-    self.stat_w2_id = 0;
-    self.stat_w3_id = 0;
-    self.stat_w4_id = 0;
-    self.stat_w5_id = 0;
-    self.stat_w6_id = 0;
-    self.stat_w7_id = 0;
-    self.stat_w8_id = 0;
-    self.stat_w9_id = 0;
-  }
   remove(self.hud_ent);
 };
 
@@ -99,7 +87,8 @@ void(entity unitPiece) ctrl_unit_remove_piece={
     if( (unitPiece != world) && (unitPiece.owner == self) ){
       this = self;
       self = unitPiece;
-        remove(self);
+        self.think = SUB_Remove;
+        self.nextthink = time + 0.01;
       self = this;
     }
   }

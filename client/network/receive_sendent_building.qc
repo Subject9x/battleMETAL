@@ -9,6 +9,27 @@ Overview:
     sv/main/controllers/ctrl_building.ctrl_send_building()
 */
 
+
+/*
+  EVENT - Death
+*/
+void() sendevent_building_die={
+  self.colormod = '0.75 0.75 0.75';
+  makevectors(self.angles);
+  switch( self.vec_size ){
+    case 2:
+      setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
+      break;
+    case 3:
+      setmodel(self, "q3mdl/map/ruins/ruin_large.obj");
+      break;
+    default:
+      setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+      break;
+  }
+  setorigin(self, self.origin + (v_up * -10));
+};
+
 /*
   SendEntity - Building =======================================
 */
@@ -16,21 +37,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
-      
-      makevectors(self.angles);
-      switch( self.vec_size ){
-        case 2:
-          setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
-          break;
-        case 3:
-          setmodel(self, "q3mdl/map/ruins/ruin_large.obj");
-          break;
-        default:
-          setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
-          break;
-      }
-      setorigin(self, self.origin + (v_up * -10));
+      data_building_death1();
     }
+  }
+
+  if( (changeFlags & SENDFLAG_BURN) ){
+    
   }
 
   if( (changeFlags & SENDFLAG_CRIT) ){
@@ -38,16 +50,21 @@ void( float isNew, float changeFlags) sendent_handle_building={
       if( self.effect2 ){
         if( !self.effect3 ){
           self.effect3 = te_building_fire_start( self );
+          self.colormod = self.colormod * 0.67;
         }
       }
       else{
         self.effect2 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.75;
       }
     }
     else{
       self.effect1 = te_building_fire_start( self );
+      self.colormod = self.colormod * 0.85;
     }
   }
+  
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();

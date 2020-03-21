@@ -9,6 +9,8 @@ Overview:
     sv/main/controllers/ctrl_building.ctrl_send_turret()
 */
 
+float() predraw_turret;
+
 void() sendevent_turret_die={
   local entity weps;
   local entity this;
@@ -101,9 +103,20 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.data_type = DATA_BLD;
       self.colormod = '1 1 1';
+      self.predraw = predraw_turret;
       self.drawmask = MASK_ENGINE;
       sendent_setup_weapons();
       setorigin( self, self.origin );
     }
   }
+};
+
+float() predraw_turret={
+  local entity weps; 
+  makevectors(self.torsoCenter.angles);
+  for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
+    weps.origin = self.origin + (v_forward * weps.compOffset_z) + (v_right * weps.compOffset_x) + (v_up * weps.compOffset_y);
+    weps.angles = self.torsoCenter.angles;
+  }
+  return TRUE;
 };

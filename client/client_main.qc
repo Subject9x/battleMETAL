@@ -552,35 +552,33 @@ void() CSQC_Ent_Remove =
   local entity weps;
   local entity next;
   weps = self.w_slot;
-  while( weps ){
-    next = weps.w_slot;
-    //remove(weps);
+  while( weps != world ){
     weps.think = SUB_Remove;
     weps.nextthink = time + 0.1;
-    weps = next;
+    weps = weps.w_slot;
   }
-  if( self.torsoCenter ){
+  if( self.torsoCenter != world ){
     self.torsoLeft.think = SUB_Remove;
     self.torsoLeft.nextthink = time + 0.1;
   }
   if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
-    if( self.torsoLeft ){
+    if( self.torsoLeft != world  ){
       self.torsoLeft.think = SUB_Remove;
       self.torsoLeft.nextthink = time + 0.1;
     }
-    if( self.torsoRight ){
+    if( self.torsoRight != world  ){
       self.torsoRight.think = SUB_Remove;
       self.torsoRight.nextthink = time + 0.1;
     }
-    if( self.armLeft ){
+    if( self.armLeft != world  ){
       self.armLeft.think = SUB_Remove;
       self.armLeft.nextthink = time + 0.1;
     }
-    if( self.armRight ){
+    if( self.armRight != world  ){
       self.armRight.think = SUB_Remove;
       self.armRight.nextthink = time + 0.1;
     }
-    if( self.legs ){
+    if( self.legs != world  ){
       self.legs.think = SUB_Remove;
       self.legs.nextthink = time + 0.1;
     }

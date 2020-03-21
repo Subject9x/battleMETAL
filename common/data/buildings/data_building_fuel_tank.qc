@@ -40,19 +40,25 @@ void() hfuel_death9 = [9, hfuel_death10]{};
 void() hfuel_death10 = [10, hfuel_death11]{
 
   te_object_explode( '1 0.75 0' ); 
-  local entity ruins;
+  
   self.deadflag = DEAD_DEAD;
   self.solid = SOLID_NOT;
 };
-void() hfuel_death11 = [11, hfuel_death12]{};
-void() hfuel_death12 = [12, SUB_Remove]{
-  makevectors( self.angles );
+void() hfuel_death11 = [11, hfuel_death12]{
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+};
+void() hfuel_death12 = [12, hfuel_death12]{
+  //
+  //makevectors( self.angles );
   //TODO - replace
   //te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
   
-  sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
+  //sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
 };
 
+/*
+  deprecated for the moment
+*/
 void() building_human_fuel_th={
   
   building_burn();
@@ -114,7 +120,4 @@ void() building_human_fuel={
   
   self.SendEntity = ctrl_send_building;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  
-  self.think = building_human_fuel_th;
-  self.nextthink = self.nextthink + random()*0.5;
 };

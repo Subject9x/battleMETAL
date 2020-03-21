@@ -997,7 +997,7 @@ void() hud_renderRepairValue={
   local float len;
   local string str;
     
-  if(CLIENT_repair_value > -1){
+  if(CLIENT_repair_value > 0){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     

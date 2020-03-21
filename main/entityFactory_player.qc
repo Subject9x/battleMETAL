@@ -155,7 +155,7 @@ void() player_makeMech={
     
     for( wep = self.w_slot; wep != world; wep = wep.w_slot){
       wep.exteriormodeltoclient = self;
-      player_set_hud_weapon( wep, hudWepStart);
+      //player_set_hud_weapon( wep, hudWepStart);
     }
   }
   
@@ -169,34 +169,94 @@ void() player_makeMech={
 };
 
 void() player_unmakeMech={
-  self.data_type = DATA_POBS;
+  self.weaponmodel = "";
+  self.viewzoom = 1;
+  self.nextVecChoice = 0;
   self.vec_size = 0;
   self.data_idx = 0;
-  self.stat_trg_face = -1;
-  self.next_wepn1 = -1;
-  self.next_wepn2 = -1;
-  self.next_wepn3 = -1;
-  self.next_wepn4 = -1;
-  self.next_wepn5 = -1;
-  self.next_wepn6 = -1;
-  self.next_wepn7 = -1;
-  self.next_wepn8 = -1;
-  self.next_wepn9 = -1;
-  self.stat_lck_stt = 0;
+  self.data_type = DATA_POBS;
+  self.currentWeaponGroup = 0;
+  self.energy = 0;
+  self.energyMax = 0;
+  self.energyRate = 0;
+  self.shield = 0;
+  self.shieldMax = 0;
+  self.shieldRate = 0;
+  self.stat_client_energy = 1;
+  self.stat_client_shield = 1;
+  
+  self.stat_target_hp_torsoCenter = 0;
+  self.stat_target_hp_torsoLeft = 0;
+  self.stat_target_hp_torsoRight = 0;
+  self.stat_target_hp_armLeft = 0;
+  self.stat_target_hp_armRight = 0;
+  self.stat_target_hp_legs = 0;
+
+  self.stat_client_hp_torsoCenter = 1;
+  self.stat_client_hp_torsoLeft = 1;
+  self.stat_client_hp_torsoRight = 1;
+  self.stat_client_hp_armLeft = 1;
+  self.stat_client_hp_armRight = 1;
+  self.stat_client_hp_legs = 1;
+  
+  self.stat_w1_id = 0;
+  self.stat_w2_id = 0;
+  self.stat_w3_id = 0;
+  self.stat_w4_id = 0;
+  self.stat_w5_id = 0;
+  self.stat_w6_id = 0;
+  self.stat_w7_id = 0;
+  self.stat_w8_id = 0;
+  self.stat_w9_id = 0;
+  
+  self.w_group1 = 0;
+  self.w_group2 = 0;
+  self.w_group3 = 0;
+  self.w_group4 = 0;
+  self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
+  self.state_2 = 0; //unknown what this used to be 
+  
+  self.stat_trg_dataidx = 0;
+  self.stat_target_shield = 0;
+  self.stat_trg_ddflg = 0;
+  self.stat_trg_dist = 0;
+  self.stat_trg_face = 0;
+  self.stat_trg_faction = 0;
+  
+  self.radar_range = 0;
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
+  self.w_proj = 0; //used to track enemy hit time
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = 0;
+  self.stat_rdr_rng = 0;
 
   self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;
-  self.stat_plr_fir = FIRE_GROUP;
-  self.stat_rdr_mode = FALSE;
-  self.stat_rdr_rng = 0;
-  self.energy = 0;
-  self.shield = 0;
-  self.enemy = world;
+  self.stat_lck_stt = LOCK_NONE;
+  
+  self.next_wepn1 = 0;
+  self.next_wepn2 = 0;
+  self.next_wepn3 = 0;
+  self.next_wepn4 = 0;
+  self.next_wepn5 = 0;
+  self.next_wepn6 = 0;
+  self.next_wepn7 = 0;
+  self.next_wepn8 = 0;
+  self.next_wepn9 = 0;
+  
+  self.ramTracker = 1;
+  self.ramUp = 1;
+  self.ramUpMax = 1;
+  self.repair_request = 0;
+  self.enemy = world; //explicit assignment here
+  self.stat_player_weapons_state = 0;
+  self.stat_plr_rep = 0;
+  self.stat_target_name = "";
+  self.stat_target_orgx = 0;
+  self.stat_target_orgy = 0;
+  self.stat_target_orgz = 0;
   
   self.weaponmodel = "";
   self.weaponframe = 0;

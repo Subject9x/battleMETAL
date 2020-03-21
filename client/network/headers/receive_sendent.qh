@@ -21,7 +21,6 @@ float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
 
 .float shieldExplodeCool;
 
-
 float() predraw_weapon
 float() predraw_tank;
 float() predraw_spg;
@@ -43,3 +42,5 @@ void() sendent_ini_interpolate;
 
 void( float prevShield ) sendevent_shield_explode;
 void( vector turretAngles ) sendevent_turret_update;
+
+void() sendevent_building_die;
