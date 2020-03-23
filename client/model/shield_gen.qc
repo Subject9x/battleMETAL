@@ -18,37 +18,229 @@ void() shield_gen_die1={
   te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
   te_field_quantum_light( margin, rint(random()*5) ) ;
   
-  te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
-  self.think = shield_gen_die1;
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  self.think = shield_gen_die2;
   self.nextthink = time + 0.1;
 };
 
-void() shield_gen_die2;
+void() shield_gen_die2={
+  local vector margin;
 
-void() shield_gen_die3;
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  te_field_quantum_light( margin, rint(random()*5) ) ;
+  
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die3;
+  self.nextthink = time + 0.1;
+};
 
-void() shield_gen_die4;
+void() shield_gen_die3={
+  local vector margin;
 
-void() shield_gen_die5;
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  te_field_quantum_light( margin, rint(random()*5) ) ;
+  
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die4;
+  self.nextthink = time + 0.1;
+};
 
-void() shield_gen_die6;
+void() shield_gen_die4={
+  local vector margin;
 
-void() shield_gen_die7;
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  te_field_quantum_light( margin, rint(random()*5) ) ;
+  
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die5;
+  self.nextthink = time + 0.1;
+};
 
-void() shield_gen_die8;
+void() shield_gen_die5={
+  local vector margin;
 
-void() shield_gen_die9;
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  te_field_quantum_light( margin, rint(random()*5) ) ;
+  
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die6;
+  self.nextthink = time + 0.1;
+};
 
-void() shield_gen_die10;
+void() shield_gen_die6={
+  local vector margin;
 
-void() shield_gen_die11;
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  te_field_quantum_light( margin, rint(random()*5) ) ;
+  
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die7;
+  self.nextthink = time + 0.1;
+};
 
-void() shield_gen_die12;
+void() shield_gen_die7={
+  local vector margin;
 
-void() shield_gen_die13;
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  te_field_quantum_light( margin, rint(random()*5) ) ;
+  
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die8;
+  self.nextthink = time + 0.1;
+};
 
-void() shield_gen_die14;
+void() shield_gen_die8={
+  local vector margin;
 
-void() shield_gen_die15;
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die9;
+  self.nextthink = time + 0.1;
+};
 
-void() shield_gen_die16;
+void() shield_gen_die9={
+  local vector margin;
+
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die10;
+  self.nextthink = time + 0.1;
+};
+
+void() shield_gen_die10={
+  local vector margin;
+
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die11;
+  self.nextthink = time + 0.1;
+};
+
+void() shield_gen_die11={
+  local vector margin;
+
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  te_field_quantum( randompos(self.absmin * 1.5, self.absmax * 1.5), randompos(self.absmin * 1.5, self.absmax * 1.5) );
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  
+  self.scale = self.scale - 0.01;
+  self.alpha = self.alpha - 0.01;
+  
+  self.think = shield_gen_die12;
+  self.nextthink = time + 0.1;
+};
+
+void() shield_gen_die12={
+  local vector margin;
+
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  
+  self.think = shield_gen_die13;
+  self.nextthink = time + 0.1;
+};
+
+void() shield_gen_die13={
+  local vector margin;
+
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  
+  self.think = shield_gen_die14;
+  self.nextthink = time + 0.1;
+};
+
+void() shield_gen_die14={
+  local vector margin;
+
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  
+  self.think = shield_gen_die15;
+  self.nextthink = time + 0.1;
+};
+
+void() shield_gen_die15={
+  local vector margin;
+
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  
+  self.think = shield_gen_die16;
+  self.nextthink = time + 0.1;
+};
+
+void() shield_gen_die16={
+  local vector margin;
+
+  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
+  
+  self.think = sendevent_building_die;
+  self.nextthink = time + 0.1;
+};

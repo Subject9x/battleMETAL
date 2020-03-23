@@ -1045,37 +1045,52 @@ LIGHTS_OFF 8388736: don't spawn lights with guard tower.
 
 
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
-Gives ALL FRIENDLY units a shield recharge boost IF they're in the radius.
-Radius: 1000units
+Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields!
+MUST HAVE: Power Plant that can power it (check power plant radius).
+Generator does have to pay for its shield generating, these can be taxed by too many nearby units.
+
+Health = 500. (default)
+
+Energy Max = 2000 units. (default)
+Energy Rate = 0. (default)
+
+Shield Max = 300. (default)
+Shield Rate = 0. (default)
+
+Radius: 1000 units.(default)
+
+behavior: death() will DAMAGE shields of all units at ai_minrange/2
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+faction : <float> [Required], faction id - 1 | 2 | 3
+targetname : <string>, used for trigger calls from other ents.
+target : <string> name of ent to go to, usually a patrol node.
+trigOnSpawn: <string> ent, fire this ENTITY when activated.
+trigOnDeath: <string target, fire this ENTITY when killed.
+shieldRate: <float> [Optional], default is 4 / tic. set this to override default.
+shieldMax: <float> [Optional], default is 4000. set this to override default.
+ai_minrange: <float> [Optional], default is 100. set ths to override default;
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
+
+
 
 
 /*QUAKED building_human_power (0.074 0.66 0.93) (-80 -80 0) (80 80 58) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
+
+Health = 1200. (default)
+
 Energy Max = 4000 units. (default)
 Energy Rate = 4 / 0.1 tic. (default)
 
@@ -1094,7 +1109,7 @@ trigOnSpawn:<string> ent, fire this ENTITY when activated.
 trigOnDeath: <string> target, fire this ENTITY when killed.
 energyRate: <float> [Optional], default is 4 / tic. set this to override default.
 energyMax: <float> [Optional], default is 4000. set this to override default.
-minrange: <float> [Optional], default is 800. set ths to override default;
+ai_minrange: <float> [Optional], default is 800. set ths to override default;
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode

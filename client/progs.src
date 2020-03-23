@@ -176,6 +176,8 @@ ui/hud/hud_system_event.qc
 //EFFECTS================
   util/particle_sys.qc
   model/power_plant.qc
+  model/shield_gen.qc
+  model/repair_bay.qc
 //=======================
 
 input_events.qc

@@ -64,7 +64,7 @@ void() data_building_shield={
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3");
-  setsize(self, '-48 -48 0', '48 48 32');
+  setsize(self, '-56 -56 0', '56 56 28');
   self.max_health = 500;
   self.shield = 0;
   self.shieldMax = 500;
@@ -72,7 +72,10 @@ void() data_building_shield={
   self.energy = 0;
   self.energyRate = 0;
   self.energyMax = 2000;
-  self.deadflag = DEAD_NO;  
+  self.deadflag = DEAD_NO;
+  self.th_die = shield_gen_die1;
+  self.scale = 1;
+  self.alpha = 1;
 };
 
 void() data_building_power={
