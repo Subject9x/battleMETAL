@@ -37,7 +37,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
-      data_building_death1();
+      if( self.th_die ){
+        self.th_die();
+      }
+      else{
+        data_building_death1(); 
+      }
     }
   }
 

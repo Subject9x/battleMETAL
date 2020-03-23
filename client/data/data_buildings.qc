@@ -57,7 +57,7 @@ void() data_building_radar={
   self.shieldMax = 150;
   self.shieldRate = 0.15;
   self.radar_range = 2000;
-  self.deadflag = DEAD_NO;  
+  self.deadflag = DEAD_NO;
 };
 
 void() data_building_shield={
@@ -87,7 +87,8 @@ void() data_building_power={
   self.energy = 0;
   self.energyMax= 4000;
   self.energyRate= 4;
-  self.deadflag = DEAD_NO;  
+  self.deadflag = DEAD_NO; 
+  self.th_die = power_plant_die1;
 };
 
 void() data_building_hangar_large={
@@ -192,5 +193,7 @@ void() data_building_death2={
 };
 
 void() data_building_death_end={
-     
 };
+
+
+

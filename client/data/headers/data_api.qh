@@ -22,3 +22,5 @@ void() data_mech_config_clearBuffer;
 void( float mechId, float configNum ) data_mech_config_save;
 float( float mechId, float configNum ) data_mech_config_load;
 float() data_mech_config_valid;
+
+.void() th_die; // merely copying over from defs.qc for SendEnt compat.

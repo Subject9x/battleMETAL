@@ -25,6 +25,7 @@ data/headers/data_projectiles.qh
 data/headers/data_mapobjs.qh
 data/headers/data_mech.qh
 util/headers/particle_sys.qh
+model/models.qh
 
 network/headers/client_globals.qh
 network/headers/server_localcmd.qh
@@ -174,6 +175,7 @@ ui/hud/hud_system_event.qc
 
 //EFFECTS================
   util/particle_sys.qc
+  model/power_plant.qc
 //=======================
 
 input_events.qc

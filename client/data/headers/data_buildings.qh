@@ -24,3 +24,4 @@ void() data_building_guard;
 void() data_building_death1;
 void() data_building_death2;
 void() data_building_death_end;
+

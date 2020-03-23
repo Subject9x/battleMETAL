@@ -1,0 +1,65 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 03/23/2020
+Overview: 
+  CSQC-side animations for specific models.
+*/
+
+/*
+  Power Plant - DEATH
+*/
+void() power_plant_die1;
+void() power_plant_die2;
+void() power_plant_die3;
+void() power_plant_die4;
+void() power_plant_die5;
+void() power_plant_die6;
+void() power_plant_die7;
+void() power_plant_die8;
+void() power_plant_die9;
+void() power_plant_die10;
+void() power_plant_die11;
+void() power_plant_die12;
+void() power_plant_die13;
+void() power_plant_die14;
+void() power_plant_die15;
+void() power_plant_die16;
+
+/*
+  Power Plant - Idle
+*/
+
+
+/*
+  Power Plant - Active
+*/
+
+/*
+  Shield Generator - DEATH
+*/
+void() shield_gen_die1;
+void() shield_gen_die2;
+void() shield_gen_die3;
+void() shield_gen_die4;
+void() shield_gen_die5;
+void() shield_gen_die6;
+void() shield_gen_die7;
+void() shield_gen_die8;
+void() shield_gen_die9;
+void() shield_gen_die10;
+void() shield_gen_die11;
+void() shield_gen_die12;
+void() shield_gen_die13;
+void() shield_gen_die14;
+void() shield_gen_die15;
+void() shield_gen_die16;
+
+/*
+  Shield Generator - Idle
+*/
+
+
+/*
+  Shield Generator - Active
+*/

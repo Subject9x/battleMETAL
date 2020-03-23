@@ -69,6 +69,7 @@ void() building_human_fuel_th={
 
 /*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/fueltank/fueltank.md3"); }
+
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -92,13 +93,14 @@ void() building_human_fuel={
   }
 
   self.vec_name = "Fuel Tank";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 2;
-  macro_set_model("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0)
+  macro_set_model("q3mdl/testball.md3", self.skin, 0)
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  util_setHealthArmor(75, 75, 1, 100) ;
+  self.health = self.max_health = 75;
   setsize(self, '-40 -40 0', '40 40 64');
-  self.shield= 0;
+  setorigin(self, self.origin);
+  self.shield = 0;
   self.shieldMax = 150;
   self.shieldRate = 0.15;
   self.scale = 1;
