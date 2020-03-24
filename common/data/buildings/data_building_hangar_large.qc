@@ -6,13 +6,6 @@ Overview: data file for building
 */
 
 
-
-void() building_human_hangar_th={
-  building_burn();
-  self.think = building_human_hangar_th;
-  self.nextthink = time + 0.1;
-};
-
 /*QUAKED building_human_hangar (0 0 1) (-80 -80 0) (80 80 88) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/hangar/hangar.md3"); }
 
@@ -93,7 +86,4 @@ void() building_human_hangar={
   
   self.SendEntity = ctrl_send_building;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  
-  self.think = building_human_hangar_th;
-  self.nextthink = time + (random() * 0.1);
 };

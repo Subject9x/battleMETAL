@@ -93,8 +93,8 @@ void( float isNew, float changeFlags) sendent_handle_building={
     
     self.faction = ReadByte();
     self.data_idx = ReadByte();
-    self.spawnflags = ReadByte();
-    
+    self.spawnflags = ReadLong();
+
     if( isNew ){
       makevectors(self.angles);
       self.solid = SOLID_SLIDEBOX;

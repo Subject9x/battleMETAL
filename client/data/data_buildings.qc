@@ -157,12 +157,10 @@ void() data_building_hangar_med={
   self.vec_name = "Vehicle Hangar";
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3");
-  setsize(self, '-72 -72 0', '72 72 48');
+  setsize(self, '-78 -78 0', '78 78 48');
   self.max_health = 500;
-  self.shield = 0;
-  self.shieldMax = 250;
-  self.shieldRate = 0.2;
   self.deadflag = DEAD_NO;
+  self.th_die = hangar_medium_die1;
 };
 
 void() data_building_guard={

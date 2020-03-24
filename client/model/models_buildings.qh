@@ -26,7 +26,6 @@ void() guard_post_die1;
 void() guard_post_die2;
 
 
-
 /*
   Radar Post - Dynamic Lights
 */
@@ -153,3 +152,29 @@ void() shield_gen_idle;
   Shield Generator - Active
 */
 void() shield_gen_active;
+
+/*
+  Hangar Large  - DEATH
+*/
+void() guard_post_die1;
+void() guard_post_die2;
+
+/*
+  Hangar Medium  - DEATH
+*/
+void() hangar_medium_die1;
+void() hangar_medium_die2;
+void() hangar_medium_die3;
+void() hangar_medium_die4;
+void() hangar_medium_die5;
+void() hangar_medium_die6;
+void() hangar_medium_die7;
+void() hangar_medium_die8;
+void() hangar_medium_die9;
+void() hangar_medium_die10;
+void() hangar_medium_die11;
+void() hangar_medium_die12;
+void() hangar_medium_die13;
+void() hangar_medium_die14;
+void() hangar_medium_die15;
+void() hangar_medium_die16;

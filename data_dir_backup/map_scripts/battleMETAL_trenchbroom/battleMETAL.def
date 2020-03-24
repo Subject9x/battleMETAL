@@ -1165,7 +1165,6 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 
-
 /*QUAKED building_human_hangar_vehicle (0 0 1) (-78 -78 0) (78 78 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/hangar_vec/hangar_vehicle.md3"); }
 
@@ -1193,7 +1192,6 @@ NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
-
 
 
 

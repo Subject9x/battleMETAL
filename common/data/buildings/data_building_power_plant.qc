@@ -21,8 +21,7 @@ void() hpower_die = [0, hpower_die1]{
   
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
-  
-  world_remove_dlight(self);
+
 };
 void() hpower_die1 = [1, hpower_die2]{
   local vector shoot;

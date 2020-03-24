@@ -6,10 +6,116 @@ Overview:
   a smaller, vehicle hangar.
 */
 
-void() building_human_hangar_vec_th={
+void() hangar_vehicle_die2;
+void() hangar_vehicle_die3;
+void() hangar_vehicle_die4;
+void() hangar_vehicle_die5;
+void() hangar_vehicle_die6;
+void() hangar_vehicle_die7;
+void() hangar_vehicle_die8;
+void() hangar_vehicle_die9;
+void() hangar_vehicle_die10;
+void() hangar_vehicle_die11;
+void() hangar_vehicle_die12;
+void() hangar_vehicle_die13;
+void() hangar_vehicle_die14;
+void() hangar_vehicle_die15;
+void() hangar_vehicle_die16;
 
-  self.think = building_human_hangar_vec_th;
-  self.nextthink = time + 0.1;
+void() hangar_vehicle_die1=[0, hangar_vehicle_die2]{
+  if( self.deadflag > DEAD_NO ){
+    return;
+  }
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DEAD; 
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
+  
+  //fire triggers when dead
+  trigger_event( self, self.trigOnDeath );
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  
+  local vector vfx;
+  
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
+
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+  
+};
+void() hangar_vehicle_die2=[0, hangar_vehicle_die3]{
+
+};
+void() hangar_vehicle_die3=[0, hangar_vehicle_die4]{
+  local vector vfx;
+  
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.mins_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
+
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+};
+void() hangar_vehicle_die4=[0, hangar_vehicle_die5]{
+
+};
+void() hangar_vehicle_die5=[0, hangar_vehicle_die6]{
+  local vector vfx;
+  
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * self.maxs_z) + (v_forward * (self.mins_y * 0.18)) + (v_right * (self.mins_x * 0.15));
+
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+};
+void() hangar_vehicle_die6=[0, hangar_vehicle_die7]{
+
+};
+void() hangar_vehicle_die7=[0, hangar_vehicle_die8]{
+  local vector vfx;
+
+  vfx = randompos(self.absmin, self.absmax);
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 2 );
+};
+void() hangar_vehicle_die8=[0, hangar_vehicle_die9]{
+  local vector vfx;
+
+  vfx = randompos(self.absmin, self.absmax);
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 4, 2 );
+};
+void() hangar_vehicle_die9=[0, hangar_vehicle_die10]{
+  local vector vfx;
+
+  vfx = randompos(self.absmin, self.absmax);
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 2 );
+};
+void() hangar_vehicle_die10=[0, hangar_vehicle_die11]{
+  local vector vfx;
+
+  vfx = randompos(self.absmin, self.absmax);
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 2, 2 );
+};
+void() hangar_vehicle_die11=[0, hangar_vehicle_die12]{
+  local vector vfx;
+
+  vfx = randompos(self.absmin, self.absmax);
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 1 );
+};
+void() hangar_vehicle_die12=[0, hangar_vehicle_die13]{
+
+};
+void() hangar_vehicle_die13=[0, hangar_vehicle_die14]{
+  local vector vfx;
+
+  vfx = randompos(self.absmin, self.absmax);
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 4, 1 );
+};
+void() hangar_vehicle_die14=[0, hangar_vehicle_die15]{
+
+};
+void() hangar_vehicle_die15=[0, SUB_Null]{
+  local vector vfx;
+
+  vfx = randompos(self.absmin, self.absmax);
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 5,1 );
 };
 
 /*QUAKED building_human_hangar_vehicle (0 0 1) (-78 -78 0) (78 78 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
@@ -52,12 +158,12 @@ void() building_human_hangar_vehicle={
   self.vec_name = "Vehicle Hangar";
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 2;
-  self.takedamage = DAMAGE_AIM;
-  self.deadflag = DEAD_NO;
+  macro_set_model("q3mdl/testball.md3", self.skin, 0)
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
+  setsize(self, '-78 -78 0', '78 78 48');
   
-  self.th_die = building_die;
+  self.th_die = hangar_vehicle_die1;
   self.use = multi_trigger;
-  self.solid = SOLID_SLIDEBOX;
   
   if( !self.health) {
     self.health = self.max_health = 500;
@@ -76,11 +182,7 @@ void() building_human_hangar_vehicle={
   if( !self.energyMax ){
     self.energyMax = 1000;
   }
-  
-  util_setModel( "q3mdl/testball.md3", self.skin, EF_LOWPRECISION) ;
-  setsize(self, '-78 -78 0', '78 78 48');
-  self.movetype = MOVETYPE_NONE;
-  
+
   if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 0.95) ){
       util_generateBuildingFoundation(self);
@@ -94,7 +196,4 @@ void() building_human_hangar_vehicle={
   
   self.SendEntity = ctrl_send_building;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  
-  self.think = building_human_hangar_vec_th;
-  self.nextthink = time + (random() * 0.1);
 };

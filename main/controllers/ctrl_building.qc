@@ -18,8 +18,6 @@ void() building_die={
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
   
-  world_remove_dlight(self);
-  
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DEAD;
   self.solid = SOLID_NOT;
@@ -120,7 +118,7 @@ float( entity dest, float changedflags ) ctrl_send_building={
     
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteByte( MSG_ENTITY, self.spawnflags );
+    WriteLong( MSG_ENTITY, self.spawnflags );
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){
