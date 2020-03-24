@@ -9,13 +9,39 @@ Overview:
 
 .void() render_dlights;
 
+/*
+  Guard Post - Dynamic Lights
+*/
+void() guard_post_dlights;
+
+/*
+  Guard Post - Think
+*/
+void() guard_post_th;
+
+/*
+  Guard Post - DEATH
+*/
+void() guard_post_die1;
+void() guard_post_die2;
 
 
 
+/*
+  Radar Post - Dynamic Lights
+*/
+void() radar_post_dlights;
 
+/*
+  Radar Post - Think
+*/
+void() radar_post_th;
 
-
-
+/*
+  Radar Post - DEATH
+*/
+void() radar_post_die1;
+void() radar_post_die2;
 
 /*
   Fuel Tank - DEATH

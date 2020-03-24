@@ -20,10 +20,10 @@ void() guard_tower_lightup={
   local vector lightOrg;
   makevectors(self.angles);
   lightOrg = self.origin + (v_up * 36);
-  world_make_dlight( (lightOrg + (v_forward * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  world_make_dlight( (lightOrg + (v_forward * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  world_make_dlight( (lightOrg + (v_right * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  world_make_dlight( (lightOrg + (v_right * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
+  //world_make_dlight( (lightOrg + (v_forward * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
+  //world_make_dlight( (lightOrg + (v_forward * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
+  //world_make_dlight( (lightOrg + (v_right * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
+  //world_make_dlight( (lightOrg + (v_right * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
   self.think = guard_tower_think;
   self.nextthink = time + 0.1;
 }

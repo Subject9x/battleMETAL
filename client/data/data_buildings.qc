@@ -58,6 +58,13 @@ void() data_building_radar={
   self.shieldRate = 0.15;
   self.radar_range = 2000;
   self.deadflag = DEAD_NO;
+  self.th_walk = radar_post_th;
+  self.th_die = radar_post_die1;
+  self.render_dlights = radar_post_dlights;
+  self.compOffset = self.origin + (v_up * 38) + (v_forward * -15) + (v_right * 18); //dlight origin
+  self.partTypeId = 0;  //dlight style
+  self.compAltOffsetCache = '0 0 0';  //dlight color
+  
 };
 
 void() data_building_shield={
@@ -168,6 +175,11 @@ void() data_building_guard={
   self.shieldMax = 50;
   self.shieldRate = 0.1;
   self.deadflag = DEAD_NO;
+  self.th_walk = guard_post_th;
+  self.th_die = guard_post_die1;
+  self.render_dlights = guard_post_dlights;
+  self.compOffset = self.origin + (v_up * 36);
+  self.w_adj_ang =  self.angles;
 };
 
 /*

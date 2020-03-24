@@ -129,6 +129,9 @@ float( entity dest, float changedflags ) ctrl_send_building={
       WriteCoord( MSG_ENTITY, self.compAltOffset_y );
       WriteCoord( MSG_ENTITY, self.compAltOffset_z );
     }
+    if( self.data_idx == UI_BUILDING_radar ){
+      WriteByte( MSG_ENTITY, self.attack_state );
+    }
   }
   
   return TRUE;

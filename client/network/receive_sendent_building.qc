@@ -9,7 +9,6 @@ Overview:
     sv/main/controllers/ctrl_building.ctrl_send_building()
 */
 
-
 /*
   EVENT - Death
 */
@@ -29,7 +28,7 @@ void() sendevent_building_die={
       setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
       break;
   }
-  setorigin(self, self.origin + (v_up * -10));
+  setorigin(self, self.origin + (v_up * -3));
 };
 
 /*
@@ -120,8 +119,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.compAltOffset_x = ReadCoord();
       self.compAltOffset_y = ReadCoord();
       self.compAltOffset_z = ReadCoord();
-      self.think = self.th_walk;
-      self.nextthink  = time + 0.1;
+    }
+    if( self.data_idx == UI_BUILDING_radar ){
+      self.w_firetime = ReadByte();
     }
   }
 };
