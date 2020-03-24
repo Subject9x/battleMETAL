@@ -14,7 +14,7 @@ void() guard_post_dlights={
   
   if( self.deadflag == DEAD_NO ){
     makevectors(self.w_adj_ang);
-    adddynamiclight2( self.origin + (v_forward * 32), 128, '1 1 0.4', 0, "", PFLAGS_NOSHADOW);
+    adddynamiclight2( self.origin + (v_forward * 32), 128, '1 1 0.4', self.partTypeId, "", PFLAGS_NOSHADOW);
   }
 };
 
@@ -22,6 +22,11 @@ void() guard_post_dlights={
   Guard Post - Think
 */
 void() guard_post_th={
+  if( self.spawnflags & 2097152){
+    //shutoff lights
+    self.render_dlights = SUB_Null;
+    return;
+  }
   if( self.deadflag == DEAD_NO ){
     self.w_adj_ang_y = anglemod(self.w_adj_ang_y + 4);
   }
@@ -33,7 +38,7 @@ void() guard_post_th={
   Guard Post - DEATH
 */
 void() guard_post_die1={
-  
+  pointsound( self.origin + (v_up * 24), "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM);
   
   self.think = guard_post_die2;
   self.nextthink = time + 0.1;

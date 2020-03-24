@@ -120,6 +120,7 @@ float( entity dest, float changedflags ) ctrl_send_building={
     
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.spawnflags );
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){
@@ -131,6 +132,9 @@ float( entity dest, float changedflags ) ctrl_send_building={
     }
     if( self.data_idx == UI_BUILDING_radar ){
       WriteByte( MSG_ENTITY, self.attack_state );
+    }
+    if(  self.data_idx == UI_BUILDING_guard_tower ){
+      WriteByte( MSG_ENTITY, self.style );
     }
   }
   

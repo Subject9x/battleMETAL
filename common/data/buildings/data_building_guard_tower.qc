@@ -6,28 +6,34 @@ Overview:
   data file for the simple guard tower building
 */
 
-void() guard_tower_think={
-  building_burn();
-  self.think = guard_tower_think;
-  self.nextthink = time + 0.1;
+void() guard_tower_die2={
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+
 };
 
-void() guard_tower_die={
+void() guard_tower_die1={
+  if( self.deadflag > DEAD_NO ){
+    return;
+  }
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DEAD; 
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
   
-  building_die();
-};
-void() guard_tower_lightup={
-  local vector lightOrg;
-  makevectors(self.angles);
-  lightOrg = self.origin + (v_up * 36);
-  //world_make_dlight( (lightOrg + (v_forward * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  //world_make_dlight( (lightOrg + (v_forward * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  //world_make_dlight( (lightOrg + (v_right * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  //world_make_dlight( (lightOrg + (v_right * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  self.think = guard_tower_think;
+  //fire triggers when dead
+  trigger_event( self, self.trigOnDeath );
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
+  
+  self.think = guard_tower_die2;
   self.nextthink = time + 0.1;
-}
-
+};
 
 /*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - LIGHTS_OFF IS_MAPKEY -
 { model("models/buildings/towersmall/guardtower.md3"); }
@@ -41,7 +47,9 @@ Max Health = 200. (default)
 Shield Max = 150. (default)
 
 -------- KEYS --------
-.faction : <float> 1, 2, 3 - [REQURIED]
+.faction : <float> 1, 2, 3 - [REQUIRED]
+.style : <float>, light style. [OPTIONAL]
+.compOffset : <vector>, color for lighting.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -49,7 +57,6 @@ Shield Max = 150. (default)
 .trigOnTarget: <string> target, fire this ENTITY when spotting a target
 .delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
   -1 = fire trigOnTarget once
-.style : <float>, light style. OPTIONAL
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -79,9 +86,7 @@ void() building_guard_tower={
   self.deadflag = DEAD_NO;
   self.movetype = MOVETYPE_NONE;
   
-  self.th_die = building_die;
-  self.think = guard_tower_think;
-  self.nextthink = time + 0.1;
+  self.th_die = guard_tower_die1;
   
   if( !self.health) {
     self.health = self.max_health = 200;
@@ -112,13 +117,6 @@ void() building_guard_tower={
   makevectors(self.angles);
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
-  if( !(self.spawnflags & 2097152) ){
-    if( !self.style ){
-      self.style = 0;
-    }
-    self.think = guard_tower_lightup;
-    self.nextthink = time + 1;
-  }
   self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE);
 };

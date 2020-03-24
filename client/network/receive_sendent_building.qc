@@ -93,6 +93,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     
     self.faction = ReadByte();
     self.data_idx = ReadByte();
+    self.spawnflags = ReadByte();
     
     if( isNew ){
       makevectors(self.angles);
@@ -122,6 +123,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
     if( self.data_idx == UI_BUILDING_radar ){
       self.w_firetime = ReadByte();
+    }
+    if(  self.data_idx == UI_BUILDING_guard_tower ){
+      self.partTypeId = ReadByte();
     }
   }
 };
