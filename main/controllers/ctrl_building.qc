@@ -108,6 +108,7 @@ float( entity dest, float changedflags ) ctrl_send_building={
       WriteCoord( MSG_ENTITY, self.angles_z );
     }
   }
+  
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
@@ -120,5 +121,15 @@ float( entity dest, float changedflags ) ctrl_send_building={
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
   }
+  
+  if( (changedflags & SENDFLAG_MOVE) ){
+    if( self.data_idx == UI_BUILDING_repair_bay ){
+      WriteByte( MSG_ENTITY, self.cockpit.attack_state);
+      WriteCoord( MSG_ENTITY, self.compAltOffset_x );
+      WriteCoord( MSG_ENTITY, self.compAltOffset_y );
+      WriteCoord( MSG_ENTITY, self.compAltOffset_z );
+    }
+  }
+  
   return TRUE;
 };

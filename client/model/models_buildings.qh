@@ -9,6 +9,30 @@ Overview:
 
 .void() render_dlights;
 
+
+
+
+
+
+
+
+
+/*
+  Fuel Tank - DEATH
+*/
+void() fuel_tank_die1;
+void() fuel_tank_die2;
+void() fuel_tank_die3;
+void() fuel_tank_die4;
+void() fuel_tank_die5;
+void() fuel_tank_die6;
+void() fuel_tank_die7;
+void() fuel_tank_die8;
+void() fuel_tank_die9;
+void() fuel_tank_die10;
+void() fuel_tank_die11;
+void() fuel_tank_die12;
+
 void() repair_bay_dlights;
 /*
   Repair Bay - Active

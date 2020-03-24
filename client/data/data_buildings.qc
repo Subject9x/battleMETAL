@@ -126,30 +126,24 @@ void() data_building_fuel={
   self.shieldMax = 150;
   self.shieldRate = 0.15;
   self.deadflag = DEAD_NO; 
+  self.th_die = fuel_tank_die1;
 };
 
 void() data_building_repair={   
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/repair_bay/mdl_repair_bay.md3");
-  setsize(self, '-53 -53 0', '53 53 40');
+  setsize(self, '-53 -53 0', '53 53 80');
   self.max_health = 600;
   self.shieldMax = 250;
   self.shieldRate = 0.33;
-  if( cvar("skill") > SKILL_REG ){
-    self.reloadValue = 750;
-    self.reloadMax = 750;
-    self.reloadRate = 0.4;
-  }
-  else{
-    self.reloadValue = 1250;
-    self.reloadMax = 1250;
-    self.reloadRate = 0.75;
-  }
   self.deadflag = DEAD_NO;
   self.th_walk = repair_bay_active;
   self.th_die = repair_bay_die1;
   self.render_dlights = repair_bay_dlights;
+  self.w_firetime = 0;
+  self.compOffset = self.origin + (v_up * 75) + (v_forward * -24);
+  self.compAltOffset = self.origin;
 };
 
 void() data_building_hangar_med={

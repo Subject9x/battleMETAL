@@ -112,4 +112,16 @@ void( float isNew, float changeFlags) sendent_handle_building={
       }
     }
   }
+  
+    //rider for desired stat changes
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    if( self.data_idx == UI_BUILDING_repair_bay ){
+      self.w_firetime = ReadByte();
+      self.compAltOffset_x = ReadCoord();
+      self.compAltOffset_y = ReadCoord();
+      self.compAltOffset_z = ReadCoord();
+      self.think = self.th_walk;
+      self.nextthink  = time + 0.1;
+    }
+  }
 };

@@ -18,16 +18,17 @@ void() sendevent_turret_die={
   makevectors(self.angles);
   setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
   self.colormod = '0.85 0.85 0.85';
-  traceline(self.origin, self.origin + (v_up * (self.maxs_z * -0.5)), FALSE, self);
-  setorigin(self, trace_endpos);
+  
+  self.origin = self.origin + (v_up * (self.maxs_z * -0.5));
+  setorigin(self, self.origin);
   if( self.torsoCenter ){
     remove(self.torsoCenter);
   }
   weps = self.w_slot;
   while( weps ){
-    this = weps.w_slot;
-    remove(weps);
-    weps = this;
+    weps.think = SUB_Remove;
+    weps.nextthink = time + 0.1;
+    weps =  weps.w_slot;
   }
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);

@@ -38,6 +38,11 @@ void( float isNew, float entFlags ) sendent_handle_map={
 float() predraw_navpoint={
   self.angles_y = anglemod(self.angles_y + 0.33);
   setorigin(self, self.origin);
+  
+  if( self.faction != CLIENT_faction ){
+    self.alpha = 0;
+  }
+  
   return TRUE;
 };
 

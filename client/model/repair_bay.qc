@@ -40,11 +40,17 @@ void() repair_bay_dlights={
   Repair Bay - Active
 */
 void() repair_bay_active={
-
+  local vector fx;
   if( self.energy < 0 ){
     self.think = repair_bay_idle;
     self.nextthink = time + 0.1;
     return;
+  }
+  if( self.w_firetime == 2 ){
+    //see sv/main/ai/ai_api.qh -> ST_WALK for the '2' value.
+    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( self.compAltOffset - self.compOffset ) * 2, 1);
+    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), self.compAltOffset, normalize( self.compOffset - self.compAltOffset ) * -2, 1);
+    trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, self.compAltOffset);
   }
 
   self.think = repair_bay_active;
@@ -69,7 +75,9 @@ void() repair_bay_idle={
 /*
   Repair Bay - Repair
 */
-void() repair_bay_repair={};
+void() repair_bay_repair={
+  
+};
 
 /*
   Repair Bay - DEATH

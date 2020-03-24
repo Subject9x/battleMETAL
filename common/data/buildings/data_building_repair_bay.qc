@@ -63,12 +63,17 @@ void() hrepair_rep = [0, hrepair_rep]{
         }
       }
       if( fix != world){
+        self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
         end_repair = FALSE;
-        makevectors(self.angles);
-        fx = self.origin + (v_up * 75) + (v_forward * -24);
-        client_send_particle( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 3, 1);
-        client_send_particle( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
-        client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
+        /*
+          makevectors(self.angles);
+          fx = self.origin + (v_up * 75) + (v_forward * -24);
+          
+          client_send_particle( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 2, 1);
+          client_send_particle( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -2, 1);
+          client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
+        */
+        self.compAltOffset = fix.origin;
 
         fix.health = fix.health + self.reloadRate;
         self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.25));
@@ -109,9 +114,7 @@ void() hrepair_rep = [0, hrepair_rep]{
     self.cockpit.think = building_repair_node_think;
     self.cockpit.nextthink = time + 3;
     self.cockpit.attack_state = ST_MELEE;
-    
-    world_update_dlight( self, -1, '0.25 0.9 0.15', 50, 2, '-1 -1 -1'); 
-    return;
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   }
 };
 
@@ -317,7 +320,7 @@ void() building_human_repair={
   setorigin(repairNode, this.compOffset);
   
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-  
+  self.compAltOffset = self.origin;
   self.th_die = hrepair_die;
   self.th_stand = hrepair_th;
   self.th_walk = hrepair_rep;
