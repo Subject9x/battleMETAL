@@ -6,13 +6,63 @@ Overview:
   CSQC-side animations for power plant
 */
 
+
+/*
+  Shield Generator - IDLE
+*/
+void() power_plant_idle={
+  local vector smoke;
+  if( self.energy > 0 ){
+    self.think = power_plant_active;
+    self.nextthink = time + 1;
+    return;
+  }
+  
+  makevectors(self.angles);
+  smoke = self.origin + (v_up * (self.maxs_z * 0.33)) + (v_right * self.mins_x * 0.75) + (v_forward * self.maxs_y);
+  
+  self.think = power_plant_idle;
+  self.nextthink = time + 1;
+};
+
+/*
+  Shield Generator - IDLE
+*/
+void() power_plant_active={
+  local vector vfx, vfx2, vfx3;
+  
+  if( self.energy <= 0 ){
+    self.think = power_plant_idle;
+    self.nextthink = time + 0.1;
+    return;
+  }
+  
+  //local vfx - green ball
+  vfx = randompos( self.compAltOffset, self.compOffset);
+  te_field_rad( vfx, normalize(self.origin - vfx), 0.5 );
+  
+  //local vfx - blue vent front
+  vfx2 = randompos(self.wepFireOffset, self.wepFireOffsetCache);
+  te_field_mineral( vfx2, normalize(self.origin - vfx2), 1 );
+    
+  //local vfx - blue vent front
+  vfx3 = randompos(self.cockpitOffset, self.w_adj_ang);
+  te_field_mineral( vfx3, normalize(self.origin - vfx3), 1 );
+   
+  self.think = power_plant_active;
+  self.nextthink = time + (random() * 1);
+};
+
+
 /*
   DEATH
 */
 void() power_plant_die1={
   local vector margin;
-
-  margin = randompos(self.absmin * 1.5, self.absmax * 1.5);
+  
+  self.solid = SOLID_NOT;
+  
+  margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
   te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
   te_field_mineral_light( margin, rint(random()*3) );

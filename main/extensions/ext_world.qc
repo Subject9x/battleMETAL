@@ -328,25 +328,20 @@ void( vector org, entity parent, float id, vector colr, float stile, float pFlag
   newLight.skin = skinNum;
   newLight.light_lev = lightRadius;
   newLight.data_idx = id;
+  setsize( newLight, '0 0 0', '0 0 0');
   setorigin( newLight, org );
-  newLight.think = SUB_Null;
-  newLight.nextthink = time + 0.1;
 };
 
 void( entity parent ) world_remove_dlight={
   local entity chaine;
   local entity ref;
   
-  chaine = findchainentity( owner, parent );
-  while( chaine ){
-    if( chaine.classname == "dynamicLight" ){
-      ref = chaine;
-      chaine = chaine.chain;
-      remove(ref);
+  for( chaine = nextent(world); chaine.owner == parent; chaine = nextent(chaine) ){
+    if( chaine.classname != "dynamicLight" ){
+      continue;
     }
-    else{
-      chaine = chaine.chain;
-    }
+    chaine.think = SUB_Remove;
+    chaine.nextthink = time + 0.1;
   }
 };
 

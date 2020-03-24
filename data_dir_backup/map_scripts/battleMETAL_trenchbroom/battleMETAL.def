@@ -1188,27 +1188,40 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 
-/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/repair/repair.md3"); }
+[ADVISED] - put it near a power plant for more energy.
+
+Repairs vehicles, mostly for player.
+AI DOES NOT know how to use Repair Bays, sorry.
+
+Health = 600. (default)
+
+Energy Max = 1000 units. (default)
+Energy Rate = 0.67 / 0.1 tic. (default)
+
+Shield Max = 250. (default)
+Shield Rate = 0. (default)
+
+Repair Rate = 4 HP / 0.1 tic.
+Repair Max = 1250 | 750 (default based on difficulty)
+
+behavior: death() will severely damage any player standing in it when it finally kabooms
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+faction: <float> = 1, 2, 3 [REQUIRED]
+targetname : <string>, used for trigger calls from other ents.
+target : <string> name of ent to go to, usually a patrol node.
+trigOnSpawn: <string> ent, fire this ENTITY when activated.
+trigOnDeath: <string> target, fire this ENTITY when killed.
+reloadMax: <float> max amount of repair charge.
+reloadRate: <float> repair speed.
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 

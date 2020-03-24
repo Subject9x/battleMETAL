@@ -6,6 +6,45 @@ Overview:
   CSQC-side animations for specific models.
 */
 
+
+.void() render_dlights;
+
+void() repair_bay_dlights;
+/*
+  Repair Bay - Active
+*/
+void() repair_bay_active;
+
+/*
+  Repair Bay - Idle
+*/
+void() repair_bay_idle;
+
+/*
+  Repair Bay - Repair
+*/
+void() repair_bay_repair;
+
+/*
+  Repair Bay - DEATH
+*/
+void() repair_bay_die1;
+void() repair_bay_die2;
+void() repair_bay_die3;
+void() repair_bay_die4;
+void() repair_bay_die5;
+void() repair_bay_die6;
+void() repair_bay_die7;
+void() repair_bay_die8;
+void() repair_bay_die9;
+void() repair_bay_die10;
+void() repair_bay_die11;
+void() repair_bay_die12;
+void() repair_bay_die13;
+void() repair_bay_die14;
+void() repair_bay_die15;
+void() repair_bay_die16;
+
 /*
   Power Plant - DEATH
 */
@@ -29,11 +68,12 @@ void() power_plant_die16;
 /*
   Power Plant - Idle
 */
-
+void() power_plant_idle;
 
 /*
   Power Plant - Active
 */
+void() power_plant_active;
 
 /*
   Shield Generator - DEATH
@@ -58,8 +98,8 @@ void() shield_gen_die16;
 /*
   Shield Generator - Idle
 */
-
-
+void() shield_gen_idle;
 /*
   Shield Generator - Active
 */
+void() shield_gen_active;

@@ -36,9 +36,21 @@ void() sendevent_building_die={
   SendEntity - Building =======================================
 */
 void( float isNew, float changeFlags) sendent_handle_building={
+  
+  self.energy = ReadByte();
+  self.shield = ReadByte();
+  
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
+      self.origin_x = ReadCoord();
+      self.origin_y = ReadCoord();
+      self.origin_z = ReadCoord();
+      
+      self.angles_x = anglemod(ReadCoord());
+      self.angles_y = anglemod(ReadCoord());
+      self.angles_z = anglemod(ReadCoord());
+      setorigin(self, self.origin);
       if( self.th_die ){
         self.th_die();
       }
@@ -71,7 +83,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   
-  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -85,6 +96,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.data_idx = ReadByte();
     
     if( isNew ){
+      makevectors(self.angles);
       self.solid = SOLID_SLIDEBOX;
       self.movetype = MOVETYPE_NONE;
       data_sync_new_building(self.data_idx);
@@ -92,7 +104,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.flags = self.flags | (FL_MONSTER | FL_UNIT); 
       self.colormod = '1 1 1';
       setorigin(self, self.origin);
-      self.drawmask = MASK_ENGINE;
+      self.drawmask = MASK_ENGINE;      
+      self.scale = 1;
+      self.alpha = 1;
+      if( self.th_walk ){
+        self.th_walk();
+      }
     }
   }
 };

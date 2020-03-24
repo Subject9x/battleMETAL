@@ -23,7 +23,6 @@ Overview:
 .float ai_attack_chance;
 
 //Server-side 'thin' unit data
-.vector cockpitOffset;
 
 .vector torsoCenterOffset;
 .vector torsoCenterAngles;
@@ -47,6 +46,7 @@ Overview:
 .vector legAngles;
 
 #endif
+.vector cockpitOffset;
 
 .float data_idx;
 .float vec_size;

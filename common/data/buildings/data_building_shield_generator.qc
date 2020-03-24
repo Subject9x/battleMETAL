@@ -136,14 +136,14 @@ void() hshield_th = [0, hshield_th]{
     self.energy = self.energyMax;
   }
   
-  if(self.energy > 0){
-    if( time > self.shieldHitDelay ){
-      self.shield = self.shield + self.shieldRate * 2;  //generators get their own shields for free
-      if(self.shield > self.shieldMax){
-        self.shield = self.shieldMax;
-      }  
-    }
+  if( time > self.shieldHitDelay ){
+    self.shield = self.shield + self.shieldRate * 2;  //generators get their own shields for free
+    if(self.shield > self.shieldMax){
+      self.shield = self.shieldMax;
+    }  
   }
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 }
 
 /*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -

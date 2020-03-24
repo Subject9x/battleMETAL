@@ -211,7 +211,6 @@ void( vector org, float vecSize ) te_shield_explode={
   setorigin( explode, org);
   te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22');
   explode.drawmask = MASK_NORMAL;
-  //pointparticles?
 };
 
 /*

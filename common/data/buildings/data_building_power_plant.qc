@@ -114,6 +114,8 @@ void() hpower_th = [0, hpower_th]{
   if(self.energy > self.energyMax){
     self.energy = self.energyMax;
   }
+    
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 }; 
 
 
@@ -174,7 +176,7 @@ void() building_human_power={
   self.deadflag = DEAD_NO;
   macro_set_model("q3mdl/testball.md3", self.skin, 0) 
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  setsize(self, '-80 -80 0', '80 80 40');
+  setsize(self, '-80 -80 0', '80 80 58');
   
   if( !self.health) {
     self.health = self.max_health = 1200;

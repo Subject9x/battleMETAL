@@ -222,6 +222,20 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   VIEW_SCALE = 0.35;
   	// add any polygons we want here
 
+
+  //dynamic lights?
+  local entity thingLight;
+  local entity notLight;
+  for( thingLight = nextent(world); thingLight != world; thingLight = nextent(thingLight)){
+    if( !thingLight.render_dlights ){
+      continue;
+    }
+    notLight = self;
+    self = thingLight;
+      thingLight.render_dlights();
+    self = notLight;
+  }
+
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)

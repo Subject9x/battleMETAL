@@ -64,7 +64,7 @@ void() data_building_shield={
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3");
-  setsize(self, '-56 -56 0', '56 56 28');
+  setsize(self,  '-48 -48 0', '48 48 32');
   self.max_health = 500;
   self.shield = 0;
   self.shieldMax = 500;
@@ -74,24 +74,34 @@ void() data_building_shield={
   self.energyMax = 2000;
   self.deadflag = DEAD_NO;
   self.th_die = shield_gen_die1;
-  self.scale = 1;
-  self.alpha = 1;
+  self.th_walk = shield_gen_active;
+  //local vfx
+  self.compOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * self.mins_x) + (v_forward * self.mins_y);
+  self.compAltOffset = self.origin + (v_up * self.maxs_z) + (v_right * (self.mins_x * 0.15)) + (v_forward * (self.mins_y * 0.15));
 };
 
 void() data_building_power={
   self.vec_name = "Power Generator";
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/power_plant/mdl_bld_h_power.md3");
-  setsize(self, '-75 -75 0', '75 75 26');
+  setsize(self, '-80 -80 0', '80 80 58');
   self.max_health = 1200;
   self.shield = 0;
   self.shieldMax = 300;
-  self.shieldRate = 0.67;
   self.energy = 0;
-  self.energyMax= 4000;
-  self.energyRate= 4;
+  self.energyMax = 4000;
   self.deadflag = DEAD_NO; 
   self.th_die = power_plant_die1;
+  self.th_walk = power_plant_active;
+  //local vfx - green ball
+  self.compOffset = self.origin + (v_up * (self.maxs_z * 0.8)) + (v_right * self.mins_x * 0.85) + (v_forward * (self.mins_y * 0.65));
+  self.compAltOffset = self.origin + (v_up * (self.maxs_z * 0.85)) + (v_right * (self.mins_x * 0.67)) + (v_forward * (self.mins_y * 0.45));
+  //local vfx - blue vent front
+  self.wepFireOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * 0) + (v_forward * self.maxs_y * 0.9);
+  self.wepFireOffsetCache = self.origin + (v_up * (self.maxs_z * 0.45)) + (v_right * (self.maxs_x * 0.25)) + (v_forward * self.maxs_y * 0.9);
+  //local vfx - blue vent front
+  self.cockpitOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * 0) + (v_forward * self.mins_y * 0.9);
+  self.w_adj_ang = self.origin + (v_up * (self.maxs_z * 0.45)) + (v_right * (self.maxs_x * 0.25)) + (v_forward * self.mins_y * 0.9);
 };
 
 void() data_building_hangar_large={
@@ -124,7 +134,6 @@ void() data_building_repair={
   setmodel(self, "q3mdl/buildings/repair_bay/mdl_repair_bay.md3");
   setsize(self, '-53 -53 0', '53 53 40');
   self.max_health = 600;
-  self.shield = 0;
   self.shieldMax = 250;
   self.shieldRate = 0.33;
   if( cvar("skill") > SKILL_REG ){
@@ -138,6 +147,9 @@ void() data_building_repair={
     self.reloadRate = 0.75;
   }
   self.deadflag = DEAD_NO;
+  self.th_walk = repair_bay_active;
+  self.th_die = repair_bay_die1;
+  self.render_dlights = repair_bay_dlights;
 };
 
 void() data_building_hangar_med={

@@ -92,8 +92,21 @@ float( entity dest, float changedflags ) ctrl_send_turret={
 float( entity dest, float changedflags ) ctrl_send_building={
   WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
   WriteByte( MSG_ENTITY, changedflags );
+  
+  WriteByte( MSG_ENTITY, self.energy );
+  WriteByte( MSG_ENTITY, self.shield );
+  
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
+    if( self.deadflag > DEAD_NO ){
+      WriteCoord( MSG_ENTITY, self.origin_x );
+      WriteCoord( MSG_ENTITY, self.origin_y );
+      WriteCoord( MSG_ENTITY, self.origin_z );
+      
+      WriteCoord( MSG_ENTITY, self.angles_x );
+      WriteCoord( MSG_ENTITY, self.angles_y );
+      WriteCoord( MSG_ENTITY, self.angles_z );
+    }
   }
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
