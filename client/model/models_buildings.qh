@@ -178,3 +178,23 @@ void() hangar_medium_die13;
 void() hangar_medium_die14;
 void() hangar_medium_die15;
 void() hangar_medium_die16;
+
+/*
+  Hangar Large  - DEATH
+*/
+void() hangar_large_die1;
+void() hangar_large_die2;
+void() hangar_large_die3;
+void() hangar_large_die4;
+void() hangar_large_die5;
+void() hangar_large_die6;
+void() hangar_large_die7;
+void() hangar_large_die8;
+void() hangar_large_die9;
+void() hangar_large_die10;
+void() hangar_large_die11;
+void() hangar_large_die12;
+void() hangar_large_die13;
+void() hangar_large_die14;
+void() hangar_large_die15;
+void() hangar_large_die16;

@@ -120,7 +120,8 @@ void() data_building_hangar_large={
   self.shield = 0;
   self.shieldMax = 300;
   self.shieldRate = 0.2;
-  self.deadflag = DEAD_NO; 
+  self.deadflag = DEAD_NO;
+  self.th_die = hangar_large_die1;
 };
 
 void() data_building_fuel={
