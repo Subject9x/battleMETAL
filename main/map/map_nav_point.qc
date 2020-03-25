@@ -109,6 +109,11 @@ void() map_nav_point={
   self.movetype = MOVETYPE_FLY;
   droptofloor();
   
+  //wild-  EF_NODEPTHTEST allows SendEnt to blast this through to all clients!
+  self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
+  self.alpha = 0.01;
+  self.scale = 0.01;
+  
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
   self.use = nav_point_use;

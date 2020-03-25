@@ -40,6 +40,7 @@ void() cl_particles_fogFrame;
 
 .void() pcl_explode;  //self implementing, whoo
 .float pcl_effectnum;
+.float trail_effectnum;
 .vector pcl_velocity;
 .float pcl_lifetime;
 .float pcl_count;
@@ -70,6 +71,8 @@ void( vector org, float total ) te_field_mineral_light;
 void( vector particleOrg, vector particleEnd ) te_field_quantum;
 void( vector org, float total ) te_field_quantum_light;
 
+void( vector org, float total ) te_unit_dust;
+void() te_unit_dust_set;
 
 /*
   Client-side explosion shells

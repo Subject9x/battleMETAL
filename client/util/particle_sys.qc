@@ -90,6 +90,42 @@ void() cl_particles_fogFrame={
   }
 };
 
+void( vector org, float total ) te_unit_dust={
+  local vector dir;
+  local vector torg;
+  local float partcle;
+  
+  makevectors(self.angles);
+  torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
+  //dir = te_apply_wind( torg );
+  dir = normalize( dir - org ) * 4;
+    
+  pointparticles( self.trail_effectnum, torg , dir * 2, total);
+};
+
+void() te_unit_dust_set={
+  local float dbg;
+  dbg = 1;
+  switch( dbg ){
+    case 1:
+      self.trail_effectnum = particleeffectnum("TE_DUST_ICE");
+      break;
+    case 2: 
+      self.trail_effectnum = particleeffectnum("TE_DUST_URBAN");
+      break;
+    case 3:
+      self.trail_effectnum = particleeffectnum("TE_DUST_BADLANDS");
+      break;
+    case 4:
+      self.trail_effectnum = particleeffectnum("TE_DUST_TUNDRA");
+      break;
+    default:
+      self.trail_effectnum = particleeffectnum("TE_DUST_DESERT");
+      break;
+  }
+};
+
+
 void() te_building_fire_th={
   if( self.owner.deadflag > DEAD_NO ){
     self.think = SUB_Remove;

@@ -32,11 +32,14 @@ void( float isNew, float entFlags ) sendent_handle_map={
     case DATA_MAP_OBJ:
       //data_objective( isNew, entFlags );
       break;
+    case DATA_MAP_DMG:
+      data_map_damage( isNew, entFlags );
+      break;
   }
 };
 
 float() predraw_navpoint={
-  self.angles_y = anglemod(self.angles_y + 0.33);
+  self.angles_y = anglemod(self.angles_y + 0.15);
   setorigin(self, self.origin);
   
   if( self.faction != CLIENT_faction ){
@@ -72,30 +75,32 @@ void( float isNew, float entFlags ) data_nav_point={
     setorigin(self, self.origin);
   }
   
-  if( isNew ){
-    if( MENU_NAV_LIST ){
-      MENU_NAV_LIST.partNext = self;
-      self.partPrev = MENU_NAV_LIST;
-      MENU_NAV_LIST = self;
+  if( entFlags & SENDFLAG_NEWENT ){
+    if( isNew ){
+      if( MENU_NAV_LIST ){
+        MENU_NAV_LIST.partNext = self;
+        self.partPrev = MENU_NAV_LIST;
+        MENU_NAV_LIST = self;
+      }
+      else{
+        MENU_NAV_LIST = self;
+      }
+    
+      self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
+      self.alpha = 0.33;
+      self.colormod = '0 1 0';
+      self.vec_name = NAVNAMES[self.data_idx];
+      setmodel(self, "q3mdl/map/nav_point.obj");
+      setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
+      setorigin( self, self.origin );                   // end up somewhere a player can reach
+      self.movetype = MOVETYPE_FLY;
+      droptofloor();
+      self.movetype = MOVETYPE_NONE;
+      self.solid = SOLID_TRIGGER;
+      setorigin(self, self.origin);
+      self.predraw = predraw_navpoint;
+      self.drawmask = MASK_NORMAL; 
     }
-    else{
-      MENU_NAV_LIST = self;
-    }
-  
-    self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
-    self.alpha = 0.33;
-    self.colormod = '0 1 0';
-    self.vec_name = NAVNAMES[self.data_idx];
-    setmodel(self, "q3mdl/map/nav_point.obj");
-    setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
-    setorigin( self, self.origin );                   // end up somewhere a player can reach
-    self.movetype = MOVETYPE_FLY;
-    droptofloor();
-    self.movetype = MOVETYPE_NONE;
-    self.solid = SOLID_TRIGGER;
-    setorigin(self, self.origin);
-    self.predraw = predraw_navpoint;
-    self.drawmask = MASK_NORMAL; 
   }
 };
 
@@ -178,132 +183,84 @@ void( float isNew, float entFlags ) data_deploy={
 };
 
 float() predraw_damage={
-  
+
   return TRUE;
 };
 
-
-void() map_damage_zone_particles_shields={
-  local vector velocityOffset, particleOffset;
+void() map_damage_zone_dlights={
+  local vector spotlight;
   
-  velocityOffset = self.dest + (v_up * 16);
-  te_particlerain( self.absmin, self.absmax, normalize(velocityOffset - self.dest) * 50, floor(self.compAltOffset_x / self.count), 244); 
-
-  if( time > self.count1 ){
-    self.count1 = time + (random() * 0.5);
-    
-    particleOffset_x = crandom() * self.compAltOffset_x;
-    particleOffset_z = crandom() * self.compAltOffset_y;
-    particleOffset_y = random() * (self.compAltOffset_z * 0.25);
-    
-    particleOffset = self.dest + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
-    if( random() < 0.8){
-      te_field_mineral(particleOffset, normalize(velocityOffset - self.dest) * 25, 5);
-    }
-    
-    te_field_mineral_light(particleOffset, 1);
-    if( self.compAltOffset_x > 128){
-      te_field_mineral_light(particleOffset, 1);
-      if( self.compAltOffset_x > 256){
-        te_field_mineral_light(particleOffset, 1);
-        if( self.compAltOffset_x > 512){
-          te_field_mineral_light(particleOffset, 1);
-        }
+  if( self.isActive ){
+    if( (self.damageType & 1) ){
+      //shield
+      if( self.effect1.isActive == TRUE ){
+        adddynamiclight2(  self.effect1.origin, 128, '0 1 0.8', 6, "", PFLAGS_NOSHADOW);
       }
     }
-  }
-};
-
-void() map_damage_zone_particles_armor={
-  local vector velocityOffset, particleOffset;
-  
-  velocityOffset = self.dest + (v_up * 16);
-  te_particlecube( self.absmin, self.absmax, normalize(velocityOffset - self.dest) * 5, floor(self.compAltOffset_x / self.count), 176, FALSE, 1); 
-
-  if( time > self.count1 ){
-    self.count1 = time + (random() * 0.5);
-    
-    particleOffset_x = crandom() * self.compAltOffset_x;
-    particleOffset_z = crandom() * self.compAltOffset_y;
-    particleOffset_y = random() * (self.compAltOffset_z / 2);
-    
-    particleOffset = self.dest + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
-    if( random() < 0.2){
-      te_field_rad(particleOffset, normalize(velocityOffset - self.dest) * 4, 1);
-    }
-    te_field_rad_light(particleOffset, 1);
-    if( self.compAltOffset_x > 256){
-      te_field_rad_light(particleOffset, 1);
-      if( self.compAltOffset_x > 512){
-        te_field_rad_light(particleOffset, 1);
-        if( self.compAltOffset_x > 1024){
-          te_field_rad_light(particleOffset, 1);
-        }
+    if( (self.damageType & 2) ){
+      //armor
+      if( self.effect2.isActive == TRUE ){
+        adddynamiclight2( self.effect2.origin, 12, '0.8 0.8 0', 3, "", PFLAGS_NOSHADOW);
       }
     }
-  }
-};
-
-void() map_damage_zone_particles_energy={
-  local vector velocityOffset, particleOrigin, particleOffset;
-  
-  velocityOffset = self.dest + (v_up * 2);
-  te_particlecube( self.absmin, self.absmax, '0 0 0', floor(self.compAltOffset_x / self.count), 128, FALSE, 10); 
-  
-  if( time > self.count1 ){
-    self.count1 = time + (random() * 0.5);
-    
-    particleOffset_x = crandom() * self.compAltOffset_x;
-    particleOffset_z = crandom() * self.compAltOffset_y;
-    particleOffset_y = random() * (self.compAltOffset_z / 2);
-    
-    particleOffset = self.dest + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
-    
-    if( random() <= 0.8 ){
-      particleOrigin_x = crandom() * self.compAltOffset_x;
-      particleOrigin_z = crandom() * self.compAltOffset_y;
-      particleOrigin_y = random() * self.compAltOffset_z;
-      particleOrigin = self.dest + (v_right * particleOrigin_x) + (v_forward * particleOrigin_z) + (v_up * particleOrigin_y);
-      te_field_quantum(particleOffset, particleOrigin);
-    }
-    
-    te_field_quantum_light(particleOffset, 1);
-    if( self.compAltOffset_x > 256){
-      te_field_quantum_light(particleOffset, 1);
-      if( self.compAltOffset_x > 512){
-        te_field_quantum_light(particleOffset, 1);
-        if( self.compAltOffset_x > 1024){
-          te_field_quantum_light(particleOffset, 1);
-        }
+    if( (self.damageType & 4) ){
+      //energy
+      if( self.effect3.isActive == TRUE ){
+        adddynamiclight2( self.effect3.origin, 64, '1 0.4 0.6', 2, "", PFLAGS_NOSHADOW);
       }
     }
   }
 };
 
 void() map_damage_zone_think={
-  
-  makevectors(self.angles);
-  if( (self.damageType & 1) )
-    map_damage_zone_particles_shields();
-  
-  if( (self.damageType & 2) )
-    map_damage_zone_particles_armor();
-  
-  if( (self.damageType & 4) )
-    map_damage_zone_particles_energy();
-  
-  if( (self.spawnflags & 8) ){
-    //spawnflags 8 = remove after first lifetime countdown
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.001;
-    return;
-  }
-  
-  if( (self.spawnflags & 4) ){
-    //reactivate damage zone after timer
-    self.think = map_damage_zone_cool;
-    self.nextthink = time + self.wait;
-    return;
+ 
+  if( self.isActive ){
+    makevectors(self.angles);
+    if( self.effect1 != world ){
+      if( time > self.effect1.wait ){
+        if( random() > 0.1 ){
+          self.effect1.origin = randompos(self.effect1.absmin, self.effect1.absmax);
+          self.effect1.isActive = TRUE;
+          self.effect1.wait = time + random() * 2;
+          te_field_mineral( self.effect1.origin, normalize((self.effect1.origin + (v_up * 10)) - self.effect1.origin) * 25, 5);
+          te_particlecube( self.absmin, self.absmax, normalize((self.effect1.origin + (v_up * 10)) - self.effect1.origin) * 25, random() * 6, 244, FALSE, 32); 
+        }
+        else{
+          self.effect1.isActive = FALSE;
+          self.effect1.wait = time + random() * 5;
+        }
+      }
+    }
+    if( self.effect2 != world ){
+      if( time > self.effect2.wait ){
+        if( random() > 0.4 ){
+          self.effect2.origin = randompos(self.effect2.absmin, self.effect2.absmax);
+          self.effect2.isActive = TRUE;
+          self.effect2.wait = time + random() * 5;
+          te_field_rad(self.effect2.origin, normalize((self.effect2.origin + (v_up * 10)) - self.effect2.origin) * 7, 1);
+          te_particlecube( self.absmin, self.absmax, '0 0 0', random() * 10, 176, FALSE, 10); 
+        }
+        else{
+          self.effect2.isActive = FALSE;
+          self.effect2.wait = time + random() * 3;
+        }
+      }
+    }
+    if( self.effect3 != world ){
+      if( time > self.effect3.wait ){
+        if( random() > 0.33 ){
+          self.effect3.origin = randompos(self.effect3.absmin, self.effect3.absmax);
+          self.effect3.isActive = TRUE;
+          self.effect3.wait = time + 2;
+          te_field_quantum( self.effect3.origin, randompos(self.effect3.absmin, self.effect3.absmax));
+          te_particlecube( self.absmin, self.absmax, '0 0 0', random() * 4, 128, FALSE, 10); 
+        }
+        else{
+          self.effect3.isActive = FALSE;
+          self.effect3.wait = time + random() * 4;
+        }
+      }
+    }
   }
   
   //otherwise do nothing else
@@ -311,44 +268,87 @@ void() map_damage_zone_think={
   self.nextthink = time + 0.1;
 };
 
-void() map_damage_zone_cool={
-  self.isActive = TRUE;
-  if( (self.spawnflags & 2) ){
-    self.think = map_damage_zone_think;
-    self.nextthink = time + self.data_lifetime;
+void( .entity efx ) data_map_damage_effect={
+  if( self.efx == world ){
+    self.efx = spawn();
+    self.efx.drawmask = MASK_NORMAL;
+    self.efx.origin =  self.origin;
+    self.efx.absmax = self.absmax;
+    self.efx.absmin = self.absmin;
+    self.efx.isActive = TRUE;
+    self.efx.wait = 0;
+    addentity(self.efx);
   }
 };
 
 void( float isNew, float entFlags ) data_map_damage={
-  local vector min, max;
   local float funcFlag;
-  self.mins = te_read_vector();
-  self.maxs = te_read_vector();
-  if( isNew ){
-    self.damageValue = ReadByte();
+  
+  if( (entFlags & SENDFLAG_MOVE) ){
+    //changes damage types / boundary size
+    self.absmin = te_read_vector();
+    self.absmax = te_read_vector();
+    
     self.damageType = ReadByte();
-    self.spawnflags = ReadByte();
     self.count = ReadByte();
     self.count1 = ReadByte();
+
     self.compAltOffset = te_read_vector();
-    
-    self.solid = SOLID_TRIGGER;
-    self.movetype = MOVETYPE_NONE;
-    self.alpha = 0.01;
-    self.colormod = '0 0 0';
-    
-    funcFlag = ReadByte();
-    if( funcFlag ){
-      setmodel( self, modelnameforindex(ReadByte()));
-      setsize(self, self.mins, self.maxs);
+    self.dest = te_read_vector();
+    self.origin = self.absmin - self.absmax;
+  }
+  
+  if( (entFlags & SENDFLAG_BURN) ){
+    //use to adjust isActive, toggling the field
+    self.isActive = ReadByte();
+    if( self.isActive ){
+      self.nextthink = time + 0.1;
     }
-    else{
-      setmodel(self, "q3mdl/testball.md3");
-      setsize(self, self.mins, self.maxs);
+  }
+  
+  if( (entFlags & SENDFLAG_NEWENT) ){
+    self.spawnflags = ReadLong();
+    
+    if( isNew ){
+      self.drawmask = MASK_NORMAL;
+      self.alpha = 0.01;
+      self.render_dlights = map_damage_zone_dlights;
+      self.think = map_damage_zone_think;
+      if( self.isActive ){
+        self.nextthink = time + 0.1;
+      }
+      
+      if( (self.damageType & 1) ){
+        if( self.effect1 == world ){
+          //shields();
+          data_map_damage_effect( effect1 );
+        }
+      }
+      if( (self.damageType & 2) ){
+        //armor();
+        if( self.effect2 == world ){
+          data_map_damage_effect( effect2 );
+        }
+      }
+      if( (self.damageType & 4) ){
+        //energy();
+        if( self.effect3 == world  ){
+          data_map_damage_effect( effect3 );
+        }
+      }
+      
+      if( (self.spawnflags & 4194304) ){
+        if( lastMapKeyObject ){
+          //build linked list backwards for later forward iteration.
+          lastMapKeyObject.w_slot = self;
+          lastMapKeyObject = self;
+        }
+        else{
+          //start chain
+          mapKeyObject = self;
+          lastMapKeyObject = self;
+        }
+      }
     }
-    setorigin(self, self.origin);
-    self.think = map_damage_zone_think;
-    self.nextthink = time + 0.1;
-    self.drawmask = MASK_ENGINE;
   }
 };

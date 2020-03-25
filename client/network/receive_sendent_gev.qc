@@ -17,11 +17,14 @@ void() sendevent_gev_move={
   
   for(weps = self.w_slot; weps != world; weps = weps.w_slot){
     if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
-      
+      weps.angles = self.angles;
     }
     else{
       weps.angles = self.torsoCenter.angles;
     }
+  }
+  if( self.trail_effectnum > 0 ){
+    te_unit_dust( self.origin, rint(random() * 3) );
   }
 };
 
@@ -141,6 +144,8 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       setsize(self, self.mins, self.maxs);
 
       sendent_ini_interpolate();
+      te_unit_dust_set();
+      
       self.predraw = predraw_tank;
     }
   }

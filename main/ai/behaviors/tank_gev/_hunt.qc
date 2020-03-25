@@ -37,7 +37,6 @@ void() ai_gev_enter_hunt={
 void() ai_gev_hunt1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_gev_enter_recall)
@@ -55,7 +54,6 @@ void() ai_gev_hunt1={
 void() ai_gev_hunt2={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   
   if( !ai_valid_target(self.enemy) ){
@@ -74,7 +72,6 @@ void() ai_gev_hunt2={
 void() ai_gev_hunt3={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   
   if( !ai_valid_target(self.enemy) ){
@@ -93,7 +90,6 @@ void() ai_gev_hunt3={
 void() ai_gev_hunt4={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   
   if( !ai_valid_target(self.enemy) ){
@@ -112,7 +108,6 @@ void() ai_gev_hunt4={
 void() ai_gev_hunt5={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_gev_enter_recall)
@@ -130,7 +125,6 @@ void() ai_gev_hunt5={
 void() ai_gev_hunt6={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   
   if( !ai_valid_target(self.enemy) ){
@@ -149,7 +143,6 @@ void() ai_gev_hunt6={
 void() ai_gev_hunt7={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   
   if( !ai_valid_target(self.enemy) ){
@@ -168,7 +161,6 @@ void() ai_gev_hunt7={
 void() ai_gev_hunt8={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   
   if( !ai_valid_target(self.enemy) ){
@@ -187,7 +179,6 @@ void() ai_gev_hunt8={
 void() ai_gev_hunt9={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   
   if( !ai_valid_target(self.enemy) ){
@@ -206,7 +197,6 @@ void() ai_gev_hunt9={
 void() ai_gev_hunt10={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   
   if( !ai_valid_target(self.enemy) ){
@@ -225,7 +215,6 @@ void() ai_gev_hunt10={
 void() ai_gev_hunt11={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_gev_enter_recall)
@@ -245,7 +234,6 @@ void() ai_gev_hunt12={
   
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_gev_enter_recall)

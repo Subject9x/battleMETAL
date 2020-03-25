@@ -20,7 +20,6 @@ void() ai_gev_enter_flank={
 void() ai_gev_flank1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;
@@ -40,7 +39,6 @@ void() ai_gev_flank1={
 void() ai_gev_flank2={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;
@@ -62,7 +60,6 @@ void() ai_gev_flank2={
 void() ai_gev_flank3={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;
@@ -80,7 +77,6 @@ void() ai_gev_flank3={
 void() ai_gev_flank4={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;
@@ -98,7 +94,6 @@ void() ai_gev_flank4={
 void() ai_gev_flank5={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;
@@ -118,7 +113,6 @@ void() ai_gev_flank5={
 void() ai_gev_flank6={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;
@@ -139,7 +133,6 @@ void() ai_gev_flank6={
 void() ai_gev_flank7={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;
@@ -160,7 +153,6 @@ void() ai_gev_flank7={
 void() ai_gev_flank8={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;
@@ -182,7 +174,6 @@ void() ai_gev_flank8={
 void() ai_gev_flank9={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float vel;
   vel = (self.data_speed_strafe + self.data_speed_forward)/2;

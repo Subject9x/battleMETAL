@@ -20,7 +20,6 @@ void() ai_gev_enter_recall={
 void() ai_gev_recall1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall2);
@@ -32,7 +31,6 @@ void() ai_gev_recall1={
 void() ai_gev_recall2={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall3);
@@ -44,7 +42,6 @@ void() ai_gev_recall2={
 void() ai_gev_recall3={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall4);
@@ -56,7 +53,6 @@ void() ai_gev_recall3={
 void() ai_gev_recall4={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall5);
@@ -68,7 +64,6 @@ void() ai_gev_recall4={
 void() ai_gev_recall5={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall6);
@@ -80,7 +75,6 @@ void() ai_gev_recall5={
 void() ai_gev_recall6={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall7);
@@ -92,7 +86,6 @@ void() ai_gev_recall6={
 void() ai_gev_recall7={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall8);
@@ -104,7 +97,6 @@ void() ai_gev_recall7={
 void() ai_gev_recall8={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall9);
@@ -116,7 +108,6 @@ void() ai_gev_recall8={
 void() ai_gev_recall9={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall10);
@@ -128,7 +119,6 @@ void() ai_gev_recall9={
 void() ai_gev_recall10={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_gev_recall1);

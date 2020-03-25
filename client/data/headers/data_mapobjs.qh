@@ -21,8 +21,8 @@ void( float isNew, float entFlags ) data_deploy;
 void( float isNew, float entFlags ) data_map_object;
 void( float isNew, float entFlags ) data_map_damage;
 
+
+void( .entity efx ) data_map_damage_effect;
+void() map_damage_zone_dlights;
 void() map_damage_zone_think;
 void() map_damage_zone_cool;
-void() map_damage_zone_particles_shields;
-void() map_damage_zone_particles_armor;
-void() map_damage_zone_particles_energy;

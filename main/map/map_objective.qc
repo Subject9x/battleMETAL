@@ -130,6 +130,11 @@ void() map_objective={
   }
   setorigin(self, self.origin);
   
+  //wild-  EF_NODEPTHTEST allows SendEnt to blast this through to all clients!
+  self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
+  self.alpha = 0.01;
+  self.scale = 0.01;
+  
   self.use = map_objective_use;
   self.think = map_objective_th;
   

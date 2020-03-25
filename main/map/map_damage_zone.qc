@@ -16,10 +16,10 @@ void() map_damage_zone_cool;
 
 void() map_damage_zone_think={
   
-  makevectors(self.angles);
-
   if( (self.spawnflags & 8) ){
     //spawnflags 8 = remove after first lifetime countdown
+    self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+    self.deadflag = DEAD_DEAD;
     self.think = SUB_Remove;
     self.nextthink = time + 0.001;
     return;
@@ -27,6 +27,8 @@ void() map_damage_zone_think={
   
   if( (self.spawnflags & 4) ){
     //reactivate damage zone after timer
+    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+    self.deadflag = DEAD_DYING;
     self.think = map_damage_zone_cool;
     self.nextthink = time + self.wait;
     return;
@@ -52,14 +54,15 @@ void() map_damage_zone_use={
 
   if( (self.spawnflags & 4) ){
     //prevents mutli-activation if in cooldown
-    if( time < self.nextthink )
+    if( time < self.nextthink ){
       return;
+    }
   }
   
   if( !self.isActive ){
     self.isActive = TRUE;
     self.SendEntity = send_damage_zone;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     self.think = map_damage_zone_think;
     if( (self.spawnflags & 2) ){
       self.nextthink = time + self.data_lifetime;
@@ -144,15 +147,6 @@ void() map_damage_zone_touch={
   }
 };
 
-void() map_damage_zone_ini={
-  if( self.classname == "func_damage_zone" ){
-    self.modelindex = 0;
-    self.model = "";
-  }
-    cons_logAFloat("map_damage_zone_ini()->data_type", self.data_type);  //DEBUG
-  self.think = map_damage_zone_think;
-  self.nextthink = time + 1;
-};
 
 /*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
 A Damage Zone is an area that hurts all units within the zone.
@@ -196,17 +190,14 @@ void() map_damage_zone={
   self.solid = SOLID_TRIGGER;
   self.movetype = MOVETYPE_NONE;
   self.touch = map_damage_zone_touch;
-  self.think = map_damage_zone_ini;
   self.count1 = time + (random() * 0.5);
   
+	self.dest1 = self.origin;
   util_MapDeveloperMarker();
   setsize( self, tempMin, tempMax );
   setorigin( self, self.origin );
   self.data_type = DATA_MAP_DMG;
-  
-  self.SendEntity = send_damage_zone;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  
+
   //compatability with func_damage_zone
   self.dest = self.origin;
   self.compAltOffset = self.maxs;
@@ -259,25 +250,23 @@ void() map_damage_zone={
       }
   }
   
+  self.effects = self.effects | EF_NODEPTHTEST;  
+  self.SendEntity = send_damage_zone;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_BURN | SENDFLAG_MOVE);
+  
   if( (self.spawnflags & 1) ){
     //START_OFF
     self.isActive = FALSE;
     return;
   }
   
-  //if( (self.spawnflags & IT_QUAD) ){
+  if( (self.spawnflags & IT_QUAD) ){
     //IF marked for mapKey, tag data_type as such.
-    //self.data_type = DATA_MAP_OBJ;
-  //}
-  //else{
- // }
-
-  if( (self.spawnflags & 2) ){
-    //map needs the countdown timer  
-    self.nextthink = time + self.data_lifetime;
+    self.alpha = 0.01;
+    self.scale = 0.01;
   }
   else{
-    self.nextthink = time + 0.1;
+    self.data_type = 0;
   }
 };
 
@@ -289,23 +278,20 @@ void() func_damage_zone={
 	if (self.angles != '0 0 0')
 		SetMovedir ();
 	self.solid = SOLID_TRIGGER;
-	setmodel( self, self.model );	// set size and link into world
+	self.dest1 = self.origin;
+  setmodel( self, self.model );	// set size and link into world
   setsize( self, self.mins, self.maxs );
   setorigin( self, self.origin );
 	self.movetype = MOVETYPE_NONE;
   
   self.isActive = TRUE;
   self.touch = map_damage_zone_touch;
-  self.think = map_damage_zone_ini;
   self.count1 = time + (random() * 0.5);
   self.data_type = DATA_MAP_DMG;
   
   self.dest = (self.absmin + self.absmax) * 0.5;
   self.compAltOffset = self.absmax - self.dest;
   self.compOffset = self.compAltOffset * -1;
-
-  self.SendEntity = send_damage_zone;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   
   if( (self.spawnflags & 2) ){
     if( !self.data_lifetime ){
@@ -353,25 +339,22 @@ void() func_damage_zone={
     }
   }
   
+  self.effects = self.effects | EF_NODEPTHTEST;  
+  self.SendEntity = send_damage_zone;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_BURN | SENDFLAG_MOVE);
+  
   if( (self.spawnflags & 1) ){
     //START_OFF
     self.isActive = FALSE;
     return;
   }
   
-  //if( (self.spawnflags & IT_QUAD) ){
+  if( (self.spawnflags & IT_QUAD) ){
     //IF marked for mapKey, tag data_type as such.
-    //self.data_type = DATA_MAP_OBJ;
-  //}
-  //else{
-    //self.data_type = 0;
-  //}
-
-  if( (self.spawnflags & 2) ){
-    //map needs the countdown timer  
-    self.nextthink = time + self.data_lifetime;
+    self.alpha = 0.01;
+    self.scale = 0.01;
   }
   else{
-    self.nextthink = time + 0.1;
+    self.data_type = 0;
   }
 };

@@ -190,39 +190,46 @@ float( float isNew, float changedFlags ) send_objective={
 
 
 float( float isNew, float changedFlags ) send_damage_zone={
-  cons_logAFloat("SV()->send_damage_zone", 1);  //DEBUG
-  /*WriteByte( MSG_ENTITY, SENDTYPE_MAP );
+
+  WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteByte( MSG_ENTITY, changedFlags );
 
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
+  WriteCoord( MSG_ENTITY, self.dest1_x );
+  WriteCoord( MSG_ENTITY, self.dest1_y );
+  WriteCoord( MSG_ENTITY, self.dest1_z );
   
   WriteByte( MSG_ENTITY, DATA_MAP_DMG );
   WriteByte( MSG_ENTITY, self.data_idx );
   
-  WriteCoord( MSG_ENTITY, self.mins_x );
-  WriteCoord( MSG_ENTITY, self.mins_y );
-  WriteCoord( MSG_ENTITY, self.mins_z );
-  
-  WriteCoord( MSG_ENTITY, self.maxs_x );
-  WriteCoord( MSG_ENTITY, self.maxs_y );
-  WriteCoord( MSG_ENTITY, self.maxs_z );
-  
-  if( isNew ){  
-    WriteByte( MSG_ENTITY, self.damageValue );
+  if( (changedFlags & SENDFLAG_MOVE) ){
+    //changes damage types / boundary size
+    WriteCoord( MSG_ENTITY, self.absmin_x );
+    WriteCoord( MSG_ENTITY, self.absmin_y );
+    WriteCoord( MSG_ENTITY, self.absmin_z );
+    
+    WriteCoord( MSG_ENTITY, self.absmax_x );
+    WriteCoord( MSG_ENTITY, self.absmax_y );
+    WriteCoord( MSG_ENTITY, self.absmax_z );
+    
     WriteByte( MSG_ENTITY, self.damageType );
-    WriteByte( MSG_ENTITY, self.spawnflags );
     WriteByte( MSG_ENTITY, self.count );
     WriteByte( MSG_ENTITY, self.count1 );
     WriteCoord( MSG_ENTITY, self.compAltOffset_x );
     WriteCoord( MSG_ENTITY, self.compAltOffset_y );
     WriteCoord( MSG_ENTITY, self.compAltOffset_z );
-    WriteByte( MSG_ENTITY, (self.classname == "func_damage_zone") );
-    if( self.classname == "func_damage_zone" ){
-      WriteByte( MSG_ENTITY, self.modelindex );
-    }
+    WriteCoord( MSG_ENTITY, self.dest_x );
+    WriteCoord( MSG_ENTITY, self.dest_y );
+    WriteCoord( MSG_ENTITY, self.dest_z );
   }
-  return TRUE;*/
+  
+  if( (changedFlags & SENDFLAG_BURN) ){
+    //use to adjust isActive, toggling the field
+    WriteByte( MSG_ENTITY, self.isActive );
+  }
+  
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, self.spawnflags );
+  }
+  return TRUE;
 };
 
