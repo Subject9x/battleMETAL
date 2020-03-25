@@ -298,7 +298,6 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     nofs = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, iofs, gui_percentToPixelRawVec('380 380'));
     switch( mapKey.data_type ){
       case DATA_MAP_DMG:
-        cons_logAVector("CL()->menu_deploy_mapOverviewPanel().mapKey.origin", mapKey.origin);  //DEBUG
         drawpic( nofs - gui_percentToPixelRawVec('8 8'), UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED, 1, 0);
         break;
       case DATA_BLD:
@@ -368,19 +367,20 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   DEPLOY_HELP_NAV_MAP = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 
-  if( (cvar("coop")) || (cvar("deathmatch")) ){
-    local entity player;
-    player = findchainflags(flags, FL_CLIENT);
-    while(player){
-      if(player.data_type == DATA_MECH){
-        if(player.faction == CLIENT_faction){
-          local vector friend_org;
-          friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
-          drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);
-        }
-      }
-      player = player.chain;
+  local entity player;
+  for( player = nextent(world); player != world; player = nextent(player) ){
+    if( !(player.flags & FL_CLIENT) ){
+      continue;
     }
+    if(player.data_type != DATA_MECH){
+      continue;
+    }
+    if(player.faction != CLIENT_faction){
+      continue;
+    }
+    local vector friend_org;
+    friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
+    drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);
   }
   
   //draw compass

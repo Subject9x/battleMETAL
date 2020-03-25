@@ -18,6 +18,9 @@ void( float isNew ) sendent_handle_update={
   entFlags = ReadByte();
   
   switch(entType){
+    case SENDTYPE_PLAYER:
+      sendent_handle_player( isNew, entFlags );
+      break;
     case SENDTYPE_TANK:
       sendent_handle_tank( isNew, entFlags );
       break;

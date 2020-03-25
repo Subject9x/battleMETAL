@@ -146,8 +146,8 @@ void() ClientConnect = {
   }
   
   self.playerState = PLAYER_SPAWN;
-  
   client_push_player_info();
+  client_data();
   
   if (intermission_running){
     ExitIntermission();
@@ -241,7 +241,6 @@ void() PutClientInServer = {
 
   switch( self.data_type ){
     case DATA_POBS:
-      client_send_mapKeyObjects( self );
       player_makeObserver();
       
       client_push_mapobjects();
@@ -329,6 +328,7 @@ void() ClientKill = {
   if(self.data_type != DATA_POBS){
     self.frags = self.frags - 2;
   }
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
 	respawn ();
 };
 
@@ -363,5 +363,81 @@ void() ClientDisconnect = {
     }
     client = client.chain;
   }
+  remove(self.clientData);
 };
 
+/*
+  Send Ent Fun
+*/
+void() client_data={
+  local entity data;
+  data = spawn();
+  setmodel(data, "q3mdl/testball.md3");
+  setsize(data, '-1 -1 -1', '1 1 1');
+  setorigin(data, data.owner.origin);
+  data.owner = self;
+  data.effects = data.effects | EF_NODEPTHTEST;
+  data.alpha = 0.01;
+  data.scale = 0.01;
+  data.origin = self.origin;
+  data.data_type = self.data_type;
+  data.faction = self.faction;
+  data.flags = self.flags;
+  data.radar_range = self.radar_range;
+  data.stat_rdr_mode = self.stat_rdr_mode;
+  data.stat_client_shield = self.stat_client_shield;
+  data.exteriormodeltoclient = self;
+  data.SendEntity = send_client_data;
+  data.SendFlags = data.SendFlags | SENDFLAG_NEWENT;
+  data.vec_size = self.vec_size;
+  self.clientData = data;
+};
+
+float( float isNew, float changeFlags ) send_client_data={
+  local entity player;
+  player = self.owner;
+  
+  self.origin = player.origin;
+  self.data_type = player.data_type;
+  self.flags = player.flags;
+  self.faction = player.faction;
+  self.radar_range = player.radar_range;
+  self.stat_rdr_mode = player.stat_rdr_mode;
+  self.stat_client_shield = player.stat_client_shield;
+  self.vec_size = player.vec_size;
+  
+  WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
+  WriteByte( MSG_ENTITY, changeFlags );
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteLong( MSG_ENTITY, self.flags);
+    WriteByte( MSG_ENTITY, self.faction);
+    WriteByte( MSG_ENTITY, self.radar_range);
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
+    WriteByte( MSG_ENTITY, self.stat_client_shield);
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    WriteByte( MSG_ENTITY, self.data_type );
+    WriteByte( MSG_ENTITY, self.faction);
+    WriteByte( MSG_ENTITY, self.vec_size);
+  }
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, num_for_edict(player));
+    WriteByte( MSG_ENTITY, self.data_type );
+    WriteByte( MSG_ENTITY, self.vec_size );
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteLong( MSG_ENTITY, self.flags);
+    WriteByte( MSG_ENTITY, self.faction);
+    WriteByte( MSG_ENTITY, self.radar_range);
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
+    WriteByte( MSG_ENTITY, self.stat_client_shield);
+  }
+  
+  return TRUE;
+};

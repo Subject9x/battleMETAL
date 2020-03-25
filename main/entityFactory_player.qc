@@ -123,6 +123,7 @@ void() player_makeMech={
   self.playerState = PLAYER_POWERUP_BEGIN;
   
   client_push_player_info();
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
   
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
  

@@ -284,6 +284,7 @@ void(string str, float tokens) client_ParseMechCommand={
     if( self.data_type == DATA_MECH ){
       client_update_faction();
     }
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
     mapfile_pvp_load(self.faction);
     return;
   }
@@ -610,20 +611,6 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
       WriteShort( MSG_ONE, 0 );
       break;
   }
-};
-
-void(entity client ) client_send_mapKeyObjects={
-  local entity objects;
-
-  /*for(objects = findchainflags(spawnflags, IT_QUAD); objects != world; objects = objects.chain){
-    msg_entity = client;
-    WriteByte( MSG_ONE, SVC_TEMPENTITY );
-    WriteByte( MSG_ONE, TE_MAPKEY_DATA );
-    WriteByte( MSG_ONE, objects.data_type );
-    WriteLong( MSG_ONE, objects.origin_x );
-    WriteLong( MSG_ONE, objects.origin_y );
-    WriteByte( MSG_ONE, objects.faction);
-  }*/
 };
 
 void() respawn={ 

@@ -86,9 +86,7 @@ void( float isNew, float entFlags ) data_nav_point={
         MENU_NAV_LIST = self;
       }
     
-      self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
-      self.alpha = 0.33;
-      self.colormod = '0 1 0';
+      self.effects = self.effects | ( EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
       self.vec_name = NAVNAMES[self.data_idx];
       setmodel(self, "q3mdl/map/nav_point.obj");
       setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
@@ -99,7 +97,9 @@ void( float isNew, float entFlags ) data_nav_point={
       self.solid = SOLID_TRIGGER;
       setorigin(self, self.origin);
       self.predraw = predraw_navpoint;
-      self.drawmask = MASK_NORMAL; 
+      self.drawmask = MASK_NORMAL;
+      self.alpha = 0.33;
+      self.colormod = '0 1 0';
     }
   }
 };
@@ -194,19 +194,19 @@ void() map_damage_zone_dlights={
     if( (self.damageType & 1) ){
       //shield
       if( self.effect1.isActive == TRUE ){
-        adddynamiclight2(  self.effect1.origin, 128, '0 1 0.8', 6, "", PFLAGS_NOSHADOW);
+        adddynamiclight2(  self.effect1.origin, 150, '0 1 0.8', 6, "", 0);
       }
     }
     if( (self.damageType & 2) ){
       //armor
       if( self.effect2.isActive == TRUE ){
-        adddynamiclight2( self.effect2.origin, 12, '0.8 0.8 0', 3, "", PFLAGS_NOSHADOW);
+        adddynamiclight2( self.effect2.origin, 96, '0.8 0.8 0', 3, "", 0);
       }
     }
     if( (self.damageType & 4) ){
       //energy
       if( self.effect3.isActive == TRUE ){
-        adddynamiclight2( self.effect3.origin, 64, '1 0.4 0.6', 2, "", PFLAGS_NOSHADOW);
+        adddynamiclight2( self.effect3.origin, 128, '1 0.4 0.6', 2, "", 0);
       }
     }
   }
@@ -218,7 +218,7 @@ void() map_damage_zone_think={
     makevectors(self.angles);
     if( self.effect1 != world ){
       if( time > self.effect1.wait ){
-        if( random() > 0.1 ){
+        if( random() > 0.5 ){
           self.effect1.origin = randompos(self.effect1.absmin, self.effect1.absmax);
           self.effect1.isActive = TRUE;
           self.effect1.wait = time + random() * 2;
@@ -233,31 +233,31 @@ void() map_damage_zone_think={
     }
     if( self.effect2 != world ){
       if( time > self.effect2.wait ){
-        if( random() > 0.4 ){
+        if( random() > 0.5 ){
           self.effect2.origin = randompos(self.effect2.absmin, self.effect2.absmax);
           self.effect2.isActive = TRUE;
-          self.effect2.wait = time + random() * 5;
+          self.effect2.wait = time + random() * 2;
           te_field_rad(self.effect2.origin, normalize((self.effect2.origin + (v_up * 10)) - self.effect2.origin) * 7, 1);
           te_particlecube( self.absmin, self.absmax, '0 0 0', random() * 10, 176, FALSE, 10); 
         }
         else{
           self.effect2.isActive = FALSE;
-          self.effect2.wait = time + random() * 3;
+          self.effect2.wait = time + random() * 1;
         }
       }
     }
     if( self.effect3 != world ){
       if( time > self.effect3.wait ){
-        if( random() > 0.33 ){
+        if( random() > 0.5 ){
           self.effect3.origin = randompos(self.effect3.absmin, self.effect3.absmax);
           self.effect3.isActive = TRUE;
-          self.effect3.wait = time + 2;
+          self.effect3.wait = time + 1 + random()* 4;
           te_field_quantum( self.effect3.origin, randompos(self.effect3.absmin, self.effect3.absmax));
           te_particlecube( self.absmin, self.absmax, '0 0 0', random() * 4, 128, FALSE, 10); 
         }
         else{
           self.effect3.isActive = FALSE;
-          self.effect3.wait = time + random() * 4;
+          self.effect3.wait = time + random() * 2;
         }
       }
     }

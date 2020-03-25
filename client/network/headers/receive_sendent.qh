@@ -34,6 +34,7 @@ void( float isNew, float changeFlags) sendent_handle_gev;
 void( float isNew, float changeFlags) sendent_handle_turret;
 void( float isNew, float changeFlags) sendent_handle_building;
 void( float isNew, float changeFlags) sendent_handle_missile;
+void( float isNew, float changeFlags) sendent_handle_player;
 
 entity( float partId ) sendent_get_entity_offset;
 void() sendent_setup_weapons;

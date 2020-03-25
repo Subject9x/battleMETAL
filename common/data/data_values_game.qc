@@ -238,6 +238,7 @@ float SENDFLAG_NEWENT = 128;
 //============================
 float RADAR_SWEEP = 2.5;
 
+.float stat_rdr_mode;
 #ifndef CSQC
 .float playerState;
 .float stat_client_energy;
@@ -285,7 +286,6 @@ float RADAR_SWEEP = 2.5;
 .float stat_trg_faction;
 
 .float stat_hit_dirs;
-.float stat_rdr_mode;
 .float stat_rdr_rng;
 .float stat_trg_dist;
 .float stat_trg_face;

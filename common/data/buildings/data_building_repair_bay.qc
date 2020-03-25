@@ -327,6 +327,9 @@ void() building_human_repair={
     
   self.SendEntity = ctrl_send_building;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;  
+  if( (self.spawnflags & IT_QUAD) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
     
   self.think = hrepair_th;
   self.nextthink = time + 1;

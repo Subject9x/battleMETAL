@@ -119,4 +119,7 @@ void() building_guard_tower={
   
   self.SendEntity = ctrl_send_building;
   self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE);
+  if( (self.spawnflags & IT_QUAD) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
 };

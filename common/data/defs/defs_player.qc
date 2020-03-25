@@ -90,4 +90,6 @@ Overview:
 .vector ramVelocity;
 .float ramUp;
 .float ramUpMax;
+
+.entity clientData;
 #endif

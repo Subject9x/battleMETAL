@@ -335,7 +335,13 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('-3 0'), RADAR_VCENTER + radarLineLeft, CLR_DEF_WHITE, HUD_ALPHA, 0);
   drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('3 0'), RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
   
-  for( blip = findchainflags( flags, FL_UNIT ); blip != world; blip = blip.chain){
+  for( blip = nextent(world); blip != world; blip = nextent(blip)){
+    if( !(blip.flags & FL_UNIT) ){
+      continue;
+    }
+    if( blip.data_idx == player_localentnum ){
+      continue;
+    }
     if( blip.deadflag > DEAD_NO ){
       continue;
     }
@@ -394,8 +400,6 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
       case DATA_MECH:
         hud_RenderRadar_Mech(hudorg, blip.vec_size, blip.faction, 1); 
         break;
-      default:
-        drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0.67);
     }
   }
 };
@@ -882,7 +886,7 @@ void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Mec
   if(CLIENT_faction == e_fact){
     clr = CLR_DEF_IIF_FRIEND;
   }
-  blipSize = e_size * '5 5 5';
+  blipSize = e_size * '4 4 4';
   drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
 };
 
@@ -897,7 +901,7 @@ void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Veh
   if(CLIENT_faction == e_fact){
     clr = CLR_DEF_IIF_FRIEND;
   }
-  blipSize = e_size * '4 4 4';
+  blipSize = e_size * '5 5 5';
   
   drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_VEC, gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
 };

@@ -110,6 +110,18 @@ void( float isNew, float changeFlags) sendent_handle_building={
       if( self.th_walk ){
         self.th_walk();
       }
+      if( (self.spawnflags & 4194304) ){
+        if( lastMapKeyObject ){
+          //build linked list backwards for later forward iteration.
+          lastMapKeyObject.w_slot = self;
+          lastMapKeyObject = self;
+        }
+        else{
+          //start chain
+          mapKeyObject = self;
+          lastMapKeyObject = self;
+        }
+      }
     }
   }
   
