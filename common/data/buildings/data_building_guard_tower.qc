@@ -10,7 +10,6 @@ void() guard_tower_die2={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
-
 };
 
 void() guard_tower_die1={

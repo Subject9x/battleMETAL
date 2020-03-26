@@ -39,7 +39,7 @@ void() ai_gev_touch_death={
 };
 
 void() ai_gev_die={
-  if( self.deadflag >= DEAD_DYING ){
+  if( self.deadflag > DEAD_NO ){
     return; //double play prevention
   }
   

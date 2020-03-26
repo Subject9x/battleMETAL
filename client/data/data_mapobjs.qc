@@ -41,6 +41,7 @@ void( float isNew, float entFlags ) sendent_handle_map={
 float() predraw_navpoint={
   self.angles_y = anglemod(self.angles_y + 0.15);
   setorigin(self, self.origin);
+  self.alpha = 0.33;
   
   if( self.faction != CLIENT_faction ){
     self.alpha = 0;
@@ -85,8 +86,7 @@ void( float isNew, float entFlags ) data_nav_point={
       else{
         MENU_NAV_LIST = self;
       }
-    
-      self.effects = self.effects | ( EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
+      
       self.vec_name = NAVNAMES[self.data_idx];
       setmodel(self, "q3mdl/map/nav_point.obj");
       setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
@@ -96,9 +96,9 @@ void( float isNew, float entFlags ) data_nav_point={
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_TRIGGER;
       setorigin(self, self.origin);
+      self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
       self.predraw = predraw_navpoint;
       self.drawmask = MASK_NORMAL;
-      self.alpha = 0.33;
       self.colormod = '0 1 0';
     }
   }

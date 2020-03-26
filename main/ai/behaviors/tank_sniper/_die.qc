@@ -20,7 +20,7 @@ void() ai_vec_dest_clean={
 
 void() ai_vec_dest_die={
   
-  if( self.deadflag >= DEAD_DYING ){
+  if( self.deadflag > DEAD_NO ){
     return; //double play prevention
   }
   

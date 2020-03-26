@@ -39,13 +39,13 @@ void() ai_turret_clean={
 */
 void() ai_turret_die={
 
-  if( self.deadflag >= DEAD_DYING ){
+  if( self.deadflag > DEAD_NO ){
     return; //double play prevention
   }
   
   ai_sfx_dead();
   
-  self.deadflag = DEAD_DYING;
+  self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
   self.colormod = '0.33 0.33 0.33';

@@ -14,7 +14,7 @@ Overview: ai unit
 */ 
 void() ai_mech_sk_die={
   
-  if( self.deadflag >= DEAD_DYING ){
+  if( self.deadflag > DEAD_NO ){
     return; //double play prevention
   }
   
@@ -22,7 +22,7 @@ void() ai_mech_sk_die={
   self.th_react = SUB_Null;
   self.th_pain = SUB_Null;
   self.th_missile = SUB_Null;
-  self.deadflag = DEAD_DYING;
+  self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.colormod = '0.05 0.05 0.05';

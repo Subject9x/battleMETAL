@@ -35,6 +35,7 @@ float CLIENT_target_faction;
 float CLIENT_target_shield; 
 float CLIENT_target_datatype; 
 float CLIENT_target_faction;
+float CLIENT_stat_trg_ddflg_prev;
 float CLIENT_stat_trg_ddflg;
     
 float CLIENT_stat_w1_id;
@@ -82,11 +83,14 @@ float CLIENT_stat_w9_rel;
 float CLIENT_weapon_state;  //where weapon_bit present == 'ok'
 
 float CLIENT_stat_trg_ent_id;
+float CLIENT_stat_trg_ent_id_prev;
 
 vector CLIENT_target_origin;
 float CLIENT_target_shield;
 
 float CLIENT_target_health_prev;
+float CLIENT_target_dist;
+float CLIENT_target_dist_prev;
 float CLIENT_stat_trg_ct_hp;
 float CLIENT_stat_trg_lg_hp;
 float CLIENT_stat_trg_lt_hp;

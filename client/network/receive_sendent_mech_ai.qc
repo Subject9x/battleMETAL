@@ -123,7 +123,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   self.angles_z = ReadAngle();
   
   self.flags = ReadByte();
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.shield = ReadByte();
   
   //Shield Explode event

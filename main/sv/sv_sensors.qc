@@ -112,16 +112,16 @@ void() sv_getTarget={
     else{
       targName = trace_ent.vec_name;
     }
-    if( targName != "" ){
-      client_sendTargetName(targName);
-    }
+    //if( targName != "" ){
+    //  client_sendTargetName(targName);
+    //}
     
     self.enemy = trace_ent;
     if(self.stat_rdr_mode){
       self.lock_timer = time + self.w_firetime;
     }
     else{
-      self.lock_timer = time + (self.w_firetime *1.75);
+      self.lock_timer = time + (self.w_firetime * 1.75);
     }
     if( self.enemy.trigOnTarget ){
       trigger_event( self.enemy, self.trigOnTarget );
@@ -138,14 +138,29 @@ void() sv_getTarget={
 
 /*scope - self = unit making the target call*/
 void() sv_updateTargetInfo={
- 
-  if( !(ai_valid_target(self.enemy)) || (self.enemy.health <= 0) ){
+  local float prevDeadFlags;
+  
+  self.stat_trg_ent_id = num_for_edict(self.enemy);
+  
+  prevDeadFlags = self.stat_trg_ddflg;
+  self.stat_trg_ddflg = self.enemy.deadflag;
+  
+  //target killed
+  if( self.enemy != world ){
+    if( prevDeadFlags == DEAD_NO && self.enemy.deadflag > DEAD_NO ){
+      self.stat_trg_ent_id = -1;
+      self.enemy = world;
+      return;
+    }
+  }
+  
+  if( !(ai_valid_target(self.enemy)) ){
+    
+    self.stat_trg_ent_id = -1;
     self.stat_trg_dataidx = 0;
-    self.stat_trg_ddflg = -6;
     self.stat_trg_dist = 0;
     self.stat_trg_face = -1;
     self.stat_trg_faction = 0;
-    self.stat_trg_ent_id = -0;
     self.addStat_targetSize_x = 0;
     self.addStat_targetSize_y = 0;
     self.addStat_targetSize_z = 0;
@@ -169,8 +184,7 @@ void() sv_updateTargetInfo={
     self.enemy = world;
     return;
   }
-  
-  self.stat_trg_ent_id = num_for_edict(self.enemy);
+
   self.stat_trg_dataidx = self.enemy.data_idx;
   self.stat_trg_dat = self.enemy.data_type;
   self.stat_trg_faction = self.enemy.faction;  

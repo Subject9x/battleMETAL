@@ -45,21 +45,6 @@ void() client_get_info={
     CLIENT_stat_w7_rel = getstatf(STAT_CLIENT_WEAPON7_RELOAD);
     CLIENT_stat_w8_rel = getstatf(STAT_CLIENT_WEAPON8_RELOAD);
     CLIENT_stat_w9_rel = getstatf(STAT_CLIENT_WEAPON9_RELOAD);
-    
-    CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
-    if( CLIENT_stat_trg_ent_id != 0 ){
-      CLIENT_target_health_prev = CLIENT_stat_trg_ct_hp;
-      CLIENT_target_origin_x = getstatf(STAT_TARGET_ORIGINX);
-      CLIENT_target_origin_y = getstatf(STAT_TARGET_ORIGINY);
-      CLIENT_target_origin_z = getstatf(STAT_TARGET_ORIGINZ);
-      CLIENT_target_shield = getstatf(STAT_TARGET_SHIELDS);
-
-      CLIENT_target_vecsize = getstati(STAT_TARGET_SIZE);
-      //CLIENT_target_name = getstats(STAT_TARGET_NAME);
-    }
-    else{
-      CLIENT_target_name = "";
-    }
   }
 };
 
@@ -69,6 +54,7 @@ void() client_get_info_thin={
 };
 
 /*
+  -DEPRECATED-
   Handles a Radar Blip TE pushed from the server to a specific client
   blips fade out over a given amount of time 
 */
@@ -122,11 +108,10 @@ void() client_get_hud_highlight={
 
 void() receive_ent_bindData={
   local string name;
-  local float targetDeadFlagPrev;
   
   name = cvar_string("_cl_name");
-  targetDeadFlagPrev = CLIENT_stat_trg_ddflg;
-  
+
+
   CLIENT_flags = getstati( STAT_ROCKETS );
   
   if( name != CLIENT_netname){
@@ -163,6 +148,21 @@ void() receive_ent_bindData={
   CLIENT_health_torso_right = getstatf(STAT_CLIENT_HP_TORSORIGHT); 
   CLIENT_health_arm_left = getstatf(STAT_CLIENT_HP_ARMLEFT); 
   CLIENT_health_arm_right = getstatf(STAT_CLIENT_HP_ARMRIGHT);
+
+
+  //Last Frame Target info cache
+  CLIENT_target_health_prev = CLIENT_stat_trg_ct_hp;
+  CLIENT_target_dist_prev = CLIENT_target_dist;
+  CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
+  
+  CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
+  CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
+  CLIENT_target_origin_x = getstatf(STAT_TARGET_ORIGINX);
+  CLIENT_target_origin_y = getstatf(STAT_TARGET_ORIGINY);
+  CLIENT_target_origin_z = getstatf(STAT_TARGET_ORIGINZ);
+  CLIENT_target_shield = getstatf(STAT_TARGET_SHIELDS);
+  CLIENT_target_dist = getstati(STAT_TRG_DIST);
+  CLIENT_target_vecsize = getstati(STAT_TARGET_SIZE);
 
   CLIENT_stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
   CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
@@ -205,15 +205,19 @@ void() receive_ent_bindData={
     }
   }
 
-  if( CLIENT_stat_trg_ddflg != DEAD_NO && targetDeadFlagPrev == DEAD_NO ){
-    if( CLIENT_stat_trg_ct_hp <= 0 && CLIENT_target_health_prev > 0 ){
+  if( CLIENT_stat_trg_ent_id_prev != 0 && CLIENT_stat_trg_ent_id == -1 ){
+    //target is lost
+    if( CLIENT_stat_trg_ddflg_prev > DEAD_NO ){
       hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
     }
   }
   
+  // hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  
   CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
   CLIENT_repair_value = getstati(STAT_PLR_REP);
   
+  CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
 };
 
 void() client_event_boundary={
@@ -236,6 +240,9 @@ void() client_event_environment={
   }
 };
 
+/*
+  unused at the moment.
+*/
 void( float criticalsType ) client_event_critical_hit={
   switch( criticalsType ){
     case M_TOR_RIGHT:

@@ -311,23 +311,25 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   //Render Nav points
   local entity nav;
   for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
-    if( nav.faction == CLIENT_faction ){
-      local float nactive, nlen;
-      local string navname;
-      tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
-      
-      drawfont_prev = drawfont;
-      drawfont = FONT_NUM_ROBOT_REGULAR;
-      
-      nlen = stringwidth(navname, 0, '12 12 0');
-      nofs_x = nofs_x - gui_percentXRaw( (nlen/2) );
-      nofs_y = nofs_y - gui_percentYRaw(18);
-      gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
-      
-      drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
-      
-      drawfont = drawfont_prev;
+    if( nav.faction != CLIENT_faction ){
+      continue;
     }
+    
+    local float nactive, nlen;
+    local string navname;
+    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
+    
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+    
+    nlen = stringwidth(navname, 0, '12 12 0');
+    nofs_x = nofs_x - gui_percentXRaw( (nlen/2) );
+    nofs_y = nofs_y - gui_percentYRaw(18);
+    gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
+    
+    drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
+    
+    drawfont = drawfont_prev;
   }
   
   //Render Deploy points
@@ -381,6 +383,19 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     local vector friend_org;
     friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
     drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);
+    
+    local vector nameOrg;
+    local float nameLen;
+    nameOrg = friend_org + gui_percentToPixelRawVec('0 -18');
+    
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+    
+    nameLen = stringwidth( player.netname, 0, '14 14 0');
+    nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
+    drawstring( nameOrg, player.netname, '14 14 0', CLR_DEF_IIF_FRIEND, 1, 0);
+    
+    drawfont = drawfont_prev;
   }
   
   //draw compass

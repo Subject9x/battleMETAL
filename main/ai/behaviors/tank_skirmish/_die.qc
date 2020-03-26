@@ -20,7 +20,7 @@ void() ai_tank_sk_clean={
 };
 
 void() ai_tank_sk_die={
-  if( self.deadflag >= DEAD_DYING ){
+  if( self.deadflag > DEAD_NO ){
     return; //double play prevention
   }
   

@@ -405,6 +405,7 @@ float( float isNew, float changeFlags ) send_client_data={
   self.stat_rdr_mode = player.stat_rdr_mode;
   self.stat_client_shield = player.stat_client_shield;
   self.vec_size = player.vec_size;
+  self.damageValue = player.damageValue;
   
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
@@ -425,6 +426,16 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, self.faction);
     WriteByte( MSG_ENTITY, self.vec_size);
   }
+  
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    WriteByte( MSG_ENTITY, self.damageValue );
+  }
+  
+  if( (changeFlags & SENDFLAG_BURN) ){
+  
+  
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, num_for_edict(player));
     WriteByte( MSG_ENTITY, self.data_type );
@@ -437,6 +448,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, self.radar_range);
     WriteByte( MSG_ENTITY, self.stat_rdr_mode);
     WriteByte( MSG_ENTITY, self.stat_client_shield);
+    WriteString( MSG_ENTITY, player.netname );
   }
   
   return TRUE;
