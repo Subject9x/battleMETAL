@@ -9,6 +9,7 @@ Overview:
 /*scope - self = unit making the target call*/
 
 /*
+  -DEPRECATED-
   All player units have a basic circular sweep pattern for radar.
   this sweeps in a circle around the player, whenever a unit is near the
   sweep-line, the player is pinged on that unit.
@@ -50,6 +51,7 @@ void() radarSweepBasic={
 };
 
 /*
+  -DEPRECATED-
   Advanced radar is given if the player has mounted at least 
   1 LSA module. The advanced radar pattern is a rapidly expanding
   circle out from the player center. Every unit near the sweep line
@@ -154,6 +156,7 @@ void() sv_updateTargetInfo={
     }
   }
   
+  //lost OR killed target.
   if( !(ai_valid_target(self.enemy)) ){
     
     self.stat_trg_ent_id = -1;

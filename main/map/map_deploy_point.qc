@@ -12,9 +12,11 @@ Overview:
 void() deploy_point_use={
   if( self.isActive ){
     self.isActive = FALSE;
+    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
     return;
   }
   self.isActive = TRUE;
+  self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
 };
 
 
@@ -24,9 +26,7 @@ void() deploy_point_th={
 };
 
 void() deploy_point_ini={
-  self.SendEntity = send_deploy_point;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = deploy_point_th;
   self.nextthink = time + 0.1;
 };
@@ -62,6 +62,7 @@ void() map_deploy_point={
     self.isActive = TRUE;
   }
   
+  self.SendEntity = send_deploy_point;
   trigger_event( self, self.trigOnSpawn );
   self.think = deploy_point_ini;
   self.nextthink = time + 0.1;

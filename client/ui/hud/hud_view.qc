@@ -336,6 +336,9 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('3 0'), RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   for( blip = nextent(world); blip != world; blip = nextent(blip)){
+    local entity test;
+    local vector testOrg;
+    local float testCheck;
     if( !(blip.flags & FL_UNIT) ){
       continue;
     }
@@ -347,6 +350,40 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     }
     if( vlen(blip.origin - RADAR_ORG) > radarRange ){
       continue;
+    }
+    
+      //passive radar cannot see through walls or buildings
+    if( !CLIENT_stat_rdr_mode ){
+      traceline( RADAR_ORG, blip.origin, MOVE_WORLDONLY, entitybyindex(player_localentnum));
+      if( !CLIENT_stat_rdr_mode  ){
+        if( trace_fraction != 1 ){
+          continue;
+        }
+      }
+      testOrg = RADAR_ORG;
+      testCheck = TRUE;
+      test = entitybyindex(player_localentnum);
+      do{
+        traceline( test.origin, blip.origin, MOVE_NORMAL, test);
+        test = trace_ent;
+        if( test == blip ){
+          test = world;
+          testCheck = TRUE;
+        }
+        else{
+          if( test.data_type == DATA_BLD || test.classname == "map_terrain"){
+            test = world;
+            testCheck = FALSE;
+          }
+          else{
+            test = test;
+            testCheck = TRUE;
+          }
+        }
+      }while(test != world);
+      if( !testCheck ){
+        continue;
+      }
     }
     hud_renderRadarContact( blip, plrFaction, radarRange );
   }

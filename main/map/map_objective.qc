@@ -18,6 +18,7 @@ void() map_objective_th;
   called by other entities during trigger call.
 */
 void() map_objective_use={
+  self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
   self.enemy = activator;
   if( self.isActive == OBJECTIVE_ACTIVE){
     SUB_UseTargets(); //allows pass-through trigger call to other triggers.
@@ -61,17 +62,21 @@ void() map_objective_th={
   
   //objective achieved
   if(self.isActive == OBJECTIVE_WIN){
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
     return;
   }
   
   //objective failed.
   if( self.isActive == OBJECTIVE_FAIL ){
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
     return;
   }
   self.think = map_objective_th;
   self.nextthink = time + 0.5;
+};
+
+void() map_objective_ini={
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.think = map_objective_th;
+  self.nextthink = time + 0.1;
 };
 
 /*QUAKED map_objective (0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF ACTIVE_ONTOUCH
@@ -151,7 +156,5 @@ void() map_objective={
     self.aState = 255;
   }
   self.SendEntity = send_objective;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  
   self.nextthink = time + 0.1;
 }

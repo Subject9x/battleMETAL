@@ -20,7 +20,7 @@ void() nav_point_touch={
       return;
     }
     if( other.faction == self.faction ){
-      self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+      self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
       self.enemy = other;
       self.isActive = 2;
 
@@ -47,7 +47,7 @@ void() nav_point_use={
   //nav point is inactive, activate
   if( !self.isActive ){
     trigger_event( activator, self.trigOnSpawn );
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
     self.isActive = TRUE;
     return;
   }
@@ -56,7 +56,7 @@ void() nav_point_use={
     //deactivate signal
     self.isActive = FALSE;
     trigger_event( other, self.trigOnDeath );
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
     return;
   }
 };
@@ -69,10 +69,7 @@ void() map_nav_point_th={
 };
 
 void() map_nav_point_ini={
-
-  self.SendEntity = send_nav_point;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = map_nav_point_th;
   self.nextthink = time + 1;
 };
@@ -116,15 +113,16 @@ void() map_nav_point={
   
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
+  
+  self.SendEntity = send_nav_point;
   self.use = nav_point_use;
   self.touch = nav_point_touch;
   self.think = map_nav_point_ini;
-  
   self.nextthink = time + 0.1;
 };
 
 void() map_nav_point_remote_send={
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
 };
 
 void() map_nav_point_remote_query={
@@ -164,7 +162,7 @@ void() map_nav_point_remote={
   setorigin( self, self.origin );
   
   self.SendEntity = send_nav_point;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = map_nav_point_remote_query;
   self.nextthink = time + 0.1;
 };

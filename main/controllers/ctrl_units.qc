@@ -117,89 +117,133 @@ void(entity unitCam) ctrl_unit_remove_cam={
 /*
   putting map object SendEntity controllers here for a hot sec.
 */
-float( float isNew, float changedFlags ) send_deploy_point={
+/*
+  OBJECT - Nav Point
+*/
+float( float isNew, float changedFlags ) send_nav_point={
+  //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteByte( MSG_ENTITY, changedFlags );
+  WriteByte( MSG_ENTITY, DATA_NAVP );
+  //--------
   
-  if( self.data_type == DATA_DEPL ){
+  //EVENT - Nav isActive change
+  if( (changedFlags & SENDFLAG_TURRET) ){
+    WriteByte( MSG_ENTITY, self.isActive );
+  }
+  
+  //EVENT - Nav Set Origin
+  if( (changedFlags & SENDFLAG_MOVE) ){
+    if( self.data_type == DATA_NAVP ){
+      WriteCoord( MSG_ENTITY, self.origin_x );
+      WriteCoord( MSG_ENTITY, self.origin_y );
+      WriteCoord( MSG_ENTITY, self.origin_z );
+    }
+    else{
+      WriteCoord( MSG_ENTITY, self.view_ofs_x );
+      WriteCoord( MSG_ENTITY, self.view_ofs_y );
+      WriteCoord( MSG_ENTITY, self.view_ofs_z );
+    }
+  }
+  
+  //EVENT - Nav Change Faction
+  if( (changedFlags & SENDFLAG_CRIT) ){
+    WriteByte( MSG_ENTITY, self.faction );
+  }
+  
+  //EVENT - new to player
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, self.data_idx );
+  }
+  return TRUE;
+};
+
+
+/*
+  OBJECT - Mission Objective
+*/
+float( float isNew, float changedFlags ) send_objective={
+  //HEADER
+  WriteByte( MSG_ENTITY, SENDTYPE_MAP );
+  WriteByte( MSG_ENTITY, changedFlags );
+  WriteByte( MSG_ENTITY, DATA_OBJT );
+  //--------
+ 
+   //EVENT - isActive change
+  if( (changedFlags & SENDFLAG_TURRET) ){
+    WriteByte( MSG_ENTITY, self.isActive );
+    WriteByte( MSG_ENTITY, self.aState );
+  }
+  
+  //EVENT - Set Origin
+  if( (changedFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
   }
-  else{
-    WriteCoord( MSG_ENTITY, self.view_ofs_x );
-    WriteCoord( MSG_ENTITY, self.view_ofs_y );
-    WriteCoord( MSG_ENTITY, self.view_ofs_z );
+  
+  //EVENT - Change Faction
+  if( (changedFlags & SENDFLAG_CRIT) ){
+    WriteByte( MSG_ENTITY, self.faction );
   }
   
-  WriteByte( MSG_ENTITY, DATA_DEPL );
-  WriteByte( MSG_ENTITY, self.data_idx );
-  
-  WriteByte( MSG_ENTITY, self.faction );
-  WriteByte( MSG_ENTITY, self.isActive );
+  //EVENT - New Ent
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, self.data_idx );
+  }
   
   return TRUE;
 };
 
 /*
-  This is a 
+  OBJECT - Player Deploy point
 */
-float( float isNew, float changedFlags ) send_nav_point={
-
+float( float isNew, float changedFlags ) send_deploy_point={
+  //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteByte( MSG_ENTITY, changedFlags );
+  WriteByte( MSG_ENTITY, DATA_DEPL );
+  //============
   
-  if( self.data_type == DATA_NAVP ){
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-  }
-  else{
-    WriteCoord( MSG_ENTITY, self.view_ofs_x );
-    WriteCoord( MSG_ENTITY, self.view_ofs_y );
-    WriteCoord( MSG_ENTITY, self.view_ofs_z );
+  //EVENT - isActive change
+  if( (changedFlags & SENDFLAG_TURRET) ){
+    WriteByte( MSG_ENTITY, self.isActive );
   }
   
-  WriteByte( MSG_ENTITY, DATA_NAVP );
-  WriteByte( MSG_ENTITY, self.data_idx );
+  //EVENT - Set Origin
+  if( (changedFlags & SENDFLAG_MOVE) ){
+    if( self.data_type == DATA_DEPL ){
+      WriteCoord( MSG_ENTITY, self.origin_x );
+      WriteCoord( MSG_ENTITY, self.origin_y );
+      WriteCoord( MSG_ENTITY, self.origin_z );
+    }
+    else{
+      WriteCoord( MSG_ENTITY, self.view_ofs_x );
+      WriteCoord( MSG_ENTITY, self.view_ofs_y );
+      WriteCoord( MSG_ENTITY, self.view_ofs_z );
+    }
+  }
   
-  WriteByte( MSG_ENTITY, self.faction );
-  WriteByte( MSG_ENTITY, self.isActive );
+  //EVENT - Change Faction
+  if( (changedFlags & SENDFLAG_CRIT) ){
+    WriteByte( MSG_ENTITY, self.faction );
+  }
   
-  return TRUE;
-};
-
-float( float isNew, float changedFlags ) send_objective={
-
-  WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
-  
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
-  
-  WriteByte( MSG_ENTITY, self.data_type );
-  WriteByte( MSG_ENTITY, self.data_idx );
-  
-  WriteByte( MSG_ENTITY, self.faction );
-  WriteByte( MSG_ENTITY, self.isActive );
-  WriteByte( MSG_ENTITY, self.aState );
+  //EVENT - New Ent
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, self.data_idx );
+  }
   
   return TRUE;
 };
 
 
 float( float isNew, float changedFlags ) send_damage_zone={
-
+  //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteByte( MSG_ENTITY, changedFlags );
-
-  WriteCoord( MSG_ENTITY, self.dest1_x );
-  WriteCoord( MSG_ENTITY, self.dest1_y );
-  WriteCoord( MSG_ENTITY, self.dest1_z );
-  
   WriteByte( MSG_ENTITY, DATA_MAP_DMG );
-  WriteByte( MSG_ENTITY, self.data_idx );
+  //============
   
   if( (changedFlags & SENDFLAG_MOVE) ){
     //changes damage types / boundary size
@@ -229,6 +273,9 @@ float( float isNew, float changedFlags ) send_damage_zone={
   
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, self.spawnflags );
+    WriteCoord( MSG_ENTITY, self.dest1_x );
+    WriteCoord( MSG_ENTITY, self.dest1_y );
+    WriteCoord( MSG_ENTITY, self.dest1_z );
   }
   return TRUE;
 };

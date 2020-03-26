@@ -20,6 +20,7 @@ void( float isNew, float entFlags ) data_objective;
 void( float isNew, float entFlags ) data_deploy;
 void( float isNew, float entFlags ) data_map_object;
 void( float isNew, float entFlags ) data_map_damage;
+void( float isNew, float entFlags ) data_weather;
 
 
 void( .entity efx ) data_map_damage_effect;
