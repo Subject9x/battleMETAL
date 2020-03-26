@@ -35,10 +35,16 @@ void() sendevent_building_die={
   SendEntity - Building =======================================
 */
 void( float isNew, float changeFlags) sendent_handle_building={
+  local float prevShield;
   
+  prevShield = self.shield;
   self.energy = ReadByte();
   self.shield = ReadByte();
   
+  if( (changeFlags & SENDFLAG_VELOCITY) ){     
+    self.faction = ReadByte();
+  }
+
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
@@ -57,10 +63,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
         data_building_death1(); 
       }
     }
-  }
-
-  if( (changeFlags & SENDFLAG_BURN) ){
-    
   }
 
   if( (changeFlags & SENDFLAG_CRIT) ){
@@ -90,8 +92,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.angles_x = anglemod(ReadCoord());
     self.angles_y = anglemod(ReadCoord());
     self.angles_z = anglemod(ReadCoord());
-    
-    self.faction = ReadByte();
+
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
 
@@ -140,4 +141,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.partTypeId = ReadByte();
     }
   }
+  //HANDLE EVENT - Shield explode
+  sendevent_shield_explode( prevShield );
 };

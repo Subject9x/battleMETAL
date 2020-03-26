@@ -742,12 +742,12 @@ void() ai_turret={
   self.think = ai_turret_patrol1;
   self.nextthink = time + (random()*0.5); //spread out thinks
   
-  self.SendEntity = ctrl_send_turret;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  
   local entity wep;
   for(wep = self.w_slot; wep != world; wep = wep.w_slot){
     wep.effects = EF_NODRAW;
   }  
   self.torsoCenter.effects = EF_NODRAW;
+  
+  self.SendEntity = ctrl_send_turret;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
 };

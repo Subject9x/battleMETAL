@@ -370,7 +370,7 @@ void() building_repair_touch={
   self.attack_state = ST_WALK;
   
   self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;       
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
 };
 
 void() building_repair_node_think={

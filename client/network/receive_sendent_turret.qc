@@ -50,19 +50,25 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.shield = ReadByte();
   }
   
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
+  //EVENT - faction changed
+  if( (changeFlags & SENDFLAG_VELOCITY) ){     
+    self.faction = ReadByte();
+  }
   
+  //EVENT - turret rotated
   if( (changeFlags & SENDFLAG_TURRET) ){
     turretAng = te_read_vector();
-    sendevent_turret_update( turretAng );
   }
+  
+  //EVENT - death
   if( (changeFlags & SENDFLAG_DEAD) ){ 
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){
       sendevent_turret_die() ;
     }
   }
+  
+  //EVENT - health dropped below threshold
   if( (changeFlags & SENDFLAG_CRIT) ){
     if( self.effect1 ){
       if( self.effect2 ){
@@ -78,6 +84,8 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       self.effect1 = te_building_fire_start( self );
     }
   }
+  
+  //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -87,9 +95,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.angles_y = anglemod(ReadCoord());
     self.angles_z = anglemod(ReadCoord());
     
-    self.faction = ReadByte();
     self.data_idx = ReadByte();
-
+    self.spawnflags = ReadLong();
+    
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
     self.next_wepn3 = ReadByte();
@@ -110,6 +118,12 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       setorigin( self, self.origin );
     }
   }
+  
+  //HANDLE EVENT - Shield explode
+  sendevent_shield_explode( prevShield );
+  
+  //HANDLE EVENT - turret rotate
+  sendevent_turret_update( turretAng );
 };
 
 float() predraw_turret={

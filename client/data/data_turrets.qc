@@ -42,6 +42,7 @@ void() data_turret_light={
   makevectors(self.angles);
   offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
   setorigin(self.torsoCenter, offset);
+  self.vec_size = 1;
 };
 
 void() data_turret_heavy={
@@ -57,6 +58,7 @@ void() data_turret_heavy={
   makevectors(self.angles);
   offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
   setorigin(self.torsoCenter, offset);
+  self.vec_size = 2;
 };
 
 void() data_turret_missile={
@@ -72,5 +74,5 @@ void() data_turret_missile={
   makevectors(self.angles);
   offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
   setorigin(self.torsoCenter, offset);
-
+  self.vec_size = 2;
 };

@@ -18,6 +18,9 @@ void() ai_change_faction_use={
     e = findchain(group, self.group);
     while(e){
       e.faction = self.faction;
+      if( e.data_type == DATA_BLD ){
+        e.SendFlags = e.SendFlags | SENDFLAG_VELOCITY;
+      }
       e = e.chain;
     }
   }
@@ -28,6 +31,9 @@ void() ai_change_faction_use={
 			if (!e)
 				return;
 			e.faction = self.faction;
+      if( e.data_type == DATA_BLD ){
+        e.SendFlags = e.SendFlags | SENDFLAG_VELOCITY;
+      }
 		} while ( 1 );
   }
   if( (self.spawnflags & 2) ){
