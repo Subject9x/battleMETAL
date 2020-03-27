@@ -125,6 +125,7 @@ void() building_radar_patrol1=[0, building_radar_patrol1]{
     }
     found = blip;
   }
+  building_burn();
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.attack_state = ST_WALK;
   

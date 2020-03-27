@@ -24,25 +24,40 @@ void() building_die={
   self.touch = SUB_Null;
 };
 
-void() building_burn={
 
+/*
+  IF a building lacks a unique think function, use this 
+*/
+void() building_burn_th={
+  
+  building_burn();
+  
+  self.think = building_burn_th;
+  self.nextthink = time + 1 + (random() * 0.5);
+};
+
+
+/*
+  Particle System  - control for burn-effect on buildings
+*/
+void() building_burn={
   if( self.health < self.max_health * 0.75){
     if( !(self.w_group & WEAPON1) ){
       self.w_group = self.w_group | WEAPON1;
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     }
   }
   if( self.health < self.max_health * 0.55){
     if( !(self.w_group & WEAPON2) ){
       self.w_group = self.w_group | WEAPON2;
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     }
     
   }
   if( self.health < self.max_health *0.33){
     if( !(self.w_group & WEAPON3) ){
       self.w_group = self.w_group | WEAPON3;
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     }
   }
 };
@@ -67,6 +82,10 @@ float( entity dest, float changedflags ) ctrl_send_turret={
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
   }
+  if( (changedflags & SENDFLAG_BURN) ){
+    WriteByte( MSG_ENTITY, self.w_group );
+  }
+  
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
@@ -103,6 +122,10 @@ float( entity dest, float changedflags ) ctrl_send_building={
   
   if( (changedflags & SENDFLAG_VELOCITY) ){
     WriteByte( MSG_ENTITY, self.faction );
+  }
+  
+  if( (changedflags & SENDFLAG_BURN) ){
+    WriteByte( MSG_ENTITY, self.w_group );
   }
   
   if( (changedflags & SENDFLAG_DEAD) ){

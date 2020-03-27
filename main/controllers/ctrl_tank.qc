@@ -56,20 +56,35 @@ void() ctrl_updateTank={
   //damage-based cosmetics for unit component pieces
   if( self.deadflag <= DEAD_NO ){
     hp = self.health / self.max_health;
-    if( hp <= 0.75){
+    if( hp <= 0.25 ){
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
+      if( self.data_type == DATA_BLD ){
+        if( !(self.w_group & WEAPON3) ){
+          self.w_group = self.w_group | WEAPON3;
+        }
+      }
+    }
+    else if( hp <= 0.5 ){
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
+      if( self.data_type == DATA_BLD ){
+        if( !(self.w_group & WEAPON2) ){
+          self.w_group = self.w_group | WEAPON2;
+        }
+      }
+    }
+    else if( hp <= 0.75 ){
       self.SendFlags = self.SendFlags | SENDFLAG_BURN;
       self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
-    }
-    else if( hp <= 0.5){
-      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
-      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
-    }
-    else if( hp <= 0.25){
-      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
-      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
+      if( self.data_type == DATA_BLD ){
+        if( !(self.w_group & WEAPON1) ){
+          self.w_group = self.w_group | WEAPON1;
+        }
+      }
     }
   }
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);

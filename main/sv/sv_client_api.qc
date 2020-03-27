@@ -399,13 +399,13 @@ float( float isNew, float changeFlags ) send_client_data={
   
   self.origin = player.origin;
   self.data_type = player.data_type;
-  self.flags = player.flags;
   self.faction = player.faction;
   self.radar_range = player.radar_range;
   self.stat_rdr_mode = player.stat_rdr_mode;
   self.stat_client_shield = player.stat_client_shield;
   self.vec_size = player.vec_size;
   self.damageValue = player.damageValue;
+  self.data_idx = player.data_idx;
   
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
@@ -414,26 +414,33 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteLong( MSG_ENTITY, self.flags);
+    WriteLong( MSG_ENTITY, player.flags);
     WriteByte( MSG_ENTITY, self.faction);
     WriteByte( MSG_ENTITY, self.radar_range);
     WriteByte( MSG_ENTITY, self.stat_rdr_mode);
     WriteByte( MSG_ENTITY, self.stat_client_shield);
+    WriteAngle( MSG_ENTITY, player.v_angle_x);
+    WriteAngle( MSG_ENTITY, player.v_angle_y);
+    WriteAngle( MSG_ENTITY, player.v_angle_z);
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteByte( MSG_ENTITY, self.data_type );
     WriteByte( MSG_ENTITY, self.faction);
     WriteByte( MSG_ENTITY, self.vec_size);
+    WriteByte( MSG_ENTITY, self.data_idx);
   }
   
   if( (changeFlags & SENDFLAG_CRIT) ){
-    WriteByte( MSG_ENTITY, self.damageValue );
+    WriteShort( MSG_ENTITY, self.damageValue );
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
+    WriteByte( MSG_ENTITY, self.w_group );
+  }
   
-  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, player.deadflag );
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){

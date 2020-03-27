@@ -69,19 +69,19 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   //EVENT - health dropped below threshold
-  if( (changeFlags & SENDFLAG_CRIT) ){
-    if( self.effect1 ){
-      if( self.effect2 ){
-        if( !self.effect3 ){
-          self.effect3 = te_building_fire_start( self );
-        }
-      }
-      else{
-        self.effect2 = te_building_fire_start( self );
-      }
-    }
-    else{
+  if( (changeFlags & SENDFLAG_BURN) ){
+    self.w_group = ReadByte();
+    if( (self.w_group & WEAPON1) && !self.effect1.count ){
       self.effect1 = te_building_fire_start( self );
+      self.colormod = self.colormod * 0.85;
+    }
+    if( (self.w_group & WEAPON2) && !self.effect2.count ){
+      self.effect2 = te_building_fire_start( self );
+      self.colormod = self.colormod * 0.75;
+    }
+    if( (self.w_group & WEAPON3) && !self.effect3.count ){
+      self.effect3 = te_building_fire_start( self );
+      self.colormod = self.colormod * 0.67;
     }
   }
   

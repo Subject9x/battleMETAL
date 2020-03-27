@@ -199,4 +199,6 @@ void() building_human_hangar_vehicle={
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
+  self.think = building_burn_th;
+  self.nextthink = time + random() * 3;
 };

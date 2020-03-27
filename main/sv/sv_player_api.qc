@@ -343,7 +343,8 @@ void() PlayerDie={
   else{
     te_mission_lose();
   }
-
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
+  
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
@@ -405,6 +406,8 @@ void() PlayerDieNetwork={
     te_mission_lose();
   }*/
 
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
+  
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
@@ -436,6 +439,7 @@ void() PlayerDead={
   
 	self.nextthink = -1;
 	self.deadflag = DEAD_DEAD;
+  
 };
 
 //called in PlayerPreThink() when self.deadflag == DEAD_DEAD

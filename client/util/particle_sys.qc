@@ -90,6 +90,16 @@ void() cl_particles_fogFrame={
   }
 };
 
+/*
+  Player-mech has crits that are burning
+*/
+void( vector org, vector wind ) te_mech_crit={
+  local vector spark;
+  //ideally you've makevectors before this....
+  spark = org + (v_up * 10);
+  pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), org, normalize( spark - org) * (wind_z/2), 0.5);
+};
+
 void( vector org, float total ) te_unit_dust={
   local vector dir;
   local vector torg;

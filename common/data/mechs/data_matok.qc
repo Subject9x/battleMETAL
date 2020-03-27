@@ -123,3 +123,15 @@ void() data_ini_matok_={
 //====================================
 #endif
 };
+#ifdef CSQC
+//oh the things done because csqc interpolation isn't a thing.
+//simply syncs 
+void() data_ini_matok_offsets={
+  self.centerTorso = '0 0 0';
+  self.leftTorso =  '-10 12.25 1';
+  self.rightTorso = '10 12.25 1';
+  self.leftArm = '-16 7 3';
+  self.rightArm = '16 7 3';
+  self.leg = '0 -12 0';
+};
+#endif

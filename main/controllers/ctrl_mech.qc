@@ -33,36 +33,16 @@ void() ctrl_update_mechplayer={
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
   
-  //TODO - source of network choke
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
       continue;
     }
     if( piece.deadflag <= DEAD_NO ){
       hp = piece.health / piece.max_health;
-      if( hp < 0.75){
-        //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
-        if( hp < 0.5){
-          //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
-          //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
-          if( hp < 0.25){
-            //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin)  * (WINDDIR_z/2), 1);
-            //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
-          }
-        }
+      if( hp < 0.6){
+        self.clientData.w_group = self.clientData.w_group | piece.partTypeId;
+        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
       }
-    }
-    else{
-      partParent = util_getPartFromName(piece.partParentId, self); 
-      if( partParent.deadflag > DEAD_NO ){
-        continue;
-      }
-      //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-      //spark = te_apply_wind( spark );
-      //client_send_particle( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
     }
   }
 };

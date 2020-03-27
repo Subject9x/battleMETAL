@@ -28,6 +28,7 @@ void() hrepair_th = [0, hrepair_th]{
       }
     }
   }
+  building_burn();
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 

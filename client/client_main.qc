@@ -566,7 +566,7 @@ void() CSQC_Ent_Remove =
   local entity weps;
   local entity next;
   weps = self.w_slot;
-  while( weps != world ){
+  while( weps.data_idx ){
     weps.think = SUB_Remove;
     weps.nextthink = time + 0.1;
     weps = weps.w_slot;

@@ -2044,13 +2044,13 @@ gravity -0.005
   
   //TE_MECHPIECE_DAMAGE - RISING SMOKE
   effect TE_MECHPIECE_DAMAGE
-  count 0.25
+  count 0.15
   type smoke
   blend alpha
   color 0x1C1C1C 0x585858
   tex 0 7
-  size 2 4
-  sizeincrease 0.1
+  size 1 2
+  sizeincrease 0.075
   alpha 180 220 64
   originjitter 2 2 2
   velocityjitter 1 1 1

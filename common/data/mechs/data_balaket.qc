@@ -122,3 +122,16 @@ void() data_ini_balaket_={
 //====================================
 #endif
 };
+#ifdef CSQC
+//oh the things done because csqc interpolation isn't a thing.
+//simply syncs 
+void() data_ini_balaket_offsets={
+  self.centerTorso = '0 0 0';
+  self.leftTorso = '-7.5 5.5 -2.5';
+  self.rightTorso = '7.5 5.5 -2.5';
+  self.leftArm = '-12.1 3.5 -3';
+  self.rightArm = '12.1 3.5 -3';
+  self.leg = '0 -16 0';
+};
+#endif
+

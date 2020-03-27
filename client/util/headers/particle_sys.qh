@@ -59,6 +59,8 @@ vector() te_read_angle;
 
 
 //ported from effectinfo_api
+void( vector org, vector wind ) te_mech_crit;
+
 void() te_building_fire_th;
 entity( entity targetBuilding ) te_building_fire_start;
 

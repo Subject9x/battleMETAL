@@ -40,6 +40,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai;
 //Building entity controllers
 float( entity dest, float changedflags ) ctrl_send_turret;
 float( entity dest, float changedflags ) ctrl_send_building;
+void() building_burn_th;  //generic check-for-burning think
 void() building_burn;
 void() building_die;
 

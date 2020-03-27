@@ -114,6 +114,7 @@ void() hpower_th = [0, hpower_th]{
     self.energy = self.energyMax;
   }
     
+  building_burn();
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 }; 
 

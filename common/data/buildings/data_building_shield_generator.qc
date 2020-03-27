@@ -142,7 +142,7 @@ void() hshield_th = [0, hshield_th]{
       self.shield = self.shieldMax;
     }  
   }
-  
+  building_burn();
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 }
 

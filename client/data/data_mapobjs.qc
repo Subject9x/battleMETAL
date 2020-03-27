@@ -34,14 +34,17 @@ void( float isNew, float entFlags ) sendent_handle_map={
 };
 
 float() predraw_navpoint={
-  self.angles_y = anglemod(self.angles_y + 0.15);
-  setorigin(self, self.origin);
-  self.alpha = 0.33;
-  
   if( self.faction != CLIENT_faction ){
     self.alpha = 0;
+    self.effects = 0;
+    self.scale = 0.01;
   }
-  
+  else{
+    self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
+    self.angles_y = anglemod(self.angles_y + 0.025);
+    self.alpha = 0.33;
+    self.scale = 1;
+  }
   return TRUE;
 };
 
@@ -67,6 +70,14 @@ void( float isNew, float entFlags ) data_nav_point={
   //EVENT - Nav Change Faction
   if( (entFlags & SENDFLAG_CRIT) ){
     self.faction = ReadByte();
+    if( CLIENT_faction != self.faction ){
+      self.effects = self.effects - (self.effects & (EF_NODEPTHTEST | EF_FULLBRIGHT | EF_DOUBLESIDED));
+      self.alpha = 0;
+    }
+    else{
+      self.alpha = 0.33;
+      self.effects = self.effects | (EF_NODEPTHTEST | EF_FULLBRIGHT);
+    }
   }
   
   //EVENT - new to player
