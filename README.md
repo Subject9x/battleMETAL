@@ -2,6 +2,7 @@
 
 ## Overview
 ----------------------
+Stable Beta 1 v2.0.6 final.
 A Total-conversion for the _[DarkPlaces](https://icculus.org/twilight/darkplaces/)_ engine all about mecha combat.
 
 _battleMETAL_ brings giant robot combat inspired by the _Mechwarrior_ and _Earthsiege_ franchises to _Quake's_ frenetic pacing and tech stack. This project adds the following large features to _Darkplaces_ via the _Quake C_ scripting language and use of external file reading.
@@ -94,5 +95,5 @@ https://github.com/Subject9x/battleMETAL/wiki
 ### Music
 ----------------------
 + All new Soundtrack created specifically for the game
-+ [Soundtrack by INNER JOIN](https://soundcloud.com/eamonn-mchugh-roohr)
++ [Soundtrack by INNER JOIN](https://innerjoin.bandcamp.com/album/battlemetal-soundtrack)
 
