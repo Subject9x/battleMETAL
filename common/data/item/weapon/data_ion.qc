@@ -28,7 +28,7 @@ void() data_ini_ion_={
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
 
   self.techLevel = 1;
-  self.equipSize = 2;
+  self.equipSize = ENE2;
   
   self.spreadDefault = '0.018 0.013 0';
   self.wepFireOffset = '0 0 4';

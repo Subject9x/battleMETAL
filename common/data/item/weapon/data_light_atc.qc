@@ -27,7 +27,7 @@ void() data_ini_light_atc_={
   self.damageType = DMG_BAL;
 
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = BAL1;
   
   self.spreadDefault = '0.025 0.025 0';
   self.wepFireOffset = '0 0.5 5'; 

@@ -27,7 +27,7 @@ void() data_ini_plasma_={
   self.damageType = DMG_BAL;
   
   self.techLevel = 3;
-  self.equipSize = 2;
+  self.equipSize = BAL2;
   
   self.wepFireOffset = '0 0 6';
   self.spreadDefault = '0.015 0.015 0';

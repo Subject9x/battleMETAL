@@ -28,7 +28,7 @@ void() data_ini_light_laser_={
   self.damageType = (DMG_ENE | EFF_SHD);
 
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = ENE1;
 
   self.spreadDefault = '0.0075 0.0075 0';
   self.wepFireOffset = '0 0 3.5'; 

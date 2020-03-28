@@ -27,7 +27,7 @@ void() data_ini_equip_recharge_capacitor_={
   self.damageType = (DMG_MSC);
   
   self.techLevel = 3;
-  self.equipSize = 3;
+  self.equipSize = MSC3;
 
   #ifdef CSQC
     self.w_name = "Recharge Capacitor";

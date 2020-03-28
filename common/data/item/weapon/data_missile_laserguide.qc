@@ -28,7 +28,7 @@ void() data_ini_missile_laserguide_={
   self.damageType = DMG_EXP | EFF_PTR;
 
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = MIS1;
 
   self.spreadDefault = '0.03 0.03 0';
   self.wepFireOffset = '0 0 2';

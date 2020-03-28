@@ -20,7 +20,7 @@ void() data_ini_empty_weapon_={
   self.damageType = 0;
 
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = MSC1;
   
   #ifdef CSQC  
     self.w_name = "-EMPTY-";

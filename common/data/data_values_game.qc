@@ -195,6 +195,23 @@ float CHAIN_FIRE_INTERVAL = 0.15;
   float EFF_LOK = 512;  //AI-ONLY: weapon requires a target lock
   float EFF_PTR = 1024; //AI-ONLY: weapon follow's unit's laser-dot, so it ignores accuracy mechanics
   float EFF_SHD = 2048; //for when you want Shield crits but not just shield-only damage of EFF_STX (see light_laser)
+//Weapon Sizes
+  float BAL1 = 1;
+  float BAL2 = 2;
+  float BAL3 = 4;
+  float BAL4 = 8;
+  float ENE1 = 16;
+  float ENE2 = 32;
+  float ENE3 = 64;
+  float ENE4 = 128;
+  float MIS1 = 256;
+  float MIS2 = 512;
+  float MIS3 = 1024;
+  float MIS4 = 2048;
+  float MSC1 = 4096;
+  float MSC2 = 8192;
+  float MSC3 = 16384;
+  float MSC4 = 32768;
 //============================
 //     GETSTAT() TYPES
 //============================

@@ -31,7 +31,7 @@ void() data_ini_quantum_={
   self.damageType = DMG_BAL;
   
   self.techLevel = 2;
-  self.equipSize = 1;
+  self.equipSize = BAL1;
  
   self.spreadDefault = '0.005 0.005 0';
   self.wepFireOffset = '0 0 2';

@@ -30,7 +30,7 @@ void() data_ini_missile_swarm_={
   self.damageType = DMG_EXP | EFF_ARC | EFF_PTR;
  
   self.techLevel = 3;
-  self.equipSize = 2;
+  self.equipSize = MIS2;
 
   self.spreadDefault = '0.07 0.07 0';
   self.wepFireOffset = '0 0 2';

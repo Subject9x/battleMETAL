@@ -32,7 +32,7 @@ void() data_ini_flak_cannon_={
   self.damageType = DMG_BAL;
   
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = BAL1;
   
   self.spreadDefault = '0.017 0.015 0';
   self.wepFireOffset = '0 0 5';

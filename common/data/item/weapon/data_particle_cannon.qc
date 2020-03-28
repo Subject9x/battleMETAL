@@ -29,7 +29,7 @@ void() data_ini_particle_cannon_={
   self.damageType = DMG_ENE;
  
   self.techLevel = 3;
-  self.equipSize = 3;
+  self.equipSize = ENE3;
   
   self.spreadDefault = '0.0025 0.0025 0';
   self.wepFireOffset = '0 0 6.75'; 

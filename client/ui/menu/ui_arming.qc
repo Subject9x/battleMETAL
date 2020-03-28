@@ -90,7 +90,7 @@ void() menu_armingListener_onKeyUp={
       while( hardpoint ){
         if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), FALSE)){
           weaponType = UI_ARMING_item_drag.damageType;
-          if( (UI_ARMING_item_drag.equipSize <= hardpoint.hardpointSize) ){
+          if( (UI_ARMING_item_drag.equipSize & hardpoint.hardpointSize) ){
             if( (weaponType & hardpoint.hardpointType) ){
               data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
               ui_date_load_item1(UI_ARMING_item_drag.data_idx);
@@ -368,7 +368,7 @@ void(vector ofs) menu_arming_HardpointGraph={
      
       if( INPUT_mouse_state == MOUSE_DRAG ){
         if( UI_ARMING_item_drag.data_idx > 0 ){      
-          if( hardpoint.hardpointSize < UI_ARMING_item_drag.equipSize || !(UI_ARMING_item_drag.damageType & hardpoint.hardpointType) ){
+          if( !(hardpoint.hardpointSize & UI_ARMING_item_drag.equipSize) || !(UI_ARMING_item_drag.damageType & hardpoint.hardpointType) ){
             allowed = FALSE;
           }
         }

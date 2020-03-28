@@ -27,7 +27,7 @@ void() data_ini_rockets_={
   self.damageType = DMG_EXP;
   
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = MIS1;
   
   self.wepFireOffset = '0 0 3';
   self.spreadDefault = '0.02 0.025 0';

@@ -32,7 +32,7 @@ void() data_ini_electro_repeater_={
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;
-  self.equipSize = 2;
+  self.equipSize = ENE2;
 
   self.spreadDefault = '0.15 0.2 0';
   self.wepFireOffset = '0 0 6'; 

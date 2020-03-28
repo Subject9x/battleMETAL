@@ -28,7 +28,7 @@ void() data_ini_missile_activeradar_={
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;
-  self.equipSize = 3;
+  self.equipSize = MIS3;
   
   self.spreadDefault = '0.03 0.03 0';
   self.wepFireOffset = '0 0 2';
