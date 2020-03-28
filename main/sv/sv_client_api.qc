@@ -422,6 +422,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
     WriteAngle( MSG_ENTITY, player.v_angle_z);
+    WriteByte( MSG_ENTITY, num_for_edict(player.enemy) );
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){

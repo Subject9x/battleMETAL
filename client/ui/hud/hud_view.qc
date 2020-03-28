@@ -323,7 +323,8 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   RADAR_VCENTER_x = RADAR_VORG_x + (RADAR_VSIZE_x / 2);
   RADAR_VCENTER_y = RADAR_VORG_y + (RADAR_VSIZE_y / 2);
   
-  drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+  
+  //drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   radarLineLeft_x = RADAR_VSIZE_x / 2.25;
   radarLineLeft_x = radarLineLeft_x * -1;
@@ -429,7 +430,9 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   if( draw ){
     switch( blip.data_type ){
       case DATA_BLD:
-        hud_RenderRadar_Building(hudorg, blip.vec_size, blip.faction, 0.85 );  
+        if( blip.faction != FACTION_ALL ){
+          hud_RenderRadar_Building(hudorg, blip.vec_size, blip.faction, 0.85 );  
+        }
         break;
       case DATA_VEHC:
         hud_RenderRadar_Vehc(hudorg, blip.vec_size, blip.faction, 0.9);

@@ -93,5 +93,7 @@ Overview:
 .float hitdir_buffer; //used for hit direction, is cleared every frame
 
 #ifdef CSQC
+.float targetEntId;
+.float entId; 
 .void( float critBits ) te_critical_hit;  //interface for unit critical hit events
 #endif

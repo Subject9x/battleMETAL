@@ -416,6 +416,7 @@ vector ACCURACY_PRIMITVE    = '0.6 1 0.001';
 float FACTION_PSC = 1;
 float FACTION_SURVEST = 2;
 float FACTION_MILITAR = 3;
+float FACTION_ALL = 255;  //buildings don't show up on radar, deploy and nav points are rendered to everyone.
 
 //============================
 //     AI VOICE SYSTEM

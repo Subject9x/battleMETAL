@@ -114,6 +114,14 @@ void() map_nav_point={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
   
+  if( !self.isActive ){
+    self.isActive = TRUE;
+  }
+  
+  if( !self.faction ){
+    self.faction = FACTION_ALL;
+  }
+  
   self.SendEntity = send_nav_point;
   self.use = nav_point_use;
   self.touch = nav_point_touch;

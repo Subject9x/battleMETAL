@@ -236,8 +236,10 @@ void(vector ofs) menu_briefMapPanel={
     local float nlen;
     local string navname;
     
-    if( nav.faction != CLIENT_faction ){
-      continue;
+    if( nav.faction != FACTION_ALL ){
+      if( nav.faction != CLIENT_faction ){
+        continue;
+      }
     }
     
     if( nav.isActive == FALSE ){

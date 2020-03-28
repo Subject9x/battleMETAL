@@ -58,7 +58,10 @@ void() map_deploy_point={
   self.solid = SOLID_NOT;
   self.use = deploy_point_use;
   
-  if( !(self.isActive) ){
+  if( !self.faction ){
+    self.faction = FACTION_ALL;
+  }
+  if( !self.isActive ){
     self.isActive = TRUE;
   }
   

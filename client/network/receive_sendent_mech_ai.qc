@@ -160,7 +160,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
   }
 
-  if( (changeFlags & SENDFLAG_NEWENT) ){    
+  if( (changeFlags & SENDFLAG_NEWENT) ){   
+    self.entId = ReadByte(); 
     self.faction = ReadByte();
     self.data_idx = ReadByte();
    

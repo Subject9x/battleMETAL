@@ -118,6 +118,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   }
   //EVENT - NEW ENTITY
   if( changeFlags & SENDFLAG_NEWENT ){
+    self.entId = ReadByte();
     self.faction = ReadByte();
     self.data_idx = ReadByte();
 

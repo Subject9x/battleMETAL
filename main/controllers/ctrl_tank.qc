@@ -116,6 +116,7 @@ float( entity dest, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   if( changedflags & SENDFLAG_NEWENT ){
+    WriteByte( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     
@@ -153,6 +154,7 @@ float( entity dest, float changedflags ) ctrl_send_spg={
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     
@@ -195,6 +197,7 @@ float( entity dest, float changedflags ) ctrl_send_gev={
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
 

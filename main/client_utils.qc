@@ -543,7 +543,9 @@ void(string cmd, float tokens) client_setNavPoint={
       continue;
     }
     if(nav.faction != self.faction){
-      continue;
+      if( nav.faction != FACTION_ALL ){
+        continue; 
+      }
     }
     if(nav.data_idx != nav_id){
       continue;

@@ -115,6 +115,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
+    self.targetEntId = ReadByte();
   }
   if( (changeFlags & SENDFLAG_TURRET) ){
     prevType = self.data_type;

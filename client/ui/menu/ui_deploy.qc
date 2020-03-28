@@ -311,7 +311,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   //Render Nav points
   local entity nav;
   for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
-    if( nav.faction != CLIENT_faction ){
+    if( nav.faction != CLIENT_faction && nav.faction != FACTION_ALL ){
       continue;
     }
     
@@ -339,9 +339,11 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   }
   local entity deploy;
   for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
-    if( deploy.faction != CLIENT_faction ){
-      continue;
-    } 
+    if( deploy.faction != FACTION_ALL ){
+      if( deploy.faction != CLIENT_faction ){
+        continue;
+      }
+    }
     if( deploy.isActive == FALSE ){
       continue;
     }

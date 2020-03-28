@@ -95,6 +95,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.angles_y = anglemod(ReadCoord());
     self.angles_z = anglemod(ReadCoord());
     
+    self.entId = ReadByte();
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
     
