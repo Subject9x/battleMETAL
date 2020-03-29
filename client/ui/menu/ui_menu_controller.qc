@@ -386,6 +386,7 @@ void() mechAcceptButtonListener={
       cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
       cl_spawnmech(); 
 
+      hud_event_clear();
       hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
       //mark time gettime()?
       //MISSION_TIME_START

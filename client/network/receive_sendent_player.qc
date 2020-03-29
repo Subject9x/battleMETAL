@@ -149,6 +149,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.deadflag = ReadByte();
     if( self.deadflag == DEAD_DEAD ){
       te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
+      self.flags = 0;
+      self.origin = '0 0 0';
+      self.damageValue = 0;
+      self.data_type = 0;
+      self.data_idx = 0;
     }
   }
   

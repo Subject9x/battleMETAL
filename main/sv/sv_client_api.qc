@@ -376,7 +376,6 @@ void() client_data={
   setsize(data, '-1 -1 -1', '1 1 1');
   setorigin(data, data.owner.origin);
   data.owner = self;
-  data.effects = data.effects | EF_NODEPTHTEST;
   data.alpha = 0.01;
   data.scale = 0.01;
   data.origin = self.origin;
@@ -386,7 +385,6 @@ void() client_data={
   data.radar_range = self.radar_range;
   data.stat_rdr_mode = self.stat_rdr_mode;
   data.stat_client_shield = self.stat_client_shield;
-  data.exteriormodeltoclient = self;
   data.SendEntity = send_client_data;
   data.SendFlags = data.SendFlags | SENDFLAG_NEWENT;
   data.vec_size = self.vec_size;
@@ -397,16 +395,29 @@ float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   player = self.owner;
   
-  self.origin = player.origin;
-  self.data_type = player.data_type;
-  self.faction = player.faction;
-  self.radar_range = player.radar_range;
-  self.stat_rdr_mode = player.stat_rdr_mode;
-  self.stat_client_shield = player.stat_client_shield;
-  self.vec_size = player.vec_size;
-  self.damageValue = player.damageValue;
-  self.data_idx = player.data_idx;
-  
+  if( player.deadflag == DEAD_NO ){
+    self.origin = player.origin;
+    self.data_type = player.data_type;
+    self.faction = player.faction;
+    self.radar_range = player.radar_range;
+    self.stat_rdr_mode = player.stat_rdr_mode;
+    self.stat_client_shield = player.stat_client_shield;
+    self.vec_size = player.vec_size;
+    self.damageValue = player.damageValue;
+    self.data_idx = player.data_idx; 
+  }
+  else{
+    self.origin = '0 0 0';
+    self.data_type = DATA_POBS;
+    self.faction = player.faction;
+    self.radar_range = 0;
+    self.stat_rdr_mode = 0;
+    self.stat_client_shield = 0;
+    self.vec_size = 0;
+    self.damageValue = 0;
+    self.data_idx = 0; 
+    self.w_group = 0;
+  }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
   
