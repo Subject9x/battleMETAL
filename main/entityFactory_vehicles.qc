@@ -223,7 +223,9 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
   self = parentEntity;
 };
 
-
+/*
+  Builds mech data for Players and Bots.
+*/
 void() build_mech_unit={
   local vector tempMin, tempMax;
   
@@ -232,10 +234,15 @@ void() build_mech_unit={
   if( self.skin < 0 ){
     self.skin = 0;
   }
+  if( self.skin > 3){
+    //Deathmach randomizer;
+    self.skin = rint(random()*3);
+  }
   
   self.data_type = DATA_MECH;
   self.flags = self.flags | FL_UNIT;
   
+  //-> sub out to making specific bots.
   if( !(self.flags & FL_CLIENT) ){
     build_mech_bot();
     return;
