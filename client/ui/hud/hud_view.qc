@@ -736,7 +736,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
 /*
   RENDER TARGET PIPS OVER AN ORIGIN IN 3D SPACE
 */
-void(vector org, vector torg, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay ={
+void(vector org, vector torg, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay={
   local float dist;
   local float targSizeX, targSizeY, targSizeZ, targZbottom;
   local vector viewAngle;
@@ -823,6 +823,176 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     c_bl_y = c_bl_y - (imgSize_y / 2);
     c_bl_z = 0;
     gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+};
+
+
+/*
+  RENDER allied target boxes
+*/
+void(vector org, entity allyTarget, float algn, float faction1, float radRange) hud_renderTargetOverlay_Ally={
+  local float dist;
+  local float targSizeX, targSizeY, targSizeZ, targZbottom;
+  local vector viewAngle;
+  local vector imgSize, factionColor;
+  
+  
+  targSizeX = allyTarget.vec_size * 2;
+  targSizeY = allyTarget.vec_size * 2; 
+  targSizeZ = allyTarget.vec_size * 4;
+  
+  if( targSizeZ < 1 ){
+    targZbottom = 0;
+  }
+  else{
+    targZbottom = targSizeZ;
+  }
+  
+  if(faction1 == allyTarget.faction){
+    factionColor = CLR_DEF_IIF_FRIEND;
+  }
+  else{
+    factionColor = CLR_DEF_IFF_ENEMY;
+  }
+  dist = vlen(org - allyTarget.origin);
+  if( dist > radRange ){
+    dist = radRange;
+  }
+  dist = 1 * (dist / radRange);
+  
+  imgSize = draw_getimagesize(HUD_TARGET_BOX_TL) * 0.5 ;
+  imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
+  
+  if( imgSize_x > gui_percentXRaw(24) ){
+    imgSize_x = gui_percentXRaw(24);
+  }
+  if(imgSize_x < gui_percentXRaw(10)){
+    imgSize_x = gui_percentXRaw(10);
+  }
+  if( imgSize_y > gui_percentYRaw(24) ){
+    imgSize_y = gui_percentYRaw(24);
+  }
+  if(imgSize_y < gui_percentYRaw(10)){
+    imgSize_y = gui_percentYRaw(10);
+  }
+  
+  viewAngle = input_angles;
+  viewAngle_x = viewAngle_x * -1;
+
+  makevectors(viewAngle);
+  local vector tl, tr, br, bl;
+  local vector c_tl, c_tr, c_br, c_bl;
+
+  tl = org + (v_right * (targSizeX * -1)) + (v_up * targSizeZ);
+  tr = org + (v_right * targSizeX) + (v_up * targSizeZ);
+  br = org + (v_right * targSizeX) + (v_up * (targZbottom * -1));
+  bl = org + (v_right * (targSizeX * -1)) + (v_up * (targZbottom * -1));
+ 
+  c_tl = cs_project(tl);
+  if (c_tl_z >= 0) {
+    c_tl_x = c_tl_x - (imgSize_x / 2);
+    c_tl_y = c_tl_y - (imgSize_y / 2);
+    c_tl_z = 0;
+    gui_renderTintImage(TRUE, c_tl, HUD_TARGET_BOX_TL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+
+  c_tr = cs_project(tr);
+  if (c_tr_z >= 0) {
+    c_tr_x = c_tr_x - (imgSize_x / 2);
+    c_tr_y = c_tr_y - (imgSize_y / 2);
+    c_tr_z = 0;
+    gui_renderTintImage(TRUE, c_tr, HUD_TARGET_BOX_TR, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+  
+  c_br = cs_project(br);
+  if (c_br_z >= 0) {
+    c_br_x = c_br_x - (imgSize_x / 2);
+    c_br_y = c_br_y - (imgSize_y / 2);
+    c_br_z = 0;
+    gui_renderTintImage(TRUE, c_br, HUD_TARGET_BOX_BR, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+  
+  c_bl = cs_project(bl);
+  if (c_tl_z >= 0) {
+    c_bl_x = c_bl_x - (imgSize_x / 2);
+    c_bl_y = c_bl_y - (imgSize_y / 2);
+    c_bl_z = 0;
+    gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+};
+
+/*
+  RENDER FRIENDLY CLIENT NAMES IN 3D SPACE
+*/
+void() hud_render_ally_names={
+  local entity player;
+  local vector namepos, nameproj, drawSize;
+  local float namelen, drawdist, adj;
+  for( player = nextent(world); player != world; player = nextent(player)){
+    if( player.data_idx == player_localentnum ){
+      continue;
+    }
+    if( player.data_type == DATA_POBS ){
+      continue;
+    }
+    if( !(player.flags & FL_CLIENT) ){
+      continue;
+    }
+    drawdist = vlen(pmove_org - player.origin);
+    if( drawdist < CLIENT_radar_range * 0.25 ){
+      drawSize = '10 10 0';
+      adj = 18;
+    }
+    else if( drawdist < CLIENT_radar_range * 0.5 ){
+      drawSize = '12 12 0';
+      adj = 26;
+    }
+    else{
+      drawSize = '14 14 0';
+      adj = 34;
+    }
+    
+    namelen = stringwidth(player.netname, 0, drawSize);
+    namepos = player.origin;
+    namepos_z = namepos_z + (gui_percentYRaw(player.vec_size * adj)) * -1;
+    nameproj = cs_project(namepos);
+    if( nameproj_z >= 0 ){
+      nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
+      nameproj_z = 0;
+      drawstring(nameproj, player.netname, drawSize, CLR_DEF_GREEN * 0.8, 1, 0);
+    }
+    namepos = cs_unproject(nameproj);
+  }
+};
+
+/*
+  RENDER FRIENDLY CLIENT NAMES IN 3D SPACE
+*/
+void() hud_render_ally_targets={
+  local entity player, playerTarg;
+  local vector namepos, nameproj, drawSize;
+  local float namelen, drawdist, adj;
+  for( player = nextent(world); player != world; player = nextent(player)){
+    if( player.targetEntId <= 0 ){
+      continue;
+    }
+    if( player.data_idx == player_localentnum ){
+      continue;
+    }
+    if( !(player.flags & FL_CLIENT) ){
+      continue;
+    }
+    if( player.data_type == DATA_POBS ){
+      continue;
+    }
+    if( player.faction != CLIENT_faction ){
+      continue;
+    }
+    playerTarg = entitybyindex( player.targetEntId );
+    if( playerTarg == world ){
+      continue;
+    }
+    hud_renderTargetOverlay_Ally(pmove_org, playerTarg, 0, CLIENT_faction, player.radar_range);
   }
 };
 
@@ -1670,6 +1840,9 @@ void() data_hud_frame={
     hud_render_sprint();
     hud_render_info();
   }
+  
+  hud_render_ally_names();
+  hud_render_ally_targets();
 };
 
 /*

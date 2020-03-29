@@ -218,9 +218,8 @@ void() PutClientInServer = {
       }
       else{
         savefile_load( FALSE );
-      }    
+      }
     }
-    
     client_sendAvailable_Mechs(SAVE_MECHS_LIST);
     client_sendAvailableItems(SAVE_ITEMS_ALL);
   }
@@ -425,22 +424,25 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteLong( MSG_ENTITY, player.flags);
-    WriteByte( MSG_ENTITY, self.faction);
-    WriteByte( MSG_ENTITY, self.radar_range);
-    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
-    WriteByte( MSG_ENTITY, self.stat_client_shield);
+    
+    WriteByte( MSG_ENTITY, player.flags );
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.radar_range );
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode );
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
     WriteAngle( MSG_ENTITY, player.v_angle_z);
+    
     WriteByte( MSG_ENTITY, num_for_edict(player.enemy) );
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, self.faction);
-    WriteByte( MSG_ENTITY, self.vec_size);
-    WriteByte( MSG_ENTITY, self.data_idx);
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.vec_size );
+    WriteByte( MSG_ENTITY, self.data_idx );
   }
   
   if( (changeFlags & SENDFLAG_CRIT) ){
@@ -456,19 +458,20 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, num_for_edict(player));
+    WriteByte( MSG_ENTITY, num_for_edict(player) );
     WriteByte( MSG_ENTITY, self.data_type );
     WriteByte( MSG_ENTITY, self.vec_size );
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteLong( MSG_ENTITY, self.flags);
-    WriteByte( MSG_ENTITY, self.faction);
-    WriteByte( MSG_ENTITY, self.radar_range);
-    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
-    WriteByte( MSG_ENTITY, self.stat_client_shield);
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.radar_range );
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode );
     WriteString( MSG_ENTITY, player.netname );
   }
   
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
+    WriteByte( MSG_ENTITY, (player.particleCube == world));
+  }
   return TRUE;
 };

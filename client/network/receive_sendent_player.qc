@@ -106,17 +106,22 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
-    setorigin(self, self.origin);
-    self.flags = ReadLong();
+    
+    self.flags = ReadByte();
     self.faction = ReadByte();
     self.radar_range = ReadByte();
     self.stat_rdr_mode = ReadByte();
     self.shield = ReadByte();
+    
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
+    
     self.targetEntId = ReadByte();
+    
+    setorigin(self, self.origin);
   }
+  
   if( (changeFlags & SENDFLAG_TURRET) ){
     prevType = self.data_type;
     self.data_type = ReadByte();
@@ -162,12 +167,23 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.data_type = ReadByte();
     self.vec_size = ReadByte();
     self.origin = te_read_vector();
-    setorigin(self, self.origin);
-    self.flags = ReadLong();
     self.faction = ReadByte();
     self.radar_range = ReadByte();
     self.stat_rdr_mode = ReadByte();
-    self.shield = ReadByte();
     self.netname = strzone( ReadString() );
+    setorigin(self, self.origin);
+  }
+  
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
+    //TODO
+    self.particleCubeFlag = ReadByte();
+    if( self.particleCubeFlag == 0 ){
+      //remove cube
+    }
+    else if( self.particleCubeFlag && isNew ){
+      if( player_localentnum == self.data_idx ){
+        //add cube
+      }
+    }
   }
 };

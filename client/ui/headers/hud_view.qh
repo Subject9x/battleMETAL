@@ -179,7 +179,10 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram;
 void( entity box ) hud_renderHighlight;
 void() hud_renderHighlight_frame;
-void()hud_render_sprint;
+void() hud_render_sprint;
+void() hud_render_ally_names;
+void() hud_render_ally_targets;
+void(vector org, entity allyTarget, float algn, float faction1, float radRange) hud_renderTargetOverlay_Ally;
 
 void() hud_render_info;
 
