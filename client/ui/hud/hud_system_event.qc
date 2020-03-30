@@ -126,6 +126,19 @@ void( float eventAdd, float limitMax) hud_event_enqueue={
   }
 };
 
+//clear the queue for respawn
+void() hud_event_clear={
+  local float itr;
+  //clear event queue
+  for( itr = 0; itr < HUD_EVENT_SIZE; itr = itr + 1){
+    HUD_EVENTS[itr] = -1;
+    //clear sound queue
+    if( itr < 7 ){
+      SOUNDQUEUE[itr] = "";
+    }
+  }
+};
+
 //Event functions
 void() hud_event_critical_left_arm={
   if( !HUD_EVENT_SOUND_START ){

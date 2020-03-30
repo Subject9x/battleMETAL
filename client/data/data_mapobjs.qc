@@ -351,7 +351,6 @@ void( float isNew, float entFlags ) data_map_damage={
 
     self.compAltOffset = te_read_vector();
     self.dest = te_read_vector();
-    self.origin = self.absmin - self.absmax;
   }
   
   if( (entFlags & SENDFLAG_BURN) ){

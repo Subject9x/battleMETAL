@@ -49,6 +49,10 @@ Overview:
 
 .float missionStatus; //moved to player level for network
 
+#ifdef CSQC
+.float particleCubeFlag;
+#endif
+
 #ifndef CSQC
 .float nextVecChoice;
 .float i_reserve; //how many reserve points does the unit cost?

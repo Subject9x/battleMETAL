@@ -83,14 +83,8 @@ void( entity comp ) ctrl_unit_part_death={
 */
 void(entity unitPiece) ctrl_unit_remove_piece={
   local entity this;
-  if( unitPiece.partTypeId ){
-    if( (unitPiece != world) && (unitPiece.owner == self) ){
-      this = self;
-      self = unitPiece;
-        self.think = SUB_Remove;
-        self.nextthink = time + 0.01;
-      self = this;
-    }
+  if( (unitPiece.owner == self) && unitPiece.partTypeId ){
+    remove(unitPiece);
   }
 };
 

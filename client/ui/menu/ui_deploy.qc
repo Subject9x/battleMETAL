@@ -298,7 +298,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     nofs = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, iofs, gui_percentToPixelRawVec('380 380'));
     switch( mapKey.data_type ){
       case DATA_MAP_DMG:
-        drawpic( nofs - gui_percentToPixelRawVec('8 8'), UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED, 1, 0);
+        drawpic( nofs - gui_percentToPixelRawVec('5 5'), UI_DEF_BOX_64, gui_percentToPixelRawVec('10 10'), CLR_DEF_RED * 1.15, 0.67, 0);
         break;
       case DATA_BLD:
         gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD + '0.15 0.15 0.15', 1, 0);

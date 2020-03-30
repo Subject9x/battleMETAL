@@ -218,9 +218,8 @@ void() PutClientInServer = {
       }
       else{
         savefile_load( FALSE );
-      }    
+      }
     }
-    
     client_sendAvailable_Mechs(SAVE_MECHS_LIST);
     client_sendAvailableItems(SAVE_ITEMS_ALL);
   }
@@ -376,7 +375,6 @@ void() client_data={
   setsize(data, '-1 -1 -1', '1 1 1');
   setorigin(data, data.owner.origin);
   data.owner = self;
-  data.effects = data.effects | EF_NODEPTHTEST;
   data.alpha = 0.01;
   data.scale = 0.01;
   data.origin = self.origin;
@@ -386,7 +384,6 @@ void() client_data={
   data.radar_range = self.radar_range;
   data.stat_rdr_mode = self.stat_rdr_mode;
   data.stat_client_shield = self.stat_client_shield;
-  data.exteriormodeltoclient = self;
   data.SendEntity = send_client_data;
   data.SendFlags = data.SendFlags | SENDFLAG_NEWENT;
   data.vec_size = self.vec_size;
@@ -397,67 +394,101 @@ float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   player = self.owner;
   
-  self.origin = player.origin;
-  self.data_type = player.data_type;
-  self.faction = player.faction;
-  self.radar_range = player.radar_range;
-  self.stat_rdr_mode = player.stat_rdr_mode;
-  self.stat_client_shield = player.stat_client_shield;
-  self.vec_size = player.vec_size;
-  self.damageValue = player.damageValue;
-  self.data_idx = player.data_idx;
-  
+  if( player.deadflag == DEAD_NO ){
+    self.origin = player.origin;
+    self.data_type = player.data_type;
+    self.faction = player.faction;
+    self.radar_range = player.radar_range;
+    self.stat_rdr_mode = player.stat_rdr_mode;
+    self.stat_client_shield = player.stat_client_shield;
+    self.vec_size = player.vec_size;
+    self.damageValue = player.damageValue;
+    self.data_idx = player.data_idx; 
+  }
+  else{
+    self.origin = '0 0 0';
+    self.data_type = DATA_POBS;
+    self.faction = player.faction;
+    self.radar_range = 0;
+    self.stat_rdr_mode = 0;
+    self.stat_client_shield = 0;
+    self.vec_size = 0;
+    self.damageValue = 0;
+    self.data_idx = 0; 
+    self.w_group = 0;
+  }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
   
+  /*
+    EVENT - per-frame update
+  */
   if( (changeFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteLong( MSG_ENTITY, player.flags);
-    WriteByte( MSG_ENTITY, self.faction);
-    WriteByte( MSG_ENTITY, self.radar_range);
-    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
-    WriteByte( MSG_ENTITY, self.stat_client_shield);
+    
+    WriteByte( MSG_ENTITY, player.flags );
+    WriteByte( MSG_ENTITY, self.radar_range );
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode );
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
     WriteAngle( MSG_ENTITY, player.v_angle_z);
+  }
+  
+  /*
+    EVENT - player target info change
+  */
+  if( (changeFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, num_for_edict(player.enemy) );
   }
   
+  /*
+    EVENT - player info change 
+  */
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, self.faction);
-    WriteByte( MSG_ENTITY, self.vec_size);
-    WriteByte( MSG_ENTITY, self.data_idx);
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.vec_size );
+    WriteByte( MSG_ENTITY, self.data_idx );
   }
-  
+  /*
+    EVENT - pieces of player mech is blown off
+  */
   if( (changeFlags & SENDFLAG_CRIT) ){
     WriteShort( MSG_ENTITY, self.damageValue );
   }
-  
+  /*
+    EVENT - pieces of player mech are low on health and burning
+  */
   if( (changeFlags & SENDFLAG_BURN) ){
     WriteByte( MSG_ENTITY, self.w_group );
   }
-  
+  /*
+    EVENT - DEAD
+  */
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, player.deadflag );
   }
-  
+  /*
+    EVENT - Client Data is new/spawned
+  */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, num_for_edict(player));
+    WriteByte( MSG_ENTITY, num_for_edict(player) );
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, self.vec_size );
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteLong( MSG_ENTITY, self.flags);
-    WriteByte( MSG_ENTITY, self.faction);
-    WriteByte( MSG_ENTITY, self.radar_range);
-    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
-    WriteByte( MSG_ENTITY, self.stat_client_shield);
+    WriteByte( MSG_ENTITY, self.faction );
     WriteString( MSG_ENTITY, player.netname );
   }
-  
+  /*
+    EVENT - second data rider used for non-critical stuff
+  */
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
+    WriteByte( MSG_ENTITY, (player.particleCube == world));
+  }
   return TRUE;
 };

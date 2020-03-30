@@ -123,7 +123,8 @@ void() player_makeMech={
   self.playerState = PLAYER_POWERUP_BEGIN;
   
   client_push_player_info();
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+  self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_VELOCITY);
   
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
  
@@ -170,6 +171,7 @@ void() player_makeMech={
 };
 
 void() player_unmakeMech={
+  self.clientData.effects = self.clientData.effects - ( self.clientData.effects & EF_NODEPTHTEST);
   self.weaponmodel = "";
   self.viewzoom = 1;
   self.nextVecChoice = 0;
@@ -267,8 +269,7 @@ void() player_unmakeMech={
   self.hud_ent.nextthink = time + 0.01;
   
   if( self.particleCube != world){
-    self.particleCube.think = SUB_Remove;
-    self.particleCube.nextthink = time + 0.01;
+    remove(self.particleCube);
   }
   ctrl_unit_clean_wgroups();
 };
