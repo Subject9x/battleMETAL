@@ -147,7 +147,6 @@ void() map_damage_zone_touch={
   }
 };
 
-
 /*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
 A Damage Zone is an area that hurts all units within the zone.
   
@@ -278,7 +277,6 @@ void() func_damage_zone={
 	if (self.angles != '0 0 0')
 		SetMovedir ();
 	self.solid = SOLID_TRIGGER;
-	self.dest1 = self.origin;
   setmodel( self, self.model );	// set size and link into world
   setsize( self, self.mins, self.maxs );
   setorigin( self, self.origin );
@@ -292,6 +290,8 @@ void() func_damage_zone={
   self.dest = (self.absmin + self.absmax) * 0.5;
   self.compAltOffset = self.absmax - self.dest;
   self.compOffset = self.compAltOffset * -1;
+  
+  self.dest1 = (self.maxs * 0.5) + (self.mins * 0.5);
   
   if( (self.spawnflags & 2) ){
     if( !self.data_lifetime ){
