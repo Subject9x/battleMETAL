@@ -420,13 +420,15 @@ float( float isNew, float changeFlags ) send_client_data={
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
   
+  /*
+    EVENT - per-frame update
+  */
   if( (changeFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
     
     WriteByte( MSG_ENTITY, player.flags );
-    WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.radar_range );
     WriteByte( MSG_ENTITY, self.stat_rdr_mode );
     WriteByte( MSG_ENTITY, self.stat_client_shield );
@@ -434,42 +436,57 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
     WriteAngle( MSG_ENTITY, player.v_angle_z);
-    
+  }
+  
+  /*
+    EVENT - player target info change
+  */
+  if( (changeFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, num_for_edict(player.enemy) );
   }
   
+  /*
+    EVENT - player info change 
+  */
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteByte( MSG_ENTITY, self.data_type );
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
   }
-  
+  /*
+    EVENT - pieces of player mech is blown off
+  */
   if( (changeFlags & SENDFLAG_CRIT) ){
     WriteShort( MSG_ENTITY, self.damageValue );
   }
-  
+  /*
+    EVENT - pieces of player mech are low on health and burning
+  */
   if( (changeFlags & SENDFLAG_BURN) ){
     WriteByte( MSG_ENTITY, self.w_group );
   }
-  
+  /*
+    EVENT - DEAD
+  */
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, player.deadflag );
   }
-  
+  /*
+    EVENT - Client Data is new/spawned
+  */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, num_for_edict(player) );
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, self.vec_size );
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.radar_range );
-    WriteByte( MSG_ENTITY, self.stat_rdr_mode );
     WriteString( MSG_ENTITY, player.netname );
   }
-  
+  /*
+    EVENT - second data rider used for non-critical stuff
+  */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     WriteByte( MSG_ENTITY, (player.particleCube == world));
   }

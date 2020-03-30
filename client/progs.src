@@ -146,6 +146,9 @@ data/data_mech.qc
 ui/anim.qc
 ui/gui_api.qc
 ui/hud/hud_view.qc
+ui/hud/hud_overlay.qc
+ui/hud/hud_radar.qc
+ui/hud/hud_target.qc
 ui/hud/hud_system_sound.qc
 ui/hud/hud_system_event.qc
 

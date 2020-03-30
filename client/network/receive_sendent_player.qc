@@ -97,6 +97,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevShield;
   local float prevCrit;
   local float prevType;
+  local float prevTarget; 
   
   prevShield = self.shield;
   prevCrit = self.damageValue;
@@ -104,11 +105,13 @@ void( float isNew, float changeFlags) sendent_handle_player={
   //Shield Explode event
   sendevent_shield_explode( prevShield );
   
+  /*
+    EVENT - per-frame update
+  */
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
     
     self.flags = ReadByte();
-    self.faction = ReadByte();
     self.radar_range = ReadByte();
     self.stat_rdr_mode = ReadByte();
     self.shield = ReadByte();
@@ -116,12 +119,26 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
-    
-    self.targetEntId = ReadByte();
-    
     setorigin(self, self.origin);
   }
   
+  /*
+    EVENT - player target info change
+  */
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    prevTarget = self.targetEntId;
+    self.targetEntId = ReadByte();
+    if( self.targetEntId != 0 ){
+      self.enemy = findfloat(world, entId, self.targetEntId);
+    }
+    else{
+      self.enemy = world;
+    }
+  }
+  
+  /*
+    EVENT - player info change 
+  */
   if( (changeFlags & SENDFLAG_TURRET) ){
     prevType = self.data_type;
     self.data_type = ReadByte();
@@ -135,6 +152,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
+  /*
+    EVENT - pieces of player mech is blown off
+  */
   if( (changeFlags & SENDFLAG_CRIT) ){
     self.damageValue = ReadShort();
     if( prevCrit < self.damageValue ){
@@ -143,6 +163,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
+  /*
+    EVENT - pieces of player mech are low on health and burning
+  */
   if( (changeFlags & SENDFLAG_BURN) ){
     self.w_group = ReadByte();
     if( self.w_group > 0 ){
@@ -150,6 +173,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
+  /*
+    EVENT - DEAD
+  */
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     if( self.deadflag == DEAD_DEAD ){
@@ -162,18 +188,21 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
+  /*
+    EVENT - Client Data is new/spawned
+  */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.data_idx = ReadByte();
+    self.entId = ReadByte();
     self.data_type = ReadByte();
-    self.vec_size = ReadByte();
     self.origin = te_read_vector();
     self.faction = ReadByte();
-    self.radar_range = ReadByte();
-    self.stat_rdr_mode = ReadByte();
     self.netname = strzone( ReadString() );
     setorigin(self, self.origin);
   }
   
+  /*
+    EVENT - second data rider used for non-critical stuff
+  */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     //TODO
     self.particleCubeFlag = ReadByte();

@@ -50,6 +50,7 @@ void() sv_getTarget={
     }
     self.lock_timer = 0;  //make sure to reset the timer
   }
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_IMPACT;
 };
 
 /*

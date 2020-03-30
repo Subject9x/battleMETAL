@@ -10,46 +10,6 @@ Overview:
 */
 
 /*
-  [pseudo-deprecated]
-  Called by client_main.CSQC_UpdateView()
-  
-  this renders a Player's name in 3D game space.
-*/
-void(entity clnt) ui_renderClientName={
-  local vector namepos, nameproj, drawcolor;
-  local float namelen,drawcheck, drawdist;
-  drawcheck = FALSE;
-  drawdist = vlen(pmove_org - clnt.origin);
-  if(CLIENT_faction == clnt.faction){
-    if(drawdist <= CLIENT_radar_range * 2){
-      drawcheck = TRUE;
-      drawcolor = CLR_DEF_IIF_FRIEND;
-    }
-  }
-  else{
-    if(CLIENT_stat_rdr_mode){
-      if(drawdist <= CLIENT_radar_range){
-        drawcheck = TRUE;
-        drawcolor = CLR_DEF_IFF_ENEMY;
-      }
-    }
-  }
-  if( drawcheck ){
-    namelen = stringwidth(clnt.netname, 0, '10 10 0');
-    namepos = clnt.origin;
-    namepos_z = namepos_z + gui_percentYRaw(clnt.vec_size * 18);
-    nameproj = cs_project(namepos);
-    if (nameproj_z >= 0) {
-      //nameproj = gui_percentToPixelRawVec(nameproj);
-      nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
-      nameproj_z = 0;
-      drawstring(nameproj, clnt.netname, '10 10 0', drawcolor, 1, 0);
-    }
-    namepos = cs_unproject(nameproj);
-  }
-};
-
-/*
   Renders the weapon icon, and a highlight box for a selected hardpoint in
   the Arming Menu.
 */

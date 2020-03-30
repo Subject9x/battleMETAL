@@ -151,6 +151,7 @@ float( entity dest, float changedflags ) ctrl_send_building={
     WriteCoord( MSG_ENTITY, self.angles_y );
     WriteCoord( MSG_ENTITY, self.angles_z );
     
+    WriteByte( MSG_ENTITY, num_for_edict(self) );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.spawnflags );
   }
