@@ -186,8 +186,8 @@ float CHAIN_FIRE_INTERVAL = 0.15;
   float DMG_EXP = 4;  //explosive damage
   float DMG_MSC = 8;  //used for equipment modules
 //Secondary Effect Types
-  float EFF_PRC = 16; //dmg is doubled
-  float EFF_RAM = 32; //DMG_ENE + RAM = feedback damage onto target.
+  float EFF_PRC = 16; //
+  float EFF_RAM = 32; //
   float EFF_STX = 64; //damage only affects shields.
   float EFF_ENE = 128; //weapon draws energy (client-side flag, really)
   

@@ -76,7 +76,7 @@ void() data_projectile_missile_laserguide_touch={
     self.impactType = IMPACT_DIRT;
     debris = 4;
     if(other.takedamage){
-      t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       self.impactType = IMPACT_ARMOR;
       if( other.shield > 0 ){
         self.impactType = IMPACT_SHIELD;

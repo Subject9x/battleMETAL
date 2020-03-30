@@ -138,7 +138,7 @@ void() data_projectile_missile_activeradar_touch={
  
   if(other.takedamage){
     self.impactType = IMPACT_ARMOR;
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
     if( other.shield > 0 ){
       self.impactType = IMPACT_SHIELD;
     }

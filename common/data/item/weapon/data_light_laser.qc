@@ -74,7 +74,7 @@ void() data_ini_attack_laser_={
     else{
       impactStyle = IMPACT_SHIELD;
     }
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
   }
   else{
     impactStyle = IMPACT_DIRT;

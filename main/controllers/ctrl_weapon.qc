@@ -192,7 +192,13 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       else{
         self.nextthink = time + 0.01;
       }
-      macro_set_collider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE)
+      if( !self.movetype ){
+        self.movetype = MOVETYPE_FLYMISSILE;
+      }
+      if( !self.solid ){
+        self.solid = SOLID_BBOX;
+      }
+      self.takedamage = DAMAGE_NO;
       setmodel(self, "q3mdl/testball.md3");
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
@@ -299,7 +305,7 @@ void() ctrl_missile_dud_touch={
 		return;
 	}
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue * 0.05, self.damageType, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue * 0.05, self.origin, '0 0 0');
   }
   remove(self);
 };

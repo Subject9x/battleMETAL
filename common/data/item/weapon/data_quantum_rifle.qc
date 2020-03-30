@@ -76,7 +76,7 @@ void() data_ini_attack_quantum_={
     hitZone = trace_ent.origin;
     hitMax = trace_ent.maxs * 3;
     if( (self.owner.flags & FL_CLIENT) ){
-      t_damage(trace_ent, self, FIRE_ENT, 15, self.damageType, FIRE_ENDPOINT, '0 0 0');
+      t_damage(trace_ent, self, FIRE_ENT, 15, FIRE_ENDPOINT, '0 0 0');
     }
   }
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);

@@ -75,7 +75,7 @@ void() data_projectile_missile_swarm_touch={
 	}
 
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
     self.impactType = IMPACT_ARMOR;
     if( other.shield > 0 ){
       self.impactType = IMPACT_SHIELD;

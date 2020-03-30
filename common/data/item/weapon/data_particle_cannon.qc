@@ -84,7 +84,7 @@ void() data_ini_attack_particle_cannon_={
     thisTarget = trace_ent;
     oldShields = thisTarget.shield;
     thisTarget.shield = 0;
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
     if( oldShields > 0 &&  thisTarget.deadflag <= DEAD_NO ){
       thisTarget.shield = oldShields;
     }

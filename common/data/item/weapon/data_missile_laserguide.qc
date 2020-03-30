@@ -24,7 +24,7 @@ void() data_ini_missile_laserguide_={
   self.energyRate = 0;
   
   self.w_range = 1000;
-  self.damageValue = 275;
+  self.damageValue = 200; //275
   self.damageType = DMG_EXP | EFF_PTR;
 
   self.techLevel = 1;

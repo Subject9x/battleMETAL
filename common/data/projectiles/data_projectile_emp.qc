@@ -118,7 +118,7 @@ void()data_prj_emp_explode={
     if(ln > DAT_PRJ_EMP_EXPRAD){
       continue;
     }
-    t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    t_damage(lst, self, self.owner, self.damageValue, self.origin, '0 0 0');
   }
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.impactType = IMPACT_SKY;  
@@ -141,7 +141,7 @@ void() data_prj_emp_touch={
     self.traileffectnum = FALSE;
   
     if(other.takedamage){
-     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+     t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       if( other.shield > 0 ){
         self.impactType = IMPACT_SHIELD;
       }

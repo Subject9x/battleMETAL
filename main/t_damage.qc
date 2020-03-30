@@ -11,9 +11,6 @@ t_damage function and 1 killed function...for some reason, maybe good house keep
 
 /*
 Ballistic Damage
-  IF shields are up, reduce shot damage by half
-  IF EFF_PRC, increase armor damage
-  IF EFF_RAM, cause energy crits
 */
 float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   local float damage, dmgtype, shields, crit;
@@ -21,31 +18,48 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   damage = dmg_amt;
   shields = targ.shield;
   
-  if( (dmgtype & EFF_STX) ){
-    damage = t_damage_ene( targ, inflictor, damage );
-    return damage;
+  //EFF_RAM - increase armor damage but affected by shield.
+  if( (dmgtype & EFF_RAM) ){
+    if( shields > 0 ){
+      damage = damage * 0.15;
+      shields = shields - damage;
+      damage = 0;
+    }
+    else{
+      damage = damage + (damage * 0.15);
+    }
   }
   
-  if( shields > 0 ){
-    damage = damage - (damage / 2 );
-    shields = shields - damage;
-    damage = 0;
-  }
-  else{
-    if( (dmgtype & EFF_PRC) )
-      damage = damage * 2;
-      
-    if( (dmgtype * EFF_RAM) ){
-      if( (self.owner.flags & FL_CLIENT) ){
-        crit = 0.25;
-        crit = crit + ((3 - skill) / 10);
-        crit = crit + ((3 - targ.vec_size) / 10);
-        crit = crit / 1.25;
-        if( random() <= crit ){
-          damage = damage * 1.5;
-        }
+  //EFF_STX - affect shields only
+  if( (dmgtype & EFF_STX) ){
+    if( shields <= 0 ){
+      damage = 0;
+    }
+    else{
+      shields = shields - damage;
+      damage = 0;
+      if( shields < 0 ){
+        shields = 0;
       }
     }
+  }
+  
+  //EFF_PRC - pierces shields but at a price
+  if( (dmgtype & EFF_PRC) ){
+    if( shields > 0 ){
+      damage = damage * 0.15;
+      shields = shields - damage;
+      damage = 0;
+    }
+    else{
+      damage = damage + (damage * 0.15);
+    }
+  }
+  
+  //Unfiltered damage
+  if( shields > 0 ){
+    shields = shields - (damage * 0.5);
+    damage = 0;
   }
   
   if( shields < 0 ){
@@ -131,44 +145,46 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
 };
 /*
 Explosive Damage
-  IF target shields > 25%, shields consume entire hit, no exceptions.
-  IF target shields < 25%, treat like EFF_PRC damage
-  IF shields are down, explosive might cause an armor crit
+  Shields > 0 
+    Will massively reduce incoming damage and shields will take
+    the hit first.
+    
+  Shields = 0
+    inflict straight damage.
 */
 float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
-  local float damage, dmgtype, shields, mod, crit, quarter;
+  local float damage, dmgtype, shields, mod, crit, frac;
   
   dmgtype = inflictor.damageType;
   damage = dmg_amt;
   shields = targ.shield;
-  quarter = shields * 0.25;
+  frac = shields * 0.15;
   
-  if( targ.shield > quarter ){
+  if( shields > 0 ){
+    if( shields < frac && shields > 0 ){
+      //shields are failing
+      damage = dmg_amt * 0.33;
+    }
+    else{
+      //shields are running hot
+      damage = dmg_amt * 0.1;
+    }
+    shields = shields - damage;
+    if( shields < 0 ){
+      shields = 0;
+    }
     damage = 0;
   }
-  else if( (targ.shield <= quarter) && (targ.shield > 0) ){
-    mod = targ.shield / targ.shieldMax;
-    mod = mod / 2;
-    damage = damage - mod;
-  }
   else{
-    //shields be zero
-    crit = 0.25;
-    crit = crit + ((3 - skill) / 10);
-    crit = crit + ((3 - targ.vec_size) / 10);
-    if( (targ.flags & FL_CLIENT) ) {
-      crit = crit / 1.25;
-    }
-    if( random() <= crit ){
-      damage = damage * 1.25;
-    }
+    //no shields means unfiltered damage.
+    damage = dmg_amt;
   }
-  
+
   targ.shield = shields;
   return damage;
 };
 
-entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
+entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
   local entity notTarg;
   local float dmgAmt, prevShields;
@@ -214,7 +230,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   //check shields
-  if( (dmg_type & DMG_BAL) ){
+  /*if( (dmg_type & DMG_BAL) ){
     dmgAmt = t_damage_bal( dmgTrg, dmgInflictor, dmgAmt );
   }
   else if( (dmg_type & DMG_ENE) ){
@@ -222,7 +238,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   else if( (dmg_type & DMG_EXP) ){
     dmgAmt = t_damage_mis( dmgTrg, dmgInflictor, dmgAmt );
-  }
+  }*/
   
   //shield delay check=============================
   /*
@@ -302,7 +318,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if( dmgTrg.health <= 0 ){
     if( dmgTrg.th_die ){
-      killed(dmgTrg, attacker, dmg_type);
+      killed(dmgTrg, attacker);
     }
   }
   return dmgTrg;
@@ -371,7 +387,7 @@ entity(entity parent, vector org, float start_rad) closestWeapon={
 */
 
 
-void(entity targ, entity attacker, float dmg_type) killed={
+void(entity targ, entity attacker) killed={
   local entity thisOldSelf;
   
   thisOldSelf = self;

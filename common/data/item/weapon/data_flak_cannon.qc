@@ -80,7 +80,7 @@ void() data_ini_attack_flak_={
       totes = DAT_FLAK_SHRAP_TOTAL;
       if(trace_ent.shield > 0){
         shieldDamage = (self.damageValue * totes) / 2;
-        t_damage(trace_ent, self, self.owner, shieldDamage, self.damageType, trace_endpos, '0 0 0');
+        t_damage(trace_ent, self, self.owner, shieldDamage, trace_endpos, '0 0 0');
         impactStyle = IMPACT_SHIELD;
       }
       else{
@@ -97,12 +97,12 @@ void() data_ini_attack_flak_={
             shrapDir = shotDir + (crandom()*DAT_FLAK_SHRAP_SPREAD_x*v_right) + (crandom()*DAT_FLAK_SHRAP_SPREAD_y*v_up);
             shrapPoint = shotpoint + shrapDir*DAT_FLAK_SHRAP_SPREAD_z;
             traceline( shotpoint, shrapPoint, FALSE, self.owner);
-            t_damage(trace_ent, self, self.owner, self.damageValue, self.damageType, trace_endpos, '0 0 0');
+            t_damage(trace_ent, self, self.owner, self.damageValue, trace_endpos, '0 0 0');
             totes = totes - 1;
           }
         }
         else{
-          t_damage(trace_ent, self, self.owner, self.damageValue * totes, self.damageType, trace_endpos, '0 0 0');
+          t_damage(trace_ent, self, self.owner, self.damageValue * totes, trace_endpos, '0 0 0');
         }
       }
     }

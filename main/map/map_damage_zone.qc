@@ -115,7 +115,7 @@ void() map_damage_zone_touch={
           rpoint_z = rpoint_z * (random() * self.compAltOffset_z);
           rpoint = other.origin + rpoint;
           //te_field_rad(rpoint, normalize(rpoint - self.dest) * 10, 0.5);
-          t_damage(other, self, world, self.damageValue, 0, rpoint, '0 0 0');        
+          t_damage(other, self, world, self.damageValue, rpoint, '0 0 0');        
         }
       }
       

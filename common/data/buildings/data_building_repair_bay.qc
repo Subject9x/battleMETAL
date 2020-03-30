@@ -192,7 +192,7 @@ void() hrepair_die16 = [16, SUB_Null]{
   local vector ouch;
   if( self.trigger_field != world ){
     ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
-    t_damage( self.trigger_field, self, world, random() * self.max_health, EFF_PRC, ouch, normalize(ouch - self.trigger_field.origin) * 1);
+    t_damage( self.trigger_field, self, world, random() * self.max_health, ouch, normalize(ouch - self.trigger_field.origin) * 1);
   }
 };
 

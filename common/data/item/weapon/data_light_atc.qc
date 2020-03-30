@@ -70,7 +70,7 @@ void() data_ini_attack_latc_={
     }
     else{
       if( trace_ent ){
-        t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_BAL, FIRE_ENDPOINT, '0 0 0');    
+        t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');    
         if( trace_ent.shield <= 0 ){
           impactStyle = IMPACT_ARMOR;
         }

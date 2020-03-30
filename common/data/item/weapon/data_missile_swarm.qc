@@ -13,14 +13,14 @@ Overview:
 #ifndef CSQC
 void() data_ini_attack_missile_swarm_;
 
-float DATA_SWARM_MAX_TARGETS = 3;
+float DATA_SWARM_MAX_TARGETS = 4; //3
 #endif
 
 void() data_ini_missile_swarm_={
 
   self.data_idx = 14;  
   
-  self.w_clipsize = 3;
+  self.w_clipsize = 1;  //3
   self.reloadRate = 0.3;
   self.reloadMax = 10;
   self.energyRate = 0;
@@ -40,7 +40,7 @@ void() data_ini_missile_swarm_={
     self.fire_sound = "sound/weapons/mis_fire.ogg";
     self.model = "q3mdl/weapons/w_swrm.md3";
     self.abbrev = "SWRM";
-    self.description = "+ Requires <Active Radar> to fire. + Fires 3 missiles at up to 3 targets each.";
+    self.description = "+ Requires <Active Radar> to fire. + Fires 1 missiles at up to 4 targets each.";
     self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
   #endif 
   

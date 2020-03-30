@@ -76,7 +76,7 @@ void() data_projectile_ini_quantum_bit_touch_={
 	}
   
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
     self.impactType = IMPACT_ARMOR;
     if( other.shield > 0 ){
       self.impactType = IMPACT_SHIELD;

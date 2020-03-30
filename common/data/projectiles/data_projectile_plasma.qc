@@ -92,7 +92,7 @@ void() data_projectile_plasma_burn_th={
     return;
   }
   
-  t_damage(self.enemy, self, self.owner, self.damageValue, self.damageType, self.cockpit.origin, '0 0 0');
+  t_damage(self.enemy, self, self.owner, self.damageType, self.cockpit.origin, '0 0 0');
   
   if(time > self.data_lifetime){
     self.think = SUB_Remove;
@@ -125,11 +125,11 @@ void() data_projectile_plasma_touch={
   if(other.takedamage){
     if(other.shield > 0){
       self.impactType = IMPACT_SHIELD;
-      t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
     }
     else{
       self.impactType = IMPACT_ARMOR;
-      hit = t_damage(other, self, self.owner, 0.01, self.damageType, self.origin, '0 0 0');
+      hit = t_damage(other, self, self.owner, 0.01, self.origin, '0 0 0');
       self.enemy = other;
       self.cockpit = hit;
       self.damageType = 0 | (DMG_BAL | EFF_RAM | EFF_PRC);

@@ -121,7 +121,7 @@ void()data_projectile_ion_explode={
     if(ln > DAT_PRJ_ION_EXPRAD){
       continue;
     }
-    t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    t_damage(lst, self, self.owner, self.damageValue, self.origin, '0 0 0');
   }
   
   self.think = SUB_Remove;
@@ -144,7 +144,7 @@ void() data_projectile_ion_touch={
     if( other.shield > 0 ){
       self.impactType = IMPACT_SKY;
     }
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
     self.think = SUB_Remove;
   }
   self.nextthink = time + 0.01;

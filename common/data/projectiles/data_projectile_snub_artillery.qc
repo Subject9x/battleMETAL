@@ -44,7 +44,7 @@ void() projectile_sfga_expl={
 
 void() data_projectile_ini_snub_artillery_={
   self.classname = "missile";
-  self.data_velocity = 1000;
+  self.data_velocity = 1100;  //1000
   self.data_lifetime = 8;
   
   #ifdef CSQC
@@ -58,7 +58,9 @@ void() data_projectile_ini_snub_artillery_={
     
   #ifndef CSQC
     self.think = data_projectile_snub_artillery_th;
-    self.touch = data_projectile_snub_artillery_touch_;    
+    self.touch = data_projectile_snub_artillery_touch_;
+    self.gravity = 0.02;
+    self.movetype = MOVETYPE_TOSS;
   #endif
 };
 
@@ -88,13 +90,11 @@ void() data_projectile_snub_artillery_touch_={
   
   if( other.takedamage ){
     self.impactType = IMPACT_ARMOR;
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
     if( other.shield > 0){
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      self.damageValue = self.damageValue * 0.5;
-      data_projectile_snub_artillery_radiusDamage();
       debris = rint(random() * 4);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 2 );
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 2, 1 );
@@ -120,13 +120,13 @@ void() data_projectile_snub_artillery_radiusDamage={
     if( !(radiusTarg.flags & FL_UNIT) ){
       continue;
     }
-    if( !CanDamage( radiusTarg, self )){
+    if( !ai_valid_target(radiusTarg) ){
       continue;
     }
     d = vlen(radiusTarg.origin - self.origin);
     d = d / self.w_range;
     dmg_act = self.damageValue - (self.damageValue * d);
-    t_damage(radiusTarg, self, self.owner, dmg_act, self.damageType, trace_endpos, '0 0 0');
+    t_damage(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
   }
 };
 #endif CSQC

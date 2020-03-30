@@ -71,7 +71,7 @@ void() data_prj_mis_touch={
 	}
  
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
     if( other.shield > 0 ){
       self.impactType = IMPACT_SHIELD;
     }
