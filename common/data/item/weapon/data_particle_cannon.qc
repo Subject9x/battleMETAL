@@ -67,7 +67,6 @@ void() data_ini_attack_particle_cannon_={
 
   ctrl_weapon_updateAmmo( FALSE );
 
-
   strikePoint = FIRE_ENDPOINT + (v_forward * -5);
   
   if( trace_ent.takedamage ){

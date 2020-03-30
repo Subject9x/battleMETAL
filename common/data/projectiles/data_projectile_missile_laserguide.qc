@@ -62,6 +62,7 @@ void() data_projectile_ini_missile_laserguide_={
 #ifndef CSQC
 void() data_projectile_missile_laserguide_touch={
   local float debris;
+  local float damage; 
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
@@ -76,13 +77,16 @@ void() data_projectile_missile_laserguide_touch={
     self.impactType = IMPACT_DIRT;
     debris = 4;
     if(other.takedamage){
-      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      self.impactType = IMPACT_ARMOR;
+      damage = self.damageValue;
       if( other.shield > 0 ){
+        damage = damage * 0.1;
+        t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
         self.impactType = IMPACT_SHIELD;
       }
       else{
+        t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
         te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 3, 2 );
+        self.impactType = IMPACT_ARMOR;
       }
       debris = 0;
     }

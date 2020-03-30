@@ -61,6 +61,7 @@ void() data_projectile_ini_missile_swarm_={
 #ifndef CSQC
 void() data_projectile_missile_swarm_touch={
   local float debris;
+  local float damage;
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
@@ -75,15 +76,23 @@ void() data_projectile_missile_swarm_touch={
 	}
 
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-    self.impactType = IMPACT_ARMOR;
+    damage = self.damageValue;
     if( other.shield > 0 ){
+      if( other.shield > (other.shieldMax * 0.5) ){
+        damage = damage * 0.25;
+      }
+      else{
+        damage = damage * 0.5;
+      }
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      self.impactType = IMPACT_ARMOR;
+      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 3, 1 );
+      self.impactType = IMPACT_ARMOR;
     }
+    
     debris = 0;
   }
   if( debris > 0 ){

@@ -61,6 +61,7 @@ void() data_projectile_ini_snub_artillery_={
     self.touch = data_projectile_snub_artillery_touch_;
     self.gravity = 0.02;
     self.movetype = MOVETYPE_TOSS;
+    self.w_range = DAT_PRJ_SFGA_RAD;
   #endif
 };
 
@@ -73,6 +74,7 @@ void() data_projectile_snub_artillery_th={
 
 void() data_projectile_snub_artillery_touch_={
   local float debris;
+  local float damage;
   
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -89,15 +91,23 @@ void() data_projectile_snub_artillery_touch_={
   }
   
   if( other.takedamage ){
-    self.impactType = IMPACT_ARMOR;
-    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-    if( other.shield > 0){
+    damage = self.damageValue;
+    if( other.shield > 0 ){
+      if( other.shield > (other.shieldMax * 0.15) ){
+        damage = damage * 0.15;
+      }
+      else{
+        damage = damage * 0.075;
+      }
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
     }
     else{
+      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       debris = rint(random() * 4);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 2 );
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 2, 1 );
+      self.impactType = IMPACT_ARMOR;
     }
     debris = 0;
   }
@@ -117,16 +127,20 @@ void() data_projectile_snub_artillery_radiusDamage={
   local float d, dmg_act;
         
   for(radiusTarg = findradius(self.origin, self.w_range); radiusTarg != world; radiusTarg = radiusTarg.chain){
-    if( !(radiusTarg.flags & FL_UNIT) ){
-      continue;
-    }
     if( !ai_valid_target(radiusTarg) ){
       continue;
     }
     d = vlen(radiusTarg.origin - self.origin);
     d = d / self.w_range;
     dmg_act = self.damageValue - (self.damageValue * d);
-    t_damage(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
+    dmg_act = dmg_act * 0.75;
+    if( radiusTarg.shield > 0 ){
+      dmg_act = dmg_act * 0.5;
+      t_damage_shield(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
+    }
+    else{
+      t_damage(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
+    }
   }
 };
 #endif CSQC

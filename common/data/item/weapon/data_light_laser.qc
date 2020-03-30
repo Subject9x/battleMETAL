@@ -54,6 +54,7 @@ void() data_ini_light_laser_={
 #ifndef CSQC
 void() data_ini_attack_laser_={
   local float impactStyle;
+  local float damage;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -68,13 +69,17 @@ void() data_ini_attack_laser_={
   }
   
   if( trace_ent.takedamage ){
-    if( trace_ent.shield <= 0 ){
-      impactStyle = IMPACT_ARMOR;
-    }
-    else{
+    damage = self.damageValue;
+    if( trace_ent.shield > 0 ){
+      damage = damage + (damage * 0.16);
+      t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, '0 0 0'); 
       impactStyle = IMPACT_SHIELD;
     }
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
+    else{
+      damage = damage * 0.85;
+      t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');  
+      impactStyle = IMPACT_ARMOR;
+    }
   }
   else{
     impactStyle = IMPACT_DIRT;

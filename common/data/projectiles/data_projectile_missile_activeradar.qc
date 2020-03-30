@@ -121,6 +121,8 @@ void() data_projectile_missile_activeradar_delay={
 
 void() data_projectile_missile_activeradar_touch={
   local float debris;
+  local float damage;
+  
   if( other == self.owner ){
     return;
   }
@@ -137,13 +139,16 @@ void() data_projectile_missile_activeradar_touch={
 	}
  
   if(other.takedamage){
-    self.impactType = IMPACT_ARMOR;
-    t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+    damage = self.damageValue;
     if( other.shield > 0 ){
+      damage = damage * 0.25;
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
     }
     else{
+      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 6, 1 );
+      self.impactType = IMPACT_ARMOR;
     }
     debris = 0;
   }

@@ -40,7 +40,7 @@ void() data_ini_missile_swarm_={
     self.fire_sound = "sound/weapons/mis_fire.ogg";
     self.model = "q3mdl/weapons/w_swrm.md3";
     self.abbrev = "SWRM";
-    self.description = "+ Requires <Active Radar> to fire. + Fires 1 missiles at up to 4 targets each.";
+    self.description = "+ target <shields> reduce damage. + Requires <Active Radar> to fire. + Fires 1 missiles at up to 4 targets each.";
     self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
   #endif 
   

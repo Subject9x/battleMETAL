@@ -15,6 +15,7 @@ float DATA_ESR_BEAM_COUNT = 3;
 float DATA_ESR_COOLDOWN_MAX = 2;
 
 #ifndef CSQC
+
 void() data_ini_attack_electro_repeater_;
 #endif 
 
@@ -42,7 +43,7 @@ void() data_ini_electro_repeater_={
     self.fire_sound = "sound/weapons/esr_fire.ogg";
     self.model = "q3mdl/weapons/w_esr.md3";
     self.abbrev = "ESR";
-    self.description = "+ 3 beams per trigger pull. + Instant-impact weapon. + Inaccurate.";
+    self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage split when target is <shielded>";
     self.icon = "gfx/ui/wep_icons/wi_esr.png";
   #endif
   
@@ -59,13 +60,13 @@ void() data_ini_electro_repeater_={
 #ifndef CSQC
 void() data_ini_attack_electro_repeater_={
   local float impactStyle;
+  local float damage;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
   }
   
   ctrl_weapon_updateAmmo( FALSE );
-  
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
@@ -75,6 +76,7 @@ void() data_ini_attack_electro_repeater_={
     self.w_isburst = FALSE;
     self.w_firetime = time + self.reloadMax;
     self.count1 = time;
+    
   }
   else{
     if( (FIRE_ENT.flags & FL_MONSTER) ){
@@ -88,26 +90,25 @@ void() data_ini_attack_electro_repeater_={
   }
   ctrl_weapon_fireOffset();
 
-
   if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
     return;
   }
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
+    damage = self.damageValue; 
     if( trace_ent.shield > 0 ){
+      damage = damage / 2;
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+      t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       impactStyle = IMPACT_SHIELD;
-      client_send_particle( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
     }
     else{
+      t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       impactStyle = IMPACT_ARMOR;
-      client_send_particle( particleeffectnum("TE_ESR_IMPACT_ARMOR"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
     }
   }
   else{
     impactStyle = IMPACT_DIRT;
-    client_send_particle( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
   }
-  
   
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
 };

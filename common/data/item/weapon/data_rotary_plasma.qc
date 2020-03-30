@@ -30,14 +30,14 @@ void() data_ini_plasma_={
   self.equipSize = BAL2;
   
   self.wepFireOffset = '0 0 6';
-  self.spreadDefault = '0.015 0.015 0';
+  self.spreadDefault = '0.005 0.005 0';
   
   #ifdef CSQC  
     self.w_name = "Rotary Plasma Chamber";
     self.fire_sound = "sound/weapons/rpls_fire.ogg";
     self.model = "q3mdl/weapons/w_rpc.md3";
     self.abbrev = "RPC";
-    self.description = "+ Burst-Fires 6 sub-munitions. + Submunitions burn over time on unshielded targets.";
+    self.description = "+ Burst-Fires 6 sub-munitions. + Submunitions burn over time on unshielded targets. + More shield damage at long range.";
     self.icon = "gfx/ui/wep_icons/wi_rpc.png";
   #endif 
   
@@ -48,15 +48,21 @@ void() data_ini_plasma_={
     self.w_attack = data_ini_attack_plasma_;
     self.think = default_weapon_think;
     self.data_ini_projectile = data_projectile_ini_plasma_;
+    self.spreadCache = self.spreadDefault;
   #endif
 };
 
 #ifndef CSQC
 void() data_ini_attack_plasma_={
 
+  self.spreadDefault = self.spreadDefault * 1.33; 
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( TRUE );
+
+  if( self.w_state == RELOADING ) {
+    self.spreadDefault = self.spreadCache;
+  }
 
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
   
