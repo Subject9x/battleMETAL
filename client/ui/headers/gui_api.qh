@@ -13,16 +13,12 @@ float FONT_NUM_ROBOT_MEDIUM;
 float FONT_NUM_DYSTOPIAN;
 float drawfont_prev;
 
-//so, 'state' for these things is tracked by the proper entry being non-zero
-//  ex: deploy point 5 is 'active' and for this player's faction if DEPLOY_POINTS_ORG[5] != '0 0 0'
-vector DEPLOY_POINTS_ORG[32]; //  server origins for all deploy points
-float DEPLOY_POINTS_ACTIVE[32];//  1 = active, 0 = hidden, -1 = inactive.
+entity DEPLOY_POINTS;  //SendEnt now provides the state data;
+entity DEPLOYPOINT;
 
 float OBJECTIVES[32];         //  1 = active, 2 = complete, 0 = hidden, -1 = failed.
 
 string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
-float NAVNAMES_ACTIVE[21];    //  1 = active, unvisit, 2 = active, visit, 0 = hidden, -1 = inactive.
-vector NAVNAMES_ORG[21];      //  server origins for all nav points
 
 string DAT_OTL_UI_IMG;
 string DAT_MNT_UI_IMG;
@@ -85,7 +81,6 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm
 vector(float dmg_type) gui_colorForWeaponType;
 void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float setAlpha, float flg) gui_renderHighlightString;
 vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffsetStart, vector uiAreaSize) gui_mapCoordToImgCoord;
-string(float navname) gui_getNavName;
 void(vector ofs, float bool, vector color1, vector color2, vector sz, float setAlpha, float flg) gui_renderModalFill;
 vector(float pcx, float pcy) gui_percentToPixel;
 float(float pcx) gui_percentX;

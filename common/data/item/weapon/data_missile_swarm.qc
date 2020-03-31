@@ -19,7 +19,6 @@ float DATA_SWARM_MAX_TARGETS = 3;
 void() data_ini_missile_swarm_={
 
   self.data_idx = 14;  
-  self.w_name = "Missile - Swarm";
   
   self.w_clipsize = 3;
   self.reloadRate = 0.3;
@@ -33,22 +32,25 @@ void() data_ini_missile_swarm_={
   self.techLevel = 3;
   self.equipSize = 2;
 
+  self.spreadDefault = '0.07 0.07 0';
+  self.wepFireOffset = '0 0 2';
+  
   #ifdef CSQC
-  self.abbrev = "SWRM";
-  self.description = "+ Requires <Active Radar> to fire. + Fires 3 missiles at up to 3 targets each.";
-  self.icon = "gfx/ui/wep_icons/wi_swrm.png";  
+    self.w_name = "Missile - Swarm";
+    self.fire_sound = "sound/weapons/mis_fire.ogg";
+    self.model = "q3mdl/weapons/w_swrm.md3";
+    self.abbrev = "SWRM";
+    self.description = "+ Requires <Active Radar> to fire. + Fires 3 missiles at up to 3 targets each.";
+    self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
   #endif 
   
   #ifndef CSQC
-  self.spreadDefault = '0.07 0.07 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 1;
-  self.wepFireOffset = '0 0 2';
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_swrm.md3";
-  self.w_attack = data_ini_attack_missile_swarm_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_missile_swarm_;
+    self.w_isburst = FALSE;
+    self.burstRate = 1;
+    self.model = "q3mdl/weapons/w_swrm.md3";
+    self.w_attack = data_ini_attack_missile_swarm_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_missile_swarm_;
   #endif
 };
 
@@ -75,7 +77,7 @@ void() data_ini_attack_missile_swarm_={
         if( !ai_check_face(targs, 0.7) || (targs == self.owner) ){
           continue;
         }
-        if( !(targs.flags & FL_MONSTER) || !(targs.flags & FL_CLIENT) ){
+        if( !(targs.flags & FL_UNIT) ){
           continue;
         }
         if( targs.faction == self.owner.faction){
@@ -95,8 +97,8 @@ void() data_ini_attack_missile_swarm_={
         NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
         NEWSHOT.w_isburst = time + 2; //use to track curving behavior
         setorigin(NEWSHOT, start);
-        sound (NEWSHOT, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
-        pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), self.origin, normalize( targs.origin - FIRE_ORIGIN ) * 3, 1);
+        
+        client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, targs.origin, 0 );
         NEWSHOT = world;
       }
   }

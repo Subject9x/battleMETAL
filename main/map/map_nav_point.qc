@@ -13,34 +13,26 @@ Overview:
   can affect the state of a navpoint.
 */
 void() nav_point_touch={
-  local entity this;
-  local entity that;
   
   if(self.isActive == TRUE){
     //nav points are a player-only thing
-    if( !(other.flags & FL_CLIENT) )
+    if( !(other.flags & FL_CLIENT) ){
       return;
+    }
     if( other.faction == self.faction ){
+      self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
       self.enemy = other;
       self.isActive = 2;
-      this = self;
-      self = other;
-        client_send_navpoint( this );
-      self = this;
-      that = other;
-      
+
       // trigOnTarget is used specifically here to trigger an objective
-      trigger_event( that, self.target );
-      self.effects = self.effects - ( self.effects &(EF_DOUBLESIDED | EF_NOSHADOW | EF_FULLBRIGHT)); 
-      self.alpha = 0.2;
-      self.colormod = '0.15 0.15 0.15';
+      trigger_event( other, self.target );
       //multi_trigger();
-      if( (self.spawnflags & 2) )
+      if( (self.spawnflags & 2) ){
         self.isActive = 1;
-      
-      if( (self.spawnflags & 4) )
+      }
+      if( (self.spawnflags & 4) ){
         self.isActive = -1;
-        
+      }
       self.solid = SOLID_NOT;
     }
   }
@@ -55,6 +47,7 @@ void() nav_point_use={
   //nav point is inactive, activate
   if( !self.isActive ){
     trigger_event( activator, self.trigOnSpawn );
+    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
     self.isActive = TRUE;
     return;
   }
@@ -63,16 +56,22 @@ void() nav_point_use={
     //deactivate signal
     self.isActive = FALSE;
     trigger_event( other, self.trigOnDeath );
+    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
     return;
   }
 };
 
+
 void() map_nav_point_th={
-
-  self.angles_y = anglemod(self.angles_y + 1);
-
+  
   self.think = map_nav_point_th;
   self.nextthink = time + 0.1;
+};
+
+void() map_nav_point_ini={
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.think = map_nav_point_th;
+  self.nextthink = time + 1;
 };
 
 /*QUAKED map_nav_point (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
@@ -98,24 +97,80 @@ OFF_AFTER_USE 4: deactivate after use
 void() map_nav_point={
 
   self.flags = self.flags | FL_NODE;
-
   self.data_type = DATA_NAVP;
+  self.isActive = TRUE;
   
-  precache_model("q3mdl/map/nav_point.obj");
-  setmodel(self, "q3mdl/map/nav_point.obj");
-  
+  setmodel(self, "q3mdl/testball.md3");
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   self.movetype = MOVETYPE_FLY;
   droptofloor();
-  self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT); 
-  self.alpha = 0.33;
-  self.colormod = '0 1 0';
+  
+  //wild-  EF_NODEPTHTEST allows SendEnt to blast this through to all clients!
+  self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
+  self.alpha = 0.01;
+  self.scale = 0.01;
+  
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
+  
+  if( !self.isActive ){
+    self.isActive = TRUE;
+  }
+  
+  if( !self.faction ){
+    self.faction = FACTION_ALL;
+  }
+  
+  self.SendEntity = send_nav_point;
   self.use = nav_point_use;
   self.touch = nav_point_touch;
-  self.isActive = TRUE;
-  self.think = map_nav_point_th;
+  self.think = map_nav_point_ini;
+  self.nextthink = time + 0.1;
+};
+
+void() map_nav_point_remote_send={
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+};
+
+void() map_nav_point_remote_query={
+  local entity trg;
+  if( self.data_idx != 0 ){
+    for( trg = findchainfloat(data_type, DATA_NAVP); trg != world; trg = trg.chain ){
+      if( trg.data_idx != self.data_idx ){
+        continue;
+      }
+      self.faction = trg.faction;
+      self.view_ofs = trg.origin;
+      self.isActive = trg.isActive;
+      self.think = map_nav_point_remote_send;
+      self.nextthink = time + 0.1;
+    } 
+  }
+  else{
+     cons_logAString("Map Error: ", "Remote Nav Point has .data_idx value but cannot find entity!"); 
+  }
+};
+
+/*QUAKED map_nav_point_remote (0.753 0.788 0.431) (-10 -10 -10) (10 10 10) - VISIT_PER_CLIENT OFF_AFTER_USE
+REMOTE: quirk in server code means not all ents are sent to the player on-connect IF
+they're not in the same BSP volume. IF nav points are not visible to [info_player_start]
+when player joins, they WILL NOT be visible for use. This sub-entity fixes the issue.
+
+USAGE: simply queries nav points for the right data_idx and pipes that info.
+
+-------- KEYS -------- 
+data_idx: <float>, each must be unique because this determines the 'name' of the nav point client-side
+
+*/
+void() map_nav_point_remote={
+  
+  setmodel(self, "q3mdl/testball.md3");
+  setsize( self, '-10 -10 -10', '10 10 10' ); 
+  setorigin( self, self.origin );
+  
+  self.SendEntity = send_nav_point;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.think = map_nav_point_remote_query;
   self.nextthink = time + 0.1;
 };

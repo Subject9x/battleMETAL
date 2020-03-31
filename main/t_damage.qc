@@ -230,7 +230,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     IE it doesn't make sense (to the designer) that shield delay is the same whether hit by an autocannon or an EMP blast.
   */
   trg.shieldHitDelay = trg.shieldHitDelay + (4 - trg.vec_size); //simulates larger reactor size on larger units.
-  //trg.shieldHitDelay = trg.shieldHitDelay + (3 - skill);        //easier game modes have shorter recharge delays. (may no longer be needed - Roohr)
   trg.shieldHitDelay = trg.shieldHitDelay * 1.33;
   trg.shieldHitDelay = trg.shieldHitDelay / 100;
   trg.shieldHitDelay = trg.shieldHitDelay + (dmg_amt / 500);  
@@ -254,26 +253,18 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = notTarg;
   }
   
-  if( (prevShields > 0) && (trg.shield <= 0) ){
-    te_shield_explode( trg.origin, trg.vec_size + 1 );
-  }
+  //TODO - replace clientside
+  //if( (prevShields > 0) && (trg.shield <= 0) ){
+    //te_shield_explode( trg.origin, trg.vec_size + 1 );
+  //}
   
   if( dmgAmt <= 0 ){
-    if( (trg.flags & FL_CLIENT) ){
-      trg.cockpit.dmg_save = ceil(trg.shield - dmg_amt);
-    }
-    te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
-  
-  //ideally I'd love to use this feature, but it makes the cockpit .weaponmodel disappear and I don't feel like fixing
-  //it right now. - Roohr
-  /*if( (trg.flags & FL_CLIENT) ){
-    trg.dmg_take = trg.dmg_take + dmgAmt;
-  }*/
-  
-  
-  sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons
+
+  if( trg.dmg_take < 0.25){
+    trg.dmg_take = trg.dmg_take + random() * 3;
+  }
   
   //the special hit-location calculator is only run for DATA_MECH units
   if( trg.data_type == DATA_MECH ){
@@ -437,16 +428,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
     }
     
     self.doobits = 0;
-    
-    if( (self.flags & FL_UNIT) || (self.data_type == DATA_BLD) ){      
-      local entity note;
-      for(note = findchainflags(flags, FL_CLIENT); note != world; note = note.chain){
-        if( note.enemy != self ){
-          continue;
-        }
-        client_send_hud_target_kill( note );
-      }
-    }
     self.th_die();
   self = thisOldSelf;
 };

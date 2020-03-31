@@ -10,44 +10,43 @@ Overview: class file for the client -> server command layer
 /*
   Setter functions, pipes client data up to server.
 */
-void(float val) cl_set_movespeedkey={
-  cvar_set("cl_movespeedkey", ftos(val));
-};
-
-void(float slot, float w_bit) cl_setweapon={
+void(float totalWeps, string wepList) cl_setweapon={
 
   local string cmd;
-  cmd = strcat("cmd mech setwep ", ftos(slot), " ", ftos(w_bit), "\n");
+  cmd = strcat("cmd m sw ", ftos(totalWeps), wepList, "\n");
   localcmd(cmd);
 };
 
 void(float sz, float id) cl_setmech={
   local string cmd;
-  cmd = strcat("cmd mech setmech ", ftos(sz)," ", ftos(id), "\n");
+  cmd = strcat("cmd m sm ", ftos(sz)," ", ftos(id), "\n");
   localcmd(cmd);
 };
 
 void() cl_spawnmech={
   local string cmd;
-  cmd = "cmd mech spawn\n";
+  cmd = "cmd m sp\n";
   localcmd(cmd);
 };
 
-void(float grp_id, float grp_val) cl_setweapongroup={
+void(float group1, float group2, float group3, float group4 ) cl_setweapongroup={
+
   local string cmd;
-  cmd = strcat("cmd mech setgroup ", ftos(grp_id)," ",ftos(grp_val), "\n");
+  cmd = strcat("cmd m sg ",ftos(group1), " ", ftos(group2), " ");
+  cmd = strcat(cmd,  ftos(group3), " ", ftos(group4), "\n");
   localcmd(cmd);
+  
 };
 
 void(float nav_id) cl_setspawnpoint={
   local string cmd;
-  cmd = strcat("cmd mech setnav ", ftos(nav_id), "\n");
+  cmd = strcat("cmd m sn ", ftos(nav_id), "\n");
   localcmd(cmd);
 };
 
 void(float nextMissionBool) cl_set_mission={
   local string cmd;
-  cmd = strcat("cmd mech nextmission ", ftos(nextMissionBool),"\n");
+  cmd = strcat("cmd m nxm ", ftos(nextMissionBool),"\n");
   localcmd(cmd);
 };
 
@@ -70,7 +69,7 @@ void() cl_exit_animatic={
   if( ANM_FILE_STATUS == 1 ){
     //animation is playing;
     anm_cleanup();
-    cmd = "cmd mech exitanim\n";
+    cmd = "cmd m exan\n";
     localcmd(cmd);
   }
 };
@@ -182,6 +181,39 @@ void(string unlockData) cl_unlock_stuff={
       tokenItr = tokenItr + 1;
     }
   }
+};
+
+/*
+  Player Mech Spawn - set CL_ vars
+*/
+
+void( entity mech ) cl_set_hud_vars={
+  cvar_set("cl_forwardspeed", ftos(mech.data_speed_forward));
+  cvar_set("cl_sidespeed", ftos(mech.data_speed_strafe));
+  cvar_set("cl_backspeed", ftos(mech.data_speed_backward));
+  cvar_set("cl_movespeedkey", ftos(mech.data_speed_accel));
+  cvar_set("cl_rollangle",  ftos(mech.hud_rollangle));
+  cvar_set("cl_bob", ftos(mech.hud_bob));
+  cvar_set("cl_bobcycle", ftos(mech.hud_bob_cycle));
+  cvar_set("cl_bobup", ftos(mech.hud_bob_up));
+  cvar_set("cl_bobmodel", ftos(mech.hud_bob_model));
+  cvar_set("cl_bobmodel_side", ftos(mech.hud_bob_side));
+  cvar_set("cl_bobmodel_speed", ftos(mech.hud_bob_speed));
+  cvar_set("cl_bobmodel_up", ftos(mech.hud_bob_model_up));
+  cvar_set("in_pitch_max", ftos(mech.pitchMax));
+  cvar_set("in_pitch_min", ftos(mech.pitchMin));
+  
+  HUD_PITCH_MAX = mech.pitchMax;
+  HUD_PITCH_MIN = mech.pitchMin;
+};
+
+void() cl_set_hud_vars_obs={
+  cvar_set("cl_forwardspeed", "500");
+  cvar_set("cl_sidespeed", "500");
+  cvar_set("cl_backspeed", "500");
+  cvar_set("cl_movespeedkey", "1.5");
+  cvar_set("in_pitch_max", "90");
+  cvar_set("in_pitch_min", "-90");
 };
 
 /*

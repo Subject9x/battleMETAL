@@ -24,7 +24,7 @@ void() ai_gev_enter_strafe={
 void() ai_gev_strafe1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
+  
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -43,7 +43,7 @@ void() ai_gev_strafe1={
 void() ai_gev_strafe2={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
+  
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -64,7 +64,7 @@ void() ai_gev_strafe2={
 void() ai_gev_strafe3={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
+  
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -83,7 +83,7 @@ void() ai_gev_strafe3={
 void() ai_gev_strafe4={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
+  
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -102,7 +102,7 @@ void() ai_gev_strafe4={
 void() ai_gev_strafe5={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
+  
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -121,7 +121,7 @@ void() ai_gev_strafe5={
 void() ai_gev_strafe6={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
+  
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -143,7 +143,6 @@ void() ai_gev_strafe6={
 void() ai_gev_strafe7={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   if( walkmove( self.ai_dir, self.data_speed_strafe ) ){
@@ -155,7 +154,6 @@ void() ai_gev_strafe7={
 void() ai_gev_strafe8={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   if( walkmove( self.ai_dir, self.data_speed_strafe ) ){
@@ -167,7 +165,7 @@ void() ai_gev_strafe8={
 void() ai_gev_strafe9={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
+  
   
   ai_face_targ();
   ai_attack();
@@ -181,7 +179,6 @@ void() ai_gev_strafe9={
 void() ai_gev_strafe10={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   
@@ -199,7 +196,6 @@ void() ai_gev_strafe10={
 void() ai_gev_strafe11={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   if( walkmove( self.ai_dir, self.data_speed_strafe ) ){
@@ -212,7 +208,6 @@ void() ai_gev_strafe11={
 void() ai_gev_strafe12={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   if( walkmove( self.ai_dir, self.data_speed_strafe ) ){

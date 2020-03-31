@@ -18,7 +18,6 @@ void() data_ini_attack_particle_cannon_;
 void() data_ini_particle_cannon_={
   
   self.data_idx = 7;
-  self.w_name = "PAC";
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
@@ -32,21 +31,24 @@ void() data_ini_particle_cannon_={
   self.techLevel = 3;
   self.equipSize = 3;
   
+  self.spreadDefault = '0.0025 0.0025 0';
+  self.wepFireOffset = '0 0 6.75'; 
+  
   #ifdef CSQC
-  self.abbrev = "PAC";
-  self.description = "+ Instant-impact weapon. + Damage ignores shields. + Target shields reduced by 15% of its max when hit.";
-  self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
+    self.w_name = "PAC";
+    self.fire_sound = "sound/weapons/pac_fire.ogg";
+    self.model = "q3mdl/weapons/w_pac.md3";
+    self.abbrev = "PAC";
+    self.description = "+ Instant-impact weapon. + Damage ignores shields. + Target shields reduced by 15% of its max when hit.";
+    self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
   #endif 
   
   #ifndef CSQC
-  self.spreadDefault = '0.0025 0.0025 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 0;
-  self.wepFireOffset = '0 0 6.75'; 
-  self.fire_sound = "sound/weapons/pac_fire.ogg";
-  self.model = "q3mdl/weapons/w_pac.md3";
-  self.think = default_weapon_think;
-  self.w_attack = data_ini_attack_particle_cannon_;
+    self.w_isburst = FALSE;
+    self.burstRate = 0;
+    self.model = "q3mdl/weapons/w_pac.md3";
+    self.think = default_weapon_think;
+    self.w_attack = data_ini_attack_particle_cannon_;
   #endif
 };
 
@@ -55,6 +57,7 @@ void() data_ini_attack_particle_cannon_={
   local vector strikePoint;
   local float oldShields;
   local entity thisTarget;
+  local float impactStyle;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -63,12 +66,8 @@ void() data_ini_attack_particle_cannon_={
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( FALSE );
-  
-  pointparticles( particleeffectnum("TE_PAC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  
-  trailparticles( world, particleeffectnum("TE_PAC_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
-  
+
+
   strikePoint = FIRE_ENDPOINT + (v_forward * -5);
   
   if( trace_ent.takedamage ){
@@ -77,11 +76,10 @@ void() data_ini_attack_particle_cannon_={
       if( trace_ent.shield < 0 ){
         trace_ent.shield = 0;
       }
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), strikePoint, '0 0 0', 1);
+      impactStyle = IMPACT_SHIELD;
     }
     else{
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"),strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+     impactStyle = IMPACT_ARMOR;
     }
     thisTarget = trace_ent;
     oldShields = thisTarget.shield;
@@ -90,9 +88,10 @@ void() data_ini_attack_particle_cannon_={
     if( oldShields > 0 &&  thisTarget.deadflag <= DEAD_NO ){
       thisTarget.shield = oldShields;
     }
-    return;
   }
-  
-  pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+  else{
+    impactStyle = IMPACT_DIRT;
+  }
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
 };
 #endif

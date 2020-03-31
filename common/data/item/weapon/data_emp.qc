@@ -17,7 +17,6 @@ void() data_ini_attack_emp_;
 void() data_ini_emp_={
 
   self.data_idx = 2;  
-  self.w_name = "EMP Cannon";
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
@@ -31,22 +30,25 @@ void() data_ini_emp_={
   self.techLevel = 2;
   self.equipSize = 3;
   
+  self.wepFireOffset = '0 0.1 7';
+  self.spreadDefault = '0.009 0.008 0';
+  
   #ifdef CSQC
-  self.abbrev = "EMP";
-  self.description = "+ Damages <shields> ONLY. + Small proximity detonation.";
-  self.icon = "gfx/ui/wep_icons/wi_emp.png";
+    self.w_name = "EMP Cannon";
+    self.fire_sound = "sound/weapons/emp_fire.ogg";
+    self.model = "q3mdl/weapons/w_emp.md3";
+    self.abbrev = "EMP";
+    self.description = "+ Damages <shields> ONLY. + Small proximity detonation.";
+    self.icon = "gfx/ui/wep_icons/wi_emp.png";
   #endif
   
   #ifndef CSQC
-  self.w_isburst = FALSE;
-  self.burstRate = 0;
-  self.wepFireOffset = '0 0.1 7';
-  self.fire_sound = "sound/weapons/emp_fire.ogg";
-  self.model = "q3mdl/weapons/w_emp.md3";
-  self.w_attack = data_ini_attack_emp_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_emp_;
-  self.spreadDefault = '0.009 0.008 0';
+    self.w_isburst = FALSE;
+    self.burstRate = 0;
+    self.model = "q3mdl/weapons/w_emp.md3";
+    self.w_attack = data_ini_attack_emp_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_emp_;
   #endif
 };
 
@@ -65,8 +67,6 @@ void() data_ini_attack_emp_={
   if( NEWSHOT ){
     NEWSHOT.w_firetime = time + 0.5;
   }
-  
-  sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_EMP_MUZZLE"), FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, FIRE_ENDPOINT, 0);
 };
 #endif

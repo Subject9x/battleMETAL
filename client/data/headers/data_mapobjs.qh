@@ -1,0 +1,29 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 03/13/2020
+Overview: 
+  CSQC-side ini function for synced map objects:
+    + objective entities.
+    + nav points.
+    + deploy points.
+    + hazard zones.
+    
+*/
+
+float() predraw_navpoint;
+
+void( float isNew, float entFlags ) sendent_handle_map;
+
+void( float isNew, float entFlags ) data_nav_point;
+void( float isNew, float entFlags ) data_objective;
+void( float isNew, float entFlags ) data_deploy;
+void( float isNew, float entFlags ) data_map_object;
+void( float isNew, float entFlags ) data_map_damage;
+void( float isNew, float entFlags ) data_weather;
+
+
+void( .entity efx ) data_map_damage_effect;
+void() map_damage_zone_dlights;
+void() map_damage_zone_think;
+void() map_damage_zone_cool;

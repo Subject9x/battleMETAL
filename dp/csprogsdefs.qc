@@ -163,6 +163,9 @@ void		end_sys_fields;			// flag for structure dumping
 ==============================================================================
 */
 
+float servertime;
+float serverprevtime;
+
 // Additional OPTIONAL Fields and Globals
 float		intermission; // indicates intermission state (0 = normal, 1 = scores, 2 = finale text)
 
@@ -360,6 +363,7 @@ const float EF_NOSHADOW		= 4096;
 const float EF_RED		= 128;
 const float EF_STARDUST		= 2048;
 const float EF_SELECTABLE 	= 16384;
+const float EF_DOUBLESIDED = 32768;
 
 const float PFL_ONGROUND	= 1;
 const float PFL_CROUCH		= 2;
@@ -1543,6 +1547,24 @@ vector gettaginfo_up;
 float checkpvs(vector viewpos, entity viewee) = #240;
 
 //compatability with common/data stuff - Roohr
-float() crandom;
+float() crandom ={
+	return 2*(random() - 0.5);
+};
+
+vector(vector m1, vector m2) randompos =
+{
+	local vector v;
+	m2 = m2 - m1;
+	v_x = m2_x * random() + m1_x;
+	v_y = m2_y * random() + m1_y;
+	v_z = m2_z * random() + m1_z;
+	return  v;
+};
+
 void() SUB_Null={};
-void() SUB_Remove={remove(self);};
+void() SUB_Remove={
+  remove(self);
+};
+
+.float gravity;
+.float scale;

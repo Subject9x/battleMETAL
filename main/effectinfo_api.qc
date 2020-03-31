@@ -16,6 +16,34 @@ vector( vector startOrg ) te_apply_wind={
   return windVel;
 };
 
+float( float isNew, float changedFlags ) te_send_missile={
+  WriteByte( MSG_ENTITY, SENDTYPE_PROJ );
+  WriteByte( MSG_ENTITY, changedFlags );
+  
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  
+  WriteCoord( MSG_ENTITY, self.angles_x );
+  WriteCoord( MSG_ENTITY, self.angles_y );
+  WriteCoord( MSG_ENTITY, self.angles_z );
+  
+  WriteCoord( MSG_ENTITY, self.velocity_x );
+  WriteCoord( MSG_ENTITY, self.velocity_y );
+  WriteCoord( MSG_ENTITY, self.velocity_z );
+
+  if( changedFlags & SENDFLAG_IMPACT ){
+    WriteByte( MSG_ENTITY, self.impactType );
+    WriteByte( MSG_ENTITY, self.damageValue );
+  }
+
+  if( changedFlags & SENDFLAG_NEWENT ){
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.damageValue );
+    WriteByte( MSG_ENTITY, self.movetype );
+  }
+  return TRUE;
+};
 
 //ported over from classice Quake C
 void(string gibname, float dm) ThrowGib =
@@ -36,34 +64,21 @@ void(string gibname, float dm) ThrowGib =
 	new.nextthink = time + 10 + random()*10;
 	new.frame = 0;
 	new.flags = 0;
-};
-
-entity( entity targetBuilding ) te_building_fire_start={
-  local entity fire;
-  fire = spawn();
-  fire.origin = util_pointNearBoxEdge( targetBuilding.origin, targetBuilding.angles, targetBuilding.mins, targetBuilding.maxs );
-  fire.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(targetBuilding.vec_size)));
-  fire.think = building_burn_th;
-  fire.nextthink = time + 0.1;
-  fire.angles = targetBuilding.angles;
-  fire.count = targetBuilding.vec_size + (1 / 3);
-  te_debris(fire.origin, targetBuilding.angles, '1 1 8', random() * (targetBuilding.vec_size * 6), targetBuilding.vec_size);
-  targetBuilding.color = targetBuilding.color - '0.1 0.1 0.1';
-  return fire;
+  new.effects = new.effects | EF_LOWPRECISION;
 };
 
 //TE_SMOKE_TEST
 void(vector org, float total) te_smoke={
   local vector smoke;
   smoke = te_apply_wind( org );
-  pointparticles(particleeffectnum("SMOKE_TEST"), org , normalize(smoke - org) * WINDDIR_z, total);
+  client_send_particle(particleeffectnum("SMOKE_TEST"), org , normalize(smoke - org) * WINDDIR_z, total);
 };
 
 /*
   Creates a small flying smoking debris field
   mostly used for mech piece explosions
 */
-void( vector org, vector angl, vector vel, float total, float debrType) te_debris={
+void( vector org, vector angl, vector vel, float total, float debrType ) te_debris={
   local float totals;
   local string debrisMdl;
   local float trailNum;
@@ -91,8 +106,8 @@ void( vector org, vector angl, vector vel, float total, float debrType) te_debri
     setorigin(newmis, org);
     newmis.velocity_x = 100 * crandom();
     newmis.velocity_y = 100 * crandom();
-    newmis.velocity_z = 50 + 100 * random();
-    newmis.effects = newmis.effects | EF_NOSHADOW;
+    newmis.velocity_z = 75 + 100 * random();
+    newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
     newmis.movetype = MOVETYPE_BOUNCE;
     newmis.solid = SOLID_NOT;
     newmis.avelocity_x = random()*450;
@@ -100,7 +115,61 @@ void( vector org, vector angl, vector vel, float total, float debrType) te_debri
     newmis.avelocity_z = random()*450;
     newmis.think = SUB_Remove;
     newmis.ltime = time;
-    newmis.nextthink = time + random() * 5;
+    newmis.nextthink = time + 1 + random() * 3;
+    newmis.frame = 0;
+    newmis.flags = 0;
+    newmis.gravity = 0.15;
+    newmis.traileffectnum = trailNum;
+    totals = totals - 1;
+  }
+};
+
+/*
+  Armor debris is a more spalling like effect where debris flies out
+  from impact point.
+*/
+void( vector org, vector angl, vector vel, float total, float debrType ) te_debris_armor={
+  local float totals;
+  local string debrisMdl;
+  local float trailNum;
+  local vector back;
+  
+  switch( debrType ){
+    case 2:
+      debrisMdl = "q3mdl/fx/debris2/mdl_debris_2.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_MED");
+      break;
+    case 3:
+      debrisMdl = "q3mdl/fx/debris3/mdl_debris_3.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
+      break;
+    default:
+      debrisMdl = "q3mdl/fx/debris1/mdl_debris_1.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
+      break;
+  }
+  makevectors(angl);
+  back = org + (v_forward * -10);
+  back = normalize(back - org);
+  
+  totals = total;
+  while( totals > 0 ){
+  	newmis = spawn();
+    setmodel (newmis, debrisMdl);
+    setsize (newmis, '0 0 0', '0 0 0');
+    setorigin(newmis, org);
+    newmis.velocity_x = (back_x * 400) + (random() * 200);
+    newmis.velocity_y = (back_y * 400) + (random() * 200);
+    newmis.velocity_z = (back_z + 50) + (random() * 50);
+    newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+    newmis.movetype = MOVETYPE_BOUNCE;
+    newmis.solid = SOLID_NOT;
+    newmis.avelocity_x = random()*650;
+    newmis.avelocity_y = random()*650;
+    newmis.avelocity_z = random()*650;
+    newmis.think = SUB_Remove;
+    newmis.ltime = time;
+    newmis.nextthink = time + random() * 0.33;
     newmis.frame = 0;
     newmis.flags = 0;
     newmis.gravity = 0.15;
@@ -137,13 +206,13 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
       break;
   }
   
-  pointparticles( partcle, torg , dir * 2, total);
+  client_send_particle( partcle, torg , dir * 2, total);
 };
 
 void() te_flame_th={
   
   self.compAltOffset = te_apply_wind( self.origin );
-  pointparticles( particleeffectnum(self.vec_name), self.origin, normalize(self.compAltOffset - self.origin) * WINDDIR_z, self.count);
+  client_send_particle( particleeffectnum(self.vec_name), self.origin, normalize(self.compAltOffset - self.origin) * WINDDIR_z, self.count);
 
   self.think = te_flame_th;
   if( self.data_lifetime > 0 ){
@@ -159,145 +228,6 @@ void() te_flame_th={
   self.nextthink = time + self.count2;
 };
 
-void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_small_flame_start={
-  local entity fire;
-  
-  fire = spawn();
-  fire.classname = "TE_FIRE";
-  fire.w_firetime = ticrate;
-  fire.movetype = MOVETYPE_NONE;
-  fire.solid = SOLID_NOT;
-  fire.angles = angl;
-  fire.think = te_flame_th;
-  fire.nextthink = time + fire.w_firetime;
-  fire.count = total;
-  fire.vec_name = "TE_FIRE_1";
-  if( lifetime > 0 ){
-    fire.data_lifetime = time + lifetime;
-  }
-  if( ownerLifetime > 0){
-    fire.health = time + ownerLifetime;
-  }
-  setorigin( fire, org );
-};
-
-void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_med_flame_start={
-  local entity fire;
-  
-  fire = spawn();
-  fire.w_firetime = ticrate;
-  fire.movetype = MOVETYPE_NONE;
-  fire.solid = SOLID_NOT;
-  fire.angles = angl;
-  fire.think = te_flame_th;
-  fire.nextthink = time + fire.w_firetime;
-  fire.count = total;
-  fire.vec_name = "TE_FIRE_2";
-  if( lifetime > 0 ){
-    fire.data_lifetime = time + lifetime;
-  }
-  if( ownerLifetime > 0 ){
-    fire.health = time + ownerLifetime;
-  }
-  setorigin( fire, org );
-};
-
-void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_big_flame_start={
-  local entity fire;
-  
-  fire = spawn();
-  fire.w_firetime = ticrate;
-  fire.movetype = MOVETYPE_NONE;
-  fire.solid = SOLID_NOT;
-  fire.angles = angl;
-  fire.think = te_flame_th;
-  fire.nextthink = time + fire.w_firetime;
-  fire.count = total;
-  fire.vec_name = "TE_FIRE_3";
-  if( lifetime > 0 )
-    fire.data_lifetime = time + lifetime;
-  
-  if( ownerLifetime > 0 ){
-    fire.health = time + ownerLifetime;
-  }
-  setorigin( fire, org );
-};
-
-
-void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
-  local vector vel;
-  local float demg;
-  
-  demg = hitDmg / 10;
-  vel = angl * demg;
-  
-  pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, demg + total);
-  pointsound( org, "sound/fx_shieldhit.ogg", 1, ATTN_NORM );
-};
-
-
-void() te_shield_explode_th={
-  self.alpha = self.alpha - 0.012;
-  self.scale = self.scale + 0.015;
-  self.think = te_shield_explode_th;
-  if( self.alpha < 0.01 ){
-    self.think = SUB_Remove;
-  }
-  self.nextthink = time + 0.01;
-};
-
-void( vector org, float vecSize ) te_shield_explode={
-  local entity explode;
- 
-  explode = spawn();
-  explode.movetype = MOVETYPE_NONE;
-  explode.solid = SOLID_NOT;
-  explode.think = te_shield_explode_th;
-  explode.nextthink = time + 0.05;
-  explode.data_lifetime = 10;
-  explode.scale = 0.1 + (vecSize / 3);
-  explode.alpha = 0.75;
-  explode.effects = explode.effects | EF_NOSHADOW;
-  setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
-  setorigin( explode, org);
-  te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22'); 
-  //pointparticles?
-};
-
-void() te_missile_explode_th={
-  self.alpha = self.alpha - 0.015;
-  self.scale = self.scale + 0.01;
-  self.think = te_shield_explode_th;
-  if( self.alpha < 0.01 ){
-    self.think = SUB_Remove;
-  }
-  self.nextthink = time + 0.01;
-};
-
-void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType ) te_missile_explode={
-  local entity explode;
- 
-  sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
- 
-  explode = spawn();
-  explode.movetype = MOVETYPE_NONE;
-  explode.solid = SOLID_NOT;
-  explode.think = te_shield_explode_th;
-  explode.nextthink = time + 0.05;
-  explode.data_lifetime = 10;
-  explode.scale = explodeSize;
-  explode.alpha = 1;
-  explode.avelocity = randomvec() * 300;
-  if( explodeColor != '0 0 0' ){
-    explode.color = explodeColor;
-  }
-  
-  setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
-  setorigin( explode, org);
-  te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
-  te_customflash( org, explodeSize * 50, 1, explodeColor); 
-  //pointparticles?
-};
 
 /*
   item is exploding, use its bbox size for area
@@ -311,76 +241,83 @@ void( vector explodeColor ) te_object_explode={
   makevectors(self.angles);
   exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
   
-  te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
+  //TODO - Replace
+  //te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
 
 };
 
-void( entity source, vector org, vector angl, vector vel, string modl, float skinNum ) te_mech_piece_explode={
-  local entity notChunk;
-  local vector localVel;
-  notChunk = self;
+/*
+  When a part is blown off a mech
+*/
+void() te_vehicle_chunk_th={  
+  local vector wishvel;
+  //trail effect for desired time, then a half-life as post-burn
+  if( time > self.ai_action_time && self.traileffectnum ){
+    self.traileffectnum = 0;
+    self.ai_action_time = self.data_lifetime * 2;
+    self.think = SUB_Remove;
+    self.nextthink = time + self.ai_action_time;
+    return;
+  }
+  self.think = te_vehicle_chunk_th;
+  self.nextthink = time + random() * 0.5;
+  if( time > self.ai_action_time ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+  }
+};
+
+void( entity parent, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk={
+  local entity piece;
   
-  localVel = vel;
-  newmis = spawn();
-  self = newmis;
-    self.vec_size = notChunk.owner.vec_size;
-    self.angles = angl;
-    if(localVel_x > 0 || localVel_y > 0 ||localVel_z > 0){
-      self.velocity = vel + VelocityForDamage (100);
-      self.avelocity_x = random()*150;
-      self.avelocity_y = random()*150;
-      self.avelocity_z = random()*100;
-    }
-    else{
-      self.velocity = VelocityForDamage (100);
-      self.avelocity_x = random()*150;
-      self.avelocity_y = random()*150;
-      self.avelocity_z = random()*200;
-    }
-    self.th_die = SUB_Remove;
-    self.owner = notChunk.owner;
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_BOUNCE);
-    util_setModel(modl, skinNum, 0);
-    setsize(self, '-4 -4 -4', '4 4 4');
-    setorigin(self, notChunk.origin);
-    self.touch = touch_mechPiece;
-    self.think = ctrl_component_burn;
-    self.traileffectnum = particleeffectnum("TE_MECHPIECE_DEAD_BURN");
-    self.nextthink = time + (random() * 1);
-    self.ai_action_time = time + (random() * (self.owner.vec_size * 120));
-    self.colormod = notChunk.colormod;
-    self.gravity = 0.67;
-    localVel = normalize(self.origin - self.owner.origin) * 10;
-    localVel_z = localVel_z + 50;
-    te_debris( self.origin, self.angles, normalize(self.origin - self.owner.origin) * 5, self.owner.vec_size * 2, self.owner.vec_size);
-  self = notChunk;
+  piece = spawn();
+  setmodel(piece, parent.model);
+  setsize (piece, '0 0 0', '0 0 0');
+  setorigin(piece, parent.origin);
+  if( wishAngl != '0 0 0' ){
+    piece.angles = wishAngl;
+  }
+  else{
+    piece.angles = parent.angles;
+  }
+  piece.skin = parent.skin;
+  piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+  piece.movetype = MOVETYPE_TOSS;
+  piece.solid = SOLID_NOT;
+  piece.frame = 0;
+  piece.flags = 0;
+  piece.colormod = '0.67 0.67 0.67';
+  piece.traileffectnum = trailnum;
+  if( wishVel != '0 0 0' ){
+    piece.velocity = wishVel;
+  }
+  else{
+    piece.velocity_x = 100 * crandom();
+    piece.velocity_y = 100 * crandom();
+    piece.velocity_z = 50 + 100 * random();
+  }
+  piece.avelocity_x = random()*100;
+  piece.avelocity_y = random()*100;
+  piece.avelocity_z = random()*150;
+  if( lifetime ){
+    piece.data_lifetime = lifetime;
+    piece.ai_action_time = time + lifetime;
+  }
+  else{
+    piece.data_lifetime = 30;
+    piece.ai_action_time = time + lifetime;
+  }
+  if( grav ){
+    piece.gravity = grav;
+  }
+  else{
+    piece.gravity = 0.67;
+  }
+  piece.think = te_vehicle_chunk_th;
+  piece.nextthink = time + 0.1;
+  
 };
 
-void( vector org, vector setVelocity, float total ) te_field_rad={
-  pointparticles( particleeffectnum("TE_FIELD_RAD"), org, setVelocity,  total);
-};
-
-void( vector org, float total ) te_field_rad_light={
-  pointparticles( particleeffectnum("TE_FIELD_RAD_LIGHT"), org, '0 0 0',  total);
-};
-
-void( vector org, vector setVelocity, float total ) te_field_mineral={
-  pointparticles( particleeffectnum("TE_FIELD_MINERAL"), org, setVelocity,  total);
-};
-
-void( vector org, float total ) te_field_mineral_light={
-  pointparticles( particleeffectnum("TE_FIELD_MINERAL_LIGHT"), org, '0 0 0',  total);
-};
-
-void( vector particleOrg, vector particleEnd ) te_field_quantum={
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), particleOrg, normalize( particleEnd - particleOrg ), 1);
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), particleOrg, normalize( particleEnd - particleOrg ) * 30, 1);
-  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), particleOrg, particleEnd);
-};
-
-void( vector org, float total ) te_field_quantum_light={
-  pointparticles( particleeffectnum("TE_FIELD_QUANTUM_LIGHT"), org, '0 0 0',  total);
-};
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
   local vector fx, vel;
@@ -402,24 +339,11 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
   if( !trace_ent.model ){
     return;
   }
-  sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-  pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
+  pointsound (self.legs.origin, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+  client_send_particle( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
 };
 
 //HUD Sound Effects
-//make sure to scope self to target client
-void() te_nav_reach={
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_NAV_REACH );
-};
-
-void() te_targ_kill={
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_TARG_KILL );
-};
-
 void() te_mission_win={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );

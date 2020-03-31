@@ -41,15 +41,20 @@ void() data_ini_monitor_={
   self.data_speed_strafe = 85;
   self.data_speed_backward = 85;
   self.data_speed_accel = 2;
-  #ifndef CSQC
+#ifndef CSQC
   self.yaw_speed = 2;    // AI-only 
   self.turret_yaw_speed = 2.75;// AI-only
   self.ai_angleLimits = '-100 100 0';
-  #endif
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
-  
+#ifdef CSQC
+  if( (self.flags & FL_MONSTER) ){
+    self.hardpoint_cnt = 9;
+    weaponList = self;
+  }
+#endif
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/monitor/monitor_tor_c.md3", 1300, '0 0 0', '0 6 0' );
  
@@ -68,11 +73,14 @@ void() data_ini_monitor_={
   //legs
   data_ini_legs_( "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0' );
   
+#ifndef CSQC
   //camera location
   data_ini_camera_( '0 18 8', self.torsoCenter );
+#endif
 //=====================================
  
 //HARDPOINT DATA======================
+#ifndef CSQC
   data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_3( M_ARM_LEFT, '-22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
@@ -82,28 +90,56 @@ void() data_ini_monitor_={
   data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 5.5', '0 0 0', 3, DMG_EXP);
   data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 4.5', '0 0 0', 3, (DMG_EXP | DMG_MSC));
   data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 4.5', '0 0 0', 3, (DMG_EXP | DMG_MSC));
+#endif
+#ifdef CSQC
+  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
+  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
+  data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_3( M_ARM_LEFT, '-22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_4( M_ARM_LEFT, '-15 3 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_5( M_TOR_RIGHT, '9.45 15.9 6', '0 0 0', 3, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_6( M_TOR_LEFT, '-9.45 15.9 6', '0 0 0', 3, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 5.5', '0 0 0', 3, DMG_EXP);
+  data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 4.5', '0 0 0', 3, (DMG_EXP | DMG_MSC));
+  data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 4.5', '0 0 0', 3, (DMG_EXP | DMG_MSC));
+#endif
 //=====================================
 
 //HUD Data=============================
-  self.pitchMax = 45;
-  self.pitchMin = -25;
+#ifndef CSQC
   self.weaponmodel = "q3mdl/mechs/monitor/monitor_hud.md3";
   self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
-  self.hud_rollangle = 2.25;
-  self.hud_bob = 0.03;
-  self.hud_bob_cycle = 0.85;
-  self.hud_bob_up = 0.5;
+#endif
+#ifdef CSQC
+  self.pitchMax = 45;
+  self.pitchMin = -25;
+  self.hud_rollangle = 2.75;
+  self.hud_bob = 0.05;
+  self.hud_bob_cycle = 0.65;
+  self.hud_bob_up = 0.35;
   self.hud_bob_model = 1;
-  self.hud_bob_side = 0.65;
+  self.hud_bob_side = 0.4;
   self.hud_bob_speed = 3.85;
   self.hud_bob_model_up = 0.15;
 //====================================
 
 //UI Data=============================
-  #ifdef CSQC
   self.abbrev = "MNT";
   self.description = "The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. | | The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. | | All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.";
   self.icon = "gfx/ui/mech_icons/icon_monitor.png";
-  #endif
+#endif
 //====================================
 };
+#ifdef CSQC
+//oh the things done because csqc interpolation isn't a thing.
+//simply syncs 
+void() data_ini_monitor_offsets={
+  self.centerTorso = '0 0 0';
+  self.leftTorso = '-11.5 11 -0.5';
+  self.rightTorso = '11.5 11 -0.5';
+  self.leftArm = '-18 9 3.5';
+  self.rightArm = '18 9 3.5';
+  self.leg = '0 -22 0';
+};
+#endif

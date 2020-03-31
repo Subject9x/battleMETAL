@@ -12,7 +12,25 @@ data/defs_linker.qc
   ../common/data/defs/defs_unit.qc		    //all fields related specifically to unit data.
   ../common/data/defs/defs_part.qc		    //all fields related to unit sub components.
   ../common/data/defs/defs_item.qc		    //all fields related to items.
+  ../common/data/defs/defs_projectile.qc		    //all fields related to items.
 //================================
+
+data/headers/data_api.qh
+data/headers/ui_data.qh
+data/headers/msn_file.qh
+data/headers/data_buildings.qh
+data/headers/data_turrets.qh
+data/headers/data_vehicles.qh
+data/headers/data_projectiles.qh
+data/headers/data_mapobjs.qh
+data/headers/data_mech.qh
+util/headers/particle_sys.qh
+model/models_buildings.qh
+
+network/headers/client_globals.qh
+network/headers/server_localcmd.qh
+network/headers/receive_entities.qh
+network/headers/receive_sendent.qh
 
 //Common Game Data================
   ../common/data/data_values_particles.qc
@@ -27,15 +45,15 @@ data/defs_linker.qc
   //---------------------------------
   
   //Projectiles--------------------
-  //../common/data/projectiles/data_projectile_emp.qc
-  //../common/data/projectiles/data_projectile_rocket.qc
-  //../common/data/projectiles/data_projectile_quantum_bit.qc
-  //../common/data/projectiles/data_projectile_plasma.qc
-  //../common/data/projectiles/data_projectile_snub_artillery.qc
-  //../common/data/projectiles/data_projectile_missile_laserguide.qc
-  //../common/data/projectiles/data_projectile_missile_activeradar.qc
-  //../common/data/projectiles/data_projectile_ion.qc
-  //../common/data/projectiles/data_projectile_missile_swarm.qc
+  ../common/data/projectiles/data_projectile_emp.qc
+  ../common/data/projectiles/data_projectile_rocket.qc
+  ../common/data/projectiles/data_projectile_quantum_bit.qc
+  ../common/data/projectiles/data_projectile_plasma.qc
+  ../common/data/projectiles/data_projectile_snub_artillery.qc
+  ../common/data/projectiles/data_projectile_missile_laserguide.qc
+  ../common/data/projectiles/data_projectile_missile_activeradar.qc
+  ../common/data/projectiles/data_projectile_ion.qc
+  ../common/data/projectiles/data_projectile_missile_swarm.qc
   //-------------------------------
   
   //Mechs--------------------------
@@ -94,14 +112,6 @@ data/defs_linker.qc
 
 util/headers/input_events.qh
 
-data/headers/data_api.qh
-data/headers/ui_data.qh
-data/headers/msn_file.qh
-
-network/headers/client_globals.qh
-network/headers/server_localcmd.qh
-network/headers/receive_entities.qh
-
 //CSQC Menu System Headers
   ui/headers/gui_api.qh
   ui/headers/hud_view.qh
@@ -109,8 +119,6 @@ network/headers/receive_entities.qh
   ui/headers/hud_system_sound.qh
   ui/headers/hud_system_event.qh
 //================
-
-util/headers/particle_sys.qh
 
 //CSQC Menu Headers
   ui/menu/headers/ui_util.qh
@@ -128,10 +136,19 @@ data/data_system.qc
 data/data_api.qc
 data/ui_data.qc
 data/msn_file.qc
+data/data_buildings.qc
+data/data_turrets.qc
+data/data_vehicles.qc
+data/data_projectiles.qc
+data/data_mapobjs.qc
+data/data_mech.qc
 
 ui/anim.qc
 ui/gui_api.qc
 ui/hud/hud_view.qc
+ui/hud/hud_overlay.qc
+ui/hud/hud_radar.qc
+ui/hud/hud_target.qc
 ui/hud/hud_system_sound.qc
 ui/hud/hud_system_event.qc
 
@@ -139,6 +156,14 @@ ui/hud/hud_system_event.qc
 //Client / Server CMD===
   network/server_localcmd.qc
   network/receive_entities.qc
+  network/receive_sendent.qc
+  network/receive_sendent_tank.qc
+  network/receive_sendent_spg.qc
+  network/receive_sendent_gev.qc
+  network/receive_sendent_mech_ai.qc
+  network/receive_sendent_turret.qc
+  network/receive_sendent_building.qc
+  network/receive_sendent_player.qc
 //========================
 
 //MENU SYSTEM============
@@ -154,6 +179,14 @@ ui/hud/hud_system_event.qc
 
 //EFFECTS================
   util/particle_sys.qc
+  model/power_plant.qc
+  model/shield_gen.qc
+  model/repair_bay.qc
+  model/fuel_tank.qc
+  model/hangar_large.qc
+  model/hangar_medium.qc
+  model/guard_tower.qc
+  model/radar_post.qc
 //=======================
 
 input_events.qc

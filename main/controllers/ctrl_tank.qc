@@ -56,23 +56,160 @@ void() ctrl_updateTank={
   //damage-based cosmetics for unit component pieces
   if( self.deadflag <= DEAD_NO ){
     hp = self.health / self.max_health;
-    if( hp <= 0.75){
-      makevectors( self.angles );
-      spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
+    if( hp <= 0.25 ){
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
+      if( self.data_type == DATA_BLD ){
+        if( !(self.w_group & WEAPON3) ){
+          self.w_group = self.w_group | WEAPON3;
+        }
+      }
     }
-    else if( hp <= 0.5){
-      makevectors( self.angles );
-      spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 1);
+    else if( hp <= 0.5 ){
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
+      if( self.data_type == DATA_BLD ){
+        if( !(self.w_group & WEAPON2) ){
+          self.w_group = self.w_group | WEAPON2;
+        }
+      }
     }
-    else if( hp <= 0.25){
-      makevectors( self.angles );
-      spark = self.origin + (v_up * (self.maxs_z * 0.75));
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
-      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 1);
+    else if( hp <= 0.75 ){
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
+      if( self.data_type == DATA_BLD ){
+        if( !(self.w_group & WEAPON1) ){
+          self.w_group = self.w_group | WEAPON1;
+        }
+      }
     }
   }
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
+};
 
+float( entity dest, float changedflags ) ctrl_send_tank={
+  WriteByte( MSG_ENTITY, SENDTYPE_TANK );
+  WriteByte( MSG_ENTITY, changedflags );
+  
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  
+  WriteAngle( MSG_ENTITY, self.angles_x );
+  WriteAngle( MSG_ENTITY, self.angles_y );
+  WriteAngle( MSG_ENTITY, self.angles_z );
+
+  WriteByte( MSG_ENTITY, self.shield );
+    
+  if( changedflags & SENDFLAG_TURRET ){
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+  if( changedflags & SENDFLAG_DEAD ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( changedflags & SENDFLAG_CRIT ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
+  }
+  if( changedflags & SENDFLAG_NEWENT ){
+    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  return TRUE;
+};
+
+float( entity dest, float changedflags ) ctrl_send_spg={
+  WriteByte( MSG_ENTITY, SENDTYPE_SPG );
+  WriteByte( MSG_ENTITY, changedflags );
+  
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  
+  WriteAngle( MSG_ENTITY, self.angles_x );
+  WriteAngle( MSG_ENTITY, self.angles_y );
+  WriteAngle( MSG_ENTITY, self.angles_z );
+  
+  WriteByte( MSG_ENTITY, self.shield );
+
+  if( changedflags & SENDFLAG_DEAD ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( changedflags & SENDFLAG_CRIT ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
+  }
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  return TRUE;
+};
+
+float( entity dest, float changedflags ) ctrl_send_gev={
+  WriteByte( MSG_ENTITY, SENDTYPE_GEV );
+  WriteByte( MSG_ENTITY, changedflags );
+  
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  
+  WriteCoord( MSG_ENTITY, self.angles_x );
+  WriteCoord( MSG_ENTITY, self.angles_y );
+  WriteCoord( MSG_ENTITY, self.angles_z );
+  
+  WriteByte( MSG_ENTITY, self.shield );
+  
+  if( (changedflags & SENDFLAG_TURRET) ){
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+  if( changedflags & SENDFLAG_DEAD ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( changedflags & SENDFLAG_CRIT ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
+  }
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.data_idx );
+
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  return TRUE;
 };

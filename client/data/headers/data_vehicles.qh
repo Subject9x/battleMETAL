@@ -1,0 +1,16 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 03/10/2020
+Overview: 
+  CSQC-side ini function for synced vehicles.
+*/
+
+
+void( float dataID ) data_sync_new_vehicle;
+
+void() data_vehicle_foslager;
+void() data_vehicle_dunerunner;
+void() data_vehicle_onnek;
+void() data_vehicle_sorcerer;
+void() data_vehicle_trowel;

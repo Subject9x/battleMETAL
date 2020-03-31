@@ -85,43 +85,6 @@ void(float hitDirBit) hud_renderDirectionHit={
   }
 };
 
-/*
-  RENDER TARGET DIRECTION INDICATORS
-*/ 
-void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection={
-  vector trg_color;
-  trg_color = CLR_DEF_ARM_HALF;
-  if( plrFaction == trgfaction ){
-    trg_color = CLR_DEF_IIF_FRIEND;
-    if( dattype == DATA_BLD ){
-      trg_color = CLR_DEF_IIF_FRIEND_BLD;
-    }
-  }
-  else{
-    trg_color = CLR_DEF_IFF_ENEMY;
-    if( dattype == DATA_BLD ){
-      trg_color = CLR_DEF_IFF_ENEMY_BLD;
-    }
-  }
-  if(targdir > -1){
-    local vector lorg;
-    if(targdir == 0){
-      lorg_x = VIEW_ORG_x + gui_percentXRaw(5); 
-      lorg_y = VIEW_CTR_y - gui_percentYRaw(24);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_L, gui_percentToPixelRawVec('16 48'), trg_color, HUD_ALPHA, 0);
-    }
-    else if(targdir == 1){
-      lorg_x = (VIEW_ORG_x + VIEW_MAX_x) - gui_percentXRaw(15); 
-      lorg_y = VIEW_CTR_y  - gui_percentYRaw(24);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_R, gui_percentToPixelRawVec('16 48'), trg_color, HUD_ALPHA, 0);     
-    }
-    else if(targdir == 2){
-      lorg_x = VIEW_CTR_x - gui_percentXRaw(24);
-      lorg_y = VIEW_CTR_y + gui_percentYRaw(48);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_B, gui_percentToPixelRawVec('48 16'), trg_color, HUD_ALPHA, 0);
-    }
-  }
-};
 
 /*
   RENDER TORSO PITCH INDICATOR
@@ -133,10 +96,14 @@ void(vector pos, float algn) hud_renderPitchIndicator={
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
   
-  pmax = HUD_PITCH_MAX * -1;
-  pmin = HUD_PITCH_MIN * -1;
+  //divide by 0 protection
+  pmax = min(HUD_PITCH_MAX * -1, -1);
+  pmin = max(HUD_PITCH_MIN * -1, 1);
 
   pcur = input_angles_x;
+  if( pcur == 0 ){
+    pcur = 1;
+  }
   if( pcur < 0 ){
     //min is up
     pcur = pcur * -1;
@@ -299,146 +266,6 @@ void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, 
   hud_renderArmorMeter('-28 30', pnl_ctr, lg, '56 12', (VIEW_LFT | VIEW_CTY),'8 -1', AXIS_V, "LG");
 };
 
-/*
-  RENDER ENTIRE RADAR PANEL
-*/
-void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
-  local vector  map_size;
-  local vector radarLineLeft, radarLineRight;
-  local entity blip;
-  local float nav;
-  
-  RADAR_ORG = radarOrg;
-  
-  map_size_x = ((world.mins_x*-1) + world.maxs_x);
-  map_size_y = ((world.mins_y*-1) + world.maxs_y);
-  
-  RADAR_VSIZE = gui_percentToPixelRawVec(siz);
-  RADAR_VORG = gui_percentToPixelRawVec(vorg);
-  RADAR_VORG = gui_calcAlign(RADAR_VORG, algn);
-  
-  RADAR_VCENTER_x = RADAR_VORG_x + (RADAR_VSIZE_x / 2);
-  RADAR_VCENTER_y = RADAR_VORG_y + (RADAR_VSIZE_y / 2);
-  
-  drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
-  
-  radarLineLeft_x = RADAR_VSIZE_x / 2.25;
-  radarLineLeft_x = radarLineLeft_x * -1;
-  radarLineLeft_y = RADAR_VSIZE_x / 2.25;
-  radarLineLeft_y = radarLineLeft_y * -1;
-  
-  radarLineRight = radarLineLeft;
-  radarLineRight_x = radarLineRight_x * -1;
-  drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('-3 0'), RADAR_VCENTER + radarLineLeft, CLR_DEF_WHITE, HUD_ALPHA, 0);
-  drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('3 0'), RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
-  
-  
-  blip = findchainfloat( data_idx, -2 );
-  while( blip ){
-    local entity kill;    
-    blip.hardpoint_cnt = blip.hardpoint_cnt - blip.radar_time ;
-    if( blip.hardpoint_cnt < 0 ){
-      blip.hardpoint_cnt = 0;
-    }
-    hud_renderRadarContact( blip, plrFaction, radarRange );
-    kill = blip;
-    blip = blip.chain;
-    if( time > kill.energy ){
-      remove( kill );
-    }
-  }
-  nav = 0;
-  while( nav <= 21 ){
-    local float navState;
-    local vector navOrg;
-    navState = NAVNAMES_ACTIVE[nav];
-    navOrg = NAVNAMES_ORG[nav];
-    if( navState > FALSE ){
-      hud_renderRadarNav( navOrg, navState, radarRange );
-    }
-    nav = nav + 1;
-  }
-};
-
-/*
-  RENDER SINGLE RADAR CONTACT
-*/
-void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
-  local vector hudorg;
-  local float ang, entAngle, entAngleRadian, radDist;
-
-  radDist = blip.radar_range / radRange * 1.5;
-  
-  ang = vectoyaw(blip.origin - RADAR_ORG);
-
-  entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
-  entAngleRadian = entAngle * DEG2RAD;
-  hudorg_x = cos(entAngleRadian);
-  hudorg_y = sin(entAngleRadian);
-  hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * radDist));
-  hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * radDist));
-
-  local float draw;
-  draw = TRUE;
-  if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
-    draw = FALSE;
-  }
-  if( (hudorg_y < RADAR_VORG_y) || (hudorg_y > (RADAR_VORG_y + RADAR_VSIZE_y) ) ){
-    draw = FALSE;
-  }
-  if( draw ){
-    switch( blip.data_type ){
-      case DATA_BLD:
-        hud_RenderRadar_Building(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt );  
-        break;
-      case DATA_VEHC:
-        hud_RenderRadar_Vehc(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt);
-        break;
-      case DATA_MECH:
-        hud_RenderRadar_Mech(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt); 
-        break;
-      default:
-        drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
-    }
-  }
-};
-
-/*
-  RENDER A NAV POINT PIP ON THE RADAR
-*/
-void( vector navOrg, float navState, float radRange ) hud_renderRadarNav={
-  local vector hudorg, colr;
-  local float ang, entAngle, entAngleRadian, radDist, draw;
-  local float alph;
-
-  radDist = vlen( navOrg - RADAR_ORG) / radRange * 1.5;
-  
-  ang = vectoyaw(navOrg - RADAR_ORG);
-
-  entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
-  entAngleRadian = entAngle * DEG2RAD;
-  hudorg_x = cos(entAngleRadian);
-  hudorg_y = sin(entAngleRadian);
-  hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * radDist));
-  hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * radDist));
-
-  draw = TRUE;
-  if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
-    draw = FALSE;
-  }
-  if( (hudorg_y < RADAR_VORG_y) || (hudorg_y > (RADAR_VORG_y + RADAR_VSIZE_y) ) ){
-    draw = FALSE;
-  }
-  if( draw ){
-    colr = CLR_DEF_ARM_OK;
-    alph = HUD_ALPHA;
-    if( navState == 2 ){
-      colr = CLR_DEF_TXT_NONSELECT;
-      alph = 0.33;
-    }
-    drawpic(hudorg - gui_percentToPixelRawVec('3 3'), UI_DEF_NAVPOINT, gui_percentToPixelRawVec('10 10'), colr, alph, 0);
-  }
-};
 /*
   RENDER RADAR DATA
     draws radar status - ACTIVE OR PASSIVE
@@ -652,274 +479,13 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   }
 };
 
-/*
-  RENDER A SHIELD METER IN 3d SPACE
-*/
-void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
-  local float dist;
-  local vector vpos, nofs, aSize;
-  if(val > 0){
-    dist = vlen(org - torg);
-    dist = dist / radRange;
-    dist = (1 / (dist * dist));    
-    dist = dist / 10;
-    aSize_x = mSize_x * dist;
-    if(aSize_x > mSize_x){
-      aSize_x = mSize_x;
-    }
-    aSize_y = mSize_y * dist;
-    if(aSize_y > mSize_y){
-      aSize_y = mSize_y;
-    }
-    vpos = org;
-    vpos_z = vpos_z + CLIENT_target_vecsize;
-    nofs = cs_project(vpos);
-    if (nofs_z >= 0) {
-      nofs_x = nofs_x - (aSize_x / 2);
-      nofs_z = 0;
-      
-      local vector meterSize, pos;
-      local vector meterColor;
-      
-      meterSize = gui_percentToPixelRawVec(mSize);
-      pos = gui_percentToPixelRawVec(nofs);
-      pos = gui_calcAlign(pos, algn);
-     
-      meterColor = CLR_DEF_ARM_DED;
-      gui_renderMeter(val, pos, aSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, AXIS_H, FALSE); 
-    }
-    cs_unproject(vpos);
-  }
-};
 
 /*
-  RENDER TARGET PIPS OVER AN ORIGIN IN 3D SPACE
+
 */
-void(vector org, vector torg, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay ={
-  local float dist;
-  local float targSizeX, targSizeY, targSizeZ, targZbottom;
-  local vector viewAngle;
-  local vector imgSize, factionColor;
+void() hud_render_tactical_map={
   
-  targSizeX = getstatf(ADDSTAT_TARGETSIZE_X);
-  targSizeY = getstatf(ADDSTAT_TARGETSIZE_Y); 
-  targSizeZ = getstatf(ADDSTAT_TARGETSIZE_Z);
-  
-  if( targSizeZ < 1 ){
-    targZbottom = 0;
-  }
-  else{
-    targZbottom = targSizeZ;
-  }
-  
-  if(faction1 == faction2){
-    factionColor = CLR_DEF_IIF_FRIEND;
-  }
-  else{
-    factionColor = CLR_DEF_IFF_ENEMY;
-  }
-  dist = vlen(org - torg);
-  if( dist > radRange ){
-    dist = radRange;
-  }
-  dist = 1 * (dist / radRange);
-  
-  imgSize = draw_getimagesize(HUD_TARGET_BOX_TL) * 0.5 ;
-  imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
-  
-  if( imgSize_x > gui_percentXRaw(24) ){
-    imgSize_x = gui_percentXRaw(24);
-  }
-  if(imgSize_x < gui_percentXRaw(10)){
-    imgSize_x = gui_percentXRaw(10);
-  }
-  if( imgSize_y > gui_percentYRaw(24) ){
-    imgSize_y = gui_percentYRaw(24);
-  }
-  if(imgSize_y < gui_percentYRaw(10)){
-    imgSize_y = gui_percentYRaw(10);
-  }
-  
-  viewAngle = input_angles;
-  viewAngle_x = viewAngle_x * -1;
-
-  makevectors(viewAngle);
-  local vector tl, tr, br, bl;
-  local vector c_tl, c_tr, c_br, c_bl;
-
-  tl = org + (v_right * (targSizeX * -1)) + (v_up * targSizeZ);
-  tr = org + (v_right * targSizeX) + (v_up * targSizeZ);
-  br = org + (v_right * targSizeX) + (v_up * (targZbottom * -1));
-  bl = org + (v_right * (targSizeX * -1)) + (v_up * (targZbottom * -1));
- 
-  c_tl = cs_project(tl);
-  if (c_tl_z >= 0) {
-    c_tl_x = c_tl_x - (imgSize_x / 2);
-    c_tl_y = c_tl_y - (imgSize_y / 2);
-    c_tl_z = 0;
-    gui_renderTintImage(TRUE, c_tl, HUD_TARGET_BOX_TL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
-  }
-
-  c_tr = cs_project(tr);
-  if (c_tr_z >= 0) {
-    c_tr_x = c_tr_x - (imgSize_x / 2);
-    c_tr_y = c_tr_y - (imgSize_y / 2);
-    c_tr_z = 0;
-    gui_renderTintImage(TRUE, c_tr, HUD_TARGET_BOX_TR, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
-  }
-  
-  c_br = cs_project(br);
-  if (c_br_z >= 0) {
-    c_br_x = c_br_x - (imgSize_x / 2);
-    c_br_y = c_br_y - (imgSize_y / 2);
-    c_br_z = 0;
-    gui_renderTintImage(TRUE, c_br, HUD_TARGET_BOX_BR, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
-  }
-  
-  c_bl = cs_project(bl);
-  if (c_tl_z >= 0) {
-    c_bl_x = c_bl_x - (imgSize_x / 2);
-    c_bl_y = c_bl_y - (imgSize_y / 2);
-    c_bl_z = 0;
-    gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
-  }
-};
-
-/*
-  RENDER A NAME OVER AN ORIGIN IN 3D SPACE
-*/
-void() hud_renderNavOverlay={
-  local float itr;
-  local vector apos, tofs, iofs, i_sz, nofs, colr;
-  local float nactive;
-  local string navname;
-  local float navDist;
-  local float distThreshold;
-  local float heat;
-
-  distThreshold = CLIENT_radar_range * 4;
-  
-  itr = 0;
-  while( itr < 21 ){
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-
-    nactive = NAVNAMES_ACTIVE[itr];
-    navname = NAVNAMES[itr];
-    if( nactive > 0 ){
-      i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
-      nofs = NAVNAMES_ORG[itr];
-      nofs_z = nofs_z + gui_percentYRaw(14);
-      apos = cs_project(nofs);
-      tofs = apos;
-      if (apos_z >= 0) {
-        tofs_x -= stringwidth(navname, TRUE, '12 12') * 0.5; //align horizontally to centre
-        tofs_y = tofs_y - 24; //align vertically again
-        tofs_z = 0;
-        apos_z = 0;
-        iofs = apos;
-        i_sz_x = i_sz_x / 4;
-        i_sz_y = i_sz_y / 4;
-        iofs_x = iofs_x - (i_sz_x/2);
-        iofs_y = iofs_y - (i_sz_y/2);
-        
-        navDist = vlen( NAVNAMES_ORG[itr] - RADAR_ORG );
-        heat = (1 - ( navDist / distThreshold ));
-        if( heat < 0.33 ){
-          heat = 0.33;
-        }
-        
-        if( nactive == 2 ){
-          colr = CLR_DEF_TXT_NONSELECT;
-        }
-        else{
-          colr = CLR_DEF_WEP_INRANGE;
-          colr = colr * heat;
-        }
-        
-        drawstring(tofs, navname, '12 12', colr, 1, 0);
-        gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, 1, 0) ;
-      }
-    }
-    drawfont = drawfont_prev;
-  
-    itr = itr + 1;
-  }
-};
-
-/*
-  RENDER A SINGLE WEAPON AND ITS RELOAD BAR
-  you might want to cover this with a nice overlay picture
-*/
-void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
-  local vector meter;
-  vorg = gui_percentToPixelRawVec(vorg);
-  vorg = gui_calcAlign(vorg, algn);
-  meter = gui_percentToPixelRawVec(siz);
-  meter_x = meter_x / 2;
-  meter_y = meter_y / 2;
-  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
-  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, AXIS_V, 0);
-};
-
-
-void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
-  local vector meter;
-  vorg = gui_percentToPixelRawVec(vorg);
-  vorg = gui_calcAlign(vorg, algn);
-  meter = gui_percentToPixelRawVec(siz);
-  meter_x = meter_x / 2;
-  meter_y = meter_y / 2;
-  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
-  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, AXIS_V, 0);
-};
-
-/*
-  RENDER A MECH ICON ON THE RADAR
-*/
-void(vector post, float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Mech={
-  local vector clr;
-  
-  clr = CLR_DEF_IFF_ENEMY;
-  if(plr_fact == e_fact){
-    clr = CLR_DEF_IIF_FRIEND;
-  }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
-};
-
-/*
-  RENDER A VEHICLE ICON ON THE RADAR
-*/
-void(vector post, float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Vehc={
-  local vector clr;
-  
-  clr = CLR_DEF_IFF_ENEMY;
-  if(plr_fact == e_fact){
-    clr = CLR_DEF_IIF_FRIEND;
-  }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_VEC,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
-};
-
-/*
-  RENDER A BUILDING ICON ON THE RADAR
-*/
-void(vector post,float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Building={
-  local vector clr;
-  
-  clr = CLR_DEF_IFF_ENEMY_BLD;
-  if(plr_fact == e_fact){
-    clr = CLR_DEF_IIF_FRIEND_BLD;
-  }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
-};
-
-/*
-  RENDER A NAV POINT ICON ON THE RADAR
-*/
-void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav={
-  if(isOn){
-    drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_NAV,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, DRAWFLAG_NORMAL);
-  }
+  return;
 };
 
 /*
@@ -934,66 +500,12 @@ void(vector ofs, vector img_sz, string bimg, float valign, float setAlpha, vecto
   drawpic(nofs, bimg, gui_percentToPixelRawVec(img_sz), tint, setAlpha, DRAWFLAG_NORMAL);  
 };
 
-/*
-  RENDERS A LABEL 'RANGE' AND DISTANCE TO ORIGIN
-*/
-void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange={
-  local float dist, msgLen;
-  local vector tofs, msgSize;
-  local string msg;
-  
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-  
-  ofs = gui_percentToPixelRawVec(ofs);
-  ofs = gui_calcAlign(ofs, algn);
-  dist = ceil(vlen(torg - porg));
-  msg = strcat("[RANGE] ", ftos(dist));
-  msgLen = stringwidth(msg, 0, '10 10 0');
-  msgSize_x = gui_percentXRaw(msgLen/2);
-  msgSize_y = gui_percentYRaw(6);
-  tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
-  drawstring(tofs, msg, '10 10 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
-  
-  drawfont = drawfont_prev;
-};
-
-/*
-  RENDERS A LABEL 'TARGET' AND THE TARGET'S NAME
-*/
-void(vector ofs, string targType, float algn) hud_renderTargetName={
-  local float msgLen;
-  local vector tofs, msgSize, factionColor;
-  local string msg;
-  
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-  
-  if(CLIENT_faction == CLIENT_target_faction){
-    factionColor = CLR_DEF_IIF_FRIEND;
-  }
-  else{
-    factionColor = CLR_DEF_IFF_ENEMY;
-  }
-
-  ofs = gui_percentToPixelRawVec(ofs);
-  ofs = gui_calcAlign(ofs, algn);
-  msg = strcat("[TARGET] ", targType);
-  msgLen = stringwidth(msg, 0, '10 10 0');
-  msgSize_x = gui_percentXRaw(msgLen/2);
-  msgSize_y = gui_percentYRaw(6);
-  tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
-  drawstring(tofs, msg, '10 10 0', factionColor, HUD_ALPHA, 0);
-  
-  drawfont = drawfont_prev;
-};
-
 void() hud_renderRepairValue={
   local vector vorg, torg;
   local float len;
   local string str;
     
-  if(CLIENT_repair_value > -1){
+  if(CLIENT_repair_value > 0){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
@@ -1511,7 +1023,7 @@ void() data_hud_frame={
           if( hasTarget){
             porg = UI_DATA_POS[uid]; 
             algn = UI_DATA_ALIGN[uid];
-            hud_renderTargetName(porg, CLIENT_w_icon, algn);
+            hud_renderTargetName(porg, CLIENT_target_name, algn);
           }
         }
         break;
@@ -1621,6 +1133,21 @@ void() data_hud_frame={
     hud_event_frame();
     hud_render_sprint();
     hud_render_info();
+  }
+  
+  //only loop clients once per hud frame
+  local entity player;
+  for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
+    if( !(player.flags & FL_CLIENT) ){continue;}
+    if( player.entId == player_localentnum ){continue;}
+    if( player.data_type == DATA_POBS ){continue;}
+    if( player.faction != CLIENT_faction ){continue;}
+    
+    hud_render_ally_names( player );
+    
+    if( player.targetEntId <= 0 ){continue;}
+    if( player.enemy.deadflag != DEAD_NO ){continue;}
+    hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
   }
 };
 

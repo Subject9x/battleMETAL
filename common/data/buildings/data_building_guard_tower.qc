@@ -6,41 +6,56 @@ Overview:
   data file for the simple guard tower building
 */
 
-void() guard_tower_think={
-  building_burn();
-  self.think = guard_tower_think;
-  self.nextthink = time + 0.1;
+void() guard_tower_die2={
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
 };
 
-void() guard_tower_die={
+void() guard_tower_die1={
+  if( self.deadflag > DEAD_NO ){
+    return;
+  }
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DEAD; 
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
   
-  building_die();
-};
-void() guard_tower_lightup={
-  local vector lightOrg;
-  makevectors(self.angles);
-  lightOrg = self.origin + (v_up * 36);
-  world_make_dlight( (lightOrg + (v_forward * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  world_make_dlight( (lightOrg + (v_forward * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  world_make_dlight( (lightOrg + (v_right * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  world_make_dlight( (lightOrg + (v_right * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-  self.think = guard_tower_think;
+  //fire triggers when dead
+  trigger_event( self, self.trigOnDeath );
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
+  
+  self.think = guard_tower_die2;
   self.nextthink = time + 0.1;
-}
-
+};
 
 /*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - LIGHTS_OFF IS_MAPKEY -
 { model("models/buildings/towersmall/guardtower.md3"); }
-Listening Post, has the ability to detect the player and alert friendly bots.
--------- KEYS -------- 
-.targetname : string, used for trigger calls from other ents
-.target : string name of ent to go to, usually a patrol node
-.trigOnSpawn:string target, fire this ENTITY when activated
-.trigOnDeath: string target, fire this ENTITY when killed
-.trigOnTarget: string target, fire this ENTITY when spotting a target
-.delay : float, use with trigOnTarget, wait time between calls to trigOnTarget
+
+Base Decoration building.
+  + can glow yellow.
+Does not require power.
+
+Max Health = 200. (default)
+
+Shield Max = 150. (default)
+
+-------- KEYS --------
+.faction : <float> 1, 2, 3 - [REQUIRED]
+.style : <float>, light style. [OPTIONAL]
+.compOffset : <vector>, color for lighting.
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.trigOnTarget: <string> target, fire this ENTITY when spotting a target
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
   -1 = fire trigOnTarget once
-.style : float, light style. OPTIONAL
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -61,22 +76,34 @@ void() building_guard_tower={
   }
 
   self.vec_name = "Guard Tower";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 1;
   macro_set_collider(DAMAGE_YES, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/towersmall/guardtower.obj", self.skin,0)
-  util_setHealthArmor(200, 200, 1, 100);
+  macro_set_model("q3mdl/testball.md3", self.skin,0)
   setsize(self, '-22 -22 0', '22 22 40');
-  self.shield = 0;
-  self.shieldMax = 50;
-  self.shieldRate = 0.1;
   
   self.deadflag = DEAD_NO;
   self.movetype = MOVETYPE_NONE;
   
-  self.th_die = building_die;
-  self.think = guard_tower_think;
-  self.nextthink = time + 0.1;
+  self.th_die = guard_tower_die1;
+  
+  if( !self.health) {
+    self.health = self.max_health = 200;
+  }
+  
+  if( !self.shieldMax ){
+    self.shieldMax = 150;
+  }
+  
+  if( !self.shieldRate ){
+    self.shieldRate = 0;
+  }
+  if( !self.energyRate ){
+    self.energyRate = 0;
+  }
+  if( !self.energyMax ){
+    self.energyMax = 1000;
+  }
   
   if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 0.95) ){
@@ -89,11 +116,11 @@ void() building_guard_tower={
   makevectors(self.angles);
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
-  if( !(self.spawnflags & 2097152) ){
-    if( !self.style ){
-      self.style = 0;
-    }
-    self.think = guard_tower_lightup;
-    self.nextthink = time + 1;
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_VELOCITY);
+  if( (self.spawnflags & IT_QUAD) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
   }
+  self.think = building_burn_th;
+  self.nextthink = time + random() * 3;
 };

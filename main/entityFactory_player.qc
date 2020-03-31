@@ -16,16 +16,7 @@ void() player_makeObserver={
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
-  if( cvar("developer") ){
-    client_update_moveSpeed(800, 800, 500, "3", 0);
-  }
-  else{
-    client_update_moveSpeed(200, 200, 200, "3", 0);
-  }
-  client_update_viewBob(0, 0, 0);
-  client_update_modelBob(0, 0, 0, 0);
-  self.stat_wep_state = 0;
-  self.stat_wep_rel = 0;
+  self.stat_player_weapons_state = 0;
   self.view_ofs = '0 0 1';
 };
 
@@ -38,8 +29,74 @@ void() player_unmakeObserver={
 };
 
 void() player_makeVec={
+  //<chuckle> oh we'll get here soon
+};
 
+//creates the 3D hud boxes for the player
+//TODO - move me to clientside.
+void() player_setup_hudconsole={
+  newmis = spawn();
+  newmis.movetype = MOVETYPE_NONE;
+  newmis.solid = SOLID_NOT;
+  newmis.viewmodelforclient = self;
+  newmis.owner = self;
+  newmis.alpha = 1;
+  setmodel(newmis, self.hud_model);
+  setsize(newmis, '0 0 0', '0 0 0');
+  setorigin(newmis, '0 0 0');
+  newmis.frame = self.weaponframe;
+  self.hud_ent = newmis;
+};
+
+float() customize_part_for_client ={
+  local vector chunkOfs;
+  if( self.owner != other ){
+    return FALSE;
+  }
+  makevectors(other.angles);
+  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - fabs(other.cockpit.compOffset_z)));
+  setorigin(self, chunkOfs);
+  return TRUE;
+};
+
+float() customize_wep_for_client={
+  local vector chunkOfs;
+  makevectors(self.owner.angles);
+  chunkOfs = self.owner.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - self.owner.cockpit.compOffset_z * 1.5));
+  self.wepFireOffset_z = self.wepFireOffsetCache_z - self.owner.cockpit.compOffset_z;
+  self.compAltOffset_z = self.compAltOffsetCache_z - self.owner.cockpit.compOffset_z;
+  setorigin(self, chunkOfs);
+  return TRUE;
+};
+
+
+void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
+  local entity newHudPart, ownerSelf;
+  local vector ofs;
+  ownerSelf = self;
+  newHudPart = spawn();
+  self = newHudPart;
   
+  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
+  setsize(self, '-1 -1 -1','1 1 1');
+  macro_set_model(wepThing.model, 0, 0)  
+  makevectors(self.owner.angles);
+  ofs = self.owner.origin + (v_right * wepThing.compOffset_x) + (v_up * (wepThing.compOffset_y * -2)) + (v_forward * (wepThing.compOffset_z - self.owner.cockpit.compOffset_z));
+  setorigin(self, ofs);
+  self.punchangle = ownerSelf.angles;
+  self.view_ofs = self.origin - ownerSelf.origin;
+  self.angles = ownerSelf.angles;
+  self.v_angle = self.angles - ownerSelf.angles; 
+
+  self.viewmodelforclient = ownerSelf;
+  self.owner = ownerSelf;
+  self.alpha = 1;
+  
+  self = ownerSelf;
+  
+  wepThing.nodrawtoclient = ownerSelf;
+  wepPointer.hudWeapon = newHudPart;
+  wepPointer = newHudPart;
 };
 
 void() player_makeMech={
@@ -66,64 +123,153 @@ void() player_makeMech={
   self.playerState = PLAYER_POWERUP_BEGIN;
   
   client_push_player_info();
-  client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
-
+  self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_VELOCITY);
   
-  client_update_viewPitch( self.pitchMin, self.pitchMax );
-  client_send_event_powerup( self );
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
+ 
+  player_setup_hudconsole();
+  //configure player mech bits visibility
+  local entity wep, hudWepStart;
+  hudWepStart = self;
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    //non-network games can have more fun with player view
+    self.torsoCenter.exteriormodeltoclient = self;
+    self.torsoCenter.customizeentityforclient = customize_part_for_client;
+    self.torsoLeft.customizeentityforclient = customize_part_for_client;
+    self.torsoRight.customizeentityforclient = customize_part_for_client;
+    self.armLeft.customizeentityforclient = customize_part_for_client;
+    self.armRight.customizeentityforclient = customize_part_for_client;
+    self.legs.customizeentityforclient = customize_part_for_client;
+    
+    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+      wep.customizeentityforclient = customize_wep_for_client;
+    }
+  }
+  else{
+    //network games are too laggy to allow a player to see their own mech parts sadly
+    self.torsoCenter.exteriormodeltoclient = self;
+    self.torsoLeft.exteriormodeltoclient = self;
+    self.torsoRight.exteriormodeltoclient = self;
+    self.armLeft.exteriormodeltoclient = self;
+    self.armRight.exteriormodeltoclient = self;
+    self.legs.exteriormodeltoclient = self;
+    
+    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+      wep.exteriormodeltoclient = self;
+      //player_set_hud_weapon( wep, hudWepStart);
+    }
+  }
   
-  //TODO - refactor/refine - this allows for composited HUD modeling, and EF_NOGUNBOB allows for sub-component HUD parts to not shake.
-  newmis = spawn();
-  newmis.movetype = MOVETYPE_NONE;
-  newmis.solid = SOLID_NOT;
-  newmis.viewmodelforclient = self;
-  newmis.owner = self;
-  newmis.alpha = 1;
-  setmodel(newmis, self.hud_model);
-  setsize(newmis, '0 0 0', '0 0 0');
-  setorigin(newmis, '0 0 0');
-  newmis.frame = self.weaponframe;
   self.hud_mode = cvar("cl_hud_sway");
-  self.hud_ent = newmis;
   util_updateViewBob();
   
-  msg_entity = self;
-  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-  WriteEntity(MSG_ONE, self.cockpit);
-  self.stat_rdr_mode = 1;
+  self.view_ofs = '0 0 0';
+  self.view_ofs_z = self.cockpit.compOffset_y;  //set player view offset to where the cockpit ent is.
+  self.stat_rdr_mode = 1; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
 };
 
 void() player_unmakeMech={
-  self.data_type = DATA_POBS;
+  self.clientData.effects = self.clientData.effects - ( self.clientData.effects & EF_NODEPTHTEST);
+  self.weaponmodel = "";
+  self.viewzoom = 1;
+  self.nextVecChoice = 0;
   self.vec_size = 0;
   self.data_idx = 0;
-  self.stat_trg_face = -1;
-  self.next_wepn1 = -1;
-  self.next_wepn2 = -1;
-  self.next_wepn3 = -1;
-  self.next_wepn4 = -1;
-  self.next_wepn5 = -1;
-  self.next_wepn6 = -1;
-  self.next_wepn7 = -1;
-  self.next_wepn8 = -1;
-  self.next_wepn9 = -1;
-  self.stat_lck_stt = 0;
+  self.data_type = DATA_POBS;
+  self.currentWeaponGroup = 0;
+  self.energy = 0;
+  self.energyMax = 0;
+  self.energyRate = 0;
+  self.shield = 0;
+  self.shieldMax = 0;
+  self.shieldRate = 0;
+  self.stat_client_energy = 1;
+  self.stat_client_shield = 1;
+  
+  self.stat_target_hp_torsoCenter = 0;
+  self.stat_target_hp_torsoLeft = 0;
+  self.stat_target_hp_torsoRight = 0;
+  self.stat_target_hp_armLeft = 0;
+  self.stat_target_hp_armRight = 0;
+  self.stat_target_hp_legs = 0;
+
+  self.stat_client_hp_torsoCenter = 1;
+  self.stat_client_hp_torsoLeft = 1;
+  self.stat_client_hp_torsoRight = 1;
+  self.stat_client_hp_armLeft = 1;
+  self.stat_client_hp_armRight = 1;
+  self.stat_client_hp_legs = 1;
+  
+  self.stat_w1_id = 0;
+  self.stat_w2_id = 0;
+  self.stat_w3_id = 0;
+  self.stat_w4_id = 0;
+  self.stat_w5_id = 0;
+  self.stat_w6_id = 0;
+  self.stat_w7_id = 0;
+  self.stat_w8_id = 0;
+  self.stat_w9_id = 0;
+  
+  self.w_group1 = 0;
+  self.w_group2 = 0;
+  self.w_group3 = 0;
+  self.w_group4 = 0;
+  self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
+  self.state_2 = 0; //unknown what this used to be 
+  
+  self.stat_trg_dataidx = 0;
+  self.stat_target_shield = 0;
+  self.stat_trg_ddflg = 0;
+  self.stat_trg_dist = 0;
+  self.stat_trg_face = 0;
+  self.stat_trg_faction = 0;
+  
+  self.radar_range = 0;
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
+  self.w_proj = 0; //used to track enemy hit time
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = 0;
-  self.stat_spr_x = 0;
-  self.stat_spr_y = 0;
+  self.stat_rdr_rng = 0;
+
   self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;
-  self.stat_plr_fir = FIRE_GROUP;
-  self.stat_rdr_mode = FALSE;
-  self.stat_rdr_rng = 0;
-  self.energy = 0;
-  self.shield = 0;
-  self.enemy = world;
+  self.stat_lck_stt = LOCK_NONE;
+  
+  self.next_wepn1 = 0;
+  self.next_wepn2 = 0;
+  self.next_wepn3 = 0;
+  self.next_wepn4 = 0;
+  self.next_wepn5 = 0;
+  self.next_wepn6 = 0;
+  self.next_wepn7 = 0;
+  self.next_wepn8 = 0;
+  self.next_wepn9 = 0;
+  
+  self.ramTracker = 1;
+  self.ramUp = 1;
+  self.ramUpMax = 1;
+  self.repair_request = 0;
+  self.enemy = world; //explicit assignment here
+  self.stat_player_weapons_state = 0;
+  self.stat_plr_rep = 0;
+  self.stat_target_name = "";
+  self.stat_target_orgx = 0;
+  self.stat_target_orgy = 0;
+  self.stat_target_orgz = 0;
+  
+  self.weaponmodel = "";
+  self.weaponframe = 0;
+  self.hud_ent.modelindex = 0;
+  self.hud_ent.effects = EF_NODRAW;
+  self.hud_ent.think = SUB_Remove;
+  self.hud_ent.nextthink = time + 0.01;
+  
+  if( self.particleCube != world){
+    remove(self.particleCube);
+  }
   ctrl_unit_clean_wgroups();
 };

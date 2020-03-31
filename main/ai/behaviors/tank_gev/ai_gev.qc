@@ -31,7 +31,11 @@ void() ai_gev={
   self.touch = ai_touch;
   
   ai_setup_patrol();
+  
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+  
+  self.SendEntity = ctrl_send_gev;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
 void() ai_gev_enter_patrol={
@@ -47,7 +51,6 @@ void() ai_gev_enter_patrol={
 void() ai_gev_patrol1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     macro_ai_frame(ai_gev_fight_prep)
@@ -60,7 +63,6 @@ void() ai_gev_patrol1={
 void() ai_gev_stand1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     macro_ai_frame(ai_gev_fight_prep)
@@ -80,7 +82,6 @@ void() ai_gev_stand1={
 void() ai_gev_walk1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   macro_ai_frame(ai_gev_walk1)
 };
@@ -90,7 +91,6 @@ void() ai_gev_fight_prep={
   
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
  
  if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(self.th_stand)

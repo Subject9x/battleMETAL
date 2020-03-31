@@ -163,13 +163,6 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
   }
 };
 
-void(float playerState) snd_hud_vfx_statelistener={
-  if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
-    if( !cvar("developer") ){
-      //snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
-    }
-  }
-};
 
 void(float lockstate) snd_hud_vfx_locklistener={
 };
@@ -186,28 +179,12 @@ void(float curSh) snd_hud_vfx_shdlistener={
   }
 };
 
-void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
-  if(self.player_state >= PLAYER_ACTIVE){
-    if(amt <= 0){
-      if( (CRITBITS & bit) ){
-        snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 2); 
-        snd_hud_vfx_addtoqueue(snd, 6);
-        CRITBITS = CRITBITS - (CRITBITS & bit);
-      }
-    }
-  }
-};
-
 void( string critSound, float limiter ) snd_hud_vfx_criticalHit={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 2); 
   snd_hud_vfx_addtoqueue(critSound, limiter);
 };
 
 //SFX
-void() te_nav_reach={
-  snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
-};
-
 void() te_targ_kill={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL, 3);
 };
@@ -222,18 +199,6 @@ void() te_mission_lose={
 
 void() te_msn_boundary={
   
-};
-
-void(float mode) snd_hud_vfx_toggleradar={
-  if(CLIENT_stat_rdr_mode_prev != mode){
-    CLIENT_stat_rdr_mode_prev = mode;
-    if(mode){
-      hud_event_enqueue(HUD_EVENT_RADAR_ACTIVE, 1); 
-    }
-    else{
-      hud_event_enqueue(HUD_EVENT_RADAR_PASSIVE, 1); 
-    }
-  }
 };
 
 void(float dedflg) snd_hud_vfx_targkill={

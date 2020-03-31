@@ -21,7 +21,7 @@ void() data_ini_trowel_={
  
   self.max_health = 465;
   setsize(self, '-32 -32 -7.75', '32 32 36');
-  
+  self.flags = self.flags | FL_TURRET | FL_MONSTER | FL_UNIT;
 //ENERGY AND SHIELDS===================
   self.energyMax = 700;
   self.energyRate= 1.85;
@@ -39,17 +39,19 @@ void() data_ini_trowel_={
   self.data_speed_strafe = 10;
   self.data_speed_backward = 10;
   self.data_speed_accel = 1;
-  #ifndef CSQC
+#ifndef CSQC
   self.yaw_speed = 1;    //AI-only 
   self.turret_yaw_speed = 1.5;//AI-only
   self.ai_angleLimits = '-125 125 0';
-  #endif
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 3;
+  weaponList = self;
   self.model = "q3mdl/vecs/trowel/mdl_trowel_chas.md3";
   
-  //tank turret`
+  //tank turret
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', self, torsoCenter, '0 0 0'); 
   
   //camera location
@@ -57,12 +59,22 @@ void() data_ini_trowel_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.75 12 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.75 16.75 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '-3 -8 10.5', '-90 0 0', 3, (DMG_ENE | DMG_BAL));
+#ifdef CSQC
+  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
+  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 -1.5 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 3.25 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '1.75 2.75 -8', '-90 0 0', 3, (DMG_ENE | DMG_BAL));
+#endif
+#ifndef CSQC
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 12 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 16.75 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '3 -8 10.5', '-90 0 0', 3, (DMG_ENE | DMG_BAL));
+#endif
 //=====================================
 
 //HUD DATA=============================
   //Unit is non-playable
 //====================================
+
 };

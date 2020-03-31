@@ -1,0 +1,17 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 03/10/2020
+Overview: 
+  CSQC-side ini function for synced turrets.
+*/
+
+/*
+  client_main.CSQC_ent_update()->Ent Type == building, SENDFLAG_NEWENT
+  scope = self
+  self is building
+*/
+void( float dataID ) data_sync_new_turret;
+void() data_turret_light;
+void() data_turret_heavy;
+void() data_turret_missile;

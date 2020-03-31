@@ -17,7 +17,6 @@ void() data_ini_attack_missile_activeradar_;
 void() data_ini_missile_activeradar_={
 
   self.data_idx = 10;  
-  self.w_name = "Missile - Active Radar";
   
   self.w_clipsize = 10;
   self.reloadRate = 0.24;
@@ -31,22 +30,25 @@ void() data_ini_missile_activeradar_={
   self.techLevel = 2;
   self.equipSize = 3;
   
+  self.spreadDefault = '0.03 0.03 0';
+  self.wepFireOffset = '0 0 2';
+  
   #ifdef CSQC  
-  self.abbrev = "MARH";
-  self.description = "+ Requires <Active Radar> on. + Requires <Target Lock> on target. + Minimum Range of 300m.";
-  self.icon = "gfx/ui/wep_icons/wi_marh.png";
+    self.w_name = "Missile - Active Radar";
+    self.fire_sound = "sound/weapons/mis_fire.ogg";
+    self.model = "q3mdl/weapons/w_arh.md3";
+    self.abbrev = "MARH";
+    self.description = "+ Requires <Active Radar> on. + Requires <Target Lock> on target. + Minimum Range of 300m.";
+    self.icon = "gfx/ui/wep_icons/wi_marh.png";
   #endif
   
   #ifndef CSQC
-  self.spreadDefault = '0.03 0.03 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 1;
-  self.wepFireOffset = '0 0 2';
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_arh.md3";
-  self.w_attack = data_ini_attack_missile_activeradar_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
+    self.w_isburst = FALSE;
+    self.burstRate = 1;
+    self.model = "q3mdl/weapons/w_arh.md3";
+    self.w_attack = data_ini_attack_missile_activeradar_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
   #endif
 };
 
@@ -89,8 +91,8 @@ void() data_ini_attack_missile_activeradar_={
     NEWSHOT.w_isburst = time + 4; //use to track curving behavior
     setorigin(NEWSHOT, start);
     NEWSHOT = world;
-    sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
-    pointparticles( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
+    
+    client_send_muzzle_flash( self.data_idx, start, arc, 0 );
   }
 };
 #endif

@@ -66,7 +66,7 @@ void() map_change_fog={
   self.movetype = MOVETYPE_NONE;
   self.use = map_changefog_use;
   self.touch = map_changefog_touch;
-  self.stat_wep_state = TRUE;
+  self.stat_player_weapons_state = TRUE;
   
   util_MapDeveloperMarker();
   

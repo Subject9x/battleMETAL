@@ -21,6 +21,7 @@ void() data_ini_dunerunner_={
  
   self.max_health = 115;
   setsize(self, '-16 -16 -10', '16 16 26');
+  self.flags = self.flags | FL_TURRET | FL_MONSTER | FL_UNIT;
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 125;
@@ -47,6 +48,8 @@ void() data_ini_dunerunner_={
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 2;
+  weaponList = self;
   self.model = "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3";
   
   //tank turret
@@ -57,8 +60,16 @@ void() data_ini_dunerunner_={
 //=====================================
  
 //HARDPOINTS==========================
+#ifdef CSQC
+  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
+  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 -0.1 0.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 -0.1 0.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+#endif
+#ifndef CSQC
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 5.25 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 5.25 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+#endif
 //=====================================
 
 //HUD DATA=============================

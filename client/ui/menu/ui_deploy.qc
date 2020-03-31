@@ -59,16 +59,16 @@ void() navSelectListener={
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_MAP_ORG, gui_percentToPixelRawVec('380 380'), TRUE) ){
     local entity nav;
     nav = findchainfloat(data_type, DATA_DEPL);
-    while(nav){
-      if(nav.isActive){
-        if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.uequipSize, TRUE)){
-          CLIENT_MENU_nav_pnt = nav.nav_name;
-        }
-        else{
-          CLIENT_MENU_nav_pnt = -1;
-        }
+    for( nav = findchainfloat(data_type, DATA_DEPL); nav != world; nav = nav.chain){
+      if( !nav.isActive || nav.faction != CLIENT_faction ){
+        continue;
       }
-      nav = nav.chain;
+      if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.uequipSize, TRUE)){
+        CLIENT_MENU_nav_pnt = nav.nav_name;
+      }
+      else{
+        CLIENT_MENU_nav_pnt = -1;
+      }
     }
     if(CLIENT_MENU_nav_pnt > 0){
       if( !(LAUNCH_VALIDATION & VALID_NODE) ){
@@ -82,21 +82,27 @@ void() navSelectListener={
 };
 
 void() navListSelectListener={
+  local entity deploy;
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_NEXT_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
-    DEPLOY_POINT_ID = DEPLOY_POINT_ID + 1;
-    if(DEPLOY_POINT_ID > DEPLOY_POINT_END){
-      DEPLOY_POINT_ID = 0;
+    if( CLIENT_MENU_deploy.partNext == world ){
+      CLIENT_MENU_deploy = DEPLOYPOINT;
     }
-    CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+    else{
+      CLIENT_MENU_deploy = CLIENT_MENU_deploy.partNext;
+    }
+    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_PREV_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
-    DEPLOY_POINT_ID = DEPLOY_POINT_ID - 1;
-    if( DEPLOY_POINT_ID < 0 ){
-      DEPLOY_POINT_ID = DEPLOY_POINT_END;
+    if( CLIENT_MENU_deploy.partPrev == world ){
+      CLIENT_MENU_deploy = DEPLOY_POINTS;
     }
-    CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+    else{
+      CLIENT_MENU_deploy = CLIENT_MENU_deploy.partPrev;
+    }
+    
+    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
-  if(CLIENT_MENU_nav_pnt > -1){
+  if(CLIENT_MENU_nav_pnt > 0){
     if( !(LAUNCH_VALIDATION & VALID_NODE) ){
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
     }
@@ -264,6 +270,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   local vector renderColor;
   local float itr, unavailableLen;
   local entity mapKey;
+  local vector nofs, tofs;
   
   itr = 0;
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(96));
@@ -286,97 +293,111 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
   
-  renderColor  = CLR_DEF_GREEN - '0.1 0.1 0.1';
-  
-  while( itr <= 32 ){
-    local vector navorg, nofs, tofs;
-    local float nactive, nlen;
-    local string navname;
-    
-    if( itr <= 21 ){
-      nactive = NAVNAMES_ACTIVE[itr];
-      
-      if( nactive != FALSE ){
-        navorg = NAVNAMES_ORG[itr];
-        navname = NAVNAMES[itr];
-      
-        tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
-        
-        drawfont_prev = drawfont;
-        drawfont = FONT_NUM_ROBOT_REGULAR;
-        
-        nlen = stringwidth(navname, 0, '12 12 0');
-        nofs_x = nofs_x - gui_percentXRaw( (nlen/2) );
-        nofs_y = nofs_y - gui_percentYRaw(18);
-        gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
-        
-        drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
-        
-        drawfont = drawfont_prev;
-      }
-    }
-    local vector deployColor;
-    nactive = DEPLOY_POINTS_ACTIVE[itr];
-    if( nactive != FALSE ){
-      navorg = DEPLOY_POINTS_ORG[itr]; 
-      tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
-      if( nactive ){
-        deployColor = CLR_DEF_ARM_OK;
-      }
-      else{
-        deployColor = CLR_DEF_ARM_HALF;
-      }
-      if(CLIENT_MENU_nav_pnt == itr){
-        gui_renderTintImage(TRUE, nofs - gui_percentToPixelRawVec('6 6'), UI_DEF_REC_64, gui_percentToPixelRawVec('28 28'), CLR_DEF_GREEN, 0.85, 0);
-        CLIENT_MENU_nav_ui_org = tofs;
-        ui_renderSprite_DeployPoint( tofs, '16 16', CLR_DEF_GREEN, 1 ) ;
-      }
-      else{
-        gui_renderTintImage2((CLIENT_MENU_nav_pnt == itr), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
-      }
-      local vector lineOrg;
-      lineOrg = mpos + gui_percentToPixelRawVec('5 110');
-      drawline(1, lineOrg + gui_percentToPixelRawVec('0 1'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 1'), '0.85 0.85 0', 0.75, 0);
-      drawline(1, lineOrg + gui_percentToPixelRawVec('0 2'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 2'), '0.85 0.85 0', 0.75, 0);
-      drawline(1, lineOrg + gui_percentToPixelRawVec('0 3'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 3'), '0.85 0.85 0', 0.75, 0);
-      drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
-    }
-    itr = itr + 1;
-  }
-  
   mapKey = mapKeyObject;
-  while( mapKey ){
+  for( mapKey = mapKeyObject; mapKey != world; mapKey = mapKey.w_slot ){
     nofs = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, iofs, gui_percentToPixelRawVec('380 380'));
     switch( mapKey.data_type ){
-      case DATA_MAP_OBJ:
-        drawpic( nofs - gui_percentToPixelRawVec('8 8'), UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED, 1, 0);
+      case DATA_MAP_DMG:
+        drawpic( nofs - gui_percentToPixelRawVec('5 5'), UI_DEF_BOX_64, gui_percentToPixelRawVec('10 10'), CLR_DEF_RED * 1.15, 0.67, 0);
         break;
       case DATA_BLD:
         gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD + '0.15 0.15 0.15', 1, 0);
         break;
     }
-    mapKey = mapKey.w_slot;
   }
-
+  
+  renderColor = CLR_DEF_GREEN - '0.1 0.1 0.1';
+  
+  //Render Nav points
+  local entity nav;
+  for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
+    if( nav.faction != CLIENT_faction && nav.faction != FACTION_ALL ){
+      continue;
+    }
+    
+    local float nactive, nlen;
+    local string navname;
+    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
+    
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+    
+    nlen = stringwidth(navname, 0, '12 12 0');
+    nofs_x = nofs_x - gui_percentXRaw( (nlen/2) );
+    nofs_y = nofs_y - gui_percentYRaw(18);
+    gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
+    
+    drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
+    
+    drawfont = drawfont_prev;
+  }
+  
+  //Render Deploy points
+  if( !CLIENT_MENU_deploy  ){
+    CLIENT_MENU_deploy = DEPLOYPOINT;
+    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
+  }
+  local entity deploy;
+  for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
+    if( deploy.faction != FACTION_ALL ){
+      if( deploy.faction != CLIENT_faction ){
+        continue;
+      }
+    }
+    if( deploy.isActive == FALSE ){
+      continue;
+    }
+    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, deploy.origin, iofs, gui_percentToPixelRawVec('380 380'));
+    
+    if( CLIENT_MENU_deploy.data_idx == deploy.data_idx ){
+      gui_renderTintImage(TRUE, nofs - gui_percentToPixelRawVec('6 6'), UI_DEF_REC_64, gui_percentToPixelRawVec('28 28'), CLR_DEF_GREEN, 0.85, 0);
+      CLIENT_MENU_nav_ui_org = tofs;
+      ui_renderSprite_DeployPoint( tofs, '16 16', CLR_DEF_GREEN, 1 ) ;
+    }
+    else{
+      gui_renderTintImage2((CLIENT_MENU_deploy.data_idx == deploy.data_idx), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
+    }
+    local vector lineOrg;
+    lineOrg = mpos + gui_percentToPixelRawVec('5 110');
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 1'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 1'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 2'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 2'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 3'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 3'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
+  }
+  
   local vector helpOrg;
   helpOrg = mpos;
   helpOrg_x = helpOrg_x + gui_percentXRaw(405) - gui_percentXRaw(12);
   DEPLOY_HELP_NAV_MAP = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 
-  if( (cvar("coop")) || (cvar("deathmatch")) ){
-    local entity player;
-    player = findchainflags(flags, FL_CLIENT);
-    while(player){
-      if(player.data_type == DATA_MECH){
-        if(player.faction == CLIENT_faction){
-          local vector friend_org;
-          friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
-          drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);
-        }
-      }
-      player = player.chain;
+  local entity player;
+  for( player = nextent(world); player != world; player = nextent(player) ){
+    if( !(player.flags & FL_CLIENT) ){
+      continue;
     }
+    if(player.data_type != DATA_MECH){
+      continue;
+    }
+    if(player.faction != CLIENT_faction){
+      continue;
+    }
+    local vector friend_org;
+    friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
+    drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);
+    
+    local vector nameOrg;
+    local float nameLen;
+    nameOrg = friend_org + gui_percentToPixelRawVec('0 -18');
+    
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+    
+    nameLen = stringwidth( player.netname, 0, '14 14 0');
+    nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
+    drawstring( nameOrg, player.netname, '14 14 0', CLR_DEF_IIF_FRIEND, 1, 0);
+    
+    drawfont = drawfont_prev;
   }
   
   //draw compass

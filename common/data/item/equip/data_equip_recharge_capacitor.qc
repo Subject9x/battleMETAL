@@ -16,7 +16,6 @@ void() recharge_capacitor_remove_;
 void() data_ini_equip_recharge_capacitor_={
 
   self.data_idx = UID_ITEM_recharge_capacitor;  
-  self.w_name = "Recharge Capacitor";
   
   self.w_clipsize = 1;
   self.reloadRate = 0;
@@ -31,6 +30,8 @@ void() data_ini_equip_recharge_capacitor_={
   self.equipSize = 3;
 
   #ifdef CSQC
+    self.w_name = "Recharge Capacitor";
+    self.model = "q3mdl/weapons/e_recap.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;
@@ -44,11 +45,11 @@ void() data_ini_equip_recharge_capacitor_={
   #endif
   
   #ifndef CSQC
-  self.w_attack = recharge_capacitor_upgrade_;
-  self.think = SUB_Null;
-  self.item_remove_upgrade = recharge_capacitor_remove_;
-  self.model = "q3mdl/weapons/e_recap.md3";
-  self.w_isburst = FALSE;
+    self.w_attack = recharge_capacitor_upgrade_;
+    self.think = SUB_Null;
+    self.item_remove_upgrade = recharge_capacitor_remove_;
+    self.model = "q3mdl/weapons/e_recap.md3";
+    self.w_isburst = FALSE;
   #endif
 };
 

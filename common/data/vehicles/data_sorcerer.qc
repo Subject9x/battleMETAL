@@ -21,6 +21,7 @@ void() data_ini_sorcerer_={
  
   self.max_health = 285;
   setsize(self, '-22 -22 -11', '22 22 26');
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 300;
@@ -39,13 +40,15 @@ void() data_ini_sorcerer_={
   self.data_speed_strafe = 40;
   self.data_speed_backward = 30;
   self.data_speed_accel = 1;
-  #ifndef CSQC
+#ifndef CSQC
   self.yaw_speed = 3;    //AI-only 
   //self.turret_yaw_speed = 3;//AI-only - but has no turret
-  #endif
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 2;
+  weaponList = self;
   self.model = "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3";
   
   //camera location

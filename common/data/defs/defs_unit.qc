@@ -13,7 +13,6 @@ Overview:
 
 //SSQC only
 #ifndef CSQC
-.float shield;        //current amount of shields
 .float shieldHitDelay;//cool down before shield recharge begins
 
 .float accuracyMod;
@@ -22,7 +21,32 @@ Overview:
 .float turret_yaw_speed;
 .float evasionDrain;
 .float ai_attack_chance;
+
+//Server-side 'thin' unit data
+
+.vector torsoCenterOffset;
+.vector torsoCenterAngles;
+.float torsoCenterHealth;
+
+.vector torsoLeftOffset;
+.float torsoLeftHealth;
+
+.vector torsoRightOffset;
+.float torsoRightHealth;
+
+.vector armLeftOffset;
+.float armLeftHealth;
+
+.vector armRightOffset;
+.float armRightHealth;
+
+.vector legsOffset;
+.float torsoCenterHealth;
+
+.vector legAngles;
+
 #endif
+.vector cockpitOffset;
 
 .float data_idx;
 .float vec_size;
@@ -33,11 +57,11 @@ Overview:
 .float energyMax;     //max amount
 .float energy;        //current amount
 .float energyRate;    //how much energy built per frame
+.float shield;        //current amount of shields
 .float shieldMax;     //max shields
 .float shieldRate;    //shield recharge rate
 .float shieldRateMod; //field for modules.
 .float startupDelay; //time in game seconds for unit to activate after spawn.
-
 
 //Weapon Spread Mechanics
 .vector spreadDefault;
@@ -64,3 +88,12 @@ Overview:
 .entity armRight;  //arms can be optional
 
 .float isActive;
+
+.float was_hit; //used for hit direction calculation mostly
+.float hitdir_buffer; //used for hit direction, is cleared every frame
+
+#ifdef CSQC
+.float targetEntId;
+.float entId; 
+.void( float critBits ) te_critical_hit;  //interface for unit critical hit events
+#endif

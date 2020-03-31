@@ -13,14 +13,14 @@ Overview: ai unit
 /* quick garbage collect before rest of death funcs */
 void() ai_vec_dest_clean={
   ctrl_unit_cleanup_tank();
+  
   self.think = ai_vec_dest_die1;
   self.nextthink = time + 0.5;
 };
 
 void() ai_vec_dest_die={
-  local vector v;
   
-  if( self.deadflag >= DEAD_DYING ){
+  if( self.deadflag > DEAD_NO ){
     return; //double play prevention
   }
   
@@ -28,10 +28,9 @@ void() ai_vec_dest_die={
   self.th_react = SUB_Null;
   self.th_pain = SUB_Null;
   self.th_missile = SUB_Null;
-  self.deadflag = DEAD_DYING;
+  self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  self.colormod = '0.33 0.33 0.33';
   self.attack_state = -1;
   self.enemy = world;
   self.maxs = self.maxs * 0.85;
@@ -58,21 +57,9 @@ void() ai_vec_dest_die={
   self.ai_action_time = time + 600;
 
   ai_alert_close( self.enemy );
+  te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
   
-  v = self.origin + (v_up * 2);
-  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-  
-  switch( self.vec_size ){
-    case 2:
-      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 240, 0.5, 600); 
-      break;
-    case 3:
-      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 180, 0.75, 600); 
-      break;
-    default:
-      te_small_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 120, 1, 600); 
-      break;
-  }
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
   self.nextthink = time + 0.1;
 };
@@ -81,8 +68,7 @@ void() ai_vec_dest_die={
   Death animation - tank sits as a smoking wreck
 */
 void() ai_vec_dest_die1={
-  self.deadflag = DEAD_DEAD;
-  te_smoke(self.origin, 1);
+  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
   self.think = ai_vec_dest_die1;
   if ( time > self.ai_action_time ){
     self.think = ai_vec_dest_die1a;
@@ -93,7 +79,6 @@ void() ai_vec_dest_die1={
 
 //stops smoking
 void() ai_vec_dest_die1a={
-  self.deadflag = DEAD_DEAD;
   self.think = ai_vec_dest_die1a;
   if( time > self.ai_action_time ){
     self.think = SUB_Remove;

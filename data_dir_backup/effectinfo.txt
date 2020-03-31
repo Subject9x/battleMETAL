@@ -15,7 +15,7 @@
 
   //TE_ESR_MUZZLE - LONG SPARKS
     effect TE_ESR_MUZZLE
-    count 2
+    count 1
     type spark
     blend alpha
     color 0x00BFFF 0xA9F5F2
@@ -33,7 +33,7 @@
    
   //TE_ESR_MUZZLE - SPARK PUFFS
     effect TE_ESR_MUZZLE
-    count 4
+    count 1.5
     type spark
     blend alpha
     color 0x81DAF5 0xA9D0F5
@@ -92,7 +92,7 @@
 
   //TE_ESR_RAIL - RAIL HEAT DISTORT
     effect TE_ESR_RAIL
-    count 8
+    count 4
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -128,7 +128,7 @@
 
   //TE_ESR_IMPACT_DIRT - LIGHTNING FRAG
     effect TE_ESR_IMPACT_DIRT
-    count 1
+    count 0.5
     type spark
     blend alpha
     orientation spark
@@ -167,7 +167,7 @@
   
   //TE_ESR_IMPACT_ARMOR - LIGHTNING FRAG
     effect TE_ESR_IMPACT_ARMOR
-    count 2
+    count 1
     type spark
     blend alpha
     orientation spark
@@ -207,7 +207,7 @@
   
   //TE_ESR_IMPACT_SHIELD - LIGHTNING FRAG
     effect TE_ESR_IMPACT_SHIELD
-    count 4
+    count 1
     type spark
     blend alpha
     color 0x08298A 0x8181F7
@@ -225,14 +225,14 @@
   
   //TE_ESR_IMPACT_SHIELD - SMOKE PUFF
     effect TE_ESR_IMPACT_SHIELD
-    count 1
+    countabsolute 1
     type smoke
     blend alpha
     color 0x08298A 0x8181F7
     tex 63 63
     size 2 4
     sizeincrease 1
-    alpha 256 512 256
+    alpha 185 370 256
     time 2 4
     originjitter 0.1 0.1 0.1
     velocitymultiplier 0
@@ -296,7 +296,7 @@ gravity -0.005
 
   //TE_LAS_HIT - SPARK
     effect TE_LAS_HIT
-    count 1
+    count 0.2
     type spark
     blend alpha
     orientation spark
@@ -305,12 +305,12 @@ gravity -0.005
     size 0.75 1.25
     alpha 256 512 256
     time 4 8
-    gravity 0.1
+    gravity 0.075
     originjitter 0.5 0.5 0.5
     velocityjitter 5 1 1
     velocitymultiplier 1
     stretchfactor 4
-    bounce 0.1
+    bounce 0.2
 
   //TE_LAS_HIT - RING
     effect TE_LAS_HIT
@@ -567,8 +567,8 @@ gravity -0.005
     orientation spark
     color 0x0D8D8D8 0xF2F2F2
     tex 40 40
-    size 0.75 0.75
-    alpha 256 256 64
+    size 3 3
+    alpha 768 768 0
     time 2 2
     velocitymultiplier 1
     
@@ -604,7 +604,7 @@ gravity -0.005
 
   //TE_ATC_MUZZLE - MORE SPARKS
     effect TE_ATC_MUZZLE
-    count 7
+    count 4
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -628,7 +628,7 @@ gravity -0.005
 
   //TE_ATC_DIRT - GRAVEL BITS
     effect TE_ATC_DIRT
-    count 5
+    count 2
     type alphastatic
     blend alpha
     orientation spark
@@ -733,10 +733,11 @@ gravity -0.005
     orientation spark
     color 0xFF8000 0xFE2E2E
     tex 40 40
-    size 0.75 0.75
-    alpha 256 256 64
-    time 2 2
-    velocitymultiplier 1
+    size 2 3
+    alpha 350 425 8
+    time 1.25 1.25
+    velocitymultiplier 3
+    stretchfactor 0.75
     
   //TE_FLK_MUZZLE - SMOKE
     effect TE_FLK_MUZZLE
@@ -939,7 +940,7 @@ gravity -0.005
     
   //TE_QRFL_MUZZLE_SPARK - BUBBLE
     effect TE_QRFL_MUZZLE_RAIL
-    count 2
+    count 1
     type smoke
     blend alpha
     color 0xB4045F 0xD0A9F5
@@ -955,7 +956,7 @@ gravity -0.005
     
   //TE_QRFL_MUZZLE_SPARK - HEAT DISTORT
     effect TE_QRFL_MUZZLE_RAIL
-    count 4
+    count 2
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -1002,7 +1003,7 @@ gravity -0.005
   
   //TE_QRFL_MUZZLE - SMOKE
     effect TE_QRFL_MUZZLE
-    count 7
+    count 3
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1083,7 +1084,7 @@ gravity -0.005
     
   //TE_QRFL_QBIT_IMPACT - NON-SHIELD - PURPLE BUBBLES
     effect TE_QRFL_QBIT_IMPACT
-    count 10
+    count 5
     type alphastatic
     blend alpha
     orientation spark
@@ -1170,7 +1171,7 @@ gravity -0.005
   
   //TE_EMP_TRAIL - SPARK CLOUD TRAIL
     effect TE_EMP_TRAIL
-    count 15
+    count 7
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1329,7 +1330,7 @@ gravity -0.005
   
   //TE_ION_TRAIL - SPARK CLOUD TRAIL
     effect TE_ION_TRAIL
-    count 15
+    count 7
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1442,7 +1443,7 @@ gravity -0.005
 //ROCKET POD EFFECTS==================================
   //TE_MIS_TRAIL - SMOKE
     effect TE_MIS_TRAIL
-    count 3
+    count 2
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -1458,7 +1459,7 @@ gravity -0.005
 
   //TE_MIS_TRAIL - SPARKS
     effect TE_MIS_TRAIL
-    count 2
+    count 1
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1497,7 +1498,7 @@ gravity -0.005
 
   //TE_MIS_MUZZLE - SPARKS
     effect TE_MIS_MUZZLE
-    count 10
+    count 5
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1729,7 +1730,7 @@ gravity -0.005
 
   //TE_SFGA_TRAIL - SPARKS
     effect TE_SFGA_TRAIL
-    count 10
+    count 5
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1767,7 +1768,7 @@ gravity -0.005
 //LG MISSILE EFFECTS==================================
   //TE_LGM_MUZZLE
     effect TE_LGM_MUZZLE
-    count 10
+    count 5
     type smoke
     blend alpha
     color 0xB43104 0x000000
@@ -1890,7 +1891,7 @@ gravity -0.005
     
   //TE_ARH_MUZZLE - SMOKE
     effect TE_ARH_MUZZLE
-    count 7
+    count 3
     type smoke
     blend alpha
     color 0x848484 0xBDBDBD
@@ -1930,13 +1931,13 @@ gravity -0.005
     
   //TE_ARH_TRAIL - SMOKE
     effect TE_ARH_TRAIL
-    count 3
+    count 1
     type smoke
     blend alpha
     color 0x848484 0xBDBDBD
     tex 8 15
     size 0.1 0.15
-    sizeincrease 0.25
+    sizeincrease 0.15
     alpha 64 96 16
     originjitter 0.1 0.1 0.1
     velocityjitter 1 1 1
@@ -2000,7 +2001,7 @@ gravity -0.005
     
   //TE_SWRM_TRAIL - SMOKE
     effect TE_SWRM_TRAIL
-    count 7
+    count 3
     type smoke
     blend alpha
     color 0xF5D0A9 0xF2F5A9
@@ -2035,21 +2036,21 @@ gravity -0.005
   originjitter 5 5 5
   velocityoffset 5 5 5
   velocityjitter 2 2 2
-  velocitymultiplier 15
+  velocitymultiplier 4
   gravity 0.25
-  stretchfactor 2
+  stretchfactor 1.5
   airfriction 4
   bounce 1
   
   //TE_MECHPIECE_DAMAGE - RISING SMOKE
   effect TE_MECHPIECE_DAMAGE
-  count 0.25
+  count 0.15
   type smoke
   blend alpha
   color 0x1C1C1C 0x585858
   tex 0 7
-  size 2 4
-  sizeincrease 0.1
+  size 1 2
+  sizeincrease 0.075
   alpha 180 220 64
   originjitter 2 2 2
   velocityjitter 1 1 1
@@ -2068,7 +2069,7 @@ gravity -0.005
   originjitter 5 5 5
   velocityoffset 1 1 1
   velocityjitter 2 2 2
-  velocitymultiplier 10
+  velocitymultiplier 1
   gravity 0.25
   stretchfactor 2
   airfriction 4
@@ -2076,10 +2077,10 @@ gravity -0.005
   
   //TE_MECHPIECE_DEAD_BURN - Light
   effect TE_MECHPIECE_DEAD_BURN
-  lightradius 25
-  lightradiusfade 100
+  lightradius 15
+  lightradiusfade 50
   lightcolor 0.875 0.227 0.004
-  lightshadow 0.2
+  lightshadow 0.1
   notunderwater
   
   //TE_MECHPIECE_DEAD_BURN - Smoke
@@ -2126,7 +2127,7 @@ gravity -0.005
   color 0x04B486 0x81DAF5
   tex 26 31
   size 1 2
-  alpha 16 24 -96
+  alpha 24 32 -96
   time 1 1.1
   originjitter 0.2 0.2 0.2
   velocityjitter 1 1 1
@@ -2139,8 +2140,8 @@ gravity -0.005
   color 0x01DF3A 0x9AFE2E
   tex 33 33
   size 2 3
-  sizeincrease 1
-  alpha 96 128 120
+  sizeincrease 1.5
+  alpha 160 192 160
 
   //TE_SHIELD_HIT_HIGH - BLUE LIGHT
   effect TE_SHIELD_HIT_HIGH
@@ -2390,24 +2391,24 @@ velocitymultiplier 1
 //SMALL DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_SMALL - SMOKE
     effect TE_DEBRIS_TRAIL_SMALL
-    count 2
+    count 0.75
     type alphastatic
     blend alpha
-    color 0x151515 0x2E2E2E
+    color 0x2E2E2E 0x666666
     tex 8 15
-    size 0.45 1
-    sizeincrease 0.1
+    size 0.15 0.25
+    sizeincrease 0.05
     alpha 240 240 150
     time 1.75 2.2
     originjitter 0.2 0.2 0.2
     velocityjitter 1 1 3
-    gravity -0.025
+    gravity -0.015
     stretchfactor 4
     trailspacing 12
 
   //TE_DEBRIS_TRAIL_SMALL - SPARKS
     effect TE_DEBRIS_TRAIL_SMALL
-    count 2
+    count 1
     type spark
     blend alpha
     orientation spark
@@ -2436,7 +2437,7 @@ velocitymultiplier 1
 //MED DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_MED - SMOKE
     effect TE_DEBRIS_TRAIL_MED
-    count 3
+    count 1
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -2482,7 +2483,7 @@ velocitymultiplier 1
 //BIG DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_BIG - SMOKE
     effect TE_DEBRIS_TRAIL_BIG
-    count 3
+    count 2
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -2668,7 +2669,7 @@ velocitymultiplier 1
 
 //TE_DUST_DESERT==================================
 effect TE_DUST_DESERT
-count 1
+count 0.25
 type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50
@@ -2859,7 +2860,7 @@ velocitymultiplier 2
 
   //TE_REPAIR_RAIL - RAIL HEAT DISTORT
     effect TE_REPAIR_RAIL
-    count 8
+    count 4
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -2907,7 +2908,7 @@ velocitymultiplier 2
 //RADIATION FIELD===========================
   //TE_FIELD_RAD - glob
     effect TE_FIELD_RAD
-    count 8
+    count 4
     type alphastatic
     blend alpha
     color 0x40FF00 0xF7F8E0

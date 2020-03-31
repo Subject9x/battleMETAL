@@ -8,8 +8,7 @@ Overview:
 */
 void() data_ini_empty_weapon_={
 
-  self.data_idx = UID_ITEM_NULL;  
-  self.w_name = "-EMPTY-";
+  self.data_idx = UID_ITEM_NULL;
   
   self.w_clipsize = 0;
   self.reloadRate = 0;
@@ -24,6 +23,8 @@ void() data_ini_empty_weapon_={
   self.equipSize = 1;
   
   #ifdef CSQC  
+    self.w_name = "-EMPTY-";
+    self.model = "q3mdl/testball.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;
@@ -35,16 +36,19 @@ void() data_ini_empty_weapon_={
     self.abbrev = "NON";
     self.description = "+ this weapon slot is Empty.";
     self.icon = "gfx/ui/wep_icons/eqp_empty.png";
+    self.alpha = 0.01;
+    self.scale = 0.01;
   #endif
   
   #ifndef CSQC  
-  self.spreadDefault = '0 0 0';
-  self.w_attack = SUB_Null;
-  self.think = SUB_Null;
-  self.w_isburst = FALSE;
-  self.burstRate = 1;
-  self.wepFireOffset = '0 0 0 ';
-  self.fire_sound = "";
-  self.model = "";
+    self.spreadDefault = '0 0 0';
+    self.w_attack = SUB_Null;
+    self.think = SUB_Null;
+    self.w_isburst = FALSE;
+    self.burstRate = 1;
+    self.wepFireOffset = self.wepFireOffsetCache = '0 0 0 ';
+    self.model = "q3mdl/testball.md3";
+    self.scale = 0.01;
+    self.alpha = 0.01;
   #endif
 };

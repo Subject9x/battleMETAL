@@ -21,6 +21,7 @@ void() data_ini_onnek_={
  
   self.max_health = 350;
   setsize(self, '-30 -30 -10.25', '30 30 28');
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 1000;
@@ -39,12 +40,14 @@ void() data_ini_onnek_={
   self.data_speed_strafe = 20;
   self.data_speed_backward = 15;
   self.data_speed_accel = 1;
-  #ifndef CSQC
+#ifndef CSQC
   self.yaw_speed = 2.5;    //AI-only 
-  #endif
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
+  self.hardpoint_cnt = 4;
+  weaponList = self;
   self.model = "q3mdl/vecs/onnek/onnek.md3";
   
   //camera location

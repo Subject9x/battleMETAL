@@ -8,11 +8,22 @@ Overview:
   these functions are here for their abstraction level.
 */
 
-void() mh_world_ini={ 
+void() mh_world_ini={
+  if( cvar("coop") ){
+    GAMETYPE = GAMEMODE_COOP;
+  }
+  else if( cvar("deathmatch") ){ 
+    GAMETYPE = GAMEMODE_DM;
+  }
+  else{
+    GAMETYPE = GAMEMODE_CAMPAIGN;
+  } 
+  cvar_set("gamemode", ftos(GAMETYPE));
+
+
   registercvar("campaign", "0", 0); 
   registercvar("saveslot", "0", 1);
   registercvar("gamemode", "0", 0);
-  registercvar("gametype", "0", 0);
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
   registercvar("cl_hud_sway", "0", 1);
@@ -26,50 +37,76 @@ void() mh_world_ini={
   MISSION_LOSSES_SURVEST = 0;
   MISSION_LOSSES_MILITAR = 0;
 
-  //oh my
+  //kept in numerical order for easy reference.
+  addstat(STAT_PLAYER_DEADFLAG, AS_INT, deadflag);
+  addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
+  
   addstat(STAT_RAM, AS_FLOAT, ramUp);
+  
+  addstat(STAT_CLIENT_ENERGY, AS_FLOAT, stat_client_energy);
+  addstat(STAT_CLIENT_SHIELD, AS_FLOAT, stat_client_shield);
+  
   addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
-  addstat( STAT_PLR_NAME, AS_STRING, netname);
-  addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);
-  addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);
-  addstat(STAT_PLR_ORG_Z, AS_FLOAT, stat_cofs_z);
-  addstat(STAT_PLR_DIDX, AS_INT, data_idx);
+  addstat(STAT_PLAYER_WEAPONS_STATE, AS_INT, stat_player_weapons_state);
+  
   addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
+  addstat(STAT_PLR_DATA_IDX, AS_INT, data_idx);
   addstat(STAT_PLR_RADMOD, AS_INT, stat_rdr_mode);
-  addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
   addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);
   addstat(STAT_PLR_RETDIST, AS_INT, stat_ret_dist);
   
-  //Target stats
   addstat(STAT_TRG_ENT_ID, AS_INT, stat_trg_ent_id);
   addstat(STAT_TRG_DATATYPE, AS_INT, stat_trg_dat);
   addstat(STAT_TRG_DATAIDX, AS_INT, stat_trg_dataidx);
-  addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
-  
-  addstat(STAT_WEP1_ID, AS_INT, stat_w1_id);
-  addstat(STAT_WEP2_ID, AS_INT, stat_w2_id);
-  addstat(STAT_WEP3_ID, AS_INT, stat_w3_id);
-  addstat(STAT_WEP4_ID, AS_INT, stat_w4_id);
-  addstat(STAT_WEP5_ID, AS_INT, stat_w5_id);
-  addstat(STAT_WEP6_ID, AS_INT, stat_w6_id);
-  addstat(STAT_WEP7_ID, AS_INT, stat_w7_id);
-  addstat(STAT_WEP8_ID, AS_INT, stat_w8_id);
-  addstat(STAT_WEP9_ID, AS_INT, stat_w9_id);
-  
-  addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
+  addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
+    
+  addstat(STAT_TARGET_HP_TORSOCENTER, AS_FLOAT, stat_target_hp_torsoCenter);
+  addstat(STAT_TARGET_HP_TORSOLEFT, AS_FLOAT, stat_target_hp_torsoLeft);
+  addstat(STAT_TARGET_HP_TORSORIGHT, AS_FLOAT, stat_target_hp_torsoRight);
+  addstat(STAT_TARGET_HP_ARMLEFT, AS_FLOAT, stat_target_hp_armLeft);
+  addstat(STAT_TARGET_HP_ARMRIGHT, AS_FLOAT, stat_target_hp_armRight);
+  addstat(STAT_TARGET_HP_LEGS, AS_FLOAT, stat_target_hp_legs);
+    
+  addstat(STAT_CLIENT_HP_TORSOCENTER, AS_FLOAT, stat_client_hp_torsoCenter);
+  addstat(STAT_CLIENT_HP_TORSOLEFT, AS_FLOAT, stat_client_hp_torsoLeft);
+  addstat(STAT_CLIENT_HP_TORSORIGHT, AS_FLOAT, stat_client_hp_torsoRight);
+  addstat(STAT_CLIENT_HP_ARMLEFT, AS_FLOAT, stat_client_hp_armLeft);
+  addstat(STAT_CLIENT_HP_ARMRIGHT, AS_FLOAT, stat_client_hp_armRight);
+  addstat(STAT_CLIENT_HP_LEGS, AS_FLOAT, stat_client_hp_legs);
+    
+  addstat(STAT_TARGET_SHIELDS, AS_FLOAT, stat_target_shield);
+  addstat(STAT_TARGET_NAME, AS_STRING, stat_target_name);
+  addstat(STAT_TARGET_NAME, AS_STRING, stat_target_name);
+    
+  addstat(STAT_TARGET_ORIGINX, AS_FLOAT, stat_target_orgx);
+  addstat(STAT_TARGET_ORIGINY, AS_FLOAT, stat_target_orgy);
+  addstat(STAT_TARGET_ORIGINZ, AS_FLOAT, stat_target_orgz);
+  addstat(STAT_TARGET_SIZE, AS_INT, stat_target_size);
+    
+  addstat(STAT_RAM_VALUE, AS_FLOAT, ramTracker);
+  addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
   
-  addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
- 
+  addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
+  
+  addstat(STAT_CLIENT_WEAPON1_RELOAD, AS_FLOAT, stat_w1_rel);
+  addstat(STAT_CLIENT_WEAPON2_RELOAD, AS_FLOAT, stat_w2_rel);
+  addstat(STAT_CLIENT_WEAPON3_RELOAD, AS_FLOAT, stat_w3_rel);
+  addstat(STAT_CLIENT_WEAPON4_RELOAD, AS_FLOAT, stat_w4_rel);
+  addstat(STAT_CLIENT_WEAPON5_RELOAD, AS_FLOAT, stat_w5_rel);
+  addstat(STAT_CLIENT_WEAPON6_RELOAD, AS_FLOAT, stat_w6_rel);
+  addstat(STAT_CLIENT_WEAPON7_RELOAD, AS_FLOAT, stat_w7_rel);
+  addstat(STAT_CLIENT_WEAPON8_RELOAD, AS_FLOAT, stat_w8_rel);
+  addstat(STAT_CLIENT_WEAPON9_RELOAD, AS_FLOAT, stat_w9_rel);
+
+  addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
   addstat(ADDSTAT_TARGETSIZE_X, AS_FLOAT, addStat_targetSize_x);
   addstat(ADDSTAT_TARGETSIZE_Y, AS_FLOAT, addStat_targetSize_y);
   addstat(ADDSTAT_TARGETSIZE_Z, AS_FLOAT, addStat_targetSize_z);
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
-  addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
-  
-  addstat(STAT_RAM_VALUE, AS_FLOAT, ramTracker);
+
 
   switch( world.worldtype ){
     case 1:
@@ -291,25 +328,20 @@ void( vector org, entity parent, float id, vector colr, float stile, float pFlag
   newLight.skin = skinNum;
   newLight.light_lev = lightRadius;
   newLight.data_idx = id;
+  setsize( newLight, '0 0 0', '0 0 0');
   setorigin( newLight, org );
-  newLight.think = SUB_Null;
-  newLight.nextthink = time + 0.1;
 };
 
 void( entity parent ) world_remove_dlight={
   local entity chaine;
   local entity ref;
   
-  chaine = findchainentity( owner, parent );
-  while( chaine ){
-    if( chaine.classname == "dynamicLight" ){
-      ref = chaine;
-      chaine = chaine.chain;
-      remove(ref);
+  for( chaine = nextent(world); chaine.owner == parent; chaine = nextent(chaine) ){
+    if( chaine.classname != "dynamicLight" ){
+      continue;
     }
-    else{
-      chaine = chaine.chain;
-    }
+    chaine.think = SUB_Remove;
+    chaine.nextthink = time + 0.1;
   }
 };
 

@@ -31,7 +31,17 @@ void() ai_tank_skirmish={
   self.touch = ai_touch;
   
   ai_setup_patrol();
+  
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+  
+  self.SendEntity = ctrl_send_tank;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
+  
+  local entity wep;
+  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
+    wep.effects = EF_NODRAW;
+  }  
+  self.torsoCenter.effects = EF_NODRAW;
 };
 
 void() ai_tank_sk_fight_prep={

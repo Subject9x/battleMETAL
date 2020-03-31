@@ -8,90 +8,115 @@ Overview: data file for building
   func: provides radar scanning to all friendly units in radius
 */
 
-//Death Animation
+//Death Animation - TODO - clientside
 void() hfuel_death1 = [1, hfuel_death2]{
   
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
-  
-  self.takedamage = DAMAGE_NO;
+  self.takedamage = DEAD_DEAD;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_NOT;
-  te_object_explode( '1 0.75 0' );
-  
-  building_die_removeFire();
-  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+
+  //fire triggers when dead
+  trigger_event( self.enemy, self.trigOnDeath );
 };
-void() hfuel_death2 = [2, hfuel_death3]{};
-void() hfuel_death3 = [3, hfuel_death4]{};
+void() hfuel_death2 = [2, hfuel_death3]{
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+
+  local vector shoot;
+  shoot = randompos(self.origin, vfx);
+  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 5, 1 );
+};
+void() hfuel_death3 = [3, hfuel_death4]{
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+
+  local vector shoot;
+  shoot = randompos(self.origin, vfx);
+  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 5, 3 );
+};
 void() hfuel_death4 = [4, hfuel_death5]{
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  te_object_explode( '1 0.75 0' );
+  local vector shoot;
+  shoot = randompos(self.origin, vfx);
+  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 4, 2 );
 };
-void() hfuel_death5 = [5, hfuel_death6]{};
-void() hfuel_death6 = [6, hfuel_death7]{};
-void() hfuel_death7 = [7, hfuel_death8]{
+void() hfuel_death5 = [5, hfuel_death6]{
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  te_object_explode( '1 0.75 0' );
+  local vector shoot;
+  shoot = randompos(self.origin, vfx);
+  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 1 );
 };
-void() hfuel_death8 = [8, hfuel_death9]{};
-void() hfuel_death9 = [9, hfuel_death10]{};
+void() hfuel_death6 = [6, hfuel_death7]{
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+
+  local vector shoot;
+  shoot = randompos(self.origin, vfx);
+  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
+};
+void() hfuel_death7 = [7, hfuel_death8]{};
+void() hfuel_death8 = [8, hfuel_death9]{
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+
+  local vector shoot;
+  shoot = randompos(self.origin, vfx);
+  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
+};
+void() hfuel_death9 = [9, hfuel_death10]{
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+
+  local vector shoot;
+  shoot = randompos(self.origin, vfx);
+  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
+};
 void() hfuel_death10 = [10, hfuel_death11]{
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  te_object_explode( '1 0.75 0' ); 
-  local entity ruins;
-  self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_NOT;
-  ruins = spawn();
-  ruins.solid = SOLID_NOT;
-  ruins.movetype = MOVETYPE_NONE;
-  switch( self.vec_size ){
-    case 2:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
-      break;
-    case 3:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
-      break;
-    default:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
-      break;
-  }
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
-  ruins.vec_size = self.vec_size;
-  ruins.angles = self.angles;
-  ruins.armLeft = te_building_fire_start( ruins );
-  if( ruins.vec_size > 1 ){
-    ruins.armRight = te_building_fire_start( ruins );
-    ruins.torsoLeft = te_building_fire_start( ruins );
-  }
+  local vector shoot;
+  shoot = randompos(self.origin, vfx);
+  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
 };
 void() hfuel_death11 = [11, hfuel_death12]{};
-void() hfuel_death12 = [12, SUB_Remove]{
-  makevectors( self.angles );
-  te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
-  
-  sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
-};
+void() hfuel_death12 = [12, hfuel_death12]{};
 
-void() building_human_fuel_th={
-  
-  building_burn();
-  
-  self.think = building_human_fuel_th;
-  self.nextthink = self.nextthink + random()*0.5;
-};
 
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/fueltank/fueltank.md3"); }
+
+Base Decoration building.
+  
+Does not require power.
+Does not explode with damage.
+
+Max Health = 100. (default)
+
+Shield Max = 250. (default)
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+.faction : <float> 1, 2, 3 - [REQURIED]
+targetname : <string>, used for trigger calls from other ents
+target : <string name> of ent to go to, usually a patrol node
+trigOnSpawn: <string> ent, fire this ENTITY when activated
+trigOnDeath: <string> target, fire this ENTITY when killed
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -110,17 +135,32 @@ void() building_human_fuel={
   }
 
   self.vec_name = "Fuel Tank";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 2;
-  macro_set_model("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0)
+  macro_set_model("q3mdl/testball.md3", self.skin, 0)
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  util_setHealthArmor(75, 75, 1, 100) ;
   setsize(self, '-40 -40 0', '40 40 64');
-  self.shield= 0;
-  self.shieldMax = 150;
-  self.shieldRate = 0.15;
+  setorigin(self, self.origin);
   self.scale = 1;
   self.deadflag = DEAD_NO;
+
+  if( !self.health) {
+    self.health = self.max_health = 100;
+  }
+  
+  if( !self.shieldMax ){
+    self.shieldMax = 250;
+  }
+  
+  if( !self.shieldRate ){
+    self.shieldRate = 0;
+  }
+  if( !self.energyRate ){
+    self.energyRate = 0;
+  }
+  if( !self.energyMax ){
+    self.energyMax = 0;
+  }
 
   if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 0.95) ){
@@ -136,6 +176,12 @@ void() building_human_fuel={
   self.th_die = hfuel_death1;
   self.use = multi_trigger;
   
-  self.think = building_human_fuel_th;
-  self.nextthink = self.nextthink + random()*0.5;
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
+  if( (self.spawnflags & IT_QUAD) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
+  
+  self.think = building_burn_th;
+  self.nextthink = time + random() * 3;
 };

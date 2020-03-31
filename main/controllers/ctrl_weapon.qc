@@ -180,6 +180,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       self.damageType = theWeapon.damageType;
       self.damageValue = theWeapon.damageValue;
       theWeapon.data_ini_projectile();
+      self.data_idx = theWeapon.data_idx; //use weapon idx to sync to CSQC
       self.data_lifetime = time + self.data_lifetime;
       self.w_firetime = time + 0.5;
       self.velocity = normalize(FIRE_ENDPOINT - FIRE_ORIGIN);
@@ -189,12 +190,14 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
         self.nextthink = time + updateDelay;
       }
       else{
-        self.nextthink = time + 0.1;
+        self.nextthink = time + 0.01;
       }
       macro_set_collider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE)
-      macro_set_model(self.model, 0, 0)
+      setmodel(self, "q3mdl/testball.md3");
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
+      self.SendEntity = te_send_missile;
+      self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_VELOCITY;
     self = theWeapon;
   }
   else{
@@ -208,14 +211,9 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
   Cosmetic death function, weapon entity is still 'active' on the server.
 */
 void() ctrl_die_weapon={
-  if(self.deadflag <= DEAD_NO){
-    te_missile_explode( self.origin, self.hardpointSize, '0.33 0.67 0.99', 1, 1);
-    
-    if( (self.currentWeaponGroup & self.w_group) ){
-      self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group);
-      self.w_group = 0;
-    }
-    
+  local entity prev;
+  if(self.deadflag == DEAD_NO){
+    self.think = SUB_Null;
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW; 
@@ -231,9 +229,21 @@ void() ctrl_die_weapon={
     }
     //attempt to garbage collect AI
     if( (self.owner.flags & FL_MONSTER) ){
-      self.partPrev.w_slot = self.w_slot; //take hard point out of rotation.
-      self.think = SUB_Remove;
-      self.nextthink = time + 0.5;
+      if( self.w_slot ){
+        prev = self.partPrev;
+        prev.w_slot = self.w_slot; //take hard point out of rotation.
+        self.w_slot.partPrev = prev;
+      }
+      remove(self);
+    }
+    else{
+      if( (self.owner.stat_player_weapons_state & self.w_group) ){
+        self.owner.stat_player_weapons_state = self.owner.stat_player_weapons_state - (self.owner.stat_player_weapons_state & self.w_group);
+      }
+    }
+    if( (self.owner.currentWeaponGroup & self.w_group) ){
+      self.owner.currentWeaponGroup = self.owner.currentWeaponGroup - (self.owner.currentWeaponGroup & self.w_group);
+      self.w_group = 0;
     }
   }
 };
@@ -244,12 +254,25 @@ void() ctrl_die_weapon={
 void() ctrl_weapon_remove_all={
   local entity removeChain;
   local entity nextWep;
+  local entity removeHudWeapon;
+  local entity nextHudWeapon;
   //call remove() in list order, no going back from this.
   removeChain = self.w_slot;
-  while(removeChain){
-    nextWep = removeChain.w_slot;
-    remove( removeChain );
-    removeChain = nextWep;
+  if( (self.flags & FL_CLIENT) ){
+    removeHudWeapon = self.hudWeapon;
+  }
+  while( removeChain ){
+    removeChain.think = SUB_Remove;
+    removeChain.nextthink = time + 0.01;
+    removeChain = removeChain.w_slot;
+    if( (self.flags & FL_CLIENT) ){
+      nextHudWeapon = removeHudWeapon.hudWeapon;
+      if( removeHudWeapon ){        
+        removeHudWeapon.think = SUB_Remove;
+        removeHudWeapon.nextthink = time + 0.01;
+        removeHudWeapon = nextHudWeapon;
+      }
+    }
   }
 };
 

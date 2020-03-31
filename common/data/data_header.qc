@@ -33,7 +33,13 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece.model = pathToModel;
   piece.compOffset = partOffset;
   piece.hitOffset = '0 0 0';
-  piece.compAltOffset = altOffsett;
+  piece.compAltOffset = piece.compAltOffsetCache = altOffsett;
+  #ifdef CSQC
+    piece.drawmask = MASK_NORMAL;
+    if( (self.flags & FL_MONSTER) ){
+      addentity(piece);
+    }
+  #endif
   self.partSlot = piece;
   piece.owner = self;
 };
@@ -68,6 +74,13 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
   local entity notItem;
   if( self.hardpoint_cnt < 10){
     item = spawn();
+    weaponList.w_slot = item;
+    #ifdef CSQC
+      item.drawmask = MASK_NORMAL;
+      if( (self.flags & FL_MONSTER) ){
+        addentity(item);
+      }
+    #endif
     notItem = self;
     self = item;
       self.data_idx = 0;
@@ -78,7 +91,6 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
       self.owner = notItem;
       self.hardpointSize = newHardPointSizeVal;
       self.hardpointType = newHardPointTypeVal;
-      weaponList.w_slot = self;
     self = notItem;
     weaponList = item;
     self.hardpoint_cnt = self.hardpoint_cnt + 1;

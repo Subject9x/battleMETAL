@@ -13,7 +13,6 @@ Overview: ai unit
 void() ai_gev_rotate1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   if( self.ai_rank > AI_RANK_REG ){
@@ -25,7 +24,6 @@ void() ai_gev_rotate1={
 void() ai_gev_rotate2={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   ai_attack();
@@ -35,7 +33,6 @@ void() ai_gev_rotate2={
 void() ai_gev_rotate3={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   if( self.ai_rank > AI_RANK_REG ){
@@ -47,7 +44,6 @@ void() ai_gev_rotate3={
 void() ai_gev_rotate4={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   ai_attack();
@@ -57,7 +53,6 @@ void() ai_gev_rotate4={
 void() ai_gev_rotate5={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   ai_attack();
@@ -67,7 +62,6 @@ void() ai_gev_rotate5={
 void() ai_gev_rotate6={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
   

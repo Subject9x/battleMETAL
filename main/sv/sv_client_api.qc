@@ -18,7 +18,7 @@ Overview:
 void(string str) SV_ParseClientCommand={
   local float argc;
   argc = tokenize(str);
-  if(argv(0) == "mech"){
+  if(argv(0) == "m"){
     client_ParseMechCommand(str, argc);
   }
   else if( argv(0) == "savegame"){
@@ -59,31 +59,42 @@ void() ClientConnect = {
   self.shield = 0;
   self.shieldMax = 0;
   self.shieldRate = 0;
-  self.stat_cofs_x = 0;
-  self.stat_cofs_y = 0;
-  self.stat_cofs_z = 0;
+  self.stat_client_energy = 0;
+  self.stat_client_shield = 0;
   
-  self.stat_w1_id = -1;
-  self.stat_w2_id = -1;
-  self.stat_w3_id = -1;
-  self.stat_w4_id = -1;
-  self.stat_w5_id = -1;
-  self.stat_w6_id = -1;
-  self.stat_w7_id = -1;
-  self.stat_w8_id = -1;
-  self.stat_w9_id = -1;
+  self.stat_target_hp_torsoCenter = 0;
+  self.stat_target_hp_torsoLeft = 0;
+  self.stat_target_hp_torsoRight = 0;
+  self.stat_target_hp_armLeft = 0;
+  self.stat_target_hp_armRight = 0;
+  self.stat_target_hp_legs = 0;
+
+  self.stat_client_hp_torsoCenter = 1;
+  self.stat_client_hp_torsoLeft = 1;
+  self.stat_client_hp_torsoRight = 1;
+  self.stat_client_hp_armLeft = 1;
+  self.stat_client_hp_armRight = 1;
+  self.stat_client_hp_legs = 1;
+  
+  self.stat_w1_id = 0;
+  self.stat_w2_id = 0;
+  self.stat_w3_id = 0;
+  self.stat_w4_id = 0;
+  self.stat_w5_id = 0;
+  self.stat_w6_id = 0;
+  self.stat_w7_id = 0;
+  self.stat_w8_id = 0;
+  self.stat_w9_id = 0;
   
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;
   self.w_group4 = 0;
-  self.aState = 0;
-  self.state_2 = 0;
-  self.stat_wep_state = 0;
-  self.stat_wep_rel = 0;
+  self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
+  self.state_2 = 0; //unknown what this used to be 
   
   self.stat_trg_dataidx = -1;
-  self.stat_trg_sh = -1;
+  self.stat_target_shield = -1;
   self.stat_trg_ddflg = -1;
   self.stat_trg_dist = -1;
   self.stat_trg_face = -1;
@@ -96,24 +107,23 @@ void() ClientConnect = {
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = 0;
   self.stat_rdr_rng = 0;
-  
-  self.stat_spr_x = 0;
-  self.stat_spr_y = 0;
+
   self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;
   self.stat_plr_fir = FIRE_GROUP;
   self.stat_lck_stt = LOCK_NONE;
   
-  self.next_wepn1 = -1;
-  self.next_wepn2 = -1;
-  self.next_wepn3 = -1;
-  self.next_wepn4 = -1;
-  self.next_wepn5 = -1;
-  self.next_wepn6 = -1;
-  self.next_wepn7 = -1;
-  self.next_wepn8 = -1;
-  self.next_wepn9 = -1;
+  self.next_wepn1 = 0;
+  self.next_wepn2 = 0;
+  self.next_wepn3 = 0;
+  self.next_wepn4 = 0;
+  self.next_wepn5 = 0;
+  self.next_wepn6 = 0;
+  self.next_wepn7 = 0;
+  self.next_wepn8 = 0;
+  self.next_wepn9 = 0;
+  
   self.ramTracker = 1;
   self.ramUp = 1;
   self.ramUpMax = 1;
@@ -121,9 +131,13 @@ void() ClientConnect = {
   self.playerState = PLAYER_CONNECT;
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here
-  
+  self.stat_player_weapons_state = 0;
   self.stat_plr_rep = -1;
-  
+  self.stat_target_name = "";
+  self.stat_target_orgx = 0;
+  self.stat_target_orgy = 0;
+  self.stat_target_orgz = 0;
+
   if( world.animaticOnly == FALSE) {
     client_playTrack(3, TRUE);  //entering hangar menu
   }
@@ -131,12 +145,9 @@ void() ClientConnect = {
     client_playTrack(world.sounds, TRUE);  //entering hangar menu
   }
   
-  CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
-  self.client_num = CLIENTS;  //book keeping for multiplayer
   self.playerState = PLAYER_SPAWN;
-  
   client_push_player_info();
-  client_send_mapKeyObjects( self );
+  client_data();
   
   if (intermission_running){
     ExitIntermission();
@@ -151,7 +162,6 @@ responsible for configuring the player and spawning them into the level
 ============
 */
 void() PutClientInServer = {
-  local float gamemode;
   local entity spot;
   
   self.flags = FL_CLIENT;
@@ -164,9 +174,10 @@ void() PutClientInServer = {
 	
   self.classname = "player";
   
-  //DecodeLevelParms ();
+  //DecodeLevelParms ();  //TODO - going to reactivate these soon.
 	self.attack_finished = time;
-	self.th_die = PlayerDie;
+  self.th_die = PlayerDie;
+  
   self.deadflag = DEAD_NO;
   
 // paustime is set by teleporters to keep the player from moving a while
@@ -180,22 +191,20 @@ void() PutClientInServer = {
   }
 
   spot  = SelectSpawnPoint();
-  
-  self.faction = spot.faction;
   if( self.faction < 1 ){
     self.faction = FACTION_PSC;  //default to 1 to satisfy game code
   }
+  else{
+    self.faction = spot.faction;
+  }
+  
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
   
-  gamemode = cvar("gamemode");
-  
-  client_sendMissionFileName();
-  client_sendGameMode(gamemode);
-
-  if( !cvar("coop") && !cvar("deathmatch") ){
-    client_sendGameMode(GAMEMODE_CAMPAIGN);
-    if(world.model == "maps/o1m1.bsp"){
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    client_sendMissionFileName();
+    client_sendGameMode(cvar("gamemode"));
+    if( world.model == "maps/o1m1.bsp"){
       //pre-populate default save file
       savefile_load( FALSE );
       if( FLAG_NEWGAME == TRUE ){
@@ -209,16 +218,24 @@ void() PutClientInServer = {
       }
       else{
         savefile_load( FALSE );
-      }    
+      }
     }
+    client_sendAvailable_Mechs(SAVE_MECHS_LIST);
+    client_sendAvailableItems(SAVE_ITEMS_ALL);
   }
-  else if ( cvar("coop") && !cvar("deathmatch") ){
-    client_sendGameMode(GAMEMODE_COOP);
+  else if ( GAMETYPE == GAMEMODE_COOP ){
+    //using client num as lazy connection-check
+    if( self.client_num < 1 ){
+      client_sendMissionFileName();
+      client_sendGameMode(cvar("gamemode"));
+    }
+  
+    self.th_die = PlayerDieNetwork;
     mapfile_coop_load();
   }
   else{
+    self.th_die = PlayerDieNetwork;
     mapfile_pvp_load(self.faction);
-    client_sendGameMode(GAMEMODE_DM);
   }
 
   switch( self.data_type ){
@@ -226,18 +243,13 @@ void() PutClientInServer = {
       player_makeObserver();
       
       client_push_mapobjects();
-      if( !coop && !deathmatch ){
-        client_sendAvailable_Mechs(SAVE_MECHS_LIST);
-        client_sendAvailableItems(SAVE_ITEMS_ALL);
+      if( self.client_num < 1 ){
+        client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);      
       }
-      client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
       
-      if(!coop && !deathmatch){
+      if( GAMETYPE == GAMEMODE_CAMPAIGN ){
         self.movetype = MOVETYPE_NONE;
         self.flags = self.flags - (self.flags & FL_FLY);
-        client_update_moveSpeed(0, 0, 0, "0", 0);
-        client_update_viewBob( 0, 0, 0 );
-        client_update_modelBob( 0, 0, 0, 0 );
         if( world.animaticOnly ){
           self.playerState = PLAYER_INTERMSN;
         }
@@ -246,7 +258,12 @@ void() PutClientInServer = {
         }
       }
       else{
-        self.playerState = PLAYER_ACTIVE;
+        if( cvar("developer") ){
+          self.playerState = PLAYER_ACTIVE;
+        }
+        else{
+          self.playerState = PLAYER_IN_MENU;
+        }
       }
       self.power_timer = 0;
       break;
@@ -310,6 +327,7 @@ void() ClientKill = {
   if(self.data_type != DATA_POBS){
     self.frags = self.frags - 2;
   }
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
 	respawn ();
 };
 
@@ -344,5 +362,133 @@ void() ClientDisconnect = {
     }
     client = client.chain;
   }
+  remove(self.clientData);
 };
 
+/*
+  Send Ent Fun
+*/
+void() client_data={
+  local entity data;
+  data = spawn();
+  setmodel(data, "q3mdl/testball.md3");
+  setsize(data, '-1 -1 -1', '1 1 1');
+  setorigin(data, data.owner.origin);
+  data.owner = self;
+  data.alpha = 0.01;
+  data.scale = 0.01;
+  data.origin = self.origin;
+  data.data_type = self.data_type;
+  data.faction = self.faction;
+  data.flags = self.flags;
+  data.radar_range = self.radar_range;
+  data.stat_rdr_mode = self.stat_rdr_mode;
+  data.stat_client_shield = self.stat_client_shield;
+  data.SendEntity = send_client_data;
+  data.SendFlags = data.SendFlags | SENDFLAG_NEWENT;
+  data.vec_size = self.vec_size;
+  self.clientData = data;
+};
+
+float( float isNew, float changeFlags ) send_client_data={
+  local entity player;
+  player = self.owner;
+  
+  if( player.deadflag == DEAD_NO ){
+    self.origin = player.origin;
+    self.data_type = player.data_type;
+    self.faction = player.faction;
+    self.radar_range = player.radar_range;
+    self.stat_rdr_mode = player.stat_rdr_mode;
+    self.stat_client_shield = player.stat_client_shield;
+    self.vec_size = player.vec_size;
+    self.damageValue = player.damageValue;
+    self.data_idx = player.data_idx; 
+  }
+  else{
+    self.origin = '0 0 0';
+    self.data_type = DATA_POBS;
+    self.faction = player.faction;
+    self.radar_range = 0;
+    self.stat_rdr_mode = 0;
+    self.stat_client_shield = 0;
+    self.vec_size = 0;
+    self.damageValue = 0;
+    self.data_idx = 0; 
+    self.w_group = 0;
+  }
+  WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
+  WriteByte( MSG_ENTITY, changeFlags );
+  
+  /*
+    EVENT - per-frame update
+  */
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteByte( MSG_ENTITY, player.flags );
+    WriteByte( MSG_ENTITY, self.radar_range );
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode );
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    
+    WriteAngle( MSG_ENTITY, player.v_angle_x);
+    WriteAngle( MSG_ENTITY, player.v_angle_y);
+    WriteAngle( MSG_ENTITY, player.v_angle_z);
+  }
+  
+  /*
+    EVENT - player target info change
+  */
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    WriteByte( MSG_ENTITY, num_for_edict(player.enemy) );
+  }
+  
+  /*
+    EVENT - player info change 
+  */
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    WriteByte( MSG_ENTITY, self.data_type );
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.vec_size );
+    WriteByte( MSG_ENTITY, self.data_idx );
+  }
+  /*
+    EVENT - pieces of player mech is blown off
+  */
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    WriteShort( MSG_ENTITY, self.damageValue );
+  }
+  /*
+    EVENT - pieces of player mech are low on health and burning
+  */
+  if( (changeFlags & SENDFLAG_BURN) ){
+    WriteByte( MSG_ENTITY, self.w_group );
+  }
+  /*
+    EVENT - DEAD
+  */
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, player.deadflag );
+  }
+  /*
+    EVENT - Client Data is new/spawned
+  */
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, num_for_edict(player) );
+    WriteByte( MSG_ENTITY, self.data_type );
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteString( MSG_ENTITY, player.netname );
+  }
+  /*
+    EVENT - second data rider used for non-critical stuff
+  */
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
+    WriteByte( MSG_ENTITY, (player.particleCube == world));
+  }
+  return TRUE;
+};

@@ -230,31 +230,34 @@ void(vector ofs) menu_briefMapPanel={
 
   renderColor  = CLR_DEF_GREEN - '0.1 0.1 0.1';
 
-  while( itr <= 21 ){
-    local vector navorg, nofs, tofs;
-    local float nactive, nlen;
+  local entity nav;
+  for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
+    local vector nofs, tofs;
+    local float nlen;
     local string navname;
-    nactive = NAVNAMES_ACTIVE[itr];
     
-    if( nactive != FALSE ){
-      navorg = NAVNAMES_ORG[itr];
-      navname = NAVNAMES[itr];
-    
-      tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec(ui_msize_in));
-      
-      drawfont_prev = drawfont;
-      drawfont = FONT_NUM_ROBOT_REGULAR;
-        
-      nlen = stringwidth(navname, 0, '12 12 0');
-      nofs_x = nofs_x - gui_percentXRaw((nlen/2));
-      nofs_y = nofs_y - gui_percentYRaw(18);
-      gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
-        
-      drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
-        
-      drawfont = drawfont_prev;
+    if( nav.faction != FACTION_ALL ){
+      if( nav.faction != CLIENT_faction ){
+        continue;
+      }
     }
-    itr = itr + 1;
+    
+    if( nav.isActive == FALSE ){
+      continue;
+    }
+    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, gui_percentToPixelRawVec(ui_msize_in));
+    
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+      
+    nlen = stringwidth(nav.vec_name, 0, '12 12 0');
+    nofs_x = nofs_x - gui_percentXRaw((nlen/2));
+    nofs_y = nofs_y - gui_percentYRaw(18);
+    gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
+      
+    drawstring(nofs, nav.vec_name, '12 12 0', renderColor, 1, 0);
+      
+    drawfont = drawfont_prev;
   }
   
   //draw compass

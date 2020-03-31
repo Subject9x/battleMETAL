@@ -8,8 +8,6 @@ Overview:
   + self scope for all is the ent being received
 */
 
-void( float wep, float delt ) client_get_weapon_delta;
-
 void() client_get_info={
   local float localDataType;
   local float wep;
@@ -26,114 +24,60 @@ void() client_get_info={
   //WARNING:
   //SVC_SETVIEW changes local_playerentum to Camera's Ent ID!
   //client = entitybyindex( getstati(STAT_PLR_ENT_ID) );
-  CLIENT_player_deadflag = ReadByte();
-  CLIENT_entorg  = te_read_vector();
-  CLIENT_radar_range  = ReadLong();
-  CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
-  CLIENT_repair_value = getstati(STAT_PLR_REP);
   
-  localDataType = ReadByte();
-  if( localDataType == DATA_MECH ){
-    CLIENT_energy = ReadShort();
-    CLIENT_shield = ReadShort();
+  if( CLIENT_data_type == DATA_MECH ){
+    CLIENT_health_center_prev = CLIENT_health_center;
+    CLIENT_health_legs_prev = CLIENT_health_legs;
+    CLIENT_health_torso_left_prev = CLIENT_health_torso_left;
+    CLIENT_health_torso_right_prev = CLIENT_health_torso_right;
+    CLIENT_health_arm_left_prev = CLIENT_health_arm_left;
+    CLIENT_health_arm_right_prev = CLIENT_health_arm_right;
     
-    lastHealthCenter = CLIENT_health_center;
-    lastHealthLegs = CLIENT_health_legs;
-    lastHealthTorsoLeft = CLIENT_health_torso_left;
-    lastHealthTorsoRight = CLIENT_health_torso_right;
-    lastHealthArmLeft = CLIENT_health_arm_left;
-    lastHealthArmRight = CLIENT_health_arm_right;
-    
-    CLIENT_health_center = ReadByte(); 
-    CLIENT_health_legs = ReadByte(); 
-    CLIENT_health_torso_left = ReadByte(); 
-    CLIENT_health_torso_right = ReadByte(); 
-    CLIENT_health_arm_left = ReadByte(); 
-    CLIENT_health_arm_right = ReadByte();
-    
-    CLIENT_hardpoint_cnt = ReadByte();
-    wep = 0;
-    while( wep <= CLIENT_hardpoint_cnt ){
-      wep = wep + 1;
-      weaponDelta = ReadByte();
-      client_get_weapon_delta( wep, weaponDelta );
-    }
-
     lastWeaponState = CLIENT_weapon_state;
-    CLIENT_weapon_state = ReadLong();
+    CLIENT_weapon_state = getstati(STAT_PLAYER_WEAPONS_STATE);
     
-    CLIENT_stat_trg_ent_id = ReadLong();
-    if( CLIENT_stat_trg_ent_id != 0 ){
-      CLIENT_target_origin_x = ReadCoord();
-      CLIENT_target_origin_y = ReadCoord();
-      CLIENT_target_origin_z = ReadCoord();
-      CLIENT_target_shield = ReadByte();
-      CLIENT_stat_trg_ct_hp = ReadByte();
-      CLIENT_stat_trg_lg_hp = ReadByte();
-      CLIENT_stat_trg_lt_hp = ReadByte(); 
-      CLIENT_stat_trg_rt_hp = ReadByte(); 
-      CLIENT_stat_trg_la_hp = ReadByte();
-      CLIENT_stat_trg_ra_hp = ReadByte();
-      CLIENT_target_vecsize = ReadShort();
-      if( CLIENT_w_icon != "" ){
-        strunzone( CLIENT_w_icon );
-      }
-      CLIENT_w_icon = strzone( ReadString() );
-    }
+    CLIENT_stat_w1_rel = getstatf(STAT_CLIENT_WEAPON1_RELOAD);
+    CLIENT_stat_w2_rel = getstatf(STAT_CLIENT_WEAPON2_RELOAD);
+    CLIENT_stat_w3_rel = getstatf(STAT_CLIENT_WEAPON3_RELOAD);
+    CLIENT_stat_w4_rel = getstatf(STAT_CLIENT_WEAPON4_RELOAD);
+    CLIENT_stat_w5_rel = getstatf(STAT_CLIENT_WEAPON5_RELOAD);
+    CLIENT_stat_w6_rel = getstatf(STAT_CLIENT_WEAPON6_RELOAD);
+    CLIENT_stat_w7_rel = getstatf(STAT_CLIENT_WEAPON7_RELOAD);
+    CLIENT_stat_w8_rel = getstatf(STAT_CLIENT_WEAPON8_RELOAD);
+    CLIENT_stat_w9_rel = getstatf(STAT_CLIENT_WEAPON9_RELOAD);
   }
 };
 
 void() client_get_info_thin={
-  CLIENT_player_deadflag = ReadByte();
-  CLIENT_entorg = te_read_vector();
+  CLIENT_player_deadflag = getstati(CLIENT_player_deadflag);
   CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
 };
 
-void( float wep, float delt ) client_get_weapon_delta={
-  switch( wep ){
-    case 1:
-      CLIENT_stat_w1_rel = delt;
-      break;
-    case 2:
-      CLIENT_stat_w2_rel = delt;
-      break;
-    case 3:
-      CLIENT_stat_w3_rel = delt;
-      break;
-    case 4:
-      CLIENT_stat_w4_rel = delt;
-      break;
-    case 5:
-      CLIENT_stat_w5_rel = delt;
-      break;
-    case 6:
-      CLIENT_stat_w6_rel = delt;
-      break;
-    case 7:
-      CLIENT_stat_w7_rel = delt;
-      break;
-    case 8:
-      CLIENT_stat_w8_rel = delt;
-      break;
-    case 9:
-      CLIENT_stat_w9_rel = delt;
-      break;
-  }
-};
-
 /*
+  -DEPRECATED-
   Handles a Radar Blip TE pushed from the server to a specific client
   blips fade out over a given amount of time 
 */
 void() client_get_contact={
   local entity blip;
+  local vector org;
+  local float radRange;
+  local float datType;
+  local float fac;
+
+  //org = te_read_vector();
+  //radRange = vlen(pmove_org - org);
+  //datType = ReadByte();
+  //fac = ReadByte();
   
+  if( vlen(pmove_org - self.origin) > CLIENT_radar_range ){
+    return;
+  }
   blip = spawn();
-  
-  setorigin( blip, te_read_vector() );
-  blip.radar_range = ReadLong();
-  blip.data_type = ReadByte();
-  blip.faction = ReadByte();
+  setorigin( blip, self.origin );
+  blip.radar_range =  vlen(pmove_org - self.origin);
+  blip.data_type = self.data_type;
+  blip.faction = self.faction;
   
   blip.data_idx = -2; //hack
   //Radar 1 - settings
@@ -142,9 +86,9 @@ void() client_get_contact={
   //blip.radar_time = 0.001;
   
   //Radar 2 - settings
-  blip.energy = time + 3;
+  blip.energy = time + 1.5;
   blip.hardpoint_cnt = 1; //alpha fade
-  blip.radar_time = 0.0025;
+  blip.radar_time = 0.00025;
   
 };
 
@@ -165,8 +109,9 @@ void() client_get_hud_highlight={
 void() receive_ent_bindData={
   local string name;
   
-  name = getstats( STAT_PLR_NAME );
-  
+  name = cvar_string("_cl_name");
+
+
   CLIENT_flags = getstati( STAT_ROCKETS );
   
   if( name != CLIENT_netname){
@@ -176,92 +121,103 @@ void() receive_ent_bindData={
     CLIENT_netname = strzone( name );
   }
   CLIENT_player_state = getstati( STAT_ARMOR );
-  CLIENT_data_idx = getstati(STAT_PLR_DIDX);
+  CLIENT_data_idx = getstati(STAT_PLR_DATA_IDX);
   CLIENT_faction = getstati( STAT_CELLS );
+  
+  if( getstatf(STAT_CLIENT_ENERGY) > 0 ){
+    CLIENT_energy = getstatf(STAT_CLIENT_ENERGY);
+  }
+  else{
+    CLIENT_energy = 0;
+  }
+  if( getstatf(STAT_CLIENT_ENERGY) > 0 ){
+    CLIENT_shield = getstatf(STAT_CLIENT_SHIELD);
+  }
+  else{
+    CLIENT_shield = 0;
+  }
+  
   CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
   CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
   CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
   CLIENT_stat_ret_dist = getstati(STAT_PLR_RETDIST);
+  
+  CLIENT_health_center = getstatf(STAT_CLIENT_HP_TORSOCENTER); 
+  CLIENT_health_legs = getstatf(STAT_CLIENT_HP_LEGS); 
+  CLIENT_health_torso_left = getstatf(STAT_CLIENT_HP_TORSOLEFT); 
+  CLIENT_health_torso_right = getstatf(STAT_CLIENT_HP_TORSORIGHT); 
+  CLIENT_health_arm_left = getstatf(STAT_CLIENT_HP_ARMLEFT); 
+  CLIENT_health_arm_right = getstatf(STAT_CLIENT_HP_ARMRIGHT);
+
+
+  //Last Frame Target info cache
+  CLIENT_target_health_prev = CLIENT_stat_trg_ct_hp;
+  CLIENT_target_dist_prev = CLIENT_target_dist;
+  CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
+  
+  CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
+  CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
+  CLIENT_target_origin_x = getstatf(STAT_TARGET_ORIGINX);
+  CLIENT_target_origin_y = getstatf(STAT_TARGET_ORIGINY);
+  CLIENT_target_origin_z = getstatf(STAT_TARGET_ORIGINZ);
+  CLIENT_target_shield = getstatf(STAT_TARGET_SHIELDS);
+  CLIENT_target_dist = getstati(STAT_TRG_DIST);
+  CLIENT_target_vecsize = getstati(STAT_TARGET_SIZE);
 
   CLIENT_stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
   CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
   CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
-       
   CLIENT_target_datatype = getstati(STAT_TRG_DATATYPE);
   CLIENT_target_faction = getstati(STAT_TRG_FACTION);
-  //CLIENT_target_shield; 
-  //CLIENT_stat_trg_ddflg;
-    
-  CLIENT_stat_w1_id = getstati(STAT_WEP1_ID);
-  CLIENT_stat_w2_id = getstati(STAT_WEP2_ID);
-  CLIENT_stat_w3_id = getstati(STAT_WEP3_ID);
-  CLIENT_stat_w4_id = getstati(STAT_WEP4_ID);
-  CLIENT_stat_w5_id = getstati(STAT_WEP5_ID);
-  CLIENT_stat_w6_id = getstati(STAT_WEP6_ID);
-  CLIENT_stat_w7_id = getstati(STAT_WEP7_ID);
-  CLIENT_stat_w8_id = getstati(STAT_WEP8_ID);
-  CLIENT_stat_w9_id = getstati(STAT_WEP9_ID);
-};
-
-void() client_event_navpoint={
-  local float navid, prevState, nexState;
+  CLIENT_stat_trg_ddflg = getstati(STAT_TRG_DDFLG);
   
-  navid = ReadByte();
-  prevState = NAVNAMES_ACTIVE[navid];
-  nexState = ReadByte();
-  NAVNAMES_ORG[navid] = te_read_vector();
+  CLIENT_stat_trg_ct_hp = getstatf(STAT_TARGET_HP_TORSOCENTER);
+  CLIENT_stat_trg_lt_hp = getstatf(STAT_TARGET_HP_TORSOLEFT); 
+  CLIENT_stat_trg_rt_hp = getstatf(STAT_TARGET_HP_TORSORIGHT); 
+  CLIENT_stat_trg_la_hp = getstatf(STAT_TARGET_HP_ARMLEFT);
+  CLIENT_stat_trg_ra_hp = getstatf(STAT_TARGET_HP_ARMRIGHT);
+  CLIENT_stat_trg_lg_hp = getstatf(STAT_TARGET_HP_LEGS);
   
-  if( (prevState == TRUE) && (nexState == 2) ){
-    //previous state was 'active unvisit' and next state is 'active and visit'
-    //play sound
-    //te_nav_reach();
-    hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );
+  if( CLIENT_player_state == PLAYER_ACTIVE || CLIENT_player_state == PLAYER_SPRINT_ON ){
+    if( CLIENT_health_torso_left <= 0 && CLIENT_health_torso_left_prev > 0 ){
+      hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
+    }
+    if( CLIENT_health_torso_right <= 0 && CLIENT_health_torso_right_prev > 0 ){
+      hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
+    }
+    if( CLIENT_health_arm_left <= 0 && CLIENT_health_arm_left_prev > 0 ){
+      hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
+    }
+    if( CLIENT_health_arm_right <= 0 && CLIENT_health_arm_right_prev > 0 ){
+      hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
+    }
+    if( CLIENT_health_legs <= 0 && CLIENT_health_legs_prev > 0 ){
+      cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward / 2));
+      cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe / 2));
+      cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward / 2));
+      hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
+    }
+    if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
+      //repair event
+      cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward));
+      cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe));
+      cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward));
+    }
   }
-  if( (prevState == 2) && (nexState == 1) ){
-    //previous state was 'active and visit' and next state is 'active unvisit'
-    //ignore state change for this client
-    return;
-  }
-  NAVNAMES_ACTIVE[navid] = nexState;
-};
 
-void() client_event_deploypoint={
-  local float depid;
+  if( CLIENT_stat_trg_ent_id_prev != 0 && CLIENT_stat_trg_ent_id == -1 ){
+    //target is lost
+    if( CLIENT_stat_trg_ddflg_prev > DEAD_NO ){
+      hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+    }
+  }
   
-  depid = ReadByte();
-  DEPLOY_POINTS_ACTIVE[depid] = ReadByte();
-  DEPLOY_POINTS_ORG[depid] = te_read_vector();
-};
-
-void() client_event_objective_win={ 
-  local float objectiveId, objectiveStatus, type;
-  objectiveId = ReadByte();
-  objectiveStatus = ReadByte();
-  type = ReadByte();
-  OBJECTIVES[objectiveId] = objectiveStatus;
-
-  if( objectiveStatus != OBJECTIVE_WIN ){
-    return;
-  }  
-  switch( type ){
-    case 1:
-      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_PRIME, 1 ); 
-      break;
-    case 2:
-      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_SECOND, 1 ); 
-      break;
-    case 3:
-      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_SECOND, 1 ); 
-      break;
-  }
-};
-
-void() client_event_objective_fail={
-  local float objectiveId, objectiveStatus;
-  objectiveId = ReadByte();
-  objectiveStatus = ReadByte();
-  OBJECTIVES[objectiveId] = objectiveStatus;
-  hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1) ;
+  // hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  
+  CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
+  CLIENT_repair_value = getstati(STAT_PLR_REP);
+  
+  CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
 };
 
 void() client_event_boundary={
@@ -284,6 +240,9 @@ void() client_event_environment={
   }
 };
 
+/*
+  unused at the moment.
+*/
 void( float criticalsType ) client_event_critical_hit={
   switch( criticalsType ){
     case M_TOR_RIGHT:
@@ -446,7 +405,7 @@ void(float missionTime, float clientKills, float missonSuccessCheck, float pscTo
   
   MENU_DEBRIEF_total_losses = totalLosses;
   
-  if( MENU_DEBRIEF_status ){
+  if( MENU_DEBRIEF_status > 0 ){
     MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
   }
   else{
@@ -485,4 +444,6 @@ void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyFa
     //start chain
     mapKeyObject = newMapKey;
   }
+  newMapKey.drawmask = MASK_NORMAL;
+  addentity(newMapKey);
 };

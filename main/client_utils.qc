@@ -12,53 +12,58 @@ Overview: client utility methods, pulled from client.qc
 */
 void() client_push_player_info={
   local entity wep;
-  local float enm;
+  local float wepItr;
   local float targShield;
-  local float weaponStateBit;
-  
+
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
   self.armorvalue = self.playerState;
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_CLIENT_INFO );
-
-  WriteByte( MSG_ONE, self.deadflag );
-
-  WriteCoord( MSG_ONE, self.origin_x );
-  WriteCoord( MSG_ONE, self.origin_y );
-  WriteCoord( MSG_ONE, self.origin_z );
-  
-  WriteLong( MSG_ONE, self.stat_rdr_rng );
-
-  WriteByte( MSG_ONE, self.data_type ); //sync integrity
   if(self.data_type == DATA_MECH){
-    WriteShort( MSG_ONE, (self.energy / self.energyMax) * 100 );
-    WriteShort( MSG_ONE, (self.shield / self.shieldMax) * 100 );
-    WriteByte( MSG_ONE, csqc_updateCompStat(self));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.legs));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.torsoLeft));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.torsoRight));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.armLeft));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.armRight));
+    self.stat_client_energy = (self.energy / self.energyMax) * 100;
+    self.stat_client_shield = (self.shield / self.shieldMax) * 100;
+    self.stat_client_hp_torsoCenter = csqc_updateCompStat(self);
+    self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
+    self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
+    self.stat_client_hp_armLeft = csqc_updateCompStat(self.armLeft);
+    self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
+    self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
     
-    WriteByte( MSG_ONE, self.hardpoint_cnt );
-    wep = self;
-    weaponStateBit = 0;
-    while( wep ){
-      wep = wep.w_slot;
-      if( wep.deadflag == DEAD_NO ){
-        weaponStateBit = weaponStateBit | wep.w_group;
+    wepItr = 1;
+    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+      //why can't we iterate over entity fields again?
+      switch(wepItr){
+        case 1:
+          self.stat_w1_rel = wep.reloadValue;
+          break;
+        case 2:
+          self.stat_w2_rel = wep.reloadValue;
+          break;
+        case 3:
+          self.stat_w3_rel = wep.reloadValue;
+          break;
+        case 4:
+          self.stat_w4_rel = wep.reloadValue;
+          break;
+        case 5:
+          self.stat_w5_rel = wep.reloadValue;
+          break;
+        case 6:
+          self.stat_w6_rel = wep.reloadValue;
+          break;
+        case 7:
+          self.stat_w7_rel = wep.reloadValue;
+          break;
+        case 8:
+          self.stat_w8_rel = wep.reloadValue;
+          break;
+        case 9:
+          self.stat_w9_rel = wep.reloadValue;
+          break;
       }
-      WriteByte( MSG_ONE, wep.reloadValue );
+      wepItr = wepItr + 1;
     }
-    WriteLong( MSG_ONE, weaponStateBit );
     
-    WriteLong( MSG_ONE, self.stat_trg_ent_id );
     if( self.stat_trg_ent_id != 0 ){
-      WriteCoord( MSG_ONE, self.enemy.origin_x );
-      WriteCoord( MSG_ONE, self.enemy.origin_y );
-      WriteCoord( MSG_ONE, self.enemy.origin_z );
       //this is silly but precludes forcing the csqc to know the target's max shields
       targShield = self.enemy.shield;
       if( targShield <= 0 ){
@@ -67,23 +72,25 @@ void() client_push_player_info={
       else{
         targShield = (self.enemy.shield / self.enemy.shieldMax) * 100;
       } 
-      WriteByte( MSG_ONE, targShield );
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.legs));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.torsoLeft));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.torsoRight));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armLeft));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armRight));
-      WriteShort( MSG_ONE, self.enemy.maxs_z * 2 );
-      if( self.enemy.netname != "" ){
-        WriteString( MSG_ONE, self.enemy.netname );
-      }
-      else{
-        WriteString( MSG_ONE, self.enemy.vec_name );
-      }
+      self.stat_target_shield = targShield;
+      self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy);
+      self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torsoLeft);
+      self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torsoRight);
+      self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armLeft);
+      self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armRight);
+      self.stat_target_hp_legs = csqc_updateCompStat(self.enemy.legs);
+    }
+    else{
+      self.stat_target_hp_torsoCenter = 0;
+      self.stat_target_hp_torsoLeft = 0;
+      self.stat_target_hp_torsoRight = 0;
+      self.stat_target_hp_armLeft = 0;
+      self.stat_target_hp_armRight = 0;
+      self.stat_target_hp_legs = 0;
     }
   }
 };
+
 /*
   sends just player state and stuff
 */
@@ -91,18 +98,6 @@ void() client_push_player_info_thin={
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
   self.armorvalue = self.playerState;
-
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_CLIENT_INFO_THIN);
-
-  WriteByte( MSG_ONE, self.deadflag );
-
-  WriteCoord( MSG_ONE, self.origin_x );
-  WriteCoord( MSG_ONE, self.origin_y );
-  WriteCoord( MSG_ONE, self.origin_z );
-  
-  WriteByte( MSG_ONE, self.data_type ); //sync integrity
 }
 void( entity targetClient ) server_push_player_info={
   local entity this;
@@ -110,21 +105,6 @@ void( entity targetClient ) server_push_player_info={
   self = targetClient;
     client_push_player_info();
   self = this;
-};
-
-void( entity radarPing ) client_push_radar_ping={
-
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_CLIENT_PING );
-  
-  WriteCoord( MSG_ONE, radarPing.origin_x );
-  WriteCoord( MSG_ONE, radarPing.origin_y );
-  WriteCoord( MSG_ONE, radarPing.origin_z );
-  
-  WriteLong( MSG_ONE, vlen(self.origin - radarPing.origin) );
-  WriteByte( MSG_ONE, radarPing.data_type );
-  WriteByte( MSG_ONE, radarPing.faction );
 };
 
 void( entity targetClient ) client_push_hud_highlight={
@@ -151,71 +131,8 @@ void( entity targetClient ) client_push_hud_highlight={
   self = this;
 }; 
 
-void( entity navpoint ) client_send_navpoint={
-  local float nactive;
-  
-  msg_entity = self;
-  
-  nactive = navpoint.isActive;
-  if( navpoint.faction != self.faction ){
-    nactive = FALSE;
-  }
-  
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_EVT_NAV );
-  
-  WriteByte( MSG_ONE, navpoint.data_idx);
-  WriteByte( MSG_ONE, nactive);
-  
-  WriteCoord( MSG_ONE, navpoint.origin_x);
-  WriteCoord( MSG_ONE, navpoint.origin_y);
-  WriteCoord( MSG_ONE, navpoint.origin_z);
-};
 
-void( entity objective ) client_send_objective={
-  if( objective.faction != self.faction ){
-    return;
-  }
-  //MISSION WIN -> aState == 255
-  //MISSION FAIL -> aState == 254
-  if( objective.aState > 253 ){
-    return;
-  }
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  if( objective.isActive == OBJECTIVE_FAIL){
-    WriteByte( MSG_ONE, TE_OBJECTIVE_FAILED);  
-    WriteByte( MSG_ONE, objective.data_idx);
-    WriteByte( MSG_ONE, objective.isActive); 
-  }
-  else{
-    WriteByte( MSG_ONE, TE_OBJECTIVE_COMPLETE);  
-    WriteByte( MSG_ONE, objective.data_idx);
-    WriteByte( MSG_ONE, objective.isActive); 
-    WriteByte( MSG_ONE, objective.aState);
-  }
-};
-
-void( entity deploy ) client_send_deploypoint={
-  msg_entity = self;
-  local float nactive;
-  
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_EVT_DEP );
-  
-  WriteByte( MSG_ONE, deploy.data_idx);
-  
-  nactive = deploy.isActive;
-  if( deploy.faction != self.faction ){
-    nactive = FALSE;
-  }
-  WriteByte( MSG_ONE, nactive);
-  
-  WriteCoord( MSG_ONE, deploy.origin_x);
-  WriteCoord( MSG_ONE, deploy.origin_y);
-  WriteCoord( MSG_ONE, deploy.origin_z);
-};
-
+//TODO - refactor
 void( entity targetClient ) client_send_boundary_warning={
   local entity this;
   
@@ -252,23 +169,16 @@ void() client_push_mapobjects={
   for(obj = findchainflags( flags, FL_NODE ); obj != world; obj = obj.chain){
     switch( obj.data_type ){
       case DATA_DEPL:
-        client_send_deploypoint( obj );
+        obj.SendFlags = obj.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
         break;
       case DATA_NAVP:
-        client_send_navpoint( obj );
+        obj.SendFlags = obj.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
         break;
       case DATA_OBJT:
-        client_send_objective( obj );
+        obj.SendFlags = obj.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
         break;
     }
   }
-};
-
-void( entity client ) client_send_critical_hit={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY);
-  WriteByte( MSG_ONE, TE_CRITICAL_HIT );
-  WriteByte( MSG_ONE, self.partTypeId);
 };
 
 /*
@@ -290,28 +200,14 @@ void( entity client, float voiceGroup, float voiceId, float limiter) client_send
   limiter = total copies of 'voiceMessage' that can sit in the voice queue.
 */
 void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
-  WriteByte( MSG_ALL, SVC_TEMPENTITY);
-  WriteByte( MSG_ALL, TE_AI_VOICE );
-  WriteByte( MSG_ALL, voiceGroup);
-  WriteByte( MSG_ALL, voiceId);
-  WriteByte( MSG_ALL, limiter );
-  WriteLong( MSG_ALL, num_for_edict(self) );
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY);
+  WriteByte( MSG_BROADCAST, TE_AI_VOICE );
+  WriteByte( MSG_BROADCAST, voiceGroup);
+  WriteByte( MSG_BROADCAST, voiceId);
+  WriteByte( MSG_BROADCAST, limiter );
+  WriteLong( MSG_BROADCAST, num_for_edict(self) );
 };
 
-void( entity client ) client_send_hud_target_kill={
-  local entity notClient;
-  notClient = self;
-  self = client;
-    te_targ_kill();
-  self = notClient;
-};
-
-void(entity client ) client_send_event_powerup={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_POWERUP );
-  WriteLong( MSG_ONE, time );
-};
 
 void(entity client, float weaponsOnOff) client_send_event_weapons={
   msg_entity = client;
@@ -327,13 +223,6 @@ void(entity client, float weaponsOnOff) client_send_event_repairs={
   WriteByte( MSG_ONE, weaponsOnOff );
 };
 
-void(entity client, float newFireMode) client_send_event_change_fire={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_FIREMODE );
-  WriteByte( MSG_ONE, newFireMode );
-};
-
 void(entity client, string theMessage, float messageLifetime) client_send_info_message={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
@@ -343,56 +232,64 @@ void(entity client, string theMessage, float messageLifetime) client_send_info_m
 };
 
 /*
-  client sends string 'cmd mech foo'
-  where foo is the command, first parm must be 'mech'
+  client sends string 'cmd m foo'
+  where foo is the command, first parm must be 'm'
   
-  so - 'cmd mech foo'
+  so - 'cmd m foo'
 */
 void(string str, float tokens) client_ParseMechCommand={
   
-  if(argv(1) == "setwep"){
+  if(argv(1) == "sw"){
     if(self.deadflag >= DEAD_NO){
       client_setWeapon(str, tokens);
     }
     return;
   }
   
-  if(argv(1) == "setmech"){
+  if(argv(1) == "sm"){
     self.vec_size = stof(argv(2));
     self.nextVecChoice = stof(argv(3));
     return;
   }
   
-  if(argv(1) == "spawn"){
+  if(argv(1) == "sp"){
     if(self.data_type == DATA_POBS){
       player_unmakeObserver();
       spawnpoint_select();
       player_makeMech();
       client_playTrack( world.sounds, TRUE );
       client_sendMissionName();
+      if( self.client_num < 1){
+        CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
+        self.client_num = CLIENTS;  //book keeping for multiplayer
+      }
     }
     return;
   }
   
-  if(argv(1) == "setgroup"){
+  if(argv(1) == "sg"){
     client_setWeaponGroup(str, tokens);
     return;
   }
   
   //
-  if(argv(1) == "setnav"){
+  if(argv(1) == "sn"){
     client_setNavPoint(str, tokens);
     return;
   }
   
   //changes player's .faction var
-  if(argv(1) == "setfaction"){
+  if(argv(1) == "fac"){
     self.faction = stof( argv(2) );
+    if( self.data_type == DATA_MECH ){
+      client_update_faction();
+    }
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
     mapfile_pvp_load(self.faction);
     return;
   }
   
-  if(argv(1) == "nextmission"){
+  if(argv(1) == "nxm"){
     client_setMission(str, tokens);
     return;
   }
@@ -403,7 +300,7 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   
   //player wants to skip an animatic
-  if( argv(1) == "exitanim" ){
+  if( argv(1) == "exan" ){
     self.count2 = 0;
     self.velocity = '0 0 0';
     self.avelocity = '0 0 0';
@@ -422,7 +319,6 @@ void(string str, float tokens) client_ParseMechCommand={
         }
       }
     }
-    
     return;
   }
   
@@ -432,71 +328,108 @@ void(string str, float tokens) client_ParseMechCommand={
   }
 };  
 
-void(string cmd, float tokens) client_setMission={
-  self.playerState = PLAYER_ACTIVE;
-  self.view_ofs = '0 0 1';
-  if( argv(2) == "1" ){ 
-    //mission successful, next map
-    if( !world.ignoreSave ){
-      savefile_changemap(nextmap);
-      savefile_save();
-    }
-    if( nextmap == "" ){
-      stuffcmd(self, "disconnect;togglemenu;cd play 2;\n");
-      return;
-    }
-    changelevel (nextmap);  //possibly altered by map_objective objects.
-  }
-  else{
-    //mission failed
-    changelevel (mapname);
+void() client_update_faction={
+  local float newSkinNum;
+  newSkinNum = self.faction - 1;
+  self.skin = newSkinNum;
+  
+  if( self.torsoCenter ){
+    self.torsoCenter.skin = newSkinNum;
+  }  
+  if( self.torsoLeft){
+    self.torsoLeft.skin = newSkinNum;
+  }  
+  if( self.torsoRight ){
+    self.torsoRight.skin = newSkinNum;
+  }  
+  if( self.armLeft ){
+    self.armLeft.skin = newSkinNum;
+  }  
+  if( self.armRight ){
+    self.armRight.skin = newSkinNum;
+  }  
+  if( self.legs ){
+    self.legs.skin = newSkinNum;
   }
 };
-/*
-  
-*/
-void(string cmd, float tokens) client_setWeaponGroup={
-  local float groupnum, groupval;
-  groupnum = stof(argv(2));
-  groupval = stof(argv(3));
-  
-  switch(groupnum){
-    case 1:
-      self.w_group1 = groupval;
-      break;
-    case 2:
-      self.w_group2 = groupval;
-      break;
-    case 3:
-      self.w_group3 = groupval;
-      break;
-    case 4:
-      self.w_group4 = groupval;
-      break;
+
+void(string cmd, float tokens) client_setMission={
+  //Single player
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    self.playerState = PLAYER_ACTIVE;
+    self.view_ofs = '0 0 1';
+    if( argv(2) == "1" ){ 
+      //mission successful, next map
+      if( !world.ignoreSave ){
+        savefile_changemap(nextmap);
+        savefile_save();
+      }
+      if( nextmap == "" ){
+        stuffcmd(self, "disconnect;togglemenu;cd play 2;demos;\n");
+        return;
+      }
+      changelevel (nextmap);  //possibly altered by map_objective objects.
+    }
+    else{
+      //mission failed
+      changelevel (mapname);
+    }
+    return;
   }
+  
+  //Co-op
+  if( GAMETYPE == GAMEMODE_COOP ){
+    self.view_ofs = '0 0 1';
+    respawn();
+    return;
+  }
+  
+  //Deathmatch
+  if( GAMETYPE == GAMEMODE_DM ){
+    self.playerState = PLAYER_ACTIVE;
+    self.view_ofs = '0 0 1';
+  
+  }
+};
+
+/*
+  Client set's their weapon groups on the server
+*/
+void(string cmd, float tokens) client_setWeaponGroup={  
+  self.w_group1 = stof(argv(2));
+  self.w_group2 = stof(argv(3));
+  self.w_group3 = stof(argv(4));
+  self.w_group4 = stof(argv(5));
 };
 
 void(string mechs) client_sendAvailable_Mechs={
   local string cmd;
-  cmd = strcat("mech list_mechs [", mechs, "]\n");
+  cmd = strcat("m lms [", mechs, "]\n");
   stuffcmd(self, cmd);
 };
 
 void(string itms) client_sendAvailableItems={
   local string cmd;
-  cmd = strcat("mech list_items [", itms,"]\n");
+  cmd = strcat("m lis [", itms,"]\n");
   stuffcmd(self, cmd);
 };
 
 void() client_sendMissionUnlocks={
   local string cmd;
-  cmd = strcat("mech unlock mechs [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
+  cmd = strcat("m unl [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
   stuffcmd(self, cmd);
 };
 
 void(float mode) client_sendGameMode={
   local string cmd;
-  cmd = strcat("mech gamemode ", ftos(mode),"\n");
+  cmd = strcat("m mode ", ftos(mode),"\n");
+  stuffcmd(self, cmd);
+};
+
+void(string targetName) client_sendTargetName={
+  local string cmd;
+  
+  cmd = strcat("m trg ", targetName,"\n");
   stuffcmd(self, cmd);
 };
 
@@ -518,40 +451,55 @@ commmand string: cmd mech setwep X Y
   Y = weapon data_idx id
 */
 void(string cmd, float tokens) client_setWeapon={
-  local float wslotid, new_id;
+  local float itr, new_id;
+  local float totalWeps;
+  local float bitCount;
   local entity oself;
-  oself = self;
-  wslotid = stof(argv(2));
-  new_id = stof(argv(3));
   
-  switch(wslotid){
-    case WEAPON1:
-      self.next_wepn1 = new_id;
-      break;
-    case WEAPON2:
-      self.next_wepn2 = new_id;
-      break;
-    case WEAPON3:
-      self.next_wepn3 = new_id;
-      break;
-    case WEAPON4:
-      self.next_wepn4 = new_id;
-      break;
-    case WEAPON5:
-      self.next_wepn5 = new_id;
-      break;
-    case WEAPON6:
-      self.next_wepn6 = new_id;
-      break;
-    case WEAPON7:
-      self.next_wepn7 = new_id;
-      break;
-    case WEAPON8:
-      self.next_wepn8 = new_id;
-      break;
-    case WEAPON9:
-      self.next_wepn9 = new_id;
-      break;
+  itr = 3;
+  bitCount = 1;
+  for( totalWeps = 1; totalWeps < stof(argv(2)); totalWeps = totalWeps + 1){
+    new_id = stof(argv(itr));
+    switch(totalWeps){
+      case 1:
+        self.next_wepn1 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+      case 2:
+        self.next_wepn2 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+      case 3:
+        self.next_wepn3 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+      case 4:
+        self.next_wepn4 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+      case 5:
+        self.next_wepn5 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+      case 6:
+        self.next_wepn6 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+      case 7:
+        self.next_wepn7 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+      case 8:
+        self.next_wepn8 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+      case 9:
+        self.next_wepn9 = new_id;
+        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
+        break;
+    }
+    itr = itr + 1;
+    bitCount = bitCount * 2;
   }
 };
 
@@ -576,13 +524,13 @@ void() client_sendMissionFileName={
     msnFile = world.missionFile;
   }
   
-  cmd = strcat("mech missionFile ", msnFile, "\n");
+  cmd = strcat("m msn ", msnFile, "\n");
   stuffcmd(self, cmd);
 };
 
 void(string fileName) client_sendAnimaticFileName={
   local string cmd;
-  cmd = strcat("mech anm_file ", fileName, "\n");
+  cmd = strcat("m anm ", fileName, "\n");
   stuffcmd(self, cmd);
 };
 
@@ -595,7 +543,9 @@ void(string cmd, float tokens) client_setNavPoint={
       continue;
     }
     if(nav.faction != self.faction){
-      continue;
+      if( nav.faction != FACTION_ALL ){
+        continue; 
+      }
     }
     if(nav.data_idx != nav_id){
       continue;
@@ -651,10 +601,10 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
   WriteShort( MSG_ONE, MISSION_TOTAL_MILITAR );
   switch( client.faction ){
     case FACTION_PSC:
-      WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
+      WriteShort( MSG_ONE, MISSION_LOSSES_PSC );
       break;
     case FACTION_SURVEST:
-      WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
+      WriteShort( MSG_ONE, MISSION_LOSSES_SURVEST );
       break;
     case FACTION_MILITAR:
       WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
@@ -665,87 +615,32 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
   }
 };
 
-void(entity client ) client_send_mapKeyObjects={
-  local entity objects;
-
-  for(objects = findchainflags(spawnflags, IT_QUAD); objects != world; objects = objects.chain){
-    msg_entity = client;
-    WriteByte( MSG_ONE, SVC_TEMPENTITY );
-    WriteByte( MSG_ONE, TE_MAPKEY_DATA );
-    WriteByte( MSG_ONE, objects.data_type );
-    WriteLong( MSG_ONE, objects.origin_x );
-    WriteLong( MSG_ONE, objects.origin_y );
-    WriteByte( MSG_ONE, objects.faction);
-  }
-};
-
-void(float fwd, float side, float bck, string accel, float roll) client_update_moveSpeed={
-  local string comd;
-  
-  msg_entity = self;
-  comd = strcat("cl_forwardspeed ", ftos(fwd), "\n");
-  comd = strcat( comd, strcat("cl_sidespeed ", ftos(side), "\n") );
-  comd = strcat( comd, strcat("cl_backspeed ", ftos(bck), "\n") );
-  comd = strcat( comd, strcat("cl_movespeedkey ", accel, "\n") );
-  comd = strcat( comd, strcat("cl_rollangle ",  ftos(roll), "\n") );
-  
-  stuffcmd(self, comd);
-};
-
-void(float bob, float cycle, float up) client_update_viewBob={
-  local string comd;
-  
-  comd = strcat("cl_bob ", ftos(bob), " \n ");
-  comd = strcat(comd, "cl_bobcycle ",  ftos(cycle), " \n ");
-  comd = strcat(comd, "cl_bobup ",  ftos(up), " \n");
-  
-  stuffcmd(self, comd );
-};
-void(float bobmodel, float side, float bmod_speed, float bmod_up) client_update_modelBob={
-  local string comd;
-  
-  comd = strcat("cl_bobmodel ", ftos(bobmodel),  " \n ");
-  comd = strcat(comd, "cl_bobmodel_side ", ftos(side),  " \n ");
-  comd = strcat(comd, "cl_bobmodel_speed ", ftos(bmod_speed),  " \n");
-  comd = strcat(comd, "cl_bobmodel_up ", ftos(bmod_up), " \n");
-  
-  stuffcmd(self, comd );
-};
-
-void(float p_min, float p_max) client_update_viewPitch={
-  local string comd;
-  
-  comd = strcat("in_pitch_max ", ftos(p_max), " \n ");
-  comd = strcat(comd, "in_pitch_min ", ftos(p_min), " \n");
-  
-  stuffcmd(self, comd);
-};
-
-
 void() respawn={ 
-  if (coop){
+  if (  GAMETYPE == GAMEMODE_COOP ){
 		// make a copy of the dead body for appearances sake
     //CopyToBodyQue (self);
     //
 		// get the spawn parms as they were at level start
 		//setspawnparms (self);
-    if(self.data_type == DATA_MECH){
+    if(self.data_type == DATA_MECH ){
       player_unmakeMech();
       player_makeObserver();
     }
+    self.playerState = PLAYER_IN_MENU;
 		// respawn		
 		PutClientInServer ();
 	}
-	else if (deathmatch){
+	else if ( GAMETYPE == GAMEMODE_DM ){
 		// make a copy of the dead body for appearances sake
     //CopyToBodyQue (self);
 
 		// set default spawn parms
-		SetNewParms ();
-    if(self.data_type == DATA_MECH){
+		//SetNewParms ();
+    if(self.data_type == DATA_MECH ){
       player_unmakeMech();
       player_makeObserver();
     }
+    self.playerState = PLAYER_IN_MENU;
 		// respawn		
 		PutClientInServer ();
 	}
@@ -842,7 +737,13 @@ void() spawnpoint_select={
     spot = SelectSpawnPoint();
   }
   
-  self.origin = self.oldorigin = spot.origin + '0 0 12';
+  //remote deploy point functionality
+  if( spot.classname == "map_deploy_point_remote" ){
+    self.origin = self.oldorigin = spot.view_ofs + '0 0 12';
+  }
+  else{
+    self.origin = self.oldorigin = spot.origin + '0 0 12';
+  }
   
   self.angles = spot.angles;
   
@@ -935,4 +836,81 @@ float(entity piece) csqc_updateCompStat={
     return perc;
   }
   return perc;
+};
+
+/*
+  Send wreckage entity to client, 
+  should cut down on workload of server, right?
+*/
+void( vector org, float explodeSize, vector explodeColor, float onShield ) client_send_missile_explode={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_EXPLODE );
+ 
+  WriteCoord(MSG_BROADCAST, org_x);
+  WriteCoord(MSG_BROADCAST, org_y);
+  WriteCoord(MSG_BROADCAST, org_z);
+  
+  WriteByte( MSG_BROADCAST, explodeSize);
+  
+  WriteCoord(MSG_BROADCAST, explodeColor_x);
+  WriteCoord(MSG_BROADCAST, explodeColor_y);
+  WriteCoord(MSG_BROADCAST, explodeColor_z);
+
+  WriteByte( MSG_BROADCAST, onShield );
+};
+
+void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_WRECK );
+  WriteByte( MSG_BROADCAST, modelIndex);
+  WriteByte( MSG_BROADCAST, skinNum);
+  WriteByte( MSG_BROADCAST, lifetime);
+  WriteByte( MSG_BROADCAST, vecSize );
+  
+  WriteCoord(MSG_BROADCAST, entOrg_x);
+  WriteCoord(MSG_BROADCAST, entOrg_y);
+  WriteCoord(MSG_BROADCAST, entOrg_z);
+  
+  WriteAngle(MSG_BROADCAST, entAngl_x);
+  WriteAngle(MSG_BROADCAST, entAngl_y);
+  WriteAngle(MSG_BROADCAST, entAngl_z);
+};
+
+void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_POINT );
+  WriteShort( MSG_BROADCAST, particleEffectId );
+  WriteCoord(MSG_BROADCAST, particleOrg_x);
+  WriteCoord(MSG_BROADCAST, particleOrg_y);
+  WriteCoord(MSG_BROADCAST, particleOrg_z);
+  WriteCoord(MSG_BROADCAST, particleVel_x);
+  WriteCoord(MSG_BROADCAST, particleVel_y);
+  WriteCoord(MSG_BROADCAST, particleVel_z);
+  WriteShort(MSG_BROADCAST, particleCount);
+};
+
+void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_VFX_RAIL );
+  WriteShort( MSG_BROADCAST, particleEffectId );
+  WriteCoord(MSG_BROADCAST, particleOrg_x);
+  WriteCoord(MSG_BROADCAST, particleOrg_y);
+  WriteCoord(MSG_BROADCAST, particleOrg_z);
+  WriteCoord(MSG_BROADCAST, particleEnd_x);
+  WriteCoord(MSG_BROADCAST, particleEnd_y);
+  WriteCoord(MSG_BROADCAST, particleEnd_z);
+};
+
+
+void( float wepId, vector flashOrg, vector flashVel, float impType ) client_send_muzzle_flash={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_MUZZLE_FLASH );
+  WriteByte( MSG_BROADCAST, wepId );
+  WriteCoord(MSG_BROADCAST, flashOrg_x);
+  WriteCoord(MSG_BROADCAST, flashOrg_y);
+  WriteCoord(MSG_BROADCAST, flashOrg_z);
+  WriteCoord(MSG_BROADCAST, flashVel_x);
+  WriteCoord(MSG_BROADCAST, flashVel_y);
+  WriteCoord(MSG_BROADCAST, flashVel_z);
+  WriteByte( MSG_BROADCAST, impType);
 };

@@ -33,22 +33,14 @@ entity() spawnpoint_coop;
 void() client_push_player_info;
 void() client_push_player_info_thin;
 void( entity targetClient ) server_push_player_info; //simply wraps client_push_player_info()
-void( entity radarPing ) client_push_radar_ping;
 void( entity targetClient ) client_push_hud_highlight;
 void( entity targetClient ) client_send_boundary_warning;
 void( entity targetClient ) client_send_enviro_warning;
 
-void( entity client ) client_send_critical_hit;
-
 void() client_push_mapobjects;
-void( entity navpoint ) client_send_navpoint;
-void( entity objective ) client_send_objective;
-void( entity deploy ) client_send_deploypoint;
 
 void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice;
 void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
-void( entity client ) client_send_hud_target_kill;
-void(entity client ) client_send_event_powerup;
 
 //client command layer
 void() client_sendMissionFileName;
@@ -58,15 +50,13 @@ void(string mechs) client_sendAvailable_Mechs;
 void(string itms) client_sendAvailableItems;
 void() client_sendMissionUnlocks;
 void(float mode) client_sendGameMode;
+void(string targetName) client_sendTargetName;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
 void(entity client, float trackNum, float entFlags) client_sendMusic;
 void(entity client, float missionSuccessCheck) client_sendEndMission;
-void(entity client) client_send_mapKeyObjects;
-void(entity client) client_send_event_powerup;
 void(entity client, string theMessage, float messageLifetime) client_send_info_message;
 void(entity client, float weaponsOnOff) client_send_event_weapons;
 void(entity client, float weaponsOnOff) client_send_event_repairs;
-void(entity client, float newFireMode) client_send_event_change_fire;
 
 void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;
@@ -76,7 +66,14 @@ void(string cmd, float tokens) client_setNavPoint;
 void(string cmd, float tokens) client_setMission;
 
 void() client_updateWeaponReloads;
-void(float fwd, float side, float bck, string accel, float roll) client_update_moveSpeed;
-void(float bob, float cycle, float up) client_update_viewBob;
-void(float bobmodel, float side, float bmod_speed, float bmod_up) client_update_modelBob;
-void(float p_max, float p_min) client_update_viewPitch;
+
+void( float wepId, vector flashOrg, vector flashVel, float impType  ) client_send_muzzle_flash;
+void( vector org, float explodeSize, vector explodeColor, float onShield ) client_send_missile_explode;
+void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck;
+void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle;
+void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail;
+
+void() client_update_faction;
+
+//sigh can't believe Im trying this again
+float client_send_monster( entity ePVEnt, float flChanged );

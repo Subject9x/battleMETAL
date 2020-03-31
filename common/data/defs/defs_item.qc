@@ -13,14 +13,10 @@ Overview
 
 //SSQC only
 #ifndef CSQC
-.float reloadValue;
 .void() w_attack;     //actual attack func
 .void() w_think;     //implementable update function
-.string fire_sound;
 .float burstRate; //percentage of reloadRate to use for burst-fire intervals.
-.float aState;
 .float state_2;
-.vector wepFireOffset;     //offset for proj. origin
 .float w_proj;       //pointer to projectile entity data
 .float w_firerate;
 .float w_currentammo;
@@ -31,6 +27,11 @@ Overview
 .float ai_nextFireTime; //last time this WEAPON was fired.
 #endif
 
+.float aState;
+.vector wepFireOffset;     //offset for proj. origin
+.vector wepFireOffsetCache; //cached offset for constant reference
+.string fire_sound;
+.float reloadValue;
 .float reloadMax;
 .float reloadRate;
 .vector w_adj_ang;      //rotate weapon model face correctly

@@ -12,8 +12,16 @@ Overview:
 void() menu_debriefListener_onClick={
   //next/retry mission button
   if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), FALSE) ){
-    setpause( 0 );
-    cl_set_mission( MENU_DEBRIEF_status );
+    //Single player 
+    if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+      setpause( 0 );
+      cl_set_mission( MENU_DEBRIEF_status );
+      return;
+    }
+    //DEATHMATCH AND COOP
+    cl_set_mission( 2 );
+    CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
+    LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE | VALID_LAUNCH));
   }
 };
 

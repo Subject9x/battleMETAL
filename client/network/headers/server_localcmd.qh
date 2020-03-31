@@ -4,11 +4,11 @@ Author: Peter Roohr
 Date: 3/8/2017
 Overview: definition file for the client -> server command layer
 */
-void(float val) cl_set_movespeedkey;
-void(float val, float w_bit) cl_setweapon;
+
+void(float totalWeps, string wepList) cl_setweapon;
 void(float sz, float id) cl_setmech;
 void() cl_spawnmech;
-void(float grp_id, float grp_val) cl_setweapongroup;
+void(float group1, float group2, float group3, float group4 ) cl_setweapongroup;
 void(float nav_id) cl_setspawnpoint;
 void(float nextMissionBool) cl_set_mission;
 
@@ -22,3 +22,6 @@ void() cl_get_mechs_sort;
 void( string fogSettings ) cl_get_new_fog;
 void( string musicSet ) cl_get_new_music;
 void() cl_exit_animatic;
+
+void( entity mech ) cl_set_hud_vars;
+void() cl_set_hud_vars_obs;

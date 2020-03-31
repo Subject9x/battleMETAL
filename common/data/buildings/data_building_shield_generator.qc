@@ -8,149 +8,172 @@ Overview: data file for building
   func: provides shields to all friendly units in its radius, but requires a nearby power plant.
 */
 void() hshield_die = [0, hshield_die1]{
+  if( self.deadflag > DEAD_NO){
+    return;
+  }
+  
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DEAD;
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  
+  //fire triggers when dead
+  trigger_event( self.enemy, self.trigOnDeath );
+
+};
+void() hshield_die1 = [1, hshield_die2]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hshield_die2 = [2, hshield_die3]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hshield_die3 = [3, hshield_die4]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hshield_die4 = [4, hshield_die5]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hshield_die5 = [5, hshield_die6]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hshield_die6 = [6, hshield_die7]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hshield_die7 = [7, hshield_die8]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hshield_die8 = [8, hshield_die9]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hshield_die9 = [9, hshield_die10]{
   local entity head;
   
-  self.solid = SOLID_NOT;
-  for(head = findradius(self.origin, 400); head != world; head = head.chain){
-    if( head.data_type != DATA_MECH ){
-      continue;
+  if( self.energy > 0 ){
+    for(head = nextent(world); head != world; head = nextent(head) ){
+      if( head == self ){
+        continue;
+      }
+      if( vlen(head.origin - self.origin) > (self.ai_minrange / 2) ){
+        continue;
+      }
+      if( !(head.flags & FL_UNIT) ){
+        continue;
+      }
+      if( head.shield <= 0 ){
+        continue;
+      }
+      if( self.energy < 0 ){
+        continue;
+      }
+      head.shield = head.shield - ((self.energy / self.energyMax) / 2);
+      if( head.shield < 0 ){
+        head.shield = 0;
+      }
+      head.shieldHitDelay = time + ((self.energy / self.energyMax) / 2);
+      self.energy  = self.energy - ((self.energy / self.energyMax) / 5);
     }
-    head.shield = head.shield + 250;
-    if(head.shield > head.shieldMax){
-      head.shield = head.shieldMax;
+  }
+};
+void() hshield_die10 = [10, hshield_die11]{};
+void() hshield_die11 = [11, hshield_die12]{};
+void() hshield_die12 = [12, hshield_die13]{};
+void() hshield_die13 = [13, hshield_die14]{};
+void() hshield_die14 = [14, hshield_die15]{};
+void() hshield_die15 = [15, SUB_Null]{};
+
+
+void() hshield_th = [0, hshield_th]{
+  local entity t;
+  local float mod;
+  local float cost;
+ 
+  cost = 0;
+  if( self.energy > 0 ){
+    for( t = nextent(world); t != world; t = nextent(t) ){   
+      if( t == self ){
+        continue;
+      }
+      if( !(t.flags & FL_UNIT) ){
+        continue;
+      }
+      if( vlen(t.origin - self.origin) > self.ai_minrange ){
+        continue;
+      }
+      if( t.faction != self.faction ){
+        continue;
+      }
+      if( time > t.shieldHitDelay ){
+        mod = t.shieldRate + (self.shieldRate * 0.33);
+        t.shield = t.shield + mod;
+        if( t.shield > t.shieldMax ){
+          t.shield = t.shieldMax;
+        }
+        cost = cost + (self.shieldRate * 0.05);
+      }
     }
   }
   
-  building_die();
-  te_object_explode( '0.25 1 0.05' );
-  te_object_explode( '0.25 1 0.05' );
-  te_object_explode( '0.25 1 0.05' );
-};
-void() hshield_die1 = [1, hshield_die2]{};
-void() hshield_die2 = [2, hshield_die3]{};
-void() hshield_die3 = [3, hshield_die4]{};
-void() hshield_die4 = [4, hshield_die5]{};
-void() hshield_die5 = [5, hshield_die6]{};
-void() hshield_die6 = [6, hshield_die7]{};
-void() hshield_die7 = [7, hshield_die8]{
-  te_object_explode( '0.25 1 0.05' );};
-void() hshield_die8 = [8, hshield_die9]{
-  te_object_explode( '0.5 1 0.05' );};
-void() hshield_die9 = [9, hshield_die10]{
-  te_object_explode( '0.75 1 0.05' );
-  self.deadflag = DEAD_DEAD;
-  local entity ruins;
-  ruins = spawn();
-  ruins.solid = SOLID_NOT;
-  ruins.movetype = MOVETYPE_NONE;
-  switch( self.vec_size ){
-    case 2:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
-      break;
-    case 3:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
-      break;
-    default:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
-      break;
-  }
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
-  ruins.vec_size = self.vec_size;
-  ruins.angles = self.angles;
-  ruins.armLeft = te_building_fire_start( ruins );
-  if( ruins.vec_size > 1 ){
-    ruins.armRight = te_building_fire_start( ruins );
-    ruins.torsoLeft = te_building_fire_start( ruins );
-  }  
-};
-void() hshield_die10 = [10, hshield_die11]{
-  te_object_explode( '1 1 0.05' );};
-void() hshield_die11 = [11, BecomeExplosion]{};
-
-void() hshield_th = [0, hshield_th]{
-  local entity t, p;
-  local float dist;
-  local float mod;
- 
+  self.energy = self.energy - cost;
   self.energy = self.energy + self.energyRate;
   if(self.energy > self.energyMax){
     self.energy = self.energyMax;
   }
   
-  if(self.shield < self.shieldMax){
-    if(self.energy > 0){
-      if( time > self.shieldHitDelay ){
-        self.shield = self.shield + self.shieldRate * 2;
-        self.energy = self.energy - self.shieldRate / 2; 
-        if(self.shield > self.shieldMax){
-          self.shield = self.shieldMax;
-        }  
-      }
-    }
-  }
-
-  for(t = findchainflags(flags, FL_MONSTER); t != world; t = t.chain ){
-
-    if( t == self ){
-      continue;
-    }
-   
-    dist = vlen(t.origin - self.origin);
-    if(dist > 1000){
-      continue;
-    }
-    if( self.energy <= 0 ){
-      continue;
-    }
-    if( time < t.shieldHitDelay ){
-      continue;
-    }
-    if( t.shield > t.shieldMax ){
-      continue;
-    }
-    mod = self.shieldRate / 2;
-    t.shield = t.shield + mod;
-    self.energy = self.energy - mod;
-    if(t.shield > t.shieldMax){
-      t.shield = t.shieldMax;
-    }
-  }
-  
-  for(p = findchainflags(flags, FL_CLIENT); p != world; p = p.chain ){
-    if(p.faction != self.faction){
-      continue;
-    }
-    dist = vlen(p.origin - self.origin);
-    if(dist > 1000){
-      continue;
-    }
-    if( self.energy <= 0 ){
-      continue;
-    }
-    if( p.shield > p.shieldMax ){
-      continue;
-    } 
-    mod = self.shieldRate;
-    p.shield = p.shield + mod;
-    self.energy = self.energy - mod;
-    if(p.shield > p.shieldMax){
-      p.shield = p.shieldMax;
-    } 
+  if( time > self.shieldHitDelay ){
+    self.shield = self.shield + self.shieldRate * 2;  //generators get their own shields for free
+    if(self.shield > self.shieldMax){
+      self.shield = self.shieldMax;
+    }  
   }
   building_burn();
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 }
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
-Gives ALL FRIENDLY units a shield recharge boost IF they're in the radius.
-Radius: 1000units
+Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields!
+MUST HAVE: Power Plant that can power it (check power plant radius).
+Generator does have to pay for its shield generating, these can be taxed by too many nearby units.
+
+Health = 500. (default)
+
+Energy Max = 2000 units. (default)
+Energy Rate = 0. (default)
+
+Shield Max = 300. (default)
+Shield Rate = 0.33 / tic (default)
+
+Radius: 1000 units.(default)
+
+behavior: death() will DAMAGE shields of all units at ai_minrange/2
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+faction : <float> [Required], faction id - 1 | 2 | 3
+targetname : <string>, used for trigger calls from other ents.
+target : <string> name of ent to go to, usually a patrol node.
+trigOnSpawn: <string> ent, fire this ENTITY when activated.
+trigOnDeath: <string target, fire this ENTITY when killed.
+shieldRate: <float> [Optional], default is 4 / tic. set this to override default.
+shieldMax: <float> [Optional], default is 4000. set this to override default.
+ai_minrange: <float> [Optional], default is 100. set ths to override default;
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -169,21 +192,42 @@ void() building_human_shield={
   }
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-  
-  macro_set_model("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0)
-  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  util_setHealthArmor(500, 500, 1, 100) ;
-  setsize(self, '-48 -48 0', '48 48 32');
-  self.shield = 0;
-  self.shieldMax = 500;
-  self.shieldRate = 0.45;
-  self.energy = 0;
-  self.energyRate = 0;
-  self.energyMax = 2000;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);  
   self.scale = 1;
   self.deadflag = DEAD_NO;
   
+  macro_set_model("q3mdl/testball.md3", self.skin, EF_LOWPRECISION)
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
+  setsize(self, '-48 -48 0', '48 48 32');
+    
+  if( !self.ai_minrange ){
+    self.ai_minrange = 1000;
+  }
+    
+  if( !self.health) {
+    self.health = self.max_health = 500;
+  }
+  
+  if( !self.shieldMax ){
+    self.shieldMax = 4000;
+  }
+  
+  if( !self.shieldRate ){
+    self.shieldRate = 0.33;
+  }
+  
+  if( !self.energyRate ){
+    self.energyRate = 0;
+  }
+  if( !self.energyMax ){
+    self.energyMax = 2000;
+  }
+  
+  //fine, you don't want power plants in YOUR map <chuckle>
+  if( !self.energy ){
+    self.energy = 0;
+  }
+
   if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 0.95) ){
       util_generateBuildingFoundation(self);
@@ -198,4 +242,10 @@ void() building_human_shield={
   self.th_die = hshield_die;
   self.use = multi_trigger;
   hshield_th();
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
+  if( (self.spawnflags & IT_QUAD) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
 };

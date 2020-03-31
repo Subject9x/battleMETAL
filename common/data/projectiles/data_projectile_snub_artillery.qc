@@ -8,50 +8,108 @@ Overview:
       AoE radius.
       
 */
+#ifndef CSQC
 float DAT_PRJ_SFGA_RAD        = 300;
 void() data_projectile_snub_artillery_radiusDamage;
 void() data_projectile_snub_artillery_touch_;
+void() data_projectile_snub_artillery_th;
+#endif CSQC
+
+#ifdef CSQC
+void() projectile_sfga_expl={
+  local vector hitColor;
+  local float hitBloom;
+  local float hitScale;
+  local float hitDebris;
+  
+  if( self.impactType == IMPACT_SKY ){
+    return;
+  }
+  if( self.impactType == IMPACT_SHIELD ){
+    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.9, ATTN_NORM );
+    pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+    te_missile_explode( self.origin, 2, '0 0 1', -0.05 ); 
+  }
+  else if( self.impactType == IMPACT_ARMOR ){
+    pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
+    pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0.1 ); 
+  }
+  else{
+    pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
+    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0.05 ); 
+  }
+};
+#endif
 
 void() data_projectile_ini_snub_artillery_={
   self.classname = "missile";
   self.data_velocity = 1000;
-  self.model = "q3mdl/proj/mdl_proj_sfga.md3";
   self.data_lifetime = 8;
   
-  //cosmetics
-  self.effects = (EF_NOSHADOW);
-  self.modelflags = 0;
-  self.alpha = 1;
-  self.color =  '0.85 0.45 0.45';
-  self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
-  self.think = SUB_Null;
-  self.touch = data_projectile_snub_artillery_touch_;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_sfga.md3";
+    self.effects = EF_NOSHADOW;
+    self.colormod =  '0.85 0.45 0.45';
+    self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
+    self.pcl_explode = projectile_sfga_expl;
+  #endif
+    
+  #ifndef CSQC
+    self.think = data_projectile_snub_artillery_th;
+    self.touch = data_projectile_snub_artillery_touch_;    
+  #endif
+};
+
+#ifndef CSQC
+void() data_projectile_snub_artillery_th={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.think = data_projectile_snub_artillery_th;
+  self.nextthink = time + 0.01;
 };
 
 void() data_projectile_snub_artillery_touch_={
+  local float debris;
   
-  if( pointcontents(self.origin) == CONTENT_SKY ){
-    remove(self);
-    return;
-  }
-  
-  makevectors(self.angles);
-  if( other.takedamage ){
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-    if( other.shield > 0){
-      pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
-    }else{
-      te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 7, 1);
-    }
-    remove(self);
-    return;
-  }
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.8 0.5', self.damageValue / 7, ceil( random() * 3) );
-  data_projectile_snub_artillery_radiusDamage();
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
   
-  remove(self);
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT;
+  self.impactType = IMPACT_DIRT;
+  debris = rint(random() * 7);
+  if( pointcontents(self.origin) == CONTENT_SKY ){
+    self.impactType = IMPACT_SKY;
+    debris = 0;
+  }
+  
+  if( other.takedamage ){
+    self.impactType = IMPACT_ARMOR;
+    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    if( other.shield > 0){
+      self.impactType = IMPACT_SHIELD;
+    }
+    else{
+      self.damageValue = self.damageValue * 0.5;
+      data_projectile_snub_artillery_radiusDamage();
+      debris = rint(random() * 4);
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 2 );
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 2, 1 );
+    }
+    debris = 0;
+  }
+  else{
+    data_projectile_snub_artillery_radiusDamage();
+  }
+  if( debris > 0 ){
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, rint(0.5 + random() * 2));
+    te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 1.25, rint(0.5 + random() * 2) );
+  }
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.05;
 };
 
 void() data_projectile_snub_artillery_radiusDamage={
@@ -71,3 +129,4 @@ void() data_projectile_snub_artillery_radiusDamage={
     t_damage(radiusTarg, self, self.owner, dmg_act, self.damageType, trace_endpos, '0 0 0');
   }
 };
+#endif CSQC

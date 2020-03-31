@@ -12,3 +12,4 @@ Overview:
 
 .float data_lifetime;	//  game seconds the projectile lives for unless it hits something.
 .float data_velocity;	//  initialized velocity value (convert at function level )
+.float impactType;    // used for server communication

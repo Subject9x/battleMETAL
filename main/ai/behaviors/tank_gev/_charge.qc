@@ -25,7 +25,6 @@ void() ai_gev_enter_charge={
 void() ai_gev_charge1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   local float dampen;
   dampen = self.data_speed_forward;
@@ -44,7 +43,6 @@ void() ai_gev_charge1={
 void() ai_gev_charge2={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float dampen;
   dampen = self.data_speed_forward;
@@ -66,7 +64,6 @@ void() ai_gev_charge2={
 void() ai_gev_charge3={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float dampen;
   dampen = self.data_speed_forward;
@@ -84,7 +81,6 @@ void() ai_gev_charge3={
 void() ai_gev_charge4={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float dampen;
   dampen = self.data_speed_forward;
@@ -102,7 +98,6 @@ void() ai_gev_charge4={
 void() ai_gev_charge5={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float dampen;
   dampen = self.data_speed_forward;
@@ -121,7 +116,6 @@ void() ai_gev_charge5={
 void() ai_gev_charge6={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float dampen;
   dampen = self.data_speed_forward;
@@ -140,7 +134,6 @@ void() ai_gev_charge6={
 void() ai_gev_charge7={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float dampen;
   dampen = self.data_speed_forward;
@@ -159,7 +152,6 @@ void() ai_gev_charge7={
 void() ai_gev_charge8={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float dampen;
   dampen = self.data_speed_forward;
@@ -178,7 +170,6 @@ void() ai_gev_charge8={
 void() ai_gev_charge9={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
 
   local float dampen;
   dampen = self.data_speed_forward;

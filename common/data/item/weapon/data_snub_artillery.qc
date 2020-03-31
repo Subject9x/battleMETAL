@@ -16,7 +16,6 @@ void() data_ini_attack_snub_artillery_;
 void() data_ini_snub_artillery_={
 
   self.data_idx = 11;  
-  self.w_name = "Snub Field Artillery";
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
@@ -30,22 +29,25 @@ void() data_ini_snub_artillery_={
   self.techLevel = 2;
   self.equipSize = 3;
 
+  self.wepFireOffset = '0 0 9';
+  self.spreadDefault = '0.02 0.02 0';
+  
   #ifdef CSQC
-  self.abbrev = "SFGA";
-  self.description = "+ Minor parabolic arc. + Shot has Blast Radius.";
-  self.icon = "gfx/ui/wep_icons/wi_sfg.png";
+    self.w_name = "Snub Field Artillery";
+    self.fire_sound = "sound/fx_boom.ogg";
+    self.model = "q3mdl/weapons/w_sfga.md3";
+    self.abbrev = "SFGA";
+    self.description = "+ Minor parabolic arc. + Shot has Blast Radius.";
+    self.icon = "gfx/ui/wep_icons/wi_sfg.png";
   #endif 
   
   #ifndef CSQC
-  self.w_isburst = FALSE;
-  self.burstRate = 0;
-  self.spreadDefault = '0.02 0.02 0';
-  self.w_attack = data_ini_attack_snub_artillery_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_snub_artillery_;
-  self.wepFireOffset = '0 0 9';
-  self.fire_sound = "sound/fx_boom.ogg";
-  self.model = "q3mdl/weapons/w_sfga.md3";
+    self.model = "q3mdl/weapons/w_sfga.md3";
+    self.w_isburst = FALSE;
+    self.burstRate = 0;
+    self.w_attack = data_ini_attack_snub_artillery_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_snub_artillery_;
   #endif
 };
 #ifndef CSQC
@@ -54,14 +56,13 @@ void() data_ini_attack_snub_artillery_={
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( FALSE );
-   
-  pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 2, 1);
   
   ctrl_weapon_make_projectile( -1 );
   if((FIRE_ENT.flags & FL_CLIENT)){
-    FIRE_ENT.punchangle_x = -2 + (crandom() * -6);
-    FIRE_ENT.punchangle_y = -3 + (crandom() * -6);
+    FIRE_ENT.punchangle_x = -1 + (crandom() * -2);
+    FIRE_ENT.punchangle_y = -1 + (crandom() * -2);
   }
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
 };
 #endif

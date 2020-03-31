@@ -134,6 +134,25 @@ float DATA_WEAPON = 12;
 float DATA_INFO_START = 13;//used to send clientdata entity to csqc
 float DATA_INFO_COOP = 14;  //used as ID for info_start_coop
 float DATA_MAP_OBJ = 15; //meh, mostly for map objects (mapKeys :/ )
+float DATA_MAP_DMG = 16;
+
+//============================
+//     UNIT PART BITS          
+//============================
+//These should have been floats from the start
+//these are component id's (compid) for model pieces
+string MECH_PIECE    = "mech_piece";
+float M_UNIT        = 1;
+float M_TOR_CENTER  = 2;
+float M_TOR_RIGHT   = 4;
+float M_TOR_LEFT    = 8;
+float M_ARM_LEFT    = 16;
+float M_ARM_RIGHT   = 32;
+float M_LEGS        = 64;
+float M_CAMERA      = 128;
+float M_LEG_L       = 256;
+float M_LEG_R       = 512;
+float M_ITEM        = 1024;
 //============================
 //     WEAPON SLOT BITS           
 //============================
@@ -184,17 +203,62 @@ float AS_INT = 2;
 float AS_FLOAT_TRUNCATED = 2;
 float AS_FLOAT = 8;
 //============================
+//     SEND ENTITY SHARED
+//============================
+//SendTypes-------------------
+float SENDTYPE_PLAYER = 1;
+float SENDTYPE_MECH_AI = 2;
+float SENDTYPE_TANK = 3;
+float SENDTYPE_SPG = 4;
+float SENDTYPE_GEV = 5;
+float SENDTYPE_MECH = 6;
+float SENDTYPE_TURRET = 7;
+float SENDTYPE_BUILD = 8;
+float SENDTYPE_CHUNK = 9; //Vehicle / Turret / Mech debris
+float SENDTYPE_PROJ = 10;  //projectiles - missiles, etc
+float SENDTYPE_MAP = 11;
+//SendFlags-------------------
+float SENDFLAG_MOVE = 1;  //update .origin and .angles of main piece 
+float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.
+float SENDFLAG_VELOCITY = 4; //unit is stood up by server
+float SENDFLAG_DEAD = 8; //marks as dead, run death anim.
+float SENDFLAG_CRIT = 16; //what component(s) blew off.
+float SENDFLAG_BURN = 32; //what is starting to burn.
+float SENDFLAG_IMPACT = 64; //specifically missile strike on something.
+float SENDFLAG_NEWENT = 128;
+  //128 is hardcoded as isNew, dont change
+  //.modelindex
+  //.faction
+  //.data_type
+  //.data_idx
+
+
+//============================
 //     SHARED STATS         
 //============================
 float RADAR_SWEEP = 2.5;
 
+.float stat_rdr_mode;
 #ifndef CSQC
 .float playerState;
-.float stat_trg_sh;
+.float stat_client_energy;
+.float stat_client_shield;
 
-.float stat_cofs_x;
-.float stat_cofs_y;
-.float stat_cofs_z;
+.float stat_target_shield;
+
+.float stat_target_hp_torsoCenter;
+.float stat_target_hp_torsoLeft;
+.float stat_target_hp_torsoRight;
+.float stat_target_hp_armLeft;
+.float stat_target_hp_armRight;
+.float stat_target_hp_legs;
+
+.float stat_client_hp_torsoCenter;
+.float stat_client_hp_torsoLeft;
+.float stat_client_hp_torsoRight;
+.float stat_client_hp_armLeft;
+.float stat_client_hp_armRight;
+.float stat_client_hp_legs;
 
 .float stat_w1_id;
 .float stat_w2_id;
@@ -222,14 +286,10 @@ float RADAR_SWEEP = 2.5;
 .float stat_trg_faction;
 
 .float stat_hit_dirs;
-.float stat_rdr_mode;
 .float stat_rdr_rng;
-.float stat_wep_state;
 .float stat_trg_dist;
 .float stat_trg_face;
-.float stat_wep_rel;
-.float stat_spr_x;
-.float stat_spr_y;
+
 .float stat_plr_fir;
 .float stat_lck_stt;
 .float stat_trg_ddflg;
@@ -239,28 +299,32 @@ float RADAR_SWEEP = 2.5;
 .float addStat_targetSize_y;
 .float addStat_targetSize_z;
 .float stat_plr_rep;
+.float stat_player_weapons_state;
+.string stat_target_name;
+
+.float stat_target_orgx;
+.float stat_target_orgy;
+.float stat_target_orgz;
+.float stat_target_size;
 #endif
 //============================
-//     STAT CHANNELS         
+//     ADDSTAT SLOT NUMBERS        
 //============================
-//float STAT_OBS_FACTION = 32;
-
+float STAT_PLAYER_DEADFLAG = 32;
 float STAT_ACCURACY = 33;
 float STAT_RAM = 34;
-
-float STAT_TARG_EID = 35;
-float STAT_VID = 36;
-
+float STAT_CLIENT_ENERGY = 35;
+float STAT_CLIENT_SHIELD = 36;
 float STAT_RAM_MAX = 37;
-//float STAT_CAM_ORG_Y = 38;
-//float STAT_CAM_ORG_Z = 39;
+//38;
+float STAT_PLAYER_WEAPONS_STATE = 39;
 
-float STAT_PLR_ORG_X = 40;
-float STAT_PLR_ORG_Y = 41;
-float STAT_PLR_ORG_Z = 42;
-float STAT_PLR_STT = 43;  //keep
+//40;
+//41;
+//42;
+//43;
 float STAT_PLAYER_DATA_TYPE = 44;
-float STAT_PLR_DIDX = 46;
+float STAT_PLR_DATA_IDX = 46;
 float STAT_PLR_RADMOD = 47;
 float STAT_PLR_HITDIR = 48;
 float STAT_PLR_RETDIST = 49;
@@ -272,46 +336,47 @@ float STAT_TRG_DIST = 55;
 float STAT_TRG_FACE = 56;
 float STAT_TRG_FACTION = 57;
 
-float STAT_TRG_LG_HP = 61;
-float STAT_TRG_CT_HP = 62;
-float STAT_TRG_LT_HP = 63;
-float STAT_TRG_RT_HP = 64;
-float STAT_TRG_LA_HP = 65;
-float STAT_TRG_RA_HP = 66;
+float STAT_TARGET_HP_TORSOCENTER = 61;
+float STAT_TARGET_HP_TORSOLEFT = 62;
+float STAT_TARGET_HP_TORSORIGHT = 63;
+float STAT_TARGET_HP_ARMLEFT = 64;
+float STAT_TARGET_HP_ARMRIGHT = 65;
+float STAT_TARGET_HP_LEGS = 66;
 
-float TRG_VEC_SIZ = 67;
-//float TRG_P_CLASS = 68;
+float STAT_CLIENT_HP_TORSOCENTER = 67;
+float STAT_CLIENT_HP_TORSOLEFT = 68;
+float STAT_CLIENT_HP_TORSORIGHT = 69;
+float STAT_CLIENT_HP_ARMLEFT = 70;
+float STAT_CLIENT_HP_ARMRIGHT = 71;
+float STAT_CLIENT_HP_LEGS = 72;
 
-float STAT_WEP1_ID = 69;
-float STAT_WEP2_ID = 70;
-float STAT_WEP3_ID = 71;
-float STAT_WEP4_ID = 72;
-float STAT_WEP5_ID = 73;
-float STAT_WEP6_ID = 74;
-float STAT_WEP7_ID = 75;
-float STAT_WEP8_ID = 76;
-float STAT_WEP9_ID = 77;
+float STAT_TARGET_SHIELDS = 73;
+float STAT_TARGET_NAME = 74;
+float STAT_TARGET_ORIGINX = 75;
+float STAT_TARGET_ORIGINY = 76;
+float STAT_TARGET_ORIGINZ = 77;
+float STAT_TARGET_SIZE = 78;
 
-float STAT_WEP_STT = 78;
-float STAT_WEP_GRP = 79;
-float STAT_WEP_REL = 80;
-float STAT_NAV_DIR = 81;
-float STAT_RAM_VALUE = 82;
-float STAT_PLR_FIR = 83;
-float STAT_LCK_STT = 84;
-float STAT_PLR_PTC = 85;
-//float ADDSTAT_TARGETSIZE = 86;
-float STAT_TRG_DDFLG = 87;
-//float STAT_TRG_ORGX = 88;
-//float STAT_TRG_ORGY = 89;
-//float STAT_TRG_ORGZ = 90;
+float STAT_RAM_VALUE = 79;
+float STAT_LCK_STT = 80;
+float STAT_TRG_DDFLG = 81;
+
+float STAT_CLIENT_WEAPON1_RELOAD = 82;
+float STAT_CLIENT_WEAPON2_RELOAD = 83;
+float STAT_CLIENT_WEAPON3_RELOAD = 84;
+float STAT_CLIENT_WEAPON4_RELOAD = 85;
+float STAT_CLIENT_WEAPON5_RELOAD = 86;
+float STAT_CLIENT_WEAPON6_RELOAD = 87;
+float STAT_CLIENT_WEAPON7_RELOAD = 88;
+float STAT_CLIENT_WEAPON8_RELOAD = 89;
+float STAT_CLIENT_WEAPON9_RELOAD = 90;
 
 float STAT_RAD_SWEEP = 91;
 float ADDSTAT_TARGETSIZE_X = 100;
 float ADDSTAT_TARGETSIZE_Y = 101;
 float ADDSTAT_TARGETSIZE_Z = 102;
 float STAT_PLR_REP = 103; //remaining repair delta
-float STAT_PLR_NAME = 104;
+//104;
 
 //============================
 //     LOCK STATES   
@@ -351,6 +416,7 @@ vector ACCURACY_PRIMITVE    = '0.6 1 0.001';
 float FACTION_PSC = 1;
 float FACTION_SURVEST = 2;
 float FACTION_MILITAR = 3;
+float FACTION_ALL = 255;  //buildings don't show up on radar, deploy and nav points are rendered to everyone.
 
 //============================
 //     AI VOICE SYSTEM

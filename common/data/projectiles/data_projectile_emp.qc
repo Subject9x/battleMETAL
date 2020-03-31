@@ -8,32 +8,55 @@ Overview:
       AoE radius.
       
 */
+#ifndef CSQC
 void() data_prj_emp_touch;
 void() data_projectile_emp_think_;
 void() data_prj_emp_explode;
 
 float DAT_PRJ_EMP_PROXYRAD    = 200;
 float DAT_PRJ_EMP_EXPRAD      = 300;
+#endif CSQC
+
+#ifdef CSQC
+void() projectile_emp_expl={
+  if( self.impactType == IMPACT_SHIELD ){
+    pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
+  }
+  else if( self.impactType == IMPACT_SKY ){
+    pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
+  }
+  else{
+    pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
+  } 
+};
+#endif
 
 void() data_projectile_ini_emp_={
   self.classname = "missile";
-  self.touch = data_prj_emp_touch;
-  self.data_idx = 0;
   self.data_velocity = 1500;
-  self.model = "q3mdl/proj/mdl_proj_emp.md3";
   self.data_lifetime = 1.43;
   
-  //cosmetics
-  self.effects = (EF_ADDITIVE | EF_NOSHADOW);
-  self.modelflags = 0;
-  self.alpha = 0.75;
-  self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");
-  self.think = data_projectile_emp_think_;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_emp.md3";
+    self.effects = (EF_ADDITIVE | EF_NOSHADOW);
+    self.modelflags = 0;
+    self.alpha = 0.75;
+    self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");
+    self.pcl_explode = projectile_emp_expl;
+  #endif
+  
+  #ifndef CSQC
+    self.model = "q3mdl/testball.md3";
+    self.touch = data_prj_emp_touch;
+    self.think = data_projectile_emp_think_;
+  #endif CSQC
 };
-
+#ifndef CSQC
 void() data_projectile_emp_think_={
-
   local float explode;
+
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   explode = FALSE;
   if(time > self.w_firetime){
     local entity proxy;
@@ -78,6 +101,7 @@ void() data_projectile_emp_think_={
 
 void()data_prj_emp_explode={
   self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   self.touch = SUB_Null;
   
   local entity lst;
@@ -96,31 +120,36 @@ void()data_prj_emp_explode={
     }
     t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
   }
-  pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
-remove(self);
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  self.impactType = IMPACT_SKY;  
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.05;
 };
 
 void() data_prj_emp_touch={
-
-	if( pointcontents(self.origin) == CONTENT_SKY ){
-    remove(self);
-    return;
-	}
- 
-  self.traileffectnum = FALSE;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  self.touch = SUB_Null;
   
-  if(other.takedamage){
-    if( other.shield > 0 ){
-      pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
-    }
-    else{
-      pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
-    }
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-    remove(self);
-    return;
-  }
+	if( pointcontents(self.origin) == CONTENT_SKY ){
+    self.impactType = IMPACT_SKY;
+	}
+  else{
+    self.impactType = IMPACT_ARMOR;
  
-  self.nextthink = time + 0.01;
-  self.think = data_prj_emp_explode;
+    self.traileffectnum = FALSE;
+  
+    if(other.takedamage){
+     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+      if( other.shield > 0 ){
+        self.impactType = IMPACT_SHIELD;
+      }
+    }
+  }
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.05;
 };
+#endif CSQC

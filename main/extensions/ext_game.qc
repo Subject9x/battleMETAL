@@ -47,20 +47,6 @@ float sv_gravity;
 .float gravity;
 //======================
 
-//These should have been floats from the start
-//these are component id's (compid) for model pieces
-string MECH_PIECE    = "mech_piece";
-float M_CAMERA      = 1;
-float M_TOR_CENTER  = 2;
-float M_TOR_RIGHT   = 3;
-float M_TOR_LEFT    = 4;
-float M_LEGS        = 5;
-float M_LEG_L       = 6;
-float M_LEG_R       = 7;
-float M_ARM_LEFT    = 8;
-float M_ARM_RIGHT   = 9;
-float M_ITEM        = 10;
-
 //direction values
 float DIR_N   = 0;
 float DIR_NE  = 1;

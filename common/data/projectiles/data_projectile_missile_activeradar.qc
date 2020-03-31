@@ -9,25 +9,57 @@ Overview:
     needs player lock-on to follow target.
 */
 
+#ifndef CSQC
 void() data_projectile_missile_activeradar_think;
 void() data_projectile_missile_activeradar_delay;
 void() data_projectile_missile_activeradar_touch;
+#endif CSQC
+
+#ifdef CSQC
+void() projectile_marh_expl={
+  local vector hitColor;
+  local float hitBloom;
+  local float hitScale;
+  
+  if( self.impactType == IMPACT_SKY ){
+    return;
+  }
+  if( self.impactType == IMPACT_SHIELD ){
+    hitColor = '0 0.2 0.67';
+    hitBloom = -0.01;
+    hitScale = 0.5;
+    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
+  }
+  else{
+    hitColor = '0.969 0.996 0.18';
+    hitBloom = 0.01;
+    hitScale = 1;
+    pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
+  }
+  te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
+};
+#endif
 
 void() data_projectile_ini_missile_active_radar_={
   self.classname = "missile";
-  //self.touch = data_projectile_missile_activeradar_touch;
   self.data_velocity = 650;
-  self.model = "q3mdl/proj/mdl_proj_marh.md3";
   self.data_lifetime = 8;
+  self.compOffset = '0 0 0';   
   
-  //cosmetics
-  self.effects = EF_NOSHADOW;
-  self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
-  self.compOffset = '0 0 0';
-  self.think = data_projectile_missile_activeradar_delay;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_marh.md3";
+    self.effects = EF_NOSHADOW;
+    self.modelflags = 0;
+    self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
+    self.pcl_explode = projectile_marh_expl;
+  #endif
+  
+  #ifndef CSQC
+    self.think = data_projectile_missile_activeradar_delay;  
+  #endif
 };
-
+#ifndef CSQC
 void() data_projectile_missile_activeradar_think={
 	local vector	dir, vtemp;
   
@@ -73,6 +105,7 @@ void() data_projectile_missile_activeradar_think={
   else{
     self.think = data_projectile_missile_activeradar_think;
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.nextthink = time + 0.3;
 };
 
@@ -81,33 +114,44 @@ void() data_projectile_missile_activeradar_delay={
   self.velocity = self.velocity * (self.data_velocity * 0.33);
   self.angles = vectoangles(self.velocity);
    
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.think = data_projectile_missile_activeradar_think; 
   self.nextthink = time + 1;
 };
 
 void() data_projectile_missile_activeradar_touch={
-	if (pointcontents(self.origin) == CONTENT_SKY){
-    remove(self);
-		return;
-	}
-  self.touch = SUB_Null;
-  self.solid = SOLID_NOT;
-  
+  local float debris;
   if( other == self.owner ){
     return;
   }
-
+  
+  self.touch = SUB_Null;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  debris = 0;
+	if (pointcontents(self.origin) == CONTENT_SKY){
+    self.impactType = IMPACT_SKY;
+    debris = 0;
+	}
+ 
   if(other.takedamage){
+    self.impactType = IMPACT_ARMOR;
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
-      self.think = SUB_Remove;
-      self.nextthink = time + 0.1;
-      return;
+      self.impactType = IMPACT_SHIELD;
     }
+    else{
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 6, 1 );
+    }
+    debris = 0;
+  }
+  if( debris > 0 ){
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, rint(random() * 3), 1 );
   }
 
-  makevectors(self.velocity);
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.969 0.996 0.18', self.damageValue / 5, 1);
   self.think = SUB_Remove;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.05;
 };
+#endif CSQC

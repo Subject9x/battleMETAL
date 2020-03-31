@@ -17,7 +17,6 @@ void() data_ini_attack_ion_;
 void() data_ini_ion_={
 
   self.data_idx = 13;  
-  self.w_name = "Ion Coil";
   
   self.w_clipsize = 3;
   self.reloadRate = 0.12;
@@ -31,22 +30,25 @@ void() data_ini_ion_={
   self.techLevel = 1;
   self.equipSize = 2;
   
+  self.spreadDefault = '0.018 0.013 0';
+  self.wepFireOffset = '0 0 4';
+  
   #ifdef CSQC
-  self.abbrev = "ION";
-  self.description = "+ Damages <shields> ONLY. + 3-Round burst. + Small proximity detonation.";
-  self.icon = "gfx/ui/wep_icons/wi_ion.png";
+    self.w_name = "Ion Coil";
+    self.fire_sound = "sound/weapons/emp_fire.ogg";
+    self.model = "q3mdl/weapons/w_ion.md3";
+    self.abbrev = "ION";
+    self.description = "+ Damages <shields> ONLY. + 3-Round burst. + Small proximity detonation.";
+    self.icon = "gfx/ui/wep_icons/wi_ion.png";
   #endif
   
   #ifndef CSQC
-  self.spreadDefault = '0.018 0.013 0';
-  self.w_isburst = FALSE;
-  self.burstRate = 1;
-  self.wepFireOffset = '0 0 4';
-  self.fire_sound = "sound/weapons/emp_fire.ogg";
-  self.model = "q3mdl/weapons/w_ion.md3";
-  self.w_attack = data_ini_attack_ion_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_ion_;
+    self.w_isburst = FALSE;
+    self.burstRate = 1;
+    self.model = "q3mdl/weapons/w_ion.md3";
+    self.w_attack = data_ini_attack_ion_;
+    self.think = default_weapon_think;
+    self.data_ini_projectile = data_projectile_ini_ion_;
   #endif
 };
 
@@ -65,8 +67,6 @@ void() data_ini_attack_ion_={
   if( NEWSHOT ){
     NEWSHOT.w_firetime = time + 0.5;
   }
-  
-  sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_ION_MUZZLE"), FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, FIRE_ENDPOINT, 0);
 };
 #endif

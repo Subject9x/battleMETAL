@@ -7,6 +7,9 @@ Overview:
   To that end, I've moved all the client-specific data to constants, ugly but necessary.
 */
 
+
+entity CLIENT_MENU_deploy;
+
 float CLIENT_currentWeaponGroup;
 
 float CLIENT_flags;
@@ -27,12 +30,12 @@ float CLIENT_stat_trg_dataidx;
 float CLIENT_stat_trg_ent_id;
 float CLIENT_stat_trg_face;
        
-float CLIENT_target_datatype;
 float CLIENT_target_faction;
 
 float CLIENT_target_shield; 
-float CLIENT_target_datatype;  
+float CLIENT_target_datatype; 
 float CLIENT_target_faction;
+float CLIENT_stat_trg_ddflg_prev;
 float CLIENT_stat_trg_ddflg;
     
 float CLIENT_stat_w1_id;
@@ -45,12 +48,9 @@ float CLIENT_stat_w7_id;
 float CLIENT_stat_w8_id;
 float CLIENT_stat_w9_id;
 
-vector CLIENT_entorg;
 float CLIENT_radar_range;
-
 float CLIENT_energy;
 float CLIENT_shield;
-
 float CLIENT_repair_value;
 
 float CLIENT_health_center;
@@ -59,6 +59,14 @@ float CLIENT_health_torso_left;
 float CLIENT_health_torso_right;
 float CLIENT_health_arm_left;
 float CLIENT_health_arm_right;
+
+//for critical hit events
+float CLIENT_health_center_prev;
+float CLIENT_health_legs_prev;
+float CLIENT_health_torso_left_prev;
+float CLIENT_health_torso_right_prev;
+float CLIENT_health_arm_left_prev;
+float CLIENT_health_arm_right_prev;
 
 float CLIENT_hardpoint_cnt;
 
@@ -75,9 +83,14 @@ float CLIENT_stat_w9_rel;
 float CLIENT_weapon_state;  //where weapon_bit present == 'ok'
 
 float CLIENT_stat_trg_ent_id;
+float CLIENT_stat_trg_ent_id_prev;
 
 vector CLIENT_target_origin;
 float CLIENT_target_shield;
+
+float CLIENT_target_health_prev;
+float CLIENT_target_dist;
+float CLIENT_target_dist_prev;
 float CLIENT_stat_trg_ct_hp;
 float CLIENT_stat_trg_lg_hp;
 float CLIENT_stat_trg_lt_hp;
@@ -88,5 +101,5 @@ float CLIENT_target_vecsize;
 
 float CLIENT_ramUp;
 
-string CLIENT_w_icon;
+string CLIENT_target_name;
 

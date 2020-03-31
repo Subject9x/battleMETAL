@@ -32,35 +32,17 @@ void() ctrl_update_mechplayer={
   self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
+  
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
       continue;
     }
     if( piece.deadflag <= DEAD_NO ){
       hp = piece.health / piece.max_health;
-      if( hp < 0.75){
-        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
-        if( hp < 0.5){
-          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
-          if( hp < 0.25){
-            spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
-          }
-        }
+      if( hp < 0.6){
+        self.clientData.w_group = self.clientData.w_group | piece.partTypeId;
+        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
       }
-    }
-    else{
-      partParent = util_getPartFromName(piece.partParentId, self); 
-      if( partParent.deadflag > DEAD_NO ){
-        continue;
-      }
-      spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-      spark = te_apply_wind( spark );
-      pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
     }
   }
 };
@@ -97,16 +79,16 @@ void() ai_ctrl_update_mechplayer={
     if( piece.deadflag <= DEAD_NO ){
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
-        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
+        //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+        //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
         if( hp < 0.5){
-          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
+          //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+          //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+          //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
           if( hp < 0.25){
-            spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 2 * WINDDIR_z, 1);
+            //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+            //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
+            //client_send_particle( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
           }
         }
       }
@@ -116,11 +98,12 @@ void() ai_ctrl_update_mechplayer={
       if( partParent.deadflag > DEAD_NO ){
         continue;
       }
-      spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-      spark = te_apply_wind( spark );
-      pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 3 * WINDDIR_z, 1);
+      //spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+      //spark = te_apply_wind( spark );
+      //client_send_particle( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * (WINDDIR_z/2), 1);
     }
   }
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
 void() ctrl_updateCenterTorso={
@@ -265,6 +248,8 @@ void() ctrl_mech_die_player={
   if( (self.flags & FL_CLIENT) ){
     ctrl_unit_part_death(self.legs);
   }
+  self.alpha = 0.01;
+  self.scale = 0.01;
 };
 
 /*
@@ -277,26 +262,29 @@ void() ctrl_component_die={
   local entity c;
   if( self.deadflag <= DEAD_NO ){
     piece = self;
+    te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
     
-    te_missile_explode( piece.origin, piece.owner.vec_size, '1 0.25 0.75', random() * (piece.vec_size * 1.5), 2); 
-    te_mech_piece_explode( piece, piece.origin, piece.angles, piece.owner.velocity, piece.model, piece.skin );
-
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW; 
     self.movetype = MOVETYPE_NONE;
     self.aiment = world;
     self.health = 0;
     setorigin( self, self.origin );
-    
+
     if( self.partTypeId == M_TOR_LEFT ){
       self.owner.armLeft.think = self.owner.armLeft.th_die;
       self.owner.armLeft.nextthink = time + 0.1;
       self.owner.armLeft.realowner = self.owner;
+      self.owner.damageValue = self.owner.damageValue | (M_TOR_LEFT | M_ARM_LEFT);
     }
     else if( self.partTypeId == M_TOR_RIGHT ){
       self.owner.armRight.think = self.owner.armRight.th_die;
       self.owner.armRight.nextthink = time + 0.1;
       self.owner.armRight.realowner = self.owner;
+      self.owner.damageValue = self.owner.damageValue | (M_TOR_RIGHT | M_ARM_RIGHT);
+    }
+    if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
+      self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
     }
     
     c = self.owner.w_slot;
@@ -320,9 +308,6 @@ void() ctrl_component_die={
         self = this;
       }
     }
-    if( (self.owner.flags & FL_CLIENT) ){
-      client_send_critical_hit( self.owner );
-    }
   }
 };
 
@@ -331,10 +316,17 @@ void() ctrl_arm_die={
   local entity this;
   local entity c;
   if( self.deadflag == DEAD_NO ){
-    piece = self;
-    
-    te_missile_explode( piece.origin, piece.owner.vec_size, '1 0.25 0.75', random() * (piece.vec_size * 1.5), 2); 
-    te_mech_piece_explode( piece, piece.origin, piece.angles, piece.owner.velocity, piece.model, piece.skin );
+    te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
+  
+    if( self.partTypeId == M_ARM_LEFT && !(self.owner.damageValue & M_ARM_LEFT) ){
+      self.owner.damageValue = self.owner.damageValue | M_ARM_LEFT;
+    }
+    else if( self.partTypeId == M_ARM_RIGHT && !(self.owner.damageValue & M_ARM_LEFT) ){
+      self.owner.damageValue = self.owner.damageValue | M_ARM_RIGHT;
+    }
+    if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
+      self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+    }
 
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;  
@@ -346,6 +338,9 @@ void() ctrl_arm_die={
     
     this = self;
     for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
+      if( c == world ){
+        continue;
+      }
       self = c;
         if(self.partParentId != this.partTypeId){
           continue;
@@ -363,9 +358,6 @@ void() ctrl_arm_die={
           self.th_pain( self.enemy );
         self = this;
       }
-    }
-    if( (self.owner.flags & FL_CLIENT) ){
-      client_send_critical_hit( self.owner );
     }
   }
 };
@@ -444,4 +436,59 @@ void() touch_mechPiece={
     self.touch = SUB_Null;
     return;
   }
+};
+
+float( float isNew, float changeFlags ) ctrl_send_mech_ai={
+  WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
+  WriteByte( MSG_ENTITY, changeFlags );
+
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  
+  WriteAngle( MSG_ENTITY, self.angles_x );
+  WriteAngle( MSG_ENTITY, self.angles_y );
+  WriteAngle( MSG_ENTITY, self.angles_z );
+
+  WriteByte( MSG_ENTITY, self.flags );
+  WriteByte( MSG_ENTITY, self.shield );
+
+  if( (changeFlags & SENDFLAG_MOVE) ){
+  
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    WriteByte( MSG_ENTITY, self.damageValue );
+  }
+  
+  if( (changeFlags & SENDFLAG_BURN) ){
+  
+  }
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.data_idx );
+
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  return TRUE;
 };

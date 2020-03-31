@@ -9,122 +9,158 @@ Overview: data file for building
 */
 
 void() hpower_die = [0, hpower_die1]{
-  local entity head;
-  self.solid = SOLID_NOT;
-  
-  self.deadflag = DEAD_DYING;
-  
-  head = findradius(self.origin, 800);
-  for( head = findradius(self.origin, 800); head != world; head = head.chain ){
-    if( head.data_type == DATA_MECH ){
-      head.energy = head.energy + 100;
-      if(head.energy > head.energyMax){
-        head.energy = head.energyMax;
-      }
-    }
-    if( head.data_type == DATA_BLD ){
-      if( head.faction == self.faction ){
-        if( head.data_idx != UI_BUILDING_power_plant){
-          head.energyRate = 0;
-        }
-      }
-    }
+  if( self.deadflag > DEAD_NO){
+    return;
   }
-
-  te_object_explode( '0.75 0.75 0.6' );
-  building_die();
-};
-void() hpower_die1 = [1, hpower_die2]{};
-void() hpower_die2 = [2, hpower_die3]{};
-void() hpower_die3 = [3, hpower_die4]{
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hpower_die4 = [4, hpower_die5]{};
-void() hpower_die5 = [5, hpower_die6]{
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hpower_die6 = [6, hpower_die7]{};
-void() hpower_die7 = [7, hpower_die8]{};
-void() hpower_die8 = [8, hpower_die9]{
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hpower_die9 = [9, hpower_die10]{
-  te_object_explode( '0.75 0.75 0.6' );
-  te_object_explode( '0.75 0.75 0.6' );
+  
+  self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DEAD;
-  local entity ruins;
-  ruins = spawn();
-  ruins.solid = SOLID_NOT;
-  ruins.movetype = MOVETYPE_NONE;
-  switch( self.vec_size ){
-    case 2:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
-      break;
-    case 3:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
-      break;
-    default:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
-      break;
-  }
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
-  ruins.vec_size = self.vec_size;
-  ruins.angles = self.angles;
-  ruins.armLeft = te_building_fire_start( ruins );
-  if( ruins.vec_size > 1 ){
-    ruins.armRight = te_building_fire_start( ruins );
-    ruins.torsoLeft = te_building_fire_start( ruins );
-  }  
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  
+  //fire triggers when dead
+  trigger_event( self.enemy, self.trigOnDeath );
+
 };
-void() hpower_die10 = [10, hpower_die11]{
-  te_object_explode( '0.75 0.75 0.6' );
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hpower_die11 = [11, BecomeExplosion]{
-  te_object_explode( '0.75 0.75 0.6' );
-  te_object_explode( '0.75 0.75 0.6' );};
+void() hpower_die1 = [1, hpower_die2]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+};
+void() hpower_die2 = [2, hpower_die3]{};
+void() hpower_die3 = [3, hpower_die4]{};
+void() hpower_die4 = [4, hpower_die5]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 4, 1 );
+};
+void() hpower_die5 = [5, hpower_die6]{};
+void() hpower_die6 = [6, hpower_die7]{};
+void() hpower_die7 = [7, hpower_die8]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 3, 2 );
+};
+void() hpower_die8 = [8, hpower_die9]{};
+void() hpower_die9 = [9, hpower_die10]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 3, 2 );
+
+};
+void() hpower_die10 = [10, hpower_die11]{};
+void() hpower_die11 = [11, hpower_die12]{};
+void() hpower_die12 = [12, hpower_die13]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 2, 3 );
+};
+void() hpower_die13 = [13, hpower_die14]{};
+void() hpower_die14 = [14, hpower_die15]{
+  local vector shoot;
+  local entity head;
+  
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
+  
+  //Dump energy onto any nearby unit.
+  for( head = nextent(world); head != world; head = nextent(head) ){
+    if( vlen(head.origin - self.origin) > (self.ai_minrange / 2) ){
+      continue;
+    }
+    if( !(head.flags | FL_UNIT) ){
+      continue;
+    }
+    head.energy = head.energy + self.energy * 0.25;
+    if( head.energy > head.energyMax ){
+      head.energy = head.energyMax;
+    }
+  }
+  
+};
+void() hpower_die15 = [15, SUB_Null]{};
 
 void() hpower_th = [0, hpower_th]{
-  if(self.energy < self.energyMax){
-    self.energy = self.energy + self.energyRate;
-    if(self.energy > self.energyMax){
-      self.energy = self.energyMax;
-    }
-  }
-  
-  //power friendly local buildings
   local entity t;
-  t = findchainfloat(data_type, DATA_BLD);
-  for( t = findchainfloat(data_type, DATA_BLD); t != world; t = t.chain){
-    if(t.faction != self.faction){
-      continue;
+  local float cost;
+  
+  cost = 0;
+  if( self.energy > 0 ){
+    //power friendly local buildings
+    for( t = nextent(world); t != world; t = nextent(t)){
+      if(t == self){
+        continue;
+      }
+      if( t.data_type != DATA_BLD ){
+        continue;
+      }
+      if(vlen(t.origin - self.origin) > self.ai_minrange){
+        continue;
+      }
+      if(t.faction != self.faction){
+        continue;
+      }
+      t.energy = t.energy + self.energyRate;
+      if( t.energy > t.energyMax ){
+        t.energy = t.energyMax;
+      }
+      cost = cost + (self.energyRate * 0.08);
     }
-    if(t == self){
-      continue;
-    }
-    if(vlen(t.origin - self.origin) > 800){
-      continue;
-    }
-    t.energyRate = self.energyRate;
   }
+  self.energy = self.energy - cost;
+  self.energy = self.energy + self.energyRate;
+  if(self.energy > self.energyMax){
+    self.energy = self.energyMax;
+  }
+    
   building_burn();
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 }; 
 
 
-/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_power (0.074 0.66 0.93) (-80 -80 0) (80 80 58) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
-Radius: 800units
--------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+
+Health = 1200. (default)
+
+Energy Max = 4000 units. (default)
+Energy Rate = 4 / 0.1 tic. (default)
+
+Shield Max = 300. (default)
+Shield Rate = 0. (default)
+
+Radius: 800 units.(default)
+
+behavior: death() will give remaining energy to every unit within radius/2.
+
+-------- KEYS --------
+faction : <float> [Required], faction id - 1 | 2 | 3
+targetname : string>, used for trigger calls from other ents.
+target : <string> name of ent to go to, usually a patrol node.
+trigOnSpawn:<string> ent, fire this ENTITY when activated.
+trigOnDeath: <string> target, fire this ENTITY when killed.
+energyRate: <float> [Optional], default is 4 / tic. set this to override default.
+energyMax: <float> [Optional], default is 4000. set this to override default.
+minrange: <float> [Optional], default is 800. set ths to override default;
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
+
 void() building_human_power={
   self.data_idx = self.nextVecChoice = UI_BUILDING_power_plant;
   self.data_type = DATA_BLD;
@@ -133,22 +169,32 @@ void() building_human_power={
     remove(self);
     return;
   }
-  self.vec_name = "Power Generator";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.vec_name = "Power Plant";
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 3;
-  macro_set_model("q3mdl/buildings/power_plant/mdl_bld_h_power.md3", self.skin, 0) 
-  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  util_setHealthArmor(1200, 1200, 1, 100);
-  setsize(self, '-75 -75 0', '75 75 26');
-  self.shield= 0;
-  self.shieldMax = 300;
-  self.shieldRate = 0.67;
-  self.energy= 0;
-  self.energyMax= 4000;
-  self.energyRate= 4;
-  
   self.scale = 1;
   self.deadflag = DEAD_NO;
+  macro_set_model("q3mdl/testball.md3", self.skin, 0) 
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
+  setsize(self, '-80 -80 0', '80 80 58');
+  
+  if( !self.health) {
+    self.health = self.max_health = 1200;
+  }
+  self.shield = 0;
+  self.shieldMax = 300;
+  self.shieldRate = 0;  //needs Shield Generator
+  
+  if( !self.energy ){
+    self.energy = self.energyMax = 4000;
+  }
+  if( !self.energyRate ){
+    self.energyRate = 4;
+  }
+  
+  if( !self.ai_minrange ){
+    self.ai_minrange = 800;
+  }
   
   if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 0.95) ){
@@ -163,6 +209,12 @@ void() building_human_power={
   
   self.th_die = hpower_die;
   self.use = multi_trigger;
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
+  if( (self.spawnflags & IT_QUAD) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
   
   hpower_th();
 };

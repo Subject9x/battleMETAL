@@ -250,7 +250,6 @@ void(entity ent, vector pnt) util_chekPointToHitDir={
     return;
   }
   sideAngle = normVec * v_right;
-  //cons_logAFloat("sangle", sideAngle);  //DEBUG
   if( hitAngle < 0.7 && hitAngle > 0 ){
     //side shot
     if( sideAngle > 0.3 && sideAngle <= 0.6){
@@ -509,7 +508,8 @@ void(string msg, string s1, string split, string s2) cons_log2Strings={
 
 void() BecomeExplosion={
   makevectors( self.angles );
-  te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
+  //TODO - replace
+  //te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
   
   sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
   self.deadflag = DEAD_DEAD;
@@ -527,31 +527,32 @@ void() BecomeExplosion={
 */
 void() util_MapDeveloperMarker={
   if( cvar("developer") ){
-    self.alpha = 0.9;
+    self.alpha = 1;
     self.scale = 1;
   }
   else{
     self.alpha = 0.01;
     self.scale = 0.01;
+    self.effects = self.effects | EF_NOSHADOW;
   }
-  self.effects = self.effects | EF_NOSHADOW;
+  setmodel(self, "q3mdl/testball.md3");
 };
 
 void() util_updateViewBob={
   self.hud_mode = cvar("cl_hud_sway");
   if( self.hud_mode == 0){
     self.hud_ent.effects = self.hud_ent.effects | EF_NOGUNBOB;
-    client_update_viewBob( 0, 0, 0);
-    client_update_modelBob( 0, 0, 0, 0);
+    //client_update_viewBob( 0, 0, 0);
+    //client_update_modelBob( 0, 0, 0, 0);
   }
   else if( self.hud_mode == 1 ){
     self.hud_ent.effects = self.hud_ent.effects | EF_NOGUNBOB;
-    client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
-    client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed, self.hud_bob_model_up);
+    //client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
+    //client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed, self.hud_bob_model_up);
   }
   else{
     self.hud_ent.effects = self.hud_ent.effects - (self.hud_ent.effects & EF_NOGUNBOB);
-    client_update_viewBob(self.hud_bob, self.hud_bob_cycle / 2, self.hud_bob_up / 4);
-    client_update_modelBob(self.hud_bob_model, self.hud_bob_side * 0.5, self.hud_bob_speed * 0.5, self.hud_bob_model_up * 0.33);
+    //client_update_viewBob(self.hud_bob, self.hud_bob_cycle / 2, self.hud_bob_up / 4);
+    //client_update_modelBob(self.hud_bob_model, self.hud_bob_side * 0.5, self.hud_bob_speed * 0.5, self.hud_bob_model_up * 0.33);
   }
 };

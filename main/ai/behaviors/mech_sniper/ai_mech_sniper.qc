@@ -30,6 +30,9 @@ void() ai_mech_sniper={
   
   ai_setup_patrol();
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+  
+  self.SendEntity = ctrl_send_mech_ai;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 void() ai_mech_sniper_walk1={

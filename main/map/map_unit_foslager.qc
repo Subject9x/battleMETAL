@@ -15,7 +15,7 @@ void() unit_foslager_h={
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_SURVEST;
    
-  self.flags = self.flags | FL_TURRET;
+  self.flags = FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -45,7 +45,7 @@ void() unit_foslager_m={
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_MILITAR;
    
-  self.flags = self.flags | FL_TURRET;
+  self.flags = FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -76,7 +76,7 @@ void() unit_foslager_survest_zapper={
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_SURVEST;
    
-  self.flags = self.flags | FL_TURRET;
+  self.flags = FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -106,7 +106,7 @@ void() unit_foslager_militar_zapper={
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_MILITAR;
    
-  self.flags = self.flags | FL_TURRET;
+  self.flags = FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -137,7 +137,7 @@ void() unit_foslager_survest_gunner={
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_SURVEST;
    
-  self.flags = self.flags | FL_TURRET;
+  self.flags = FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -167,7 +167,7 @@ void() unit_foslager_militar_gunner={
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_MILITAR;
    
-  self.flags = self.flags | FL_TURRET;
+  self.flags = FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);

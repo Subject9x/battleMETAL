@@ -8,6 +8,7 @@ Overview:
 */
 
 void() PlayerDie;
+void() PlayerDieNetwork;
 void() PlayerDieEnd;  //replaces think functions originally set by player animations.
 void() PlayerDead;
 void() PlayerDeathThink;

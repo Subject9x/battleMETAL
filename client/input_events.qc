@@ -47,10 +47,12 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   if(inputEventType == INPUT_EVENT_KEYDOWN){
     if( (scanx == K_TAB) && (CLIENT_data_type == DATA_POBS) ){
       if( (CLIENT_player_state != PLAYER_INTERMSN) && MENU_ACTIVE ){
-        MENU_ACTIVE = FALSE;
-        CLIENT_MENU_menu_choice = 0;
-        setcursormode( 0 );
-        setpause( 0 );
+        if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
+          MENU_ACTIVE = FALSE;
+          CLIENT_MENU_menu_choice = 0;
+          setcursormode( 0 );
+          setpause( 0 );
+        }
       }
       else{
         if( CLIENT_player_state != PLAYER_INTERMSN ){
@@ -77,6 +79,33 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     else if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
       //good lord....
       HUD_ZOOM_ACTIVE = TRUE;
+      return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
+      //Toggle Radar
+      CLIENT_stat_rdr_mode = !CLIENT_stat_rdr_mode;
+      if(CLIENT_stat_rdr_mode_prev != CLIENT_stat_rdr_mode){
+        CLIENT_stat_rdr_mode_prev = CLIENT_stat_rdr_mode;
+        if(CLIENT_stat_rdr_mode){
+          hud_event_enqueue(HUD_EVENT_RADAR_ACTIVE, 1); 
+          CLIENT_radar_range = CLIENT_radar_range * 2;
+        }
+        else{
+          hud_event_enqueue(HUD_EVENT_RADAR_PASSIVE, 1); 
+          CLIENT_radar_range = CLIENT_radar_range / 2;
+        }
+      }
+      //return false here to make sure player choice gets up to server.
+      return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
+      //Toggle Group Fire
+      hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
+      return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
+      //Toggle Chain Fire
+      hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
       return FALSE;
     }
   }
@@ -164,6 +193,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       HUD_ZOOM_ACTIVE = FALSE;
       return FALSE;
     }
+    
     return FALSE;
   } 
    

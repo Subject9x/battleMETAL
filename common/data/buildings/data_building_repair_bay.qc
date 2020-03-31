@@ -10,19 +10,26 @@ void() building_repair_touch;
 void() building_repair_node_think;  //cool down to prevent spam of notifications.
 
 void() hrepair_th = [0, hrepair_th]{
+  self.energy = self.energy + self.energyRate;
+  if( self.energy > self.energyMax ){
+    self.energy = self.energyMax;
+  }
+  
   if( self.trigger_field.takedamage >= DAMAGE_YES){
     self.th_walk();
     return;
   }
   else{
-    if(self.reloadValue < self.reloadMax){
+    if( self.energy > self.energyRate ){
       self.reloadValue = self.reloadValue + self.reloadRate;
+      self.energy = self.energy - self.reloadValue * 2;
       if(self.reloadValue > self.reloadMax){
         self.reloadValue = self.reloadMax;
       }
     }
   }
   building_burn();
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 
 void() hrepair_rep = [0, hrepair_rep]{
@@ -57,15 +64,20 @@ void() hrepair_rep = [0, hrepair_rep]{
         }
       }
       if( fix != world){
+        self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
         end_repair = FALSE;
-        makevectors(self.angles);
-        fx = self.origin + (v_up * 75) + (v_forward * -24);
-        pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 3, 1);
-        pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
-        trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
+        /*
+          makevectors(self.angles);
+          fx = self.origin + (v_up * 75) + (v_forward * -24);
+          
+          client_send_particle( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 2, 1);
+          client_send_particle( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -2, 1);
+          client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
+        */
+        self.compAltOffset = fix.origin;
 
-        fix.health = fix.health + (self.reloadRate * 2);
-        self.reloadValue = self.reloadValue - (self.reloadRate * (self.trigger_field.vec_size * 1.25));
+        fix.health = fix.health + self.reloadRate;
+        self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.25));
         if(fix.health >= fix.max_health){
           fix.health = fix.max_health;
           if( fix.partTypeId == M_LEGS ){
@@ -103,93 +115,115 @@ void() hrepair_rep = [0, hrepair_rep]{
     self.cockpit.think = building_repair_node_think;
     self.cockpit.nextthink = time + 3;
     self.cockpit.attack_state = ST_MELEE;
-    
-    world_update_dlight( self, -1, '0.25 0.9 0.15', 50, 2, '-1 -1 -1'); 
-    return;
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   }
 };
 
 void() hrepair_die = [0, hrepair_die1]{
-  world_remove_dlight( self );
+  if( self.deadflag > DEAD_NO ){
+    return;
+  }
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DEAD; 
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
   
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
   
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DYING;
-  self.solid = SOLID_NOT;
-  building_die_removeFire();
-  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 void() hrepair_die1 = [1, hrepair_die2]{
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hrepair_die2 = [2, hrepair_die3]{
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hrepair_die3 = [3, hrepair_die4]{};
-void() hrepair_die4 = [4, hrepair_die5]{};
-void() hrepair_die5 = [5, hrepair_die6]{
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hrepair_die6 = [6, hrepair_die7]{
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hrepair_die7 = [7, hrepair_die8]{};
-void() hrepair_die8 = [8, hrepair_die9]{};
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+};
+void() hrepair_die2 = [2, hrepair_die3]{};
+void() hrepair_die3 = [3, hrepair_die4]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+};
+void() hrepair_die4 = [4, hrepair_die5]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+};
+void() hrepair_die5 = [5, hrepair_die6]{};
+void() hrepair_die6 = [6, hrepair_die7]{};
+void() hrepair_die7 = [7, hrepair_die8]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+};
+void() hrepair_die8 = [8, hrepair_die9]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+};
 void() hrepair_die9 = [9, hrepair_die10]{
-  te_object_explode( '0.75 0.75 0.6' );
-  
-  self.deadflag = DEAD_DEAD;
-  local entity ruins;
-  ruins = spawn();
-  ruins.solid = SOLID_NOT;
-  ruins.movetype = MOVETYPE_NONE;
-
-  setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
-  ruins.vec_size = self.vec_size;
-  ruins.angles = self.angles;
-  ruins.angles_y = anglemod( 45 + crandom() * 125);
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
-  ruins.armLeft = te_building_fire_start( ruins );
-  if( ruins.vec_size > 1 ){
-    ruins.armRight = te_building_fire_start( ruins );
-    ruins.torsoLeft = te_building_fire_start( ruins );
-  }  
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
 };
-void() hrepair_die10 = [10, hrepair_die11]{
-  te_object_explode( '0.75 0.75 0.6' );};
-void() hrepair_die11 = [11, BecomeExplosion]{
-  te_object_explode( '0.75 0.75 0.6' );
+void() hrepair_die10 = [10, hrepair_die11]{};
+void() hrepair_die11 = [11, hrepair_die12]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
 };
-
-void() repair_light_up={
-  local vector lightColor;
-  if( self.faction == FACTION_PSC ){
-    lightColor = '0.25 0.85 0.35';
+void() hrepair_die12 = [12, hrepair_die13]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
+};
+void() hrepair_die13 = [13, hrepair_die14]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
+};
+void() hrepair_die14 = [14, hrepair_die15]{
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
+};
+void() hrepair_die15 = [15, hrepair_die16]{};
+void() hrepair_die16 = [16, SUB_Null]{
+  local vector ouch;
+  if( self.trigger_field != world ){
+    ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
+    t_damage( self.trigger_field, self, world, random() * self.max_health, EFF_PRC, ouch, normalize(ouch - self.trigger_field.origin) * 1);
   }
-  else{
-    lightColor = '0.95 0.25 0.15';
-  }
-  
-  //setup dlights
-  world_make_dlight( (self.origin + (v_up * 64) + (v_right * 32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50);
-  world_make_dlight( (self.origin + (v_up * 64) + (v_right * -28)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
-  world_make_dlight( (self.origin + (v_up * 64) + (v_right * 32) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
-  world_make_dlight( (self.origin + (v_up * 64) + (v_right * -28) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
-  
-  world_make_dlight( (self.origin + (v_up * 10) + (v_right * 24)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
-  world_make_dlight( (self.origin + (v_up * 10) + (v_right * -24)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
-  world_make_dlight( (self.origin + (v_up * 10) + (v_right * 24) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
-  world_make_dlight( (self.origin + (v_up * 10) + (v_right * -24) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
-  self.think = hrepair_th;
-  self.nextthink = time + 0.1;
 };
 
-/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/repair/repair.md3"); }
+[ADVISED] - put it near a power plant for more energy.
+
+Repairs vehicles, mostly for player.
+AI DOES NOT know how to use Repair Bays, sorry.
+
+Health = 600. (default)
+
+Energy Max = 1000 units. (default)
+Energy Rate = 0.67 / 0.1 tic. (default)
+
+Shield Max = 250. (default)
+Shield Rate = 0. (default)
+
+Repair Rate = 4 HP / 0.1 tic.
+Repair Max = 1250 | 750 (default based on difficulty)
+
+behavior: death() will severely damage any player standing in it when it finally kabooms
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+faction: <float> = 1, 2, 3 [REQUIRED]
+targetname : <string>, used for trigger calls from other ents.
+target : <string> name of ent to go to, usually a patrol node.
+trigOnSpawn: <string> ent, fire this ENTITY when activated.
+trigOnDeath: <string> target, fire this ENTITY when killed.
+reloadMax: <float> max amount of repair charge.
+reloadRate: <float> repair speed.
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -213,22 +247,46 @@ void() building_human_repair={
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
   macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, 0)
-  util_setHealthArmor(600, 600, 1, 100) ;
-  setsize(self, '-53 -53 0', '53 53 40');
-  self.shield = 0;
-  self.shieldMax = 250;
+  macro_set_model("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, EF_LOWPRECISION)
+  setsize(self, '-53 -53 0', '53 53 80');
+  
+  if( !self.health ){
+    self.health = self.max_health = 600;
+  }
+
+  if( !self.energy ){
+    self.energy = 0;
+  }
+  if( !self.energyMax ){
+    self.energyMax = 1000;
+  }
+  if( !self.energyRate ){
+    self.energyRate = 0.67;
+  }
+  
+  if( !self.shield ){
+    self.shield = 0;
+  }
+  if( !self.shieldMax ){
+    self.shieldMax = 250;
+  }
   self.shieldRate = 0.33;
   
-  if( skill > SKILL_REG ){
-    self.reloadValue = 750;
-    self.reloadMax = 750;
-    self.reloadRate = 0.4;
+  if( !self.reloadMax ){
+    if( skill > SKILL_REG ){
+      self.reloadMax = 750;
+    }
+    else{
+      self.reloadMax = 1250;
+    }
   }
-  else{
-    self.reloadValue = 1250;
-    self.reloadMax = 1250;
-    self.reloadRate = 0.75;
+  
+  if( !self.reloadValue ){
+    self.reloadValue = self.reloadMax;
+  }
+
+  if( !self.reloadRate ){
+    self.reloadRate = 4;
   }
 
   self.nextthink = time + 0.1;
@@ -255,21 +313,26 @@ void() building_human_repair={
   repairNode.owner = this;
   this.cockpit = repairNode;
   self = repairNode;
-    util_setModel("q3mdl/testball.md3", repairNode.skin, 0) ;
+    util_setModel("q3mdl/testball.md3", repairNode.skin, EF_LOWPRECISION) ;
     util_setCollider(FALSE, SOLID_TRIGGER, MOVETYPE_NONE) ;
     util_setHealthArmor(0, 0, 0, 0) ;
   self = this;
   setsize(repairNode, '-8 -8 -24', '8 8 32');
   setorigin(repairNode, this.compOffset);
   
-  makevectors(self.angles);
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-  
+  self.compAltOffset = self.origin;
   self.th_die = hrepair_die;
   self.th_stand = hrepair_th;
   self.th_walk = hrepair_rep;
     
-  self.think = repair_light_up;
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;  
+  if( (self.spawnflags & IT_QUAD) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
+    
+  self.think = hrepair_th;
   self.nextthink = time + 1;
 };
 
@@ -306,7 +369,9 @@ void() building_repair_touch={
   client_send_event_repairs( self.owner.trigger_field, TRUE );
   self.touch = SUB_Null;
   self.attack_state = ST_WALK;
-  world_update_dlight( self, 1, '-1 -1 -1', 0, -1, '-1 -1 -1');            
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
 };
 
 void() building_repair_node_think={

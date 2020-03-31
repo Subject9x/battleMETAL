@@ -41,15 +41,20 @@ void() data_ini_matok_={
   self.data_speed_strafe = 100;
   self.data_speed_backward = 90;
   self.data_speed_accel = 1.5;
-  #ifndef CSQC
+#ifndef CSQC
   self.yaw_speed = 3;    // AI-only 
   self.turret_yaw_speed = 3.5;// AI-only
   self.ai_angleLimits = '-125 125 0';
-  #endif
+#endif
 //=====================================
  
 //MECH COMPONENTS====================
-  
+#ifdef CSQC
+  if( (self.flags & FL_MONSTER) ){
+    self.hardpoint_cnt = 5;
+    weaponList = self;
+  }
+#endif
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', '0 6 0' );
  
@@ -68,27 +73,43 @@ void() data_ini_matok_={
   //legs
   data_ini_legs_( "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0' );
   
+#ifndef CSQC
   //camera location
   data_ini_camera_( '0 15 7', self.torsoCenter);
+#endif
 //=====================================
  
 //HARDPOINT DATA======================
+#ifndef CSQC
   data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
   data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
   data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
+#endif
+#ifdef CSQC
+  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
+  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
+  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
+  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
+  data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
+#endif
 //=====================================
 
 //HUD Data=============================
-  self.pitchMax = 55;
-  self.pitchMin = -45;
+#ifndef CSQC
   self.weaponmodel = "q3mdl/mechs/matok/matok_hud.md3";
   self.hud_model = "q3mdl/mechs/matok/matok_hud.obj";
-  self.hud_rollangle = 2.25;
-  self.hud_bob = 0.0008;
+#endif
+#ifdef CSQC
+  self.pitchMax = 55;
+  self.pitchMin = -45;
+  self.hud_rollangle = 3.25;
+  self.hud_bob = 0.035;
   self.hud_bob_cycle = 0.5;
-  self.hud_bob_up = 0.5;
+  self.hud_bob_up = 0.4;
   self.hud_bob_model = 1;
   self.hud_bob_side = 0.35;
   self.hud_bob_speed = 6.55;
@@ -100,4 +121,17 @@ void() data_ini_matok_={
   self.description = "The MATOK was the second-generation combat mech that Federal Military churned out as the threat of AUTHOR was increasing. MATOKs are the main stay of Federal squadrons today, found in almost every  deployment and any combat. | | A dangerous generalist, the MATOK is design to engage targets head on with a slew of direct-fire power and large reactor recharge capacity. | | MATOK operators have to remember not to get surrounded though, the MATOK's defensive capabilities are not as strong as its offense. Its speed is also a problem against more agile targets.";
   self.icon = "gfx/ui/mech_icons/icon_matok.png";
 //====================================
+#endif
 };
+#ifdef CSQC
+//oh the things done because csqc interpolation isn't a thing.
+//simply syncs 
+void() data_ini_matok_offsets={
+  self.centerTorso = '0 0 0';
+  self.leftTorso =  '-10 12.25 1';
+  self.rightTorso = '10 12.25 1';
+  self.leftArm = '-16 7 3';
+  self.rightArm = '16 7 3';
+  self.leg = '0 -12 0';
+};
+#endif

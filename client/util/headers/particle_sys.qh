@@ -33,19 +33,95 @@ float( float fogColor, float fogColorTarg  ) cl_particles_fogColorAdjust;
 float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust;
 void() cl_particles_fogFrame;
 
+//Particle data
+.entity effect1, effect2, effect3;
+
+.vector wind;
+
+.void() pcl_explode;  //self implementing, whoo
+.float pcl_effectnum;
+.float trail_effectnum;
+.vector pcl_velocity;
+.float pcl_lifetime;
+.float pcl_count;
+.float pcl_fadeout; //time when debris starts to fade out
+
+.float wait;
+.float spawnflags;
+.float count;
+.float count1;
+.vector dest;
+
 //===================================
-void() te_shield_think={
-
-  self.alpha = self.alpha - 0.3;
-  self.angles = vectoangles( CLIENT_entorg - self.origin );
-  
-  self.think = te_shield_think;
-  if( self.alpha <= 0 ){
-    self.alpha = 0;
-    self.think = SUB_Remove;
-  }
-
-  self.nextthink = time + 0.01;
-};
 
 vector() te_read_vector;
+vector() te_read_angle;
+
+
+//ported from effectinfo_api
+void( vector org, vector wind ) te_mech_crit;
+
+void() te_building_fire_th;
+entity( entity targetBuilding ) te_building_fire_start;
+
+void( vector org, vector setVelocity, float total ) te_field_rad;
+void( vector org, float total ) te_field_rad_light;
+
+void( vector org, vector setVelocity, float total ) te_field_mineral;
+void( vector org, float total ) te_field_mineral_light;
+
+void( vector particleOrg, vector particleEnd ) te_field_quantum;
+void( vector org, float total ) te_field_quantum_light;
+
+void( vector org, float total ) te_unit_dust;
+void() te_unit_dust_set;
+
+/*
+  Client-side explosion shells
+*/
+void() te_missile_explode_th;
+void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode;
+void() te_shield_explode_th;
+void( vector org, float vecSize ) te_shield_explode;
+void( vector explodeColor ) te_object_explode;
+
+/*
+  Wreck event is when a unit is destroyed in combat.
+  We send this event, and the client handles the entire presentation of it as much as possible.
+*/
+void() particle_vehicle_wreck_th;
+void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) particle_vehicle_wreck;
+
+/*
+  When a missile explodes...
+*/
+void() particle_missile_explode_th;
+void( vector org, float explodeSize, vector explodeColor, float onShield ) particle_missile_explode;
+
+/*
+  When a mech piece is blown off;
+*/
+void() particle_mech_chunk_th;
+void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) particle_mech_chunk;
+
+/*
+  Muzzle flash
+*/
+void( float flashId, vector flashOrg, vector flashVel, float impactStyle ) particle_muzzle_flash;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_latc;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_emp;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_las;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_mis;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_qrfl;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_rpc;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_pac;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_esr;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_mlg;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_marh;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_sfa;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_flak;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_ion;
+void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_swarm;
+
+vector( vector startOrg ) te_apply_wind;
+vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge;

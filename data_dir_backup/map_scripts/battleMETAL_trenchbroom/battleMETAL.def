@@ -983,8 +983,20 @@ DELAY 4: wait after fire before execution
 //===========================================================
 /*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/radar/radar.md3"); }
-Listening Post, has the ability to detect the player and alert friendly bots.
+
+Radar Post has the ability to detect the player and alert friendly bot to these players.
+  
+Does not require power.
+
+Max Health = 100. (default)
+
+Shield Max = 250. (default)
+
+Radar Range = 2000. (default) 
+
 -------- KEYS -------- 
+.faction : <float> = 1, 2, 3 [REQUIRED]
+.radar_range : <float> = range of radar in game units.
 .targetname : string, used for trigger calls from other ents
 .target : string name of ent to go to, usually a patrol node
 .trigOnSpawn:string target, fire this ENTITY when activated
@@ -997,91 +1009,112 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY LIGHTS_OFF
+/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/towersmall/guardtower.md3"); }
-Listening Post, has the ability to detect the player and alert friendly bots.
--------- KEYS -------- 
-.targetname : string, used for trigger calls from other ents
-.target : string name of ent to go to, usually a patrol node
-.trigOnSpawn:string target, fire this ENTITY when activated
-.trigOnDeath: string target, fire this ENTITY when killed
-.trigOnTarget: string target, fire this ENTITY when spotting a target
-.delay : float, use with trigOnTarget, wait time between calls to trigOnTarget
+
+Base Decoration building.
+  + can glow yellow.
+Does not require power.
+
+Max Health = 200. (default)
+
+Shield Max = 150. (default)
+
+-------- KEYS --------
+.faction : <float> 1, 2, 3 - [REQURIED]
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.trigOnTarget: <string> target, fire this ENTITY when spotting a target
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
   -1 = fire trigOnTarget once
-.style : float, light style. OPTIONAL
+.style : <float>, light style. OPTIONAL
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-LIGHTS_OFF 8388736: don't spawn lights with guard tower.
+LIGHTS_OFF 2097152: turns off lights from this building.
 */
 
 
 
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
-Gives ALL FRIENDLY units a shield recharge boost IF they're in the radius.
-Radius: 1000units
+Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields!
+MUST HAVE: Power Plant that can power it (check power plant radius).
+Generator does have to pay for its shield generating, these can be taxed by too many nearby units.
+
+Health = 500. (default)
+
+Energy Max = 2000 units. (default)
+Energy Rate = 0. (default)
+
+Shield Max = 300. (default)
+Shield Rate = 0. (default)
+
+Radius: 1000 units.(default)
+
+behavior: death() will DAMAGE shields of all units at ai_minrange/2
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+faction : <float> [Required], faction id - 1 | 2 | 3
+targetname : <string>, used for trigger calls from other ents.
+target : <string> name of ent to go to, usually a patrol node.
+trigOnSpawn: <string> ent, fire this ENTITY when activated.
+trigOnDeath: <string target, fire this ENTITY when killed.
+shieldRate: <float> [Optional], default is 4 / tic. set this to override default.
+shieldMax: <float> [Optional], default is 4000. set this to override default.
+ai_minrange: <float> [Optional], default is 100. set ths to override default;
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+
+
+/*QUAKED building_human_power (0.074 0.66 0.93) (-80 -80 0) (80 80 58) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
-Radius: 800units
--------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+
+Health = 1200. (default)
+
+Energy Max = 4000 units. (default)
+Energy Rate = 4 / 0.1 tic. (default)
+
+Shield Max = 300. (default)
+Shield Rate = 0. (default)
+
+Radius: 800 units.(default)
+
+behavior: death() will give remaining energy to every unit within radius/2.
+
+-------- KEYS --------
+faction : <float> [Required], faction id - 1 | 2 | 3
+targetname : string>, used for trigger calls from other ents.
+target : <string> name of ent to go to, usually a patrol node.
+trigOnSpawn:<string> ent, fire this ENTITY when activated.
+trigOnDeath: <string> target, fire this ENTITY when killed.
+energyRate: <float> [Optional], default is 4 / tic. set this to override default.
+energyMax: <float> [Optional], default is 4000. set this to override default.
+ai_minrange: <float> [Optional], default is 800. set ths to override default;
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -1102,10 +1135,19 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 
-/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_hangar (0 0 1) (-80 -80 0) (80 80 88) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/hangar/hangar.md3"); }
-Mostly just a decorating building, BUT
-you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
+
+Base Decoration building.
+ + you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
+ 
+Does Not require power.
+
+Max Health = 800.(default)
+
+ShieldMax = 600. (default)
+ShieldRate = 0. (default)
+
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -1116,105 +1158,116 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_hangar_vehicle (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_hangar_vehicle (0 0 1) (-78 -78 0) (78 78 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/hangar_vec/hangar_vehicle.md3"); }
-Mostly just a decorating building, BUT
-you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
+
+Base Decoration building.
+ + you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
+ 
+Does Not require power.
+
+Max Health = 500.(default)
+
+ShieldMax = 400. (default)
+ShieldRate = 0. (default)
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+.faction : <float> 1, 2, 3 - [REQURIED]
+targetname : <string>, used for trigger calls from other ents
+target : <string> name of ent to go to, usually a patrol node
+trigOnSpawn: <string> ent, fire this ENTITY when activated
+trigOnDeath: <string> target, fire this ENTITY when killed
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/repair/repair.md3"); }
+[ADVISED] - put it near a power plant for more energy.
+
+Repairs vehicles, mostly for player.
+AI DOES NOT know how to use Repair Bays, sorry.
+
+Health = 600. (default)
+
+Energy Max = 1000 units. (default)
+Energy Rate = 0.67 / 0.1 tic. (default)
+
+Shield Max = 250. (default)
+Shield Rate = 0. (default)
+
+Repair Rate = 4 HP / 0.1 tic.
+Repair Max = 1250 | 750 (default based on difficulty)
+
+behavior: death() will severely damage any player standing in it when it finally kabooms
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+faction: <float> = 1, 2, 3 [REQUIRED]
+targetname : <string>, used for trigger calls from other ents.
+target : <string> name of ent to go to, usually a patrol node.
+trigOnSpawn: <string> ent, fire this ENTITY when activated.
+trigOnDeath: <string> target, fire this ENTITY when killed.
+reloadMax: <float> max amount of repair charge.
+reloadRate: <float> repair speed.
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/fueltank/fueltank.md3"); }
+
+Base Decoration building.
+  
+Does not require power.
+Does not explode with damage.
+
+Max Health = 100. (default)
+
+Shield Max = 250. (default)
+
 -------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
+.faction : <float> 1, 2, 3 - [REQURIED]
+targetname : <string>, used for trigger calls from other ents
+target : <string name> of ent to go to, usually a patrol node
+trigOnSpawn: <string> ent, fire this ENTITY when activated
+trigOnDeath: <string> target, fire this ENTITY when killed
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, Survest Faction
 -------- KEYS -------- 
@@ -1244,7 +1297,7 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 
-/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, MILITAR Faction
 NOTE: auto promotion x1 on-spawn!
@@ -1277,7 +1330,7 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 
-/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, PSC Faction
 NOTE: auto promotion x2 on-spawn!
@@ -1309,7 +1362,7 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1988,6 +2041,26 @@ VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
 
+
+
+
+
+/*QUAKED map_nav_point_remote (0.753 0.788 0.431) (-10 -10 -10) (10 10 10) - VISIT_PER_CLIENT OFF_AFTER_USE
+REMOTE: quirk in server code means not all ents are sent to the player on-connect IF
+they're not in the same BSP volume. IF nav points are not visible to [info_player_start]
+when player joins, they WILL NOT be visible for use. This sub-entity fixes the issue.
+
+USAGE: simply queries nav points for the right data_idx and pipes that info.
+
+-------- KEYS -------- 
+data_idx: <float> point this to an EXISTING nav point.
+
+*/
+
+
+
+
+
 /*QUAKED map_change_fog (0.431 0.788 0.753) (-16 -16 -32) (16 16 32) REMOVE_ONTOUCH
 A Map Wrapper for the fog cvar. Allows a map to take control of the fog setting in a controllabe way. 
 This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
@@ -2088,6 +2161,32 @@ Deploy points can be tailored to specific factions, and can be activated/deactiv
 */
 
 
+
+
+/*QUAKED map_deploy_point_remote (0.431 0.753 0.788) (-26 -26 -44) (26 26 28)
+REMOTE: quirk in server code means not all ents are sent to the player on-connect IF
+they're not in the same BSP volume. IF deploy points are not visible to [info_player_start]
+when player joins, they WILL NOT be visible for use. This sub-entity fixes the issue.
+
+USAGE: works exactly like [map_deploy_point] but with the following addition:
+  + .view_ofs = <vector> the ACTUAL origin of the desired deploy point.
+    - this will be sent to player's CSQC on-spawn.
+  + .target = <string> only if you want 2 ents per deploy, the actual, and the remote.
+    - this is checked FIRST and is EITHER/OR.
+
+Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
+Deploy points can be tailored to specific factions, and can be activated/deactivated.
+
+-------- KEYS -------- 
+.faction = <float> - Deploy Point only appears for this faction
+.data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
+.isActive = <float> [bool] - if active, allow players to spawn here.  
+.trigOnSpawn = <string> [target] - map object to fire when this is created
+*/
+
+
+
+
 /*QUAKED map_fail_objective (0.431 0.788 0.753) (-16 -8 -16) (16 8 16) - ON_TOUCH
 Merely a necessary interstitial map object to set a Mission Objective to 'fail'.
 This should be used sparingly, they clean themsleves up after firing.
@@ -2146,12 +2245,15 @@ REACTIVATE 4: reactivate after countdown
 REMOVE_FIRSTUSE 8: remove after first countdown
 */
 
-/*QUAKED map_objective (0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF ACTIVE_ONTOUCH MISSION_LOSE MISSION_WIN
+
+
+
+/*QUAKED map_objective (0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF ACTIVE_ONTOUCH
   An Objective a specific map object.
   Map Objectives are named triggers that are sent to the client for interaction.
   Map Objectives MUST map to an Objective ID in the Map's MSN File.
-  These objects don't have to be anywhere specifically, they mostly just help hold game
-  state
+  In order to sync these with clients; they should be placed in the same 'holding box' as 
+  [info_player_starts] to make sure the player PVS picks them up asap.
   
 -------- KEYS -------- 
 .data_idx = must match a number in the msn_file
@@ -2166,15 +2268,41 @@ REMOVE_FIRSTUSE 8: remove after first countdown
                   2 = secondary
                   3 = tertiary
 .count = only complete objective when count is hit;
-.trigOnDeath = fire this event when Objective is 'failed', isActive == -1;
-.map = next map if MISSION_WIN
-.mapFile = next map if MISSION_LOSE
+.target = <string> fire this trigger when object is 'won;, isActive == 2;
+.trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
 -------- SPAWNFLAGS --------
 START_OFF 1: 
 ACTIVE_ONTOUCH 2: allows player to touch, set mins and maxs
-MISSION_LOSE 4: when 'failed', fire-off end-mission logic
-MISSION_WIN 8: when 'complete' fire-off end-mission logic
 */
+
+
+
+
+
+/*QUAKED map_mission_end(0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF - MISSION_LOSE - TOUCH_ACTIVE TOUCH_FACTION
+End_Mission ends the entire mission for EVERY player / faction.
+It is the source of the "Mission Fail/Succeed" message that players see on their HUDs.
+Default is play "mission successful" message for faction-matching players.
+Odds are there'll be 2 of these per single player map, 1 success, 1 fail.
+
+-------- KEYS -------- 
+.isActive = <float> enum
+            0 = Inactive
+            1 = active
+.faction = <float> faction for this objective
+.count = <float> only complete objective when count is hit;
+.map = <string> "<mapname>.bsp" - map to play next.
+
+-------- SPAWNFLAGS --------
+START_OFF 1: starts disabled, and will need at least 1 trigger call to activate before being usable!
+MISSION_LOSE 4: play "mission failed" message for faction-matching players.
+TOUCH_ACTIVE 16: allows player to touch, set mins and maxs.
+TOUCH_FACTION 32: only register touch events when other is same faction.
+*/
+
+
+
+
 
 /*QUAKED map_unlock_items (0.753 0.788 0.431) (-32 -32 -64) (32 32 64) - ONTOUCH
   will provide unlocked mechs and items to player.

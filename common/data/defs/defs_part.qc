@@ -13,11 +13,21 @@ Overview:
 
 #ifndef CSQC
 .string modelPath;
-.entity partPrev;     //walk the chain
-.entity partNext;     //chain entity of next part in unit's part list
 #endif
 
+#ifdef CSQC
+  .vector centerTorso;
+  .vector leftTorso;
+  .vector rightTorso;
+  .vector leftArm;
+  .vector rightArm;
+  .vector leg;
+#endif
+
+.entity partPrev;     //walk the chain
+.entity partNext;     //chain entity of next part in unit's part list
 .vector compAltOffset;    //useful alt offset
+.vector compAltOffsetCache;    ///cached offset for constant reference
 .float partParentId;  //component id of PARENT
 .float partTypeId;    //component id
 .vector compOffset;

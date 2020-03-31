@@ -84,6 +84,7 @@ string HUD_TEXT_RADAR_PASSIVE = "Radar: Passive";
 //System Functions
 void() hud_event_frame;
 void( float eventAdd, float limitMax) hud_event_enqueue;
+void() hud_event_clear;
 
 //Event functions
 void() hud_event_critical_left_arm;

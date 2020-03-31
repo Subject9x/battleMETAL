@@ -283,6 +283,7 @@ qsrc/misc.qc
   main/map/map_change_wind.qc
   main/map/map_damage_zone.qc
   main/map/map_deploy_point.qc
+  main/map/map_end_mission.qc
   main/map/map_nav_point.qc
   main/map/map_objective.qc
   main/map/map_misc_model.qc

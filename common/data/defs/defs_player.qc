@@ -9,6 +9,7 @@ Overview:
 	
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
+
 .entity w_slot;     //use this for teh linked list goodness
 .float data_type;
 
@@ -24,18 +25,39 @@ Overview:
 .float hud_mode;  //sway mode
 .entity hud_ent;  //fixes sway mode set bug
 
+.entity hudTorsoCenter;
+.entity hudTorsoLeft;
+.entity hudTorsoRight;
+.entity hudArmLeft;
+.entity hudArmRight;
+
+.entity hudWeapon;  //used as list-id for hud weapon ents.
+
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
 .float equipSize;
+
+.float next_wepn1;
+.float next_wepn2;
+.float next_wepn3;
+.float next_wepn4;
+.float next_wepn5;
+.float next_wepn6;
+.float next_wepn7;
+.float next_wepn8;
+.float next_wepn9;
+
+.float missionStatus; //moved to player level for network
+
+#ifdef CSQC
+.float particleCubeFlag;
+#endif
 
 #ifndef CSQC
 .float nextVecChoice;
 .float i_reserve; //how many reserve points does the unit cost?
 
 .float max_armor; //why wasn't this ever included!?
-
-.float was_hit; //used for hit direction calculation mostly
-.float hitdir_buffer; //used for hit direction, is cleared every frame
 
 .float	dmgtime; //pulled from client.qc
 //.float playermovestate, playermovebegin; //pulled from dpqc player.qc
@@ -65,16 +87,6 @@ Overview:
 .float laser_sight_timer;
 .vector laser_sight_org;
 
-.float next_wepn1;
-.float next_wepn2;
-.float next_wepn3;
-.float next_wepn4;
-.float next_wepn5;
-.float next_wepn6;
-.float next_wepn7;
-.float next_wepn8;
-.float next_wepn9;
-
 .vector ramAngle;
 .float ramCharge;
 .float ramCool;
@@ -82,4 +94,6 @@ Overview:
 .vector ramVelocity;
 .float ramUp;
 .float ramUpMax;
+
+.entity clientData;
 #endif

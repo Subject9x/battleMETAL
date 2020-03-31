@@ -8,43 +8,91 @@ Overview:
     Explodes on touch
 */
 
+#ifndef CSQC
 void() data_prj_mis_touch;
 void() data_projectile_rocket_think_;
+#endif CSQC
+
+#ifdef CSQC
+void() projectile_rocket_expl={
+  local vector hitColor;
+  local float hitBloom;
+  local float hitScale;
+  
+  if( self.impactType == IMPACT_SKY ){
+    return;
+  }
+  if( self.impactType == IMPACT_SHIELD ){
+    hitColor = '0 1.25 0.67';
+    hitBloom = -0.01;
+    hitScale = 0.5;
+    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
+  }
+  else{
+    hitColor = '0.99 0.6 0.18';
+    hitBloom = 0.01;
+    hitScale = 1;
+    pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
+  }
+  te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
+};
+#endif
 
 void() data_projectile_ini_rocket_={
   self.classname = "missile";
-  self.touch = data_prj_mis_touch;
   self.data_velocity = 1300;
-  self.model = "q3mdl/proj/mdl_proj_mis.md3";
   self.data_lifetime = 0.56;
   
-  //cosmetics
-  self.effects = EF_NOSHADOW;
-  self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");
-  self.think = data_projectile_rocket_think_;
+  #ifdef CSQC
+    //cosmetics
+    self.model = "q3mdl/proj/mdl_proj_mis.md3";
+    self.effects = EF_NOSHADOW;
+    self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");
+    self.pcl_explode = projectile_rocket_expl;
+  #endif
+  
+  #ifndef CSQC
+    self.touch = data_prj_mis_touch;
+    self.think = data_projectile_rocket_think_;  
+  #endif
 };
 
+#ifndef CSQC
 void() data_prj_mis_touch={
+  local float debris, debrisType;
+  self.touch = SUB_Null;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  
+  self.impactType = IMPACT_DIRT;
+  debris = rint(3 + random() * 5);
 	if ( pointcontents(self.origin) == CONTENT_SKY){
-    remove(self);
-		return;
+    self.impactType = IMPACT_SKY;
 	}
-
+ 
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
-      remove(self);
-      return;
+      self.impactType = IMPACT_SHIELD;
     }
+    else{
+      self.impactType = IMPACT_ARMOR;
+      debris = rint(4 + random() * 6);
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
+    }
+    debris = 0;
   }
-  makevectors(self.angles);
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 5, 1);
+  if( debris > 0 ){
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, debrisType );
+  }
   
-  remove(self);
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.05;
 };
 
 void() data_projectile_rocket_think_={
+  self.SendFlags |= SENDFLAG_MOVE;
   self.think = data_projectile_rocket_think_;
   self.nextthink = time + 0.05;
   if( time > self.data_lifetime ){
@@ -52,3 +100,4 @@ void() data_projectile_rocket_think_={
     self.nextthink = time + 0.01;
   }
 };
+#endif CSQC

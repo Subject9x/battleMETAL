@@ -8,7 +8,7 @@ Overview:
 	ID in the unit's data file under self.data_idx
 */
 
-float UID_ITEM_EMPTY = -1;
+float UID_ITEM_EMPTY = 0;
 float UID_ITEM_NULL = 0;
 //-----WEAPONS-----------
 float UID_ITEM_light_autocannon     = 1;

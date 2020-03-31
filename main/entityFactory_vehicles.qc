@@ -82,6 +82,10 @@ void() build_unit_camera={
     self.view_ofs = self.origin - partParent.origin;
     self.angles = partParent.angles;
     self.v_angle = self.angles - partParent.angles;
+    self.effects = self.effects | EF_LOWPRECISION;
+    if( (this.flags & FL_MONSTER) ){
+      self.effects = self.effects | EF_NODRAW;
+    }
   self = this;
 };
 
@@ -93,11 +97,8 @@ void() build_unit_weapon_list={
   weaponMount = self.w_slot;
   if( weaponMount ){
     weaponCount = 1;
-    unitPartList.partNext = weaponMount;  //should be last piece added to unit, now we add weapons
-    unitPartList = weaponMount;
     while( weaponMount ){
       weaponBuild = weaponMount;
-      unitPartList.partNext = weaponMount;
       switch( weaponCount ){
         case 1:
           build_unit_weapon( self.next_wepn1, self, stat_w1_id);
@@ -157,6 +158,9 @@ void() build_unit_weapon_list={
       weaponCount = weaponCount + 1;
       weaponMount.partPrev = prevWeapon;
       prevWeapon = weaponMount;
+      if( (weaponMount.owner.flags & FL_MONSTER) ){
+        weaponMount.effects = weaponMount.effects | EF_NODRAW;
+      }
       weaponMount = weaponMount.w_slot;
     }
   }
@@ -214,6 +218,7 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
         self.w_attack = SUB_Null; //remove upgrade function
       }
     }
+    self.wepFireOffsetCache = self.wepFireOffset;
     self.th_die = ctrl_die_weapon;
   self = parentEntity;
 };
@@ -241,8 +246,7 @@ void() build_mech_unit={
   
   build_mech_torsoCenter();
   
-  self.energy = self.energyMax;
-  self.shield = self.shieldMax;
+
   self.health = self.max_health;
   self.evasionDrain = (4 - self.vec_size) / 6.7 + EVADE_DRAIN_PERCENT;
   self.shieldRateMod = 1.33; //unmodified here.
@@ -287,7 +291,8 @@ void() build_mech_unit={
   if( self.cockpit ){
     build_unit_camera();
   }
-  
+  self.energy = self.energyMax;
+  self.shield = self.shieldMax;
   self.doRadarSweep = radarSweepBasic;
   
   if( self.hardpoint_cnt > 0 ){
@@ -376,30 +381,35 @@ void() build_mech_bot={
   self.torsoCenter.yaw_speed = self.turret_yaw_speed;
   unitPartList.partNext = self.torsoCenter;
   unitPartList = unitPartList.partNext;
+  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   
   if( self.torsoRight ){
     build_mech_torsoRight();
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
+    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
   }
   if( self.torsoLeft ){
     build_mech_torsoLeft();
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
+    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
   }
   if( self.armRight ){
     build_mech_armRight();
     self.armRight.partPrev = unitPartList;
     unitPartList.partNext = self.armRight;
     unitPartList = unitPartList.partNext;
+    self.armRight.effects = self.armRight.effects | EF_NODRAW;
   }
   if( self.armLeft ){
     build_mech_armLeft();
     self.armLeft.partPrev = unitPartList;
     unitPartList.partNext = self.armLeft;
     unitPartList = unitPartList.partNext;
+    self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
   }
   if( (self.legs) ){
     build_mech_legs();
@@ -554,13 +564,14 @@ void() build_vehicle_unit={
   hmaxs = self.maxs;
   hmins = self.mins;
   
+  //->CSQC
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
-  self.skin = self.faction - 1;
-  if( self.skin < 0 ){
-    self.skin = 0;
-  }
+  //self.skin = self.faction - 1;
+  //if( self.skin < 0 ){
+  //  self.skin = 0;
+ // }
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
-  macro_set_model(self.model, self.skin, 0)
+  macro_set_model("q3mdl/testball.md3", 0, 0) //->CSQC for specifics
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
@@ -577,6 +588,7 @@ void() build_vehicle_unit={
     self.torsoCenter.partPrev = unitPartList;
     unitPartList.partNext = self.torsoCenter;
     unitPartList = unitPartList.partNext;
+    self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   }
   
   if( (self.torsoRight) ){
@@ -584,12 +596,14 @@ void() build_vehicle_unit={
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
+    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
   }
   if( (self.torsoLeft) ){
     build_mech_torsoLeft();
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
+    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
   }
   if( (self.cockpit) ){
     build_unit_camera();

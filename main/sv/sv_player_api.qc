@@ -26,7 +26,6 @@ void() PlayerPreThink = {
     return;
   }
   
-  
   if( self.playerState == PLAYER_INTERMSN ){
     client_push_player_info_thin();
   }
@@ -61,7 +60,6 @@ void() PlayerPreThink = {
   if( !self.button8 ){
     if( self.playerState == PLAYER_SPRINT_ON ){
       self.playerState = PLAYER_ACTIVE;
-      client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
       if( time > self.ramCharge ){
         self.ramAngle_y = self.v_angle_y;
       }
@@ -133,10 +131,6 @@ void() PlayerPostThink = {
   }
   ButtonCommands();
   
-  self.stat_cofs_x = self.origin_x;
-  self.stat_cofs_y = self.origin_y;
-  self.stat_cofs_z = self.origin_z;
-  
   //Update Target information
   sv_updateTargetInfo();
   
@@ -159,10 +153,11 @@ void() PlayerPostThink = {
     ctrl_update_mechplayer();
     
     local entity wep_chain;
-    wep_chain = self.w_slot;
-    while(wep_chain){
+    for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
+      if( wep_chain.owner != self ){
+        continue;
+      }
       ctrl_weapon_think(wep_chain);
-      wep_chain = wep_chain.w_slot;
     }
     client_updateWeaponReloads();
     
@@ -186,9 +181,6 @@ void() PlayerPostThink = {
       self.compOffset = trace_endpos;
       //te_beam_esr(self.origin + (v_up * -4), trace_endpos);
     }
-    self.stat_cofs_x = self.origin_x;
-    self.stat_cofs_y = self.origin_y;
-    self.stat_cofs_z = self.origin_z;
   }
   //========================================  
 
@@ -252,14 +244,19 @@ void() PlayerPostThink = {
     }
   }
   
-  
   //after server processes everything, push data to client
   client_push_player_info();
  
 	if (!(self.flags & FL_ONGROUND)){
 		self.jump_flag = self.velocity_z;
   }
-
+  if( self.clientData ){
+    local float prevCrit;
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_MOVE;
+    if( self.damageValue > 0 ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
+    }
+  }
 };
 
 
@@ -286,10 +283,11 @@ void() PlayerPostThink_powerup={
   ctrl_update_mechplayer();
   
   local entity wep_chain;
-  wep_chain = self.w_slot;
-  while(wep_chain){
+  for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
+    if( wep_chain.owner != self ){
+      continue;
+    }
     ctrl_weapon_think(wep_chain);
-    wep_chain = wep_chain.w_slot;
   }
   client_updateWeaponReloads();
 
@@ -299,11 +297,7 @@ void() PlayerPostThink_powerup={
       makevectors(self.v_angle);
       traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
       self.compOffset = trace_endpos;
-      //te_beam_esr(self.origin + (v_up * -4), trace_endpos);
     }
-    self.stat_cofs_x = self.origin_x;
-    self.stat_cofs_y = self.origin_y;
-    self.stat_cofs_z = self.origin_z;
   }
 
   //after server processes everything, push data to client
@@ -320,9 +314,6 @@ void() PlayerDie={
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
     client_push_player_info();
-    msg_entity = self;
-    WriteByte( MSG_ONE, SVC_SETVIEWPORT );
-    WriteEntity( MSG_ONE, self );    
   }
   self.effects = 0;
   
@@ -352,7 +343,8 @@ void() PlayerDie={
   else{
     te_mission_lose();
   }
-
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
+  
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
@@ -372,9 +364,82 @@ void() PlayerDieEnd={
   self.nextthink = time + 0.1;
 };
 
-void() PlayerDead={
+void() PlayerDieNetwork={
+	if( self.deadflag ){
+		bprint("warning: PlayerDie called twice\n");
+		return;
+	}
+	if(self.data_type == DATA_MECH){
+    client_push_player_info();
+    ctrl_unit_clean_wgroups();
+    ctrl_mech_die_player();
+  }
+  self.effects = 0;
+  
+	self.deadflag = DEAD_DYING;
+	self.solid = SOLID_CORPSE;
+	self.flags = self.flags - (self.flags & FL_ONGROUND);
+	self.movetype = MOVETYPE_TOSS;
+  setsize(self, '-4 -4 -4', '4 4 4');
+	setorigin(self, self.origin);
+  
+  if (self.velocity_z < 10){
+    self.velocity_x = self.velocity_x + (crandom() * ((4 - self.vec_size) * 100));
+    self.velocity_y = self.velocity_y + (crandom() * ((4 - self.vec_size) * 100));
+    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
+  }
+  
+	self.angles_x = 0;
+	self.angles_z = 0;
+  self.angles_y = 0;
+  self.avelocity = '0 0 0';
+  
+  /*
+  //update objectives on player death.
+  client_push_mapobjects();
+  if( MISSION_STATUS ){        
+    //only send unlocks if player won mission
+    //client_sendMissionUnlocks();
+    te_mission_win();
+  }
+  else{
+    te_mission_lose();
+  }*/
+
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
+  
+  self.think = PlayerDieEnd;
+  self.nextthink = time + GAME_TIME_TO_DEBRIEF;
+};
+
+void() PlayerDieNetworkEnd={
+  self.movetype = MOVETYPE_NONE;
+  self.playerState = PLAYER_IN_MENU;
+  
+  //client_sendEndMission(self, MISSION_STATUS );
+  //client_push_player_info();
+  
+  
+  local entity start;
+  start = find(world, classname, "info_player_start");
+  if( start ){
+    setorigin( self, start.origin);
+  }
+  
+  self.think = PlayerDead;
+  self.nextthink = time + 0.1;
+};
+
+
+
+void() PlayerDead={  
+  ctrl_unit_cleanup_player();
+  player_unmakeMech();
+  player_makeObserver();
+  
 	self.nextthink = -1;
 	self.deadflag = DEAD_DEAD;
+  
 };
 
 //called in PlayerPreThink() when self.deadflag == DEAD_DEAD
@@ -402,10 +467,8 @@ void() PlayerDeathThink={
 	self.button7 = 0;
   self.button8 = 0;
 	
-  //self.deadflag = DEAD_NO;
-  player_unmakeMech();
-  ctrl_unit_cleanup_player();
-  player_makeObserver();
+  self.deadflag = DEAD_NO;
+
   if( cvar("deathmatch") || cvar("coop") ){
     spawnpoint_select();
     self.movetype = MOVETYPE_FLY;

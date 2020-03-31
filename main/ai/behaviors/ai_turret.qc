@@ -39,14 +39,13 @@ void() ai_turret_clean={
 */
 void() ai_turret_die={
 
-  if( self.deadflag >= DEAD_DYING ){
+  if( self.deadflag > DEAD_NO ){
     return; //double play prevention
   }
   
-  local vector  v;
   ai_sfx_dead();
   
-  self.deadflag = DEAD_DYING;
+  self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
   self.colormod = '0.33 0.33 0.33';
@@ -54,10 +53,13 @@ void() ai_turret_die={
   //annoying that turret corpses block a lot of fire.
   self.maxs_x = self.maxs_x * 0.33;
   self.maxs_y = self.maxs_y * 0.33;
-  self.maxs_z = self.maxs_z * 0.67;
+  self.maxs_z = (self.maxs_z + (self.mins_z * -1)) * 0.67;
   self.mins_x = self.maxs_x * -1;
   self.mins_y = self.maxs_y * -1;
+  self.mins_z = 0;
   setsize(self, self.mins, self.maxs);
+  droptofloor();
+  self.solid = SOLID_NOT;
   
   local entity w_chain;
   w_chain = self.w_slot;
@@ -73,15 +75,15 @@ void() ai_turret_die={
   trigger_event( self, self.trigOnDeath );
 
   makevectors( self.angles );
-  v = self.origin + (v_up * 2);
-  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 240, 0.67, 360); 
   
-
   ai_call_for_help( self.enemy );
   self.think = ai_turret_clean;
   self.nextthink = time + 0.75;
   
+  te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  self.effects = self.effects | EF_LOWPRECISION;
 };
 
 void() ai_turret_die_burn={  
@@ -739,4 +741,13 @@ void() ai_turret={
   
   self.think = ai_turret_patrol1;
   self.nextthink = time + (random()*0.5); //spread out thinks
+  
+  local entity wep;
+  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
+    wep.effects = EF_NODRAW;
+  }  
+  self.torsoCenter.effects = EF_NODRAW;
+  
+  self.SendEntity = ctrl_send_turret;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
 };

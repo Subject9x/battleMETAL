@@ -279,29 +279,20 @@ void() navBarListener={
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025), TRUE)){
     //MENU - DEPLOY button
-    local float itr, idx;
-    
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
     }
     
-    itr = 0;
-    idx = 0;
-    while( itr < 33 ){
-      local float nactive;
-      nactive = DEPLOY_POINTS_ACTIVE[itr];
-      if( nactive == TRUE ){
-        DEPLOY_IDS[idx] = itr;
-        idx = idx + 1;
+    if( CLIENT_MENU_deploy == world ){
+      CLIENT_MENU_deploy = DEPLOYPOINT;
+      CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
+      if( !(LAUNCH_VALIDATION & VALID_NODE) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
-      itr = itr + 1;
     }
     SPRITE_deploy_point_FRAME = 1;
-    //this does assume there's at least 1 deploy point on the map for the player...
-    DEPLOY_POINT_ID = 0;
-    DEPLOY_POINT_END = idx - 1;
     CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
-    CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+    
     if( CLIENT_MENU_nav_pnt != -1 ){
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
     }
@@ -311,6 +302,8 @@ void() navBarListener={
 void() mechAcceptButtonListener={
   local entity hardpoint;
   local float bit;
+  local string weaponsList;
+  local float totalHardpoints;
   
   if( menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ, FALSE) ){
     if( (LAUNCH_VALIDATION &  VALID_NODE) ){
@@ -323,21 +316,81 @@ void() mechAcceptButtonListener={
       ui_data_load_hud( MECH_DATA_ID );
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
       
+
       bit = 1;
+      totalHardpoints = 1;
+      weaponsList = " ";
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
+      CLIENT_weapon_state = 0;
       while( hardpoint ){
-        cl_setweapon(bit, hardpoint.data_idx);
+        weaponsList = strcat(weaponsList, ftos(hardpoint.data_idx), " ");
+        
+        //bind weapon data, reduce server traffic
+        switch(bit){
+          case WEAPON1:
+            CLIENT_stat_w1_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON2:
+            CLIENT_stat_w2_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON3:
+            CLIENT_stat_w3_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON4:
+            CLIENT_stat_w4_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON5:
+            CLIENT_stat_w5_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON6:
+            CLIENT_stat_w6_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON7:
+            CLIENT_stat_w7_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON8:
+            CLIENT_stat_w8_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON9:
+            CLIENT_stat_w9_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+        }
         bit = bit * 2;
         hardpoint = hardpoint.w_slot;
+        totalHardpoints = totalHardpoints + 1;  
       }
-    
-      cl_setweapongroup(1, CLIENT_MENU_nex_grp1);
-      cl_setweapongroup(2, CLIENT_MENU_nex_grp2);
-      cl_setweapongroup(3, CLIENT_MENU_nex_grp3);
-      cl_setweapongroup(4, CLIENT_MENU_nex_grp4);
+      
+      CLIENT_hardpoint_cnt = totalHardpoints;
+      CLIENT_stat_rdr_mode = CLIENT_stat_rdr_mode_prev = 1; //go active radar on spawn;      
+      CLIENT_radar_range = MECH_DATA_RAD * 2; //go active on spawn
+      
+      CLIENT_health_center_prev = CLIENT_health_center = MECH_DATA_HPCT;
+      CLIENT_health_legs_prev = CLIENT_health_legs = MECH_DATA_HPLG;
+      CLIENT_health_torso_left_prev = CLIENT_health_torso_left = MECH_DATA_HPST;
+      CLIENT_health_torso_right_prev = CLIENT_health_torso_right = MECH_DATA_HPST;
+      CLIENT_health_arm_left_prev = CLIENT_health_arm_left = MECH_DATA_HPAR;
+      CLIENT_health_arm_right_prev = CLIENT_health_arm_right = MECH_DATA_HPAR; 
+      
+      cl_set_hud_vars(UI_HANGAR_DATA_mech);
+      
+      cl_setweapon(totalHardpoints, weaponsList);
+      cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
       cl_spawnmech(); 
 
-      CLIENT_MENU_nav_pnt = -1;
+      hud_event_clear();
+      hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
+      //mark time gettime()?
+      //MISSION_TIME_START
+      
       MENU_ACTIVE = FALSE;
     }
   }

@@ -9,3 +9,6 @@ void() ClientKill;
 void() PutClientInServer;
 void() ClientConnect;
 void() ClientDisconnect;
+
+void() client_data;
+float( float isNew, float changeFlags ) send_client_data;
