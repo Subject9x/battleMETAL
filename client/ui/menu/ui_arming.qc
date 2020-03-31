@@ -609,10 +609,33 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
       drawpic(lofs + gui_percentToPixelRawVec('16 -8'), hardpoint.icon, gui_percentToPixelRawVec('20 20'), '1 1 1', 1,0);
     }
     if( !(hardpoint.damageType & DMG_MSC) ){    
-      gui_renderTintImage((CLIENT_MENU_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
-      gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
-      gui_renderTintImage((CLIENT_MENU_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
-      gui_renderTintImage((CLIENT_MENU_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+      if(CLIENT_MENU_nex_grp1 & bit){
+        drawpic( lofs + gui_percentToPixelRawVec('40 -3'), HUD_RAD_PIP_BLD, groupButtonSize, CLR_DEF_ARM_OK * 2, 1.5, 0);
+      }
+      else{
+        drawpic( lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_64, groupButtonSize, CLR_DEF_TXT_CANTSELECT, 1, 0);
+      }
+      
+      if(CLIENT_MENU_nex_grp2 & bit){ 
+        drawpic( lofs + gui_percentToPixelRawVec('60 -3'), HUD_RAD_PIP_BLD, groupButtonSize, CLR_DEF_ARM_OK * 2, 1.5, 0);
+      }
+      else{
+        drawpic( lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_64, groupButtonSize, CLR_DEF_TXT_CANTSELECT, 1, 0);
+      }
+    
+      if(CLIENT_MENU_nex_grp3 & bit){   
+        drawpic( lofs + gui_percentToPixelRawVec('80 -3'), HUD_RAD_PIP_BLD, groupButtonSize, CLR_DEF_ARM_OK * 2, 1.5, 0);
+      }
+      else{
+        drawpic( lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_64, groupButtonSize, CLR_DEF_TXT_CANTSELECT, 1, 0);
+      }
+    
+      if(CLIENT_MENU_nex_grp4 & bit){   
+        drawpic(lofs + gui_percentToPixelRawVec('100 -3'), HUD_RAD_PIP_BLD, groupButtonSize, CLR_DEF_ARM_OK * 2, 1.5, 0);
+      }
+      else{
+        drawpic( lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_64, groupButtonSize, CLR_DEF_TXT_CANTSELECT, 1, 0);
+      }
     }
     
     bit = bit * 2;
