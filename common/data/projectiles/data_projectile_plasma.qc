@@ -10,7 +10,7 @@ Overview:
 
 #ifndef CSQC
 float data_projectile_plasma_burn_time = 1.5;
-float data_projectile_plasma_burn_dmg = 0.75;
+float data_projectile_plasma_burn_dmg = 0.1;
 
 void() data_projectile_plasma_touch;
 void() data_projectile_plasma_burn_ini_;
@@ -44,8 +44,8 @@ void() projectile_plasma_expl={
 
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
-  self.data_velocity = 1200;
-  self.data_lifetime = 0.649;
+  self.data_velocity = 1500;
+  self.data_lifetime = 0.75;
   
   #ifdef CSQC
     //cosmetics
@@ -85,7 +85,7 @@ void() data_projectile_plasma_burn_th={
     return;
   }
   
-  t_damage(self.enemy, self, self.owner, self.damageValue, self.cockpit.origin, '0 0 0');
+  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.cockpit.origin, '0 0 0');
   
   if(time > self.data_lifetime){
     self.think = SUB_Remove;
@@ -130,7 +130,6 @@ void() data_projectile_plasma_touch={
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      damage = damage * (1 - exp);
       hit = t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
       self.enemy = other;
       self.cockpit = hit;

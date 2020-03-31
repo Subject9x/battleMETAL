@@ -17,12 +17,12 @@ void() data_ini_plasma_={
 
   self.data_idx = 6;  
   
-  self.w_clipsize = 6;
-  self.reloadRate = 0.18;
-  self.reloadMax = 5;
+  self.w_clipsize = 1;
+  self.reloadRate = 0.33;
+  self.reloadMax = 0.33;
   self.energyRate = 0;
   
-  self.w_range = 1000;
+  self.w_range = 1200;
   self.damageValue = 10;
   self.damageType = DMG_BAL;
   

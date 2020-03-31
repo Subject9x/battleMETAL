@@ -21,8 +21,8 @@ void() data_ini_particle_cannon_={
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
-  self.reloadMax = 9;
-  self.energyRate = 250;
+  self.reloadMax = 7.5; //9
+  self.energyRate = 300;  //250
 
   self.w_range = 2000;
   self.damageValue = 250;

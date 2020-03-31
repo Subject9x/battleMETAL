@@ -37,9 +37,9 @@ void() data_ini_balaket_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 225;
-  self.data_speed_strafe = 175;
-  self.data_speed_backward = 150;
+  self.data_speed_forward = 200;  //225;
+  self.data_speed_strafe = 165;   //175;
+  self.data_speed_backward = 140; //150;
   self.data_speed_accel = 1.5;
 #ifndef CSQC
   self.yaw_speed = 3.75;    // AI-only 

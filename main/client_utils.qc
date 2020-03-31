@@ -284,8 +284,14 @@ void(string str, float tokens) client_ParseMechCommand={
     if( self.data_type == DATA_MECH ){
       client_update_faction();
     }
+    else{
+      if( GAMETYPE == GAMEMODE_DM ){
+        self.data_type = DATA_POBS;
+        mapfile_pvp_load(self.faction);
+        PutClientInServer();
+      }
+    }
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
-    mapfile_pvp_load(self.faction);
     return;
   }
   

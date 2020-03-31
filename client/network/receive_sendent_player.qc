@@ -196,6 +196,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.data_type = ReadByte();
     self.origin = te_read_vector();
     self.faction = ReadByte();
+    self.flags = ReadByte();
     self.netname = strzone( ReadString() );
     setorigin(self, self.origin);
   }

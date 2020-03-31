@@ -35,4 +35,7 @@ float IMP_SHOWOBJ = 25;
 float IMP_ZOOM = 26;
 float IMP_SLIDE = 27;
 
+float IMP_FAC_NEXT = 28;
+float IMP_FAC_PREV = 29;
+
 void(float selector) mpls_groupFire;

@@ -182,6 +182,42 @@ void() ImpulseCommands ={
     }
   }
 
+  if(self.impulse == IMP_FAC_NEXT){
+    self.faction = self.faction + 1;
+    if( self.faction > 3 ){
+      self.faction = 1;
+    }
+    if( self.data_type == DATA_MECH ){
+      client_update_faction();
+    }
+    else{
+      if( GAMETYPE == GAMEMODE_DM ){
+        self.data_type = DATA_POBS;
+        mapfile_pvp_load(self.faction);
+        PutClientInServer();
+      }
+    }
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+  }
+  
+  if(self.impulse == IMP_FAC_PREV){
+    self.faction = self.faction - 1;
+    if( self.faction < 1 ){
+      self.faction = 3;
+    }
+    if( self.data_type == DATA_MECH ){
+      client_update_faction();
+    }
+    else{
+      if( GAMETYPE == GAMEMODE_DM ){
+        self.data_type = DATA_POBS;
+        mapfile_pvp_load(self.faction);
+        PutClientInServer();
+      }
+    }
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+  }
+
 	self.impulse = 0;
 };
 

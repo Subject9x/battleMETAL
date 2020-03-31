@@ -58,21 +58,41 @@ void() ctrl_updateLegs={
 
 void() ctrl_dieLegs={
   local entity newLegs;
+  local entity check;
+  local float blown;
   //leg critical hit
   if( self.owner.deadflag == DEAD_NO ){
     //leg critical hit event.
     if( !(self.flags & FL_DISARMED) ){
       if( self.health <= 0 ){
-        self.flags = self.flags | FL_DISARMED;
-        self.owner.data_speed_forward = self.owner.data_speed_forward / 2;
-        self.owner.data_speed_strafe = self.owner.data_speed_strafe / 2;
-        self.owner.data_speed_backward = self.owner.data_speed_backward / 2;
-        if( (self.owner.flags & FL_MONSTER) ){
-          if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
-            self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+        blown = FALSE;
+        for( check = self.owner.w_slot; check != world; check = check.w_slot ){
+          if( blown ){
+            continue;
           }
-          if( !(self.owner.damageValue & M_LEGS) ){
-            self.owner.damageValue = self.owner.damageValue | M_LEGS;
+          if( check.deadflag != DEAD_NO ){
+            continue;
+          }
+          if( check.data_idx == UID_ITEM_turbo_charger){
+            blown = TRUE;
+            newLegs = self;
+            self = check;
+              check.th_die();
+            self = newLegs;
+          }
+        }
+        if( !blown ){
+          self.flags = self.flags | FL_DISARMED;
+          self.owner.data_speed_forward = self.owner.data_speed_forward * 0.7;  // /2
+          self.owner.data_speed_strafe = self.owner.data_speed_strafe * 0.8;
+          self.owner.data_speed_backward = self.owner.data_speed_backward;  // /2
+          if( (self.owner.flags & FL_MONSTER) ){
+            if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
+              self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+            }
+            if( !(self.owner.damageValue & M_LEGS) ){
+              self.owner.damageValue = self.owner.damageValue | M_LEGS;
+            }
           }
         }
       }
