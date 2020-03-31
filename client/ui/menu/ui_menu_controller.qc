@@ -304,6 +304,7 @@ void() mechAcceptButtonListener={
   local float bit;
   local string weaponsList;
   local float totalHardpoints;
+  local float turboTotalPerc;
   
   if( menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ, FALSE) ){
     if( (LAUNCH_VALIDATION &  VALID_NODE) ){
@@ -316,7 +317,6 @@ void() mechAcceptButtonListener={
       ui_data_load_hud( MECH_DATA_ID );
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
       
-
       bit = 1;
       totalHardpoints = 1;
       weaponsList = " ";
@@ -324,6 +324,11 @@ void() mechAcceptButtonListener={
       CLIENT_weapon_state = 0;
       while( hardpoint ){
         weaponsList = strcat(weaponsList, ftos(hardpoint.data_idx), " ");
+        
+        //turbocharger upgrade...
+        if( hardpoint.data_idx == UID_ITEM_turbo_charger ){
+          turboTotalPerc = turboTotalPerc + (0.4 - (UI_HANGAR_DATA_mech.vec_size/10));
+        }
         
         //bind weapon data, reduce server traffic
         switch(bit){
@@ -380,7 +385,7 @@ void() mechAcceptButtonListener={
       CLIENT_health_arm_left_prev = CLIENT_health_arm_left = MECH_DATA_HPAR;
       CLIENT_health_arm_right_prev = CLIENT_health_arm_right = MECH_DATA_HPAR; 
       
-      cl_set_hud_vars(UI_HANGAR_DATA_mech);
+      cl_set_hud_vars(UI_HANGAR_DATA_mech, turboTotalPerc);
       
       cl_setweapon(totalHardpoints, weaponsList);
       cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );

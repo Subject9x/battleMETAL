@@ -255,7 +255,6 @@ void() build_mech_unit={
   
 
   self.health = self.max_health;
-  self.evasionDrain = (4 - self.vec_size) / 6.7 + EVADE_DRAIN_PERCENT;
   self.shieldRateMod = 1.33; //unmodified here.
   
   setsize(self, tempMin, tempMax);
@@ -380,7 +379,8 @@ void() build_mech_bot={
   self.energy = self.energyMax;
   self.shield = self.shieldMax;
   self.health = self.max_health;
-  self.evasionDrain = EVADE_DRAIN_PERCENT;
+  self.evasionDrain = self.vec_size * 0.75;
+  self.evasionDrain = self.vec_size;
   
   unitPartList = self;
   
@@ -585,7 +585,7 @@ void() build_vehicle_unit={
   self.shieldHitDelay = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
-  self.evasionDrain = EVADE_DRAIN_PERCENT;
+  self.evasionDrain = self.vec_size;
   
   unitPartList = self;
   

@@ -49,6 +49,9 @@ Overview:
 
 .float missionStatus; //moved to player level for network
 
+
+.float ramUpMax;
+
 #ifdef CSQC
 .float particleCubeFlag;
 #endif

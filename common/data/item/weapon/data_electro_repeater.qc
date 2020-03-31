@@ -11,10 +11,11 @@ Overview:
       Inaccurate
       spin up and cooldown
 */
-float DATA_ESR_BEAM_COUNT = 3;
-float DATA_ESR_COOLDOWN_MAX = 2;
+
 
 #ifndef CSQC
+float DATA_ESR_BEAM_COUNT = 3;
+float DATA_ESR_COOLDOWN_MAX = 2;
 
 void() weapon_esr_think={
   local float delta, lim;
@@ -118,16 +119,16 @@ void() data_ini_attack_electro_repeater_={
   }
   
   ctrl_weapon_fireOffset();
-
+  
+  impactStyle = IMPACT_SKY;
   if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
     return;
   }
   if( trace_ent.takedamage ){
     damage = self.damageValue; 
     if( trace_ent.shield > 0 ){
-      damage = damage / 2;
+      damage = damage * 0.67;
       t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
-      t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       impactStyle = IMPACT_SHIELD;
     }
     else{
@@ -136,7 +137,9 @@ void() data_ini_attack_electro_repeater_={
     }
   }
   else{
-    impactStyle = IMPACT_DIRT;
+    if( trace_ent != world ){
+      impactStyle = IMPACT_DIRT;
+    }
   }
   
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);

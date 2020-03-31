@@ -126,7 +126,7 @@ void() ctrl_updateCenterTorso={
     if( self.energy > -1 ){
       diff = self.energyRate;
       if( self.playerState == PLAYER_SPRINT_ON ){
-        diff = diff * self.evasionDrain;
+        diff = diff - self.evasionDrain;
       }
       self.energy = self.energy + diff;
     }  

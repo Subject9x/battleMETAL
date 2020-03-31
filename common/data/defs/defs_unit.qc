@@ -19,7 +19,6 @@ Overview:
 .float accuracy; 
 
 .float turret_yaw_speed;
-.float evasionDrain;
 .float ai_attack_chance;
 
 //Server-side 'thin' unit data
@@ -46,6 +45,7 @@ Overview:
 .vector legAngles;
 
 #endif
+.float evasionDrain;
 .vector cockpitOffset;
 
 .float data_idx;

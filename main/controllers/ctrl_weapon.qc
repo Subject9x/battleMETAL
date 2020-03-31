@@ -259,6 +259,7 @@ void() ctrl_die_weapon={
 */
 void() ctrl_weapon_remove_all={
   local entity removeChain;
+  local entity removeNext;
   local entity nextWep;
   local entity removeHudWeapon;
   local entity nextHudWeapon;
@@ -268,16 +269,15 @@ void() ctrl_weapon_remove_all={
     removeHudWeapon = self.hudWeapon;
   }
   while( removeChain ){
-    removeChain.think = SUB_Remove;
-    removeChain.nextthink = time + 0.01;
-    removeChain = removeChain.w_slot;
+    removeNext = removeChain.w_slot;
+    remove(removeChain);
+    removeChain = removeNext;
     if( (self.flags & FL_CLIENT) ){
       nextHudWeapon = removeHudWeapon.hudWeapon;
-      if( removeHudWeapon ){        
-        removeHudWeapon.think = SUB_Remove;
-        removeHudWeapon.nextthink = time + 0.01;
-        removeHudWeapon = nextHudWeapon;
+      if( removeHudWeapon ){    
+        remove(removeHudWeapon);
       }
+      removeHudWeapon = nextHudWeapon;
     }
   }
 };

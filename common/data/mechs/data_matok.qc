@@ -28,11 +28,12 @@ void() data_ini_matok_={
   self.shieldMax   = 600;
   self.shieldRate  = 3.33;
   self.startupDelay = 7;
+  self.evasionDrain = 3;
 //=====================================
  
 //RADAR================================
   self.radar_range = 1400;
-  self.w_firetime = 3;  //lock-on time in seconds
+  self.w_firetime = 2;  //lock-on time in seconds
   self.spreadDefault = ACCURACY_MARKSMAN;
 //=====================================
 
@@ -40,7 +41,7 @@ void() data_ini_matok_={
   self.data_speed_forward = 150;
   self.data_speed_strafe = 100;
   self.data_speed_backward = 90;
-  self.data_speed_accel = 1.5;
+  self.data_speed_accel = 1.25;
 #ifndef CSQC
   self.yaw_speed = 3;    // AI-only 
   self.turret_yaw_speed = 3.5;// AI-only

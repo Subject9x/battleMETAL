@@ -53,6 +53,7 @@ void() data_projectile_ini_missile_active_radar_={
     self.modelflags = 0;
     self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
     self.pcl_explode = projectile_marh_expl;
+    self.scale = 1.25;
   #endif
   
   #ifndef CSQC
@@ -106,17 +107,29 @@ void() data_projectile_missile_activeradar_think={
     self.think = data_projectile_missile_activeradar_think;
   }
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  self.nextthink = time + 0.3;
+  self.nextthink = time + 0.15;
+};
+
+void() data_projectile_missile_activeradar_int={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  if( time > self.ai_action_time ){
+    self.think = data_projectile_missile_activeradar_think;
+    self.nextthink = time + 0.01;
+    return;
+  }
+  self.think = data_projectile_missile_activeradar_int;
+  self.nextthink = time + 0.025;
 };
 
 void() data_projectile_missile_activeradar_delay={
   self.velocity = normalize( self.origin - self.compOffset);
   self.velocity = self.velocity * (self.data_velocity * 0.33);
   self.angles = vectoangles(self.velocity);
-   
+ 
+  self.ai_action_time = time + 1;
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  self.think = data_projectile_missile_activeradar_think; 
-  self.nextthink = time + 1;
+  self.think = data_projectile_missile_activeradar_int; 
+  self.nextthink = time + 0.01;
 };
 
 void() data_projectile_missile_activeradar_touch={

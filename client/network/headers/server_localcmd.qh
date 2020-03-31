@@ -23,5 +23,5 @@ void( string fogSettings ) cl_get_new_fog;
 void( string musicSet ) cl_get_new_music;
 void() cl_exit_animatic;
 
-void( entity mech ) cl_set_hud_vars;
+void( entity mech, float turboMod ) cl_set_hud_vars;
 void() cl_set_hud_vars_obs;

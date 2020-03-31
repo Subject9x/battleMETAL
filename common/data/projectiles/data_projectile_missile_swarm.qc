@@ -51,6 +51,7 @@ void() data_projectile_ini_missile_swarm_={
     self.effects = EF_NOSHADOW;
     self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL"); 
     self.pcl_explode = projectile_swarm_expl;
+    self.scale = 1.5;
   #endif 
   
   #ifndef CSQC
@@ -137,9 +138,20 @@ void() data_projectile_missile_swarm_think={
     self.nextthink = time + 0.1;
   }
   else{
-    self.nextthink = time + 0.1;
+    self.nextthink = time + 0.067;
     self.think = data_projectile_missile_swarm_think;
   }
+};
+
+void() data_projectile_missile_swarm_delay_int={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  if( time > self.ai_action_time ){
+    self.think = data_projectile_missile_swarm_think;
+    self.nextthink = time + 0.01;
+    return;
+  }
+  self.think = data_projectile_missile_swarm_delay_int;
+  self.nextthink = time + 0.025;
 };
 
 void() data_projectile_missile_swarm_delay={
@@ -147,9 +159,10 @@ void() data_projectile_missile_swarm_delay={
   self.velocity = normalize( self.origin - self.compOffset);
   self.velocity = self.velocity * (self.data_velocity * 0.50);
   self.angles = vectoangles(self.velocity);
-   
-  self.think = data_projectile_missile_swarm_think; 
-  self.nextthink = time + 1;
+ 
+  self.ai_action_time = time + 1;
+  self.think = data_projectile_missile_swarm_delay_int; 
+  self.nextthink = time + 0.05;
 };
 #endif CSQC
 

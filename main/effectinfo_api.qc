@@ -24,9 +24,9 @@ float( float isNew, float changedFlags ) te_send_missile={
   WriteCoord( MSG_ENTITY, self.origin_y );
   WriteCoord( MSG_ENTITY, self.origin_z );
   
-  WriteCoord( MSG_ENTITY, self.angles_x );
-  WriteCoord( MSG_ENTITY, self.angles_y );
-  WriteCoord( MSG_ENTITY, self.angles_z );
+  WriteAngle( MSG_ENTITY, self.angles_x );
+  WriteAngle( MSG_ENTITY, self.angles_y );
+  WriteAngle( MSG_ENTITY, self.angles_z );
   
   WriteCoord( MSG_ENTITY, self.velocity_x );
   WriteCoord( MSG_ENTITY, self.velocity_y );

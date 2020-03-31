@@ -187,11 +187,11 @@ void(string unlockData) cl_unlock_stuff={
   Player Mech Spawn - set CL_ vars
 */
 
-void( entity mech ) cl_set_hud_vars={
+void( entity mech, float turboMod ) cl_set_hud_vars={
   cvar_set("cl_forwardspeed", ftos(mech.data_speed_forward));
   cvar_set("cl_sidespeed", ftos(mech.data_speed_strafe));
   cvar_set("cl_backspeed", ftos(mech.data_speed_backward));
-  cvar_set("cl_movespeedkey", ftos(mech.data_speed_accel));
+  cvar_set("cl_movespeedkey", ftos(mech.data_speed_accel + turboMod));
   cvar_set("cl_rollangle",  ftos(mech.hud_rollangle));
   cvar_set("cl_bob", ftos(mech.hud_bob));
   cvar_set("cl_bobcycle", ftos(mech.hud_bob_cycle));

@@ -52,6 +52,7 @@ void() data_projectile_ini_missile_laserguide_={
     self.modelflags = 0;
     self.traileffectnum = particleeffectnum("TE_LGM_TRAIL");
     self.pcl_explode = projectile_mlg_expl;
+    self.scale = 2;
   #endif 
   
   #ifndef CSQC
@@ -148,7 +149,7 @@ void() data_projectile_missile_laserguide_think={
     self.nextthink = time + 0.1;
   }
   else{
-    self.nextthink = time + 0.2;
+    self.nextthink = time + 0.075;
     self.think = data_projectile_missile_laserguide_think;
   }
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;

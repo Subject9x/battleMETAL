@@ -28,12 +28,13 @@ void() data_ini_monitor_={
   self.shieldMax = 300;
   self.shieldRate= 2.75;
   self.startupDelay = 9;
+  self.evasionDrain = 1.4;
 //=====================================
  
 //RADAR================================
   //self.radar_range = 750;
   self.radar_range = 1200;
-  self.w_firetime = 5;  // lock-on time in seconds
+  self.w_firetime = 3;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_LOWTECH;
 //=====================================
 

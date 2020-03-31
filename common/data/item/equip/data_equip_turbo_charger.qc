@@ -42,12 +42,11 @@ void() data_ini_equip_turbo_charger_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "TCHR";
-    self.description = "+ This module may absorb a critical leg hit. + Proportional Increase <Evasion> speed by 20%. + Proportional Increase <Evasion> energy cost  by 20%.";
+    self.description = "+ This module will absorb 1 critical leg hit. + Proportional Increase <Evasion> speed by 20%. + Proportional Increase <Evasion> energy cost  by 20%.";
     self.icon = "gfx/ui/wep_icons/eqp_tchr.png";
   #endif
   
   #ifndef CSQC
-    self.evasionDrain = 0.2;
     self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
     self.w_attack = turbo_charger_upgrade_;
     self.think = SUB_Null;
@@ -60,11 +59,14 @@ void() data_ini_equip_turbo_charger_={
 void() turbo_charger_upgrade_={
   local entity module;
   local float perc;
-  perc = 0.4 - (self.vec_size / 10);
-  perc = perc * 0.85;
+  
+  //save old values here
   self.energyMax = self.owner.evasionDrain;
-  self.owner.evasionDrain =  self.owner.evasionDrain + (self.owner.evasionDrain * self.evasionDrain);
   self.data_speed_accel = self.owner.data_speed_accel;
+  
+  self.evasionDrain = self.owner.vec_size / 10;
+  perc = 0.4 - self.evasionDrain;
+  self.owner.evasionDrain =  self.owner.evasionDrain + (self.owner.evasionDrain * self.evasionDrain);
   self.owner.data_speed_accel = self.owner.data_speed_accel + perc;
   
   if( (self.owner.flags & FL_CLIENT) ){
