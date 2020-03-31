@@ -218,9 +218,11 @@ void() PlayerPostThink = {
   if( time > self.ramCool ){
     if( self.playerState == PLAYER_SPRINT_ON ){
       if(self.movement_x > 0 && self.movement_y == 0 ){
-        if( self.ramUp < self.ramUpMax ){
-          self.ramUp = self.ramUp + (cvar("sys_ticrate") * 3);
-        }      
+        if( self.energy > (self.energyMax * 0.15)){
+          if( self.ramUp < self.ramUpMax ){
+            self.ramUp = self.ramUp + (cvar("sys_ticrate") * 3);
+          }   
+        }   
       }
       else{
         self.ramUp = 0;

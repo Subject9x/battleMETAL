@@ -168,13 +168,16 @@ void() ImpulseCommands ={
   if(self.impulse == IMP_SLIDE){    
     if( time > self.ramCool ){
       if( self.ramUp >= self.ramUpMax ){
-        self.ramCharge = time + (self.ramUp / 2);
-        self.ramPower_x = self.data_speed_forward * (self.data_speed_accel * 2);
-        self.ramPower_y = 0;
-        self.ramPower_z = -15;
-        self.ramVelocity = self.velocity;
-        self.ramAngle_y = self.v_angle_y;
-        self.ramTracker = self.ramCharge;
+        if( self.energy >= (self.energyMax * (self.ramUpMax / 25)) ){
+          self.ramCharge = time + (self.ramUp / 2);
+          self.ramPower_x = self.data_speed_forward * (self.data_speed_accel * 2);
+          self.ramPower_y = 0;
+          self.ramPower_z = -15;
+          self.ramVelocity = self.velocity;
+          self.ramAngle_y = self.v_angle_y;
+          self.ramTracker = self.ramCharge;
+          self.energy = self.energy - (self.energyMax * (self.ramUpMax / 25));
+        }
       }
     }
     else{

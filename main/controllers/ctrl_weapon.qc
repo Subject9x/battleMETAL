@@ -238,9 +238,10 @@ void() ctrl_die_weapon={
       if( self.w_slot ){
         prev = self.partPrev;
         prev.w_slot = self.w_slot; //take hard point out of rotation.
-        self.w_slot.partPrev = prev;
+        prev.w_slot.partPrev = prev;
       }
-      remove(self);
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.01;
     }
     else{
       if( (self.owner.stat_player_weapons_state & self.w_group) ){
@@ -264,14 +265,13 @@ void() ctrl_weapon_remove_all={
   local entity removeHudWeapon;
   local entity nextHudWeapon;
   //call remove() in list order, no going back from this.
-  removeChain = self.w_slot;
+
   if( (self.flags & FL_CLIENT) ){
     removeHudWeapon = self.hudWeapon;
   }
-  while( removeChain ){
-    removeNext = removeChain.w_slot;
-    remove(removeChain);
-    removeChain = removeNext;
+  for( removeChain = self.w_slot; removeChain != world; removeChain = removeChain.w_slot ){
+    removeChain.think = SUB_Remove;
+    removeChain.nextthink = time + 0.01;
     if( (self.flags & FL_CLIENT) ){
       nextHudWeapon = removeHudWeapon.hudWeapon;
       if( removeHudWeapon ){    

@@ -314,13 +314,7 @@ void() build_mech_unit={
   
   //fall_dmg = actual damage applied
   self.fall_dmg = (MAX_VEHICLE_SIZE - self.vec_size) / MAX_VEHICLE_SIZE ;
-  
-  self.ramUpMax = 4 - self.vec_size;
-  self.ramUpMax = self.ramUpMax / 10;
-  self.ramUpMax = self.data_speed_forward * self.ramUpMax;
-  self.ramUpMax = self.data_speed_forward - self.ramUpMax;
-  self.ramUpMax = self.ramUpMax / 33;
-  self.ramUp = 0;
+
 };
 
 void() build_mech_torsoCenter={

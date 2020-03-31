@@ -11,20 +11,6 @@ Overview:
       Inaccurate
       spin up and cooldown
 */
-
-
-/*
-  Steps:
-    spin up
-      shot 1
-        last fire time
-        last fire rate
-        
-      
-    spin down
-      player doesn't fire
-*/
-
 #ifndef CSQC
 // last fire time == self.count1
 // cooldown check == self.count2;
@@ -35,7 +21,7 @@ Overview:
 float DATA_ESR_BEAM_COUNT = 3;
 float DATA_ESR_COOLDOWN_MAX = 2;
 
-float ESR_HEAT_UP = 0.1;    //count5
+float ESR_HEAT_UP = 0.05;    //count5
 float ESR_MAX_RATE = 0.085;  //count3
 float ESR_RATE_UP = 0.0065;   //count3
 float ESR_RATE_DN = 0.01;   //count3
@@ -151,6 +137,8 @@ void() data_ini_attack_electro_repeater_={
   
 
   if( !ctrl_weapon_checkEnergy() ){
+    self.w_state = RELOADING;
+    self.w_currentammo = self.reloadMax  / 2;
     return;
   }
 

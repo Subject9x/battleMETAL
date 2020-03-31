@@ -97,6 +97,7 @@ Overview:
 .vector ramVelocity;
 .float ramUp;
 .float ramUpMax;
+.float ramCooldown;
 
 .entity clientData;
 #endif
