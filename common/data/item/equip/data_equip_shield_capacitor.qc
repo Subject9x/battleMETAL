@@ -26,7 +26,7 @@ void() data_ini_equip_shield_capacitor_={
   self.damageType = (DMG_MSC);
 
   self.techLevel = 3;
-  self.equipSize = 2;
+  self.equipSize = MSC2;
   
   #ifdef CSQC   
     self.w_name = "Shield Capacitor";

@@ -291,7 +291,7 @@ void() ai_vtol_pain={
 void() ai_vtol_crash={
   
   if( other.takedamage > DAMAGE_NO ){
-    t_damage( other, self, self, (self.health * -1), DMG_ENE | EFF_PRC, self.origin, '0 0 0');
+    t_damage( other, self, self, (self.health * -1), self.origin, '0 0 0');
   }
   
   self.think = BecomeExplosion;

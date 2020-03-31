@@ -60,6 +60,8 @@ void() data_projectile_ini_rocket_={
 #ifndef CSQC
 void() data_prj_mis_touch={
   local float debris, debrisType;
+  local float damage; 
+  
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
@@ -71,11 +73,20 @@ void() data_prj_mis_touch={
 	}
  
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    damage = self.damageValue;
     if( other.shield > 0 ){
+      if( other.shield > (other.shieldMax * 0.15) ){
+        damage = damage * 0.15;
+      }
+      else{
+        damage = damage * 0.05;
+      }
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
     }
     else{
+      damage = damage + (damage * 0.25);
+      t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
       self.impactType = IMPACT_ARMOR;
       debris = rint(4 + random() * 6);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );

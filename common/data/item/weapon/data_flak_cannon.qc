@@ -13,8 +13,6 @@ Overview:
 float DAT_FLAK_SHRAP_TOTAL    = 10;
 #ifndef CSQC
 vector DAT_FLAK_SHRAP_SPREAD  = '0.2 0.2 64';
-float DAT_PRJ_FLAK_PROXYRAD   = 45;
-float DAT_PRJ_FLAK_EXPRAD     = 50;
 void() data_ini_attack_flak_;
 #endif
 
@@ -32,7 +30,7 @@ void() data_ini_flak_cannon_={
   self.damageType = DMG_BAL;
   
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = BAL1;
   
   self.spreadDefault = '0.017 0.015 0';
   self.wepFireOffset = '0 0 5';
@@ -43,7 +41,7 @@ void() data_ini_flak_cannon_={
     self.model = "q3mdl/weapons/w_flk.md3";
     self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
     self.abbrev = "FLAK";
-    self.description = "+ Instant-impact weapon. + Shotgun Damage pattern when Target has no <shields>. + 8 sub-munitions.";
+    self.description = "+ Instant-impact weapon. + Shotgun Damage pattern when Target has no <shields>. + 10 sub-munitions.";
     self.icon = "gfx/ui/wep_icons/wi_flak.png";
   #endif
   
@@ -79,11 +77,13 @@ void() data_ini_attack_flak_={
     if(trace_ent && trace_ent != world){
       totes = DAT_FLAK_SHRAP_TOTAL;
       if(trace_ent.shield > 0){
-        shieldDamage = (self.damageValue * totes) / 2;
-        t_damage(trace_ent, self, self.owner, shieldDamage, self.damageType, trace_endpos, '0 0 0');
+      //Target shields are up, don't do shrapnel effect
+        shieldDamage = (self.damageValue * totes) / 3;
+        t_damage_shield(trace_ent, self,self.owner, shieldDamage, trace_endpos, '0 0 0'); 
         impactStyle = IMPACT_SHIELD;
       }
       else{
+        //Target shields are down, mechs get hit with shrapnel.
         impactStyle = IMPACT_ARMOR;
         if( trace_ent.data_type == DATA_MECH ){
           local vector shotpoint;
@@ -95,14 +95,14 @@ void() data_ini_attack_flak_={
           shotDir = normalize(trace_endpos - shotpoint);
           while(totes > 0){
             shrapDir = shotDir + (crandom()*DAT_FLAK_SHRAP_SPREAD_x*v_right) + (crandom()*DAT_FLAK_SHRAP_SPREAD_y*v_up);
-            shrapPoint = shotpoint + shrapDir*DAT_FLAK_SHRAP_SPREAD_z;
+            shrapPoint = shotpoint + (shrapDir*DAT_FLAK_SHRAP_SPREAD_z);
             traceline( shotpoint, shrapPoint, FALSE, self.owner);
-            t_damage(trace_ent, self, self.owner, self.damageValue, self.damageType, trace_endpos, '0 0 0');
+            t_damage(trace_ent, self, self.owner, self.damageValue, trace_endpos, '0 0 0');
             totes = totes - 1;
           }
         }
         else{
-          t_damage(trace_ent, self, self.owner, self.damageValue * totes, self.damageType, trace_endpos, '0 0 0');
+          t_damage(trace_ent, self, self.owner, self.damageValue * (totes / 2), trace_endpos, '0 0 0');
         }
       }
     }

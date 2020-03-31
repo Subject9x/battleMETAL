@@ -18,17 +18,17 @@ void() data_ini_missile_activeradar_={
 
   self.data_idx = 10;  
   
-  self.w_clipsize = 10;
-  self.reloadRate = 0.24;
-  self.reloadMax = 5.5;
+  self.w_clipsize = 3;   //10
+  self.reloadRate = 0.18; //0.24
+  self.reloadMax = 6.5;   //5.5
   self.energyRate = 0;
   
-  self.w_range = 1500;
-  self.damageValue = 15;
+  self.w_range = 1600;    //1500
+  self.damageValue = 50;  //15
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;
-  self.equipSize = 3;
+  self.equipSize = MIS3;
   
   self.spreadDefault = '0.03 0.03 0';
   self.wepFireOffset = '0 0 2';
@@ -38,7 +38,7 @@ void() data_ini_missile_activeradar_={
     self.fire_sound = "sound/weapons/mis_fire.ogg";
     self.model = "q3mdl/weapons/w_arh.md3";
     self.abbrev = "MARH";
-    self.description = "+ Requires <Active Radar> on. + Requires <Target Lock> on target. + Minimum Range of 300m.";
+    self.description = "+ target <shields> reduce damage. + Requires <Active Radar> on. + Requires <Target Lock> on target. + Minimum Range of 300m.";
     self.icon = "gfx/ui/wep_icons/wi_marh.png";
   #endif
   

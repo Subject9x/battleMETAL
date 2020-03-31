@@ -126,7 +126,7 @@ void() ctrl_updateCenterTorso={
     if( self.energy > -1 ){
       diff = self.energyRate;
       if( self.playerState == PLAYER_SPRINT_ON ){
-        diff = diff * self.evasionDrain;
+        diff = diff - self.evasionDrain;
       }
       self.energy = self.energy + diff;
     }  
@@ -389,16 +389,16 @@ void() ctrl_player_mech_touch={
   dot = vec * v_forward;
   
 	if( dot < 0.6 ){
-    t_damage(other, self, self, other.max_health * 0.15, 0, self.legs.origin, '0 0 0');
+    t_damage(other, self, self, other.max_health * 0.15, self.legs.origin, '0 0 0');
     return;
   }  
   
   if( other.shield <= 0 ){
     if( self.vec_size > other.vec_size ){
-      t_damage(other, self, self, other.max_health * 0.5 , 0, self.legs.origin, '0 0 0');
+      t_damage(other, self, self, other.max_health * 0.5 , self.legs.origin, '0 0 0');
     }
     else{
-      t_damage(other, self, self, other.max_health * 0.33, 0, self.legs.origin, '0 0 0');
+      t_damage(other, self, self, other.max_health * 0.33, self.legs.origin, '0 0 0');
     }
   }
   

@@ -50,7 +50,14 @@ void() ClientConnect = {
   self.nextVecChoice = 0;
   self.vec_size = 0;
   self.data_idx = 0;
-  self.data_type = DATA_POBS;
+  
+  if( GAMETYPE != GAMEMODE_DM ){
+    self.data_type = DATA_POBS;
+  }
+  else{
+    self.data_type = 0;
+  }
+  
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.faction = FACTION_PSC; //default
   self.energy = 0;
@@ -183,6 +190,7 @@ void() PutClientInServer = {
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
   self.view_ofs = '0 0 1';
+
   
   if( !cvar("developer") ){
     if( coop ){
@@ -190,14 +198,16 @@ void() PutClientInServer = {
     }
   }
 
+
   spot  = SelectSpawnPoint();
-  if( self.faction < 1 ){
-    self.faction = FACTION_PSC;  //default to 1 to satisfy game code
+  if( GAMETYPE != GAMEMODE_DM ){
+    if( self.faction < 1 ){
+      self.faction = FACTION_PSC;  //default to 1 to satisfy game code
+    }
+    else{
+      self.faction = spot.faction;
+    }
   }
-  else{
-    self.faction = spot.faction;
-  }
-  
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
   
@@ -234,11 +244,20 @@ void() PutClientInServer = {
     mapfile_coop_load();
   }
   else{
+    if( self.playerState == PLAYER_SPAWN ){
+      
+    }
     self.th_die = PlayerDieNetwork;
-    mapfile_pvp_load(self.faction);
   }
 
   switch( self.data_type ){
+    case 0:
+      client_push_mapobjects();
+      if( self.client_num < 1 ){
+        client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);      
+      }
+      self.power_timer = 0;
+      break;
     case DATA_POBS:
       player_makeObserver();
       
@@ -428,7 +447,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
     
-    WriteByte( MSG_ENTITY, player.flags );
+    WriteLong( MSG_ENTITY, player.flags );
     WriteByte( MSG_ENTITY, self.radar_range );
     WriteByte( MSG_ENTITY, self.stat_rdr_mode );
     WriteByte( MSG_ENTITY, self.stat_client_shield );
@@ -482,6 +501,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
     WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, player.flags );
     WriteString( MSG_ENTITY, player.netname );
   }
   /*

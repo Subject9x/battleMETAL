@@ -63,7 +63,7 @@
     orientation beam
     color 0x33CCCC 0x66FFFF
     tex 60 60
-    size 0.4 0.5
+    size 2 3
     alpha 512 1024 64
     time 0.05 0.07
     bounce -1
@@ -79,12 +79,12 @@
     orientation spark
     color 0x65A8A3 0xAACFCC
     tex 34 34
-    size 0.05 0.1
+    size 0.15 0.3
     sizeincrease -1
     alpha 512 512 2048
-    originjitter 0.13 0.13 0.13
+    originjitter 0.25 0.25 0.5
     velocityjitter 4 4 0
-    velocitymultiplier 1
+    velocitymultiplier 2
     stretchfactor 10
     notunderwater
     trailspacing 1
@@ -178,22 +178,21 @@
     time 0.3 0.5
     originjitter 0.1 0.1 0.1
     velocityjitter 10 10 10
-    velocitymultiplier -30
+    velocitymultiplier -1
     notunderwater
-    stretchfactor 25
+    stretchfactor 1
     airfriction 0.01
     bounce 2
   
   //TE_ESR_IMPACT_ARMOR - SMOKE PUFF
     effect TE_ESR_IMPACT_ARMOR
-    count 1
+    countabsolute 1
     type smoke
     blend alpha
     color 0xFAAC58 0x81F7F3
     tex 63 63
     size 1 2
-    alpha 256 512 256
-    time 3 5
+    alpha 256 512 650
     originjitter 0.1 0.1 0.1
     velocitymultiplier 0
     notunderwater
@@ -272,19 +271,18 @@ gravity -0.005
     type beam
     blend add
     orientation beam
-    color 0xBA94DF 0x7F3FBF
+    color 0x7339AC 0x7339AC
     tex 60 60
-    size 0.75 1.5
+    size 3 3
     sizeincrease 1
-    alpha 1024 1024 32
-    time 0.25 0.25
+    alpha 1024 1024 1400
     bounce -1
-    velocityoffset 0 0 4000
+    velocityoffset 0 0 1
     originjitter 0 0 0
     velocityjitter 0 0 0
-    velocitymultiplier 4
+    velocitymultiplier 1
     notunderwater
-    trailspacing 1
+    trailspacing 4
 
   //TE_LAS_RAIL - LIGHT
     effect TE_LAS_RAIL
@@ -1842,7 +1840,7 @@ gravity -0.005
     tex 8 15
     size 0.15 0.25
     sizeincrease 0.1
-    alpha 32 48 48
+    alpha 64 96 24
     time 3 3
     originjitter 0.05 0.05 0.05
     velocityjitter 1 1 3

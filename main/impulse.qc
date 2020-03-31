@@ -62,8 +62,8 @@ void() playerAttack={
     wgrp = wep_chain.w_group;
     if( wep_chain.w_attack ){
       if( (weaponGroup > 0) && ( (self.playerState == PLAYER_ACTIVE) || (self.playerState == PLAYER_SPRINT_ON) )){
-        if( (weaponGroup& wgrp) ){
-          if(wep_chain.w_state == READY){
+        if( (weaponGroup & wgrp) ){
+          if(wep_chain.w_state == READY || wep_chain.w_state == WAITING){
             self = wep_chain;
               self.w_attack();
             self = oself;
@@ -168,18 +168,57 @@ void() ImpulseCommands ={
   if(self.impulse == IMP_SLIDE){    
     if( time > self.ramCool ){
       if( self.ramUp >= self.ramUpMax ){
-        self.ramCharge = time + (self.ramUp / 2);
-        self.ramPower_x = self.data_speed_forward * (self.data_speed_accel * 2);
-        self.ramPower_y = 0;
-        self.ramPower_z = -15;
-        self.ramVelocity = self.velocity;
-        self.ramAngle_y = self.v_angle_y;
-        self.ramTracker = self.ramCharge;
+        if( self.energy >= (self.energyMax * (self.ramUpMax / 25)) ){
+          self.ramCharge = time + (self.ramUp / 2);
+          self.ramPower_x = self.data_speed_forward * (self.data_speed_accel * 2);
+          self.ramPower_y = 0;
+          self.ramPower_z = -15;
+          self.ramVelocity = self.velocity;
+          self.ramAngle_y = self.v_angle_y;
+          self.ramTracker = self.ramCharge;
+          self.energy = self.energy - (self.energyMax * (self.ramUpMax / 25));
+        }
       }
     }
     else{
       self.ramUp = 0;
     }
+  }
+
+  if(self.impulse == IMP_FAC_NEXT){
+    self.faction = self.faction + 1;
+    if( self.faction > 3 ){
+      self.faction = 1;
+    }
+    if( self.data_type == DATA_MECH ){
+      client_update_faction();
+    }
+    else{
+      if( GAMETYPE == GAMEMODE_DM ){
+        self.data_type = DATA_POBS;
+        mapfile_pvp_load(self.faction);
+        PutClientInServer();
+      }
+    }
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+  }
+  
+  if(self.impulse == IMP_FAC_PREV){
+    self.faction = self.faction - 1;
+    if( self.faction < 1 ){
+      self.faction = 3;
+    }
+    if( self.data_type == DATA_MECH ){
+      client_update_faction();
+    }
+    else{
+      if( GAMETYPE == GAMEMODE_DM ){
+        self.data_type = DATA_POBS;
+        mapfile_pvp_load(self.faction);
+        PutClientInServer();
+      }
+    }
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
   }
 
 	self.impulse = 0;

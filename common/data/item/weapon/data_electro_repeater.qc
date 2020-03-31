@@ -11,10 +11,81 @@ Overview:
       Inaccurate
       spin up and cooldown
 */
+#ifndef CSQC
+// last fire time == self.count1
+// cooldown check == self.count2;
+// last fire rate = self.count3
+// next cool check == self.count4
+// reload counter = self.count
+// overheat counter = self.count5
 float DATA_ESR_BEAM_COUNT = 3;
 float DATA_ESR_COOLDOWN_MAX = 2;
 
-#ifndef CSQC
+float ESR_HEAT_UP = 0.05;    //count5
+float ESR_MAX_RATE = 0.085;  //count3
+float ESR_RATE_UP = 0.0065;   //count3
+float ESR_RATE_DN = 0.01;   //count3
+float ESR_SPREAD_UP = 1.15;
+float ESR_SPREAD_DN = 0.95;
+
+void() weapon_esr_think={
+  local float delta, lim;
+  local float prevState;
+  
+  prevState = self.w_state;
+
+  //Reloading - overheated, full cooldown
+  if( self.w_state == RELOADING ){
+    if( time > self.w_firetime ){
+      if( self.w_currentammo < self.reloadMax ){
+        self.w_currentammo = self.w_currentammo + ESR_HEAT_UP;
+        self.w_firetime = time + 0.33;
+      }
+      else{
+        self.w_state = READY;
+      }
+    }
+  }
+  else{
+    //Recoil - Just fired
+    if( prevState == RECOIL ){
+      if( time > self.w_firetime ){
+        self.w_state = READY;
+      }
+    }
+    //Waiting - has not been fired recently, cooling down
+    if( prevState == WAITING || time > self.count2 ){
+      if( self.w_state == WAITING ){
+        //proper cool down
+        if( time > self.count4 ){
+          //spin down the fire rate
+          self.count3 = self.count3 + ESR_RATE_DN;
+          if( self.count3 > self.reloadRate ){
+            self.count3 = self.reloadRate;
+          }
+          //unfocus the spread lens
+          self.spreadDefault = self.spreadDefault * ESR_SPREAD_UP;
+          if( self.spreadDefault > self.spreadCache * 4 ){
+            self.spreadDefault = self.spreadCache * 4;
+          }
+          //take off some heat
+          if( self.w_currentammo < self.reloadMax ){
+            self.w_currentammo = self.w_currentammo + ESR_HEAT_UP / 3;
+          }
+        }
+      }
+      else{
+        self.w_state = WAITING;
+        self.count4 = time + 0.1;
+      }
+    }
+  }
+
+  lim = self.reloadMax;
+  self.reloadValue = (self.w_currentammo / lim) * 100;
+  self.think = weapon_esr_think;
+};
+
 void() data_ini_attack_electro_repeater_;
 #endif 
 
@@ -23,18 +94,18 @@ void() data_ini_electro_repeater_={
   self.data_idx = 8;
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.23;
-  self.reloadMax = 0.23;
-  self.energyRate = 18;
+  self.reloadRate = 0.2;
+  self.reloadMax = 4;
+  self.energyRate = 5;
   
-  self.w_range = 450;
-  self.damageValue = 7;
+  self.w_range = 500;
+  self.damageValue = 10;
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;
-  self.equipSize = 2;
+  self.equipSize = ENE2;
 
-  self.spreadDefault = '0.15 0.2 0';
+  self.spreadDefault = '0.015 0.015 0';
   self.wepFireOffset = '0 0 6'; 
   
   #ifdef CSQC  
@@ -42,7 +113,7 @@ void() data_ini_electro_repeater_={
     self.fire_sound = "sound/weapons/esr_fire.ogg";
     self.model = "q3mdl/weapons/w_esr.md3";
     self.abbrev = "ESR";
-    self.description = "+ 3 beams per trigger pull. + Instant-impact weapon. + Inaccurate.";
+    self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage split when target is <shielded>";
     self.icon = "gfx/ui/wep_icons/wi_esr.png";
   #endif
   
@@ -50,8 +121,11 @@ void() data_ini_electro_repeater_={
     self.w_isburst = FALSE;
     self.burstRate = 0;
     self.model = "q3mdl/weapons/w_esr.md3";
-    self.think = default_weapon_think;
+    self.think = weapon_esr_think;
     self.w_attack = data_ini_attack_electro_repeater_;
+    self.spreadCache = self.spreadDefault;
+    self.damageCache = self.damageValue;
+    self.count3 = self.reloadRate;
   #endif
   
 };
@@ -59,55 +133,64 @@ void() data_ini_electro_repeater_={
 #ifndef CSQC
 void() data_ini_attack_electro_repeater_={
   local float impactStyle;
+  local float damage;
   
+
   if( !ctrl_weapon_checkEnergy() ){
+    self.w_state = RELOADING;
+    self.w_currentammo = self.reloadMax  / 2;
     return;
   }
+
+  self.w_state = RECOIL;
+  self.count1 = time;
+  self.count2 = time + self.reloadRate * 2;
   
-  ctrl_weapon_updateAmmo( FALSE );
-  
-  
-  self.w_currentammo = self.w_currentammo - 1;
-  if(self.w_currentammo <= 0){
-    self.reloadValue = 0;
-    self.w_currentammo = self.w_clipsize;
-    self.w_state = RELOADING;
-    self.w_isburst = FALSE;
-    self.w_firetime = time + self.reloadMax;
-    self.count1 = time;
+  self.count3 = self.count3 - ESR_RATE_UP;
+  if( self.count3 < ESR_MAX_RATE ){
+    self.count3 = ESR_MAX_RATE;
   }
-  else{
-    if( (FIRE_ENT.flags & FL_MONSTER) ){
-      self.w_firetime = time + (self.reloadRate / self.burstRate) * 1.67;
-    }
-    else{
-      self.w_firetime = time + self.reloadRate / self.burstRate;
-    }
-    self.w_state = RECOIL;
-    self.w_isburst = FALSE;
+  
+  self.w_firetime = time + self.count3;
+
+  self.spreadDefault = self.spreadDefault * ESR_SPREAD_DN;
+  if( self.spreadDefault < self.spreadCache ){
+    self.spreadDefault = self.spreadCache;
+  }
+  
+  self.owner.energy = self.owner.energy - self.energyRate;
+  
+  self.w_currentammo = self.w_currentammo - ESR_HEAT_UP;
+  if( self.w_currentammo < 0 ){
+    self.w_state = RELOADING;
+    self.count2 = time;
+    self.count3 = self.reloadRate;
+    self.spreadDefault = self.spreadCache * 4;
   }
   ctrl_weapon_fireOffset();
-
-
+  
+  
+  impactStyle = IMPACT_SKY;
   if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
     return;
   }
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
+    damage = self.damageValue; 
     if( trace_ent.shield > 0 ){
+      damage = damage * 0.67;
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       impactStyle = IMPACT_SHIELD;
-      client_send_particle( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
     }
     else{
+      t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       impactStyle = IMPACT_ARMOR;
-      client_send_particle( particleeffectnum("TE_ESR_IMPACT_ARMOR"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
     }
   }
   else{
-    impactStyle = IMPACT_DIRT;
-    client_send_particle( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+    if( trace_ent != world ){
+      impactStyle = IMPACT_DIRT;
+    }
   }
-  
   
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
 };

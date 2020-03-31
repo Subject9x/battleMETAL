@@ -25,6 +25,10 @@ Overview
 .float ai_weaponEnergy; //current max energy cost.
 .float ai_attackPreviousEnergy; //cached every attack call, compared when new attack is made.
 .float ai_nextFireTime; //last time this WEAPON was fired.
+.vector spreadCache;
+.float damageCache;
+.float reloadMaxCache;
+.float lastFired;
 #endif
 
 .float aState;

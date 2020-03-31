@@ -58,9 +58,9 @@ void( float isNew, float changeFlags) sendent_handle_missile={
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
   
-  self.angles_x = ReadCoord();
-  self.angles_y = ReadCoord();
-  self.angles_z = ReadCoord();
+  self.angles_x = anglemod(ReadAngle());
+  self.angles_y = anglemod(ReadAngle());
+  self.angles_z = anglemod(ReadAngle());
 
   self.velocity_x = ReadCoord();
   self.velocity_y = ReadCoord();
@@ -73,23 +73,23 @@ void( float isNew, float changeFlags) sendent_handle_missile={
       self.pcl_explode();
     }
   }
-  if( changeFlags & 128 ){
+  if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
     self.movetype = ReadByte();
     
     if( isNew ){
       self.solid = SOLID_NOT;
+      self.alpha = 1;
+      self.scale = 1;
+      self.origin2 = self.origin;
+      self.origin1 = self.origin;
       data_sync_new_projectile(self.data_idx);
       setmodel(self, self.model);
       setsize(self, '0 0 0', '0 0 0');
-      self.origin2 = self.origin;
-      self.origin1 = self.origin;
       setorigin(self, self.origin);
       self.drawmask = MASK_NORMAL;
       self.predraw = predraw_missile;
-      self.alpha = 1;
-      self.scale = 1;
       self.nextthink = time + 0.1;
     }
   }

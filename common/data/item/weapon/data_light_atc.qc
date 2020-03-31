@@ -27,7 +27,7 @@ void() data_ini_light_atc_={
   self.damageType = DMG_BAL;
 
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = BAL1;
   
   self.spreadDefault = '0.025 0.025 0';
   self.wepFireOffset = '0 0.5 5'; 
@@ -54,6 +54,7 @@ void() data_ini_light_atc_={
 #ifndef CSQC
 void() data_ini_attack_latc_={
   local float impactStyle;
+  local float damage;
   
   ctrl_weapon_fireOffset();
 
@@ -70,13 +71,16 @@ void() data_ini_attack_latc_={
     }
     else{
       if( trace_ent ){
-        t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_BAL, FIRE_ENDPOINT, '0 0 0');    
-        if( trace_ent.shield <= 0 ){
-          impactStyle = IMPACT_ARMOR;
-        }
-        else{
+        if( trace_ent.shield > 0 ){
+          damage = self.damageValue / 2 ;
+          t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, '0 0 0'); 
           impactStyle = IMPACT_SHIELD;
         }
+        else{
+          damage = self.damageValue + (self.damageValue * 0.18);
+          t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+          impactStyle = IMPACT_ARMOR;
+        } 
       }
     }
     

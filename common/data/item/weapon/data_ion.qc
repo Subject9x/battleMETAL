@@ -19,16 +19,16 @@ void() data_ini_ion_={
   self.data_idx = 13;  
   
   self.w_clipsize = 3;
-  self.reloadRate = 0.12;
-  self.reloadMax = 5;
-  self.energyRate = 120;
+  self.reloadRate = 0.15;
+  self.reloadMax = 4;
+  self.energyRate = 175;
   
-  self.w_range = 800;
+  self.w_range = 1000;
   self.damageValue = 75;
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
 
   self.techLevel = 1;
-  self.equipSize = 2;
+  self.equipSize = ENE2;
   
   self.spreadDefault = '0.018 0.013 0';
   self.wepFireOffset = '0 0 4';
@@ -38,7 +38,7 @@ void() data_ini_ion_={
     self.fire_sound = "sound/weapons/emp_fire.ogg";
     self.model = "q3mdl/weapons/w_ion.md3";
     self.abbrev = "ION";
-    self.description = "+ Damages <shields> ONLY. + 3-Round burst. + Small proximity detonation.";
+    self.description = "+ Damages <shields> ONLY. + 3-Round burst.";
     self.icon = "gfx/ui/wep_icons/wi_ion.png";
   #endif
   

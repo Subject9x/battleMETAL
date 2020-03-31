@@ -124,7 +124,7 @@ void() player_makeMech={
   
   client_push_player_info();
   self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_VELOCITY);
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_IMPACT);
   
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
  

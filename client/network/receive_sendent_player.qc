@@ -111,7 +111,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
     
-    self.flags = ReadByte();
+    self.flags = ReadLong();
     self.radar_range = ReadByte();
     self.stat_rdr_mode = ReadByte();
     self.shield = ReadByte();
@@ -119,7 +119,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
-    setorigin(self, self.origin);
   }
   
   /*
@@ -196,8 +195,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.data_type = ReadByte();
     self.origin = te_read_vector();
     self.faction = ReadByte();
+    self.flags = ReadByte();
     self.netname = strzone( ReadString() );
+    setmodel(self, "q3mdl/testball.md3");
     setorigin(self, self.origin);
+    self.alpha = 0.01;
+    self.scale = 0.01;
   }
   
   /*

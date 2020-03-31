@@ -192,7 +192,13 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       else{
         self.nextthink = time + 0.01;
       }
-      macro_set_collider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE)
+      if( !self.movetype ){
+        self.movetype = MOVETYPE_FLYMISSILE;
+      }
+      if( !self.solid ){
+        self.solid = SOLID_BBOX;
+      }
+      self.takedamage = DAMAGE_NO;
       setmodel(self, "q3mdl/testball.md3");
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
@@ -232,9 +238,10 @@ void() ctrl_die_weapon={
       if( self.w_slot ){
         prev = self.partPrev;
         prev.w_slot = self.w_slot; //take hard point out of rotation.
-        self.w_slot.partPrev = prev;
+        prev.w_slot.partPrev = prev;
       }
-      remove(self);
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.01;
     }
     else{
       if( (self.owner.stat_player_weapons_state & self.w_group) ){
@@ -253,25 +260,24 @@ void() ctrl_die_weapon={
 */
 void() ctrl_weapon_remove_all={
   local entity removeChain;
+  local entity removeNext;
   local entity nextWep;
   local entity removeHudWeapon;
   local entity nextHudWeapon;
   //call remove() in list order, no going back from this.
-  removeChain = self.w_slot;
+
   if( (self.flags & FL_CLIENT) ){
     removeHudWeapon = self.hudWeapon;
   }
-  while( removeChain ){
+  for( removeChain = self.w_slot; removeChain != world; removeChain = removeChain.w_slot ){
     removeChain.think = SUB_Remove;
     removeChain.nextthink = time + 0.01;
-    removeChain = removeChain.w_slot;
     if( (self.flags & FL_CLIENT) ){
       nextHudWeapon = removeHudWeapon.hudWeapon;
-      if( removeHudWeapon ){        
-        removeHudWeapon.think = SUB_Remove;
-        removeHudWeapon.nextthink = time + 0.01;
-        removeHudWeapon = nextHudWeapon;
+      if( removeHudWeapon ){    
+        remove(removeHudWeapon);
       }
+      removeHudWeapon = nextHudWeapon;
     }
   }
 };
@@ -299,7 +305,7 @@ void() ctrl_missile_dud_touch={
 		return;
 	}
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue * 0.05, self.damageType, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue * 0.05, self.origin, '0 0 0');
   }
   remove(self);
 };

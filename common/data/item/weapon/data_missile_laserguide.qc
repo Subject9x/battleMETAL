@@ -24,11 +24,11 @@ void() data_ini_missile_laserguide_={
   self.energyRate = 0;
   
   self.w_range = 1000;
-  self.damageValue = 275;
+  self.damageValue = 200; //275
   self.damageType = DMG_EXP | EFF_PTR;
 
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = MIS1;
 
   self.spreadDefault = '0.03 0.03 0';
   self.wepFireOffset = '0 0 2';
@@ -38,7 +38,7 @@ void() data_ini_missile_laserguide_={
     self.fire_sound = "sound/weapons/mis_fire.ogg";
     self.model = "q3mdl/weapons/w_lgm.md3"; 
     self.abbrev = "MLGD";
-    self.description = "+ Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+    self.description = "+ target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
     self.icon = "gfx/ui/wep_icons/wi_mlgd.png"; 
   #endif 
   

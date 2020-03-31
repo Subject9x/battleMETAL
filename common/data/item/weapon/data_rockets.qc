@@ -23,11 +23,11 @@ void() data_ini_rockets_={
   self.energyRate = 0;
   
   self.w_range = 400;
-  self.damageValue = 38;
+  self.damageValue = 45;  //38
   self.damageType = DMG_EXP;
   
   self.techLevel = 1;
-  self.equipSize = 1;
+  self.equipSize = MIS1;
   
   self.wepFireOffset = '0 0 3';
   self.spreadDefault = '0.02 0.025 0';
@@ -37,7 +37,7 @@ void() data_ini_rockets_={
     self.fire_sound = "sound/weapons/mis_fire.ogg";
     self.model = "q3mdl/weapons/w_mis.md3";
     self.abbrev = "RCK";
-    self.description = "+ Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+    self.description = "+ target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
     self.icon = "gfx/ui/wep_icons/wi_rck.png";
   #endif 
   

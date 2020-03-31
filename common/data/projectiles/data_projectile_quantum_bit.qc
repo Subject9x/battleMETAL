@@ -65,6 +65,8 @@ void() data_projectile_quantum_bit_th={
 }
 
 void() data_projectile_ini_quantum_bit_touch_={
+  local float damage, hit;
+  
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
@@ -76,10 +78,27 @@ void() data_projectile_ini_quantum_bit_touch_={
 	}
   
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-    self.impactType = IMPACT_ARMOR;
-    if( other.shield > 0 ){
+    damage = self.damageValue;
+    if(other.shield > 0){
+      if( other.shield  > (other.shieldMax * 0.75) ){
+        damage = damage * 0.33;
+        hit = self.damageValue - damage;
+      }
+      if( other.shield  > (other.shieldMax * 0.5) ){
+        damage = damage * 0.67;
+        hit = self.damageValue - damage;
+      }
+      else{
+        hit = 0;
+      }
+      t_damage_shield(other, self, self.owner, damage, self.origin, '0 0 0');
+      t_damage(other, self, self.owner, hit, self.origin, '0 0 0');
       self.impactType = IMPACT_SHIELD;
+    }
+    else{
+      damage = damage * 0.67;
+      t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
+      self.impactType = IMPACT_ARMOR;
     }
   }  
   

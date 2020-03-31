@@ -52,6 +52,7 @@ void() data_projectile_ini_missile_laserguide_={
     self.modelflags = 0;
     self.traileffectnum = particleeffectnum("TE_LGM_TRAIL");
     self.pcl_explode = projectile_mlg_expl;
+    self.scale = 2;
   #endif 
   
   #ifndef CSQC
@@ -62,6 +63,7 @@ void() data_projectile_ini_missile_laserguide_={
 #ifndef CSQC
 void() data_projectile_missile_laserguide_touch={
   local float debris;
+  local float damage; 
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
@@ -76,13 +78,16 @@ void() data_projectile_missile_laserguide_touch={
     self.impactType = IMPACT_DIRT;
     debris = 4;
     if(other.takedamage){
-      t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-      self.impactType = IMPACT_ARMOR;
+      damage = self.damageValue;
       if( other.shield > 0 ){
+        damage = damage * 0.1;
+        t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
         self.impactType = IMPACT_SHIELD;
       }
       else{
+        t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
         te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 3, 2 );
+        self.impactType = IMPACT_ARMOR;
       }
       debris = 0;
     }
@@ -144,7 +149,7 @@ void() data_projectile_missile_laserguide_think={
     self.nextthink = time + 0.1;
   }
   else{
-    self.nextthink = time + 0.2;
+    self.nextthink = time + 0.075;
     self.think = data_projectile_missile_laserguide_think;
   }
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;

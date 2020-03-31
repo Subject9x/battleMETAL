@@ -27,7 +27,7 @@ void() data_ini_snub_artillery_={
   self.damageType = (DMG_BAL | EFF_ARC);
 
   self.techLevel = 2;
-  self.equipSize = 3;
+  self.equipSize = BAL3;
 
   self.wepFireOffset = '0 0 9';
   self.spreadDefault = '0.02 0.02 0';
@@ -37,7 +37,7 @@ void() data_ini_snub_artillery_={
     self.fire_sound = "sound/fx_boom.ogg";
     self.model = "q3mdl/weapons/w_sfga.md3";
     self.abbrev = "SFGA";
-    self.description = "+ Minor parabolic arc. + Shot has Blast Radius.";
+    self.description = "+ Minor parabolic arc. + Shot has Blast Radius on open ground.";
     self.icon = "gfx/ui/wep_icons/wi_sfg.png";
   #endif 
   

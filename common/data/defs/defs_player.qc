@@ -49,6 +49,9 @@ Overview:
 
 .float missionStatus; //moved to player level for network
 
+
+.float ramUpMax;
+
 #ifdef CSQC
 .float particleCubeFlag;
 #endif
@@ -94,6 +97,7 @@ Overview:
 .vector ramVelocity;
 .float ramUp;
 .float ramUpMax;
+.float ramCooldown;
 
 .entity clientData;
 #endif

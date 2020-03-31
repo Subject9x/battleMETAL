@@ -28,20 +28,23 @@ void() data_ini_balaket_={
   self.shieldMax = 400;
   self.shieldRate= 3;
   self.startupDelay = 5;
+  self.evasionDrain = 1;
 //=====================================
  
 //RADAR================================
-  self.radar_range = 1500;
-  self.w_firetime = 4.5;  // lock-on time in seconds
+  self.radar_range = 1700;
+  self.w_firetime = 4;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_SKIRMISH;
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 225;
-  self.data_speed_strafe = 175;
-  self.data_speed_backward = 150;
-  self.data_speed_accel = 1.5;
+  self.data_speed_forward = 200;  //225;
+  self.data_speed_strafe = 165;   //175;
+  self.data_speed_backward = 140; //150;
+  self.data_speed_accel = 1.75;
 #ifndef CSQC
+  self.ramUpMax = 3;
+  self.ramCooldown = 6;
   self.yaw_speed = 3.75;    // AI-only 
   self.turret_yaw_speed = 4.25;// AI-only
   self.ai_angleLimits = '-135 135 0';
@@ -89,9 +92,9 @@ void() data_ini_balaket_={
 #ifdef CSQC
   //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
   //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
-  data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
+  data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 #endif
 //=====================================
 

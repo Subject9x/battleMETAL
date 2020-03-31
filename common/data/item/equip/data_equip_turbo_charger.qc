@@ -29,7 +29,7 @@ void() data_ini_equip_turbo_charger_={
   self.damageType = DMG_MSC;
  
   self.techLevel = 2;
-  self.equipSize = 3;
+  self.equipSize = MSC3;
   
   #ifdef CSQC     
     self.w_name = "Turbo Charger";
@@ -42,12 +42,11 @@ void() data_ini_equip_turbo_charger_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "TCHR";
-    self.description = "+ Increase <Evasion> speed by 20%. + Increase <Evasion> energy cost  by 13%.";
+    self.description = "+ This module will absorb 1 critical leg hit. + Proportional Increase <Evasion> speed by 20%. + Proportional Increase <Evasion> energy cost  by 20%.";
     self.icon = "gfx/ui/wep_icons/eqp_tchr.png";
   #endif
   
   #ifndef CSQC
-    self.evasionDrain = 0.13;
     self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
     self.w_attack = turbo_charger_upgrade_;
     self.think = SUB_Null;
@@ -59,15 +58,20 @@ void() data_ini_equip_turbo_charger_={
 #ifndef CSQC
 void() turbo_charger_upgrade_={
   local entity module;
+  local float perc;
   
+  //save old values here
   self.energyMax = self.owner.evasionDrain;
-  self.owner.evasionDrain = self.evasionDrain + self.owner.evasionDrain;
   self.data_speed_accel = self.owner.data_speed_accel;
-  self.owner.data_speed_accel = self.owner.data_speed_accel + (self.owner.data_speed_accel * self.energyRate);
+  
+  self.evasionDrain = self.owner.vec_size / 10;
+  perc = 0.4 - self.evasionDrain;
+  self.owner.evasionDrain =  self.owner.evasionDrain + (self.owner.evasionDrain * self.evasionDrain);
+  self.owner.data_speed_accel = self.owner.data_speed_accel + perc;
+  
   if( (self.owner.flags & FL_CLIENT) ){
     module = self;
     self = module.owner;
-      //client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, ftos(self.owner.data_speed_accel), self.owner.hud_rollangle);  
       self.ramUpMax = 4 - self.vec_size;
       self.ramUpMax = self.ramUpMax / 10;
       self.ramUpMax = self.data_speed_forward * self.ramUpMax;
@@ -84,7 +88,7 @@ void() turbo_charger_remove_={
   if( (self.owner.flags & FL_CLIENT) ){
     module = self;
     self = module.owner;
-      //client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, ftos(self.owner.data_speed_accel), self.owner.hud_rollangle);  
+      self.data_speed_accel = module.data_speed_accel;
       self.ramUpMax = 4 - self.vec_size;
       self.ramUpMax = self.ramUpMax / 10;
       self.ramUpMax = self.data_speed_forward * self.ramUpMax;

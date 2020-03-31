@@ -9,169 +9,10 @@ according to the original source code, there should only be one
 t_damage function and 1 killed function...for some reason, maybe good house keeping?
 */
 
-/*
-Ballistic Damage
-  IF shields are up, reduce shot damage by half
-  IF EFF_PRC, increase armor damage
-  IF EFF_RAM, cause energy crits
-*/
-float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
-  local float damage, dmgtype, shields, crit;
-  dmgtype = inflictor.damageType;
-  damage = dmg_amt;
-  shields = targ.shield;
-  
-  if( (dmgtype & EFF_STX) ){
-    damage = t_damage_ene( targ, inflictor, damage );
-    return damage;
-  }
-  
-  if( shields > 0 ){
-    damage = damage - (damage / 2 );
-    shields = shields - damage;
-    damage = 0;
-  }
-  else{
-    if( (dmgtype & EFF_PRC) )
-      damage = damage * 2;
-      
-    if( (dmgtype * EFF_RAM) ){
-      if( (self.owner.flags & FL_CLIENT) ){
-        crit = 0.25;
-        crit = crit + ((3 - skill) / 10);
-        crit = crit + ((3 - targ.vec_size) / 10);
-        crit = crit / 1.25;
-        if( random() <= crit ){
-          damage = damage * 1.5;
-        }
-      }
-    }
-  }
-  
-  if( shields < 0 ){
-    shields = 0;
-  }
-  targ.shield = shields;
-  
-  return damage;
-};
-
-/*
-Energy Damage
-  IF target shields are up, shields take dmg * 1.5
-  IF EFF_ENE, only affects shields
-  IF EFF_STX, might cause shield crit
-  IF EFF_PRC, shields only consume 25% of damage
-  OR EFF_RAM, spill over damage
-*/
-float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
-  local float damage, dmgtype, shields, mod, crit;
-  
-  dmgtype = inflictor.damageType;
-  damage = dmg_amt;
-  shields = targ.shield;
-
-  if( shields <= 0 ){
-    if( (dmgtype & EFF_ENE) ){
-      //EFF_ENE only affects shields, no shields means damage is LOST
-      return 0;
-    }
-    return damage;
-  }
-  
-  //energy is automatically a little better at shields.
-  damage = damage + ( damage * 0.16);
-  
-  if( (dmgtype & EFF_STX) || (dmgtype & EFF_SHD) ){
-    if( (self.owner.flags & FL_CLIENT) ){
-      crit = 0.25;
-      crit = crit + ((3 - skill) / 10);
-      crit = crit + ((3 - targ.vec_size) / 10);
-      crit = crit / 1.25;
-      if( random() <= crit ){
-        damage = damage * 1.75;
-      }
-    }
-  }
-  if( (dmgtype & EFF_PRC) ){
-    mod = damage * 0.15;
-    shields = shields - mod;
-    damage = damage - mod;
-  }
-  else{
-    shields = shields - damage;
-    if( shields < 0 ){
-      if( (dmgtype & EFF_RAM) ){
-        mod = shields;
-        damage = mod * -1;
-      }
-      else{
-        damage = 0;
-      }
-      shields = 0;
-    }  
-  }
-  
-  if( shields <= 0 ){
-    shields = 0;
-  }
-  else{
-    if( !(dmgtype & EFF_PRC) ){
-      damage = 0;
-    }    
-  }
-  
-  targ.shield = shields;
- 
-  //EFF_STX only affects shields;
-  if( (dmgtype & EFF_STX) ){
-    damage = 0;
-  }
-  return damage;
-};
-/*
-Explosive Damage
-  IF target shields > 25%, shields consume entire hit, no exceptions.
-  IF target shields < 25%, treat like EFF_PRC damage
-  IF shields are down, explosive might cause an armor crit
-*/
-float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
-  local float damage, dmgtype, shields, mod, crit, quarter;
-  
-  dmgtype = inflictor.damageType;
-  damage = dmg_amt;
-  shields = targ.shield;
-  quarter = shields * 0.25;
-  
-  if( targ.shield > quarter ){
-    damage = 0;
-  }
-  else if( (targ.shield <= quarter) && (targ.shield > 0) ){
-    mod = targ.shield / targ.shieldMax;
-    mod = mod / 2;
-    damage = damage - mod;
-  }
-  else{
-    //shields be zero
-    crit = 0.25;
-    crit = crit + ((3 - skill) / 10);
-    crit = crit + ((3 - targ.vec_size) / 10);
-    if( (targ.flags & FL_CLIENT) ) {
-      crit = crit / 1.25;
-    }
-    if( random() <= crit ){
-      damage = damage * 1.25;
-    }
-  }
-  
-  targ.shield = shields;
-  return damage;
-};
-
-entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
+entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
   local entity notTarg;
-  local float dmgAmt, prevShields;
+  local float dmgAmt;
   
   if( !trg.takedamage ){
     return world;
@@ -182,11 +23,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( trg.deadflag != DEAD_NO ){
     return world;
   }
+
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
-  
-  prevShields = trg.shield;
   
   //reduce friendly fire damage on easier settings
   if(trg.faction == attacker.faction){
@@ -213,29 +53,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
-  //check shields
-  if( (dmg_type & DMG_BAL) ){
-    dmgAmt = t_damage_bal( dmgTrg, dmgInflictor, dmgAmt );
-  }
-  else if( (dmg_type & DMG_ENE) ){
-    dmgAmt = t_damage_ene( dmgTrg, dmgInflictor, dmgAmt );
-  }
-  else if( (dmg_type & DMG_EXP) ){
-    dmgAmt = t_damage_mis( dmgTrg, dmgInflictor, dmgAmt );
-  }
-  
-  //shield delay check=============================
-  /*
-    the idea is to make sure the delay is proportionate to the 'damage dealt.' 
-    IE it doesn't make sense (to the designer) that shield delay is the same whether hit by an autocannon or an EMP blast.
-  */
-  trg.shieldHitDelay = trg.shieldHitDelay + (4 - trg.vec_size); //simulates larger reactor size on larger units.
-  trg.shieldHitDelay = trg.shieldHitDelay * 1.33;
-  trg.shieldHitDelay = trg.shieldHitDelay / 100;
-  trg.shieldHitDelay = trg.shieldHitDelay + (dmg_amt / 500);  
-  trg.shieldHitDelay = time + (trg.shieldHitDelay + SHIELD_DELAY);
-  //================================================
-  
   //AI react to Damage
   if( (trg.flags & FL_MONSTER) ){
     notTarg = self;
@@ -252,11 +69,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
     self = notTarg;
   }
-  
-  //TODO - replace clientside
-  //if( (prevShields > 0) && (trg.shield <= 0) ){
-    //te_shield_explode( trg.origin, trg.vec_size + 1 );
-  //}
   
   if( dmgAmt <= 0 ){
     return trg;
@@ -302,11 +114,96 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if( dmgTrg.health <= 0 ){
     if( dmgTrg.th_die ){
-      killed(dmgTrg, attacker, dmg_type);
+      killed(dmgTrg, attacker);
     }
   }
   return dmgTrg;
 };
+
+
+/*
+  you've already checked shield levels before calling this.
+*/
+entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, vector force) t_damage_shield={
+  local entity dmgTrg, dmgInflictor;
+  local entity notTarg;
+  local float dmgAmt;
+  
+  if( !trg.takedamage ){
+    return world;
+  }
+  if( (trg.flags & FL_GODMODE) ){
+    return world;
+  }
+  if( trg.deadflag != DEAD_NO ){
+    return world;
+  }
+  dmgTrg = trg;
+  dmgInflictor = inflictor;
+  dmgAmt = dmg_amt;
+  
+  //reduce friendly fire damage on easier settings
+  if(trg.faction == attacker.faction){
+    if( skill < 2 ){
+      dmgAmt = dmgAmt * 0.33;
+    }
+    else if( skill > 1){
+      dmgAmt = dmgAmt * 0.67;
+    }
+  }
+  
+  trg.shield = trg.shield - dmgAmt;
+  if( trg.shield < 0 ){
+    trg.shield = 0;
+  }
+  
+  trg.dmg_inflictor = inflictor;
+  if(trg.was_hit < time){
+    trg.was_hit = time + 1;
+  }
+
+  //calculate hit time and angle
+  util_chekPointToHitDir(trg, dmg_point);
+  
+  if( (attacker.flags & FL_CLIENT) ){
+    attacker.w_proj = time + 0.2;
+    if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
+      attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
+    }
+  }
+  
+  //shield delay check=============================
+  /*
+    the idea is to make sure the delay is proportionate to the 'damage dealt.' 
+    IE it doesn't make sense (to the designer) that shield delay is the same whether hit by an autocannon or an EMP blast.
+  */
+  trg.shieldHitDelay = trg.shieldHitDelay + (4 - trg.vec_size); //simulates larger reactor size on larger units.
+  trg.shieldHitDelay = trg.shieldHitDelay * 1.33;
+  trg.shieldHitDelay = trg.shieldHitDelay / 100;
+  trg.shieldHitDelay = trg.shieldHitDelay + (dmg_amt / 500);  
+  trg.shieldHitDelay = time + (trg.shieldHitDelay + SHIELD_DELAY);
+  //================================================
+  
+  //AI react to Damage
+  if( (trg.flags & FL_MONSTER) ){
+    notTarg = self;
+    self = dmgTrg;
+    if( self.th_react ){  
+      if( time > self.ai_react_buffer ){
+        self.th_react( attacker );
+      }
+    }
+    if( self.ai_rank > AI_RANK_REG ){
+      if( self.shield < (self.shieldMax / 2) ){
+        ai_call_for_help(attacker);
+      }
+    }
+    self = notTarg;
+  }
+
+  return dmgTrg;
+}
+
 
 /*
   finds closest sub-entity
@@ -371,7 +268,7 @@ entity(entity parent, vector org, float start_rad) closestWeapon={
 */
 
 
-void(entity targ, entity attacker, float dmg_type) killed={
+void(entity targ, entity attacker) killed={
   local entity thisOldSelf;
   
   thisOldSelf = self;

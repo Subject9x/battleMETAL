@@ -175,7 +175,6 @@ float FALL_CT_MULTIPLIER = 3;
 float FALL_KILL_MULTIPLIER = 3; 
 float FALL_DAMAGE_FRACTION = 0.2;
 float SHIELD_DELAY = 5; //game timer to pause before shields are brought backonline
-float EVADE_DRAIN_PERCENT = 0.33;  //reduce energyRate by this % when unit is Evading
 float CHAIN_FIRE_INTERVAL = 0.15; 
 //============================
 //     WEAPON FLAGS
@@ -186,8 +185,8 @@ float CHAIN_FIRE_INTERVAL = 0.15;
   float DMG_EXP = 4;  //explosive damage
   float DMG_MSC = 8;  //used for equipment modules
 //Secondary Effect Types
-  float EFF_PRC = 16; //dmg is doubled
-  float EFF_RAM = 32; //DMG_ENE + RAM = feedback damage onto target.
+  float EFF_PRC = 16; //
+  float EFF_RAM = 32; //
   float EFF_STX = 64; //damage only affects shields.
   float EFF_ENE = 128; //weapon draws energy (client-side flag, really)
   
@@ -195,6 +194,23 @@ float CHAIN_FIRE_INTERVAL = 0.15;
   float EFF_LOK = 512;  //AI-ONLY: weapon requires a target lock
   float EFF_PTR = 1024; //AI-ONLY: weapon follow's unit's laser-dot, so it ignores accuracy mechanics
   float EFF_SHD = 2048; //for when you want Shield crits but not just shield-only damage of EFF_STX (see light_laser)
+//Weapon Sizes
+  float BAL1 = 1;
+  float BAL2 = 2;
+  float BAL3 = 4;
+  float BAL4 = 8;
+  float ENE1 = 16;
+  float ENE2 = 32;
+  float ENE3 = 64;
+  float ENE4 = 128;
+  float MIS1 = 256;
+  float MIS2 = 512;
+  float MIS3 = 1024;
+  float MIS4 = 2048;
+  float MSC1 = 4096;
+  float MSC2 = 8192;
+  float MSC3 = 16384;
+  float MSC4 = 32768;
 //============================
 //     GETSTAT() TYPES
 //============================
