@@ -284,6 +284,9 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
     case DATA_MECH:
       img = HUD_RAD_PIP_MCH;
       break;
+    default:
+      img = UI_DEF_REC_64;
+      break;
   }
   
   cImgOrg = cs_project(imgOrg);
