@@ -62,8 +62,8 @@ void() playerAttack={
     wgrp = wep_chain.w_group;
     if( wep_chain.w_attack ){
       if( (weaponGroup > 0) && ( (self.playerState == PLAYER_ACTIVE) || (self.playerState == PLAYER_SPRINT_ON) )){
-        if( (weaponGroup& wgrp) ){
-          if(wep_chain.w_state == READY){
+        if( (weaponGroup & wgrp) ){
+          if(wep_chain.w_state == READY || wep_chain.w_state == WAITING){
             self = wep_chain;
               self.w_attack();
             self = oself;
