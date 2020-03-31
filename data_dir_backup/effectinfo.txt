@@ -178,9 +178,9 @@
     time 0.3 0.5
     originjitter 0.1 0.1 0.1
     velocityjitter 10 10 10
-    velocitymultiplier -30
+    velocitymultiplier -1
     notunderwater
-    stretchfactor 25
+    stretchfactor 1
     airfriction 0.01
     bounce 2
   

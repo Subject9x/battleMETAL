@@ -42,17 +42,17 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     local entity test;
     local vector testOrg;
     local float testCheck;
-    ///if( !(blip.flags & FL_UNIT) ){
-      //continue;
-    //}
+    if( !(blip.flags & FL_UNIT) ){
+      continue;
+    }
     if( blip.deadflag > DEAD_NO ){
-      //continue;
+      continue;
     }
     if( vlen(blip.origin - RADAR_ORG) > radarRange ){
       continue;
     }
     
-      //passive radar cannot see through walls or buildings
+    //passive radar cannot see through walls or buildings
     if( CLIENT_stat_rdr_mode == FALSE ){
       traceline( RADAR_ORG, blip.origin, MOVE_WORLDONLY, entitybyindex(player_localentnum));
       if( trace_fraction != 1 ){

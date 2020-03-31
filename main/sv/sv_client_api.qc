@@ -447,7 +447,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
     
-    WriteByte( MSG_ENTITY, player.flags );
+    WriteLong( MSG_ENTITY, player.flags );
     WriteByte( MSG_ENTITY, self.radar_range );
     WriteByte( MSG_ENTITY, self.stat_rdr_mode );
     WriteByte( MSG_ENTITY, self.stat_client_shield );
