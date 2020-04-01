@@ -83,24 +83,34 @@ void() navSelectListener={
 
 void() navListSelectListener={
   local entity deploy;
+  local entity found;
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_NEXT_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
-    if( CLIENT_MENU_deploy.partNext == world ){
-      CLIENT_MENU_deploy = DEPLOYPOINT;
+    for( deploy = CLIENT_MENU_deploy.nextPoint; deploy != world; deploy = deploy.nextPoint ){
+      if( found.data_idx ){
+        continue;
+      }
+      if( deploy.isActive ){
+        found = deploy;
+      }
     }
-    else{
-      CLIENT_MENU_deploy = CLIENT_MENU_deploy.partNext;
+    if( found ){
+      CLIENT_MENU_deploy = found;
+      CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
     }
-    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_PREV_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
-    if( CLIENT_MENU_deploy.partPrev == world ){
-      CLIENT_MENU_deploy = DEPLOY_POINTS;
+    for( deploy = CLIENT_MENU_deploy.prevPoint; deploy != world; deploy = deploy.prevPoint ){
+      if( found.data_idx ){
+        continue;
+      }
+      if( deploy.isActive ){
+        found = deploy;
+      }
     }
-    else{
-      CLIENT_MENU_deploy = CLIENT_MENU_deploy.partPrev;
+    if( found ){
+      CLIENT_MENU_deploy = found;
+      CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
     }
-    
-    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
   }
   if(CLIENT_MENU_nav_pnt > 0){
     if( !(LAUNCH_VALIDATION & VALID_NODE) ){

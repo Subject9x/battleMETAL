@@ -179,11 +179,38 @@ void( float isNew, float entFlags ) data_objective={
   }
 };
 
+
+/*
+  Reorganize client's deploy point list
+*/
+void( entity dep , float prevFac ) data_deploy_changeFaction={
+  
+  //deploy point was removed from player's deploy queue
+  if( prevFac == CLIENT_faction && dep.faction != CLIENT_faction ){
+    if( dep.prevPoint.data_idx ){
+      dep.prevPoint.nextPoint = dep.nextPoint;
+      dep.nextPoint.prevPoint = dep.prevPoint;
+    }
+    else{
+      FACTION_DEPLOY = dep.nextPoint;
+    }
+    return;
+  }
+  
+  //deploy point was added to player's queue
+  if( prevFac != CLIENT_faction && dep.faction == CLIENT_faction ){
+    FACTION_DEPLOY.prevPoint = dep;
+    dep.nextPoint = FACTION_DEPLOY;
+    FACTION_DEPLOY = dep;
+  }
+};
+
 /*
   OBJECT - Deploy Point
 */
 void( float isNew, float entFlags ) data_deploy={
   local float prevState;
+  local float prevFaction;
   
  //EVENT - isActive change
   if( (entFlags & SENDFLAG_TURRET) ){
@@ -200,7 +227,11 @@ void( float isNew, float entFlags ) data_deploy={
   
   //EVENT - Change Faction
   if( (entFlags & SENDFLAG_CRIT) ){
+    prevFaction = self.faction;
     self.faction = ReadByte();
+    if( prevFaction != self.faction && self.faction != FACTION_ALL ){
+      data_deploy_changeFaction(self, prevFaction);
+    }
   }
   
   //EVENT - new to player
@@ -218,9 +249,9 @@ void( float isNew, float entFlags ) data_deploy={
       
       setmodel(self, "q3mdl/testball.md3");
       setorigin(self, self.origin);
-      if( DEPLOY_POINTS ){
-        self.partPrev = DEPLOY_POINTS;
+      if( DEPLOY_POINTS.data_idx ){
         DEPLOY_POINTS.partNext = self;
+        self.partPrev = DEPLOY_POINTS;
         DEPLOY_POINTS = self;
       }
       else{

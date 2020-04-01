@@ -284,10 +284,28 @@ void() navBarListener={
     }
     
     if( CLIENT_MENU_deploy == world ){
-      CLIENT_MENU_deploy = DEPLOYPOINT;
-      CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
-      if( !(LAUNCH_VALIDATION & VALID_NODE) ){
-        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+      local entity deploy;
+      local entity previous;
+      //build list of faction-only deply points
+      for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
+        if( deploy.faction == CLIENT_faction || deploy.faction == FACTION_ALL ){
+          if( !previous.data_idx ){
+            FACTION_DEPLOY = deploy; // first point
+            previous = deploy;
+          }
+          else{
+            previous.nextPoint = deploy;
+            deploy.prevPoint = previous;
+            previous = deploy;
+          }
+        }
+      }
+      if( FACTION_DEPLOY.data_idx ){
+        CLIENT_MENU_deploy = FACTION_DEPLOY;
+        CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
+        if( !(LAUNCH_VALIDATION & VALID_NODE) ){
+          LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+        }
       }
     }
     SPRITE_deploy_point_FRAME = 1;

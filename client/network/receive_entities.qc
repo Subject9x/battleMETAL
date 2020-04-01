@@ -178,6 +178,7 @@ void() receive_ent_bindData={
   CLIENT_stat_trg_ra_hp = getstatf(STAT_TARGET_HP_ARMRIGHT);
   CLIENT_stat_trg_lg_hp = getstatf(STAT_TARGET_HP_LEGS);
   
+  //Critical hits
   if( CLIENT_player_state == PLAYER_ACTIVE || CLIENT_player_state == PLAYER_SPRINT_ON ){
     if( CLIENT_health_torso_left <= 0 && CLIENT_health_torso_left_prev > 0 ){
       hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
@@ -192,16 +193,10 @@ void() receive_ent_bindData={
       hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
     }
     if( CLIENT_health_legs <= 0 && CLIENT_health_legs_prev > 0 ){
-      cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward / 2));
-      cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe / 2));
-      cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward / 2));
       hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
     }
     if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
       //repair event
-      cvar_set("cl_forwardspeed", ftos(UI_HANGAR_DATA_mech.data_speed_forward));
-      cvar_set("cl_sidespeed", ftos(UI_HANGAR_DATA_mech.data_speed_strafe));
-      cvar_set("cl_backspeed", ftos(UI_HANGAR_DATA_mech.data_speed_backward));
     }
   }
 

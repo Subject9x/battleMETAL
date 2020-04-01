@@ -16,6 +16,10 @@ float drawfont_prev;
 entity DEPLOY_POINTS;  //SendEnt now provides the state data;
 entity DEPLOYPOINT;
 
+.entity nextPoint;
+.entity prevPoint;
+entity FACTION_DEPLOY;
+
 float OBJECTIVES[32];         //  1 = active, 2 = complete, 0 = hidden, -1 = failed.
 
 string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
