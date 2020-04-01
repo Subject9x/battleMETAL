@@ -43,6 +43,7 @@ entity controls_ram;
 entity controls_radar;
 entity controls_navs;
 entity controls_objectives;
+entity controls_tacmap;
 entity controls_repair;
 entity controls_chat_team;
 entity controls_chat_all;
@@ -186,6 +187,9 @@ void() txt_control_bind_nav={
 void() txt_control_bind_obj={
   menu_keybind_change ("impulse 25");
 };
+void() txt_control_bind_map={
+  menu_keybind_change ("impulse 12");
+};
 void() txt_control_bind_repair={
   menu_keybind_change ("impulse 26");
 };
@@ -275,6 +279,8 @@ void() m_controls_i={
   controls_navs = inp_keybindfield('209 98', '14 14 0', txt_control_bind_nav, "Show Navs:  ", "impulse 9", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
   controls_objectives = inp_keybindfield('176 118', '14 14 0', txt_control_bind_obj, "Display Objectives:  ", "impulse 25", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
+  controls_tacmap = inp_keybindfield('199 138', '14 14 0', txt_control_bind_map, "Display Map:  ", "impulse 12", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   controls_chat_team = inp_keybindfield('210 158', '14 14 0', txt_control_bind_chat_team, "Chat Team:  ", "messagemode2", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 

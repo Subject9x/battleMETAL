@@ -88,6 +88,8 @@ float HUD_UID_RAM_METER     = 19;
   string HUD_SPRINT_ON = "[EVASION ON]";
   string HUD_SPRINT_OFF = "!- EVASION OFFLINE -!";
   string HUD_SPRINT_RAM = "[RAM-SHOCKS READY]";
+  
+  float HUD_TACMAP_ON;
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -182,6 +184,7 @@ void() hud_renderHighlight_frame;
 void() hud_render_sprint;
 void( entity thePlayer ) hud_render_ally_names;
 void(vector org, entity allyTarget, float algn, float faction1, float radRange) hud_renderTargetOverlay_Ally;
+
 void() hud_render_tactical_map;
 
 void() hud_render_info;

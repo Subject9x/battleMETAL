@@ -16,7 +16,6 @@ void() CSQC_Init =
   VIEW_ORG = '0 0';
   
   //ini the HUD sound system
-  CRITBITS = -1;
   SQSIZE = 6; //set to 6
   STIME = 0;
   STIME_NEXT = 0;
@@ -47,6 +46,9 @@ void() CSQC_Init =
 
   SELECT_MECH = CLIENT_MENU_sel_mech = 0;
   LAUNCH_VALIDATION = 0; //set launch validation to 0 to prevent invalid deployments to game world
+
+  UI_OBJECTIVE_ACTIVE = FALSE;
+  HUD_TACMAP_ON = FALSE;
 
   //clear out and prepare the sound queue
   i = 1;

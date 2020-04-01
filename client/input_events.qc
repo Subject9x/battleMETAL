@@ -64,24 +64,43 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
       return TRUE;
     }
-    else if(scanx == K_C){
+    else if(scanx == K_SHIFT){
+      return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 12", 0), ftos(scanx),0) != -1 ){
+      //INPUT - HUD - TACTICAL MAP
+      if(HUD_TACMAP_ON){
+        HUD_TACMAP_ON = FALSE;
+      }
+      else{
+        HUD_TACMAP_ON = TRUE;
+        if( UI_OBJECTIVE_ACTIVE ){
+          UI_OBJECTIVE_ACTIVE = FALSE;
+        }
+      }
+      return TRUE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 25", 0), ftos(scanx),0) != -1 ){
+      //INPUT - HUD - OBJECTIVES DISPLAY
       if(UI_OBJECTIVE_ACTIVE){
         UI_OBJECTIVE_ACTIVE = FALSE;
       }
       else{
         UI_OBJECTIVE_ACTIVE = TRUE;
+        if( HUD_TACMAP_ON ){
+          HUD_TACMAP_ON = FALSE;
+        }
       }
       return TRUE;
     }
-    else if(scanx == K_SHIFT){
-      return FALSE;
-    }
     else if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
+      //INPUT - HUD - ZOOM WINDOW
       //good lord....
       HUD_ZOOM_ACTIVE = TRUE;
       return FALSE;
     }
     else if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
+      //INPUT - HUD - TOGGLE RADAR MODE
       //Toggle Radar
       CLIENT_stat_rdr_mode = !CLIENT_stat_rdr_mode;
       if(CLIENT_stat_rdr_mode_prev != CLIENT_stat_rdr_mode){
@@ -99,12 +118,12 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       return FALSE;
     }
     else if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
-      //Toggle Group Fire
+      //INPUT - HUD - Toggle Group Fire
       hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
       return FALSE;
     }
     else if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
-      //Toggle Chain Fire
+      //INPUT - HUD - Toggle Chain Fire
       hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
       return FALSE;
     }

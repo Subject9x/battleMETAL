@@ -63,8 +63,6 @@ string AI_VOICE_A[10];
 string AI_VOICE_B[10];
 string AI_VOICE_C[10];
 
-float CRITBITS; //tracks sound playing for critical loss of mech parts
-
 void() snd_hud_vfx_frame;
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue;
 void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_trnsmsn_addtoqueue;

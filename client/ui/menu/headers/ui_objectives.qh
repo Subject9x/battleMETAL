@@ -5,7 +5,6 @@ Date: 01/08/2018
 Overview: header for the mission objectives hud overlay
 */
 
-float UI_OBJECTIVE_ACTIVE = FALSE;
-
+float UI_OBJECTIVE_ACTIVE;
 
 void(vector org) ui_objective_frame;

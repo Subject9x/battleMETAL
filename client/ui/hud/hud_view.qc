@@ -479,15 +479,6 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   }
 };
 
-
-/*
-
-*/
-void() hud_render_tactical_map={
-  
-  return;
-};
-
 /*
   displays a background image on the hud
   always draws from bottom left of screen UP
@@ -907,7 +898,6 @@ void() data_hud_frame={
     hasTarget = TRUE;
   }
   
-  hud_renderNavOverlay();
 
   uid = 1;
   while( uid <= 32 ){
@@ -1084,7 +1074,8 @@ void() data_hud_frame={
     }
     uid = uid + 1;
   }
-  
+   
+    
   if( CLIENT_stat_trg_dataidx > 0 ){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
     hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H);
@@ -1118,6 +1109,7 @@ void() data_hud_frame={
         break;
     }
   }
+
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
   hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
@@ -1135,19 +1127,25 @@ void() data_hud_frame={
     hud_render_info();
   }
   
-  //only loop clients once per hud frame
-  local entity player;
-  for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
-    if( !(player.flags & FL_CLIENT) ){continue;}
-    if( player.entId == player_localentnum ){continue;}
-    if( player.data_type == DATA_POBS ){continue;}
-    if( player.faction != CLIENT_faction ){continue;}
-    
-    hud_render_ally_names( player );
-    
-    if( player.targetEntId <= 0 ){continue;}
-    if( player.enemy.deadflag != DEAD_NO ){continue;}
-    hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
+  if( HUD_TACMAP_ON ){
+    hud_render_tactical_map();
+  }
+  else{
+    hud_renderNavOverlay();
+     //only loop clients once per hud frame
+    local entity player;
+    for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
+      if( !(player.flags & FL_CLIENT) ){continue;}
+      if( player.entId == player_localentnum ){continue;}
+      if( player.data_type == DATA_POBS ){continue;}
+      if( player.faction != CLIENT_faction ){continue;}
+      
+      hud_render_ally_names( player );
+      
+      if( player.targetEntId <= 0 ){continue;}
+      if( player.enemy.deadflag != DEAD_NO ){continue;}
+      hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
+    }
   }
 };
 
