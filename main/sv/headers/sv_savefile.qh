@@ -9,22 +9,6 @@ The save file is mostly an inter-level intermediary file
 to track player unlocks
 */
 
-//globals
-string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
-string SAVE_MAP;
-string SAVE_MECHS_LIST;
-string SAVE_ITEMS_ALL;
-float SAVE_MISSN_POINTS;
-
-string SAVE_FILE_EXT = ".sav";
-
-//file tags
-string SAVE_FILE_MSN_NAME = "mission";
-string SAVE_FILE_MECH_LIST = "mechs";
-string SAVE_FILE_ITEMS = "items";
-string SAVE_FILES_POINTS = "points";
-string SAVE_FILE_NEWGAME = "newgame";
-
 //functions
 void(float override) savefile_load; //single player only
 void() savefile_save; //single player only
@@ -34,4 +18,8 @@ string(string item, string source) savefile_insert;
 void(string nextmap) savefile_changemap;
 
 void() mapfile_coop_load;  //coop options
-void(float faction) mapfile_pvp_load;  //pvp options
+void() mapfile_team_load;  //pvp options
+void() mapfile_dm_load;  //pvp options
+
+void( string theseMechs, string theseItems ) mapfile_setData_team1;
+void( string theseMechs, string theseItems ) mapfile_setData_team2;

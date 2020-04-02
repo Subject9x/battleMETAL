@@ -48,12 +48,28 @@ void( ) FRIK_FILE_precaches =
 string MAP_NAME;  //strips mapname global of junk
 float UNLOCKED_MECHS[256];
 #endif
-string PATH_DATA_MAP = "map_scripts";
+string PATH_DATA_MAP = "maps/";
 string PATH_DATA_ANIM = "anim";
 string PATH_DATA_SAVE = "saves";
 string PATH_DATA_UI = "ui";
 string NEWLINE = "\n";
 float FLAG_NEWGAME;
+//globals
+string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
+string SAVE_MAP;
+string SAVE_MECHS_LIST;
+string SAVE_ITEMS_ALL;
+float SAVE_MISSN_POINTS;
+
+string SAVE_FILE_EXT = ".sav";
+
+//file tags
+string SAVE_FILE_MSN_NAME = "mission";
+string SAVE_FILE_MECH_LIST = "mechs";
+string SAVE_FILE_ITEMS = "items";
+string SAVE_FILES_POINTS = "points";
+string SAVE_FILE_NEWGAME = "newgame";
+
 //============================
 //   GAME MODES
 //============================

@@ -1,0 +1,12 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 04/02/2020
+Overview:
+  Local save file handling.
+  Network games will validate player selection data on-submit.
+  Campaign games will load data locally.
+*/
+
+void( string fileName ) cl_load_savefile;
+void( float gameType ) cl_set_savepath;

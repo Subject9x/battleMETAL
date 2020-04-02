@@ -275,9 +275,14 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   //draw hud
   
   AVAILABLE_RESERVE = 0;
-  if(CLIENT_player_state == PLAYER_SPAWN){
+  
+  //Player has just connected to server
+  if(CLIENT_player_state == PLAYER_CONNECT ){
     localcmd(strcat("stopsound", "\n"));
     cl_set_hud_vars_obs();
+  }
+  if(CLIENT_player_state == PLAYER_SPAWN){
+    
   }
   
   if(CLIENT_data_type == DATA_MECH){
@@ -477,6 +482,11 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     else if(argv(1) == "mode"){
       cvar_set("gamemode", argv(2));
+      cvar_set("saveslot", argv(3));
+      if(CLIENT_player_state == PLAYER_CONNECT ){
+        //cons_logAFloat("Connected", 1); //DEBUG
+        cl_set_savepath( cvar("gamemode") );
+      }
     }
     else if(argv(1) == "unl"){
       cl_unlock_stuff(s);

@@ -31,8 +31,16 @@ float TE_STOMP_TYPE;  //set by world type
 .entity particleCube; //used by mech/map/map_particlecube_effect.qc
 .vector wind;
 
-void() mh_world_ini;
+//Unlock Data for network play
+string WORLD_MAP_NAME;
 
+float WORLD_DATA_MECHS_TEAM1[64]; //when co-op, this is all players
+float WORLD_DATA_ITEMS_TEAM1[64];
+
+float WORLD_DATA_MECHS_TEAM2[64];
+float WORLD_DATA_ITEMS_TEAM2[64];
+
+void() mh_world_ini;
 void() world_get_fog;
 
 //RTLight converter system---------------------------------------------
@@ -64,3 +72,5 @@ void( entity light, float fileData ) world_export_realtimelights_write;
 void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angles, float skinNum, float lightRadius ) world_make_dlight;
 void( entity parent ) world_remove_dlight;
 void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight;
+
+void() sv_world_load_items;

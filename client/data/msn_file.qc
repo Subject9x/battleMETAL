@@ -8,7 +8,7 @@ Overview: header for the mission file handler.
 void() msn_getfile={
   local float flannel;
   local string file;
-  file = strcat(PATH_DATA_MAP, "/", MAP_NAME, "/", MSN_FILENAME, ".msn");
+  file = strcat(PATH_DATA_MAP, MAP_NAME, "/", MSN_FILENAME, ".msn");
   
   if( cvar("developer") ){
     cons_logAString("loading file:", file);

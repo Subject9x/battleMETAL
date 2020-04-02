@@ -9,17 +9,26 @@ Overview:
 */
 
 void() mh_world_ini={
+  tokenizebyseparator(mapname, "/", ".");
+  WORLD_MAP_NAME = argv(1);
+  WORLD_MAP_NAME = strzone(WORLD_MAP_NAME);
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;
   }
-  else if( cvar("deathmatch") ){ 
-    GAMETYPE = GAMEMODE_DM;
+  else if( cvar("deathmatch") ){
+    if( cvar("teamplay") ){
+      GAMETYPE = GAMEMODE_TEAMDM;
+    }
+    else{
+      GAMETYPE = GAMEMODE_DM;
+    }
   }
   else{
     GAMETYPE = GAMEMODE_CAMPAIGN;
   } 
   cvar_set("gamemode", ftos(GAMETYPE));
 
+  sv_world_load_items();
 
   registercvar("campaign", "0", 0); 
   registercvar("saveslot", "0", 1);
@@ -229,6 +238,32 @@ void() WeatherDominator_think={
   WeatherDominator.think = WeatherDominator_think;
   WeatherDominator.nextthink = time + 0.05;
 };
+
+
+/*
+  Populate item availability.
+  Loads items from map_script files
+  COOP - coop.sav
+  DM - dm.sav
+  TDM
+    - team1.sav
+    - team2.sav
+*/
+void() sv_world_load_items={
+  switch( GAMETYPE ){
+    case GAMEMODE_COOP:
+      mapfile_coop_load();
+      break;
+    case GAMEMODE_DM:
+      mapfile_dm_load();
+      break;
+    case GAMEMODE_TEAMDM:
+      mapfile_team_load();
+      break;
+  }
+};
+
+
 
 /*
   Real-time Light entity exporter functionality.

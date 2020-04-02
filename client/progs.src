@@ -24,6 +24,8 @@ data/headers/data_vehicles.qh
 data/headers/data_projectiles.qh
 data/headers/data_mapobjs.qh
 data/headers/data_mech.qh
+data/headers/local_savefile.qh
+
 util/headers/particle_sys.qh
 model/models_buildings.qh
 
@@ -142,6 +144,8 @@ data/data_vehicles.qc
 data/data_projectiles.qc
 data/data_mapobjs.qc
 data/data_mech.qc
+
+data/local_savefile.qc
 
 ui/anim.qc
 ui/gui_api.qc

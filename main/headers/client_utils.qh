@@ -17,7 +17,7 @@ this is the header.
 void() SetChangeParms;
 void() SetNewParms;
 void() DecodeLevelParms;
-void() respawn;
+void() sv_player_respawn; //was respawn() but this was not an engine required name.
 entity() SelectSpawnPoint;
 //==========================
 float(entity piece) csqc_updateCompStat;
@@ -25,6 +25,7 @@ float(entity piece) csqc_updateCompStat;
 void() legacy_PlayerDie;
 
 //spawn spot wrappers
+void() sv_select_info_start;
 void() spawnpoint_select;
 void() spawnpoint_Random;
 entity() spawnpoint_coop;
@@ -49,7 +50,7 @@ void() client_sendMissionName;
 void(string mechs) client_sendAvailable_Mechs;
 void(string itms) client_sendAvailableItems;
 void() client_sendMissionUnlocks;
-void(float mode) client_sendGameMode;
+void(float mode, float saveSlot) client_sendGameMode;
 void(string targetName) client_sendTargetName;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
 void(entity client, float trackNum, float entFlags) client_sendMusic;

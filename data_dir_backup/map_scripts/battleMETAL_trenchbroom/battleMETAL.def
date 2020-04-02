@@ -45,70 +45,32 @@ When the player touches this, he gets sent to the map listed in the "map" variab
 "isActive" : 1 = activate by touch, 0 = activate by remote
 "count" : <float> count in game seconds till intermission is over;
 */
+
+
+
 /*QUAKED info_player_start (1 0 0) (-16 -16 -24) (16 16 24)
-The normal starting point for a level.
+  Initial Player Spawn point for CAMPAIGN missions.
+  Players are then taken to the Briefing screen, so the
+    exact position of this is irrelevant.
 */
-/*QUAKED info_player_start2 (1 0 0) (-16 -16 -24) (16 16 24)
-Only used on start map for the return point from an episode.
-*/
+
+
 /*QUAKED info_player_deathmatch (1 0 1) (-16 -16 -24) (16 16 24)
-potential spawning position for deathmatch games
-
-new in Dark Places:
-"targetname"
- inactive (skipped) until triggered.
- (for use in combination with
-  trigger_playercount)
+  Initial Player Spawn point for DEATHMATH and TEAM DEATHMATCH missions.
+  Players are then taken to the Briefing screen, so the
+    exact position of this is irrelevant.
 */
+
+
 /*QUAKED info_player_coop (1 0 1) (-16 -16 -24) (16 16 24)
-potential spawning position for coop games
+  Initial Player Spawn point for COOPERATIVE missions.
+  Players are then taken to the Briefing screen, so the
+    exact position of this is irrelevant.
 */
-/*QUAKED info_player_team1 (.7 0 0) (-16 -16 -24) (16 16 24)
-potential spawning position for teamplay games
-team #1 - red
 
-new in Dark Places:
-"targetname"
- inactive (skipped) until triggered.
- (for use in combination with
-  trigger_playercount)
-*/
-/*QUAKED info_player_team2 (0 0 .7) (-16 -16 -24) (16 16 24)
-potential spawning position for teamplay games
-team #2 - blue
 
-new in Dark Places:
-"targetname"
- inactive (skipped) until triggered.
- (for use in combination with
-  trigger_playercount)
-*/
-/*QUAKED info_player_team3 (.7 .7 .7) (-16 -16 -24) (16 16 24)
-potential spawning position for teamplay games
-team #3 - grey
 
-new in Dark Places:
-"targetname"
- inactive (skipped) until triggered.
- (for use in combination with
-  trigger_playercount)
-*/
-/*QUAKED info_player_team1 (1 0 0) (-16 -16 -24) (16 16 24)
-CTF Starting point for a player
-in team one (Red).
 
-Keys:
-"angle"
- viewing angle when spawning
-*/
-/*QUAKED info_player_team2 (1 0 0) (-16 -16 -24) (16 16 24)
-CTF Starting point for a player in
-team two (Blue).
-
-Keys:
-"angle"
- viewing angle when spawning
-*/
 /*QUAKED func_door (0 .5 .8) ? START_OPEN x DOOR_DONT_LINK GOLD_KEY SILVER_KEY TOGGLE
 if two doors touch, they are assumed to be connected and operate as a unit.
 

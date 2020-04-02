@@ -50,16 +50,9 @@ void() ClientConnect = {
   self.nextVecChoice = 0;
   self.vec_size = 0;
   self.data_idx = 0;
-  
-  if( GAMETYPE != GAMEMODE_DM ){
-    self.data_type = DATA_POBS;
-  }
-  else{
-    self.data_type = 0;
-  }
-  
+  self.data_type = DATA_POBS;
   self.currentWeaponGroup = self.currentWeaponGroup;
-  self.faction = FACTION_PSC; //default
+  self.faction = FACTION_ALL; //default
   self.energy = 0;
   self.energyMax = 0;
   self.energyRate = 0;
@@ -135,7 +128,7 @@ void() ClientConnect = {
   self.ramUp = 1;
   self.ramUpMax = 1;
   self.repair_request = 0;
-  self.playerState = PLAYER_CONNECT;
+  self.playerState = PLAYER_CONNECT;  //so we can detect a first-connect state.
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here
   self.stat_player_weapons_state = 0;
@@ -145,14 +138,14 @@ void() ClientConnect = {
   self.stat_target_orgy = 0;
   self.stat_target_orgz = 0;
 
-  if( world.animaticOnly == FALSE) {
-    client_playTrack(3, TRUE);  //entering hangar menu
+  if( world.animaticOnly ) {
+    client_playTrack(world.sounds, TRUE);  //play desired music for animatic
   }
   else{
-    client_playTrack(world.sounds, TRUE);  //entering hangar menu
+    client_playTrack(3, TRUE);  //entering hangar menu
   }
   
-  self.playerState = PLAYER_SPAWN;
+  //self.playerState = PLAYER_SPAWN;
   client_push_player_info();
   client_data();
   
@@ -165,7 +158,10 @@ void() ClientConnect = {
 ===========
 PutClientInServer
 
-responsible for configuring the player and spawning them into the level
+responsible for configuring the player and spawning them into the level.
+
+note: This is also called after a player respawns too...
+
 ============
 */
 void() PutClientInServer = {
@@ -185,106 +181,41 @@ void() PutClientInServer = {
 	self.attack_finished = time;
   self.th_die = PlayerDie;
   
-  self.deadflag = DEAD_NO;
+  self.deadflag = DEAD_NO;  //re-rack
   
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
   self.view_ofs = '0 0 1';
 
-  
-  if( !cvar("developer") ){
-    if( coop ){
-      spot = spawnpoint_coop();
-    }
-  }
-
-
-  spot  = SelectSpawnPoint();
-  if( GAMETYPE != GAMEMODE_DM ){
-    if( self.faction < 1 ){
-      self.faction = FACTION_PSC;  //default to 1 to satisfy game code
-    }
-    else{
-      self.faction = spot.faction;
-    }
-  }
-	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
-  self.angles = spot.angles;
-  
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-    client_sendMissionFileName();
-    client_sendGameMode(cvar("gamemode"));
-    if( world.model == "maps/o1m1.bsp"){
-      //pre-populate default save file
-      savefile_load( FALSE );
-      if( FLAG_NEWGAME == TRUE ){
-        savefile_default();
-        savefile_load( FALSE );
-      }
-    }
-    if( world.animaticOnly == FALSE ){
-      if( world.itemOverrideFile != "" ){
-        savefile_load( TRUE );
-      }
-      else{
-        savefile_load( FALSE );
-      }
-    }
-    client_sendAvailable_Mechs(SAVE_MECHS_LIST);
-    client_sendAvailableItems(SAVE_ITEMS_ALL);
-  }
-  else if ( GAMETYPE == GAMEMODE_COOP ){
-    //using client num as lazy connection-check
-    if( self.client_num < 1 ){
-      client_sendMissionFileName();
-      client_sendGameMode(cvar("gamemode"));
-    }
-  
-    self.th_die = PlayerDieNetwork;
-    mapfile_coop_load();
-  }
-  else{
-    if( self.playerState == PLAYER_SPAWN ){
+  //GAME MODE BLOCK
+  switch(GAMETYPE){
+    case GAMEMODE_CAMPAIGN:
+      PutClientInServer_Campaign();
+      break;
+    
+    case GAMEMODE_COOP:
+      PutClientInServer_Coop();
+      break;
       
-    }
-    self.th_die = PlayerDieNetwork;
+    case GAMEMODE_DM:
+      PutClientInServer_Deathmatch();
+      break;
+     
+    case GAMEMODE_TEAMDM:
+      PutClientInServer_TeamDeathmatch();
+      break;
   }
 
   switch( self.data_type ){
-    case 0:
-      client_push_mapobjects();
-      if( self.client_num < 1 ){
-        client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);      
-      }
-      self.power_timer = 0;
-      break;
     case DATA_POBS:
-      player_makeObserver();
       
-      client_push_mapobjects();
-      if( self.client_num < 1 ){
-        client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);      
-      }
-      
+
       if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-        self.movetype = MOVETYPE_NONE;
-        self.flags = self.flags - (self.flags & FL_FLY);
-        if( world.animaticOnly ){
-          self.playerState = PLAYER_INTERMSN;
-        }
-        else{
-          self.playerState = PLAYER_IN_MENU;
-        }
+
       }
       else{
-        if( cvar("developer") ){
-          self.playerState = PLAYER_ACTIVE;
-        }
-        else{
-          self.playerState = PLAYER_IN_MENU;
-        }
+
       }
-      self.power_timer = 0;
       break;
     default:
       self.trigOnSpawn = spot.trigOnSpawn;
@@ -347,7 +278,7 @@ void() ClientKill = {
     self.frags = self.frags - 2;
   }
   self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
-	respawn ();
+	sv_player_respawn();
 };
 
 /*
@@ -384,6 +315,169 @@ void() ClientDisconnect = {
   remove(self.clientData);
 };
 
+//better to split these out for clarity
+/*
+  PutClientInServer_Campaign
+    GAMEMODE_COOP
+*/
+void() PutClientInServer_Campaign={
+
+  /*PutClientInServer Logic
+    1) find a spawn point
+    2) configure faction
+    3) send eqipment selections
+    4) config client th_ funcs
+  */
+  sv_select_info_start();
+  
+  //handle one-time server connect functions.
+  if( self.playerState == PLAYER_CONNECT ){
+    client_sendMissionFileName();
+    client_sendGameMode(cvar("gamemode"), cvar("saveslot"));
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    self.power_timer = 0;
+    player_makeObserver();
+    self.playerState = PLAYER_SPAWN;
+    self.faction = FACTION_PSC; //campaign default
+  }
+  client_push_mapobjects(); //refreshes map object data for everyone
+  
+ if( world.model == "maps/o1m1.bsp"){
+    //pre-populate default save file
+    savefile_load( FALSE );
+    if( FLAG_NEWGAME == TRUE ){
+      savefile_default();
+      savefile_load( FALSE );
+    }
+  }
+  if( world.animaticOnly == FALSE ){
+    if( world.itemOverrideFile != "" ){
+      savefile_load( TRUE );
+    }
+    else{
+      savefile_load( FALSE );
+    }
+  }
+  
+  self.movetype = MOVETYPE_NONE;
+  self.flags = self.flags - (self.flags & FL_FLY);
+  if( world.animaticOnly ){
+    self.playerState = PLAYER_INTERMSN;
+  }
+  else{
+    self.playerState = PLAYER_IN_MENU;
+  }
+};
+
+
+/*
+  PutClientInServer_Coop
+    GAMEMODE_COOP
+*/
+void() PutClientInServer_Coop={
+  /*PutClientInServer Logic
+    1) find a spawn point
+    2) configure faction
+    3) send eqipment selections
+    4) config client th_ funcs
+  */
+  sv_select_info_start();
+  
+  //handle one-time server connect functions.
+  if( self.playerState == PLAYER_CONNECT ){
+    client_sendMissionFileName();
+    client_sendGameMode(cvar("gamemode"), FALSE);
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    self.power_timer = 0;
+    player_makeObserver();
+    self.playerState = PLAYER_SPAWN;
+    self.faction = FACTION_PSC; //campaign default
+  }
+  client_push_mapobjects(); //refreshes map object data for everyone
+
+  self.th_die = PlayerDieNetwork;
+  mapfile_coop_load();
+  
+  if( cvar("developer") ){
+    self.playerState = PLAYER_ACTIVE;
+  }
+  else{
+    self.playerState = PLAYER_IN_MENU;
+  }
+};
+
+
+/*
+  PutClientInServer_Deathmatch
+    GAMEMODE_COOP
+    TEAMPLAY = FALSE
+*/
+void() PutClientInServer_Deathmatch={
+  /*PutClientInServer Logic
+    1) find a spawn point
+    2) configure faction
+    3) send eqipment selections
+    4) config client th_ funcs
+  */
+ 
+  sv_select_info_start();
+  
+  //handle one-time server connect functions.
+  if( self.playerState == PLAYER_CONNECT ){
+    client_sendMissionFileName();
+    client_sendGameMode(cvar("gamemode"), FALSE);
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    self.power_timer = 0;
+    player_makeObserver();
+    self.playerState = PLAYER_SPAWN;
+    self.faction = FACTION_ALL; //campaign default
+  }
+  client_push_mapobjects(); //refreshes map object data for everyone
+  
+  self.th_die = PlayerDieNetwork;  
+  
+  if( cvar("developer") ){
+    self.playerState = PLAYER_ACTIVE;
+  }
+  else{
+    self.playerState = PLAYER_IN_MENU;
+  }
+};
+
+
+/*
+  PutClientInServer_TeamDeathmatch
+    GAMEMODE_COOP
+    TEAMPLAY = TRUE
+*/
+void() PutClientInServer_TeamDeathmatch={
+  /*PutClientInServer Logic
+    1) find a spawn point
+    2) configure faction
+    3) send eqipment selections
+    4) config client th_ funcs
+  */
+  //handle one-time server connect functions.
+  if( self.playerState == PLAYER_CONNECT ){
+    client_sendMissionFileName();
+    client_sendGameMode(cvar("gamemode"), FALSE);
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    self.power_timer = 0;
+    player_makeObserver();
+    self.playerState = PLAYER_SPAWN;
+    self.faction = FACTION_ALL; //campaign default
+  }
+  client_push_mapobjects(); //refreshes map object data for everyone
+  self.th_die = PlayerDieNetwork;
+    
+  if( cvar("developer") ){
+    self.playerState = PLAYER_ACTIVE;
+  }
+  else{
+    self.playerState = PLAYER_IN_MENU;
+  }
+};
+
 /*
   Send Ent Fun
 */
@@ -409,6 +503,10 @@ void() client_data={
   self.clientData = data;
 };
 
+/*
+  Send ClientData SendEnt()
+  cliet/network/receive_player.qc
+*/
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   player = self.owner;

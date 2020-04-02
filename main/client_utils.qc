@@ -287,7 +287,7 @@ void(string str, float tokens) client_ParseMechCommand={
     else{
       if( GAMETYPE == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
-        mapfile_pvp_load(self.faction);
+        //mapfile_pvp_load(self.faction);
         PutClientInServer();
       }
     }
@@ -386,7 +386,7 @@ void(string cmd, float tokens) client_setMission={
   //Co-op
   if( GAMETYPE == GAMEMODE_COOP ){
     self.view_ofs = '0 0 1';
-    respawn();
+    sv_player_respawn();
     return;
   }
   
@@ -408,17 +408,20 @@ void(string cmd, float tokens) client_setWeaponGroup={
   self.w_group4 = stof(argv(5));
 };
 
+
+//DEPRECATED -> remove soon
 void(string mechs) client_sendAvailable_Mechs={
   local string cmd;
   cmd = strcat("m lms [", mechs, "]\n");
   stuffcmd(self, cmd);
 };
-
+//DEPRECATED -> remove soon
 void(string itms) client_sendAvailableItems={
   local string cmd;
   cmd = strcat("m lis [", itms,"]\n");
   stuffcmd(self, cmd);
 };
+
 
 void() client_sendMissionUnlocks={
   local string cmd;
@@ -426,9 +429,9 @@ void() client_sendMissionUnlocks={
   stuffcmd(self, cmd);
 };
 
-void(float mode) client_sendGameMode={
+void(float mode, float saveSlot) client_sendGameMode={
   local string cmd;
-  cmd = strcat("m mode ", ftos(mode),"\n");
+  cmd = strcat("m mode ", ftos(mode)," ", ftos(saveSlot),"\n");
   stuffcmd(self, cmd);
 };
 
@@ -621,7 +624,7 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
   }
 };
 
-void() respawn={ 
+void() sv_player_respawn={ 
   if (  GAMETYPE == GAMEMODE_COOP ){
 		// make a copy of the dead body for appearances sake
     //CopyToBodyQue (self);
@@ -726,6 +729,44 @@ entity() SelectSpawnPoint={
 		error ("PutClientInServer: no info_player_start on level");
 
 	return spot;
+};
+
+/*
+  SELECT INFO_START 
+    overrides SelectSpawnPoint();
+  
+  battleMETAL doesn't put the player into the action at any of the original info_ node entities.
+  Instead, the game sends that decision to the client for handling.
+  
+  scope: self = client
+*/
+void() sv_select_info_start={
+  local entity spot;
+  
+  switch( GAMETYPE ){
+    case GAMEMODE_CAMPAIGN:
+      spot = find(spot, classname, "info_player_start");
+      break;
+      
+    case GAMEMODE_COOP:
+      spot = find(spot, classname, "info_player_coop");
+      break;
+      
+    case GAMEMODE_DM:
+      spot = find(spot, classname, "info_player_deathmatch");
+      break;
+    case GAMEMODE_TEAMDM:
+      spot = find(spot, classname, "info_player_deathmatch");
+      break;
+  }
+  if( spot ){
+    self.angles = spot.angles;
+    setorigin(self, spot.origin);
+    
+  }
+  else{
+    error ("PutClientInServer()->sv_select_info_start(): no info_player_start on level");
+  }
 };
 
 void() spawnpoint_select={

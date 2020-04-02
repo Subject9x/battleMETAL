@@ -172,19 +172,18 @@ void() savefile_default={
   
 };
 
-//coop options
+/*
+  Loads the co-op save file for GAMETYPE == GAMEMODE_COOP games.
+    + this file should be /data/map_scripts/<map>/coop.sav
+    + unlocks are handled via nextmap's coop.sav file.
+*/
 void() mapfile_coop_load={
-  local string mapFileName, file, line, contents;
+  local string file, line, contents;
   local float flannel, line_tag, argc;
   
-  file = mapname;
-  mapFileName = mapname;
+  local string mechData, itemData;
   
-  if( world.mapFile ){
-    mapFileName = world.mapFile;
-  }
-  
-  file = strcat(PATH_DATA_MAP, "/", file, "/", mapFileName, SAVE_FILE_EXT);
+  file = strcat(PATH_DATA_MAP, mapname, "/coop", SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);
@@ -193,36 +192,34 @@ void() mapfile_coop_load={
     while( (line != "") ){
       if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
         line_tag = tokenizebyseparator(line, "'","'",": ",",");
-        if( argv(1) == SAVE_FILE_MSN_NAME) {
-          
-        }
         if( argv(1) == SAVE_FILE_MECH_LIST ){
-          client_sendAvailable_Mechs( argv(3) );
+          mechData = argv(3);
         }
         if( argv(1) == SAVE_FILE_ITEMS ){
-          client_sendAvailableItems( argv(3) );
+          itemData = argv(3);
         }
       }
       line = fgets(flannel);
     }
     fclose(flannel);
   }
+  
+  mapfile_setData_team1( mechData ,itemData );
 };  
 
-//pvp options
-//scope this for the client
-void( float playerFaction ) mapfile_pvp_load={
-  local string mapFileName, file, line, contents;
+
+/*
+  Loads the 2 team deathmatch save files for GAMETYPE == GAMEMODE_TEAMDM games.
+    + this file should be /data/map_scripts/<map>/team1.sav
+    + this file should be /data/map_scripts/<map>/team2.sav
+*/
+void() mapfile_team_load={
+  local string file, line, contents;
   local float flannel, line_tag, argc;
   
-  file = mapname;
-  mapFileName = mapname;
-  
-  if( world.mapFile ){
-    mapFileName = world.mapFile;
-  }
-  
-  file = strcat(PATH_DATA_MAP, "/", mapname, "/", mapFileName, "_", ftos(playerFaction), SAVE_FILE_EXT);
+  local string mechData, itemData;
+
+  file = strcat(PATH_DATA_MAP, mapname, "/team1", SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);
@@ -235,14 +232,112 @@ void( float playerFaction ) mapfile_pvp_load={
           
         }
         if( argv(1) == SAVE_FILE_MECH_LIST ){
-          client_sendAvailable_Mechs( argv(3) );
+          mechData = argv(3);
         }
         if( argv(1) == SAVE_FILE_ITEMS ){
-          client_sendAvailableItems( argv(3) );
+          itemData = argv(3);
         }
       }
       line = fgets(flannel);
     }
     fclose(flannel);
   }
+  
+  mapfile_setData_team1( mechData, itemData );
+  
+  file = strcat(PATH_DATA_MAP, mapname, "/team2", SAVE_FILE_EXT);
+  flannel = fopen(file, FILE_READ);
+  if(flannel > -1){
+    contents = fgets(flannel);
+    argc = tokenizebyseparator(contents, "{", ",", "}");
+    line = fgets(flannel);
+    while( (line != "") ){
+      if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+        line_tag = tokenizebyseparator(line, "'","'",": ",",");
+        if( argv(1) == SAVE_FILE_MSN_NAME) {
+          
+        }
+        if( argv(1) == SAVE_FILE_MECH_LIST ){
+          mechData = argv(3);
+        }
+        if( argv(1) == SAVE_FILE_ITEMS ){
+          itemData = argv(3);
+        }
+      }
+      line = fgets(flannel);
+    }
+    fclose(flannel);
+  }
+  
+  mapfile_setData_team2( mechData, itemData );
+}; 
+
+/*
+  Loads the deathmatch save file for GAMETYPE == GAMEMODE_DM games.
+    + this file should be /data/map_scripts/<map>/dm.sav
+*/
+void() mapfile_dm_load={
+  local string file, line, contents;
+  local float flannel, line_tag, argc;
+  
+  local string mechData, itemData;
+  
+  file = strcat(PATH_DATA_MAP, mapname, "/dm", SAVE_FILE_EXT);
+  flannel = fopen(file, FILE_READ);
+  if(flannel > -1){
+    contents = fgets(flannel);
+    argc = tokenizebyseparator(contents, "{", ",", "}");
+    line = fgets(flannel);
+    while( (line != "") ){
+      if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+        line_tag = tokenizebyseparator(line, "'","'",": ",",");
+        if( argv(1) == SAVE_FILE_MECH_LIST ){
+          mechData = argv(3);
+        }
+        if( argv(1) == SAVE_FILE_ITEMS ){
+          itemData = argv(3);
+        }
+      }
+      line = fgets(flannel);
+    }
+    fclose(flannel);
+  }
+  
+  mapfile_setData_team1( mechData ,itemData );
 };  
+
+void( string theseMechs, string theseItems ) mapfile_setData_team1={
+  local float itr;
+  local float max;
+  local float point;
+  itr = 0;
+  max = tokenizebyseparator( theseMechs, " ");
+  for( itr = 0; itr < max; itr = itr + 1){
+    point = stof(argv(itr));
+    WORLD_DATA_MECHS_TEAM1[itr] = point;
+  }
+  itr = 0;
+  max = tokenizebyseparator( theseItems, " ");
+  for( itr = 0; itr < max; itr = itr + 1){
+    point = stof(argv(itr));
+    WORLD_DATA_ITEMS_TEAM1[itr] = point;
+  }
+}; 
+
+void( string theseMechs, string theseItems ) mapfile_setData_team2={
+  local float itr;
+  local float max;
+  local float point;
+  itr = 0;
+  max = tokenizebyseparator( theseMechs, " ");
+  for( itr = 0; itr < max; itr = itr + 1){
+    point = stof(argv(itr));
+    WORLD_DATA_MECHS_TEAM2[itr] = point;
+  }
+  itr = 0;
+  max = tokenizebyseparator( theseItems, " ");
+  for( itr = 0; itr < max; itr = itr + 1){
+    point = stof(argv(itr));
+    WORLD_DATA_ITEMS_TEAM2[itr] = point;
+  }
+}; 

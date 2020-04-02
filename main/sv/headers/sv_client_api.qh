@@ -10,5 +10,10 @@ void() PutClientInServer;
 void() ClientConnect;
 void() ClientDisconnect;
 
+void() PutClientInServer_Campaign;
+void() PutClientInServer_Coop;
+void() PutClientInServer_Deathmatch;
+void() PutClientInServer_TeamDeathmatch;
+
 void() client_data;
 float( float isNew, float changeFlags ) send_client_data;
