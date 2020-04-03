@@ -9,9 +9,6 @@ Overview:
 */
 
 void() mh_world_ini={
-  tokenizebyseparator(mapname, "/", ".");
-  WORLD_MAP_NAME = argv(1);
-  WORLD_MAP_NAME = strzone(WORLD_MAP_NAME);
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;
   }

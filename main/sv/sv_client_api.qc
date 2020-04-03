@@ -187,6 +187,8 @@ void() PutClientInServer = {
 	self.pausetime = 0;
   self.view_ofs = '0 0 1';
 
+  sv_select_info_start();
+
   //GAME MODE BLOCK
   switch(GAMETYPE){
     case GAMEMODE_CAMPAIGN:
@@ -328,7 +330,6 @@ void() PutClientInServer_Campaign={
     3) send eqipment selections
     4) config client th_ funcs
   */
-  sv_select_info_start();
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
@@ -364,9 +365,9 @@ void() PutClientInServer_Campaign={
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;
   }
-  else{
-    self.playerState = PLAYER_IN_MENU;
-  }
+  //if( cvar("developer") ){
+  // self.playerState = PLAYER_ACTIVE;
+  //}
 };
 
 
@@ -381,7 +382,6 @@ void() PutClientInServer_Coop={
     3) send eqipment selections
     4) config client th_ funcs
   */
-  sv_select_info_start();
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
@@ -398,12 +398,9 @@ void() PutClientInServer_Coop={
   self.th_die = PlayerDieNetwork;
   mapfile_coop_load();
   
-  if( cvar("developer") ){
-    self.playerState = PLAYER_ACTIVE;
-  }
-  else{
-    self.playerState = PLAYER_IN_MENU;
-  }
+  //if( cvar("developer") ){
+  // self.playerState = PLAYER_ACTIVE;
+  //}
 };
 
 
@@ -419,8 +416,6 @@ void() PutClientInServer_Deathmatch={
     3) send eqipment selections
     4) config client th_ funcs
   */
- 
-  sv_select_info_start();
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
@@ -433,15 +428,12 @@ void() PutClientInServer_Deathmatch={
     self.faction = FACTION_ALL; //campaign default
   }
   client_push_mapobjects(); //refreshes map object data for everyone
-  
   self.th_die = PlayerDieNetwork;  
   
-  if( cvar("developer") ){
-    self.playerState = PLAYER_ACTIVE;
-  }
-  else{
-    self.playerState = PLAYER_IN_MENU;
-  }
+  
+  //if( cvar("developer") ){
+  // self.playerState = PLAYER_ACTIVE;
+  //}
 };
 
 
@@ -457,6 +449,7 @@ void() PutClientInServer_TeamDeathmatch={
     3) send eqipment selections
     4) config client th_ funcs
   */
+  
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
     client_sendMissionFileName();
@@ -470,12 +463,9 @@ void() PutClientInServer_TeamDeathmatch={
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;
     
-  if( cvar("developer") ){
-    self.playerState = PLAYER_ACTIVE;
-  }
-  else{
-    self.playerState = PLAYER_IN_MENU;
-  }
+  //if( cvar("developer") ){
+  // self.playerState = PLAYER_ACTIVE;
+  //}
 };
 
 /*

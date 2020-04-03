@@ -57,7 +57,7 @@ void( float gameType ) cl_set_savepath={
   
   switch( gameType ){
     case GAMEMODE_CAMPAIGN:
-      filePath = strcat(PATH_DATA_SAVE,SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
+      filePath = strcat(PATH_DATA_SAVE,"/",SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
       break;
     
     case GAMEMODE_COOP:

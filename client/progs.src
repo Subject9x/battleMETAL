@@ -131,6 +131,7 @@ util/headers/input_events.qh
   ui/menu/headers/ui_deploy.qh
   ui/menu/headers/ui_objectives.qh
   ui/menu/headers/ui_debrief.qh
+  ui/menu/headers/ui_connect.qh
 //================
 
 data/client_precache.qc
@@ -180,6 +181,7 @@ ui/hud/hud_system_event.qc
   ui/menu/ui_deploy.qc
   ui/menu/ui_objectives.qc
   ui/menu/ui_debrief.qc
+  ui/menu/ui_connect.qc
 //=======================
 
 //EFFECTS================

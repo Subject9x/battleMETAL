@@ -281,16 +281,11 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     localcmd(strcat("stopsound", "\n"));
     cl_set_hud_vars_obs();
   }
-  if(CLIENT_player_state == PLAYER_SPAWN){
-    
-  }
   
   if(CLIENT_data_type == DATA_MECH){
     if(MENU_ACTIVE){
       if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
-        MENU_ACTIVE = FALSE;
-        CLIENT_MENU_menu_choice = 0;
-        setcursormode(0);
+        menu_exit();
         if( MECH_DATA_ID != CLIENT_data_idx ){
           ui_data_load_mech(CLIENT_data_idx);
         }
@@ -317,14 +312,13 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     }
   }
   else{
-    if(CLIENT_player_state == PLAYER_IN_MENU){
-      if( !MENU_ACTIVE && !(LAUNCH_VALIDATION & VALID_LAUNCH) ){
-        MENU_ACTIVE = TRUE;
-        CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
-        setcursormode( 1 );
-        setpause( 1 );
+    if( CLIENT_player_state == PLAYER_SPAWN ){
+      if( !MENU_ACTIVE ){
+         menu_enter( menu_connect_choice() );
       }
     }
+    
+    /*
     if(UI_OBJECTIVE_ACTIVE){
       //old PvP / co-op respawn state code. After death, this would tell the player to hit tab to spawn again.
       local float len;
@@ -343,6 +337,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       og_y = VIEW_CTR_y + gui_percentYRaw(32);
       drawstring(og, mesg, '8 8 0', '1 1 1', HUD_ALPHA, 0);
     }
+    */
   }
    
   //HUD sound system
@@ -484,7 +479,6 @@ void(string s) CSQC_Parse_StuffCmd =
       cvar_set("gamemode", argv(2));
       cvar_set("saveslot", argv(3));
       if(CLIENT_player_state == PLAYER_CONNECT ){
-        //cons_logAFloat("Connected", 1); //DEBUG
         cl_set_savepath( cvar("gamemode") );
       }
     }

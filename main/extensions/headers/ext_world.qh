@@ -32,8 +32,6 @@ float TE_STOMP_TYPE;  //set by world type
 .vector wind;
 
 //Unlock Data for network play
-string WORLD_MAP_NAME;
-
 float WORLD_DATA_MECHS_TEAM1[64]; //when co-op, this is all players
 float WORLD_DATA_ITEMS_TEAM1[64];
 

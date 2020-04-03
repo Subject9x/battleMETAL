@@ -120,6 +120,7 @@ void() receive_ent_bindData={
     }
     CLIENT_netname = strzone( name );
   }
+  CLIENT_player_state_prev = CLIENT_player_state;
   CLIENT_player_state = getstati( STAT_ARMOR );
   CLIENT_data_idx = getstati(STAT_PLR_DATA_IDX);
   CLIENT_faction = getstati( STAT_CELLS );
@@ -407,11 +408,8 @@ void(float missionTime, float clientKills, float missonSuccessCheck, float pscTo
     MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
   }
   
-  MENU_ACTIVE = 1;
-  CLIENT_MENU_menu_choice = MENU_DEBRIEF_ACTIVE;
+  menu_enter( MENU_DEBRIEF_ACTIVE);
   CLIENT_player_state = PLAYER_IN_MENU;
-  setpause( 1 );
-  setcursormode( 1 );
 };
 
 /*

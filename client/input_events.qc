@@ -17,7 +17,6 @@ Overview:
 */
 
 float(float inputEventType, float scanx, float chary, float devid) handle_input={
-  CLIENT_player_state = getstati(STAT_ARMOR);
   
 //console override-----
   if(inputEventType == INPUT_EVENT_KEYDOWN){
@@ -48,18 +47,12 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     if( (scanx == K_TAB) && (CLIENT_data_type == DATA_POBS) ){
       if( (CLIENT_player_state != PLAYER_INTERMSN) && MENU_ACTIVE ){
         if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
-          MENU_ACTIVE = FALSE;
-          CLIENT_MENU_menu_choice = 0;
-          setcursormode( 0 );
-          setpause( 0 );
+          menu_exit();
         }
       }
       else{
         if( CLIENT_player_state != PLAYER_INTERMSN ){
-          MENU_ACTIVE = TRUE;
-          CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
-          setcursormode( 1 );
-          setpause( 1 );
+          menu_enter( MENU_BRIEF_ACTIVE);
         }
       }
       return TRUE;
@@ -175,6 +168,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
           case MENU_DEBRIEF_ACTIVE:
             menu_debriefListener_onClick();
             break;
+          case MENU_CONNECT_ACTIVE:
+            menu_connectListener_onClick();
+            break;
         }
         return TRUE;
       }
@@ -201,7 +197,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
             //menu_deployListener_onKeyUp();
             break;
         }
-        if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
+        if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE && CLIENT_MENU_menu_choice != MENU_CONNECT_ACTIVE ){
           menu_mainListener();
         }
         return TRUE;
@@ -274,6 +270,9 @@ void() handle_input_hover={
         break;
       case MENU_DEBRIEF_ACTIVE:
         menu_debriefListener_onHover();
+        break;
+      case MENU_CONNECT_ACTIVE:
+        menu_connectListener_onHover();
         break;
     } 
   }

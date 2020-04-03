@@ -118,6 +118,7 @@ float OBJECTIVE_FAIL = 4;
 //============================
 //   PLAYER STATE ID's           
 //============================
+//used for client-state syncing between server and client
 float PLAYER_DEAD = -1;         // 
 float PLAYER_CONNECT = 0;       // Client just connected to server.
 float PLAYER_SPAWN = 1;         // Client has been initialized, and spawned in as observer.

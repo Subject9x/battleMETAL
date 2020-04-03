@@ -56,6 +56,9 @@ void() menu_handleFrame={
     case MENU_DEBRIEF_ACTIVE:
       menu_debrief_drawFrame();
       break;
+    case MENU_CONNECT_ACTIVE:
+      menu_connect_drawFrame();
+      break;
   }
   if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
     //debrief menu is bespoke, occuring after all other menus.
@@ -417,4 +420,39 @@ void() mechAcceptButtonListener={
       MENU_ACTIVE = FALSE;
     }
   }
+};
+
+void( float menuId ) menu_enter={
+  MENU_ACTIVE = TRUE;
+  CLIENT_MENU_menu_choice = menuId;
+  setcursormode( 1 );
+  setpause( 1 );
+};
+
+void() menu_exit={
+  MENU_ACTIVE = FALSE;
+  CLIENT_MENU_menu_choice = 0;
+  setcursormode( 0 );
+  setpause( 0 );
+};
+
+float() menu_connect_choice={
+  local float choice;
+  //cons_logAFloat("gamemode", cvar("gamemode")); //DEBUG
+  switch( cvar("gamemode") ){
+    case GAMEMODE_CAMPAIGN:
+      choice = MENU_BRIEF_ACTIVE;
+      //cons_logAFloat("MENU_BRIEF_ACTIVE", MENU_BRIEF_ACTIVE); //DEBUG
+      break;
+    case GAMEMODE_COOP:
+      //todo
+      choice = MENU_BRIEF_ACTIVE;
+      //cons_logAFloat("MENU_BRIEF_ACTIVE", MENU_BRIEF_ACTIVE); //DEBUG
+      break;
+    default:
+      choice = MENU_CONNECT_ACTIVE;
+     //cons_logAFloat("MENU_CONNECT_ACTIVE", MENU_CONNECT_ACTIVE); //DEBUG
+      break;
+  }
+  return choice;
 };

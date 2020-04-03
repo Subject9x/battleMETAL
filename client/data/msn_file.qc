@@ -33,7 +33,7 @@ void() msn_getfile={
 void() msn_parsefile={
   local float tobj, flannel, argc, line_tag, token;
   local string file, contents, line;
-  file = strcat(PATH_DATA_MAP, "/", MAP_NAME, "/", MSN_FILENAME, ".msn");
+  file = strcat(PATH_DATA_MAP, MAP_NAME, "/", MSN_FILENAME, ".msn");
   flannel = fopen(file, FILE_READ);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{",",","}");
@@ -44,7 +44,7 @@ void() msn_parsefile={
       line_tag = tokenizebyseparator(line, "'", "'", ": ","'","'");
       if (argv(1) == MSN_FILE_IMG){
         if( argv(token) != "" ){
-          msn_setmappic( argv(1), strcat("data/map_scripts/",argv(token)));
+          msn_setmappic( argv(1), strcat("data/maps/",argv(token)));
         }
       }
       if (argv(1) == MSN_FILE_NAME){
