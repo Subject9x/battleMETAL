@@ -18,6 +18,8 @@ Overview:
       + map name
 */
 
+//Globals
+
 //pseudo interface
 void() menu_connectListener_onClick;
 
@@ -33,3 +35,4 @@ void() menu_connect_drawFrame;
 void( vector menuOrg ) menu_connect_draw_bar;
 void( vector menuOrg ) menu_connect_draw_mission_info;
 void( vector menuOrg ) menu_connect_draw_players;
+void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row;

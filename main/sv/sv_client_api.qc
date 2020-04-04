@@ -480,6 +480,7 @@ void() client_data={
   data.owner = self;
   data.alpha = 0.01;
   data.scale = 0.01;
+  data.effects = data.effects | EF_NODEPTHTEST;
   data.origin = self.origin;
   data.data_type = self.data_type;
   data.faction = self.faction;
@@ -589,13 +590,15 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, player.flags );
+    WriteLong( MSG_ENTITY, player.flags );
+    WriteByte( MSG_ENTITY, player.frags );
     WriteString( MSG_ENTITY, player.netname );
   }
   /*
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
+    WriteByte( MSG_ENTITY, player.frags );
     WriteByte( MSG_ENTITY, (player.particleCube == world));
   }
   return TRUE;

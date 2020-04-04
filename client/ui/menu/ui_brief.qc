@@ -14,6 +14,8 @@ void() menu_briefDrawFrame={
   
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_BRIEF, 1, 0);
   
+  menu_navBar_drawFrame(VIEW_ORG);
+  
   menu_briefMissionInfo( topleftroot + gui_percentToPixelRawVec('10 32') );
   menu_briefPlaySound( topleftroot );
   menu_briefMissionText( topleftroot );
@@ -29,6 +31,7 @@ void() menu_briefDrawFrame={
 
 //hook for input system
 void() menu_briefListener_onClick={
+  menu_navbBar_listener();
   objIntelSwitchListener();
   briefSoundListener();
 };

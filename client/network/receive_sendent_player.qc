@@ -98,9 +98,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevCrit;
   local float prevType;
   local float prevTarget; 
+  local float prevKills;
   
   prevShield = self.shield;
   prevCrit = self.damageValue;
+  prevKills = self.kills;
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
@@ -195,20 +197,30 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.data_type = ReadByte();
     self.origin = te_read_vector();
     self.faction = ReadByte();
-    self.flags = ReadByte();
+    self.flags = ReadLong();
+    self.kills = ReadByte();
     self.netname = strzone( ReadString() );
     setmodel(self, "q3mdl/testball.md3");
     setorigin(self, self.origin);
     self.alpha = 0.01;
     self.scale = 0.01;
+    if( isNew ){
+      scoreboard_push(self);
+    }
   }
   
   /*
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
+    self.kills = ReadByte();
     //TODO
     self.particleCubeFlag = ReadByte();
+    
+    if( prevKills != self.kills ){
+      //cons_logAFloat("MADE A KILL", 1); //DEBUG
+      scoreboard_sort(scoreHead);
+    }
     if( self.particleCubeFlag == 0 ){
       //remove cube
     }

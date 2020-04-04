@@ -128,3 +128,82 @@ void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_rend
     SPRITE_deploy_point_FRAME_TIMER = time + 0.15;
   }
 };
+
+/*
+  Player scoreboard stuff
+*/
+
+void( entity head ) scoreboard_sort={
+  local entity current;
+  local entity next; 
+  
+  //scoreSorted = world;
+  current = head;
+  
+  while( current != world ){
+    next = current.scoreNext;
+    //cons_logAFloat(strcat("scoreboard_sort()->current:",current.netname), current.kills); //DEBUG
+    //cons_logAFloat(strcat("scoreboard_sort()->next:",next.netname), next.kills); //DEBUG
+    
+    scoreboard_sort_push( current );
+    current = next;
+  }
+  
+  //cons_logAFloat(strcat("scoreboard_sort()->scoreHead:",scoreHead.netname), scoreHead.kills); //DEBUG
+  //cons_logAFloat(strcat("scoreboard_sort()->scoreNext:",scoreHead.scoreNext.netname), scoreHead.scoreNext.kills); //DEBUG
+};
+
+void( entity player ) scoreboard_push={
+  if( scoreHead != world ){
+    //cons_logAFloat(strcat("PUSH TO LIST->scoreHead:",scoreHead.netname), scoreHead.kills); //DEBUG
+    player.scoreNext = scoreHead;
+  }
+  //cons_logAFloat(strcat("PUSH TO LIST->scoreHead = ",player.netname), player.kills); //DEBUG
+  scoreHead = player;
+};
+
+void( entity newScore ) scoreboard_sort_push={
+  local entity current;
+  if( scoreSorted == world || scoreSorted.kills > newScore.kills ){
+    //cons_logAFloat(strcat("scoreboard_sort_push()->newScore:",newScore.netname), newScore.kills); //DEBUG
+    newScore.scoreNext = scoreSorted;
+    scoreSorted = newScore;
+    
+   // cons_logAFloat(strcat("scoreboard_sort_push()->scoreSorted:",scoreSorted.netname), scoreSorted.kills); //DEBUG
+  }
+  else{
+    current = scoreSorted;
+   // cons_logAFloat(strcat("scoreboard_sort_push()->scoreSorted:",scoreSorted.netname), scoreSorted.kills); //DEBUG
+    while( ((current.scoreNext != world) && (current.scoreNext.kills < newScore.kills)) ){
+      current = current.scoreNext;
+      //cons_logAFloat(strcat("scoreboard_sort_push()->scoreSorted:",current.netname), current.kills); //DEBUG
+    }
+    newScore.scoreNext = current.scoreNext;
+    current.scoreNext = newScore;
+  }
+};
+
+void( entity removed) scoreboard_stitch={
+  local entity parent;
+  local entity found;
+  
+  parent = scoreHead;
+  while( parent != world){
+    if( found == world ){
+      if( parent.scoreNext == removed ){
+        found = parent;
+      }
+    }
+    parent = parent.scoreNext;
+  }
+  if( found != world ){
+    found.scoreNext = removed.scoreNext;
+  }
+  else{
+    scoreHead = removed.scoreNext;
+  }
+  scoreboard_sort( scoreHead );
+};
+
+  
+

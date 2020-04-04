@@ -11,6 +11,7 @@ Overview:
 
 //hook for inputs
 void() menu_armingListener_onClick={
+  menu_navbBar_listener();
   weaponSelectListener();
   hardpointListener();
   weaponGroupPanelListener();
@@ -300,6 +301,8 @@ void() menu_arming_drawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_ARMING, 1, 0);
+  
+  menu_navBar_drawFrame(VIEW_ORG);
   
   menu_arming_HardpointGraph(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponList(topleftroot + gui_percentToPixelRawVec('0 24'));

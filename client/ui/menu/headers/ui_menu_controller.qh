@@ -24,7 +24,7 @@ float() menu_connect_choice;
 
 void() menu_handleFrame;
 void() menu_mainListener;
-void() navBarListener;
+void() menu_navbBar_listener;
 void() mechAcceptButtonListener;
 
 void() menu_listen_onClick;
@@ -100,3 +100,47 @@ string UI_WEP_ENE;
 string UI_WEP_BAL;
 string UI_WEP_EXP;
 string UI_WEP_MSC;
+
+//Navbar buttons
+
+vector UI_NAVBAR_BRIEF_ORG;
+vector UI_NAVBAR_HANGAR_ORG;
+vector UI_NAVBAR_ARMING_ORG;
+vector UI_NAVBAR_DEPLOY_ORG;
+vector UI_NAVBAR_LAUNCH_ORG;
+vector UI_NAVBAR_CONNECT_ORG;
+vector UI_NAVBAR_INFO_ORG;
+vector UI_NAVBAR_DISCONNECT_ORG;
+
+vector UI_NAVBAR_BRIEF_SIZE = '96 24';
+vector UI_NAVBAR_HANGAR_SIZE = '96 24';
+vector UI_NAVBAR_ARMING_SIZE = '96 24';
+vector UI_NAVBAR_DEPLOY_SIZE = '128 24';
+vector UI_NAVBAR_LAUNCH_SIZE = '128 24';
+vector UI_NAVBAR_CONNECT_SIZE = '128 24';
+vector UI_NAVBAR_INFO_SIZE = '96 24';
+vector UI_NAVBAR_DISCONNECT_SIZE = '128 24';
+
+float UI_NAVBAR_DISCONNECT_HOVER;
+float UI_NAVBAR_CONNECT_HOVER;
+
+vector UI_NAVBAR_font_select = '18 14 0';
+vector UI_NAVBAR_font_unselect = '14 10 0';
+
+void( vector ofs ) ui_navbutton_brief_draw;
+void( vector ofs ) ui_navbutton_hangar_draw;
+void( vector ofs ) ui_navbutton_arming_draw;
+void( vector ofs ) ui_navbutton_deploy_draw;
+void( vector ofs ) ui_navbutton_connect_draw;
+void( vector ofs ) ui_navbutton_info_draw;
+void( vector ofs ) ui_navbutton_launch_draw;
+void( vector ofs ) ui_navbutton_disconnect_draw;
+
+void() ui_navbutton_brief_click;
+void() ui_navbutton_hangar_click;
+void() ui_navbutton_arming_click;
+void() ui_navbutton_deploy_click;
+void() ui_navbutton_connect_click;
+void() ui_navbutton_info_click;
+void() ui_navbutton_launch_click;
+void() ui_navbutton_disconnect_click;

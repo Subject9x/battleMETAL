@@ -317,27 +317,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
          menu_enter( menu_connect_choice() );
       }
     }
-    
-    /*
-    if(UI_OBJECTIVE_ACTIVE){
-      //old PvP / co-op respawn state code. After death, this would tell the player to hit tab to spawn again.
-      local float len;
-      local vector og;
-      local string mesg;
-      if(CLIENT_player_state == PLAYER_SPAWN){
-        len = stringwidth("Press any key to respawn", 0, '8 8 0');
-        mesg = "Press any key to respawn";
-      }
-      else if(CLIENT_player_state == PLAYER_IN_MENU){
-        len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
-        mesg = "Press [TAB] For Hangar Menu";
-      }
-      og = VIEW_CTR;
-      og_x = og_x - gui_percentXRaw(len/2);
-      og_y = VIEW_CTR_y + gui_percentYRaw(32);
-      drawstring(og, mesg, '8 8 0', '1 1 1', HUD_ALPHA, 0);
-    }
-    */
   }
    
   //HUD sound system
@@ -558,6 +537,10 @@ void() CSQC_Ent_Remove ={
   local entity weps;
   local entity next;
   local entity rem;
+  
+  if( (self.flags & FL_CLIENT) ){
+    scoreboard_stitch(self);
+  }
   
   weps = self.w_slot;
   while( weps.data_idx ){

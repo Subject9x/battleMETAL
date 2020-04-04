@@ -323,6 +323,10 @@ void(entity targ, entity attacker) killed={
       killed_monsters = killed_monsters + 1;
       WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
     }
+    if( (self.flags & FL_CLIENT) ){
+      attacker.frags = attacker.frags + 1;
+      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
+    }
     
     self.doobits = 0;
     self.th_die();

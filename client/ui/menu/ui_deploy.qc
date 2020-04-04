@@ -13,6 +13,9 @@ void() menu_deployDrawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, 1, 0);
+  
+  menu_navBar_drawFrame(VIEW_ORG);
+  
   menu_deploy_missionInfoPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_deploy_mapOverviewPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_deploy_mechInfoPanel(topleftroot);
@@ -22,7 +25,7 @@ void() menu_deployDrawFrame={
 
 //hook for input system
 void() menu_deployListener_onClick={
-  //navSelectListener();
+  menu_navbBar_listener();
   navListSelectListener();
 };
 

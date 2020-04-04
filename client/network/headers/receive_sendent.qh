@@ -19,6 +19,9 @@ float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
 .float lastupdate;
 .float prevupdate;
 
+.float kills;
+.float deaths;
+
 .float shieldExplodeCool;
 
 float() predraw_weapon

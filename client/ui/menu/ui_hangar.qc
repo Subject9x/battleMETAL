@@ -8,7 +8,9 @@ Overview: class file for hangar ui
 
 //hook for input events
 void() menu_hangarListener_onClick={
+  menu_navbBar_listener();
   mechSelectListener();
+  
 };
 
 void() menu_hangarListener_onDrag={
@@ -79,6 +81,9 @@ void() menu_hangarDrawFrame={
   
   topleftroot = VIEW_ORG;
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_HANGAR, 1, 0);
+  
+  menu_navBar_drawFrame(VIEW_ORG);
+  
   menu_hangar_MechDisplay(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_hangar_MechList(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_hangar_MechInfo(topleftroot);

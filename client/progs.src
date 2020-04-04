@@ -182,6 +182,7 @@ ui/hud/hud_system_event.qc
   ui/menu/ui_objectives.qc
   ui/menu/ui_debrief.qc
   ui/menu/ui_connect.qc
+  ui/menu/ui_navbar.qc
 //=======================
 
 //EFFECTS================

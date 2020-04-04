@@ -22,3 +22,15 @@ float SPRITE_deploy_point_FRAME_MAX = 4;
 float SPRITE_deploy_point_FRAME_TIMER;
 string SPRITE_deploy_point_FRAMES[4];
 void( vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_renderSprite_DeployPoint;
+
+/*
+  Player scoreboard stuff
+*/
+entity scoreHead;
+entity scoreSorted;
+.entity scorePrev;
+.entity scoreNext;
+
+void( entity head ) scoreboard_sort;
+void( entity player ) scoreboard_push;
+void(entity newScore) scoreboard_sort_push;

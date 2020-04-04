@@ -120,6 +120,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
       return FALSE;
     }
+    else if( strstrofs(findkeysforcommand("impulse 24", 0), ftos(scanx),0) != -1 ){
+      scoreboard_sort(scoreHead);
+    }
   }
   else if(inputEventType == INPUT_EVENT_MOUSE_POS){
     if(MENU_ACTIVE){
