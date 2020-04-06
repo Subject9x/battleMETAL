@@ -23,7 +23,7 @@ void() menu_connectListener_onClick={
   if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_DISCONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_DISCONNECT_SIZE), TRUE)){
     ui_navbutton_disconnect_click();
   }
-    if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), TRUE)){
     ui_navbutton_connect_click();
   }
 };
@@ -32,7 +32,7 @@ void() menu_connectListener_onClick={
 
 void() menu_connectListener_onHover={
   
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_DISCONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_DISCONNECT_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_DISCONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_DISCONNECT_SIZE), FALSE)){
     UI_NAVBAR_DISCONNECT_HOVER = TRUE;
     return;
   }
@@ -40,7 +40,7 @@ void() menu_connectListener_onHover={
     UI_NAVBAR_DISCONNECT_HOVER = FALSE;
   }
   
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), FALSE)){
     UI_NAVBAR_CONNECT_HOVER = TRUE;
   }
   else{
@@ -100,6 +100,7 @@ void( vector menuOrg ) menu_connect_draw_players={
   local float menuLabelLen;
   
   local float playerRowItr;
+  local float itr;
   
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('200 220'), '1 1 1', 1, 0);
 
@@ -116,10 +117,13 @@ void( vector menuOrg ) menu_connect_draw_players={
   
   listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
   playerRowItr = 1;
-  for( player = scoreHead; player != world; player = player.scoreNext ){
-    listRowOfs_y = menuOrg_y + ( playerRowItr * gui_percentYRaw(14) );
-    menu_connect_draw_player_row( listRowOfs, playerRowItr, player );
-    playerRowItr = playerRowItr + 1;
+  for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
+    if( SCOREBOARD[itr] != 0 ){
+      player = findfloat(world, entId, SCOREBOARD[itr]);
+      listRowOfs_y = menuOrg_y + ( playerRowItr * gui_percentYRaw(14) );
+      menu_connect_draw_player_row( listRowOfs, playerRowItr, player );
+      playerRowItr = playerRowItr + 1;
+    }
   }
   
   drawfont = drawfont_prev;
@@ -147,15 +151,16 @@ void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row=
   
   drawstring(rowOfs, strcat(ftos(itr),")"), fontSize, rowColor, 1, 0);
   
-  playerName = playerRow.netname;
-  playerNameLen = strlen(playerRow.netname);
-  if( playerNameLen > 24 ){
-    playerName = substring(playerName, 0, 24);
+  if( playerRow.netname != "" ){
+    playerName = playerRow.netname;
+    playerNameLen = strlen(playerRow.netname);
+    if( playerNameLen > 24 ){
+      playerName = substring(playerName, 0, 24);
+    }
+    playerNameOfs = rowOfs + gui_percentToPixelRawVec('0 14');
+    drawstring(rowOfs + gui_percentToPixelRawVec('12 0'), playerName, fontSize, rowColor, 1, 0);
   }
   
-  
-  playerNameOfs = rowOfs + gui_percentToPixelRawVec('0 14');
-  drawstring(rowOfs + gui_percentToPixelRawVec('12 0'), playerName, fontSize, rowColor, 1, 0);
   
   playerStatusOfs = rowOfs + gui_percentToPixelRawVec('0 14');
   

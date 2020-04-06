@@ -128,7 +128,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
     prevTarget = self.targetEntId;
-    self.targetEntId = ReadByte();
+    self.targetEntId = ReadLong();
     if( self.targetEntId != 0 ){
       self.enemy = findfloat(world, entId, self.targetEntId);
     }
@@ -193,19 +193,21 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadByte();
+    self.entId = ReadLong();
     self.data_type = ReadByte();
     self.origin = te_read_vector();
     self.faction = ReadByte();
     self.flags = ReadLong();
-    self.kills = ReadByte();
+    self.kills = ReadShort();
     self.netname = strzone( ReadString() );
     setmodel(self, "q3mdl/testball.md3");
     setorigin(self, self.origin);
     self.alpha = 0.01;
     self.scale = 0.01;
     if( isNew ){
-      scoreboard_push(self);
+      addentity(self);
+      scoreboard_push( self.entId, self.kills );
+      scoreboard_sort();
     }
   }
   
@@ -213,14 +215,14 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    self.kills = ReadByte();
+    self.kills = ReadShort();
+    if( prevKills != self.kills ){
+      scoreboard_push( self.entId, self.kills );
+      scoreboard_sort();
+    }
+    
     //TODO
     self.particleCubeFlag = ReadByte();
-    
-    if( prevKills != self.kills ){
-      //cons_logAFloat("MADE A KILL", 1); //DEBUG
-      scoreboard_sort(scoreHead);
-    }
     if( self.particleCubeFlag == 0 ){
       //remove cube
     }

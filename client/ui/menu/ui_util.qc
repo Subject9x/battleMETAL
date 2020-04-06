@@ -132,77 +132,81 @@ void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_rend
 /*
   Player scoreboard stuff
 */
-
-void( entity head ) scoreboard_sort={
-  local entity current;
-  local entity next; 
+/*
+  SCOREBOARD[]; <k, v> = itr, .entId
+  SCORETABLE[]; <k, v> = .entId, .kills
+*/
+void() scoreboard_sort={
+  local float i, j, key, key2;
+  local float entScore1, entScore2;
+  local entity player, nextPlayer;
   
-  //scoreSorted = world;
-  current = head;
-  
-  while( current != world ){
-    next = current.scoreNext;
-    //cons_logAFloat(strcat("scoreboard_sort()->current:",current.netname), current.kills); //DEBUG
-    //cons_logAFloat(strcat("scoreboard_sort()->next:",next.netname), next.kills); //DEBUG
-    
-    scoreboard_sort_push( current );
-    current = next;
+  for( i=1; i < SCOREBOARDMAX; i=i+1){
+    // entId from scoreboard
+    key = SCOREBOARD[i];
+    if( key != 0 ){
+      j = i - 1;
+      while( ((j >= 0) && (SCORETABLE[key2] < SCORETABLE[key])) ){
+        key2 = SCOREBOARD[j];
+        SCOREBOARD[j+1] = SCOREBOARD[j];
+        j = j - 1;
+      }
+      SCOREBOARD[j + 1] = key;
+    }
   }
-  
-  //cons_logAFloat(strcat("scoreboard_sort()->scoreHead:",scoreHead.netname), scoreHead.kills); //DEBUG
-  //cons_logAFloat(strcat("scoreboard_sort()->scoreNext:",scoreHead.scoreNext.netname), scoreHead.scoreNext.kills); //DEBUG
 };
 
-void( entity player ) scoreboard_push={
-  if( scoreHead != world ){
-    //cons_logAFloat(strcat("PUSH TO LIST->scoreHead:",scoreHead.netname), scoreHead.kills); //DEBUG
-    player.scoreNext = scoreHead;
+/*
+  sendent_handle_player()-> SENDFLAG_NEWENT && isNew
+  scope: self == player data ent
+*/
+void( float scoreId, float score ) scoreboard_push={
+  local float i, j;
+  local float exist;
+  
+  exist = FALSE;
+  
+  for( i = 0; i < SCOREBOARDMAX; i = i + 1){
+    if( SCOREBOARD[i] == scoreId ){
+      exist = TRUE;
+      SCORESTACK = i;
+    }
+    else{
+      if( (i + 1) <= SCOREBOARDMAX ){
+        j = i + 1;
+        if( SCOREBOARD[i] != 0 && SCOREBOARD[j] == 0 ){
+          SCORESTACK = j;
+          break;
+        }
+      }
+    }
   }
-  //cons_logAFloat(strcat("PUSH TO LIST->scoreHead = ",player.netname), player.kills); //DEBUG
-  scoreHead = player;
+  if( !exist ){
+    SCOREBOARD[SCORESTACK] = scoreId;
+  }
+  SCORETABLE[scoreId] = score;
 };
 
 void( entity newScore ) scoreboard_sort_push={
-  local entity current;
-  if( scoreSorted == world || scoreSorted.kills > newScore.kills ){
-    //cons_logAFloat(strcat("scoreboard_sort_push()->newScore:",newScore.netname), newScore.kills); //DEBUG
-    newScore.scoreNext = scoreSorted;
-    scoreSorted = newScore;
-    
-   // cons_logAFloat(strcat("scoreboard_sort_push()->scoreSorted:",scoreSorted.netname), scoreSorted.kills); //DEBUG
-  }
-  else{
-    current = scoreSorted;
-   // cons_logAFloat(strcat("scoreboard_sort_push()->scoreSorted:",scoreSorted.netname), scoreSorted.kills); //DEBUG
-    while( ((current.scoreNext != world) && (current.scoreNext.kills < newScore.kills)) ){
-      current = current.scoreNext;
-      //cons_logAFloat(strcat("scoreboard_sort_push()->scoreSorted:",current.netname), current.kills); //DEBUG
-    }
-    newScore.scoreNext = current.scoreNext;
-    current.scoreNext = newScore;
-  }
+
 };
 
-void( entity removed) scoreboard_stitch={
-  local entity parent;
-  local entity found;
+void( entity removed ) scoreboard_stitch={
+  local float i;
+  local float exist;
   
-  parent = scoreHead;
-  while( parent != world){
-    if( found == world ){
-      if( parent.scoreNext == removed ){
-        found = parent;
-      }
+  exist = -1;
+  
+  for( i = 0; i < SCOREBOARDMAX; i = i + 1){
+    if( SCOREBOARD[i] == removed.entId ){
+      exist = i;
     }
-    parent = parent.scoreNext;
   }
-  if( found != world ){
-    found.scoreNext = removed.scoreNext;
+  if( exist > -1){
+    SCOREBOARD[exist] = 0;
+    SCORETABLE[removed.entId] = 0;
+    SCORESTACK = SCORESTACK - 1;
   }
-  else{
-    scoreHead = removed.scoreNext;
-  }
-  scoreboard_sort( scoreHead );
 };
 
   

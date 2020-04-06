@@ -433,7 +433,6 @@ void() PlayerDieNetworkEnd={
 };
 
 
-
 void() PlayerDead={  
   ctrl_unit_cleanup_player();
   player_unmakeMech();
@@ -471,7 +470,7 @@ void() PlayerDeathThink={
   self.deadflag = DEAD_NO;
 
   if( cvar("deathmatch") || cvar("coop") ){
-    spawnpoint_select();
+    sv_select_info_start();
     self.movetype = MOVETYPE_FLY;
     self.flags = self.flags | FL_FLY;
   }

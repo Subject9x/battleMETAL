@@ -260,24 +260,23 @@ void() ClientKill = {
   }
   
   bprint (self.netname);
-  if(self.data_type != DATA_POBS){
-    	bprint (" cowardly ejects!\n");
-  }
-
-  if(self.data_type == DATA_MECH){
-    self.data_type = DATA_POBS;
-    ctrl_unit_clean_wgroups();
-    ctrl_unit_cleanup_player();
-  }
+  bprint (" cowardly ejects!\n");
+  
+  self.data_type = DATA_POBS;
+  ctrl_unit_clean_wgroups();
+  ctrl_unit_cleanup_player();
+  
   self.solid = SOLID_CORPSE;
-  self.alpha = 0;
+  self.alpha = 0.01;
   setsize(self, '-3 -3 -3', '3 3 3');
   self.movetype = MOVETYPE_TOSS;
   self.deadflag = DEAD_DEAD;
   self.nextthink = -1;
+  
   //only deduct frags of player is going from !observer to another !observer
   if(self.data_type != DATA_POBS){
     self.frags = self.frags - 2;
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
   }
   self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
 	sv_player_respawn();
@@ -429,7 +428,7 @@ void() PutClientInServer_Deathmatch={
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  
-  
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_VELOCITY);
   
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
@@ -550,7 +549,7 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - player target info change
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    WriteByte( MSG_ENTITY, num_for_edict(player.enemy) );
+    WriteLong( MSG_ENTITY, num_for_edict(player.enemy) );
   }
   
   /*
@@ -584,21 +583,21 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, num_for_edict(player) );
+    WriteLong( MSG_ENTITY, num_for_edict(player) );
     WriteByte( MSG_ENTITY, self.data_type );
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
     WriteByte( MSG_ENTITY, self.faction );
     WriteLong( MSG_ENTITY, player.flags );
-    WriteByte( MSG_ENTITY, player.frags );
+    WriteShort( MSG_ENTITY, player.frags );
     WriteString( MSG_ENTITY, player.netname );
   }
   /*
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    WriteByte( MSG_ENTITY, player.frags );
+    WriteShort( MSG_ENTITY, player.frags );
     WriteByte( MSG_ENTITY, (player.particleCube == world));
   }
   return TRUE;

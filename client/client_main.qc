@@ -142,6 +142,13 @@ void() CSQC_Init =
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
   FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
   
+  SCORESTACK = 0;
+  local float i;
+  for( i=0; i < SCOREBOARDMAX; i=i+1){
+    SCOREBOARD[i] = 0;
+    SCORETABLE[i] = 0;
+  }
+  
   cl_set_hud_vars_obs();
 };
 
@@ -540,6 +547,7 @@ void() CSQC_Ent_Remove ={
   
   if( (self.flags & FL_CLIENT) ){
     scoreboard_stitch(self);
+    scoreboard_sort();
   }
   
   weps = self.w_slot;

@@ -316,16 +316,22 @@ void(entity targ, entity attacker) killed={
           MISSION_LOSSES_MILITAR = MISSION_LOSSES_MILITAR + 1;
           break;
       }
-      if( (attacker.flags & FL_CLIENT) && (self.faction != attacker.faction) ){
-        attacker.frags = attacker.frags + 1;
-      }
       self.enemy = attacker;
       killed_monsters = killed_monsters + 1;
       WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
     }
     if( (self.flags & FL_CLIENT) ){
-      attacker.frags = attacker.frags + 1;
-      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
+      if( attacker.flags & FL_CLIENT ){
+        if(self.faction == attacker.faction){
+          attacker.frags = attacker.frags - 1;
+        }
+        else{
+          attacker.frags = attacker.frags + 1;
+          self.frags = self.frags - 1;
+        }
+        attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
+        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
+      }
     }
     
     self.doobits = 0;
