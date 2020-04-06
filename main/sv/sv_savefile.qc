@@ -314,13 +314,13 @@ void( string theseMechs, string theseItems ) mapfile_setData_team1={
   max = tokenizebyseparator( theseMechs, " ");
   for( itr = 0; itr < max; itr = itr + 1){
     point = stof(argv(itr));
-    WORLD_DATA_MECHS_TEAM1[itr] = point;
+    WORLD_DATA_MECHS_SURVEST[itr] = point;
   }
   itr = 0;
   max = tokenizebyseparator( theseItems, " ");
   for( itr = 0; itr < max; itr = itr + 1){
     point = stof(argv(itr));
-    WORLD_DATA_ITEMS_TEAM1[itr] = point;
+    WORLD_DATA_ITEMS_SURVEST[itr] = point;
   }
 }; 
 
@@ -332,12 +332,12 @@ void( string theseMechs, string theseItems ) mapfile_setData_team2={
   max = tokenizebyseparator( theseMechs, " ");
   for( itr = 0; itr < max; itr = itr + 1){
     point = stof(argv(itr));
-    WORLD_DATA_MECHS_TEAM2[itr] = point;
+    WORLD_DATA_MECHS_MILITAR[itr] = point;
   }
   itr = 0;
   max = tokenizebyseparator( theseItems, " ");
   for( itr = 0; itr < max; itr = itr + 1){
     point = stof(argv(itr));
-    WORLD_DATA_ITEMS_TEAM2[itr] = point;
+    WORLD_DATA_ITEMS_MILITAR[itr] = point;
   }
 }; 

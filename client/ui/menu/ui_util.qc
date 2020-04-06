@@ -144,15 +144,13 @@ void() scoreboard_sort={
   for( i=1; i < SCOREBOARDMAX; i=i+1){
     // entId from scoreboard
     key = SCOREBOARD[i];
-    if( key != 0 ){
-      j = i - 1;
-      while( ((j >= 0) && (SCORETABLE[key2] < SCORETABLE[key])) ){
-        key2 = SCOREBOARD[j];
-        SCOREBOARD[j+1] = SCOREBOARD[j];
-        j = j - 1;
-      }
-      SCOREBOARD[j + 1] = key;
+    j = i - 1;
+    while( ((j >= 0) && (SCORETABLE[key2] < SCORETABLE[key])) ){
+      key2 = SCOREBOARD[j];
+      SCOREBOARD[j+1] = SCOREBOARD[j];
+      j = j - 1;
     }
+    SCOREBOARD[j + 1] = key;
   }
 };
 

@@ -238,6 +238,7 @@ void(entity client, string theMessage, float messageLifetime) client_send_info_m
   so - 'cmd m foo'
 */
 void(string str, float tokens) client_ParseMechCommand={
+  local float prevFaction;
   
   if(argv(1) == "sw"){
     if(self.deadflag >= DEAD_NO){
@@ -280,17 +281,32 @@ void(string str, float tokens) client_ParseMechCommand={
   
   //changes player's .faction var
   if(argv(1) == "fac"){
+    prevFaction = self.faction;
     self.faction = stof( argv(2) );
-    if( self.data_type == DATA_MECH ){
-      client_update_faction();
-    }
-    else{
-      if( GAMETYPE == GAMEMODE_DM ){
-        self.data_type = DATA_POBS;
-        //mapfile_pvp_load(self.faction);
-        PutClientInServer();
+    if( GAMETYPE == GAMEMODE_TEAMDM ){
+      if( prevFaction != self.faction ){
+        if( self.faction == FACTION_MILITAR ){
+          if( TEAM_MILITAR_TOTAL < 9 ){
+            TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
+            TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+          }
+          else{
+            self.faction = prevFaction;
+          }
+        }
+        else if( self.faction == FACTION_SURVEST ){
+          if( TEAM_SURVEST_TOTAL < 9 ){
+            TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
+            TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL - 1;
+          }
+          else{
+            self.faction = prevFaction;
+          }
+        }
       }
     }
+    
+    client_update_faction();
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
     return;
   }

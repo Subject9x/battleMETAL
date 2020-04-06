@@ -30,6 +30,21 @@ void( float mech_id ) sendevent_player_mech={
   }
 };
 
+void( float prevFac, float newFaction ) sendevent_handle_faction={
+  if( prevFac == FACTION_SURVEST ){
+    TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
+  }
+  else if( prevFac == FACTION_MILITAR ){
+    TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL - 1;
+  }
+  if( newFaction == FACTION_SURVEST ){
+    TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
+  }
+  else if( newFaction == FACTION_MILITAR ){
+    TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+  }
+};
+
 /*
   HANDLE EVENT - player mech parts destroyed
 */
@@ -99,10 +114,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevType;
   local float prevTarget; 
   local float prevKills;
+  local float prevFaction;
   
   prevShield = self.shield;
   prevCrit = self.damageValue;
   prevKills = self.kills;
+  prevFaction = self.faction;
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
@@ -205,7 +222,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.alpha = 0.01;
     self.scale = 0.01;
     if( isNew ){
-      addentity(self);
+      //addentity(self);
       scoreboard_push( self.entId, self.kills );
       scoreboard_sort();
     }
@@ -231,5 +248,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
         //add cube
       }
     }
+  }
+  
+  /*
+    HANDLE - Update Faction totals
+  */
+  if( prevFaction != self.faction ){
+    sendevent_handle_faction( prevFaction, self.faction );
   }
 };

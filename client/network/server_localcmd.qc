@@ -29,6 +29,12 @@ void() cl_spawnmech={
   localcmd(cmd);
 };
 
+void( float newFaction ) cl_set_faction={
+  local string cmd;
+  cmd = strcat("cmd m fac ", ftos(newFaction),"\n");
+  localcmd(cmd);
+};
+
 void(float group1, float group2, float group3, float group4 ) cl_setweapongroup={
 
   local string cmd;

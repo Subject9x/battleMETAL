@@ -15,6 +15,8 @@ void() mh_world_ini={
   else if( cvar("deathmatch") ){
     if( cvar("teamplay") ){
       GAMETYPE = GAMEMODE_TEAMDM;
+      TEAM_SURVEST_TOTAL = 0;
+      TEAM_MILITAR_TOTAL = 0;
     }
     else{
       GAMETYPE = GAMEMODE_DM;

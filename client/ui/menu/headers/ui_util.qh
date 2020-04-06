@@ -26,12 +26,11 @@ void( vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_ren
 /*
   Player scoreboard stuff
 */
-float TOTAL_PLAYERS;
 
 //hard limit of 255 >.> see Line 142 of quakedef.h
-float SCOREBOARD[5]; //  <k, v> = itr, .entId
+float SCOREBOARD[16]; //  <k, v> = itr, .entId
 float SCORETABLE[1024]; //  <k, v> = .entId, .kills
-float SCOREBOARDMAX = 5;
+float SCOREBOARDMAX = 16;
 
 float SCORESTACK;
 

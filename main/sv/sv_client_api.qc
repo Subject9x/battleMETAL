@@ -424,7 +424,7 @@ void() PutClientInServer_Deathmatch={
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
-    self.faction = FACTION_ALL; //campaign default
+    self.faction = FACTION_ALL; //deathmatch has no real teams.
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  
@@ -457,7 +457,14 @@ void() PutClientInServer_TeamDeathmatch={
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
-    self.faction = FACTION_ALL; //campaign default
+    if( TEAM_SURVEST_TOTAL < 9 ){
+      self.faction = FACTION_SURVEST;
+      TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
+    }
+    else{
+      self.faction = FACTION_MILITAR;
+      TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+    }
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;
@@ -480,9 +487,8 @@ void() client_data={
   data.alpha = 0.01;
   data.scale = 0.01;
   data.effects = data.effects | EF_NODEPTHTEST;
-  data.origin = self.origin;
+  data.origin = world.origin;
   data.data_type = self.data_type;
-  data.faction = self.faction;
   data.flags = self.flags;
   data.radar_range = self.radar_range;
   data.stat_rdr_mode = self.stat_rdr_mode;
@@ -502,9 +508,7 @@ float( float isNew, float changeFlags ) send_client_data={
   player = self.owner;
   
   if( player.deadflag == DEAD_NO ){
-    self.origin = player.origin;
     self.data_type = player.data_type;
-    self.faction = player.faction;
     self.radar_range = player.radar_range;
     self.stat_rdr_mode = player.stat_rdr_mode;
     self.stat_client_shield = player.stat_client_shield;
@@ -513,9 +517,7 @@ float( float isNew, float changeFlags ) send_client_data={
     self.data_idx = player.data_idx; 
   }
   else{
-    self.origin = '0 0 0';
     self.data_type = DATA_POBS;
-    self.faction = player.faction;
     self.radar_range = 0;
     self.stat_rdr_mode = 0;
     self.stat_client_shield = 0;
@@ -531,9 +533,9 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - per-frame update
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteCoord( MSG_ENTITY, player.origin_x );
+    WriteCoord( MSG_ENTITY, player.origin_y );
+    WriteCoord( MSG_ENTITY, player.origin_z );
     
     WriteLong( MSG_ENTITY, player.flags );
     WriteByte( MSG_ENTITY, self.radar_range );
@@ -557,7 +559,7 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, player.faction );
     WriteByte( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
   }
@@ -585,10 +587,10 @@ float( float isNew, float changeFlags ) send_client_data={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, num_for_edict(player) );
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteByte( MSG_ENTITY, self.faction );
+    WriteCoord( MSG_ENTITY, player.origin_x );
+    WriteCoord( MSG_ENTITY, player.origin_y );
+    WriteCoord( MSG_ENTITY, player.origin_z );
+    WriteByte( MSG_ENTITY, player.faction );
     WriteLong( MSG_ENTITY, player.flags );
     WriteShort( MSG_ENTITY, player.frags );
     WriteString( MSG_ENTITY, player.netname );

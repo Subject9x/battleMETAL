@@ -11,6 +11,7 @@ void() cl_spawnmech;
 void(float group1, float group2, float group3, float group4 ) cl_setweapongroup;
 void(float nav_id) cl_setspawnpoint;
 void(float nextMissionBool) cl_set_mission;
+void( float newFaction ) cl_set_faction;
 
 void(string fileName) cl_get_msnfile;
 void(string fileName) cl_get_animfile;

@@ -77,6 +77,10 @@ float GAMEMODE_CAMPAIGN = 1;
 float GAMEMODE_COOP = 2;
 float GAMEMODE_DM = 3;
 float GAMEMODE_TEAMDM = 4;
+
+float TEAM_SURVEST_TOTAL;  //team deathmatch
+float TEAM_MILITAR_TOTAL;
+
 //============================
 //   GAME DIFFICULTY
 //============================

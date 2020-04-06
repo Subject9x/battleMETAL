@@ -368,7 +368,6 @@ void( vector ofs ) ui_navbutton_connect_draw={
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_connect_click={
-  //cons_logAFloat("ui_navbutton_connect_click()", 1 ); //DEBUG
   CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
 };
 
@@ -413,4 +412,66 @@ void( vector ofs ) ui_navbutton_disconnect_draw={
 };
 void() ui_navbutton_disconnect_click={
   localcmd("disconnect;\n");
+};
+
+/*
+  BUTTON - Change Team
+*/
+void( vector ofs ) ui_navbutton_team_draw={
+  local vector fontSize;
+  local vector textPos;
+  local float strWidth;
+  local vector disColor;
+  
+  UI_NAVBAR_TEAM_ORG = ofs;
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  if( UI_NAVBAR_TEAM_HOVER ){
+    disColor = CLR_DEF_WEP_LOWENG * 4;
+    fontSize = UI_NAVBAR_font_select;
+  }
+  else{
+    disColor = CLR_DEF_WEP_LOWENG * 3;
+    fontSize = UI_NAVBAR_font_unselect;
+  }
+  if( CLIENT_faction == FACTION_SURVEST ){
+    if( TEAM_MILITAR_TOTAL > 7 ){
+      disColor = CLR_DEF_TXT_NONSELECT;
+    }
+  }
+  if( CLIENT_faction == FACTION_MILITAR ){
+    if( TEAM_SURVEST_TOTAL > 7 ){
+      disColor = CLR_DEF_TXT_NONSELECT;
+    }
+  }
+  
+  drawpic(UI_NAVBAR_TEAM_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_TEAM_SIZE), disColor, 1, 0) ;
+  textPos = UI_NAVBAR_TEAM_ORG;
+  strWidth = stringwidth("[Switch Team]", 0 , fontSize)/2;
+  textPos_x = (textPos_x +  gui_percentXRaw(64)) - gui_percentXRaw(strWidth);
+  textPos_y = textPos_y + gui_percentYRaw(4);
+  drawstring(textPos, "[Switch Team]", fontSize, disColor, 1, 0) ;
+  
+  drawfont = drawfont_prev;
+};
+void() ui_navbutton_team_click={
+  local float nextFaction;
+  if( CLIENT_faction == FACTION_SURVEST ){
+     if( TEAM_MILITAR_TOTAL < 9 ){
+      TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
+      TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+      nextFaction = FACTION_MILITAR;
+    }
+  }
+  else if(CLIENT_faction == FACTION_MILITAR){
+    if( TEAM_SURVEST_TOTAL < 9 ){
+      TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
+      TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL - 1;
+      nextFaction = FACTION_SURVEST;
+    }
+  }
+  if( nextFaction != CLIENT_faction ){
+    cl_set_faction( nextFaction );
+  }
 };
