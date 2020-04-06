@@ -319,9 +319,9 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     }
   }
   else{
-    if( CLIENT_player_state == PLAYER_SPAWN ){
+    if( CLIENT_player_state_prev == PLAYER_CONNECT && CLIENT_player_state == PLAYER_SPAWN ){
       if( !MENU_ACTIVE ){
-         menu_enter( menu_connect_choice() );
+        menu_enter( menu_connect_choice() );
       }
     }
   }

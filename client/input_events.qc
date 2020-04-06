@@ -47,12 +47,14 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     if( (scanx == K_TAB) && (CLIENT_data_type == DATA_POBS) ){
       if( (CLIENT_player_state != PLAYER_INTERMSN) && MENU_ACTIVE ){
         if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
-          menu_exit();
+          if( cvar("developer") ){
+            menu_exit();
+          }
         }
       }
       else{
         if( CLIENT_player_state != PLAYER_INTERMSN ){
-          menu_enter( MENU_BRIEF_ACTIVE);
+          menu_enter( CLIENT_MENU_menu_choice );
         }
       }
       return TRUE;

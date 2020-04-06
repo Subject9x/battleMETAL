@@ -190,7 +190,6 @@ void( float menuId ) menu_enter={
 
 void() menu_exit={
   MENU_ACTIVE = FALSE;
-  CLIENT_MENU_menu_choice = 0;
   setcursormode( 0 );
   setpause( 0 );
 };
