@@ -121,7 +121,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       return FALSE;
     }
     else if( strstrofs(findkeysforcommand("impulse 24", 0), ftos(scanx),0) != -1 ){
-      scoreboard_sort(scoreHead);
+      //scoreboard_sort(scoreHead);
     }
   }
   else if(inputEventType == INPUT_EVENT_MOUSE_POS){

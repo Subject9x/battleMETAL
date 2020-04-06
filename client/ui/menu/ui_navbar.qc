@@ -19,7 +19,7 @@ void( vector ofs ) ui_navbutton_brief_draw={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_BRIEF_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_BRIEF_ORG), CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_BRIEF_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_BRIEF_SIZE), CLR_DEF_WEP_INRANGE, 1, 0) ;
   if( CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE ){
     fontSize = UI_NAVBAR_font_select;
   }
@@ -369,6 +369,7 @@ void( vector ofs ) ui_navbutton_connect_draw={
 };
 void() ui_navbutton_connect_click={
   //cons_logAFloat("ui_navbutton_connect_click()", 1 ); //DEBUG
+  CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
 };
 
 /*
