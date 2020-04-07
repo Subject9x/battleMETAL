@@ -232,13 +232,18 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
   
   local float playerRowItr;
   local float itr;
-  panelSurvestSize_x = panelMilitarSize_x = gui_percentXRaw(150);
-  panelSurvestSize_y = HUD_SCORE_SURVEST_HEIGHT;
-  drawpic(panelOfs, UI_DEF_BOX_512, panelSurvestSize, CLR_UI_PSC_BRIEF * 0.9, HUD_ALPHA * 1.15, 0);
+  if( HUD_SCORE_SURVEST_HEIGHT > 0){
+    panelSurvestSize_x = panelMilitarSize_x = gui_percentXRaw(150);
+    panelSurvestSize_y = HUD_SCORE_SURVEST_HEIGHT;
+    drawpic(panelOfs, UI_DEF_BOX_512, panelSurvestSize, CLR_UI_PSC_BRIEF * 0.9, HUD_ALPHA * 1.15, 0);
+  }
   
-  panelMOfs_x = panelOfs_x;
-  panelMOfs_y = panelOfs_y + panelSurvestSize_y;
-  drawpic(panelMOfs, UI_DEF_BOX_512, panelSurvestSize, CLR_UI_AUTH_BRIEF, HUD_ALPHA * 1.15, 0);
+  if( HUD_SCORE_MILITAR_HEIGHT > 0 ){
+    panelMOfs_x = panelOfs_x;
+    panelMOfs_y = panelOfs_y + panelSurvestSize_y;
+    panelMilitarSize_y = HUD_SCORE_MILITAR_HEIGHT;
+    drawpic(panelMOfs, UI_DEF_BOX_512, panelMilitarSize, CLR_UI_AUTH_BRIEF, HUD_ALPHA * 1.15, 0);
+  }
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -246,27 +251,27 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
   listOfs_x = listRowOfs_x = panelOfs_x + gui_percentXRaw(2);
   listOfs_y = panelOfs_y + gui_percentYRaw(2);
   playerRowItr = 0;
-  teamCount1 = 1;
-  teamCount2 = 1;
+  teamCount1 = 0;
+  teamCount2 = 0;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
     if( SCOREBOARD[itr] != 0 ){
       player = findfloat(world, entId, SCOREBOARD[itr]);
       if( player.faction == FACTION_SURVEST ){
-        listRowOfs_x = panelOfs_x + gui_percentXRaw(8);
+        listRowOfs_y = listOfs_y + ( teamCount1 * gui_percentYRaw(12) );
         playerRowItr = teamCount1;
         teamCount1 = teamCount1 + 1;
       }
       else if(player.faction == FACTION_MILITAR){
-        listRowOfs_x = panelOfs_x + gui_percentXRaw(318);
+        listRowOfs_y = panelMOfs_y + ( teamCount2 * gui_percentYRaw(12) );
         playerRowItr = teamCount2;
         teamCount2 = teamCount2 + 1;
       }
-      listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
-      hud_render_score_row( listRowOfs, playerRowItr, player );
+      listRowOfs_x = panelOfs_x + gui_percentXRaw(2);
+      hud_render_score_row( listRowOfs, playerRowItr + 1, player );
     }
   }
-  HUD_SCORE_SURVEST_HEIGHT = gui_percentYRaw( teamCount1 * 14 );
-  HUD_SCORE_MILITAR_HEIGHT = gui_percentYRaw( teamCount2 * 14 );
+  HUD_SCORE_SURVEST_HEIGHT = gui_percentYRaw( teamCount1 * 12 );
+  HUD_SCORE_MILITAR_HEIGHT = gui_percentYRaw( teamCount2 * 12 );
   drawfont = drawfont_prev;
 };
 
