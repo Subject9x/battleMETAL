@@ -14,6 +14,8 @@ void(float navid) ui_renderNav;
 void(float num, vector org) ui_renderHardPointNumber;
 void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 
+
+
 /*
   Animated images, don't make regular use :/
 */
@@ -26,7 +28,6 @@ void( vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_ren
 /*
   Player scoreboard stuff
 */
-
 //hard limit of 255 >.> see Line 142 of quakedef.h
 float SCOREBOARD[16]; //  <k, v> = itr, .entId
 float SCORETABLE[1024]; //  <k, v> = .entId, .kills
@@ -34,6 +35,6 @@ float SCOREBOARDMAX = 16;
 
 float SCORESTACK;
 
-void( ) scoreboard_sort;
+void() scoreboard_sort;
 void( float scoreId, float score ) scoreboard_push;
 void( entity newScore ) scoreboard_sort_push;

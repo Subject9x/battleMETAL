@@ -35,8 +35,9 @@ void() menu_connect_drawFrame;
 //------------------
 
 void( vector menuOrg ) menu_connect_draw_bar;
-void( vector menuOrg ) menu_connect_draw_mission_info;
+void( vector menuOrg ) menu_connect_draw_mission_info_dm;
 void( vector menuOrg ) menu_connect_draw_players_dm;
+void( vector menuOrg ) menu_connect_draw_mission_info_team;
 void( vector menuOrg ) menu_connect_draw_players_team;
 void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar;
 void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row;

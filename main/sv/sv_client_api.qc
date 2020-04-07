@@ -42,9 +42,18 @@ called when a player connects to a server
 ============
 */
 void() ClientConnect = {
+  if( GAMETYPE == GAMEMODE_COOP ){
+    bprint(self.netname);
+    bprint(" has arrived to help!\n");
+  }
+  else if( GAMETYPE == GAMEMODE_DM ){
+    bprint(self.netname);
+    bprint(" has entered the combat zone.\n");
+  }
+  else if( GAMETYPE == GAMEMODE_TEAMDM ){
+    bprint(" Unkown contact has entered the AO.\n");
+  }
   
-  bprint(self.netname);
-  bprint(" has deployed to the combat zone\n");
   self.weaponmodel = "";
   self.viewzoom = 1;
   self.nextVecChoice = 0;
@@ -482,7 +491,7 @@ void() client_data={
   data = spawn();
   setmodel(data, "q3mdl/testball.md3");
   setsize(data, '-1 -1 -1', '1 1 1');
-  setorigin(data, data.owner.origin);
+  setorigin(data, world.origin);
   data.owner = self;
   data.alpha = 0.01;
   data.scale = 0.01;
@@ -506,6 +515,7 @@ void() client_data={
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   player = self.owner;
+  self.view_ofs = player.origin;
   
   if( player.deadflag == DEAD_NO ){
     self.data_type = player.data_type;
@@ -533,9 +543,9 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - per-frame update
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
-    WriteCoord( MSG_ENTITY, player.origin_x );
-    WriteCoord( MSG_ENTITY, player.origin_y );
-    WriteCoord( MSG_ENTITY, player.origin_z );
+    WriteCoord( MSG_ENTITY, self.view_ofs_x );
+    WriteCoord( MSG_ENTITY, self.view_ofs_y );
+    WriteCoord( MSG_ENTITY, self.view_ofs_z );
     
     WriteLong( MSG_ENTITY, player.flags );
     WriteByte( MSG_ENTITY, self.radar_range );

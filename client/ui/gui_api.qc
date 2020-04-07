@@ -608,6 +608,30 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
   drawfont = drawfont_prev;
 };
 
+void( vector lOrg, string label, string value, vector labelColor, vector valueColor, vector fonts, vector fontSize ) gui_labelKeyPair={
+  local float labelLen, valueLen;
+  
+  local vector valueOrg;
+  
+  labelLen = stringwidth( label, 0, fontSize );
+  valueLen = stringwidth( value, 0, fontSize );
+  
+  drawfont_prev = drawfont;
+  drawfont = fonts_x;
+    drawstring( lOrg, label, fontSize, labelColor, 1, 0 );
+  
+  drawfont = drawfont_prev;
+  
+  valueOrg_x = lOrg_x + gui_percentXRaw(labelLen) + fontSize_x;
+  valueOrg_y = lOrg_y;
+  
+  drawfont_prev = drawfont;
+  drawfont = fonts_y;
+    drawstring( valueOrg, value, fontSize, valueColor, 1, 0 );
+  
+  drawfont = drawfont_prev;
+};
+
 /*
   Simply renders a tooltip help box, enforcing global styling standard.
 */
