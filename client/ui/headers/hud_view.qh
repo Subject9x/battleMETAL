@@ -90,6 +90,10 @@ float HUD_UID_RAM_METER     = 19;
   string HUD_SPRINT_RAM = "[RAM-SHOCKS READY]";
   
   float HUD_TACMAP_ON;
+  float HUD_SCORES_ON;
+  float HUD_SCORE_HEIGHT;
+  float HUD_SCORE_SURVEST_HEIGHT;
+  float HUD_SCORE_MILITAR_HEIGHT;
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -186,6 +190,11 @@ void( entity thePlayer ) hud_render_ally_names;
 void(vector org, entity allyTarget, float algn, float faction1, float radRange) hud_renderTargetOverlay_Ally;
 
 void() hud_render_tactical_map;
+void() hud_render_scoreboard;
+void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row;
+void( vector panelOfs ) hud_render_scoreboard_dm;
+void( vector panelOfs ) hud_render_scoreboard_tdm;
+void( vector panelOfs ) hud_render_scoreboard_coop;
 
 void() hud_render_info;
 

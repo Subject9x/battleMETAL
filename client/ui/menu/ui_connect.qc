@@ -77,7 +77,7 @@ void() menu_connect_drawFrame={
   
   //mission info
     //Map | time remaining | score
-  
+  menu_connect_draw_satmap( VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') );
   //player list
     //name - score 
     //TDM - mech type - score
@@ -271,4 +271,11 @@ void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar={
   drawfont = FONT_NUM_ROBOT_REGULAR;
 };
 
-
+void( vector menuOrg ) menu_connect_draw_satmap={
+  local vector panelOrg;
+  panelOrg = menuOrg;
+  panelOrg_x = VIEW_MAX_x - gui_percentXRaw(310);
+  panelOrg_y = menuOrg_y + gui_percentYRaw(24);
+  drawpic( panelOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('300 300'), CLR_DEF_WHITE, 1, 0);
+  drawpic( panelOrg + gui_percentToPixelRawVec('4 4'), MSN_MAPPIC, gui_percentToPixelRawVec('292 292'), CLR_DEF_WHITE, 1, 0);
+};

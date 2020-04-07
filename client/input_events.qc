@@ -59,6 +59,16 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
       return TRUE;
     }
+    else if( (scanx == K_TAB) && (CLIENT_data_type == DATA_MECH) ){
+      //INPUT - HUD - SHOW SCORES
+      if(HUD_SCORES_ON){
+        HUD_SCORES_ON = FALSE;
+      }
+      else{
+        HUD_SCORES_ON = TRUE;
+      }
+      return TRUE;
+    }
     else if(scanx == K_SHIFT){
       return FALSE;
     }

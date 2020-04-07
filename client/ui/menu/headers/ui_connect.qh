@@ -40,3 +40,5 @@ void( vector menuOrg ) menu_connect_draw_players_dm;
 void( vector menuOrg ) menu_connect_draw_players_team;
 void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar;
 void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row;
+
+void( vector menuOrg ) menu_connect_draw_satmap;

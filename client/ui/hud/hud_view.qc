@@ -1130,7 +1130,10 @@ void() data_hud_frame={
   if( HUD_TACMAP_ON ){
     hud_render_tactical_map();
   }
-  else{
+  if( HUD_SCORES_ON ){
+    hud_render_scoreboard();
+  }
+  if( HUD_TACMAP_ON || HUD_SCORES_ON ){
     hud_renderNavOverlay();
      //only loop clients once per hud frame
     local entity player;
