@@ -81,17 +81,28 @@ void() menu_connect_drawFrame={
     //mission info - DM
     menu_connect_draw_satmap( VIEW_ORG + gui_percentToPixelRawVec('9.984 182') );
     menu_connect_draw_mission_info_dm(topleftroot + gui_percentToPixelRawVec('10 32'));
-    //player list
+    //server flags - DM
+    local vector rulesOrg;
+    rulesOrg_x = VIEW_CTR_x;
+    rulesOrg_y = VIEW_ORG_y;
+    menu_connect_draw_rules_dm( rulesOrg + gui_percentToPixelRawVec('-85 32') );
+    //Server About - DM
+    menu_connect_draw_about_dm( rulesOrg + gui_percentToPixelRawVec('20 32') );
+    //player list - DM
     menu_connect_draw_players_dm( topleftroot + gui_percentToPixelRawVec('10 182') );
   }
   else if( cvar("gamemode") == GAMEMODE_COOP ){
-    //mission info - DM
+    //mission info - COOP
+    menu_connect_draw_mission_info_coop( topleftroot + gui_percentToPixelRawVec('10 32') );
     
     //player list
-    
+    menu_connect_draw_players_coop( topleftroot + gui_percentToPixelRawVec('10 182') );
   }
 };
 
+/*
+  Navbar for entire menu, top of screen.
+*/
 void( vector menuOrg ) menu_connect_draw_bar={
   local vector enterOfs;
   local vector switchOfs;
@@ -118,14 +129,14 @@ void( vector menuOrg ) menu_connect_draw_mission_info_dm={
   local vector fontsStyle;
   local vector leftAnchor;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('620 150'), '0.65 0.65 0.65', 1, 0);
+  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('225 150'), '0.65 0.65 0.65', 1, 0);
   
   // Server Name
   if( cvar_string("hostname") != "" || cvar_string("hostname") != "UNNAMED" ){
     serverName = cvar_string("hostname");
   }
   
-  leftAnchor =  menuOrg + gui_percentToPixelRawVec('10 4');
+  leftAnchor =  menuOrg + gui_percentToPixelRawVec('4 4');
   
   fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;
   fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
@@ -149,7 +160,103 @@ void( vector menuOrg ) menu_connect_draw_mission_info_dm={
   }
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0 72'), "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
-  //gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 36'), "Server :", serverName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  //Frag Limit
+  local string scoreLimit;
+  if( SV_FRAGLIMIT > 0 ){
+    scoreLimit = ftos(SV_FRAGLIMIT);
+  }
+  else{
+    scoreLimit = "No Limit";
+  }
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('8 90'), "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  
+  //Time Limit
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+  
+  //Game Status
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('6 126'), "Server :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+};
+
+void( vector menuOrg ) menu_connect_draw_rules_dm={
+  local vector labelOrg;
+  local float labelLen;
+  local vector leftAnchor;
+  local vector ruleRow;
+  local vector fontsStyle;
+  
+  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('105 150'), '0.65 0.65 0.65', 1, 0);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
+  
+  labelLen = stringwidth("- Server Rules -", 0, '10 10');
+  labelOrg = menuOrg;
+  labelOrg_x = menuOrg_x + gui_percentXRaw(48) - gui_percentXRaw(labelLen / 2);
+  labelOrg_y = menuOrg_y + gui_percentYRaw(4);
+  drawstring(labelOrg, "- Server Rules -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
+  
+  leftAnchor = menuOrg + gui_percentToPixelRawVec('8 20');
+  ruleRow = leftAnchor;
+  
+  if( SV_SERVERFLAGS == 0 ){
+    drawstring( ruleRow, "None", '12 12', CLR_DEF_WHITE, 1, 0);
+  }
+  
+  if( (SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+    drawstring( ruleRow, "Spawn Farthest", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_NOPOWERUP) ){
+    drawstring( ruleRow, "No Power Up", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_CHEATS) ){
+    drawstring( ruleRow, "Cheats Allowed", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_FIREON) ){
+    drawstring( ruleRow, "Friendly Fire", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
+    drawstring( ruleRow, "One-life Only", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_NOMAP) ){
+    drawstring( ruleRow, "Limited TacMap", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_NORADAR) ){
+    drawstring( ruleRow, "Passive Radar Only", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
+    drawstring( ruleRow, "Hide Player Status", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
+  drawfont = drawfont_prev;
+};
+
+
+void( vector menuOrg ) menu_connect_draw_about_dm={
+  local vector labelOrg;
+  local float labelLen;
+  
+  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('290 150'), '0.65 0.65 0.65', 1, 0);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
+    labelLen = stringwidth("- About -", 0, '10 10');
+    labelOrg = menuOrg;
+    labelOrg_x = menuOrg_x + gui_percentXRaw(145) - gui_percentXRaw(labelLen / 2);
+    labelOrg_y = menuOrg_y + gui_percentYRaw(4);
+    drawstring(labelOrg, "- About -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawfont = drawfont_prev;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
+    drawstring(menuOrg + gui_percentToPixelRawVec('6 18'), "< coming soon - space for custom server text >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawfont = drawfont_prev;
 };
 
 void( vector menuOrg ) menu_connect_draw_players_dm={
@@ -208,7 +315,7 @@ void( vector menuOrg ) menu_connect_draw_mission_info_team={
   //Server Game Mode
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('10 18'), "Mode :", "Team Deathmatch", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
-    //Max Players
+  //Max Players
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0.5 36'), "Players :", ftos(maxclients), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Map filename
@@ -223,7 +330,21 @@ void( vector menuOrg ) menu_connect_draw_mission_info_team={
   }
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0 72'), "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
-  //gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 36'), "Server :", serverName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  //Frag Limit
+  local string scoreLimit;
+  if( SV_FRAGLIMIT > 0 ){
+    scoreLimit = ftos(SV_FRAGLIMIT);
+  }
+  else{
+    scoreLimit = "[NONE]";
+  }
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 90'), "Score Max :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  
+  //Time Limit
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 108'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+  
+  //Game Status
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 126'), "Mission Status :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
 };
 
 void( vector menuOrg ) menu_connect_draw_players_team={
@@ -276,6 +397,51 @@ void( vector menuOrg ) menu_connect_draw_players_team={
 };
 
 
+void( vector menuOrg ) menu_connect_draw_mission_info_coop={
+  local string serverName;
+  local string serverMsnName;
+  
+  local vector fontsStyle;
+  local vector leftAnchor;
+  
+  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('620 250'), '0.65 0.65 0.65', 1, 0);
+  
+  // Server Name
+  if( cvar_string("hostname") != "" || cvar_string("hostname") != "UNNAMED" ){
+    serverName = cvar_string("hostname");
+  }
+  
+  leftAnchor =  menuOrg + gui_percentToPixelRawVec('10 4');
+  
+  fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;
+  fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
+  gui_labelKeyPair( leftAnchor, "Server :", serverName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '14 14' );
+  
+  //Server Game Mode
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('10 18'), "Mode :", "Coop", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  
+    //Max Players
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0.5 36'), "Players :", ftos(maxclients), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  
+  //Map filename
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('14.5 54'), "Map :", MAP_NAME, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  
+  //Mission Name
+  if( MSN_NAME != "" ){
+    serverMsnName = MSN_NAME;
+  }
+  else{
+    serverMsnName = "[Classified]";
+  }
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0 72'), "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  
+  //gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 36'), "Server :", serverName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+};
+
+void( vector menuOrg ) menu_connect_draw_players_coop={
+
+};
+
 void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar={
   local vector menuLabelOfs;
   local float menuLabelLen;
@@ -294,6 +460,9 @@ void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar={
   drawfont = FONT_NUM_ROBOT_REGULAR;
 };
 
+/*
+  Draw player server data as a row, used by almost every menu that needs player rows.
+*/
 void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row={
   local vector fontSize;
   local vector rowColor; 
@@ -335,18 +504,24 @@ void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row=
   local float statusLen;
   local string playerStatus;
   playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('48 0');
-  if( playerRow.deadflag == DEAD_DEAD ){
-    playerStatus = "Dead";
-    statusColor = CLR_DEF_RED * 0.9;
+  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
+        playerStatus = "<hidden>";
+        statusColor = CLR_DEF_ARM_THREEQ;
   }
   else{
-    if( playerRow.data_type == DATA_POBS || playerRow.data_type == 0 ){
-      playerStatus = "In Menu";
-    statusColor = CLR_DEF_ARM_THREEQ * 0.9;
+    if( playerRow.deadflag == DEAD_DEAD ){
+      playerStatus = "Dead";
+      statusColor = CLR_DEF_RED * 0.9;
     }
     else{
-      playerStatus = "Deployed";
-      statusColor = CLR_DEF_IIF_FRIEND_BLD * 0.9;
+      if( playerRow.data_type == DATA_POBS || playerRow.data_type == 0 ){
+        playerStatus = "In Menu";
+        statusColor = CLR_DEF_ARM_THREEQ * 0.9;
+      }
+      else{
+        playerStatus = "Deployed";
+        statusColor = CLR_DEF_IIF_FRIEND_BLD * 0.9;
+      }
     }
   }
   statusLen = stringwidth(playerStatus, 0, fontSize);
@@ -354,6 +529,9 @@ void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row=
   drawstring(playerStatusOfs, playerStatus, fontSize, statusColor, 1, 0);
 };
 
+/*
+  Takes the MSN_MAPPIC from the mission file and draws it here for reference.
+*/
 void( vector menuOrg ) menu_connect_draw_satmap={
   local vector panelOrg;
   if( MSN_MAPPIC != "" ){

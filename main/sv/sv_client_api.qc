@@ -161,6 +161,8 @@ void() ClientConnect = {
   if (intermission_running){
     ExitIntermission();
   }
+
+  client_sendServerInfo();  
 };
 
 /*

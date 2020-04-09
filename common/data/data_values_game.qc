@@ -81,6 +81,24 @@ float GAMEMODE_TEAMDM = 4;
 float TEAM_SURVEST_TOTAL;  //team deathmatch
 float TEAM_MILITAR_TOTAL;
 
+//Multiplayer Mission Status
+float MISSION_STATUS_READY = 1;
+float MISSION_STATUS_ACTIVE = 2;
+float MISSION_STATUS_ENDING = 3;
+float MISSION_STATUS_WIN = 3; //dm / coop / campaign win status
+float MISSION_STATUS_WIN1 = 4;  //TDM - survest win
+float MISSION_STATUS_WIN2 = 5;  //TDM - militar win
+
+//Multiplayer Server Flags
+float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
+float SVFLAG_NOPOWERUP  = 2;  //  skip powerup sequence
+float SVFLAG_CHEATS     = 4;  //  cheaty cheat pants
+float SVFLAG_FIREON     = 8;  //  friendly fire on
+float SVFLAG_NOLIVES    = 16; //  limited lives
+float SVFLAG_NOMAP      = 32; //  only see yourself on tac map
+float SVFLAG_NORADAR    = 64; //  no radar allowed
+float SVFLAG_NOSTATUS   = 128; // hide player status in menus
+
 //============================
 //   GAME DIFFICULTY
 //============================

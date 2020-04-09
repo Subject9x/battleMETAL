@@ -37,6 +37,7 @@ void() mh_world_ini={
   registercvar("cl_hud_sway", "0", 1);
   
   //Mission unit stat totals
+  MISSION_STATUS = MISSION_STATUS_READY;
   MISSION_TOTAL_PSC = 0;
   MISSION_TOTAL_SURVEST = 0;
   MISSION_TOTAL_MILITAR = 0;
@@ -44,6 +45,17 @@ void() mh_world_ini={
   MISSION_LOSSES_PSC = 0;
   MISSION_LOSSES_SURVEST = 0;
   MISSION_LOSSES_MILITAR = 0;
+
+  serverflags = 255;  //DEBUG
+
+  STARTTIME = time;
+  local string serverInfo;
+  serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
+  serverInfo = strcat(serverInfo, ftos(cvar("timelimit")), " ");
+  serverInfo = strcat(serverInfo, ftos(cvar("fraglimit"))," ");
+  serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
+  serverInfo = strcat(serverInfo, ftos(serverflags),"\n");
+  SERVER_INFO = strzone(serverInfo);
 
   //kept in numerical order for easy reference.
   addstat(STAT_PLAYER_DEADFLAG, AS_INT, deadflag);

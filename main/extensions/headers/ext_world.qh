@@ -10,6 +10,11 @@ Overview: function extensions to world.qc
 float CLIENTS;
 float MISSION_STATUS;     //used to track whether player WON or LOST the current mission.
 float GAMETYPE;
+float STARTTIME;
+float TECHLEVEL
+
+string SERVER_INFO;
+
 entity WeatherDominator;  //global weather controlling entity.
 vector WINDDIR; //these get set by worldspawn but are here because 
 void() WeatherDominator_think;

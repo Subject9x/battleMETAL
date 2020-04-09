@@ -406,12 +406,9 @@ void(string cmd, float tokens) client_setMission={
     return;
   }
   
-  //Deathmatch
-  if( GAMETYPE == GAMEMODE_DM ){
-    self.playerState = PLAYER_ACTIVE;
-    self.view_ofs = '0 0 1';
-  
-  }
+  //Deathmatch / Team DM
+  self.playerState = PLAYER_ACTIVE;
+  self.view_ofs = '0 0 1';
 };
 
 /*
@@ -451,6 +448,7 @@ void(float mode, float saveSlot) client_sendGameMode={
   stuffcmd(self, cmd);
 };
 
+//DEPRECATED -> remove soon
 void(string targetName) client_sendTargetName={
   local string cmd;
   
@@ -539,6 +537,11 @@ void(float track, float loop) client_playTrack={
   }
   cmd = strcat(cmd, ftos(track), "\n");
   stuffcmd(self, cmd);
+};
+
+
+void() client_sendServerInfo={
+  stuffcmd(self, SERVER_INFO);
 };
 
 void() client_sendMissionFileName={
@@ -655,7 +658,7 @@ void() sv_player_respawn={
 		// respawn		
 		PutClientInServer ();
 	}
-	else if ( GAMETYPE == GAMEMODE_DM ){
+	else if ( GAMETYPE == GAMEMODE_DM || GAMETYPE == GAMEMODE_TEAMDM ){
 		// make a copy of the dead body for appearances sake
     //CopyToBodyQue (self);
 

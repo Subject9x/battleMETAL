@@ -204,7 +204,7 @@ float() menu_connect_choice={
       break;
     case GAMEMODE_COOP:
       //todo
-      choice = MENU_BRIEF_ACTIVE;
+      choice = MENU_CONNECT_ACTIVE;
       //cons_logAFloat("MENU_BRIEF_ACTIVE", MENU_BRIEF_ACTIVE); //DEBUG
       break;
     default:

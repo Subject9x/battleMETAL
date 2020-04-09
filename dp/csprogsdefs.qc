@@ -512,8 +512,30 @@ float(string str, float ofs) str2chr = #222;
 string(float c, ...) chr2str = #223;
 string(float ccase, float calpha, float cnum, string s, ...) strconv = #224;
 string(float chars, string s, ...) strpad = #225;
+
+/*
+  DOCUMENTATION: INFOGET/ADD KEYS - supposedly this from netconn.c-Line 1988
+  "fullserverinfo" ?
+    gamename
+    modname 
+    mapname
+    hostname
+    protocol
+    clients
+    bots
+    sv_maxclients
+    gameversion
+    qcstatus
+    challenge
+  "userinfo"
+    cls.userinfo
+    *ip
+    frags
+    name
+*/
 string(string info, string key, string value, ...) infoadd = #226;
 string(string info, string key) infoget = #227;
+
 float(string s1, string s2, float len) strncmp = #228;
 float(string s1, string s2) strcasecmp = #229;
 float(string s1, string s2, float len) strncasecmp = #230;

@@ -44,6 +44,8 @@ void( entity client, float voiceGroup, float voiceId, float limiter) client_send
 void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
 
 //client command layer
+void() client_sendServerInfo;
+
 void() client_sendMissionFileName;
 void(string fileName) client_sendAnimaticFileName;
 void() client_sendMissionName;

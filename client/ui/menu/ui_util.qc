@@ -129,6 +129,55 @@ void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_rend
   }
 };
 
+
+string() ui_calculate_game_time_string={
+  local string val;
+  local float t, sec, min, hr;
+  if( SV_ENDTIME > 0 ){
+    t = servertime + (servertime - time);
+    t = SV_ENDTIME - t ;
+    sec = t - floor( t / 60 ) * 60 ;
+    sec = rint(sec);
+    
+    min = (t - floor( t / 3600) * 3600) / 60;
+    min = rint(min);
+    
+    hr = t / 3600;
+    hr = rint(hr);
+    val = sprintf("%02d:%02d:%02d", hr, min, sec);
+  }else{
+    val = "No Limit";
+  }
+  
+  return val;
+};
+
+string() ui_label_mission_status={
+  local string val;
+  switch( SV_MISSIONSTATUS ){
+    case MISSION_STATUS_READY:
+      val = "Ready";
+      break;
+    case MISSION_STATUS_ACTIVE:
+      val = "In Progress";
+      break;
+    case MISSION_STATUS_ENDING:
+      val = "Complete";
+      break;
+    case MISSION_STATUS_WIN:
+      val = "Victory";
+      break;
+    case MISSION_STATUS_WIN1:
+      val = "Victory - Survest";
+      break;
+    case MISSION_STATUS_WIN2:
+      val = "Victory - Militar";
+      break;
+      
+  }
+  return val;
+};
+
 /*
   Player scoreboard stuff
 */

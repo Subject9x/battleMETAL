@@ -477,7 +477,17 @@ void(string s) CSQC_Parse_StuffCmd =
     }
   }
   else{
-    if( argv(0) == "fog" ){
+    if( argv(0) == "svinfo" ){
+      SV_STARTTIME = stof(argv(1));
+      SV_ENDTIME = stof(argv(2));
+      if( SV_ENDTIME > 0 ){
+        SV_ENDTIME = (SV_ENDTIME * 60) + SV_STARTTIME;
+      }
+      SV_FRAGLIMIT = stof(argv(3));
+      SV_MISSIONSTATUS = stof(argv(4));
+      SV_SERVERFLAGS = stof(argv(5));
+    }
+    else if( argv(0) == "fog" ){
       cl_get_new_fog( s );
     }
     else if( argv(0) == "cd" ){  
