@@ -34,23 +34,28 @@ void() menu_connectListener_onKeyUp;
 void() menu_connect_drawFrame;
 //------------------
 
-void( vector menuOrg ) menu_connect_draw_bar;
+//Deathmatch layout
 void( vector menuOrg ) menu_connect_draw_mission_info_dm;
 void( vector menuOrg ) menu_connect_draw_rules_dm;
 void( vector menuOrg ) menu_connect_draw_about_dm;
 void( vector menuOrg ) menu_connect_draw_players_dm;
 
+//Team Deathmatch Layout
 void( vector menuOrg ) menu_connect_draw_mission_info_team;
 void( vector menuOrg ) menu_connect_draw_rules_team
 void( vector menuOrg ) menu_connect_draw_about_team;
-void( vector menuOrg ) menu_connect_draw_objectives;
-void( vector menuOrg ) menu_connect_draw_objectives_row;
 void( vector menuOrg ) menu_connect_draw_players_team;
 
+//Cooperative Layout
 void( vector menuOrg ) menu_connect_draw_mission_info_coop;
+void( vector menuOrg ) menu_connet_draw_coop_about;
+void( vector menuOrg ) menu_connect_draw_coop_rules;
 void( vector menuOrg ) menu_connect_draw_players_coop;
 
+//Generic methods
+void( vector menuOrg ) menu_connect_draw_bar;
 void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar;
 void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row;
-
-void( vector menuOrg ) menu_connect_draw_satmap;
+void( vector menuOrg ) menu_connect_draw_objectives;
+void( vector menuOrg ) menu_connect_draw_objectives_row;
+void( vector menuOrg, vector satMapSize ) menu_connect_draw_satmap;
