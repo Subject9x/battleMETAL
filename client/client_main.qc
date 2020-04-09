@@ -252,8 +252,9 @@ void(float w, float h, float menushown) CSQC_UpdateView =
 	addentities( (MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
     
 	// draw the main view
-	renderscene();
-  
+  if( !MENU_ACTIVE ){
+    renderscene();
+  }
   //get player data from server
   client_get_info();
   

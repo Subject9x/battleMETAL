@@ -41,6 +41,10 @@ void( vector menuOrg ) menu_connect_draw_about_dm;
 void( vector menuOrg ) menu_connect_draw_players_dm;
 
 void( vector menuOrg ) menu_connect_draw_mission_info_team;
+void( vector menuOrg ) menu_connect_draw_rules_team
+void( vector menuOrg ) menu_connect_draw_about_team;
+void( vector menuOrg ) menu_connect_draw_objectives;
+void( vector menuOrg ) menu_connect_draw_objectives_row;
 void( vector menuOrg ) menu_connect_draw_players_team;
 
 void( vector menuOrg ) menu_connect_draw_mission_info_coop;
