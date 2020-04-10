@@ -144,22 +144,33 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   local vector playerNameOfs;
   local vector playerScoreOfs;
   
-  if( playerRow.entId == player_localentnum ){
-    fontSize = '10 10 0';
-    rowColor = CLR_DEF_GREEN;
-  }
-  else{
-    fontSize = '8 8 0';
-    rowColor = CLR_DEF_WHITE * 0.75;
-    if( playerRow.deadflag == DEAD_DEAD ){
-      rowColor = CLR_DEF_RED * 0.9;
+  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
+    rowColor = CLR_DEF_WHITE;
+    if( playerRow.entId == player_localentnum ){
+      fontSize = '10 10 0';
     }
     else{
-      if( playerRow.data_type == DATA_POBS || playerRow.data_type == 0 ){
-        rowColor = CLR_DEF_ARM_THREEQ * 0.9;
+    fontSize = '8 8 0';
+    }
+  }
+  else{
+    if( playerRow.entId == player_localentnum ){
+      fontSize = '10 10 0';
+      rowColor = CLR_DEF_GREEN;
+    }
+    else{
+      fontSize = '8 8 0';
+      rowColor = CLR_DEF_WHITE * 0.75;
+      if( playerRow.deadflag > DEAD_NO ){
+        rowColor = CLR_DEF_RED * 0.9;
       }
       else{
-        rowColor = CLR_DEF_IIF_FRIEND_BLD * 0.9;
+        if( playerRow.data_type == DATA_POBS || playerRow.data_type == 0 ){
+          rowColor = CLR_DEF_ARM_THREEQ * 0.9;
+        }
+        else{
+          rowColor = CLR_DEF_IIF_FRIEND_BLD * 0.9;
+        }
       }
     }
   }

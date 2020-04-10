@@ -256,7 +256,7 @@ void(string str, float tokens) client_ParseMechCommand={
   if(argv(1) == "sp"){
     if(self.data_type == DATA_POBS){
       player_unmakeObserver();
-      spawnpoint_select();
+      sv_client_spawnpoint_select();
       player_makeMech();
       client_playTrack( world.sounds, TRUE );
       client_sendMissionName();
@@ -399,22 +399,26 @@ void(string cmd, float tokens) client_setMission={
     return;
   }
   
-  //Co-op
-  if( GAMETYPE == GAMEMODE_COOP ){
-    self.view_ofs = '0 0 1';
-    sv_player_respawn();
-    return;
+  // Network games
+  // -Mission is on-going
+  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+    //Co-op respawn
+    if( GAMETYPE == GAMEMODE_COOP ){
+      sv_client_respawn();
+      return;
+    }
+    //DM/TDM respawn
+    if( GAMETYPE == GAMEMODE_TEAMDM || GAMETYPE == GAMEMODE_DM ){
+      sv_client_respawn();
+      return;
+    }
   }
-  
-  //Deathmatch / Team DM
-  self.playerState = PLAYER_ACTIVE;
-  self.view_ofs = '0 0 1';
 };
 
 /*
   Client set's their weapon groups on the server
 */
-void(string cmd, float tokens) client_setWeaponGroup={  
+void(string cmd, float tokens) client_setWeaponGroup={
   self.w_group1 = stof(argv(2));
   self.w_group2 = stof(argv(3));
   self.w_group3 = stof(argv(4));
@@ -539,7 +543,6 @@ void(float track, float loop) client_playTrack={
   stuffcmd(self, cmd);
 };
 
-
 void() client_sendServerInfo={
   stuffcmd(self, SERVER_INFO);
 };
@@ -641,41 +644,6 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
       WriteShort( MSG_ONE, 0 );
       break;
   }
-};
-
-void() sv_player_respawn={ 
-  if (  GAMETYPE == GAMEMODE_COOP ){
-		// make a copy of the dead body for appearances sake
-    //CopyToBodyQue (self);
-    //
-		// get the spawn parms as they were at level start
-		//setspawnparms (self);
-    if(self.data_type == DATA_MECH ){
-      player_unmakeMech();
-      player_makeObserver();
-    }
-    self.playerState = PLAYER_IN_MENU;
-		// respawn		
-		PutClientInServer ();
-	}
-	else if ( GAMETYPE == GAMEMODE_DM || GAMETYPE == GAMEMODE_TEAMDM ){
-		// make a copy of the dead body for appearances sake
-    //CopyToBodyQue (self);
-
-		// set default spawn parms
-		//SetNewParms ();
-    if(self.data_type == DATA_MECH ){
-      player_unmakeMech();
-      player_makeObserver();
-    }
-    self.playerState = PLAYER_IN_MENU;
-		// respawn		
-		PutClientInServer ();
-	}
-	else{	
-  // restart the entire server
-		localcmd ("restart\n");
-	}
 };
 
 entity() spawnpoint_coop={
@@ -786,45 +754,6 @@ void() sv_select_info_start={
   else{
     error ("PutClientInServer()->sv_select_info_start(): no info_player_start on level");
   }
-};
-
-void() spawnpoint_select={
-  local entity spot;
-
-  if(self.goalentity){
-    if( coop ){
-      spot = spawnpoint_coop();
-    }
-    else{
-      spot = self.goalentity;
-    }
-  }
-  else{
-    spot = SelectSpawnPoint();
-  }
-  
-  //remote deploy point functionality
-  if( spot.classname == "map_deploy_point_remote" ){
-    self.origin = self.oldorigin = spot.view_ofs + '0 0 12';
-  }
-  else{
-    self.origin = self.oldorigin = spot.origin + '0 0 12';
-  }
-  
-  self.angles = spot.angles;
-  
-  //haha, cache angles for powerup sequence.
-  self.wind_x = 0;
-  self.wind_y = self.angles_y;
-  self.wind_z = self.angles_z;
-  
-	self.fixangle = TRUE;
-  self.trigOnSpawn = spot.trigOnSpawn;
-  self.trigOnDeath = spot.trigOnDeath;
-  self.trigOnAttack = spot.trigOnAttack;
-  self.trigOnDamage = spot.trigOnDamage;
-  self.trigOnPanic = spot.trigOnPanic;
-  self.trigOnTarget = spot.trigOnTarget;
 };
 
 void() spawnpoint_Random={

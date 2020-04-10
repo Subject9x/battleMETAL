@@ -121,9 +121,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevKills = self.kills;
   prevFaction = self.faction;
   
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
-  
   /*
     EVENT - per-frame update
   */
@@ -196,6 +193,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
+    SV_MISSIONSTATUS = ReadByte();
+    
+    if( self.entId == player_localentnum ){
+      CLIENT_player_deadflag = self.deadflag;
+    }
     if( self.deadflag == DEAD_DEAD ){
       te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
       self.flags = 0;
@@ -256,4 +258,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( prevFaction != self.faction ){
     sendevent_handle_faction( prevFaction, self.faction );
   }
+  
+  //Shield Explode event
+  sendevent_shield_explode( prevShield );
 };

@@ -292,6 +292,13 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   }
   
   if(CLIENT_data_type == DATA_MECH){
+    if( dmg_save > 0 ){
+      cons_logAFloat("dmg_save", dmg_save); //DEBUG
+    }
+    if( dmg_take > 0 ){
+      cons_logAFloat("dmg_take", dmg_take); //DEBUG
+    }
+    
     if(MENU_ACTIVE){
       if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
         menu_exit();
@@ -356,6 +363,7 @@ float(string s) CSQC_ConsoleCommand =
 {
 	return FALSE;
 };
+
 
 // parse tempentity if it suits your fancy, return TRUE to tell engine you have finished parsing the 
 //tempentity, return FALSE to tell engine to parse tempentity itself (it will reset parse position automatically)
@@ -480,13 +488,12 @@ void(string s) CSQC_Parse_StuffCmd =
   else{
     if( argv(0) == "svinfo" ){
       SV_STARTTIME = stof(argv(1));
-      SV_ENDTIME = stof(argv(2));
+      SV_ENDTIME = getstatf(STAT_TIMELIMIT);
       if( SV_ENDTIME > 0 ){
         SV_ENDTIME = (SV_ENDTIME * 60) + SV_STARTTIME;
       }
-      SV_FRAGLIMIT = stof(argv(3));
-      SV_MISSIONSTATUS = stof(argv(4));
-      SV_SERVERFLAGS = stof(argv(5));
+      SV_MISSIONSTATUS = stof(argv(2));
+      SV_SERVERFLAGS = stof(argv(3));
     }
     else if( argv(0) == "fog" ){
       cl_get_new_fog( s );

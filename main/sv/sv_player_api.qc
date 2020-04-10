@@ -8,6 +8,13 @@ Overview:
 ** - this has been modified to be incorporated into battleMETAL and is not compatible with
       other code bases.
 */
+/*
+===========
+PlayerPreThink
+
+called before running player input frame
+============
+*/
 void() PlayerPreThink = {
 	if (self.deadflag == DEAD_DEAD){
 		PlayerDeathThink ();
@@ -22,10 +29,6 @@ void() PlayerPreThink = {
 		return;					// the think tics
 	}
   
-  if(self.view_ofs == '0 0 0'){
-    return;
-  }
-  
   if( self.playerState == PLAYER_INTERMSN ){
     client_push_player_info_thin();
   }
@@ -36,12 +39,13 @@ void() PlayerPreThink = {
   
 	makevectors (self.v_angle);		// is this still used
 
-	//CheckRules ();
+	//CheckRules ();  TODO - apparently vanilla QC checks multiplayer rules here - Roohr
 	//WaterMove ();
 
 	//if (self.waterlevel == 2)
 		//CheckWaterJump ();
 
+  //Player powering up their mech, prevent movement
   if(time < self.power_timer){
     PlayerPreThink_powerup();
     return;
@@ -56,7 +60,7 @@ void() PlayerPreThink = {
 // teleporters can force a non-moving pause time	
 	if (time < self.pausetime)
 		self.velocity = '0 0 0';
-    
+  
   if( !self.button8 ){
     if( self.playerState == PLAYER_SPRINT_ON ){
       self.playerState = PLAYER_ACTIVE;
@@ -76,6 +80,13 @@ void() PlayerPreThink = {
   
 };
 
+/*
+===========
+PlayerPostThink
+
+called after running player input frame
+============
+*/
 void() PlayerPostThink = {
   if (self.deadflag >= DEAD_DYING){
     return;
@@ -105,6 +116,11 @@ void() PlayerPostThink = {
     return;
   }
     
+  if( self.impulse ){
+		ImpulseCommands ();
+  }
+  ButtonCommands();
+  
   if(self.data_type != DATA_POBS){ 
     local float hudSwayCheck;
     hudSwayCheck = cvar("cl_hud_sway");
@@ -125,12 +141,7 @@ void() PlayerPostThink = {
       self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & (STAT_HIT_LF | STAT_HIT_RT | STAT_HIT_BK));
     }
   }
-  ////
-	if( self.impulse ){
-		ImpulseCommands ();
-  }
-  ButtonCommands();
-  
+
   //Update Target information
   sv_updateTargetInfo();
   
@@ -261,7 +272,6 @@ void() PlayerPostThink = {
   }
 };
 
-
 void() PlayerPreThink_powerup={
   self.angles = self.wind;
   self.v_angle = self.wind;
@@ -306,19 +316,28 @@ void() PlayerPostThink_powerup={
   client_push_player_info();
 };
 
+/*
+===========
+PlayerDie - Campaign
 
+self.th_die() 
+============
+*/
 void() PlayerDie={
+  cons_logAFloat("SV()->PlayerDie()->enter", 1);  //DEBUG
 	if( self.deadflag ){
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}
+  
 	if(self.data_type == DATA_MECH){
+    cons_logAFloat("SV()->PlayerDie()->self.data_type == DATA_MECH", 1);  //DEBUG
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
     client_push_player_info();
   }
-  self.effects = 0;
   
+  self.effects = 0;
 	self.deadflag = DEAD_DYING;
 	self.solid = SOLID_CORPSE;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
@@ -327,7 +346,7 @@ void() PlayerDie={
 	setorigin(self, self.origin);
   
   if (self.velocity_z < 10){
-    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
+    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
   }
   
 	self.angles_x = 0;
@@ -352,43 +371,58 @@ void() PlayerDie={
 };
 
 void() PlayerDieEnd={
+  cons_logAFloat("SV()->PlayerDieEnd()->enter", 1);  //DEBUG
   self.movetype = MOVETYPE_NONE;
   self.playerState = PLAYER_INTERMSN;
   client_sendEndMission(self, MISSION_STATUS );
   client_push_player_info();
+  
+  /*
   local entity start;
   start = find(world, classname, "info_player_start");
   if( start ){
     setorigin( self, start.origin);
   }
+  */
   
   self.think = PlayerDead;
   self.nextthink = time + 0.1;
 };
 
+/*
+===========
+PlayerDie - Network Games
+============
+*/
+/*
+  Call stack: t_damage() -> killed() -> player.th_die();
+    this is called on the frame that a player is actually killed.
+*/
 void() PlayerDieNetwork={
+  cons_logAFloat("SV()->PlayerDieNetwork()->enter", 1);  //DEBUG
 	if( self.deadflag ){
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}
 	if(self.data_type == DATA_MECH){
+    cons_logAFloat("SV()->PlayerDieNetwork()->self.data_type == DATA_MECH", 1);  //DEBUG
     client_push_player_info();
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
   }
-  self.effects = 0;
   
+  self.effects = 0;
 	self.deadflag = DEAD_DYING;
 	self.solid = SOLID_CORPSE;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 	self.movetype = MOVETYPE_TOSS;
-  setsize(self, '-4 -4 -4', '4 4 4');
+  setsize(self, '-8 -8 -8', '8 8 8');
 	setorigin(self, self.origin);
   
   if (self.velocity_z < 10){
     self.velocity_x = self.velocity_x + (crandom() * ((4 - self.vec_size) * 100));
     self.velocity_y = self.velocity_y + (crandom() * ((4 - self.vec_size) * 100));
-    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
+    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
   }
   
 	self.angles_x = 0;
@@ -396,67 +430,54 @@ void() PlayerDieNetwork={
   self.angles_y = 0;
   self.avelocity = '0 0 0';
   
-  /*
-  //update objectives on player death.
-  client_push_mapobjects();
-  if( MISSION_STATUS ){        
-    //only send unlocks if player won mission
-    //client_sendMissionUnlocks();
-    te_mission_win();
-  }
-  else{
-    te_mission_lose();
-  }*/
-
   self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
   
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
 
+/*
+  call stack: think()? -> 
+    time + GAME_TIME_TO_DEBRIEF
+*/
 void() PlayerDieNetworkEnd={
+  cons_logAFloat("SV()->PlayerDieNetworkEnd()->enter", 1);  //DEBUG
   self.movetype = MOVETYPE_NONE;
   self.playerState = PLAYER_IN_MENU;
-  
-  //client_sendEndMission(self, MISSION_STATUS );
-  //client_push_player_info();
-  
-  
-  local entity start;
-  start = find(world, classname, "info_player_start");
-  if( start ){
-    setorigin( self, start.origin);
-  }
+    
+  ctrl_unit_cleanup_player();
   
   self.think = PlayerDead;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 1;
 };
 
 
 void() PlayerDead={  
-  ctrl_unit_cleanup_player();
-  player_unmakeMech();
-  player_makeObserver();
-  
+  cons_logAFloat("SV()->PlayerDead()->enter", 1);  //DEBUG
+  //player_unmakeMech();
 	self.nextthink = -1;
 	self.deadflag = DEAD_DEAD;
 };
 
 //called in PlayerPreThink() when self.deadflag == DEAD_DEAD
-void() PlayerDeathThink={
+void() PlayerDeathThink={  
+  cons_logAFloat("SV()->PlayerDeathThink()->enter", 1);  //DEBUG
+
+//battleMETAL - player respawn is stage-managed wth clientside menus...
 // wait for all buttons released
-	if (self.deadflag == DEAD_DEAD){
+/*	if (self.deadflag == DEAD_DEAD){
 		if (self.button2 || self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7){
 			return;
     }
 		self.deadflag = DEAD_RESPAWNABLE;
+    cons_logAFloat("SV()->PlayerDeathThink()->self.deadflag = DEAD_RESPAWNABLE", self.deadflag);  //DEBUG
 		return;
 	}
 
 // wait for any button down
 	if (!self.button2 && !self.button0 && !self.button3 && !self.button4 && !self.button5 && !self.button6 && !self.button7 && !self.button8)
 		return;
-
+*/
 	self.button0 = 0;
 	self.button1 = 0;
 	self.button2 = 0;
@@ -466,17 +487,22 @@ void() PlayerDeathThink={
 	self.button6 = 0;
 	self.button7 = 0;
   self.button8 = 0;
-	
-  self.deadflag = DEAD_NO;
+	self.deadflag = DEAD_RESPAWNABLE;
+  
+  cons_logAFloat("SV()->PlayerDeathThink()->self.deadflag = DEAD_RESPAWNABLE", self.deadflag);  //DEBUG
 
-  if( cvar("deathmatch") || cvar("coop") ){
-    sv_select_info_start();
-    self.movetype = MOVETYPE_FLY;
-    self.flags = self.flags | FL_FLY;
-  }
-
-  if( cvar("coop") || cvar("deathmatch") ){
-    sv_player_respawn();
+  switch( cvar("gamemode") ){
+    default:
+      break;
+    case GAMEMODE_DM:
+    
+      break;
+    case GAMEMODE_TEAMDM:
+    
+      break;
+    case GAMEMODE_COOP:
+    
+      break;
   }
 };
 

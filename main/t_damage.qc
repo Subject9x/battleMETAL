@@ -73,10 +73,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( dmgAmt <= 0 ){
     return trg;
   }
-
-  if( trg.dmg_take < 0.25){
-    trg.dmg_take = trg.dmg_take + random() * 3;
-  }
   
   //the special hit-location calculator is only run for DATA_MECH units
   if( trg.data_type == DATA_MECH ){
@@ -200,7 +196,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
     self = notTarg;
   }
-
   return dmgTrg;
 }
 
@@ -481,12 +476,12 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 // add to the damage total for clients, which will be sent as a single
 // message at the end of the frame
 // FIXME: remove after combining shotgun blasts?
-	if (targ.flags & FL_CLIENT)
-	{
-		targ.dmg_take = targ.dmg_take + take;
-		targ.dmg_save = targ.dmg_save + save;
-		targ.dmg_inflictor = inflictor;
-	}
+   /* if (targ.flags & FL_CLIENT)
+    {
+      targ.dmg_take = targ.dmg_take + take;
+      targ.dmg_save = targ.dmg_save + save;
+      targ.dmg_inflictor = inflictor;
+    }*/
 
 // figure momentum add
 	if ( (inflictor != world) && (targ.movetype == MOVETYPE_WALK) )

@@ -192,8 +192,8 @@ void( vector menuOrg ) menu_connect_draw_mission_info_dm={
   
   //Frag Limit
   local string scoreLimit;
-  if( SV_FRAGLIMIT > 0 ){
-    scoreLimit = ftos(SV_FRAGLIMIT);
+  if( getstatf(STAT_FRAGLIMIT) > 0 ){
+    scoreLimit = ftos(getstatf(STAT_FRAGLIMIT));
   }
   else{
     scoreLimit = "No Limit";
@@ -364,8 +364,8 @@ void( vector menuOrg ) menu_connect_draw_mission_info_team={
   
   //Frag Limit
   local string scoreLimit;
-  if( SV_FRAGLIMIT > 0 ){
-    scoreLimit = ftos(SV_FRAGLIMIT);
+  if( getstatf(STAT_FRAGLIMIT) > 0 ){
+    scoreLimit = ftos(getstatf(STAT_FRAGLIMIT));
   }
   else{
     scoreLimit = "[NONE]";
@@ -611,8 +611,8 @@ void( vector menuOrg ) menu_connect_draw_mission_info_coop={
   
   //Frag Limit
   local string scoreLimit;
-  if( SV_FRAGLIMIT > 0 ){
-    scoreLimit = ftos(SV_FRAGLIMIT);
+  if( getstatf(STAT_FRAGLIMIT) > 0 ){
+    scoreLimit = ftos(getstatf(STAT_FRAGLIMIT));
   }
   else{
     scoreLimit = "No Limit";
@@ -771,8 +771,8 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
       player = findfloat(world, entId, SCOREBOARD[itr]);
       listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
       listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
-      playerRowItr = playerRowItr + 1;
       menu_connect_draw_player_row( listRowOfs, playerRowItr, player );
+      playerRowItr = playerRowItr + 1;
     }
   }
   

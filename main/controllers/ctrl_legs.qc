@@ -99,34 +99,18 @@ void() ctrl_dieLegs={
     }
     return;
   }
-  //create visible duplicate
-  newLegs = spawn();
-  newLegs.vec_size = self.owner.vec_size;
-  newLegs.skin = self.skin;
-  newLegs.angles = self.owner.angles;
-  setsize(newLegs, self.compOffset, self.compAltOffset);
-  setmodel(newLegs, self.model);
-  setorigin(newLegs, self.origin);
-  newLegs.frame = 3;
-
-  if( (self.owner.flags & FL_CLIENT) ){
-    newLegs.think = leg_die1;
-  }
-  else{
-    newLegs.think = bot_leg_die1;
-  }
-  newLegs.nextthink = time + 0.1;
   
-  self.health = 0;
-  self.deadflag = DEAD_DEAD;
-  self.effects = EF_NODRAW;
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_NOT;
-  self.alpha = 0;
-  self.aiment = world;
-  self.owner = world;
-  setsize(self, '-1 -1 -1', '1 1 1');
-  setorigin( self, self.origin );
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.1;
+  if( self.deadflag == DEAD_NO ){
+    //create visible duplicate
+    te_vehicle_chunk( self, self.owner.velocity, self.angles,  particleeffectnum("TE_DEBRIS_TRAIL_MED"), 3600, 1 );
+    
+    self.health = 0;
+    self.deadflag = DEAD_DEAD;
+    self.effects = EF_NODRAW;  
+    self.movetype = MOVETYPE_NONE;
+    self.aiment = world;
+    self.health = 0;
+    setsize(self, '-1 -1 -1', '1 1 1');
+    setorigin( self, self.origin );
+  }
 };

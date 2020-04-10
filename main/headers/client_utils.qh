@@ -17,7 +17,6 @@ this is the header.
 void() SetChangeParms;
 void() SetNewParms;
 void() DecodeLevelParms;
-void() sv_player_respawn; //was respawn() but this was not an engine required name.
 entity() SelectSpawnPoint;
 //==========================
 float(entity piece) csqc_updateCompStat;
@@ -26,7 +25,6 @@ void() legacy_PlayerDie;
 
 //spawn spot wrappers
 void() sv_select_info_start;
-void() spawnpoint_select;
 void() spawnpoint_Random;
 entity() spawnpoint_coop;
 

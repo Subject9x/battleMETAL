@@ -53,6 +53,9 @@ void() ClientConnect = {
   else if( GAMETYPE == GAMEMODE_TEAMDM ){
     bprint(" Unkown contact has entered the AO.\n");
   }
+  if( MISSION_STATUS == MISSION_STATUS_READY ){
+    MISSION_STATUS = MISSION_STATUS_ACTIVE;
+  }
   
   self.weaponmodel = "";
   self.viewzoom = 1;
@@ -219,7 +222,7 @@ void() PutClientInServer = {
       break;
   }
 
-  switch( self.data_type ){
+  /*switch( self.data_type ){
     case DATA_POBS:
       
 
@@ -240,12 +243,7 @@ void() PutClientInServer = {
       player_makeMech();
       self.count4 = 0;
       break;
-  }
-
-  if (deathmatch || coop)
-	{
-		makevectors(self.angles);
-	}
+  }*/
 };
 
 /*
@@ -261,7 +259,7 @@ void() ClientKill = {
     return;
   }
   
-  if ( (intermission_running) && ( (coop) || (deathmatch) ) )  // not allowed during intermission
+  if ( (intermission_running) && ( GAMETYPE != GAMEMODE_CAMPAIGN ) )  // not allowed during intermission
 		return;
 
   //if player is an observer and their next class is still observer
@@ -271,9 +269,11 @@ void() ClientKill = {
   }
   
   bprint (self.netname);
-  bprint (" cowardly ejects!\n");
-  
-  self.data_type = DATA_POBS;
+  bprint (" cowardly self-destructs!\n");
+
+  client_push_player_info();
+  ctrl_unit_clean_wgroups();
+  ctrl_mech_die_player();
   ctrl_unit_clean_wgroups();
   ctrl_unit_cleanup_player();
   
@@ -287,10 +287,13 @@ void() ClientKill = {
   //only deduct frags of player is going from !observer to another !observer
   if(self.data_type != DATA_POBS){
     self.frags = self.frags - 2;
+    if( self.frags < 0 ){
+      self.frags = 0;
+    }
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
   }
   self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
-	sv_player_respawn();
+	sv_client_respawn();
 };
 
 /*
@@ -335,7 +338,6 @@ void() ClientDisconnect = {
 void() PutClientInServer_Campaign={
 
   /*PutClientInServer Logic
-    1) find a spawn point
     2) configure faction
     3) send eqipment selections
     4) config client th_ funcs
@@ -387,7 +389,6 @@ void() PutClientInServer_Campaign={
 */
 void() PutClientInServer_Coop={
   /*PutClientInServer Logic
-    1) find a spawn point
     2) configure faction
     3) send eqipment selections
     4) config client th_ funcs
@@ -421,7 +422,6 @@ void() PutClientInServer_Coop={
 */
 void() PutClientInServer_Deathmatch={
   /*PutClientInServer Logic
-    1) find a spawn point
     2) configure faction
     3) send eqipment selections
     4) config client th_ funcs
@@ -431,7 +431,7 @@ void() PutClientInServer_Deathmatch={
   if( self.playerState == PLAYER_CONNECT ){
     client_sendMissionFileName();
     client_sendGameMode(cvar("gamemode"), FALSE);
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
@@ -454,7 +454,6 @@ void() PutClientInServer_Deathmatch={
 */
 void() PutClientInServer_TeamDeathmatch={
   /*PutClientInServer Logic
-    1) find a spawn point
     2) configure faction
     3) send eqipment selections
     4) config client th_ funcs
@@ -483,6 +482,73 @@ void() PutClientInServer_TeamDeathmatch={
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
   //}
+};
+
+void() sv_client_respawn={ 
+  if( GAMETYPE == GAMEMODE_COOP ){
+		// get the spawn parms as they were at level start
+		//setspawnparms (self);
+    if(self.data_type == DATA_MECH ){
+      player_makeObserver();
+    }
+    self.playerState = PLAYER_SPAWN;
+		// respawn		
+		PutClientInServer ();
+    return;
+	}
+	if ( GAMETYPE == GAMEMODE_DM || GAMETYPE == GAMEMODE_TEAMDM ){
+		// set default spawn parms
+		//SetNewParms ();
+    if(self.data_type == DATA_MECH ){
+      player_makeObserver();
+    }
+    self.playerState = PLAYER_SPAWN;
+		// respawn		
+		PutClientInServer ();
+    return;
+  }
+  
+  // restart the entire server
+  localcmd ("restart\n");
+};
+
+void() sv_client_spawnpoint_select={
+  local entity spot;
+
+  if(self.goalentity){
+    if( coop ){
+      spot = spawnpoint_coop();
+    }
+    else{
+      spot = self.goalentity;
+    }
+  }
+  else{
+    spot = SelectSpawnPoint();
+  }
+  
+  //remote deploy point functionality
+  if( spot.classname == "map_deploy_point_remote" ){
+    self.origin = self.oldorigin = spot.view_ofs + '0 0 12';
+  }
+  else{
+    self.origin = self.oldorigin = spot.origin + '0 0 12';
+  }
+  
+  self.angles = spot.angles;
+  
+  //haha, cache angles for powerup sequence.
+  self.wind_x = 0;
+  self.wind_y = self.angles_y;
+  self.wind_z = self.angles_z;
+  
+	self.fixangle = TRUE;
+  self.trigOnSpawn = spot.trigOnSpawn;
+  self.trigOnDeath = spot.trigOnDeath;
+  self.trigOnAttack = spot.trigOnAttack;
+  self.trigOnDamage = spot.trigOnDamage;
+  self.trigOnPanic = spot.trigOnPanic;
+  self.trigOnTarget = spot.trigOnTarget;
 };
 
 /*
@@ -592,6 +658,7 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, player.deadflag );
+    WriteByte( MSG_ENTITY, MISSION_STATUS );
   }
   /*
     EVENT - Client Data is new/spawned

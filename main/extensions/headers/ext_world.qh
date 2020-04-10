@@ -11,7 +11,7 @@ float CLIENTS;
 float MISSION_STATUS;     //used to track whether player WON or LOST the current mission.
 float GAMETYPE;
 float STARTTIME;
-float TECHLEVEL
+float TECHLEVEL;
 
 string SERVER_INFO;
 

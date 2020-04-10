@@ -51,8 +51,6 @@ void() mh_world_ini={
   STARTTIME = time;
   local string serverInfo;
   serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
-  serverInfo = strcat(serverInfo, ftos(cvar("timelimit")), " ");
-  serverInfo = strcat(serverInfo, ftos(cvar("fraglimit"))," ");
   serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
   serverInfo = strcat(serverInfo, ftos(serverflags),"\n");
   SERVER_INFO = strzone(serverInfo);

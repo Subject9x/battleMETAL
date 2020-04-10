@@ -46,6 +46,8 @@ float		trace_inwater;
 //
 void()		CSQC_Init;
 void()		CSQC_Shutdown;
+void( float intermission ) CSQC_UpdateIntermissionState;
+void( float showingScores ) CSQC_UpdateShowingScoresState;
 float(float evtype, float scanx, float chary, float devid)	CSQC_InputEvent;
 void(float w, float h, float m)		CSQC_UpdateView;
 float(string s)	CSQC_ConsoleCommand;
@@ -140,17 +142,6 @@ void		end_sys_globals;		// flag for structure dumping
 //
 .float() t_remove; // called by CSQC_Ent_Remove to clean up this entity, return TRUE if remove(self) should be performed afterward
 
-//added from normal defs.qc
-.float health;
-.float max_health;
-.float count1, count2, count3, count4, count5, count6;
-.float modelflags;
-.float takedamage;
-.float traileffectnum;
-.float yaw_speed;
-.string weaponmodel;
-.vector punchangle;
-.float deadflag;
 //================================================
 void		end_sys_fields;			// flag for structure dumping
 //================================================
@@ -172,6 +163,27 @@ float		intermission; // indicates intermission state (0 = normal, 1 = scores, 2 
 vector		view_angles; // same as input_angles
 vector		view_punchangle; // from server
 vector		view_punchvector; // from server
+
+string worldstatus;
+
+//added from normal defs.qc
+.float health;
+.float max_health;
+.float count1, count2, count3, count4, count5, count6;
+.float modelflags;
+.float takedamage;
+.float traileffectnum;
+.float yaw_speed;
+.string weaponmodel;
+.vector punchangle;
+.float deadflag;
+
+//chalk this up to more lost documentation
+//CSQC does actually have these as auto-updated globals! :|
+float dmg_take;
+float dmg_save;
+vector dmg_origin;
+
 
 /*
 ==============================================================================
@@ -220,22 +232,76 @@ const float VF_CL_VIEWANGLES_Z	= 36;	//(float)
 
 const float VF_PERSPECTIVE      = 200;
 
-const float STAT_HEALTH		= 0;
-const float STAT_WEAPONMODEL	= 2;
-const float STAT_AMMO		= 3;
-const float STAT_ARMOR		= 4;
-const float STAT_WEAPONFRAME	= 5;
-const float STAT_SHELLS		= 6;
-const float STAT_NAILS		= 7;
-const float STAT_ROCKETS	= 8;
-const float STAT_CELLS		= 9;
-const float STAT_ACTIVEWEAPON	= 10;
-const float STAT_TOTALSECRETS	= 11;
-const float STAT_TOTALMONSTERS	= 12;
-const float STAT_SECRETS		= 13;
-const float STAT_MONSTERS		= 14;
-const float STAT_ITEMS		= 15;
-const float STAT_VIEWHEIGHT	= 16;
+/*
+  Having the full list of these would have helped from the start...
+  quakedef.h - Line - 218
+  Max Stats = 256
+*/
+const float STAT_HEALTH		            = 0;
+const float STAT_WEAPONMODEL          = 2;
+const float STAT_AMMO                 = 3;
+const float STAT_ARMOR		            = 4;
+const float STAT_WEAPONFRAME	        = 5;
+const float STAT_SHELLS		            = 6;
+const float STAT_NAILS		            = 7;
+const float STAT_ROCKETS	            = 8;
+const float STAT_CELLS		            = 9;
+const float STAT_ACTIVEWEAPON	        = 10;
+const float STAT_TOTALSECRETS	        = 11;
+const float STAT_TOTALMONSTERS	      = 12;
+const float STAT_SECRETS		          = 13;
+const float STAT_MONSTERS		          = 14;
+const float STAT_ITEMS		            = 15;
+const float STAT_VIEWHEIGHT	          = 16;
+
+const float STAT_VIEWZOOM             = 21;
+
+const float STAT_MOVEVARS_AIRACCEL_QW_STRETCHFACTOR = 220;
+const float STAT_MOVEVARS_AIRCONTROL_PENALTY  =  221;
+const float STAT_MOVEVARS_AIRSPEEDLIMIT_NONQW =  222;
+const float STAT_MOVEVARS_AIRSTRAFEACCEL_QW   =  223;
+const float STAT_MOVEVARS_AIRCONTROL_POWER    =  224;
+const float STAT_MOVEFLAGS                    = 225;
+
+const float STAT_MOVEVARS_WARSOWBUNNY_AIRFORWARDACCEL = 226;
+const float STAT_MOVEVARS_WARSOWBUNNY_ACCEL   =  227;
+const float STAT_MOVEVARS_WARSOWBUNNY_TOPSPEED =   228;
+const float STAT_MOVEVARS_WARSOWBUNNY_TURNACCEL =  229;
+const float STAT_MOVEVARS_WARSOWBUNNY_BACKTOSIDERATIO = 230;
+
+const float STAT_MOVEVARS_AIRSTOPACCELERATE   =  231;
+const float STAT_MOVEVARS_AIRSTRAFEACCELERATE =  232;
+const float STAT_MOVEVARS_MAXAIRSTRAFESPEED   =  233;
+const float STAT_MOVEVARS_AIRCONTROL          =  234;
+
+const float	STAT_FRAGLIMIT                  = 235;
+const float	STAT_TIMELIMIT                  = 236;
+
+const float	STAT_MOVEVARS_WALLFRICTION    = 237;
+const float STAT_MOVEVARS_FRICTION            = 238;
+const float STAT_MOVEVARS_WATERFRICTION       = 239;
+
+const float		STAT_MOVEVARS_TICRATE   = 240;
+const float		STAT_MOVEVARS_TIMESCALE = 241;
+const float   STAT_MOVEVARS_GRAVITY   = 242;
+
+const float STAT_MOVEVARS_STOPSPEED           = 243;
+const float STAT_MOVEVARS_MAXSPEED            = 244;
+const float STAT_MOVEVARS_SPECTATORMAXSPEED   = 245;// FIXME: QW has a separate cvar for this
+const float STAT_MOVEVARS_ACCELERATE          =  246;
+const float STAT_MOVEVARS_AIRACCELERATE       =  247;
+const float STAT_MOVEVARS_WATERACCELERATE     =  248;
+const float STAT_MOVEVARS_ENTGRAVITY          =  249;
+const float STAT_MOVEVARS_JUMPVELOCITY        =  250;
+const float STAT_MOVEVARS_EDGEFRICTION        =  251;
+const float STAT_MOVEVARS_MAXAIRSPEED         =  252;
+const float STAT_MOVEVARS_STEPHEIGHT          =  253;
+const float STAT_MOVEVARS_AIRACCEL_QW         =  254;
+const float STAT_MOVEVARS_AIRACCEL_SIDEWAYS_FRICTION = 255;
+
+
+
+
 
 // Quake Sound Constants
 const float CHAN_AUTO			= 0;
@@ -1325,6 +1391,15 @@ float log(float f) = #532;
 //description:
 //controls color of the entity, '0 0 0', is forced to be '1 1 1' (otherwise everything would be black), used for tinting objects, for instance using '1 0.6 0.4' on an ogre would give you an orange ogre (order is red green blue), note the colors can go up to '8 8 8' (8x as bright as normal).
 
+//DP_ENT_GLOWMOD
+//idea: LordHavoc
+//darkplaces implementation: LordHavoc
+//field definition:
+.vector glowmod;
+//description:
+//controls color of the entity's glow texture (fullbrights), '0 0 0', is forced to be '1 1 1' (otherwise everything would be black), 
+//used for tinting objects, see colormod (same color restrictions apply).
+
 //FTE_CSQC_SKELETONOBJECTS
 //idea: Spike, LordHavoc
 //darkplaces implementation: LordHavoc
@@ -1543,12 +1618,6 @@ void(float fh, entity e) writetofile = #606;
 float(string s) isfunction = #607;
 void(entity e, string s) parseentitydata = #608;
 
-// assorted builtins
-const float		STAT_MOVEVARS_TICRATE           = 240;
-const float		STAT_MOVEVARS_TIMESCALE         = 241;
-const float		STAT_FRAGLIMIT					= 235;
-const float		STAT_TIMELIMIT					= 236;
-const float     STAT_MOVEVARS_GRAVITY           = 242;
 string(void)						ReadPicture = #501;
 float PARTICLES_USEALPHA = 1;
 float particles_alphamin, particles_alphamax;

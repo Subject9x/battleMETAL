@@ -48,9 +48,6 @@ $frame l_die1 l_die2 l_die3 l_die4
 
 void() leg_stand1;
 void() leg_die1;
-void() leg_die2;
-void() leg_die3;
-void() leg_die4;
 
 void() leg_walk1;
 void() leg_walk2;

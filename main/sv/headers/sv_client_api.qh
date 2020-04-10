@@ -14,6 +14,8 @@ void() PutClientInServer_Campaign;
 void() PutClientInServer_Coop;
 void() PutClientInServer_Deathmatch;
 void() PutClientInServer_TeamDeathmatch;
+void() sv_client_respawn; //was respawn()
+void() sv_client_spawnpoint_select;
 
 void() client_data;
 float( float isNew, float changeFlags ) send_client_data;

@@ -22,7 +22,7 @@ float DATA_ESR_BEAM_COUNT = 3;
 float DATA_ESR_COOLDOWN_MAX = 2;
 
 float ESR_HEAT_UP = 0.05;    //count5
-float ESR_MAX_RATE = 0.085;  //count3
+float ESR_MAX_RATE = 0.09;  //count3
 float ESR_RATE_UP = 0.0065;   //count3
 float ESR_RATE_DN = 0.01;   //count3
 float ESR_SPREAD_UP = 1.15;
@@ -65,7 +65,7 @@ void() weapon_esr_think={
           }
           //unfocus the spread lens
           self.spreadDefault = self.spreadDefault * ESR_SPREAD_UP;
-          if( self.spreadDefault > self.spreadCache * 4 ){
+          if( self.spreadDefault_x > self.spreadCache_x * 4 ){
             self.spreadDefault = self.spreadCache * 4;
           }
           //take off some heat
@@ -154,7 +154,7 @@ void() data_ini_attack_electro_repeater_={
   self.w_firetime = time + self.count3;
 
   self.spreadDefault = self.spreadDefault * ESR_SPREAD_DN;
-  if( self.spreadDefault < self.spreadCache ){
+  if( self.spreadDefault_x < self.spreadCache_x ){
     self.spreadDefault = self.spreadCache;
   }
   

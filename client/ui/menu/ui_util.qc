@@ -152,6 +152,8 @@ string() ui_calculate_game_time_string={
   return val;
 };
 
+
+
 string() ui_label_mission_status={
   local string val;
   switch( SV_MISSIONSTATUS ){

@@ -33,11 +33,8 @@ void() ctrl_unit_cleanup_player={
   ctrl_unit_remove_piece(self.torsoRight);
   ctrl_unit_remove_piece(self.armLeft);
   ctrl_unit_remove_piece(self.armRight);
-  if(self.legs != world && self.legs.owner == self){
-    self.legs.think = leg_die1;
-    self.legs.nextthink = time + 0.1;
-    ctrl_unit_remove_piece(self.legs);
-  }
+  ctrl_unit_remove_piece(self.legs);
+  
   ctrl_weapon_remove_all();
   remove(self.hud_ent);
 };

@@ -25,7 +25,7 @@ void() player_unmakeObserver={
     self.flags = self.flags - (self.flags & FL_FLY);
   }
   self.movetype = MOVETYPE_WALK;
-  self.scale = 1;
+  //self.scale = 1; //DEBUG
 };
 
 void() player_makeVec={
@@ -171,13 +171,11 @@ void() player_makeMech={
 };
 
 void() player_unmakeMech={
-  self.clientData.effects = self.clientData.effects - ( self.clientData.effects & EF_NODEPTHTEST);
-  self.weaponmodel = "";
+  //self.clientData.effects = self.clientData.effects - ( self.clientData.effects & EF_NODEPTHTEST);
   self.viewzoom = 1;
   self.nextVecChoice = 0;
   self.vec_size = 0;
   self.data_idx = 0;
-  self.data_type = DATA_POBS;
   self.currentWeaponGroup = 0;
   self.energy = 0;
   self.energyMax = 0;
@@ -261,8 +259,6 @@ void() player_unmakeMech={
   self.stat_target_orgy = 0;
   self.stat_target_orgz = 0;
   
-  self.weaponmodel = "";
-  self.weaponframe = 0;
   self.hud_ent.modelindex = 0;
   self.hud_ent.effects = EF_NODRAW;
   self.hud_ent.think = SUB_Remove;

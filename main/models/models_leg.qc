@@ -100,18 +100,12 @@ void() leg_back8=[$l_walk8, leg_back7]{
   te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
 };
 
-
-void() leg_die1 = [$l_die1, leg_die2]{
+void() leg_die1={
+  self.frame = 5;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-};
-void() leg_die2 = [$l_die2, leg_die3]{};
-void() leg_die3 = [$l_die3, leg_die4]{};
-void() leg_die4 = [$l_die4, leg_die4]{
-  
-  self.deadflag = DEAD_DEAD;
   self.think = SUB_Remove;
-  self.nextthink = time + 100;
+  self.nextthink = time + 3600;
 };
 
 /*
