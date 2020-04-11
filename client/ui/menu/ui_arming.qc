@@ -24,7 +24,8 @@ void() menu_armingListener_onDrag={
 };
 
 void() menu_armingListener_onHover={
-  //toolTips
+  local float found;
+  //ToolTip - HARDPOINT Graph
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_GRAPH, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '132 56 0';
@@ -34,7 +35,7 @@ void() menu_armingListener_onHover={
     toolTip.alpha = 1;
     return;
   }
-  
+  //ToolTip - Weapon Groups
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_WEAPON_GROUPS, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '200 48 0';
@@ -44,7 +45,7 @@ void() menu_armingListener_onHover={
     toolTip.alpha = 1;
     return;
   }
-  
+  //ToolTip - Energy Group Cost
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_ENERGY_GROUPS, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '156 48 0';
@@ -54,7 +55,7 @@ void() menu_armingListener_onHover={
     toolTip.alpha = 1;
     return;
   }
-  
+  //ToolTip - Weapon In List
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_LIST_WEAPON, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '200 32 0';
@@ -64,7 +65,7 @@ void() menu_armingListener_onHover={
     toolTip.alpha = 1;
     return;
   }
-  
+  //ToolTip - Weapon In HARDPOINT
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_WEAPON, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '200 40 0';
@@ -75,6 +76,32 @@ void() menu_armingListener_onHover={
     return;
   }
   
+  //Weapon rollover
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL, FALSE)){
+    UI_ARMING_weapon_rollover = TRUE;
+    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_BAL, 0);
+    UI_ARMING_weapon_rolloverID = WEPLIST_BAL_ARR[UI_ARMING_weapon_rolloverID];
+    return;
+  }
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_ENE, WEPNLIST_SIZE_ENE, FALSE)){
+    UI_ARMING_weapon_rollover = TRUE;
+    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_ENE, cursorpos, WEPNLIST_SIZE_ENE, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_ENE, 0);
+    UI_ARMING_weapon_rolloverID = WEPLIST_ENE_ARR[UI_ARMING_weapon_rolloverID];
+    return;
+  }
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_EXP, WEPNLIST_SIZE_EXP, FALSE)){
+    UI_ARMING_weapon_rollover = TRUE;
+    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_EXP, 0);
+    UI_ARMING_weapon_rolloverID = WEPLIST_EXP_ARR[UI_ARMING_weapon_rolloverID];
+    return;
+  }
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC, FALSE)){
+    UI_ARMING_weapon_rollover = TRUE;
+    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_MSC, 0);
+    UI_ARMING_weapon_rolloverID = WEPLIST_MSC_ARR[UI_ARMING_weapon_rolloverID];
+    return;
+  }
+  UI_ARMING_weapon_rollover = FALSE;
   toolTip.data_idx = FALSE;
 };
 
@@ -497,9 +524,12 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
           listItemColor = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, listItemOffset + gui_percentToPixelRawVec('0 -1.44'), UI_BOX_SELECT, gui_percentToPixelRawVec('140.8 12'), CLR_DEF_ARM_OK, 1, 0);
         }
-        //if(!(CLIENT_MENU_sel_hrpnt_types & weaponType) || (UI_ARMING_DATA_item_list.equipSize > CLIENT_MENU_sel_hrpnt_size)){
-        //  listItemColor = CLR_DEF_TXT_CANTSELECT;
-        //}
+        else{
+          if( UI_ARMING_weapon_rollover && UI_ARMING_weapon_rolloverID == itemId){
+            gui_renderTintImage(TRUE, listItemOffset + gui_percentToPixelRawVec('0 -1.44'), UI_BOX_SELECT, gui_percentToPixelRawVec('140.8 12'), CLR_DEF_IIF_FRIEND_BLD * 1.15, 1, 0);
+          }
+        }
+      
         listItemLabelLen = stringwidth( UI_ARMING_DATA_item_list.w_name, 0, '12 10');
         listItemLabelLen = listItemLabelLen / 2;
         listItemLabelOrg = listItemOffset;

@@ -366,13 +366,13 @@ void(vector ofs) menu_hangar_MechInfo={
     gui_renderMeter((MECH_DATA_ENMAX/DISP_MAX_ENE)*100, nofs + gui_percentToPixelRawVec('85 65'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ENE_BCK, CLR_DEF_ENE_FRT, 1, 0, AXIS_H, 0);
     drawstring(nofs + gui_percentToPixelRawVec('162 64'), ftos(MECH_DATA_ENMAX), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     gui_renderMeter((MECH_DATA_ENRATE/DISP_MAX_ENE_RATE)*100, nofs + gui_percentToPixelRawVec('85 75'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ENE_BCK, CLR_DEF_ENE_FRT, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 74'), ftos(MECH_DATA_ENRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('162 74'), sprintf("%00.2f", MECH_DATA_ENRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Shield
     gui_renderMeter((MECH_DATA_SHMAX/DISP_MAX_SHIELD)*100, nofs + gui_percentToPixelRawVec('85 87'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
     drawstring(nofs + gui_percentToPixelRawVec('162 86'), ftos(MECH_DATA_SHMAX), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     gui_renderMeter((MECH_DATA_SHRATE/DISP_MAX_SHIELD_RATE)*100, nofs + gui_percentToPixelRawVec('85 97'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 96'), ftos(MECH_DATA_SHRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('162 96'), sprintf("%00.2f", MECH_DATA_SHRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Armor rates
     gui_renderMeter((MECH_DATA_HPCT/DISP_MAX_ARM_CT)*100, nofs + gui_percentToPixelRawVec('85 109'),gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);

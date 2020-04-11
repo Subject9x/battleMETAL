@@ -27,6 +27,9 @@ float WEPLIST_MSC_ARR[8];
 
 float WEPBITS[9];
 
+float UI_ARMING_weapon_rollover;
+float UI_ARMING_weapon_rolloverID;
+
 float UI_TOTAL_WEAPONS = 24; //weapon id's
 
 //Tooltips
