@@ -49,6 +49,7 @@ void() mh_world_ini={
   serverflags = 255;  //DEBUG
 
   STARTTIME = time;
+  ENDTIME = time + (cvar("timelimit") * 60);
   local string serverInfo;
   serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
   serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
@@ -246,6 +247,30 @@ void() WeatherDominator_think={
   
   WeatherDominator.think = WeatherDominator_think;
   WeatherDominator.nextthink = time + 0.05;
+};
+
+/*
+  CHECK SERVER GAME RULES
+    ports -> CheckRules()
+*/
+void() sv_checkRules={
+  
+  //Game FragLimit hit
+  if( self.frags >= cvar("fraglimit") ){
+    cons_logAFloat("RULE: Frag Limit", 1);  //DEBUG
+    
+  }
+  
+  //Game TimeLimit hit
+  if( time >= ENDTIME ){
+    cons_logAFloat("RULE: Time Limit", 1);  //DEBUG
+  }
+  
+  //Objective hit
+  
+  //Limited Lives, no one left
+  
+
 };
 
 
