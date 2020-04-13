@@ -24,7 +24,7 @@ void() data_ini_particle_cannon_={
   self.reloadMax = 7.5; //9
   self.energyRate = 300;  //250
 
-  self.w_range = 2000;
+  self.w_range = 3000;  //2000
   self.damageValue = 250;
   self.damageType = DMG_ENE;
  

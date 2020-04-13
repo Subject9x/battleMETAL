@@ -42,8 +42,8 @@ void() projectile_mlg_expl={
 
 void() data_projectile_ini_missile_laserguide_={
   self.classname = "missile";
-  self.data_velocity = 800;
-  self.data_lifetime = 2;
+  self.data_velocity = 1000; //800
+  self.data_lifetime = 2.2; //1.8
   
   #ifdef CSQC
     //cosmetics

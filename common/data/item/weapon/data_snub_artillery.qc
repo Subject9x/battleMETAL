@@ -22,7 +22,7 @@ void() data_ini_snub_artillery_={
   self.reloadMax = 10;
   self.energyRate = 0;
   
-  self.w_range = 1000;
+  self.w_range = 3500;  //1000
   self.damageValue = 300;
   self.damageType = (DMG_BAL | EFF_ARC);
 

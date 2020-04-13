@@ -32,7 +32,7 @@ void() data_ini_matok_={
 //=====================================
  
 //RADAR================================
-  self.radar_range = 1400;
+  self.radar_range = 1600;  //1400
   self.w_firetime = 2;  //lock-on time in seconds
   self.spreadDefault = ACCURACY_MARKSMAN;
 //=====================================

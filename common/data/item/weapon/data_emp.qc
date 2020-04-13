@@ -23,7 +23,7 @@ void() data_ini_emp_={
   self.reloadMax = 6;
   self.energyRate = 250;
   
-  self.w_range = 1700;
+  self.w_range = 2500;  //1700
   self.damageValue = 400;
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   

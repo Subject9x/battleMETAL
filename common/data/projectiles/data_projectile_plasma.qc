@@ -44,8 +44,8 @@ void() projectile_plasma_expl={
 
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
-  self.data_velocity = 1500;
-  self.data_lifetime = 0.75;
+  self.data_velocity = 1600;  //vel = Range / lifetime
+  self.data_lifetime = 1.12;  //0.75
   
   #ifdef CSQC
     //cosmetics

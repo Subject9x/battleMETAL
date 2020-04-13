@@ -32,8 +32,7 @@ void() data_ini_monitor_={
 //=====================================
  
 //RADAR================================
-  //self.radar_range = 750;
-  self.radar_range = 1200;
+  self.radar_range = 1200;  //1200
   self.w_firetime = 3;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_LOWTECH;
 //=====================================

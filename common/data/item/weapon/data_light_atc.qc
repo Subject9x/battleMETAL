@@ -22,7 +22,7 @@ void() data_ini_light_atc_={
   self.reloadMax = 1.15;
   self.energyRate = 0;
   
-  self.w_range = 1800;
+  self.w_range = 2800;  //1800
   self.damageValue = 6.67;
   self.damageType = DMG_BAL;
 

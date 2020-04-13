@@ -43,7 +43,7 @@ void() projectile_swarm_expl={
 void() data_projectile_ini_missile_swarm_={
   self.classname = "missile";
   self.data_velocity = 800;
-  self.data_lifetime = 3;
+  self.data_lifetime = 2; //1.875
   
   #ifdef CSQC
     //cosmetics

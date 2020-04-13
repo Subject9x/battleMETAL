@@ -32,7 +32,7 @@ void() data_ini_balaket_={
 //=====================================
  
 //RADAR================================
-  self.radar_range = 1700;
+  self.radar_range = 1400;  //1700
   self.w_firetime = 4;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_SKIRMISH;
 //=====================================

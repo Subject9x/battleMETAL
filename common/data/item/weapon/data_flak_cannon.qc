@@ -25,7 +25,7 @@ void() data_ini_flak_cannon_={
   self.reloadMax = 0.6;
   self.energyRate = 0;
   
-  self.w_range = 2000;
+  self.w_range = 1800;  //2000
   self.damageValue = 2.33;
   self.damageType = DMG_BAL;
   

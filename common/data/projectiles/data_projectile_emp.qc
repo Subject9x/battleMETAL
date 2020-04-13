@@ -33,8 +33,8 @@ void() projectile_emp_expl={
 
 void() data_projectile_ini_emp_={
   self.classname = "missile";
-  self.data_velocity = 1500;
-  self.data_lifetime = 1.43;
+  self.data_velocity = 2700;  //1500
+  self.data_lifetime = 0.925;  //1.43
   
   #ifdef CSQC
     //cosmetics
@@ -118,7 +118,7 @@ void()data_prj_emp_explode={
     if(ln > DAT_PRJ_EMP_EXPRAD){
       continue;
     }
-    if( other.shield > 0 ){
+    if( lst.shield > 0 ){
       t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue * 0.15, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
     }

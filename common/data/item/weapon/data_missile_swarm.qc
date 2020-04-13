@@ -25,7 +25,7 @@ void() data_ini_missile_swarm_={
   self.reloadMax = 10;
   self.energyRate = 0;
   
-  self.w_range = 1000;
+  self.w_range = 1500;  //1000
   self.damageValue = 20;
   self.damageType = DMG_EXP | EFF_ARC | EFF_PTR;
  
