@@ -118,16 +118,12 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
   
-  self.angles_x = ReadAngle();
-  self.angles_y = ReadAngle();
-  self.angles_z = ReadAngle();
+  self.angles_x = anglemod(ReadAngle());
+  self.angles_y = anglemod(ReadAngle());
+  self.angles_z = anglemod(ReadAngle());
   
-  self.flags = ReadByte();
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-  self.shield = ReadByte();
-  
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
+  //self.flags = ReadLong(); // DEBUG - disabled for now.
+  self.shield = ReadShort();
   
   //EVENT - MOVE
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -135,9 +131,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng_x = ReadAngle();
-    turretAng_y = ReadAngle();
-    turretAng_z = ReadAngle();
+    turretAng_x = anglemod(ReadAngle());
+    turretAng_y = anglemod(ReadAngle());
+    turretAng_z = anglemod(ReadAngle());
     sendevent_turret_update( turretAng );
   }
 
@@ -161,7 +157,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
 
   if( (changeFlags & SENDFLAG_NEWENT) ){   
-    self.entId = ReadByte(); 
+    self.entId = ReadLong(); 
     self.faction = ReadByte();
     self.data_idx = ReadByte();
    
@@ -176,10 +172,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.next_wepn9 = ReadByte();
     
     if( isNew ){    
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.skin =  self.faction - 1;
       self.data_type = DATA_MECH;
       data_sync_new_mech_ai( self.data_idx );
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.drawmask = MASK_ENGINE;
       
       sendent_setup_weapons();
@@ -195,6 +191,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       sendent_ini_interpolate(); 
     }
   }
+  //Shield Explode event
+  sendevent_shield_explode( prevShield );
 };
 
 float() predraw_mech_ai={

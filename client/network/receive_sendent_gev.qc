@@ -24,7 +24,9 @@ void() sendevent_gev_move={
     }
   }
   if( self.trail_effectnum > 0 ){
-    te_unit_dust( self.origin, rint(random() * 3) );
+    if( self.deadflag == DEAD_NO ){
+      te_unit_dust( self.origin, rint(random() * 3) );
+    }
   }
 };
 
@@ -74,23 +76,20 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
  
-  self.angles_x = anglemod(ReadCoord());
-  self.angles_y = anglemod(ReadCoord());
-  self.angles_z = anglemod(ReadCoord());
+  self.angles_x = anglemod(ReadAngle());
+  self.angles_y = anglemod(ReadAngle());
+  self.angles_z = anglemod(ReadAngle());
   
-  self.shield = ReadByte();
-  
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
+  self.shield = ReadShort();
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     sendevent_gev_move();
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng_x = ReadAngle();
-    turretAng_y = ReadAngle();
-    turretAng_z = ReadAngle();
+    turretAng_x = anglemod(ReadAngle());
+    turretAng_y = anglemod(ReadAngle());
+    turretAng_z = anglemod(ReadAngle());
     sendevent_turret_update( turretAng );
   }
   
@@ -116,7 +115,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadByte();
+    self.entId = ReadLong();
     self.faction = ReadByte();
     self.data_idx = ReadByte();
    
@@ -150,4 +149,6 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       self.predraw = predraw_tank;
     }
   }
+  //Shield Explode event
+  sendevent_shield_explode( prevShield );
 };

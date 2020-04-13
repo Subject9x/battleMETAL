@@ -47,7 +47,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   //EVENT - MOVE - for turrets, this means a general update tic.
   prevShield = self.shield;
   if( (changeFlags & SENDFLAG_MOVE) ){
-    self.shield = ReadByte();
+    self.shield = ReadShort();
   }
   
   //EVENT - faction changed
@@ -95,7 +95,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.angles_y = anglemod(ReadCoord());
     self.angles_z = anglemod(ReadCoord());
     
-    self.entId = ReadByte();
+    self.entId = ReadLong();
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
     

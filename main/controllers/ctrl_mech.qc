@@ -450,8 +450,8 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
 
-  WriteByte( MSG_ENTITY, self.flags );
-  WriteByte( MSG_ENTITY, self.shield );
+  //  WriteLong( MSG_ENTITY, self.flags ); // DEBUG - disabled for now.
+  WriteShort( MSG_ENTITY, self.shield );
 
   if( (changeFlags & SENDFLAG_MOVE) ){
   
@@ -476,7 +476,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   }
 
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
 

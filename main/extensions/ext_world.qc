@@ -257,13 +257,13 @@ void() sv_checkRules={
   
   //Game FragLimit hit
   if( self.frags >= cvar("fraglimit") ){
-    cons_logAFloat("RULE: Frag Limit", 1);  //DEBUG
+
     
   }
   
   //Game TimeLimit hit
   if( time >= ENDTIME ){
-    cons_logAFloat("RULE: Time Limit", 1);  //DEBUG
+
   }
   
   //Objective hit

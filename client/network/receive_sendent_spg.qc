@@ -65,14 +65,11 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
   
-  self.angles_x = ReadAngle();
-  self.angles_y = ReadAngle();
-  self.angles_z = ReadAngle();
+  self.angles_x = anglemod(ReadAngle());
+  self.angles_y = anglemod(ReadAngle());
+  self.angles_z = anglemod(ReadAngle());
   
-  self.shield = ReadByte();
-  
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
+  self.shield = ReadShort();
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     sendevent_spg_move();
@@ -100,7 +97,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadByte();
+    self.entId = ReadLong();
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     
@@ -131,6 +128,9 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       sendent_ini_interpolate();
     }
   }
+  
+  //Shield Explode event
+  sendevent_shield_explode( prevShield );
 };
 
 /*

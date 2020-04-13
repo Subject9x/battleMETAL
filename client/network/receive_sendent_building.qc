@@ -38,8 +38,8 @@ void( float isNew, float changeFlags) sendent_handle_building={
   local float prevShield;
   
   prevShield = self.shield;
-  self.energy = ReadByte();
-  self.shield = ReadByte();
+  self.energy = ReadShort();
+  self.shield = ReadShort();
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){     
     self.faction = ReadByte();
@@ -90,7 +90,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.angles_y = anglemod(ReadCoord());
     self.angles_z = anglemod(ReadCoord());
 
-    self.entId = ReadByte();
+    self.entId = ReadLong();
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
 

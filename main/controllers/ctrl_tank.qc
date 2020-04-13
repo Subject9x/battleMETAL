@@ -57,8 +57,7 @@ void() ctrl_updateTank={
   if( self.deadflag <= DEAD_NO ){
     hp = self.health / self.max_health;
     if( hp <= 0.25 ){
-      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
       if( self.data_type == DATA_BLD ){
         if( !(self.w_group & WEAPON3) ){
@@ -67,8 +66,7 @@ void() ctrl_updateTank={
       }
     }
     else if( hp <= 0.5 ){
-      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
       if( self.data_type == DATA_BLD ){
         if( !(self.w_group & WEAPON2) ){
@@ -77,8 +75,7 @@ void() ctrl_updateTank={
       }
     }
     else if( hp <= 0.75 ){
-      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       if( self.data_type == DATA_BLD ){
         if( !(self.w_group & WEAPON1) ){
@@ -102,7 +99,7 @@ float( entity dest, float changedflags ) ctrl_send_tank={
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
 
-  WriteByte( MSG_ENTITY, self.shield );
+  WriteShort( MSG_ENTITY, self.shield );
     
   if( changedflags & SENDFLAG_TURRET ){
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
@@ -116,7 +113,7 @@ float( entity dest, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   if( changedflags & SENDFLAG_NEWENT ){
-    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     
@@ -145,7 +142,7 @@ float( entity dest, float changedflags ) ctrl_send_spg={
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
   
-  WriteByte( MSG_ENTITY, self.shield );
+  WriteShort( MSG_ENTITY, self.shield );
 
   if( changedflags & SENDFLAG_DEAD ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -154,7 +151,7 @@ float( entity dest, float changedflags ) ctrl_send_spg={
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     
@@ -179,11 +176,11 @@ float( entity dest, float changedflags ) ctrl_send_gev={
   WriteCoord( MSG_ENTITY, self.origin_y );
   WriteCoord( MSG_ENTITY, self.origin_z );
   
-  WriteCoord( MSG_ENTITY, self.angles_x );
-  WriteCoord( MSG_ENTITY, self.angles_y );
-  WriteCoord( MSG_ENTITY, self.angles_z );
+  WriteAngle( MSG_ENTITY, self.angles_x );
+  WriteAngle( MSG_ENTITY, self.angles_y );
+  WriteAngle( MSG_ENTITY, self.angles_z );
   
-  WriteByte( MSG_ENTITY, self.shield );
+  WriteShort( MSG_ENTITY, self.shield );
   
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
@@ -197,7 +194,7 @@ float( entity dest, float changedflags ) ctrl_send_gev={
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
 

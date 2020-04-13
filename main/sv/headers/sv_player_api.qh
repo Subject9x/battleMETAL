@@ -20,5 +20,6 @@ void() PlayerPostThink;
 //battleMETAL extensions
 void() PlayerPreThink_powerup;  //used when player is powering up for the first time.
 void() PlayerPostThink_powerup;
-void() PlayerDieNetwork;
 void() PlayerDieEnd;  //replaces think functions originally set by player animations.
+void() PlayerDieNetwork;
+void() PlayerDieNetworkEnd;

@@ -230,14 +230,14 @@ void( vector ofs ) ui_navbutton_launch_draw={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  gui_renderTintImage2((LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_LAUNCH_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_LAUNCH_SIZE), CLR_DEF_WEP_INRANGE, '0.25 0.25 0.25', 1, 0);
+  gui_renderTintImage2((LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_LAUNCH_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_LAUNCH_SIZE), CLR_DEF_WEP_INRANGE * 0.85, '0.25 0.25 0.25', 1, 0);
 
   strWidth = stringwidth(">>[LAUNCH]>>", 0 , UI_NAVBAR_font_select);
   textPos = UI_NAVBAR_LAUNCH_ORG;
   textPos_x = (textPos_x + gui_percentXRaw(64)) - (strWidth / 2);
   textPos_y = (textPos_y + gui_percentYRaw(4.32));
   
-  gui_renderHighlightString(">>[LAUNCH]>>", textPos, '0.85 0.85 0.85', CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, UI_NAVBAR_font_select, 1, 0) ;
+  gui_renderHighlightString(">>[LAUNCH]>>", textPos, CLR_DEF_GREEN * 2, CLR_DEF_TXT_NONSELECT, (LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_font_select, 1, 0) ;
   
   drawfont = drawfont_prev;
 };

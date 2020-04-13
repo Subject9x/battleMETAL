@@ -77,16 +77,16 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   self.angles_y = ReadAngle();
   self.angles_z = ReadAngle();
   
-  self.shield = ReadByte();
+  self.shield = ReadShort();
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
 
   //EVENT - TURRET ROTATES
   if( changeFlags & SENDFLAG_TURRET ){
-    turretAng_x = ReadAngle();
-    turretAng_y = ReadAngle();
-    turretAng_z = ReadAngle();
+    turretAng_x = anglemod(ReadAngle());
+    turretAng_y = anglemod(ReadAngle());
+    turretAng_z = anglemod(ReadAngle());
     sendevent_turret_update( turretAng );
   }
   
@@ -118,7 +118,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   }
   //EVENT - NEW ENTITY
   if( changeFlags & SENDFLAG_NEWENT ){
-    self.entId = ReadByte();
+    self.entId = ReadLong();
     self.faction = ReadByte();
     self.data_idx = ReadByte();
 
@@ -175,6 +175,7 @@ float() predraw_tank={
   else{
     self.origin2 = self.origin1 = self.origin;
   }
+  
   if( self.deadflag == DEAD_NO ){
     makevectors(self.angles);
     if( self.torsoCenter != world ){

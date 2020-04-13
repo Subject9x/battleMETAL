@@ -69,7 +69,7 @@ float( entity dest, float changedflags ) ctrl_send_turret={
   //=================
   
   if( (changedflags & SENDFLAG_MOVE) ){
-    WriteByte( MSG_ENTITY, self.shield );
+    WriteShort( MSG_ENTITY, self.shield );
   }
   if( (changedflags & SENDFLAG_VELOCITY) ){
     WriteByte( MSG_ENTITY, self.faction );
@@ -95,7 +95,7 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     WriteCoord( MSG_ENTITY, self.angles_y );
     WriteCoord( MSG_ENTITY, self.angles_z );
 
-    WriteByte( MSG_ENTITY, num_for_edict(self));
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.spawnflags );
     
@@ -118,8 +118,8 @@ float( entity dest, float changedflags ) ctrl_send_building={
   WriteByte( MSG_ENTITY, changedflags );
   //=================
   
-  WriteByte( MSG_ENTITY, self.energy );
-  WriteByte( MSG_ENTITY, self.shield );
+  WriteShort( MSG_ENTITY, self.energy );
+  WriteShort( MSG_ENTITY, self.shield );
   
   if( (changedflags & SENDFLAG_VELOCITY) ){
     WriteByte( MSG_ENTITY, self.faction );
@@ -151,7 +151,7 @@ float( entity dest, float changedflags ) ctrl_send_building={
     WriteCoord( MSG_ENTITY, self.angles_y );
     WriteCoord( MSG_ENTITY, self.angles_z );
     
-    WriteByte( MSG_ENTITY, num_for_edict(self) );
+    WriteLong( MSG_ENTITY, num_for_edict(self) );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.spawnflags );
   }

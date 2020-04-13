@@ -128,9 +128,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.origin = te_read_vector();
     
     self.flags = ReadLong();
-    self.radar_range = ReadByte();
+    self.radar_range = ReadLong();
     self.stat_rdr_mode = ReadByte();
-    self.shield = ReadByte();
+    self.shield = ReadShort();
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());

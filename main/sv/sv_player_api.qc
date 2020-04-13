@@ -40,6 +40,7 @@ void() PlayerPreThink = {
 	makevectors (self.v_angle);		// is this still used
 
 	//CheckRules ();  TODO - apparently vanilla QC checks multiplayer rules here - Roohr
+  sv_checkRules();
 	//WaterMove ();
 
 	//if (self.waterlevel == 2)

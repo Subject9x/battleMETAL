@@ -271,29 +271,50 @@ void() ClientKill = {
   bprint (self.netname);
   bprint (" cowardly self-destructs!\n");
 
-  client_push_player_info();
+  //only deduct frags of player is going from !observer to another !observer
+  self.frags = self.frags - 2;
+  if( self.frags < 0 ){
+    self.frags = 0;
+  }
+  
   ctrl_unit_clean_wgroups();
   ctrl_mech_die_player();
-  ctrl_unit_clean_wgroups();
   ctrl_unit_cleanup_player();
   
-  self.solid = SOLID_CORPSE;
+  self.solid = SOLID_NOT;
+	self.movetype = MOVETYPE_TOSS;
+	self.deadflag = DEAD_DEAD;
+	
   self.alpha = 0.01;
-  setsize(self, '-3 -3 -3', '3 3 3');
-  self.movetype = MOVETYPE_TOSS;
-  self.deadflag = DEAD_DEAD;
-  self.nextthink = -1;
+  self.effects = 0;
+  setsize(self, '-8 -8 -8', '8 8 8');
+	setorigin(self, self.origin);
   
-  //only deduct frags of player is going from !observer to another !observer
-  if(self.data_type != DATA_POBS){
-    self.frags = self.frags - 2;
-    if( self.frags < 0 ){
-      self.frags = 0;
-    }
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_DEAD | SENDFLAG_TURRET);
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+   self.think = PlayerDieEnd; 
   }
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
-	sv_client_respawn();
+  else{
+    self.think = PlayerDieNetworkEnd;
+  }
+  self.nextthink = time + 1;
+ /*
+  client_push_player_info();
+
+	self.flags = self.flags - (self.flags & FL_ONGROUND);
+  setsize(self, '-8 -8 -8', '8 8 8');
+	setorigin(self, self.origin);
+  
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+   PlayerDieEnd();
+    
+  }
+  else{
+    PlayerDieNetworkEnd();
+  }
+  
+  self.nextthink = time + GAME_TIME_TO_DEBRIEF;*/
+	//sv_client_respawn();
 };
 
 /*
@@ -616,9 +637,9 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.view_ofs_z );
     
     WriteLong( MSG_ENTITY, player.flags );
-    WriteByte( MSG_ENTITY, self.radar_range );
+    WriteLong( MSG_ENTITY, self.radar_range );
     WriteByte( MSG_ENTITY, self.stat_rdr_mode );
-    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteShort( MSG_ENTITY, self.stat_client_shield );
     
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
