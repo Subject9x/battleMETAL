@@ -169,6 +169,7 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   return handle_input(evtype, scanx, chary, devid);
 };
 
+
 // the most important function in CSQC...
 void(float w, float h, float menushown) CSQC_UpdateView =
 {
@@ -232,6 +233,14 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   VIEW_SCALE = 0.35;
   	// add any polygons we want here
 
+  //DATA - Update local Client data vars from Server
+  client_get_info();
+  
+  receive_ent_bindData();
+  
+  client_state_events();
+  //=================================================
+
   if( !MENU_ACTIVE ){
     //dynamic lights?
     local entity thingLight;
@@ -246,7 +255,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       self = notLight;
     }
   }
-  
 
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
@@ -257,57 +265,21 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   if( !MENU_ACTIVE ){
     renderscene();
   }
-  //get player data from server
-  client_get_info();
-  
-  //alter fog settings if needed
-  cl_particles_fogFrame();
-  
-  //mission file load check
-  if(MSN_FILEFOUND){
-    if(MSN_LOADED == FALSE){
-      msn_parsefile();
-      MSN_LOADED = TRUE;
-    }
-  }
- 
+
   /*
     special rant: the fact that the client itself, isn't a faffing global entity in the CLIENT
     module of all things is the height of idiocy.
   */
-  //PLAYER_ENTITYNUM = getstati(STAT_PLR_ENT_ID); //this is ridiculous
-
-  receive_ent_bindData();
+  
+  //alter fog settings if needed
+  cl_particles_fogFrame();
+  
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
 
 	// draw custom hud
-  //draw hud
-    
-  //Player has just connected to server
-  if(CLIENT_player_state == PLAYER_CONNECT ){
-    localcmd(strcat("stopsound", "\n"));
-    cl_set_hud_vars_obs();
-  }
-
-  if(CLIENT_data_type == DATA_MECH){
-
-    if( dmg_save > 0 ){
-      cons_logAFloat("dmg_save", dmg_save); //DEBUG
-    }
-    if( dmg_take > 0 ){
-      cons_logAFloat("dmg_take", dmg_take); //DEBUG
-    }
-    
-    if( MENU_ACTIVE ){
-      if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
-        menu_exit();
-        if( MECH_DATA_ID != CLIENT_data_idx ){
-          ui_data_load_mech(CLIENT_data_idx);
-        }
-      }
-    }
+  if(CLIENT_data_type == DATA_MECH){    
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
@@ -368,6 +340,9 @@ float() CSQC_Parse_TempEntity =
     case TE_UI_BOX:
       client_get_hud_highlight();
       return TRUE;
+    case TE_SERVERINFO:
+      client_get_serverinfo();
+      return TRUE;
     case TE_MISSION_WIN:
       hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1) ;
       return TRUE;
@@ -388,10 +363,6 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_MSG_ENV_WARN:
       client_event_environment();
-      return TRUE;
-    //TODO -> MapKey Data to SendEntity
-    case TE_MAPKEY_DATA:
-      client_event_get_mapkeyinfo( ReadByte(), ReadLong(), ReadLong(), ReadByte() ) ;
       return TRUE;
     case TE_MSG_INFO:
       client_event_info_box( ReadString(), CLR_DEF_TXT_GRAY_SMOOTH, ReadLong(), '14 14 0');
@@ -418,14 +389,6 @@ float() CSQC_Parse_TempEntity =
     case TE_VFX_RAIL:
       trailparticles( world, ReadShort(), te_read_vector(), te_read_vector() );
       return TRUE;
-    case TE_VFX_WRECK:
-      //                 float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl
-      particle_vehicle_wreck( ReadByte(), ReadByte(), ReadByte(), ReadByte(), te_read_vector(), te_read_angle() ) ;
-      return TRUE;
-    case TE_VFX_MECH:
-      //                 float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl
-      particle_mech_chunk( ReadByte(), ReadByte(), ReadByte(), te_read_vector(), te_read_angle() ) ;
-      return TRUE;
     case TE_VFX_EXPLODE:
       particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
       return TRUE;
@@ -440,7 +403,7 @@ float() CSQC_Parse_TempEntity =
   if string is interesting, deal with it, otherwise pass it to localcmd() and let engine parse it (note: will not be executed immediately).
 
   (battleMETAL)
-  All low-speed Client/Server commands go here, mostly stuff dealing with menu commands reaching the 
+  All low-delta Client/Server commands go here, mostly stuff dealing with menu commands reaching the 
   server.
 */
 void(string s) CSQC_Parse_StuffCmd =
@@ -455,37 +418,35 @@ void(string s) CSQC_Parse_StuffCmd =
     else if(argv(1) == "anm"){
       cl_get_animfile( argv(2) );
     }
-    else if(argv(1) == "lms"){
-      tokenizebyseparator(s, "[", "]");
-      cl_get_mechs_all( argv(1) );
-    }
-    else if(argv(1) == "lis"){
-      tokenizebyseparator(s, "[", "]");
-      cl_get_items_all( argv(1) );
-    }
-    else if(argv(1) == "mode"){
-      cvar_set("gamemode", argv(2));
-      cvar_set("saveslot", argv(3));
-      if(CLIENT_player_state == PLAYER_CONNECT ){
-        cl_set_savepath( cvar("gamemode") );
-      }
-    }
     else if(argv(1) == "unl"){
       cl_unlock_stuff(s);
-    }
-    else if(argv(1) == "trg"){
-      CLIENT_target_name = strzone(argv(2));
     }
   }
   else{
     if( argv(0) == "svinfo" ){
-      SV_STARTTIME = stof(argv(1));
+      //receives the SV_SERVERINFO string
+      SV_STARTTIME = stof(argv(1) );
+      SV_MISSIONSTATUS = stof(argv(2) );
+      cvar_set("gamemode", argv(3) );
+      SV_SERVERFLAGS = stof(argv(4) );
+      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){        
+        cvar_set("saveslot", argv(5) );
+        cons_logAFloat("saveslot", cvar("saveslot"));  //debug
+      }
+      else{     
+        cvar_set("saveslot", "0");
+      }
+      
+      
       SV_ENDTIME = getstatf(STAT_TIMELIMIT);
       if( SV_ENDTIME > 0 ){
         SV_ENDTIME = (SV_ENDTIME * 60) + SV_STARTTIME;
       }
-      SV_MISSIONSTATUS = stof(argv(2));
-      SV_SERVERFLAGS = stof(argv(3));
+      
+            if(CLIENT_player_state == PLAYER_CONNECT ){
+        cl_set_savepath( cvar("gamemode") );
+      }
+      
     }
     else if( argv(0) == "fog" ){
       cl_get_new_fog( s );

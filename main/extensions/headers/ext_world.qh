@@ -16,6 +16,8 @@ float TECHLEVEL;
 
 string SERVER_INFO;
 
+void() world_ini_serverinfo;
+
 entity WeatherDominator;  //global weather controlling entity.
 vector WINDDIR; //these get set by worldspawn but are here because 
 void() WeatherDominator_think;

@@ -17,7 +17,7 @@ called before running player input frame
 */
 void() PlayerPreThink = {
 	if (self.deadflag == DEAD_DEAD){
-		PlayerDeathThink ();
+		//PlayerDeathThink ();
 		return;
 	}
 	if (self.deadflag >= DEAD_DYING){
@@ -325,18 +325,18 @@ self.th_die()
 ============
 */
 void() PlayerDie={
-  cons_logAFloat("SV()->PlayerDie()->enter", 1);  //DEBUG
 	if( self.deadflag ){
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}
+  self.playerState = PLAYER_DEAD;
+  ctrl_unit_clean_wgroups();
+  ctrl_mech_die_player();
   
-	if(self.data_type == DATA_MECH){
-    cons_logAFloat("SV()->PlayerDie()->self.data_type == DATA_MECH", 1);  //DEBUG
-    ctrl_unit_clean_wgroups();
-    ctrl_mech_die_player();
-    client_push_player_info();
-  }
+  client_push_player_info();
+  client_push_mapobjects();
+  client_send_server_info_update();
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
   
   self.effects = 0;
 	self.deadflag = DEAD_DYING;
@@ -354,37 +354,27 @@ void() PlayerDie={
 	self.angles_z = 0;
   self.angles_y = 0;
   self.avelocity = '0 0 0';
-  
-  //update objectives on player death.
-  client_push_mapobjects();
-  if( MISSION_STATUS ){        
+
     //only send unlocks if player won mission
-    client_sendMissionUnlocks();
-    te_mission_win();
-  }
-  else{
-    te_mission_lose();
-  }
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
-  
+    //client_sendMissionUnlocks();
+    //te_mission_win();
+
+    //te_mission_lose();
+
+
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
 
 void() PlayerDieEnd={
+  //client_sendEndMission(self, MISSION_STATUS );
+  
   cons_logAFloat("SV()->PlayerDieEnd()->enter", 1);  //DEBUG
   self.movetype = MOVETYPE_NONE;
-  self.playerState = PLAYER_INTERMSN;
-  client_sendEndMission(self, MISSION_STATUS );
-  client_push_player_info();
   
-  /*
-  local entity start;
-  start = find(world, classname, "info_player_start");
-  if( start ){
-    setorigin( self, start.origin);
-  }
-  */
+  self.playerState = PLAYER_DEBRIEF;
+  ctrl_unit_cleanup_player();
+  player_unmakeMech();
   
   self.think = PlayerDead;
   self.nextthink = time + 0.1;
@@ -405,12 +395,15 @@ void() PlayerDieNetwork={
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}
+  self.playerState = PLAYER_DEAD;
 	if(self.data_type == DATA_MECH){
     cons_logAFloat("SV()->PlayerDieNetwork()->self.data_type == DATA_MECH", 1);  //DEBUG
-    client_push_player_info();
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
   }
+  client_push_player_info();
+  client_push_mapobjects();
+  client_send_server_info_update();
   
   self.effects = 0;
 	self.deadflag = DEAD_DYING;
@@ -433,7 +426,7 @@ void() PlayerDieNetwork={
   
   self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
   
-  self.think = PlayerDieEnd;
+  self.think = PlayerDieNetworkEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
 
@@ -443,19 +436,22 @@ void() PlayerDieNetwork={
 */
 void() PlayerDieNetworkEnd={
   cons_logAFloat("SV()->PlayerDieNetworkEnd()->enter", 1);  //DEBUG
+  
   self.movetype = MOVETYPE_NONE;
-  self.playerState = PLAYER_IN_MENU;
+  self.playerState = PLAYER_REDEPLOY;
     
   ctrl_unit_cleanup_player();
+  player_unmakeMech();
+  player_makeObserver();
   
   self.think = PlayerDead;
   self.nextthink = time + 1;
 };
 
 
-void() PlayerDead={  
+void() PlayerDead={
+  self.playerState = PLAYER_SPAWN;
   cons_logAFloat("SV()->PlayerDead()->enter", 1);  //DEBUG
-  //player_unmakeMech();
 	self.nextthink = -1;
 	self.deadflag = DEAD_DEAD;
 };
@@ -478,7 +474,7 @@ void() PlayerDeathThink={
 // wait for any button down
 	if (!self.button2 && !self.button0 && !self.button3 && !self.button4 && !self.button5 && !self.button6 && !self.button7 && !self.button8)
 		return;
-*/
+
 	self.button0 = 0;
 	self.button1 = 0;
 	self.button2 = 0;
@@ -488,23 +484,8 @@ void() PlayerDeathThink={
 	self.button6 = 0;
 	self.button7 = 0;
   self.button8 = 0;
+  */
 	self.deadflag = DEAD_RESPAWNABLE;
-  
-  cons_logAFloat("SV()->PlayerDeathThink()->self.deadflag = DEAD_RESPAWNABLE", self.deadflag);  //DEBUG
-
-  switch( cvar("gamemode") ){
-    default:
-      break;
-    case GAMEMODE_DM:
-    
-      break;
-    case GAMEMODE_TEAMDM:
-    
-      break;
-    case GAMEMODE_COOP:
-    
-      break;
-  }
 };
 
 //UNUSED

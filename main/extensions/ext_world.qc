@@ -50,11 +50,8 @@ void() mh_world_ini={
 
   STARTTIME = time;
   ENDTIME = time + (cvar("timelimit") * 60);
-  local string serverInfo;
-  serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
-  serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
-  serverInfo = strcat(serverInfo, ftos(serverflags),"\n");
-  SERVER_INFO = strzone(serverInfo);
+
+  world_ini_serverinfo();
 
   //kept in numerical order for easy reference.
   addstat(STAT_PLAYER_DEADFLAG, AS_INT, deadflag);
@@ -66,7 +63,9 @@ void() mh_world_ini={
   addstat(STAT_CLIENT_SHIELD, AS_FLOAT, stat_client_shield);
   
   addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
+  addstat(STAT_PLAYER_STATE, AS_INT, playerState);
   addstat(STAT_PLAYER_WEAPONS_STATE, AS_INT, stat_player_weapons_state);
+  addstat(STAT_PLAYER_FACTION, AS_INT, faction);
   
   addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
   addstat(STAT_PLR_DATA_IDX, AS_INT, data_idx);
@@ -172,6 +171,19 @@ void() mh_world_ini={
   MAP_UNLOCK_EQUIP = world.unlockEquip;
 };
 
+void() world_ini_serverinfo={
+  local string serverInfo;
+  serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
+  serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
+  serverInfo = strcat(serverInfo, ftos(GAMETYPE)," ");
+  serverInfo = strcat(serverInfo, ftos(serverflags)," ");
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
+  }
+  SERVER_INFO = strzone(serverInfo);
+
+};
+
 /*
   finds the closest fog settings for the unit in question.
 */
@@ -255,6 +267,12 @@ void() WeatherDominator_think={
 */
 void() sv_checkRules={
   
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    
+  
+    return;
+  }
+  
   //Game FragLimit hit
   if( self.frags >= cvar("fraglimit") ){
 
@@ -267,6 +285,7 @@ void() sv_checkRules={
   }
   
   //Objective hit
+  
   
   //Limited Lives, no one left
   

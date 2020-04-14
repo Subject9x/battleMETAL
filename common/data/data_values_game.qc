@@ -141,14 +141,13 @@ float OBJECTIVE_FAIL = 4;
 //   PLAYER STATE ID's           
 //============================
 //used for client-state syncing between server and client
-// .armorvalue is used for this - getstati(STAT_ARMOR)
 float PLAYER_CONNECT        = 0;  // Client just connected to server.
 float PLAYER_SPAWN          = 1;  // Client has been initialized, and spawned in as observer.
-float PLAYER_IN_MENU        = 2;  // Client is in the CSQC menu system.
+float PLAYER_BRIEF          = 2;  // Client entered the main CSQC menu system.
 float PLAYER_DEAD           = 3;  // player has been killed in combat.
 float PLAYER_REDEPLOY       = 4;  // player use ClientKill().
 float PLAYER_RESPAWN        = 5;  // player is ready to respawn from being dead.
-float PLAYER_END_CAMP       = 6;  // player has finished a campaign mission.
+float PLAYER_DEBRIEF        = 6;  // player has finished a campaign mission.
 float PLAYER_INTERMSN       = 7; // Client has entered an intermission event.
 
 float PLAYER_ANIM_STOP      = 8;  // Client told to stop playing animatic.
@@ -279,6 +278,9 @@ float SENDTYPE_CHUNK = 9; //Vehicle / Turret / Mech debris
 float SENDTYPE_PROJ = 10;  //projectiles - missiles, etc
 float SENDTYPE_MAP = 11;
 //SendFlags-------------------
+//note: sendEnt is capped to 7 bitflags + NEWENT 
+//      and uses WriteByte, to add more flags, try switching
+//      to WriteShort for ChangeFlags
 float SENDFLAG_MOVE = 1;  //update .origin and .angles of main piece 
 float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.
 float SENDFLAG_VELOCITY = 4; //unit is stood up by server
@@ -377,10 +379,10 @@ float STAT_RAM = 34;
 float STAT_CLIENT_ENERGY = 35;
 float STAT_CLIENT_SHIELD = 36;
 float STAT_RAM_MAX = 37;
-//38;
+float STAT_PLAYER_STATE = 38;
 float STAT_PLAYER_WEAPONS_STATE = 39;
+float STAT_PLAYER_FACTION = 40;
 
-//40;
 //41;
 //42;
 //43;

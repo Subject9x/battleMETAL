@@ -8,6 +8,13 @@ Overview:
   + self scope for all is the ent being received
 */
 
+/*
+  Most of the Client's data is piped through the addstat() channels.
+  This function is called towards the top of client_main.CSQC_Update_View() to
+  ensure that the most recent data is being pulled before operating on it.
+  
+  get_info() takes the previous frame's data for comparison
+*/
 void() client_get_info={  
   //WARNING:
   //SVC_SETVIEW changes local_playerentum to Camera's Ent ID!
@@ -38,118 +45,20 @@ void() client_get_info={
   }
 };
 
-void() client_get_info_thin={
-  CLIENT_player_deadflag = getstati(STAT_PLAYER_DEADFLAG);
-  CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
-};
-
 /*
-  -DEPRECATED-
-  Handles a Radar Blip TE pushed from the server to a specific client
-  blips fade out over a given amount of time 
+  Reads off addstat() data into Client_* vars.
 */
-void() client_get_contact={
-  local entity blip;
-  local vector org;
-  local float radRange;
-  local float datType;
-  local float fac;
-
-  //org = te_read_vector();
-  //radRange = vlen(pmove_org - org);
-  //datType = ReadByte();
-  //fac = ReadByte();
-  
-  if( vlen(pmove_org - self.origin) > CLIENT_radar_range ){
-    return;
-  }
-  blip = spawn();
-  setorigin( blip, self.origin );
-  blip.radar_range =  vlen(pmove_org - self.origin);
-  blip.data_type = self.data_type;
-  blip.faction = self.faction;
-  
-  blip.data_idx = -2; //hack
-  //Radar 1 - settings
-  //blip.energy = time + 6;
-  //blip.hardpoint_cnt = 1; //alpha fade
-  //blip.radar_time = 0.001;
-  
-  //Radar 2 - settings
-  blip.energy = time + 1.5;
-  blip.hardpoint_cnt = 1; //alpha fade
-  blip.radar_time = 0.00025;
-  
-};
-
-void() client_get_hud_highlight={
-  local entity hfx;
-  local float t;
-  
-  hfx = spawn();
-  hfx.data_idx = -3;  //more hacks
-  hfx.origin = te_read_vector();
-  hfx.drawsize = te_read_vector();
-  hfx.drawcolor1 = te_read_vector();
-  t = ReadShort();
-  hfx.drawme = time + (t / 3);
-  
-};
-
 void() receive_ent_bindData={
   local string name;
   
   name = cvar_string("_cl_name");
 
   CLIENT_flags = getstati( STAT_ROCKETS );
-  CLIENT_player_state = getstati( STAT_ARMOR );
+  CLIENT_faction = getstati( STAT_PLAYER_FACTION );
+  CLIENT_player_state = getstati( STAT_PLAYER_STATE );
   CLIENT_player_deadflag = getstati(STAT_PLAYER_DEADFLAG);
   CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
   CLIENT_data_idx = getstati(STAT_PLR_DATA_IDX);
-  CLIENT_faction = getstati( STAT_CELLS );
-
-  //State Events==================================
-  if( CLIENT_player_state != CLIENT_player_state_prev ){
-    
-    //EVENT - CLIENT FIRST TIME CONNECT---
-    if( (CLIENT_player_state_prev == PLAYER_CONNECT) && (CLIENT_player_state == PLAYER_SPAWN) ){
-      if( !MENU_ACTIVE ){
-        menu_enter( menu_connect_choice() );
-      }
-    }
-    //------------------------------------
-    
-    //EVENT - CLIENT ENTERS MECH---
-      
-    //------------------------------------
-    
-    //EVENT - CLIENT DEATH----------------
-    if( CLIENT_player_state == PLAYER_DEAD ){
-      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-        menu_enter( MENU_DEBRIEF_ACTIVE );
-      }
-      else{
-      
-      }
-    }
-    if( CLIENT_player_state == PLAYER_REDEPLOY ){
-      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-        menu_enter( MENU_DEBRIEF_ACTIVE );
-      }
-    }
-    //if( (CLIENT_player_deadflag > DEAD_NO) && (CLIENT_player_deadflag_prev == DEAD_NO) ){
-    //  menu_death_think();
-    //}
-    //------------------------------------
-  }
-  //==============================================
-
-
-
-
-  //EVENT -END OF MISSION---------------
-  
-  //------------------------------------
 
   if( CLIENT_data_type == DATA_MECH ){
     if( name != CLIENT_netname){
@@ -248,6 +157,109 @@ void() receive_ent_bindData={
   }
 };
 
+/*
+  State controller for Client's playerState as picked up from Server
+*/
+void() client_state_events={
+  if( CLIENT_player_state != CLIENT_player_state_prev ){
+      cons_log2Float("CLIENT_player_state ", CLIENT_player_state_prev, "--->", CLIENT_player_state);  //debug
+    //Player has just connected to server
+    if( (CLIENT_player_state_prev == 0) && (CLIENT_player_state == PLAYER_CONNECT) ){
+      cons_logAFloat("PLAYER_CONNECT", 1);  //debug
+      localcmd(strcat("stopsound", "\n"));
+      cl_set_hud_vars_obs();
+      return;
+    }
+  
+    //EVENT - CLIENT FIRST TIME CONNECT---
+    if( (CLIENT_player_state_prev == PLAYER_CONNECT) && (CLIENT_player_state == PLAYER_SPAWN) ){
+      cons_logAFloat("PLAYER_SPAWN", 1);  //debug
+      //mission file load check
+      if(MSN_FILEFOUND){
+        if(MSN_LOADED == FALSE){
+          msn_parsefile();
+          MSN_LOADED = TRUE;
+        }
+      }
+      if( !MENU_ACTIVE ){
+        menu_enter( menu_connect_choice() );
+      }
+      return;
+    }
+    //------------------------------------
+    
+    //EVENT - CLIENT ENTERS MECH---
+    if( (CLIENT_player_state_prev == PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_POWERUP_BEGIN) ){
+      cons_logAFloat("PLAYER_POWERUP_BEGIN", 1);  //debug
+      if( MECH_DATA_ID != CLIENT_data_idx ){
+        ui_data_load_mech(CLIENT_data_idx);
+      }
+      hud_event_clear();
+      hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
+      //mark time gettime()?
+      //MISSION_TIME_START
+      menu_exit();
+      return;
+    }
+    //------------------------------------
+    
+    //EVENT - CLIENT DEATH----------------
+    if( (CLIENT_player_state_prev != PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEAD) ){
+      cons_logAFloat("PLAYER_DEAD", 1);  //debug
+      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+        if( SV_MISSIONSTATUS == MISSION_STATUS_WIN ){
+          te_mission_win();
+        }
+        else{
+          te_mission_lose();
+        }
+      }
+      else{
+        
+      }
+      return;
+    }
+    //------------------------------------
+    
+    //EVENT - CLIENT CAMPAIGN DEBRIEF DEATH
+    if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
+      cons_logAFloat("PLAYER_DEBRIEF", 1);  //debug
+      menu_enter( MENU_DEBRIEF_ACTIVE );
+      MENU_button_delay = servertime + 2;
+      return;
+    }
+    //------------------------------------
+    
+    //EVENT - CLIENT NET RESPAWN
+    if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_REDEPLOY) ){
+      cons_logAFloat("PLAYER_REDEPLOY", 1);  //debug
+      menu_enter( MENU_CONNECT_ACTIVE );
+      MENU_button_delay = servertime + 1;
+      MENU_respawn_cool = servertime + 15;
+      MENU_respawn_cool_start = servertime;
+      return;
+    }
+  }
+//==============================================
+};
+
+
+
+void() client_get_hud_highlight={
+  local entity hfx;
+  local float t;
+  
+  hfx = spawn();
+  hfx.data_idx = -3;  //more hacks
+  hfx.origin = te_read_vector();
+  hfx.drawsize = te_read_vector();
+  hfx.drawcolor1 = te_read_vector();
+  t = ReadShort();
+  hfx.drawme = time + (t / 3);
+  
+};
+
+
 void() client_event_boundary={
   HUD_WARN_ON = ReadByte();
   HUD_WARN_DIR = ReadAngle();
@@ -265,32 +277,6 @@ void() client_event_environment={
     if( time > HUD_WARN_ENV_MARK ){
       HUD_WARN_ENV_MARK = time + HUD_WARN_ENV_TIME;
     }
-  }
-};
-
-/*
-  unused at the moment.
-*/
-void( float criticalsType ) client_event_critical_hit={
-  switch( criticalsType ){
-    case M_TOR_RIGHT:
-      hud_event_enqueue( HUD_EVENT_CRITICAL_TORSO_RIGHT, 1 );
-      break;
-    case M_TOR_LEFT:
-      hud_event_enqueue( HUD_EVENT_CRITICAL_TORSO_LEFT, 1 );
-      break;
-    case M_LEGS:
-      hud_event_enqueue( HUD_EVENT_CRITICAL_LEGS, 1 );
-      break;
-    case M_ARM_LEFT:
-      hud_event_enqueue( HUD_EVENT_CRITICAL_ARM_LEFT, 1 );
-      break;
-    case M_ARM_RIGHT:
-      hud_event_enqueue( HUD_EVENT_CRITICAL_ARM_RIGHT, 1 );
-      break;
-    case M_ITEM:
-      hud_event_enqueue( HUD_EVENT_CRITICAL_WEAPON, 1 );
-      break;
   }
 };
 
@@ -414,6 +400,15 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
 };
 
 /*
+  server Mapping = client_send_server_info_update()
+  
+*/
+void() client_get_serverinfo={
+  SV_MISSIONSTATUS = ReadByte();
+  SV_STARTTIME = ReadLong();
+};
+
+/*
   server Mapping = client_sendEndMission();
   
   receives end-mission data from server,
@@ -441,34 +436,5 @@ void( float missonSuccessCheck, float pscTotal, float survestTotal, float milita
   }
   
   menu_enter( MENU_DEBRIEF_ACTIVE);
-  CLIENT_player_state = PLAYER_IN_MENU;
-};
-
-/*
-  MapKeys are basically entities that have been given the SPAWNFLAG_MAPKEY value. This transmits
-  the entity's data_type, the server-origin, and the faction value (optional).
-  
-  MapKeys are draw in the ui_deploy.qc menu for player reference.
-*/
-void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyFactionValue ) client_event_get_mapkeyinfo={
-  local entity newMapKey;
-  
-  newMapKey = spawn();
-  newMapKey.data_type = mapKeyTypeId;
-  newMapKey.origin_x = mapKeyCoordX;
-  newMapKey.origin_y = mapKeyCoordY;
-  newMapKey.origin_z = 0;
-  newMapKey.faction = mapKeyFactionValue;
-  
-  if( mapKeyObject ){
-    //build linked list backwards for later forward iteration.
-    newMapKey.w_slot = mapKeyObject;
-    mapKeyObject = newMapKey;
-  }
-  else{
-    //start chain
-    mapKeyObject = newMapKey;
-  }
-  newMapKey.drawmask = MASK_NORMAL;
-  addentity(newMapKey);
+  CLIENT_player_state = PLAYER_BRIEF;
 };

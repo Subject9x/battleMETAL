@@ -7,6 +7,8 @@ Overview:
   Occurs once the map has sent the PLAYER_INTERMSN.
 */
 
+//menu
+
 float MENU_DEBRIEF_status;
 
 float MENU_DEBRIEF_total_monsters;

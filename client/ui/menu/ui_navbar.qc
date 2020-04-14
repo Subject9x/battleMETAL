@@ -225,6 +225,7 @@ void( vector ofs ) ui_navbutton_launch_draw={
   local vector fontSize;
   local vector textPos;
   local float strWidth;
+  local string text;
   
   UI_NAVBAR_LAUNCH_ORG = ofs;
   drawfont_prev = drawfont;
@@ -232,13 +233,25 @@ void( vector ofs ) ui_navbutton_launch_draw={
 
   gui_renderTintImage2((LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_LAUNCH_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_LAUNCH_SIZE), CLR_DEF_WEP_INRANGE * 0.85, '0.25 0.25 0.25', 1, 0);
 
-  strWidth = stringwidth(">>[LAUNCH]>>", 0 , UI_NAVBAR_font_select);
+  local float t;
+  local float sec;
+  if( servertime < MENU_respawn_cool ){
+    
+    t = 15 - (servertime - MENU_respawn_cool_start); 
+    sec = t - floor( t / 60 ) * 60 ;
+    sec = rint(sec);
+    text = sprintf("%02d", sec);
+    gui_renderMeter( ( (15 - sec) / 15) * 100, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), CLR_DEF_GRAY_H, CLR_DEF_IIF_FRIEND_BLD, 0.367, 0, AXIS_H, FALSE);
+  }
+  else{
+    text = ">>[LAUNCH]>>";
+  }
+  strWidth = stringwidth(text, 0 , UI_NAVBAR_font_select);
   textPos = UI_NAVBAR_LAUNCH_ORG;
   textPos_x = (textPos_x + gui_percentXRaw(64)) - (strWidth / 2);
   textPos_y = (textPos_y + gui_percentYRaw(4.32));
   
-  gui_renderHighlightString(">>[LAUNCH]>>", textPos, CLR_DEF_GREEN * 2, CLR_DEF_TXT_NONSELECT, (LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_font_select, 1, 0) ;
-  
+  gui_renderHighlightString(text, textPos, CLR_DEF_GREEN * 2, CLR_DEF_TXT_NONSELECT, (LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_font_select, 1, 0) ;
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_launch_click={
@@ -247,92 +260,95 @@ void() ui_navbutton_launch_click={
   local string weaponsList;
   local float totalHardpoints;
   local float turboTotalPerc;
-  if( (LAUNCH_VALIDATION &  VALID_NODE) ){      
-    cl_setspawnpoint( CLIENT_MENU_nav_pnt );
-    LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
-    
-    ui_data_load_hud( MECH_DATA_ID );
-    cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
-    
-    bit = 1;
-    totalHardpoints = 1;
-    weaponsList = " ";
-    hardpoint = UI_HANGAR_DATA_mech.w_slot;
-    CLIENT_weapon_state = 0;
-    while( hardpoint ){
-      weaponsList = strcat(weaponsList, ftos(hardpoint.data_idx), " ");
+  if( servertime > MENU_respawn_cool ){
+    if( (LAUNCH_VALIDATION &  VALID_NODE) ){      
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
       
-      //turbocharger upgrade...
-      if( hardpoint.data_idx == UID_ITEM_turbo_charger ){
-        turboTotalPerc = turboTotalPerc + (0.4 - (UI_HANGAR_DATA_mech.vec_size/10));
+      ui_data_load_hud( MECH_DATA_ID );
+      cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
+      
+      bit = 1;
+      totalHardpoints = 1;
+      weaponsList = " ";
+      hardpoint = UI_HANGAR_DATA_mech.w_slot;
+      CLIENT_weapon_state = 0;
+      while( hardpoint ){
+        weaponsList = strcat(weaponsList, ftos(hardpoint.data_idx), " ");
+        
+        //turbocharger upgrade...
+        if( hardpoint.data_idx == UID_ITEM_turbo_charger ){
+          turboTotalPerc = turboTotalPerc + (0.4 - (UI_HANGAR_DATA_mech.vec_size/10));
+        }
+        
+        //bind weapon data, reduce server traffic
+        switch(bit){
+          case WEAPON1:
+            CLIENT_stat_w1_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON2:
+            CLIENT_stat_w2_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON3:
+            CLIENT_stat_w3_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON4:
+            CLIENT_stat_w4_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON5:
+            CLIENT_stat_w5_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON6:
+            CLIENT_stat_w6_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON7:
+            CLIENT_stat_w7_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON8:
+            CLIENT_stat_w8_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+          case WEAPON9:
+            CLIENT_stat_w9_id = hardpoint.data_idx;
+            CLIENT_weapon_state = CLIENT_weapon_state | bit;
+            break;
+        }
+        bit = bit * 2;
+        hardpoint = hardpoint.w_slot;
+        totalHardpoints = totalHardpoints + 1;  
       }
       
-      //bind weapon data, reduce server traffic
-      switch(bit){
-        case WEAPON1:
-          CLIENT_stat_w1_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
-        case WEAPON2:
-          CLIENT_stat_w2_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
-        case WEAPON3:
-          CLIENT_stat_w3_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
-        case WEAPON4:
-          CLIENT_stat_w4_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
-        case WEAPON5:
-          CLIENT_stat_w5_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
-        case WEAPON6:
-          CLIENT_stat_w6_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
-        case WEAPON7:
-          CLIENT_stat_w7_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
-        case WEAPON8:
-          CLIENT_stat_w8_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
-        case WEAPON9:
-          CLIENT_stat_w9_id = hardpoint.data_idx;
-          CLIENT_weapon_state = CLIENT_weapon_state | bit;
-          break;
+      CLIENT_hardpoint_cnt = totalHardpoints;
+      CLIENT_stat_rdr_mode = CLIENT_stat_rdr_mode_prev = 1; //go active radar on spawn;      
+      CLIENT_radar_range = MECH_DATA_RAD * 2; //go active on spawn
+      
+      CLIENT_health_center_prev = CLIENT_health_center = MECH_DATA_HPCT;
+      CLIENT_health_legs_prev = CLIENT_health_legs = MECH_DATA_HPLG;
+      CLIENT_health_torso_left_prev = CLIENT_health_torso_left = MECH_DATA_HPST;
+      CLIENT_health_torso_right_prev = CLIENT_health_torso_right = MECH_DATA_HPST;
+      CLIENT_health_arm_left_prev = CLIENT_health_arm_left = MECH_DATA_HPAR;
+      CLIENT_health_arm_right_prev = CLIENT_health_arm_right = MECH_DATA_HPAR; 
+      
+      cl_set_hud_vars(UI_HANGAR_DATA_mech, turboTotalPerc);
+      cl_setweapon(totalHardpoints, weaponsList);
+      if( CLIENT_MENU_nex_grp1 < 1 ){
+        CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 | bit;
       }
-      bit = bit * 2;
-      hardpoint = hardpoint.w_slot;
-      totalHardpoints = totalHardpoints + 1;  
+      cons_logAFloat("CLIENT_MENU_nex_grp1", CLIENT_MENU_nex_grp1); //debug
+      cons_logAFloat("CLIENT_MENU_nex_grp2", CLIENT_MENU_nex_grp2); //debug
+      cons_logAFloat("CLIENT_MENU_nex_grp3", CLIENT_MENU_nex_grp3); //debug
+      cons_logAFloat("CLIENT_MENU_nex_grp4", CLIENT_MENU_nex_grp4); //debug
+      
+      cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
+      cl_spawnmech();
     }
-    
-    CLIENT_hardpoint_cnt = totalHardpoints;
-    CLIENT_stat_rdr_mode = CLIENT_stat_rdr_mode_prev = 1; //go active radar on spawn;      
-    CLIENT_radar_range = MECH_DATA_RAD * 2; //go active on spawn
-    
-    CLIENT_health_center_prev = CLIENT_health_center = MECH_DATA_HPCT;
-    CLIENT_health_legs_prev = CLIENT_health_legs = MECH_DATA_HPLG;
-    CLIENT_health_torso_left_prev = CLIENT_health_torso_left = MECH_DATA_HPST;
-    CLIENT_health_torso_right_prev = CLIENT_health_torso_right = MECH_DATA_HPST;
-    CLIENT_health_arm_left_prev = CLIENT_health_arm_left = MECH_DATA_HPAR;
-    CLIENT_health_arm_right_prev = CLIENT_health_arm_right = MECH_DATA_HPAR; 
-    
-    cl_set_hud_vars(UI_HANGAR_DATA_mech, turboTotalPerc);
-    
-    cl_setweapon(totalHardpoints, weaponsList);
-    cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
-    cl_spawnmech(); 
-
-    hud_event_clear();
-    hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
-    //mark time gettime()?
-    //MISSION_TIME_START
-    menu_exit();
   }
 };
 
@@ -368,7 +384,9 @@ void( vector ofs ) ui_navbutton_connect_draw={
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_connect_click={
-  CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
+  if( servertime > MENU_button_delay ){
+    CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
+  }
 };
 
 /*

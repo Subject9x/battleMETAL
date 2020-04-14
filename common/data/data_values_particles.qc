@@ -2,10 +2,13 @@
 battleMETAL
 Author: Peter Roohr
 Date: 01/22/2017
-Overview: data def file for particles
+Overview:
+  TE_ message ID's, these are sent via SVC_TEMPENTITY
+  and are read in client_main.CSQC_Parse_TempEntity()
+  
 */
 
-//Projectil Impact Events
+//Projectile Impact Events
 float IMPACT_SKY = 0;
 float IMPACT_DIRT = 1;
 float IMPACT_SHIELD = 2;
@@ -13,11 +16,11 @@ float IMPACT_ARMOR = 3;
 
 //ALERT: 70-75 are reserved, otherwise go nuts?
 //TE_ ID's
-float TE_CLIENT_INFO = 80;  //not a particle but here for completeness
-//81;
-float TE_CLIENT_HIT = 82;  //not a particle but here for completeness
-float TE_CLIENT_DMG = 83;  //not a particle but here for completeness
-float TE_UI_BOX = 84;      //not a particle but here for completeness
+float TE_CLIENT_INFO = 80;
+float TE_SERVERINFO =  81;
+//82;
+//83;
+float TE_UI_BOX = 84;
 
 float TE_HUD_SPARK = 90;
 //91;
@@ -37,14 +40,14 @@ float TE_AI_VOICE = 100;
 //101;
 
 float TE_MISSION_NAME = 102;
-float TE_HAZARD_SHIELD = 103;
-float TE_HAZARD_ENERGY = 104;
-float TE_HAZARD_ARMOR = 105;
+//103;
+//104;
+//105;
 float TE_MISSION_END = 106;
 float TE_MSG_ENV_WARN = 107;
 
 float TE_MUZZLE_FLASH = 108;
-float TE_MAPKEY_DATA = 109;
+//109;
 
 float TE_VFX_EXPLODE = 110;
 
@@ -52,7 +55,7 @@ float TE_MSG_INFO = 111;
 float TE_WEAPONS_ON = 112;
 float TE_REPAIRS_ON = 113;
 
-float TE_VFX_MECH = 114;
-float TE_VFX_WRECK = 115;
+//114;
+//115;
 float TE_VFX_POINT = 116;
 float TE_VFX_RAIL = 117;

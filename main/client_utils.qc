@@ -16,8 +16,6 @@ void() client_push_player_info={
   local float targShield;
 
   self.ammo_rockets = self.flags;
-  self.ammo_cells = self.faction;
-  self.armorvalue = self.playerState;
   if(self.data_type == DATA_MECH){
     self.stat_client_energy = (self.energy / self.energyMax) * 100;
     self.stat_client_shield = (self.shield / self.shieldMax) * 100;
@@ -96,8 +94,6 @@ void() client_push_player_info={
 */
 void() client_push_player_info_thin={
   self.ammo_rockets = self.flags;
-  self.ammo_cells = self.faction;
-  self.armorvalue = self.playerState;
 }
 void( entity targetClient ) server_push_player_info={
   local entity this;
@@ -182,56 +178,6 @@ void() client_push_mapobjects={
 };
 
 /*
-  Sends an AI voice sample to play for a specific client
-  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
-*/
-void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY);
-  WriteByte( MSG_ONE, TE_AI_VOICE );
-  WriteByte( MSG_ONE, voiceGroup);
-  WriteByte( MSG_ONE, voiceId);
-  WriteByte( MSG_ONE, limiter );
-  WriteLong( MSG_ONE, num_for_edict(self) );
-};
-
-/*
-  Sends an AI voice sample to play to ALL Clients
-  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
-*/
-void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY);
-  WriteByte( MSG_BROADCAST, TE_AI_VOICE );
-  WriteByte( MSG_BROADCAST, voiceGroup);
-  WriteByte( MSG_BROADCAST, voiceId);
-  WriteByte( MSG_BROADCAST, limiter );
-  WriteLong( MSG_BROADCAST, num_for_edict(self) );
-};
-
-
-void(entity client, float weaponsOnOff) client_send_event_weapons={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_WEAPONS_ON );
-  WriteByte( MSG_ONE, weaponsOnOff );
-};
-
-void(entity client, float weaponsOnOff) client_send_event_repairs={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_REPAIRS_ON );
-  WriteByte( MSG_ONE, weaponsOnOff );
-};
-
-void(entity client, string theMessage, float messageLifetime) client_send_info_message={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_MSG_INFO );
-  WriteString( MSG_ONE, theMessage );
-  WriteLong( MSG_ONE, messageLifetime );
-};
-
-/*
   client sends string 'cmd m foo'
   where foo is the command, first parm must be 'm'
   
@@ -256,10 +202,14 @@ void(string str, float tokens) client_ParseMechCommand={
   if(argv(1) == "sp"){
     if(self.data_type == DATA_POBS){
       player_unmakeObserver();
+      if( self.playerState == PLAYER_SPAWN ){
+        PutClientInServer();
+      }
       sv_client_spawnpoint_select();
       player_makeMech();
       client_playTrack( world.sounds, TRUE );
       client_sendMissionName();
+      
       if( self.client_num < 1){
         CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
         self.client_num = CLIENTS;  //book keeping for multiplayer
@@ -425,38 +375,9 @@ void(string cmd, float tokens) client_setWeaponGroup={
   self.w_group4 = stof(argv(5));
 };
 
-
-//DEPRECATED -> remove soon
-void(string mechs) client_sendAvailable_Mechs={
-  local string cmd;
-  cmd = strcat("m lms [", mechs, "]\n");
-  stuffcmd(self, cmd);
-};
-//DEPRECATED -> remove soon
-void(string itms) client_sendAvailableItems={
-  local string cmd;
-  cmd = strcat("m lis [", itms,"]\n");
-  stuffcmd(self, cmd);
-};
-
-
 void() client_sendMissionUnlocks={
   local string cmd;
   cmd = strcat("m unl [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
-  stuffcmd(self, cmd);
-};
-
-void(float mode, float saveSlot) client_sendGameMode={
-  local string cmd;
-  cmd = strcat("m mode ", ftos(mode)," ", ftos(saveSlot),"\n");
-  stuffcmd(self, cmd);
-};
-
-//DEPRECATED -> remove soon
-void(string targetName) client_sendTargetName={
-  local string cmd;
-  
-  cmd = strcat("m trg ", targetName,"\n");
   stuffcmd(self, cmd);
 };
 
@@ -471,6 +392,57 @@ void() client_sendMissionName={
     WriteString( MSG_ONE, strcat(world.message,"\n"));
   }
 };
+
+/*
+  Sends an AI voice sample to play for a specific client
+  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
+*/
+void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY);
+  WriteByte( MSG_ONE, TE_AI_VOICE );
+  WriteByte( MSG_ONE, voiceGroup);
+  WriteByte( MSG_ONE, voiceId);
+  WriteByte( MSG_ONE, limiter );
+  WriteLong( MSG_ONE, num_for_edict(self) );
+};
+
+/*
+  Sends an AI voice sample to play to ALL Clients
+  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
+*/
+void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY);
+  WriteByte( MSG_BROADCAST, TE_AI_VOICE );
+  WriteByte( MSG_BROADCAST, voiceGroup);
+  WriteByte( MSG_BROADCAST, voiceId);
+  WriteByte( MSG_BROADCAST, limiter );
+  WriteLong( MSG_BROADCAST, num_for_edict(self) );
+};
+
+
+void(entity client, float weaponsOnOff) client_send_event_weapons={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_WEAPONS_ON );
+  WriteByte( MSG_ONE, weaponsOnOff );
+};
+
+void(entity client, float weaponsOnOff) client_send_event_repairs={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_REPAIRS_ON );
+  WriteByte( MSG_ONE, weaponsOnOff );
+};
+
+void(entity client, string theMessage, float messageLifetime) client_send_info_message={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_MSG_INFO );
+  WriteString( MSG_ONE, theMessage );
+  WriteLong( MSG_ONE, messageLifetime );
+};
+
 
 /*
 commmand string: cmd mech setwep X Y
@@ -620,7 +592,7 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
 */
 void(entity client, float missionSuccessCheck) client_sendEndMission={
 
-  client.armorvalue = client.playerState = PLAYER_INTERMSN;
+  client.playerState = PLAYER_INTERMSN;
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_MISSION_END );
@@ -740,6 +712,7 @@ void() sv_select_info_start={
     case GAMEMODE_DM:
       spot = find(spot, classname, "info_player_deathmatch");
       break;
+      
     case GAMEMODE_TEAMDM:
       spot = find(spot, classname, "info_player_deathmatch");
       break;
@@ -832,42 +805,20 @@ float(entity piece) csqc_updateCompStat={
 };
 
 /*
+  Send important world data
+*/
+void() client_send_server_info_update={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_SERVERINFO );
+  WriteByte( MSG_BROADCAST, MISSION_STATUS );
+  WriteLong( MSG_BROADCAST, STARTTIME );
+  //WriteString( MSG_BROADCAST, world.message );
+};
+
+/*
   Send wreckage entity to client, 
   should cut down on workload of server, right?
 */
-void( vector org, float explodeSize, vector explodeColor, float onShield ) client_send_missile_explode={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_VFX_EXPLODE );
- 
-  WriteCoord(MSG_BROADCAST, org_x);
-  WriteCoord(MSG_BROADCAST, org_y);
-  WriteCoord(MSG_BROADCAST, org_z);
-  
-  WriteByte( MSG_BROADCAST, explodeSize);
-  
-  WriteCoord(MSG_BROADCAST, explodeColor_x);
-  WriteCoord(MSG_BROADCAST, explodeColor_y);
-  WriteCoord(MSG_BROADCAST, explodeColor_z);
-
-  WriteByte( MSG_BROADCAST, onShield );
-};
-
-void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_VFX_WRECK );
-  WriteByte( MSG_BROADCAST, modelIndex);
-  WriteByte( MSG_BROADCAST, skinNum);
-  WriteByte( MSG_BROADCAST, lifetime);
-  WriteByte( MSG_BROADCAST, vecSize );
-  
-  WriteCoord(MSG_BROADCAST, entOrg_x);
-  WriteCoord(MSG_BROADCAST, entOrg_y);
-  WriteCoord(MSG_BROADCAST, entOrg_z);
-  
-  WriteAngle(MSG_BROADCAST, entAngl_x);
-  WriteAngle(MSG_BROADCAST, entAngl_y);
-  WriteAngle(MSG_BROADCAST, entAngl_z);
-};
 
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
@@ -893,7 +844,6 @@ void( float entityId, float particleEffectId, vector particleOrg, vector particl
   WriteCoord(MSG_BROADCAST, particleEnd_y);
   WriteCoord(MSG_BROADCAST, particleEnd_z);
 };
-
 
 void( float wepId, vector flashOrg, vector flashVel, float impType ) client_send_muzzle_flash={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );

@@ -185,13 +185,12 @@ void( float menuId ) menu_enter={
   MENU_ACTIVE = TRUE;
   CLIENT_MENU_menu_choice = menuId;
   setcursormode( 1 );
-  setpause( 1 );
 };
 
 void() menu_exit={
   MENU_ACTIVE = FALSE;
+  CLIENT_MENU_menu_choice = 0;
   setcursormode( 0 );
-  setpause( 0 );
 };
 
 float() menu_connect_choice={

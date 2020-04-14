@@ -3,25 +3,29 @@ battleMETAL
 Author: Peter Roohr
 Date: 07/23/2019
 Overview: 
-  Debriefing screen ( sure, score screen).
-  Occurs once the map has sent the PLAYER_INTERMSN.
+  Debriefing screen -
   this is generally triggered by player death or mission end.
+  used only for campaign missions.
+  
+  playerState = PLAYER_DEBRIEF
 */
 
 //menu hooks
 void() menu_debriefListener_onClick={
   //next/retry mission button
-  if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), FALSE) ){
-    //Single player 
-    if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-      setpause( 0 );
-      cl_set_mission( MENU_DEBRIEF_status );
-      return;
+  if( servertime > MENU_button_delay ){
+    if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
+      //Single player 
+      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+        setpause( 0 );
+        cl_set_mission( MENU_DEBRIEF_status );
+        return;
+      }
+      //DEATHMATCH AND COOP
+      cl_set_mission( 2 );
+      CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE | VALID_LAUNCH));
     }
-    //DEATHMATCH AND COOP
-    cl_set_mission( 2 );
-    CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
-    LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE | VALID_LAUNCH));
   }
 };
 
@@ -32,6 +36,8 @@ void() menu_debriefListener_onHover={
 
 //menu rendering
 void() menu_debrief_drawFrame={
+      cons_logAFloat("MENU_button_delay", MENU_button_delay);  //debug
+      cons_logAFloat("servertime", time);  //debug
   local vector topleftroot;
   topleftroot = VIEW_ORG;
 
@@ -48,7 +54,7 @@ void() menu_debrief_drawFrame={
   menu_debrief_objectives_primary( topleftroot + gui_percentToPixelRawVec('10 32') );
   menu_debrief_objectives_secondary( topleftroot + gui_percentToPixelRawVec('10 272') );
   menu_debrief_stats( topleftroot + gui_percentToPixelRaw(VIEW_CTR_x, 32) );
-  menu_debrief_unlocks( topleftroot + gui_percentToPixelRaw(VIEW_CTR_x, 160) );
+  //menu_debrief_unlocks( topleftroot + gui_percentToPixelRaw(VIEW_CTR_x, 160) );
 };
 
 /*

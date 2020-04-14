@@ -39,9 +39,12 @@ void() map_end_mission_over={
     player.movetype = MOVETYPE_NONE;
     player.modelindex = 0;
     //------------------------------
-    client_sendEndMission(player, player.missionStatus);
+    //client_sendEndMission(player, player.missionStatus);
+    client_push_player_info();
     if(player.data_type == DATA_MECH){
       self = player;
+      ctrl_unit_clean_wgroups();
+      ctrl_unit_cleanup_player();
       player_unmakeMech();
       player_makeObserver();
     }
@@ -93,10 +96,10 @@ void() map_end_mission_conclude={
         if( !world.ignoreSave ){
           savefile_append();    
         }
-        te_mission_win();
+        //te_mission_win();
       }
       else{
-        te_mission_lose();
+        //te_mission_lose();
         self.missionStatus = FALSE;
       }
     }
@@ -185,7 +188,6 @@ void() map_mission_end={
     setsize(self, tempMin, tempMax);
   }
   else{
-    
     util_MapDeveloperMarker();
     self.solid = SOLID_NOT;
     setsize(self, '-10 -10 -10', '10 10 10');

@@ -196,12 +196,17 @@ vector dmg_origin;
 const float MASK_ENGINE			= 1;
 const float MASK_ENGINEVIEWMODELS	= 2;
 const float MASK_NORMAL			= 4;
+//casts no shadows.
 
-const float RF_VIEWMODEL	= 1;
-const float RF_EXTERNALMODEL	= 2;
-const float RF_DEPTHHACK	= 4;
-const float RF_ADDITIVE		= 8;
-const float RF_USEAXIS		= 16;
+const float RF_EXTERNALMODEL	= 2; // T
+const float RF_VIEWMODEL	= 1; // The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
+const float RF_DEPTHHACK	= 4; // The entity appears closer to the view than normal, either by scaling it wierdly or by just using a depthrange. This will usually be found in conjunction with RF_VIEWMODEL
+const float RF_ADDITIVE		= 8;// Add the entity acording to it's alpha values instead of the normal blend
+const float RF_USEAXIS		= 16; // When set, the entity will use the v_forward, v_right and v_up globals instead of it's angles field for orientation. Angles will be ignored compleatly.
+// Note that to use this properly, you'll NEED to use the predraw function to set the globals.
+const float RF_FULLBRIGHT	= 256;
+const float RF_NOSHADOW	= 512;
+const float RF_DYNAMICMODELLIGHT = 8192;
 
 const float VF_MIN		= 1;	//(vector)
 const float VF_MIN_X		= 2;	//(float)
@@ -231,6 +236,18 @@ const float VF_CL_VIEWANGLES_Y	= 35;	//(float)
 const float VF_CL_VIEWANGLES_Z	= 36;	//(float) 
 
 const float VF_PERSPECTIVE      = 200;
+
+const float VF_FOG_DENSITY  = 202; //(float)
+const float VF_FOG_COLOR    = 203; //(vector)
+const float VF_FOG_COLOR_R  = 204; //(float)
+const float VF_FOG_COLOR_G  = 205; //(float)
+const float VF_FOG_COLOR_B  = 206; //(float)
+const float VF_FOG_ALPHA    = 207; //(float)
+const float VF_FOG_START    = 208; //(float)
+const float VF_FOG_END      = 209; //(float)
+const float VF_FOG_HEIGHT   = 210; //(float)
+const float VF_FOG_FADEDEPTH= 211; //(float)
+
 
 /*
   Having the full list of these would have helped from the start...
@@ -911,7 +928,7 @@ void() printparticle =
 // DP_CSQC_ENTITYTRANSPARENTSORTING_OFFSET
 // idea: VorteX
 // darkplaces implementation: VorteX
-float RF_USETRANSPARENTOFFSET = 64; // enables transparent origin offsetting
+//float RF_USETRANSPARENTOFFSET = 64; // enables transparent origin offsetting
 // global definitions
 float transparent_offset; // should be set before entity is added
 // description: offset a model's meshes origin used for transparent sorting. Could be used to tweak sorting bugs on very large transparent entities or hacking transparent sorting order for certain objects
@@ -921,7 +938,7 @@ float transparent_offset; // should be set before entity is added
 // DP_CSQC_ENTITYWORLDOBJECT
 // idea: VorteX
 // darkplaces implementation: VorteX
-const float RF_WORLDOBJECT = 128;
+//const float RF_WORLDOBJECT = 128;
 // description: when renderflag is set, engine will not use culling methods for this entity, e.g. it will always be drawn
 // useful for large outdoor objects (like asteroids on sky horizon or sky models)
 
@@ -1640,9 +1657,7 @@ float PARTICLES_USECOLOR = 2;
 vector particles_colormin, particles_colormax;
 void(float effectindex, entity own, vector org_from, vector org_to, vector dir_from, vector dir_to, float countmultiplier, float flags) boxparticles = #502;
 float trace_networkentity;
-const float RF_FULLBRIGHT	= 256;
-const float RF_NOSHADOW	= 512;
-float RF_DYNAMICMODELLIGHT = 8192;
+
 
 float gettaginfo_parent;
 string gettaginfo_name;
@@ -1673,4 +1688,5 @@ void() SUB_Remove={
 };
 
 .float gravity;
+.float renderflags; //again, lost in documentation somewhere, use RF_* flags on this.
 .float scale;

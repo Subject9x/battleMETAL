@@ -51,6 +51,10 @@ float MENU_SCORE_ACTIVE = 8;
 vector MENU_BTN_LAUNCH_ORG;
 vector MENU_BTN_LAUNCH_SZ;
 
+float MENU_button_delay;  //set when screen is first transitioned to, prevents player from blowing through
+float MENU_respawn_cool;  //set when screen is first transitioned to, prevents player from blowing through
+float MENU_respawn_cool_start;  //set when screen is first transitioned to, prevents player from blowing through
+
 //CLIENT MENU CONST
 float CLIENT_MENU_menu_choice;
 float CLIENT_MENU_sel_hrpnt;
