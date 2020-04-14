@@ -16,7 +16,7 @@ entity		world;
 float		time;
 float		frametime;
 
-float 		player_localentnum;	//the entnum
+float 		player_localentnum;	//the entnum = player_localnum + 1 (apparently)
 float 		player_localnum;	//the playernum
 float		  maxclients;	//a constant filled in by the engine. gah, portability eh?
 
@@ -298,10 +298,6 @@ const float STAT_MOVEVARS_MAXAIRSPEED         =  252;
 const float STAT_MOVEVARS_STEPHEIGHT          =  253;
 const float STAT_MOVEVARS_AIRACCEL_QW         =  254;
 const float STAT_MOVEVARS_AIRACCEL_SIDEWAYS_FRICTION = 255;
-
-
-
-
 
 // Quake Sound Constants
 const float CHAN_AUTO			= 0;
@@ -659,7 +655,26 @@ vector() getmousepos = #344;
 float(float framenum) getinputstate = #345;
 void(float sens) setsensitivityscale = #346;
 void(...) runstandardplayerphysics = #347; // this may or may not take a player ent
+
+/*
+  clvm_cmds.c - Line 159
+  --KEYS--
+  playernum == player_localnum (when grabbing local player)
+  
+  --KEYNAME--
+    name
+    frags
+    ping
+    pl - qw_packetloss
+    movementloss - qw_movementloss
+    entertime - qw_entertime
+    colors - 
+    topcolor - colors & 0xf0
+    bottomcolor -  (cl.scores[i].colors &15)<<4)
+    viewentity - 
+*/
 string(float playernum, string keyname) getplayerkeyvalue = #348;
+
 float() isdemo = #349;
 float() isserver = #350;
 void(vector origin, vector forward, vector right, vector up) SetListener = #351;

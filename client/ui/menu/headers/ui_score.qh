@@ -6,3 +6,18 @@ Overview:
   End of Round score screen for DM / TDM / Coop(?) games
   also shown when player dies.
 */
+
+//pseudo interface
+void() menu_scoreListener_onClick;
+
+//void() menu_scoreListener_onDrag;
+
+void() menu_scoreListener_onHover;
+
+//void() menu_scoreListener_onKeyUp;
+
+void() menu_score_drawFrame;
+//------------------
+
+
+void( vector menuOrg ) menu_score_draw_bar;

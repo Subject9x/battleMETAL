@@ -692,14 +692,11 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, player.origin_z );
     WriteByte( MSG_ENTITY, player.faction );
     WriteLong( MSG_ENTITY, player.flags );
-    WriteShort( MSG_ENTITY, player.frags );
-    WriteString( MSG_ENTITY, player.netname );
   }
   /*
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    WriteShort( MSG_ENTITY, player.frags );
     WriteByte( MSG_ENTITY, (player.particleCube == world));
   }
   return TRUE;

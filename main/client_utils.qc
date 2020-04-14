@@ -624,8 +624,6 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_MISSION_END );
-  WriteLong( MSG_ONE, time );
-  WriteLong( MSG_ONE, client.frags );
   WriteByte( MSG_ONE, missionSuccessCheck );
   WriteShort( MSG_ONE, MISSION_TOTAL_PSC );
   WriteShort( MSG_ONE, MISSION_TOTAL_SURVEST );

@@ -54,6 +54,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
       else{
         if( CLIENT_player_state != PLAYER_INTERMSN ){
+        cons_logAFloat("CLIENT_player_state != PLAYER_INTERMSN", 1);  //DEBUG
           menu_enter( CLIENT_MENU_menu_choice );
         }
       }
@@ -185,6 +186,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
             break;
           case MENU_CONNECT_ACTIVE:
             menu_connectListener_onClick();
+            break;
+          case MENU_SCORE_ACTIVE:
+            menu_scoreListener_onClick();
             break;
         }
         return TRUE;

@@ -141,16 +141,22 @@ float OBJECTIVE_FAIL = 4;
 //   PLAYER STATE ID's           
 //============================
 //used for client-state syncing between server and client
-float PLAYER_DEAD = -1;         // 
-float PLAYER_CONNECT = 0;       // Client just connected to server.
-float PLAYER_SPAWN = 1;         // Client has been initialized, and spawned in as observer.
-float PLAYER_IN_MENU = 2;       // Client is in the CSQC menu system.
-float PLAYER_POWERUP_BEGIN = 3; // Client has spawned into their mech, and the mech is powering up.
-float PLAYER_POWERUP_END = 4;   // Client mech has completed powerup sequence.
-float PLAYER_ACTIVE = 5;        // Client is controlling mech, and may move/fire freely.
-float PLAYER_ANIM_STOP = 6;     // Client told to stop playing animatic.
-float PLAYER_SPRINT_ON = 7;     // Client has engaged the 'sprint' button.
-float PLAYER_INTERMSN = 8;      // Client has entered an intermission event.
+// .armorvalue is used for this - getstati(STAT_ARMOR)
+float PLAYER_CONNECT        = 0;  // Client just connected to server.
+float PLAYER_SPAWN          = 1;  // Client has been initialized, and spawned in as observer.
+float PLAYER_IN_MENU        = 2;  // Client is in the CSQC menu system.
+float PLAYER_DEAD           = 3;  // player has been killed in combat.
+float PLAYER_REDEPLOY       = 4;  // player use ClientKill().
+float PLAYER_RESPAWN        = 5;  // player is ready to respawn from being dead.
+float PLAYER_END_CAMP       = 6;  // player has finished a campaign mission.
+float PLAYER_INTERMSN       = 7; // Client has entered an intermission event.
+
+float PLAYER_ANIM_STOP      = 8;  // Client told to stop playing animatic.
+float PLAYER_POWERUP_BEGIN  = 9;  // Client has spawned into their mech, and the mech is powering up.
+float PLAYER_POWERUP_END    = 10;  // Client mech has completed powerup sequence.
+float PLAYER_ACTIVE         = 11;  // Client is controlling mech, and may move/fire freely.
+float PLAYER_SPRINT_ON      = 12; // Client has engaged the 'sprint' button.
+
 //============================
 //         DATA_TYPE           
 //============================

@@ -232,19 +232,21 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   VIEW_SCALE = 0.35;
   	// add any polygons we want here
 
-
-  //dynamic lights?
-  local entity thingLight;
-  local entity notLight;
-  for( thingLight = nextent(world); thingLight != world; thingLight = nextent(thingLight)){
-    if( !thingLight.render_dlights ){
-      continue;
+  if( !MENU_ACTIVE ){
+    //dynamic lights?
+    local entity thingLight;
+    local entity notLight;
+    for( thingLight = nextent(world); thingLight != world; thingLight = nextent(thingLight)){
+      if( !thingLight.render_dlights ){
+        continue;
+      }
+      notLight = self;
+      self = thingLight;
+        thingLight.render_dlights();
+      self = notLight;
     }
-    notLight = self;
-    self = thingLight;
-      thingLight.render_dlights();
-    self = notLight;
   }
+  
 
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
@@ -282,16 +284,15 @@ void(float w, float h, float menushown) CSQC_UpdateView =
 
 	// draw custom hud
   //draw hud
-  
-  AVAILABLE_RESERVE = 0;
-  
+    
   //Player has just connected to server
   if(CLIENT_player_state == PLAYER_CONNECT ){
     localcmd(strcat("stopsound", "\n"));
     cl_set_hud_vars_obs();
   }
-  
+
   if(CLIENT_data_type == DATA_MECH){
+
     if( dmg_save > 0 ){
       cons_logAFloat("dmg_save", dmg_save); //DEBUG
     }
@@ -299,7 +300,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       cons_logAFloat("dmg_take", dmg_take); //DEBUG
     }
     
-    if(MENU_ACTIVE){
+    if( MENU_ACTIVE ){
       if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
         menu_exit();
         if( MECH_DATA_ID != CLIENT_data_idx ){
@@ -307,8 +308,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         }
       }
     }
-
-    //HUD SOUND SYSTEM LISTENERS
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
@@ -324,13 +323,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       //Map has a .message value, and it's currently active for rendering
       if( MISSION_NAME_ON == TRUE ){
         client_event_mission_name_frame();
-      }
-    }
-  }
-  else{
-    if( CLIENT_player_state_prev == PLAYER_CONNECT && CLIENT_player_state == PLAYER_SPAWN ){
-      if( !MENU_ACTIVE ){
-        menu_enter( menu_connect_choice() );
       }
     }
   }
@@ -383,7 +375,7 @@ float() CSQC_Parse_TempEntity =
       hud_event_enqueue( HUD_EVENT_MISSION_FAILED, 1) ;
       return TRUE;
     case TE_MISSION_END:
-      client_event_debrief_active( ReadLong(), ReadLong(), ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
+      client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
     case TE_MSN_BOUND:
       client_event_boundary();

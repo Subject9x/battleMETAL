@@ -19,7 +19,6 @@ Overview:
 */
 
 void() menu_connectListener_onClick={
-
   if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_DISCONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_DISCONNECT_SIZE), TRUE)){
     ui_navbutton_disconnect_click();
   }
@@ -825,9 +824,9 @@ void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row=
   local float playerNameLen;
   local string playerName;
   playerNameOfs = rowOfs + gui_percentToPixelRawVec('14 0');
-  if( playerRow.netname != "" ){
-    playerName = playerRow.netname;
-    playerNameLen = strlen(playerRow.netname);
+  playerName = getplayerkeyvalue(playerRow.entId - 1, "name");
+  if( playerName != "" ){
+    playerNameLen = strlen(playerName);
     if( playerNameLen > 24 ){
       playerName = substring(playerName, 0, 24);
     }

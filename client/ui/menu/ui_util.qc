@@ -129,7 +129,6 @@ void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_rend
   }
 };
 
-
 string() ui_calculate_game_time_string={
   local string val;
   local float t, sec, min, hr;
@@ -152,6 +151,23 @@ string() ui_calculate_game_time_string={
   return val;
 };
 
+string(float timeVal ) ui_calculate_time_string={
+  local string val;
+  local float t, sec, min, hr;
+  
+  t = timeVal + (servertime - time);
+  sec = t - floor( t / 60 ) * 60 ;
+  sec = rint(sec);
+  
+  min = (t - floor( t / 3600) * 3600) / 60;
+  min = rint(min);
+  
+  hr = t / 3600;
+  hr = rint(hr);
+  val = sprintf("%02d:%02d:%02d", hr, min, sec);
+  
+  return val;
+};
 
 
 string() ui_label_mission_status={

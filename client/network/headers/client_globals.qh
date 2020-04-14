@@ -17,6 +17,7 @@ string CLIENT_netname;
 float CLIENT_player_state;
 float CLIENT_player_state_prev;
 float CLIENT_player_deadflag;
+float CLIENT_player_deadflag_prev;
 
 float CLIENT_data_type;
 float CLIENT_data_idx;

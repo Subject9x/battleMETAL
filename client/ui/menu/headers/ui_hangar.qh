@@ -62,7 +62,6 @@ void() menu_hangarListener_onHover;
 
 //Listener Hooks called by menu_hangarListener_onClick
 void() mechSelectListener;
-void() mechAcceptButtonListener;
 
 void(vector ofs) menu_hangar_MechDisplay;
 void(vector ofs) menu_hangar_MechList;
