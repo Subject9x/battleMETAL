@@ -212,6 +212,7 @@ void() client_state_events={
         else{
           te_mission_lose();
         }
+        SV_ENDTIME = servertime;
       }
       return;
     }

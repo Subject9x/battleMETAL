@@ -793,6 +793,7 @@ void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar={
     drawstring(menuLabelOfs, titleTeam, '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
   
   drawstring(titleOfs + gui_percentToPixelRawVec('6 14'), "[Name]", '12 12', CLR_DEF_WHITE, 1, 0);
+  drawstring(titleOfs + gui_percentToPixelRawVec('180 14'), "[Ping]", '12 12', CLR_DEF_WHITE, 1, 0);
   drawstring(titleOfs + gui_percentToPixelRawVec('220 14'), "[Score]", '12 12', CLR_DEF_WHITE, 1, 0);
   drawstring(titleOfs + gui_percentToPixelRawVec('260 14'), "[Status]", '12 12', CLR_DEF_WHITE, 1, 0);
   
@@ -807,6 +808,7 @@ void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row=
   local vector rowColor; 
   
   local vector playerNameOfs;
+  local vector playerPingOfs;
   local vector playerStatusOfs;
   local vector playerScoreOfs;
   
@@ -833,8 +835,26 @@ void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row=
     drawstring(playerNameOfs, playerName, fontSize, rowColor, 1, 0);
   }
   
+  local float pingLen;
+  local vector pingColor;
+  local float ping;
+  ping = stof(getplayerkeyvalue(playerRow.entId - 1, "ping"));
+  if( ping <= 50 ){
+    pingColor = CLR_DEF_IIF_FRIEND_BLD;
+  }
+  else if( ping <= 100 ){
+    pingColor = CLR_DEF_ARM_THREEQ;
+  }
+  else{
+    pingColor = CLR_DEF_RED;
+  }
+  pingLen = stringwidth( getplayerkeyvalue(playerRow.entId - 1, "ping"), 0, fontSize );
+  playerPingOfs = playerNameOfs + gui_percentToPixelRawVec('170 0');
+  playerPingOfs_x = playerPingOfs_x - gui_percentXRaw(pingLen / 2);
+  drawstring(playerPingOfs, getplayerkeyvalue(playerRow.entId - 1, "ping"), fontSize, pingColor, 1, 0);
+  
   local float scoreLen;
-  playerScoreOfs = playerNameOfs + gui_percentToPixelRawVec('210 0');
+  playerScoreOfs = playerPingOfs + gui_percentToPixelRawVec('41 0');
   scoreLen = stringwidth(ftos(playerRow.kills), 0, fontSize);
   playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
   drawstring(playerScoreOfs, ftos(playerRow.kills), fontSize, rowColor, 1, 0);
@@ -842,10 +862,10 @@ void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row=
   local vector statusColor;
   local float statusLen;
   local string playerStatus;
-  playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('48 0');
+  playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('52 0');
   if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
-        playerStatus = "<hidden>";
-        statusColor = CLR_DEF_ARM_THREEQ;
+    playerStatus = "<hidden>";
+    statusColor = CLR_DEF_ARM_THREEQ;
   }
   else{
     if( playerRow.deadflag == DEAD_DEAD ){

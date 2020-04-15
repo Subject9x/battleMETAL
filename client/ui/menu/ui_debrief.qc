@@ -321,7 +321,7 @@ void(vector panelOffset) menu_debrief_stats={
   
   //Time taken
   drawstring( thisOrg + gui_percentToPixelRawVec('6 72'), "Mission Time:", '14 14', CLR_DEF_GRAY_H, 1, 0);
-  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), sprintf("%00.2f",MENU_DEBRIEF_time_elapsed), '16 16', '1 1 1', 1, 0);
+  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), ui_calculate_time_string( SV_ENDTIME - SV_PLAYERTIME ) , '16 16', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
 };
