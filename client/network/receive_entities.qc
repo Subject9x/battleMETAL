@@ -195,9 +195,8 @@ void() client_state_events={
         ui_data_load_mech(CLIENT_data_idx);
       }
       hud_event_clear();
-      hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
-      //mark time gettime()?
-      //MISSION_TIME_START
+      hud_event_enqueue( HUD_EVENT_POWERUP, 1);
+      SV_PLAYERTIME = servertime;
       menu_exit();
       return;
     }
@@ -214,9 +213,6 @@ void() client_state_events={
           te_mission_lose();
         }
       }
-      else{
-        
-      }
       return;
     }
     //------------------------------------
@@ -226,6 +222,13 @@ void() client_state_events={
       cons_logAFloat("PLAYER_DEBRIEF", 1);  //debug
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_button_delay = servertime + 2;
+      
+      if( SV_MISSIONSTATUS == MISSION_STATUS_WIN ){
+        MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
+      }
+      else{
+        MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
+      }
       return;
     }
     //------------------------------------

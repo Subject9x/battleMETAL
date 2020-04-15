@@ -308,6 +308,34 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
 };
 
 /*
+  RENDER MISSION CLOCK
+  shows the time elapsed since player got into their mech 
+*/
+void(vector pos, float algn, float flag) hud_render_missionClock={
+  local float lbl_len;
+  local string stat;
+  local vector tsize, colr, morg, torg;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  torg = gui_percentToPixelRawVec(pos);
+  torg = gui_calcAlign(torg, algn);
+  tsize = '10 10 0';
+  colr = CLR_DEF_ARM_HALF;
+  lbl_len = stringwidth("[Time]", 0, tsize);
+  
+  stat = ui_calculate_time_string( servertime - SV_PLAYERTIME );
+  
+  morg = torg;
+  morg_x = morg_x + gui_percentXRaw(lbl_len + 4);
+  drawstring(torg, "[Time]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag); 
+  drawstring(morg, stat, tsize, colr, HUD_ALPHA, flag);
+  
+  drawfont = drawfont_prev;
+};
+
+/*
   RENDER RADAR DATA
     draws radar status - ACTIVE OR PASSIVE
     draws radar range - range changes based on radius
@@ -1070,6 +1098,11 @@ void() data_hud_frame={
           axis = UI_DATA_AXIS_FLAG[uid];
           hud_render_ram(porg, vsize, getstatf(STAT_RAM_VALUE), algn, axis, lblofs, lalign);
         }
+        break;
+      case HUD_UID_MSN_CLOCK:
+        porg = UI_DATA_POS[uid];
+        algn = UI_DATA_ALIGN[uid];
+        hud_render_missionClock( porg, algn, 0);
         break;
     }
     uid = uid + 1;

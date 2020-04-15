@@ -36,8 +36,6 @@ void() menu_debriefListener_onHover={
 
 //menu rendering
 void() menu_debrief_drawFrame={
-      cons_logAFloat("MENU_button_delay", MENU_button_delay);  //debug
-      cons_logAFloat("servertime", time);  //debug
   local vector topleftroot;
   topleftroot = VIEW_ORG;
 
@@ -54,7 +52,7 @@ void() menu_debrief_drawFrame={
   menu_debrief_objectives_primary( topleftroot + gui_percentToPixelRawVec('10 32') );
   menu_debrief_objectives_secondary( topleftroot + gui_percentToPixelRawVec('10 272') );
   menu_debrief_stats( topleftroot + gui_percentToPixelRaw(VIEW_CTR_x, 32) );
-  //menu_debrief_unlocks( topleftroot + gui_percentToPixelRaw(VIEW_CTR_x, 160) );
+  menu_debrief_unlocks( topleftroot + gui_percentToPixelRaw(VIEW_CTR_x, 160) );
 };
 
 /*
