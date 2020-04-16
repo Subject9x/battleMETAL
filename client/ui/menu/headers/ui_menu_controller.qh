@@ -36,6 +36,12 @@ void() menu_death_think;
 
 void(vector ofs) menu_navBar_drawFrame;
 
+//some generics
+void( vector menuOrg ) menu_serverinfo_basic; // connect_dm and score_dm ui.
+void( vector menuOrg ) menu_playerlist_basic; // connect_dm and score_dm ui.
+void( vector menuOrg ) menu_draw_players_basic;
+void( vector rowOfs, float itr, entity playerRow ) menu_player_row_basic;
+
 float AVAILABLE_RESERVE;
 float SELECT_MECH;  //replaces entity functionality, used in conjunction with ui_data file loading - Roohr 6/26/2018
 float MENU_ACTIVE;
@@ -108,8 +114,9 @@ string UI_WEP_BAL;
 string UI_WEP_EXP;
 string UI_WEP_MSC;
 
-//Navbar buttons
 
+
+//Navbar buttons
 vector UI_NAVBAR_BRIEF_ORG;
 vector UI_NAVBAR_HANGAR_ORG;
 vector UI_NAVBAR_ARMING_ORG;

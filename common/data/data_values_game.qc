@@ -88,6 +88,7 @@ float MISSION_STATUS_ENDING = 3;
 float MISSION_STATUS_WIN = 3; //dm / coop / campaign win status
 float MISSION_STATUS_WIN1 = 4;  //TDM - survest win
 float MISSION_STATUS_WIN2 = 5;  //TDM - militar win
+float MISSION_STATUS_STALEMATE = 6;  //TDM - wut
 
 //Multiplayer Server Flags
 float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players

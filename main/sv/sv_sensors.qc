@@ -19,9 +19,6 @@ void() sv_getTarget={
   
   makevectors(self.v_angle);
   src = self;
-  if(self.cockpit != world){
-    src = self.cockpit;
-  }
 
   traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
   if( ai_valid_target(trace_ent) ){

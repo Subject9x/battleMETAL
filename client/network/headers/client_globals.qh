@@ -12,6 +12,8 @@ entity CLIENT_MENU_deploy;
 
 float CLIENT_currentWeaponGroup;
 
+float CLIENT_mission_status;
+
 float CLIENT_flags;
 string CLIENT_netname;
 float CLIENT_player_state;

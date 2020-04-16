@@ -243,6 +243,20 @@ void() client_state_events={
       MENU_respawn_cool_start = servertime;
       return;
     }
+    //------------------------------------
+    
+    //EVENT - CLIENT END OF DM/TDM
+    if( (CLIENT_player_state_prev != PLAYER_INTERMSN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
+      cons_logAFloat("PLAYER_INTERMSN", 1);  //debug
+      menu_enter( MENU_SCORE_ACTIVE );
+      if( cvar("gamemode") == GAMEMODE_DM ){
+        
+      }
+      MENU_button_delay = servertime + 1;
+      //MENU_respawn_cool = servertime + 15;
+      //MENU_respawn_cool_start = servertime;
+    }
+    //------------------------------------
   }
 //==============================================
 };

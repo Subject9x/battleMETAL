@@ -16,8 +16,14 @@ called before running player input frame
 ============
 */
 void() PlayerPreThink = {
+  if( self.playerState == PLAYER_INTERMSN ){
+    client_push_player_info_thin();
+    if( MISSION_STATUS == MISSION_STATUS_ENDING ){
+      return;
+    }
+  }
+  
 	if (self.deadflag == DEAD_DEAD){
-		//PlayerDeathThink ();
 		return;
 	}
 	if (self.deadflag >= DEAD_DYING){
@@ -29,9 +35,7 @@ void() PlayerPreThink = {
 		return;					// the think tics
 	}
   
-  if( self.playerState == PLAYER_INTERMSN ){
-    client_push_player_info_thin();
-  }
+
   
 	if (self.view_ofs == '0 0 0'){
   	return;		// intermission or finale
@@ -40,7 +44,6 @@ void() PlayerPreThink = {
 	makevectors (self.v_angle);		// is this still used
 
 	//CheckRules ();  TODO - apparently vanilla QC checks multiplayer rules here - Roohr
-  sv_checkRules();
 	//WaterMove ();
 
 	//if (self.waterlevel == 2)

@@ -35,10 +35,8 @@ void() menu_connect_drawFrame;
 //------------------
 
 //Deathmatch layout
-void( vector menuOrg ) menu_connect_draw_mission_info_dm;
 void( vector menuOrg ) menu_connect_draw_rules_dm;
 void( vector menuOrg ) menu_connect_draw_about_dm;
-void( vector menuOrg ) menu_connect_draw_players_dm;
 
 //Team Deathmatch Layout
 void( vector menuOrg ) menu_connect_draw_mission_info_team;
@@ -55,7 +53,6 @@ void( vector menuOrg ) menu_connect_draw_players_coop;
 //Generic methods
 void( vector menuOrg ) menu_connect_draw_bar;
 void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar;
-void( vector rowOfs, float itr, entity playerRow ) menu_connect_draw_player_row;
 void( vector menuOrg ) menu_connect_draw_objectives;
 void( vector menuOrg ) menu_connect_draw_objectives_row;
 void( vector menuOrg, vector satMapSize ) menu_connect_draw_satmap;

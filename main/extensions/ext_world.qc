@@ -49,8 +49,14 @@ void() mh_world_ini={
   serverflags = 255;  //DEBUG
 
   STARTTIME = time;
-  ENDTIME = time + (cvar("timelimit") * 60);
-
+  if( cvar("timelimit") != FALSE ){
+    ENDTIME = time + (cvar("timelimit") * 60);
+  }
+  else{
+    ENDTIME = 0;
+  }
+  ENDROUND = 0;
+  
   world_ini_serverinfo();
 
   //kept in numerical order for easy reference.
@@ -181,7 +187,6 @@ void() world_ini_serverinfo={
     serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
   }
   SERVER_INFO = strzone(serverInfo);
-
 };
 
 /*
@@ -262,26 +267,34 @@ void() WeatherDominator_think={
 };
 
 /*
-  CHECK SERVER GAME RULES
-    ports -> CheckRules()
+  Server GameMode Rules
 */
-void() sv_checkRules={
-  
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+void() sv_rules_dm={
+  local entity player;
+
+  //Game FragLimit hit
+  if( cvar("fraglimit") != FALSE ){
+    for( player = nextent(world); player != world; player = nextent(player)){
+      if( !(player.flags & FL_CLIENT) ){
+        continue;
+      }
+      if( player.frags >= cvar("fraglimit") ){
+        ENDROUND = TRUE;
+      }
+    }
     
-  
+    if( ENDROUND ){
+        cons_logAFloat("SV()->sv_rules_dm.ENDROUND", 1); //debug
+      ENDROUND_TIME = time + 0.5;
+      MISSION_STATUS = MISSION_STATUS_ENDING;
+    }
     return;
   }
   
-  //Game FragLimit hit
-  if( self.frags >= cvar("fraglimit") ){
-
-    
-  }
-  
-  //Game TimeLimit hit
+  //Game TimeLimit hit  
   if( time >= ENDTIME ){
-
+    ENDROUND_TIME = time + 0.5;
+    ENDROUND = TRUE;
   }
   
   //Objective hit
@@ -290,6 +303,59 @@ void() sv_checkRules={
   //Limited Lives, no one left
   
 
+};
+void() sv_rules_tdm={
+
+};
+void() sv_rules_coop={
+
+};
+
+/*
+  CHECK SERVER GAME RULES
+    ports -> CheckRules()
+*/
+void() sv_checkRules={
+
+  switch( GAMETYPE ){
+    case GAMEMODE_COOP:
+      sv_rules_coop();
+      break;
+    case GAMEMODE_TEAMDM:
+      sv_rules_tdm();
+      break;
+    default:
+      sv_rules_dm();
+      break;
+  }
+};
+
+
+/*
+  Ends Round for all players
+*/
+void() sv_endServer={
+  cons_logAFloat("sv_endServer", 1);  //debug
+  local entity player;
+  local entity this;
+  for( player = nextent(world); player != world; player = nextent(player)){
+    if( !(player.flags & FL_CLIENT) ){
+      continue;
+    }
+    if( player.data_type == DATA_MECH && player.playerState > PLAYER_ANIM_STOP){
+      this = self;
+      self = player;
+        ctrl_unit_clean_wgroups();
+        ctrl_mech_die_player();
+        client_push_player_info();
+        ctrl_unit_cleanup_player();
+        player_unmakeMech();
+        player_makeObserver();
+      self = this;
+    }
+    player.playerState = PLAYER_INTERMSN;
+    player.deadflag = DEAD_DEAD;
+  }
 };
 
 
@@ -315,8 +381,6 @@ void() sv_world_load_items={
       break;
   }
 };
-
-
 
 /*
   Real-time Light entity exporter functionality.

@@ -114,59 +114,25 @@ void() worldspawn =
 	lightstyle(63, "a");
 };
 
+/*
+  Engine Entry point to new server frame
+*/
 void() StartFrame =
 {
 	teamplay = cvar("teamplay");
 	skill = cvar("skill");
 	framecount = framecount + 1;
+  GAMETYPE = cvar("gamemode");
+  
+  if( GAMETYPE != GAMEMODE_CAMPAIGN ){
+    if( ENDROUND == FALSE ){
+      sv_checkRules();  //placed here for consistency and fairness
+    }
+    else{
+      if( (ENDROUND < 2 ) && (time > ENDROUND) ){
+        sv_endServer();
+        ENDROUND = 2;
+      }
+    }
+  }
 };
-
-/*
-==============================================================================
-
-BODY QUE
-
-==============================================================================
-*/
-
-/*entity	bodyque_head;
-
-void() bodyque =
-{	// just here so spawn functions don't complain after the world
-	// creates bodyques
-};
-
-void() InitBodyQue =
-{
-	
-	bodyque_head = spawn();
-	bodyque_head.classname = "bodyque";
-	bodyque_head.owner = spawn();
-	bodyque_head.owner.classname = "bodyque";
-	bodyque_head.owner.owner = spawn();
-	bodyque_head.owner.owner.classname = "bodyque";
-	bodyque_head.owner.owner.owner = spawn();
-	bodyque_head.owner.owner.owner.classname = "bodyque";
-	bodyque_head.owner.owner.owner.owner = bodyque_head;
-};
-
-
-// make a body que entry for the given ent so the ent can be
-// respawned elsewhere
-void(entity ent) CopyToBodyQue =
-{
-  bodyque_head.effects = ent.effects;
-	bodyque_head.angles = ent.angles;
-	bodyque_head.model = ent.model;
-	bodyque_head.modelindex = ent.modelindex;
-	bodyque_head.frame = ent.frame;
-	bodyque_head.colormap = ent.colormap;
-	bodyque_head.movetype = ent.movetype;
-	bodyque_head.velocity = ent.velocity;
-	bodyque_head.flags = 0;
-	setorigin (bodyque_head, ent.origin);
-	setsize (bodyque_head, ent.mins, ent.maxs);
-	bodyque_head = bodyque_head.owner;
-};
-*/
-

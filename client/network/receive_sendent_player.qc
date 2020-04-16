@@ -131,6 +131,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevKills;
   local float prevFaction;
   local float prevDeadFlag;
+  local float msnStat;
   
   prevShield = self.shield;
   prevCrit = self.damageValue;
@@ -247,20 +248,21 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     self.kills = stof(getplayerkeyvalue(self.entId - 1, "frags"));
+    //TODO
+    self.particleCubeFlag = ReadByte();
+    
     if( prevKills != self.kills ){
       scoreboard_push( self.entId, self.kills );
       scoreboard_sort();
     }
     
-    //TODO
-    self.particleCubeFlag = ReadByte();
     if( self.particleCubeFlag == 0 ){
       //remove cube
     }
     else if( self.particleCubeFlag && isNew ){
-      if( player_localentnum == self.data_idx ){
+      //if( player_localentnum == self.data_idx ){
         //add cube
-      }
+      //}
     }
   }
   
