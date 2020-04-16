@@ -450,7 +450,16 @@ void() PlayerDieNetworkEnd={
   }
   cons_logAFloat("SV()->PlayerDieNetworkEnd()->enter", 1);  //DEBUG
   self.movetype = MOVETYPE_NONE;
-  self.playerState = PLAYER_REDEPLOY;
+  
+  
+  if( MISSION_STATUS < MISSION_STATUS_OVER ){
+    self.playerState = PLAYER_REDEPLOY;
+  }
+  else{
+    self.playerState = PLAYER_INTERMSN; //short-circuit to intermission
+      //on ending server.
+  }
+  
   
   self.think = PlayerDead;
   self.nextthink = time + 1;

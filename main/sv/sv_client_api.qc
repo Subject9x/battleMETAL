@@ -218,6 +218,12 @@ void() PutClientInServer = {
       PutClientInServer_TeamDeathmatch();
       break;
   }
+  //Client connected to a round that's ending.
+  if( MISSION_STATUS > MISSION_STATUS_ACTIVE ){
+    if( GAMETYPE != GAMEMODE_CAMPAIGN ){
+      self.playerState = PLAYER_INTERMSN;
+    }
+  }
 };
 
 /*
@@ -227,8 +233,7 @@ ClientKill
 Player entered the suicide command
 ============
 */
-void() ClientKill = {
-
+void() ClientKill = { 
   if(self.deadflag){
     return;
   }
@@ -244,12 +249,12 @@ void() ClientKill = {
   
   bprint (self.netname);
   bprint (" cowardly self-destructs!\n");
-
-  //only deduct frags of player is going from !observer to another !observer
+  
   self.frags = self.frags - 2;
   if( self.frags < 0 ){
     self.frags = 0;
   }
+  
   self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_TURRET);
   self.health = 0;
   self.th_die();

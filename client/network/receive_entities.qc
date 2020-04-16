@@ -255,6 +255,7 @@ void() client_state_events={
       MENU_button_delay = servertime + 1;
       //MENU_respawn_cool = servertime + 15;
       //MENU_respawn_cool_start = servertime;
+      return;
     }
     //------------------------------------
     

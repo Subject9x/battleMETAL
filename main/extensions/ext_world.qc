@@ -304,7 +304,37 @@ void() sv_rules_dm={
 
 };
 void() sv_rules_tdm={
+  local entity player;
 
+  //Game FragLimit hit
+  if( cvar("fraglimit") != FALSE ){
+    for( player = nextent(world); player != world; player = nextent(player)){
+      if( !(player.flags & FL_CLIENT) ){
+        continue;
+      }
+      if( player.frags >= cvar("fraglimit") ){
+        MISSION_STATUS = MISSION_STATUS_OVER;
+      }
+    }
+    
+    if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
+      cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
+    }
+    return;
+  }
+  
+  //Game TimeLimit hit  
+  if( time >= ENDTIME_LIMIT ){
+    MISSION_STATUS ==  MISSION_STATUS_OVER;
+    cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
+    return;
+  }
+  
+  //Objective hit
+  
+  
+  //Limited Lives, no one left
+  
 };
 void() sv_rules_coop={
 
