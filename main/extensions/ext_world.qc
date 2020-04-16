@@ -50,10 +50,10 @@ void() mh_world_ini={
 
   STARTTIME = time;
   if( cvar("timelimit") != FALSE ){
-    ENDTIME = time + (cvar("timelimit") * 60);
+    ENDTIME_LIMIT = time + (cvar("timelimit") * 60);
   }
   else{
-    ENDTIME = 0;
+    ENDTIME_LIMIT = 0;
   }
   ENDROUND = 0;
   
@@ -279,22 +279,21 @@ void() sv_rules_dm={
         continue;
       }
       if( player.frags >= cvar("fraglimit") ){
-        ENDROUND = TRUE;
+        MISSION_STATUS = MISSION_STATUS_OVER;
       }
     }
     
-    if( ENDROUND ){
-        cons_logAFloat("SV()->sv_rules_dm.ENDROUND", 1); //debug
-      ENDROUND_TIME = time + 0.5;
-      MISSION_STATUS = MISSION_STATUS_ENDING;
+    if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
+      cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
     }
     return;
   }
   
   //Game TimeLimit hit  
-  if( time >= ENDTIME ){
-    ENDROUND_TIME = time + 0.5;
-    ENDROUND = TRUE;
+  if( time >= ENDTIME_LIMIT ){
+    MISSION_STATUS ==  MISSION_STATUS_OVER;
+    cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
+    return;
   }
   
   //Objective hit
@@ -316,17 +315,27 @@ void() sv_rules_coop={
     ports -> CheckRules()
 */
 void() sv_checkRules={
-
-  switch( GAMETYPE ){
-    case GAMEMODE_COOP:
-      sv_rules_coop();
-      break;
-    case GAMEMODE_TEAMDM:
-      sv_rules_tdm();
-      break;
-    default:
-      sv_rules_dm();
-      break;
+  GAMETYPE = cvar("gamemode");
+  if( GAMETYPE != GAMEMODE_CAMPAIGN ){
+    //campaign missions run on their own single-player behavior with specific mission end checks
+    if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+      switch( GAMETYPE ){
+        case GAMEMODE_COOP:
+          sv_rules_coop();
+          break;
+        case GAMEMODE_TEAMDM:
+          sv_rules_tdm();
+          break;
+        default:
+          sv_rules_dm();
+          break;
+      }
+      return;
+    }
+    else{
+    //server has hit its rules checks, start gameover stuff here.
+      sv_endServer();
+    }
   }
 };
 
@@ -335,26 +344,56 @@ void() sv_checkRules={
   Ends Round for all players
 */
 void() sv_endServer={
-  cons_logAFloat("sv_endServer", 1);  //debug
   local entity player;
   local entity this;
-  for( player = nextent(world); player != world; player = nextent(player)){
-    if( !(player.flags & FL_CLIENT) ){
-      continue;
+  
+  if( MISSION_STATUS == MISSION_STATUS_OVER ){
+    cons_logAFloat("SV()->sv_endServer.MISSION_STATUS == MISSION_STATUS_OVER", 1);  //debug
+    //send game over data
+        //TODO
+    //Setup end-timer 1 - gives enough time to alert players of end mission, and prepare for score screen.   
+    MISSION_STATUS = MISSION_STATUS_ENDING;
+    ENDROUND_TIME = time + 15;
+    return;
+  }
+  
+  if( MISSION_STATUS == MISSION_STATUS_ENDING ){
+    if( time > ENDROUND_TIME ){
+      cons_logAFloat("SV()->sv_endServer.MISSION_STATUS == MISSION_STATUS_ENDING", 1);  //debug
+      for( player = nextent(world); player != world; player = nextent(player)){
+        if( !(player.flags & FL_CLIENT) ){
+          continue;
+        }
+        if( player.data_type == DATA_MECH && player.playerState > PLAYER_ANIM_STOP){
+          this = self;
+          self = player;
+            ctrl_unit_clean_wgroups();
+            ctrl_mech_die_player();
+            client_push_player_info();
+            ctrl_unit_cleanup_player();
+            player_unmakeMech();
+            player_makeObserver();
+          self = this;
+        }
+        player.playerState = PLAYER_INTERMSN;
+        player.deadflag = DEAD_DEAD;
+      }
+      MISSION_STATUS = MISSION_STATUS_DONE;
+      //ENDROUND_TIME = time + 120; //2 minutes of score screen.
+      ENDROUND_TIME = time + 5; //debug 30s test
+      ENDROUND = TRUE;
     }
-    if( player.data_type == DATA_MECH && player.playerState > PLAYER_ANIM_STOP){
-      this = self;
-      self = player;
-        ctrl_unit_clean_wgroups();
-        ctrl_mech_die_player();
-        client_push_player_info();
-        ctrl_unit_cleanup_player();
-        player_unmakeMech();
-        player_makeObserver();
-      self = this;
+    return;
+  }
+  
+  if( MISSION_STATUS == MISSION_STATUS_DONE ){
+    if( time > ENDROUND_TIME ){
+      if( ENDROUND == TRUE ){
+        cons_logAFloat("SV()->sv_endServer.MISSION_STATUS == MISSION_STATUS_DONE", 1);  //debug
+        ENDROUND = FALSE;
+      }
     }
-    player.playerState = PLAYER_INTERMSN;
-    player.deadflag = DEAD_DEAD;
+    return;
   }
 };
 

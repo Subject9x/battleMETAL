@@ -58,6 +58,9 @@ void() menu_handleFrame={
     case MENU_CONNECT_ACTIVE:
       menu_connect_drawFrame();
       break;
+    case MENU_SCORE_ACTIVE:
+      menu_score_drawFrame();
+      break;
   }
 
   if( toolTip.data_idx > FALSE ){

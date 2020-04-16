@@ -122,17 +122,5 @@ void() StartFrame =
 	teamplay = cvar("teamplay");
 	skill = cvar("skill");
 	framecount = framecount + 1;
-  GAMETYPE = cvar("gamemode");
-  
-  if( GAMETYPE != GAMEMODE_CAMPAIGN ){
-    if( ENDROUND == FALSE ){
-      sv_checkRules();  //placed here for consistency and fairness
-    }
-    else{
-      if( (ENDROUND < 2 ) && (time > ENDROUND) ){
-        sv_endServer();
-        ENDROUND = 2;
-      }
-    }
-  }
+  sv_checkRules(); //ported over here for fairness and synchronization
 };

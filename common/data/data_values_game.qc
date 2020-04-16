@@ -82,13 +82,16 @@ float TEAM_SURVEST_TOTAL;  //team deathmatch
 float TEAM_MILITAR_TOTAL;
 
 //Multiplayer Mission Status
-float MISSION_STATUS_READY = 1;
-float MISSION_STATUS_ACTIVE = 2;
-float MISSION_STATUS_ENDING = 3;
-float MISSION_STATUS_WIN = 3; //dm / coop / campaign win status
-float MISSION_STATUS_WIN1 = 4;  //TDM - survest win
-float MISSION_STATUS_WIN2 = 5;  //TDM - militar win
-float MISSION_STATUS_STALEMATE = 6;  //TDM - wut
+float MISSION_STATUS_READY    = 1;  //server ready to start when the first player connects
+float MISSION_STATUS_ACTIVE   = 2;  //server is running as normal
+float MISSION_STATUS_OVER     = 3;  //sv_checkrules() hit, triggering server end func
+float MISSION_STATUS_ENDING   = 4;  //
+float MISSION_STATUS_DONE     = 5;
+
+float MISSION_STATUS_WIN      = 6;  //dm / coop / campaign win status
+float MISSION_STATUS_WIN1     = 7;  //TDM - survest win
+float MISSION_STATUS_WIN2     = 8;  //TDM - militar win
+float MISSION_STATUS_STALEMATE= 9;  //TDM - wut
 
 //Multiplayer Server Flags
 float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players

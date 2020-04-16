@@ -11,10 +11,12 @@ float CLIENTS;
 float MISSION_STATUS;     //used to track whether player WON or LOST the current mission.
 float GAMETYPE;
 float STARTTIME;
-float ENDTIME;
-float ENDROUND;           //sv_checkRules sets this so ending is next frame-ish;
-float ENDROUND_TIME;           //sv_checkRules sets this so ending is next frame-ish;
+float ENDTIME_LIMIT;
 float TECHLEVEL;
+
+float ENDROUND;           //sv_checkRules sets this so ending is next frame-ish;
+float ENDROUND_TIME;      //sv_checkRules sets this so ending is next frame-ish;
+
 
 string SERVER_INFO;
 

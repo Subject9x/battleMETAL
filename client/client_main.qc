@@ -438,9 +438,9 @@ void(string s) CSQC_Parse_StuffCmd =
       }
       
       
-      SV_ENDTIME = getstatf(STAT_TIMELIMIT);
-      if( SV_ENDTIME > 0 ){
-        SV_ENDTIME = (SV_ENDTIME * 60) + SV_STARTTIME;
+      SV_ENDTIMELIMIT = getstatf(STAT_TIMELIMIT);
+      if( SV_ENDTIMELIMIT > 0 ){
+        SV_ENDTIMELIMIT = (SV_ENDTIMELIMIT * 60) + SV_STARTTIME;
       }
       
             if(CLIENT_player_state == PLAYER_CONNECT ){

@@ -438,14 +438,19 @@ void() PlayerDieNetwork={
     time + GAME_TIME_TO_DEBRIEF
 */
 void() PlayerDieNetworkEnd={
-  cons_logAFloat("SV()->PlayerDieNetworkEnd()->enter", 1);  //DEBUG
   
-  self.movetype = MOVETYPE_NONE;
-  self.playerState = PLAYER_REDEPLOY;
-    
   ctrl_unit_cleanup_player();
   player_unmakeMech();
   player_makeObserver();
+ 
+  if( self.playerState == PLAYER_INTERMSN ){
+    //end of round happened during death.
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+  cons_logAFloat("SV()->PlayerDieNetworkEnd()->enter", 1);  //DEBUG
+  self.movetype = MOVETYPE_NONE;
+  self.playerState = PLAYER_REDEPLOY;
   
   self.think = PlayerDead;
   self.nextthink = time + 1;
@@ -453,9 +458,14 @@ void() PlayerDieNetworkEnd={
 
 
 void() PlayerDead={
-  self.playerState = PLAYER_SPAWN;
-  cons_logAFloat("SV()->PlayerDead()->enter", 1);  //DEBUG
 	self.nextthink = -1;
+  if( self.playerState == PLAYER_INTERMSN ){
+    //end of round happened during death.
+    self.deadflag = DEAD_DEAD;
+    return;
+  } 
+  cons_logAFloat("SV()->PlayerDead()->enter", 1);  //DEBUG
+  self.playerState = PLAYER_SPAWN;
 	self.deadflag = DEAD_DEAD;
 };
 

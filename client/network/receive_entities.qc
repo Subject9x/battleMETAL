@@ -212,7 +212,7 @@ void() client_state_events={
         else{
           te_mission_lose();
         }
-        SV_ENDTIME = servertime;
+        SV_ENDTIMELIMIT = servertime;
       }
       return;
     }
@@ -247,6 +247,19 @@ void() client_state_events={
     
     //EVENT - CLIENT END OF DM/TDM
     if( (CLIENT_player_state_prev != PLAYER_INTERMSN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
+      cons_logAFloat("PLAYER_INTERMSN", 1);  //debug
+      menu_enter( MENU_SCORE_ACTIVE );
+      if( cvar("gamemode") == GAMEMODE_DM ){
+        
+      }
+      MENU_button_delay = servertime + 1;
+      //MENU_respawn_cool = servertime + 15;
+      //MENU_respawn_cool_start = servertime;
+    }
+    //------------------------------------
+    
+    //EVENT - CLIENT connect during end of round
+    if( (CLIENT_player_state_prev != PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
       cons_logAFloat("PLAYER_INTERMSN", 1);  //debug
       menu_enter( MENU_SCORE_ACTIVE );
       if( cvar("gamemode") == GAMEMODE_DM ){
