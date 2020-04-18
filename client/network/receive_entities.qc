@@ -159,8 +159,25 @@ void() receive_ent_bindData={
 
 /*
   State controller for Client's playerState as picked up from Server
+  also Server Mission Status and Results
 */
 void() client_state_events={
+  
+  //
+  if( SV_MISSION_STATUS_PREV != SV_MISSIONSTATUS ){
+    //Server Event - end of map
+    if( (SV_MISSION_STATUS_PREV != MISSION_STATUS_OVER) && (SV_MISSIONSTATUS == MISSION_STATUS_OVER) ){
+      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+        if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
+          hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1 );
+        }
+        else{
+          hud_event_enqueue( HUD_EVENT_MISSION_FAILED, 1 );
+        }
+      }
+    }
+  }
+  
   if( CLIENT_player_state != CLIENT_player_state_prev ){
       cons_log2Float("CLIENT_player_state ", CLIENT_player_state_prev, "--->", CLIENT_player_state);  //debug
     //Player has just connected to server
@@ -206,7 +223,7 @@ void() client_state_events={
     if( (CLIENT_player_state_prev != PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEAD) ){
       cons_logAFloat("PLAYER_DEAD", 1);  //debug
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-        if( SV_MISSIONSTATUS == MISSION_STATUS_WIN ){
+        if( SV_MISSIONSTATUS == MISSION_RESULT_WIN ){
           te_mission_win();
         }
         else{
@@ -224,7 +241,25 @@ void() client_state_events={
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_button_delay = servertime + 2;
       
-      if( SV_MISSIONSTATUS == MISSION_STATUS_WIN ){
+      if( SV_MISSIONSTATUS == MISSION_RESULT_WIN ){
+        MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
+      }
+      else{
+        MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
+      }
+      return;
+    }
+    //------------------------------------
+    
+    //EVENT - CLIENT CAMPAIGN DEBRIEF MISSION END
+    if( (CLIENT_player_state_prev != PLAYER_DEBRIEF) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
+      cons_logAFloat("PLAYER_DEBRIEF", 1);  //debug
+      menu_enter( MENU_DEBRIEF_ACTIVE );
+      MENU_button_delay = servertime + 2;
+      MENU_DEBRIEF_status = SV_MISSION_RESULT;
+      cons_logAFloat("SV_MISSION_RESULT", SV_MISSION_RESULT);  //debug
+      cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
+      if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
         MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
       }
       else{
@@ -436,8 +471,15 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   
 */
 void() client_get_serverinfo={
+  SV_MISSION_STATUS_PREV = SV_MISSIONSTATUS;
+  
   SV_MISSIONSTATUS = ReadByte();
   SV_STARTTIME = ReadLong();
+  SV_SERVERFLAGS = ReadLong();
+  SV_MISSION_RESULT = ReadByte();
+  if( SV_MISSIONSTATUS == MISSION_STATUS_OVER ){
+    SV_ENDTIME = servertime;
+  }
 };
 
 /*

@@ -330,7 +330,7 @@ void(string cmd, float tokens) client_setMission={
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
     self.playerState = PLAYER_ACTIVE;
     self.view_ofs = '0 0 1';
-    if( argv(2) == "1" ){ 
+    if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       if( !world.ignoreSave ){
         savefile_changemap(nextmap);
@@ -805,14 +805,16 @@ float(entity piece) csqc_updateCompStat={
 };
 
 /*
-  Send important world data
+  Send important world data, useful for timed updates like Campaign and Coop.
 */
 void() client_send_server_info_update={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_SERVERINFO );
-  WriteByte( MSG_BROADCAST, MISSION_STATUS );
-  WriteLong( MSG_BROADCAST, STARTTIME );
-  //WriteString( MSG_BROADCAST, world.message );
+  WriteByte( MSG_ALL, SVC_TEMPENTITY );
+  WriteByte( MSG_ALL, TE_SERVERINFO );
+  WriteByte( MSG_ALL, MISSION_STATUS );
+  WriteLong( MSG_ALL, STARTTIME );
+  WriteLong( MSG_ALL, serverflags );
+  WriteByte( MSG_ALL, MISSION_RESULT );
+  //WriteString( MSG_ALL, world.message );
 };
 
 /*

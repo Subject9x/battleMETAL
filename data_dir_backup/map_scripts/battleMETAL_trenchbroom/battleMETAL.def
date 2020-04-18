@@ -2243,9 +2243,10 @@ ACTIVE_ONTOUCH 2: allows player to touch, set mins and maxs
 
 /*QUAKED map_mission_end(0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF - MISSION_LOSE - TOUCH_ACTIVE TOUCH_FACTION
 End_Mission ends the entire mission for EVERY player / faction.
-It is the source of the "Mission Fail/Succeed" message that players see on their HUDs.
 Default is play "mission successful" message for faction-matching players.
 Odds are there'll be 2 of these per single player map, 1 success, 1 fail.
+
+CAMPAIGN ONLY and COOP ONLY!
 
 -------- KEYS -------- 
 .isActive = <float> enum

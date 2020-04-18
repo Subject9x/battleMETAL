@@ -25,7 +25,7 @@ void() map_end_mission_over={
   }
   nextmap = self.map;
   
-  objective = self;
+  /*objective = self;
   playerStart = find(world, classname, "info_player_start");
   for( player = nextent(world); player.classname == "player"; player = nextent(player) ){
     //taken from execute_changelevel()
@@ -50,35 +50,34 @@ void() map_end_mission_over={
     }
     setorigin (player, playerStart.origin);
   }
-  self = objective;
-	WriteByte (MSG_ALL, SVC_INTERMISSION);
+  self = objective;*/
+	//WriteByte (MSG_ALL, SVC_INTERMISSION);
   self.think = SUB_Remove;
   self.nextthink = time + 2;
 };
 
 
 void() map_end_mission_event={
-  intermission_running = 1;
-  intermission_exittime = time + 2;
+  //intermission_running = 1;
+  //intermission_exittime = time + 2;
   self.think = map_end_mission_over;
   self.nextthink = time + 3;
 };
 
 /*
-  Only if MISSION_LOSE or MISSION_WIN.
+Only if MISSION_LOSE or MISSION_WIN.
+
+  Change - MISSION_STATUS? 1:-1.
+
+  set objective states to client.
+
+  change clients to observers.
   
-    Change - MISSION_STATUS? 1:-1.
-  
-    put clients into INTERMISSION.
-  
-    set objective states to client.
-  
-    change clients to observers.
-    
+  CAMPAIGN---------
     if MISSION_WIN
       nextmap -> .map
       send unlocks to client.
-  
+
     if MISSION_LOSE
       nextmap -> .map
 */
@@ -86,13 +85,25 @@ void() map_end_mission_conclude={
   local entity player;
   local entity objective;
   
-  objective = self;
+  //mission can only end if its active.
+  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+    MISSION_STATUS = MISSION_STATUS_OVER;
+    if( self.missionStatus == TRUE ){
+      MISSION_RESULT = MISSION_RESULT_WIN;
+    }
+    else{
+      MISSION_RESULT = MISSION_RESULT_FAIL;
+    }
+    self.think = map_end_mission_event;
+    self.nextthink = time + 4;
+  }
+  /*objective = self;
   for( player = nextent(world); player.classname == "player"; player = nextent(player) ){
     self = player;
     if( self.faction == objective.faction ){
       if( objective.missionStatus == TRUE ){
         self.missionStatus = TRUE;
-        client_sendMissionUnlocks();
+        //client_sendMissionUnlocks(); TODO - figure out unlocks
         if( !world.ignoreSave ){
           savefile_append();    
         }
@@ -105,23 +116,22 @@ void() map_end_mission_conclude={
     }
     else{
       if( objective.missionStatus == TRUE ){
-        te_mission_lose();
+        //te_mission_lose();
         self.missionStatus = FALSE;
       }
       else{
         self.missionStatus = TRUE;
-        client_sendMissionUnlocks();
+        //client_sendMissionUnlocks(); TODO - figure out unlocks
         if( !world.ignoreSave ){
           savefile_append();    
         }
-        te_mission_win();
+        //te_mission_win();
       }
     }
   }
-  self = objective;
+  self = objective;*/
     
-  self.think = map_end_mission_event;
-  self.nextthink = time + 4;
+
 };
 
 
@@ -157,9 +167,10 @@ void() map_end_mission_touch={
 
 /*QUAKED map_mission_end(0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF - MISSION_LOSE - TOUCH_ACTIVE TOUCH_FACTION
 End_Mission ends the entire mission for EVERY player / faction.
-It is the source of the "Mission Fail/Succeed" message that players see on their HUDs.
 Default is play "mission successful" message for faction-matching players.
 Odds are there'll be 2 of these per single player map, 1 success, 1 fail.
+
+CAMPAIGN ONLY and COOP ONLY!
 
 -------- KEYS -------- 
 .isActive = <float> enum

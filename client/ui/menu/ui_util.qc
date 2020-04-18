@@ -172,7 +172,8 @@ string(float timeVal ) ui_calculate_time_string={
 
 string() ui_label_mission_status={
   local string val;
-  switch( SV_MISSIONSTATUS ){
+//TODO fix 
+ /*switch( SV_MISSIONSTATUS ){
     case MISSION_STATUS_READY:
       val = "Ready";
       break;
@@ -182,17 +183,17 @@ string() ui_label_mission_status={
     case MISSION_STATUS_ENDING:
       val = "Complete";
       break;
-    case MISSION_STATUS_WIN:
+    case MISSION_RESULT_WIN:
       val = "Victory";
       break;
-    case MISSION_STATUS_WIN1:
+    case MISSION_RESULT_WIN1:
       val = "Victory - Survest";
       break;
-    case MISSION_STATUS_WIN2:
+    case MISSION_RESULT_WIN2:
       val = "Victory - Militar";
       break;
       
-  }
+  }*/
   return val;
 };
 

@@ -9,6 +9,7 @@ Overview: function extensions to world.qc
 //GLOBALS
 float CLIENTS;
 float MISSION_STATUS;     //used to track whether player WON or LOST the current mission.
+float MISSION_RESULT;     //
 float GAMETYPE;
 float STARTTIME;
 float ENDTIME_LIMIT;

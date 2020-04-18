@@ -15,6 +15,7 @@ void() menu_debriefListener_onClick={
   //next/retry mission button
   if( servertime > MENU_button_delay ){
     if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
+      cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
       //Single player 
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
         setpause( 0 );
@@ -38,14 +39,6 @@ void() menu_debriefListener_onHover={
 void() menu_debrief_drawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
-
-  if( cvar("gamemode") != GAMEMODE_CAMPAIGN ){
-    if( SV_MISSIONSTATUS == MISSION_STATUS_ACTIVE ){
-      if( CLIENT_player_deadflag > DEAD_NO ){
-        MENU_DEBRIEF_status = 0;
-      }
-    }
-  }
 
   gui_renderTintImage2(MENU_DEBRIEF_status, topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF - '0.15 0.15 0.15', 1, 0) ;  
   menu_debrief_header( topleftroot );
@@ -321,7 +314,7 @@ void(vector panelOffset) menu_debrief_stats={
   
   //Time taken
   drawstring( thisOrg + gui_percentToPixelRawVec('6 72'), "Mission Time:", '14 14', CLR_DEF_GRAY_H, 1, 0);
-  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), ui_calculate_time_string( SV_ENDTIMELIMIT - SV_PLAYERTIME ) , '16 16', '1 1 1', 1, 0);
+  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), ui_calculate_time_string( SV_ENDTIME - SV_PLAYERTIME ) , '16 16', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
 };

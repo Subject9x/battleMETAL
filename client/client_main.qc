@@ -433,20 +433,18 @@ void(string s) CSQC_Parse_StuffCmd =
         cvar_set("saveslot", argv(5) );
         cons_logAFloat("saveslot", cvar("saveslot"));  //debug
       }
-      else{     
+      else{
+        SV_ENDTIMELIMIT = getstatf(STAT_TIMELIMIT);
         cvar_set("saveslot", "0");
       }
       
-      
-      SV_ENDTIMELIMIT = getstatf(STAT_TIMELIMIT);
       if( SV_ENDTIMELIMIT > 0 ){
         SV_ENDTIMELIMIT = (SV_ENDTIMELIMIT * 60) + SV_STARTTIME;
       }
       
-            if(CLIENT_player_state == PLAYER_CONNECT ){
+      if(CLIENT_player_state == PLAYER_CONNECT ){
         cl_set_savepath( cvar("gamemode") );
       }
-      
     }
     else if( argv(0) == "fog" ){
       cl_get_new_fog( s );
