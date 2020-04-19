@@ -144,7 +144,6 @@ void() CSQC_Init =
   FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
   
   SCORESTACK = 0;
-  local float i;
   for( i=0; i < SCOREBOARDMAX; i=i+1){
     SCOREBOARD[i] = 0;
     SCORETABLE[i] = 0;
@@ -156,6 +155,18 @@ void() CSQC_Init =
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
 void() CSQC_Shutdown =
 {
+  if( UNLOCKED_MECHS_DATA != "" ){
+    strunzone(UNLOCKED_MECHS_DATA); 
+  }
+  if( UNLOCKED_ITEMS_DATA != "" ){
+    strunzone(UNLOCKED_ITEMS_DATA); 
+  }
+  if( MENU_DEBRIEF_unlocks_mechs != "" ){
+    strunzone(MENU_DEBRIEF_unlocks_mechs); 
+  } 
+  if( MENU_DEBRIEF_unlocks_equip != "" ){
+    strunzone(MENU_DEBRIEF_unlocks_equip); 
+  }
   
   localcmd("cd stop\n");
 };
@@ -417,9 +428,6 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     else if(argv(1) == "anm"){
       cl_get_animfile( argv(2) );
-    }
-    else if(argv(1) == "unl"){
-      cl_unlock_stuff(s);
     }
   }
   else{

@@ -18,8 +18,9 @@ void() menu_debriefListener_onClick={
       cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
       //Single player 
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+        cl_savefile_save();
         setpause( 0 );
-        cl_set_mission( MENU_DEBRIEF_status );
+        //cl_set_mission( MENU_DEBRIEF_status );
         return;
       }
       //DEATHMATCH AND COOP
@@ -482,4 +483,36 @@ void(vector panelOffset) menu_debrief_unlocks={
   drawfont = drawfont_prev;
 };
 
+void() menu_debrief_sort_unlocks={
+  local string item;
+  local float tokens;
+  local float tokenItr;
+  local float itemCounter;
+  
+  tokenItr = 0;
+  itemCounter = 0;
+  //mech list is blank
+  if( MENU_DEBRIEF_unlocks_mechs != "" ){
+    tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
+    while( tokenItr < tokens ){
+      item = strzone(argv(tokenItr));  
+      itemCounter = stof(item);
+      UNLOCKED_MECHS[itemCounter] = itemCounter;
+      strunzone(item);
+      tokenItr = tokenItr + 1;
+    }
+  }
 
+  tokenItr = 0;
+  itemCounter = 1;
+  if( MENU_DEBRIEF_unlocks_equip != "" ){
+    tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
+    while( tokenItr < tokens ){
+      item = strzone(argv(tokenItr));
+      itemCounter = stof(item);
+      UNLOCKED_ITEMS[itemCounter] = itemCounter;
+      strunzone(item);
+      tokenItr = tokenItr + 1;
+    }
+  }
+};

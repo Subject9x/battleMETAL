@@ -8,5 +8,14 @@ Overview:
   Campaign games will load data locally.
 */
 
+string UNLOCKED_MECHS_DATA; // pulled from cl_load_savefile
+string UNLOCKED_ITEMS_DATA; // pulled from cl_load_savefile
+
 void( string fileName ) cl_load_savefile;
 void( float gameType ) cl_set_savepath;
+void() cl_get_mechs_sort;
+void() cl_load_mechs_all;
+void() cl_load_items_all;
+void() cl_savefile_save; //single player only
+void() cl_savefile_append;
+string(string item, string source) cl_savefile_insert;

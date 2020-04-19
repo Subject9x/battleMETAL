@@ -35,6 +35,7 @@ float TE_STOMP_TYPE;  //set by world type
 .string missionFile;  //data/map_scripts/<map_name>/<map_name>.msn
 .string mapFile;      //data/map_scripts/<map_name>/<map_name>.sav
 
+//DEPRECATED
 .string unlockMechs;  //determines unlock mechs given to the player.
 .string unlockEquip;  //determines unlock equip given to the player.
 .string itemOverrideFile; //if present, send this file of items instead of normal save file

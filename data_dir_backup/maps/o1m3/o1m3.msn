@@ -3,6 +3,7 @@
 //img stored in data/map_scripts/
   'img' : 'o1m2/o1m2.png'
   'name'  : 'Operation Stolen Ground'
+  'display' : 'Damage king'
   'type'  : 'Base Defense'
   'points' : '1'
   'sector' : 'Badlands'
@@ -18,6 +19,8 @@
   'objid' : '1'
   'objtype': 'primary'
   'objdesc' : 'Protect all base structures at (NAV) Alpha.'
+  'mechs' : '2'
+  'items' : '5 10 15'
 }
 {
   'objid' : '2'

@@ -375,11 +375,12 @@ void(string cmd, float tokens) client_setWeaponGroup={
   self.w_group4 = stof(argv(5));
 };
 
-void() client_sendMissionUnlocks={
+//DEPRECATED
+/*void() client_sendMissionUnlocks={
   local string cmd;
   cmd = strcat("m unl [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
   stuffcmd(self, cmd);
-};
+};*/
 
 /*
   client Mapping = client_event_mission_name();

@@ -189,7 +189,7 @@ void() execute_changelevel={
       if( world.animaticOnly == FALSE ){
         self.playerState = PLAYER_INTERMSN;  //TEST
         client_push_mapobjects();
-        client_sendMissionUnlocks();
+        //client_sendMissionUnlocks();
         client_sendEndMission(self, 1) ;
       }
     this = self;

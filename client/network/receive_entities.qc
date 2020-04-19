@@ -261,6 +261,7 @@ void() client_state_events={
       cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
       if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
         MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
+        msn_unlock_stuff();
       }
       else{
         MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";

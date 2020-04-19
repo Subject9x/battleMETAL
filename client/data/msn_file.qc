@@ -97,11 +97,18 @@ void() msn_parsefile={
           MSN_ANIM = strzone(argv(token));
         }
       }
+      if (argv(1) == MSN_FILE_DISP){
+        if( argv(token) != "" ){
+          MSN_DISP = strzone(argv(token));
+        }
+      }
 
       //objectives section
       tobj = msn_mapobjid(tobj, argv(1), argv(token));  //somehow reading this second works
       msn_setobjdesc(tobj, argv(1), argv(token));
       msn_setobj_type(tobj, argv(1), argv(token));
+      msn_setobj_mechs(tobj, argv(1), argv(token));
+      msn_setobj_items(tobj, argv(1), argv(token));
     }
     //checks for end-of-objective struct
     if( (tobj > 0) && (line =="}")){
@@ -212,4 +219,48 @@ void( float obj_id, string line, string val) msn_setobj_type={
       MSN_OBJ_TYPES[obj_id] = strzone(val);
     }
   }
+};
+
+void( float obj_id, string line, string val) msn_setobj_mechs={
+  if(line == MSN_FILE_OBJ_MECH){
+    if(obj_id != 0){
+      MSN_OBJ_MECHS[obj_id] = strzone(val);
+    }
+  }
+};
+
+void( float obj_id, string line, string val) msn_setobj_items={
+  if(line == MSN_FILE_OBJ_ITEM){
+    if(obj_id != 0){
+      MSN_OBJ_ITEMS[obj_id] = strzone(val);
+    }
+  }
+};
+
+//ops
+void() msn_unlock_stuff={
+  local string unlockMechs;
+  local string unlockItems;
+  local entity obj;
+  for( obj = findfloat(world, data_type, DATA_OBJT); obj != world; obj = nextent(obj) ){
+    if( obj.data_type != DATA_OBJT ){
+      continue;
+    }
+    if( obj.faction != CLIENT_faction ){
+      continue;
+    }
+    if( MSN_OBJ_MECHS[obj.data_idx] != "" ){
+      unlockMechs = strcat(unlockMechs, MSN_OBJ_MECHS[obj.data_idx], " ");
+    }
+    if( MSN_OBJ_ITEMS[obj.data_idx] != "" ){
+      unlockItems = strcat(unlockMechs, MSN_OBJ_ITEMS[obj.data_idx], " ");
+    }
+  }
+  if( unlockMechs != "" ){
+    MENU_DEBRIEF_unlocks_mechs = strzone( unlockMechs );
+  }
+  if( unlockItems != "" ){
+    MENU_DEBRIEF_unlocks_equip = strzone( unlockItems );
+  }
+  cl_savefile_append();
 };

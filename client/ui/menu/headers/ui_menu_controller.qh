@@ -78,10 +78,6 @@ float CLIENT_MENU_nex_grp1;
 float CLIENT_MENU_nex_grp2;
 float CLIENT_MENU_nex_grp3;
 float CLIENT_MENU_nex_grp4;
-//
-
-string MISSION_OBJECTIVES[12];
-float MISSION_OBJ_STATUS[12];
 
 //pre-launch validation
 float LAUNCH_VALIDATION;

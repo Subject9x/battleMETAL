@@ -123,7 +123,7 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
     just make sure the custom nav bar gets a custom onClick() func to match.
 */
 void(vector ofs) menu_navBar_drawFrame={
-  local vector nvpos
+  local vector nvpos;
   local vector launchPos;
   
   nvpos = ofs + gui_percentToPixelRawVec('9.984 7.488');

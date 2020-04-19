@@ -167,7 +167,6 @@ void() map_end_mission_touch={
 
 /*QUAKED map_mission_end(0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF - MISSION_LOSE - TOUCH_ACTIVE TOUCH_FACTION
 End_Mission ends the entire mission for EVERY player / faction.
-Default is play "mission successful" message for faction-matching players.
 Odds are there'll be 2 of these per single player map, 1 success, 1 fail.
 
 CAMPAIGN ONLY and COOP ONLY!
@@ -178,8 +177,8 @@ CAMPAIGN ONLY and COOP ONLY!
             1 = active
 .faction = <float> faction for this objective
 .count = <float> only complete objective when count is hit;
-.map = <string> "<mapname>.bsp" - map to play next.
-
+.map = <string> "<mapname>.bsp" - map to play on WIN
+.mapFile = <string> "<mapname>.bsp" - map to play on FAIL
 -------- SPAWNFLAGS --------
 START_OFF 1: starts disabled, and will need at least 1 trigger call to activate before being usable!
 MISSION_LOSE 4: play "mission failed" message for faction-matching players.
