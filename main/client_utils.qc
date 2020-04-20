@@ -208,7 +208,6 @@ void(string str, float tokens) client_ParseMechCommand={
       sv_client_spawnpoint_select();
       player_makeMech();
       client_playTrack( world.sounds, TRUE );
-      client_sendMissionName();
       
       if( self.client_num < 1){
         CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
@@ -333,14 +332,14 @@ void(string cmd, float tokens) client_setMission={
     if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       if( !world.ignoreSave ){
-        savefile_changemap(nextmap);
+        savefile_changemap(sv_nextmap);
         savefile_save();
       }
-      if( nextmap == "" ){
+      if( sv_nextmap == "" ){
         stuffcmd(self, "disconnect;togglemenu;cd play 2;demos;\n");
         return;
       }
-      changelevel (nextmap);  //possibly altered by map_objective objects.
+      changelevel (sv_nextmap);  //possibly altered by map_objective objects.
     }
     else{
       //mission failed
@@ -375,25 +374,6 @@ void(string cmd, float tokens) client_setWeaponGroup={
   self.w_group4 = stof(argv(5));
 };
 
-//DEPRECATED
-/*void() client_sendMissionUnlocks={
-  local string cmd;
-  cmd = strcat("m unl [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
-  stuffcmd(self, cmd);
-};*/
-
-/*
-  client Mapping = client_event_mission_name();
-*/
-void() client_sendMissionName={
-  if( world.message != "" ){
-    msg_entity = self;
-    WriteByte( MSG_ONE, SVC_TEMPENTITY);
-    WriteByte( MSG_ONE, TE_MISSION_NAME );
-    WriteString( MSG_ONE, strcat(world.message,"\n"));
-  }
-};
-
 /*
   Sends an AI voice sample to play for a specific client
   limiter = total copies of 'voiceMessage' that can sit in the voice queue.
@@ -419,14 +399,6 @@ void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
   WriteByte( MSG_BROADCAST, voiceId);
   WriteByte( MSG_BROADCAST, limiter );
   WriteLong( MSG_BROADCAST, num_for_edict(self) );
-};
-
-
-void(entity client, float weaponsOnOff) client_send_event_weapons={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_WEAPONS_ON );
-  WriteByte( MSG_ONE, weaponsOnOff );
 };
 
 void(entity client, float weaponsOnOff) client_send_event_repairs={

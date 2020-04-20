@@ -23,35 +23,8 @@ void() map_end_mission_over={
   if( self.missionStatus == -1 ){
     self.missionStatus = 0; //client compatability zero-out.
   }
-  nextmap = self.map;
-  
-  /*objective = self;
-  playerStart = find(world, classname, "info_player_start");
-  for( player = nextent(world); player.classname == "player"; player = nextent(player) ){
-    //taken from execute_changelevel()
-    player.view_ofs = '0 0 0';
-    player.angles = player.v_angle = player.angles;
-    player.fixangle = TRUE;		// turn this way immediately
-    player.think = SUB_Null;  //I guess this was an animation thing originall? (q1)
-    player.nextthink = time + 0.5;
-    player.takedamage = DAMAGE_NO;
-    player.solid = SOLID_NOT;
-    player.movetype = MOVETYPE_NONE;
-    player.modelindex = 0;
-    //------------------------------
-    //client_sendEndMission(player, player.missionStatus);
-    client_push_player_info();
-    if(player.data_type == DATA_MECH){
-      self = player;
-      ctrl_unit_clean_wgroups();
-      ctrl_unit_cleanup_player();
-      player_unmakeMech();
-      player_makeObserver();
-    }
-    setorigin (player, playerStart.origin);
-  }
-  self = objective;*/
-	//WriteByte (MSG_ALL, SVC_INTERMISSION);
+
+
   self.think = SUB_Remove;
   self.nextthink = time + 2;
 };
@@ -75,11 +48,11 @@ Only if MISSION_LOSE or MISSION_WIN.
   
   CAMPAIGN---------
     if MISSION_WIN
-      nextmap -> .map
+      sv_nextmap -> .map
       send unlocks to client.
 
     if MISSION_LOSE
-      nextmap -> .map
+      sv_nextmap -> .map
 */
 void() map_end_mission_conclude={
   local entity player;
@@ -94,44 +67,10 @@ void() map_end_mission_conclude={
     else{
       MISSION_RESULT = MISSION_RESULT_FAIL;
     }
+    sv_nextmap = self.map;
     self.think = map_end_mission_event;
     self.nextthink = time + 4;
   }
-  /*objective = self;
-  for( player = nextent(world); player.classname == "player"; player = nextent(player) ){
-    self = player;
-    if( self.faction == objective.faction ){
-      if( objective.missionStatus == TRUE ){
-        self.missionStatus = TRUE;
-        //client_sendMissionUnlocks(); TODO - figure out unlocks
-        if( !world.ignoreSave ){
-          savefile_append();    
-        }
-        //te_mission_win();
-      }
-      else{
-        //te_mission_lose();
-        self.missionStatus = FALSE;
-      }
-    }
-    else{
-      if( objective.missionStatus == TRUE ){
-        //te_mission_lose();
-        self.missionStatus = FALSE;
-      }
-      else{
-        self.missionStatus = TRUE;
-        //client_sendMissionUnlocks(); TODO - figure out unlocks
-        if( !world.ignoreSave ){
-          savefile_append();    
-        }
-        //te_mission_win();
-      }
-    }
-  }
-  self = objective;*/
-    
-
 };
 
 
@@ -178,7 +117,6 @@ CAMPAIGN ONLY and COOP ONLY!
 .faction = <float> faction for this objective
 .count = <float> only complete objective when count is hit;
 .map = <string> "<mapname>.bsp" - map to play on WIN
-.mapFile = <string> "<mapname>.bsp" - map to play on FAIL
 -------- SPAWNFLAGS --------
 START_OFF 1: starts disabled, and will need at least 1 trigger call to activate before being usable!
 MISSION_LOSE 4: play "mission failed" message for faction-matching players.

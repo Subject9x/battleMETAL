@@ -29,7 +29,7 @@ entity lastspawn;
 //======================
 
 //from client.qc
-string nextmap;
+string sv_nextmap;
 float	intermission_running;
 float	intermission_exittime;
 //======================

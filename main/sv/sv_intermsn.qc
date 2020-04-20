@@ -48,7 +48,7 @@ void() GotoNextMap={
       changelevel (mapname);
     }
     else{  
-      changelevel (nextmap);
+      changelevel (sv_nextmap);
     }  
   }
 };
@@ -215,7 +215,7 @@ void() changelevel_touch={
 		bprint (" exited the level\n");
 	}
   
-	nextmap = self.map;
+	sv_nextmap = self.map;
   
 	SUB_UseTargets ();
 
@@ -240,7 +240,7 @@ to touch the changelevel trigger
 */
 void() changelevel_use={
   if( world.animaticOnly ){
-    nextmap = self.map;
+    sv_nextmap = self.map;
 		GotoNextMap();
 		return;
   }
@@ -255,7 +255,7 @@ void() changelevel_use={
 		bprint (other.netname);
 		bprint (" exited the level\n");
 	}
-  nextmap = self.map;
+  sv_nextmap = self.map;
   
 	SUB_UseTargets ();
   

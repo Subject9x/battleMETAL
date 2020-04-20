@@ -39,7 +39,7 @@ float TE_MSN_BOUND = 99;
 float TE_AI_VOICE = 100;
 //101;
 
-float TE_MISSION_NAME = 102;
+//102;
 //103;
 //104;
 //105;
@@ -52,7 +52,7 @@ float TE_MUZZLE_FLASH = 108;
 float TE_VFX_EXPLODE = 110;
 
 float TE_MSG_INFO = 111;
-float TE_WEAPONS_ON = 112;
+//112;
 float TE_REPAIRS_ON = 113;
 
 //114;

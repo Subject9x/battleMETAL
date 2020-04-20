@@ -22,6 +22,7 @@ void() client_get_info={
   
   CLIENT_player_state_prev = CLIENT_player_state;
   CLIENT_player_deadflag_prev = CLIENT_player_deadflag;
+  CLIENT_flags_prev = CLIENT_flags;
   
   if( CLIENT_data_type == DATA_MECH ){
     CLIENT_health_center_prev = CLIENT_health_center;
@@ -141,6 +142,12 @@ void() receive_ent_bindData={
       if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
         //repair event
       }
+    }
+    if( !(CLIENT_flags_prev & FL_NOSHOOT) && (CLIENT_flags & FL_NOSHOOT) ){
+        hud_event_enqueue( HUD_EVENT_WEAPONS_OFF, 1) ;
+    }
+    if( (CLIENT_flags_prev & FL_NOSHOOT) && !(CLIENT_flags & FL_NOSHOOT) ){
+        hud_event_enqueue( HUD_EVENT_WEAPONS_ON, 1) ;
     }
 
     if( CLIENT_stat_trg_ent_id_prev != 0 && CLIENT_stat_trg_ent_id == -1 ){

@@ -206,7 +206,7 @@ string(string item, string source) cl_savefile_insert={
 void() cl_savefile_save={
   local float flannel;
   local string file;
-  //if( strstrofs(nextmap, "anim", 0) != -1 ){
+  //if( strstrofs(sv_nextmap, "anim", 0) != -1 ){
   //  return;
   //}
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);

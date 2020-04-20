@@ -15,6 +15,7 @@ float CLIENT_currentWeaponGroup;
 float CLIENT_mission_status;
 
 float CLIENT_flags;
+float CLIENT_flags_prev;
 string CLIENT_netname;
 float CLIENT_player_state;
 float CLIENT_player_state_prev;
