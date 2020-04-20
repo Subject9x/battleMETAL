@@ -30,7 +30,7 @@ void() mh_world_ini={
   sv_world_load_items();
 
   registercvar("campaign", "0", 0); 
-  registercvar("saveslot", "0", 1);
+  registercvar("saveslot", "0", 0);
   registercvar("gamemode", "0", 0);
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
@@ -49,11 +49,11 @@ void() mh_world_ini={
   serverflags = 255;  //DEBUG
 
   STARTTIME = time;
-  if( cvar("timelimit") != FALSE ){
+  if( cvar("timelimit") > FALSE ){
     ENDTIME_LIMIT = time + (cvar("timelimit") * 60);
   }
   else{
-    ENDTIME_LIMIT = 0;
+    ENDTIME_LIMIT = -1;
   }
   ENDROUND = 0;
   
@@ -267,33 +267,36 @@ void() WeatherDominator_think={
 };
 
 /*
-  Server GameMode Rules
+  SV_RULES - Deathmatch Server
 */
 void() sv_rules_dm={
   local entity player;
 
   //Game FragLimit hit
-  if( cvar("fraglimit") != FALSE ){
-    for( player = nextent(world); player != world; player = nextent(player)){
-      if( !(player.flags & FL_CLIENT) ){
-        continue;
+  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+    if( cvar("fraglimit") != FALSE ){
+      for( player = nextent(world); player != world; player = nextent(player)){
+        if( !(player.flags & FL_CLIENT) ){
+          continue;
+        }
+        if( player.frags >= cvar("fraglimit") ){
+          MISSION_STATUS = MISSION_STATUS_OVER;
+        }
       }
-      if( player.frags >= cvar("fraglimit") ){
-        MISSION_STATUS = MISSION_STATUS_OVER;
+      
+      if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
+        cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
       }
     }
-    
-    if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
-      cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
-    }
-    return;
   }
-  
-  //Game TimeLimit hit  
-  if( time >= ENDTIME_LIMIT ){
-    MISSION_STATUS ==  MISSION_STATUS_OVER;
-    cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
-    return;
+  //Game TimeLimit hit
+  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+    if( ENDTIME_LIMIT != -1 ){
+      if( time >= ENDTIME_LIMIT ){
+        MISSION_STATUS = MISSION_STATUS_OVER;
+        cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
+      }
+    }
   }
   
   //Objective hit
@@ -303,6 +306,10 @@ void() sv_rules_dm={
   
 
 };
+
+/*
+  SV_RULES - Team Deathmatch Server
+*/
 void() sv_rules_tdm={
   local entity player;
 
@@ -317,17 +324,19 @@ void() sv_rules_tdm={
       }
     }
     
-    if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
+    if( MISSION_STATUS == MISSION_STATUS_OVER ){
       cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
     }
     return;
   }
   
   //Game TimeLimit hit  
-  if( time >= ENDTIME_LIMIT ){
-    MISSION_STATUS ==  MISSION_STATUS_OVER;
-    cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
-    return;
+  if( ENDTIME_LIMIT != -1 ){
+    if( time >= ENDTIME_LIMIT ){
+      MISSION_STATUS = MISSION_STATUS_OVER;
+      cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
+      return;
+    }
   }
   
   //Objective hit
@@ -336,12 +345,16 @@ void() sv_rules_tdm={
   //Limited Lives, no one left
   
 };
+
+/*
+  SV_RULES - Coop Mission
+*/
 void() sv_rules_coop={
   
 };
 
 /*
-  CAMPAIGN MISSION RULES
+  SV_RULES - Campaign Mission
 */
 void() sv_rules_camp={
   
@@ -398,6 +411,12 @@ void() sv_endServer={
     }
     else{
       ENDROUND_TIME = time + 15;
+    }
+    for( player = nextent(world); player.classname == "player"; player = nextent(player)){
+      if( !(player.flags & FL_CLIENT) ){
+        continue;
+      }
+      player.flags = player.flags | FL_NOSHOOT;
     }
     return;
   }

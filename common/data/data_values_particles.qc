@@ -26,19 +26,16 @@ float TE_HUD_SPARK = 90;
 //91;
 //92;
 //93
-
-//SFX block
 //94;
 //95;
-float TE_MISSION_WIN = 96;
-float TE_MISSION_LOSE = 97;
+//96;
+//97;
 //98;
 float TE_MSN_BOUND = 99;
 //======================
 
 float TE_AI_VOICE = 100;
 //101;
-
 //102;
 //103;
 //104;

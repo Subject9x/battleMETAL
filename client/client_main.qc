@@ -354,12 +354,6 @@ float() CSQC_Parse_TempEntity =
     case TE_SERVERINFO:
       client_get_serverinfo();
       return TRUE;
-    case TE_MISSION_WIN:
-      hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1) ;
-      return TRUE;
-    case TE_MISSION_LOSE:
-      hud_event_enqueue( HUD_EVENT_MISSION_FAILED, 1) ;
-      return TRUE;
     case TE_MISSION_END:
       client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
@@ -431,14 +425,8 @@ void(string s) CSQC_Parse_StuffCmd =
         cons_logAFloat("saveslot", cvar("saveslot"));  //debug
       }
       else{
-        SV_ENDTIMELIMIT = getstatf(STAT_TIMELIMIT);
         cvar_set("saveslot", "0");
       }
-      
-      if( SV_ENDTIMELIMIT > 0 ){
-        SV_ENDTIMELIMIT = (SV_ENDTIMELIMIT * 60) + SV_STARTTIME;
-      }
-      
       if(CLIENT_player_state == PLAYER_CONNECT ){
         cl_set_savepath( cvar("gamemode") );
       }

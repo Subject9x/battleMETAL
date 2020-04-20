@@ -264,6 +264,7 @@ void() client_state_events={
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_button_delay = servertime + 2;
       MENU_DEBRIEF_status = SV_MISSION_RESULT;
+      MENU_DEBRIEF_time_elapsed = -1;
       cons_logAFloat("SV_MISSION_RESULT", SV_MISSION_RESULT);  //debug
       cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
       if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
@@ -488,6 +489,7 @@ void() client_get_serverinfo={
   if( SV_MISSIONSTATUS == MISSION_STATUS_OVER ){
     SV_ENDTIME = servertime;
   }
+  SV_NEXTMAP = strzone(ReadString());
 };
 
 /*

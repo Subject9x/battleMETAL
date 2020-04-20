@@ -29,6 +29,7 @@ float SV_STARTTIME;
 float SV_ENDTIME;
 float SV_ENDTIMELIMIT;
 float SV_SERVERFLAGS;
+string SV_NEXTMAP;
 
 //additional clientside SV_vars
 float SV_PLAYERTIME;  //set when player spawns into mech

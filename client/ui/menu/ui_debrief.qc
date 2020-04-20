@@ -19,8 +19,7 @@ void() menu_debriefListener_onClick={
       //Single player 
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
         cl_savefile_save();
-        setpause( 0 );
-        //cl_set_mission( MENU_DEBRIEF_status );
+        MENU_DEBRIEF_time_elapsed = time + 0.1;
         return;
       }
       //DEATHMATCH AND COOP
@@ -40,6 +39,13 @@ void() menu_debriefListener_onHover={
 void() menu_debrief_drawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
+
+  if( MENU_DEBRIEF_time_elapsed != -1 ){
+    if( time > MENU_DEBRIEF_time_elapsed ){
+      cl_set_mission( MENU_DEBRIEF_status );
+      MENU_DEBRIEF_time_elapsed = 999999;
+    }
+  }
 
   gui_renderTintImage2(MENU_DEBRIEF_status, topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF - '0.15 0.15 0.15', 1, 0) ;  
   menu_debrief_header( topleftroot );

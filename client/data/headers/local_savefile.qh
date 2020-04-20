@@ -19,3 +19,4 @@ void() cl_load_items_all;
 void() cl_savefile_save; //single player only
 void() cl_savefile_append;
 string(string item, string source) cl_savefile_insert;
+void() cl_savefile_default;  //single player, but initial start

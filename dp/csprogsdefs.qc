@@ -46,14 +46,12 @@ float		trace_inwater;
 //
 void()		CSQC_Init;
 void()		CSQC_Shutdown;
-void( float intermission ) CSQC_UpdateIntermissionState;
-void( float showingScores ) CSQC_UpdateShowingScoresState;
 float(float evtype, float scanx, float chary, float devid)	CSQC_InputEvent;
 void(float w, float h, float m)		CSQC_UpdateView;
 float(string s)	CSQC_ConsoleCommand;
 void(float isnew) CSQC_Ent_Update;
 void() CSQC_Ent_Remove;
-float() CSQC_Parse_Event; //>.>
+float() CSQC_Parse_Event;
 
 
 //these fields are read and set by the default player physics
@@ -254,67 +252,66 @@ const float VF_FOG_FADEDEPTH= 211; //(float)
   quakedef.h - Line - 218
   Max Stats = 256
 */
-const float STAT_HEALTH		            = 0;
-const float STAT_WEAPONMODEL          = 2;
-const float STAT_AMMO                 = 3;
-const float STAT_ARMOR		            = 4;
-const float STAT_WEAPONFRAME	        = 5;
-const float STAT_SHELLS		            = 6;
-const float STAT_NAILS		            = 7;
-const float STAT_ROCKETS	            = 8;
-const float STAT_CELLS		            = 9;
-const float STAT_ACTIVEWEAPON	        = 10;
-const float STAT_TOTALSECRETS	        = 11;
-const float STAT_TOTALMONSTERS	      = 12;
-const float STAT_SECRETS		          = 13;
-const float STAT_MONSTERS		          = 14;
-const float STAT_ITEMS		            = 15;
-const float STAT_VIEWHEIGHT	          = 16;
+float STAT_HEALTH		            = 0;
+float STAT_WEAPONMODEL          = 2;
+float STAT_AMMO                 = 3;
+float STAT_ARMOR		            = 4;
+float STAT_WEAPONFRAME	        = 5;
+float STAT_SHELLS		            = 6;
+float STAT_NAILS		            = 7;
+float STAT_ROCKETS	            = 8;
+float STAT_CELLS		            = 9;
+float STAT_ACTIVEWEAPON	        = 10;
+float STAT_TOTALSECRETS	        = 11;
+float STAT_TOTALMONSTERS	      = 12;
+float STAT_SECRETS		          = 13;
+float STAT_MONSTERS		          = 14;
+float STAT_ITEMS		            = 15;
+float STAT_VIEWHEIGHT	          = 16;
 
-const float STAT_VIEWZOOM             = 21;
+float STAT_VIEWZOOM             = 21;
 
-const float STAT_MOVEVARS_AIRACCEL_QW_STRETCHFACTOR = 220;
-const float STAT_MOVEVARS_AIRCONTROL_PENALTY  =  221;
-const float STAT_MOVEVARS_AIRSPEEDLIMIT_NONQW =  222;
-const float STAT_MOVEVARS_AIRSTRAFEACCEL_QW   =  223;
-const float STAT_MOVEVARS_AIRCONTROL_POWER    =  224;
-const float STAT_MOVEFLAGS                    = 225;
+float STAT_MOVEVARS_AIRACCEL_QW_STRETCHFACTOR = 220;
+float STAT_MOVEVARS_AIRCONTROL_PENALTY  =  221;
+float STAT_MOVEVARS_AIRSPEEDLIMIT_NONQW =  222;
+float STAT_MOVEVARS_AIRSTRAFEACCEL_QW   =  223;
+float STAT_MOVEVARS_AIRCONTROL_POWER    =  224;
+float STAT_MOVEFLAGS                    = 225;
 
-const float STAT_MOVEVARS_WARSOWBUNNY_AIRFORWARDACCEL = 226;
-const float STAT_MOVEVARS_WARSOWBUNNY_ACCEL   =  227;
-const float STAT_MOVEVARS_WARSOWBUNNY_TOPSPEED =   228;
-const float STAT_MOVEVARS_WARSOWBUNNY_TURNACCEL =  229;
-const float STAT_MOVEVARS_WARSOWBUNNY_BACKTOSIDERATIO = 230;
+float STAT_MOVEVARS_WARSOWBUNNY_AIRFORWARDACCEL = 226;
+float STAT_MOVEVARS_WARSOWBUNNY_ACCEL   =  227;
+float STAT_MOVEVARS_WARSOWBUNNY_TOPSPEED =   228;
+float STAT_MOVEVARS_WARSOWBUNNY_TURNACCEL =  229;
+float STAT_MOVEVARS_WARSOWBUNNY_BACKTOSIDERATIO = 230;
 
-const float STAT_MOVEVARS_AIRSTOPACCELERATE   =  231;
-const float STAT_MOVEVARS_AIRSTRAFEACCELERATE =  232;
-const float STAT_MOVEVARS_MAXAIRSTRAFESPEED   =  233;
-const float STAT_MOVEVARS_AIRCONTROL          =  234;
+float STAT_MOVEVARS_AIRSTOPACCELERATE   =  231;
+float STAT_MOVEVARS_AIRSTRAFEACCELERATE =  232;
+float STAT_MOVEVARS_MAXAIRSTRAFESPEED   =  233;
+float STAT_MOVEVARS_AIRCONTROL          =  234;
 
-const float	STAT_FRAGLIMIT                  = 235;
-const float	STAT_TIMELIMIT                  = 236;
+float	STAT_FRAGLIMIT                  = 235;
+float	STAT_TIMELIMIT                  = 236;
 
-const float	STAT_MOVEVARS_WALLFRICTION    = 237;
-const float STAT_MOVEVARS_FRICTION            = 238;
-const float STAT_MOVEVARS_WATERFRICTION       = 239;
+float	STAT_MOVEVARS_WALLFRICTION    = 237;
+float STAT_MOVEVARS_FRICTION            = 238;
+float STAT_MOVEVARS_WATERFRICTION       = 239;
+float		STAT_MOVEVARS_TICRATE   = 240;
+float		STAT_MOVEVARS_TIMESCALE = 241;
+float   STAT_MOVEVARS_GRAVITY   = 242;
 
-const float		STAT_MOVEVARS_TICRATE   = 240;
-const float		STAT_MOVEVARS_TIMESCALE = 241;
-const float   STAT_MOVEVARS_GRAVITY   = 242;
-
-const float STAT_MOVEVARS_STOPSPEED           = 243;
-const float STAT_MOVEVARS_MAXSPEED            = 244;
-const float STAT_MOVEVARS_SPECTATORMAXSPEED   = 245;// FIXME: QW has a separate cvar for this
-const float STAT_MOVEVARS_ACCELERATE          =  246;
-const float STAT_MOVEVARS_AIRACCELERATE       =  247;
-const float STAT_MOVEVARS_WATERACCELERATE     =  248;
-const float STAT_MOVEVARS_ENTGRAVITY          =  249;
-const float STAT_MOVEVARS_JUMPVELOCITY        =  250;
-const float STAT_MOVEVARS_EDGEFRICTION        =  251;
-const float STAT_MOVEVARS_MAXAIRSPEED         =  252;
-const float STAT_MOVEVARS_STEPHEIGHT          =  253;
-const float STAT_MOVEVARS_AIRACCEL_QW         =  254;
-const float STAT_MOVEVARS_AIRACCEL_SIDEWAYS_FRICTION = 255;
+float STAT_MOVEVARS_STOPSPEED           = 243;
+float STAT_MOVEVARS_MAXSPEED            = 244;
+float STAT_MOVEVARS_SPECTATORMAXSPEED   = 245;// FIXME: QW has a separate cvar for this
+float STAT_MOVEVARS_ACCELERATE          =  246;
+float STAT_MOVEVARS_AIRACCELERATE       =  247;
+float STAT_MOVEVARS_WATERACCELERATE     =  248;
+float STAT_MOVEVARS_ENTGRAVITY          =  249;
+float STAT_MOVEVARS_JUMPVELOCITY        =  250;
+float STAT_MOVEVARS_EDGEFRICTION        =  251;
+float STAT_MOVEVARS_MAXAIRSPEED         =  252;
+float STAT_MOVEVARS_STEPHEIGHT          =  253;
+float STAT_MOVEVARS_AIRACCEL_QW         =  254;
+float STAT_MOVEVARS_AIRACCEL_SIDEWAYS_FRICTION = 255;
 
 // Quake Sound Constants
 const float CHAN_AUTO			= 0;

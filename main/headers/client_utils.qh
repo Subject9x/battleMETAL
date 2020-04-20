@@ -49,7 +49,6 @@ void() client_sendMissionFileName;
 void(string fileName) client_sendAnimaticFileName;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
 void(entity client, float trackNum, float entFlags) client_sendMusic;
-void(entity client, float missionSuccessCheck) client_sendEndMission;
 void(entity client, string theMessage, float messageLifetime) client_send_info_message;
 void(entity client, float weaponsOnOff) client_send_event_repairs;
 

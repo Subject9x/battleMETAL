@@ -132,9 +132,14 @@ void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_rend
 string() ui_calculate_game_time_string={
   local string val;
   local float t, sec, min, hr;
-  if( SV_ENDTIMELIMIT > 0 ){
+  local float endTime;
+  endTime = (getstatf(STAT_TIMELIMIT) - 1) * 60;
+  endTime = endTime + SV_STARTTIME;
+  if( getstatf(STAT_TIMELIMIT) > 0 ){
     t = servertime + (servertime - time);
-    t = SV_ENDTIMELIMIT - t ;
+    
+    t = endTime - t ;
+    
     sec = t - floor( t / 60 ) * 60 ;
     sec = rint(sec);
     

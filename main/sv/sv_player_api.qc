@@ -357,21 +357,12 @@ void() PlayerDie={
 	self.angles_z = 0;
   self.angles_y = 0;
   self.avelocity = '0 0 0';
-
-    //only send unlocks if player won mission
-    //client_sendMissionUnlocks();
-    //te_mission_win();
-
-    //te_mission_lose();
-
-
+  
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
 
 void() PlayerDieEnd={
-  //client_sendEndMission(self, MISSION_STATUS );
-  
   cons_logAFloat("SV()->PlayerDieEnd()->enter", 1);  //DEBUG
   self.movetype = MOVETYPE_NONE;
   

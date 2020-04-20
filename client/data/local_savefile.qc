@@ -8,15 +8,6 @@ Overview:
   Campaign games will load data locally.
 */
 
-/*
-
-      cl_get_mechs_all( argv(1) );
-    }
-    else if(argv(1) == "lis"){
-      tokenizebyseparator(s, "[", "]");
-      cl_get_items_all( argv(1) )
-*/
-
 void( string fileName ) cl_load_savefile={
   local string line, contents;
   local float flannel, line_tag, argc;
@@ -213,7 +204,7 @@ void() cl_savefile_save={
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
   fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
-  fputs(flannel, strcat("  'mission' : ", SAVE_MAP, ",\n"));
+  fputs(flannel, strcat("  'mission' : ", SV_NEXTMAP, ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
   if( strstrofs(MAP_NAME, "o1m3", 0) != -1 ){
@@ -225,12 +216,37 @@ void() cl_savefile_save={
     }
   }
   else{
-    cons_logAFloat("CL()->cl_savefile_save().unlocks", 1);  //debug
     fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
     fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
   }
-      cons_logAString("CL()->cl_savefile_save().UNLOCKED_MECHS_DATA", UNLOCKED_MECHS_DATA);  //debug
-      cons_logAString("CL()->cl_savefile_save().UNLOCKED_ITEMS_DATA", UNLOCKED_ITEMS_DATA);  //debug
   fputs(flannel, "}");
   fclose(flannel);
 }; 
+
+/*
+  Default Save File, set when player finishes campaign training.
+*/
+void() cl_savefile_default={
+  local float flannel;
+  local string file;
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
+  flannel = fopen(file, FILE_WRITE);
+  fputs(flannel, "{\n");
+  fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
+  fputs(flannel, "  'mission' : o1m1,\n");
+  if( cvar("developer") ){
+    fputs(flannel, "  'mechs' : 1 2 3,\n");
+    fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
+  }
+  else{
+    fputs(flannel, "  'mechs' : 1,\n");
+    fputs(flannel, "  'items' : 1 3 4 8 12 16 18 21,\n");
+  }
+  
+  fputs(flannel, "  'points' : ,\n");
+  fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
+  fputs(flannel, "  'newgame': 1,\n");
+  fputs(flannel, "}");
+  fclose(flannel);
+  
+};

@@ -21,11 +21,6 @@ void(string str) SV_ParseClientCommand={
   if(argv(0) == "m"){
     client_ParseMechCommand(str, argc);
   }
-  else if( argv(0) == "savegame"){
-    if( world.ignoreSave == FALSE ){
-      savefile_save();
-    }
-  }
   else if( argv(0) == "loadgame"){
     savefile_load(FALSE);
   }
@@ -163,7 +158,6 @@ void() ClientConnect = {
   if (intermission_running){
     ExitIntermission();
   }
-
   client_sendServerInfo();
 };
 
@@ -323,7 +317,6 @@ void() PutClientInServer_Campaign={
     //pre-populate default save file
     savefile_load( FALSE );
     if( FLAG_NEWGAME == TRUE ){
-      savefile_default();
       savefile_load( FALSE );
     }
   }
@@ -398,6 +391,7 @@ void() PutClientInServer_Deathmatch={
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
     self.faction = FACTION_ALL; //deathmatch has no real teams.
+
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  

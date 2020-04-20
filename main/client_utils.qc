@@ -333,7 +333,6 @@ void(string cmd, float tokens) client_setMission={
       //mission successful, next map
       if( !world.ignoreSave ){
         savefile_changemap(sv_nextmap);
-        savefile_save();
       }
       if( sv_nextmap == "" ){
         stuffcmd(self, "disconnect;togglemenu;cd play 2;demos;\n");
@@ -561,6 +560,7 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
 };
 
 /*
+  DEPRECATED
   client Mapping = client_event_debrief_active();
 */
 void(entity client, float missionSuccessCheck) client_sendEndMission={
@@ -587,6 +587,18 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
       WriteShort( MSG_ONE, 0 );
       break;
   }
+};
+/*
+  Send important world data, useful for timed updates like Campaign and Coop.
+*/
+void() client_send_server_info_update={
+  WriteByte( MSG_ALL, SVC_TEMPENTITY );
+  WriteByte( MSG_ALL, TE_SERVERINFO );
+  WriteByte( MSG_ALL, MISSION_STATUS );
+  WriteLong( MSG_ALL, STARTTIME );
+  WriteLong( MSG_ALL, serverflags );
+  WriteByte( MSG_ALL, MISSION_RESULT );
+  WriteString( MSG_ALL, sv_nextmap );
 };
 
 entity() spawnpoint_coop={
@@ -775,19 +787,6 @@ float(entity piece) csqc_updateCompStat={
     return perc;
   }
   return perc;
-};
-
-/*
-  Send important world data, useful for timed updates like Campaign and Coop.
-*/
-void() client_send_server_info_update={
-  WriteByte( MSG_ALL, SVC_TEMPENTITY );
-  WriteByte( MSG_ALL, TE_SERVERINFO );
-  WriteByte( MSG_ALL, MISSION_STATUS );
-  WriteLong( MSG_ALL, STARTTIME );
-  WriteLong( MSG_ALL, serverflags );
-  WriteByte( MSG_ALL, MISSION_RESULT );
-  //WriteString( MSG_ALL, world.message );
 };
 
 /*
