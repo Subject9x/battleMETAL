@@ -133,7 +133,7 @@ string() ui_calculate_game_time_string={
   local string val;
   local float t, sec, min, hr;
   local float endTime;
-  endTime = (getstatf(STAT_TIMELIMIT) - 1) * 60;
+  endTime = getstatf(STAT_TIMELIMIT) * 60;
   endTime = endTime + SV_STARTTIME;
   if( getstatf(STAT_TIMELIMIT) > 0 ){
     t = servertime + (servertime - time);
@@ -178,27 +178,17 @@ string(float timeVal ) ui_calculate_time_string={
 string() ui_label_mission_status={
   local string val;
 //TODO fix 
- /*switch( SV_MISSIONSTATUS ){
+ switch( SV_MISSIONSTATUS ){
     case MISSION_STATUS_READY:
       val = "Ready";
       break;
     case MISSION_STATUS_ACTIVE:
       val = "In Progress";
       break;
-    case MISSION_STATUS_ENDING:
+    default:
       val = "Complete";
       break;
-    case MISSION_RESULT_WIN:
-      val = "Victory";
-      break;
-    case MISSION_RESULT_WIN1:
-      val = "Victory - Survest";
-      break;
-    case MISSION_RESULT_WIN2:
-      val = "Victory - Militar";
-      break;
-      
-  }*/
+  }
   return val;
 };
 

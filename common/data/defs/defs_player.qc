@@ -48,9 +48,8 @@ Overview:
 .float next_wepn9;
 
 .float missionStatus; //moved to player level for network
-
-
 .float ramUpMax;
+.float missionLosses; //mostly campaign related.
 
 #ifdef CSQC
 .float particleCubeFlag;

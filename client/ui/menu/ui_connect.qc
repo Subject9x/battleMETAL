@@ -138,12 +138,13 @@ void( vector menuOrg ) menu_connect_draw_bar={
   enterOfs_y = menuOrg_y;
   
   ui_navbutton_disconnect_draw( menuOrg );
-  ui_navbutton_connect_draw( enterOfs );
+  if( SV_MISSIONSTATUS <= MISSION_STATUS_ACTIVE ){
+    ui_navbutton_connect_draw( enterOfs );
+  }
   
   if( cvar("gamemode") == GAMEMODE_TEAMDM ){
     switchOfs_x = VIEW_CTR_x - gui_percentXRaw( UI_NAVBAR_TEAM_SIZE_x / 2 );
     switchOfs_y = menuOrg_y;
-    
     ui_navbutton_team_draw( switchOfs );
   }
 };
@@ -228,7 +229,7 @@ void( vector menuOrg ) menu_connect_draw_about_dm={
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
-    drawstring(menuOrg + gui_percentToPixelRawVec('6 18'), "< coming soon - space for custom server text >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawstring(menuOrg + gui_percentToPixelRawVec('6 18'), "< work in progress >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
 };
 
@@ -405,7 +406,7 @@ void( vector menuOrg ) menu_connect_draw_about_team={
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
-    drawstring(menuOrg + gui_percentToPixelRawVec('250 18'), "< coming soon - space for custom server text >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawstring(menuOrg + gui_percentToPixelRawVec('250 18'), "< work in progress >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
 };
 
@@ -554,7 +555,7 @@ void( vector menuOrg ) menu_connet_draw_coop_about={
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
-    drawstring(menuOrg + gui_percentToPixelRawVec('125 18'), "< coming soon - space for custom server text >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawstring(menuOrg + gui_percentToPixelRawVec('125 18'), "< work in progress >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
 };
 

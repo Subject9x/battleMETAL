@@ -170,7 +170,7 @@ void() receive_ent_bindData={
 */
 void() client_state_events={
   
-  //
+  //SERVER EVENTS
   if( SV_MISSION_STATUS_PREV != SV_MISSIONSTATUS ){
     //Server Event - end of map
     if( (SV_MISSION_STATUS_PREV != MISSION_STATUS_OVER) && (SV_MISSIONSTATUS == MISSION_STATUS_OVER) ){
@@ -185,6 +185,8 @@ void() client_state_events={
     }
   }
   
+  
+  //CLIENT EVENTS
   if( CLIENT_player_state != CLIENT_player_state_prev ){
       cons_log2Float("CLIENT_player_state ", CLIENT_player_state_prev, "--->", CLIENT_player_state);  //debug
     //Player has just connected to server

@@ -72,6 +72,7 @@ void() mh_world_ini={
   addstat(STAT_PLAYER_STATE, AS_INT, playerState);
   addstat(STAT_PLAYER_WEAPONS_STATE, AS_INT, stat_player_weapons_state);
   addstat(STAT_PLAYER_FACTION, AS_INT, faction);
+  addstat(STAT_PLAYER_LOSSES, AS_INT, missionLosses);
   
   addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
   addstat(STAT_PLR_DATA_IDX, AS_INT, data_idx);
@@ -101,7 +102,6 @@ void() mh_world_ini={
   addstat(STAT_CLIENT_HP_LEGS, AS_FLOAT, stat_client_hp_legs);
     
   addstat(STAT_TARGET_SHIELDS, AS_FLOAT, stat_target_shield);
-  addstat(STAT_TARGET_NAME, AS_STRING, stat_target_name);
   addstat(STAT_TARGET_NAME, AS_STRING, stat_target_name);
     
   addstat(STAT_TARGET_ORIGINX, AS_FLOAT, stat_target_orgx);
@@ -183,6 +183,7 @@ void() world_ini_serverinfo={
   serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
   serverInfo = strcat(serverInfo, ftos(GAMETYPE)," ");
   serverInfo = strcat(serverInfo, ftos(serverflags)," ");
+  serverInfo = strcat(serverInfo, ftos(cvar("timelimit"))," ");
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
     serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
   }
@@ -455,8 +456,8 @@ void() sv_endServer={
         ENDROUND_TIME = time + 2;
       }
       else{
-        //ENDROUND_TIME = time + 120; //2 minutes of score screen.
-        ENDROUND_TIME = time + 5; //debug 30s test
+        ENDROUND_TIME = time + 120; //2 minutes of score screen.
+        //ENDROUND_TIME = time + 5; //debug 30s test
       }
       ENDROUND = TRUE;
     }
@@ -464,10 +465,18 @@ void() sv_endServer={
   }
   
   if( MISSION_STATUS == MISSION_STATUS_DONE ){
-    if( time > ENDROUND_TIME ){
-      if( ENDROUND == TRUE ){
-        cons_logAFloat("SV()->sv_endServer.MISSION_STATUS == MISSION_STATUS_DONE", 1);  //debug
-        ENDROUND = FALSE;
+    if( GAMETYPE != GAMEMODE_CAMPAIGN ){
+      if( time > ENDROUND_TIME ){
+        if( ENDROUND == TRUE ){
+          cons_logAFloat("SV()->sv_endServer.MISSION_STATUS == MISSION_STATUS_DONE", 1);  //debug
+          ENDROUND = FALSE;
+          if( sv_nextmap != "" ){
+            changelevel(sv_nextmap);
+          }
+          else{
+            changelevel(mapname);
+          }
+        }
       }
     }
     return;

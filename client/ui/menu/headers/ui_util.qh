@@ -26,6 +26,7 @@ void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 float SV_MISSIONSTATUS;
 float SV_MISSION_RESULT;
 float SV_STARTTIME;
+float SV_TIMELIMIT; //getstatf(STAT_TIMELIMIT) is not populated until post-ClientConnect()
 float SV_ENDTIME;
 float SV_ENDTIMELIMIT;
 float SV_SERVERFLAGS;

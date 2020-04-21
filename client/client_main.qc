@@ -150,6 +150,14 @@ void() CSQC_Init =
   }
   
   cl_set_hud_vars_obs();
+  
+  //this seams to appease the Garbage Collection gods...
+  UNLOCKED_MECHS_DATA = ""; 
+  UNLOCKED_ITEMS_DATA = ""; 
+  MENU_DEBRIEF_unlocks_mechs = ""; 
+  MENU_DEBRIEF_unlocks_equip = ""; 
+  SV_NEXTMAP = "";
+  
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -167,7 +175,9 @@ void() CSQC_Shutdown =
   if( MENU_DEBRIEF_unlocks_equip != "" ){
     strunzone(MENU_DEBRIEF_unlocks_equip); 
   }
-  
+  if( SV_NEXTMAP != "" ){
+    strunzone(SV_NEXTMAP);
+  }
   localcmd("cd stop\n");
 };
 
@@ -420,8 +430,9 @@ void(string s) CSQC_Parse_StuffCmd =
       SV_MISSIONSTATUS = stof(argv(2) );
       cvar_set("gamemode", argv(3) );
       SV_SERVERFLAGS = stof(argv(4) );
+      SV_TIMELIMIT = stof(argv(5));
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){        
-        cvar_set("saveslot", argv(5) );
+        cvar_set("saveslot", argv(6) );
         cons_logAFloat("saveslot", cvar("saveslot"));  //debug
       }
       else{

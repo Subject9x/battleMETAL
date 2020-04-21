@@ -364,7 +364,7 @@ void( vector rowOfs, float itr, entity playerRow ) menu_player_row_basic={
   drawstring(playerPingOfs, getplayerkeyvalue(playerRow.entId - 1, "ping"), fontSize, pingColor, 1, 0);
   
   local float scoreLen;
-  playerScoreOfs = playerPingOfs + gui_percentToPixelRawVec('41 0');
+  playerScoreOfs = playerPingOfs + gui_percentToPixelRawVec('45 0');
   scoreLen = stringwidth(ftos(playerRow.kills), 0, fontSize);
   playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
   drawstring(playerScoreOfs, ftos(playerRow.kills), fontSize, rowColor, 1, 0);
@@ -372,7 +372,7 @@ void( vector rowOfs, float itr, entity playerRow ) menu_player_row_basic={
   local vector statusColor;
   local float statusLen;
   local string playerStatus;
-  playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('52 0');
+  playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('49 0');
   if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
     playerStatus = "<hidden>";
     statusColor = CLR_DEF_ARM_THREEQ;
