@@ -72,7 +72,6 @@ void() mh_world_ini={
   addstat(STAT_PLAYER_STATE, AS_INT, playerState);
   addstat(STAT_PLAYER_WEAPONS_STATE, AS_INT, stat_player_weapons_state);
   addstat(STAT_PLAYER_FACTION, AS_INT, faction);
-  addstat(STAT_PLAYER_LOSSES, AS_INT, missionLosses);
   
   addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
   addstat(STAT_PLR_DATA_IDX, AS_INT, data_idx);
@@ -418,6 +417,9 @@ void() sv_endServer={
         continue;
       }
       player.flags = player.flags | FL_NOSHOOT;
+      if( GAMETYPE == GAMEMODE_CAMPAIGN || GAMETYPE == GAMEMODE_COOP ){
+        client_send_campaign_end_data( player );
+      }
     }
     return;
   }

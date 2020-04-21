@@ -50,6 +50,7 @@ Overview:
 .float missionStatus; //moved to player level for network
 .float ramUpMax;
 .float missionLosses; //mostly campaign related.
+.float botKills;      //campaign/coop tracking of bot kills.
 
 #ifdef CSQC
 .float particleCubeFlag;

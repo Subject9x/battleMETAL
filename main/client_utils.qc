@@ -560,19 +560,17 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
 };
 
 /*
-  DEPRECATED
   client Mapping = client_event_debrief_active();
+  CAMPAIGN / COOP ONLY
+  sends the 'conclusion' data from a mission to the client
 */
 void(entity client, float missionSuccessCheck) client_sendEndMission={
-
-  client.playerState = PLAYER_INTERMSN;
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_MISSION_END );
-  WriteByte( MSG_ONE, missionSuccessCheck );
-  WriteShort( MSG_ONE, MISSION_TOTAL_PSC );
-  WriteShort( MSG_ONE, MISSION_TOTAL_SURVEST );
-  WriteShort( MSG_ONE, MISSION_TOTAL_MILITAR );
+  WriteByte( MSG_ALL, SVC_TEMPENTITY );
+  WriteByte( MSG_ALL, TE_MISSION_END );
+  WriteByte( MSG_ALL, missionSuccessCheck );
+  WriteShort( MSG_ALL, MISSION_TOTAL_PSC );
+  WriteShort( MSG_ALL, MISSION_TOTAL_SURVEST );
+  WriteShort( MSG_ALL, MISSION_TOTAL_MILITAR );
   switch( client.faction ){
     case FACTION_PSC:
       WriteShort( MSG_ONE, MISSION_LOSSES_PSC );
@@ -599,6 +597,32 @@ void() client_send_server_info_update={
   WriteLong( MSG_ALL, serverflags );
   WriteByte( MSG_ALL, MISSION_RESULT );
   WriteString( MSG_ALL, sv_nextmap );
+};
+
+/*
+  CAMPAIGN / COOP  death/end-mission updates.
+  
+*/
+void( entity client ) client_send_campaign_end_data={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_CLIENT_INFO );
+  WriteLong( MSG_ONE, client.botKills );
+  WriteLong( MSG_ONE, client.missionLosses );
+  switch(client.faction){
+    default :
+      WriteLong( MSG_ONE, MISSION_TOTAL_SURVEST + MISSION_TOTAL_MILITAR );
+      WriteLong( MSG_ONE, MISSION_TOTAL_PSC );
+      break;
+    case FACTION_SURVEST:
+      WriteLong( MSG_ONE, MISSION_TOTAL_PSC + MISSION_TOTAL_MILITAR );
+      WriteLong( MSG_ONE, MISSION_TOTAL_SURVEST );
+      break;
+    case FACTION_MILITAR:
+      WriteLong( MSG_ONE, MISSION_TOTAL_SURVEST + MISSION_TOTAL_PSC );
+      WriteLong( MSG_ONE, MISSION_TOTAL_MILITAR );
+      break;
+  }  
 };
 
 entity() spawnpoint_coop={
@@ -830,4 +854,22 @@ void( float wepId, vector flashOrg, vector flashVel, float impType ) client_send
   WriteCoord(MSG_BROADCAST, flashVel_y);
   WriteCoord(MSG_BROADCAST, flashVel_z);
   WriteByte( MSG_BROADCAST, impType);
+};
+
+
+/*
+  Losses is mostly just a campaign fluff text thing, gives player perspective.
+*/
+void() client_update_losses={
+  switch(self.faction){
+    case FACTION_MILITAR:
+      self.missionLosses = MISSION_LOSSES_MILITAR;
+      break;
+    case FACTION_PSC:
+      self.missionLosses = MISSION_LOSSES_PSC;
+      break;
+    case FACTION_SURVEST:
+      self.missionLosses = MISSION_LOSSES_SURVEST;
+      break;
+  }
 };

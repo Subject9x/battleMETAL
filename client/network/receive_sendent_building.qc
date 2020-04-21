@@ -124,7 +124,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   
-    //rider for desired stat changes
+  //rider for desired stat changes
   if( (changeFlags & SENDFLAG_MOVE) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       self.w_firetime = ReadByte();
@@ -139,6 +139,8 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.partTypeId = ReadByte();
     }
   }
+  
+  
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
 };

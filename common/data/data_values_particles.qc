@@ -22,7 +22,7 @@ float TE_SERVERINFO =  81;
 //83;
 float TE_UI_BOX = 84;
 
-float TE_HUD_SPARK = 90;
+//90;
 //91;
 //92;
 //93

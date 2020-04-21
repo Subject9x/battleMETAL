@@ -373,7 +373,7 @@ void( vector rowOfs, float itr, entity playerRow ) menu_player_row_basic={
   local float statusLen;
   local string playerStatus;
   playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('49 0');
-  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
+  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) && (cvar("gamemode") != GAMEMODE_COOP) ){
     playerStatus = "<hidden>";
     statusColor = CLR_DEF_ARM_THREEQ;
   }

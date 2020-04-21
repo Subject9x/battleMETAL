@@ -117,7 +117,7 @@ void() menu_connect_drawFrame={
     menu_connet_draw_coop_about( topleftroot + gui_percentToPixelRawVec('210 32') );
     
     //objectives stats - COOP
-    menu_connect_draw_objectives( topleftroot + gui_percentToPixelRawVec('210 100') );
+    menu_connect_draw_objectives_coop( topleftroot + gui_percentToPixelRawVec('210 100') );
     
     //player list - COOP
     menu_connect_draw_players_coop( topleftroot + gui_percentToPixelRawVec('10 282') );
@@ -522,20 +522,20 @@ void( vector menuOrg ) menu_connect_draw_mission_info_coop={
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0 56'), "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
   //Frag Limit
-  local string scoreLimit;
+  /*local string scoreLimit;
   if( getstatf(STAT_FRAGLIMIT) > 0 ){
     scoreLimit = ftos(getstatf(STAT_FRAGLIMIT));
   }
   else{
     scoreLimit = "No Limit";
   }
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 70'), "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 70'), "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );*/
   
   //Time Limit
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 84'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10');  
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 70'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10');  
   
   //Game Status
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 98'), "Server :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 84'), "Server :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
 };
 
 void( vector menuOrg ) menu_connet_draw_coop_about={
@@ -583,11 +583,6 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
     drawstring( ruleRow, "None", '12 12', CLR_DEF_WHITE, 1, 0);
   }
   listCount = 0;
-  if( (SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
-    drawstring( ruleRow, "Spawn Farthest", '10 10', CLR_DEF_WHITE, 1, 0);
-    ruleRow_y = ruleRow_y + gui_percentYRaw(12);
-    listCount = listCount + 1;
-  }
   if( (SV_SERVERFLAGS & SVFLAG_NOPOWERUP) ){
     drawstring( ruleRow, "No Power Up", '10 10', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(12);
@@ -600,13 +595,7 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   }
   if( (SV_SERVERFLAGS & SVFLAG_FIREON) ){
     drawstring( ruleRow, "Friendly Fire", '10 10', CLR_DEF_WHITE, 1, 0);
-    if( listCount == 3 ){
-      ruleRow_x = ruleRow_x + gui_percentXRaw(85);
-      ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
-    }
-    else{
-      ruleRow_y = ruleRow_y + gui_percentYRaw(12);
-    }
+    ruleRow_y = ruleRow_y + gui_percentYRaw(12);
     listCount = listCount + 1;
   }
   if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
@@ -622,7 +611,7 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   }
   if( (SV_SERVERFLAGS & SVFLAG_NOMAP) ){
     drawstring( ruleRow, "Limited TacMap", '10 10', CLR_DEF_WHITE, 1, 0);
-    if( listCount == 4 ){
+    if( listCount == 3 ){
       ruleRow_x = ruleRow_x + gui_percentXRaw(85);
       ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
     }
@@ -633,7 +622,7 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   }
   if( (SV_SERVERFLAGS & SVFLAG_NORADAR) ){
     drawstring( ruleRow, "Passive Radar Only", '10 10', CLR_DEF_WHITE, 1, 0);
-    if( listCount == 4 ){
+    if( listCount == 3 ){
       ruleRow_x = ruleRow_x + gui_percentXRaw(85);
       ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
     }
@@ -642,16 +631,83 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
     }
     listCount = listCount + 1;
   }
-  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
-    drawstring( ruleRow, "Hide Player Status", '10 10', CLR_DEF_WHITE, 1, 0);
-    if( listCount == 4 ){
-      ruleRow_x = ruleRow_x + gui_percentXRaw(85);
-      ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
+  drawfont = drawfont_prev;
+};
+
+void( vector menuOrg ) menu_connect_draw_objectives_coop={
+  local vector labelOrg;
+  local float labelLen;
+  local entity objective;
+
+  local vector bpos, lofs;
+  local float lst_idx, eol, line_rtn;
+  local vector objectiveOffset;
+  local string desc;
+  local string text;
+  
+  local string objectiveStatusLabel;
+  local float objectiveStatus;
+  local vector objectiveColor;
+  local vector objectiveStatusOrg;
+  
+  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('420 183'), '0.65 0.65 0.65', 1, 0);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
+    labelLen = stringwidth("- Team Objectives -", 0, '10 10');
+    labelOrg_x = menuOrg_x + gui_percentXRaw(210) - gui_percentXRaw(labelLen/2);
+    labelOrg_y = menuOrg_y + gui_percentYRaw(2);
+    drawstring( labelOrg, "- Team Objectives -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawfont = drawfont_prev;
+  
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  bpos = menuOrg;
+
+  lofs = bpos + gui_percentToPixelRawVec('12 24');
+  lst_idx = 1;
+  line_rtn = 0;
+  objectiveOffset_x = lofs_x + gui_percentXRaw(2);
+  objectiveOffset_y = lofs_y + line_rtn + gui_percentYRaw(3);
+  eol = TRUE;
+  while(eol){
+    objectiveStatus = OBJECTIVES[lst_idx];
+    
+    if( objectiveStatus == OBJECTIVE_WIN ){
+      objectiveStatusLabel = "Complete";
+      objectiveColor = CLR_DEF_ARM_OK;
+    }
+    else if( objectiveStatus == OBJECTIVE_ACTIVE ){
+      objectiveStatusLabel = "Incomplete";
+      objectiveColor = CLR_DEF_TXT_NONSELECT - '0.1 0.1 0.1';
+    }
+    else if( objectiveStatus == OBJECTIVE_FAIL ){
+      objectiveStatusLabel = "Failed";
+      objectiveColor = CLR_DEF_ARM_ONEQ;
     }
     else{
-      ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+      objectiveStatusLabel = "In Progress";
+      objectiveColor = CLR_DEF_ARM_THREEQ;
     }
-    listCount = listCount + 1;
+    
+    
+    desc = MSN_OBJ_DESC[lst_idx];
+    text = strcat( ftos(lst_idx),") ", desc);
+    line_rtn = gui_wrapText(objectiveOffset, '350 150', text, '12 10 0', CLR_DEF_TXT_NONSELECT, 1);
+    
+    objectiveStatusOrg_x = menuOrg_x + gui_percentXRaw(375);
+    objectiveStatusOrg_x = objectiveStatusOrg_x - gui_percentXRaw(stringwidth(objectiveStatusLabel,0,'14 14') / 2); 
+    objectiveStatusOrg_y = objectiveOffset_y;
+    drawstring( objectiveStatusOrg, objectiveStatusLabel, '14 14 0', objectiveColor, 1);
+    
+    
+    if(MSN_OBJ_DESC[(lst_idx+1)] == ""){
+      eol = FALSE;
+    }
+    lst_idx = lst_idx + 1;
+    objectiveOffset_y = objectiveOffset_y + line_rtn + gui_percentYRaw(12);
   }
   drawfont = drawfont_prev;
 };
@@ -703,12 +759,12 @@ void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar={
     menuLabelLen = stringwidth(titleTeam, 0, '12 12 0');
     menuLabelOfs_x = titleOfs_x + gui_percentXRaw( UI_CONNECT_DMLIST_SIZE_x / 2 ) - gui_percentXRaw( menuLabelLen / 2 );
     menuLabelOfs_y = titleOfs_y + gui_percentYRaw(4);
+    
     drawstring(menuLabelOfs, titleTeam, '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
-  
-  drawstring(titleOfs + gui_percentToPixelRawVec('6 14'), "[Name]", '12 12', CLR_DEF_WHITE, 1, 0);
-  drawstring(titleOfs + gui_percentToPixelRawVec('180 14'), "[Ping]", '12 12', CLR_DEF_WHITE, 1, 0);
-  drawstring(titleOfs + gui_percentToPixelRawVec('220 14'), "[Score]", '12 12', CLR_DEF_WHITE, 1, 0);
-  drawstring(titleOfs + gui_percentToPixelRawVec('260 14'), "[Status]", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring(titleOfs + gui_percentToPixelRawVec('6 14'), "[Name]", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring(titleOfs + gui_percentToPixelRawVec('180 14'), "[Ping]", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring(titleOfs + gui_percentToPixelRawVec('220 14'), "[Score]", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring(titleOfs + gui_percentToPixelRawVec('260 14'), "[Status]", '12 12', CLR_DEF_WHITE, 1, 0);
   
   drawfont = FONT_NUM_ROBOT_REGULAR;
 };

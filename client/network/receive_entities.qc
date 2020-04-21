@@ -267,6 +267,8 @@ void() client_state_events={
       MENU_button_delay = servertime + 2;
       MENU_DEBRIEF_status = SV_MISSION_RESULT;
       MENU_DEBRIEF_time_elapsed = -1;
+      //MENU_DEBRIEF_total_losses = getstati(STAT_PLAYER_LOSSES);
+      
       cons_logAFloat("SV_MISSION_RESULT", SV_MISSION_RESULT);  //debug
       cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
       if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
@@ -492,6 +494,21 @@ void() client_get_serverinfo={
     SV_ENDTIME = servertime;
   }
   SV_NEXTMAP = strzone(ReadString());
+};
+
+
+/*
+  server Mapping = client_send_campaign_end_data();
+  
+  receives end-of-mission player data, usually 
+  for either player death, or player campaign / coop end.
+*/
+void() client_campaign_end_data={
+  MENU_DEBRIEF_total_kills = ReadLong();
+  MENU_DEBRIEF_total_losses = ReadLong();
+  MENU_DEBRIEF_total_monsters = ReadLong();
+  MENU_DEBRIEF_total_allies = ReadLong();
+  
 };
 
 /*

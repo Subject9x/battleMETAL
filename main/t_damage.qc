@@ -312,8 +312,10 @@ void(entity targ, entity attacker) killed={
           break;
       }
       self.enemy = attacker;
+      if( (self.enemy.flags & FL_CLIENT) ){
+        self.enemy.botKills = self.enemy.botKills + 1;
+      }
       killed_monsters = killed_monsters + 1;
-      WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
     }
     if( (self.flags & FL_CLIENT) ){
       if( attacker.flags & FL_CLIENT ){

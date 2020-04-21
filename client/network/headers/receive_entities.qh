@@ -41,3 +41,5 @@ void(float pscTotal, float survestTotal, float militarTotal , float missonSucces
 void() receive_ent_bindData;
 
 void() client_state_events;
+
+void() client_campaign_end_data;

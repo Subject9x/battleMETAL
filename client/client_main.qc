@@ -358,27 +358,46 @@ float() CSQC_Parse_TempEntity =
   id = ReadByte();
 
   switch( id ){
-    case TE_UI_BOX:
-      client_get_hud_highlight();
+    case TE_CLIENT_INFO:
+      client_campaign_end_data();
       return TRUE;
+      
     case TE_SERVERINFO:
       client_get_serverinfo();
       return TRUE;
-    case TE_MISSION_END:
-      client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
+      
+    case TE_UI_BOX:
+      client_get_hud_highlight();
       return TRUE;
+      
     case TE_MSN_BOUND:
       client_event_boundary();
       return TRUE;
+      
     case TE_AI_VOICE:
       snd_hud_trnsmsn_addtoqueue(ReadByte(), ReadByte(), ReadByte(), ReadLong());
       return TRUE;
+      
+    case TE_MISSION_END:
+      client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
+      return TRUE;
+      
     case TE_MSG_ENV_WARN:
       client_event_environment();
       return TRUE;
+    
+    case TE_MUZZLE_FLASH:
+      particle_muzzle_flash( ReadByte(), te_read_vector(), te_read_vector(), ReadByte() ) ;
+      return TRUE;
+    
+    case TE_VFX_EXPLODE:
+      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
+      return TRUE;
+    
     case TE_MSG_INFO:
       client_event_info_box( ReadString(), CLR_DEF_TXT_GRAY_SMOOTH, ReadLong(), '14 14 0');
       return TRUE;
+      
     case TE_REPAIRS_ON:
       if( ReadByte() ){
         hud_event_enqueue( HUD_EVENT_REPAIRS_ON, 1) ;
@@ -387,17 +406,13 @@ float() CSQC_Parse_TempEntity =
         hud_event_enqueue( HUD_EVENT_REPAIRS_OFF, 1) ;
       }
       return TRUE;
+      
     case TE_VFX_POINT:
       pointparticles( ReadShort(), te_read_vector(), te_read_vector(), ReadShort());
       return TRUE;
+      
     case TE_VFX_RAIL:
       trailparticles( world, ReadShort(), te_read_vector(), te_read_vector() );
-      return TRUE;
-    case TE_VFX_EXPLODE:
-      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
-      return TRUE;
-    case TE_MUZZLE_FLASH:
-      particle_muzzle_flash( ReadByte(), te_read_vector(), te_read_vector(), ReadByte() ) ;
       return TRUE;
   } 
 	return FALSE;

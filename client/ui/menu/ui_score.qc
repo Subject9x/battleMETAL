@@ -62,11 +62,16 @@ void() menu_score_drawFrame={
 //------------------
 
 //DEATHMATCH SCORE SCREEN
-void( vector menuOrg ) menu_score_dm_
+void( vector menuOrg ) menu_score_dm={};
 
 
 //-----------------------
 
+//COOP SCORE SCREEN
+void( vector menuOrg ) menu_score_tdm={};
+
+
+//-----------------------
 
 void( vector menuOrg ) menu_score_draw_bar={
   ui_navbutton_disconnect_draw( menuOrg );

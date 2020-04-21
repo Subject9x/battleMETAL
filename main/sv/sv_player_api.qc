@@ -16,6 +16,10 @@ called before running player input frame
 ============
 */
 void() PlayerPreThink = {
+
+  //keep losses up-to-date
+  client_update_losses();
+  
   if( self.playerState == PLAYER_INTERMSN ){
     client_push_player_info_thin();
     if( MISSION_STATUS == MISSION_STATUS_ENDING ){
@@ -339,6 +343,8 @@ void() PlayerDie={
   client_push_player_info();
   client_push_mapobjects();
   client_send_server_info_update();
+  client_send_campaign_end_data( self );
+  
   self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
   
   self.effects = 0;

@@ -48,6 +48,7 @@ void( vector menuOrg ) menu_connect_draw_players_team;
 void( vector menuOrg ) menu_connect_draw_mission_info_coop;
 void( vector menuOrg ) menu_connet_draw_coop_about;
 void( vector menuOrg ) menu_connect_draw_coop_rules;
+void( vector menuOrg ) menu_connect_draw_objectives_coop;
 void( vector menuOrg ) menu_connect_draw_players_coop;
 
 //Generic methods

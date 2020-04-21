@@ -44,6 +44,7 @@ void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
 //client command layer
 void() client_sendServerInfo;
 void() client_send_server_info_update;
+void( entity client ) client_send_campaign_end_data;
 
 void() client_sendMissionFileName;
 void(string fileName) client_sendAnimaticFileName;
@@ -66,6 +67,7 @@ void( float particleEffectId, vector particleOrg, vector particleVel, float part
 void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail;
 
 void() client_update_faction;
+void() client_update_losses;
 
 //sigh can't believe Im trying this again
 float client_send_monster( entity ePVEnt, float flChanged );
