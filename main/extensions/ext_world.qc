@@ -458,8 +458,12 @@ void() sv_endServer={
         ENDROUND_TIME = time + 2;
       }
       else{
-        ENDROUND_TIME = time + 120; //2 minutes of score screen.
-        //ENDROUND_TIME = time + 5; //debug 30s test
+        if( GAMETYPE == GAMEMODE_COOP ){
+          ENDROUND_TIME = time + SERVER_SCORE_TIME_COOP;
+        }
+        else{
+          ENDROUND_TIME = time + SERVER_SCORE_TIME_DM;
+        }
       }
       ENDROUND = TRUE;
     }

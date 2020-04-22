@@ -178,7 +178,6 @@ string(float timeVal ) ui_calculate_time_string={
   return val;
 };
 
-
 string() ui_label_mission_status={
   local string val;
 //TODO fix 
@@ -274,5 +273,17 @@ void( entity removed ) scoreboard_stitch={
   }
 };
 
+/*
+  Campaign / coop stuff
+*/
+void( float missionStat ) ui_set_mission_status={
+  MENU_DEBRIEF_status = missionStat;
+  if( missionStat == MISSION_RESULT_WIN ){
+    MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
+  }
+  else{
+    MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
+  }
+};
   
 

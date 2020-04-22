@@ -62,3 +62,8 @@ float SCORESTACK;
 void() scoreboard_sort;
 void( float scoreId, float score ) scoreboard_push;
 void( entity newScore ) scoreboard_sort_push;
+
+/*
+  Campaign / coop stuff
+*/
+void( float missionStat ) ui_set_mission_status;

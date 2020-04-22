@@ -36,11 +36,13 @@ void() menu_death_think;
 
 void(vector ofs) menu_navBar_drawFrame;
 
+vector uiParentSize; //use this as scope-1 size pointer
+
 //some generics
 void( vector menuOrg ) menu_serverinfo_basic; // connect_dm and score_dm ui.
 void( vector menuOrg ) menu_playerlist_basic; // connect_dm and score_dm ui.
 void( vector menuOrg ) menu_draw_players_basic;
-void( vector rowOfs, float itr, entity playerRow ) menu_player_row_basic;
+void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_row_basic;
 
 float AVAILABLE_RESERVE;
 float SELECT_MECH;  //replaces entity functionality, used in conjunction with ui_data file loading - Roohr 6/26/2018

@@ -293,6 +293,9 @@ void() handle_input_hover={
       case MENU_CONNECT_ACTIVE:
         menu_connectListener_onHover();
         break;
+      case MENU_SCORE_ACTIVE:
+        menu_scoreListener_onHover();
+        break;
     } 
   }
 };

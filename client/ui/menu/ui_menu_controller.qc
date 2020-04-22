@@ -295,7 +295,8 @@ void( vector menuOrg ) menu_draw_players_basic={
   
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec(UI_CONNECT_DMLIST_SIZE), '0.65 0.65 0.65', 1, 0);
 
-  menu_connect_draw_scorebar ( menuOrg, "- Players -" );
+  uiParentSize = UI_CONNECT_DMLIST_SIZE;
+  menu_connect_draw_scorebar ( menuOrg, "- Players -", TRUE );
 
   listOfs_x = listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
   listOfs_y = menuOrg_y + gui_percentYRaw(14);
@@ -304,7 +305,7 @@ void( vector menuOrg ) menu_draw_players_basic={
     if( SCOREBOARD[itr] != 0 ){
       player = findfloat(world, entId, SCOREBOARD[itr]);
       listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
-      menu_player_row_basic( listRowOfs, playerRowItr, player );
+      menu_player_row_basic( listRowOfs, playerRowItr, player, TRUE );
       playerRowItr = playerRowItr + 1;
     }
   }
@@ -313,7 +314,7 @@ void( vector menuOrg ) menu_draw_players_basic={
 };
 
 //draws player score rows
-void( vector rowOfs, float itr, entity playerRow ) menu_player_row_basic={
+void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_row_basic={
   local vector fontSize;
   local vector rowColor; 
   
@@ -339,8 +340,8 @@ void( vector rowOfs, float itr, entity playerRow ) menu_player_row_basic={
   playerName = getplayerkeyvalue(playerRow.entId - 1, "name");
   if( playerName != "" ){
     playerNameLen = strlen(playerName);
-    if( playerNameLen > 24 ){
-      playerName = substring(playerName, 0, 24);
+    if( playerNameLen > 28 ){
+      playerName = substring(playerName, 0, 28);
     }
     drawstring(playerNameOfs, playerName, fontSize, rowColor, 1, 0);
   }
@@ -359,15 +360,20 @@ void( vector rowOfs, float itr, entity playerRow ) menu_player_row_basic={
     pingColor = CLR_DEF_RED;
   }
   pingLen = stringwidth( getplayerkeyvalue(playerRow.entId - 1, "ping"), 0, fontSize );
-  playerPingOfs = playerNameOfs + gui_percentToPixelRawVec('170 0');
+  playerPingOfs = playerNameOfs + gui_percentToPixelRawVec('150 0');
   playerPingOfs_x = playerPingOfs_x - gui_percentXRaw(pingLen / 2);
   drawstring(playerPingOfs, getplayerkeyvalue(playerRow.entId - 1, "ping"), fontSize, pingColor, 1, 0);
   
-  local float scoreLen;
-  playerScoreOfs = playerPingOfs + gui_percentToPixelRawVec('45 0');
-  scoreLen = stringwidth(ftos(playerRow.kills), 0, fontSize);
-  playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
-  drawstring(playerScoreOfs, ftos(playerRow.kills), fontSize, rowColor, 1, 0);
+  
+  if( showScore ){
+    local float scoreLen;
+    playerScoreOfs = playerPingOfs + gui_percentToPixelRawVec('45 0');
+    scoreLen = stringwidth(ftos(playerRow.kills), 0, fontSize);
+    playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
+    drawstring(playerScoreOfs, ftos(playerRow.kills), fontSize, rowColor, 1, 0);
+  }else{
+    playerScoreOfs = playerPingOfs;
+  }
   
   local vector statusColor;
   local float statusLen;

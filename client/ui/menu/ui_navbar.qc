@@ -236,7 +236,6 @@ void( vector ofs ) ui_navbutton_launch_draw={
   local float t;
   local float sec;
   if( servertime < MENU_respawn_cool ){
-    
     t = 15 - (servertime - MENU_respawn_cool_start); 
     sec = t - floor( t / 60 ) * 60 ;
     sec = rint(sec);

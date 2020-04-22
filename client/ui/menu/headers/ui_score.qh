@@ -21,3 +21,13 @@ void() menu_score_drawFrame;
 
 
 void( vector menuOrg ) menu_score_draw_bar;
+
+
+vector MENU_SCORE_READY_ORG;
+
+void( vector menuOrg ) menu_score_coop_nav;
+void( vector menuOrg ) menu_score_coop_server_info;
+void( vector menuOrg ) menu_score_coop_mission_info;
+void( vector menuOrg ) menu_score_coop_status;
+void( vector menuOrg ) menu_score_coop_players;
+void( vector menuOrg ) menu_score_coop_client_stats;

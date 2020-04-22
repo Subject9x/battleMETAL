@@ -53,7 +53,7 @@ void( vector menuOrg ) menu_connect_draw_players_coop;
 
 //Generic methods
 void( vector menuOrg ) menu_connect_draw_bar;
-void( vector titleOfs, string titleTeam ) menu_connect_draw_scorebar;
+void( vector titleOfs, string titleTeam, float showScore ) menu_connect_draw_scorebar;
 void( vector menuOrg ) menu_connect_draw_objectives;
 void( vector menuOrg ) menu_connect_draw_objectives_row;
 void( vector menuOrg, vector satMapSize ) menu_connect_draw_satmap;

@@ -169,12 +169,15 @@ void() receive_ent_bindData={
   also Server Mission Status and Results
 */
 void() client_state_events={
+  local float gameType;
+  
+  gameType = cvar("gamemode");
   
   //SERVER EVENTS
   if( SV_MISSION_STATUS_PREV != SV_MISSIONSTATUS ){
     //Server Event - end of map
     if( (SV_MISSION_STATUS_PREV != MISSION_STATUS_OVER) && (SV_MISSIONSTATUS == MISSION_STATUS_OVER) ){
-      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+      if( gameType == GAMEMODE_CAMPAIGN ){
         if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
           hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1 );
         }
@@ -231,7 +234,7 @@ void() client_state_events={
     //EVENT - CLIENT DEATH----------------
     if( (CLIENT_player_state_prev != PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEAD) ){
       cons_logAFloat("PLAYER_DEAD", 1);  //debug
-      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+      if( gameType == GAMEMODE_CAMPAIGN ){
         if( SV_MISSIONSTATUS == MISSION_RESULT_WIN ){
           te_mission_win();
         }
@@ -247,15 +250,10 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF DEATH
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       cons_logAFloat("PLAYER_DEBRIEF", 1);  //debug
+      
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_button_delay = servertime + 2;
-      
-      if( SV_MISSIONSTATUS == MISSION_RESULT_WIN ){
-        MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
-      }
-      else{
-        MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
-      }
+      ui_set_mission_status( SV_MISSION_RESULT );
       return;
     }
     //------------------------------------
@@ -263,21 +261,15 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF MISSION END
     if( (CLIENT_player_state_prev != PLAYER_DEBRIEF) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       cons_logAFloat("PLAYER_DEBRIEF", 1);  //debug
+      
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_button_delay = servertime + 2;
-      MENU_DEBRIEF_status = SV_MISSION_RESULT;
       MENU_DEBRIEF_time_elapsed = -1;
-      //MENU_DEBRIEF_total_losses = getstati(STAT_PLAYER_LOSSES);
       
       cons_logAFloat("SV_MISSION_RESULT", SV_MISSION_RESULT);  //debug
       cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
-      if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
-        MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
-        msn_unlock_stuff();
-      }
-      else{
-        MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
-      }
+
+      ui_set_mission_status( SV_MISSION_RESULT );
       return;
     }
     //------------------------------------
@@ -287,7 +279,12 @@ void() client_state_events={
       cons_logAFloat("PLAYER_REDEPLOY", 1);  //debug
       menu_enter( MENU_CONNECT_ACTIVE );
       MENU_button_delay = servertime + 1;
-      MENU_respawn_cool = servertime + 15;
+      if( gameType == GAMEMODE_COOP ){
+        MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_COOP;
+      }
+      else{
+        MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_DM;
+      }
       MENU_respawn_cool_start = servertime;
       return;
     }
@@ -297,11 +294,17 @@ void() client_state_events={
     if( (CLIENT_player_state_prev != PLAYER_INTERMSN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
       cons_logAFloat("PLAYER_INTERMSN", 1);  //debug
       menu_enter( MENU_SCORE_ACTIVE );
-      if( cvar("gamemode") == GAMEMODE_DM ){
-        
+      if(  gameType == GAMEMODE_COOP  ){
+        MENU_DEBRIEF_time_elapsed = -1;
+        ui_set_mission_status( SV_MISSION_RESULT );
+        MENU_respawn_cool_start = servertime + SERVER_SCORE_TIME_COOP;
+      }
+      else{
+        MENU_respawn_cool = servertime + SERVER_SCORE_TIME_DM;
       }
       MENU_button_delay = servertime + 1;
-      //MENU_respawn_cool = servertime + 15;
+      MENU_respawn_cool_start = servertime;
+      //MENU_respawn_cool = servertime + 15;  //debug
       //MENU_respawn_cool_start = servertime;
       return;
     }
@@ -311,7 +314,7 @@ void() client_state_events={
     if( (CLIENT_player_state_prev != PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
       cons_logAFloat("PLAYER_INTERMSN", 1);  //debug
       menu_enter( MENU_SCORE_ACTIVE );
-      if( cvar("gamemode") == GAMEMODE_DM ){
+      if( gameType == GAMEMODE_DM ){
         
       }
       MENU_button_delay = servertime + 1;
@@ -508,7 +511,6 @@ void() client_campaign_end_data={
   MENU_DEBRIEF_total_losses = ReadLong();
   MENU_DEBRIEF_total_monsters = ReadLong();
   MENU_DEBRIEF_total_allies = ReadLong();
-  
 };
 
 /*

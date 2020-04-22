@@ -94,6 +94,11 @@ float MISSION_RESULT_WIN1     = 3;
 float MISSION_RESULT_WIN2     = 4;
 float MISSION_RESULT_STALEMATE= 5;
 
+float SERVER_RESPAWN_COOL_DM = 15;
+float SERVER_RESPAWN_COOL_COOP = 7;
+float SERVER_SCORE_TIME_DM = 30;
+float SERVER_SCORE_TIME_COOP = 60;
+
 //Multiplayer Server Flags
 float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
 float SVFLAG_NOPOWERUP  = 2;  //  skip powerup sequence
