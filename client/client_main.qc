@@ -365,7 +365,11 @@ float() CSQC_Parse_TempEntity =
     case TE_SERVERINFO:
       client_get_serverinfo();
       return TRUE;
-      
+    
+    case TE_CLIENT_INFO_DM:
+      client_dm_end_data();
+      return TRUE;
+    
     case TE_UI_BOX:
       client_get_hud_highlight();
       return TRUE;

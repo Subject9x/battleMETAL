@@ -49,14 +49,17 @@ Overview:
 
 .float missionStatus; //moved to player level for network
 .float ramUpMax;
-.float missionLosses; //mostly campaign related.
-.float botKills;      //campaign/coop tracking of bot kills.
 
 #ifdef CSQC
 .float particleCubeFlag;
 #endif
 
 #ifndef CSQC
+.float missionLosses; //mostly campaign related.
+.float botKills;      //campaign/coop tracking of bot kills.
+.float playerDeaths;      //tracked in TDM / DM for personal score.
+.float playerDMdamage;    //fun tracker for total damage output over a match.
+
 .float nextVecChoice;
 .float i_reserve; //how many reserve points does the unit cost?
 

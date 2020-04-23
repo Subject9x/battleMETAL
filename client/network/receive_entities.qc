@@ -170,6 +170,7 @@ void() receive_ent_bindData={
 */
 void() client_state_events={
   local float gameType;
+  local float timeVal;
   
   gameType = cvar("gamemode");
   
@@ -242,6 +243,13 @@ void() client_state_events={
           te_mission_lose();
         }
         SV_ENDTIMELIMIT = servertime;
+      }
+      else{
+        timeVal = servertime - CLIENT_spawn_time;
+        if( timeVal > CLIENT_best_time ){
+          CLIENT_best_time = timeVal;
+          CLIENT_best_mech = MECH_DATA_ID;
+        }
       }
       return;
     }
@@ -511,6 +519,16 @@ void() client_campaign_end_data={
   MENU_DEBRIEF_total_losses = ReadLong();
   MENU_DEBRIEF_total_monsters = ReadLong();
   MENU_DEBRIEF_total_allies = ReadLong();
+};
+
+/*
+  server Mapping = client_send_dm_end_data();
+
+  Client-specific data captured over a DM/TDM match 
+  and sent at end-of-round.
+*/
+void() client_dm_end_data={
+  CLIENT_dmg_total = ReadLong();
 };
 
 /*

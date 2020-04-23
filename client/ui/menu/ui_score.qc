@@ -64,7 +64,7 @@ void() menu_score_drawFrame={
   else if( cvar("gamemode") == GAMEMODE_TEAMDM ){
   }
   else if( cvar("gamemode") == GAMEMODE_DM ){
-    
+    menu_score_dm_nav( VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') );
     //mission info - DM
     menu_serverinfo_basic(topleftroot + gui_percentToPixelRawVec('10 32'));
     
@@ -78,13 +78,84 @@ void() menu_score_drawFrame={
     
     //player list - DM
     menu_draw_players_basic( topleftroot + gui_percentToPixelRawVec('10 182') );
+    
+    //player stats - DM
+    menu_score_dm_client_info( topleftroot + gui_percentToPixelRawVec('320 182') );
     return; 
   }
 };
 //------------------
 
 //DEATHMATCH SCORE SCREEN
-void( vector menuOrg ) menu_score_dm={};
+void( vector menuOrg ) menu_score_dm_nav={  
+  local float t, sec;
+  local string text;
+  
+  t = SERVER_SCORE_TIME_DM - (servertime - MENU_respawn_cool_start); 
+  sec = t - floor( t / 60 ) * 60 ;
+  sec = rint(sec);
+  text = sprintf("%02d", sec);
+  
+  local vector labelOrg;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+    labelOrg = menuOrg + gui_percentToPixelRawVec('315 7');
+    drawstring( labelOrg, "Next Round in:", '14 14', CLR_DEF_TXT_HIGHLIGHT, 1, 0 );
+  drawfont = drawfont_prev;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
+    drawstring( labelOrg + gui_percentToPixelRawVec('90 -1'),text, '16 16', CLR_DEF_TXT_HIGHLIGHT, 1, 0 );
+  drawfont = drawfont_prev;
+  
+  local vector nextMapMeterOrg;
+  nextMapMeterOrg = menuOrg + gui_percentToPixelRawVec('445 0');
+  
+  gui_renderMeter( ( (SERVER_SCORE_TIME_DM - sec) / SERVER_SCORE_TIME_DM) * 100, nextMapMeterOrg, gui_percentToPixelRawVec('175 32'), CLR_DEF_GRAY_H * 0.67, CLR_DEF_IIF_FRIEND_BLD, 1, 0, AXIS_H, FALSE);
+};
+
+void( vector menuOrg ) menu_score_dm_client_info={
+local vector labelOrg;
+  local float labelLen;
+  
+  local vector fontsStyle;
+  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('150 90'), CLR_UI_PSC_BRIEF * 0.8, 1, 0);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
+    labelLen = stringwidth("- Player Stats -", 0, '10 10');
+    labelOrg_x = menuOrg_x + gui_percentXRaw(75) - gui_percentXRaw(labelLen/2);
+    labelOrg_y = menuOrg_y + gui_percentYRaw(2);
+    drawstring( labelOrg, "- Player Stats -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawfont = drawfont_prev;
+  
+  fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;
+  fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
+  
+  //Player Score
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('22 14'), "Your Kills :", getplayerkeyvalue(player_localnum, "frags"), CLR_DEF_GREEN, CLR_DEF_ARM_OK, fontsStyle, '12 12' );
+  
+  //Player Death
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('10 28'), "Your Deaths :", ftos(getstati(STAT_PLAYER_DEATHS)), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '12 12' );
+  
+  //Best survival time
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('20 42'), "Best Time :", ui_calculate_time_string(CLIENT_best_time), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  
+  //Best Surviving Mech
+  local string mechName;
+  if( CLIENT_best_mech > 0 ){
+    mechName = MECH_DATA_NAMES[CLIENT_best_mech];
+  }
+  else{
+    mechName = "<none>";
+  }
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('18 58'), "Best Mech :", MECH_DATA_NAMES[CLIENT_best_mech], CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  
+  //Total Damage output
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('4 72'), "Total Damage :", ftos(CLIENT_dmg_total), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+};
+
 //-----------------------
 
 //COOP SCORE SCREEN
@@ -310,7 +381,7 @@ void( vector menuOrg ) menu_score_coop_client_stats={
   local float labelLen;
   
   local vector fontsStyle;
-  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('150 75'), '0.95 0.95 0.95', 1, 0);
+  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('150 90'), '0.95 0.95 0.95', 1, 0);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
@@ -326,15 +397,17 @@ void( vector menuOrg ) menu_score_coop_client_stats={
   //Player Score
   gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('20 14'), "Your Kills :", getplayerkeyvalue(player_localnum, "frags"), CLR_DEF_GREEN, CLR_DEF_ARM_OK, fontsStyle, '12 12' );
   
+  //Player Death
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('8 28'), "Your Deaths :", ftos(getstati(STAT_PLAYER_DEATHS)), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '12 12' );
+  
   //Team Score
-  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('18 28'), "Total Kills :", ftos(MENU_DEBRIEF_total_kills), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('18 42'), "Total Kills :", ftos(MENU_DEBRIEF_total_kills), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Team Losses
-  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('31 42'), "Losses :", ftos(MENU_DEBRIEF_total_losses), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('31 58'), "Losses :", ftos(MENU_DEBRIEF_total_losses), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Elapsed Time
-  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('4 58'), "Time Elapsed :", ui_calculate_time_string(SV_ENDTIME), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
-  
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('4 72'), "Time Elapsed :", ui_calculate_time_string(SV_ENDTIME), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
 };
 //-----------------------
 

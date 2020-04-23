@@ -45,6 +45,7 @@ void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
 void() client_sendServerInfo;
 void() client_send_server_info_update;
 void( entity client ) client_send_campaign_end_data;
+void( entity client ) client_send_dm_end_data;
 
 void() client_sendMissionFileName;
 void(string fileName) client_sendAnimaticFileName;

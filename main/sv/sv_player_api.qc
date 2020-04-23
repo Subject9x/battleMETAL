@@ -426,6 +426,8 @@ void() PlayerDieNetwork={
   
   self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
   
+  self.playerDeaths = self.playerDeaths + 1;
+  
   self.think = PlayerDieNetworkEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };

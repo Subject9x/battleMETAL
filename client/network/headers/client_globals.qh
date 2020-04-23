@@ -108,3 +108,7 @@ float CLIENT_ramUp;
 
 string CLIENT_target_name;
 
+float CLIENT_spawn_time;  //start marker for tracking best time
+float CLIENT_best_time;   //longest survial time in a mech
+float CLIENT_best_mech;   //best mech matched to longest survival time
+float CLIENT_dmg_total;   //total damage over the match

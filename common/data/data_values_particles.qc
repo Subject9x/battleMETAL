@@ -18,7 +18,7 @@ float IMPACT_ARMOR = 3;
 //TE_ ID's
 float TE_CLIENT_INFO = 80;
 float TE_SERVERINFO =  81;
-//82;
+float TE_CLIENT_INFO_DM = 82;
 //83;
 float TE_UI_BOX = 84;
 

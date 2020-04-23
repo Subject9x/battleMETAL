@@ -348,6 +348,7 @@ void() ui_navbutton_launch_click={
       cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
       cl_spawnmech();
       client_event_mission_name( MSN_DISP );
+      CLIENT_spawn_time = servertime; //mark for when palyer dies.
     }
   }
 };

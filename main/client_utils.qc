@@ -208,7 +208,6 @@ void(string str, float tokens) client_ParseMechCommand={
       sv_client_spawnpoint_select();
       player_makeMech();
       client_playTrack( world.sounds, TRUE );
-      
       if( self.client_num < 1){
         CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
         self.client_num = CLIENTS;  //book keeping for multiplayer
@@ -624,6 +623,17 @@ void( entity client ) client_send_campaign_end_data={
       break;
   }  
 };
+
+/*
+  Sends client-specific data for post-DM/TDM matches.
+*/
+void( entity client ) client_send_dm_end_data={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_CLIENT_INFO_DM );
+  WriteLong( MSG_ONE, client.playerDMdamage );
+};
+
 
 entity() spawnpoint_coop={
   local entity locus;

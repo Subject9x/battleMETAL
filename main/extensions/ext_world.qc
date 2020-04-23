@@ -85,6 +85,7 @@ void() mh_world_ini={
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
   addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
+  addstat(STAT_PLAYER_DEATHS, AS_INT, playerDeaths);
     
   addstat(STAT_TARGET_HP_TORSOCENTER, AS_FLOAT, stat_target_hp_torsoCenter);
   addstat(STAT_TARGET_HP_TORSOLEFT, AS_FLOAT, stat_target_hp_torsoLeft);
@@ -419,6 +420,9 @@ void() sv_endServer={
       player.flags = player.flags | FL_NOSHOOT;
       if( GAMETYPE == GAMEMODE_CAMPAIGN || GAMETYPE == GAMEMODE_COOP ){
         client_send_campaign_end_data( player );
+      }
+      else{
+         client_send_dm_end_data( player ); 
       }
     }
     return;

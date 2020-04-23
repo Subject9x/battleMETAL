@@ -43,3 +43,4 @@ void() receive_ent_bindData;
 void() client_state_events;
 
 void() client_campaign_end_data;
+void() client_dm_end_data;

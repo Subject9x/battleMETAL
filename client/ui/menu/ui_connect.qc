@@ -24,9 +24,11 @@ void() menu_connectListener_onClick={
   }
   if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), TRUE)){
     ui_navbutton_connect_click();
-  }  
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_TEAM_ORG, gui_percentToPixelRawVec(UI_NAVBAR_TEAM_SIZE), TRUE)){
-    ui_navbutton_team_click();
+  }
+  if( SV_MISSIONSTATUS <= MISSION_STATUS_ACTIVE ){
+    if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_TEAM_ORG, gui_percentToPixelRawVec(UI_NAVBAR_TEAM_SIZE), TRUE)){
+      ui_navbutton_team_click();
+    }  
   }
 };
 
@@ -140,12 +142,11 @@ void( vector menuOrg ) menu_connect_draw_bar={
   ui_navbutton_disconnect_draw( menuOrg );
   if( SV_MISSIONSTATUS <= MISSION_STATUS_ACTIVE ){
     ui_navbutton_connect_draw( enterOfs );
-  }
-  
-  if( cvar("gamemode") == GAMEMODE_TEAMDM ){
-    switchOfs_x = VIEW_CTR_x - gui_percentXRaw( UI_NAVBAR_TEAM_SIZE_x / 2 );
-    switchOfs_y = menuOrg_y;
-    ui_navbutton_team_draw( switchOfs );
+    if( cvar("gamemode") == GAMEMODE_TEAMDM ){
+      switchOfs_x = VIEW_CTR_x - gui_percentXRaw( UI_NAVBAR_TEAM_SIZE_x / 2 );
+      switchOfs_y = menuOrg_y;
+      ui_navbutton_team_draw( switchOfs );
+    }
   }
 };
 
