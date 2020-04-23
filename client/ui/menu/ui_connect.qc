@@ -450,6 +450,9 @@ void( vector menuOrg ) menu_connect_draw_players_team={
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec(UI_CONNECT_TEAMLIST_SIZE), CLR_UI_PSC_BRIEF * 0.9, 1, 0);
   drawpic(menuOrg + gui_percentToPixelRawVec('310 0'), UI_DEF_BOX_512, gui_percentToPixelRawVec(UI_CONNECT_TEAMLIST_SIZE), CLR_UI_AUTH_BRIEF, 1, 0);
 
+  drawpic( menuOrg + gui_percentToPixelRawVec('100 48'), "gfx/ui/ui_icon_survest.png", gui_percentToPixelRawVec('110 100'), '0.85 0.85 0.85', 0.33, 0);
+  drawpic( menuOrg + gui_percentToPixelRawVec('394 38'), "gfx/ui/ui_icon_militar.png", gui_percentToPixelRawVec('128 128'), '0.85 0.85 0.85', 0.33, 0);
+
   uiParentSize = UI_CONNECT_TEAMLIST_SIZE;
   menu_connect_draw_scorebar( menuOrg, "- Survest -", TRUE );
   menu_connect_draw_scorebar( menuOrg + gui_percentToPixelRawVec('310 0'), "- Militar -", TRUE );

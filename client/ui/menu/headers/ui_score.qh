@@ -26,7 +26,11 @@ void( vector menuOrg ) menu_score_dm_nav;
 void( vector menuOrg ) menu_score_dm_client_info;
 
 //Team DM
+void( vector menuOrg ) menu_score_tdm_nav;
+void( vector menuOrg ) menu_score_tdm_server_info;
 
+void( vector menuOrg ) menu_score_tdm_objectives;
+void( vector menuOrg ) menu_score_tdm_client_info;
 
 //COOP
 
