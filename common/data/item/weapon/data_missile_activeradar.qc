@@ -18,13 +18,13 @@ void() data_ini_missile_activeradar_={
 
   self.data_idx = 10;  
   
-  self.w_clipsize = 3;   //10
-  self.reloadRate = 0.18; //0.24
-  self.reloadMax = 6.5;   //5.5
+  self.w_clipsize = 3;
+  self.reloadRate = 0.18;
+  self.reloadMax = 6.5;
   self.energyRate = 0;
   
-  self.w_range = 1600;    //1500
-  self.damageValue = 50;  //15
+  self.w_range = 3000;  //1600
+  self.damageValue = 50;
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;

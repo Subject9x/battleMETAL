@@ -23,7 +23,7 @@ void() data_ini_light_laser_={
   self.reloadMax = 0.95;
   self.energyRate = 12;
 
-  self.w_range = 2000;
+  self.w_range = 3000;  //2000
   self.damageValue = 15;
   self.damageType = (DMG_ENE | EFF_SHD);
 

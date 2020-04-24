@@ -40,8 +40,8 @@ void() projectile_rocket_expl={
 
 void() data_projectile_ini_rocket_={
   self.classname = "missile";
-  self.data_velocity = 1300;
-  self.data_lifetime = 0.56;
+  self.data_velocity = 1500;
+  self.data_lifetime = 0.5025;
   
   #ifdef CSQC
     //cosmetics

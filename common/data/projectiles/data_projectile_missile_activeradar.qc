@@ -42,8 +42,8 @@ void() projectile_marh_expl={
 
 void() data_projectile_ini_missile_active_radar_={
   self.classname = "missile";
-  self.data_velocity = 650;
-  self.data_lifetime = 8;
+  self.data_velocity = 1200; //650
+  self.data_lifetime = 3; //8
   self.compOffset = '0 0 0';   
   
   #ifdef CSQC
