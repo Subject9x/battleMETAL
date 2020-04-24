@@ -543,37 +543,49 @@ void() CSQC_Ent_Remove ={
     remove(rem);
   }
   if( self.torsoCenter.partTypeId ){
-    remove(self.torsoCenter);
+    rem = self.torsoCenter;
+    self.torsoCenter = world;
+    remove(rem);
   }
   if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
-    if( self.torsoLeft.partTypeId ){
-      remove(self.torsoLeft);
+    if( self.torsoLeft != world ){
+      rem = self.torsoLeft;
+      self.torsoLeft = world;
+      remove(rem);
     }
-    if( self.torsoRight.partTypeId ){
-      remove(self.torsoRight);
+    if( self.torsoRight != world ){
+      rem = self.torsoRight;
+      self.torsoRight = world;
+      remove(rem);
     }
-    if( self.armLeft.partTypeId ){
-      remove(self.armLeft);
+    if( self.armLeft != world ){
+      rem = self.armLeft;
+      self.armLeft = world;
+      remove(rem);
     }
-    if( self.armRight.partTypeId ){
-      remove(self.armRight);
+    if( self.armRight != world ){
+      rem = self.armRight;
+      self.armRight = world;
+      remove(rem);
     }
-    if( self.legs.partTypeId ){
-      remove(self.legs);
+    if( self.legs != world ){
+      rem = self.legs;
+      self.legs = world;
+      remove(rem);
     }
   }
   if( self.data_type == DATA_BLD ){
-    if( self.effect1 ){
+    if( self.effect1 != world ){
       remove(self.effect1);
     }
   }
   if( self.data_type == DATA_BLD ){
-    if( self.effect2 ){
+    if( self.effect2 != world ){
       remove(self.effect2);
     }
   }
   if( self.data_type == DATA_BLD ){
-    if( self.effect3 ){
+    if( self.effect3 != world ){
       remove(self.effect3);
     }
   }

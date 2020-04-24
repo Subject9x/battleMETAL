@@ -28,38 +28,44 @@ void() sendevent_mech_ai_move={
 */
 void() sendevent_mech_ai_die={
   local entity weps;
+  local entity rem;
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
-  if( self.torsoCenter ){
-    self.torsoCenter.modelindex = 0;
-    self.torsoCenter.scale = 0.01;
-    self.torsoCenter.alpha = 0.01;
-    self.torsoCenter.think = SUB_Remove;
-    self.torsoCenter.nextthink = time + 0.1;
+  if( self.torsoCenter != world ){
+    rem = self.torsoCenter;
+    self.torsoCenter = world;
+    remove(rem);
   }
-  if( self.torsoLeft ){
-    self.torsoLeft.think = SUB_Remove;
-    self.torsoLeft.nextthink = time + 0.1;
+  if( self.torsoLeft != world ){
+    rem = self.torsoLeft;
+    self.torsoLeft = world;
+    remove(rem);
   }
-  if( self.torsoRight ){
-    self.torsoRight.think = SUB_Remove;
-    self.torsoRight.nextthink = time + 0.1;
+  if( self.torsoRight != world ){
+    rem = self.torsoRight;
+    self.torsoRight = world;
+    remove(rem);
   }
-  if( self.armLeft ){
-    self.armLeft.think = SUB_Remove;
-    self.armLeft.nextthink = time + 0.1;
+  if( self.armLeft != world ){
+    rem = self.armLeft;
+    self.armLeft = world;
+    remove(rem);
   }
-  if( self.armRight ){
-    self.armRight.think = SUB_Remove;
-    self.armRight.nextthink = time + 0.1;
+  if( self.armRight != world ){
+    rem = self.armRight;
+    self.armRight = world;
+    remove(rem);
   }
-  if( self.legs ){
-    self.legs.think = SUB_Remove;
-    self.legs.nextthink = time + 0.1;
+  if( self.legs != world ){
+    rem = self.legs;
+    self.legs = world;
+    remove(rem);
   }
-  for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
-    weps.think = SUB_Remove;
-    weps.nextthink = time + 0.1;
+  weps = self.w_slot;
+  while( weps != world ){
+    rem = weps;
+    weps = rem.w_slot;
+    remove(rem);
   }
 };
 
@@ -68,35 +74,56 @@ void() sendevent_mech_ai_die={
 */
 void( float critical ) sendevent_mech_ai_crit={
   local entity weps;
+  local entity rem;
+  local entity prev;
+  
   if( (critical & M_TOR_LEFT) ){
-    te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoLeft.think = SUB_Remove;
-    self.torsoLeft.nextthink = time + 0.1;
+    if( self.torsoLeft != world ){
+      te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      rem = self.torsoLeft;
+      self.torsoLeft = world;
+      remove(rem);
+    }
   }
   if( (critical & M_TOR_RIGHT) ){
-    te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoRight.think = SUB_Remove;
-    self.torsoRight.nextthink = time + 0.1;
+    if( self.torsoRight != world ){
+      te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      rem = self.torsoRight;
+      self.torsoRight = world;
+      remove(rem);
+    }
   }
   if( (critical & M_ARM_LEFT) ){
-    te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armLeft.think = SUB_Remove;
-    self.armLeft.nextthink = time + 0.1;
+    if( self.armLeft != world ){
+      te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      rem = self.armLeft;
+      self.armLeft = world;
+      remove(rem);
+    }
   }
   if( (critical & M_ARM_RIGHT) ){
-    te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armRight.think = SUB_Remove;
-    self.armRight.nextthink = time + 0.1;
+    if( self.armRight != world ){
+      te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      rem = self.armRight;
+      self.armRight = world;
+      remove(rem);
+    }
   }
   if( (critical & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.legs.think = SUB_Remove;
-    self.legs.nextthink = time + 0.1;
   }
-  for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
+  weps = self.w_slot;
+  prev = self;
+  while(weps != world ){
     if( (weps.partParentId & critical) ){
-      weps.think = SUB_Remove;
-      weps.nextthink = time + 0.1;
+      rem = weps;
+      weps = weps.w_slot;
+      prev.w_slot = weps;
+      remove(rem);
+    }
+    else{
+      prev = weps;
+      weps = weps.w_slot;
     }
   }
   pointsound( self.origin, "sound/fx_boom.ogg", 0.7 + (random() * 0.3) , ATTN_NORM );

@@ -32,18 +32,21 @@ void() sendevent_tank_move={
 void() sendevent_tank_die={
   local entity weps;
   local entity this;
+  local entity rem;
   
   makevectors(self.angles);
   self.origin = self.origin + (v_up * -2);
   self.colormod = '0.33 0.33 0.33';
   if( self.torsoCenter != world ){
-    remove(self.torsoCenter);
+    rem = self.torsoCenter;
+    self.torsoCenter = world;
+    remove(rem);
   }     
   weps = self.w_slot;
   while( weps ){
-    this = weps.w_slot;
-    remove(weps);
-    weps = this;
+    rem = weps;
+    weps = rem.w_slot;
+    remove(rem);
   }
   self.deadflag = DEAD_DEAD;
   if(self.vec_size == 1){
