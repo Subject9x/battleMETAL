@@ -132,9 +132,17 @@ void() data_projectile_missile_activeradar_delay={
   self.nextthink = time + 0.01;
 };
 
+float DAT_MARH_SHRAP_TOTAL = 5;
+
 void() data_projectile_missile_activeradar_touch={
   local float debris;
   local float damage;
+  
+  local vector shotpoint;
+  local vector shrapPoint;
+  local vector shotDir;
+  local vector shrapDir;
+  local float totes;
   
   if( other == self.owner ){
     return;
@@ -155,11 +163,27 @@ void() data_projectile_missile_activeradar_touch={
     damage = self.damageValue;
     if( other.shield > 0 ){
       damage = damage * 0.25;
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+      t_damage_shield(other, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( other.data_type == DATA_MECH ){
+        makevectors(self.velocity);
+        totes = DAT_MARH_SHRAP_TOTAL;
+        shotpoint = self.origin + (v_forward * -48);
+        shotDir = normalize(self.origin - shotpoint);
+        while(totes > 0){
+          shrapDir = shotDir + (crandom()*0.4*v_right) + (crandom()*0.4*v_up);
+          shrapPoint = shotpoint + (shrapDir*128);
+          traceline( shotpoint, shrapPoint, FALSE, self.owner);
+          t_damage(trace_ent, self, self.owner, self.damageValue /DAT_MARH_SHRAP_TOTAL, trace_endpos, '0 0 0');
+          totes = totes - 1;
+        }
+      }
+      else{
+        t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      }
+    
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 6, 1 );
       self.impactType = IMPACT_ARMOR;
     }
