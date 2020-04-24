@@ -92,7 +92,7 @@ void() data_ini_attack_missile_activeradar_={
     setorigin(NEWSHOT, start);
     NEWSHOT = world;
     
-    client_send_muzzle_flash( self.data_idx, start, arc, 0 );
+    client_send_muzzle_flash( self.data_idx, self.origin, start, 0 );
   }
 };
 #endif
