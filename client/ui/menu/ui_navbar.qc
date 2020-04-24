@@ -340,11 +340,6 @@ void() ui_navbutton_launch_click={
       if( CLIENT_MENU_nex_grp1 < 1 ){
         CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 | bit;
       }
-      cons_logAFloat("CLIENT_MENU_nex_grp1", CLIENT_MENU_nex_grp1); //debug
-      cons_logAFloat("CLIENT_MENU_nex_grp2", CLIENT_MENU_nex_grp2); //debug
-      cons_logAFloat("CLIENT_MENU_nex_grp3", CLIENT_MENU_nex_grp3); //debug
-      cons_logAFloat("CLIENT_MENU_nex_grp4", CLIENT_MENU_nex_grp4); //debug
-      
       cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
       cl_spawnmech();
       client_event_mission_name( MSN_DISP );

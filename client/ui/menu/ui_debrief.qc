@@ -15,7 +15,6 @@ void() menu_debriefListener_onClick={
   //next/retry mission button
   if( servertime > MENU_button_delay ){
     if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
-      cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
       //Single player 
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
         cl_savefile_save();

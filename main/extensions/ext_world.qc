@@ -287,7 +287,6 @@ void() sv_rules_dm={
       }
       
       if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
-        cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
       }
     }
   }
@@ -296,7 +295,6 @@ void() sv_rules_dm={
     if( ENDTIME_LIMIT != -1 ){
       if( time >= ENDTIME_LIMIT ){
         MISSION_STATUS = MISSION_STATUS_OVER;
-        cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
       }
     }
   }
@@ -327,7 +325,6 @@ void() sv_rules_tdm={
     }
     
     if( MISSION_STATUS == MISSION_STATUS_OVER ){
-      cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
     }
     return;
   }
@@ -336,7 +333,6 @@ void() sv_rules_tdm={
   if( ENDTIME_LIMIT != -1 ){
     if( time >= ENDTIME_LIMIT ){
       MISSION_STATUS = MISSION_STATUS_OVER;
-      cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
       return;
     }
   }
