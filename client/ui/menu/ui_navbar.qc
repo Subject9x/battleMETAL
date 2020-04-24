@@ -349,6 +349,7 @@ void() ui_navbutton_launch_click={
       cl_spawnmech();
       client_event_mission_name( MSN_DISP );
       CLIENT_spawn_time = servertime; //mark for when palyer dies.
+      CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
     }
   }
 };

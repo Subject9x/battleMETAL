@@ -61,7 +61,7 @@ void() playerAttack={
     local float wgrp;
     wgrp = wep_chain.w_group;
     if( wep_chain.w_attack ){
-      if( (weaponGroup > 0) && ( (self.playerState == PLAYER_ACTIVE) || (self.playerState == PLAYER_SPRINT_ON) )){
+      if( (weaponGroup > 0) && (self.playerState == PLAYER_ACTIVE) ){
         if( (weaponGroup & wgrp) ){
           if(wep_chain.w_state == READY || wep_chain.w_state == WAITING){
             self = wep_chain;
@@ -235,7 +235,7 @@ void() ButtonCommands={
     if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
       if( self.playerState == PLAYER_ACTIVE ){
         self.ramAngle_y = self.v_angle_y;
-        self.playerState = PLAYER_SPRINT_ON;
+        self.moveState = MOVE_SPRINT;
         //client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
       }
     }

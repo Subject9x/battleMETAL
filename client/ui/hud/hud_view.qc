@@ -802,19 +802,19 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   ramPos = gui_percentToPixelRawVec(ramOrg);
   ramPos = gui_calcAlign(ramPos, ramAlign);
   
-  if( CLIENT_player_state == PLAYER_SPRINT_ON ){
+  if( ramValue > 0 ){
     ramLabel = "SPRINT";
     ramColor = gui_getColorForArmor(ramValue);
     if(ramValue > 100 ){
       ramValue = 100;
     }
   }
-  else if( ramValue == 256 ){
+  else if( CLIENT_move_state == MOVE_RAM_CHARGE ){
     ramLabel = "RAM!";
     ramColor =  '0.9 0.1 0.1';
     ramValue = 100;
   }
-  else if( ramValue == 255 ){
+  else if(CLIENT_move_state == MOVE_RAM_COOL ){
     ramLabel = "----";
     ramColor =  '0.15 0.15 0.15';
     ramValue = 100;
@@ -845,13 +845,14 @@ void() hud_render_sprint={
   local vector spos;
   local string msg;
   local vector msgClr;
-  if(CLIENT_player_state == PLAYER_SPRINT_ON){
+  
+  if(CLIENT_move_state > MOVE_NORM){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     if( cvar("cl_movespeedkey") > 1 ){
       msg = HUD_SPRINT_ON;
       msgClr = CLR_DEF_RET_GETLOCK;
-      if( getstatf(STAT_RAM) >= getstatf(STAT_RAM_MAX) ){
+      if( getstatf(STAT_RAM) >= CLIENT_ram_max ){
         msg = HUD_SPRINT_RAM;
         msgClr = CLR_DEF_RED;
       }
@@ -1096,7 +1097,7 @@ void() data_hud_frame={
           lalign = UI_DATA_LABEL_ALIGN[uid];
           lblofs = UI_DATA_LABEL_OFS[uid];
           axis = UI_DATA_AXIS_FLAG[uid];
-          hud_render_ram(porg, vsize, getstatf(STAT_RAM_VALUE), algn, axis, lblofs, lalign);
+          hud_render_ram(porg, vsize, getstatf(STAT_RAM_VALUE) * 100, algn, axis, lblofs, lalign);
         }
         break;
       case HUD_UID_MSN_CLOCK:

@@ -68,10 +68,11 @@ void() mh_world_ini={
   addstat(STAT_CLIENT_ENERGY, AS_FLOAT, stat_client_energy);
   addstat(STAT_CLIENT_SHIELD, AS_FLOAT, stat_client_shield);
   
-  addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
+  //addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
   addstat(STAT_PLAYER_STATE, AS_INT, playerState);
   addstat(STAT_PLAYER_WEAPONS_STATE, AS_INT, stat_player_weapons_state);
   addstat(STAT_PLAYER_FACTION, AS_INT, faction);
+  addstat(STAT_MOVE_STATE, AS_INT, moveState);
   
   addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
   addstat(STAT_PLR_DATA_IDX, AS_INT, data_idx);

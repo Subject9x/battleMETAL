@@ -70,8 +70,8 @@ void() PlayerPreThink = {
 		self.velocity = '0 0 0';
   
   if( !self.button8 ){
-    if( self.playerState == PLAYER_SPRINT_ON ){
-      self.playerState = PLAYER_ACTIVE;
+    if( self.moveState > 0 ){
+      self.moveState = 0;
       if( time > self.ramCharge ){
         self.ramAngle_y = self.v_angle_y;
       }
@@ -235,33 +235,36 @@ void() PlayerPostThink = {
 	}
 
   if( time > self.ramCool ){
-    if( self.playerState == PLAYER_SPRINT_ON ){
+    if( self.moveState > MOVE_NORM ){
       if(self.movement_x > 0 && self.movement_y == 0 ){
         if( self.energy > (self.energyMax * 0.15)){
           if( self.ramUp < self.ramUpMax ){
-            self.ramUp = self.ramUp + (cvar("sys_ticrate") * 3);
+            self.ramUp = self.ramUp + self.data_speed_accel / 125;
           }   
         }   
       }
       else{
-        self.ramUp = 0;
+        self.ramUp = self.ramUp - self.data_speed_accel / 100;
       }
     }
     else{
+        self.ramUp = self.ramUp - self.data_speed_accel / 100;
+    }
+    if( self.ramUp < 0 ){
       self.ramUp = 0;
     }
   }
   if( time <= self.ramCharge ){
-    self.ramTracker = 256;
+    self.moveState = MOVE_RAM_CHARGE;
   }
   else if( time <= self.ramCool ){
     self.ramUp = 0;
-    self.ramTracker = 255;
+    self.moveState = MOVE_RAM_COOL;
   }
   else{
-    self.ramTracker = (self.ramUp / self.ramUpMax) * 100;
-    if(self.ramTracker > 100 ){
-      self.ramTracker = 100;
+    self.ramTracker = (self.ramUp / self.ramUpMax);
+    if(self.ramTracker > 1 ){
+      self.ramTracker = 1;
     }
   }
   

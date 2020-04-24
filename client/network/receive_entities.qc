@@ -82,6 +82,8 @@ void() receive_ent_bindData={
       CLIENT_shield = 0;
     }
     
+    CLIENT_move_state = getstati(STAT_MOVE_STATE);
+    
     CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
     CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
     CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
@@ -123,7 +125,7 @@ void() receive_ent_bindData={
     CLIENT_stat_trg_lg_hp = getstatf(STAT_TARGET_HP_LEGS);
     
     //Critical hits
-    if( CLIENT_player_state == PLAYER_ACTIVE || CLIENT_player_state == PLAYER_SPRINT_ON ){
+    if( CLIENT_player_state == PLAYER_ACTIVE ){
       if( CLIENT_health_torso_left <= 0 && CLIENT_health_torso_left_prev > 0 ){
         hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
       }
@@ -144,10 +146,10 @@ void() receive_ent_bindData={
       }
     }
     if( !(CLIENT_flags_prev & FL_NOSHOOT) && (CLIENT_flags & FL_NOSHOOT) ){
-        hud_event_enqueue( HUD_EVENT_WEAPONS_OFF, 1) ;
+      hud_event_enqueue( HUD_EVENT_WEAPONS_OFF, 1) ;
     }
     if( (CLIENT_flags_prev & FL_NOSHOOT) && !(CLIENT_flags & FL_NOSHOOT) ){
-        hud_event_enqueue( HUD_EVENT_WEAPONS_ON, 1) ;
+      hud_event_enqueue( HUD_EVENT_WEAPONS_ON, 1) ;
     }
 
     if( CLIENT_stat_trg_ent_id_prev != 0 && CLIENT_stat_trg_ent_id == -1 ){

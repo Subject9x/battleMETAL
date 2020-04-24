@@ -22,6 +22,8 @@ float CLIENT_player_state_prev;
 float CLIENT_player_deadflag;
 float CLIENT_player_deadflag_prev;
 
+float CLIENT_move_state;  //simple sprint tracker
+
 float CLIENT_data_type;
 float CLIENT_data_idx;
 float CLIENT_faction;
@@ -105,6 +107,7 @@ float CLIENT_stat_trg_ra_hp;
 float CLIENT_target_vecsize;
 
 float CLIENT_ramUp;
+float CLIENT_ram_max;
 
 string CLIENT_target_name;
 

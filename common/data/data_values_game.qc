@@ -164,7 +164,13 @@ float PLAYER_ANIM_STOP      = 8;  // Client told to stop playing animatic.
 float PLAYER_POWERUP_BEGIN  = 9;  // Client has spawned into their mech, and the mech is powering up.
 float PLAYER_POWERUP_END    = 10;  // Client mech has completed powerup sequence.
 float PLAYER_ACTIVE         = 11;  // Client is controlling mech, and may move/fire freely.
-float PLAYER_SPRINT_ON      = 12; // Client has engaged the 'sprint' button.
+float PLAYER_SPRINT_ON      = 12;
+
+float MOVE_NORM             = 0;  //normal walking without +button8
+float MOVE_SPRINT           = 1;  // Client has engaged the 'sprint' 
+float MOVE_RAM_ON           = 2;
+float MOVE_RAM_CHARGE       = 3;
+float MOVE_RAM_COOL         = 4;
 
 //============================
 //         DATA_TYPE           
@@ -387,13 +393,13 @@ float STAT_ACCURACY = 33;
 float STAT_RAM = 34;
 float STAT_CLIENT_ENERGY = 35;
 float STAT_CLIENT_SHIELD = 36;
-float STAT_RAM_MAX = 37;
+//float STAT_RAM_MAX = 37;
 float STAT_PLAYER_STATE = 38;
 float STAT_PLAYER_WEAPONS_STATE = 39;
 float STAT_PLAYER_FACTION = 40;
 float STAT_PLAYER_DEATHS = 41;
+float STAT_MOVE_STATE = 42;
 
-//42;
 //43;
 float STAT_PLAYER_DATA_TYPE = 44;
 float STAT_PLR_DATA_IDX = 46;
