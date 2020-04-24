@@ -451,12 +451,12 @@ void( vector ofs ) ui_navbutton_team_draw={
     fontSize = UI_NAVBAR_font_unselect;
   }
   if( CLIENT_faction == FACTION_SURVEST ){
-    if( TEAM_MILITAR_TOTAL > 7 ){
+    if( TEAM_MILITAR_TOTAL > 8 ){
       disColor = CLR_DEF_TXT_NONSELECT;
     }
   }
   if( CLIENT_faction == FACTION_MILITAR ){
-    if( TEAM_SURVEST_TOTAL > 7 ){
+    if( TEAM_SURVEST_TOTAL > 8 ){
       disColor = CLR_DEF_TXT_NONSELECT;
     }
   }
