@@ -48,11 +48,6 @@ void() dynamic_precache =
 
 void() cs_precache={
 
-  //cockpit images 
-  HUD_BLK_IMG_B = precache_pic("gfx/hud/hud_blk_bck.png", 0);
-  HUD_MTK_IMG_B = precache_pic("gfx/hud/hud_mtk_bck.png", 0);
-  HUD_MNT_IMG_B = precache_pic("gfx/hud/hud_mnt_bck.png", 0);
-  
   HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret/ret_pip_hrz.png", 0);
   HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret/ret_pip_vrt.png", 0);
   HUT_RET_LOK = precache_pic("gfx/hud/ret/ret_lock.png", 0);
@@ -109,8 +104,6 @@ void() cs_precache={
   UI_BTN_ARR_RIGHT = precache_pic("gfx/ui/btn_arr_right.png",8);
   UI_BTN_ARR_LEFT = precache_pic("gfx/ui/btn_arr_left.png",8);
   UI_COMPASS = precache_pic("gfx/ui/ui_compass.png",8);
-  //HUD_TARGET_BOX = precache_pic("gfx/hud/target_box.png",0);
-  HUD_TARGET_BOX = precache_pic("gfx/hud/target_box_a.png",0);
   
   HUD_TARGET_BOX_TL = precache_pic("gfx/hud/target_box_tl.png",0);
   HUD_TARGET_BOX_TR = precache_pic("gfx/hud/target_box_tr.png",0);
@@ -132,11 +125,6 @@ void() cs_precache={
   SPRITE_deploy_point_FRAMES[2] = "gfx/ui/sprite/deploy_2.tga";
   SPRITE_deploy_point_FRAMES[3] = "gfx/ui/sprite/deploy_3.tga";
   SPRITE_deploy_point_FRAMES[4] = "gfx/ui/sprite/deploy_4.tga";
-  
-  //HUD GRAPHICS
-  DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);
-  DAT_MNT_UI_IMG = precache_pic("gfx/ui/hgr_MNT.png",0);
-  DAT_MTK_UI_IMG = precache_pic("gfx/ui/hgr_mtk.png",0);
   
   //STANDUP VOICES
   AI_VOICE_A[0] = "sound/voice/voiceA/voiceA_die.ogg";

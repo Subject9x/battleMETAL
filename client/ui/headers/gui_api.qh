@@ -24,10 +24,6 @@ string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
 float NAVNAMES_ACTIVE[21];    //  1 = active, unvisit, 2 = active, visit, 0 = hidden, -1 = inactive.
 vector NAVNAMES_ORG[21];      //  server origins for all nav points
 
-string DAT_OTL_UI_IMG;
-string DAT_MNT_UI_IMG;
-string DAT_MTK_UI_IMG;
-
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;
