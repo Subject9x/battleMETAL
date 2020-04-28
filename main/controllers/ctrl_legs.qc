@@ -83,9 +83,9 @@ void() ctrl_dieLegs={
         }
         if( !blown ){
           self.flags = self.flags | FL_DISARMED;
-          self.owner.data_speed_forward = self.owner.data_speed_forward * 0.7;  // /2
+          self.owner.data_speed_forward = self.owner.data_speed_forward * 0.7;
           self.owner.data_speed_strafe = self.owner.data_speed_strafe * 0.8;
-          self.owner.data_speed_backward = self.owner.data_speed_backward;  // /2
+          self.owner.data_speed_backward = self.owner.data_speed_backward;
           if( (self.owner.flags & FL_MONSTER) ){
             if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
               self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;

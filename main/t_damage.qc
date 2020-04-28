@@ -29,7 +29,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgAmt = dmg_amt;
   
   //reduce friendly fire damage on easier settings
-  if(trg.faction == attacker.faction){
+  if((trg.faction != FACTION_ALL) && (trg.faction == attacker.faction) ){
     if( skill < 2 ){
       dmgAmt = dmgAmt * 0.33;
     }
