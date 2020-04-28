@@ -157,7 +157,7 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_misc_lodge={
   if( !self.health) {
-    self.health = self.max_health = 150;
+    self.health = self.max_health = 200;
   }
   self.vec_size = 1;
   self.model = "q3mdl/buildings/misc/misc_lodge.obj";
@@ -192,10 +192,146 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_misc_off_pyra={
   if( !self.health) {
-    self.health = self.max_health = 150;
+    self.health = self.max_health = 200;
   }
   self.vec_size = 2;
   self.model = "q3mdl/buildings/misc/misc_off_pyramid.obj";
+  
+  misc_building();
+};
+
+/*QUAKED building_misc_off_large (0 0 1) (-88 -88 0) (88 88 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 250. (default)
+
+-------- KEYS --------
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() building_misc_off_large={
+  if( !self.health) {
+    self.health = self.max_health = 250;
+  }
+  self.vec_size = 2;
+  self.model = "q3mdl/buildings/misc/misc_off_large.obj";
+  
+  misc_building();
+};
+
+
+/*QUAKED building_misc_off_small (0 0 1) (-36 -36 0) (36 36 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 100. (default)
+
+-------- KEYS --------
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() building_misc_off_small={
+  if( !self.health) {
+    self.health = self.max_health = 100;
+  }
+  self.vec_size = 2;
+  self.model = "q3mdl/buildings/misc/misc_off_sm.obj";
+  
+  misc_building();
+};
+
+
+/*QUAKED building_misc_fact_steam (0 0 1) (-36 -36 0) (36 36 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 300. (default)
+
+-------- KEYS --------
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() building_misc_fact_steam={
+  if( !self.health) {
+    self.health = self.max_health = 100;
+  }
+  self.vec_size = 3;
+  self.model = "q3mdl/buildings/misc/misc_fact_steam.obj";
+  
+  misc_building();
+};
+
+
+
+/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 200. (default)
+
+-------- KEYS --------
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() building_misc_apt_larg={
+  if( !self.health) {
+    self.health = self.max_health = 200;
+  }
+  self.vec_size = 3;
+  self.model = "q3mdl/buildings/misc/misc_apt_larg.obj";
   
   misc_building();
 };
