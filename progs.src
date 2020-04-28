@@ -261,6 +261,8 @@ qsrc/triggers.qc
   main/map/map_turret_heavy.qc
   main/map/map_turret_missile.qc
  
+  main/map/map_misc_buildings.qc
+ 
   main/entityFactory_vehicles.qc
   //player types
   main/extensions/ext_player.qc
