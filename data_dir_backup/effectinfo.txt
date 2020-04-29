@@ -270,19 +270,15 @@ gravity -0.005
     countabsolute 1
     type beam
     blend add
-    orientation beam
+    orientation billboard
     color 0x7339AC 0x7339AC
-    tex 60 60
-    size 3 3
-    sizeincrease 1
-    alpha 1024 1024 1400
-    bounce -1
-    velocityoffset 0 0 1
-    originjitter 0 0 0
-    velocityjitter 0 0 0
-    velocitymultiplier 1
+    tex 41 41
+    size 2 2
+    sizeincrease -1
+    alpha 512 512 650
     notunderwater
-    trailspacing 4
+    trailspacing 32
+    stretchfactor -1
 
   //TE_LAS_RAIL - LIGHT
     effect TE_LAS_RAIL
