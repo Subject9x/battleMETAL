@@ -19,12 +19,12 @@ void() data_ini_light_laser_={
   self.data_idx = 3;
   
   self.w_clipsize = 1;
-  self.reloadRate = 2; //0.95
-  self.reloadMax = 2;  //0.95
+  self.reloadRate = 1.5; //0.95
+  self.reloadMax = 1.5;  //0.95
   self.energyRate = 18; //12
 
   self.w_range = 3000;  //2000
-  self.damageValue = 45;  //15
+  self.damageValue = 30;  //15
   self.damageType = (DMG_ENE | EFF_SHD);
 
   self.techLevel = 1;
@@ -34,7 +34,7 @@ void() data_ini_light_laser_={
   self.wepFireOffset = '0 0 3.5'; 
   
   #ifdef CSQC
-    self.w_name = "Light Laser";
+    self.w_name = "Laser";
     self.fire_sound = "sound/weapons/laser_fire.ogg";
     self.model = "q3mdl/weapons/w_laser.md3";
     self.abbrev = "LAS";
@@ -71,12 +71,11 @@ void() data_ini_attack_laser_={
   if( trace_ent.takedamage ){
     damage = self.damageValue;
     if( trace_ent.shield > 0 ){
-      damage = damage + (damage * 0.16);
+      damage = damage + (damage * 0.25);
       t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, '0 0 0'); 
       impactStyle = IMPACT_SHIELD;
     }
     else{
-      damage = damage * 0.85;
       t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');  
       impactStyle = IMPACT_ARMOR;
     }

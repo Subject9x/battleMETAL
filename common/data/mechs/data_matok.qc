@@ -28,7 +28,7 @@ void() data_ini_matok_={
   self.shieldMax   = 600;
   self.shieldRate  = 3.33;
   self.startupDelay = 7;
-  self.evasionDrain = 3;
+  self.evasionDrain = 2; //3
 //=====================================
  
 //RADAR================================
@@ -41,7 +41,7 @@ void() data_ini_matok_={
   self.data_speed_forward = 150;
   self.data_speed_strafe = 100;
   self.data_speed_backward = 90;
-  self.data_speed_accel = 1.25;
+  self.data_speed_accel = 1.5;  //1.25
   self.ramUpMax = 2;
   self.ramCooldown = 3;
 #ifndef CSQC

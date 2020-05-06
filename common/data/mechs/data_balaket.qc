@@ -28,7 +28,7 @@ void() data_ini_balaket_={
   self.shieldMax = 400;
   self.shieldRate= 3;
   self.startupDelay = 5;
-  self.evasionDrain = 1;
+  self.evasionDrain = 2.75;  //1
 //=====================================
  
 //RADAR================================
@@ -41,7 +41,7 @@ void() data_ini_balaket_={
   self.data_speed_forward = 175;  //200;
   self.data_speed_strafe = 145;   //165;
   self.data_speed_backward = 125; //140;
-  self.data_speed_accel = 1.75;
+  self.data_speed_accel = 2;  //1.75
   self.ramUpMax = 3;
   self.ramCooldown = 6;
 #ifndef CSQC

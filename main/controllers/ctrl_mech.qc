@@ -201,8 +201,8 @@ void() ai_ctrl_updateCenterTorso={
     self.count4 = time + 0.1;
     if( self.energy > -1 ){
       diff = self.energyRate;
-      if( self.moveState == MOVE_SPRINT){
-        diff = diff * self.evasionDrain;
+      if( self.moveState == MOVE_SPRINT ){
+        diff = diff - self.evasionDrain;
       }
       self.energy = self.energy + diff;
     }  

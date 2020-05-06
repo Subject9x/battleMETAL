@@ -373,8 +373,6 @@ void() build_mech_bot={
   self.energy = self.energyMax;
   self.shield = self.shieldMax;
   self.health = self.max_health;
-  self.evasionDrain = self.vec_size * 0.75;
-  self.evasionDrain = self.vec_size;
   
   unitPartList = self;
   
