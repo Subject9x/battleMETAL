@@ -29,7 +29,7 @@ void() data_ini_equip_turbo_charger_={
   self.damageType = DMG_MSC;
  
   self.techLevel = 2;
-  self.equipSize = MSC3;
+  self.equipSize = MSC4;
   
   #ifdef CSQC     
     self.w_name = "Turbo Charger";

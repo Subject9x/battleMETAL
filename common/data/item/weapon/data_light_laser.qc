@@ -19,12 +19,12 @@ void() data_ini_light_laser_={
   self.data_idx = 3;
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.95;
-  self.reloadMax = 0.95;
-  self.energyRate = 12;
+  self.reloadRate = 2; //0.95
+  self.reloadMax = 2;  //0.95
+  self.energyRate = 18; //12
 
   self.w_range = 3000;  //2000
-  self.damageValue = 15;
+  self.damageValue = 45;  //15
   self.damageType = (DMG_ENE | EFF_SHD);
 
   self.techLevel = 1;
