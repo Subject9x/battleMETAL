@@ -39,7 +39,7 @@ void() data_ini_particle_cannon_={
     self.fire_sound = "sound/weapons/pac_fire.ogg";
     self.model = "q3mdl/weapons/w_pac.md3";
     self.abbrev = "PAC";
-    self.description = "+ Instant-impact weapon. + Damage ignores shields. + Target shields reduced by 15% of its max when hit.";
+    self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Low shields on target yields higher armor damage.";
     self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
   #endif 
   
@@ -58,7 +58,7 @@ void() data_ini_attack_particle_cannon_={
   local float oldShields;
   local entity thisTarget;
   local float impactStyle;
-  local float dmg;
+  local float dmgArmor, dmgShield;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -71,13 +71,20 @@ void() data_ini_attack_particle_cannon_={
   strikePoint = FIRE_ENDPOINT + (v_forward * -5);
   
   if( trace_ent.takedamage ){
-    dmg = self.damageValue;
+    dmgArmor = self.damageValue;
+    dmgShield = self.damageValue;
     if( trace_ent.shield > 0 ){
-      dmg = dmg * 0.5;
-      trace_ent.shield = trace_ent.shield - (dmg * 0.5);
+      if( trace_ent.shield <= (trace_ent.shieldMax * 0.25) ){
+        dmgShield = dmgShield * 0.25;
+      }
+      else if( trace_ent.shield > (trace_ent.shieldMax * 0.25) ){
+        dmgShield = dmgShield * 0.5;
+      }
+      trace_ent.shield = trace_ent.shield - dmgShield;
       if( trace_ent.shield < 0 ){
         trace_ent.shield = 0;
       }
+      dmgArmor = dmgArmor - dmgShield;
       impactStyle = IMPACT_SHIELD;
     }
     else{
@@ -87,7 +94,7 @@ void() data_ini_attack_particle_cannon_={
     thisTarget = trace_ent;
     oldShields = thisTarget.shield;
     thisTarget.shield = 0;
-    t_damage(trace_ent, self, FIRE_ENT, dmg, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
+    t_damage(trace_ent, self, FIRE_ENT, dmgArmor, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
     if( oldShields > 0 &&  thisTarget.deadflag <= DEAD_NO ){
       thisTarget.shield = oldShields;
     }
