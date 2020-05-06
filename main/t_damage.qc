@@ -29,12 +29,16 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgAmt = dmg_amt;
   
   //reduce friendly fire damage on easier settings
-  if((trg.faction != FACTION_ALL) && (trg.faction == attacker.faction) ){
-    if( skill < 2 ){
-      dmgAmt = dmgAmt * 0.33;
-    }
-    else if( skill > 1){
-      dmgAmt = dmgAmt * 0.67;
+  if( trg.faction != FACTION_ALL) ){
+    if( (serverflags  & SVFLAG_FIREON) ){
+      if( trg.faction == attacker.faction ){
+        if( skill < 2 ){
+          dmgAmt = dmgAmt * 0.33;
+        }
+        else if( skill > 1){
+          dmgAmt = dmgAmt * 0.67;
+        }
+      }
     }
   }
   
@@ -317,33 +321,26 @@ void(entity targ, entity attacker) killed={
       }
       killed_monsters = killed_monsters + 1;
     }
-    if( (self.flags & FL_CLIENT) ){
-      if( attacker.flags & FL_CLIENT ){
-        if( self.faction != FACTION_ALL ){
-          if(self.faction == attacker.faction){
+    if( (self.flags & FL_CLIENT) && (attacker.flags & FL_CLIENT) ){
+      //deathmatch edge-case
+      if( self.faction == FACTION_ALL ){
+        attacker.frags = attacker.frags + 1;
+      }
+      else{
+        if( (self.faction == attacker.faction) ){
+          if( (serverflags & SVFLAG_FIREON) ){
             attacker.frags = attacker.frags - 1;
             if( attacker.frags < 0 ){
               attacker.frags = 0;
             }
           }
-          else{
-            attacker.frags = attacker.frags + 1;
-            self.frags = self.frags - 1;
-            if( self.frags < 0 ){
-              self.frags = 0;
-            }
-          }
         }
         else{
           attacker.frags = attacker.frags + 1;
-          self.frags = self.frags - 1;
-          if( self.frags < 0 ){
-            self.frags = 0;
-          }
         }
-        attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
       }
+      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
     }
     
     self.doobits = 0;
