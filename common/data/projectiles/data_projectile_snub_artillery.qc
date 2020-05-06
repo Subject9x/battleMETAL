@@ -44,8 +44,8 @@ void() projectile_sfga_expl={
 
 void() data_projectile_ini_snub_artillery_={
   self.classname = "missile";
-  self.data_velocity = 1100;  //1000
-  self.data_lifetime = 8;
+  self.data_velocity = 1300;  //
+  self.data_lifetime = 6;
   
   #ifdef CSQC
     //cosmetics
@@ -59,7 +59,7 @@ void() data_projectile_ini_snub_artillery_={
   #ifndef CSQC
     self.think = data_projectile_snub_artillery_th;
     self.touch = data_projectile_snub_artillery_touch_;
-    self.gravity = 0.02;
+    self.gravity = 0.03;
     self.movetype = MOVETYPE_TOSS;
     self.w_range = DAT_PRJ_SFGA_RAD;
   #endif

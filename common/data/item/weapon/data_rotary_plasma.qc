@@ -22,7 +22,7 @@ void() data_ini_plasma_={
   self.reloadMax = 0.33;
   self.energyRate = 0;
   
-  self.w_range = 1200;
+  self.w_range = 1800;  //1200
   self.damageValue = 10;
   self.damageType = DMG_BAL;
   

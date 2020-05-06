@@ -31,8 +31,8 @@ void() projectile_ion_expl={
 #endif
 void() data_projectile_ini_ion_={
   self.classname = "missile";
-  self.data_velocity = 4000;
-  self.data_lifetime = 2.57;
+  self.data_velocity = 3000;  //4000
+  self.data_lifetime = 0.49;  //2.57
   
   #ifdef CSQC
     //cosmetics

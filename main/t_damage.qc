@@ -319,10 +319,19 @@ void(entity targ, entity attacker) killed={
     }
     if( (self.flags & FL_CLIENT) ){
       if( attacker.flags & FL_CLIENT ){
-        if(self.faction == attacker.faction){
-          attacker.frags = attacker.frags - 1;
-          if( attacker.frags < 0 ){
-            attacker.frags = 0;
+        if( self.faction != FACTION_ALL ){
+          if(self.faction == attacker.faction){
+            attacker.frags = attacker.frags - 1;
+            if( attacker.frags < 0 ){
+              attacker.frags = 0;
+            }
+          }
+          else{
+            attacker.frags = attacker.frags + 1;
+            self.frags = self.frags - 1;
+            if( self.frags < 0 ){
+              self.frags = 0;
+            }
           }
         }
         else{

@@ -24,8 +24,8 @@ void() data_ini_particle_cannon_={
   self.reloadMax = 7.5; //9
   self.energyRate = 300;  //250
 
-  self.w_range = 2000;
-  self.damageValue = 250;
+  self.w_range = 3000;  //2000
+  self.damageValue = 200; //250
   self.damageType = DMG_ENE;
  
   self.techLevel = 3;
@@ -58,6 +58,7 @@ void() data_ini_attack_particle_cannon_={
   local float oldShields;
   local entity thisTarget;
   local float impactStyle;
+  local float dmg;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -70,8 +71,10 @@ void() data_ini_attack_particle_cannon_={
   strikePoint = FIRE_ENDPOINT + (v_forward * -5);
   
   if( trace_ent.takedamage ){
+    dmg = self.damageValue;
     if( trace_ent.shield > 0 ){
-      trace_ent.shield = trace_ent.shield - (trace_ent.shieldMax * 0.15);
+      dmg = dmg * 0.5;
+      trace_ent.shield = trace_ent.shield - (dmg * 0.5);
       if( trace_ent.shield < 0 ){
         trace_ent.shield = 0;
       }
@@ -80,10 +83,11 @@ void() data_ini_attack_particle_cannon_={
     else{
      impactStyle = IMPACT_ARMOR;
     }
+    
     thisTarget = trace_ent;
     oldShields = thisTarget.shield;
     thisTarget.shield = 0;
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
+    t_damage(trace_ent, self, FIRE_ENT, dmg, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
     if( oldShields > 0 &&  thisTarget.deadflag <= DEAD_NO ){
       thisTarget.shield = oldShields;
     }

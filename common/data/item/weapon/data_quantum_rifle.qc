@@ -26,7 +26,7 @@ void() data_ini_quantum_={
   self.reloadMax = 3;
   self.energyRate = 0;
   
-  self.w_range = 2000;
+  self.w_range = 2800;  //2000
   self.damageValue = 4;
   self.damageType = DMG_BAL;
   

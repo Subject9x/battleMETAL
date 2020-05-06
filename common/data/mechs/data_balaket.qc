@@ -32,15 +32,15 @@ void() data_ini_balaket_={
 //=====================================
  
 //RADAR================================
-  self.radar_range = 1700;
+  self.radar_range = 1400;  //1700
   self.w_firetime = 4;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_SKIRMISH;
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 200;  //225;
-  self.data_speed_strafe = 165;   //175;
-  self.data_speed_backward = 140; //150;
+  self.data_speed_forward = 175;  //200;
+  self.data_speed_strafe = 145;   //165;
+  self.data_speed_backward = 125; //140;
   self.data_speed_accel = 1.75;
   self.ramUpMax = 3;
   self.ramCooldown = 6;
