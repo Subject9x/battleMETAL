@@ -194,10 +194,8 @@ void() client_state_events={
   
   //CLIENT EVENTS
   if( CLIENT_player_state != CLIENT_player_state_prev ){
-      cons_log2Float("CLIENT_player_state ", CLIENT_player_state_prev, "--->", CLIENT_player_state);  //debug
     //Player has just connected to server
     if( (CLIENT_player_state_prev == 0) && (CLIENT_player_state == PLAYER_CONNECT) ){
-      cons_logAFloat("PLAYER_CONNECT", 1);  //debug
       localcmd(strcat("stopsound", "\n"));
       cl_set_hud_vars_obs();
       return;
@@ -205,7 +203,6 @@ void() client_state_events={
   
     //EVENT - CLIENT FIRST TIME CONNECT---
     if( (CLIENT_player_state_prev == PLAYER_CONNECT) && (CLIENT_player_state == PLAYER_SPAWN) ){
-      cons_logAFloat("PLAYER_SPAWN", 1);  //debug
       //mission file load check
       if(MSN_FILEFOUND){
         if(MSN_LOADED == FALSE){
@@ -222,7 +219,6 @@ void() client_state_events={
     
     //EVENT - CLIENT ENTERS MECH---
     if( (CLIENT_player_state_prev == PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_POWERUP_BEGIN) ){
-      cons_logAFloat("PLAYER_POWERUP_BEGIN", 1);  //debug
       if( MECH_DATA_ID != CLIENT_data_idx ){
         ui_data_load_mech(CLIENT_data_idx);
       }
@@ -236,7 +232,6 @@ void() client_state_events={
     
     //EVENT - CLIENT DEATH----------------
     if( (CLIENT_player_state_prev != PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEAD) ){
-      cons_logAFloat("PLAYER_DEAD", 1);  //debug
       if( gameType == GAMEMODE_CAMPAIGN ){
         if( SV_MISSIONSTATUS == MISSION_RESULT_WIN ){
           te_mission_win();
@@ -259,8 +254,6 @@ void() client_state_events={
     
     //EVENT - CLIENT CAMPAIGN DEBRIEF DEATH
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
-      cons_logAFloat("PLAYER_DEBRIEF", 1);  //debug
-      
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_button_delay = servertime + 2;
       ui_set_mission_status( SV_MISSION_RESULT );
@@ -270,15 +263,9 @@ void() client_state_events={
     
     //EVENT - CLIENT CAMPAIGN DEBRIEF MISSION END
     if( (CLIENT_player_state_prev != PLAYER_DEBRIEF) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
-      cons_logAFloat("PLAYER_DEBRIEF", 1);  //debug
-      
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_button_delay = servertime + 2;
       MENU_DEBRIEF_time_elapsed = -1;
-      
-      cons_logAFloat("SV_MISSION_RESULT", SV_MISSION_RESULT);  //debug
-      cons_logAFloat("MENU_DEBRIEF_status", MENU_DEBRIEF_status);  //debug
-
       ui_set_mission_status( SV_MISSION_RESULT );
       return;
     }
@@ -286,7 +273,6 @@ void() client_state_events={
     
     //EVENT - CLIENT NET RESPAWN
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_REDEPLOY) ){
-      cons_logAFloat("PLAYER_REDEPLOY", 1);  //debug
       menu_enter( MENU_CONNECT_ACTIVE );
       MENU_button_delay = servertime + 1;
       if( gameType == GAMEMODE_COOP ){
@@ -302,7 +288,6 @@ void() client_state_events={
     
     //EVENT - CLIENT END OF DM/TDM
     if( (CLIENT_player_state_prev != PLAYER_INTERMSN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
-      cons_logAFloat("PLAYER_INTERMSN", 1);  //debug
       menu_enter( MENU_SCORE_ACTIVE );
       if(  gameType == GAMEMODE_COOP  ){
         MENU_DEBRIEF_time_elapsed = -1;
@@ -312,24 +297,23 @@ void() client_state_events={
       else{
         MENU_respawn_cool = servertime + SERVER_SCORE_TIME_DM;
       }
-      MENU_button_delay = servertime + 1;
-      MENU_respawn_cool_start = servertime;
-      //MENU_respawn_cool = servertime + 15;  //debug
+      //MENU_button_delay = servertime + 1;
       //MENU_respawn_cool_start = servertime;
+      MENU_respawn_cool = servertime + 15;  //debug
+      MENU_respawn_cool_start = servertime;
       return;
     }
     //------------------------------------
     
     //EVENT - CLIENT connect during end of round
     if( (CLIENT_player_state_prev != PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
-      cons_logAFloat("PLAYER_INTERMSN", 1);  //debug
       menu_enter( MENU_SCORE_ACTIVE );
       if( gameType == GAMEMODE_DM ){
         
       }
-      MENU_button_delay = servertime + 1;
-      //MENU_respawn_cool = servertime + 15;
-      //MENU_respawn_cool_start = servertime;
+      //MENU_button_delay = servertime + 1;
+      MENU_respawn_cool = servertime + 15;
+      MENU_respawn_cool_start = servertime;
     }
     //------------------------------------
   }

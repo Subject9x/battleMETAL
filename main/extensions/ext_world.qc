@@ -287,7 +287,6 @@ void() sv_rules_dm={
       }
       
       if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
-        cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
       }
     }
   }
@@ -296,7 +295,6 @@ void() sv_rules_dm={
     if( ENDTIME_LIMIT != -1 ){
       if( time >= ENDTIME_LIMIT ){
         MISSION_STATUS = MISSION_STATUS_OVER;
-        cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
       }
     }
   }
@@ -327,7 +325,6 @@ void() sv_rules_tdm={
     }
     
     if( MISSION_STATUS == MISSION_STATUS_OVER ){
-      cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: fraglimit", 1); //debug
     }
     return;
   }
@@ -336,7 +333,6 @@ void() sv_rules_tdm={
   if( ENDTIME_LIMIT != -1 ){
     if( time >= ENDTIME_LIMIT ){
       MISSION_STATUS = MISSION_STATUS_OVER;
-      cons_logAFloat("SV()->sv_rules_dm.MISSION_STATUS_OVER: timelimit", 1); //debug
       return;
     }
   }
@@ -403,7 +399,6 @@ void() sv_endServer={
   
   if( MISSION_STATUS == MISSION_STATUS_OVER ){
     client_send_server_info_update();
-    cons_logAFloat("SV()->sv_endServer.MISSION_STATUS == MISSION_STATUS_OVER", 1);  //debug
     //send game over data
         //TODO
     //Setup end-timer 1 - gives enough time to alert players of end mission, and prepare for score screen.   
@@ -439,7 +434,6 @@ void() sv_endServer={
       else{
         sendPlayerState = PLAYER_INTERMSN;
       }
-      cons_logAFloat("SV()->sv_endServer.MISSION_STATUS == MISSION_STATUS_ENDING", 1);  //debug
       for( player = nextent(world); player.classname == "player"; player = nextent(player)){
         if( !(player.flags & FL_CLIENT) ){
           continue;
@@ -479,7 +473,6 @@ void() sv_endServer={
     if( GAMETYPE != GAMEMODE_CAMPAIGN ){
       if( time > ENDROUND_TIME ){
         if( ENDROUND == TRUE ){
-          cons_logAFloat("SV()->sv_endServer.MISSION_STATUS == MISSION_STATUS_DONE", 1);  //debug
           ENDROUND = FALSE;
           if( sv_nextmap != "" ){
             changelevel(sv_nextmap);
