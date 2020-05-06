@@ -9,12 +9,19 @@ Overview: function extensions to world.qc
 //GLOBALS
 float CLIENTS;
 float MISSION_STATUS;     //used to track whether player WON or LOST the current mission.
+float MISSION_RESULT;     //
 float GAMETYPE;
 float STARTTIME;
-float ENDTIME;
+float ENDTIME_LIMIT;
 float TECHLEVEL;
 
+float ENDROUND;           //sv_checkRules sets this so ending is next frame-ish;
+float ENDROUND_TIME;      //sv_checkRules sets this so ending is next frame-ish;
+
+
 string SERVER_INFO;
+
+void() world_ini_serverinfo;
 
 entity WeatherDominator;  //global weather controlling entity.
 vector WINDDIR; //these get set by worldspawn but are here because 
@@ -28,6 +35,7 @@ float TE_STOMP_TYPE;  //set by world type
 .string missionFile;  //data/map_scripts/<map_name>/<map_name>.msn
 .string mapFile;      //data/map_scripts/<map_name>/<map_name>.sav
 
+//DEPRECATED
 .string unlockMechs;  //determines unlock mechs given to the player.
 .string unlockEquip;  //determines unlock equip given to the player.
 .string itemOverrideFile; //if present, send this file of items instead of normal save file
@@ -37,14 +45,16 @@ float TE_STOMP_TYPE;  //set by world type
 .entity particleCube; //used by mech/map/map_particlecube_effect.qc
 .vector wind;
 
-//Unlock Data for network play
+//Unlock Data for network play - data validation
 float WORLD_DATA_MECHS_SURVEST[64]; //when co-op, this is all players
 float WORLD_DATA_ITEMS_SURVEST[64];
 
 float WORLD_DATA_MECHS_MILITAR[64];
 float WORLD_DATA_ITEMS_MILITAR[64];
 
+void() sv_world_load_items;
 void() sv_checkRules;
+void() sv_endServer;
 
 void() mh_world_ini;
 void() world_get_fog;
@@ -79,4 +89,3 @@ void( vector org, entity parent, float id, vector colr, float stile, float pFlag
 void( entity parent ) world_remove_dlight;
 void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight;
 
-void() sv_world_load_items;

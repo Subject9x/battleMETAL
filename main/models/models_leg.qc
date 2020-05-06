@@ -29,36 +29,90 @@ void() leg_stand1= [$l_stand1, leg_stand1]{
 */
 void() leg_walk1 = [$l_walk1, leg_walk2]{
   self.walkframe = $l_walk1; 
+  if( self.owner.moveState > 0 ){
+    self.think = leg_run2;
+  }
 
 };
-
 void() leg_walk2 = [$l_walk2, leg_walk3]{
   self.walkframe = $l_walk2;
   te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
+  if( self.owner.moveState > 0 ){
+    self.think = leg_run2;
+  }
 };
 void() leg_walk3 = [$l_walk3, leg_walk4]{
   self.walkframe = $l_walk3; 
+  if( self.owner.moveState > 0 ){
+    self.think = leg_run2;
+  }
 };
 
 void() leg_walk4 = [$l_walk4, leg_walk5]{
   self.walkframe = $l_walk4; 
+  if( self.owner.moveState > 0 ){
+    self.think = leg_run3;
+  }
 };
 
 void() leg_walk5 = [$l_walk5, leg_walk6]{
   self.walkframe = $l_walk5; 
+  if( self.owner.moveState > 0 ){
+    self.think = leg_run3;
+  }
 };
 
 void() leg_walk6 = [$l_walk6, leg_walk7]{
   self.walkframe = $l_walk6; 
   te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
+  if( self.owner.moveState > 0 ){
+    self.think = leg_run3;
+  }
 };
 
 void() leg_walk7 = [$l_walk7, leg_walk8]{
   self.walkframe = $l_walk7; 
+  if( self.owner.moveState > 0 ){
+    self.think = leg_run4;
+  }
 };
 
 void() leg_walk8 = [$l_walk8, leg_walk1]{
   self.walkframe = $l_walk8; 
+  if( self.owner.moveState > 0 ){
+    self.think = leg_run4;
+  }
+};
+
+/*
+  Client Leg Animations - Run
+*/
+
+void() leg_run1 = [$l_walk2, leg_run2]{
+  self.walkframe = $l_walk2; 
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
+  if( self.owner.moveState == 0 ){
+    self.think = leg_walk3;
+  }
+};
+void() leg_run2 = [$l_walk4, leg_run3]{
+  self.walkframe = $l_walk4; 
+  if( self.owner.moveState == 0 ){
+    self.think = leg_walk5;
+  }
+};
+void() leg_run3 = [$l_walk6, leg_run4]{
+  self.walkframe = $l_walk6; 
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
+  if( self.owner.moveState == 0 ){
+    self.think = leg_walk7;
+  }
+};
+void() leg_run4 = [$l_walk8, leg_run1]{
+  self.walkframe = $l_walk8; 
+  if( self.owner.moveState == 0 ){
+    self.think = leg_walk1;
+  }
 };
 
 /*

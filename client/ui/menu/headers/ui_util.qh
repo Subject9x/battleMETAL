@@ -21,16 +21,23 @@ void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
     + pretty much undocumented,
     + do not seem to work.
     + missing info they prescribe to have
-    
   c'mon....
 */
 float SV_MISSIONSTATUS;
+float SV_MISSION_RESULT;
 float SV_STARTTIME;
+float SV_TIMELIMIT; //getstatf(STAT_TIMELIMIT) is not populated until post-ClientConnect()
 float SV_ENDTIME;
-float SV_FRAGLIMIT;
+float SV_ENDTIMELIMIT;
 float SV_SERVERFLAGS;
+string SV_NEXTMAP;
+
+//additional clientside SV_vars
+float SV_PLAYERTIME;  //set when player spawns into mech
+float SV_MISSION_STATUS_PREV;
 
 string() ui_calculate_game_time_string;
+string( float timeVal ) ui_calculate_time_string;
 string() ui_label_mission_status;
 
 /*
@@ -55,3 +62,8 @@ float SCORESTACK;
 void() scoreboard_sort;
 void( float scoreId, float score ) scoreboard_push;
 void( entity newScore ) scoreboard_sort_push;
+
+/*
+  Campaign / coop stuff
+*/
+void( float missionStat ) ui_set_mission_status;

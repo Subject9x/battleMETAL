@@ -89,17 +89,6 @@ void(entity unitPiece) ctrl_unit_remove_piece={
   Deals with removing a player camera from the server.
 */
 void(entity unitCam) ctrl_unit_remove_cam={
-  setorigin(self, self.cockpit.origin);
-  
-  if( self.cockpit != world ){
-    msg_entity = self;
-    WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-    WriteEntity(MSG_ONE, self);
-    WriteByte(MSG_ONE, SVC_SETANGLES);
-    WriteAngle(MSG_ONE, self.angles_x);
-    WriteAngle(MSG_ONE, self.angles_y);
-    WriteAngle(MSG_ONE, self.angles_z);
-  }
   self.weaponmodel = self.weaponmodel;
   self.weaponframe = 0;
   remove(self.cockpit);

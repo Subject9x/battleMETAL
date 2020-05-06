@@ -16,8 +16,6 @@ void() client_push_player_info={
   local float targShield;
 
   self.ammo_rockets = self.flags;
-  self.ammo_cells = self.faction;
-  self.armorvalue = self.playerState;
   if(self.data_type == DATA_MECH){
     self.stat_client_energy = (self.energy / self.energyMax) * 100;
     self.stat_client_shield = (self.shield / self.shieldMax) * 100;
@@ -96,8 +94,6 @@ void() client_push_player_info={
 */
 void() client_push_player_info_thin={
   self.ammo_rockets = self.flags;
-  self.ammo_cells = self.faction;
-  self.armorvalue = self.playerState;
 }
 void( entity targetClient ) server_push_player_info={
   local entity this;
@@ -182,56 +178,6 @@ void() client_push_mapobjects={
 };
 
 /*
-  Sends an AI voice sample to play for a specific client
-  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
-*/
-void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY);
-  WriteByte( MSG_ONE, TE_AI_VOICE );
-  WriteByte( MSG_ONE, voiceGroup);
-  WriteByte( MSG_ONE, voiceId);
-  WriteByte( MSG_ONE, limiter );
-  WriteLong( MSG_ONE, num_for_edict(self) );
-};
-
-/*
-  Sends an AI voice sample to play to ALL Clients
-  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
-*/
-void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY);
-  WriteByte( MSG_BROADCAST, TE_AI_VOICE );
-  WriteByte( MSG_BROADCAST, voiceGroup);
-  WriteByte( MSG_BROADCAST, voiceId);
-  WriteByte( MSG_BROADCAST, limiter );
-  WriteLong( MSG_BROADCAST, num_for_edict(self) );
-};
-
-
-void(entity client, float weaponsOnOff) client_send_event_weapons={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_WEAPONS_ON );
-  WriteByte( MSG_ONE, weaponsOnOff );
-};
-
-void(entity client, float weaponsOnOff) client_send_event_repairs={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_REPAIRS_ON );
-  WriteByte( MSG_ONE, weaponsOnOff );
-};
-
-void(entity client, string theMessage, float messageLifetime) client_send_info_message={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_MSG_INFO );
-  WriteString( MSG_ONE, theMessage );
-  WriteLong( MSG_ONE, messageLifetime );
-};
-
-/*
   client sends string 'cmd m foo'
   where foo is the command, first parm must be 'm'
   
@@ -256,10 +202,12 @@ void(string str, float tokens) client_ParseMechCommand={
   if(argv(1) == "sp"){
     if(self.data_type == DATA_POBS){
       player_unmakeObserver();
+      if( self.playerState == PLAYER_SPAWN ){
+        PutClientInServer();
+      }
       sv_client_spawnpoint_select();
       player_makeMech();
       client_playTrack( world.sounds, TRUE );
-      client_sendMissionName();
       if( self.client_num < 1){
         CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
         self.client_num = CLIENTS;  //book keeping for multiplayer
@@ -380,17 +328,16 @@ void(string cmd, float tokens) client_setMission={
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
     self.playerState = PLAYER_ACTIVE;
     self.view_ofs = '0 0 1';
-    if( argv(2) == "1" ){ 
+    if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       if( !world.ignoreSave ){
-        savefile_changemap(nextmap);
-        savefile_save();
+        savefile_changemap(sv_nextmap);
       }
-      if( nextmap == "" ){
+      if( sv_nextmap == "" ){
         stuffcmd(self, "disconnect;togglemenu;cd play 2;demos;\n");
         return;
       }
-      changelevel (nextmap);  //possibly altered by map_objective objects.
+      changelevel (sv_nextmap);  //possibly altered by map_objective objects.
     }
     else{
       //mission failed
@@ -425,52 +372,48 @@ void(string cmd, float tokens) client_setWeaponGroup={
   self.w_group4 = stof(argv(5));
 };
 
-
-//DEPRECATED -> remove soon
-void(string mechs) client_sendAvailable_Mechs={
-  local string cmd;
-  cmd = strcat("m lms [", mechs, "]\n");
-  stuffcmd(self, cmd);
-};
-//DEPRECATED -> remove soon
-void(string itms) client_sendAvailableItems={
-  local string cmd;
-  cmd = strcat("m lis [", itms,"]\n");
-  stuffcmd(self, cmd);
-};
-
-
-void() client_sendMissionUnlocks={
-  local string cmd;
-  cmd = strcat("m unl [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
-  stuffcmd(self, cmd);
-};
-
-void(float mode, float saveSlot) client_sendGameMode={
-  local string cmd;
-  cmd = strcat("m mode ", ftos(mode)," ", ftos(saveSlot),"\n");
-  stuffcmd(self, cmd);
-};
-
-//DEPRECATED -> remove soon
-void(string targetName) client_sendTargetName={
-  local string cmd;
-  
-  cmd = strcat("m trg ", targetName,"\n");
-  stuffcmd(self, cmd);
+/*
+  Sends an AI voice sample to play for a specific client
+  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
+*/
+void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY);
+  WriteByte( MSG_ONE, TE_AI_VOICE );
+  WriteByte( MSG_ONE, voiceGroup);
+  WriteByte( MSG_ONE, voiceId);
+  WriteByte( MSG_ONE, limiter );
+  WriteLong( MSG_ONE, num_for_edict(self) );
 };
 
 /*
-  client Mapping = client_event_mission_name();
+  Sends an AI voice sample to play to ALL Clients
+  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
 */
-void() client_sendMissionName={
-  if( world.message != "" ){
-    msg_entity = self;
-    WriteByte( MSG_ONE, SVC_TEMPENTITY);
-    WriteByte( MSG_ONE, TE_MISSION_NAME );
-    WriteString( MSG_ONE, strcat(world.message,"\n"));
-  }
+void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY);
+  WriteByte( MSG_BROADCAST, TE_AI_VOICE );
+  WriteByte( MSG_BROADCAST, voiceGroup);
+  WriteByte( MSG_BROADCAST, voiceId);
+  WriteByte( MSG_BROADCAST, limiter );
+  WriteLong( MSG_BROADCAST, num_for_edict(self) );
 };
+
+void(entity client, float weaponsOnOff) client_send_event_repairs={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_REPAIRS_ON );
+  WriteByte( MSG_ONE, weaponsOnOff );
+};
+
+void(entity client, string theMessage, float messageLifetime) client_send_info_message={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_MSG_INFO );
+  WriteString( MSG_ONE, theMessage );
+  WriteLong( MSG_ONE, messageLifetime );
+};
+
 
 /*
 commmand string: cmd mech setwep X Y
@@ -617,19 +560,16 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
 
 /*
   client Mapping = client_event_debrief_active();
+  CAMPAIGN / COOP ONLY
+  sends the 'conclusion' data from a mission to the client
 */
 void(entity client, float missionSuccessCheck) client_sendEndMission={
-
-  client.armorvalue = client.playerState = PLAYER_INTERMSN;
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_MISSION_END );
-  WriteLong( MSG_ONE, time );
-  WriteLong( MSG_ONE, client.frags );
-  WriteByte( MSG_ONE, missionSuccessCheck );
-  WriteShort( MSG_ONE, MISSION_TOTAL_PSC );
-  WriteShort( MSG_ONE, MISSION_TOTAL_SURVEST );
-  WriteShort( MSG_ONE, MISSION_TOTAL_MILITAR );
+  WriteByte( MSG_ALL, SVC_TEMPENTITY );
+  WriteByte( MSG_ALL, TE_MISSION_END );
+  WriteByte( MSG_ALL, missionSuccessCheck );
+  WriteShort( MSG_ALL, MISSION_TOTAL_PSC );
+  WriteShort( MSG_ALL, MISSION_TOTAL_SURVEST );
+  WriteShort( MSG_ALL, MISSION_TOTAL_MILITAR );
   switch( client.faction ){
     case FACTION_PSC:
       WriteShort( MSG_ONE, MISSION_LOSSES_PSC );
@@ -645,6 +585,55 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
       break;
   }
 };
+/*
+  Send important world data, useful for timed updates like Campaign and Coop.
+*/
+void() client_send_server_info_update={
+  WriteByte( MSG_ALL, SVC_TEMPENTITY );
+  WriteByte( MSG_ALL, TE_SERVERINFO );
+  WriteByte( MSG_ALL, MISSION_STATUS );
+  WriteLong( MSG_ALL, STARTTIME );
+  WriteLong( MSG_ALL, serverflags );
+  WriteByte( MSG_ALL, MISSION_RESULT );
+  WriteString( MSG_ALL, sv_nextmap );
+};
+
+/*
+  CAMPAIGN / COOP  death/end-mission updates.
+  
+*/
+void( entity client ) client_send_campaign_end_data={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_CLIENT_INFO );
+  WriteLong( MSG_ONE, client.botKills );
+  WriteLong( MSG_ONE, client.missionLosses );
+  switch(client.faction){
+    default :
+      WriteLong( MSG_ONE, MISSION_TOTAL_SURVEST + MISSION_TOTAL_MILITAR );
+      WriteLong( MSG_ONE, MISSION_TOTAL_PSC );
+      break;
+    case FACTION_SURVEST:
+      WriteLong( MSG_ONE, MISSION_TOTAL_PSC + MISSION_TOTAL_MILITAR );
+      WriteLong( MSG_ONE, MISSION_TOTAL_SURVEST );
+      break;
+    case FACTION_MILITAR:
+      WriteLong( MSG_ONE, MISSION_TOTAL_SURVEST + MISSION_TOTAL_PSC );
+      WriteLong( MSG_ONE, MISSION_TOTAL_MILITAR );
+      break;
+  }  
+};
+
+/*
+  Sends client-specific data for post-DM/TDM matches.
+*/
+void( entity client ) client_send_dm_end_data={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_CLIENT_INFO_DM );
+  WriteLong( MSG_ONE, client.playerDMdamage );
+};
+
 
 entity() spawnpoint_coop={
   local entity locus;
@@ -742,6 +731,7 @@ void() sv_select_info_start={
     case GAMEMODE_DM:
       spot = find(spot, classname, "info_player_deathmatch");
       break;
+      
     case GAMEMODE_TEAMDM:
       spot = find(spot, classname, "info_player_deathmatch");
       break;
@@ -837,39 +827,6 @@ float(entity piece) csqc_updateCompStat={
   Send wreckage entity to client, 
   should cut down on workload of server, right?
 */
-void( vector org, float explodeSize, vector explodeColor, float onShield ) client_send_missile_explode={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_VFX_EXPLODE );
- 
-  WriteCoord(MSG_BROADCAST, org_x);
-  WriteCoord(MSG_BROADCAST, org_y);
-  WriteCoord(MSG_BROADCAST, org_z);
-  
-  WriteByte( MSG_BROADCAST, explodeSize);
-  
-  WriteCoord(MSG_BROADCAST, explodeColor_x);
-  WriteCoord(MSG_BROADCAST, explodeColor_y);
-  WriteCoord(MSG_BROADCAST, explodeColor_z);
-
-  WriteByte( MSG_BROADCAST, onShield );
-};
-
-void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_VFX_WRECK );
-  WriteByte( MSG_BROADCAST, modelIndex);
-  WriteByte( MSG_BROADCAST, skinNum);
-  WriteByte( MSG_BROADCAST, lifetime);
-  WriteByte( MSG_BROADCAST, vecSize );
-  
-  WriteCoord(MSG_BROADCAST, entOrg_x);
-  WriteCoord(MSG_BROADCAST, entOrg_y);
-  WriteCoord(MSG_BROADCAST, entOrg_z);
-  
-  WriteAngle(MSG_BROADCAST, entAngl_x);
-  WriteAngle(MSG_BROADCAST, entAngl_y);
-  WriteAngle(MSG_BROADCAST, entAngl_z);
-};
 
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
@@ -896,7 +853,6 @@ void( float entityId, float particleEffectId, vector particleOrg, vector particl
   WriteCoord(MSG_BROADCAST, particleEnd_z);
 };
 
-
 void( float wepId, vector flashOrg, vector flashVel, float impType ) client_send_muzzle_flash={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_MUZZLE_FLASH );
@@ -908,4 +864,22 @@ void( float wepId, vector flashOrg, vector flashVel, float impType ) client_send
   WriteCoord(MSG_BROADCAST, flashVel_y);
   WriteCoord(MSG_BROADCAST, flashVel_z);
   WriteByte( MSG_BROADCAST, impType);
+};
+
+
+/*
+  Losses is mostly just a campaign fluff text thing, gives player perspective.
+*/
+void() client_update_losses={
+  switch(self.faction){
+    case FACTION_MILITAR:
+      self.missionLosses = MISSION_LOSSES_MILITAR;
+      break;
+    case FACTION_PSC:
+      self.missionLosses = MISSION_LOSSES_PSC;
+      break;
+    case FACTION_SURVEST:
+      self.missionLosses = MISSION_LOSSES_SURVEST;
+      break;
+  }
 };

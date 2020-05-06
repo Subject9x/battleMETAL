@@ -406,9 +406,11 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
-    nameLen = stringwidth( player.netname, 0, '14 14 0');
+    local string playerName;
+    playerName = getplayerkeyvalue(player.entId - 1, "name");
+    nameLen = stringwidth( playerName, 0, '14 14 0');
     nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
-    drawstring( nameOrg, player.netname, '14 14 0', CLR_DEF_IIF_FRIEND, 1, 0);
+    drawstring( nameOrg, playerName, '14 14 0', CLR_DEF_IIF_FRIEND, 1, 0);
     
     drawfont = drawfont_prev;
   }

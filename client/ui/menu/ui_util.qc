@@ -129,13 +129,21 @@ void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_rend
   }
 };
 
-
 string() ui_calculate_game_time_string={
   local string val;
   local float t, sec, min, hr;
-  if( SV_ENDTIME > 0 ){
-    t = servertime + (servertime - time);
-    t = SV_ENDTIME - t ;
+  local float endTime;
+  endTime = getstatf(STAT_TIMELIMIT) * 60;
+  if( getstatf(STAT_TIMELIMIT) > 0  || cvar("gamemode") == GAMEMODE_COOP ){
+    if( cvar("gamemode") == GAMEMODE_COOP) {
+      t = servertime + (servertime - time);
+    }
+    else{
+      endTime = endTime + SV_STARTTIME;
+      t = servertime + (servertime - time);
+      t = endTime - t ;
+    }
+    
     sec = t - floor( t / 60 ) * 60 ;
     sec = rint(sec);
     
@@ -152,30 +160,37 @@ string() ui_calculate_game_time_string={
   return val;
 };
 
-
+string(float timeVal ) ui_calculate_time_string={
+  local string val;
+  local float t, sec, min, hr;
+  
+  t = timeVal + (servertime - time);
+  sec = t - floor( t / 60 ) * 60 ;
+  sec = rint(sec);
+  
+  min = (t - floor( t / 3600) * 3600) / 60;
+  min = rint(min);
+  
+  hr = t / 3600;
+  hr = rint(hr);
+  val = sprintf("%02d:%02d:%02d", hr, min, sec);
+  
+  return val;
+};
 
 string() ui_label_mission_status={
   local string val;
-  switch( SV_MISSIONSTATUS ){
+//TODO fix 
+ switch( SV_MISSIONSTATUS ){
     case MISSION_STATUS_READY:
       val = "Ready";
       break;
     case MISSION_STATUS_ACTIVE:
       val = "In Progress";
       break;
-    case MISSION_STATUS_ENDING:
+    default:
       val = "Complete";
       break;
-    case MISSION_STATUS_WIN:
-      val = "Victory";
-      break;
-    case MISSION_STATUS_WIN1:
-      val = "Victory - Survest";
-      break;
-    case MISSION_STATUS_WIN2:
-      val = "Victory - Militar";
-      break;
-      
   }
   return val;
 };
@@ -258,5 +273,17 @@ void( entity removed ) scoreboard_stitch={
   }
 };
 
+/*
+  Campaign / coop stuff
+*/
+void( float missionStat ) ui_set_mission_status={
+  MENU_DEBRIEF_status = missionStat;
+  if( missionStat == MISSION_RESULT_WIN ){
+    MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
+  }
+  else{
+    MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
+  }
+};
   
 

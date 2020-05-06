@@ -6,6 +6,8 @@ Overview:
   map_unlock_item, when triggered via its use() method, this will add its unlock value to the
   map's .unlockMechs and .unlockEquip fields. it does check for duplicates when running the unlock.
 
+DEPRECATED - UNSTABLE - 4/19/2020
+
 */
 
 void() map_unlock_item_use={

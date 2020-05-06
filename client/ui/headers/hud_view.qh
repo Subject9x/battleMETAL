@@ -34,6 +34,7 @@ float HUD_UID_ARM_TARG_BLD  = 16;
 float HUD_UID_MESSAGE_BOX   = 17;
 float HUD_UID_ENVIRO_BOX    = 18;
 float HUD_UID_RAM_METER     = 19;
+float HUD_UID_MSN_CLOCK     = 20;
 //==========================================
 
 
@@ -168,6 +169,7 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
 void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon2;
 void(vector org, vector pos, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay;
 void(vector org, vector pos, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay;
+void(vector pos, float algn, float flag) hud_render_missionClock;
 void() hud_renderNavOverlay;
 void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding;
 void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle;

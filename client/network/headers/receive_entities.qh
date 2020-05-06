@@ -29,17 +29,18 @@ entity lastMapKeyObject; //pointer for last sync'd map object
 
 //function headers
 void() client_get_info;
-void() client_get_info_thin;
-void() client_get_contact;
 void() client_get_hud_highlight;
 
-void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyRiderValue ) client_event_get_mapkeyinfo;
-void( float criticalsType ) client_event_critical_hit;
 void() client_event_boundary;
 void() client_event_environment;
 void( string name ) client_event_mission_name;
 void() client_event_mission_name_frame;
 void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) client_event_info_box;
-void(float missionTime, float clientKills, float pscTotal, float survestTotal, float militarTotal , float missonSuccessCheck, float totalLosses) client_event_debrief_active;
+void(float pscTotal, float survestTotal, float militarTotal , float missonSuccessCheck, float totalLosses) client_event_debrief_active;
 
 void() receive_ent_bindData;
+
+void() client_state_events;
+
+void() client_campaign_end_data;
+void() client_dm_end_data;

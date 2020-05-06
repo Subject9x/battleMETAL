@@ -12,26 +12,30 @@ float MSN_FILEFOUND = FALSE;
 float MSN_LOADED = FALSE;
 
 //file tags
-string MSN_FILE_IMG = "img";
-string MSN_FILE_NAME = "name";
-string MSN_FILE_TYPE = "type";
-string MSN_FILE_POINTS = "points";
-string MSN_FILE_SECTOR = "sector";
-string MSN_FILE_LOCUS = "location";
-string MSN_FILE_TIME = "time";
-string MSN_FILE_BRIEF = "brief";
-string MSN_FILE_INTEL = "intel";
-string MSN_FILE_OBJS = "objtotal";
-string MSN_FILE_ANIM = "anim";
-string MSN_FILE_OBJ_ID = "objid";
-string MSN_FILE_OBJ_DESC = "objdesc";
-string MSN_FILE_OBJ_TYPE = "objtype";
+string MSN_FILE_IMG = "img";            //satellite map image path.
+string MSN_FILE_NAME = "name";          //mission name
+string MSN_FILE_DISP = "display";       //cool white-red title of mission when player starts
+string MSN_FILE_TYPE = "type";          //should be simple - Combat Patrol / Base Defense, etc
+string MSN_FILE_POINTS = "points";      //unused at the moment.
+string MSN_FILE_SECTOR = "sector";      //cosmetic / fluff
+string MSN_FILE_LOCUS = "location";     //cosmetic / fluff.
+string MSN_FILE_TIME = "time";          //cosmetic / fluff - any time desired.
+string MSN_FILE_BRIEF = "brief";        //large text field for briefing fluff text.
+string MSN_FILE_INTEL = "intel";        //text field to give players more info on mission.
+string MSN_FILE_OBJS = "objtotal";      //meta data, total number of objectives for player(s)
+string MSN_FILE_ANIM = "anim";          //animatic file to play for briefing/
+string MSN_FILE_OBJ_ID = "objid";       //objective's data_idx id
+string MSN_FILE_OBJ_DESC = "objdesc";   //Short desc of objective
+string MSN_FILE_OBJ_TYPE = "objtype";   //1 = Primary, 2 = Secondary, 3 = Tertiary
+string MSN_FILE_OBJ_MECH = "mechs";     //mechs unlocked by completing the objective
+string MSN_FILE_OBJ_ITEM = "items";     //items unlocked by completing the objective.
 
 //file values
 string MSN_FILENAME;
 string MSN_SFX;
 string MSN_MAPPIC;
 string MSN_NAME;
+string MSN_DISP;
 string MSN_TYPE;
 string MSN_RESERVETOTAL;
 string MSN_SECTOR;
@@ -45,8 +49,10 @@ float MSN_OBJ;
 float MSN_SFX_COUNT;
 .float MSN_SFX_TIME;
 
-string MSN_OBJ_DESC[10];
-string MSN_OBJ_TYPES[10];
+string MSN_OBJ_DESC[16];
+string MSN_OBJ_TYPES[16];
+string MSN_OBJ_MECHS[16];
+string MSN_OBJ_ITEMS[16];
 
 void() msn_getfile;
 void() msn_parsefile;
@@ -64,3 +70,8 @@ void(string line, string val) msn_settotalobjectives;
 float(float currentObjId, string line, string val) msn_mapobjid;
 void(float obj_id, string line, string val) msn_setobjdesc;
 void( float obj_id, string line, string val) msn_setobj_type;
+void( float obj_id, string line, string val) msn_setobj_mechs;
+void( float obj_id, string line, string val) msn_setobj_items;
+
+//ops
+void() msn_unlock_stuff;

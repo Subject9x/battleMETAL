@@ -43,20 +43,15 @@ void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
 
 //client command layer
 void() client_sendServerInfo;
+void() client_send_server_info_update;
+void( entity client ) client_send_campaign_end_data;
+void( entity client ) client_send_dm_end_data;
 
 void() client_sendMissionFileName;
 void(string fileName) client_sendAnimaticFileName;
-void() client_sendMissionName;
-void(string mechs) client_sendAvailable_Mechs;
-void(string itms) client_sendAvailableItems;
-void() client_sendMissionUnlocks;
-void(float mode, float saveSlot) client_sendGameMode;
-void(string targetName) client_sendTargetName;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
 void(entity client, float trackNum, float entFlags) client_sendMusic;
-void(entity client, float missionSuccessCheck) client_sendEndMission;
 void(entity client, string theMessage, float messageLifetime) client_send_info_message;
-void(entity client, float weaponsOnOff) client_send_event_weapons;
 void(entity client, float weaponsOnOff) client_send_event_repairs;
 
 void( float track, float loop) client_playTrack;
@@ -69,12 +64,11 @@ void(string cmd, float tokens) client_setMission;
 void() client_updateWeaponReloads;
 
 void( float wepId, vector flashOrg, vector flashVel, float impType  ) client_send_muzzle_flash;
-void( vector org, float explodeSize, vector explodeColor, float onShield ) client_send_missile_explode;
-void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) client_send_wreck;
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle;
 void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail;
 
 void() client_update_faction;
+void() client_update_losses;
 
 //sigh can't believe Im trying this again
 float client_send_monster( entity ePVEnt, float flChanged );

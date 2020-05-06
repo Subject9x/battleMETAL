@@ -105,9 +105,6 @@ void() hrepair_rep = [0, hrepair_rep]{
     client_send_event_repairs( self.trigger_field, FALSE ) ;
     if( self.startupDelay == FL_NOSHOOT ){
       self.trigger_field.flags = self.trigger_field.flags - FL_NOSHOOT;
-      if( (self.trigger_field.flags & FL_CLIENT) ){
-        client_send_event_weapons( self.trigger_field, TRUE );
-      }
     }
     self.trigger_field.stat_plr_rep = -1;
     self.trigger_field = world;
@@ -364,7 +361,6 @@ void() building_repair_touch={
   if( !(other.flags & FL_NOSHOOT) ){
     other.flags = other.flags | FL_NOSHOOT;
     self.owner.startupDelay = FL_NOSHOOT;
-    client_send_event_weapons( self.owner.trigger_field, FALSE );
   }
   client_send_event_repairs( self.owner.trigger_field, TRUE );
   self.touch = SUB_Null;

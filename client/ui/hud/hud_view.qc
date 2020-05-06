@@ -308,6 +308,34 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
 };
 
 /*
+  RENDER MISSION CLOCK
+  shows the time elapsed since player got into their mech 
+*/
+void(vector pos, float algn, float flag) hud_render_missionClock={
+  local float lbl_len;
+  local string stat;
+  local vector tsize, colr, morg, torg;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  torg = gui_percentToPixelRawVec(pos);
+  torg = gui_calcAlign(torg, algn);
+  tsize = '10 10 0';
+  colr = CLR_DEF_ARM_HALF;
+  lbl_len = stringwidth("[Time]", 0, tsize);
+  
+  stat = ui_calculate_time_string( servertime - SV_PLAYERTIME );
+  
+  morg = torg;
+  morg_x = morg_x + gui_percentXRaw(lbl_len + 4);
+  drawstring(torg, "[Time]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag); 
+  drawstring(morg, stat, tsize, colr, HUD_ALPHA, flag);
+  
+  drawfont = drawfont_prev;
+};
+
+/*
   RENDER RADAR DATA
     draws radar status - ACTIVE OR PASSIVE
     draws radar range - range changes based on radius
@@ -774,19 +802,19 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   ramPos = gui_percentToPixelRawVec(ramOrg);
   ramPos = gui_calcAlign(ramPos, ramAlign);
   
-  if( CLIENT_player_state == PLAYER_SPRINT_ON ){
+  if( ramValue > 0 ){
     ramLabel = "SPRINT";
     ramColor = gui_getColorForArmor(ramValue);
     if(ramValue > 100 ){
       ramValue = 100;
     }
   }
-  else if( ramValue == 256 ){
+  else if( CLIENT_move_state == MOVE_RAM_CHARGE ){
     ramLabel = "RAM!";
     ramColor =  '0.9 0.1 0.1';
     ramValue = 100;
   }
-  else if( ramValue == 255 ){
+  else if(CLIENT_move_state == MOVE_RAM_COOL ){
     ramLabel = "----";
     ramColor =  '0.15 0.15 0.15';
     ramValue = 100;
@@ -817,13 +845,14 @@ void() hud_render_sprint={
   local vector spos;
   local string msg;
   local vector msgClr;
-  if(CLIENT_player_state == PLAYER_SPRINT_ON){
+  
+  if(CLIENT_move_state > MOVE_NORM){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     if( cvar("cl_movespeedkey") > 1 ){
       msg = HUD_SPRINT_ON;
       msgClr = CLR_DEF_RET_GETLOCK;
-      if( getstatf(STAT_RAM) >= getstatf(STAT_RAM_MAX) ){
+      if( getstatf(STAT_RAM) >= CLIENT_ram_max ){
         msg = HUD_SPRINT_RAM;
         msgClr = CLR_DEF_RED;
       }
@@ -1068,8 +1097,13 @@ void() data_hud_frame={
           lalign = UI_DATA_LABEL_ALIGN[uid];
           lblofs = UI_DATA_LABEL_OFS[uid];
           axis = UI_DATA_AXIS_FLAG[uid];
-          hud_render_ram(porg, vsize, getstatf(STAT_RAM_VALUE), algn, axis, lblofs, lalign);
+          hud_render_ram(porg, vsize, getstatf(STAT_RAM_VALUE) * 100, algn, axis, lblofs, lalign);
         }
+        break;
+      case HUD_UID_MSN_CLOCK:
+        porg = UI_DATA_POS[uid];
+        algn = UI_DATA_ALIGN[uid];
+        hud_render_missionClock( porg, algn, 0);
         break;
     }
     uid = uid + 1;

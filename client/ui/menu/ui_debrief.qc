@@ -3,25 +3,29 @@ battleMETAL
 Author: Peter Roohr
 Date: 07/23/2019
 Overview: 
-  Debriefing screen ( sure, score screen).
-  Occurs once the map has sent the PLAYER_INTERMSN.
+  Debriefing screen -
   this is generally triggered by player death or mission end.
+  used only for campaign missions.
+  
+  playerState = PLAYER_DEBRIEF
 */
 
 //menu hooks
 void() menu_debriefListener_onClick={
   //next/retry mission button
-  if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), FALSE) ){
-    //Single player 
-    if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-      setpause( 0 );
-      cl_set_mission( MENU_DEBRIEF_status );
-      return;
+  if( servertime > MENU_button_delay ){
+    if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
+      //Single player 
+      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+        cl_savefile_save();
+        MENU_DEBRIEF_time_elapsed = time + 0.1;
+        return;
+      }
+      //DEATHMATCH AND COOP
+      cl_set_mission( 2 );
+      CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE | VALID_LAUNCH));
     }
-    //DEATHMATCH AND COOP
-    cl_set_mission( 2 );
-    CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
-    LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE | VALID_LAUNCH));
   }
 };
 
@@ -35,11 +39,10 @@ void() menu_debrief_drawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
 
-  if( cvar("gamemode") != GAMEMODE_CAMPAIGN ){
-    if( SV_MISSIONSTATUS == MISSION_STATUS_ACTIVE ){
-      if( CLIENT_player_deadflag > DEAD_NO ){
-        MENU_DEBRIEF_status = 0;
-      }
+  if( MENU_DEBRIEF_time_elapsed != -1 ){
+    if( time > MENU_DEBRIEF_time_elapsed ){
+      cl_set_mission( MENU_DEBRIEF_status );
+      MENU_DEBRIEF_time_elapsed = 999999;
     }
   }
 
@@ -317,7 +320,7 @@ void(vector panelOffset) menu_debrief_stats={
   
   //Time taken
   drawstring( thisOrg + gui_percentToPixelRawVec('6 72'), "Mission Time:", '14 14', CLR_DEF_GRAY_H, 1, 0);
-  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), sprintf("%00.2f",MENU_DEBRIEF_time_elapsed), '16 16', '1 1 1', 1, 0);
+  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), ui_calculate_time_string( SV_ENDTIME - SV_PLAYERTIME ) , '16 16', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -485,4 +488,36 @@ void(vector panelOffset) menu_debrief_unlocks={
   drawfont = drawfont_prev;
 };
 
+void() menu_debrief_sort_unlocks={
+  local string item;
+  local float tokens;
+  local float tokenItr;
+  local float itemCounter;
+  
+  tokenItr = 0;
+  itemCounter = 0;
+  //mech list is blank
+  if( MENU_DEBRIEF_unlocks_mechs != "" ){
+    tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
+    while( tokenItr < tokens ){
+      item = strzone(argv(tokenItr));  
+      itemCounter = stof(item);
+      UNLOCKED_MECHS[itemCounter] = itemCounter;
+      strunzone(item);
+      tokenItr = tokenItr + 1;
+    }
+  }
 
+  tokenItr = 0;
+  itemCounter = 1;
+  if( MENU_DEBRIEF_unlocks_equip != "" ){
+    tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
+    while( tokenItr < tokens ){
+      item = strzone(argv(tokenItr));
+      itemCounter = stof(item);
+      UNLOCKED_ITEMS[itemCounter] = itemCounter;
+      strunzone(item);
+      tokenItr = tokenItr + 1;
+    }
+  }
+};

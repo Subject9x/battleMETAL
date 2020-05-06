@@ -48,7 +48,7 @@ void() GotoNextMap={
       changelevel (mapname);
     }
     else{  
-      changelevel (nextmap);
+      changelevel (sv_nextmap);
     }  
   }
 };
@@ -189,8 +189,6 @@ void() execute_changelevel={
       if( world.animaticOnly == FALSE ){
         self.playerState = PLAYER_INTERMSN;  //TEST
         client_push_mapobjects();
-        client_sendMissionUnlocks();
-        client_sendEndMission(self, 1) ;
       }
     this = self;
 		other = find (other, classname, "player");
@@ -215,7 +213,7 @@ void() changelevel_touch={
 		bprint (" exited the level\n");
 	}
   
-	nextmap = self.map;
+	sv_nextmap = self.map;
   
 	SUB_UseTargets ();
 
@@ -240,7 +238,7 @@ to touch the changelevel trigger
 */
 void() changelevel_use={
   if( world.animaticOnly ){
-    nextmap = self.map;
+    sv_nextmap = self.map;
 		GotoNextMap();
 		return;
   }
@@ -255,7 +253,7 @@ void() changelevel_use={
 		bprint (other.netname);
 		bprint (" exited the level\n");
 	}
-  nextmap = self.map;
+  sv_nextmap = self.map;
   
 	SUB_UseTargets ();
   

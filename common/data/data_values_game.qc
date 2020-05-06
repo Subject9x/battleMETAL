@@ -81,13 +81,23 @@ float GAMEMODE_TEAMDM = 4;
 float TEAM_SURVEST_TOTAL;  //team deathmatch
 float TEAM_MILITAR_TOTAL;
 
-//Multiplayer Mission Status
-float MISSION_STATUS_READY = 1;
-float MISSION_STATUS_ACTIVE = 2;
-float MISSION_STATUS_ENDING = 3;
-float MISSION_STATUS_WIN = 3; //dm / coop / campaign win status
-float MISSION_STATUS_WIN1 = 4;  //TDM - survest win
-float MISSION_STATUS_WIN2 = 5;  //TDM - militar win
+//Server Mission Status
+float MISSION_STATUS_READY    = 1;  //server ready to start when the first player connects
+float MISSION_STATUS_ACTIVE   = 2;  //server is running as normal
+float MISSION_STATUS_OVER     = 3;  //sv_checkrules() hit, triggering server end func
+float MISSION_STATUS_ENDING   = 4;  //
+float MISSION_STATUS_DONE     = 5;
+//Server Mission Results
+float MISSION_RESULT_WIN      = 1;
+float MISSION_RESULT_FAIL     = 2;
+float MISSION_RESULT_WIN1     = 3;
+float MISSION_RESULT_WIN2     = 4;
+float MISSION_RESULT_STALEMATE= 5;
+
+float SERVER_RESPAWN_COOL_DM = 15;
+float SERVER_RESPAWN_COOL_COOP = 7;
+float SERVER_SCORE_TIME_DM = 30;
+float SERVER_SCORE_TIME_COOP = 60;
 
 //Multiplayer Server Flags
 float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
@@ -141,16 +151,27 @@ float OBJECTIVE_FAIL = 4;
 //   PLAYER STATE ID's           
 //============================
 //used for client-state syncing between server and client
-float PLAYER_DEAD = -1;         // 
-float PLAYER_CONNECT = 0;       // Client just connected to server.
-float PLAYER_SPAWN = 1;         // Client has been initialized, and spawned in as observer.
-float PLAYER_IN_MENU = 2;       // Client is in the CSQC menu system.
-float PLAYER_POWERUP_BEGIN = 3; // Client has spawned into their mech, and the mech is powering up.
-float PLAYER_POWERUP_END = 4;   // Client mech has completed powerup sequence.
-float PLAYER_ACTIVE = 5;        // Client is controlling mech, and may move/fire freely.
-float PLAYER_ANIM_STOP = 6;     // Client told to stop playing animatic.
-float PLAYER_SPRINT_ON = 7;     // Client has engaged the 'sprint' button.
-float PLAYER_INTERMSN = 8;      // Client has entered an intermission event.
+float PLAYER_CONNECT        = 0;  // Client just connected to server.
+float PLAYER_SPAWN          = 1;  // Client has been initialized, and spawned in as observer.
+float PLAYER_BRIEF          = 2;  // Client entered the main CSQC menu system.
+float PLAYER_DEAD           = 3;  // player has been killed in combat.
+float PLAYER_REDEPLOY       = 4;  // player use ClientKill().
+float PLAYER_RESPAWN        = 5;  // player is ready to respawn from being dead.
+float PLAYER_DEBRIEF        = 6;  // player has finished a campaign mission.
+float PLAYER_INTERMSN       = 7; // Client has entered an intermission event.
+
+float PLAYER_ANIM_STOP      = 8;  // Client told to stop playing animatic.
+float PLAYER_POWERUP_BEGIN  = 9;  // Client has spawned into their mech, and the mech is powering up.
+float PLAYER_POWERUP_END    = 10;  // Client mech has completed powerup sequence.
+float PLAYER_ACTIVE         = 11;  // Client is controlling mech, and may move/fire freely.
+float PLAYER_SPRINT_ON      = 12;
+
+float MOVE_NORM             = 0;  //normal walking without +button8
+float MOVE_SPRINT           = 1;  // Client has engaged the 'sprint' 
+float MOVE_RAM_ON           = 2;
+float MOVE_RAM_CHARGE       = 3;
+float MOVE_RAM_COOL         = 4;
+
 //============================
 //         DATA_TYPE           
 //============================
@@ -172,8 +193,7 @@ float DATA_DEPL = 11;
 float DATA_WEAPON = 12;
 float DATA_INFO_START = 13;//used to send clientdata entity to csqc
 float DATA_INFO_COOP = 14;  //used as ID for info_start_coop
-float DATA_MAP_OBJ = 15; //meh, mostly for map objects (mapKeys :/ )
-float DATA_MAP_DMG = 16;
+float DATA_MAP_DMG = 15;
 
 //============================
 //     UNIT PART BITS          
@@ -273,6 +293,9 @@ float SENDTYPE_CHUNK = 9; //Vehicle / Turret / Mech debris
 float SENDTYPE_PROJ = 10;  //projectiles - missiles, etc
 float SENDTYPE_MAP = 11;
 //SendFlags-------------------
+//note: sendEnt is capped to 7 bitflags + NEWENT 
+//      and uses WriteByte, to add more flags, try switching
+//      to WriteShort for ChangeFlags
 float SENDFLAG_MOVE = 1;  //update .origin and .angles of main piece 
 float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.
 float SENDFLAG_VELOCITY = 4; //unit is stood up by server
@@ -370,13 +393,13 @@ float STAT_ACCURACY = 33;
 float STAT_RAM = 34;
 float STAT_CLIENT_ENERGY = 35;
 float STAT_CLIENT_SHIELD = 36;
-float STAT_RAM_MAX = 37;
-//38;
+//float STAT_RAM_MAX = 37;
+float STAT_PLAYER_STATE = 38;
 float STAT_PLAYER_WEAPONS_STATE = 39;
+float STAT_PLAYER_FACTION = 40;
+float STAT_PLAYER_DEATHS = 41;
+float STAT_MOVE_STATE = 42;
 
-//40;
-//41;
-//42;
 //43;
 float STAT_PLAYER_DATA_TYPE = 44;
 float STAT_PLR_DATA_IDX = 46;

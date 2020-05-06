@@ -124,7 +124,7 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
   
   idx = cur = 0;
 
-  if( CLIENT_player_state == PLAYER_IN_MENU ){
+  if( CLIENT_player_state == PLAYER_BRIEF ){
     return;
   }
 

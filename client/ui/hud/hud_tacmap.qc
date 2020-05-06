@@ -179,10 +179,10 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   
   local float playerNameLen;
   local string playerName;
+  playerName = getplayerkeyvalue(playerRow.entId - 1, "name");
   playerNameOfs = rowOfs + gui_percentToPixelRawVec('14 0');
-  if( playerRow.netname != "" ){
-    playerName = playerRow.netname;
-    playerNameLen = strlen(playerRow.netname);
+  if( playerName != "" ){
+    playerNameLen = strlen(playerName);
     if( playerNameLen > 24 ){
       playerName = substring(playerName, 0, 24);
     }

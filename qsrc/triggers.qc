@@ -733,9 +733,6 @@ void() toggleweapons_touch={
       //DISABLE_ONLY
       if( !(other.flags & FL_NOSHOOT) ){
         other.flags = other.flags | FL_NOSHOOT;
-        if( (self.spawnflags & 64) ){
-          client_send_event_weapons( other, FALSE );
-        }
       }
       return;
     }
@@ -743,9 +740,6 @@ void() toggleweapons_touch={
       //ENABLY_ONLY
       if( (other.flags & FL_NOSHOOT) ){
         other.flags = other.flags - (other.flags & FL_NOSHOOT);
-        if( (self.spawnflags & 64) ){
-          client_send_event_weapons( other, TRUE );
-        }
       }
       return;
     }
@@ -770,7 +764,7 @@ void() toggleweapons_touch={
   }
 };
 
-/*QUAKED trigger_toggleweapons (.5 .5 .5) ? START_OFF LIFETIME REACTIVATE REMOVE DISABLE_ONLY ENABLY_ONLY NOTIFY
+/*QUAKED trigger_toggleweapons (.5 .5 .5) ? START_OFF LIFETIME REACTIVATE REMOVE DISABLE_ONLY ENABLY_ONLY
   Toggles Player's ability to shoot stuff (or turns it on if it was off.)
   FL_NOSHOOT
   
@@ -783,7 +777,6 @@ REACTIVATE 4: <UNUSED>
 REMOVE 8: remove on first-touch.
 DISABLE_ONLY 16: only disables player, adds FL_NOSHOOT
 ENABLY_ONLY 32: only re-enables player, removes FL_NOSHOOT
-NOTIFY 64: sends HUD event to touching player.
 */
 void() trigger_toggleweapons={
   InitTrigger ();

@@ -68,14 +68,16 @@ void( entity thePlayer ) hud_render_ally_names={
     adj = 34;
   }
   
-  namelen = stringwidth(thePlayer.netname, 0, drawSize);
+  local string playerName;
+  playerName = getplayerkeyvalue(thePlayer.entId - 1, "name");
+  namelen = stringwidth(playerName, 0, drawSize);
   namepos = thePlayer.origin;
   namepos_z = namepos_z + (gui_percentYRaw(thePlayer.vec_size * adj)) * -1;
   nameproj = cs_project(namepos);
   if( nameproj_z >= 0 ){
     nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
     nameproj_z = 0;
-    drawstring(nameproj, thePlayer.netname, drawSize, CLR_DEF_GREEN * 0.8, 1, 0);
+    drawstring(nameproj, playerName, drawSize, CLR_DEF_GREEN * 0.8, 1, 0);
   }
   namepos = cs_unproject(nameproj);
   

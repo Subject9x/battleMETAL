@@ -6,3 +6,37 @@ Overview:
   End of Round score screen for DM / TDM / Coop(?) games
   also shown when player dies.
 */
+
+//pseudo interface
+void() menu_scoreListener_onClick;
+
+//void() menu_scoreListener_onDrag;
+
+void() menu_scoreListener_onHover;
+
+//void() menu_scoreListener_onKeyUp;
+
+void() menu_score_drawFrame;
+//------------------
+vector MENU_SCORE_READY_ORG;
+void( vector menuOrg ) menu_score_draw_bar;
+
+//Deathmatch
+void( vector menuOrg ) menu_score_dm_nav;
+void( vector menuOrg ) menu_score_dm_client_info;
+
+//Team DM
+void( vector menuOrg ) menu_score_tdm_nav;
+void( vector menuOrg ) menu_score_tdm_server_info;
+
+void( vector menuOrg ) menu_score_tdm_objectives;
+void( vector menuOrg ) menu_score_tdm_client_info;
+
+//COOP
+
+void( vector menuOrg ) menu_score_coop_nav;
+void( vector menuOrg ) menu_score_coop_server_info;
+void( vector menuOrg ) menu_score_coop_mission_info;
+void( vector menuOrg ) menu_score_coop_status;
+void( vector menuOrg ) menu_score_coop_players;
+void( vector menuOrg ) menu_score_coop_client_stats;

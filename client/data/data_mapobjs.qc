@@ -24,9 +24,6 @@ void( float isNew, float entFlags ) sendent_handle_map={
     case DATA_DEPL:
       data_deploy( isNew, entFlags );
       break;
-    case DATA_MAP_OBJ:
-      //data_objective( isNew, entFlags );
-      break;
     case DATA_MAP_DMG:
       data_map_damage( isNew, entFlags );
       break;
@@ -174,7 +171,7 @@ void( float isNew, float entFlags ) data_objective={
     }
     //objective has been failed
     if( (prevState == OBJECTIVE_ACTIVE) && (self.isActive == OBJECTIVE_FAIL) ){
-      hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1 ); 
+      hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1 );
     }
   }
 };

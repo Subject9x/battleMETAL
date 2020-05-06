@@ -21,11 +21,6 @@ void(string str) SV_ParseClientCommand={
   if(argv(0) == "m"){
     client_ParseMechCommand(str, argc);
   }
-  else if( argv(0) == "savegame"){
-    if( world.ignoreSave == FALSE ){
-      savefile_save();
-    }
-  }
   else if( argv(0) == "loadgame"){
     savefile_load(FALSE);
   }
@@ -157,15 +152,13 @@ void() ClientConnect = {
     client_playTrack(3, TRUE);  //entering hangar menu
   }
   
-  //self.playerState = PLAYER_SPAWN;
   client_push_player_info();
   client_data();
   
   if (intermission_running){
     ExitIntermission();
   }
-
-  client_sendServerInfo();  
+  client_sendServerInfo();
 };
 
 /*
@@ -192,9 +185,7 @@ void() PutClientInServer = {
   self.classname = "player";
   
   //DecodeLevelParms ();  //TODO - going to reactivate these soon.
-	self.attack_finished = time;
-  self.th_die = PlayerDie;
-  
+	self.attack_finished = time;  
   self.deadflag = DEAD_NO;  //re-rack
   
 // paustime is set by teleporters to keep the player from moving a while
@@ -221,29 +212,12 @@ void() PutClientInServer = {
       PutClientInServer_TeamDeathmatch();
       break;
   }
-
-  /*switch( self.data_type ){
-    case DATA_POBS:
-      
-
-      if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-
-      }
-      else{
-
-      }
-      break;
-    default:
-      self.trigOnSpawn = spot.trigOnSpawn;
-      self.trigOnDeath = spot.trigOnDeath;
-      self.trigOnAttack = spot.trigOnAttack;
-      self.trigOnDamage = spot.trigOnDamage;
-      self.trigOnPanic = spot.trigOnPanic;
-      self.trigOnTarget = spot.trigOnTarget;
-      player_makeMech();
-      self.count4 = 0;
-      break;
-  }*/
+  //Client connected to a round that's ending.
+  if( MISSION_STATUS > MISSION_STATUS_ACTIVE ){
+    if( GAMETYPE != GAMEMODE_CAMPAIGN ){
+      self.playerState = PLAYER_INTERMSN;
+    }
+  }
 };
 
 /*
@@ -253,8 +227,7 @@ ClientKill
 Player entered the suicide command
 ============
 */
-void() ClientKill = {
-
+void() ClientKill = { 
   if(self.deadflag){
     return;
   }
@@ -270,51 +243,15 @@ void() ClientKill = {
   
   bprint (self.netname);
   bprint (" cowardly self-destructs!\n");
-
-  //only deduct frags of player is going from !observer to another !observer
+  
   self.frags = self.frags - 2;
   if( self.frags < 0 ){
     self.frags = 0;
   }
   
-  ctrl_unit_clean_wgroups();
-  ctrl_mech_die_player();
-  ctrl_unit_cleanup_player();
-  
-  self.solid = SOLID_NOT;
-	self.movetype = MOVETYPE_TOSS;
-	self.deadflag = DEAD_DEAD;
-	
-  self.alpha = 0.01;
-  self.effects = 0;
-  setsize(self, '-8 -8 -8', '8 8 8');
-	setorigin(self, self.origin);
-  
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_DEAD | SENDFLAG_TURRET);
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-   self.think = PlayerDieEnd; 
-  }
-  else{
-    self.think = PlayerDieNetworkEnd;
-  }
-  self.nextthink = time + 1;
- /*
-  client_push_player_info();
-
-	self.flags = self.flags - (self.flags & FL_ONGROUND);
-  setsize(self, '-8 -8 -8', '8 8 8');
-	setorigin(self, self.origin);
-  
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-   PlayerDieEnd();
-    
-  }
-  else{
-    PlayerDieNetworkEnd();
-  }
-  
-  self.nextthink = time + GAME_TIME_TO_DEBRIEF;*/
-	//sv_client_respawn();
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_TURRET);
+  self.health = 0;
+  self.th_die();
 };
 
 /*
@@ -367,12 +304,12 @@ void() PutClientInServer_Campaign={
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
     client_sendMissionFileName();
-    client_sendGameMode(cvar("gamemode"), cvar("saveslot"));
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
     self.faction = FACTION_PSC; //campaign default
+    self.th_die = PlayerDie;
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   
@@ -380,7 +317,6 @@ void() PutClientInServer_Campaign={
     //pre-populate default save file
     savefile_load( FALSE );
     if( FLAG_NEWGAME == TRUE ){
-      savefile_default();
       savefile_load( FALSE );
     }
   }
@@ -418,7 +354,6 @@ void() PutClientInServer_Coop={
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
     client_sendMissionFileName();
-    client_sendGameMode(cvar("gamemode"), FALSE);
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
     self.power_timer = 0;
     player_makeObserver();
@@ -451,12 +386,12 @@ void() PutClientInServer_Deathmatch={
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
     client_sendMissionFileName();
-    client_sendGameMode(cvar("gamemode"), FALSE);
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
     self.faction = FACTION_ALL; //deathmatch has no real teams.
+
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  
@@ -483,7 +418,6 @@ void() PutClientInServer_TeamDeathmatch={
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
     client_sendMissionFileName();
-    client_sendGameMode(cvar("gamemode"), FALSE);
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
     self.power_timer = 0;
     player_makeObserver();
@@ -692,14 +626,11 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, player.origin_z );
     WriteByte( MSG_ENTITY, player.faction );
     WriteLong( MSG_ENTITY, player.flags );
-    WriteShort( MSG_ENTITY, player.frags );
-    WriteString( MSG_ENTITY, player.netname );
   }
   /*
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    WriteShort( MSG_ENTITY, player.frags );
     WriteByte( MSG_ENTITY, (player.particleCube == world));
   }
   return TRUE;

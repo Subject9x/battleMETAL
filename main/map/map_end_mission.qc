@@ -23,102 +23,54 @@ void() map_end_mission_over={
   if( self.missionStatus == -1 ){
     self.missionStatus = 0; //client compatability zero-out.
   }
-  nextmap = self.map;
-  
-  objective = self;
-  playerStart = find(world, classname, "info_player_start");
-  for( player = nextent(world); player.classname == "player"; player = nextent(player) ){
-    //taken from execute_changelevel()
-    player.view_ofs = '0 0 0';
-    player.angles = player.v_angle = player.angles;
-    player.fixangle = TRUE;		// turn this way immediately
-    player.think = SUB_Null;  //I guess this was an animation thing originall? (q1)
-    player.nextthink = time + 0.5;
-    player.takedamage = DAMAGE_NO;
-    player.solid = SOLID_NOT;
-    player.movetype = MOVETYPE_NONE;
-    player.modelindex = 0;
-    //------------------------------
-    client_sendEndMission(player, player.missionStatus);
-    if(player.data_type == DATA_MECH){
-      self = player;
-      player_unmakeMech();
-      player_makeObserver();
-    }
-    setorigin (player, playerStart.origin);
-  }
-  self = objective;
-	WriteByte (MSG_ALL, SVC_INTERMISSION);
+
+
   self.think = SUB_Remove;
   self.nextthink = time + 2;
 };
 
 
 void() map_end_mission_event={
-  intermission_running = 1;
-  intermission_exittime = time + 2;
+  //intermission_running = 1;
+  //intermission_exittime = time + 2;
   self.think = map_end_mission_over;
   self.nextthink = time + 3;
 };
 
 /*
-  Only if MISSION_LOSE or MISSION_WIN.
+Only if MISSION_LOSE or MISSION_WIN.
+
+  Change - MISSION_STATUS? 1:-1.
+
+  set objective states to client.
+
+  change clients to observers.
   
-    Change - MISSION_STATUS? 1:-1.
-  
-    put clients into INTERMISSION.
-  
-    set objective states to client.
-  
-    change clients to observers.
-    
+  CAMPAIGN---------
     if MISSION_WIN
-      nextmap -> .map
+      sv_nextmap -> .map
       send unlocks to client.
-  
+
     if MISSION_LOSE
-      nextmap -> .map
+      sv_nextmap -> .map
 */
 void() map_end_mission_conclude={
   local entity player;
   local entity objective;
   
-  objective = self;
-  for( player = nextent(world); player.classname == "player"; player = nextent(player) ){
-    self = player;
-    if( self.faction == objective.faction ){
-      if( objective.missionStatus == TRUE ){
-        self.missionStatus = TRUE;
-        client_sendMissionUnlocks();
-        if( !world.ignoreSave ){
-          savefile_append();    
-        }
-        te_mission_win();
-      }
-      else{
-        te_mission_lose();
-        self.missionStatus = FALSE;
-      }
+  //mission can only end if its active.
+  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+    MISSION_STATUS = MISSION_STATUS_OVER;
+    if( self.missionStatus == TRUE ){
+      MISSION_RESULT = MISSION_RESULT_WIN;
     }
     else{
-      if( objective.missionStatus == TRUE ){
-        te_mission_lose();
-        self.missionStatus = FALSE;
-      }
-      else{
-        self.missionStatus = TRUE;
-        client_sendMissionUnlocks();
-        if( !world.ignoreSave ){
-          savefile_append();    
-        }
-        te_mission_win();
-      }
+      MISSION_RESULT = MISSION_RESULT_FAIL;
     }
+    sv_nextmap = self.map;
+    self.think = map_end_mission_event;
+    self.nextthink = time + 4;
   }
-  self = objective;
-    
-  self.think = map_end_mission_event;
-  self.nextthink = time + 4;
 };
 
 
@@ -154,9 +106,9 @@ void() map_end_mission_touch={
 
 /*QUAKED map_mission_end(0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF - MISSION_LOSE - TOUCH_ACTIVE TOUCH_FACTION
 End_Mission ends the entire mission for EVERY player / faction.
-It is the source of the "Mission Fail/Succeed" message that players see on their HUDs.
-Default is play "mission successful" message for faction-matching players.
 Odds are there'll be 2 of these per single player map, 1 success, 1 fail.
+
+CAMPAIGN ONLY and COOP ONLY!
 
 -------- KEYS -------- 
 .isActive = <float> enum
@@ -164,8 +116,7 @@ Odds are there'll be 2 of these per single player map, 1 success, 1 fail.
             1 = active
 .faction = <float> faction for this objective
 .count = <float> only complete objective when count is hit;
-.map = <string> "<mapname>.bsp" - map to play next.
-
+.map = <string> "<mapname>.bsp" - map to play on WIN
 -------- SPAWNFLAGS --------
 START_OFF 1: starts disabled, and will need at least 1 trigger call to activate before being usable!
 MISSION_LOSE 4: play "mission failed" message for faction-matching players.
@@ -185,7 +136,6 @@ void() map_mission_end={
     setsize(self, tempMin, tempMax);
   }
   else{
-    
     util_MapDeveloperMarker();
     self.solid = SOLID_NOT;
     setsize(self, '-10 -10 -10', '10 10 10');

@@ -3,6 +3,7 @@
 //img stored in data/map_scripts/
   'img' : 'training/training.png'
   'name'  : 'Training Refresher'
+  'display' : 'The long dark'
   'type'  : 'Trainer'
   'points' : '1'
   'sector' : 'Outbuilding Facility 32X'

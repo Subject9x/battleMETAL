@@ -57,6 +57,12 @@ void() leg_walk5;
 void() leg_walk6;
 void() leg_walk7;
 void() leg_walk8;
+
+void() leg_run1;
+void() leg_run2;
+void() leg_run3;
+void() leg_run4;
+
 //not sure how easy it is to reverse anims here;
 void() leg_back1;
 void() leg_back2;
@@ -66,6 +72,10 @@ void() leg_back5;
 void() leg_back6;
 void() leg_back7;
 void() leg_back8;
+
+
+
+
 
 void() bot_leg_stand1;
 

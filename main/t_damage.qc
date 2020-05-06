@@ -29,7 +29,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgAmt = dmg_amt;
   
   //reduce friendly fire damage on easier settings
-  if(trg.faction == attacker.faction){
+  if((trg.faction != FACTION_ALL) && (trg.faction == attacker.faction) ){
     if( skill < 2 ){
       dmgAmt = dmgAmt * 0.33;
     }
@@ -312,8 +312,10 @@ void(entity targ, entity attacker) killed={
           break;
       }
       self.enemy = attacker;
+      if( (self.enemy.flags & FL_CLIENT) ){
+        self.enemy.botKills = self.enemy.botKills + 1;
+      }
       killed_monsters = killed_monsters + 1;
-      WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
     }
     if( (self.flags & FL_CLIENT) ){
       if( attacker.flags & FL_CLIENT ){

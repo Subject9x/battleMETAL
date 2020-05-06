@@ -48,15 +48,19 @@ Overview:
 .float next_wepn9;
 
 .float missionStatus; //moved to player level for network
-
-
 .float ramUpMax;
+.float ramCooldown;
 
 #ifdef CSQC
 .float particleCubeFlag;
 #endif
 
 #ifndef CSQC
+.float missionLosses; //mostly campaign related.
+.float botKills;      //campaign/coop tracking of bot kills.
+.float playerDeaths;      //tracked in TDM / DM for personal score.
+.float playerDMdamage;    //fun tracker for total damage output over a match.
+
 .float nextVecChoice;
 .float i_reserve; //how many reserve points does the unit cost?
 
@@ -90,14 +94,14 @@ Overview:
 .float laser_sight_timer;
 .vector laser_sight_org;
 
+
+.float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
 .vector ramAngle;
 .float ramCharge;
 .float ramCool;
 .vector ramPower;
 .vector ramVelocity;
 .float ramUp;
-.float ramUpMax;
-.float ramCooldown;
 
 .entity clientData;
 #endif

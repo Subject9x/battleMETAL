@@ -30,7 +30,7 @@ void() mh_world_ini={
   sv_world_load_items();
 
   registercvar("campaign", "0", 0); 
-  registercvar("saveslot", "0", 1);
+  registercvar("saveslot", "0", 0);
   registercvar("gamemode", "0", 0);
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
@@ -49,12 +49,15 @@ void() mh_world_ini={
   serverflags = 255;  //DEBUG
 
   STARTTIME = time;
-  ENDTIME = time + (cvar("timelimit") * 60);
-  local string serverInfo;
-  serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
-  serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
-  serverInfo = strcat(serverInfo, ftos(serverflags),"\n");
-  SERVER_INFO = strzone(serverInfo);
+  if( cvar("timelimit") > FALSE ){
+    ENDTIME_LIMIT = time + (cvar("timelimit") * 60);
+  }
+  else{
+    ENDTIME_LIMIT = -1;
+  }
+  ENDROUND = 0;
+  
+  world_ini_serverinfo();
 
   //kept in numerical order for easy reference.
   addstat(STAT_PLAYER_DEADFLAG, AS_INT, deadflag);
@@ -65,8 +68,11 @@ void() mh_world_ini={
   addstat(STAT_CLIENT_ENERGY, AS_FLOAT, stat_client_energy);
   addstat(STAT_CLIENT_SHIELD, AS_FLOAT, stat_client_shield);
   
-  addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
+  //addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
+  addstat(STAT_PLAYER_STATE, AS_INT, playerState);
   addstat(STAT_PLAYER_WEAPONS_STATE, AS_INT, stat_player_weapons_state);
+  addstat(STAT_PLAYER_FACTION, AS_INT, faction);
+  addstat(STAT_MOVE_STATE, AS_INT, moveState);
   
   addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
   addstat(STAT_PLR_DATA_IDX, AS_INT, data_idx);
@@ -80,6 +86,7 @@ void() mh_world_ini={
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
   addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
+  addstat(STAT_PLAYER_DEATHS, AS_INT, playerDeaths);
     
   addstat(STAT_TARGET_HP_TORSOCENTER, AS_FLOAT, stat_target_hp_torsoCenter);
   addstat(STAT_TARGET_HP_TORSOLEFT, AS_FLOAT, stat_target_hp_torsoLeft);
@@ -96,7 +103,6 @@ void() mh_world_ini={
   addstat(STAT_CLIENT_HP_LEGS, AS_FLOAT, stat_client_hp_legs);
     
   addstat(STAT_TARGET_SHIELDS, AS_FLOAT, stat_target_shield);
-  addstat(STAT_TARGET_NAME, AS_STRING, stat_target_name);
   addstat(STAT_TARGET_NAME, AS_STRING, stat_target_name);
     
   addstat(STAT_TARGET_ORIGINX, AS_FLOAT, stat_target_orgx);
@@ -170,6 +176,19 @@ void() mh_world_ini={
   
   MAP_UNLOCK_MECHS = world.unlockMechs;
   MAP_UNLOCK_EQUIP = world.unlockEquip;
+};
+
+void() world_ini_serverinfo={
+  local string serverInfo;
+  serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
+  serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
+  serverInfo = strcat(serverInfo, ftos(GAMETYPE)," ");
+  serverInfo = strcat(serverInfo, ftos(serverflags)," ");
+  serverInfo = strcat(serverInfo, ftos(cvar("timelimit"))," ");
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
+  }
+  SERVER_INFO = strzone(serverInfo);
 };
 
 /*
@@ -250,27 +269,222 @@ void() WeatherDominator_think={
 };
 
 /*
-  CHECK SERVER GAME RULES
-    ports -> CheckRules()
+  SV_RULES - Deathmatch Server
 */
-void() sv_checkRules={
-  
+void() sv_rules_dm={
+  local entity player;
+
   //Game FragLimit hit
-  if( self.frags >= cvar("fraglimit") ){
-
-    
+  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+    if( cvar("fraglimit") != FALSE ){
+      for( player = nextent(world); player != world; player = nextent(player)){
+        if( !(player.flags & FL_CLIENT) ){
+          continue;
+        }
+        if( player.frags >= cvar("fraglimit") ){
+          MISSION_STATUS = MISSION_STATUS_OVER;
+        }
+      }
+      
+      if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
+      }
+    }
   }
-  
   //Game TimeLimit hit
-  if( time >= ENDTIME ){
-
+  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+    if( ENDTIME_LIMIT != -1 ){
+      if( time >= ENDTIME_LIMIT ){
+        MISSION_STATUS = MISSION_STATUS_OVER;
+      }
+    }
   }
   
   //Objective hit
   
+  
   //Limited Lives, no one left
   
 
+};
+
+/*
+  SV_RULES - Team Deathmatch Server
+*/
+void() sv_rules_tdm={
+  local entity player;
+
+  //Game FragLimit hit
+  if( cvar("fraglimit") != FALSE ){
+    for( player = nextent(world); player != world; player = nextent(player)){
+      if( !(player.flags & FL_CLIENT) ){
+        continue;
+      }
+      if( player.frags >= cvar("fraglimit") ){
+        MISSION_STATUS = MISSION_STATUS_OVER;
+      }
+    }
+    
+    if( MISSION_STATUS == MISSION_STATUS_OVER ){
+    }
+    return;
+  }
+  
+  //Game TimeLimit hit  
+  if( ENDTIME_LIMIT != -1 ){
+    if( time >= ENDTIME_LIMIT ){
+      MISSION_STATUS = MISSION_STATUS_OVER;
+      return;
+    }
+  }
+  
+  //Objective hit
+  
+  
+  //Limited Lives, no one left
+  
+};
+
+/*
+  SV_RULES - Coop Mission
+*/
+void() sv_rules_coop={
+  
+};
+
+/*
+  SV_RULES - Campaign Mission
+*/
+void() sv_rules_camp={
+  
+};
+
+/*
+  CHECK SERVER GAME RULES
+    ports -> CheckRules()
+*/
+void() sv_checkRules={
+  GAMETYPE = cvar("gamemode");
+  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+    switch( GAMETYPE ){
+      case GAMEMODE_CAMPAIGN:
+        sv_rules_camp();
+        break;
+      case GAMEMODE_COOP:
+        sv_rules_coop();
+        break;
+      case GAMEMODE_TEAMDM:
+        sv_rules_tdm();
+        break;
+      default:
+        sv_rules_dm();
+        break;
+    }
+    return;
+  }
+  else{
+  //server has hit its rules checks, start gameover stuff here.
+    sv_endServer();
+  }
+};
+
+
+/*
+  Ends Round for all players
+*/
+void() sv_endServer={
+  local entity player;
+  local entity this;
+  local entity spot;
+  local float sendPlayerState;
+  
+  if( MISSION_STATUS == MISSION_STATUS_OVER ){
+    client_send_server_info_update();
+    //send game over data
+        //TODO
+    //Setup end-timer 1 - gives enough time to alert players of end mission, and prepare for score screen.   
+    MISSION_STATUS = MISSION_STATUS_ENDING;
+    if( (GAMETYPE == GAMEMODE_COOP) || (GAMETYPE == GAMEMODE_CAMPAIGN) ){
+      ENDROUND_TIME = time + 8;
+    }
+    else{
+      ENDROUND_TIME = time + 15;
+    }
+    for( player = nextent(world); player.classname == "player"; player = nextent(player)){
+      if( !(player.flags & FL_CLIENT) ){
+        continue;
+      }
+      player.flags = player.flags | FL_NOSHOOT;
+      if( GAMETYPE == GAMEMODE_CAMPAIGN || GAMETYPE == GAMEMODE_COOP ){
+        client_send_campaign_end_data( player );
+      }
+      else{
+         client_send_dm_end_data( player ); 
+      }
+    }
+    return;
+  }
+  
+  if( MISSION_STATUS == MISSION_STATUS_ENDING ){
+    client_send_server_info_update();
+    if( time > ENDROUND_TIME ){
+      spot = find(world, classname, "info_player_start");
+      if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+        sendPlayerState = PLAYER_DEBRIEF;
+      }
+      else{
+        sendPlayerState = PLAYER_INTERMSN;
+      }
+      for( player = nextent(world); player.classname == "player"; player = nextent(player)){
+        if( !(player.flags & FL_CLIENT) ){
+          continue;
+        }
+        this = self;
+        self = player;
+          if( (self.data_type == DATA_MECH) && (self.playerState > PLAYER_ANIM_STOP) ){
+            ctrl_unit_clean_wgroups();
+            client_push_player_info();
+            ctrl_unit_cleanup_player();
+            player_unmakeMech();
+            player_makeObserver();
+          }
+          self.playerState = sendPlayerState;
+          self.deadflag = DEAD_DEAD;
+          setorigin( self, spot.origin );
+        self = this;
+      }
+      MISSION_STATUS = MISSION_STATUS_DONE;
+      if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+        ENDROUND_TIME = time + 2;
+      }
+      else{
+        if( GAMETYPE == GAMEMODE_COOP ){
+          ENDROUND_TIME = time + SERVER_SCORE_TIME_COOP;
+        }
+        else{
+          ENDROUND_TIME = time + SERVER_SCORE_TIME_DM;
+        }
+      }
+      ENDROUND = TRUE;
+    }
+    return;
+  }
+  
+  if( MISSION_STATUS == MISSION_STATUS_DONE ){
+    if( GAMETYPE != GAMEMODE_CAMPAIGN ){
+      if( time > ENDROUND_TIME ){
+        if( ENDROUND == TRUE ){
+          ENDROUND = FALSE;
+          if( sv_nextmap != "" ){
+            changelevel(sv_nextmap);
+          }
+          else{
+            changelevel(mapname);
+          }
+        }
+      }
+    }
+    return;
+  }
 };
 
 
@@ -296,8 +510,6 @@ void() sv_world_load_items={
       break;
   }
 };
-
-
 
 /*
   Real-time Light entity exporter functionality.

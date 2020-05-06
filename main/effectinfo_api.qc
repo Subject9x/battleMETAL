@@ -343,19 +343,6 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
   client_send_particle( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
 };
 
-//HUD Sound Effects
-void() te_mission_win={
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_MISSION_WIN );
-};
-
-void() te_mission_lose={
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_MISSION_LOSE );
-};
-
 void() te_msn_boundary={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );

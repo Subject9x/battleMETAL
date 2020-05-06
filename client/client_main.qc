@@ -144,19 +144,40 @@ void() CSQC_Init =
   FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
   
   SCORESTACK = 0;
-  local float i;
   for( i=0; i < SCOREBOARDMAX; i=i+1){
     SCOREBOARD[i] = 0;
     SCORETABLE[i] = 0;
   }
   
   cl_set_hud_vars_obs();
+  
+  //this seams to appease the Garbage Collection gods...
+  UNLOCKED_MECHS_DATA = ""; 
+  UNLOCKED_ITEMS_DATA = ""; 
+  MENU_DEBRIEF_unlocks_mechs = ""; 
+  MENU_DEBRIEF_unlocks_equip = ""; 
+  SV_NEXTMAP = "";
+  
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
 void() CSQC_Shutdown =
 {
-  
+  if( UNLOCKED_MECHS_DATA != "" ){
+    strunzone(UNLOCKED_MECHS_DATA); 
+  }
+  if( UNLOCKED_ITEMS_DATA != "" ){
+    strunzone(UNLOCKED_ITEMS_DATA); 
+  }
+  if( MENU_DEBRIEF_unlocks_mechs != "" ){
+    strunzone(MENU_DEBRIEF_unlocks_mechs); 
+  } 
+  if( MENU_DEBRIEF_unlocks_equip != "" ){
+    strunzone(MENU_DEBRIEF_unlocks_equip); 
+  }
+  if( SV_NEXTMAP != "" ){
+    strunzone(SV_NEXTMAP);
+  }
   localcmd("cd stop\n");
 };
 
@@ -168,6 +189,7 @@ void() CSQC_Shutdown =
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   return handle_input(evtype, scanx, chary, devid);
 };
+
 
 // the most important function in CSQC...
 void(float w, float h, float menushown) CSQC_UpdateView =
@@ -232,18 +254,27 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   VIEW_SCALE = 0.35;
   	// add any polygons we want here
 
+  //DATA - Update local Client data vars from Server
+  client_get_info();
+  
+  receive_ent_bindData();
+  
+  client_state_events();
+  //=================================================
 
-  //dynamic lights?
-  local entity thingLight;
-  local entity notLight;
-  for( thingLight = nextent(world); thingLight != world; thingLight = nextent(thingLight)){
-    if( !thingLight.render_dlights ){
-      continue;
+  if( !MENU_ACTIVE ){
+    //dynamic lights?
+    local entity thingLight;
+    local entity notLight;
+    for( thingLight = nextent(world); thingLight != world; thingLight = nextent(thingLight)){
+      if( !thingLight.render_dlights ){
+        continue;
+      }
+      notLight = self;
+      self = thingLight;
+        thingLight.render_dlights();
+      self = notLight;
     }
-    notLight = self;
-    self = thingLight;
-      thingLight.render_dlights();
-    self = notLight;
   }
 
 	// add clientside entities (MASK_NORMAL)
@@ -255,60 +286,21 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   if( !MENU_ACTIVE ){
     renderscene();
   }
-  //get player data from server
-  client_get_info();
-  
-  //alter fog settings if needed
-  cl_particles_fogFrame();
-  
-  //mission file load check
-  if(MSN_FILEFOUND){
-    if(MSN_LOADED == FALSE){
-      msn_parsefile();
-      MSN_LOADED = TRUE;
-    }
-  }
- 
+
   /*
     special rant: the fact that the client itself, isn't a faffing global entity in the CLIENT
     module of all things is the height of idiocy.
   */
-  //PLAYER_ENTITYNUM = getstati(STAT_PLR_ENT_ID); //this is ridiculous
-
-  receive_ent_bindData();
+  
+  //alter fog settings if needed
+  cl_particles_fogFrame();
+  
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
 
 	// draw custom hud
-  //draw hud
-  
-  AVAILABLE_RESERVE = 0;
-  
-  //Player has just connected to server
-  if(CLIENT_player_state == PLAYER_CONNECT ){
-    localcmd(strcat("stopsound", "\n"));
-    cl_set_hud_vars_obs();
-  }
-  
-  if(CLIENT_data_type == DATA_MECH){
-    if( dmg_save > 0 ){
-      cons_logAFloat("dmg_save", dmg_save); //DEBUG
-    }
-    if( dmg_take > 0 ){
-      cons_logAFloat("dmg_take", dmg_take); //DEBUG
-    }
-    
-    if(MENU_ACTIVE){
-      if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
-        menu_exit();
-        if( MECH_DATA_ID != CLIENT_data_idx ){
-          ui_data_load_mech(CLIENT_data_idx);
-        }
-      }
-    }
-
-    //HUD SOUND SYSTEM LISTENERS
+  if(CLIENT_data_type == DATA_MECH){    
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
@@ -324,13 +316,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       //Map has a .message value, and it's currently active for rendering
       if( MISSION_NAME_ON == TRUE ){
         client_event_mission_name_frame();
-      }
-    }
-  }
-  else{
-    if( CLIENT_player_state_prev == PLAYER_CONNECT && CLIENT_player_state == PLAYER_SPAWN ){
-      if( !MENU_ACTIVE ){
-        menu_enter( menu_connect_choice() );
       }
     }
   }
@@ -373,45 +358,50 @@ float() CSQC_Parse_TempEntity =
   id = ReadByte();
 
   switch( id ){
+    case TE_CLIENT_INFO:
+      client_campaign_end_data();
+      return TRUE;
+      
+    case TE_SERVERINFO:
+      client_get_serverinfo();
+      return TRUE;
+    
+    case TE_CLIENT_INFO_DM:
+      client_dm_end_data();
+      return TRUE;
+    
     case TE_UI_BOX:
       client_get_hud_highlight();
       return TRUE;
-    case TE_MISSION_WIN:
-      hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1) ;
-      return TRUE;
-    case TE_MISSION_LOSE:
-      hud_event_enqueue( HUD_EVENT_MISSION_FAILED, 1) ;
-      return TRUE;
-    case TE_MISSION_END:
-      client_event_debrief_active( ReadLong(), ReadLong(), ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
-      return TRUE;
+      
     case TE_MSN_BOUND:
       client_event_boundary();
       return TRUE;
+      
     case TE_AI_VOICE:
       snd_hud_trnsmsn_addtoqueue(ReadByte(), ReadByte(), ReadByte(), ReadLong());
       return TRUE;
-    case TE_MISSION_NAME:
-      client_event_mission_name( ReadString() );
+      
+    case TE_MISSION_END:
+      client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
+      
     case TE_MSG_ENV_WARN:
       client_event_environment();
       return TRUE;
-    //TODO -> MapKey Data to SendEntity
-    case TE_MAPKEY_DATA:
-      client_event_get_mapkeyinfo( ReadByte(), ReadLong(), ReadLong(), ReadByte() ) ;
+    
+    case TE_MUZZLE_FLASH:
+      particle_muzzle_flash( ReadByte(), te_read_vector(), te_read_vector(), ReadByte() ) ;
       return TRUE;
+    
+    case TE_VFX_EXPLODE:
+      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
+      return TRUE;
+    
     case TE_MSG_INFO:
       client_event_info_box( ReadString(), CLR_DEF_TXT_GRAY_SMOOTH, ReadLong(), '14 14 0');
       return TRUE;
-    case TE_WEAPONS_ON:
-      if( ReadByte() ){
-        hud_event_enqueue( HUD_EVENT_WEAPONS_ON, 1) ;
-      }
-      else{
-        hud_event_enqueue( HUD_EVENT_WEAPONS_OFF, 1) ;
-      }
-      return TRUE;
+      
     case TE_REPAIRS_ON:
       if( ReadByte() ){
         hud_event_enqueue( HUD_EVENT_REPAIRS_ON, 1) ;
@@ -420,25 +410,13 @@ float() CSQC_Parse_TempEntity =
         hud_event_enqueue( HUD_EVENT_REPAIRS_OFF, 1) ;
       }
       return TRUE;
+      
     case TE_VFX_POINT:
       pointparticles( ReadShort(), te_read_vector(), te_read_vector(), ReadShort());
       return TRUE;
+      
     case TE_VFX_RAIL:
       trailparticles( world, ReadShort(), te_read_vector(), te_read_vector() );
-      return TRUE;
-    case TE_VFX_WRECK:
-      //                 float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl
-      particle_vehicle_wreck( ReadByte(), ReadByte(), ReadByte(), ReadByte(), te_read_vector(), te_read_angle() ) ;
-      return TRUE;
-    case TE_VFX_MECH:
-      //                 float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl
-      particle_mech_chunk( ReadByte(), ReadByte(), ReadByte(), te_read_vector(), te_read_angle() ) ;
-      return TRUE;
-    case TE_VFX_EXPLODE:
-      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
-      return TRUE;
-    case TE_MUZZLE_FLASH:
-      particle_muzzle_flash( ReadByte(), te_read_vector(), te_read_vector(), ReadByte() ) ;
       return TRUE;
   } 
 	return FALSE;
@@ -448,7 +426,7 @@ float() CSQC_Parse_TempEntity =
   if string is interesting, deal with it, otherwise pass it to localcmd() and let engine parse it (note: will not be executed immediately).
 
   (battleMETAL)
-  All low-speed Client/Server commands go here, mostly stuff dealing with menu commands reaching the 
+  All low-delta Client/Server commands go here, mostly stuff dealing with menu commands reaching the 
   server.
 */
 void(string s) CSQC_Parse_StuffCmd =
@@ -463,37 +441,25 @@ void(string s) CSQC_Parse_StuffCmd =
     else if(argv(1) == "anm"){
       cl_get_animfile( argv(2) );
     }
-    else if(argv(1) == "lms"){
-      tokenizebyseparator(s, "[", "]");
-      cl_get_mechs_all( argv(1) );
-    }
-    else if(argv(1) == "lis"){
-      tokenizebyseparator(s, "[", "]");
-      cl_get_items_all( argv(1) );
-    }
-    else if(argv(1) == "mode"){
-      cvar_set("gamemode", argv(2));
-      cvar_set("saveslot", argv(3));
-      if(CLIENT_player_state == PLAYER_CONNECT ){
-        cl_set_savepath( cvar("gamemode") );
-      }
-    }
-    else if(argv(1) == "unl"){
-      cl_unlock_stuff(s);
-    }
-    else if(argv(1) == "trg"){
-      CLIENT_target_name = strzone(argv(2));
-    }
   }
   else{
     if( argv(0) == "svinfo" ){
-      SV_STARTTIME = stof(argv(1));
-      SV_ENDTIME = getstatf(STAT_TIMELIMIT);
-      if( SV_ENDTIME > 0 ){
-        SV_ENDTIME = (SV_ENDTIME * 60) + SV_STARTTIME;
+      //receives the SV_SERVERINFO string
+      SV_STARTTIME = stof(argv(1) );
+      SV_MISSIONSTATUS = stof(argv(2) );
+      cvar_set("gamemode", argv(3) );
+      SV_SERVERFLAGS = stof(argv(4) );
+      SV_TIMELIMIT = stof(argv(5));
+      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){        
+        cvar_set("saveslot", argv(6) );
+        cons_logAFloat("saveslot", cvar("saveslot"));  //debug
       }
-      SV_MISSIONSTATUS = stof(argv(2));
-      SV_SERVERFLAGS = stof(argv(3));
+      else{
+        cvar_set("saveslot", "0");
+      }
+      if(CLIENT_player_state == PLAYER_CONNECT ){
+        cl_set_savepath( cvar("gamemode") );
+      }
     }
     else if( argv(0) == "fog" ){
       cl_get_new_fog( s );
@@ -577,37 +543,49 @@ void() CSQC_Ent_Remove ={
     remove(rem);
   }
   if( self.torsoCenter.partTypeId ){
-    remove(self.torsoCenter);
+    rem = self.torsoCenter;
+    self.torsoCenter = world;
+    remove(rem);
   }
   if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
-    if( self.torsoLeft.partTypeId ){
-      remove(self.torsoLeft);
+    if( self.torsoLeft != world ){
+      rem = self.torsoLeft;
+      self.torsoLeft = world;
+      remove(rem);
     }
-    if( self.torsoRight.partTypeId ){
-      remove(self.torsoRight);
+    if( self.torsoRight != world ){
+      rem = self.torsoRight;
+      self.torsoRight = world;
+      remove(rem);
     }
-    if( self.armLeft.partTypeId ){
-      remove(self.armLeft);
+    if( self.armLeft != world ){
+      rem = self.armLeft;
+      self.armLeft = world;
+      remove(rem);
     }
-    if( self.armRight.partTypeId ){
-      remove(self.armRight);
+    if( self.armRight != world ){
+      rem = self.armRight;
+      self.armRight = world;
+      remove(rem);
     }
-    if( self.legs.partTypeId ){
-      remove(self.legs);
+    if( self.legs != world ){
+      rem = self.legs;
+      self.legs = world;
+      remove(rem);
     }
   }
   if( self.data_type == DATA_BLD ){
-    if( self.effect1 ){
+    if( self.effect1 != world ){
       remove(self.effect1);
     }
   }
   if( self.data_type == DATA_BLD ){
-    if( self.effect2 ){
+    if( self.effect2 != world ){
       remove(self.effect2);
     }
   }
   if( self.data_type == DATA_BLD ){
-    if( self.effect3 ){
+    if( self.effect3 != world ){
       remove(self.effect3);
     }
   }

@@ -30,6 +30,21 @@ void( float mech_id ) sendevent_player_mech={
   }
 };
 
+/*
+  HANDLE EVENT - player killed on this frame.
+*/
+void() sendevent_handle_player_death={
+  te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
+  self.flags = 0;
+  self.origin = '0 0 0';
+  self.damageValue = 0;
+  self.data_type = 0;
+  self.data_idx = 0;
+};
+
+/*
+  HANDLE EVENT - player has changed factions during a team game.
+*/
 void( float prevFac, float newFaction ) sendevent_handle_faction={
   if( prevFac == FACTION_SURVEST ){
     TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
@@ -115,11 +130,14 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevTarget; 
   local float prevKills;
   local float prevFaction;
+  local float prevDeadFlag;
+  local float msnStat;
   
   prevShield = self.shield;
   prevCrit = self.damageValue;
   prevKills = self.kills;
   prevFaction = self.faction;
+  prevDeadFlag = self.deadflag;
   
   /*
     EVENT - per-frame update
@@ -198,13 +216,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
     if( self.entId == player_localentnum ){
       CLIENT_player_deadflag = self.deadflag;
     }
-    if( self.deadflag == DEAD_DEAD ){
-      te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
-      self.flags = 0;
-      self.origin = '0 0 0';
-      self.damageValue = 0;
-      self.data_type = 0;
-      self.data_idx = 0;
+    if( (self.deadflag == DEAD_DEAD) && (prevDeadFlag != self.deadflag) ){
+      sendevent_handle_player_death();
     }
   }
   
@@ -217,8 +230,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.origin = te_read_vector();
     self.faction = ReadByte();
     self.flags = ReadLong();
-    self.kills = ReadShort();
-    self.netname = strzone( ReadString() );
+    self.kills = stof(getplayerkeyvalue(self.entId - 1, "frags"));
+    self.netname = strzone( getplayerkeyvalue(self.entId - 1, "name"));
     setmodel(self, "q3mdl/testball.md3");
     setorigin(self, self.origin);
     self.alpha = 0.01;
@@ -234,21 +247,22 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    self.kills = ReadShort();
+    self.kills = stof(getplayerkeyvalue(self.entId - 1, "frags"));
+    //TODO
+    self.particleCubeFlag = ReadByte();
+    
     if( prevKills != self.kills ){
       scoreboard_push( self.entId, self.kills );
       scoreboard_sort();
     }
     
-    //TODO
-    self.particleCubeFlag = ReadByte();
     if( self.particleCubeFlag == 0 ){
       //remove cube
     }
     else if( self.particleCubeFlag && isNew ){
-      if( player_localentnum == self.data_idx ){
+      //if( player_localentnum == self.data_idx ){
         //add cube
-      }
+      //}
     }
   }
   

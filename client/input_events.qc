@@ -54,6 +54,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
       else{
         if( CLIENT_player_state != PLAYER_INTERMSN ){
+        cons_logAFloat("CLIENT_player_state != PLAYER_INTERMSN", 1);  //DEBUG
           menu_enter( CLIENT_MENU_menu_choice );
         }
       }
@@ -186,6 +187,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
           case MENU_CONNECT_ACTIVE:
             menu_connectListener_onClick();
             break;
+          case MENU_SCORE_ACTIVE:
+            menu_scoreListener_onClick();
+            break;
         }
         return TRUE;
       }
@@ -288,6 +292,9 @@ void() handle_input_hover={
         break;
       case MENU_CONNECT_ACTIVE:
         menu_connectListener_onHover();
+        break;
+      case MENU_SCORE_ACTIVE:
+        menu_scoreListener_onHover();
         break;
     } 
   }

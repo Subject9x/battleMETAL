@@ -11,11 +11,7 @@ to track player unlocks
 
 //functions
 void(float override) savefile_load; //single player only
-void() savefile_save; //single player only
-void() savefile_default;  //single player, but initial start
-void() savefile_append;
-string(string item, string source) savefile_insert;
-void(string nextmap) savefile_changemap;
+void(string sv_nextmap) savefile_changemap;
 
 void() mapfile_coop_load;  //coop options
 void() mapfile_team_load;  //pvp options

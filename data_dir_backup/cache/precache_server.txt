@@ -20,6 +20,15 @@ q3mdl/buildings/turret_light/mdl_bld_h_ltur.md3
 q3mdl/buildings/turret_missile/mdl_turret_missile_base.obj
 q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3
 
+q3mdl/buildings/misc/misc_apt_sm.obj
+q3mdl/buildings/misc/misc_fact_med.obj
+q3mdl/buildings/misc/misc_lodge.obj
+q3mdl/buildings/misc/misc_off_pyramid.obj
+q3mdl/buildings/misc/misc_off_large.obj
+q3mdl/buildings/misc/misc_off_sm.obj
+q3mdl/buildings/misc/misc_fact_steam.obj
+q3mdl/buildings/misc/misc_apt_larg.obj
+
 //mech model
 q3mdl/testball.md3
 
