@@ -10,7 +10,7 @@ Overview:
   SIZE: MEDIUM
   --------------------------------
 */
-void() unit_matok_sniper_h={
+void() unit_matok_survest_sniper={
   self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
@@ -22,23 +22,27 @@ void() unit_matok_sniper_h={
   
   ai_promote();
   switch( self.ai_rank ){
+    case 1:
+      ai_ini_weapons(UID_ITEM_flak,UID_ITEM_target_module,UID_ITEM_flak,UID_ITEM_EMPTY,UID_ITEM_missile_activeradar,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
     case 2:
-      ai_ini_weapons( UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_ion_coil, UID_ITEM_light_laser, UID_ITEM_quantum_rifle, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_MARKSMAN;
+      ai_ini_weapons(UID_ITEM_missile_laserguide,UID_ITEM_target_module,UID_ITEM_EMPTY,UID_ITEM_light_autocannon,UID_ITEM_missile_activeradar,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_light_laser,  UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_SNIPER;
+      ai_ini_weapons(UID_ITEM_light_autocannon,UID_ITEM_target_module,UID_ITEM_rotary_plasma,UID_ITEM_light_autocannon,UID_ITEM_missile_activeradar,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
-      ai_ini_weapons( UID_ITEM_light_autocannon, UID_ITEM_light_autocannon, UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_ion_coil, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons(UID_ITEM_flak,UID_ITEM_target_module,UID_ITEM_flak,UID_ITEM_EMPTY,UID_ITEM_missile_activeradar,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
   }
   macro_ai_setup(ai_mech_sniper)
 };
 
-void() unit_matok_sniper_m={
+void() unit_matok_militar_sniper={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
@@ -50,23 +54,27 @@ void() unit_matok_sniper_m={
   
   ai_promote();
   switch( self.ai_rank ){
+    case 1:
+      ai_ini_weapons(UID_ITEM_flak,UID_ITEM_light_laser,UID_ITEM_missile_laserguide,UID_ITEM_missile_laserguide,UID_ITEM_shield_capacitor,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
     case 2:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_quantum_rifle, UID_ITEM_flak, UID_ITEM_missile_activeradar, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_SNIPER;
+      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_particle_cannon,UID_ITEM_EMPTY,UID_ITEM_shield_capacitor,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 3:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_quantum_rifle, UID_ITEM_light_autocannon, UID_ITEM_particle_cannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons(UID_ITEM_flak,UID_ITEM_flak,UID_ITEM_particle_cannon,UID_ITEM_electro_repeater,UID_ITEM_shield_capacitor,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_SNIPER;
       break;
     default:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_quantum_rifle, UID_ITEM_flak, UID_ITEM_ion_coil, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_MARKSMAN;
+      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_missile_laserguide,UID_ITEM_missile_laserguide,UID_ITEM_EMPTY,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
   }
   macro_ai_setup(ai_mech_sniper)
 };
 
-void() unit_matok_sniper_p={
+void() unit_matok_psc_sniper={
   self.faction = FACTION_PSC;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
@@ -78,16 +86,20 @@ void() unit_matok_sniper_p={
   
   ai_promote();
   switch( self.ai_rank ){
+    case 1:
+      ai_ini_weapons(UID_ITEM_target_module,UID_ITEM_large_sensors,UID_ITEM_particle_cannon,UID_ITEM_emp,UID_ITEM_energy_battery,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
     case 2:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_quantum_rifle, UID_ITEM_flak, UID_ITEM_missile_activeradar, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons(UID_ITEM_target_module,UID_ITEM_large_sensors,UID_ITEM_particle_cannon,UID_ITEM_particle_cannon,UID_ITEM_energy_battery,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_SNIPER;
       break;
     case 3:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_quantum_rifle, UID_ITEM_light_autocannon, UID_ITEM_particle_cannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons(UID_ITEM_target_module,UID_ITEM_large_sensors,UID_ITEM_particle_cannon,UID_ITEM_particle_cannon,UID_ITEM_recharge_capacitor,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_SNIPER;
       break;
     default:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_quantum_rifle, UID_ITEM_flak, UID_ITEM_ion_coil, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons(UID_ITEM_target_module,UID_ITEM_large_sensors,UID_ITEM_particle_cannon,UID_ITEM_ion_coil,UID_ITEM_EMPTY,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }
@@ -107,17 +119,21 @@ void() unit_matok_militar_zapper={
   
   ai_promote();
   switch( self.ai_rank ){
-    default:
-      ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_particle_cannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_MARKSMAN;
+    case 1:
+      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_target_module,UID_ITEM_ion_coil,UID_ITEM_ion_coil,UID_ITEM_EMPTY,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 2:
-      ai_ini_weapons( UID_ITEM_quantum_rifle, UID_ITEM_quantum_rifle, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_SNIPER;
+      ai_ini_weapons(UID_ITEM_EMPTY,UID_ITEM_target_module,UID_ITEM_ion_coil,UID_ITEM_emp,UID_ITEM_EMPTY,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 3:
-      ai_ini_weapons( UID_ITEM_quantum_rifle, UID_ITEM_quantum_rifle, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_SNIPER;
+      ai_ini_weapons(UID_ITEM_EMPTY,UID_ITEM_target_module,UID_ITEM_emp,UID_ITEM_emp,UID_ITEM_recharge_capacitor,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    default:
+      ai_ini_weapons(UID_ITEM_EMPTY,UID_ITEM_target_module,UID_ITEM_ion_coil,UID_ITEM_ion_coil,UID_ITEM_EMPTY,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
   }
   macro_ai_setup(ai_mech_sniper)
@@ -135,17 +151,21 @@ void() unit_matok_survest_zapper={
   
   ai_promote();
   switch( self.ai_rank ){
-    default:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_ion_coil, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_SKIRMISH;
+    case 1:
+      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_ion_coil,UID_ITEM_EMPTY,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_LOWTECH;
       break;
     case 2:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_ion_coil, UID_ITEM_ion_coil, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_MARKSMAN;
+      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_EMPTY,UID_ITEM_emp,UID_ITEM_energy_battery,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
-      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_ion_coil, UID_ITEM_ion_coil, UID_ITEM_energy_battery,  UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_SNIPER;
+      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_ion_coil,UID_ITEM_ion_coil,UID_ITEM_energy_battery,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+    default:
+      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_EMPTY,  UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
   macro_ai_setup(ai_mech_sniper)

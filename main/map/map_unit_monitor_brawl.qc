@@ -199,7 +199,7 @@ void() unit_monitor_survest_lobber={
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     default:
-      ai_ini_weapons(UID_ITEM_light_autocannon,UID_ITEM_EMPTY,UID_ITEM_light_autocannon,UID_ITEM_EMPTY,UID_ITEM_rocket_launcher,UID_ITEM_EMPTY,UID_ITEM_rocket_launcher,UID_ITEM_rocket_launcher);
+      ai_ini_weapons(UID_ITEM_light_autocannon,UID_ITEM_EMPTY,UID_ITEM_light_autocannon,UID_ITEM_EMPTY,UID_ITEM_rocket_launcher,UID_ITEM_rocket_launcher,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_rocket_launcher);
       self.spreadDefault = ACCURACY_PRIMITVE;
       break;
   }

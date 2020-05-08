@@ -3552,16 +3552,19 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //
 //  METAL : BALAKET
 //
-/*QUAKED unit_balaket_sniper_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_survest_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_h.md3"); }
-  Skill 0 | 1
-    ATC | ATC | LAS
-    LOWTECH
-  Skill 2
-    LAS | ATC | FLAK
+  Skill 0
+    ATCx2 LASx1
     SKIRMISH
+  Skill 1 
+    ATCx2 LASx1
+    SKIRMISH
+  Skill 2
+    ATCx2 FLAKx1
+    MARKSMAN
   Skill 3
-    LAS | LAS | LGM
+    FLAKx3
     MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -3597,16 +3600,19 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_balaket_sniper_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_militar_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_m.md3"); }
-  Skill 0 | 1
-    ATC | ATC | QRF
+  Skill 0
+    LASx2
     SKIRMISH
+  Skill 1 
+    LASx2
+    MARKSMAN
   Skill 2
-    LAS | LAS | MARH
+    LASx2 ATCx1
     MARKSMAN
   Skill 3
-    LAS | QRFL | PAC 
+    LASx2 FLAKx1
     SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -3642,16 +3648,20 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_balaket_brawl_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_survest_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_h.md3"); }
-  Skill 0 | 1
-    FLAK | FLAK | ION
+Balanced mix of weaponry in service to Faction's fighting style.
+  Skill 0
+    LASx2 RCKTx1
     PRIMITIVE
+  Skill 1 
+    LASx1 FLAKx1 RCKTx1
+    LOWTECH
   Skill 2
-    LAS | LAS | MIS
+    LASx1 RPLASx1 RCKTx1
     LOWTECH
   Skill 3
-    ATC | ATC | ESR
+    RPLASx3
     SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -3687,17 +3697,21 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_balaket_brawl_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_militar_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_m.md3"); }
-  Skill 0 | 1
-    LAS | LAS | RPC
+Balanced mix of weaponry in service to Faction's fighting style.
+  Skill 0
+    LASx1 MARHx1
+    LOWTECH
+  Skill 1 
+    ATCx1 ESRx1 MARHx1
     LOWTECH
   Skill 2
-    FLAK | FLAK | ESR
+    ESRx2 MARHx1
     SKIRMISH
   Skill 3
-    ATC | ATC | PAC
-    MARKSMAN
+    ESRx2 RECAPx1
+    SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3733,17 +3747,21 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
-/*QUAKED unit_balaket_brawl_p (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_psc_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_p.md3"); }
-  Skill 0 | 1
-    LAS | LAS | RPC
-    LOWTECH
-  Skill 2
-    FLAK | FLAK | ESR
+Balanced mix of weaponry in service to Faction's fighting style.
+  Skill 0
+    ATCx1 FLAKx1 SFGAx1
     SKIRMISH
-  Skill 3
-    ATC | ATC | PAC
+  Skill 1 
+    ATCx1 FLAKx1 EMPx1
     MARKSMAN
+  Skill 2
+    RPLASx1 FLAKx1 PACx1
+    SNIPER
+  Skill 3
+    RPLASx1 ESRx1 PACx1
+    SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3782,17 +3800,20 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //
 //  METAL : MATOK
 //
-/*QUAKED unit_matok_sniper_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
-  Skill 0 | 1
-    ATC | ATC | FLAK | FLAK | ION
+  Skill 0
+    FLAKx2 MARHx1 ATGMx1
+    SKIRMISH
+  Skill 1
+    ATCx1 ATGMx1 MARHx1 MLGx1
     SKIRMISH
   Skill 2
-    FLAK | FLAK | ION | LAS | QRF
-    MARKSMAN
+    ATCx1 ATGMx1 MARHx1 MLGx1
+    SKIRMISH
   Skill 3
-    LAS | LAS | LAS | LAS | LAS
-    SNIPER
+    ATCx2 ATGMx1 MARHx1 RPLASx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3827,16 +3848,19 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_matok_sniper_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_militar_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
-  Skill 0 | 1
-    LAS | LAS | QRF | FLAK | ION 
+  Skill 0
+    LASx2 MLGx2
+    SKIRMISH
+  Skill 1
+    LASx1 FLAKx1 MLGx2 SCAPx1 
     MARKSMAN
   Skill 2
-    LAS | LAS | LAS | LAS | MARH
-    SNIPER
+    LASx2 PACx1 SCAPx1
+    MARKSMAN
   Skill 3
-    LAS | LAS | QRF | ATC | PAC
+    FLAKx2 ESRx1 PACx1 SCAPx1
     SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -3872,16 +3896,19 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_matok_sniper_p (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_psc_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_p.md3"); }
-  Skill 0 | 1
-    LAS | LAS | QRF | FLAK | ION 
+  Skill 0
+    ATGMx1 LSAx1 PACx1 IONx1
     MARKSMAN
+  Skill 1
+    ATGMx1 LSAx1 PACx1 EMPx1 ENBATx1
+    SNIPER
   Skill 2
-    LAS | LAS | LAS | LAS | MARH
+    ATGMx1 LSAx1 PACx1 PACx1 ENBATx1
     SNIPER
   Skill 3
-    LAS | LAS | QRF | ATC | PAC
+    ATGMx1 LSAx1 PACx1 PACx1 RECAPx1
     SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -3921,6 +3948,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_matok_militar_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
 ZAPPER - focuses on shield breaking
+  Skill 0
+    IONx2 ATGMx1
+    LOWTECH
+  Skill 1
+    IONx2 ATGMx1 LASx1
+    LOWTECH
+  Skill 2
+    EMPx1 IONx1 ATGMx1
+    SKIRMISH
+  Skill 3
+    EMPx2 ATGMx1 RECAPx1
+    SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3958,6 +3997,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_matok_survest_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
 ZAPPER - focuses on shield breaking
+  Skill 0
+    LASx4
+    LOWTECH
+  Skill 1
+    LASx3 IONx1
+    LOWTECH
+  Skill 2
+    LASx2 EMPx1 ENBATx1
+    SKIRMISH
+  Skill 3
+    LASx2 IONx2 ENBATx1
+    SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3993,16 +4044,20 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
-/*QUAKED unit_matok_brawl_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
-  Skill 0 | 1
-    ATC | FLAK | LAS | MIS | ION
+Balanced mix of weaponry in service to Faction's fighting style.
+  Skill 0
+    ATCx1 RPLASx2
+    LOWTECH
+  Skill 1
+    ATCx2 RPLASx2 FLAKx1
     LOWTECH
   Skill 2
-    LAS | LAS | MLG | MIS | SFGA
+    LASx2 RPLASx2 FLAKx1
     SKIRMISH
   Skill 3
-    LAS | LAS | ION | LAS | RPC
+    LASx2 RPLASx2 MLGx1
     SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -4038,16 +4093,20 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_matok_brawl_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_militar_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
-  Skill 0 | 1
-    ATC | ATC | ESR | ION | MIS
+Balanced mix of weaponry in service to Faction's fighting style.
+  Skill 0
+    LASx2 ATCx1 ESRx1
+    LOWTECH
+  Skill 1
+    LASx1 ATCx1 ESRx1 FLAKx1 
     SKIRMISH
   Skill 2
-    QRF | FLAK | ESR | RPC | LGM 
-    MARKSMAN
+    LASx1 ATCx1 ESRx1 IONx1 HSEMx1
+    SKIRMISH
   Skill 3
-    QRF | LAS | RPC | RPC | EMP
+    LASx1 ATCx1 ESRx1 PACx1 TURBx1
     MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -4088,6 +4147,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_matok_militar_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
 GUNNER - bad at shields, good on firepower
+  Skill 0
+    ATCx1 LASx1 ESRx2
+    SKIRMISH
+  Skill 1
+    FLAKx2 ESRx2 ATGMx1
+    SKIRMISH
+  Skill 2
+    FLAKx2 PACx2 ATCx1
+    MARKSMAN
+  Skill 3
+    ATGMx1 FLAKx1 PACx2 RECAPx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4125,6 +4196,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_matok_survest_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
 GUNNER - bad at shields, good on firepower
+  Skill 0
+    ATCx2 RPLASx2
+    SKIRMISH
+  Skill 1
+    ATCx2 RPLASx2 FLAKx1
+    SKIRMISH
+  Skill 2
+    FLAKx2 RPLASx2 ATGMx1
+    MARKSMAN
+  Skill 3
+    FLAKx2 RPLASx2 HSEMx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4163,6 +4246,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_matok_survest_lobber (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
 LOBBER - mostly missile firepower
+  Skill 0
+    ATCx2 RCKTx2
+    LOWTECH
+  Skill 1
+    ATCx2 RCKTx3
+    LOWTECH
+  Skill 2
+    ATCx1 LASx1 MLGx2
+    SKIRMISH
+  Skill 3
+    LASx2 MLGx3
+    SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
