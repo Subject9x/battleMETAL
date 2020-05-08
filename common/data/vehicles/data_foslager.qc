@@ -25,7 +25,7 @@ void() data_ini_foslager_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 400;
-  self.energyRate= 2;
+  self.energyRate= 3;
   self.shieldMax = 100;
   self.shieldRate= 0;
 //=====================================

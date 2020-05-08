@@ -9,6 +9,14 @@ Overview:
       3rnd burst
       Arcing
       3mis per up-to 3 targets
+      
+      NEW IDEA - 5/7/2020
+      big clip,
+      hold-trigger-down fire,
+      long reload
+      proxy-det
+      long-range
+      slight arc
 */
 #ifndef CSQC
 void() data_ini_attack_missile_swarm_;

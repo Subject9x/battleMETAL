@@ -2565,102 +2565,22 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-
-/*QUAKED unit_foslager_h (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
-{ model("models/vecs/foslager/foslager_h.md3"); }
-  Skill 0 | 1
-    MIS | LATC | LAS
-    LOWTECH
-  Skill 2
-    MLG | LATC | LAS
-    SKIRMISH
-  Skill 3
-    ION | LAT | FLAK
-    MARKSMAN 
--------- KEYS -------- 
-targetname : string, used for trigger calls from other ents.
-  TRIGGER_ME must have targetname to work.
-target : string name of ent to go to, usually a patrol node.
-trigOnSpawn:string ent, fire this ENTITY when activated.
-trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
-trigOnDeath: string target, fire this ENTITY when killed.
-delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_DROP 262144: don't drop bot to the floor onspawn
-TRIGGER_ME 524288: ai only spawns when triggered
-MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
-UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
-*/
-
-/*QUAKED unit_foslager_m (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
-{ model("models/vecs/foslager/foslager_m.md3"); }
-  Skill 0 | 1
-    ESR | LATC | LAS
-    SKIRMISH
-  Skill 2
-    PAC | LATC | FLAK
-    MARKSMAN
-  Skill 3
-    ION | RPC | FLAK
-    SNIPER
--------- KEYS -------- 
-targetname : string, used for trigger calls from other ents.
-  TRIGGER_ME must have targetname to work.
-target : string name of ent to go to, usually a patrol node.
-trigOnSpawn:string ent, fire this ENTITY when activated.
-trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
-trigOnDeath: string target, fire this ENTITY when killed.
-delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_DROP 262144: don't drop bot to the floor onspawn
-TRIGGER_ME 524288: ai only spawns when triggered
-MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
-UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
-*/
 //-------------------ZAPPER  --------------------------------
 /*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
 ZAPPER - focuses on shield breaking
+  Skill 0
+    LASx2 ATCx1
+    LOWTECH
+  Skill 1
+    LASx3
+    LOWTECH
+  Skill 2
+    IONx1 ATCx1 LASx1
+    SKIRMISH
+  Skill 3
+    IONx1 LASx1 FLAKx1
+    SKIRMISH 
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -2698,6 +2618,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
 ZAPPER - focuses on shield breaking
+  Skill 0
+    LASx3
+    SKIRMISH
+  Skill 1
+    IONx1 LASx1 ATGMx1
+    SKIRMISH
+  Skill 2
+    IONx1 LASx1 ATGMx1
+    SKIRMISH
+  Skill 3
+    EMPx1 LASx1 ATGMx1
+    SKIRMISH 
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -2736,6 +2668,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
 GUNNER - bad at shields, good on firepower
+  Skill 0
+    FLAKx1 ATCx1
+    LOWTECH
+  Skill 1
+    RPLASx1 ATCx2
+    LOWTECH
+  Skill 2
+    RPLASx1 ATCx1 FLAKx1
+    SKIRMISH
+  Skill 3
+    RPLASx1 FLAKx2
+    SKIRMISH 
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -2773,6 +2717,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
 GUNNER - bad at shields, good on firepower
+  Skill 0
+    FLAKx2
+    SKIRMISH
+  Skill 1
+    ESRx1 FLAKx1
+    SKIRMISH
+  Skill 2
+    ESRx1 LASx1 FLAKx1
+    MARKSMAN
+  Skill 3
+    ESRx1 LASx2
+    MARKSMAN 
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -2814,16 +2770,19 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //  SIZE: HEAVY
 //  --------------------------------
 //
-/*QUAKED unit_trowel_m (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_trowel_militar_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
-  Skill 0 | 1
-    ESR | ESR
-    MARKSMAN
+  Skill 0
+    MLGx1 LASx1 ATGMx1
+    SKIRMISH
+  Skill 1
+    MLGx1 IONx1 ATGMx1
+    SKIRMISH
   Skill 2
-    ESR | SFGA
+    SFGAx1 LASx1 ATGMx1
     SNIPER
   Skill 3
-    PAC | SFGA
+    SFGAx2 ATGMx1
     SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -2859,93 +2818,20 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_trowel_h (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_trowel_survest_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
-  Skill 0 | 1
-    MIS | ION
-    LOWTECH
+  Skill 0
+    LASx1 RCKTx1 ATGMx1
+    SKIRMISH
+  Skill 1
+    RPLASx1 RCKTx1 ATGMx1
+    SKIRMISH
   Skill 2
-    RPC | ION
+    MARHx1 RCKTx1 ATGMx1
     SKIRMISH
   Skill 3
-    SFGA | EMP
+    MLGx1 IONx1 ATGMx1
     MARKSMAN
--------- KEYS -------- 
-targetname : string, used for trigger calls from other ents.
-  TRIGGER_ME must have targetname to work.
-target : string name of ent to go to, usually a patrol node.
-trigOnSpawn:string ent, fire this ENTITY when activated.
-trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
-trigOnDeath: string target, fire this ENTITY when killed.
-delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_DROP 262144: don't drop bot to the floor onspawn
-TRIGGER_ME 524288: ai only spawns when triggered
-MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
-UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
-*/
-
-//-------------------ZAPPER  --------------------------------
-/*QUAKED unit_trowel_miliar_zapper (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
-{ model("models/vecs/trowel/trowel_m.md3"); }
-ZAPPER - focuses on shield breaking
--------- KEYS -------- 
-targetname : string, used for trigger calls from other ents.
-  TRIGGER_ME must have targetname to work.
-target : string name of ent to go to, usually a patrol node.
-trigOnSpawn:string ent, fire this ENTITY when activated.
-trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
-trigOnDeath: string target, fire this ENTITY when killed.
-delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_DROP 262144: don't drop bot to the floor onspawn
-TRIGGER_ME 524288: ai only spawns when triggered
-MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
-UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
-*/
-/*QUAKED unit_trowel_survest_zapper (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
-{ model("models/vecs/trowel/trowel_h.md3"); }
-ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -2985,6 +2871,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
 //-------------------GUNNER  --------------------------------
+  Skill 0
+    ESRx1 LASx1 ATGMx1
+    SKIRMISH
+  Skill 1
+    ESRx1 PACx1 ATGMx1
+    MARKSMAN
+  Skill 2
+    IONx1 PACx1 ATGMx1
+    SNIPER
+  Skill 3
+    SFGAx1 PACx1 ATGMx1
+    SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3021,6 +2919,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 /*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
+  Skill 0
+    RPLASx1 LASx1 ATGMx1
+    LOWTECH
+  Skill 1
+    RPLASx2 ATGMx1
+    SKIRMISH
+  Skill 2
+    RPLASx2 ATGMx1
+    MARKSMAN
+  Skill 3
+    IONx1 RPLASx1 ATGMx1
+    SNIPER
 //-------------------GUNNER  --------------------------------
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -3159,6 +3069,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 ZAPPER - focuses on shield breaking
+  Skill 0
+    LASx4
+    LOWTECH
+  Skill 1
+    IONx1 LASx2 ATGMx1
+    SKIRMISH
+  Skill 2
+    IONx2 
+    MARKSMAN
+  Skill 3
+    EMPx1 IONx1 ATGMx1 LSAx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3196,6 +3118,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 ZAPPER - focuses on shield breaking
+  Skill 0
+    LASx4
+    LOWTECH
+  Skill 1
+    IONx1 LASx2 ATGMx1
+    SKIRMISH
+  Skill 2
+    EMPx1 IONx1 ATGMx1 RECAPx1
+    MARKSMAN
+  Skill 3
+    EMPx2 ATGMx1 RECAPx1
+    SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3235,6 +3169,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 GUNNER - bad at shields, good on firepower
+  Skill 0
+    ATCx4
+    PRIMITIVE
+  Skill 1
+    FLAKx2 ATCx2
+    LOWTECH
+  Skill 2
+    ESRx1 FLAKx2 ATGMx1
+    SKIRMISH
+  Skill 3
+    ESRx3 FLAKx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3272,6 +3218,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 GUNNER - bad at shields, good on firepower
+  Skill 0
+    FLAKx4
+    SKIRMISH
+  Skill 1
+    PACx1 FLAKx1
+    SKIRMISH
+  Skill 2
+    PACx1 FLAKx2
+    MARKSMAN
+  Skill 3
+    PACx2 ATGMx1 LSAx1
+    SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3311,6 +3269,15 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 LOBBER - mostly missile firepower
+  Skill 0 | 1
+    RPLASx2 ATCx1
+    SKIRMISH
+  Skill 2
+    RPLASx3 LASx1
+    MARKSMAN
+  Skill 3
+    RPLASx4
+    SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3348,6 +3315,15 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 LOBBER - mostly missile firepower
+  Skill 0 | 1
+    SFGAx1 FLAKx1
+    SKIRMISH
+  Skill 2
+    SFGAx2 FLAKx1
+    MARKSMAN
+  Skill 3
+    SFGAx3 FLAKx1
+    SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3389,16 +3365,14 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_sorcerer_h (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_survest_gunner (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
+  RPLASx2
   Skill 0 | 1
-    MIS | MIS
     PRIMITIVE
   Skill 2
-    MIS | MLG
     LOWTECH
   Skill 3
-    MLG | MLG
     SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -3434,16 +3408,14 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_sorcerer_m (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_militar_gunner (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
+  ESRx2
   Skill 0 | 1
-    ARH | ARH
     SKIRMISH
   Skill 2
-    MLG | MLGo
     MARKSMAN
   Skill 3
-    SWRM | SWRM
     SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -3484,6 +3456,15 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
 LOBBER - mostly missile firepower
+  Skill 0 | 1
+    RCKTx2
+    PRIMITIVE
+  Skill 2
+    RCKTx2
+    LOWTECH
+  Skill 3
+    MLGx2
+    SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -3521,6 +3502,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
 LOBBER - mostly missile firepower
+  Skill 0
+    MLGx2
+    LOWTECH
+  Skill 1
+    MARHx2
+    LOWTECH
+  Skill 2
+    MARHx2
+    SKIRMISH
+  Skill 3
+    MARHx2
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4208,17 +4201,16 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //
 //  METAL : MONITOR
 //
-/*QUAKED unit_monitor_brawl_h (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
-  Skill 0 | 1
-    ATC | FLAK | ATC | FLAK | LAS | LAS | MIS | ARH | MIS
-    PRIMITIVE
-  Skill 2
-    ATC | FLAK | ATC | FLAK | EMP | ESR | MIS | MIS | MIS
-    LOWTECH
-  Skill 3
-    LAS | ATC | LAS | ATC | SFGA | SFGA | MIS | MIS | MIS
+  Skill 0
     SKIRMISH
+  Skill 1
+    SKIRMISH
+  Skill 2
+    MARKSMAN
+  Skill 3
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4255,14 +4247,13 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 /*QUAKED unit_monitor_brawl_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
-  Skill 0 | 1
-    FLAK | FLAK | FLAK | FLAK | RPC | EMP | MIS | MARH | MARH
-    LOWTECH
-  Skill 2
-    LAS | ATC | LAS | ATC | EMP | ESR | MLG | MLG | MLG
+  Skill 0
     SKIRMISH
+  Skill 1
+    SKIRMISH
+  Skill 2
+    MARKSMAN
   Skill 3
-    LAS | LAS | LAS | LAS | ESR | ESR | ENBAT | ENBAT | RECAP
     MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -4300,14 +4291,13 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 /*QUAKED unit_monitor_brawl_p (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_p.md3"); }
-  Skill 0 | 1
-    FLAK | FLAK | FLAK | FLAK | RPC | EMP | MIS | MARH | MARH
-    LOWTECH
-  Skill 2
-    LAS | ATC | LAS | ATC | EMP | ESR | MLG | MLG | MLG
+  Skill 0
     SKIRMISH
+  Skill 1
+    SKIRMISH
+  Skill 2
+    MARKSMAN
   Skill 3
-    LAS | LAS | LAS | LAS | ESR | ESR | ENBAT | ENBAT | RECAP
     MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -4348,6 +4338,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_monitor_militar_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
 ZAPPER - focuses on shield breaking
+  Skill 0
+    LASx4 IONx2 ATGMx1
+    SKIRMISH
+  Skill 1
+    LASx4 IONx2 ENBATx1 RECAPx1
+    SKIRMISH
+  Skill 2
+    LASx2 EMPx2 ENBATx1 RECAPx1
+    MARKSMAN
+  Skill 3
+    LASx2 EMPx2 IONx2 RECAPx2 ATGMx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4387,6 +4389,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_monitor_militar_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
 GUNNER - bad at shields, good on firepower
+  Skill 0
+    ATCx4 FLAKx3
+    SKIRMISH
+  Skill 1
+    ATCx2 FLAKx4 SFGAx1
+    SKIRMISH
+  Skill 2
+    ATCx4 ESRx1 PACx1 SFGAx2 
+    MARKSMAN
+  Skill 3
+    FLAKx2 ESRx2 SFGAx2 HSEMx1 ENBATx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4425,52 +4439,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
 LOBBER - mostly missile firepower
--------- KEYS -------- 
-targetname : string, used for trigger calls from other ents.
-  TRIGGER_ME must have targetname to work.
-target : string name of ent to go to, usually a patrol node.
-trigOnSpawn:string ent, fire this ENTITY when activated.
-trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
-trigOnDeath: string target, fire this ENTITY when killed.
-delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_DROP 262144: don't drop bot to the floor onspawn
-TRIGGER_ME 524288: ai only spawns when triggered
-MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
-UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
-*/
-
-/*QUAKED unit_monitor_sniper_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
-{ model("models/mechs/monitor/monitor_m.md3"); }
-  Skill 0 | 1
-    LAS | ATC | LAS | ATC | PAC | QRF | MARH | ENBAT | ATGM
-    MARKSMAN
+  Skill 0
+    ATCx2 RCKTx4
+    PRIMITIVE
+  Skill 1
+    ATCx2 RCKTx4 ATGMx1
+    LOWTECH
   Skill 2
-    ATC | ATC | ATC | ATC | PAC | PAC | ATGM | ENBAT | HSEM
-    SNIPER
+    ATCx2 MLGx2 RCKTx2 ATGMx1
+    SKIRMISH
   Skill 3
-    LAS | LAS | LAS | LAS | LGM | LGM | ENBAT | ATGM | HSEM
-    SNIPER
+    ATCx2 MLGx3 RCKTx2 ATGMx1
+    SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4510,6 +4490,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_monitor_survest_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
 ZAPPER - focuses on shield breaking
+  Skill 0
+    LASx2 LASx2 LASx2 ENBATx1
+    SKIRMISH
+  Skill 1
+    LASx2 LASx2 IONx2
+    SKIRMISH
+  Skill 2
+    LASx2 EMPx2 ENBATx2
+    MARKSMAN
+  Skill 3
+    ATCx4 IONx4 ENBATx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4549,6 +4541,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_monitor_survest_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
 GUNNER - bad at shields, good on firepower
+  Skill 0
+    ATCx2 FLAKx2 ATCx2
+    LOWTECH
+  Skill 1
+    ATCx2 RPLASx2 FLAKx2 FLAKx1
+    LOWTECH
+  Skill 2
+    ATCx2 RPLASx2 RPLASx2 ATGMx1 LSAx1
+    SKIRMISH
+  Skill 3
+    ATCx2 RPLASx6 ATGMx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4588,6 +4592,18 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 /*QUAKED unit_monitor_militar_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
 LOBBER - mostly missile firepower
+  Skill 0
+    LASx2 MARHx2 SCAPx2 HSEMx1
+    SKIRMISH
+  Skill 1
+    LASx2 ATCx2 MARHx3 SCAPx2
+    SKIRMISH
+  Skill 2
+    LASx2 ATCx2 MARHx3 ATGMx1 LSAx1
+    MARKSMAN
+  Skill 3
+    LASx2 ATCx2 MARHx4 ATGMx1
+    MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.

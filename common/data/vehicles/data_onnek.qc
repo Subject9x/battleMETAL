@@ -32,7 +32,7 @@ void() data_ini_onnek_={
  
 //RADAR================================
   self.radar_range = 1500;
-  self.w_firetime = 6;  //lock-on time in seconds
+  self.w_firetime = 4;  //lock-on time in seconds
 //=====================================
 
 //SPEED================================

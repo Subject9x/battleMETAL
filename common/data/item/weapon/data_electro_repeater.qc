@@ -98,7 +98,7 @@ void() data_ini_electro_repeater_={
   self.reloadMax = 4;
   self.energyRate = 5;
   
-  self.w_range = 1000; //500
+  self.w_range = 1000;
   self.damageValue = 10;
   self.damageType = DMG_ENE;
 

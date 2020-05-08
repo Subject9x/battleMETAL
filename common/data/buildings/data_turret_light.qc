@@ -23,8 +23,8 @@ void() data_ini_light_turret_={
   setsize(self, '-20 -20 -6', '20 20 24');
   
 //ENERGY AND SHIELDS===================
-  self.energyMax  = 200;
-  self.energyRate = 0.75;
+  self.energyMax  = 350;
+  self.energyRate = 2;
   self.shieldMax  = 100;
   self.shieldRate = 0.25;
 //=====================================

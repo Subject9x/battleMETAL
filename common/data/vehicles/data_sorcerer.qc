@@ -15,13 +15,13 @@ Overview:
 */
 void() data_ini_sorcerer_={
 
-  self.data_idx = UID_VEHICLE_sorcerer;  //
-  self.vec_size = 2;  //
+  self.data_idx = UID_VEHICLE_sorcerer;
+  self.vec_size = 2;
   self.vec_name = "Sorcerer";
  
   self.max_health = 285;
   setsize(self, '-22 -22 -11', '22 22 26');
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 300;
@@ -41,7 +41,7 @@ void() data_ini_sorcerer_={
   self.data_speed_backward = 30;
   self.data_speed_accel = 1;
 #ifndef CSQC
-  self.yaw_speed = 3;    //AI-only 
+  self.yaw_speed = 4.25;    //AI-only 
   //self.turret_yaw_speed = 3;//AI-only - but has no turret
 #endif
 //=====================================
