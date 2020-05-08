@@ -4201,16 +4201,21 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //
 //  METAL : MONITOR
 //
-/*QUAKED unit_monitor_militar_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_survest_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
+Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
-    SKIRMISH
+    ATCx2 FLAKx1 RPLASx1 RCKTx2
+    LOWTECH
   Skill 1
-    SKIRMISH
+    ATCx2 FLAKx1 LASx1 IONx1 RPLASx1 RCKTx2
+    LOWTECH
   Skill 2
-    MARKSMAN
+    ATCx2 FLAKx1 LASx1 MARHx1 ATGMx1 HSEMx1 RCKTx2
+    SKIRMISH
   Skill 3
-    MARKSMAN
+    LASx2 FLAKx2 MLGx2 HSEMx2 RCKTx1
+    SKIRMISH
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -4245,15 +4250,20 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_monitor_brawl_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
+Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
+    ATCx2 ESRx1 LASx1 MARHx1
     SKIRMISH
   Skill 1
+    FLAKx1 LASx1 ESRx1 IONx1 RCKTx1 MARHx1
     SKIRMISH
   Skill 2
+    ATCx2 LASx2 EMPx1 ESRx1 ENBATx1 MARHx1 ATGMx1
     MARKSMAN
   Skill 3
+    ATCx2 LASx2 PACx1 SFGAx1 ENBATx1 MARHx1 ATGMx1
     MARKSMAN
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
@@ -4289,16 +4299,21 @@ TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_monitor_brawl_p (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_psc_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_p.md3"); }
+Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
-    SKIRMISH
+    FLAKx2 PACx1 IONx1 RECAPx2 HSEMx1
+    MARKSMAN
   Skill 1
-    SKIRMISH
+    LASx2 FLAKx2 PACx1 IONx1 RECAPx2 HSEMx1
+    MARKSMAN
   Skill 2
-    MARKSMAN
+    FLAKx4 PACx2 RECAPx2 HSEMx1
+    SNIPER
   Skill 3
-    MARKSMAN
+    FLAKx4 PACx2 RECAPx3
+    SNIPER
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
