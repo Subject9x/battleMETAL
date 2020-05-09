@@ -93,11 +93,11 @@ void() data_projectile_snub_artillery_touch_={
   if( other.takedamage ){
     damage = self.damageValue;
     if( other.shield > 0 ){
-      if( other.shield > (other.shieldMax * 0.15) ){
-        damage = damage * 0.15;
+      if( other.shield > (other.shieldMax * 0.5) ){
+        damage = damage * 0.33;
       }
       else{
-        damage = damage * 0.075;
+        damage = damage * 0.67;
       }
       t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
@@ -135,7 +135,7 @@ void() data_projectile_snub_artillery_radiusDamage={
     dmg_act = self.damageValue - (self.damageValue * d);
     dmg_act = dmg_act * 0.75;
     if( radiusTarg.shield > 0 ){
-      dmg_act = dmg_act * 0.5;
+      dmg_act = dmg_act * 0.25;
       t_damage_shield(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
     }
     else{

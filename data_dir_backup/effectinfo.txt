@@ -934,7 +934,7 @@
     
   //TE_QRFL_MUZZLE_SPARK - BUBBLE
     effect TE_QRFL_MUZZLE_RAIL
-    count 1
+    count 0.5
     type smoke
     blend alpha
     color 0xB4045F 0xD0A9F5
@@ -945,7 +945,7 @@
     velocityjitter 0.5 0.5 0.5
     stretchfactor 2
     gravity -0.0008
-    trailspacing 2
+    trailspacing 6
     bounce -1
     
   //TE_QRFL_MUZZLE_SPARK - HEAT DISTORT
@@ -964,7 +964,7 @@
     velocitymultiplier 1
     stretchfactor 2
     gravity -0.00001
-    trailspacing 8
+    trailspacing 16
     bounce -1
     
   //TE_QRFL_MUZZLE - PURPLE FLAME
@@ -1025,30 +1025,30 @@
     blend alpha
     color 0x000000 0x000000
     tex 32 32
-    size 2 3
+    size 0.5 1
     alpha 64 64 64
-    time 0.15 0.25
-    sizeincrease -6
+    time 0.3 0.5
+    sizeincrease -2
     originjitter 0 0 0
     velocitymultiplier -0.25
     velocityjitter 2 2 2
-    trailspacing 10
+    trailspacing 24
   
   //TE_QRFL_QBIT_TRAIL - RED PARTICLES
     effect TE_QRFL_QBIT_TRAIL
-    countabsolute 1
+    count 1
     type spark
     blend alpha
     orientation spark
     color 0xDF013A 0xFF0000
     tex 62 62
-    size 0.08 0.15
-    alpha 64 64 64
-    time 0.15 0.25
+    size 0.1 0.2
+    alpha 128 128 128
+    time 0.4 0.6
     originjitter 0 0 0
     velocitymultiplier -0.25
     velocityjitter 2 2 2
-    trailspacing 15
+    trailspacing 16
     stretchfactor 10
   
    //TE_QRFL_QBIT_TRAIL - LIGHT

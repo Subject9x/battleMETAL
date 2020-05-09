@@ -42,9 +42,9 @@ void() projectile_swarm_expl={
 
 void() data_projectile_ini_missile_swarm_={
   self.classname = "missile";
-  self.data_velocity = 800;
-  self.data_lifetime = 2; //1.875
-  
+  self.data_velocity = 1515;
+  self.data_lifetime = 0.99;
+ 
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_lgm.md3";
@@ -55,7 +55,7 @@ void() data_projectile_ini_missile_swarm_={
   #endif 
   
   #ifndef CSQC
-    self.think = data_projectile_missile_swarm_delay;
+    self.think = data_projectile_missile_swarm_think;
     self.touch = data_projectile_missile_swarm_touch;  
   #endif
 };
@@ -80,10 +80,10 @@ void() data_projectile_missile_swarm_touch={
     damage = self.damageValue;
     if( other.shield > 0 ){
       if( other.shield > (other.shieldMax * 0.5) ){
-        damage = damage * 0.25;
+        damage = damage * 0.33;
       }
       else{
-        damage = damage * 0.5;
+        damage = damage * 0.67;
       }
       t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
@@ -108,30 +108,6 @@ void() data_projectile_missile_swarm_think={
 	local vector	dir, vtemp;
   
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  
-	if (self.enemy.health < 1){
-    self.think = BecomeExplosion;
-    self.nextthink = time + 1 + random();
-		return;
-	}
-
-	if( self.enemy != world ){
-    makevectors(self.enemy.angles);
-    vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.maxs_x) * v_right) + (v_forward * (crandom() * self.enemy.maxs_x));
-    dir = normalize(vtemp - self.origin);
-    if( time > NEWSHOT.w_isburst ){
-      self.velocity = dir * self.data_velocity;
-    }
-    else{
-      self.velocity_x = dir_x * self.data_velocity;
-      self.velocity_y = dir_y * self.data_velocity;
-      self.velocity_z = dir_z * self.data_velocity / 4;
-    }
-    self.angles = vectoangles( self.velocity );
-	}
-  else{
-    self.velocity = self.angles * self.data_velocity;
-  }
   
   if(time > self.data_lifetime){
     self.think = ctrl_missile_dud;

@@ -225,7 +225,6 @@ void() client_state_events={
       hud_event_clear();
       hud_event_enqueue( HUD_EVENT_POWERUP, 1);
       SV_PLAYERTIME = servertime;
-      menu_exit();
       return;
     }
     //------------------------------------

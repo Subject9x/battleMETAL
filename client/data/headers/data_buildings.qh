@@ -21,6 +21,7 @@ void() data_building_repair;
 void() data_building_hangar_med;
 void() data_building_guard;
 void() data_building_barracks;
+void() data_building_supply_depot;
 
 void() data_building_death1;
 void() data_building_death2;

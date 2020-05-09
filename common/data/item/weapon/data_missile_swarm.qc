@@ -20,28 +20,26 @@ Overview:
 */
 #ifndef CSQC
 void() data_ini_attack_missile_swarm_;
-
-float DATA_SWARM_MAX_TARGETS = 4; //3
 #endif
 
 void() data_ini_missile_swarm_={
 
   self.data_idx = 14;  
   
-  self.w_clipsize = 1;  //3
-  self.reloadRate = 0.3;
+  self.w_clipsize = 20;
+  self.reloadRate = 0.12;
   self.reloadMax = 10;
   self.energyRate = 0;
   
-  self.w_range = 1500;  //1000
-  self.damageValue = 20;
+  self.w_range = 1500;
+  self.damageValue = 15; //20
   self.damageType = DMG_EXP | EFF_ARC | EFF_PTR;
  
   self.techLevel = 3;
   self.equipSize = MIS2;
 
-  self.spreadDefault = '0.07 0.07 0';
-  self.wepFireOffset = '0 0 2';
+  self.spreadDefault = '0.033 0.033 0';
+  self.wepFireOffset = '0 0 1';
   
   #ifdef CSQC
     self.w_name = "Missile - Swarm";
@@ -67,48 +65,16 @@ void() data_ini_attack_missile_swarm_={
   local float maxtarg;
   local vector arc, start;
   
-  if( self.owner.stat_rdr_mode == TRUE ){
-    //check for 'Active' Radar
-      ctrl_weapon_updateAmmo( TRUE );
-    
-      ctrl_weapon_fireOffset();
-      
-      local entity targs;
-      maxtarg = DATA_SWARM_MAX_TARGETS;
-      for(targs = findradius(self.origin, self.w_range); targs != world; targs = targs.chain){
-        if( maxtarg <= 0 ){
-          continue;
-        }
-        if( targs.deadflag > DEAD_NO ){
-          continue;
-        }
-        if( !ai_check_face(targs, 0.7) || (targs == self.owner) ){
-          continue;
-        }
-        if( !(targs.flags & FL_UNIT) ){
-          continue;
-        }
-        if( targs.faction == self.owner.faction){
-          continue;
-        }
-        maxtarg = maxtarg - 1;
-        ctrl_weapon_make_projectile( 0.2 );
-        
-        arc = FIRE_ORIGIN + (v_forward * (200 + (crandom() * 20)));
-        arc = arc + (v_up * (133 + (crandom() * 67))) + (v_right * (crandom() * 67));
-        start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
-        NEWSHOT.enemy = targs;
-        NEWSHOT.compOffset = start;
-        NEWSHOT.velocity = '0 0 0';
-        NEWSHOT.velocity = normalize( arc - start );
-        NEWSHOT.velocity = NEWSHOT.velocity * 50;
-        NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
-        NEWSHOT.w_isburst = time + 2; //use to track curving behavior
-        setorigin(NEWSHOT, start);
-        
-        client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, targs.origin, 0 );
-        NEWSHOT = world;
-      }
-  }
+  ctrl_weapon_fireOffset();
+
+  ctrl_weapon_updateAmmo( FALSE );
+   
+  self.owner.punchangle_x = -0.1 + crandom() * -0.1;
+  self.owner.punchangle_y = -0.1 + crandom() * -0.1;
+
+  ctrl_weapon_make_projectile( 0.01 );
+
+  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + (v_forward * 1), FIRE_ENDPOINT, 0);
+ 
 };
 #endif

@@ -12,7 +12,7 @@ Overview:
 */
 
 float DAT_QRFL_QBITS = 10; 
-
+vector DAT_QRFL_SPREAD = '0.085 0.085 0';
 #ifndef CSQC
 void() data_ini_attack_quantum_;
 #endif
@@ -23,17 +23,17 @@ void() data_ini_quantum_={
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
-  self.reloadMax = 3;
+  self.reloadMax = 5;
   self.energyRate = 0;
   
-  self.w_range = 2800;  //2000
-  self.damageValue = 4;
+  self.w_range = 1000;
+  self.damageValue = 15;
   self.damageType = DMG_BAL;
   
   self.techLevel = 2;
   self.equipSize = BAL1;
  
-  self.spreadDefault = '0.005 0.005 0';
+  self.spreadDefault = '0 0 0';
   self.wepFireOffset = '0 0 2';
   
   #ifdef CSQC
@@ -59,51 +59,44 @@ void() data_ini_quantum_={
 #ifndef CSQC
 void() data_ini_attack_quantum_={
   local float qbits;
-  local vector hitZone;
-  local vector hitMin;
-  local vector hitMax;
-  local vector rando;
-
+  local vector dir;
+  local vector qbdir;
+  local float qdmgShield;
+  local float qdmgShieldTotal;
+  local float qdmg;
+  
   ctrl_weapon_fireOffset();  
   
   ctrl_weapon_updateAmmo( FALSE );
  
-  hitZone = FIRE_ENDPOINT;
-  hitMax = '25 25 25';
-  hitMin = '-25 -25 -25';
-  
-  if( trace_ent.takedamage ){
-    hitZone = trace_ent.origin;
-    hitMax = trace_ent.maxs * 3;
-    if( (self.owner.flags & FL_CLIENT) ){
-      t_damage(trace_ent, self, FIRE_ENT, 15, FIRE_ENDPOINT, '0 0 0');
-    }
-  }
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
   
-  if( self.data_ini_projectile ){
-    if( (self.owner.flags & FL_CLIENT) ){
-      qbits = DAT_QRFL_QBITS;
-    }
-    else{
-      qbits = rint(DAT_QRFL_QBITS * 0.33);
-    }
-    
-    for( qbits = DAT_QRFL_QBITS; qbits > 0; qbits = qbits - 1){
-      rando = randomvec();
-      rando_x = hitZone_x + (hitMax_x * crandom()) * 3;
-      rando_y = hitZone_y + (hitMax_y * crandom()) * 2;
-      rando_z = hitZone_z + (hitMax_z * crandom()) * 3;
-      if(pointcontents(rando) < CONTENT_EMPTY){
-        continue;
+  dir = normalize(FIRE_ENDPOINT - FIRE_ORIGIN);
+
+  if( (self.owner.flags & FL_CLIENT) ){
+    qbits = DAT_QRFL_QBITS;
+  }
+  else{
+    qbits = rint(DAT_QRFL_QBITS * 0.5);
+  }
+ 
+  while( qbits > 0 ){
+    qbdir = dir + crandom()*DAT_QRFL_SPREAD_x*v_right + crandom()*DAT_QRFL_SPREAD_y*v_up;
+    traceline(self.origin, self.origin + qbdir*self.w_range, FALSE, self);
+    if( trace_fraction != 1.0 ){
+      qdmg = self.damageValue;
+      if(trace_ent.shield > 0 ){
+        qdmgShield = min((trace_ent.shield/trace_ent.shieldMax), 0.5);
+        qdmgShieldTotal = qdmgShieldTotal + (self.damageValue * qdmgShield);
+        qdmg = qdmg - (self.damageValue * qdmgShield);
       }
-      ctrl_weapon_make_projectile( -1 );
-      NEWSHOT.velocity = normalize(hitZone - rando);
-      NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
-      NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
-      setsize(NEWSHOT, '0 0 0', '0 0 0');
-      setorigin(NEWSHOT, rando);
+      t_damage(trace_ent, self, self.owner, qdmg, trace_endpos, '0 0 0');
     }
+    trailparticles(world, particleeffectnum("TE_QRFL_QBIT_TRAIL"), FIRE_ORIGIN, trace_endpos);
+    qbits = qbits - 1;
+  }
+  if(trace_ent.health > 0 ){
+    trace_ent.shield = trace_ent.shield - qdmgShieldTotal;
   }
 };
 #endif

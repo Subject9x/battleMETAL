@@ -80,7 +80,7 @@ void() data_projectile_missile_laserguide_touch={
     if(other.takedamage){
       damage = self.damageValue;
       if( other.shield > 0 ){
-        damage = damage * 0.1;
+        damage = damage * 0.33;
         t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
         self.impactType = IMPACT_SHIELD;
       }

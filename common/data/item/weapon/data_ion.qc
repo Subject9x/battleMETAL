@@ -21,9 +21,9 @@ void() data_ini_ion_={
   self.w_clipsize = 3;
   self.reloadRate = 0.15;
   self.reloadMax = 4;
-  self.energyRate = 175;
+  self.energyRate = 100;
   
-  self.w_range = 1500;  //1000
+  self.w_range = 1500; 
   self.damageValue = 75;
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
 

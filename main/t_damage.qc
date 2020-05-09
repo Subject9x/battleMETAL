@@ -30,12 +30,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   
   //reduce friendly fire damage on easier settings
   if( (trg.faction != FACTION_ALL) ){
-    if( (serverflags  & SVFLAG_FIREON) ){
+    if( (serverflags & SVFLAG_FIREON) ){
       if( trg.faction == attacker.faction ){
         if( skill < 2 ){
           dmgAmt = dmgAmt * 0.33;
         }
-        else if( skill > 1){
+        else{
           dmgAmt = dmgAmt * 0.67;
         }
       }
@@ -177,6 +177,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     the idea is to make sure the delay is proportionate to the 'damage dealt.' 
     IE it doesn't make sense (to the designer) that shield delay is the same whether hit by an autocannon or an EMP blast.
   */
+  //shield delay should be communicated to the player
+  //ION / EMP should be better than most for messing with delay
+  
   trg.shieldHitDelay = trg.shieldHitDelay + (4 - trg.vec_size); //simulates larger reactor size on larger units.
   trg.shieldHitDelay = trg.shieldHitDelay * 1.33;
   trg.shieldHitDelay = trg.shieldHitDelay / 100;

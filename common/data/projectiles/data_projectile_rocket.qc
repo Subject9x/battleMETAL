@@ -75,11 +75,11 @@ void() data_prj_mis_touch={
   if(other.takedamage){
     damage = self.damageValue;
     if( other.shield > 0 ){
-      if( other.shield > (other.shieldMax * 0.15) ){
-        damage = damage * 0.15;
+      if( other.shield > (other.shieldMax * 0.5) ){
+        damage = damage * 0.33;
       }
       else{
-        damage = damage * 0.05;
+        damage = damage * 0.67;
       }
       t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_SHIELD;
