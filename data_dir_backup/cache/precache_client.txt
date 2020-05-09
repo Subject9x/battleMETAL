@@ -10,6 +10,8 @@ q3mdl/buildings/power_plant/mdl_bld_h_power.md3
 q3mdl/buildings/radar/mdl_bld_h_radar.md3
 q3mdl/buildings/repair_bay/mdl_repair_bay.md3
 q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3
+q3mdl/buildings/barracks/building_barracks.obj
+q3mdl/buildings/supply_depot/building_supply_depot.obj
 
 q3mdl/buildings/turret_heavy/mdl_turret_heavy_base.obj
 q3mdl/buildings/turret_heavy/mdl_turret_heavy_turret.obj

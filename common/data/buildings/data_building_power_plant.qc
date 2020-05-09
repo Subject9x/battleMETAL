@@ -3,9 +3,9 @@ battleMETAL
 Author: Peter Roohr
 Date: 01/21/2017
 Overview: data file for building
-  type: radar tower
-  faction: humans
-  func: provides radar scanning to all friendly units in radius
+  type: Power Plant
+  faction: any
+  func: provides radar scanning to all friendly units and buildings in radius.
 */
 
 void() hpower_die = [0, hpower_die1]{

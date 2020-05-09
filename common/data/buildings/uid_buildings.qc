@@ -22,3 +22,5 @@ float UI_BUILDING_fuel_tank = 5;
 float UI_BUILDING_repair_bay = 6;
 float UI_BUILDING_hangar_med = 7;
 float UI_BUILDING_guard_tower = 8;
+float UI_BUILDING_barracks = 9;
+float UI_BUILDING_supply_depot = 10;

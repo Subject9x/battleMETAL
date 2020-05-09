@@ -87,12 +87,12 @@
     velocitymultiplier 2
     stretchfactor 10
     notunderwater
-    trailspacing 1
+    trailspacing 8
     bounce -1
 
   //TE_ESR_RAIL - RAIL HEAT DISTORT
     effect TE_ESR_RAIL
-    count 4
+    count 1
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -104,14 +104,14 @@
     velocityoffset 0.01 0.05 0.1
     velocityjitter 0.5 0.5 0.5
     velocitymultiplier 1
-    stretchfactor 2
+    stretchfactor 4
     gravity -0.00001
-    trailspacing 16
+    trailspacing 32
     bounce -1  
   
   //TE_ESR_IMPACT_DIRT - GRAVEL BITS
     effect TE_ESR_IMPACT_DIRT
-    count 5
+    count 2
     type alphastatic
     blend alpha
     orientation spark
@@ -247,20 +247,20 @@
 //==========================================
 
 //TEST SMOKE==================================
-effect SMOKE_TEST
-count 0.333
-type smoke
-blend alpha
-color 0x1b1c1c 0x303333
-tex 0 7
-size 2 8
-sizeincrease 0.1
-alpha 128 240 32
-time 6 10
-originjitter 1.5 1.5 1.5
-velocityjitter 1 1 1
-velocitymultiplier 1
-gravity -0.005
+  effect SMOKE_TEST
+  count 0.333
+  type smoke
+  blend alpha
+  color 0x1b1c1c 0x303333
+  tex 0 7
+  size 2 8
+  sizeincrease 0.1
+  alpha 128 240 32
+  time 6 10
+  originjitter 1.5 1.5 1.5
+  velocityjitter 1 1 1
+  velocitymultiplier 1
+  gravity -0.005
 //==========================================
 
 
@@ -359,7 +359,7 @@ gravity -0.005
 //PAC BEAM==================================
   //TE_PAC_MUZZLE - SPARKS ACCEL
     effect TE_PAC_MUZZLE
-    count 4
+    count 1.5
     type smoke
     blend add
     orientation spark
@@ -439,7 +439,7 @@ gravity -0.005
   
   //TE_PAC_IMPACT_SHIELD -  YELLOW SPARKS
     effect TE_PAC_IMPACT_SHIELD
-    count 4
+    count 2
     type spark
     blend alpha
     orientation spark
@@ -504,7 +504,7 @@ gravity -0.005
   
   //TE_PAC_IMPACT_ARMOR - SLOSH 
     effect TE_PAC_IMPACT_ARMOR
-    count 4
+    count 2
     type spark
     blend alpha
     color 0xFE2E2E 0xDF7401
@@ -527,7 +527,7 @@ gravity -0.005
   
   //TE_PAC_IMPACT_GROUND - SPARKS ACCEL
     effect TE_PAC_IMPACT_GROUND
-    count 4
+    count 2
     type spark
     blend add
     orientation spark
@@ -735,7 +735,7 @@ gravity -0.005
     
   //TE_FLK_MUZZLE - SMOKE
     effect TE_FLK_MUZZLE
-    count 10
+    count 3
     type spark
     blend alpha
     color 0x000000 0x1C1C1C
@@ -767,7 +767,7 @@ gravity -0.005
 
   //TE_FLK_MUZZLE - SPARKS
     effect TE_FLK_MUZZLE
-    count 12
+    count 5
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -846,7 +846,7 @@ gravity -0.005
     
   //TE_FLK_DIRT - SMOKE
     effect TE_FLK_DIRT
-    count 2
+    count 1
     type smoke
     blend alpha
     color 0x000000 0x1C1C1C
@@ -950,7 +950,7 @@ gravity -0.005
     
   //TE_QRFL_MUZZLE_SPARK - HEAT DISTORT
     effect TE_QRFL_MUZZLE_RAIL
-    count 2
+    count 1
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -997,7 +997,7 @@ gravity -0.005
   
   //TE_QRFL_MUZZLE - SMOKE
     effect TE_QRFL_MUZZLE
-    count 3
+    count 1
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -1060,7 +1060,7 @@ gravity -0.005
   
   //TE_QRFL_IMPACT_SHIELD - BLACK LINES
     effect TE_QRFL_IMPACT_SHIELD
-    count 1
+    count 0.5
     type alphastatic
     blend alpha
     orientation spark
@@ -1078,7 +1078,7 @@ gravity -0.005
     
   //TE_QRFL_QBIT_IMPACT - NON-SHIELD - PURPLE BUBBLES
     effect TE_QRFL_QBIT_IMPACT
-    count 5
+    count 2
     type alphastatic
     blend alpha
     orientation spark
@@ -1165,7 +1165,7 @@ gravity -0.005
   
   //TE_EMP_TRAIL - SPARK CLOUD TRAIL
     effect TE_EMP_TRAIL
-    count 7
+    count 5
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1180,7 +1180,7 @@ gravity -0.005
   
   //TE_EMP_TRAIL - SPARK CLOUD
     effect TE_EMP_TRAIL
-    count 5
+    count 3
     type smoke
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1203,7 +1203,7 @@ gravity -0.005
 
   //TE_EMP_EXPL - SMOKE PUFF RED
     effect TE_EMP_EXPL
-    count 2
+    count 1
     type alphastatic
     blend alpha
     color 0xFF0080 0xFF0040 
@@ -1217,7 +1217,7 @@ gravity -0.005
     
   //TE_EMP_EXPL - SMOKE RING
     effect TE_EMP_EXPL
-    count 5
+    count 3
     type smoke
     blend alpha
     color 0x58ACFA 0x819FF7
@@ -1229,7 +1229,7 @@ gravity -0.005
   
   //TE_EMP_EXPL - SPARKS
     effect TE_EMP_EXPL
-    count 5
+    count 3
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1324,7 +1324,7 @@ gravity -0.005
   
   //TE_ION_TRAIL - SPARK CLOUD TRAIL
     effect TE_ION_TRAIL
-    count 7
+    count 2
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1339,7 +1339,7 @@ gravity -0.005
   
   //TE_ION_TRAIL - SPARK CLOUD
     effect TE_ION_TRAIL
-    count 5
+    count 3
     type smoke
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1362,7 +1362,7 @@ gravity -0.005
   
   //TE_ION_EXPL - SMOKE PUFF RED
     effect TE_ION_EXPL
-    count 2
+    count 1
     type alphastatic
     blend alpha
     color 0xFF0080 0xFF0040 
@@ -1376,7 +1376,7 @@ gravity -0.005
     
   //TE_ION_EXPL - BLUE PUFF
     effect TE_ION_EXPL
-    count 5
+    count 3
     type smoke
     blend alpha
     color 0x58ACFA 0x819FF7
@@ -1387,7 +1387,7 @@ gravity -0.005
   
   //TE_ION_EXPL - SPARKS
     effect TE_ION_EXPL
-    count 5
+    count 3
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1412,7 +1412,7 @@ gravity -0.005
 
   //TE_ION_IMPACT_ARMOR - SPARKS
     effect TE_ION_IMPACT_ARMOR
-    count 5
+    count 3
     type spark
     blend alpha
     color 0xA901DB 0xF781F3
@@ -1437,7 +1437,7 @@ gravity -0.005
 //ROCKET POD EFFECTS==================================
   //TE_MIS_TRAIL - SMOKE
     effect TE_MIS_TRAIL
-    count 2
+    count 1
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -1449,7 +1449,7 @@ gravity -0.005
     velocityjitter 1 1 3
     gravity -0.0075
     stretchfactor 4
-    trailspacing 8
+    trailspacing 18
 
   //TE_MIS_TRAIL - SPARKS
     effect TE_MIS_TRAIL
@@ -1513,7 +1513,7 @@ gravity -0.005
 //RPC EFFECTS==================================
   //TE_RPC_MUZZLE - SLOSH EFFECTS
     effect TE_RPC_MUZZLE
-    count 4
+    count 2
     type alphastatic
     blend alpha
     color 0x40FF00 0xF7F8E0
@@ -1554,7 +1554,7 @@ gravity -0.005
 
   //TE_RPC_HIT - GREEN SLOSH ON HIT
     effect TE_RPC_HIT
-    count 4
+    count 2
     type alphastatic
     blend alpha
     color 0x40FF00 0xF7F8E0
@@ -1569,7 +1569,7 @@ gravity -0.005
 
   //TE_RPC_HIT - GREEN SMOKE RISE ON HIT
     effect TE_RPC_HIT
-    count 4
+    count 2
     type smoke
     blend alpha
     color 0x40FF00 0xF7F8E0
@@ -1593,7 +1593,7 @@ gravity -0.005
 
   //TE_RPC_BURN - GREEN RISING SMOKE
     effect TE_RPC_BURN
-    count 4
+    count 2
     type smoke
     blend alpha
     color 0x40FF00 0xF7F8E0
@@ -1608,7 +1608,7 @@ gravity -0.005
   
   //TE_RPC_BURN - GREEN FALLING BLEED
     effect TE_RPC_BURN
-    count 1
+    count 0.5
     type spark
     blend alpha
     color 0x40FF00 0xF7F8E0
@@ -1817,7 +1817,7 @@ gravity -0.005
     velocitymultiplier -0.5
     notunderwater
     stretchfactor 0.25
-    trailspacing 3
+    trailspacing 12
     
   //TE_LGM_TRAIL - LIGHT
     effect TE_LGM_TRAIL
@@ -1829,7 +1829,7 @@ gravity -0.005
     
   //TE_LGM_TRAIL - SMOKE
     effect TE_LGM_TRAIL
-    count 5
+    count 2
     type smoke
     blend alpha
     color 0xD8D8D8 0xFAFAFA
@@ -1842,7 +1842,7 @@ gravity -0.005
     velocityjitter 1 1 3
     gravity -0.0001
     stretchfactor 6
-    trailspacing 6
+    trailspacing 12
   
   //TE_LGM_IMPACT_SHIELD
   
@@ -1937,7 +1937,7 @@ gravity -0.005
     velocityjitter 1 1 1
     gravity -0.0001
     stretchfactor 2
-    trailspacing 4
+    trailspacing 12
 
 //==========================================
 
@@ -1969,7 +1969,7 @@ gravity -0.005
   
   //TE_SWRM_TRAIL - FLAME
     effect TE_SWRM_TRAIL
-    count 5
+    count 2
     type smoke
     blend alpha
     orientation oriented
@@ -1995,7 +1995,7 @@ gravity -0.005
     
   //TE_SWRM_TRAIL - SMOKE
     effect TE_SWRM_TRAIL
-    count 3
+    count 1
     type smoke
     blend alpha
     color 0xF5D0A9 0xF2F5A9
@@ -2006,8 +2006,8 @@ gravity -0.005
     originjitter 0.05 0.05 0.05
     velocityjitter 0.05 0.05 0.05
     gravity -0.00005
-    stretchfactor 6
-    trailspacing 3
+    stretchfactor 5
+    trailspacing 18
   
   //TE_SWRM_EXPL
 

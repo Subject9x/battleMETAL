@@ -44,6 +44,14 @@ void( float dataID ) data_sync_new_building={
     case UI_BUILDING_guard_tower:
       data_building_guard();
       break;
+      
+    case UI_BUILDING_barracks:
+      data_building_barracks();
+      break;
+    
+    case UI_BUILDING_supply_depot:
+      data_building_supply_depot();
+      break;
   }
 };
 
@@ -179,6 +187,26 @@ void() data_building_guard={
   self.render_dlights = guard_post_dlights;
   self.compOffset = self.origin + (v_up * 36);
   self.w_adj_ang =  self.angles;
+};
+
+void() data_building_barracks={
+  self.vec_name = "Barracks";
+  self.vec_size = 2;
+  setmodel(self, "q3mdl/buildings/barracks/building_barracks.obj");
+  setsize(self, '-60 -60 0', '60 60 37');
+  self.max_health = 275;
+  self.deadflag = DEAD_NO;
+  self.th_die = fuel_tank_die1;
+};
+
+void() data_building_supply_depot={
+  self.vec_name = "Supply Depot";
+  self.vec_size = 2;
+  setmodel(self, "q3mdl/buildings/barracks/building_supply_depot.obj");
+  setsize(self, '-60 -60 0', '60 60 37');
+  self.max_health = 275;
+  self.deadflag = DEAD_NO;
+  self.th_die = fuel_tank_die1;
 };
 
 /*

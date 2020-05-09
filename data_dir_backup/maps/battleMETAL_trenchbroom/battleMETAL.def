@@ -1223,6 +1223,64 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 
+/*QUAKED building_barracks (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+Base Decoration building.
+ 
+Does Not require power.
+
+Max Health = 275.(default)
+
+ShieldMax = 300. (default)
+ShieldRate = 0. (default)
+
+-------- KEYS -------- 
+.faction : <float> 1, 2, 3 - [REQURIED]
+targetname : <string>, used for trigger calls from other ents
+target : <string> name of ent to go to, usually a patrol node
+trigOnSpawn: <string> ent, fire this ENTITY when activated
+trigOnDeath: <string> target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+
+
+/*QUAKED building_supply_depot (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+Base Decoration building.
+ 
+Does Not require power.
+
+Max Health = 350.(default)
+
+ShieldMax = 250. (default)
+ShieldRate = 0. (default)
+
+-------- KEYS -------- 
+.faction : <float> 1, 2, 3 - [REQURIED]
+targetname : <string>, used for trigger calls from other ents
+target : <string> name of ent to go to, usually a patrol node
+trigOnSpawn: <string> ent, fire this ENTITY when activated
+trigOnDeath: <string> target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+
+
 
 /*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
@@ -1315,7 +1373,6 @@ DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
-
 
 
 //-------------------ZAPPER  --------------------------------

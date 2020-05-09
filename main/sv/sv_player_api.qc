@@ -372,7 +372,6 @@ void() PlayerDie={
 };
 
 void() PlayerDieEnd={
-  cons_logAFloat("SV()->PlayerDieEnd()->enter", 1);  //DEBUG
   self.movetype = MOVETYPE_NONE;
   
   self.playerState = PLAYER_DEBRIEF;
@@ -393,14 +392,12 @@ PlayerDie - Network Games
     this is called on the frame that a player is actually killed.
 */
 void() PlayerDieNetwork={
-  cons_logAFloat("SV()->PlayerDieNetwork()->enter", 1);  //DEBUG
 	if( self.deadflag ){
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}
   self.playerState = PLAYER_DEAD;
 	if(self.data_type == DATA_MECH){
-    cons_logAFloat("SV()->PlayerDieNetwork()->self.data_type == DATA_MECH", 1);  //DEBUG
     ctrl_unit_clean_wgroups();
     ctrl_mech_die_player();
   }
@@ -450,7 +447,6 @@ void() PlayerDieNetworkEnd={
     self.deadflag = DEAD_DEAD;
     return;
   }
-  cons_logAFloat("SV()->PlayerDieNetworkEnd()->enter", 1);  //DEBUG
   self.movetype = MOVETYPE_NONE;
   
   
@@ -461,7 +457,6 @@ void() PlayerDieNetworkEnd={
     self.playerState = PLAYER_INTERMSN; //short-circuit to intermission
       //on ending server.
   }
-  
   
   self.think = PlayerDead;
   self.nextthink = time + 1;
@@ -474,16 +469,13 @@ void() PlayerDead={
     //end of round happened during death.
     self.deadflag = DEAD_DEAD;
     return;
-  } 
-  cons_logAFloat("SV()->PlayerDead()->enter", 1);  //DEBUG
+  }
   self.playerState = PLAYER_SPAWN;
 	self.deadflag = DEAD_DEAD;
 };
 
 //called in PlayerPreThink() when self.deadflag == DEAD_DEAD
 void() PlayerDeathThink={  
-  cons_logAFloat("SV()->PlayerDeathThink()->enter", 1);  //DEBUG
-
 //battleMETAL - player respawn is stage-managed wth clientside menus...
 // wait for all buttons released
 /*	if (self.deadflag == DEAD_DEAD){
