@@ -119,7 +119,7 @@ void()data_prj_emp_explode={
       continue;
     }
     if( lst.shield > 0 ){
-      t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue * 0.15, FIRE_ENDPOINT, '0 0 0');
+      t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue * 0.15, FIRE_ENDPOINT, TRUE);
       self.impactType = IMPACT_SHIELD;
     }
     else{        
@@ -145,7 +145,7 @@ void() data_prj_emp_touch={
     self.traileffectnum = FALSE;
     if(other.takedamage){
       if( other.shield > 0 ){
-        t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
+        t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
         self.impactType = IMPACT_SHIELD;
       }
       else{        

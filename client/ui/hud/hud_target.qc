@@ -55,7 +55,7 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  if(CLIENT_faction == CLIENT_target_faction){
+  if( (CLIENT_faction == CLIENT_target_faction) && (CLIENT_target_faction != FACTION_ALL) ){
     factionColor = CLR_DEF_IIF_FRIEND;
   }
   else{
@@ -94,7 +94,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     targZbottom = targSizeZ;
   }
   
-  if(faction1 == faction2){
+  if( (faction1 == faction2) && (faction2 != FACTION_ALL) ){
     factionColor = CLR_DEF_IIF_FRIEND;
   }
   else{

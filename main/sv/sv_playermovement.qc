@@ -205,6 +205,12 @@ void() SV_PlayerPhysics =
     if (f > 0){
       self.ramVelocity = self.ramVelocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);
     }
+    if( self.ramVelocity_x > self.data_speed_forward * 3 ){
+      self.ramVelocity_x = self.data_speed_forward * 3;
+    }
+    if( self.ramVelocity_y > self.data_speed_forward * 3 ){
+      self.ramVelocity_y = self.data_speed_forward * 3;
+    }
     self.velocity = self.ramVelocity;
     self.velocity_z = self.velocity_z + (self.ramPower_x * -0.5);
   }

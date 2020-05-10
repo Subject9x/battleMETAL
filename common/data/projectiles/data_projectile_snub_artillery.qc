@@ -54,6 +54,7 @@ void() data_projectile_ini_snub_artillery_={
     self.colormod =  '0.85 0.45 0.45';
     self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
     self.pcl_explode = projectile_sfga_expl;
+    self.scale = 1.25;
   #endif
     
   #ifndef CSQC
@@ -99,7 +100,7 @@ void() data_projectile_snub_artillery_touch_={
       else{
         damage = damage * 0.67;
       }
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
     }
     else{
@@ -136,7 +137,7 @@ void() data_projectile_snub_artillery_radiusDamage={
     dmg_act = dmg_act * 0.75;
     if( radiusTarg.shield > 0 ){
       dmg_act = dmg_act * 0.25;
-      t_damage_shield(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
+      t_damage_shield(radiusTarg, self, self.owner, dmg_act, trace_endpos, FALSE);
     }
     else{
       t_damage(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');

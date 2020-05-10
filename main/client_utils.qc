@@ -14,11 +14,28 @@ void() client_push_player_info={
   local entity wep;
   local float wepItr;
   local float targShield;
-
+  local float myShield;
+  
   self.ammo_rockets = self.flags;
   if(self.data_type == DATA_MECH){
     self.stat_client_energy = (self.energy / self.energyMax) * 100;
-    self.stat_client_shield = (self.shield / self.shieldMax) * 100;
+    
+    if( time <= self.shieldHitRegen ) {
+      myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+      myShield = (time - self.shieldHitRegenStart) / myShield;
+      myShield =  -100 - (myShield * -100);
+    }
+    else{
+      myShield = self.shield;
+      if( myShield <= 0 ){
+        myShield = 0;
+      }
+      else{
+        myShield = (self.shield / self.shieldMax) * 100;
+      }
+    }
+    self.stat_client_shield = myShield;
+    
     self.stat_client_hp_torsoCenter = csqc_updateCompStat(self);
     self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
     self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
@@ -63,13 +80,21 @@ void() client_push_player_info={
     
     if( self.stat_trg_ent_id != 0 ){
       //this is silly but precludes forcing the csqc to know the target's max shields
-      targShield = self.enemy.shield;
-      if( targShield <= 0 ){
-        targShield = 0;
+      if( time <= self.enemy.shieldHitRegen ) {
+        targShield = self.enemy.shieldHitRegen - self.enemy.shieldHitRegenStart;
+        targShield = (time - self.enemy.shieldHitRegenStart) / targShield;
+        targShield =  -100 - (targShield * -100);
       }
       else{
-        targShield = (self.enemy.shield / self.enemy.shieldMax) * 100;
-      } 
+        targShield = self.enemy.shield;
+        if( targShield <= 0 ){
+          targShield = 0;
+        }
+        else{
+          targShield = (self.enemy.shield / self.enemy.shieldMax) * 100;
+        }
+      }
+      
       self.stat_target_shield = targShield;
       self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy);
       self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torsoLeft);

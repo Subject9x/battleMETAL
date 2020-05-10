@@ -236,7 +236,7 @@ void() build_mech_unit={
   }
   if( self.skin > 3){
     //Deathmach randomizer;
-    self.skin = rint(random()*3);
+    self.skin = min(rint(random()*3),0);
   }
   
   self.data_type = DATA_MECH;
@@ -260,6 +260,7 @@ void() build_mech_unit={
   setsize(self, tempMin, tempMax);
   
   self.shieldHitDelay = 0;
+  self.shieldHitRegen = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
   unitPartList = self;

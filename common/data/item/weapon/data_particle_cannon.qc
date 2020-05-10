@@ -39,7 +39,7 @@ void() data_ini_particle_cannon_={
     self.fire_sound = "sound/weapons/pac_fire.ogg";
     self.model = "q3mdl/weapons/w_pac.md3";
     self.abbrev = "PAC";
-    self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Low shields on target yields higher armor damage.";
+    self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Lower shields on target yields higher armor damage.";
     self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
   #endif 
   

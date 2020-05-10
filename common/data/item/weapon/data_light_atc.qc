@@ -73,7 +73,7 @@ void() data_ini_attack_latc_={
       if( trace_ent ){
         if( trace_ent.shield > 0 ){
           damage = self.damageValue / 2 ;
-          t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, '0 0 0'); 
+          t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, FALSE); 
           impactStyle = IMPACT_SHIELD;
         }
         else{

@@ -178,7 +178,7 @@ void() data_ini_attack_electro_repeater_={
     damage = self.damageValue; 
     if( trace_ent.shield > 0 ){
       damage = damage * 0.67;
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
       impactStyle = IMPACT_SHIELD;
     }
     else{

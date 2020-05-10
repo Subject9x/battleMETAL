@@ -37,7 +37,7 @@ void() data_ini_plasma_={
     self.fire_sound = "sound/weapons/rpls_fire.ogg";
     self.model = "q3mdl/weapons/w_rpc.md3";
     self.abbrev = "RPC";
-    self.description = "+ Burst-Fires 6 sub-munitions. + Submunitions burn over time on unshielded targets. + More shield damage at long range.";
+    self.description = "+ Will burn over time on unshielded hit. + inhibits target shield regen when burning.";
     self.icon = "gfx/ui/wep_icons/wi_rpc.png";
   #endif 
   

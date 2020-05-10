@@ -79,7 +79,7 @@ void() data_ini_attack_flak_={
       if(trace_ent.shield > 0){
       //Target shields are up, don't do shrapnel effect
         shieldDamage = (self.damageValue * totes) / 3;
-        t_damage_shield(trace_ent, self,self.owner, shieldDamage, trace_endpos, '0 0 0'); 
+        t_damage_shield(trace_ent, self,self.owner, shieldDamage, trace_endpos, FALSE); 
         impactStyle = IMPACT_SHIELD;
       }
       else{

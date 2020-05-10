@@ -131,7 +131,7 @@ void() ctrl_updateCenterTorso={
       self.energy = self.energy + diff;
     }  
     if(self.shield < self.shieldMax){
-      if(time > self.shieldHitDelay){
+      if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
         if(self.energy > 0){
           self.shield = self.shield + self.shieldRate;
           self.energy = self.energy - self.shieldRate;
@@ -207,10 +207,10 @@ void() ai_ctrl_updateCenterTorso={
       self.energy = self.energy + diff;
     }  
     if(self.shield < self.shieldMax){
-      if(time > self.shieldHitDelay){
+      if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
         if(self.energy > 0){
-          self.shield = self.shield + self.shieldRate;
-          self.energy = self.energy - (self.shieldRate * 3);
+          self.shield = self.shield + (self.shieldRate * 0.5);
+          self.energy = self.energy - (self.shieldRate * 2);
           if(self.shield > self.shieldMax){
             self.shield = self.shieldMax;
           }

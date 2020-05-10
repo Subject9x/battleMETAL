@@ -91,7 +91,7 @@ void() data_projectile_ini_quantum_bit_touch_={
       else{
         hit = 0;
       }
-      t_damage_shield(other, self, self.owner, damage, self.origin, '0 0 0');
+      t_damage_shield(other, self, self.owner, damage, self.origin, FALSE);
       t_damage(other, self, self.owner, hit, self.origin, '0 0 0');
       self.impactType = IMPACT_SHIELD;
     }

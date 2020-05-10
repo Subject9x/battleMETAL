@@ -193,8 +193,16 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
       }
     }
   }
+  
+  if( val < 0 ){
+    //regen cooldown
+    val = (val * -1);
+    gui_renderMeter(val, pos, meterSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, meterAxis, 0);
+  }
+  else{
+    gui_renderMeter(val, pos, meterSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, meterAxis, 0);
+  }
 
-  gui_renderMeter(val, pos, meterSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, meterAxis, 0);
   
   
   if(bool_label){

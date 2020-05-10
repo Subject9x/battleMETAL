@@ -12,7 +12,7 @@ Overview:
 */
 
 float DAT_QRFL_QBITS = 10; 
-vector DAT_QRFL_SPREAD = '0.085 0.085 0';
+vector DAT_QRFL_SPREAD = '0.095 0.095 0';
 #ifndef CSQC
 void() data_ini_attack_quantum_;
 #endif
@@ -22,12 +22,12 @@ void() data_ini_quantum_={
   self.data_idx = 5;  
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.1;
+  self.reloadRate = 5;
   self.reloadMax = 5;
   self.energyRate = 0;
   
-  self.w_range = 1000;
-  self.damageValue = 15;
+  self.w_range = 1200;
+  self.damageValue = 18;
   self.damageType = DMG_BAL;
   
   self.techLevel = 2;
@@ -40,9 +40,9 @@ void() data_ini_quantum_={
     self.w_name = "Quantum Rifle";
     self.fire_sound = "sound/weapons/qrfl_fire.ogg";
     self.model = "q3mdl/weapons/w_qrf.md3";
-    self.damageValue = (DAT_QRFL_QBITS * self.damageValue) / 3 + 15;
+    self.damageValue = (DAT_QRFL_QBITS * self.damageValue);
     self.abbrev = "QRF";
-    self.description = "+ Instant-impact weapon. + Initial damage on-hit. + 8 sub-munitions. + sub-munitions home on impact spot.";
+    self.description = "+ Instant-impact weapon. + Shotgun-style spread pattern. + 10 qbits per shot.";
     self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
   #endif 
   

@@ -12,7 +12,7 @@ Date: 3/30/2020
 void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
   local float dist;
   local vector vpos, nofs, aSize;
-  if(val > 0){
+  if(val != 0){
     dist = vlen(org - torg);
     dist = dist / radRange;
     dist = (1 / (dist * dist));    
@@ -40,7 +40,13 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       pos = gui_calcAlign(pos, algn);
      
       meterColor = CLR_DEF_ARM_DED;
-      gui_renderMeter(val, pos, aSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, AXIS_H, FALSE); 
+      if( val < 0 ){
+        //render delay regen
+        gui_renderMeter( (val * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE); 
+      }
+      else{
+        gui_renderMeter(val, pos, aSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, AXIS_H, FALSE); 
+      }
     }
     cs_unproject(vpos);
   }

@@ -42,8 +42,8 @@ void() projectile_swarm_expl={
 
 void() data_projectile_ini_missile_swarm_={
   self.classname = "missile";
-  self.data_velocity = 1515;
-  self.data_lifetime = 0.99;
+  self.data_velocity = 1750;
+  self.data_lifetime = 0.855;
  
   #ifdef CSQC
     //cosmetics
@@ -56,7 +56,9 @@ void() data_projectile_ini_missile_swarm_={
   
   #ifndef CSQC
     self.think = data_projectile_missile_swarm_think;
-    self.touch = data_projectile_missile_swarm_touch;  
+    self.touch = data_projectile_missile_swarm_touch;      
+    self.gravity = 0.04;
+    self.movetype = MOVETYPE_TOSS;
   #endif
 };
 #ifndef CSQC
@@ -85,7 +87,7 @@ void() data_projectile_missile_swarm_touch={
       else{
         damage = damage * 0.67;
       }
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
     }
     else{

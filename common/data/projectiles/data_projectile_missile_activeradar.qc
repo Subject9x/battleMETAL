@@ -163,7 +163,7 @@ void() data_projectile_missile_activeradar_touch={
     damage = self.damageValue;
     if( other.shield > 0 ){
       damage = damage * 0.25;
-      t_damage_shield(other, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+      t_damage_shield(other, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
     }
     else{

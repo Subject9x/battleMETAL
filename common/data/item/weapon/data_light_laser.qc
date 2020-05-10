@@ -72,7 +72,7 @@ void() data_ini_attack_laser_={
     damage = self.damageValue;
     if( trace_ent.shield > 0 ){
       damage = damage + (damage * 0.25);
-      t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, '0 0 0'); 
+      t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, FALSE); 
       impactStyle = IMPACT_SHIELD;
     }
     else{

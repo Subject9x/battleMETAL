@@ -16,10 +16,6 @@ void( float dataID ) data_sync_new_projectile={
       data_projectile_ini_rocket_();
       break;
       
-    case UID_ITEM_quantum_rifle:
-      data_projectile_ini_quantum_bit_();
-      break;
-      
     case UID_ITEM_rotary_plasma:
       data_projectile_ini_plasma_();
       break;

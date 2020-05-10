@@ -46,6 +46,23 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if(trg.was_hit < time){
     trg.was_hit = time + 1;
   }
+  
+  //shield delay check=============================
+  /*
+    the idea is to make sure the delay is proportionate to the 'damage dealt.' 
+    IE it doesn't make sense (to the designer) that shield delay is the same whether hit by an autocannon or an EMP blast.
+  */
+  //shield delay should be communicated to the player
+  if( time > trg.shieldHitRegen ){
+  
+  }
+  if( time < trg.shieldHitDelay ){
+    //stack
+    trg.shieldHitDelay = trg.shieldHitDelay + 0.1;
+  }
+  //================================================
+  
+
 
   //calculate hit time and angle
   util_chekPointToHitDir(trg, dmg_point);
@@ -124,7 +141,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
 /*
   you've already checked shield levels before calling this.
 */
-entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, vector force) t_damage_shield={
+entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, float shieldBreaker) t_damage_shield={
   local entity dmgTrg, dmgInflictor;
   local entity notTarg;
   local float dmgAmt;
@@ -179,12 +196,28 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   */
   //shield delay should be communicated to the player
   //ION / EMP should be better than most for messing with delay
-  
-  trg.shieldHitDelay = trg.shieldHitDelay + (4 - trg.vec_size); //simulates larger reactor size on larger units.
-  trg.shieldHitDelay = trg.shieldHitDelay * 1.33;
-  trg.shieldHitDelay = trg.shieldHitDelay / 100;
-  trg.shieldHitDelay = trg.shieldHitDelay + (dmg_amt / 500);  
-  trg.shieldHitDelay = time + (trg.shieldHitDelay + SHIELD_DELAY);
+  if( trg.shield <= 0 ){
+    if( time > trg.shieldHitRegen ){
+      //fresh hit
+      if( shieldBreaker ){
+        trg.shieldHitRegen = time + (SHIELD_DELAY * 2);
+      }
+      else{
+        trg.shieldHitRegen = time + SHIELD_DELAY;
+      }
+      trg.shieldHitRegenStart = time;
+    }
+  }
+  else{
+    if( time > trg.shieldHitDelay ){
+      if( shieldBreaker ){
+        trg.shieldHitDelay = time + (SHIELD_DELAY / 3);
+      }
+      else{
+        trg.shieldHitDelay = time + (SHIELD_DELAY / 4);
+      }
+    }
+  }
   //================================================
   
   //AI react to Damage

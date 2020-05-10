@@ -45,7 +45,7 @@ void() projectile_plasma_expl={
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
   self.data_velocity = 1600;  //vel = Range / lifetime
-  self.data_lifetime = 1.12;  //0.75
+  self.data_lifetime = 1.12;
   
   #ifdef CSQC
     //cosmetics
@@ -85,7 +85,7 @@ void() data_projectile_plasma_burn_th={
     return;
   }
   
-  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.cockpit.origin, '0 0 0');
+  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.cockpit.origin, FALSE);
   
   if(time > self.data_lifetime){
     self.think = SUB_Remove;
@@ -126,7 +126,7 @@ void() data_projectile_plasma_touch={
       else{
         damage = damage * 0.45;
       }
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
     }
     else{
