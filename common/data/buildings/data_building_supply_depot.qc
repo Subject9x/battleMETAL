@@ -122,7 +122,7 @@ void() hangar_depot_die15=[0, SUB_Null]{
 };
 
 /*QUAKED building_supply_depot (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
-{ model("models/buildings/supply_depot/building_supply_depot.md3"); }
+{ model("models/buildings/depot/building_depot.md3"); }
 
 Base Decoration building.
  
@@ -162,7 +162,7 @@ void() building_supply_depot={
   self.vec_size = 2;
   macro_set_model("q3mdl/testball.md3", self.skin, 0)
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  setsize(self, '-60 -60 0', '60 60 37');
+  setsize(self, '-64 -64 0', '64 64 48');
   
   self.th_die = hangar_depot_die1;
   self.use = multi_trigger;

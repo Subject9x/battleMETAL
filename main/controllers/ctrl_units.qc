@@ -227,35 +227,36 @@ float( float isNew, float changedFlags ) send_damage_zone={
   
   if( (changedFlags & SENDFLAG_MOVE) ){
     //changes damage types / boundary size
-    WriteCoord( MSG_ENTITY, self.absmin_x );
-    WriteCoord( MSG_ENTITY, self.absmin_y );
-    WriteCoord( MSG_ENTITY, self.absmin_z );
     
-    WriteCoord( MSG_ENTITY, self.absmax_x );
-    WriteCoord( MSG_ENTITY, self.absmax_y );
-    WriteCoord( MSG_ENTITY, self.absmax_z );
-    
-    WriteByte( MSG_ENTITY, self.damageType );
-    WriteByte( MSG_ENTITY, self.count );
-    WriteByte( MSG_ENTITY, self.count1 );
-    WriteCoord( MSG_ENTITY, self.compAltOffset_x );
-    WriteCoord( MSG_ENTITY, self.compAltOffset_y );
-    WriteCoord( MSG_ENTITY, self.compAltOffset_z );
-    WriteCoord( MSG_ENTITY, self.dest_x );
-    WriteCoord( MSG_ENTITY, self.dest_y );
-    WriteCoord( MSG_ENTITY, self.dest_z );
   }
   
   if( (changedFlags & SENDFLAG_BURN) ){
     //use to adjust isActive, toggling the field
+  }
+  
+  if( (changedFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.isActive );
   }
   
+  if( (changedFlags & SENDFLAG_CRIT) ){
+    WriteByte( MSG_ENTITY, 1 );
+  }
+  
   if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.spawnflags );
-    WriteCoord( MSG_ENTITY, self.dest1_x );
-    WriteCoord( MSG_ENTITY, self.dest1_y );
-    WriteCoord( MSG_ENTITY, self.dest1_z );
+    
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+    
+    WriteByte( MSG_ENTITY, self.damageType );
+    WriteShort( MSG_ENTITY, self.alpha );
+    WriteAngle( MSG_ENTITY, self.wait );
   }
   return TRUE;
 };

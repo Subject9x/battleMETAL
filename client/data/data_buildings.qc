@@ -202,9 +202,9 @@ void() data_building_barracks={
 void() data_building_supply_depot={
   self.vec_name = "Supply Depot";
   self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/barracks/building_supply_depot.obj");
-  setsize(self, '-60 -60 0', '60 60 37');
-  self.max_health = 275;
+  setmodel(self, "q3mdl/buildings/depot/building_depot.obj");
+  setsize(self, '-64 -64 0', '64 64 48');
+  self.max_health = 350;
   self.deadflag = DEAD_NO;
   self.th_die = fuel_tank_die1;
 };

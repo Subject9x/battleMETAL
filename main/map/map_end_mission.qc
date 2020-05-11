@@ -23,8 +23,7 @@ void() map_end_mission_over={
   if( self.missionStatus == -1 ){
     self.missionStatus = 0; //client compatability zero-out.
   }
-
-
+  
   self.think = SUB_Remove;
   self.nextthink = time + 2;
 };

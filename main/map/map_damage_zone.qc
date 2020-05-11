@@ -2,164 +2,211 @@
 battleMETAL
 Author: Peter Roohr
 Date: 11/14/2018
+mod: 05/10/2020
 Overview: 
-  A Damage Zone is an area that hurts all units within the zone.
-  These are brush-based model usually, but can be set via entity text editing.
-  HOW TO USE
-    where ever you put 1 of the 'radical' textures, if you want that area to damage the player,
-    then you place this entity over that textured spot.
+  Damage ones are like small-scale toxic pools. They're a single obj, 1 of 3 sizes - Small, Med, Large.
+  There are 3 flavors of Damage.
+    RAD = Radiation - deals damage directly to armor, ignores shields.
+    QTM = Quantum - deals damage as energy sapped from colliding unit's energy pool.
+    STA = Static - deals damage to unit's shields.
 
+  SPAWNFLAGS
+    START_OFF 1: START_OFF - only activated by trigger
+    LIFETIME 2: lifetime
+    REACTIVATE 4: reactivate after countdown
+    REMOVE_FIRSTUSE 8: remove after first countdown
+    REMOVE_ONTOUCH 16: remove on first touch
+    ACTIVE_ONTOUCH 32: activate on-touch
+    IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
-void() map_damage_zone_use;
-void() map_damage_zone_cool;
-
-void() map_damage_zone_think={
-  
-  if( (self.spawnflags & 8) ){
-    //spawnflags 8 = remove after first lifetime countdown
-    self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-    self.deadflag = DEAD_DEAD;
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.001;
-    return;
-  }
-  
-  if( (self.spawnflags & 4) ){
-    //reactivate damage zone after timer
-    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
-    self.deadflag = DEAD_DYING;
-    self.think = map_damage_zone_cool;
-    self.nextthink = time + self.wait;
-    return;
-  }
-  
-  //otherwise do nothing else
-  self.think = map_damage_zone_think;
-  self.nextthink = time + 0.1;
-};
-
-void() map_damage_zone_cool={
-  self.isActive = TRUE;
-  if( (self.spawnflags & 2) ){
-    self.think = map_damage_zone_think;
-    self.nextthink = time + self.data_lifetime;
-  }
-};
-
-/*
-  Primary trigger channel, called by other map logic
-*/
-void() map_damage_zone_use={
-
-  if( (self.spawnflags & 4) ){
-    //prevents mutli-activation if in cooldown
-    if( time < self.nextthink ){
-      return;
-    }
-  }
-  
-  if( !self.isActive ){
-    self.isActive = TRUE;
-    self.SendEntity = send_damage_zone;
-    self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-    self.think = map_damage_zone_think;
-    if( (self.spawnflags & 2) ){
-      self.nextthink = time + self.data_lifetime;
-    }
-    else{
-      self.nextthink = time + 0.1;
-    }
-  }
-};
-
-void() map_damage_zone_touch={
-  local vector rpoint;
-
-  if( (self.spawnflags & 32) ){
-    if( !self.isActive ){
-      self.think = map_damage_zone_use;
-      self.nextthink = time + 0.1;
-      return;
-    }
-  }
-
+void() map_hazard_ping={
+  self.SendEntity = send_damage_zone;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.think = self.th_walk;
+    cons_logAFloat(" self.wait", self.wait); //debug
   if( self.isActive ){
-    if( (other.flags & FL_UNIT) ){
-      //Zone Damage - SHIELDS
-      if( (self.damageType & 1) ){
-        //shield damage is gated so as not to trigger an energy draining feedback loop
-        other.shield = other.shield - self.damageValue;
-        if( other.shield < 0 )
-          other.shield = 0;
-        if( time > other.shieldHitDelay ){
-          other.shieldHitDelay = time + 1;
-        }
-        else{
-          other.shieldHitDelay = time + 3;
-        }
-        rpoint = randomvec();
-        rpoint_x = rpoint_x * (random() * other.maxs_x);
-        rpoint_y = rpoint_y * (random() * other.maxs_y);
-        rpoint_z = rpoint_z * (random() * other.maxs_z);
-        rpoint = other.origin + rpoint;
-        //te_field_mineral(rpoint, normalize(rpoint - other.origin) * 10, 0.5);
-      }
-      
-      //Zone Damage - ARMOR
-      if( (self.damageType & 2) ){
-        if( (other.data_type == DATA_VEHC) || (other.data_type == DATA_MECH) ){
-          rpoint = randomvec();
-          rpoint_x = rpoint_x * (random() * self.compAltOffset_x);
-          rpoint_y = rpoint_y * (random() * self.compAltOffset_y);
-          rpoint_z = rpoint_z * (random() * self.compAltOffset_z);
-          rpoint = other.origin + rpoint;
-          //te_field_rad(rpoint, normalize(rpoint - self.dest) * 10, 0.5);
-          t_damage(other, self, world, self.damageValue, rpoint, '0 0 0');        
-        }
-      }
-      
-      //Zone Damage - ENERGY
-      if( (self.damageType & 4) ){
-        other.energy = other.energy - self.damageValue;
-        if( other.energy < 0 ){
-          other.energy = 0;
-         }
-        //realized damageValue can be inverted...
-        if( other.energy > other.energyMax ){
-          other.energy = other.energyMax;
-        }
-      }
-      
-      if( (other.flags & FL_CLIENT) ){
-        client_send_enviro_warning( other );
-      }
-      if( (self.damageType & 8) ){
-        //TODO - impact speed?
-      }
-      
-      if( (self.spawnflags & 16) ){
-        //remove on first touch
-        self.think = SUB_Remove;
-        self.nextthink = time + 0.01;
-      }
-    }
+    self.nextthink = time + (random() * self.wait);
+    return;
   }
 };
 
-/*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
-A Damage Zone is an area that hurts all units within the zone.
+void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_ini={
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  self.vec_size = entSize;
+  self.th_walk = thFunc;
   
+  if( (self.spawnflags & START_OFF) ){
+    self.isActive = FALSE;
+  }
+  else{
+    self.isActive = TRUE;
+  }
+  if( (self.spawnflags & LIFETIME) ){
+    if( !self.data_lifetime ){
+      //lifetime not specified, and there's no default value;
+      self.spawnflags = self.spawnflags - (self.spawnflags & LIFETIME);
+    }
+  }
+  if( !self.wait ){
+    self.wait = defWait;
+  }
+  if( !self.alpha ){
+    self.alpha = 1.0;
+  }
+  
+  if( !self.damageValue ){
+    self.damageValue = defDmg;
+  }
+  self.effects = self.effects | EF_NODEPTHTEST;  
+
+  self.model = "q3mdl/testball.md3";
+  setmodel( self, self.model );
+  self.think = map_hazard_ping;
+  self.nextthink = time + 0.1;
+  self.angles_y = anglemod( (random() * 180) + (random() * 180) );
+};
+
+void() map_damage_zone_rad_think={
+  local entity unit;
+  local vector mechHit;
+  
+  if( self.isActive ){
+    for( unit = nextent(world); unit != world; unit = nextent(unit) ){
+      if( !(unit.flags & FL_UNIT) ){
+        continue;
+      }
+      if( vlen(unit.origin - self.origin) > (self.maxs_x * 1.15) ){
+        continue;
+      }
+      if( unit.data_type == DATA_MECH ){
+        mechHit = randomvec() * unit.maxs_x;
+        mechHit = unit.origin + mechHit;
+        t_damage(unit, self, world, self.damageValue, mechHit, '0 0 0');
+      }
+      else{
+        t_damage(unit, self, world, self.damageValue, unit.origin, '0 0 0');  
+      }
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+    }
+  }
+  
+  if( (self.spawnflags & LIFETIME) ){
+    if( time > self.data_lifetime ){
+      self.isActive = FALSE;
+      self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+      return;
+    }
+  }
+  self.think = map_damage_zone_rad_think;
+  self.nextthink = time + (random() * self.wait);
+};
+void() map_damage_zone_crs_think={
+  local entity unit;
+  local vector mechHit;
+  
+  if( self.isActive ){
+    for( unit = nextent(world); unit != world; unit = nextent(unit) ){
+      if( !(unit.flags & FL_UNIT) ){
+        continue;
+      }
+      if( vlen(unit.origin - self.origin) > (self.maxs_x * 3) ){
+        continue;
+      }
+      t_damage_shield(unit, self, world, self.damageValue, unit.origin, (self.vec_size > 1) );  
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+    }
+  }
+  
+  if( (self.spawnflags & LIFETIME) ){
+    if( time > self.data_lifetime ){
+      self.isActive = FALSE;
+      self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+      return;
+    }
+  }
+  self.think = map_damage_zone_crs_think;
+  self.nextthink = time + (random() * self.wait);
+};
+void() map_damage_zone_qtm_think={
+  local entity unit;
+  local vector mechHit;
+  
+  if( self.isActive ){
+    for( unit = nextent(world); unit != world; unit = nextent(unit) ){
+      if( !(unit.flags & FL_UNIT) ){
+        continue;
+      }
+      if( vlen(unit.origin - self.origin) > (self.maxs_x * 3) ){
+        continue;
+      }
+      if( unit.energy <= 0 ){
+        continue;
+      }
+      t_damage_shield(unit, self, world, self.damageValue, unit.origin, (self.vec_size > 1) );  
+      unit.energy = unit.energy - (self.damageValue / 10);
+      if( unit.energy < 0 ){
+        unit.energy = 0;
+      }
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+    }
+  }
+  
+  if( (self.spawnflags & LIFETIME) ){
+    if( time > self.data_lifetime ){
+      self.isActive = FALSE;
+      self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+      return;
+    }
+  }
+  self.think = map_damage_zone_qtm_think;
+  self.nextthink = time + (random() * self.wait);
+};
+
+
+/*QUAKED map_hazard_rad_small (0.8 0.45 0.25) (-18 -18 0) (18 18 20) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
+
+damageValue = 1
+wait = 0.3
+alpha = 1
+
 -------- KEYS -------- 
-.mins = <vector> lower bounds of box if using point entity
-.maxs = <vector> upper bounds of box if using point entity
+.damageValue = <float> 
 .targetname = <string> [targetname] - make triggerable
-.damageValue = <float> - amount of damage to impart
-.damageType = <float> [flag] 1 - NO_DMG SHIELDS
-.damageType = <float> [flag] 2 - NO_DMG ARMOR
-.damageType = <float> [flag] 4 - NO_DMG ENERGY
-.damageType = <float> [flag] 8 - NO_DMG SPEED
-.data_lifetime = <float> - time to live, use with spawnflags[2]
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+.alpha = <float> - alpha level on model of ent
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() map_hazard_rad_small={
+  self.data_idx = 1;
+  self.damageType = 1;
+  
+  map_damage_zone_ini(1, map_damage_zone_rad_think, 1, 0.5);
+
+  setsize( self, '-18 -18 0', '18 18 20' );
+  setorigin( self, self.origin );
+};
+/*QUAKED map_hazard_rad_medium (0.8 0.45 0.25) (-40 -40 0) (40 40 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
+
+damageValue = 2
+wait = 0.25
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.67 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
 .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
 
 -------- SPAWNFLAGS -------- 
@@ -171,190 +218,237 @@ REMOVE_ONTOUCH 16: remove on first touch
 ACTIVE_ONTOUCH 32: activate on-touch
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
-void() map_damage_zone={
-  local vector tempMin;
-  local vector tempMax;
+void() map_hazard_rad_medium={
+  self.data_idx = 2;
+  self.damageType = 1;
   
-  self.isActive = TRUE;
-  
-  if( !self.mins ){
-    self.mins = VEC_HULL_MIN;
-  }
-  if( !self.maxs ){
-    self.mins = VEC_HULL_MAX;
-  }
-  tempMin = self.mins;
-  tempMax = self.maxs;
-  
-  self.solid = SOLID_TRIGGER;
-  self.movetype = MOVETYPE_NONE;
-  self.touch = map_damage_zone_touch;
-  self.count1 = time + (random() * 0.5);
-  
-	self.dest1 = self.origin;
-  util_MapDeveloperMarker();
-  setsize( self, tempMin, tempMax );
-  setorigin( self, self.origin );
-  self.data_type = DATA_MAP_DMG;
+  map_damage_zone_ini(2, map_damage_zone_rad_think, 2, 0.4);
 
-  //compatability with func_damage_zone
-  self.dest = self.origin;
-  self.compAltOffset = self.maxs;
-  self.compOffset = self.mins;
-  
-  //volume limiter to prevent render choke, this will default to the LAST damageType in the flag value, but if you're already blending, you probably dont' care.
-  if( (self.damageType & 1) ){
-    if( self.maxs_x <= 128 ){
-      self.count = SHIELD_SMALL;
-    }
-    else if( self.maxs_x <= 256 ){
-      self.count = SHIELD_MEDIUM;
-    }
-    else{
-      self.count = SHIELD_LARGE;
-    }
-  }
-  if( (self.damageType & 2) ){
-    if( self.maxs_x <= 128 ){
-      self.count = RAD_SMALL;
-    }
-    else if( self.maxs_x <= 256 ){
-      self.count = RAD_MEDIUM;
-    }
-    else{
-      self.count = RAD_LARGE;
-    }
-  }
-  if( (self.damageType & 4) ){
-    if( self.maxs_x <= 128 ){
-      self.count = QUAN_SMALL;
-    }
-    else if( self.maxs_x <= 256 ){
-      self.count = QUAN_MEDIUM;
-    }
-    else{
-      self.count = QUAN_LARGE;
-    }
-  }
-  
-  if( (self.spawnflags & 2) ){
-    if( !self.data_lifetime ){
-      self.spawnflags = self.spawnflags - (self.spawnflags & 2);
-      }
-  }
-  
-  if( (self.spawnflags & 4) ){
-    if( !self.wait ){
-      self.spawnflags = self.spawnflags - (self.spawnflags & 4);
-      }
-  }
-  
-  self.effects = self.effects | EF_NODEPTHTEST;  
-  self.SendEntity = send_damage_zone;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_BURN | SENDFLAG_MOVE);
-  
-  if( (self.spawnflags & 1) ){
-    //START_OFF
-    self.isActive = FALSE;
-    return;
-  }
-  
-  if( (self.spawnflags & IT_QUAD) ){
-    //IF marked for mapKey, tag data_type as such.
-    self.alpha = 0.01;
-    self.scale = 0.01;
-  }
-  else{
-    self.data_type = 0;
-  }
+  setsize( self, '-40 -40 0', '40 40 25' );
+  setorigin( self, self.origin );
 };
+/*QUAKED map_hazard_rad_large (0.8 0.45 0.25) (-48 -48 0) (48 48 30) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
 
-/*
-  Brush-binding compatability.
+damageValue = 3
+wait = 0.3
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.79 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
-void() func_damage_zone={
-	if (self.movedir == '0 0 0')
-	if (self.angles != '0 0 0')
-		SetMovedir ();
-	self.solid = SOLID_TRIGGER;
-  setmodel( self, self.model );	// set size and link into world
-  setsize( self, self.mins, self.maxs );
+void() map_hazard_rad_large={
+  self.data_idx = 3;
+  self.damageType = 1;
+  
+  map_damage_zone_ini(3, map_damage_zone_rad_think, 3, 0.3);
+  
+  setsize( self, '-48 -48 0', '48 48 30' );
   setorigin( self, self.origin );
-	self.movetype = MOVETYPE_NONE;
+};
+//=================================================================================================
+/*QUAKED map_hazard_crys_small (0.25 0.45 0.8) (-20 -20 0) (20 20 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
+
+damageValue = 1
+wait = 0.3
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = <float> 
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+.alpha = <float> - alpha level on model of ent
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() map_hazard_crys_small={
+  self.data_idx = 1;
+  self.damageType = 2;
   
-  self.isActive = TRUE;
-  self.touch = map_damage_zone_touch;
-  self.count1 = time + (random() * 0.5);
-  self.data_type = DATA_MAP_DMG;
+  map_damage_zone_ini(1, map_damage_zone_crs_think, 2, 0.5);
+
+  setsize( self, '-20 -20 0', '20 20 25' );
+  setorigin( self, self.origin );
+  self.solid = SOLID_SLIDEBOX;
+};
+/*QUAKED map_hazard_crys_medium (0.25 0.45 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
+
+damageValue = 2
+wait = 0.25
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.67 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() map_hazard_crys_medium={
+  self.data_idx = 2;
+  self.damageType = 2;
   
-  self.dest = (self.absmin + self.absmax) * 0.5;
-  self.compAltOffset = self.absmax - self.dest;
-  self.compOffset = self.compAltOffset * -1;
+  map_damage_zone_ini(2, map_damage_zone_crs_think, 4, 0.4);
+
+  setsize( self, '-30 -30 0', '30 30 40' );
+  setorigin( self, self.origin );
+  self.solid = SOLID_SLIDEBOX;
+};
+/*QUAKED map_hazard_crys_large (0.25 0.45 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
+
+damageValue = 3
+wait = 0.2
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.79 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() map_hazard_crys_large={
+  self.data_idx = 3;
+  self.damageType = 2;
   
-  self.dest1 = (self.maxs * 0.5) + (self.mins * 0.5);
+  map_damage_zone_ini(3, map_damage_zone_crs_think, 6, 0.2);
   
-  if( (self.spawnflags & 2) ){
-    if( !self.data_lifetime ){
-      self.spawnflags = self.spawnflags - (self.spawnflags & 2);
-    }
-  }
+  setsize( self, '-40 -40 0', '40 40 52' );
+  setorigin( self, self.origin );
+  self.solid = SOLID_SLIDEBOX;
+};
+//=================================================================================================
+/*QUAKED map_hazard_quant_small (0.8 0.25 0.8) (-20 -20 0) (20 20 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
+
+damageValue = 1
+wait = 0.3
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = <float> 
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+.alpha = <float> - alpha level on model of ent
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() map_hazard_quant_small={
+  self.data_idx = 1;
+  self.damageType = 3;
   
-  if( (self.spawnflags & 4) ){
-    if( !self.wait ){
-      self.spawnflags = self.spawnflags - (self.spawnflags & 4);
-    }
-  }
-    //volume limiter to prevent render choke, this will default to the LAST damageType in the flag value, but if you're already blending, you probably dont' care.
-  if( (self.damageType & 1) ){
-    if( self.maxs_x <= 128 ){
-      self.count = SHIELD_SMALL;
-    }
-    else if( self.maxs_x <= 256 ){
-      self.count = SHIELD_MEDIUM;
-    }
-    else{
-      self.count = SHIELD_LARGE;
-    }
-  }
-  if( (self.damageType & 2) ){
-    if( self.maxs_x <= 128 ){
-      self.count = RAD_SMALL;
-    }
-    else if( self.maxs_x <= 256 ){
-      self.count = RAD_MEDIUM;
-    }
-    else{
-      self.count = RAD_LARGE;
-    }
-  }
-  if( (self.damageType & 4) ){
-    if( self.maxs_x <= 128 ){
-      self.count = QUAN_SMALL;
-    }
-    else if( self.maxs_x <= 256 ){
-      self.count = QUAN_MEDIUM;
-    }
-    else{
-      self.count = QUAN_LARGE;
-    }
-  }
+  map_damage_zone_ini(1, map_damage_zone_qtm_think, 2, 0.5);
+
+  setsize( self, '-20 -20 0', '20 20 25' );
+  setorigin( self, self.origin );
+  self.solid = SOLID_SLIDEBOX;
+};
+/*QUAKED map_hazard_quant_medium (0.8 0.25 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
+
+damageValue = 2
+wait = 0.25
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.67 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() map_hazard_quant_medium={
+  self.data_idx = 2;
+  self.damageType = 3;
   
-  self.effects = self.effects | EF_NODEPTHTEST;  
-  self.SendEntity = send_damage_zone;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_BURN | SENDFLAG_MOVE);
+  map_damage_zone_ini(2, map_damage_zone_qtm_think, 4, 0.4);
+
+  setsize( self, '-30 -30 0', '30 30 40' );
+  setorigin( self, self.origin );
+  self.solid = SOLID_SLIDEBOX;
+};
+/*QUAKED map_hazard_quant_large (0.8 0.25 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
+
+damageValue = 3
+wait = 0.2
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.79 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+void() map_hazard_quant_large={
+  self.data_idx = 3;
+  self.damageType = 3;
   
-  if( (self.spawnflags & 1) ){
-    //START_OFF
-    self.isActive = FALSE;
-    return;
-  }
+  map_damage_zone_ini(3, map_damage_zone_qtm_think, 6, 0.2);
   
-  if( (self.spawnflags & IT_QUAD) ){
-    //IF marked for mapKey, tag data_type as such.
-    self.alpha = 0.01;
-    self.scale = 0.01;
-  }
-  else{
-    self.data_type = 0;
-  }
+  setsize( self, '-40 -40 0', '40 40 52' );
+  setorigin( self, self.origin );
+  self.solid = SOLID_SLIDEBOX;
 };

@@ -2135,19 +2135,148 @@ RESTORE_WORLDVAL 16: restore original wind values
 
 
 
-/*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
-A Damage Zone is an area that hurts all units within the zone.
-  
+/*QUAKED map_hazard_rad_small (0.8 0.45 0.25) (-18 -18 0) (18 18 20) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
+
+damageValue = 1
+wait = 0.3
+alpha = 1
+
 -------- KEYS -------- 
-.mins = <vector> lower bounds of box
-.maxs = <vector> upper bounds of box
+.damageValue = <float> 
 .targetname = <string> [targetname] - make triggerable
-.damageValue = <float> - amount of damage to impart
-.damageType = <float> [flag] 1 - NO_DMG SHIELDS
-.damageType = <float> [flag] 2 - NO_DMG ARMOR
-.damageType = <float> [flag] 4 - NO_DMG ENERGY
-.damageType = <float> [flag] 8 - NO_DMG SPEED
-.data_lifetime = <float> - time to live, use with spawnflags[2]
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+.alpha = <float> - alpha level on model of ent
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+
+
+/*QUAKED map_hazard_rad_medium (0.8 0.45 0.25) (-40 -40 0) (40 40 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
+
+damageValue = 2
+wait = 0.25
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.67 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+
+/*QUAKED map_hazard_rad_large (0.8 0.45 0.25) (-48 -48 0) (48 48 30) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
+
+damageValue = 3
+wait = 0.3
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.79 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+
+/*QUAKED map_deploy_point (1 0.45 0.2) (-26 -26 -44) (26 26 28)
+Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
+Deploy points can be tailored to specific factions, and can be activated/deactivated.
+
+-------- KEYS -------- 
+.faction = <float> - Deploy Point only appears for this faction
+.data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
+.isActive = <float> [bool] - if active, allow players to spawn here.  
+.trigOnSpawn = <string> [target] - map object to fire when this is created
+*/
+
+
+/*QUAKED map_hazard_crys_small (0.25 0.45 0.8) (-20 -20 0) (20 20 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
+
+damageValue = 1
+wait = 0.3
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = <float> 
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+.alpha = <float> - alpha level on model of ent
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+/*QUAKED map_hazard_crys_medium (0.25 0.45 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
+
+damageValue = 2
+wait = 0.25
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.67 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+/*QUAKED map_hazard_crys_large (0.25 0.45 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
+
+damageValue = 3
+wait = 0.2
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.79 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
 .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
 
 -------- SPAWNFLAGS -------- 
@@ -2162,16 +2291,73 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 
+/*QUAKED map_hazard_quant_small (0.8 0.25 0.8) (-20 -20 0) (20 20 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
 
-/*QUAKED map_deploy_point (1 0.45 0.2) (-26 -26 -44) (26 26 28)
-Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
-Deploy points can be tailored to specific factions, and can be activated/deactivated.
+damageValue = 1
+wait = 0.3
+alpha = 1
 
 -------- KEYS -------- 
-.faction = <float> - Deploy Point only appears for this faction
-.data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
-.isActive = <float> [bool] - if active, allow players to spawn here.  
-.trigOnSpawn = <string> [target] - map object to fire when this is created
+.damageValue = <float> 
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+.alpha = <float> - alpha level on model of ent
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+/*QUAKED map_hazard_quant_medium (0.8 0.25 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
+
+damageValue = 2
+wait = 0.25
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.67 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+/*QUAKED map_hazard_quant_large (0.8 0.25 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
+
+damageValue = 3
+wait = 0.2
+alpha = 1
+
+-------- KEYS -------- 
+.damageValue = 0.79 <DEFAULT>
+.targetname = <string> [targetname] - make triggerable
+.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 

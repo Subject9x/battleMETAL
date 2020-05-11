@@ -16,8 +16,6 @@ void() info_notnull =
 
 //============================================================================
 
-float START_OFF = 1;
-
 void() light_use =
 {
 	if (self.spawnflags & START_OFF)

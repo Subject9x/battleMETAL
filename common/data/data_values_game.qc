@@ -312,6 +312,16 @@ float SENDFLAG_NEWENT = 128;
 
 
 //============================
+//     COMMON SPAWNFLAGS
+//============================
+float START_OFF = 1; //only activated by trigger
+float LIFETIME = 2; //lifetime
+float REACTIVATE = 4; //reactivate after countdown
+float REMOVE_FIRSTUSE = 8; //remove after first countdown
+float REMOVE_ONTOUCH = 16; //remove on first touch
+float ACTIVE_ONTOUCH = 32; //activate on-touch
+float IS_MAPKEY = 4194304; //mark's this entity on player's briefing map.
+//============================
 //     SHARED STATS         
 //============================
 float RADAR_SWEEP = 2.5;
