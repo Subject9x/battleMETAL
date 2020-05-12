@@ -88,7 +88,9 @@ void() map_damage_zone_rad_think={
       else{
         t_damage(unit, self, world, self.damageValue, unit.origin, '0 0 0');  
       }
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      if( (unit.flags & FL_CLIENT) ){
+        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      }
     }
   }
   
@@ -115,7 +117,9 @@ void() map_damage_zone_crs_think={
         continue;
       }
       t_damage_shield(unit, self, world, self.damageValue, unit.origin, (self.vec_size > 1) );  
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      if( (unit.flags & FL_CLIENT) ){
+        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      }
     }
   }
   
@@ -144,12 +148,13 @@ void() map_damage_zone_qtm_think={
       if( unit.energy <= 0 ){
         continue;
       }
-      t_damage_shield(unit, self, world, self.damageValue, unit.origin, (self.vec_size > 1) );  
-      unit.energy = unit.energy - (self.damageValue / 10);
+      unit.energy = unit.energy - self.damageValue;
       if( unit.energy < 0 ){
         unit.energy = 0;
       }
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      if( (unit.flags & FL_CLIENT) ){
+        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      }
     }
   }
   
@@ -356,7 +361,7 @@ void() map_hazard_crys_large={
   self.solid = SOLID_SLIDEBOX;
 };
 //=================================================================================================
-/*QUAKED map_hazard_quant_small (0.8 0.25 0.8) (-20 -20 0) (20 20 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+/*QUAKED map_hazard_quant_small (0.8 0.25 0.8) (-25 -25 0) (25 25 30) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
 
 damageValue = 1
@@ -382,13 +387,12 @@ void() map_hazard_quant_small={
   self.data_idx = 1;
   self.damageType = 3;
   
-  map_damage_zone_ini(1, map_damage_zone_qtm_think, 2, 0.5);
+  map_damage_zone_ini(1, map_damage_zone_qtm_think, 3, 0.6);
 
-  setsize( self, '-20 -20 0', '20 20 25' );
+  setsize( self, '-25 -25 0', '25 25 30' );
   setorigin( self, self.origin );
-  self.solid = SOLID_SLIDEBOX;
 };
-/*QUAKED map_hazard_quant_medium (0.8 0.25 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+/*QUAKED map_hazard_quant_medium (0.8 0.25 0.8) (-35 -35 0) (35 35 45) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
 
 damageValue = 2
@@ -414,13 +418,12 @@ void() map_hazard_quant_medium={
   self.data_idx = 2;
   self.damageType = 3;
   
-  map_damage_zone_ini(2, map_damage_zone_qtm_think, 4, 0.4);
+  map_damage_zone_ini(2, map_damage_zone_qtm_think, 4, 0.5);
 
-  setsize( self, '-30 -30 0', '30 30 40' );
+  setsize( self, '-35 -35 0', '35 35 45' );
   setorigin( self, self.origin );
-  self.solid = SOLID_SLIDEBOX;
 };
-/*QUAKED map_hazard_quant_large (0.8 0.25 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+/*QUAKED map_hazard_quant_large (0.8 0.25 0.8) (-45 -45 0) (45 45 56) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
 
 damageValue = 3
@@ -446,9 +449,8 @@ void() map_hazard_quant_large={
   self.data_idx = 3;
   self.damageType = 3;
   
-  map_damage_zone_ini(3, map_damage_zone_qtm_think, 6, 0.2);
+  map_damage_zone_ini(3, map_damage_zone_qtm_think, 5, 0.3);
   
-  setsize( self, '-40 -40 0', '40 40 52' );
+  setsize( self, '-45 -45 0', '45 45 56' );
   setorigin( self, self.origin );
-  self.solid = SOLID_SLIDEBOX;
 };

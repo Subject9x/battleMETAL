@@ -281,7 +281,7 @@ void() map_hazard_stat_dlights={
 };
 void() map_hazard_quant_dlights={
   makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 128, '1 0.4 0.6', 2, "", PFLAGS_FULLDYNAMIC);
+  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 110, '1 0.4 0.6', 1, "", PFLAGS_FULLDYNAMIC);
 };
 
 void() hazard_rad_think={
@@ -360,7 +360,7 @@ void() hazard_quant_think={
   if( random() > 0.6 ){
     te_field_quantum(partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)), 1);
   }
-  te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
+  //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
    
   if( self.isActive ){
     self.think = hazard_quant_think;
@@ -432,21 +432,23 @@ void(float dataIdx) hazard_ini_static={
 void(float dataIdx) hazard_ini_quant={
   switch( dataIdx ){
     case 2:
-      self.model = "q3mdl/map/rads/min_base_md.obj";
+      self.model = "q3mdl/map/rads/qtm_base_md.obj";
       setmodel(self, self.model);
       setsize( self, '-30 -30 0', '30 30 40' );
       break;
     case 3:
-      self.model = "q3mdl/map/rads/min_base_lg.obj";
+      self.model = "q3mdl/map/rads/qtm_base_lg.obj";
       setmodel(self, self.model);
       setsize( self, '-40 -40 0', '40 40 52' );
       break;
     default:
-      self.model = "q3mdl/map/rads/min_base_sm.obj";
+      self.model = "q3mdl/map/rads/qtm_base_sm.obj";
       setmodel(self, self.model);
       setsize( self, '-20 -20 0', '20 20 25' );
       break;
   }
+  self.effects = self.effects | EF_DOUBLESIDED;
+  self.alpha = 0.75;
   if( self.isActive ){
     self.think = hazard_quant_think;
     self.nextthink = servertime + (random() * self.wait);

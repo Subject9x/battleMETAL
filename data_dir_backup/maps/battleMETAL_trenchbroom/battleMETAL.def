@@ -2291,7 +2291,7 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 
 
-/*QUAKED map_hazard_quant_small (0.8 0.25 0.8) (-20 -20 0) (20 20 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+/*QUAKED map_hazard_quant_small (0.8 0.25 0.8) (-25 -25 0) (25 25 30) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
 
 damageValue = 1
@@ -2314,7 +2314,7 @@ ACTIVE_ONTOUCH 32: activate on-touch
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
-/*QUAKED map_hazard_quant_medium (0.8 0.25 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+/*QUAKED map_hazard_quant_medium (0.8 0.25 0.8) (-35 -35 0) (35 35 45) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
 
 damageValue = 2
@@ -2337,7 +2337,7 @@ ACTIVE_ONTOUCH 32: activate on-touch
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
-/*QUAKED map_hazard_quant_large (0.8 0.25 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
+/*QUAKED map_hazard_quant_large (0.8 0.25 0.8) (-45 -45 0) (45 45 56) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
 
 damageValue = 3
