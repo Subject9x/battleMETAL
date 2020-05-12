@@ -252,7 +252,21 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   VIEW_CTR_x = VIEW_MAX_x / 2;
   VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_SCALE = 0.35;
-  	// add any polygons we want here
+
+  //alter fog settings if needed
+  cl_particles_fogFrame();
+  
+  setproperty(VF_FOG_DENSITY, FOG_DENSITY);
+  setproperty(VF_FOG_COLOR_R, FOG_RED);
+  setproperty(VF_FOG_COLOR_G, FOG_GREEN);
+  setproperty(VF_FOG_COLOR_B, FOG_BLUE);
+  setproperty(VF_FOG_ALPHA,FOG_ALPHA );
+  setproperty(VF_FOG_START, FOG_DIST_MIN);
+  setproperty(VF_FOG_END, FOG_DIST_MAX);
+  setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
+  setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);
+
+  // add any polygons we want here
 
   //DATA - Update local Client data vars from Server
   client_get_info();
@@ -291,9 +305,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     special rant: the fact that the client itself, isn't a faffing global entity in the CLIENT
     module of all things is the height of idiocy.
   */
-  
-  //alter fog settings if needed
-  cl_particles_fogFrame();
+
   
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)

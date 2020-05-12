@@ -83,9 +83,7 @@ void() build_unit_camera={
     self.angles = partParent.angles;
     self.v_angle = self.angles - partParent.angles;
     self.effects = self.effects | EF_LOWPRECISION;
-    if( (this.flags & FL_MONSTER) ){
-      self.effects = self.effects | EF_NODRAW;
-    }
+    self.effects = self.effects | EF_NODRAW;
   self = this;
 };
 

@@ -59,6 +59,16 @@ float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust={
 
 /*
   checks every frame to see if fog needs to transition
+      localcmd(newFog);
+      float VF_FOG_DENSITY  = 202; //(float)
+      float VF_FOG_COLOR_R  = 204; //(float)
+      float VF_FOG_COLOR_G  = 205; //(float)
+      float VF_FOG_COLOR_B  = 206; //(float)
+      float VF_FOG_ALPHA    = 207; //(float)
+      float VF_FOG_START    = 208; //(float)
+      float VF_FOG_END      = 209; //(float)
+      float VF_FOG_HEIGHT   = 210; //(float)
+      float VF_FOG_FADEDEPTH= 211; //(float)
 */
 void() cl_particles_fogFrame={
   local string newFog;
@@ -86,7 +96,7 @@ void() cl_particles_fogFrame={
     newFog = strcat(newFog, ftos(FOG_DIST_MAX)," ");
     newFog = strcat(newFog, ftos(FOG_DIST_TOP)," ");
     newFog = strcat(newFog, ftos(FOG_FADE_DEPTH),"\n");
-    localcmd(newFog);
+    //localcmd(newFog);
   }
 };
 
