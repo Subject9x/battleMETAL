@@ -491,6 +491,7 @@ void() ui_navbutton_team_click={
     }
   }
   if( nextFaction != CLIENT_faction ){
+    menu_update_colors( nextFaction );
     cl_set_faction( nextFaction );
   }
 };

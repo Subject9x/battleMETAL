@@ -211,6 +211,7 @@ void() client_state_events={
         }
       }
       if( !MENU_ACTIVE ){
+        menu_update_colors( CLIENT_faction );
         menu_enter( menu_connect_choice() );
       }
       return;

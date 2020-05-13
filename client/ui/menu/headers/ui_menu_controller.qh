@@ -20,6 +20,7 @@ entity MENU_NAV_LIST;
 float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 
+void( float fact ) menu_update_colors;
 void( float menuId ) menu_enter;
 void() menu_exit;
 float() menu_connect_choice;

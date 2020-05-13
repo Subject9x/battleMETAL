@@ -16,20 +16,6 @@ void() menu_handleFrame={
   local vector mpos; 
   cursorpos = getmousepos();
   
-  //UI Theming
-  if( CLIENT_faction == 1 ){
-    CLR_DEF_UI_BRIEF = CLR_UI_PSC_BRIEF;
-    CLR_DEF_UI_HANGAR = CLR_UI_PSC_HANGAR;
-    CLR_DEF_UI_ARMING = CLR_UI_PSC_ARMING;
-    CLR_DEF_UI_DEPLOY = CLR_UI_PSC_DEPLOY;
-  }
-  else if( CLIENT_faction == 2 ){
-    CLR_DEF_UI_BRIEF = CLR_UI_AUTH_BRIEF;
-    CLR_DEF_UI_HANGAR = CLR_UI_AUTH_HANGAR;
-    CLR_DEF_UI_ARMING = CLR_UI_AUTH_ARMING;
-    CLR_DEF_UI_DEPLOY = CLR_UI_AUTH_DEPLOY;
-  }
-
   cursorImageSize = draw_getimagesize(UI_CURSOR_IMG);
   cursorImageSize = gui_percentToPixelRawVec( gui_scaleSize(cursorImageSize, VIEW_SCALE/1.25) );
   
@@ -181,6 +167,35 @@ void() mechAcceptButtonListener={
 
   if( menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ, FALSE) ){
 
+  }
+};
+
+void( float fact ) menu_update_colors={
+  switch( fact ){
+    case FACTION_PSC:
+      CLR_DEF_UI_BRIEF = CLR_UI_PSC_BRIEF;
+      CLR_DEF_UI_HANGAR = CLR_UI_PSC_HANGAR;
+      CLR_DEF_UI_ARMING = CLR_UI_PSC_ARMING;
+      CLR_DEF_UI_DEPLOY = CLR_UI_PSC_DEPLOY;
+      break;
+    case FACTION_SURVEST:
+      CLR_DEF_UI_BRIEF = CLR_UI_SRV_BRIEF;
+      CLR_DEF_UI_HANGAR = CLR_UI_SRV_HANGAR;
+      CLR_DEF_UI_ARMING = CLR_UI_SRV_ARMING;
+      CLR_DEF_UI_DEPLOY = CLR_UI_SRV_DEPLOY;
+      break;
+    case FACTION_MILITAR:
+      CLR_DEF_UI_BRIEF = CLR_UI_MIL_BRIEF;
+      CLR_DEF_UI_HANGAR = CLR_UI_MIL_HANGAR;
+      CLR_DEF_UI_ARMING = CLR_UI_MIL_ARMING;
+      CLR_DEF_UI_DEPLOY = CLR_UI_MIL_DEPLOY;
+      break;
+    default:
+      CLR_DEF_UI_BRIEF = CLR_UI_DM_BRIEF;
+      CLR_DEF_UI_HANGAR = CLR_UI_DM_HANGAR;
+      CLR_DEF_UI_ARMING = CLR_UI_DM_ARMING;
+      CLR_DEF_UI_DEPLOY = CLR_UI_DM_DEPLOY;
+      break;
   }
 };
 

@@ -253,7 +253,7 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
     panelMOfs_x = panelOfs_x;
     panelMOfs_y = panelOfs_y + panelSurvestSize_y;
     panelMilitarSize_y = HUD_SCORE_MILITAR_HEIGHT;
-    drawpic(panelMOfs, UI_DEF_BOX_512, panelMilitarSize, CLR_UI_AUTH_BRIEF, HUD_ALPHA * 1.15, 0);
+    drawpic(panelMOfs, UI_DEF_BOX_512, panelMilitarSize, CLR_UI_MIL_BRIEF, HUD_ALPHA * 1.15, 0);
   }
   
   drawfont_prev = drawfont;

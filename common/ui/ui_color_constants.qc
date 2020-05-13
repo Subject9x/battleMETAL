@@ -31,11 +31,23 @@ vector CLR_UI_PSC_HANGAR = '0.47 0.47 0.45';
 vector CLR_UI_PSC_ARMING = '0.4 0.2 0.1';
 vector CLR_UI_PSC_DEPLOY = '0.42 0.53 0.37';
 
-//Author theming
-vector CLR_UI_AUTH_BRIEF = '0.12 0.17 0.27';
-vector CLR_UI_AUTH_HANGAR = '0.14 0.137 0.29';
-vector CLR_UI_AUTH_ARMING = '0.1 0.21 0.26';
-vector CLR_UI_AUTH_DEPLOY = '0.27 0.5 0.6';
+//Survest Theming
+vector CLR_UI_SRV_BRIEF = '0.8 0.48 0';
+vector CLR_UI_SRV_HANGAR = '0.47 0.47 0.32';
+vector CLR_UI_SRV_ARMING = '0.37 0.5 0';
+vector CLR_UI_SRV_DEPLOY = '0.7 0.17 0';
+
+//Militar theming
+vector CLR_UI_MIL_BRIEF = '0.12 0.17 0.27';
+vector CLR_UI_MIL_HANGAR = '0.14 0.137 0.29';
+vector CLR_UI_MIL_ARMING = '0.1 0.21 0.26';
+vector CLR_UI_MIL_DEPLOY = '0.27 0.5 0.6';
+
+//Deathmatch theming
+vector CLR_UI_DM_BRIEF = '0.26 0.4 0.0';
+vector CLR_UI_DM_HANGAR = '0.26 0.4 0.0';
+vector CLR_UI_DM_ARMING = '0.26 0.4 0.0';
+vector CLR_UI_DM_DEPLOY = '0.26 0.4 0.0';
 
 //HUD Colors
 vector CLR_HUD_WHITE = '0.9 0.9 0.9';     //0

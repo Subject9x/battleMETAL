@@ -448,7 +448,7 @@ void( vector menuOrg ) menu_connect_draw_players_team={
   local float itr;
   
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec(UI_CONNECT_TEAMLIST_SIZE), CLR_UI_PSC_BRIEF * 0.9, 1, 0);
-  drawpic(menuOrg + gui_percentToPixelRawVec('310 0'), UI_DEF_BOX_512, gui_percentToPixelRawVec(UI_CONNECT_TEAMLIST_SIZE), CLR_UI_AUTH_BRIEF, 1, 0);
+  drawpic(menuOrg + gui_percentToPixelRawVec('310 0'), UI_DEF_BOX_512, gui_percentToPixelRawVec(UI_CONNECT_TEAMLIST_SIZE), CLR_UI_MIL_BRIEF, 1, 0);
 
   drawpic( menuOrg + gui_percentToPixelRawVec('100 48'), "gfx/ui/ui_icon_survest.png", gui_percentToPixelRawVec('110 100'), '0.85 0.85 0.85', 0.33, 0);
   drawpic( menuOrg + gui_percentToPixelRawVec('394 38'), "gfx/ui/ui_icon_militar.png", gui_percentToPixelRawVec('128 128'), '0.85 0.85 0.85', 0.33, 0);
