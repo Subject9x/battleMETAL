@@ -396,6 +396,7 @@ void(float dataIdx) hazard_ini_rad={
       setsize( self, '-25 -25 0', '25 25 20' );
       break;
   }
+  self.effects = self.effects | (EF_NOSHADOW);
   if( self.isActive ){
     self.think = hazard_rad_think;
     self.nextthink = servertime + (random() * self.wait);
@@ -476,10 +477,16 @@ void( float isNew, float entFlags ) data_map_damage={
       
   if( (entFlags & SENDFLAG_DEAD) ){
     self.isActive = ReadByte();
+    if( self.damageType == 3 ){
+      self.effects = self.effects | EF_DOUBLESIDED;
+    }
   }
   
   if( (entFlags & SENDFLAG_CRIT) ){
     crit = ReadByte();
+    if( self.damageType == 3 ){
+      self.effects = self.effects | EF_DOUBLESIDED;
+    }
   }
   
   if( (entFlags & SENDFLAG_NEWENT) ){
@@ -496,7 +503,6 @@ void( float isNew, float entFlags ) data_map_damage={
     self.alpha = ReadShort();
     self.wait = ReadAngle();
     self.effects = self.effects - (self.effects & EF_NODEPTHTEST);
-    self.effects = self.effects | (EF_NOSHADOW);
   }
   if( isNew ){
     self.drawmask = MASK_NORMAL;

@@ -258,14 +258,17 @@ float CHAIN_FIRE_INTERVAL = 0.15;
   float BAL2 = 2;
   float BAL3 = 4;
   float BAL4 = 8;
+  
   float ENE1 = 16;
   float ENE2 = 32;
   float ENE3 = 64;
   float ENE4 = 128;
+  
   float MIS1 = 256;
   float MIS2 = 512;
   float MIS3 = 1024;
   float MIS4 = 2048;
+  
   float MSC1 = 4096;
   float MSC2 = 8192;
   float MSC3 = 16384;

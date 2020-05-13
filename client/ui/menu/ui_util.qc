@@ -31,58 +31,112 @@ void(string imageIcon, vector org, float selected, float allow) ui_renderHardPoi
   }
 };
 
+void( vector org, vector imgSize, float wepType, vector highColor ) ui_renderHardpoint_class_pair={
+  local string pic;
+  if( wepType < 1 || wepType > MSC4 ){
+    //safety valve
+    return;
+  }
+  switch( wepType ){
+    default:
+      pic = "";
+      break;
+    case BAL1:
+      pic = "gfx/ui/wep_icons/bal1.tga";
+      break;
+    case BAL2:
+      pic = "gfx/ui/wep_icons/bal2.tga";
+      break;
+    case BAL3:
+      pic = "gfx/ui/wep_icons/bal3.tga";
+      break;
+    case BAL4:
+      pic = "gfx/ui/wep_icons/bal4.tga";
+      break;
+    case ENE1:
+      pic = "gfx/ui/wep_icons/ene1.tga";
+      break;
+    case ENE2:
+      pic = "gfx/ui/wep_icons/ene2.tga";
+      break;
+    case ENE3:
+      pic = "gfx/ui/wep_icons/ene3.tga";
+      break;
+    case ENE4:
+      pic = "gfx/ui/wep_icons/ene4.tga";
+      break;
+    case MIS1:
+      pic = "gfx/ui/wep_icons/mis1.tga";
+      break;
+    case MIS2:
+      pic = "gfx/ui/wep_icons/mis2.tga";
+      break;
+    case MIS3:
+      pic = "gfx/ui/wep_icons/mis3.tga";
+      break;
+    case MIS4:
+      pic = "gfx/ui/wep_icons/mis4.tga";
+      break;
+    case MSC1:
+      pic = "gfx/ui/wep_icons/misc1.tga";
+      break;
+    case MSC2:
+      pic = "gfx/ui/wep_icons/misc2.tga";
+      break;
+    case MSC3:
+      pic = "gfx/ui/wep_icons/misc3.tga";
+      break;
+    case MSC4:
+      pic = "gfx/ui/wep_icons/misc4.tga";
+      break;
+  } 
+  if( pic == "" ){
+    return;
+  }
+  drawpic( org, pic, gui_percentToPixelRawVec(imgSize), highColor, 1, 0);
+};
+
 /*
   Renders 1 row in the Hangar Menu.
   Displays Hardpoint data for the selected Mech.
 */
 void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   local vector pofs, hptNumOrg, hptSizeOrg;
-  local float localHardpointSize;
-  local string hardpointLabel, hardpointSizeLabel;
+  local string hardpointLabel;
   local float drawfontLocal;
   
   drawfontLocal = drawfont;
   drawfontLocal = FONT_NUM_ROBOT_REGULAR;
   
-  pofs = org + gui_percentToPixelRawVec('0 8');
-  pofs_x = org_x + gui_percentXRaw((hpt_num * 26));
+  pofs = org + gui_percentToPixelRawVec('-10 -15');
+  pofs_y = pofs_y + gui_percentYRaw(((hpt_num + 1) * 20));
   
-  drawpic( pofs + gui_percentToPixelRawVec('0 -2'), UI_BOX_SELECT, gui_percentToPixelRawVec('25 150'), '0.45 0.45 0.45', 0.75, 0);
+  hardpointLabel = strcat(ftos(hpt_num + 1),")");
   
-  hardpointLabel = strcat("{",ftos(hpt_num + 1),"}");
-  
-  hptNumOrg = pofs + gui_percentToPixelRawVec('0 -2');
+  hptNumOrg = pofs;
   hptNumOrg_x = hptNumOrg_x + gui_percentXRaw(25 / 2) - gui_percentXRaw(stringwidth(hardpointLabel, 0, '12 12 0') / 2);
   
   drawstring(hptNumOrg, hardpointLabel, '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
   
-  localHardpointSize = sz;
-  hardpointSizeLabel = ftos(localHardpointSize);
-  hptSizeOrg = pofs + gui_percentToPixelRawVec('0 24');
-  hptSizeOrg_x = hptSizeOrg_x + gui_percentXRaw(30 / 2) - gui_percentXRaw(stringwidth(hardpointLabel, 0, '14 14 0') / 2);
-  if( localHardpointSize == 2 ){
-    drawstring(hptSizeOrg, hardpointSizeLabel, '14 14 0', CLR_DEF_WHITE,1 , 0);
-  }
-  else if( localHardpointSize == 3){
-    drawstring(hptSizeOrg, hardpointSizeLabel, '14 14 0', CLR_DEF_WHITE,1 , 0);
-  }
-  else{
-    drawstring(hptSizeOrg, hardpointSizeLabel, '14 14 0', CLR_DEF_WHITE,1 , 0);
-  }
+  local float itr;
+  local float hpointVal;
+  local vector itemColor;
   
-  if((types & DMG_ENE)){
-    drawpic(pofs + gui_percentToPixelRawVec('3 60'), UI_WEP_ENE, gui_percentToPixelRawVec('18 18'), CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', 1, 0);
+  hptSizeOrg = hptNumOrg;
+  hptSizeOrg_x = hptSizeOrg_x + gui_percentXRaw(11);
+  hpointVal = 1;
+  for( itr = 0; itr < 16; itr = itr + 1 ){
+    if( (sz & hpointVal) ){
+      itemColor = '1 1 1';
+    }
+    else{
+      itemColor = '0.33 0.33 0.33';
+    }
+    ui_renderHardpoint_class_pair( hptSizeOrg, '14 14', hpointVal, itemColor);
+    
+    hptSizeOrg_x = hptSizeOrg_x + gui_percentXRaw(15);
+    hpointVal = hpointVal * 2;
   }
-  if((types & DMG_BAL)){
-    drawpic(pofs + gui_percentToPixelRawVec('3 80'), UI_WEP_BAL, gui_percentToPixelRawVec('18 18'), CLR_DEF_ARM_HALF, 1, 0);
-  }
-  if((types & DMG_EXP)){
-    drawpic(pofs + gui_percentToPixelRawVec('3 100'), UI_WEP_EXP, gui_percentToPixelRawVec('18 18'), CLR_DEF_ARM_OK, 1, 0);
-  }
-  if((types & DMG_MSC)){
-    drawpic(pofs + gui_percentToPixelRawVec('3 120'), UI_WEP_MSC, gui_percentToPixelRawVec('18 18'), CLR_HUD_PURPLE, 1, 0);
-  }
-  
   drawfont = drawfontLocal;
 };
 

@@ -820,7 +820,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   if(ITEM1_DATA_SIZE > -1 ){
     //reload
     drawstring(icol,"Hardpoint Size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM1_DATA_SIZE), '14 14', '1 1 1', 1, 0);
+    ui_renderHardpoint_class_pair( icol + gui_percentToPixelRawVec('112 0'), '14 14', ITEM1_DATA_SIZE, '1 1 1' );
     icol = icol + gui_percentToPixelRawVec('0 12');
   }
 

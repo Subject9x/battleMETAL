@@ -94,7 +94,7 @@ void() data_ini_balaket_={
   //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
   data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 #endif
 //=====================================
 

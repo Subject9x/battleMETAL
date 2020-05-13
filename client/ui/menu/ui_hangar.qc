@@ -100,13 +100,13 @@ void(vector ofs) menu_hangar_MechDisplay={
   local vector mechSize;
   local vector mechMins;
   
-  nofs = ofs + gui_percentToPixelRawVec('377 8');
+  nofs = ofs + gui_percentToPixelRawVec('367 8');
   
-  drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('250 250'), CLR_DEF_UI_HANGAR, 1, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('242 242'), CLR_DEF_UI_HANGAR, 1, 0);
+  drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('260 250'), CLR_DEF_UI_HANGAR, 1, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('252 242'), CLR_DEF_UI_HANGAR, 1, 0);
   
   if(SELECT_MECH > FALSE){
-    i_sz = gui_percentToPixelRawVec('250 250');
+    i_sz = gui_percentToPixelRawVec('250 242');
     hofs_x = nofs_x;
     hofs_y = nofs_y;
     if( MECH_DATA_ICON != "" ){
@@ -159,34 +159,28 @@ void(vector ofs) menu_hangar_MechHPoints={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  nofs = ofs + gui_percentToPixelRawVec('365 272');
-  drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('255 192'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('18.5 32'), UI_DEF_BOX_512, gui_percentToPixelRawVec('236 38'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('18.5 70'), UI_DEF_BOX_512, gui_percentToPixelRawVec('236 128'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
+  nofs = ofs + gui_percentToPixelRawVec('355 262');
+  drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('265 202'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   
-  tlen = gui_percentXRaw(stringwidth("- Hardpoint Data -", 0, '10 8 0'));
+  tlen = gui_percentXRaw(stringwidth("-Hardpoint Restrictions-", 0, '10 8 0'));
   tofs_x = nofs_x + gui_percentXRaw(255/2) - (tlen/2);
   tofs_y = nofs_y + gui_percentYRaw(10);
-  drawstring(tofs, "-HardpointData -", '10 10 0', CLR_DEF_WHITE, 1, 0);
+  drawstring(tofs + gui_percentToPixelRawVec('9.9 0'), "-Hardpoint Restrictions-", '10 10 0', CLR_DEF_WHITE, 1, 0);
     
   if(SELECT_MECH > FALSE){
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-      ui_renderHardpointRow((nofs + gui_percentToPixelRawVec('20 14')), hardpointItr - 1, hardpoint.hardpointType, hardpoint.hardpointSize);
+      ui_renderHardpointRow((nofs + gui_percentToPixelRawVec('20 20')), hardpointItr - 1, hardpoint.hardpointType, hardpoint.hardpointSize);
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
   }
-  drawstring(nofs + gui_percentToPixelRawVec('20 32'), "-Sizes-", '8 8 0', CLR_DEF_WHITE, 1, 0);
-  
-  drawstring(nofs + gui_percentToPixelRawVec('20 72'), "-Types-", '8 8 0', CLR_DEF_WHITE, 1, 0);
-  
   drawfont = drawfont_prev;
   
   local vector helpOrg;
-  helpOrg_x = nofs_x + gui_percentXRaw(260) - gui_percentXRaw(12);
-  helpOrg_y = nofs_y + gui_percentYRaw(12);
+  helpOrg_x = nofs_x + gui_percentXRaw(270) - gui_percentXRaw(12);
+  helpOrg_y = nofs_y - gui_percentYRaw(6);
   HANGAR_HELP_HARDPOINT_LIST = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 };
@@ -198,18 +192,18 @@ void(vector ofs) menu_hangar_MechList={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  drawpic(ofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('116 440'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
+  drawpic(ofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('106 440'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   
   textLen = stringwidth( "-Available Metal-", 0, '10 10 0');
   labelOfs = ofs + gui_percentToPixelRawVec('9.9 16');
-  labelOfs_x = labelOfs_x + gui_percentXRaw( 116 / 2 ) - gui_percentXRaw( textLen / 2 );
+  labelOfs_x = labelOfs_x + gui_percentXRaw( 106 / 2 ) - gui_percentXRaw( textLen / 2 );
   drawstring(labelOfs, "-Available Metal-", '10 10 0', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
   
-  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('16 24'), 1, "======LIGHT======", CLR_DEF_IFF_ENEMY, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
-  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('16 150'), 2, "======MEDIUM=====", CLR_DEF_ARM_HALF, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
-  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('16 275'), 3, "======HEAVY======", CLR_DEF_ARM_OK, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('12 24'), 1, "======LIGHT======", CLR_DEF_IFF_ENEMY, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('12 150'), 2, "======MEDIUM=====", CLR_DEF_ARM_HALF, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('12 275'), 3, "======HEAVY======", CLR_DEF_ARM_OK, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
 };
 
 void(vector ofs, float mechSize, string listName, vector listNameColor, float mechListTotalValue, vector mechListOriginValue, vector mechListSizeValue ) menu_hangar_MechList_draw={
@@ -248,7 +242,7 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
         lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
         if( (mechId == CLIENT_MENU_sel_mech) ){
           clr = CLR_DEF_TXT_HIGHLIGHT;
-          gui_renderTintImage(TRUE, lofs - gui_percentToPixelRawVec('2 2'), UI_BOX_SELECT, gui_percentToPixelRawVec('108 13'), CLR_DEF_ARM_OK, 1, 0);
+          gui_renderTintImage(TRUE, lofs - gui_percentToPixelRawVec('0 2'), UI_BOX_SELECT, gui_percentToPixelRawVec('104 13'), CLR_DEF_ARM_OK, 1, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
@@ -319,7 +313,7 @@ void(vector ofs) menu_hangar_MechInfo={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  nofs = ofs + gui_percentToPixelRawVec('125 32');
+  nofs = ofs + gui_percentToPixelRawVec('115 32');
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('250 180'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
 
   slen = stringwidth("-Metal Info-", 0 ,'10 10 0');
@@ -406,7 +400,7 @@ void(vector ofs) menu_hangar_MechFluff={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  nofs = ofs + gui_percentToPixelRawVec('115 203');
+  nofs = ofs + gui_percentToPixelRawVec('105 203');
   drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('250 261'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   
   if(SELECT_MECH > FALSE){
