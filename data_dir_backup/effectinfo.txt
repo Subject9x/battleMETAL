@@ -729,13 +729,13 @@
     tex 40 40
     size 2 3
     alpha 350 425 8
-    time 1.25 1.25
+    time 1 1
     velocitymultiplier 3
     stretchfactor 0.75
     
   //TE_FLK_MUZZLE - SMOKE
     effect TE_FLK_MUZZLE
-    count 3
+    count 1
     type spark
     blend alpha
     color 0x000000 0x1C1C1C
@@ -767,7 +767,7 @@
 
   //TE_FLK_MUZZLE - SPARKS
     effect TE_FLK_MUZZLE
-    count 5
+    count 2
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -798,14 +798,13 @@
     tex 0 7
     size 9 11
     sizeincrease 0.25
-    alpha 240 256 0.075
-    time 7 9
+    alpha 128 150 64
     originjitter 0.15 0.15 0.15
     velocityjitter 0.05 0.5 1
     
   //TE_FLK_IMPACT - BULLET FRAGS
     effect TE_FLK_IMPACT
-    count 10
+    count 3
     type spark
     blend alpha
     orientation spark
@@ -860,7 +859,7 @@
     
   //TE_FLK_DIRT - GRAVEL BITS
     effect TE_FLK_DIRT
-    count 5
+    count 2
     type alphastatic
     blend alpha
     orientation spark
@@ -877,7 +876,7 @@
 
   //TE_FLK_DIRT - BULLET FRAGS
     effect TE_FLK_DIRT
-    count 2
+    count 1
     type spark
     blend alpha
     orientation spark
@@ -2521,7 +2520,7 @@ velocitymultiplier 1
 //FOOT STOMP SAND EFFECT==================================
   //TE_STOMP_SAND - GRAVEL BITS
     effect TE_STOMP_SAND
-    count 5
+    count 2
     type alphastatic
     blend alpha
     orientation spark
@@ -2668,8 +2667,8 @@ type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50
 tex 0 7
-size 4 5
-sizeincrease 2
+size 1.5 2.5
+sizeincrease 1
 alpha 128 256 64
 originjitter 8 8 1
 velocityjitter 1 1 -6
@@ -2688,7 +2687,7 @@ type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50
 tex 0 7
-size 8 12
+size 3 4
 sizeincrease 0.5
 alpha 200 240 96
 originjitter 8 8 1
@@ -2707,7 +2706,7 @@ type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50
 tex 0 7
-size 2 8
+size 3 4
 sizeincrease 0.5
 alpha 128 240 128
 time 1 2
@@ -2728,7 +2727,7 @@ type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50
 tex 0 7
-size 2 8
+size 3 4
 sizeincrease 0.5
 alpha 128 240 128
 time 1 2
@@ -2749,7 +2748,7 @@ type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50
 tex 0 7
-size 2 8
+size 3 4
 sizeincrease 0.5
 alpha 128 240 128
 time 1 2
@@ -2797,7 +2796,7 @@ velocitymultiplier 2
    
   //TE_REPAIR_MUZZLE - SPARK PUFFS
     effect TE_REPAIR_MUZZLE
-    count 4
+    count 2
     type spark
     blend alpha
     color 0xFF8000 0xFF8000
@@ -2854,7 +2853,7 @@ velocitymultiplier 2
 
   //TE_REPAIR_RAIL - RAIL HEAT DISTORT
     effect TE_REPAIR_RAIL
-    count 4
+    count 2
     type spark
     blend alpha
     color 0xFAFAFA 0xFAFAFA
@@ -2902,7 +2901,7 @@ velocitymultiplier 2
 //RADIATION FIELD===========================
   //TE_FIELD_RAD - glob
     effect TE_FIELD_RAD
-    count 2
+    count 1
     type alphastatic
     blend alpha
     color 0x40FF00 0xF7F8E0

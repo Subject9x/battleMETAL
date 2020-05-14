@@ -36,7 +36,7 @@ void() misc_build_die1={
   trigger_event( self, self.trigOnDeath );
 
   local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
+  shoot = randompos(self.absmin * 0.67, self.absmax * 0.67);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
   
   self.think = misc_build_die2;
@@ -295,7 +295,7 @@ void() building_misc_fact_steam={
   if( !self.health) {
     self.health = self.max_health = 100;
   }
-  self.vec_size = 3;
+  self.vec_size = 2;
   self.model = "q3mdl/buildings/misc/misc_fact_steam.obj";
   
   misc_building();

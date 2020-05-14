@@ -441,6 +441,9 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
   ang = vectoangles(muzzleVel - muzzleOrg);
   makevectors(ang);
   pointsound( muzzleOrg, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM);
+  if( vlen(muzzleVel - muzzleOrg) >= 1500 ){
+    pointsound( muzzleVel, "sound/weapons/atc_fire.ogg", 0.5, ATTN_NORM);
+  }
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), muzzleOrg, norm * 4, 1);
   pointparticles( particleeffectnum("TE_ATC_TRACER"), muzzleOrg, norm * 1400, 1);
     switch(impactStyle){
@@ -468,6 +471,9 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
 //Light Laser ID 3
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_las={
   pointsound( muzzleOrg, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM);
+  if( vlen(muzzleVel - muzzleOrg) >= 1500 ){
+    pointsound( muzzleVel, "sound/weapons/laser_fire.ogg", 0.5, ATTN_NORM);
+  }
   pointparticles( particleeffectnum("TE_LAS_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleVel) * 2, 1);
   trailparticles( world, particleeffectnum("TE_LAS_RAIL"), muzzleOrg, muzzleVel );
   
@@ -525,6 +531,11 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
   local vector norm;
   norm = normalize(muzzleVel - muzzleOrg);
   pointsound( muzzleOrg, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM);
+  
+  if( vlen(muzzleVel - muzzleOrg) >= 1500 ){
+    pointsound( muzzleVel, "sound/weapons/pac_fire.ogg", 0.5, ATTN_NORM);
+  }
+  
   pointparticles( particleeffectnum("TE_PAC_MUZZLE"), muzzleOrg, norm * 4, 1);
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), muzzleOrg, muzzleVel );
   
@@ -603,6 +614,9 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
   norm = normalize(muzzleVel - muzzleOrg);
   ang = vectoangles(muzzleVel - muzzleOrg);
   makevectors(ang);
+  if( vlen(muzzleVel - muzzleOrg) >= 1500 ){
+    pointsound( muzzleVel, "sound/weapons/flak_fire.ogg", 0.5, ATTN_NORM);
+  }
   pointsound( muzzleOrg, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), muzzleOrg, norm * 4, 1);
   pointparticles( particleeffectnum("TE_FLK_TRACER"), muzzleOrg, norm * 1600, 1);

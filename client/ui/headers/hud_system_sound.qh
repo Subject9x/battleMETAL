@@ -50,6 +50,8 @@ float SQUED;
 string SOUNDQUEUE[6]; //match this with SQSIZE / VQSIZE
 //float SQ_LAST_IDX;    //index of last sound in array before 'null' values;
 
+float SFX_REACT_TIME; //reactor hum timer
+
 //Transmission Queue - for AI voices
 float TRTIME;
 float TR_TIME_NEXT;

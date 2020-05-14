@@ -58,6 +58,11 @@ void() ai_mech_sniper_die={
   ctrl_unit_part_death(self.armRight);
   ctrl_unit_part_death(self.cockpit);
   
+  self.model = "";
+  setmodel(self, self.model);
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin(self, self.origin);
+  
   ai_alert_close( self.enemy );
   
   self.think = ai_mech_sniper_die2;

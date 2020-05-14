@@ -19,6 +19,13 @@ void() snd_hud_vfx_frame={
   local string nextSound;
   local float nextEnt;
   
+  if( cvar("bgmvolume") <= 0 ){
+    if( time > SFX_REACT_TIME ){
+      SFX_REACT_TIME = time + 30;
+      pointsound(pmove_org, SND_MCH_SFX_REACT, 1, ATTN_NONE);
+    }
+  }
+  
   if(time > STIME_NEXT){
     if(SOUNDQUEUE[0] != "null"){
       sfx_len = soundlength(SOUNDQUEUE[0]);

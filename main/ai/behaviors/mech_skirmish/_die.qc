@@ -47,21 +47,23 @@ void() ai_mech_sk_die={
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
 
-  if( self.ai_node_recall ){
+  if( self.ai_node_recall.owner == self ){
     remove(self.ai_node_recall);
   }
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
   
-  setsize(self, '-1 -1 -1', '1 1 1');
-  setorigin(self, self.origin);
-  droptofloor();
   ctrl_unit_part_death(self.torsoCenter);
   ctrl_unit_part_death(self.torsoLeft);
   ctrl_unit_part_death(self.torsoRight);
   ctrl_unit_part_death(self.armLeft);
   ctrl_unit_part_death(self.armRight);
   ctrl_unit_part_death(self.cockpit);
+  
+  self.model = "";
+  setmodel(self, self.model);
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin(self, self.origin);
   
   self.think = ai_mech_sk_die2;
   self.nextthink = time + 1;

@@ -330,11 +330,10 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         client_event_mission_name_frame();
       }
     }
+    //HUD sound system
+    snd_hud_vfx_frame();
   }
-   
-  //HUD sound system
-  snd_hud_vfx_frame();
- 
+  
   //menu system
   if(MENU_ACTIVE){
     menu_handleFrame();
