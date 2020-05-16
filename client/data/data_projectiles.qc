@@ -39,6 +39,10 @@ void( float dataID ) data_sync_new_projectile={
     case UID_ITEM_missile_swarm:
       data_projectile_ini_missile_swarm_();
       break;
+      
+    case UID_ITEM_quantum_rifle:
+      data_projectile_ini_quantum_bit_();
+      break;
   }
 };
 

@@ -25,22 +25,22 @@ void() data_ini_monitor_={
 //ENERGY AND SHIELDS===================
   self.energyMax = 600;
   self.energyRate= 3.85;
-  self.shieldMax = 300;
+  self.shieldMax = 375;
   self.shieldRate= 2.75;
   self.startupDelay = 9;
   self.evasionDrain = 1.4;
 //=====================================
  
 //RADAR================================
-  self.radar_range = 1200;  //1200
+  self.radar_range = 1400;
   self.w_firetime = 3;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_LOWTECH;
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 85;
-  self.data_speed_strafe = 85;
-  self.data_speed_backward = 85;
+  self.data_speed_forward = 90; //85
+  self.data_speed_strafe = 90; //85
+  self.data_speed_backward = 90; //85
   self.data_speed_accel = 2;
   self.ramUpMax = 2;
   self.ramCooldown = 2;

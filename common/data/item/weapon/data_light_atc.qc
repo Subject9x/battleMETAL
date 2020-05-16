@@ -22,8 +22,8 @@ void() data_ini_light_atc_={
   self.reloadMax = 1.15;
   self.energyRate = 0;
   
-  self.w_range = 2800;  //1800
-  self.damageValue = 6.67;
+  self.w_range = 2800;
+  self.damageValue = 8.87;
   self.damageType = DMG_BAL;
 
   self.techLevel = 1;
@@ -71,14 +71,12 @@ void() data_ini_attack_latc_={
     }
     else{
       if( trace_ent ){
-        if( trace_ent.shield > 0 ){
-          damage = self.damageValue / 2 ;
-          t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, FALSE); 
+        if( trace_ent.shield > (trace_ent.shieldMax * 0.25) ){
+          t_damage_shield(trace_ent, self,self.owner, self.damageValue * 0.67, trace_endpos, FALSE); 
           impactStyle = IMPACT_SHIELD;
         }
         else{
-          damage = self.damageValue + (self.damageValue * 0.18);
-          t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+          t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
           impactStyle = IMPACT_ARMOR;
         } 
       }

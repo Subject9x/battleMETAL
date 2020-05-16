@@ -23,7 +23,7 @@ void() data_ini_missile_activeradar_={
   self.reloadMax = 6.5;
   self.energyRate = 0;
   
-  self.w_range = 3000;  //1600
+  self.w_range = 3000;
   self.damageValue = 50;
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  

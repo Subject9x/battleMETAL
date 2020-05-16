@@ -13,7 +13,7 @@ void() data_prj_emp_touch;
 void() data_projectile_emp_think_;
 void() data_prj_emp_explode;
 
-float DAT_PRJ_EMP_PROXYRAD    = 200;
+float DAT_PRJ_EMP_PROXYRAD    = 300;  //200
 float DAT_PRJ_EMP_EXPRAD      = 300;
 #endif CSQC
 
@@ -65,6 +65,9 @@ void() data_projectile_emp_think_={
         continue;
       }
       if(proxy.takedamage <= 0){
+        continue;
+      }
+      if( (proxy.data_type != DATA_MECH) && (proxy.data_type != DATA_VEHC) ){
         continue;
       }
       traceline(self.origin, proxy.origin, FALSE, self.owner);

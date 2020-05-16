@@ -24,13 +24,13 @@ void() data_ini_ion_={
   self.energyRate = 100;
   
   self.w_range = 1500; 
-  self.damageValue = 75;
+  self.damageValue = 90;  //75
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
 
   self.techLevel = 1;
   self.equipSize = ENE2;
   
-  self.spreadDefault = '0.018 0.013 0';
+  self.spreadDefault = '0.025 0.05 0'; //'0.018 0.013 0'
   self.wepFireOffset = '0 0 4';
   
   #ifdef CSQC

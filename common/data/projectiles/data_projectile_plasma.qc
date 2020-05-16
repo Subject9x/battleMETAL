@@ -9,7 +9,7 @@ Overview:
 */
 
 #ifndef CSQC
-float data_projectile_plasma_burn_time = 1.5;
+float data_projectile_plasma_burn_time = 0.5;
 float data_projectile_plasma_burn_dmg = 0.1;
 
 void() data_projectile_plasma_touch;
@@ -84,8 +84,8 @@ void() data_projectile_plasma_burn_th={
     self.nextthink = time + 0.1;
     return;
   }
-  
-  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.cockpit.origin, FALSE);
+
+  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.cockpit.origin, TRUE);
   
   if(time > self.data_lifetime){
     self.think = SUB_Remove;
@@ -102,8 +102,8 @@ void() data_projectile_plasma_burn_th={
 
 void() data_projectile_plasma_touch={
   local entity hit;
-  local float exp;
   local float damage;
+  local float proc;
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
@@ -118,15 +118,16 @@ void() data_projectile_plasma_touch={
   
   if(other.takedamage){
     damage = self.damageValue;
-    exp = time / self.data_lifetime;
     if(other.shield > 0){
-      if( exp > 0.75 ){
-        damage = damage + (damage * 0.33);
+      proc = FALSE;
+      if( other.shield <= (other.shieldMax * 0.1) ){
+        proc = TRUE;
+        damage = damage * 0.5;
       }
       else{
-        damage = damage * 0.45;
+        damage = damage * 0.33;
       }
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, proc);
       self.impactType = IMPACT_SHIELD;
     }
     else{
@@ -134,7 +135,7 @@ void() data_projectile_plasma_touch={
       self.enemy = other;
       self.cockpit = hit;
       self.damageValue = data_projectile_plasma_burn_dmg;
-      self.data_lifetime = time + (data_projectile_plasma_burn_time * exp);
+      self.data_lifetime = time + data_projectile_plasma_burn_time;
       setsize(self, '-1 -1 -1', '1 1 1');
       if( other != hit ){
         setorigin(self, self.origin);
@@ -153,7 +154,7 @@ void() data_projectile_plasma_touch={
 };
 
 void() data_projectile_plasma_think_={
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
   if( time > self.data_lifetime ){
     client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
     self.touch = SUB_Null;

@@ -18,19 +18,19 @@ void() data_ini_plasma_={
   self.data_idx = 6;  
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.33;
-  self.reloadMax = 0.33;
+  self.reloadRate = 0.45;
+  self.reloadMax = 0.45;
   self.energyRate = 0;
   
-  self.w_range = 1800;  //1200
-  self.damageValue = 10;
+  self.w_range = 1800;
+  self.damageValue = 18;
   self.damageType = DMG_BAL;
   
   self.techLevel = 3;
   self.equipSize = BAL2;
   
   self.wepFireOffset = '0 0 6';
-  self.spreadDefault = '0.005 0.005 0';
+  self.spreadDefault = '0.0075 0.0075 0';
   
   #ifdef CSQC  
     self.w_name = "Rotary Plasma Chamber";
@@ -55,14 +55,9 @@ void() data_ini_plasma_={
 #ifndef CSQC
 void() data_ini_attack_plasma_={
 
-  self.spreadDefault = self.spreadDefault * 1.33; 
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( TRUE );
-
-  if( self.w_state == RELOADING ) {
-    self.spreadDefault = self.spreadCache;
-  }
 
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
   

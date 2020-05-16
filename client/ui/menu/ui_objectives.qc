@@ -13,7 +13,7 @@ void(vector org) ui_objective_frame={
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
-    lst_idx = 1;
+    lst_idx = 0;
     itr = 0; 
     torg = org + gui_percentToPixelRawVec('16 128');
     drawstring(torg, "[OBJECTIVES]", '14 14 0', HUD_COLOR_DEF, 0.9, 0);

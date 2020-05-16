@@ -251,7 +251,7 @@ void() ButtonCommands={
   //action mapping: +regen
   if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
     if( self.shield < self.shieldMax ){
-      self.shield = self.shield + (self.shieldRate * 0.55);
+      self.shield = self.shield + (self.shieldRate * 0.75);
       self.energy = self.energy - (self.shieldRate * self.shieldRateMod);
       if( self.energy < 0 ){
         self.energy = 0;

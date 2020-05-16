@@ -20,14 +20,14 @@ void() data_ini_equip_energy_battery_={
   self.w_clipsize = 1;
   self.reloadRate = 0;
   self.reloadMax = 0;
-  self.energyRate = 0.33;  // percent multiplier to unit's Energy Max
+  self.energyRate = 0.67;  // percent multiplier to unit's Energy Max
   
   self.w_range = 0;
   self.damageValue = 0;
   self.damageType = DMG_MSC;
  
   self.techLevel = 2;
-  self.equipSize = MSC3;
+  self.equipSize = MSC2;
   
   #ifdef CSQC
     self.w_name = "Energy Battery";
@@ -40,7 +40,7 @@ void() data_ini_equip_energy_battery_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "ENBAT";
-    self.description = "+ Increases <Energy maximum> by 33%.";
+    self.description = "+ Increases <Energy maximum> by 67%.";
     self.icon = "gfx/ui/wep_icons/eqp_enbat.png";
   #endif
   

@@ -20,7 +20,7 @@ void() data_ini_equip_sensor_array_={
   self.w_clipsize = 1;
   self.reloadRate = 0;
   self.reloadMax = 0;
-  self.energyRate = 0.3;  // percent multiplier to unit's radar range
+  self.energyRate = 0.5;  // percent multiplier to unit's radar range
   
   self.w_range = 0;
   self.damageValue = 0;
@@ -40,7 +40,7 @@ void() data_ini_equip_sensor_array_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "LSAR";
-    self.description = "+ Increases <Radar Range> by 30%.";
+    self.description = "+ Increases <Radar Range> by 50%.";
     self.icon = "gfx/ui/wep_icons/eqp_lsar.png";
   #endif
   

@@ -62,7 +62,8 @@ void() data_ini_missile_swarm_={
 
 #ifndef CSQC
 void() data_ini_attack_missile_swarm_={
-
+  local entity hold;
+  
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( FALSE );
@@ -72,14 +73,25 @@ void() data_ini_attack_missile_swarm_={
 
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + (v_forward * 1), FIRE_ENDPOINT, 0);
   
-  local vector end;
+  ctrl_weapon_make_projectile( -1 );
+  
+  if( ai_valid_target(self.owner.enemy) ){
+    hold = self;
+    self = hold.owner;
+    if( util_checkPointAngleImpl(self.enemy.origin) ){
+      NEWSHOT.enemy = self.enemy;
+    }
+    self = hold;
+  }
+  NEWSHOT = world;
+  
+  /*local vector end;
   local vector spread;
   spread = '0.15 0.15 0';
   end = FIRE_ENDPOINT;
   FIRE_ENDPOINT = end + crandom()*spread_x*v_right + crandom()*spread_y*v_up;
-  ctrl_weapon_make_projectile( -1 );
   
   FIRE_ENDPOINT = end + crandom()*spread_x*v_right + crandom()*spread_y*v_up;
-  ctrl_weapon_make_projectile( -1 );
+  ctrl_weapon_make_projectile( -1 );*/
 };
 #endif

@@ -13,7 +13,7 @@ void() data_projectile_ion_touch;
 void() data_projectile_ion_think_;
 void() data_projectile_ion_explode;
 
-float DAT_PRJ_ION_EXPRAD      = 100;
+float DAT_PRJ_ION_EXPRAD = 100;
 #endif CSQC
 
 #ifdef CSQC

@@ -10,39 +10,35 @@ Overview:
       Submunitions
       Affects shields only
 */
-
-float DAT_QRFL_QBITS = 10; 
-vector DAT_QRFL_SPREAD = '0.095 0.095 0';
 #ifndef CSQC
 void() data_ini_attack_quantum_;
 #endif
 
 void() data_ini_quantum_={
 
-  self.data_idx = 5;  
+  self.data_idx = UID_ITEM_quantum_rifle;  
   
   self.w_clipsize = 1;
   self.reloadRate = 5;
   self.reloadMax = 5;
   self.energyRate = 0;
   
-  self.w_range = 1200;
-  self.damageValue = 18;
+  self.w_range = 1500;
+  self.damageValue = 50;
   self.damageType = DMG_BAL;
   
   self.techLevel = 2;
-  self.equipSize = BAL1;
+  self.equipSize = BAL3;
  
-  self.spreadDefault = '0 0 0';
+  self.spreadDefault = '0.09 0.09 0';
   self.wepFireOffset = '0 0 2';
   
   #ifdef CSQC
     self.w_name = "Quantum Rifle";
     self.fire_sound = "sound/weapons/qrfl_fire.ogg";
     self.model = "q3mdl/weapons/w_qrf.md3";
-    self.damageValue = (DAT_QRFL_QBITS * self.damageValue);
     self.abbrev = "QRF";
-    self.description = "+ Instant-impact weapon. + Shotgun-style spread pattern. + 10 qbits per shot.";
+    self.description = "+ Single-fire projectile. + will home on your target when facing them. + Anti-Shield. + reduced damage on Armor.";
     self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
   #endif 
   
@@ -58,45 +54,25 @@ void() data_ini_quantum_={
 
 #ifndef CSQC
 void() data_ini_attack_quantum_={
-  local float qbits;
-  local vector dir;
-  local vector qbdir;
-  local float qdmgShield;
-  local float qdmgShieldTotal;
-  local float qdmg;
+  local entity hold;
   
   ctrl_weapon_fireOffset();  
   
   ctrl_weapon_updateAmmo( FALSE );
  
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
-  
-  dir = normalize(FIRE_ENDPOINT - FIRE_ORIGIN);
 
-  if( (self.owner.flags & FL_CLIENT) ){
-    qbits = DAT_QRFL_QBITS;
-  }
-  else{
-    qbits = rint(DAT_QRFL_QBITS * 0.5);
-  }
- 
-  while( qbits > 0 ){
-    qbdir = dir + crandom()*DAT_QRFL_SPREAD_x*v_right + crandom()*DAT_QRFL_SPREAD_y*v_up;
-    traceline(self.origin, self.origin + qbdir*self.w_range, FALSE, self);
-    if( trace_fraction != 1.0 ){
-      qdmg = self.damageValue;
-      if(trace_ent.shield > 0 ){
-        qdmgShield = min((trace_ent.shield/trace_ent.shieldMax), 0.5);
-        qdmgShieldTotal = qdmgShieldTotal + (self.damageValue * qdmgShield);
-        qdmg = qdmg - (self.damageValue * qdmgShield);
-      }
-      t_damage(trace_ent, self, self.owner, qdmg, trace_endpos, '0 0 0');
+  ctrl_weapon_make_projectile( -1 );
+
+  if( ai_valid_target(self.owner.enemy) ){
+    hold = self;
+    self = hold.owner;
+    if( util_checkPointAngleImpl(self.enemy.origin) ){
+      NEWSHOT.enemy = self.enemy;
     }
-    trailparticles(world, particleeffectnum("TE_QRFL_QBIT_TRAIL"), FIRE_ORIGIN, trace_endpos);
-    qbits = qbits - 1;
+    self = hold;
   }
-  if(trace_ent.health > 0 ){
-    trace_ent.shield = trace_ent.shield - qdmgShieldTotal;
-  }
+  NEWSHOT.avelocity = '0 0 300';
+  NEWSHOT = world;
 };
 #endif
