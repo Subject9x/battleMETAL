@@ -12,5 +12,3 @@ void( float dataID ) data_sync_new_projectile;
 float() predraw_missile;  //root predraw call, all other predraws below this are under this one.
 
 float() predraw_plasma;
-float() predraw_qbit;
-

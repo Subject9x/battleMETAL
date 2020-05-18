@@ -13,5 +13,6 @@ entity(entity targ, entity inflictor, entity attacker, float dmg_amt, vector dmg
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, float shieldBreaker) t_damage_shield;
 
 void(entity targ, entity attacker) killed;
+float(float damage, vector dir) TraceAttack;
 //float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor;
 //entity(entity parent, vector org, float start_rad) closestWeapon;

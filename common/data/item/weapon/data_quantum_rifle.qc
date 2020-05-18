@@ -18,8 +18,8 @@ void() data_ini_quantum_={
 
   self.data_idx = UID_ITEM_quantum_rifle;  
   
-  self.w_clipsize = 1;
-  self.reloadRate = 5;
+  self.w_clipsize = 4;
+  self.reloadRate = 0.15;
   self.reloadMax = 5;
   self.energyRate = 0;
   
@@ -28,7 +28,7 @@ void() data_ini_quantum_={
   self.damageType = DMG_BAL;
   
   self.techLevel = 2;
-  self.equipSize = BAL3;
+  self.equipSize = BAL2;  //BAL1 || BAL3
  
   self.spreadDefault = '0.09 0.09 0';
   self.wepFireOffset = '0 0 2';
@@ -44,7 +44,7 @@ void() data_ini_quantum_={
   
   #ifndef CSQC
     self.w_isburst = FALSE;
-    self.burstRate = 0;
+    self.burstRate = 0.67;
     self.model = "q3mdl/weapons/w_qrf.md3";
     self.w_attack = data_ini_attack_quantum_;
     self.think = default_weapon_think;
@@ -58,7 +58,7 @@ void() data_ini_attack_quantum_={
   
   ctrl_weapon_fireOffset();  
   
-  ctrl_weapon_updateAmmo( FALSE );
+  ctrl_weapon_updateAmmo( TRUE );
  
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
 

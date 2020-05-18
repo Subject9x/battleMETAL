@@ -154,7 +154,7 @@ void() data_projectile_plasma_touch={
 };
 
 void() data_projectile_plasma_think_={
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   if( time > self.data_lifetime ){
     client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
     self.touch = SUB_Null;

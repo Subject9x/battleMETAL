@@ -81,7 +81,7 @@ void() data_projectile_missile_swarm_touch={
   if(other.takedamage){
     damage = self.damageValue;
     if( other.shield > 0 ){
-      if( other.shield > (other.shieldMax * 0.5) ){
+      if( other.shield > (other.shieldMax * 0.25) ){
         damage = damage * 0.33;
       }
       else{
@@ -110,7 +110,6 @@ void() data_projectile_missile_swarm_think={
 	local vector	dir, vtemp;
   local float f_dot;
   
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
   
   if(time > self.data_lifetime){
     self.think = ctrl_missile_dud;
@@ -118,14 +117,17 @@ void() data_projectile_missile_swarm_think={
   }
   else{
     if( ai_valid_target( self.enemy ) ){
-      vtemp = self.enemy.origin + '0 0 5';
-      dir = normalize(vtemp - self.origin) * 0.33;
+      vtemp = self.enemy.origin + '0 0 10';
+      vtemp = randompos(vtemp + (self.enemy.mins * 0.75), vtemp + (self.enemy.maxs * 0.75));
+      dir = normalize(vtemp - self.origin) * 0.75;
       self.velocity = dir * self.data_velocity;
+      self.angles = vectoangles(self.velocity);
+      self.SendFlags = self.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_TURRET);
     }
-    self.nextthink = time + 0.05;
+    self.nextthink = time + 0.075;
     self.think = data_projectile_missile_swarm_think;
   }
-  self.angles = vectoangles(self.velocity);
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 
 void() data_projectile_missile_swarm_delay_int={

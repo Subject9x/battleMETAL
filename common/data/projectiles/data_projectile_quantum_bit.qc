@@ -45,8 +45,7 @@ void() data_projectile_ini_quantum_bit_={
     self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
     self.damageType = self.damageType | EFF_SHD;
     self.pcl_explode = projectile_qbit_expl;
-    self.predraw_projectile = predraw_qbit;
-    self.scale = 1.5;
+    self.scale = 1.15;
   #endif
   
   #ifndef CSQC
@@ -73,9 +72,10 @@ void() data_projectile_quantum_bit_th={
     vtemp = self.enemy.origin + '0 0 5';
     dir = normalize(vtemp - self.origin);
     dir = dir * 0.75;
-    self.velocity = dir * self.data_velocity; 
+    self.velocity = dir * self.data_velocity;
+    self.SendFlags = self.SendFlags | (SENDFLAG_TURRET | SENDFLAG_VELOCITY);
   }
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 }
 
 void() data_projectile_ini_quantum_bit_touch_={

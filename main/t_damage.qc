@@ -386,6 +386,40 @@ void(entity targ, entity attacker) killed={
 
 
 //LEGACY FROM COMBAT.QC
+/*
+================
+TraceAttack
+================
+ported over from orginal q1src,modified to return
+  TRUE = do damage logic
+  FALSE = a miss.
+*/
+float(float damage, vector dir) TraceAttack =
+{
+	local	vector	vel, org;
+	
+	vel = normalize(dir + v_up*crandom() + v_right*crandom());
+	vel = vel + 2*trace_plane_normal;
+	vel = vel * 200;
+
+	org = trace_endpos - dir*4;
+
+	if (trace_ent.takedamage)
+	{
+		/*SpawnBlood (org, vel*0.2, damage);
+		AddMultiDamage (trace_ent, damage);*/
+    return TRUE;
+	}
+	else{
+    return FALSE;
+		/*WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
+		WriteCoord (MSG_BROADCAST, org_x);
+		WriteCoord (MSG_BROADCAST, org_y);
+		WriteCoord (MSG_BROADCAST, org_z);*/
+	}
+};
+
 
 void() T_MissileTouch;
 void() T_MissileTouch={};

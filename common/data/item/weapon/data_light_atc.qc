@@ -18,7 +18,7 @@ void() data_ini_light_atc_={
   self.data_idx = 1;  
   
   self.w_clipsize = 3;
-  self.reloadRate = 0.075;
+  self.reloadRate = 0.1;  //0.075
   self.reloadMax = 1.15;
   self.energyRate = 0;
   

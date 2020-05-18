@@ -75,16 +75,3 @@ float() predraw_plasma={
   }
   return TRUE;
 };
-
-
-float() predraw_qbit={
-  self.alpha = self.alpha - 0.005;
-  if( self.alpha <= 0 ){
-    self.alpha = 0;
-    self.traileffectnum = 0;
-  }
-  return TRUE;
-};
-
-
-
