@@ -22,7 +22,7 @@ void() hrepair_th = [0, hrepair_th]{
   else{
     if( self.energy > self.energyRate ){
       self.reloadValue = self.reloadValue + self.reloadRate;
-      self.energy = self.energy - self.reloadValue * 2;
+      self.energy = self.energy - self.reloadRate * 2;
       if(self.reloadValue > self.reloadMax){
         self.reloadValue = self.reloadMax;
       }

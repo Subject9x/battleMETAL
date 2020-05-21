@@ -129,6 +129,92 @@ void() map_nav_point={
   self.nextthink = time + 0.1;
 };
 
+
+/*
+  Nav points are capped at 21, so here's the navs as bespoke map ents?
+*/
+void() nav_alpha{
+  self.data_idx = 1;
+  map_nav_point();
+}
+void() nav_beta{
+  self.data_idx = 2;
+  map_nav_point();
+}
+void() nav_delta{
+  self.data_idx = 3;
+  map_nav_point();
+}
+void() nav_epsilon{
+  self.data_idx = 4;
+  map_nav_point();
+}
+void() nav_gamma{
+  self.data_idx = 5;
+  map_nav_point();
+}
+void() nav_iota{
+  self.data_idx = 6;
+  map_nav_point();
+}
+void() nav_kappa{
+  self.data_idx = 7;
+  map_nav_point();
+}
+void() nav_lambda{
+  self.data_idx = 8;
+  map_nav_point();
+}
+void() nav_mu{
+  self.data_idx = 9;
+  map_nav_point();
+}
+void() nav_nu{
+  self.data_idx = 10;
+  map_nav_point();
+}
+void() nav_omicron{
+  self.data_idx = 11;
+  map_nav_point();
+}
+void() nav_rho{
+  self.data_idx = 12;
+  map_nav_point();
+}
+void() nav_tau{
+  self.data_idx = 13;
+  map_nav_point();
+}
+void() nav_upsilon{
+  self.data_idx = 14;
+  map_nav_point();
+}
+void() nav_zeta{
+  self.data_idx = 15;
+  map_nav_point();
+}
+void() nav_eta{
+  self.data_idx = 16;
+  map_nav_point();
+}
+void() nav_theta{
+  self.data_idx = 17;
+  map_nav_point();
+}
+void() nav_xi{
+  self.data_idx = 18;
+  map_nav_point();
+}
+void() nav_phi{
+  self.data_idx = 19;
+  map_nav_point();
+}
+void() nav_omega{
+  self.data_idx = 20;
+  map_nav_point();
+}
+
+
 void() map_nav_point_remote_send={
   self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
 };

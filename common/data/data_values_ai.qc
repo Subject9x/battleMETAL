@@ -13,8 +13,8 @@ Overview: AI values that have been spun off from common/game
 float AI_VOICE_TIME = 32;
 
 //this works to balance AI mech stats vs player mech stats.
-float AI_ADJUST_ENERGY = 0.75;
-float AI_ADJUST_SHIELD = 0.75;
+float AI_ADJUST_ENERGY = 0.85;
+float AI_ADJUST_SHIELD = 0.85;
 
 //AI TH_REACT cooldown
 float AI_REACT_ROK = 4;
@@ -23,9 +23,9 @@ float AI_REACT_VET = 2;
 float AI_REACT_ACE = 1;
 
 //AI movement speed ratio 
-float AI_WALK_SPD = 0.075;
+float AI_WALK_SPD = 0.085;
 float AI_RUN_FACTOR = 1.25;
-float AI_MECH_MOVE_FACTOR = 0.75; //mechs cannot move as fast as player
+float AI_MECH_MOVE_FACTOR = 0.85; //mechs cannot move as fast as player
 float AI_RUN_SPD = 0.2;
 float AI_PATROL_SPEED_LIMIT = 100; //units going full speed on patrol so far is rough on game balance.
 
@@ -46,10 +46,10 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.55;
-float AI_DMG_SKILL_REG = 0.65;
-float AI_DMG_SKILL_VET = 0.75;
-float AI_DMG_SKILL_ACE = 0.85;
+float AI_DMG_SKILL_ROK = 0.6;
+float AI_DMG_SKILL_REG = 0.7;
+float AI_DMG_SKILL_VET = 0.8;
+float AI_DMG_SKILL_ACE = 0.9;
 
 //Field of View as normalized dot product
 // 0.0 ~ 90d from center
@@ -77,10 +77,10 @@ float AI_YAW_VET = 1.1;
 float AI_YAW_ACE = 1.15;
 
 //attack chances
-float AI_ATTACK_ROK = 0.3;
-float AI_ATTACK_REG = 0.25;
-float AI_ATTACK_VET = 0.15;
-float AI_ATTACK_ACE = 0.1;
+float AI_ATTACK_ROK = 0.275;
+float AI_ATTACK_REG = 0.225;
+float AI_ATTACK_VET = 0.125;
+float AI_ATTACK_ACE = 0.075;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
@@ -106,7 +106,7 @@ float AI_CNV_RATE_ACE  = 0.3;
 //Armor Values
 //hp = hp * AI_ARMOR
 //AI mechs share initial stats with the player, so we have to detune them now.
-float AI_ARMOR_MECH = 0.67;
+float AI_ARMOR_MECH = 0.55;
 
 //Shield Values
 //shield = shield * AI_SHIELD

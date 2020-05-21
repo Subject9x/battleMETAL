@@ -211,10 +211,21 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   else{
     if( time > trg.shieldHitDelay ){
       if( shieldBreaker ){
-        trg.shieldHitDelay = time + (SHIELD_DELAY / 3);
+        trg.shieldHitDelay = time + (SHIELD_DELAY * 0.75);
       }
       else{
-        trg.shieldHitDelay = time + (SHIELD_DELAY / 4);
+        trg.shieldHitDelay = time + (SHIELD_DELAY * 0.33);
+      }
+      trg.shieldHitDelayStart = time;
+    }
+    else{
+      if( (trg.shieldHitDelay - trg.shieldHitDelayStart ) < SHIELD_DELAY ){
+        if( shieldBreaker ){
+          trg.shieldHitDelay = trg.shieldHitDelay + (SHIELD_DELAY * 0.75);
+        }
+        else{
+          trg.shieldHitDelay = trg.shieldHitDelay + (SHIELD_DELAY * 0.33);
+        }
       }
     }
   }

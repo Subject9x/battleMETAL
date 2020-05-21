@@ -42,8 +42,8 @@ void() projectile_mlg_expl={
 
 void() data_projectile_ini_missile_laserguide_={
   self.classname = "missile";
-  self.data_velocity = 1000; //800
-  self.data_lifetime = 2.2; //1.8
+  self.data_velocity = 2200; //1000
+  self.data_lifetime = 1.1; //2.2
   
   #ifdef CSQC
     //cosmetics
@@ -119,6 +119,7 @@ void() data_projectile_missile_laserguide_think={
       turnrate = turnrate - 0.1;
     }
   }
+  //TODO - fix me
   
   if (lorg != '0 0 0'){
     olddir = normalize(self.velocity);

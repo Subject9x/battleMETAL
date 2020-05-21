@@ -14,6 +14,7 @@ Overview:
 //SSQC only
 #ifndef CSQC
 .float shieldHitDelay;  //when shield > 
+.float shieldHitDelayStart;  //when shield > 
 .float shieldHitRegen;  //cool down before shield recharge begins
 .float shieldHitRegenStart;
 .float accuracyMod;
