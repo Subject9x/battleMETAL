@@ -26,13 +26,13 @@ void() data_ini_missile_swarm_={
 
   self.data_idx = 14;  
   
-  self.w_clipsize = 15;
-  self.reloadRate = 0.11;
-  self.reloadMax = 10;
+  self.w_clipsize = 9;
+  self.reloadRate = 0.13;
+  self.reloadMax = 7;
   self.energyRate = 0;
   
   self.w_range = 1500;
-  self.damageValue = 18;
+  self.damageValue = 10;
   self.damageType = DMG_EXP | EFF_ARC | EFF_PTR;
  
   self.techLevel = 3;
@@ -46,7 +46,7 @@ void() data_ini_missile_swarm_={
     self.fire_sound = "sound/weapons/mis_fire.ogg";
     self.model = "q3mdl/weapons/w_swrm.md3";
     self.abbrev = "SWRM";
-    self.description = "+ target <shields> reduce damage. + Rapid-fire rocket pod. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+    self.description = "+ target <shields> reduce damage. + Burst-fire. + Shots will home on any target when fired. + Does NOT require <Target Lock>.";
     self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
   #endif 
   
@@ -62,24 +62,36 @@ void() data_ini_missile_swarm_={
 
 #ifndef CSQC
 void() data_ini_attack_missile_swarm_={
-
+  local entity hold;
+  
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE );
+  ctrl_weapon_updateAmmo( TRUE );
    
   self.owner.punchangle_x = -0.1 + crandom() * -0.1;
   self.owner.punchangle_y = -0.1 + crandom() * -0.1;
 
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + (v_forward * 1), FIRE_ENDPOINT, 0);
   
-  local vector end;
+  ctrl_weapon_make_projectile( -1 );
+  
+  if( ai_valid_target(self.owner.enemy) ){
+    hold = self;
+    self = hold.owner;
+    if( util_checkPointAngleImpl(self.enemy.origin) ){
+      NEWSHOT.enemy = self.enemy;
+    }
+    self = hold;
+  }
+  NEWSHOT = world;
+  
+  /*local vector end;
   local vector spread;
   spread = '0.15 0.15 0';
   end = FIRE_ENDPOINT;
   FIRE_ENDPOINT = end + crandom()*spread_x*v_right + crandom()*spread_y*v_up;
-  ctrl_weapon_make_projectile( -1 );
   
   FIRE_ENDPOINT = end + crandom()*spread_x*v_right + crandom()*spread_y*v_up;
-  ctrl_weapon_make_projectile( -1 );
+  ctrl_weapon_make_projectile( -1 );*/
 };
 #endif

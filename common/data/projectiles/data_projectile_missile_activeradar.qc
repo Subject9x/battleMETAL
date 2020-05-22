@@ -42,8 +42,8 @@ void() projectile_marh_expl={
 
 void() data_projectile_ini_missile_active_radar_={
   self.classname = "missile";
-  self.data_velocity = 1200; //650
-  self.data_lifetime = 3; //8
+  self.data_velocity = 1800;  //1200
+  self.data_lifetime = 1.75;   //3
   self.compOffset = '0 0 0';   
   
   #ifdef CSQC
@@ -63,6 +63,8 @@ void() data_projectile_ini_missile_active_radar_={
 #ifndef CSQC
 void() data_projectile_missile_activeradar_think={
 	local vector	dir, vtemp;
+  local float prevTargRadar;
+  local float lock;
   
   if( !self.touch ){
     self.touch = data_projectile_missile_activeradar_touch;
@@ -82,54 +84,46 @@ void() data_projectile_missile_activeradar_think={
     self.nextthink = time + 1 + random();
     return;
   }
-	if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
-    makevectors(self.enemy.angles);
-    vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.maxs_x) * v_right) + (v_forward * (crandom() * self.enemy.maxs_x));
-    dir = normalize(vtemp - self.origin);
-    if( time > NEWSHOT.w_isburst ){
-      self.velocity = dir * self.data_velocity;
-    }
-    else{
-      self.velocity_x = dir_x * self.data_velocity;
-      self.velocity_y = dir_y * self.data_velocity;
-      self.velocity_z = dir_z * self.data_velocity / 4;
-    }
-    self.angles = vectoangles( self.velocity );
-	}
-  else{
-    self.velocity = self.angles * self.data_velocity;
-  }
   
+  lock = TRUE;
+  //enemy players switching to passive radar dumps the lock-on
+  if( (self.enemy.flags & FL_CLIENT) ){
+    if((self.stat_rdr_mode == TRUE) && (self.enemy.stat_rdr_mode == FALSE) ){
+      lock = FALSE;
+    }
+    self.stat_rdr_mode = self.enemy.stat_rdr_mode;  //cache previous enemy radar mode.
+  }
+  if( lock ){
+    vtemp = self.enemy.origin + '0 0 10';
+    vtemp = randompos( vtemp + self.enemy.mins, vtemp + self.enemy.maxs );
+    dir = normalize(vtemp - self.origin);
+    self.dest = vtemp;
+  }
+  else{
+    dir = normalize( self.dest - self.origin);
+  }
+  self.velocity = dir * self.data_velocity;
+
+  self.think = data_projectile_missile_activeradar_think;
   if(time > self.data_lifetime){
     self.think = BecomeExplosion;
   }
-  else{
-    self.think = data_projectile_missile_activeradar_think;
-  }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  self.nextthink = time + 0.15;
+  
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
+  self.nextthink = time + 0.05;
 };
 
-void() data_projectile_missile_activeradar_int={
+void() data_projectile_missile_activeradar_delay={
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  if( time > self.ai_action_time ){
+  if( time > self.w_isburst ){
+    self.data_velocity = 1500;
+    self.data_lifetime = time + 1.56;
     self.think = data_projectile_missile_activeradar_think;
     self.nextthink = time + 0.01;
     return;
   }
-  self.think = data_projectile_missile_activeradar_int;
+  self.think = data_projectile_missile_activeradar_delay;
   self.nextthink = time + 0.025;
-};
-
-void() data_projectile_missile_activeradar_delay={
-  self.velocity = normalize( self.origin - self.compOffset);
-  self.velocity = self.velocity * (self.data_velocity * 0.33);
-  self.angles = vectoangles(self.velocity);
- 
-  self.ai_action_time = time + 1;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  self.think = data_projectile_missile_activeradar_int; 
-  self.nextthink = time + 0.01;
 };
 
 float DAT_MARH_SHRAP_TOTAL = 5;
@@ -152,7 +146,7 @@ void() data_projectile_missile_activeradar_touch={
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
   debris = 0;
 	if (pointcontents(self.origin) == CONTENT_SKY){
     self.impactType = IMPACT_SKY;
@@ -162,13 +156,18 @@ void() data_projectile_missile_activeradar_touch={
   if(other.takedamage){
     damage = self.damageValue;
     if( other.shield > 0 ){
-      damage = damage * 0.25;
+      if( other.shield >= (other.shieldMax * 0.67) ){
+        damage = damage * 0.67;
+      }
+      else{
+        damage = damage * 0.25;
+      }
       t_damage_shield(other, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
     }
     else{
       if( other.data_type == DATA_MECH ){
-        makevectors(self.velocity);
+        makevectors(self.angles);
         totes = DAT_MARH_SHRAP_TOTAL;
         shotpoint = self.origin + (v_forward * -48);
         shotDir = normalize(self.origin - shotpoint);
@@ -192,7 +191,7 @@ void() data_projectile_missile_activeradar_touch={
   if( debris > 0 ){
     te_debris( self.origin, vectoangles(self.velocity), self.velocity, rint(random() * 3), 1 );
   }
-
+  self.velocity = '0 0 0';
   self.think = SUB_Remove;
   self.nextthink = time + 0.05;
 };

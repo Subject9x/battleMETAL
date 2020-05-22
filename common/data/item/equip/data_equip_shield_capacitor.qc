@@ -19,7 +19,7 @@ void() data_ini_equip_shield_capacitor_={
   self.w_clipsize = 1;
   self.reloadRate = 0;
   self.reloadMax = 0;
-  self.energyRate = 0.25;  //percent multiplier to unit's shieldMax
+  self.energyRate = 0.67;  //percent multiplier to unit's shieldMax
   
   self.w_range = 0;
   self.damageValue = 0;
@@ -39,7 +39,7 @@ void() data_ini_equip_shield_capacitor_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "SCAP";
-    self.description = "+ Increases <Shield Maximum> by 25%.";
+    self.description = "+ Increases <Shield Maximum> by 67%.";
     self.icon = "gfx/ui/wep_icons/eqp_lscap.png";
   #endif
   

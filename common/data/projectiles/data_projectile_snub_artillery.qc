@@ -44,7 +44,7 @@ void() projectile_sfga_expl={
 
 void() data_projectile_ini_snub_artillery_={
   self.classname = "missile";
-  self.data_velocity = 1300;  //
+  self.data_velocity = 1300;
   self.data_lifetime = 6;
   
   #ifdef CSQC
@@ -83,7 +83,7 @@ void() data_projectile_snub_artillery_touch_={
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
   
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
   self.impactType = IMPACT_DIRT;
   debris = rint(random() * 7);
   if( pointcontents(self.origin) == CONTENT_SKY ){

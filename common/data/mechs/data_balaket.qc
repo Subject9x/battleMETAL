@@ -26,22 +26,22 @@ void() data_ini_balaket_={
   self.energyMax = 400;
   self.energyRate= 4.0;
   self.shieldMax = 400;
-  self.shieldRate= 3;
+  self.shieldRate = 3;
   self.startupDelay = 5;
-  self.evasionDrain = 2.75;  //1
+  self.evasionDrain = 3;
 //=====================================
  
 //RADAR================================
-  self.radar_range = 1400;  //1700
+  self.radar_range = 1600;
   self.w_firetime = 4;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_SKIRMISH;
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 175;  //200;
-  self.data_speed_strafe = 145;   //165;
-  self.data_speed_backward = 125; //140;
-  self.data_speed_accel = 2;  //1.75
+  self.data_speed_forward = 185;  //175
+  self.data_speed_strafe = 120; //145
+  self.data_speed_backward = 90;
+  self.data_speed_accel = 2;
   self.ramUpMax = 3;
   self.ramCooldown = 6;
 #ifndef CSQC

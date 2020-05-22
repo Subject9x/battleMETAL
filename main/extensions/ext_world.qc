@@ -46,7 +46,7 @@ void() mh_world_ini={
   MISSION_LOSSES_SURVEST = 0;
   MISSION_LOSSES_MILITAR = 0;
 
-  serverflags = 255;  //DEBUG
+  //serverflags = 255;  //DEBUG
 
   STARTTIME = time;
   if( cvar("timelimit") > FALSE ){

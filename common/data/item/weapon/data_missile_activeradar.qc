@@ -18,13 +18,13 @@ void() data_ini_missile_activeradar_={
 
   self.data_idx = 10;  
   
-  self.w_clipsize = 3;
+  self.w_clipsize = 4;  //3
   self.reloadRate = 0.18;
-  self.reloadMax = 6.5;
+  self.reloadMax = 5;
   self.energyRate = 0;
   
-  self.w_range = 3000;  //1600
-  self.damageValue = 50;
+  self.w_range = 4000;  //3000
+  self.damageValue = 33;
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;
@@ -57,6 +57,7 @@ void() data_ini_attack_missile_activeradar_={
   local vector arc; //calculate the initial arc value before lock-on adjustment
   local vector start;
   local float canFire;
+  local entity hold;
   
   canFire = FALSE;
   
@@ -64,10 +65,14 @@ void() data_ini_attack_missile_activeradar_={
     canFire = TRUE;
   }
   else{
-    if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
-      //check to see if owner has a target lock
-      canFire = TRUE;
-    }  
+    if( ai_valid_target(self.owner.enemy) ){
+      hold = self;
+      self = hold.owner;
+      if( util_checkPointAngleImpl(self.enemy.origin) ){
+        canFire = TRUE;
+      }
+      self = hold;
+    }
   }
   
   if( canFire ){
@@ -75,24 +80,26 @@ void() data_ini_attack_missile_activeradar_={
   
     ctrl_weapon_fireOffset();
     
-    arc = FIRE_ORIGIN + (v_forward * (300 + (crandom() * 20)));
-    arc = arc + (v_up * (300 + (crandom() * 20))) + (v_right * (crandom() * 20));
+    arc = FIRE_ORIGIN + (v_forward * (600 + (crandom() * 20)));
+    arc = arc + (v_up * (600 + (crandom() * 20)));
     arc = arc + (v_right * (crandom() * 20));
    
     start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
  
-    ctrl_weapon_make_projectile( 0.15 );
+    ctrl_weapon_make_projectile( -1 );
     NEWSHOT.compOffset = start;
     NEWSHOT.enemy = self.owner.enemy;
     NEWSHOT.velocity = '0 0 0';
     NEWSHOT.velocity = normalize( arc - start );
-    NEWSHOT.velocity = NEWSHOT.velocity * 50;
-    NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
-    NEWSHOT.w_isburst = time + 4; //use to track curving behavior
+    NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
+    NEWSHOT.avelocity = '0 0 45';
+    NEWSHOT.w_isburst = time + 0.65; //use to track curving behavior
+    NEWSHOT.stat_rdr_mode = self.owner.enemy.stat_rdr_mode;
+    NEWSHOT.dest = FIRE_ENDPOINT;
     setorigin(NEWSHOT, start);
     NEWSHOT = world;
     
-    client_send_muzzle_flash( self.data_idx, self.origin, start, 0 );
+    client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0 );
   }
 };
 #endif

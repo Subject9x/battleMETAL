@@ -597,7 +597,7 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
 //Missile Active Radar ID 10
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_marh={
   pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_ARH_MUZZLE"), muzzleOrg, vectoangles(muzzleVel - muzzleVel) * 1, 1);
+  pointparticles( particleeffectnum("TE_ARH_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 1, 1);
 };
 
 //Snub Artillery ID 11
@@ -619,7 +619,7 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
   }
   pointsound( muzzleOrg, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), muzzleOrg, norm * 4, 1);
-  pointparticles( particleeffectnum("TE_FLK_TRACER"), muzzleOrg, norm * 1600, 1);
+  //pointparticles( particleeffectnum("TE_FLK_TRACER"), muzzleOrg, norm * 1600, 1);
   
   switch(impactStyle){
     default:

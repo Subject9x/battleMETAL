@@ -196,7 +196,6 @@ void() ImpulseCommands ={
     else{
       if( GAMETYPE == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
-        //mapfile_pvp_load(self.faction);
         PutClientInServer();
       }
     }
@@ -214,7 +213,6 @@ void() ImpulseCommands ={
     else{
       if( GAMETYPE == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
-        //mapfile_pvp_load(self.faction);
         PutClientInServer();
       }
     }
@@ -251,7 +249,7 @@ void() ButtonCommands={
   //action mapping: +regen
   if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
     if( self.shield < self.shieldMax ){
-      self.shield = self.shield + (self.shieldRate * 0.55);
+      self.shield = self.shield + (self.shieldRate * 0.75);
       self.energy = self.energy - (self.shieldRate * self.shieldRateMod);
       if( self.energy < 0 ){
         self.energy = 0;

@@ -77,7 +77,7 @@ void() map_damage_zone_rad_think={
       if( !(unit.flags & FL_UNIT) ){
         continue;
       }
-      if( vlen(unit.origin - self.origin) > (self.maxs_x * 1.15) ){
+      if( vlen(unit.origin - self.origin) > (self.maxs_x * 3) ){
         continue;
       }
       if( unit.data_type == DATA_MECH ){
@@ -113,7 +113,7 @@ void() map_damage_zone_crs_think={
       if( !(unit.flags & FL_UNIT) ){
         continue;
       }
-      if( vlen(unit.origin - self.origin) > (self.maxs_x * 3) ){
+      if( vlen(unit.origin - self.origin) > (self.maxs_x * 4) ){
         continue;
       }
       t_damage_shield(unit, self, world, self.damageValue, unit.origin, (self.vec_size > 1) );  
@@ -142,7 +142,7 @@ void() map_damage_zone_qtm_think={
       if( !(unit.flags & FL_UNIT) ){
         continue;
       }
-      if( vlen(unit.origin - self.origin) > (self.maxs_x * 3) ){
+      if( vlen(unit.origin - self.origin) > (self.maxs_x * 4) ){
         continue;
       }
       if( unit.energy <= 0 ){

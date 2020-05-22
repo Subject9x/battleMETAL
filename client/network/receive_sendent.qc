@@ -54,18 +54,12 @@ void( float isNew ) sendent_handle_update={
 void( float isNew, float changeFlags) sendent_handle_missile={
   local float impactEvent;
   
-  self.origin_x = ReadCoord();
-  self.origin_y = ReadCoord();
-  self.origin_z = ReadCoord();
+  if( changeFlags & SENDFLAG_MOVE ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
   
-  self.angles_x = anglemod(ReadAngle());
-  self.angles_y = anglemod(ReadAngle());
-  self.angles_z = anglemod(ReadAngle());
-
-  self.velocity_x = ReadCoord();
-  self.velocity_y = ReadCoord();
-  self.velocity_z = ReadCoord();
-
   if( changeFlags & SENDFLAG_IMPACT ){
     self.impactType = ReadByte();
     self.damageValue = ReadByte();
@@ -77,7 +71,6 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
     self.movetype = ReadByte();
-    
     if( isNew ){
       self.solid = SOLID_NOT;
       self.alpha = 1;
@@ -92,6 +85,18 @@ void( float isNew, float changeFlags) sendent_handle_missile={
       self.predraw = predraw_missile;
       self.nextthink = time + 0.1;
     }
+  }
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
+    self.velocity_x = ReadCoord();
+    self.velocity_y = ReadCoord();
+    self.velocity_z = ReadCoord();
+    self.angles = vectoangles(self.velocity);
+  }
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    //only if you want to override angles == velocity;
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
   }
 };
 

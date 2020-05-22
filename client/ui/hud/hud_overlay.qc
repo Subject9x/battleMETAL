@@ -56,37 +56,35 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
   RENDER FRIENDLY CLIENT NAMES IN 3D SPACE
 */
 void( entity thePlayer ) hud_render_ally_names={
-  local entity thePlayer;
   local vector namepos, nameproj, drawSize;
   local float namelen, drawdist, adj;
 
   drawdist = vlen(pmove_org - thePlayer.origin);
   if( drawdist < CLIENT_radar_range * 0.25 ){
     drawSize = '10 10 0';
-    adj = 18;
+    adj = 26;
   }
   else if( drawdist < CLIENT_radar_range * 0.5 ){
     drawSize = '12 12 0';
-    adj = 26;
+    adj = 34;
   }
   else{
     drawSize = '14 14 0';
-    adj = 34;
+    adj = 42;
   }
   
   local string playerName;
   playerName = getplayerkeyvalue(thePlayer.entId - 1, "name");
   namelen = stringwidth(playerName, 0, drawSize);
   namepos = thePlayer.origin;
-  namepos_z = namepos_z + (gui_percentYRaw(thePlayer.vec_size * adj)) * -1;
+  namepos_z = namepos_z + (gui_percentYRaw(thePlayer.vec_size * adj));
   nameproj = cs_project(namepos);
   if( nameproj_z >= 0 ){
     nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
     nameproj_z = 0;
-    drawstring(nameproj, playerName, drawSize, CLR_DEF_GREEN * 0.8, 1, 0);
+    drawstring(nameproj, playerName, drawSize, CLR_DEF_GREEN * 1.5, 1, 0);
   }
   namepos = cs_unproject(nameproj);
-  
 };
 
 /*

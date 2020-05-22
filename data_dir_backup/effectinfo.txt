@@ -796,7 +796,7 @@
     blend alpha
     color 0x000000 0x1C1C1C
     tex 0 7
-    size 9 11
+    size 5 7
     sizeincrease 0.25
     alpha 128 150 64
     originjitter 0.15 0.15 0.15
@@ -804,7 +804,7 @@
     
   //TE_FLK_IMPACT - BULLET FRAGS
     effect TE_FLK_IMPACT
-    count 3
+    count 1
     type spark
     blend alpha
     orientation spark
@@ -850,16 +850,16 @@
     blend alpha
     color 0x000000 0x1C1C1C
     tex 0 7
-    size 9 11
+    size 3 5
     sizeincrease 0.25
-    alpha 240 256 64
-    time 7 9
+    alpha 120 128 32
+    time 3 5
     originjitter 0.15 0.15 0.15
     velocityjitter 0.05 0.5 1
     
   //TE_FLK_DIRT - GRAVEL BITS
     effect TE_FLK_DIRT
-    count 2
+    count 0.33
     type alphastatic
     blend alpha
     orientation spark
@@ -876,7 +876,7 @@
 
   //TE_FLK_DIRT - BULLET FRAGS
     effect TE_FLK_DIRT
-    count 1
+    count 0.5
     type spark
     blend alpha
     orientation spark
@@ -898,16 +898,20 @@
     stainalpha 256 512
     stainsize 2 2.5
     staintex 36 36
-
-  //TE_FLK_DIRT - LIGHT
-    effect TE_FLK_DIRT
-    lightradius 45
-    lightradiusfade 5
-    lighttime 0.075
-    lightcolor 0.961 0.855 0.506
-    lightshadow 0.3
-    notunderwater
-    
+ 
+ //TE_FLK_TRAIL - SMOKE
+    effect TE_FLK_TRAIL
+    count 0.75
+    type alphastatic
+    blend alpha
+    color 0x2E2E2E 0x666666
+    tex 8 15
+    size 0.45 0.65
+    sizeincrease 0.1
+    alpha 200 220 100
+    originjitter 0.33 0.33 0.33
+    velocityjitter 0.1 0.1 0.1
+    trailspacing 24
 //=====================================================
 
 
@@ -927,7 +931,7 @@
     alpha 256 256 300
     time 0.75 0.9
     velocitymultiplier 3
-    stretchfactor 10
+    stretchfactor 6
     airfriction 2.5
     bounce -1
     
@@ -944,7 +948,7 @@
     velocityjitter 0.5 0.5 0.5
     stretchfactor 2
     gravity -0.0008
-    trailspacing 6
+    trailspacing 12
     bounce -1
     
   //TE_QRFL_MUZZLE_SPARK - HEAT DISTORT
@@ -963,7 +967,7 @@
     velocitymultiplier 1
     stretchfactor 2
     gravity -0.00001
-    trailspacing 16
+    trailspacing 32
     bounce -1
     
   //TE_QRFL_MUZZLE - PURPLE FLAME
@@ -1026,7 +1030,6 @@
     tex 32 32
     size 0.5 1
     alpha 64 64 64
-    time 0.3 0.5
     sizeincrease -2
     originjitter 0 0 0
     velocitymultiplier -0.25
@@ -1043,7 +1046,6 @@
     tex 62 62
     size 0.1 0.2
     alpha 128 128 128
-    time 0.4 0.6
     originjitter 0 0 0
     velocitymultiplier -0.25
     velocityjitter 2 2 2

@@ -13,7 +13,7 @@ void() data_projectile_ion_touch;
 void() data_projectile_ion_think_;
 void() data_projectile_ion_explode;
 
-float DAT_PRJ_ION_EXPRAD      = 100;
+float DAT_PRJ_ION_EXPRAD = 100;
 #endif CSQC
 
 #ifdef CSQC
@@ -31,8 +31,8 @@ void() projectile_ion_expl={
 #endif
 void() data_projectile_ini_ion_={
   self.classname = "missile";
-  self.data_velocity = 3000;  //4000
-  self.data_lifetime = 0.49;  //2.57
+  self.data_velocity = 3000;
+  self.data_lifetime = 0.49;
   
   #ifdef CSQC
     //cosmetics
@@ -54,7 +54,6 @@ void() data_projectile_ion_think_={
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   
   if(time > self.data_lifetime){
-    self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
     self.impactType = IMPACT_SKY;
     self.think = data_projectile_ion_explode;
   }else{

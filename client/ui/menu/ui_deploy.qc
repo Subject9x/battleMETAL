@@ -395,6 +395,9 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     if(player.faction != CLIENT_faction){
       continue;
     }
+    if(player.faction == FACTION_ALL){
+      continue;
+    }
     local vector friend_org;
     friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
     drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);

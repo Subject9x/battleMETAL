@@ -22,8 +22,8 @@ void() data_ini_rockets_={
   self.reloadMax = 1;
   self.energyRate = 0;
   
-  self.w_range = 750;
-  self.damageValue = 90;
+  self.w_range = 1800;
+  self.damageValue = 50; //90
   self.damageType = DMG_EXP;
   
   self.techLevel = 1;
@@ -62,7 +62,8 @@ void() data_ini_attack_rockets_={
   self.owner.punchangle_y = -1 + crandom() * -1;
 
   ctrl_weapon_make_projectile( 0.01 );
-
+  
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + (v_forward * 1), FIRE_ENDPOINT, 0);
+  
 };
 #endif

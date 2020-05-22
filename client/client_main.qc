@@ -97,9 +97,9 @@ void() CSQC_Init =
   NAVNAMES[16] = "Eta";
   NAVNAMES[17] = "Theta";
   NAVNAMES[18] = "Xi";
-  NAVNAMES[19] = "Upsilon";
-  NAVNAMES[20] = "Phi";
-  NAVNAMES[21] = "Omega";
+  NAVNAMES[19] = "Phi";
+  NAVNAMES[20] = "Omega";
+  NAVNAMES[21] = "RANDOM";
   
   ANM_FILE_STATUS = 0;
   

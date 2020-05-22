@@ -23,7 +23,7 @@ void() data_ini_emp_={
   self.reloadMax = 6;
   self.energyRate = 250;
   
-  self.w_range = 2500;  //1700
+  self.w_range = 3000;  //2500
   self.damageValue = 400;
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   
@@ -31,7 +31,7 @@ void() data_ini_emp_={
   self.equipSize = ENE3;
   
   self.wepFireOffset = '0 0.1 7';
-  self.spreadDefault = '0.009 0.008 0';
+  self.spreadDefault = '0 0 0';
   
   #ifdef CSQC
     self.w_name = "EMP Cannon";

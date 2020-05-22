@@ -43,7 +43,7 @@ void() projectile_swarm_expl={
 void() data_projectile_ini_missile_swarm_={
   self.classname = "missile";
   self.data_velocity = 1750;
-  self.data_lifetime = 0.855;
+  self.data_lifetime = 1;
  
   #ifdef CSQC
     //cosmetics
@@ -81,11 +81,11 @@ void() data_projectile_missile_swarm_touch={
   if(other.takedamage){
     damage = self.damageValue;
     if( other.shield > 0 ){
-      if( other.shield > (other.shieldMax * 0.5) ){
+      if( other.shield > (other.shieldMax * 0.25) ){
         damage = damage * 0.33;
       }
       else{
-        damage = damage * 0.67;
+        damage = damage * 0.75;
       }
       t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
@@ -108,17 +108,26 @@ void() data_projectile_missile_swarm_touch={
 
 void() data_projectile_missile_swarm_think={
 	local vector	dir, vtemp;
+  local float f_dot;
   
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   
   if(time > self.data_lifetime){
     self.think = ctrl_missile_dud;
     self.nextthink = time + 0.1;
   }
   else{
-    self.nextthink = time + 0.067;
+    if( ai_valid_target( self.enemy ) ){
+      vtemp = self.enemy.origin + '0 0 10';
+      vtemp = randompos(vtemp + (self.enemy.mins * 0.75), vtemp + (self.enemy.maxs * 0.75));
+      dir = normalize(vtemp - self.origin) * 0.75;
+      self.velocity = dir * self.data_velocity;
+      self.angles = vectoangles(self.velocity);
+      self.SendFlags = self.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_TURRET);
+    }
+    self.nextthink = time + 0.075;
     self.think = data_projectile_missile_swarm_think;
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 
 void() data_projectile_missile_swarm_delay_int={

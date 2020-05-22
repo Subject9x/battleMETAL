@@ -203,7 +203,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
       self.SendEntity = te_send_missile;
-      self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_VELOCITY;
+      self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
     self = theWeapon;
   }
   else{

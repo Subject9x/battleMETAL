@@ -213,20 +213,16 @@ void() menu_exit={
 
 float() menu_connect_choice={
   local float choice;
-  //cons_logAFloat("gamemode", cvar("gamemode")); //DEBUG
   switch( cvar("gamemode") ){
     case GAMEMODE_CAMPAIGN:
       choice = MENU_BRIEF_ACTIVE;
-      //cons_logAFloat("MENU_BRIEF_ACTIVE", MENU_BRIEF_ACTIVE); //DEBUG
       break;
     case GAMEMODE_COOP:
       //todo
       choice = MENU_CONNECT_ACTIVE;
-      //cons_logAFloat("MENU_BRIEF_ACTIVE", MENU_BRIEF_ACTIVE); //DEBUG
       break;
     default:
       choice = MENU_CONNECT_ACTIVE;     
-      //cons_logAFloat("MENU_CONNECT_ACTIVE", MENU_CONNECT_ACTIVE); //DEBUG
       break;
   }
   return choice;
@@ -363,22 +359,23 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   
   local float pingLen;
   local vector pingColor;
-  local float ping;
-  ping = stof(getplayerkeyvalue(playerRow.entId - 1, "ping"));
-  if( ping <= 50 ){
+  local float pingVal;
+  local entity ent;
+  ent = entitybyindex(playerRow.entId);
+  pingVal = ent.ping;
+  if( pingVal <= 50 ){
     pingColor = CLR_DEF_IIF_FRIEND_BLD;
   }
-  else if( ping <= 100 ){
+  else if( pingVal <= 100 ){
     pingColor = CLR_DEF_ARM_THREEQ;
   }
   else{
     pingColor = CLR_DEF_RED;
   }
-  pingLen = stringwidth( getplayerkeyvalue(playerRow.entId - 1, "ping"), 0, fontSize );
+  pingLen = stringwidth( ftos(pingVal), 0, fontSize );
   playerPingOfs = playerNameOfs + gui_percentToPixelRawVec('150 0');
   playerPingOfs_x = playerPingOfs_x - gui_percentXRaw(pingLen / 2);
-  drawstring(playerPingOfs, getplayerkeyvalue(playerRow.entId - 1, "ping"), fontSize, pingColor, 1, 0);
-  
+  drawstring(playerPingOfs,ftos(pingVal), fontSize, pingColor, 1, 0);
   
   if( showScore ){
     local float scoreLen;

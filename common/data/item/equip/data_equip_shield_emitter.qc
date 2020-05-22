@@ -19,7 +19,7 @@ void() data_ini_equip_shield_emitter_={
   self.w_clipsize = 1;
   self.reloadRate = 0;
   self.reloadMax = 0;
-  self.energyRate = 0.5;  // percent multiplier to unit's shieldRate
+  self.energyRate = 0.75;  // percent multiplier to unit's shieldRate
   
   self.w_range = 0;
   self.damageValue = 0;
@@ -39,7 +39,7 @@ void() data_ini_equip_shield_emitter_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "HSEM";
-    self.description = "+ Increases <Shield recharge> by 50%.";
+    self.description = "+ Increases <Shield recharge> by 75%. + Energy cost <unaffected>.";
     self.icon = "gfx/ui/wep_icons/eqp_hsem.png";
   #endif
   

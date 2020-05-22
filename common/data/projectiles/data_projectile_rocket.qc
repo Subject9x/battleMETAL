@@ -9,6 +9,7 @@ Overview:
 */
 
 #ifndef CSQC
+float DAT_ROCKET_PROXY_RAD = 25;
 void() data_prj_mis_touch;
 void() data_projectile_rocket_think_;
 #endif CSQC
@@ -40,8 +41,8 @@ void() projectile_rocket_expl={
 
 void() data_projectile_ini_rocket_={
   self.classname = "missile";
-  self.data_velocity = 1500;
-  self.data_lifetime = 0.5025;
+  self.data_velocity = 1973;  //1500
+  self.data_lifetime = 0.38;  //0.5
   
   #ifdef CSQC
     //cosmetics
@@ -58,13 +59,14 @@ void() data_projectile_ini_rocket_={
 };
 
 #ifndef CSQC
-void() data_prj_mis_touch={
+void(entity theOther ) data_prj_mis_hit={  
   local float debris, debrisType;
   local float damage; 
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
+  self.velocity = '0 0 0';
   
   self.impactType = IMPACT_DIRT;
   debris = rint(3 + random() * 5);
@@ -72,10 +74,10 @@ void() data_prj_mis_touch={
     self.impactType = IMPACT_SKY;
 	}
  
-  if(other.takedamage){
+  if(theOther.takedamage){
     damage = self.damageValue;
-    if( other.shield > 0 ){
-      if( other.shield > (other.shieldMax * 0.5) ){
+    if( theOther.shield > 0 ){
+      if( theOther.shield > (theOther.shieldMax * 0.5) ){
         damage = damage * 0.33;
       }
       else{
@@ -86,7 +88,7 @@ void() data_prj_mis_touch={
     }
     else{
       damage = damage + (damage * 0.25);
-      t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
+      t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
       self.impactType = IMPACT_ARMOR;
       debris = rint(4 + random() * 6);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
@@ -102,13 +104,49 @@ void() data_prj_mis_touch={
   self.nextthink = time + 0.05;
 };
 
+void() data_prj_mis_touch={
+  data_prj_mis_hit( other );
+};
+
 void() data_projectile_rocket_think_={
-  self.SendFlags |= SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.think = data_projectile_rocket_think_;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + 0.025;
+  self.angles = vectoangles(self.velocity);
   if( time > self.data_lifetime ){
     self.think = ctrl_missile_dud;
     self.nextthink = time + 0.01;
+    return;
+  }
+  if( (self.owner.flags & FL_CLIENT) ){
+    local entity close;
+    local float hit;
+    hit = FALSE;
+    for( close = findradius(self.origin, DAT_ROCKET_PROXY_RAD); close != world; close = close.chain ){
+      if( hit ){
+        continue;
+      }
+      if( close.deadflag != DEAD_NO ){
+        continue;
+      }
+      if( !(close.flags & FL_UNIT) ){
+        continue;
+      }
+      if( close.faction == self.owner.faction ){
+        continue;
+      }
+      traceline(self.origin, close.origin, FALSE, self.owner );
+      if( trace_fraction == 1 ){
+        hit = TRUE;
+        self.origin = trace_endpos;
+        self.velocity = '0 0 0';
+      }
+    }
+    if( hit == TRUE ){
+      self.movetype = MOVETYPE_NONE;
+      self.touch = SUB_Null;
+      data_prj_mis_hit( close );
+    }
   }
 };
 #endif CSQC
