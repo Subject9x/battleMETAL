@@ -561,6 +561,7 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
+  WriteShort( MSG_ENTITY, self.owner.ping );
   
   /*
     EVENT - per-frame update

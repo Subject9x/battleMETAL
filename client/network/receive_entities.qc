@@ -103,6 +103,7 @@ void() receive_ent_bindData={
     
     CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
     CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
+    
     CLIENT_target_origin_x = getstatf(STAT_TARGET_ORIGINX);
     CLIENT_target_origin_y = getstatf(STAT_TARGET_ORIGINY);
     CLIENT_target_origin_z = getstatf(STAT_TARGET_ORIGINZ);
@@ -111,7 +112,6 @@ void() receive_ent_bindData={
     CLIENT_target_vecsize = getstati(STAT_TARGET_SIZE);
 
     CLIENT_stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
-    CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
     CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
     CLIENT_target_datatype = getstati(STAT_TRG_DATATYPE);
     CLIENT_target_faction = getstati(STAT_TRG_FACTION);

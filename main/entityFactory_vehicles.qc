@@ -145,7 +145,7 @@ void() build_unit_weapon_list={
           if( (self.flags & FL_CLIENT)){
             self.stat_w8_rel = 100;
           }
-          break;
+          break;
         case 9:
           build_unit_weapon( self.next_wepn9, self, stat_w9_id);
           if( (self.flags & FL_CLIENT)){
@@ -226,9 +226,10 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
 */
 void() build_mech_unit={
   local vector tempMin, tempMax;
-  
+
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
   self.skin = self.faction - 1;
+
   if( self.skin < 0 ){
     self.skin = 0;
   }
@@ -314,6 +315,7 @@ void() build_mech_unit={
   //fall_dmg = actual damage applied
   self.fall_dmg = (MAX_VEHICLE_SIZE - self.vec_size) / MAX_VEHICLE_SIZE ;
 
+  client_update_faction();
 };
 
 void() build_mech_torsoCenter={
@@ -650,10 +652,11 @@ void() build_turret_unit={
   setorigin(self, self.origin);
 
   if( !(self.spawnflags & NO_DROP) ){
-    setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-    droptofloor();
-    if(util_cornerSlopeCheck(self, 2)){
+    if( util_cornerSlopeCheck(self, 4) ){
       util_generateBuildingFoundation(self);
+    }
+    else{
+      droptofloor();
     }
   }
 };

@@ -1688,3 +1688,4 @@ void() SUB_Remove={
 .float gravity;
 .float renderflags; //again, lost in documentation somewhere, use RF_* flags on this.
 .float scale;
+.float ping; //client string ping value doesn't seem to work :|

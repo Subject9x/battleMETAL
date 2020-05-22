@@ -182,8 +182,8 @@ void( vector menuOrg ) menu_connect_draw_rules_dm={
     drawstring( ruleRow, "Spawn Farthest", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  if( (SV_SERVERFLAGS & SVFLAG_NOPOWERUP) ){
-    drawstring( ruleRow, "No Power Up", '12 12', CLR_DEF_WHITE, 1, 0);
+  if( (SV_SERVERFLAGS & SVFLAG_POWERUP) ){
+    drawstring( ruleRow, "Freeze on Power-up", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
   if( (SV_SERVERFLAGS & SVFLAG_CHEATS) ){
@@ -322,8 +322,8 @@ void( vector menuOrg ) menu_connect_draw_rules_team={
     ruleRow_y = ruleRow_y + gui_percentYRaw(12);
     listCount = listCount + 1;
   }
-  if( (SV_SERVERFLAGS & SVFLAG_NOPOWERUP) ){
-    drawstring( ruleRow, "No Power Up", '10 10', CLR_DEF_WHITE, 1, 0);
+  if( (SV_SERVERFLAGS & SVFLAG_POWERUP) ){
+    drawstring( ruleRow, "Freeze on Power-up", '10 10', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(12);
     listCount = listCount + 1;
   }
@@ -588,8 +588,8 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
     drawstring( ruleRow, "None", '12 12', CLR_DEF_WHITE, 1, 0);
   }
   listCount = 0;
-  if( (SV_SERVERFLAGS & SVFLAG_NOPOWERUP) ){
-    drawstring( ruleRow, "No Power Up", '10 10', CLR_DEF_WHITE, 1, 0);
+  if( (SV_SERVERFLAGS & SVFLAG_POWERUP) ){
+    drawstring( ruleRow, "Freeze on Power-up", '10 10', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(12);
     listCount = listCount + 1;
   }

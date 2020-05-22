@@ -113,7 +113,7 @@ void() player_makeMech={
   
   self.currentWeaponGroup = self.w_group1;
   
-  if( cvar("developer") ){
+  if( cvar("developer") || !(serverflags & SVFLAG_POWERUP) ){
     self.power_timer = time + POWERUP_DEBUG;
   }
   else{

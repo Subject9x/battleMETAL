@@ -25,7 +25,6 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   RADAR_VCENTER_x = RADAR_VORG_x + (RADAR_VSIZE_x / 2);
   RADAR_VCENTER_y = RADAR_VORG_y + (RADAR_VSIZE_y / 2);
   
-  
   //drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   radarLineLeft_x = RADAR_VSIZE_x / 2.25;
@@ -88,7 +87,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   
   local entity nav;
   for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
-    if( nav.faction != CLIENT_faction ){
+    if( (nav.faction != FACTION_ALL) && (nav.faction != CLIENT_faction) ){
       continue;
     }
     if( nav.isActive == FALSE ){
@@ -135,7 +134,9 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
         hud_RenderRadar_Vehc(hudorg, blip.vec_size, blip.faction, 0.9);
         break;
       case DATA_MECH:
-        hud_RenderRadar_Mech(hudorg, blip.vec_size, blip.faction, 1); 
+        if( blip.entId != player_localentnum ){
+          hud_RenderRadar_Mech(hudorg, blip.vec_size, blip.faction, 1); 
+        }
         break;
     }
   }
@@ -186,8 +187,10 @@ void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Mec
   local vector blipSize;
   
   clr = CLR_DEF_IFF_ENEMY;
-  if(CLIENT_faction == e_fact){
-    clr = CLR_DEF_IIF_FRIEND;
+  if( e_fact != FACTION_ALL ){
+    if(CLIENT_faction == e_fact){
+      clr = CLR_DEF_IIF_FRIEND;
+    }
   }
   blipSize = e_size * '4 4 4';
   drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);

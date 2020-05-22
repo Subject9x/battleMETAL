@@ -25,8 +25,8 @@ void() data_ini_flak_cannon_={
   self.reloadMax = 2;
   self.energyRate = 0;
   
-  self.w_range = 500;  //2000
-  self.damageValue = 2; //2.33
+  self.w_range = 500;
+  self.damageValue = 2.5; //2
   self.damageType = DMG_BAL;
   
   self.techLevel = 1;
@@ -41,7 +41,7 @@ void() data_ini_flak_cannon_={
     self.model = "q3mdl/weapons/w_flk.md3";
     self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
     self.abbrev = "FLAK";
-    self.description = "+ Instant-impact weapon. +4-rnd burst. +  shotgun damage pattern. + 6 sub-munitions.";
+    self.description = "+ Instant-impact weapon. +4-rnd burst. +  shotgun damage pattern. + 4 sub-munitions.";
     self.icon = "gfx/ui/wep_icons/wi_flak.png";
   #endif
   
@@ -83,10 +83,13 @@ void() data_ini_attack_flak_={
   while (totes > 0){
     direction = dir + crandom()*self.spreadDefault_x*v_right + crandom()*self.spreadDefault_y*v_up;
     traceline (src, src + direction*self.w_range, FALSE, self.owner);
+    if( (random() * 1) <= 0.3 ){
+      client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_FLK_TRAIL"), src, src + direction*self.w_range );
+    }
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0){
         impactStyle = IMPACT_SHIELD;
-        t_damage_shield(trace_ent, self,self.owner, (self.damageValue * 0.75), trace_endpos, FALSE);
+        t_damage_shield(trace_ent, self,self.owner, (self.damageValue * 0.85), trace_endpos, FALSE);
         client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), trace_endpos, '0 0 0', 1 );
       }
       else{

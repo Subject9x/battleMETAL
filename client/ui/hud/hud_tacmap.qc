@@ -89,31 +89,42 @@ void() hud_render_tactical_map={
       if(player.faction != CLIENT_faction){
         continue;
       }
-      local vector friend_org;
-      friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, mapOrg, mapImgSize);
-      gui_renderTintImage2((player.entId == player_localentnum), friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
-      
       if( player.entId != player_localentnum ){
-        local vector nameOrg;
-        local float nameLen;
-        nameOrg = friend_org + gui_percentToPixelRawVec('0 -10');
+        if( player.faction != FACTION_ALL ){
+          local vector friend_org;
+          friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, mapOrg, mapImgSize);
+          gui_renderTintImage2((player.entId == player_localentnum), friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
+          
+          local vector nameOrg;
+          local float nameLen;
+          nameOrg = friend_org + gui_percentToPixelRawVec('0 -10');
+          
+          drawfont_prev = drawfont;
+          drawfont = FONT_NUM_ROBOT_REGULAR;
+          
+          nameLen = stringwidth( player.netname, 0, '10 10 0');
+          nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
+          drawstring( nameOrg, player.netname, '10 10 0', CLR_DEF_IIF_FRIEND_BLD, 1, 0);
+          
+          drawfont = drawfont_prev;
+          if( player.targetEntId <= 0 ){continue;}
+          if( player.enemy.deadflag != DEAD_NO ){continue;}
+            
+          local vector target_org;
+          target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
+          drawpic(target_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
+        }
         
-        drawfont_prev = drawfont;
-        drawfont = FONT_NUM_ROBOT_REGULAR;
-        
-        nameLen = stringwidth( player.netname, 0, '10 10 0');
-        nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
-        drawstring( nameOrg, player.netname, '10 10 0', CLR_DEF_IIF_FRIEND_BLD, 1, 0);
-        
-        drawfont = drawfont_prev;
       }
-      
-      if( player.targetEntId <= 0 ){continue;}
-      if( player.enemy.deadflag != DEAD_NO ){continue;}
-        
-      local vector target_org;
-      target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
-      drawpic(target_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
+      else{
+        gui_renderTintImage2(TRUE, gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
+        if( player.targetEntId <= 0 ){continue;}
+        if( player.enemy.deadflag != DEAD_NO ){continue;}
+          
+        local vector target_org;
+        target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
+        drawpic(target_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
+      }
     }
   
   //render allied contacts

@@ -31,25 +31,25 @@ float() ai_can_spawn={
   }
   
   if( (self.spawnflags & NO_CAMPAIGN) ){
-    if( !coop && !deathmatch && (teamplay == 0)){
+    if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
       return FALSE;
     }
   }
   
   if( (self.spawnflags & NO_COOP) ){
-    if( coop && !deathmatch ){
+    if( cvar("gamemode") == GAMEMODE_COOP ){
       return FALSE;
     }
   }
 
   if( (self.spawnflags & NO_DM) ){
-    if( !coop && deathmatch ){
+    if( cvar("gamemode") == GAMEMODE_DM  ){
       return FALSE;
      }
   }
   
   if( (self.spawnflags & NO_TDM) ){
-    if( deathmatch && (teamplay == 0) ){
+    if( cvar("gamemode") == GAMEMODE_TEAMDM ){
       return FALSE;
     }
   }

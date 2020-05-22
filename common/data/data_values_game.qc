@@ -101,7 +101,7 @@ float SERVER_SCORE_TIME_COOP = 60;
 
 //Multiplayer Server Flags
 float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
-float SVFLAG_NOPOWERUP  = 2;  //  skip powerup sequence
+float SVFLAG_POWERUP    = 2;  //  enforce powerup sequence
 float SVFLAG_CHEATS     = 4;  //  cheaty cheat pants
 float SVFLAG_FIREON     = 8;  //  friendly fire on
 float SVFLAG_NOLIVES    = 16; //  limited lives

@@ -515,18 +515,6 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   }
 };
 
-/*
-  displays a background image on the hud
-  always draws from bottom left of screen UP
-*/
-void(vector ofs, vector img_sz, string bimg, float valign, float setAlpha, vector tint) hud_HelmetImage={
-  local vector nofs;
-  
-  nofs = gui_percentToPixelRawVec(ofs);
-  nofs = gui_calcAlign(nofs, valign); 
-  drawpic(nofs, bimg, gui_percentToPixelRawVec(img_sz), tint, setAlpha, DRAWFLAG_NORMAL);  
-};
-
 void() hud_renderRepairValue={
   local vector vorg, torg;
   local float len;
@@ -1050,7 +1038,7 @@ void() data_hud_frame={
           if( hasTarget){
             porg = UI_DATA_POS[uid]; 
             algn = UI_DATA_ALIGN[uid];
-            hud_renderTargetName(porg, CLIENT_target_name, algn);
+            hud_renderTargetName(porg, algn);
           }
         }
         break;
@@ -1178,19 +1166,19 @@ void() data_hud_frame={
   if( HUD_TACMAP_ON || HUD_SCORES_ON ){
     hud_renderNavOverlay();
      //only loop clients once per hud frame
-    local entity player;
-    for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
-      if( !(player.flags & FL_CLIENT) ){continue;}
-      if( player.entId == player_localentnum ){continue;}
-      if( player.data_type == DATA_POBS ){continue;}
-      if( player.faction != CLIENT_faction ){continue;}
-      
-      hud_render_ally_names( player );
-      
-      if( player.targetEntId <= 0 ){continue;}
-      if( player.enemy.deadflag != DEAD_NO ){continue;}
-      hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
-    }
+  }
+  local entity player;
+  for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
+    if( !(player.flags & FL_CLIENT) ){continue;}
+    if( player.entId == player_localentnum ){continue;}
+    if( player.data_type == DATA_POBS ){continue;}
+    if( player.faction != CLIENT_faction ){continue;}
+    if( player.faction == FACTION_ALL){continue;}
+    hud_render_ally_names( player );
+    
+    if( player.targetEntId <= 0 ){continue;}
+    if( player.enemy.deadflag != DEAD_NO ){continue;}
+    hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
   }
 };
 

@@ -47,10 +47,11 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
 /*
   RENDERS A LABEL 'TARGET' AND THE TARGET'S NAME
 */
-void(vector ofs, string targType, float algn) hud_renderTargetName={
+void(vector ofs, float algn) hud_renderTargetName={
   local float msgLen;
   local vector tofs, msgSize, factionColor;
   local string msg;
+  local string targType;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -60,6 +61,15 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   }
   else{
     factionColor = CLR_DEF_IFF_ENEMY;
+  }
+
+  local entity playerTarg;
+  playerTarg = findfloat(world, entId, CLIENT_stat_trg_ent_id);
+  if( (playerTarg.flags & FL_CLIENT) ){
+    targType = getplayerkeyvalue(CLIENT_stat_trg_ent_id - 1, "name");
+  }
+  else{
+    targType = playerTarg.vec_name;
   }
 
   ofs = gui_percentToPixelRawVec(ofs);
@@ -109,17 +119,17 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   imgSize = draw_getimagesize(HUD_TARGET_BOX_TL) * 0.5 ;
   imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
   
-  if( imgSize_x > gui_percentXRaw(24) ){
-    imgSize_x = gui_percentXRaw(24);
+  if( imgSize_x > gui_percentXRaw(48) ){
+    imgSize_x = gui_percentXRaw(48);
   }
-  if(imgSize_x < gui_percentXRaw(10)){
-    imgSize_x = gui_percentXRaw(10);
+  if(imgSize_x < gui_percentXRaw(32)){
+    imgSize_x = gui_percentXRaw(32);
   }
-  if( imgSize_y > gui_percentYRaw(24) ){
-    imgSize_y = gui_percentYRaw(24);
+  if( imgSize_y > gui_percentYRaw(48) ){
+    imgSize_y = gui_percentYRaw(48);
   }
-  if(imgSize_y < gui_percentYRaw(10)){
-    imgSize_y = gui_percentYRaw(10);
+  if(imgSize_y < gui_percentYRaw(32)){
+    imgSize_y = gui_percentYRaw(32);
   }
   
   viewAngle = input_angles;
@@ -164,6 +174,39 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     c_bl_y = c_bl_y - (imgSize_y / 2);
     c_bl_z = 0;
     gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+  
+  local entity thePlayer;
+  thePlayer = entitybyindex(CLIENT_stat_trg_ent_id);
+  if( (thePlayer.flags & FL_CLIENT) ){
+    local vector namepos, nameproj, drawSize;
+    local float namelen, drawdist, adj;
+
+    drawdist = vlen(pmove_org - thePlayer.origin);
+    if( drawdist < CLIENT_radar_range * 0.25 ){
+      drawSize = '10 10 0';
+      adj = 26;
+    }
+    else if( drawdist < CLIENT_radar_range * 0.5 ){
+      drawSize = '12 12 0';
+      adj = 34;
+    }
+    else{
+      drawSize = '14 14 0';
+      adj = 42;
+    }
+    local string playerName;
+    playerName = getplayerkeyvalue(CLIENT_stat_trg_ent_id - 1, "name");
+    namelen = stringwidth(playerName, 0, drawSize);
+    namepos = thePlayer.origin;
+    namepos_z = namepos_z + (gui_percentYRaw(thePlayer.vec_size * adj));
+    nameproj = cs_project(namepos);
+    if( nameproj_z >= 0 ){
+      nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
+      nameproj_z = 0;
+      drawstring(nameproj, playerName, drawSize, CLR_DEF_IFF_ENEMY * 1.5, 1, 0);
+    }
+    namepos = cs_unproject(nameproj);
   }
 };
 
@@ -228,7 +271,7 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
   local vector imgSize, factionColor;
   local string img;
 
-  targSizeZ = allyTarget.vec_size * 12;
+  targSizeZ = allyTarget.vec_size * 16;
   
   if( targSizeZ < 1 ){
     targZbottom = 0;
@@ -253,17 +296,17 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
   imgSize = '4 4 0';
   imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
   
-  if( imgSize_x > gui_percentXRaw(24) ){
-    imgSize_x = gui_percentXRaw(24);
+  if( imgSize_x > gui_percentXRaw(16) ){
+    imgSize_x = gui_percentXRaw(16);
   }
-  if(imgSize_x < gui_percentXRaw(10)){
-    imgSize_x = gui_percentXRaw(10);
+  if(imgSize_x < gui_percentXRaw(8)){
+    imgSize_x = gui_percentXRaw(8);
   }
-  if( imgSize_y > gui_percentYRaw(24) ){
-    imgSize_y = gui_percentYRaw(24);
+  if( imgSize_y > gui_percentYRaw(16) ){
+    imgSize_y = gui_percentYRaw(16);
   }
-  if(imgSize_y < gui_percentYRaw(10)){
-    imgSize_y = gui_percentYRaw(10);
+  if(imgSize_y < gui_percentYRaw(8)){
+    imgSize_y = gui_percentYRaw(8);
   }
   
   viewAngle = input_angles;

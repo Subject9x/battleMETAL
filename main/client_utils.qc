@@ -325,6 +325,11 @@ void(string str, float tokens) client_ParseMechCommand={
 
 void() client_update_faction={
   local float newSkinNum;
+  
+  if( self.skin > 3){
+    //Deathmach randomizer;
+    self.skin = min(rint(random()*3),0);
+  }
   newSkinNum = self.faction - 1;
   self.skin = newSkinNum;
   

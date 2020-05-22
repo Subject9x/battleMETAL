@@ -196,7 +196,6 @@ void() ImpulseCommands ={
     else{
       if( GAMETYPE == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
-        //mapfile_pvp_load(self.faction);
         PutClientInServer();
       }
     }
@@ -214,7 +213,6 @@ void() ImpulseCommands ={
     else{
       if( GAMETYPE == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
-        //mapfile_pvp_load(self.faction);
         PutClientInServer();
       }
     }
