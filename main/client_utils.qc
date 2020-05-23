@@ -347,9 +347,7 @@ void(string cmd, float tokens) client_setMission={
     self.view_ofs = '0 0 1';
     if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
-      if( !world.ignoreSave ){
-        savefile_changemap(sv_nextmap);
-      }
+      savefile_changemap(sv_nextmap); //TODO - fix me
       if( sv_nextmap == "" ){
         stuffcmd(self, "disconnect;togglemenu;cd play 2;demos;\n");
         return;

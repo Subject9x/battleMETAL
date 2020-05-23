@@ -12,10 +12,11 @@ float MSN_FILEFOUND = FALSE;
 float MSN_LOADED = FALSE;
 
 //file tags
-string MSN_FILE_IMG = "img";            //satellite map image path.
 string MSN_FILE_NAME = "name";          //mission name
 string MSN_FILE_DISP = "display";       //cool white-red title of mission when player starts
 string MSN_FILE_TYPE = "type";          //should be simple - Combat Patrol / Base Defense, etc
+string MSN_FILE_IMG = "img";            //satellite map image path.
+string MSN_FILE_NOSAVE = "nosave";      //disables the campaign save functionality for this mission.
 string MSN_FILE_POINTS = "points";      //unused at the moment.
 string MSN_FILE_SECTOR = "sector";      //cosmetic / fluff
 string MSN_FILE_LOCUS = "location";     //cosmetic / fluff.
@@ -24,6 +25,7 @@ string MSN_FILE_BRIEF = "brief";        //large text field for briefing fluff te
 string MSN_FILE_INTEL = "intel";        //text field to give players more info on mission.
 string MSN_FILE_OBJS = "objtotal";      //meta data, total number of objectives for player(s)
 string MSN_FILE_ANIM = "anim";          //animatic file to play for briefing/
+
 string MSN_FILE_OBJ_ID = "objid";       //objective's data_idx id
 string MSN_FILE_OBJ_DESC = "objdesc";   //Short desc of objective
 string MSN_FILE_OBJ_TYPE = "objtype";   //1 = Primary, 2 = Secondary, 3 = Tertiary
@@ -37,6 +39,7 @@ string MSN_MAPPIC;
 string MSN_NAME;
 string MSN_DISP;
 string MSN_TYPE;
+float MSN_NOSAVE;
 string MSN_RESERVETOTAL;
 string MSN_SECTOR;
 string MSN_LOCATION;

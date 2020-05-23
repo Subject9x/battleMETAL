@@ -102,6 +102,9 @@ void() msn_parsefile={
           MSN_DISP = strzone(argv(token));
         }
       }
+      if( argv(1) == MSN_FILE_NOSAVE ){
+        MSN_NOSAVE = stof(argv(token));
+      }
 
       //objectives section
       tobj = msn_mapobjid(tobj, argv(1), argv(token));  //somehow reading this second works
