@@ -453,28 +453,6 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   //  WriteLong( MSG_ENTITY, self.flags ); // DEBUG - disabled for now.
   WriteShort( MSG_ENTITY, self.shield );
 
-  if( (changeFlags & SENDFLAG_MOVE) ){
-  
-  }
-  
-  if( (changeFlags & SENDFLAG_TURRET) ){
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
-  }
-
-  if( (changeFlags & SENDFLAG_CRIT) ){
-    WriteByte( MSG_ENTITY, self.damageValue );
-  }
-  
-  if( (changeFlags & SENDFLAG_BURN) ){
-  
-  }
-  
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    WriteByte( MSG_ENTITY, self.deadflag );
-  }
-
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
@@ -490,5 +468,23 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
   }
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){}
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    WriteByte( MSG_ENTITY, self.damageValue );
+  }
+  
+  if( (changeFlags & SENDFLAG_BURN) ){}
   return TRUE;
 };

@@ -556,3 +556,26 @@ void() util_updateViewBob={
     //client_update_modelBob(self.hud_bob_model, self.hud_bob_side * 0.5, self.hud_bob_speed * 0.5, self.hud_bob_model_up * 0.33);
   }
 };
+
+/*
+=============
+infront
+
+returns 1 if the entity is in front (in sight) of self
+=============
+*/
+float(entity targ) infront =
+{
+	local vector	vec;
+	local float		dot;
+	
+	makevectors (self.angles);
+	vec = normalize (targ.origin - self.origin);
+	dot = vec * v_forward;
+	
+	if ( dot > 0.3)
+	{
+		return TRUE;
+	}
+	return FALSE;
+};

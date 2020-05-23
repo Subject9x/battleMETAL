@@ -60,32 +60,6 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     self.origin_z = ReadCoord();
   }
   
-  if( changeFlags & SENDFLAG_IMPACT ){
-    self.impactType = ReadByte();
-    self.damageValue = ReadByte();
-    if( self.pcl_explode ){
-      self.pcl_explode();
-    }
-  }
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.data_idx = ReadByte();
-    self.damageValue = ReadByte();
-    self.movetype = ReadByte();
-    if( isNew ){
-      self.solid = SOLID_NOT;
-      self.alpha = 1;
-      self.scale = 1;
-      self.origin2 = self.origin;
-      self.origin1 = self.origin;
-      data_sync_new_projectile(self.data_idx);
-      setmodel(self, self.model);
-      setsize(self, '0 0 0', '0 0 0');
-      setorigin(self, self.origin);
-      self.drawmask = MASK_NORMAL;
-      self.predraw = predraw_missile;
-      self.nextthink = time + 0.1;
-    }
-  }
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     self.velocity_x = ReadCoord();
     self.velocity_y = ReadCoord();
@@ -98,6 +72,38 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
   }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.data_idx = ReadByte();
+    self.damageValue = ReadByte();
+    self.movetype = ReadByte();
+    if( isNew ){
+      self.solid = SOLID_NOT;
+      self.alpha = 1;
+      self.scale = 1;
+      data_sync_new_projectile(self.data_idx);
+      setmodel(self, self.model);
+      setsize(self, '0 0 0', '0 0 0');
+      self.drawmask = MASK_NORMAL;
+      self.predraw = predraw_missile;
+      self.nextthink = time + 0.1;
+    }
+    self.origin2 = self.origin;
+    self.origin1 = self.origin;
+    setorigin(self, self.origin);
+  }
+  
+  if( changeFlags & SENDFLAG_IMPACT ){
+    self.impactType = ReadByte();
+    self.damageValue = ReadByte();
+    if( self.impactType > 0 ){
+      self.velocity = '0 0 0';
+    }
+    if( self.pcl_explode ){
+      self.pcl_explode();
+    }
+  }
+  
 };
 
 float() predraw_weapon={

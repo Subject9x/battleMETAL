@@ -121,27 +121,6 @@ float( entity dest, float changedflags ) ctrl_send_building={
   WriteShort( MSG_ENTITY, self.energy );
   WriteShort( MSG_ENTITY, self.shield );
   
-  if( (changedflags & SENDFLAG_VELOCITY) ){
-    WriteByte( MSG_ENTITY, self.faction );
-  }
-  
-  if( (changedflags & SENDFLAG_BURN) ){
-    WriteByte( MSG_ENTITY, self.w_group );
-  }
-  
-  if( (changedflags & SENDFLAG_DEAD) ){
-    WriteByte( MSG_ENTITY, self.deadflag );
-    if( self.deadflag > DEAD_NO ){
-      WriteCoord( MSG_ENTITY, self.origin_x );
-      WriteCoord( MSG_ENTITY, self.origin_y );
-      WriteCoord( MSG_ENTITY, self.origin_z );
-      
-      WriteCoord( MSG_ENTITY, self.angles_x );
-      WriteCoord( MSG_ENTITY, self.angles_y );
-      WriteCoord( MSG_ENTITY, self.angles_z );
-    }
-  }
-  
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
@@ -170,6 +149,29 @@ float( entity dest, float changedflags ) ctrl_send_building={
       WriteByte( MSG_ENTITY, self.style );
     }
   }
+  
+  if( (changedflags & SENDFLAG_VELOCITY) ){
+    WriteByte( MSG_ENTITY, self.faction );
+  }
+  
+  if( (changedflags & SENDFLAG_BURN) ){
+    WriteByte( MSG_ENTITY, self.w_group );
+  }
+  
+  if( (changedflags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+    if( self.deadflag > DEAD_NO ){
+      WriteCoord( MSG_ENTITY, self.origin_x );
+      WriteCoord( MSG_ENTITY, self.origin_y );
+      WriteCoord( MSG_ENTITY, self.origin_z );
+      
+      WriteCoord( MSG_ENTITY, self.angles_x );
+      WriteCoord( MSG_ENTITY, self.angles_y );
+      WriteCoord( MSG_ENTITY, self.angles_z );
+    }
+  }
+  
+
   
   return TRUE;
 };

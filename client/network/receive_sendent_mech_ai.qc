@@ -29,7 +29,7 @@ void() sendevent_mech_ai_move={
 void() sendevent_mech_ai_die={
   local entity weps;
   local entity rem;
-  te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+  te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
   if( self.torsoCenter != world ){
     rem = self.torsoCenter;
@@ -152,37 +152,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   //self.flags = ReadLong(); // DEBUG - disabled for now.
   self.shield = ReadShort();
   
-  //EVENT - MOVE
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    sendevent_mech_ai_move();
-  }
-  
-  if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng_x = anglemod(ReadAngle());
-    turretAng_y = anglemod(ReadAngle());
-    turretAng_z = anglemod(ReadAngle());
-    sendevent_turret_update( turretAng );
-  }
-
-  //EVENT - CRITICAL HIT
-  if( (changeFlags & SENDFLAG_CRIT) ){
-    critical = ReadByte();
-    if( critical > 0 ){
-      sendevent_mech_ai_crit( critical );
-    }
-  }
-  
-  if( (changeFlags & SENDFLAG_BURN) ){
-    
-  }
-  
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if( self.deadflag > DEAD_NO ){
-      sendevent_mech_ai_die();
-    }
-  }
-
   if( (changeFlags & SENDFLAG_NEWENT) ){   
     self.entId = ReadLong(); 
     self.faction = ReadByte();
@@ -218,6 +187,36 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       sendent_ini_interpolate(); 
     }
   }
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+    if( self.deadflag > DEAD_NO ){
+      sendevent_mech_ai_die();
+    }
+  }
+  
+  //EVENT - MOVE
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    sendevent_mech_ai_move();
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    turretAng_x = anglemod(ReadAngle());
+    turretAng_y = anglemod(ReadAngle());
+    turretAng_z = anglemod(ReadAngle());
+    sendevent_turret_update( turretAng );
+  }
+
+  //EVENT - CRITICAL HIT
+  if( (changeFlags & SENDFLAG_CRIT) ){
+    critical = ReadByte();
+    if( critical > 0 ){
+      sendevent_mech_ai_crit( critical );
+    }
+  }
+  
+  if( (changeFlags & SENDFLAG_BURN) ){}
+  
   //Shield Explode event
   sendevent_shield_explode( prevShield );
 };

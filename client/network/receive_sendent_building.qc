@@ -41,46 +41,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
   self.energy = ReadShort();
   self.shield = ReadShort();
   
-  if( (changeFlags & SENDFLAG_VELOCITY) ){     
-    self.faction = ReadByte();
-  }
-
-  if( (changeFlags & SENDFLAG_BURN) ){
-    self.w_group = ReadByte();
-    if( (self.w_group & WEAPON1) && !self.effect1.count ){
-      self.effect1 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.85;
-    }
-    if( (self.w_group & WEAPON2) && !self.effect2.count ){
-      self.effect2 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.75;
-    }
-    if( (self.w_group & WEAPON3) && !self.effect3.count ){
-      self.effect3 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.67;
-    }
-  }
-
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if( self.deadflag > DEAD_NO ){
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
-      
-      self.angles_x = anglemod(ReadCoord());
-      self.angles_y = anglemod(ReadCoord());
-      self.angles_z = anglemod(ReadCoord());
-      setorigin(self, self.origin);
-      if( self.th_die ){
-        self.th_die();
-      }
-      else{
-        data_building_death1(); 
-      }
-    }
-  }
-
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -140,6 +100,45 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   
+  if( (changeFlags & SENDFLAG_VELOCITY) ){     
+    self.faction = ReadByte();
+  }
+
+  if( (changeFlags & SENDFLAG_BURN) ){
+    self.w_group = ReadByte();
+    if( (self.w_group & WEAPON1) && !self.effect1.count ){
+      self.effect1 = te_building_fire_start( self );
+      self.colormod = self.colormod * 0.85;
+    }
+    if( (self.w_group & WEAPON2) && !self.effect2.count ){
+      self.effect2 = te_building_fire_start( self );
+      self.colormod = self.colormod * 0.75;
+    }
+    if( (self.w_group & WEAPON3) && !self.effect3.count ){
+      self.effect3 = te_building_fire_start( self );
+      self.colormod = self.colormod * 0.67;
+    }
+  }
+
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+    if( self.deadflag > DEAD_NO ){
+      self.origin_x = ReadCoord();
+      self.origin_y = ReadCoord();
+      self.origin_z = ReadCoord();
+      
+      self.angles_x = anglemod(ReadCoord());
+      self.angles_y = anglemod(ReadCoord());
+      self.angles_z = anglemod(ReadCoord());
+      setorigin(self, self.origin);
+      if( self.th_die ){
+        self.th_die();
+      }
+      else{
+        data_building_death1(); 
+      }
+    }
+  } 
   
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
