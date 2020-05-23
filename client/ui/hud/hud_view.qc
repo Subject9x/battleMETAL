@@ -641,6 +641,9 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
     
     drawfont = drawfont_prev;
   }
+  else{
+    HUD_WARN_ENV_TYPES = 0;
+  }
 };
 
 /*

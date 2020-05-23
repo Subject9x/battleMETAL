@@ -396,10 +396,6 @@ float() CSQC_Parse_TempEntity =
     case TE_MISSION_END:
       client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
-      
-    case TE_MSG_ENV_WARN:
-      client_event_environment();
-      return TRUE;
     
     case TE_MUZZLE_FLASH:
       particle_muzzle_flash( ReadByte(), te_read_vector(), te_read_vector(), ReadByte() ) ;

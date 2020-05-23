@@ -41,7 +41,7 @@ float TE_AI_VOICE = 100;
 //104;
 //105;
 float TE_MISSION_END = 106;
-float TE_MSG_ENV_WARN = 107;
+//107;
 
 float TE_MUZZLE_FLASH = 108;
 //109;
