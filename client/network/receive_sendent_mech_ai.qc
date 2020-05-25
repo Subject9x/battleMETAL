@@ -166,26 +166,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    
-    if( isNew ){    
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-      self.skin =  self.faction - 1;
-      self.data_type = DATA_MECH;
-      data_sync_new_mech_ai( self.data_idx );
-      self.drawmask = MASK_ENGINE;
-      
-      sendent_setup_weapons();
-      
-      self.alpha = 0.001;
-      self.scale = 0.001;
-      self.movetype = MOVETYPE_STEP;
-      self.solid = SOLID_SLIDEBOX;
-      setmodel(self, "q3mdl/testball.md3");
-      setsize(self, self.mins, self.maxs);
-      setorigin(self, self.origin);
-      self.predraw = predraw_mech_ai;
-      sendent_ini_interpolate(); 
-    }
   }
   
   if( (changeFlags & SENDFLAG_DEAD) ){
@@ -219,6 +199,27 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
+  
+  if( isNew ){    
+    self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+    self.skin =  self.faction - 1;
+    self.data_type = DATA_MECH;
+    self.alpha = 0.001;
+    self.scale = 0.001;
+    self.movetype = MOVETYPE_STEP;
+    self.solid = SOLID_SLIDEBOX;
+    self.predraw = predraw_mech_ai;
+    self.drawmask = MASK_ENGINE;
+    
+    data_sync_new_mech_ai( self.data_idx );
+    
+    setmodel(self, "q3mdl/testball.md3");
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+
+    sendent_setup_weapons();
+    sendent_ini_interpolate(); 
+  }
 };
 
 float() predraw_mech_ai={

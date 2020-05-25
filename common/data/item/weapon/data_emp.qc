@@ -20,11 +20,11 @@ void() data_ini_emp_={
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
-  self.reloadMax = 6;
-  self.energyRate = 250;
+  self.reloadMax = 6; //
+  self.energyRate = 300;  //250
   
-  self.w_range = 3000;  //2500
-  self.damageValue = 400;
+  self.w_range = 3000;
+  self.damageValue = 600; //400
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   
   self.techLevel = 2;

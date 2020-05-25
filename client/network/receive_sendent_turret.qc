@@ -111,16 +111,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    if( isNew ){
-      data_sync_new_turret(self.data_idx);
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-      self.data_type = DATA_BLD;
-      self.colormod = '1 1 1';
-      self.predraw = predraw_turret;
-      self.drawmask = MASK_ENGINE;
-      sendent_setup_weapons();
-      setorigin( self, self.origin );
-    }
   }
   
   //HANDLE EVENT - Shield explode
@@ -128,6 +118,18 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //HANDLE EVENT - turret rotate
   sendevent_turret_update( turretAng );
+  
+  if( isNew ){
+    self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+    self.data_type = DATA_BLD;
+    self.colormod = '1 1 1';
+    self.predraw = predraw_turret;
+    self.drawmask = MASK_ENGINE;
+    setorigin( self, self.origin );
+    
+    data_sync_new_turret(self.data_idx);
+    sendent_setup_weapons();
+  }
 };
 
 float() predraw_turret={
