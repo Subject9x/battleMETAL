@@ -128,25 +128,27 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
+    
+    if( isNew ){
+      self.skin =  self.faction - 1;
+      self.data_type = DATA_VEHC;
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      data_sync_new_vehicle(self.data_idx);
+      self.drawmask = MASK_ENGINE;
+      
+      sendent_setup_weapons();
+      
+      self.movetype = MOVETYPE_STEP;
+      self.solid = SOLID_SLIDEBOX;
+      setmodel(self, self.model);
+      setsize(self, self.mins, self.maxs);
+
+      sendent_ini_interpolate();
+      te_unit_dust_set();
+      
+      self.predraw = predraw_tank;
+    }
   }
   //Shield Explode event
   sendevent_shield_explode( prevShield );
-  if( isNew ){
-    self.skin =  self.faction - 1;
-    self.data_type = DATA_VEHC;
-    self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_tank;
-    self.movetype = MOVETYPE_STEP;
-    self.solid = SOLID_SLIDEBOX;
-    
-    data_sync_new_vehicle(self.data_idx);
-    
-    setmodel(self, self.model);
-    setsize(self, self.mins, self.maxs);
-
-    sendent_ini_interpolate();
-    sendent_setup_weapons();  
-    te_unit_dust_set();
-  }
 };
