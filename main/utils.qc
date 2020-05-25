@@ -45,7 +45,7 @@ float(float numOfSides) util_roll_dice={
   return roll;
 };
 
-float( entity t, float hpMax ) util_getPieceHpForAverage{
+float( entity t, float hpMax ) util_getPieceHpForAverage={
   local float sendBack;
   sendBack = 0;
   if( t != world ){
@@ -85,6 +85,59 @@ float(entity t) util_getMechHpAverage={
     return total;
   }
   return FALSE;
+};
+
+entity(entity t) util_findMechCrit={
+  local entity part;
+  local float final, perc;
+  
+  final = t.health / t.max_health;
+  
+  if( t.armLeft.deadflag == DEAD_NO ){
+    perc = t.armLeft.health / t.armLeft.max_health;
+    cons_logAFloat("armLeft", perc);  //debug
+    if( perc < final ){
+      final = perc;
+      part = t.armLeft;
+    }
+  }
+  if( t.armRight.deadflag == DEAD_NO ){
+    perc = t.armRight.health / t.armRight.max_health;
+    cons_logAFloat("armRight", perc);  //debug
+    if( perc < final ){
+      final = perc;
+      part = t.armRight;
+    }
+  }
+  if( t.torsoLeft.deadflag == DEAD_NO ){
+    perc = t.torsoLeft.health / t.torsoLeft.max_health;
+    cons_logAFloat("torsoLeft", perc);  //debug
+    if( perc < final ){
+      final = perc;
+      part = t.torsoLeft;
+    }
+  }
+  if( t.torsoRight.deadflag == DEAD_NO ){
+    perc = t.torsoRight.health / t.torsoRight.max_health;
+    cons_logAFloat("torsoRight", perc);  //debug
+    if( perc < final ){
+      final = perc;
+      part = t.torsoRight;
+    }
+  }
+  if( t.legs.deadflag == DEAD_NO ){
+    perc = t.legs.health / t.legs.max_health;
+    cons_logAFloat("legs", perc);  //debug
+    if( perc < final ){
+      final = perc;
+      part = t.legs;
+    }
+  }
+  if( !part ){
+    part = t;
+  }
+  cons_logAFloat("part", part.partTypeId);  //debug
+  return part;
 };
 
 float(entity t) util_getMechHpTotal={
