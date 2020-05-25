@@ -95,7 +95,6 @@ entity(entity t) util_findMechCrit={
   
   if( t.armLeft.deadflag == DEAD_NO ){
     perc = t.armLeft.health / t.armLeft.max_health;
-    cons_logAFloat("armLeft", perc);  //debug
     if( perc < final ){
       final = perc;
       part = t.armLeft;
@@ -103,7 +102,6 @@ entity(entity t) util_findMechCrit={
   }
   if( t.armRight.deadflag == DEAD_NO ){
     perc = t.armRight.health / t.armRight.max_health;
-    cons_logAFloat("armRight", perc);  //debug
     if( perc < final ){
       final = perc;
       part = t.armRight;
@@ -111,7 +109,6 @@ entity(entity t) util_findMechCrit={
   }
   if( t.torsoLeft.deadflag == DEAD_NO ){
     perc = t.torsoLeft.health / t.torsoLeft.max_health;
-    cons_logAFloat("torsoLeft", perc);  //debug
     if( perc < final ){
       final = perc;
       part = t.torsoLeft;
@@ -119,7 +116,6 @@ entity(entity t) util_findMechCrit={
   }
   if( t.torsoRight.deadflag == DEAD_NO ){
     perc = t.torsoRight.health / t.torsoRight.max_health;
-    cons_logAFloat("torsoRight", perc);  //debug
     if( perc < final ){
       final = perc;
       part = t.torsoRight;
@@ -127,7 +123,6 @@ entity(entity t) util_findMechCrit={
   }
   if( t.legs.deadflag == DEAD_NO ){
     perc = t.legs.health / t.legs.max_health;
-    cons_logAFloat("legs", perc);  //debug
     if( perc < final ){
       final = perc;
       part = t.legs;
@@ -136,7 +131,6 @@ entity(entity t) util_findMechCrit={
   if( !part ){
     part = t;
   }
-  cons_logAFloat("part", part.partTypeId);  //debug
   return part;
 };
 
