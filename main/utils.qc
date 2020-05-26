@@ -286,26 +286,36 @@ float(vector orig) util_lockOnChoke={
 void(entity ent, vector pnt) util_chekPointToHitDir={
   local float hitAngle, sideAngle;
   local vector normVec;
+
   
   makevectors(ent.v_angle);
   normVec = normalize(pnt - ent.origin);
   hitAngle = normVec * v_forward;
-
-  if( hitAngle <= 0 ){
-    //rear hit
-    ent.hitdir_buffer = ent.hitdir_buffer | (STAT_HIT_LF | STAT_HIT_RT);
-    return;
-  }
   sideAngle = normVec * v_right;
-  if( hitAngle < 0.7 && hitAngle > 0 ){
-    //side shot
-    if( sideAngle > 0.3 && sideAngle <= 0.6){
-      ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_RT;
-    }
-    else if(sideAngle <= -0.6 && sideAngle > -1){
+
+  /*
+    Direction Table
+    normVec * v_forward
+      Front = 1.0
+      Back = -1.0
+      
+    normVec * v_right;
+      Left = -1.0
+      Right = 1.0
+  */
+  //check for side hits
+  if( (hitAngle <= 0.7) && (hitAngle > -0.7) ){
+    if( sideAngle < 0 ){
       ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_LF; 
     }
+    else{
+      ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_RT;
+    }
   }
+  else if( hitAngle < -0.75 ){
+    ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_BK;
+  }
+ 
 };
 
 

@@ -98,17 +98,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   //the special hit-location calculator is only run for DATA_MECH units
   if( trg.data_type == DATA_MECH ){
     //filter out leg hits
-    if(dmg_point_z < (trg.origin_z - 5)){
-      if( dmgTrg.legs.deadflag != DEAD_DEAD ){
-        dmgTrg = dmgTrg.legs;
-      }
-      if( dmg_point_z > (trg.origin_z - trg.mins_z / 2) ){
-        //shot was close enough to mid-point, even though legs are dead
-        dmgTrg = t_find_part(dmg_point, dmgTrg);
-      }
-      //miss
+    if( !(dmgTrg.legs.flags & FL_DISARMED) && (dmg_point_z < (trg.origin_z - 5)) ){
+      dmgTrg = dmgTrg.legs;
     }
     else{
+      if(dmg_point_z < (trg.origin_z - 5) ){
+        dmgAmt = dmgAmt * 0.33;  //NOTE: indirect hit to not completely punished wasted leg shots
+      }
       dmgTrg = t_find_part(dmg_point, dmgTrg);
     }
   }
@@ -120,7 +116,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
-  if( (dmgTrg.flags & FL_MONSTER) && dmgTrg.data_type != DATA_BLD ){    
+  if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){    
     if( util_getMechHpAverage(dmgTrg) < 0.6){
       notTarg = self;
       self = dmgTrg;

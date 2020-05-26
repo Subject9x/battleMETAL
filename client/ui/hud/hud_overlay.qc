@@ -148,3 +148,34 @@ void() hud_renderNavOverlay={
   
   drawfont = drawfont_prev;
 };
+
+/*
+  RENDER DIRECTIONAL HIT INDICATORS
+*/
+void(float hitDirBit) hud_renderDirectionHit={
+  local vector icoSize;
+  local vector orgLeft;
+  local vector orgRight;
+  local vector hitColor;
+  icoSize_x = gui_percentXRaw(24);
+  icoSize_y = gui_percentYRaw(VIEW_MAX_y * 0.67);
+  orgLeft_y = orgRight_y = VIEW_ORG_y + (VIEW_MAX_y * 0.15);
+  
+  
+  if( CLIENT_shield > 0 ){
+    hitColor = CLR_HUD_DMG_SHIELD;
+  }
+  else{
+    hitColor = CLR_HUD_DMG_ARMOR;
+  }
+  
+  if( (hitDirBit & STAT_HIT_LF) ){
+    orgLeft_x = VIEW_ORG_x + gui_percentXRaw(1);
+    gui_renderTintImage(TRUE, orgLeft, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
+  }
+  
+  if( (hitDirBit & STAT_HIT_RT) ){
+    orgRight_x = VIEW_MAX_x - gui_percentXRaw(24);
+    gui_renderTintImage(TRUE, orgRight, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
+  }
+};

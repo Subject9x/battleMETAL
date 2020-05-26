@@ -141,12 +141,13 @@ void() PlayerPostThink = {
       self.playerState = PLAYER_ACTIVE;
     }
     
-    self.stat_hit_dirs =  self.hitdir_buffer;
+    self.stat_hit_dirs = self.hitdir_buffer;
     if(time >= self.w_proj){
       self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);
     }
     if(time >= self.was_hit){
       self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & (STAT_HIT_LF | STAT_HIT_RT | STAT_HIT_BK));
+      self.hitdir_buffer = 0;
     }
   }
 
