@@ -42,8 +42,8 @@ void() projectile_mlg_expl={
 
 void() data_projectile_ini_missile_laserguide_={
   self.classname = "missile";
-  self.data_velocity = 2200; //1000
-  self.data_lifetime = 1.1; //2.2
+  self.data_velocity = 2200;
+  self.data_lifetime = 1.1;
   
   #ifdef CSQC
     //cosmetics
@@ -101,56 +101,26 @@ void() data_projectile_missile_laserguide_touch={
 };
 
 void() data_projectile_missile_laserguide_think={
-  local vector lorg, dir, olddir;
+  local vector vtemp, dir, olddir;
   local float turnrate;
-
-  if( self.owner.stat_rdr_mode == TRUE ){
-    turnrate = 0.75;
+  
+  if( self.enemy.deadflag == DEAD_NO ){
+    vtemp = normalize(self.enemy.origin - self.origin);
+    self.velocity = vtemp * 0.5;
+    self.velocity = self.velocity * self.data_velocity;
+    self.angles = vectoangles(self.velocity);
+    self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
   }
   else{
-    turnrate = 0.9;
+    
   }
-  
-  lorg = self.owner.laser_sight_org;
-  
-  if( vlen(self.enemy.origin - lorg) <= 200 ){
-    turnrate = turnrate - 0.2;
-    if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
-      turnrate = turnrate - 0.1;
-    }
-  }
-  //TODO - fix me
-  
-  if (lorg != '0 0 0'){
-    olddir = normalize(self.velocity);
-		dir = normalize(lorg - self.origin);
-    if (olddir_x - dir_x > turnrate){
-      dir_x = olddir_x - turnrate;
-    }
-    if (olddir_x - dir_x < -1 * turnrate){
-      dir_x = olddir_x + turnrate;
-    }
-    if (olddir_y - dir_y > turnrate){
-      dir_y = olddir_y - turnrate;
-    }
-    if (olddir_y - dir_y < -1 * turnrate){
-      dir_y = olddir_y + turnrate;
-    }
-    if (olddir_z - dir_z > turnrate){
-      dir_z = olddir_z - turnrate;
-    }
-    if (olddir_z - dir_z < -1 * turnrate){
-      dir_z = olddir_z + turnrate;
-    }
-    self.velocity = dir * self.data_velocity;
-		self.angles = vectoangles(self.velocity);
-	}
+
   if(time > self.data_lifetime){
     self.think = ctrl_missile_dud;
     self.nextthink = time + 0.1;
   }
   else{
-    self.nextthink = time + 0.075;
+    self.nextthink = time + 0.025;
     self.think = data_projectile_missile_laserguide_think;
   }
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;

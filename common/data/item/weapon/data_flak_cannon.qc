@@ -26,7 +26,7 @@ void() data_ini_flak_cannon_={
   self.energyRate = 0;
   
   self.w_range = 500;
-  self.damageValue = 3; //2.5
+  self.damageValue = 2.5;
   self.damageType = DMG_BAL;
   
   self.techLevel = 1;
@@ -41,7 +41,7 @@ void() data_ini_flak_cannon_={
     self.model = "q3mdl/weapons/w_flk.md3";
     self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
     self.abbrev = "FLAK";
-    self.description = "+ Instant-impact weapon. + Strong against shields. + 4-rnd burst. + Shotgun damage pattern. + 4 sub-munitions.";
+    self.description = "+ Instant-impact weapon. +4-rnd burst and 4 pellets per shot. +  shotgun damage pattern. + Stronger against shields and small targets.";
     self.icon = "gfx/ui/wep_icons/wi_flak.png";
   #endif
   
@@ -61,8 +61,8 @@ void() data_ini_attack_flak_={
   local vector direction;
   local vector src;
   local vector dir;
-  local float hit;
   local float totes;
+  local float damage;
       
   cacheSpread = self.spreadDefault;
   self.spreadDefault = '0 0 0';
@@ -89,12 +89,21 @@ void() data_ini_attack_flak_={
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0){
         impactStyle = IMPACT_SHIELD;
-        t_damage_shield(trace_ent, self,self.owner, self.damageValue , trace_endpos, FALSE);
+        t_damage_shield(trace_ent, self,self.owner, (self.damageValue * 0.9), trace_endpos, FALSE);
         client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), trace_endpos, '0 0 0', 1 );
       }
       else{
         impactStyle = IMPACT_ARMOR;
-        t_damage(trace_ent, self, self.owner, (self.damageValue * 0.75), trace_endpos, '0 0 0');
+        damage = self.damageValue * 0.8;
+        if( (trace_ent.data_type == DATA_MECH) || (trace_ent.data_type == DATA_VEHC) ){
+          if( trace_ent.vec_size == 1){
+            damage = self.damageValue;
+          }
+          else if( trace_ent.vec_size == 3 ){
+            damage = self.damageValue * 0.67;
+          }
+        }
+        t_damage(trace_ent, self, self.owner, damage, trace_endpos, '0 0 0');
         client_send_particle( particleeffectnum("TE_FLK_IMPACT"), trace_endpos, normalize(trace_endpos - self.origin) * 2, 1 );
       }
     }

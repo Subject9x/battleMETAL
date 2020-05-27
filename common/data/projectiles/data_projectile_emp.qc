@@ -13,7 +13,7 @@ void() data_prj_emp_touch;
 void() data_projectile_emp_think_;
 void() data_prj_emp_explode;
 
-float DAT_PRJ_EMP_PROXYRAD    = 300;  //200
+float DAT_PRJ_EMP_PROXYRAD    = 30;  //200
 float DAT_PRJ_EMP_EXPRAD      = 300;
 #endif CSQC
 
@@ -124,13 +124,26 @@ void()data_prj_emp_explode={
     if(ln > DAT_PRJ_EMP_EXPRAD){
       continue;
     }
-    if( lst.shield > 0 ){
-      t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue * 0.15, FIRE_ENDPOINT, TRUE);
-      self.impactType = IMPACT_SHIELD;
+    //make sure primary contact target takes the damage
+    if(ln > DAT_PRJ_EMP_PROXYRAD){
+      if( lst.shield > 0 ){
+        t_damage_shield(trace_ent, self, FIRE_ENT, (self.damageValue * 0.25) * (ln / DAT_PRJ_EMP_EXPRAD), FIRE_ENDPOINT, TRUE);
+        self.impactType = IMPACT_SHIELD;
+      }
+      else{        
+        self.impactType = IMPACT_ARMOR;
+      }
     }
-    else{        
-      self.impactType = IMPACT_ARMOR;
+    else{
+      if( lst.shield > 0 ){
+        t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
+        self.impactType = IMPACT_SHIELD;
+      }
+      else{        
+        self.impactType = IMPACT_ARMOR;
+      }
     }
+
   }
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.impactType = IMPACT_SKY;  
