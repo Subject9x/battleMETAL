@@ -245,11 +245,17 @@ void() msn_unlock_stuff={
   local string unlockMechs;
   local string unlockItems;
   local entity obj;
-  for( obj = findfloat(world, data_type, DATA_OBJT); obj != world; obj = nextent(obj) ){
+  unlockMechs = "";
+  unlockItems = "";
+  
+  for( obj = nextent(world); obj != world; obj = nextent(obj) ){
     if( obj.data_type != DATA_OBJT ){
       continue;
     }
     if( obj.faction != CLIENT_faction ){
+      continue;
+    }
+    if( obj.isActive != OBJECTIVE_WIN ){
       continue;
     }
     if( MSN_OBJ_MECHS[obj.data_idx] != "" ){

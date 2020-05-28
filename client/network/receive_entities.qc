@@ -267,6 +267,10 @@ void() client_state_events={
       MENU_button_delay = servertime + 2;
       MENU_DEBRIEF_time_elapsed = -1;
       ui_set_mission_status( SV_MISSION_RESULT );
+      if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
+        msn_unlock_stuff();
+        menu_debrief_sort_unlocks();
+      }
       return;
     }
     //------------------------------------
