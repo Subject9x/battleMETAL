@@ -141,9 +141,12 @@ void() cl_get_mechs_sort={
   appends new save data from mission to single-player save file
 */
 void() cl_savefile_append={
+  local string s;
+  
   if(MENU_DEBRIEF_unlocks_mechs != ""){
     if(UNLOCKED_MECHS_DATA != ""){
-      UNLOCKED_MECHS_DATA = strzone(cl_savefile_insert(MENU_DEBRIEF_unlocks_mechs, UNLOCKED_MECHS_DATA));
+      s = cl_savefile_insert(MENU_DEBRIEF_unlocks_mechs, UNLOCKED_MECHS_DATA);
+      UNLOCKED_MECHS_DATA = strzone(s);
     }
     else{
       UNLOCKED_MECHS_DATA = strzone(MENU_DEBRIEF_unlocks_mechs);
@@ -152,7 +155,8 @@ void() cl_savefile_append={
   
   if(MENU_DEBRIEF_unlocks_equip != ""){
     if(UNLOCKED_ITEMS_DATA != ""){
-      UNLOCKED_ITEMS_DATA = strzone(cl_savefile_insert(MENU_DEBRIEF_unlocks_equip, UNLOCKED_ITEMS_DATA));
+      s = cl_savefile_insert(MENU_DEBRIEF_unlocks_equip, UNLOCKED_ITEMS_DATA);
+      UNLOCKED_ITEMS_DATA = strzone(s);
     }
     else{
       UNLOCKED_ITEMS_DATA = strzone(MENU_DEBRIEF_unlocks_equip);
@@ -162,31 +166,32 @@ void() cl_savefile_append={
 
 //checks to see if item is already on list
 string(string item, string source) cl_savefile_insert={
-  local string update, line;
-  local float tokens, itr;
+  local string update, unlockToken, saveItemId;
+  local float tokens, unlockItr, saveItr, savedItemTotal, added;
+  
   tokens = tokenizebyseparator(item, " ");
   update = "";
-  line = strcat(" ", source);
-  itr = 0;
-  while( itr <= tokens){
-    local string toke, chk;
-    toke = argv(itr);
-    if( (toke != "") && (toke != " ") ){
-      chk = strcat(" ", toke);
-      if( strstrofs(line, chk, 0) == -1){
-        if( itr == 0){
-          update = strcat(update, toke);
-        }
-        else{
-          update = strcat(update, chk);
+  unlockItr = 0;
+  while( unlockItr < tokens){
+    tokenizebyseparator(item, " ");
+    unlockToken = argv(unlockItr);
+    savedItemTotal = tokenizebyseparator(source, " ");
+    saveItr = 0;
+    added = FALSE;
+    while( saveItr < savedItemTotal ){
+      saveItemId = argv(saveItr);
+      if( unlockToken != saveItemId ){
+        if( added == FALSE ){
+          added = TRUE;
+          update = strcat(update, " ", unlockToken);
         }
       }
+      saveItr = saveItr + 1;
     }
-    itr = itr + 1;
+    unlockItr = unlockItr + 1;
   }
-  
   if(update != ""){
-    update = strcat(source, " ", update);
+    update = strcat(source, update);
     return update;
   }
   else{

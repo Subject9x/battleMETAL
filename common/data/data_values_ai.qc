@@ -67,19 +67,19 @@ float AI_VIEW_VET = 0.65;
 float AI_VIEW_ACE = 0.45;
 
 //View Ranges, multipliers against ai.radar_range
-float AI_VIEW_RANGE_ROK = 0.75;
-float AI_VIEW_RANGE_REG = 1;
-float AI_VIEW_RANGE_VET = 1.25;
-float AI_VIEW_RANGE_ACE = 1.5;
+float AI_VIEW_RANGE_ROK = 0.7;
+float AI_VIEW_RANGE_REG = 0.8;
+float AI_VIEW_RANGE_VET = 0.9;
+float AI_VIEW_RANGE_ACE = 1;
 
 //Adjust yaw_speed
 float AI_YAW_VET = 1.1;
 float AI_YAW_ACE = 1.15;
 
 //attack chances
-float AI_ATTACK_ROK = 0.275;
-float AI_ATTACK_REG = 0.225;
-float AI_ATTACK_VET = 0.125;
+float AI_ATTACK_ROK = 0.255;
+float AI_ATTACK_REG = 0.205;
+float AI_ATTACK_VET = 0.105;
 float AI_ATTACK_ACE = 0.075;
 
 //WEAPON TWEAKS
@@ -134,7 +134,7 @@ float AI_REFLEX_ROK = 3;
 float AI_NODE_DISTANCE = 67;
 
 //Help call cooldowns
-float AI_HELP_COOL_ROK = 7;
-float AI_HELP_COOL_REG = 5;
-float AI_HELP_COOL_VET = 3;
-float AI_HELP_COOL_ACE = 1;
+float AI_HELP_COOL_ROK = 11;
+float AI_HELP_COOL_REG = 9;
+float AI_HELP_COOL_VET = 7;
+float AI_HELP_COOL_ACE = 5;
