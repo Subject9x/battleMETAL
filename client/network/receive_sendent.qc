@@ -54,6 +54,29 @@ void( float isNew ) sendent_handle_update={
 void( float isNew, float changeFlags) sendent_handle_missile={
   local float impactEvent;
   
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.data_idx = ReadByte();
+    self.damageValue = ReadByte();
+    self.origin2 = self.origin;
+    self.origin1 = self.origin;
+    setorigin(self, self.origin);
+  }
+  
+  if( isNew ){
+    self.solid = SOLID_NOT;
+    self.alpha = 1;
+    self.scale = 1;
+    data_sync_new_projectile(self.data_idx);
+    setmodel(self, self.model);
+    setsize(self, '0 0 0', '0 0 0');
+    self.drawmask = MASK_NORMAL;
+    self.predraw = predraw_missile;
+    self.nextthink = time + 0.1;
+  }
+  
   if( changeFlags & SENDFLAG_MOVE ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -61,36 +84,16 @@ void( float isNew, float changeFlags) sendent_handle_missile={
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    self.velocity_x = ReadCoord();
-    self.velocity_y = ReadCoord();
-    self.velocity_z = ReadCoord();
-    self.angles = vectoangles(self.velocity);
+    self.velocity_x = ReadShort();
+    self.velocity_y = ReadShort();
+    self.velocity_z = ReadShort();
   }
+  
   if( (changeFlags & SENDFLAG_TURRET) ){
     //only if you want to override angles == velocity;
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
-  }
-  
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.data_idx = ReadByte();
-    self.damageValue = ReadByte();
-    self.movetype = ReadByte();
-    if( isNew ){
-      self.solid = SOLID_NOT;
-      self.alpha = 1;
-      self.scale = 1;
-      data_sync_new_projectile(self.data_idx);
-      setmodel(self, self.model);
-      setsize(self, '0 0 0', '0 0 0');
-      self.drawmask = MASK_NORMAL;
-      self.predraw = predraw_missile;
-      self.nextthink = time + 0.1;
-    }
-    self.origin2 = self.origin;
-    self.origin1 = self.origin;
-    setorigin(self, self.origin);
   }
   
   if( changeFlags & SENDFLAG_IMPACT ){
@@ -104,6 +107,7 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     }
   }
   
+  self.angles = vectoangles(self.velocity);
 };
 
 float() predraw_weapon={

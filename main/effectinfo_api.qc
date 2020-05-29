@@ -20,6 +20,14 @@ float( float isNew, float changedFlags ) te_send_missile={
   WriteByte( MSG_ENTITY, SENDTYPE_PROJ );
   WriteByte( MSG_ENTITY, changedFlags );
   
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.damageValue );
+  }
+  
   if( (changedFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
@@ -27,9 +35,9 @@ float( float isNew, float changedFlags ) te_send_missile={
   }
   
   if( (changedFlags & SENDFLAG_VELOCITY) ){
-    WriteCoord( MSG_ENTITY, self.velocity_x );
-    WriteCoord( MSG_ENTITY, self.velocity_y );
-    WriteCoord( MSG_ENTITY, self.velocity_z );
+    WriteShort( MSG_ENTITY, self.velocity_x );
+    WriteShort( MSG_ENTITY, self.velocity_y );
+    WriteShort( MSG_ENTITY, self.velocity_z );
   }
   
   if( (changedFlags & SENDFLAG_TURRET) ){
@@ -37,13 +45,7 @@ float( float isNew, float changedFlags ) te_send_missile={
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
   }
-  
-  if( (changedFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, self.data_idx );
-    WriteByte( MSG_ENTITY, self.damageValue );
-    WriteByte( MSG_ENTITY, self.movetype );
-  }
-  
+    
   if( (changedFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.impactType );
     WriteByte( MSG_ENTITY, self.damageValue );
