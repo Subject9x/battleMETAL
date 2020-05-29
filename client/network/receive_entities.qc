@@ -484,6 +484,8 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   
 */
 void() client_get_serverinfo={
+  local string name;
+  
   SV_MISSION_STATUS_PREV = SV_MISSIONSTATUS;
   
   SV_MISSIONSTATUS = ReadByte();
@@ -493,7 +495,11 @@ void() client_get_serverinfo={
   if( SV_MISSIONSTATUS == MISSION_STATUS_OVER ){
     SV_ENDTIME = servertime;
   }
-  SV_NEXTMAP = strzone(ReadString());
+  name = ReadString();
+  if( SV_NEXTMAP == "" ){
+    SV_NEXTMAP = strzone(name);
+  }
+  
 };
 
 

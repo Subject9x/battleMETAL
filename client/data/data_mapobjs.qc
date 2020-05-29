@@ -366,7 +366,7 @@ void() hazard_quant_think={
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
   if( random() > 0.6 ){
-    te_field_quantum(partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)), 1);
+    te_field_quantum( partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)) );
   }
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
   
