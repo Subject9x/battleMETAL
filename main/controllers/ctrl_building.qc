@@ -68,6 +68,30 @@ float( entity dest, float changedflags ) ctrl_send_turret={
   WriteByte( MSG_ENTITY, changedflags );
   //=================
   
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+
+    WriteLong( MSG_ENTITY, num_for_edict(self));
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteLong( MSG_ENTITY, self.spawnflags );
+    
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteShort( MSG_ENTITY, self.shield );
   }
@@ -86,29 +110,6 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.w_group );
   }
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    
-    WriteCoord( MSG_ENTITY, self.angles_x );
-    WriteCoord( MSG_ENTITY, self.angles_y );
-    WriteCoord( MSG_ENTITY, self.angles_z );
-
-    WriteLong( MSG_ENTITY, num_for_edict(self));
-    WriteByte( MSG_ENTITY, self.data_idx );
-    WriteLong( MSG_ENTITY, self.spawnflags );
-    
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
-  }
   return TRUE;
 };
 
@@ -126,9 +127,9 @@ float( entity dest, float changedflags ) ctrl_send_building={
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
     
-    WriteCoord( MSG_ENTITY, self.angles_x );
-    WriteCoord( MSG_ENTITY, self.angles_y );
-    WriteCoord( MSG_ENTITY, self.angles_z );
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
     
     WriteLong( MSG_ENTITY, num_for_edict(self) );
     WriteByte( MSG_ENTITY, self.data_idx );
@@ -138,9 +139,9 @@ float( entity dest, float changedflags ) ctrl_send_building={
   if( (changedflags & SENDFLAG_MOVE) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       WriteByte( MSG_ENTITY, self.cockpit.attack_state);
-      WriteCoord( MSG_ENTITY, self.compAltOffset_x );
-      WriteCoord( MSG_ENTITY, self.compAltOffset_y );
-      WriteCoord( MSG_ENTITY, self.compAltOffset_z );
+      WriteShort( MSG_ENTITY, self.compAltOffset_x );
+      WriteShort( MSG_ENTITY, self.compAltOffset_y );
+      WriteShort( MSG_ENTITY, self.compAltOffset_z );
     }
     if( self.data_idx == UI_BUILDING_radar ){
       WriteByte( MSG_ENTITY, self.attack_state );
@@ -165,13 +166,11 @@ float( entity dest, float changedflags ) ctrl_send_building={
       WriteCoord( MSG_ENTITY, self.origin_y );
       WriteCoord( MSG_ENTITY, self.origin_z );
       
-      WriteCoord( MSG_ENTITY, self.angles_x );
-      WriteCoord( MSG_ENTITY, self.angles_y );
-      WriteCoord( MSG_ENTITY, self.angles_z );
+      WriteAngle( MSG_ENTITY, self.angles_x );
+      WriteAngle( MSG_ENTITY, self.angles_y );
+      WriteAngle( MSG_ENTITY, self.angles_z );
     }
   }
-  
-
   
   return TRUE;
 };

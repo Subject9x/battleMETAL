@@ -70,6 +70,36 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   self.angles_y = anglemod(ReadAngle());
   self.angles_z = anglemod(ReadAngle());
   
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.entId = ReadLong();
+    self.faction = ReadByte();
+    self.data_idx = ReadByte();
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte();
+  }
+  
+  if( isNew ){
+    self.skin =  self.faction - 1;
+    self.data_type = DATA_VEHC;
+    self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+    data_sync_new_vehicle(self.data_idx);
+    self.drawmask = MASK_ENGINE;
+    
+    sendent_setup_weapons();
+    
+    setmodel(self, self.model);
+    setsize(self, self.mins, self.maxs);
+    self.predraw = predraw_spg;
+    sendent_ini_interpolate();
+  }
+  
   self.shield = ReadShort();
   
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -94,39 +124,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
       makevectors(self.angles);
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
-    }
-  }
-  
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadLong();
-    self.faction = ReadByte();
-    self.data_idx = ReadByte();
-    
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
-
-    if( isNew ){
-      self.skin =  self.faction - 1;
-      self.data_type = DATA_VEHC;
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-      data_sync_new_vehicle(self.data_idx);
-      self.drawmask = MASK_ENGINE;
-      
-      sendent_setup_weapons();
-      
-      self.movetype = MOVETYPE_STEP;
-      self.solid = SOLID_SLIDEBOX;
-      setmodel(self, self.model);
-      setsize(self, self.mins, self.maxs);
-      self.predraw = predraw_spg;
-      sendent_ini_interpolate();
     }
   }
   

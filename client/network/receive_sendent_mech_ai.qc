@@ -178,8 +178,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       
       self.alpha = 0.001;
       self.scale = 0.001;
-      self.movetype = MOVETYPE_STEP;
-      self.solid = SOLID_SLIDEBOX;
       setmodel(self, "q3mdl/testball.md3");
       setsize(self, self.mins, self.maxs);
       setorigin(self, self.origin);
