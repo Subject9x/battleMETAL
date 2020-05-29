@@ -46,40 +46,37 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
     
-    self.angles_x = anglemod(ReadCoord());
-    self.angles_y = anglemod(ReadCoord());
-    self.angles_z = anglemod(ReadCoord());
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
 
     self.entId = ReadLong();
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
-
-    if( isNew ){
-      makevectors(self.angles);
-      self.solid = SOLID_SLIDEBOX;
-      self.movetype = MOVETYPE_NONE;
-      data_sync_new_building(self.data_idx);
-      self.data_type = DATA_BLD;
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT); 
-      self.colormod = '1 1 1';
-      setorigin(self, self.origin);
-      self.drawmask = MASK_ENGINE;      
-      self.scale = 1;
-      self.alpha = 1;
-      if( self.th_walk ){
-        self.th_walk();
+  }    
+  if( isNew ){
+    makevectors(self.angles);
+    data_sync_new_building(self.data_idx);
+    self.data_type = DATA_BLD;
+    self.flags = self.flags | (FL_MONSTER | FL_UNIT); 
+    self.colormod = '1 1 1';
+    setorigin(self, self.origin);
+    self.drawmask = MASK_ENGINE;      
+    self.scale = 1;
+    self.alpha = 1;
+    if( self.th_walk ){
+      self.th_walk();
+    }
+    if( (self.spawnflags & 4194304) ){
+      if( lastMapKeyObject ){
+        //build linked list backwards for later forward iteration.
+        lastMapKeyObject.w_slot = self;
+        lastMapKeyObject = self;
       }
-      if( (self.spawnflags & 4194304) ){
-        if( lastMapKeyObject ){
-          //build linked list backwards for later forward iteration.
-          lastMapKeyObject.w_slot = self;
-          lastMapKeyObject = self;
-        }
-        else{
-          //start chain
-          mapKeyObject = self;
-          lastMapKeyObject = self;
-        }
+      else{
+        //start chain
+        mapKeyObject = self;
+        lastMapKeyObject = self;
       }
     }
   }
@@ -88,9 +85,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
   if( (changeFlags & SENDFLAG_MOVE) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       self.w_firetime = ReadByte();
-      self.compAltOffset_x = ReadCoord();
-      self.compAltOffset_y = ReadCoord();
-      self.compAltOffset_z = ReadCoord();
+      self.compAltOffset_x = ReadShort();
+      self.compAltOffset_y = ReadShort();
+      self.compAltOffset_z = ReadShort();
     }
     if( self.data_idx == UI_BUILDING_radar ){
       self.w_firetime = ReadByte();
@@ -127,9 +124,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.origin_y = ReadCoord();
       self.origin_z = ReadCoord();
       
-      self.angles_x = anglemod(ReadCoord());
-      self.angles_y = anglemod(ReadCoord());
-      self.angles_z = anglemod(ReadCoord());
+      self.angles_x = anglemod(ReadAngle());
+      self.angles_y = anglemod(ReadAngle());
+      self.angles_z = anglemod(ReadAngle());
       setorigin(self, self.origin);
       if( self.th_die ){
         self.th_die();

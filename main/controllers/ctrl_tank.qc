@@ -98,20 +98,7 @@ float( entity dest, float changedflags ) ctrl_send_tank={
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
-
-  WriteShort( MSG_ENTITY, self.shield );
-    
-  if( changedflags & SENDFLAG_TURRET ){
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
-  }
-  if( changedflags & SENDFLAG_DEAD ){
-    WriteByte( MSG_ENTITY, self.deadflag );
-  }
-  if( changedflags & SENDFLAG_CRIT ){
-    WriteByte( MSG_ENTITY, self.pcl_effectnum );
-  }
+  
   if( changedflags & SENDFLAG_NEWENT ){
     WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
@@ -126,6 +113,20 @@ float( entity dest, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  
+  WriteShort( MSG_ENTITY, self.shield );
+    
+  if( changedflags & SENDFLAG_TURRET ){
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
+  }
+  if( changedflags & SENDFLAG_DEAD ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( changedflags & SENDFLAG_CRIT ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   return TRUE;
 };
@@ -142,14 +143,6 @@ float( entity dest, float changedflags ) ctrl_send_spg={
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
   
-  WriteShort( MSG_ENTITY, self.shield );
-
-  if( changedflags & SENDFLAG_DEAD ){
-    WriteByte( MSG_ENTITY, self.deadflag );
-  }
-  if( changedflags & SENDFLAG_CRIT ){
-    WriteByte( MSG_ENTITY, self.pcl_effectnum );
-  }
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
@@ -164,6 +157,15 @@ float( entity dest, float changedflags ) ctrl_send_spg={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  
+  WriteShort( MSG_ENTITY, self.shield );
+
+  if( changedflags & SENDFLAG_DEAD ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+  }
+  if( changedflags & SENDFLAG_CRIT ){
+    WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   return TRUE;
 };
@@ -180,6 +182,21 @@ float( entity dest, float changedflags ) ctrl_send_gev={
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
   
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self));
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  
   WriteShort( MSG_ENTITY, self.shield );
   
   if( (changedflags & SENDFLAG_TURRET) ){
@@ -193,20 +210,6 @@ float( entity dest, float changedflags ) ctrl_send_gev={
   if( changedflags & SENDFLAG_CRIT ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
-  if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
-    WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.data_idx );
 
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
-  }
   return TRUE;
 };

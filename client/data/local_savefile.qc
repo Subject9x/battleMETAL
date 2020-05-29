@@ -166,27 +166,31 @@ void() cl_savefile_append={
 
 //checks to see if item is already on list
 string(string item, string source) cl_savefile_insert={
-  local string update, unlockToken, saveItemId;
-  local float tokens, unlockItr, saveItr, savedItemTotal, added;
+  local string update, tempSource, unlockToken, saveItemId;
+  local float tokens, unlockItr, saveItr, savedItemTotal, exists;
   
+  tempSource = source;
   tokens = tokenizebyseparator(item, " ");
   update = "";
   unlockItr = 0;
   while( unlockItr < tokens){
     tokenizebyseparator(item, " ");
     unlockToken = argv(unlockItr);
-    savedItemTotal = tokenizebyseparator(source, " ");
+    savedItemTotal = tokenizebyseparator(tempSource, " ");
     saveItr = 0;
-    added = FALSE;
+    exists = FALSE;
     while( saveItr < savedItemTotal ){
       saveItemId = argv(saveItr);
-      if( unlockToken != saveItemId ){
-        if( added == FALSE ){
-          added = TRUE;
-          update = strcat(update, " ", unlockToken);
+      if( !exists ){
+        if( stof(unlockToken) == stof(saveItemId) ){
+          exists = TRUE;
         }
       }
       saveItr = saveItr + 1;
+    }
+    if( !exists ){
+      update = strcat(update, " ", unlockToken);
+      tempSource = strcat(tempSource, " ", unlockToken);
     }
     unlockItr = unlockItr + 1;
   }
