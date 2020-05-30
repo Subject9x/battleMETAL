@@ -84,14 +84,5 @@ void() data_ini_attack_missile_swarm_={
     self = hold;
   }
   NEWSHOT = world;
-  
-  /*local vector end;
-  local vector spread;
-  spread = '0.15 0.15 0';
-  end = FIRE_ENDPOINT;
-  FIRE_ENDPOINT = end + crandom()*spread_x*v_right + crandom()*spread_y*v_up;
-  
-  FIRE_ENDPOINT = end + crandom()*spread_x*v_right + crandom()*spread_y*v_up;
-  ctrl_weapon_make_projectile( -1 );*/
 };
 #endif
