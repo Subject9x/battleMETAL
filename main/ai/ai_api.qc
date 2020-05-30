@@ -382,7 +382,7 @@ void() ai_ranged_attack={
       if( ai_attack_blockcheck(wep_chain) ){
         continue;
       }
-      if( !ai_check_face(this.enemy, 0.95) ){
+      if( !ai_check_face(this.enemy, 0.9) ){
         continue;
       }
       self = wep_chain;

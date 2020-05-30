@@ -188,7 +188,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
         wepAim = self.owner.enemy.hitOffset - (targVel * self.owner.ai_leading);
       }
       else{
-        wepAim = self.owner.enemy.origin - (targVel * self.owner.ai_leading);
+        wepAim = (self.owner.enemy.origin + '0 0 10') - (targVel * self.owner.ai_leading);
       }
     }
     wepAim = normalize(wepAim - self.origin);
