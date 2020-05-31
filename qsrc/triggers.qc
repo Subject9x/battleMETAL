@@ -270,20 +270,65 @@ void() counter_use =
 	{
 		if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
 		{
-			if (self.count >= 4)
-				centerprint (activator, "There are more to go...");
-			else if (self.count == 3)
-				centerprint (activator, "Only 3 more to go...");
-			else if (self.count == 2)
-				centerprint (activator, "Only 2 more to go...");
-			else
-				centerprint (activator, "Only 1 more to go...");
+      if( self.vec_size && self.vec_size > 0) {
+        if( self.count >= self.vec_size ){
+          if( self.deathmsg != "" ){
+            centerprint (activator, self.deathmsg );
+          }
+          else{
+            centerprint (activator, "There are more to go...");
+          }
+        }
+        else{
+          if( self.description != "" && self.abbrev != "" ){
+            centerprint (activator, strcat( self.description, " ", ftos(self.count), " ", self.abbrev ));
+          }
+          else{
+            if (self.count == 3){
+              centerprint (activator, "Only 3 more to go...");
+            }
+            else if (self.count == 2){
+              centerprint (activator, "Only 2 more to go...");
+            }
+            else{
+              centerprint (activator, "Only 1 more to go...");
+            }
+          }
+        }
+      }
+      else{
+        //legacy / default logic
+        if (self.count >= 4){
+          if( self.deathmsg != "" ){
+            centerprint (activator, self.deathmsg );
+          }
+          else{
+            centerprint (activator, "There are more to go...");
+          }
+        }
+        else{
+          if (self.count == 3){
+            centerprint (activator, "Only 3 more to go...");
+          }
+          else if (self.count == 2){
+            centerprint (activator, "Only 2 more to go...");
+          }
+          else{
+            centerprint (activator, "Only 1 more to go...");
+          }
+        }
+      }
 		}
 		return;
 	}
 	
 	if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0){
-  	centerprint(activator, "Sequence completed!");
+  	if( self.message != "" && self.message ){
+      centerprint(activator, self.message);
+    }
+    else{
+      centerprint(activator, "Sequence completed!");
+    }
   }
 	
 	self.enemy = activator;
@@ -297,6 +342,12 @@ If nomessage is not set, t will print "1 more.. " etc when triggered and "sequen
 
 After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
 
+-------- KEYS --------
+message = <string> played when 'sequence complete'
+description = <string> text to write before the <.count> value.
+abbrev = <string> text to write AFTER <.count> value.
+deathmsg = <string> text to write instead of "more to go"
+vec_size = <float> threshold to determine between "more to go" and "x to go"
 -------- SPAWNFLAGS --------
 nomessage 1
 NO_EASY 2 : remove when skill = 0

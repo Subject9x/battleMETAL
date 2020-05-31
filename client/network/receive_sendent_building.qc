@@ -29,6 +29,26 @@ void() sendevent_building_die={
       break;
   }
   setorigin(self, self.origin + (v_up * -3));
+  if( (self.spawnflags & 4194304) ){
+    self.spawnflags = self.spawnflags - (self.spawnflags & 4194304);
+    
+    local entity key, parentKey;
+    
+    key = mapKeyObject;
+    parentKey = world;
+    while( key ){
+      if( key == self ){
+        if( parentKey && parentKey != world ){
+          parentKey.w_slot = key.w_slot;
+        }
+        else{
+          mapKeyObject = key.w_slot;
+        }
+      }
+      parentKey = key;
+      key = key.w_slot;
+    }
+  }
 };
 
 /*

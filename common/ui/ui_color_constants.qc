@@ -99,7 +99,7 @@ vector CLR_HUD_DMG_SHIELD = '0.2 0.9 0.2';
   //enemy
   vector CLR_DEF_IFF_ENEMY = '0.8 0 0';
   
-  vector CLR_DEF_IFF_ENEMY_BLD = '0.6 0.29 0';
+  vector CLR_DEF_IFF_ENEMY_BLD = '0.8 0.49 0';
   
 //CROSSHAIRS
   //acquiring lock

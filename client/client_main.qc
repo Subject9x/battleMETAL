@@ -489,6 +489,12 @@ void(string s) CSQC_Parse_Print =
 // if string is interesting, deal with it, otherwise pass it to centerprint() to invoke the engine code.
 void(string s) CSQC_Parse_CenterPrint =
 {
+  //TODO - how much string meta-data can we handle to actually take advantage of this function? <grumble>
+  if( cvar("developer") ){
+    if( strstrofs(s, " to go...", 0) != -1 ){
+      cons_logAFloat("caught fun string", 1); //debug
+    }
+  }
 	centerprint(s);
 };
 

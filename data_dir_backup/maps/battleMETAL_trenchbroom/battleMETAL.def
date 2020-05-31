@@ -568,7 +568,12 @@ If nomessage is not set, t will print "1 more.. " etc when triggered and "sequen
 
 After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
 note: triggers ON use() where .count = '0', so your ideal total should actually be N - 1.
-
+-------- KEYS --------
+message = <string> played when 'sequence complete'
+description = <string> text to write before the <.count> value.
+abbrev = <string> text to write AFTER <.count> value.
+deathmsg = <string> text to write instead of "more to go"
+vec_size = <float> threshold to determine between "more to go" and "x to go"
 -------- SPAWNFLAGS --------
 nomessage 1
 NO_EASY 2 : remove when skill = 0
