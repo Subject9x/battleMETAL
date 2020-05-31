@@ -216,18 +216,18 @@ void() cl_savefile_save={
   fputs(flannel, strcat("  'mission' : ", SV_NEXTMAP, ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
-  if( strstrofs(MAP_NAME, "o1m3", 0) != -1 ){
+  //if( strstrofs(MAP_NAME, "o1m3", 0) != -1 ){
     //TODO - pipe next map to client
-    if( strstrofs("", "anim", 0) != -1){
-      fputs(flannel, strcat("  'newgame' : ", ftos(0), ",\n"));
-      fputs(flannel, "  'mechs' : 1 2 3,\n");
-      fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
-    }
-  }
-  else{
+  //  if( strstrofs("", "anim", 0) != -1){
+  //    fputs(flannel, strcat("  'newgame' : ", ftos(0), ",\n"));
+  //    fputs(flannel, "  'mechs' : 1 2 3,\n");
+  //    fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
+  //  }
+ // }
+  //else{
     fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
     fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
-  }
+  //}
   fputs(flannel, "}");
   fclose(flannel);
 }; 

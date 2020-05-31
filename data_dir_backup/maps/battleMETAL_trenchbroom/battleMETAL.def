@@ -2007,7 +2007,7 @@ REMOVE_FIRSTUSE 8: remove after first countdown
 //===========================================================
 //    battleMETAL  Map Objects
 //===========================================================
-/*QUAKED map_nav_point (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED map_nav_point (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2028,7 +2028,7 @@ VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
 
-/*QUAKED nav_alpha (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_alpha (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2051,7 +2051,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_beta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_beta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2074,7 +2074,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_delta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_delta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2097,7 +2097,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_epsilon (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_epsilon (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2120,7 +2120,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_gamma (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_gamma (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2143,7 +2143,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_iota (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_iota (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2166,7 +2166,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_kappa (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_kappa (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2189,7 +2189,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_lambda (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_lambda (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2212,7 +2212,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_mu (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_mu (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2235,7 +2235,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_nu (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_nu (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2258,7 +2258,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_omicron (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_omicron (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2281,7 +2281,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_rho (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_rho (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2304,7 +2304,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_tau (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_tau (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2327,7 +2327,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_upsilon (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_upsilon (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2350,7 +2350,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_zeta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_zeta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2373,7 +2373,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_eta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_eta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2396,7 +2396,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_theta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_theta (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2419,7 +2419,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_xi (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_xi (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2442,7 +2442,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_phi (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_phi (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2465,7 +2465,7 @@ trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off t
 VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
-/*QUAKED nav_omega (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED nav_omega (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -2489,7 +2489,7 @@ VISIT_PER_CLIENT 2: only updates visited state per client
 OFF_AFTER_USE 4: deactivate after use
 */
 
-/*QUAKED map_nav_point_remote (0.753 0.788 0.431) (-10 -10 -10) (10 10 10) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED map_nav_point_remote (0.753 0.788 0.431) (-10 -10 -10) (10 10 10) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 REMOTE: quirk in server code means not all ents are sent to the player on-connect IF
 they're not in the same BSP volume. IF nav points are not visible to [info_player_start]
 when player joins, they WILL NOT be visible for use. This sub-entity fixes the issue.

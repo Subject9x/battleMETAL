@@ -74,7 +74,7 @@ void() map_nav_point_ini={
   self.nextthink = time + 1;
 };
 
-/*QUAKED map_nav_point (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+/*QUAKED map_nav_point (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) START_OFF VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
@@ -98,7 +98,6 @@ void() map_nav_point={
 
   self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;
-  self.isActive = TRUE;
   
   setmodel(self, "q3mdl/testball.md3");
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
@@ -114,7 +113,10 @@ void() map_nav_point={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
   
-  if( !self.isActive ){
+  if( (self.spawnflags & 1) ){
+    self.isActive = FALSE;
+  }
+  else{
     self.isActive = TRUE;
   }
   
