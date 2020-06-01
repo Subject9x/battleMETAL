@@ -15,13 +15,13 @@ Overview:
 */
 void() data_ini_trowel_={
 
-  self.data_idx = UID_VEHICLE_trowel;  //
-  self.vec_size = 3;  //
+  self.data_idx = UID_VEHICLE_trowel;
+  self.vec_size = 3;
   self.vec_name = "Trowel";
  
-  self.max_health = 465;
+  self.max_health = 550;//465;
   setsize(self, '-32 -32 -7.75', '32 32 36');
-  self.flags = self.flags | FL_TURRET | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_TURRET | FL_MONSTER | FL_UNIT);
 //ENERGY AND SHIELDS===================
   self.energyMax = 700;
   self.energyRate= 1.85;
@@ -40,9 +40,9 @@ void() data_ini_trowel_={
   self.data_speed_backward = 10;
   self.data_speed_accel = 1;
 #ifndef CSQC
-  self.yaw_speed = 1;    //AI-only 
-  self.turret_yaw_speed = 1.5;//AI-only
-  self.ai_angleLimits = '-125 125 0';
+  self.yaw_speed = 1.5;//1;    //AI-only 
+  self.turret_yaw_speed = 2;//1.5;//AI-only
+  self.ai_angleLimits = '-160 160 0';
 #endif
 //=====================================
  

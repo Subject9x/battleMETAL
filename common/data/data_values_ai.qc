@@ -46,10 +46,10 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.6;
-float AI_DMG_SKILL_REG = 0.7;
-float AI_DMG_SKILL_VET = 0.8;
-float AI_DMG_SKILL_ACE = 0.9;
+float AI_DMG_SKILL_ROK = 0.75;
+float AI_DMG_SKILL_REG = 0.85;
+float AI_DMG_SKILL_VET = 0.9;
+float AI_DMG_SKILL_ACE = 1;
 
 //Field of View as normalized dot product
 // 0.0 ~ 90d from center
@@ -114,10 +114,10 @@ float AI_ARMOR_MECH = 0.55;
 float AI_SHIELD_MECH = 0.85;
 
 //ai_leading ratings, how well an ai tracks a slippery target
-float AI_LEAD_ACE = 0.3;
-float AI_LEAD_VET = 0.35;
-float AI_LEAD_REG = 0.4;
-float AI_LEAD_ROK = 0.45;
+float AI_LEAD_ACE = 0.25;
+float AI_LEAD_VET = 0.3;
+float AI_LEAD_REG = 0.35;
+float AI_LEAD_ROK = 0.4;
 
 //common engage ranges
 float AI_RANGE_S = 400;

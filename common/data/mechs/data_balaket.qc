@@ -47,7 +47,7 @@ void() data_ini_balaket_={
 #ifndef CSQC
   self.yaw_speed = 3.75;    // AI-only 
   self.turret_yaw_speed = 4.25;// AI-only
-  self.ai_angleLimits = '-135 135 0';
+  self.ai_angleLimits = '-175 175 0';
 #endif
 //=====================================
  

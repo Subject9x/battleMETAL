@@ -46,8 +46,8 @@ void() data_ini_monitor_={
   self.ramCooldown = 2;
 #ifndef CSQC
   self.yaw_speed = 2;    // AI-only 
-  self.turret_yaw_speed = 2.75;// AI-only
-  self.ai_angleLimits = '-100 100 0';
+  self.turret_yaw_speed = 3;// AI-only
+  self.ai_angleLimits = '-150 150 0';
 #endif
 //=====================================
  
