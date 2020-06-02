@@ -28,8 +28,8 @@ void() ai_gev_charge1={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.1;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.1;}
   
   ai_face_targ();
   ai_attack();
@@ -46,8 +46,8 @@ void() ai_gev_charge2={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.2;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.2;}
 
   ai_face_targ();
 
@@ -67,8 +67,8 @@ void() ai_gev_charge3={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.3;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.3;}
 
   ai_face_targ();
 
@@ -84,8 +84,8 @@ void() ai_gev_charge4={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.4;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.4;}
   
   ai_face_targ();
 
@@ -101,8 +101,8 @@ void() ai_gev_charge5={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.5;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.5;}
 
   ai_face_targ();  
   ai_attack();
@@ -119,8 +119,8 @@ void() ai_gev_charge6={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.6;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.6;}
 
   ai_face_targ();     
   ai_attack();
@@ -137,8 +137,8 @@ void() ai_gev_charge7={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.7;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.7;}
 
   ai_face_targ();
   ai_attack();
@@ -155,8 +155,8 @@ void() ai_gev_charge8={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.8;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.8;}
 
   ai_face_targ();
   ai_attack();
@@ -173,8 +173,8 @@ void() ai_gev_charge9={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.9;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.9;}
 
   ai_face_targ();
   

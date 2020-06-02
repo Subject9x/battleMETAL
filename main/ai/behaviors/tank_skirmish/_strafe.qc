@@ -61,8 +61,8 @@ void() ai_tank_sk_strafe2={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.1;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.1;}
 
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_strafe3)
@@ -78,8 +78,8 @@ void() ai_tank_sk_strafe3={
   ChangeYaw();
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.2;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.2;}
   
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_strafe4)
@@ -95,9 +95,9 @@ void() ai_tank_sk_strafe4={
   ChangeYaw();
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.3;
-  
+  }
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_strafe5)
     return;
@@ -116,8 +116,8 @@ void() ai_tank_sk_strafe5={
     
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.4;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.4;}
   
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_strafe6)
@@ -133,8 +133,8 @@ void() ai_tank_sk_strafe6={
   ChangeYaw();
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.5;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.5;}
   
   ai_attack();
   if( walkmove( self.angles_y, dampen ) ){
@@ -151,8 +151,8 @@ void() ai_tank_sk_strafe7={
   ChangeYaw();
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.6;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.6;}
   
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_strafe8)
@@ -167,8 +167,8 @@ void() ai_tank_sk_strafe8={
   ChangeYaw();
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.7;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.7;}
   
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_strafe9)
@@ -183,8 +183,8 @@ void() ai_tank_sk_strafe9={
   ChangeYaw();
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.8;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.8;}
   
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_strafe10)
@@ -199,8 +199,8 @@ void() ai_tank_sk_strafe10={
   ChangeYaw();
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.9;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.9;}
   
   if( walkmove( self.angles_y, dampen ) ){
     self.speed = self.lefty;

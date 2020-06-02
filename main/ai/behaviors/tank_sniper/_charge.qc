@@ -27,15 +27,15 @@ void() ai_spg_charge1={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.1;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.1;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
   ChangeYaw();
   
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
   
   if( walkmove( self.angles_y, dampen ) ){  
     macro_ai_frame(ai_spg_charge2)
@@ -51,8 +51,8 @@ void() ai_spg_charge2={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.2;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.2;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
@@ -73,8 +73,8 @@ void() ai_spg_charge3={
    
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.3;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.3;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
@@ -93,8 +93,8 @@ void() ai_spg_charge4={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.4;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.4;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
@@ -113,8 +113,8 @@ void() ai_spg_charge5={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.5;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.5;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
@@ -133,8 +133,8 @@ void() ai_spg_charge6={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.6;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.6;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
@@ -153,8 +153,8 @@ void() ai_spg_charge7={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.7;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.7;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
@@ -173,8 +173,8 @@ void() ai_spg_charge8={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.8;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.8;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
@@ -193,8 +193,8 @@ void() ai_spg_charge9={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.9;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.9;}
 
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);

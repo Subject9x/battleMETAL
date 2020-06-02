@@ -28,9 +28,9 @@ void() ai_tank_sk_reverse1={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.1;
-  
+  }
   ChangeYaw();
   ai_attack();
   if( walkmove( anglemod(self.angles_y), dampen )){
@@ -46,12 +46,12 @@ void() ai_tank_sk_reverse2={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.2;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.2;}
 
   ChangeYaw();
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
   
   if( walkmove( anglemod(self.angles_y), dampen )){
     macro_ai_frame(ai_tank_sk_reverse3)
@@ -66,8 +66,8 @@ void() ai_tank_sk_reverse3={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.3;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.3;}
 
   ChangeYaw();
   if( walkmove( anglemod(self.angles_y), dampen )){
@@ -83,8 +83,8 @@ void() ai_tank_sk_reverse4={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.4;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.4;}
 
   ChangeYaw();
   if( walkmove( anglemod(self.angles_y), dampen )){
@@ -100,8 +100,8 @@ void() ai_tank_sk_reverse5={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.5;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.5;}
  
   ChangeYaw();
   ai_attack();
@@ -119,8 +119,8 @@ void() ai_tank_sk_reverse6={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.6;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.6;}
 
   ChangeYaw();
   if( self.ai_rank > AI_RANK_REG )
@@ -139,8 +139,8 @@ void() ai_tank_sk_reverse7={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.7;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.7;}
 
   ChangeYaw();
   if( walkmove( anglemod(self.angles_y), dampen )){
@@ -156,8 +156,8 @@ void() ai_tank_sk_reverse8={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.8;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.8;}
 
   ChangeYaw();
   if( walkmove( anglemod(self.angles_y), dampen )){
@@ -173,8 +173,8 @@ void() ai_tank_sk_reverse9={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.9;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.9;}
 
   ChangeYaw();
   ai_attack();
@@ -191,8 +191,8 @@ void() ai_tank_sk_reverse10={
   macro_ai_update(ctrl_updateTank)
   
   ChangeYaw();
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
   
   if( walkmove( anglemod(self.angles_y), self.data_speed_backward )){
     macro_ai_frame(ai_tank_sk_reverse11)

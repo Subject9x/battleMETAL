@@ -403,6 +403,7 @@ void() ai_ranged_attack={
       self = this;
     }
   }
+  self.currentWeaponGroup = 0;
 };
 
 /*
@@ -413,32 +414,38 @@ void() ai_ranged_attack={
 float(entity wep) ai_attack_blockcheck={
   local vector viewpont, vang;
 
-  if( (self.flags & FL_TURRET) ){
+  /*if( (self.flags & FL_TURRET) ){
     vang = self.torsoCenter.angles;
   }
   else{
     vang = self.angles;
-  }
+  }*/
+  vang = self.v_angle;
   
   if( self.enemy.data_type == DATA_BLD ){
-    viewpont = normalize(self.enemy.hitOffset - self.cockpit.origin);
+    viewpont = normalize(self.enemy.hitOffset - wep.origin);
   }
   else{
-    viewpont = normalize(self.enemy.origin - self.cockpit.origin);
+    viewpont = normalize((self.enemy.origin + '0 0 10') - wep.origin);
   }
   
   makevectors( vang );
-  traceline (self.cockpit.origin + v_forward * 1, self.cockpit.origin + viewpont*wep.w_range, (wep.damageType & EFF_ARC), self);
+  traceline (wep.origin + v_forward * 1, wep.origin + viewpont*wep.w_range, (wep.damageType & EFF_ARC), self);
 
   if(trace_ent == world){
+    return TRUE;
+  }
+  if(!trace_ent.takedamage){
     return TRUE;
   }
   if( trace_ent.faction == self.faction ){
     return TRUE;
   }
-  if( (viewpont * v_forward) <= 0.95 ){
+  
+  //not sure what this does anymore
+  /*if( (viewpont * v_forward) <= 0.99 ){
     return TRUE;
-  }
+  }*/
   return FALSE;
 };
 

@@ -22,9 +22,9 @@ void() ai_tank_sk_juke1={
   
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.1;
-  
+  }
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_juke2)
     return;
@@ -37,9 +37,9 @@ void() ai_tank_sk_juke2={
     
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.2;
-  
+  }
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_juke3)
     return;
@@ -52,8 +52,8 @@ void() ai_tank_sk_juke3={
     
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.3;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.3;}
   
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -71,8 +71,8 @@ void() ai_tank_sk_juke4={
     
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.4;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.4;}
 
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_juke5)
@@ -86,8 +86,8 @@ void() ai_tank_sk_juke5={
     
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.5;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.5;}
   
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -105,8 +105,8 @@ void() ai_tank_sk_juke6={
     
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.6;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.6;}
 
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_juke7)
@@ -120,8 +120,8 @@ void() ai_tank_sk_juke7={
     
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.7;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.7;}
 
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_tank_sk_juke8)
@@ -135,8 +135,8 @@ void() ai_tank_sk_juke8={
     
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.8;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.8;}
 
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -154,9 +154,9 @@ void() ai_tank_sk_juke9={
     
   local float dampen;
   dampen = self.data_speed_forward * AI_RUN_FACTOR;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.9;
-
+}
   ai_attack();
 
   if( walkmove( self.angles_y, dampen ) ){

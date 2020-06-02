@@ -26,8 +26,8 @@ void() ai_tank_sk_flank1={
   
   local float dampen;
   dampen = 0.1;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
   
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
@@ -46,8 +46,8 @@ void() ai_tank_sk_flank2={
   
   local float dampen;
   dampen = 0.2;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
     
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
@@ -69,8 +69,8 @@ void() ai_tank_sk_flank3={
   
   local float dampen;
   dampen = 0.3;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
   
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
@@ -87,8 +87,8 @@ void() ai_tank_sk_flank4={
 
   local float dampen;
   dampen = 0.4;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
     
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
@@ -105,8 +105,8 @@ void() ai_tank_sk_flank5={
 
   local float dampen;
   dampen = 0.5;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
     
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
@@ -125,8 +125,8 @@ void() ai_tank_sk_flank6={
   
   local float dampen;
   dampen = 0.6;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
   
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
@@ -148,8 +148,8 @@ void() ai_tank_sk_flank7={
 
   local float dampen;
   dampen = 0.7;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
     
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
@@ -166,8 +166,8 @@ void() ai_tank_sk_flank8={
 
   local float dampen;
   dampen = 0.8;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
     
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
@@ -184,8 +184,8 @@ void() ai_tank_sk_flank9={
 
   local float dampen;
   dampen = 0.8;
-  if( self.speed != self.lefty )
-    dampen = 1;
+  if( self.speed != self.lefty ){
+    dampen = 1;}
     
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );

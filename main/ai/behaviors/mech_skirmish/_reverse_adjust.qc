@@ -42,8 +42,8 @@ void() ai_mech_sk_reverse_adjust1={
 
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.1;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.1;}
   
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen ) ){
@@ -60,8 +60,8 @@ void() ai_mech_sk_reverse_adjust2={
 
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.2;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.2;}
   
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen ) ){
@@ -78,8 +78,8 @@ void() ai_mech_sk_reverse_adjust3={
 
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.3;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.3;}
   
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen) ){
@@ -96,8 +96,8 @@ void() ai_mech_sk_reverse_adjust4={
 
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.4;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.4;}
   
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen ) ){
@@ -114,8 +114,8 @@ void() ai_mech_sk_reverse_adjust5={
 
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.5;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.5;}
   
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen ) ){
@@ -132,8 +132,8 @@ void() ai_mech_sk_reverse_adjust6={
 
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.6;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.6;}
   
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen ) ){
@@ -150,8 +150,8 @@ void() ai_mech_sk_reverse_adjust7={
   
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.7;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.7;}
 
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen ) ){
@@ -168,8 +168,8 @@ void() ai_mech_sk_reverse_adjust8={
 
   local float dampen;
   dampen = self.data_speed_backward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.8;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.8;}
 
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen ) ){

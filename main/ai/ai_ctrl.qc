@@ -236,7 +236,7 @@ float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
 float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vis={
   local float enemyVis;
   enemyVis = ai_check_vis(self.enemy);
-  if( enemyVis != VIS_FRAC && enemyVis != VIS_FRN ){
+  if( (enemyVis != VIS_FRAC) && (enemyVis != VIS_FRN) ){
     return FALSE;
   }
   if( self.stat_trg_dist < AI_RANGE_M ){
@@ -251,6 +251,7 @@ float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vi
     macro_ai_frame(frameFuncRangeOut)
     return TRUE;
   }
+  return FALSE;
 };
 
 /*
@@ -436,7 +437,7 @@ float( entity targ ) ai_check_vis={
     return VIS_FRAC;
   }
   
-  if ( trace_fraction == 1 ){
+  if ( trace_fraction == 1.0 ){
     return VIS_FRAC;
   }
   

@@ -35,7 +35,15 @@ void() sendevent_turret_die={
   }
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
-  
+    if( (self.w_group & WEAPON1) && !self.effect1.count ){
+    remove(self.effect1);
+  }
+  if( (self.w_group & WEAPON2) && !self.effect2.count ){
+    remove(self.effect1);
+  }
+  if( (self.w_group & WEAPON3) && !self.effect3.count ){
+    remove(self.effect1);
+  }
 };
 
 /*

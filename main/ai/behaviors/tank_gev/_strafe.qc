@@ -28,8 +28,8 @@ void() ai_gev_strafe1={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.4;
+  if( self.speed != self.lefty ){
+    dampen = self.data_speed_strafe * 0.4;}
   
   ai_face_targ();
   ai_attack();
@@ -47,12 +47,12 @@ void() ai_gev_strafe2={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.5;
+  if( self.speed != self.lefty ){
+    dampen = self.data_speed_strafe * 0.5;}
   
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
 
   if( walkmove( self.ai_dir, dampen ) ){
     macro_ai_frame(ai_gev_strafe3)
@@ -68,8 +68,8 @@ void() ai_gev_strafe3={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.6;
+  if( self.speed != self.lefty ){
+    dampen = self.data_speed_strafe * 0.6;}
   
   ai_face_targ();
   
@@ -87,8 +87,8 @@ void() ai_gev_strafe4={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.7;
+  if( self.speed != self.lefty ){
+    dampen = self.data_speed_strafe * 0.7;}
   
   ai_face_targ();
   
@@ -106,8 +106,8 @@ void() ai_gev_strafe5={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.8;
+  if( self.speed != self.lefty ){
+    dampen = self.data_speed_strafe * 0.8;}
   
   ai_face_targ();
   ai_attack();
@@ -125,8 +125,8 @@ void() ai_gev_strafe6={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.9;
+  if( self.speed != self.lefty ){
+    dampen = self.data_speed_strafe * 0.9;}
   
   ai_face_targ();
   

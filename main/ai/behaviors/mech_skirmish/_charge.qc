@@ -92,8 +92,8 @@ void() ai_mech_sk_charge3={
   local float goalAngle;
   goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
   
   if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge4)

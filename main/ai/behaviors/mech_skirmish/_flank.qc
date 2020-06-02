@@ -29,8 +29,8 @@ void() ai_mech_sk_flank1={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.1;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.1;}
   
   ai_face_targ();
   
@@ -53,8 +53,8 @@ void() ai_mech_sk_flank2={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.2;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.2;}
   
   ai_face_targ();
   ai_attack();
@@ -78,13 +78,13 @@ void() ai_mech_sk_flank3={
 
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.3;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.3;}
   
   ai_face_targ();
     
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
   
   local float goalAngle;
   self.legs.ai_dir =  goalAngle = anglemod(self.angles_y + self.ai_dir);
@@ -105,8 +105,8 @@ void() ai_mech_sk_flank4={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.4;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.4;}
   
   ai_face_targ();
     
@@ -129,8 +129,8 @@ void() ai_mech_sk_flank5={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.5;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.5;}
   
   ai_face_targ();
       
@@ -153,8 +153,8 @@ void() ai_mech_sk_flank6={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.6;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.6;}
   
   ai_face_targ();
   ai_attack();
@@ -178,12 +178,12 @@ void() ai_mech_sk_flank7={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.7;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.7;}
   
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
         
   local float goalAngle;
   self.legs.ai_dir = goalAngle = anglemod(self.angles_y + self.ai_dir);
@@ -204,8 +204,8 @@ void() ai_mech_sk_flank8={
   
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.8;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.8;}
   
   ai_face_targ();
         
@@ -228,8 +228,8 @@ void() ai_mech_sk_flank9={
 
   local float dampen;
   dampen = self.data_speed_strafe;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.9;
+  if( self.speed != self.lefty ){
+    dampen = dampen * 0.9;}
   
   ai_face_targ();  
   
@@ -271,8 +271,8 @@ void() ai_mech_sk_flank11={
   macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
       
   local float goalAngle;
   self.legs.ai_dir = goalAngle = anglemod(self.angles_y + self.ai_dir);
@@ -351,8 +351,8 @@ void() ai_mech_sk_flank15={
 
 
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG )
-    ai_attack();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();}
       
   local float goalAngle;
   self.legs.ai_dir = goalAngle = anglemod(self.angles_y + self.ai_dir);

@@ -365,15 +365,14 @@ void() client_event_environment={
 */
 void() client_event_mission_name_frame={
   
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_DYSTOPIAN;
+
   
   //state controller
   switch( MISSION_NAME_STATE ){
     case 1:
-      MISSION_NAME_COLOR_x = gui_colorFadeTo( CLR_DEF_WHITE_x, MISSION_NAME_COLOR_x, 0.004 );
-      MISSION_NAME_COLOR_y = gui_colorFadeTo( CLR_DEF_WHITE_y, MISSION_NAME_COLOR_y, 0.004 );
-      MISSION_NAME_COLOR_z = gui_colorFadeTo( CLR_DEF_WHITE_z, MISSION_NAME_COLOR_z, 0.004 );
+      MISSION_NAME_COLOR_x = gui_colorFadeTo( CLR_DEF_TXT_HIGHLIGHT_x, MISSION_NAME_COLOR_x, 0.004 );
+      MISSION_NAME_COLOR_y = gui_colorFadeTo( CLR_DEF_TXT_HIGHLIGHT_y, MISSION_NAME_COLOR_y, 0.004 );
+      MISSION_NAME_COLOR_z = gui_colorFadeTo( CLR_DEF_TXT_HIGHLIGHT_z, MISSION_NAME_COLOR_z, 0.004 );
       if( time > MISSION_NAME_TIME_RATE ){
         MISSION_NAME_ALPHA = MISSION_NAME_ALPHA + 0.01;
         MISSION_NAME_TIME_RATE = time + 0.05;
@@ -413,9 +412,21 @@ void() client_event_mission_name_frame={
   else if( MISSION_NAME_ALPHA < 0 ){
     MISSION_NAME_ALPHA = 0;
   }
-  
-  drawstring( MISSION_NAME_ORG, MISSION_NAME, '32 32 0', '1 1 1', MISSION_NAME_ALPHA, 0);
-  drawstring( MISSION_NAME_ORG, MISSION_NAME, '32 32 0', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
+
+  local vector backpanelOrg, backpanelSize;
+  local float backSize;
+  backpanelSize = '34 34 0';
+  backpanelOrg = MISSION_NAME_ORG - gui_percentToPixelRawVec('2 2');
+
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_DYSTOPIAN;
+
+    backSize = gui_percentXRaw( stringwidth(MISSION_NAME, 0, '18 18 0') / 2 );
+    backpanelOrg_x = VIEW_CTR_x - backSize;
+    backpanelOrg_y = VIEW_CTR_y - gui_percentYRaw( 66 );
+    drawstring( backpanelOrg, MISSION_NAME, '18 18 0', '0 0 0', MISSION_NAME_ALPHA - 0.25, 0);
+    
+    drawstring( MISSION_NAME_ORG, MISSION_NAME, '16 16 0', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
   drawfont = drawfont_prev;
 };
 
@@ -439,10 +450,10 @@ void( string name ) client_event_mission_name={
     noNewLine = strstrofs( name, "\n", 0 );
     MISSION_NAME = substring( name, 0, noNewLine);
     MISSION_NAME = strzone( MISSION_NAME );
-    nameLen = stringwidth(MISSION_NAME, 0, '32 32 0');
+    nameLen = stringwidth(MISSION_NAME, 0, '16 16 0');
     nameLen = gui_percentXRaw( nameLen / 2 );
     newOrg_x = VIEW_CTR_x - nameLen;
-    newOrg_y = VIEW_CTR_y - gui_percentYRaw( 96 );
+    newOrg_y = VIEW_CTR_y - gui_percentYRaw( 64 );
     MISSION_NAME_ORG = newOrg;
   drawfont = drawfont_prev;
 };
