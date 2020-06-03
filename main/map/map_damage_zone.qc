@@ -24,7 +24,7 @@ void() map_hazard_ping={
   self.SendEntity = send_damage_zone;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   self.think = self.th_walk;
-    cons_logAFloat(" self.wait", self.wait); //debug
+  
   if( self.isActive ){
     self.nextthink = time + (random() * self.wait);
     return;
