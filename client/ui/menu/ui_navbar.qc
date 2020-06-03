@@ -35,6 +35,7 @@ void( vector ofs ) ui_navbutton_brief_draw={
 };
 //BRIEFING - onClick
 void() ui_navbutton_brief_click={
+  INFO_SWITCH = 1;
   //if previous menu was ARMING, save config
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
     data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot

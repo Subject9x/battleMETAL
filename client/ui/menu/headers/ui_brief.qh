@@ -6,11 +6,13 @@ Overview: ui header file the deployment menu
 */
 
 //some menu globals
-  float INFO_SWITCH = TRUE;
+  float INFO_SWITCH;
   vector OBJ_BTN_ORG;
   vector OBJ_BTN_SZ;
   vector INT_BTN_ORG;
   vector INT_BTN_SZ;
+  vector BRF_BTN_ORG;
+  vector BRF_BTN_SZ;
   
   //Tooltip origins
   vector BRIEF_MAP_HELP_ORG;
@@ -44,4 +46,4 @@ void(vector ofs) menu_briefMissionText;
 void(vector ofs) menu_briefMapPanel;
 void(vector ofs) menu_briefObjectivePanel;
 void(vector ofs) menu_briefIntelPanel;
-void(vector ofs) menu_objIntelSwitchPanel;
+void(vector ofs) menu_brief_text_window;

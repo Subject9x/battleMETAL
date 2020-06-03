@@ -216,6 +216,7 @@ float() menu_connect_choice={
   switch( cvar("gamemode") ){
     case GAMEMODE_CAMPAIGN:
       choice = MENU_BRIEF_ACTIVE;
+      INFO_SWITCH = 1;
       break;
     case GAMEMODE_COOP:
       //todo

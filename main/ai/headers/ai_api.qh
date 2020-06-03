@@ -8,13 +8,13 @@ Overview:
 
 //MACROs for AI
 // think->nextthink function, use for transitions to next AI frame func, updates all AI subcomponents
-#define macro_ai_frame(next_func) if((self.flags&FL_TURRET)){ai_turret_control();}if(self.legs){ai_leg_control();} self.think=next_func; self.nextthink=time+0.05;
+#define macro_ai_frame(next_func) if((self.flags&FL_TURRET)){ai_turret_control();}if(self.legs){ai_leg_control();}self.think=next_func;self.nextthink=time+0.05;
 
 //given the ctrl_ update_func, check DEBUG state, and deadflag state, then run global ai_update() function.
-#define macro_ai_update(update_func) update_func(); if(!(self.spawnflags&DEBUG_MODE)){if(!self.deadflag){ai_update();}}
+#define macro_ai_update(update_func) update_func();if(!(self.spawnflags&DEBUG_MODE)){if(!self.deadflag){ai_update();}}
 
 //set ai_action_time, this will loop back to the ai_frame you want to until ai_action_time = 0
-#define macro_ai_frame_count(repeat_frame) if( self.ai_action_time > 0 ){self.ai_action_time = self.ai_action_time - 1;macro_ai_frame(repeat_frame) return;}
+#define macro_ai_frame_count(repeat_frame) if(self.ai_action_time>0){self.ai_action_time = self.ai_action_time-1;macro_ai_frame(repeat_frame) return;}
 
 #define macro_ai_frame_hunt(hunt_func) if(!self.ai_node_recall){ai_sfx_huntStart();node_recall_setup();self.goalentity=self.enemy;macro_ai_frame(hunt_func) return;} self.goalentity=self.ai_node_recall;macro_ai_frame(hunt_func) return;
 
