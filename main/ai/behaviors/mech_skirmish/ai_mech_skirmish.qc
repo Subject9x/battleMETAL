@@ -87,8 +87,9 @@ void() ai_mech_sk_fight_prep={
       //enemy is behind the unit
       if( self.yaw_speed < 2 ){
         if( self.ai_rank > AI_RANK_REG ){
-          if( roll < 0.33 )
+          if( roll < 0.33 ){
             self.lefty = self.lefty * -1;
+          }
           macro_ai_frame(ai_mech_sk_enter_strafe)
           return;
         }

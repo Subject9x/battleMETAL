@@ -419,7 +419,7 @@ float(entity t) ai_check_range={
 };
 
 float( entity targ ) ai_check_vis={
-  local vector	spot1, spot2;
+  local vector spot1, spot2;
   local float targDist;
   local float blockZ;
   
@@ -433,29 +433,35 @@ float( entity targ ) ai_check_vis={
   
   traceline (spot1, spot2, FALSE, self);
 
+  //case: los crossed content - ported q1
+  if ( trace_inopen && trace_inwater ){
+    return VIS_FAIL;     // sight line crossed contents
+  }
+
+  //case: los hit desired target
   if( trace_ent == targ ){
     return VIS_FRAC;
   }
   
+  //case: los length is 1.0, ie a clear line
   if ( trace_fraction == 1.0 ){
     return VIS_FRAC;
   }
-  
-  if ( trace_inopen && trace_inwater ){
-    return VIS_FAIL;     // sight line crossed contents
-  }
+
+  //case: los hit a friendly entity, who is blocking los
   if( trace_ent.faction == self.faction ){
     friend_blocker = trace_ent;
     friend_blocker_dist = vlen(friend_blocker.origin - spot1);
     return VIS_FRN;
   }
-  targDist = vlen(spot2 - spot1);
-  if( trace_ent.data_idx ){
+  
+  /*targDist = vlen(spot2 - spot1);
+  if( trace_ent ){
     blockZ = trace_ent.maxs_z * 1.67;
     if( (targ.maxs_z > blockZ ) && (targDist <= AI_RANGE_M ) ){
       return VIS_FRAC;
     }
-  }
+  }*/
   return VIS_FAIL;
 };
 
