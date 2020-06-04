@@ -57,34 +57,6 @@ float() ai_can_spawn={
   return TRUE;
 };
 
-/*
-  Line of Sight is calculated from the AI's camera entity.
-*/
-float( entity t ) ai_line_of_sight={
-  local entity trace;
-  
-  trace = self.cockpit;
-  traceline( trace.origin, t.origin, MOVE_NORMAL, self);
-  //realized the terrain model is an entity, and not a brush model, thus itll never be 'world'
-  
-  if( trace_ent == t ){
-    return TRUE;
-  }
-  
-  if( trace_ent.data_idx && trace_ent != t ){
-    if( vlen(t.origin - self.origin) < AI_RANGE_S ){
-      if( trace_ent.maxs_z <= t.maxs_z ){
-        return TRUE;
-      }
-      if( self.stat_rdr_mode == TRUE ){
-        return TRUE;
-      }
-    }
-  }
-  return FALSE;
-};
-
-
 void( entity t ) ai_call_for_help={
   local float allies;
   local entity ally;
@@ -96,17 +68,20 @@ void( entity t ) ai_call_for_help={
   
   allies = 0;
   ai_sfx_help();
-  for(ally=findchainflags(flags, FL_MONSTER); ally != world; ally = ally.chain){
+  for(ally=nextent(world); ally != world; ally = nextent(ally)){
     if( !ai_valid_target(ally) ){
       continue;
     }
-    if( vlen( ally.origin - self.origin ) > self.ai_view ){
-      continue;
-    }
-    if( ally == self ){
+    if( !(ally.flags & FL_MONSTER) ){
       continue;
     }
     if( (ally.flags & FL_DISARMED) ){
+      continue;
+    }
+    if( ally.faction != self.faction ){
+      continue;
+    }
+    if( vlen( ally.origin - self.origin ) > self.ai_view ){
       continue;
     }
     ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
@@ -217,10 +192,11 @@ float() ai_find_target_visual={
   selfSensorOrg_z = 0;
   
   for(targ = findradius(self.origin, rng); targ != world; targ = targ.chain){ 
+    
     if( targ.faction == self.faction ){
       continue;
     }
-    if( ai_valid_target(targ) == FALSE ){
+    if( !ai_valid_target(targ) ){
       continue;
     }
     enemySensorOrg_x = targ.origin_x;
@@ -230,10 +206,7 @@ float() ai_find_target_visual={
     if(ndist > rng){
       continue;
     }
-    if( ai_check_vis(targ) != VIS_FRAC ){
-      continue;
-    }
-    if( ai_check_face(targ, self.ai_fov) == FALSE){
+    if( ai_check_vis(targ) != VIS_FRAC && ai_check_vis(targ) != VIS_FRN ){
       continue;
     }
     if( (self.flags & FL_TURRET) ){
@@ -241,12 +214,16 @@ float() ai_find_target_visual={
         continue;
       }
     }
-
+    else{
+      if( ai_check_face(targ, self.ai_fov) == FALSE){
+        continue;
+      }
+    }
     rng = ndist;
     found = targ;
   }
 
-  if( found != world){
+  if( found != world ){
     if( (self.flags & FL_DISARMED) ){
       if( self.stat_rdr_mode ){       
         ai_sfx_help();
@@ -293,12 +270,12 @@ float() ai_find_target_radar={
     if( ndist > rng ){
       continue;
     }
-    if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == FALSE ){
+    if( (targ.flags & FL_CLIENT) && (targ.stat_rdr_mode == FALSE) ){
       if( ndist > (rng / 2) ){
         continue;
       }
     }
-    if( !ai_line_of_sight(targ) ){
+    if( (ai_check_vis(targ) != VIS_FRAC) && (ai_check_vis(targ) != VIS_FRN)){
       continue;
     }
     rng = ndist;
@@ -333,22 +310,23 @@ void( entity ally, entity targ, float override ) ai_give_target={
   }
   
   this = self;
-  validTarg = ai_valid_target(ally.enemy);
-  if( validTarg ){
-    self = ally;
-    if( override ){
-      self.enemy = ally.enemy;
-      macro_ai_frame(self.th_missile)
-      if( (this.enemy.flags & FL_CLIENT) ){
-        ai_sfx_roger();
-      }
-    }
-    else{
-      if( self.th_react ){
-        self.th_react(ally.enemy);
-      }
+  //validTarg = ai_valid_target(ally.enemy);  note: every other func calling this one already involes ai_valid_target()
+  //if( validTarg ){
+  self = ally;
+  //providing clause where ally has no target
+  if( override || !ai_valid_target(ally.enemy) ){
+    self.enemy = ally.enemy;
+    macro_ai_frame(self.th_missile)
+    if( (this.enemy.flags & FL_CLIENT) ){
+      ai_sfx_roger();
     }
   }
+  else{
+    if( self.th_react ){
+      self.th_react(ally.enemy);
+    }
+  }
+  //}
   self = this;
 };
 
@@ -368,7 +346,7 @@ void() ai_ranged_attack={
     //if the AI has a turret, use the turret's angles for Line of Sight offset origins.
     self.v_angle = self.torsoCenter.angles;
     diff = vectoangles( self.enemy.origin - self.cockpit.origin);
-    self.v_angle_x = diff_x * -1; //still correcting for age-old pitch bug
+    self.v_angle_x = diff_x;
   }
   
   for( wep_chain = self.w_slot; wep_chain.owner == self; wep_chain = wep_chain.w_slot){
@@ -414,12 +392,7 @@ void() ai_ranged_attack={
 float(entity wep) ai_attack_blockcheck={
   local vector viewpont, vang;
 
-  /*if( (self.flags & FL_TURRET) ){
-    vang = self.torsoCenter.angles;
-  }
-  else{
-    vang = self.angles;
-  }*/
+  //ai v_angle already set by ai_ranged_attack
   vang = self.v_angle;
   
   if( self.enemy.data_type == DATA_BLD ){

@@ -172,7 +172,6 @@ void() ai_noncom_missile={
       ai_give_target( friend, self.enemy, TRUE ) ;
     }
     //ai_next_state( ST_RUN );
-    return;
   }
   //ai_next_state( ST_WALK );
   return;

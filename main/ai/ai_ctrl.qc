@@ -455,13 +455,6 @@ float( entity targ ) ai_check_vis={
     return VIS_FRN;
   }
   
-  /*targDist = vlen(spot2 - spot1);
-  if( trace_ent ){
-    blockZ = trace_ent.maxs_z * 1.67;
-    if( (targ.maxs_z > blockZ ) && (targDist <= AI_RANGE_M ) ){
-      return VIS_FRAC;
-    }
-  }*/
   return VIS_FAIL;
 };
 
@@ -471,7 +464,7 @@ float() ai_attack={
 };
 
 void() ai_patrol_turn={
-  if( self.ideal_yaw < anglemod(self.angles_y-90) || self.ideal_yaw < anglemod(self.angles_y+90) ){
+  if( self.ideal_yaw < anglemod(self.angles_y-90) || self.ideal_yaw > anglemod(self.angles_y+90) ){
     macro_ai_frame(self.th_rotate)
   }
 };

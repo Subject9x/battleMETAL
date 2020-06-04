@@ -30,14 +30,14 @@ void() sendevent_building_die={
   }
   setorigin(self, self.origin + (v_up * -3));
   
-  if( (self.w_group & WEAPON1) && !self.effect1.count ){
+  if( self.effect1.count && self.effect1 != world ){
     remove(self.effect1);
   }
-  if( (self.w_group & WEAPON2) && !self.effect2.count ){
-    remove(self.effect1);
+  if( self.effect2.count && self.effect2 != world ){
+    remove(self.effect2);
   }
-  if( (self.w_group & WEAPON3) && !self.effect3.count ){
-    remove(self.effect1);
+  if( self.effect3.count && self.effect3 != world ){
+    remove(self.effect3);
   }
   
   if( (self.spawnflags & 4194304) ){

@@ -169,6 +169,17 @@ void( entity attacker ) ai_mech_sniper_react1={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
+  if( (attacker.flags & FL_CLIENT) ){
+    if( vlen(attacker.origin - self.origin) <= AI_RANGE_L ){
+      self.oldenemy = self.enemy;
+      self.enemy = attacker;
+      self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+      self.torsoCenter.attack_state = TR_TARG;
+      self.ai_react_buffer = time + self.ai_react_time * 5;
+      macro_ai_frame(ai_mech_sk_fight_prep)
+      return;
+    }
+  }
   
   if( ai_check_targ_infront( attacker, self.ai_fov, (self.flags & FL_TURRET)) ){
     self.oldenemy = self.enemy;
