@@ -4,15 +4,17 @@ Author: Peter Roohr
 Date: 4/14/2018
 Overview:
   menu definition file
-  NEW GAME MENU
+  Player Setup
   
-  WARNING - MULTIPLAYER DEPRECATED AT THIS TIME
 */
 
 //Main Menu Globals
 entity setup_title;
 entity setup_label_playername;
 entity setup_txtfld_playername;
+
+entity setup_pic;
+
 entity setup_accept;
 
 //Main Menu Constants
@@ -32,16 +34,24 @@ void() click_setup_accept={
 };
 
 void() textfield_setup_name={
-  cvar_set("_cl_name", self.data_text);
+  if( self.data_text != "" ){
+    cvar_set("_cl_name", self.data_text);
+  }
+  else{
+    cvar_set("_cl_name", "DEAD_HAND");
+    self.data_text = "DEAD_HAND";
+  }
 };
 
 // ini functions
 void() m_setup_i={
   setup_title = lbl_img('10 100', '1 1 0', IMG_SETUP_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SETUP, 1, (UI_FLAG_SIZE_IMG) );
-  setup_label_playername = lbl_text('10 142 0', '10 10 0', "Player Name", '1 1 1', 0, M_SETUP, 1, 0);
+  setup_label_playername = lbl_text('10 142 0', '12 12 0', "Player Name : ", '1 1 1', 0, M_SETUP, 1, 0);
   
-  setup_txtfld_playername = inp_textfield('150 144', '8 8 0', 32, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC));
+  setup_txtfld_playername = inp_textfield('150 140', '14 14 0', 24, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_UPP));
   setup_txtfld_playername.data_text = strzone(str_cvar("_cl_name"));
+  
+  //setup_pic = lbl_img('150 160', '1 1 0', "gfx/ui/mech_icons/icon_matok.png", '1 1 1', (VIEW_CTX | VIEW_CTY), M_SETUP, 1, (UI_FLAG_SIZE_IMG) );
   
   setup_accept = btn_img_callback('10 230 0', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_SETUP, click_setup_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };

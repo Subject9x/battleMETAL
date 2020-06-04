@@ -423,9 +423,10 @@ void(entity txt) render_textfield={
     this = self;
     self = txt;
       local vector org, sizzle, bclr;
-      
+      local float fon;
       org = gui_percentToPixelRawVec(self.origin);
-      sizzle_x = self.size_x * self.len;
+      fon = stringwidth("  ", 0, self.size );
+      sizzle_x = fon * self.len;
       sizzle_y = self.size_y;
       sizzle = gui_percentToPixelRawVec(sizzle);
       
@@ -451,7 +452,16 @@ void(entity txt) render_textfield={
       if( (TEXTFIELD_TARGET == self) && (UI_INPUT_ACTIVE) ){
         bclr = CLR_DEF_ARM_THREEQ;
       }
-
+    
+      if( self.data_text == "" ){
+        self.label = "DEAD_HAND";
+      }
+      else{
+        self.label = self.data_text;
+      }
+      
+  
+      drawpic(org - gui_percentToPixelRawVec('2 2'), "gfx/ui/box_256.png", sizzle + gui_percentToPixelRawVec('4 2'), bclr - '0.5 0.5 0.5', 1, 0);
       drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
     self = this;
   }
@@ -470,7 +480,6 @@ void(entity txt) render_bindfield={
       if(self.len > -1){
         self.label = keynumtostring(self.len);
       }
-      
       
       if( self.image1 != "" ){
         drawfont = drawfont_prev;
@@ -744,6 +753,12 @@ float(float keynr, float uiFlags) menu_textfilter_validate={
           valid = TRUE;
         }
       }
+      if( (uiFlags & UI_FLAG_TXTFIELD_UPP) ){
+        if( (itr >= 85) && (itr <= 110) ){
+          valid = TRUE;
+        }
+      }
+      
       if( keynr == K_SPACE ){
         valid = TRUE;
       }
@@ -769,17 +784,37 @@ void(float keynr, float ascii) menu_do_textfield={
     }
     return;
   }
-  if( menu_textfilter_validate(keynr, TEXTFIELD_TARGET.flags) ){
-    if( txtlen < TEXTFIELD_TARGET.len){
-      txt = TEXTFIELD_TARGET.data_text;
-      if( keynr == K_SPACE ){
-        txt = strcat(txt, " ");
-      }
-      else{
-        txt = strcat(txt, keynumtostring(keynr) );
-      }
-      TEXTFIELD_TARGET.data_text = strzone(txt);
-    } 
+  if( !(TEXTFIELD_TARGET.flags & UI_FLAG_TXTFIELD_MOUSE) ){
+    //this textfield is a pure text input, and not control key setup
+    //if( menu_textfilter_validate(keynr, TEXTFIELD_TARGET.flags) ){
+      if( txtlen < TEXTFIELD_TARGET.len){
+        txt = TEXTFIELD_TARGET.data_text;
+        if( keynr == K_SPACE ){
+          txt = strcat(txt, " ");
+        }
+        else{
+          txt = strcat(txt, chr(ascii)  );
+        }
+        TEXTFIELD_TARGET.data_text = strzone(txt);
+      } 
+    //}
+    TEXTFIELD_TARGET.data_text = strzone(txt);
+  }
+  else{
+    if( menu_textfilter_validate(keynr, TEXTFIELD_TARGET.flags) ){
+      if( txtlen < TEXTFIELD_TARGET.len){
+        txt = TEXTFIELD_TARGET.data_text;
+        switch(keynr){
+          default:
+            txt = strcat(txt, keynumtostring(keynr) );
+            break;
+          case K_SPACE:
+            txt = strcat(txt, " ");
+            break;
+        }
+        TEXTFIELD_TARGET.data_text = strzone(txt);
+      } 
+    }
   }
 };
 
@@ -974,4 +1009,33 @@ void() menu_ini_txtfilter={
   UI_INPUT_FILTER[82] = K_MOUSE14;
   UI_INPUT_FILTER[83] = K_MOUSE15;
   UI_INPUT_FILTER[84] = K_MOUSE16;
+  
+  //upper case
+  UI_INPUT_FILTER[85] = 65;
+  UI_INPUT_FILTER[86] = 66;
+  UI_INPUT_FILTER[87] = 67;
+  UI_INPUT_FILTER[88] = 68;
+  UI_INPUT_FILTER[89] = 69;
+  UI_INPUT_FILTER[90] = 70;
+  UI_INPUT_FILTER[91] = 71;
+  UI_INPUT_FILTER[92] = 72;
+  UI_INPUT_FILTER[93] = 73;
+  UI_INPUT_FILTER[94] = 74;
+  UI_INPUT_FILTER[95] = 75;
+  UI_INPUT_FILTER[96] = 76;
+  UI_INPUT_FILTER[97] = 77;
+  UI_INPUT_FILTER[98] = 78;
+  UI_INPUT_FILTER[99] = 79;
+  UI_INPUT_FILTER[100] = 80;
+  UI_INPUT_FILTER[101] = 81;
+  UI_INPUT_FILTER[102] = 82;
+  UI_INPUT_FILTER[103] = 83;
+  UI_INPUT_FILTER[104] = 84;
+  UI_INPUT_FILTER[105] = 85;
+  UI_INPUT_FILTER[106] = 86;
+  UI_INPUT_FILTER[107] = 87;
+  UI_INPUT_FILTER[108] = 88;
+  UI_INPUT_FILTER[109] = 89;
+  UI_INPUT_FILTER[110] = 90;
+  
 };

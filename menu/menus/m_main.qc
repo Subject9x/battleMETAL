@@ -18,6 +18,7 @@ entity main_camp;
 entity main_backto;
 entity main_training;
 entity main_options;
+entity main_multi;
 entity main_help;
 entity main_credits;
 entity main_quit;
@@ -62,10 +63,9 @@ void() click_main_train={
 };
 
 void() click_main_multi={
-  //disabled for now
-  /*menu_clear_items(M_STATE);
+  menu_clear_items(M_STATE);
   M_STATE = M_MULTI;
-  m_multi_f();*/
+  m_multi_f();
 };
 
 void() click_main_quit={
@@ -126,13 +126,15 @@ void() m_main_i={
     main_title = lbl_img('10 50', '1 1 0', IMG_MAIN_TITLE, '1.5 0.75 0.35', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
     main_camp = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_CAMP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_camp, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     main_training = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_TRAIN, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_train, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  //main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '0.25 0.25 0.25', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-    orgOptions = '10 170 0';
-   orgHelp = '10 189 0';
+    main_multi = btn_img_callback('10 170 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     
-    main_credits = btn_img_callback('10 209 0', '1 1 0', IMG_MAIN_CREDITS, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    orgOptions = '10 189 0';
+    orgHelp = '10 209 0';
+    
+    main_credits = btn_img_callback('10 229 0', '1 1 0', IMG_MAIN_CREDITS, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     IMG_QUIT = IMG_MAIN_QUIT;
-    orgQuit = '10 228 0';
+    orgQuit = '10 249 0';
+    
   }
   
   main_label = lbl_img('10 100', labelSize, IMG_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, mainTitleFlag );
