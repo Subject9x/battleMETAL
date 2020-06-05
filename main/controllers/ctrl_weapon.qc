@@ -50,7 +50,7 @@ void(entity wep) ctrl_weapon_think_ai={
       self = weaponOwner;
       return;
     }  
-    if( self.think ){
+    if( self.think && self.think != SUB_Remove){
       self.think();
       self.think = self.think;
     }
