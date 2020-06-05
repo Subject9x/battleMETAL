@@ -54,7 +54,7 @@ void() data_ini_balaket_={
 //MECH COMPONENTS====================
 #ifdef CSQC
   if( (self.flags & FL_MONSTER) ){
-    self.hardpoint_cnt = 3;
+    self.hardpoint_cnt = 5;
     weaponList = self;
   }
 #endif
@@ -88,6 +88,8 @@ void() data_ini_balaket_={
   data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
+  data_ini_unitHardpoint_4( M_TOR_LEFT, '-7.85 7.0 6.0', '0 0 0', 1, DMG_MSC );
+  data_ini_unitHardpoint_5( M_TOR_RIGHT, '7.85 7.0 6.0', '0 0 0', 2, DMG_MSC );
 #endif
 #ifdef CSQC
   //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
@@ -95,6 +97,8 @@ void() data_ini_balaket_={
   data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
+  data_ini_unitHardpoint_4( M_TOR_LEFT, '-7.85 7.0 6.0', '0 0 0', MSC1, DMG_MSC );
+  data_ini_unitHardpoint_5( M_TOR_RIGHT, '7.85 7.0 6.0', '0 0 0', (MSC1|MSC2), DMG_MSC );
 #endif
 //=====================================
 

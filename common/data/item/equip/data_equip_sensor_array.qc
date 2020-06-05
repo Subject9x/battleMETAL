@@ -24,7 +24,7 @@ void() data_ini_equip_sensor_array_={
   
   self.w_range = 0;
   self.damageValue = 0;
-  self.damageType = (DMG_MSC);
+  self.damageType = DMG_MSC;
   
   self.techLevel = 1;
   self.equipSize = MSC1;
