@@ -5,6 +5,7 @@ void() CSQC_Init =
   registercvar("gamemode", "0");
   registercommand("fog");
   registercvar("cl_hud_sway", "1");
+  registercvar("cl_team", "2");
 
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){

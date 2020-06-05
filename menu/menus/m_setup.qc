@@ -13,7 +13,14 @@ entity setup_title;
 entity setup_label_playername;
 entity setup_txtfld_playername;
 
+entity setup_team_label;
+entity setup_team_value;
+entity setup_team_prev;
+entity setup_team_next;
+
+entity setup_pic_label;
 entity setup_pic;
+
 
 entity setup_accept;
 
@@ -43,6 +50,26 @@ void() textfield_setup_name={
   }
 };
 
+void() setup_team_prev_f={
+  if( setup_team_value.len == 2 ){
+   setup_team_value.len = 3;
+  }
+  else{
+    setup_team_value.len = 2;
+  }
+  cvar_set("cl_team", ftos(setup_team_value.len) );
+};
+
+void() setup_team_next_f={
+  if( setup_team_value.len == 3 ){
+   setup_team_value.len = 2;
+  }
+  else{
+    setup_team_value.len = 3;
+  }
+  cvar_set("cl_team", ftos(setup_team_value.len) );
+};
+
 // ini functions
 void() m_setup_i={
   setup_title = lbl_img('10 100', '1 1 0', IMG_SETUP_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SETUP, 1, (UI_FLAG_SIZE_IMG) );
@@ -51,9 +78,16 @@ void() m_setup_i={
   setup_txtfld_playername = inp_textfield('150 140', '14 14 0', 24, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_UPP));
   setup_txtfld_playername.data_text = strzone(str_cvar("_cl_name"));
   
+  setup_team_label = lbl_text('10 165 0', '12 12 0', "Preferred TDM Team : ", '1 1 1', 0, M_SETUP, 1, 0);
+  setup_team_value = lbl_text('200 185 0', '12 12 0', strzone(ftos(cvar("cl_team"))), '1 1 1', 0, M_SETUP, 1, 0);
+  setup_team_value.len = cvar("cl_team");
+  setup_team_prev = btn_img_callback('150 175 0', '14 18', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_SETUP, setup_team_next_f, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  setup_team_next = btn_img_callback('265 175 0', '14 18', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_SETUP, setup_team_next_f, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  
+  setup_pic_label = lbl_text('10 224 0', '12 12 0', "Player Color Tint : ", '1 1 1', 0, M_SETUP, 1, 0);
   //setup_pic = lbl_img('150 160', '1 1 0', "gfx/ui/mech_icons/icon_matok.png", '1 1 1', (VIEW_CTX | VIEW_CTY), M_SETUP, 1, (UI_FLAG_SIZE_IMG) );
   
-  setup_accept = btn_img_callback('10 230 0', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_SETUP, click_setup_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  setup_accept = btn_img_callback('10 350 0', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_SETUP, click_setup_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };
 
 /*
@@ -77,6 +111,12 @@ void() m_setup_d={
   while(widget){
     widget.draw(widget);
     widget = widget.chain;
+  }
+  if( setup_team_value.len == 1 ){
+    drawpic( gui_percentToPixelRawVec('175 160'), IMG_TEAM_SURVEST, gui_percentToPixelRawVec('75 64'), '1 1 1', 1, 0);
+  }
+  else{
+    drawpic( gui_percentToPixelRawVec('175 160'), IMG_TEAM_MILITAR, gui_percentToPixelRawVec('75 64'), '1 1 1', 1, 0);
   }
 };
 
