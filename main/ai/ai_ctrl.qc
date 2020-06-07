@@ -511,6 +511,9 @@ void() ai_setup_patrol={
   local vector newOrgTop;
   local float angl, px, py, dlen;
   
+  //make a single call reference here, instead of in every ai_setup func.
+  trigger_event( find(world, classname, "player"), self.trigOnSpawn ); //event interface
+  
   if( (self.target) && self.target != "" ){
     if( lastNode.targetname != self.target ){
       node = find(world, targetname, self.target);

@@ -612,7 +612,6 @@ void() ai_unit_make_trigger={
   self.think = self.unit_ini;
   self.nextthink = time + self.wait + (random() * 1);
   self.unit_ini = SUB_Null;
-  trigger_event( find(world, classname, "player"), self.trigOnSpawn ); //event interface
 };
 
 /*
