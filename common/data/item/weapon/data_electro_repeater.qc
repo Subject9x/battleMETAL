@@ -135,13 +135,14 @@ void() data_ini_attack_electro_repeater_={
   local float impactStyle;
   local float damage;
   
-
-  if( !ctrl_weapon_checkEnergy() ){
+  
+  
+  if( self.owner.energy <= self.energyRate ){
     self.w_state = RELOADING;
-    self.w_currentammo = self.reloadMax  / 2;
+    self.w_currentammo = self.reloadMax / 1.125;
     return;
   }
-
+  
   self.w_state = RECOIL;
   self.count1 = time;
   self.count2 = time + self.reloadRate * 2;
