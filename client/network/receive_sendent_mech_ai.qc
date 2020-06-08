@@ -31,32 +31,32 @@ void() sendevent_mech_ai_die={
   local entity rem;
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
-  if( self.torsoCenter != world ){
+  if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
     rem = self.torsoCenter;
     self.torsoCenter = world;
     remove(rem);
   }
-  if( self.torsoLeft != world ){
+  if( self.torsoLeft.partTypeId && self.torsoLeft != world ){
     rem = self.torsoLeft;
     self.torsoLeft = world;
     remove(rem);
   }
-  if( self.torsoRight != world ){
+  if( self.torsoRight.partTypeId && self.torsoRight != world ){
     rem = self.torsoRight;
     self.torsoRight = world;
     remove(rem);
   }
-  if( self.armLeft != world ){
+  if( self.armLeft.partTypeId && self.armLeft != world ){
     rem = self.armLeft;
     self.armLeft = world;
     remove(rem);
   }
-  if( self.armRight != world ){
+  if( self.armRight.partTypeId && self.armRight != world ){
     rem = self.armRight;
     self.armRight = world;
     remove(rem);
   }
-  if( self.legs != world ){
+  if( self.legs.partTypeId && self.legs != world ){
     rem = self.legs;
     self.legs = world;
     remove(rem);
@@ -65,7 +65,9 @@ void() sendevent_mech_ai_die={
   while( weps != world ){
     rem = weps;
     weps = rem.w_slot;
-    remove(rem);
+    if( rem.data_idx && rem.owner == self ){
+      remove(rem);
+    }
   }
 };
 

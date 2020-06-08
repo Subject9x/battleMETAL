@@ -37,7 +37,9 @@ void() sendevent_spg_die={
   while( weps ){
     rem = weps;
     weps = rem.w_slot;
-    remove(rem);
+    if( rem.data_idx && rem.owner == self ){
+      remove(rem);
+    }
   }
   self.deadflag = DEAD_DEAD;
   if(self.vec_size == 1){

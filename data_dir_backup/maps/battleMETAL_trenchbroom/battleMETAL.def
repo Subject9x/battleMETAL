@@ -743,11 +743,11 @@ DISABLE_ONLY 16: only disables player, adds FL_NOSHOOT
 ENABLY_ONLY 32: only re-enables player, removes FL_NOSHOOT
 */
 /*QUAKED trigger_timer (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT
-Waits for .delay game seconds before firing .target
+Waits for .count game seconds before firing .target
 
 After the timer expires, it will fire all of it's targets and remove itself.
 -------- KEYS -------- 
-.delay = <float> game seconds to count before firing.
+.count = <float> game seconds to count before firing.
 .message = <string> message to display on end of countdown.
 
 -------- SPAWNFLAGS --------

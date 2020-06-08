@@ -37,7 +37,7 @@ void() sendevent_tank_die={
   makevectors(self.angles);
   self.origin = self.origin + (v_up * -2);
   self.colormod = '0.33 0.33 0.33';
-  if( self.torsoCenter != world ){
+  if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
     rem = self.torsoCenter;
     self.torsoCenter = world;
     remove(rem);
@@ -46,7 +46,9 @@ void() sendevent_tank_die={
   while( weps ){
     rem = weps;
     weps = rem.w_slot;
-    remove(rem);
+    if( rem.data_idx && rem.owner == self ){
+      remove(rem);
+    }
   }
   self.deadflag = DEAD_DEAD;
   if(self.vec_size == 1){

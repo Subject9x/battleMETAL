@@ -36,15 +36,18 @@ void() sendevent_gev_move={
 void() sendevent_gev_die={
   local entity weps;
   local entity this;
+  local entity rem;
   
   makevectors(self.angles);
   self.colormod = '0.33 0.33 0.33';  
   te_missile_explode( self.origin, self.vec_size, '0.9 0.67 0.33', 0.02 ) ;
   weps = self.w_slot;
   while( weps ){
-    this = weps.w_slot;
-    remove(weps);
-    weps = this;
+    rem = weps;
+    weps = rem.w_slot;
+    if( rem.data_idx && rem.owner == self ){
+      remove(rem);
+    }
   }
   self.deadflag = DEAD_DEAD;
   if(self.vec_size == 1){

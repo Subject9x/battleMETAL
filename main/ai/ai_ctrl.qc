@@ -219,6 +219,7 @@ float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
       self.goalentity = world;
       handOff = self.ai_node_recall;
       self.ai_node_recall = world;
+      strunzone(handOff.targetname);
       remove(handOff);
     }
     else{
@@ -240,6 +241,7 @@ float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vi
     return FALSE;
   }
   if( self.stat_trg_dist < AI_RANGE_M ){
+    strunzone(self.ai_node_recall.targetname);
     remove(self.ai_node_recall);
     self.ai_node_recall = world;
     self.attack_state = 0;

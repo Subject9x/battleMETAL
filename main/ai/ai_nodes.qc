@@ -55,7 +55,7 @@ entity() node_recall_setup={
     traceline( nodeOrg, nodeOrg + (v_up * 18), MOVE_NORMAL, theBot);
     setorigin( self, trace_endpos );
     self.targetname = strzone(strcat("node_recall_for_", ftos(num_for_edict(theBot))));
-    if( theBot.movetarget ){
+    if( theBot.movetarget && theBot.movetarget.targetname != "" ){
       self.target = theBot.movetarget.targetname;
     }
     self.owner = theBot;
