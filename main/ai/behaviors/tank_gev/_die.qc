@@ -25,8 +25,12 @@ void() ai_gev_die1={
 void() ai_gev_die_clean={
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   ctrl_unit_cleanup_tank();
-  self.think = ai_gev_die1;
+  
+  self.think = SUB_Remove;
   self.nextthink = time + 0.1;
+  
+  //self.think = ai_gev_die1;
+  //self.nextthink = time + 0.1;
 };
 
 void() ai_gev_touch_death={

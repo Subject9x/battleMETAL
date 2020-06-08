@@ -135,8 +135,6 @@ void() data_ini_attack_electro_repeater_={
   local float impactStyle;
   local float damage;
   
-  
-  
   if( self.owner.energy <= self.energyRate ){
     self.w_state = RELOADING;
     self.w_currentammo = self.reloadMax / 1.125;

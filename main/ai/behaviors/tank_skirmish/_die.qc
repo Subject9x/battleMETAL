@@ -15,8 +15,11 @@ void() ai_tank_sk_clean={
  
   self.effects = self.effects | EF_LOWPRECISION;
   
-  self.think = ai_tank_sk_die1;
-  self.nextthink = time + 0.25;  
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+  
+  //self.think = ai_tank_sk_die1;
+  //self.nextthink = time + 0.25;  
 };
 
 void() ai_tank_sk_die={
@@ -72,11 +75,13 @@ void() ai_tank_sk_die={
 };
 
 void() ai_tank_sk_die1={
-  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+
+  
+  /*self.SendFlags = self.SendFlags | SENDFLAG_BURN;
   self.think = ai_tank_sk_die1;
   if ( time > self.ai_action_time ){
     self.think = SUB_Remove;
     self.ai_action_time = time + 7200;
   }
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.1;*/
 };

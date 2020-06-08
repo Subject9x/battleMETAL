@@ -14,8 +14,11 @@ Overview: ai unit
 void() ai_vec_dest_clean={
   ctrl_unit_cleanup_tank();
   
-  self.think = ai_vec_dest_die1;
-  self.nextthink = time + 0.5;
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+  
+  //self.think = ai_vec_dest_die1;
+  //self.nextthink = time + 0.5;
 };
 
 void() ai_vec_dest_die={
@@ -68,6 +71,7 @@ void() ai_vec_dest_die={
   Death animation - tank sits as a smoking wreck
 */
 void() ai_vec_dest_die1={
+  
   self.SendFlags = self.SendFlags | SENDFLAG_BURN;
   self.think = ai_vec_dest_die1;
   if ( time > self.ai_action_time ){

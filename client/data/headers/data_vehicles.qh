@@ -14,3 +14,6 @@ void() data_vehicle_dunerunner;
 void() data_vehicle_onnek;
 void() data_vehicle_sorcerer;
 void() data_vehicle_trowel;
+
+void() data_vehicle_wreck;
+void() data_vehicle_wreck_th;

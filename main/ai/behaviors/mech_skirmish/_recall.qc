@@ -12,7 +12,10 @@ Overview: ai unit
     
 */
 void() ai_mech_sk_enter_recall={
+  
   self.goalentity = self.ai_node_recall;
+  
+  
   ai_sfx_huntEnd();
   self.enemy = world;
   self.torsoCenter.attack_state = TR_GOAL;

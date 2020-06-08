@@ -207,12 +207,25 @@ void() ai_face_goal={
 */
 float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
   local entity handOff;
+  
   //moving to recall node
   if( self.goalentity && self.goalentity != world ){
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin );
     ChangeYaw();
-    if( !walkmove(self.angles_y, moveSpeed) ){
+    if( walkmove(self.angles_y, moveSpeed) == FALSE ){
       movetogoal( moveSpeed );
+    }
+    //check for closest patrol node
+    if( self.movetarget != world && self.movetarget.classname != "ai_node" ){
+      if( vlen(self.movetarget.origin - self.origin) < vlen(self.goalentity.origin - self.origin) ){
+        if( ai_check_vis(self.movetarget) != VIS_FAIL ){
+          self.goalentity = world;
+          handOff = self.ai_node_recall;
+          self.ai_node_recall = world;
+          strunzone(handOff.targetname);
+          remove(handOff);
+        }
+      }
     }
     //reached the recall node
     if( vlen(self.goalentity.origin - self.origin) <= AI_NODE_DISTANCE ){
@@ -237,7 +250,7 @@ float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
 float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vis={
   local float enemyVis;
   enemyVis = ai_check_vis(self.enemy);
-  if( (enemyVis != VIS_FRAC) && (enemyVis != VIS_FRN) ){
+  if( enemyVis == VIS_FAIL ){
     return FALSE;
   }
   if( self.stat_trg_dist < AI_RANGE_M ){
