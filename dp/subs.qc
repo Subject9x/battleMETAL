@@ -278,7 +278,13 @@ void() SUB_UseTargets =
 			t = find(t, targetname, self.killtarget);
 			if (!t)
 				return;
-			remove (t);
+      if( t.data_type && t.th_die){
+        t.think = t.th_die;
+        t.nextthink = time + 0.1;
+      }
+      else{
+        remove (t);
+      }
 		} while ( 1 );
 	}
 //
