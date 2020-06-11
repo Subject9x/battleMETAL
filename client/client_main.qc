@@ -588,17 +588,13 @@ void() CSQC_Ent_Remove ={
     }
   }
   if( self.data_type == DATA_BLD ){
-    if( self.effect1 != world ){
+    if( self.effect1.count && self.effect1 != world ){
       remove(self.effect1);
     }
-  }
-  if( self.data_type == DATA_BLD ){
-    if( self.effect2 != world ){
+    if( self.effect2.count && self.effect2 != world ){
       remove(self.effect2);
     }
-  }
-  if( self.data_type == DATA_BLD ){
-    if( self.effect3 != world ){
+    if( self.effect3.count && self.effect3 != world ){
       remove(self.effect3);
     }
   }
