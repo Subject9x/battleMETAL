@@ -70,6 +70,7 @@ ONTOUCH 2 : will fire ontouch instead of by targetname.
 */
 void() map_unlock_items={
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
   
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;

@@ -107,6 +107,7 @@ void() map_no_shoot={
   self.isActive = TRUE;
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
 

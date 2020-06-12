@@ -19,6 +19,7 @@ void() map_initTrigger={
 	self.solid = SOLID_TRIGGER;
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
   
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);

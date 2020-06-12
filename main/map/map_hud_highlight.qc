@@ -153,6 +153,7 @@ void() map_hud_highlight={
   self.noise = "misc/talk.wav"; //TODO
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
   
   //touchable check
   if( (self.spawnflags & 2) ){

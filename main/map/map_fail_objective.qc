@@ -50,6 +50,7 @@ void() map_fail_objective={
   }
   else{
     util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
     self.solid = SOLID_NOT;
     setsize( self, VEC_ORIGIN, VEC_ORIGIN );
   }

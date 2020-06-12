@@ -69,6 +69,7 @@ void() map_change_fog={
   self.stat_player_weapons_state = TRUE;
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
   
   setsize(self, '-16 -16 -32', '16 16 32');
   setorigin(self, self.origin);

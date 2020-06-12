@@ -145,6 +145,7 @@ void() map_animatic={
   self.use = animatic_event_use;
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
   
   //touchable check
   if( (self.spawnflags & 2) ){

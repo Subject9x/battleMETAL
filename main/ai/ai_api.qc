@@ -496,6 +496,8 @@ entity() ai_goal_offset_node={
   offsetNode = spawn();
   offsetNode.classname = "ai_node";
   offsetNode.ai_rank = (random() * 50) + (random() * 33);
+  offsetNode.faction = self.faction;
+  offsetNode.isActive = TRUE;
   setsize(offsetNode, '-16 -16 -32', '16 16 32');
   setorigin(offsetNode, offsetNodeOrg);
   return offsetNode;

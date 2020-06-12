@@ -46,6 +46,7 @@ void() map_particle_ini={
   self.movetype = MOVETYPE_NONE;
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
   
   setsize( self, VEC_ORIGIN, VEC_ORIGIN );
   setorigin( self, self.origin );

@@ -136,6 +136,7 @@ void() map_mission_end={
   }
   else{
     util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
     self.solid = SOLID_NOT;
     setsize(self, '-10 -10 -10', '10 10 10');
   }

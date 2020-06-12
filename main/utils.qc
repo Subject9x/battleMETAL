@@ -583,7 +583,7 @@ void() BecomeExplosion={
   Used for map dev, marks out map objects when cvar("developer") = TRUE,
 */
 void() util_MapDeveloperMarker={
-  if( cvar("developer") ){
+  if( cvar("developer") == TRUE ){
     self.alpha = 1;
     self.scale = 1;
   }
@@ -594,6 +594,13 @@ void() util_MapDeveloperMarker={
   }
   setmodel(self, "q3mdl/testball.md3");
 };
+
+void() util_DeveloperNodeMark={
+  if( !cvar("developer") ){
+    self.effects = self.effects | EF_NODRAW;
+  }
+};
+
 
 void() util_updateViewBob={
   self.hud_mode = cvar("cl_hud_sway");

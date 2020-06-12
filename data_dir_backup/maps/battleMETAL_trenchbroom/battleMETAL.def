@@ -863,6 +863,34 @@ INACTIVE_ONTOUCH 8:  shutoff when touched by AI
 */
 
 
+
+/*QUAKED ai_node_counter (0.988 0.5 0.267) (-10 -10 -18) (10 10 18) - START_INACTIVE
+
+Special node; this actively counts how many bots are near this node,
+firing off .trigOnAttack when the .count is reached.
+
+This is used to setup patrol and move paths for AI.
+For best results, place manually as close to ground as possible!
+
+ai_view = 100 [default]
+
+-------- KEYS -------- 
+.count = <float> number of bots that need to be in-radius.
+.ai_view = <float> range to check for units.
+.faction = <float> [faction number]
+.targetname = <string> used by AI to find node
+.target = <string> should target another AI node to form a chain
+.trigOnDeath = <string> [target] trigger this item when node is removed
+.trigOnAttack = <string> [target] trigger this when .count limit is hit.
+.isActive = <float> [1] on/off, default ON.
+
+-------- SPAWNFLAGS -------- 
+START_INACTIVE 1: start with .isActive = FALSE
+*/
+
+
+
+
 /*QUAKED ai_change_faction (0.988 0.976 0.267) (-16 -16 -16) (16 16 16) START_OFF REMOVE_ONUSE DELAY_FIRE
 changes the faction field of the targeted objects
 

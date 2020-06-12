@@ -92,6 +92,7 @@ void() map_change_wind={
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
   
   setsize( self, tempMin, tempMax );
   setorigin( self, self.origin );

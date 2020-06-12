@@ -95,6 +95,8 @@ void() ai_change_faction={
   self.movetype = MOVETYPE_NONE;
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
+  
   setsize( self, '-3 -3 -3', '3 3 3' );
   setorigin( self, self.origin );
   
@@ -128,6 +130,7 @@ void() ai_change_rank={
   self.movetype = MOVETYPE_NONE;
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
  
   setsize( self, '-3 -3 -3', '3 3 3' );
   setorigin( self, self.origin );

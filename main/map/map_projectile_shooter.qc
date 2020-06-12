@@ -119,6 +119,7 @@ void() map_projectile_shooter={
   self.th_die = ctrl_die_weapon;
   
   util_MapDeveloperMarker();
+  util_DeveloperNodeMark();
     
   setsize( self, self.mins, self.maxs );
   setorigin( self, self.origin );
