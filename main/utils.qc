@@ -181,7 +181,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
     if( self.w_isburst ){
-      wepAim = self.owner.laser_sight_org - (targVel * self.owner.ai_leading);
+        wepAim = (self.owner.enemy.origin + '0 0 10') - (targVel * self.owner.ai_leading);
     }
     else{
       if( self.owner.enemy.data_type == DATA_BLD ){
