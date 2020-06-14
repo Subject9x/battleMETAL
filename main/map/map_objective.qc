@@ -16,30 +16,37 @@ void() map_objective_th;
 
 /*
   called by other entities during trigger call.
+  
 */
 void() map_objective_use={
+  if( self.isActive == OBJECTIVE_ACTIVE){
+    if( OBJECTIVE_FAILED == TRUE){
+      //objective was failed
+      self.isActive = OBJECTIVE_FAIL;
+      trigger_event( self.enemy, self.trigOnDeath );
+    }
+    else{
+      SUB_UseTargets(); //allows pass-through trigger call to other triggers.
+      if( self.count ){
+        //Objective counter adjust
+        self.count1 = self.count1 + 1;
+        if( self.count1 >= self.count ){
+          self.isActive = OBJECTIVE_WIN;
+        }
+      }
+      //no counter, regular Objective 'complete'
+      self.isActive = OBJECTIVE_WIN;
+    }
+  }
+  else{
+    //objective wasn't activated, and now it will be
+    if( self.isActive != OBJECTIVE_FAIL ){
+      //don't reactivate failed objectives
+      self.isActive = OBJECTIVE_ACTIVE;
+    }
+  }
   self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
   self.enemy = activator;
-  if( self.isActive == OBJECTIVE_ACTIVE){
-    SUB_UseTargets(); //allows pass-through trigger call to other triggers.
-    if( self.count ){
-      //Objective counter adjust
-      self.count1 = self.count1 + 1;
-      if( self.count1 >= self.count ){
-        self.isActive = OBJECTIVE_WIN;
-      }
-      return;
-    }
-    //no counter, regular Objective 'complete'
-    self.isActive = OBJECTIVE_WIN;
-    return;
-  }
-  
-  //objective wasn't activated, and now it will be
-  if( self.isActive != OBJECTIVE_FAIL ){
-    //don't reactivate failed objectives
-    self.isActive = OBJECTIVE_ACTIVE;
-  }
 };
 
 void() map_objective_touch={
@@ -59,7 +66,7 @@ void() map_objective_touch={
   this is run every time + 0.1, checking isActive every time.
 */
 void() map_objective_th={
-  
+  self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
   //objective achieved
   if(self.isActive == OBJECTIVE_WIN){
     return;
@@ -90,8 +97,9 @@ void() map_objective_ini={
 .data_idx = must match a number in the msn_file
 .isActive = 0 = hidden/inactive 
             1 = active
-            2 = complete
-           -1 = failed
+            2 = won
+            3 = complete
+            4 = failed
 .faction = faction for this objective
 .target = fire THIS trigger when Objective is COMPLETE, isActive == 2
 .aState = determines which SFX to play when 'completed'
@@ -147,7 +155,6 @@ void() map_objective={
   //start off
   if( (self.spawnflags & 1) ){
     self.isActive = OBJECTIVE_DISABLE;
-    return;
   }
   if( (self.spawnflags & 4) ){
     self.aState = 254;

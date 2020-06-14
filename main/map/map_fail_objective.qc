@@ -17,12 +17,22 @@ Inputs
 
 void() map_fail_objective_use={
   local entity obj;
-  for( obj = findchain(targetname, self.target); obj != world; obj = obj.chain ){
+  local entity thisEnt;
+  
+  OBJECTIVE_FAILED = TRUE;
+  for( obj = nextent(world); obj != world; obj = nextent(obj) ){
     if( obj.classname != "map_objective" ){
       continue;
     }
-    obj.isActive = OBJECTIVE_FAIL;
+    if( obj.targetname == "" || obj.targetname != self.target ){
+      continue;
+    }
+    thisEnt = self;
+    self = obj;
+      obj.use();
+    self = thisEnt;
   }
+  OBJECTIVE_FAILED = FALSE;
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
 };
@@ -50,7 +60,7 @@ void() map_fail_objective={
   }
   else{
     util_MapDeveloperMarker();
-  util_DeveloperNodeMark();
+    util_DeveloperNodeMark();
     self.solid = SOLID_NOT;
     setsize( self, VEC_ORIGIN, VEC_ORIGIN );
   }

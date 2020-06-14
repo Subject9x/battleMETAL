@@ -50,6 +50,7 @@ void() ai_mech_sk_die={
   if( self.ai_node_recall.owner == self ){
     remove(self.ai_node_recall);
   }
+  
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
   

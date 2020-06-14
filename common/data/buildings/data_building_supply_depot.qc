@@ -35,12 +35,11 @@ void() hangar_depot_die1=[0, hangar_depot_die2]{
   self.touch = SUB_Null;
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
   
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
   local vector vfx;
-  
   makevectors(self.angles);
   vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
 

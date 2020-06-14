@@ -18,6 +18,7 @@ float TECHLEVEL;
 float ENDROUND;           //sv_checkRules sets this so ending is next frame-ish;
 float ENDROUND_TIME;      //sv_checkRules sets this so ending is next frame-ish;
 
+float OBJECTIVE_FAILED;   //global to handle map objective state changes on fail.
 
 string SERVER_INFO;
 

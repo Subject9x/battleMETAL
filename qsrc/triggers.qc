@@ -38,10 +38,10 @@ void( entity active, string event) trigger_event={
   
   oldTarget = self.target;
   thisTarget = event;
-  self.target = thisTarget;
-  SUB_UseTargets();
-  self.target = oldTarget;
   
+  self.target = thisTarget;
+    SUB_UseTargets();
+  self.target = oldTarget;
 };
 
 void() trigger_reactivate =
@@ -68,41 +68,41 @@ void() multi_wait =
 // so wait for the delay time before firing
 void() multi_trigger =
 {
-	if (self.nextthink > time)
-	{
-		return;		// allready been triggered
-	}
+  if (self.nextthink > time)
+  {
+    return; // already been triggered
+  }
+
+  if (self.classname == "trigger_secret")
+  {
+    if (self.enemy.classname != "player"){
+      return;
+    }
+    found_secrets = found_secrets + 1;
+    WriteByte (MSG_ALL, SVC_FOUNDSECRET);
+  }
+
+  if (self.noise){
+    sound (self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
+  }
+  // don't trigger again until reset
+  self.takedamage = DAMAGE_NO;
+
+  activator = self.enemy;
   
-	if (self.classname == "trigger_secret")
-	{
-		if (self.enemy.classname != "player")
-			return;
-		found_secrets = found_secrets + 1;
-		WriteByte (MSG_ALL, SVC_FOUNDSECRET);
-	}
+  SUB_UseTargets();
 
-	if (self.noise)
-		sound (self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
-
-// don't trigger again until reset
-	self.takedamage = DAMAGE_NO;
-
-	activator = self.enemy;
-	
-	SUB_UseTargets();
-
-	if (self.wait > 0)	
-	{
-		self.think = multi_wait;
-		self.nextthink = time + self.wait;
-	}
-	else
-	{	// we can't just remove (self) here, because this is a touch function
-		// called wheil C code is looping through area links...
-		self.touch = SUB_Null;
-		self.nextthink = time + 0.1;
-		self.think = SUB_Remove;
-	}
+  if (self.wait > 0){
+    self.think = multi_wait;
+    self.nextthink = time + self.wait;
+  }
+  else{
+    // we can't just remove (self) here, because this is a touch function
+    // called wheil C code is looping through area links...
+    self.touch = SUB_Null;
+    self.nextthink = time + 0.1;
+    self.think = SUB_Remove;
+  }
 };
 
 void() multi_killed =
@@ -264,8 +264,10 @@ void() trigger_secret =
 void() counter_use =
 {
 	self.count = self.count - 1;
-	if (self.count < 0)
-		return;
+  cons_logAFloat(self.targetname, self.count);  //debug
+  if (self.count < 0){
+    return;
+  }
 	if (self.count != 0)
 	{
 		if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
@@ -330,9 +332,9 @@ void() counter_use =
       centerprint(activator, "Sequence completed!");
     }
   }
-	
-	self.enemy = activator;
-	multi_trigger ();
+  cons_logAFloat("sequence", 1);  //debug
+  self.enemy = activator;
+  multi_trigger ();
 };
 
 /*QUAKED trigger_counter (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT

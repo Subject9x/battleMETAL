@@ -238,46 +238,47 @@ match (string)self.target and call their .use function
 */
 void() SUB_UseTargets =
 {
-
-	local entity t, act;
+  local entity t, act;
   local entity tempSelf, tempOther;
 //
 // check for a delay
 //
-	if (self.delay){
-	// create a temp object to fire at a later time
-		t = spawn();
-		t.classname = "DelayedUse";
-		t.nextthink = time + self.delay;
-		t.think = DelayThink;
-		t.enemy = activator;
-		t.message = self.message;
-		t.killtarget = self.killtarget;
-		t.target = self.target;
-		return;
-	}
+  if (self.delay){
+  // create a temp object to fire at a later time
+    t = spawn();
+    t.classname = "DelayedUse";
+    t.nextthink = time + self.delay;
+    t.think = DelayThink;
+    t.enemy = activator;
+    t.message = self.message;
+    t.killtarget = self.killtarget;
+    t.target = self.target;
+    return;
+  }
 
 //
 // print the message
 //
-	if (activator.classname == "player" && self.message != "")
-	{
-		if (activator.flags & FL_CLIENT)
-			centerprint (activator, self.message);
-		if (!self.noise)
-            precache_sound ("misc/talk.wav");
-			sound (activator, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
-	}
+  if (activator.classname == "player" && self.message != "")
+  {
+    if (activator.flags & FL_CLIENT){
+      centerprint (activator, self.message);
+    }
+    if (!self.noise){
+      precache_sound ("misc/talk.wav");
+      sound (activator, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
+    }
+  }
 
 //
 // kill the killtagets
 //
-	if (self.killtarget){
-		t = world;
-		do{
-			t = find(t, targetname, self.killtarget);
-			if (!t)
-				return;
+  if (self.killtarget){
+    t = world;
+    do{
+      t = find(t, targetname, self.killtarget);
+      if (!t)
+        return;
       if( t.data_type && t.th_die){
         t.think = t.th_die;
         t.nextthink = time + 0.1;
@@ -285,8 +286,8 @@ void() SUB_UseTargets =
       else{
         remove (t);
       }
-		} while ( 1 );
-	}
+    } while ( 1 );
+  }
 //
 // fire targets
 //
@@ -311,7 +312,10 @@ void() SUB_UseTargets =
   // guess this needed updating too.
   if( self.target ){
     act = activator;
-    for(t = findchain( targetname, self.target); t != world; t = t.chain){
+    for(t = nextent(world); t != world; t = nextent(t) ){
+      if( t.targetname == "" || t.targetname != self.target ){
+        continue;
+      }
       tempSelf = self;
       tempOther = other;
       self = t;

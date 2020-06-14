@@ -20,13 +20,15 @@ void() building_radar_alert2;   //th_missile
 void() building_radar_cool1;    //th_melee
 void() building_radar_touch;    //touch
 
-void() building_radar_die2=[1, SUB_Null]{
+void() building_radar_die2={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
+  self.think = SUB_Null;
+  self.nextthink = time + 0.1;
 };
 
-void() building_radar_die1=[0, building_radar_die2]{
+void() building_radar_die1={
   if( self.deadflag > DEAD_NO ){
     return;
   }
@@ -36,7 +38,10 @@ void() building_radar_die1=[0, building_radar_die2]{
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 
   //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
+  
+  self.think = building_radar_die2;
+  self.nextthink = time + 0.1;
 };
 
 /*

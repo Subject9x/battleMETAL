@@ -22,7 +22,7 @@ void() guard_tower_die1={
   self.touch = SUB_Null;
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
   
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
