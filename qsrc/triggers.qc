@@ -264,7 +264,6 @@ void() trigger_secret =
 void() counter_use =
 {
 	self.count = self.count - 1;
-  cons_logAFloat(self.targetname, self.count);  //debug
   if (self.count < 0){
     return;
   }
@@ -332,7 +331,6 @@ void() counter_use =
       centerprint(activator, "Sequence completed!");
     }
   }
-  cons_logAFloat("sequence", 1);  //debug
   self.enemy = activator;
   multi_trigger ();
 };

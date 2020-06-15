@@ -123,17 +123,6 @@ void( float isNew, float entFlags ) data_nav_point={
 void( float isNew, float entFlags ) data_objective={
   local float prevState;
   
-  //EVENT - new to player
-  if( entFlags & SENDFLAG_NEWENT ){
-    self.data_idx = ReadByte();
-  }
-  if( isNew ){
-    setmodel(self, "q3mdl/testball.md3");
-    setorigin(self, self.origin);
-    self.alpha = 0.01;
-    self.drawmask = MASK_ENGINE;
-  }
-  
  //EVENT - isActive change
   if( (entFlags & SENDFLAG_TURRET) ){
     prevState = self.isActive;
@@ -152,6 +141,12 @@ void( float isNew, float entFlags ) data_objective={
   //EVENT - Change Faction
   if( (entFlags & SENDFLAG_CRIT) ){
     self.faction = ReadByte();
+  }
+  
+  //EVENT - new to player
+  if( entFlags & SENDFLAG_NEWENT ){
+    self.data_idx = ReadByte();
+    self.data_type = DATA_OBJT;
   }
   
   //HANDLE EVENT - objective status
@@ -173,6 +168,12 @@ void( float isNew, float entFlags ) data_objective={
     if( (prevState == OBJECTIVE_ACTIVE) && (self.isActive == OBJECTIVE_FAIL) ){
       hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1 );
     }
+  }
+  if( isNew ){
+    setmodel(self, "q3mdl/testball.md3");
+    setorigin(self, self.origin);
+    self.alpha = 0.01;
+    self.drawmask = MASK_ENGINE;
   }
 };
 

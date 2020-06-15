@@ -149,17 +149,13 @@ float( float isNew, float changedFlags ) send_objective={
   WriteByte( MSG_ENTITY, DATA_OBJT );
   //--------
   
-  //EVENT - New Ent
-  if( (changedFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, self.data_idx );
-  }
-  
-   //EVENT - isActive change
+  //EVENT - isActive change
   if( (changedFlags & SENDFLAG_TURRET) ){
     WriteByte( MSG_ENTITY, self.isActive );
     WriteByte( MSG_ENTITY, self.aState );
   }
   
+
   //EVENT - Set Origin
   if( (changedFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -170,6 +166,11 @@ float( float isNew, float changedFlags ) send_objective={
   //EVENT - Change Faction
   if( (changedFlags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.faction );
+  }
+  
+  //EVENT - New Ent
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, self.data_idx );
   }
   
   return TRUE;
