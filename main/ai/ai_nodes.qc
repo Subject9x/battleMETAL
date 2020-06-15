@@ -36,6 +36,9 @@ void() ai_node_counter_th={
       self.nextthink = time + 1;
     }
   }
+  self.think = SUB_Null;
+  self.nextthink = time + 0.1;
+  
 };
 
 void() node_use={
@@ -142,6 +145,11 @@ void() ai_node={
 };
 
 
+void() node_counter_die={
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+};
+
 /*QUAKED ai_node_counter (0.988 0.5 0.267) (-10 -10 -18) (10 10 18) - START_INACTIVE
 
 Special node; this actively counts how many bots are near this node,
@@ -183,3 +191,4 @@ void() ai_node_counter={
   self.think = ai_node_check;
   self.nextthink = time + 1;
 };
+
