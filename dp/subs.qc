@@ -277,8 +277,9 @@ void() SUB_UseTargets =
     t = world;
     do{
       t = find(t, targetname, self.killtarget);
-      if (!t)
+      if (!t){
         return;
+      }
       if( t.data_type && t.th_die){
         t.think = t.th_die;
         t.nextthink = time + 0.1;
@@ -313,7 +314,7 @@ void() SUB_UseTargets =
   if( self.target ){
     act = activator;
     for(t = nextent(world); t != world; t = nextent(t) ){
-      if( t.targetname == "" || t.targetname != self.target ){
+      if( !t.targetname || t.targetname != self.target ){
         continue;
       }
       tempSelf = self;
@@ -325,8 +326,8 @@ void() SUB_UseTargets =
       }
       self = tempSelf;
       other = tempOther;
-      activator = act;
     }
+    activator = act;
   }
 };
 

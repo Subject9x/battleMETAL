@@ -29,16 +29,14 @@ void() ai_node_counter_th={
       if( self.trigOnAttack != "" ){
         trigger_event( self, self.trigOnAttack );
         self.trigOnAttack = "";
+        self.think = SUB_Null;
+        self.nextthink = time + 0.1;
+        return;
       }
     }
-    else{
-      self.think = ai_node_counter_th;
-      self.nextthink = time + 1;
-    }
   }
-  self.think = SUB_Null;
-  self.nextthink = time + 0.1;
-  
+  self.think = ai_node_counter_th;
+  self.nextthink = time + 1;
 };
 
 void() node_use={
@@ -138,6 +136,7 @@ void() ai_node={
   
   if ( !self.targetname ){
 		objerror ("node - missing targetname");
+    return;
   }
   node_setup();
   self.think = ai_node_check;
@@ -177,11 +176,19 @@ void() ai_node_counter={
   
   if ( !self.targetname || self.targetname == "" ){
 		objerror ("node - missing targetname");
+    return;
   }
   if( !self.trigOnAttack || self.trigOnAttack == "" ){
     objerror("node - missing trigOnAttack target");
+    return;
   }
   node_setup();
+  self.th_die = node_counter_die;
+  
+  if( !self.target ){
+    self.target = "";
+  }
+  
   if( self.ai_view == 0 || !self.ai_view ){
     self.ai_view = 250;
   }

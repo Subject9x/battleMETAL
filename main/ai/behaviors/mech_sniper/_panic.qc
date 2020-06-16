@@ -13,7 +13,7 @@ Overview: ai unit
 */
 void(entity attacker) ai_mech_sniper_panic1={
   local entity friend;
-  
+
   ai_update_accuracy( TRUE );
   macro_ai_update( ai_ctrl_update_mechplayer )
   
@@ -134,6 +134,7 @@ void() ai_mech_sniper_panic16={
 */
 void( entity attacker ) ai_mech_sniper_react1={
   local float enemyvis;
+  local entity ally;
   
   if( !attacker ){
     self.ai_react_buffer = time + self.ai_react_time * 2;
@@ -144,7 +145,16 @@ void( entity attacker ) ai_mech_sniper_react1={
   if( attacker.faction == self.faction ){
     return;
   }
-  
+  if( (self.flags & FL_DISARMED) ){
+    if( self.stat_rdr_mode ){       
+      ai_sfx_help();
+      ally = ai_find_friend( self.ai_view );
+      if( ally ){
+        ai_give_target( ally, attacker, (ally.ai_rank <= self.ai_rank));
+      }
+    }
+    return;
+  }
   if( attacker == self.enemy ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
     return;

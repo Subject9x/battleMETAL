@@ -36,12 +36,18 @@ void( entity active, string event) trigger_event={
     activator = active;
   }
   
-  oldTarget = self.target;
-  thisTarget = event;
-  
-  self.target = thisTarget;
+  if( self.target == "" || !self.target ){
+    self.target = event;
     SUB_UseTargets();
-  self.target = oldTarget;
+  }
+  else{
+    oldTarget = self.target;
+    thisTarget = event;
+    
+    self.target = thisTarget;
+      SUB_UseTargets();
+    self.target = oldTarget;
+  }
 };
 
 void() trigger_reactivate =

@@ -26,7 +26,7 @@ void() nav_point_touch={
 
       // trigOnTarget is used specifically here to trigger an objective
       trigger_event( other, self.target );
-      //multi_trigger();
+      
       if( (self.spawnflags & 2) ){
         self.isActive = 1;
       }

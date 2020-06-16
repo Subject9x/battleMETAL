@@ -13,6 +13,11 @@ Overview:
 */
 
 void() map_objective_th;
+void() map_objective_th_use={
+  SUB_UseTargets(); //allows pass-through trigger call to other triggers.
+  self.think = map_objective_th;
+  self.nextthink = time + 0.1;
+};
 
 /*
   called by other entities during trigger call.
@@ -26,7 +31,8 @@ void() map_objective_use={
       trigger_event( self.enemy, self.trigOnDeath );
     }
     else{
-      SUB_UseTargets(); //allows pass-through trigger call to other triggers.
+      self.think = map_objective_th_use;
+      self.nextthink = time + 0.1;
       if( self.count ){
         //Objective counter adjust
         self.count1 = self.count1 + 1;
@@ -77,7 +83,7 @@ void() map_objective_th={
     return;
   }
   self.think = map_objective_th;
-  self.nextthink = time + 0.5;
+  self.nextthink = time + 1;
 };
 
 void() map_objective_ini={
@@ -151,10 +157,12 @@ void() map_objective={
   self.use = map_objective_use;
   self.think = map_objective_th;
   
-  self.isActive = OBJECTIVE_ACTIVE;
   //start off
   if( (self.spawnflags & 1) ){
     self.isActive = OBJECTIVE_DISABLE;
+  }
+  else{
+    self.isActive = OBJECTIVE_ACTIVE;
   }
   if( (self.spawnflags & 4) ){
     self.aState = 254;

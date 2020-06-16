@@ -11,7 +11,8 @@ Overview: ai unit
 */
 void( entity attacker ) ai_mech_sk_react1={
   local float enemyvis;
-
+  local entity ally;
+  
   if( !attacker ){
     self.ai_react_buffer = time + self.ai_react_time * 2;
     return;
@@ -21,6 +22,18 @@ void( entity attacker ) ai_mech_sk_react1={
   if( attacker.faction == self.faction ){
     return;
   }
+  
+  if( (self.flags & FL_DISARMED) ){
+    if( self.stat_rdr_mode ){       
+      ai_sfx_help();
+      ally = ai_find_friend( self.ai_view );
+      if( ally ){
+        ai_give_target( ally, attacker, (ally.ai_rank <= self.ai_rank));
+      }
+    }
+    return;
+  }
+  
   if( attacker == self.enemy ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
     if( self.attack_state != ST_HUNT ){

@@ -443,7 +443,10 @@ void() build_mech_bot={
   self.data_speed_backward = self.data_speed_backward * AI_MECH_MOVE_FACTOR;
   
   if( self.hardpoint_cnt > 0 ){
-    if( !(self.spawnflags & UNARMED) ){
+    if( (self.spawnflags & UNARMED) ){
+      self.flags = self.flags | FL_DISARMED;
+    }
+    else{
       build_unit_weapon_list();
     }
   }
@@ -610,7 +613,10 @@ void() build_vehicle_unit={
   }
   
   if( self.hardpoint_cnt > 0 ){
-    if( !(self.spawnflags & UNARMED) ){
+    if( (self.spawnflags & UNARMED) ){
+      self.flags = self.flags | FL_DISARMED;
+    }
+    else{
       build_unit_weapon_list();
     }
   }
