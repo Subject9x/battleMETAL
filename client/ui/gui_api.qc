@@ -562,7 +562,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
       drawstring(charpos, toke, fsize, clr, alph, 0);
     }
     else{
-      line_row = line_row + 1;
+      line_row = line_row + 0.75;
       line_length = 0;
     }
     token = token + 1;
