@@ -14,7 +14,8 @@ float GAME_SAVES_SKILL[GAME_SAVES_MAX];
 entity TEXTFIELD_TARGET;
 entity KEYBIND_TARGET;
 float UI_INPUT_ACTIVE;  //buffer to track textfields
-float UI_INPUT_FILTER_MAX = 84;
+float UI_INPUT_SHIFT; //detect shift input
+float UI_INPUT_FILTER_MAX = 110;
 float UI_INPUT_FILTER[UI_INPUT_FILTER_MAX];  //filter out these chars;
 float UI_KEYBIND_ACTIVE;
 
@@ -30,11 +31,13 @@ float UI_FLAG_ALIGN       = 4;  //use alignment field
 float UI_FLAG_NOHIGHLIGHT = 8;  //don't render highlight overlay
 float UI_FLAG_SIZE_IMG    = 16; //base item size on img1 field
 float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
-float UI_FLAG_TXTFIELD_NUM = 64;
-float UI_FLAG_TXTFIELD_SPEC = 128;
-float UI_FLAG_TXTFIELD_LOW = 256;
-float UI_FLAG_TXTFIELD_MOUSE = 512;
-float UI_FLAG_TXTFIELD_FUNC = 1024;
+float UI_FLAG_TXTFIELD_NUM = 64;    //allow number in textfields
+float UI_FLAG_TXTFIELD_SPEC = 128;  //alllow special characters
+float UI_FLAG_TXTFIELD_LOW = 256;   //allow lowercase
+float UI_FLAG_TXTFIELD_MOUSE = 512; //allow mouse click reading
+float UI_FLAG_TXTFIELD_FUNC = 1024; //allow function key detection
+float UI_FLAG_TXTFIELD_UPP = 2048; //allow uppercase
+
 
 // UI fields
 .string label;

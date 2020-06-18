@@ -2,7 +2,8 @@
 battleMETAL
 Author: Peter Roohr
 Date: 4/16/2018
-Overview: multiplayer join game menu
+Overview: 
+  multiplayer join game menu
 */
 
 //join Globals

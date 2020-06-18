@@ -17,3 +17,6 @@ string UI_IMG_ARW_RGT = "gfx/hud/trg_pip_rgt.png";
 string UI_BOX_64 = "gfx/ui/box_64.png";
 string UI_BOX_256 = "gfx/ui/box_256.png";
 string UI_BOX_512 = "gfx/ui/box_512.png";
+
+string IMG_TEAM_SURVEST = "gfx/ui/ui_icon_survest.png";
+string IMG_TEAM_MILITAR = "gfx/ui/ui_icon_militar.png";

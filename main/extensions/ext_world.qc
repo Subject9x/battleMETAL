@@ -35,6 +35,7 @@ void() mh_world_ini={
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
   registercvar("cl_hud_sway", "0", 1);
+  registercvar("cl_team", "0", 2);
   
   //Mission unit stat totals
   MISSION_STATUS = MISSION_STATUS_READY;
