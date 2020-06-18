@@ -18,6 +18,9 @@ void() m_init={
   registercvar("cl_hud_color", "0", 1);
   registercvar("cl_hud_sway", "0", 1);
   registercvar("cl_team", "1", 2);
+  registercvar("cl_tint_r", "1", 1);
+  registercvar("cl_tint_g", "1", 1);
+  registercvar("cl_tint_b", "1", 1);
   
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){

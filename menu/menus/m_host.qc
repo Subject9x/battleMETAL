@@ -1,8 +1,9 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/15/2018
-Overview: host game menu
+Overview: 
+  host game menu
 */
 
 //constants

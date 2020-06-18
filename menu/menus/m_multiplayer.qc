@@ -1,8 +1,9 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/14/2018
-Overview: multiplayer top menu
+Overview: 
+  multiplayer top menu
 */
 
 //Multiplayer Globals
