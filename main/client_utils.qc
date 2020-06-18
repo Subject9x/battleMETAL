@@ -208,9 +208,9 @@ void(string str, float tokens) client_ParseMechCommand={
   if(argv(1) == "sm"){
     self.vec_size = stof(argv(2));
     self.nextVecChoice = stof(argv(3));
-    self.color_x = stof(argv(4));
-    self.color_y = stof(argv(5));
-    self.color_z = stof(argv(6));
+    self.colormod_x = stof(argv(4));
+    self.colormod_y = stof(argv(5));
+    self.colormod_z = stof(argv(6));
     return;
   }
   

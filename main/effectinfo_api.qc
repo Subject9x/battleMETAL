@@ -290,6 +290,7 @@ void( entity parent, vector wishVel, vector wishAngl, float trailnum, float life
   }
   piece.skin = parent.skin;
   piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+  piece.colormod = parent.owner.colormod;
   piece.movetype = MOVETYPE_TOSS;
   piece.solid = SOLID_NOT;
   piece.frame = 0;

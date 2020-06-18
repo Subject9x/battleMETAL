@@ -58,7 +58,7 @@ void(entity own) build_unit_component={
     self.th_die = ctrl_arm_die;
   }
   self.realowner = follow;
-  self.colormod = '1 1 1';
+  self.colormod = self.owner.colormod;
 };
 
 void() build_unit_camera={
@@ -349,7 +349,7 @@ void() build_mech_torsoCenter={
     self.angles = this.angles;
     self.v_angle = self.angles - this.angles;
     this.torsoCenter = self;
-    self.colormod = '1 1 1';
+    self.colormod = this.colormod;
     self.th_die = ctrl_component_die;
   self = this;
 };
@@ -554,7 +554,7 @@ void() build_mech_legs={
     self.data_speed_strafe = this.data_speed_strafe;
     self.data_speed_accel = this.data_speed_accel;  
     leg_stand1();
-    self.colormod = '1 1 1';
+    self.colormod = this.colormod;
   self = this;
 };
 
