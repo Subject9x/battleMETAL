@@ -290,12 +290,19 @@ void( entity parent, vector wishVel, vector wishAngl, float trailnum, float life
   }
   piece.skin = parent.skin;
   piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-  piece.colormod = parent.owner.colormod;
+  
+  if( (parent.owner.flags & FL_CLIENT) ){
+    piece.colormod = parent.owner.colormod;
+  }
+  else{
+    piece.colormod = '1 1 1';
+  }
+  
   piece.movetype = MOVETYPE_TOSS;
   piece.solid = SOLID_NOT;
   piece.frame = 0;
   piece.flags = 0;
-  piece.colormod = '0.67 0.67 0.67';
+  piece.colormod = piece.colormod * '0.75 0.75 0.75';
   piece.traileffectnum = trailnum;
   if( wishVel != '0 0 0' ){
     piece.velocity = wishVel;

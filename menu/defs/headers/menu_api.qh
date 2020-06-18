@@ -24,6 +24,8 @@ vector VID_RESO_HALF[36];
 string VID_RESO_NAME[36];
 float VID_RESO_TOTAL;
 
+float HOST_RATE_TABLE[12];
+
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL     = 1;  //don't render label
 float UI_FLAG_NEW         = 2;  //is new
@@ -175,10 +177,41 @@ string(float typ) map_list_getmap ={
 			}
       itr = itr + 1;
 			ln = fgets(f);
-		} 
+		}
+    while( itr <= 128 ){
+      if(typ){
+        if(MAPS_TDM[itr] != ""){
+          strunzone(MAPS_TDM[itr]);
+        }
+      }
+      else{
+        if(MAPS_COOP[itr] != ""){
+          strunzone(MAPS_COOP[itr]);
+        }
+      }
+      itr = itr + 1;
+    }
 	} 
 	fclose(f);
   return found;
+};
+
+/*
+  following Darkplaces standards
+*/
+void() menu_ini_ratelist={
+  HOST_RATE_TABLE[1] = 1000;  //"28.8 bad"
+  HOST_RATE_TABLE[2] = 1500;  //"28.8 mediocre"
+  HOST_RATE_TABLE[3] = 2000;  //"28.8 good"
+  HOST_RATE_TABLE[4] = 2500;  //"33.6 mediocre"
+  HOST_RATE_TABLE[5] = 3000;  //"33.6 good"
+  HOST_RATE_TABLE[6] = 3500;  //"56k bad"
+  HOST_RATE_TABLE[7] = 4000;  //"56k mediocre"
+  HOST_RATE_TABLE[8] = 4500;  //"56k adequate"
+  HOST_RATE_TABLE[9] = 5000;  //"56k good"
+  HOST_RATE_TABLE[10] = 7000;  // "64k ISDN"
+  HOST_RATE_TABLE[11] = 15000; //"128k ISDN"
+  HOST_RATE_TABLE[12] = 25000; //"broadband"
 };
 
 /*

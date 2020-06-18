@@ -41,6 +41,8 @@ void() m_init={
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
   FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
   
+  menu_ini_ratelist();
+  
   //setup textfield key filter;
   menu_ini_txtfilter();
 };
