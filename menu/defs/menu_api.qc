@@ -328,7 +328,7 @@ void(entity btn) render_btn_txt={
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         local float txt_len;
         txt_len = stringwidth(self.label, 0, self.size);
-        sizzle_x =  self.size_x * txt_len;
+        sizzle_x = txt_len;
         sizzle_y = self.size_y;
         sizzle = gui_percentToPixelRawVec( sizzle );
       }
@@ -647,7 +647,7 @@ float(vector mpos, vector org, vector sz) menu_checkMouseInBounds={
 
   local vector asz;
   asz = org + sz;
-  if( ( (mpos_x > org_x) && (mpos_x < asz_x) ) && ( (mpos_y > org_y) && (mpos_y < asz_y) ) ){
+  if( ( (mpos_x > org_x) && (mpos_x <= asz_x) ) && ( (mpos_y > org_y) && (mpos_y <= asz_y) ) ){
     return TRUE;
   }
   return FALSE;

@@ -106,7 +106,7 @@ float ERR_BADSCALE				= -3;
 float ERR_BADSIZE				= -3; // same as ERR_BADSCALE
 float ERR_NOTCACHED				= -4;
 
-// server list stuff
+//Server List 'TYPE' field -> mvm_cmds.c-Line 248
 float SLIST_HOSTCACHEVIEWCOUNT  = 0;
 float SLIST_HOSTCACHETOTALCOUNT = 1;
 float SLIST_MASTERQUERYCOUNT 	= 2;
@@ -115,20 +115,56 @@ float SLIST_SERVERQUERYCOUNT 	= 4;
 float SLIST_SERVERREPLYCOUNT 	= 5;
 float SLIST_SORTFIELD		= 6;
 float SLIST_SORTDESCENDING	= 7;
-float SLIST_LEGACY_LINE1 	= 1024;
-float SLIST_LEGACY_LINE2 	= 1025;
-float SLIST_TEST_CONTAINS	= 0;
-float SLIST_TEST_NOTCONTAIN	= 1;
-float SLIST_TEST_LESSEQUAL	= 2;
-float SLIST_TEST_LESS		= 3;
-float SLIST_TEST_EQUAL		= 4;
-float SLIST_TEST_GREATER	= 5;
-float SLIST_TEST_GREATEREQUAL	= 6;
-float SLIST_TEST_NOTEQUAL	= 7;
-float SLIST_TEST_STARTSWITH	= 8;
-float SLIST_TEST_NOTSTARTSWITH	= 9;
+
+//Server List 'SLMO_*' Mask...operations? mvm_cmds.c-Line 253
+//  -> sethostcachemaskstring
+//  -> sethostcachemasknumber
+float SLMO_CONTAINS	= 0;
+float SLMO_NOTCONTAIN	= 1;
+float SLMO_LESSEQUAL	= 2;
+float SLMO_LESS		= 3;
+float SLMO_EQUAL		= 4;
+float SLMO_GREATER	= 5;
+float SLMO_GREATEREQUAL	= 6;
+float SLMO_NOTEQUAL	= 7;
+float SLMO_STARTSWITH	= 8;
+float SLMO_NOTSTARTSWITH	= 9;
+
 float SLIST_MASK_AND = 0;
 float SLIST_MASK_OR  = 512;
+
+float SLSF_DESCENDING = 1;
+float SLSF_FAVORITES = 2;
+float SLSF_CATEGORIES = 4;
+
+float SQS_NONE = 0;
+float SQS_QUERYING = 1;
+float SQS_QUERIED = 2;
+float SQS_TIMEDOUT = 3;
+float SQS_REFRESHING = 4;
+
+//Server List Field(FLD) Enums -> mvm_cmds.q-Line 334
+//  ->gethostcachestring(float type, float hostnr);
+float SLIF_CNAME = 0;
+float SLIF_GAME = 2;
+float SLIF_MOD = 3;
+float SLIF_MAP = 4;
+float SLIF_NAME = 5;
+float SLIF_QCSTATUS = 12;
+float SLIF_PLAYERS = 13;
+float SLIF_LEGACY_LINE1 	= 1024;
+float SLIF_LEGACY_LINE2 	= 1025;
+//  ->gethostcachenumber(float fld, float hostnr)
+float SLIF_PING = 1;
+float SLIF_MAXPLAYERS = 6;
+float SLIF_NUMPLAYERS = 7;
+float SLIF_PROTOCOL = 8;
+float SLIF_NUMBOTS = 9;
+float SLIF_NUMHUMANS = 10;
+float SLIF_FREESLOTS = 11;
+float SLIF_CATEGORY = 14;
+float SLIF_ISFAVORITE = 15;
+float SLIF_COUNT = 16;
 
 //DP_GFX_FONTS
 //idea: Blub\0, divVerent
@@ -355,7 +391,8 @@ vector	getresolution(float number) = #608;
 string	keynumtostring(float keynum) = #609;
 
 float	gethostcachevalue(float type) = #611;
-string	gethostcachestring(float type, float hostnr) = #612;
+//not 'type'!, FIELD, as in those SLIF_* values! (grrrr)
+string	gethostcachestring(float fld, float hostnr) = #612;
 
 //DP_CSQC_BINDMAPS
 //idea: daemon, motorsep
@@ -595,9 +632,7 @@ void 	resethostcachemasks(void) = #615;
 void 	sethostcachemaskstring(float mask, float fld, string str, float op) = #616;
 void	sethostcachemasknumber(float mask, float fld, float num, float op) = #617;
 void 	resorthostcache(void) = #618;
-float SLSF_DESCENDING = 1;
-float SLSF_FAVORITES = 2;
-float SLSF_CATEGORIES = 4;
+
 void	sethostcachesort(float fld, float slsf) = #619;
 void	refreshhostcache(...) = #620;  // optional boolean argument "clear_list"
 float	gethostcachenumber(float fld, float hostnr) = #621;

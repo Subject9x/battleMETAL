@@ -212,7 +212,6 @@ void() click_host_rate_down={
   host_update_rate(SELECT_RATE);
 };
 
-
 void() click_host_more_plrs={
   SELECT_PLAYERS = SELECT_PLAYERS + 1;
   host_update_playeramount();
