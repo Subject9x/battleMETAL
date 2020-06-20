@@ -34,6 +34,10 @@ float SERVER_TOTAL;
 float SERVER_VIEW;
 
 float SERVER_PAGE;
+float SERVER_PAGE_TOTAL;
+float SERVER_PAGE_LIST_START;
+float SERVER_PAGE_LIST_END;
+
 float SERVER_SORT_NAME;
 float SERVER_SORT_PING;
 float SERVER_SORT_MAP;
@@ -46,7 +50,10 @@ entity join_server_ping;
 entity join_server_game;
 entity join_server_map;
 entity join_server_numplayer;
-entity join_server_players;
+entity join_server_mods;
+
+entity join_server_pagenext;
+entity join_server_pageprev;
 
 entity join_favs;
 entity join_fav1;
@@ -63,7 +70,15 @@ entity join_fav5_btn;
 //join constants
 string IMG_JOIN_TITLE = "gfx/menu/join/title_join.png";
 float SERVER_NAME_MAX = 24;
-float SERVER_PAGE_MAX = 12;
+float SERVER_PAGE_SIZE = 8;  //technically 8, but PAGE - 1 is the start to account for hostnr 0 being valid
+
+void() join_page_update={
+  SERVER_PAGE_TOTAL = ceil(SERVER_TOTAL / SERVER_PAGE_SIZE);
+
+  SERVER_PAGE_LIST_START = max((SERVER_PAGE * SERVER_PAGE_SIZE)-1, 0); 
+  SERVER_PAGE_LIST_END = (SERVER_PAGE * SERVER_PAGE_SIZE) + SERVER_PAGE_SIZE;
+
+};
 
 //join callbacks
 void() join_sort_name={
@@ -76,7 +91,7 @@ void() join_sort_name={
     sethostcachesort(SLIF_NAME, SLSF_DESCENDING);
     SERVER_SORT_NAME = TRUE;
   }
-  SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT);
+  join_page_update();
 };
 
 void() join_sort_ping={
@@ -89,7 +104,7 @@ void() join_sort_ping={
   sethostcachesort(SLIF_PING, SLSF_DESCENDING);
     SERVER_SORT_PING = TRUE;
   }
-  SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT);
+  join_page_update();
 };
 
 void() join_sort_map={
@@ -102,7 +117,7 @@ void() join_sort_map={
     sethostcachesort(SLIF_MAP, SLSF_DESCENDING);
     SERVER_SORT_MAP = TRUE;
   }
-  SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT);
+  join_page_update();
 };
 
 void() join_sort_numplayer={
@@ -115,13 +130,26 @@ void() join_sort_numplayer={
     sethostcachesort(SLIF_NUMPLAYERS, SLSF_DESCENDING);
     SERVER_SORT_PLAYERS = TRUE;
   }
-  SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT);
+  join_page_update();
 };
 
 void() join_sort_players={
   refreshhostcache();
   sethostcachesort(SLIF_PING, 0);
-  SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT);
+  join_page_update();
+};
+
+void() join_server_page_next={
+  if( SERVER_PAGE < SERVER_PAGE_TOTAL ){
+    SERVER_PAGE = SERVER_PAGE + 1;
+  }
+  join_page_update();
+};
+void() join_server_page_prev={
+  if( SERVER_PAGE > 0 ){
+    SERVER_PAGE = SERVER_PAGE - 1;
+  }
+  join_page_update();
 };
 
 // ini function, called by '_f' function as a setup func
@@ -135,24 +163,21 @@ void() m_join_i={
   SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT);
   SERVER_VIEW = gethostcachevalue(SLIST_HOSTCACHEVIEWCOUNT);
   
-  cons_logAFloat("SLIST_HOSTCACHEVIEWCOUNT", gethostcachevalue(SLIST_HOSTCACHEVIEWCOUNT)); //debug
-  cons_logAFloat("SLIST_HOSTCACHETOTALCOUNT", gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT)); //debug
-  
-  cons_logAFloat("SLIST_MASTERQUERYCOUNT", gethostcachevalue(SLIST_MASTERQUERYCOUNT)); //debug
-  cons_logAFloat("SLIST_MASTERREPLYCOUNT", gethostcachevalue(SLIST_MASTERREPLYCOUNT)); //debug
-  
-  cons_logAFloat("SLIST_SERVERQUERYCOUNT", gethostcachevalue(SLIST_SERVERQUERYCOUNT)); //debug
-  cons_logAFloat("SLIST_SERVERREPLYCOUNT", gethostcachevalue(SLIST_SERVERREPLYCOUNT)); //debug
-  
-  SERVER_PAGE = 1;
+  SERVER_PAGE = 0;
+  join_page_update();
+
   
   join_title = lbl_img('10 30', '1 1 0', IMG_JOIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_JOIN, 1, (UI_FLAG_SIZE_IMG) );
   join_favs = lbl_text('64 60', '14 14 0', "-Favorites-", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_JOIN, 1, 0);
-  join_server_name = btn_text_callback('10 100', '16 16', "[Server]", 0, M_JOIN, join_sort_name, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_ping = btn_text_callback('135 100', '16 16', "[Ping]", 0, M_JOIN, join_sort_ping, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_map = btn_text_callback('185 100', '16 16', "[Map]", 0, M_JOIN, join_sort_map, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_numplayer = btn_text_callback('235 100', '16 16', "[Players]", 0, M_JOIN, join_sort_numplayer, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_players = btn_text_callback('285 100', '16 16', "[Mod]", 0, M_JOIN, join_sort_players, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);  
+  join_server_name = btn_text_callback('10 180', '16 16', "[Server]", 0, M_JOIN, join_sort_name, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_ping = btn_text_callback('135 180', '16 16', "[Ping]", 0, M_JOIN, join_sort_ping, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_map = btn_text_callback('185 180', '16 16', "[Map]", 0, M_JOIN, join_sort_map, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_numplayer = btn_text_callback('235 180', '16 16', "[Players]", 0, M_JOIN, join_sort_numplayer, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_mods = btn_text_callback('285 180', '16 16', "[Mod]", 0, M_JOIN, join_sort_players, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);  
+
+  join_server_pagenext = btn_img_callback('52 160', '16 16', UI_IMG_ARW_RGT, 0, M_JOIN, join_server_page_next, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
+  join_server_pageprev = btn_img_callback('10 160', '16 16', UI_IMG_ARW_LFT, 0, M_JOIN, join_server_page_prev, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
+  
 };
 
 /*
@@ -164,7 +189,6 @@ void() m_join_f={
   setkeydest(KEY_MENU);
   m_join_i();
 };
-
 
 //Server Info Rendering
 void(float serverCacheId, vector ofset) join_render_serverinfo={
@@ -181,16 +205,20 @@ void(float serverCacheId, vector ofset) join_render_serverinfo={
   playerCount = strcat(playerCount, "/");
   playerCount = strcat(playerCount, ftos(gethostcachenumber(SLIF_MAXPLAYERS, serverCacheId)));
   
-  gui_renderString(serverName, ofset , '1 1 1', '12 12 0', 1, 0);
-  gui_renderString(serverIp, ofset + gui_percentToPixelRawVec('0 12'), '1 1 1', '10 10 0', 1, 0);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
   
-  gui_renderString(ftos(gethostcachenumber(SLIF_PING, serverCacheId)), ofset + gui_percentToPixelRawVec('135 0'), '1 1 1', '12 12 0', 1, 0);
-  
-  gui_renderString(gethostcachestring(SLIF_MAP, serverCacheId), ofset + gui_percentToPixelRawVec('185 0'), '1 1 1', '12 12 0', 1, 0);
-  
-  gui_renderString(playerCount,  ofset + gui_percentToPixelRawVec('235 0'), '1 1 1', '12 12 0', 1, 0);
-  
-  gui_renderString(gethostcachestring(SLIF_MOD, serverCacheId),  ofset + gui_percentToPixelRawVec('285 0'), '1 1 1', '12 12 0', 1, 0);
+    gui_renderString(serverName, ofset , '1 1 1', '12 12 0', 1, 0);
+    gui_renderString(serverIp, ofset + gui_percentToPixelRawVec('0 12'), '1 1 1', '10 10 0', 1, 0);
+    
+    gui_renderString(ftos(gethostcachenumber(SLIF_PING, serverCacheId)), ofset + gui_percentToPixelRawVec('135 0'), '1 1 1', '12 12 0', 1, 0);
+    
+    gui_renderString(gethostcachestring(SLIF_MAP, serverCacheId), ofset + gui_percentToPixelRawVec('180 0'), '1 1 1', '12 12 0', 1, 0);
+    
+    gui_renderString(playerCount, ofset + gui_percentToPixelRawVec('240 0'), '1 1 1', '12 12 0', 1, 0);
+    
+    gui_renderString(gethostcachestring(SLIF_MOD, serverCacheId),  ofset + gui_percentToPixelRawVec('282 0'), '1 1 1', '12 12 0', 1, 0);
+  drawfont = drawfont_prev;
 };
 
 /*
@@ -199,6 +227,7 @@ void(float serverCacheId, vector ofset) join_render_serverinfo={
 */
 void() m_join_d={
   local float itr, rowItr;
+  local float prevPages, nextPages;
   local vector pos;
   resorthostcache();
   
@@ -209,12 +238,20 @@ void() m_join_d={
     widget = widget.chain;
   }
   
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
+    gui_renderString( ftos(SERVER_PAGE), join_server_pageprev.origin + gui_percentToPixelRawVec('26 0'), '1 1 1', '16 16 0', 1, 0);
+  drawfont = drawfont_prev;
+
+  
   for(itr=0; itr < SERVER_TOTAL; itr=itr+1){
-    if( itr > SERVER_PAGE - 1 && itr <= SERVER_PAGE * SERVER_PAGE_MAX ){
-      if( gethostcachenumber(SLIF_PING, itr) > -1 ){
+    if( (itr > SERVER_PAGE_LIST_START) && (itr < SERVER_PAGE_LIST_END) ){
+      if( gethostcachenumber(SLIF_PING, itr) > 0 ){
         pos_x = 10;
-        pos_y = 120 + (rowItr * 26);
+        pos_y = 200 + (rowItr * 26);
+        
         join_render_serverinfo( itr, pos );
+        
         rowItr = rowItr + 1;
       }
     }
