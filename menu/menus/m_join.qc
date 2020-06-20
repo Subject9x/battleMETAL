@@ -73,11 +73,11 @@ float SERVER_NAME_MAX = 24;
 float SERVER_PAGE_SIZE = 8;  //technically 8, but PAGE - 1 is the start to account for hostnr 0 being valid
 
 void() join_page_update={
+  SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT);
+  SERVER_VIEW = gethostcachevalue(SLIST_HOSTCACHEVIEWCOUNT);
   SERVER_PAGE_TOTAL = ceil(SERVER_TOTAL / SERVER_PAGE_SIZE);
-
   SERVER_PAGE_LIST_START = max((SERVER_PAGE * SERVER_PAGE_SIZE)-1, 0); 
   SERVER_PAGE_LIST_END = (SERVER_PAGE * SERVER_PAGE_SIZE) + SERVER_PAGE_SIZE;
-
 };
 
 //join callbacks
@@ -243,7 +243,6 @@ void() m_join_d={
     gui_renderString( ftos(SERVER_PAGE), join_server_pageprev.origin + gui_percentToPixelRawVec('26 0'), '1 1 1', '16 16 0', 1, 0);
   drawfont = drawfont_prev;
 
-  
   for(itr=0; itr < SERVER_TOTAL; itr=itr+1){
     if( (itr > SERVER_PAGE_LIST_START) && (itr < SERVER_PAGE_LIST_END) ){
       if( gethostcachenumber(SLIF_PING, itr) > 0 ){
