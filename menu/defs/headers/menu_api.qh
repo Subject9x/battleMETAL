@@ -90,6 +90,7 @@ string(float val) menu_float_bool;
 //void() render_predraw;
 void(entity btn) render_btn;
 void(entity btn) render_btn_txt;
+void(entity btn) render_chkbox;
 void(entity lbl) render_lbl_img;
 void(entity lbl) render_lbl_text;
 void(entity pnl) render_txt_pnl;
@@ -102,6 +103,7 @@ entity() new_ui_elm;
 entity(vector org, vector siz, string lbl, vector clr, float algn, float menu_id, float alph, float flgs) lbl_text;
 entity(vector org, vector siz, string img1, vector clr, float algn, float menu_id, float alph, float flgs) lbl_img;
 entity(vector org, vector siz, string img1, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_img_callback;
+entity(vector org, vector siz, float algn, float menu_id, void() click, vector clr, vector checkColor, float alph, float flgs) btn_check_callback;
 entity(vector org, vector siz, string txt, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_text_callback;
 entity(vector org, vector siz, string img1, float algn, float menu_id, string commd, vector clr, vector hclr, float alph, float flgs) btn_img_command;
 
@@ -194,6 +196,25 @@ string(float typ) map_list_getmap ={
 	} 
 	fclose(f);
   return found;
+};
+
+/*
+  sv_masterextra is pernicious and wants to set itself
+  to the hardcoded defaults, instead, lets just make it a text file.
+*/
+  void() menu_setup_mainservers={
+  local float f;
+  f = fopen("data/cache/servers.txt", FILE_READ);
+  if (f != -1){
+    cvar_set("sv_master1", fgets(f));
+    cvar_set("sv_master2", fgets(f));
+    cvar_set("sv_master3", fgets(f));
+    cvar_set("sv_master4", fgets(f));
+    cvar_set("sv_masterextra1", fgets(f));
+    cvar_set("sv_masterextra2", fgets(f));
+    cvar_set("sv_masterextra3", fgets(f));
+  }
+  fclose(f);
 };
 
 /*

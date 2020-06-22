@@ -25,6 +25,8 @@ float SELECT_RATE;
 
 float SELECT_MAP;
 
+float SERVER_FLAGS;
+
 string PUBLIC_TYPE;
 
 //globals
@@ -65,6 +67,18 @@ entity host_dm_timelim;
 
 entity host_launch;
 entity host_back;
+
+//serverflags
+
+entity host_flag_spawnfar;
+entity host_flag_powerup;
+entity host_flag_cheats;
+entity host_flag_fireon;
+entity host_flag_nolives;
+entity host_flag_nomap;
+entity host_flag_noradar;
+entity host_flag_nostatus;
+
 //images
 string IMG_HOST_TITLE = "gfx/menu/host/host_title.png";
 
@@ -318,7 +332,81 @@ void() host_time_limit={
   cvar_set("timelimit", self.data_text);
 };
 
+//Server Flag callbacks
+void() host_check_flag_spawn={
+  if( host_flag_spawnfar.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_SPAWNFAR;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_SPAWNFAR);
+  }
+};
+
+void() host_check_flag_powerup={
+  if( host_flag_powerup.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_POWERUP;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_POWERUP);
+  }
+};
+
+void() host_check_flag_cheats={
+  if( host_flag_cheats.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_CHEATS;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_CHEATS);
+  }
+};
+
+void() host_check_flag_fireon={
+  if( host_flag_fireon.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_FIREON;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_FIREON);
+  }
+};
+
+void() host_check_flag_nolives={
+  if( host_flag_nolives.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_NOLIVES;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_NOLIVES);
+  }
+};
+
+void() host_check_flag_nomap={
+  if( host_flag_nomap.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_NOMAP;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_NOMAP);
+  }
+};
+
+void() host_check_flag_noradar={
+  if( host_flag_noradar.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_NORADAR;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_NORADAR);
+  }
+};
+
+void() host_check_flag_nostatus={
+  if( host_flag_nostatus.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_NOSTATUS;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_NOSTATUS);
+  }
+};
+
 void() click_host_back={
+  cvar_set("sv_serverflags", "0");
   menu_clear_items(M_STATE);
   m_multi_f();
 };
@@ -326,16 +414,24 @@ void() click_host_back={
 void() click_host_launch={
   menu_clear_items(M_STATE);
   setkeydest(KEY_GAME);
-  cvar_set("skill", ftos(SELECT_SKILL));
+  
+  if( cvar("deathmatch") ){
+    cvar_set("skill", "3");
+  }
+  else{
+    cvar_set("skill", ftos(SELECT_SKILL));
+  }
+  cvar_set("sv_serverflags", ftos(rint(SERVER_FLAGS)));
   cmd("map", strcat(" ", host_map_lbl.label));
 };
 
 void() m_host_i={
   PUBLIC_TYPE = "debug";
+  SERVER_FLAGS = cvar("sv_serverflags");
   
-  host_title = lbl_img('10 90', '1 1 0', IMG_HOST_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_HOST, 1, (UI_FLAG_SIZE_IMG) );
+  host_title = lbl_img('10 50', '1 1 0', IMG_HOST_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_HOST, 1, (UI_FLAG_SIZE_IMG) );
   
-  host_name = inp_textfield('100 133', '14 14 0', 48, host_servername, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC) );
+  host_name = inp_textfield('100 93', '14 14 0', 48, host_servername, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC) );
   if( str_cvar("hostname") == ""){
     host_name.data_text = strzone("UNNAMED");
   }
@@ -343,33 +439,33 @@ void() m_host_i={
     host_name.data_text = strzone(str_cvar("hostname"));
   }
   
-  host_port = inp_textfield('100 153', '14 14 0', 16, host_portnum, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
+  host_port = inp_textfield('100 113', '14 14 0', 16, host_portnum, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
   host_port.data_text = strzone(str_cvar("port"));
   
   SELECT_TYPE = 3;
-  host_public = lbl_text('120 173', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
-  host_type_nxt = btn_img_callback('180 173 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_public_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  host_type_prev = btn_img_callback('100 173 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_public_prev, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_public = lbl_text('120 133', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_type_nxt = btn_img_callback('180 133 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_public_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_type_prev = btn_img_callback('100 133 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_public_prev, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   cvar_set("sv_public", "1");
   
-  host_serverrate = lbl_text('120 193', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_serverrate = lbl_text('120 153', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
   local float rate;
   rate = cvar("rate");
   host_serverrate.len = SELECT_RATE = rate;
   
-  host_rate_up = btn_img_callback('200 193 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_rate_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  host_rate_dn = btn_img_callback('100 193 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_rate_down, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_rate_up = btn_img_callback('200 153 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_rate_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_rate_dn = btn_img_callback('100 153 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_rate_down, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   SUB_MENU = SUB_COOP;
   
-  host_gametype = lbl_text('120 213', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
-  host_gametype_next = btn_img_callback('230 213 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_nexttype, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  host_gametype_prev = btn_img_callback('100 213 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_prevtype, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_gametype = lbl_text('120 173', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_gametype_next = btn_img_callback('230 173 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_nexttype, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_gametype_prev = btn_img_callback('100 173 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_prevtype, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  host_playernum = lbl_text('120 233', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_playernum = lbl_text('120 193', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
   host_playernum.label = strzone(ftos(cvar("maxplayers")));
-  host_playermor = btn_img_callback('140 233 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_more_plrs, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  host_playerles = btn_img_callback('100 233 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_less_plrs, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_playermor = btn_img_callback('140 193 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_more_plrs, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_playerles = btn_img_callback('100 193 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_less_plrs, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   host_playernum.subid = SUB_COOP;
   host_playermor.subid = SUB_COOP;
@@ -377,37 +473,62 @@ void() m_host_i={
   
   //map selector
   SELECT_MAP = 1;
-  host_map_lbl = lbl_text('120 253', '14 14 0', " ", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_map_lbl = lbl_text('120 213', '14 14 0', " ", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
   host_map_lbl.label = strzone(map_list_getmap(0));
   
-  host_map_nxt = btn_img_callback('180 253 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_nxt, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  host_map_prev = btn_img_callback('100 253 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_prv, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_map_nxt = btn_img_callback('180 213 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_nxt, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_map_prev = btn_img_callback('100 213 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_prv, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_map_lbl.subid = SUB_COOP;
   host_map_nxt.subid = SUB_COOP;
   host_map_prev.subid = SUB_COOP;
   
   //COOP SUB MENU
-  host_skill_lbl = lbl_text('120 273', '14 14 0', "NOVICE", CLR_DEF_BLUE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
-  host_skill_next = btn_img_callback('200 273 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_nextskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  host_skill_prev = btn_img_callback('100 273 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_prevskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_skill_lbl = lbl_text('120 233', '14 14 0', "NOVICE", CLR_DEF_BLUE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_skill_next = btn_img_callback('200 233 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_nextskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_skill_prev = btn_img_callback('100 233 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_prevskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_skill_lbl.subid = SUB_COOP;
   host_skill_next.subid = SUB_COOP;
   host_skill_prev.subid = SUB_COOP;
   
   //TDM SUB MENU
-  host_dm_fraglim = inp_textfield('140 273', '14 14 0', 3, host_frag_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
+  host_dm_fraglim = inp_textfield('140 233', '14 14 0', 3, host_frag_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
   host_dm_fraglim.data_text = strzone(ftos(cvar("fraglimit")));
   
-  host_dm_timelim = inp_textfield('140 293', '14 14 0', 3, host_time_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
+  host_dm_timelim = inp_textfield('140 253', '14 14 0', 3, host_time_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
   host_dm_timelim.data_text = strzone(ftos(cvar("timelimit")));
 
   host_dm_fraglim.subid = SUB_TDM;
   host_dm_timelim.subid = SUB_TDM;
 
+  //serverflags
+  host_flag_spawnfar = btn_check_callback('80 293', '14 14', 0, M_HOST, host_check_flag_spawn, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_spawnfar.label = strzone("Spawn Furthest");
+  
+  host_flag_powerup = btn_check_callback('180 293', '14 14', 0, M_HOST, host_check_flag_powerup, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_powerup.label = strzone("Powerup Delay");
+  
+  host_flag_cheats = btn_check_callback('80 313', '14 14', 0, M_HOST, host_check_flag_cheats, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_cheats.label = strzone("Cheats");
+  
+  host_flag_fireon = btn_check_callback('180 313', '14 14', 0, M_HOST, host_check_flag_fireon, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_fireon.label = strzone("Friendly Fire");
+  
+  //host_flag_nolives = btn_check_callback('100 273', '14 14', 0, M_HOST, host_check_flag_nolives, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, UI_FLAG_SIZE_IMG);
+  //host_flag_nolives.label = strzone("Respawn");
+  
+  host_flag_nomap = btn_check_callback('80 333', '14 14', 0, M_HOST, host_check_flag_nomap, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_nomap.label = strzone("No Map ");
+  
+  host_flag_noradar = btn_check_callback('180 333', '14 14', 0, M_HOST, host_check_flag_noradar, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_noradar.label = strzone("No Radar");
+  
+  host_flag_nostatus = btn_check_callback('80 353', '14 14', 0, M_HOST, host_check_flag_nostatus, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_nostatus.label = strzone("Hide Menu Status");
+  
   //LAAAAAAAAUNCH!
-  host_launch = btn_img_callback('140 313 0', '96 16', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_launch, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL));
+  host_launch = btn_img_callback('140 400 0', '96 16', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_launch, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL));
   //or not
-  host_back = btn_img_callback('25 313 0', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_back = btn_img_callback('10 400 0', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };
 
 void() m_host_f={
@@ -418,6 +539,7 @@ void() m_host_f={
   map_list_getmap(TRUE);
   M_STATE = M_HOST;
   setkeydest(KEY_MENU);
+  cvar_set("sv_serverflags", "0");
   m_host_i();
 };
 
@@ -452,7 +574,7 @@ void() m_host_d={
   
   gui_renderString(PUBLIC_TYPE, host_public.origin + gui_percentToPixelRawVec('85 1'), '1 1 0.1', '12 12 0', 1, 0);
   
-  host_serverrate.label = strcat(sprintf("%2.2f", host_serverrate.len), " Kbps");
+  host_serverrate.label = strcat(sprintf("%2.2f", host_serverrate.len / 1000), " Kbps");
   gui_renderString("Server Rate  :", host_serverrate.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
   gui_renderString("Game Type  :", host_gametype.origin + gui_percentToPixelRawVec('-95 1'), '1 1 1', '12 12 0', 1, 0);
 
@@ -493,6 +615,7 @@ void() m_host_d={
       }
       break;
   }
+  gui_renderString("-Server Flags-", gui_percentToPixelRawVec('80 273'), '1 1 0.33', '14 14 0', 1, 0);
   
   local entity widget;
   widget = findchainfloat(menuId, M_HOST);
@@ -515,6 +638,7 @@ void(float key, float ascii) m_host_k={
       menu_clear_items(M_STATE);
       SUB_MENU = 0;
       m_multi_f();
+      cvar_set("sv_serverflags", "0");  //dont save serverflags
       break;
   }
 };

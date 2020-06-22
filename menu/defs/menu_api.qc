@@ -127,7 +127,6 @@ entity() btn_new_blank={
     self.select_color = '1 1 1';
     self.subid = FALSE;
   self = this;
-  
   return button;
 };
 
@@ -150,6 +149,30 @@ entity(vector org, vector siz, string img1, float algn, float menu_id, void() cl
   self = this;
   return newBtn;
 };
+
+entity(vector org, vector siz, float algn, float menu_id, void() click, vector clr, vector checkColor, float alph, float flgs) btn_check_callback={
+  local entity newBtn, this;
+  
+  newBtn = btn_new_blank();
+  this = self;
+  self = newBtn;
+    self.classname = "checkbox";
+    self.origin = org;
+    self.size = siz;
+    self.image1 = "gfx/ui/box_64.png";
+    self.menuId = menu_id;
+    self.onClick = click;
+    self.draw = render_chkbox;
+    self.flags = flgs;
+    self.align = algn;
+    self.alpha = alph;
+    self.color = clr;
+    self.select_color = checkColor;
+    self.len = 0;
+  self = this;
+  return newBtn;
+};
+
 
 entity(vector org, vector siz, string txt, vector clr, float algn, float menu_id, float alph, float flgs) text_panel={
   local entity elbl, this;
@@ -323,7 +346,6 @@ void(entity btn) render_btn_txt={
     this = self;
     self = btn;
       org = gui_percentToPixelRawVec(self.origin);
-      
       sizzle = gui_percentToPixelRawVec(self.size);
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         local float txt_len;
@@ -355,8 +377,60 @@ void(entity btn) render_btn_txt={
       }
       
       drawstring(org, self.label, self.size, bclr, self.alpha, 0);
-      
     self = this;
+  }
+};
+
+
+void(entity btn) render_chkbox={
+  local entity this;
+  local vector org, sizzle, bclr, labelOrg;
+  local float labelLen;
+  
+  if(btn.drawme){
+    this = self;
+    self = btn;
+      org = gui_percentToPixelRawVec(self.origin);
+      
+      sizzle = gui_percentToPixelRawVec(self.size);
+      if( (self.flags & UI_FLAG_SIZE_IMG) ){
+        sizzle = drawgetimagesize(self.image1);
+        sizzle = gui_percentToPixelRawVec( gui_scaleSize(sizzle, VIEW_SCALE) );
+      }
+      
+      if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+        MOUSE_TARGET = self;
+        if( self.rolledover == FALSE){ 
+          localsound("sound/misc/menu3.wav");
+          self.rolledover = TRUE;
+        }    
+      }
+      else{
+        if( self.rolledover == TRUE){
+          self.rolledover = FALSE;
+          MOUSE_TARGET = null_entity;
+        }
+      }
+
+      bclr = self.color;
+      if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){  
+        if(self.rolledover){
+          bclr = self.select_color;
+        }  
+      }
+      
+      drawpic(org, self.image1, sizzle, self.color, self.alpha, 0);
+      if( self.len == TRUE ){
+        drawpic(org, "gfx/hud/rad_bld.png", sizzle, self.select_color, self.alpha, 0);
+      }
+      if( self.label != "" ){
+        labelLen = stringwidth(self.label, 0, '12 12');
+        labelOrg = org;
+        labelOrg_x = org_x - gui_percentXRaw(labelLen);
+        drawstring(labelOrg, self.label, '12 12', '0.85 0.85 0.85', 1, 0);
+      }
+      
+    self = this; 
   }
 };
 
@@ -573,6 +647,14 @@ void(entity myself) btn_isclick={
   local entity this;
   this = self;
   self = myself;
+    if( self.classname == "checkbox" ){
+      if( self.len == TRUE ){
+        self.len = FALSE;
+      }
+      else{
+        self.len = TRUE;
+      }
+    }
     if(self.onClick){
       self.onClick();
     }

@@ -82,7 +82,7 @@ void() join_page_update={
 
 //join callbacks
 void() join_sort_name={
-  refreshhostcache();
+  refreshhostcache(TRUE);
   if( SERVER_SORT_NAME ) {
     sethostcachesort(SLIF_NAME, 0);
     SERVER_SORT_NAME = FALSE;
@@ -95,7 +95,7 @@ void() join_sort_name={
 };
 
 void() join_sort_ping={
-  refreshhostcache();
+  refreshhostcache(TRUE);
   if(SERVER_SORT_PING) {
     sethostcachesort(SLIF_PING, 0);
     SERVER_SORT_PING = FALSE;
@@ -108,7 +108,7 @@ void() join_sort_ping={
 };
 
 void() join_sort_map={
-  refreshhostcache();
+  refreshhostcache(TRUE);
   if( SERVER_SORT_MAP ) {
     sethostcachesort(SLIF_MAP, 0);
     SERVER_SORT_MAP = FALSE;
@@ -121,7 +121,7 @@ void() join_sort_map={
 };
 
 void() join_sort_numplayer={
-  refreshhostcache();
+  refreshhostcache(TRUE);
   if( SERVER_SORT_PLAYERS ) {
     sethostcachesort(SLIF_NUMPLAYERS, 0);
     SERVER_SORT_PLAYERS = FALSE;
@@ -134,7 +134,7 @@ void() join_sort_numplayer={
 };
 
 void() join_sort_players={
-  refreshhostcache();
+  refreshhostcache(TRUE);
   sethostcachesort(SLIF_PING, 0);
   join_page_update();
 };
@@ -154,8 +154,9 @@ void() join_server_page_prev={
 
 // ini function, called by '_f' function as a setup func
 void() m_join_i={
+  menu_setup_mainservers();
   resethostcachemasks();
-  refreshhostcache();
+  refreshhostcache(TRUE);
   sethostcachesort(SLIF_PING, 0);
   resorthostcache();
   
@@ -165,7 +166,6 @@ void() m_join_i={
   
   SERVER_PAGE = 0;
   join_page_update();
-
   
   join_title = lbl_img('10 30', '1 1 0', IMG_JOIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_JOIN, 1, (UI_FLAG_SIZE_IMG) );
   join_favs = lbl_text('64 60', '14 14 0', "-Favorites-", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_JOIN, 1, 0);
@@ -263,6 +263,7 @@ void() m_join_d={
 void(float key, float ascii) m_join_k={
   //cons_logAFloat("m_join_k.key", key);  //DEBUG
   //cons_logAFloat("m_join_k.ascii", ascii);  //DEBUG   
+  //listListener();
   
   switch(key){
     case K_ESCAPE:

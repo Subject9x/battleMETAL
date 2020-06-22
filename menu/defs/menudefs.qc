@@ -643,3 +643,13 @@ string	getextresponse(void) = #624;
 const string cvar_string(string name) = #71;
 const string cvar_defstring(string name) = #89;
 float	stringwidth(string text, float handleColors, vector size) = #468;
+
+//Multiplayer Server Flags
+float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
+float SVFLAG_POWERUP    = 2;  //  enforce powerup sequence
+float SVFLAG_CHEATS     = 4;  //  cheaty cheat pants
+float SVFLAG_FIREON     = 8;  //  friendly fire on
+float SVFLAG_NOLIVES    = 16; //  limited lives
+float SVFLAG_NOMAP      = 32; //  only see yourself on tac map
+float SVFLAG_NORADAR    = 64; //  no radar allowed
+float SVFLAG_NOSTATUS   = 128; // hide player status in menus
