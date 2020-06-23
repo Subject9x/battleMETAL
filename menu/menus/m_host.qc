@@ -413,8 +413,9 @@ void() click_host_back={
 
 void() click_host_launch={
   menu_clear_items(M_STATE);
-  setkeydest(KEY_GAME);
-  
+  if( host_map_lbl.label == "" ){
+    return;
+  }
   if( cvar("deathmatch") ){
     cvar_set("skill", "3");
   }
@@ -422,6 +423,7 @@ void() click_host_launch={
     cvar_set("skill", ftos(SELECT_SKILL));
   }
   cvar_set("sv_serverflags", ftos(rint(SERVER_FLAGS)));
+  menu_exit_togame();
   cmd("map", strcat(" ", host_map_lbl.label));
 };
 

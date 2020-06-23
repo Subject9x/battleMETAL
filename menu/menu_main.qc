@@ -23,7 +23,7 @@ void() m_init={
   registercvar("cl_tint_b", "1", 1);
   registercvar("sv_serverflags", "0", 0);
   
-  menu_setup_mainservers();  
+  menu_setup_mainservers();
   
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){

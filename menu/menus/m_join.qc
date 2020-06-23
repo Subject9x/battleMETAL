@@ -43,6 +43,12 @@ float SERVER_SORT_PING;
 float SERVER_SORT_MAP;
 float SERVER_SORT_PLAYERS;
 
+float SERVER_ROW_ITR;
+vector SERVER_LIST_ORG;
+vector SERVER_LIST_SIZE;
+
+float SERVER_SELECTED;
+
 entity join_title;
 
 entity join_server_name;
@@ -140,14 +146,18 @@ void() join_sort_players={
 };
 
 void() join_server_page_next={
-  if( SERVER_PAGE < SERVER_PAGE_TOTAL ){
-    SERVER_PAGE = SERVER_PAGE + 1;
+  if( SERVER_TOTAL > 0 ){
+    if( SERVER_PAGE < SERVER_PAGE_TOTAL ){
+      SERVER_PAGE = SERVER_PAGE + 1;
+    }
   }
   join_page_update();
 };
 void() join_server_page_prev={
-  if( SERVER_PAGE > 0 ){
-    SERVER_PAGE = SERVER_PAGE - 1;
+  if( SERVER_TOTAL > 0 ){
+    if( SERVER_PAGE > -1 ){
+      SERVER_PAGE = SERVER_PAGE - 1;
+    }
   }
   join_page_update();
 };
@@ -226,10 +236,8 @@ void(float serverCacheId, vector ofset) join_render_serverinfo={
   running on M_STATE to determine which menu_d to execute.
 */
 void() m_join_d={
-  local float itr, rowItr;
-  local float prevPages, nextPages;
+  local float itr;
   local vector pos;
-  resorthostcache();
   
   local entity widget;
   widget = findchainfloat(menuId, M_JOIN);
@@ -242,28 +250,44 @@ void() m_join_d={
   drawfont = FONT_NUM_ROBOT_MEDIUM;
     gui_renderString( ftos(SERVER_PAGE), join_server_pageprev.origin + gui_percentToPixelRawVec('26 0'), '1 1 1', '16 16 0', 1, 0);
   drawfont = drawfont_prev;
-
+  SERVER_ROW_ITR = 0;
+  
+  SERVER_LIST_ORG = gui_percentToPixelRawVec('10 200');
+  
   for(itr=0; itr < SERVER_TOTAL; itr=itr+1){
     if( (itr > SERVER_PAGE_LIST_START) && (itr < SERVER_PAGE_LIST_END) ){
       if( gethostcachenumber(SLIF_PING, itr) > 0 ){
-        pos_x = 10;
-        pos_y = 200 + (rowItr * 26);
+        pos_x = SERVER_LIST_ORG_x;
+        pos_y = SERVER_LIST_ORG_y + gui_percentYRaw(SERVER_ROW_ITR * 26);
         
         join_render_serverinfo( itr, pos );
-        
-        rowItr = rowItr + 1;
+        SERVER_ROW_ITR = SERVER_ROW_ITR + 1;
       }
     }
   }
+  SERVER_LIST_SIZE_x = 350;
+  SERVER_LIST_SIZE_y = SERVER_ROW_ITR * 26;
+  SERVER_LIST_SIZE = gui_percentToPixelRawVec(SERVER_LIST_SIZE);
+  drawfill(SERVER_LIST_ORG, SERVER_LIST_SIZE, '1 1 1', 0.33, 0);  //debug
 };
 
 /*
   menu_k functions are the 'listener' functions
 */
 void(float key, float ascii) m_join_k={
-  //cons_logAFloat("m_join_k.key", key);  //DEBUG
-  //cons_logAFloat("m_join_k.ascii", ascii);  //DEBUG   
-  //listListener();
+  local float hostNumber;
+  
+  if(key == K_MOUSE1){
+    SERVER_SELECTED = listListener(SERVER_LIST_ORG, SERVER_LIST_SIZE, gui_percentToPixelRawVec('350 26'), SERVER_ROW_ITR+1, 0);
+    if( SERVER_SELECTED != -1 ){
+      SERVER_SELECTED = SERVER_PAGE_LIST_START + SERVER_SELECTED;
+      menu_clear_items(M_STATE);
+      menu_exit_togame();
+      cmd("connect ", gethostcachestring(SLIF_CNAME, SERVER_SELECTED));
+      return;
+    }
+    return;
+  }
   
   switch(key){
     case K_ESCAPE:

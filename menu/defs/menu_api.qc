@@ -543,7 +543,7 @@ void(entity txt) render_textfield={
 
 void(entity txt) render_bindfield={
   local entity this;
-  local vector org, sizzle, bclr;
+  local vector sizzle, bclr;
   local vector actionOrg;
   
   if(txt.drawme){
@@ -739,29 +739,29 @@ float(vector mpos, vector org, vector sz) menu_checkMouseInBounds={
   calculates the screen-area of a list, determines if the mouse is within the bounds of one of these
   and returns the index number of the item if any'
 */
-float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener={
-  if(menu_checkMouseInBounds(VIEW_MPOS, org, list_size)){
-    local float lst_idx, toSender;
-    lst_idx = 1;
+float(vector org, vector list_size, vector row_size, float max_items, float space) listListener={
+  local float listIndex, toSender;
+  local vector listOffset;
+  local float selectCheck; 
+  if( menu_checkMouseInBounds(VIEW_MPOS, org, list_size) ){
+    
+    listIndex = 1;
     toSender = 0;
-    while(lst_idx <= max_items){
-      local vector lofs;
-      local float chk;
-      lofs_x = org_x;
-      lofs_y = org_y + (lst_idx * row_size_y);
-      chk = menu_checkMouseInBounds(VIEW_MPOS, lofs, row_size);
-      //drawline doesnt work in-menu
-      //gui_DrawRect(lofs, gui_percentToPixel(row_size_x, row_size_y), '0 0 0', '1 1 1');
-      if(chk){
-        //gui_DrawRect(lofs, lofs + row_size, '2 2', '1 1 1');
-        toSender = lst_idx;
+
+    while(listIndex < max_items){
+      listOffset_x = org_x;
+      listOffset_y = org_y + (listIndex * row_size_y);
+      
+      selectCheck = menu_checkMouseInBounds(VIEW_MPOS, listOffset, row_size);
+      if( selectCheck ){
+        toSender = listIndex;
       }
-      lst_idx = lst_idx + 1;
+      listIndex = listIndex + 1;
     }
     return toSender;
   }
   else{
-    return 0;
+    return -1;
   }
 };
 
