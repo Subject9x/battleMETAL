@@ -155,7 +155,7 @@ void() join_server_page_next={
 };
 void() join_server_page_prev={
   if( SERVER_TOTAL > 0 ){
-    if( SERVER_PAGE > -1 ){
+    if( SERVER_PAGE > 0 ){
       SERVER_PAGE = SERVER_PAGE - 1;
     }
   }
@@ -239,6 +239,8 @@ void() m_join_d={
   local float itr;
   local vector pos;
   
+  resorthostcache();
+  
   local entity widget;
   widget = findchainfloat(menuId, M_JOIN);
   while(widget){
@@ -256,7 +258,7 @@ void() m_join_d={
   
   for(itr=0; itr < SERVER_TOTAL; itr=itr+1){
     if( (itr > SERVER_PAGE_LIST_START) && (itr < SERVER_PAGE_LIST_END) ){
-      if( gethostcachenumber(SLIF_PING, itr) > 0 ){
+      if( gethostcachenumber(SLIF_PING, itr) > -1 ){
         pos_x = SERVER_LIST_ORG_x;
         pos_y = SERVER_LIST_ORG_y + gui_percentYRaw(SERVER_ROW_ITR * 26);
         
