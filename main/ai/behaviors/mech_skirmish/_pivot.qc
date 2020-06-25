@@ -115,9 +115,14 @@ void() ai_mech_sk_rotate1={
   ai_update_accuracy( FALSE );
   macro_ai_update(ai_ctrl_update_mechplayer)
   
-  ChangeYaw();
-  if( self.angles_y == self.ideal_yaw ){
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+
+  if( self.torsoCenter.angles_y == self.torsoCenter.ai_dir ){
     macro_ai_frame_count(ai_mech_sk_rotate1)
+    self.torsoCenter.attack_state = TR_NORM;
     macro_ai_frame(ai_mech_sk_stand1)
     return;
   }

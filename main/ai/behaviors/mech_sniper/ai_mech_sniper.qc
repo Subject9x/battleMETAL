@@ -61,12 +61,14 @@ void() ai_mech_sniper_stand1={
     }
   }
   
-  if( random() < 0.25 ){
-    self.ideal_yaw = (random() * self.ai_angleLimits_x) * -1;
-    self.ideal_yaw = self.ideal_yaw + self.ai_angleLimits_y;
-    self.ideal_yaw = self.ideal_yaw * crandom();
-    self.ideal_yaw = anglemod( self.angles_y + self.ideal_yaw);
-    macro_ai_frame(ai_mech_sniper_turn1)
+  if( random() < 0.5 ){
+    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 3);
+    self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
+    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
+    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
+    self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
+    self.torsoCenter.attack_state = TR_YAW;
+    macro_ai_frame(ai_mech_sniper_pivot1)
     return;
   }
   

@@ -87,6 +87,8 @@ void() ai_mech_sniper_turn2;
 void() ai_mech_sniper_turn3;
 void() ai_mech_sniper_turn4;
 
+void() ai_mech_sniper_pivot1;
+
 void() ai_mech_sniper_snipe1;
 void() ai_mech_sniper_snipe2;
 void() ai_mech_sniper_snipe3;

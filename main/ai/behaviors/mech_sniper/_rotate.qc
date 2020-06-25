@@ -128,3 +128,21 @@ void() ai_mech_sniper_turn4={
   
   macro_ai_frame(ai_mech_sniper_fight_prep)
 };
+
+void() ai_mech_sniper_pivot1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ai_ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    macro_ai_frame(ai_mech_sniper_fight_prep)
+    return;
+  }
+  
+  if( self.torsoCenter.angles_y == self.torsoCenter.ai_dir ){
+    macro_ai_frame_count(ai_mech_sniper_pivot1)
+    self.torsoCenter.attack_state = TR_NORM;
+    macro_ai_frame(ai_mech_sniper_stand1)
+    return;
+  }
+  macro_ai_frame(ai_mech_sniper_pivot1)
+};
