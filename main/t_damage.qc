@@ -315,8 +315,8 @@ void(entity targ, entity attacker) killed={
   
   thisOldSelf = self;
   self = targ;
+    self.enemy = attacker;
     if( targ.partTypeId != FALSE ){
-      self.enemy = attacker;
       self.takedamage = DAMAGE_NO;
       self.touch = SUB_Null;
       self.th_die();
@@ -341,7 +341,6 @@ void(entity targ, entity attacker) killed={
       }
     }
 
-    self.enemy = attacker;
     self.takedamage = DAMAGE_NO;
     self.touch = SUB_Null;
     
@@ -358,7 +357,6 @@ void(entity targ, entity attacker) killed={
           MISSION_LOSSES_MILITAR = MISSION_LOSSES_MILITAR + 1;
           break;
       }
-      self.enemy = attacker;
       if( (self.enemy.flags & FL_CLIENT) ){
         self.enemy.botKills = self.enemy.botKills + 1;
       }
