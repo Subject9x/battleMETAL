@@ -324,6 +324,7 @@ float REMOVE_FIRSTUSE = 8; //remove after first countdown
 float REMOVE_ONTOUCH = 16; //remove on first touch
 float ACTIVE_ONTOUCH = 32; //activate on-touch
 float IS_MAPKEY = 4194304; //mark's this entity on player's briefing map.
+float IS_VIP = 8388608; //faction-allied player will be notified of this entity's state
 //============================
 //     SHARED STATS         
 //============================

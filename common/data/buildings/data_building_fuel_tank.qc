@@ -99,7 +99,7 @@ void() hfuel_death11 = [11, hfuel_death12]{};
 void() hfuel_death12 = [12, hfuel_death12]{};
 
 
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/fueltank/fueltank.md3"); }
 
 Base Decoration building.
@@ -124,6 +124,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_human_fuel={
   self.data_idx = self.nextVecChoice = UI_BUILDING_fuel_tank;

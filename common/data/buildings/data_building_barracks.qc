@@ -121,7 +121,7 @@ void() hangar_barracks_die15=[0, SUB_Null]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 5,1 );
 };
 
-/*QUAKED building_barracks (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_barracks (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/barracks/building_barracks.md3"); }
 
 Base Decoration building.
@@ -146,6 +146,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_barracks={
 

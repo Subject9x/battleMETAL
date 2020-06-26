@@ -65,7 +65,7 @@ void() misc_building={
   self.nextthink = time + random() * 3;
 };
 
-/*QUAKED building_misc_apartment (0 0 1) (-20 -20 0) (20 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_apartment (0 0 1) (-20 -20 0) (20 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -74,6 +74,7 @@ Does not require power.
 Max Health = 200. (default)
 
 -------- KEYS --------
+.faction : <float> optional if you want to use as base building.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -87,6 +88,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_apartment={
   if( !self.health) {
@@ -98,7 +100,7 @@ void() building_misc_apartment={
   misc_building();
 };
 
-/*QUAKED building_misc_factory_med (0 0 1) (-36 -36 0) (36 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_factory_med (0 0 1) (-36 -36 0) (36 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -107,6 +109,7 @@ Does not require power.
 Max Health = 200. (default)
 
 -------- KEYS --------
+.faction : <float> optional if you want to use as base building.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -120,6 +123,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_factory_med={
   if( !self.health) {
@@ -132,7 +136,7 @@ void() building_misc_factory_med={
 };
 
 
-/*QUAKED building_misc_lodge(0 0 1) (-38 -38 0) (38 38 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_lodge(0 0 1) (-38 -38 0) (38 38 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -141,6 +145,7 @@ Does not require power.
 Max Health = 200. (default)
 
 -------- KEYS --------
+.faction : <float> optional if you want to use as base building.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -154,6 +159,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_lodge={
   if( !self.health) {
@@ -167,7 +173,7 @@ void() building_misc_lodge={
 
 
 
-/*QUAKED building_misc_off_pyra (0 0 1) (-68 -68 0) (68 68 72) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_off_pyra (0 0 1) (-68 -68 0) (68 68 72) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -176,6 +182,7 @@ Does not require power.
 Max Health = 200. (default)
 
 -------- KEYS --------
+.faction : <float> optional if you want to use as base building.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -189,6 +196,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_off_pyra={
   if( !self.health) {
@@ -200,7 +208,7 @@ void() building_misc_off_pyra={
   misc_building();
 };
 
-/*QUAKED building_misc_off_large (0 0 1) (-88 -88 0) (88 88 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_off_large (0 0 1) (-88 -88 0) (88 88 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -209,6 +217,7 @@ Does not require power.
 Max Health = 250. (default)
 
 -------- KEYS --------
+.faction : <float> optional if you want to use as base building.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -222,6 +231,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_off_large={
   if( !self.health) {
@@ -234,7 +244,7 @@ void() building_misc_off_large={
 };
 
 
-/*QUAKED building_misc_off_small (0 0 1) (-36 -36 0) (36 36 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_off_small (0 0 1) (-36 -36 0) (36 36 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -243,6 +253,7 @@ Does not require power.
 Max Health = 100. (default)
 
 -------- KEYS --------
+.faction : <float> optional if you want to use as base building.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -256,6 +267,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_off_small={
   if( !self.health) {
@@ -268,15 +280,16 @@ void() building_misc_off_small={
 };
 
 
-/*QUAKED building_misc_fact_steam (0 0 1) (-36 -36 0) (36 36 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_fact_steam (0 0 1) (-36 -36 0) (36 36 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
 Does not require power.
 
 Max Health = 300. (default)
-
+faction = 255 (FACTION_ALL default)
 -------- KEYS --------
+.faction : <float> optional if you want to use as base building.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -290,6 +303,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_fact_steam={
   if( !self.health) {
@@ -303,7 +317,7 @@ void() building_misc_fact_steam={
 
 
 
-/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -312,6 +326,7 @@ Does not require power.
 Max Health = 200. (default)
 
 -------- KEYS --------
+.faction : <float> optional if you want to use as base building.
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -325,6 +340,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_apt_larg={
   if( !self.health) {

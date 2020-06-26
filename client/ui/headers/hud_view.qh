@@ -168,6 +168,7 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
 void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon;
 void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon2;
 void(vector org, vector pos, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay;
+void() hud_render_vip_overlay;
 void(vector org, vector pos, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay;
 void(vector pos, float algn, float flag) hud_render_missionClock;
 void() hud_renderNavOverlay;

@@ -219,7 +219,7 @@ void() building_radar_touch={
   }
 };
 
-/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/radar/radar.md3"); }
 
 Radar Post, has the ability to detect the player and alert friendly bot to these players.
@@ -249,6 +249,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_human_radar={
   self.data_idx = self.nextVecChoice = UI_BUILDING_radar;

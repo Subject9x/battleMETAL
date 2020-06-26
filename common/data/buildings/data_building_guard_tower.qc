@@ -34,7 +34,7 @@ void() guard_tower_die1={
   self.nextthink = time + 0.1;
 };
 
-/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - LIGHTS_OFF IS_MAPKEY -
+/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - LIGHTS_OFF IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -64,6 +64,7 @@ NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 LIGHTS_OFF 2097152: turns off lights from this building.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_guard_tower={
   self.data_idx = self.nextVecChoice = UI_BUILDING_guard_tower;

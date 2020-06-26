@@ -119,7 +119,7 @@ void() hpower_th = [0, hpower_th]{
 }; 
 
 
-/*QUAKED building_human_power (0.074 0.66 0.93) (-80 -80 0) (80 80 58) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_power (0.074 0.66 0.93) (-80 -80 0) (80 80 58) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
 
@@ -159,6 +159,7 @@ NO_VETERAN 16384: remove from Veteran Difficulty
 NO_ELITE 32768: remove from Elit Difficulty
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 void() building_human_power={

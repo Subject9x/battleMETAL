@@ -146,7 +146,7 @@ void() hshield_th = [0, hshield_th]{
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 }
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
 Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields!
@@ -181,6 +181,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_human_shield={
   self.data_idx = self.nextVecChoice = UI_BUILDING_shield_generator;

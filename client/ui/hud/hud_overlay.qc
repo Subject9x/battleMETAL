@@ -149,6 +149,89 @@ void() hud_renderNavOverlay={
   drawfont = drawfont_prev;
 };
 
+
+/*
+  RENDER VIP ITEM TARGET BOX
+*/
+void() hud_render_vip_overlay={
+  local entity ent;
+  for(ent = nextent(world); ent != world; ent = nextent(ent)){
+    if( !(ent.spawnflags & IS_VIP) ){
+      continue;
+    }
+    if( ent.deadflag != DEAD_NO ){
+      continue;
+    }
+    if( ent.faction != CLIENT_faction ){
+      continue;
+    }
+    local float dist;
+    local float targSizeX, targSizeY, targSizeZ, targZbottom;
+    local vector viewAngle;
+    local vector imgSize, factionColor;
+    
+    targSizeX = ent.maxs_x;
+    targSizeY = ent.maxs_y; 
+    targSizeZ = ent.maxs_z / 2;
+    
+    if( targSizeZ < 1 ){
+      targZbottom = 0;
+    }
+    else{
+      targZbottom = targSizeZ;
+    }
+    
+    dist = vlen(ent.origin - pmove_org);
+    if( dist > CLIENT_radar_range ){
+      dist = CLIENT_radar_range;
+    }
+    dist = 1 * (dist / CLIENT_radar_range);
+    
+    imgSize = draw_getimagesize(HUD_TARGET_BOX_TL) * 0.5 ;
+    imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
+    
+    if( imgSize_x > gui_percentXRaw(32) ){
+      imgSize_x = gui_percentXRaw(32);
+    }
+    if(imgSize_x < gui_percentXRaw(32)){
+      imgSize_x = gui_percentXRaw(32);
+    }
+    if( imgSize_y > gui_percentYRaw(24) ){
+      imgSize_y = gui_percentYRaw(24);
+    }
+    if(imgSize_y < gui_percentYRaw(16)){
+      imgSize_y = gui_percentYRaw(16);
+    }
+    
+    viewAngle = input_angles;
+    viewAngle_x = viewAngle_x * -1;
+
+    makevectors(viewAngle);
+    local vector br, bl;
+    local vector c_br, c_bl;
+
+    br = ent.origin + (v_right * targSizeX) + (v_up * (targZbottom * -1));
+    bl = ent.origin + (v_right * (targSizeX * -1)) + (v_up * (targZbottom * -1));
+    
+    c_br = cs_project(br);
+    if (c_br_z >= 0) {
+      c_br_x = c_br_x - (imgSize_x / 2);
+      c_br_y = c_br_y - (imgSize_y / 2);
+      c_br_z = 0;
+      gui_renderTintImage(TRUE, c_br, HUD_TARGET_BOX_BR, imgSize, CLR_DEF_IIF_FRIEND_BLD, HUD_ALPHA + 0.25, 0);
+      
+    }
+    
+    c_bl = cs_project(bl);
+    if (c_bl_z >= 0) {
+      c_bl_x = c_bl_x - (imgSize_x / 2);
+      c_bl_y = c_bl_y - (imgSize_y / 2);
+      c_bl_z = 0;
+      gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, CLR_DEF_IIF_FRIEND_BLD, HUD_ALPHA + 0.25, 0);
+    }
+  }
+};
+
 /*
   RENDER DIRECTIONAL HIT INDICATORS
 */

@@ -1120,6 +1120,7 @@ void() data_hud_frame={
   //these funcs can be moved out of this check as desired.
   if( !HUD_ZOOM_ACTIVE ){
     //repair sits above all
+    hud_render_vip_overlay();
     hud_renderRepairValue();
     hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
     hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );

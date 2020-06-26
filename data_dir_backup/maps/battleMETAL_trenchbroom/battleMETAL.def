@@ -944,7 +944,7 @@ DELAY 4: wait after fire before execution
 //===========================================================
 //    battleMETAL Buildings Human
 //===========================================================
-/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/radar/radar.md3"); }
 
 Radar Post has the ability to detect the player and alert friendly bot to these players.
@@ -974,12 +974,13 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -1008,12 +1009,13 @@ NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 LIGHTS_OFF 2097152: turns off lights from this building.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
 Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields!
@@ -1048,12 +1050,13 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_human_power (0.074 0.66 0.93) (-80 -80 0) (80 80 58) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_power (0.074 0.66 0.93) (-80 -80 0) (80 80 58) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
 
@@ -1093,12 +1096,13 @@ NO_VETERAN 16384: remove from Veteran Difficulty
 NO_ELITE 32768: remove from Elit Difficulty
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_human_hangar (0 0 1) (-80 -80 0) (80 80 88) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_hangar (0 0 1) (-80 -80 0) (80 80 88) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/hangar/hangar.md3"); }
 
 Base Decoration building.
@@ -1123,12 +1127,13 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_human_hangar_vehicle (0 0 1) (-78 -78 0) (78 78 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_hangar_vehicle (0 0 1) (-78 -78 0) (78 78 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/hangar_vec/hangar_vehicle.md3"); }
 
 Base Decoration building.
@@ -1154,12 +1159,13 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/repair/repair.md3"); }
 [ADVISED] - put it near a power plant for more energy.
 
@@ -1194,13 +1200,14 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
 
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/fueltank/fueltank.md3"); }
 
 Base Decoration building.
@@ -1225,11 +1232,12 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_barracks (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_barracks (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -1254,11 +1262,12 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_supply_depot (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_supply_depot (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -1283,12 +1292,13 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, Survest Faction
 -------- KEYS -------- 
@@ -1314,11 +1324,12 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, MILITAR Faction
 NOTE: auto promotion x1 on-spawn!
@@ -1345,13 +1356,14 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
 
-/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, PSC Faction
 NOTE: auto promotion x2 on-spawn!
@@ -1378,11 +1390,12 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1408,10 +1421,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_light_militar_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_militar_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1437,10 +1451,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_light_psc_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_psc_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1466,12 +1481,13 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED building_turret_light_survest_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_survest_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1497,10 +1513,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_light_militar_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_militar_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1526,10 +1543,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_light_psc_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_light_psc_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1555,12 +1573,13 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_turret_missile_m (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_missile_m (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Missile Turret, MILITAR Faction
 NOTE: auto promotion x1 on-spawn!
@@ -1587,13 +1606,14 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
 
-/*QUAKED building_turret_missile_s (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_missile_s (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Missile Turret, Survest Faction
 -------- KEYS -------- 
@@ -1619,12 +1639,13 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_turret_missile_p (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_missile_p (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Missile Turret, PSC Faction
 NOTE: auto promotion x2 on-spawn!
@@ -1651,12 +1672,13 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED building_turret_missile_survest_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_missile_survest_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -1682,10 +1704,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_missile_militar_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_missile_militar_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -1711,10 +1734,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_missile_psc_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_missile_psc_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -1740,12 +1764,13 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_turret_heavy_m (0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_m (0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Heavy Turret, MILITAR Faction
 NOTE: auto promotion x1 on-spawn!
@@ -1772,10 +1797,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_heavy_s(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_s(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Heavy Turret, Survest Faction
 -------- KEYS -------- 
@@ -1801,10 +1827,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_heavy_p(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_p(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Heavy Turret, Survest Faction
 -------- KEYS -------- 
@@ -1830,11 +1857,12 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED building_turret_heavy_survest_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_survest_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1860,10 +1888,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_heavy_militar_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_militar_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1889,10 +1918,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_heavy_psc_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_psc_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1918,11 +1948,12 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED building_turret_heavy_survest_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_survest_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1948,10 +1979,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_heavy_militar_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_militar_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1977,10 +2009,11 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_heavy_psc_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
+/*QUAKED building_turret_heavy_psc_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -2006,6 +2039,7 @@ PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
 NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
@@ -3173,7 +3207,7 @@ RANDOM_ANGLE 2: random yaw rotation
 //  SIZE: SMALL
 //  --------------------------------
 //
-/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/dunerunner/dunerunner_h.md3"); }
   Skill 0 | 1
     ATC | ATC
@@ -3217,9 +3251,10 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/dunerunner/dunerunner_m.md3"); }
   Skill 0 | 1
     LAS | ATC
@@ -3263,6 +3298,7 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //
@@ -3272,7 +3308,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //  --------------------------------
 //
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/foslager/foslager_h.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -3320,8 +3356,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/foslager/foslager_m.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -3369,9 +3406,10 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/foslager/foslager_h.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -3419,8 +3457,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/foslager/foslager_m.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -3468,6 +3507,7 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //
@@ -3476,7 +3516,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //  SIZE: HEAVY
 //  --------------------------------
 //
-/*QUAKED unit_trowel_militar_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_trowel_militar_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/trowel/trowel_m.md3"); }
   Skill 0
     MLGx1 LASx1 ATGMx1
@@ -3523,8 +3563,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_trowel_survest_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_trowel_survest_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/trowel/trowel_h.md3"); }
   Skill 0
     LASx1 RCKTx1 ATGMx1
@@ -3571,10 +3612,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/trowel/trowel_m.md3"); }
 //-------------------GUNNER  --------------------------------
   Skill 0
@@ -3622,8 +3664,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/trowel/trowel_h.md3"); }
   Skill 0
     RPLASx1 LASx1 ATGMx1
@@ -3671,6 +3714,7 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //
@@ -3679,7 +3723,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_onnek_h (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_onnek_h (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_h.md3"); }
   Skill 0 | 1
     ION
@@ -3723,9 +3767,10 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED unit_onnek_m (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_onnek_m (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_m.md3"); }
   Skill 0 | 1
     PAC
@@ -3769,10 +3814,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_h.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -3820,8 +3866,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_m.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -3869,10 +3916,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_h.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -3920,8 +3968,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_m.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -3969,10 +4018,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_h.md3"); }
 LOBBER - mostly missile firepower
   Skill 0 | 1
@@ -4017,8 +4067,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_m.md3"); }
 LOBBER - mostly missile firepower
   Skill 0 | 1
@@ -4063,6 +4114,7 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //
@@ -4071,7 +4123,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_sorcerer_survest_gunner (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_survest_gunner (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
   RPLASx2
   Skill 0 | 1
@@ -4113,8 +4165,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_sorcerer_militar_gunner (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_militar_gunner (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
   ESRx2
   Skill 0 | 1
@@ -4156,10 +4209,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
 LOBBER - mostly missile firepower
   Skill 0 | 1
@@ -4204,8 +4258,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
 LOBBER - mostly missile firepower
   Skill 0
@@ -4253,12 +4308,13 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //
 //  METAL : BALAKET
 //
-/*QUAKED unit_balaket_survest_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_survest_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_h.md3"); }
   Skill 0
     ATCx2 LASx1
@@ -4305,8 +4361,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_balaket_militar_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_militar_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_m.md3"); }
   Skill 0
     LASx2
@@ -4353,8 +4410,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_balaket_survest_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_survest_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_h.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4402,8 +4460,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_balaket_militar_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_militar_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_m.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4451,9 +4510,10 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED unit_balaket_psc_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_balaket_psc_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_p.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4501,12 +4561,13 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //
 //  METAL : MATOK
 //
-/*QUAKED unit_matok_survest_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
   Skill 0
     FLAKx2 MARHx1 ATGMx1
@@ -4553,8 +4614,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_militar_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_militar_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_m.md3"); }
   Skill 0
     LASx2 MLGx2
@@ -4601,8 +4663,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_psc_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_psc_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_p.md3"); }
   Skill 0
     ATGMx1 LSAx1 PACx1 IONx1
@@ -4649,9 +4712,10 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_matok_militar_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_militar_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_m.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -4699,8 +4763,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_survest_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -4748,9 +4813,10 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED unit_matok_survest_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4798,8 +4864,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_militar_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_militar_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_m.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4847,10 +4914,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_matok_militar_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_militar_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_m.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -4898,8 +4966,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_survest_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -4947,9 +5016,10 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_matok_survest_lobber (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_lobber (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
 LOBBER - mostly missile firepower
   Skill 0
@@ -4997,12 +5067,13 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //
 //  METAL : MONITOR
 //
-/*QUAKED unit_monitor_survest_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_survest_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_h.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -5050,8 +5121,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_monitor_militar_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_m.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -5099,8 +5171,9 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_monitor_psc_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_psc_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_p.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -5148,10 +5221,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_monitor_militar_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_m.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -5199,10 +5273,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_monitor_militar_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_m.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -5250,9 +5325,10 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_h.md3"); }
 LOBBER - mostly missile firepower
   Skill 0
@@ -5300,10 +5376,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_monitor_survest_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_survest_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_h.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -5351,10 +5428,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_monitor_survest_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_survest_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_h.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -5402,10 +5480,11 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_monitor_militar_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_m.md3"); }
 LOBBER - mostly missile firepower
   Skill 0
@@ -5453,11 +5532,12 @@ NO_DROP 262144: don't drop bot to the floor onspawn
 TRIGGER_ME 524288: ai only spawns when triggered
 MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_factory_med (0 0 1) (-36 -36 0) (36 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_factory_med (0 0 1) (-36 -36 0) (36 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5479,11 +5559,12 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_lodge(0 0 1) (-38 -38 0) (38 38 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_lodge(0 0 1) (-38 -38 0) (38 38 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5505,11 +5586,12 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_apartment (0 0 1) (-20 -20 0) (20 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_apartment (0 0 1) (-20 -20 0) (20 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5531,9 +5613,10 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED building_misc_off_pyra (0 0 1) (-68 -68 0) (68 68 72) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_off_pyra (0 0 1) (-68 -68 0) (68 68 72) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5555,11 +5638,12 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_off_large (0 0 1) (-88 -88 0) (88 88 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_off_large (0 0 1) (-88 -88 0) (88 88 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5581,12 +5665,13 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_misc_off_small (0 0 1) (-36 -36 0) (36 36 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_off_small (0 0 1) (-36 -36 0) (36 36 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5608,12 +5693,13 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
 
-/*QUAKED building_misc_fact_steam (0 0 1) (-36 -36 0) (36 36 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_fact_steam (0 0 1) (-36 -36 0) (36 36 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5635,11 +5721,12 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5649,6 +5736,7 @@ Max Health = 200. (default)
 note: flatside direction == arrow direction.
 
 -------- KEYS --------
+.faction : <float> 
 .targetname : <string>, used for trigger calls from other ents
 .target : <string> name of ent to go to, usually a patrol node
 .trigOnSpawn: <string> target, fire this ENTITY when activated
@@ -5662,4 +5750,5 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
