@@ -453,6 +453,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
   if( (changeFlags & SENDFLAG_DEAD) ){

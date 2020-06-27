@@ -178,7 +178,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   
   local entity thePlayer;
   thePlayer = entitybyindex(CLIENT_stat_trg_ent_id);
-  if( (thePlayer.flags & FL_CLIENT) ){
+  if( (thePlayer.flags & FL_CLIENT) || thePlayer.netname != ""){
     local vector namepos, nameproj, drawSize;
     local float namelen, drawdist, adj;
 
@@ -197,6 +197,9 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     }
     local string playerName;
     playerName = getplayerkeyvalue(CLIENT_stat_trg_ent_id - 1, "name");
+    if( (thePlayer.flags & FL_MONSTER) ){
+      playerName = thePlayer.netname;
+    }
     namelen = stringwidth(playerName, 0, drawSize);
     namepos = thePlayer.origin;
     namepos_z = namepos_z + (gui_percentYRaw(thePlayer.vec_size * adj));

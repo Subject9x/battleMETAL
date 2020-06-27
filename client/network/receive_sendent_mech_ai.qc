@@ -169,6 +169,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local float prevShield;
   local vector turretAng;
   local float critical;
+  local string newName;
   
   prevShield = self.shield;
   
@@ -197,26 +198,29 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    
-    if( isNew ){    
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-      self.skin =  self.faction - 1;
-      self.data_type = DATA_MECH;
-      data_sync_new_mech_ai( self.data_idx );
-      self.drawmask = MASK_ENGINE;
-      
-      sendent_setup_weapons();
-      
-      self.alpha = 0.001;
-      self.scale = 0.001;
-      setmodel(self, "q3mdl/testball.md3");
-      setsize(self, self.mins, self.maxs);
-      setorigin(self, self.origin);
-      self.predraw = predraw_mech_ai;
-      sendent_ini_interpolate(); 
+    newName = ReadString();
+    if( newName != "" ){
+      self.netname = strzone(newName);
     }
   }
-  
+  if( isNew ){    
+    self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+    self.skin =  self.faction - 1;
+    self.data_type = DATA_MECH;
+    data_sync_new_mech_ai( self.data_idx );
+    self.drawmask = MASK_ENGINE;
+    
+    sendent_setup_weapons();
+    
+    self.alpha = 0.001;
+    self.scale = 0.001;
+    setmodel(self, "q3mdl/testball.md3");
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+    self.predraw = predraw_mech_ai;
+    sendent_ini_interpolate(); 
+  }
+    
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     if( self.deadflag > DEAD_NO ){

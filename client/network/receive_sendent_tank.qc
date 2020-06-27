@@ -61,6 +61,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   local float prevShield;
   local float pclEffect;
   local vector turretAng;
+  local string newName;
   
   prevShield = self.shield;
   
@@ -86,6 +87,10 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
+    newName = ReadString();
+    if( newName != "" ){
+      self.netname = strzone(newName);
+    }
   }
   if( isNew ){    
     self.skin =  self.faction - 1;

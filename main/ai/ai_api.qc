@@ -13,6 +13,10 @@ Overview:
 */
 float() ai_can_spawn={  
 
+  if( self.netname ){
+    self.netname = strzone(self.netname);
+  }
+
   if( self.nextVecChoice < 1 ){
     return FALSE;
   }

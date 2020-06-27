@@ -113,6 +113,7 @@ float( entity dest, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
   WriteShort( MSG_ENTITY, self.shield );
@@ -157,6 +158,7 @@ float( entity dest, float changedflags ) ctrl_send_spg={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
   WriteShort( MSG_ENTITY, self.shield );
@@ -195,6 +197,7 @@ float( entity dest, float changedflags ) ctrl_send_gev={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
   WriteShort( MSG_ENTITY, self.shield );

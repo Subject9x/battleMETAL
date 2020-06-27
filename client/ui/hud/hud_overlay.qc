@@ -150,6 +150,10 @@ void() hud_renderNavOverlay={
   drawfont = drawfont_prev;
 };
 
+void(entity t)hud_render_vip_overlay_target={
+  
+};
+
 
 /*
   RENDER VIP ITEM TARGET BOX
@@ -164,6 +168,7 @@ void() hud_render_vip_overlay={
       continue;
     }
     if( ent.faction != CLIENT_faction ){
+      hud_render_vip_overlay( ent );
       continue;
     }
     local float dist;
