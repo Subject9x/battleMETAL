@@ -131,6 +131,10 @@ void( float critical ) sendevent_mech_ai_crit={
   pointsound( self.origin, "sound/fx_boom.ogg", 0.7 + (random() * 0.3) , ATTN_NORM );
 };
 
+void(float critBits) sendevent_mech_burn={
+
+};
+
 /*
   SendEntity - MECH AI =====================================
 */
@@ -215,7 +219,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
   }
   
-  if( (changeFlags & SENDFLAG_BURN) ){}
+  if( (changeFlags & SENDFLAG_BURN) ){
+    
+  }
+  sendevent_mech_burn( critical );
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );

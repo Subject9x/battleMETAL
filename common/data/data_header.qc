@@ -36,8 +36,12 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece.compAltOffset = piece.compAltOffsetCache = altOffsett;
   #ifdef CSQC
     piece.drawmask = MASK_NORMAL;
+  #endif
+  #ifndef CSQC
     if( (self.flags & FL_MONSTER) ){
-      addentity(piece);
+      if( piece.partTypeId != M_LEGS ){
+        piece.effects = piece.effects | EF_NODRAW;
+      }
     }
   #endif
   self.partSlot = piece;
@@ -77,9 +81,9 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
     weaponList.w_slot = item;
     #ifdef CSQC
       item.drawmask = MASK_NORMAL;
-      if( (self.flags & FL_MONSTER) ){
-        addentity(item);
-      }
+    #endif
+    #ifndef CSCQ
+      item.effects = item.effects | EF_NODRAW;
     #endif
     notItem = self;
     self = item;

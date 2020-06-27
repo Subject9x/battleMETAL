@@ -42,6 +42,7 @@ void() weapon_esr_think={
         self.w_firetime = time + 0.33;
       }
       else{
+        self.reloadValue = 100;
         self.w_state = READY;
       }
     }
@@ -51,6 +52,7 @@ void() weapon_esr_think={
     if( prevState == RECOIL ){
       if( time > self.w_firetime ){
         self.w_state = READY;
+        self.reloadValue = 100;
       }
     }
     //Waiting - has not been fired recently, cooling down
@@ -121,7 +123,15 @@ void() data_ini_electro_repeater_={
     self.w_isburst = FALSE;
     self.burstRate = 0;
     self.model = "q3mdl/weapons/w_esr.md3";
-    self.think = weapon_esr_think;
+    if( (self.owner.flags & FL_MONSTER) ){
+      self.reloadMax = 1;
+      self.energyRate = self.energyRate / 2;
+      self.think = default_weapon_think;
+    }
+    else{
+      self.think = weapon_esr_think;
+    }
+    
     self.w_attack = data_ini_attack_electro_repeater_;
     self.spreadCache = self.spreadDefault;
     self.damageCache = self.damageValue;

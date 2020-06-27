@@ -55,7 +55,7 @@ void(entity wep) ctrl_weapon_think_ai={
       self.think = self.think;
     }
     
-    if( ai_valid_target( weaponOwner.enemy ) ){
+    if( weaponOwner.enemy ){
       if( weaponOwner.stat_trg_dist > self.w_range ){
         stackWeapon = FALSE;
       }

@@ -345,7 +345,7 @@ void(entity targ, entity attacker) killed={
     self.touch = SUB_Null;
     
     // bump the monster counter
-    if ( (self.flags & (FL_MONSTER | FL_UNIT)) ){
+    if ( (self.flags & (FL_MONSTER | FL_UNIT)) || (self.spawnflags & IS_VIP)){
       switch( self.faction ){
         case FACTION_PSC:
           MISSION_LOSSES_PSC = MISSION_LOSSES_PSC + 1;

@@ -133,7 +133,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
 
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.w_group = ReadByte();
+    self.w_group = ReadLong();
     if( (self.w_group & WEAPON1) && !self.effect1.count ){
       self.effect1 = te_building_fire_start( self );
       self.colormod = self.colormod * 0.85;

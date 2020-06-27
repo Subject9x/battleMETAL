@@ -107,7 +107,7 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   if( (changedflags & SENDFLAG_BURN) ){
-    WriteByte( MSG_ENTITY, self.w_group );
+    WriteLong( MSG_ENTITY, self.w_group );
   }
   
   return TRUE;
@@ -156,7 +156,7 @@ float( entity dest, float changedflags ) ctrl_send_building={
   }
   
   if( (changedflags & SENDFLAG_BURN) ){
-    WriteByte( MSG_ENTITY, self.w_group );
+    WriteLong( MSG_ENTITY, self.w_group );
   }
   
   if( (changedflags & SENDFLAG_DEAD) ){
