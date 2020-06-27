@@ -1298,7 +1298,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 
-/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, Survest Faction
 -------- KEYS -------- 
@@ -1329,7 +1329,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 
-/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, MILITAR Faction
 NOTE: auto promotion x1 on-spawn!
@@ -1363,7 +1363,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 
-/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, PSC Faction
 NOTE: auto promotion x2 on-spawn!
@@ -1395,7 +1395,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1425,7 +1425,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_light_militar_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_militar_zapper (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1455,7 +1455,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_light_psc_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_psc_zapper (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1487,7 +1487,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED building_turret_light_survest_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_survest_gunner (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1517,7 +1517,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_light_militar_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_militar_gunner (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1547,7 +1547,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_turret_light_psc_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
+/*QUAKED building_turret_light_psc_gunner (0.0 0.0 1.0) (-32 -32 -6) (32 32 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY IS_VIP
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 

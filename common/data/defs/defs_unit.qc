@@ -47,6 +47,8 @@ Overview:
 .vector legAngles;
 
 #endif
+.float burnBits;    //bitflags sent to client for fire/burning effects on ents.
+
 .float evasionDrain;
 .vector cockpitOffset;
 

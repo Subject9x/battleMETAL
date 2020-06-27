@@ -42,21 +42,21 @@ void() building_burn_th={
 */
 void() building_burn={
   if( self.health < self.max_health * 0.75){
-    if( !(self.w_group & WEAPON1) ){
-      self.w_group = self.w_group | WEAPON1;
+    if( !(self.burnBits & WEAPON1) ){
+      self.burnBits = self.burnBits | WEAPON1;
       self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     }
   }
   if( self.health < self.max_health * 0.55){
-    if( !(self.w_group & WEAPON2) ){
-      self.w_group = self.w_group | WEAPON2;
+    if( !(self.burnBits & WEAPON2) ){
+      self.burnBits = self.burnBits | WEAPON2;
       self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     }
     
   }
   if( self.health < self.max_health *0.33){
-    if( !(self.w_group & WEAPON3) ){
-      self.w_group = self.w_group | WEAPON3;
+    if( !(self.burnBits & WEAPON3) ){
+      self.burnBits = self.burnBits | WEAPON3;
       self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     }
   }
@@ -107,7 +107,7 @@ float( entity dest, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   if( (changedflags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.w_group );
+    WriteLong( MSG_ENTITY, self.burnBits );
   }
   
   return TRUE;
@@ -156,7 +156,7 @@ float( entity dest, float changedflags ) ctrl_send_building={
   }
   
   if( (changedflags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.w_group );
+    WriteLong( MSG_ENTITY, self.burnBits );
   }
   
   if( (changedflags & SENDFLAG_DEAD) ){

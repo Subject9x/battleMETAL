@@ -60,8 +60,8 @@ void() ctrl_updateTank={
       self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
       if( self.data_type == DATA_BLD ){
-        if( !(self.w_group & WEAPON3) ){
-          self.w_group = self.w_group | WEAPON3;
+        if( !(self.burnBits & WEAPON3) ){
+          self.burnBits = self.burnBits | WEAPON3;
         }
       }
     }
@@ -69,8 +69,8 @@ void() ctrl_updateTank={
       self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
       if( self.data_type == DATA_BLD ){
-        if( !(self.w_group & WEAPON2) ){
-          self.w_group = self.w_group | WEAPON2;
+        if( !(self.burnBits & WEAPON2) ){
+          self.burnBits = self.burnBits | WEAPON2;
         }
       }
     }
@@ -78,8 +78,8 @@ void() ctrl_updateTank={
       self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       if( self.data_type == DATA_BLD ){
-        if( !(self.w_group & WEAPON1) ){
-          self.w_group = self.w_group | WEAPON1;
+        if( !(self.burnBits & WEAPON1) ){
+          self.burnBits = self.burnBits | WEAPON1;
         }
       }
     }

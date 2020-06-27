@@ -131,8 +131,33 @@ void( float critical ) sendevent_mech_ai_crit={
   pointsound( self.origin, "sound/fx_boom.ogg", 0.7 + (random() * 0.3) , ATTN_NORM );
 };
 
-void(float critBits) sendevent_mech_burn={
-
+void(float critBits) sendevent_mech_burn={  local vector offset;
+  local vector offset;
+  
+  if( (critBits & M_TOR_LEFT) ){
+    offset = self.torsoLeft.origin;
+    te_mech_crit( offset, '0 0 10');
+  }
+  if( (critBits & M_TOR_RIGHT) ){
+    offset = self.torsoRight.origin;
+    te_mech_crit( offset, '0 0 10');
+  }
+  if( (critBits & M_ARM_LEFT) ){
+    if( !(self.damageValue & M_TOR_LEFT) ){
+    offset = self.armLeft.origin;
+      te_mech_crit( offset, '0 0 10');
+    }
+  }
+  if( (critBits & M_ARM_RIGHT) ){
+    if( !(self.damageValue & M_TOR_RIGHT) ){
+    offset = self.armRight.origin;
+      te_mech_crit( offset, '0 0 10');
+    }
+  }
+  if( (critBits & M_LEGS) ){
+    offset = self.legs.origin + '0 0 -10';
+    te_mech_crit( offset, '0 0 10');
+  }
 };
 
 /*
@@ -220,9 +245,11 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
-    
+    self.burnBits = ReadLong();
+    if( self.burnBits > 0 ){
+      sendevent_mech_burn( self.burnBits );
+    }
   }
-  sendevent_mech_burn( critical );
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );

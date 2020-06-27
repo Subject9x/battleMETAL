@@ -202,9 +202,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.w_group = ReadByte();
-    if( self.w_group > 0 ){
-      sendevent_player_burn( self.w_group );
+    self.burnBits = ReadByte();
+    if( self.burnBits > 0 ){
+      sendevent_player_burn( self.burnBits );
     }
   }
   

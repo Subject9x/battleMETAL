@@ -32,7 +32,7 @@ void() ctrl_update_mechplayer={
   self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
-  
+  self.burnBits = 0;
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
       continue;
@@ -40,10 +40,13 @@ void() ctrl_update_mechplayer={
     if( piece.deadflag <= DEAD_NO ){
       hp = piece.health / piece.max_health;
       if( hp < 0.6){
-        self.clientData.w_group = self.clientData.w_group | piece.partTypeId;
+        self.clientData.burnBits = self.clientData.burnBits | piece.partTypeId;
         self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
       }
     }
+  }
+  if( self.burnBits > 0 ){
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
   }
 };
 
@@ -71,6 +74,21 @@ void() ai_ctrl_update_mechplayer={
   self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
+  self.burnBits = 0;
+  for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
+    if( piece.classname != MECH_PIECE ){
+      continue;
+    }
+    if( piece.deadflag <= DEAD_NO ){
+      hp = piece.health / piece.max_health;
+      if( hp < 0.6){
+        self.burnBits = self.burnBits | piece.partTypeId;
+      }
+    }
+  }
+  if( self.burnBits > 0 ){
+    self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+  }
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
@@ -453,6 +471,8 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.damageValue );
   }
   
-  if( (changeFlags & SENDFLAG_BURN) ){}
+  if( (changeFlags & SENDFLAG_BURN) ){
+    WriteLong( MSG_ENTITY, self.burnBits );
+  }
   return TRUE;
 };
