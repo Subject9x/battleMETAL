@@ -24,7 +24,6 @@ void() sendevent_turret_die={
   setorigin(self, self.origin);
   if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
     rem = self.torsoCenter;
-    self.torsoCenter = world;
     remove(rem);
   }
   weps = self.w_slot;
@@ -37,19 +36,16 @@ void() sendevent_turret_die={
   }
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
-  if( self.effect1.count && self.effect1 != world ){
+  if( self.effect1.owner == self && self.effect1 != world ){
     rem = self.effect1;
-    self.effect1 = world;
     remove(rem);
   }
-  if( self.effect2.count && self.effect2 != world ){
+  if( self.effect2.owner == self && self.effect2 != world ){
     rem = self.effect2;
-    self.effect2 = world;
     remove(rem);
   }
-  if( self.effect3.count && self.effect3 != world ){
+  if( self.effect3.owner == self && self.effect3 != world ){
     rem = self.effect3;
-    self.effect3 = world;
     remove(rem);
   }
 };

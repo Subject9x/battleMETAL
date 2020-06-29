@@ -33,32 +33,27 @@ void() sendevent_mech_ai_die={
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
   if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
     rem = self.torsoCenter;
-    self.torsoCenter = world;
     remove(rem);
   }
   if( self.torsoLeft.partTypeId && self.torsoLeft != world ){
     rem = self.torsoLeft;
-    self.torsoLeft = world;
     remove(rem);
   }
   if( self.torsoRight.partTypeId && self.torsoRight != world ){
     rem = self.torsoRight;
-    self.torsoRight = world;
     remove(rem);
   }
   if( self.armLeft.partTypeId && self.armLeft != world ){
     rem = self.armLeft;
-    self.armLeft = world;
     remove(rem);
   }
   if( self.armRight.partTypeId && self.armRight != world ){
     rem = self.armRight;
-    self.armRight = world;
+
     remove(rem);
   }
   if( self.legs.partTypeId && self.legs != world ){
     rem = self.legs;
-    self.legs = world;
     remove(rem);
   }
   weps = self.w_slot;
