@@ -631,8 +631,8 @@ void(vector org, float radius, vector lightcolours, float style, string cubemapn
 void(string texturename, float flag, ...) R_BeginPolygon = #306;
 void(vector org, vector texcoords, vector rgb, float alpha) R_PolygonVertex = #307;
 void() R_EndPolygon = #308;
-vector (vector v) cs_unproject = #310;
-vector (vector v) cs_project = #311;
+vector (vector v) cs_unproject = #310;  //Project 3D coordinate into 2D space! discard z value after calling func
+vector (vector v) cs_project = #311;  //Project 2D coordinate into 3D space! discard z value after calling func
 
 //void(float width, vector pos1, vector pos2, float flag) drawline = #315;
 void (float width, vector pos1, vector pos2, vector rgb, float alpha, float flags)drawline = #315;
@@ -695,6 +695,22 @@ float() isserver = #350;
 void(vector origin, vector forward, vector right, vector up) SetListener = #351;
 void(string cmdname) registercommand = #352;
 float(entity ent) wasfreed = #353;
+
+
+
+/*
+  Key Types
+    gamename
+    modname
+    mapname
+    hostname
+    protocol
+    clients
+    bots
+    sv_maxclients
+    gameversion
+    qcstatus
+*/
 string(string key) serverkey = #354;
 
 // Use proper case; refer to the id1 Write* functions!

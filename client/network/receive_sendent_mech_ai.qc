@@ -31,37 +31,30 @@ void() sendevent_mech_ai_die={
   local entity rem;
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
-  if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
-    rem = self.torsoCenter;
-    remove(rem);
+  if( self.torsoCenter.owner == self &&  self.torsoLeft.partTypeId == M_TOR_CENTER){
+    sendent_handle_remove(self.torsoCenter);
   }
-  if( self.torsoLeft.partTypeId && self.torsoLeft != world ){
-    rem = self.torsoLeft;
-    remove(rem);
+  if( self.torsoLeft.owner == self &&  self.torsoLeft.partTypeId == M_TOR_LEFT){
+    sendent_handle_remove(self.torsoLeft);
   }
-  if( self.torsoRight.partTypeId && self.torsoRight != world ){
-    rem = self.torsoRight;
-    remove(rem);
+  if( self.torsoRight.owner == self &&  self.torsoRight.partTypeId == M_TOR_RIGHT){
+    sendent_handle_remove(self.torsoRight);
   }
-  if( self.armLeft.partTypeId && self.armLeft != world ){
-    rem = self.armLeft;
-    remove(rem);
+  if( self.armLeft.owner == self &&  self.armLeft.partTypeId == M_ARM_LEFT){
+    sendent_handle_remove(self.armLeft);
   }
-  if( self.armRight.partTypeId && self.armRight != world ){
-    rem = self.armRight;
-
-    remove(rem);
+  if( self.armRight.owner == self &&  self.armRight.partTypeId == M_ARM_RIGHT){
+    sendent_handle_remove(self.armRight);
   }
-  if( self.legs.partTypeId && self.legs != world ){
-    rem = self.legs;
-    remove(rem);
+  if( self.legs.owner == self &&  self.legs.partTypeId == M_LEGS){
+    sendent_handle_remove(self.legs);
   }
   weps = self.w_slot;
   while( weps != world ){
     rem = weps;
     weps = rem.w_slot;
     if( rem.data_idx && rem.owner == self ){
-      remove(rem);
+      sendent_handle_remove(rem);
     }
   }
 };
@@ -77,33 +70,25 @@ void( float critical ) sendevent_mech_ai_crit={
   if( (critical & M_TOR_LEFT) ){
     if( self.torsoLeft != world ){
       te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      rem = self.torsoLeft;
-      self.torsoLeft = world;
-      remove(rem);
+      sendent_handle_remove(self.torsoLeft);
     }
   }
   if( (critical & M_TOR_RIGHT) ){
     if( self.torsoRight != world ){
       te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      rem = self.torsoRight;
-      self.torsoRight = world;
-      remove(rem);
+      sendent_handle_remove(self.torsoRight);
     }
   }
   if( (critical & M_ARM_LEFT) ){
     if( self.armLeft != world ){
       te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      rem = self.armLeft;
-      self.armLeft = world;
-      remove(rem);
+      sendent_handle_remove(self.armLeft);
     }
   }
   if( (critical & M_ARM_RIGHT) ){
     if( self.armRight != world ){
       te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      rem = self.armRight;
-      self.armRight = world;
-      remove(rem);
+      sendent_handle_remove(self.armRight);
     }
   }
   if( (critical & M_LEGS) ){
@@ -114,8 +99,8 @@ void( float critical ) sendevent_mech_ai_crit={
   while(weps != world ){
     if( (weps.partParentId & critical) ){
       rem = weps;
+      prev.w_slot = weps.w_slot;
       weps = weps.w_slot;
-      prev.w_slot = weps;
       remove(rem);
     }
     else{
@@ -123,10 +108,11 @@ void( float critical ) sendevent_mech_ai_crit={
       weps = weps.w_slot;
     }
   }
-  pointsound( self.origin, "sound/fx_boom.ogg", 0.7 + (random() * 0.3) , ATTN_NORM );
+  pointsound( self.origin, "sound/fx_boom.ogg", 0.5 + (random() * 0.5) , ATTN_NORM );
 };
 
-void(float critBits) sendevent_mech_burn={  local vector offset;
+void(float critBits) sendevent_mech_burn={  
+  local vector offset;
   local vector offset;
   
   if( (critBits & M_TOR_LEFT) ){
@@ -139,7 +125,7 @@ void(float critBits) sendevent_mech_burn={  local vector offset;
   }
   if( (critBits & M_ARM_LEFT) ){
     if( !(self.damageValue & M_TOR_LEFT) ){
-    offset = self.armLeft.origin;
+      offset = self.armLeft.origin;
       te_mech_crit( offset, '0 0 10');
     }
   }
@@ -196,24 +182,22 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     newName = ReadString();
     if( newName != "" ){
       self.netname = strzone(newName);
-    }
-  }
-  if( isNew ){    
+    }   
     self.flags = self.flags | (FL_MONSTER | FL_UNIT);
     self.skin =  self.faction - 1;
     self.data_type = DATA_MECH;
     data_sync_new_mech_ai( self.data_idx );
-    self.drawmask = MASK_ENGINE;
-    
-    sendent_setup_weapons();
-    
-    self.alpha = 0.001;
-    self.scale = 0.001;
-    setmodel(self, "q3mdl/testball.md3");
-    setsize(self, self.mins, self.maxs);
-    setorigin(self, self.origin);
-    self.predraw = predraw_mech_ai;
-    sendent_ini_interpolate(); 
+    self.deadflag == DEAD_NO;
+    if( isNew ){ 
+      sendent_setup_weapons();
+      self.alpha = 0.001;
+      self.scale = 0.001;
+      setmodel(self, "q3mdl/testball.md3");
+      setsize(self, self.mins, self.maxs);
+      setorigin(self, self.origin);
+      self.predraw = predraw_mech_ai;
+      sendent_ini_interpolate(); 
+    }
   }
     
   if( (changeFlags & SENDFLAG_DEAD) ){
@@ -258,6 +242,11 @@ float() predraw_mech_ai={
   local entity weps;
   local vector saved;
   local entity partOfs;
+  
+  if( self.deadflag != DEAD_NO ){
+    return FALSE;
+  }
+  
   if( self.nextthink != self.frame1time ){
     self.frame2time = self.frame1time;
     self.frame1time = self.nextthink;
@@ -276,40 +265,38 @@ float() predraw_mech_ai={
     self.origin2 = self.origin1 = self.origin;
   }
 
-  if( self.deadflag == DEAD_NO ){
-    makevectors(self.angles);
-    if( self.torsoCenter != world ){
-      self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
-    }
+  makevectors(self.angles);
+  if( self.torsoCenter != world ){
+    self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+  }
 
-    makevectors(self.torsoCenter.angles);
-    if( self.torsoLeft ){
-      self.torsoLeft.angles = self.torsoCenter.angles;
-      self.torsoLeft.origin = self.origin + (v_right * self.torsoLeft.compOffset_x) + (v_forward * self.torsoLeft.compOffset_z) + (v_up * self.torsoLeft.compOffset_y);self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+  makevectors(self.torsoCenter.angles);
+  if( self.torsoLeft ){
+    self.torsoLeft.angles = self.torsoCenter.angles;
+    self.torsoLeft.origin = self.origin + (v_right * self.torsoLeft.compOffset_x) + (v_forward * self.torsoLeft.compOffset_z) + (v_up * self.torsoLeft.compOffset_y);self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+  }
+  if( self.torsoRight ){
+    self.torsoRight.angles = self.torsoCenter.angles;
+    self.torsoRight.origin = self.origin + (v_right * self.torsoRight.compOffset_x) + (v_forward * self.torsoRight.compOffset_z) + (v_up * self.torsoRight.compOffset_y);
+  }
+  if( self.armLeft ){
+    self.armLeft.angles = self.torsoCenter.angles;
+    self.armLeft.origin = self.origin + (v_right * self.armLeft.compOffset_x) + (v_forward * self.armLeft.compOffset_z) + (v_up * self.armLeft.compOffset_y);
+  }
+  if( self.armRight ){
+    self.armRight.angles = self.torsoCenter.angles;
+    self.armRight.origin = self.origin + (v_right * self.armRight.compOffset_x) + (v_forward * self.armRight.compOffset_z) + (v_up * self.armRight.compOffset_y);
+  }
+  for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
+    if( weps.partParentId == M_LEGS ){
+      makevectors(self.angles);
+      saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+      weps.origin = self.origin + saved ;
     }
-    if( self.torsoRight ){
-      self.torsoRight.angles = self.torsoCenter.angles;
-      self.torsoRight.origin = self.origin + (v_right * self.torsoRight.compOffset_x) + (v_forward * self.torsoRight.compOffset_z) + (v_up * self.torsoRight.compOffset_y);
-    }
-    if( self.armLeft ){
-      self.armLeft.angles = self.torsoCenter.angles;
-      self.armLeft.origin = self.origin + (v_right * self.armLeft.compOffset_x) + (v_forward * self.armLeft.compOffset_z) + (v_up * self.armLeft.compOffset_y);
-    }
-    if( self.armRight ){
-      self.armRight.angles = self.torsoCenter.angles;
-      self.armRight.origin = self.origin + (v_right * self.armRight.compOffset_x) + (v_forward * self.armRight.compOffset_z) + (v_up * self.armRight.compOffset_y);
-    }
-    for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
-      if( weps.partParentId == M_LEGS ){
-        makevectors(self.angles);
-        saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
-        weps.origin = self.origin + saved ;
-      }
-      else{
-        makevectors(self.torsoCenter.angles);
-        saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
-        weps.origin = self.origin + saved;
-      }
+    else{
+      makevectors(self.torsoCenter.angles);
+      saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
+      weps.origin = self.origin + saved;
     }
   }
   

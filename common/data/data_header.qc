@@ -79,14 +79,14 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
   if( self.hardpoint_cnt < 10){
     item = spawn();
     weaponList.w_slot = item;
-    #ifdef CSQC
-      item.drawmask = MASK_NORMAL;
-    #endif
-    #ifndef CSCQ
-      item.effects = item.effects | EF_NODRAW;
-    #endif
     notItem = self;
     self = item;
+    #ifdef CSQC
+      //self.drawmask = MASK_NORMAL;
+    #endif
+    #ifndef CSCQ
+      self.effects = self.effects | EF_NODRAW;
+    #endif
       self.data_idx = 0;
       self.w_group = weaponBit;
       self.partParentId = parentPartID;

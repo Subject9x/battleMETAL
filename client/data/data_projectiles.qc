@@ -47,6 +47,9 @@ void( float dataID ) data_sync_new_projectile={
 };
 
 float() predraw_missile={
+  if( wasfreed(self) ){
+    return FALSE;
+  }
   if( self.nextthink != self.frame1time ){
     self.frame2time = self.frame1time;
     self.frame1time = self.nextthink;

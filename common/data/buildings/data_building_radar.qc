@@ -38,7 +38,7 @@ void() building_radar_die1={
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
   
   self.think = building_radar_die2;
   self.nextthink = time + 0.1;
@@ -82,7 +82,7 @@ void() building_radar_detect1=[0, building_radar_detect1]{
     self.th_missile();
     if( self.trigOnTarget ){
       if( time > self.wait ){
-        trigger_event( self, self.trigOnTarget );
+        trigger_event( self.enemy, self.trigOnTarget );
         self.wait = time + self.delay;
       }
     }

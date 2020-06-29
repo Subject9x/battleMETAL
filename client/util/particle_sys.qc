@@ -148,12 +148,13 @@ void() te_unit_dust_set={
 
 void() te_building_fire_th={
   if( self.owner.deadflag > DEAD_NO ){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.5;
+    remove(self);
     return;
   }
   self.compAltOffset = te_apply_wind( self.origin );
   pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
+  
+  
   self.think = te_building_fire_th;
   self.nextthink = time + 0.1 + random() * 0.75;
 };
@@ -161,6 +162,8 @@ void() te_building_fire_th={
 entity( entity targetBuilding ) te_building_fire_start={
   local entity fire;
   fire = spawn();
+  setmodel(fire, "q3mdl/testball.md3");
+  fire.alpha = 0;
   fire.origin = util_pointNearBoxEdge( targetBuilding.origin, targetBuilding.angles, targetBuilding.mins, targetBuilding.maxs );
   fire.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(targetBuilding.vec_size)));
   fire.think = te_building_fire_th;
@@ -169,7 +172,6 @@ entity( entity targetBuilding ) te_building_fire_start={
   fire.count = targetBuilding.vec_size + (1 / 3);
   targetBuilding.colormod = targetBuilding.colormod - '0.1 0.1 0.1';
   fire.owner = targetBuilding;
-  fire.drawmask = MASK_NORMAL;
   return fire;
 };
 
@@ -227,9 +229,7 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
   explode.effects = explode.effects | EF_NOSHADOW;
   explode.avelocity = randomvec() * 300;
   explode.angles = randomvec() * 30;
-  explode.drawmask = MASK_NORMAL;
   explode.pcl_count = bloom;
-  addentity(explode);
   
   if( explodeColor != '0 0 0' ){
     explode.colormod = explodeColor;
@@ -266,7 +266,6 @@ void( vector org, float vecSize ) te_shield_explode={
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
   te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22');
-  explode.drawmask = MASK_NORMAL;
 };
 
 /*
@@ -277,7 +276,8 @@ void() particle_missile_explode_th={
   self.scale = self.scale + 0.005;
   self.think = particle_missile_explode_th;
   if( self.alpha < 0.01 ){
-    self.think = SUB_Remove;
+    remove(self);
+    return;
   }
   self.nextthink = time + 0.01;
 };
@@ -308,7 +308,6 @@ void( vector org, float explodeSize, vector explodeColor, float onShield  ) part
   
   setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
   setorigin( explode, org);
-  explode.drawmask = MASK_NORMAL;
   
   te_customflash( org, explodeSize * 50, 1.5, explodeColor); 
 };
@@ -382,7 +381,6 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
     self.pcl_count = 1;
     self.nextthink = time + (random() * 1);
     self.think = particle_vehicle_wreck_th;
-    self.drawmask = MASK_NORMAL;
   self = this;
 };
 

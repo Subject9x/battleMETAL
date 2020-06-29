@@ -44,7 +44,7 @@ void() sendevent_gev_die={
     rem = weps;
     weps = rem.w_slot;
     if( rem.data_idx && rem.owner == self ){
-      remove(rem);
+      sendent_handle_remove(rem);
     }
   }
   
@@ -92,23 +92,21 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     if( newName != "" ){
       self.netname = strzone(newName);
     }
-  }
-  if( isNew ){
+    self.deadflag = DEAD_NO;
     self.skin =  self.faction - 1;
     self.data_type = DATA_VEHC;
     self.flags = self.flags | (FL_MONSTER | FL_UNIT);
     data_sync_new_vehicle(self.data_idx);
+  if( isNew ){
     self.drawmask = MASK_ENGINE;
-    
     sendent_setup_weapons();
-    
     setmodel(self, self.model);
     setsize(self, self.mins, self.maxs);
-
     sendent_ini_interpolate();
     te_unit_dust_set();
     
     self.predraw = predraw_tank;
+  }
   }
   
   self.shield = ReadShort();

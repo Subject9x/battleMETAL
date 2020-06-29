@@ -159,41 +159,47 @@ void() ai_touch={
   turned into macro_ai_patrol in ai_api.qh - Roohr
   
 float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic={
+macro_ai_patrol(speed,pauseFunc,nextFunc) 
   local entity nextNode;
-  
-  if( self.goalentity.classname == "ai_node" ){
-    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    ChangeYaw();
-    if( walkmove( self.angles_y, self.data_speed_forward) == FALSE ){
-      movetogoal( self.data_speed_forward );
+  if((self.goalentity.flags&FL_NODE)){
+    ai_face_goal();
+    if(walkmove(self.angles_y,max(speed,65*AI_WALK_SPD))==FALSE){
+      movetogoal(max(self.data_speed_forward,65*AI_WALK_SPD));
+      ai_patrol_turn();
     }
-    //AI has reached node
-    if( vlen(self.goalentity.origin - self.origin) <= (random() * AI_NODE_DISTANCE) ){
-      if( self.goalentity.pausetime ){
-        self.pausetime = self.goalentity.pausetime;
-        self.pausetime = self.pausetime + (self.pausetime * (self.ai_action_mod / 10));
-        self.pausetime = self.pausetime + time;
+    if(vlen(self.goalentity.origin-self.origin)<=(random()*AI_NODE_DISTANCE)){
+      if(self.goalentity.pausetime){
+        self.pausetime=self.goalentity.pausetime;
+        self.pausetime=self.pausetime+(self.pausetime*(self.ai_action_mod/10));
+        self.pausetime = self.pausetime+time;
       }
-      if( self.goalentity.target ){
-        nextNode = find(world, targetname, self.goalentity.target);
-        self.movetarget = nextNode;
+      if(self.goalentity.target){
+        nextNode=find(world,targetname,self.goalentity.target);
+        self.movetarget=nextNode;
       }
       else{
-        self.movetarget = world;
+        if(self.goalentity.ai_rank>0){
+          self.movetarget=world;
+          self.goalentity.think=SUB_Remove;
+          self.goalentity.nextthink=time+0.1;
+        }
+        else{
+          self.movetarget=ai_goal_offset_node();
+        }
+      } 
+      self.goalentity=self.movetarget;
+      if(time<self.pausetime){
+        macro_ai_frame(pauseFunc) 
+        return;
       }
-      self.goalentity = self.movetarget;
-      if( time < self.pausetime ){
-        macro_ai_frame(pauseFrameFunc)
-        return TRUE;
-      }
-    }
-    macro_ai_frame(nextFrameFunc)
-    return TRUE;
-  }
-  macro_ai_frame(pauseFrameFunc)
-  return FALSE;
+    } 
+    macro_ai_frame(nextFunc) 
+    return;
+  } 
+  macro_ai_frame(pauseFunc)
 };
 */
+
 
 void() ai_face_goal={
   self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);

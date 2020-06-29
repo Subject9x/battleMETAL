@@ -97,7 +97,6 @@ void( float isNew, float entFlags ) data_nav_point={
       setorigin(self, self.origin);
       self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
       self.predraw = predraw_navpoint;
-      self.drawmask = MASK_NORMAL;
       self.colormod = '0 1 0';
     }
   }
@@ -147,6 +146,7 @@ void( float isNew, float entFlags ) data_objective={
   if( entFlags & SENDFLAG_NEWENT ){
     self.data_idx = ReadByte();
     self.data_type = DATA_OBJT;
+    self.drawmask = MASK_ENGINE;
   }
   
   //HANDLE EVENT - objective status
@@ -173,7 +173,6 @@ void( float isNew, float entFlags ) data_objective={
     setmodel(self, "q3mdl/testball.md3");
     setorigin(self, self.origin);
     self.alpha = 0.01;
-    self.drawmask = MASK_ENGINE;
   }
 };
 
@@ -235,6 +234,7 @@ void( float isNew, float entFlags ) data_deploy={
   //EVENT - new to player
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
+    self.drawmask = MASK_ENGINE;
     if( isNew ){
       if( cvar("developer") ){
         self.alpha = 0.9;
@@ -257,7 +257,6 @@ void( float isNew, float entFlags ) data_deploy={
         DEPLOY_POINTS = self;
         DEPLOYPOINT = self; //first
       }
-      self.drawmask = MASK_NORMAL;
     }
   }
 };
@@ -508,6 +507,7 @@ void( float isNew, float entFlags ) data_map_damage={
     self.spawnflags = ReadLong();
     
     self.origin = te_read_vector();
+    self.drawmask = MASK_ENGINE;
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
@@ -519,7 +519,6 @@ void( float isNew, float entFlags ) data_map_damage={
     self.effects = self.effects - (self.effects & EF_NODEPTHTEST);
   }
   if( isNew ){
-    self.drawmask = MASK_NORMAL;
     if( self.isActive ){
       self.nextthink = time + 0.1;
     }

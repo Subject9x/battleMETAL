@@ -120,7 +120,6 @@ void() CSQC_Init =
   CFG_INDEX_PREV = CFG_INDEX;
 
   toolTip = spawn();
-
   UI_HANGAR_DATA_mech = spawn();
   UI_ARMING_DATA_item_a = spawn();
   UI_ARMING_DATA_item_b = spawn();
@@ -278,6 +277,8 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   receive_ent_bindData();
   
   client_state_events();
+  makevectors(input_angles);
+  SetListener(pmove_org, v_forward, v_right, v_up );  //debug
   //=================================================
 
   if( !MENU_ACTIVE ){
@@ -295,13 +296,21 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     }
   }
 
-	// add clientside entities (MASK_NORMAL)
-	// add engine networked entities (MASK_ENGINE)
-	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
-	addentities( (MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
-    
-	// draw the main view
+  // draw the main view
   if( !MENU_ACTIVE ){
+    // add clientside entities (MASK_NORMAL)
+    // add engine networked entities (MASK_ENGINE)
+    // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
+    local entity oldSelf;
+    oldSelf = self;
+    self = world;
+    while( (self = nextent(self)) ){
+      if( self.model ){
+        addentity(self);
+      }
+    }
+    self = oldSelf;
+    addentities( (MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
     renderscene();
   }
 
@@ -309,8 +318,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     special rant: the fact that the client itself, isn't a faffing global entity in the CLIENT
     module of all things is the height of idiocy.
   */
-
-  
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
@@ -508,9 +515,10 @@ float(entity ent, float channel, string soundname, float volume, float attenuati
 	return FALSE;
 };
 
-float() CSQC_Parse_Event={
-  return FALSE;
-};
+//not used in darkplaces
+//float() CSQC_Parse_Event={
+ // return FALSE;
+//};
 
 
 // return TRUE if you want to eat this event, otherwise return FALSE to let engine handle it.
@@ -524,10 +532,10 @@ float(float event) CSQC_Event =
 // called when a network slot was previously empty, before parsing begins
 // this basically lets you do extra work before returning the result of spawn()
 // OPTIONAL, probably should be deprecated as well
-/*entity(float entNum) CSQC_Ent_Spawn =
+entity(float entNum) CSQC_Ent_Spawn =
 {
-	return spawn();
-};*/
+  return spawn();
+};
 
 
 // parse a network update, isnew indicates this network slot was previously empty
@@ -557,49 +565,39 @@ void() CSQC_Ent_Remove ={
     next = weps.w_slot;
     rem = weps;
     weps = next;
-    remove(rem);
+    if( rem.owner == self ){
+      sendent_handle_remove(rem);
+    }
   }
-  if( self.torsoCenter.partTypeId ){
-    rem = self.torsoCenter;
-    self.torsoCenter = world;
-    remove(rem);
+  if( self.torsoCenter.owner == self && self.torsoCenter.model ){
+    sendent_handle_remove(self.torsoCenter);
   }
   if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
-    if( self.torsoLeft != world ){
-      rem = self.torsoLeft;
-      self.torsoLeft = world;
-      remove(rem);
+    if( self.torsoLeft.owner == self && self.torsoLeft.model ){
+      sendent_handle_remove(self.torsoLeft);
     }
-    if( self.torsoRight != world ){
-      rem = self.torsoRight;
-      self.torsoRight = world;
-      remove(rem);
+    if( self.torsoRight.owner == self && self.torsoRight.model ){
+      sendent_handle_remove(self.torsoRight);
     }
-    if( self.armLeft != world ){
-      rem = self.armLeft;
-      self.armLeft = world;
-      remove(rem);
+    if( self.armLeft.owner == self && self.armLeft.model ){
+      sendent_handle_remove(self.armLeft);
     }
-    if( self.armRight != world ){
-      rem = self.armRight;
-      self.armRight = world;
-      remove(rem);
+    if( self.armRight.owner == self && self.armRight.model ){
+      sendent_handle_remove( self.armRight);
     }
-    if( self.legs != world ){
-      rem = self.legs;
-      self.legs = world;
-      remove(rem);
+    if( self.legs.owner == self && self.legs.model ){
+      sendent_handle_remove(self.legs );
     }
   }
   if( self.data_type == DATA_BLD ){
-    if( self.effect1.count && self.effect1 != world ){
-      remove(self.effect1);
+    if( self.effect1.owner == self && self.effect1.pcl_effectnum > 0){
+      sendent_handle_remove(self.effect1);
     }
-    if( self.effect2.count && self.effect2 != world ){
-      remove(self.effect2);
+    if( self.effect2.owner == self && self.effect2.pcl_effectnum > 0 ){
+      sendent_handle_remove(self.effect2);
     }
-    if( self.effect3.count && self.effect3 != world ){
-      remove(self.effect3);
+    if( self.effect3.owner == self && self.effect3.pcl_effectnum > 0){
+      sendent_handle_remove(self.effect3);
     }
   }
 	//if (self.t_remove)

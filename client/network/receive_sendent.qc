@@ -72,7 +72,6 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     data_sync_new_projectile(self.data_idx);
     setmodel(self, self.model);
     setsize(self, '0 0 0', '0 0 0');
-    self.drawmask = MASK_NORMAL;
     self.predraw = predraw_missile;
     self.nextthink = time + 0.1;
   }

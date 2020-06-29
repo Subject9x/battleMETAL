@@ -22,31 +22,27 @@ void() sendevent_turret_die={
   
   self.origin = self.origin + (v_up * (self.maxs_z * -0.5));
   setorigin(self, self.origin);
-  if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
-    rem = self.torsoCenter;
-    remove(rem);
+  if( self.torsoCenter.owner == self ){
+    sendent_handle_remove(self.torsoCenter);
   }
   weps = self.w_slot;
   while( weps ){
     rem = weps;
     weps = rem.w_slot;
-    if( rem.data_idx && rem.owner == self ){
-      remove(rem);
+    if( rem.owner == self ){
+      sendent_handle_remove(rem);
     }
   }
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
   if( self.effect1.owner == self && self.effect1 != world ){
-    rem = self.effect1;
-    remove(rem);
+    sendent_handle_remove(self.effect1);
   }
   if( self.effect2.owner == self && self.effect2 != world ){
-    rem = self.effect2;
-    remove(rem);
+    sendent_handle_remove(self.effect2);
   }
   if( self.effect3.owner == self && self.effect3 != world ){
-    rem = self.effect3;
-    remove(rem);
+    sendent_handle_remove(self.effect3);
   }
 };
 
@@ -82,16 +78,15 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-  }
-  if( isNew ){
-    data_sync_new_turret(self.data_idx);
-    self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-    self.data_type = DATA_BLD;
-    self.colormod = '1 1 1';
-    self.predraw = predraw_turret;
-    self.drawmask = MASK_ENGINE;
-    sendent_setup_weapons();
-    setorigin( self, self.origin );
+    data_sync_new_turret(self.data_idx);  
+    if( isNew ){
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      self.data_type = DATA_BLD;
+      self.colormod = '1 1 1';
+      self.predraw = predraw_turret;
+      sendent_setup_weapons();
+      setorigin( self, self.origin );
+    }
   }
   
   //EVENT - MOVE - for turrets, this means a general update tic.
@@ -121,17 +116,19 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   //EVENT - health dropped below threshold
   if( (changeFlags & SENDFLAG_BURN) ){
     self.burnBits = ReadLong();
-    if( (self.burnBits & WEAPON1) && !self.effect1.count ){
-      self.effect1 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.85;
-    }
-    if( (self.burnBits & WEAPON2) && !self.effect2.count ){
-      self.effect2 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.75;
-    }
-    if( (self.burnBits & WEAPON3) && !self.effect3.count ){
-      self.effect3 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.67;
+    if( self.burnBits > 0 ){
+      if( (self.burnBits & WEAPON1) && !self.effect1.count ){
+        self.effect1 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.85;
+      }
+      if( (self.burnBits & WEAPON2) && !self.effect2.count ){
+        self.effect2 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.75;
+      }
+      if( (self.burnBits & WEAPON3) && !self.effect3.count ){
+        self.effect3 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.67;
+      }
     }
   }
   
@@ -143,11 +140,14 @@ void( float isNew, float changeFlags) sendent_handle_turret={
 };
 
 float() predraw_turret={
-  local entity weps; 
-  makevectors(self.torsoCenter.angles);
-  for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
-    weps.origin = self.origin + (v_forward * weps.compOffset_z) + (v_right * weps.compOffset_x) + (v_up * weps.compOffset_y);
-    weps.angles = self.torsoCenter.angles;
+  local entity weps;
+  if( self.deadflag == DEAD_NO ){
+    makevectors(self.torsoCenter.angles);
+    for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
+      weps.origin = self.origin + (v_forward * weps.compOffset_z) + (v_right * weps.compOffset_x) + (v_up * weps.compOffset_y);
+      weps.angles = self.torsoCenter.angles;
+    }
+    return TRUE;
   }
-  return TRUE;
+  return FALSE;
 };

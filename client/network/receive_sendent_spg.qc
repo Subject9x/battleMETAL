@@ -35,7 +35,7 @@ void() sendevent_spg_die={
     rem = weps;
     weps = rem.w_slot;
     if( rem.data_idx && rem.owner == self ){
-      remove(rem);
+      sendent_handle_remove(rem);
     }
   }
   
@@ -76,25 +76,24 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
+    
     newName = ReadString();
     if( newName != "" ){
       self.netname = strzone(newName);
     }
-  }
-  
-  if( isNew ){
+    self.deadflag = DEAD_NO;
     self.skin =  self.faction - 1;
     self.data_type = DATA_VEHC;
     self.flags = self.flags | (FL_MONSTER | FL_UNIT);
     data_sync_new_vehicle(self.data_idx);
-    self.drawmask = MASK_ENGINE;
-    
-    sendent_setup_weapons();
-    
-    setmodel(self, self.model);
-    setsize(self, self.mins, self.maxs);
-    self.predraw = predraw_spg;
-    sendent_ini_interpolate();
+    if( isNew ){
+      self.drawmask = MASK_ENGINE;
+      sendent_setup_weapons();
+      setmodel(self, self.model);
+      setsize(self, self.mins, self.maxs);
+      self.predraw = predraw_spg;
+      sendent_ini_interpolate();
+    }
   }
   
   self.shield = ReadShort();
@@ -134,7 +133,11 @@ void( float isNew, float changeFlags) sendent_handle_spg={
 float() predraw_spg={
   local entity weps;
   local vector saved;
-
+  
+  if( self.deadflag != DEAD_NO ){
+    return FALSE;
+  }
+  
   if( self.nextthink != self.frame1time ){
     self.frame2time = self.frame1time;
     self.frame1time = self.nextthink;

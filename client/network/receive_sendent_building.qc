@@ -31,13 +31,13 @@ void() sendevent_building_die={
   setorigin(self, self.origin + (v_up * -3));
   
   if( self.effect1.count && self.effect1 != world ){
-    remove(self.effect1);
+    sendent_handle_remove(self.effect1);
   }
   if( self.effect2.count && self.effect2 != world ){
-    remove(self.effect2);
+    sendent_handle_remove(self.effect2);
   }
   if( self.effect3.count && self.effect3 != world ){
-    remove(self.effect3);
+    sendent_handle_remove(self.effect3);
   }
   
   if( (self.spawnflags & 4194304) ){
@@ -67,8 +67,11 @@ void() sendevent_building_die={
 */
 void( float isNew, float changeFlags) sendent_handle_building={
   local float prevShield;
+  local float prevDeadflag;
   
   prevShield = self.shield;
+  prevDeadflag = self.deadflag;
+  
   self.energy = ReadShort();
   self.shield = ReadShort();
   
@@ -84,33 +87,38 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.entId = ReadLong();
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
-  }    
-  if( isNew ){
-    makevectors(self.angles);
-    data_sync_new_building(self.data_idx);
-    self.data_type = DATA_BLD;
-    self.flags = self.flags | (FL_MONSTER | FL_UNIT); 
-    self.colormod = '1 1 1';
+    
+    self.deadflag = DEAD_NO;
     setorigin(self, self.origin);
-    self.drawmask = MASK_ENGINE;      
-    self.scale = 1;
-    self.alpha = 1;
-    if( self.th_walk ){
-      self.th_walk();
-    }
-    if( (self.spawnflags & 4194304) ){
-      if( lastMapKeyObject ){
-        //build linked list backwards for later forward iteration.
-        lastMapKeyObject.w_slot = self;
-        lastMapKeyObject = self;
+    if( isNew ){
+      self.drawmask = MASK_ENGINE;
+      self.scale = 1;
+      self.alpha = 1;
+      
+      makevectors(self.angles);
+      data_sync_new_building(self.data_idx);
+      self.data_type = DATA_BLD;
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT); 
+      self.colormod = '1 1 1';
+
+      if( self.th_walk ){
+        self.th_walk();
       }
-      else{
-        //start chain
-        mapKeyObject = self;
-        lastMapKeyObject = self;
+      if( (self.spawnflags & 4194304) ){
+        if( lastMapKeyObject ){
+          //build linked list backwards for later forward iteration.
+          lastMapKeyObject.w_slot = self;
+          lastMapKeyObject = self;
+        }
+        else{
+          //start chain
+          mapKeyObject = self;
+          lastMapKeyObject = self;
+        }
       }
     }
-  }
+  }    
+
   
   //rider for desired stat changes
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -134,23 +142,25 @@ void( float isNew, float changeFlags) sendent_handle_building={
 
   if( (changeFlags & SENDFLAG_BURN) ){
     self.burnBits = ReadLong();
-    if( (self.burnBits & WEAPON1) && !self.effect1.count ){
-      self.effect1 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.85;
-    }
-    if( (self.burnBits & WEAPON2) && !self.effect2.count ){
-      self.effect2 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.75;
-    }
-    if( (self.burnBits & WEAPON3) && !self.effect3.count ){
-      self.effect3 = te_building_fire_start( self );
-      self.colormod = self.colormod * 0.67;
+    if( self.burnBits > 0 ){
+      if( (self.burnBits & WEAPON1) && self.effect1.owner != self ){
+        self.effect1 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.85;
+      }
+      if( (self.burnBits & WEAPON2) && self.effect2.owner != self ){
+        self.effect2 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.75;
+      }
+      if( (self.burnBits & WEAPON3) && self.effect3.owner != self ){
+        self.effect3 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.67;
+      }
     }
   }
 
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    if( self.deadflag > DEAD_NO ){
+    if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO){
       self.origin_x = ReadCoord();
       self.origin_y = ReadCoord();
       self.origin_z = ReadCoord();
@@ -166,8 +176,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
         data_building_death1(); 
       }
     }
-  } 
-  
+  }
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
 };

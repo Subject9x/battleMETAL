@@ -34,17 +34,17 @@ void() sendevent_tank_die={
   local entity this;
   local entity rem;
   
-  if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
-    rem = self.torsoCenter;
-    self.torsoCenter = world;
-    remove(rem);
-  }     
+  if( (self.flags & FL_TURRET) ){
+    if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
+      sendent_handle_remove(self.torsoCenter);
+    }     
+  }
   weps = self.w_slot;
   while( weps ){
     rem = weps;
     weps = rem.w_slot;
     if( rem.data_idx && rem.owner == self ){
-      remove(rem);
+      sendent_handle_remove(rem);
     }
   }
   
@@ -73,7 +73,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   self.angles_y = ReadAngle();
   self.angles_z = ReadAngle();
   
-    //EVENT - NEW ENTITY
+  //EVENT - NEW ENTITY
   if( changeFlags & SENDFLAG_NEWENT ){
     self.entId = ReadLong();
     self.faction = ReadByte();
@@ -87,24 +87,24 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
+    
     newName = ReadString();
     if( newName != "" ){
       self.netname = strzone(newName);
     }
-  }
-  if( isNew ){    
+    self.deadflag = DEAD_NO;
     self.skin =  self.faction - 1;
     self.data_type = DATA_VEHC;
     self.flags = self.flags | (FL_MONSTER | FL_UNIT);
     data_sync_new_vehicle( self.data_idx );
-    self.drawmask = MASK_ENGINE;
-    
-    sendent_setup_weapons();
-
-    setmodel(self, self.model);
-    setsize(self, self.mins, self.maxs);
-    self.predraw = predraw_tank;
-    sendent_ini_interpolate();
+    if( isNew ){    
+      self.drawmask = MASK_ENGINE;
+      sendent_setup_weapons();
+      setmodel(self, self.model);
+      setsize(self, self.mins, self.maxs);
+      self.predraw = predraw_tank;
+      sendent_ini_interpolate();
+    }
   }
   self.shield = ReadShort();
   
@@ -145,6 +145,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
     }
   }
+  
 };
 
 /*
@@ -153,26 +154,24 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
 float() predraw_tank={
   local entity weps;
   local vector saved;
-
-  if( self.nextthink != self.frame1time ){
-    self.frame2time = self.frame1time;
-    self.frame1time = self.nextthink;
-    self.origin2 = self.origin1;
-		self.origin1 = self.origin;
-  }
-  self.lerpfrac = (time - self.frame2time) / (self.frame1time-self.frame2time);
-  self.lerpfrac = 1-bound(0, self.lerpfrac, 10);
-
-  if( (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)) ){
-    saved = self.origin;
-    self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-    self.origin_z = saved_z;
-  }
-  else{
-    self.origin2 = self.origin1 = self.origin;
-  }
-  
   if( self.deadflag == DEAD_NO ){
+    if( self.nextthink != self.frame1time ){
+      self.frame2time = self.frame1time;
+      self.frame1time = self.nextthink;
+      self.origin2 = self.origin1;
+      self.origin1 = self.origin;
+    }
+    self.lerpfrac = (time - self.frame2time) / (self.frame1time-self.frame2time);
+    self.lerpfrac = 1-bound(0, self.lerpfrac, 10);
+
+    if( (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)) ){
+      saved = self.origin;
+      self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+      self.origin_z = saved_z;
+    }
+    else{
+      self.origin2 = self.origin1 = self.origin;
+    }
     makevectors(self.angles);
     if( self.torsoCenter != world ){
       self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
@@ -189,7 +188,8 @@ float() predraw_tank={
         weps.origin = self.torsoCenter.origin + saved;
       }
     }
-  }
   
-  return TRUE;
+    return TRUE;
+  }
+  return FALSE;
 };

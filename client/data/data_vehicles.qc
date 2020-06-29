@@ -36,8 +36,6 @@ void() data_vehicle_foslager = {
   data_ini_foslager_();
       
   setmodel(self, self.model);
-
-  self.torsoCenter.drawmask = MASK_NORMAL;
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
@@ -50,8 +48,6 @@ void() data_vehicle_dunerunner = {
   data_ini_dunerunner_();
   
   setmodel(self, self.model);
-
-  self.torsoCenter.drawmask = MASK_NORMAL;
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
@@ -79,7 +75,6 @@ void() data_vehicle_trowel = {
   data_ini_trowel_();
   
   setmodel(self, self.model);
-  self.torsoCenter.drawmask = MASK_NORMAL;
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
@@ -95,14 +90,11 @@ void() data_vehicle_wreck={
   makevectors(self.angles);  
   shell = spawn();
   shell.angles = self.angles;
-  shell.origin = self.origin + (v_up * -2);
-  shell.model = self.model;
-  setmodel(shell, shell.model);
+  setmodel(shell, self.model);
   setsize(shell, self.mins, self.maxs);
-  setorigin(shell, shell.origin);
+  setorigin(shell,  self.origin + (v_up * -2));
   shell.colormod = '0.33 0.33 0.33';
   shell.vec_size = self.vec_size;
-  shell.drawmask = MASK_NORMAL;
   
   self.alpha = 0;
   self.effects = self.effects | EF_NODRAW;
