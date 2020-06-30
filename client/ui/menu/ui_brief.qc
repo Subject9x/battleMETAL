@@ -115,7 +115,7 @@ void(vector ofs) menu_briefMissionInfo={
   local vector fontSizeSmall, fontSizeMedium;
   
   fontSizeSmall = '8 8';
-  fontSizeMedium = '10 8';
+  fontSizeMedium = '10 10';
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -139,13 +139,13 @@ void(vector ofs) menu_briefMissionInfo={
   drawstring( ofs + gui_percentToPixelRawVec('42 34'), strcat(ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
   //sector
   drawstring( ofs+ gui_percentToPixelRawVec('7 44'), "Sector:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs+ gui_percentToPixelRawVec('42 44'), MSN_SECTOR, '10 8 0', '1 1 1', 1, 0);
+  drawstring( ofs+ gui_percentToPixelRawVec('42 44'), MSN_SECTOR, fontSizeMedium, '1 1 1', 1, 0);
   //location
   drawstring( ofs + gui_percentToPixelRawVec('7 54'), "Location:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs + gui_percentToPixelRawVec('42 54'), MSN_LOCATION, '10 8 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('42 54'), MSN_LOCATION, fontSizeMedium, '1 1 1', 1, 0);
   //local time
   drawstring( ofs + gui_percentToPixelRawVec('7 64'), "Local time:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs + gui_percentToPixelRawVec('42 64'), MSN_LOCALTIME, '10 8 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('42 64'), MSN_LOCALTIME, fontSizeMedium, '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
   
@@ -389,7 +389,7 @@ void(vector ofs) menu_briefObjectivePanel={
   while(eol){
     desc = MSN_OBJ_DESC[lst_idx];
     text = strcat( ftos(lst_idx),") ", desc);
-    line_rtn = gui_wrapText(objectiveOffset, '265 332', text, '12 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+    line_rtn = gui_wrapText(objectiveOffset, '265 332', text, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
     
     if(MSN_OBJ_DESC[(lst_idx+1)] == ""){
       eol = FALSE;
@@ -419,7 +419,7 @@ void(vector ofs) menu_briefIntelPanel={
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
   fpos = ofs + gui_percentToPixelRawVec('22 133');
-  gui_wrapText(fpos, '255 332', MSN_INTEL, '12 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+  gui_wrapText(fpos, '255 332', MSN_INTEL, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
   
   drawfont = drawfont_prev;
   

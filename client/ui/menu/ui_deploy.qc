@@ -148,13 +148,13 @@ void(vector ofs) menu_deploy_missionInfoPanel={
   drawstring(pabelLabelOrg, "-Misson Status-", '10 10 0', '1 1 1', 1, 0);
   
   //mission name
-  drawstring(panelOfs + gui_percentToPixelRawVec('6 19'), "Name:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+  drawstring(panelOfs + gui_percentToPixelRawVec('6 19'), "Name:", '10 10 0', CLR_DEF_GRAY_H, 1, 0);
   namePos = panelOfs + gui_percentToPixelRawVec('32 18');
-  drawstring(namePos, MSN_NAME, '12 10 0', '1 1 1', 1, 0);
+  drawstring(namePos, MSN_NAME, '12 12 0', '1 1 1', 1, 0);
   
   //mission type
   drawstring(panelOfs + gui_percentToPixelRawVec('6 36'), "Type:", '10 8 0', CLR_DEF_GRAY_H, 1, 0); 
-  drawstring(panelOfs + gui_percentToPixelRawVec('32 34'), MSN_TYPE, '12 10 0', '1 1 1', 1, 0); 
+  drawstring(panelOfs + gui_percentToPixelRawVec('32 34'), MSN_TYPE, '12 12 0', '1 1 1', 1, 0); 
   
   drawfont = drawfont_prev;
  
@@ -268,7 +268,7 @@ void(vector ofs) menu_deploy_mechInfoPanel={
     drawstring(spos + gui_percentToPixelRawVec('40 -4'), MECH_DATA_NAMES[CLIENT_MENU_sel_mech], '12 12 0', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     drawstring(spos + gui_percentToPixelRawVec('6 14'), "Type: ", '10 8 0', CLR_DEF_TXT_NONSELECT, 1, 0);
-    drawstring(spos + gui_percentToPixelRawVec('40 14'), type, '12 10 0', t_color, 1, 0);
+    drawstring(spos + gui_percentToPixelRawVec('40 14'), type, '12 12 0', t_color, 1, 0);
     
     drawfont = drawfont_prev;
     //drawstring(spos + gui_percentToPixel(0, 0.0166), "[COST] ", '6 6 0', '1 1 1', 1, 0);

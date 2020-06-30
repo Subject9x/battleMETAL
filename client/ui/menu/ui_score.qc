@@ -493,7 +493,7 @@ void( vector menuOrg ) menu_score_coop_status={
     
     desc = MSN_OBJ_DESC[lst_idx];
     text = strcat( ftos(lst_idx),") ", desc);
-    line_rtn = gui_wrapText(objectiveOffset, '300 150', text, '12 10 0', CLR_DEF_TXT_NONSELECT, 1);
+    line_rtn = gui_wrapText(objectiveOffset, '300 150', text, '12 12 0', CLR_DEF_TXT_NONSELECT, 1);
     
     objectiveStatusOrg_x = menuOrg_x + gui_percentXRaw(335);
     objectiveStatusOrg_x = objectiveStatusOrg_x - gui_percentXRaw(stringwidth(objectiveStatusLabel,0,'14 14') / 2); 
