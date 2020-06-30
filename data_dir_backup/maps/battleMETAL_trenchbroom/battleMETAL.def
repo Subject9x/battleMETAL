@@ -890,6 +890,54 @@ START_INACTIVE 1: start with .isActive = FALSE
 
 
 
+/*QUAKED ai_node_tether (0.988 0.5 0.5) (-10 -10 -18) (10 10 18)
+  Tether nodes help anchor AI to a specific location on the map.
+  When an AI moves out of range of its tether, it will be compelled to make its way BACK
+    to a random <vector> inside (ai_view / 4).
+  
+  AI WILL lookup these nodes when they spawn in!
+  AI cannot accept a node with a pitch difference of > 45d
+    ie: keep nodes on relativaly flat plane with AI's
+  
+For best results, place manually as close to ground as possible!
+
+targetname = [REQUIRED]
+ai_view = game-units of leash size. [default]AI_RANGE_M == 1000 
+faction = faction matching, [default] FACTION_ALL == 255
+-------- KEYS -------- 
+.ai_view = <float> tether radius
+.faction = <float> [faction number]
+.targetname = <string> used by AI to find node
+
+-------- SPAWNFLAGS -------- 
+*/
+
+
+
+
+/*QUAKED ai_exec_order (0.85 0.976 0.267) (-10 -10 -18) (10 10 18) - IN_RADIUS
+  Super primitive order execution system:
+  
+targetname = [REQUIRED]
+target = fires the desired trigger
+trigOnAttack = update AI to target THIS enemy.
+trigOnSpawn = update AI to THIS patrol node.
+trigOnDeath = update AI's tether node to THIS.
+
+faction = faction matching, [default] FACTION_ALL == 255
+-------- KEYS -------- 
+.targetname = <string> used by AI to find node
+.faction = <float> [faction number]
+.delay = <float> game seconds before firing.
+.ai_view = <float> only for IN_RADIUS, default 100
+
+-------- SPAWNFLAGS --------
+IN_RADIUS 2 : will find any <faction> units in .ai_vew
+*/
+
+
+
+
 
 /*QUAKED ai_change_faction (0.988 0.976 0.267) (-16 -16 -16) (16 16 16) START_OFF REMOVE_ONUSE DELAY_FIRE
 changes the faction field of the targeted objects

@@ -103,9 +103,14 @@ entity() node_recall_setup={
 
 void() ai_node_check={
   local entity nodeCheck;
-  if( self.target ){
+  if( self.target || self.target != "" ){
     nodeCheck = find(world, targetname, self.target );
-    if( !nodeCheck ){
+    if( nodeCheck ){
+      //wires nodes together for custom chain traversal
+      self.partNext = nodeCheck;
+      nodeCheck.partPrev = self;
+    }
+    else{
       if( cvar("developer") ){
         cons_log2Strings("node", self.targetname, "can't find target of", self.target);  //DEBUG
       }
@@ -120,8 +125,14 @@ void() ai_node_check={
 
 
 /*QUAKED ai_node (0.988 0.976 0.267) (-10 -10 -18) (10 10 18) - START_INACTIVE
+
 This is used to setup patrol and move paths for AI.
 For best results, place manually as close to ground as possible!
+
+!NOTE! Make sure nodes can reliably see each other around walls and steep floors!
+when in doubt, add more nodes, because the bot uses these to 'see' around corners
+in their patrol path.
+
 -------- KEYS -------- 
 .faction = <float> [faction number]
 .targetname = <string> used by AI to find node
@@ -135,7 +146,7 @@ START_INACTIVE 1: start with .isActive = FALSE
 void() ai_node={
   
   if ( !self.targetname ){
-		objerror ("node - missing targetname");
+    objerror (strcat("[ERROR] ai_node (", vtos(self.origin),") - missing targetname!"));
     return;
   }
   node_setup();
@@ -175,11 +186,11 @@ START_INACTIVE 1: start with .isActive = FALSE
 void() ai_node_counter={
   
   if ( !self.targetname || self.targetname == "" ){
-		objerror ("node - missing targetname");
+    objerror (strcat("[ERROR] ai_node_counter (", vtos(self.origin),") - missing targetname!"));
     return;
   }
   if( !self.trigOnAttack || self.trigOnAttack == "" ){
-    objerror("node - missing trigOnAttack target");
+    objerror (strcat("[ERROR] ai_node_counter (", vtos(self.origin),") - missing trigOnAttack!"));
     return;
   }
   node_setup();
@@ -199,3 +210,125 @@ void() ai_node_counter={
   self.nextthink = time + 1;
 };
 
+/*QUAKED ai_node_tether (0.988 0.5 0.5) (-10 -10 -18) (10 10 18)
+  Tether nodes help anchor AI to a specific location on the map.
+  When an AI moves out of range of its tether, it will be compelled to make its way BACK
+    to a random <vector> inside (ai_view / 4).
+  
+  AI WILL lookup these nodes when they spawn in!
+  AI cannot accept a node with a pitch difference of > 45d
+    ie: keep nodes on relativaly flat plane with AI's
+  
+For best results, place manually as close to ground as possible!
+
+targetname = [REQUIRED]
+ai_view = game-units of leash size. [default]AI_RANGE_M == 1000 
+faction = faction matching, [default] FACTION_ALL == 255
+-------- KEYS -------- 
+.ai_view = <float> tether radius
+.faction = <float> [faction number]
+.targetname = <string> used by AI to find node
+
+-------- SPAWNFLAGS -------- 
+*/
+void() ai_node_tether={
+    
+  if ( !self.targetname || self.targetname == "" ){
+    objerror (strcat("[ERROR] ai_node_tether (", vtos(self.origin),") - missing targetname!"));
+    return;
+  }
+  
+  node_setup();
+  self.pausetime = 0;
+  
+  if( !self.ai_view ){
+    self.ai_view = AI_RANGE_M;
+  }
+  
+  if( !self.faction ){
+    self.faction = FACTION_ALL;
+  }
+};
+
+void() ai_exec_order_use={
+  local entity ent;
+  local entity thisNode;
+  local float entDist;
+  local float hasPatrol;
+  local float hasEnemy;
+  
+  if( self.delay ){
+    self.think = self.use;
+    self.nextthink = time + self.delay;
+    self.use = SUB_Null;
+    return;
+  }
+  thisNode = self;
+  if( self.trigOnSpawn || self.trigOnSpawn != "" ){
+    hasPatrol = TRUE;
+  }
+    if( self.trigOnAttack || self.trigOnAttack != "" ){
+    hasEnemy = TRUE;
+  }
+  for( ent = nextent(world); ent.faction == self.faction; ent = nextent(ent) ){
+    if( !(ent.flags & FL_UNIT) ){
+      continue;
+    }
+    if( ent.deadflag != DEAD_NO ){
+      continue;
+    }
+    entDist = vlen(ent.origin - self.origin);
+    if( entDist > self.ai_view ){
+      continue;
+    }
+    if( hasPatrol ){
+      ent.target = strzone(self.trigOnSpawn);
+    }
+    if( hasPatrol ){
+      ent.enemy = find(world, targetname, self.trigOnAttack);
+    }
+    if( ent.use ){
+      self = ent;
+        ent.use();
+      self = thisNode;
+    }
+  }
+};
+
+/*QUAKED ai_exec_order (0.85 0.976 0.267) (-10 -10 -18) (10 10 18) - IN_RADIUS
+  Super primitive order execution system:
+  
+
+targetname = [REQUIRED]
+target = fires the desired trigger
+trigOnAttack = update AI to target THIS enemy.
+trigOnSpawn = update AI to THIS patrol node.
+trigOnDeath = update AI's tether node to THIS.
+
+faction = faction matching, [default] FACTION_ALL == 255
+-------- KEYS -------- 
+.targetname = <string> used by AI to find node
+.faction = <float> [faction number]
+.delay = <float> game seconds before firing.
+.ai_view = <float> only for IN_RADIUS, default 100
+
+-------- SPAWNFLAGS --------
+IN_RADIUS 2 : will find any <faction> units in .ai_vew
+*/
+void() ai_exec_order={
+  if ( !self.targetname || self.targetname == "" ){
+    objerror (strcat("[ERROR] ai_exec_order (", vtos(self.origin),") - missing targetname!"));
+    return;
+  }
+  if ( !self.target || self.target == "" ){
+    objerror (strcat("[ERROR] ai_exec_order (", vtos(self.origin),") - missing target!"));
+    return;
+  }
+  node_setup();
+  self.pausetime = 0;
+  
+  if( !self.ai_view ){
+    self.ai_view = 100;
+  }
+  self.use = ai_exec_order_use;
+};

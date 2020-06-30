@@ -130,6 +130,33 @@ void() ai_pilot_ini_ace;
 void() node_setup;
 entity() node_recall_setup;
 
+//AI TRAIL/BREADCRUMB
+float TETHER_NONE   = 0;  //-> .tetherStatus
+float TETHER_NODE   = 1;  //-> .tetherStatus
+float TETHER_PATROL = 2;  //-> .tetherStatus
+float TETHER_ENT    = 3;  //-> .tetherStatus
+float TETHER_SELF   = 4;  //-> .tetherStatus
+.vector trailDest;
+.float trailMax;
+.float trailTotal;
+.entity tetherNode;
+.float tetherStatus; //TETHER_NONE = 0, TETHER_NODE = 1, TETHER_PATROL = 2, TETHER_ENT = 3, TETHER_SELF = 4;
+.vector tetherOrg;  //either closest tether-node, patrol node, or starting origin.
+.vector trail1;
+.vector trail2;
+.vector trail3;
+.vector trail4;
+.vector trail5;
+.vector trail6;
+.vector trail7;
+.vector trail8;
+void() ai_node_tether_find;
+float() ai_node_tether_check;
+float() ai_mark_trail;
+void() ai_trail_back;
+void() ai_trail_forward;
+void() ai_trail_clear;
+
 //AI UTILS - 
 float() ai_can_spawn;
 float() ai_find_target_visual;
@@ -158,6 +185,9 @@ entity() ai_goal_offset_node;
 
 //AI CONTROL - ai_ctrl.qc 
 //float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic;
+void() ai_move_physics;
+void(void() nextFunc, void() pauseFunc) ai_patrol_frame;
+void() ai_tether_frame;
 void() ai_patrol_turn;
 void() ai_rotate_mech;
 void() ai_rotate_tank;
@@ -191,7 +221,9 @@ void( float estate ) ai_turret_set_state;
 float( float scan_mode) ai_check_scan;
 void() ai_face_targ;
 void() ai_face_goal;
+void(vector v) ai_face_origin;
 float(entity targ, float ang_limit) ai_check_face;
+float(vector v, float ang_limit) ai_check_face_origin;
 float(entity t, float ang, float useTurret) ai_check_targ_infront;
 float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;

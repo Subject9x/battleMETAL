@@ -6,8 +6,9 @@ Overview: AI Controller functions, ported mainly from Quake 1
 */
 
 void( float estate ) ai_turret_set_state={
-  if( (self.torsoCenter) )
+  if( (self.torsoCenter) ){
     self.torsoCenter.attack_state = estate;
+  }
 };
 
 /*
@@ -160,10 +161,13 @@ void() ai_touch={
   
 float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic={
 macro_ai_patrol(speed,pauseFunc,nextFunc) 
+  
   local entity nextNode;
-  if((self.goalentity.flags&FL_NODE)){
+  
+  if( (self.goalentity.flags&FL_NODE) ){
     ai_face_goal();
-    if(walkmove(self.angles_y,max(speed,65*AI_WALK_SPD))==FALSE){
+    
+    if( walkmove(self.angles_y,max(speed,65*AI_WALK_SPD))==FALSE ){
       movetogoal(max(self.data_speed_forward,65*AI_WALK_SPD));
       ai_patrol_turn();
     }
@@ -200,9 +204,139 @@ macro_ai_patrol(speed,pauseFunc,nextFunc)
 };
 */
 
+/*
+  Not exactly sure why I converted this to macro except cutting down on stack size?
+  
+*/
+void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
+  local entity nextNode;
+  local float distLeft;
+  local vector viewAng;
+  
+  //paused at node
+  if( time < self.pausetime ){
+    pauseFunc();
+    return;
+  }
+  
+  if( (self.goalentity.flags&FL_NODE) ){
+    distLeft = vlen(self.tetherOrg - self.origin);
+    //Going to node
+    if( distLeft > AI_RANGE_S ){
+      cons_logAFloat("distLeft > AI_RANGE_S", 1);  //debug
+      ai_face_goal();
+      self.torsoCenter.attack_state = TR_GOAL;
+      self.legs.attack_state = TR_GOAL;
+      if( ai_check_face(self.goalentity, 0.75) ){
+        walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD));
+      }
+      else{
+        walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD));
+      }
+      macro_ai_frame(nextFunc)
+      return;
+    }
+    
+    //Arriving at node
+    if( distLeft < AI_RANGE_S && self.tetherStatus == TETHER_PATROL ){
+      cons_logAFloat("distLeft > (AI_RANGE_S * 0.5)", 1);  //debug
+      self.tetherStatus = TETHER_NODE;
+      self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, 128, 32);
+      self.torsoCenter.attack_state = TR_NORM;
+      self.legs.attack_state = TR_NORM;
+      if( ai_check_face_origin(self.tetherOrg, 0.75) ){
+        walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD));
+      }
+      else{
+        walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD));
+      }
+      macro_ai_frame(nextFunc)
+      return;
+    }
+    if( distLeft > AI_NODE_DISTANCE ){
+      cons_logAFloat("distLeft > AI_NODE_DISTANCE", 1);  //debug
+      ai_face_origin(self.tetherOrg);
+      self.torsoCenter.attack_state = TR_NORM;
+      self.legs.attack_state = TR_NORM;
+      if( ai_check_face_origin(self.tetherOrg, 0.75) ){
+        walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD));
+      }
+      else{
+        walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD));
+      }
+      macro_ai_frame(nextFunc)
+      return;
+    }
+    
+    //arrived, set pause and next node
+    if( self.goalentity.pausetime ){
+      self.pausetime = self.goalentity.pausetime;
+      self.pausetime = min(1, self.pausetime - (self.ai_rank / 2));
+      self.pausetime = self.pausetime+time;
+    }
+    if( self.goalentity.partNext != world ){
+      self.movetarget = self.goalentity.partNext;
+      self.tetherStatus = TETHER_PATROL;
+      self.tetherOrg = self.movetarget.origin;
+      makevectors(self.angles);
+      traceline(self.origin + (v_up * (self.mins_z * 0.85)), self.origin + (v_forward * 512), MOVE_NORMAL, self);
+      if( trace_fraction < 0.75) {
+        self.movetarget = self.goalentity;
+        self.tetherStatus = TETHER_PATROL;
+        self.tetherOrg = self.goalentity.origin;
+      }
+    }
+    else{
+      self.movetarget = world;
+      self.tetherStatus = TETHER_NODE;
+      cons_logAFloat("self.movetarget = world;", 1);  //debug
+    }
+    macro_ai_frame(pauseFunc)
+    return;
+  }  
+  macro_ai_frame(pauseFunc)
+};
+
+void() ai_tether_frame={
+  if( self.tetherOrg == '0 0 0' ){
+    //ai lacks a tether node at this time;
+    self.tetherStatus = TETHER_SELF;
+    self.think = self.th_stand;
+    self.nextthink = time + 0.05;
+    return;
+  }
+  if( vlen(self.tetherOrg - self.origin) > 32 ){
+    //travelling to node
+    ai_face_origin(self.tetherOrg);
+    self.legs.attack_state = TR_NORM;
+    if( self.enemy ){
+      self.torsoCenter.attack_state = TR_TARG;
+    }
+    else{
+      self.torsoCenter.attack_state = TR_NORM;
+    }
+    if( ai_check_face_origin(self.tetherOrg, 0.75) ){
+      walkmove(self.angles_y, 65*AI_WALK_SPD);
+    }
+    else{
+      walkmove(self.angles_y, 15*AI_WALK_SPD);
+    }
+  }
+  else{
+    //reached the node
+    self.think = self.th_stand;
+    self.nextthink = time + 0.05;
+  }
+};
 
 void() ai_face_goal={
   self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+  ChangeYaw();
+};
+
+
+void(vector v) ai_face_origin={
+  self.ideal_yaw = vectoyaw(v - self.origin);  
   ChangeYaw();
 };
 
@@ -300,20 +434,7 @@ void( float moveSpeed, void() nextFrameFunc, void() pauseFrameFunc ) ai_hunt_log
   actions are the atomic functions of any AI state;
 ===================================================
 */
-float( float scan_mode) ai_check_scan={
-  local float scanned;
-  scanned = FALSE;
-  if( time > self.ai_viewtime ){
-    self.ai_viewtime = time + self.ai_viewcheck;
-    if( scan_mode ){
-      scanned = ai_find_target_radar();
-    }
-    else{
-      scanned = ai_find_target_visual();
-    }
-  }
-  return scanned;
-};
+
 
 void() ai_face_targ={
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
@@ -361,31 +482,7 @@ void( float alt_low, float alt_max) ai_fly_update={
   } 
 }
 
-/*
-  Adjust AI's .accuracy setting based on movement
-  TRUE = unit is moving, adjust self.accuracy up to spreadDefault_y (max)
-  FALSE = unit is standing still, self.accuracy down to spreadDefault_x (min)
-*/
-void( float move ) ai_update_accuracy={
-  local float rate;
-  rate = self.spreadDefault_z;
-  if( move ){      
-    //unit is moving, increase spread factor
-    rate = rate - self.accuracyMod;
-    self.accuracy = self.accuracy + rate;
-    if( self.accuracy > self.spreadDefault_y ){
-      self.accuracy = self.spreadDefault_y;
-    }
-  }
-  else{
-    //standing still, lessen the spread
-    rate = rate + self.accuracyMod;
-    self.accuracy = self.accuracy - (rate * 2);
-    if( self.accuracy < self.spreadDefault_x ){
-      self.accuracy = self.spreadDefault_x;
-    }
-  }
-};
+
 
 /*
   Checks to see if Entity T is in the ANG arc of self
@@ -410,6 +507,27 @@ float(entity t, float ang) ai_check_face={
   }
   
 	return FALSE;
+};
+
+float(vector v, float ang_limit) ai_check_face_origin={
+  local vector vang, vec;
+  local float dot;
+  
+  if( (self.flags & FL_TURRET) ){
+    vang = self.torsoCenter.angles;
+  }
+  else{
+    vang = self.angles;
+  }
+  
+  makevectors ( vang );
+  vec = normalize (v - self.origin);
+  dot = vec * v_forward;
+
+  if ( dot >= ang_limit){
+    return TRUE;
+  }
+  return FALSE;
 };
 
 /*
@@ -618,6 +736,8 @@ void() ai_setup_patrol={
       self.think = SUB_Null;
       return;
     }
+    self.tetherStatus = TETHER_PATROL;  //debug
+    self.tetherOrg = self.movetarget.origin;
     self.nextthink = time + (random() * 2);
     if( (self.spawnflags & COLD_START) ){
       self.spawnflags = self.spawnflags - COLD_START;
@@ -627,14 +747,22 @@ void() ai_setup_patrol={
     }
   }
   else{
-    self.think = self.th_stand;
     if( (self.spawnflags & DEBUG_MODE) ){
       self.think = SUB_Null;
       return;
     }
+      //debug
+    //check for tether node
+    ai_node_tether_find();
+    if( self.tetherStatus == TETHER_NODE ){
+      self.think = self.th_walk;
+    }
+    else{
+      self.think = self.th_stand;
+    }
     self.nextthink = time + (random() * 2);
     if( (self.spawnflags & COLD_START) ){
-      self.spawnflags = self.spawnflags - COLD_START;
+      self.spawnflags = self.spawnflags - (self.spawnflags & COLD_START);
       self.nextthink = self.nextthink + 7;
     } 
   }
