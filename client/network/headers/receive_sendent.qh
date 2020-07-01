@@ -18,6 +18,8 @@ float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
 .vector lastangle;
 .float lastupdate;
 .float prevupdate;
+.float frame1;
+.float frame2;
 
 .float kills;
 .float deaths;
@@ -40,10 +42,14 @@ void( entity removeMe ) sendent_handle_remove={
   }
 };
 
-float() predraw_weapon
-float() predraw_tank;
-float() predraw_spg;
-float() predraw_mech_ai;
+.void() interpolate_entity;
+void() interpolate_origin;
+void() interpolate_angle;
+void() interpolate_ground;
+
+void() interpolate_tank;
+void() interpolate_mech_ai;
+void() interpolate_turret;
 
 void( float isNew ) sendent_handle_update;
 void( float isNew, float changeFlags ) sendent_handle_mech_ai;

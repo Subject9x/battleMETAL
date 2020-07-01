@@ -305,8 +305,16 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     oldSelf = self;
     self = world;
     while( (self = nextent(self)) ){
-      if( self.model ){
+      if( self.data_type && self.deadflag == DEAD_NO ){
+        if( self.interpolate_entity ){
+          self.interpolate_entity();
+        }
         addentity(self);
+      }
+      else{
+        if( self.model && !self.partTypeId && !self.w_slot ){
+          addentity(self);
+        }
       }
     }
     self = oldSelf;

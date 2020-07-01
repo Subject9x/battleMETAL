@@ -62,6 +62,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   local float pclEffect;
   local vector turretAng;
   local string newName;
+  local entity parent;
   
   prevShield = self.shield;
   
@@ -69,9 +70,9 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   self.origin_y = ReadCoord();
   self.origin_z = ReadCoord();
   
-  self.angles_x = ReadAngle();
-  self.angles_y = ReadAngle();
-  self.angles_z = ReadAngle();
+  self.angles_x = anglemod(ReadAngle());
+  self.angles_y = anglemod(ReadAngle());
+  self.angles_z = anglemod(ReadAngle());
   
   //EVENT - NEW ENTITY
   if( changeFlags & SENDFLAG_NEWENT ){
@@ -89,21 +90,21 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.next_wepn9 = ReadByte();
     
     newName = ReadString();
-    if( newName != "" ){
-      self.netname = strzone(newName);
-    }
-    self.deadflag = DEAD_NO;
-    self.skin =  self.faction - 1;
-    self.data_type = DATA_VEHC;
-    self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-    data_sync_new_vehicle( self.data_idx );
-    if( isNew ){    
-      self.drawmask = MASK_ENGINE;
+    if( isNew ){
+      if( newName != "" ){
+        self.netname = strzone(newName);
+      }
+      self.deadflag = DEAD_NO;
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      self.data_type = DATA_VEHC;
+      self.skin =  self.faction - 1;
+      self.movetype = MOVETYPE_STEP;
+      data_sync_new_vehicle( self.data_idx );
       sendent_setup_weapons();
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
-      self.predraw = predraw_tank;
       sendent_ini_interpolate();
+      self.interpolate_entity = interpolate_tank;
     }
   }
   self.shield = ReadShort();
@@ -145,51 +146,61 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
     }
   }
-  
+  if( isNew ){      
+    if( self.torsoCenter ){
+      parent = self;
+      self = parent.torsoCenter;
+        sendent_ini_interpolate();
+      self = parent;
+    }
+  }
 };
 
-/*
-  PREDRAW - Tank
-*/
-float() predraw_tank={
-  local entity weps;
+void() interpolate_tank={
+  local entity parent;
+  local entity wepn;
   local vector saved;
-  if( self.deadflag == DEAD_NO ){
-    if( self.nextthink != self.frame1time ){
-      self.frame2time = self.frame1time;
-      self.frame1time = self.nextthink;
-      self.origin2 = self.origin1;
-      self.origin1 = self.origin;
-    }
-    self.lerpfrac = (time - self.frame2time) / (self.frame1time-self.frame2time);
-    self.lerpfrac = 1-bound(0, self.lerpfrac, 10);
-
-    if( (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)) ){
-      saved = self.origin;
-      self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-      self.origin_z = saved_z;
-    }
-    else{
-      self.origin2 = self.origin1 = self.origin;
-    }
-    makevectors(self.angles);
-    if( self.torsoCenter != world ){
-      self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
-    }
-    for( weps = self.w_slot; weps != world; weps = weps.w_slot ){
-      if( weps.partParentId == M_LEGS ){
-        makevectors(self.angles);
-        saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
-        weps.origin = self.origin + saved ;
+  
+  interpolate_origin();
+  interpolate_angle();
+  interpolate_ground();
+  
+  parent = self;
+  makevectors(parent.angles);
+  if( self.torsoCenter ){
+    self = self.torsoCenter;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      interpolate_origin();
+      interpolate_angle();
+      interpolate_ground();
+      self.think = SUB_Null;
+      self.nextthink = time + 0.01;
+      addentity(self);
+    self = parent;
+  }
+  
+  wepn = self.w_slot;
+  while( (wepn != world) ){
+    self = wepn;
+      if( self.partParentId == M_LEGS ){
+        makevectors(parent.angles);
+        saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+        self.origin = parent.origin + saved ;
       }
       else{
-        makevectors(self.torsoCenter.angles);
-        saved = (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
-        weps.origin = self.torsoCenter.origin + saved;
+        makevectors(parent.torsoCenter.angles);
+        saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+        self.origin = parent.torsoCenter.origin + saved;
       }
-    }
-  
-    return TRUE;
+      interpolate_origin();
+      interpolate_angle();
+      interpolate_ground();
+      self.think = SUB_Null;
+      self.nextthink = time + 0.01;
+      addentity(self);
+    self = parent;
+    wepn = wepn.w_slot;
   }
-  return FALSE;
+  self.think = SUB_Null;
+  self.nextthink = time + 0.01;
 };

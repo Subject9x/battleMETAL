@@ -78,21 +78,21 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.next_wepn9 = ReadByte();
     
     newName = ReadString();
-    if( newName != "" ){
-      self.netname = strzone(newName);
-    }
-    self.deadflag = DEAD_NO;
-    self.skin =  self.faction - 1;
-    self.data_type = DATA_VEHC;
-    self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-    data_sync_new_vehicle(self.data_idx);
-    if( isNew ){
-      self.drawmask = MASK_ENGINE;
+    if( isNew ){    
+      if( newName != "" ){
+        self.netname = strzone(newName);
+      }
+      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      self.data_type = DATA_VEHC;
+      self.skin =  self.faction - 1;
+      self.movetype = MOVETYPE_STEP;
+      data_sync_new_vehicle(self.data_idx);
+      self.deadflag = DEAD_NO;
       sendent_setup_weapons();
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
-      self.predraw = predraw_spg;
       sendent_ini_interpolate();
+      self.interpolate_entity = interpolate_tank;
     }
   }
   
@@ -125,42 +125,4 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
-};
-
-/*
-  PREDRAW - SPG
-*/
-float() predraw_spg={
-  local entity weps;
-  local vector saved;
-  
-  if( self.deadflag != DEAD_NO ){
-    return FALSE;
-  }
-  
-  if( self.nextthink != self.frame1time ){
-    self.frame2time = self.frame1time;
-    self.frame1time = self.nextthink;
-    self.origin2 = self.origin1;
-		self.origin1 = self.origin;
-  }
-  self.lerpfrac = (time - self.frame2time) / (self.frame1time-self.frame2time);
-  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
-
-  if( (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)) ){
-    saved = self.origin;
-    self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-    self.origin_z = saved_z;
-  }
-  else{
-    self.origin2 = self.origin1 = self.origin;
-  }
-  
-  if( self.deadflag == DEAD_NO ){
-    makevectors(self.angles);
-    for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-      weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
-    }
-  }
-  return TRUE;
 };
