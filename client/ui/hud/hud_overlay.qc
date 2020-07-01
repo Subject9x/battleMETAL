@@ -160,6 +160,13 @@ void(entity t)hud_render_vip_overlay_target={
 */
 void() hud_render_vip_overlay={
   local entity ent;
+  local float dist;
+  local float targSizeX, targSizeY, targSizeZ, targZbottom;
+  local vector viewAngle;
+  local vector imgSize, factionColor;
+  local vector br, bl;
+  local vector c_br, c_bl;
+    
   for(ent = nextent(world); ent != world; ent = nextent(ent)){
     if( !(ent.spawnflags & IS_VIP) ){
       continue;
@@ -168,13 +175,9 @@ void() hud_render_vip_overlay={
       continue;
     }
     if( ent.faction != CLIENT_faction ){
-      hud_render_vip_overlay( ent );
+      hud_render_vip_overlay_target( ent );
       continue;
     }
-    local float dist;
-    local float targSizeX, targSizeY, targSizeZ, targZbottom;
-    local vector viewAngle;
-    local vector imgSize, factionColor;
     
     targSizeX = ent.maxs_x;
     targSizeY = ent.maxs_y; 
@@ -213,8 +216,6 @@ void() hud_render_vip_overlay={
     viewAngle_x = viewAngle_x * -1;
 
     makevectors(viewAngle);
-    local vector br, bl;
-    local vector c_br, c_bl;
 
     br = ent.origin + (v_right * targSizeX) + (v_up * (targZbottom * -1));
     bl = ent.origin + (v_right * (targSizeX * -1)) + (v_up * (targZbottom * -1));
