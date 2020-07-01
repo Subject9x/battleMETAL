@@ -192,18 +192,6 @@ void() PlayerPostThink = {
       self.doRadarSweep();
     }
   }
-  
-  //DEBUG / DEV ONLY!
-  if( cvar("developer") ){
-    if(self.button0){
-      makevectors(self.v_angle);
-      traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
-      self.compOffset = trace_endpos;
-      //te_beam_esr(self.origin + (v_up * -4), trace_endpos);
-    }
-  }
-  //========================================  
-
 // check for attack
   playerAttack();
 
@@ -282,6 +270,18 @@ void() PlayerPostThink = {
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
     }
   }
+    //DEBUG / DEV ONLY!
+  if( cvar("developer") ){
+    if(self.button3){
+      makevectors(self.v_angle);
+      traceline(self.origin, self.origin + (v_forward * 10000), FALSE, self);
+      self.compOffset = trace_endpos;
+      
+      trailparticles(self, particleeffectnum("TE_LAS_RAIL"), self.origin + (v_up * -8), self.origin + (v_forward * 10000)); //debug
+      cons_logAVector("view trace_normal", util_trace_norm_angle()); //debug
+    }
+  }
+  //========================================  
 };
 
 void() PlayerPreThink_powerup={

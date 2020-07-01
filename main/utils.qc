@@ -623,28 +623,55 @@ void() util_updateViewBob={
 
 
 /*
-  Cast out 8 rays to find random furthest point from an origin
+  Cast out 6 rays to find random furthest point from an origin
 */
 vector(vector org, entity filter, float len, float height) util_find_random_farpoint={
   local float itr;
   local vector ang;
   local vector landing;
   
-  ang = '0 0 0';
-  itr = ceil(random()*8);
-  
-  ang_y = (itr * 45);
+  ang = self.angles;
+  //quantize rays into semi-random 60deg increments, then correct for 0==360
+  itr = floor(random()*6);
+  itr = itr * (random() * 30);
+  itr = itr + 30;
+  itr = itr - 90;
+  ang_y = anglemod(ang_y + itr);
   makevectors(ang);
   traceline(org, org + (v_forward * len), MOVE_NORMAL, filter);
 
   landing = trace_endpos + (v_up * height) ;
   if( trace_fraction < 1 ){
-    landing = landing - (v_forward * ((1-trace_fraction) * len)) ;
+    landing = landing - (v_forward * (trace_fraction * len)) ;
   }
 
   return landing;
 };
 
+/*
+  Converts trace_plane_normal into useable angles, 
+  sourced: moddb tutorial.
+*/
+vector() util_trace_norm_angle={
+  local vector norm;
+  local vector normAng;
+  norm = trace_plane_normal;
+  norm_x = 0 - norm_x;
+  norm_y = 0 - norm_y;
+  normAng = vectoangles(norm);
+  return normAng;
+};
+
+
+/*
+  mostly for bots, tracks the last frame's movement
+*/
+float( vector last, vector now, float len ) util_movedelta={
+  if( vlen(now - last) >= len ){
+    return TRUE;
+  }
+  return FALSE;
+};
 /*
 =============
 infront

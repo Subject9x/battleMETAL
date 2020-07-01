@@ -72,8 +72,7 @@ void() ai_spg_patrol1={
     macro_ai_frame(ai_spg_fight_prep)
     return;
   }
-  
-  macro_ai_patrol(self.data_speed_forward, ai_spg_stand1, ai_spg_patrol1)
+  ai_patrol_frame(ai_spg_patrol1, ai_spg_stand1);
 };
 
 void() ai_spg_enter_patrol={

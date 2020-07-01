@@ -23,7 +23,7 @@ void() ai_mech_sniper_patrol1={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol2)
+  ai_patrol_frame(ai_mech_sniper_patrol2, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol2={
   ai_update_accuracy( TRUE );
@@ -33,7 +33,7 @@ void() ai_mech_sniper_patrol2={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol3)
+  ai_patrol_frame(ai_mech_sniper_patrol3, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol3={
   ai_update_accuracy( TRUE );
@@ -43,7 +43,7 @@ void() ai_mech_sniper_patrol3={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol4)
+  ai_patrol_frame(ai_mech_sniper_patrol4, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol4={
   ai_update_accuracy( TRUE );
@@ -53,7 +53,7 @@ void() ai_mech_sniper_patrol4={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol5)
+  ai_patrol_frame(ai_mech_sniper_patrol5, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol5={
   ai_update_accuracy( TRUE );
@@ -63,7 +63,7 @@ void() ai_mech_sniper_patrol5={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol6)
+  ai_patrol_frame(ai_mech_sniper_patrol6, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol6={
   ai_update_accuracy( TRUE );
@@ -73,7 +73,7 @@ void() ai_mech_sniper_patrol6={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol7)
+  ai_patrol_frame(ai_mech_sniper_patrol7, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol7={
   ai_update_accuracy( TRUE );
@@ -83,7 +83,7 @@ void() ai_mech_sniper_patrol7={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol8)
+  ai_patrol_frame(ai_mech_sniper_patrol8, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol8={
   ai_update_accuracy( TRUE );
@@ -93,7 +93,7 @@ void() ai_mech_sniper_patrol8={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol9)
+  ai_patrol_frame(ai_mech_sniper_patrol9, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol9={
   ai_update_accuracy( TRUE );
@@ -103,7 +103,7 @@ void() ai_mech_sniper_patrol9={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol10)
+  ai_patrol_frame(ai_mech_sniper_patrol10, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol10={
   ai_update_accuracy( TRUE );
@@ -113,7 +113,7 @@ void() ai_mech_sniper_patrol10={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol11)
+  ai_patrol_frame(ai_mech_sniper_patrol11, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol11={
   ai_update_accuracy( TRUE );
@@ -123,7 +123,7 @@ void() ai_mech_sniper_patrol11={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol12)
+  ai_patrol_frame(ai_mech_sniper_patrol12, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol12={
   ai_update_accuracy( TRUE );
@@ -133,7 +133,7 @@ void() ai_mech_sniper_patrol12={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol13)
+  ai_patrol_frame(ai_mech_sniper_patrol13, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol13={
   ai_update_accuracy( TRUE );
@@ -143,7 +143,7 @@ void() ai_mech_sniper_patrol13={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol14)
+  ai_patrol_frame(ai_mech_sniper_patrol14, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol14={
   ai_update_accuracy( TRUE );
@@ -153,7 +153,7 @@ void() ai_mech_sniper_patrol14={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol15)
+  ai_patrol_frame(ai_mech_sniper_patrol15, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol15={
   ai_update_accuracy( TRUE );
@@ -163,7 +163,7 @@ void() ai_mech_sniper_patrol15={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol16)
+  ai_patrol_frame(ai_mech_sniper_patrol16, ai_mech_sk_enter_stand);
 };
 void() ai_mech_sniper_patrol16={
   ai_update_accuracy( TRUE );
@@ -173,5 +173,5 @@ void() ai_mech_sniper_patrol16={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_enter_stand, ai_mech_sniper_patrol1)
+  ai_patrol_frame(ai_mech_sniper_patrol1, ai_mech_sk_enter_stand);
 };

@@ -211,8 +211,13 @@ macro_ai_patrol(speed,pauseFunc,nextFunc)
 void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
   local entity nextNode;
   local float distLeft;
-  local vector viewAng;
+  local vector blockCheck;
   local vector orgCheck;
+  local vector norms;
+  
+  local float walkSpeed, cornerSpeed, useSpeed;
+  walkSpeed = max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD);
+  cornerSpeed = max((self.data_speed_forward/4)*AI_WALK_SPD,24*AI_WALK_SPD);
   
   //paused at node
   if( time < self.pausetime ){
@@ -220,12 +225,12 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
     return;
   }
   
-  orgCheck = self.origin;
+  self.lastorigin = self.origin;
   if( (self.goalentity.flags&FL_NODE) ){
     distLeft = vlen(self.tetherOrg - self.origin);
     //Going to node
     if( distLeft > AI_RANGE_S ){
-      cons_logAFloat("distLeft > AI_RANGE_S", distLeft);  //debug
+      //cons_logAFloat("distLeft > AI_RANGE_S", distLeft);  //debug
       ai_face_goal();
       if( (self.flags & FL_TURRET) ){
         self.torsoCenter.attack_state = TR_NORM;
@@ -234,14 +239,23 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
         self.legs.attack_state = TR_NORM;
       }
       if( ai_check_face(self.goalentity, 0.75) ){
-        if( !walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD)) ){
-          movetogoal( max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD) );
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( walkSpeed );
         }
+        useSpeed = walkSpeed;
       }
       else{
-        if( !walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD)) ){
-          movetogoal( max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD) );
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( cornerSpeed );
         }
+        useSpeed = cornerSpeed;
+      }
+      //stuck check
+      if( !util_movedelta( self.lastorigin, self.origin, useSpeed * 0.5 ) ){
+        self.movetype = MOVETYPE_FLY;
+      }
+      else{
+        self.movetype = MOVETYPE_STEP;
       }
       macro_ai_frame(nextFunc)
       return;
@@ -249,26 +263,39 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
     
     //Arriving at node
     if( distLeft < AI_RANGE_S && self.tetherStatus == TETHER_PATROL ){
-      cons_logAFloat("distLeft > (AI_RANGE_S * 0.5)", distLeft);  //debug
+      //cons_logAFloat("distLeft > (AI_RANGE_S * 0.5)", distLeft);  //debug
       self.tetherStatus = TETHER_NODE;
-      self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, 64, 32);
+      self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, 96, 32);
       if( (self.flags & FL_TURRET) ){
         self.torsoCenter.attack_state = TR_NORM;
       }
       if( (self.legs) ){
         self.legs.attack_state = TR_NORM;
       }
-      if( ai_check_face_origin(self.tetherOrg, 0.75) ){
-        walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD));
+      if( ai_check_face(self.goalentity, 0.85) ){
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( walkSpeed );
+        }
+        useSpeed = walkSpeed;
       }
       else{
-        walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD));
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( cornerSpeed );
+        }
+        useSpeed = cornerSpeed;
+      }
+      //stuck check
+      if( !util_movedelta( self.lastorigin, self.origin, useSpeed * 0.5 ) ){
+        self.movetype = MOVETYPE_FLY;
+      }
+      else{
+        self.movetype = MOVETYPE_STEP;
       }
       macro_ai_frame(nextFunc)
       return;
     }
     if( distLeft > AI_NODE_DISTANCE ){
-      cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
+      //cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
       ai_face_origin(self.tetherOrg);
       
       if( (self.flags & FL_TURRET) ){
@@ -277,47 +304,72 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       if( (self.legs) ){
         self.legs.attack_state = TR_NORM;
       }
-      
-      if( ai_check_face_origin(self.tetherOrg, 0.75) ){
-        walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD));
+      if( ai_check_face(self.goalentity, 0.85) ){
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( walkSpeed );
+        }
+        useSpeed = walkSpeed;
       }
       else{
-        walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD));
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( cornerSpeed );
+        }
+        useSpeed = cornerSpeed;
+      }
+      //stuck check
+      if( !util_movedelta( self.lastorigin, self.origin, useSpeed * 0.5 ) ){
+        self.movetype = MOVETYPE_FLY;
+      }
+      else{
+        self.movetype = MOVETYPE_STEP;
       }
       if( orgCheck != self.origin ){
         macro_ai_frame(nextFunc)
         return;
-        
       }
     }
     
     //arrived, set pause and next node
-    if( self.goalentity.pausetime ){
-      self.pausetime = self.goalentity.pausetime;
-      self.pausetime = min(1, self.pausetime - (self.ai_rank / 2));
-      self.pausetime = self.pausetime+time;
-    }
     if( self.goalentity.partNext != world ){
-      self.movetarget = self.goalentity.partNext;
+      nextNode = self.goalentity.partNext;
+      self.movetarget = nextNode;
       self.tetherStatus = TETHER_PATROL;
       self.tetherOrg = self.movetarget.origin;
       makevectors(self.angles);
-      traceline(self.origin + (v_up * (self.mins_z * 0.85)), self.origin + (v_forward * 512), MOVE_NORMAL, self);
-      if( trace_fraction < 0.75) {
+      blockCheck = self.origin;
+      if( self.legs ){
+        blockCheck = blockCheck + (v_up * (self.mins_z * 0.5));
+      }
+      traceline(blockCheck, self.tetherOrg, MOVE_NORMAL, self);
+      norms = util_trace_norm_angle();
+      //trailparticles(self, particleeffectnum("TE_LAS_RAIL"), blockCheck, self.tetherOrg); //debug
+      //cons_logAVector("(v_up * (self.mins_z * 0.5))", (v_up * (self.mins_z * 0.5)));  //debug
+      //cons_logAVector("trace_plane_normal angle", norms);  //debug
+      //cons_logAFloat("trace_fraction", trace_fraction);  //debug
+      if( trace_fraction < 0.26 && norms_x <= 0.5) {
         self.movetarget = self.goalentity;
-        self.tetherStatus = TETHER_PATROL;
-        self.tetherOrg = self.goalentity.origin;
+        self.tetherOrg = self.movetarget.origin;
       }
     }
     else{
       self.movetarget = world;
       self.tetherStatus = TETHER_NODE;
-      cons_logAFloat("self.movetarget = world;", 1);  //debug
+      //cons_logAFloat("self.movetarget = world;", 1);  //debug
     }
+    if( self.goalentity.pausetime ){
+      self.pausetime = self.goalentity.pausetime;
+      self.pausetime = min(1, self.pausetime - (self.ai_rank / 2));
+      self.pausetime = self.pausetime+time;
+      macro_ai_frame(pauseFunc)
+    }
+    else{
+      macro_ai_frame(nextFunc)
+    }
+    self.goalentity = self.movetarget;
+  }
+  else{
     macro_ai_frame(pauseFunc)
-    return;
-  }  
-  macro_ai_frame(pauseFunc)
+  }
 };
 
 void() ai_tether_frame={

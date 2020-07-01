@@ -251,7 +251,7 @@ void() ai_tank_sk_patrol1={
     return;
   }
 
-  ai_patrol_frame(ai_tank_sk_patrol1, ai_tank_sk_enter_sentry);
+  ai_patrol_frame(ai_tank_sk_patrol1, ai_tank_sk_stand1);
 };
 
 /*

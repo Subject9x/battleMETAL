@@ -13,6 +13,8 @@ Overview:
 
 //SSQC only
 #ifndef CSQC
+.vector lastorigin; //mostly AI move tracker
+
 .float shieldHitDelay;  //when shield > 
 .float shieldHitDelayStart;  //when shield > 
 .float shieldHitRegen;  //cool down before shield recharge begins
