@@ -212,6 +212,7 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
   local entity nextNode;
   local float distLeft;
   local vector viewAng;
+  local vector orgCheck;
   
   //paused at node
   if( time < self.pausetime ){
@@ -219,19 +220,28 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
     return;
   }
   
+  orgCheck = self.origin;
   if( (self.goalentity.flags&FL_NODE) ){
     distLeft = vlen(self.tetherOrg - self.origin);
     //Going to node
     if( distLeft > AI_RANGE_S ){
-      cons_logAFloat("distLeft > AI_RANGE_S", 1);  //debug
+      cons_logAFloat("distLeft > AI_RANGE_S", distLeft);  //debug
       ai_face_goal();
-      self.torsoCenter.attack_state = TR_GOAL;
-      self.legs.attack_state = TR_GOAL;
+      if( (self.flags & FL_TURRET) ){
+        self.torsoCenter.attack_state = TR_NORM;
+      }
+      if( (self.legs) ){
+        self.legs.attack_state = TR_NORM;
+      }
       if( ai_check_face(self.goalentity, 0.75) ){
-        walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD));
+        if( !walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD)) ){
+          movetogoal( max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD) );
+        }
       }
       else{
-        walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD));
+        if( !walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD)) ){
+          movetogoal( max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD) );
+        }
       }
       macro_ai_frame(nextFunc)
       return;
@@ -239,11 +249,15 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
     
     //Arriving at node
     if( distLeft < AI_RANGE_S && self.tetherStatus == TETHER_PATROL ){
-      cons_logAFloat("distLeft > (AI_RANGE_S * 0.5)", 1);  //debug
+      cons_logAFloat("distLeft > (AI_RANGE_S * 0.5)", distLeft);  //debug
       self.tetherStatus = TETHER_NODE;
-      self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, 128, 32);
-      self.torsoCenter.attack_state = TR_NORM;
-      self.legs.attack_state = TR_NORM;
+      self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, 64, 32);
+      if( (self.flags & FL_TURRET) ){
+        self.torsoCenter.attack_state = TR_NORM;
+      }
+      if( (self.legs) ){
+        self.legs.attack_state = TR_NORM;
+      }
       if( ai_check_face_origin(self.tetherOrg, 0.75) ){
         walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD));
       }
@@ -254,18 +268,27 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       return;
     }
     if( distLeft > AI_NODE_DISTANCE ){
-      cons_logAFloat("distLeft > AI_NODE_DISTANCE", 1);  //debug
+      cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
       ai_face_origin(self.tetherOrg);
-      self.torsoCenter.attack_state = TR_NORM;
-      self.legs.attack_state = TR_NORM;
+      
+      if( (self.flags & FL_TURRET) ){
+        self.torsoCenter.attack_state = TR_NORM;
+      }
+      if( (self.legs) ){
+        self.legs.attack_state = TR_NORM;
+      }
+      
       if( ai_check_face_origin(self.tetherOrg, 0.75) ){
         walkmove(self.angles_y, max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD));
       }
       else{
         walkmove(self.angles_y, max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD));
       }
-      macro_ai_frame(nextFunc)
-      return;
+      if( orgCheck != self.origin ){
+        macro_ai_frame(nextFunc)
+        return;
+        
+      }
     }
     
     //arrived, set pause and next node

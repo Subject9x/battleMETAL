@@ -250,8 +250,8 @@ void() ai_tank_sk_patrol1={
     macro_ai_frame(ai_tank_sk_fight_prep)
     return;
   }
-  
-  macro_ai_patrol(self.data_speed_forward, ai_tank_sk_enter_sentry, ai_tank_sk_patrol1)
+
+  ai_patrol_frame(ai_tank_sk_patrol1, ai_tank_sk_enter_sentry);
 };
 
 /*
