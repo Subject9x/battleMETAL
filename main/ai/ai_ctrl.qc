@@ -859,3 +859,102 @@ void() ai_setup_patrol={
     } 
   }
 };
+
+/*
+  MOVE-STAND
+    AI stands in place, tracking target as needed.
+*/
+void(float waitTime, float clearMove ) ai_move_stand={
+  if( self.ai_move == MOVE_STAND && self.ai_move_last != MOVE_STAND ){
+    //entered this move state.
+    self.ai_movewait = time + waitTime;
+    self.ai_clearblock = clearMove;
+  }
+  else{
+    if( time > self.ai_movewait ){
+      //time expired, return to top of combat state;
+      self.ai_state_next = ST_COMBAT;
+      if( self.ai_clearblock ){
+        self.ai_blockflag = 0;
+        self.ai_moveflag = self.ai_dance_card;
+      }
+    }
+  }
+};
+
+/*
+  MOVE-CHARGE
+    AI charges forwar at target, maintaining direction TO target
+*/
+
+void() ai_move_charge={
+  if( self.ai_move == MOVE_CHARGE && self.ai_move_last != MOVE_CHARGE ){
+    //entered this move state.
+  }
+  else{
+  
+  }
+};
+
+/*
+  MOVE-CHARGE/LEFT
+    AI charges at target but along angle (A)
+*/
+void() ai_move_charge_left={
+  if( self.ai_move == MOVE_CHARGE_LEFT && self.ai_move_last != MOVE_CHARGE_LEFT ){
+    //entered this move state.
+  }
+  else{
+  
+  }
+};
+
+/*
+  MOVE-CHARGE/RIGHT
+    AI charges at target but along angle (A)
+*/
+void() ai_move_charge_right={
+  if( self.ai_move == MOVE_CHARGE_RIGHT && self.ai_move_last != MOVE_CHARGE_RIGHT ){
+    //entered this move state.
+  }
+  else{
+  
+  }
+};
+
+
+/*
+  MOVE-STRAFE/LEFT
+    AI stands in place, tracking target as needed.
+*/
+void() ai_move_strafe_left={
+
+};
+
+void() ai_move_strafe_right={
+
+};
+
+void() ai_move_circle_left={
+
+};
+
+void() ai_move_circle_right={
+
+};
+
+void() ai_move_back={
+
+};
+void() ai_move_back_left={
+
+};
+void() ai_move_back_right={
+
+};
+void() ai_move_snapshot={
+
+};
+void() ai_move_snipeshot={
+
+};

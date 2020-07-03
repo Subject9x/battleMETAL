@@ -65,6 +65,7 @@ void() ai_mech_sk_patrol={
     self.legs.nextthink = time + 0.1;
     self.torsoCenter.attack_state = TR_GOAL;
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
+    cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODE]",  self.ai_state_next); //debug
     return;
   }
   cons_logAString("running--------", "sk_patrol"); //debug
@@ -72,7 +73,7 @@ void() ai_mech_sk_patrol={
 };
 void() ai_mech_sk_ptr_pause={
   ai_update_accuracy( FALSE );
-  if( self.ai_state = ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
+  if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
     cons_logAString("new state", "sk_patrol_pause"); //debug
     self.legs.attack_state = TR_YAW;
     self.legs.angles_y = self.angles_y;
@@ -83,9 +84,11 @@ void() ai_mech_sk_ptr_pause={
   if( time > self.pausetime ){
     if( self.movetarget != world ){
       self.ai_state_next = ST_PTR;
+    cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
     }
     else{
       self.ai_state_next = ST_STAND;
+    cons_logAFloat("ENTER[ST_STAND]",  self.ai_state_next); //debug
     }
   }
 };
@@ -96,17 +99,20 @@ void() ai_mech_sk_ptr_travel_node={
   patrolState = ai_patrol_frame(ai_mech_sk_patrol1, ai_mech_sk_enter_stand);
     cons_logAFloat("running--------patrolState", patrolState); //debug
   
-  if( patrolState == PATROL_PAUSE ){
-    self.ai_state_next = ST_PTR_PAUSE;
-    return;
-  }
-  
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
     //macro_ai_frame(ai_mech_sk_fight_prep)
     //return;
+    self.ai_state_next = ST_COMBAT;
+    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    return;
   }
   
+  if( patrolState == PATROL_PAUSE ){
+    self.ai_state_next = ST_PTR_PAUSE;
+    cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
+    return;
+  }
 };
 void() ai_mech_sk_ptr_travel_blocked={
 
@@ -125,25 +131,47 @@ float ST_COM_REACT            = 12;
 
 void() ai_mech_sk_combat={
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-    return;
+    cons_logAString("new state", "ai_mech_sk_combat"); //debug
+    self.ai_state_next = ST_COM_FIGHT;
+    cons_logAFloat("ENTER[ST_COM_FIGHT]",  self.ai_state_next); //debug
+  }
+  else{
+  
   }
 };
 
 void() ai_mech_sk_com_fight={
   if( self.ai_state == ST_COM_FIGHT && self.ai_state_last != ST_COM_FIGHT ){
-    return;
+    cons_logAString("new state", "ai_mech_sk_com_fight"); //debug
+    if( (self.ai_blockflag & self.ai_dance_card) ){
+      // AI is currently blocked, so stand still for a spell
+      
+    }
+  }
+  else{
+  
   }
 
 };
 void() ai_mech_sk_com_maneuver={
   if( self.ai_state == ST_COM_FIGHT_MOVE && self.ai_state_last != ST_COM_FIGHT_MOVE ){
+    if( self.ai_moveflag > 0 ){
+      //AI still has moves it can do for now
+    }
+    else{
+      
+    }
+    cons_logAString("new state", "ai_mech_sk_com_maneuver"); //debug
     return;
   }
 
 };
 void() ai_mech_sk_com_maneuver_block={
   if( self.ai_state == ST_COM_FIGHT_MOVEBLOCK && self.ai_state_last != ST_COM_FIGHT_MOVEBLOCK ){
-    return;
+    cons_logAString("new state", "ai_mech_sk_com_maneuver_block"); //debug
+  }
+  else{
+  
   }
 
 };
@@ -152,8 +180,14 @@ void() ai_mech_sk_frame={
   //run unit frame updates
   macro_ai_update(ai_ctrl_update_mechplayer)
   
+  //State update
   self.ai_state_last = self.ai_state;
   self.ai_state = self.ai_state_next;
+  
+  //Move tracker update
+  self.ai_move_last = self.ai_move;
+  self.ai_move = self.ai_move_next;
+  
   //state machine
   switch( self.ai_state ){
     case ST_STAND:
@@ -176,6 +210,12 @@ void() ai_mech_sk_frame={
       break;
     case ST_PTR_TETHER_BLOCK:
       self.ai_state_patrol_tether_blocked();
+      break;
+    case ST_COMBAT:
+      self.ai_state_combat();
+      break;
+    case ST_COM_FIGHT:
+      self.ai_state_combat_fight();
       break;
   }
   
@@ -239,6 +279,9 @@ void() ai_mech_skirmish={
   self.trailTotal = 0;
   self.ai_state_last = 0;
   self.ai_state_next = ST_STAND; //debug
+  self.ai_move_last = 0;
+  self.ai_move_next = MOVE_STAND;
+  self.ai_dance_card = (MOVE_CHARGE | MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT | MOVE_STRAFE_LEFT | MOVE_STRAFE_RIGHT | MOVE_BACK | MOVE_CIRCLE_LEFT | MOVE_CIRCLE_RIGHT);
 
   self.think = self.ai_state_frame;
   self.nextthink = time + 0.01;

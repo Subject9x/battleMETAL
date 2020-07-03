@@ -242,6 +242,7 @@ float PATROL_WALKING      = 2;
 float PATROL_ARRIVE       = 3;
 float PATROL_ADJUST       = 4;
 
+float MOVE_STAND          = 0;    //every AI has this
 float MOVE_CHARGE         = 1;
 float MOVE_CHARGE_LEFT    = 2;
 float MOVE_CHARGE_RIGHT   = 4;
@@ -252,13 +253,21 @@ float MOVE_CIRCLE_RIGHT   = 64;
 float MOVE_BACK           = 128;
 float MOVE_BACK_LEFT      = 256;
 float MOVE_BACK_RIGHT     = 512;
+float MOVE_SNAPSHOT       = 1024;
+float MOVE_SNIPESHOT      = 2048;
 
-.float ai_moveflag;
-.float ai_blockflag;
-.float ai_state;
-.float ai_state_last;
-.float ai_state_next;
+.float ai_state;      //  the current state, usually not accessed directly.
+.float ai_state_last; //  used for per-frame comparisons
+.float ai_state_next; //  SET this one to decide the next STATE.
 
+.float ai_movewait;   //  timer for moves that require a timer, set this on ENTERING a new move, usually.
+.float ai_dance_card; //  set on spawn, the total number of allowable MOVE
+.float ai_move;       //  the current move, usually not accessed directly.
+.float ai_move_last;  //  used for per-frame comparisons
+.float ai_move_next;  //  SET this one to decide the next move.
+.float ai_moveflag;   //  remaining allowable moves before attempting to refresh the move set
+.float ai_blockflag;  //  anytime a move is blocked, subtract from ai_moveflag, and place it here, when ai_blockflag == ai_dance_card, then bot must chill for a sec.
+.float ai_clearblock; //  set to clear the AI's ai_blockflag on the next frame.
 
 //float ST_STAND                = 1
 float ST_PTR                  = 2;  //enter patrolling state?
@@ -272,12 +281,12 @@ float ST_COMBAT               = 8;
 float ST_COM_FIGHT            = 9;  //old fight_prep function
 float ST_COM_FIGHT_MOVE       = 10;  //execute a prescribed combat maneuver
 float ST_COM_FIGHT_MOVEBLOCK  = 11; //desired meneuver was blocked
-float ST_COM_REACT            = 12;
+float ST_COM_REACT            = 12; //no target but hit by fire
 
-float ST_TRAIL_MOVE           = 13;
-float ST_TRAIL_BLOCK          = 14;
-float ST_TRAIL_ROLLBACK       = 15;
-float ST_TRAIL_ROLLBLOCK      = 16;
+float ST_TRAIL_MOVE           = 13; //
+float ST_TRAIL_BLOCK          = 14; //
+float ST_TRAIL_ROLLBACK       = 15; //
+float ST_TRAIL_ROLLBLOCK      = 16; //
 
 float ST_TRACK_MOVE           = 17;
 float ST_TRACK_BLOCK          = 18;
@@ -311,3 +320,16 @@ float ST_TRACK_ROLLBLOCK      = 20;
 .void() ai_state_track_rollback;
 .void() ai_state_track_rollback_block;
 
+void(float waitTime, float clearMove ) ai_move_stand;
+void() ai_move_charge;
+void() ai_move_charge_left;
+void() ai_move_charge_right;
+void() ai_move_strafe_left;
+void() ai_move_strafe_right;
+void() ai_move_circle_left;
+void() ai_move_circle_right;
+void() ai_move_back;
+void() ai_move_back_left;
+void() ai_move_back_right;
+void() ai_move_snapshot;
+void() ai_move_snipeshot;
