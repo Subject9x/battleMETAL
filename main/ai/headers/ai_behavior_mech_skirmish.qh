@@ -12,6 +12,16 @@ void() ai_mech_skirmish;
 void() ai_mech_sk_die;
 void() ai_mech_sk_die2;
 
+void() ai_mech_sk_frame;
+void() ai_mech_sk_stand;
+void() ai_mech_sk_patrol;
+void() ai_mech_sk_ptr_pause;
+void() ai_mech_sk_ptr_travel_node;
+void() ai_mech_sk_ptr_travel_blocked;
+void() ai_mech_sk_ptr_tether;
+void() ai_mech_sk_ptr_tether_blocked;
+
+
 /*
   Macro rebuild
 */
@@ -171,6 +181,23 @@ void() ai_mech_sk_recall13;
 void() ai_mech_sk_recall14;
 void() ai_mech_sk_recall15;
 void() ai_mech_sk_recall16;
+
+void() ai_mech_sk_trailback1;
+void() ai_mech_sk_trailback2;
+void() ai_mech_sk_trailback3;
+void() ai_mech_sk_trailback4;
+void() ai_mech_sk_trailback5;
+void() ai_mech_sk_trailback6;
+void() ai_mech_sk_trailback7;
+void() ai_mech_sk_trailback8;
+void() ai_mech_sk_trailback9;
+void() ai_mech_sk_trailback10;
+void() ai_mech_sk_trailback11;
+void() ai_mech_sk_trailback12;
+void() ai_mech_sk_trailback13;
+void() ai_mech_sk_trailback14;
+void() ai_mech_sk_trailback15;
+void() ai_mech_sk_trailback16;
 
 void(entity attacker) ai_mech_sk_panic1;
 void() ai_mech_sk_panic2;

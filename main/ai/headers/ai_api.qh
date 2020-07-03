@@ -153,7 +153,7 @@ float TETHER_SELF   = 4;  //-> .tetherStatus
 void() ai_node_tether_find;
 float() ai_node_tether_check;
 float() ai_mark_trail;
-void() ai_trail_back;
+float() ai_trail_back;
 void() ai_trail_forward;
 void() ai_trail_clear;
 
@@ -231,3 +231,74 @@ float() ai_attack;
 void( float alt_low, float alt_max ) ai_fly_update;
 void( float move ) ai_update_accuracy;
 //========================================
+
+
+////////////////////////////////
+float MOVE_CHARGE         = 1;
+float MOVE_CHARGE_LEFT    = 2;
+float MOVE_CHARGE_RIGHT   = 4;
+float MOVE_STRAFE_LEFT    = 8;
+float MOVE_STRAFE_RIGHT   = 16;
+float MOVE_CIRCLE_LEFT    = 32;
+float MOVE_CIRCLE_RIGHT   = 64;
+float MOVE_BACK           = 128;
+float MOVE_BACK_LEFT      = 256;
+float MOVE_BACK_RIGHT     = 512;
+
+.float ai_moveflag;
+.float ai_blockflag;
+.float ai_state;
+.float ai_state_last;
+
+
+//float ST_STAND                = 1
+float ST_PTR                  = 2;  //enter patrolling state?
+float ST_PTR_PAUSE            = 3;  //arrived at ai_node
+float ST_PTR_TRAVEL_NODE      = 4;  //traveling to an ai_node
+float ST_PTR_TRAVEL_NODEBLOCK = 5;  //travel to node was blocked for some reason
+float ST_PTR_TETHER           = 6;  //travel to tetherOrg when tetherStatus != TETHER_PATROL
+float ST_PTR_TETHER_BLOCK     = 7;  //travel to tetherOrg has been blocked
+
+float ST_COMBAT               = 8;
+float ST_COM_FIGHT            = 9;  //old fight_prep function
+float ST_COM_FIGHT_MOVE       = 10;  //execute a prescribed combat maneuver
+float ST_COM_FIGHT_MOVEBLOCK  = 11; //desired meneuver was blocked
+float ST_COM_REACT            = 12;
+
+float ST_TRAIL_MOVE           = 13;
+float ST_TRAIL_BLOCK          = 14;
+float ST_TRAIL_ROLLBACK       = 15;
+float ST_TRAIL_ROLLBLOCK      = 16;
+
+float ST_TRACK_MOVE           = 17;
+float ST_TRACK_BLOCK          = 18;
+float ST_TRACK_ROLLBACK       = 19;
+float ST_TRACK_ROLLBLOCK      = 20;
+
+.void() ai_state_frame;
+
+.void() ai_state_stand;
+
+.void() ai_state_patrol;
+.void() ai_state_patrol_pause;
+.void() ai_state_patrol_travel_node;
+.void() ai_state_patrol_travel_blocked;
+.void() ai_state_patrol_tether;
+.void() ai_state_patrol_tether_blocked;
+
+.void() ai_state_combat;
+.void() ai_state_combat_fight;
+.void() ai_state_combat_maneuver;
+.void() ai_state_combat_maneuver_block;
+.void() ai_state_combat_react;
+
+.void() ai_state_trail_move;
+.void() ai_state_trail_move_block;
+.void() ai_state_trail_rollback;
+.void() ai_state_trail_rollback_block;
+
+.void() ai_state_track_move;
+.void() ai_state_track_move_block;
+.void() ai_state_track_rollback;
+.void() ai_state_track_rollback_block;
+

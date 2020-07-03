@@ -196,7 +196,9 @@ float() ai_find_target_visual={
   selfSensorOrg_z = 0;
   
   for(targ = findradius(self.origin, rng); targ != world; targ = targ.chain){ 
-    
+    if( (targ.flags & FL_NOTARGET) ){
+      continue;
+    }
     if( targ.faction == self.faction ){
       continue;
     }
@@ -261,6 +263,9 @@ float() ai_find_target_radar={
   
   rng = self.ai_view;
   for(targ = findradius(self.origin, self.ai_view); targ != world; targ = targ.chain){
+    if( (targ.flags & FL_NOTARGET) ){
+      continue;
+    }
     if( !ai_valid_target(targ) ){
       continue;
     }
@@ -504,42 +509,43 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
   Trail / Breadcrumb impl
 */
 float() ai_mark_trail={
-  if( self.trailTotal == self.trailMax ){
-    return FALSE;
+  if( self.trailTotal < self.trailMax ){  
+    self.trailTotal = self.trailTotal + 1;
+    cons_logAFloat("ai_mark_trail().trailTotal", self.trailTotal);  //debug
+    switch( self.trailTotal ){
+      case 1:
+        self.trail1 = self.origin;
+        break;
+      case 2:
+        self.trail2 = self.origin;
+        break;
+      case 3:
+        self.trail3 = self.origin;
+        break;
+      case 4:
+        self.trail4 = self.origin;
+        break;
+      case 5:
+        self.trail5 = self.origin;
+        break;
+      case 6:
+        self.trail6 = self.origin;
+        break;
+      case 7:
+        self.trail7 = self.origin;
+        break;
+      case 8:
+        self.trail8 = self.origin;
+        break;
+    }
+    return TRUE;
   }
-  self.trailTotal = self.trailTotal + 1;
-  switch( self.trailTotal ){
-    case 1:
-      self.trail1 = self.origin;
-      break;
-    case 2:
-      self.trail2 = self.origin;
-      break;
-    case 3:
-      self.trail3 = self.origin;
-      break;
-    case 4:
-      self.trail4 = self.origin;
-      break;
-    case 5:
-      self.trail5 = self.origin;
-      break;
-    case 6:
-      self.trail6 = self.origin;
-      break;
-    case 7:
-      self.trail7 = self.origin;
-      break;
-    case 8:
-      self.trail8 = self.origin;
-      break;
-  }
-  return TRUE;
+  return FALSE;
 };
 
-void() ai_trail_back={
+float() ai_trail_back={
   if( self.trailTotal == 0 ){
-    return;
+    return FALSE;
   }
   self.trailTotal = self.trailTotal - 1;
   switch( self.trailTotal ){
@@ -568,6 +574,7 @@ void() ai_trail_back={
       self.trailDest = self.trail8;
       break;
   }
+  return TRUE;
 };
 
 void() ai_trail_forward={
