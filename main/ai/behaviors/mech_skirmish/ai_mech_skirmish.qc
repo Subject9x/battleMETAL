@@ -12,57 +12,101 @@ Overview: ai unit
 
 
 void() ai_mech_sk_stand={
+  ai_update_accuracy( FALSE );
   if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    cons_logAString("new state", "ai_mech_sk_stand"); //debug
+    cons_logAString("new state", "sk_stand"); //debug
     //entering stand state
     self.torsoCenter.attack_state = TR_NORM;
     self.legs.attack_state = TR_NORM;
     self.legs.think = bot_leg_stand1;
     self.legs.nextthink = time + 0.1;
     self.goalentity = world;
+    return;
   }
-  else{
-    if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-      //macro_ai_frame(ai_mech_sk_fight_prep)
-      //return;
-    }
-    
-    if( self.movetarget != world ){
-      if( time > self.pausetime ){
-        self.ai_state_last = self.ai_state;
-        self.ai_state = ST_PTR;
-        //macro_ai_frame(ai_mech_sk_patrol1)
-        return;
-      }
-    }
-    
-    //TODO - reimpl scanning
-    if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
-      self.ai_action_time = self.ai_action_mod * (self.ai_rank * 2);
-      self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
-      self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
-      self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
-      self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
-      self.torsoCenter.attack_state = TR_YAW;
-      // macro_ai_frame(ai_mech_sk_rotate1)
-      //return;
-    }
 
+  cons_logAString("running--------", "sk_stand"); //debug
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    //macro_ai_frame(ai_mech_sk_fight_prep)
+    //return;
   }
+  
+  if( self.movetarget != world ){
+    if( time > self.pausetime ){
+      self.ai_state_next = ST_PTR;
+      //macro_ai_frame(ai_mech_sk_patrol1)
+      return;
+    }
+  }
+  
+  //TODO - reimpl scanning
+  if( self.torsoCenter.angles_y == self.torsoCenter.ai_dir ){
+    self.torsoCenter.attack_state = TR_NORM;
+  }
+  if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
+    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 2);
+    self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
+    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
+    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
+    self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
+    self.torsoCenter.attack_state = TR_YAW;
+    // macro_ai_frame(ai_mech_sk_rotate1)
+    //return;
+  }
+
 };
 
 void() ai_mech_sk_patrol={
-  if( self.ai_state == ST_PTR && self.ai_state != self.ai_state_last ){
-    if( self.targetname ){
-      
+  ai_update_accuracy( TRUE );
+  if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
+    cons_logAString("new state", "sk_patrol"); //debug
+    self.goalentity = self.movetarget;
+    self.legs.attack_state = TR_GOAL;
+    self.legs.think = bot_leg_walk1;
+    self.legs.nextthink = time + 0.1;
+    self.torsoCenter.attack_state = TR_GOAL;
+    self.ai_state_next = ST_PTR_TRAVEL_NODE;
+    return;
+  }
+  cons_logAString("running--------", "sk_patrol"); //debug
+
+};
+void() ai_mech_sk_ptr_pause={
+  ai_update_accuracy( FALSE );
+  if( self.ai_state = ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
+    cons_logAString("new state", "sk_patrol_pause"); //debug
+    self.legs.attack_state = TR_YAW;
+    self.legs.angles_y = self.angles_y;
+    self.legs.think = bot_leg_stand1;
+    self.legs.nextthink = time + 0.1;
+    return;
+  }
+  if( time > self.pausetime ){
+    if( self.movetarget != world ){
+      self.ai_state_next = ST_PTR;
+    }
+    else{
+      self.ai_state_next = ST_STAND;
     }
   }
 };
-void() ai_mech_sk_ptr_pause={
-
-};
 void() ai_mech_sk_ptr_travel_node={
-
+  ai_update_accuracy( TRUE );
+  local float patrolState;
+    cons_logAString("running--------", "ai_mech_sk_ptr_travel_node"); //debug
+  patrolState = ai_patrol_frame(ai_mech_sk_patrol1, ai_mech_sk_enter_stand);
+    cons_logAFloat("running--------patrolState", patrolState); //debug
+  
+  if( patrolState == PATROL_PAUSE ){
+    self.ai_state_next = ST_PTR_PAUSE;
+    return;
+  }
+  
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    //prepare for war....
+    //macro_ai_frame(ai_mech_sk_fight_prep)
+    //return;
+  }
+  
 };
 void() ai_mech_sk_ptr_travel_blocked={
 
@@ -75,12 +119,41 @@ void() ai_mech_sk_ptr_tether_blocked={
 
 };
 
+/*
+float ST_COM_REACT            = 12;
+*/
+
+void() ai_mech_sk_combat={
+  if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
+    return;
+  }
+};
+
+void() ai_mech_sk_com_fight={
+  if( self.ai_state == ST_COM_FIGHT && self.ai_state_last != ST_COM_FIGHT ){
+    return;
+  }
+
+};
+void() ai_mech_sk_com_maneuver={
+  if( self.ai_state == ST_COM_FIGHT_MOVE && self.ai_state_last != ST_COM_FIGHT_MOVE ){
+    return;
+  }
+
+};
+void() ai_mech_sk_com_maneuver_block={
+  if( self.ai_state == ST_COM_FIGHT_MOVEBLOCK && self.ai_state_last != ST_COM_FIGHT_MOVEBLOCK ){
+    return;
+  }
+
+};
 
 void() ai_mech_sk_frame={
   //run unit frame updates
-  ai_update_accuracy( FALSE );
   macro_ai_update(ai_ctrl_update_mechplayer)
   
+  self.ai_state_last = self.ai_state;
+  self.ai_state = self.ai_state_next;
   //state machine
   switch( self.ai_state ){
     case ST_STAND:
@@ -105,7 +178,13 @@ void() ai_mech_sk_frame={
       self.ai_state_patrol_tether_blocked();
       break;
   }
-  self.ai_state_last = self.ai_state;
+  
+  if( (self.flags&FL_TURRET) ){
+    ai_turret_control();
+  }
+  if( self.legs ){
+    ai_leg_control();
+  }
   
   self.think = ai_mech_sk_frame;
   self.nextthink = time + 0.05;
@@ -151,10 +230,15 @@ void() ai_mech_skirmish={
   self.ai_state_patrol_tether = ai_mech_sk_ptr_tether;
   self.ai_state_patrol_tether_blocked = ai_mech_sk_ptr_tether_blocked;
   
+  self.ai_state_combat = ai_mech_sk_combat;
+  self.ai_state_combat_fight =ai_mech_sk_com_fight;
+  self.ai_state_combat_maneuver = ai_mech_sk_com_maneuver;
+  self.ai_state_combat_maneuver_block = ai_mech_sk_com_maneuver_block;
+  
   self.trailMax = 4;  //debug here
   self.trailTotal = 0;
   self.ai_state_last = 0;
-  self.ai_state = ST_STAND; //debug
+  self.ai_state_next = ST_STAND; //debug
 
   self.think = self.ai_state_frame;
   self.nextthink = time + 0.01;

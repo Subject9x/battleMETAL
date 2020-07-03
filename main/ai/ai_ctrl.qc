@@ -206,9 +206,15 @@ macro_ai_patrol(speed,pauseFunc,nextFunc)
 
 /*
   Not exactly sure why I converted this to macro except cutting down on stack size?
-  
+  reports back a status
+
+  float PATROL_PAUSE        = 1;
+  float PATROL_WALKING      = 2;
+  float PATROL_ARRIVE       = 3
+  float PATROL_ADJUST       = 4;
+
 */
-void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
+float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
   local entity nextNode;
   local float distLeft;
   local vector blockCheck;
@@ -221,10 +227,11 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
   
   //paused at node
   if( time < self.pausetime ){
-    pauseFunc();
-    return;
+    //pauseFunc();
+    return PATROL_PAUSE;
   }
-  
+  self.dphitcontentsmask = 0;
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   self.lastorigin = self.origin;
   if( (self.goalentity.flags&FL_NODE) ){
     distLeft = vlen(self.tetherOrg - self.origin);
@@ -257,8 +264,8 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       else{
         self.movetype = MOVETYPE_STEP;
       }
-      macro_ai_frame(nextFunc)
-      return;
+      //macro_ai_frame(nextFunc)
+      return PATROL_WALKING;
     }
     
     //Arriving at node
@@ -291,8 +298,8 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       else{
         self.movetype = MOVETYPE_STEP;
       }
-      macro_ai_frame(nextFunc)
-      return;
+      //macro_ai_frame(nextFunc)
+      return PATROL_ARRIVE;
     }
     if( distLeft > AI_NODE_DISTANCE ){
       //cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
@@ -324,8 +331,8 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
         self.movetype = MOVETYPE_STEP;
       }
       if( orgCheck != self.origin ){
-        macro_ai_frame(nextFunc)
-        return;
+        //macro_ai_frame(nextFunc)
+        return PATROL_ADJUST;
       }
     }
     
@@ -340,7 +347,9 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       if( self.legs ){
         blockCheck = blockCheck + (v_up * (self.mins_z * 0.5));
       }
+      
       traceline(blockCheck, self.tetherOrg, MOVE_NORMAL, self);
+      self.dphitcontentsmask = 0;
       norms = util_trace_norm_angle();
       //trailparticles(self, particleeffectnum("TE_LAS_RAIL"), blockCheck, self.tetherOrg); //debug
       //cons_logAVector("(v_up * (self.mins_z * 0.5))", (v_up * (self.mins_z * 0.5)));  //debug
@@ -360,16 +369,21 @@ void(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       self.pausetime = self.goalentity.pausetime;
       self.pausetime = min(1, self.pausetime - (self.ai_rank / 2));
       self.pausetime = self.pausetime+time;
-      macro_ai_frame(pauseFunc)
+      self.goalentity = self.movetarget;
+     // macro_ai_frame(pauseFunc)
+      return PATROL_PAUSE;
     }
     else{
-      macro_ai_frame(nextFunc)
+      self.goalentity = self.movetarget;
+      //macro_ai_frame(nextFunc)
+      return PATROL_WALKING;
     }
-    self.goalentity = self.movetarget;
   }
   else{
-    macro_ai_frame(pauseFunc)
+    //macro_ai_frame(pauseFunc)
+    return PATROL_PAUSE;
   }
+  return PATROL_WALKING;
 };
 
 void() ai_tether_frame={
@@ -644,7 +658,8 @@ float( entity targ ) ai_check_vis={
   else{
     spot2 = targ.cockpit.origin;
   }
-  
+  self.dphitcontentsmask = 0;
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY);
   traceline (spot1, spot2, FALSE, self);
 
   //case: los crossed content - ported q1
@@ -758,6 +773,8 @@ void() ai_setup_patrol={
       angl = anglemod( (node.ai_dir * 45) + (crandom() * 15)) * DEG2RAD;
       node.angles_y = angl;
       makevectors(node.angles);
+      self.dphitcontentsmask = 0;
+      self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_BOTCLIP | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER);
       traceline( node.origin, node.origin + (v_up * (self.maxs_z * 4)), MOVE_NORMAL, self);
       traceline( trace_endpos, trace_endpos + (v_forward * (self.maxs_x * 4)), MOVE_HITMODEL, self);
       //traceline( trace_endpos, trace_endpos + (v_up * -1024), MOVE_NORMAL, self);

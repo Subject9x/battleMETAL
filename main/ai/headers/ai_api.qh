@@ -13,6 +13,9 @@ Overview:
 //given the ctrl_ update_func, check DEBUG state, and deadflag state, then run global ai_update() function.
 #define macro_ai_update(update_func) update_func();if(!(self.spawnflags&DEBUG_MODE)){if(!self.deadflag){ai_update();}}
 
+//parsing out the important bit to macro_ai_frame, ignoring the func calling
+#define macro_ai_sub_frames if((self.flags&FL_TURRET)){ai_turret_control();}if(self.legs){ai_leg_control();}
+
 //set ai_action_time, this will loop back to the ai_frame you want to until ai_action_time = 0
 #define macro_ai_frame_count(repeat_frame) if(self.ai_action_time>0){self.ai_action_time = self.ai_action_time-1;macro_ai_frame(repeat_frame) return;}
 
@@ -186,7 +189,7 @@ entity() ai_goal_offset_node;
 //AI CONTROL - ai_ctrl.qc 
 //float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic;
 void() ai_move_physics;
-void(void() nextFunc, void() pauseFunc) ai_patrol_frame;
+float(void() nextFunc, void() pauseFunc) ai_patrol_frame;
 void() ai_tether_frame;
 void() ai_patrol_turn;
 void() ai_rotate_mech;
@@ -234,6 +237,11 @@ void( float move ) ai_update_accuracy;
 
 
 ////////////////////////////////
+float PATROL_PAUSE        = 1;
+float PATROL_WALKING      = 2;
+float PATROL_ARRIVE       = 3;
+float PATROL_ADJUST       = 4;
+
 float MOVE_CHARGE         = 1;
 float MOVE_CHARGE_LEFT    = 2;
 float MOVE_CHARGE_RIGHT   = 4;
@@ -249,6 +257,7 @@ float MOVE_BACK_RIGHT     = 512;
 .float ai_blockflag;
 .float ai_state;
 .float ai_state_last;
+.float ai_state_next;
 
 
 //float ST_STAND                = 1
