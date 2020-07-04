@@ -159,6 +159,7 @@ void() ClientConnect = {
     ExitIntermission();
   }
   client_sendServerInfo();
+  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
 };
 
 /*
