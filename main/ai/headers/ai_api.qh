@@ -237,6 +237,13 @@ void( float move ) ai_update_accuracy;
 
 
 ////////////////////////////////
+float TRACE_OPEN = 0;
+float TRACE_CLOSE_WALL = 1; 
+float TRACE_CLIPPED = 2;
+float TRACE_ENT = 3;
+float TRACE_CLIFF = 4;
+float(vector destOrg, float interval) ai_read_terrain;
+
 float PATROL_PAUSE        = 1;
 float PATROL_WALKING      = 2;
 float PATROL_ARRIVE       = 3;
@@ -293,8 +300,9 @@ float ST_TRACK_BLOCK          = 18;
 float ST_TRACK_ROLLBACK       = 19;
 float ST_TRACK_ROLLBLOCK      = 20;
 
-.void() ai_state_frame;
+void() ai_state_frame;
 
+.void() ai_unit_update;
 .void() ai_state_stand;
 
 .void() ai_state_patrol;

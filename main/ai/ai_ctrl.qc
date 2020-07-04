@@ -230,8 +230,7 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
     //pauseFunc();
     return PATROL_PAUSE;
   }
-  self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
+
   self.lastorigin = self.origin;
   if( (self.goalentity.flags&FL_NODE) ){
     distLeft = vlen(self.tetherOrg - self.origin);

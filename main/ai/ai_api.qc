@@ -469,6 +469,21 @@ void() ai_unit_make_trigger={
   self.unit_ini = SUB_Null;
 };
 
+
+/*
+  TRACE_OPEN = 0;
+  TRACE_CLOSE_WALL = 1; 
+  TRACE_CLIPPED = 2;
+  TRACE_ENT = 3;
+  TRACE_CLIFF = 4;
+*/
+float(vector destOrg, float interval) ai_read_terrain={
+
+  
+  
+
+};
+
 /*
   initialize weapon loadout default IF
   the weapon slot is not overridden -
