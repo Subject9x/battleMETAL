@@ -11,7 +11,11 @@ Overview:
 */
 
 /*
-  The top-level State Controller for all AI brains.
+  THE BRAIN of all AI's - the top-level state controller.
+  important vars:
+    .ai_state       - the current state, usually no need to operate on this
+    .ai_state_next  - set/operate on this to send the AI into a NEW state.
+    .ai_state_last  - delta-tracking of AI's state choice, get this for compares.
 */
 void() ai_state_frame={
   //run unit frame updates
@@ -53,9 +57,11 @@ void() ai_state_frame={
       break;
     case ST_COM_MOVE_START:
       self.ai_state_combat_moveStart();
+      ai_combat_move_frame();
       break;
     case ST_COM_MOVE_EXEC:
       self.ai_state_combat_moveExec();
+      ai_combat_move_frame();
       break;
     case ST_COM_MOVE_END:
       self.ai_state_combat_moveEnd();
@@ -82,9 +88,18 @@ void() ai_state_frame={
 };
 
 /*
-  Combat subsystem, use ai_dance_card to tailor move list
+  Combat Sub-state; this should only be run by self.ai_state_combat_moveExec();
+  important vars:
+    .ai_move      -  the current move, usually no need to operate on this.
+    .ai_move_last - delta-tracking of AI's move choice, get this for compares.
+    .ai_move_next - set/operate on this to create a new move order.
+    .ai_movewait  - timer used for [ST_COM_MOVE_EXEC], set this in [ST_COM_MOVE_START], when expired, it goes to [ST_COM_MOVE_END]
+    .ai_moveflag  - a collection of currently-possible moves, as moves are executed, remove them from this collection.
+    .ai_blockflag - a collection filled up as AI fails at certain moves, usually when blockflag == dance_Card, the bot is truly stuck
+    .ai_dance_card  - bitflag collection of all possible moves for THIS AI, usually set at-spawn by unit-type
 */
 void() ai_combat_move_frame={
+
   switch(self.ai_move){
     case MOVE_STAND:
       ai_move_stand();
@@ -124,6 +139,9 @@ void() ai_combat_move_frame={
       break;
     case MOVE_SNIPESHOT:
       ai_move_snipeshot();
+      break;
+    case MOVE_STAND_FACE:
+      ai_move_standface();
       break;
   }
 };

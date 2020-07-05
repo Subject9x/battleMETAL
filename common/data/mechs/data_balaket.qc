@@ -48,6 +48,9 @@ void() data_ini_balaket_={
   self.yaw_speed = 3.75;    // AI-only 
   self.turret_yaw_speed = 4.25;// AI-only
   self.ai_angleLimits = '-175 175 0';
+  if( (self.flags & FL_MONSTER) ){
+    self.data_speed_accel = 0.075;
+  }
 #endif
 //=====================================
  

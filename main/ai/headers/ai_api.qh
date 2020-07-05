@@ -68,6 +68,8 @@ float TR_NORM               = 0;  //Turret follows the angles of its parent
 float TR_TARG               = 1;  //Turret ideal yaw is the parent's .enemy
 float TR_GOAL               = 3;  //Turret ideal yaw = parent's .goalentity
 float TR_YAW                = 4;  //Turret ideal yaw set by outside source
+float TR_LEFT               = 5;  //Turret ideal yaw is left-side away from ai_dir
+float TR_RIGHT              = 6;  //Turret ideal yaw is right-side awa from ai_dir;
 
 //VIS CONSTANTS
 float VIS_FAIL = 0;
@@ -80,6 +82,8 @@ float enemy_infront;
 float enemy_range;
 float enemy_vis;
 float enemy_hunt;
+float side_crit;
+vector ai_angle;
 entity friend_blocker;
 float friend_blocker_dist;
 entity AI_NODES[128];
@@ -266,6 +270,7 @@ float MOVE_BACK_RIGHT     = 512;
 float MOVE_SNAPSHOT       = 1024;
 float MOVE_SNIPESHOT      = 2048;
 float MOVE_PATROLNODE     = 4096;
+float MOVE_STAND_FACE     = 8192;
 
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_last; //  used for per-frame comparisons
@@ -346,5 +351,6 @@ void() ai_move_back;
 void() ai_move_back_left;
 void() ai_move_back_right;
 void() ai_move_snapshot;
-void() ai_move_snipeshot;
+void() ai_move_standface;
+float() ai_move_patrol_node;
 float() ai_move_patrol_node;

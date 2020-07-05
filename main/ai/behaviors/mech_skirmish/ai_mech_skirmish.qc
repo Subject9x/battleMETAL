@@ -123,7 +123,6 @@ void() mech_sk_combat={
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET));
-    makevectors(self.angles);
     //new, trail stack
    // if( !ai_mark_trail() ){
       //TODO trailmixin
@@ -138,17 +137,48 @@ void() mech_sk_combat={
       if( enemy_range < 200 ) {
         //------------------> FACING FRONT
         if( enemy_infront ){
-          self.ai_movewait = ai_calc_move(self.origin + (v_forward * ((self.data_speed_backward*AI_WALK_SPD) * -10)), self.data_speed_backward*AI_WALK_SPD );
-          self.ai_move_next = MOVE_BACK;
-          if( self.ai_movewait == 0){
-            self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & MOVE_CHARGE);
-            self.ai_blockflag = self.ai_blockflag | MOVE_BACK;
-            self.ai_move_next = MOVE_STAND;
-          }
           self.ai_state_next = ST_COM_MOVE_START;
           cons_logAFloat("ENTER[ST_COM_MOVE_START]",  self.ai_state_next); //debug
-          cons_logAFloat("self.ai_movewait", self.ai_movewait); //debug
-          cons_logAFloat("NEXT MOVE", self.ai_move_next); //debug
+          //RANK - ROOKIE
+          if( self.ai_rank == AI_RANK_ROK ){
+            self.ai_movewait = 5 + ceil(random() * 5);
+            self.ai_move_next = MOVE_STAND_FACE;
+            cons_logAFloat("self.ai_movewait", self.ai_movewait); //debug
+            cons_logAFloat("NEXT MOVE-MOVE_STAND_FACE", self.ai_move_next); //debug
+            return;
+          }
+          //RANK - REG
+          if( self.ai_rank == AI_RANK_REG ){
+            makevectors(self.angles);
+            self.ai_movewait = ai_calc_move(self.origin + (v_forward * ((self.data_speed_backward*AI_WALK_SPD) * -10)), self.data_speed_backward*AI_WALK_SPD );
+            self.ai_move_next = MOVE_BACK;
+            if( self.ai_movewait == 0){
+              self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & MOVE_CHARGE);
+              self.ai_blockflag = self.ai_blockflag | MOVE_BACK;
+              self.ai_move_next = MOVE_STAND;
+            }
+            cons_logAFloat("self.ai_movewait", self.ai_movewait); //debug
+            cons_logAFloat("NEXT MOVE", self.ai_move_next); //debug
+            return;
+          }
+          //RANK - VET+
+          if( roll <= 0.3 ){
+            self.ai_move_next = MOVE_BACK_RIGHT;
+            self.ai_dir = 45;
+          }
+          else if( roll <= 0.6 ){
+            self.ai_move_next = MOVE_BACK;
+            self.ai_dir = 0;
+          }
+          else{
+            self.ai_move_next = MOVE_BACK_LEFT;
+            self.ai_dir = 45;
+          }
+          self.ai_dir = anglemod((self.angles_y - 180) + self.ai_dir);
+          ai_angle = self.angles;
+          ai_angle_y = self.ai_dir;
+          makevectors(ai_angle);
+          self.ai_movewait = ai_calc_move(self.origin + (v_forward * ((self.data_speed_backward*AI_WALK_SPD) * -10)), self.data_speed_backward*AI_WALK_SPD );
           return;
         }
         //------------------> FACING REAR
@@ -305,7 +335,6 @@ void() mech_sk_com_moveExec={
     cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
     return;
   }
-  ai_combat_move_frame();
 };
 
 /*
@@ -361,7 +390,7 @@ void() ai_mech_skirmish={
   self.ai_state_next = ST_STAND; //debug
   self.ai_move_last = 0;
   self.ai_move_next = MOVE_STAND; //debug
-  self.ai_dance_card = (MOVE_CHARGE | MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT | MOVE_STRAFE_LEFT | MOVE_STRAFE_RIGHT | MOVE_BACK | MOVE_CIRCLE_LEFT | MOVE_CIRCLE_RIGHT);
+  self.ai_dance_card = (MOVE_CHARGE | MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT | MOVE_STRAFE_LEFT | MOVE_STRAFE_RIGHT | MOVE_BACK | MOVE_CIRCLE_LEFT | MOVE_CIRCLE_RIGHT | MOVE_STAND_FACE);
   
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);

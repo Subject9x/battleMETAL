@@ -48,6 +48,9 @@ void() data_ini_monitor_={
   self.yaw_speed = 2;    // AI-only 
   self.turret_yaw_speed = 3;// AI-only
   self.ai_angleLimits = '-150 150 0';
+  if( (self.flags & FL_MONSTER) ){
+    self.data_speed_accel = 0.05;
+  }
 #endif
 //=====================================
  

@@ -48,6 +48,9 @@ void() data_ini_matok_={
   self.yaw_speed = 3;    // AI-only 
   self.turret_yaw_speed = 3.75;// AI-only
   self.ai_angleLimits = '-180 180 0';
+  if( (self.flags & FL_MONSTER) ){
+    self.data_speed_accel = 0.065;
+  }
 #endif
 //=====================================
  

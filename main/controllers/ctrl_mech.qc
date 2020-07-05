@@ -262,12 +262,18 @@ void() ctrl_component_die={
       self.owner.armLeft.nextthink = time + 0.1;
       self.owner.armLeft.realowner = self.owner;
       self.owner.damageValue = self.owner.damageValue | (M_TOR_LEFT | M_ARM_LEFT);
+      if( !(self.owner.damageValue & (M_TOR_RIGHT | M_ARM_RIGHT) ) ){
+        side_crit = TR_LEFT;
+      }
     }
     else if( self.partTypeId == M_TOR_RIGHT ){
       self.owner.armRight.think = self.owner.armRight.th_die;
       self.owner.armRight.nextthink = time + 0.1;
       self.owner.armRight.realowner = self.owner;
       self.owner.damageValue = self.owner.damageValue | (M_TOR_RIGHT | M_ARM_RIGHT);
+      if( !(self.owner.damageValue & (M_TOR_LEFT | M_ARM_LEFT) ) ){
+        side_crit = TR_RIGHT;
+      }
     }
     if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
       self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
