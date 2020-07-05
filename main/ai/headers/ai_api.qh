@@ -225,8 +225,8 @@ float( float scan_mode) ai_check_scan;
 void() ai_face_targ;
 void() ai_face_goal;
 void(vector v) ai_face_origin;
-float(entity targ, float ang_limit) ai_check_face;
-float(vector v, float ang_limit) ai_check_face_origin;
+float(entity targ, float ang_limit, float useTurret) ai_check_face;
+float(vector v, float ang_limit, float useTurret) ai_check_face_origin;
 float(entity t, float ang, float useTurret) ai_check_targ_infront;
 float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
@@ -237,6 +237,9 @@ void( float move ) ai_update_accuracy;
 
 
 ////////////////////////////////
+entity(entity node) ai_node_to_target;
+float(vector destOrg, float wishSpeed ) ai_calc_move;
+
 float TRACE_OPEN = 0;
 float TRACE_CLOSE_WALL = 1; 
 float TRACE_CLIPPED = 2;
@@ -262,11 +265,13 @@ float MOVE_BACK_LEFT      = 256;
 float MOVE_BACK_RIGHT     = 512;
 float MOVE_SNAPSHOT       = 1024;
 float MOVE_SNIPESHOT      = 2048;
+float MOVE_PATROLNODE     = 4096;
 
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_last; //  used for per-frame comparisons
 .float ai_state_next; //  SET this one to decide the next STATE.
 
+.float ai_dampen;
 .float ai_movewait;   //  timer for moves that require a timer, set this on ENTERING a new move, usually.
 .float ai_dance_card; //  set on spawn, the total number of allowable MOVE
 .float ai_move;       //  the current move, usually not accessed directly.
@@ -277,17 +282,17 @@ float MOVE_SNIPESHOT      = 2048;
 .float ai_clearblock; //  set to clear the AI's ai_blockflag on the next frame.
 
 //float ST_STAND                = 1
-float ST_PTR                  = 2;  //enter patrolling state?
+float ST_PTR                  = 2;  //ENTER -> PATROL
 float ST_PTR_PAUSE            = 3;  //arrived at ai_node
 float ST_PTR_TRAVEL_NODE      = 4;  //traveling to an ai_node
 float ST_PTR_TRAVEL_NODEBLOCK = 5;  //travel to node was blocked for some reason
 float ST_PTR_TETHER           = 6;  //travel to tetherOrg when tetherStatus != TETHER_PATROL
 float ST_PTR_TETHER_BLOCK     = 7;  //travel to tetherOrg has been blocked
 
-float ST_COMBAT               = 8;
-float ST_COM_FIGHT            = 9;  //old fight_prep function
-float ST_COM_FIGHT_MOVE       = 10;  //execute a prescribed combat maneuver
-float ST_COM_FIGHT_MOVEBLOCK  = 11; //desired meneuver was blocked
+float ST_COMBAT               = 8;  //ENTER -> COMBAT
+float ST_COM_MOVE_START       = 9;  //begin combat maneuver
+float ST_COM_MOVE_EXEC        = 10; //execute a prescribed combat maneuver
+float ST_COM_MOVE_END         = 11; //completed a combat maneuver
 float ST_COM_REACT            = 12; //no target but hit by fire
 
 float ST_TRAIL_MOVE           = 13; //
@@ -313,9 +318,9 @@ void() ai_state_frame;
 .void() ai_state_patrol_tether_blocked;
 
 .void() ai_state_combat;
-.void() ai_state_combat_fight;
-.void() ai_state_combat_maneuver;
-.void() ai_state_combat_maneuver_block;
+.void() ai_state_combat_moveStart;
+.void() ai_state_combat_moveExec;
+.void() ai_state_combat_moveEnd;
 .void() ai_state_combat_react;
 
 .void() ai_state_trail_move;
@@ -328,7 +333,8 @@ void() ai_state_frame;
 .void() ai_state_track_rollback;
 .void() ai_state_track_rollback_block;
 
-void(float waitTime, float clearMove ) ai_move_stand;
+void() ai_combat_move_frame;  //sub-state for combat maneuverin'
+void() ai_move_stand;
 void() ai_move_charge;
 void() ai_move_charge_left;
 void() ai_move_charge_right;
@@ -341,3 +347,4 @@ void() ai_move_back_left;
 void() ai_move_back_right;
 void() ai_move_snapshot;
 void() ai_move_snipeshot;
+float() ai_move_patrol_node;

@@ -23,7 +23,7 @@ float AI_REACT_VET = 2;
 float AI_REACT_ACE = 1;
 
 //AI movement speed ratio 
-float AI_WALK_SPD = 0.085;
+float AI_WALK_SPD = 0.1375;
 float AI_RUN_FACTOR = 1.25;
 float AI_MECH_MOVE_FACTOR = 0.85; //mechs cannot move as fast as player
 float AI_RUN_SPD = 0.2;

@@ -29,7 +29,7 @@ void() ai_vtol_th;
 void() ai_vtol_stand={
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
-    if( ai_check_face( self.enemy, self.ai_fov ) ){
+    if( ai_check_face( self.enemy, self.ai_fov, FALSE) ){
       ai_next_state( ST_RUN );
       return;
     }
@@ -187,7 +187,7 @@ void() ai_vtol_melee={
   ai_fly_update( 350, 600); 
   
   if( self.ai_rank < AI_RANK_REG ){
-    if( ai_check_face( self.enemy, 0.97 ) ){
+    if( ai_check_face( self.enemy, 0.97, FALSE) ){
       ai_attack();
     }
   }
@@ -210,7 +210,7 @@ void() ai_vtol_melee={
 void() ai_vtol_missile={
   ai_face_targ();
   ai_fly_update( 350, 600); 
-  if( ai_check_face( self.enemy, 0.97 ) ){
+  if( ai_check_face( self.enemy, 0.97, FALSE) ){
     if( ai_attack() ){
       if( self.ai_rank < AI_RANK_REG ){
         ai_next_state( ST_MISSILE_STRAFE );
@@ -235,7 +235,7 @@ void() ai_vtol_missile_strafe={
     walkmove( self.ai_dir, speeed * AI_RUN_SPD );
     ai_fly_update( 250, 600); 
     
-    if( ai_check_face( self.enemy, 0.97 ) ){
+    if( ai_check_face( self.enemy, 0.97, FALSE) ){
       if( ai_attack() ){
         ai_next_state( ST_RUN_STRAFE );
         self.ai_action_time = self.ai_action_time + 2;

@@ -15,6 +15,8 @@ Overview: ai unit
 */
 void() ai_mech_sk_stand={
   ai_update_accuracy( FALSE );
+  
+  //Enter state
   if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
     cons_logAString("new state", "sk_stand"); //debug
     //entering stand state
@@ -25,18 +27,19 @@ void() ai_mech_sk_stand={
     self.goalentity = world;
     return;
   }
-
+  //-----------------
+  
   cons_logAString("running--------", "sk_stand"); //debug
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     self.ai_state_next = ST_COMBAT;
-    //macro_ai_frame(ai_mech_sk_fight_prep)
-    //return;
+    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    return;
   }
   
   if( self.movetarget != world ){
     if( time > self.pausetime ){
       self.ai_state_next = ST_PTR;
-      //macro_ai_frame(ai_mech_sk_patrol1)
+      cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
       return;
     }
   }
@@ -51,109 +54,8 @@ void() ai_mech_sk_stand={
     self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
     self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
     self.torsoCenter.attack_state = TR_YAW;
-    // macro_ai_frame(ai_mech_sk_rotate1)
-    //return;
-  }
-
-};
-
-/*
-  STATE : PATROL START
-*/
-void() ai_mech_sk_patrol={
-  ai_update_accuracy( TRUE );
-  if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
-    if( self.ai_state_last == ST_COMBAT || self.ai_state_last == ST_COM_FIGHT || self.ai_state_last == ST_COM_FIGHT_MOVEBLOCK){
-      if( self.movetarget != world ){
-        
-      }
-    }
-    else{
-      cons_logAString("new state", "sk_patrol"); //debug
-      self.goalentity = self.movetarget;
-      self.legs.attack_state = TR_GOAL;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
-      self.torsoCenter.attack_state = TR_GOAL;
-      self.ai_state_next = ST_PTR_TRAVEL_NODE;
-      cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODE]",  self.ai_state_next); //debug
-    }
     return;
   }
-  else{
-    cons_logAString("running--------", "sk_patrol"); //debug
-  
-  }
-
-};
-/*
-  STATE : PATROL PAUSE
-*/
-void() ai_mech_sk_ptr_pause={
-  ai_update_accuracy( FALSE );
-  if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
-    cons_logAString("new state", "sk_patrol_pause"); //debug
-    self.legs.attack_state = TR_YAW;
-    self.legs.angles_y = self.angles_y;
-    self.legs.think = bot_leg_stand1;
-    self.legs.nextthink = time + 0.1;
-    return;
-  }
-  if( time > self.pausetime ){
-    if( self.movetarget != world ){
-      self.ai_state_next = ST_PTR;
-    cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
-    }
-    else{
-      self.ai_state_next = ST_STAND;
-    cons_logAFloat("ENTER[ST_STAND]",  self.ai_state_next); //debug
-    }
-  }
-};
-/*
-  STATE : PATROL TRAVEL TO NODE
-*/
-void() ai_mech_sk_ptr_travel_node={
-  ai_update_accuracy( TRUE );
-  local float patrolState;
-    cons_logAString("running--------", "ai_mech_sk_ptr_travel_node"); //debug
-  patrolState = ai_patrol_frame(ai_mech_sk_patrol1, ai_mech_sk_enter_stand);
-    cons_logAFloat("running--------patrolState", patrolState); //debug
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    //prepare for war....
-    //macro_ai_frame(ai_mech_sk_fight_prep)
-    //return;
-    self.ai_state_next = ST_COMBAT;
-    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
-    return;
-  }
-  
-  if( patrolState == PATROL_PAUSE ){
-    self.ai_state_next = ST_PTR_PAUSE;
-    cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
-    return;
-  }
-};
-/*
-  STATE : PATROL TRAVEL TO NODE BLOCKED
-*/
-void() ai_mech_sk_ptr_travel_blocked={
-
-};
-
-/*
-  STATE : PATROL USE TETHER
-*/
-void() ai_mech_sk_ptr_tether={
-
-};
-
-/*
-  STATE : PATROL USE TETHER BLOCKED
-*/
-void() ai_mech_sk_ptr_tether_blocked={
-
 };
 
 /*
@@ -162,248 +64,268 @@ float ST_COM_REACT            = 12;
 
 /*
   STATE : COMBAT START
+    used to filter out what the AI should do before entering combat sub-system
 */
-void() ai_mech_sk_combat={
+void() mech_sk_combat={
   local float roll;
+  local entity prox;
+  
+  //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-    cons_logAString("new state", "ai_mech_sk_combat"); //debug
-    self.ai_state_next = ST_COM_FIGHT;
-    cons_logAFloat("ENTER[ST_COM_FIGHT]",  self.ai_state_next); //debug
+    cons_logAString("new state", "mech_sk_combat"); //debug
     
-  }
-  else{
-
-    ai_update_accuracy( FALSE );
-    macro_ai_update(ai_ctrl_update_mechplayer)
-    self.speed = self.lefty;
-        
+    //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
-      //macro_ai_frame(self.th_stand)
-      self.ai_state_next = ST_PTR;
+      self.ai_state_next = ST_STAND;
+      self.ai_dampen = 0;
+      cons_logAFloat("ENTER[ST_STAND]",  self.ai_state_next); //debug
       return;
-    } 
+    }
+    
+    //check if target is near a node of AI's patrol path
+    if( self.ai_move_last != MOVE_PATROLNODE ){
+      if( self.movetarget ){
+        prox = ai_node_to_target(self.movetarget);
+        if( prox != world ){
+          self.ai_move_next = MOVE_PATROLNODE;
+          self.ai_state_next = ST_COM_MOVE_START;
+          self.goalentity = prox;
+          self.tetherOrg = self.goalentity.origin;
+          self.ai_dampen = 1;
+          
+          self.legs.attack_state = TR_GOAL;
+          self.legs.think = bot_leg_walk1;
+          self.legs.nextthink = time + 0.1;
+          
+          self.torsoCenter.attack_state = TR_GOAL;
+          cons_logAFloat("ENTER[ST_COM_MOVE_START]",  self.ai_state_next); //debug
+          cons_logAString("self.goal",self.goalentity.targetname); //debug
+          cons_logAFloat("self.ai_move_next: MOVE_PATROLNODE",  MOVE_PATROLNODE); //debug
+          return;
+        }
+      }
+    }
+    //------------------------------------------------
+    //otherwise prepare dancin'
+    //self.speed = self.lefty;
     
     if( (self.flags & FL_DISARMED) ){
       //TODO pain / flee
       //self.th_pain( world );
       return;
     }
-
-    //new, trail stack
-    if( !ai_mark_trail() ){
-      //TODO trailmixin
-      cons_logAFloat("hit trail max!", 1);  //debug
-      //ai_mech_sk_trail_gate();
-      return;
-    }
-
+    
     enemy_hunt = FALSE;
 
-    roll = random();
+    roll = random() * 1;
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET));
+    makevectors(self.angles);
+    //new, trail stack
+   // if( !ai_mark_trail() ){
+      //TODO trailmixin
+      //cons_logAFloat("hit trail max!", 1);  //debug
+      //ai_mech_sk_trail_gate();
+      //return;
+   // }
     
+    //clean LoS================================
     if( enemy_vis == VIS_FRAC ){
-      if( enemy_range < 200 ){
+      //-------> RANGE SHORT
+      if( enemy_range < 200 ) {
+        //------------------> FACING FRONT
         if( enemy_infront ){
-          if( self.yaw_speed < 2 ){
-            if( self.ai_rank > AI_RANK_REG ){
-              self.lefty = -1;
-              //macro_ai_frame(ai_mech_sk_enter_charge)
+          self.ai_movewait = ai_calc_move(self.origin + (v_forward * ((self.data_speed_backward*AI_WALK_SPD) * -10)), self.data_speed_backward*AI_WALK_SPD );
+          self.ai_move_next = MOVE_BACK;
+          if( self.ai_movewait == 0){
+            self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & MOVE_CHARGE);
+            self.ai_blockflag = self.ai_blockflag | MOVE_BACK;
+            self.ai_move_next = MOVE_STAND;
+          }
+          self.ai_state_next = ST_COM_MOVE_START;
+          cons_logAFloat("ENTER[ST_COM_MOVE_START]",  self.ai_state_next); //debug
+          cons_logAFloat("self.ai_movewait", self.ai_movewait); //debug
+          cons_logAFloat("NEXT MOVE", self.ai_move_next); //debug
+          return;
+        }
+        //------------------> FACING REAR
+        
+      }
+      //------> RANGE COMBAT
+      if( enemy_range <= self.ai_minrange ){
+        //------------------> FACING FRONT
+        if( enemy_infront ){
+          if( !(self.ai_blockflag & MOVE_CHARGE) ){
+            self.ai_movewait = ai_calc_move(self.origin + (v_forward * ((self.data_speed_forward*AI_WALK_SPD) * 10)), self.data_speed_forward*AI_WALK_SPD );
+            self.ai_move_next = MOVE_CHARGE;
+            self.ai_state_next = ST_COM_MOVE_START;
+            if( self.ai_movewait == 0 ){
+              self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & MOVE_CHARGE);
+              self.ai_blockflag = self.ai_blockflag | MOVE_CHARGE;
+              self.ai_move_next = MOVE_STAND;
+              self.ai_dampen = 0;
               return;
             }
-            macro_ai_frame(ai_mech_sk_pivot1)
+            cons_logAFloat("ENTER[ST_COM_MOVE_START]",  self.ai_state_next); //debug
+            cons_logAFloat("self.ai_movewait", self.ai_movewait); //debug
+          cons_logAFloat("NEXT MOVE", self.ai_move_next); //debug
             return;
           }
-          if( self.ai_rank > AI_RANK_REG ){
-            self.lefty = self.lefty * -1;
-            //macro_ai_frame(ai_mech_sk_enter_strafe)
-            return;
-          }
-          //macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
-          return;
         }
-        //enemy is behind the unit
-        if( self.yaw_speed < 2 ){
-          if( self.ai_rank > AI_RANK_REG ){
-            if( roll < 0.33 ){
-              self.lefty = self.lefty * -1;
-            }
-            //macro_ai_frame(ai_mech_sk_enter_strafe)
-            return;
-          }
-          self.lefty = 1;
-          //macro_ai_frame(ai_mech_sk_enter_charge)
-          return;
+        //------------------> FACING REAR
+      }
+      //------> RANGE TOOO FAR
+        //------------------> FACING FRONT
+        if( enemy_infront ){
+        
         }
-        if( self.ai_rank > AI_RANK_REG ){
-          self.lefty = self.lefty * -1;
-          //macro_ai_frame(ai_mech_sk_enter_flank)
-          return;
+        //------------------> FACING REAR
+    }
+    
+    //FRIENDLY FIRE================================
+    if( enemy_vis == VIS_FRN ){
+      //-------> RANGE SHORT
+      if( enemy_range < 200 ) {
+        //------------------> FACING FRONT
+        if( enemy_infront ){
+        
         }
-        self.lefty = 1;
-        //macro_ai_frame(ai_mech_sk_enter_charge)
-        return;
+        //------------------> FACING REAR
+      }
+      //------> RANGE COMBAT
+      if( enemy_range <= self.ai_minrange ){
+        //------------------> FACING FRONT
+        if( enemy_infront ){
+        
+        }
+        //------------------> FACING REAR
+      }
+      //------> RANGE TOOO FAR
+        //------------------> FACING FRONT
+        if( enemy_infront ){
+          
+        }
+        //------------------> FACING REAR
+      
+    }
+    
+    //NO LoS================================
+    if( enemy_vis == VIS_FAIL ){
+      //-------> RANGE SHORT
+      if( enemy_range < 200 ) {
+        //------------------> FACING FRONT
+        if( enemy_infront ){
+        
+        }
+        //------------------> FACING REAR
+      }
+      //------> RANGE COMBAT
+      if( enemy_range <= self.ai_minrange ){
+        //------------------> FACING FRONT
+        if( enemy_infront ){
+        
+        }
+        //------------------> FACING REAR
       }
       
-      if( enemy_range <= self.ai_minrange ){
+      //------> RANGE TOOO FAR
+        //------------------> FACING FRONT
         if( enemy_infront ){
-          if( self.yaw_speed < 2 ){
-            if( self.ai_rank > AI_RANK_REG ){
-              self.lefty = 1;
-              //macro_ai_frame(ai_mech_sk_enter_charge)
-              return;
-            }
-            //macro_ai_frame(ai_mech_sk_enter_flank)
-            return;
-          }
-          if( self.ai_rank > AI_RANK_REG ){
-            if( roll < 0.33 ){
-              self.lefty = self.lefty * -1;
-              //macro_ai_frame(ai_mech_sk_enter_flank)
-              return;
-            }
-            if( roll < 0.67 ){
-              self.lefty = self.lefty * -1;
-              //macro_ai_frame(ai_mech_sk_enter_charge)
-              return;
-            }
-            if( roll > 0.75 ){
-              self.lefty = self.lefty * -1;
-            }
-            //macro_ai_frame(ai_mech_sk_enter_strafe)
-            return;
-          }
-          if( roll < 0.6 ){
-            self.lefty = self.lefty * -1;
-            //macro_ai_frame(ai_mech_sk_enter_strafe)
-            return;
-          }
-          self.lefty = 1;
-          //macro_ai_frame(ai_mech_sk_enter_charge)
-          return;
+        
         }
-        if( self.ai_rank > AI_RANK_REG ){
-          if( roll < 0.6 ){
-            self.lefty = self.lefty * -1;
-            //macro_ai_frame(ai_mech_sk_enter_flank)
-            return;
-          }
-          self.lefty = 1;
-          //macro_ai_frame(ai_mech_sk_enter_charge)
-          return;
-        }
-        if( roll < 0.33 ){
-          //macro_ai_frame(ai_mech_sk_stand_fight1)
-          return;
-        }
-        if( roll < 0.6 ){
-          self.lefty = self.lefty * -1;
-          //macro_ai_frame(ai_mech_sk_enter_strafe)
-          return;
-        }
-        self.lefty = self.lefty * -1;
-        //macro_ai_frame(ai_mech_sk_enter_charge)
-        return;
-      }
-
-      if( enemy_range > self.ai_minrange ){
-        if( enemy_infront ){
-          self.lefty = 1;
-          //macro_ai_update(ai_mech_sk_enter_charge)
-          return;
-        }
-        if( self.ai_rank > AI_RANK_REG ){
-          self.lefty = self.lefty * -1;
-          //macro_ai_update(ai_mech_sk_enter_flank)
-          return;
-        }
-        self.lefty = -1;
-        //macro_ai_update(ai_mech_sk_enter_charge)
-        return;
-      }
+        //------------------> FACING REAR
     }
-    
-    if( enemy_vis == VIS_FRN ){
-      self.lefty = self.lefty * -1;
-      if( self.ai_rank > AI_RANK_REG ){
-        //macro_ai_update(ai_mech_sk_enter_flank)
-        return;
-      }
-      //macro_ai_update(ai_mech_sk_enter_charge)
-      return;
-    }
-    
-    if( enemy_vis == VIS_FAIL ){
-      if( self.ai_rank > AI_RANK_REG || self.stat_rdr_mode > 0){
-        enemy_hunt = TRUE;
-      }
-    }
-    
-    if( enemy_hunt ){
-      if(  self.ai_node_recall == world || !(self.ai_node_recall) ){
-        macro_ai_frame(ai_mech_sk_enter_hunt)
-        return;
-      }
-      //macro_ai_frame(ai_mech_sk_enter_recall)
-      return;
-    }
-
-    if( self.movetarget ){
-      self.goalentity = self.movetarget;
-      macro_ai_frame(ai_mech_sk_patrol1)
-      return;
-    }
-
-    //macro_ai_frame(ai_mech_sk_enter_stand)
+    return;
+  //---------------------------------------------------------------------------
   }
 };
 
 /*
   STATE : COMBAT FIGHTING
 */
-void() ai_mech_sk_com_fight={
-  if( self.ai_state == ST_COM_FIGHT && self.ai_state_last != ST_COM_FIGHT ){
-    cons_logAString("new state", "ai_mech_sk_com_fight"); //debug
+void() mech_sk_com_moveStart={
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    cons_logAString("new state", "mech_sk_com_moveStart"); //debug
+    cons_logAFloat("self.ai_move_next", self.ai_move_next); //debug
     
+    if( self.ai_move_next == MOVE_PATROLNODE ){
+      //called ai_node_to_target() before getting to this state
+      cons_logAFloat(" self.ai_move_next == MOVE_PATROLNODE",  self.ai_state_next); //debug
+      cons_logAFloat("ENTER[ST_COM_MOVE_EXEC]",  self.ai_state_next); //debug
+    }
+    self.ai_state_next = ST_COM_MOVE_EXEC;
+    self.ai_movewait = time + self.ai_movewait;
+    return;
   }
-  else{
-  
-  }
-
+  //------------------------------------------------------------------
 };
 
 /*
   STATE : COMBAT MANEUVER
 */
-void() ai_mech_sk_com_maneuver={
-  if( self.ai_state == ST_COM_FIGHT_MOVE && self.ai_state_last != ST_COM_FIGHT_MOVE ){
-    if( self.ai_moveflag > 0 ){
-      //AI still has moves it can do for now
+void() mech_sk_com_moveExec={
+  local float nodeMove;
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
+    cons_logAString("new state", "mech_sk_com_moveExec"); //debug
+    
+    //AI is moving to closest node
+    if( self.ai_move_next == MOVE_PATROLNODE ){
+      cons_logAFloat("ai_move_next : MOVE_PATROLNODE", self.ai_move_next); //debug
+      nodeMove = ai_move_patrol_node();
+      if( nodeMove == PATROL_ARRIVE ){
+        cons_logAString("ai_mech_sk_com_maneuver", "nodeMove == PATROL_ARRIVE"); //debug
+        self.ai_state_next = ST_COM_MOVE_END;
+        cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
+        return;
+      }
     }
-    else{
-      
-    }
-    cons_logAString("new state", "ai_mech_sk_com_maneuver"); //debug
     return;
   }
+  //------------------------------------------------------------------
 
+  if( self.ai_move == MOVE_PATROLNODE  && self.ai_move_last == MOVE_PATROLNODE ){
+    //cons_logAString("ai_mech_sk_com_maneuver", "self.ai_move == MOVE_PATROLNODE"); //debug
+    nodeMove = ai_move_patrol_node();
+    if( nodeMove == PATROL_ARRIVE ){
+      cons_logAString("ai_mech_sk_com_maneuver", "nodeMove == PATROL_ARRIVE"); //debug
+      self.ai_state_next = ST_COM_MOVE_END;
+      cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
+    }
+    return;
+  }
+  if( time > self.ai_movewait ){
+    cons_logAFloat("time > self.ai_movewait", self.ai_movewait); //debug
+    self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & self.ai_move);
+    self.ai_state_next = ST_COMBAT;
+    cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
+    return;
+  }
+  ai_combat_move_frame();
 };
 
 /*
   STATE : COMBAT MANEUVER BLOCKED
 */
-void() ai_mech_sk_com_maneuver_block={
-  if( self.ai_state == ST_COM_FIGHT_MOVEBLOCK && self.ai_state_last != ST_COM_FIGHT_MOVEBLOCK ){
-    cons_logAString("new state", "ai_mech_sk_com_maneuver_block"); //debug
-  }
-  else{
+void() mech_sk_com_moveEnd={
   
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
+    cons_logAString("new state", "mech_sk_com_moveEnd"); //debug
+    if( self.ai_move_last == MOVE_PATROLNODE ){      
+      cons_logAString("self.ai_move_last == MOVE_PATROLNODE", "run"); //debug
+      self.ai_blockflag = 0; 
+      self.ai_moveflag = self.ai_dance_card;
+    }
+    self.ai_state_next = ST_COMBAT;
+    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    return;
   }
-
+ //------------------------------------------------------------------
 };
 
 /*
@@ -414,7 +336,9 @@ void() ai_mech_skirmish={
   initialize_data_mech_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
-    
+  
+  
+  //deprecate this
   self.th_stand = ai_mech_sk_enter_stand;
   self.th_walk = ai_mech_sk_patrol1;
   self.th_missile = ai_mech_sk_fight_prep;
@@ -423,14 +347,12 @@ void() ai_mech_skirmish={
   self.th_die = ai_mech_sk_die;
   self.th_rotate = ai_rotate_mech;
   self.touch = ai_touch;
+  //-----------------
 
   ai_setup_patrol();
   
-  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
-  
   self.SendEntity = ctrl_send_mech_ai;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-
   
   //new state stuff
   self.trailMax = 4;  //debug here
@@ -455,13 +377,13 @@ void() ai_mech_skirmish={
   self.ai_state_patrol_tether = ai_mech_sk_ptr_tether;
   self.ai_state_patrol_tether_blocked = ai_mech_sk_ptr_tether_blocked;
   
-  self.ai_state_combat = ai_mech_sk_combat;
-  self.ai_state_combat_fight =ai_mech_sk_com_fight;
-  self.ai_state_combat_maneuver = ai_mech_sk_com_maneuver;
-  self.ai_state_combat_maneuver_block = ai_mech_sk_com_maneuver_block;
+  self.ai_state_combat = mech_sk_combat;
+  self.ai_state_combat_moveStart = mech_sk_com_moveStart;
+  self.ai_state_combat_moveExec = mech_sk_com_moveExec;
+  self.ai_state_combat_moveEnd = mech_sk_com_moveEnd;
   //--------------------------------------------------------------------------
   self.think = ai_state_frame;
-  self.nextthink = time + 0.01;
+  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 
 void() ai_mech_sk_trail_gate={

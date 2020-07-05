@@ -107,7 +107,7 @@ void() ai_gev_fight_prep={
   self.ai_action_time = self.ai_action_mod;
   enemy_vis = ai_check_vis( self.enemy );
   enemy_range = self.stat_trg_dist;
-  enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+  enemy_infront = ai_check_face( self.enemy, self.ai_fov, (self.flags&FL_TURRET) );
   enemy_hunt = FALSE;
   
   if( enemy_vis == VIS_FRAC ){

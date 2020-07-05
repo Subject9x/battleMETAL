@@ -221,7 +221,7 @@ float() ai_find_target_visual={
       }
     }
     else{
-      if( ai_check_face(targ, self.ai_fov) == FALSE){
+      if( ai_check_face(targ, self.ai_fov, (self.flags&FL_TURRET)) == FALSE){
         continue;
       }
     }
@@ -482,6 +482,110 @@ float(vector destOrg, float interval) ai_read_terrain={
   
   
 
+};
+
+/*
+  Inspired by the original SUB_CalcMoved
+*/
+float(vector destOrg, float wishSpeed ) ai_calc_move={
+  local vector distDiff;
+  local float len;
+  local float travel;
+  
+  distDiff = destOrg - self.origin;
+  len = vlen (distDiff);
+  
+  traceline(self.origin, destOrg, MOVE_NORMAL, self);
+  if( trace_fraction < 0.1 ){
+    return 0;
+  }
+  if( trace_fraction != 1.0 ){
+    len = len * trace_fraction;
+  }
+  // divide by speed to get time to reach dest
+  travel = len / wishSpeed;
+  
+  return travel;
+};
+
+/*
+  if AI has a movetarget, this will find the closest patrol node to the target
+  return world == FALSE / None
+*/
+entity(entity node) ai_node_to_target={
+  local entity checkNode;
+  local entity found;
+  local entity parnt;
+  local float link;
+  local float dist;
+  local float distComp;
+  //cons_logAString("ai_node_to_target", "---->()"); //debug
+  //cons_logAString("node.classname", node.classname); //debug
+  //cons_logAString("node.owner.classname", node.owner.classname); //debug
+  
+  if( node.owner == world && node.partTypeId == 0 ){
+    //node set of 1
+    //cons_logAFloat("node.owner == node", 1); //debug
+    dist = vlen(node.origin - self.enemy.origin);
+    if( dist < self.stat_trg_dist ){
+      cons_logAFloat("dist < self.stat_trg_dist", 1); //debug
+      return node;
+    }
+    //cons_logAFloat(" return world", 1); //debug
+    return world;
+  }
+  if( node.owner == world ){
+    parnt = node;
+  }
+  else{
+    parnt = node.owner;
+  }
+
+  dist = self.stat_trg_dist;
+  for(checkNode = parnt; checkNode != world; checkNode = checkNode.partNext){
+    distComp = vlen(checkNode.origin - self.enemy.origin);
+    //cons_logAString("checkNode", checkNode.classname); //debug
+    //cons_logAFloat("distComp", distComp); //debug
+    if( distComp < dist ){
+      checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
+      traceline(checkNode.origin, self.enemy.origin, MOVE_NOMONSTERS, checkNode);
+      trailparticles(checkNode, particleeffectnum("TE_LAS_RAIL"), checkNode.origin, self.enemy.origin);  //debug
+      if( trace_fraction == 1.0 || trace_ent == self.enemy ){
+        dist = distComp;
+        found = checkNode;
+      }
+      checkNode.dphitcontentsmask = 0;
+    }
+  }
+  if( found ){
+    if( vlen(found.origin - self.enemy.origin) > self.stat_trg_dist ){
+      return world;
+    }
+    //cons_logAFloat("found", 1); //debug
+    //cons_logAFloat("node.partTypeId", node.partTypeId); //debug
+    //cons_logAFloat("found.partTypeId", found.partTypeId); //debug
+    if( found.partTypeId < node.partTypeId ){
+      traceline(self.origin, node.partPrev.origin, MOVE_NORMAL, self);
+      if( trace_fraction == 1.0 ){
+        //cons_logAFloat("found.partTypeId < node.partTypeId", 1); //debug
+        return node.partPrev;
+      }
+    }
+    if( found.partTypeId > node.partTypeId ){
+      traceline(self.origin, node.partNext.origin, MOVE_NORMAL, self);
+      if( trace_fraction == 1.0 ){
+        //cons_logAFloat("found.partTypeId > node.partTypeId", 1); //debug
+        return node.partNext;
+      }
+    }
+    if( trace_fraction != 1.0 ){
+      //cons_logAFloat("trace_fraction", trace_fraction); //debug
+      return world;
+    }
+    return found;
+  }
+  cons_logAFloat("no-op return world", 1); //debug
+  return world;
 };
 
 /*

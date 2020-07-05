@@ -100,15 +100,24 @@ entity() node_recall_setup={
   return theNode;
 };
 
-
+/*
+  Map now links patrol nodes together into custom linked-list, and adds .owner as the end node in the chain
+  for querying.
+*/
 void() ai_node_check={
-  local entity nodeCheck;
+  local entity nexNode;
   if( self.target || self.target != "" ){
-    nodeCheck = find(world, targetname, self.target );
-    if( nodeCheck ){
+    nexNode = find(world, targetname, self.target );
+    if( nexNode ){
+      if(self.partPrev == world ){
+        nexNode.owner = self;
+      }
       //wires nodes together for custom chain traversal
-      self.partNext = nodeCheck;
-      nodeCheck.partPrev = self;
+      self.partNext = nexNode;
+      nexNode.partPrev = self;
+      if( nexNode != self.owner && nexNode.owner != self ){
+        nexNode.partTypeId = self.partTypeId + 1;
+      }
     }
     else{
       if( cvar("developer") ){
@@ -150,6 +159,8 @@ void() ai_node={
     return;
   }
   node_setup();
+  //set the collision filter to help AI when making traceline calls.
+  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   self.think = ai_node_check;
   self.nextthink = time + 1;
 };

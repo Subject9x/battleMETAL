@@ -36,7 +36,7 @@ void() ai_ranged_attack={
       if( ai_attack_blockcheck(wep_chain) ){
         continue;
       }
-      if( !ai_check_face(this.enemy, 0.85) ){
+      if( !ai_check_face(this.enemy, 0.85, (self.flags&FL_TURRET)) ){
         continue;
       }
       self = wep_chain;

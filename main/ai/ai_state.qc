@@ -26,7 +26,7 @@ void() ai_state_frame={
   self.ai_move = self.ai_move_next;
   
   //state machine
-  switch( self.ai_state ){
+  switch(self.ai_state){
     case ST_STAND:
       self.ai_state_stand();
       break;
@@ -51,14 +51,22 @@ void() ai_state_frame={
     case ST_COMBAT:
       self.ai_state_combat();
       break;
-    case ST_COM_FIGHT:
-      self.ai_state_combat_fight();
+    case ST_COM_MOVE_START:
+      self.ai_state_combat_moveStart();
       break;
-    case ST_COM_FIGHT_MOVE:
-      self.ai_state_combat_maneuver();
+    case ST_COM_MOVE_EXEC:
+      self.ai_state_combat_moveExec();
       break;
-    case ST_COM_FIGHT_MOVEBLOCK:
-      self.ai_state_combat_maneuver_block();
+    case ST_COM_MOVE_END:
+      self.ai_state_combat_moveEnd();
+      break;
+    case ST_TRAIL_MOVE:
+      break;
+    case ST_TRAIL_BLOCK:
+      break;
+    case ST_TRAIL_ROLLBACK:
+      break;
+    case ST_TRAIL_ROLLBLOCK:
       break;
   }
   
@@ -72,3 +80,77 @@ void() ai_state_frame={
   self.think = ai_state_frame;
   self.nextthink = time + 0.05;
 };
+
+/*
+  Combat subsystem, use ai_dance_card to tailor move list
+*/
+void() ai_combat_move_frame={
+  switch(self.ai_move){
+    case MOVE_STAND:
+      ai_move_stand();
+      break;
+    case MOVE_CHARGE:
+      ai_move_charge();
+      break;
+    case MOVE_CHARGE_LEFT:
+      ai_move_charge_left();
+      break;
+    case MOVE_CHARGE_RIGHT:
+      ai_move_charge_right();
+      break;
+    case MOVE_STRAFE_LEFT:
+      ai_move_strafe_left();
+      break;
+    case MOVE_STRAFE_RIGHT:
+      ai_move_strafe_right();
+      break;
+    case MOVE_CIRCLE_LEFT:
+      ai_move_circle_left();
+      break;
+    case MOVE_CIRCLE_RIGHT:
+      ai_move_circle_right();
+      break;
+    case MOVE_BACK:
+      ai_move_back();
+      break;
+    case MOVE_BACK_LEFT:
+      ai_move_back_left();
+      break;
+    case MOVE_BACK_RIGHT:
+      ai_move_back_right();
+      break;
+    case MOVE_SNAPSHOT:
+      ai_move_snapshot();
+      break;
+    case MOVE_SNIPESHOT:
+      ai_move_snipeshot();
+      break;
+  }
+};
+
+
+void( float estate ) ai_turret_set_state={
+  if( (self.torsoCenter) ){
+    self.torsoCenter.attack_state = estate;
+  }
+};
+
+
+/*
+  refer to macro macro_ai_
+*/
+void() ai_update={
+  if( ai_valid_target(self.enemy) ){
+    ai_turret_set_state(TR_TARG);
+    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+    ai_lock_on();
+  }
+  else{ 
+    self.enemy = world;
+    self.button0 = FALSE;
+  }
+  ai_ranged_attack();
+  self.button0 = FALSE;
+};
+
+

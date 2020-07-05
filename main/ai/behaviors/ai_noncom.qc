@@ -64,7 +64,7 @@ void() ai_noncom_run={
     
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = self.stat_trg_dist;
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+    enemy_infront = ai_check_face( self.enemy, self.ai_fov, FALSE);
     
     friend = ai_find_friend( AI_RANGE_L );
     friend_range = -1;

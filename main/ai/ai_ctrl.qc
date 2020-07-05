@@ -5,11 +5,6 @@ Date: 7/9/2018
 Overview: AI Controller functions, ported mainly from Quake 1
 */
 
-void( float estate ) ai_turret_set_state={
-  if( (self.torsoCenter) ){
-    self.torsoCenter.attack_state = estate;
-  }
-};
 
 /*
   scope = self is AI making the call.
@@ -100,23 +95,6 @@ float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame={
   return FALSE;
 };
 
-/*
-  refer to macro macro_ai_
-*/
-void() ai_update={
-  if( ai_valid_target( self.enemy ) ){
-    ai_turret_set_state( TR_TARG );
-    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
-    ai_lock_on();
-  }
-  else{ 
-    self.enemy = world;
-    self.button0 = FALSE;
-  }
-  ai_ranged_attack();
-  self.button0 = FALSE;
-  
-};
 
 /*
   Primary Generic touch function for AI.
@@ -212,8 +190,8 @@ macro_ai_patrol(speed,pauseFunc,nextFunc)
   float PATROL_WALKING      = 2;
   float PATROL_ARRIVE       = 3
   float PATROL_ADJUST       = 4;
-
 */
+//TODO - knock out func params, these will be deprecated
 float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
   local entity nextNode;
   local float distLeft;
@@ -223,11 +201,10 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
   
   local float walkSpeed, cornerSpeed, useSpeed;
   walkSpeed = max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD);
-  cornerSpeed = max((self.data_speed_forward/4)*AI_WALK_SPD,24*AI_WALK_SPD);
+  cornerSpeed = max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD);
   
   //paused at node
   if( time < self.pausetime ){
-    //pauseFunc();
     return PATROL_PAUSE;
   }
 
@@ -244,14 +221,14 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       if( (self.legs) ){
         self.legs.attack_state = TR_NORM;
       }
-      if( ai_check_face(self.goalentity, 0.75) ){
+      if( ai_check_face(self.goalentity, 0.75, (self.flags&FL_TURRET)) ){
         if( !walkmove(self.angles_y, walkSpeed) ){
           movetogoal( walkSpeed );
         }
         useSpeed = walkSpeed;
       }
       else{
-        if( !walkmove(self.angles_y, walkSpeed) ){
+        if( !walkmove(self.angles_y, cornerSpeed) ){
           movetogoal( cornerSpeed );
         }
         useSpeed = cornerSpeed;
@@ -263,7 +240,6 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       else{
         self.movetype = MOVETYPE_STEP;
       }
-      //macro_ai_frame(nextFunc)
       return PATROL_WALKING;
     }
     
@@ -278,14 +254,14 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       if( (self.legs) ){
         self.legs.attack_state = TR_NORM;
       }
-      if( ai_check_face(self.goalentity, 0.85) ){
+      if( ai_check_face(self.goalentity, 0.85, (self.flags&FL_TURRET)) ){
         if( !walkmove(self.angles_y, walkSpeed) ){
           movetogoal( walkSpeed );
         }
         useSpeed = walkSpeed;
       }
       else{
-        if( !walkmove(self.angles_y, walkSpeed) ){
+        if( !walkmove(self.angles_y, cornerSpeed) ){
           movetogoal( cornerSpeed );
         }
         useSpeed = cornerSpeed;
@@ -297,7 +273,6 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       else{
         self.movetype = MOVETYPE_STEP;
       }
-      //macro_ai_frame(nextFunc)
       return PATROL_ARRIVE;
     }
     if( distLeft > AI_NODE_DISTANCE ){
@@ -310,14 +285,14 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       if( (self.legs) ){
         self.legs.attack_state = TR_NORM;
       }
-      if( ai_check_face(self.goalentity, 0.85) ){
+      if( ai_check_face(self.goalentity, 0.85, (self.flags&FL_TURRET)) ){
         if( !walkmove(self.angles_y, walkSpeed) ){
           movetogoal( walkSpeed );
         }
         useSpeed = walkSpeed;
       }
       else{
-        if( !walkmove(self.angles_y, walkSpeed) ){
+        if( !walkmove(self.angles_y, cornerSpeed) ){
           movetogoal( cornerSpeed );
         }
         useSpeed = cornerSpeed;
@@ -329,8 +304,7 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       else{
         self.movetype = MOVETYPE_STEP;
       }
-      if( orgCheck != self.origin ){
-        //macro_ai_frame(nextFunc)
+      if( self.lastorigin != self.origin ){
         return PATROL_ADJUST;
       }
     }
@@ -369,17 +343,14 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
       self.pausetime = min(1, self.pausetime - (self.ai_rank / 2));
       self.pausetime = self.pausetime+time;
       self.goalentity = self.movetarget;
-     // macro_ai_frame(pauseFunc)
       return PATROL_PAUSE;
     }
     else{
       self.goalentity = self.movetarget;
-      //macro_ai_frame(nextFunc)
       return PATROL_WALKING;
     }
   }
   else{
-    //macro_ai_frame(pauseFunc)
     return PATROL_PAUSE;
   }
   return PATROL_WALKING;
@@ -403,7 +374,7 @@ void() ai_tether_frame={
     else{
       self.torsoCenter.attack_state = TR_NORM;
     }
-    if( ai_check_face_origin(self.tetherOrg, 0.75) ){
+    if( ai_check_face_origin(self.tetherOrg, 0.75, (self.flags&FL_TURRET)) ){
       walkmove(self.angles_y, 65*AI_WALK_SPD);
     }
     else{
@@ -575,11 +546,11 @@ void( float alt_low, float alt_max) ai_fly_update={
 /*
   Checks to see if Entity T is in the ANG arc of self
 */
-float(entity t, float ang) ai_check_face={
+float(entity t, float ang, float useTurret) ai_check_face={
 	local vector	vang, vec;
 	local float		dot;
   
-  if( (self.flags & FL_TURRET) ){
+  if( useTurret ){
     vang = self.torsoCenter.angles;
   }
   else{
@@ -597,11 +568,11 @@ float(entity t, float ang) ai_check_face={
 	return FALSE;
 };
 
-float(vector v, float ang_limit) ai_check_face_origin={
+float(vector v, float ang_limit, float useTurret) ai_check_face_origin={
   local vector vang, vec;
   local float dot;
   
-  if( (self.flags & FL_TURRET) ){
+  if( useTurret ){
     vang = self.torsoCenter.angles;
   }
   else{
@@ -649,6 +620,7 @@ float( entity targ ) ai_check_vis={
   local vector spot1, spot2;
   local float targDist;
   local float blockZ;
+  local float contentBuffer;
   
   spot1 = self.cockpit.origin;
   if( targ.data_type == DATA_BLD ){
@@ -657,9 +629,13 @@ float( entity targ ) ai_check_vis={
   else{
     spot2 = targ.cockpit.origin;
   }
+  contentBuffer = self.dphitcontentsmask;
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY);
-  traceline (spot1, spot2, FALSE, self);
+  
+    traceline (spot1, spot2, FALSE, self);
+  
+  self.dphitcontentsmask = contentBuffer;
 
   //case: los crossed content - ported q1
   if ( trace_inopen && trace_inwater ){
@@ -722,6 +698,10 @@ void() ai_rotate_tank={
     return;
   }
   macro_ai_frame(ai_rotate_tank)
+};
+
+float(float moveDist, float wishSpeed, float interval) ai_move_time_calc={
+  
 };
 
 /*
@@ -863,20 +843,13 @@ void() ai_setup_patrol={
   MOVE-STAND
     AI stands in place, tracking target as needed.
 */
-void(float waitTime, float clearMove ) ai_move_stand={
-  if( self.ai_move == MOVE_STAND && self.ai_move_last != MOVE_STAND ){
-    //entered this move state.
-    self.ai_movewait = time + waitTime;
-    self.ai_clearblock = clearMove;
-  }
-  else{
-    if( time > self.ai_movewait ){
-      //time expired, return to top of combat state;
-      self.ai_state_next = ST_COMBAT;
-      if( self.ai_clearblock ){
-        self.ai_blockflag = 0;
-        self.ai_moveflag = self.ai_dance_card;
-      }
+void() ai_move_stand={
+  if( time > self.ai_movewait ){
+    //time expired, return to top of combat state;
+    self.ai_state_next = ST_COMBAT;
+    if( self.ai_clearblock ){
+      self.ai_blockflag = 0;
+      self.ai_moveflag = self.ai_dance_card;
     }
   }
 };
@@ -887,12 +860,22 @@ void(float waitTime, float clearMove ) ai_move_stand={
 */
 
 void() ai_move_charge={
-  if( self.ai_move == MOVE_CHARGE && self.ai_move_last != MOVE_CHARGE ){
-    //entered this move state.
+  if( self.ai_move == MOVE_CHARGE && self.ai_move_last != MOVE_CHARGE){
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+      self.legs.ai_dir = anglemod(self.angles_y);
+      self.legs.think = bot_leg_walk1;
+      self.legs.nextthink = time + 0.1;
+    }
+    if( self.torsoCenter ){
+      self.torsoCenter.attack_state = TR_TARG;
+    }
   }
-  else{
+  if( self.ai_dampen < 1.0){
+    self.ai_dampen = self.ai_dampen + 0.05;
+  }
   
-  }
+  walkmove( self.angles_y, (self.data_speed_forward * self.ai_dampen) * AI_WALK_SPD );
 };
 
 /*
@@ -900,12 +883,22 @@ void() ai_move_charge={
     AI charges at target but along angle (A)
 */
 void() ai_move_charge_left={
-  if( self.ai_move == MOVE_CHARGE_LEFT && self.ai_move_last != MOVE_CHARGE_LEFT ){
-    //entered this move state.
-  }
-  else{
   
+  if( self.legs ){
+    self.ai_dir = 0;
+    self.legs.attack_state = TR_NORM;
+    self.legs.ai_dir = anglemod(self.angles_y - self.ai_dir);
+    self.legs.think = bot_leg_walk1;
+    self.legs.nextthink = time + 0.1;
   }
+  if( self.torsoCenter ){
+    self.torsoCenter.attack_state = TR_TARG;
+  }
+  if( self.ai_dampen < 1.0 ){
+    self.ai_dampen = self.ai_dampen + 0.05;
+  }
+  
+  walkmove( self.angles_y, (self.data_speed_forward * self.ai_dampen) * AI_WALK_SPD );
 };
 
 /*
@@ -913,12 +906,23 @@ void() ai_move_charge_left={
     AI charges at target but along angle (A)
 */
 void() ai_move_charge_right={
-  if( self.ai_move == MOVE_CHARGE_RIGHT && self.ai_move_last != MOVE_CHARGE_RIGHT ){
-    //entered this move state.
+  if( self.ai_move_last != MOVE_CHARGE ){
+    if( self.legs ){
+      self.ai_dir = 0;
+      self.legs.attack_state = TR_NORM;
+      self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
+      self.legs.think = bot_leg_walk1;
+      self.legs.nextthink = time + 0.1;
+    }
   }
-  else{
+  if( self.torsoCenter ){
+    self.torsoCenter.attack_state = TR_TARG;
+  }
+  if( self.ai_dampen < 1.0 ){
+    self.ai_dampen = self.ai_dampen + 0.05;
+  }
   
-  }
+  walkmove( self.angles_y, (self.data_speed_forward * self.ai_dampen) * AI_WALK_SPD );
 };
 
 
@@ -943,7 +947,23 @@ void() ai_move_circle_right={
 };
 
 void() ai_move_back={
-
+  if( self.ai_move == MOVE_BACK && self.ai_move_last != MOVE_BACK){
+    cons_logAFloat("NEW MOVE - MOVE_BACK", MOVE_BACK);  //debug
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+      self.legs.ai_dir = anglemod(self.angles_y);
+      self.legs.think = bot_leg_back1;
+      self.legs.nextthink = time + 0.1;
+    }
+    if( self.torsoCenter ){
+      self.torsoCenter.attack_state = TR_TARG;
+    }
+  }
+  if( self.ai_dampen < 1.0){
+    self.ai_dampen = self.ai_dampen + 0.05;
+  }
+  
+  walkmove( anglemod(self.angles_y - 180), (self.data_speed_backward * self.ai_dampen) * AI_WALK_SPD );
 };
 void() ai_move_back_left={
 
@@ -956,4 +976,80 @@ void() ai_move_snapshot={
 };
 void() ai_move_snipeshot={
 
+};
+
+/*
+  Special move for AI that have a patrol route.
+  If they're attacked on a patrol route, they first try to find the closest patrol node to their target.
+  IF! this condition is true, they execute this particular maneuver to get closer to the enemy
+  
+  biggest difference between this and AI_PATROL_FRAME() is that the bot can track its target while
+  moving to that node, and make attacks.
+*/
+float() ai_move_patrol_node={
+  local entity nextNode;
+  local float distLeft;
+  local vector blockCheck;
+  local vector orgCheck;
+  local vector norms;
+  
+  local float walkSpeed, cornerSpeed, useSpeed;
+  walkSpeed = max(self.data_speed_forward*AI_WALK_SPD,65*AI_WALK_SPD);
+  cornerSpeed = max((self.data_speed_forward/3)*AI_WALK_SPD,32*AI_WALK_SPD);
+  
+  self.lastorigin = self.origin;
+  if( (self.goalentity.flags&FL_NODE) ){
+    distLeft = vlen(self.tetherOrg - self.origin);
+    //Going to node
+    if( distLeft > AI_NODE_DISTANCE ){
+      //cons_logAFloat("distLeft > AI_RANGE_S", distLeft);  //debug
+      ai_face_goal();
+      if( (self.legs) ){
+        self.legs.attack_state = TR_NORM;
+      }
+      if( ai_check_face(self.goalentity, 0.75, FALSE) ){
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( walkSpeed );
+        }
+        useSpeed = walkSpeed;
+      }
+      else{
+        if( !walkmove(self.angles_y, cornerSpeed) ){
+          movetogoal( cornerSpeed );
+        }
+        useSpeed = cornerSpeed;
+      }
+      return PATROL_WALKING;
+    }
+    
+    //Arriving at node    
+    if( distLeft > AI_NODE_DISTANCE ){
+      //cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
+      ai_face_origin(self.tetherOrg);
+      
+      if( (self.legs) ){
+        self.legs.attack_state = TR_NORM;
+      }
+      if( ai_check_face(self.goalentity, 0.85, FALSE) ){
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( walkSpeed );
+        }
+        useSpeed = walkSpeed;
+      }
+      else{
+        if( !walkmove(self.angles_y, walkSpeed) ){
+          movetogoal( cornerSpeed );
+        }
+        useSpeed = cornerSpeed;
+      }
+      return PATROL_WALKING;
+    }
+    
+    //arrived, go back to regular combat
+    return PATROL_ARRIVE;
+  }
+  else{
+    return PATROL_ARRIVE;
+  }
+  return PATROL_WALKING;
 };

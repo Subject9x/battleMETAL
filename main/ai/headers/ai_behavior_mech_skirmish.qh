@@ -21,10 +21,10 @@ void() ai_mech_sk_ptr_travel_blocked;
 void() ai_mech_sk_ptr_tether;
 void() ai_mech_sk_ptr_tether_blocked;
 
-void() ai_mech_sk_combat;
-void() ai_mech_sk_com_fight;
-void() ai_mech_sk_com_maneuver;
-void() ai_mech_sk_com_maneuver_block;
+void() mech_sk_combat;
+void() mech_sk_com_moveStart;
+void() mech_sk_com_moveExec;
+void() mech_sk_com_moveEnd;
 
 
 /*
