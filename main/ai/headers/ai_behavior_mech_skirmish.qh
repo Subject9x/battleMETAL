@@ -27,6 +27,11 @@ void() mech_sk_com_moveExec;
 void() mech_sk_com_moveEnd;
 void() mech_sk_com_blocked;
 
+void() mech_sk_trail_move;
+void() mech_sk_trail_move_block;
+void() mech_sk_trail_rollback;
+void() mech_sk_trail_rollback_block;
+
 
 /*
   Macro rebuild

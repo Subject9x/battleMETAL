@@ -487,23 +487,35 @@ float(vector destOrg, float interval) ai_read_terrain={
 /*
   Inspired by the original SUB_CalcMoved
 */
-float(vector destOrg, float wishSpeed ) ai_calc_move={
+float(vector destOrg, float wishSpeed, float useLegs) ai_calc_move={
+  local vector startOrg;
   local vector distDiff;
   local float len;
   local float travel;
   
   distDiff = destOrg - self.origin;
   len = vlen (distDiff);
+  cons_logAFloat("ai_calc_move().wishSpeed", wishSpeed);  //debug
+  cons_logAFloat("ai_calc_move().len", len);  //debug
   
-  traceline(self.origin, destOrg, MOVE_NORMAL, self);
-  if( trace_fraction < 0.1 ){
+  if( useLegs ){
+    startOrg = self.legs.origin;
+  }else{
+    startOrg = self.origin;
+  }
+  traceline(startOrg, destOrg, MOVE_NORMAL, self);
+  
+  if( trace_fraction < 0.25 ){
     return 0;
   }
-  if( trace_fraction != 1.0 ){
-    len = len * trace_fraction;
-  }
+  len = len * trace_fraction;
+  
   // divide by speed to get time to reach dest
   travel = len / wishSpeed;
+  
+  trailparticles(self, particleeffectnum("TE_LAS_RAIL"), startOrg, destOrg);  //debug
+  cons_logAFloat("ai_calc_move().len", len);  //debug
+  cons_logAFloat("ai_calc_move().travel", travel);  //debug
   
   return travel;
 };
@@ -726,6 +738,68 @@ void() ai_trail_forward={
       self.trailDest = self.trail8;
       break;
   }
+};
+
+vector(float trailId) ai_trail_getdest={
+  local vector getDest;
+  switch( self.trailTotal ){
+    case 1:
+      getDest = self.trail1;
+      break;
+    case 2:
+      getDest = self.trail2;
+      break;
+    case 3:
+      getDest = self.trail3;
+      break;
+    case 4:
+      getDest = self.trail4;
+      break;
+    case 5:
+      getDest = self.trail5;
+      break;
+    case 6:
+      getDest = self.trail6;
+      break;
+    case 7:
+      getDest = self.trail7;
+      break;
+    case 8:
+      getDest = self.trail8;
+      break;
+  }
+  return getDest;
+};
+
+/*
+  AI TRAIL - Find closest clear .trailX
+*/
+vector() ai_trail_available={
+  local float itr;
+  local float radii;
+  local vector vecDest;
+  local float vecLen;
+  local vector vecFound;
+  
+  vecFound = '0 0 0';
+  radii = AI_RANGE_L;
+  itr = self.trailTotal;
+  while( itr > 0 ){
+    vecDest = ai_trail_getdest(itr);
+    vecLen = vlen(vecDest - self.origin);
+    if( vecLen < radii ){
+      traceline(self.origin, vecDest, MOVE_NORMAL, self);
+      if( trace_fraction == 1.0 ){
+        radii = vecLen;
+        vecFound = vecDest;
+      } 
+    }
+    itr = itr - 1;
+  }
+  if( vecFound != '0 0 0' ){
+    return vecFound;
+  }
+  return self.origin;
 };
 
 void() ai_trail_clear={

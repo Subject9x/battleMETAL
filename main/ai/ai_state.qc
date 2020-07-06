@@ -66,13 +66,20 @@ void() ai_state_frame={
     case ST_COM_MOVE_END:
       self.ai_state_combat_moveEnd();
       break;
+    case ST_COM_MOVE_BLOCK:
+      self.ai_state_combat_blocked();
+      break;
     case ST_TRAIL_MOVE:
+      self.ai_state_trail_move();
       break;
     case ST_TRAIL_BLOCK:
+      self.ai_state_trail_move_block();
       break;
     case ST_TRAIL_ROLLBACK:
+      self.ai_state_trail_rollback();
       break;
     case ST_TRAIL_ROLLBLOCK:
+      self.ai_state_trail_rollback_block();
       break;
   }
   
@@ -145,15 +152,85 @@ void() ai_combat_move_frame={
       ai_move_standface();
       break;
   }
-  if( !noBlock ){
-    self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & self.ai_move);
-    self.ai_blockflag = self.ai_blockflag | self.ai_move;
-    self.ai_state_next = ST_COM_MOVE_BLOCK;
-    cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
-    
+  if( noBlock == FALSE ){
+    if( self.ai_state_combat_blocked ){
+      if( time < self.ai_movewait ){
+      cons_logAFloat("!INTERRUPT! ai_combat_move_frame ",  1); //debug
+      }
+      self.ai_state_next = ST_COM_MOVE_BLOCK;
+      cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
+    }
   }
 };
 
+/*
+  scope = self is AI making the call.
+  called every frame if the AI Unit has FL_TURRET
+  flag, this  assumes .torsoCenter is the AI's turret ent.
+*/
+void() ai_turret_control={
+  local entity turretOwner;
+  local float ang;
+  local float oldAng;
+  if( (self.torsoCenter) ){
+    turretOwner = self;
+    self = self.torsoCenter;
+      oldAng = self.angles_y;
+      macro_set_offset(turretOwner, self.compOffset)
+      switch( self.attack_state ){
+        case TR_NORM:
+          self.ideal_yaw = turretOwner.angles_y;
+          break;
+        case TR_TARG:
+          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin );
+          break;
+        case TR_GOAL:
+          self.ideal_yaw = vectoyaw( turretOwner.goalentity.origin - self.owner.origin );
+          break;
+        case TR_YAW:
+          self.ideal_yaw = self.ai_dir;
+          break;
+        case TR_LEFT:
+          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin ) - 75;
+          break;
+        case TR_RIGHT:
+          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin ) + 75;
+          break;
+      }
+      //run check to see if ideal_yaw is within unit's max rotation limits.
+      self.ideal_yaw = anglemod(self.ideal_yaw);
+      self.ideal_yaw = ai_check_turret_yaw( self.ideal_yaw, turretOwner.angles_y, turretOwner.ai_angleLimits_x, turretOwner.ai_angleLimits_y);
+      ChangeYaw(); 
+      self.v_angle = self.angles;
+    self = turretOwner;
+    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+  }
+};
+
+
+void() ai_leg_control={
+  local entity legOwner;
+  legOwner = self;
+  self = self.legs;
+    macro_set_offset(self.owner, self.compOffset)
+    switch( self.attack_state ){
+      case TR_NORM:
+        self.ideal_yaw = self.owner.angles_y;
+        break;
+      case TR_TARG:
+        self.ideal_yaw = self.ai_dir;
+        break;
+      case TR_GOAL:
+        self.ideal_yaw = vectoyaw(self.owner.goalentity.origin - self.origin);
+        break;
+      case TR_YAW:
+        self.ideal_yaw = self.angles_y;
+        break;
+    }
+    ChangeYaw();
+    self.v_angle = self.angles;
+  self = legOwner;
+};
 
 void( float estate ) ai_turret_set_state={
   if( (self.torsoCenter) ){

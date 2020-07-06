@@ -45,6 +45,7 @@ void() ai_mech_sk_ptr_pause={
     self.legs.angles_y = self.angles_y;
     self.legs.think = bot_leg_stand1;
     self.legs.nextthink = time + 0.1;
+    ai_trail_clear(); //clear out any previous trail pattern.
     return;
   }
   //--------------------------
@@ -97,6 +98,8 @@ void() ai_mech_sk_ptr_travel_node={
 void() ai_mech_sk_ptr_travel_blocked={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
     cons_logAString("new state", "ai_mech_sk_ptr_travel_blocked"); //debug
+    self.tetherOrg = self.movetarget.origin;
+    self.ai_state_next = ST_PTR;
     return;
   }
 };

@@ -23,10 +23,10 @@ float AI_REACT_VET = 2;
 float AI_REACT_ACE = 1;
 
 //AI movement speed ratio 
-float AI_WALK_SPD = 0.1375;
+float AI_WALK_SPD = 0.17;
+float AI_RUN_SPD = 0.25;
 float AI_RUN_FACTOR = 1.25;
 float AI_MECH_MOVE_FACTOR = 0.85; //mechs cannot move as fast as player
-float AI_RUN_SPD = 0.2;
 float AI_PATROL_SPEED_LIMIT = 100; //units going full speed on patrol so far is rough on game balance.
 
 //Radar post
@@ -46,7 +46,7 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.75;
+float AI_DMG_SKILL_ROK = 0.8;
 float AI_DMG_SKILL_REG = 0.85;
 float AI_DMG_SKILL_VET = 0.9;
 float AI_DMG_SKILL_ACE = 1;
