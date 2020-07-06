@@ -255,6 +255,7 @@ float PATROL_PAUSE        = 1;
 float PATROL_WALKING      = 2;
 float PATROL_ARRIVE       = 3;
 float PATROL_ADJUST       = 4;
+float PATROL_BLOCK        = 5;
 
 float MOVE_STAND          = 0;    //every AI has this
 float MOVE_CHARGE         = 1;
@@ -298,17 +299,18 @@ float ST_COMBAT               = 8;  //ENTER -> COMBAT
 float ST_COM_MOVE_START       = 9;  //begin combat maneuver
 float ST_COM_MOVE_EXEC        = 10; //execute a prescribed combat maneuver
 float ST_COM_MOVE_END         = 11; //completed a combat maneuver
-float ST_COM_REACT            = 12; //no target but hit by fire
+float ST_COM_MOVE_BLOCK       = 12;
+float ST_COM_REACT            = 13; //no target but hit by fire
 
-float ST_TRAIL_MOVE           = 13; //
-float ST_TRAIL_BLOCK          = 14; //
-float ST_TRAIL_ROLLBACK       = 15; //
-float ST_TRAIL_ROLLBLOCK      = 16; //
+float ST_TRAIL_MOVE           = 14; //
+float ST_TRAIL_BLOCK          = 15; //
+float ST_TRAIL_ROLLBACK       = 16; //
+float ST_TRAIL_ROLLBLOCK      = 17; //
 
-float ST_TRACK_MOVE           = 17;
-float ST_TRACK_BLOCK          = 18;
-float ST_TRACK_ROLLBACK       = 19;
-float ST_TRACK_ROLLBLOCK      = 20;
+float ST_TRACK_MOVE           = 18;
+float ST_TRACK_BLOCK          = 19;
+float ST_TRACK_ROLLBACK       = 20;
+float ST_TRACK_ROLLBLOCK      = 21;
 
 void() ai_state_frame;
 
@@ -326,6 +328,7 @@ void() ai_state_frame;
 .void() ai_state_combat_moveStart;
 .void() ai_state_combat_moveExec;
 .void() ai_state_combat_moveEnd;
+.void() ai_state_combat_blocked;
 .void() ai_state_combat_react;
 
 .void() ai_state_trail_move;
@@ -340,17 +343,16 @@ void() ai_state_frame;
 
 void() ai_combat_move_frame;  //sub-state for combat maneuverin'
 void() ai_move_stand;
-void() ai_move_charge;
-void() ai_move_charge_left;
-void() ai_move_charge_right;
-void() ai_move_strafe_left;
-void() ai_move_strafe_right;
-void() ai_move_circle_left;
-void() ai_move_circle_right;
-void() ai_move_back;
-void() ai_move_back_left;
-void() ai_move_back_right;
+float() ai_move_charge;
+float() ai_move_charge_left;
+float() ai_move_charge_right;
+float() ai_move_strafe_left;
+float() ai_move_strafe_right;
+float() ai_move_circle_left;
+float() ai_move_circle_right;
+float() ai_move_back;
+float() ai_move_back_left;
+float() ai_move_back_right;
 void() ai_move_snapshot;
 void() ai_move_standface;
-float() ai_move_patrol_node;
 float() ai_move_patrol_node;

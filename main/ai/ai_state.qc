@@ -99,40 +99,41 @@ void() ai_state_frame={
     .ai_dance_card  - bitflag collection of all possible moves for THIS AI, usually set at-spawn by unit-type
 */
 void() ai_combat_move_frame={
-
+  local float noBlock;
+  noBlock = TRUE;
   switch(self.ai_move){
     case MOVE_STAND:
       ai_move_stand();
       break;
     case MOVE_CHARGE:
-      ai_move_charge();
+      noBlock = ai_move_charge();
       break;
     case MOVE_CHARGE_LEFT:
-      ai_move_charge_left();
+      noBlock = ai_move_charge_left();
       break;
     case MOVE_CHARGE_RIGHT:
-      ai_move_charge_right();
+      noBlock = ai_move_charge_right();
       break;
     case MOVE_STRAFE_LEFT:
-      ai_move_strafe_left();
+      noBlock = ai_move_strafe_left();
       break;
     case MOVE_STRAFE_RIGHT:
-      ai_move_strafe_right();
+      noBlock = ai_move_strafe_right();
       break;
     case MOVE_CIRCLE_LEFT:
-      ai_move_circle_left();
+      noBlock = ai_move_circle_left();
       break;
     case MOVE_CIRCLE_RIGHT:
-      ai_move_circle_right();
+      noBlock = ai_move_circle_right();
       break;
     case MOVE_BACK:
-      ai_move_back();
+      noBlock = ai_move_back();
       break;
     case MOVE_BACK_LEFT:
-      ai_move_back_left();
+      noBlock = ai_move_back_left();
       break;
     case MOVE_BACK_RIGHT:
-      ai_move_back_right();
+      noBlock = ai_move_back_right();
       break;
     case MOVE_SNAPSHOT:
       ai_move_snapshot();
@@ -143,6 +144,13 @@ void() ai_combat_move_frame={
     case MOVE_STAND_FACE:
       ai_move_standface();
       break;
+  }
+  if( !noBlock ){
+    self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & self.ai_move);
+    self.ai_blockflag = self.ai_blockflag | self.ai_move;
+    self.ai_state_next = ST_COM_MOVE_BLOCK;
+    cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
+    
   }
 };
 

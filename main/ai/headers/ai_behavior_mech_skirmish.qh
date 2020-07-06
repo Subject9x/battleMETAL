@@ -25,6 +25,7 @@ void() mech_sk_combat;
 void() mech_sk_com_moveStart;
 void() mech_sk_com_moveExec;
 void() mech_sk_com_moveEnd;
+void() mech_sk_com_blocked;
 
 
 /*

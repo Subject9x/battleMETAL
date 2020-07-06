@@ -262,11 +262,11 @@ void() mech_sk_combat={
       }
       
       //------> RANGE TOOO FAR
-        //------------------> FACING FRONT
-        if( enemy_infront ){
-        
-        }
-        //------------------> FACING REAR
+      //------------------> FACING FRONT
+      if( enemy_infront ){
+      
+      }
+      //------------------> FACING REAR
     }
     return;
   //---------------------------------------------------------------------------
@@ -338,13 +338,33 @@ void() mech_sk_com_moveExec={
 };
 
 /*
-  STATE : COMBAT MANEUVER BLOCKED
+  STATE : COMBAT MANEUVER COMPLETED
 */
 void() mech_sk_com_moveEnd={
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
     cons_logAString("new state", "mech_sk_com_moveEnd"); //debug
+    if( self.ai_move_last == MOVE_PATROLNODE ){      
+      cons_logAString("self.ai_move_last == MOVE_PATROLNODE", "run"); //debug
+      self.ai_blockflag = 0; 
+      self.ai_moveflag = self.ai_dance_card;
+    }
+    self.ai_state_next = ST_COMBAT;
+    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    return;
+  }
+ //------------------------------------------------------------------
+};
+
+/*
+  STATE : COMBAT MANEUVER BLOCKED
+*/
+void() mech_sk_com_blocked={
+  
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
+    cons_logAString("new state", "mech_sk_com_blocked"); //debug
     if( self.ai_move_last == MOVE_PATROLNODE ){      
       cons_logAString("self.ai_move_last == MOVE_PATROLNODE", "run"); //debug
       self.ai_blockflag = 0; 
@@ -368,14 +388,14 @@ void() ai_mech_skirmish={
   
   
   //deprecate this
-  self.th_stand = ai_mech_sk_enter_stand;
-  self.th_walk = ai_mech_sk_patrol1;
-  self.th_missile = ai_mech_sk_fight_prep;
-  self.th_pain = ai_mech_sk_panic1;
-  self.th_react = ai_mech_sk_react1;
-  self.th_die = ai_mech_sk_die;
-  self.th_rotate = ai_rotate_mech;
-  self.touch = ai_touch;
+  //self.th_stand = ai_mech_sk_enter_stand;
+  //self.th_walk = ai_mech_sk_patrol1;
+  //self.th_missile = ai_mech_sk_fight_prep;
+  //self.th_pain = ai_mech_sk_panic1;
+  //self.th_react = ai_mech_sk_react1;
+  //self.th_die = ai_mech_sk_die;
+  //self.th_rotate = ai_rotate_mech;
+  //self.touch = ai_touch;
   //-----------------
 
   ai_setup_patrol();
@@ -410,6 +430,7 @@ void() ai_mech_skirmish={
   self.ai_state_combat_moveStart = mech_sk_com_moveStart;
   self.ai_state_combat_moveExec = mech_sk_com_moveExec;
   self.ai_state_combat_moveEnd = mech_sk_com_moveEnd;
+  self.ai_state_combat_blocked = mech_sk_com_blocked;
   //--------------------------------------------------------------------------
   self.think = ai_state_frame;
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks

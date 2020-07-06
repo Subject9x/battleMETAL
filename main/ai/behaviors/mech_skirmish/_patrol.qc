@@ -74,8 +74,6 @@ void() ai_mech_sk_ptr_travel_node={
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
-    //macro_ai_frame(ai_mech_sk_fight_prep)
-    //return;
     self.ai_state_next = ST_COMBAT;
     cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
     return;
@@ -87,7 +85,7 @@ void() ai_mech_sk_ptr_travel_node={
     return;
   }
   
-  if( patrolState == PATROL_ADJUST ){
+  if( patrolState == PATROL_BLOCK ){
     self.ai_state_next = ST_PTR_TRAVEL_NODEBLOCK;
     cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
     return;
@@ -125,7 +123,7 @@ void() ai_mech_sk_ptr_tether_blocked={
 
 
 
-
+//=====================================================================================
 
 
 
