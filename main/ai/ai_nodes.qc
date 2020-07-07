@@ -110,7 +110,15 @@ void() ai_node_check={
     nexNode = find(world, targetname, self.target );
     if( nexNode ){
       if(self.partPrev == world ){
+        //start of chain
+        self.owner = world;
         nexNode.owner = self;
+      }
+      else{
+        if( self.owner != nexNode ){
+          //end of chain
+          nexNode.owner = self.owner;
+        }
       }
       //wires nodes together for custom chain traversal
       self.partNext = nexNode;

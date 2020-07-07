@@ -3,8 +3,8 @@ battleMETAL
 Author: Peter Roohr
 Date: 07/06/2020
 Overview: 
-
   tank snipers are basically missile / tank hunter vehicles.
+  the _combat file contains the state code for ST_COMBAT states.
 */
 
 void() spg_combat={
@@ -21,6 +21,20 @@ void() spg_combat={
       self.ai_state_next = ST_STAND;
       self.ai_dampen = 0;
       cons_logAFloat("ENTER[ST_STAND]",  self.ai_state_next); //debug
+      ai_trail_clear();
+      return;
+    }
+    if( (self.flags & FL_DISARMED) ){
+      //TODO pain / flee
+      //self.th_pain( world );
+      //return;
+    }
+    
+    //new, trail stack
+    if( self.trailTotal == self.trailMax ){
+      cons_logAFloat("spg_combat->hit trail max!", 1);  //debug
+      self.ai_state_next = ST_TRAIL_MOVE;
+      cons_logAFloat("ENTER[ST_TRAIL_MOVE]",  self.ai_state_next); //debug
       return;
     }
     
@@ -41,24 +55,10 @@ void() spg_combat={
           return;
         }
       }
-      //new, trail stack
-      if( !ai_mark_trail() ){
-        //TODO trailmixin
-        cons_logAFloat("hit trail max!", 1);  //debug
-        //ai_mech_sk_trail_gate();
-        self.ai_state_next = ST_TRAIL_MOVE;
-        return;
-      }
+
     }
     //------------------------------------------------
     //otherwise prepare dancin'
-    //self.speed = self.lefty;
-    
-    if( (self.flags & FL_DISARMED) ){
-      //TODO pain / flee
-      //self.th_pain( world );
-      return;
-    }
     
     enemy_hunt = FALSE;
     roll = random() * 1;
@@ -66,7 +66,6 @@ void() spg_combat={
     enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, FALSE);
     self.ai_movedist = max((4 - self.ai_rank),1) * 10; //default move here, but can be overridden down the line.
-
     
     self.ai_state_next = ST_COM_MOVE_START;
     //clean LoS================================
@@ -124,63 +123,38 @@ void() spg_combat={
       if( enemy_range <= self.ai_minrange ){
         //------------------> FACING FRONT
         if( enemy_infront ){
-        
+          self.ai_movedist = 3;
+          self.ai_move_next = MOVE_SNIPESHOT;
+          return;
         }
         //------------------> FACING REAR
       }
       //------> RANGE TOOO FAR
         //------------------> FACING FRONT
-        if( enemy_infront ){
-          
-        }
-        //------------------> FACING REAR
-      
+        //------------------> FACING REAR          
+      self.ai_movedist = 3;
+      self.ai_move_next = MOVE_STAND_FACE;
+      return;
     }
     
     //NO LoS================================
-    if( enemy_vis == VIS_FAIL ){
       //-------> RANGE SHORT
-      if( enemy_range < 200 ) {
         //------------------> FACING FRONT
-        if( enemy_infront ){
-          self.ai_movedist = 10;
-          self.ai_move_next = MOVE_BACK;
-          return;
-        }
+  
         //------------------> FACING REAR
-        self.ai_movedist = 10;
-        self.ai_move_next = MOVE_STAND_FACE;
-        return;
-      }
+
       //------> RANGE COMBAT
-      if( enemy_range <= self.ai_minrange ){
         //------------------> FACING FRONT
-        if( enemy_infront ){
-          self.ai_movedist = 2;
-          self.ai_move_next = MOVE_STAND_FACE;
-          return;
-        }
+
         //------------------> FACING REAR
-        self.ai_movedist = 3;
-        self.ai_move_next = MOVE_STAND_FACE;
-        return;
-      }
+
       
       //------> RANGE TOOO FAR
       //------------------> FACING FRONT
-      if( enemy_infront ){
-        self.ai_movedist = 3;
-        self.ai_move_next = MOVE_STAND_FACE;
-        return;
-      }
+
       //------------------> FACING REAR
-    }
     self.enemy = world;
-    if( self.movetarget || self.target ){
-      self.ai_state_next = ST_PTR;
-      return;
-    }
-    self.ai_movedist = 10;
+    self.ai_movedist = 1;
     self.ai_state_next = ST_STAND;
     return;
   //---------------------------------------------------------------------------
@@ -200,13 +174,6 @@ void() spg_com_moveStart={
       //called ai_node_to_target() before getting to this state
       cons_logAFloat(" self.ai_move_next == MOVE_PATROLNODE",  self.ai_state_next); //debug
       cons_logAFloat("ENTER[ST_COM_MOVE_EXEC]",  self.ai_state_next); //debug
-    }
-    else{
-      local float trail;
-      trail = ai_mark_trail();
-      if( !trail ){
-        
-      }
     }
     if( (self.ai_blockflag & self.ai_move_next) ){
       self.ai_move_next = MOVE_STAND;
@@ -276,6 +243,17 @@ void() spg_com_moveEnd={
     else{
       self.ai_movedist = 0;
       self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & self.ai_move);
+      if( !(self.ai_move_next & (MOVE_STAND | MOVE_SNAPSHOT | MOVE_STAND_FACE | MOVE_SNIPESHOT)) ){  
+        cons_logAString("mech_sk_com_moveStart", "Move is not a standing move, so mark the trail."); //debug
+        local float trail;
+        trail = ai_mark_trail();
+        if( !trail ){
+          //AI is out of trail markers, walk it back.
+          cons_logAString("mech_sk_com_moveStart", "AI is out of trail markers, walk it back"); //debug
+          self.ai_state_next = ST_TRAIL_MOVE;
+          return;
+        }
+      }
     }
     self.ai_state_next = ST_COMBAT;
     cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug

@@ -13,28 +13,28 @@ Overview:
 void(float dice) spg_fight_close_front={
   if( self.ai_rank < AI_RANK_VET ){
     if( dice < 0.6 ){
-      self.ai_movedist = 10;
+      self.ai_movedist = 5;
       self.ai_move_next = MOVE_STAND_FACE;
       return;
     }
     else{
-      self.ai_movedist = 5;
+      self.ai_movedist = 3;
       self.ai_move_next = MOVE_SNIPESHOT;
       return;
     }
   }
   else{
-    self.ai_movedist = 5;
+    self.ai_movedist = 1;
     self.ai_move_next = MOVE_SNIPESHOT;
     if( dice <= 0.35 ){
       if( (self.ai_moveflag & MOVE_CHARGE_LEFT) ){
-        self.ai_movedist = 10;
+        self.ai_movedist = 5;
         self.ai_move_next = MOVE_CHARGE_LEFT;
       }
     }
     else if( dice <= 0.75 ){
       if( (self.ai_moveflag & MOVE_CHARGE_RIGHT) ){
-        self.ai_movedist = 10;
+        self.ai_movedist = 5;
         self.ai_move_next = MOVE_CHARGE_RIGHT;
       }
     }
@@ -46,28 +46,28 @@ void(float dice) spg_fight_close_front={
 void(float dice) spg_fight_close_rear={
   if( self.ai_rank < AI_RANK_VET ){
     if( dice < 0.6 ){
-      self.ai_movedist = 10;
+      self.ai_movedist = 4;
       self.ai_move_next = MOVE_STAND_FACE;
       return;
     }
     else{
-      self.ai_movedist = 5;
+      self.ai_movedist = 3;
       self.ai_move_next = MOVE_SNIPESHOT;
       return;
     }
   }
   else{
-    self.ai_movedist = 5;
+    self.ai_movedist = 3;
     self.ai_move_next = MOVE_SNIPESHOT;
     if( dice <= 0.35 ){
       if( (self.ai_moveflag & MOVE_CHARGE_LEFT) ){
-        self.ai_movedist = 10;
+        self.ai_movedist = 5;
         self.ai_move_next = MOVE_CHARGE_LEFT;
       }
     }
     else if( dice <= 0.75 ){
       if( (self.ai_moveflag & MOVE_CHARGE_RIGHT) ){
-        self.ai_movedist = 10;
+        self.ai_movedist = 5;
         self.ai_move_next = MOVE_CHARGE_RIGHT;
       }
     }
@@ -81,18 +81,16 @@ void(float dice) spg_fight_mid_front={
   local float lean;
   lean = vectoyaw(self.enemy.origin - self.origin);
   if( self.ai_rank == AI_RANK_ROK ){
+    self.ai_movedist = 6;
     if( dice < 0.4 ){
-      self.ai_movedist = 10;
       self.ai_move_next = MOVE_STAND_FACE;
       return;
     }
     else if( dice < 0.7 ){
-      self.ai_movedist = 10;
       self.ai_move_next = MOVE_SNIPESHOT;
       return;
     }
     else{
-      self.ai_movedist = 10;
       self.ai_move_next = MOVE_BACK;
       return;
     }
@@ -135,7 +133,7 @@ void(float dice) spg_fight_mid_front={
         return;
       }
     }
-    self.ai_movedist = 5;
+    self.ai_movedist = 3;
     if( dice < 0.5 ){
       if( dice < 0.2 ){
         if( (self.ai_moveflag & MOVE_BACK_LEFT) ){
@@ -152,7 +150,7 @@ void(float dice) spg_fight_mid_front={
     return;
   }
   if( self.ai_rank == AI_RANK_ACE ){
-    self.ai_movedist = 10;
+    self.ai_movedist = 2;
     if( dice <= 0.25 ){
       if( (self.ai_moveflag & MOVE_BACK_RIGHT) ){
         self.ai_move_next = MOVE_BACK_RIGHT;
@@ -185,7 +183,7 @@ void(float dice) spg_fight_mid_front={
 //FIGHT: ranged / Enemy behind
 void(float dice) spg_fight_mid_rear={
   if( self.ai_rank <= AI_RANK_VET ){
-    self.ai_movedist = 10;
+    self.ai_movedist = 5;
     if( dice <= 0.25 ){
       self.ai_move_next = MOVE_SNIPESHOT;
       return;
@@ -210,17 +208,15 @@ void(float dice) spg_fight_mid_rear={
     return;
   }
   if( self.ai_rank == AI_RANK_ACE ){
-    self.ai_movedist = 5;
+    self.ai_movedist = 2;
     self.ai_move_next = MOVE_SNIPESHOT;
     if( dice <= 0.35 ){
       if( (self.ai_moveflag & MOVE_CHARGE_LEFT) ){
-        self.ai_movedist = 10;
         self.ai_move_next = MOVE_CHARGE_LEFT;
       }
     }
     else if( dice <= 0.75 ){
       if( (self.ai_moveflag & MOVE_CHARGE_RIGHT) ){
-        self.ai_movedist = 10;
         self.ai_move_next = MOVE_CHARGE_RIGHT;
       }
     }

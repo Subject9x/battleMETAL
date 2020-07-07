@@ -41,7 +41,8 @@ void() ai_touch={
   local float enemyFront;
   local float otherFront;
   local entity thisEnemy;
-    //ignore environment
+  
+  //ignore environment
   if( !(other.flags & FL_UNIT) ){
     return;
   }
@@ -59,11 +60,8 @@ void() ai_touch={
     }
     if( time > self.ai_react_buffer ){
       self.enemy = other;
-      if( (self.flags & FL_TURRET) ){
-        self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-        self.torsoCenter.attack_state = TR_TARG;
-      }
       self.ai_react_buffer = time + self.ai_react_time * 2;
+      self.ai_state_next = ST_COMBAT;
       return;
     }
   }
@@ -856,7 +854,8 @@ float() ai_move_charge={
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   
-  self.angles_y = self.ai_dir;
+  self.ideal_yaw = self.ai_dir;
+  ChangeYaw();
   status = walkmove( self.angles_y, (self.ai_wishSpeed * AI_RUN_SPD ) * self.ai_dampen );
   return status;
 };
@@ -896,7 +895,8 @@ float() ai_move_charge_left={
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   
-  self.angles_y = self.ai_dir;
+  self.ideal_yaw = self.ai_dir;
+  ChangeYaw();
   status = walkmove( self.angles_y, (self.ai_wishSpeed * AI_RUN_SPD ) * self.ai_dampen );
   ai_face_targ();
   ai_attack();
@@ -937,7 +937,8 @@ float() ai_move_charge_right={
   if( self.ai_dampen < 1.025){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  self.angles_y = self.ai_dir;
+  self.ideal_yaw = self.ai_dir;
+  ChangeYaw();
   status = walkmove( self.angles_y, (self.ai_wishSpeed * AI_RUN_SPD ) * self.ai_dampen );
   ai_face_targ();
   ai_attack();
@@ -1329,7 +1330,8 @@ float() ai_move_patrol_node={
   local float walkSpeed, cornerSpeed, useSpeed;
   walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
   walkSpeed = walkSpeed*AI_RUN_SPD;
-  cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 4;
+  cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
+  cornerSpeed = cornerSpeed / 1.5;
   cornerSpeed = cornerSpeed*AI_RUN_SPD;
   
   self.lastorigin = self.origin;

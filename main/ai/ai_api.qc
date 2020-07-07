@@ -567,6 +567,9 @@ entity(entity node) ai_node_to_target={
         found = checkNode;
       }
       checkNode.dphitcontentsmask = 0;
+    }    
+    if( checkNode.partNext && checkNode.owner == checkNode.partNext ){
+      break;
     }
   }
   if( found ){

@@ -17,9 +17,6 @@ void() ai_spg_patrol={
     cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODE]",  self.ai_state_next); //debug
     return;
   }
-  else{
-    cons_logAString("running--------", "ai_spg_patrol"); //debug
-  }
 };
 void() ai_spg_ptr_pause={
   ai_update_accuracy( FALSE );
@@ -32,6 +29,12 @@ void() ai_spg_ptr_pause={
   }
   //--------------------------
   
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    //prepare for war....
+    self.ai_state_next = ST_COMBAT;
+    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    return;
+  }
   
   if( time > self.pausetime ){
     if( self.movetarget != world ){
@@ -73,6 +76,12 @@ void() ai_spg_ptr_travel_node={
   }
 };
 void() ai_spg_ptr_travel_blocked={
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    //prepare for war....
+    self.ai_state_next = ST_COMBAT;
+    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    return;
+  }
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
     self.ai_movewait = time + (self.ai_rank * 2);
     cons_logAString("new state", "ai_spg_ptr_travel_blocked"); //debug

@@ -14,6 +14,11 @@ void() spg_trail_move={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_MOVE && self.ai_state_last != ST_TRAIL_MOVE ){
     cons_logAString("new state", "spg_trail_move"); //debug
+    if( ai_trail_back() ){
+      self.tetherOrg = self.trailDest;
+      self.tetherStatus = TETHER_NODE;
+      return;
+    }
     self.tetherOrg = ai_trail_available();
     if( self.tetherOrg == self.origin ){
       //failed to find trail dest, ok, scrap and try nodes?
@@ -32,16 +37,21 @@ void() spg_trail_move={
       if( !walkmove(self.angles_y, self.data_speed_forward * AI_RUN_SPD) ){
         self.ai_state_next = ST_TRAIL_BLOCK;
       }
+      return; 
     }
     else{
       if( !walkmove(self.angles_y, (self.data_speed_forward / 4)* AI_RUN_SPD) ){
         self.ai_state_next = ST_TRAIL_BLOCK;
       }
+      return;
+    }
+    if( self.trailDest == self.trail1 ){
+      //reached end of trail
+      ai_trail_clear();
     }
     return;
   }
   self.trailTotal = self.trailTotal - 1;
-  
   self.ai_state_next = ST_COMBAT;
 };
 
@@ -52,8 +62,15 @@ void() spg_trail_move_block={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_BLOCK && self.ai_state_last != ST_TRAIL_BLOCK ){
     cons_logAString("new state", "spg_trail_move_block"); //debug    
-    self.tetherOrg = ai_trail_available();
+    if( ai_trail_back() ){
+      cons_logAString("spg_trail_move_block", "trail found"); //debug    
+      cons_logAVector("spg_trail_move_block", self.trailDest); //debug    
+      self.tetherOrg = self.trailDest;
+      self.tetherStatus = TETHER_NODE;
+      return;
+    }
     if( self.tetherOrg == self.origin ){
+      cons_logAString("spg_trail_move_block", "------no trail found"); //debug    
       //failed to find trail dest, ok, scrap and try nodes?
       self.movetarget = ai_node_to_target(self);
       self.tetherOrg = self.movetarget.origin;

@@ -30,7 +30,6 @@ void() ai_vec_dest={
   self.touch = ai_touch;
 
   ai_setup_patrol();
-  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
   
   self.SendEntity = ctrl_send_spg;
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;   
@@ -51,7 +50,7 @@ void() ai_vec_dest={
     self.ai_dance_card = self.ai_dance_card | (MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT); //oh ho ho 
   }
   if(self.ai_rank == AI_RANK_ACE){
-    self.ai_dance_card = self.ai_dance_card | (MOVE_BACK_LEFT | MOVE_BACK_RIGHT); //oh ho ho 
+    self.ai_dance_card = self.ai_dance_card | (MOVE_BACK_LEFT | MOVE_BACK_RIGHT);
   }
   self.ai_moveflag = self.ai_dance_card;
   self.dphitcontentsmask = 0;
