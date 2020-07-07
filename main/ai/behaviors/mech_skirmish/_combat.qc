@@ -78,8 +78,7 @@ void() mech_sk_combat={
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-    self.ai_movedist = max((4 - self.ai_rank),1) * 10; //default move here, but can be overridden down the line.
-
+    self.ai_movedist = max((4 - self.ai_rank),1) * 2; //default move here, but can be overridden down the line.
     
     self.ai_state_next = ST_COM_MOVE_START;
     //clean LoS================================
@@ -102,7 +101,6 @@ void() mech_sk_combat={
           return;
         }
         //------------------> FACING REAR
-
         mech_sk_fight_mid_rear(roll);
         return;
       }
@@ -119,15 +117,33 @@ void() mech_sk_combat={
     
     //FRIENDLY FIRE================================
     if( enemy_vis == VIS_FRN ){
-      local vector lean;
-      lean = vectoangles(self.enemy.origin - self.origin);
+      local float lean;
+      lean = vectoyaw(self.enemy.origin - self.origin);
+      lean = anglemod(lean);
       //-------> RANGE SHORT
       if( enemy_range < 200 ) {
         //------------------> FACING FRONT
         if( enemy_infront ){
-          
+          if( self.ai_rank == AI_RANK_ROK ){
+            self.ai_movedist = 5;
+            self.ai_move_next = MOVE_STAND_FACE;
+            return;
+          }
+          if( lean >= anglemod(self.angles_y + 45 ) ){
+            self.ai_movedist = 3;
+            self.ai_move_next = MOVE_STRAFE_RIGHT;
+            return;
+          }
+          if( lean <= anglemod(self.angles_y - 45 ) ){
+            self.ai_movedist = 3;
+            self.ai_move_next = MOVE_STRAFE_LEFT;
+            return;
+          }
+          self.ai_movedist = 5;
+          self.ai_move_next = MOVE_BACK;
         }
         //------------------> FACING REAR
+        
       }
       //------> RANGE COMBAT
       if( enemy_range <= self.ai_minrange ){
@@ -193,8 +209,18 @@ void() mech_sk_com_moveStart={
       
     }
     if( (self.ai_blockflag & self.ai_move_next) ){
+      //TODO - blocked move fall throughs
       self.ai_move_next = MOVE_STAND;
     }
+    if( (self.ai_move_next & (MOVE_STRAFE_LEFT | MOVE_CHARGE_LEFT | MOVE_BACK_LEFT)) &&
+      !(self.ai_move_last & (MOVE_STRAFE_RIGHT | MOVE_CHARGE_RIGHT | MOVE_BACK_RIGHT)) ){
+      self.ai_dampen = 0;
+    }
+    
+    if( !(self.ai_move_next & (MOVE_BACK | MOVE_BACK_LEFT | MOVE_BACK_RIGHT))){
+      self.ai_dampen = 0;
+    }
+    self.ai_wishSpeed = 0;
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }

@@ -137,9 +137,12 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
   
   local float walkSpeed, cornerSpeed, useSpeed;
   walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
-  walkSpeed = max(walkSpeed*AI_WALK_SPD,1);
+  walkSpeed = max(walkSpeed, 1);
   cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 4;
-  cornerSpeed = max(cornerSpeed*AI_WALK_SPD,1);
+  cornerSpeed = max(cornerSpeed, 1);
+  
+  cons_logAFloat("ai_patrol_frame().walkSpeed", walkSpeed);//debug
+  cons_logAFloat("ai_patrol_frame().cornerSpeed", cornerSpeed);//debug
   
   //paused at node
   if( time < self.pausetime ){
@@ -827,7 +830,7 @@ float() ai_move_charge={
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_RUN_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_CHARGE", MOVE_CHARGE);  //debug
@@ -850,13 +853,14 @@ float() ai_move_charge={
     self.legs.attack_state = TR_TARG;
     self.legs.ai_dir = self.ai_dir;
   }
-  if( self.ai_dampen < 1.025){
+  if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   
   self.ideal_yaw = self.ai_dir;
   ChangeYaw();
-  status = walkmove( self.angles_y, (self.ai_wishSpeed * AI_RUN_SPD ) * self.ai_dampen );
+  status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
+  ai_attack();
   return status;
 };
 
@@ -869,11 +873,11 @@ float() ai_move_charge_left={
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   self.ai_dir = anglemod(self.ai_dir - 60);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_RUN_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_CHARGE_LEFT", MOVE_CHARGE_LEFT);  //debug
@@ -891,13 +895,13 @@ float() ai_move_charge_left={
       self.torsoCenter.attack_state = TR_TARG;
     }
   }
-  if( self.ai_dampen < 1.025){
+  if( self.ai_dampen < 1){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   
   self.ideal_yaw = self.ai_dir;
   ChangeYaw();
-  status = walkmove( self.angles_y, (self.ai_wishSpeed * AI_RUN_SPD ) * self.ai_dampen );
+  status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
   ai_face_targ();
   ai_attack();
   return status;
@@ -912,11 +916,11 @@ float() ai_move_charge_right={
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   self.ai_dir = anglemod(self.ai_dir + 60);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_RUN_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_CHARGE_RIGHT", MOVE_CHARGE_RIGHT);  //debug
@@ -934,12 +938,12 @@ float() ai_move_charge_right={
       self.torsoCenter.attack_state = TR_TARG;
     }
   }
-  if( self.ai_dampen < 1.025){
+  if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   self.ideal_yaw = self.ai_dir;
   ChangeYaw();
-  status = walkmove( self.angles_y, (self.ai_wishSpeed * AI_RUN_SPD ) * self.ai_dampen );
+  status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
   ai_face_targ();
   ai_attack();
   return status;
@@ -959,7 +963,7 @@ float() ai_move_strafe_left={
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_WALK_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_CIRCLE_LEFT", MOVE_STRAFE_LEFT);  //debug
@@ -970,7 +974,7 @@ float() ai_move_strafe_left={
     
     if( self.legs ){
       self.legs.ai_dir = self.ai_dir;
-      self.legs.attack_state = TR_YAW;
+      self.legs.attack_state = TR_TARG;
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
@@ -981,8 +985,9 @@ float() ai_move_strafe_left={
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  status = walkmove( self.ai_dir, (self.data_speed_strafe * self.ai_dampen) * AI_WALK_SPD );
+  status = walkmove( self.ai_dir, (self.data_speed_strafe * self.ai_dampen) );
   self.angles_y = self.ai_dir;
+  ai_attack();
   return status;
 };
 /*
@@ -998,7 +1003,7 @@ float() ai_move_strafe_right={
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_WALK_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_CIRCLE_LEFT", MOVE_STRAFE_RIGHT);  //debug
@@ -1009,7 +1014,7 @@ float() ai_move_strafe_right={
     
     if( self.legs ){
       self.legs.ai_dir = self.ai_dir;
-      self.legs.attack_state = TR_YAW;
+      self.legs.attack_state = TR_TARG;
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
@@ -1020,8 +1025,9 @@ float() ai_move_strafe_right={
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  status = walkmove( self.ai_dir, (self.data_speed_strafe * self.ai_dampen) * AI_WALK_SPD );
+  status = walkmove( self.ai_dir, self.data_speed_strafe * self.ai_dampen);
   self.angles_y = self.ai_dir;
+  ai_attack();
   return status;
 };
 
@@ -1035,11 +1041,11 @@ float() ai_move_circle_left={
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   self.ai_dir = anglemod(self.ai_dir - 70);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_RUN_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_CIRCLE_LEFT", MOVE_CIRCLE_LEFT);  //debug
@@ -1049,7 +1055,7 @@ float() ai_move_circle_left={
     self.ai_movewait = time + status;
     
     if( self.legs ){
-      self.legs.attack_state = TR_YAW;
+      self.legs.attack_state = TR_TARG;
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
@@ -1063,8 +1069,9 @@ float() ai_move_circle_left={
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  status = walkmove( self.ai_dir, (self.ai_wishSpeed * self.ai_dampen) * AI_RUN_SPD );
+  status = walkmove( self.ai_dir, self.ai_wishSpeed * self.ai_dampen );
   self.angles_y = self.ai_dir;
+  ai_attack();
   return status;
 };
 /*
@@ -1077,11 +1084,11 @@ float() ai_move_circle_right={
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   self.ai_dir = anglemod(self.ai_dir + 70);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_RUN_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_CIRCLE_RIGHT", MOVE_CIRCLE_RIGHT);  //debug
@@ -1091,7 +1098,7 @@ float() ai_move_circle_right={
     self.ai_movewait = time + status;
     
     if( self.legs ){
-      self.legs.attack_state = TR_YAW;
+      self.legs.attack_state = TR_TARG;
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
@@ -1106,7 +1113,8 @@ float() ai_move_circle_right={
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   self.angles_y = self.ai_dir;
-  status = walkmove( self.ai_dir, (self.ai_wishSpeed * self.ai_dampen) * AI_RUN_SPD );
+  status = walkmove( self.ai_dir, self.ai_wishSpeed * self.ai_dampen );
+  ai_attack();
   return status;
 };
 
@@ -1124,7 +1132,7 @@ float() ai_move_back={
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_WALK_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_BACK", MOVE_BACK);  //debug
@@ -1146,13 +1154,9 @@ float() ai_move_back={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  
-  if(self.legs){
-    ai_face_targ();
-  }
-  
+  ai_face_targ();
   ai_attack();
-  status = walkmove( self.ai_dir,  (self.ai_wishSpeed * AI_WALK_SPD ) * self.ai_dampen  );
+  status = walkmove( self.ai_dir,  self.ai_wishSpeed * self.ai_dampen  );
   return status;
 };
 /*
@@ -1168,9 +1172,9 @@ float() ai_move_back_left={
     self.ai_dir = anglemod(self.ai_dir);
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
-    self.ai_wishSpeed = (self.data_speed_backward + self.data_speed_strafe) / 2;
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
     makevectors(ai_angle);
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_WALK_SPD, (self.legs != world));
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 0.1 ){
       cons_logAFloat("!BLOCKED! MOVE_BACK_LEFT", MOVE_BACK_LEFT);  //debug
@@ -1192,12 +1196,9 @@ float() ai_move_back_left={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  
-  if(self.legs){
-    ai_face_targ();
-  }
+  ai_face_targ();
   ai_attack();
-  status = walkmove( self.ai_dir, (self.ai_wishSpeed * self.ai_dampen) * AI_WALK_SPD );
+  status = walkmove( self.ai_dir, self.ai_wishSpeed * self.ai_dampen );
   return status;
 };
 /*
@@ -1214,8 +1215,8 @@ float() ai_move_back_right={
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    self.ai_wishSpeed = (self.data_speed_backward + self.data_speed_strafe) / 2;
-    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed*AI_WALK_SPD, (self.legs != world));
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
+    status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 1 ){
       cons_logAFloat("!BLOCKED! MOVE_BACK", MOVE_BACK_RIGHT);  //debug
@@ -1238,11 +1239,9 @@ float() ai_move_back_right={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  if(self.legs){
-    ai_face_targ();
-  }
+  ai_face_targ();
   ai_attack();
-  status = walkmove( self.ai_dir, (self.ai_wishSpeed * self.ai_dampen) * AI_WALK_SPD );
+  status = walkmove( self.ai_dir, self.ai_wishSpeed * self.ai_dampen );
   return status;
 };
 
@@ -1329,10 +1328,8 @@ float() ai_move_patrol_node={
   
   local float walkSpeed, cornerSpeed, useSpeed;
   walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
-  walkSpeed = walkSpeed*AI_RUN_SPD;
   cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
   cornerSpeed = cornerSpeed / 1.5;
-  cornerSpeed = cornerSpeed*AI_RUN_SPD;
   
   self.lastorigin = self.origin;
   if( (self.goalentity.flags&FL_NODE) ){

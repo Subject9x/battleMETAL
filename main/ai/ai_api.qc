@@ -539,7 +539,7 @@ entity(entity node) ai_node_to_target={
     //node set of 1
     //cons_logAFloat("node.owner == node", 1); //debug
     dist = vlen(node.origin - self.enemy.origin);
-    if( dist < self.stat_trg_dist ){
+    if( dist < self.stat_trg_dist / 2 ){
       cons_logAFloat("dist < self.stat_trg_dist", 1); //debug
       return node;
     }
@@ -553,7 +553,7 @@ entity(entity node) ai_node_to_target={
     parnt = node.owner;
   }
 
-  dist = self.stat_trg_dist;
+  dist = self.stat_trg_dist / 1.25;
   for(checkNode = parnt; checkNode != world; checkNode = checkNode.partNext){
     distComp = vlen(checkNode.origin - self.enemy.origin);
     //cons_logAString("checkNode", checkNode.classname); //debug

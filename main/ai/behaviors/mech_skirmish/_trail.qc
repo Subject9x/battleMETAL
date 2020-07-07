@@ -30,32 +30,34 @@ void() mech_sk_trail_move={
     self.legs.nextthink = time + 0.1;
     
     if( ai_trail_back() ){
+      cons_logAString("mech_sk_trail_move", "ai_trail_back()"); //debug
       self.tetherOrg = self.trailDest;
-      self.tetherStatus = TETHER_NODE;
       return;
     }
     self.tetherOrg = ai_trail_available();
     if( self.tetherOrg == self.origin ){
+      cons_logAString("mech_sk_trail_move", " self.tetherOrg == self.origin"); //debug
       //failed to find trail dest, ok, scrap and try nodes?
       self.movetarget = ai_node_to_target(self);
       self.tetherOrg = self.movetarget.origin;
     }
+    
     return;
   }
  //------------------------------------------------------------------
   ai_attack();
+  ai_face_origin(self.tetherOrg);
   if( vlen(self.tetherOrg - self.origin) > AI_NODE_DISTANCE / 2 ){
     //cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
-    ai_face_origin(self.tetherOrg);
     
     if( ai_check_face_origin(self.tetherOrg, 0.85, FALSE) ){
-      if( !walkmove(self.angles_y, self.data_speed_forward * AI_RUN_SPD) ){
+      if( !walkmove(self.angles_y, self.data_speed_forward ) ){
         self.ai_state_next = ST_TRAIL_BLOCK;
         return;
       }
     }
     else{
-      if( !walkmove(self.angles_y, (self.data_speed_forward / 4)* AI_RUN_SPD) ){
+      if( !walkmove(self.angles_y, (self.data_speed_forward / 4)) ){
         self.ai_state_next = ST_TRAIL_BLOCK;
         return;
       }
@@ -63,6 +65,7 @@ void() mech_sk_trail_move={
     if( self.trailDest == self.trail1 ){
       //reached end of trail
       ai_trail_clear();
+      self.ai_moveflag = self.ai_dance_card;
     }
     return;
   }
@@ -82,6 +85,7 @@ void() mech_sk_trail_move_block={
       cons_logAVector("mech_sk_trail_move_block", self.trailDest); //debug    
       self.tetherOrg = self.trailDest;
       self.tetherStatus = TETHER_NODE;
+      self.ai_state_next = ST_TRAIL_MOVE;
       return;
     }
     if( self.tetherOrg == self.origin ){
@@ -89,8 +93,8 @@ void() mech_sk_trail_move_block={
       //failed to find trail dest, ok, scrap and try nodes?
       self.movetarget = ai_node_to_target(self);
       self.tetherOrg = self.movetarget.origin;
+      self.ai_state_next = ST_TRAIL_MOVE;
     }
-    self.ai_state_next = ST_TRAIL_MOVE;
     return;
   }
  //------------------------------------------------------------------
