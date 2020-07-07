@@ -38,10 +38,10 @@ void( entity attacker ) ai_spg_react1={
     self.ai_react_buffer = time + self.ai_react_time * 2;
     //Enemy fire is coming 'out of nowhere'
     if( vlen(attacker.origin - self.origin) > self.ai_view ){
-      macro_ai_frame(ai_spg_panic1)
+    //macro_ai_frame(ai_spg_panic1)
       return;
     }
-    macro_ai_frame(ai_spg_fight_prep)
+    self.ai_state_next = ST_COMBAT;
     return;
   }
   
@@ -50,7 +50,7 @@ void( entity attacker ) ai_spg_react1={
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.ai_react_buffer = time + self.ai_react_time * 3;
-    macro_ai_frame(ai_spg_fight_prep)
+    self.ai_state_next = ST_COMBAT;
     return;
   }
   
@@ -58,7 +58,7 @@ void( entity attacker ) ai_spg_react1={
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.ai_react_buffer = time + self.ai_react_time * 3;
-    macro_ai_frame(ai_spg_fight_prep)
+    self.ai_state_next = ST_COMBAT;
     return;
   }
 };

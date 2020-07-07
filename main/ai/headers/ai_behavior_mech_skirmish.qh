@@ -12,7 +12,6 @@ void() ai_mech_skirmish;
 void() ai_mech_sk_die;
 void() ai_mech_sk_die2;
 
-void() ai_mech_sk_frame;
 void() ai_mech_sk_stand;
 void() ai_mech_sk_patrol;
 void() ai_mech_sk_ptr_pause;
@@ -31,6 +30,15 @@ void() mech_sk_trail_move;
 void() mech_sk_trail_move_block;
 void() mech_sk_trail_rollback;
 void() mech_sk_trail_rollback_block;
+
+void(float dice) mech_sk_fight_close_front;
+void(float dice) mech_sk_fight_close_rear;
+
+void(float dice) mech_sk_fight_mid_front;
+void(float dice) mech_sk_fight_mid_rear;
+
+void(float dice) mech_sk_fight_far_front;
+void(float dice) mech_sk_fight_far_rear;
 
 
 /*

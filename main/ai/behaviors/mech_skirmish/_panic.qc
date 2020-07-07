@@ -36,29 +36,25 @@ void( entity attacker ) ai_mech_sk_react1={
   
   if( attacker == self.enemy ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
-    if( self.attack_state != ST_HUNT ){
-      macro_ai_frame(ai_mech_sk_fight_prep)
-    }
     return;
   }
   //AI currently has no target
   if( !ai_valid_target(self.enemy) ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
     self.enemy = attacker;
-    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-    self.torsoCenter.attack_state = TR_TARG;
-    macro_ai_frame(ai_mech_sk_fight_prep)
+    self.ai_state_next = ST_COMBAT;
     return;
   }
   
   enemyvis = ai_check_vis(self.enemy);
   if( enemyvis == VIS_FAIL ){
+    self.ai_react_buffer = time + self.ai_react_time * 10;
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.torsoCenter.attack_state = TR_TARG;
-    self.ai_react_buffer = time + self.ai_react_time * 5;
-    macro_ai_frame(ai_mech_sk_fight_prep)
+    self.enemy = attacker;
+    self.ai_state_next = ST_COMBAT;
     return;
   }
   if( (attacker.flags & FL_CLIENT) ){
@@ -67,8 +63,9 @@ void( entity attacker ) ai_mech_sk_react1={
       self.enemy = attacker;
       self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
       self.torsoCenter.attack_state = TR_TARG;
-      self.ai_react_buffer = time + self.ai_react_time * 5;
-      macro_ai_frame(ai_mech_sk_fight_prep)
+      self.ai_react_buffer = time + self.ai_react_time * 5;   
+      self.enemy = attacker;
+      self.ai_state_next = ST_COMBAT;
       return;
     }
   }
@@ -77,8 +74,9 @@ void( entity attacker ) ai_mech_sk_react1={
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.torsoCenter.attack_state = TR_TARG;
-    self.ai_react_buffer = time + self.ai_react_time * 5;
-    macro_ai_frame(ai_mech_sk_fight_prep)
+    self.ai_react_buffer = time + self.ai_react_time * 5;    
+    self.enemy = attacker;
+    self.ai_state_next = ST_COMBAT;
     return;
   }
   

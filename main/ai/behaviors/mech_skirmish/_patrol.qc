@@ -30,7 +30,6 @@ void() ai_mech_sk_patrol={
   else{
     cons_logAString("running--------", "sk_patrol"); //debug
   }
-
 };
 /*
   STATE : PATROL PAUSE

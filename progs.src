@@ -161,6 +161,10 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/mech_skirmish/_reverse_adjust.qc
     main/ai/behaviors/mech_skirmish/_recall.qc
     
+    main/ai/behaviors/mech_skirmish/_combat.qc
+    main/ai/behaviors/mech_skirmish/_fight.qc
+    main/ai/behaviors/mech_skirmish/_trail.qc
+    
   main/ai/behaviors/mech_sniper/ai_mech_sniper.qc
     main/ai/behaviors/mech_sniper/_charge.qc
     main/ai/behaviors/mech_sniper/_die.qc
@@ -182,25 +186,39 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/tank_gev/_recall.qc
   
   main/ai/behaviors/tank_sniper/ai_destroyer.qc
-    main/ai/behaviors/tank_sniper/_charge.qc
-    main/ai/behaviors/tank_sniper/_die.qc
+    main/ai/behaviors/tank_sniper/_patrol.qc
+    main/ai/behaviors/tank_sniper/_combat.qc
+    main/ai/behaviors/tank_sniper/_trail.qc
+    main/ai/behaviors/tank_sniper/_fight.qc
     main/ai/behaviors/tank_sniper/_panic.qc
-    main/ai/behaviors/tank_sniper/_reverse.qc
-    main/ai/behaviors/tank_sniper/_rotate.qc
-    main/ai/behaviors/tank_sniper/_snipe.qc
-    main/ai/behaviors/tank_sniper/_strafe.qc
-  
+    main/ai/behaviors/tank_sniper/_die.qc
+    
+    //main/ai/behaviors/tank_sniper/_charge.qc
+    //main/ai/behaviors/tank_sniper/_reverse.qc
+    //main/ai/behaviors/tank_sniper/_rotate.qc
+    //main/ai/behaviors/tank_sniper/_snipe.qc
+    //main/ai/behaviors/tank_sniper/_strafe.qc
+    
+
   main/ai/behaviors/tank_skirmish/ai_tank_skirmish.qc
-    main/ai/behaviors/tank_skirmish/_charge.qc
+    main/ai/behaviors/tank_skirmish/_combat.qc
+    main/ai/behaviors/tank_skirmish/_fight.qc
+    main/ai/behaviors/tank_skirmish/_patrol.qc
+    main/ai/behaviors/tank_skirmish/_trail.qc
+    main/ai/behaviors/tank_skirmish/_track.qc
     main/ai/behaviors/tank_skirmish/_die.qc
-    main/ai/behaviors/tank_skirmish/_flank.qc
-    main/ai/behaviors/tank_skirmish/_hunt.qc
-    main/ai/behaviors/tank_skirmish/_juke.qc
-    main/ai/behaviors/tank_skirmish/_panic.qc
-    main/ai/behaviors/tank_skirmish/_reverse.qc
-    main/ai/behaviors/tank_skirmish/_rotate.qc
-    main/ai/behaviors/tank_skirmish/_strafe.qc
-    main/ai/behaviors/tank_skirmish/_recall.qc
+    
+    
+    
+    //main/ai/behaviors/tank_skirmish/_charge.qc
+    //main/ai/behaviors/tank_skirmish/_flank.qc
+    //main/ai/behaviors/tank_skirmish/_hunt.qc
+    //main/ai/behaviors/tank_skirmish/_juke.qc
+    //main/ai/behaviors/tank_skirmish/_panic.qc
+    //main/ai/behaviors/tank_skirmish/_reverse.qc
+    //main/ai/behaviors/tank_skirmish/_rotate.qc
+    //main/ai/behaviors/tank_skirmish/_strafe.qc
+    //main/ai/behaviors/tank_skirmish/_recall.qc
   
   
   //main/ai/behaviors/ai_noncom.qc TODO

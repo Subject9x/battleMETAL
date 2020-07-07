@@ -802,16 +802,19 @@ void() ai_move_stand={
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     cons_logAFloat("NEW MOVE - MOVE_STAND", MOVE_STAND);  //debug
     self.ai_movewait = time + self.ai_movedist;
-  }
-  if( time > self.ai_movewait ){
-    //time expired, return to top of combat state;
-    self.ai_state_next = ST_COMBAT;
+    if(self.legs){
+      self.legs.attack_state = TR_YAW;
+      self.legs.think = bot_leg_stand1;
+      self.legs.nextthink = time + 0.1;
+    }
     if( self.ai_clearblock ){
       self.ai_blockflag = 0;
       self.ai_moveflag = rint(0);
       self.ai_moveflag = self.ai_dance_card;
     }
+    return;
   }
+  ai_attack();
 };
 
 /*
@@ -1143,7 +1146,10 @@ float() ai_move_back={
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   
-  ai_face_targ();
+  if(self.legs){
+    ai_face_targ();
+  }
+  
   ai_attack();
   status = walkmove( self.ai_dir,  (self.ai_wishSpeed * AI_WALK_SPD ) * self.ai_dampen  );
   return status;
@@ -1186,7 +1192,9 @@ float() ai_move_back_left={
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   
-  ai_face_targ();
+  if(self.legs){
+    ai_face_targ();
+  }
   ai_attack();
   status = walkmove( self.ai_dir, (self.ai_wishSpeed * self.ai_dampen) * AI_WALK_SPD );
   return status;
@@ -1229,8 +1237,9 @@ float() ai_move_back_right={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  
-  ai_face_targ();
+  if(self.legs){
+    ai_face_targ();
+  }
   ai_attack();
   status = walkmove( self.ai_dir, (self.ai_wishSpeed * self.ai_dampen) * AI_WALK_SPD );
   return status;
