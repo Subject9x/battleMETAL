@@ -26,6 +26,8 @@ void() mech_sk_combat={
     //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
+      //TODO 
+        //-> exit combat with trailDest nodes, and far away from patrol node
       self.ai_state_next = ST_STAND;
       self.ai_dampen = 0;
       cons_logAFloat("ENTER[ST_STAND]",  self.ai_state_next); //debug
@@ -221,6 +223,17 @@ void() mech_sk_com_moveStart={
       self.ai_dampen = 0;
     }
     self.ai_wishSpeed = 0;
+    
+    if( !(self.ai_move_next & (MOVE_STAND | MOVE_SNAPSHOT | MOVE_STAND_FACE | MOVE_SNIPESHOT)) ){  
+      cons_logAString("mech_sk_com_moveStart", "Move is not a standing move, so mark the trail."); //debug
+      if( !ai_mark_trail() ){
+        //AI is out of trail markers, walk it back.
+        cons_logAString("mech_sk_com_moveStart", "AI is out of trail markers, walk it back"); //debug
+        self.ai_state_next = ST_TRAIL_MOVE;
+        return;
+      }
+    }
+    
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
@@ -239,7 +252,6 @@ void() mech_sk_com_moveExec={
     return;
   }
   //------------------------------------------------------------------
-
   if( self.ai_move == MOVE_PATROLNODE  && self.ai_move_last == MOVE_PATROLNODE ){
     //cons_logAString("ai_mech_sk_com_maneuver", "self.ai_move == MOVE_PATROLNODE"); //debug
     nodeMove = ai_move_patrol_node();
@@ -274,17 +286,6 @@ void() mech_sk_com_moveEnd={
     else{
       self.ai_movedist = 0;
       self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & self.ai_move);
-      if( !(self.ai_move_next & (MOVE_STAND | MOVE_SNAPSHOT | MOVE_STAND_FACE | MOVE_SNIPESHOT)) ){  
-        cons_logAString("mech_sk_com_moveStart", "Move is not a standing move, so mark the trail."); //debug
-        local float trail;
-        trail = ai_mark_trail();
-        if( !trail ){
-          //AI is out of trail markers, walk it back.
-          cons_logAString("mech_sk_com_moveStart", "AI is out of trail markers, walk it back"); //debug
-          self.ai_state_next = ST_TRAIL_MOVE;
-          return;
-        }
-      }
     }
     self.ai_state_next = ST_COMBAT;
     cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug

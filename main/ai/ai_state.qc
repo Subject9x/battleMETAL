@@ -152,6 +152,14 @@ void() ai_combat_move_frame={
       ai_move_standface();
       break;
   }
+  
+  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail1);  //debug
+  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail2);  //debug
+  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail3);  //debug
+  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail4);  //debug
+  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail5);  //debug
+  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail6);  //debug
+    
   if( noBlock == FALSE ){
     if( self.ai_state_combat_blocked ){
       if( time < self.ai_movewait ){

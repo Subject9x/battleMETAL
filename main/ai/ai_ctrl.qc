@@ -826,7 +826,7 @@ float() ai_move_charge={
   local float status;
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = self.data_speed_forward;
+    self.ai_wishSpeed = self.data_speed_forward * 0.3;
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -855,6 +855,7 @@ float() ai_move_charge={
   }
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
+    cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
   
   self.ideal_yaw = self.ai_dir;
@@ -873,7 +874,7 @@ float() ai_move_charge_left={
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   self.ai_dir = anglemod(self.ai_dir - 60);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2)  * 0.3;
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -895,8 +896,9 @@ float() ai_move_charge_left={
       self.torsoCenter.attack_state = TR_TARG;
     }
   }
-  if( self.ai_dampen < 1){
+  if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
+    cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
   
   self.ideal_yaw = self.ai_dir;
@@ -916,7 +918,7 @@ float() ai_move_charge_right={
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   self.ai_dir = anglemod(self.ai_dir + 60);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2) * 0.3;
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -940,6 +942,7 @@ float() ai_move_charge_right={
   }
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
+    cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
   self.ideal_yaw = self.ai_dir;
   ChangeYaw();
@@ -959,7 +962,7 @@ float() ai_move_strafe_left={
   
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_dir = anglemod(self.angles_y - 90);
-    self.ai_wishSpeed = self.data_speed_strafe;
+    self.ai_wishSpeed = self.data_speed_strafe * 0.3;
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -999,7 +1002,7 @@ float() ai_move_strafe_right={
   
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_dir = anglemod(self.angles_y + 90);
-    self.ai_wishSpeed = self.data_speed_strafe;
+    self.ai_wishSpeed = self.data_speed_strafe * 0.3;
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -1041,7 +1044,7 @@ float() ai_move_circle_left={
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   self.ai_dir = anglemod(self.ai_dir - 70);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2) * 0.3;
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -1084,7 +1087,7 @@ float() ai_move_circle_right={
   self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
   self.ai_dir = anglemod(self.ai_dir + 70);
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2) * 0.3;
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -1128,7 +1131,7 @@ float() ai_move_back={
   
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_dir = anglemod(self.angles_y - 180);
-    self.ai_wishSpeed = self.data_speed_backward;
+    self.ai_wishSpeed = self.data_speed_backward * 0.3;
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -1153,6 +1156,7 @@ float() ai_move_back={
   }  
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
+    cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
   ai_face_targ();
   ai_attack();
@@ -1172,7 +1176,7 @@ float() ai_move_back_left={
     self.ai_dir = anglemod(self.ai_dir);
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
-    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2) * 0.3;
     makevectors(ai_angle);
     status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
@@ -1195,6 +1199,7 @@ float() ai_move_back_left={
   }  
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
+    cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
   ai_face_targ();
   ai_attack();
@@ -1215,7 +1220,7 @@ float() ai_move_back_right={
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
-    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2);
+    self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2) * 0.3;
     status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed, (self.legs != world));
     
     if( status <= 1 ){
@@ -1238,6 +1243,7 @@ float() ai_move_back_right={
   }  
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
+    cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
   ai_face_targ();
   ai_attack();

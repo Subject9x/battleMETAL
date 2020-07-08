@@ -678,10 +678,11 @@ float() ai_mark_trail={
 };
 
 float() ai_trail_back={
-  if( self.trailTotal == 0 ){
+  self.trailTotal = self.trailTotal - 1;
+  if( self.trailTotal <= 0 ){
+    self.trailTotal = 0;
     return FALSE;
   }
-  self.trailTotal = self.trailTotal - 1;
   switch( self.trailTotal ){
     case 1:
       self.trailDest = self.trail1;
