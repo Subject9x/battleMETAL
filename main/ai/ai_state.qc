@@ -106,41 +106,44 @@ void() ai_state_frame={
     .ai_dance_card  - bitflag collection of all possible moves for THIS AI, usually set at-spawn by unit-type
 */
 void() ai_combat_move_frame={
-  local float noBlock;
-  noBlock = TRUE;
+  local float moveStatus;
+  moveStatus = TRUE;
   switch(self.ai_move){
     case MOVE_STAND:
       ai_move_stand();
       break;
     case MOVE_CHARGE:
-      noBlock = ai_move_charge();
+      moveStatus = ai_move_charge();
       break;
     case MOVE_CHARGE_LEFT:
-      noBlock = ai_move_charge_left();
+      moveStatus = ai_move_charge_left();
       break;
     case MOVE_CHARGE_RIGHT:
-      noBlock = ai_move_charge_right();
+      moveStatus = ai_move_charge_right();
       break;
     case MOVE_STRAFE_LEFT:
-      noBlock = ai_move_strafe_left();
+      moveStatus = ai_move_strafe_left();
       break;
     case MOVE_STRAFE_RIGHT:
-      noBlock = ai_move_strafe_right();
+      moveStatus = ai_move_strafe_right();
       break;
     case MOVE_CIRCLE_LEFT:
-      noBlock = ai_move_circle_left();
+      moveStatus = ai_move_circle_left();
       break;
     case MOVE_CIRCLE_RIGHT:
-      noBlock = ai_move_circle_right();
+      moveStatus = ai_move_circle_right();
       break;
     case MOVE_BACK:
-      noBlock = ai_move_back();
+      moveStatus = ai_move_back();
       break;
     case MOVE_BACK_LEFT:
-      noBlock = ai_move_back_left();
+      moveStatus = ai_move_back_left();
       break;
     case MOVE_BACK_RIGHT:
-      noBlock = ai_move_back_right();
+      moveStatus = ai_move_back_right();
+      break;
+    case MOVE_PATROLNODE:
+      moveStatus = ai_move_patrol_node( AI_RANGE_S, AI_NODE_DISTANCE, 0);
       break;
     case MOVE_SNAPSHOT:
       ai_move_snapshot();
@@ -151,16 +154,24 @@ void() ai_combat_move_frame={
     case MOVE_STAND_FACE:
       ai_move_standface();
       break;
+    case MOVE_NODE_HIDE:
+      ai_move_node_hide();
+      break;
+    case MOVE_NODE_CLEAR:
+      ai_move_node_clear();
+      break;
+    case MOVE_NODE_REVERSE:
+      ai_move_node_reverse();
+      break;
+    case MOVE_NODE_RADIUS:
+      ai_move_node_radius();
+      break;
   }
-  
-  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail1);  //debug
-  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail2);  //debug
-  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail3);  //debug
-  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail4);  //debug
-  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail5);  //debug
-  trailparticles(self, particleeffectnum("TE_ESR_RAIL"), self.origin, self.trail6);  //debug
-    
-  if( noBlock == FALSE ){
+  if( moveStatus == PATROL_ARRIVE ){
+    self.ai_state_next = ST_COM_MOVE_END;
+    return;
+  }
+  if( moveStatus == FALSE ){
     if( self.ai_state_combat_blocked ){
       if( time < self.ai_movewait ){
       cons_logAFloat("!INTERRUPT! ai_combat_move_frame ",  1); //debug

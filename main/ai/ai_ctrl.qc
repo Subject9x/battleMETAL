@@ -118,21 +118,28 @@ macro_ai_patrol(speed,pauseFunc,nextFunc)
 };
 */
 
-/*
-  Not exactly sure why I converted this to macro except cutting down on stack size?
-  reports back a status
 
-  float PATROL_PAUSE        = 1;
-  float PATROL_WALKING      = 2;
-  float PATROL_ARRIVE       = 3
-  float PATROL_ADJUST       = 4;
-*/
 //TODO - knock out func params, these will be deprecated
 float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
+  //deprecated - remove soon.
+  return FALSE;
+};
+
+/*
+  PATROL SUB STATE
+    PATROL_PAUSE        = 1;  //Paused at node because node had .float paustime
+    PATROL_WALKING      = 2;  //walking to a node where dist > AI_RANGE_S
+    PATROL_ARRIVE       = 3;  //dist <= AI_NODE_DISTANCE
+    PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && dist > AI_NODE_DISTANCE
+    PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
+    void() ai_patrol_state_frame;
+  .float patrolState;
+*/
+void() ai_patrol_state_frame={
   local entity nextNode;
   local float distLeft;
   local vector blockCheck;
-  local vector orgCheck;
+  local vector cacheOrg;
   local vector norms;
   
   local float walkSpeed, cornerSpeed, useSpeed;
@@ -141,162 +148,151 @@ float(void() nextFunc, void() pauseFunc) ai_patrol_frame={
   cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 4;
   cornerSpeed = max(cornerSpeed, 1);
   
-  cons_logAFloat("ai_patrol_frame().walkSpeed", walkSpeed);//debug
-  cons_logAFloat("ai_patrol_frame().cornerSpeed", cornerSpeed);//debug
+  //cons_logAFloat("ai_patrol_frame().walkSpeed", walkSpeed);//debug
+ // cons_logAFloat("ai_patrol_frame().cornerSpeed", cornerSpeed);//debug
   
-  //paused at node
+  //PAUSED AT NODE
   if( time < self.pausetime ){
-    return PATROL_PAUSE;
+    self.tetherStatus = TETHER_SELF;
+    self.patrolState = PATROL_PAUSE;
+    return;
   }
 
+  cacheOrg = self.patrolNode.origin;
   self.lastorigin = self.origin;
-  if( (self.goalentity.flags&FL_NODE) ){
-    distLeft = vlen(self.tetherOrg - self.origin);
-    //Going to node
-    if( distLeft > AI_RANGE_S ){
-      //cons_logAFloat("distLeft > AI_RANGE_S", distLeft);  //debug
-      ai_face_goal();
-      if( (self.flags & FL_TURRET) ){
-        self.torsoCenter.attack_state = TR_NORM;
-      }
-      if( (self.legs) ){
-        self.legs.attack_state = TR_NORM;
-      }
-      if( ai_check_face(self.goalentity, 0.75, (self.flags&FL_TURRET)) ){
-        if( !walkmove(self.angles_y, walkSpeed) ){
-          movetogoal( walkSpeed );
-        }
-        useSpeed = walkSpeed;
-      }
-      else{
-        if( !walkmove(self.angles_y, cornerSpeed) ){
-          movetogoal( cornerSpeed );
-        }
-        useSpeed = cornerSpeed;
-      }
-      //stuck check
-      if( !util_movedelta( self.lastorigin, self.origin, useSpeed * 0.5 ) ){
-        self.movetype = MOVETYPE_FLY;
-      }
-      else{
-        self.movetype = MOVETYPE_STEP;
-      }
-      return PATROL_WALKING;
+  if( self.tetherStatus == TETHER_NODE ){
+    distLeft = vlen(self.goalentity.origin - self.origin); 
+  }
+  else{
+    distLeft = vlen(self.tetherOrg - self.origin); 
+  }
+  //GOING TO NODE
+  if( distLeft > AI_RANGE_S ){
+    self.tetherStatus = TETHER_SELF;
+    ai_face_goal();
+    if( (self.flags & FL_TURRET) ){
+      self.torsoCenter.attack_state = TR_NORM;
     }
-    
-    //Arriving at node
-    if( distLeft < AI_RANGE_S && self.tetherStatus == TETHER_PATROL ){
-      //cons_logAFloat("distLeft > (AI_RANGE_S * 0.5)", distLeft);  //debug
-      self.tetherStatus = TETHER_NODE;
-      self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, 96, 32);
-      if( (self.flags & FL_TURRET) ){
-        self.torsoCenter.attack_state = TR_NORM;
-      }
-      if( (self.legs) ){
-        self.legs.attack_state = TR_NORM;
-      }
-      if( ai_check_face(self.goalentity, 0.85, (self.flags&FL_TURRET)) ){
-        if( !walkmove(self.angles_y, walkSpeed) ){
-          movetogoal( walkSpeed );
-        }
-        useSpeed = walkSpeed;
-      }
-      else{
-        if( !walkmove(self.angles_y, cornerSpeed) ){
-          movetogoal( cornerSpeed );
-        }
-        useSpeed = cornerSpeed;
-      }
-      //stuck check
-      if( !util_movedelta( self.lastorigin, self.origin, useSpeed * 0.5 ) ){
-        self.movetype = MOVETYPE_FLY;
-      }
-      else{
-        self.movetype = MOVETYPE_STEP;
-      }
-      return PATROL_ARRIVE;
+    if( (self.legs) ){
+      self.legs.attack_state = TR_NORM;
     }
-    if( distLeft > AI_NODE_DISTANCE ){
-      //cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
+    if( ai_check_face(self.goalentity, 0.75, (self.flags&FL_TURRET)) ){
+      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+        movetogoal( walkSpeed );
+      }
+    }
+    else{
+      if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
+        movetogoal( cornerSpeed );
+      }
+    }
+    self.patrolState = PATROL_WALKING;
+    return;
+  }
+  
+  //ADJUST NEAR NODE - ADJUST FINAL DESTINATION
+  if( distLeft > AI_NODE_DISTANCE ){
+    self.tetherStatus = TETHER_NODE;
+    self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, 96, 24);
+    if( (self.flags & FL_TURRET) ){
+      self.torsoCenter.attack_state = TR_NORM;
+    }
+    if( (self.legs) ){
+      self.legs.attack_state = TR_NORM;
+    }
+    setorigin(self.patrolNode, self.tetherOrg);
+    ai_face_goal();
+    if( ai_check_face_origin(self.tetherOrg, 0.85, FALSE) ){
+      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+        movetogoal( walkSpeed );
+      }
+    }
+    else{
+      if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
+        movetogoal( cornerSpeed );
+      }
+    }
+    setorigin(self.patrolNode, cacheOrg);
+    self.patrolState = PATROL_WALKING;
+    return;
+  }
+  
+  //PATROL - ARRIVING AT NODE
+  if( distLeft <= AI_NODE_DISTANCE && distLeft > AI_NODE_DISTANCE / 1.25){
+    if( self.tetherStatus == TETHER_NODE ){
       ai_face_origin(self.tetherOrg);
-      
-      if( (self.flags & FL_TURRET) ){
-        self.torsoCenter.attack_state = TR_NORM;
-      }
-      if( (self.legs) ){
-        self.legs.attack_state = TR_NORM;
-      }
-      if( ai_check_face(self.goalentity, 0.85, (self.flags&FL_TURRET)) ){
-        if( !walkmove(self.angles_y, walkSpeed) ){
-          movetogoal( walkSpeed );
-        }
-        useSpeed = walkSpeed;
-      }
-      else{
-        if( !walkmove(self.angles_y, cornerSpeed) ){
-          movetogoal( cornerSpeed );
-        }
-        useSpeed = cornerSpeed;
-      }
-      //stuck check
-      if( !util_movedelta( self.lastorigin, self.origin, useSpeed * 0.5 ) ){
-        self.movetype = MOVETYPE_FLY;
-      }
-      else{
-        self.movetype = MOVETYPE_STEP;
-      }
-      if( self.lastorigin == self.origin ){
-        return PATROL_BLOCK;
-      }
-      return PATROL_ADJUST;
+      setorigin(self.patrolNode, self.tetherOrg);
+    }
+    else{
+      ai_face_goal();
     }
     
-    //arrived, set pause and next node
-    if( self.goalentity.partNext != world ){
-      nextNode = self.goalentity.partNext;
-      self.movetarget = nextNode;
-      self.tetherStatus = TETHER_PATROL;
-      self.tetherOrg = self.movetarget.origin;
-      makevectors(self.angles);
-      blockCheck = self.origin;
-      if( self.legs ){
-        blockCheck = blockCheck + (v_up * (self.mins_z * 0.5));
-      }
-      
-      traceline(blockCheck, self.tetherOrg, MOVE_NORMAL, self);
-      self.dphitcontentsmask = 0;
-      norms = util_trace_norm_angle();
-      //trailparticles(self, particleeffectnum("TE_LAS_RAIL"), blockCheck, self.tetherOrg); //debug
-      //cons_logAVector("(v_up * (self.mins_z * 0.5))", (v_up * (self.mins_z * 0.5)));  //debug
-      //cons_logAVector("trace_plane_normal angle", norms);  //debug
-      //cons_logAFloat("trace_fraction", trace_fraction);  //debug
-      if( trace_fraction < 0.26 && norms_x <= 0.5) {
-        self.movetarget = self.goalentity;
-        self.tetherOrg = self.movetarget.origin;
+    if( (self.flags & FL_TURRET) ){
+      self.torsoCenter.attack_state = TR_NORM;
+    }
+    if( (self.legs) ){
+      self.legs.attack_state = TR_NORM;
+    }
+    setorigin(self.patrolNode, self.tetherOrg);
+    if( ai_check_face(self.goalentity, 0.85, FALSE) ){
+      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+        movetogoal( walkSpeed );
       }
     }
     else{
-      self.movetarget = world;
-      self.tetherStatus = TETHER_NODE;
-      //cons_logAFloat("self.movetarget = world;", 1);  //debug
+      if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
+        movetogoal( cornerSpeed );
+      }
     }
-    if( self.goalentity.pausetime ){
-      self.pausetime = self.goalentity.pausetime;
-      self.pausetime = min(1, self.pausetime - (self.ai_rank / 2));
-      self.pausetime = self.pausetime+time;
-      self.goalentity = self.movetarget;
-      return PATROL_PAUSE;
+    setorigin(self.patrolNode, cacheOrg);
+    self.patrolState = PATROL_ADJUST;
+    return;
+  }
+  
+  //PATROL - ARRIVED AT NODE, set pause and next node
+  if( self.goalentity.partNext != world ){
+    nextNode = self.goalentity.partNext;
+    self.patrolNode = nextNode;
+    self.tetherStatus = TETHER_PATROL;
+    self.tetherOrg = self.patrolNode.origin;
+    makevectors(self.angles);
+    blockCheck = self.origin;
+    if( self.legs ){
+      blockCheck = blockCheck + (v_up * (self.mins_z * 0.5));
     }
-    else{
-      self.goalentity = self.movetarget;
-      return PATROL_WALKING;
+    
+    //traceline(blockCheck, self.tetherOrg, MOVE_NORMAL, self);
+    tracebox(self.origin, self.mins, self.maxs, self.tetherOrg, MOVE_NORMAL, self);
+    norms = util_trace_norm_angle();
+    trailparticles(self, particleeffectnum("TE_LAS_RAIL"), blockCheck, self.tetherOrg); //debug
+    //cons_logAVector("(v_up * (self.mins_z * 0.5))", (v_up * (self.mins_z * 0.5)));  //debug
+    cons_logAVector("trace_plane_normal angle", norms);  //debug
+    cons_logAFloat("trace_fraction", trace_fraction);  //debug
+    if( trace_fraction < 0.26 && norms_x <= 0.5) {
+      self.patrolNode = self.goalentity;
+      self.tetherOrg = self.patrolNode.origin;
     }
   }
   else{
-    return PATROL_PAUSE;
+    self.patrolNode = world;
+    self.tetherStatus = TETHER_NODE;
   }
-  return PATROL_WALKING;
+  if( self.goalentity.pausetime && nextNode != self.goalentity ){
+    self.pausetime = self.goalentity.pausetime;
+    self.pausetime = max(1, self.pausetime - (self.ai_rank / 2));
+    self.pausetime = self.pausetime + time;
+    self.goalentity = self.patrolNode;
+    self.patrolState =  PATROL_PAUSE;
+    return;
+  }
+  else{
+    self.goalentity = self.patrolNode;
+    self.patrolState = PATROL_WALKING;
+    return;
+  }
+  self.patrolState =  PATROL_ARRIVE;
 };
+
 
 void() ai_tether_frame={
   if( self.tetherOrg == '0 0 0' ){
@@ -672,7 +668,8 @@ void() ai_setup_patrol={
     if( !node ){
       lastNode = node;
       //error handling - target but missing the entity.
-      self.think = self.th_stand;
+      //self.think = self.th_stand;
+      self.ai_state_next = ST_STAND;
       if( (self.spawnflags & DEBUG_MODE) ){
         self.think = SUB_Null;
         return;
@@ -728,8 +725,8 @@ void() ai_setup_patrol={
       self.spawnflags = self.spawnflags - self.spawnflags & RANDOM_START;
       setorigin( self, newOrg);
     }
-    self.target = node.targetname;
-    self.movetarget = node;
+    //self.target = node.targetname;
+    self.patrolNode = node;
     self.goalentity = node;
     self.ideal_yaw = vectoyaw( node.origin - self.origin );
     
@@ -745,35 +742,35 @@ void() ai_setup_patrol={
     if( self.legs != world ){
       util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
     }
-    self.think = self.th_walk;
+    //self.think = self.th_walk;
     if( (self.spawnflags & DEBUG_MODE) ){
-      self.think = SUB_Null;
+      //self.think = SUB_Null;
       return;
     }
     self.tetherStatus = TETHER_PATROL;  //debug
-    self.tetherOrg = self.movetarget.origin;
+    self.tetherOrg = self.patrolNode.origin;
     self.nextthink = time + (random() * 2);
     if( (self.spawnflags & COLD_START) ){
       self.spawnflags = self.spawnflags - COLD_START;
-      self.think = self.th_stand;
+      //self.think = self.th_stand;
       self.nextthink = self.nextthink + 7;
       return;
     }
   }
   else{
     if( (self.spawnflags & DEBUG_MODE) ){
-      self.think = SUB_Null;
+      //self.think = SUB_Null;
       return;
     }
       //debug
     //check for tether node
-    ai_node_tether_find();
-    if( self.tetherStatus == TETHER_NODE ){
-      self.think = self.th_walk;
-    }
-    else{
-      self.think = self.th_stand;
-    }
+    //ai_node_tether_find();
+    //if( self.tetherStatus == TETHER_NODE ){
+      //self.think = self.th_walk;
+   // }
+    //else{
+     // self.think = self.th_stand;
+   // }
     self.nextthink = time + (random() * 2);
     if( (self.spawnflags & COLD_START) ){
       self.spawnflags = self.spawnflags - (self.spawnflags & COLD_START);
@@ -1169,7 +1166,6 @@ float() ai_move_back={
 */
 float() ai_move_back_left={
   local float status;
-  
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_dir = self.angles_y - 180;
     self.ai_dir = self.ai_dir + (25 + (random() * 35));
@@ -1325,76 +1321,124 @@ void() ai_move_standface={
   biggest difference between this and AI_PATROL_FRAME() is that the bot can track its target while
   moving to that node, and make attacks.
 */
-float() ai_move_patrol_node={
+float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node={
   local entity nextNode;
   local float distLeft;
-  local vector blockCheck;
-  local vector orgCheck;
-  local vector norms;
+  local float walkSpeed, cornerSpeed;
   
-  local float walkSpeed, cornerSpeed, useSpeed;
+  if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    self.patrolState = 0;
+    self.tetherStatus = TETHER_NODE;
+    self.tetherOrg = self.goalentity.origin;
+    self.ai_dampen = 1;
+    
+    if( self.legs ){
+      self.legs.attack_state = TR_GOAL;
+      self.legs.think = bot_leg_walk1;
+      self.legs.nextthink = time + 0.1;
+    }
+    return -1;
+  }
   walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
-  cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
-  cornerSpeed = cornerSpeed / 1.5;
+  cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 3;
   
   self.lastorigin = self.origin;
-  if( (self.goalentity.flags&FL_NODE) ){
-    distLeft = vlen(self.tetherOrg - self.origin);
-    //Going to node
-    if( distLeft > AI_NODE_DISTANCE ){
-      //cons_logAFloat("distLeft > AI_RANGE_S", distLeft);  //debug
-      ai_face_goal();
-      if( (self.legs) ){
-        self.legs.attack_state = TR_NORM;
+  distLeft = vlen(self.tetherOrg - self.origin);
+  //Going to node
+  if( distLeft > outRadius ){
+    //cons_logAFloat("distLeft > AI_RANGE_S", distLeft);  //debug
+    ai_face_goal();
+    if( (self.legs) ){
+      self.legs.attack_state = TR_NORM;
+    }
+    if( ai_check_face(self.goalentity, 0.75, FALSE) ){
+      if( !walkmove(self.angles_y, walkSpeed) ){
+        movetogoal( walkSpeed );
       }
-      if( ai_check_face(self.goalentity, 0.75, FALSE) ){
-        if( !walkmove(self.angles_y, walkSpeed) ){
-          movetogoal( walkSpeed );
-        }
-        useSpeed = walkSpeed;
+    }
+    else{
+      if( !walkmove(self.angles_y, cornerSpeed) ){
+        movetogoal( cornerSpeed );
       }
-      else{
-        if( !walkmove(self.angles_y, cornerSpeed) ){
-          movetogoal( cornerSpeed );
-        }
-        useSpeed = cornerSpeed;
-      }
-      
-      ai_attack();
-      return PATROL_WALKING;
     }
     
-    //Arriving at node    
-    if( distLeft > AI_NODE_DISTANCE ){
-      //cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
-      ai_face_origin(self.tetherOrg);
-      
-      if( (self.legs) ){
-        self.legs.attack_state = TR_NORM;
+    ai_attack();
+    return PATROL_WALKING;
+  }
+  
+  //Arriving at node    
+  if( distLeft > innerRadius){
+    //cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
+    ai_face_origin(self.tetherOrg);
+    
+    if( (self.legs) ){
+      self.legs.attack_state = TR_NORM;
+    }
+    if( ai_check_face(self.goalentity, 0.85, FALSE) ){
+      if( !walkmove(self.angles_y, walkSpeed) ){
+        movetogoal( walkSpeed );
       }
-      if( ai_check_face(self.goalentity, 0.85, FALSE) ){
-        if( !walkmove(self.angles_y, walkSpeed) ){
-          movetogoal( walkSpeed );
-        }
-        useSpeed = walkSpeed;
+    }
+    else{
+      if( !walkmove(self.angles_y, walkSpeed) ){
+        movetogoal( cornerSpeed );
       }
-      else{
-        if( !walkmove(self.angles_y, walkSpeed) ){
-          movetogoal( cornerSpeed );
-        }
-        useSpeed = cornerSpeed;
-      }
-        
-      ai_attack();
-      return PATROL_WALKING;
+    }
+    ai_attack();
+    return PATROL_WALKING;
+  }
+  return PATROL_ARRIVE;
+};
+
+void() ai_move_node_radius={
+  local entity node;
+  if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    self.patrolState = 0;
+    node = ai_node_to_target(self);
+    if( node ){
+      self.goalentity = node;
+    }
+    else{
+      self.goalentity = self.patrolNode;
+    }
+    self.ai_dampen = 0;
+    
+    self.patrolState = ai_move_patrol_node(  AI_RANGE_M * 0.67, AI_RANGE_S/2, 0);
+    if( self.patrolState == PATROL_ARRIVE ){
+      self.ai_state_next = ST_COM_MOVE_END;
+      cons_logAFloat("MOVE HEADER - ai_move_node_radius() self.patrolState == PATROL_ARRIVE-> ST_COM_MOVE_END",  self.ai_state_next); //debug
+      return;
     }
     
-    //arrived, go back to regular combat
-    ai_trail_clear(); //clear out any previous trail pattern.
-    return PATROL_ARRIVE;
+    if( self.legs ){
+      self.legs.attack_state = TR_GOAL;
+      self.legs.think = bot_leg_walk1;
+      self.legs.nextthink = time + 0.1;
+    }
+    
+    self.ai_movewait = time + 30;
+    return;
   }
-  else{
-    return PATROL_ARRIVE;
+  ai_attack();
+  cons_logAFloat("PRE------->",self.patrolState); //debug
+  self.patrolState = ai_move_patrol_node( AI_RANGE_M * 0.67, AI_RANGE_S * 0.5, 0);
+  cons_logAFloat("POST------->",self.patrolState); //debug
+  if( self.patrolState = PATROL_ARRIVE ){
+    self.ai_state_next = ST_COM_MOVE_END;
+      cons_logAFloat("ai_move_node_radius() self.patrolState == PATROL_ARRIVE-> ST_COM_MOVE_END",  self.ai_state_next); //debug
+    return;
   }
-  return PATROL_WALKING;
+  
+};
+
+void() ai_move_node_hide={
+  
+};
+
+void() ai_move_node_clear={
+
+};
+
+void() ai_move_node_reverse={
+
 };

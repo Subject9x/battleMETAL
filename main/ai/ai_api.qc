@@ -101,7 +101,7 @@ void( entity t ) ai_call_for_help={
 
 float(entity t) ai_valid_target={  
   if( t != self ){
-    if( (t.flags & FL_UNIT) && (t.deadflag == DEAD_NO) ){
+    if( (t.flags & (FL_UNIT|FL_MONSTER)) && (t.deadflag == DEAD_NO) ){
       return TRUE;
     }
   }
@@ -399,7 +399,8 @@ entity() ai_goal_offset_node={
   while( tests < 7 ){
     angl_y = anglemod( angl_y + (incr * tests) );
     makevectors(angl);
-    traceline(self.origin, self.origin + (v_forward * 200), FALSE, self);
+    //traceline(self.origin, self.origin + (v_forward * 200), FALSE, self);
+    tracebox(self.origin, self.mins, self.maxs, self.origin + (v_forward * 200), MOVE_NORMAL, self);
     if( pointcontents(trace_endpos) == 0 || pointcontents(trace_endpos) == CONTENT_WATER){
       testLen = vlen(trace_endpos - self.origin);
       if( testLen < checkLen && testLen > 33 ){
@@ -503,7 +504,8 @@ float(vector destOrg, float wishSpeed, float useLegs) ai_calc_move={
   }else{
     startOrg = self.origin;
   }
-  traceline(startOrg, destOrg, MOVE_NORMAL, self);
+  tracebox(startOrg, self.mins, self.maxs, destOrg, MOVE_NORMAL, self);
+  //traceline(startOrg, destOrg, MOVE_NORMAL, self);
   
   if( trace_fraction < 0.25 ){
     return 0;
@@ -521,48 +523,46 @@ float(vector destOrg, float wishSpeed, float useLegs) ai_calc_move={
 };
 
 /*
-  if AI has a movetarget, this will find the closest patrol node to the target
+  Find the closest ai_node of the AI's patrol route to the target entity
   return world == FALSE / None
 */
-entity(entity node) ai_node_to_target={
+entity(entity targ) ai_node_to_target={
   local entity checkNode;
   local entity found;
   local entity parnt;
   local float link;
   local float dist;
   local float distComp;
-  //cons_logAString("ai_node_to_target", "---->()"); //debug
-  //cons_logAString("node.classname", node.classname); //debug
-  //cons_logAString("node.owner.classname", node.owner.classname); //debug
   
-  if( node.owner == world && node.partTypeId == 0 ){
-    //node set of 1
-    //cons_logAFloat("node.owner == node", 1); //debug
-    dist = vlen(node.origin - self.enemy.origin);
-    if( dist < self.stat_trg_dist / 2 ){
-      cons_logAFloat("dist < self.stat_trg_dist", 1); //debug
-      return node;
-    }
-    //cons_logAFloat(" return world", 1); //debug
-    return world;
-  }
-  if( node.owner == world ){
-    parnt = node;
+  cons_logAString("CALL FUNCTION:ai_node_to_target()", "---->()"); //debug
+  cons_logAString("targ.classname", targ.classname); //debug
+  cons_logAString("self.patrolNode.targetname", self.patrolNode.targetname); //debug
+  
+  if( self.patrolNode.owner == world ){
+    parnt = self.patrolNode;
   }
   else{
-    parnt = node.owner;
+    parnt = self.patrolNode.owner;
   }
+  
+  cons_logAString("parnt.targetname", parnt.targetname); //debug
+  dist = vlen(targ.origin - parnt.origin);
+  cons_logAFloat("vlen(targ.origin - parnt.origin)", vlen(targ.origin - parnt.origin)); //debug
 
-  dist = self.stat_trg_dist / 1.25;
   for(checkNode = parnt; checkNode != world; checkNode = checkNode.partNext){
-    distComp = vlen(checkNode.origin - self.enemy.origin);
-    //cons_logAString("checkNode", checkNode.classname); //debug
-    //cons_logAFloat("distComp", distComp); //debug
+    distComp = vlen(checkNode.origin - targ.origin);
+    cons_logAString("-------------------------->checkNode", checkNode.targetname); //debug
+    cons_logAFloat("------------------------------------->distComp", distComp); //debug
+    cons_logAFloat(" ", 0); //debug
+    if(checkNode == parnt ){
+      distComp = distComp - 1;  //hackfrauds
+    }
     if( distComp < dist ){
       checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
-      traceline(checkNode.origin, self.enemy.origin, MOVE_NOMONSTERS, checkNode);
-      trailparticles(checkNode, particleeffectnum("TE_LAS_RAIL"), checkNode.origin, self.enemy.origin);  //debug
-      if( trace_fraction == 1.0 || trace_ent == self.enemy ){
+      tracebox(checkNode.origin, targ.mins, targ.maxs, targ.origin, MOVE_NOMONSTERS, self);
+      trailparticles(checkNode, particleeffectnum("TE_LAS_RAIL"), checkNode.origin, targ.origin);  //debug
+      cons_logAFloat("ai_node_to_target().trace_fraction", trace_fraction); //debug
+      if( trace_fraction >= 0.9 || trace_ent == targ || (trace_ent.flags&FL_UNIT)){
         dist = distComp;
         found = checkNode;
       }
@@ -573,34 +573,61 @@ entity(entity node) ai_node_to_target={
     }
   }
   if( found ){
-    if( vlen(found.origin - self.enemy.origin) > self.stat_trg_dist ){
-      return world;
-    }
-    //cons_logAFloat("found", 1); //debug
-    //cons_logAFloat("node.partTypeId", node.partTypeId); //debug
-    //cons_logAFloat("found.partTypeId", found.partTypeId); //debug
-    if( found.partTypeId < node.partTypeId ){
-      traceline(self.origin, node.partPrev.origin, MOVE_NORMAL, self);
+    if( found.partTypeId < self.patrolNode.partTypeId ){
+      tracebox(targ.origin, targ.mins, targ.maxs, self.patrolNode.partPrev.origin, MOVE_NOMONSTERS, targ);
       if( trace_fraction == 1.0 ){
-        //cons_logAFloat("found.partTypeId < node.partTypeId", 1); //debug
-        return node.partPrev;
+        cons_logAFloat("found.partTypeId < node.partTypeId", 1); //debug
+        return self.patrolNode.partPrev;
       }
     }
-    if( found.partTypeId > node.partTypeId ){
-      traceline(self.origin, node.partNext.origin, MOVE_NORMAL, self);
+    if( found.partTypeId > self.patrolNode.partTypeId ){
+      tracebox(targ.origin, targ.mins, targ.maxs, self.patrolNode.partNext.origin, MOVE_NOMONSTERS, targ);
       if( trace_fraction == 1.0 ){
-        //cons_logAFloat("found.partTypeId > node.partTypeId", 1); //debug
-        return node.partNext;
+        cons_logAFloat("found.partTypeId > node.partTypeId", 1); //debug
+        return self.patrolNode.partNext;
       }
-    }
-    if( trace_fraction != 1.0 ){
-      //cons_logAFloat("trace_fraction", trace_fraction); //debug
-      return world;
     }
     return found;
   }
+  else{
+    if( vlen(targ.origin - parnt.origin) >= AI_RANGE_L ){
+      return parnt;
+    }
+  }
   cons_logAFloat("no-op return world", 1); //debug
   return world;
+};
+
+/*
+  Simply moves up/down the AI's patrolNode chain (if possible)
+*/
+entity(float checkDir) ai_get_next_node={
+  local entity foundNode;
+  
+  foundNode = world;
+  if( checkDir ){
+    if( self.patrolNode.partNext ){
+      foundNode = self.patrolNode.partNext;
+    }
+  }
+  else{
+    if( self.patrolNode.partPrev ){
+      foundNode = self.patrolNode.partPrev;
+    }
+  }
+  return foundNode;
+};
+
+/*
+  AI determines if its outside the node-radius of its current node
+*/
+float() ai_check_node_radius={
+  local float radius;
+  radius = AI_RANGE_M;
+  if( vlen(self.origin - self.patrolNode.origin) <= radius ){
+    return TRUE;
+  }
+  return FALSE;
 };
 
 /*

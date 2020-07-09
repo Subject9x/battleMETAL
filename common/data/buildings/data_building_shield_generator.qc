@@ -73,7 +73,7 @@ void() hshield_die9 = [9, hshield_die10]{
       if( vlen(head.origin - self.origin) > (self.ai_minrange / 2) ){
         continue;
       }
-      if( !(head.flags & FL_UNIT) ){
+      if( !(head.flags & (FL_UNIT | FL_MONSTER)) ){
         continue;
       }
       if( head.shield <= 0 ){
@@ -110,7 +110,7 @@ void() hshield_th = [0, hshield_th]{
       if( t == self ){
         continue;
       }
-      if( !(t.flags & FL_UNIT) ){
+      if( !(t.flags & (FL_UNIT|FL_MONSTER)) ){
         continue;
       }
       if( vlen(t.origin - self.origin) > self.ai_minrange ){
@@ -193,7 +193,7 @@ void() building_human_shield={
   }
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);  
+  self.flags = self.flags | FL_MONSTER ;  
   self.scale = 1;
   self.deadflag = DEAD_NO;
   

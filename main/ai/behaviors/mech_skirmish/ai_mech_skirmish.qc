@@ -32,14 +32,14 @@ void() ai_mech_sk_stand={
   cons_logAString("running--------", "sk_stand"); //debug
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     self.ai_state_next = ST_COMBAT;
-    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    cons_logAFloat("ai_mech_sk_stand ai_check_scan( self.stat_rdr_mode ) == TRUE ->[ST_COMBAT]",  self.ai_state_next); //debug
     return;
   }
   
-  if( self.movetarget != world ){
+  if( self.patrolNode != world ){
     if( time > self.pausetime ){
       self.ai_state_next = ST_PTR;
-      cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
+      cons_logAFloat("ai_mech_sk_stand self.patrolNode != world ->[ST_PTR]",  self.ai_state_next); //debug
       return;
     }
   }
@@ -87,7 +87,14 @@ void() ai_mech_skirmish={
   self.trailMax = 8;  //debug here
   self.trailTotal = 0;
   self.ai_state_last = 0;
-  self.ai_state_next = ST_STAND; //debug
+  
+  if(self.patrolNode){
+    self.ai_state_next = ST_PTR;
+  }
+  else{
+    self.ai_state_next = ST_STAND; //debug
+  }
+  
   self.ai_move_last = 0;
   self.ai_move_next = MOVE_STAND; //debug
   self.ai_dance_card = (MOVE_CHARGE | MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT | MOVE_STRAFE_LEFT | MOVE_STRAFE_RIGHT | MOVE_BACK | MOVE_CIRCLE_LEFT | MOVE_CIRCLE_RIGHT | MOVE_STAND_FACE);
@@ -121,21 +128,6 @@ void() ai_mech_skirmish={
   //--------------------------------------------------------------------------
 };
 
-void() ai_mech_sk_trail_gate={
-  if( !ai_trail_back() ){
-    cons_logAFloat("End of Trail, back to fight prep", 2);  //debug
-    macro_ai_frame(ai_mech_sk_fight_prep)
-    return;
-  }
-  self.tetherStatus = TETHER_NODE;
-  self.tetherOrg = self.trailDest;
-  
-  cons_logAFloat("trailDest", self.trailMax);  //debug
-  cons_logAFloat("trailTotal", self.trailTotal);  //debug
-  
-  macro_ai_frame(ai_mech_sk_patrol1)
-};
-
 /*
   Fight Prep is like the big combat-logic filter, TH_SCRUTINIZER? 
 */
@@ -154,13 +146,6 @@ void() ai_mech_sk_fight_prep={
   
   if( (self.flags & FL_DISARMED) ){
     self.th_pain( world );
-    return;
-  }
-
-  //new, trail stack
-  if( !ai_mark_trail() ){
-    cons_logAFloat("hit trail max!", 1);  //debug
-    ai_mech_sk_trail_gate();
     return;
   }
 

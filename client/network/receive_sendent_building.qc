@@ -98,7 +98,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
       makevectors(self.angles);
       data_sync_new_building(self.data_idx);
       self.data_type = DATA_BLD;
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT); 
+      self.flags = self.flags | FL_MONSTER; 
       self.colormod = '1 1 1';
 
       if( self.th_walk ){

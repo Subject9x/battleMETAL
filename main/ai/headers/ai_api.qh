@@ -243,8 +243,12 @@ void( float move ) ai_update_accuracy;
 
 
 ////////////////////////////////
+.entity patrolNode;
 .float ai_wishSpeed;    //calculated on entering a new move
 entity(entity node) ai_node_to_target;
+entity(float checkDir) ai_get_next_node;
+float() ai_check_node_radius;
+
 float(vector destOrg, float wishSpeed, float useLegs ) ai_calc_move;
 
 float TRACE_OPEN = 0;
@@ -254,13 +258,23 @@ float TRACE_ENT = 3;
 float TRACE_CLIFF = 4;
 float(vector destOrg, float interval) ai_read_terrain;
 
-float PATROL_PAUSE        = 1;
-float PATROL_WALKING      = 2;
-float PATROL_ARRIVE       = 3;
-float PATROL_ADJUST       = 4;
-float PATROL_BLOCK        = 5;
+float PATROL_PAUSE        = 1;  //Paused at node because node had .float paustime
+float PATROL_WALKING      = 2;  //walking to a node where dist > AI_RANGE_S
+float PATROL_ARRIVE       = 3;  //dist <= AI_NODE_DISTANCE
+float PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && dist > AI_NODE_DISTANCE
+float PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
+void() ai_patrol_state_frame;
+.float patrolState;
 
-float MOVE_STAND          = 0;    //every AI has this
+
+float MOVE_STAND          = 0;  //every AI has this
+float MOVE_PATROLNODE     = 3;  //AI moves at patrol_frame style movement to get back to node distance.
+float MOVE_NODE_CLEAR     = 5;  // enemy_vis == VIS_FRN, so find a node to shoot from
+float MOVE_NODE_HIDE      = 6;  // enemy_range > AI_RANGE_M, so try and take cover
+float MOVE_NODE_REVERSE   = 7;  // unit is out of node range, do a fighting reverse 
+float MOVE_BACK           = 9;
+float MOVE_NODE_RADIUS     = 10; // AI is 'ring-out' on their current node
+//special mapped moves
 float MOVE_CHARGE         = 1;
 float MOVE_CHARGE_LEFT    = 2;
 float MOVE_CHARGE_RIGHT   = 4;
@@ -268,13 +282,11 @@ float MOVE_STRAFE_LEFT    = 8;
 float MOVE_STRAFE_RIGHT   = 16;
 float MOVE_CIRCLE_LEFT    = 32;
 float MOVE_CIRCLE_RIGHT   = 64;
-float MOVE_BACK           = 128;
-float MOVE_BACK_LEFT      = 256;
-float MOVE_BACK_RIGHT     = 512;
-float MOVE_SNAPSHOT       = 1024;
-float MOVE_SNIPESHOT      = 2048;
-float MOVE_PATROLNODE     = 4096;
-float MOVE_STAND_FACE     = 8192;
+float MOVE_BACK_LEFT      = 128;
+float MOVE_BACK_RIGHT     = 256;
+float MOVE_SNAPSHOT       = 512;
+float MOVE_SNIPESHOT      = 1024;
+float MOVE_STAND_FACE     = 2048;
 
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_last; //  used for per-frame comparisons
@@ -287,6 +299,7 @@ float MOVE_STAND_FACE     = 8192;
 .float ai_move;       //  the current move, usually not accessed directly.
 .float ai_move_last;  //  used for per-frame comparisons
 .float ai_move_next;  //  AI-CODE-SET this one to decide the next move.
+
 .float ai_moveflag;   //  remaining allowable moves before attempting to refresh the move set
 .float ai_blockflag;  //  anytime a move is blocked, subtract from ai_moveflag, and place it here, when ai_blockflag == ai_dance_card, then bot must chill for a sec.
 .float ai_clearblock; //  AI-CODE-SET to clear the AI's ai_blockflag on the next frame.
@@ -359,4 +372,8 @@ float() ai_move_back_left;
 float() ai_move_back_right;
 void() ai_move_snapshot;
 void() ai_move_standface;
-float() ai_move_patrol_node;
+void() ai_move_node_hide;
+void() ai_move_node_clear;
+void() ai_move_node_reverse;
+void() ai_move_node_radius;
+float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node;

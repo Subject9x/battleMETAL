@@ -171,7 +171,7 @@ void() radarSweepBasic={
   high = anglemod( sweep + 1 );
   
   for(blip = findradius(self.origin, self.radar_range); blip != world; blip = blip.chain){
-    if( !(blip.flags &  FL_UNIT) ){
+    if( !(blip.flags & (FL_UNIT|FL_MONSTER)) ){
       continue;
     }
     if( blip == self ){

@@ -17,14 +17,13 @@ Overview: ai unit
 void() ai_mech_sk_patrol={
   ai_update_accuracy( TRUE );
   if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
-    cons_logAString("new state", "sk_patrol"); //debug
+     cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
-    self.goalentity = self.movetarget;
+    self.goalentity = self.patrolNode;
     self.legs.attack_state = TR_GOAL;
     self.legs.think = bot_leg_walk1;
     self.legs.nextthink = time + 0.1;
     self.torsoCenter.attack_state = TR_GOAL;
-    cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODE]",  self.ai_state_next); //debug
     return;
   }
   else{
@@ -39,25 +38,25 @@ void() ai_mech_sk_ptr_pause={
   
   //entered pause state
   if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
-    cons_logAString("new state", "sk_patrol_pause"); //debug
+     cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
     self.legs.attack_state = TR_YAW;
     self.legs.angles_y = self.angles_y;
     self.legs.think = bot_leg_stand1;
     self.legs.nextthink = time + 0.1;
-    ai_trail_clear(); //clear out any previous trail pattern.
     return;
   }
   //--------------------------
   
   
   if( time > self.pausetime ){
-    if( self.movetarget != world ){
+    if( self.patrolNode != world ){
       self.ai_state_next = ST_PTR;
-      cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
+      cons_logAFloat("time > self.pausetime -> ST_PTR | self.patrolNode != world -> ST_PTR",  self.ai_state_next); //debug
     }
     else{
       self.ai_state_next = ST_STAND;
       cons_logAFloat("ENTER[ST_STAND]",  self.ai_state_next); //debug
+    cons_logAFloat("time > self.pausetime -> ST_PTR ELSE ST_STAND",  self.ai_state_next); //debug
     }
   }
 };
@@ -66,28 +65,27 @@ void() ai_mech_sk_ptr_pause={
 */
 void() ai_mech_sk_ptr_travel_node={
   ai_update_accuracy( TRUE );
-  local float patrolState;
-  
+
   cons_logAString("running--------", "ai_mech_sk_ptr_travel_node"); //debug
-  patrolState = ai_patrol_frame(ai_mech_sk_patrol1, ai_mech_sk_enter_stand);
-  cons_logAFloat("running--------patrolState", patrolState); //debug
+  ai_patrol_state_frame();
+  cons_logAFloat("running--------patrolState", self.patrolState); //debug
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
     self.ai_state_next = ST_COMBAT;
-    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    cons_logAFloat("ai_check_scan( self.stat_rdr_mode ) == TRUE -> ST_COMBAT",  self.ai_state_next); //debug
     return;
   }
   
-  if( patrolState == PATROL_PAUSE ){
+  if( self.patrolState == PATROL_PAUSE ){
     self.ai_state_next = ST_PTR_PAUSE;
-    cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
+    cons_logAFloat("self.patrolState == PATROL_PAUSE  -> ST_PTR_PAUSE",  self.ai_state_next); //debug
     return;
   }
   
-  if( patrolState == PATROL_BLOCK ){
+  if(self.patrolState == PATROL_BLOCK ){
     self.ai_state_next = ST_PTR_TRAVEL_NODEBLOCK;
-    cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
+    cons_logAFloat("self.patrolState == PATROL_BLOCK  -> ST_PTR_TRAVEL_NODEBLOCK",  self.ai_state_next); //debug
     return;
   }
 };
@@ -96,7 +94,7 @@ void() ai_mech_sk_ptr_travel_node={
 */
 void() ai_mech_sk_ptr_travel_blocked={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
-    cons_logAString("new state", "ai_mech_sk_ptr_travel_blocked"); //debug
+     cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
     self.tetherOrg = self.movetarget.origin;
     self.ai_state_next = ST_PTR;
     return;
@@ -108,7 +106,7 @@ void() ai_mech_sk_ptr_travel_blocked={
 */
 void() ai_mech_sk_ptr_tether={
   if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
-    cons_logAString("new state", "ai_mech_sk_ptr_tether"); //debug
+     cons_logAFloat("ENTER[ST_PTR_TETHER]",  self.ai_state_next); //debug
     return;
   }
 };
@@ -118,7 +116,7 @@ void() ai_mech_sk_ptr_tether={
 */
 void() ai_mech_sk_ptr_tether_blocked={
   if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
-    cons_logAString("new state", "ai_mech_sk_ptr_tether_blocked"); //debug
+     cons_logAFloat("ENTER[ST_PTR_TETHER_BLOCK]",  self.ai_state_next); //debug
     return;
   }
 };

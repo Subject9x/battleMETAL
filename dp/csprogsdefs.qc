@@ -546,7 +546,7 @@ string(string s) precache_file2 = #77;
 
 float(string s) stof = #81;
 
-
+//v1 = start org, v2 = end org, min == .mins, max == .maxs
 void(vector v1, vector min, vector max, vector v2, float nomonsters, entity forent) tracebox = #90;
 vector() randomvec = #91;
 vector(vector org) getlight = #92;

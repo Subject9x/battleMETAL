@@ -80,7 +80,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.next_wepn9 = ReadByte();
     data_sync_new_turret(self.data_idx);  
     if( isNew ){
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+      self.flags = self.flags | FL_MONSTER ;
       self.data_type = DATA_BLD;
       self.colormod = '1 1 1';
       self.predraw = predraw_turret;

@@ -158,7 +158,7 @@ void() building_supply_depot={
   }
 
   self.vec_name = "Supply Depot";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;
   macro_set_model("q3mdl/testball.md3", self.skin, 0)
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
