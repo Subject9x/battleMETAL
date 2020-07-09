@@ -84,8 +84,6 @@ void() ai_mech_skirmish={
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   
   //new state stuff
-  self.trailMax = 8;  //debug here
-  self.trailTotal = 0;
   self.ai_state_last = 0;
   
   if(self.patrolNode){

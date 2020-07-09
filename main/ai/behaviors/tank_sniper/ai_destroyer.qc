@@ -39,8 +39,6 @@ void() ai_vec_dest={
   } 
   
   //new state stuff
-  self.trailMax = 4;  //debug here
-  self.trailTotal = 0;
   self.ai_state_last = 0;
   self.ai_state_next = ST_STAND; //debug
   self.ai_move_last = 0;

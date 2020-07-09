@@ -143,20 +143,10 @@ float TETHER_NODE   = 1;  //-> .tetherStatus
 float TETHER_PATROL = 2;  //-> .tetherStatus
 float TETHER_ENT    = 3;  //-> .tetherStatus
 float TETHER_SELF   = 4;  //-> .tetherStatus
-.vector trailDest;
-.float trailMax;
-.float trailTotal;
 .entity tetherNode;
 .float tetherStatus; //TETHER_NONE = 0, TETHER_NODE = 1, TETHER_PATROL = 2, TETHER_ENT = 3, TETHER_SELF = 4;
 .vector tetherOrg;  //either closest tether-node, patrol node, or starting origin.
-.vector trail1;
-.vector trail2;
-.vector trail3;
-.vector trail4;
-.vector trail5;
-.vector trail6;
-.vector trail7;
-.vector trail8;
+
 void() ai_node_tether_find;
 float() ai_node_tether_check;
 float() ai_mark_trail;

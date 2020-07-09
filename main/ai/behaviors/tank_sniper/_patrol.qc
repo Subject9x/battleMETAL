@@ -50,11 +50,10 @@ void() ai_spg_ptr_pause={
 };
 void() ai_spg_ptr_travel_node={
   ai_update_accuracy( TRUE );
-  local float patrolState;
-  
+
   cons_logAString("running--------", "ai_spg_ptr_travel_node"); //debug
-  patrolState = ai_patrol_frame(ai_mech_sk_patrol1, ai_mech_sk_enter_stand);
-  cons_logAFloat("running--------patrolState", patrolState); //debug
+  self.patrolState = ai_patrol_frame(ai_mech_sk_patrol1, ai_mech_sk_enter_stand);
+  cons_logAFloat("running--------patrolState", self.patrolState); //debug
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
@@ -63,13 +62,13 @@ void() ai_spg_ptr_travel_node={
     return;
   }
   
-  if( patrolState == PATROL_PAUSE ){
+  if( self.patrolState == PATROL_PAUSE ){
     self.ai_state_next = ST_PTR_PAUSE;
     cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
     return;
   }
   
-  if( patrolState == PATROL_BLOCK ){
+  if( self.patrolState == PATROL_BLOCK ){
     self.ai_state_next = ST_PTR_TRAVEL_NODEBLOCK;
     cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
     return;

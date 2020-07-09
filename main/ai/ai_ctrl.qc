@@ -1423,7 +1423,7 @@ void() ai_move_node_radius={
   cons_logAFloat("PRE------->",self.patrolState); //debug
   self.patrolState = ai_move_patrol_node( AI_RANGE_M * 0.67, AI_RANGE_S * 0.5, 0);
   cons_logAFloat("POST------->",self.patrolState); //debug
-  if( self.patrolState = PATROL_ARRIVE ){
+  if( self.patrolState == PATROL_ARRIVE ){
     self.ai_state_next = ST_COM_MOVE_END;
       cons_logAFloat("ai_move_node_radius() self.patrolState == PATROL_ARRIVE-> ST_COM_MOVE_END",  self.ai_state_next); //debug
     return;
