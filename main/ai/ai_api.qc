@@ -478,16 +478,30 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   local vector distDiff;
   local float len;
   local float travel;
+  local vector tMins;
+  local vector tMaxs;
   
   distDiff = destOrg - self.origin;
   len = vlen (distDiff);
   cons_logAVector("ai_calc_move().destOrg", destOrg);  //debug
   cons_logAVector("ai_calc_move().self.origin", self.origin);  //debug
   cons_logAFloat("ai_calc_move().wishSpeed", wishSpeed);  //debug
-  cons_logAFloat("ai_calc_move().len", len);  //debug
+  cons_logAFloat("ai_calc_move().len", len);  //debug  tMins = self.mins;
+  tMaxs = self.maxs;
+  tMins = self.mins;
   
-  tracebox(self.origin, self.mins, self.maxs, destOrg, MOVE_NORMAL, self);
+  tMins_z = tMins_z * 0.8; //adjust for slope
   
+  tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg, MOVE_NORMAL, self);
+  //big debug 
+    trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMaxs_z), destOrg + (v_right * tMaxs_x) + (v_up * tMaxs_z));  //debug
+    trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMaxs_z), destOrg + (v_right * tMins_x) + (v_up * tMaxs_z));  //debug
+    trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMins_z), destOrg + (v_right * tMaxs_x) + (v_up * tMins_z));  //debug
+    trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMins_z), destOrg + (v_right * tMins_x) + (v_up * tMins_z));  //debug
+  //
+  
+  
+  cons_logAFloat("ai_calc_move().trace_fraction", trace_fraction);  //debug
   if( trace_fraction < 0.15 ){
     return 0;
   }
@@ -496,11 +510,11 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   // divide by speed to get time to reach dest
   travel = len / wishSpeed;
   
-  trailparticles(self, particleeffectnum("TE_LAS_RAIL"), self.origin, destOrg);  //debug
-  cons_logAFloat("ai_calc_move().len", len);  //debug
+  
+  cons_logAFloat("ai_calc_move().len calc", len);  //debug
   cons_logAFloat("ai_calc_move().travel", travel);  //debug
   
-  return travel;
+  return travel * 0.5;  //AI runs at about time + 0.05 so adjust travel time 
 };
 
 /*
@@ -541,7 +555,7 @@ entity(entity targ) ai_node_to_target={
     
     checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
     tracebox(checkNode.origin, self.mins, self.maxs, self.origin, MOVE_NOMONSTERS, self);
-    trailparticles(checkNode, particleeffectnum("TE_LAS_RAIL"), checkNode.origin, targ.origin);  //debug
+    trailparticles(checkNode, particleeffectnum("TE_PAC_RAIL"), checkNode.origin, targ.origin);  //debug
     cons_logAFloat("ai_node_to_target().trace_fraction", trace_fraction); //debug
     if( trace_fraction >= 0.9 || trace_ent == targ || (trace_ent.flags&FL_UNIT)){
       cons_logAString("ai_node_to_target().trace_ent", trace_ent.classname); //debug

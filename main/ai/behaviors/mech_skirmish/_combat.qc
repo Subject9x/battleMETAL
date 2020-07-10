@@ -77,6 +77,7 @@ void() mech_sk_combat={
       if(myDist >= 0.75){
         cons_logAString("Line 81 -myDist >= 0.75","1"); //debug
         if(enemy_infront){
+          self.ai_movedist = self.data_speed_forward * 3;
           if(roll > 0.6){
             self.ai_move_next = MOVE_BACK_LEFT;
             cons_logAString("L83 self.ai_move_next","MOVE_BACK_LEFT"); //debug
@@ -88,18 +89,20 @@ void() mech_sk_combat={
           return;
         }
         else{
-          self.ai_movewait = self.ai_rank;
+          self.ai_movewait = self.ai_rank * 1.25;
           self.ai_move_next = MOVE_STAND_FACE;
           return;
         }
       }
       else{
         if(myDist <= 0.67){
+          self.ai_movedist = self.data_speed_forward * 7;
           if(roll > 0.5){
             self.ai_move_next = MOVE_STRAFE_LEFT;
             cons_logAString("L99 self.ai_move_next","MOVE_STRAFE_LEFT"); //debug
           }
           else{
+            self.ai_movedist = 
             self.ai_move_next = MOVE_STRAFE_RIGHT;
             cons_logAString("L102 self.ai_move_next","MOVE_STRAFE_RIGHT"); //debug
           }
@@ -128,11 +131,10 @@ void() mech_sk_combat={
     //myDist < 1.0
     //get fighting
     roll = random() * 1;
-    self.ai_movedist = AI_RANGE_M * myDist;
-    
     cons_logAString("Line 129 -mech_sk_combat:"," get fightin"); //debug
     if(myDist < 0.33 ){
       if(enemy_infront){
+        self.ai_movedist = self.data_speed_forward * 5;
         if( roll > 0.5 ){
           self.ai_move_next = MOVE_CHARGE_LEFT;
           cons_logAString("133 self.ai_move_next","MOVE_CHARGE_LEFT"); //debug
@@ -143,6 +145,7 @@ void() mech_sk_combat={
         return;
       }
       if(self.ai_rank > AI_RANK_REG){
+        self.ai_movedist = self.data_speed_forward * 3;
         if(roll > 0.5){
           self.ai_move_next = MOVE_BACK_LEFT;
           cons_logAString("141 self.ai_move_next","MOVE_BACK_LEFT"); //debug
@@ -159,14 +162,16 @@ void() mech_sk_combat={
       return;
     }
     if(myDist < 0.66 ){
-    
+      if(enemy_infront){
+        
+      }
     }
     if(myDist < 1.0 ){
+      if(enemy_infront){
+      
+      }
     
     }
-    
-
-    //self.ai_movedist = max((4 - self.ai_rank),1) * 2; //default move here, but can be overridden down the line.
     return;
   //---------------------------------------------------------------------------
   }
@@ -247,7 +252,12 @@ void() mech_sk_com_blocked={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
     cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
-
+    if( self.ai_blockflag ){
+    
+    }
+    else{
+      
+    }
     return;
   }
  //------------------------------------------------------------------

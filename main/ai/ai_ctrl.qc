@@ -822,6 +822,7 @@ float() ai_move_charge={
   status = TRUE;
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_wishSpeed = self.data_speed_forward * 0.3;
+    self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
@@ -872,7 +873,7 @@ float() ai_move_charge_left={
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2)  * 0.3;
     self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
-    self.ai_dir = anglemod(self.ai_dir - 45);
+    self.ai_dir = anglemod(self.ai_dir + 45);
   
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
@@ -885,10 +886,13 @@ float() ai_move_charge_left={
     }
     cons_logAFloat("NEW MOVE - MOVE_CHARGE_LEFT", MOVE_CHARGE_LEFT);  //debug
     self.ai_movewait = time + status;
+    cons_logAFloat("self.ideal_yaw", self.ideal_yaw); //debug
+    cons_logAFloat("self.ai_dir", self.ai_dir); //debug
     self.ideal_yaw = self.ai_dir;
     
     if( self.legs ){
-      self.legs.attack_state = TR_NORM;
+      self.legs.attack_state = TR_TARG;
+      self.legs.ai_dir = self.ai_dir;
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
@@ -908,7 +912,6 @@ float() ai_move_charge_left={
   else{
     ChangeYaw();
   }
-  ai_face_targ();
   ai_attack();
   return status;
 };
@@ -923,7 +926,7 @@ float() ai_move_charge_right={
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_wishSpeed = (self.data_speed_forward / 2 )+ (self.data_speed_strafe / 2) * 0.3;
     self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
-    self.ai_dir = anglemod(self.ai_dir + 45);
+    self.ai_dir = anglemod(self.ai_dir - 45);
   
     ai_angle = self.angles;
     ai_angle_y = self.ai_dir;
@@ -936,10 +939,13 @@ float() ai_move_charge_right={
     }
     cons_logAFloat("NEW MOVE - MOVE_CHARGE_RIGHT", MOVE_CHARGE_RIGHT);  //debug
     self.ai_movewait = time + status;
+    cons_logAFloat("self.ideal_yaw", self.ideal_yaw); //debug
+    cons_logAFloat("self.ai_dir", self.ai_dir); //debug
     self.ideal_yaw = self.ai_dir;
     
     if( self.legs ){
-      self.legs.attack_state = TR_NORM;
+      self.legs.attack_state = TR_TARG;
+      self.legs.ai_dir = self.ai_dir;
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
@@ -952,14 +958,12 @@ float() ai_move_charge_right={
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
     cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
-  
   if( self.angles_y == self.ideal_yaw ){
     status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
   }
   else{
     ChangeYaw();
   }
-  ai_face_targ();
   ai_attack();
   return status;
 };
