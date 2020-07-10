@@ -470,25 +470,10 @@ void() ai_unit_make_trigger={
   self.unit_ini = SUB_Null;
 };
 
-
-/*
-  TRACE_OPEN = 0;
-  TRACE_CLOSE_WALL = 1; 
-  TRACE_CLIPPED = 2;
-  TRACE_ENT = 3;
-  TRACE_CLIFF = 4;
-*/
-float(vector destOrg, float interval) ai_read_terrain={
-
-  
-  
-
-};
-
 /*
   Inspired by the original SUB_CalcMoved
 */
-float(vector destOrg, float wishSpeed, float useLegs) ai_calc_move={
+float(vector destOrg, float wishSpeed) ai_calc_move={
   local vector startOrg;
   local vector distDiff;
   local float len;
@@ -496,18 +481,14 @@ float(vector destOrg, float wishSpeed, float useLegs) ai_calc_move={
   
   distDiff = destOrg - self.origin;
   len = vlen (distDiff);
+  cons_logAVector("ai_calc_move().destOrg", destOrg);  //debug
+  cons_logAVector("ai_calc_move().self.origin", self.origin);  //debug
   cons_logAFloat("ai_calc_move().wishSpeed", wishSpeed);  //debug
   cons_logAFloat("ai_calc_move().len", len);  //debug
   
-  if( useLegs ){
-    startOrg = self.legs.origin;
-  }else{
-    startOrg = self.origin;
-  }
-  tracebox(startOrg, self.mins, self.maxs, destOrg, MOVE_NORMAL, self);
-  //traceline(startOrg, destOrg, MOVE_NORMAL, self);
+  tracebox(self.origin, self.mins, self.maxs, destOrg, MOVE_NORMAL, self);
   
-  if( trace_fraction < 0.25 ){
+  if( trace_fraction < 0.15 ){
     return 0;
   }
   len = len * trace_fraction;
@@ -515,7 +496,7 @@ float(vector destOrg, float wishSpeed, float useLegs) ai_calc_move={
   // divide by speed to get time to reach dest
   travel = len / wishSpeed;
   
-  trailparticles(self, particleeffectnum("TE_LAS_RAIL"), startOrg, destOrg);  //debug
+  trailparticles(self, particleeffectnum("TE_LAS_RAIL"), self.origin, destOrg);  //debug
   cons_logAFloat("ai_calc_move().len", len);  //debug
   cons_logAFloat("ai_calc_move().travel", travel);  //debug
   
@@ -523,8 +504,8 @@ float(vector destOrg, float wishSpeed, float useLegs) ai_calc_move={
 };
 
 /*
-  Find the closest ai_node of the AI's patrol route to the target entity
-  return world == FALSE / None
+  Find the closest node to the target entity that the AI 
+  can feasibly reach.
 */
 entity(entity targ) ai_node_to_target={
   local entity checkNode;
@@ -551,18 +532,20 @@ entity(entity targ) ai_node_to_target={
 
   for(checkNode = parnt; checkNode != world; checkNode = checkNode.partNext){
     distComp = vlen(checkNode.origin - targ.origin);
-    cons_logAString("-------------------------->checkNode", checkNode.targetname); //debug
-    cons_logAFloat("------------------------------------->distComp", distComp); //debug
-    cons_logAFloat(" ", 0); //debug
     if(checkNode == parnt ){
       distComp = distComp - 1;  //hackfrauds
     }
-    if( distComp < dist ){
-      checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
-      tracebox(checkNode.origin, targ.mins, targ.maxs, targ.origin, MOVE_NOMONSTERS, self);
-      trailparticles(checkNode, particleeffectnum("TE_LAS_RAIL"), checkNode.origin, targ.origin);  //debug
-      cons_logAFloat("ai_node_to_target().trace_fraction", trace_fraction); //debug
-      if( trace_fraction >= 0.9 || trace_ent == targ || (trace_ent.flags&FL_UNIT)){
+    cons_logAString("-------------------------->checkNode", checkNode.targetname); //debug
+    cons_logAFloat("------------------------------------->distComp", distComp); //debug
+    cons_logAFloat(" ", 0); //debug
+    
+    checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
+    tracebox(checkNode.origin, self.mins, self.maxs, self.origin, MOVE_NOMONSTERS, self);
+    trailparticles(checkNode, particleeffectnum("TE_LAS_RAIL"), checkNode.origin, targ.origin);  //debug
+    cons_logAFloat("ai_node_to_target().trace_fraction", trace_fraction); //debug
+    if( trace_fraction >= 0.9 || trace_ent == targ || (trace_ent.flags&FL_UNIT)){
+      cons_logAString("ai_node_to_target().trace_ent", trace_ent.classname); //debug
+      if( distComp < dist ){
         dist = distComp;
         found = checkNode;
       }
@@ -573,6 +556,8 @@ entity(entity targ) ai_node_to_target={
     }
   }
   if( found ){
+    cons_logAString("found.targetname", found.targetname); //debug
+    cons_logAString("found.classname", found.classname); //debug
     if( found.partTypeId < self.patrolNode.partTypeId ){
       tracebox(targ.origin, targ.mins, targ.maxs, self.patrolNode.partPrev.origin, MOVE_NOMONSTERS, targ);
       if( trace_fraction == 1.0 ){
@@ -590,7 +575,7 @@ entity(entity targ) ai_node_to_target={
     return found;
   }
   else{
-    if( vlen(targ.origin - parnt.origin) >= AI_RANGE_L ){
+    if( vlen(parnt.origin - targ.origin) <= AI_RANGE_L ){
       return parnt;
     }
   }
@@ -619,15 +604,30 @@ entity(float checkDir) ai_get_next_node={
 };
 
 /*
-  AI determines if its outside the node-radius of its current node
+  Check if entity <toCheck> is outside of 
+  
+  AI's current patrolNode.ai_view radius.
+  
+  returns a percentage of distance to node.
+  
+  a value > 1 is out of node radius
 */
-float() ai_check_node_radius={
-  local float radius;
-  radius = AI_RANGE_M;
-  if( vlen(self.origin - self.patrolNode.origin) <= radius ){
-    return TRUE;
-  }
-  return FALSE;
+float(entity toCheck) ai_check_node_radius={
+  local float distance;
+  distance = vlen(toCheck.origin - self.patrolNode.origin);
+  distance = max(distance / self.patrolNode.ai_view, 0.01);
+  return distance;
+};
+
+/*
+  A soft-wrapper for ai_check_node_radius();
+    this converts self.stat_trg_dst (target distance to self)
+    in a percentage of node radius.
+*/
+float() ai_check_node_radius_targdist={
+  local float distance;
+  distance = max(self.stat_trg_dist / self.patrolNode.ai_view, 0.01);
+  return distance;
 };
 
 /*

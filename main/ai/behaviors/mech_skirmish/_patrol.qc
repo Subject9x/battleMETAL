@@ -17,12 +17,16 @@ Overview: ai unit
 void() ai_mech_sk_patrol={
   ai_update_accuracy( TRUE );
   if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
-     cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
+    cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
+    
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
     self.goalentity = self.patrolNode;
+    self.tetherStatus = TETHER_NODE;
+    
     self.legs.attack_state = TR_GOAL;
     self.legs.think = bot_leg_walk1;
     self.legs.nextthink = time + 0.1;
+    
     self.torsoCenter.attack_state = TR_GOAL;
     return;
   }
@@ -43,6 +47,7 @@ void() ai_mech_sk_ptr_pause={
     self.legs.angles_y = self.angles_y;
     self.legs.think = bot_leg_stand1;
     self.legs.nextthink = time + 0.1;
+    self.pausetime = time + self.pausetime;
     return;
   }
   //--------------------------
@@ -66,26 +71,21 @@ void() ai_mech_sk_ptr_pause={
 void() ai_mech_sk_ptr_travel_node={
   ai_update_accuracy( TRUE );
 
-  cons_logAString("running--------", "ai_mech_sk_ptr_travel_node"); //debug
   ai_patrol_state_frame();
-  cons_logAFloat("running--------patrolState", self.patrolState); //debug
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
     self.ai_state_next = ST_COMBAT;
-    cons_logAFloat("ai_check_scan( self.stat_rdr_mode ) == TRUE -> ST_COMBAT",  self.ai_state_next); //debug
     return;
   }
   
   if( self.patrolState == PATROL_PAUSE ){
     self.ai_state_next = ST_PTR_PAUSE;
-    cons_logAFloat("self.patrolState == PATROL_PAUSE  -> ST_PTR_PAUSE",  self.ai_state_next); //debug
     return;
   }
   
   if(self.patrolState == PATROL_BLOCK ){
     self.ai_state_next = ST_PTR_TRAVEL_NODEBLOCK;
-    cons_logAFloat("self.patrolState == PATROL_BLOCK  -> ST_PTR_TRAVEL_NODEBLOCK",  self.ai_state_next); //debug
     return;
   }
 };
@@ -94,8 +94,17 @@ void() ai_mech_sk_ptr_travel_node={
 */
 void() ai_mech_sk_ptr_travel_blocked={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
-     cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
-    self.tetherOrg = self.movetarget.origin;
+    cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
+    if( ai_blocked_teleport() ){
+      self.tetherOrg = self.patrolNode.origin;
+      self.ai_state_next = ST_PTR;
+      return;
+    }
+    self.ai_movewait = time + 30;
+    return;
+  }
+  if( ai_blocked_teleport() ){
+    self.tetherOrg = self.patrolNode.origin;
     self.ai_state_next = ST_PTR;
     return;
   }
@@ -105,20 +114,20 @@ void() ai_mech_sk_ptr_travel_blocked={
   STATE : PATROL USE TETHER
 */
 void() ai_mech_sk_ptr_tether={
-  if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
+  //if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
      cons_logAFloat("ENTER[ST_PTR_TETHER]",  self.ai_state_next); //debug
     return;
-  }
+  //}
 };
 
 /*
   STATE : PATROL USE TETHER BLOCKED
 */
 void() ai_mech_sk_ptr_tether_blocked={
-  if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
+  //if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
      cons_logAFloat("ENTER[ST_PTR_TETHER_BLOCK]",  self.ai_state_next); //debug
     return;
-  }
+ // }
 };
 
 

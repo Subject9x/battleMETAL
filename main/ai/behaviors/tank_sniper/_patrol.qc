@@ -24,7 +24,6 @@ void() ai_spg_ptr_pause={
   //entered pause state
   if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
     cons_logAString("new state", "ai_spg_ptr_pause"); //debug
-    ai_trail_clear(); //clear out any previous trail pattern.
     return;
   }
   //--------------------------
@@ -81,11 +80,11 @@ void() ai_spg_ptr_travel_blocked={
     cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
     return;
   }
-  if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
+  //if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
     self.ai_movewait = time + (self.ai_rank * 2);
     cons_logAString("new state", "ai_spg_ptr_travel_blocked"); //debug
     return;
-  }
+  //}
   if( time > self.ai_movewait ){
     self.tetherOrg = self.movetarget.origin;
     self.ai_state_next = ST_PTR;
@@ -93,15 +92,15 @@ void() ai_spg_ptr_travel_blocked={
   }
 };
 void() ai_spg_ptr_tether={
-  if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
+  //if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
     cons_logAString("new state", "ai_spg_ptr_tether"); //debug
-    return;
-  }
+  //  return;
+  //}
 
 };
 void() ai_spg_ptr_tether_blocked={
-  if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
+  //if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
     cons_logAString("new state", "ai_spg_ptr_tether_blocked"); //debug
     return;
-  }
+  //}
 };

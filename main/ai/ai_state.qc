@@ -46,12 +46,12 @@ void() ai_state_frame={
     case ST_PTR_TRAVEL_NODEBLOCK:
       self.ai_state_patrol_travel_blocked();
       break;
-    case ST_PTR_TETHER:
-      self.ai_state_patrol_tether();
-      break;
-    case ST_PTR_TETHER_BLOCK:
-      self.ai_state_patrol_tether_blocked();
-      break;
+    //case ST_PTR_TETHER:
+      //self.ai_state_patrol_tether();
+      //break;
+    //case ST_PTR_TETHER_BLOCK:
+      //self.ai_state_patrol_tether_blocked();
+      //break;
     case ST_COMBAT:
       self.ai_state_combat();
       break;
@@ -69,18 +69,18 @@ void() ai_state_frame={
     case ST_COM_MOVE_BLOCK:
       self.ai_state_combat_blocked();
       break;
-    case ST_TRAIL_MOVE:
-      self.ai_state_trail_move();
-      break;
-    case ST_TRAIL_BLOCK:
-      self.ai_state_trail_move_block();
-      break;
-    case ST_TRAIL_ROLLBACK:
-      self.ai_state_trail_rollback();
-      break;
-    case ST_TRAIL_ROLLBLOCK:
-      self.ai_state_trail_rollback_block();
-      break;
+    //case ST_TRAIL_MOVE:
+      //self.ai_state_trail_move();
+      //break;
+    //case ST_TRAIL_BLOCK:
+     // self.ai_state_trail_move_block();
+      //break;
+    //case ST_TRAIL_ROLLBACK:
+    //  self.ai_state_trail_rollback();
+     // break;
+    //case ST_TRAIL_ROLLBLOCK:
+      //self.ai_state_trail_rollback_block();
+      //break;
   }
   
   if( (self.flags&FL_TURRET) ){
@@ -91,7 +91,8 @@ void() ai_state_frame={
   }
   
   self.think = ai_state_frame;
-  self.nextthink = time + 0.05;
+  //self.nextthink = time + 0.05;
+  self.nextthink = time + 0.05; //debug
 };
 
 /*
@@ -169,12 +170,14 @@ void() ai_combat_move_frame={
   }
   if( moveStatus == PATROL_ARRIVE ){
     self.ai_state_next = ST_COM_MOVE_END;
+    cons_logAFloat("moveStatus == PATROL_ARRIVE -> ST_COM_MOVE_END",  ST_COM_MOVE_END); //debug
+      
     return;
   }
   if( moveStatus == FALSE ){
     if( self.ai_state_combat_blocked ){
       if( time < self.ai_movewait ){
-      cons_logAFloat("!INTERRUPT! ai_combat_move_frame ",  1); //debug
+        cons_logAFloat("!INTERRUPT! ai_combat_move_frame ",  1); //debug
       }
       self.ai_state_next = ST_COM_MOVE_BLOCK;
       cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug

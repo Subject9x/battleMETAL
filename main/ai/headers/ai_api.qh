@@ -117,7 +117,7 @@ entity lastNode;        //minor optimization
 .float helpTime;  //prevents flooding of help calls
 .float helpTimeDelay;
 
-void( float randomBool ) ai_voice_ini;
+
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -137,7 +137,7 @@ void() ai_pilot_ini_ace;
 void() node_setup;
 entity() node_recall_setup;
 
-//AI TRAIL/BREADCRUMB
+//AI TETHER FUNCTIONALITY
 float TETHER_NONE   = 0;  //-> .tetherStatus
 float TETHER_NODE   = 1;  //-> .tetherStatus
 float TETHER_PATROL = 2;  //-> .tetherStatus
@@ -147,54 +147,57 @@ float TETHER_SELF   = 4;  //-> .tetherStatus
 .float tetherStatus; //TETHER_NONE = 0, TETHER_NODE = 1, TETHER_PATROL = 2, TETHER_ENT = 3, TETHER_SELF = 4;
 .vector tetherOrg;  //either closest tether-node, patrol node, or starting origin.
 
-void() ai_node_tether_find;
-float() ai_node_tether_check;
-float() ai_mark_trail;
-float() ai_trail_back;
-void() ai_trail_forward;
-void() ai_trail_clear;
-vector(float trailId) ai_trail_getdest;
-vector() ai_trail_available;
-
-//AI UTILS - 
+////////////////////////////////
+//AI interaction functionality - ai_api.qc
 float() ai_can_spawn;
+void( entity t) ai_call_for_help;
+float(entity t) ai_valid_target;
+entity( float radiius ) ai_find_friend;
+void( entity t) ai_alert_close;
+entity( float startSmallRadius ) ai_find_friend_farthest;
 float() ai_find_target_visual;
 float() ai_find_target_radar;
-entity( float radiius ) ai_find_friend;
-entity( float startSmallRadius ) ai_find_friend_farthest;
-void() ai_ranged_attack;
-float(entity wep) ai_attack_blockcheck;
-float(entity t) ai_valid_target;
-void(float dst, float grp, float bracket) ai_wep_group_track;
-float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;
-float( float bestAccuracy ) ai_wait_for_shot;
-void() ai_lock_on;
-void( entity t) ai_call_for_help;
-void( entity t) ai_alert_close;
-float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
-
-//AI MAP FUNCS
-void() ai_unit_make_trigger;
-void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
-void() ai_touch;
-void() ai_setup_patrol;
 entity() ai_node_pick_rand;
 entity() ai_goal_offset_node;
+void() ai_unit_make_trigger;
+float(vector destOrg, float wishSpeed) ai_calc_move;
+entity(entity node) ai_node_to_target;
+entity(float checkDir) ai_get_next_node;
+float(entity toCheck) ai_check_node_radius;
+float() ai_check_node_radius_targdist;
+void() ai_node_tether_find;
+float() ai_node_tether_check;
 
-//AI CONTROL - ai_ctrl.qc 
+////////////////////////////////
+//AI COMBAT FUNCTIONS - ai_combat.qc
+float( float scan_mode) ai_check_scan;
+void() ai_ranged_attack;
+float(entity wep) ai_attack_blockcheck;
+void(float dst, float grp, float bracket) ai_wep_group_track;
+float(entity wep) ai_attack_checkEne;
+float( float bestAccuracy ) ai_wait_for_shot;
+void() ai_lock_on;
+
+
+//AI MAP FUNCS
+void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
+
+
+//DEPRECATED-----------
 //float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic;
 void() ai_move_physics;
 float(void() nextFunc, void() pauseFunc) ai_patrol_frame;
-void() ai_tether_frame;
-void() ai_patrol_turn;
-void() ai_rotate_mech;
-void() ai_rotate_tank;
+
 float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic
 float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vis;
-float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame;
+//---------------
 
-//AI VOICE STUFF
+
+
+////////////////////////////////
+//AI VOICE STUFF - ai_voice.qc
+void( float randomBool ) ai_voice_ini;
 void() ai_sfx_spotted;
 void() ai_sfx_warning;
 void() ai_sfx_huntStart;
@@ -205,57 +208,42 @@ void() ai_sfx_kill;
 void() ai_sfx_roger;
 void() ai_sfx_help;
 
-/*
-  AI STATE FUNCTIONS=====================
-*/
-void() ai_update;
-void() ai_turret_control;
-void() ai_leg_control;
-void( float estate ) ai_turret_set_state;
+////////////////////////////////
+//AI-CONTROL FUNCTIONS - ai_ctrl.qc
 
-/*
-  AI ACTION SET==========================
-  Headers
-*/
-float( float scan_mode) ai_check_scan;
-void() ai_face_targ;
+float() ai_blocked_teleport;
+float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
+float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame;
+void() ai_touch;
+void() ai_patrol_state_frame;
 void() ai_face_goal;
 void(vector v) ai_face_origin;
+void() ai_face_targ;
+void( float alt_low, float alt_max ) ai_fly_update;
 float(entity targ, float ang_limit, float useTurret) ai_check_face;
 float(vector v, float ang_limit, float useTurret) ai_check_face_origin;
 float(entity t, float ang, float useTurret) ai_check_targ_infront;
 float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
-void( float alt_low, float alt_max ) ai_fly_update;
-void( float move ) ai_update_accuracy;
-//========================================
+void() ai_patrol_turn;
+void() ai_rotate_mech;
+void() ai_rotate_tank;
+void() ai_setup_patrol;
+
+//movement
 
 
-////////////////////////////////
 .entity patrolNode;
 .float ai_wishSpeed;    //calculated on entering a new move
-entity(entity node) ai_node_to_target;
-entity(float checkDir) ai_get_next_node;
-float() ai_check_node_radius;
 
-float(vector destOrg, float wishSpeed, float useLegs ) ai_calc_move;
-
-float TRACE_OPEN = 0;
-float TRACE_CLOSE_WALL = 1; 
-float TRACE_CLIPPED = 2;
-float TRACE_ENT = 3;
-float TRACE_CLIFF = 4;
-float(vector destOrg, float interval) ai_read_terrain;
 
 float PATROL_PAUSE        = 1;  //Paused at node because node had .float paustime
 float PATROL_WALKING      = 2;  //walking to a node where dist > AI_RANGE_S
 float PATROL_ARRIVE       = 3;  //dist <= AI_NODE_DISTANCE
 float PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && dist > AI_NODE_DISTANCE
 float PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
-void() ai_patrol_state_frame;
 .float patrolState;
-
 
 float MOVE_STAND          = 0;  //every AI has this
 float MOVE_PATROLNODE     = 3;  //AI moves at patrol_frame style movement to get back to node distance.
@@ -299,15 +287,17 @@ float ST_PTR                  = 2;  //ENTER -> PATROL
 float ST_PTR_PAUSE            = 3;  //arrived at ai_node
 float ST_PTR_TRAVEL_NODE      = 4;  //traveling to an ai_node
 float ST_PTR_TRAVEL_NODEBLOCK = 5;  //travel to node was blocked for some reason
-float ST_PTR_TETHER           = 6;  //travel to tetherOrg when tetherStatus != TETHER_PATROL
-float ST_PTR_TETHER_BLOCK     = 7;  //travel to tetherOrg has been blocked
 
 float ST_COMBAT               = 8;  //ENTER -> COMBAT
 float ST_COM_MOVE_START       = 9;  //begin combat maneuver
 float ST_COM_MOVE_EXEC        = 10; //execute a prescribed combat maneuver
 float ST_COM_MOVE_END         = 11; //completed a combat maneuver
-float ST_COM_MOVE_BLOCK       = 12;
+float ST_COM_MOVE_BLOCK       = 12; //combat move was blocked for some reason
 float ST_COM_REACT            = 13; //no target but hit by fire
+
+//deprecate asap
+//float ST_PTR_TETHER           = 6;  //travel to tetherOrg when tetherStatus != TETHER_PATROL
+//float ST_PTR_TETHER_BLOCK     = 7;  //travel to tetherOrg has been blocked
 
 float ST_TRAIL_MOVE           = 14; //
 float ST_TRAIL_BLOCK          = 15; //
@@ -318,6 +308,15 @@ float ST_TRACK_MOVE           = 18;
 float ST_TRACK_BLOCK          = 19;
 float ST_TRACK_ROLLBACK       = 20;
 float ST_TRACK_ROLLBLOCK      = 21;
+
+////////////////////////////////
+//AI STATE FUNCTIONS - ai_state.qc
+void() ai_update;
+void() ai_turret_control;
+void() ai_leg_control;
+void( float estate ) ai_turret_set_state;
+void( float move ) ai_update_accuracy;
+
 
 void() ai_state_frame;
 

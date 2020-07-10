@@ -88,7 +88,9 @@ entity() node_recall_setup={
     node_setup();
     makevectors( theBot.angles );
     nodeOrg = theBot.origin + (v_up * theBot.mins_z) + (v_forward * (self.mins_x + 10));
+    
     traceline( nodeOrg, nodeOrg + (v_up * 18), MOVE_NORMAL, theBot);
+    
     setorigin( self, trace_endpos );
     self.targetname = strzone(strcat("r", ftos(num_for_edict(theBot))));
     if( theBot.movetarget && theBot.movetarget.targetname != "" ){
@@ -138,6 +140,28 @@ void() ai_node_check={
     self.think = ai_node_counter_th;
     self.nextthink = time + 1;
   }
+  else{
+    if( !self.ai_view ){
+      local float minDist;
+      local float checkDist;
+      local float itr;
+      local vector checkAng;
+      minDist = AI_RANGE_M;
+      itr = 0;
+      checkAng = self.angles;
+      while( itr < 8 ){
+        checkAng_y = itr * 45;
+        makevectors(checkAng);
+        tracebox(self.origin, '-10 -10 -4', '10 10 4', self.origin + (v_forward * AI_RANGE_M), MOVE_NORMAL, self);
+        checkDist = vlen(trace_endpos - self.origin);
+        if( checkDist < minDist ){
+          minDist = checkDist;
+        }
+        itr = itr + 1;
+      }
+      self.ai_view = max(minDist, AI_RANGE_M / 2);
+    }
+  }
 };
 
 
@@ -166,6 +190,7 @@ void() ai_node={
     objerror (strcat("[ERROR] ai_node (", vtos(self.origin),") - missing targetname!"));
     return;
   }
+  self.angles = '0 0 0';
   node_setup();
   //set the collision filter to help AI when making traceline calls.
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);

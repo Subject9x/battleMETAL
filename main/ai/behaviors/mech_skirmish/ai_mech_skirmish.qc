@@ -28,23 +28,24 @@ void() ai_mech_sk_stand={
     return;
   }
   //-----------------
-  
   cons_logAString("running--------", "sk_stand"); //debug
+  if( ai_valid_target(self.enemy) ){
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     self.ai_state_next = ST_COMBAT;
-    cons_logAFloat("ai_mech_sk_stand ai_check_scan( self.stat_rdr_mode ) == TRUE ->[ST_COMBAT]",  self.ai_state_next); //debug
     return;
   }
   
   if( self.patrolNode != world ){
     if( time > self.pausetime ){
       self.ai_state_next = ST_PTR;
-      cons_logAFloat("ai_mech_sk_stand self.patrolNode != world ->[ST_PTR]",  self.ai_state_next); //debug
       return;
     }
   }
   
-  if( self.torsoCenter.angles_y == self.torsoCenter.ai_dir ){
+  if( self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw ){
     self.torsoCenter.attack_state = TR_NORM;
   }
   if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
