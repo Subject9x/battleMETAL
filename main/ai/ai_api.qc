@@ -485,14 +485,15 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   len = vlen (distDiff);
   cons_logAVector("ai_calc_move().destOrg", destOrg);  //debug
   cons_logAVector("ai_calc_move().self.origin", self.origin);  //debug
+  cons_logAFloat("self.ai_movedist", self.ai_movedist / self.ai_wishSpeed);  //debug
   cons_logAFloat("ai_calc_move().wishSpeed", wishSpeed);  //debug
   cons_logAFloat("ai_calc_move().len", len);  //debug  tMins = self.mins;
   tMaxs = self.maxs;
   tMins = self.mins;
   
-  tMins_z = tMins_z * 0.8; //adjust for slope
+  tMins_z = tMins_z * 0.75; //adjust for slope
   
-  tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg, MOVE_NORMAL, self);
+  tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg + (v_forward * (tMaxs_x / 2)), MOVE_NORMAL, self);
   //big debug 
     trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMaxs_z), destOrg + (v_right * tMaxs_x) + (v_up * tMaxs_z));  //debug
     trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMaxs_z), destOrg + (v_right * tMins_x) + (v_up * tMaxs_z));  //debug
@@ -500,9 +501,8 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
     trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMins_z), destOrg + (v_right * tMins_x) + (v_up * tMins_z));  //debug
   //
   
-  
   cons_logAFloat("ai_calc_move().trace_fraction", trace_fraction);  //debug
-  if( trace_fraction < 0.15 ){
+  if( trace_fraction < 0.1 ){
     return 0;
   }
   len = len * trace_fraction;
@@ -510,11 +510,10 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   // divide by speed to get time to reach dest
   travel = len / wishSpeed;
   
-  
   cons_logAFloat("ai_calc_move().len calc", len);  //debug
   cons_logAFloat("ai_calc_move().travel", travel);  //debug
   
-  return travel * 0.5;  //AI runs at about time + 0.05 so adjust travel time 
+  return travel + 0.25;  //AI runs at about time + 0.05 so adjust travel time 
 };
 
 /*

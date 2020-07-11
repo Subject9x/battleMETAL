@@ -45,7 +45,8 @@ void() data_ini_balaket_={
   self.ramUpMax = 3;
   self.ramCooldown = 6;
 #ifndef CSQC
-  self.yaw_speed = 3.75;    // AI-only 
+  //self.yaw_speed = 3.75;    // AI-only 
+  self.yaw_speed = 5;    // AI-only 
   self.turret_yaw_speed = 4.25;// AI-only
   self.ai_angleLimits = '-175 175 0';
   if( (self.flags & FL_MONSTER) ){

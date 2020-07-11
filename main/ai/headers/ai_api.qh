@@ -337,10 +337,12 @@ void() ai_state_frame;
 .void() ai_state_combat_blocked;
 .void() ai_state_combat_react;
 
+//deprecate----------
 .void() ai_state_trail_move;
 .void() ai_state_trail_move_block;
 .void() ai_state_trail_rollback;
 .void() ai_state_trail_rollback_block;
+//--------------
 
 .void() ai_state_track_move;
 .void() ai_state_track_move_block;
@@ -366,3 +368,72 @@ void() ai_move_node_clear;
 void() ai_move_node_reverse;
 void() ai_move_node_radius;
 float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node;
+
+string(float stateId) dbg_state={
+  switch(stateId){
+    case ST_STAND:
+      return "ST_STAND";
+    case ST_PTR:
+      return "ST_PTR";
+    case ST_PTR_PAUSE:
+      return "ST_PTR_PAUSE";
+    case ST_PTR_TRAVEL_NODE:
+      return "ST_PTR_TRAVEL_NODE";
+    case ST_PTR_TRAVEL_NODEBLOCK:
+      return "ST_PTR_TRAVEL_NODEBLOCK";
+    case ST_COMBAT:
+      return "ST_COMBAT";
+    case ST_COM_MOVE_START:
+      return "ST_COM_MOVE_START";
+    case ST_COM_MOVE_EXEC:
+      return "ST_COM_MOVE_EXEC";
+    case ST_COM_MOVE_END:
+      return "ST_COM_MOVE_END";
+    case ST_COM_MOVE_BLOCK:
+      return "ST_COM_MOVE_BLOCK";
+  }
+  return "null";
+}
+string(float moveId) dbg_move={
+  switch(moveId){
+    case MOVE_STAND:
+      return "MOVE_STAND";
+    case MOVE_CHARGE:
+      return "MOVE_CHARGE";
+    case MOVE_CHARGE_LEFT:
+      return "MOVE_CHARGE_LEFT";
+    case MOVE_CHARGE_RIGHT:
+      return "MOVE_CHARGE_RIGHT";
+    case MOVE_STRAFE_LEFT:
+      return "MOVE_STRAFE_LEFT";
+    case MOVE_STRAFE_RIGHT:
+      return "MOVE_STRAFE_RIGHT";
+    case MOVE_CIRCLE_LEFT:
+      return "MOVE_CIRCLE_LEFT";
+    case MOVE_CIRCLE_RIGHT:
+      return "MOVE_CIRCLE_RIGHT";
+    case MOVE_BACK:
+      return "MOVE_BACK";
+    case MOVE_BACK_LEFT:
+      return "MOVE_BACK_LEFT";
+    case MOVE_BACK_RIGHT:
+      return "MOVE_BACK_RIGHT";
+    case MOVE_PATROLNODE:
+      return "MOVE_PATROLNODE";
+    case MOVE_SNAPSHOT:
+      return "MOVE_SNAPSHOT";
+    case MOVE_SNIPESHOT:
+      return "MOVE_SNIPESHOT";
+    case MOVE_STAND_FACE:
+      return "MOVE_STAND_FACE";
+    case MOVE_NODE_HIDE:
+      return "MOVE_NODE_HIDE";
+    case MOVE_NODE_CLEAR:
+      return "MOVE_NODE_CLEAR";
+    case MOVE_NODE_REVERSE:
+      return "MOVE_NODE_REVERSE";
+    case MOVE_NODE_RADIUS:
+      return "MOVE_NODE_RADIUS";
+  }
+  return "null";
+}

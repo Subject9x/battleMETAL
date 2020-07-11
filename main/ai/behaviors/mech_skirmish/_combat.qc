@@ -71,13 +71,14 @@ void() mech_sk_combat={
       return;
     }
     
+    roll = random() * 1;
     //AI is in bounds, but target is out of bounds
     if( targDist > 1 && myDist <= 1 ){
       //AI is on edge of bounds but inside radius
       if(myDist >= 0.75){
         cons_logAString("Line 81 -myDist >= 0.75","1"); //debug
         if(enemy_infront){
-          self.ai_movedist = self.data_speed_forward * 3;
+          self.ai_movedist = 2;
           if(roll > 0.6){
             self.ai_move_next = MOVE_BACK_LEFT;
             cons_logAString("L83 self.ai_move_next","MOVE_BACK_LEFT"); //debug
@@ -96,13 +97,12 @@ void() mech_sk_combat={
       }
       else{
         if(myDist <= 0.67){
-          self.ai_movedist = self.data_speed_forward * 7;
+          self.ai_movedist = 5;
           if(roll > 0.5){
             self.ai_move_next = MOVE_STRAFE_LEFT;
             cons_logAString("L99 self.ai_move_next","MOVE_STRAFE_LEFT"); //debug
           }
           else{
-            self.ai_movedist = 
             self.ai_move_next = MOVE_STRAFE_RIGHT;
             cons_logAString("L102 self.ai_move_next","MOVE_STRAFE_RIGHT"); //debug
           }
@@ -127,25 +127,46 @@ void() mech_sk_combat={
       return;
     }
     
+    if( enemy_vis == VIS_FRN ){
+      if( distToTarg < 0.25 ){
+        if( enemy_infront ){
+          if( roll < 0.3 ){
+            self.ai_move_next = MOVE_BACK;
+            return;
+          }
+          if( roll < 0.7 ){
+            self.ai_move_next = MOVE_BACK_LEFT;
+            return;
+          }
+          self.ai_move_next = MOVE_BACK_RIGHT;
+          return;
+        }
+      }
+    }
+    
     //target < 1.0
     //myDist < 1.0
     //get fighting
-    roll = random() * 1;
     cons_logAString("Line 129 -mech_sk_combat:"," get fightin"); //debug
     if(myDist < 0.33 ){
       if(enemy_infront){
-        self.ai_movedist = self.data_speed_forward * 5;
-        if( roll > 0.5 ){
-          self.ai_move_next = MOVE_CHARGE_LEFT;
-          cons_logAString("133 self.ai_move_next","MOVE_CHARGE_LEFT"); //debug
+        if( distToTarg > 0.25 ){
+          self.ai_movedist = 14;
+          if( roll > 0.5 ){
+            self.ai_move_next = MOVE_CHARGE_LEFT;
+            cons_logAString("133 self.ai_move_next","MOVE_CHARGE_LEFT"); //debug
+            return;
+          }
+          self.ai_move_next = MOVE_CHARGE_RIGHT;
+          cons_logAString("137 self.ai_move_next","MOVE_CHARGE_RIGHT"); //debug
           return;
         }
-        self.ai_move_next = MOVE_CHARGE_RIGHT;
-        cons_logAString("137 self.ai_move_next","MOVE_CHARGE_RIGHT"); //debug
+        self.ai_movedist = 7;
+        self.ai_move_next =  MOVE_BACK;
         return;
       }
       if(self.ai_rank > AI_RANK_REG){
-        self.ai_movedist = self.data_speed_forward * 3;
+        self.ai_movedist = 5;
         if(roll > 0.5){
           self.ai_move_next = MOVE_BACK_LEFT;
           cons_logAString("141 self.ai_move_next","MOVE_BACK_LEFT"); //debug
@@ -156,22 +177,133 @@ void() mech_sk_combat={
         }
         return;
       }
-      self.ai_movewait = random() * self.ai_rank * 1.25;
+      self.ai_movewait = random() * (self.ai_rank * 1.5);
       self.ai_move_next = MOVE_STAND_FACE;
       cons_logAString("154 self.ai_move_next","MOVE_STAND_FACE"); //debug
       return;
     }
     if(myDist < 0.66 ){
       if(enemy_infront){
-        
+        if( distToTarg < 0.5 ){
+          if( self.ai_rank == AI_RANK_ROK ){
+            self.ai_movewait = 3;
+            self.ai_move_next = MOVE_STAND_FACE;
+            return;
+          }
+          if( self.ai_rank == AI_RANK_REG ){
+            self.ai_movedist = 4;
+            if( roll < 0.6 ){
+              self.ai_move_next = MOVE_BACK_LEFT;
+            }
+            else{
+              self.ai_move_next = MOVE_BACK_RIGHT;
+            }
+            return;
+          }
+        }
+        if( self.ai_rank == AI_RANK_ROK ){
+          if( roll > 0.33 ){
+            self.ai_movewait = 5;
+            self.ai_move_next = MOVE_STAND_FACE;
+            return;
+          }
+          self.ai_movedist = 5;
+          self.ai_move_next = MOVE_CHARGE;
+          return;
+        }
+        if( roll < 0.25 ){
+          self.ai_movedist = 8;
+          self.ai_move_next = MOVE_CIRCLE_LEFT;
+          return;
+        }
+        if( roll < 0.5 ){
+          self.ai_movedist = 10;
+          self.ai_move_next = MOVE_STRAFE_RIGHT;
+          return;
+        }
+        if( roll < 0.75 ){
+          self.ai_movedist = 10;
+          self.ai_move_next = MOVE_STRAFE_LEFT;
+          return;
+        }
+        self.ai_movedist = 8;
+        self.ai_move_next = MOVE_CIRCLE_RIGHT;
+        return;
       }
     }
     if(myDist < 1.0 ){
       if(enemy_infront){
-      
+        if(distToTarg > 0.33){
+          if( roll > 0.5 ){
+            self.ai_movedist = 3;
+            self.ai_move_next = MOVE_BACK_LEFT;
+            return;
+          }
+          self.ai_movedist = 3;
+          self.ai_move_next = MOVE_BACK_RIGHT;
+          return;
+        }
+        if(distToTarg > 0.6){
+          if( roll < 0.25 ){
+            self.ai_movedist = 8;
+            self.ai_move_next = MOVE_CIRCLE_LEFT;
+            return;
+          }
+          if( roll < 0.5 ){
+            self.ai_movedist = 10;
+            self.ai_move_next = MOVE_STRAFE_RIGHT;
+            return;
+          }
+          if( roll < 0.75 ){
+            self.ai_movedist = 10;
+            self.ai_move_next = MOVE_STRAFE_LEFT;
+            return;
+          }
+          self.ai_movedist = 8;
+          self.ai_move_next = MOVE_CIRCLE_RIGHT;
+          return;
+        }
+        if(distToTarg > 1.0){
+          self.ai_movewait = 2 + (random()*self.ai_rank);
+          self.ai_move_next = MOVE_STAND_FACE;
+          return;
+        }
       }
-    
+      //enemy's not in front
+      if(distToTarg > 0.33){
+        self.ai_movedist = 4;
+        if( roll > 0.5 ){
+          self.ai_move_next = MOVE_CIRCLE_LEFT;
+          return;
+        }
+          self.ai_move_next = MOVE_CIRCLE_RIGHT;
+          return;
+      }
+      if(distToTarg > 0.6){
+        self.ai_movewait = 4;
+        if( roll < 0.25 ){
+          self.ai_move_next = MOVE_BACK_LEFT;
+          return;
+        }
+        if( roll < 0.5 ){
+          self.ai_move_next = MOVE_BACK_RIGHT;
+          return;
+        }
+        self.ai_movewait = 8;
+        if( roll < 0.75 ){
+          self.ai_move_next = MOVE_CHARGE_LEFT;
+          return;
+        }
+        self.ai_move_next = MOVE_CHARGE_RIGHT;
+        return;
+      }
+      if(distToTarg > 1.0){
+        self.ai_movewait = 15;
+        self.ai_move_next = MOVE_STAND_FACE;
+        return;
+      }
     }
+    self.ai_move_next = MOVE_NODE_RADIUS;
     return;
   //---------------------------------------------------------------------------
   }
@@ -185,7 +317,6 @@ void() mech_sk_com_moveStart={
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     cons_logAFloat("ENTER[ST_COM_MOVE_START]",  self.ai_state_next); //debug
     cons_logAFloat("self.ai_move_next", self.ai_move_next); //debug
-
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
@@ -205,16 +336,11 @@ void() mech_sk_com_moveExec={
   }
   //------------------------------------------------------------------
   cons_logAFloat("-----------------------MOVE",  self.ai_move); //debug
-  nodeMove = ai_check_node_radius(self);
-  if(nodeMove > 0.95){
-    self.ai_move_next = MOVE_NODE_RADIUS;
-    self.ai_state_next = ST_COM_MOVE_START;
-    return;
-  }
-  if( self.ai_move != MOVE_PATROLNODE ){
-    if( vlen(self.goalentity.origin - self.origin) > AI_RANGE_M ){
-      self.ai_state_next = ST_COM_MOVE_START;
+  if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
+    nodeMove = ai_check_node_radius(self);
+    if(nodeMove > 0.95){
       self.ai_move_next = MOVE_NODE_RADIUS;
+      self.ai_state_next = ST_COM_MOVE_START;
       return;
     }
     if( time > self.ai_movewait ){
@@ -233,12 +359,8 @@ void() mech_sk_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
     cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
-
-    if( ai_valid_target(self.enemy) && ai_check_vis(self.enemy) != VIS_FAIL ){
-      self.ai_state_next = ST_COMBAT;
-      cons_logAFloat("continue the combat->ST_COMBAT",  self.ai_state_next); //debug
-      return;
-    }
+    
+    self.ai_state_next = ST_COMBAT;
     return;
   }
  //------------------------------------------------------------------
@@ -252,12 +374,9 @@ void() mech_sk_com_blocked={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
     cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
-    if( self.ai_blockflag ){
-    
-    }
-    else{
-      
-    }
+    self.goalentity = self.patrolNode;
+    self.ai_move_next = MOVE_NODE_RADIUS;
+    self.ai_state_next = ST_COM_MOVE_START;
     return;
   }
  //------------------------------------------------------------------

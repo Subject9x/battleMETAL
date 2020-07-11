@@ -91,8 +91,7 @@ void() ai_state_frame={
   }
   
   self.think = ai_state_frame;
-  //self.nextthink = time + 0.05;
-  self.nextthink = time + 0.05; //debug
+  self.nextthink = time + 0.04;
 };
 
 /*
@@ -168,19 +167,12 @@ void() ai_combat_move_frame={
       ai_move_node_radius();
       break;
   }
-  if( moveStatus == PATROL_ARRIVE ){
-    self.ai_state_next = ST_COM_MOVE_END;
-    cons_logAFloat("moveStatus == PATROL_ARRIVE -> ST_COM_MOVE_END",  ST_COM_MOVE_END); //debug
-      
-    return;
-  }
   if( moveStatus == FALSE ){
     if( self.ai_state_combat_blocked ){
       if( time < self.ai_movewait ){
         cons_logAFloat("!INTERRUPT! ai_combat_move_frame ",  1); //debug
       }
       self.ai_state_next = ST_COM_MOVE_BLOCK;
-      cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
     }
   }
 };
