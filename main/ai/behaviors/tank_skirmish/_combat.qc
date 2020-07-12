@@ -65,7 +65,7 @@ void() tank_sk_combat={
                           //so roll a single dice per instance of this
                           //frame...
     //AI is in bounds, but target is out of bounds
-    if( enemy_dist > 1 && combat_dist <= 1 ){
+    if( enemy_dist > 1.0 && combat_dist <= 1.0 ){
       tank_sk_fight_target_fire();
       return;
     }
