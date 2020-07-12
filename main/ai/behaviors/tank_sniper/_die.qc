@@ -63,31 +63,5 @@ void() ai_vec_dest_die={
   te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
   
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  
-  self.nextthink = time + 0.1;
-};
-
-/*
-  Death animation - tank sits as a smoking wreck
-*/
-void() ai_vec_dest_die1={
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-  self.think = ai_vec_dest_die1;
-  if ( time > self.ai_action_time ){
-    self.think = ai_vec_dest_die1a;
-    self.ai_action_time = time + 0.05;
-  }
-  self.nextthink = time + 0.1;
-};
-
-//stops smoking
-void() ai_vec_dest_die1a={
-  self.think = ai_vec_dest_die1a;
-  if( time > self.ai_action_time ){
-    self.think = SUB_Remove;
-    self.nextthink = time + 7200;
-    return;
-  }
   self.nextthink = time + 0.1;
 };

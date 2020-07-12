@@ -39,113 +39,12 @@ void(float dice) spg_fight_far_rear;
 
 
 void() ai_vec_dest_die;
-void() ai_vec_dest_die1;
-void() ai_vec_dest_die1a;
-/*
-  Macro rebuild
-*/
-void() ai_spg_stand1;
-void() ai_spg_patrol1;
-void() ai_spg_fight_prep;
+
+
 void( entity attacker ) ai_spg_react1;
-
-void() ai_spg_enter_patrol;
-void() ai_spg_enter_charge;
-void() ai_spg_enter_strafe;
-
-/*
-  rotate in place
-*/
-void() ai_spg_rotate1;
-void() ai_spg_rotate2;
-void() ai_spg_rotate3;
-void() ai_spg_rotate4;
-void() ai_spg_rotate5;
-void() ai_spg_rotate6;
-void() ai_spg_rotate7;
-void() ai_spg_rotate8;
-
-/*
-  Turn in place, to ideal_yaw
-*/
-void() ai_spg_turn1;
-void() ai_spg_turn2;
-void() ai_spg_turn3;
-void() ai_spg_turn4;
-
-/*
-  maintain yaw to enemy
-  move backwards
-*/
-void() ai_spg_reverse1;
-void() ai_spg_reverse2;
-void() ai_spg_reverse3;
-void() ai_spg_reverse4;
-void() ai_spg_reverse5;
-void() ai_spg_reverse6;
-void() ai_spg_reverse7;
-void() ai_spg_reverse8;
-void() ai_spg_reverse9;
-void() ai_spg_reverse10;
-
-/*
-  turn perpendicular and move for a tad
-  
-*/
-void() ai_spg_strafe1;
-void() ai_spg_strafe2;
-void() ai_spg_strafe3;
-void() ai_spg_strafe4;
-void() ai_spg_strafe5;
-void() ai_spg_strafe6;
-void() ai_spg_strafe7;
-void() ai_spg_strafe8;
-
-/*
-  turns to face target
-  tries to line up shot when accurate
-*/
-void() ai_spg_snipe1;
-void() ai_spg_snipe2;
-void() ai_spg_snipe3;
-void() ai_spg_snipe4;
-void() ai_spg_snipe5;
-void() ai_spg_snipe6;
-void() ai_spg_snipe7;
-void() ai_spg_snipe8;
-void() ai_spg_snipe9;
-void() ai_spg_snipe10;
-void() ai_spg_snipe11;
-void() ai_spg_snipe12;
-void() ai_spg_snipe13;
-void() ai_spg_snipe14;
-void() ai_spg_snipe15;
-void() ai_spg_snipe16;
-
-/*
-  charge forward a little bit
-*/
-void() ai_spg_charge1;
-void() ai_spg_charge2;
-void() ai_spg_charge3;
-void() ai_spg_charge4;
-void() ai_spg_charge5;
-void() ai_spg_charge6;
-void() ai_spg_charge7;
-void() ai_spg_charge8;
-void() ai_spg_charge9;
 
 /*
   Panic
   th_pain
 */
 void(entity attacker) ai_spg_panic1;
-void() ai_spg_panic2;
-void() ai_spg_panic3;
-void() ai_spg_panic4;
-void() ai_spg_panic5;
-void() ai_spg_panic6;
-void() ai_spg_panic7;
-void() ai_spg_panic8;
-void() ai_spg_panic9;
-void() ai_spg_panic10;

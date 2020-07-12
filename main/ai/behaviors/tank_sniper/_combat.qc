@@ -152,40 +152,24 @@ void() spg_com_moveExec={
   local float nodeMove;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
-    cons_logAString("new state", "spg_com_moveExec"); //debug
-    
-    //AI is moving to closest node
-    if( self.ai_move_next == MOVE_PATROLNODE ){
-      cons_logAFloat("ai_move_next : MOVE_PATROLNODE", self.ai_move_next); //debug
-      nodeMove = ai_move_patrol_node();
-      if( nodeMove == PATROL_ARRIVE ){
-        cons_logAString("ai_mech_sk_com_maneuver", "nodeMove == PATROL_ARRIVE"); //debug
-        self.ai_state_next = ST_COM_MOVE_END;
-        cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
-        return;
-      }
-    }
+    cons_logAFloat("ENTER[ST_COM_MOVE_EXEC]",  self.ai_state_next); //debug
+    cons_logAFloat("-----------------------MOVE NEXT",  self.ai_move_next); //debug
     return;
   }
   //------------------------------------------------------------------
-
-  if( self.ai_move == MOVE_PATROLNODE  && self.ai_move_last == MOVE_PATROLNODE ){
-    //cons_logAString("ai_mech_sk_com_maneuver", "self.ai_move == MOVE_PATROLNODE"); //debug
-    nodeMove = ai_move_patrol_node();
-    if( nodeMove == PATROL_ARRIVE ){
-      cons_logAString("ai_mech_sk_com_maneuver", "nodeMove == PATROL_ARRIVE"); //debug
-      self.ai_state_next = ST_COM_MOVE_END;
-      cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
+  cons_logAFloat("-----------------------MOVE",  self.ai_move); //debug
+  if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
+    nodeMove = ai_check_node_radius(self);
+    if(nodeMove > 0.95){
+      self.ai_move_next = MOVE_NODE_RADIUS;
+      self.ai_state_next = ST_COM_MOVE_START;
+      return;
     }
-    return;
+    if( time > self.ai_movewait ){
+      self.ai_state_next = ST_COM_MOVE_END;
+      return;
+    }
   }
-  if( time > self.ai_movewait ){
-    cons_logAFloat("time > self.ai_movewait", self.ai_movewait); //debug
-    self.ai_state_next = ST_COM_MOVE_END;
-    cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
-    return;
-  }
-
 };
 
 /*
@@ -194,18 +178,16 @@ void() spg_com_moveExec={
 void() spg_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-    cons_logAString("new state", "spg_com_moveEnd"); //debug
-    if( self.ai_move_last == MOVE_PATROLNODE ){      
-      cons_logAString("self.ai_move_last == MOVE_PATROLNODE", "run"); //debug
-      self.ai_blockflag = 0; 
-      self.ai_moveflag = self.ai_dance_card;
+    cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
+    if( ai_valid_target(self.enemy) ){
+      self.ai_state_next = ST_COMBAT;
+      return;
     }
-    else{
-      self.ai_movedist = 0;
-      self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & self.ai_move);
+    if( self.patrolNode ){
+      self.ai_state_next = ST_PTR;
+      return;
     }
-    self.ai_state_next = ST_COMBAT;
-    cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
+    self.ai_state_next = ST_STAND;
     return;
   }
  //------------------------------------------------------------------
@@ -217,22 +199,10 @@ void() spg_com_moveEnd={
 void() spg_com_blocked={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
-    cons_logAString("new state", "spg_com_blocked"); //debug
-    cons_logAFloat("LAST MOVE", self.ai_move_last); //debug
-    cons_logAFloat("MOVE", self.ai_move); //debug
-    if( self.ai_move_last == MOVE_PATROLNODE ){      
-      cons_logAString("self.ai_move_last == MOVE_PATROLNODE", "run"); //debug
-      self.ai_blockflag = 0; 
-      self.ai_moveflag = self.ai_dance_card;
-      self.ai_state_next = ST_COMBAT;
-      cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
-    }
-    else{
-      self.ai_movedist = 0;
-      self.ai_blockflag = self.ai_blockflag | self.ai_move;
-      self.ai_moveflag = self.ai_moveflag - (self.ai_moveflag & self.ai_move);
-      self.ai_state_next = ST_TRAIL_MOVE;
-    }
+    cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
+    self.goalentity = self.patrolNode;
+    self.ai_move_next = MOVE_NODE_RADIUS;
+    self.ai_state_next = ST_COM_MOVE_START;
     return;
   }
  //------------------------------------------------------------------
