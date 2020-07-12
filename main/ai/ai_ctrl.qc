@@ -1064,6 +1064,7 @@ float() ai_move_strafe_right={
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
+  
   if( self.angles_y == self.ai_dir ){
     status = walkmove( self.ai_dir, self.data_speed_strafe * self.ai_dampen);
     cons_logAFloat("ai_move_strafe_right->status", status);  //debug

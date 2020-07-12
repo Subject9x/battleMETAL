@@ -78,12 +78,18 @@ float VIS_TRG = 2;
 float VIS_FRN = 3;
 
 //GLOBALS
-float enemy_infront;
-float enemy_range;
-float enemy_vis;
-float enemy_hunt;
+//--> these are populated in AI _combat.qc -> ST_COMBAT state
+float enemy_infront;  //boolean, on-this-frame check if target is in AI's forward arc.
+float enemy_range;    //distance to AI relative to patrolNode.ai_view (radius)
+float enemy_dist;     //target's distance to patrolNode
+float combat_dist;    //AI's distance to its patrolNode
+float enemy_vis;      //enum, Line of Sight to target
+float enemy_hunt;     //potentially deprecated.
+float combat_roll;    //per-state-frame dice roll for random movement selection.
+vector ai_angle;      //used for temporary angle calcs that preclude overriding the AI's current yaw
+//////////////////this are set every frame by every AI, do not rely on these OUTSIDE the function they're called (like all the trace_* globals)
+
 float side_crit;
-vector ai_angle;        //used for temporary angle calcs that preclude overriding the AI's current yaw
 entity friend_blocker;
 float friend_blocker_dist;
 entity AI_NODES[128];
@@ -232,8 +238,6 @@ void() ai_rotate_tank;
 void() ai_setup_patrol;
 
 //movement
-
-
 .entity patrolNode;
 .float ai_wishSpeed;    //calculated on entering a new move
 
@@ -252,6 +256,7 @@ float MOVE_NODE_HIDE      = 6;  // enemy_range > AI_RANGE_M, so try and take cov
 float MOVE_NODE_REVERSE   = 7;  // unit is out of node range, do a fighting reverse 
 float MOVE_BACK           = 9;
 float MOVE_NODE_RADIUS     = 10; // AI is 'ring-out' on their current node
+
 //special mapped moves
 float MOVE_CHARGE         = 1;
 float MOVE_CHARGE_LEFT    = 2;
@@ -317,7 +322,6 @@ void() ai_leg_control;
 void( float estate ) ai_turret_set_state;
 void( float move ) ai_update_accuracy;
 
-
 void() ai_state_frame;
 
 .void() ai_unit_update;
@@ -369,6 +373,9 @@ void() ai_move_node_reverse;
 void() ai_move_node_radius;
 float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node;
 
+
+//DEBUG functions
+//when you need the var-name for a global var value.
 string(float stateId) dbg_state={
   switch(stateId){
     case ST_STAND:

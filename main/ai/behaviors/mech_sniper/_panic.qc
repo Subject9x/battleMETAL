@@ -124,7 +124,7 @@ void() ai_mech_sniper_panic16={
   ai_update_accuracy( TRUE );
   macro_ai_update( ai_ctrl_update_mechplayer )
   
-  macro_ai_frame_count( ai_mech_sk_panic1 )
+  //macro_ai_frame_count( ai_mech_sk_panic1 )
 
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic1)
 };
@@ -186,7 +186,7 @@ void( entity attacker ) ai_mech_sniper_react1={
       self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
       self.torsoCenter.attack_state = TR_TARG;
       self.ai_react_buffer = time + self.ai_react_time * 5;
-      macro_ai_frame(ai_mech_sk_fight_prep)
+      //macro_ai_frame(ai_mech_sk_fight_prep)
       return;
     }
   }

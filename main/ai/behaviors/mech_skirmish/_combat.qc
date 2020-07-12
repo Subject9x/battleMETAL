@@ -44,27 +44,22 @@ void() mech_sk_combat={
     }
     self.ai_state_next = ST_COM_MOVE_START;
     enemy_hunt = FALSE;
+    
     /*
       Combat Frame State Checks
     */
-    enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-    
-    local float targDist;
-    local float myDist;
-    local float distToTarg;
-    
-    targDist = ai_check_node_radius(self.enemy);
-    myDist = ai_check_node_radius(self);
-    distToTarg = ai_check_node_radius_targdist();
-    
-    cons_logAFloat("Line 61 -mech_sk_combat:targDist", targDist); //debug
-    cons_logAFloat("Line 62 -mech_sk_combat:myDist", myDist); //debug
-    cons_logAFloat("Line 63 -mech_sk_combat:distToTarg", distToTarg); //debug
+    enemy_vis = ai_check_vis( self.enemy );
+    enemy_range = ai_check_node_radius_targdist();
+    enemy_dist = ai_check_node_radius(self.enemy);
+    combat_dist = ai_check_node_radius(self);
+
+    cons_logAFloat("Line 61 -mech_sk_combat:enemy_dist", enemy_dist); //debug
+    cons_logAFloat("Line 62 -mech_sk_combat:combat_dist", combat_dist); //debug
+    cons_logAFloat("Line 63 -mech_sk_combat:enemy_range", enemy_range); //debug
     
     //out of bounds, do move override
-    if(myDist > 1.0){
+    if(combat_dist > 1.0){
       //run
       self.ai_move_next = MOVE_NODE_RADIUS;
       cons_logAString("Line 72 -mech_sk_combat:NEXT MOVE","MOVE_NODE_RADIUS"); //debug
@@ -73,10 +68,10 @@ void() mech_sk_combat={
     
     roll = random() * 1;
     //AI is in bounds, but target is out of bounds
-    if( targDist > 1 && myDist <= 1 ){
+    if( enemy_dist > 1.0 && combat_dist <= 1.0){
       //AI is on edge of bounds but inside radius
-      if(myDist >= 0.75){
-        cons_logAString("Line 81 -myDist >= 0.75","1"); //debug
+      if(combat_dist >= 0.75){
+        cons_logAString("Line 81 -combat_dist >= 0.75","1"); //debug
         if(enemy_infront){
           self.ai_movedist = 2;
           if(roll > 0.6){
@@ -89,46 +84,49 @@ void() mech_sk_combat={
           }
           return;
         }
-        else{
-          self.ai_movewait = self.ai_rank * 1.25;
-          self.ai_move_next = MOVE_STAND_FACE;
-          return;
-        }
-      }
-      else{
-        if(myDist <= 0.67){
-          self.ai_movedist = 5;
-          if(roll > 0.5){
-            self.ai_move_next = MOVE_STRAFE_LEFT;
-            cons_logAString("L99 self.ai_move_next","MOVE_STRAFE_LEFT"); //debug
-          }
-          else{
-            self.ai_move_next = MOVE_STRAFE_RIGHT;
-            cons_logAString("L102 self.ai_move_next","MOVE_STRAFE_RIGHT"); //debug
-          }
-          return;
-        }
-        cons_logAString("Line 106 -self.ai_move_next","MOVE_STAND_FACE"); //debug
-        self.ai_movewait = self.ai_rank;
+        self.ai_movewait = self.ai_rank * 1.25;
         self.ai_move_next = MOVE_STAND_FACE;
         return;
       }
+      if(combat_dist <= 0.33){
+        self.ai_movedist = 5;
+        if(roll > 0.5){
+          self.ai_move_next = MOVE_STRAFE_LEFT;
+          cons_logAString("95 self.ai_move_next","MOVE_STRAFE_LEFT"); //debug
+        }
+        else{
+          self.ai_move_next = MOVE_STRAFE_RIGHT;
+          cons_logAString("99 self.ai_move_next","MOVE_STRAFE_RIGHT"); //debug
+        }
+        return;
+      }
+      cons_logAString("Line 104 -self.ai_move_next","MOVE_STAND_FACE"); //debug
+      self.ai_movedist = combat_dist * (8 * self.data_speed_forward);
+      if(roll > 0.5){
+        self.ai_move_next = MOVE_CHARGE_LEFT;
+        cons_logAString("107 self.ai_move_next","MOVE_CHARGE_LEFT"); //debug
+      }
+      else{
+        self.ai_move_next = MOVE_CHARGE_RIGHT;
+        cons_logAString("111 self.ai_move_next","MOVE_CHARGE_RIGHT"); //debug
+      }
+      return;
     }
     
-    if( targDist > 1.0 && myDist > 1.0 ){
+    if( enemy_dist > 1.0 && combat_dist > 1.0 ){
       if( enemy_vis == VIS_FAIL ){
         self.enemy = world;
         self.ai_state_next = ST_PTR;
         return;
       }
       //both target and AI are out of bounds
-      cons_logAString("Line 120 -mech_sk_combat:"," targDist > 1.0 && myDist > 1.0"); //debug
+      cons_logAString("Line 120 -mech_sk_combat:"," enemy_dist > 1.0 && combat_dist > 1.0"); //debug
       self.ai_move_next = MOVE_NODE_RADIUS;
       return;
     }
     
     if( enemy_vis == VIS_FRN ){
-      if( distToTarg < 0.25 ){
+      if( enemy_range < 0.25 ){
         if( enemy_infront ){
           if( roll < 0.3 ){
             self.ai_move_next = MOVE_BACK;
@@ -144,13 +142,54 @@ void() mech_sk_combat={
       }
     }
     
+    //target == building - those things don't really move or fight back...
+    if(self.enemy.data_type == DATA_BLD){
+      if(combat_dist < 0.5){
+        if(enemy_infront){
+          if(enemy_dist > 0.5){
+            self.ai_movedist = 5;
+            if(roll < 0.4){
+              self.ai_move_next = MOVE_CHARGE;
+              return;
+            }
+            if(roll < 0.7){
+              self.ai_move_next = MOVE_CHARGE_LEFT;
+              return;
+            }
+            self.ai_move_next = MOVE_CHARGE_RIGHT;
+            return;
+          }
+          self.ai_movewait = 10;
+          self.ai_move_next = MOVE_STAND_FACE;
+          return;
+        }
+        else{
+          //not in front
+          if(enemy_dist > 0.5){
+            self.ai_movewait = 4;
+            self.ai_move_next = MOVE_STAND_FACE;
+            return;
+          }
+          self.ai_movedist = 5;
+          if(roll < 0.6){
+            self.ai_move_next = MOVE_STRAFE_LEFT;
+            return;
+          }
+          self.ai_move_next = MOVE_STRAFE_RIGHT;
+          return;
+        }
+      }
+      self.ai_movewait = 10;
+      self.ai_move_next = MOVE_STAND_FACE;
+      return;
+    }
     //target < 1.0
-    //myDist < 1.0
+    //combat_dist < 1.0
     //get fighting
     cons_logAString("Line 129 -mech_sk_combat:"," get fightin"); //debug
-    if(myDist < 0.33 ){
+    if(combat_dist < 0.33 ){
       if(enemy_infront){
-        if( distToTarg > 0.25 ){
+        if( enemy_range > 0.25 ){
           self.ai_movedist = 14;
           if( roll > 0.5 ){
             self.ai_move_next = MOVE_CHARGE_LEFT;
@@ -182,9 +221,9 @@ void() mech_sk_combat={
       cons_logAString("154 self.ai_move_next","MOVE_STAND_FACE"); //debug
       return;
     }
-    if(myDist < 0.66 ){
+    if(combat_dist < 0.66 ){
       if(enemy_infront){
-        if( distToTarg < 0.5 ){
+        if( enemy_range < 0.5 ){
           if( self.ai_rank == AI_RANK_ROK ){
             self.ai_movewait = 3;
             self.ai_move_next = MOVE_STAND_FACE;
@@ -231,9 +270,9 @@ void() mech_sk_combat={
         return;
       }
     }
-    if(myDist < 1.0 ){
+    if(combat_dist < 1.0 ){
       if(enemy_infront){
-        if(distToTarg > 0.33){
+        if(enemy_range > 0.33){
           if( roll > 0.5 ){
             self.ai_movedist = 3;
             self.ai_move_next = MOVE_BACK_LEFT;
@@ -243,7 +282,7 @@ void() mech_sk_combat={
           self.ai_move_next = MOVE_BACK_RIGHT;
           return;
         }
-        if(distToTarg > 0.6){
+        if(enemy_range > 0.6){
           if( roll < 0.25 ){
             self.ai_movedist = 8;
             self.ai_move_next = MOVE_CIRCLE_LEFT;
@@ -263,14 +302,14 @@ void() mech_sk_combat={
           self.ai_move_next = MOVE_CIRCLE_RIGHT;
           return;
         }
-        if(distToTarg > 1.0){
+        if(enemy_range > 1.0){
           self.ai_movewait = 2 + (random()*self.ai_rank);
           self.ai_move_next = MOVE_STAND_FACE;
           return;
         }
       }
       //enemy's not in front
-      if(distToTarg > 0.33){
+      if(enemy_range > 0.33){
         self.ai_movedist = 4;
         if( roll > 0.5 ){
           self.ai_move_next = MOVE_CIRCLE_LEFT;
@@ -279,7 +318,7 @@ void() mech_sk_combat={
           self.ai_move_next = MOVE_CIRCLE_RIGHT;
           return;
       }
-      if(distToTarg > 0.6){
+      if(enemy_range > 0.6){
         self.ai_movewait = 4;
         if( roll < 0.25 ){
           self.ai_move_next = MOVE_BACK_LEFT;
@@ -297,7 +336,7 @@ void() mech_sk_combat={
         self.ai_move_next = MOVE_CHARGE_RIGHT;
         return;
       }
-      if(distToTarg > 1.0){
+      if(enemy_range > 1.0){
         self.ai_movewait = 15;
         self.ai_move_next = MOVE_STAND_FACE;
         return;
@@ -348,14 +387,12 @@ void() mech_sk_com_moveExec={
       return;
     }
   }
-
 };
 
 /*
   STATE : COMBAT MANEUVER COMPLETED
 */
 void() mech_sk_com_moveEnd={
-  
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
     cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug

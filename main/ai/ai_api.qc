@@ -687,6 +687,7 @@ void() ai_node_tether_find={
   local entity found;
   local float dist;
   local float testDist;
+  local vector tMins;
   local vector ang;
   dist = AI_RANGE_L;
   
@@ -703,8 +704,10 @@ void() ai_node_tether_find={
       //tether nodes need to be on relatively flat planes because a bot cannot climb a wall or slope to reach a tether node.
       testDist = vlen(findNode.origin - self.origin);
       if( testDist < dist ){
-        traceline(findNode.origin, self.origin, TRUE, self);
-        cons_logAFloat("trace_fraction", trace_fraction);
+        tMins = self.mins;
+        tMins_z = tMins_z * 0.75;
+        tracebox(findNode.origin, tMins, self.maxs, self.origin, MOVE_NORMAL, self);
+        cons_logAFloat("ai_node_tether_find()-trace_fraction", trace_fraction);
         if( trace_fraction == 1 ){
           dist = testDist;
           found = findNode;

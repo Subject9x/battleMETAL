@@ -51,7 +51,7 @@ void() ai_spg_ptr_travel_node={
   ai_update_accuracy( TRUE );
 
   cons_logAString("running--------", "ai_spg_ptr_travel_node"); //debug
-  self.patrolState = ai_patrol_frame(ai_mech_sk_patrol1, ai_mech_sk_enter_stand);
+  //self.patrolState = ai_patrol_frame(ai_mech_sk_patrol1, ai_mech_sk_enter_stand);
   cons_logAFloat("running--------patrolState", self.patrolState); //debug
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){

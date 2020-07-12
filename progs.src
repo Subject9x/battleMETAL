@@ -149,18 +149,9 @@ main/controllers/headers/controllers.qh
   main/ai/ai_state.qc
   main/ai/behaviors/ai_turret.qc
   main/ai/behaviors/mech_skirmish/ai_mech_skirmish.qc
-    main/ai/behaviors/mech_skirmish/_charge.qc
     main/ai/behaviors/mech_skirmish/_die.qc
-    main/ai/behaviors/mech_skirmish/_flank.qc
-    main/ai/behaviors/mech_skirmish/_hunt.qc
     main/ai/behaviors/mech_skirmish/_panic.qc
     main/ai/behaviors/mech_skirmish/_patrol.qc
-    main/ai/behaviors/mech_skirmish/_pivot.qc
-    main/ai/behaviors/mech_skirmish/_strafe.qc
-    main/ai/behaviors/mech_skirmish/_standfight.qc
-    main/ai/behaviors/mech_skirmish/_reverse_adjust.qc
-    main/ai/behaviors/mech_skirmish/_recall.qc
-    
     main/ai/behaviors/mech_skirmish/_combat.qc
     main/ai/behaviors/mech_skirmish/_fight.qc
     main/ai/behaviors/mech_skirmish/_trail.qc
@@ -207,19 +198,6 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/tank_skirmish/_trail.qc
     main/ai/behaviors/tank_skirmish/_track.qc
     main/ai/behaviors/tank_skirmish/_die.qc
-    
-    
-    
-    //main/ai/behaviors/tank_skirmish/_charge.qc
-    //main/ai/behaviors/tank_skirmish/_flank.qc
-    //main/ai/behaviors/tank_skirmish/_hunt.qc
-    //main/ai/behaviors/tank_skirmish/_juke.qc
-    //main/ai/behaviors/tank_skirmish/_panic.qc
-    //main/ai/behaviors/tank_skirmish/_reverse.qc
-    //main/ai/behaviors/tank_skirmish/_rotate.qc
-    //main/ai/behaviors/tank_skirmish/_strafe.qc
-    //main/ai/behaviors/tank_skirmish/_recall.qc
-  
   
   //main/ai/behaviors/ai_noncom.qc TODO
   //main/ai/behaviors/ai_vtol.qc TODO
