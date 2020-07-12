@@ -147,6 +147,7 @@ main/controllers/headers/controllers.qh
   main/ai/ai_move.qc
   main/ai/ai_combat.qc
   main/ai/ai_state.qc
+  //AI behavior types
   main/ai/behaviors/ai_turret.qc
   main/ai/behaviors/mech_skirmish/ai_mech_skirmish.qc
     main/ai/behaviors/mech_skirmish/_die.qc
@@ -183,12 +184,6 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/tank_sniper/_fight.qc
     main/ai/behaviors/tank_sniper/_panic.qc
     main/ai/behaviors/tank_sniper/_die.qc
-    
-    //main/ai/behaviors/tank_sniper/_charge.qc
-    //main/ai/behaviors/tank_sniper/_reverse.qc
-    //main/ai/behaviors/tank_sniper/_rotate.qc
-    //main/ai/behaviors/tank_sniper/_snipe.qc
-    //main/ai/behaviors/tank_sniper/_strafe.qc
     
 
   main/ai/behaviors/tank_skirmish/ai_tank_skirmish.qc

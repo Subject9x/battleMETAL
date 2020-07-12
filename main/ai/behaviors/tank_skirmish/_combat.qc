@@ -13,7 +13,6 @@ Overview:
     used to filter out what the AI should do before entering combat sub-system
 */
 void() tank_sk_combat={
-  local float roll;
   local entity prox;
   
   //ENTER STATE------------------------------------------------------------------
@@ -57,6 +56,12 @@ void() tank_sk_combat={
     //out of bounds, do move override
     if(combat_dist > 1.0){
       //run
+      prox = ai_node_to_target(self);
+      if(prox != self.patrolNode){
+        if( vlen(prox.origin - self.origin) <= prox.ai_view ){
+          self.patrolNode = prox;
+        }
+      }
       self.ai_move_next = MOVE_NODE_RADIUS;
       return;
     }
@@ -116,6 +121,7 @@ void() tank_sk_com_moveStart={
 */
 void() tank_sk_com_moveExec={
   local float nodeMove;
+  local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
     cons_logAFloat("ENTER[ST_COM_MOVE_EXEC]",  self.ai_state_next); //debug
@@ -126,7 +132,13 @@ void() tank_sk_com_moveExec={
   cons_logAFloat("-----------------------MOVE",  self.ai_move); //debug
   if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
     nodeMove = ai_check_node_radius(self);
-    if(nodeMove > 0.95){
+    if(nodeMove > 0.99){
+      nodeCheck = ai_node_to_target(self);
+      if(nodeCheck != self.patrolNode){
+        if( (vlen(nodeCheck.origin - self.origin) <= nodeCheck.ai_view) && (ai_check_node_radius(self) > 0.95)){
+          self.patrolNode = nodeCheck;
+        }
+      }
       self.ai_move_next = MOVE_NODE_RADIUS;
       self.ai_state_next = ST_COM_MOVE_START;
       return;

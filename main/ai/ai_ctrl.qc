@@ -2,7 +2,10 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 7/9/2018
-Overview: AI Controller functions, ported mainly from Quake 1
+rebuild: 07/12/2020
+Overview: 
+  AI Controller functions
+
 */
 
 
@@ -17,6 +20,7 @@ Overview: AI Controller functions, ported mainly from Quake 1
 */
 float() ai_blocked_teleport={
   local entity clients;
+  local entity node;
   local float canPort;
   local float isSeen;
   isSeen = 0;
@@ -33,19 +37,27 @@ float() ai_blocked_teleport={
     }
   }
   if( isSeen == 0 ){
-    if( self.patrolNode ){
-      if( self.patrolNode.partPrev ){
-        self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
-        self.tetherStatus = TETHER_NODE;
-      }
-      else{
-        self.tetherOrg = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.15,32), 24);
-        self.tetherStatus = TETHER_NODE;
-        
-      }
-      setorigin(self, self.tetherOrg);
-      cons_logAFloat("ai_blocked_teleport() - teleporting unit", 1);  //DEBUG
+    node = ai_node_to_target(self);
+    if( node ){
+      self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
+      self.tetherStatus = TETHER_NODE;
       return TRUE;
+    }
+    else{
+      if( self.patrolNode ){
+        if( self.patrolNode.partPrev ){
+          self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
+          self.tetherStatus = TETHER_NODE;
+        }
+        else{
+          self.tetherOrg = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.15,32), 24);
+          self.tetherStatus = TETHER_NODE;
+          
+        }
+        setorigin(self, self.tetherOrg);
+        cons_logAFloat("ai_blocked_teleport() - teleporting unit", 1);  //DEBUG
+        return TRUE;
+      }
     }
   }
   return FALSE;
@@ -251,6 +263,9 @@ void() ai_patrol_state_frame={
     if( ai_check_face_origin(self.tetherOrg, 0.85, FALSE) ){
       if( walkmove(self.angles_y, walkSpeed) == FALSE ){
         setorigin(self.patrolNode, self.tetherOrg);
+        if(!self.legs){
+          ChangeYaw();
+        }
         movetogoal( walkSpeed );
         setorigin(self.patrolNode, cacheOrg);
       }
@@ -258,6 +273,9 @@ void() ai_patrol_state_frame={
     else{
       if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
         setorigin(self.patrolNode, self.tetherOrg);
+        if(!self.legs){
+          ChangeYaw();
+        }
         movetogoal( cornerSpeed );
         setorigin(self.patrolNode, cacheOrg);
       }
@@ -286,11 +304,17 @@ void() ai_patrol_state_frame={
     setorigin(self.patrolNode, self.tetherOrg);
     if( ai_check_face(self.goalentity, 0.85, FALSE) ){
       if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+        if(!self.legs){
+          ChangeYaw();
+        }
         movetogoal( walkSpeed );
       }
     }
     else{
       if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
+        if(!self.legs){
+          ChangeYaw();
+        }
         movetogoal( cornerSpeed );
       }
     }
@@ -1194,6 +1218,7 @@ float() ai_move_back={
     }
     cons_logAFloat("NEW MOVE - MOVE_BACK", MOVE_BACK);  //debug
     self.ai_movewait = time + status;
+    self.ideal_yaw = self.ai_dir;
     
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
@@ -1210,8 +1235,8 @@ float() ai_move_back={
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
     cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
-  ai_face_targ();
   ai_attack();
+  ChangeYaw();
   status = walkmove( self.ai_dir,  self.ai_wishSpeed * self.ai_dampen  );
     cons_logAFloat("ai_move_back->status", status);  //debug
   return status;
@@ -1240,6 +1265,7 @@ float() ai_move_back_left={
     }
     cons_logAFloat("NEW MOVE - MOVE_BACK_LEFT", MOVE_BACK_LEFT);  //debug
     self.ai_movewait = time + status;
+    self.ideal_yaw = self.ai_dir;
     
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
@@ -1257,6 +1283,7 @@ float() ai_move_back_left={
     cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
   ai_attack();
+  ChangeYaw();
   status = walkmove( self.ai_dir, self.ai_wishSpeed * self.ai_dampen );
     cons_logAFloat("ai_move_back_left->status", status);  //debug
   return status;
@@ -1286,6 +1313,7 @@ float() ai_move_back_right={
     cons_logAFloat("NEW MOVE - MOVE_BACK", MOVE_BACK_RIGHT);  //debug
     cons_logAFloat("-------------------- self.ai_movewait",  self.ai_movewait);  //debug
     self.ai_movewait = time + status;
+    self.ideal_yaw = self.ai_dir;
     
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
@@ -1303,6 +1331,7 @@ float() ai_move_back_right={
     cons_logAFloat("self.ai_dampen", self.ai_dampen); //debug
   }
   ai_attack();
+  ChangeYaw();
   status = walkmove( self.ai_dir, self.ai_wishSpeed * self.ai_dampen );
   cons_logAFloat("ai_move_back_right->status", status);  //debug
   return status;

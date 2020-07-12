@@ -5,9 +5,6 @@ Date: 09/23/2018
 Overview: ai unit
   Tank - Destroyer
   Behavior - Sniper
-  
-  Setup
-    
 */
 
 /* quick garbage collect before rest of death funcs */
