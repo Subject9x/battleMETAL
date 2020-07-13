@@ -89,13 +89,6 @@ void() spg_combat={
 void() spg_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    
-    if( self.ai_move_next == MOVE_PATROLNODE ){
-      //called ai_node_to_target() before getting to this state
-    }
-    if( (self.ai_blockflag & self.ai_move_next) ){
-      self.ai_move_next = MOVE_STAND;
-    }
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }

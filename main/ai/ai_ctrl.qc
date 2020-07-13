@@ -793,11 +793,6 @@ void() ai_move_stand={
       self.legs.think = bot_leg_stand1;
       self.legs.nextthink = time + 0.1;
     }
-    if( self.ai_clearblock ){
-      self.ai_blockflag = 0;
-      self.ai_moveflag = rint(0);
-      self.ai_moveflag = self.ai_dance_card;
-    }
     return;
   }
   ai_attack();

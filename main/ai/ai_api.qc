@@ -748,48 +748,41 @@ float() ai_patrol_traffic_adjust={
   makevectors(self.angles);
   tracebox(self.origin, tMins, tMaxs, self.origin + (v_forward * (self.maxs_x * 2)), MOVE_NORMAL, self);
   
-  if( trace_ent.faction == self.faction ){
-    if( trace_ent.data_type != DATA_BLD && trace_ent.movetype != MOVETYPE_FLYMISSILE ){
-      oldthat = self;
-      self = trace_ent;
-      counter = ai_check_targ_infront(oldthat, 0.9, FALSE);
-      self = oldthat;
-      //blocked unit is patrolling.
-      if( (trace_ent.ai_state == ST_PTR_TRAVEL_NODE) || (trace_ent.ai_state == ST_PTR) ){
-        if( ai_check_targ_infront(trace_ent, 0.9, FALSE) && !counter ){
-          self.ai_state_next = ST_PTR_PAUSE;
-          self.pausetime = 3;
-        }
+  if( trace_ent ){
+    if( trace_ent.faction == self.faction ){
+      if( trace_ent.data_type != DATA_BLD && trace_ent.movetype != MOVETYPE_FLYMISSILE ){
+        oldthat = self;
+        self = trace_ent;
+        counter = ai_check_targ_infront(oldthat, 0.9, FALSE);
+        self = oldthat;
+        //blocked unit is patrolling.
+        self.ai_blockflag = time + 10;
+        self.ai_state_next = ST_PTR_PAUSE;
+        self.pausetime = 3;
+        return TRUE;
       }
-      else{
+      return FALSE;
+    }
+    else{
+      if( trace_ent.data_type != DATA_BLD && trace_ent.movetype != MOVETYPE_FLYMISSILE ){
         //combat?
         self.ai_move_next = MOVE_STAND_FACE;
         self.ai_movewait = 5;
         self.ai_state_next = ST_COM_MOVE_START;
+       
+        oldthat = self;
+        self = trace_ent;
+        counter = ai_check_targ_infront(oldthat, 0.85, FALSE);
+        self = oldthat;
+        if( counter ){
+          trace_ent.ai_move_next = MOVE_BACK;
+          trace_ent.ai_movedist = 10;
+          trace_ent.ai_state_next = ST_COM_MOVE_START;
+        }
+        return TRUE;
       }
-      return TRUE;
+      return FALSE;
     }
-    return FALSE;
-  }
-  else{
-    if( trace_ent.data_type != DATA_BLD && trace_ent.movetype != MOVETYPE_FLYMISSILE ){
-      //combat?
-      self.ai_move_next = MOVE_STAND_FACE;
-      self.ai_movewait = 5;
-      self.ai_state_next = ST_COM_MOVE_START;
-     
-      oldthat = self;
-      self = trace_ent;
-      counter = ai_check_targ_infront(oldthat, 0.85, FALSE);
-      self = oldthat;
-      if( counter ){
-        trace_ent.ai_move_next = MOVE_BACK;
-        trace_ent.ai_movedist = 10;
-        trace_ent.ai_state_next = ST_COM_MOVE_START;
-      }
-      return TRUE;
-    }
-    return FALSE;
   }
   return FALSE;
 };

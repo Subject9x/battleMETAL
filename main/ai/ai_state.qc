@@ -29,6 +29,13 @@ void() ai_state_frame={
   self.ai_move_last = self.ai_move;
   self.ai_move = self.ai_move_next;
   
+  //blockflag
+  if( time < self.ai_blockflag ){
+    self.solid = SOLID_CORPSE;
+  }
+  else{
+    self.solid = SOLID_SLIDEBOX;
+  }
   //state machine
   switch(self.ai_state){
     case ST_STAND:
@@ -91,7 +98,7 @@ void() ai_state_frame={
   }
   
   self.think = ai_state_frame;
-  self.nextthink = time + 0.04;
+  self.nextthink = time + 0.067;
 };
 
 /*
@@ -102,7 +109,6 @@ void() ai_state_frame={
     .ai_move_next - set/operate on this to create a new move order.
     .ai_movewait  - timer used for [ST_COM_MOVE_EXEC], set this in [ST_COM_MOVE_START], when expired, it goes to [ST_COM_MOVE_END]
     .ai_moveflag  - a collection of currently-possible moves, as moves are executed, remove them from this collection.
-    .ai_blockflag - a collection filled up as AI fails at certain moves, usually when blockflag == dance_Card, the bot is truly stuck
     .ai_dance_card  - bitflag collection of all possible moves for THIS AI, usually set at-spawn by unit-type
 */
 void() ai_combat_move_frame={

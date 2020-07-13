@@ -268,7 +268,7 @@ float MOVE_STAND_FACE     = 2048;
 .float ai_move_next;  //  AI-CODE-SET this one to decide the next move.
 
 .float ai_moveflag;   //  remaining allowable moves before attempting to refresh the move set
-.float ai_blockflag;  //  anytime a move is blocked, subtract from ai_moveflag, and place it here, when ai_blockflag == ai_dance_card, then bot must chill for a sec.
+.float ai_blockflag;  //a result of time + value, bot will go SOLID_CORPSE for a hot sec
 .float ai_clearblock; //  AI-CODE-SET to clear the AI's ai_blockflag on the next frame.
 
 //float ST_STAND                = 1
