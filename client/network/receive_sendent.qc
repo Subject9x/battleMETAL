@@ -7,6 +7,62 @@ Overview:
   I don't even know if it's worth it to try this.
 */
 
+//implementing parts of Spike's CSQC-only mod code here
+void() interpolate_origin={
+  //interpolate origins and angles so that they're synced to the thinks.
+  //interpolation = latency.
+  if (self.nextthink != self.frame1time)
+  {
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    self.frame2 = self.frame1;
+    self.frame1 = self.frame;
+    self.origin2 = self.origin1;
+    self.origin1 = self.origin;
+    self.angle2 = self.angle1;
+    self.angle1 = self.angles_y;
+  }
+  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  self.lerpfrac = 1 - bound(0, self.lerpfrac, 1);
+};
+
+void() interpolate_angle={
+  local float savedang;
+  local float dir;
+ 
+  savedang = self.angles_y;
+  dir = (self.angle2-self.angle1);
+  if (dir > 180){
+    dir -= 360;
+  }
+  else if (dir < -180){
+    dir += 360;
+  }
+  self.angles_y = self.angle1 + (dir*self.lerpfrac);
+};
+
+void() interpolate_ground={
+  if (self.flags & (FL_ONGROUND|FL_PARTIALGROUND|FL_FLY|FL_SWIM))
+  {
+    //while its onground, it should move at the same animation speed as it animates
+    vector saved = self.origin;						
+    self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+    if (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)){
+      self.origin_z = saved_z;	//try and avoid monsters on plats juddering separately from the plat_center_touch. could probably do something better based on dotproducts with the direction of motion or something. not sure.
+    }
+    //addentity(self);
+    self.origin = saved;
+  }
+  else
+  {
+    //but if its in free-fall, don't lag it.
+    //no nasty surprises when it does hit the ground please.
+    self.origin2 = self.origin1 = self.origin;
+    //addentity(self);
+  }
+};
+//-----------------------------------
+
 /*
   Entry point for handler api
 */
@@ -109,15 +165,6 @@ void( float isNew, float changeFlags) sendent_handle_missile={
   self.angles = vectoangles(self.velocity);
 };
 
-float() predraw_weapon={
-  local vector ofs;
-  local entity part;
-  //makevectors(self.angles);
-  //self.origin = self.owner.origin +(v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-  //setorigin(self, self.origin);
-  return TRUE;
-};
-
 /*
   EVENT - Shields are eliminated
 */
@@ -148,9 +195,12 @@ void( vector turretAngles ) sendevent_turret_update={
 void() sendent_ini_interpolate={
   self.frame2time = time + 0.05;
   self.frame1time = time + 0.05;
+  self.frame2 = self.frame1;
+  self.frame1 = self.frame;
   self.origin2 = self.origin1;
   self.origin1 = self.origin;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.01;
+  self.angle2 = self.angle1 = self.angles_y;
 };
 
 void() sendent_setup_weapons={
@@ -162,7 +212,6 @@ void() sendent_setup_weapons={
     self = weps;
       sendent_set_weapon();
       initialize_data_item_(self.data_idx);
-      self.angles = this.angles;
       self.owner = this;
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
@@ -171,11 +220,14 @@ void() sendent_setup_weapons={
       if( self.partParentId == M_LEGS ){
         makevectors(this.angles);
         setorigin(self, this.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
+        self.angles = this.angles;
       }
       else{
         makevectors(this.torsoCenter.angles);
         setorigin(self, this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
+        self.angles = this.torsoCenter.angles;
       }
+      sendent_ini_interpolate();
     self = this;
     weps = weps.w_slot;
   }

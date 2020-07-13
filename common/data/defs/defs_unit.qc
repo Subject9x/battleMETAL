@@ -101,5 +101,6 @@ Overview:
 #ifdef CSQC
 .float targetEntId;
 .float entId; 
-.void( float critBits ) te_critical_hit;  //interface for unit critical hit events
+.void( float critHits ) te_critical_hit;  //interface for unit critical hit events
+.float critBits;
 #endif
