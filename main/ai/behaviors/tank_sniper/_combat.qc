@@ -12,7 +12,6 @@ void() spg_combat={
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-     cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
     
     //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
@@ -90,7 +89,6 @@ void() spg_combat={
 void() spg_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    cons_logAString("new state", "spg_com_moveStart"); //debug
     
     if( self.ai_move_next == MOVE_PATROLNODE ){
       //called ai_node_to_target() before getting to this state
@@ -113,7 +111,6 @@ void() spg_com_moveExec={
   local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_EXEC]",  self.ai_state_next); //debug
     return;
   }
   //------------------------------------------------------------------
@@ -143,7 +140,6 @@ void() spg_com_moveExec={
 void() spg_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
     if( ai_valid_target(self.enemy) ){
       self.ai_state_next = ST_COMBAT;
       return;
@@ -164,7 +160,6 @@ void() spg_com_moveEnd={
 void() spg_com_blocked={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
     self.goalentity = self.patrolNode;
     self.ai_move_next = MOVE_NODE_RADIUS;
     self.ai_state_next = ST_COM_MOVE_START;

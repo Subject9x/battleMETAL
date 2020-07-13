@@ -79,7 +79,6 @@ void() ai_gev_stand={
   
   //Enter state
   if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    cons_logAString("new state", "gev_stand"); //debug
     //entering stand state
     if(self.torsoCenter){
       self.torsoCenter.attack_state = TR_NORM;

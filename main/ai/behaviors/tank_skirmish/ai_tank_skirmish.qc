@@ -86,7 +86,6 @@ void() ai_tank_sk_stand={
   
   //Enter state
   if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    cons_logAString("new state", "sk_stand"); //debug
     //entering stand state
     if(self.torsoCenter){
       self.torsoCenter.attack_state = TR_NORM;
@@ -95,7 +94,6 @@ void() ai_tank_sk_stand={
     return;
   }
   //-----------------
-  cons_logAString("running--------", "sk_stand"); //debug
   if( ai_valid_target(self.enemy) ){
     self.ai_state_next = ST_COMBAT;
     return;

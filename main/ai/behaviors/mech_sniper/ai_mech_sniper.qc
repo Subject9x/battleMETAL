@@ -78,7 +78,6 @@ void() ai_mech_sniper_stand={
   
   //Enter state
   if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    cons_logAString("new state", "sniper_stand"); //debug
     //entering stand state
     self.torsoCenter.attack_state = TR_NORM;
     self.legs.attack_state = TR_NORM;

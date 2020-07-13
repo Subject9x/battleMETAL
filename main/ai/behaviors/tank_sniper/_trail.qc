@@ -13,7 +13,6 @@ Overview:
 void() spg_trail_move={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_MOVE && self.ai_state_last != ST_TRAIL_MOVE ){
-    cons_logAString("new state", "spg_trail_move"); //debug
 
     return;
   }
@@ -27,7 +26,6 @@ void() spg_trail_move={
 void() spg_trail_move_block={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_BLOCK && self.ai_state_last != ST_TRAIL_BLOCK ){
-    cons_logAString("new state", "spg_trail_move_block"); //debug    
 
     return;
   }
@@ -52,7 +50,6 @@ void() spg_trail_rollback={
 void() spg_trail_rollback_block={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_ROLLBLOCK && self.ai_state_last != ST_TRAIL_ROLLBLOCK ){
-    cons_logAString("new state", "spg_trail_rollback_block"); //debug
     return;
   }
  //------------------------------------------------------------------

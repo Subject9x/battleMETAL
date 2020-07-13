@@ -141,7 +141,7 @@ void() ai_node_check={
     self.nextthink = time + 1;
   }
   else{
-    if( !self.ai_view ){
+    if( !self.ai_view || self.ai_view < 15){
       local float minDist;
       local float checkDist;
       local float itr;
@@ -195,13 +195,13 @@ void() ai_node={
   //set the collision filter to help AI when making traceline calls.
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   self.think = ai_node_check;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.01;
 };
 
 
 void() node_counter_die={
   self.think = SUB_Remove;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.01;
 };
 
 /*QUAKED ai_node_counter (0.988 0.5 0.267) (-10 -10 -18) (10 10 18) - START_INACTIVE
@@ -292,6 +292,8 @@ void() ai_node_tether={
   if( !self.faction ){
     self.faction = FACTION_ALL;
   }
+  self.think = ai_node_check;
+  self.nextthink = time + 1;
 };
 
 void() ai_exec_order_use={

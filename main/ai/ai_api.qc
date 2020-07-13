@@ -481,28 +481,18 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   
   distDiff = destOrg - self.origin;
   len = vlen (distDiff);
-  cons_logAVector("ai_calc_move().destOrg", destOrg);  //debug
-  cons_logAVector("ai_calc_move().self.origin", self.origin);  //debug
-  cons_logAFloat("self.ai_movedist", self.ai_movedist / self.ai_wishSpeed);  //debug
-  cons_logAFloat("ai_calc_move().wishSpeed", wishSpeed);  //debug
-  cons_logAFloat("ai_calc_move().len", len);  //debug 
-  cons_logAFloat("ai_calc_move().self.ai_movedist", self.ai_movedist);  //debug 
-  cons_logAFloat("ai_calc_move().self.data_speed_forward", self.data_speed_forward);  //debug 
-  cons_logAFloat("ai_calc_move().self.data_speed_strafe", self.data_speed_strafe);  //debug 
-  cons_logAString("ai_calc_move().self.ai_move", dbg_move(self.ai_move));  //debug 
   tMaxs = self.maxs;
   tMins = self.mins;
   tMins_z = tMins_z * 0.75; //adjust for slope
   
   tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg + (v_forward * (tMaxs_x / 2)), MOVE_NORMAL, self);
   //big debug 
-    trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMaxs_z), destOrg + (v_right * tMaxs_x) + (v_up * tMaxs_z));  //debug
-    trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMaxs_z), destOrg + (v_right * tMins_x) + (v_up * tMaxs_z));  //debug
-    trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMins_z), destOrg + (v_right * tMaxs_x) + (v_up * tMins_z));  //debug
-    trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMins_z), destOrg + (v_right * tMins_x) + (v_up * tMins_z));  //debug
+   // trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMaxs_z), destOrg + (v_right * tMaxs_x) + (v_up * tMaxs_z));  //debug
+    //trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMaxs_z), destOrg + (v_right * tMins_x) + (v_up * tMaxs_z));  //debug
+    //trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMins_z), destOrg + (v_right * tMaxs_x) + (v_up * tMins_z));  //debug
+    //trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMins_z), destOrg + (v_right * tMins_x) + (v_up * tMins_z));  //debug
   //
-  
-  cons_logAFloat("ai_calc_move().trace_fraction", trace_fraction);  //debug
+
   if( trace_fraction < 0.1 ){
     return 0;
   }
@@ -510,9 +500,6 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   
   // divide by speed to get time to reach dest
   travel = len / wishSpeed;
-  
-  cons_logAFloat("ai_calc_move().len calc", len);  //debug
-  cons_logAFloat("ai_calc_move().travel", travel);  //debug
   
   return travel / 24;  //AI runs at about time + 0.04 so adjust travel time 
 };
@@ -529,10 +516,6 @@ entity(entity targ) ai_node_to_target={
   local float dist;
   local float distComp;
   
-  cons_logAString("CALL FUNCTION:ai_node_to_target()", "---->()"); //debug
-  cons_logAString("targ.classname", targ.classname); //debug
-  cons_logAString("self.patrolNode.targetname", self.patrolNode.targetname); //debug
-  
   if( self.patrolNode.owner == world ){
     parnt = self.patrolNode;
   }
@@ -540,25 +523,17 @@ entity(entity targ) ai_node_to_target={
     parnt = self.patrolNode.owner;
   }
   
-  cons_logAString("parnt.targetname", parnt.targetname); //debug
   dist = vlen(targ.origin - parnt.origin);
-  cons_logAFloat("vlen(targ.origin - parnt.origin)", vlen(targ.origin - parnt.origin)); //debug
 
   for(checkNode = parnt; checkNode != world; checkNode = checkNode.partNext){
     distComp = vlen(checkNode.origin - targ.origin);
     if(checkNode == parnt ){
       distComp = distComp - 1;  //hackfrauds
     }
-    cons_logAString("-------------------------->checkNode", checkNode.targetname); //debug
-    cons_logAFloat("------------------------------------->distComp", distComp); //debug
-    cons_logAFloat(" ", 0); //debug
     
     checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
     tracebox(checkNode.origin, self.mins, self.maxs, self.origin, MOVE_NOMONSTERS, self);
-    trailparticles(checkNode, particleeffectnum("TE_PAC_RAIL"), checkNode.origin, targ.origin);  //debug
-    cons_logAFloat("ai_node_to_target().trace_fraction", trace_fraction); //debug
     if( trace_fraction >= 0.9 || trace_ent == targ || (trace_ent.flags&FL_UNIT)){
-      cons_logAString("ai_node_to_target().trace_ent", trace_ent.classname); //debug
       if( distComp < dist ){
         dist = distComp;
         found = checkNode;
@@ -570,19 +545,15 @@ entity(entity targ) ai_node_to_target={
     }
   }
   if( found ){
-    cons_logAString("found.targetname", found.targetname); //debug
-    cons_logAString("found.classname", found.classname); //debug
     if( found.partTypeId < self.patrolNode.partTypeId ){
       tracebox(targ.origin, targ.mins, targ.maxs, self.patrolNode.partPrev.origin, MOVE_NOMONSTERS, targ);
       if( trace_fraction == 1.0 ){
-        cons_logAFloat("found.partTypeId < node.partTypeId", 1); //debug
         return self.patrolNode.partPrev;
       }
     }
     if( found.partTypeId > self.patrolNode.partTypeId ){
       tracebox(targ.origin, targ.mins, targ.maxs, self.patrolNode.partNext.origin, MOVE_NOMONSTERS, targ);
       if( trace_fraction == 1.0 ){
-        cons_logAFloat("found.partTypeId > node.partTypeId", 1); //debug
         return self.patrolNode.partNext;
       }
     }
@@ -593,7 +564,6 @@ entity(entity targ) ai_node_to_target={
       return parnt;
     }
   }
-  cons_logAFloat("no-op return world", 1); //debug
   return world;
 };
 
@@ -629,7 +599,12 @@ entity(float checkDir) ai_get_next_node={
 float(entity toCheck) ai_check_node_radius={
   local float distance;
   distance = vlen(toCheck.origin - self.patrolNode.origin);
-  distance = max(distance / self.patrolNode.ai_view, 0.01);
+  if( self.patrolNode.ai_view != 0 ){
+    distance = max(distance / self.patrolNode.ai_view, 0.01);
+  }
+  else{
+    distance = max(distance / AI_RANGE_S * 1.25, 0.01);
+  }
   return distance;
 };
 
@@ -640,7 +615,12 @@ float(entity toCheck) ai_check_node_radius={
 */
 float() ai_check_node_radius_targdist={
   local float distance;
-  distance = max(self.stat_trg_dist / self.patrolNode.ai_view, 0.01);
+  if( self.patrolNode.ai_view != 0 ){
+    distance = max(self.stat_trg_dist / self.patrolNode.ai_view, 0.01);
+  }
+  else{
+    distance = 1.0;
+  }
   return distance;
 };
 
@@ -697,7 +677,7 @@ void() ai_node_tether_find={
     if( findNode.classname != "ai_node_tether" ){
       continue;
     }
-    if( (findNode.faction != FACTION_ALL) && (findNode.faction != self.faction) ){
+    if( findNode.faction && findNode.faction != self.faction ){
       continue;
     }
     ang = vectoangles(findNode.origin - self.origin);
@@ -720,6 +700,7 @@ void() ai_node_tether_find={
     self.tetherStatus = TETHER_NODE;
     self.tetherOrg = util_find_random_farpoint(found.origin, found, random() * found.ai_view/1.25, 64);
     self.tetherNode = found;
+    self.patrolNode = found;
   }
   else{
     //no tether nodes found,

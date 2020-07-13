@@ -83,7 +83,6 @@ void() ai_spg_stand={
   
   //Enter state
   if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    cons_logAString("new state", "tank_sniper_stand"); //debug
     //entering stand state
     if(self.torsoCenter){
       self.torsoCenter.attack_state = TR_NORM;
@@ -105,16 +104,6 @@ void() ai_spg_stand={
       self.ai_state_next = ST_PTR;
       return;
     }
-  }
-  
-  if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
-    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 2);
-    self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
-    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
-    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
-    self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
-    self.torsoCenter.attack_state = TR_YAW;
-    return;
   }
 };
 

@@ -15,7 +15,6 @@ Overview: ai unit
 void() ai_mech_sniper_patrol={
   ai_update_accuracy( TRUE );
   if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
-    cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
     
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
     self.goalentity = self.patrolNode;
@@ -37,7 +36,6 @@ void() ai_mech_sniper_ptr_pause={
   
   //entered pause state
   if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
-     cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
     self.legs.attack_state = TR_YAW;
     self.legs.angles_y = self.angles_y;
     self.legs.think = bot_leg_stand1;
@@ -86,7 +84,6 @@ void() ai_mech_sniper_ptr_travel_node={
 */
 void() ai_mech_sniper_ptr_travel_blocked={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
-    cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
     if( ai_blocked_teleport() ){
       self.tetherOrg = self.patrolNode.origin;
       self.ai_state_next = ST_PTR;
@@ -107,8 +104,6 @@ void() ai_mech_sniper_ptr_travel_blocked={
 */
 void() ai_mech_sniper_ptr_tether={
   //if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
-     cons_logAFloat("ENTER[ST_PTR_TETHER]",  self.ai_state_next); //debug
-    return;
   //}
 };
 
@@ -117,7 +112,6 @@ void() ai_mech_sniper_ptr_tether={
 */
 void() ai_mech_sniper_ptr_tether_blocked={
   //if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
-     cons_logAFloat("ENTER[ST_PTR_TETHER_BLOCK]",  self.ai_state_next); //debug
-    return;
+
  // }
 };

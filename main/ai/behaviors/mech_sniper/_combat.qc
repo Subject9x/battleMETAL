@@ -20,7 +20,6 @@ void() mech_sniper_combat={
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-     cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
     
     //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
@@ -339,7 +338,6 @@ void() mech_sniper_combat={
 void() mech_sniper_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_START]",  self.ai_state_next); //debug
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
@@ -354,7 +352,6 @@ void() mech_sniper_com_moveExec={
   local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_EXEC]",  self.ai_state_next); //debug
     return;
   }
   //-----------------------------------------------------------------
@@ -384,7 +381,6 @@ void() mech_sniper_com_moveExec={
 void() mech_sniper_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
     
     self.ai_state_next = ST_COMBAT;
     return;
@@ -399,7 +395,6 @@ void() mech_sniper_com_blocked={
   local entity blockNode;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
     self.goalentity = self.patrolNode;
     self.ai_move_next = MOVE_NODE_RADIUS;
     self.ai_state_next = ST_COM_MOVE_START;

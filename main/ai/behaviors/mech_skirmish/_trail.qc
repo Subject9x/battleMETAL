@@ -23,8 +23,6 @@ Overview:
 void() mech_sk_trail_move={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_MOVE && self.ai_state_last != ST_TRAIL_MOVE ){
-    cons_logAString("new state", "mech_sk_trail_move"); //debug
-
     self.ai_state_next = ST_STAND;
     self.pausetime = 5;
     return;
@@ -90,8 +88,6 @@ void() mech_sk_trail_move_block={
   ai_attack();
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_BLOCK && self.ai_state_last != ST_TRAIL_BLOCK ){
-    cons_logAString("new state", "mech_sk_trail_move_block"); //debug    
-
 
     return;
   }
@@ -105,8 +101,6 @@ void() mech_sk_trail_rollback={
   ai_attack();
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_ROLLBACK && self.ai_state_last != ST_TRAIL_ROLLBACK ){
-    cons_logAString("new state", "mech_sk_trail_rollback"); //debug
-
     return;
   }
  //------------------------------------------------------------------
@@ -119,7 +113,6 @@ void() mech_sk_trail_rollback_block={
   ai_attack();
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_TRAIL_ROLLBLOCK && self.ai_state_last != ST_TRAIL_ROLLBLOCK ){
-    cons_logAString("new state", "mech_sk_trail_rollback_block"); //debug
 
     return;
   }

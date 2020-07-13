@@ -92,7 +92,6 @@ void() tank_sk_fight_out_radius={
     return;
   }
   //both target and AI are out of bounds
-  cons_logAString("Line 120 -tank_sk_combat:"," enemy_dist > 1.0 && combat_dist > 1.0"); //debug
   self.ai_move_next = MOVE_NODE_RADIUS;
 };
 

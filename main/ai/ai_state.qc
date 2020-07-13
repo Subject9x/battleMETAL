@@ -170,7 +170,6 @@ void() ai_combat_move_frame={
   if( moveStatus == FALSE ){
     if( self.ai_state_combat_blocked ){
       if( time < self.ai_movewait ){
-        cons_logAFloat("!INTERRUPT! ai_combat_move_frame ",  1); //debug
       }
       self.ai_state_next = ST_COM_MOVE_BLOCK;
     }

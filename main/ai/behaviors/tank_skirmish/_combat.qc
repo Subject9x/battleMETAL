@@ -17,7 +17,6 @@ void() tank_sk_combat={
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-     cons_logAFloat("ENTER[ST_COMBAT]",  self.ai_state_next); //debug
     
     //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
@@ -48,11 +47,7 @@ void() tank_sk_combat={
     enemy_dist = ai_check_node_radius(self.enemy);
     combat_dist = ai_check_node_radius(self);
     enemy_range = ai_check_node_radius_targdist();
-    
-    cons_logAFloat("Line 61 -tank_sk_combat:enemy_dist", enemy_dist); //debug
-    cons_logAFloat("Line 62 -tank_sk_combat:combat_dist", combat_dist); //debug
-    cons_logAFloat("Line 63 -tank_sk_combat:enemy_range", enemy_range); //debug
-    
+   
     //out of bounds, do move override
     if(combat_dist > 1.0){
       //run
@@ -94,7 +89,6 @@ void() tank_sk_combat={
     //combat_dist < 1.0
     //get fighting
     self.ai_move_next = MOVE_NODE_RADIUS;
-    cons_logAString("Line 129 -tank_sk_combat:"," get fightin"); //debug
     tank_sk_fight_full();
     return;
   //---------------------------------------------------------------------------
@@ -108,8 +102,6 @@ void() tank_sk_combat={
 void() tank_sk_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_START]",  self.ai_state_next); //debug
-    cons_logAFloat("self.ai_move_next", self.ai_move_next); //debug
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
@@ -124,12 +116,9 @@ void() tank_sk_com_moveExec={
   local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_EXEC]",  self.ai_state_next); //debug
-    cons_logAFloat("-----------------------MOVE NEXT",  self.ai_move_next); //debug
     return;
   }
   //------------------------------------------------------------------
-  cons_logAFloat("-----------------------MOVE",  self.ai_move); //debug
   if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
     nodeMove = ai_check_node_radius(self);
     if(nodeMove > 0.99){
@@ -156,7 +145,6 @@ void() tank_sk_com_moveExec={
 void() tank_sk_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
     if( ai_valid_target(self.enemy) ){
       self.ai_state_next = ST_COMBAT;
       return;
@@ -178,7 +166,6 @@ void() tank_sk_com_blocked={
   local entity blockNode;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
-    cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
     self.goalentity = self.patrolNode;
     self.ai_move_next = MOVE_NODE_RADIUS;
     self.ai_state_next = ST_COM_MOVE_START;

@@ -14,7 +14,6 @@ Overview:
 void() ai_tank_sk_patrol={
   ai_update_accuracy( TRUE );
   if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
-    cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
     
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
     self.goalentity = self.patrolNode;
@@ -25,9 +24,6 @@ void() ai_tank_sk_patrol={
     }
     return;
   }
-  else{
-    cons_logAString("running--------", "sk_patrol"); //debug
-  }
 };
 /*
   STATE : PATROL PAUSE
@@ -37,7 +33,6 @@ void() ai_tank_sk_ptr_pause={
   
   //entered pause state
   if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
-     cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
     self.pausetime = time + self.pausetime;
     return;
   }
@@ -45,12 +40,9 @@ void() ai_tank_sk_ptr_pause={
   if( time > self.pausetime ){
     if( self.patrolNode != world ){
       self.ai_state_next = ST_PTR;
-      cons_logAFloat("time > self.pausetime -> ST_PTR | self.patrolNode != world -> ST_PTR",  self.ai_state_next); //debug
     }
     else{
       self.ai_state_next = ST_STAND;
-      cons_logAFloat("ENTER[ST_STAND]",  self.ai_state_next); //debug
-      cons_logAFloat("time > self.pausetime -> ST_PTR ELSE ST_STAND",  self.ai_state_next); //debug
     }
   }
 };
@@ -83,7 +75,6 @@ void() ai_tank_sk_ptr_travel_node={
 */
 void() ai_tank_sk_ptr_travel_blocked={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
-    cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
     if( ai_blocked_teleport() ){
       self.tetherOrg = self.patrolNode.origin;
       self.ai_state_next = ST_PTR;
@@ -104,8 +95,6 @@ void() ai_tank_sk_ptr_travel_blocked={
 */
 void() ai_tank_sk_ptr_tether={
   //if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
-     cons_logAFloat("ENTER[ST_PTR_TETHER]",  self.ai_state_next); //debug
-    return;
   //}
 };
 
@@ -114,7 +103,5 @@ void() ai_tank_sk_ptr_tether={
 */
 void() ai_tank_sk_ptr_tether_blocked={
   //if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
-     cons_logAFloat("ENTER[ST_PTR_TETHER_BLOCK]",  self.ai_state_next); //debug
-    return;
  // }
 };
