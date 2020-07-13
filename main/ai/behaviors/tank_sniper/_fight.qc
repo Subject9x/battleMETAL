@@ -116,17 +116,114 @@ void() spg_fight_building={
   }
   if(enemy_range < 0.7){
     if(enemy_infront){
-    
+      if(self.ai_move_last == MOVE_STAND_FACE ){
+        self.ai_movedist = 5;
+        if(combat_roll > 0.5){
+          self.ai_move_next = MOVE_CHARGE_LEFT;
+          return; 
+        }
+        self.ai_move_next = MOVE_CHARGE_LEFT;
+        return;
+      }
+      self.ai_movewait = 5;
+      self.ai_move_next = MOVE_STAND_FACE;
+      return;
     }
+    self.ai_movewait = 7;
+    self.ai_move_next = MOVE_STAND_FACE;
     return;
   }
   //enemy_range <=1.0
+  if(enemy_infront){
+    if(self.ai_move_last == MOVE_STAND_FACE ){
+      self.ai_movedist = 7;
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_CHARGE_LEFT;
+        return; 
+      }
+      self.ai_move_next = MOVE_CHARGE_LEFT;
+      return;
+    }
+    self.ai_movewait = 5;
+    self.ai_move_next = MOVE_STAND_FACE;
+    return;
+  }
+  self.ai_movewait = 7;
+  self.ai_move_next = MOVE_STAND_FACE;
+  return;
 };
 
 /*
   CASE:
-    my node dist
+    my node dist is in the green
 */
 void() spg_fight_full={
+  if(combat_dist < 0.4){
+    if(enemy_infront){
+      if(enemy_range<0.4){
+      
+      }
+      if(enemy_range<0.7){
+      
+      }
+      //enemy_range<=1.0
+      
+      return;
+    }
+    if(enemy_range<0.4){
+    
+    }
+    if(enemy_range<0.7){
+    
+    }
+    //enemy_range<=1.0
+    
+    return;
+  }
+  if(combat_dist < 0.7){
+    if(enemy_infront){
+      if(enemy_range<0.4){
+      
+      }
+      if(enemy_range<0.7){
+      
+      }
+      //enemy_range<=1.0
+      
+    
+      return;
+    }
+    
+    if(enemy_range<0.4){
+    
+    }
+    if(enemy_range<0.7){
+    
+    }
+    //enemy_range<=1.0
+      
+    return;
+  }
+  //long range 
+  if(enemy_infront){
+    if(enemy_range<0.4){
+    
+    }
+    if(enemy_range<0.7){
+    
+    }
+    //enemy_range<=1.0
+    
+    return;
+  }
+
+  if(enemy_range<0.4){
   
+  }
+  if(enemy_range<0.7){
+  
+  }
+  //enemy_range<=1.0
+  
+  return;
 };

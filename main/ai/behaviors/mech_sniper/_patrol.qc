@@ -2,176 +2,122 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 09/23/2018
+rebuild: 07/01/2020
 Overview: ai unit
-  Mech - Sniper
+  Mech - Skirmisher
   Behavior - Patrol
-    Patrol frames,
-  16 for frame binding at 2 ai : 1 leg anim frame
-  Setup
-    
+    AI must be given a valid .target that links to an ai_node entity
 */
-void() ai_mech_sniper_patrol1={
-  ai_update_accuracy( TRUE ); 
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  self.legs.attack_state = TR_GOAL;
-  self.legs.think = bot_leg_walk1;
-  self.legs.nextthink = time + 0.1;
-  self.torsoCenter.attack_state = TR_NORM;
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol2, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol2={
+
+/*
+  STATE : PATROL START
+*/
+void() ai_mech_sniper_patrol={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
+  if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
+    cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
+    
+    self.ai_state_next = ST_PTR_TRAVEL_NODE;
+    self.goalentity = self.patrolNode;
+    self.tetherStatus = TETHER_NODE;
+    
+    self.legs.attack_state = TR_GOAL;
+    self.legs.think = bot_leg_walk1;
+    self.legs.nextthink = time + 0.1;
+    
+    self.torsoCenter.attack_state = TR_GOAL;
     return;
   }
-  ai_patrol_frame(ai_mech_sniper_patrol3, ai_mech_sniper_enter_stand);
 };
-void() ai_mech_sniper_patrol3={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
+/*
+  STATE : PATROL PAUSE
+*/
+void() ai_mech_sniper_ptr_pause={
+  ai_update_accuracy( FALSE );
   
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
+  //entered pause state
+  if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
+     cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
+    self.legs.attack_state = TR_YAW;
+    self.legs.angles_y = self.angles_y;
+    self.legs.think = bot_leg_stand1;
+    self.legs.nextthink = time + 0.1;
+    self.pausetime = time + self.pausetime;
     return;
   }
-  ai_patrol_frame(ai_mech_sniper_patrol4, ai_mech_sniper_enter_stand);
+  //--------------------------
+  
+  
+  if( time > self.pausetime ){
+    if( self.patrolNode != world ){
+      self.ai_state_next = ST_PTR;
+    }
+    else{
+      self.ai_state_next = ST_STAND;
+    }
+  }
 };
-void() ai_mech_sniper_patrol4={
+/*
+  STATE : PATROL TRAVEL TO NODE
+*/
+void() ai_mech_sniper_ptr_travel_node={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
+
+  ai_patrol_state_frame();
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
+    //prepare for war....
+    self.ai_state_next = ST_COMBAT;
     return;
   }
-  ai_patrol_frame(ai_mech_sniper_patrol5, ai_mech_sniper_enter_stand);
+  
+  if( self.patrolState == PATROL_PAUSE ){
+    self.ai_state_next = ST_PTR_PAUSE;
+    return;
+  }
+  
+  if(self.patrolState == PATROL_BLOCK ){
+    self.ai_state_next = ST_PTR_TRAVEL_NODEBLOCK;
+    return;
+  }
 };
-void() ai_mech_sniper_patrol5={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
+/*
+  STATE : PATROL TRAVEL TO NODE BLOCKED
+*/
+void() ai_mech_sniper_ptr_travel_blocked={
+  if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
+    cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
+    if( ai_blocked_teleport() ){
+      self.tetherOrg = self.patrolNode.origin;
+      self.ai_state_next = ST_PTR;
+      return;
+    }
+    self.ai_movewait = time + 30;
     return;
   }
-  ai_patrol_frame(ai_mech_sniper_patrol6, ai_mech_sniper_enter_stand);
+  if( ai_blocked_teleport() ){
+    self.tetherOrg = self.patrolNode.origin;
+    self.ai_state_next = ST_PTR;
+    return;
+  }
 };
-void() ai_mech_sniper_patrol6={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
+
+/*
+  STATE : PATROL USE TETHER
+*/
+void() ai_mech_sniper_ptr_tether={
+  //if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
+     cons_logAFloat("ENTER[ST_PTR_TETHER]",  self.ai_state_next); //debug
     return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol7, ai_mech_sniper_enter_stand);
+  //}
 };
-void() ai_mech_sniper_patrol7={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
+
+/*
+  STATE : PATROL USE TETHER BLOCKED
+*/
+void() ai_mech_sniper_ptr_tether_blocked={
+  //if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
+     cons_logAFloat("ENTER[ST_PTR_TETHER_BLOCK]",  self.ai_state_next); //debug
     return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol8, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol8={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol9, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol9={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol10, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol10={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol11, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol11={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol12, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol12={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol13, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol13={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol14, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol14={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol15, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol15={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol16, ai_mech_sniper_enter_stand);
-};
-void() ai_mech_sniper_patrol16={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
-    return;
-  }
-  ai_patrol_frame(ai_mech_sniper_patrol1, ai_mech_sniper_enter_stand);
+ // }
 };

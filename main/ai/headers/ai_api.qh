@@ -23,7 +23,7 @@ Overview:
 
 #define macro_ai_movegoal(speed) if( self.movetarget ){movetogoal(speed);}
 
-#define macro_ai_patrol(speed,pauseFunc,nextFunc) local entity nextNode;if((self.goalentity.flags&FL_NODE)){ai_face_goal();if(walkmove(self.angles_y,max(speed,65*AI_WALK_SPD))==FALSE){movetogoal(max(self.data_speed_forward,65*AI_WALK_SPD));ai_patrol_turn();}if(vlen(self.goalentity.origin-self.origin)<=(random()*AI_NODE_DISTANCE)){if(self.goalentity.pausetime){self.pausetime=self.goalentity.pausetime;self.pausetime=self.pausetime+(self.pausetime*(self.ai_action_mod/10));self.pausetime = self.pausetime+time;}if(self.goalentity.target){nextNode=find(world,targetname,self.goalentity.target);self.movetarget=nextNode;}else{if(self.goalentity.ai_rank>0){self.movetarget=world;self.goalentity.think=SUB_Remove;self.goalentity.nextthink=time+0.1;}else{self.movetarget=ai_goal_offset_node();}} self.goalentity=self.movetarget;if(time<self.pausetime){macro_ai_frame(pauseFunc) return;}} macro_ai_frame(nextFunc) return;} macro_ai_frame(pauseFunc)
+#define macro_ai_patrol(speed,pauseFunc,nextFunc) local entity nextNode;if((self.goalentity.flags&FL_NODE)){ai_face_goal();if(walkmove(self.angles_y,max(speed,65*AI_WALK_SPD))==FALSE){movetogoal(max(self.data_speed_forward,65*AI_WALK_SPD));//ai_patrol_turn();}if(vlen(self.goalentity.origin-self.origin)<=(random()*AI_NODE_DISTANCE)){if(self.goalentity.pausetime){self.pausetime=self.goalentity.pausetime;self.pausetime=self.pausetime+(self.pausetime*(self.ai_action_mod/10));self.pausetime = self.pausetime+time;}if(self.goalentity.target){nextNode=find(world,targetname,self.goalentity.target);self.movetarget=nextNode;}else{if(self.goalentity.ai_rank>0){self.movetarget=world;self.goalentity.think=SUB_Remove;self.goalentity.nextthink=time+0.1;}else{self.movetarget=ai_goal_offset_node();}} self.goalentity=self.movetarget;if(time<self.pausetime){macro_ai_frame(pauseFunc) return;}} macro_ai_frame(nextFunc) return;} macro_ai_frame(pauseFunc)
 
 #define macro_ai_setup(iniFunc) if(!(self.nextVecChoice)||self.nextVecChoice<=0){self.think=SUB_Remove;self.nextthink=time+0.05;return;}if((self.spawnflags&TRIGGER_ME)&&(self.targetname)){self.wait=1;if(self.delay>0){self.wait=self.delay;self.delay=0;}self.use=ai_unit_make_trigger;self.unit_ini=iniFunc;}else{self.think=iniFunc;self.nextthink=time+0.05;}
 
@@ -48,20 +48,12 @@ float TRIGGER_ME = 524288;  //ai only spawns when triggered
 float MUTE_ME = 1048576;  //ai ignores sending voice effects / radio sounds.
 float UNARMED = 2097152; //ai spawns with no weapons, skip build_weapons() factory step;
 
-//AI STATE CONSTANTS
+//AI STATE (LEGACY) CONSTANTS
 float ST_STAND              = 1;  //th_stand
 float ST_WALK               = 2;  //th_walk
-float ST_FLYDIR             = 3;  //th_fly
 float ST_RUN                = 4;  //th_run
-float ST_RUN_STRAFE         = 5;  //th_run_strafe
-float ST_RUN_CHARGE         = 6;  //th_run_charge
 float ST_MISSILE            = 7;  //th_missile
 float ST_MELEE              = 8;  //th_melee
-float ST_MISSILE_STRAFE     = 9;  //th_missile_strafe
-float ST_HUNT               = 10; //th_hunt
-float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
-float ST_HUNT_START         = 12; //TODO
-float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'staggers' the target
 
 //AI TURRET CONSTANTS
 float TR_NORM               = 0;  //Turret follows the angles of its parent
@@ -99,7 +91,6 @@ entity lastNode;        //minor optimization
 
 //ENTITY VARS
 .void( entity attacker ) th_react;  //supplants ai_damage_react() call in t_damage();
-.void() th_rotate;             //literal corner case.
 .float ai_react_buffer;             //prevents too many runs of th_react;
 .float ai_react_time;               //stat for react buffer
 
@@ -122,8 +113,6 @@ entity lastNode;        //minor optimization
 
 .float helpTime;  //prevents flooding of help calls
 .float helpTimeDelay;
-
-
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -174,6 +163,7 @@ float(entity toCheck) ai_check_node_radius;
 float() ai_check_node_radius_targdist;
 void() ai_node_tether_find;
 float() ai_node_tether_check;
+float() ai_patrol_traffic_adjust;
 
 ////////////////////////////////
 //AI COMBAT FUNCTIONS - ai_combat.qc
@@ -193,7 +183,6 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
 //DEPRECATED-----------
 //float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic;
 void() ai_move_physics;
-float(void() nextFunc, void() pauseFunc) ai_patrol_frame;
 
 float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic
 float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vis;
@@ -232,9 +221,6 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront;
 float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
-void() ai_patrol_turn;
-void() ai_rotate_mech;
-void() ai_rotate_tank;
 void() ai_setup_patrol;
 
 //movement

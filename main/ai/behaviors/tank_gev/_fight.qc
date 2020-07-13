@@ -23,7 +23,7 @@ Overview:
   AI - inside bounds
     if( enemy_dist > 1 && combat_dist <= 1 ){
 */
-void() tank_sk_fight_target_fire={
+void() gev_fight_target_fire={
   //AI is on edge of bounds but inside radius
   if(combat_dist >= 0.75){
     if(enemy_infront){
@@ -85,14 +85,13 @@ void() tank_sk_fight_target_fire={
   AI - out of node bounds
     if( enemy_dist > 1.0 && combat_dist > 1.0 ){
 */
-void() tank_sk_fight_out_radius={
+void() gev_fight_out_radius={
   if( enemy_vis == VIS_FAIL ){
     self.enemy = world;
     self.ai_state_next = ST_PTR;
     return;
   }
   //both target and AI are out of bounds
-  cons_logAString("Line 120 -tank_sk_combat:"," enemy_dist > 1.0 && combat_dist > 1.0"); //debug
   self.ai_move_next = MOVE_NODE_RADIUS;
 };
 
@@ -102,7 +101,7 @@ void() tank_sk_fight_out_radius={
   target obscured by friendly
     if( enemy_vis == VIS_FRN ){
 */
-void() tank_sk_fight_vis_friend={
+void() gev_fight_vis_friend={
   if( enemy_range < 0.25 ){
     if( enemy_infront ){
       if( combat_roll < 0.3 ){
@@ -121,7 +120,7 @@ void() tank_sk_fight_vis_friend={
   CASE:
     target is a building...
 */
-void() tank_sk_fight_building={
+void() gev_fight_building={
   if(combat_dist < 0.5){
     if(enemy_infront){
       if(enemy_dist > 0.33){
@@ -149,7 +148,7 @@ void() tank_sk_fight_building={
   CASE:
     my node dist
 */
-void() tank_sk_fight_full={
+void() gev_fight_full={
   if(combat_dist < 0.4 ){
     if(enemy_infront){
       if( enemy_range > 0.25 ){

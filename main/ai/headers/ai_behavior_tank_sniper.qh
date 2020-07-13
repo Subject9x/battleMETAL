@@ -9,7 +9,12 @@ Overview:
   tank snipers are basically missile / tank hunter vehicles.
 */
 
+void() ai_vec_dest;
+
+void() ai_vec_dest_die;
+void( entity attacker ) ai_spg_react;
 void() ai_spg_stand;
+
 void() ai_spg_patrol;
 void() ai_spg_ptr_pause;
 void() ai_spg_ptr_travel_node;
@@ -33,13 +38,3 @@ void() spg_fight_out_radius;
 void() spg_fight_vis_friend;
 void() spg_fight_building;
 void() spg_fight_full;
-
-void() ai_vec_dest_die;
-
-void( entity attacker ) ai_spg_react1;
-
-/*
-  Panic
-  th_pain
-*/
-void(entity attacker) ai_spg_panic1;

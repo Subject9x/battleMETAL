@@ -12,55 +12,6 @@ Overview: ai unit
 */
 
 /*
-  STATE : STAND
-*/
-void() ai_mech_sk_stand={
-  ai_update_accuracy( FALSE );
-  
-  //Enter state
-  if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    cons_logAString("new state", "sk_stand"); //debug
-    //entering stand state
-    self.torsoCenter.attack_state = TR_NORM;
-    self.legs.attack_state = TR_NORM;
-    self.legs.think = bot_leg_stand1;
-    self.legs.nextthink = time + 0.1;
-    self.goalentity = world;
-    return;
-  }
-  //-----------------
-  cons_logAString("running--------", "sk_stand"); //debug
-  if( ai_valid_target(self.enemy) ){
-    self.ai_state_next = ST_COMBAT;
-    return;
-  }
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    self.ai_state_next = ST_COMBAT;
-    return;
-  }
-  
-  if( self.patrolNode != world ){
-    if( time > self.pausetime ){
-      self.ai_state_next = ST_PTR;
-      return;
-    }
-  }
-  
-  if( self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw ){
-    self.torsoCenter.attack_state = TR_NORM;
-  }
-  if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
-    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 2);
-    self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
-    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
-    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
-    self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
-    self.torsoCenter.attack_state = TR_YAW;
-    return;
-  }
-};
-
-/*
   AI SPAWN FUNCTION
 */
 void() ai_mech_skirmish={
@@ -69,7 +20,7 @@ void() ai_mech_skirmish={
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
-  self.th_react = ai_mech_sk_react1;
+  self.th_pain = ai_mech_sk_react;
   self.th_die = ai_mech_sk_die;
   
   ai_setup_patrol();
@@ -118,4 +69,51 @@ void() ai_mech_skirmish={
   //--------------------------------------------------------------------------
   self.think = ai_state_frame;
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+};
+
+/*
+  STATE : STAND
+*/
+void() ai_mech_sk_stand={
+  ai_update_accuracy( FALSE );
+  
+  //Enter state
+  if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
+    //entering stand state
+    self.torsoCenter.attack_state = TR_NORM;
+    self.legs.attack_state = TR_NORM;
+    self.legs.think = bot_leg_stand1;
+    self.legs.nextthink = time + 0.1;
+    self.goalentity = world;
+    return;
+  }
+  //-----------------
+  if( ai_valid_target(self.enemy) ){
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
+  
+  if( self.patrolNode != world ){
+    if( time > self.pausetime ){
+      self.ai_state_next = ST_PTR;
+      return;
+    }
+  }
+  
+  if( self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw ){
+    self.torsoCenter.attack_state = TR_NORM;
+  }
+  if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
+    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 2);
+    self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
+    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
+    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
+    self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
+    self.torsoCenter.attack_state = TR_YAW;
+    return;
+  }
 };

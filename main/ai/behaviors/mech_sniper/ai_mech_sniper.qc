@@ -19,190 +19,101 @@ void() ai_mech_sniper={
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
-  self.th_stand = ai_mech_sniper_enter_stand;
-  self.th_walk = ai_mech_sniper_patrol1;
-  self.th_missile = ai_mech_sniper_fight_prep;
-  self.th_pain = ai_mech_sniper_panic1;
-  self.th_react = ai_mech_sniper_react1;
+  self.th_pain = ai_mech_sniper_react;
   self.th_die = ai_mech_sniper_die;
-  self.th_rotate = ai_rotate_mech;
   self.touch = ai_touch;
   
   ai_setup_patrol();
-  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
   
   self.SendEntity = ctrl_send_mech_ai;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    //new state stuff
+  self.ai_state_last = 0;
+  
+  if(self.patrolNode){
+    self.ai_state_next = ST_PTR;
+  }
+  else{
+    self.ai_state_next = ST_STAND; //debug
+  }
+  
+  self.ai_move_last = 0;
+  self.ai_move_next = MOVE_STAND; //debug
+  self.ai_dance_card = (MOVE_CHARGE | MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT | MOVE_STRAFE_LEFT | MOVE_STRAFE_RIGHT | MOVE_BACK | MOVE_CIRCLE_LEFT | MOVE_CIRCLE_RIGHT | MOVE_STAND_FACE);
+  
+  self.dphitcontentsmask = 0;
+  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
+  
+  self.ai_unit_update = ai_ctrl_update_mechplayer;
+  
+  //ai state interface--------------------------------------------------------
+  self.ai_state_stand = ai_mech_sniper_stand;
+  self.ai_state_patrol = ai_mech_sniper_patrol;
+  self.ai_state_patrol_pause = ai_mech_sniper_ptr_pause;
+  self.ai_state_patrol_travel_node = ai_mech_sniper_ptr_travel_node;
+  self.ai_state_patrol_travel_blocked = ai_mech_sniper_ptr_travel_blocked;
+  self.ai_state_patrol_tether = ai_mech_sniper_ptr_tether;
+  self.ai_state_patrol_tether_blocked = ai_mech_sniper_ptr_tether_blocked;
+  
+  self.ai_state_combat = mech_sniper_combat;
+  self.ai_state_combat_moveStart = mech_sniper_com_moveStart;
+  self.ai_state_combat_moveExec = mech_sniper_com_moveExec;
+  self.ai_state_combat_moveEnd = mech_sniper_com_moveEnd;
+  self.ai_state_combat_blocked = mech_sniper_com_blocked;
+  
+  self.ai_state_trail_move = mech_sniper_trail_move;
+  self.ai_state_trail_move_block = mech_sniper_trail_move_block;
+  self.ai_state_trail_rollback = mech_sniper_trail_rollback;
+  self.ai_state_trail_rollback_block = mech_sniper_trail_rollback_block;
+  //--------------------------------------------------------------------------
+  
+  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 
-void() ai_mech_sniper_walk1={
-  ai_update_accuracy( FALSE ); 
-  macro_ai_update(ai_ctrl_update_mechplayer)
+/*
+  STATE : STAND
+*/
+void() ai_mech_sniper_stand={
+  ai_update_accuracy( FALSE );
   
-  macro_ai_frame(ai_mech_sniper_walk1)
-};
-
-void() ai_mech_sniper_stand1={
-  ai_update_accuracy( FALSE ); 
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  self.legs.attack_state = TR_YAW;
-  self.legs.think = bot_leg_stand1;
-  self.legs.nextthink = time + 0.1;
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_mech_sniper_fight_prep)
+  //Enter state
+  if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
+    cons_logAString("new state", "sniper_stand"); //debug
+    //entering stand state
+    self.torsoCenter.attack_state = TR_NORM;
+    self.legs.attack_state = TR_NORM;
+    self.legs.think = bot_leg_stand1;
+    self.legs.nextthink = time + 0.1;
+    self.goalentity = world;
     return;
   }
-  if( self.movetarget != world ){
+  //-----------------
+  if( ai_valid_target(self.enemy) ){
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
+  
+  if( self.patrolNode != world ){
     if( time > self.pausetime ){
-      macro_ai_frame(ai_mech_sniper_patrol1)
+      self.ai_state_next = ST_PTR;
       return;
     }
   }
   
-  if( random() < 0.5 ){
-    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 3);
+  if( self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw ){
+    self.torsoCenter.attack_state = TR_NORM;
+  }
+  if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
+    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 2);
     self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
     self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
     self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
     self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
     self.torsoCenter.attack_state = TR_YAW;
-    macro_ai_frame(ai_mech_sniper_pivot1)
     return;
   }
-  
-  macro_ai_frame(ai_mech_sniper_stand1)
-};
-
-void() ai_mech_sniper_enter_stand={
-  self.legs.ai_dir = self.legs.angles_y;
-  self.legs.attack_state = TR_NORM;
-  self.legs.think = bot_leg_stand1;
-  self.legs.nextthink = time + 0.1;
-  
-  self.torsoCenter.attack_state = TR_NORM;
-  
-  macro_ai_frame(ai_mech_sniper_stand1)
-};
-
-void() ai_mech_sniper_fight_prep={
-  local float roll;
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ai_ctrl_update_mechplayer)
-  
-  if( !ai_valid_target(self.enemy) ){
-    macro_ai_frame(self.th_stand)
-    return;
-  } 
-  
-  if( (self.flags & FL_DISARMED) ){
-    self.th_pain( world );
-    return;
-  }
-
-  
-  roll = random();
-  self.ai_action_time = self.ai_action_mod;
-  enemy_vis = ai_check_vis( self.enemy );
-  enemy_range = self.stat_trg_dist;
-  enemy_infront = ai_check_face( self.enemy, self.ai_fov, TRUE);
-  
-  if( enemy_vis == VIS_FRAC ){
-    if( enemy_range < 200 ){
-      if( enemy_infront ){
-        if( self.ai_rank > AI_RANK_REG ){
-          macro_ai_frame(ai_mech_sniper_enter_melee)
-          return;
-        }
-        if( roll < 0.35 ){
-          self.lefty = -1;
-          macro_ai_frame(ai_mech_sniper_enter_charge)
-          return;
-        }
-        macro_ai_frame(ai_mech_sniper_enter_reverse)
-        return;
-      }
-      if( self.ai_rank > AI_RANK_REG ){
-        macro_ai_frame(ai_mech_sniper_enter_reverse)
-        return;
-      }
-      macro_ai_frame(ai_mech_sniper_rotate1)
-      return;
-    }
-    if( enemy_range <= self.ai_minrange ){
-      if( enemy_infront ){
-        if( self.ai_rank > AI_RANK_REG ){
-          if( roll < 0.35 ){
-            macro_ai_frame(ai_mech_sniper_enter_reverse)
-            return;
-          }
-          if( roll < 0.67 ){
-            //melee
-            macro_ai_frame(ai_mech_sniper_enter_melee)
-            return;
-          }
-        }
-        if( roll < 0.15 ){
-          macro_ai_frame(ai_mech_sniper_snipe1)
-          return;
-        }
-        if( roll < 0.3 ){
-          macro_ai_frame(ai_mech_sniper_enter_reverse)
-          return;
-        }
-        if( roll < 0.67 ){
-          self.lefty = 1;
-          macro_ai_frame(ai_mech_sniper_enter_charge)
-          return;
-        }
-        macro_ai_frame(ai_mech_sniper_rotate1)
-        return;
-      }
-      if( self.ai_rank > AI_RANK_REG ){
-        if( roll < 0.2 ){
-          //melee
-          macro_ai_frame(ai_mech_sniper_enter_melee)
-          return;
-        }
-        macro_ai_frame(ai_mech_sniper_enter_charge)
-        return;
-      }
-      if( roll < 0.4 ){
-        macro_ai_frame(ai_mech_sniper_enter_reverse)
-        return;
-      }
-      macro_ai_frame(ai_mech_sniper_rotate1)
-      return;
-    }
-    if( enemy_range > self.ai_minrange ){
-      if( enemy_infront ){
-        if( roll < 0.35 ){
-          self.lefty = 1;
-          macro_ai_frame(ai_mech_sniper_enter_charge)
-          return;
-        }
-        if( roll < 0.5 ){
-          macro_ai_frame(ai_mech_sniper_snipe1)
-          return;
-        }
-      }
-      macro_ai_frame(ai_mech_sniper_rotate1)
-      return;
-    }
-  }
-  if( enemy_vis == VIS_FRN ){
-    if( self.ai_rank > AI_RANK_REG ){
-      //melee
-      macro_ai_frame(ai_mech_sniper_enter_melee)
-      return;
-    }
-    macro_ai_frame(ai_mech_sniper_enter_reverse)
-    return;
-  }
-  self.enemy = world;
-  //snipers don't hunt, snapshot last known yaw
-  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-  macro_ai_frame(ai_mech_sniper_turn1)
-  return;
 };

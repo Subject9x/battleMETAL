@@ -8,11 +8,13 @@ Overview:
   
   skirmish tanks are all MBT style tanks
 */
+void() ai_tank_skirmish;
 
 void() ai_tank_sk_die;
 void() ai_tank_sk_die1;
 
 void() ai_tank_sk_stand;
+void(entity attacker) ai_tank_sk_react;
 
 void() ai_tank_sk_patrol;
 void() ai_tank_sk_ptr_pause;

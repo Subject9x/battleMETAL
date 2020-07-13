@@ -92,10 +92,8 @@ void( entity t ) ai_call_for_help={
     allies = allies + 1;
   }
   
-  if( allies < self.ai_rank ){
-    if( self.th_pain ){
-      self.th_pain( t );
-    }
+  if( self.th_pain ){
+    self.th_pain( t );
   }
 }; 
 
@@ -331,8 +329,8 @@ void( entity ally, entity targ, float override ) ai_give_target={
     }
   }
   else{
-    if( self.th_react ){
-      self.th_react(ally.enemy);
+    if( self.th_pain ){
+      self.th_pain(ally.enemy);
     }
   }
   //}
@@ -487,10 +485,13 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   cons_logAVector("ai_calc_move().self.origin", self.origin);  //debug
   cons_logAFloat("self.ai_movedist", self.ai_movedist / self.ai_wishSpeed);  //debug
   cons_logAFloat("ai_calc_move().wishSpeed", wishSpeed);  //debug
-  cons_logAFloat("ai_calc_move().len", len);  //debug  tMins = self.mins;
+  cons_logAFloat("ai_calc_move().len", len);  //debug 
+  cons_logAFloat("ai_calc_move().self.ai_movedist", self.ai_movedist);  //debug 
+  cons_logAFloat("ai_calc_move().self.data_speed_forward", self.data_speed_forward);  //debug 
+  cons_logAFloat("ai_calc_move().self.data_speed_strafe", self.data_speed_strafe);  //debug 
+  cons_logAString("ai_calc_move().self.ai_move", dbg_move(self.ai_move));  //debug 
   tMaxs = self.maxs;
   tMins = self.mins;
-  
   tMins_z = tMins_z * 0.75; //adjust for slope
   
   tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg + (v_forward * (tMaxs_x / 2)), MOVE_NORMAL, self);
@@ -513,7 +514,7 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   cons_logAFloat("ai_calc_move().len calc", len);  //debug
   cons_logAFloat("ai_calc_move().travel", travel);  //debug
   
-  return travel + 0.25;  //AI runs at about time + 0.05 so adjust travel time 
+  return travel / 24;  //AI runs at about time + 0.04 so adjust travel time 
 };
 
 /*
@@ -742,4 +743,80 @@ float() ai_node_tether_check={
     return FALSE;
   }
   return TRUE;
+};
+
+
+/*
+  Traffic adjuster:
+    called in ai_patrol_state_frame() when the WALKMOVE() call is blocked.
+    This finds the trace along the AI's current facing, and freezes itself
+    IF there's a friendly unit in front of it.
+    
+    returns TRUE IF traffic was handled,
+    return FALSE if trace_ent wasn't a unit.
+*/
+float() ai_patrol_traffic_adjust={
+  local vector tMins;
+  local vector tMaxs;
+  local entity oldthat;
+  local float counter;
+  local vector newOrg;
+  
+  tMins = self.mins * 0.75;
+  tMaxs = self.maxs * 0.75;
+  makevectors(self.angles);
+  tracebox(self.origin, tMins, tMaxs, self.origin + (v_forward * (self.maxs_x * 2)), MOVE_NORMAL, self);
+  
+  if( trace_ent.faction == self.faction ){
+    if( trace_ent.data_type != DATA_BLD ){
+      oldthat = self;
+      self = trace_ent;
+      counter = ai_check_targ_infront(oldthat, 0.9, FALSE);
+      self = oldthat;
+      //blocked unit is patrolling.
+      if( (trace_ent.ai_state == ST_PTR_TRAVEL_NODE) || (trace_ent.ai_state == ST_PTR) ){
+        if( ai_check_targ_infront(trace_ent, 0.9, FALSE) && !counter ){
+          self.ai_state_next = ST_PTR_PAUSE;
+          self.pausetime = 3;
+        }
+        else{
+          newOrg = self.origin;
+          setorigin(self, trace_ent.origin);
+          setorigin(trace_ent, newOrg);
+          trace_ent.ai_state_next = ST_PTR_PAUSE;
+          trace_ent.pausetime = 3;
+          trace_ent.ai_state_next = ST_PTR;
+        }
+      }
+      else{
+        //combat?
+        self.ai_move_next = MOVE_STAND_FACE;
+        self.ai_movewait = 5;
+        self.ai_state_next = ST_COM_MOVE_START;
+      }
+      return TRUE;
+    }
+    return FALSE;
+  }
+  else{
+    if( trace_ent.data_type != DATA_BLD ){
+      //combat?
+      self.ai_move_next = MOVE_STAND_FACE;
+      self.ai_movewait = 5;
+      self.ai_state_next = ST_COM_MOVE_START;
+     
+      oldthat = self;
+      self = trace_ent;
+      counter = ai_check_targ_infront(oldthat, 0.85, FALSE);
+      self = oldthat;
+      if( counter ){
+        trace_ent.ai_move_next = MOVE_BACK;
+        trace_ent.ai_movedist = 10;
+        trace_ent.ai_state_next = ST_COM_MOVE_START;
+      }
+      return TRUE;
+    }
+    return FALSE;
+  }
+  return FALSE;
 };

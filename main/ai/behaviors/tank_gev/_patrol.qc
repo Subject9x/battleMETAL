@@ -1,18 +1,17 @@
 /*
 battleMETAL 
 Author: Peter Roohr
-Date: 09/23/2018
-rebuild: 07/01/2020
-Overview: ai unit
-  Mech - Skirmisher
-  Behavior - Patrol
-    AI must be given a valid .target that links to an ai_node entity
+Date: 07/07/2020
+Overview: 
+  Skirmish tanks are the basic behavior of tanks in the game,
+  _patrol.qc contains the state function bodies for the state machine.
+  
 */
 
 /*
   STATE : PATROL START
 */
-void() ai_mech_sk_patrol={
+void() ai_gev_patrol={
   ai_update_accuracy( TRUE );
   if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
     cons_logAFloat("ENTER[ST_PTR]",  self.ai_state_next); //debug
@@ -21,33 +20,25 @@ void() ai_mech_sk_patrol={
     self.goalentity = self.patrolNode;
     self.tetherStatus = TETHER_NODE;
     
-    self.legs.attack_state = TR_GOAL;
-    self.legs.think = bot_leg_walk1;
-    self.legs.nextthink = time + 0.1;
-    
-    self.torsoCenter.attack_state = TR_GOAL;
+    if( self.torsoCenter ){
+      self.torsoCenter.attack_state = TR_GOAL;
+    }
     return;
   }
 };
 /*
   STATE : PATROL PAUSE
 */
-void() ai_mech_sk_ptr_pause={
+void() ai_gev_ptr_pause={
   ai_update_accuracy( FALSE );
   
   //entered pause state
   if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
      cons_logAFloat("ENTER[ST_PTR_PAUSE]",  self.ai_state_next); //debug
-    self.legs.attack_state = TR_YAW;
-    self.legs.angles_y = self.angles_y;
-    self.legs.think = bot_leg_stand1;
-    self.legs.nextthink = time + 0.1;
     self.pausetime = time + self.pausetime;
     return;
   }
   //--------------------------
-  
-  
   if( time > self.pausetime ){
     if( self.patrolNode != world ){
       self.ai_state_next = ST_PTR;
@@ -60,7 +51,7 @@ void() ai_mech_sk_ptr_pause={
 /*
   STATE : PATROL TRAVEL TO NODE
 */
-void() ai_mech_sk_ptr_travel_node={
+void() ai_gev_ptr_travel_node={
   ai_update_accuracy( TRUE );
 
   ai_patrol_state_frame();
@@ -84,7 +75,7 @@ void() ai_mech_sk_ptr_travel_node={
 /*
   STATE : PATROL TRAVEL TO NODE BLOCKED
 */
-void() ai_mech_sk_ptr_travel_blocked={
+void() ai_gev_ptr_travel_blocked={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
     cons_logAFloat("ENTER[ST_PTR_TRAVEL_NODEBLOCK]",  self.ai_state_next); //debug
     if( ai_blocked_teleport() ){
@@ -105,7 +96,7 @@ void() ai_mech_sk_ptr_travel_blocked={
 /*
   STATE : PATROL USE TETHER
 */
-void() ai_mech_sk_ptr_tether={
+void() ai_gev_ptr_tether={
   //if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
      cons_logAFloat("ENTER[ST_PTR_TETHER]",  self.ai_state_next); //debug
     return;
@@ -115,7 +106,7 @@ void() ai_mech_sk_ptr_tether={
 /*
   STATE : PATROL USE TETHER BLOCKED
 */
-void() ai_mech_sk_ptr_tether_blocked={
+void() ai_gev_ptr_tether_blocked={
   //if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
      cons_logAFloat("ENTER[ST_PTR_TETHER_BLOCK]",  self.ai_state_next); //debug
     return;

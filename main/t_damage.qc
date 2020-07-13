@@ -78,9 +78,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( (trg.flags & FL_MONSTER) ){
     notTarg = self;
     self = dmgTrg;
-    if( self.th_react ){  
+    if( self.th_pain ){  
       if( time > self.ai_react_buffer ){
-        self.th_react( attacker );
+        self.th_pain( attacker );
       }
     }
     if( self.ai_rank > AI_RANK_REG ){
@@ -231,9 +231,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( (trg.flags & FL_MONSTER) ){
     notTarg = self;
     self = dmgTrg;
-    if( self.th_react ){  
+    if( self.th_pain ){  
       if( time > self.ai_react_buffer ){
-        self.th_react( attacker );
+        self.th_pain( attacker );
       }
     }
     if( self.ai_rank > AI_RANK_REG ){

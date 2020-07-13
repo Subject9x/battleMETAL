@@ -21,7 +21,7 @@ void() ai_tank_skirmish={
   }
   ai_voice_ini( TRUE );
   
-  //self.th_react = ai_tank_sk_react1;
+  self.th_pain = ai_tank_sk_react;
   self.th_die = ai_tank_sk_die;
   self.touch = ai_touch;
   

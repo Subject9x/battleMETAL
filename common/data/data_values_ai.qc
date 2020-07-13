@@ -17,10 +17,10 @@ float AI_ADJUST_ENERGY = 0.85;
 float AI_ADJUST_SHIELD = 0.85;
 
 //AI TH_REACT cooldown
-float AI_REACT_ROK = 4;
-float AI_REACT_REG = 3;
-float AI_REACT_VET = 2;
-float AI_REACT_ACE = 1;
+float AI_REACT_ROK = 2;
+float AI_REACT_REG = 1.5;
+float AI_REACT_VET = 1;
+float AI_REACT_ACE = 0.5;
 
 //AI movement speed ratio 
 float AI_WALK_SPD = 0.075;

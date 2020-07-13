@@ -19,9 +19,6 @@ void() ai_spg_patrol={
     
     return;
   }
-  else{
-    cons_logAString("running--------", "sk_patrol"); //debug
-  }
 };
 
 void() ai_spg_ptr_pause={
@@ -37,12 +34,9 @@ void() ai_spg_ptr_pause={
   if( time > self.pausetime ){
     if( self.patrolNode != world ){
       self.ai_state_next = ST_PTR;
-      cons_logAFloat("time > self.pausetime -> ST_PTR | self.patrolNode != world -> ST_PTR",  self.ai_state_next); //debug
     }
     else{
       self.ai_state_next = ST_STAND;
-      cons_logAFloat("ENTER[ST_STAND]",  self.ai_state_next); //debug
-      cons_logAFloat("time > self.pausetime -> ST_PTR ELSE ST_STAND",  self.ai_state_next); //debug
     }
   }
 };

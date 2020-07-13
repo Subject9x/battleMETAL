@@ -15,7 +15,7 @@ float ST_COM_REACT            = 12;
   STATE : COMBAT START
     used to filter out what the AI should do before entering combat sub-system
 */
-void() mech_sk_combat={
+void() mech_sniper_combat={
   local entity prox;
   
   //ENTER STATE------------------------------------------------------------------
@@ -52,6 +52,7 @@ void() mech_sk_combat={
     enemy_range = ai_check_node_radius_targdist();
     enemy_dist = ai_check_node_radius(self.enemy);
     combat_dist = ai_check_node_radius(self);
+    
     //out of bounds, do move override
     if(combat_dist > 1.0){
       //run
@@ -62,7 +63,6 @@ void() mech_sk_combat={
         }
       }
       self.ai_move_next = MOVE_NODE_RADIUS;
-      cons_logAString("Line 72 -mech_sk_combat:NEXT MOVE","MOVE_NODE_RADIUS"); //debug
       return;
     }
     
@@ -336,7 +336,7 @@ void() mech_sk_combat={
 /*
   STATE : COMBAT FIGHTING
 */
-void() mech_sk_com_moveStart={
+void() mech_sniper_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     cons_logAFloat("ENTER[ST_COM_MOVE_START]",  self.ai_state_next); //debug
@@ -349,7 +349,7 @@ void() mech_sk_com_moveStart={
 /*
   STATE : COMBAT MANEUVER
 */
-void() mech_sk_com_moveExec={
+void() mech_sniper_com_moveExec={
   local float nodeMove;
   local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
@@ -357,7 +357,7 @@ void() mech_sk_com_moveExec={
     cons_logAFloat("ENTER[ST_COM_MOVE_EXEC]",  self.ai_state_next); //debug
     return;
   }
-  //------------------------------------------------------------------
+  //-----------------------------------------------------------------
   if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
     nodeMove = ai_check_node_radius(self);
     if(nodeMove > 0.99){
@@ -381,7 +381,7 @@ void() mech_sk_com_moveExec={
 /*
   STATE : COMBAT MANEUVER COMPLETED
 */
-void() mech_sk_com_moveEnd={
+void() mech_sniper_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
     cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
@@ -395,7 +395,7 @@ void() mech_sk_com_moveEnd={
 /*
   STATE : COMBAT MANEUVER BLOCKED
 */
-void() mech_sk_com_blocked={
+void() mech_sniper_com_blocked={
   local entity blockNode;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){

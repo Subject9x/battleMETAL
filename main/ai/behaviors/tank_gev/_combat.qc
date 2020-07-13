@@ -1,13 +1,18 @@
 /*
 battleMETAL 
 Author: Peter Roohr
-Date: 07/06/2020
+Date: 07/07/2020
 Overview: 
-  tank snipers are basically missile / tank hunter vehicles.
-  the _combat file contains the state code for ST_COMBAT states.
+  gev tanks are special hovercraft, usually fast and annoying
+  _combat.qc contains the state function bodies for the state machine.
+  
 */
 
-void() spg_combat={
+/*
+  STATE : COMBAT START
+    used to filter out what the AI should do before entering combat sub-system
+*/
+void() gev_combat={
   local entity prox;
   
   //ENTER STATE------------------------------------------------------------------
@@ -28,6 +33,7 @@ void() spg_combat={
       return;
     }
     
+    
     if( (self.flags & FL_DISARMED) ){
       //TODO pain / flee
       return;
@@ -46,6 +52,12 @@ void() spg_combat={
     //out of bounds, do move override
     if(combat_dist > 1.0){
       //run
+      prox = ai_node_to_target(self);
+      if(prox != self.patrolNode){
+        if( vlen(prox.origin - self.origin) <= prox.ai_view ){
+          self.patrolNode = prox;
+        }
+      }
       self.ai_move_next = MOVE_NODE_RADIUS;
       return;
     }
@@ -55,30 +67,30 @@ void() spg_combat={
                           //frame...
     //AI is in bounds, but target is out of bounds
     if( enemy_dist > 1.0 && combat_dist <= 1.0 ){
-      spg_fight_target_fire();
+      gev_fight_target_fire();
       return;
     }
     
     if( enemy_dist > 1.0 && combat_dist > 1.0 ){
-      spg_fight_out_radius();
+      gev_fight_out_radius();
       return;
     }
     
     if( enemy_vis == VIS_FRN ){
-      spg_fight_vis_friend();
+      gev_fight_vis_friend();
       return;
     }
     
     //target == building - those things don't really move or fight back...
     if(self.enemy.data_type == DATA_BLD){
-      spg_fight_building();
+      gev_fight_building();
       return;
     }
     //target < 1.0
     //combat_dist < 1.0
     //get fighting
     self.ai_move_next = MOVE_NODE_RADIUS;
-    spg_fight_full();
+    gev_fight_full();
     return;
   //---------------------------------------------------------------------------
   }
@@ -86,29 +98,21 @@ void() spg_combat={
 
 /*
   STATE : COMBAT FIGHTING
+    marks the beginning of the AI doing a combat maneuver.
 */
-void() spg_com_moveStart={
+void() gev_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    cons_logAString("new state", "spg_com_moveStart"); //debug
-    
-    if( self.ai_move_next == MOVE_PATROLNODE ){
-      //called ai_node_to_target() before getting to this state
-    }
-    if( (self.ai_blockflag & self.ai_move_next) ){
-      self.ai_move_next = MOVE_STAND;
-    }
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
   //------------------------------------------------------------------
-
 };
 
 /*
   STATE : COMBAT MANEUVER
 */
-void() spg_com_moveExec={
+void() gev_com_moveExec={
   local float nodeMove;
   local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
@@ -140,7 +144,7 @@ void() spg_com_moveExec={
 /*
   STATE : COMBAT MANEUVER COMPLETED
 */
-void() spg_com_moveEnd={
+void() gev_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
     cons_logAFloat("ENTER[ST_COM_MOVE_END]",  self.ai_state_next); //debug
@@ -161,7 +165,8 @@ void() spg_com_moveEnd={
 /*
   STATE : COMBAT MANEUVER BLOCKED
 */
-void() spg_com_blocked={
+void() gev_com_blocked={
+  local entity blockNode;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
     cons_logAFloat("ENTER[ST_COM_MOVE_BLOCK]",  self.ai_state_next); //debug
@@ -172,5 +177,3 @@ void() spg_com_blocked={
   }
  //------------------------------------------------------------------
 };
-
-
