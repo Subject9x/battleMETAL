@@ -29,7 +29,7 @@ void() gev_fight_target_fire={
     if(enemy_infront){
       if(combat_roll > 0.6 || self.ai_rank > AI_RANK_REG){
         self.ai_move_next = MOVE_BACK;
-        self.ai_movedist = 12;
+        self.ai_movedist = 6;
       }
       else{
         self.ai_move_next = MOVE_STAND_FACE;
@@ -39,7 +39,7 @@ void() gev_fight_target_fire={
     }
     else{
       if( self.ai_rank > AI_RANK_REG ){
-        self.ai_movedist = 10;
+        self.ai_movedist = 5;
         if( combat_roll > 0.5 ){
           self.ai_move_next = MOVE_CHARGE_LEFT;
         }
@@ -49,13 +49,13 @@ void() gev_fight_target_fire={
         return;
       }
       self.ai_move_next = MOVE_CHARGE;
-      self.ai_movedist = 15;
+      self.ai_movedist = 7;
       return;
     }
   }
   else{
     if(combat_dist <= 0.33){
-      self.ai_movedist = 15;
+      self.ai_movedist = 7;
       if( combat_roll > 0.5 ){
         self.ai_move_next = MOVE_CHARGE_LEFT;
       }
@@ -64,7 +64,7 @@ void() gev_fight_target_fire={
       }
       return;
     }
-    self.ai_movedist = 8;
+    self.ai_movedist = 3;
     if( combat_roll > 0.5 ){
       self.ai_move_next = MOVE_BACK_LEFT;
       return;
@@ -74,7 +74,7 @@ void() gev_fight_target_fire={
       return;
     }
     self.ai_move_next = MOVE_CHARGE;
-    self.ai_movewait = 15;
+    self.ai_movewait = 5;
     return;
   }
 };
@@ -104,15 +104,37 @@ void() gev_fight_out_radius={
 void() gev_fight_vis_friend={
   if( enemy_range < 0.25 ){
     if( enemy_infront ){
+      self.ai_movedist = 2 + random() * 10;
       if( combat_roll < 0.3 ){
+        self.ai_move_next = MOVE_STRAFE_LEFT;
         return;
       }
       if( combat_roll < 0.7 ){
+        self.ai_move_next = MOVE_STRAFE_RIGHT;
         return;
       }
+      self.ai_move_next = MOVE_BACK_LEFT;
       return;
     }
   }
+  self.ai_movedist = 2 + random() * 5;
+  if(enemy_infront){
+    if( combat_roll < 0.3 ){
+      self.ai_move_next = MOVE_CIRCLE_LEFT;
+      return;
+    }
+    if( combat_roll < 0.7 ){
+      self.ai_move_next = MOVE_CIRCLE_RIGHT;
+      return;
+    }
+    self.ai_move_next = MOVE_BACK_RIGHT;
+    return;
+  }
+  if( combat_roll < 0.6 ){
+    self.ai_move_next = MOVE_BACK;
+    return;
+  }
+  self.ai_move_next = MOVE_BACK_LEFT;
 };
 
 
@@ -149,161 +171,79 @@ void() gev_fight_building={
     my node dist
 */
 void() gev_fight_full={
-  if(combat_dist < 0.4 ){
-    if(enemy_infront){
-      if( enemy_range > 0.25 ){
-        self.ai_movedist = 20 * enemy_range;
-      }
-      else{
-        self.ai_movedist = 5;
-      }
-      if( combat_roll < 0.25 ){
-        self.ai_move_next = MOVE_CHARGE_LEFT;
-        return;
-      }
-      if( combat_roll < 0.5 ){
-        self.ai_move_next = MOVE_CHARGE;
-        return;
-      }
-      if( combat_roll < 0.75 ){
+  if(combat_dist < 0.6){
+    if(enemy_range<0.6){
+      if(enemy_infront){
+        self.ai_movedist = 2 + (random() * self.ai_rank);
+        if(combat_roll<0.4){
+          self.ai_move_next = MOVE_CHARGE;
+          return;
+        }
+        if(combat_roll<0.7){
+          self.ai_move_next = MOVE_CHARGE_LEFT;
+          return;
+        }
         self.ai_move_next = MOVE_CHARGE_RIGHT;
         return;
       }
-      self.ai_move_next = MOVE_BACK;
+      self.ai_movedist = 5 + (random() * self.ai_rank);
+      if(combat_roll<0.4){
+        self.ai_move_next = MOVE_STRAFE_LEFT;
+        return;
+      }
+      if(combat_roll<0.7){
+        self.ai_move_next = MOVE_CIRCLE_RIGHT;
+        return;
+      }
+      self.ai_move_next = MOVE_CIRCLE_LEFT;
       return;
     }
-    self.ai_movedist = 15;
-    if( combat_roll < 0.25 ){
+    self.ai_movedist = 8 + (random() * self.ai_rank);
+    if(enemy_infront){
+      if(combat_roll<0.6){
+        self.ai_move_next = MOVE_STRAFE_RIGHT;
+        return;
+      }
+      self.ai_move_next = MOVE_STRAFE_LEFT;
+      return;
+    }
+    if(combat_roll<0.6){
+      self.ai_move_next = MOVE_BACK_RIGHT;
+      return;
+    }
+    self.ai_move_next = MOVE_BACK_LEFT;
+    return;
+  }
+  if(enemy_range<0.6){
+    self.ai_movedist = 0.5 + (random() * self.ai_rank);
+    if(enemy_infront){
+      if(combat_roll<0.4){
+        self.ai_move_next = MOVE_CIRCLE_LEFT;
+        return;
+      }
+      if(combat_roll<0.7){
+        self.ai_move_next = MOVE_CIRCLE_RIGHT;
+        return;
+      }
+      self.ai_move_next = MOVE_CHARGE_RIGHT;
+      return;
+    }
+    if(combat_roll<0.6){
       self.ai_move_next = MOVE_CHARGE_LEFT;
       return;
     }
-    if( combat_roll < 0.5 ){
-      self.ai_move_next = MOVE_BACK;
-      return;
-    }
-    if( combat_roll < 0.75 ){
-      self.ai_move_next = MOVE_CHARGE_RIGHT;
-      return;
-    }
-    self.ai_movewait = self.ai_rank + 2;
-    self.ai_move_next = MOVE_STAND_FACE;
+    self.ai_move_next = MOVE_CHARGE_RIGHT;
     return;
   }
-  if(combat_dist < 0.7 ){
-    if(enemy_infront){
-      if( enemy_range < 0.5 ){
-        self.ai_movedist = 10 * combat_dist;
-        if( combat_roll < 0.25 ){
-          self.ai_move_next = MOVE_CHARGE_LEFT;
-          return;
-        }
-        if( combat_roll < 0.5 ){
-          self.ai_move_next = MOVE_CHARGE_RIGHT;
-          return;
-        }
-        if( combat_roll < 0.75 ){
-          self.ai_move_next = MOVE_BACK_LEFT;
-          return;
-        }
-        self.ai_move_next = MOVE_BACK_RIGHT;
-        return;
-      }
-      self.ai_movedist = 20 * combat_dist;
-      if( combat_roll < 0.6 ){
-        self.ai_move_next = MOVE_CHARGE_LEFT;
-        return;
-      }
-      self.ai_move_next = MOVE_CHARGE_RIGHT;
+  if(enemy_infront){
+    self.ai_movedist = self.ai_rank;
+    if(combat_roll<0.6){
+      self.ai_move_next = MOVE_CIRCLE_LEFT;
       return;
     }
-    self.ai_movewait = combat_dist * 10 + self.ai_rank;
-    self.ai_move_next = MOVE_STAND_FACE;
+    self.ai_move_next = MOVE_CIRCLE_RIGHT;
     return;
   }
-  if(combat_dist < 1.0 ){
-    if(enemy_infront){
-      if(enemy_range > 0.2){
-        local float nodeYaw;
-        nodeYaw = vectoyaw(self.patrolNode.origin - self.origin);
-        self.ai_movedist = 12;
-        if( nodeYaw > self.angles_y ){
-          self.ai_move_next = MOVE_BACK_LEFT;
-          return;
-        }
-        self.ai_move_next = MOVE_BACK_RIGHT;
-        return;
-      }
-      if(enemy_range > 0.5){
-        self.ai_movedist = 3;
-        if( combat_roll < 0.4 ){
-          self.ai_move_next = MOVE_CHARGE_LEFT;
-          return;
-        }
-        if( combat_roll < 0.7 ){
-          self.ai_move_next = MOVE_CHARGE_RIGHT;
-          return;
-        }
-        self.ai_move_next = MOVE_CHARGE;
-        return;
-      }
-      if(enemy_range > 1.0){
-        if( combat_roll < 0.4 ){
-          self.ai_movedist = 10;
-          self.ai_move_next = MOVE_CHARGE_LEFT;
-          return;
-        }
-        if( combat_roll < 0.7 ){
-          self.ai_movedist = 10;
-          self.ai_move_next = MOVE_CHARGE_RIGHT;
-          return;
-        }
-        self.ai_movewait = self.ai_rank * 2;
-        self.ai_move_next = MOVE_STAND_FACE;
-        return;
-      }
-      self.ai_movewait = self.ai_rank * 1.15;
-      self.ai_move_next = MOVE_STAND_FACE;
-      return;
-    }
-    //enemy's not in front
-    if(enemy_range < 0.4){
-      self.ai_movedist = 4;
-      if( combat_roll > 0.25 ){
-        nodeYaw = vectoyaw(self.patrolNode.origin - self.origin);
-        self.ai_movedist = 10;
-        if( self.angles_y <= nodeYaw ){
-          self.ai_move_next = MOVE_BACK_LEFT;
-          return;
-        }
-        self.ai_move_next = MOVE_BACK_RIGHT;
-        return;
-      }
-      self.ai_movewait = self.ai_rank * 2;
-      self.ai_move_next = MOVE_STAND_FACE;
-      return;
-    }
-    if(enemy_range < 0.7){
-      self.ai_movewait = 15;
-      if( combat_roll < 0.25 ){
-        self.ai_move_next = MOVE_CHARGE_LEFT;
-        return;
-      }
-      if( combat_roll < 0.5 ){
-        self.ai_move_next = MOVE_CHARGE;
-        return;
-      }
-      if( combat_roll < 0.75 ){
-        self.ai_move_next = MOVE_CHARGE_RIGHT;
-        return;
-      }
-      self.ai_movedist = 15;
-      self.ai_move_next = MOVE_BACK;
-      return;
-    }
-    if(enemy_range > 1.0){
-      self.ai_movewait = 20;
-      self.ai_move_next = MOVE_CHARGE;
-      return;
-    }
-  }
+  self.ai_move_next = MOVE_SNAPSHOT;
+  self.ai_movewait = self.ai_rank * 1.15;
 };

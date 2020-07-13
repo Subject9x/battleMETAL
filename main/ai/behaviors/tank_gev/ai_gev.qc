@@ -121,7 +121,7 @@ void() ai_gev_stand={
 void( entity attacker ) ai_gev_react={
   local float enemyvis;
   
-  if( !(attacker.flags & FL_MONSTER) || !(attacker.flags & FL_CLIENT)){
+  if( !(attacker.flags & FL_MONSTER) && !(attacker.flags & FL_CLIENT)){
     return;
   }
   

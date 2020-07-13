@@ -749,7 +749,7 @@ float() ai_patrol_traffic_adjust={
   tracebox(self.origin, tMins, tMaxs, self.origin + (v_forward * (self.maxs_x * 2)), MOVE_NORMAL, self);
   
   if( trace_ent.faction == self.faction ){
-    if( trace_ent.data_type != DATA_BLD ){
+    if( trace_ent.data_type != DATA_BLD && trace_ent.movetype != MOVETYPE_FLYMISSILE ){
       oldthat = self;
       self = trace_ent;
       counter = ai_check_targ_infront(oldthat, 0.9, FALSE);
@@ -759,14 +759,6 @@ float() ai_patrol_traffic_adjust={
         if( ai_check_targ_infront(trace_ent, 0.9, FALSE) && !counter ){
           self.ai_state_next = ST_PTR_PAUSE;
           self.pausetime = 3;
-        }
-        else{
-          newOrg = self.origin;
-          setorigin(self, trace_ent.origin);
-          setorigin(trace_ent, newOrg);
-          trace_ent.ai_state_next = ST_PTR_PAUSE;
-          trace_ent.pausetime = 3;
-          trace_ent.ai_state_next = ST_PTR;
         }
       }
       else{
@@ -780,7 +772,7 @@ float() ai_patrol_traffic_adjust={
     return FALSE;
   }
   else{
-    if( trace_ent.data_type != DATA_BLD ){
+    if( trace_ent.data_type != DATA_BLD && trace_ent.movetype != MOVETYPE_FLYMISSILE ){
       //combat?
       self.ai_move_next = MOVE_STAND_FACE;
       self.ai_movewait = 5;

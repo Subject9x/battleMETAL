@@ -106,51 +106,8 @@ void() spg_fight_vis_friend={
     target is a building...
 */
 void() spg_fight_building={
-  if(enemy_range < 0.4){
-    self.ai_movewait = 5;
-    if(enemy_infront){
-      self.ai_movewait = 1;
-    }
-    self.ai_move_next = MOVE_STAND_FACE;
-    return;
-  }
-  if(enemy_range < 0.7){
-    if(enemy_infront){
-      if(self.ai_move_last == MOVE_STAND_FACE ){
-        self.ai_movedist = 5;
-        if(combat_roll > 0.5){
-          self.ai_move_next = MOVE_CHARGE_LEFT;
-          return; 
-        }
-        self.ai_move_next = MOVE_CHARGE_LEFT;
-        return;
-      }
-      self.ai_movewait = 5;
-      self.ai_move_next = MOVE_STAND_FACE;
-      return;
-    }
-    self.ai_movewait = 7;
-    self.ai_move_next = MOVE_STAND_FACE;
-    return;
-  }
-  //enemy_range <=1.0
-  if(enemy_infront){
-    if(self.ai_move_last == MOVE_STAND_FACE ){
-      self.ai_movedist = 7;
-      if(combat_roll > 0.5){
-        self.ai_move_next = MOVE_CHARGE_LEFT;
-        return; 
-      }
-      self.ai_move_next = MOVE_CHARGE_LEFT;
-      return;
-    }
-    self.ai_movewait = 5;
-    self.ai_move_next = MOVE_STAND_FACE;
-    return;
-  }
-  self.ai_movewait = 7;
-  self.ai_move_next = MOVE_STAND_FACE;
-  return;
+  self.ai_move_next = MOVE_SNAPSHOT;
+  self.ai_movewait = 2;
 };
 
 /*
@@ -158,72 +115,54 @@ void() spg_fight_building={
     my node dist is in the green
 */
 void() spg_fight_full={
-  if(combat_dist < 0.4){
-    if(enemy_infront){
-      if(enemy_range<0.4){
-      
+  if(combat_dist < 0.6 ){
+    if(enemy_range < 0.6){
+      if(enemy_infront){
+        self.ai_movedist = 3;
+        if(combat_roll<0.6){
+          self.ai_move_next = MOVE_BACK_RIGHT;
+          return;
+        }
+        self.ai_move_next = MOVE_BACK_LEFT;
+        return;
       }
-      if(enemy_range<0.7){
-      
+      self.ai_movedist = 6;
+      if(combat_roll<0.6){
+        self.ai_move_next = MOVE_CHARGE_RIGHT;
+        return;
       }
-      //enemy_range<=1.0
-      
+      self.ai_move_next = MOVE_CHARGE_LEFT;
       return;
     }
-    if(enemy_range<0.4){
-    
-    }
-    if(enemy_range<0.7){
-    
-    }
-    //enemy_range<=1.0
-    
-    return;
-  }
-  if(combat_dist < 0.7){
     if(enemy_infront){
-      if(enemy_range<0.4){
-      
-      }
-      if(enemy_range<0.7){
-      
-      }
-      //enemy_range<=1.0
-      
-    
+      self.ai_movewait = 2;
+      self.ai_move_next = MOVE_SNAPSHOT;
       return;
     }
-    
-    if(enemy_range<0.4){
-    
+    self.ai_movedist = 10;
+    if(combat_roll<0.6){
+      self.ai_move_next = MOVE_CHARGE_RIGHT;
+      return;
     }
-    if(enemy_range<0.7){
-    
-    }
-    //enemy_range<=1.0
-      
+    self.ai_move_next = MOVE_CHARGE_LEFT;
     return;
   }
-  //long range 
-  if(enemy_infront){
-    if(enemy_range<0.4){
-    
+  //
+  if(enemy_range < 0.6){
+    if(enemy_infront){
+      self.ai_movedist = 3;
+      if(combat_roll<0.6){
+        self.ai_move_next = MOVE_CHARGE_RIGHT;
+        return;
+      }
+      self.ai_move_next = MOVE_CHARGE_LEFT;
+      return;
     }
-    if(enemy_range<0.7){
-    
-    }
-    //enemy_range<=1.0
-    
+    self.ai_movewait = 4;
+    self.ai_move_next = MOVE_SNAPSHOT;
     return;
   }
-
-  if(enemy_range<0.4){
-  
-  }
-  if(enemy_range<0.7){
-  
-  }
-  //enemy_range<=1.0
-  
+  self.ai_movewait = 8;
+  self.ai_move_next = MOVE_SNAPSHOT;
   return;
 };

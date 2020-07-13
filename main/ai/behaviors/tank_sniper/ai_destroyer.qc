@@ -114,7 +114,7 @@ void() ai_spg_stand={
 void( entity attacker ) ai_spg_react={
   local float enemyvis;
   
-  if( !(attacker.flags & FL_MONSTER) || !(attacker.flags & FL_CLIENT)){
+  if( !(attacker.flags & FL_MONSTER) && !(attacker.flags & FL_CLIENT)){
     return;
   }
   
