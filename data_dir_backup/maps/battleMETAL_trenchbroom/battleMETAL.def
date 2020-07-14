@@ -843,8 +843,14 @@ Compiler-only entity that specifies the origin of a skybox (a wholly contained, 
 //===========================================================
 
 /*QUAKED ai_node (0.988 0.976 0.267) (-10 -10 -18) (10 10 18) - REMOVE_ONTOUCH START_INACTIVE INACTIVE_ONTOUCH
-This is used to setup patrol and move paths for AI.
-For best results, place manually as close to ground as possible!
+
+  This is used to setup patrol and move paths for AI.
+  For best results, place manually as close to ground as possible!
+  Make sure EACH node can see the PREV and NEXT nodes in a chain.
+ 
+!REQUIRED!
+.data_idx = <float> Set this to '1' to determine node chain
+  
 -------- KEYS -------- 
 .faction = <float> [faction number]
 .targetname = <string> used by AI to find node

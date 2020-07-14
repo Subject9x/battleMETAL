@@ -21,6 +21,11 @@ void() ai_mech_sk_ptr_travel_blocked;
 void() ai_mech_sk_ptr_tether;
 void() ai_mech_sk_ptr_tether_blocked;
 
+void() mech_sk_tether;
+void() mech_sk_thr_pause;
+void() mech_sk_thr_travel;
+void() mech_sk_thr_travel_block;
+
 void() mech_sk_combat;
 void() mech_sk_com_moveStart;
 void() mech_sk_com_moveExec;
@@ -40,4 +45,3 @@ void(float dice) mech_sk_fight_mid_rear;
 
 void(float dice) mech_sk_fight_far_front;
 void(float dice) mech_sk_fight_far_rear;
-

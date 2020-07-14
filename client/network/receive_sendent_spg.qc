@@ -89,11 +89,13 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       data_sync_new_vehicle(self.data_idx);
       self.deadflag = DEAD_NO;
       sendent_setup_weapons();
-      setmodel(self, self.model);
-      setsize(self, self.mins, self.maxs);
       sendent_ini_interpolate();
-      self.interpolate_entity = interpolate_tank;
     }
+    setmodel(self, self.model);
+    setsize(self, self.mins, self.maxs);
+    self.interpolate_entity = interpolate_tank;
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_spg;
   }
   
   self.shield = ReadShort();
@@ -125,4 +127,13 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
+};
+
+float() predraw_spg={
+  if(self.deadflag == DEAD_NO){
+    if(self.interpolate_entity){
+      self.interpolate_entity();
+    }
+  }
+  return FALSE;
 };

@@ -23,21 +23,10 @@ void() ai_mech_skirmish={
   self.th_pain = ai_mech_sk_react;
   self.th_die = ai_mech_sk_die;
   
-  ai_setup_patrol();
-  
   self.SendEntity = ctrl_send_mech_ai;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   
   //new state stuff
   self.ai_state_last = 0;
-  
-  if(self.patrolNode){
-    self.ai_state_next = ST_PTR;
-  }
-  else{
-    self.ai_state_next = ST_STAND; //debug
-  }
-  
   self.ai_move_last = 0;
   self.ai_move_next = MOVE_STAND; //debug
   self.ai_dance_card = (MOVE_CHARGE | MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT | MOVE_STRAFE_LEFT | MOVE_STRAFE_RIGHT | MOVE_BACK | MOVE_CIRCLE_LEFT | MOVE_CIRCLE_RIGHT | MOVE_STAND_FACE);
@@ -56,6 +45,11 @@ void() ai_mech_skirmish={
   self.ai_state_patrol_tether = ai_mech_sk_ptr_tether;
   self.ai_state_patrol_tether_blocked = ai_mech_sk_ptr_tether_blocked;
   
+  self.ai_state_tether  = mech_sk_tether;
+  self.ai_state_tether_pause  = mech_sk_thr_pause;
+  self.ai_state_tether_travel  = mech_sk_thr_travel;
+  self.ai_state_tether_travel_block  = mech_sk_thr_travel_block;
+  
   self.ai_state_combat = mech_sk_combat;
   self.ai_state_combat_moveStart = mech_sk_com_moveStart;
   self.ai_state_combat_moveExec = mech_sk_com_moveExec;
@@ -67,8 +61,8 @@ void() ai_mech_skirmish={
   self.ai_state_trail_rollback = mech_sk_trail_rollback;
   self.ai_state_trail_rollback_block = mech_sk_trail_rollback_block;
   //--------------------------------------------------------------------------
-  self.think = ai_state_frame;
-  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+  self.think = ai_setup_patrol;
+  self.nextthink = time + 1; //give server a chance to stand up all ai_node types.
 };
 
 /*

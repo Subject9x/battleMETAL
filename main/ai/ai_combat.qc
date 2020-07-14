@@ -79,7 +79,7 @@ float(entity wep) ai_attack_blockcheck={
   }
   
   makevectors( vang );
-  traceline (wep.origin + v_forward * 1, wep.origin + viewpont*wep.w_range, (wep.damageType & EFF_ARC), self);
+  tracebox (wep.origin + v_forward * 1, '-4 -4 -4', '4 4 4',wep.origin + viewpont*wep.w_range, (wep.damageType & EFF_ARC), self);
 
   if(trace_ent == world){
     return TRUE;

@@ -38,7 +38,7 @@ void() interpolate_angle={
   else if (dir < -180){
     dir += 360;
   }
-  self.angles_y = self.angle1 + (dir*self.lerpfrac);
+  //self.angles_y = self.angle1 + (dir*self.lerpfrac);
 };
 
 void() interpolate_ground={

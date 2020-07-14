@@ -102,10 +102,12 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       sendent_setup_weapons();
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
-      sendent_ini_interpolate();
-      te_unit_dust_set();
-      self.interpolate_entity = interpolate_tank;
     }
+    sendent_ini_interpolate();
+    te_unit_dust_set();
+    self.interpolate_entity = interpolate_tank;
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_gev;
   }
   
   self.shield = ReadShort();
@@ -152,4 +154,13 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       self = this;
     }
   }
+};
+
+float() predraw_gev={
+  if(self.deadflag==DEAD_NO){
+    if(self.interpolate_entity){
+      self.interpolate_entity();
+    }
+  }
+  return FALSE;
 };

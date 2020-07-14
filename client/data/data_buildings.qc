@@ -16,39 +16,30 @@ void( float dataID ) data_sync_new_building={
     case UI_BUILDING_radar:
       data_building_radar();
       break;
-      
     case UI_BUILDING_shield_generator:
       data_building_shield();
       break;
-      
     case UI_BUILDING_power_plant:
       data_building_power();
       break;
-      
     case UI_BUILDING_hangar_large:
       data_building_hangar_large();
       break;
-      
     case UI_BUILDING_fuel_tank:
       data_building_fuel();
       break;
-      
     case UI_BUILDING_repair_bay:
       data_building_repair();
       break;
-      
     case UI_BUILDING_hangar_med:
       data_building_hangar_med();
       break;
-      
     case UI_BUILDING_guard_tower:
       data_building_guard();
       break;
-      
     case UI_BUILDING_barracks:
       data_building_barracks();
       break;
-    
     case UI_BUILDING_supply_depot:
       data_building_supply_depot();
       break;

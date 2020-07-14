@@ -180,6 +180,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
     newName = ReadString();
+    setorigin(self, self.origin);
     if( isNew ){ 
       if( newName != "" ){
         self.netname = strzone(newName);
@@ -193,13 +194,14 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.critBits = 0;
       setmodel(self, "q3mdl/testball.md3");
       setsize(self, self.mins, self.maxs);
-      setorigin(self, self.origin);
       sendent_ini_interpolate(); 
       sendent_setup_weapons();
-      self.alpha = 0.001;
-      self.scale = 0.001;
-      self.interpolate_entity = interpolate_mech_ai;
     }
+    self.alpha = 0.001;
+    self.scale = 0.001;
+    self.interpolate_entity = interpolate_mech_ai;
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_mech_ai;
   }
     
   if( (changeFlags & SENDFLAG_DEAD) ){
@@ -389,4 +391,13 @@ void() interpolate_mech_ai={
   self.think = SUB_Null;
   self.nextthink = time + 0.01;
 
+};
+
+float() predraw_mech_ai={
+  if(self.deadflag==DEAD_NO){
+    if(self.interpolate_entity){
+      self.interpolate_entity();
+    }
+  }
+  return FALSE;
 };

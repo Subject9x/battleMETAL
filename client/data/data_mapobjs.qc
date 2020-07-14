@@ -146,7 +146,11 @@ void( float isNew, float entFlags ) data_objective={
   if( entFlags & SENDFLAG_NEWENT ){
     self.data_idx = ReadByte();
     self.data_type = DATA_OBJT;
-    self.drawmask = MASK_ENGINE;
+    if( isNew ){
+      setmodel(self, "q3mdl/testball.md3");
+      setorigin(self, self.origin);
+      self.alpha = 0.01;
+    }
   }
   
   //HANDLE EVENT - objective status
@@ -168,11 +172,6 @@ void( float isNew, float entFlags ) data_objective={
     if( (prevState == OBJECTIVE_ACTIVE) && (self.isActive == OBJECTIVE_FAIL) ){
       hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1 );
     }
-  }
-  if( isNew ){
-    setmodel(self, "q3mdl/testball.md3");
-    setorigin(self, self.origin);
-    self.alpha = 0.01;
   }
 };
 
@@ -234,7 +233,6 @@ void( float isNew, float entFlags ) data_deploy={
   //EVENT - new to player
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.drawmask = MASK_ENGINE;
     if( isNew ){
       if( cvar("developer") ){
         self.alpha = 0.9;
@@ -441,6 +439,10 @@ void(float dataIdx) hazard_ini_static={
     self.nextthink = servertime + (random() * self.wait);
     self.render_dlights = map_hazard_stat_dlights;
   }
+  self.renderflags = self.renderflags | RF_MODELLIGHT;
+  self.modellight_ambient = '1 1 1';
+  self.modellight_diffuse = '1 0 1';
+  self.modellight_dir = '90 0 0';
 };
 
 void(float dataIdx) hazard_ini_quant={
@@ -507,7 +509,6 @@ void( float isNew, float entFlags ) data_map_damage={
     self.spawnflags = ReadLong();
     
     self.origin = te_read_vector();
-    self.drawmask = MASK_ENGINE;
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
@@ -516,35 +517,46 @@ void( float isNew, float entFlags ) data_map_damage={
     self.damageType = ReadByte();
     self.alpha = ReadShort();
     self.wait = ReadAngle();
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_dmg_zone;
     self.effects = self.effects - (self.effects & EF_NODEPTHTEST);
-  }
-  if( isNew ){
-    if( self.isActive ){
-      self.nextthink = time + 0.1;
-    }
-    switch( self.damageType ){
-      default:
-        hazard_ini_rad( self.data_idx );
-        break;
-      case 2:
-        hazard_ini_static( self.data_idx );
-        break;
-      case 3:
-        hazard_ini_quant( self.data_idx );
-        break;
+    self.renderflags = self.renderflags - (self.renderflags & RF_DEPTHHACK);
+    if( isNew ){
+      if( self.isActive ){
+        self.nextthink = time + 0.1;
+      }
+      switch( self.damageType ){
+        case 1:
+          hazard_ini_rad( self.data_idx );
+          break;
+        case 2:
+          hazard_ini_static( self.data_idx );
+          break;
+        case 3:
+          hazard_ini_quant( self.data_idx );
+          break;
+      }
+      if( (self.spawnflags & IS_MAPKEY) ){
+        if( lastMapKeyObject ){
+          //build linked list backwards for later forward iteration.
+          lastMapKeyObject.w_slot = self;
+          lastMapKeyObject = self;
+        }
+        else{
+          //start chain
+          mapKeyObject = self;
+          lastMapKeyObject = self;
+        }
+      }
     }
     setorigin(self, self.origin);
-    if( (self.spawnflags & IS_MAPKEY) ){
-      if( lastMapKeyObject ){
-        //build linked list backwards for later forward iteration.
-        lastMapKeyObject.w_slot = self;
-        lastMapKeyObject = self;
-      }
-      else{
-        //start chain
-        mapKeyObject = self;
-        lastMapKeyObject = self;
-      }
-    }
   }
+};
+
+
+float() predraw_dmg_zone={
+  setorigin(self, self.origin);
+  //self.render_dlights();
+  
+  return FALSE;
 };

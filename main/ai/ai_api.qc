@@ -310,7 +310,6 @@ float() ai_find_target_radar={
 
 void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
-  local float validTarg;
   
   if( !ally.th_missile ){
     return;
@@ -318,12 +317,11 @@ void( entity ally, entity targ, float override ) ai_give_target={
   
   this = self;
   //validTarg = ai_valid_target(ally.enemy);  note: every other func calling this one already involes ai_valid_target()
-  //if( validTarg ){
   self = ally;
   //providing clause where ally has no target
   if( override || !ai_valid_target(ally.enemy) ){
     self.enemy = ally.enemy;
-    macro_ai_frame(self.th_missile)
+    self.ai_state_next = ST_COMBAT;
     if( (this.enemy.flags & FL_CLIENT) ){
       ai_sfx_roger();
     }
@@ -333,7 +331,6 @@ void( entity ally, entity targ, float override ) ai_give_target={
       self.th_pain(ally.enemy);
     }
   }
-  //}
   self = this;
 };
 
@@ -472,7 +469,6 @@ void() ai_unit_make_trigger={
   Inspired by the original SUB_CalcMoved
 */
 float(vector destOrg, float wishSpeed) ai_calc_move={
-  local vector startOrg;
   local vector distDiff;
   local float len;
   local float travel;
@@ -512,11 +508,10 @@ entity(entity targ) ai_node_to_target={
   local entity checkNode;
   local entity found;
   local entity parnt;
-  local float link;
   local float dist;
   local float distComp;
   
-  if( self.patrolNode.owner == world ){
+  if( self.patrolNode.data_idx == TRUE ){
     parnt = self.patrolNode;
   }
   else{
@@ -526,6 +521,9 @@ entity(entity targ) ai_node_to_target={
   dist = vlen(targ.origin - parnt.origin);
 
   for(checkNode = parnt; checkNode != world; checkNode = checkNode.partNext){
+    if(checkNode.partNext.partTypeId == TRUE ){
+      continue;
+    }
     distComp = vlen(checkNode.origin - targ.origin);
     if(checkNode == parnt ){
       distComp = distComp - 1;  //hackfrauds
@@ -539,13 +537,10 @@ entity(entity targ) ai_node_to_target={
         found = checkNode;
       }
       checkNode.dphitcontentsmask = 0;
-    }    
-    if( checkNode.partNext && checkNode.owner == checkNode.partNext ){
-      break;
     }
   }
   if( found ){
-    if( found.partTypeId < self.patrolNode.partTypeId ){
+    /*if( found.partTypeId < self.patrolNode.partTypeId ){
       tracebox(targ.origin, targ.mins, targ.maxs, self.patrolNode.partPrev.origin, MOVE_NOMONSTERS, targ);
       if( trace_fraction == 1.0 ){
         return self.patrolNode.partPrev;
@@ -556,7 +551,7 @@ entity(entity targ) ai_node_to_target={
       if( trace_fraction == 1.0 ){
         return self.patrolNode.partNext;
       }
-    }
+    }*/
     return found;
   }
   else{
@@ -663,7 +658,7 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
 /*
   Attempts to find the closest allowable <ai_node_tether> entity.
 */
-void() ai_node_tether_find={
+entity() ai_node_tether_find={
   local entity findNode;
   local entity found;
   local float dist;
@@ -672,23 +667,23 @@ void() ai_node_tether_find={
   local vector ang;
   dist = AI_RANGE_L;
   
+  tMins = self.mins;
+  tMins_z = tMins_z * 0.75;
   //first query existing nodes to see if a tether exists nearest the AI.
   for(findNode = nextent(world); findNode != world; findNode = nextent(findNode)){
     if( findNode.classname != "ai_node_tether" ){
       continue;
     }
-    if( findNode.faction && findNode.faction != self.faction ){
-      continue;
-    }
-    ang = vectoangles(findNode.origin - self.origin);
+    ang = vectoangles(findNode.origin - (self.origin + '0 0 10'));
     if( ang_x <= 67 || ang_x >= 293) {
       //tether nodes need to be on relatively flat planes because a bot cannot climb a wall or slope to reach a tether node.
-      testDist = vlen(findNode.origin - self.origin);
+      testDist = vlen(findNode.origin - (self.origin + '0 0 10'));
       if( testDist < dist ){
-        tMins = self.mins;
-        tMins_z = tMins_z * 0.75;
-        tracebox(findNode.origin, tMins, self.maxs, self.origin, MOVE_NORMAL, self);
-        cons_logAFloat("ai_node_tether_find()-trace_fraction", trace_fraction);
+        tracebox((self.origin + '0 0 10'), tMins, self.maxs, findNode.origin, MOVE_NORMAL, self);
+        trailparticles(world, particleeffectnum("TE_ESR_RAIL"), (self.origin + '0 0 10'), trace_endpos); //debug
+        cons_logAString("trace_ent", trace_ent.classname);  //debug
+        cons_logAFloat("trace_fraction", trace_fraction);  //debug
+        
         if( trace_fraction == 1 ){
           dist = testDist;
           found = findNode;
@@ -696,16 +691,7 @@ void() ai_node_tether_find={
       }
     }
   }
-  if( found ){
-    self.tetherStatus = TETHER_NODE;
-    self.tetherOrg = util_find_random_farpoint(found.origin, found, random() * found.ai_view/1.25, 64);
-    self.tetherNode = found;
-    self.patrolNode = found;
-  }
-  else{
-    //no tether nodes found,
-    self.tetherStatus = TETHER_SELF;
-  }
+  return found;
 };
 
 /*
@@ -741,7 +727,6 @@ float() ai_patrol_traffic_adjust={
   local vector tMaxs;
   local entity oldthat;
   local float counter;
-  local vector newOrg;
   
   tMins = self.mins * 0.75;
   tMaxs = self.maxs * 0.75;

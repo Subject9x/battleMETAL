@@ -90,8 +90,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
     
     self.deadflag = DEAD_NO;
     setorigin(self, self.origin);
+    self.predraw = predraw_building;
+    self.drawmask = MASK_ENGINE;
     if( isNew ){
-      self.drawmask = MASK_ENGINE;
       self.scale = 1;
       self.alpha = 1;
       
@@ -179,4 +180,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
+};
+
+float() predraw_building={
+  setorigin(self, self.origin);
+  return FALSE;
 };

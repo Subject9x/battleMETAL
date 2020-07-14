@@ -108,25 +108,21 @@ entity() node_recall_setup={
 */
 void() ai_node_check={
   local entity nexNode;
+  if( self.data_idx == TRUE ){
+    self.partTypeId = 1;
+  }
   if( self.target || self.target != "" ){
     nexNode = find(world, targetname, self.target );
-    if( nexNode ){
-      if(self.partPrev == world ){
-        //start of chain
-        self.owner = world;
+    if( nexNode && nexNode.data_idx == FALSE ){
+      nexNode.partTypeId = self.partTypeId + 1;
+      nexNode.partPrev = self;
+      self.partNext = nexNode;
+      if(self.partTypeId == TRUE ){
         nexNode.owner = self;
       }
       else{
-        if( self.owner != nexNode ){
-          //end of chain
-          nexNode.owner = self.owner;
-        }
-      }
-      //wires nodes together for custom chain traversal
-      self.partNext = nexNode;
-      nexNode.partPrev = self;
-      if( nexNode != self.owner && nexNode.owner != self ){
-        nexNode.partTypeId = self.partTypeId + 1;
+        self.owner = self.partPrev.owner;
+        nexNode.owner = self.owner;
       }
     }
     else{
@@ -148,11 +144,11 @@ void() ai_node_check={
       local vector checkAng;
       minDist = AI_RANGE_M;
       itr = 0;
-      checkAng = self.angles;
+      checkAng = '0 0 0';
       while( itr < 8 ){
         checkAng_y = itr * 45;
         makevectors(checkAng);
-        tracebox(self.origin, '-10 -10 -4', '10 10 4', self.origin + (v_forward * AI_RANGE_M), MOVE_NORMAL, self);
+        tracebox(self.origin, '-10 -10 -9', '10 10 18', self.origin + (v_forward * AI_RANGE_M), MOVE_NORMAL, self);
         checkDist = vlen(trace_endpos - self.origin);
         if( checkDist < minDist ){
           minDist = checkDist;
@@ -161,6 +157,8 @@ void() ai_node_check={
       }
       self.ai_view = max(minDist, AI_RANGE_M / 2);
     }
+    cons_logAVector(self.classname, self.origin); //debug
+    cons_logAFloat(self.classname, self.ai_view);
   }
 };
 
@@ -251,7 +249,7 @@ void() ai_node_counter={
     self.count = 2;
   }
   self.think = ai_node_check;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.5;
 };
 
 /*QUAKED ai_node_tether (0.988 0.5 0.5) (-10 -10 -18) (10 10 18)
@@ -278,10 +276,11 @@ faction = faction matching, [default] FACTION_ALL == 255
 void() ai_node_tether={
     
   if ( !self.targetname || self.targetname == "" ){
-    objerror (strcat("[ERROR] ai_node_tether (", vtos(self.origin),") - missing targetname!"));
-    return;
+    //objerror (strcat("[ERROR] ai_node_tether (", vtos(self.origin),") - missing targetname!"));
+    //return;
   }
-  
+ 
+  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   node_setup();
   self.pausetime = 0;
   
@@ -289,9 +288,7 @@ void() ai_node_tether={
     self.ai_view = AI_RANGE_M;
   }
   
-  if( !self.faction ){
-    self.faction = FACTION_ALL;
-  }
+  
   self.think = ai_node_check;
   self.nextthink = time + 1;
 };

@@ -157,6 +157,7 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/mech_skirmish/_combat.qc
     main/ai/behaviors/mech_skirmish/_fight.qc
     main/ai/behaviors/mech_skirmish/_trail.qc
+    main/ai/behaviors/mech_skirmish/_tether.qc
     
   main/ai/behaviors/mech_sniper/ai_mech_sniper.qc
     main/ai/behaviors/mech_sniper/_die.qc
@@ -164,6 +165,7 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/mech_sniper/_combat.qc
     main/ai/behaviors/mech_sniper/_fight.qc
     main/ai/behaviors/mech_sniper/_trail.qc
+    main/ai/behaviors/mech_sniper/_tether.qc
   
   main/ai/behaviors/tank_gev/ai_gev.qc
     main/ai/behaviors/tank_gev/_die.qc
@@ -171,6 +173,7 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/tank_gev/_combat.qc
     main/ai/behaviors/tank_gev/_fight.qc
     main/ai/behaviors/tank_gev/_trail.qc
+    main/ai/behaviors/tank_gev/_tether.qc
   
   main/ai/behaviors/tank_sniper/ai_destroyer.qc
     main/ai/behaviors/tank_sniper/_patrol.qc
@@ -178,6 +181,7 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/tank_sniper/_trail.qc
     main/ai/behaviors/tank_sniper/_fight.qc
     main/ai/behaviors/tank_sniper/_die.qc
+    main/ai/behaviors/tank_sniper/_tether.qc
   
   main/ai/behaviors/tank_skirmish/ai_tank_skirmish.qc
     main/ai/behaviors/tank_skirmish/_combat.qc
@@ -186,6 +190,7 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/tank_skirmish/_trail.qc
     main/ai/behaviors/tank_skirmish/_track.qc
     main/ai/behaviors/tank_skirmish/_die.qc
+    main/ai/behaviors/tank_skirmish/_tether.qc
   
   //main/ai/behaviors/ai_noncom.qc TODO
   //main/ai/behaviors/ai_vtol.qc TODO

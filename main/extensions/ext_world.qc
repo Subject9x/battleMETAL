@@ -133,8 +133,7 @@ void() mh_world_ini={
   addstat(ADDSTAT_TARGETSIZE_Z, AS_FLOAT, addStat_targetSize_z);
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
-
-
+  
   switch( world.worldtype ){
     case 1:
       TE_STOMP_TYPE = particleeffectnum("TE_STOMP_ICE");

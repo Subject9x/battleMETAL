@@ -92,6 +92,11 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     newName = ReadString();
     if( isNew ){
       if( newName != "" ){
+        if( self.netname != "" ){
+          local string s;
+          s = self.netname;
+          strunzone(s);
+        }
         self.netname = strzone(newName);
       }
       self.deadflag = DEAD_NO;
@@ -103,9 +108,11 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       sendent_setup_weapons();
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
-      sendent_ini_interpolate();
-      self.interpolate_entity = interpolate_tank;
     }
+    sendent_ini_interpolate();
+    self.interpolate_entity = interpolate_tank;
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_tank;
   }
   self.shield = ReadShort();
   
@@ -203,4 +210,13 @@ void() interpolate_tank={
   }
   self.think = SUB_Null;
   self.nextthink = time + 0.01;
+};
+
+float() predraw_tank={
+  if(self.deadflag==DEAD_NO){
+    if(self.interpolate_entity){
+      self.interpolate_entity();
+    }
+  }
+  return FALSE;
 };

@@ -24,20 +24,10 @@ void() ai_gev={
   self.th_die = ai_gev_die;
   self.touch = ai_touch;
   
-  ai_setup_patrol();
-  
   self.SendEntity = ctrl_send_gev;
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
   //new state stuff
   self.ai_state_last = 0;
-  
-  if(self.patrolNode){
-    self.ai_state_next = ST_PTR;
-  }
-  else{
-    self.ai_state_next = ST_STAND; //debug
-  }
-  
   self.ai_move_last = 0;
   self.ai_move_next = MOVE_STAND; //debug
   self.ai_dance_card = (MOVE_CHARGE | MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT | MOVE_STRAFE_LEFT | MOVE_STRAFE_RIGHT | MOVE_BACK | MOVE_CIRCLE_LEFT | MOVE_CIRCLE_RIGHT | MOVE_STAND_FACE);
@@ -55,6 +45,11 @@ void() ai_gev={
   self.ai_state_patrol_travel_blocked = ai_gev_ptr_travel_blocked;
   self.ai_state_patrol_tether = ai_gev_ptr_tether;
   self.ai_state_patrol_tether_blocked = ai_gev_ptr_tether_blocked;
+    
+  self.ai_state_tether = gev_tether;
+  self.ai_state_tether_pause = gev_thr_pause;
+  self.ai_state_tether_travel = gev_thr_travel;
+  self.ai_state_tether_travel_block = gev_thr_travel_block;
   
   self.ai_state_combat = gev_combat;
   self.ai_state_combat_moveStart = gev_com_moveStart;
@@ -67,8 +62,8 @@ void() ai_gev={
   self.ai_state_trail_rollback = gev_trail_rollback;
   self.ai_state_trail_rollback_block = gev_trail_rollback_block;
   //--------------------------------------------------------------------------
-  self.think = ai_state_frame;
-  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+  self.think = ai_setup_patrol;
+  self.nextthink = time + 1; //give server a chance to stand up all ai_node types.
 };
 
 /*

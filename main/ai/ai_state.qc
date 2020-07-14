@@ -30,64 +30,65 @@ void() ai_state_frame={
   self.ai_move = self.ai_move_next;
   
   //blockflag
-  if( time < self.ai_blockflag ){
-    self.solid = SOLID_CORPSE;
-  }
-  else{
-    self.solid = SOLID_SLIDEBOX;
-  }
+  //if( time < self.ai_blockflag ){
+   // self.solid = SOLID_NOT;
+  //}
+  //else{
+  //  self.solid = SOLID_SLIDEBOX;
+  //}
   //state machine
   switch(self.ai_state){
     case ST_STAND:
-      self.ai_state_stand();
+      self.ai_run_state_now = self.ai_state_stand;
       break;
     case ST_PTR:
-      self.ai_state_patrol();
+      self.ai_run_state_now = self.ai_state_patrol;
       break;
     case ST_PTR_PAUSE:
-      self.ai_state_patrol_pause();
+      self.ai_run_state_now = self.ai_state_patrol_pause;
       break;
     case ST_PTR_TRAVEL_NODE:
-      self.ai_state_patrol_travel_node();
+      self.ai_run_state_now = self.ai_state_patrol_travel_node;
       break;
     case ST_PTR_TRAVEL_NODEBLOCK:
-      self.ai_state_patrol_travel_blocked();
+      self.ai_run_state_now = self.ai_state_patrol_travel_blocked;
       break;
-    //case ST_PTR_TETHER:
-      //self.ai_state_patrol_tether();
-      //break;
-    //case ST_PTR_TETHER_BLOCK:
-      //self.ai_state_patrol_tether_blocked();
-      //break;
+    case ST_THR:
+      self.ai_run_state_now = self.ai_state_tether;
+      break;
+    case ST_THR_PAUSE:
+      self.ai_run_state_now = self.ai_state_tether_pause;
+      break;
+    case ST_THR_TRAVEL:
+      self.ai_run_state_now = self.ai_state_tether_travel;
+      break;
+    case ST_THR_TRAVEL_BLOCK:
+      self.ai_run_state_now = self.ai_state_tether_travel_block;
+      break;
     case ST_COMBAT:
-      self.ai_state_combat();
+      self.ai_run_state_now = self.ai_state_combat;
       break;
     case ST_COM_MOVE_START:
-      self.ai_state_combat_moveStart();
-      ai_combat_move_frame();
+      self.ai_run_state_now = self.ai_state_combat_moveStart;
       break;
     case ST_COM_MOVE_EXEC:
-      self.ai_state_combat_moveExec();
-      ai_combat_move_frame();
+      self.ai_run_state_now = self.ai_state_combat_moveExec;
       break;
     case ST_COM_MOVE_END:
-      self.ai_state_combat_moveEnd();
+      self.ai_run_state_now = self.ai_state_combat_moveEnd;
       break;
     case ST_COM_MOVE_BLOCK:
-      self.ai_state_combat_blocked();
+      self.ai_run_state_now = self.ai_state_combat_blocked;
       break;
-    //case ST_TRAIL_MOVE:
-      //self.ai_state_trail_move();
-      //break;
-    //case ST_TRAIL_BLOCK:
-     // self.ai_state_trail_move_block();
-      //break;
-    //case ST_TRAIL_ROLLBACK:
-    //  self.ai_state_trail_rollback();
-     // break;
-    //case ST_TRAIL_ROLLBLOCK:
-      //self.ai_state_trail_rollback_block();
-      //break;
+  }
+  
+  if( self.ai_run_state_now ){
+    self.ai_run_state_now();
+  }
+  
+  if( self.ai_state == ST_COM_MOVE_START || self.ai_state == ST_COM_MOVE_EXEC ){
+    //optimization to reduce nesting of switch/case calls
+    ai_combat_move_frame();
   }
   
   if( (self.flags&FL_TURRET) ){
@@ -191,7 +192,7 @@ void() ai_turret_control={
   local entity turretOwner;
   local float ang;
   local float oldAng;
-  if( (self.torsoCenter) ){
+  if( self.torsoCenter ){
     turretOwner = self;
     self = self.torsoCenter;
       oldAng = self.angles_y;

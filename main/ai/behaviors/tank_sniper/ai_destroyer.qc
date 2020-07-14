@@ -25,7 +25,13 @@ void() ai_vec_dest={
   self.touch = ai_touch;
 
   ai_setup_patrol();
-  
+    
+  if(self.deadflag == DEAD_DYING){
+    //AI failed to have either a PATROL NODE or TETHER NODE, so kill it.
+    self.think = self.th_die;
+    self.nextthink = time + 0.1;
+    return;
+  }
   self.SendEntity = ctrl_send_spg;
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;   
   local entity wep;
@@ -50,15 +56,20 @@ void() ai_vec_dest={
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   
   self.ai_unit_update = ctrl_updateTank;
-  self.ai_state_stand = ai_spg_stand;
   
   //ai state interface--------------------------------------------------------
+  self.ai_state_stand = ai_spg_stand;
   self.ai_state_patrol = ai_spg_patrol;
   self.ai_state_patrol_pause = ai_spg_ptr_pause;
   self.ai_state_patrol_travel_node = ai_spg_ptr_travel_node;
   self.ai_state_patrol_travel_blocked = ai_spg_ptr_travel_blocked;
   self.ai_state_patrol_tether = ai_spg_ptr_tether;
   self.ai_state_patrol_tether_blocked = ai_spg_ptr_tether_blocked;
+    
+  self.ai_state_tether = spg_tether;
+  self.ai_state_tether_pause = spg_thr_pause;
+  self.ai_state_tether_travel = spg_thr_travel;
+  self.ai_state_tether_travel_block = spg_thr_travel_block;
   
   self.ai_state_combat = spg_combat;
   self.ai_state_combat_moveStart = spg_com_moveStart;
@@ -70,9 +81,9 @@ void() ai_vec_dest={
   self.ai_state_trail_move_block = spg_trail_move_block;
   self.ai_state_trail_rollback = spg_trail_rollback;
   self.ai_state_trail_rollback_block = spg_trail_rollback_block;
+  //--------------------------------------------------------------------------
   self.think = ai_state_frame;
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
-  //--------------------------------------------------------------------------
 };
 
 /*

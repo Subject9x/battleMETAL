@@ -11,7 +11,7 @@ Overview:
 */
 void() radar_post_dlights={
   if( self.deadflag == DEAD_NO ){
-    adddynamiclight( self.compOffset, 128, self.compAltOffsetCache, self.partTypeId, "", PFLAGS_NOSHADOW); 
+    adddynamiclight( self.compOffset, 128, self.compAltOffsetCache); 
   }
 };
 

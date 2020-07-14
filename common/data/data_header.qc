@@ -35,7 +35,7 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece.hitOffset = '0 0 0';
   piece.compAltOffset = piece.compAltOffsetCache = altOffsett;
   #ifdef CSQC
-    piece.drawmask = MASK_NORMAL;
+    piece.drawmask = MASK_ENGINE;
   #endif
   #ifndef CSQC
     if( (self.flags & FL_MONSTER) ){

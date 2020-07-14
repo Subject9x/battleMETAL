@@ -9,8 +9,6 @@ Overview:
     sv/main/controllers/ctrl_building.ctrl_send_turret()
 */
 
-float() predraw_turret;
-
 void() sendevent_turret_die={
   local entity weps;
   local entity this;
@@ -78,16 +76,18 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
+    setorigin( self, self.origin );
     if( isNew ){
       self.flags = self.flags | FL_MONSTER ;
       self.data_type = DATA_BLD;
       self.colormod = '1 1 1';
       data_sync_new_turret(self.data_idx);
-      setorigin( self, self.origin );
       sendent_setup_weapons();
-      sendent_ini_interpolate();
-      self.interpolate_entity = interpolate_turret;
     }
+    sendent_ini_interpolate();
+    self.interpolate_entity = interpolate_turret;
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_turret;
   }
   
   //EVENT - MOVE - for turrets, this means a general update tic.
@@ -198,4 +198,13 @@ void() interpolate_turret={
   }
   self.think = SUB_Null;
   self.nextthink = time + 0.01;
+};
+
+float() predraw_turret={
+  if(self.deadflag == DEAD_NO){
+    if(self.interpolate_entity){
+      self.interpolate_entity();
+    }
+  }
+  return FALSE;
 };
