@@ -35,7 +35,7 @@ void() data_ini_light_atc_={
   #ifdef CSQC  
     self.w_name = "Light Autocannon";
     self.abbrev = "ATC";
-    self.description = "+ Instant-impact weapon. + 3-round burst. + Better against <Armor>.";
+    self.description = "+ Instant-impact weapon. + 3-round burst. + Better against <Armor>. + stronger against [medium] targets.";
     self.icon = "gfx/ui/wep_icons/wi_atc.png";
     self.model = "q3mdl/weapons/w_atc.md3";
     self.fire_sound = "sound/weapons/atc_fire.ogg";
@@ -76,7 +76,13 @@ void() data_ini_attack_latc_={
           impactStyle = IMPACT_SHIELD;
         }
         else{
-          t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
+          if( trace_ent.vec_size == 2 || trace_ent.data_type == DATA_VEHC ){
+            damage = self.damageValue + (self.damageValue * 0.4);
+          }
+          else{
+            damage = self.damageValue;
+          }
+          t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
           impactStyle = IMPACT_ARMOR;
         } 
       }

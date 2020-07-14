@@ -106,6 +106,7 @@ void() data_projectile_emp_think_={
 };
 
 void()data_prj_emp_explode={
+  local float damage;
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   self.touch = SUB_Null;
@@ -127,7 +128,11 @@ void()data_prj_emp_explode={
     //make sure primary contact target takes the damage
     if(ln > DAT_PRJ_EMP_PROXYRAD){
       if( lst.shield > 0 ){
-        t_damage_shield(trace_ent, self, FIRE_ENT, (self.damageValue * 0.25) * (ln / DAT_PRJ_EMP_EXPRAD), FIRE_ENDPOINT, TRUE);
+        damage = (self.damageValue * 0.25) * (ln / DAT_PRJ_EMP_EXPRAD);
+        if( trace_ent.vec_size < 2 ){
+          damage = damage * 0.3;
+        }
+        t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, TRUE);
         self.impactType = IMPACT_SHIELD;
       }
       else{        
@@ -136,7 +141,13 @@ void()data_prj_emp_explode={
     }
     else{
       if( lst.shield > 0 ){
-        t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
+        if( trace_ent.vec_size < 2 ){
+          damage = self.damageValue * 0.3;
+        }
+        else{
+          damage = self.damageValue;
+        }
+        t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, TRUE);
         self.impactType = IMPACT_SHIELD;
       }
       else{        

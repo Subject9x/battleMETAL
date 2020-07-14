@@ -1217,13 +1217,13 @@ void() hud_lock_frame={
   //2) just acquired lock
   if( (CLIENT_stat_lock_state & LOCK_TARG_START) ){
     if( (time > HUD_LOCK_STEP) && (time < HUD_LOCK_TIME_END) ){
-      HUD_LOCK_ALPHA = HUD_LOCK_ALPHA + HUD_LOCK_ALPHA_RATE;
+      HUD_LOCK_ALPHA = HUD_LOCK_ALPHA + HUD_LOCK_ALPHA_RATE * 0.85;
       HUD_LOCK_SIZE = HUD_LOCK_SIZE - HUD_LOCK_SIZE_RATE;
       HUD_LOCK_STEP = time + HUD_LOCK_STEP_RATE;
     }
   }
   else if( (CLIENT_stat_lock_state & LOCK_TARG_HAS) && (HUD_LOCK_STATE_PREV & LOCK_TARG_START) ){
-    HUD_LOCK_ALPHA = 1;
+    HUD_LOCK_ALPHA = 0.85;
     HUD_LOCK_COLOR = CLR_DEF_RET_HASLOCK;
   }
   HUD_LOCK_STATE_PREV = CLIENT_stat_lock_state;
@@ -1276,7 +1276,9 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  drawpic(imgCenter, "gfx/hud/ret/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  if( !(lockval & LOCK_TARG_HAS) ){
+    drawpic(imgCenter, "gfx/hud/ret/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  }
 
   //convergence
   pipLeft = VIEW_CTR - gui_percentToPixelRawVec('11 1.5');
@@ -1348,7 +1350,9 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  drawpic(imgCenter, "gfx/hud/ret/crosshair2.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  if( !(lockval & LOCK_TARG_HAS) ){
+    drawpic(imgCenter, "gfx/hud/ret/crosshair2.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  }
 
   //convergence
   pipLeft = VIEW_CTR - gui_percentToPixelRawVec('17 1.5');
@@ -1401,7 +1405,9 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  drawpic(imgCenter, "gfx/hud/ret/crosshair3.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  if( !(lockval & LOCK_TARG_HAS) ){
+    drawpic(imgCenter, "gfx/hud/ret/crosshair3.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  }
   
   //accuracy pips
   pipSizeH_x = pipSizeH_x * unitAccuracy;
@@ -1452,7 +1458,9 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  drawpic(imgCenter, "gfx/hud/ret/crosshair4.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  if( !(lockval & LOCK_TARG_HAS)  ){
+    drawpic(imgCenter, "gfx/hud/ret/crosshair4.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  }
   
   pipSizeH_x = pipSizeH_x * unitAccuracy;
   pipSizeH_y = pipSizeH_y * unitAccuracy;

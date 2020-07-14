@@ -28,6 +28,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
   
+  if( (attacker.flags & FL_CLIENT) ){
+    if( !attacker.enemy ){
+      attacker.enemy = dmgTrg;
+      attacker.stat_lck_stt = attacker.stat_lck_stt | LOCK_TARG_HAS;
+    }
+  }
+  
   //reduce friendly fire damage on easier settings
   if( (trg.faction != FACTION_ALL) ){
     if( !(serverflags & SVFLAG_FIREON) ){

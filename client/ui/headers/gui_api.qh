@@ -24,10 +24,6 @@ float OBJECTIVES[16];         //  1 = active, 2 = complete, 0 = hidden, -1 = fai
 
 string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
 
-string DAT_OTL_UI_IMG;
-string DAT_MNT_UI_IMG;
-string DAT_MTK_UI_IMG;
-
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;

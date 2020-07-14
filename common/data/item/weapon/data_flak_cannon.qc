@@ -41,7 +41,7 @@ void() data_ini_flak_cannon_={
     self.model = "q3mdl/weapons/w_flk.md3";
     self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
     self.abbrev = "FLAK";
-    self.description = "+ Instant-impact weapon. +4-rnd burst and 4 pellets per shot. +  shotgun damage pattern. + Stronger against shields and small targets.";
+    self.description = "+ Instant-impact weapon. +4-rnd burst and 4 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
     self.icon = "gfx/ui/wep_icons/wi_flak.png";
   #endif
   
