@@ -38,7 +38,7 @@ void() data_ini_missile_activeradar_={
     self.fire_sound = "sound/weapons/mis_fire.ogg";
     self.model = "q3mdl/weapons/w_arh.md3";
     self.abbrev = "MARH";
-    self.description = "+ target <shields> reduce damage. + Requires <Active Radar> on. + Requires <Target Lock> on target. + Minimum Range of 300m.";
+    self.description = "+ target <shields> reduce damage. + Requires <Active Radar> on. + Minimum Range of 300m. + stronger against [small] targets.";
     self.icon = "gfx/ui/wep_icons/wi_marh.png";
   #endif
   

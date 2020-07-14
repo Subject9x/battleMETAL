@@ -225,7 +225,7 @@ void() hud_render_vip_overlay={
       c_br_x = c_br_x - (imgSize_x / 2);
       c_br_y = c_br_y - (imgSize_y / 2);
       c_br_z = 0;
-      gui_renderTintImage(TRUE, c_br, HUD_TARGET_BOX_BR, imgSize, CLR_DEF_IIF_FRIEND_BLD, HUD_ALPHA + 0.25, 0);
+      gui_renderTintImage(TRUE, c_br, HUD_TARGET_BOX_BR, imgSize, CLR_DEF_IIF_FRIEND_BLD, 1- ((HUD_ALPHA + 0.25) * dist), 0);
       
     }
     
@@ -234,7 +234,7 @@ void() hud_render_vip_overlay={
       c_bl_x = c_bl_x - (imgSize_x / 2);
       c_bl_y = c_bl_y - (imgSize_y / 2);
       c_bl_z = 0;
-      gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, CLR_DEF_IIF_FRIEND_BLD, HUD_ALPHA + 0.25, 0);
+      gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, CLR_DEF_IIF_FRIEND_BLD, 1 - ((HUD_ALPHA + 0.25) * dist), 0);
     }
   }
 };

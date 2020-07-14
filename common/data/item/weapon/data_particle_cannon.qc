@@ -39,7 +39,7 @@ void() data_ini_particle_cannon_={
     self.fire_sound = "sound/weapons/pac_fire.ogg";
     self.model = "q3mdl/weapons/w_pac.md3";
     self.abbrev = "PAC";
-    self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Lower shields on target yields higher armor damage.";
+    self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Lower shields on target yields higher armor damage. + better against [large] targets.";
     self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
   #endif 
   
@@ -71,6 +71,12 @@ void() data_ini_attack_particle_cannon_={
   strikePoint = FIRE_ENDPOINT + (v_forward * -5);
   
   if( trace_ent.takedamage ){
+    if(trace_ent.vec_size <= 1){
+      self.damageValue = self.damageValue * 0.33;
+    }
+    if(trace_ent.vec_size == 2){
+      self.damageValue = self.damageValue * 0.5;
+    }
     dmgArmor = self.damageValue;
     dmgShield = self.damageValue;
     if( trace_ent.shield > 0 ){

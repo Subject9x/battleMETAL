@@ -155,6 +155,9 @@ void() data_projectile_missile_activeradar_touch={
  
   if(other.takedamage){
     damage = self.damageValue;
+    if(other.vec_size > 2){
+      damage = damage * 0.5;
+    }
     if( other.shield > 0 ){
       if( other.shield >= (other.shieldMax * 0.67) ){
         damage = damage * 0.67;
