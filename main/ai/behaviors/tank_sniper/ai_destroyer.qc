@@ -23,15 +23,7 @@ void() ai_vec_dest={
   self.th_pain = ai_spg_react;
   self.th_die = ai_vec_dest_die;
   self.touch = ai_touch;
-
-  ai_setup_patrol();
-    
-  if(self.deadflag == DEAD_DYING){
-    //AI failed to have either a PATROL NODE or TETHER NODE, so kill it.
-    self.think = self.th_die;
-    self.nextthink = time + 0.1;
-    return;
-  }
+  
   self.SendEntity = ctrl_send_spg;
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;   
   local entity wep;
@@ -82,8 +74,8 @@ void() ai_vec_dest={
   self.ai_state_trail_rollback = spg_trail_rollback;
   self.ai_state_trail_rollback_block = spg_trail_rollback_block;
   //--------------------------------------------------------------------------
-  self.think = ai_state_frame;
-  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
+  self.think = ai_setup_patrol;
+  self.nextthink = time + 2;
 };
 
 /*

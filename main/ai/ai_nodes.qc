@@ -113,16 +113,17 @@ void() ai_node_check={
   }
   if( self.target || self.target != "" ){
     nexNode = find(world, targetname, self.target );
-    if( nexNode && nexNode.data_idx == FALSE ){
-      nexNode.partTypeId = self.partTypeId + 1;
-      nexNode.partPrev = self;
-      self.partNext = nexNode;
-      if(self.partTypeId == TRUE ){
-        nexNode.owner = self;
-      }
-      else{
-        self.owner = self.partPrev.owner;
-        nexNode.owner = self.owner;
+    if( nexNode ){
+      if( nexNode.data_idx <= 0){
+        nexNode.partTypeId = self.partTypeId + 1;
+        nexNode.partPrev = self;
+        self.partNext = nexNode;
+        if(self.partTypeId==1){
+          nexNode.owner = self;
+        }
+        else{
+          nexNode.owner = self.owner;
+        }
       }
     }
     else{
@@ -137,7 +138,7 @@ void() ai_node_check={
     self.nextthink = time + 1;
   }
   else{
-    if( !self.ai_view || self.ai_view < 15){
+    if( !self.ai_view || self.ai_view < 100){
       local float minDist;
       local float checkDist;
       local float itr;
@@ -145,17 +146,15 @@ void() ai_node_check={
       minDist = AI_RANGE_M;
       itr = 0;
       checkAng = '0 0 0';
-      while( itr < 8 ){
-        checkAng_y = itr * 45;
+      while( itr < 12 ){
+        checkAng_y = itr * 30;
         makevectors(checkAng);
         tracebox(self.origin, '-10 -10 -9', '10 10 18', self.origin + (v_forward * AI_RANGE_M), MOVE_NORMAL, self);
         checkDist = vlen(trace_endpos - self.origin);
-        if( checkDist < minDist ){
-          minDist = checkDist;
-        }
+        minDist = minDist + checkDist;
         itr = itr + 1;
       }
-      self.ai_view = max(minDist, AI_RANGE_M / 2);
+      self.ai_view = max(minDist / 12, 100);
     }
     cons_logAVector(self.classname, self.origin); //debug
     cons_logAFloat(self.classname, self.ai_view);
@@ -283,11 +282,6 @@ void() ai_node_tether={
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   node_setup();
   self.pausetime = 0;
-  
-  if( !self.ai_view ){
-    self.ai_view = AI_RANGE_M;
-  }
-  
   
   self.think = ai_node_check;
   self.nextthink = time + 1;

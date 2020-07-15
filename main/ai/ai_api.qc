@@ -507,56 +507,44 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
 entity(entity targ) ai_node_to_target={
   local entity checkNode;
   local entity found;
-  local entity parnt;
+  local entity head;
   local float dist;
   local float distComp;
   
-  if( self.patrolNode.data_idx == TRUE ){
-    parnt = self.patrolNode;
+  if( self.patrolNode.owner ){
+    checkNode = self.patrolNode.owner.partNext;
   }
   else{
-    parnt = self.patrolNode.owner;
+    checkNode = self.patrolNode;
   }
+  dist = vlen(targ.origin - checkNode.origin);
   
-  dist = vlen(targ.origin - parnt.origin);
-
-  for(checkNode = parnt; checkNode != world; checkNode = checkNode.partNext){
-    if(checkNode.partNext.partTypeId == TRUE ){
-      continue;
-    }
+  while( (checkNode != world) ){
     distComp = vlen(checkNode.origin - targ.origin);
-    if(checkNode == parnt ){
-      distComp = distComp - 1;  //hackfrauds
-    }
-    
     checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
-    tracebox(checkNode.origin, self.mins, self.maxs, self.origin, MOVE_NOMONSTERS, self);
+    tracebox(checkNode.origin, self.mins, self.maxs, targ.origin, MOVE_NORMAL, targ);
     if( trace_fraction >= 0.9 || trace_ent == targ || (trace_ent.flags&FL_UNIT)){
       if( distComp < dist ){
         dist = distComp;
         found = checkNode;
       }
-      checkNode.dphitcontentsmask = 0;
+    }
+    checkNode.dphitcontentsmask = 0;
+    if(checkNode.partNext == checkNode.owner ){
+      checkNode = world;
+    }
+    else{
+      checkNode = checkNode.partNext;
     }
   }
+  
+  
   if( found ){
-    /*if( found.partTypeId < self.patrolNode.partTypeId ){
-      tracebox(targ.origin, targ.mins, targ.maxs, self.patrolNode.partPrev.origin, MOVE_NOMONSTERS, targ);
-      if( trace_fraction == 1.0 ){
-        return self.patrolNode.partPrev;
-      }
-    }
-    if( found.partTypeId > self.patrolNode.partTypeId ){
-      tracebox(targ.origin, targ.mins, targ.maxs, self.patrolNode.partNext.origin, MOVE_NOMONSTERS, targ);
-      if( trace_fraction == 1.0 ){
-        return self.patrolNode.partNext;
-      }
-    }*/
     return found;
   }
   else{
-    if( vlen(parnt.origin - targ.origin) <= AI_RANGE_L ){
-      return parnt;
+    if( vlen(checkNode.origin - targ.origin) <= AI_RANGE_L ){
+      return checkNode;
     }
   }
   return world;
@@ -668,25 +656,32 @@ entity() ai_node_tether_find={
   dist = AI_RANGE_L;
   
   tMins = self.mins;
-  tMins_z = tMins_z * 0.75;
+  tMins_z = tMins_z * 0.67;
+  cons_logAString("FOR ENT", self.classname);  //debug
+  cons_logAVector("FOR ENT", self.origin);  //debug
   //first query existing nodes to see if a tether exists nearest the AI.
   for(findNode = nextent(world); findNode != world; findNode = nextent(findNode)){
     if( findNode.classname != "ai_node_tether" ){
       continue;
     }
-    ang = vectoangles(findNode.origin - (self.origin + '0 0 10'));
+    ang = vectoangles(findNode.origin - (self.origin + '0 0 5'));
     if( ang_x <= 67 || ang_x >= 293) {
       //tether nodes need to be on relatively flat planes because a bot cannot climb a wall or slope to reach a tether node.
-      testDist = vlen(findNode.origin - (self.origin + '0 0 10'));
+      testDist = vlen(findNode.origin - (self.origin + '0 0 5'));
       if( testDist < dist ){
-        tracebox((self.origin + '0 0 10'), tMins, self.maxs, findNode.origin, MOVE_NORMAL, self);
-        trailparticles(world, particleeffectnum("TE_ESR_RAIL"), (self.origin + '0 0 10'), trace_endpos); //debug
-        cons_logAString("trace_ent", trace_ent.classname);  //debug
-        cons_logAFloat("trace_fraction", trace_fraction);  //debug
-        
+        tracebox((self.origin + '0 0 5'), tMins, self.maxs, findNode.origin, MOVE_NORMAL, self);
         if( trace_fraction == 1 ){
           dist = testDist;
           found = findNode;
+        }
+        else{
+          if( (trace_ent.flags & FL_UNIT) ){
+            tracebox((trace_ent.origin + '0 0 5'), tMins, self.maxs, findNode.origin, MOVE_NORMAL, self);
+            if( trace_fraction == 1 ){
+              dist = testDist;
+              found = findNode;
+            }
+          }
         }
       }
     }

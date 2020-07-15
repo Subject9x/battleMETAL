@@ -25,6 +25,7 @@ void() ai_mech_sk_patrol={
     self.legs.nextthink = time + 0.1;
     
     self.torsoCenter.attack_state = TR_GOAL;
+    
     return;
   }
 };
@@ -45,7 +46,11 @@ void() ai_mech_sk_ptr_pause={
   }
   //--------------------------
   
-  
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    //prepare for war....
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
   if( time > self.pausetime ){
     if( self.patrolNode != world ){
       self.ai_state_next = ST_PTR;

@@ -62,7 +62,7 @@ void() ai_mech_skirmish={
   self.ai_state_trail_rollback_block = mech_sk_trail_rollback_block;
   //--------------------------------------------------------------------------
   self.think = ai_setup_patrol;
-  self.nextthink = time + 1; //give server a chance to stand up all ai_node types.
+  self.nextthink = time + 2;
 };
 
 /*

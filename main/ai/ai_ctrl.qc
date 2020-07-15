@@ -367,26 +367,6 @@ void(vector v) ai_face_origin={
 };
 
 /*
-  a single frame of hunting logic,
-  moveSpeed = self.<speed> to move at.
-  nextFrameFunc = the AI frame to do.
-  pauseFrameFunc = the end / fail frame to go to.
-  //DEPRECATE ASAP
-*/
-void( float moveSpeed, void() nextFrameFunc, void() pauseFrameFunc ) ai_hunt_logic={
-  self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-  ChangeYaw();
-  if( !walkmove( self.angles_y, moveSpeed ) ){
-    movetogoal( moveSpeed );
-  }
-  if( vlen(self.goalentity.origin - self.origin) > AI_NODE_DISTANCE ){
-    macro_ai_frame(nextFrameFunc)
-    return;
-  }
-  macro_ai_frame(pauseFrameFunc)
-};
-
-/*
 ===================================================
   AI Actions
   actions are the atomic functions of any AI state;
@@ -531,7 +511,7 @@ float( entity targ ) ai_check_vis={
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_DONOTENTER | DPCONTENTS_MONSTERCLIP);
   
-    tracebox (spot1, self.mins * 0.5, self.maxs * 0.5, spot2, MOVE_NORMAL, self);
+  tracebox (spot1, self.mins * 0.5, self.maxs * 0.5, spot2, MOVE_NORMAL, self);
   
   self.dphitcontentsmask = contentBuffer;
 
@@ -609,22 +589,16 @@ void() ai_setup_patrol={
         node = find(world, targetname, self.target);
       }
       if( node ){
-        cons_logAVector(node.classname, node.origin); //debug
-        cons_logAString(node.classname, node.targetname);
-        near = ai_node_to_target(self);
-        if( near != world && near != node ){
-          cons_logAVector(near.classname, near.origin); //debug
-          cons_logAString(near.classname, near.targetname);
-          node = near;
-        }
         self.tetherStatus = TETHER_PATROL;
         self.tetherOrg = node.origin;
         self.patrolNode = node;
         self.ai_state_next = ST_PTR;
         lastNode = node;
-        cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
-        cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);
-      cons_logAString("///////////////////", "////////////");
+        if( cvar("developer") ){
+          cons_logAVector(node.classname, node.origin); //debug
+          cons_logAString(node.classname, node.targetname);
+          cons_logAString("///////////////////", "////////////");
+        }
       }
       else{
         self.deadflag = DEAD_DYING;
@@ -642,6 +616,11 @@ void() ai_setup_patrol={
            //just teleport them
            self.origin = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.85,32), self.maxs_x);
            setorigin(self, self.origin);
+        }
+        if( cvar("developer") ){
+          cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
+          cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);
+          cons_logAString("-------------------", "-------------");
         }
       }
       else{
@@ -666,11 +645,14 @@ void() ai_setup_patrol={
   
   if(self.deadflag == DEAD_DYING){
     //AI failed to have either a PATROL NODE or TETHER NODE, so kill it.
-    cons_logAString("///////////////", "----------");
-    cons_logAVector(self.classname, self.origin); //debug
-    cons_logAString(self.classname, self.vec_name);
-    cons_logAString("///////////////", "^ REMOVED ^");
-    self.think = self.th_die;
+    if( cvar("developer") ){
+      cons_logAString("///////////////", "----------");
+      cons_logAVector(self.classname, self.origin); //debug
+      cons_logAString(self.classname, self.vec_name);
+      cons_logAString("///////////////", "^ REMOVED ^");
+    }
+    
+    self.th_die();
     self.nextthink = time + 0.1;
   }
   else{
@@ -678,8 +660,11 @@ void() ai_setup_patrol={
       self.spawnflags = self.spawnflags - (self.spawnflags&COLD_START);
       self.nextthink = 7;
     }
+    else{
+      self.nextthink = 2;
+    }
     self.think = ai_state_frame;
-    self.nextthink = time + (self.nextthink + random() * 0.5); //spread out thinks
+    self.nextthink = self.nextthink + time;
   }
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
