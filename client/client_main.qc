@@ -302,9 +302,9 @@ void(float w, float h, float menushown) CSQC_UpdateView =
             addentity(self);
           }
         }
-        //if(self.render_dlights){
-          //self.render_dlights();
-       // }
+        if(self.render_dlights){
+          self.render_dlights();
+        }
       }
     //}
     self = oldSelf;

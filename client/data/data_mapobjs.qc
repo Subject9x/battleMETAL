@@ -271,15 +271,11 @@ void( float isNew, float entFlags ) data_weather;
 */
 void() map_hazard_rad_dlights={
   makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 100, '0.8 0.8 0', 3, "", 0);
+  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 25, '0.8 0.8 0', 0, "", 0);
 };
 void() map_hazard_stat_dlights={
   makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 150, '0 1 0.8', 6, "", 0);
-};
-void() map_hazard_quant_dlights={
-  makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 110, '1 0.4 0.6', 1, "", 0);
+  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 33, '0 1 0.8', 0, "", 0);
 };
 
 void() hazard_rad_think={
@@ -468,7 +464,6 @@ void(float dataIdx) hazard_ini_quant={
   if( self.isActive ){
     self.think = hazard_quant_think;
     self.nextthink = servertime + (random() * self.wait);
-    self.render_dlights = map_hazard_quant_dlights;
   }
 };
 

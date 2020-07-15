@@ -193,8 +193,8 @@ void( vector org, float total ) te_field_mineral_light={
 };
 
 void( vector particleOrg, vector particleEnd ) te_field_quantum={
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), particleOrg, normalize( particleEnd - particleOrg ), 1);
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), particleOrg, normalize( particleEnd - particleOrg ) * 30, 1);
+  pointparticles( particleeffectnum("TE_FIELD_QUANTUM"), particleOrg, normalize( particleEnd - particleOrg ), 1);
+  pointparticles( particleeffectnum("TE_FIELD_QUANTUM"), particleOrg, normalize( particleEnd - particleOrg ) * 30, 1);
   trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), particleOrg, particleEnd);
 };
 
