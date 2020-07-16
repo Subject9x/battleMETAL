@@ -45,17 +45,18 @@ void() ai_tank_skirmish={
   
   //ai state interface--------------------------------------------------------
   self.ai_state_stand = ai_tank_sk_stand;
-  self.ai_state_patrol = ai_tank_sk_patrol;
-  self.ai_state_patrol_pause = ai_tank_sk_ptr_pause;
-  self.ai_state_patrol_travel_node = ai_tank_sk_ptr_travel_node;
-  self.ai_state_patrol_travel_blocked = ai_tank_sk_ptr_travel_blocked;
-  self.ai_state_patrol_tether = ai_tank_sk_ptr_tether;
-  self.ai_state_patrol_tether_blocked = ai_tank_sk_ptr_tether_blocked;
-    
-  self.ai_state_tether = tank_tether;
-  self.ai_state_tether_pause = tank_thr_pause;
-  self.ai_state_tether_travel = tank_thr_travel;
-  self.ai_state_tether_travel_block = tank_thr_travel_block;
+  
+  self.ai_state_patrol = ai_patrol;
+  self.ai_state_patrol_pause = ai_ptr_pause;
+  self.ai_state_patrol_travel_node = ai_ptr_travel_node;
+  self.ai_state_patrol_travel_blocked = ai_ptr_travel_blocked;
+  self.ai_state_patrol_tether = ai_ptr_tether;
+  self.ai_state_patrol_tether_blocked = ai_ptr_tether_blocked;
+  
+  self.ai_state_tether = ai_tether;
+  self.ai_state_tether_pause = ai_thr_pause;
+  self.ai_state_tether_travel = ai_thr_travel;
+  self.ai_state_tether_travel_block = ai_thr_travel_block;
   
   self.ai_state_combat = tank_sk_combat;
   self.ai_state_combat_moveStart = tank_sk_com_moveStart;

@@ -17,18 +17,6 @@ void() ai_gev_stand;
 void() ai_gev_patrol;
 void( entity attacker ) ai_gev_react;
 
-void() ai_gev_patrol;
-void() ai_gev_ptr_pause;
-void() ai_gev_ptr_travel_node;
-void() ai_gev_ptr_travel_blocked;
-void() ai_gev_ptr_tether;
-void() ai_gev_ptr_tether_blocked;
-
-void() gev_tether;
-void() gev_thr_pause;
-void() gev_thr_travel;
-void() gev_thr_travel_block;
-
 void() gev_combat;
 void() gev_com_moveStart;
 void() gev_com_moveExec;

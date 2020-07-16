@@ -38,17 +38,17 @@ void() ai_mech_sniper={
   
   //ai state interface--------------------------------------------------------
   self.ai_state_stand = ai_mech_sniper_stand;
-  self.ai_state_patrol = ai_mech_sniper_patrol;
-  self.ai_state_patrol_pause = ai_mech_sniper_ptr_pause;
-  self.ai_state_patrol_travel_node = ai_mech_sniper_ptr_travel_node;
-  self.ai_state_patrol_travel_blocked = ai_mech_sniper_ptr_travel_blocked;
-  self.ai_state_patrol_tether = ai_mech_sniper_ptr_tether;
-  self.ai_state_patrol_tether_blocked = ai_mech_sniper_ptr_tether_blocked;
-    
-  self.ai_state_tether = mech_sniper_tether;
-  self.ai_state_tether_pause = mech_sniper_thr_pause;
-  self.ai_state_tether_travel = mech_sniper_thr_travel;
-  self.ai_state_tether_travel_block = mech_sniper_thr_travel_block;
+  self.ai_state_patrol = ai_patrol;
+  self.ai_state_patrol_pause = ai_ptr_pause;
+  self.ai_state_patrol_travel_node = ai_ptr_travel_node;
+  self.ai_state_patrol_travel_blocked = ai_ptr_travel_blocked;
+  self.ai_state_patrol_tether = ai_ptr_tether;
+  self.ai_state_patrol_tether_blocked = ai_ptr_tether_blocked;
+  
+  self.ai_state_tether = ai_tether;
+  self.ai_state_tether_pause = ai_thr_pause;
+  self.ai_state_tether_travel = ai_thr_travel;
+  self.ai_state_tether_travel_block = ai_thr_travel_block;
   
   self.ai_state_combat = mech_sniper_combat;
   self.ai_state_combat_moveStart = mech_sniper_com_moveStart;

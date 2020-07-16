@@ -11,14 +11,18 @@ Overview:
 /*
   STATE : PATROL START
 */
-void() ai_gev_patrol={
+void() ai_patrol={
   ai_update_accuracy( TRUE );
   if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
-    
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
     self.goalentity = self.patrolNode;
-    self.tetherStatus = TETHER_NODE;
+    self.tetherStatus = TETHER_PATROL;
     
+    if( self.legs ){
+      self.legs.attack_state = TR_TARG;
+      self.legs.think = bot_leg_walk1;
+      self.legs.nextthink = time + 0.1;
+    }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_GOAL;
     }
@@ -28,11 +32,15 @@ void() ai_gev_patrol={
 /*
   STATE : PATROL PAUSE
 */
-void() ai_gev_ptr_pause={
+void() ai_ptr_pause={
   ai_update_accuracy( FALSE );
   
   //entered pause state
   if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
+    if( self.legs ){
+      self.legs.think = bot_leg_stand1;
+      self.legs.nextthink = time + 0.1;
+    }
     self.pausetime = time + self.pausetime;
     return;
   }
@@ -49,7 +57,7 @@ void() ai_gev_ptr_pause={
 /*
   STATE : PATROL TRAVEL TO NODE
 */
-void() ai_gev_ptr_travel_node={
+void() ai_ptr_travel_node={
   ai_update_accuracy( TRUE );
 
   ai_patrol_state_frame();
@@ -73,9 +81,14 @@ void() ai_gev_ptr_travel_node={
 /*
   STATE : PATROL TRAVEL TO NODE BLOCKED
 */
-void() ai_gev_ptr_travel_blocked={
+void() ai_ptr_travel_blocked={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
     if( ai_blocked_teleport() ){
+      if( self.legs ){
+        self.legs.think = bot_leg_stand1;
+        self.legs.nextthink = time + 0.1;
+      }
+      
       self.tetherOrg = self.patrolNode.origin;
       self.ai_state_next = ST_PTR;
       return;
@@ -84,6 +97,10 @@ void() ai_gev_ptr_travel_blocked={
     return;
   }
   if( ai_blocked_teleport() ){
+    if( self.legs ){
+      self.legs.think = bot_leg_stand1;
+      self.legs.nextthink = time + 0.1;
+    }
     self.tetherOrg = self.patrolNode.origin;
     self.ai_state_next = ST_PTR;
     return;
@@ -93,7 +110,7 @@ void() ai_gev_ptr_travel_blocked={
 /*
   STATE : PATROL USE TETHER
 */
-void() ai_gev_ptr_tether={
+void() ai_ptr_tether={
   //if( self.ai_state == ST_PTR_TETHER && self.ai_state_last != ST_PTR_TETHER ){
   //}
 };
@@ -101,7 +118,7 @@ void() ai_gev_ptr_tether={
 /*
   STATE : PATROL USE TETHER BLOCKED
 */
-void() ai_gev_ptr_tether_blocked={
+void() ai_ptr_tether_blocked={
   //if( self.ai_state == ST_PTR_TETHER_BLOCK && self.ai_state_last != ST_PTR_TETHER_BLOCK ){
  // }
 };

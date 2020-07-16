@@ -17,18 +17,6 @@ void( entity attacker ) ai_mech_sniper_react;
 void() ai_mech_sniper_die;
 void() ai_mech_sniper_die2;
 
-void() ai_mech_sniper_patrol;
-void() ai_mech_sniper_ptr_pause;
-void() ai_mech_sniper_ptr_travel_node;
-void() ai_mech_sniper_ptr_travel_blocked;
-void() ai_mech_sniper_ptr_tether;
-void() ai_mech_sniper_ptr_tether_blocked;
-
-void() mech_sniper_tether;
-void() mech_sniper_thr_pause;
-void() mech_sniper_thr_travel;
-void() mech_sniper_thr_travel_block;
-
 void() mech_sniper_combat;
 void() mech_sniper_com_moveStart;
 void() mech_sniper_com_moveExec;

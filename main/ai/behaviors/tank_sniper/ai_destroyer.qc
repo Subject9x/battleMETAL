@@ -51,17 +51,18 @@ void() ai_vec_dest={
   
   //ai state interface--------------------------------------------------------
   self.ai_state_stand = ai_spg_stand;
-  self.ai_state_patrol = ai_spg_patrol;
-  self.ai_state_patrol_pause = ai_spg_ptr_pause;
-  self.ai_state_patrol_travel_node = ai_spg_ptr_travel_node;
-  self.ai_state_patrol_travel_blocked = ai_spg_ptr_travel_blocked;
-  self.ai_state_patrol_tether = ai_spg_ptr_tether;
-  self.ai_state_patrol_tether_blocked = ai_spg_ptr_tether_blocked;
+  
+  self.ai_state_patrol = ai_patrol;
+  self.ai_state_patrol_pause = ai_ptr_pause;
+  self.ai_state_patrol_travel_node = ai_ptr_travel_node;
+  self.ai_state_patrol_travel_blocked = ai_ptr_travel_blocked;
+  self.ai_state_patrol_tether = ai_ptr_tether;
+  self.ai_state_patrol_tether_blocked = ai_ptr_tether_blocked;
     
-  self.ai_state_tether = spg_tether;
-  self.ai_state_tether_pause = spg_thr_pause;
-  self.ai_state_tether_travel = spg_thr_travel;
-  self.ai_state_tether_travel_block = spg_thr_travel_block;
+  self.ai_state_tether = ai_tether;
+  self.ai_state_tether_pause = ai_thr_pause;
+  self.ai_state_tether_travel = ai_thr_travel;
+  self.ai_state_tether_travel_block = ai_thr_travel_block;
   
   self.ai_state_combat = spg_combat;
   self.ai_state_combat_moveStart = spg_com_moveStart;

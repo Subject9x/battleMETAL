@@ -15,18 +15,6 @@ void() ai_vec_dest_die;
 void( entity attacker ) ai_spg_react;
 void() ai_spg_stand;
 
-void() ai_spg_patrol;
-void() ai_spg_ptr_pause;
-void() ai_spg_ptr_travel_node;
-void() ai_spg_ptr_travel_blocked;
-void() ai_spg_ptr_tether;
-void() ai_spg_ptr_tether_blocked;
-
-void() spg_tether;
-void() spg_thr_pause;
-void() spg_thr_travel;
-void() spg_thr_travel_block;
-
 void() spg_combat;
 void() spg_com_moveStart;
 void() spg_com_moveExec;

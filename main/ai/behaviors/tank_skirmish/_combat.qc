@@ -22,10 +22,16 @@ void() tank_sk_combat={
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
       if( self.patrolNode ){
-        self.goalentity = self.patrolNode;
-        self.tetherStatus = TETHER_NODE;
-        self.ai_state_next = ST_PTR;
-        return;
+        if( self.tetherStatus == TETHER_NODE ){
+          self.goalentity = self.patrolNode;
+          self.ai_state_next = ST_THR;
+          return;
+        }
+        if( self.tetherStatus == TETHER_PATROL ){
+          self.goalentity = self.patrolNode;
+          self.ai_state_next = ST_PTR;
+          return;
+        }
       }
       self.ai_state_next = ST_STAND;
       self.ai_dampen = 0;
@@ -150,8 +156,16 @@ void() tank_sk_com_moveEnd={
       return;
     }
     if( self.patrolNode ){
-      self.ai_state_next = ST_PTR;
-      return;
+      if( self.tetherStatus == TETHER_NODE ){
+        self.goalentity = self.patrolNode;
+        self.ai_state_next = ST_THR;
+        return;
+      }
+      if( self.tetherStatus == TETHER_PATROL ){
+        self.goalentity = self.patrolNode;
+        self.ai_state_next = ST_PTR;
+        return;
+      }
     }
     self.ai_state_next = ST_STAND;
     return;
