@@ -108,6 +108,7 @@ entity() node_recall_setup={
 */
 void() ai_node_check={
   local entity nexNode;
+  local float contentCache;
   if( self.data_idx == TRUE ){
     self.partTypeId = 1;
   }
@@ -146,6 +147,8 @@ void() ai_node_check={
       minDist = AI_RANGE_M;
       itr = 0;
       checkAng = '0 0 0';
+      contentCache = self.dphitcontentsmask;
+      self.dphitcontentsmask = (DPCONTENTS_BOTCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP);
       while( itr < 12 ){
         checkAng_y = itr * 30;
         makevectors(checkAng);
@@ -155,6 +158,7 @@ void() ai_node_check={
         itr = itr + 1;
       }
       self.ai_view = max(minDist / 12, 100);
+      self.dphitcontentsmask = contentCache;
     }
     cons_logAVector(self.classname, self.origin); //debug
     cons_logAFloat(self.classname, self.ai_view);

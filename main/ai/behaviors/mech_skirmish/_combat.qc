@@ -356,7 +356,7 @@ void() mech_sk_com_moveExec={
   //------------------------------------------------------------------
   if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
     nodeMove = ai_check_node_radius(self);
-    if(nodeMove > 0.99){
+    if(nodeMove > 0.75){
       nodeCheck = ai_node_to_target(self);
       if(nodeCheck != self.patrolNode){
         if( (vlen(nodeCheck.origin - self.origin) <= nodeCheck.ai_view) && (ai_check_node_radius(self) > 0.95)){

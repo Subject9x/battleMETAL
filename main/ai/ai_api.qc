@@ -418,45 +418,6 @@ entity() ai_goal_offset_node={
   return offsetNode;
 };
 
-
-//AI MAP FUNCS
-/*
-  called by any AI unit that needs to spawn onto the map.
-  This function delegates HOW the AI should be spawned based on its starting parameters.
-  
-  if the AI is to be triggered by another object, then postpone full ini into the use() function
-  else
-  fall-through and create the ai
-
-  now macro_ai_setup - Roohr
-
-float( void() ai_ini ) ai_unit_setup={
-  
-  self.wait = 1;
-  if( self.delay > 0 ){
-    //defaults the wait value in case map didnt specify
-    self.wait = self.delay;
-  }
-  if( (!self.nextVecChoice) ){
-    //safety check
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.05;
-    return TRUE;
-  }
-  
-  if( (self.spawnflags & TRIGGER_ME) && (self.targetname) ){
-    //checking the targetname is mostly for validation
-    self.use = ai_unit_make_trigger;
-    self.think = ai_ini;
-    self.spawnflags = self.spawnflags - (self.spawnflags & TRIGGER_ME);
-    return TRUE;
-  }
-  //fall-through, AI is cleared to happen
-  self.use = multi_trigger;
-  return FALSE;
-};
-*/
-
 void() ai_unit_make_trigger={
   self.spawnflags = self.spawnflags - TRIGGER_ME;
   self.use = SUB_Null;  //triggered
@@ -519,7 +480,7 @@ entity(entity targ) ai_node_to_target={
   }
   dist = vlen(targ.origin - checkNode.origin);
   
-  while( (checkNode != world) ){
+  /*while( (checkNode != world) ){
     distComp = vlen(checkNode.origin - targ.origin);
     checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
     tracebox(checkNode.origin, self.mins, self.maxs, targ.origin, MOVE_NORMAL, targ);
@@ -536,9 +497,9 @@ entity(entity targ) ai_node_to_target={
     else{
       checkNode = checkNode.partNext;
     }
-  }
+  }*/
   
-  
+  found = checkNode;
   if( found ){
     return found;
   }
@@ -656,20 +617,18 @@ entity() ai_node_tether_find={
   dist = AI_RANGE_L;
   
   tMins = self.mins;
-  tMins_z = tMins_z * 0.67;
-  cons_logAString("FOR ENT", self.classname);  //debug
-  cons_logAVector("FOR ENT", self.origin);  //debug
+  tMins_z = tMins_z * 0.5;
   //first query existing nodes to see if a tether exists nearest the AI.
   for(findNode = nextent(world); findNode != world; findNode = nextent(findNode)){
     if( findNode.classname != "ai_node_tether" ){
       continue;
     }
     ang = vectoangles(findNode.origin - (self.origin + '0 0 5'));
-    if( ang_x <= 67 || ang_x >= 293) {
+    if( ang_x <= 67 || ang_x >= 275) {
       //tether nodes need to be on relatively flat planes because a bot cannot climb a wall or slope to reach a tether node.
       testDist = vlen(findNode.origin - (self.origin + '0 0 5'));
       if( testDist < dist ){
-        tracebox((self.origin + '0 0 5'), tMins, self.maxs, findNode.origin, MOVE_NORMAL, self);
+        traceline( self.origin, findNode.origin, MOVE_NORMAL, self);
         if( trace_fraction == 1 ){
           dist = testDist;
           found = findNode;

@@ -15,7 +15,7 @@ Overview:
 void() mech_sk_tether={
   if(self.ai_state==ST_THR && self.ai_state_last != ST_THR){
     //check if out of node bounds
-    if( ai_check_node_radius(self) ){
+    if( ai_check_node_radius(self) > 1.0 ){
       self.ai_state_next = ST_THR_TRAVEL;
       return;
     }
@@ -56,7 +56,7 @@ void() mech_sk_thr_travel={
     return;
   }
   if( time > self.ai_movewait ){
-    if( ai_check_node_radius(self) ){
+    if( ai_check_node_radius(self) <= 0.75 ){
       self.ai_state_next = ST_THR_PAUSE;
       return;
     }
