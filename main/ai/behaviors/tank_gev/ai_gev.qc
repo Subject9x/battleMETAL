@@ -94,8 +94,10 @@ void() ai_gev_stand={
   
   if( self.patrolNode != world ){
     if( time > self.pausetime ){
-      self.ai_state_next = ST_PTR;
-      return;
+      if( self.patrolNode.classname == "ai_node"){
+        self.ai_state_next = ST_PTR;
+        return;
+      }
     }
   }
   

@@ -271,11 +271,11 @@ void( float isNew, float entFlags ) data_weather;
 */
 void() map_hazard_rad_dlights={
   makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 25, '0.8 0.8 0', 0, "", 0);
+  //adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 25, '0.8 0.8 0', 0, "", 0);
 };
 void() map_hazard_stat_dlights={
   makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 33, '0 1 0.8', 0, "", 0);
+  //adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 33, '0 1 0.8', 0, "", 0);
 };
 
 void() hazard_rad_think={
@@ -294,7 +294,7 @@ void() hazard_rad_think={
   partclPoint_x = partclPoint_x + (self.maxs_x * rando_x);
   partclPoint_y = partclPoint_y + (self.maxs_x * rando_y);
   
-  if( random() > 0.67 ){
+  if( random() > 0.9 ){
     te_field_rad(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
   }
   
@@ -326,7 +326,7 @@ void() hazard_crs_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  if( random() > 0.6 ){
+  if( random() > 0.9 ){
     te_field_mineral(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
   }
   
@@ -359,7 +359,7 @@ void() hazard_quant_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  if( random() > 0.6 ){
+  if( random() > 0.9 ){
     te_field_quantum( partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)) );
   }
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 

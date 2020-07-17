@@ -249,7 +249,7 @@ void() ctrl_component_die={
   if( self.deadflag <= DEAD_NO ){
     piece = self;
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
-    
+    self.owner.critBits = self.owner.critBits & self.partTypeId;
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW; 
     self.movetype = MOVETYPE_NONE;
@@ -309,7 +309,7 @@ void() ctrl_arm_die={
   local entity c;
   if( self.deadflag == DEAD_NO ){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
-  
+    self.owner.critBits = self.owner.critBits & self.partTypeId;
     if( self.partTypeId == M_ARM_LEFT && !(self.owner.damageValue & M_ARM_LEFT) ){
       self.owner.damageValue = self.owner.damageValue | M_ARM_LEFT;
     }

@@ -17,6 +17,9 @@ Overview:
 */
 void() ai_tether={
   if(self.ai_state==ST_THR && self.ai_state_last != ST_THR){
+    self.goalentity = self.patrolNode;
+    self.tetherOrg = self.goalentity.origin;
+    self.tetherStatus = TETHER_NODE;
     //check if out of node bounds
     if( ai_check_node_radius(self) > 1.0 ){
       self.ai_state_next = ST_THR_TRAVEL;
@@ -37,15 +40,19 @@ void() ai_tether={
 */
 void() ai_thr_pause={
   if(self.ai_state==ST_THR_PAUSE && self.ai_state_last != ST_THR_PAUSE){
-    if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-      //prepare for war....
-      self.ai_state_next = ST_COMBAT;
-      return;
-    }
     if( self.legs ){
       self.legs.attack_state = TR_NORM;
       self.legs.think = bot_leg_stand1;
       self.legs.nextthink = time + 0.1;
+    }
+    if( self.torsoCenter ){
+      self.torsoCenter.attack_state = TR_YAW;
+      self.torsoCenter.ai_dir = self.angles_y;
+    }
+    if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+      //prepare for war....
+      self.ai_state_next = ST_COMBAT;
+      return;
     }
     self.ai_movewait = time + 30;
     return;

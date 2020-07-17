@@ -93,6 +93,8 @@ Overview:
 .entity torsoRight;
 .entity armRight;  //arms can be optional
 
+.float critBits;
+
 .float isActive;
 
 .float was_hit; //used for hit direction calculation mostly
@@ -102,5 +104,4 @@ Overview:
 .float targetEntId;
 .float entId; 
 .void( float critHits ) te_critical_hit;  //interface for unit critical hit events
-.float critBits;
 #endif

@@ -14,7 +14,17 @@ float AI_VOICE_TIME = 32;
 
 //this works to balance AI mech stats vs player mech stats.
 float AI_ADJUST_ENERGY = 0.85;
-float AI_ADJUST_SHIELD = 0.85;
+float AI_ADJUST_SHIELD = 0.85;  //rate, this is applied to .shieldRate
+
+//Armor Values
+//hp = hp * AI_ARMOR
+//AI mechs share initial stats with the player, so we have to detune them now.
+float AI_ARMOR_MECH = 0.65;
+
+//Shield Values
+//shield = shield * AI_SHIELD
+//AI mechs share initial stats with player, so we have to detune them now.
+float AI_SHIELD_MECH = 0.75;  //applied to .shieldMax
 
 //AI TH_REACT cooldown
 float AI_REACT_ROK = 2;
@@ -102,16 +112,6 @@ float AI_CNV_RATE_ROK  = 0.15;
 float AI_CNV_RATE_REG  = 0.2;
 float AI_CNV_RATE_VET  = 0.25;
 float AI_CNV_RATE_ACE  = 0.3;
-
-//Armor Values
-//hp = hp * AI_ARMOR
-//AI mechs share initial stats with the player, so we have to detune them now.
-float AI_ARMOR_MECH = 0.55;
-
-//Shield Values
-//shield = shield * AI_SHIELD
-//AI mechs share initial stats with player, so we have to detune them now.
-float AI_SHIELD_MECH = 0.85;
 
 //ai_leading ratings, how well an ai tracks a slippery target
 float AI_LEAD_ACE = 0.25;

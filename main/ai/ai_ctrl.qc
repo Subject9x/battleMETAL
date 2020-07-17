@@ -216,7 +216,7 @@ void() ai_patrol_state_frame={
   
   cacheOrg = self.goalentity.origin;
   self.lastorigin = self.origin;
-  if( self.tetherStatus == TETHER_NODE ){
+  if( self.tetherStatus == TETHER_NODE || self.tetherStatus == TETHER_PATROL ){
     distLeft = vlen(self.goalentity.origin - self.origin); 
   }
   else{
@@ -336,8 +336,10 @@ void() ai_patrol_state_frame={
     
   }
   else{
-    self.patrolNode = world;
-    self.tetherStatus = TETHER_NODE;
+    if( self.patrolNode.classname == "ai_node"){
+      self.patrolNode = world;
+      self.tetherStatus = TETHER_NODE;
+    }
   }
   if( self.goalentity.pausetime && nextNode != self.goalentity ){
     self.pausetime = self.goalentity.pausetime;
@@ -608,8 +610,6 @@ void() ai_setup_patrol={
       //AI is an area-tethered type
       node = ai_node_tether_find();
       if( node ){
-        self.tetherStatus = TETHER_NODE;
-        self.tetherOrg = node.origin;
         self.patrolNode = node;
         self.ai_state_next = ST_THR;
         if( ai_check_node_radius(self) > 1.0 ){
@@ -618,6 +618,7 @@ void() ai_setup_patrol={
            setorigin(self, self.origin);
         }
         if( cvar("developer") ){
+          cons_logAVector(self.classname, self.origin);
           cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
           cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);
           cons_logAString("-------------------", "-------------");

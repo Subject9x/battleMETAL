@@ -466,56 +466,46 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   can feasibly reach.
 */
 entity(entity targ) ai_node_to_target={
-  local entity checkNode;
+  local entity hold;
   local entity found;
-  local entity head;
   local float dist;
   local float distComp;
   
-  if( self.patrolNode.owner ){
-    checkNode = self.patrolNode.owner.partNext;
+  dist = ai_check_node_radius(self);
+  distComp = ai_check_node_radius(targ);
+
+  if( distComp <= dist* 1.25 ){
+    return self.patrolNode;
   }
-  else{
-    checkNode = self.patrolNode;
-  }
-  dist = vlen(targ.origin - checkNode.origin);
-  
-  /*
-    Idea: check of enemy is closer to next or last node,
-      if so, set as destination,
-      also check for player LoS / distance
-  
-  */
-  
-  /*while( (checkNode != world) ){
-    distComp = vlen(checkNode.origin - targ.origin);
-    checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
-    tracebox(checkNode.origin, self.mins, self.maxs, targ.origin, MOVE_NORMAL, targ);
-    if( trace_fraction >= 0.9 || trace_ent == targ || (trace_ent.flags&FL_UNIT)){
-      if( distComp < dist ){
-        dist = distComp;
-        found = checkNode;
+  found = world;
+  if(self.patrolNode.partNext){
+    hold = self.patrolNode;
+    self.patrolNode = self.patrolNode.partNext;
+      distComp = ai_check_node_radius(targ);
+      if( distComp > (dist * 1.25) ){
+        tracebox(self.origin, self.mins * 0.75, self.maxs * 0.75, self.patrolNode.origin, MOVE_NORMAL, self);
+        if(trace_fraction == 1.0 || trace_ent == targ ){
+          found = self.patrolNode;
+        }
       }
+    self.patrolNode = hold;
+  }
+  if( !found ){
+    if(self.patrolNode.partPrev){
+      hold = self.patrolNode;
+      self.patrolNode = self.patrolNode.partPrev;
+        distComp = ai_check_node_radius(targ);
+        if( distComp > (dist * 1.25) ){
+          tracebox(self.origin, self.mins * 0.75, self.maxs * 0.75, self.patrolNode.origin, MOVE_NORMAL, self);
+          if(trace_fraction == 1.0 || trace_ent == targ ){
+            found = self.patrolNode;
+          }
+        }
+      self.patrolNode = hold;
     }
-    checkNode.dphitcontentsmask = 0;
-    if(checkNode.partNext == checkNode.owner ){
-      checkNode = world;
-    }
-    else{
-      checkNode = checkNode.partNext;
-    }
-  }*/
+  }
   
-  found = checkNode;
-  if( found ){
-    return found;
-  }
-  else{
-    if( vlen(checkNode.origin - targ.origin) <= AI_RANGE_L ){
-      return checkNode;
-    }
-  }
-  return world;
+  return found;
 };
 
 /*

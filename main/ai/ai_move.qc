@@ -78,7 +78,10 @@ float() ai_move_charge={
     status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
   }
   else{
+    yawCache = self.yaw_speed;
+    self.yaw_speed = yawCache * 2;
     ChangeYaw();
+    self.yaw_speed = yawCache;
   }
   ai_attack();
   return status;
@@ -126,7 +129,10 @@ float() ai_move_charge_left={
     status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
   }
   else{
+    yawCache = self.yaw_speed;
+    self.yaw_speed = yawCache * 2;
     ChangeYaw();
+    self.yaw_speed = yawCache;
   }
   ai_attack();
   return status;
@@ -174,7 +180,10 @@ float() ai_move_charge_right={
     status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
   }
   else{
+    yawCache = self.yaw_speed;
+    self.yaw_speed = yawCache * 2;
     ChangeYaw();
+    self.yaw_speed = yawCache;
   }
   ai_attack();
   return status;
@@ -221,7 +230,10 @@ float() ai_move_strafe_left={
     status = walkmove( self.ai_dir, (self.data_speed_strafe * self.ai_dampen) );
   }
   else{
+    yawCache = self.yaw_speed;
+    self.yaw_speed = yawCache * 2;
     ChangeYaw();
+    self.yaw_speed = yawCache;
   }
 
   ai_attack();
@@ -268,7 +280,10 @@ float() ai_move_strafe_right={
     status = walkmove( self.ai_dir, self.data_speed_strafe * self.ai_dampen);
   }
   else{
+    yawCache = self.yaw_speed;
+    self.yaw_speed = yawCache * 2;
     ChangeYaw();
+    self.yaw_speed = yawCache;
   }
   ai_attack();
   return status;
@@ -582,7 +597,6 @@ float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node=
   
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.patrolState = 0;
-    self.tetherStatus = TETHER_NODE;
     self.tetherOrg = self.goalentity.origin;
     self.ai_dampen = 1;
     
@@ -647,9 +661,7 @@ void() ai_move_node_radius={
   local entity node;
   local float oldPatrolState;
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-     
     self.patrolState = 0;
-    self.tetherStatus = TETHER_NODE;
     self.tetherOrg = self.goalentity.origin;
     self.ai_dampen = 1;
     
@@ -673,7 +685,11 @@ void() ai_move_node_radius={
         return;
       }
       if( self.patrolNode ){
-        self.ai_state_next = ST_PTR;
+        if( self.patrolNode.classname == "ai_node" ){
+          self.ai_state_next = ST_PTR;
+          return;
+        }
+        self.ai_state_next = ST_THR;
         return;
       }
       self.ai_state_next = ST_STAND;
@@ -687,9 +703,6 @@ void() ai_move_node_radius={
   }
   
 };
-
-
-
 
 
 /*

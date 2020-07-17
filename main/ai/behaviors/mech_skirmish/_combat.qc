@@ -72,7 +72,7 @@ void() mech_sk_combat={
       return;
     }
     
-    combat_roll = random() * 1;
+    combat_roll = random() * 1.0;
     //AI is in bounds, but target is out of bounds
     if( enemy_dist > 1.0 && combat_dist <= 1.0){
       //AI is on edge of bounds but inside radius
@@ -183,7 +183,7 @@ void() mech_sk_combat={
     //target < 1.0
     //combat_dist < 1.0
     //get fighting
-    if(combat_dist < 0.33 ){
+    if(combat_dist <= 0.4 ){
       if(enemy_infront){
         if( enemy_range > 0.25 ){
           self.ai_movedist = 14;
@@ -212,7 +212,7 @@ void() mech_sk_combat={
       self.ai_move_next = MOVE_STAND_FACE;
       return;
     }
-    if(combat_dist < 0.66 ){
+    if(combat_dist <= 0.7 ){
       if(enemy_infront){
         if( enemy_range < 0.5 ){
           if( self.ai_rank == AI_RANK_ROK ){
@@ -420,6 +420,7 @@ void() mech_sk_com_blocked={
     self.goalentity = self.patrolNode;
     self.ai_move_next = MOVE_NODE_RADIUS;
     self.ai_state_next = ST_COM_MOVE_START;
+    self.ai_movewait = time + 15;
     return;
   }
  //------------------------------------------------------------------

@@ -247,6 +247,7 @@ void() ai_leg_control={
         self.ideal_yaw = self.angles_y;
         break;
     }
+    self.ideal_yaw = anglemod(self.ideal_yaw);
     ChangeYaw();
     self.v_angle = self.angles;
   self = legOwner;

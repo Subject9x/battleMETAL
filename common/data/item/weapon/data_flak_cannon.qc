@@ -63,6 +63,7 @@ void() data_ini_attack_flak_={
   local vector dir;
   local float totes;
   local float damage;
+  local float damageBuff;
       
   cacheSpread = self.spreadDefault;
   self.spreadDefault = '0 0 0';
@@ -80,6 +81,10 @@ void() data_ini_attack_flak_={
   
   src = self.origin + v_forward*2;
   dir = normalize(FIRE_ENDPOINT - src);
+  damageBuff = 1;
+  if( vlen(FIRE_ENDPOINT - src) <= (self.w_range * 0.5)){
+    damageBuff = 2;
+  }
   while (totes > 0){
     direction = dir + crandom()*self.spreadDefault_x*v_right + crandom()*self.spreadDefault_y*v_up;
     traceline (src, src + direction*self.w_range, FALSE, self.owner);
@@ -89,12 +94,12 @@ void() data_ini_attack_flak_={
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0){
         impactStyle = IMPACT_SHIELD;
-        t_damage_shield(trace_ent, self,self.owner, (self.damageValue * 0.9), trace_endpos, FALSE);
+        t_damage_shield(trace_ent, self,self.owner, ((self.damageValue * damageBuff)* 0.9), trace_endpos, FALSE);
         client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), trace_endpos, '0 0 0', 1 );
       }
       else{
         impactStyle = IMPACT_ARMOR;
-        damage = self.damageValue * 0.8;
+        damage = (self.damageValue * damageBuff) * 0.8;
         if( (trace_ent.data_type == DATA_MECH) || (trace_ent.data_type == DATA_VEHC) ){
           if( trace_ent.vec_size == 1){
             damage = self.damageValue;

@@ -77,6 +77,7 @@ float enemy_vis;      //enum, Line of Sight to target
 float enemy_hunt;     //potentially deprecated.
 float combat_roll;    //per-state-frame dice roll for random movement selection.
 vector ai_angle;      //used for temporary angle calcs that preclude overriding the AI's current yaw
+float yawCache;       //used to quickly cache yaw to do some per-frame mods
 //////////////////this are set every frame by every AI, do not rely on these OUTSIDE the function they're called (like all the trace_* globals)
 
 float side_crit;
