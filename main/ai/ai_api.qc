@@ -480,6 +480,13 @@ entity(entity targ) ai_node_to_target={
   }
   dist = vlen(targ.origin - checkNode.origin);
   
+  /*
+    Idea: check of enemy is closer to next or last node,
+      if so, set as destination,
+      also check for player LoS / distance
+  
+  */
+  
   /*while( (checkNode != world) ){
     distComp = vlen(checkNode.origin - targ.origin);
     checkNode.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);

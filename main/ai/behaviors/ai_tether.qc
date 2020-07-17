@@ -27,6 +27,7 @@ void() ai_tether={
       self.ai_state_next = ST_COMBAT;
       return;
     }
+    self.ai_state_next = ST_STAND;
     return;
   }
 };
@@ -36,12 +37,30 @@ void() ai_tether={
 */
 void() ai_thr_pause={
   if(self.ai_state==ST_THR_PAUSE && self.ai_state_last != ST_THR_PAUSE){
-    
+    if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+      //prepare for war....
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+      self.legs.think = bot_leg_stand1;
+      self.legs.nextthink = time + 0.1;
+    }
+    self.ai_movewait = time + 30;
+    return;
   }
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
     self.ai_state_next = ST_COMBAT;
     return;
+  }
+  if( time > self.ai_movewait ){
+    if( ai_check_node_radius(self) > 1.0 ){
+      self.ai_state_next = ST_THR_TRAVEL;
+      return;
+    }
+    self.ai_state_next = ST_STAND;
   }
 };
 
@@ -56,6 +75,11 @@ void() ai_thr_travel={
     self.tetherStatus = TETHER_NODE;
     self.patrolState = 0;
     self.ai_movewait = time + 30;
+    if(self.legs){
+      self.legs.attack_state = TR_GOAL;
+      self.legs.think = bot_leg_walk1;
+      self.legs.nextthink = time + 0.1;
+    }
     return;
   }
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
@@ -85,7 +109,7 @@ void() ai_thr_travel={
 */
 void() ai_thr_travel_block={
   if(self.ai_state==ST_THR_TRAVEL_BLOCK && self.ai_state_last != ST_THR_TRAVEL_BLOCK){
-  
+    
     return;
   }
 };

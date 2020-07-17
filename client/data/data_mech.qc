@@ -8,6 +8,8 @@ Overview:
 
 
 void( float dataID ) data_sync_new_mech_ai={
+  weaponList = self;  //prepare to build unit's weapon list
+  self.hardpoint_cnt = 0;
   switch( dataID ){
     case UID_MECH_balaket:
       data_ini_balaket_();

@@ -111,31 +111,30 @@ void( float critical ) sendevent_mech_ai_crit={
   pointsound( self.origin, "sound/fx_boom.ogg", 0.5 + (random() * 0.5) , ATTN_NORM );
 };
 
-void(float critBits) sendevent_mech_burn={  
-  local vector offset;
+void(float criticalHits) sendevent_mech_burn={  
   local vector offset;
   
-  if( (critBits & M_TOR_LEFT) ){
+  if( (criticalHits & M_TOR_LEFT) ){
     offset = self.torsoLeft.origin;
     te_mech_crit( offset, '0 0 10');
   }
-  if( (critBits & M_TOR_RIGHT) ){
+  if( (criticalHits & M_TOR_RIGHT) ){
     offset = self.torsoRight.origin;
     te_mech_crit( offset, '0 0 10');
   }
-  if( (critBits & M_ARM_LEFT) ){
+  if( (criticalHits & M_ARM_LEFT) ){
     if( !(self.damageValue & M_TOR_LEFT) ){
       offset = self.armLeft.origin;
       te_mech_crit( offset, '0 0 10');
     }
   }
-  if( (critBits & M_ARM_RIGHT) ){
+  if( (criticalHits & M_ARM_RIGHT) ){
     if( !(self.damageValue & M_TOR_RIGHT) ){
     offset = self.armRight.origin;
       te_mech_crit( offset, '0 0 10');
     }
   }
-  if( (critBits & M_LEGS) ){
+  if( (criticalHits & M_LEGS) ){
     offset = self.legs.origin + '0 0 -10';
     te_mech_crit( offset, '0 0 10');
   }
@@ -146,7 +145,6 @@ void(float critBits) sendevent_mech_burn={
 */
 void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local entity this;
-  local entity weps;
   local float prevShield;
   local vector turretAng;
   local float critical;
@@ -178,7 +176,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.next_wepn6 = ReadByte();
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
+    self.next_wepn9 = ReadByte(); 
+    
     newName = ReadString();
     setorigin(self, self.origin);
     if( isNew ){ 

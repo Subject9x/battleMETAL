@@ -208,9 +208,9 @@ void() sendent_setup_weapons={
   weps = self.w_slot;
   while( weps != world ){
     self = weps;
+      self.owner = this;
       sendent_set_weapon();
       initialize_data_item_(self.data_idx);
-      self.owner = this;
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
       setsize(self, '-1 -1 -1', '1 1 1');

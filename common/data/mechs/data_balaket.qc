@@ -56,12 +56,6 @@ void() data_ini_balaket_={
 //=====================================
  
 //MECH COMPONENTS====================
-#ifdef CSQC
-  if( (self.flags & FL_MONSTER) ){
-    self.hardpoint_cnt = 5;
-    weaponList = self;
-  }
-#endif
 
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );

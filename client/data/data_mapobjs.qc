@@ -435,10 +435,6 @@ void(float dataIdx) hazard_ini_static={
     self.nextthink = servertime + (random() * self.wait);
     self.render_dlights = map_hazard_stat_dlights;
   }
-  self.renderflags = self.renderflags | RF_MODELLIGHT;
-  self.modellight_ambient = '1 1 1';
-  self.modellight_diffuse = '1 0 1';
-  self.modellight_dir = '90 0 0';
 };
 
 void(float dataIdx) hazard_ini_quant={

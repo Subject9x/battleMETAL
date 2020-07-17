@@ -55,12 +55,6 @@ void() data_ini_matok_={
 //=====================================
  
 //MECH COMPONENTS====================
-#ifdef CSQC
-  if( (self.flags & FL_MONSTER) ){
-    self.hardpoint_cnt = 5;
-    weaponList = self;
-  }
-#endif
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', '0 6 0' );
  

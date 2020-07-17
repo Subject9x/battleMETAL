@@ -371,53 +371,53 @@ void() ai_thr_travel_block;
 //DEBUG functions
 //when you need the var-name for a global var value.
 string(float stateId) dbg_state={
-  local string s;
-  s = "null";
+  local string val;
+  val = "null";
   switch(stateId){
     case ST_STAND:
-      s =  "ST_STAND";
+      val =  "ST_STAND";
       break;
     case ST_PTR:
-      s =  "ST_PTR";
+      val =  "ST_PTR";
       break;
     case ST_PTR_PAUSE:
-      s =  "ST_PTR_PAUSE";
+      val =  "ST_PTR_PAUSE";
       break;
     case ST_PTR_TRAVEL_NODE:
-      s =  "ST_PTR_TRAVEL_NODE";
+      val =  "ST_PTR_TRAVEL_NODE";
       break;
     case ST_PTR_TRAVEL_NODEBLOCK:
-      s =  "ST_PTR_TRAVEL_NODEBLOCK";
+      val =  "ST_PTR_TRAVEL_NODEBLOCK";
       break;
     case ST_THR:
-      s =  "ST_THR";
+      val =  "ST_THR";
       break;
     case ST_THR_PAUSE:
-      s =  "ST_THR_PAUSE";
+      val =  "ST_THR_PAUSE";
       break;
     case ST_THR_TRAVEL:
-      s =  "ST_THR_TRAVEL";
+      val =  "ST_THR_TRAVEL";
       break;
     case ST_THR_TRAVEL_BLOCK:
-      s =  "ST_THR_TRAVEL_BLOCK";
+      val =  "ST_THR_TRAVEL_BLOCK";
       break;
     case ST_COMBAT:
-      s =  "ST_COMBAT";
+      val =  "ST_COMBAT";
       break;
     case ST_COM_MOVE_START:
-      s =  "ST_COM_MOVE_START";
+      val =  "ST_COM_MOVE_START";
       break;
     case ST_COM_MOVE_EXEC:
-      s =  "ST_COM_MOVE_EXEC";
+      val =  "ST_COM_MOVE_EXEC";
       break;
     case ST_COM_MOVE_END:
-      s =  "ST_COM_MOVE_END";
+      val =  "ST_COM_MOVE_END";
       break;
     case ST_COM_MOVE_BLOCK:
-      s =  "ST_COM_MOVE_BLOCK";
+      val =  "ST_COM_MOVE_BLOCK";
       break;
   }
-  return s;
+  return val;
 }
 string(float moveId) dbg_move={
   switch(moveId){
