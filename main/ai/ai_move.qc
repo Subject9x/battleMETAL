@@ -46,9 +46,11 @@ float() ai_move_charge={
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_wishSpeed = self.data_speed_forward;
     self.ai_movedist = (self.ai_movedist * self.ai_wishSpeed) * 10;
-    self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
     ai_angle = self.angles;
-    ai_angle_y = self.ai_dir;
+    if( ai_check_face( self.enemy, 0.85, FALSE) ){
+      self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
+      ai_angle_y = self.ai_dir;
+    }
     makevectors(ai_angle);
     status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed);
     

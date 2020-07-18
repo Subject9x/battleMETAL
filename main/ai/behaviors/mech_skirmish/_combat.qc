@@ -209,19 +209,19 @@ void() mech_sk_combat={
         return;
       }
       self.ai_movewait = random() * (self.ai_rank * 1.5);
-      self.ai_move_next = MOVE_STAND_FACE;
+      self.ai_move_next = MOVE_SNAPSHOT;
       return;
     }
     if(combat_dist <= 0.7 ){
       if(enemy_infront){
-        if( enemy_range < 0.5 ){
+        if( enemy_range <= 0.5 ){
           if( self.ai_rank == AI_RANK_ROK ){
-            self.ai_movewait = 3;
+            self.ai_movewait = 8;
             self.ai_move_next = MOVE_STAND_FACE;
             return;
           }
           if( self.ai_rank == AI_RANK_REG ){
-            self.ai_movedist = 4;
+            self.ai_movedist = 8;
             if( combat_roll < 0.6 ){
               self.ai_move_next = MOVE_BACK_LEFT;
             }
@@ -230,38 +230,90 @@ void() mech_sk_combat={
             }
             return;
           }
-        }
-        if( self.ai_rank == AI_RANK_ROK ){
-          if( combat_roll > 0.33 ){
-            self.ai_movewait = 5;
-            self.ai_move_next = MOVE_STAND_FACE;
+          if( combat_roll <=0.25 ){
+            self.ai_movedist = 6;
+            self.ai_move_next = MOVE_CIRCLE_RIGHT;
             return;
           }
-          self.ai_movedist = 5;
-          self.ai_move_next = MOVE_CHARGE;
-          return;
-        }
-        if( combat_roll < 0.25 ){
-          self.ai_movedist = 8;
+          if( combat_roll <=0.5 ){
+            self.ai_movedist = 6;
+            self.ai_move_next = MOVE_STRAFE_LEFT;
+            return;
+          }
+          if( combat_roll <=0.75 ){
+            self.ai_movedist = 6;
+            self.ai_move_next = MOVE_STRAFE_RIGHT;
+            return;
+          }
+          self.ai_movedist = 6;
           self.ai_move_next = MOVE_CIRCLE_LEFT;
           return;
         }
-        if( combat_roll < 0.5 ){
-          self.ai_movedist = 10;
+        if( self.ai_rank == AI_RANK_ROK ){
+          if( combat_roll > 0.33 ){
+            self.ai_movewait = 7;
+            self.ai_move_next = MOVE_STAND_FACE;
+            return;
+          }
+          self.ai_movedist = 7;
+          self.ai_move_next = MOVE_CHARGE;
+          return;
+        }
+        if( combat_roll <= 0.25 ){
+          self.ai_movedist = 5;
+          self.ai_move_next = MOVE_CIRCLE_LEFT;
+          return;
+        }
+        if( combat_roll <= 0.5 ){
+          self.ai_movedist = 5;
           self.ai_move_next = MOVE_STRAFE_RIGHT;
           return;
         }
-        if( combat_roll < 0.75 ){
-          self.ai_movedist = 10;
+        if( combat_roll <= 0.75 ){
+          self.ai_movedist = 5;
           self.ai_move_next = MOVE_STRAFE_LEFT;
           return;
         }
-        self.ai_movedist = 8;
+        self.ai_movedist =  5;
         self.ai_move_next = MOVE_CIRCLE_RIGHT;
         return;
       }
+      //enemy not in front;
+      if(self.ai_rank==AI_RANK_ROK){
+        if(combat_roll < 0.3 ){
+          self.ai_movewait = 4;
+          self.ai_move_next = MOVE_SNAPSHOT;
+          return;
+        }
+        self.ai_movewait = 6;
+        self.ai_move_next = MOVE_STAND_FACE;
+        return;
+      }
+      if(self.ai_rank < AI_RANK_ACE ){
+        if( combat_roll <= 0.5 ){
+          self.ai_movedist = 4;
+          self.ai_move_next = MOVE_STRAFE_LEFT;
+          return;
+        }
+        self.ai_movedist = 4;
+        self.ai_move_next = MOVE_STRAFE_RIGHT;
+        return;
+      }
+      if( combat_roll <= 0.3 ){
+        self.ai_movedist = 4;
+        self.ai_move_next = MOVE_CHARGE_RIGHT;
+        return;
+      }
+      if( combat_roll <= 0.7 ){
+        self.ai_movedist = 4;
+        self.ai_move_next = MOVE_CHARGE_LEFT;
+        return;
+      }
+      self.ai_movedist = 4;
+      self.ai_move_next = MOVE_CHARGE;
+      return;
     }
-    if(combat_dist < 1.0 ){
+    if(combat_dist <= 1.0 ){
       if(enemy_infront){
         if(enemy_range > 0.33){
           if( combat_roll > 0.5 ){
@@ -334,6 +386,7 @@ void() mech_sk_combat={
       }
     }
     self.ai_move_next = MOVE_NODE_RADIUS;
+    self.ai_movewait = 15;
     return;
   //---------------------------------------------------------------------------
   }
