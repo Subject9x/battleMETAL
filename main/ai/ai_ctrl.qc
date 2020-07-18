@@ -581,9 +581,6 @@ void() ai_setup_patrol={
   else{
     //AI is a patrol-type
     if( self.target || self.target != "" ){
-      cons_logAVector(self.classname, self.origin); //debug
-      cons_logAString(self.classname, self.vec_name);
-      cons_logAString(self.classname, self.target);
       if( lastNode && lastNode.targetname == self.target ){
         node = lastNode;
       }

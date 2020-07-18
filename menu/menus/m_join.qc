@@ -270,7 +270,6 @@ void() m_join_d={
   SERVER_LIST_SIZE_x = 350;
   SERVER_LIST_SIZE_y = SERVER_ROW_ITR * 26;
   SERVER_LIST_SIZE = gui_percentToPixelRawVec(SERVER_LIST_SIZE);
-  drawfill(SERVER_LIST_ORG, SERVER_LIST_SIZE, '1 1 1', 0.33, 0);  //debug
 };
 
 /*

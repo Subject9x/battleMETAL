@@ -33,9 +33,9 @@ void() ai_vec_dest={
   
   //new state stuff
   self.ai_state_last = 0;
-  self.ai_state_next = ST_STAND; //debug
+  self.ai_state_next = ST_STAND;
   self.ai_move_last = 0;
-  self.ai_move_next = MOVE_STAND; //debug
+  self.ai_move_next = MOVE_STAND;
   self.ai_dance_card = ( MOVE_BACK | MOVE_STAND_FACE | MOVE_SNIPESHOT );
   if(self.ai_rank == AI_RANK_REG || self.ai_rank == AI_RANK_VET ){
     self.ai_dance_card = self.ai_dance_card | (MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT); //oh ho ho 
