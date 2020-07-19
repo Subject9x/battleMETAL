@@ -33,7 +33,7 @@ void() spg_fight_target_fire={
         return;
       }
       self.ai_move_next = MOVE_STAND_FACE;
-      self.ai_movewait = 1 + (random() * (self.ai_rank * 1.25));
+      self.ai_movedist = 1 + (random() * (self.ai_rank * 1.25));
       return;
     }
     self.ai_movedist = 10;
@@ -51,13 +51,23 @@ void() spg_fight_target_fire={
     if( enemy_dist > 1.0 && combat_dist > 1.0 ){
 */
 void() spg_fight_out_radius={
+  if( enemy_vis == VIS_FAIL ){
+    self.enemy = world;
+    if(self.tetherStatus == TETHER_PATROL){
+      self.ai_state_next = ST_PTR;
+    }
+    else{
+      self.ai_state_next = ST_THR;
+    }
+    return;
+  }
   if(self.ai_move_last == MOVE_STAND_FACE){
     self.ai_movedist = 10;
     self.ai_move_next = MOVE_NODE_RADIUS;
     return;
   }
   self.ai_move_next = MOVE_STAND_FACE;
-  self.ai_movewait = 1 + (random() * (self.ai_rank * 1.25));
+  self.ai_movedist = 1 + (random() * (self.ai_rank * 1.25));
   return;
 };
 /*
@@ -85,7 +95,7 @@ void() spg_fight_vis_friend={
       return;
     }
     self.ai_move_next = MOVE_STAND_FACE;
-    self.ai_movewait = 3 + (random() * (self.ai_rank * 1.25));
+    self.ai_movedist = 3 + (random() * (self.ai_rank * 1.25));
     return;
   }
   if(enemy_range < 0.4){
@@ -98,7 +108,7 @@ void() spg_fight_vis_friend={
     return;
   }
   self.ai_move_next = MOVE_STAND_FACE;
-  self.ai_movewait = 10;
+  self.ai_movedist = 10;
 };
 
 /*
@@ -107,7 +117,7 @@ void() spg_fight_vis_friend={
 */
 void() spg_fight_building={
   self.ai_move_next = MOVE_SNAPSHOT;
-  self.ai_movewait = 2;
+  self.ai_movedist = 2;
 };
 
 /*
@@ -135,7 +145,7 @@ void() spg_fight_full={
       return;
     }
     if(enemy_infront){
-      self.ai_movewait = 2;
+      self.ai_movedist = 2;
       self.ai_move_next = MOVE_SNAPSHOT;
       return;
     }
@@ -158,11 +168,11 @@ void() spg_fight_full={
       self.ai_move_next = MOVE_CHARGE_LEFT;
       return;
     }
-    self.ai_movewait = 4;
+    self.ai_movedist = 4;
     self.ai_move_next = MOVE_SNAPSHOT;
     return;
   }
-  self.ai_movewait = 8;
+  self.ai_movedist = 8;
   self.ai_move_next = MOVE_SNAPSHOT;
   return;
 };

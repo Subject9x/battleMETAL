@@ -664,6 +664,7 @@ void() ai_move_node_radius={
   local float oldPatrolState;
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.patrolState = 0;
+    self.goalentity = self.patrolNode;
     self.tetherOrg = self.goalentity.origin;
     self.ai_dampen = 1;
     

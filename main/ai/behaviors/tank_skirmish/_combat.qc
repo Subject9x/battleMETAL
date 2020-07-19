@@ -57,10 +57,12 @@ void() tank_sk_combat={
     //out of bounds, do move override
     if(combat_dist > 1.0){
       //run
-      prox = ai_node_to_target(self);
-      if(prox != self.patrolNode){
-        if( vlen(prox.origin - self.origin) <= prox.ai_view ){
-          self.patrolNode = prox;
+      if(self.tetherStatus == TETHER_PATROL ){
+        prox = ai_node_to_target(self);
+        if(prox != self.patrolNode){
+          if( vlen(prox.origin - self.origin) <= prox.ai_view ){
+            self.patrolNode = prox;
+          }
         }
       }
       self.ai_move_next = MOVE_NODE_RADIUS;

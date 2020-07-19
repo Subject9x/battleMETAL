@@ -33,7 +33,7 @@ void() gev_fight_target_fire={
       }
       else{
         self.ai_move_next = MOVE_STAND_FACE;
-        self.ai_movewait = self.ai_rank;
+        self.ai_movedist = self.ai_rank;
       }
       return;
     }
@@ -74,7 +74,7 @@ void() gev_fight_target_fire={
       return;
     }
     self.ai_move_next = MOVE_CHARGE;
-    self.ai_movewait = 5;
+    self.ai_movedist = 5;
     return;
   }
 };
@@ -88,7 +88,12 @@ void() gev_fight_target_fire={
 void() gev_fight_out_radius={
   if( enemy_vis == VIS_FAIL ){
     self.enemy = world;
-    self.ai_state_next = ST_PTR;
+    if(self.tetherStatus == TETHER_PATROL){
+      self.ai_state_next = ST_PTR;
+    }
+    else{
+      self.ai_state_next = ST_THR;
+    }
     return;
   }
   //both target and AI are out of bounds
@@ -155,12 +160,12 @@ void() gev_fight_building={
         }
         return;
       }
-      self.ai_movewait = 10;
+      self.ai_movedist = 10;
       self.ai_move_next = MOVE_STAND_FACE;
       return;
     }
   }
-  self.ai_movewait = 10;
+  self.ai_movedist = 10;
   self.ai_move_next = MOVE_STAND_FACE;
   return;
 };
@@ -245,5 +250,5 @@ void() gev_fight_full={
     return;
   }
   self.ai_move_next = MOVE_SNAPSHOT;
-  self.ai_movewait = self.ai_rank * 1.15;
+  self.ai_movedist = self.ai_rank * 1.15;
 };
