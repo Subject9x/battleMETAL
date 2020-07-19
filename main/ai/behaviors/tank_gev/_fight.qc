@@ -121,6 +121,9 @@ void() gev_fight_vis_friend={
       self.ai_move_next = MOVE_BACK_LEFT;
       return;
     }
+    self.ai_move_next = MOVE_SNAPSHOT;
+    self.ai_movedist = self.ai_rank / 2;
+    return;
   }
   self.ai_movedist = 2 + random() * 5;
   if(enemy_infront){

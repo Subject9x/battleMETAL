@@ -129,17 +129,20 @@ void() tank_sk_com_moveExec={
   //------------------------------------------------------------------
   if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
     nodeMove = ai_check_node_radius(self);
-    if(nodeMove > 0.99){
-      nodeCheck = ai_node_to_target(self);
-      if(nodeCheck != self.patrolNode){
-        if( (vlen(nodeCheck.origin - self.origin) <= nodeCheck.ai_view) && (ai_check_node_radius(self) > 0.95)){
-          self.patrolNode = nodeCheck;
+    if(nodeMove > 0.75){
+      if( self.tetherStatus == TETHER_PATROL ){
+        nodeCheck = ai_node_to_target(self);
+        if(nodeCheck != self.patrolNode){
+          if( (vlen(nodeCheck.origin - self.origin) <= nodeCheck.ai_view) && (ai_check_node_radius(self) > 0.95)){
+            self.patrolNode = nodeCheck;
+          }
         }
       }
       self.ai_move_next = MOVE_NODE_RADIUS;
       self.ai_state_next = ST_COM_MOVE_START;
       return;
     }
+    
     if( time > self.ai_movewait ){
       self.ai_state_next = ST_COM_MOVE_END;
       return;

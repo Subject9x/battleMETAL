@@ -75,7 +75,6 @@ void() tank_sk_fight_target_fire={
     }
     self.ai_move_next = MOVE_CHARGE;
     self.ai_movedist = 15;
-    return;
   }
 };
 
@@ -109,15 +108,36 @@ void() tank_sk_fight_out_radius={
 void() tank_sk_fight_vis_friend={
   if( enemy_range < 0.25 ){
     if( enemy_infront ){
+      self.ai_movedist = self.ai_rank * 1.2;
       if( combat_roll < 0.3 ){
+        self.ai_move_next = MOVE_BACK;
         return;
       }
       if( combat_roll < 0.7 ){
+        self.ai_move_next = MOVE_BACK_RIGHT;
         return;
       }
+      self.ai_move_next = MOVE_BACK_LEFT;
       return;
     }
+    self.ai_movedist = 8;
+    if(combat_roll < 0.6){
+      self.ai_move_next = MOVE_CHARGE_LEFT;
+      return;
+    }
+    self.ai_move_next = MOVE_CHARGE_RIGHT;
   }
+  if(enemy_infront){
+    self.ai_movedist = self.ai_rank * 1.05;
+    if(combat_roll < 0.6){
+      self.ai_move_next = MOVE_BACK_RIGHT;
+      return;
+    }
+    self.ai_move_next = MOVE_BACK_LEFT;
+    return;
+  }
+  self.ai_movedist = self.ai_rank * 2;
+  self.ai_move_next = MOVE_SNAPSHOT;
 };
 
 

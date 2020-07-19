@@ -49,7 +49,7 @@ void() spg_combat={
     enemy_range = ai_check_node_radius_targdist();
     
     //out of bounds, do move override
-    if(combat_dist >= 1.0){
+    if(combat_dist > 1.0){
       //run
       if(self.tetherStatus == TETHER_PATROL ){
         prox = ai_node_to_target(self);
@@ -67,12 +67,12 @@ void() spg_combat={
                           //so roll a single dice per instance of this
                           //frame...
     //AI is in bounds, but target is out of bounds
-    if( enemy_dist >= 1.0 && combat_dist <= 1.0 ){
+    if( enemy_dist > 1.0 && combat_dist <= 1.0 ){
       spg_fight_target_fire();
       return;
     }
     
-    if( enemy_dist >= 1.0 && combat_dist > 1.0 ){
+    if( enemy_dist > 1.0 && combat_dist > 1.0 ){
       spg_fight_out_radius();
       return;
     }
@@ -122,17 +122,20 @@ void() spg_com_moveExec={
   //------------------------------------------------------------------
   if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
     nodeMove = ai_check_node_radius(self);
-    if(nodeMove > 0.99){
-      nodeCheck = ai_node_to_target(self);
-      if(nodeCheck != self.patrolNode){
-        if( (vlen(nodeCheck.origin - self.origin) <= nodeCheck.ai_view) && (ai_check_node_radius(self) > 0.95)){
-          self.patrolNode = nodeCheck;
+    if(nodeMove > 0.75){
+      if( self.tetherStatus == TETHER_PATROL ){
+        nodeCheck = ai_node_to_target(self);
+        if(nodeCheck != self.patrolNode){
+          if( (vlen(nodeCheck.origin - self.origin) <= nodeCheck.ai_view) && (ai_check_node_radius(self) > 0.95)){
+            self.patrolNode = nodeCheck;
+          }
         }
       }
       self.ai_move_next = MOVE_NODE_RADIUS;
       self.ai_state_next = ST_COM_MOVE_START;
       return;
     }
+    
     if( time > self.ai_movewait ){
       self.ai_state_next = ST_COM_MOVE_END;
       return;

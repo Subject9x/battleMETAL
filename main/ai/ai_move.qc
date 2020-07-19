@@ -76,15 +76,9 @@ float() ai_move_charge={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  if( self.angles_y == self.ai_dir ){
-    status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
-  }
-  else{
-    yawCache = self.yaw_speed;
-    self.yaw_speed = yawCache * 2;
-    ChangeYaw();
-    self.yaw_speed = yawCache;
-  }
+  
+  status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
+
   ai_attack();
   return status;
 };
@@ -127,15 +121,13 @@ float() ai_move_charge_left={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  if( self.angles_y == self.ideal_yaw ){
-    status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
-  }
-  else{
-    yawCache = self.yaw_speed;
-    self.yaw_speed = yawCache * 2;
-    ChangeYaw();
-    self.yaw_speed = yawCache;
-  }
+  
+  yawCache = self.yaw_speed;
+  self.yaw_speed = yawCache * 2;
+  ChangeYaw();
+  self.yaw_speed = yawCache;
+  status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
+  
   ai_attack();
   return status;
 };
@@ -148,6 +140,7 @@ float() ai_move_charge_right={
   local float status;
   status = TRUE;
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    
     self.ai_wishSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
     self.ai_movedist = (self.ai_movedist * self.ai_wishSpeed) * 25;
     self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
@@ -178,15 +171,15 @@ float() ai_move_charge_right={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  if( self.angles_y == self.ideal_yaw ){
-    status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
-  }
-  else{
-    yawCache = self.yaw_speed;
-    self.yaw_speed = yawCache * 2;
-    ChangeYaw();
-    self.yaw_speed = yawCache;
-  }
+    
+
+  yawCache = self.yaw_speed;
+  self.yaw_speed = yawCache * 2;
+  ChangeYaw();
+  self.yaw_speed = yawCache;
+  
+  status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
+  
   ai_attack();
   return status;
 };
@@ -228,16 +221,14 @@ float() ai_move_strafe_left={
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  if(self.angles_y == self.ideal_yaw){
-    status = walkmove( self.ai_dir, (self.data_speed_strafe * self.ai_dampen) );
-  }
-  else{
-    yawCache = self.yaw_speed;
-    self.yaw_speed = yawCache * 2;
-    ChangeYaw();
-    self.yaw_speed = yawCache;
-  }
-
+  
+  yawCache = self.yaw_speed;
+  self.yaw_speed = yawCache * 3;
+  ChangeYaw();
+  self.yaw_speed = yawCache;
+  
+  status = walkmove( self.ai_dir, (self.data_speed_strafe * self.ai_dampen) );
+  
   ai_attack();
   return status;
 };
@@ -278,15 +269,13 @@ float() ai_move_strafe_right={
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
   
-  if( self.angles_y == self.ai_dir ){
-    status = walkmove( self.ai_dir, self.data_speed_strafe * self.ai_dampen);
-  }
-  else{
-    yawCache = self.yaw_speed;
-    self.yaw_speed = yawCache * 2;
-    ChangeYaw();
-    self.yaw_speed = yawCache;
-  }
+  yawCache = self.yaw_speed;
+  self.yaw_speed = yawCache * 3;
+  ChangeYaw();
+  self.yaw_speed = yawCache;
+    
+  status = walkmove( self.ai_dir, self.data_speed_strafe * self.ai_dampen);
+  
   ai_attack();
   return status;
 };
@@ -330,6 +319,8 @@ float() ai_move_circle_left={
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
+  
+  ChangeYaw();
   status = walkmove( self.ai_dir, self.ai_wishSpeed * self.ai_dampen );
 
   ai_attack();
@@ -374,8 +365,10 @@ float() ai_move_circle_right={
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-  self.angles_y = self.ai_dir;
+  
+  ChangeYaw();
   status = walkmove( self.ai_dir, self.ai_wishSpeed * self.ai_dampen );
+  
   ai_attack();
   return status;
 };
@@ -704,9 +697,7 @@ void() ai_move_node_radius={
     self.ai_state_next = ST_COM_MOVE_END;
     return;
   }
-  
 };
-
 
 /*
   Ported sv_playermovement.qc walking code over to this.

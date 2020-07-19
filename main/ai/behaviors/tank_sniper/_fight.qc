@@ -26,7 +26,7 @@ Overview:
 */
 void() spg_fight_target_fire={
   if( enemy_infront ){
-    if( combat_dist < 0.5 ){
+    if( combat_dist <= 0.5 ){
       if(self.ai_move_last == MOVE_STAND_FACE){
         self.ai_movedist = 10;
         self.ai_move_next = MOVE_CHARGE;
@@ -78,11 +78,11 @@ void() spg_fight_out_radius={
 void() spg_fight_vis_friend={
   if( enemy_infront ){
     self.ai_movedist = 10;
-    if( enemy_range < 0.4 ){
+    if( combat_dist < 0.4 ){
       self.ai_move_next = MOVE_BACK_LEFT;
       return;
     }
-    if( enemy_range < 0.7 ){
+    if( combat_dist < 0.7 ){
       self.ai_move_next = MOVE_BACK_RIGHT;
       return;
     }
@@ -98,7 +98,7 @@ void() spg_fight_vis_friend={
     self.ai_movedist = 3 + (random() * (self.ai_rank * 1.25));
     return;
   }
-  if(enemy_range < 0.4){
+  if(combat_dist < 0.4){
     self.ai_movedist = 6;
     if(combat_roll < 0.6){
       self.ai_move_next = MOVE_CHARGE_LEFT;
@@ -126,8 +126,11 @@ void() spg_fight_building={
 */
 void() spg_fight_full={
   if(combat_dist < 0.6 ){
+    cons_logAString("1", "combat_dist < 0.6"); //debug
     if(enemy_range < 0.6){
+    cons_logAString("2", "enemy_range < 0.6"); //debug
       if(enemy_infront){
+    cons_logAString("3", "enemy_infront"); //debug
         self.ai_movedist = 3;
         if(combat_roll<0.6){
           self.ai_move_next = MOVE_BACK_RIGHT;
@@ -144,13 +147,14 @@ void() spg_fight_full={
       self.ai_move_next = MOVE_CHARGE_LEFT;
       return;
     }
+    cons_logAString("4", "!enemy_infront"); //debug
     if(enemy_infront){
-      self.ai_movedist = 2;
+      self.ai_movedist = 4;
       self.ai_move_next = MOVE_SNAPSHOT;
       return;
     }
     self.ai_movedist = 10;
-    if(combat_roll<0.6){
+    if(combat_roll< 0.6){
       self.ai_move_next = MOVE_CHARGE_RIGHT;
       return;
     }
@@ -159,7 +163,9 @@ void() spg_fight_full={
   }
   //
   if(enemy_range < 0.6){
+    cons_logAString("5", "enemy_range < 0.6"); //debug
     if(enemy_infront){
+    cons_logAString("6", "enemy_infront"); //debug
       self.ai_movedist = 3;
       if(combat_roll<0.6){
         self.ai_move_next = MOVE_CHARGE_RIGHT;
@@ -174,5 +180,4 @@ void() spg_fight_full={
   }
   self.ai_movedist = 8;
   self.ai_move_next = MOVE_SNAPSHOT;
-  return;
 };

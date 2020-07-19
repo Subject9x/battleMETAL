@@ -504,7 +504,9 @@ entity(entity targ) ai_node_to_target={
       self.patrolNode = hold;
     }
   }
-  
+  if( !found ){
+    found = self.patrolNode;
+  }
   return found;
 };
 
