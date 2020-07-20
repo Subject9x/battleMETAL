@@ -20,7 +20,6 @@ void() mech_sk_combat={
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-    
     //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
@@ -54,7 +53,19 @@ void() mech_sk_combat={
     enemy_range = ai_check_node_radius_targdist();
     enemy_dist = ai_check_node_radius(self.enemy);
     combat_dist = ai_check_node_radius(self);
-    //out of bounds, do move override
+   
+    if( enemy_vis == VIS_FAIL ){
+      if(enemy_range >= 0.85 ){
+        self.enemy = world;
+        self.ai_state_next = ST_STAND;
+        self.ai_dampen = 0;
+        return;
+      }
+      self.ai_movedist = 5;
+      self.ai_move_next = MOVE_STAND_FACE;
+      return;
+    }
+   //out of bounds, do move override
     if(combat_dist > 1.0){
       //run
       if(self.tetherStatus == TETHER_PATROL ){
@@ -99,7 +110,11 @@ void() mech_sk_combat={
     self.ai_movedist = 5;
     mech_sk_fight_full();
   //---------------------------------------------------------------------------
+    return;
   }
+  //TODO - error is probably here!
+ cons_logAString("mech_sk_combat", "error! called twice!"); //debug
+ cons_logAString("NEXT STATE", dbg_state(self.ai_state_next) ); //debug
 };
 
 /*
@@ -109,6 +124,7 @@ void() mech_sk_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_state_next = ST_COM_MOVE_EXEC;
+    cons_logAString("mech_sk_com_moveStart", "entering"); //debug
     return;
   }
   //------------------------------------------------------------------
@@ -122,9 +138,11 @@ void() mech_sk_com_moveExec={
   local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
+    cons_logAString("mech_sk_com_moveExec", "entering"); //debug
     return;
   }
   //------------------------------------------------------------------
+ cons_logAString("mech_sk_com_moveExec", "running"); //debug
   if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
     nodeMove = ai_check_node_radius(self);
     if(nodeMove > 0.75){
@@ -154,10 +172,6 @@ void() mech_sk_com_moveExec={
 void() mech_sk_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-    if( ai_valid_target(self.enemy) ){
-      self.ai_state_next = ST_COMBAT;
-      return;
-    }
     if( self.patrolNode ){
       if( self.tetherStatus == TETHER_NODE ){
         self.goalentity = self.patrolNode;
@@ -170,10 +184,12 @@ void() mech_sk_com_moveEnd={
         return;
       }
     }
-    self.ai_state_next = ST_STAND;
+    self.ai_state_next = ST_COMBAT;
     return;
   }
  //------------------------------------------------------------------
+ cons_logAString("mech_sk_com_moveEnd", "error! called twice!"); //debug
+ cons_logAString("NEXT STATE", dbg_state(self.ai_state_next)); //debug
 };
 
 /*

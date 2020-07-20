@@ -321,7 +321,9 @@ void( entity ally, entity targ, float override ) ai_give_target={
   //providing clause where ally has no target
   if( override || !ai_valid_target(ally.enemy) ){
     self.enemy = ally.enemy;
-    self.ai_state_next = ST_COMBAT;
+    if(self.ai_state_next != ST_COMBAT ){
+      self.ai_state_next = ST_COMBAT;
+    }
     if( (this.enemy.flags & FL_CLIENT) ){
       ai_sfx_roger();
     }

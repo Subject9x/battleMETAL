@@ -9,6 +9,16 @@ Overview:
 
 //AI is on edge of bounds but inside radius
 void() mech_sk_fight_target_fire={
+  if(combat_dist <= 0.33){
+    self.ai_movedist = 5;
+    if(combat_roll > 0.5){
+      self.ai_move_next = MOVE_STRAFE_LEFT;
+    }
+    else{
+      self.ai_move_next = MOVE_STRAFE_RIGHT;
+    }
+    return;
+  }
   if(combat_dist >= 0.75){
     if(enemy_infront){
       self.ai_movedist = 2;
@@ -22,16 +32,6 @@ void() mech_sk_fight_target_fire={
     }
     self.ai_movedist = self.ai_rank * 1.25;
     self.ai_move_next = MOVE_STAND_FACE;
-    return;
-  }
-  if(combat_dist <= 0.33){
-    self.ai_movedist = 5;
-    if(combat_roll > 0.5){
-      self.ai_move_next = MOVE_STRAFE_LEFT;
-    }
-    else{
-      self.ai_move_next = MOVE_STRAFE_RIGHT;
-    }
     return;
   }
   self.ai_movedist = self.ai_rank * 2;

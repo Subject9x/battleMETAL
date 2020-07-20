@@ -104,11 +104,15 @@ void() ai_spg_stand={
   }
   
   if( self.patrolNode != world ){
-    if( time > self.pausetime ){
-      if( self.patrolNode.classname == "ai_node"){
+    if( self.patrolNode.classname == "ai_node"){
+      if( time > self.pausetime ){
         self.ai_state_next = ST_PTR;
         return;
       }
+    }
+    else{
+      self.ai_state_next = ST_THR;
+      return;
     }
   }
 };

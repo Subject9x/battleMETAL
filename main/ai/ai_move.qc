@@ -672,12 +672,14 @@ void() ai_move_node_radius={
   
   oldPatrolState = self.patrolState;
   ai_attack();
-  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view, self.goalentity.ai_view * 0.33, 0);
+  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.85, self.goalentity.ai_view * 0.25, 0);
   
   if( time > self.ai_movewait ){
     if( ai_blocked_teleport() ){
       if( self.enemy ){
-        self.ai_state_next = ST_COMBAT;
+        if(self.ai_state_next != ST_COMBAT ){
+          self.ai_state_next = ST_COMBAT;
+        }
         return;
       }
       if( self.patrolNode ){
@@ -693,7 +695,7 @@ void() ai_move_node_radius={
     }
   }
   
-  if( self.patrolState == PATROL_ARRIVE){
+  if( self.patrolState == PATROL_ARRIVE && oldPatrolState != PATROL_ARRIVE){
     self.ai_state_next = ST_COM_MOVE_END;
     return;
   }

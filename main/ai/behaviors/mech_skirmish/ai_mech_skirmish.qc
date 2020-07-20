@@ -93,11 +93,15 @@ void() ai_mech_sk_stand={
   }
   
   if( self.patrolNode != world ){
-    if( time > self.pausetime ){
-      if( self.patrolNode.classname == "ai_node"){
+    if( self.patrolNode.classname == "ai_node"){
+      if( time > self.pausetime ){
         self.ai_state_next = ST_PTR;
         return;
       }
+    }
+    else{
+      self.ai_state_next = ST_THR;
+      return;
     }
   }
   
@@ -128,7 +132,11 @@ void(entity attacker) ai_mech_sk_react={
   }
 
   //AI currently has target
-  self.enemy = attacker;
-  self.ai_react_buffer = time + self.ai_react_time * 5;
-  self.ai_state_next = ST_COMBAT;
+  if(attacker != self.enemy){  
+    self.enemy = attacker;
+    self.ai_react_buffer = time + self.ai_react_time * 5;
+    if(self.ai_state_next != ST_COMBAT ){
+      self.ai_state_next = ST_COMBAT;
+    }
+  }
 };
