@@ -121,6 +121,7 @@ void() ai_gev_stand={
     AI has been hit by weapons-fire, what do they do with this info?
 */
 void( entity attacker ) ai_gev_react={
+
   local float enemyvis;
   
   if( !(attacker.flags & FL_MONSTER) && !(attacker.flags & FL_CLIENT)){
@@ -131,9 +132,36 @@ void( entity attacker ) ai_gev_react={
   if( attacker.faction == self.faction ){
     return;
   }
+  
+  if( !attacker ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
+    return;
+  }
+  
+  if( attacker == self.enemy ){
+    self.ai_react_buffer = time + self.ai_react_time * 5;
+    return;
+  }
 
   //AI currently has target
+  if( self.enemy ){
+    return;
+  }
+  
+  if( ai_check_vis(self.enemy) == VIS_FRAC ){
+    if( ai_check_node_radius(self.enemy) > 1.0 ){
+      return;
+    }
+  }
+  if( ai_check_vis(self.enemy) == VIS_FRN ){
+    if( ai_check_node_radius(self.enemy) <= 1.0 ){
+      return;
+    }
+  }
   self.enemy = attacker;
   self.ai_react_buffer = time + self.ai_react_time * 5;
   self.ai_state_next = ST_COMBAT;
+  if(self.ai_state_next != ST_COMBAT){
+    self.ai_state_next = ST_COMBAT;
+  }
 };

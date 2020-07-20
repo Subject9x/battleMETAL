@@ -78,12 +78,12 @@ void() mech_sniper_fight_out_radius={
     return;
   }
   if(self.ai_move_last == MOVE_STAND_FACE){
-    self.ai_movedist = 15;
+    self.ai_movedist = 5;
     self.ai_move_next = MOVE_NODE_RADIUS;
     return;
   }
   self.ai_move_next = MOVE_STAND_FACE;
-  self.ai_movedist = 5 + (random() * (self.ai_rank * 1.25));
+  self.ai_movedist = random() * (self.ai_rank * 1.25);
   return;
 };
 
@@ -170,7 +170,6 @@ void() mech_sniper_fight_building={
   }
   self.ai_movedist = 4;
   self.ai_move_next = MOVE_SNAPSHOT;
-  return;
 };
 
 /*
@@ -242,5 +241,5 @@ void() mech_sniper_fight_full={
     self.ai_movedist = 6;
     return;
   }
-  self.ai_movedist = 10;
+  self.ai_movedist = 2;
 };

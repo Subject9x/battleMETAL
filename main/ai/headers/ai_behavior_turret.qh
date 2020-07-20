@@ -1,0 +1,30 @@
+/*
+battleMETAL 
+Author: Peter Roohr
+Date: 07/20/2020
+Overview: 
+  Header file for the turret building ai behavior set.
+  Behaviors originally were all in one file, but these became unmaintainable.
+*/
+
+void() ai_turret;
+
+void() ai_vec_dest_die;
+void( entity attacker ) ai_spg_react;
+void() ai_spg_stand;
+
+void() turret_patrol;
+void() turret_patrol_pause;
+void() turret_patrol_travel;
+void() turret_patrol_travel_block;
+
+void() turret_combat;
+void() turret_com_moveStart;
+void() turret_com_moveExec;
+void() turret_com_moveEnd;
+void() turret_com_blocked;
+
+void() turret_fight_target_fire;
+void() turret_fight_out_radius;
+void() turret_fight_vis_friend;
+void() turret_fight_full;

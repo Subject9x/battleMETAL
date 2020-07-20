@@ -67,14 +67,16 @@ void() spg_combat={
                           //so roll a single dice per instance of this
                           //frame...
     //AI is in bounds, but target is out of bounds
-    if( enemy_dist > 1.0 && combat_dist <= 1.0 ){
-      spg_fight_target_fire();
-      return;
-    }
-    
-    if( enemy_dist > 1.0 && combat_dist > 1.0 ){
-      spg_fight_out_radius();
-      return;
+    if( enemy_dist > 1.0 ){
+      if( combat_dist <= 1.0 ){
+        //AI is on edge of bounds but inside radius
+        spg_fight_target_fire();
+        return;
+      }
+      if( combat_dist > 1.0 ){
+        spg_fight_out_radius();
+        return;
+      }
     }
     
     if( enemy_vis == VIS_FRN ){
@@ -92,6 +94,7 @@ void() spg_combat={
     //get fighting
     self.ai_move_next = MOVE_NODE_RADIUS;
     spg_fight_full();
+    return;
   //---------------------------------------------------------------------------
   }
 };

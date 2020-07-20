@@ -476,12 +476,12 @@ entity(entity targ) ai_node_to_target={
   dist = ai_check_node_radius(self);
   distComp = ai_check_node_radius(targ);
 
-  if( distComp <= dist* 1.25 ){
+  if( distComp <= dist * 1.25 ){
     return self.patrolNode;
   }
   found = world;
+  hold = self.patrolNode;
   if(self.patrolNode.partNext){
-    hold = self.patrolNode;
     self.patrolNode = self.patrolNode.partNext;
       distComp = ai_check_node_radius(targ);
       if( distComp > (dist * 1.25) ){
@@ -494,7 +494,6 @@ entity(entity targ) ai_node_to_target={
   }
   if( !found ){
     if(self.patrolNode.partPrev){
-      hold = self.patrolNode;
       self.patrolNode = self.patrolNode.partPrev;
         distComp = ai_check_node_radius(targ);
         if( distComp > (dist * 1.25) ){

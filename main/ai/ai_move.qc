@@ -33,6 +33,7 @@ void() ai_move_stand={
     }
     return;
   }
+  ai_face_targ();
   ai_attack();
 };
 
@@ -70,7 +71,7 @@ float() ai_move_charge={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return 1;
+    return status;
   }
   
   if( self.ai_dampen < 1.0){
@@ -171,8 +172,7 @@ float() ai_move_charge_right={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
-    
-
+  
   yawCache = self.yaw_speed;
   self.yaw_speed = yawCache * 2;
   ChangeYaw();
@@ -476,7 +476,7 @@ float() ai_move_back_right={
     makevectors(ai_angle);
     status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed);
     
-    if( status <= 1 ){
+    if( status <= 0.1 ){
       return FALSE;
     }
     self.ai_movewait = time + status;
@@ -592,6 +592,7 @@ float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node=
   
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.patrolState = 0;
+    self.goalentity = self.patrolNode;
     self.tetherOrg = self.goalentity.origin;
     self.ai_dampen = 1;
     

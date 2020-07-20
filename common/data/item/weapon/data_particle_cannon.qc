@@ -71,12 +71,6 @@ void() data_ini_attack_particle_cannon_={
   strikePoint = FIRE_ENDPOINT + (v_forward * -5);
   
   if( trace_ent.takedamage ){
-    if(trace_ent.vec_size <= 1){
-      self.damageValue = self.damageValue * 0.33;
-    }
-    if(trace_ent.vec_size == 2){
-      self.damageValue = self.damageValue * 0.5;
-    }
     dmgArmor = self.damageValue;
     dmgShield = self.damageValue;
     if( trace_ent.shield > 0 ){
@@ -87,10 +81,17 @@ void() data_ini_attack_particle_cannon_={
         dmgShield = dmgShield * 0.5;
       }
       trace_ent.shield = trace_ent.shield - dmgShield;
+      dmgArmor = dmgArmor - dmgShield;
       if( trace_ent.shield < 0 ){
         trace_ent.shield = 0;
       }
-      dmgArmor = dmgArmor - dmgShield;
+      if(trace_ent.vec_size <= 1){
+        dmgArmor = dmgArmor * 0.33;
+      }
+      if(trace_ent.vec_size == 2){
+       dmgArmor = dmgArmor * 0.5;
+      }
+      
       impactStyle = IMPACT_SHIELD;
     }
     else{

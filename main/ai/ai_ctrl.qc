@@ -98,93 +98,59 @@ float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame={
 void() ai_touch={
   local float enemyFront;
   local float otherFront;
-  local entity thisEnemy;
-  
   //ignore environment
   if( !(other.flags & FL_MONSTER) || !(other.flags & FL_CLIENT) ){
     return;
   }
   
   otherFront = ai_check_targ_infront( other, self.ai_fov, (self.flags & FL_TURRET) );
+  if(self.enemy){
+    enemyFront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET) ); 
+  }
+  
   if( otherFront ){
-    if( other.faction == self.faction && other.data_type != DATA_BLD ){
-      if( (self.ai_state == ST_PTR) || (self.ai_state == ST_PTR_TRAVEL_NODE) || (self.ai_state == ST_PTR_TRAVEL_NODEBLOCK) ){
-        self.pausetime = 5 + (random() * (self.ai_rank + 5));
-        self.ai_state_next = ST_PTR_PAUSE;
-        return;
+    if( other.faction == self.faction ){
+      if( !(other.flags & FL_CLIENT) && !other.enemy && self.enemy){
+        other.enemy = self.enemy;
+        if(other.ai_state_next != ST_COMBAT){
+          other.ai_move_next = 0;
+          other.ai_state_next = ST_COMBAT;
+        }
       }
-    }
-  }
-  
-  enemyFront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET) ); 
-  if( other.faction != self.faction ){
-    if( ai_valid_target(self.enemy) ){
-      if( !enemyFront && otherFront ){
-        thisEnemy = other;
-      }
-    }
-    else{
-      thisEnemy = other;
-    }
-    if( time > self.ai_react_buffer ){
-      self.enemy = other;
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      self.ai_state_next = ST_COMBAT;
-      return;
-    }
-  }
-};
-
-/*
-  processes 1 frame of AI logic for moving towards a patrol node;
-  the return value is used to check if entire frame should return early.
-  
-  turned into macro_ai_patrol in ai_api.qh - Roohr
-  
-float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic={
-macro_ai_patrol(speed,pauseFunc,nextFunc) 
-  
-  local entity nextNode;
-  
-  if( (self.goalentity.flags&FL_NODE) ){
-    ai_face_goal();
-    
-    if( walkmove(self.angles_y,max(speed,65*AI_WALK_SPD))==FALSE ){
-      movetogoal(max(self.data_speed_forward,65*AI_WALK_SPD));
-      ai_patrol_turn();
-    }
-    if(vlen(self.goalentity.origin-self.origin)<=(random()*AI_NODE_DISTANCE)){
-      if(self.goalentity.pausetime){
-        self.pausetime=self.goalentity.pausetime;
-        self.pausetime=self.pausetime+(self.pausetime*(self.ai_action_mod/10));
-        self.pausetime = self.pausetime+time;
-      }
-      if(self.goalentity.target){
-        nextNode=find(world,targetname,self.goalentity.target);
-        self.movetarget=nextNode;
-      }
-      else{
-        if(self.goalentity.ai_rank>0){
-          self.movetarget=world;
-          self.goalentity.think=SUB_Remove;
-          self.goalentity.nextthink=time+0.1;
+      if(other.data_type != DATA_BLD){
+        if( (self.ai_state == ST_PTR) || (self.ai_state == ST_PTR_TRAVEL_NODE) || (self.ai_state == ST_PTR_TRAVEL_NODEBLOCK) ){
+          self.pausetime = random() * (self.ai_rank + 3);
+          self.ai_state_next = ST_PTR_PAUSE;
+          return;
         }
         else{
-          self.movetarget=ai_goal_offset_node();
+          self.ai_move_next = MOVE_STAND_FACE;
+          self.ai_movedist = random() * (self.ai_rank + 2);
+          self.ai_state_next = ST_COM_MOVE_START;
+          return;
         }
-      } 
-      self.goalentity=self.movetarget;
-      if(time<self.pausetime){
-        macro_ai_frame(pauseFunc) 
+      }
+    }
+    if(other.data_type != DATA_BLD){
+      if(!enemyFront){
+        self.enemy = other;
+        if(self.ai_state_next != ST_COMBAT){
+          self.ai_move_next = 0;
+          self.ai_state_next = ST_COMBAT;
+        }
         return;
       }
-    } 
-    macro_ai_frame(nextFunc) 
+    }
+  }
+  if(!enemyFront){
+    self.enemy = other;
+    if(self.ai_state_next != ST_COMBAT){
+      self.ai_move_next = 0;
+      self.ai_state_next = ST_COMBAT;
+    }
     return;
-  } 
-  macro_ai_frame(pauseFunc)
+  }
 };
-*/
 
 /*
   PATROL SUB STATE
@@ -427,26 +393,11 @@ void( float alt_low, float alt_max) ai_fly_update={
 /*
   Checks to see if Entity T is in the ANG arc of self
 */
-float(entity t, float ang, float useTurret) ai_check_face={
-	local vector	vang, vec;
-	local float		dot;
+float(entity t, float ang, float useTurret) ai_check_face={  
+  local float valu;
   
-  if( useTurret ){
-    vang = self.torsoCenter.angles;
-  }
-  else{
-    vang = self.angles;
-  }
-  
-  makevectors ( vang );
-	vec = normalize (t.origin - self.origin);
-	dot = vec * v_forward;
-  
-	if ( dot >= ang){
-		return TRUE;
-  }
-  
-	return FALSE;
+  valu = ai_check_face_origin(t.origin, ang, useTurret);
+  return valu;
 };
 
 float(vector v, float ang_limit, float useTurret) ai_check_face_origin={

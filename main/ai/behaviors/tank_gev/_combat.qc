@@ -73,14 +73,16 @@ void() gev_combat={
                           //so roll a single dice per instance of this
                           //frame...
     //AI is in bounds, but target is out of bounds
-    if( enemy_dist > 1.0 && combat_dist <= 1.0 ){
-      gev_fight_target_fire();
-      return;
-    }
-    
-    if( enemy_dist > 1.0 && combat_dist > 1.0 ){
-      gev_fight_out_radius();
-      return;
+    if( enemy_dist > 1.0 ){
+      if( combat_dist <= 1.0 ){
+        //AI is on edge of bounds but inside radius
+        gev_fight_target_fire();
+        return;
+      }
+      if( combat_dist > 1.0 ){
+        gev_fight_out_radius();
+        return;
+      }
     }
     
     if( enemy_vis == VIS_FRN ){

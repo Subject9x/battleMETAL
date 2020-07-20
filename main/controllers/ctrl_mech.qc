@@ -264,6 +264,11 @@ void() ctrl_component_die={
       self.owner.damageValue = self.owner.damageValue | (M_TOR_LEFT | M_ARM_LEFT);
       if( !(self.owner.damageValue & (M_TOR_RIGHT | M_ARM_RIGHT) ) ){
         side_crit = TR_LEFT;
+        self.owner.shieldMax = self.owner.shieldMax * 0.5;
+      }
+      else{
+        self.owner.shieldMax = 0;
+        self.owner.shieldRate = 0;
       }
     }
     else if( self.partTypeId == M_TOR_RIGHT ){
@@ -273,6 +278,11 @@ void() ctrl_component_die={
       self.owner.damageValue = self.owner.damageValue | (M_TOR_RIGHT | M_ARM_RIGHT);
       if( !(self.owner.damageValue & (M_TOR_LEFT | M_ARM_LEFT) ) ){
         side_crit = TR_RIGHT;
+        self.owner.shieldMax = self.owner.shieldMax * 0.5;
+      }
+      else{
+        self.owner.shieldMax = 0;
+        self.owner.shieldRate = 0;
       }
     }
     if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){

@@ -47,6 +47,7 @@ main/controllers/headers/controllers.qh
     main/ai/headers/ai_behavior_tank_skirmish.qh
     main/ai/headers/ai_behavior_tank_sniper.qh
     main/ai/headers/ai_behavior_tank_gev.qh
+    main/ai/headers/ai_behavior_turret.qh
   main/map/triggers_map_h.qc
 //==========================
 
@@ -149,10 +150,15 @@ main/controllers/headers/controllers.qh
   main/ai/ai_state.qc
   main/ai/ai_nodes.qc
   main/ai/ai_voice.qc
-//AI behavior types
+//AI behavior code
   main/ai/behaviors/ai_tether.qc
   main/ai/behaviors/ai_patrol.qc
-  main/ai/behaviors/ai_turret.qc
+  main/ai/behaviors/turret/ai_turret.qc
+    main/ai/behaviors/turret/_combat.qc
+    main/ai/behaviors/turret/_fight.qc
+    main/ai/behaviors/turret/_patrol.qc
+    main/ai/behaviors/turret/_die.qc
+  
   main/ai/behaviors/mech_skirmish/ai_mech_skirmish.qc
     main/ai/behaviors/mech_skirmish/_die.qc
     main/ai/behaviors/mech_skirmish/_combat.qc

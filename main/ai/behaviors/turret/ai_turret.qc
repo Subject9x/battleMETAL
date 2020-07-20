@@ -723,17 +723,14 @@ void() ai_turret={
   
   macro_ai_setup(ai_turret)
   
+  self.spreadDefault = ACCURACY_LOWTECH;
+  
   ai_unit_ini_var();
   initialize_data_turret_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
   trigger_event( self, self.trigOnSpawn); //event interface
-  
-  self.spreadDefault = ACCURACY_LOWTECH;
 
-  self.th_stand = ai_turret_patrol1;
-  self.th_walk = ai_turret_idle1;
-  self.th_missile = ai_turret_fight_prep;
   self.th_react = ai_turret_react1;
   self.th_die = ai_turret_die;
   self.touch = ai_turret_touch;
@@ -747,6 +744,7 @@ void() ai_turret={
   self.ai_unit_update = ctrl_updateTank;
   
   //ai state interface--------------------------------------------------------
+  self.ai_state_next = ST_PTR;
   self.ai_state_stand = ai_mech_sk_stand;
  
   self.ai_state_patrol = turret_patrol;
@@ -759,12 +757,10 @@ void() ai_turret={
   self.ai_state_combat_moveExec = turret_com_moveExec;
   self.ai_state_combat_moveEnd = turret_com_moveEnd;
   self.ai_state_combat_blocked = turret_com_blocked;
-  
   //--------------------------------------------------------------------------
+  self.SendEntity = ctrl_send_turret;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
   
   self.think = ai_state_frame;
   self.nextthink = time + (random() * 0.5);
-  
-  self.SendEntity = ctrl_send_turret;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
 };

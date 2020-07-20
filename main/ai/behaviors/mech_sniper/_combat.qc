@@ -73,15 +73,16 @@ void() mech_sniper_combat={
     
     combat_roll = random() * 1.0;
     //AI is in bounds, but target is out of bounds
-    if( enemy_dist >= 1.0 && combat_dist <= 1.0){
-      //AI is on edge of bounds but inside radius
-      mech_sniper_fight_target_fire();
-      return;
-    }
-    
-    if( enemy_dist >= 1.0 && combat_dist > 1.0 ){
-      mech_sniper_fight_out_radius();
-      return;
+    if( enemy_dist > 1.0 ){
+      if( combat_dist <= 1.0 ){
+        //AI is on edge of bounds but inside radius
+        mech_sniper_fight_target_fire();
+        return;
+      }
+      if( combat_dist > 1.0 ){
+        mech_sniper_fight_out_radius();
+        return;
+      }
     }
     
     if( enemy_vis == VIS_FRN ){
@@ -98,7 +99,9 @@ void() mech_sniper_combat={
     //combat_dist < 1.0
     //get fighting
     self.ai_move_next = MOVE_NODE_RADIUS;
+    self.ai_movedist = 30;
     mech_sniper_fight_full();
+    return;
   //---------------------------------------------------------------------------
   }
 };
