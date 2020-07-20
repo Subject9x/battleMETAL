@@ -238,7 +238,7 @@ float() ai_move_strafe_left={
 */
 float() ai_move_strafe_right={
   local float status;
-  
+  status = TRUE;
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_dir = anglemod(self.angles_y - 90);
     self.ai_wishSpeed = self.data_speed_strafe;
@@ -649,6 +649,7 @@ float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node=
     ai_attack();
     return PATROL_WALKING;
   }
+
   return PATROL_ARRIVE;
 };
 
@@ -672,16 +673,10 @@ void() ai_move_node_radius={
   
   oldPatrolState = self.patrolState;
   ai_attack();
-  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.85, self.goalentity.ai_view * 0.25, 0);
+  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95, self.goalentity.ai_view * 0.33, 0);
   
   if( time > self.ai_movewait ){
     if( ai_blocked_teleport() ){
-      if( self.enemy ){
-        if(self.ai_state_next != ST_COMBAT ){
-          self.ai_state_next = ST_COMBAT;
-        }
-        return;
-      }
       if( self.patrolNode ){
         if( self.patrolNode.classname == "ai_node" ){
           self.ai_state_next = ST_PTR;
