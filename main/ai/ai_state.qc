@@ -29,13 +29,6 @@ void() ai_state_frame={
   self.ai_move_last = self.ai_move;
   self.ai_move = self.ai_move_next;
   
-  //blockflag
-  //if( time < self.ai_blockflag ){
-   // self.solid = SOLID_NOT;
-  //}
-  //else{
-  //  self.solid = SOLID_SLIDEBOX;
-  //}
   //state machine
   switch(self.ai_state){
     case ST_STAND:
@@ -99,7 +92,7 @@ void() ai_state_frame={
   }
   
   self.think = ai_state_frame;
-  self.nextthink = time + 0.067;
+  self.nextthink = time + 0.07;
 };
 
 /*

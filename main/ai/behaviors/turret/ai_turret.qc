@@ -7,307 +7,52 @@ Overview: ai unit
   an on-ground, static vehicle
 */
 
-void() ai_turret_die;
-void() ai_turret_die_burn;
-void() temp_chunk_burn;
+void() ai_turret={
+  ai_unit_ini_var();
+  
+  initialize_data_turret_( self.nextVecChoice );
+  
+  ai_pilot_ini_stats(self.ai_rank);
+  
+  trigger_event( self, self.trigOnSpawn); //event interface
 
-void() temp_chunk_burn={
-  if( time > self.delay){
-    self.think = SUB_Remove;
-  }
-  else{  
-    te_smoke(self.origin, 1);
-    self.think = temp_chunk_burn;
-  }
-	self.nextthink = time + 0.1;
-};
-
-void() ai_turret_clean={
-  ctrl_unit_remove_piece(self.cockpit);
-  ctrl_weapon_remove_all();
-  ctrl_unit_remove_piece(self.torsoLeft);
-  ctrl_unit_remove_piece(self.torsoRight);
-  ctrl_unit_remove_piece(self.torsoCenter);
+  self.th_pain = ai_turret_react;
+  self.th_die = ai_turret_die;
+  self.touch = ai_turret_touch;
   
-  self.think = ai_turret_die_burn;
-  self.ai_action_time = time + 360;
-  self.nextthink = time + 0.1;
-};
-
-/*
-  TH_DIE
-*/
-void() ai_turret_die={
-
-  if( self.deadflag > DEAD_NO ){
-    return; //double play prevention
-  }
+  self.SendEntity = ctrl_send_turret;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_NEWENT);
   
-  ai_sfx_dead();
+  local entity wep;
+  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
+    wep.effects = wep.effects | EF_NODRAW;
+  }  
+  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   
-  self.deadflag = DEAD_DEAD;
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_CORPSE;
-  self.colormod = '0.33 0.33 0.33';
+  self.ai_state_last = 0;
+  self.ai_state_next = ST_PTR;
+  self.ai_move_last = 0;
+  self.ai_move_next = MOVE_STAND;
+  self.ai_movewait = 0;
   
-  //annoying that turret corpses block a lot of fire.
-  self.maxs_x = self.maxs_x * 0.33;
-  self.maxs_y = self.maxs_y * 0.33;
-  self.maxs_z = (self.maxs_z + (self.mins_z * -1)) * 0.67;
-  self.mins_x = self.maxs_x * -1;
-  self.mins_y = self.maxs_y * -1;
-  self.mins_z = 0;
-  setsize(self, self.mins, self.maxs);
-  droptofloor();
-  self.solid = SOLID_NOT;
+  self.ai_unit_update = ctrl_updateTank;
   
-  local entity w_chain;
-  w_chain = self.w_slot;
-  while(w_chain){
-    ctrl_unit_part_death(w_chain);
-    w_chain = w_chain.w_slot;
-  }
+  //ai state interface--------------------------------------------------------  
+  self.ai_run_state_now = SUB_Null;
+  self.ai_state_patrol = turret_patrol;
+  self.ai_state_patrol_pause = turret_patrol_pause;
+  self.ai_state_patrol_travel_node = turret_patrol_travel;
+  self.ai_state_patrol_travel_blocked = turret_patrol_travel_block;
   
-  ctrl_unit_part_death(self.cockpit);  
-  ctrl_unit_part_death(self.torsoCenter);
+  self.ai_state_combat = turret_combat;
+  self.ai_state_combat_moveStart = turret_com_moveStart;
+  self.ai_state_combat_moveExec = turret_com_moveExec;
+  self.ai_state_combat_moveEnd = turret_com_moveEnd;
+  self.ai_state_combat_blocked = turret_com_blocked;
+  //--------------------------------------------------------------------------
   
-  //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
-
-  makevectors( self.angles );
-  
-  ai_call_for_help( self.enemy );
-  self.think = ai_turret_clean;
-  self.nextthink = time + 0.75;
-  
-  te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  self.effects = self.effects | EF_LOWPRECISION;
-};
-
-void() ai_turret_die_burn={  
-
-  self.think = ai_turret_die_burn;
-  self.nextthink = time + 0.1;
-  
-  if ( time > self.ai_action_time ){
-    self.think = BecomeExplosion;
-    self.nextthink = time + 0.01;
-  }
-};
-
-/*
-  macro rebuild
-*/
-void() ai_turret_patrol1;
-void() ai_turret_patrol2;
-void() ai_turret_patrol3;
-void() ai_turret_patrol4;
-void() ai_turret_patrol5;
-void() ai_turret_patrol6;
-void() ai_turret_patrol7;
-void() ai_turret_patrol8;
-
-void() ai_turret_fight_prep;
-void() ai_turret_touch;
-
-void() ai_turret_rotate1;
-void() ai_turret_rotate2;
-void() ai_turret_rotate3;
-void() ai_turret_rotate4;
-void() ai_turret_rotate5;
-void() ai_turret_rotate6;
-void() ai_turret_rotate7;
-void() ai_turret_rotate8;
-
-void() ai_turret_combat1;
-void() ai_turret_combat2;
-void() ai_turret_combat3;
-void() ai_turret_combat4;
-void() ai_turret_combat5;
-void() ai_turret_combat6;
-
-void() ai_turret_hunt1;
-void() ai_turret_hunt2;
-void() ai_turret_hunt3;
-void() ai_turret_hunt4;
-void() ai_turret_hunt5;
-void() ai_turret_hunt6;
-void() ai_turret_hunt7;
-void() ai_turret_hunt8;
-void() ai_turret_hunt9;
-void() ai_turret_hunt10;
-
-void() ai_turret_idle1;
-void() ai_turret_idle2;
-void() ai_turret_idle3;
-void() ai_turret_idle4;
-void() ai_turret_idle5;
-void() ai_turret_idle6;
-void() ai_turret_idle7;
-void() ai_turret_idle8;
-void() ai_turret_idle9;
-void() ai_turret_idle10;
-void( entity attacker ) ai_turret_react1;
-
-void() ai_turret_patrol1={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  self.torsoCenter.ai_dir = (random() * self.ai_angleLimits_x) * -1;
-  self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
-  self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
-  self.torsoCenter.ai_dir = anglemod( self.torsoCenter.angles_y + self.torsoCenter.ai_dir);
-  
-  ai_turret_set_state(TR_YAW);
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_patrol2)
-};
-void() ai_turret_patrol2={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_patrol3)
-};
-void() ai_turret_patrol3={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_patrol4)
-};
-void() ai_turret_patrol4={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_patrol5)
-};
-void() ai_turret_patrol5={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_patrol6)
-};
-void() ai_turret_patrol6={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_patrol7)
-};
-void() ai_turret_patrol7={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  macro_ai_frame(ai_turret_patrol8)
-};
-void() ai_turret_patrol8={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  if( self.torsoCenter.angles_y != self.torsoCenter.ai_dir ){
-    macro_ai_frame(ai_turret_patrol2)
-    return;
-  }
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    if( random() < 0.35 ){
-      macro_ai_frame(ai_turret_idle1)
-      return;
-    }
-  }
-  if( random() < 0.5 ){
-    macro_ai_frame(ai_turret_idle1)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_patrol1)
-};
-
-void() ai_turret_fight_prep={
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( !ai_valid_target(self.enemy) ){
-    macro_ai_frame(self.th_stand)
-    return;
-  } 
-  
-  self.ai_action_time = self.ai_action_mod;
-  enemy_vis = ai_check_vis( self.enemy );
-  enemy_range = self.stat_trg_dist;
-  enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-  
-  if( enemy_vis == VIS_FRAC ){
-    if( enemy_range <= self.ai_minrange ){
-      if( enemy_infront ){
-        macro_ai_frame(ai_turret_combat1)
-        return;
-      }
-      macro_ai_update(ai_turret_rotate1)
-      return;
-    }
-    if( enemy_range > self.ai_minrange ){
-      macro_ai_update(ai_turret_rotate1)
-      return;
-    }
-  }
-  if( enemy_vis == VIS_FRN ){
-    macro_ai_update(ai_turret_rotate1)
-    return;
-  }
-  if( enemy_vis == VIS_FAIL ){
-    if( enemy_range >= AI_RANGE_L ){
-      self.enemy = world;
-      macro_ai_frame(ai_turret_patrol1)
-      return;
-    }
-    ai_turret_set_state( TR_YAW );
-    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.origin );
-    ai_sfx_huntStart();
-    macro_ai_frame(ai_turret_hunt1)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_idle1)
+  self.think = ai_state_frame;
+  self.nextthink = time + (random() * 0.5);
 };
 
 void() ai_turret_touch={
@@ -317,284 +62,28 @@ void() ai_turret_touch={
     if( !ai_valid_target(self.enemy) ){
       self.oldenemy = self.enemy;
       self.enemy = other;
-      macro_ai_frame(ai_turret_fight_prep)
+      if(self.ai_state_next != ST_COMBAT){
+        self.ai_state_next = ST_COMBAT;
+      }
       return; 
     }
     touch_front = ai_check_targ_infront( other, self.ai_fov, TRUE);
     if( touch_front ){
       self.oldenemy = self.enemy;
       self.enemy = other;
-      macro_ai_frame(ai_turret_fight_prep)
+      if(self.ai_state_next != ST_COMBAT){
+        self.ai_state_next = ST_COMBAT;
+      }
       return;
     }
   }
 };
 
 /*
-  Rotate
-  turret merely rotates to track target
-*/
-void() ai_turret_rotate1={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  ai_turret_set_state(TR_TARG);
-   
-  ai_attack();
-  
-  macro_ai_frame(ai_turret_rotate2)
-};
-void() ai_turret_rotate2={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
- 
-  macro_ai_frame(ai_turret_rotate3)
-};
-void() ai_turret_rotate3={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-
-  macro_ai_frame(ai_turret_rotate4)
-};
-void() ai_turret_rotate4={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-   
-  ai_attack();
-
-  macro_ai_frame(ai_turret_rotate5)
-};
-void() ai_turret_rotate5={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-
-  macro_ai_frame(ai_turret_rotate6)
-};
-void() ai_turret_rotate6={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  macro_ai_frame(ai_turret_rotate7)
-};
-void() ai_turret_rotate7={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-   
-  ai_attack();
-  
-  macro_ai_frame(ai_turret_rotate8)
-};
-void() ai_turret_rotate8={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_attack();
-  }
-  
-  macro_ai_frame(ai_turret_fight_prep)
-};
-
-/*
-  Combat - turret fires at target
-*/
-void() ai_turret_combat1={
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_updateTank)
-  
-  ai_turret_set_state(TR_TARG);
-  ai_attack();
-  
-  macro_ai_frame(ai_turret_combat2)
-};
-void() ai_turret_combat2={
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_attack();
-  }
-  
-  macro_ai_frame(ai_turret_combat3)
-};
-void() ai_turret_combat3={
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_updateTank)
-  
-  macro_ai_frame(ai_turret_combat4)
-};
-void() ai_turret_combat4={
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_updateTank)
-  
-  macro_ai_frame(ai_turret_combat5)
-};
-void() ai_turret_combat5={
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_updateTank)
-
-  ai_attack();
-  
-  macro_ai_frame(ai_turret_combat6)
-};
-void() ai_turret_combat6={
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_updateTank)
-
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_attack();
-  }
-  
-  macro_ai_frame(ai_turret_fight_prep)
-};
-
-void() ai_turret_hunt1={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_vis(self.enemy) != VIS_FAIL ){
-    ai_turret_set_state(TR_TARG);
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_hunt2)
-};
-void() ai_turret_hunt2={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    if( ai_check_vis(self.enemy) != VIS_FAIL ){
-      ai_turret_set_state(TR_TARG);
-      macro_ai_frame(ai_turret_fight_prep)
-      return;
-    }
-  }
-  
-  macro_ai_frame(ai_turret_hunt3)
-};
-void() ai_turret_hunt3={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_vis(self.enemy) != VIS_FAIL ){
-    ai_turret_set_state(TR_TARG);
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-
-  macro_ai_frame(ai_turret_hunt4)
-};
-void() ai_turret_hunt4={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    if( ai_check_vis(self.enemy) != VIS_FAIL ){
-      ai_turret_set_state(TR_TARG);
-      macro_ai_frame(ai_turret_fight_prep)
-      return;
-    }
-  }
-  
-  macro_ai_frame(ai_turret_hunt5)
-};
-void() ai_turret_hunt5={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-
-  if( ai_check_vis(self.enemy) != VIS_FAIL ){
-    ai_turret_set_state(TR_TARG);
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_hunt6)
-};
-void() ai_turret_hunt6={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    if( ai_check_vis(self.enemy) != VIS_FAIL ){
-      ai_turret_set_state(TR_TARG);
-      macro_ai_frame(ai_turret_fight_prep)
-      return;
-    }
-  }
-  
-  macro_ai_frame(ai_turret_hunt7)
-};
-void() ai_turret_hunt7={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_vis(self.enemy) != VIS_FAIL ){
-    ai_turret_set_state(TR_TARG);
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-
-  macro_ai_frame(ai_turret_hunt8)
-};
-void() ai_turret_hunt8={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    if( ai_check_vis(self.enemy) != VIS_FAIL ){
-      ai_turret_set_state(TR_TARG);
-      macro_ai_frame(ai_turret_fight_prep)
-      return;
-    }
-  }
-  
-  macro_ai_frame(ai_turret_hunt9)
-};
-void() ai_turret_hunt9={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_vis(self.enemy) != VIS_FAIL ){
-    ai_turret_set_state(TR_TARG);
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_hunt10)
-};
-void() ai_turret_hunt10={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    if( ai_check_vis(self.enemy) != VIS_FAIL ){
-      ai_turret_set_state(TR_TARG);
-      macro_ai_frame(ai_turret_fight_prep)
-      return;
-    }
-  }
-  
-  macro_ai_frame_count(ai_turret_hunt1)
-  
-  self.enemy = world; //dumps target
-  if( ai_valid_target( self.oldenemy ) ){
-    self.enemy = self.oldenemy;
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  ai_turret_set_state(TR_NORM);
-  macro_ai_frame(ai_turret_patrol1)
-};
-
-/*
-  TH_REACT
+  TH_PAIN
     what to do when hit by fire
 */
-void( entity attacker ) ai_turret_react1={  
+void( entity attacker ) ai_turret_react={  
   local float enemyvis;
 
   self.ai_react_buffer = time + self.ai_react_time;
@@ -609,7 +98,9 @@ void( entity attacker ) ai_turret_react1={
     self.enemy = attacker;
     self.torsoCenter.ai_dir = TR_TARG;
     self.torsoCenter.enemy = self.enemy;
-    macro_ai_frame(ai_turret_fight_prep)
+    if(!self.ai_state_next == ST_COMBAT){
+      self.ai_state_next = ST_COMBAT;
+    }
     return;
   }
   
@@ -619,7 +110,9 @@ void( entity attacker ) ai_turret_react1={
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.ai_react_buffer = time + self.ai_react_time * 5;
-    macro_ai_frame(ai_turret_fight_prep)
+    if(!self.ai_state_next == ST_COMBAT){
+      self.ai_state_next = ST_COMBAT;
+    }
     return;
   }
   
@@ -628,139 +121,11 @@ void( entity attacker ) ai_turret_react1={
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.ai_react_buffer = time + self.ai_react_time * 5;
-    macro_ai_frame(ai_turret_fight_prep)
+    if(!self.ai_state_next == ST_COMBAT){
+      self.ai_state_next = ST_COMBAT;
+    }
     return;
   }
   
-  
   self.ai_react_buffer = time + self.ai_react_time * 2;
-};
-
-/*
-  Turret idles by rotating to a random heading
-*/
-void() ai_turret_idle1={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  self.torsoCenter.ideal_yaw = anglemod( self.angles_y + (35 + (random() * 25) + (random() * 45)) * crandom() );
-  ai_turret_set_state(TR_YAW);
-  
-  macro_ai_frame(ai_turret_idle2)
-};
-void() ai_turret_idle2={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-
-  macro_ai_frame(ai_turret_idle3)
-};
-void() ai_turret_idle3={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-
-  macro_ai_frame(ai_turret_idle4)
-};
-void() ai_turret_idle4={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  macro_ai_frame(ai_turret_idle5)
-};
-void() ai_turret_idle5={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-
-  macro_ai_frame(ai_turret_idle6)
-};
-void() ai_turret_idle6={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  macro_ai_frame(ai_turret_idle7)
-};
-void() ai_turret_idle7={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  macro_ai_frame(ai_turret_idle8)
-};
-void() ai_turret_idle8={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    if( random() < 0.33){
-      macro_ai_frame(ai_turret_patrol1)
-      return;
-    }
-  }
-  
-  macro_ai_frame(ai_turret_idle9)
-};
-void() ai_turret_idle9={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    if( random() < 0.33){
-      macro_ai_frame(ai_turret_patrol1)
-      return;
-    }
-  }
-  macro_ai_frame(ai_turret_idle10)
-};
-void() ai_turret_idle10={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  macro_ai_frame(ai_turret_patrol1)
-};
-
-/*
-  SPAWN
-*/
-void() ai_turret={
-  
-  macro_ai_setup(ai_turret)
-  
-  self.spreadDefault = ACCURACY_LOWTECH;
-  
-  ai_unit_ini_var();
-  initialize_data_turret_( self.nextVecChoice );
-  ai_pilot_ini_stats(self.ai_rank);
-  
-  trigger_event( self, self.trigOnSpawn); //event interface
-
-  self.th_react = ai_turret_react1;
-  self.th_die = ai_turret_die;
-  self.touch = ai_turret_touch;
-  
-  local entity wep;
-  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
-    wep.effects = wep.effects | EF_NODRAW;
-  }  
-  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
-  
-  self.ai_unit_update = ctrl_updateTank;
-  
-  //ai state interface--------------------------------------------------------
-  self.ai_state_next = ST_PTR;
-  self.ai_state_stand = ai_mech_sk_stand;
- 
-  self.ai_state_patrol = turret_patrol;
-  self.ai_state_patrol_pause = turret_patrol_pause;
-  self.ai_state_patrol_travel_node = turret_patrol_travel;
-  self.ai_state_patrol_travel_blocked = turret_patrol_travel_block;
-  
-  self.ai_state_combat = turret_combat;
-  self.ai_state_combat_moveStart = turret_com_moveStart;
-  self.ai_state_combat_moveExec = turret_com_moveExec;
-  self.ai_state_combat_moveEnd = turret_com_moveEnd;
-  self.ai_state_combat_blocked = turret_com_blocked;
-  //--------------------------------------------------------------------------
-  self.SendEntity = ctrl_send_turret;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
-  
-  self.think = ai_state_frame;
-  self.nextthink = time + (random() * 0.5);
 };

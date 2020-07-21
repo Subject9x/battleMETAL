@@ -9,9 +9,11 @@ Overview:
 
 void() ai_turret;
 
-void() ai_vec_dest_die;
-void( entity attacker ) ai_spg_react;
-void() ai_spg_stand;
+void() ai_turret_die_burn;
+void() ai_turret_die;
+void( entity attacker ) ai_turret_react;
+void() temp_chunk_burn;
+void() ai_turret_touch;
 
 void() turret_patrol;
 void() turret_patrol_pause;

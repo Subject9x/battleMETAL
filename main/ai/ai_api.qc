@@ -311,10 +311,6 @@ float() ai_find_target_radar={
 void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
   
-  if( !ally.th_missile ){
-    return;
-  }
-  
   this = self;
   //validTarg = ai_valid_target(ally.enemy);  note: every other func calling this one already involes ai_valid_target()
   self = ally;
@@ -445,12 +441,6 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   tMins_z = tMins_z * 0.75; //adjust for slope
   
   tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg + (v_forward * (tMaxs_x / 2)), MOVE_NORMAL, self);
-  //big debug 
-   // trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMaxs_z), destOrg + (v_right * tMaxs_x) + (v_up * tMaxs_z));  //debug
-    //trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMaxs_z), destOrg + (v_right * tMins_x) + (v_up * tMaxs_z));  //debug
-    //trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMaxs_x) + (v_up * tMins_z), destOrg + (v_right * tMaxs_x) + (v_up * tMins_z));  //debug
-    //trailparticles(self, particleeffectnum("TE_PAC_RAIL"), self.origin + (v_forward * (tMaxs_x / 2)) + (v_right * tMins_x) + (v_up * tMins_z), destOrg + (v_right * tMins_x) + (v_up * tMins_z));  //debug
-  //
 
   if( trace_fraction < 0.1 ){
     return 0;

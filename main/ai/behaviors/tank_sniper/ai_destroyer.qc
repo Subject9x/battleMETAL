@@ -11,10 +11,15 @@ Overview: ai unit
   AI SPAWN FUNCTION
 */
 void() ai_vec_dest={
+  
   ai_unit_ini_var();
+  
   initialize_data_vehicle_( self.nextVecChoice );
+  
   self.spawnflags = self.spawnflags | HAS_RADAR;
+  
   ai_pilot_ini_stats(self.ai_rank);
+  
   if( self.vec_size < 3 ){
      self.spawnflags = self.spawnflags | MUTE_ME;
   }
@@ -25,7 +30,7 @@ void() ai_vec_dest={
   self.touch = ai_touch;
   
   self.SendEntity = ctrl_send_spg;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;   
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   local entity wep;
   for(wep = self.w_slot; wep != world; wep = wep.w_slot){
     wep.effects = EF_NODRAW;

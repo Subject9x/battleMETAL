@@ -13,27 +13,32 @@ Overview:
 void() turret_combat={
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
   
+    if( !ai_valid_target(self.enemy) ){
+      self.enemy = world;
+      self.ai_state_next = ST_PTR;
+    }
+  
     return;
   }
 };
 
 void() turret_com_moveStart={
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-  
+    self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
 };
 
 void() turret_com_moveExec={
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
-  
+    self.ai_state_next = ST_COM_MOVE_END;
     return;
   }
 };
 
 void() turret_com_moveEnd={
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-  
+    self.ai_state_next = ST_COMBAT;
     return;
   }
 };
