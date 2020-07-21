@@ -83,72 +83,51 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
   
 };
 
-float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame={
-  if( walkmove( moveAngle, moveSpeed ) ){
-    macro_ai_frame(nextFrameFunc)
-    return TRUE;
-  }
-  return FALSE;
-};
-
-
 /*
   Primary Generic touch function for AI.
 */
 void() ai_touch={
   local float enemyFront;
   local float otherFront;
+  local float vis;
+  local float distanc;
+  
+  if( time < self.ai_react_buffer ){
+    return;
+  }
   //ignore environment
   if( !(other.flags & FL_MONSTER) || !(other.flags & FL_CLIENT) ){
     return;
   }
-  
-  otherFront = ai_check_targ_infront( other, self.ai_fov, (self.flags & FL_TURRET) );
-  if(self.enemy){
-    enemyFront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET) ); 
-  }
-  
-  if( otherFront ){
-    if( other.faction == self.faction ){
-      if( !(other.flags & FL_CLIENT) && !other.enemy && self.enemy){
-        other.enemy = self.enemy;
-        if(other.ai_state_next != ST_COMBAT){
-          other.ai_move_next = 0;
-          other.ai_state_next = ST_COMBAT;
-        }
-      }
-      if(other.data_type != DATA_BLD){
-        if( (self.ai_state == ST_PTR) || (self.ai_state == ST_PTR_TRAVEL_NODE) || (self.ai_state == ST_PTR_TRAVEL_NODEBLOCK) ){
-          self.pausetime = random() * (self.ai_rank + 3);
-          self.ai_state_next = ST_PTR_PAUSE;
-          return;
-        }
-        else{
-          self.ai_move_next = MOVE_STAND_FACE;
-          self.ai_movedist = random() * (self.ai_rank + 2);
-          self.ai_state_next = ST_COM_MOVE_START;
-          return;
-        }
-      }
-    }
-    if(other.data_type != DATA_BLD){
-      if(!enemyFront){
-        self.enemy = other;
-        if(self.ai_state_next != ST_COMBAT){
-          self.ai_move_next = 0;
-          self.ai_state_next = ST_COMBAT;
-        }
-        return;
-      }
-    }
-  }
-  if(!enemyFront){
-    self.enemy = other;
-    if(self.ai_state_next != ST_COMBAT){
-      self.ai_move_next = 0;
-      self.ai_state_next = ST_COMBAT;
-    }
+  if(self.enemy && other == self.enemy){
+    self.ai_react_buffer = time + (self.ai_react_time * 3);
     return;
+  }
+  self.ai_react_buffer = time + (self.ai_react_time * 2);
+  
+  //AI lacks an enemy at the moment.
+  otherFront = ai_check_targ_infront( other, self.ai_fov, (self.flags & FL_TURRET) );
+  if(!self.enemy){
+    if(other.faction != self.faction){
+      self.enemy = other;
+    }
+    else if(other.enemy){
+      self.enemy = other.enemy;
+    }
+    self.ai_move_next = MOVE_STAND_FACE;
+    self.ai_state_next = ST_COM_MOVE_START;
+    return;
+  }
+  
+  //AI DOES have a current enemy
+  enemyFront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET) );
+  distanc = ai_check_node_radius(self.enemy);
+  vis = ai_check_vis(self.enemy);
+  
+  if( !enemyFront && otherFront ){
+    if( distanc > 1.0 || vis != VIS_FRAC){
+      self.enemy = other;
+    }
   }
 };
 
@@ -464,7 +443,7 @@ float( entity targ ) ai_check_vis={
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_DONOTENTER | DPCONTENTS_MONSTERCLIP);
   
-  tracebox (spot1, self.mins * 0.5, self.maxs * 0.5, spot2, MOVE_NORMAL, self);
+  tracebox (spot1, targ.mins * 0.5, targ.maxs * 0.5, spot2, MOVE_NORMAL, self);
   
   self.dphitcontentsmask = contentBuffer;
 

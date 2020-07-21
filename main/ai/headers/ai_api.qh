@@ -7,22 +7,6 @@ Overview:
 */
 
 //MACROs for AI
-// think->nextthink function, use for transitions to next AI frame func, updates all AI subcomponents
-#define macro_ai_frame(next_func) if((self.flags&FL_TURRET)){ai_turret_control();}if(self.legs){ai_leg_control();}self.think=next_func;self.nextthink=time+0.05;
-
-//given the ctrl_ update_func, check DEBUG state, and deadflag state, then run global ai_update() function.
-#define macro_ai_update(update_func) update_func();if(!(self.spawnflags&DEBUG_MODE)){if(!self.deadflag){ai_update();}}
-
-//parsing out the important bit to macro_ai_frame, ignoring the func calling
-//#define macro_ai_sub_frames if((self.flags&FL_TURRET)){ai_turret_control();}if(self.legs){ai_leg_control();}
-
-//set ai_action_time, this will loop back to the ai_frame you want to until ai_action_time = 0
-#define macro_ai_frame_count(repeat_frame) if(self.ai_action_time>0){self.ai_action_time = self.ai_action_time-1;macro_ai_frame(repeat_frame) return;}
-
-//#define macro_ai_frame_hunt(hunt_func) if(!self.ai_node_recall){ai_sfx_huntStart();node_recall_setup();self.goalentity=self.enemy;macro_ai_frame(hunt_func) return;} self.goalentity=self.ai_node_recall;macro_ai_frame(hunt_func) return;
-//#define macro_ai_movegoal(speed) if( self.movetarget ){movetogoal(speed);}
-//#define macro_ai_patrol(speed,pauseFunc,nextFunc) local entity nextNode;if((self.goalentity.flags&FL_NODE)){ai_face_goal();if(walkmove(self.angles_y,max(speed,65*AI_WALK_SPD))==FALSE){movetogoal(max(self.data_speed_forward,65*AI_WALK_SPD));//ai_patrol_turn();}if(vlen(self.goalentity.origin-self.origin)<=(random()*AI_NODE_DISTANCE)){if(self.goalentity.pausetime){self.pausetime=self.goalentity.pausetime;self.pausetime=self.pausetime+(self.pausetime*(self.ai_action_mod/10));self.pausetime = self.pausetime+time;}if(self.goalentity.target){nextNode=find(world,targetname,self.goalentity.target);self.movetarget=nextNode;}else{if(self.goalentity.ai_rank>0){self.movetarget=world;self.goalentity.think=SUB_Remove;self.goalentity.nextthink=time+0.1;}else{self.movetarget=ai_goal_offset_node();}} self.goalentity=self.movetarget;if(time<self.pausetime){macro_ai_frame(pauseFunc) return;}} macro_ai_frame(nextFunc) return;} macro_ai_frame(pauseFunc)
-
 #define macro_ai_setup(iniFunc) if(!(self.nextVecChoice)||self.nextVecChoice<=0){self.think=SUB_Remove;self.nextthink=time+0.05;return;}if((self.spawnflags&TRIGGER_ME)&&(self.targetname)){self.wait=1;if(self.delay>0){self.wait=self.delay;self.delay=0;}self.use=ai_unit_make_trigger;self.unit_ini=iniFunc;}else{self.think=iniFunc;self.nextthink=time+0.05;}
 
 //CONSTANTS
@@ -198,7 +182,6 @@ void() ai_sfx_help;
 //AI-CONTROL FUNCTIONS - ai_ctrl.qc
 float() ai_blocked_teleport;
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
-float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame;
 void() ai_touch;
 void() ai_patrol_state_frame;
 void() ai_face_goal;
@@ -224,15 +207,13 @@ float PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && 
 float PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
 .float patrolState;
 
-float MOVE_STAND          = 0;  //every AI has this
-float MOVE_PATROLNODE     = 3;  //AI moves at patrol_frame style movement to get back to node distance.
+
 float MOVE_NODE_CLEAR     = 5;  // enemy_vis == VIS_FRN, so find a node to shoot from
 float MOVE_NODE_HIDE      = 6;  // enemy_range > AI_RANGE_M, so try and take cover
 float MOVE_NODE_REVERSE   = 7;  // unit is out of node range, do a fighting reverse 
-float MOVE_BACK           = 9;
-float MOVE_NODE_RADIUS     = 10; // AI is 'ring-out' on their current node
 
 //special mapped moves
+float MOVE_STAND          = 0;  //every AI has this
 float MOVE_CHARGE         = 1;
 float MOVE_CHARGE_LEFT    = 2;
 float MOVE_CHARGE_RIGHT   = 4;
@@ -245,6 +226,9 @@ float MOVE_BACK_RIGHT     = 256;
 float MOVE_SNAPSHOT       = 512;
 float MOVE_SNIPESHOT      = 1024;
 float MOVE_STAND_FACE     = 2048;
+float MOVE_PATROLNODE     = 4096;  //AI moves at patrol_frame style movement to get back to node distance.
+float MOVE_BACK           = 8192;
+float MOVE_NODE_RADIUS    = 16384; // AI is 'ring-out' on their current node
 
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_last; //  used for per-frame comparisons
@@ -261,6 +245,7 @@ float MOVE_STAND_FACE     = 2048;
 .float ai_moveflag;   //  remaining allowable moves before attempting to refresh the move set
 .float ai_blockflag;  //a result of time + value, bot will go SOLID_CORPSE for a hot sec
 .float ai_clearblock; //  AI-CODE-SET to clear the AI's ai_blockflag on the next frame.
+void() ai_block_table;
 
 float ST_PTR                  = 2;  //ENTER -> PATROL
 float ST_PTR_PAUSE            = 3;  //arrived at ai_node

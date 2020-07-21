@@ -19,7 +19,12 @@ Overview:
 */
 void() ai_state_frame={
   //run unit frame updates
-  macro_ai_update(self.ai_unit_update)
+  self.ai_unit_update();
+  if( !(self.spawnflags&DEBUG_MODE) ){
+    if( !self.deadflag ){
+      ai_update();
+    }
+  }
   
   //State update
   self.ai_state_last = self.ai_state;

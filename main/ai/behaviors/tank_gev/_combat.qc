@@ -103,6 +103,9 @@ void() gev_combat={
     return;
   //---------------------------------------------------------------------------
   }
+  //can't find WHY its sometimes ending up here, but it is.
+  self.ai_state_last = 0;
+  self.ai_state_next = ST_COMBAT;
 };
 
 /*

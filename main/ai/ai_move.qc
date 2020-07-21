@@ -697,6 +697,68 @@ void() ai_move_node_radius={
   }
 };
 
+
+/*
+  A primitive fall-through selector that tries to eliminate blocked moves over a series of 
+  frames.
+  by elinimating possible moves, the AI might get a better move choice before resetting the blockflag
+  and having all moves again.
+*/
+void() ai_block_table={
+  local float nextMove;
+  nextMove = MOVE_STAND;
+  switch(self.ai_move){
+    case MOVE_CHARGE:
+      if(!(self.ai_blockflag & MOVE_BACK)){
+        nextMove = MOVE_BACK;
+      }
+      break;
+      
+    case MOVE_CHARGE_LEFT:
+      if(!(self.ai_blockflag & MOVE_CIRCLE_LEFT)){
+        nextMove = MOVE_CIRCLE_LEFT;
+      }
+      break;
+      
+    case MOVE_CHARGE_RIGHT:
+      if(!(self.ai_blockflag & MOVE_CIRCLE_RIGHT)){
+        nextMove = MOVE_CIRCLE_RIGHT;
+      }
+      break;
+      
+    case MOVE_CIRCLE_LEFT:
+      if(!(self.ai_blockflag & MOVE_STRAFE_LEFT)){
+        nextMove = MOVE_STRAFE_LEFT;
+      }
+      break;
+      
+    case MOVE_CIRCLE_RIGHT:
+      if(!(self.ai_blockflag & MOVE_STRAFE_RIGHT)){
+        nextMove = MOVE_STRAFE_RIGHT;
+      }
+      break;
+      
+    case MOVE_STRAFE_LEFT:
+      if(!(self.ai_blockflag & MOVE_BACK_LEFT)){
+        nextMove = MOVE_BACK_LEFT;
+      }
+      break;
+      
+    case MOVE_STRAFE_RIGHT:
+      if(!(self.ai_blockflag & MOVE_BACK_RIGHT)){
+        nextMove = MOVE_BACK_RIGHT;
+      }
+      break;
+      
+    //all default to move_Stand
+    //case MOVE_BACK:
+    //case MOVE_BACK_LEFT:
+    //case MOVE_BACK_LEFT:
+  }
+  self.ai_move_next = nextMove;
+};
+
+
 /*
   Ported sv_playermovement.qc walking code over to this.
   UNUSED FOR NOW

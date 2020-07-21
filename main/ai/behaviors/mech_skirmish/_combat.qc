@@ -17,7 +17,6 @@ float ST_COM_REACT            = 12;
 */
 void() mech_sk_combat={
   local entity prox;
-  
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
     //check if target is blown up in between frames
@@ -58,7 +57,7 @@ void() mech_sk_combat={
     combat_dist = ai_check_node_radius(self);
    
     if( enemy_vis == VIS_FAIL ){
-      if(enemy_range >= 0.85 ){
+      if(enemy_dist >= 0.85 ){
         self.enemy = world;
         self.ai_state_next = ST_STAND;
         self.ai_dampen = 0;
@@ -111,9 +110,13 @@ void() mech_sk_combat={
     //combat_dist < 1.0
     //get fighting
     mech_sk_fight_full();
+    cons_logAString("------->LAST", dbg_state(self.ai_state_next)); //debug
   //---------------------------------------------------------------------------
     return;
   }
+  //can't find WHY its sometimes ending up here, but it is.
+  self.ai_state_last = 0;
+  self.ai_state_next = ST_COMBAT;
 };
 
 /*
@@ -183,6 +186,7 @@ void() mech_sk_com_blocked={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
     self.ai_move_next = 0;
+    self.patrolState = 0;
     self.goalentity = self.patrolNode;
     self.ai_move_next = MOVE_NODE_RADIUS;
     self.ai_state_next = ST_COM_MOVE_START;

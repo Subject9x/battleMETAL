@@ -165,7 +165,6 @@ void( entity attacker ) ai_spg_react={
   }
   self.enemy = attacker;
   self.ai_react_buffer = time + self.ai_react_time * 5;
-  self.ai_state_next = ST_COMBAT;
   if(self.ai_state_next != ST_COMBAT){
     self.ai_state_next = ST_COMBAT;
   }
