@@ -17,9 +17,10 @@ void() ai_patrol={
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
     self.goalentity = self.patrolNode;
     self.tetherStatus = TETHER_PATROL;
+    self.patrolState = PATROL_WALKING;
     
     if( self.legs ){
-      self.legs.attack_state = TR_TARG;
+      self.legs.attack_state = TR_GOAL;
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
@@ -58,8 +59,10 @@ void() ai_ptr_pause={
   STATE : PATROL TRAVEL TO NODE
 */
 void() ai_ptr_travel_node={
+  local float lastPatrol
   ai_update_accuracy( TRUE );
 
+  lastPatrol = self.patrolState;
   ai_patrol_state_frame();
   
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
@@ -68,14 +71,17 @@ void() ai_ptr_travel_node={
     return;
   }
   
-  if( self.patrolState == PATROL_PAUSE ){
+  if( self.patrolState == PATROL_PAUSE && lastPatrol != PATROL_PAUSE ){
     self.ai_state_next = ST_PTR_PAUSE;
     return;
   }
   
-  if(self.patrolState == PATROL_BLOCK ){
+  if(self.patrolState == PATROL_BLOCK && lastPatrol != PATROL_BLOCK ){
     self.ai_state_next = ST_PTR_TRAVEL_NODEBLOCK;
     return;
+  }
+  if(self.patrolState == PATROL_ARRIVE && lastPatrol != PATROL_ARRIVE ){
+    self.ai_state_next = ST_PTR;
   }
 };
 /*

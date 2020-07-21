@@ -273,32 +273,33 @@ void() ai_patrol_state_frame={
   }
   
   //PATROL - ARRIVED AT NODE, set pause and next node
-  if( self.goalentity.partNext != world ){
-    nextNode = self.goalentity.partNext;
-    self.patrolNode = nextNode;
-    self.tetherStatus = TETHER_PATROL;
-    self.tetherOrg = self.patrolNode.origin;
-    
-  }
-  else{
-    if( self.patrolNode.classname == "ai_node"){
-      self.patrolNode = world;
-      self.tetherStatus = TETHER_NODE;
-    }
-  }
-  if( self.goalentity.pausetime && nextNode != self.goalentity ){
+  if(self.goalentity.pausetime > 0.0){
     self.pausetime = self.goalentity.pausetime;
     self.pausetime = max(5, self.pausetime - (self.ai_rank / 2));
     self.goalentity = self.patrolNode;
-    self.patrolState =  PATROL_PAUSE;
-    return;
+    self.patrolState = PATROL_PAUSE;
   }
   else{
-    self.goalentity = self.patrolNode;
-    self.patrolState = PATROL_WALKING;
-    return;
+    self.pausetime = 0;
+    self.patrolState = PATROL_ARRIVE;
   }
-  self.patrolState =  PATROL_ARRIVE;
+  
+  nextNode = self.patrolNode;
+  if( self.goalentity.partNext != world ){
+    //case - there's the next node
+    nextNode = self.goalentity.partNext;
+  }
+  
+  if(nextNode != self.patrolNode ){
+    self.tetherStatus = TETHER_PATROL;
+  }
+  else{
+    self.tetherStatus = TETHER_NODE;
+  }
+  
+  self.patrolNode = nextNode;
+  self.tetherOrg = self.patrolNode.origin;
+
 };
 
 
