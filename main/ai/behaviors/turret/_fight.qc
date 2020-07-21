@@ -9,18 +9,3 @@ Overview:
   _fight - all the combat-related decisions
   
 */
-void() turret_fight_target_fire={
-
-};
-
-void() turret_fight_out_radius={
-
-};
-
-void() turret_fight_vis_friend={
-
-};
-
-void() turret_fight_full={
-
-};

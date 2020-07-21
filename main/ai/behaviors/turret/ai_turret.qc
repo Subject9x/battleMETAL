@@ -98,7 +98,7 @@ void( entity attacker ) ai_turret_react={
     self.enemy = attacker;
     self.torsoCenter.ai_dir = TR_TARG;
     self.torsoCenter.enemy = self.enemy;
-    if(!self.ai_state_next == ST_COMBAT){
+    if(self.ai_state_next != ST_COMBAT){
       self.ai_state_next = ST_COMBAT;
     }
     return;
@@ -110,7 +110,7 @@ void( entity attacker ) ai_turret_react={
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.ai_react_buffer = time + self.ai_react_time * 5;
-    if(!self.ai_state_next == ST_COMBAT){
+    if(self.ai_state_next != ST_COMBAT){
       self.ai_state_next = ST_COMBAT;
     }
     return;
@@ -121,7 +121,7 @@ void( entity attacker ) ai_turret_react={
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.ai_react_buffer = time + self.ai_react_time * 5;
-    if(!self.ai_state_next == ST_COMBAT){
+    if(self.ai_state_next != ST_COMBAT){
       self.ai_state_next = ST_COMBAT;
     }
     return;

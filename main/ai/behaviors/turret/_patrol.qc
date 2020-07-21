@@ -70,17 +70,17 @@ void() turret_patrol_travel={
   }
   if(self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw){
     self.ai_state_next = ST_PTR_PAUSE;
-    self.ai_movewait = random() * (self.ai_rank * 2);
+    self.ai_movewait = random() * (self.ai_rank * 3);
     return;
   }
 };
 
 /*
   STATE::ST_PTR_TRAVEL_NODEBLOCK
+  --modified here to be more a fade-out state from combat
 */
 void() turret_patrol_travel_block={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
-  
     return;
   }
 };

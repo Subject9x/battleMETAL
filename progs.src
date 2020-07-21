@@ -155,7 +155,6 @@ main/controllers/headers/controllers.qh
   main/ai/behaviors/ai_patrol.qc
   main/ai/behaviors/turret/ai_turret.qc
     main/ai/behaviors/turret/_combat.qc
-    main/ai/behaviors/turret/_fight.qc
     main/ai/behaviors/turret/_patrol.qc
     main/ai/behaviors/turret/_die.qc
   

@@ -25,8 +25,3 @@ void() turret_com_moveStart;
 void() turret_com_moveExec;
 void() turret_com_moveEnd;
 void() turret_com_blocked;
-
-void() turret_fight_target_fire;
-void() turret_fight_out_radius;
-void() turret_fight_vis_friend;
-void() turret_fight_full;
