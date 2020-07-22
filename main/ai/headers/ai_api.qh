@@ -120,7 +120,6 @@ float TETHER_NODE   = 1;  //-> .tetherStatus
 float TETHER_PATROL = 2;  //-> .tetherStatus
 float TETHER_ENT    = 3;  //-> .tetherStatus
 float TETHER_SELF   = 4;  //-> .tetherStatus
-.entity tetherNode;
 .float tetherStatus; //TETHER_NONE = 0, TETHER_NODE = 1, TETHER_PATROL = 2, TETHER_ENT = 3, TETHER_SELF = 4;
 .vector tetherOrg;  //either closest tether-node, patrol node, or starting origin.
 
@@ -144,7 +143,6 @@ entity(float checkDir) ai_get_next_node;
 float(entity toCheck) ai_check_node_radius;
 float() ai_check_node_radius_targdist;
 entity() ai_node_tether_find;
-float() ai_node_tether_check;
 float() ai_patrol_traffic_adjust;
 
 ////////////////////////////////
@@ -206,9 +204,8 @@ float PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && 
 float PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
 .float patrolState;
 
-
 float MOVE_NODE_CLEAR     = 5;  // enemy_vis == VIS_FRN, so find a node to shoot from
-float MOVE_NODE_HIDE      = 6;  // enemy_range > AI_RANGE_M, so try and take cover
+float MOVE_NODE_TACTICAL  = 6;  // tetherStatus == TETHER_PATROL, and target is beyond patrol nbode
 float MOVE_NODE_REVERSE   = 7;  // unit is out of node range, do a fighting reverse 
 
 //special mapped moves
@@ -324,7 +321,7 @@ float() ai_move_back_left;
 float() ai_move_back_right;
 void() ai_move_snapshot;
 void() ai_move_standface;
-void() ai_move_node_hide;
+void() ai_move_node_tactical;
 void() ai_move_node_clear;
 void() ai_move_node_reverse;
 void() ai_move_node_radius;
@@ -332,7 +329,6 @@ float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node;
 
 ////////////////////////////////
 //GENERIC PATROL IMPL - ai_tether.qc
-
 void() ai_patrol;
 void() ai_ptr_pause;
 void() ai_ptr_travel_node;
@@ -430,8 +426,8 @@ string(float moveId) dbg_move={
       return "MOVE_SNIPESHOT";
     case MOVE_STAND_FACE:
       return "MOVE_STAND_FACE";
-    case MOVE_NODE_HIDE:
-      return "MOVE_NODE_HIDE";
+    case MOVE_NODE_TACTICAL:
+      return "MOVE_NODE_TACTICAL";
     case MOVE_NODE_CLEAR:
       return "MOVE_NODE_CLEAR";
     case MOVE_NODE_REVERSE:

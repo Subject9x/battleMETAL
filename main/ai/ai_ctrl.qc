@@ -616,11 +616,6 @@ void() ai_setup_patrol={
 };
 
 
-
-void() ai_move_node_hide={
-  
-};
-
 void() ai_move_node_clear={
 
 };

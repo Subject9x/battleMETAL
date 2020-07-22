@@ -157,8 +157,8 @@ void() ai_combat_move_frame={
     case MOVE_STAND_FACE:
       ai_move_standface();
       break;
-    case MOVE_NODE_HIDE:
-      ai_move_node_hide();
+    case MOVE_NODE_TACTICAL:
+      ai_move_node_tactical();  //hackfrauds
       break;
     case MOVE_NODE_CLEAR:
       ai_move_node_clear();

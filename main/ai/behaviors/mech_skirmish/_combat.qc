@@ -67,19 +67,17 @@ void() mech_sk_combat={
       self.ai_move_next = MOVE_STAND_FACE;
       return;
     }
-   //out of bounds, do move override
-    if(combat_dist > 1.0){
+    //out of bounds, do move override
+    if( 1.0 < enemy_dist ){
       //run
       if(self.tetherStatus == TETHER_PATROL ){
-        prox = ai_node_to_target(self);
+        prox = ai_node_to_target(self.enemy);
         if(prox != self.patrolNode){
-          if( vlen(prox.origin - self.origin) <= prox.ai_view ){
-            self.patrolNode = prox;
-          }
+          self.patrolNode = prox;
+          self.ai_move_next = MOVE_NODE_TACTICAL;
+          return;
         }
       }
-      self.ai_move_next = MOVE_NODE_RADIUS;
-      return;
     }
     
     combat_roll = random() * 1.0;

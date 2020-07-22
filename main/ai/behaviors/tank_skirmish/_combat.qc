@@ -37,8 +37,7 @@ void() tank_sk_combat={
       self.ai_dampen = 0;
       return;
     }
-    
-    
+  
     if( (self.flags & FL_DISARMED) ){
       //TODO pain / flee
       return;
@@ -47,39 +46,42 @@ void() tank_sk_combat={
     enemy_hunt = FALSE;
     /*
       Combat Frame State Checks
-    */
+    */    
+    enemy_vis = 0;
+    enemy_infront = 0;
+    enemy_dist = 0;
+    combat_dist = 0;
+    enemy_range = 0;
+    
     enemy_vis = ai_check_vis( self.enemy );
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
     enemy_dist = ai_check_node_radius(self.enemy);
     combat_dist = ai_check_node_radius(self);
     enemy_range = ai_check_node_radius_targdist();
-   
+
     //out of bounds, do move override
-    if(combat_dist > 1.0){
+    if( 1.0 < enemy_dist ){
       //run
       if(self.tetherStatus == TETHER_PATROL ){
-        prox = ai_node_to_target(self);
+        prox = ai_node_to_target(self.enemy);
         if(prox != self.patrolNode){
-          if( vlen(prox.origin - self.origin) <= prox.ai_view ){
-            self.patrolNode = prox;
-          }
+          self.patrolNode = prox;
+          self.ai_move_next = MOVE_NODE_TACTICAL;
+          return;
         }
       }
-      self.ai_move_next = MOVE_NODE_RADIUS;
-      return;
     }
-    
     combat_roll = random() * 1;  //engine doesn't like rolling a lot of dice, 
                           //so roll a single dice per instance of this
                           //frame...
     //AI is in bounds, but target is out of bounds
-    if( enemy_dist > 1.0 ){
+    if( 1.0 < enemy_dist ){
       if( combat_dist <= 1.0 ){
         //AI is on edge of bounds but inside radius
         tank_sk_fight_target_fire();
         return;
       }
-      if( combat_dist > 1.0 ){
+      if( 1.0 < combat_dist ){
         tank_sk_fight_out_radius();
         return;
       }

@@ -455,45 +455,37 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
 };
 
 /*
-  Find the closest node to the target entity that the AI 
-  can feasibly reach.
+  WHEN: AI are set to TETHER_PATROL, they can query their patrol nodes for better positioning data.
+    This checks to see if patrolNode.partNext or patrolNode.partPrev are CLOSER to the desired target.
+    If they are, then the AI executes MOVE_NODE_TACTICAL to get there.
 */
 entity(entity targ) ai_node_to_target={
   local entity hold;
   local entity found;
   local float dist;
   local float distComp;
+  local float checkDist;
   
-  dist = ai_check_node_radius(self);
-  distComp = ai_check_node_radius(targ);
-
-  if( distComp <= dist * 1.25 ){
-    return self.patrolNode;
-  }
-  found = world;
-  hold = self.patrolNode;
+  dist = ai_check_node_radius(targ);
+  
   if(self.patrolNode.partNext){
-    self.patrolNode = self.patrolNode.partNext;
+    hold = self.patrolNode;
+    self.patrolNode = hold.partNext;
       distComp = ai_check_node_radius(targ);
-      if( distComp > (dist * 1.25) ){
-        tracebox(self.origin, self.mins * 0.75, self.maxs * 0.75, self.patrolNode.origin, MOVE_NORMAL, self);
-        if(trace_fraction == 1.0 || trace_ent == targ ){
-          found = self.patrolNode;
-        }
-      }
     self.patrolNode = hold;
+    if( distComp <= dist ){
+      found = self.patrolNode.partNext;
+    }
   }
   if( !found ){
     if(self.patrolNode.partPrev){
-      self.patrolNode = self.patrolNode.partPrev;
+      hold = self.patrolNode;
+      self.patrolNode = hold.partPrev;
         distComp = ai_check_node_radius(targ);
-        if( distComp > (dist * 1.25) ){
-          tracebox(self.origin, self.mins * 0.75, self.maxs * 0.75, self.patrolNode.origin, MOVE_NORMAL, self);
-          if(trace_fraction == 1.0 || trace_ent == targ ){
-            found = self.patrolNode;
-          }
-        }
       self.patrolNode = hold;
+      if( distComp <= dist ){
+        found = self.patrolNode.partPrev;
+      }
     }
   }
   if( !found ){
@@ -538,7 +530,7 @@ float(entity toCheck) ai_check_node_radius={
     distance = max(distance / self.patrolNode.ai_view, 0.01);
   }
   else{
-    distance = max(distance / AI_RANGE_S * 1.25, 0.01);
+    distance = max(distance / AI_RANGE_S, 0.01);
   }
   return distance;
 };
@@ -643,24 +635,6 @@ entity() ai_node_tether_find={
     }
   }
   return found;
-};
-
-/*
-  Tries to keep the AI leashed to its tether node, making sure not to exceed
-  the radius of the node.
-*/
-float() ai_node_tether_check={
-  if( self.tetherStatus == TETHER_NODE || self.tetherStatus == TETHER_PATROL ){
-    if( vlen(self.tetherNode.origin - self.origin) > self.tetherNode.ai_view){
-      //ai is out of bounds
-      return FALSE;
-    }
-    return TRUE;
-  }
-  if( vlen(self.tetherOrg - self.origin) > AI_RANGE_M ){
-    return FALSE;
-  }
-  return TRUE;
 };
 
 

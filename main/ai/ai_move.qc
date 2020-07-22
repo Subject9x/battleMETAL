@@ -699,6 +699,50 @@ void() ai_move_node_radius={
 };
 
 /*
+  AI has a patrol node and the target is closer to another node
+*/
+void() ai_move_node_tactical={
+  local float oldPatrolState;
+  if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    self.patrolState = 0;
+    self.goalentity = self.patrolNode;
+    self.tetherOrg = self.goalentity.origin;
+    self.ai_dampen = 1;
+    
+    if( self.legs ){
+      self.legs.attack_state = TR_GOAL;
+      self.legs.think = bot_leg_walk1;
+      self.legs.nextthink = time + 0.1;
+    }
+    self.ai_movewait = time + 30;
+    return;
+  }
+  oldPatrolState = self.patrolState;
+  ai_attack();
+  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95, self.goalentity.ai_view * 0.33, 0);
+  
+  if( time > self.ai_movewait ){
+    if( ai_blocked_teleport() ){
+      if( self.patrolNode ){
+        if( self.patrolNode.classname == "ai_node" ){
+          self.ai_state_next = ST_PTR;
+          return;
+        }
+        self.ai_state_next = ST_THR;
+        return;
+      }
+      self.ai_state_next = ST_STAND;
+      return;
+    }
+  }
+  
+  if( self.patrolState == PATROL_ARRIVE && oldPatrolState != PATROL_ARRIVE){
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
+};
+
+/*
   Ported sv_playermovement.qc walking code over to this.
   UNUSED FOR NOW
 */
