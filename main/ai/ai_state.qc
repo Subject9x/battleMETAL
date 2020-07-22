@@ -107,8 +107,6 @@ void() ai_state_frame={
     .ai_move_last - delta-tracking of AI's move choice, get this for compares.
     .ai_move_next - set/operate on this to create a new move order.
     .ai_movewait  - timer used for [ST_COM_MOVE_EXEC], set this in [ST_COM_MOVE_START], when expired, it goes to [ST_COM_MOVE_END]
-    .ai_moveflag  - a collection of currently-possible moves, as moves are executed, remove them from this collection.
-    .ai_dance_card  - bitflag collection of all possible moves for THIS AI, usually set at-spawn by unit-type
 */
 void() ai_combat_move_frame={
   local float moveStatus;
@@ -174,8 +172,6 @@ void() ai_combat_move_frame={
   }
   if( moveStatus == FALSE ){
     if( self.ai_state_combat_blocked ){
-      if( time < self.ai_movewait ){
-      }
       self.ai_state_next = ST_COM_MOVE_BLOCK;
     }
   }

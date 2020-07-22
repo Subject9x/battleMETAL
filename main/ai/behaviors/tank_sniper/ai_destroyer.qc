@@ -41,14 +41,7 @@ void() ai_vec_dest={
   self.ai_state_next = ST_STAND;
   self.ai_move_last = 0;
   self.ai_move_next = MOVE_STAND;
-  self.ai_dance_card = ( MOVE_BACK | MOVE_STAND_FACE | MOVE_SNIPESHOT );
-  if(self.ai_rank == AI_RANK_REG || self.ai_rank == AI_RANK_VET ){
-    self.ai_dance_card = self.ai_dance_card | (MOVE_CHARGE_LEFT | MOVE_CHARGE_RIGHT); //oh ho ho 
-  }
-  if(self.ai_rank == AI_RANK_ACE){
-    self.ai_dance_card = self.ai_dance_card | (MOVE_BACK_LEFT | MOVE_BACK_RIGHT);
-  }
-  self.ai_moveflag = self.ai_dance_card;
+  
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   

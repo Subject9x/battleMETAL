@@ -236,15 +236,9 @@ float MOVE_NODE_RADIUS    = 16384; // AI is 'ring-out' on their current node
 .float ai_dampen;     //  psuedo-velocity, prevents AI from pivoting on a dime, which is hard to players to fight.
 .float ai_movewait;   //  set by ai_calc_move when entering a new move, this will be checked for completed move.
 .float ai_movedist;   //  AI-CODE-SET to desired number of frames for desired movement
-.float ai_dance_card; //  set on spawn, the total number of allowable MOVE
 .float ai_move;       //  the current move, usually not accessed directly.
 .float ai_move_last;  //  used for per-frame comparisons
 .float ai_move_next;  //  AI-CODE-SET this one to decide the next move.
-
-.float ai_moveflag;   //  remaining allowable moves before attempting to refresh the move set
-.float ai_blockflag;  //a result of time + value, bot will go SOLID_CORPSE for a hot sec
-.float ai_clearblock; //  AI-CODE-SET to clear the AI's ai_blockflag on the next frame.
-void() ai_block_table;
 
 float ST_PTR                  = 2;  //ENTER -> PATROL
 float ST_PTR_PAUSE            = 3;  //arrived at ai_node

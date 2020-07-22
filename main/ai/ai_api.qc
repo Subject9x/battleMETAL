@@ -685,7 +685,6 @@ float() ai_patrol_traffic_adjust={
         counter = ai_check_targ_infront(oldthat, 0.9, FALSE);
         self = oldthat;
         //blocked unit is patrolling.
-        self.ai_blockflag = time + 10;
         self.ai_state_next = ST_PTR_PAUSE;
         self.pausetime = 3;
         return TRUE;
