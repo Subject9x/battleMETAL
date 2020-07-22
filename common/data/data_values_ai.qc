@@ -19,7 +19,7 @@ float AI_ADJUST_SHIELD = 0.85;  //rate, this is applied to .shieldRate
 //Armor Values
 //hp = hp * AI_ARMOR
 //AI mechs share initial stats with the player, so we have to detune them now.
-float AI_ARMOR_MECH = 0.65;
+float AI_ARMOR_MECH = 0.6;
 
 //Shield Values
 //shield = shield * AI_SHIELD
@@ -87,10 +87,10 @@ float AI_YAW_VET = 1.1;
 float AI_YAW_ACE = 1.15;
 
 //attack chances
-float AI_ATTACK_ROK = 0.255;
-float AI_ATTACK_REG = 0.205;
-float AI_ATTACK_VET = 0.105;
-float AI_ATTACK_ACE = 0.075;
+float AI_ATTACK_ROK = 0.125;
+float AI_ATTACK_REG = 0.1;
+float AI_ATTACK_VET = 0.075;
+float AI_ATTACK_ACE = 0.05;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;

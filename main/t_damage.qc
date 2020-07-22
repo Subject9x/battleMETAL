@@ -86,12 +86,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     notTarg = self;
     self = dmgTrg;
     if( self.th_pain ){  
-      if( time > self.ai_react_buffer ){
-        self.th_pain( attacker );
-      }
+      self.th_pain( attacker );
     }
     if( self.ai_rank > AI_RANK_REG ){
-      if( self.shield < (self.shieldMax / 2) ){
+      if( self.shield <= (self.shieldMax / 2) ){
         ai_call_for_help(attacker);
       }
     }

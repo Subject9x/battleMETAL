@@ -88,7 +88,7 @@ void( entity t ) ai_call_for_help={
     if( vlen( ally.origin - self.origin ) > self.ai_view ){
       continue;
     }
-    ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
+    ai_give_target( ally, t, (t.flags&FL_CLIENT) );
     allies = allies + 1;
   }
   
@@ -126,7 +126,6 @@ entity( float radiius) ai_find_friend={
   return friend;
 };
 
-
 void( entity t) ai_alert_close={
   
   local entity ally;
@@ -138,7 +137,7 @@ void( entity t) ai_alert_close={
     if( !ai_valid_target(ally) ){
       continue;
     }
-    ai_give_target( ally, t, (self.ai_rank >= ally.ai_rank) );
+    ai_give_target( ally, t, (t.flags&FL_CLIENT) );
   }
 };
 
@@ -210,7 +209,7 @@ float() ai_find_target_visual={
     if(ndist > rng){
       continue;
     }
-    if( ai_check_vis(targ) != VIS_FRAC && ai_check_vis(targ) != VIS_FRN ){
+    if( ai_check_vis(targ) != VIS_FRAC ){
       continue;
     }
     if( (self.flags & FL_TURRET) ){
@@ -219,7 +218,7 @@ float() ai_find_target_visual={
       }
     }
     else{
-      if( ai_check_face(targ, self.ai_fov, (self.flags&FL_TURRET)) == FALSE){
+      if( !ai_check_face(targ, self.ai_fov, FALSE) ){
         continue;
       }
     }
@@ -233,7 +232,7 @@ float() ai_find_target_visual={
         ai_sfx_help();
         ally = ai_find_friend( self.ai_view );
         if( ally ){
-          ai_give_target( ally, found, (ally.ai_rank <= self.ai_rank));
+          ai_give_target( ally, found, (found.flags&FL_CLIENT));
         }
       }
       return FALSE;
@@ -315,20 +314,22 @@ void( entity ally, entity targ, float override ) ai_give_target={
   //validTarg = ai_valid_target(ally.enemy);  note: every other func calling this one already involes ai_valid_target()
   self = ally;
   //providing clause where ally has no target
-  if( override || !ai_valid_target(ally.enemy) ){
-    self.enemy = ally.enemy;
-    if(self.ai_state_next != ST_COMBAT ){
-      self.ai_state_next = ST_COMBAT;
+    if( override ){
+      self.enemy = targ;
+      if(self.ai_state_next != ST_COMBAT ){
+        self.ai_state_next = ST_COMBAT;
+      }
     }
-    if( (this.enemy.flags & FL_CLIENT) ){
-      ai_sfx_roger();
+    else{
+      if( self.th_pain ){
+        self.th_pain(targ);
+      }
     }
-  }
-  else{
-    if( self.th_pain ){
-      self.th_pain(ally.enemy);
+    if( self.enemy == targ ){
+      if( (targ.flags & FL_CLIENT) ){
+        ai_sfx_roger();
+      }
     }
-  }
   self = this;
 };
 
@@ -617,7 +618,7 @@ entity() ai_node_tether_find={
     if( ang_x <= 67 || ang_x >= 275) {
       //tether nodes need to be on relatively flat planes because a bot cannot climb a wall or slope to reach a tether node.
       testDist = vlen(findNode.origin - (self.origin + '0 0 5'));
-      if( testDist < dist ){
+      if( testDist <= dist ){
         traceline( self.origin, findNode.origin, MOVE_NORMAL, self);
         if( trace_fraction == 1 ){
           dist = testDist;
@@ -625,10 +626,16 @@ entity() ai_node_tether_find={
         }
         else{
           if( (trace_ent.flags & FL_UNIT) ){
-            tracebox((trace_ent.origin + '0 0 5'), tMins, self.maxs, findNode.origin, MOVE_NORMAL, self);
-            if( trace_fraction == 1 ){
+            if( trace_ent.patrolNode && !trace_ent.patrolNode.target ){
               dist = testDist;
               found = findNode;
+            }
+            else{
+              tracebox((trace_ent.origin + '0 0 5'), tMins, self.maxs * 0.75, findNode.origin, MOVE_NORMAL, self);
+              if( trace_fraction == 1 ){
+                dist = testDist;
+                found = findNode;
+              }
             }
           }
         }

@@ -131,6 +131,41 @@ void() ai_touch={
   }
 };
 
+void(entity atk) ai_react={
+  local float enemyvis;
+  
+  if( !(atk.flags & FL_MONSTER) && !(atk.flags & FL_CLIENT)){
+    return;
+  }
+  
+  //AI has taken friendly fire
+  if( atk.faction == self.faction ){
+    return;
+  }
+  
+  if( atk == self.enemy ){
+    self.ai_react_buffer = time + self.ai_react_time * 5;
+    return;
+  }
+
+  //AI currently has target
+  if( ai_check_vis(self.enemy) == VIS_FRAC ){
+    if( ai_check_node_radius(self.enemy) > 1.0 ){
+      return;
+    }
+  }
+  if( ai_check_vis(self.enemy) == VIS_FRN ){
+    if( ai_check_node_radius(self.enemy) <= 1.0 ){
+      return;
+    }
+  }
+  self.enemy = atk;
+  self.ai_react_buffer = time + self.ai_react_time * 5;
+  if(self.ai_state_next != ST_COMBAT ){
+    self.ai_state_next = ST_COMBAT;
+  }
+};
+
 /*
   PATROL SUB STATE
     PATROL_PAUSE        = 1;  //Paused at node because node had .float paustime
@@ -425,13 +460,13 @@ float( entity targ ) ai_check_vis={
     spot2 = targ.hitOffset;
   }
   else{
-    spot2 = targ.cockpit.origin;
+    spot2 = targ.origin + '0 0 5';
   }
   contentBuffer = self.dphitcontentsmask;
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_DONOTENTER | DPCONTENTS_MONSTERCLIP);
   
-  tracebox (spot1, targ.mins * 0.5, targ.maxs * 0.5, spot2, MOVE_NORMAL, self);
+  traceline (spot1, spot2, MOVE_NORMAL, self);
   
   self.dphitcontentsmask = contentBuffer;
 
@@ -463,12 +498,6 @@ float( entity targ ) ai_check_vis={
 float() ai_attack={
   self.button0 = 1;
   return 1;
-};
-
-
-float(float moveDist, float wishSpeed, float interval) ai_move_time_calc={
-  
-  return 0;
 };
 
 /*
@@ -529,7 +558,7 @@ void() ai_setup_patrol={
         self.ai_state_next = ST_THR;
         if( ai_check_node_radius(self) > 1.0 ){
            //just teleport them
-           self.origin = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.85,32), self.maxs_x);
+           self.origin = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.99,64), self.maxs_x);
            setorigin(self, self.origin);
         }
         if( cvar("developer") ){
@@ -565,10 +594,11 @@ void() ai_setup_patrol={
       cons_logAString("///////////////", "----------");
       cons_logAVector(self.classname, self.origin); //debug
       cons_logAString(self.classname, self.vec_name);
+      cons_logAString(self.classname, self.patrolNode.classname); //debug
+      cons_logAVector(self.classname, self.patrolNode.origin); //debug
       cons_logAString("///////////////", "^ REMOVED ^");
     }
-    
-    self.th_die();
+    self.think = self.th_die;
     self.nextthink = time + 0.1;
   }
   else{
@@ -581,8 +611,8 @@ void() ai_setup_patrol={
     }
     self.think = ai_state_frame;
     self.nextthink = self.nextthink + time;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   }
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 
