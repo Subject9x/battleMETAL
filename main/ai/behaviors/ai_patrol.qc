@@ -59,7 +59,7 @@ void() ai_ptr_pause={
   STATE : PATROL TRAVEL TO NODE
 */
 void() ai_ptr_travel_node={
-  local float lastPatrol
+  local float lastPatrol;
   ai_update_accuracy( TRUE );
 
   lastPatrol = self.patrolState;
@@ -71,6 +71,10 @@ void() ai_ptr_travel_node={
     return;
   }
   
+  if(self.patrolState == PATROL_ARRIVE && lastPatrol == PATROL_ARRIVE ){
+    self.ai_state_next = ST_PTR;
+    return;
+  }
   if( self.patrolState == PATROL_PAUSE && lastPatrol != PATROL_PAUSE ){
     self.ai_state_next = ST_PTR_PAUSE;
     return;
@@ -79,9 +83,6 @@ void() ai_ptr_travel_node={
   if(self.patrolState == PATROL_BLOCK && lastPatrol != PATROL_BLOCK ){
     self.ai_state_next = ST_PTR_TRAVEL_NODEBLOCK;
     return;
-  }
-  if(self.patrolState == PATROL_ARRIVE && lastPatrol != PATROL_ARRIVE ){
-    self.ai_state_next = ST_PTR;
   }
 };
 /*

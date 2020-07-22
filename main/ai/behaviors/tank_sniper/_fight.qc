@@ -126,11 +126,8 @@ void() spg_fight_building={
 */
 void() spg_fight_full={
   if(combat_dist < 0.6 ){
-    cons_logAString("1", "combat_dist < 0.6"); //debug
     if(enemy_range < 0.6){
-    cons_logAString("2", "enemy_range < 0.6"); //debug
       if(enemy_infront){
-    cons_logAString("3", "enemy_infront"); //debug
         self.ai_movedist = 3;
         if(combat_roll<0.6){
           self.ai_move_next = MOVE_BACK_RIGHT;
@@ -147,7 +144,6 @@ void() spg_fight_full={
       self.ai_move_next = MOVE_CHARGE_LEFT;
       return;
     }
-    cons_logAString("4", "!enemy_infront"); //debug
     if(enemy_infront){
       self.ai_movedist = 4;
       self.ai_move_next = MOVE_SNAPSHOT;
@@ -163,9 +159,7 @@ void() spg_fight_full={
   }
   //
   if(enemy_range < 0.6){
-    cons_logAString("5", "enemy_range < 0.6"); //debug
     if(enemy_infront){
-    cons_logAString("6", "enemy_infront"); //debug
       self.ai_movedist = 3;
       if(combat_roll<0.6){
         self.ai_move_next = MOVE_CHARGE_RIGHT;

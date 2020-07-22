@@ -110,7 +110,6 @@ void() mech_sk_combat={
     //combat_dist < 1.0
     //get fighting
     mech_sk_fight_full();
-    cons_logAString("------->LAST", dbg_state(self.ai_state_next)); //debug
   //---------------------------------------------------------------------------
     return;
   }
@@ -171,6 +170,12 @@ void() mech_sk_com_moveExec={
 void() mech_sk_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
+    if( !(self.ai_move_last & (MOVE_STAND_FACE | MOVE_STAND | MOVE_SNAPSHOT | MOVE_SNIPESHOT)) ){
+      self.ai_move_next = MOVE_STAND_FACE;
+      self.ai_movedist = self.ai_rank * 3;
+      self.ai_state_next = ST_COM_MOVE_START;
+      return;
+    }
     self.ai_state_next = ST_COMBAT;
     self.ai_move_next = 0;
     return;
@@ -185,6 +190,12 @@ void() mech_sk_com_blocked={
   local entity blockNode;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
+    if( !(self.ai_move_last & (MOVE_STAND_FACE | MOVE_STAND | MOVE_SNAPSHOT | MOVE_SNIPESHOT)) ){
+      self.ai_move_next = MOVE_STAND_FACE;
+      self.ai_movedist = self.ai_rank * 4;
+      self.ai_state_next = ST_COM_MOVE_START;
+      return;
+    }
     self.ai_move_next = 0;
     self.patrolState = 0;
     self.goalentity = self.patrolNode;

@@ -161,7 +161,7 @@ void() ai_patrol_state_frame={
   
   cacheOrg = self.goalentity.origin;
   self.lastorigin = self.origin;
-  if( self.tetherStatus == TETHER_NODE || self.tetherStatus == TETHER_PATROL ){
+  if( self.tetherStatus == TETHER_PATROL ){
     distLeft = vlen(self.goalentity.origin - self.origin); 
   }
   else{
@@ -190,9 +190,9 @@ void() ai_patrol_state_frame={
   //------------------------------------------------
   
   //ADJUST NEAR NODE - ADJUST FINAL DESTINATION
-  if( distLeft > self.goalentity.ai_view * 0.5 ){
+  if( distLeft > self.goalentity.ai_view * 0.75 ){
     self.tetherStatus = TETHER_SELF;
-    self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, max(self.goalentity.ai_view*0.15,32), 24);
+    self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, max(self.goalentity.ai_view*0.25,32), 24);
     if( (self.flags & FL_TURRET) ){
       self.torsoCenter.ai_dir = vectoyaw(self.tetherOrg - self.origin);
       self.torsoCenter.attack_state = TR_YAW;
@@ -204,24 +204,20 @@ void() ai_patrol_state_frame={
     if( ai_check_face_origin(self.tetherOrg, 0.85, FALSE) ){
       if( walkmove(self.angles_y, walkSpeed) == FALSE ){
         if( !ai_patrol_traffic_adjust()){
-          setorigin(self.patrolNode, self.tetherOrg);
           if(!self.legs){
             ChangeYaw();
           }
           movetogoal( walkSpeed );
-          setorigin(self.patrolNode, cacheOrg);
         }
       }
     }
     else{
       if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
         if( !ai_patrol_traffic_adjust()){
-          setorigin(self.patrolNode, self.tetherOrg);
           if(!self.legs){
             ChangeYaw();
           }
           movetogoal( walkSpeed );
-          setorigin(self.patrolNode, cacheOrg);
         }
       }
     }
@@ -230,14 +226,8 @@ void() ai_patrol_state_frame={
   }
   
   //PATROL - ARRIVING AT NODE
-  if( distLeft <= self.goalentity.ai_view * 0.5 && distLeft > max(self.goalentity.ai_view*0.15,32)){
-    if( self.tetherStatus == TETHER_SELF ){
-      ai_face_origin(self.tetherOrg);
-      setorigin(self.patrolNode, self.tetherOrg);
-    }
-    else{
-      ai_face_goal();
-    }
+  if( distLeft > max(self.goalentity.ai_view*0.25,32)){
+    ai_face_origin(self.tetherOrg);
     if( (self.flags & FL_TURRET) ){
       self.torsoCenter.ai_dir = vectoyaw(self.tetherOrg - self.origin);
       self.torsoCenter.attack_state = TR_YAW;
@@ -245,9 +235,8 @@ void() ai_patrol_state_frame={
     if( (self.legs) ){
       self.legs.attack_state = TR_NORM;
     }
-    
-    setorigin(self.patrolNode, self.tetherOrg);
-    if( ai_check_face(self.goalentity, 0.85, FALSE) ){
+
+    if( ai_check_face_origin(self.tetherOrg, 0.85, FALSE) ){
       if( walkmove(self.angles_y, walkSpeed) == FALSE ){
         if( !ai_patrol_traffic_adjust()){
           if(!self.legs){
@@ -267,7 +256,6 @@ void() ai_patrol_state_frame={
         }
       }
     }
-    setorigin(self.patrolNode, cacheOrg);
     self.patrolState = PATROL_ADJUST;
     return;
   }
@@ -296,7 +284,6 @@ void() ai_patrol_state_frame={
   else{
     self.tetherStatus = TETHER_NODE;
   }
-  
   self.patrolNode = nextNode;
   self.tetherOrg = self.patrolNode.origin;
 

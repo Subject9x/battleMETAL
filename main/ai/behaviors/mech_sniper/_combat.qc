@@ -99,7 +99,7 @@ void() mech_sniper_combat={
     //combat_dist < 1.0
     //get fighting
     self.ai_move_next = MOVE_NODE_RADIUS;
-    self.ai_movedist = 30;
+    self.ai_movedist = 10;
     mech_sniper_fight_full();
     return;
   //---------------------------------------------------------------------------
@@ -161,23 +161,13 @@ void() mech_sniper_com_moveExec={
 void() mech_sniper_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-    if( ai_valid_target(self.enemy) ){
-      self.ai_state_next = ST_COMBAT;
+    if( !(self.ai_move_last | (MOVE_STAND_FACE | MOVE_STAND | MOVE_SNAPSHOT | MOVE_SNIPESHOT)) ){
+      self.ai_move_next = MOVE_STAND_FACE;
+      self.ai_movedist = self.ai_rank * 3;
+      self.ai_state_next = ST_COM_MOVE_START;
       return;
     }
-    if( self.patrolNode ){
-      if( self.tetherStatus == TETHER_NODE ){
-        self.goalentity = self.patrolNode;
-        self.ai_state_next = ST_THR;
-        return;
-      }
-      if( self.tetherStatus == TETHER_PATROL ){
-        self.goalentity = self.patrolNode;
-        self.ai_state_next = ST_PTR;
-        return;
-      }
-    }
-    self.ai_state_next = ST_STAND;
+    self.ai_state_next = ST_COMBAT;
     return;
   }
  //------------------------------------------------------------------
@@ -190,6 +180,12 @@ void() mech_sniper_com_blocked={
   local entity blockNode;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
+    if( !(self.ai_move_last & (MOVE_STAND_FACE | MOVE_STAND | MOVE_SNAPSHOT | MOVE_SNIPESHOT)) ){
+      self.ai_move_next = MOVE_STAND_FACE;
+      self.ai_movedist = self.ai_rank * 4;
+      self.ai_state_next = ST_COM_MOVE_START;
+      return;
+    }
     self.goalentity = self.patrolNode;
     self.ai_move_next = MOVE_NODE_RADIUS;
     self.ai_state_next = ST_COM_MOVE_START;

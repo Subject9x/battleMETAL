@@ -73,45 +73,13 @@ void() node_setup={
 };
 
 /*
-  Recall Nodes are created when an AI spawns a Hunt Node,
-  Recall Nodes act as a breadcrumb to bring the AI back to exactly where they were before hunting.
-  This only exist for a limited amount of time.
-*/
-entity() node_recall_setup={
-  local entity theBot;
-  local entity theNode;
-  local vector nodeOrg;
-  
-  theNode = spawn();
-  theBot = self;
-  self = theNode;
-    node_setup();
-    makevectors( theBot.angles );
-    nodeOrg = theBot.origin + (v_up * theBot.mins_z) + (v_forward * (self.mins_x + 10));
-    
-    traceline( nodeOrg, nodeOrg + (v_up * 18), MOVE_NORMAL, theBot);
-    
-    setorigin( self, trace_endpos );
-    self.targetname = strzone(strcat("r", ftos(num_for_edict(theBot))));
-    if( theBot.movetarget && theBot.movetarget.targetname != "" ){
-      self.target = theBot.movetarget.targetname;
-    }
-    self.owner = theBot;
-  self = theBot;
-  
-  return theNode;
-};
-
-/*
   Map now links patrol nodes together into custom linked-list, and adds .owner as the end node in the chain
   for querying.
 */
 void() ai_node_check={
   local entity nexNode;
   local float contentCache;
-  if( self.data_idx == TRUE ){
-    self.partTypeId = 1;
-  }
+
   if( self.target || self.target != "" ){
     nexNode = find(world, targetname, self.target );
     if( nexNode ){
@@ -119,12 +87,6 @@ void() ai_node_check={
         nexNode.partTypeId = self.partTypeId + 1;
         nexNode.partPrev = self;
         self.partNext = nexNode;
-        if(self.partTypeId==1){
-          nexNode.owner = self;
-        }
-        else{
-          nexNode.owner = self.owner;
-        }
       }
     }
     else{
@@ -139,7 +101,7 @@ void() ai_node_check={
     self.nextthink = time + 1;
   }
   else{
-    if( !self.ai_view || self.ai_view < 100){
+    if( !self.ai_view ){
       local float minDist;
       local float checkDist;
       local float itr;
@@ -152,7 +114,7 @@ void() ai_node_check={
       while( itr < 12 ){
         checkAng_y = itr * 30;
         makevectors(checkAng);
-        tracebox(self.origin, '-10 -10 -9', '10 10 18', self.origin + (v_forward * AI_RANGE_M), MOVE_NORMAL, self);
+        tracebox(self.origin, '-10 -10 -9', '10 10 9', self.origin + (v_forward * AI_RANGE_M), MOVE_NORMAL, self);
         checkDist = vlen(trace_endpos - self.origin);
         minDist = minDist + checkDist;
         itr = itr + 1;
@@ -160,8 +122,10 @@ void() ai_node_check={
       self.ai_view = max(minDist / 12, 100);
       self.dphitcontentsmask = contentCache;
     }
-    cons_logAVector(self.classname, self.origin); //debug
-    cons_logAFloat(self.classname, self.ai_view);
+    if( cvar("developer") ){
+      cons_logAVector(self.classname, self.origin); //debug
+      cons_logAFloat(self.classname, self.ai_view);
+    }
   }
 };
 

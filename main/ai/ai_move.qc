@@ -575,6 +575,8 @@ void() ai_move_standface={
   }
   ai_face_targ();
   ai_attack();
+  ai_attack();
+  ai_attack();
 };
 
 /*
@@ -631,7 +633,6 @@ float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node=
   
   //Arriving at node    
   if( distLeft > innerRadius ){
-    //cons_logAFloat("distLeft > AI_NODE_DISTANCE", distLeft);  //debug
     ai_face_origin(self.tetherOrg);
     
     if( (self.legs) ){

@@ -113,7 +113,6 @@ void() ai_pilot_ini_ace;
 
 //AI NODES
 void() node_setup;
-entity() node_recall_setup;
 
 //AI TETHER FUNCTIONALITY
 float TETHER_NONE   = 0;  //-> .tetherStatus

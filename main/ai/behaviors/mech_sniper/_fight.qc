@@ -9,9 +9,9 @@ Overview:
   seein in _combat.qc into manageable chunks of code.
   
   external globals
-  float enemy_infront;  //boolean, on-this-frame check if target is in AI's forward arc.
-  float enemy_range;    //distance to AI relative to patrolNode.ai_view (radius)
-  float enemy_vis;      //enum, Line of Sight to target
+    float enemy_infront;  //boolean, on-this-frame check if target is in AI's forward arc.
+    float enemy_range;    //distance to AI relative to patrolNode.ai_view (radius)
+    float enemy_vis;      //enum, Line of Sight to target
     float enemy_hunt;     //potentially deprecated.
     float enemy_dist;     //target's distance to patrolNode
     float combat_dist;    //AI's distance to its patrolNode
@@ -25,37 +25,60 @@ Overview:
     if( enemy_dist > 1 && combat_dist <= 1 ){
 */
 void() mech_sniper_fight_target_fire={
-  if(combat_dist >= 0.75){
+  if(combat_dist <= 0.33){
     if(enemy_infront){
-      self.ai_movedist = 2;
-      if(combat_roll > 0.6){
-        self.ai_move_next = MOVE_BACK_LEFT;
+      self.ai_movedist = 7;
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_BACK_RIGHT;
       }
       else{
-        self.ai_move_next = MOVE_BACK_RIGHT;
+        self.ai_move_next = MOVE_BACK_LEFT;
       }
       return;
     }
-    self.ai_movedist = self.ai_rank;
-    self.ai_move_next = MOVE_STAND_FACE;
-    return;
+      self.ai_movedist = 5;
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_STRAFE_LEFT;
+      }
+      else{
+        self.ai_move_next = MOVE_STRAFE_RIGHT;
+      }
+      return;
   }
-  if(combat_dist <= 0.33){
-    self.ai_movedist = 5;
+  if(combat_dist <= 0.67){
+    self.ai_movedist = self.ai_rank * 1.5;
+    if(enemy_infront){
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_BACK_RIGHT;
+      }
+      else{
+        self.ai_move_next = MOVE_BACK_LEFT;
+      }
+      return;
+    }
     if(combat_roll > 0.5){
-      self.ai_move_next = MOVE_STRAFE_LEFT;
+      self.ai_move_next = MOVE_CHARGE_LEFT;
     }
     else{
-      self.ai_move_next = MOVE_STRAFE_RIGHT;
+      self.ai_move_next = MOVE_CHARGE_RIGHT;
     }
     return;
   }
-  self.ai_movedist = combat_dist * (8 * self.data_speed_forward);
+  self.ai_movedist = 3;
+  if(enemy_infront){
+    if(combat_roll > 0.6){
+      self.ai_move_next = MOVE_BACK_LEFT;
+    }
+    else{
+      self.ai_move_next = MOVE_BACK_RIGHT;
+    }
+    return;
+  }  
   if(combat_roll > 0.5){
-    self.ai_move_next = MOVE_CHARGE_LEFT;
+    self.ai_move_next = MOVE_CIRCLE_LEFT;
   }
   else{
-    self.ai_move_next = MOVE_CHARGE_RIGHT;
+    self.ai_move_next = MOVE_CIRCLE_LEFT;
   }
   return;
 };
@@ -103,20 +126,15 @@ void() mech_sniper_fight_vis_friend={
       self.ai_move_next = MOVE_BACK_LEFT;
       return;
     }
-    if(self.ai_move_last == MOVE_STAND_FACE){
-      if(combat_roll < 0.6){
-        self.ai_move_next = MOVE_STRAFE_RIGHT;
-        return;
-      }
-      self.ai_move_next = MOVE_STRAFE_LEFT;
+    if(combat_roll < 0.6){
+      self.ai_move_next = MOVE_STRAFE_RIGHT;
       return;
     }
-    self.ai_move_next = MOVE_STAND_FACE;
-    self.ai_movedist = 1 + (random() * (self.ai_rank * 1.15));
+    self.ai_move_next = MOVE_STRAFE_LEFT;
     return;
   }
-  if(enemy_range < 0.4){
-    self.ai_movedist = 3;
+  self.ai_movedist = 6;
+  if(enemy_range <= 0.4){
     if(combat_roll < 0.6){
       self.ai_move_next = MOVE_CHARGE_RIGHT;
       return;
@@ -124,8 +142,13 @@ void() mech_sniper_fight_vis_friend={
     self.ai_move_next = MOVE_CHARGE_LEFT;
     return;
   }
-  self.ai_move_next = MOVE_STAND_FACE;
-  self.ai_movedist = 4;
+  if(combat_roll < 0.6){
+    self.ai_move_next = MOVE_STRAFE_RIGHT;
+    return;
+  }
+  self.ai_move_next = MOVE_STRAFE_LEFT;
+  return;
+
 };
 
 /*
@@ -178,10 +201,10 @@ void() mech_sniper_fight_building={
 */
 void() mech_sniper_fight_full={
   if(combat_dist < 0.6){
-    if(enemy_range<0.6){
-      if(enemy_infront){
-        self.ai_movedist = 15;
-        if(combat_roll<0.6){
+    if(enemy_range < 0.6){
+      if( enemy_infront ){
+        self.ai_movedist = 7;
+        if(combat_roll < 0.6){
           self.ai_move_next = MOVE_STRAFE_RIGHT;
           return;
         }
@@ -189,25 +212,25 @@ void() mech_sniper_fight_full={
         return;
       }
       self.ai_movedist = 5;
-      if(combat_roll<0.6){
+      if(combat_roll < 0.6){
         self.ai_move_next = MOVE_CHARGE_RIGHT;
         return;
       }
       self.ai_move_next = MOVE_CHARGE_LEFT;
       return;
     }
-    self.ai_move_next = MOVE_SNAPSHOT;
-    if(enemy_infront){
-      self.ai_movedist = 4;
-      return;
-    }
-    self.ai_movedist = 8;
-    return;
-  }
-  if(enemy_range<0.6){
+    self.ai_move_next = MOVE_CHARGE;
     if(enemy_infront){
       self.ai_movedist = 5;
-      if(combat_roll<0.6){
+      return;
+    }
+    self.ai_movedist = 6;
+    return;
+  }
+  if(enemy_range < 0.6){
+    if(enemy_infront){
+      self.ai_movedist = 5;
+      if(combat_roll < 0.6){
         self.ai_move_next = MOVE_BACK_RIGHT;
         return;
       }
@@ -223,23 +246,22 @@ void() mech_sniper_fight_full={
     return;
   }
   if(enemy_infront){
-    if(combat_roll<0.25){
+    if(combat_roll < 0.25){
       self.ai_movedist = 5;
-      if(combat_roll<0.1){
+      if(combat_roll < 0.1){
         self.ai_move_next = MOVE_STRAFE_RIGHT;
         return;
       }
       self.ai_move_next = MOVE_STRAFE_LEFT;
       return;
     }
-    self.ai_movedist = 10;
-    self.ai_move_next = MOVE_SNAPSHOT;
+    self.ai_movedist = 5;
+    self.ai_move_next = MOVE_CHARGE;
     return;
   }
-  self.ai_move_next = MOVE_SNAPSHOT;
   if(enemy_infront){
     self.ai_movedist = 6;
+    self.ai_move_next = MOVE_BACK;
     return;
   }
-  self.ai_movedist = 2;
 };
