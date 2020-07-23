@@ -204,27 +204,29 @@ float PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && 
 float PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
 .float patrolState;
 
-float MOVE_NODE_CLEAR     = 5;  // enemy_vis == VIS_FRN, so find a node to shoot from
-float MOVE_NODE_TACTICAL  = 6;  // tetherStatus == TETHER_PATROL, and target is beyond patrol nbode
+
 float MOVE_NODE_REVERSE   = 7;  // unit is out of node range, do a fighting reverse 
 
 //special mapped moves
 float MOVE_STAND          = 0;  //every AI has this
-float MOVE_CHARGE         = 1;
-float MOVE_CHARGE_LEFT    = 2;
-float MOVE_CHARGE_RIGHT   = 4;
-float MOVE_STRAFE_LEFT    = 8;
-float MOVE_STRAFE_RIGHT   = 16;
-float MOVE_CIRCLE_LEFT    = 32;
-float MOVE_CIRCLE_RIGHT   = 64;
-float MOVE_BACK_LEFT      = 128;
-float MOVE_BACK_RIGHT     = 256;
-float MOVE_SNAPSHOT       = 512;
-float MOVE_SNIPESHOT      = 1024;
-float MOVE_STAND_FACE     = 2048;
-float MOVE_PATROLNODE     = 4096;  //AI moves at patrol_frame style movement to get back to node distance.
-float MOVE_BACK           = 8192;
-float MOVE_NODE_RADIUS    = 16384; // AI is 'ring-out' on their current node
+float MOVE_SNAPSHOT       = 1;
+float MOVE_SNIPESHOT      = 2;
+float MOVE_STAND_FACE     = 3;
+float MOVE_PATROLNODE     = 4;  //AI moves at patrol_frame style movement to get back to node distance.
+float MOVE_NODE_RADIUS    = 5; // AI is 'ring-out' on their current node
+float MOVE_END_PAUSE      = 6;  // enemy_vis == VIS_FRN, so find a node to shoot from
+float MOVE_NODE_TACTICAL  = 7;  // tetherStatus == TETHER_PATROL, and target is beyond patrol nbode
+
+float MOVE_CHARGE         = 8;
+float MOVE_CHARGE_LEFT    = 9;
+float MOVE_CHARGE_RIGHT   = 10;
+float MOVE_STRAFE_LEFT    = 11;
+float MOVE_STRAFE_RIGHT   = 12;
+float MOVE_CIRCLE_LEFT    = 13;
+float MOVE_CIRCLE_RIGHT   = 14;
+float MOVE_BACK_LEFT      = 15;
+float MOVE_BACK_RIGHT     = 16;
+float MOVE_BACK           = 17;
 
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_last; //  used for per-frame comparisons
@@ -236,6 +238,7 @@ float MOVE_NODE_RADIUS    = 16384; // AI is 'ring-out' on their current node
 .float ai_move;       //  the current move, usually not accessed directly.
 .float ai_move_last;  //  used for per-frame comparisons
 .float ai_move_next;  //  AI-CODE-SET this one to decide the next move.
+.float ai_blockflag;
 
 float ST_PTR                  = 2;  //ENTER -> PATROL
 float ST_PTR_PAUSE            = 3;  //arrived at ai_node
@@ -322,7 +325,7 @@ float() ai_move_back_right;
 void() ai_move_snapshot;
 void() ai_move_standface;
 void() ai_move_node_tactical;
-void() ai_move_node_clear;
+void() ai_move_end_pause;
 void() ai_move_node_reverse;
 void() ai_move_node_radius;
 float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node;
@@ -428,10 +431,8 @@ string(float moveId) dbg_move={
       return "MOVE_STAND_FACE";
     case MOVE_NODE_TACTICAL:
       return "MOVE_NODE_TACTICAL";
-    case MOVE_NODE_CLEAR:
-      return "MOVE_NODE_CLEAR";
-    case MOVE_NODE_REVERSE:
-      return "MOVE_NODE_REVERSE";
+    case MOVE_END_PAUSE:
+      return "MOVE_END_PAUSE";
     case MOVE_NODE_RADIUS:
       return "MOVE_NODE_RADIUS";
   }

@@ -25,12 +25,17 @@ Overview:
 */
 void() ai_move_stand={
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    if(self.data_type == DATA_MECH){
+      cons_logAFloat("---------NEW MOVE STAND", -1); //debug
+    }
     self.ai_movewait = time + self.ai_movedist;
     if(self.legs){
       self.legs.attack_state = TR_YAW;
       self.legs.think = bot_leg_stand1;
       self.legs.nextthink = time + 0.1;
     }
+    ai_face_targ();
+    ai_attack();
     return;
   }
   ai_face_targ();
@@ -71,7 +76,7 @@ float() ai_move_charge={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }
   
   if( self.ai_dampen < 1.0){
@@ -117,7 +122,7 @@ float() ai_move_charge_left={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
@@ -167,7 +172,7 @@ float() ai_move_charge_right={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
@@ -216,7 +221,7 @@ float() ai_move_strafe_left={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
@@ -263,7 +268,7 @@ float() ai_move_strafe_right={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }
   if( self.ai_dampen < 1.0 ){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
@@ -311,7 +316,7 @@ float() ai_move_circle_left={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }
   if( self.legs ){
     self.legs.ai_dir = self.ai_dir;
@@ -357,7 +362,7 @@ float() ai_move_circle_right={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }
   if( self.legs ){
     self.legs.ai_dir = self.ai_dir;
@@ -405,7 +410,7 @@ float() ai_move_back={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }  
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
@@ -448,7 +453,7 @@ float() ai_move_back_left={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }  
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
@@ -491,7 +496,7 @@ float() ai_move_back_right={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    return status;
+    return TRUE;
   }  
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
@@ -575,8 +580,9 @@ void() ai_move_standface={
   }
   ai_face_targ();
   ai_attack();
-  ai_attack();
-  ai_attack();
+  if(self.data_type == DATA_MECH){
+  
+  }
 };
 
 /*
@@ -658,6 +664,8 @@ float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node=
 void() ai_move_node_radius={
   local entity node;
   local float oldPatrolState;
+  local float outRadius, innerRadius;
+  
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.patrolState = 0;
     self.goalentity = self.patrolNode;
@@ -675,9 +683,15 @@ void() ai_move_node_radius={
   
   oldPatrolState = self.patrolState;
   ai_attack();
-  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95, self.goalentity.ai_view * 0.33, 0);
+  outRadius = max(self.goalentity.ai_view * 0.95, AI_RANGE_S);
+  innerRadius = max(self.goalentity.ai_view * 0.33, 64);
+  self.patrolState = ai_move_patrol_node( outRadius, innerRadius, 0);
   
   if( time > self.ai_movewait ){
+    if( 1.0 > ai_check_node_radius(self) ){
+      self.ai_state_next = ST_COM_MOVE_END;
+      return;
+    }
     if( ai_blocked_teleport() ){
       if( self.patrolNode ){
         if( self.patrolNode.classname == "ai_node" ){
@@ -740,6 +754,36 @@ void() ai_move_node_tactical={
     self.ai_state_next = ST_COMBAT;
     return;
   }
+};
+
+/*
+  MOVE_END_PAUSE
+    Automatically used at the end of any combat move that isn't
+      + node radius things
+      + any stand_ still move.
+      
+    this is to help reduce traffic jams AND give the player some chances for solid hits.
+*/
+void() ai_move_end_pause={
+  if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    self.ai_dampen = 0;
+    if( self.legs ){
+      self.legs.ai_dir = self.angles_y;
+      self.legs.attack_state = TR_YAW;
+      self.legs.think = bot_leg_stand1;
+      self.legs.nextthink = time + 0.1;
+    }
+    if( self.torsoCenter ){
+      self.torsoCenter.attack_state = TR_TARG;
+    }
+    self.ai_movewait = time + (self.ai_rank * 2);
+    
+    return;
+  }
+  if( !self.legs ){
+    ai_face_targ();
+  }
+  ai_attack();
 };
 
 /*

@@ -149,7 +149,7 @@ void() mech_sk_fight_building={
 
 void() mech_sk_fight_full={
   //CLOSE COMBAT
-  if(combat_dist <= 0.4 ){
+  if(combat_dist < 0.4 ){
     if(enemy_infront){
       if( enemy_range > 0.25 ){
         self.ai_movedist = 5;
@@ -180,7 +180,7 @@ void() mech_sk_fight_full={
   }
   //---------------------------------
   //MID RANGE COMBAT
-  if(combat_dist <= 0.7 ){
+  if(combat_dist < 0.7 ){
     if(enemy_infront){
       if( enemy_range <= 0.5 ){
         if( self.ai_rank == AI_RANK_REG ){
@@ -238,11 +238,14 @@ void() mech_sk_fight_full={
     }
     //enemy not in front;
     if(self.ai_rank==AI_RANK_ROK){
-      if(combat_roll < 0.4 ){
+      if(combat_roll < 0.5 ){
         self.ai_movedist = 4;
         self.ai_move_next = MOVE_BACK;
         return;
       }
+      self.ai_movedist = 4;
+      self.ai_move_next = MOVE_CHARGE;
+      return;
     }
     if(self.ai_rank < AI_RANK_ACE ){
       self.ai_movedist = 6;

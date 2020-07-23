@@ -497,7 +497,7 @@ float( entity targ ) ai_check_vis={
 
 float() ai_attack={
   self.button0 = 1;
-  return 1;
+  return self.button0;
 };
 
 /*
@@ -556,7 +556,7 @@ void() ai_setup_patrol={
       if( node ){
         self.patrolNode = node;
         self.ai_state_next = ST_THR;
-        if( ai_check_node_radius(self) > 1.0 ){
+        if( 1.0 < ai_check_node_radius(self) ){
            //just teleport them
            self.origin = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.99,64), self.maxs_x);
            setorigin(self, self.origin);
@@ -613,13 +613,4 @@ void() ai_setup_patrol={
     self.nextthink = self.nextthink + time;
     self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   }
-};
-
-
-void() ai_move_node_clear={
-
-};
-
-void() ai_move_node_reverse={
-
 };

@@ -82,13 +82,13 @@ void() mech_sk_combat={
     
     combat_roll = random() * 1.0;
     //AI is in bounds, but target is out of bounds
-    if( enemy_dist > 1.0 ){
-      if( combat_dist <= 1.0 ){
+    if( 1.0 < enemy_dist){
+      if( 1.0 >= combat_dist ){
         //AI is on edge of bounds but inside radius
         mech_sk_fight_target_fire();
         return;
       }
-      if( combat_dist > 1.0 ){
+      if( 1.0  < combat_dist ){
         mech_sk_fight_out_radius();
         return;
       }
@@ -141,7 +141,7 @@ void() mech_sk_com_moveExec={
   //------------------------------------------------------------------
   if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
     nodeMove = ai_check_node_radius(self);
-    if(nodeMove > 0.75){
+    if(nodeMove > 1.25){
       if( self.tetherStatus == TETHER_PATROL ){
         nodeCheck = ai_node_to_target(self);
         if(nodeCheck != self.patrolNode){
@@ -168,9 +168,17 @@ void() mech_sk_com_moveExec={
 void() mech_sk_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-    if( !(self.ai_move_last & (MOVE_STAND_FACE | MOVE_STAND | MOVE_SNAPSHOT | MOVE_SNIPESHOT)) ){
-      self.ai_move_next = MOVE_STAND_FACE;
-      self.ai_movedist = self.ai_rank * 3;
+    ai_attack();
+    if( self.ai_move == MOVE_END_PAUSE ){
+      if( self.ai_blockflag ){
+        self.ai_blockflag = 0;
+        self.ai_state_next = ST_COM_MOVE_START;
+        self.ai_move_next = MOVE_NODE_RADIUS;
+        return;
+      }
+    }
+    if( self.ai_move > MOVE_NODE_TACTICAL){
+      self.ai_move_next = MOVE_END_PAUSE;
       self.ai_state_next = ST_COM_MOVE_START;
       return;
     }
@@ -188,18 +196,24 @@ void() mech_sk_com_blocked={
   local entity blockNode;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
-    if( !(self.ai_move_last & (MOVE_STAND_FACE | MOVE_STAND | MOVE_SNAPSHOT | MOVE_SNIPESHOT)) ){
-      self.ai_move_next = MOVE_STAND_FACE;
-      self.ai_movedist = self.ai_rank * 4;
+    ai_attack();
+    if( 1.0 < ai_check_node_radius(self) ){
+      self.patrolState = 0;
+      self.goalentity = self.patrolNode;
+      self.ai_move_next = MOVE_NODE_RADIUS;
+      self.ai_state_next = ST_COM_MOVE_START;
+      self.ai_movewait = time + 8;
+      return;
+    }
+    if( self.ai_move == MOVE_BACK || self.ai_move = MOVE_BACK_LEFT || self.ai_move == MOVE_BACK_RIGHT ){
+      self.ai_move_next = MOVE_CHARGE;
+      self.ai_movedist = 3;
       self.ai_state_next = ST_COM_MOVE_START;
       return;
     }
-    self.ai_move_next = 0;
-    self.patrolState = 0;
-    self.goalentity = self.patrolNode;
-    self.ai_move_next = MOVE_NODE_RADIUS;
+    self.ai_move_next = MOVE_BACK;
+    self.ai_movedist = 3;
     self.ai_state_next = ST_COM_MOVE_START;
-    self.ai_movewait = time + 15;
     return;
   }
  //------------------------------------------------------------------
