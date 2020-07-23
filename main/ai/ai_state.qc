@@ -97,7 +97,7 @@ void() ai_state_frame={
   }
   
   self.think = ai_state_frame;
-  self.nextthink = time + 0.07;
+  self.nextthink = time + 0.06;
 };
 
 /*

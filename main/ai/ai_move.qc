@@ -765,8 +765,7 @@ void() ai_move_end_pause={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    self.ai_movewait = time + (self.ai_rank * 2);
-    
+    self.ai_movewait = time + (self.ai_rank * 1.25);
     return;
   }
   if( !self.legs ){

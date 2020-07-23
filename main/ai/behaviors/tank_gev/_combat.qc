@@ -131,15 +131,13 @@ void() gev_com_moveExec={
     return;
   }
   //------------------------------------------------------------------
-  if( self.ai_move != MOVE_PATROLNODE && self.ai_move != MOVE_NODE_RADIUS ){
+  if( MOVE_NODE_TACTICAL < self.ai_move ){
     nodeMove = ai_check_node_radius(self);
-    if(nodeMove > 1.25){
+    if( 1.0 < nodeMove ){
       if( self.tetherStatus == TETHER_PATROL ){
         nodeCheck = ai_node_to_target(self);
         if(nodeCheck != self.patrolNode){
-          if( (vlen(nodeCheck.origin - self.origin) <= nodeCheck.ai_view) && (ai_check_node_radius(self) > 0.95)){
-            self.patrolNode = nodeCheck;
-          }
+          self.patrolNode = nodeCheck;
         }
       }
       self.ai_move_next = MOVE_NODE_RADIUS;

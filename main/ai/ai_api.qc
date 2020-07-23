@@ -460,7 +460,7 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   
   // divide by speed to get time to reach dest
   travel = len / wishSpeed;
-  travel = travel / 24; //AI runs at about time + 0.04 so adjust travel time 
+  travel = travel / 35; //AI runs at about time + 0.04 so adjust travel time 
   
   return travel * 0.9;  
 };
