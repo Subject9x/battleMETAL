@@ -173,6 +173,11 @@ void() ai_combat_move_frame={
     if( self.ai_state_combat_blocked ){
       self.ai_state_next = ST_COM_MOVE_BLOCK;
     }
+    else{
+      self.ai_move_next = MOVE_STAND;
+      self.ai_blockflag = 0;
+      self.ai_movedist = 4;
+    }
   }
 };
 

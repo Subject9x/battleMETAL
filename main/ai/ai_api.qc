@@ -427,6 +427,15 @@ void() ai_unit_make_trigger={
 
 /*
   Inspired by the original SUB_CalcMoved
+    Unit gives a requested destination, and a wishspeed.
+    
+    Algo then runs a tracebox to make sure the unit will fit and arrive at the point.
+    Then, as part of some 'rounding' effort - we find a point that's actually
+      endpoint - AI bbox size. 
+      
+    This comes out to kinda always leave a unit-sized gap after the AI moves, like a 
+    primitive avoidance system. By increasing the gaps of units during moves, this
+    should free up any given volume, allowing more bots to move easier.
 */
 float(vector destOrg, float wishSpeed) ai_calc_move={
   local vector distDiff;
@@ -441,17 +450,19 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   tMins = self.mins;
   tMins_z = tMins_z * 0.75; //adjust for slope
   
-  tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg + (v_forward * (tMaxs_x / 2)), MOVE_NORMAL, self);
-
-  if( trace_fraction < 0.1 ){
+  tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg + (v_forward * (tMins_x / 2)), MOVE_NORMAL, self);
+  
+  if( trace_fraction <= 0.1 ){
     return 0;
   }
-  len = len * trace_fraction;
+  distDiff = trace_endpos + (v_forward * (tMins_x * 2));
+  len = vlen(distDiff - self.origin);
   
   // divide by speed to get time to reach dest
   travel = len / wishSpeed;
+  travel = travel / 24; //AI runs at about time + 0.04 so adjust travel time 
   
-  return travel / 24;  //AI runs at about time + 0.04 so adjust travel time 
+  return travel * 0.9;  
 };
 
 /*

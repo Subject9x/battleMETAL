@@ -177,6 +177,13 @@ void() mh_world_ini={
   
   MAP_UNLOCK_MECHS = world.unlockMechs;
   MAP_UNLOCK_EQUIP = world.unlockEquip;
+  //ini AI globals
+  enemy_infront = 1.0;
+  enemy_vis = 1.0;
+  enemy_range = 1.0;
+  enemy_dist = 1.0;
+  combat_dist = 1.0;
+  combat_roll = 1.0;
 };
 
 void() world_ini_serverinfo={

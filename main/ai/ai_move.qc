@@ -480,11 +480,11 @@ float() ai_move_back_right={
     ai_angle_y = self.ai_dir;
     makevectors(ai_angle);
     status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed);
-    
+     
     if( status <= 0.1 ){
       return FALSE;
     }
-    self.ai_movewait = time + status;
+    self.ai_movewait = time + (status * 0.5);
     self.ideal_yaw = self.ai_dir;
     
     if( self.legs ){
@@ -677,37 +677,30 @@ void() ai_move_node_radius={
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
-    self.ai_movewait = time + 30;
+    self.ai_movewait = time + 15;
     return;
   }
   
   oldPatrolState = self.patrolState;
   ai_attack();
-  outRadius = max(self.goalentity.ai_view * 0.95, AI_RANGE_S);
+  outRadius = max(self.goalentity.ai_view * 0.95, AI_RANGE_S/2);
   innerRadius = max(self.goalentity.ai_view * 0.33, 64);
   self.patrolState = ai_move_patrol_node( outRadius, innerRadius, 0);
   
+  if( 0.85 >= ai_check_node_radius(self) ){
+    self.ai_state_next = ST_COM_MOVE_END;
+    return;
+  }
   if( time > self.ai_movewait ){
-    if( 1.0 > ai_check_node_radius(self) ){
-      self.ai_state_next = ST_COM_MOVE_END;
-      return;
-    }
     if( ai_blocked_teleport() ){
-      if( self.patrolNode ){
-        if( self.patrolNode.classname == "ai_node" ){
-          self.ai_state_next = ST_PTR;
-          return;
-        }
-        self.ai_state_next = ST_THR;
+      if( self.patrolNode.classname == "ai_node" ){
+        self.ai_state_next = ST_PTR;
         return;
       }
-      self.ai_state_next = ST_STAND;
+      self.ai_state_next = ST_THR;
       return;
     }
-  }
-  
-  if( self.patrolState == PATROL_ARRIVE && oldPatrolState != PATROL_ARRIVE){
-    self.ai_state_next = ST_COM_MOVE_END;
+    self.ai_state_next = ST_STAND;
     return;
   }
 };
@@ -728,30 +721,26 @@ void() ai_move_node_tactical={
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
-    self.ai_movewait = time + 30;
+    self.ai_movewait = time + 15;
     return;
   }
   oldPatrolState = self.patrolState;
   ai_attack();
   self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95, self.goalentity.ai_view * 0.33, 0);
-  
+  if( 0.9 >= ai_check_node_radius(self) ){
+    self.ai_state_next = ST_COM_MOVE_END;
+    return;
+  }
   if( time > self.ai_movewait ){
     if( ai_blocked_teleport() ){
-      if( self.patrolNode ){
-        if( self.patrolNode.classname == "ai_node" ){
-          self.ai_state_next = ST_PTR;
-          return;
-        }
-        self.ai_state_next = ST_THR;
+      if( self.patrolNode.classname == "ai_node" ){
+        self.ai_state_next = ST_PTR;
         return;
       }
-      self.ai_state_next = ST_STAND;
+      self.ai_state_next = ST_THR;
       return;
     }
-  }
-  
-  if( self.patrolState == PATROL_ARRIVE && oldPatrolState != PATROL_ARRIVE){
-    self.ai_state_next = ST_COMBAT;
+    self.ai_state_next = ST_STAND;
     return;
   }
 };
