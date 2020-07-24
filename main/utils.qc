@@ -632,9 +632,9 @@ vector(vector org, entity filter, float len, float height) util_find_random_farp
   
   ang = self.angles;
   //quantize rays into semi-random 60deg increments, then correct for 0==360
-  itr = floor(random()*6);
-  itr = itr * (random() * 30);
-  itr = itr + 30;
+  itr = floor(random()*10);
+  itr = itr * (random() * 18);
+  itr = itr + 18;
   itr = itr - 90;
   ang_y = anglemod(ang_y + itr);
   makevectors(ang);

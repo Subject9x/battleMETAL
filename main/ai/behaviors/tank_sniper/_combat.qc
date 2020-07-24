@@ -187,14 +187,13 @@ void() spg_com_blocked={
       self.ai_movewait = time + 8;
       return;
     }
-    if( self.ai_move == MOVE_BACK || self.ai_move = MOVE_BACK_LEFT || self.ai_move == MOVE_BACK_RIGHT ){
+    self.ai_movedist = 3;
+    if( self.ai_move == MOVE_BACK || self.ai_move == MOVE_BACK_LEFT || self.ai_move == MOVE_BACK_RIGHT ){
       self.ai_move_next = MOVE_CHARGE;
-      self.ai_movedist = 3;
       self.ai_state_next = ST_COM_MOVE_START;
       return;
     }
     self.ai_move_next = MOVE_BACK;
-    self.ai_movedist = 3;
     self.ai_state_next = ST_COM_MOVE_START;
     return;
   }

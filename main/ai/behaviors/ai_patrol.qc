@@ -27,6 +27,14 @@ void() ai_patrol={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_GOAL;
     }
+    
+
+    if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+      //prepare for war....
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
+    
     return;
   }
 };
@@ -38,6 +46,11 @@ void() ai_ptr_pause={
   
   //entered pause state
   if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
+    if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+      //prepare for war....
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
     if( self.legs ){
       self.legs.think = bot_leg_stand1;
       self.legs.nextthink = time + 0.1;
@@ -46,6 +59,11 @@ void() ai_ptr_pause={
     return;
   }
   //--------------------------
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    //prepare for war....
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
   if( time > self.pausetime ){
     if( self.patrolNode != world ){
       self.ai_state_next = ST_PTR;
@@ -65,12 +83,13 @@ void() ai_ptr_travel_node={
   lastPatrol = self.patrolState;
   ai_patrol_state_frame();
   
+
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
     self.ai_state_next = ST_COMBAT;
     return;
   }
-  
+
   if(self.patrolState == PATROL_ARRIVE && lastPatrol == PATROL_ARRIVE ){
     self.ai_state_next = ST_PTR;
     return;

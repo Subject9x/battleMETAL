@@ -53,10 +53,13 @@ float() ai_move_charge={
     self.ai_wishSpeed = self.data_speed_forward;
     self.ai_movedist = (self.ai_movedist * self.ai_wishSpeed) * 10;
     ai_angle = self.angles;
+    self.ideal_yaw = self.angles_y;
     if( ai_check_face( self.enemy, 0.85, FALSE) ){
       self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
       ai_angle_y = self.ai_dir;
+      self.ideal_yaw = self.ai_dir;
     }
+    
     makevectors(ai_angle);
     status = ai_calc_move(self.origin + (v_forward * self.ai_movedist), self.ai_wishSpeed);
     
@@ -64,8 +67,6 @@ float() ai_move_charge={
       return FALSE;
     }
     self.ai_movewait = time + status;
-    self.ai_dir = vectoyaw(self.enemy.origin - self.origin);
-    self.ideal_yaw = self.ai_dir;
     
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
@@ -82,6 +83,7 @@ float() ai_move_charge={
   if( self.ai_dampen < 1.0){
     self.ai_dampen = self.ai_dampen + self.data_speed_accel;
   }
+  ChangeYaw();
   
   status = walkmove( self.angles_y, self.ai_wishSpeed * self.ai_dampen );
 
@@ -710,6 +712,10 @@ void() ai_move_node_radius={
 */
 void() ai_move_node_tactical={
   local float oldPatrolState;
+  local float enemyRad;
+  local float myRad;
+  local float outRad;
+  
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.patrolState = 0;
     self.goalentity = self.patrolNode;
@@ -726,7 +732,12 @@ void() ai_move_node_tactical={
   }
   oldPatrolState = self.patrolState;
   ai_attack();
-  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95, self.goalentity.ai_view * 0.33, 0);
+  enemyRad = ai_check_node_radius(self.enemy);
+  myRad = ai_check_node_radius(self);
+  
+  outRad = max( enemyRad - myRad, 0.15);
+  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95, self.goalentity.ai_view * outRad, 0);
+  
   if( 0.9 >= ai_check_node_radius(self) ){
     self.ai_state_next = ST_COM_MOVE_END;
     return;
@@ -738,6 +749,10 @@ void() ai_move_node_tactical={
         return;
       }
       self.ai_state_next = ST_THR;
+      return;
+    }
+    if(self.enemy){
+      self.ai_state_next = ST_COMBAT;
       return;
     }
     self.ai_state_next = ST_STAND;
@@ -765,13 +780,16 @@ void() ai_move_end_pause={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    self.ai_movewait = time + (self.ai_rank * 1.25);
+    self.ai_movewait = time + self.ai_rank;
     return;
   }
   if( !self.legs ){
     ai_face_targ();
   }
   ai_attack();
+  if(time > self.ai_movewait ){
+    self.ai_state_next = ST_COMBAT;
+  } 
 };
 
 /*

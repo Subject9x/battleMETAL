@@ -228,10 +228,10 @@ float() ai_find_target_visual={
 
   if( found != world ){
     if( (self.flags & FL_DISARMED) ){
-      if( self.stat_rdr_mode ){       
-        ai_sfx_help();
+      if( self.stat_rdr_mode ){    
         ally = ai_find_friend( self.ai_view );
-        if( ally ){
+        if( ally ){   
+          ai_sfx_help();
           ai_give_target( ally, found, (found.flags&FL_CLIENT));
         }
       }

@@ -114,7 +114,7 @@ void() ai_node_check={
       while( itr < 12 ){
         checkAng_y = itr * 30;
         makevectors(checkAng);
-        tracebox(self.origin, '-10 -10 -9', '10 10 9', self.origin + (v_forward * AI_RANGE_M), MOVE_NORMAL, self);
+        tracebox(self.origin - (v_up * 5), '-10 -10 -9', '10 10 9', self.origin - (v_up * 5) + (v_forward * AI_RANGE_M), MOVE_NORMAL, self);
         checkDist = vlen(trace_endpos - self.origin);
         minDist = minDist + checkDist;
         itr = itr + 1;

@@ -57,15 +57,13 @@ void() gev_combat={
     if(1.0 < combat_dist ){
       //run
       if(self.tetherStatus == TETHER_PATROL ){
-        prox = ai_node_to_target(self);
+        prox = ai_node_to_target(self.enemy);
         if(prox != self.patrolNode){
-          if( vlen(prox.origin - self.origin) <= prox.ai_view ){
-            self.patrolNode = prox;
-          }
+          self.patrolNode = prox;
+          self.ai_move_next = MOVE_NODE_TACTICAL;
+          return;
         }
       }
-      self.ai_move_next = MOVE_NODE_RADIUS;
-      return;
     }
     
     combat_roll = random() * 1;  //engine doesn't like rolling a lot of dice, 
@@ -78,7 +76,7 @@ void() gev_combat={
         gev_fight_target_fire();
         return;
       }
-      if( combat_dist > 1.0 ){
+      if( 1.0 < combat_dist ){
         gev_fight_out_radius();
         return;
       }
@@ -114,6 +112,8 @@ void() gev_combat={
 void() gev_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    cons_logAString("star move", dbg_move(self.ai_move)); //debug
+    cons_logAFloat("faction", self.faction); //debug
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
@@ -159,7 +159,7 @@ void() gev_com_moveEnd={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
     ai_attack();
-    if( self.ai_move == MOVE_END_PAUSE ){
+    if( self.ai_move_last == MOVE_END_PAUSE ){
       if( self.ai_blockflag ){
         self.ai_blockflag = 0;
         self.ai_state_next = ST_COM_MOVE_START;
@@ -195,14 +195,13 @@ void() gev_com_blocked={
       self.ai_movewait = time + 8;
       return;
     }
-    if( self.ai_move == MOVE_BACK || self.ai_move = MOVE_BACK_LEFT || self.ai_move == MOVE_BACK_RIGHT ){
+    self.ai_movedist = 3;
+    if( self.ai_move == MOVE_BACK || self.ai_move == MOVE_BACK_LEFT || self.ai_move == MOVE_BACK_RIGHT ){
       self.ai_move_next = MOVE_CHARGE;
-      self.ai_movedist = 3;
       self.ai_state_next = ST_COM_MOVE_START;
       return;
     }
     self.ai_move_next = MOVE_BACK;
-    self.ai_movedist = 3;
     self.ai_state_next = ST_COM_MOVE_START;
     return;
   }

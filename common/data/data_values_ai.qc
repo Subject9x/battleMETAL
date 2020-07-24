@@ -33,8 +33,8 @@ float AI_REACT_VET = 1;
 float AI_REACT_ACE = 0.5;
 
 //AI movement speed ratio 
-float AI_WALK_SPD = 0.1;
-float AI_RUN_SPD = 0.2;
+float AI_WALK_SPD = 0.09;
+float AI_RUN_SPD = 0.19;
 float AI_RUN_FACTOR = 1.25;
 float AI_MECH_MOVE_FACTOR = 0.7; //mechs cannot move as fast as player
 float AI_PATROL_SPEED_LIMIT = 100; //units going full speed on patrol so far is rough on game balance.

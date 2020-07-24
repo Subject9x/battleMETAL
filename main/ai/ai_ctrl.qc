@@ -228,6 +228,7 @@ void() ai_patrol_state_frame={
   if( distLeft > self.goalentity.ai_view * 0.75 ){
     self.tetherStatus = TETHER_SELF;
     self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, max(self.goalentity.ai_view*0.25,32), 24);
+    traceline(self.origin, self.tetherOrg, MOVE_NORMAL, self);
     if( (self.flags & FL_TURRET) ){
       self.torsoCenter.ai_dir = vectoyaw(self.tetherOrg - self.origin);
       self.torsoCenter.attack_state = TR_YAW;
@@ -261,7 +262,7 @@ void() ai_patrol_state_frame={
   }
   
   //PATROL - ARRIVING AT NODE
-  if( distLeft > max(self.goalentity.ai_view*0.25,32)){
+  if( distLeft > random()*(self.maxs_x*2) ){
     ai_face_origin(self.tetherOrg);
     if( (self.flags & FL_TURRET) ){
       self.torsoCenter.ai_dir = vectoyaw(self.tetherOrg - self.origin);
@@ -273,7 +274,7 @@ void() ai_patrol_state_frame={
 
     if( ai_check_face_origin(self.tetherOrg, 0.85, FALSE) ){
       if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-        if( !ai_patrol_traffic_adjust()){
+        if( !ai_patrol_traffic_adjust() ){
           if(!self.legs){
             ChangeYaw();
           }
@@ -283,7 +284,7 @@ void() ai_patrol_state_frame={
     }
     else{
       if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-        if( !ai_patrol_traffic_adjust()){
+        if( !ai_patrol_traffic_adjust() ){
           if(!self.legs){
             ChangeYaw();
           }
@@ -464,7 +465,7 @@ float( entity targ ) ai_check_vis={
   }
   contentBuffer = self.dphitcontentsmask;
   self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_DONOTENTER | DPCONTENTS_MONSTERCLIP);
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY);
   
   traceline (spot1, spot2, MOVE_NORMAL, self);
   

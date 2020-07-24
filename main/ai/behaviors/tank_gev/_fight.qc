@@ -25,58 +25,127 @@ Overview:
 */
 void() gev_fight_target_fire={
   //AI is on edge of bounds but inside radius
-  if(combat_dist >= 0.75){
+  if( combat_dist <= 0.3 ){
+    self.ai_movedist = 7;
     if(enemy_infront){
-      if(combat_roll > 0.6 || self.ai_rank > AI_RANK_REG){
-        self.ai_move_next = MOVE_BACK;
-        self.ai_movedist = 6;
-      }
-      else{
-        self.ai_move_next = MOVE_STAND_FACE;
-        self.ai_movedist = self.ai_rank;
-      }
-      return;
-    }
-    else{
-      if( self.ai_rank > AI_RANK_REG ){
-        self.ai_movedist = 5;
-        if( combat_roll > 0.5 ){
-          self.ai_move_next = MOVE_CHARGE_LEFT;
+      if( enemy_range <= 0.3 ){
+        if(combat_roll > 0.5){
+          self.ai_move_next = MOVE_CIRCLE_LEFT;
+          return;
         }
-        else{
-          self.ai_move_next = MOVE_CHARGE_LEFT;
-        }
+        self.ai_move_next = MOVE_CIRCLE_RIGHT;
         return;
       }
-      self.ai_move_next = MOVE_CHARGE;
-      self.ai_movedist = 7;
-      return;
-    }
-  }
-  else{
-    if(combat_dist <= 0.33){
-      self.ai_movedist = 7;
-      if( combat_roll > 0.5 ){
-        self.ai_move_next = MOVE_CHARGE_LEFT;
+      if( enemy_range <= 0.67){
+        if(combat_roll > 0.5){
+          self.ai_move_next = MOVE_STRAFE_LEFT;
+          return;
+        }
+        self.ai_move_next = MOVE_STRAFE_RIGHT;
+        return;
       }
-      else{
-        self.ai_move_next = MOVE_CHARGE_LEFT;
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_BACK_LEFT;
+        return;
       }
-      return;
-    }
-    self.ai_movedist = 3;
-    if( combat_roll > 0.5 ){
-      self.ai_move_next = MOVE_BACK_LEFT;
-      return;
-    }
-    else{
       self.ai_move_next = MOVE_BACK_RIGHT;
       return;
     }
-    self.ai_move_next = MOVE_CHARGE;
-    self.ai_movedist = 5;
+    if( enemy_range <= 0.3 ){
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_CIRCLE_LEFT;
+        return;
+      }
+      self.ai_move_next = MOVE_CIRCLE_RIGHT;
+      return;
+    }
+    if( enemy_range <= 0.67){
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_STRAFE_LEFT;
+        return;
+      }
+      self.ai_move_next = MOVE_STRAFE_RIGHT;
+      return;
+    }
+    self.ai_move_next = MOVE_STAND_FACE;
     return;
   }
+  if( combat_dist <= 0.67 ){
+    self.ai_movedist = 5;
+    if(enemy_infront){
+      if( enemy_range <= 0.3 ){
+        if(combat_roll > 0.5){
+          self.ai_move_next = MOVE_STRAFE_RIGHT;
+          return;
+        }
+        self.ai_move_next = MOVE_STRAFE_LEFT;
+        return;
+      }
+      if( enemy_range <= 0.67){
+        if(combat_roll > 0.5){
+          self.ai_move_next = MOVE_CIRCLE_RIGHT;
+          return;
+        }
+        self.ai_move_next = MOVE_CIRCLE_LEFT;
+        return;
+      }
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_CHARGE_LEFT;
+        return;
+      }
+      self.ai_move_next = MOVE_CHARGE_RIGHT;
+      return;
+    }
+    if( enemy_range <= 0.5){
+      if(combat_roll > 0.5){
+        self.ai_move_next = MOVE_CHARGE_LEFT;
+        return;
+      }
+      self.ai_move_next = MOVE_CHARGE_RIGHT;
+      return;
+    }
+    self.ai_move_next = MOVE_CHARGE;
+    return;
+  }
+  self.ai_movedist = 3;
+  if(enemy_infront){
+    if( enemy_range <= 0.3 ){
+      if(combat_roll < 0.4){
+        self.ai_move_next = MOVE_CHARGE;
+        return;
+      }
+      if(combat_roll < 0.7){
+        self.ai_move_next = MOVE_CHARGE_LEFT;
+        return;
+      }
+      self.ai_move_next = MOVE_CHARGE_RIGHT;
+      return;
+    }
+    if( enemy_range <= 0.67){
+      if(combat_roll < 0.4){
+        self.ai_move_next = MOVE_BACK_LEFT;
+        return;
+      }
+      if(combat_roll < 0.7){
+        self.ai_move_next = MOVE_BACK;
+        return;
+      }
+      self.ai_move_next = MOVE_BACK_RIGHT;
+      return;
+    }
+    if(combat_roll < 0.6){
+      self.ai_move_next = MOVE_CIRCLE_RIGHT;
+      return;
+    }
+    self.ai_move_next = MOVE_CIRCLE_LEFT;
+    return;
+  }
+  if(combat_roll < 0.6){
+    self.ai_move_next = MOVE_CHARGE_LEFT;
+    return;
+  }
+  self.ai_move_next = MOVE_CHARGE_RIGHT;
+  return;
 };
 
 /*
