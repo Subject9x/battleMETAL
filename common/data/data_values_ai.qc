@@ -10,6 +10,27 @@ Overview: AI values that have been spun off from common/game
 //============================
 //     AI STATS      
 //============================
+//SPAWNFLAGS
+float NO_CAMPAIGN = 1;    //remove from campaign mode
+float NO_COOP = 2;    //remove from co-op mode
+float NO_DM = 4;    //remove from DeathMatch
+float NO_TDM = 8;    //remove from Team DeathMatch
+float COLD_START = 16;   //on-spawn, bot will ignore friendly help calls
+float RANDOM_START = 32;   //start on random node if AI has patrol path
+float HAS_RADAR = 64;   //radar is expensive to use, use sparingly
+                                        //generally this is for mech units
+float DEBUG_MODE = 128; //dont do anything
+float NO_NOVICE = 4096;  //remove from Novice Difficulty
+float NO_REGULAR = 8192; //remove from Regular Difficulty
+float NO_VETERAN = 16384; //remove from Veteran Difficulty
+float NO_ELITE = 32768;  //remove from Elit Difficulty
+float PROMOTE = 65536;  //AI rank is set by skill, this spawnflag bumps it up by 1
+float DEMOTE = 131072;  //AI rank is set by skill, this spawnflag debuffs it up by 1
+float NO_DROP = 262144; //don't drop bot to the floor onspawn
+float TRIGGER_ME = 524288;  //ai only spawns when triggered
+float MUTE_ME = 1048576;  //ai ignores sending voice effects / radio sounds.
+float UNARMED = 2097152; //ai spawns with no weapons, skip build_weapons() factory step;
+
 float AI_VOICE_TIME = 32;
 
 //this works to balance AI mech stats vs player mech stats.

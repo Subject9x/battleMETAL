@@ -40,20 +40,6 @@ void( float dataID ) data_sync_new_mech_ai={
 
 };
 
-void() data_mech_balaket={
-  
-};
-
-void() data_mech_matok={
-  
-
-};
-
-void() data_mech_monitor={
-  
-
-};
-
 void( entity setPart ) data_mech_setup_part={
   setPart.skin = setPart.owner.skin;
   setmodel(setPart, setPart.model);

@@ -28,7 +28,6 @@ void() ai_patrol={
       self.torsoCenter.attack_state = TR_GOAL;
     }
     
-
     if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
       //prepare for war....
       self.ai_state_next = ST_COMBAT;
@@ -77,32 +76,36 @@ void() ai_ptr_pause={
   STATE : PATROL TRAVEL TO NODE
 */
 void() ai_ptr_travel_node={
-  local float lastPatrol;
-  ai_update_accuracy( TRUE );
-
-  lastPatrol = self.patrolState;
-  ai_patrol_state_frame();
   
-
+  ai_update_accuracy( TRUE );
+  
+  if(self.patrolState == PATROL_ARRIVE && self.patrolStateLast != PATROL_ARRIVE ){
+    if(self.tetherStatus == TETHER_PATROL){
+      self.ai_state_next = ST_PTR;
+    }
+    else{
+      self.ai_state_next = ST_THR;
+    }
+    return;
+  }
+  
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
     self.ai_state_next = ST_COMBAT;
     return;
   }
-
-  if(self.patrolState == PATROL_ARRIVE && lastPatrol == PATROL_ARRIVE ){
-    self.ai_state_next = ST_PTR;
-    return;
-  }
-  if( self.patrolState == PATROL_PAUSE && lastPatrol != PATROL_PAUSE ){
+  
+  if( self.patrolState == PATROL_PAUSE && self.patrolStateLast != PATROL_PAUSE ){
     self.ai_state_next = ST_PTR_PAUSE;
     return;
   }
   
-  if(self.patrolState == PATROL_BLOCK && lastPatrol != PATROL_BLOCK ){
+  if(self.patrolState == PATROL_BLOCK && self.patrolStateLast != PATROL_BLOCK ){
     self.ai_state_next = ST_PTR_TRAVEL_NODEBLOCK;
     return;
   }
+  self.patrolStateLast = self.patrolState;
+  ai_patrol_state_frame();
 };
 /*
   STATE : PATROL TRAVEL TO NODE BLOCKED

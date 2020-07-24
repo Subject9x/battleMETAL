@@ -91,7 +91,7 @@ void() ai_mech_sniper_stand={
   }
   
   if( self.patrolNode != world ){
-    if( self.patrolNode.classname == "ai_node"){
+    if( self.patrolNode.classname == "ai_node" && self.tetherStatus == TETHER_PATROL ){
       if( time > self.pausetime ){
         self.ai_state_next = ST_PTR;
         return;

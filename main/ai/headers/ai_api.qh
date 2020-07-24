@@ -9,27 +9,6 @@ Overview:
 //MACROs for AI
 #define macro_ai_setup(iniFunc) if(!(self.nextVecChoice)||self.nextVecChoice<=0){self.think=SUB_Remove;self.nextthink=time+0.05;return;}if((self.spawnflags&TRIGGER_ME)&&(self.targetname)){self.wait=1;if(self.delay>0){self.wait=self.delay;self.delay=0;}self.use=ai_unit_make_trigger;self.unit_ini=iniFunc;}else{self.think=iniFunc;self.nextthink=time+0.05;}
 
-//CONSTANTS
-float NO_CAMPAIGN = 1;    //remove from campaign mode
-float NO_COOP = 2;    //remove from co-op mode
-float NO_DM = 4;    //remove from DeathMatch
-float NO_TDM = 8;    //remove from Team DeathMatch
-float COLD_START = 16;   //on-spawn, bot will ignore friendly help calls
-float RANDOM_START = 32;   //start on random node if AI has patrol path
-float HAS_RADAR = 64;   //radar is expensive to use, use sparingly
-                                        //generally this is for mech units
-float DEBUG_MODE = 128; //dont do anything
-float NO_NOVICE = 4096;  //remove from Novice Difficulty
-float NO_REGULAR = 8192; //remove from Regular Difficulty
-float NO_VETERAN = 16384; //remove from Veteran Difficulty
-float NO_ELITE = 32768;  //remove from Elit Difficulty
-float PROMOTE = 65536;  //AI rank is set by skill, this spawnflag bumps it up by 1
-float DEMOTE = 131072;  //AI rank is set by skill, this spawnflag debuffs it up by 1
-float NO_DROP = 262144; //don't drop bot to the floor onspawn
-float TRIGGER_ME = 524288;  //ai only spawns when triggered
-float MUTE_ME = 1048576;  //ai ignores sending voice effects / radio sounds.
-float UNARMED = 2097152; //ai spawns with no weapons, skip build_weapons() factory step;
-
 //AI STATE (LEGACY) CONSTANTS
 float ST_STAND              = 1;  //th_stand
 float ST_WALK               = 2;  //th_walk
@@ -203,9 +182,7 @@ float PATROL_ARRIVE       = 3;  //dist <= AI_NODE_DISTANCE
 float PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && dist > AI_NODE_DISTANCE
 float PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
 .float patrolState;
-
-
-float MOVE_NODE_REVERSE   = 7;  // unit is out of node range, do a fighting reverse 
+.float patrolStateLast;
 
 //special mapped moves
 float MOVE_STAND          = 0;  //every AI has this
@@ -328,7 +305,7 @@ void() ai_move_node_tactical;
 void() ai_move_end_pause;
 void() ai_move_node_reverse;
 void() ai_move_node_radius;
-float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node;
+float(float outRadius, float innerRadius) ai_move_patrol_node;
 
 ////////////////////////////////
 //GENERIC PATROL IMPL - ai_tether.qc
@@ -438,3 +415,35 @@ string(float moveId) dbg_move={
   }
   return "null";
 }
+
+string(float tether) dbg_tether={
+  switch(tether){
+    case TETHER_NODE:
+      return "TETHER_NODE";
+    case TETHER_PATROL:
+      return "TETHER_PATROL";
+    case TETHER_ENT:
+      return "TETHER_ENT";
+    case TETHER_SELF:
+      return "TETHER_SELF";
+    case TETHER_NONE:
+      return "TETHER_NONE";
+  }
+  return "null";
+};
+
+string(float patrol) dbg_patrol={
+  switch(patrol){
+    case PATROL_ADJUST:
+      return "PATROL_ADJUST";
+    case PATROL_ARRIVE:
+      return "PATROL_ARRIVE";
+    case PATROL_BLOCK:
+      return "PATROL_BLOCK";
+    case PATROL_PAUSE:
+      return "PATROL_PAUSE";
+    case PATROL_WALKING:
+      return "PATROL_WALKING";
+  }
+  return "null";
+};

@@ -289,22 +289,26 @@ void() ctrl_component_die={
       self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
     }
     
-    c = self.owner.w_slot;
     this = self;
-    while(c){
-      self = c;
-        if(self.partParentId == this.partTypeId){
-          self.think = self.th_die;
-          self.nextthink = time + (random() * 0.5);
-        }
-      self = this;
-      c = c.w_slot;
+    for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
+      if( c == world ){
+        continue;
+      }
+      if(c.partParentId != this.partTypeId){
+        continue;
+      }
+      if( c.th_die ){
+        c.think = c.th_die;
+      }
+      else{
+        c.think = SUB_Remove;
+      }
+      c.nextthink = time + (random() * 0.5);
     }
     
     if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
       if( self.owner.th_pain && self.owner.health > 0){
         //if the bot loses all guns, have it panic
-        this = self;
         self = this.owner;
           self.th_pain( self.enemy );
         self = this;
@@ -313,10 +317,11 @@ void() ctrl_component_die={
   }
 };
 
-void() ctrl_arm_die={    
+void() ctrl_arm_die={
   local entity piece;
   local entity this;
   local entity c;
+  
   if( self.deadflag == DEAD_NO ){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
     self.owner.critBits = self.owner.critBits & self.partTypeId;
@@ -331,7 +336,7 @@ void() ctrl_arm_die={
     }
 
     self.deadflag = DEAD_DEAD;
-    self.effects = EF_NODRAW;  
+    self.effects = EF_NODRAW;
     self.movetype = MOVETYPE_NONE;
     self.aiment = world;
     self.health = 0;
@@ -343,23 +348,16 @@ void() ctrl_arm_die={
       if( c == world ){
         continue;
       }
-      self = c;
-        if(self.partParentId != this.partTypeId){
-          continue;
-        }
-        self.think = self.th_die;
-        self.nextthink = time + (random() * 0.5);
-      self = this;
-    }
-    
-    if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
-      if( self.owner.th_pain && self.owner.health > 0){
-        //if the bot loses all guns, have it panic
-        this = self;
-        self = this.owner;
-          self.th_pain( self.enemy );
-        self = this;
+      if(c.partParentId != this.partTypeId){
+        continue;
       }
+      if( c.th_die ){
+        c.think = c.th_die;
+      }
+      else{
+        c.think = SUB_Remove;
+      }
+      c.nextthink = time + (random() * 0.5);
     }
   }
 };
@@ -457,6 +455,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
 
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, num_for_edict(self));
+    WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
 

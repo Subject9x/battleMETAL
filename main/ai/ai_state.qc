@@ -146,7 +146,7 @@ void() ai_combat_move_frame={
       moveStatus = ai_move_back_right();
       break;
     case MOVE_PATROLNODE:
-      moveStatus = ai_move_patrol_node( AI_RANGE_S, AI_NODE_DISTANCE, 0);
+      moveStatus = ai_move_patrol_node( AI_RANGE_S, AI_NODE_DISTANCE );
       break;
     case MOVE_SNAPSHOT:
       ai_move_snapshot();

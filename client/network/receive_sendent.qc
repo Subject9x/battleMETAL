@@ -210,7 +210,14 @@ void() sendent_setup_weapons={
     self = weps;
       self.owner = this;
       sendent_set_weapon();
-      initialize_data_item_(self.data_idx);
+      if(!(this.flags & FL_DISARMED)){
+        initialize_data_item_(self.data_idx);
+      }
+      else{
+        self.model = "q3mdl/testball.md3";
+        self.alpha = 0.01;
+        self.scale = 0.01;
+      }
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
       setsize(self, '-1 -1 -1', '1 1 1');

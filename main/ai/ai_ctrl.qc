@@ -189,34 +189,25 @@ void() ai_patrol_state_frame={
   
   //PAUSED AT NODE
   if( time < self.pausetime ){
-    self.tetherStatus = TETHER_SELF;
     self.patrolState = PATROL_PAUSE;
     return;
   }
   
   cacheOrg = self.goalentity.origin;
   self.lastorigin = self.origin;
-  if( self.tetherStatus == TETHER_PATROL ){
-    distLeft = vlen(self.goalentity.origin - self.origin); 
-  }
-  else{
-    distLeft = vlen(self.tetherOrg - self.origin); 
-  }
+  distLeft = vlen(self.goalentity.origin - self.origin); 
+
   //GOING TO NODE-----------------------------------
   if( distLeft > self.goalentity.ai_view ){
     ai_face_goal();
-    if( ai_check_face(self.goalentity, 0.75, (self.flags&FL_TURRET)) ){
+    if( ai_check_face(self.goalentity, 0.9, FALSE) ){
       if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-        if( !ai_patrol_traffic_adjust()){
-          movetogoal( walkSpeed );
-        }
+        movetogoal( walkSpeed );
       }
     }
     else{
       if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-        if( !ai_patrol_traffic_adjust()){
-          movetogoal( cornerSpeed );
-        }
+        movetogoal( cornerSpeed );
       }
     }
     self.patrolState = PATROL_WALKING;
@@ -224,75 +215,27 @@ void() ai_patrol_state_frame={
   }
   //------------------------------------------------
   
-  //ADJUST NEAR NODE - ADJUST FINAL DESTINATION
-  if( distLeft > self.goalentity.ai_view * 0.75 ){
-    self.tetherStatus = TETHER_SELF;
-    self.tetherOrg = util_find_random_farpoint(self.goalentity.origin, self.goalentity, max(self.goalentity.ai_view*0.25,32), 24);
-    traceline(self.origin, self.tetherOrg, MOVE_NORMAL, self);
-    if( (self.flags & FL_TURRET) ){
-      self.torsoCenter.ai_dir = vectoyaw(self.tetherOrg - self.origin);
-      self.torsoCenter.attack_state = TR_YAW;
-    }
-    if( (self.legs) ){
-      self.legs.attack_state = TR_NORM;
-    }
+  //PATROL - ARRIVING AT NODE
+  if( distLeft > self.goalentity.ai_view * 0.25 ){
     ai_face_goal();
-    if( ai_check_face_origin(self.tetherOrg, 0.85, FALSE) ){
+    
+    if( ai_check_face(self.goalentity, 0.9, FALSE) ){
       if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-        if( !ai_patrol_traffic_adjust()){
-          if(!self.legs){
-            ChangeYaw();
-          }
-          movetogoal( walkSpeed );
+        if(!self.legs){
+          ChangeYaw();
         }
+        movetogoal( walkSpeed );
       }
     }
     else{
       if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-        if( !ai_patrol_traffic_adjust()){
-          if(!self.legs){
-            ChangeYaw();
-          }
-          movetogoal( walkSpeed );
+        if(!self.legs){
+          ChangeYaw();
         }
+        movetogoal( cornerSpeed );
       }
     }
     self.patrolState = PATROL_WALKING;
-    return;
-  }
-  
-  //PATROL - ARRIVING AT NODE
-  if( distLeft > random()*(self.maxs_x*2) ){
-    ai_face_origin(self.tetherOrg);
-    if( (self.flags & FL_TURRET) ){
-      self.torsoCenter.ai_dir = vectoyaw(self.tetherOrg - self.origin);
-      self.torsoCenter.attack_state = TR_YAW;
-    }
-    if( (self.legs) ){
-      self.legs.attack_state = TR_NORM;
-    }
-
-    if( ai_check_face_origin(self.tetherOrg, 0.85, FALSE) ){
-      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-        if( !ai_patrol_traffic_adjust() ){
-          if(!self.legs){
-            ChangeYaw();
-          }
-          movetogoal( walkSpeed );
-        }
-      }
-    }
-    else{
-      if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-        if( !ai_patrol_traffic_adjust() ){
-          if(!self.legs){
-            ChangeYaw();
-          }
-          movetogoal( cornerSpeed );
-        }
-      }
-    }
-    self.patrolState = PATROL_ADJUST;
     return;
   }
   
@@ -300,7 +243,6 @@ void() ai_patrol_state_frame={
   if(self.goalentity.pausetime > 0.0){
     self.pausetime = self.goalentity.pausetime;
     self.pausetime = max(5, self.pausetime - (self.ai_rank / 2));
-    self.goalentity = self.patrolNode;
     self.patrolState = PATROL_PAUSE;
   }
   else{
@@ -308,21 +250,24 @@ void() ai_patrol_state_frame={
     self.patrolState = PATROL_ARRIVE;
   }
   
-  nextNode = self.patrolNode;
-  if( self.goalentity.partNext != world ){
-    //case - there's the next node
-    nextNode = self.goalentity.partNext;
+  if(self.patrolState == PATROL_ARRIVE){
+    if( self.goalentity.partNext ){
+      //case - there's the next node
+      nextNode = self.goalentity.partNext;
+    }
+    else{
+      nextNode = self.patrolNode;
+    }
+    if(nextNode == self.patrolNode ){
+      //IF an ai_node is missing a .target , then we 'error correct' here by cutting the AI over to ST_THR sub system.
+      //the AI will treat this final destination node as if it were ai_node_tether.
+      self.tetherStatus = TETHER_NODE;
+    }
+    else{
+      self.patrolNode = nextNode;
+    }
   }
-  
-  if(nextNode != self.patrolNode ){
-    self.tetherStatus = TETHER_PATROL;
-  }
-  else{
-    self.tetherStatus = TETHER_NODE;
-  }
-  self.patrolNode = nextNode;
   self.tetherOrg = self.patrolNode.origin;
-
 };
 
 

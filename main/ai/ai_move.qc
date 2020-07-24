@@ -595,7 +595,7 @@ void() ai_move_standface={
   biggest difference between this and AI_PATROL_FRAME() is that the bot can track its target while
   moving to that node, and make attacks.
 */
-float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node={
+float(float outRadius, float innerRadius) ai_move_patrol_node={
   local entity nextNode;
   local float distLeft;
   local float walkSpeed, cornerSpeed;
@@ -634,7 +634,6 @@ float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node=
         movetogoal( cornerSpeed );
       }
     }
-    
     ai_attack();
     return PATROL_WALKING;
   }
@@ -646,7 +645,7 @@ float(float outRadius, float innerRadius, float proxRadius) ai_move_patrol_node=
     if( (self.legs) ){
       self.legs.attack_state = TR_NORM;
     }
-    if( ai_check_face(self.goalentity, 0.85, FALSE) ){
+    if( ai_check_face(self.goalentity, 0.9, FALSE) ){
       if( !walkmove(self.angles_y, walkSpeed) ){
         movetogoal( walkSpeed );
       }
@@ -687,7 +686,7 @@ void() ai_move_node_radius={
   ai_attack();
   outRadius = max(self.goalentity.ai_view * 0.95, AI_RANGE_S/2);
   innerRadius = max(self.goalentity.ai_view * 0.33, 64);
-  self.patrolState = ai_move_patrol_node( outRadius, innerRadius, 0);
+  self.patrolState = ai_move_patrol_node( outRadius, innerRadius );
   
   if( 0.85 >= ai_check_node_radius(self) ){
     self.ai_state_next = ST_COM_MOVE_END;
@@ -736,7 +735,7 @@ void() ai_move_node_tactical={
   myRad = ai_check_node_radius(self);
   
   outRad = max( enemyRad - myRad, 0.15);
-  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95, self.goalentity.ai_view * outRad, 0);
+  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95, self.goalentity.ai_view * outRad );
   
   if( 0.9 >= ai_check_node_radius(self) ){
     self.ai_state_next = ST_COM_MOVE_END;

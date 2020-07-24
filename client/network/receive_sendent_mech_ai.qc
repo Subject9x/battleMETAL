@@ -165,6 +165,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   if( (changeFlags & SENDFLAG_NEWENT) ){   
     self.entId = ReadLong(); 
+    self.flags = ReadLong();
     self.faction = ReadByte();
     self.data_idx = ReadByte();
    
@@ -184,7 +185,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       if( newName != "" ){
         self.netname = strzone(newName);
       }   
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.data_type = DATA_MECH;
       self.skin =  self.faction - 1;
       self.movetype = MOVETYPE_STEP;
@@ -193,7 +193,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.critBits = 0;
       setmodel(self, "q3mdl/testball.md3");
       setsize(self, self.mins, self.maxs);
-      sendent_ini_interpolate(); 
+      sendent_ini_interpolate();
       sendent_setup_weapons();
     }
     self.alpha = 0.001;

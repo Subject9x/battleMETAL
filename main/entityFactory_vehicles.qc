@@ -53,9 +53,11 @@ void(entity own) build_unit_component={
   self.view_ofs = self.origin - follow.origin;
   self.angles = follow.angles;
   self.v_angle = self.angles - follow.angles;
-  self.th_die = ctrl_component_die;
   if( self.partTypeId == M_ARM_RIGHT || self.partTypeId == M_ARM_LEFT ){
     self.th_die = ctrl_arm_die;
+  }
+  else{
+    self.th_die = ctrl_component_die;
   }
   self.realowner = follow;
   self.colormod = self.owner.colormod;
