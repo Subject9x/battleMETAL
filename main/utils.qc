@@ -632,7 +632,7 @@ vector(vector org, entity filter, float len, float height) util_find_random_farp
   
   ang = self.angles;
   //quantize rays into semi-random 60deg increments, then correct for 0==360
-  itr = floor(random()*10);
+  itr = rint(random()*10);
   itr = itr * (random() * 18);
   itr = itr + 18;
   itr = itr - 90;
@@ -640,7 +640,7 @@ vector(vector org, entity filter, float len, float height) util_find_random_farp
   makevectors(ang);
   traceline(org, org + (v_forward * len), MOVE_NORMAL, filter);
 
-  landing = trace_endpos + (v_up * height) ;
+  landing = trace_endpos + (v_up * height);
   if( trace_fraction < 1 ){
     landing = landing - (v_forward * (trace_fraction * len)) ;
   }

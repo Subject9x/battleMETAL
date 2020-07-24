@@ -305,7 +305,7 @@ void() ai_move_node_tactical;
 void() ai_move_end_pause;
 void() ai_move_node_reverse;
 void() ai_move_node_radius;
-float(float outRadius, float innerRadius) ai_move_patrol_node;
+float(float outRadius) ai_move_patrol_node;
 
 ////////////////////////////////
 //GENERIC PATROL IMPL - ai_tether.qc

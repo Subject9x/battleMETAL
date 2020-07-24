@@ -500,13 +500,9 @@ void() ai_setup_patrol={
       //AI is an area-tethered type
       node = ai_node_tether_find();
       if( node ){
+        self.tetherStatus = TETHER_NODE;
         self.patrolNode = node;
         self.ai_state_next = ST_THR;
-        if( 1.0 < ai_check_node_radius(self) ){
-           //just teleport them
-           self.origin = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.99,64), self.maxs_x);
-           setorigin(self, self.origin);
-        }
         if( cvar("developer") ){
           cons_logAVector(self.classname, self.origin);
           cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
