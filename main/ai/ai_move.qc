@@ -5,6 +5,38 @@ Date: 06/30/2020
 Overview: 
   Ferris Bueller: what are you all still doing here? movies over.
 */
+
+
+/*
+  Idea:
+    Bot queries all 8 directions first, before moving, only picking the movement with the longest travel time.
+*/
+float(float moveLen) ai_move_director={
+  local float moveItr;
+  local vector thisAng;
+  local float goodLen;
+  local float goodDir;
+  local float goodMove;
+  
+  thisAng = self.angles;
+  thisAng_y = vectoyaw(self.enemy.origin - self.origin);
+  moveItr = 0;
+  goodLen = 0;
+  while( moveItr < 10 ){
+    thisAng_y = anglemod(thisAng_y + (moveItr * 36));
+    makevectors(thisAng);
+    tracebox(self.origin, self.mins * 0.75, self.maxs * 0.75, self.origin + (v_forward * moveLen), MOVE_NORMAL, self);
+    
+    if( moveLen * trace_fraction > goodLen && bitshift(8, moveItr) != self.ai_move_last){
+      goodLen = moveLen * trace_fraction;
+      goodDir = moveItr;
+      goodMove = bitshift(8, moveItr);
+    }
+    moveItr = moveItr + 1;
+  }
+  return goodMove;
+};
+
 /*
 ===================================================
   AI MOVEMENTS
@@ -25,9 +57,6 @@ Overview:
 */
 void() ai_move_stand={
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    if(self.data_type == DATA_MECH){
-      cons_logAFloat("---------NEW MOVE STAND", -1); //debug
-    }
     self.ai_movewait = time + self.ai_movedist;
     if(self.legs){
       self.legs.attack_state = TR_YAW;
@@ -753,7 +782,7 @@ void() ai_move_end_pause={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    self.ai_movewait = time + self.ai_rank;
+    self.ai_movewait = time + self.ai_rank/2; //state-shifts add 0.07 time to every call.
     return;
   }
   if( !self.legs ){

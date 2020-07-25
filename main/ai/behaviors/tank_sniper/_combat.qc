@@ -79,12 +79,18 @@ void() spg_combat={
     
     if( enemy_vis == VIS_FRN ){
       spg_fight_vis_friend();
+      if(self.ai_move_next > MOVE_NODE_TACTICAL){
+        self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+      }
       return;
     }
     
     //target == building - those things don't really move or fight back...
     if(self.enemy.data_type == DATA_BLD){
       spg_fight_building();
+      if(self.ai_move_next > MOVE_NODE_TACTICAL){
+        self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+      }
       return;
     }
     //target < 1.0
@@ -92,6 +98,9 @@ void() spg_combat={
     //get fighting
     self.ai_move_next = MOVE_NODE_RADIUS;
     spg_fight_full();
+    if(self.ai_move_next > MOVE_NODE_TACTICAL){
+      self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+    }
     return;
   //---------------------------------------------------------------------------
   }
@@ -188,12 +197,7 @@ void() spg_com_blocked={
       return;
     }
     self.ai_movedist = 3;
-    if( self.ai_move == MOVE_BACK || self.ai_move == MOVE_BACK_LEFT || self.ai_move == MOVE_BACK_RIGHT ){
-      self.ai_move_next = MOVE_CHARGE;
-      self.ai_state_next = ST_COM_MOVE_START;
-      return;
-    }
-    self.ai_move_next = MOVE_BACK;
+    self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_backward);
     self.ai_state_next = ST_COM_MOVE_START;
     return;
   }

@@ -195,15 +195,15 @@ float MOVE_END_PAUSE      = 6;  // enemy_vis == VIS_FRN, so find a node to shoot
 float MOVE_NODE_TACTICAL  = 7;  // tetherStatus == TETHER_PATROL, and target is beyond patrol nbode
 
 float MOVE_CHARGE         = 8;
-float MOVE_CHARGE_LEFT    = 9;
-float MOVE_CHARGE_RIGHT   = 10;
-float MOVE_STRAFE_LEFT    = 11;
-float MOVE_STRAFE_RIGHT   = 12;
-float MOVE_CIRCLE_LEFT    = 13;
-float MOVE_CIRCLE_RIGHT   = 14;
-float MOVE_BACK_LEFT      = 15;
-float MOVE_BACK_RIGHT     = 16;
-float MOVE_BACK           = 17;
+float MOVE_CHARGE_RIGHT   = 16;
+float MOVE_STRAFE_RIGHT   = 32;
+float MOVE_CIRCLE_RIGHT   = 64;
+float MOVE_BACK_RIGHT     = 128;
+float MOVE_BACK           = 256;
+float MOVE_BACK_LEFT      = 512;
+float MOVE_CIRCLE_LEFT    = 1024;
+float MOVE_STRAFE_LEFT    = 2048;
+float MOVE_CHARGE_LEFT    = 4096;
 
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_last; //  used for per-frame comparisons
@@ -287,6 +287,9 @@ void() ai_state_frame;
 .void() ai_state_track_rollback;
 .void() ai_state_track_rollback_block;
 
+////////////////////////////////
+//GENERIC PATROL IMPL - ai_move.qc
+float(float moveLen) ai_move_director;
 void() ai_combat_move_frame;  //sub-state for combat maneuverin'
 void() ai_move_stand;
 float() ai_move_charge;
@@ -308,7 +311,7 @@ void() ai_move_node_radius;
 float(float outRadius) ai_move_patrol_node;
 
 ////////////////////////////////
-//GENERIC PATROL IMPL - ai_tether.qc
+//GENERIC PATROL IMPL - ai_patrol.qc
 void() ai_patrol;
 void() ai_ptr_pause;
 void() ai_ptr_travel_node;

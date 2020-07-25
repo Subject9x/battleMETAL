@@ -112,8 +112,6 @@ void() gev_combat={
 void() gev_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    cons_logAString("star move", dbg_move(self.ai_move)); //debug
-    cons_logAFloat("faction", self.faction); //debug
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
@@ -196,12 +194,7 @@ void() gev_com_blocked={
       return;
     }
     self.ai_movedist = 3;
-    if( self.ai_move == MOVE_BACK || self.ai_move == MOVE_BACK_LEFT || self.ai_move == MOVE_BACK_RIGHT ){
-      self.ai_move_next = MOVE_CHARGE;
-      self.ai_state_next = ST_COM_MOVE_START;
-      return;
-    }
-    self.ai_move_next = MOVE_BACK;
+    self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_backward);
     self.ai_state_next = ST_COM_MOVE_START;
     return;
   }

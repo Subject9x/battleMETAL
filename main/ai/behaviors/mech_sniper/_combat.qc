@@ -85,12 +85,18 @@ void() mech_sniper_combat={
     
     if( enemy_vis == VIS_FRN ){
       mech_sniper_fight_vis_friend();
+      if(self.ai_move_next > MOVE_NODE_TACTICAL){
+        self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+      }
       return;
     }
     
     //target == building - those things don't really move or fight back...
     if(self.enemy.data_type == DATA_BLD){
       mech_sniper_fight_building();
+      if(self.ai_move_next > MOVE_NODE_TACTICAL){
+        self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+      }
       return;
     }
     //target < 1.0
@@ -99,6 +105,9 @@ void() mech_sniper_combat={
     self.ai_move_next = MOVE_NODE_RADIUS;
     self.ai_movedist = 10;
     mech_sniper_fight_full();
+    if(self.ai_move_next > MOVE_NODE_TACTICAL){
+      self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+    }
     return;
   //---------------------------------------------------------------------------
   }
@@ -113,7 +122,6 @@ void() mech_sniper_combat={
 void() mech_sniper_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
   //------------------------------------------------------------------
@@ -127,6 +135,7 @@ void() mech_sniper_com_moveExec={
   local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
+    self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
   //-----------------------------------------------------------------
@@ -195,12 +204,7 @@ void() mech_sniper_com_blocked={
       return;
     }
     self.ai_movedist = 3;
-    if( self.ai_move == MOVE_BACK || self.ai_move == MOVE_BACK_LEFT || self.ai_move == MOVE_BACK_RIGHT ){
-      self.ai_move_next = MOVE_CHARGE;
-      self.ai_state_next = ST_COM_MOVE_START;
-      return;
-    }
-    self.ai_move_next = MOVE_BACK;
+    self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_backward);
     self.ai_state_next = ST_COM_MOVE_START;
     return;
   }
