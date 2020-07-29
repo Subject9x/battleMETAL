@@ -17,16 +17,14 @@ void() spg_combat={
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
       if( self.patrolNode ){
+        self.goalentity = self.patrolNode;
         if( self.tetherStatus == TETHER_NODE ){
-          self.goalentity = self.patrolNode;
           self.ai_state_next = ST_THR;
-          return;
         }
         if( self.tetherStatus == TETHER_PATROL ){
-          self.goalentity = self.patrolNode;
           self.ai_state_next = ST_PTR;
-          return;
         }
+        return;
       }
       self.ai_state_next = ST_STAND;
       self.ai_dampen = 0;
@@ -34,7 +32,8 @@ void() spg_combat={
     }
     
     if( (self.flags & FL_DISARMED) ){
-      //TODO pain / flee
+      self.ai_state_next = ST_STAND;
+      self.ai_dampen = 0;
       return;
     }
     self.ai_state_next = ST_COM_MOVE_START;
@@ -69,10 +68,16 @@ void() spg_combat={
       if( combat_dist <= 1.0 ){
         //AI is on edge of bounds but inside radius
         spg_fight_target_fire();
+        if(self.ai_move_next > MOVE_NODE_TACTICAL){
+          self.ai_move_next = ai_move_director();
+        }
         return;
       }
       if( combat_dist > 1.0 ){
         spg_fight_out_radius();
+        if(self.ai_move_next > MOVE_NODE_TACTICAL){
+          self.ai_move_next = ai_move_director();
+        }
         return;
       }
     }
@@ -80,7 +85,7 @@ void() spg_combat={
     if( enemy_vis == VIS_FRN ){
       spg_fight_vis_friend();
       if(self.ai_move_next > MOVE_NODE_TACTICAL){
-        self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+        self.ai_move_next = ai_move_director();
       }
       return;
     }
@@ -89,7 +94,7 @@ void() spg_combat={
     if(self.enemy.data_type == DATA_BLD){
       spg_fight_building();
       if(self.ai_move_next > MOVE_NODE_TACTICAL){
-        self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+        self.ai_move_next = ai_move_director();
       }
       return;
     }
@@ -99,7 +104,7 @@ void() spg_combat={
     self.ai_move_next = MOVE_NODE_RADIUS;
     spg_fight_full();
     if(self.ai_move_next > MOVE_NODE_TACTICAL){
-      self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+      self.ai_move_next = ai_move_director();
     }
     return;
   //---------------------------------------------------------------------------

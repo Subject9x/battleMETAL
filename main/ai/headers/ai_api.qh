@@ -289,7 +289,7 @@ void() ai_state_frame;
 
 ////////////////////////////////
 //GENERIC PATROL IMPL - ai_move.qc
-float(float moveLen) ai_move_director;
+float() ai_move_director;
 void() ai_combat_move_frame;  //sub-state for combat maneuverin'
 void() ai_move_stand;
 float() ai_move_charge;

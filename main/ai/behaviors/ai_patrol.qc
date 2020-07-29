@@ -79,16 +79,6 @@ void() ai_ptr_travel_node={
   
   ai_update_accuracy( TRUE );
   
-  if(self.patrolState == PATROL_ARRIVE && self.patrolStateLast != PATROL_ARRIVE ){
-    if(self.tetherStatus == TETHER_PATROL){
-      self.ai_state_next = ST_PTR;
-    }
-    else{
-      self.ai_state_next = ST_THR;
-    }
-    return;
-  }
-  
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
     self.ai_state_next = ST_COMBAT;
@@ -97,6 +87,18 @@ void() ai_ptr_travel_node={
   
   if( self.patrolState == PATROL_PAUSE && self.patrolStateLast != PATROL_PAUSE ){
     self.ai_state_next = ST_PTR_PAUSE;
+    return;
+  }
+  
+  if(self.patrolState == PATROL_ARRIVE){
+    if(self.tetherStatus == TETHER_PATROL){
+      self.ai_state_next = ST_PTR;
+    }
+    else{
+      self.ai_movedist = max(self.patrolNode.ai_view, 250);
+      self.ai_move_next = ai_move_director();
+      self.ai_state_next = ST_COM_MOVE_START;
+    }
     return;
   }
   
@@ -117,7 +119,6 @@ void() ai_ptr_travel_blocked={
         self.legs.think = bot_leg_stand1;
         self.legs.nextthink = time + 0.1;
       }
-      
       self.tetherOrg = self.patrolNode.origin;
       self.ai_state_next = ST_PTR;
       return;

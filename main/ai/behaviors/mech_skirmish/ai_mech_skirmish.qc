@@ -121,7 +121,9 @@ void() ai_mech_sk_stand={
 void(entity attacker) ai_mech_sk_react={
   local float enemyvis;
   
-  if( !(attacker.flags & FL_MONSTER) && !(attacker.flags & FL_CLIENT)){
+  self.ai_react_buffer = time + self.ai_react_time * 5;
+  
+  if( (!(attacker.flags & FL_MONSTER) && !(attacker.flags & FL_CLIENT)) || (self.flags & FL_DISARMED) ){
     return;
   }
   
@@ -130,13 +132,7 @@ void(entity attacker) ai_mech_sk_react={
     return;
   }
   
-  if( !attacker ){
-    self.ai_react_buffer = time + self.ai_react_time * 2;
-    return;
-  }
-  
   if( attacker == self.enemy ){
-    self.ai_react_buffer = time + self.ai_react_time * 5;
     return;
   }
 
@@ -146,7 +142,7 @@ void(entity attacker) ai_mech_sk_react={
   }
   
   if( ai_check_vis(self.enemy) == VIS_FRAC ){
-    if( ai_check_node_radius(self.enemy) > 1.0 ){
+    if( ai_check_node_radius(self.enemy) >= 1.0 ){
       return;
     }
   }
@@ -156,7 +152,6 @@ void(entity attacker) ai_mech_sk_react={
     }
   }
   self.enemy = attacker;
-  self.ai_react_buffer = time + self.ai_react_time * 5;
   if(self.ai_state_next != ST_COMBAT ){
     self.ai_state_next = ST_COMBAT;
   }

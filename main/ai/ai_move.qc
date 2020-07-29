@@ -11,27 +11,36 @@ Overview:
   Idea:
     Bot queries all 8 directions first, before moving, only picking the movement with the longest travel time.
 */
-float(float moveLen) ai_move_director={
+float() ai_move_director={
+  local float moveLen;
   local float moveItr;
   local vector thisAng;
   local float goodLen;
   local float goodDir;
   local float goodMove;
+  local float moves;
   
+  moveLen = (self.ai_movedist * self.data_speed_forward) * 10;
   thisAng = self.angles;
   thisAng_y = vectoyaw(self.enemy.origin - self.origin);
   moveItr = 0;
   goodLen = 0;
+  goodMove = 0;
+  moves = 8;
+  
   while( moveItr < 10 ){
     thisAng_y = anglemod(thisAng_y + (moveItr * 36));
     makevectors(thisAng);
     tracebox(self.origin, self.mins * 0.75, self.maxs * 0.75, self.origin + (v_forward * moveLen), MOVE_NORMAL, self);
     
-    if( moveLen * trace_fraction > goodLen && bitshift(8, moveItr) != self.ai_move_last){
+    
+    trailparticles(self, particleeffectnum("TE_REPAIR_RAIL"), self.origin, trace_endpos); //debug
+    if( (moveLen * trace_fraction) > goodLen ){
       goodLen = moveLen * trace_fraction;
       goodDir = moveItr;
-      goodMove = bitshift(8, moveItr);
+      goodMove = moves;
     }
+    moves = bitshift(moves, 1);
     moveItr = moveItr + 1;
   }
   return goodMove;
@@ -671,6 +680,7 @@ float(float outRadius) ai_move_patrol_node={
 };
 
 void() ai_move_node_radius={
+  cons_logAFloat("call------->ai_move_node_radius()", 12);  //debug
   local entity node;
   local float oldPatrolState;
   local float outRadius, innerRadius;
@@ -695,7 +705,7 @@ void() ai_move_node_radius={
   outRadius = max(self.goalentity.ai_view * 0.95, AI_RANGE_S/2);
   self.patrolState = ai_move_patrol_node( outRadius );
   
-  if( 0.85 >= ai_check_node_radius(self) ){
+  if( self.patrolState == PATROL_ARRIVE ){
     self.ai_state_next = ST_COM_MOVE_END;
     return;
   }
@@ -717,6 +727,7 @@ void() ai_move_node_radius={
   AI has a patrol node and the target is closer to another node
 */
 void() ai_move_node_tactical={
+  cons_logAFloat("call------->ai_move_node_tactical()", 12);  //debug
   local float oldPatrolState;
   local float enemyRad;
   local float myRad;
@@ -771,6 +782,7 @@ void() ai_move_node_tactical={
     this is to help reduce traffic jams AND give the player some chances for solid hits.
 */
 void() ai_move_end_pause={
+  cons_logAFloat("call------->ai_move_node_tactical()", 12);  //debug
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_dampen = 0;
     if( self.legs ){

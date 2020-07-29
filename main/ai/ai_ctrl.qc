@@ -184,7 +184,7 @@ void() ai_patrol_state_frame={
   
   walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
   walkSpeed = max(walkSpeed, 2);
-  cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 4;
+  cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 3.5;
   cornerSpeed = max(cornerSpeed, 1);
   
   //PAUSED AT NODE
@@ -200,7 +200,7 @@ void() ai_patrol_state_frame={
   //GOING TO NODE-----------------------------------
   if( distLeft > self.goalentity.ai_view ){
     ai_face_goal();
-    if( ai_check_face(self.goalentity, 0.9, FALSE) ){
+    if( ai_check_face(self.goalentity, 0.85, FALSE) ){
       if( walkmove(self.angles_y, walkSpeed) == FALSE ){
         movetogoal( walkSpeed );
       }
@@ -216,29 +216,26 @@ void() ai_patrol_state_frame={
   //------------------------------------------------
   
   //PATROL - ARRIVING AT NODE
-  if( distLeft > self.goalentity.ai_view * 0.25 ){
+  if( distLeft > min(self.goalentity.ai_view * 0.25,64) ){
     ai_face_goal();
-    
-    if( ai_check_face(self.goalentity, 0.9, FALSE) ){
-      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-        if(!self.legs){
-          ChangeYaw();
-        }
-        movetogoal( walkSpeed );
+    if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
+      if(!self.legs){
+        ChangeYaw();
       }
-    }
-    else{
-      if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-        if(!self.legs){
-          ChangeYaw();
-        }
-        movetogoal( cornerSpeed );
-      }
+      movetogoal( cornerSpeed );
     }
     self.patrolState = PATROL_WALKING;
     return;
   }
-  
+  if( distLeft > min(self.goalentity.ai_view * 0.1,32) ){
+    ai_face_goal();
+    if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
+      if(!self.legs){
+        ChangeYaw();
+      }
+      movetogoal( cornerSpeed );
+    }
+  }
   //PATROL - ARRIVED AT NODE, set pause and next node
   if(self.goalentity.pausetime > 0.0){
     self.pausetime = self.goalentity.pausetime;

@@ -22,16 +22,14 @@ void() tank_sk_combat={
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
       if( self.patrolNode ){
+        self.goalentity = self.patrolNode;
         if( self.tetherStatus == TETHER_NODE ){
-          self.goalentity = self.patrolNode;
           self.ai_state_next = ST_THR;
-          return;
         }
         if( self.tetherStatus == TETHER_PATROL ){
-          self.goalentity = self.patrolNode;
           self.ai_state_next = ST_PTR;
-          return;
         }
+        return;
       }
       self.ai_state_next = ST_STAND;
       self.ai_dampen = 0;
@@ -39,7 +37,8 @@ void() tank_sk_combat={
     }
   
     if( (self.flags & FL_DISARMED) ){
-      //TODO pain / flee
+      self.ai_state_next = ST_STAND;
+      self.ai_dampen = 0;
       return;
     }
     self.ai_state_next = ST_COM_MOVE_START;
@@ -79,10 +78,16 @@ void() tank_sk_combat={
       if( combat_dist <= 1.0 ){
         //AI is on edge of bounds but inside radius
         tank_sk_fight_target_fire();
+        if(self.ai_move_next > MOVE_NODE_TACTICAL){
+          self.ai_move_next = ai_move_director();
+        }
         return;
       }
       if( 1.0 < combat_dist ){
         tank_sk_fight_out_radius();
+        if(self.ai_move_next > MOVE_NODE_TACTICAL){
+          self.ai_move_next = ai_move_director();
+        }
         return;
       }
     }
@@ -90,7 +95,7 @@ void() tank_sk_combat={
     if( enemy_vis == VIS_FRN ){
       tank_sk_fight_vis_friend();
       if(self.ai_move_next > MOVE_NODE_TACTICAL){
-        self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+        self.ai_move_next = ai_move_director();
       }
       return;
     }
@@ -99,7 +104,7 @@ void() tank_sk_combat={
     if(self.enemy.data_type == DATA_BLD){
       tank_sk_fight_building();
       if(self.ai_move_next > MOVE_NODE_TACTICAL){
-        self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+        self.ai_move_next = ai_move_director();
       }
       return;
     }
@@ -109,7 +114,7 @@ void() tank_sk_combat={
     self.ai_move_next = MOVE_NODE_RADIUS;
     tank_sk_fight_full();
     if(self.ai_move_next > MOVE_NODE_TACTICAL){
-      self.ai_move_next = ai_move_director(self.ai_movedist * self.data_speed_forward);
+      self.ai_move_next = ai_move_director();
     }
     return;
   //---------------------------------------------------------------------------
