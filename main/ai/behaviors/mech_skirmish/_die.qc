@@ -64,6 +64,8 @@ void() ai_mech_sk_die={
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);
   
+  ai_alert_close( self.enemy );
+  
   self.think = ai_mech_sk_die2;
   self.nextthink = time + 1;
 };

@@ -141,32 +141,6 @@ void( entity t) ai_alert_close={
   }
 };
 
-/*
-  ai_find_friend() but we look for the friend furthest away.
-*/
-entity( float startSmallRadius ) ai_find_friend_farthest={
-  local entity ally, friend;
-  local float dist, rad;
-  
-  rad = startSmallRadius;
-
-  for(ally=findchainfloat(faction, self.faction); ally != world; ally = ally.chain){
-    if( !ai_valid_target(ally) ){
-      continue;
-    }
-    //oh and the potential friend needs to offer something in protection.
-    if( (ally.flags & FL_DISARMED) ){
-      continue;
-    }
-    dist = vlen( ally.origin - self.origin );
-    if( dist < rad ){
-      continue;
-    }
-    rad = dist;
-    friend = ally;
-  }
-  return friend;
-};
 
 float() ai_find_target_visual={
   local entity targ, found;
@@ -331,90 +305,6 @@ void( entity ally, entity targ, float override ) ai_give_target={
       }
     }
   self = this;
-};
-
-
-
-/*
-  Only used for RANDOM_START
-*/
-entity() ai_node_pick_rand={
-  local entity anode;
-  local float clr, total, pick;
-  local string grpid;
-  
-  if( self.target ){
-    anode = find(world, targetname, self.target);
-    if( anode && anode.group ){
-      grpid = anode.group;
-      total = 0;
-      clr = 0;
-      while( clr <= 128 ){
-        AI_NODES[clr] = world;
-        clr = clr + 1;
-      }
-      
-      anode = findchain( group, grpid);
-      if( anode && (anode.flags & FL_NODE) ){  
-        while( anode ){
-          AI_NODES[total] = anode;
-          total = total + 1;
-          anode = anode.chain;
-        }
-        pick = rint(random() * total );
-        anode = AI_NODES[pick];
-      }
-    }
-    else{
-      self.spawnflags = self.spawnflags - self.spawnflags & RANDOM_START;
-    }
-  }
-  return anode;
-};
-
-
-/*
-  finds a random spot offset from goalentity to move to,
-  this alleviates issue of bots traffic jamming at terminal patrol nodes.
-*/
-entity() ai_goal_offset_node={
-  local vector angl;
-  local float incr;
-  local float tests;
-  local float testLen;
-  local float checkLen;
-  local vector offsetNodeOrg;
-  local entity offsetNode;
-  angl = self.angles;
-  angl_y = anglemod(self.angles_y - 99);
-  incr = 33;
-  tests = 1;
-  checkLen = 250;
-  while( tests < 7 ){
-    angl_y = anglemod( angl_y + (incr * tests) );
-    makevectors(angl);
-    //traceline(self.origin, self.origin + (v_forward * 200), FALSE, self);
-    tracebox(self.origin, self.mins, self.maxs, self.origin + (v_forward * 200), MOVE_NORMAL, self);
-    if( pointcontents(trace_endpos) == 0 || pointcontents(trace_endpos) == CONTENT_WATER){
-      testLen = vlen(trace_endpos - self.origin);
-      if( testLen < checkLen && testLen > 33 ){
-        checkLen = testLen;
-        offsetNodeOrg = trace_endpos;
-      }
-    }
-    tests = tests + 1;
-  }
-  if( checkLen == 250 ){
-    return world;
-  }
-  offsetNode = spawn();
-  offsetNode.classname = "ai_node";
-  offsetNode.ai_rank = (random() * 50) + (random() * 33);
-  offsetNode.faction = self.faction;
-  offsetNode.isActive = TRUE;
-  setsize(offsetNode, '-16 -16 -32', '16 16 32');
-  setorigin(offsetNode, offsetNodeOrg);
-  return offsetNode;
 };
 
 void() ai_unit_make_trigger={
@@ -646,63 +536,4 @@ entity() ai_node_tether_find={
     }
   }
   return found;
-};
-
-
-/*
-  Traffic adjuster:
-    called in ai_patrol_state_frame() when the WALKMOVE() call is blocked.
-    This finds the trace along the AI's current facing, and freezes itself
-    IF there's a friendly unit in front of it.
-    
-    returns TRUE IF traffic was handled,
-    return FALSE if trace_ent wasn't a unit.
-*/
-float() ai_patrol_traffic_adjust={
-  local vector tMins;
-  local vector tMaxs;
-  local entity oldthat;
-  local float counter;
-  
-  tMins = self.mins * 0.75;
-  tMaxs = self.maxs * 0.75;
-  makevectors(self.angles);
-  tracebox(self.origin, tMins, tMaxs, self.origin + (v_forward * (self.maxs_x * 2)), MOVE_NORMAL, self);
-  
-  if( trace_ent ){
-    if( trace_ent.faction == self.faction ){
-      if( trace_ent.data_type != DATA_BLD && trace_ent.movetype != MOVETYPE_FLYMISSILE ){
-        oldthat = self;
-        self = trace_ent;
-        counter = ai_check_targ_infront(oldthat, 0.9, FALSE);
-        self = oldthat;
-        //blocked unit is patrolling.
-        self.ai_state_next = ST_PTR_PAUSE;
-        self.pausetime = 3;
-        return TRUE;
-      }
-      return FALSE;
-    }
-    else{
-      if( trace_ent.data_type != DATA_BLD && trace_ent.movetype != MOVETYPE_FLYMISSILE ){
-        //combat?
-        self.ai_move_next = MOVE_STAND_FACE;
-        self.ai_movewait = 5;
-        self.ai_state_next = ST_COM_MOVE_START;
-       
-        oldthat = self;
-        self = trace_ent;
-        counter = ai_check_targ_infront(oldthat, 0.85, FALSE);
-        self = oldthat;
-        if( counter ){
-          trace_ent.ai_move_next = MOVE_BACK;
-          trace_ent.ai_movedist = 10;
-          trace_ent.ai_state_next = ST_COM_MOVE_START;
-        }
-        return TRUE;
-      }
-      return FALSE;
-    }
-  }
-  return FALSE;
 };

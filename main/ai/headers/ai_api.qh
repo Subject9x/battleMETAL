@@ -37,7 +37,6 @@ float enemy_range;    //distance to AI relative to patrolNode.ai_view (radius)
 float enemy_dist;     //target's distance to patrolNode
 float combat_dist;    //AI's distance to its patrolNode
 float enemy_vis;      //enum, Line of Sight to target
-float enemy_hunt;     //potentially deprecated.
 float combat_roll;    //per-state-frame dice roll for random movement selection.
 vector ai_angle;      //used for temporary angle calcs that preclude overriding the AI's current yaw
 float yawCache;       //used to quickly cache yaw to do some per-frame mods
@@ -46,7 +45,6 @@ float yawCache;       //used to quickly cache yaw to do some per-frame mods
 float side_crit;
 entity friend_blocker;
 float friend_blocker_dist;
-entity AI_NODES[128];
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
 vector selfSensorOrg;
 entity lastNode;        //minor optimization
@@ -66,13 +64,11 @@ entity lastNode;        //minor optimization
 .vector ai_angleLimits;       //x = min, y= max, z = pitch speed
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
-.float ai_hunt_total;   //current number of hunt nodes
 .float ai_dir;          //chassis facing vs .angles
 .entity ai_node_recall;
 .float ai_patrol_speed; //a fraction of forward speed for any unit speed > 100
 .float voiceTime; //when next to say something
 .float ai_voice_group;
-
 .float helpTime;  //prevents flooding of help calls
 .float helpTimeDelay;
 
@@ -109,12 +105,9 @@ void( entity t) ai_call_for_help;
 float(entity t) ai_valid_target;
 entity( float radiius ) ai_find_friend;
 void( entity t) ai_alert_close;
-entity( float startSmallRadius ) ai_find_friend_farthest;
 float() ai_find_target_visual;
 float() ai_find_target_radar;
 void( entity ally, entity targ, float override ) ai_give_target;
-entity() ai_node_pick_rand;
-entity() ai_goal_offset_node;
 void() ai_unit_make_trigger;
 float(vector destOrg, float wishSpeed) ai_calc_move;
 entity(entity node) ai_node_to_target;
@@ -122,7 +115,6 @@ entity(float checkDir) ai_get_next_node;
 float(entity toCheck) ai_check_node_radius;
 float() ai_check_node_radius_targdist;
 entity() ai_node_tether_find;
-float() ai_patrol_traffic_adjust;
 
 ////////////////////////////////
 //AI COMBAT FUNCTIONS - ai_combat.qc

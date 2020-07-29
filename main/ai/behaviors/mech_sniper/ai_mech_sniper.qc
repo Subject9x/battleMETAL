@@ -109,7 +109,6 @@ void() ai_mech_sniper_stand={
     self.torsoCenter.attack_state = TR_NORM;
   }
   if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
-    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 2);
     self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
     self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
     self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();

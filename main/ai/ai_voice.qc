@@ -27,11 +27,11 @@ void( float randomBool ) ai_voice_ini={
   if( randomBool ){
     randoVoice = random();
     
-    if( randoVoice <= 0.4 ){
+    if( randoVoice < 0.4 ){
       //VOICE  A
       self.ai_voice_group = AI_VOICE_GROUP_A;
     }
-    else if( randoVoice <= 0.7 ){
+    else if( randoVoice < 0.7 ){
       //VOICE  B
       self.ai_voice_group = AI_VOICE_GROUP_B;
     }

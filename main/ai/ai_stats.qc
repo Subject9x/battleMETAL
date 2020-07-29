@@ -37,7 +37,6 @@ void() ai_unit_ini_var={
   self.ai_action_mod = 0;
   self.ai_viewtime = 0;
   self.ai_minrange = 0;
-  self.ai_hunt_total = -1;
   self.lefty = 1;
   if( random() > 0.5 ){
     self.lefty = -1;
@@ -112,7 +111,6 @@ void() ai_pilot_ini_rok={
   self.ai_fov = AI_FOV_ROK;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_ROK;
   self.ai_viewcheck = AI_VIEW_ROK;
-  self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_ROK );
   self.ai_leading = AI_LEAD_ROK;
   self.ai_attack_chance = 0.05 + AI_ATTACK_ROK;
   self.w_firetime = self.w_firetime * 2;
@@ -123,7 +121,6 @@ void() ai_pilot_ini_reg={
   self.ai_fov = AI_FOV_REG;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;
   self.ai_viewcheck = AI_VIEW_REG;
-  self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_REG );
   self.ai_leading = AI_LEAD_REG;
   self.ai_attack_chance = 0.1 + AI_ATTACK_REG;
   self.w_firetime = self.w_firetime * 1;
@@ -135,7 +132,6 @@ void() ai_pilot_ini_vet={
   self.ai_fov = AI_FOV_VET;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_VET;
   self.ai_viewcheck = AI_VIEW_VET;
-  self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_VET );
   if(self.yaw_speed){
     self.yaw_speed = self.yaw_speed * AI_YAW_VET;
   }
@@ -152,7 +148,6 @@ void() ai_pilot_ini_ace={
   self.ai_fov = AI_FOV_ACE;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_ACE;
   self.ai_viewcheck = AI_VIEW_ACE;
-  self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_ACE );
   if(self.yaw_speed){
     self.yaw_speed = self.yaw_speed * AI_YAW_ACE;
   }

@@ -247,8 +247,6 @@ void() ai_combat_start={
       return;
     }
     self.ai_state_next = ST_COM_MOVE_START;
-    enemy_hunt = FALSE;
-    
     /*
       Combat Frame State Checks
     */

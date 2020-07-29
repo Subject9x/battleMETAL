@@ -12,7 +12,6 @@ Overview:
     float enemy_infront;  //boolean, on-this-frame check if target is in AI's forward arc.
     float enemy_range;    //distance to AI relative to patrolNode.ai_view (radius)
     float enemy_vis;      //enum, Line of Sight to target
-    float enemy_hunt;     //potentially deprecated.
     float enemy_dist;     //target's distance to patrolNode
     float combat_dist;    //AI's distance to its patrolNode
     float combat_roll;    //per-state-frame dice roll for random movement selection.

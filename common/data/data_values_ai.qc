@@ -16,7 +16,6 @@ float NO_COOP = 2;    //remove from co-op mode
 float NO_DM = 4;    //remove from DeathMatch
 float NO_TDM = 8;    //remove from Team DeathMatch
 float COLD_START = 16;   //on-spawn, bot will ignore friendly help calls
-float RANDOM_START = 32;   //start on random node if AI has patrol path
 float HAS_RADAR = 64;   //radar is expensive to use, use sparingly
                                         //generally this is for mech units
 float DEBUG_MODE = 128; //dont do anything
@@ -144,12 +143,6 @@ float AI_LEAD_ROK = 0.4;
 float AI_RANGE_S = 400;
 float AI_RANGE_M = 1000;
 float AI_RANGE_L = 1600;
-
-//Frameset counter, how many loops of a frame set
-float AI_REFLEX_ACE = 0;
-float AI_REFLEX_VET = 1;
-float AI_REFLEX_REG = 2;
-float AI_REFLEX_ROK = 3;
 
 //Patrol Node Chec Range
 float AI_NODE_DISTANCE = 67;

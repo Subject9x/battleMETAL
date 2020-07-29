@@ -30,8 +30,7 @@ float() ai_move_director={
     thisAng_y = anglemod(thisAng_y + (moveItr * 36));
     makevectors(thisAng);
     tracebox(self.origin, self.mins * 0.5, self.maxs * 0.5, self.origin + (v_forward * moveLen), MOVE_NORMAL, self);
-    if( goodLen < (trace_fraction * moveLen) ){    
-      trailparticles(self, particleeffectnum("TE_REPAIR_RAIL"), self.origin, trace_endpos); //debug
+    if( goodLen < (trace_fraction * moveLen) ){
       goodLen = trace_fraction * moveLen;
       goodMove = bitshift(8, moveItr);
     }
@@ -705,7 +704,7 @@ void() ai_move_node_radius={
   outRadius = max(self.goalentity.ai_view * 0.95, AI_RANGE_S/2);
   self.patrolState = ai_move_patrol_node( outRadius );
   
-  if( self.patrolState == PATROL_ARRIVE && self.patrolStateLast != PATROL_ARRIVE){
+  if( self.patrolState == PATROL_ARRIVE ){
     self.ai_state_next = ST_COM_MOVE_END;
     return;
   }
@@ -745,7 +744,7 @@ void() ai_move_node_tactical={
   ai_attack();
   self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95 );
   
-  if( self.patrolState == PATROL_ARRIVE && self.patrolStateLast != PATROL_ARRIVE){
+  if( self.patrolState == PATROL_ARRIVE ){
     self.ai_state_next = ST_COM_MOVE_END;
     return;
   }

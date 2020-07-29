@@ -356,9 +356,6 @@ void() ai_vtol={
   initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
-  if( (self.spawnflags & RANDOM_START) ){ 
-    ai_node_pick_rand( self.target );
-  }
   trigger_event( self, self.trigOnSpawn); //event interface
   
   self.th_stand = ai_vtol_stand;

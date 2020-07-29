@@ -232,9 +232,6 @@ void() ai_noncom_tank={
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
-  if( (self.spawnflags & RANDOM_START) ){ 
-    ai_node_pick_rand( self.target );
-  }
   trigger_event( self, self.trigOnSpawn); //event interface
    
   ai_setup_patrol();
