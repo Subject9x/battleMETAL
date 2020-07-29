@@ -4,6 +4,10 @@ Author: Peter Roohr
 Date: 06/30/2020
 Overview: 
   just spinning about combat-specific funcs to a separate file.
+  2 big pieces
+    Combat Functions
+    Combat State
+      - standardized the combat sub-states into a single 
 */
 
 /*
@@ -205,3 +209,209 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
   }
 };
 
+/*
+
+*/
+
+/*
+  STATE : COMBAT START
+    used to filter out what the AI should do before entering combat sub-system
+*/
+void() ai_combat_start={
+  local entity prox;
+  
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
+    
+    //check if target is blown up in between frames
+    if( !ai_valid_target(self.enemy) ){
+      //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
+      if( self.patrolNode ){
+        self.goalentity = self.patrolNode;
+        if( self.tetherStatus == TETHER_NODE ){
+          self.ai_state_next = ST_THR;
+        }
+        if( self.tetherStatus == TETHER_PATROL ){
+          self.ai_state_next = ST_PTR;
+        }
+        return;
+      }
+      self.ai_state_next = ST_STAND;
+      self.ai_dampen = 0;
+      return;
+    }
+    
+    if( (self.flags & FL_DISARMED) ){
+      self.ai_state_next = ST_STAND;
+      self.ai_dampen = 0;
+      return;
+    }
+    self.ai_state_next = ST_COM_MOVE_START;
+    enemy_hunt = FALSE;
+    
+    /*
+      Combat Frame State Checks
+    */
+    enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
+    enemy_vis = ai_check_vis( self.enemy );
+    enemy_range = ai_check_node_radius_targdist();
+    enemy_dist = ai_check_node_radius(self.enemy);
+    combat_dist = ai_check_node_radius(self);
+    
+    //out of bounds, do move override
+    if( 1.0 < enemy_dist ){
+      //run
+      if(self.tetherStatus == TETHER_PATROL ){
+        prox = ai_node_to_target(self.enemy);
+        if(prox != self.patrolNode){
+          self.patrolNode = prox;
+          self.ai_move_next = MOVE_NODE_TACTICAL;
+          return;
+        }
+      }
+    }
+    
+    combat_roll = random() * 1.0;
+    //AI is in bounds, but target is out of bounds
+    if( 1.0 < enemy_dist ){
+      if( combat_dist <= 1.0 ){
+        //AI is on edge of bounds but inside radius
+        self.ai_fight_take_fire();
+        if(self.ai_move_next > MOVE_NODE_TACTICAL){
+          self.ai_move_next = ai_move_director();
+        }
+        return;
+      }
+      if( combat_dist > 1.0 ){
+        self.ai_fight_out_radius();
+        if(self.ai_move_next > MOVE_NODE_TACTICAL){
+          self.ai_move_next = ai_move_director();
+        }
+        return;
+      }
+    }
+    
+    if( enemy_vis == VIS_FRN ){
+      self.ai_fight_vis_friend();
+      if(self.ai_move_next > MOVE_NODE_TACTICAL){
+        self.ai_move_next = ai_move_director();
+      }
+      return;
+    }
+    
+    //target == building - those things don't really move or fight back...
+    if(self.enemy.data_type == DATA_BLD){
+      self.ai_fight_building();
+      if(self.ai_move_next > MOVE_NODE_TACTICAL){
+        self.ai_move_next = ai_move_director();
+      }
+      return;
+    }
+    //target < 1.0
+    //combat_dist < 1.0
+    //get fighting
+    self.ai_move_next = MOVE_NODE_RADIUS;
+    self.ai_movedist = 10;
+    self.ai_fight_target();
+    if(self.ai_move_next > MOVE_NODE_TACTICAL){
+      self.ai_move_next = ai_move_director();
+    }
+    return;
+  //---------------------------------------------------------------------------
+  }
+  //can't find WHY its sometimes ending up here, but it is.
+  self.ai_state_last = 0;
+  self.ai_state_next = ST_COMBAT;
+};
+
+/*
+  STATE : COMBAT FIGHTING
+*/
+void() ai_com_moveStart={
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    return;
+  }
+  //------------------------------------------------------------------
+};
+
+/*
+  STATE : COMBAT MANEUVER
+*/
+void() ai_com_moveExec={
+  local float nodeMove;
+  local entity nodeCheck;
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
+    self.ai_state_next = ST_COM_MOVE_EXEC;
+    return;
+  }
+  //-----------------------------------------------------------------
+  if( MOVE_NODE_TACTICAL < self.ai_move ){
+    nodeMove = ai_check_node_radius(self);
+    if( 1.0 < nodeMove ){
+      if( self.tetherStatus == TETHER_PATROL ){
+        nodeCheck = ai_node_to_target(self);
+        if(nodeCheck != self.patrolNode){
+          self.patrolNode = nodeCheck;
+        }
+      }
+      self.ai_move_next = MOVE_NODE_RADIUS;
+      self.ai_state_next = ST_COM_MOVE_START;
+      return;
+    }
+    if( time > self.ai_movewait ){
+      self.ai_state_next = ST_COM_MOVE_END;
+      return;
+    }
+  }
+  if( MOVE_PATROLNODE > self.ai_move ){
+    if( time > self.ai_movewait ){
+      self.ai_state_next = ST_COM_MOVE_END;
+      return;
+    }
+  }
+};
+
+/*
+  STATE : COMBAT MANEUVER COMPLETED
+*/
+void() ai_com_moveEnd={
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
+    if( self.ai_blockflag ){
+      self.ai_blockflag = 0;
+      self.ai_state_next = ST_COM_MOVE_START;
+      self.ai_move_next = MOVE_NODE_RADIUS;
+      return;
+    }
+    self.ai_state_next = ST_COMBAT;
+    self.ai_move_next = 0;
+    return;
+  }
+ //------------------------------------------------------------------
+};
+
+/*
+  STATE : COMBAT MANEUVER BLOCKED
+*/
+void() ai_com_blocked={
+  local entity blockNode;
+  //ENTER STATE------------------------------------------------------------------
+  if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
+    ai_attack();
+    if( 1.0 < ai_check_node_radius(self) ){
+      self.patrolState = 0;
+      self.goalentity = self.patrolNode;
+      self.ai_move_next = MOVE_NODE_RADIUS;
+      self.ai_state_next = ST_COM_MOVE_START;
+      self.ai_movewait = time + 8;
+      return;
+    }
+    self.ai_movedist = 3;
+    self.ai_move_next = ai_move_director();
+    self.ai_state_next = ST_COM_MOVE_START;
+    return;
+  }
+ //------------------------------------------------------------------
+};

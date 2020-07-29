@@ -18,7 +18,6 @@ float() ai_move_director={
   local float goodLen;
   local float goodDir;
   local float goodMove;
-  local float moves;
   
   moveLen = (self.ai_movedist * self.data_speed_forward) * 10;
   thisAng = self.angles;
@@ -26,22 +25,28 @@ float() ai_move_director={
   moveItr = 0;
   goodLen = 0;
   goodMove = 0;
-  moves = 8;
   
   while( moveItr < 10 ){
     thisAng_y = anglemod(thisAng_y + (moveItr * 36));
     makevectors(thisAng);
-    tracebox(self.origin, self.mins * 0.75, self.maxs * 0.75, self.origin + (v_forward * moveLen), MOVE_NORMAL, self);
-    
-    
-    trailparticles(self, particleeffectnum("TE_REPAIR_RAIL"), self.origin, trace_endpos); //debug
-    if( (moveLen * trace_fraction) > goodLen ){
-      goodLen = moveLen * trace_fraction;
-      goodDir = moveItr;
-      goodMove = moves;
+    tracebox(self.origin, self.mins * 0.5, self.maxs * 0.5, self.origin + (v_forward * moveLen), MOVE_NORMAL, self);
+    if( goodLen < (trace_fraction * moveLen) ){    
+      trailparticles(self, particleeffectnum("TE_REPAIR_RAIL"), self.origin, trace_endpos); //debug
+      goodLen = trace_fraction * moveLen;
+      goodMove = bitshift(8, moveItr);
     }
-    moves = bitshift(moves, 1);
     moveItr = moveItr + 1;
+  }
+
+  if( ai_check_face_origin(self.enemy.origin, 0.45, FALSE) == FALSE ){
+    if(goodMove == MOVE_CHARGE || goodMove == MOVE_CHARGE_RIGHT || goodMove == MOVE_CHARGE_LEFT || goodMove == MOVE_CIRCLE_LEFT || goodMove == MOVE_CIRCLE_RIGHT){
+      goodMove = MOVE_STAND_FACE;
+    }
+  }
+  else{    
+    if(goodMove == MOVE_BACK || goodMove == MOVE_BACK_LEFT || goodMove == MOVE_BACK_RIGHT ){
+      goodMove = MOVE_STAND_FACE;
+    }
   }
   return goodMove;
 };
@@ -620,9 +625,6 @@ void() ai_move_standface={
   }
   ai_face_targ();
   ai_attack();
-  if(self.data_type == DATA_MECH){
-  
-  }
 };
 
 /*
@@ -680,9 +682,7 @@ float(float outRadius) ai_move_patrol_node={
 };
 
 void() ai_move_node_radius={
-  cons_logAFloat("call------->ai_move_node_radius()", 12);  //debug
   local entity node;
-  local float oldPatrolState;
   local float outRadius, innerRadius;
   
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
@@ -700,12 +700,12 @@ void() ai_move_node_radius={
     return;
   }
   
-  oldPatrolState = self.patrolState;
+  self.patrolStateLast = self.patrolState;
   ai_attack();
   outRadius = max(self.goalentity.ai_view * 0.95, AI_RANGE_S/2);
   self.patrolState = ai_move_patrol_node( outRadius );
   
-  if( self.patrolState == PATROL_ARRIVE ){
+  if( self.patrolState == PATROL_ARRIVE && self.patrolStateLast != PATROL_ARRIVE){
     self.ai_state_next = ST_COM_MOVE_END;
     return;
   }
@@ -727,12 +727,6 @@ void() ai_move_node_radius={
   AI has a patrol node and the target is closer to another node
 */
 void() ai_move_node_tactical={
-  cons_logAFloat("call------->ai_move_node_tactical()", 12);  //debug
-  local float oldPatrolState;
-  local float enemyRad;
-  local float myRad;
-  local float outRad;
-  
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.patrolState = 0;
     self.goalentity = self.patrolNode;
@@ -747,11 +741,11 @@ void() ai_move_node_tactical={
     self.ai_movewait = time + 15;
     return;
   }
-  oldPatrolState = self.patrolState;
+  self.patrolStateLast = self.patrolState;
   ai_attack();
   self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95 );
   
-  if( 0.9 >= ai_check_node_radius(self) ){
+  if( self.patrolState == PATROL_ARRIVE && self.patrolStateLast != PATROL_ARRIVE){
     self.ai_state_next = ST_COM_MOVE_END;
     return;
   }
@@ -782,7 +776,6 @@ void() ai_move_node_tactical={
     this is to help reduce traffic jams AND give the player some chances for solid hits.
 */
 void() ai_move_end_pause={
-  cons_logAFloat("call------->ai_move_node_tactical()", 12);  //debug
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.ai_dampen = 0;
     if( self.legs ){
@@ -794,16 +787,13 @@ void() ai_move_end_pause={
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
     }
-    self.ai_movewait = time + self.ai_rank/2; //state-shifts add 0.07 time to every call.
+    self.ai_movewait = time + self.ai_rank/3; //state-shifts add 0.07 time to every call.
     return;
   }
   if( !self.legs ){
     ai_face_targ();
   }
   ai_attack();
-  if(time > self.ai_movewait ){
-    self.ai_state_next = ST_COMBAT;
-  } 
 };
 
 /*

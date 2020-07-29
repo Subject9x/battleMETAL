@@ -232,17 +232,22 @@ float ST_COM_MOVE_START       = 11;  //begin combat maneuver
 float ST_COM_MOVE_EXEC        = 12; //execute a prescribed combat maneuver
 float ST_COM_MOVE_END         = 13; //completed a combat maneuver
 float ST_COM_MOVE_BLOCK       = 14; //combat move was blocked for some reason
-float ST_COM_REACT            = 15; //no target but hit by fire
 
-float ST_TRACK_MOVE           = 18;
-float ST_TRACK_BLOCK          = 19;
-float ST_TRACK_ROLLBACK       = 20;
-float ST_TRACK_ROLLBLOCK      = 21;
+//stub - unimplemented hunting behavior
+// Quake C can't really DO good unit pathfinding across complex terrain,
+//    ergo hunting isn't really possible without a massive expenditure of labor.
+//float ST_TRACK_MOVE           = 15;
+//float ST_TRACK_BLOCK          = 16;
+//float ST_TRACK_ROLLBACK       = 17;
+//float ST_TRACK_ROLLBLOCK      = 18;
 
-float ST_TRAIL_MOVE           = 22;
-float ST_TRAIL_BLOCK          = 23;
-float ST_TRAIL_ROLLBACK       = 24;
-float ST_TRAIL_ROLLBLOCK      = 25;
+//stub - unimplemented unblocking behavior
+//  was an idea to have units do a move-stack thing where they could unwind their
+//    current move stack as a means to both pathfind and get themselves unstuck.
+//float ST_TRAIL_MOVE           = 19;
+//float ST_TRAIL_BLOCK          = 20;
+//float ST_TRAIL_ROLLBACK       = 21;
+//float ST_TRAIL_ROLLBLOCK      = 22;
 
 ////////////////////////////////
 //AI STATE FUNCTIONS - ai_state.qc
@@ -277,15 +282,11 @@ void() ai_state_frame;
 .void() ai_state_tether_travel;
 .void() ai_state_tether_travel_block;
 
-.void() ai_state_trail_move;
-.void() ai_state_trail_move_block;
-.void() ai_state_trail_rollback;
-.void() ai_state_trail_rollback_block;
-
-.void() ai_state_track_move;
-.void() ai_state_track_move_block;
-.void() ai_state_track_rollback;
-.void() ai_state_track_rollback_block;
+.void() ai_fight_take_fire;
+.void() ai_fight_out_radius;
+.void() ai_fight_vis_friend;
+.void() ai_fight_building;
+.void() ai_fight_target;
 
 ////////////////////////////////
 //GENERIC PATROL IMPL - ai_move.qc
@@ -318,6 +319,14 @@ void() ai_ptr_travel_node;
 void() ai_ptr_travel_blocked;
 void() ai_ptr_tether;
 void() ai_ptr_tether_blocked;
+
+////////////////////////////////
+//GENERIC COMBAT IMPL - ai_combat.qc
+void() ai_combat_start;
+void() ai_com_moveStart;
+void() ai_com_moveExec;
+void() ai_com_moveEnd;
+void() ai_com_blocked;
 
 ////////////////////////////////
 //GENERIC TETHER IMPL - ai_tether.qc
@@ -378,45 +387,65 @@ string(float stateId) dbg_state={
   return val;
 }
 string(float moveId) dbg_move={
+  string move;
+  move = "null";
   switch(moveId){
     case MOVE_STAND:
-      return "MOVE_STAND";
+      move = "MOVE_STAND";
+      break;
     case MOVE_CHARGE:
-      return "MOVE_CHARGE";
+      move = "MOVE_CHARGE";
+      break;
     case MOVE_CHARGE_LEFT:
-      return "MOVE_CHARGE_LEFT";
+      move = "MOVE_CHARGE_LEFT";
+      break;
     case MOVE_CHARGE_RIGHT:
-      return "MOVE_CHARGE_RIGHT";
+      move = "MOVE_CHARGE_RIGHT";
+      break;
     case MOVE_STRAFE_LEFT:
-      return "MOVE_STRAFE_LEFT";
+      move = "MOVE_STRAFE_LEFT";
+      break;
     case MOVE_STRAFE_RIGHT:
-      return "MOVE_STRAFE_RIGHT";
+      move = "MOVE_STRAFE_RIGHT";
+      break;
     case MOVE_CIRCLE_LEFT:
-      return "MOVE_CIRCLE_LEFT";
+      move = "MOVE_CIRCLE_LEFT";
+      break;
     case MOVE_CIRCLE_RIGHT:
-      return "MOVE_CIRCLE_RIGHT";
+      move = "MOVE_CIRCLE_RIGHT";
+      break;
     case MOVE_BACK:
-      return "MOVE_BACK";
+      move = "MOVE_BACK";
+      break;
     case MOVE_BACK_LEFT:
-      return "MOVE_BACK_LEFT";
+      move = "MOVE_BACK_LEFT";
+      break;
     case MOVE_BACK_RIGHT:
-      return "MOVE_BACK_RIGHT";
+      move = "MOVE_BACK_RIGHT";
+      break;
     case MOVE_PATROLNODE:
-      return "MOVE_PATROLNODE";
+      move = "MOVE_PATROLNODE";
+      break;
     case MOVE_SNAPSHOT:
-      return "MOVE_SNAPSHOT";
+      move = "MOVE_SNAPSHOT";
+      break;
     case MOVE_SNIPESHOT:
-      return "MOVE_SNIPESHOT";
+      move = "MOVE_SNIPESHOT";
+      break;
     case MOVE_STAND_FACE:
-      return "MOVE_STAND_FACE";
+      move = "MOVE_STAND_FACE";
+      break;
     case MOVE_NODE_TACTICAL:
-      return "MOVE_NODE_TACTICAL";
+      move = "MOVE_NODE_TACTICAL";
+      break;
     case MOVE_END_PAUSE:
-      return "MOVE_END_PAUSE";
+      move = "MOVE_END_PAUSE";
+      break;
     case MOVE_NODE_RADIUS:
-      return "MOVE_NODE_RADIUS";
+      move = "MOVE_NODE_RADIUS";
+      break;
   }
-  return "null";
+  return move;
 }
 
 string(float tether) dbg_tether={

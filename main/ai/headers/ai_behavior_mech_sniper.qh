@@ -17,17 +17,6 @@ void( entity attacker ) ai_mech_sniper_react;
 void() ai_mech_sniper_die;
 void() ai_mech_sniper_die2;
 
-void() mech_sniper_combat;
-void() mech_sniper_com_moveStart;
-void() mech_sniper_com_moveExec;
-void() mech_sniper_com_moveEnd;
-void() mech_sniper_com_blocked;
-
-void() mech_sniper_trail_move;
-void() mech_sniper_trail_move_block;
-void() mech_sniper_trail_rollback;
-void() mech_sniper_trail_rollback_block;
-
 void() mech_sniper_fight_target_fire;
 void() mech_sniper_fight_out_radius;
 void() mech_sniper_fight_vis_friend;

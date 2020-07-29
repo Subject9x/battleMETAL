@@ -370,8 +370,8 @@ float(vector v, float ang_limit, float useTurret) ai_check_face_origin={
   Checks to see if Entity T is in the ANG arc of self
 */
 float(entity t, float ang, float useTurret) ai_check_targ_infront={
-	local vector	vang, vec;
-	local float		dot;
+  local vector vang, vec;
+  local float dot;
   
   vang = self.angles;
   if( useTurret ){
@@ -379,14 +379,14 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
   }
   
   makevectors ( vang );
-	vec = normalize (t.origin - self.origin);
-	dot = vec * v_forward;
+  vec = normalize (t.origin - self.origin);
+  dot = vec * v_forward;
   
-	if ( dot >= ang){
-		return TRUE;
+  if ( dot >= ang){
+    return TRUE;
   }
   
-	return FALSE;
+  return FALSE;
 };
 
 float(entity t) ai_check_range={

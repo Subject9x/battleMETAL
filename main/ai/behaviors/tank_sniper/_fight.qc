@@ -108,7 +108,7 @@ void() spg_fight_vis_friend={
     return;
   }
   self.ai_move_next = MOVE_STAND_FACE;
-  self.ai_movedist = 10;
+  self.ai_movedist = 8;
 };
 
 /*

@@ -15,17 +15,6 @@ void() ai_vec_dest_die;
 void( entity attacker ) ai_spg_react;
 void() ai_spg_stand;
 
-void() spg_combat;
-void() spg_com_moveStart;
-void() spg_com_moveExec;
-void() spg_com_moveEnd;
-void() spg_com_blocked;
-
-void() spg_trail_move;
-void() spg_trail_move_block;
-void() spg_trail_rollback;
-void() spg_trail_rollback_block;
-
 void() spg_fight_target_fire;
 void() spg_fight_out_radius;
 void() spg_fight_vis_friend;

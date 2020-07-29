@@ -62,16 +62,18 @@ void() ai_vec_dest={
   self.ai_state_tether_travel = ai_thr_travel;
   self.ai_state_tether_travel_block = ai_thr_travel_block;
   
-  self.ai_state_combat = spg_combat;
-  self.ai_state_combat_moveStart = spg_com_moveStart;
-  self.ai_state_combat_moveExec = spg_com_moveExec;
-  self.ai_state_combat_moveEnd = spg_com_moveEnd;
-  self.ai_state_combat_blocked = spg_com_blocked;
+  self.ai_state_combat = ai_combat_start;
+  self.ai_state_combat_moveStart = ai_com_moveStart;
+  self.ai_state_combat_moveExec = ai_com_moveExec;
+  self.ai_state_combat_moveEnd = ai_com_moveEnd;
+  self.ai_state_combat_blocked = ai_com_blocked;
   
-  self.ai_state_trail_move = spg_trail_move;
-  self.ai_state_trail_move_block = spg_trail_move_block;
-  self.ai_state_trail_rollback = spg_trail_rollback;
-  self.ai_state_trail_rollback_block = spg_trail_rollback_block;
+  self.ai_fight_take_fire = spg_fight_target_fire;
+  self.ai_fight_out_radius = spg_fight_out_radius;
+  self.ai_fight_vis_friend = spg_fight_vis_friend;
+  self.ai_fight_building = spg_fight_building;
+  self.ai_fight_target = spg_fight_full;
+  
   //--------------------------------------------------------------------------
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;

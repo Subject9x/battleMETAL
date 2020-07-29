@@ -16,17 +16,6 @@ void() ai_tank_sk_die1;
 void() ai_tank_sk_stand;
 void(entity attacker) ai_tank_sk_react;
 
-void() tank_sk_combat;
-void() tank_sk_com_moveStart;
-void() tank_sk_com_moveExec;
-void() tank_sk_com_moveEnd;
-void() tank_sk_com_blocked;
-  
-void() tank_sk_trail_move;
-void() tank_sk_trail_move_block;
-void() tank_sk_trail_rollback;
-void() tank_sk_trail_rollback_block;
-
 void() tank_sk_fight_target_fire;
 void() tank_sk_fight_out_radius;
 void() tank_sk_fight_vis_friend;

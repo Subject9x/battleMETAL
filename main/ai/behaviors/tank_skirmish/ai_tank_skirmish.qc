@@ -57,16 +57,18 @@ void() ai_tank_skirmish={
   self.ai_state_tether_travel = ai_thr_travel;
   self.ai_state_tether_travel_block = ai_thr_travel_block;
   
-  self.ai_state_combat = tank_sk_combat;
-  self.ai_state_combat_moveStart = tank_sk_com_moveStart;
-  self.ai_state_combat_moveExec = tank_sk_com_moveExec;
-  self.ai_state_combat_moveEnd = tank_sk_com_moveEnd;
-  self.ai_state_combat_blocked = tank_sk_com_blocked;
+  self.ai_state_combat = ai_combat_start;
+  self.ai_state_combat_moveStart = ai_com_moveStart;
+  self.ai_state_combat_moveExec = ai_com_moveExec;
+  self.ai_state_combat_moveEnd = ai_com_moveEnd;
+  self.ai_state_combat_blocked = ai_com_blocked;
   
-  self.ai_state_trail_move = tank_sk_trail_move;
-  self.ai_state_trail_move_block = tank_sk_trail_move_block;
-  self.ai_state_trail_rollback = tank_sk_trail_rollback;
-  self.ai_state_trail_rollback_block = tank_sk_trail_rollback_block;
+  self.ai_fight_take_fire = tank_sk_fight_target_fire;
+  self.ai_fight_out_radius = tank_sk_fight_out_radius;
+  self.ai_fight_vis_friend = tank_sk_fight_vis_friend;
+  self.ai_fight_building = tank_sk_fight_building;
+  self.ai_fight_target = tank_sk_fight_full;
+  
   //--------------------------------------------------------------------------
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;

@@ -51,16 +51,18 @@ void() ai_gev={
   self.ai_state_tether_travel = ai_thr_travel;
   self.ai_state_tether_travel_block = ai_thr_travel_block;
   
-  self.ai_state_combat = gev_combat;
-  self.ai_state_combat_moveStart = gev_com_moveStart;
-  self.ai_state_combat_moveExec = gev_com_moveExec;
-  self.ai_state_combat_moveEnd = gev_com_moveEnd;
-  self.ai_state_combat_blocked = gev_com_blocked;
+  self.ai_state_combat = ai_combat_start;
+  self.ai_state_combat_moveStart = ai_com_moveStart;
+  self.ai_state_combat_moveExec = ai_com_moveExec;
+  self.ai_state_combat_moveEnd = ai_com_moveEnd;
+  self.ai_state_combat_blocked = ai_com_blocked;
   
-  self.ai_state_trail_move = gev_trail_move;
-  self.ai_state_trail_move_block = gev_trail_move_block;
-  self.ai_state_trail_rollback = gev_trail_rollback;
-  self.ai_state_trail_rollback_block = gev_trail_rollback_block;
+  self.ai_fight_take_fire = gev_fight_target_fire;
+  self.ai_fight_out_radius = gev_fight_out_radius;
+  self.ai_fight_vis_friend = gev_fight_vis_friend;
+  self.ai_fight_building = gev_fight_building;
+  self.ai_fight_target = gev_fight_full;
+  
   //--------------------------------------------------------------------------
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;

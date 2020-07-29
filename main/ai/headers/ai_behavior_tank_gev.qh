@@ -17,17 +17,6 @@ void() ai_gev_stand;
 void() ai_gev_patrol;
 void( entity attacker ) ai_gev_react;
 
-void() gev_combat;
-void() gev_com_moveStart;
-void() gev_com_moveExec;
-void() gev_com_moveEnd;
-void() gev_com_blocked;
-  
-void() gev_trail_move;
-void() gev_trail_move_block;
-void() gev_trail_rollback;
-void() gev_trail_rollback_block;
-
 void() gev_fight_target_fire;
 void() gev_fight_out_radius;
 void() gev_fight_vis_friend;
