@@ -695,7 +695,7 @@ void() ai_move_node_radius={
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
-    self.ai_movewait = time + 15;
+    self.ai_movewait = time + (self.ai_rank * 4);
     return;
   }
   
@@ -737,7 +737,7 @@ void() ai_move_node_tactical={
       self.legs.think = bot_leg_walk1;
       self.legs.nextthink = time + 0.1;
     }
-    self.ai_movewait = time + 15;
+    self.ai_movewait = time + (self.ai_rank * 4);
     return;
   }
   self.patrolStateLast = self.patrolState;
@@ -757,42 +757,9 @@ void() ai_move_node_tactical={
       self.ai_state_next = ST_THR;
       return;
     }
-    if(self.enemy){
-      self.ai_state_next = ST_COMBAT;
-      return;
-    }
     self.ai_state_next = ST_STAND;
     return;
   }
-};
-
-/*
-  MOVE_END_PAUSE
-    Automatically used at the end of any combat move that isn't
-      + node radius things
-      + any stand_ still move.
-      
-    this is to help reduce traffic jams AND give the player some chances for solid hits.
-*/
-void() ai_move_end_pause={
-  if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.ai_dampen = 0;
-    if( self.legs ){
-      self.legs.ai_dir = self.angles_y;
-      self.legs.attack_state = TR_YAW;
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
-    }
-    if( self.torsoCenter ){
-      self.torsoCenter.attack_state = TR_TARG;
-    }
-    self.ai_movewait = time + self.ai_rank/3; //state-shifts add 0.07 time to every call.
-    return;
-  }
-  if( !self.legs ){
-    ai_face_targ();
-  }
-  ai_attack();
 };
 
 /*

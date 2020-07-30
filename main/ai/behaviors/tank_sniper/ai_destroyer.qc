@@ -31,25 +31,23 @@ void() ai_vec_dest={
   self.touch = ai_touch;
   
   self.SendEntity = ctrl_send_spg;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   local entity wep;
   for(wep = self.w_slot; wep != world; wep = wep.w_slot){
     wep.effects = EF_NODRAW;
   } 
   
-  //new state stuff
   self.ai_state_last = 0;
   self.ai_state_next = ST_STAND;
   self.ai_move_last = 0;
   self.ai_move_next = MOVE_STAND;
   
   self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   
   self.ai_unit_update = ctrl_updateTank;
   
   //ai state interface--------------------------------------------------------
-  self.ai_state_stand = ai_spg_stand;
+  self.ai_state_stand = ai_stand_generic;
   
   self.ai_state_patrol = ai_patrol;
   self.ai_state_patrol_pause = ai_ptr_pause;
@@ -78,42 +76,4 @@ void() ai_vec_dest={
   //--------------------------------------------------------------------------
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;
-};
-
-/*
-  STATE: STAND
-*/
-void() ai_spg_stand={
-  ai_update_accuracy( FALSE );
-  
-  //Enter state
-  if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    //entering stand state
-    if(self.torsoCenter){
-      self.torsoCenter.attack_state = TR_NORM;
-    }
-    self.goalentity = world;
-    return;
-  }
-  if( ai_valid_target(self.enemy) ){
-    self.ai_state_next = ST_COMBAT;
-    return;
-  }
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    self.ai_state_next = ST_COMBAT;
-    return;
-  }
-  
-  if( self.patrolNode != world ){
-    if( self.patrolNode.classname == "ai_node" && self.tetherStatus == TETHER_PATROL ){
-      if( time > self.pausetime ){
-        self.ai_state_next = ST_PTR;
-        return;
-      }
-    }
-    else{
-      self.ai_state_next = ST_THR;
-      return;
-    }
-  }
 };

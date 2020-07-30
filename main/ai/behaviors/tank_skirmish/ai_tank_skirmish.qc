@@ -31,19 +31,19 @@ void() ai_tank_skirmish={
   for(wep = self.w_slot; wep != world; wep = wep.w_slot){
     wep.effects = EF_NODRAW;
   }  
-  self.torsoCenter.effects = EF_NODRAW;  
-  //new state stuff
+  self.torsoCenter.effects = EF_NODRAW;
+  
   self.ai_state_last = 0;
   self.ai_move_last = 0;
-  self.ai_move_next = MOVE_STAND; //debug
+  self.ai_move_next = MOVE_STAND;
   
   self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   
   self.ai_unit_update = ctrl_updateTank;
   
   //ai state interface--------------------------------------------------------
-  self.ai_state_stand = ai_tank_sk_stand;
+  self.ai_state_stand = ai_stand_generic;
   
   self.ai_state_patrol = ai_patrol;
   self.ai_state_patrol_pause = ai_ptr_pause;
@@ -72,56 +72,4 @@ void() ai_tank_skirmish={
   //--------------------------------------------------------------------------
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;
-};
-
-/*
-  STATE : STAND
-*/
-void() ai_tank_sk_stand={
-  ai_update_accuracy( FALSE );
-  
-  //Enter state
-  if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    //entering stand state
-    if(self.torsoCenter){
-      self.torsoCenter.attack_state = TR_NORM;
-    }
-    self.goalentity = world;
-    return;
-  }
-  //-----------------
-  if( ai_valid_target(self.enemy) ){
-    self.ai_state_next = ST_COMBAT;
-    return;
-  }
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    self.ai_state_next = ST_COMBAT;
-    return;
-  }
-  
-  if( self.patrolNode != world ){
-    if( self.patrolNode.classname == "ai_node" && self.tetherStatus == TETHER_PATROL ){
-      if( time > self.pausetime ){
-        self.ai_state_next = ST_PTR;
-        return;
-      }
-    }
-    else{
-      self.ai_state_next = ST_THR;
-      return;
-    }
-  }
-  
-  if( self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw ){
-    self.torsoCenter.attack_state = TR_NORM;
-  }
-  if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
-    self.ai_action_time = self.ai_action_mod * (self.ai_rank * 2);
-    self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
-    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
-    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
-    self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
-    self.torsoCenter.attack_state = TR_YAW;
-    return;
-  }
 };

@@ -567,3 +567,17 @@ void( float missonSuccessCheck, float pscTotal, float survestTotal, float milita
   menu_enter( MENU_DEBRIEF_ACTIVE);
   CLIENT_player_state = PLAYER_BRIEF;
 };
+
+/*
+  Converts trace_plane_normal into useable angles, 
+  sourced: moddb tutorial.
+*/
+vector() util_trace_norm_angle={
+  local vector norm;
+  local vector normAng;
+  norm = trace_plane_normal;
+  norm_x = 0 - norm_x;
+  norm_y = 0 - norm_y;
+  normAng = vectoangles(norm);
+  return normAng;
+};

@@ -370,7 +370,11 @@ void() ai_com_moveExec={
       return;
     }
   }
-  if( MOVE_PATROLNODE > self.ai_move ){
+  //node_radius
+  //node_tactical
+  //this have their OWN timers for ending, set on the first frame of ST_COM_MOVE_START
+  if( self.ai_move < MOVE_PATROLNODE ){
+    //all the _STAND move timers here
     if( time > self.ai_movewait ){
       self.ai_state_next = ST_COM_MOVE_END;
       return;

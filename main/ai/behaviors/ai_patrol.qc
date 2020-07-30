@@ -8,6 +8,63 @@ Overview:
   
 */
 
+
+/*
+  STATE: STAND - GENERIC
+*/
+void() ai_stand_generic={
+  ai_update_accuracy( FALSE );
+  //Enter state
+  if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
+    if( self.torsoCenter ){
+      self.torsoCenter.attack_state = TR_NORM;
+    }
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+      self.legs.think = bot_leg_stand1;
+      self.legs.nextthink = time + 0.1;
+    }
+    self.goalentity = world;
+    return;
+  }
+  //-----------------
+  if( ai_valid_target(self.enemy) ){
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
+  
+  if( self.patrolNode != world ){
+    if( self.patrolNode.classname == "ai_node" && self.tetherStatus == TETHER_PATROL ){
+      if( time > self.pausetime ){
+        self.ai_state_next = ST_PTR;
+        return;
+      }
+    }
+    else{
+      self.ai_state_next = ST_THR;
+      return;
+    }
+  }
+  
+  if( self.torsoCenter ){
+    if( self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw ){
+      self.torsoCenter.attack_state = TR_NORM;
+    }
+    if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
+      self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
+      self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
+      self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
+      self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
+      self.torsoCenter.attack_state = TR_YAW;
+      return;
+    }
+  }
+};
+
 /*
   STATE : PATROL START
 */
@@ -33,7 +90,6 @@ void() ai_patrol={
       self.ai_state_next = ST_COMBAT;
       return;
     }
-    
     return;
   }
 };

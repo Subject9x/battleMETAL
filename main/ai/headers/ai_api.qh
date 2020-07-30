@@ -183,8 +183,7 @@ float MOVE_SNIPESHOT      = 2;
 float MOVE_STAND_FACE     = 3;
 float MOVE_PATROLNODE     = 4;  //AI moves at patrol_frame style movement to get back to node distance.
 float MOVE_NODE_RADIUS    = 5; // AI is 'ring-out' on their current node
-float MOVE_END_PAUSE      = 6;  // enemy_vis == VIS_FRN, so find a node to shoot from
-float MOVE_NODE_TACTICAL  = 7;  // tetherStatus == TETHER_PATROL, and target is beyond patrol nbode
+float MOVE_NODE_TACTICAL  = 6;  // tetherStatus == TETHER_PATROL, and target is beyond patrol nbode
 
 float MOVE_CHARGE         = 8;
 float MOVE_CHARGE_RIGHT   = 16;
@@ -298,13 +297,13 @@ float() ai_move_back_right;
 void() ai_move_snapshot;
 void() ai_move_standface;
 void() ai_move_node_tactical;
-void() ai_move_end_pause;
 void() ai_move_node_reverse;
 void() ai_move_node_radius;
 float(float outRadius) ai_move_patrol_node;
 
 ////////////////////////////////
 //GENERIC PATROL IMPL - ai_patrol.qc
+void() ai_stand_generic;
 void() ai_patrol;
 void() ai_ptr_pause;
 void() ai_ptr_travel_node;
@@ -429,9 +428,6 @@ string(float moveId) dbg_move={
       break;
     case MOVE_NODE_TACTICAL:
       move = "MOVE_NODE_TACTICAL";
-      break;
-    case MOVE_END_PAUSE:
-      move = "MOVE_END_PAUSE";
       break;
     case MOVE_NODE_RADIUS:
       move = "MOVE_NODE_RADIUS";

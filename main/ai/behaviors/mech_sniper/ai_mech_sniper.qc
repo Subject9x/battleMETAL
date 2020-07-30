@@ -24,6 +24,11 @@ void() ai_mech_sniper={
   self.touch = ai_touch;
   
   self.SendEntity = ctrl_send_mech_ai;
+  local entity wep;
+  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
+    wep.effects = EF_NODRAW;
+  }  
+  self.torsoCenter.effects = EF_NODRAW;
   
   //new state stuff
   self.ai_state_last = 0;
@@ -31,12 +36,12 @@ void() ai_mech_sniper={
   self.ai_move_next = MOVE_STAND;
   
   self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   
   self.ai_unit_update = ai_ctrl_update_mechplayer;
   
   //ai state interface--------------------------------------------------------
-  self.ai_state_stand = ai_mech_sniper_stand;
+  self.ai_state_stand = ai_stand_generic;
   self.ai_state_patrol = ai_patrol;
   self.ai_state_patrol_pause = ai_ptr_pause;
   self.ai_state_patrol_travel_node = ai_ptr_travel_node;
@@ -64,56 +69,4 @@ void() ai_mech_sniper={
   //--------------------------------------------------------------------------
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;
-};
-
-/*
-  STATE : STAND
-*/
-void() ai_mech_sniper_stand={
-  ai_update_accuracy( FALSE );
-  
-  //Enter state
-  if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
-    //entering stand state
-    self.torsoCenter.attack_state = TR_NORM;
-    self.legs.attack_state = TR_NORM;
-    self.legs.think = bot_leg_stand1;
-    self.legs.nextthink = time + 0.1;
-    self.goalentity = world;
-    return;
-  }
-  //-----------------
-  if( ai_valid_target(self.enemy) ){
-    self.ai_state_next = ST_COMBAT;
-    return;
-  }
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    self.ai_state_next = ST_COMBAT;
-    return;
-  }
-  
-  if( self.patrolNode != world ){
-    if( self.patrolNode.classname == "ai_node" && self.tetherStatus == TETHER_PATROL ){
-      if( time > self.pausetime ){
-        self.ai_state_next = ST_PTR;
-        return;
-      }
-    }
-    else{
-      self.ai_state_next = ST_THR;
-      return;
-    }
-  }
-  
-  if( self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw ){
-    self.torsoCenter.attack_state = TR_NORM;
-  }
-  if( random() > 0.9 && self.torsoCenter.attack_state != TR_YAW){
-    self.torsoCenter.ai_dir = (crandom() * self.ai_angleLimits_x);
-    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
-    self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
-    self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
-    self.torsoCenter.attack_state = TR_YAW;
-    return;
-  }
 };

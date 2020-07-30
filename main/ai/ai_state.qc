@@ -160,9 +160,6 @@ void() ai_combat_move_frame={
     case MOVE_NODE_TACTICAL:
       ai_move_node_tactical();  //hackfrauds
       break;
-    case MOVE_END_PAUSE:
-      ai_move_end_pause();
-      break;
     case MOVE_NODE_RADIUS:
       ai_move_node_radius();
       break;
