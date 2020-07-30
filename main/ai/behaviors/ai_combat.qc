@@ -256,6 +256,13 @@ void() ai_combat_start={
     enemy_dist = ai_check_node_radius(self.enemy);
     combat_dist = ai_check_node_radius(self);
     
+    if(enemy_vis == VIS_FAIL){
+      self.enemy = world;
+      self.ai_move_next = MOVE_NODE_RADIUS;
+      self.ai_movedist = 15;
+      return;
+    }
+    
     //out of bounds, do move override
     if( 1.0 < enemy_dist ){
       //run
@@ -309,7 +316,7 @@ void() ai_combat_start={
     //combat_dist < 1.0
     //get fighting
     self.ai_move_next = MOVE_NODE_RADIUS;
-    self.ai_movedist = 10;
+    self.ai_movedist = 5;
     self.ai_fight_target();
     if(self.ai_move_next > MOVE_NODE_TACTICAL){
       self.ai_move_next = ai_move_director();

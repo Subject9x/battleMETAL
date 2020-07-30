@@ -21,7 +21,7 @@ void() ai_tank_skirmish={
   }
   ai_voice_ini( TRUE );
   
-  self.th_pain = ai_tank_sk_react;
+  self.th_pain = ai_react_generic;
   self.th_die = ai_tank_sk_die;
   self.touch = ai_touch;
   
@@ -123,49 +123,5 @@ void() ai_tank_sk_stand={
     self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
     self.torsoCenter.attack_state = TR_YAW;
     return;
-  }
-};
-
-void(entity attacker) ai_tank_sk_react={
-  local float enemyvis;
-  
-  if( !(attacker.flags & FL_MONSTER) && !(attacker.flags & FL_CLIENT)){
-    return;
-  }
-  
-  //AI has taken friendly fire
-  if( attacker.faction == self.faction ){
-    return;
-  }
-  
-  if( !attacker ){
-    self.ai_react_buffer = time + self.ai_react_time * 2;
-    return;
-  }
-  
-  if( attacker == self.enemy ){
-    self.ai_react_buffer = time + self.ai_react_time * 5;
-    return;
-  }
-
-  //AI currently has target
-  if( self.enemy ){
-    return;
-  }
-  
-  if( ai_check_vis(self.enemy) == VIS_FRAC ){
-    if( ai_check_node_radius(self.enemy) > 1.0 ){
-      return;
-    }
-  }
-  if( ai_check_vis(self.enemy) == VIS_FRN ){
-    if( ai_check_node_radius(self.enemy) <= 1.0 ){
-      return;
-    }
-  }
-  self.enemy = attacker;
-  self.ai_react_buffer = time + self.ai_react_time * 5;
-  if(self.ai_state_next != ST_COMBAT){
-    self.ai_state_next = ST_COMBAT;
   }
 };

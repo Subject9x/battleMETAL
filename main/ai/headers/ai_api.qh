@@ -50,7 +50,7 @@ vector selfSensorOrg;
 entity lastNode;        //minor optimization
 
 //ENTITY VARS
-.void( entity attacker ) th_react;  //supplants ai_damage_react() call in t_damage();
+void(entity newAttacker) ai_react_generic;
 .float ai_react_buffer;             //prevents too many runs of th_react;
 .float ai_react_time;               //stat for react buffer
 

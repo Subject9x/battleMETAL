@@ -25,7 +25,8 @@ void() ai_vec_dest={
   }
   ai_voice_ini( TRUE );
   
-  self.th_pain = ai_spg_react;
+  self.th_pain = ai_react_generic;
+  
   self.th_die = ai_vec_dest_die;
   self.touch = ai_touch;
   
@@ -114,53 +115,5 @@ void() ai_spg_stand={
       self.ai_state_next = ST_THR;
       return;
     }
-  }
-};
-
-/*
-  Function : reaction
-    AI has been hit by weapons-fire, what do they do with this info?
-*/
-void( entity attacker ) ai_spg_react={
-  local float enemyvis;
-  
-  if( !(attacker.flags & FL_MONSTER) && !(attacker.flags & FL_CLIENT)){
-    return;
-  }
-  
-  //AI has taken friendly fire
-  if( attacker.faction == self.faction ){
-    return;
-  }
-  
-  if( !attacker ){
-    self.ai_react_buffer = time + self.ai_react_time * 2;
-    return;
-  }
-  
-  if( attacker == self.enemy ){
-    self.ai_react_buffer = time + self.ai_react_time * 5;
-    return;
-  }
-
-  //AI currently has target
-  if( self.enemy ){
-    return;
-  }
-  
-  if( ai_check_vis(self.enemy) == VIS_FRAC ){
-    if( ai_check_node_radius(self.enemy) > 1.0 ){
-      return;
-    }
-  }
-  if( ai_check_vis(self.enemy) == VIS_FRN ){
-    if( ai_check_node_radius(self.enemy) <= 1.0 ){
-      return;
-    }
-  }
-  self.enemy = attacker;
-  self.ai_react_buffer = time + self.ai_react_time * 5;
-  if(self.ai_state_next != ST_COMBAT){
-    self.ai_state_next = ST_COMBAT;
   }
 };

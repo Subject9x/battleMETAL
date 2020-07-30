@@ -25,7 +25,6 @@ void() ai_vec_dest_die={
   }
   
   ai_sfx_dead();
-  self.th_react = SUB_Null;
   self.th_pain = SUB_Null;
   self.th_missile = SUB_Null;
   self.deadflag = DEAD_DEAD;

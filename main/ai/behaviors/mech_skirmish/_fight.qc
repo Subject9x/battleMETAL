@@ -142,8 +142,8 @@ void() mech_sk_fight_building={
     self.ai_move_next = MOVE_STRAFE_RIGHT;
     return;
   }
-  self.ai_movedist = 10;
-  self.ai_move_next = MOVE_STAND_FACE;
+  self.ai_movedist = 4;
+  self.ai_move_next = MOVE_BACK;
 };
 
 void() mech_sk_fight_full={
@@ -271,18 +271,17 @@ void() mech_sk_fight_full={
   //FAR COMBAT
   if(enemy_infront){
     if(enemy_range <= 0.33){
+      self.ai_movedist = 3;
       if( combat_roll > 0.5 ){
-        self.ai_movedist = 3;
         self.ai_move_next = MOVE_BACK_LEFT;
         return;
       }
-      self.ai_movedist = 3;
       self.ai_move_next = MOVE_BACK_RIGHT;
       return;
     }
     if(enemy_range <= 0.67){
+      self.ai_movedist = 5;
       if( combat_roll <= 0.25 ){
-        self.ai_movedist = 5;
         self.ai_move_next = MOVE_CIRCLE_LEFT;
         return;
       }
@@ -296,7 +295,6 @@ void() mech_sk_fight_full={
         self.ai_move_next = MOVE_STRAFE_LEFT;
         return;
       }
-      self.ai_movedist = 5;
       self.ai_move_next = MOVE_CIRCLE_RIGHT;
       return;
     }

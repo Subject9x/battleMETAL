@@ -20,8 +20,7 @@ void() ai_mech_skirmish={
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
-  self.th_pain = ai_mech_sk_react;
-  self.th_die = ai_mech_sk_die;
+
   
   self.SendEntity = ctrl_send_mech_ai;
   
@@ -35,6 +34,8 @@ void() ai_mech_skirmish={
   
   self.ai_unit_update = ai_ctrl_update_mechplayer;
   
+  self.th_pain = ai_react_generic;
+  self.th_die = ai_mech_sk_die;
   //ai state interface--------------------------------------------------------
   self.ai_state_stand = ai_mech_sk_stand;
  
@@ -115,44 +116,5 @@ void() ai_mech_sk_stand={
     self.torsoCenter.ai_dir = anglemod( self.angles_y + self.torsoCenter.ai_dir);
     self.torsoCenter.attack_state = TR_YAW;
     return;
-  }
-};
-
-void(entity attacker) ai_mech_sk_react={
-  local float enemyvis;
-  
-  self.ai_react_buffer = time + self.ai_react_time * 5;
-  
-  if( (!(attacker.flags & FL_MONSTER) && !(attacker.flags & FL_CLIENT)) || (self.flags & FL_DISARMED) ){
-    return;
-  }
-  
-  //AI has taken friendly fire
-  if( attacker.faction == self.faction ){
-    return;
-  }
-  
-  if( attacker == self.enemy ){
-    return;
-  }
-
-  //AI currently has target
-  if( self.enemy ){
-    return;
-  }
-  
-  if( ai_check_vis(self.enemy) == VIS_FRAC ){
-    if( ai_check_node_radius(self.enemy) >= 1.0 ){
-      return;
-    }
-  }
-  if( ai_check_vis(self.enemy) == VIS_FRN ){
-    if( ai_check_node_radius(self.enemy) <= 1.0 ){
-      return;
-    }
-  }
-  self.enemy = attacker;
-  if(self.ai_state_next != ST_COMBAT ){
-    self.ai_state_next = ST_COMBAT;
   }
 };
