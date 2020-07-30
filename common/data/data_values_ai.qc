@@ -10,23 +10,53 @@ Overview: AI values that have been spun off from common/game
 //============================
 //     AI STATS      
 //============================
+//SPAWNFLAGS
+float NO_CAMPAIGN = 1;    //remove from campaign mode
+float NO_COOP = 2;    //remove from co-op mode
+float NO_DM = 4;    //remove from DeathMatch
+float NO_TDM = 8;    //remove from Team DeathMatch
+float COLD_START = 16;   //on-spawn, bot will ignore friendly help calls
+float HAS_RADAR = 64;   //radar is expensive to use, use sparingly
+                                        //generally this is for mech units
+float DEBUG_MODE = 128; //dont do anything
+float NO_NOVICE = 4096;  //remove from Novice Difficulty
+float NO_REGULAR = 8192; //remove from Regular Difficulty
+float NO_VETERAN = 16384; //remove from Veteran Difficulty
+float NO_ELITE = 32768;  //remove from Elit Difficulty
+float PROMOTE = 65536;  //AI rank is set by skill, this spawnflag bumps it up by 1
+float DEMOTE = 131072;  //AI rank is set by skill, this spawnflag debuffs it up by 1
+float NO_DROP = 262144; //don't drop bot to the floor onspawn
+float TRIGGER_ME = 524288;  //ai only spawns when triggered
+float MUTE_ME = 1048576;  //ai ignores sending voice effects / radio sounds.
+float UNARMED = 2097152; //ai spawns with no weapons, skip build_weapons() factory step;
+
 float AI_VOICE_TIME = 32;
 
 //this works to balance AI mech stats vs player mech stats.
 float AI_ADJUST_ENERGY = 0.85;
-float AI_ADJUST_SHIELD = 0.85;
+float AI_ADJUST_SHIELD = 0.85;  //rate, this is applied to .shieldRate
+
+//Armor Values
+//hp = hp * AI_ARMOR
+//AI mechs share initial stats with the player, so we have to detune them now.
+float AI_ARMOR_MECH = 0.6;
+
+//Shield Values
+//shield = shield * AI_SHIELD
+//AI mechs share initial stats with player, so we have to detune them now.
+float AI_SHIELD_MECH = 0.75;  //applied to .shieldMax
 
 //AI TH_REACT cooldown
-float AI_REACT_ROK = 4;
-float AI_REACT_REG = 3;
-float AI_REACT_VET = 2;
-float AI_REACT_ACE = 1;
+float AI_REACT_ROK = 2;
+float AI_REACT_REG = 1.5;
+float AI_REACT_VET = 1;
+float AI_REACT_ACE = 0.5;
 
 //AI movement speed ratio 
-float AI_WALK_SPD = 0.085;
+float AI_WALK_SPD = 0.09;
+float AI_RUN_SPD = 0.19;
 float AI_RUN_FACTOR = 1.25;
-float AI_MECH_MOVE_FACTOR = 0.85; //mechs cannot move as fast as player
-float AI_RUN_SPD = 0.2;
+float AI_MECH_MOVE_FACTOR = 0.7; //mechs cannot move as fast as player
 float AI_PATROL_SPEED_LIMIT = 100; //units going full speed on patrol so far is rough on game balance.
 
 //Radar post
@@ -46,7 +76,7 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.75;
+float AI_DMG_SKILL_ROK = 0.8;
 float AI_DMG_SKILL_REG = 0.85;
 float AI_DMG_SKILL_VET = 0.9;
 float AI_DMG_SKILL_ACE = 1;
@@ -77,10 +107,10 @@ float AI_YAW_VET = 1.1;
 float AI_YAW_ACE = 1.15;
 
 //attack chances
-float AI_ATTACK_ROK = 0.255;
-float AI_ATTACK_REG = 0.205;
-float AI_ATTACK_VET = 0.105;
-float AI_ATTACK_ACE = 0.075;
+float AI_ATTACK_ROK = 0.125;
+float AI_ATTACK_REG = 0.1;
+float AI_ATTACK_VET = 0.075;
+float AI_ATTACK_ACE = 0.05;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
@@ -103,16 +133,6 @@ float AI_CNV_RATE_REG  = 0.2;
 float AI_CNV_RATE_VET  = 0.25;
 float AI_CNV_RATE_ACE  = 0.3;
 
-//Armor Values
-//hp = hp * AI_ARMOR
-//AI mechs share initial stats with the player, so we have to detune them now.
-float AI_ARMOR_MECH = 0.55;
-
-//Shield Values
-//shield = shield * AI_SHIELD
-//AI mechs share initial stats with player, so we have to detune them now.
-float AI_SHIELD_MECH = 0.85;
-
 //ai_leading ratings, how well an ai tracks a slippery target
 float AI_LEAD_ACE = 0.25;
 float AI_LEAD_VET = 0.3;
@@ -123,12 +143,6 @@ float AI_LEAD_ROK = 0.4;
 float AI_RANGE_S = 400;
 float AI_RANGE_M = 1000;
 float AI_RANGE_L = 1600;
-
-//Frameset counter, how many loops of a frame set
-float AI_REFLEX_ACE = 0;
-float AI_REFLEX_VET = 1;
-float AI_REFLEX_REG = 2;
-float AI_REFLEX_ROK = 3;
 
 //Patrol Node Chec Range
 float AI_NODE_DISTANCE = 67;

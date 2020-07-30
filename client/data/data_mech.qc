@@ -8,6 +8,8 @@ Overview:
 
 
 void( float dataID ) data_sync_new_mech_ai={
+  weaponList = self;  //prepare to build unit's weapon list
+  self.hardpoint_cnt = 0;
   switch( dataID ){
     case UID_MECH_balaket:
       data_ini_balaket_();
@@ -35,20 +37,6 @@ void( float dataID ) data_sync_new_mech_ai={
   if( self.armRight ){
     data_mech_setup_part( self.armRight );
   }
-
-};
-
-void() data_mech_balaket={
-  
-};
-
-void() data_mech_matok={
-  
-
-};
-
-void() data_mech_monitor={
-  
 
 };
 

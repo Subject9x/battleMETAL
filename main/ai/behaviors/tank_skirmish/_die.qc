@@ -5,9 +5,6 @@ Date: 09/23/2018
 Overview: ai unit
   Tank - Skirmish
   Behavior - Skirmish
-  
-  Setup
-    
 */
 
 void() ai_tank_sk_clean={
@@ -28,14 +25,11 @@ void() ai_tank_sk_die={
   }
   
   ai_sfx_dead();
-  self.th_react = SUB_Null;
   self.th_pain = SUB_Null;
   self.th_missile = SUB_Null;
   self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  //self.colormod = '0.33 0.33 0.33'; ->CSQC
-  self.attack_state = -1;
   self.enemy = world;
   self.maxs = self.maxs * 0.85;
   self.mins = self.mins * 0.85;
@@ -63,8 +57,6 @@ void() ai_tank_sk_die={
   if( self.ai_node_recall ){
     remove(self.ai_node_recall);
   }
-  self.ai_action_time = time + 600;
-
   ai_alert_close( self.enemy );
 
   te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
@@ -74,6 +66,9 @@ void() ai_tank_sk_die={
   self.nextthink = time + 0.1;
 };
 
+//was removed in favor of pushing vehicle wrecks to the client-side.
+//this does mean a player who DOESNT witness this tanks death will never see the wreck,
+//but its a small price to pay for lighter network load.
 void() ai_tank_sk_die1={
 
   

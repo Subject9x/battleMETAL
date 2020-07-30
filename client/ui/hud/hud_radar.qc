@@ -41,7 +41,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     local entity test;
     local vector testOrg;
     local float testCheck;
-    if( !(blip.flags & FL_UNIT) ){
+    if( !(blip.flags & FL_UNIT) && !(blip.flags & FL_MONSTER) ){
       continue;
     }
     if( blip.deadflag > DEAD_NO ){

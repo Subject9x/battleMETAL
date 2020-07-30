@@ -129,7 +129,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
@@ -182,7 +182,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
@@ -235,7 +235,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
@@ -290,7 +290,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
@@ -343,7 +343,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
@@ -397,7 +397,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
@@ -452,7 +452,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
@@ -507,7 +507,6 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
@@ -561,7 +560,6 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
 PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1

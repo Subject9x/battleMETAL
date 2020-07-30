@@ -34,7 +34,6 @@ void( float dataID ) data_sync_new_vehicle={
 void() data_vehicle_foslager = {
   
   data_ini_foslager_();
-      
   setmodel(self, self.model);
   setmodel(self.torsoCenter, self.torsoCenter.model);
 

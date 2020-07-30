@@ -2,140 +2,23 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 09/23/2019
+rebuild: 07/12/2020
 Overview: 
-  Header file for the mech_skirmish ai behavior set.
+  Header file for the mech_sniperirmish ai behavior set.
   Behaviors originally were all in one file, but these became unmaintainable.
   
   mech snipers are the only other mech behavior, they try to stay at long range, and dont hunt
 */
 
+void() ai_mech_sniper;
+
+void() ai_mech_sniper_stand;
+void( entity attacker ) ai_mech_sniper_react;
 void() ai_mech_sniper_die;
 void() ai_mech_sniper_die2;
 
-void() ai_mech_sniper_fight_prep;
-void() ai_mech_sniper_walk1;
-void() ai_mech_sniper_stand1;
-void() ai_mech_sniper_enter_stand;
-void( entity attacker ) ai_mech_sniper_react1;
-
-void() ai_mech_sniper_enter_charge;
-void() ai_mech_sniper_enter_melee;
-void() ai_mech_sniper_enter_reverse;
-
-void() ai_mech_sniper_patrol1;
-void() ai_mech_sniper_patrol2;
-void() ai_mech_sniper_patrol3;
-void() ai_mech_sniper_patrol4;
-void() ai_mech_sniper_patrol5;
-void() ai_mech_sniper_patrol6;
-void() ai_mech_sniper_patrol7;
-void() ai_mech_sniper_patrol8;
-void() ai_mech_sniper_patrol9;
-void() ai_mech_sniper_patrol10;
-void() ai_mech_sniper_patrol11;
-void() ai_mech_sniper_patrol12;
-void() ai_mech_sniper_patrol13;
-void() ai_mech_sniper_patrol14;
-void() ai_mech_sniper_patrol15;
-void() ai_mech_sniper_patrol16;
-
-void() ai_mech_sniper_reverse1;
-void() ai_mech_sniper_reverse2;
-void() ai_mech_sniper_reverse3;
-void() ai_mech_sniper_reverse4;
-void() ai_mech_sniper_reverse5;
-void() ai_mech_sniper_reverse6;
-void() ai_mech_sniper_reverse7;
-void() ai_mech_sniper_reverse8;
-void() ai_mech_sniper_reverse9;
-void() ai_mech_sniper_reverse10;
-void() ai_mech_sniper_reverse11;
-void() ai_mech_sniper_reverse12;
-void() ai_mech_sniper_reverse13;
-void() ai_mech_sniper_reverse14;
-void() ai_mech_sniper_reverse15;
-void() ai_mech_sniper_reverse16;
-
-void() ai_mech_sniper_charge1;
-void() ai_mech_sniper_charge2;
-void() ai_mech_sniper_charge3;
-void() ai_mech_sniper_charge4;
-void() ai_mech_sniper_charge5;
-void() ai_mech_sniper_charge6;
-void() ai_mech_sniper_charge7;
-void() ai_mech_sniper_charge8;
-void() ai_mech_sniper_charge9;
-void() ai_mech_sniper_charge10;
-void() ai_mech_sniper_charge11;
-void() ai_mech_sniper_charge12;
-void() ai_mech_sniper_charge13;
-void() ai_mech_sniper_charge14;
-void() ai_mech_sniper_charge15;
-void() ai_mech_sniper_charge16;
-
-void() ai_mech_sniper_rotate1;
-void() ai_mech_sniper_rotate2;
-void() ai_mech_sniper_rotate3;
-void() ai_mech_sniper_rotate4;
-void() ai_mech_sniper_rotate5;
-void() ai_mech_sniper_rotate6;
-void() ai_mech_sniper_rotate7;
-void() ai_mech_sniper_rotate8;
-
-void() ai_mech_sniper_turn1;
-void() ai_mech_sniper_turn2;
-void() ai_mech_sniper_turn3;
-void() ai_mech_sniper_turn4;
-
-void() ai_mech_sniper_pivot1;
-
-void() ai_mech_sniper_snipe1;
-void() ai_mech_sniper_snipe2;
-void() ai_mech_sniper_snipe3;
-void() ai_mech_sniper_snipe4;
-void() ai_mech_sniper_snipe5;
-void() ai_mech_sniper_snipe6;
-void() ai_mech_sniper_snipe7;
-void() ai_mech_sniper_snipe8;
-
-/*
-  melee for veterans, tries to shoot some,
-  then strafes
-*/
-void() ai_mech_sniper_melee1;
-void() ai_mech_sniper_melee2;
-void() ai_mech_sniper_melee3;
-void() ai_mech_sniper_melee4;
-void() ai_mech_sniper_melee5;
-void() ai_mech_sniper_melee6;
-void() ai_mech_sniper_melee7;
-void() ai_mech_sniper_melee8;
-void() ai_mech_sniper_melee9;
-void() ai_mech_sniper_melee10;
-void() ai_mech_sniper_melee11;
-void() ai_mech_sniper_melee12;
-void() ai_mech_sniper_melee13;
-void() ai_mech_sniper_melee14;
-void() ai_mech_sniper_melee15;
-void() ai_mech_sniper_melee16;
-
-/*
-  th_pain
-  Panic
-*/
-void(entity attacker) ai_mech_sniper_panic1;
-void() ai_mech_sniper_panic2;
-void() ai_mech_sniper_panic3;
-void() ai_mech_sniper_panic4;
-void() ai_mech_sniper_panic5;
-void() ai_mech_sniper_panic6;
-void() ai_mech_sniper_panic7;
-void() ai_mech_sniper_panic8;
-void() ai_mech_sniper_panic9;
-void() ai_mech_sniper_panic10;
-void() ai_mech_sniper_panic11;
-void() ai_mech_sniper_panic12;
-void() ai_mech_sniper_panic13;
-void() ai_mech_sniper_panic14;
-void() ai_mech_sniper_panic15;
-void() ai_mech_sniper_panic16;
+void() mech_sniper_fight_target_fire;
+void() mech_sniper_fight_out_radius;
+void() mech_sniper_fight_vis_friend;
+void() mech_sniper_fight_building;
+void() mech_sniper_fight_full;

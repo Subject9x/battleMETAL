@@ -88,6 +88,7 @@ void() ctrl_updateTank={
 };
 
 float( entity dest, float changedflags ) ctrl_send_tank={
+  local vector vex;
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
   WriteByte( MSG_ENTITY, changedflags );
   

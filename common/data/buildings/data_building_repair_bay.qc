@@ -233,7 +233,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 void() building_human_repair={
   self.data_idx = self.nextVecChoice = UI_BUILDING_repair_bay;
   self.data_type = DATA_BLD;
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | FL_MONSTER;
   self.deadflag = DEAD_NO;
   self.movetype = MOVETYPE_NONE;
   

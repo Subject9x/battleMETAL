@@ -85,13 +85,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( (trg.flags & FL_MONSTER) ){
     notTarg = self;
     self = dmgTrg;
-    if( self.th_react ){  
-      if( time > self.ai_react_buffer ){
-        self.th_react( attacker );
-      }
+    if( self.th_pain ){  
+      self.th_pain( attacker );
     }
     if( self.ai_rank > AI_RANK_REG ){
-      if( self.shield < (self.shieldMax / 2) ){
+      if( self.shield <= (self.shieldMax / 2) ){
         ai_call_for_help(attacker);
       }
     }
@@ -117,6 +115,17 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   }
   
   if( dmgTrg.health > 0 ){
+    if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
+      if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
+        if( (trg.critBits & M_TOR_LEFT) ){
+          dmgAmt = dmgAmt * 2;
+        }
+        if( (trg.critBits & M_TOR_RIGHT) ){
+          dmgAmt = dmgAmt * 2;
+        }
+      }
+    }
+    
     dmgTrg.health = dmgTrg.health - dmgAmt;
     if( dmgTrg.health < 0){
       dmgTrg.health = 0;
@@ -124,7 +133,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   }
   
   if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){    
-    if( util_getMechHpAverage(dmgTrg) < 0.6){
+    if( util_getMechHpAverage(dmgTrg) <= 0.4){
       notTarg = self;
       self = dmgTrg;
         ai_call_for_help( attacker );
@@ -238,9 +247,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( (trg.flags & FL_MONSTER) ){
     notTarg = self;
     self = dmgTrg;
-    if( self.th_react ){  
+    if( self.th_pain ){  
       if( time > self.ai_react_buffer ){
-        self.th_react( attacker );
+        self.th_pain( attacker );
       }
     }
     if( self.ai_rank > AI_RANK_REG ){

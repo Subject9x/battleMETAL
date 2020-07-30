@@ -843,8 +843,14 @@ Compiler-only entity that specifies the origin of a skybox (a wholly contained, 
 //===========================================================
 
 /*QUAKED ai_node (0.988 0.976 0.267) (-10 -10 -18) (10 10 18) - REMOVE_ONTOUCH START_INACTIVE INACTIVE_ONTOUCH
-This is used to setup patrol and move paths for AI.
-For best results, place manually as close to ground as possible!
+
+  This is used to setup patrol and move paths for AI.
+  For best results, place manually as close to ground as possible!
+  Make sure EACH node can see the PREV and NEXT nodes in a chain.
+ 
+!REQUIRED!
+.data_idx = <float> Set this to '1' to determine node chain
+  
 -------- KEYS -------- 
 .faction = <float> [faction number]
 .targetname = <string> used by AI to find node
@@ -887,6 +893,54 @@ ai_view = 100 [default]
 -------- SPAWNFLAGS -------- 
 START_INACTIVE 1: start with .isActive = FALSE
 */
+
+
+
+/*QUAKED ai_node_tether (0.988 0.5 0.5) (-10 -10 -18) (10 10 18)
+  Tether nodes help anchor AI to a specific location on the map.
+  When an AI moves out of range of its tether, it will be compelled to make its way BACK
+    to a random <vector> inside (ai_view / 4).
+  
+  AI WILL lookup these nodes when they spawn in!
+  AI cannot accept a node with a pitch difference of > 45d
+    ie: keep nodes on relativaly flat plane with AI's
+  
+For best results, place manually as close to ground as possible!
+
+targetname = [REQUIRED]
+ai_view = game-units of leash size. [default]AI_RANGE_M == 1000 
+faction = faction matching, [default] FACTION_ALL == 255
+-------- KEYS -------- 
+.ai_view = <float> tether radius
+.faction = <float> [faction number]
+.targetname = <string> used by AI to find node
+
+-------- SPAWNFLAGS -------- 
+*/
+
+
+
+
+/*QUAKED ai_exec_order (0.85 0.976 0.267) (-10 -10 -18) (10 10 18) - IN_RADIUS
+  Super primitive order execution system:
+  
+targetname = [REQUIRED]
+target = fires the desired trigger
+trigOnAttack = update AI to target THIS enemy.
+trigOnSpawn = update AI to THIS patrol node.
+trigOnDeath = update AI's tether node to THIS.
+
+faction = faction matching, [default] FACTION_ALL == 255
+-------- KEYS -------- 
+.targetname = <string> used by AI to find node
+.faction = <float> [faction number]
+.delay = <float> game seconds before firing.
+.ai_view = <float> only for IN_RADIUS, default 100
+
+-------- SPAWNFLAGS --------
+IN_RADIUS 2 : will find any <faction> units in .ai_vew
+*/
+
 
 
 
@@ -3207,7 +3261,7 @@ RANDOM_ANGLE 2: random yaw rotation
 //  SIZE: SMALL
 //  --------------------------------
 //
-/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/dunerunner/dunerunner_h.md3"); }
   Skill 0 | 1
     ATC | ATC
@@ -3234,7 +3288,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3254,7 +3308,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/dunerunner/dunerunner_m.md3"); }
   Skill 0 | 1
     LAS | ATC
@@ -3281,7 +3335,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3308,7 +3362,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 //  --------------------------------
 //
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/foslager/foslager_h.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -3339,7 +3393,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3358,7 +3412,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/foslager/foslager_m.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -3389,7 +3443,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3409,7 +3463,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/foslager/foslager_h.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -3440,7 +3494,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3459,7 +3513,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/foslager/foslager_m.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -3490,7 +3544,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3516,7 +3570,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 //  SIZE: HEAVY
 //  --------------------------------
 //
-/*QUAKED unit_trowel_militar_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_trowel_militar_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/trowel/trowel_m.md3"); }
   Skill 0
     MLGx1 LASx1 ATGMx1
@@ -3546,7 +3600,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3565,7 +3619,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_trowel_survest_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_trowel_survest_lobber (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/trowel/trowel_h.md3"); }
   Skill 0
     LASx1 RCKTx1 ATGMx1
@@ -3595,7 +3649,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3616,7 +3670,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/trowel/trowel_m.md3"); }
 //-------------------GUNNER  --------------------------------
   Skill 0
@@ -3647,7 +3701,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3666,7 +3720,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/trowel/trowel_h.md3"); }
   Skill 0
     RPLASx1 LASx1 ATGMx1
@@ -3697,7 +3751,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3723,7 +3777,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_onnek_h (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_onnek_h (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_h.md3"); }
   Skill 0 | 1
     ION
@@ -3750,7 +3804,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3770,7 +3824,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED unit_onnek_m (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_onnek_m (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_m.md3"); }
   Skill 0 | 1
     PAC
@@ -3797,7 +3851,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3818,7 +3872,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_h.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -3849,7 +3903,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3868,7 +3922,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_m.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -3899,7 +3953,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3920,7 +3974,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_h.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -3951,7 +4005,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -3970,7 +4024,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_m.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -4001,7 +4055,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4022,7 +4076,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_h.md3"); }
 LOBBER - mostly missile firepower
   Skill 0 | 1
@@ -4050,7 +4104,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4069,7 +4123,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 28)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/onnek/onnek_m.md3"); }
 LOBBER - mostly missile firepower
   Skill 0 | 1
@@ -4097,7 +4151,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4123,7 +4177,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_sorcerer_survest_gunner (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_sorcerer_survest_gunner (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
   RPLASx2
   Skill 0 | 1
@@ -4148,7 +4202,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4167,7 +4221,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_sorcerer_militar_gunner (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_sorcerer_militar_gunner (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
   ESRx2
   Skill 0 | 1
@@ -4192,7 +4246,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4213,7 +4267,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
 LOBBER - mostly missile firepower
   Skill 0 | 1
@@ -4241,7 +4295,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4260,7 +4314,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-22 -22 -11) (22 22 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
 LOBBER - mostly missile firepower
   Skill 0
@@ -4291,7 +4345,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4314,7 +4368,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 //
 //  METAL : BALAKET
 //
-/*QUAKED unit_balaket_survest_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_balaket_survest_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_h.md3"); }
   Skill 0
     ATCx2 LASx1
@@ -4344,7 +4398,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4363,7 +4417,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_balaket_militar_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_balaket_militar_sniper (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_m.md3"); }
   Skill 0
     LASx2
@@ -4393,7 +4447,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4412,7 +4466,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_balaket_survest_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_balaket_survest_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_h.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4443,7 +4497,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4462,7 +4516,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_balaket_militar_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_balaket_militar_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_m.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4493,7 +4547,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4513,7 +4567,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED unit_balaket_psc_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_balaket_psc_brawler (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/balaket/balaket_p.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4544,7 +4598,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4567,7 +4621,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 //
 //  METAL : MATOK
 //
-/*QUAKED unit_matok_survest_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_survest_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
   Skill 0
     FLAKx2 MARHx1 ATGMx1
@@ -4597,7 +4651,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4616,7 +4670,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_militar_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_militar_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_m.md3"); }
   Skill 0
     LASx2 MLGx2
@@ -4646,7 +4700,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4665,7 +4719,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_psc_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_psc_sniper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_p.md3"); }
   Skill 0
     ATGMx1 LSAx1 PACx1 IONx1
@@ -4695,7 +4749,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4715,7 +4769,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_matok_militar_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_militar_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_m.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -4746,7 +4800,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4765,7 +4819,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_survest_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_survest_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -4796,7 +4850,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4816,7 +4870,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED unit_matok_survest_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_survest_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4847,7 +4901,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4866,7 +4920,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_militar_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_militar_brawler (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_m.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -4897,7 +4951,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4918,7 +4972,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_matok_militar_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_militar_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_m.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -4949,7 +5003,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -4968,7 +5022,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_matok_survest_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_survest_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -4999,7 +5053,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5019,7 +5073,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_matok_survest_lobber (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_matok_survest_lobber (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/matok/matok_h.md3"); }
 LOBBER - mostly missile firepower
   Skill 0
@@ -5050,7 +5104,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5073,7 +5127,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 //
 //  METAL : MONITOR
 //
-/*QUAKED unit_monitor_survest_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_survest_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_h.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -5104,7 +5158,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5123,7 +5177,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_monitor_militar_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_militar_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_m.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -5154,7 +5208,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5173,7 +5227,7 @@ MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
 UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED unit_monitor_psc_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_psc_brawler (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_p.md3"); }
 Balanced mix of weaponry in service to Faction's fighting style.
   Skill 0
@@ -5204,7 +5258,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5225,7 +5279,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_monitor_militar_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_militar_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_m.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -5256,7 +5310,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5277,7 +5331,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_monitor_militar_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_militar_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_m.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -5308,7 +5362,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5328,7 +5382,7 @@ UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_h.md3"); }
 LOBBER - mostly missile firepower
   Skill 0
@@ -5359,7 +5413,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5380,7 +5434,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_monitor_survest_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_survest_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_h.md3"); }
 ZAPPER - focuses on shield breaking
   Skill 0
@@ -5411,7 +5465,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5432,7 +5486,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_monitor_survest_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_survest_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_h.md3"); }
 GUNNER - bad at shields, good on firepower
   Skill 0
@@ -5463,7 +5517,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
@@ -5484,7 +5538,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_monitor_militar_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
+/*QUAKED unit_monitor_militar_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED - IS_VIP
 { model("models/mechs/monitor/monitor_m.md3"); }
 LOBBER - mostly missile firepower
   Skill 0
@@ -5515,7 +5569,7 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
+
 HAS_RADAR 64: radar is expensive to use, use sparingly
 DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
 DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY

@@ -280,22 +280,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   makevectors(input_angles);
   SetListener(pmove_org, v_forward, v_right, v_up );  //debug
   //=================================================
-
-  if( !MENU_ACTIVE ){
-    //dynamic lights?
-    local entity thingLight;
-    local entity notLight;
-    for( thingLight = nextent(world); thingLight != world; thingLight = nextent(thingLight)){
-      if( !thingLight.render_dlights ){
-        continue;
-      }
-      notLight = self;
-      self = thingLight;
-        thingLight.render_dlights();
-      self = notLight;
-    }
-  }
-
+  
   // draw the main view
   if( !MENU_ACTIVE ){
     // add clientside entities (MASK_NORMAL)
@@ -305,18 +290,23 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     oldSelf = self;
     self = world;
     while( (self = nextent(self)) ){
-      if( self.data_type && self.deadflag == DEAD_NO ){
-        if( self.interpolate_entity ){
-          self.interpolate_entity();
-        }
-        addentity(self);
-      }
-      else{
-        if( self.model && !self.partTypeId && !self.w_slot ){
+      //if( self.drawmask == MASK_NORMAL ){
+        if( self.data_type && self.deadflag == DEAD_NO ){
+          if( self.interpolate_entity ){
+            self.interpolate_entity();
+          }
           addentity(self);
         }
+        else{
+          if( self.model && !self.partTypeId && !self.w_slot ){
+            addentity(self);
+          }
+        }
+        if(self.render_dlights){
+          self.render_dlights();
+        }
       }
-    }
+    //}
     self = oldSelf;
     addentities( (MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
     renderscene();
@@ -376,7 +366,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
 // return FALSE to let engine process command, TRUE to eat command
 float(string s) CSQC_ConsoleCommand =
 {
-	return FALSE;
+  return FALSE;
 };
 
 

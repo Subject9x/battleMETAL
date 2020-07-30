@@ -2,6 +2,7 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 09/23/2018
+rebuild: 07/12/2020
 Overview: ai unit
   Tank - GEV
   Behavior - Skirmish
@@ -9,120 +10,15 @@ Overview: ai unit
   Setup
     
 */
+void() ai_gev;
+
 void() ai_gev_die;
-void() ai_gev_stand1;
-void() ai_gev_walk1;
+void() ai_gev_stand;
+void() ai_gev_patrol;
+void( entity attacker ) ai_gev_react;
 
-void() ai_gev_enter_patrol;
-void() ai_gev_patrol1;
-
-void() ai_gev_fight_prep;
-void( entity attacker ) ai_gev_react1;
-
-void() ai_gev_enter_flank;
-void() ai_gev_enter_charge;
-void() ai_gev_enter_strafe;
-
-/*
-  FLANK
-  self.ideal_yaw = rand45 to  enemy yaw
-  self.ai_dir = enemy yaw
-  self.lefty = 1 LEFT || -1 RIGHT
-*/
-void() ai_gev_flank1;
-void() ai_gev_flank2;
-void() ai_gev_flank3;
-void() ai_gev_flank4;
-void() ai_gev_flank5;
-void() ai_gev_flank6;
-void() ai_gev_flank7;
-void() ai_gev_flank8;
-void() ai_gev_flank9;
-
-/*
-  STRAFE
-  self.ideal_yaw = 90deg to enemy_yaw
-  self.ai_dir = self.ideal_yaw
-  self.lefty = 1 LEFT || -1 RIGHT
-*/
-void() ai_gev_strafe1;
-void() ai_gev_strafe2;
-void() ai_gev_strafe3;
-void() ai_gev_strafe4;
-void() ai_gev_strafe5;
-void() ai_gev_strafe6;
-void() ai_gev_strafe7;
-void() ai_gev_strafe8;
-void() ai_gev_strafe9;
-void() ai_gev_strafe10;
-void() ai_gev_strafe11;
-void() ai_gev_strafe12;
-
-/*
-  CHARGE
-  self.ideal_yaw = enemy_yaw
-  self.ai_dir = charge yaw
-  self.lefty = 1 FORWARD || -1 BACKWARD
-*/
-void() ai_gev_charge1;
-void() ai_gev_charge2;
-void() ai_gev_charge3;
-void() ai_gev_charge4;
-void() ai_gev_charge5;
-void() ai_gev_charge6;
-void() ai_gev_charge7;
-void() ai_gev_charge8;
-void() ai_gev_charge9;
-
-//rotates towards self.enemy for t=6x0.05 
-void() ai_gev_rotate1;
-void() ai_gev_rotate2;
-void() ai_gev_rotate3;
-void() ai_gev_rotate4;
-void() ai_gev_rotate5;
-void() ai_gev_rotate6;
-
-/*
-  Panic
-  th_pain
-*/
-void(entity attacker) ai_gev_panic1;
-void() ai_gev_panic2;
-void() ai_gev_panic3;
-void() ai_gev_panic4;
-void() ai_gev_panic5;
-void() ai_gev_panic6;
-void() ai_gev_panic7;
-void() ai_gev_panic8;
-void() ai_gev_panic9;
-void() ai_gev_panic10;
-
-/*
-  HUNT
-  attempt to walkmove to target for a little bit
-*/
-void() ai_gev_enter_hunt;
-void() ai_gev_hunt1;
-void() ai_gev_hunt2;
-void() ai_gev_hunt3;
-void() ai_gev_hunt4;
-void() ai_gev_hunt5;
-void() ai_gev_hunt6;
-void() ai_gev_hunt7;
-void() ai_gev_hunt8;
-void() ai_gev_hunt9;
-void() ai_gev_hunt10;
-void() ai_gev_hunt11;
-void() ai_gev_hunt12;
-
-void() ai_gev_enter_recall;
-void() ai_gev_recall1;
-void() ai_gev_recall2;
-void() ai_gev_recall3;
-void() ai_gev_recall4;
-void() ai_gev_recall5;
-void() ai_gev_recall6;
-void() ai_gev_recall7;
-void() ai_gev_recall8;
-void() ai_gev_recall9;
-void() ai_gev_recall10;
+void() gev_fight_target_fire;
+void() gev_fight_out_radius;
+void() gev_fight_vis_friend;
+void() gev_fight_building;
+void() gev_fight_full;

@@ -19,9 +19,7 @@ void() ai_mech_sk_die={
   }
   
   ai_sfx_dead();
-  self.th_react = SUB_Null;
   self.th_pain = SUB_Null;
-  self.th_missile = SUB_Null;
   self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -66,13 +64,15 @@ void() ai_mech_sk_die={
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);
   
+  ai_alert_close( self.enemy );
+  
   self.think = ai_mech_sk_die2;
   self.nextthink = time + 1;
 };
 
 //explode
 void() ai_mech_sk_die2={
-  ctrl_unit_cleanup_tank();
+  ctrl_unit_cleanup_mech();
   self.think = SUB_Remove;
   self.nextthink = time + 1;
 };

@@ -60,7 +60,7 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
     self.damageValue = defDmg;
   }
   self.effects = self.effects | EF_NODEPTHTEST;  
-
+  self.data_type == DATA_MAP_DMG;
   self.model = "q3mdl/testball.md3";
   setmodel( self, self.model );
   self.think = map_hazard_ping;

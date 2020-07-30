@@ -35,7 +35,7 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece.hitOffset = '0 0 0';
   piece.compAltOffset = piece.compAltOffsetCache = altOffsett;
   #ifdef CSQC
-    piece.drawmask = MASK_NORMAL;
+    piece.drawmask = MASK_ENGINE;
   #endif
   #ifndef CSQC
     if( (self.flags & FL_MONSTER) ){
@@ -82,13 +82,13 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
     notItem = self;
     self = item;
     #ifdef CSQC
-      //self.drawmask = MASK_NORMAL;
+      self.drawmask = MASK_NORMAL;
     #endif
     #ifndef CSCQ
       self.effects = self.effects | EF_NODRAW;
     #endif
       self.data_idx = 0;
-      self.w_group = weaponBit;
+      self.w_group = self.w_group|weaponBit;
       self.partParentId = parentPartID;
       self.compOffset = pointOffsetVec;
       self.w_adj_ang = adjustAngleVec;
@@ -186,27 +186,36 @@ void() default_weapon_think={
 	reuseable in both client and server.
 */
 entity(float part, entity unit) util_getPartFromName={
-  
+  local entity thepart;
   switch( part ){
     case M_TOR_CENTER:
+      thepart = unit;
       if( (unit.flags & FL_TURRET) ){
-        return unit.torsoCenter;
+        thepart = unit.torsoCenter;
       }
-      return unit;
+      break;
     case M_TOR_RIGHT:
-      return unit.torsoRight;
+      thepart = unit.torsoRight;
+      break;
     case M_TOR_LEFT:
-      return unit.torsoLeft;
+      thepart = unit.torsoLeft;
+      break;
     case M_LEGS:
+      thepart = unit.legs;
       if( (unit.data_type == DATA_VEHC) ){
-        return unit;  //edge case for hull-mounted weapons on a turreted object
+        thepart = unit;  //edge case for hull-mounted weapons on a turreted object
       }
-      return unit.legs;
+      break;
     case M_ARM_LEFT:
-      return unit.armLeft;
+      thepart = unit.armLeft;
+      break;
     case M_ARM_RIGHT:
-      return unit.armRight;
+      thepart = unit.armRight;
+      break;
     default:
-      return unit;
+      thepart = unit;
+      break;
   }
+  
+  return thepart;
 };

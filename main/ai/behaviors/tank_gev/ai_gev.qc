@@ -20,208 +20,54 @@ void() ai_gev={
   }
   ai_voice_ini( TRUE );
 
-  self.th_stand = ai_gev_stand1;
-  self.th_walk = ai_gev_enter_patrol;
-  self.th_pain = ai_gev_panic1;
-  self.th_missile = ai_gev_fight_prep;
-  self.th_pain = ai_gev_panic1;
-  self.th_react = ai_gev_react1;
+  self.th_pain = ai_react_generic;
   self.th_die = ai_gev_die;
-  self.th_rotate = ai_rotate_tank;
   self.touch = ai_touch;
   
-  ai_setup_patrol();
-  
-  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
-  
   self.SendEntity = ctrl_send_gev;
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
-};
-
-void() ai_gev_enter_patrol={
-  ai_update_accuracy( FALSE ); 
-  macro_ai_update(ctrl_updateTank)
-  
-  self.goalentity = self.movetarget;
-  self.torsoCenter.attack_state = TR_GOAL;
-  
-  macro_ai_frame(ai_gev_patrol1)
-};
-
-void() ai_gev_patrol1={
-  ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_gev_fight_prep)
-    return;
-  }
-
-  macro_ai_patrol(self.data_speed_forward / 2, ai_gev_stand1, ai_gev_patrol1)
-};
-
-void() ai_gev_stand1={
-  ai_update_accuracy( FALSE ); 
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
-    macro_ai_frame(ai_gev_fight_prep)
-    return;
-  }
-  
-  if( self.movetarget ){
-    if( time > self.pausetime ){
-      macro_ai_frame(ai_gev_enter_patrol)
-      return;
-    }
-  }
-  
-  macro_ai_frame(ai_gev_stand1)
-};
-
-void() ai_gev_walk1={
-  ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_updateTank)
-  
-  macro_ai_frame(ai_gev_walk1)
-};
-
-void() ai_gev_fight_prep={
-  local float roll;
-  
-  ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_updateTank)
- 
- if( !ai_valid_target(self.enemy) ){
-    macro_ai_frame(self.th_stand)
-    return;
-  } 
-      
-  if( (self.flags & FL_DISARMED) ){
-    self.th_pain( world );
-    return;
+  local entity wep;
+  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
+    wep.effects = EF_NODRAW;
   }  
+  self.torsoCenter.effects = EF_NODRAW;
   
-  self.speed = self.lefty;
-  roll = random();
-  self.ai_action_time = self.ai_action_mod;
-  enemy_vis = ai_check_vis( self.enemy );
-  enemy_range = self.stat_trg_dist;
-  enemy_infront = ai_check_face( self.enemy, self.ai_fov );
-  enemy_hunt = FALSE;
+  self.ai_state_last = 0;
+  self.ai_move_last = 0;
+  self.ai_move_next = MOVE_STAND; //debug
   
-  if( enemy_vis == VIS_FRAC ){
-    //enemy is danger close
-    if( enemy_range <= 200 ){
-      if( enemy_infront ){
-        if( self.ai_rank > AI_RANK_REG ){
-          self.lefty = 1;
-          if( roll < 0.6 ){
-            self.lefty = -1;
-            macro_ai_frame(ai_gev_enter_flank)
-            return;
-          }       
-          macro_ai_frame(ai_gev_enter_flank)
-          return;
-        }
-        if( roll > 0.6 ){
-          self.lefty = -1;
-          macro_ai_frame(ai_gev_charge1)
-          return;
-        }
-        macro_ai_frame(ai_gev_rotate1)
-        return;
-      }
-      if( self.ai_rank > AI_RANK_REG ){
-        self.lefty = 1;
-        macro_ai_frame(ai_gev_enter_charge)
-        return;
-      }
-      macro_ai_frame(ai_gev_enter_strafe)
-      return;
-    }
+  self.dphitcontentsmask = 0;
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
+  
+  self.ai_unit_update = ctrl_updateTank;
+  
+  //ai state interface--------------------------------------------------------
+  self.ai_state_stand = ai_stand_generic;
+  
+  self.ai_state_patrol = ai_patrol;
+  self.ai_state_patrol_pause = ai_ptr_pause;
+  self.ai_state_patrol_travel_node = ai_ptr_travel_node;
+  self.ai_state_patrol_travel_blocked = ai_ptr_travel_blocked;
+  self.ai_state_patrol_tether = ai_ptr_tether;
+  self.ai_state_patrol_tether_blocked = ai_ptr_tether_blocked;
     
-    //enemy is in prime combat range
-    if( enemy_range <= self.ai_minrange ){
-      if( enemy_infront ){
-        //AI is a decent pilot
-        if( self.ai_rank > AI_RANK_REG ){
-          if( roll < 0.33 ){
-            macro_ai_frame(ai_gev_enter_flank)
-            return;
-          }
-          if( roll < 0.67 ){
-            macro_ai_frame(ai_gev_enter_strafe)
-            return;
-          }
-          self.lefty = -1;
-          macro_ai_frame(ai_gev_enter_charge)
-          return;
-        }
-        if( roll < 0.33 ){
-            macro_ai_frame(ai_gev_enter_strafe)
-            return;
-        }
-        if( roll < 0.67 ){
-          self.lefty = -1;
-          macro_ai_frame(ai_gev_enter_charge)
-          return;
-        }
-        macro_ai_frame(ai_gev_enter_flank)
-        return;
-      }
-      
-      if( self.ai_rank > AI_RANK_REG ){
-        if( roll < 0.33 ){
-          macro_ai_frame(ai_gev_enter_strafe)
-          return;
-        }
-        self.lefty = 1;
-        macro_ai_frame(ai_gev_enter_charge)
-        return;
-      }
-      if( roll < 0.33 ){
-        macro_ai_frame(ai_gev_enter_flank)
-        return;
-      }
-      self.lefty = -1;
-      macro_ai_frame(ai_gev_enter_charge)
-      return;
-    }
-    
-    //enemy is out of combat range
-    if( enemy_range > self.ai_minrange ){
-      if( enemy_infront ){
-        self.lefty = 1;
-        macro_ai_frame(ai_gev_enter_charge)
-        return;
-      }
-      //dump target, find new one
-      self.enemy = world;
-      macro_ai_frame(ai_gev_stand1)
-      return;
-    }
-  }
-  if( enemy_vis == VIS_FRN ){
-    enemy_vis = VIS_FAIL;
-  }
-  if( enemy_vis == VIS_FAIL ){      
-    if( self.stat_rdr_mode ){
-      enemy_hunt = TRUE;
-    }
-  }
+  self.ai_state_tether = ai_tether;
+  self.ai_state_tether_pause = ai_thr_pause;
+  self.ai_state_tether_travel = ai_thr_travel;
+  self.ai_state_tether_travel_block = ai_thr_travel_block;
   
-  if( enemy_hunt ){
-    if( self.ai_node_recall == world || !(self.ai_node_recall) ){
-      macro_ai_frame(ai_gev_enter_hunt)
-      return;
-    }
-    macro_ai_frame(ai_gev_enter_recall)
-    return;
-  }
-  if( self.movetarget ){
-    macro_ai_frame(ai_gev_enter_patrol)
-    return;
-  }
-  macro_ai_frame(ai_gev_stand1)
+  self.ai_state_combat = ai_combat_start;
+  self.ai_state_combat_moveStart = ai_com_moveStart;
+  self.ai_state_combat_moveExec = ai_com_moveExec;
+  self.ai_state_combat_moveEnd = ai_com_moveEnd;
+  self.ai_state_combat_blocked = ai_com_blocked;
+  
+  self.ai_fight_take_fire = gev_fight_target_fire;
+  self.ai_fight_out_radius = gev_fight_out_radius;
+  self.ai_fight_vis_friend = gev_fight_vis_friend;
+  self.ai_fight_building = gev_fight_building;
+  self.ai_fight_target = gev_fight_full;
+  
+  //--------------------------------------------------------------------------
+  self.think = ai_setup_patrol;
+  self.nextthink = time + 2;
 };

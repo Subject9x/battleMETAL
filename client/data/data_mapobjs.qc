@@ -146,7 +146,11 @@ void( float isNew, float entFlags ) data_objective={
   if( entFlags & SENDFLAG_NEWENT ){
     self.data_idx = ReadByte();
     self.data_type = DATA_OBJT;
-    self.drawmask = MASK_ENGINE;
+    if( isNew ){
+      setmodel(self, "q3mdl/testball.md3");
+      setorigin(self, self.origin);
+      self.alpha = 0.01;
+    }
   }
   
   //HANDLE EVENT - objective status
@@ -168,11 +172,6 @@ void( float isNew, float entFlags ) data_objective={
     if( (prevState == OBJECTIVE_ACTIVE) && (self.isActive == OBJECTIVE_FAIL) ){
       hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1 );
     }
-  }
-  if( isNew ){
-    setmodel(self, "q3mdl/testball.md3");
-    setorigin(self, self.origin);
-    self.alpha = 0.01;
   }
 };
 
@@ -234,7 +233,6 @@ void( float isNew, float entFlags ) data_deploy={
   //EVENT - new to player
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.drawmask = MASK_ENGINE;
     if( isNew ){
       if( cvar("developer") ){
         self.alpha = 0.9;
@@ -273,15 +271,11 @@ void( float isNew, float entFlags ) data_weather;
 */
 void() map_hazard_rad_dlights={
   makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 100, '0.8 0.8 0', 3, "", 0);
+  //adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 25, '0.8 0.8 0', 0, "", 0);
 };
 void() map_hazard_stat_dlights={
   makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 150, '0 1 0.8', 6, "", 0);
-};
-void() map_hazard_quant_dlights={
-  makevectors(self.angles);
-  adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 110, '1 0.4 0.6', 1, "", 0);
+  //adddynamiclight2( self.origin + (v_up * (self.maxs_z * 0.85)), 33, '0 1 0.8', 0, "", 0);
 };
 
 void() hazard_rad_think={
@@ -300,7 +294,7 @@ void() hazard_rad_think={
   partclPoint_x = partclPoint_x + (self.maxs_x * rando_x);
   partclPoint_y = partclPoint_y + (self.maxs_x * rando_y);
   
-  if( random() > 0.67 ){
+  if( random() > 0.9 ){
     te_field_rad(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
   }
   
@@ -332,7 +326,7 @@ void() hazard_crs_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  if( random() > 0.6 ){
+  if( random() > 0.9 ){
     te_field_mineral(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
   }
   
@@ -365,7 +359,7 @@ void() hazard_quant_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  if( random() > 0.6 ){
+  if( random() > 0.9 ){
     te_field_quantum( partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)) );
   }
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
@@ -466,7 +460,6 @@ void(float dataIdx) hazard_ini_quant={
   if( self.isActive ){
     self.think = hazard_quant_think;
     self.nextthink = servertime + (random() * self.wait);
-    self.render_dlights = map_hazard_quant_dlights;
   }
 };
 
@@ -507,7 +500,6 @@ void( float isNew, float entFlags ) data_map_damage={
     self.spawnflags = ReadLong();
     
     self.origin = te_read_vector();
-    self.drawmask = MASK_ENGINE;
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
@@ -516,35 +508,46 @@ void( float isNew, float entFlags ) data_map_damage={
     self.damageType = ReadByte();
     self.alpha = ReadShort();
     self.wait = ReadAngle();
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_dmg_zone;
     self.effects = self.effects - (self.effects & EF_NODEPTHTEST);
-  }
-  if( isNew ){
-    if( self.isActive ){
-      self.nextthink = time + 0.1;
-    }
-    switch( self.damageType ){
-      default:
-        hazard_ini_rad( self.data_idx );
-        break;
-      case 2:
-        hazard_ini_static( self.data_idx );
-        break;
-      case 3:
-        hazard_ini_quant( self.data_idx );
-        break;
+    self.renderflags = self.renderflags - (self.renderflags & RF_DEPTHHACK);
+    if( isNew ){
+      if( self.isActive ){
+        self.nextthink = time + 0.1;
+      }
+      switch( self.damageType ){
+        case 1:
+          hazard_ini_rad( self.data_idx );
+          break;
+        case 2:
+          hazard_ini_static( self.data_idx );
+          break;
+        case 3:
+          hazard_ini_quant( self.data_idx );
+          break;
+      }
+      if( (self.spawnflags & IS_MAPKEY) ){
+        if( lastMapKeyObject ){
+          //build linked list backwards for later forward iteration.
+          lastMapKeyObject.w_slot = self;
+          lastMapKeyObject = self;
+        }
+        else{
+          //start chain
+          mapKeyObject = self;
+          lastMapKeyObject = self;
+        }
+      }
     }
     setorigin(self, self.origin);
-    if( (self.spawnflags & IS_MAPKEY) ){
-      if( lastMapKeyObject ){
-        //build linked list backwards for later forward iteration.
-        lastMapKeyObject.w_slot = self;
-        lastMapKeyObject = self;
-      }
-      else{
-        //start chain
-        mapKeyObject = self;
-        lastMapKeyObject = self;
-      }
-    }
   }
+};
+
+
+float() predraw_dmg_zone={
+  setorigin(self, self.origin);
+  //self.render_dlights();
+  
+  return FALSE;
 };

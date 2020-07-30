@@ -44,3 +44,5 @@ void() client_state_events;
 
 void() client_campaign_end_data;
 void() client_dm_end_data;
+
+vector() util_trace_norm_angle;

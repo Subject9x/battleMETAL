@@ -156,7 +156,7 @@ void() building_human_hangar={
   }
 
   self.vec_name = "Large Hangar";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER;
   self.vec_size = 3;
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;

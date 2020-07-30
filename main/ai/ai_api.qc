@@ -71,7 +71,10 @@ void( entity t ) ai_call_for_help={
   self.helpTime = time + self.helpTimeDelay;
   
   allies = 0;
-  ai_sfx_help();
+  
+  if((t.flags&FL_CLIENT)){
+    ai_sfx_help();  
+  }
   for(ally=nextent(world); ally != world; ally = nextent(ally)){
     if( !ai_valid_target(ally) ){
       continue;
@@ -88,20 +91,14 @@ void( entity t ) ai_call_for_help={
     if( vlen( ally.origin - self.origin ) > self.ai_view ){
       continue;
     }
-    ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
+    ai_give_target( ally, t, (t.flags&FL_CLIENT) );
     allies = allies + 1;
-  }
-  
-  if( allies < self.ai_rank ){
-    if( self.th_pain ){
-      self.th_pain( t );
-    }
   }
 }; 
 
 float(entity t) ai_valid_target={  
   if( t != self ){
-    if( (t.flags & FL_UNIT) && (t.deadflag == DEAD_NO) ){
+    if( (t.flags & (FL_UNIT|FL_MONSTER)) && (t.deadflag == DEAD_NO) ){
       return TRUE;
     }
   }
@@ -128,11 +125,13 @@ entity( float radiius) ai_find_friend={
   return friend;
 };
 
-
 void( entity t) ai_alert_close={
   
   local entity ally;
-  ai_sfx_help();
+  
+  if((t.flags&FL_CLIENT)){
+    ai_sfx_help();
+  }
   for(ally = findradius(self.origin, self.ai_view); ally != world; ally = ally.chain){
     if( ally.faction != self.faction ){
       continue;
@@ -140,36 +139,10 @@ void( entity t) ai_alert_close={
     if( !ai_valid_target(ally) ){
       continue;
     }
-    ai_give_target( ally, t, (self.ai_rank >= ally.ai_rank) );
+    ai_give_target( ally, t, (t.flags&FL_CLIENT) );
   }
 };
 
-/*
-  ai_find_friend() but we look for the friend furthest away.
-*/
-entity( float startSmallRadius ) ai_find_friend_farthest={
-  local entity ally, friend;
-  local float dist, rad;
-  
-  rad = startSmallRadius;
-
-  for(ally=findchainfloat(faction, self.faction); ally != world; ally = ally.chain){
-    if( !ai_valid_target(ally) ){
-      continue;
-    }
-    //oh and the potential friend needs to offer something in protection.
-    if( (ally.flags & FL_DISARMED) ){
-      continue;
-    }
-    dist = vlen( ally.origin - self.origin );
-    if( dist < rad ){
-      continue;
-    }
-    rad = dist;
-    friend = ally;
-  }
-  return friend;
-};
 
 float() ai_find_target_visual={
   local entity targ, found;
@@ -196,7 +169,9 @@ float() ai_find_target_visual={
   selfSensorOrg_z = 0;
   
   for(targ = findradius(self.origin, rng); targ != world; targ = targ.chain){ 
-    
+    if( (targ.flags & FL_NOTARGET) ){
+      continue;
+    }
     if( targ.faction == self.faction ){
       continue;
     }
@@ -210,7 +185,7 @@ float() ai_find_target_visual={
     if(ndist > rng){
       continue;
     }
-    if( ai_check_vis(targ) != VIS_FRAC && ai_check_vis(targ) != VIS_FRN ){
+    if( ai_check_vis(targ) != VIS_FRAC ){
       continue;
     }
     if( (self.flags & FL_TURRET) ){
@@ -219,7 +194,7 @@ float() ai_find_target_visual={
       }
     }
     else{
-      if( ai_check_face(targ, self.ai_fov) == FALSE){
+      if( !ai_check_face(targ, self.ai_fov, FALSE) ){
         continue;
       }
     }
@@ -229,13 +204,10 @@ float() ai_find_target_visual={
 
   if( found != world ){
     if( (self.flags & FL_DISARMED) ){
-      if( self.stat_rdr_mode ){       
+      if((found.flags&FL_CLIENT)){
         ai_sfx_help();
-        ally = ai_find_friend( self.ai_view );
-        if( ally ){
-          ai_give_target( ally, found, (ally.ai_rank <= self.ai_rank));
-        }
       }
+      ai_alert_close(found);
       return FALSE;
     }
     else{
@@ -261,6 +233,9 @@ float() ai_find_target_radar={
   
   rng = self.ai_view;
   for(targ = findradius(self.origin, self.ai_view); targ != world; targ = targ.chain){
+    if( (targ.flags & FL_NOTARGET) ){
+      continue;
+    }
     if( !ai_valid_target(targ) ){
       continue;
     }
@@ -287,13 +262,10 @@ float() ai_find_target_radar={
   }
   if( found ){
     if( (self.flags & FL_DISARMED) ){
-      if( self.stat_rdr_mode ){       
+      if((found.flags&FL_CLIENT)){
         ai_sfx_help();
-        ally = ai_find_friend( self.ai_view );
-        if( ally ){
-          ai_give_target( ally, found, (ally.ai_rank <= self.ai_rank));
-        }
       }
+      ai_alert_close(found);
       return FALSE;
     }
     else{
@@ -307,310 +279,29 @@ float() ai_find_target_radar={
 
 void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
-  local float validTarg;
-  
-  if( !ally.th_missile ){
-    return;
-  }
   
   this = self;
   //validTarg = ai_valid_target(ally.enemy);  note: every other func calling this one already involes ai_valid_target()
-  //if( validTarg ){
   self = ally;
   //providing clause where ally has no target
-  if( override || !ai_valid_target(ally.enemy) ){
-    self.enemy = ally.enemy;
-    macro_ai_frame(self.th_missile)
-    if( (this.enemy.flags & FL_CLIENT) ){
-      ai_sfx_roger();
+    if( override ){
+      self.enemy = targ;
+      if(self.ai_state_next != ST_COMBAT ){
+        self.ai_state_next = ST_COMBAT;
+      }
     }
-  }
-  else{
-    if( self.th_react ){
-      self.th_react(ally.enemy);
+    else{
+      if( self.th_pain ){
+        self.th_pain(targ);
+      }
     }
-  }
-  //}
+    if( self.enemy == targ ){
+      if( (targ.flags & FL_CLIENT) ){
+        ai_sfx_roger();
+      }
+    }
   self = this;
 };
-
-/*
-  Main AI attack function, called when AI's self.button0 = 1.
-  Runs through AI's weapon list, and finds which are able to be fired, then calls that function.
-*/
-void() ai_ranged_attack={
-  local entity wep_chain, this;
-  local float fired;
-  local vector diff;
-
-  self.ai_weaponEnergy = 0;
-  this = self;
-  self.v_angle = self.angles;
-  if( (self.flags & FL_TURRET) ){
-    //if the AI has a turret, use the turret's angles for Line of Sight offset origins.
-    self.v_angle = self.torsoCenter.angles;
-    diff = vectoangles( self.enemy.origin - self.cockpit.origin);
-    self.v_angle_x = diff_x;
-  }
-  
-  for( wep_chain = self.w_slot; wep_chain.owner == self; wep_chain = wep_chain.w_slot){
-    if(self.button0){
-      if(wep_chain.w_state != READY){
-        continue;
-      }
-      if( !(self.currentWeaponGroup & wep_chain.w_group) ){
-        continue;
-      }
-      if( ai_attack_blockcheck(wep_chain) ){
-        continue;
-      }
-      if( !ai_check_face(this.enemy, 0.85) ){
-        continue;
-      }
-      self = wep_chain;
-        self.w_attack();
-        fired = fired + 1;
-      self = this;
-    }
-    else{
-      //Weapon has a bust-fire mode, and has been fired at least once, run through the burst.
-      if(wep_chain.w_isburst != TRUE){
-        continue;
-      }
-      if(wep_chain.w_state != READY){
-        continue;
-      }
-      self = wep_chain;
-        self.w_attack();
-      self = this;
-    }
-  }
-  self.currentWeaponGroup = 0;
-};
-
-/*
-  Don't fire if the weapon's barrel is blocked by things like:
-  non-target entity,
-  friendlies
-*/  
-float(entity wep) ai_attack_blockcheck={
-  local vector viewpont, vang;
-
-  //ai v_angle already set by ai_ranged_attack
-  vang = self.v_angle;
-  
-  if( self.enemy.data_type == DATA_BLD ){
-    viewpont = normalize(self.enemy.hitOffset - wep.origin);
-  }
-  else{
-    viewpont = normalize((self.enemy.origin + '0 0 10') - wep.origin);
-  }
-  
-  makevectors( vang );
-  traceline (wep.origin + v_forward * 1, wep.origin + viewpont*wep.w_range, (wep.damageType & EFF_ARC), self);
-
-  if(trace_ent == world){
-    return TRUE;
-  }
-  if(!trace_ent.takedamage){
-    return TRUE;
-  }
-  if( trace_ent.faction == self.faction ){
-    return TRUE;
-  }
-  
-  //not sure what this does anymore
-  /*if( (viewpont * v_forward) <= 0.99 ){
-    return TRUE;
-  }*/
-  return FALSE;
-};
-
-/*
-  Only used for RANDOM_START
-*/
-entity() ai_node_pick_rand={
-  local entity anode;
-  local float clr, total, pick;
-  local string grpid;
-  
-  if( self.target ){
-    anode = find(world, targetname, self.target);
-    if( anode && anode.group ){
-      grpid = anode.group;
-      total = 0;
-      clr = 0;
-      while( clr <= 128 ){
-        AI_NODES[clr] = world;
-        clr = clr + 1;
-      }
-      
-      anode = findchain( group, grpid);
-      if( anode && (anode.flags & FL_NODE) ){  
-        while( anode ){
-          AI_NODES[total] = anode;
-          total = total + 1;
-          anode = anode.chain;
-        }
-        pick = rint(random() * total );
-        anode = AI_NODES[pick];
-      }
-    }
-    else{
-      self.spawnflags = self.spawnflags - self.spawnflags & RANDOM_START;
-    }
-  }
-  return anode;
-};
-
-
-/*
-  finds a random spot offset from goalentity to move to,
-  this alleviates issue of bots traffic jamming at terminal patrol nodes.
-*/
-entity() ai_goal_offset_node={
-  local vector angl;
-  local float incr;
-  local float tests;
-  local float testLen;
-  local float checkLen;
-  local vector offsetNodeOrg;
-  local entity offsetNode;
-  angl = self.angles;
-  angl_y = anglemod(self.angles_y - 99);
-  incr = 33;
-  tests = 1;
-  checkLen = 250;
-  while( tests < 7 ){
-    angl_y = anglemod( angl_y + (incr * tests) );
-    makevectors(angl);
-    traceline(self.origin, self.origin + (v_forward * 200), FALSE, self);
-    if( pointcontents(trace_endpos) == 0 || pointcontents(trace_endpos) == CONTENT_WATER){
-      testLen = vlen(trace_endpos - self.origin);
-      if( testLen < checkLen && testLen > 33 ){
-        checkLen = testLen;
-        offsetNodeOrg = trace_endpos;
-      }
-    }
-    tests = tests + 1;
-  }
-  if( checkLen == 250 ){
-    return world;
-  }
-  offsetNode = spawn();
-  offsetNode.classname = "ai_node";
-  offsetNode.ai_rank = (random() * 50) + (random() * 33);
-  offsetNode.faction = self.faction;
-  offsetNode.isActive = TRUE;
-  setsize(offsetNode, '-16 -16 -32', '16 16 32');
-  setorigin(offsetNode, offsetNodeOrg);
-  return offsetNode;
-};
-
-
-void(float dst, float grp, float bracket) ai_wep_group_track={
-  if( dst <= bracket ){
-    self.currentWeaponGroup = self.currentWeaponGroup | grp;
-  }
-  else{
-    self.currentWeaponGroup = self.currentWeaponGroup - self.currentWeaponGroup & grp;
-  }
-};
-
-/*
-  AI checks to see if it has enough energy to fire this weapon in relation
-  to the total energy cost of ALL its energy weapons.
-*/  
-float(entity wep) ai_attack_checkEne={
-  if( self.energy >= self.ai_weaponEnergy ){
-    return TRUE;
-  }
-  return FALSE;
-};
-
-/*
-  AI attempts to hold-off on making an attack until their accuracy is as best as
-  it can be
-*/
-float( float bestAccuracy ) ai_wait_for_shot={
-  if( self.accuracy <= bestAccuracy ){
-    return TRUE;
-  }
-  return FALSE;
-};
-
-void() ai_lock_on={
-  //can only lock-on to enemy units
-  if( self.enemy.faction != self.faction ){
-    if( util_lockOnChoke(self.enemy.origin) ){
-      if( !(self.stat_lck_stt & LOCK_TARG_START) && !(self.stat_lck_stt & LOCK_TARG_HAS) ){
-        self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_START;
-        self.power_timer_segment = time;
-        if(self.stat_rdr_mode){
-          self.lock_timer = time + self.w_firetime;
-        }
-        else{
-          self.lock_timer = time + (self.w_firetime * 2);
-        }
-      }
-      if( time > self.lock_timer ){
-        if( !(self.stat_lck_stt & LOCK_TARG_HAS) ){
-          self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG_START;
-          self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_HAS;
-        }
-      }
-    }
-    else{
-      if( (self.stat_lck_stt & LOCK_TARG_START) ){
-        self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG_START;
-      }
-      if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
-        self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG_HAS;
-      }
-      if( (self.enemy.stat_lck_stt & LOCK_PLAYER) ){
-        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - LOCK_PLAYER;
-      }
-    }
-  }
-};
-
-//AI MAP FUNCS
-/*
-  called by any AI unit that needs to spawn onto the map.
-  This function delegates HOW the AI should be spawned based on its starting parameters.
-  
-  if the AI is to be triggered by another object, then postpone full ini into the use() function
-  else
-  fall-through and create the ai
-
-  now macro_ai_setup - Roohr
-
-float( void() ai_ini ) ai_unit_setup={
-  
-  self.wait = 1;
-  if( self.delay > 0 ){
-    //defaults the wait value in case map didnt specify
-    self.wait = self.delay;
-  }
-  if( (!self.nextVecChoice) ){
-    //safety check
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.05;
-    return TRUE;
-  }
-  
-  if( (self.spawnflags & TRIGGER_ME) && (self.targetname) ){
-    //checking the targetname is mostly for validation
-    self.use = ai_unit_make_trigger;
-    self.think = ai_ini;
-    self.spawnflags = self.spawnflags - (self.spawnflags & TRIGGER_ME);
-    return TRUE;
-  }
-  //fall-through, AI is cleared to happen
-  self.use = multi_trigger;
-  return FALSE;
-};
-*/
 
 void() ai_unit_make_trigger={
   self.spawnflags = self.spawnflags - TRIGGER_ME;
@@ -618,6 +309,143 @@ void() ai_unit_make_trigger={
   self.think = self.unit_ini;
   self.nextthink = time + self.wait + (random() * 1);
   self.unit_ini = SUB_Null;
+};
+
+/*
+  Inspired by the original SUB_CalcMoved
+    Unit gives a requested destination, and a wishspeed.
+    
+    Algo then runs a tracebox to make sure the unit will fit and arrive at the point.
+    Then, as part of some 'rounding' effort - we find a point that's actually
+      endpoint - AI bbox size. 
+      
+    This comes out to kinda always leave a unit-sized gap after the AI moves, like a 
+    primitive avoidance system. By increasing the gaps of units during moves, this
+    should free up any given volume, allowing more bots to move easier.
+*/
+float(vector destOrg, float wishSpeed) ai_calc_move={
+  local vector distDiff;
+  local float len;
+  local float travel;
+  local vector tMins;
+  local vector tMaxs;
+  
+  distDiff = destOrg - self.origin;
+  len = vlen (distDiff);
+  tMaxs = self.maxs;
+  tMins = self.mins;
+  tMins_z = tMins_z * 0.75; //adjust for slope
+  
+  tracebox(self.origin + (v_forward * (tMaxs_x / 2)), tMins, tMaxs, destOrg + (v_forward * (tMins_x / 2)), MOVE_NORMAL, self);
+  
+  if( trace_fraction <= 0.1 ){
+    return 0;
+  }
+  distDiff = trace_endpos + (v_forward * (tMins_x * 2));
+  len = vlen(distDiff - self.origin);
+  
+  // divide by speed to get time to reach dest
+  travel = len / wishSpeed;
+  travel = travel / 35; //AI runs at about time + 0.04 so adjust travel time 
+  
+  return travel * 0.9;  
+};
+
+/*
+  WHEN: AI are set to TETHER_PATROL, they can query their patrol nodes for better positioning data.
+    This checks to see if patrolNode.partNext or patrolNode.partPrev are CLOSER to the desired target.
+    If they are, then the AI executes MOVE_NODE_TACTICAL to get there.
+*/
+entity(entity targ) ai_node_to_target={
+  local entity hold;
+  local entity found;
+  local float dist;
+  local float distComp;
+  local float checkDist;
+  
+  dist = ai_check_node_radius(targ);
+  
+  if(self.patrolNode.partNext){
+    hold = self.patrolNode;
+    self.patrolNode = hold.partNext;
+      distComp = ai_check_node_radius(targ);
+    self.patrolNode = hold;
+    if( distComp <= dist ){
+      found = self.patrolNode.partNext;
+    }
+  }
+  if( !found ){
+    if(self.patrolNode.partPrev){
+      hold = self.patrolNode;
+      self.patrolNode = hold.partPrev;
+        distComp = ai_check_node_radius(targ);
+      self.patrolNode = hold;
+      if( distComp <= dist ){
+        found = self.patrolNode.partPrev;
+      }
+    }
+  }
+  if( !found ){
+    found = self.patrolNode;
+  }
+  return found;
+};
+
+/*
+  Simply moves up/down the AI's patrolNode chain (if possible)
+*/
+entity(float checkDir) ai_get_next_node={
+  local entity foundNode;
+  
+  foundNode = world;
+  if( checkDir ){
+    if( self.patrolNode.partNext ){
+      foundNode = self.patrolNode.partNext;
+    }
+  }
+  else{
+    if( self.patrolNode.partPrev ){
+      foundNode = self.patrolNode.partPrev;
+    }
+  }
+  return foundNode;
+};
+
+/*
+  Check if entity <toCheck> is outside of 
+  
+  AI's current patrolNode.ai_view radius.
+  
+  returns a percentage of distance to node.
+  
+  a value > 1 is out of node radius
+*/
+float(entity toCheck) ai_check_node_radius={
+  local float distance;
+  distance = vlen(toCheck.origin - self.patrolNode.origin);
+  if( self.patrolNode.ai_view != 0 ){
+    distance = max(distance / self.patrolNode.ai_view, 0.01);
+  }
+  else{
+    distance = max(distance / AI_RANGE_S, 0.01);
+  }
+  return distance;
+};
+
+/*
+  A soft-wrapper for ai_check_node_radius();
+    this converts self.stat_trg_dst (target distance to self)
+    in a percentage of node radius.
+*/
+float() ai_check_node_radius_targdist={
+  local float distance;
+  if( self.patrolNode.ai_view != 0 ){
+    distance = max(self.stat_trg_dist / self.patrolNode.ai_view, 0.01);
+  }
+  else{
+    distance = 1.0;
+  }
+  return distance;
 };
 
 /*
@@ -655,3 +483,53 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
     self.next_wepn9 = wep9;
   }
 }; 
+
+/*
+  Attempts to find the closest allowable <ai_node_tether> entity.
+*/
+entity() ai_node_tether_find={
+  local entity findNode;
+  local entity found;
+  local float dist;
+  local float testDist;
+  local vector tMins;
+  local vector ang;
+  dist = AI_RANGE_L;
+  
+  tMins = self.mins;
+  tMins_z = tMins_z * 0.5;
+  //first query existing nodes to see if a tether exists nearest the AI.
+  for(findNode = nextent(world); findNode != world; findNode = nextent(findNode)){
+    if( findNode.classname != "ai_node_tether" ){
+      continue;
+    }
+    ang = vectoangles(findNode.origin - (self.origin + '0 0 5'));
+    if( ang_x <= 67 || ang_x >= 275) {
+      //tether nodes need to be on relatively flat planes because a bot cannot climb a wall or slope to reach a tether node.
+      testDist = vlen(findNode.origin - (self.origin + '0 0 5'));
+      if( testDist <= dist ){
+        traceline( self.origin, findNode.origin, MOVE_NORMAL, self);
+        if( trace_fraction == 1 ){
+          dist = testDist;
+          found = findNode;
+        }
+        else{
+          if( (trace_ent.flags & FL_UNIT) ){
+            if( trace_ent.patrolNode && !trace_ent.patrolNode.target ){
+              dist = testDist;
+              found = findNode;
+            }
+            else{
+              tracebox((trace_ent.origin + '0 0 5'), tMins, self.maxs * 0.75, findNode.origin, MOVE_NORMAL, self);
+              if( trace_fraction == 1 ){
+                dist = testDist;
+                found = findNode;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return found;
+};

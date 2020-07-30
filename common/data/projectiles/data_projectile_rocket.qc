@@ -129,7 +129,7 @@ void() data_projectile_rocket_think_={
       if( close.deadflag != DEAD_NO ){
         continue;
       }
-      if( !(close.flags & FL_UNIT) ){
+      if( !(close.flags & FL_UNIT) || !(close.flags&FL_MONSTER) ){
         continue;
       }
       if( close.faction == self.owner.faction ){

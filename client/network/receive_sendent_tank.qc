@@ -92,6 +92,11 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     newName = ReadString();
     if( isNew ){
       if( newName != "" ){
+        if( self.netname != "" ){
+          local string s;
+          s = self.netname;
+          strunzone(s);
+        }
         self.netname = strzone(newName);
       }
       self.deadflag = DEAD_NO;
@@ -103,9 +108,11 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       sendent_setup_weapons();
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
-      sendent_ini_interpolate();
-      self.interpolate_entity = interpolate_tank;
     }
+    sendent_ini_interpolate();
+    self.interpolate_entity = interpolate_tank;
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_tank;
   }
   self.shield = ReadShort();
   
@@ -160,22 +167,25 @@ void() interpolate_tank={
   local entity parent;
   local entity wepn;
   local vector saved;
+  local vector compAngle;
   
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
   
   parent = self;
-  makevectors(parent.angles);
+  makevectors(self.angles);
+  
   if( self.torsoCenter ){
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles_x = compAngle_x;
       interpolate_origin();
       interpolate_angle();
       interpolate_ground();
+      addentity(self);
       self.think = SUB_Null;
       self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
   }
   
@@ -185,13 +195,15 @@ void() interpolate_tank={
       if( self.partParentId == M_LEGS ){
         makevectors(parent.angles);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        self.origin = parent.origin + saved ;
+        saved = parent.origin + saved;
       }
       else{
         makevectors(parent.torsoCenter.angles);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        self.origin = parent.torsoCenter.origin + saved;
+        saved = parent.torsoCenter.origin + saved;
+        self.angles = parent.torsoCenter.angles;
       }
+      self.origin = saved;
       interpolate_origin();
       interpolate_angle();
       interpolate_ground();
@@ -203,4 +215,13 @@ void() interpolate_tank={
   }
   self.think = SUB_Null;
   self.nextthink = time + 0.01;
+};
+
+float() predraw_tank={
+  if(self.deadflag==DEAD_NO){
+    if(self.interpolate_entity){
+      self.interpolate_entity();
+    }
+  }
+  return FALSE;
 };

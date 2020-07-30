@@ -38,26 +38,24 @@ void() data_ini_balaket_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 185;  //175
-  self.data_speed_strafe = 120; //145
+  self.data_speed_forward = 185;
+  self.data_speed_strafe = 120;
   self.data_speed_backward = 90;
   self.data_speed_accel = 2;
   self.ramUpMax = 3;
   self.ramCooldown = 6;
 #ifndef CSQC
-  self.yaw_speed = 3.75;    // AI-only 
+  //self.yaw_speed = 3.75;    // AI-only 
+  self.yaw_speed = 5;    // AI-only 
   self.turret_yaw_speed = 4.25;// AI-only
   self.ai_angleLimits = '-175 175 0';
+  if( (self.flags & FL_MONSTER) ){
+    self.data_speed_accel = 0.025;
+  }
 #endif
 //=====================================
  
 //MECH COMPONENTS====================
-#ifdef CSQC
-  if( (self.flags & FL_MONSTER) ){
-    self.hardpoint_cnt = 5;
-    weaponList = self;
-  }
-#endif
 
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );

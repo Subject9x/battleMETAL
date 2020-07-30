@@ -38,7 +38,7 @@ void() interpolate_angle={
   else if (dir < -180){
     dir += 360;
   }
-  self.angles_y = self.angle1 + (dir*self.lerpfrac);
+  //self.angles_y = self.angle1 + (dir*self.lerpfrac);
 };
 
 void() interpolate_ground={
@@ -118,19 +118,17 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     self.damageValue = ReadByte();
     self.origin2 = self.origin;
     self.origin1 = self.origin;
-    setorigin(self, self.origin);
+    if( isNew ){
+      self.solid = SOLID_NOT;
+      self.alpha = 1;
+      self.scale = 1;
+      data_sync_new_projectile(self.data_idx);
+      setmodel(self, self.model);
+      self.nextthink = time + 0.1;
+      self.predraw = predraw_missile;
+    }
   }
   
-  if( isNew ){
-    self.solid = SOLID_NOT;
-    self.alpha = 1;
-    self.scale = 1;
-    data_sync_new_projectile(self.data_idx);
-    setmodel(self, self.model);
-    setsize(self, '0 0 0', '0 0 0');
-    self.predraw = predraw_missile;
-    self.nextthink = time + 0.1;
-  }
   
   if( changeFlags & SENDFLAG_MOVE ){
     self.origin_x = ReadCoord();
@@ -210,9 +208,16 @@ void() sendent_setup_weapons={
   weps = self.w_slot;
   while( weps != world ){
     self = weps;
-      sendent_set_weapon();
-      initialize_data_item_(self.data_idx);
       self.owner = this;
+      sendent_set_weapon();
+      if(!(this.flags & FL_DISARMED)){
+        initialize_data_item_(self.data_idx);
+      }
+      else{
+        self.model = "q3mdl/testball.md3";
+        self.alpha = 0.01;
+        self.scale = 0.01;
+      }
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
       setsize(self, '-1 -1 -1', '1 1 1');

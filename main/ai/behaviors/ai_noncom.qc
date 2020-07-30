@@ -64,7 +64,7 @@ void() ai_noncom_run={
     
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = self.stat_trg_dist;
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+    enemy_infront = ai_check_face( self.enemy, self.ai_fov, FALSE);
     
     friend = ai_find_friend( AI_RANGE_L );
     friend_range = -1;
@@ -232,9 +232,6 @@ void() ai_noncom_tank={
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
-  if( (self.spawnflags & RANDOM_START) ){ 
-    ai_node_pick_rand( self.target );
-  }
   trigger_event( self, self.trigOnSpawn); //event interface
    
   ai_setup_patrol();

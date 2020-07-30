@@ -197,7 +197,7 @@ const float MASK_NORMAL			= 4;
 //casts no shadows.
 
 //no proof these render flags are accessible by DP's flavor of QuakeC - Roohr :|
-const float RF_EXTERNALMODEL	= 2; // T
+const float RF_EXTERNALMODEL	= 2; // The entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
 const float RF_VIEWMODEL	= 1; // The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
 const float RF_DEPTHHACK	= 4; // The entity appears closer to the view than normal, either by scaling it wierdly or by just using a depthrange. This will usually be found in conjunction with RF_VIEWMODEL
 const float RF_ADDITIVE		= 8;// Add the entity acording to it's alpha values instead of the normal blend
@@ -546,7 +546,7 @@ string(string s) precache_file2 = #77;
 
 float(string s) stof = #81;
 
-
+//v1 = start org, v2 = end org, min == .mins, max == .maxs
 void(vector v1, vector min, vector max, vector v2, float nomonsters, entity forent) tracebox = #90;
 vector() randomvec = #91;
 vector(vector org) getlight = #92;
