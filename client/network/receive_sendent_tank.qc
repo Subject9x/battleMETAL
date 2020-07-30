@@ -74,13 +74,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   self.angles_y = anglemod(ReadAngle());
   self.angles_z = anglemod(ReadAngle());
   
-  self.chassisAngle_x = ReadShort();
-  self.chassisAngle_z = ReadShort();
-  
-  cons_logAFloat("THE YAW", self.angles_y); //debug
-  cons_logAFloat("self.chassisAngle_x", self.chassisAngle_x); //debug
-  cons_logAFloat("self.chassisAngle_z", self.chassisAngle_z); //debug
-  
   //EVENT - NEW ENTITY
   if( changeFlags & SENDFLAG_NEWENT ){
     self.entId = ReadLong();
@@ -113,7 +106,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       self.movetype = MOVETYPE_STEP;
       data_sync_new_vehicle( self.data_idx );
       sendent_setup_weapons();
-      //setmodel(self, self.model);
+      setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
     }
     sendent_ini_interpolate();
@@ -181,19 +174,7 @@ void() interpolate_tank={
   interpolate_ground();
   
   parent = self;
-  compAngle = self.angles;
-  if( self.chassis ){
-    self.chassis.origin = self.origin;    
-    self.chassis.angles = self.angles;
-    self.chassis.angles_x = self.chassisAngle_x + 180;
-    self.chassis.angles_y = self.angles;
-
-    makevectors(self.chassis.angles);
-    compAngle_x  = self.chassis.angles_x;
-  }
-  else{
-    makevectors(self.angles);
-  }
+  makevectors(self.angles);
   
   if( self.torsoCenter ){
     self = self.torsoCenter;
@@ -215,9 +196,6 @@ void() interpolate_tank={
         makevectors(parent.angles);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
         saved = parent.origin + saved;
-        if(self.chassis){
-          self.angles = parent.chassis.angles;
-        }
       }
       else{
         makevectors(parent.torsoCenter.angles);

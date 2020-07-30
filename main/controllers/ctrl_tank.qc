@@ -96,22 +96,9 @@ float( entity dest, float changedflags ) ctrl_send_tank={
   WriteCoord( MSG_ENTITY, self.origin_y );
   WriteCoord( MSG_ENTITY, self.origin_z );
   
-  makevectors(self.angles);
-  traceline(self.origin, self.origin + (v_up * -128), MOVE_NORMAL, self);
-  vex = util_trace_norm_angle();
-  vex_x = vex_x - 90;
-  vex_y = vex_y;
-  
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
-  
-  cons_logAFloat("vex_x", vex_x); //debug
-  cons_logAFloat("vex_y", vex_y); //debug
-  cons_logAFloat("vex_z", vex_z); //debug
-  
-  WriteShort( MSG_ENTITY, vex_x );
-  WriteShort( MSG_ENTITY, vex_y );
   
   if( changedflags & SENDFLAG_NEWENT ){
     WriteLong( MSG_ENTITY, num_for_edict(self));

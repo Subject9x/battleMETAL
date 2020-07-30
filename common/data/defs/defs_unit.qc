@@ -104,6 +104,4 @@ Overview:
 .float targetEntId;
 .float entId; 
 .void( float critHits ) te_critical_hit;  //interface for unit critical hit events
-.entity chassis;
-.vector chassisAngle;
 #endif

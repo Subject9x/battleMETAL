@@ -34,17 +34,7 @@ void( float dataID ) data_sync_new_vehicle={
 void() data_vehicle_foslager = {
   
   data_ini_foslager_();
-  self.effects = self.effects | EF_NODRAW;
-  
-  local entity chass;
-  chass = spawn();
-  self.chassis = chass;
-  self.chassis.drawmask = MASK_ENGINE;
-  self.chassis.origin = self.origin;
-  self.chassis.angles = self.angles;
-  self.chassis.angles_x = self.chassisAngle_x;
-  self.chassis.angles_z = self.chassisAngle_z;
-  setmodel(self.chassis, self.model);
+  setmodel(self, self.model);
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
