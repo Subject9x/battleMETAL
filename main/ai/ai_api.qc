@@ -71,7 +71,10 @@ void( entity t ) ai_call_for_help={
   self.helpTime = time + self.helpTimeDelay;
   
   allies = 0;
-  ai_sfx_help();
+  
+  if((t.flags&FL_CLIENT)){
+    ai_sfx_help();  
+  }
   for(ally=nextent(world); ally != world; ally = nextent(ally)){
     if( !ai_valid_target(ally) ){
       continue;
@@ -90,10 +93,6 @@ void( entity t ) ai_call_for_help={
     }
     ai_give_target( ally, t, (t.flags&FL_CLIENT) );
     allies = allies + 1;
-  }
-  
-  if( self.th_pain ){
-    self.th_pain( t );
   }
 }; 
 
@@ -129,7 +128,10 @@ entity( float radiius) ai_find_friend={
 void( entity t) ai_alert_close={
   
   local entity ally;
-  ai_sfx_help();
+  
+  if((t.flags&FL_CLIENT)){
+    ai_sfx_help();
+  }
   for(ally = findradius(self.origin, self.ai_view); ally != world; ally = ally.chain){
     if( ally.faction != self.faction ){
       continue;
@@ -202,13 +204,10 @@ float() ai_find_target_visual={
 
   if( found != world ){
     if( (self.flags & FL_DISARMED) ){
-      if( self.stat_rdr_mode ){    
-        ally = ai_find_friend( self.ai_view );
-        if( ally ){   
-          ai_sfx_help();
-          ai_give_target( ally, found, (found.flags&FL_CLIENT));
-        }
+      if((found.flags&FL_CLIENT)){
+        ai_sfx_help();
       }
+      ai_alert_close(found);
       return FALSE;
     }
     else{
@@ -263,13 +262,10 @@ float() ai_find_target_radar={
   }
   if( found ){
     if( (self.flags & FL_DISARMED) ){
-      if( self.stat_rdr_mode ){       
+      if((found.flags&FL_CLIENT)){
         ai_sfx_help();
-        ally = ai_find_friend( self.ai_view );
-        if( ally ){
-          ai_give_target( ally, found, (ally.ai_rank <= self.ai_rank));
-        }
       }
+      ai_alert_close(found);
       return FALSE;
     }
     else{

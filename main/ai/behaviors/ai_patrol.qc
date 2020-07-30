@@ -64,12 +64,7 @@ void() ai_ptr_pause={
     return;
   }
   if( time > self.pausetime ){
-    if( self.patrolNode != world ){
-      self.ai_state_next = ST_PTR;
-    }
-    else{
-      self.ai_state_next = ST_STAND;
-    }
+    self.ai_state_next = ST_PTR;
   }
 };
 /*
