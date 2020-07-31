@@ -194,10 +194,10 @@ void( vector menuOrg ) menu_connect_draw_rules_dm={
     drawstring( ruleRow, "Friendly Fire", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
-    drawstring( ruleRow, "One-life Only", '12 12', CLR_DEF_WHITE, 1, 0);
-    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
-  }
+  //if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
+  //  drawstring( ruleRow, "One-life Only", '12 12', CLR_DEF_WHITE, 1, 0);
+  //  ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  //}
   if( (SV_SERVERFLAGS & SVFLAG_NOMAP) ){
     drawstring( ruleRow, "Limited TacMap", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
@@ -343,7 +343,7 @@ void( vector menuOrg ) menu_connect_draw_rules_team={
     }
     listCount = listCount + 1;
   }
-  if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
+  /*if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
     drawstring( ruleRow, "One-life Only", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 3 ){
       ruleRow_x = ruleRow_x + gui_percentXRaw(64);
@@ -353,7 +353,7 @@ void( vector menuOrg ) menu_connect_draw_rules_team={
       ruleRow_y = ruleRow_y + gui_percentYRaw(12);
     }
     listCount = listCount + 1;
-  }
+  }*/
   if( (SV_SERVERFLAGS & SVFLAG_NOMAP) ){
     drawstring( ruleRow, "Limited TacMap", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 4 ){
@@ -603,7 +603,7 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
     ruleRow_y = ruleRow_y + gui_percentYRaw(12);
     listCount = listCount + 1;
   }
-  if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
+  /*if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
     drawstring( ruleRow, "One-life Only", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 3 ){
       ruleRow_x = ruleRow_x + gui_percentXRaw(85);
@@ -613,7 +613,7 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
       ruleRow_y = ruleRow_y + gui_percentYRaw(12);
     }
     listCount = listCount + 1;
-  }
+  }*/
   if( (SV_SERVERFLAGS & SVFLAG_NOMAP) ){
     drawstring( ruleRow, "Limited TacMap", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 3 ){
