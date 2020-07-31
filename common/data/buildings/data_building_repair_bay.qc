@@ -59,10 +59,10 @@ void() hrepair_rep = [0, hrepair_rep]{
             hp = csqc_updateCompStat(part);
             if( hp < lowHP){
               lowHP = hp;
-              if( part.partTypeId == M_ARM_RIGHT && (repairMe.critBits & M_TOR_RIGHT) ){
+              if( part.partTypeId == M_ARM_RIGHT && (repairMe.damageValue & M_TOR_RIGHT) ){
                 fix = part.owner.torsoRight;
               }
-              else if( part.partTypeId == M_ARM_LEFT && (repairMe.critBits & M_TOR_LEFT) ){
+              else if( part.partTypeId == M_ARM_LEFT && (repairMe.damageValue & M_TOR_LEFT) ){
                 fix = part.owner.torsoLeft;
               }
               else{
@@ -77,27 +77,28 @@ void() hrepair_rep = [0, hrepair_rep]{
         self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
         end_repair = FALSE;
         self.compAltOffset = fix.origin;
-
-        
         if( fix.deadflag == DEAD_NO ){
           fix.health = fix.health + self.reloadRate;
           self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.25));
         }
         else{
-          fix.health = fix.health + self.reloadRate / 1.25;
+          fix.health = fix.health + self.reloadRate / 1.15;
           self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.75));
           if(fix.deadflag == DEAD_DEAD && fix.partTypeId != M_LEGS){
             self.deadflag = DEAD_DYING;
             if(fix.deadflag != DEAD_NO ){
               fix.deadflag = DEAD_NO;
               fix.effects = fix.effects - (fix.effects & EF_NODRAW);
+              repairMe.damageValue = repairMe.damageValue - (repairMe.damageValue & fix.partTypeId);
               repairMe.critBits = repairMe.critBits - (repairMe.critBits & fix.partTypeId);
+              
               part = repairMe.w_slot;
               while( part != world ){
                 if( part.partParentId == fix.partTypeId && part.deadflag != DEAD_NO ){
                   part.deadflag = DEAD_NO;
                   part.effects = part.effects - (part.effects & EF_NODRAW);
                   repairMe.stat_player_weapons_state = repairMe.stat_player_weapons_state | part.w_group;
+                  part.think = part.w_think;
                   if( part.item_run_upgrade ){
                     self = part;
                       self.item_run_upgrade();
@@ -112,6 +113,12 @@ void() hrepair_rep = [0, hrepair_rep]{
           else if(fix.deadflag == DEAD_DYING){
             if(fix.health > fix.max_health * 0.5){
               fix.deadflag = DEAD_NO;
+              if( !(fix.owner.damageValue & M_TOR_LEFT) ){
+                fix.owner.shieldMax = fix.owner.shieldMax * 0.5;
+              }
+              if( !(fix.owner.damageValue & M_TOR_LEFT) ){
+                fix.owner.shieldMax = fix.owner.shieldMax * 0.5;
+              }
             }
           }
         }
@@ -389,6 +396,9 @@ void() building_repair_touch={
   if( !(other.flags & FL_CLIENT) ){
     return;
   }
+  if(self.owner.reloadValue <= 0){
+    return;
+  }
   if( self.owner.trigger_field != world ){
     return;
   }
@@ -398,9 +408,6 @@ void() building_repair_touch={
   other.energy = other.energy + (other.energyRate * 0.45);
   if( other.energy > other.energyMax ){
     other.energy = other.energyMax;
-  }
-  if(self.owner.reloadValue <= 0){
-    return;
   }
   if(util_getMechHpAverage(other) >= 1){
     return;

@@ -218,6 +218,7 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
     }
     self.wepFireOffsetCache = self.wepFireOffset;
     self.th_die = ctrl_die_weapon;
+    self.w_think = self.think;
   self = parentEntity;
 };
 

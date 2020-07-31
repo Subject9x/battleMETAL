@@ -191,14 +191,16 @@ void() ai_ctrl_updateCenterTorso={
         diff = diff - self.evasionDrain;
       }
       self.energy = self.energy + diff;
-    }  
-    if(self.shield < self.shieldMax){
-      if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-        if(self.energy > 0){
-          self.shield = self.shield + (self.shieldRate * 0.5);
-          self.energy = self.energy - (self.shieldRate * 2);
-          if(self.shield > self.shieldMax){
-            self.shield = self.shieldMax;
+    }
+    if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
+      if(self.shield < self.shieldMax){
+        if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+          if(self.energy > 0){
+            self.shield = self.shield + (self.shieldRate * 0.5);
+            self.energy = self.energy - (self.shieldRate * 2);
+            if(self.shield > self.shieldMax){
+              self.shield = self.shieldMax;
+            }
           }
         }
       }
@@ -259,13 +261,8 @@ void() ctrl_component_die={
       self.owner.armLeft.nextthink = time + 0.1;
       self.owner.armLeft.realowner = self.owner;
       self.owner.damageValue = self.owner.damageValue | (M_TOR_LEFT | M_ARM_LEFT);
-      if( !(self.owner.damageValue & (M_TOR_RIGHT | M_ARM_RIGHT) ) ){
-        side_crit = TR_LEFT;
+      if( (self.owner.damageValue & (M_TOR_RIGHT | M_ARM_RIGHT) ) ){
         self.owner.shieldMax = self.owner.shieldMax * 0.5;
-      }
-      else{
-        self.owner.shieldMax = 0;
-        self.owner.shieldRate = self.owner.shieldRate * 0.5;
       }
     }
     else if( self.partTypeId == M_TOR_RIGHT ){
@@ -273,13 +270,8 @@ void() ctrl_component_die={
       self.owner.armRight.nextthink = time + 0.1;
       self.owner.armRight.realowner = self.owner;
       self.owner.damageValue = self.owner.damageValue | (M_TOR_RIGHT | M_ARM_RIGHT);
-      if( !(self.owner.damageValue & (M_TOR_LEFT | M_ARM_LEFT) ) ){
-        side_crit = TR_RIGHT;
+      if( (self.owner.damageValue & (M_TOR_LEFT | M_ARM_LEFT) ) ){
         self.owner.shieldMax = self.owner.shieldMax * 0.5;
-      }
-      else{
-        self.owner.shieldMax = 0;
-        self.owner.shieldRate = self.owner.shieldRate * 0.5;
       }
     }
     if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
@@ -331,11 +323,7 @@ void() ctrl_arm_die={
 
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;
-    self.movetype = MOVETYPE_NONE;
-    self.aiment = world;
     self.health = 0;
-    setsize(self, '0 0 0', '0 0 0');
-    setorigin( self, self.origin );
     
     this = self;
     for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
@@ -347,11 +335,8 @@ void() ctrl_arm_die={
       }
       if( c.th_die ){
         c.think = c.th_die;
+        c.nextthink = time + (random() * 0.5);
       }
-      else{
-        c.think = SUB_Remove;
-      }
-      c.nextthink = time + (random() * 0.5);
     }
   }
 };

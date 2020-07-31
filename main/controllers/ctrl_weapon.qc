@@ -221,7 +221,6 @@ void() ctrl_die_weapon={
   if(self.deadflag == DEAD_NO){
     self.deadflag = DEAD_DEAD;
     self.effects = self.effects | EF_NODRAW; 
-    setsize(self, '-0.25 -0.25 -0.25', '0.25 0.25 0.25');
     
     if( (self.damageType & DMG_MSC) ){
       //weapon is equip, run death func which undoes the module's upgrades

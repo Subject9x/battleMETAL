@@ -42,7 +42,6 @@ vector ai_angle;      //used for temporary angle calcs that preclude overriding 
 float yawCache;       //used to quickly cache yaw to do some per-frame mods
 //////////////////this are set every frame by every AI, do not rely on these OUTSIDE the function they're called (like all the trace_* globals)
 
-float side_crit;
 entity friend_blocker;
 float friend_blocker_dist;
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z

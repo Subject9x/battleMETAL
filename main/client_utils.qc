@@ -487,7 +487,7 @@ void(string cmd, float tokens) client_setWeapon={
         break;
     }
     itr = itr + 1;
-    bitCount = bitCount * 2;
+    bitCount = floor(bitCount * 2);
   }
 };
 

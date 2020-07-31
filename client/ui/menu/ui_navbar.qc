@@ -320,7 +320,7 @@ void() ui_navbutton_launch_click={
             CLIENT_weapon_state = CLIENT_weapon_state | bit;
             break;
         }
-        bit = bit * 2;
+        bit = floor(bit * 2);
         hardpoint = hardpoint.w_slot;
         totalHardpoints = totalHardpoints + 1;  
       }
