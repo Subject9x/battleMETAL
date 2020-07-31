@@ -30,6 +30,8 @@ void() guard_tower_die1={
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
   
+  ai_alert_close(self.enemy);
+  
   self.think = guard_tower_die2;
   self.nextthink = time + 0.1;
 };

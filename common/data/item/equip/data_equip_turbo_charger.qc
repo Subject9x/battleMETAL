@@ -48,7 +48,7 @@ void() data_ini_equip_turbo_charger_={
   
   #ifndef CSQC
     self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
-    self.w_attack = turbo_charger_upgrade_;
+    self.item_run_upgrade = turbo_charger_upgrade_;
     self.think = SUB_Null;
     self.item_remove_upgrade = turbo_charger_remove_;
     self.w_isburst = FALSE; 

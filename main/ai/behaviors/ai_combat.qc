@@ -31,6 +31,9 @@ void() ai_ranged_attack={
   
   for( wep_chain = self.w_slot; wep_chain.owner == self; wep_chain = wep_chain.w_slot){
     if(self.button0){
+      if(wep_chain.deadflag > DEAD_NO){
+        continue;
+      }
       if(wep_chain.w_state != READY){
         continue;
       }
@@ -49,6 +52,9 @@ void() ai_ranged_attack={
       self = this;
     }
     else{
+      if(wep_chain.deadflag > DEAD_NO){
+        continue;
+      }
       //Weapon has a bust-fire mode, and has been fired at least once, run through the burst.
       if(wep_chain.w_isburst != TRUE){
         continue;

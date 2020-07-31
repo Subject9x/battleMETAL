@@ -46,7 +46,7 @@ void() data_ini_equip_energy_battery_={
   
   #ifndef CSQC
     self.think = SUB_Null;
-    self.w_attack = energy_battery_upgrade_;
+    self.item_run_upgrade = energy_battery_upgrade_;
     self.item_remove_upgrade = energy_battery_remove_;
     self.model = "q3mdl/weapons/e_enbat.md3";
     self.w_isburst = FALSE;

@@ -21,6 +21,7 @@ void() hpower_die = [0, hpower_die1]{
   
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
+  ai_alert_close(self.enemy);
 
 };
 void() hpower_die1 = [1, hpower_die2]{

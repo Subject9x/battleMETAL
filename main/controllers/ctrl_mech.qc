@@ -249,13 +249,10 @@ void() ctrl_component_die={
   if( self.deadflag <= DEAD_NO ){
     piece = self;
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
-    self.owner.critBits = self.owner.critBits & self.partTypeId;
+    self.owner.critBits = self.owner.critBits | self.partTypeId;
     self.deadflag = DEAD_DEAD;
-    self.effects = EF_NODRAW; 
-    self.movetype = MOVETYPE_NONE;
-    self.aiment = world;
+    self.effects = EF_NODRAW;
     self.health = 0;
-    setorigin( self, self.origin );
 
     if( self.partTypeId == M_TOR_LEFT ){
       self.owner.armLeft.think = self.owner.armLeft.th_die;
@@ -268,7 +265,7 @@ void() ctrl_component_die={
       }
       else{
         self.owner.shieldMax = 0;
-        self.owner.shieldRate = 0;
+        self.owner.shieldRate = self.owner.shieldRate * 0.5;
       }
     }
     else if( self.partTypeId == M_TOR_RIGHT ){
@@ -282,7 +279,7 @@ void() ctrl_component_die={
       }
       else{
         self.owner.shieldMax = 0;
-        self.owner.shieldRate = 0;
+        self.owner.shieldRate = self.owner.shieldRate * 0.5;
       }
     }
     if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
@@ -299,11 +296,8 @@ void() ctrl_component_die={
       }
       if( c.th_die ){
         c.think = c.th_die;
+        c.nextthink = time + (random() * 0.5);
       }
-      else{
-        c.think = SUB_Remove;
-      }
-      c.nextthink = time + (random() * 0.5);
     }
     
     if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){

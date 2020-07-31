@@ -21,6 +21,7 @@ void() hfuel_death1 = [1, hfuel_death2]{
 
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
+  ai_alert_close(self.enemy);
 };
 void() hfuel_death2 = [2, hfuel_death3]{
   local vector vfx;

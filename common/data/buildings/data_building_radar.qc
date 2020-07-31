@@ -39,6 +39,7 @@ void() building_radar_die1={
 
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
+  ai_alert_close(self.enemy);
   
   self.think = building_radar_die2;
   self.nextthink = time + 0.1;

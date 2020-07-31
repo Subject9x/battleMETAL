@@ -109,13 +109,11 @@ void() map_projectile_shooter={
   
   if( (self.flags & FL_MONSTER) ){
     self.damageValue = ai_pilot_mod_damage( skill, self.damageValue);
-    if(self.w_clipsize > 1)
+    if(self.w_clipsize > 1){
       self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
+    }
   }
 
-  if( (self.damageType & DMG_MSC) )
-    self.w_think = SUB_Null;
-  
   self.th_die = ctrl_die_weapon;
   
   util_MapDeveloperMarker();

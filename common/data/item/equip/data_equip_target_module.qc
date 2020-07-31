@@ -46,7 +46,7 @@ void() data_ini_equip_target_module_={
   
   #ifndef CSQC
     self.spreadDefault = '0.5 0.5 0.33';  //upgrades Unit's accuracy
-    self.w_attack = target_module_upgrade_;
+    self.item_run_upgrade = target_module_upgrade_;
     self.item_remove_upgrade = target_module_remove_;
     self.think = SUB_Null;
     self.w_isburst = FALSE;

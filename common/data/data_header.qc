@@ -16,6 +16,7 @@ entity unitPartList;  //used by vehicle factory to build full list of unit's par
 entity weaponBuild; //used by vehicle factory to build current weapon
 .void() unit_ini;
 .void() item_remove_upgrade;
+.void() item_run_upgrade;
 #endif
 entity weaponList;  //used by data functions to populate weapon lists for units
 

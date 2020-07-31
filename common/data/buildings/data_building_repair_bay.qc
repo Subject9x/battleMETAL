@@ -34,14 +34,16 @@ void() hrepair_th = [0, hrepair_th]{
 
 void() hrepair_rep = [0, hrepair_rep]{
   local float end_repair;
-  local entity repairMe,fix;  
+  local entity repairMe,fix;
   local entity part;
   local float lowHP;
   local float hp;
   local vector fx;
-  fix = world;
+  local entity altSelf;
   
+  fix = world;
   end_repair = TRUE;
+  altSelf = self;
   
   if( self.cockpit.attack_state == ST_WALK ){
     if( vlen(self.trigger_field.origin - self.cockpit.origin) <= 32){
@@ -53,11 +55,19 @@ void() hrepair_rep = [0, hrepair_rep]{
         part = repairMe.partNext;
         lowHP = 99.99;
         while(part){
-          if( part.deadflag <= DEAD_NO && (part.partTypeId != M_ITEM || part.partTypeId != M_CAMERA) ){
+          if( part.partTypeId != M_ITEM || part.partTypeId != M_CAMERA ){
             hp = csqc_updateCompStat(part);
             if( hp < lowHP){
               lowHP = hp;
-              fix = part;
+              if( part.partTypeId == M_ARM_RIGHT && (repairMe.critBits & M_TOR_RIGHT) ){
+                fix = part.owner.torsoRight;
+              }
+              else if( part.partTypeId == M_ARM_LEFT && (repairMe.critBits & M_TOR_LEFT) ){
+                fix = part.owner.torsoLeft;
+              }
+              else{
+                fix = part;
+              }
             }
           }
           part = part.partNext;
@@ -66,18 +76,46 @@ void() hrepair_rep = [0, hrepair_rep]{
       if( fix != world){
         self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
         end_repair = FALSE;
-        /*
-          makevectors(self.angles);
-          fx = self.origin + (v_up * 75) + (v_forward * -24);
-          
-          client_send_particle( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 2, 1);
-          client_send_particle( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -2, 1);
-          client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
-        */
         self.compAltOffset = fix.origin;
 
-        fix.health = fix.health + self.reloadRate;
-        self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.25));
+        
+        if( fix.deadflag == DEAD_NO ){
+          fix.health = fix.health + self.reloadRate;
+          self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.25));
+        }
+        else{
+          fix.health = fix.health + self.reloadRate / 1.25;
+          self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.75));
+          if(fix.deadflag == DEAD_DEAD && fix.partTypeId != M_LEGS){
+            self.deadflag = DEAD_DYING;
+            if(fix.deadflag != DEAD_NO ){
+              fix.deadflag = DEAD_NO;
+              fix.effects = fix.effects - (fix.effects & EF_NODRAW);
+              repairMe.critBits = repairMe.critBits - (repairMe.critBits & fix.partTypeId);
+              part = repairMe.w_slot;
+              while( part != world ){
+                if( part.partParentId == fix.partTypeId && part.deadflag != DEAD_NO ){
+                  part.deadflag = DEAD_NO;
+                  part.effects = part.effects - (part.effects & EF_NODRAW);
+                  repairMe.stat_player_weapons_state = repairMe.stat_player_weapons_state | part.w_group;
+                  if( part.item_run_upgrade ){
+                    self = part;
+                      self.item_run_upgrade();
+                    self = altSelf;
+                  }
+                  setsize(part, '-1 -1 -1', '1 1 1');
+                }
+                part = part.w_slot;
+              }
+            }
+          }
+          else if(fix.deadflag == DEAD_DYING){
+            if(fix.health > fix.max_health * 0.5){
+              fix.deadflag = DEAD_NO;
+            }
+          }
+        }
+        
         if(fix.health >= fix.max_health){
           fix.health = fix.max_health;
           if( fix.partTypeId == M_LEGS ){
@@ -107,6 +145,18 @@ void() hrepair_rep = [0, hrepair_rep]{
       self.trigger_field.flags = self.trigger_field.flags - FL_NOSHOOT;
     }
     self.trigger_field.stat_plr_rep = -1;
+    
+    part = repairMe.partNext;
+    while(part){
+      if( part.partTypeId != M_ITEM || part.partTypeId != M_CAMERA ){
+        if(part.deadflag != DEAD_NO && part.health > 0){
+          part.deadflag = DEAD_NO;
+          self.trigger_field.critBits = self.trigger_field.critBits - (self.trigger_field.critBits & part.partTypeId);
+        }
+      }
+      part = part.partNext;
+    }
+    
     self.trigger_field = world;
     self.th_stand();
     self.cockpit.think = building_repair_node_think;
@@ -127,6 +177,7 @@ void() hrepair_die = [0, hrepair_die1]{
   
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
+  ai_alert_close(self.enemy);
   
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };

@@ -212,9 +212,8 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
     
     if( (self.damageType & DMG_MSC) ){
       //Fire Equipment 'upgrade' functions now
-      if( self.w_attack ){
-        self.w_attack();
-        self.w_attack = SUB_Null; //remove upgrade function
+      if( self.item_run_upgrade ){
+        self.item_run_upgrade();
       }
     }
     self.wepFireOffsetCache = self.wepFireOffset;

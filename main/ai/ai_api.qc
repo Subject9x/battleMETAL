@@ -132,6 +132,9 @@ void( entity t) ai_alert_close={
   if((t.flags&FL_CLIENT)){
     ai_sfx_help();
   }
+  if(!self.ai_view || self.ai_view < 1){
+    self.ai_view = AI_RANGE_M;
+  }
   for(ally = findradius(self.origin, self.ai_view); ally != world; ally = ally.chain){
     if( ally.faction != self.faction ){
       continue;

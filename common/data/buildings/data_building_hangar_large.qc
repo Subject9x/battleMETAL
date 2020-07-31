@@ -42,6 +42,8 @@ void() hangar_die1=[0, hangar_die2]{
 
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
   
+  ai_alert_close(self.enemy);
+  
 };
 void() hangar_die2=[0, hangar_die3]{
 
