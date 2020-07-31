@@ -65,6 +65,7 @@ float UI_FLAG_TXTFIELD_UPP = 2048; //allow uppercase
 .string data_text;
 .float subid; //sub menu, used sparingly
 .vector size; //used to size elements
+.vector drawSize; //computed from .size
 
 //some of this ported over from ui_defs in the client code
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;

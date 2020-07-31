@@ -308,6 +308,7 @@ void(entity btn) render_btn={
         sizzle = drawgetimagesize(self.image1);
         sizzle = gui_percentToPixelRawVec( gui_scaleSize(sizzle, VIEW_SCALE) );
       }
+      self.drawSize = sizzle;
       
       if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
         MOUSE_TARGET = self;
