@@ -19,7 +19,7 @@ void() data_ini_onnek_={
   self.vec_size = 2;  //
   self.vec_name = "Onnek";
  
-  self.max_health = 350;
+  self.max_health = 300;
   setsize(self, '-30 -30 -10.25', '30 30 28');
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   
