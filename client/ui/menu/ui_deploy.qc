@@ -335,12 +335,12 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
-    nlen = stringwidth(navname, 0, '12 12 0');
+    nlen = stringwidth(nav.vec_name, 0, '12 12 0');
     nofs_x = nofs_x - gui_percentXRaw( (nlen/2) );
     nofs_y = nofs_y - gui_percentYRaw(18);
     gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
     
-    drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
+    drawstring(nofs, nav.vec_name, '12 12 0', renderColor, 1, 0);
     
     drawfont = drawfont_prev;
   }

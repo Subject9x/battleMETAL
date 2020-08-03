@@ -104,4 +104,7 @@ Overview:
 .float targetEntId;
 .float entId; 
 .void( float critHits ) te_critical_hit;  //interface for unit critical hit events
+.vector uiOffset; //menu-specific hardpoint draw locations.
+  //prevents hardpoint overlap in MENU_HANGAR but still allowing hardpoints to be close to the actual
+  //weapon locations.
 #endif

@@ -387,14 +387,15 @@ void(vector ofs) menu_arming_HardpointGraph={
     drawpic(mechIconOrg, MECH_DATA_ICON, gui_percentToPixelRawVec('350 375'), CLR_DEF_WHITE - '0.1 0.1 0.1' , 1, 0);
     drawpic(nofs, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
     
-    MECHPANEL_CTR = hardpointCenter;
+    MECHPANEL_CTR = mechIconOrg;
+    MECHPANEL_CTR_x = MECHPANEL_CTR_x + gui_percentXRaw(360 / 2);
+    MECHPANEL_CTR_y = MECHPANEL_CTR_y + gui_percentYRaw(mechIconTopOffset_y + (50));
 
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
       allowed = TRUE;
-      hardpointCoord = gui_mapCoordToImgCoord( mechMins,  mechSize, hardpoint.compOffset * 0.75, panelOffset, panelImageSize );
-      hardpoint.ui_org = hardpointCoord - gui_percentToPixelRawVec('17 17');
+      hardpoint.ui_org = MECHPANEL_CTR + gui_percentToPixelRawVec(hardpoint.uiOffset) - gui_percentToPixelRawVec('17 17');
      
       if( INPUT_mouse_state == MOUSE_DRAG ){
         if( UI_ARMING_item_drag.data_idx > 0 ){      

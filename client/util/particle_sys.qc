@@ -617,6 +617,7 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
   }
   pointsound( muzzleOrg, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), muzzleOrg, norm * 4, 1);
+  pointparticles( particleeffectnum("TE_FLK_IMPACT_FLASH"), muzzleVel, muzzleVel, 1);
   //pointparticles( particleeffectnum("TE_FLK_TRACER"), muzzleOrg, norm * 1600, 1);
   
   switch(impactStyle){

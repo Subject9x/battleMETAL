@@ -120,10 +120,25 @@ void() data_ini_balaket_={
 //====================================
 
 //UI Data=============================
-
   self.abbrev = "BLK";
   self.description = "A primitive combat platform, BALAKETTs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. | | BALAKETT units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. | | They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
   self.icon = "gfx/ui/mech_icons/icon_balaket.png";
+  
+  local entity hardpnt;
+  hardpnt = self.w_slot;
+  hardpnt.uiOffset = '-85 25'; //#1
+  
+  hardpnt = hardpnt.w_slot;
+  hardpnt.uiOffset = '85 25'; //#2
+  
+  hardpnt = hardpnt.w_slot;
+  hardpnt.uiOffset = '12 -50';//#3
+  
+  hardpnt = hardpnt.w_slot;
+  hardpnt.uiOffset = '-50 -18.0';//#4
+  
+  hardpnt = hardpnt.w_slot;
+  hardpnt.uiOffset = '50 -18.0'; //#5
 //====================================
 #endif
 };
