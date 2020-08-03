@@ -894,7 +894,6 @@ void() data_hud_frame={
     hasTarget = TRUE;
   }
   
-
   uid = 1;
   while( uid <= 32 ){
     local float objid, algn, lflag, lalign, axis, wbit;

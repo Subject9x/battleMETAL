@@ -47,12 +47,6 @@ void() dynamic_precache =
 };
 
 void() cs_precache={
-
-  //cockpit images 
-  HUD_BLK_IMG_B = precache_pic("gfx/hud/hud_blk_bck.png", 0);
-  HUD_MTK_IMG_B = precache_pic("gfx/hud/hud_mtk_bck.png", 0);
-  HUD_MNT_IMG_B = precache_pic("gfx/hud/hud_mnt_bck.png", 0);
-  
   HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret/ret_pip_hrz.png", 0);
   HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret/ret_pip_vrt.png", 0);
   HUT_RET_LOK = precache_pic("gfx/hud/ret/ret_lock.png", 0);

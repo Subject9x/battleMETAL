@@ -15,7 +15,7 @@ void(vector org) ui_objective_frame={
     
     lst_idx = 0;
     itr = 1; 
-    torg = org + gui_percentToPixelRawVec('32 128');
+    torg = org + gui_percentToPixelRawVec('8 52');
     drawstring(torg, "[OBJECTIVES]", '14 14 0', HUD_COLOR_DEF, 1.1, 0);
     while( itr < 32 ){
       local float complete;

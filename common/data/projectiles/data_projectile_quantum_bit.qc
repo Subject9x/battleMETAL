@@ -144,7 +144,7 @@ void() data_projectile_ini_quantum_bit_touch_={
       self.impactType = IMPACT_ARMOR;
     }
   }  
-  if(self.aState = TRUE){
+  if(self.aState == TRUE){
     self.enemy = other;
     self.think = data_projectile_quantum_shatter;
     self.nextthink = time + 0.01;
