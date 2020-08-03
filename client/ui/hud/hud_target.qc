@@ -232,25 +232,44 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
 */
 void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
   local vector meter;
+  local vector tColor;
+  
+  if(CLIENT_target_faction == CLIENT_faction){
+   tColor =  gui_getColorForArmor(val);
+  }
+  else{
+   tColor =  gui_getColorForArmorTarget(val);
+  }
+  
   vorg = gui_percentToPixelRawVec(vorg);
   vorg = gui_calcAlign(vorg, algn);
   meter = gui_percentToPixelRawVec(siz);
   meter_x = meter_x / 2;
   meter_y = meter_y / 2;
   meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
-  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, AXIS_V, 0);
+  
+  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 
 void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
   local vector meter;
+  local vector tColor;
+  
+  if(CLIENT_target_faction == CLIENT_faction){
+   tColor =  gui_getColorForArmor(val);
+  }
+  else{
+   tColor =  gui_getColorForArmorTarget(val);
+  }
+  
   vorg = gui_percentToPixelRawVec(vorg);
   vorg = gui_calcAlign(vorg, algn);
   meter = gui_percentToPixelRawVec(siz);
   meter_x = meter_x / 2;
   meter_y = meter_y / 2;
   meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
-  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 /*

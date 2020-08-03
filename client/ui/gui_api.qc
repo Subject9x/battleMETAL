@@ -243,6 +243,24 @@ vector(float val) gui_getColorForArmor={
   }
 };
 
+vector(float val) gui_getColorForArmorTarget={
+  if((-1<val)&&(val<=25)){
+    return CLR_DEF_TARG_ARM_ONEQ;
+  }
+  else if((25<val)&&(val<=50)){
+    return CLR_DEF_TARG_ARM_HALF;
+  }
+  else if((50<val)&&(val<=75)){
+    return CLR_DEF_TARG_ARM_THREEQ;
+  }
+  else if((75<val)&&(val<=100)){
+    return CLR_DEF_TARG_ARM_OK;
+  }
+  else{
+    return CLR_DEF_ARM_DED;
+  }
+};
+
 vector(float val) gui_getColorForShield={
   if((1<val)&&(val<=25)){
     return CLR_DEF_SHD_ONEQ;

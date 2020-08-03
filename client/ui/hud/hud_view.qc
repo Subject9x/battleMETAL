@@ -203,15 +203,27 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
 /*
   RENDER ARMOR METER
 */
-void( vector pos, vector grpCtr, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label) hud_renderArmorMeter={
+void( vector pos, vector grpCtr, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label, float thatTarget) hud_renderArmorMeter={
   local vector meterSize, label_org, shofs;
+  
+  local vector tColor;
+  if( thatTarget ){
+    if(CLIENT_target_faction == CLIENT_faction){
+     tColor =  gui_getColorForArmor(val);
+    }
+    else{
+     tColor =  gui_getColorForArmorTarget(val);
+    }
+  }else{
+     tColor =  gui_getColorForArmor(val);
+  }
   
   shofs = grpCtr;
   meterSize = gui_percentToPixelRawVec(mSize);
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), shofs);
   
-  gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, meterAxis, 0);
+  gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, meterAxis, 0);
   label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), (VIEW_LFT | VIEW_TOP), pos);
   
   drawfont_prev = drawfont;
@@ -224,22 +236,22 @@ void( vector pos, vector grpCtr, float val, vector mSize, float lbl_algn, vector
   RENDER ARMOR GRAPH STYLE 1
   used for mech targets
 */
-void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph={
+void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, float lg, float isTarget) hud_renderArmorGraph={
   local vector pnl_ctr;
   pnl_ctr = gui_percentToPixelRawVec(vorg);
   pnl_ctr = gui_calcAlign(pnl_ctr, algn);
   
-  hud_renderArmorMeter('-6 -27', pnl_ctr, ct, '12 55', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "CT");
+  hud_renderArmorMeter('-6 -27', pnl_ctr, ct, '12 55', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "CT", isTarget);
   
-  hud_renderArmorMeter('-22 -24', pnl_ctr, lt, '12 48', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "LT");
+  hud_renderArmorMeter('-22 -24', pnl_ctr, lt, '12 48', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "LT", isTarget);
   
-  hud_renderArmorMeter('-38 -18', pnl_ctr, la, '12 36', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "LA");
+  hud_renderArmorMeter('-38 -18', pnl_ctr, la, '12 36', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "LA", isTarget);
   
-  hud_renderArmorMeter('10 -24', pnl_ctr, rt, '12 48', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "RT");
+  hud_renderArmorMeter('10 -24', pnl_ctr, rt, '12 48', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "RT", isTarget);
   
-  hud_renderArmorMeter('26 -18', pnl_ctr, ra, '12 36', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "RA");
+  hud_renderArmorMeter('26 -18', pnl_ctr, ra, '12 36', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "RA", isTarget);
   
-  hud_renderArmorMeter('-28 30', pnl_ctr, lg, '56 12', (VIEW_LFT | VIEW_CTY),'8 -1', AXIS_V, "LG");
+  hud_renderArmorMeter('-28 30', pnl_ctr, lg, '56 12', (VIEW_LFT | VIEW_CTY),'8 -1', AXIS_V, "LG", isTarget);
 };
 
 /*
@@ -919,7 +931,7 @@ void() data_hud_frame={
         if( HUD_ZOOM_ACTIVE == FALSE){
           porg = UI_DATA_POS[uid];
           algn = UI_DATA_ALIGN[uid];
-          hud_renderArmorGraph(porg, algn, CLIENT_health_center, CLIENT_health_torso_left, CLIENT_health_torso_right, CLIENT_health_arm_left, CLIENT_health_arm_right, CLIENT_health_legs);
+          hud_renderArmorGraph(porg, algn, CLIENT_health_center, CLIENT_health_torso_left, CLIENT_health_torso_right, CLIENT_health_arm_left, CLIENT_health_arm_right, CLIENT_health_legs, FALSE);
         }
         break;
       case HUD_UID_SHIELD_PLAYER: 
@@ -940,7 +952,7 @@ void() data_hud_frame={
             if( CLIENT_target_datatype == DATA_MECH ){
               porg = UI_DATA_POS[uid];
               algn = UI_DATA_ALIGN[uid];
-              hud_renderArmorGraph(porg, algn, CLIENT_stat_trg_ct_hp, CLIENT_stat_trg_lt_hp, CLIENT_stat_trg_rt_hp, CLIENT_stat_trg_la_hp, CLIENT_stat_trg_ra_hp, CLIENT_stat_trg_lg_hp);
+              hud_renderArmorGraph(porg, algn, CLIENT_stat_trg_ct_hp, CLIENT_stat_trg_lt_hp, CLIENT_stat_trg_rt_hp, CLIENT_stat_trg_la_hp, CLIENT_stat_trg_ra_hp, CLIENT_stat_trg_lg_hp, TRUE);
             }
           }
         }

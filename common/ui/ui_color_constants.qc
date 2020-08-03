@@ -72,6 +72,16 @@ vector CLR_HUD_DMG_SHIELD = '0.2 0.9 0.2';
   //gone
   vector CLR_DEF_ARM_DED= '0.5 0.5 0.5';
 
+  //target armor meter
+  //fine
+  vector CLR_DEF_TARG_ARM_OK    = '1.0 0.59 0';
+  //75%
+  vector CLR_DEF_TARG_ARM_THREEQ  = '1.3 0.19 0';
+  //50%
+  vector CLR_DEF_TARG_ARM_HALF  = '0.69 0 0';
+  //25%
+  vector CLR_DEF_TARG_ARM_ONEQ  = '0.33 0 0';
+
 //shield constants
   //fine
   vector CLR_DEF_SHD_OK= '0.2 0.8 0.2';
