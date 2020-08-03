@@ -41,7 +41,7 @@ void() data_projectile_ini_quantum_bit_={
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
-    self.effects = EF_NOSHADOW | EF_DOUBLESIDED;
+    self.effects = self.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
     self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
     self.damageType = self.damageType | EFF_SHD;
     self.pcl_explode = projectile_qbit_expl;
@@ -67,16 +67,58 @@ void() data_projectile_quantum_bit_th={
     remove(self);
     return;
   }
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_VELOCITY);
   
-  if( ai_valid_target(self.enemy) ){
+  /*if( ai_valid_target(self.enemy) ){
     vtemp = self.enemy.origin + '0 0 5';
     dir = normalize(vtemp - self.origin);
     dir = dir * 0.75;
     self.velocity = dir * self.data_velocity;
     self.SendFlags = self.SendFlags | (SENDFLAG_TURRET | SENDFLAG_VELOCITY);
   }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;*/
 }
+
+
+/*
+  Projectile will chain onto nearby targets with successful hits.
+*/
+void() data_projectile_quantum_shatter={
+  local entity thing;
+  local float itr;
+  
+  self.damageValue = self.damageValue * 0.4;
+  itr = 4;
+  if( self.aState ){
+    itr = rint( itr * 1.5);
+  } 
+  itr = 2 + rint(random() * itr);
+  for(thing = findradius(self.enemy.origin, 250); thing != world; thing = thing.chain){
+    if(itr == 0){
+      continue;
+    }
+    if(thing == self.enemy){
+      continue;
+    }
+    if( !thing.takedamage ){
+      continue;
+    }
+    if( !(thing.flags & (FL_MONSTER)) && !(thing.flags & (FL_CLIENT)) ){
+      continue;
+    }
+    itr = itr - 1;
+    trailparticles(self.enemy, particleeffectnum("TE_QRFL_QBIT_TRAIL"), self.enemy.origin, thing.origin);
+    if(thing.shield > 0){
+      t_damage_shield(thing, self, self.owner, self.damageValue * 0.67, self.origin, FALSE);
+    }
+    else{
+      t_damage(thing, self, self.owner, self.damageValue, self.origin, '0 0 0');
+    }
+  }
+
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
+};
 
 void() data_projectile_ini_quantum_bit_touch_={
   local float hit;
@@ -93,16 +135,23 @@ void() data_projectile_ini_quantum_bit_touch_={
   
   if(other.takedamage){
     if(other.shield > 0){
-      t_damage_shield(other, self, self.owner, self.damageValue, self.origin, TRUE);
+      t_damage_shield(other, self, self.owner, self.damageValue * 0.15 , self.origin, TRUE);
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      t_damage(other, self, self.owner, self.damageValue * 0.15, self.origin, '0 0 0');
+      self.aState = TRUE;
+      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       self.impactType = IMPACT_ARMOR;
     }
   }  
-  
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.05;
+  if(self.aState = TRUE){
+    self.enemy = other;
+    self.think = data_projectile_quantum_shatter;
+    self.nextthink = time + 0.01;
+  }
+  else{
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
+  }
 };
 #endif CSQC
