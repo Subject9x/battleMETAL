@@ -117,7 +117,7 @@ void() hud_render_tactical_map={
         
       }
       else{
-        gui_renderTintImage2(TRUE, gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
+        gui_renderTintImage2(TRUE, gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'),'0.25 1 2', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
         if( player.targetEntId <= 0 ){continue;}
         if( player.enemy.deadflag != DEAD_NO ){continue;}
           
@@ -128,6 +128,13 @@ void() hud_render_tactical_map={
     }
   
   //render allied contacts
+  local string arrow;
+  local vector arrowOrg;
+  
+  arrow = gui_angleToArrow(input_angles_y);
+  makevectors(input_angles);
+  arrowOrg = gui_mapCoordToImgCoord(world.mins, map_size, pmove_org + (v_forward * 200), mapOrg, mapImgSize);
+  drawpic(arrowOrg, arrow, gui_percentToPixelRawVec('10 10'), '0.25 1 2', 1, 0);
 };
 
 void() hud_render_scoreboard={

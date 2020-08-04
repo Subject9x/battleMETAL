@@ -45,6 +45,38 @@ string(float anglee) gui_angleToNav={
   }
 };
 
+string(float anglee) gui_angleToArrow={
+  anglee = anglemod(anglee);
+  if(anglee >= 337.5 || anglee < 22.5){
+    return "gfx/hud/map_lf.png";
+  }
+  else if(anglee >= 22.5 && anglee < 67.5){
+    return "gfx/hud/map_ul.png";
+  }
+  else if(anglee >= 67.5 && anglee < 112.5){
+    return "gfx/hud/map_up.png";
+  }
+  else if(anglee >= 112.5 && anglee < 157){
+    return "gfx/hud/map_ur.png";
+  }
+  else if(anglee >= 157 && anglee < 202){
+    return "gfx/hud/map_rt.png";
+  }
+  else if(anglee >= 202 && anglee < 247){
+    return "gfx/hud/map_dr.png";
+  }
+  else if(anglee >= 247 && anglee < 292){
+    return "gfx/hud/map_dn.png";
+  }
+  else if(anglee >= 292 && anglee < 337.5){
+    return "gfx/hud/map_dl.png";
+  }
+  else{
+    return "gfx/hud/map_dr.png";
+  }
+};
+
+
 float(float anglee) gui_angleToEnum={
   anglee = anglemod(anglee);
   if(anglee >= 315 || anglee < 45){
