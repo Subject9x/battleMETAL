@@ -39,7 +39,7 @@ float() predraw_navpoint={
   else{
     self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
     self.angles_y = anglemod(self.angles_y + 0.025);
-    self.alpha = 0.33;
+    self.alpha = 0.2;
     self.scale = 1;
   }
   return TRUE;

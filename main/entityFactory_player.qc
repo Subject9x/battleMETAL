@@ -145,6 +145,24 @@ void() player_makeMech={
     for( wep = self.w_slot; wep != world; wep = wep.w_slot){
       wep.customizeentityforclient = customize_wep_for_client;
     }
+    
+    switch(cvar("skill")){
+      case 1:
+        self.energyMax = self.energyMax * 1.5;
+        self.energyRate = self.energyRate * 1.1;
+        break;
+      case 2:
+        self.energyMax = self.energyMax * 1.25;
+        self.energyRate = self.energyRate * 1.05;
+        break;
+      case 3:
+        self.energyMax = self.energyMax * 0.9;
+        self.energyRate = self.energyRate * 0.95;
+        break;
+      default:
+        self.energyMax = self.energyMax * 1;
+        break;
+    }
   }
   else{
     //network games are too laggy to allow a player to see their own mech parts sadly

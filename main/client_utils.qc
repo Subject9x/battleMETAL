@@ -738,10 +738,6 @@ void() sv_select_info_start={
   local entity spot;
   
   switch( GAMETYPE ){
-    case GAMEMODE_CAMPAIGN:
-      spot = find(spot, classname, "info_player_start");
-      break;
-      
     case GAMEMODE_COOP:
       spot = find(spot, classname, "info_player_coop");
       break;
@@ -753,11 +749,13 @@ void() sv_select_info_start={
     case GAMEMODE_TEAMDM:
       spot = find(spot, classname, "info_player_deathmatch");
       break;
+    default:
+      spot = find(spot, classname, "info_player_start");
+      break;
   }
   if( spot ){
     self.angles = spot.angles;
     setorigin(self, spot.origin);
-    
   }
   else{
     error ("PutClientInServer()->sv_select_info_start(): no info_player_start on level");
