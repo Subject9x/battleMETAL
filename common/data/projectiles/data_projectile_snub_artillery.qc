@@ -17,11 +17,6 @@ void() data_projectile_snub_artillery_th;
 
 #ifdef CSQC
 void() projectile_sfga_expl={
-  local vector hitColor;
-  local float hitBloom;
-  local float hitScale;
-  local float hitDebris;
-  
   if( self.impactType == IMPACT_SKY ){
     return;
   }

@@ -40,7 +40,6 @@ void() repair_bay_dlights={
   Repair Bay - Active
 */
 void() repair_bay_active={
-  local vector fx;
   if( self.energy < 0 ){
     self.think = repair_bay_idle;
     self.nextthink = time + 0.1;

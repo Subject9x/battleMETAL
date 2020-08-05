@@ -35,7 +35,6 @@ void() sendevent_gev_move={
 */
 void() sendevent_gev_die={
   local entity weps;
-  local entity this;
   local entity rem;
 
   te_missile_explode( self.origin, self.vec_size, '0.9 0.67 0.33', 0.02 ) ;
@@ -61,7 +60,6 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   local float prevShield;
   local float pclEffect;
   local vector turretAng;
-  local entity weps;
   local entity this;
   local string newName;
   

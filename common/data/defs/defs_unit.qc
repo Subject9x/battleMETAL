@@ -25,17 +25,15 @@ Overview:
 .float turret_yaw_speed;
 .float ai_attack_chance;
 
-//Server-side 'thin' unit data
-
-
-
-
+.float shieldRateMod; //field for modules.
+.float radar_time;
+.float was_hit; //used for hit direction calculation mostly
+.float hitdir_buffer; //used for hit direction, is cleared every frame
 #endif
 
 .float burnBits;    //bitflags sent to client for fire/burning effects on ents.
 
 .float evasionDrain;
-
 
 .float data_idx;
 .float vec_size;
@@ -49,13 +47,11 @@ Overview:
 .float shield;        //current amount of shields
 .float shieldMax;     //max shields
 .float shieldRate;    //shield recharge rate
-.float shieldRateMod; //field for modules.
 .float startupDelay; //time in game seconds for unit to activate after spawn.
 
 //Weapon Spread Mechanics
 .vector spreadDefault;
 
-.float radar_time;
 .float radar_range;
 
 //Client-side data and cosmetics -> REFACTOR speedForward | speedStrafe | speedBackwards | speedAccel
@@ -77,14 +73,12 @@ Overview:
 
 .float isActive;
 
-.float was_hit; //used for hit direction calculation mostly
-.float hitdir_buffer; //used for hit direction, is cleared every frame
 
 #ifdef CSQC
 .float pitchMin;
 .float pitchMax;
 
-.vector torsoCenterOffset;
+/*.vector torsoCenterOffset;
 .vector torsoCenterAngles;
 .float torsoCenterHealth;
 
@@ -101,15 +95,12 @@ Overview:
 .float armRightHealth;
 
 .vector legsOffset;
-.float torsoCenterHealth;
+.float torsoCenterHealth;*/
 
-.vector legAngles;
 .vector cockpitOffset;
-
 
 .float targetEntId;
 .float entId; 
-.void( float critHits ) te_critical_hit;  //interface for unit critical hit events
 .vector uiOffset; //menu-specific hardpoint draw locations.
   //prevents hardpoint overlap in MENU_HANGAR but still allowing hardpoints to be close to the actual
   //weapon locations.

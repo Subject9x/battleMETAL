@@ -15,11 +15,6 @@ void() data_projectile_quantum_bit_th;
 
 #ifdef CSQC
 void() projectile_qbit_expl={
-  local vector hitColor;
-  local float hitBloom;
-  local float hitScale;
-  local float hitDebris;
-  
   if( self.impactType == IMPACT_SKY ){
     return;
   }
@@ -46,6 +41,7 @@ void() data_projectile_ini_quantum_bit_={
     self.damageType = self.damageType | EFF_SHD;
     self.pcl_explode = projectile_qbit_expl;
     self.scale = 1.15;
+    self.predraw_projectile = predraw_quantum;
   #endif
   
   #ifndef CSQC

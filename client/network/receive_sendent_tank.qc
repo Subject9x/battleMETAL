@@ -31,7 +31,6 @@ void() sendevent_tank_move={
 */
 void() sendevent_tank_die={
   local entity weps;
-  local entity this;
   local entity rem;
   
   if( (self.flags & FL_TURRET) ){
@@ -167,7 +166,6 @@ void() interpolate_tank={
   local entity parent;
   local entity wepn;
   local vector saved;
-  local vector compAngle;
   
   interpolate_origin();
   interpolate_angle();
@@ -179,7 +177,6 @@ void() interpolate_tank={
   if( self.torsoCenter ){
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles_x = compAngle_x;
       interpolate_origin();
       interpolate_angle();
       interpolate_ground();

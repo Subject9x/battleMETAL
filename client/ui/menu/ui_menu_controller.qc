@@ -292,18 +292,18 @@ void( vector menuOrg ) menu_playerlist_basic={
 
 //arranges player rows for dm
 void( vector menuOrg ) menu_draw_players_basic={
-  local entity player;
   
+  local entity player;
   local vector menuLabelOfs;
   local vector listOfs;
   local vector listRowOfs;
-  
-  local vector fontColor;
-  
-  local float menuLabelLen;
-  
+  local vector fontColor;  
   local float playerRowItr;
   local float itr;
+  
+  menuLabelOfs = '0 0';
+  listOfs = '0 0';
+  fontColor = '1 1 1';
   
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec(UI_CONNECT_DMLIST_SIZE), '0.65 0.65 0.65', 1, 0);
 

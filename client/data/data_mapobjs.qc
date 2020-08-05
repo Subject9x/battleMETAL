@@ -263,7 +263,7 @@ void( float isNew, float entFlags ) data_deploy={
 /*
   OBJECT - Weather Data
 */
-void( float isNew, float entFlags ) data_weather;
+//void( float isNew, float entFlags ) data_weather;
 
 
 /*

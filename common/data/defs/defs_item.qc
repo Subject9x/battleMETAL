@@ -27,11 +27,10 @@ Overview
 .float ai_nextFireTime; //last time this WEAPON was fired.
 .vector spreadCache;
 .float damageCache;
+.float reloadValue;
 #endif
 
 #ifdef CSQC
-.float reloadMaxCache;
-.float lastFired;
 .string fire_sound;
 .string w_name;       //label for weapon, need to keep 'classname' reserved for actual class
 .string icon;       //client-side
@@ -40,7 +39,6 @@ Overview
 .float aState;
 .vector wepFireOffset;     //offset for proj. origin
 .vector wepFireOffsetCache; //cached offset for constant reference
-.float reloadValue;
 .float reloadMax;
 .float reloadRate;
 .vector w_adj_ang;      //rotate weapon model face correctly

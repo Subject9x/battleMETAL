@@ -20,11 +20,6 @@ void() data_projectile_plasma_think_;
 
 #ifdef CSQC
 void() projectile_plasma_expl={
-  local vector hitColor;
-  local float hitBloom;
-  local float hitScale;
-  local float hitDebris;
-  
   if( self.impactType == IMPACT_SKY ){
     return;
   }

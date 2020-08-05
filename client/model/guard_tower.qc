@@ -10,8 +10,6 @@ Overview:
   Guard Post - Dynamic Lights
 */
 void() guard_post_dlights={
-  local vector spotlight;
-  
   if( self.deadflag == DEAD_NO ){
     makevectors(self.w_adj_ang);
     adddynamiclight2( self.origin + (v_forward * 32), 128, '1 1 0.4', self.partTypeId, "", 0);

@@ -909,8 +909,7 @@ void() data_hud_frame={
   uid = 1;
   while( uid <= 32 ){
     local float objid, algn, lflag, lalign, axis, wbit;
-    local vector porg, vsize, color1, lblofs;
-    local string localIcon;
+    local vector porg, vsize, lblofs;
     local vector wep;
     
     objid = UI_DATA_UIDS[uid];

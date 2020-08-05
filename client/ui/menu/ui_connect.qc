@@ -158,7 +158,6 @@ void( vector menuOrg ) menu_connect_draw_rules_dm={
   local float labelLen;
   local vector leftAnchor;
   local vector ruleRow;
-  local vector fontsStyle;
   
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('105 150'), '0.65 0.65 0.65', 1, 0);
   
@@ -297,7 +296,6 @@ void( vector menuOrg ) menu_connect_draw_rules_team={
   local float labelLen;
   local vector leftAnchor;
   local vector ruleRow;
-  local vector fontsStyle;
   
   local float listCount;
   
@@ -414,7 +412,6 @@ void( vector menuOrg ) menu_connect_draw_about_team={
 void( vector menuOrg ) menu_connect_draw_objectives={
   local vector labelOrg;
   local float labelLen;
-  local entity objective;
   
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('420 183'), '0.65 0.65 0.65', 1, 0);
   
@@ -434,13 +431,8 @@ void( vector menuOrg ) menu_connect_draw_objectives_row={
 void( vector menuOrg ) menu_connect_draw_players_team={
   local entity player;
   
-  local vector menuLabelOfs;
   local vector listOfs;
   local vector listRowOfs;
-  
-  local vector fontColor;
-  
-  local float menuLabelLen;
   
   local float teamCount1;
   local float teamCount2;
@@ -457,6 +449,7 @@ void( vector menuOrg ) menu_connect_draw_players_team={
   menu_connect_draw_scorebar( menuOrg, "- Survest -", TRUE );
   menu_connect_draw_scorebar( menuOrg + gui_percentToPixelRawVec('310 0'), "- Militar -", TRUE );
   
+  listOfs = '0 0';
   listOfs_x = listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
   listOfs_y = menuOrg_y + gui_percentYRaw(14);
   
@@ -569,7 +562,7 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   local float labelLen;
   local vector leftAnchor;
   local vector ruleRow;
-  local vector fontsStyle;
+  
   local float listCount;
   
   drawfont_prev = drawfont;
@@ -642,7 +635,6 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
 void( vector menuOrg ) menu_connect_draw_objectives_coop={
   local vector labelOrg;
   local float labelLen;
-  local entity objective;
 
   local vector bpos, lofs;
   local float lst_idx, eol, line_rtn;
@@ -703,7 +695,7 @@ void( vector menuOrg ) menu_connect_draw_objectives_coop={
     objectiveStatusOrg_x = menuOrg_x + gui_percentXRaw(335);
     objectiveStatusOrg_x = objectiveStatusOrg_x - gui_percentXRaw(stringwidth(objectiveStatusLabel,0,'14 14') / 2); 
     objectiveStatusOrg_y = objectiveOffset_y;
-    drawstring( objectiveStatusOrg, objectiveStatusLabel, '14 14 0', objectiveColor, 1);
+    drawstring( objectiveStatusOrg, objectiveStatusLabel, '14 14 0', objectiveColor, 1, 0);
     
     if(MSN_OBJ_DESC[(lst_idx+1)] == ""){
       eol = FALSE;
@@ -717,13 +709,8 @@ void( vector menuOrg ) menu_connect_draw_objectives_coop={
 void( vector menuOrg ) menu_connect_draw_players_coop={
   local entity player;
   
-  local vector menuLabelOfs;
   local vector listOfs;
   local vector listRowOfs;
-  
-  local vector fontColor;
-  
-  local float menuLabelLen;
   
   local float playerRowItr;
   local float itr;
@@ -733,6 +720,7 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
 
   menu_connect_draw_scorebar( menuOrg, "- Players -", FALSE);
   
+  listOfs = '0 0';
   listOfs_x = listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
   listOfs_y = menuOrg_y + gui_percentYRaw(16);
 

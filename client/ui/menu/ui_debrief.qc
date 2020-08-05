@@ -85,17 +85,17 @@ void(vector panelOffset) menu_debrief_header={
   MENU_DEBRIEF_BUTTON_ORG_mission = nextMissionOrg;
   
   //TODO - what to do with FAILED missions?
-  local string missionStatus;
+  local string missionStat;
   if( MENU_DEBRIEF_status ){
-    missionStatus = "[Next Mission]";
+    missionStat = "[Next Mission]";
     nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(16);
   }
   else{
-    missionStatus = "<< Retry ";
+    missionStat = "<< Retry ";
     nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(32);
   }
   nextMissionLabelOrg_y = gui_percentYRaw(10);
-  drawstring( nextMissionLabelOrg, missionStatus, '18 14', '1 1 1', 1, 0);
+  drawstring( nextMissionLabelOrg, missionStat, '18 14', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
 };

@@ -24,7 +24,6 @@ void() menu_armingListener_onDrag={
 };
 
 void() menu_armingListener_onHover={
-  local float found;
   //ToolTip - HARDPOINT Graph
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_GRAPH, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
@@ -343,7 +342,7 @@ void() menu_arming_drawFrame={
 };
 
 void(vector ofs) menu_arming_HardpointGraph={
-  local vector nofs, panelOffset, hardpointCenter, panelImageSize;
+  local vector nofs, panelOffset, panelImageSize;
   local entity hardpoint;
   local float hardpointItr;
   
@@ -783,7 +782,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   local vector icol;
   icol = nofs + gui_percentToPixelRawVec('8 42');
   
-  local vector smallFont, mediumFont;
+  local vector smallFont;
   smallFont = '10 10';
   
   if( ITEM1_DATA_DMG > -1 ){

@@ -27,8 +27,6 @@ float	DEAD_DEAD				  = 2;
 float	DEAD_RESPAWNABLE	= 3;
 float	DEAD_RESPAWNING		= 4; // dead, waiting for buttons to be released
 
-.float player_state;
-
 //input globals and constants
 float INPUT_EVENT_KEYDOWN = 0;
 float INPUT_EVENT_KEYUP = 1;

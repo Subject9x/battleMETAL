@@ -189,7 +189,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.skin =  self.faction - 1;
       self.movetype = MOVETYPE_STEP;
       data_sync_new_mech_ai( self.data_idx );
-      self.deadflag == DEAD_NO;
+      self.deadflag = DEAD_NO;
       self.critBits = 0;
       setmodel(self, "q3mdl/testball.md3");
       setsize(self, self.mins, self.maxs);

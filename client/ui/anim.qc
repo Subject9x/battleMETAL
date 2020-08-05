@@ -187,6 +187,7 @@ void() anm_execute_frame={
       tcnt = 0;
       line = ANM_FRAME_MSG[ANM_FRAME_CUR];
       tokens = tokenizebyseparator(line, "|");
+      txtstart = '0 0';
       txtstart_x = VIEW_CTR_x;
       txtstart_y = VIEW_MAX_y - (tokens * 10);
       while( tcnt <= tokens){

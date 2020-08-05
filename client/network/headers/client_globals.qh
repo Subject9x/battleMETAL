@@ -12,7 +12,7 @@ entity CLIENT_MENU_deploy;
 
 float CLIENT_currentWeaponGroup;
 
-float CLIENT_mission_status;
+//float CLIENT_mission_status;
 
 float CLIENT_flags;
 float CLIENT_flags_prev;
@@ -106,10 +106,7 @@ float CLIENT_stat_trg_la_hp;
 float CLIENT_stat_trg_ra_hp;
 float CLIENT_target_vecsize;
 
-float CLIENT_ramUp;
 float CLIENT_ram_max;
-
-string CLIENT_target_name;
 
 float CLIENT_spawn_time;  //start marker for tracking best time
 float CLIENT_best_time;   //longest survial time in a mech

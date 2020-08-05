@@ -258,7 +258,6 @@ void( vector menuOrg ) menu_score_tdm_server_info={
 void( vector menuOrg ) menu_score_tdm_objectives={
   local vector labelOrg;
   local float labelLen;
-  local entity objective;
   
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('435 250'), '0.65 0.65 0.65', 1, 0);
   
@@ -440,7 +439,6 @@ void( vector menuOrg ) menu_score_coop_mission_info={
 void( vector menuOrg ) menu_score_coop_status={
   local vector labelOrg;
   local float labelLen;
-  local entity objective;
 
   local vector lofs;
   local float lst_idx, eol, line_rtn;
@@ -498,7 +496,7 @@ void( vector menuOrg ) menu_score_coop_status={
     objectiveStatusOrg_x = menuOrg_x + gui_percentXRaw(335);
     objectiveStatusOrg_x = objectiveStatusOrg_x - gui_percentXRaw(stringwidth(objectiveStatusLabel,0,'14 14') / 2); 
     objectiveStatusOrg_y = objectiveOffset_y;
-    drawstring( objectiveStatusOrg, objectiveStatusLabel, '14 14 0', objectiveColor, 1);
+    drawstring( objectiveStatusOrg, objectiveStatusLabel, '14 14 0', objectiveColor, 1,0);
     
     if(MSN_OBJ_DESC[(lst_idx+1)] == ""){
       eol = FALSE;
@@ -512,13 +510,8 @@ void( vector menuOrg ) menu_score_coop_status={
 void( vector menuOrg ) menu_score_coop_players={
   local entity player;
   
-  local vector menuLabelOfs;
   local vector listOfs;
   local vector listRowOfs;
-  
-  local vector fontColor;
-  
-  local float menuLabelLen;
   
   local float playerRowItr;
   local float itr;
@@ -529,9 +522,11 @@ void( vector menuOrg ) menu_score_coop_players={
 
   menu_connect_draw_scorebar( menuOrg, "- Players -", FALSE);
   
+  listOfs = '0 0';
   listOfs_x = listRowOfs_x = menuOrg_x + gui_percentXRaw(2);
   listOfs_y = menuOrg_y + gui_percentYRaw(14);
 
+  itr = 0;
   playerRowItr = 1;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
     if( SCOREBOARD[itr] != 0 ){

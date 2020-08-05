@@ -328,8 +328,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       continue;
     }
     
-    local float nactive, nlen;
-    local string navname;
+    local float nlen;
     tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
     
     drawfont_prev = drawfont;

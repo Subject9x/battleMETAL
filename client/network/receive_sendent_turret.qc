@@ -11,7 +11,6 @@ Overview:
 
 void() sendevent_turret_die={
   local entity weps;
-  local entity this;
   local entity rem;
   
   makevectors(self.angles);
@@ -49,7 +48,6 @@ void() sendevent_turret_die={
 */
 void( float isNew, float changeFlags) sendent_handle_turret={
   local vector turretAng;
-  local entity weps;
   local entity this;
   local float prevShield;
   

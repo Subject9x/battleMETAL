@@ -9,12 +9,13 @@ Date: 3/30/2020
   RENDER ENTIRE RADAR PANEL
 */
 void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
-  local vector  map_size;
+  local vector map_size;
   local vector radarLineLeft, radarLineRight;
   local entity blip;
 
   RADAR_ORG = radarOrg;
   
+  map_size = '0 0';
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
   

@@ -197,7 +197,6 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 // the most important function in CSQC...
 void(float w, float h, float menushown) CSQC_UpdateView =
 {
-  local entity scan;
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", "1");
@@ -356,6 +355,8 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   
   if( cvar("developer") ){
     local vector porg, pang, torg;
+    pang = '0 0 0'; //sh, compiler.
+    torg = '0 0 0';
     porg_x = pang_x = torg_x = VIEW_ORG_x;
     porg_y = pang_y = torg_y = VIEW_MAX_y;
     drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);

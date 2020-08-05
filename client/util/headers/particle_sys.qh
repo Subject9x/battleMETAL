@@ -50,7 +50,7 @@ void() cl_particles_fogFrame;
 .float spawnflags;
 .float count;
 .float count1;
-.vector dest;
+//.vector dest;
 
 //===================================
 
@@ -59,7 +59,7 @@ vector() te_read_angle;
 
 
 //ported from effectinfo_api
-void( vector org, vector wind ) te_mech_crit;
+void( vector org, vector windVel ) te_mech_crit;
 
 void() te_building_fire_th;
 entity( entity targetBuilding ) te_building_fire_start;
@@ -101,8 +101,8 @@ void( vector org, float explodeSize, vector explodeColor, float onShield ) parti
 /*
   When a mech piece is blown off;
 */
-void() particle_mech_chunk_th;
-void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) particle_mech_chunk;
+//void() particle_mech_chunk_th;
+//void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) particle_mech_chunk;
 
 /*
   Muzzle flash

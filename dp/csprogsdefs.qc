@@ -51,7 +51,7 @@ void(float w, float h, float m)		CSQC_UpdateView;
 float(string s)	CSQC_ConsoleCommand;
 void(float isnew) CSQC_Ent_Update;
 void() CSQC_Ent_Remove;
-float() CSQC_Parse_Event;
+//float() CSQC_Parse_Event; // darkplaces doesn't implement this, apparently.
 
 
 //these fields are read and set by the default player physics

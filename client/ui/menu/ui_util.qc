@@ -185,7 +185,7 @@ void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_rend
 
 string() ui_calculate_game_time_string={
   local string val;
-  local float t, sec, min, hr;
+  local float t, sec, mint, hr;
   local float endTime;
   endTime = getstatf(STAT_TIMELIMIT) * 60;
   if( getstatf(STAT_TIMELIMIT) > 0  || cvar("gamemode") == GAMEMODE_COOP ){
@@ -201,12 +201,12 @@ string() ui_calculate_game_time_string={
     sec = t - floor( t / 60 ) * 60 ;
     sec = rint(sec);
     
-    min = (t - floor( t / 3600) * 3600) / 60;
-    min = rint(min);
+    mint = (t - floor( t / 3600) * 3600) / 60;
+    mint = rint(mint);
     
     hr = t / 3600;
     hr = rint(hr);
-    val = sprintf("%02d:%02d:%02d", hr, min, sec);
+    val = sprintf("%02d:%02d:%02d", hr, mint, sec);
   }else{
     val = "No Limit";
   }
@@ -216,18 +216,18 @@ string() ui_calculate_game_time_string={
 
 string(float timeVal ) ui_calculate_time_string={
   local string val;
-  local float t, sec, min, hr;
+  local float t, sec, mint, hr;
   
   t = timeVal + (servertime - time);
   sec = t - floor( t / 60 ) * 60 ;
   sec = rint(sec);
   
-  min = (t - floor( t / 3600) * 3600) / 60;
-  min = rint(min);
+  mint = (t - floor( t / 3600) * 3600) / 60;
+  mint = rint(mint);
   
   hr = t / 3600;
   hr = rint(hr);
-  val = sprintf("%02d:%02d:%02d", hr, min, sec);
+  val = sprintf("%02d:%02d:%02d", hr, mint, sec);
   
   return val;
 };
@@ -258,8 +258,6 @@ string() ui_label_mission_status={
 */
 void() scoreboard_sort={
   local float i, j, key, key2;
-  local float entScore1, entScore2;
-  local entity player, nextPlayer;
   
   for( i=1; i < SCOREBOARDMAX; i=i+1){
     // entId from scoreboard

@@ -223,7 +223,6 @@ void() ui_navbutton_deploy_click={
   BUTTON - Launch!
 */
 void( vector ofs ) ui_navbutton_launch_draw={
-  local vector fontSize;
   local vector textPos;
   local float strWidth;
   local string text;

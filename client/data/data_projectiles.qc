@@ -78,3 +78,13 @@ float() predraw_plasma={
   }
   return TRUE;
 };
+
+
+float() predraw_quantum={
+  self.scale = max(0.5, random() * 1.25);
+  self.alpha = max(0.33, random() * 1);
+  self.colormod_x = max(0.1, random() * 1);
+  self.colormod_y = max(0.1, random() * 1);
+  self.colormod_z = max(0.1, random() * 1);
+  return TRUE;
+};

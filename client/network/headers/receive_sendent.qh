@@ -15,14 +15,14 @@ float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
 .vector origin1;
 .float angle2;
 .float angle1;
-.vector lastangle;
-.float lastupdate;
-.float prevupdate;
+//.vector lastangle;
+//.float lastupdate;
+//.float prevupdate;
 .float frame1;
 .float frame2;
 
 .float kills;
-.float deaths;
+//.float deaths;
 
 .float shieldExplodeCool;
 

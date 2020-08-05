@@ -10,10 +10,8 @@ Overview:
 
 void( string fileName ) cl_load_savefile={
   local string line, contents;
-  local float flannel, line_tag, argc;
+  local float flannel, line_tag;
   
-  local string mechData, itemData;
-
   flannel = fopen(fileName, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);

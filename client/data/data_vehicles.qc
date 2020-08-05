@@ -61,7 +61,6 @@ void() data_vehicle_onnek = {
 };
 
 void() data_vehicle_sorcerer = {
-  local vector offset;
   
   data_ini_sorcerer_();
       

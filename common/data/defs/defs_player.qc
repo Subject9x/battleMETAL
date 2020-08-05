@@ -14,6 +14,7 @@ Overview:
 .float data_type;
 
 #ifdef CSQC
+.float particleCubeFlag;
 .float hud_bob;    //bob settings are important for dat immersion
 .float hud_bob_cycle;
 .float hud_bob_up;  
@@ -22,19 +23,7 @@ Overview:
 .float hud_bob_side;
 .float hud_bob_model_up;
 .float hud_bob_speed;
-
-.entity hudTorsoCenter;
-.entity hudTorsoLeft;
-.entity hudTorsoRight;
-.entity hudArmLeft;
-.entity hudArmRight;
 #endif 
-
-.string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
-.float hud_mode;  //sway mode
-.entity hud_ent;  //fixes sway mode set bug
-
-.entity hudWeapon;  //used as list-id for hud weapon ents.
 
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
@@ -50,15 +39,17 @@ Overview:
 .float next_wepn8;
 .float next_wepn9;
 
-.float missionStatus; //moved to player level for network
+
 .float ramUpMax;
 .float ramCooldown;
 
-#ifdef CSQC
-.float particleCubeFlag;
-#endif
-
 #ifndef CSQC
+.float missionStatus; //moved to player level for network
+.float hud_mode;  //sway mode
+.string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
+.entity hud_ent;  //fixes sway mode set bug
+.entity hudWeapon;  //used as list-id for hud weapon ents.
+
 .float missionLosses; //mostly campaign related.
 .float botKills;      //campaign/coop tracking of bot kills.
 .float playerDeaths;      //tracked in TDM / DM for personal score.

@@ -25,5 +25,5 @@ float() data_mech_config_valid;
 
 .void() th_die; // merely copying over from defs.qc for SendEnt compat.
 .void() th_walk; // merely copying over from defs.qc for SendEnt compat.
-.void() th_idle; // merely copying over from defs.qc for SendEnt compat.
-.void() th_run; // merely copying over from defs.qc for SendEnt compat.
+//.void() th_idle; // merely copying over from defs.qc for SendEnt compat.
+//.void() th_run; // merely copying over from defs.qc for SendEnt compat.

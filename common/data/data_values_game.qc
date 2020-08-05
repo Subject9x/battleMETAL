@@ -53,12 +53,16 @@ string PATH_DATA_ANIM = "anim";
 string PATH_DATA_SAVE = "saves";
 string PATH_DATA_UI = "ui";
 string NEWLINE = "\n";
+#ifndef CSQC
 float FLAG_NEWGAME;
+#endif
 //globals
 string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
+#ifndef CSQC
 string SAVE_MAP;
 string SAVE_MECHS_LIST;
 string SAVE_ITEMS_ALL;
+#endif
 string SAVE_FILE_EXT = ".sav";
 
 //file tags

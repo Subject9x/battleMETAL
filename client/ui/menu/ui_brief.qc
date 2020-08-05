@@ -196,7 +196,7 @@ void(vector ofs) menu_briefPlaySound={
     renders button bar for the panel.
 */
 void(vector ofs) menu_brief_text_window={
-  local vector bpos, fpos;
+  local vector bpos;
   
   bpos = ofs + gui_percentToPixelRawVec('10 107');
   drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('270 365'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
@@ -325,7 +325,6 @@ void(vector ofs) menu_briefMapPanel={
   for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
     local vector nofs, tofs;
     local float nlen;
-    local string navname;
     
     if( nav.faction != FACTION_ALL ){
       if( nav.faction != CLIENT_faction ){

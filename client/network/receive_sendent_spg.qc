@@ -27,7 +27,6 @@ void() sendevent_spg_move={
 */
 void() sendevent_spg_die={
   local entity weps;
-  local entity this;
   local entity rem;
 
   weps = self.w_slot;

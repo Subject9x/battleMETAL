@@ -28,13 +28,13 @@ void() ui_data_load_hudnames={
 
 //this is for sorting the mechs by size class in a clean way
 void() ui_data_load_mechsizes={
-  local float count;
-  count = 1;
+  local float total;
+  total = 1;
     //TODO - mech limit magic numbers
-  while( count <= 3) {
-    ui_data_load_mech_info( count, UI_HANGAR_DATA_mech_list );
-    MECH_DATA_SIZES[count] = MECH_DATA_SIZE;
-    count = count + 1;
+  while( total <= 3) {
+    ui_data_load_mech_info( total, UI_HANGAR_DATA_mech_list );
+    MECH_DATA_SIZES[total] = MECH_DATA_SIZE;
+    total = total + 1;
   }
   ui_data_cleanup_mechlist_entity( UI_HANGAR_DATA_mech_list );
 };
@@ -82,7 +82,6 @@ void() ui_data_clear_mechdata={
 void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
   local entity mech_piece;
   local float itr;
-  local entity next_hardpoint;
   
   itr = 1;
   mech_piece = mechEntity.w_slot;
@@ -512,4 +511,5 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
   }
+  return TRUE;
 };

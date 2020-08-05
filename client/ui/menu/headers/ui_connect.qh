@@ -25,11 +25,11 @@ vector UI_CONNECT_TEAMLIST_SIZE = '310 190';
 //pseudo interface
 void() menu_connectListener_onClick;
 
-void() menu_connectListener_onDrag;
+//void() menu_connectListener_onDrag;
 
 void() menu_connectListener_onHover;
 
-void() menu_connectListener_onKeyUp;
+//void() menu_connectListener_onKeyUp;
 
 void() menu_connect_drawFrame;
 //------------------

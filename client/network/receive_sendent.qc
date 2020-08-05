@@ -108,7 +108,6 @@ void( float isNew ) sendent_handle_update={
   SendEntity - Projectile ====================================
 */
 void( float isNew, float changeFlags) sendent_handle_missile={
-  local float impactEvent;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
@@ -128,7 +127,6 @@ void( float isNew, float changeFlags) sendent_handle_missile={
       self.predraw = predraw_missile;
     }
   }
-  
   
   if( changeFlags & SENDFLAG_MOVE ){
     self.origin_x = ReadCoord();
@@ -181,8 +179,7 @@ void( float prevShield ) sendevent_shield_explode={
   EVENT - Turret rotated
 */
 void( vector turretAngles ) sendevent_turret_update={
-  local entity weps;
-  local vector angl;
+  
   if( self.torsoCenter != world ){
     self.torsoCenter.angles_x = anglemod(turretAngles_x);
     self.torsoCenter.angles_y = anglemod(turretAngles_y);

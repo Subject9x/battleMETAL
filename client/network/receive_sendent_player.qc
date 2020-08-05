@@ -63,27 +63,27 @@ void( float prevFac, float newFaction ) sendevent_handle_faction={
 /*
   HANDLE EVENT - player mech parts destroyed
 */
-void( float critBits ) sendevent_player_critical={
+void( float criticalBits ) sendevent_player_critical={
   local vector offset;
   
   makevectors( self.angles );
-  if( (critBits & M_TOR_LEFT) ){
+  if( (criticalBits & M_TOR_LEFT) ){
     offset = self.origin + (v_forward * self.leftTorso_z) + (v_right * self.leftTorso_x) + (v_up * self.leftTorso_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
-  if( (critBits & M_TOR_RIGHT) ){
+  if( (criticalBits & M_TOR_RIGHT) ){
     offset = self.origin + (v_forward * self.rightTorso_z) + (v_right * self.rightTorso_x) + (v_up * self.rightTorso_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
-  if( (critBits & M_ARM_LEFT) ){
+  if( (criticalBits & M_ARM_LEFT) ){
     offset = self.origin + (v_forward * self.leftArm_z) + (v_right * self.leftArm_x) + (v_up * self.leftArm_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
-  if( (critBits & M_ARM_RIGHT) ){
+  if( (criticalBits & M_ARM_RIGHT) ){
     offset = self.origin + (v_forward * self.rightArm_z) + (v_right * self.rightArm_x) + (v_up * self.rightArm_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
-  if( (critBits & M_LEGS) ){
+  if( (criticalBits & M_LEGS) ){
     offset = self.origin + (v_forward * self.leg_z) + (v_right * self.leg_x) + (v_up * self.leg_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
@@ -93,31 +93,31 @@ void( float critBits ) sendevent_player_critical={
 /*
   HANDLE EVENT - player mech pieces are dying
 */
-void( float critBits ) sendevent_player_burn={
+void( float criticalBits ) sendevent_player_burn={
   local vector offset;
 
   makevectors( self.angles );
-  if( (critBits & M_TOR_LEFT) ){
+  if( (criticalBits & M_TOR_LEFT) ){
     offset = self.origin + (v_forward * self.leftTorso_z) + (v_right * self.leftTorso_x) + (v_up * self.leftTorso_y);
     te_mech_crit( offset, '0 0 10');
   }
-  if( (critBits & M_TOR_RIGHT) ){
+  if( (criticalBits & M_TOR_RIGHT) ){
     offset = self.origin + (v_forward * self.rightTorso_z) + (v_right * self.rightTorso_x) + (v_up * self.rightTorso_y);
     te_mech_crit( offset, '0 0 10');
   }
-  if( (critBits & M_ARM_LEFT) ){
+  if( (criticalBits & M_ARM_LEFT) ){
     if( !(self.damageValue & M_TOR_LEFT) ){
       offset = self.origin + (v_forward * self.leftArm_z) + (v_right * self.leftArm_x) + (v_up * self.leftArm_y);
       te_mech_crit( offset, '0 0 10');
     }
   }
-  if( (critBits & M_ARM_RIGHT) ){
+  if( (criticalBits & M_ARM_RIGHT) ){
     if( !(self.damageValue & M_TOR_RIGHT) ){
       offset = self.origin + (v_forward * self.rightArm_z) + (v_right * self.rightArm_x) + (v_up * self.rightArm_y);
       te_mech_crit( offset, '0 0 10');
     }
   }
-  if( (critBits & M_LEGS) ){
+  if( (criticalBits & M_LEGS) ){
     offset = self.origin + (v_forward * self.leg_z) + (v_right * self.leg_x) + (v_up * self.leg_y);
     te_mech_crit( offset, '0 0 10');
   }
@@ -131,7 +131,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevKills;
   local float prevFaction;
   local float prevDeadFlag;
-  local float msnStat;
   
   prevShield = self.shield;
   prevCrit = self.damageValue;

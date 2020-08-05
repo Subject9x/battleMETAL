@@ -91,7 +91,6 @@ void( entity thePlayer ) hud_render_ally_names={
   RENDER A NAME OVER AN ORIGIN IN 3D SPACE
 */
 void() hud_renderNavOverlay={
-  local float itr;
   local vector apos, tofs, iofs, i_sz, nofs, colr;
   local float nactive;
   local string navname;
@@ -163,7 +162,7 @@ void() hud_render_vip_overlay={
   local float dist;
   local float targSizeX, targSizeY, targSizeZ, targZbottom;
   local vector viewAngle;
-  local vector imgSize, factionColor;
+  local vector imgSize;
   local vector br, bl;
   local vector c_br, c_bl;
     

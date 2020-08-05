@@ -7,9 +7,6 @@ Overview:
   contains necessary globals, constants, and function defines 
   to run the whole menu sub system.
 */
-
-float DEBRIEF_TIMER;
-
 entity toolTip;
 
 vector cursorpos;
@@ -28,12 +25,6 @@ float() menu_connect_choice;
 void() menu_handleFrame;
 void() menu_mainListener;
 void() menu_navbBar_listener;
-void() menu_listen_onClick;
-void() menu_listen_onHover;
-void() menu_listen_onDrag;
-void() menu_listen_onKeyUp;
-
-void() menu_death_think;
 
 void(vector ofs) menu_navBar_drawFrame;
 

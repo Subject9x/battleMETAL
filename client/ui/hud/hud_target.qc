@@ -76,7 +76,8 @@ void(vector ofs, float algn) hud_renderTargetName={
       targType = playerTarg.vec_name;
     }
   }
-
+  msgSize = '0 0';
+  
   ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlign(ofs, algn);
   msg = strcat("[TARGET] ", targType);
@@ -287,6 +288,7 @@ void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange={
   ofs = gui_calcAlign(ofs, algn);
   dist = ceil(vlen(torg - porg));
   msg = strcat("[RANGE] ", ftos(dist));
+  msgSize = '0 0';
   msgLen = stringwidth(msg, 0, '10 10 0');
   msgSize_x = gui_percentXRaw(msgLen/2);
   msgSize_y = gui_percentYRaw(6);
