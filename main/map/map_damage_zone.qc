@@ -60,7 +60,7 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
     self.damageValue = defDmg;
   }
   self.effects = self.effects | EF_NODEPTHTEST;  
-  self.data_type == DATA_MAP_DMG;
+  self.data_type = DATA_MAP_DMG;
   self.model = "q3mdl/testball.md3";
   setmodel( self, self.model );
   self.think = map_hazard_ping;
@@ -106,7 +106,6 @@ void() map_damage_zone_rad_think={
 };
 void() map_damage_zone_crs_think={
   local entity unit;
-  local vector mechHit;
   
   if( self.isActive ){
     for( unit = nextent(world); unit != world; unit = nextent(unit) ){
@@ -135,7 +134,6 @@ void() map_damage_zone_crs_think={
 };
 void() map_damage_zone_qtm_think={
   local entity unit;
-  local vector mechHit;
   
   if( self.isActive ){
     for( unit = nextent(world); unit != world; unit = nextent(unit) ){

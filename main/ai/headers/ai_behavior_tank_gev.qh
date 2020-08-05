@@ -13,9 +13,6 @@ Overview: ai unit
 void() ai_gev;
 
 void() ai_gev_die;
-void() ai_gev_stand;
-void() ai_gev_patrol;
-void( entity attacker ) ai_gev_react;
 
 void() gev_fight_target_fire;
 void() gev_fight_out_radius;

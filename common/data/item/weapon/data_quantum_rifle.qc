@@ -53,7 +53,6 @@ void() data_ini_quantum_={
 
 #ifndef CSQC
 void() data_ini_attack_quantum_={
-  local entity hold;
   
   ctrl_weapon_fireOffset();
   

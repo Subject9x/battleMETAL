@@ -411,7 +411,6 @@ void() ai_com_moveEnd={
   STATE : COMBAT MANEUVER BLOCKED
 */
 void() ai_com_blocked={
-  local entity blockNode;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
     ai_attack();

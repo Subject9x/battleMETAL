@@ -173,7 +173,6 @@ note: This is also called after a player respawns too...
 ============
 */
 void() PutClientInServer = {
-  local entity spot;
   
   self.flags = FL_CLIENT;
   self.velocity = '0 0 0';	// 1998-07-21 Player moves after respawn fix by Xian

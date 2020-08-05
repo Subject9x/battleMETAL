@@ -68,6 +68,3 @@ void( float entityId, float particleEffectId, vector particleOrg, vector particl
 
 void() client_update_faction;
 void() client_update_losses;
-
-//sigh can't believe Im trying this again
-float client_send_monster( entity ePVEnt, float flChanged );

@@ -65,17 +65,17 @@ void() hpower_die14 = [14, hpower_die15]{
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
   
-  //Dump energy onto any nearby unit.
+  //EMP bomb
   for( head = nextent(world); head != world; head = nextent(head) ){
     if( vlen(head.origin - self.origin) > (self.ai_minrange / 2) ){
       continue;
     }
-    if( !(head.flags | FL_UNIT) ){
+    if( !(head.flags & FL_UNIT) && !(head.flags & FL_CLIENT) ){
       continue;
     }
-    head.energy = head.energy + self.energy * 0.25;
-    if( head.energy > head.energyMax ){
-      head.energy = head.energyMax;
+    head.energy = head.energy - self.energy * 0.25;
+    if( head.energy < 0 ){
+      head.energy = 0;
     }
   }
   

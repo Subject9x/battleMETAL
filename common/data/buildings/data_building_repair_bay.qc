@@ -38,7 +38,6 @@ void() hrepair_rep = [0, hrepair_rep]{
   local entity part;
   local float lowHP;
   local float hp;
-  local vector fx;
   local entity altSelf;
   
   fix = world;

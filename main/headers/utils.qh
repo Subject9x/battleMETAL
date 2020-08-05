@@ -72,7 +72,7 @@ float(entity targ) infront;
 
 entity(entity t) util_findMechCrit;
 
-vector(vector org, entity filter, float len, float height) util_find_random_farpoint;
+vector(vector org, entity filter, float len, float useHeight) util_find_random_farpoint;
 
 vector() util_trace_norm_angle;
 

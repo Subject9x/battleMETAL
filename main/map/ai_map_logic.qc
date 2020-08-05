@@ -44,7 +44,6 @@ void() ai_change_faction_use={
 
 void() ai_change_rank_use={
   local entity e, this;
-  local float m;
   if( (self.spawnflags & 4) ){
     if( time < self.nextthink)
       return;

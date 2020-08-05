@@ -258,7 +258,6 @@ void( vector explodeColor ) te_object_explode={
   When a part is blown off a mech
 */
 void() te_vehicle_chunk_th={  
-  local vector wishvel;
   //trail effect for desired time, then a half-life as post-burn
   if( time > self.ai_action_time && self.traileffectnum ){
     self.traileffectnum = 0;

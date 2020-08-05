@@ -264,7 +264,6 @@ void() PlayerPostThink = {
 		self.jump_flag = self.velocity_z;
   }
   if( self.clientData ){
-    local float prevCrit;
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_MOVE;
     if( self.damageValue > 0 ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;

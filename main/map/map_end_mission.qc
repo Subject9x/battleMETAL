@@ -16,9 +16,6 @@ float TOUCH_ACTIVE = 16;
 float TOUCH_FACTION = 32;
 
 void() map_end_mission_over={
-  local entity objective;
-  local entity playerStart;
-  local entity player;
   
   if( self.missionStatus == -1 ){
     self.missionStatus = 0; //client compatability zero-out.
@@ -54,9 +51,6 @@ Only if MISSION_LOSE or MISSION_WIN.
       sv_nextmap -> .map
 */
 void() map_end_mission_conclude={
-  local entity player;
-  local entity objective;
-  
   //mission can only end if its active.
   if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
     MISSION_STATUS = MISSION_STATUS_OVER;

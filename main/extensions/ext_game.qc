@@ -20,8 +20,6 @@ float RELOADING = 1;
 float WAITING = 2;
 float RECOIL = 4;
 
-.entity lst_p; //linked list parent
-
 //from world.qc
 entity lastspawn;
 //void() InitBodyQue;

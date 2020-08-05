@@ -108,8 +108,6 @@ void() data_projectile_missile_swarm_touch={
 
 void() data_projectile_missile_swarm_think={
 	local vector	dir, vtemp;
-  local float f_dot;
-  
   
   if(time > self.data_lifetime){
     self.think = ctrl_missile_dud;

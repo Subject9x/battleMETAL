@@ -623,7 +623,6 @@ void( vector org, entity parent, float id, vector colr, float stile, float pFlag
 
 void( entity parent ) world_remove_dlight={
   local entity chaine;
-  local entity ref;
   
   for( chaine = nextent(world); chaine.owner == parent; chaine = nextent(chaine) ){
     if( chaine.classname != "dynamicLight" ){

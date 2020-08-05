@@ -24,62 +24,55 @@ Overview:
     if( enemy_dist > 1 && combat_dist <= 1 ){
 */
 void() mech_sniper_fight_target_fire={
-  if(combat_dist <= 0.33){
+  if(combat_dist < 0.4){
     if(enemy_infront){
-      self.ai_movedist = 7;
+      self.ai_movedist = 4;
       if(combat_roll > 0.5){
         self.ai_move_next = MOVE_BACK_RIGHT;
+        return;
       }
-      else{
-        self.ai_move_next = MOVE_BACK_LEFT;
-      }
+      self.ai_move_next = MOVE_BACK_LEFT;
       return;
     }
-      self.ai_movedist = 5;
-      if(combat_roll > 0.5){
-        self.ai_move_next = MOVE_STRAFE_LEFT;
-      }
-      else{
-        self.ai_move_next = MOVE_STRAFE_RIGHT;
-      }
+    self.ai_movedist = 3;
+    if(combat_roll > 0.5){
+      self.ai_move_next = MOVE_STRAFE_LEFT;
       return;
+    }
+    self.ai_move_next = MOVE_STRAFE_RIGHT;
+    return;
   }
-  if(combat_dist <= 0.67){
+  if(combat_dist < 0.7){
     self.ai_movedist = self.ai_rank * 1.5;
     if(enemy_infront){
       if(combat_roll > 0.5){
         self.ai_move_next = MOVE_BACK_RIGHT;
+      return;
       }
-      else{
-        self.ai_move_next = MOVE_BACK_LEFT;
-      }
+      self.ai_move_next = MOVE_BACK_LEFT;
       return;
     }
     if(combat_roll > 0.5){
       self.ai_move_next = MOVE_CHARGE_LEFT;
+      return;
     }
-    else{
-      self.ai_move_next = MOVE_CHARGE_RIGHT;
-    }
+    self.ai_move_next = MOVE_CHARGE_RIGHT;
     return;
   }
   self.ai_movedist = 3;
   if(enemy_infront){
     if(combat_roll > 0.6){
       self.ai_move_next = MOVE_BACK_LEFT;
+      return;
     }
-    else{
-      self.ai_move_next = MOVE_BACK_RIGHT;
-    }
+    self.ai_move_next = MOVE_BACK_RIGHT;
     return;
-  }  
+  }
   if(combat_roll > 0.5){
     self.ai_move_next = MOVE_CIRCLE_LEFT;
+    return;
   }
-  else{
-    self.ai_move_next = MOVE_CIRCLE_LEFT;
-  }
-  return;
+  self.ai_move_next = MOVE_CIRCLE_LEFT;
 };
 
 /*
@@ -202,7 +195,7 @@ void() mech_sniper_fight_full={
   if(combat_dist < 0.6){
     if(enemy_range < 0.6){
       if( enemy_infront ){
-        self.ai_movedist = 7;
+        self.ai_movedist = 4;
         if(combat_roll < 0.6){
           self.ai_move_next = MOVE_STRAFE_RIGHT;
           return;
@@ -210,7 +203,6 @@ void() mech_sniper_fight_full={
         self.ai_move_next = MOVE_STRAFE_LEFT;
         return;
       }
-      self.ai_movedist = 5;
       if(combat_roll < 0.6){
         self.ai_move_next = MOVE_CHARGE_RIGHT;
         return;
@@ -218,17 +210,16 @@ void() mech_sniper_fight_full={
       self.ai_move_next = MOVE_CHARGE_LEFT;
       return;
     }
-    self.ai_move_next = MOVE_CHARGE;
+    self.ai_move_next = MOVE_SNAPSHOT;
     if(enemy_infront){
-      self.ai_movedist = 5;
+      self.ai_movedist = 3;
       return;
     }
-    self.ai_movedist = 6;
     return;
   }
+  self.ai_movedist = 2;
   if(enemy_range < 0.6){
     if(enemy_infront){
-      self.ai_movedist = 5;
       if(combat_roll < 0.6){
         self.ai_move_next = MOVE_BACK_RIGHT;
         return;
@@ -236,8 +227,7 @@ void() mech_sniper_fight_full={
       self.ai_move_next = MOVE_BACK_LEFT;
       return;
     }
-    self.ai_movedist = 5;
-    if(combat_roll<0.6){
+    if(combat_roll < 0.6){
       self.ai_move_next = MOVE_STRAFE_RIGHT;
       return;
     }
@@ -246,21 +236,32 @@ void() mech_sniper_fight_full={
   }
   if(enemy_infront){
     if(combat_roll < 0.25){
-      self.ai_movedist = 5;
-      if(combat_roll < 0.1){
-        self.ai_move_next = MOVE_STRAFE_RIGHT;
-        return;
-      }
       self.ai_move_next = MOVE_STRAFE_LEFT;
       return;
     }
-    self.ai_movedist = 5;
+    if(combat_roll < 0.8){
+      self.ai_move_next = MOVE_STRAFE_RIGHT;
+      return;
+    }
     self.ai_move_next = MOVE_CHARGE;
     return;
   }
-  if(enemy_infront){
-    self.ai_movedist = 6;
-    self.ai_move_next = MOVE_BACK;
+  if( self.ai_rank == AI_RANK_ROK ){
+    if(self.ai_move_last > MOVE_NODE_TACTICAL){
+      self.ai_movedist = 5;
+      self.ai_move_next = MOVE_STAND_FACE;
+      return;
+    }
+    if(self.ai_move_last == MOVE_STAND_FACE){
+      self.ai_movedist = 3;
+      self.ai_move_next = MOVE_BACK;
+      return;
+    }
+  }
+  self.ai_movedist = 3;
+  if(combat_roll < 0.25){
+    self.ai_move_next = MOVE_STRAFE_RIGHT;
     return;
   }
+  self.ai_move_next = MOVE_STRAFE_LEFT;
 };

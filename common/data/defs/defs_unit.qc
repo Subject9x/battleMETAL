@@ -27,32 +27,15 @@ Overview:
 
 //Server-side 'thin' unit data
 
-.vector torsoCenterOffset;
-.vector torsoCenterAngles;
-.float torsoCenterHealth;
 
-.vector torsoLeftOffset;
-.float torsoLeftHealth;
 
-.vector torsoRightOffset;
-.float torsoRightHealth;
-
-.vector armLeftOffset;
-.float armLeftHealth;
-
-.vector armRightOffset;
-.float armRightHealth;
-
-.vector legsOffset;
-.float torsoCenterHealth;
-
-.vector legAngles;
 
 #endif
+
 .float burnBits;    //bitflags sent to client for fire/burning effects on ents.
 
 .float evasionDrain;
-.vector cockpitOffset;
+
 
 .float data_idx;
 .float vec_size;
@@ -81,9 +64,6 @@ Overview:
 .float data_speed_backward; //backward speed
 .float data_speed_accel;	//cl_speedkey acceleration factor
 
-.float pitchMin;
-.float pitchMax;
-
 //Unit subcomponents
 .entity legs;
 .entity cockpit;
@@ -101,6 +81,32 @@ Overview:
 .float hitdir_buffer; //used for hit direction, is cleared every frame
 
 #ifdef CSQC
+.float pitchMin;
+.float pitchMax;
+
+.vector torsoCenterOffset;
+.vector torsoCenterAngles;
+.float torsoCenterHealth;
+
+.vector torsoLeftOffset;
+.float torsoLeftHealth;
+
+.vector torsoRightOffset;
+.float torsoRightHealth;
+
+.vector armLeftOffset;
+.float armLeftHealth;
+
+.vector armRightOffset;
+.float armRightHealth;
+
+.vector legsOffset;
+.float torsoCenterHealth;
+
+.vector legAngles;
+.vector cockpitOffset;
+
+
 .float targetEntId;
 .float entId; 
 .void( float critHits ) te_critical_hit;  //interface for unit critical hit events

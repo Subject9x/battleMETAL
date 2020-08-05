@@ -16,7 +16,6 @@ float() ai_move_director={
   local float moveItr;
   local vector thisAng;
   local float goodLen;
-  local float goodDir;
   local float goodMove;
   
   moveLen = (self.ai_movedist * self.data_speed_forward) * 10;
@@ -635,7 +634,7 @@ void() ai_move_standface={
   moving to that node, and make attacks.
 */
 float(float outRadius) ai_move_patrol_node={
-  local entity nextNode;
+
   local float distLeft;
   local float walkSpeed, cornerSpeed;
   
@@ -681,8 +680,7 @@ float(float outRadius) ai_move_patrol_node={
 };
 
 void() ai_move_node_radius={
-  local entity node;
-  local float outRadius, innerRadius;
+  local float outRadius;
   
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
     self.patrolState = 0;

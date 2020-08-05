@@ -20,7 +20,6 @@ void() hangar_vehicle_die12;
 void() hangar_vehicle_die13;
 void() hangar_vehicle_die14;
 void() hangar_vehicle_die15;
-void() hangar_vehicle_die16;
 
 void() hangar_vehicle_die1=[0, hangar_vehicle_die2]{
   if( self.deadflag > DEAD_NO ){

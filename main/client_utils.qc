@@ -442,7 +442,6 @@ void(string cmd, float tokens) client_setWeapon={
   local float itr, new_id;
   local float totalWeps;
   local float bitCount;
-  local entity oself;
   
   itr = 3;
   bitCount = 1;

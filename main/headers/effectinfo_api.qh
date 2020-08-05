@@ -30,7 +30,4 @@ void() te_vehicle_chunk_th;
 void( entity parent, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk
 
 //SFX
-void() te_mission_win;
-void() te_mission_lose;
 void() te_msn_boundary;
-void() te_targ_kill;

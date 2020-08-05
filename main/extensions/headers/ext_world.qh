@@ -13,7 +13,6 @@ float MISSION_RESULT;     //
 float GAMETYPE;
 float STARTTIME;
 float ENDTIME_LIMIT;
-float TECHLEVEL;
 
 float ENDROUND;           //sv_checkRules sets this so ending is next frame-ish;
 float ENDROUND_TIME;      //sv_checkRules sets this so ending is next frame-ish;
@@ -32,9 +31,7 @@ float TE_STOMP_TYPE;  //set by world type
 
 //EXTENSIONS
 .float client_num;
-
 .string missionFile;  //data/map_scripts/<map_name>/<map_name>.msn
-.string mapFile;      //data/map_scripts/<map_name>/<map_name>.sav
 
 //DEPRECATED
 .string unlockMechs;  //determines unlock mechs given to the player.

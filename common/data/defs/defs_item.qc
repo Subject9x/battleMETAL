@@ -27,26 +27,29 @@ Overview
 .float ai_nextFireTime; //last time this WEAPON was fired.
 .vector spreadCache;
 .float damageCache;
+#endif
+
+#ifdef CSQC
 .float reloadMaxCache;
 .float lastFired;
+.string fire_sound;
+.string w_name;       //label for weapon, need to keep 'classname' reserved for actual class
+.string icon;       //client-side
 #endif
 
 .float aState;
 .vector wepFireOffset;     //offset for proj. origin
 .vector wepFireOffsetCache; //cached offset for constant reference
-.string fire_sound;
 .float reloadValue;
 .float reloadMax;
 .float reloadRate;
 .vector w_adj_ang;      //rotate weapon model face correctly
-.string w_name;       //label for weapon, need to keep 'classname' reserved for actual class
 .float w_firetime;
 .float w_clipsize;
 .float w_group;     //weapon group, only 1-3 - SET BY PARENT
 .float w_range;
 .float damageValue;
 .float damageType;  //  Enumerated Float, see defs_game.qc\
-.string icon;       //client-side
 .string description;//client-side
 .string abbrev;
 

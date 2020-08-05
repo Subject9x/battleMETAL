@@ -13,9 +13,6 @@ void() ai_tank_skirmish;
 void() ai_tank_sk_die;
 void() ai_tank_sk_die1;
 
-void() ai_tank_sk_stand;
-void(entity attacker) ai_tank_sk_react;
-
 void() tank_sk_fight_target_fire;
 void() tank_sk_fight_out_radius;
 void() tank_sk_fight_vis_friend;

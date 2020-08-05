@@ -11,7 +11,6 @@ void() ctrl_updateTank={
   local entity cam;
   local entity wep;
   local vector v1;
-  local vector spark;
   local float hp;
   
   cam = self.cockpit;
@@ -87,8 +86,7 @@ void() ctrl_updateTank={
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
-float( entity dest, float changedflags ) ctrl_send_tank={
-  local vector vex;
+float( entity targEnt, float changedflags ) ctrl_send_tank={
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
   WriteByte( MSG_ENTITY, changedflags );
   
@@ -133,7 +131,7 @@ float( entity dest, float changedflags ) ctrl_send_tank={
   return TRUE;
 };
 
-float( entity dest, float changedflags ) ctrl_send_spg={
+float( entity targEnt, float changedflags ) ctrl_send_spg={
   WriteByte( MSG_ENTITY, SENDTYPE_SPG );
   WriteByte( MSG_ENTITY, changedflags );
   
@@ -173,7 +171,7 @@ float( entity dest, float changedflags ) ctrl_send_spg={
   return TRUE;
 };
 
-float( entity dest, float changedflags ) ctrl_send_gev={
+float( entity targEnt, float changedflags ) ctrl_send_gev={
   WriteByte( MSG_ENTITY, SENDTYPE_GEV );
   WriteByte( MSG_ENTITY, changedflags );
   

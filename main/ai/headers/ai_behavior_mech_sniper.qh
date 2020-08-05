@@ -12,8 +12,6 @@ Overview:
 
 void() ai_mech_sniper;
 
-void() ai_mech_sniper_stand;
-void( entity attacker ) ai_mech_sniper_react;
 void() ai_mech_sniper_die;
 void() ai_mech_sniper_die2;
 

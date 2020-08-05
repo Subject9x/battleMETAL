@@ -132,8 +132,6 @@ void() ai_touch={
 };
 
 void(entity atk) ai_react={
-  local float enemyvis;
-  
   if( !(atk.flags & FL_MONSTER) && !(atk.flags & FL_CLIENT)){
     return;
   }
@@ -459,7 +457,6 @@ float() ai_attack={
 */
 void() ai_setup_patrol={
   local entity node;
-  local entity near;
   
   //make a single call reference here, instead of in every ai_setup func.
   trigger_event( find(world, classname, "player"), self.trigOnSpawn ); //event interface

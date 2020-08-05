@@ -29,7 +29,7 @@ float ESR_SPREAD_UP = 1.15;
 float ESR_SPREAD_DN = 0.95;
 
 void() weapon_esr_think={
-  local float delta, lim;
+  local float lim;
   local float prevState;
   
   prevState = self.w_state;

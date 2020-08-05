@@ -185,8 +185,8 @@ void() ai_combat_move_frame={
 */
 void() ai_turret_control={
   local entity turretOwner;
-  local float ang;
   local float oldAng;
+  
   if( self.torsoCenter ){
     turretOwner = self;
     self = self.torsoCenter;

@@ -625,7 +625,7 @@ void() util_updateViewBob={
 /*
   Cast out 6 rays to find random furthest point from an origin
 */
-vector(vector org, entity filter, float len, float height) util_find_random_farpoint={
+vector(vector org, entity filter, float len, float useHeight) util_find_random_farpoint={
   local float itr;
   local vector ang;
   local vector landing;
@@ -640,7 +640,7 @@ vector(vector org, entity filter, float len, float height) util_find_random_farp
   makevectors(ang);
   traceline(org, org + (v_forward * len), MOVE_NORMAL, filter);
 
-  landing = trace_endpos + (v_up * height);
+  landing = trace_endpos + (v_up * useHeight);
   if( trace_fraction < 1 ){
     landing = landing - (v_forward * (trace_fraction * len)) ;
   }

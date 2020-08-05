@@ -101,8 +101,7 @@ void() data_projectile_missile_laserguide_touch={
 };
 
 void() data_projectile_missile_laserguide_think={
-  local vector vtemp, dir, olddir;
-  local float turnrate;
+  local vector vtemp;
   
   if( self.enemy.deadflag == DEAD_NO ){
     vtemp = normalize(self.enemy.origin - self.origin);

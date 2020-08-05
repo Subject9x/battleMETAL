@@ -59,8 +59,6 @@ string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
 string SAVE_MAP;
 string SAVE_MECHS_LIST;
 string SAVE_ITEMS_ALL;
-float SAVE_MISSN_POINTS;
-
 string SAVE_FILE_EXT = ".sav";
 
 //file tags

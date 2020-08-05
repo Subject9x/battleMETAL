@@ -265,7 +265,6 @@ void() ai_state_frame;
 .void() ai_state_combat_moveExec;
 .void() ai_state_combat_moveEnd;
 .void() ai_state_combat_blocked;
-.void() ai_state_combat_react;
 
 .void() ai_state_tether;
 .void() ai_state_tether_pause;
@@ -296,7 +295,6 @@ float() ai_move_back_right;
 void() ai_move_snapshot;
 void() ai_move_standface;
 void() ai_move_node_tactical;
-void() ai_move_node_reverse;
 void() ai_move_node_radius;
 float(float outRadius) ai_move_patrol_node;
 

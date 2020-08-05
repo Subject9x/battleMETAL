@@ -149,7 +149,6 @@ void( entity t) ai_alert_close={
 
 float() ai_find_target_visual={
   local entity targ, found;
-  local entity ally; 
   local float rng, fog, fogLen, ndist;
 
   if( ai_valid_target(self.enemy) ){
@@ -228,7 +227,6 @@ float() ai_find_target_radar={
   }
   local entity targ, found;
   local float rng, ndist;
-  local entity ally; 
   
   selfSensorOrg_x = self.origin_x;
   selfSensorOrg_y = self.origin_y;
@@ -364,7 +362,6 @@ entity(entity targ) ai_node_to_target={
   local entity found;
   local float dist;
   local float distComp;
-  local float checkDist;
   
   dist = ai_check_node_radius(targ);
   

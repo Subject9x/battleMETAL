@@ -8,11 +8,8 @@ Overview:
 
 void() ctrl_update_mechplayer={
   local entity parent;
-  local entity wep;  
   local entity piece;
   local float hp;
-  local vector spark;
-  local entity partParent;
   
   parent = self;
   
@@ -54,8 +51,6 @@ void() ai_ctrl_update_mechplayer={
   local entity wep;
   local entity piece;
   local float hp;
-  local vector spark;
-  local entity partParent;
   
   ai_ctrl_updateCenterTorso();
   
@@ -96,7 +91,6 @@ void() ctrl_updateCenterTorso={
   local float diff;
   local float mx, my;
   local float rate;
-  local entity cam;
   local vector v1;
 
   if( time > self.laser_sight_timer ){
@@ -172,8 +166,6 @@ void() ctrl_updateCenterTorso={
 
 void() ai_ctrl_updateCenterTorso={
   local float diff;
-  local float mx, my;
-  local float rate;
   local entity cam;
   local vector v1;
 
@@ -304,7 +296,6 @@ void() ctrl_component_die={
 };
 
 void() ctrl_arm_die={
-  local entity piece;
   local entity this;
   local entity c;
   

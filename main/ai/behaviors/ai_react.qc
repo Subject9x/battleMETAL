@@ -10,7 +10,6 @@ Overview:
 */
 
 void(entity newAttacker) ai_react_generic={
-  local float enemyvis;
   
   self.ai_react_buffer = time + self.ai_react_time * 5;
   

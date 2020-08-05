@@ -34,7 +34,7 @@ void() ai_gev_die_clean={
 };
 
 void() ai_gev_touch_death={
-  local vector vel;
+  //local vector vel;
   if( other == world ){
     self.movetype = MOVETYPE_NONE;
     self.SendFlags = self.SendFlags | SENDFLAG_BURN;

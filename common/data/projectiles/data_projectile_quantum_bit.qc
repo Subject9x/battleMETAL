@@ -56,8 +56,6 @@ void() data_projectile_ini_quantum_bit_={
 
 #ifndef CSQC
 void() data_projectile_quantum_bit_th={
-  local vector predict;
-  local vector dir, vtemp;
   
   self.think = data_projectile_quantum_bit_th;
   self.nextthink = time + 0.025;
@@ -68,15 +66,6 @@ void() data_projectile_quantum_bit_th={
     return;
   }
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_VELOCITY);
-  
-  /*if( ai_valid_target(self.enemy) ){
-    vtemp = self.enemy.origin + '0 0 5';
-    dir = normalize(vtemp - self.origin);
-    dir = dir * 0.75;
-    self.velocity = dir * self.data_velocity;
-    self.SendFlags = self.SendFlags | (SENDFLAG_TURRET | SENDFLAG_VELOCITY);
-  }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;*/
 }
 
 
@@ -121,7 +110,6 @@ void() data_projectile_quantum_shatter={
 };
 
 void() data_projectile_ini_quantum_bit_touch_={
-  local float hit;
   
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;

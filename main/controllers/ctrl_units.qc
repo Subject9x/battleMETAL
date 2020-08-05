@@ -79,7 +79,6 @@ void( entity comp ) ctrl_unit_part_death={
   Removes component from Unit, it's one-way so be careful!
 */
 void(entity unitPiece) ctrl_unit_remove_piece={
-  local entity this;
   if( (unitPiece.owner == self) && unitPiece.partTypeId ){
     remove(unitPiece);
   }

@@ -62,7 +62,7 @@ void() building_burn={
   }
 };
 
-float( entity dest, float changedflags ) ctrl_send_turret={
+float( entity targEnt, float changedflags ) ctrl_send_turret={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
   WriteByte( MSG_ENTITY, changedflags );
@@ -113,7 +113,7 @@ float( entity dest, float changedflags ) ctrl_send_turret={
   return TRUE;
 };
 
-float( entity dest, float changedflags ) ctrl_send_building={
+float( entity targEnt, float changedflags ) ctrl_send_building={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
   WriteByte( MSG_ENTITY, changedflags );

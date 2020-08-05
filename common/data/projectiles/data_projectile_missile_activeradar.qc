@@ -63,7 +63,6 @@ void() data_projectile_ini_missile_active_radar_={
 #ifndef CSQC
 void() data_projectile_missile_activeradar_think={
 	local vector	dir, vtemp;
-  local float prevTargRadar;
   local float lock;
   
   if( !self.touch ){
