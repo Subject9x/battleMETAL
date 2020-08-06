@@ -43,6 +43,8 @@ void() click_camp_back={
 
 // ini function, called by '_f' function as a setup func
 void() m_camp_i={
+  campaign_loadfiles();
+  
   camp_title = lbl_img('10 100', '1 1 0', IMG_CAMP_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SINGLE, 1, (UI_FLAG_SIZE_IMG) );
   camp_new = btn_img_callback('10 132', '1 1 0', IMG_CAMP_NEW, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_new, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   camp_load = btn_img_callback('10 151', '1 1 0', IMG_CAMP_LOAD, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_load, '1 1 1', '0 1 0',1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));

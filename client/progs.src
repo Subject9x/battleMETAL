@@ -13,6 +13,7 @@ data/defs_linker.qc
   ../common/data/defs/defs_part.qc		    //all fields related to unit sub components.
   ../common/data/defs/defs_item.qc		    //all fields related to items.
   ../common/data/defs/defs_projectile.qc		    //all fields related to items.
+  ../common/data/camp_loader.qh
 //================================
 
 data/headers/data_api.qh

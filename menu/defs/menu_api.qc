@@ -302,7 +302,7 @@ void(entity btn) render_btn={
     this = self;
     self = btn;
       org = gui_percentToPixelRawVec(self.origin);
-      
+      self.drawOrg = org;
       sizzle = gui_percentToPixelRawVec(self.size);
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         sizzle = drawgetimagesize(self.image1);
@@ -356,6 +356,8 @@ void(entity btn) render_btn_txt={
         sizzle = gui_percentToPixelRawVec( sizzle );
       }
       
+      self.drawSize = sizzle;
+      self.drawOrg = org;
       bclr = self.color;
       if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
         MOUSE_TARGET = self;
@@ -688,7 +690,7 @@ void() menu_scan_saves={
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
       local float line_count, line_tag, save_skill;
-      local string line, save_name, save_num, map_name, contents;
+      local string line, save_name, save_num, map_name, contents, campid;
       line_count = 0;
       contents = fgets(flannel);
       tokenizebyseparator(contents, "{", ",", "}");
@@ -705,11 +707,16 @@ void() menu_scan_saves={
           if( argv(1) == "skill" ){
             save_skill = stof(argv(3));
           }
+          if( argv(1) == CAMP_SAVE_TAG ){
+            campid = argv(3);
+          }
         }
         line = fgets(flannel);
       }
       fclose(flannel);
-      save_name = strcat("[SAVE ", save_num,"]  ", map_name, "  ","-","  ", gui_skillAsString(save_skill));
+      save_name = strcat("[SAVE", save_num,"]", campid," -map(",map_name);
+      save_name = strcat(save_name, ") -skill:(", gui_skillAsString(save_skill),")");
+      
       GAME_SAVES[itr] = strzone(fname);
       GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
       GAME_SAVES_SKILL[itr] = save_skill;

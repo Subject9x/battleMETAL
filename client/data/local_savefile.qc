@@ -25,6 +25,9 @@ void( string fileName ) cl_load_savefile={
         if( argv(1) == SAVE_FILE_ITEMS ){
           UNLOCKED_ITEMS_DATA = strzone(argv(3));
         }
+        if( argv(1) == CAMP_SAVE_TAG ){
+          SAVEFILE_CAMPAIGN = strzone(argv(3));
+        }
       }
       line = fgets(flannel);
     }
@@ -214,6 +217,7 @@ void() cl_savefile_save={
   fputs(flannel, strcat("  'mission' : ", SV_NEXTMAP, ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
+  fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
   //if( strstrofs(MAP_NAME, "o1m3", 0) != -1 ){
     //TODO - pipe next map to client
   //  if( strstrofs("", "anim", 0) != -1){
@@ -253,7 +257,7 @@ void() cl_savefile_default={
   fputs(flannel, "  'points' : ,\n");
   fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
   fputs(flannel, "  'newgame': 1,\n");
+  fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
   fputs(flannel, "}");
   fclose(flannel);
-  
 };

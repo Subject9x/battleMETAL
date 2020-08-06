@@ -10,6 +10,8 @@ Overview:
 
 string UNLOCKED_MECHS_DATA; // pulled from cl_load_savefile
 string UNLOCKED_ITEMS_DATA; // pulled from cl_load_savefile
+string SAVEFILE_CAMPAIGN;
+
 
 void( string fileName ) cl_load_savefile;
 void( float gameType ) cl_set_savepath;

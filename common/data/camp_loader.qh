@@ -1,0 +1,38 @@
+/*
+battleMETAL
+author: Peter Roohr
+date: 05/08/2020
+overview:
+  Header for campaign file loader.
+*/
+
+//CONSTANTS
+string PATH_CAMP_FILE = "campaigns/original.dat";
+string CAMP_TAG_NAME = "name";
+string CAMP_TAG_MAP = "map";
+string CAMP_TAG_DESC = "desc";
+string CAMP_TAG_AUTHOR = "author";
+
+string CAMP_SAVE_TAG = "campaign";
+
+float CAMP_TOTAL    = 17; //max number of campaigns (16).
+float CAMP_PAGE_MAX = 8;  //max results per page
+
+//GLOBALS
+#ifndef CSQC
+string CAMP_SELECT_MAP;
+string CAMP_SELECT_NAME;
+
+float CAMP_PAGE;
+float CAMP_PAGE_END;
+
+string CAMP_NAME[16];
+string CAMP_MAP[16];
+string CAMP_DESC[16];
+string CAMP_AUTH[16];
+
+void() campaign_loadfiles;
+#endif
+
+
+

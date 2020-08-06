@@ -1,5 +1,6 @@
 ../../menu.dat
   ../common/ui/ui_color_constants.qc
+  ../common/data/camp_loader.qh
 //HEADERS---------------
 defs/menudefs.qc
 defs/keycodes.qc
@@ -8,11 +9,14 @@ defs/headers/utils.qh
 defs/headers/gui_api.qh
 defs/headers/menu_gfx.qh
 defs/headers/menu_api.qh
+
 //=======================
 
 defs/utils.qc
 defs/gui_api.qc
 defs/menu_api.qc
+
+../common/data/data_campaign.qc
 
 menu_main.qc
 

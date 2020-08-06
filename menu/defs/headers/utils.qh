@@ -1,10 +1,17 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/11/2018
 Overview: utility functions for menu
 */
 
+string PATH_DATA_MAP = "maps/";
+string PATH_DATA_ANIM = "anim";
+string PATH_DATA_SAVE = "saves";
+string PATH_DATA_UI = "ui";
+string NEWLINE = "\n";
+string SAVE_FILE_EXT = ".sav";
+string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
 
 //console logging==========================================================
 void(string msg, float val) cons_logAFloat;

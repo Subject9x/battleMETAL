@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/11/2018
 Overview: utility functions for menu
@@ -24,4 +24,33 @@ void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
   bprint(strcat(msg," : ",s1," | ", split," : ",s2,"\n"));
+};
+
+void(string nextMap, string startItems, string startMechs, string campaignName) menu_write_new_save={
+  local float flannel;
+  local string file;
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
+  flannel = fopen(file, FILE_WRITE);
+    fputs(flannel, "{\n");
+    fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
+    fputs(flannel, strcat("  'mission' : ", nextMap, ",\n"));
+    fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
+    fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
+    fputs(flannel, strcat("  'campaign' : ", campaignName, ",\n"));
+    if(startMechs != "..."){
+      fputs(flannel, strcat("  'mechs' : ", startMechs, ",\n"));
+    }
+    else{
+      fputs(flannel, strcat("  'mechs' : ", " ", ",\n"));
+    }
+    
+    if(startItems != "..."){
+      fputs(flannel, strcat("  'items' : ", startItems, ",\n"));
+    }
+    else{
+      fputs(flannel, strcat("  'items' : ", " ", ",\n"));
+    }
+    
+    fputs(flannel, "}");
+  fclose(flannel);
 };
