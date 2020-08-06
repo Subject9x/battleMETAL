@@ -51,7 +51,7 @@ void() click_newg_back={
 };
 
 void() click_newg_launch={
-  menu_write_new_save(CAMP_SELECT_MAP, "...", "...", CAMP_SELECT_NAME);
+  menu_write_new_save(CAMP_SELECT_MAP, CAMP_SELECT_ITEMS, CAMP_SELECT_MECHS, CAMP_SELECT_NAME);
   menu_clear_items(M_STATE);
   cmd("deathmatch 0\n");
   cmd("coop 0\n");
@@ -60,6 +60,8 @@ void() click_newg_launch={
   cmd("map", strcat(" ", CAMP_SELECT_MAP,"\n"));
   strunzone(CAMP_SELECT_MAP);
   strunzone(CAMP_SELECT_NAME);
+  strunzone(CAMP_SELECT_MECHS);
+  strunzone(CAMP_SELECT_ITEMS);
 };
 
 void() click_newg_novice={
@@ -86,15 +88,26 @@ void() click_newg_campaign={
   newgame_substate = NEWGAME_SKILL;
   newgame_back_cacheOrg = new_back.origin;
   new_back.origin = gui_percentToPixelRawVec('10 230 0');
-  if(CAMP_SELECT_MAP != "" ){
+  
+  if(CAMP_SELECT_MAP != ""){
     strunzone(CAMP_SELECT_MAP);
   }
   CAMP_SELECT_MAP = strzone(CAMP_MAP[self.data_bind]);
 
-  if(CAMP_SELECT_NAME != "" ){
+  if(CAMP_SELECT_NAME != ""){
     strunzone(CAMP_SELECT_NAME);
   }
   CAMP_SELECT_NAME = strzone(CAMP_NAME[self.data_bind]);
+  
+  if(CAMP_SELECT_MECHS != ""){
+    strunzone(CAMP_SELECT_MECHS);
+  }
+  CAMP_SELECT_MECHS = strzone(CAMP_MECHS[self.data_bind]);
+  
+  if(CAMP_SELECT_ITEMS != ""){
+    strunzone(CAMP_SELECT_ITEMS);
+  }
+  CAMP_SELECT_ITEMS = strzone(CAMP_ITEMS[self.data_bind]);
 };
 
 void(vector labelOrg) newmgame_text_rookie={

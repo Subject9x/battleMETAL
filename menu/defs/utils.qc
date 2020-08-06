@@ -37,18 +37,18 @@ void(string nextMap, string startItems, string startMechs, string campaignName) 
     fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
     fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
     fputs(flannel, strcat("  'campaign' : ", campaignName, ",\n"));
-    if(startMechs != "..."){
+    if(startMechs != ""){
       fputs(flannel, strcat("  'mechs' : ", startMechs, ",\n"));
     }
     else{
-      fputs(flannel, strcat("  'mechs' : ", " ", ",\n"));
+      fputs(flannel, "  'mechs' : ,\n");
     }
     
-    if(startItems != "..."){
+    if(startItems != ""){
       fputs(flannel, strcat("  'items' : ", startItems, ",\n"));
     }
     else{
-      fputs(flannel, strcat("  'items' : ", " ", ",\n"));
+      fputs(flannel, "  'items' : ,\n");
     }
     
     fputs(flannel, "}");

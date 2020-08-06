@@ -59,6 +59,16 @@ void() campaign_loadfiles={
                 CAMP_AUTH[itr+1] = strzone(argv(token));
               }
             }
+            if (argv(1) == CAMP_TAG_MECHS){
+              if( argv(token) != "" ){
+                CAMP_MECHS[itr+1] = strzone(argv(token));
+              }
+            }
+            if (argv(1) == CAMP_TAG_ITEMS){
+              if( argv(token) != "" ){
+                CAMP_ITEMS[itr+1] = strzone(argv(token));
+              }
+            }
           }
           line = fgets(flannel);
         }
