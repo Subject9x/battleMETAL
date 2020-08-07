@@ -60,6 +60,7 @@ void() sendevent_building_die={
       key = key.w_slot;
     }
   }
+  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
 };
 
 /*

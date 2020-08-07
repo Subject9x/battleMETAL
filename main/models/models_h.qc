@@ -62,6 +62,7 @@ void() leg_run1;
 void() leg_run2;
 void() leg_run3;
 void() leg_run4;
+void() leg_run5;
 
 //not sure how easy it is to reverse anims here;
 void() leg_back1;

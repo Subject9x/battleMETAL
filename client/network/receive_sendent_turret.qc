@@ -31,7 +31,7 @@ void() sendevent_turret_die={
     }
   }
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
-  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
   if( self.effect1.owner == self && self.effect1 != world ){
     sendent_handle_remove(self.effect1);
   }

@@ -36,7 +36,6 @@ void() leg_walk1 = [$l_walk1, leg_walk2]{
 };
 void() leg_walk2 = [$l_walk2, leg_walk3]{
   self.walkframe = $l_walk2;
-  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   if( self.owner.moveState > 0 ){
     self.think = leg_run2;
   }
@@ -90,7 +89,6 @@ void() leg_walk8 = [$l_walk8, leg_walk1]{
 
 void() leg_run1 = [$l_walk2, leg_run2]{
   self.walkframe = $l_walk2; 
-  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   if( self.owner.moveState == 0 ){
     self.think = leg_walk3;
   }
@@ -108,7 +106,13 @@ void() leg_run3 = [$l_walk6, leg_run4]{
     self.think = leg_walk7;
   }
 };
-void() leg_run4 = [$l_walk8, leg_run1]{
+void() leg_run4 = [$l_walk7, leg_run5]{
+  self.walkframe = $l_walk8; 
+  if( self.owner.moveState == 0 ){
+    self.think = leg_walk1;
+  }
+};
+void() leg_run5 = [$l_walk8, leg_run1]{
   self.walkframe = $l_walk8; 
   if( self.owner.moveState == 0 ){
     self.think = leg_walk1;
