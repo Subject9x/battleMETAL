@@ -330,12 +330,28 @@ void() client_get_hud_highlight={
   
   hfx = spawn();
   hfx.data_idx = -3;  //more hacks
-  hfx.origin = te_read_vector();
-  hfx.drawsize = te_read_vector();
+  
   hfx.drawcolor1 = te_read_vector();
   t = ReadShort();
-  hfx.drawme = time + (t / 3);
+  hfx.partTypeId = ReadByte();
   
+  local float fnd;
+  fnd = 0;
+  while( fnd < 32 ){
+    if( UI_DATA_UIDS[fnd] == hfx.partTypeId ){
+      if( hfx.partParentId == 0 ){
+        hfx.partParentId = fnd;
+      }
+    }
+    fnd = fnd + 1;
+  }
+  hfx.drawsize = te_read_vector();  //we still send a prospective size because some HUD elements don't have a defined size?
+  
+  if( hfx.partTypeId == 0 || !hfx.partTypeId ){
+    hfx.origin = te_read_vector();
+  }
+  
+  hfx.drawme = time + (t / 3);
 };
 
 

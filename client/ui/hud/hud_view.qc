@@ -756,17 +756,46 @@ void() hud_renderHighlight_frame={
   Highlights a chosen section of the player's HUD
 */
 void( entity box ) hud_renderHighlight={
-  local vector bx_pos, bx_sz;
+  local vector bx_pos, boxSize;
   local float x,y;
+  local vector elmOrg, elmSize;
+  local float elmAlign;
   
   x = (0.1/100) * VIEW_MAX_x;
   y = (0.1/100) * VIEW_MAX_y;
-  bx_pos_x = VIEW_ORG_x + ( VIEW_MAX_x * box.origin_x );
-  bx_pos_y = VIEW_ORG_y + ( VIEW_MAX_y * box.origin_y );
-  bx_sz_x = box.drawsize_x * VIEW_MAX_x;
-  bx_sz_y = box.drawsize_y * VIEW_MAX_y;
   
-  drawpic( bx_pos, UI_DEF_BOX_256_THICK, bx_sz, box.drawcolor1, 0.75, 0);
+  if( box.partParentId != 0 ){
+    elmOrg = UI_DATA_POS[box.partParentId];
+    if(elmOrg != '0 0 0'){
+      elmAlign = UI_DATA_ALIGN[box.partParentId];
+      elmSize = UI_DATA_SIZE[box.partParentId];
+      
+      elmOrg = gui_percentToPixelRawVec(elmOrg);
+      if(elmAlign != 0 ){
+        elmOrg = gui_calcAlign(elmOrg, elmAlign);
+      }
+      if( elmSize != '0 0 0' ){
+        boxSize = gui_percentToPixelRawVec(elmSize);
+      }
+      else{
+        boxSize_x = box.drawsize_x * VIEW_MAX_x;
+        boxSize_y = box.drawsize_y * VIEW_MAX_y;
+      }
+      if(box.partTypeId == HUD_UID_ARM_PLAYER){
+        elmOrg = elmOrg - (boxSize*0.5);
+      }
+      drawpic( elmOrg, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.75, 0);
+    }
+  }
+  else{  
+    if( box.origin != '0 0 0'){
+      bx_pos_x = VIEW_ORG_x + ( VIEW_MAX_x * box.origin_x );
+      bx_pos_y = VIEW_ORG_y + ( VIEW_MAX_y * box.origin_y );
+      boxSize_x = box.drawsize_x * VIEW_MAX_x;
+      boxSize_y = box.drawsize_y * VIEW_MAX_y;
+      drawpic( bx_pos, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.75, 0);
+    }
+  }
 };
 
 /*

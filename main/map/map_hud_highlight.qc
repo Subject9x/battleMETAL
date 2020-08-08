@@ -127,6 +127,7 @@ void() map_hud_highlight_use={
   MESSAGE_ONLY will just send a special event to show an info box;
   
 -------- KEYS -------- 
+.partTypeId = <float> [HUD element ID] - if you want to highlight a specific hud element
 .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
 .compOffset = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
 .color = <vector> [red, green, blue] - color of the box

@@ -135,20 +135,23 @@ void( entity targetClient ) client_push_hud_highlight={
     msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY );
     WriteByte( MSG_ONE, TE_UI_BOX );
-    WriteCoord( MSG_ONE, this.movedir_x );
-    WriteCoord( MSG_ONE, this.movedir_y );
-    WriteCoord( MSG_ONE, this.movedir_z );
-    
-    WriteCoord( MSG_ONE, this.compOffset_x );
-    WriteCoord( MSG_ONE, this.compOffset_y );
-    WriteCoord( MSG_ONE, this.compOffset_z );
     
     WriteCoord( MSG_ONE, this.color_x );
     WriteCoord( MSG_ONE, this.color_y );
     WriteCoord( MSG_ONE, this.color_z );
-
+    
     WriteShort( MSG_ONE, this.data_lifetime );
-  
+    WriteByte( MSG_ONE, this.partTypeId );
+    
+    WriteCoord( MSG_ONE, this.compOffset_x );
+    WriteCoord( MSG_ONE, this.compOffset_y );
+    WriteCoord( MSG_ONE, this.compOffset_z );
+      
+    if( this.partTypeId == 0 || !this.partTypeId ){
+      WriteCoord( MSG_ONE, this.movedir_x );
+      WriteCoord( MSG_ONE, this.movedir_y );
+      WriteCoord( MSG_ONE, this.movedir_z );
+    }
   self = this;
 }; 
 
