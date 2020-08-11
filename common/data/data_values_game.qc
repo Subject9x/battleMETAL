@@ -161,12 +161,13 @@ float PLAYER_REDEPLOY       = 4;  // player use ClientKill().
 float PLAYER_RESPAWN        = 5;  // player is ready to respawn from being dead.
 float PLAYER_DEBRIEF        = 6;  // player has finished a campaign mission.
 float PLAYER_INTERMSN       = 7; // Client has entered an intermission event.
+float PLAYER_MENU           = 8;  //dear galaxy, why is it so hard to summon the main menu via code? >:(
 
-float PLAYER_ANIM_STOP      = 8;  // Client told to stop playing animatic.
-float PLAYER_POWERUP_BEGIN  = 9;  // Client has spawned into their mech, and the mech is powering up.
-float PLAYER_POWERUP_END    = 10;  // Client mech has completed powerup sequence.
-float PLAYER_ACTIVE         = 11;  // Client is controlling mech, and may move/fire freely.
-float PLAYER_SPRINT_ON      = 12;
+float PLAYER_ANIM_STOP      = 9;  // Client told to stop playing animatic.
+float PLAYER_POWERUP_BEGIN  = 10;  // Client has spawned into their mech, and the mech is powering up.
+float PLAYER_POWERUP_END    = 11;  // Client mech has completed powerup sequence.
+float PLAYER_ACTIVE         = 12;  // Client is controlling mech, and may move/fire freely.
+float PLAYER_SPRINT_ON      = 13;
 
 float MOVE_NORM             = 0;  //normal walking without +button8
 float MOVE_SPRINT           = 1;  // Client has engaged the 'sprint' 

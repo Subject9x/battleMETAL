@@ -147,6 +147,9 @@ void() ClientConnect = {
 
   if( world.animaticOnly ) {
     client_playTrack(world.sounds, TRUE);  //play desired music for animatic
+    if( world.animaticOnly > 1){
+      stuffcmd(self, "ismenu");
+    }
   }
   else{
     client_playTrack(3, TRUE);  //entering hangar menu
@@ -179,7 +182,7 @@ void() PutClientInServer = {
 	self.air_finished = time + 12;
 	self.dmg = 2;   		// initial water damage
 	self.effects = 0;
-  
+  self.health = 100;
 	self.fixangle = TRUE;		// turn this way immediately
 	
   self.classname = "player";
@@ -307,7 +310,13 @@ void() PutClientInServer_Campaign={
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
     self.power_timer = 0;
     player_makeObserver();
-    self.playerState = PLAYER_SPAWN;
+    if(world.animaticOnly > 1){
+      self.playerState = PLAYER_MENU;
+    }
+    else{
+      self.playerState = PLAYER_SPAWN;
+    }
+    
     self.faction = FACTION_PSC; //campaign default
     self.th_die = PlayerDie;
   }

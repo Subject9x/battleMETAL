@@ -44,6 +44,20 @@ void() hrepair_rep = [0, hrepair_rep]{
   end_repair = TRUE;
   altSelf = self;
   
+  if( self.reloadValue < 0  ){
+    self.cockpit.ai_movedist = time + 30;
+    self.think = hrepair_th;
+    self.nextthink = time + 0.1;
+    self.cockpit.attack_state = ST_MELEE;
+    self.trigger_field = world;
+    client_send_event_repairs( self.trigger_field, FALSE ) ;
+    if( self.startupDelay == FL_NOSHOOT ){
+      self.trigger_field.flags = self.trigger_field.flags - FL_NOSHOOT;
+    }
+    self.trigger_field.stat_plr_rep = -1;
+    return;
+  }
+  
   if( self.cockpit.attack_state == ST_WALK ){
     if( vlen(self.trigger_field.origin - self.cockpit.origin) <= 32){
       repairMe = self.trigger_field;
@@ -395,18 +409,11 @@ void() building_repair_touch={
   if( !(other.flags & FL_CLIENT) ){
     return;
   }
-  if(self.owner.reloadValue <= 0){
-    return;
-  }
   if( self.owner.trigger_field != world ){
     return;
   }
   if(other.faction != self.owner.faction){
     return;
-  }
-  other.energy = other.energy + (other.energyRate * 0.45);
-  if( other.energy > other.energyMax ){
-    other.energy = other.energyMax;
   }
   if(util_getMechHpAverage(other) >= 1){
     return;
@@ -414,6 +421,18 @@ void() building_repair_touch={
   if( self.attack_state == ST_WALK ){
     return;
   }
+  if( time > self.ai_movedist ){
+    if(self.owner.reloadValue <= 0){
+      self.ai_movedist = time + 20;
+      return;
+    }
+  }
+  other.energy = other.energy + (other.energyRate * 0.45);
+  if( other.energy > other.energyMax ){
+    other.energy = other.energyMax;
+  }
+  
+  
   self.owner.trigger_field = other;
   
   if( !(other.flags & FL_NOSHOOT) ){

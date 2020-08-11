@@ -22,6 +22,7 @@ void() m_init={
   registercvar("cl_tint_g", "1", 1);
   registercvar("cl_tint_b", "1", 1);
   registercvar("sv_serverflags", "0", 0);
+  registercvar("cl_ismenu", "0", 0);
   
   menu_setup_mainservers();
   
@@ -263,8 +264,15 @@ void(float mode) m_toggle={
     MAIN_MISSION = FALSE;
     menu_clear_items(M_MAIN); 
     m_main_f();
-    cmd("startdemos", " start\n");
     return;
+  }
+  
+  if(cvar("cl_ismenu") == 1){
+    setkeydest(KEY_MENU);
+    MAIN_MISSION = FALSE;
+    menu_clear_items(M_MAIN); 
+    m_main_f();
+    return; 
   }
 
   setkeydest(KEY_MENU);
@@ -277,7 +285,8 @@ void(float mode) m_toggle={
   Quake C api hook - not sure yet
 */
 void() m_newmap={
-
+  cvar_set("cl_ismenu", "0");
+  menu_clear_items(M_STATE); 
 };
 
 /*

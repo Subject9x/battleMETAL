@@ -9,6 +9,7 @@ void() CSQC_Init =
   registercvar("cl_tint_r", "1", 1);
   registercvar("cl_tint_g", "1", 1);
   registercvar("cl_tint_b", "1", 1);
+  registercvar("cl_ismenu", "0", 0);
 
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
@@ -160,7 +161,6 @@ void() CSQC_Init =
   MENU_DEBRIEF_unlocks_mechs = ""; 
   MENU_DEBRIEF_unlocks_equip = ""; 
   SV_NEXTMAP = "";
-  
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -197,6 +197,7 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 // the most important function in CSQC...
 void(float w, float h, float menushown) CSQC_UpdateView =
 {
+
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", "1");
@@ -271,6 +272,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   // add any polygons we want here
 
   //DATA - Update local Client data vars from Server
+  
   client_get_info();
   
   receive_ent_bindData();
@@ -483,6 +485,11 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     else if( argv(0) == "cd" ){  
       cl_get_new_music( s ) ;
+    }
+    else if( argv(0) == "ismenu"){
+      cvar_set("cl_ismenu", "1");
+      setcursormode(0);
+      localcmd("togglemenu\n");
     }
     else{
       localcmd(s);

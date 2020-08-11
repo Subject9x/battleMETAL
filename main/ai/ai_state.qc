@@ -20,82 +20,80 @@ Overview:
 void() ai_state_frame={
   //run unit frame updates
   self.ai_unit_update();
+  if( !self.deadflag ){
+    ai_update();
+  }
   if( !(self.spawnflags&DEBUG_MODE) ){
-    if( !self.deadflag ){
-      ai_update();
+    //State update
+    self.ai_state_last = self.ai_state;
+    self.ai_state = self.ai_state_next;
+    
+    //Move tracker update
+    self.ai_move_last = self.ai_move;
+    self.ai_move = self.ai_move_next;
+    
+    //state machine
+    switch(self.ai_state){
+      case ST_STAND:
+        self.ai_run_state_now = self.ai_state_stand;
+        break;
+      case ST_PTR:
+        self.ai_run_state_now = self.ai_state_patrol;
+        break;
+      case ST_PTR_PAUSE:
+        self.ai_run_state_now = self.ai_state_patrol_pause;
+        break;
+      case ST_PTR_TRAVEL_NODE:
+        self.ai_run_state_now = self.ai_state_patrol_travel_node;
+        break;
+      case ST_PTR_TRAVEL_NODEBLOCK:
+        self.ai_run_state_now = self.ai_state_patrol_travel_blocked;
+        break;
+      case ST_THR:
+        self.ai_run_state_now = self.ai_state_tether;
+        break;
+      case ST_THR_PAUSE:
+        self.ai_run_state_now = self.ai_state_tether_pause;
+        break;
+      case ST_THR_TRAVEL:
+        self.ai_run_state_now = self.ai_state_tether_travel;
+        break;
+      case ST_THR_TRAVEL_BLOCK:
+        self.ai_run_state_now = self.ai_state_tether_travel_block;
+        break;
+      case ST_COMBAT:
+        self.ai_run_state_now = self.ai_state_combat;
+        break;
+      case ST_COM_MOVE_START:
+        self.ai_run_state_now = self.ai_state_combat_moveStart;
+        break;
+      case ST_COM_MOVE_EXEC:
+        self.ai_run_state_now = self.ai_state_combat_moveExec;
+        break;
+      case ST_COM_MOVE_END:
+        self.ai_run_state_now = self.ai_state_combat_moveEnd;
+        break;
+      case ST_COM_MOVE_BLOCK:
+        self.ai_run_state_now = self.ai_state_combat_blocked;
+        break;
+    }
+    
+    if( self.ai_run_state_now ){
+      self.ai_run_state_now();
+    }
+    
+    if( self.ai_state == ST_COM_MOVE_START || self.ai_state == ST_COM_MOVE_EXEC ){
+      //optimization to reduce nesting of switch/case calls
+      ai_combat_move_frame();
+    }
+    
+    if( (self.flags&FL_TURRET) ){
+      ai_turret_control();
+    }
+    if( self.legs ){
+      ai_leg_control();
     }
   }
-  
-  //State update
-  self.ai_state_last = self.ai_state;
-  self.ai_state = self.ai_state_next;
-  
-  //Move tracker update
-  self.ai_move_last = self.ai_move;
-  self.ai_move = self.ai_move_next;
-  
-  //state machine
-  switch(self.ai_state){
-    case ST_STAND:
-      self.ai_run_state_now = self.ai_state_stand;
-      break;
-    case ST_PTR:
-      self.ai_run_state_now = self.ai_state_patrol;
-      break;
-    case ST_PTR_PAUSE:
-      self.ai_run_state_now = self.ai_state_patrol_pause;
-      break;
-    case ST_PTR_TRAVEL_NODE:
-      self.ai_run_state_now = self.ai_state_patrol_travel_node;
-      break;
-    case ST_PTR_TRAVEL_NODEBLOCK:
-      self.ai_run_state_now = self.ai_state_patrol_travel_blocked;
-      break;
-    case ST_THR:
-      self.ai_run_state_now = self.ai_state_tether;
-      break;
-    case ST_THR_PAUSE:
-      self.ai_run_state_now = self.ai_state_tether_pause;
-      break;
-    case ST_THR_TRAVEL:
-      self.ai_run_state_now = self.ai_state_tether_travel;
-      break;
-    case ST_THR_TRAVEL_BLOCK:
-      self.ai_run_state_now = self.ai_state_tether_travel_block;
-      break;
-    case ST_COMBAT:
-      self.ai_run_state_now = self.ai_state_combat;
-      break;
-    case ST_COM_MOVE_START:
-      self.ai_run_state_now = self.ai_state_combat_moveStart;
-      break;
-    case ST_COM_MOVE_EXEC:
-      self.ai_run_state_now = self.ai_state_combat_moveExec;
-      break;
-    case ST_COM_MOVE_END:
-      self.ai_run_state_now = self.ai_state_combat_moveEnd;
-      break;
-    case ST_COM_MOVE_BLOCK:
-      self.ai_run_state_now = self.ai_state_combat_blocked;
-      break;
-  }
-  
-  if( self.ai_run_state_now ){
-    self.ai_run_state_now();
-  }
-  
-  if( self.ai_state == ST_COM_MOVE_START || self.ai_state == ST_COM_MOVE_EXEC ){
-    //optimization to reduce nesting of switch/case calls
-    ai_combat_move_frame();
-  }
-  
-  if( (self.flags&FL_TURRET) ){
-    ai_turret_control();
-  }
-  if( self.legs ){
-    ai_leg_control();
-  }
-  
   self.think = ai_state_frame;
   self.nextthink = time + 0.06;
 };

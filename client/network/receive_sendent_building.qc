@@ -119,8 +119,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
         }
       }
     }
-  }    
-
+  }
   
   //rider for desired stat changes
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -129,6 +128,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.compAltOffset_x = ReadShort();
       self.compAltOffset_y = ReadShort();
       self.compAltOffset_z = ReadShort();
+      self.energy = ReadShort();
     }
     if( self.data_idx == UI_BUILDING_radar ){
       self.w_firetime = ReadByte();
@@ -138,7 +138,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   
-  if( (changeFlags & SENDFLAG_VELOCITY) ){     
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
     self.faction = ReadByte();
   }
 

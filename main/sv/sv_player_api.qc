@@ -39,7 +39,12 @@ void() PlayerPreThink = {
 		return;					// the think tics
 	}
   
-
+  if( self.playerState == PLAYER_INTERMSN ){
+    client_push_player_info_thin();
+    if(world.animaticOnly){
+      return;
+    }
+  }
   
 	if (self.view_ofs == '0 0 0'){
   	return;		// intermission or finale
@@ -117,6 +122,9 @@ void() PlayerPostThink = {
   
   if( self.playerState == PLAYER_INTERMSN ){
     client_push_player_info_thin();
+    if(world.animaticOnly){
+      return;
+    }
   }
   
   if(time < self.power_timer){

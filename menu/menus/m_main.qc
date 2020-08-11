@@ -54,11 +54,12 @@ void() click_main_train={
   menu_clear_items(M_STATE);
   M_STATE = M_MAIN;
   m_main_f();
+  menu_exit_togame();
+  cvar_set("cl_ismenu","0");
   cvar_set("skill", "1");
   cmd("deathmatch 0\n");
   cmd("coop 0\n");
   cmd("maxplayers 1\n");
-  menu_exit_togame();
   cmd("map", " training_only\n");
 };
 
@@ -96,9 +97,7 @@ void() click_main_leave={
   M_STATE = M_MAIN;
   MAIN_MISSION = FALSE;
   m_main_f();
-  cmd("disconnect\n");
-  cmd("startdemos start\n");
-  cmd("demos\n");
+  cmd("map cin_menu.bsp\n");
 };
 
 // ini functions
@@ -176,8 +175,10 @@ void(float key, float ascii) m_main_k={
   
   switch(key){
     case K_ESCAPE:
-      menu_clear_items(M_STATE);
-      menu_exit_togame();
+      if(cvar("cl_ismenu") == FALSE ){
+        menu_clear_items(M_STATE);
+        menu_exit_togame();
+      }
       break;
   }
 };

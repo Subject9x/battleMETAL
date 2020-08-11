@@ -218,6 +218,17 @@ void() client_state_events={
     }
     //------------------------------------
     
+    
+    //EVENT - CLIENT END OF DM/TDM
+    if( (CLIENT_player_state_prev == PLAYER_CONNECT) && (CLIENT_player_state == PLAYER_MENU) ){
+      setcursormode( 0 );
+      menu_exit();
+      cvar_set("cl_ismenu", "1");
+      localcmd("togglemenu\n");
+      return;
+    }
+    //------------------------------------
+    
     //EVENT - CLIENT ENTERS MECH---
     if( (CLIENT_player_state_prev == PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_POWERUP_BEGIN) ){
       if( MECH_DATA_ID != CLIENT_data_idx ){
@@ -292,6 +303,11 @@ void() client_state_events={
     
     //EVENT - CLIENT END OF DM/TDM
     if( (CLIENT_player_state_prev != PLAYER_INTERMSN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
+      if( gameType == GAMEMODE_CAMPAIGN ){
+        setcursormode( 0 );
+        menu_exit();
+        return;
+      }
       menu_enter( MENU_SCORE_ACTIVE );
       if(  gameType == GAMEMODE_COOP  ){
         MENU_DEBRIEF_time_elapsed = -1;

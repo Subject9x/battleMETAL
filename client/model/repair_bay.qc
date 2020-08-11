@@ -28,10 +28,7 @@ void() repair_bay_dlights={
           lightColor = '0.95 0.25 0.15';
         }
       }
-      adddynamiclight2( (self.origin + (v_up * 10) + (v_right * 24)), 128, lightColor, 2, "", 0); 
-      adddynamiclight2( (self.origin + (v_up * 10) + (v_right * -24)), 128, lightColor, 2, "", 0); 
-      adddynamiclight2( (self.origin + (v_up * 64) + (v_right * 32) + (v_forward * -32)), 64, lightColor, 2, "", PFLAGS_FULLDYNAMIC );
-      adddynamiclight2( (self.origin + (v_up * 64) + (v_right * -32) + (v_forward * -32)), 64,lightColor, 2, "", PFLAGS_FULLDYNAMIC ); 
+      adddynamiclight2( self.origin, 128, lightColor, 2, "", PFLAGS_FULLDYNAMIC); 
     }
   }
 };

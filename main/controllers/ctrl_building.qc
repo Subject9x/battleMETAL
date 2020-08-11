@@ -142,6 +142,7 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
       WriteShort( MSG_ENTITY, self.compAltOffset_x );
       WriteShort( MSG_ENTITY, self.compAltOffset_y );
       WriteShort( MSG_ENTITY, self.compAltOffset_z );
+      WriteShort( MSG_ENTITY, self.reloadValue );
     }
     if( self.data_idx == UI_BUILDING_radar ){
       WriteByte( MSG_ENTITY, self.attack_state );

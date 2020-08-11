@@ -56,6 +56,8 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         if( CLIENT_player_state != PLAYER_INTERMSN ){
         cons_logAFloat("CLIENT_player_state != PLAYER_INTERMSN", 1);  //DEBUG
           menu_enter( CLIENT_MENU_menu_choice );
+        }else{
+          menu_exit();
         }
       }
       return TRUE;
