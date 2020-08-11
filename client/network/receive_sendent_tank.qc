@@ -193,12 +193,13 @@ void() interpolate_tank={
         makevectors(parent.angles);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
         saved = parent.origin + saved;
+        self.angles = parent.angles + self.w_adj_ang;
       }
       else{
         makevectors(parent.torsoCenter.angles);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
         saved = parent.torsoCenter.origin + saved;
-        self.angles = parent.torsoCenter.angles;
+        self.angles = parent.torsoCenter.angles + self.w_adj_ang;
       }
       self.origin = saved;
       interpolate_origin();
