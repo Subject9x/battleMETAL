@@ -428,7 +428,9 @@ void( vector ofs ) ui_navbutton_disconnect_draw={
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_disconnect_click={
-  localcmd("disconnect;\n");
+  cvar_set("cl_ismenu", "1");
+  cvar_set("sv_public", "-2");
+  localcmd("map cin_menu.bsp\n");
 };
 
 /*

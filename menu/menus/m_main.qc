@@ -57,9 +57,11 @@ void() click_main_train={
   menu_exit_togame();
   cvar_set("cl_ismenu","0");
   cvar_set("skill", "1");
-  cmd("deathmatch 0\n");
-  cmd("coop 0\n");
-  cmd("maxplayers 1\n");
+  cvar_set("sv_public", "-2");
+  cvar_set("deathmatch", "0");
+  cvar_set("coop", "0");
+  cvar_set("teamplay", "0");
+  cvar_set("maxplayers", "1");
   cmd("map", " training_only\n");
 };
 
@@ -97,7 +99,7 @@ void() click_main_leave={
   M_STATE = M_MAIN;
   MAIN_MISSION = FALSE;
   m_main_f();
-  cvar_set("sv_public", "-3");
+  cvar_set("sv_public", "-2");
   cmd("map cin_menu.bsp\n");
 };
 

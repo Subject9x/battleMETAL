@@ -59,6 +59,7 @@ entity join_server_mods;
 
 entity join_server_pagenext;
 entity join_server_pageprev;
+entity join_refresh_btn;
 
 entity join_favs;
 entity join_fav1;
@@ -77,26 +78,16 @@ string IMG_JOIN_TITLE = "gfx/menu/join/title_join.png";
 float SERVER_NAME_MAX = 24;
 float SERVER_PAGE_SIZE = 8;  //technically 8, but PAGE - 1 is the start to account for hostnr 0 being valid
 
-void() join_page_update={
-  SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHETOTALCOUNT);
-  if( SERVER_TOTAL > SERVER_PAGE_SIZE ){
-    SERVER_PAGE_TOTAL = rint(ceil(SERVER_TOTAL / SERVER_PAGE_SIZE));
+void(float totalServers) join_page_update={
+  if( totalServers > SERVER_PAGE_SIZE ){
+    SERVER_PAGE_TOTAL = rint(floor(totalServers / SERVER_PAGE_SIZE));
     SERVER_PAGE_LIST_START = max((SERVER_PAGE * SERVER_PAGE_SIZE), 1); 
     SERVER_PAGE_LIST_END = (SERVER_PAGE * SERVER_PAGE_SIZE) + SERVER_PAGE_SIZE;
   }
   else{
     SERVER_PAGE_TOTAL = 1;
     SERVER_PAGE_LIST_START = 0; 
-    SERVER_PAGE_LIST_END = SERVER_TOTAL;
-  }
-  
-  cons_logAFloat("join_page_update().SERVER_TOTAL", SERVER_TOTAL); //debug
-  cons_logAFloat("join_page_update().SERVER_PAGE_TOTAL", SERVER_PAGE_TOTAL); //debug
-  cons_logAFloat("join_page_update().SERVER_PAGE_LIST_START", SERVER_PAGE_LIST_START); //debug
-  cons_logAFloat("join_page_update().SERVER_PAGE_LIST_END", SERVER_PAGE_LIST_END); //debug
-  local float itr;
-  for(itr=0;itr<SERVER_TOTAL; itr=itr+1){
-    cons_logAString("server", gethostcachestring(gethostcacheindexforkey("ping"),itr)); //debug
+    SERVER_PAGE_LIST_END = totalServers;
   }
 };
 
@@ -111,7 +102,6 @@ void() join_sort_name={
     SERVER_SORT_NAME = TRUE;
   }
   resorthostcache();
-  join_page_update();
 };
 
 void() join_sort_ping={
@@ -125,7 +115,6 @@ void() join_sort_ping={
     SERVER_SORT_PING = TRUE;
   }
   resorthostcache();
-  join_page_update();
 };
 
 void() join_sort_map={
@@ -139,7 +128,6 @@ void() join_sort_map={
     SERVER_SORT_MAP = TRUE;
   }
   resorthostcache();
-  join_page_update();
 };
 
 void() join_sort_numplayer={
@@ -153,58 +141,64 @@ void() join_sort_numplayer={
     SERVER_SORT_PLAYERS = TRUE;
   }
   resorthostcache();
-  join_page_update();
 };
 
 void() join_sort_players={
-
+  
   sethostcachesort(gethostcacheindexforkey("ping"), 0);
   resorthostcache();
-  join_page_update();
 };
 
 void() join_server_page_next={
-  if( SERVER_TOTAL > 0 ){
-    if( SERVER_PAGE < SERVER_PAGE_TOTAL ){
-      SERVER_PAGE = SERVER_PAGE + 1;
-    }
+  if( (SERVER_PAGE + 1) < SERVER_PAGE_TOTAL ){
+    refreshhostcache();
+    resorthostcache();
+    SERVER_PAGE = SERVER_PAGE + 1;
   }
-  join_page_update();
 };
 void() join_server_page_prev={
-  if( SERVER_TOTAL > 0 ){
-    if( SERVER_PAGE > 0 ){
-      SERVER_PAGE = SERVER_PAGE - 1;
-    }
+  if( SERVER_PAGE > 0 ){
+    refreshhostcache();
+    resorthostcache();
+    SERVER_PAGE = SERVER_PAGE - 1;
   }
-  join_page_update();
 };
+
+
+void() join_refresh_action={
+  refreshhostcache();
+  resorthostcache();
+};
+
 
 // ini function, called by '_f' function as a setup func
 void() m_join_i={
   menu_setup_mainservers();
+  
   resethostcachemasks();
+  
   sethostcachesort(gethostcacheindexforkey("ping"), FALSE);
+  
   refreshhostcache();
+  
   resorthostcache();
   
   SERVER_CURRENT = 0;
-  SERVER_TOTAL = gethostcachevalue(SLIST_HOSTCACHEVIEWCOUNT);
   
-  SERVER_PAGE = 1;
-  
-  join_page_update();
+  SERVER_PAGE = 0;
   
   join_title = lbl_img('10 30', '1 1 0', IMG_JOIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_JOIN, 1, (UI_FLAG_SIZE_IMG) );
   join_favs = lbl_text('64 60', '14 14 0', "-Favorites-", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_JOIN, 1, 0);
+
+  join_server_pageprev = btn_img_callback('10 160', '16 16', UI_IMG_ARW_LFT, 0, M_JOIN, join_server_page_prev, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
+  join_server_pagenext = btn_img_callback('52 160', '16 16', UI_IMG_ARW_RGT, 0, M_JOIN, join_server_page_next, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
+  join_refresh_btn =  btn_text_callback('100 160', '16 16', "[Refresh]", 0, M_JOIN, join_refresh_action, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  
   join_server_name = btn_text_callback('10 180', '16 16', "[Server]", 0, M_JOIN, join_sort_name, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
   join_server_ping = btn_text_callback('135 180', '16 16', "[Ping]", 0, M_JOIN, join_sort_ping, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
   join_server_map = btn_text_callback('185 180', '16 16', "[Map]", 0, M_JOIN, join_sort_map, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
   join_server_numplayer = btn_text_callback('235 180', '16 16', "[Players]", 0, M_JOIN, join_sort_numplayer, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
   join_server_mods = btn_text_callback('285 180', '16 16', "[Mod]", 0, M_JOIN, join_sort_players, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);  
-
-  join_server_pagenext = btn_img_callback('52 160', '16 16', UI_IMG_ARW_RGT, 0, M_JOIN, join_server_page_next, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
-  join_server_pageprev = btn_img_callback('10 160', '16 16', UI_IMG_ARW_LFT, 0, M_JOIN, join_server_page_prev, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
   
 };
 
@@ -256,6 +250,8 @@ void(float serverCacheId, vector ofset) join_render_serverinfo={
 void() m_join_d={
   local float itr;
   local vector pos;
+  local float hostCacheId;
+  local float total_servers;
   
   resorthostcache();
   
@@ -270,13 +266,19 @@ void() m_join_d={
   drawfont = FONT_NUM_ROBOT_MEDIUM;
     gui_renderString( ftos(SERVER_PAGE), join_server_pageprev.origin + gui_percentToPixelRawVec('26 0'), '1 1 1', '16 16 0', 1, 0);
   drawfont = drawfont_prev;
+  
+  itr = 0;
   SERVER_ROW_ITR = 0;
   
   SERVER_LIST_ORG = gui_percentToPixelRawVec('10 200');
   
-  for(itr=0; itr < SERVER_TOTAL; itr=itr+1){
-    if( (itr > SERVER_PAGE_LIST_START) && (itr < SERVER_PAGE_LIST_END) ){
-      if( gethostcachenumber(SLIF_PING, itr) > -1 ){
+  total_servers = gethostcachevalue(SLIST_HOSTCACHEVIEWCOUNT);
+  join_page_update(total_servers);
+  
+  for(itr=0; itr < total_servers; itr=itr+1){
+    if( (itr >= SERVER_PAGE_LIST_START) && (itr < SERVER_PAGE_LIST_END) ){
+      cons_logAFloat(gethostcachestring(gethostcacheindexforkey("cname"), itr), itr);  //debug
+      if(itr < total_servers  && gethostcachenumber(gethostcacheindexforkey("ping"), itr) > -1){
         pos_x = SERVER_LIST_ORG_x;
         pos_y = SERVER_LIST_ORG_y + gui_percentYRaw(SERVER_ROW_ITR * 26);
         
@@ -303,7 +305,7 @@ void(float key, float ascii) m_join_k={
       SERVER_SELECTED = SERVER_PAGE_LIST_START + SERVER_SELECTED;
       menu_clear_items(M_STATE);
       menu_exit_togame();
-      cmd("connect ", gethostcachestring(SLIF_CNAME, SERVER_SELECTED));
+      cmd("connect ", gethostcachestring(gethostcacheindexforkey("cname"), SERVER_SELECTED));
     }
     return;
   }
