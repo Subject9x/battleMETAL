@@ -94,6 +94,10 @@ void(string fileToOpen) anm_parseFile={
         clr = stov(argv(3));
         ANM_FRAME_TXT_CLR[frame_count] = clr;
       }
+      if( (argv(1) == ANM_FILE_TAG_FADE) ){
+        ANM_FRAME_FADE[frame_count] =  stof(argv(3));
+      }
+      
     }
     if( line == "}"){
       frame_count = frame_count + 1;
@@ -113,6 +117,10 @@ void(string fileToOpen) anm_parseFile={
 
 void() anm_execute_frame={
   if(time > ANM_FRAME_TIME){
+    ANM_FRAME_TIME = 0;
+    ANM_FRAME_ALPHA_CUR = 0;
+    ANM_FRAME_CUR_FADE_STEP = 0;
+    
     if(ANM_FRAME_CUR == 0){
       //first frame, handle meta data
       if(ANM_META_DATA[1] == "1"){
@@ -122,26 +130,47 @@ void() anm_execute_frame={
         pointsound(pmove_org, ANM_META_DATA[0], 1, ATTN_NORM); 
       }
     }
+    
     ANM_FRAME_CUR = ANM_FRAME_CUR + 1;
+    
     if( ANM_FRAME_CUR == ANM_FRAME_TOTAL ){
       anm_cleanup();
       localcmd("cd resume");
       sound7(self, CHAN_WEAPON, "", 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
       return;
     }
+    
     if(ANM_FRAME_SND[ANM_FRAME_CUR] != ""){
       pointsound(pmove_org, ANM_FRAME_SND[ANM_FRAME_CUR], 1, ATTN_NONE);
     }
+    
     ANM_FRAME_TIME = time + ANM_FRAME_TIM[ANM_FRAME_CUR];
+    
     if(ANM_META_DATA[2] != ""){
       drawpic('0 0', ANM_META_DATA[2] , VIEW_MAX, '1 1 1', 1, 0); 
     }
+    
+    //fade is pre-baked amount of 2 seconds on fade-in and fade-out, 
+    //set 'fade' 1 for just fade in, 2 for just fade out, 4 for both
+    local float fadeFlag;
+    fadeFlag = ANM_FRAME_FADE[ANM_FRAME_CUR];
+    
     local float frameSlice;
     frameSlice = ANM_FRAME_TIM[ANM_FRAME_CUR] * ANM_FRAME_SLICE;
-    ANM_FRAME_CUR_FADE_START = time + frameSlice;
-    ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[ANM_FRAME_CUR] - frameSlice);
     ANM_FRAME_CUR_FADE_RATE = (ANM_FRAME_ALPHA[ANM_FRAME_CUR] * frameSlice) / ANM_FRAME_TIM[ANM_FRAME_CUR];
-    
+    if( (fadeFlag & 1) || (fadeFlag & 4) ){
+      ANM_FRAME_CUR_FADE_START = time + frameSlice;
+    }
+    else{
+      ANM_FRAME_CUR_FADE_START = 0;
+    }
+    if( (fadeFlag & 2) || (fadeFlag & 4) ){
+      ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[ANM_FRAME_CUR] - frameSlice);
+    }
+    else{
+      ANM_FRAME_CUR_FADE_END = 0;
+    }
+  //fade in and fade out
   }
   else{
     local vector siz, org, frm_color, txt_color;
@@ -156,13 +185,19 @@ void() anm_execute_frame={
     
     if(ANM_FRAME_IMG[ANM_FRAME_CUR] != ""){
       if(time < ANM_FRAME_CUR_FADE_START){
-        if(ANM_FRAME_ALPHA_CUR < ANM_FRAME_ALPHA[ANM_FRAME_CUR] ){
-          ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA_CUR + ANM_FRAME_CUR_FADE_RATE;
+        if( time > ANM_FRAME_CUR_FADE_STEP ){
+          ANM_FRAME_CUR_FADE_STEP = time + ANM_FRAME_SLICE;
+          if(ANM_FRAME_ALPHA_CUR < ANM_FRAME_ALPHA[ANM_FRAME_CUR] ){
+            ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA_CUR + ANM_FRAME_CUR_FADE_RATE;
+          }
         }
       }
       if((time >= ANM_FRAME_CUR_FADE_END) && (time < ANM_FRAME_TIME) ){
-        if(ANM_FRAME_ALPHA_CUR > 0){
-          ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA_CUR - ANM_FRAME_CUR_FADE_RATE;
+        if( time > ANM_FRAME_CUR_FADE_STEP ){
+          ANM_FRAME_CUR_FADE_STEP = time + ANM_FRAME_SLICE;
+          if(ANM_FRAME_ALPHA_CUR > 0){
+            ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA_CUR - ANM_FRAME_CUR_FADE_RATE;
+          }
         }
       }
       

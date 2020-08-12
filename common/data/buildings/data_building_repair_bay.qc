@@ -49,12 +49,14 @@ void() hrepair_rep = [0, hrepair_rep]{
     self.think = hrepair_th;
     self.nextthink = time + 0.1;
     self.cockpit.attack_state = ST_MELEE;
-    self.trigger_field = world;
-    client_send_event_repairs( self.trigger_field, FALSE ) ;
-    if( self.startupDelay == FL_NOSHOOT ){
-      self.trigger_field.flags = self.trigger_field.flags - FL_NOSHOOT;
+    if( self.trigger_field ){
+      client_send_event_repairs( self.trigger_field, FALSE ) ;
+      if( self.startupDelay == FL_NOSHOOT ){
+        self.trigger_field.flags = self.trigger_field.flags - FL_NOSHOOT;
+      }
+      self.trigger_field.stat_plr_rep = -1;
+      self.trigger_field = world;
     }
-    self.trigger_field.stat_plr_rep = -1;
     return;
   }
   

@@ -97,6 +97,7 @@ void() click_main_leave={
   M_STATE = M_MAIN;
   MAIN_MISSION = FALSE;
   m_main_f();
+  cvar_set("sv_public", "-3");
   cmd("map cin_menu.bsp\n");
 };
 
