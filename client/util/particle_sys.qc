@@ -492,7 +492,7 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
 
 //Rocket Launcher ID 4
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_mis={
-  pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
+  pointsound( muzzleOrg, "sound/weapons/rckt_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_MIS_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleVel), 1);
 };
 
@@ -593,7 +593,7 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
 
 //Missile Active Radar ID 10
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_marh={
-  pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
+  pointsound( muzzleOrg, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_ARH_MUZZLE"), muzzleOrg, normalize(muzzleVel - muzzleOrg) * 1, 1);
 };
 
@@ -643,7 +643,7 @@ void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzlefla
 
 //Missile Swarm ID 14
 void( vector muzzleOrg, vector muzzleVel, float impactStyle ) particle_muzzleflash_swarm={
-  pointsound( muzzleOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
+  pointsound( muzzleOrg, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), muzzleOrg, normalize( muzzleVel - muzzleOrg ) * 3, 1);
 };
 

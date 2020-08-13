@@ -34,7 +34,7 @@ void() data_ini_rockets_={
   
   #ifdef CSQC
     self.w_name = "Rocket Launcher";
-    self.fire_sound = "sound/weapons/mis_fire.ogg";
+    self.fire_sound = "sound/weapons/rckt_fire.ogg";
     self.model = "q3mdl/weapons/w_mis.md3";
     self.abbrev = "RCK";
     self.description = "+ target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";

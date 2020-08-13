@@ -43,7 +43,7 @@ void() data_ini_missile_swarm_={
   
   #ifdef CSQC
     self.w_name = "Missile - Swarm";
-    self.fire_sound = "sound/weapons/mis_fire.ogg";
+    self.fire_sound = "sound/weapons/arh_fire.ogg";
     self.model = "q3mdl/weapons/w_swrm.md3";
     self.abbrev = "SWRM";
     self.description = "+ target <shields> reduce damage. + Burst-fire. + Shots will home on any target when fired. + Does NOT require <Target Lock>.";

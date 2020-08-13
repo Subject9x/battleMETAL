@@ -35,7 +35,7 @@ void() data_ini_missile_activeradar_={
   
   #ifdef CSQC  
     self.w_name = "Missile - Active Radar";
-    self.fire_sound = "sound/weapons/mis_fire.ogg";
+    self.fire_sound = "sound/weapons/arh_fire.ogg";
     self.model = "q3mdl/weapons/w_arh.md3";
     self.abbrev = "MARH";
     self.description = "+ target <shields> reduce damage. + Requires <Active Radar> on. + Minimum Range of 300m. + stronger against [small] targets.";
