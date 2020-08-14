@@ -355,7 +355,7 @@ void(string cmd, float tokens) client_setMission={
       //mission successful, next map
       savefile_changemap(sv_nextmap); //TODO - fix me
       if( sv_nextmap == "" ){
-        stuffcmd(self, "disconnect;togglemenu;cd play 2;demos;\n");
+        stuffcmd(self, "map cin_menu.bsp;togglemenu,cl_ismenu 1;\n");
         return;
       }
       changelevel (sv_nextmap);  //possibly altered by map_objective objects.

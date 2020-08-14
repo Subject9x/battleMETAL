@@ -23,7 +23,10 @@ entity main_help;
 entity main_credits;
 entity main_quit;
 
+entity main_player_options; //link to player options during network play
+
 //Main Menu Constants
+string IMG_MULTI_PLAYERSETUP   = "gfx/menu/multi/multi_playersetup.png";
 string IMG_MAIN_TITLE  = "gfx/menu/main/main_title.png";
 string IMG_MAIN_PAUSE  = "gfx/pause.png";
 string IMG_MAIN_LBL    = "gfx/menu/main/main_label.png";
@@ -100,7 +103,15 @@ void() click_main_leave={
   MAIN_MISSION = FALSE;
   m_main_f();
   cvar_set("sv_public", "-2");
+  cvar_set("deathmatch", "0");
+  cvar_set("teamplay", "0");
+  cvar_set("coop", "0");
   cmd("map cin_menu.bsp\n");
+};
+
+void() click_main_player_setup={
+  menu_clear_items(M_STATE);
+  m_setup_f();
 };
 
 // ini functions
@@ -112,14 +123,15 @@ void() m_main_i={
   local float mainTitleFlag;
   
   if( MAIN_MISSION ){
-    main_leave = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_LEAVE, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_leave, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     IMG_TITLE = IMG_MAIN_PAUSE;
     labelSize = '160 24 0';
     mainTitleFlag = 0;
+    main_player_options = btn_img_callback('10 132 0', '1 1 0', IMG_MULTI_PLAYERSETUP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_player_setup, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     orgOptions = '10 151 0';
     orgHelp = '10 170 0';
+    main_leave = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_LEAVE, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_leave, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     IMG_QUIT = IMG_MAIN_EXIT;
-    orgQuit = '10 189 0';
+    orgQuit = '10 206 0';
   }
   else{
     IMG_TITLE = IMG_MAIN_LBL;

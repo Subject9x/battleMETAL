@@ -11,8 +11,6 @@ Overview:
 
 void(entity newAttacker) ai_react_generic={
   
-  self.ai_react_buffer = time + self.ai_react_time * 5;
-  
   if( (!(newAttacker.flags & FL_MONSTER) && !(newAttacker.flags & FL_CLIENT)) || (self.flags & FL_DISARMED) ){
     ai_call_for_help(newAttacker);
     return;
@@ -26,7 +24,6 @@ void(entity newAttacker) ai_react_generic={
   if( newAttacker == self.enemy ){
     return;
   }
-
   //AI currently has target
   if( self.enemy ){
     return;
@@ -42,6 +39,8 @@ void(entity newAttacker) ai_react_generic={
       return;
     }
   }
+  
+  self.ai_react_buffer = time + self.ai_react_time * 3.75;
   
   self.enemy = newAttacker;
   if(self.ai_state_next != ST_COMBAT ){

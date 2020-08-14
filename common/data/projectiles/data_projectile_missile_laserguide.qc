@@ -103,17 +103,12 @@ void() data_projectile_missile_laserguide_touch={
 void() data_projectile_missile_laserguide_think={
   local vector vtemp;
   
-  if( self.enemy.deadflag == DEAD_NO ){
-    vtemp = normalize(self.enemy.origin - self.origin);
-    self.velocity = vtemp * 0.5;
-    self.velocity = self.velocity * self.data_velocity;
-    self.angles = vectoangles(self.velocity);
-    self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
-  }
-  else{
-    
-  }
-
+  vtemp = normalize(self.owner.laser_sight_org - self.origin);
+  self.velocity = vtemp * 0.5;
+  self.velocity = self.velocity * self.data_velocity;
+  self.angles = vectoangles(self.velocity);
+  self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
+  
   if(time > self.data_lifetime){
     self.think = ctrl_missile_dud;
     self.nextthink = time + 0.1;

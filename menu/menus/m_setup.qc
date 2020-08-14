@@ -58,7 +58,12 @@ void() click_setup_accept={
   cvar_set("cl_tint_g", ftos(setup_tint_y));
   cvar_set("cl_tint_b", ftos(setup_tint_z));
   menu_clear_items(M_STATE);
-  m_multi_f();
+  if( MAIN_MISSION ) {
+    m_main_f();
+  }
+  else{
+    m_multi_f();
+  }
 };
 
 void() textfield_setup_name={
@@ -221,10 +226,15 @@ void(float key, float ascii) m_setup_k={
     case K_ESCAPE:
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
-      m_multi_f();
       cvar_set("cl_tint_r", ftos(setup_tint_x));
       cvar_set("cl_tint_g", ftos(setup_tint_y));
       cvar_set("cl_tint_b", ftos(setup_tint_z));
+      if( MAIN_MISSION ) {
+        m_main_f();
+      }
+      else{
+        m_multi_f();
+      }
       break;
   }
 };

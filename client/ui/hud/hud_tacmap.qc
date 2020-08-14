@@ -207,7 +207,6 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   scoreLen = stringwidth(ftos(playerRow.kills), 0, fontSize);
   playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
   drawstring(playerScoreOfs, ftos(playerRow.kills), fontSize, rowColor, 1, 0);
-  
 };
 
 void( vector panelOfs ) hud_render_scoreboard_dm={

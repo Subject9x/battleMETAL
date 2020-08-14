@@ -15,7 +15,6 @@ entity multi_back;
 
 //MultiplayerConstants
 string IMG_MULTI_TITLE   = "gfx/menu/multi/multi_title.png";
-string IMG_MULTI_PLAYERSETUP   = "gfx/menu/multi/multi_playersetup.png";
 string IMG_MULTI_HOSTGAME   = "gfx/menu/multi/multi_hostgame.png";
 string IMG_MULTI_JOINGAME   = "gfx/menu/multi/multi_joingame.png";
 

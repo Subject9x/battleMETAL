@@ -16,15 +16,15 @@ void() data_ini_attack_missile_laserguide_;
 
 void() data_ini_missile_laserguide_={
 
-  self.data_idx = 9;  
+  self.data_idx = 9;
   
   self.w_clipsize = 1;
   self.reloadRate = 0.22;
-  self.reloadMax = 3.75; //2
+  self.reloadMax = 3.75;
   self.energyRate = 0;
   
   self.w_range = 2400;
-  self.damageValue = 45;  //67
+  self.damageValue = 45;
   self.damageType = DMG_EXP | EFF_PTR;
 
   self.techLevel = 1;
@@ -38,7 +38,7 @@ void() data_ini_missile_laserguide_={
     self.fire_sound = "sound/weapons/mis_fire.ogg";
     self.model = "q3mdl/weapons/w_lgm.md3"; 
     self.abbrev = "MLGD";
-    self.description = "+ target <shields> reduce damage. + Missile will home on weakest part of target mech. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+    self.description = "+ target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
     self.icon = "gfx/ui/wep_icons/wi_mlgd.png"; 
   #endif 
   
@@ -63,24 +63,8 @@ void() data_ini_attack_missile_laserguide_={
    
   ctrl_weapon_make_projectile( 0.01 );
   
-  if( ai_valid_target(self.owner.enemy) ){
-    hold = self;
-    self = hold.owner;
-    if( util_checkPointAngleImpl(self.enemy.origin) ){
-      if( self.enemy.data_type == DATA_MECH ){
-        NEWSHOT.enemy = util_findMechCrit(self.enemy);
-      }
-    }
-    self = hold;
-  }
-  else{
-    if( trace_ent.data_type == DATA_MECH ){
-      NEWSHOT.enemy = util_findMechCrit(trace_ent);
-    }
-  }
-  
   makevectors(self.owner.v_angle);
-  lasOrg = FIRE_ORIGIN + (v_forward * 2.1) + (v_up * -0.5);
+  lasOrg = FIRE_ORIGIN + (v_forward * 2.1);
   client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, lasOrg, 0);
 };
 #endif

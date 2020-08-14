@@ -171,7 +171,7 @@ void(float width, float height) m_draw={
       local vector p;
       p = VIEW_MAX;
       p_z = 0;
-      drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.75, 0);      
+      drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.85, 0);      
     }
   }
   
