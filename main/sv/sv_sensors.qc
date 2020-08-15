@@ -68,6 +68,7 @@ void() sv_updateTargetInfo={
     if( prevDeadFlags == DEAD_NO && self.enemy.deadflag > DEAD_NO ){
       self.stat_trg_ent_id = -1;
       self.enemy = world;
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_IMPACT;
       return;
     }
   }
@@ -94,6 +95,7 @@ void() sv_updateTargetInfo={
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
     }
     self.stat_target_name = "";
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_IMPACT;
     return;
   }
   

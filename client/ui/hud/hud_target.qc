@@ -228,7 +228,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
 };
 
 /*
-  RENDER A SINGLE WEAPON AND ITS RELOAD BAR
+  RENDER ARMOR DIAGRAM: BUILDING
   you might want to cover this with a nice overlay picture
 */
 void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
@@ -252,7 +252,10 @@ void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
   gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, AXIS_V, 0);
 };
 
-
+/*
+  RENDER ARMOR DIAGRAM: VEHICLE
+  you might want to cover this with a nice overlay picture
+*/
 void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
   local vector meter;
   local vector tColor;

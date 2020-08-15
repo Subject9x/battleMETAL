@@ -172,12 +172,16 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgAmt = dmg_amt;
   
   //reduce friendly fire damage on easier settings
-  if(trg.faction == attacker.faction){
-    if( skill < 2 ){
-      dmgAmt = dmgAmt * 0.33;
-    }
-    else if( skill > 1){
-      dmgAmt = dmgAmt * 0.67;
+  if( (trg.faction != FACTION_ALL) ){
+    if( trg.faction == attacker.faction ){
+      if( (serverflags & SVFLAG_FIREON) ){
+        if( skill < 2 ){
+          dmgAmt = dmgAmt * 0.67;
+        }
+        else{
+          dmgAmt = dmgAmt * 0.33;
+        }
+      }
     }
   }
   

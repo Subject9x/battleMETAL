@@ -75,6 +75,7 @@ void() hud_render_tactical_map={
   
   //render allies
   local entity player;
+  local entity enem;
   local vector target_org;
   for( player = nextent(world); player != world; player = nextent(player) ){
     if( !(player.flags & FL_CLIENT) ){
@@ -110,15 +111,24 @@ void() hud_render_tactical_map={
         target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
         drawpic(target_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
       }
-      
     }
     else{
       gui_renderTintImage2(TRUE, gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'),'0.25 1 2', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
-      if( player.targetEntId <= 0 ){continue;}
-      if( player.enemy.deadflag != DEAD_NO ){continue;}
-      
+      if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
+      if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
+      if(player.enemy == world){continue;}
       target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
-      drawpic(target_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
+      local string pipType;
+      if( CLIENT_target_datatype == DATA_MECH ){
+        pipType = HUD_RAD_PIP_MCH;
+      }
+      else if( CLIENT_target_datatype == DATA_VEHC ){
+        pipType = HUD_RAD_PIP_VEC;
+      }
+      else if( CLIENT_target_datatype == DATA_BLD ){
+        pipType = HUD_RAD_PIP_BLD;
+      }
+      drawpic(target_org, pipType, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
     }
   }
   
