@@ -698,6 +698,39 @@ float( float desiredColor, float startColor, float colorRate ) gui_colorFadeTo={
   return newValue;
 };
 
+
+void() gui_drawversion={
+  local float lblLen;
+  local string lbl;
+  local float lblAlpha;
+  local vector lowerLeft, lowerRight, upperRight;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  lbl = strcat("Beta 2 v",cvar_string("gameversion"));
+  
+  lblAlpha = 0.4;
+  
+  lblLen = stringwidth(lbl, 0, '12 12 0');
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), lbl, '12 12', '1 1 1', lblAlpha, 0);
+  
+  lowerLeft = VIEW_ORG;
+  lowerLeft_y = lowerLeft_y + VIEW_MAX_y - gui_percentXRaw(14);
+  drawstring(lowerLeft + gui_percentToPixelRawVec('2 0'), lbl, '12 12', '1 1 1', lblAlpha, 0);
+  
+  lowerRight = VIEW_MAX;
+  lowerRight_x = lowerRight_x - gui_percentXRaw(lblLen);
+  lowerRight_y = lowerRight_y - gui_percentYRaw(14);
+  drawstring(lowerRight, lbl, '12 12', '1 1 1', lblAlpha, 0);
+  
+  upperRight_x = VIEW_MAX_x - gui_percentXRaw(lblLen);
+  upperRight_y = gui_percentYRaw(2);
+  drawstring(upperRight, lbl, '12 12', '1 1 1', lblAlpha, 0);
+  
+  drawfont = drawfont_prev;
+};
+
 void(string msg, float val) cons_logAFloat={
   print(strcat(msg,":", ftos(val),"\n"));
 };

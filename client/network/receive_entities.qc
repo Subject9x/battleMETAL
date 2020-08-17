@@ -51,6 +51,7 @@ void() client_get_info={
 */
 void() receive_ent_bindData={
   local string name;
+  local float oldTargetType;
   
   name = cvar_string("_cl_name");
 
@@ -113,6 +114,7 @@ void() receive_ent_bindData={
 
     CLIENT_stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
     CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
+    CLIENT_target_datatype_prev = CLIENT_target_datatype;
     CLIENT_target_datatype = getstati(STAT_TRG_DATATYPE);
     CLIENT_target_faction = getstati(STAT_TRG_FACTION);
     CLIENT_stat_trg_ddflg = getstati(STAT_TRG_DDFLG);
@@ -154,7 +156,7 @@ void() receive_ent_bindData={
 
     if( CLIENT_stat_trg_ent_id_prev != 0 && CLIENT_stat_trg_ent_id == -1 ){
       //target is lost
-      if( CLIENT_stat_trg_ddflg_prev > DEAD_NO ){
+      if( CLIENT_stat_trg_ddflg_prev > DEAD_NO && CLIENT_target_datatype_prev != DATA_VEHC ){
         hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
       }
     }

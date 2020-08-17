@@ -28,7 +28,9 @@ string ANM_FILE_TAG_TXT_CLR = "text_color";
 string ANM_FILE_TAG_FADE = "fade";
 
 float ANM_FRAME_MAX = 20; //this is here for reference, but if modified, MODIFY THE FOLLOWING ARRAY LIMITS!
-float ANM_FRAME_SLICE = 0.05; //used for alpha blending timer
+float ANM_FRAME_SLICE = 0.1; //used for alpha blending timer
+
+float ANM_FADE_TIME = 2;  //general fade-in and fade-out if fade flag is checked
 
 float ANM_FILE_STATUS;
 float ANM_FRAME_TOTAL;

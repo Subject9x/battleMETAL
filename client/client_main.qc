@@ -363,6 +363,10 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     porg_y = pang_y = torg_y = VIEW_MAX_y;
     drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
   }
+  
+  //FIXME / TODO / DEBUG
+  //version wille eventually be only displayed as needed.
+  gui_drawversion();
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!

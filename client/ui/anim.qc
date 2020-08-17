@@ -118,8 +118,8 @@ void(string fileToOpen) anm_parseFile={
 void() anm_execute_frame={
   if(time > ANM_FRAME_TIME){
     ANM_FRAME_TIME = 0;
-    ANM_FRAME_ALPHA_CUR = 0;
     ANM_FRAME_CUR_FADE_STEP = 0;
+    ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA[ANM_FRAME_CUR];
     
     if(ANM_FRAME_CUR == 0){
       //first frame, handle meta data
@@ -156,21 +156,25 @@ void() anm_execute_frame={
     fadeFlag = ANM_FRAME_FADE[ANM_FRAME_CUR];
     
     local float frameSlice;
-    frameSlice = ANM_FRAME_TIM[ANM_FRAME_CUR] * ANM_FRAME_SLICE;
-    ANM_FRAME_CUR_FADE_RATE = (ANM_FRAME_ALPHA[ANM_FRAME_CUR] * frameSlice) / ANM_FRAME_TIM[ANM_FRAME_CUR];
+    frameSlice = 0.1 * ANM_FRAME_ALPHA[ANM_FRAME_CUR];
+    ANM_FRAME_CUR_FADE_RATE = frameSlice / 2;
+    
     if( (fadeFlag & 1) || (fadeFlag & 4) ){
-      ANM_FRAME_CUR_FADE_START = time + frameSlice;
+      ANM_FRAME_ALPHA_CUR = 0;
+      ANM_FRAME_CUR_FADE_START = time + 2;
+      ANM_FRAME_TIME = ANM_FRAME_TIME + 2;
     }
     else{
       ANM_FRAME_CUR_FADE_START = 0;
     }
+    
     if( (fadeFlag & 2) || (fadeFlag & 4) ){
-      ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[ANM_FRAME_CUR] - frameSlice);
+      ANM_FRAME_CUR_FADE_END = time + ANM_FRAME_TIM[ANM_FRAME_CUR] + 2;
+      ANM_FRAME_TIME = ANM_FRAME_TIME + 2;
     }
     else{
       ANM_FRAME_CUR_FADE_END = 0;
     }
-  //fade in and fade out
   }
   else{
     local vector siz, org, frm_color, txt_color;
@@ -192,7 +196,7 @@ void() anm_execute_frame={
           }
         }
       }
-      if((time >= ANM_FRAME_CUR_FADE_END) && (time < ANM_FRAME_TIME) ){
+      if( time >= ANM_FRAME_CUR_FADE_END ){
         if( time > ANM_FRAME_CUR_FADE_STEP ){
           ANM_FRAME_CUR_FADE_STEP = time + ANM_FRAME_SLICE;
           if(ANM_FRAME_ALPHA_CUR > 0){
@@ -209,6 +213,8 @@ void() anm_execute_frame={
       siz = ANM_FRAME_SIZE[ANM_FRAME_CUR];
       siz_x = siz_x * VIEW_MAX_x;
       siz_y = siz_y * VIEW_MAX_y;
+      cons_logAFloat( ANM_FRAME_IMG[ANM_FRAME_CUR], ANM_FRAME_CUR); //debug
+      
       drawpic(org, ANM_FRAME_IMG[ANM_FRAME_CUR], siz, frm_color, ANM_FRAME_ALPHA_CUR, 0);
     } 
     if(ANM_FRAME_MSG[ANM_FRAME_CUR] != ""){
@@ -257,10 +263,18 @@ void() anm_cleanup={
   Calculates the total run time of the animation in seconds
 */
 float() anm_total_runtime={
-  local float total, itr;
+  local float total, itr, fadeFlag;
   itr = 0;
   while( itr <= ANM_FRAME_TOTAL){
     total = total + ANM_FRAME_TIM[itr];
+    fadeFlag = ANM_FRAME_FADE[itr];
+    if( (fadeFlag & 1) || (fadeFlag & 4) ){
+      
+      total = total + 2;
+    }
+    if( (fadeFlag & 2) || (fadeFlag & 4) ){
+      total = total + 2;
+    }
     itr = itr + 1;
   }
   return total;

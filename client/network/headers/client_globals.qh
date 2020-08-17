@@ -41,6 +41,7 @@ float CLIENT_target_faction;
 
 float CLIENT_target_shield; 
 float CLIENT_target_datatype; 
+float CLIENT_target_datatype_prev; 
 float CLIENT_target_faction;
 float CLIENT_stat_trg_ddflg_prev;
 float CLIENT_stat_trg_ddflg;
