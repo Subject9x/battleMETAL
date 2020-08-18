@@ -253,7 +253,6 @@ void() build_mech_unit={
   
   build_mech_torsoCenter();
   
-
   self.health = self.max_health;
   self.shieldRateMod = 1.33; //unmodified here.
   
@@ -607,7 +606,7 @@ void() build_vehicle_unit={
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
-    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
+    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
   }
   if( (self.cockpit) ){
     build_unit_camera();

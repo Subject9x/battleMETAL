@@ -289,5 +289,8 @@ void() sendent_set_weapon={
      case WEAPON9:
       self.data_idx = self.owner.next_wepn9;
       break;
+    default:
+      self.data_idx = 0;
+      break;
   }
 };
