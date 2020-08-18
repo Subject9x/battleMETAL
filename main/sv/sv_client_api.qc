@@ -399,8 +399,7 @@ void() PutClientInServer_Deathmatch={
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
-    self.faction = FACTION_ALL; //deathmatch has no real teams.
-
+    self.faction = FACTION_ALL; //deathmatch has no real teams
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  

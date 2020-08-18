@@ -208,14 +208,18 @@ void( vector pos, vector grpCtr, float val, vector mSize, float lbl_algn, vector
   
   local vector tColor;
   if( thatTarget ){
-    if(CLIENT_target_faction == CLIENT_faction){
-     tColor =  gui_getColorForArmor(val);
+    if(CLIENT_target_faction == FACTION_ALL){
+      tColor =  gui_getColorForArmorTarget(val);
+    }
+    else if(CLIENT_target_faction != CLIENT_faction){
+      tColor =  gui_getColorForArmorTarget(val);
     }
     else{
-     tColor =  gui_getColorForArmorTarget(val);
+      tColor =  gui_getColorForArmor(val);
     }
-  }else{
-     tColor =  gui_getColorForArmor(val);
+  }
+  else{
+    tColor =  gui_getColorForArmor(val);
   }
   
   shofs = grpCtr;

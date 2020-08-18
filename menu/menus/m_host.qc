@@ -9,9 +9,9 @@ Overview:
 //constants
 float FRAG_MAX = 1000;
 float TIME_MAX = 20;
-float SUB_COOP = 2;
-float SUB_DM  = 3;
-float SUB_TDM = 4;
+float SUB_COOP = 1;
+float SUB_DM  = 2;
+float SUB_TDM = 3;
 float PLRS_MAX_COOP = 4;
 float PLRS_MIN_COOP = 2;
 float PLRS_MAX_TDM = 16;
@@ -238,13 +238,14 @@ void() click_host_less_plrs={
 
 void() click_host_nexttype={
   SUB_MENU = SUB_MENU + 1;
-  if(SUB_MENU >= 4){
-    SUB_MENU = 4;
+  if(SUB_MENU > 2){
+    SUB_MENU = 3;
     host_gametype_next.drawme = FALSE;
     host_gametype_prev.drawme = TRUE;
   }
   else{
     host_gametype_next.drawme = TRUE;
+    host_gametype_prev.drawme = TRUE;
   }
   map_list_getmap((SUB_MENU==SUB_COOP));
   SELECT_MAP = 1;
@@ -253,13 +254,14 @@ void() click_host_nexttype={
 
 void() click_host_prevtype={
   SUB_MENU = SUB_MENU - 1;
-  if(SUB_MENU <= 2){
-    SUB_MENU = 2;
+  if(SUB_MENU < 2){
+    SUB_MENU = 1;
     host_gametype_next.drawme = TRUE;
     host_gametype_prev.drawme = FALSE;
   }
   else{
     host_gametype_prev.drawme = TRUE;
+    host_gametype_next.drawme = TRUE;
   }
   
   map_list_getmap((SUB_MENU==SUB_COOP));
@@ -412,10 +414,10 @@ void() click_host_back={
 };
 
 void() click_host_launch={
-  menu_clear_items(M_STATE);
-  if( host_map_lbl.label == "" ){
+  if( host_map_lbl.label == "" || !host_map_lbl.label){
     return;
   }
+  menu_clear_items(M_STATE);
   if( cvar("deathmatch") ){
     cvar_set("skill", "3");
   }

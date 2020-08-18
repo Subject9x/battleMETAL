@@ -56,11 +56,14 @@ void(vector ofs, float algn) hud_renderTargetName={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  if( (CLIENT_faction == CLIENT_target_faction) && (CLIENT_target_faction != FACTION_ALL) ){
-    factionColor = CLR_DEF_IIF_FRIEND;
+  if( CLIENT_target_faction == FACTION_ALL ){
+    factionColor = CLR_DEF_IFF_ENEMY;
+  }
+  else if( CLIENT_target_faction != CLIENT_faction ){
+    factionColor = CLR_DEF_IFF_ENEMY;
   }
   else{
-    factionColor = CLR_DEF_IFF_ENEMY;
+    factionColor = CLR_DEF_IIF_FRIEND;
   }
 
   local entity playerTarg;

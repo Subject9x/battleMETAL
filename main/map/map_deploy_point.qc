@@ -26,13 +26,42 @@ void() deploy_point_th={
 };
 
 void() deploy_point_ini={
+  if( (self.spawnflags & NO_CAMPAIGN) ){
+    if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+      remove(self);
+      return;
+    }
+  }
+  
+  if( (self.spawnflags & NO_COOP) ){
+    if( cvar("gamemode") == GAMEMODE_COOP ){
+      remove(self);
+      return;
+    }
+  }
+
+  if( (self.spawnflags & NO_DM) ){
+    if( cvar("gamemode") == GAMEMODE_DM  ){
+      remove(self);
+      return;
+     }
+  }
+  
+  if( (self.spawnflags & NO_TDM) ){
+    if( cvar("gamemode") == GAMEMODE_TEAMDM ){
+      remove(self);
+      return;
+    }
+  }
+  
+  trigger_event( self, self.trigOnSpawn );
   self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = deploy_point_th;
   self.nextthink = time + 0.1;
 };
 
 
-/*QUAKED map_deploy_point (0.753 0.788 0.431) (-26 -26 -44) (26 26 28)
+/*QUAKED map_deploy_point (0.753 0.788 0.431) (-26 -26 -44) (26 26 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM
 Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
 Deploy points can be tailored to specific factions, and can be activated/deactivated.
 
@@ -41,6 +70,11 @@ Deploy points can be tailored to specific factions, and can be activated/deactiv
 .data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
 .isActive = <float> [bool] - if active, allow players to spawn here.  
 .trigOnSpawn = <string> [target] - map object to fire when this is created
+-------SPAWNFLAGS-----
+NO_CAMPAIGN 1 : removed from singleplayer
+NO_COOP 2 : removed from co-operative games
+NO_DM 4 : removed from deathmatch games
+NO_TDM 8 : removed from deathmatch 1 / teamplay 1 games.
 */
 void() map_deploy_point={
   self.data_type = DATA_DEPL;
@@ -66,7 +100,6 @@ void() map_deploy_point={
   }
   
   self.SendEntity = send_deploy_point;
-  trigger_event( self, self.trigOnSpawn );
   self.think = deploy_point_ini;
   self.nextthink = time + 0.1;
 }
