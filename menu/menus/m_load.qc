@@ -32,10 +32,8 @@ void() click_load_loadgame={
     cvar_set("coop", ftos(0));
     cvar_set("deathmatch", ftos(0));
     cvar_set("skill", ftos(GAME_SAVES_SKILL[self.data_bind]));
-    tokenizebyseparator(GAME_SAVES_DRAWNAME[self.data_bind], "  ");
     menu_exit_togame();
-    mapName = strcat(argv(1),"\n");
-    cmd(strcat("map ", mapName));
+    cmd(strcat("map ", GAME_SAVES_MAP[self.data_bind]));
   }
 };
 

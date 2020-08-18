@@ -714,17 +714,19 @@ void() menu_scan_saves={
         line = fgets(flannel);
       }
       fclose(flannel);
-      save_name = strcat("[SAVE", save_num,"]", campid," -map(",map_name);
-      save_name = strcat(save_name, ") -skill:(", gui_skillAsString(save_skill),")");
+      save_name = strcat("[", save_num,"]", gui_skillAsString(save_skill),"-", campid);
+      save_name = strcat(save_name, " mission: ", map_name);
       
       GAME_SAVES[itr] = strzone(fname);
       GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
       GAME_SAVES_SKILL[itr] = save_skill;
+      GAME_SAVES_MAP[itr] = strzone(map_name);
     }
     else{
       GAME_SAVES[itr] = strzone(" ");
       GAME_SAVES_DRAWNAME[itr] = strzone("- NEW SAVE SLOT -");
       GAME_SAVES_SKILL[itr] = 0;
+      GAME_SAVES_MAP[itr] = "";
     }
     itr = itr + 1;
   }
