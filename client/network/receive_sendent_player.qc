@@ -188,28 +188,29 @@ void() sendevent_handle_player_death={
   self.data_type = 0;
   self.data_idx = 0;
   
-  self.torsoCenter.drawmask = MASK_NORMAL;
-  self.torsoLeft.drawmask = MASK_NORMAL;
-  self.torsoRight.drawmask = MASK_NORMAL;
-  self.armLeft.drawmask = MASK_NORMAL;
-  self.armRight.drawmask = MASK_NORMAL;
-  self.cockpit.drawmask = MASK_NORMAL;
+  //self.torsoCenter.drawmask = MASK_NORMAL;
+  //self.torsoLeft.drawmask = MASK_NORMAL;
+  //self.torsoRight.drawmask = MASK_NORMAL;
+  //self.armLeft.drawmask = MASK_NORMAL;
+  //self.armRight.drawmask = MASK_NORMAL;
+  //self.cockpit.drawmask = MASK_NORMAL;
   
   self.damageValue = self.damageValue | (M_TOR_CENTER | M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT);
   
-  //remove(self.torsoCenter);
-  //remove(self.torsoLeft);
-  //remove(self.torsoRight);
-  //remove(self.armLeft);
-  //remove(self.armRight);
-  //remove(self.cockpit);
+  remove(self.torsoCenter);
+  remove(self.torsoLeft);
+  remove(self.torsoRight);
+  remove(self.armLeft);
+  remove(self.armRight);
+  remove(self.cockpit);
   
-  wep = self;
+  wep = self.w_slot;
   while( (wep != world) ){
     nextWep = wep;
     nextWep = nextWep.w_slot;
-    wep.drawmask = MASK_NORMAL;
+    //wep.drawmask = MASK_NORMAL;
     remove(wep);
+    wep = nextWep;
   }
 };
 
@@ -407,16 +408,16 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   /*
     EVENT - DEAD
-  */
-  if( (changeFlags & SENDFLAG_DEAD) ){
+  */  if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     SV_MISSIONSTATUS = ReadByte();
     
     if( self.entId == player_localentnum ){
       CLIENT_player_deadflag = self.deadflag;
     }
-    if( (self.deadflag == DEAD_DEAD) && (prevDeadFlag != self.deadflag) ){
+    if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
       sendevent_handle_player_death();
+      cons_logAFloat("sendevent_handle_player_death();", 1);  //debug
     }
   }
   
