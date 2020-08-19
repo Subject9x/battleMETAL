@@ -65,18 +65,21 @@ void() data_ini_matok_={
   data_ini_torso_right_( "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1', '8 12.25 0' );
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-16 7 3', '-14 7 0' );
+  data_ini_arm_left_( "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-11 12 0', '-14 7 0' );
 
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/matok/matok_arm_r.md3", 675, '16 7 3', '14 7 0' );
+  data_ini_arm_right_( "q3mdl/mechs/matok/matok_arm_r.md3", 675, '11 12 0', '14 7 0' );
 
   //legs
   data_ini_legs_( "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0' );
   
-#ifndef CSQC
   //camera location
-  data_ini_camera_( '0 15 7', self.torsoCenter);
-#endif
+  #ifdef CSQC
+    data_ini_camera_( '0 15 20', self.torsoCenter);
+  #else
+    data_ini_camera_( '0 15 7', self.torsoCenter);
+  #endif
+  
 //=====================================
  
 //HARDPOINT DATA======================
@@ -89,12 +92,21 @@ void() data_ini_matok_={
   data_ini_unitHardpoint_6( M_TOR_CENTER, '0 6 7', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 #endif
 #ifdef CSQC
-  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
-  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
   data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1), (DMG_BAL | DMG_ENE | DMG_MSC | DMG_EXP) );
   data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1), (DMG_BAL | DMG_ENE | DMG_MSC | DMG_EXP) );
-  data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
+  
+  //client arms can aim up and down, so we bolt the weapons directly to the parent
+  //bad, late-in-the-game hack frauds
+  //see predraw_player_weapon()
+  if((self.flags&FL_CLIENT)){
+    data_ini_unitHardpoint_3( M_ARM_RIGHT, '7.5 -9 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
+    data_ini_unitHardpoint_4( M_ARM_LEFT, '-7.5 -9 2.25', '0 0 -90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
+  }
+  else{
+    data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
+    data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
+  }
+  
   data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
   data_ini_unitHardpoint_6( M_TOR_CENTER, '0 6 7', '0 0 0', (MSC1|MSC2|MSC3|MSC4), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 #endif

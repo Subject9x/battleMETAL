@@ -18,6 +18,8 @@ void() player_makeObserver={
   self.scale = 0.005;
   self.stat_player_weapons_state = 0;
   self.view_ofs = '0 0 1';
+  self.damageValue = 0;
+  self.clientData.SendFlags =  self.clientData.SendFlags | SENDFLAG_TURRET;
 };
 
 void() player_unmakeObserver={
@@ -25,7 +27,6 @@ void() player_unmakeObserver={
     self.flags = self.flags - (self.flags & FL_FLY);
   }
   self.movetype = MOVETYPE_WALK;
-  //self.scale = 1; //DEBUG
 };
 
 void() player_makeVec={
@@ -166,17 +167,24 @@ void() player_makeMech={
   }
   else{
     //network games are too laggy to allow a player to see their own mech parts sadly
-    self.torsoCenter.exteriormodeltoclient = self;
-    self.torsoLeft.exteriormodeltoclient = self;
-    self.torsoRight.exteriormodeltoclient = self;
-    self.armLeft.exteriormodeltoclient = self;
-    self.armRight.exteriormodeltoclient = self;
-    self.legs.exteriormodeltoclient = self;
+    //self.torsoCenter.exteriormodeltoclient = self;
+    //self.torsoLeft.exteriormodeltoclient = self;
+    //self.torsoRight.exteriormodeltoclient = self;
+    //self.armLeft.exteriormodeltoclient = self;
+    //self.armRight.exteriormodeltoclient = self;
+    //self.legs.exteriormodeltoclient = self;
     
-    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
-      wep.exteriormodeltoclient = self;
+    self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
+    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
+    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
+    self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
+    self.armRight.effects = self.armRight.effects | EF_NODRAW;
+    
+    
+    //for( wep = self.w_slot; wep != world; wep = wep.w_slot){
+    //  wep.exteriormodeltoclient = self;
       //player_set_hud_weapon( wep, hudWepStart);
-    }
+    //}
   }
   
   self.hud_mode = cvar("cl_hud_sway");
@@ -186,6 +194,7 @@ void() player_makeMech={
   self.view_ofs_z = self.cockpit.compOffset_y;  //set player view offset to where the cockpit ent is.
   self.stat_rdr_mode = 1; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
+  self.damageValue = 0;
 };
 
 void() player_unmakeMech={

@@ -545,9 +545,11 @@ void() client_data={
 */
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
+  local float prevType;
   player = self.owner;
   self.view_ofs = player.origin;
   
+  prevType = self.data_type;
   if( player.deadflag == DEAD_NO ){
     self.data_type = player.data_type;
     self.radar_range = player.radar_range;
@@ -569,7 +571,6 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
-  WriteShort( MSG_ENTITY, self.owner.ping );
   
   /*
     EVENT - per-frame update
@@ -604,6 +605,18 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.faction );
     WriteByte( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, player.next_wepn1);
+    WriteByte( MSG_ENTITY, player.next_wepn2);
+    WriteByte( MSG_ENTITY, player.next_wepn3);
+    WriteByte( MSG_ENTITY, player.next_wepn4);
+    WriteByte( MSG_ENTITY, player.next_wepn5);
+    WriteByte( MSG_ENTITY, player.next_wepn6);
+    WriteByte( MSG_ENTITY, player.next_wepn7);
+    WriteByte( MSG_ENTITY, player.next_wepn8);
+    WriteByte( MSG_ENTITY, player.next_wepn9);
+    WriteCoord( MSG_ENTITY, player.colormod_x);
+    WriteCoord( MSG_ENTITY, player.colormod_y);
+    WriteCoord( MSG_ENTITY, player.colormod_z);
   }
   /*
     EVENT - pieces of player mech is blown off

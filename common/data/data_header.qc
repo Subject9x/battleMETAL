@@ -83,18 +83,13 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
     notItem = self;
     self = item;
     #ifdef CSQC
-      self.drawmask = MASK_NORMAL;
+      self.drawmask = MASK_ENGINE;
     #endif
     #ifndef CSQC
-      if( (notItem.flags & FL_CLIENT) ){
-        self.exteriormodeltoclient = notItem;
-      }
-      else{
-        self.effects = self.effects | EF_NODRAW;
-      }
+      self.effects = self.effects | EF_NODRAW;
     #endif
       self.data_idx = 0;
-      self.w_group = self.w_group|weaponBit;
+      self.w_group = self.w_group | weaponBit;
       self.partParentId = parentPartID;
       self.compOffset = pointOffsetVec;
       self.w_adj_ang = adjustAngleVec;
