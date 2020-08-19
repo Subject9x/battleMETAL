@@ -19,12 +19,12 @@ void() data_ini_light_laser_={
   self.data_idx = 3;
   
   self.w_clipsize = 1;
-  self.reloadRate = 1.5; //0.95
-  self.reloadMax = 1.5;  //0.95
-  self.energyRate = 18; //12
+  self.reloadRate = 1.5;
+  self.reloadMax = 1.5;
+  self.energyRate = 18;
 
-  self.w_range = 3000;  //2000
-  self.damageValue = 30;  //15
+  self.w_range = 3000;
+  self.damageValue = 25;
   self.damageType = (DMG_ENE | EFF_SHD);
 
   self.techLevel = 1;
@@ -38,7 +38,7 @@ void() data_ini_light_laser_={
     self.fire_sound = "sound/weapons/laser_fire.ogg";
     self.model = "q3mdl/weapons/w_laser.md3";
     self.abbrev = "LAS";
-    self.description = "+ Instant-impact weapon. + Small damage bonus against <shields>.";
+    self.description = "+ Instant-impact weapon. + bonus damage  against <shields>.";
     self.icon = "gfx/ui/wep_icons/wi_las.png";
   #endif
   
@@ -69,14 +69,12 @@ void() data_ini_attack_laser_={
   }
   
   if( trace_ent.takedamage ){
-    damage = self.damageValue;
     if( trace_ent.shield > 0 ){
-      t_damage_shield(trace_ent, self,self.owner, damage, trace_endpos, FALSE); 
+      t_damage_shield(trace_ent, self,self.owner, self.damageValue * 1.85, trace_endpos, FALSE); 
       impactStyle = IMPACT_SHIELD;
     }
     else{
-      damage = damage * 0.5;
-      t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');  
+      t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');  
       impactStyle = IMPACT_ARMOR;
     }
   }

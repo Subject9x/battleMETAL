@@ -129,9 +129,6 @@ void()data_prj_emp_explode={
     if(ln > DAT_PRJ_EMP_PROXYRAD){
       if( lst.shield > 0 ){
         damage = (self.damageValue * 0.25) * (ln / DAT_PRJ_EMP_EXPRAD);
-        if( trace_ent.vec_size < 2 ){
-          damage = damage * 0.3;
-        }
         t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, TRUE);
         self.impactType = IMPACT_SHIELD;
       }
@@ -141,12 +138,7 @@ void()data_prj_emp_explode={
     }
     else{
       if( lst.shield > 0 ){
-        if( trace_ent.vec_size < 2 ){
-          damage = self.damageValue * 0.3;
-        }
-        else{
-          damage = self.damageValue;
-        }
+        damage = self.damageValue;
         t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, TRUE);
         self.impactType = IMPACT_SHIELD;
       }

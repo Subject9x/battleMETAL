@@ -85,9 +85,6 @@ void()data_projectile_ion_explode={
       continue;
     }
     if( other.shield > 0 ){
-      if(other.vec_size > 1){
-        self.damageValue = self.damageValue * 0.33;
-      }
       t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
       self.impactType = IMPACT_SKY;
     }

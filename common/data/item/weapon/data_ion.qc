@@ -21,9 +21,9 @@ void() data_ini_ion_={
   self.w_clipsize = 3;
   self.reloadRate = 0.15;
   self.reloadMax = 4;
-  self.energyRate = 125; //100
+  self.energyRate = 125;
   
-  self.w_range = 1500; 
+  self.w_range = 1500;
   self.damageValue = 90;
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
 
@@ -38,7 +38,7 @@ void() data_ini_ion_={
     self.fire_sound = "sound/weapons/emp_fire.ogg";
     self.model = "q3mdl/weapons/w_ion.md3";
     self.abbrev = "ION";
-    self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + 3-Round burst. + effective against [smaller] targets.";
+    self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + 3-Round burst.";
     self.icon = "gfx/ui/wep_icons/wi_ion.png";
   #endif
   
