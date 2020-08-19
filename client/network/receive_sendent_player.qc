@@ -188,13 +188,6 @@ void() sendevent_handle_player_death={
   self.data_type = 0;
   self.data_idx = 0;
   
-  //self.torsoCenter.drawmask = MASK_NORMAL;
-  //self.torsoLeft.drawmask = MASK_NORMAL;
-  //self.torsoRight.drawmask = MASK_NORMAL;
-  //self.armLeft.drawmask = MASK_NORMAL;
-  //self.armRight.drawmask = MASK_NORMAL;
-  //self.cockpit.drawmask = MASK_NORMAL;
-  
   self.damageValue = self.damageValue | (M_TOR_CENTER | M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT);
   
   remove(self.torsoCenter);
@@ -208,7 +201,6 @@ void() sendevent_handle_player_death={
   while( (wep != world) ){
     nextWep = wep;
     nextWep = nextWep.w_slot;
-    //wep.drawmask = MASK_NORMAL;
     remove(wep);
     wep = nextWep;
   }
@@ -373,6 +365,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.colormod = te_read_vector();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
+        self.deadflag = DEAD_NO;
         self.damageValue = rint(0);
         sendevent_player_mech(self.data_idx);
         self.predraw = player_predraw;
