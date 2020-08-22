@@ -13,6 +13,29 @@ Overview:
 void() data_ini_attack_latc_;
 #endif
 
+#ifdef CSQC
+void() te_muzzle_latc={
+  local vector startOrg;
+  local vector endOrg;
+  local vector ang;
+  local vector norm;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  norm = normalize(endOrg - startOrg);
+  ang = vectoangles(endOrg - startOrg);
+  makevectors(ang);
+  pointsound( startOrg, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM);
+  if( vlen(endOrg - startOrg) >= 1500 ){
+    pointsound( endOrg, "sound/weapons/atc_fire.ogg", 0.5, ATTN_NORM);
+  }
+  pointparticles( particleeffectnum("TE_ATC_MUZZLE"), startOrg, norm * 4, 1);
+  pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg, norm * 1400, 1);
+  
+};
+#endif
 void() data_ini_light_atc_={
 
   self.data_idx = 1;  
@@ -39,7 +62,7 @@ void() data_ini_light_atc_={
     self.icon = "gfx/ui/wep_icons/wi_atc.png";
     self.model = "q3mdl/weapons/w_atc.md3";
     self.fire_sound = "sound/weapons/atc_fire.ogg";
-    self.wepFireOffset = '0 0.5 5';
+    self.itemMuzzleFlash = te_muzzle_latc;
   #endif
   
   #ifndef CSQC  
@@ -47,41 +70,30 @@ void() data_ini_light_atc_={
     self.think = default_weapon_think;
     self.w_isburst = FALSE;
     self.burstRate = 1;
-    self.model = "q3mdl/weapons/w_atc.md3"; //todo - move client side only
   #endif
 };
 
 #ifndef CSQC
 void() data_ini_attack_latc_={
-  local float impactStyle;
   
   ctrl_weapon_fireOffset();
-
+  
   ctrl_weapon_updateAmmo( TRUE );
-
+  
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){
     return;
   }
   else{
-    if( !trace_ent.takedamage ){
-      if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) ){
-        impactStyle = IMPACT_DIRT;
+    if( trace_ent.takedamage ){
+      if( trace_ent.shield > 0 ){
+        t_damage_shield(trace_ent, self,self.owner, self.damageValue, trace_endpos, FALSE); 
       }
+      else{
+        t_damage(trace_ent, self, FIRE_ENT, self.damageValue * 1.75, FIRE_ENDPOINT, '0 0 0');
+      } 
     }
-    else{
-      if( trace_ent ){
-        if( trace_ent.shield > 0 ){
-          t_damage_shield(trace_ent, self,self.owner, self.damageValue, trace_endpos, FALSE); 
-          impactStyle = IMPACT_SHIELD;
-        }
-        else{
-          t_damage(trace_ent, self, FIRE_ENT, self.damageValue * 1.75, FIRE_ENDPOINT, '0 0 0');
-          impactStyle = IMPACT_ARMOR;
-        } 
-      }
-    }
-    
-  }
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);  
+  } 
+  client_send_weapon_flash( self.w_group, num_for_edict(self.owner), FIRE_ENDPOINT);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

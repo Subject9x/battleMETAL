@@ -48,7 +48,6 @@ void() data_ini_equip_energy_battery_={
     self.think = SUB_Null;
     self.item_run_upgrade = energy_battery_upgrade_;
     self.item_remove_upgrade = energy_battery_remove_;
-    self.model = "q3mdl/weapons/e_enbat.md3";
     self.w_isburst = FALSE;
   #endif
 };

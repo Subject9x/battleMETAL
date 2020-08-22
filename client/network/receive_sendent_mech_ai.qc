@@ -149,6 +149,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local vector turretAng;
   local float critical;
   local string newName;
+  local float prevAttackFlag;
   
   prevShield = self.shield;
   
@@ -212,6 +213,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   //EVENT - MOVE
   if( (changeFlags & SENDFLAG_MOVE) ){
+    prevAttackFlag = self.attackFlag;
+    self.attackFlag = ReadLong();
     sendevent_mech_ai_move();
   }
   
@@ -276,6 +279,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
         sendent_ini_interpolate();
       self = this;
     }
+  }
+  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+    sendevent_handle_weaponfire();
   }
 };
 

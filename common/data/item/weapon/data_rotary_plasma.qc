@@ -13,6 +13,19 @@ Overview:
 #ifndef CSQC
 void() data_ini_attack_plasma_;
 #endif
+#ifdef CSQC
+void() te_muzzle_rpc={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  pointsound( startOrg, "sound/weapons/rpls_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_RPC_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+}
+#endif
 void() data_ini_plasma_={
 
   self.data_idx = 6;  
@@ -39,12 +52,12 @@ void() data_ini_plasma_={
     self.abbrev = "RPC";
     self.description = "+ Will burn over time on unshielded hit. + inhibits target shield regen when burning.";
     self.icon = "gfx/ui/wep_icons/wi_rpc.png";
+    self.itemMuzzleFlash = te_muzzle_rpc;
   #endif 
   
   #ifndef CSQC
     self.w_isburst = FALSE;
     self.burstRate = 1.5;
-    self.model = "q3mdl/weapons/w_rpc.md3";
     self.w_attack = data_ini_attack_plasma_;
     self.think = default_weapon_think;
     self.data_ini_projectile = data_projectile_ini_plasma_;
@@ -58,9 +71,9 @@ void() data_ini_attack_plasma_={
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( TRUE );
-
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
   
   ctrl_weapon_make_projectile( -1 );
+  
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

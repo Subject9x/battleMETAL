@@ -15,6 +15,24 @@ Overview:
 void() data_ini_attack_particle_cannon_;
 #endif
 
+#ifdef CSQC
+void() te_muzzle_pac={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  pointsound( startOrg, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM);
+  
+  if( vlen(endOrg - startOrg) >= 1500 ){
+    pointsound( endOrg, "sound/weapons/pac_fire.ogg", 0.5, ATTN_NORM);
+  }
+  
+  pointparticles( particleeffectnum("TE_PAC_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+};
+#endif
 void() data_ini_particle_cannon_={
   
   self.data_idx = 7;
@@ -40,13 +58,13 @@ void() data_ini_particle_cannon_={
     self.model = "q3mdl/weapons/w_pac.md3";
     self.abbrev = "PAC";
     self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Lower shields on target yields higher armor damage. + better against [large] targets.";
-    self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
+    self.icon = "gfx/ui/wep_icons/wi_pac.png";
+    self.itemMuzzleFlash = te_muzzle_pac;
   #endif 
   
   #ifndef CSQC
     self.w_isburst = FALSE;
     self.burstRate = 0;
-    self.model = "q3mdl/weapons/w_pac.md3";
     self.think = default_weapon_think;
     self.w_attack = data_ini_attack_particle_cannon_;
   #endif
@@ -57,7 +75,6 @@ void() data_ini_attack_particle_cannon_={
   local vector strikePoint;
   local float oldShields;
   local entity thisTarget;
-  local float impactStyle;
   local float dmgArmor, dmgShield;
   
   if( !ctrl_weapon_checkEnergy() ){
@@ -91,11 +108,6 @@ void() data_ini_attack_particle_cannon_={
       if(trace_ent.vec_size == 2){
        dmgArmor = dmgArmor * 0.5;
       }
-      
-      impactStyle = IMPACT_SHIELD;
-    }
-    else{
-     impactStyle = IMPACT_ARMOR;
     }
     
     thisTarget = trace_ent;
@@ -106,9 +118,7 @@ void() data_ini_attack_particle_cannon_={
       thisTarget.shield = oldShields;
     }
   }
-  else{
-    impactStyle = IMPACT_DIRT;
-  }
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
+  client_send_weapon_flash( self.w_group, num_for_edict(self.owner), FIRE_ENDPOINT);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

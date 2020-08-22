@@ -13,7 +13,34 @@ Overview:
 #ifndef CSQC
 void() data_ini_attack_quantum_;
 #endif
-
+#ifdef CSQC
+void() te_muzzle_qrf={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  local vector ang;
+  local vector prtclRail_org;
+  local vector prtclRail_end;
+  local vector prtclSpark_org;
+  
+  ang = vectoangles(endOrg - startOrg);
+  makevectors(ang);
+  prtclRail_org = startOrg + (v_forward * 2);
+  prtclRail_end = startOrg + (v_forward * 48);
+  prtclSpark_org = startOrg + (v_forward * 22);
+  pointsound( startOrg, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( endOrg - startOrg ), 1 ) ;
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
+  
+  trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5) );
+  trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5) );
+}
+#endif
 void() data_ini_quantum_={
 
   self.data_idx = UID_ITEM_quantum_rifle;  
@@ -40,6 +67,7 @@ void() data_ini_quantum_={
     self.abbrev = "QRF";
     self.description = "+ Single-fire projectile. + Better against <Armor> + Targets without <Shields> will cause projectile to shatter and deal additional radius damage to nearby targets.";
     self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
+    self.itemMuzzleFlash = te_muzzle_qrf;
   #endif 
   
   #ifndef CSQC
@@ -57,12 +85,12 @@ void() data_ini_attack_quantum_={
   ctrl_weapon_fireOffset();
   
   ctrl_weapon_updateAmmo( FALSE );
- 
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
 
   ctrl_weapon_make_projectile( -1 );
   
   NEWSHOT.avelocity = '0 0 300';
   NEWSHOT = world;
+  
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

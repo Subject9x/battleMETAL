@@ -60,46 +60,6 @@ float() customize_part_for_client ={
   return TRUE;
 };
 
-float() customize_wep_for_client={
-  local vector chunkOfs;
-  makevectors(self.owner.angles);
-  chunkOfs = self.owner.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - self.owner.cockpit.compOffset_z * 1.5));
-  self.wepFireOffset_z = self.wepFireOffsetCache_z - self.owner.cockpit.compOffset_z;
-  self.compAltOffset_z = self.compAltOffsetCache_z - self.owner.cockpit.compOffset_z;
-  setorigin(self, chunkOfs);
-  return TRUE;
-};
-
-
-void( entity wepThing, entity wepPointer ) player_set_hud_weapon={
-  local entity newHudPart, ownerSelf;
-  local vector ofs;
-  ownerSelf = self;
-  newHudPart = spawn();
-  self = newHudPart;
-  
-  macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
-  setsize(self, '-1 -1 -1','1 1 1');
-  macro_set_model(wepThing.model, 0, 0)  
-  makevectors(self.owner.angles);
-  ofs = self.owner.origin + (v_right * wepThing.compOffset_x) + (v_up * (wepThing.compOffset_y * -2)) + (v_forward * (wepThing.compOffset_z - self.owner.cockpit.compOffset_z));
-  setorigin(self, ofs);
-  self.punchangle = ownerSelf.angles;
-  self.view_ofs = self.origin - ownerSelf.origin;
-  self.angles = ownerSelf.angles;
-  self.v_angle = self.angles - ownerSelf.angles; 
-
-  self.viewmodelforclient = ownerSelf;
-  self.owner = ownerSelf;
-  self.alpha = 1;
-  
-  self = ownerSelf;
-  
-  wepThing.nodrawtoclient = ownerSelf;
-  wepPointer.hudWeapon = newHudPart;
-  wepPointer = newHudPart;
-};
-
 void() player_makeMech={
   
   self.data_idx = self.nextVecChoice;
@@ -134,19 +94,6 @@ void() player_makeMech={
   local entity wep, hudWepStart;
   hudWepStart = self;
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-    //non-network games can have more fun with player view
-    self.torsoCenter.exteriormodeltoclient = self;
-    self.torsoCenter.customizeentityforclient = customize_part_for_client;
-    self.torsoLeft.customizeentityforclient = customize_part_for_client;
-    self.torsoRight.customizeentityforclient = customize_part_for_client;
-    self.armLeft.customizeentityforclient = customize_part_for_client;
-    self.armRight.customizeentityforclient = customize_part_for_client;
-    self.legs.customizeentityforclient = customize_part_for_client;
-    
-    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
-      wep.customizeentityforclient = customize_wep_for_client;
-    }
-    
     switch(cvar("skill")){
       case 1:
         self.energyMax = self.energyMax * 1.5;
@@ -165,27 +112,13 @@ void() player_makeMech={
         break;
     }
   }
-  else{
-    //network games are too laggy to allow a player to see their own mech parts sadly
-    //self.torsoCenter.exteriormodeltoclient = self;
-    //self.torsoLeft.exteriormodeltoclient = self;
-    //self.torsoRight.exteriormodeltoclient = self;
-    //self.armLeft.exteriormodeltoclient = self;
-    //self.armRight.exteriormodeltoclient = self;
-    //self.legs.exteriormodeltoclient = self;
-    
-    self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
-    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
-    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
-    self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
-    self.armRight.effects = self.armRight.effects | EF_NODRAW;
-    
-    
-    //for( wep = self.w_slot; wep != world; wep = wep.w_slot){
-    //  wep.exteriormodeltoclient = self;
-      //player_set_hud_weapon( wep, hudWepStart);
-    //}
-  }
+  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
+  self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
+  self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
+  self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
+  self.armRight.effects = self.armRight.effects | EF_NODRAW;
+  //self.legs.exteriormodeltoclient = self;
+  self.legs.customizeentityforclient = customize_part_for_client;
   
   self.hud_mode = cvar("cl_hud_sway");
   util_updateViewBob();

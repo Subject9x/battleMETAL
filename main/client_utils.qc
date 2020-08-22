@@ -871,17 +871,14 @@ void( float entityId, float particleEffectId, vector particleOrg, vector particl
   WriteCoord(MSG_BROADCAST, particleEnd_z);
 };
 
-void( float wepId, vector flashOrg, vector flashVel, float impType ) client_send_muzzle_flash={
+void( float wepId, float entId, vector flashVel ) client_send_weapon_flash={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_MUZZLE_FLASH );
+  WriteByte( MSG_BROADCAST, TE_WEAPON_FLASH );
   WriteByte( MSG_BROADCAST, wepId );
-  WriteCoord(MSG_BROADCAST, flashOrg_x);
-  WriteCoord(MSG_BROADCAST, flashOrg_y);
-  WriteCoord(MSG_BROADCAST, flashOrg_z);
-  WriteCoord(MSG_BROADCAST, flashVel_x);
-  WriteCoord(MSG_BROADCAST, flashVel_y);
-  WriteCoord(MSG_BROADCAST, flashVel_z);
-  WriteByte( MSG_BROADCAST, impType);
+  WriteLong( MSG_BROADCAST, entId );
+  WriteCoord( MSG_BROADCAST, flashVel_x);
+  WriteCoord( MSG_BROADCAST, flashVel_y);
+  WriteCoord( MSG_BROADCAST, flashVel_z);
 };
 
 

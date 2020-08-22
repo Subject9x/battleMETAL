@@ -279,7 +279,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   
   client_state_events();
   makevectors(input_angles);
-  SetListener(pmove_org, v_forward, v_right, v_up );  //debug
   //=================================================
   
   // draw the main view
@@ -291,7 +290,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     oldSelf = self;
     self = world;
     while( (self = nextent(self)) ){
-      //if( self.drawmask == MASK_NORMAL ){
+      if( self.drawmask == MASK_NORMAL ){
         if( self.data_type && self.deadflag == DEAD_NO ){
           if( self.interpolate_entity ){
             self.interpolate_entity();
@@ -307,7 +306,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
           self.render_dlights();
         }
       }
-    //}
+    }
     self = oldSelf;
     addentities( (MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
     renderscene();
@@ -413,8 +412,8 @@ float() CSQC_Parse_TempEntity =
       client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
     
-    case TE_MUZZLE_FLASH:
-      particle_muzzle_flash( ReadByte(), te_read_vector(), te_read_vector(), ReadByte() ) ;
+    case TE_WEAPON_FLASH:
+      particle_weapon_flash( ReadByte(), ReadLong(), te_read_vector() ) ;
       return TRUE;
     
     case TE_VFX_EXPLODE:
@@ -475,7 +474,6 @@ void(string s) CSQC_Parse_StuffCmd =
       SV_TIMELIMIT = stof(argv(5));
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){        
         cvar_set("saveslot", argv(6) );
-        cons_logAFloat("saveslot", cvar("saveslot"));  //debug
       }
       else{
         cvar_set("saveslot", "0");

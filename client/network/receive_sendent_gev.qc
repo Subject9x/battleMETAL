@@ -62,6 +62,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   local vector turretAng;
   local entity this;
   local string newName;
+  local float prevAttackFlag;
   
   prevShield = self.shield;
   
@@ -142,6 +143,12 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     }
   }
   
+  //EVENT - UNIT MOVE
+  if( changeFlags & SENDFLAG_MOVE ){
+    prevAttackFlag = self.attackFlag;
+    self.attackFlag = ReadLong();
+  }
+  
   //Shield Explode event
   sendevent_shield_explode( prevShield );  
   if( isNew ){      
@@ -151,6 +158,9 @@ void( float isNew, float changeFlags) sendent_handle_gev={
         sendent_ini_interpolate();
       self = this;
     }
+  }
+  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+    sendevent_handle_weaponfire();
   }
 };
 

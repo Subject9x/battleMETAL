@@ -44,12 +44,11 @@ void() data_ini_equip_sensor_array_={
     self.icon = "gfx/ui/wep_icons/eqp_lsar.png";
   #endif
   
-  #ifndef
+  #ifndef CSQC
     self.item_remove_upgrade = sensor_array_remove_;
     self.item_run_upgrade = sensor_array_upgrade_;
     self.think = SUB_Null;
     self.w_isburst = FALSE;
-    self.model = "q3mdl/weapons/e_lsar.md3";
   #endif
 };
 

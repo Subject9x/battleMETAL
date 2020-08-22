@@ -201,6 +201,7 @@ void() PlayerPostThink = {
     }
   }
 // check for attack
+  self.attackFlag = 0; //zero-out the attackFlag every frame to prevent multiple overdraws of muzzle flash and trailparticles on the clients.
   playerAttack();
 
 // check to see if player landed and play landing sound	

@@ -14,6 +14,18 @@ Overview:
 void() data_ini_attack_missile_activeradar_;
 #endif 
 
+#ifdef CSQC
+void() te_muzzle_marh={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  pointsound( startOrg, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_ARH_MUZZLE"), startOrg, normalize( startOrg - endOrg ) * 1, 1);
+};
+#endif
 void() data_ini_missile_activeradar_={
 
   self.data_idx = 10;  
@@ -40,6 +52,7 @@ void() data_ini_missile_activeradar_={
     self.abbrev = "MARH";
     self.description = "+ target <shields> reduce damage. + Requires <Active Radar> on. + Minimum Range of 300m. + stronger against [small] targets.";
     self.icon = "gfx/ui/wep_icons/wi_marh.png";
+    self.itemMuzzleFlash = te_muzzle_marh;
   #endif
   
   #ifndef CSQC
@@ -98,8 +111,7 @@ void() data_ini_attack_missile_activeradar_={
     NEWSHOT.dest = FIRE_ENDPOINT;
     setorigin(NEWSHOT, start);
     NEWSHOT = world;
-    
-    client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0 );
+    self.owner.attackFlag = self.owner.attackFlag | self.w_group;
   }
 };
 #endif

@@ -445,7 +445,9 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (changeFlags & SENDFLAG_MOVE) ){}
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    WriteLong( MSG_ENTITY, self.attackFlag );
+  }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );

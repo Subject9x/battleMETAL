@@ -19,7 +19,7 @@ void(entity item) predraw_player_weapon={
   this = self;
   entAng = self.angles;
   drawAng = self.angles;
-    drawAng_x = drawAng_x *-1;
+  drawAng_x = drawAng_x *-1;
   if(item.partParentId == M_ARM_LEFT || item.partParentId == M_ARM_RIGHT){
     if(item.partParentId == M_ARM_LEFT){
       offset = self.armLeft.origin;
@@ -304,12 +304,14 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevKills;
   local float prevFaction;
   local float prevDeadFlag;
+  local float prevAttackFlag;
   
   prevShield = self.shield;
   prevCrit = self.damageValue;
   prevKills = self.kills;
   prevFaction = self.faction;
   prevDeadFlag = self.deadflag;
+  prevAttackFlag = self.attackFlag;
   
   self.ping = stof( getplayerkeyvalue(self.entId - 1, "ping") );
   self.kills = stof( getplayerkeyvalue(self.entId - 1, "frags") );
@@ -328,19 +330,15 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
+    self.attackFlag = ReadLong();
   }
   
   /*
-    EVENT - player target info change
+    EVENT - player has fired weapons
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    prevTarget = self.targetEntId;
-    self.targetEntId = ReadLong();
-    if( self.targetEntId != 0 ){
-      self.enemy = findfloat(world, entId, self.targetEntId);
-    }
-    else{
-      self.enemy = world;
+    if(self.attackFlag != FALSE){
+      
     }
   }
   
@@ -410,7 +408,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
     if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
       sendevent_handle_player_death();
-      cons_logAFloat("sendevent_handle_player_death();", 1);  //debug
     }
   }
   
@@ -438,13 +435,23 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
+    prevTarget = self.targetEntId;
     self.kills = stof(getplayerkeyvalue(self.entId - 1, "frags"));
+    
     //TODO
     self.particleCubeFlag = ReadByte();
+    self.targetEntId = ReadLong();
     
     if( prevKills != self.kills ){
       scoreboard_push( self.entId, self.kills );
       scoreboard_sort();
+    }
+    
+    if( self.targetEntId != 0 ){
+      self.enemy = findfloat(world, entId, self.targetEntId);
+    }
+    else{
+      self.enemy = world;
     }
     
     if( self.particleCubeFlag == 0 ){
@@ -466,4 +473,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
+  
+  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+    sendevent_handle_weaponfire();
+  }
 };

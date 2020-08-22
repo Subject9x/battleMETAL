@@ -176,10 +176,30 @@ void( float prevShield ) sendevent_shield_explode={
 
 
 /*
+  EVENT - entity attackFlag != 0, indicating an attack has been made by weapons
+    scope = self is owning unit
+*/
+void() sendevent_handle_weaponfire={
+  local entity this;
+  local entity equip;
+  
+  this = self;
+  equip = this.w_slot;
+  
+  makevectors(self.angles);
+  
+  while( equip != world ){
+    if( (self.attackFlag & equip.w_group) ){
+      te_weapon_fire_handler(equip);
+    }
+    equip = equip.w_slot;
+  }
+};
+
+/*
   EVENT - Turret rotated
 */
 void( vector turretAngles ) sendevent_turret_update={
-  
   if( self.torsoCenter != world ){
     self.torsoCenter.angles_x = anglemod(turretAngles_x);
     self.torsoCenter.angles_y = anglemod(turretAngles_y);

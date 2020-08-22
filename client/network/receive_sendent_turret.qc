@@ -50,6 +50,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   local vector turretAng;
   local entity this;
   local float prevShield;
+  local float prevAttackFlag;
   
     //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
@@ -92,6 +93,8 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   prevShield = self.shield;
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.shield = ReadShort();
+    prevAttackFlag = self.attackFlag;
+    self.attackFlag = ReadLong();
   }
   
   //EVENT - faction changed
@@ -136,6 +139,10 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //HANDLE EVENT - turret rotate
   sendevent_turret_update( turretAng );
+  
+  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+    sendevent_handle_weaponfire();
+  }
   
   if( isNew ){      
     if( self.torsoCenter ){

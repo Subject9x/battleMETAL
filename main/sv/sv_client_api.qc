@@ -145,6 +145,8 @@ void() ClientConnect = {
   self.stat_target_orgy = 0;
   self.stat_target_orgz = 0;
 
+  self.attackFlag = 0;
+
   if( world.animaticOnly ) {
     client_playTrack(world.sounds, TRUE);  //play desired music for animatic
     if( world.animaticOnly > 1){
@@ -588,13 +590,16 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
     WriteAngle( MSG_ENTITY, player.v_angle_z);
+    WriteLong( MSG_ENTITY, player.attackFlag);
   }
   
   /*
-    EVENT - player target info change
+    EVENT - player has fired weapons
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(player.enemy) );
+    if(player.attackFlag != FALSE){
+      
+    }
   }
   
   /*
@@ -654,6 +659,7 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     WriteByte( MSG_ENTITY, (player.particleCube == world));
+    WriteLong( MSG_ENTITY, num_for_edict(player.enemy) );
   }
   return TRUE;
 };

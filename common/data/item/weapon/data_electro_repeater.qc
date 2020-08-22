@@ -91,6 +91,19 @@ void() weapon_esr_think={
 void() data_ini_attack_electro_repeater_;
 #endif 
 
+#ifdef CSQC
+void() te_muzzle_esr={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z + v_up * 0.1;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  pointsound( startOrg, "sound/weapons/esr_fire.ogg", 0.5 + (random() * 0.5), ATTN_NORM);
+  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 1, 1);
+};
+#endif
 void() data_ini_electro_repeater_={
   
   self.data_idx = 8;
@@ -117,12 +130,12 @@ void() data_ini_electro_repeater_={
     self.abbrev = "ESR";
     self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage split when target is <shielded>";
     self.icon = "gfx/ui/wep_icons/wi_esr.png";
+    self.itemMuzzleFlash = te_muzzle_esr;
   #endif
   
   #ifndef CSQC
     self.w_isburst = FALSE;
     self.burstRate = 0;
-    self.model = "q3mdl/weapons/w_esr.md3";
     if( (self.owner.flags & FL_MONSTER) ){
       self.reloadMax = 1;
       self.energyRate = self.energyRate / 2;
@@ -142,7 +155,6 @@ void() data_ini_electro_repeater_={
 
 #ifndef CSQC
 void() data_ini_attack_electro_repeater_={
-  local float impactStyle;
   local float damage;
   
   if( self.owner.energy <= self.energyRate ){
@@ -178,8 +190,6 @@ void() data_ini_attack_electro_repeater_={
   }
   ctrl_weapon_fireOffset();
   
-  
-  impactStyle = IMPACT_SKY;
   if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
     return;
   }
@@ -188,19 +198,12 @@ void() data_ini_attack_electro_repeater_={
     if( trace_ent.shield > 0 ){
       damage = damage * 0.67;
       t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
-      impactStyle = IMPACT_SHIELD;
     }
     else{
       t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
-      impactStyle = IMPACT_ARMOR;
     }
   }
-  else{
-    if( trace_ent != world ){
-      impactStyle = IMPACT_DIRT;
-    }
-  }
-  
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle);
+  client_send_weapon_flash( self.w_group, num_for_edict(self.owner), FIRE_ENDPOINT);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

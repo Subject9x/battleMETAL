@@ -30,11 +30,10 @@ Overview:
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame
 #endif
-
+.float attackFlag;  //a bitflag set every frame that a unit has fired weapons, where it is weapon bits, WEAPON1 | WEAPON2 etc
+                    //the csqc then processes the rest of the particle attacks.
 .float burnBits;    //bitflags sent to client for fire/burning effects on ents.
-
 .float evasionDrain;
-
 .float data_idx;
 .float vec_size;
 .string vec_name;

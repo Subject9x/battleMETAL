@@ -16,6 +16,22 @@ vector DAT_FLAK_SHRAP_SPREAD  = '0.2 0.2 64';
 void() data_ini_attack_flak_;
 #endif
 
+#ifdef CSQC
+void() te_muzzle_flk={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  if( vlen(endOrg - startOrg) >= 1500 ){
+    pointsound( endOrg, "sound/weapons/flak_fire.ogg", 0.5, ATTN_NORM);
+  }
+  pointsound( startOrg, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
+};
+#endif
 void() data_ini_flak_cannon_={
 
   self.data_idx = 12;  
@@ -43,12 +59,12 @@ void() data_ini_flak_cannon_={
     self.abbrev = "FLAK";
     self.description = "+ Instant-impact weapon. +4-rnd burst and 4 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
     self.icon = "gfx/ui/wep_icons/wi_flak.png";
+    self.itemMuzzleFlash = te_muzzle_flk;
   #endif
   
   #ifndef CSQC
     self.burstRate = 1;
     self.w_isburst = FALSE;
-    self.model = "q3mdl/weapons/w_flk.md3";
     self.w_attack = data_ini_attack_flak_;
     self.think = default_weapon_think;
   #endif
@@ -56,7 +72,6 @@ void() data_ini_flak_cannon_={
 
 #ifndef CSQC
 void() data_ini_attack_flak_={
-  local float impactStyle;
   local vector cacheSpread;
   local vector direction;
   local vector src;
@@ -89,16 +104,13 @@ void() data_ini_attack_flak_={
     direction = dir + crandom()*self.spreadDefault_x*v_right + crandom()*self.spreadDefault_y*v_up;
     traceline (src, src + direction*self.w_range, FALSE, self.owner);
     if( (random() * 1) <= 0.3 ){
-      client_send_particle_rail( num_for_edict(self), particleeffectnum("TE_FLK_TRAIL"), src, src + direction*self.w_range );
+      client_send_weapon_flash( self.w_group, num_for_edict(self.owner), src + direction*self.w_range);
     }
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0){
-        impactStyle = IMPACT_SHIELD;
         t_damage_shield(trace_ent, self,self.owner, ((self.damageValue * damageBuff)* 0.9), trace_endpos, FALSE);
-        client_send_particle( particleeffectnum("TE_SHIELD_HIT_HIGH"), trace_endpos, '0 0 0', 1 );
       }
       else{
-        impactStyle = IMPACT_ARMOR;
         damage = (self.damageValue * damageBuff) * 0.8;
         if( (trace_ent.data_type == DATA_MECH) || (trace_ent.data_type == DATA_VEHC) ){
           if( trace_ent.vec_size == 1){
@@ -109,15 +121,10 @@ void() data_ini_attack_flak_={
           }
         }
         t_damage(trace_ent, self, self.owner, damage, trace_endpos, '0 0 0');
-        client_send_particle( particleeffectnum("TE_FLK_IMPACT"), trace_endpos, normalize(trace_endpos - self.origin) * 2, 1 );
       }
-    }
-    else{
-      client_send_particle( particleeffectnum("TE_FLK_DIRT"), trace_endpos, normalize(trace_endpos - self.origin) * 2, 1 );
     }
     totes = totes - 1;
   }
-  
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

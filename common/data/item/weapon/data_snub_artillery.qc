@@ -12,7 +12,19 @@ Overview:
 #ifndef CSQC
 void() data_ini_attack_snub_artillery_;
 #endif
-
+#ifdef CSQC
+void() te_muzzle_sfg={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  pointsound( startOrg, "sound/weapons/sfga_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+}
+#endif
 void() data_ini_snub_artillery_={
 
   self.data_idx = 11;  
@@ -39,10 +51,10 @@ void() data_ini_snub_artillery_={
     self.abbrev = "SFGA";
     self.description = "+ Minor parabolic arc. + Shot has Blast Radius on open ground.";
     self.icon = "gfx/ui/wep_icons/wi_sfg.png";
+    self.itemMuzzleFlash = te_muzzle_sfg;
   #endif 
   
   #ifndef CSQC
-    self.model = "q3mdl/weapons/w_sfga.md3";
     self.w_isburst = FALSE;
     self.burstRate = 0;
     self.w_attack = data_ini_attack_snub_artillery_;
@@ -63,6 +75,6 @@ void() data_ini_attack_snub_artillery_={
     FIRE_ENT.punchangle_y = -1 + (crandom() * -2);
   }
   
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, 0);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

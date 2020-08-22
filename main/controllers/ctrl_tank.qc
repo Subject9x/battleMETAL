@@ -128,6 +128,9 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
   if( changedflags & SENDFLAG_CRIT ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
+  if( changedflags & SENDFLAG_MOVE ){
+    WriteLong( MSG_ENTITY, self.attackFlag );
+  }
   return TRUE;
 };
 
@@ -167,6 +170,9 @@ float( entity targEnt, float changedflags ) ctrl_send_spg={
   }
   if( changedflags & SENDFLAG_CRIT ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
+  }
+  if( changedflags & SENDFLAG_MOVE ){
+    WriteLong( MSG_ENTITY, self.attackFlag );
   }
   return TRUE;
 };
@@ -212,6 +218,9 @@ float( entity targEnt, float changedflags ) ctrl_send_gev={
   if( changedflags & SENDFLAG_CRIT ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
-
+  
+  if( changedflags & SENDFLAG_MOVE ){
+    WriteLong( MSG_ENTITY, self.attackFlag );
+  }
   return TRUE;
 };

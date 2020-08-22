@@ -14,6 +14,23 @@ Overview:
 void() data_ini_attack_laser_;
 #endif
  
+#ifdef CSQC
+void() te_muzzle_las={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  pointsound( startOrg, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM);
+  if( vlen(endOrg - startOrg) >= 1500 ){
+    pointsound( endOrg, "sound/weapons/laser_fire.ogg", 0.5, ATTN_NORM);
+  }
+  pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, normalize(startOrg - endOrg) * 2, 1);
+  //trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, muzzleVel );
+};
+#endif
 void() data_ini_light_laser_={
   
   self.data_idx = 3;
@@ -40,12 +57,12 @@ void() data_ini_light_laser_={
     self.abbrev = "LAS";
     self.description = "+ Instant-impact weapon. + bonus damage  against <shields>.";
     self.icon = "gfx/ui/wep_icons/wi_las.png";
+    self.itemMuzzleFlash = te_muzzle_las;
   #endif
   
   #ifndef CSQC
     self.w_isburst = FALSE;
     self.burstRate = 0;
-    self.model = "q3mdl/weapons/w_laser.md3";
     self.think = default_weapon_think;
     self.w_attack = data_ini_attack_laser_;
   #endif
@@ -53,7 +70,6 @@ void() data_ini_light_laser_={
 
 #ifndef CSQC
 void() data_ini_attack_laser_={
-  local float impactStyle;
   local float damage;
   
   if( !ctrl_weapon_checkEnergy() ){
@@ -71,17 +87,12 @@ void() data_ini_attack_laser_={
   if( trace_ent.takedamage ){
     if( trace_ent.shield > 0 ){
       t_damage_shield(trace_ent, self,self.owner, self.damageValue * 1.85, trace_endpos, FALSE); 
-      impactStyle = IMPACT_SHIELD;
     }
     else{
       t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');  
-      impactStyle = IMPACT_ARMOR;
     }
   }
-  else{
-    impactStyle = IMPACT_DIRT;
-  }
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, FIRE_ENDPOINT, impactStyle );
-  
+  client_send_weapon_flash( self.w_group, num_for_edict(self.owner), FIRE_ENDPOINT);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

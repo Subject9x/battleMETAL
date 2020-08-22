@@ -47,7 +47,6 @@ void() data_ini_empty_weapon_={
     self.w_isburst = FALSE;
     self.burstRate = 1;
     self.wepFireOffset = self.wepFireOffsetCache = '0 0 0 ';
-    self.model = "q3mdl/testball.md3";
     self.scale = 0.01;
     self.alpha = 0.01;
   #endif

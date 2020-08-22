@@ -50,7 +50,6 @@ void() data_ini_equip_target_module_={
     self.item_remove_upgrade = target_module_remove_;
     self.think = SUB_Null;
     self.w_isburst = FALSE;
-    self.model = "q3mdl/weapons/e_atgm.md3";
   #endif
 
 };

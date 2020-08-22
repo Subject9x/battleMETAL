@@ -22,6 +22,19 @@ Overview:
 void() data_ini_attack_missile_swarm_;
 #endif
 
+#ifdef CSQC
+void() te_muzzle_swrm={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  pointsound( startOrg, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), startOrg, normalize( endOrg - startOrg ) * 3, 1);
+}
+#endif
 void() data_ini_missile_swarm_={
 
   self.data_idx = 14;  
@@ -48,6 +61,7 @@ void() data_ini_missile_swarm_={
     self.abbrev = "SWRM";
     self.description = "+ target <shields> reduce damage. + Burst-fire. + Shots will home on any target when fired. + Does NOT require <Target Lock>.";
     self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
+    self.itemMuzzleFlash = te_muzzle_swrm;
   #endif 
   
   #ifndef CSQC
@@ -70,8 +84,6 @@ void() data_ini_attack_missile_swarm_={
    
   self.owner.punchangle_x = -0.1 + crandom() * -0.1;
   self.owner.punchangle_y = -0.1 + crandom() * -0.1;
-
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + (v_forward * 1), FIRE_ENDPOINT, 0);
   
   ctrl_weapon_make_projectile( -1 );
   
@@ -84,5 +96,7 @@ void() data_ini_attack_missile_swarm_={
     self = hold;
   }
   NEWSHOT = world;
+  
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

@@ -266,6 +266,7 @@ void() ai_update={
     self.enemy = world;
     self.button0 = FALSE;
   }
+  self.attackFlag = 0;
   ai_ranged_attack();
   self.button0 = FALSE;
 };

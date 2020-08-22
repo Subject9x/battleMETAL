@@ -62,6 +62,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   local vector turretAng;
   local string newName;
   local entity parent;
+  local float prevAttackFlag;
   
   prevShield = self.shield;
   
@@ -126,11 +127,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     sendevent_turret_update( turretAng );
   }
   
-  //EVENT - UNIT MOVE
-  if( changeFlags & SENDFLAG_MOVE ){
-    sendevent_tank_move();
-  }
-  
   //EVENT - DEATH
   if( changeFlags & SENDFLAG_DEAD ){
     self.deadflag = ReadByte();
@@ -152,6 +148,14 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
     }
   }
+  
+  //EVENT - UNIT MOVE
+  if( changeFlags & SENDFLAG_MOVE ){
+    prevAttackFlag = self.attackFlag;
+    self.attackFlag = ReadLong();
+    sendevent_tank_move();
+  }
+  
   if( isNew ){      
     if( self.torsoCenter ){
       parent = self;
@@ -159,6 +163,9 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
         sendent_ini_interpolate();
       self = parent;
     }
+  }
+  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+    sendevent_handle_weaponfire();
   }
 };
 

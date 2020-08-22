@@ -14,6 +14,26 @@ Overview:
 void() data_ini_attack_missile_laserguide_;
 #endif
 
+#ifdef CSQC
+void() te_muzzle_lgm={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * 2.1), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  local vector ang;
+  ang = vectoangles(endOrg - startOrg);
+  pointsound( startOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * -0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
+  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * 0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
+  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_up * 1), normalize((startOrg + v_up * 2) - startOrg), 1);
+  
+  trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * 0.5), endOrg + (v_forward * 16) + (v_right * 0.5) );
+  trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * -0.5), endOrg + (v_forward * 16) + (v_right * -0.5) );
+};
+#endif
 void() data_ini_missile_laserguide_={
 
   self.data_idx = 9;
@@ -40,6 +60,7 @@ void() data_ini_missile_laserguide_={
     self.abbrev = "MLGD";
     self.description = "+ target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
     self.icon = "gfx/ui/wep_icons/wi_mlgd.png"; 
+    self.itemMuzzleFlash = te_muzzle_lgm;
   #endif 
   
   #ifndef CSQC
@@ -63,8 +84,6 @@ void() data_ini_attack_missile_laserguide_={
    
   ctrl_weapon_make_projectile( 0.01 );
   
-  makevectors(self.owner.v_angle);
-  lasOrg = FIRE_ORIGIN + (v_forward * 2.1);
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN, lasOrg, 0);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

@@ -13,6 +13,19 @@ Overview:
 void() data_ini_attack_rockets_;
 #endif
 
+#ifdef CSQC
+void() te_muzzle_rck={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  
+  pointsound( startOrg, "sound/weapons/rckt_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_MIS_MUZZLE"), startOrg, normalize(endOrg - startOrg), 1);
+}
+#endif
 void() data_ini_rockets_={
 
   self.data_idx = 4;  
@@ -39,6 +52,7 @@ void() data_ini_rockets_={
     self.abbrev = "RCK";
     self.description = "+ target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
     self.icon = "gfx/ui/wep_icons/wi_rck.png";
+    self.itemMuzzleFlash = te_muzzle_rck;
   #endif 
   
   #ifndef CSQC
@@ -63,7 +77,6 @@ void() data_ini_attack_rockets_={
 
   ctrl_weapon_make_projectile( 0.01 );
   
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + (v_forward * 1), FIRE_ENDPOINT, 0);
-  
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

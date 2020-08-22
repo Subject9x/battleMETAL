@@ -77,5 +77,6 @@ void() sendent_ini_interpolate;
 
 void( float prevShield ) sendevent_shield_explode;
 void( vector turretAngles ) sendevent_turret_update;
+void() sendevent_handle_weaponfire;
 
 void() sendevent_building_die;

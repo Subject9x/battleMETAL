@@ -51,6 +51,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   local float prevShield;
   local float pclEffect;
   local string newName;
+  local float prevAttackFlag;
   
   prevShield = self.shield;
   
@@ -124,8 +125,18 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     }
   }
   
+  //EVENT - UNIT MOVE
+  if( changeFlags & SENDFLAG_MOVE ){
+    prevAttackFlag = self.attackFlag;
+    self.attackFlag = ReadLong();
+  }
+  
   //Shield Explode event
   sendevent_shield_explode( prevShield );
+  
+  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+    sendevent_handle_weaponfire();
+  }
 };
 
 float() predraw_spg={

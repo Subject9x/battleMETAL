@@ -194,7 +194,7 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
     }
     macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
     setsize(self, '-1 -1 -1','1 1 1');
-    macro_set_model(self.model, 0, 0)
+    setmodel(self, "q3mdl/testball.md3");
     ofs = self.compOffset + self.compAltOffset;
     macro_set_offset(own, ofs)
     

@@ -13,7 +13,18 @@ Overview:
 #ifndef CSQC
 void() data_ini_attack_emp_;
 #endif
-
+#ifdef CSQC
+void() te_muzzle_emp={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z + v_up * 0.1;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  pointsound( startOrg, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_EMP_MUZZLE"), startOrg, normalize( startOrg - endOrg ) * 4, 1);
+};
+#endif
 void() data_ini_emp_={
 
   self.data_idx = 2;  
@@ -40,6 +51,7 @@ void() data_ini_emp_={
     self.abbrev = "EMP";
     self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + Small proximity detonation.";
     self.icon = "gfx/ui/wep_icons/wi_emp.png";
+    self.itemMuzzleFlash = te_muzzle_emp;
   #endif
   
   #ifndef CSQC
@@ -67,6 +79,6 @@ void() data_ini_attack_emp_={
   if( NEWSHOT ){
     NEWSHOT.w_firetime = time + 0.5;
   }
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, FIRE_ENDPOINT, 0);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

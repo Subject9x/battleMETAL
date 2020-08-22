@@ -14,6 +14,18 @@ Overview:
 void() data_ini_attack_ion_;
 #endif
 
+#ifdef CSQC
+void() te_muzzle_ion={
+  local vector startOrg;
+  local vector endOrg;
+  
+  startOrg = self.origin + v_forward * self.wepFireOffset_z + v_up * 0.1;
+  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  endOrg = trace_endpos;
+  pointsound( startOrg, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_ION_MUZZLE"), startOrg, normalize( endOrg - startOrg) * 4, 1);
+};
+#endif
 void() data_ini_ion_={
 
   self.data_idx = 13;  
@@ -40,6 +52,7 @@ void() data_ini_ion_={
     self.abbrev = "ION";
     self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + 3-Round burst.";
     self.icon = "gfx/ui/wep_icons/wi_ion.png";
+    self.itemMuzzleFlash = te_muzzle_ion;
   #endif
   
   #ifndef CSQC
@@ -67,6 +80,6 @@ void() data_ini_attack_ion_={
   if( NEWSHOT ){
     NEWSHOT.w_firetime = time + 0.5;
   }
-  client_send_muzzle_flash( self.data_idx, FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, FIRE_ENDPOINT, 0);
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

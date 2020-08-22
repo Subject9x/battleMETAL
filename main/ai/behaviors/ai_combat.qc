@@ -18,7 +18,7 @@ void() ai_ranged_attack={
   local entity wep_chain, this;
   local float fired;
   local vector diff;
-
+  
   self.ai_weaponEnergy = 0;
   this = self;
   self.v_angle = self.angles;
@@ -66,6 +66,9 @@ void() ai_ranged_attack={
         self.w_attack();
       self = this;
     }
+  }
+  if( fired > 0 ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   }
   self.currentWeaponGroup = 0;
 };
