@@ -117,15 +117,6 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     self.damageValue = ReadByte();
     self.origin2 = self.origin;
     self.origin1 = self.origin;
-    if( isNew ){
-      self.solid = SOLID_NOT;
-      self.alpha = 1;
-      self.scale = 1;
-      data_sync_new_projectile(self.data_idx);
-      setmodel(self, self.model);
-      self.nextthink = time + 0.1;
-      self.predraw = predraw_missile;
-    }
   }
   
   if( changeFlags & SENDFLAG_MOVE ){
@@ -158,6 +149,15 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     }
   }
   
+  if( isNew ){
+    self.solid = SOLID_NOT;
+    self.alpha = 1;
+    self.scale = 1;
+    data_sync_new_projectile(self.data_idx);
+    setmodel(self, self.model);
+    self.nextthink = time + 0.1;
+    self.predraw = predraw_missile;
+  }
   self.angles = vectoangles(self.velocity);
 };
 

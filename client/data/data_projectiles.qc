@@ -64,7 +64,7 @@ float() predraw_missile={
   if( self.predraw_projectile ){
     self.predraw_projectile();
   }
-  return TRUE;
+  return FALSE;
 };
 
 float() predraw_plasma={
@@ -76,7 +76,23 @@ float() predraw_plasma={
     self.scale = self.scale + 0.075;
     self.alpha = self.alpha - 0.025;
   }
-  return TRUE;
+  return FALSE;
+};
+
+float() predraw_marh={
+  local entity cluster;
+  cluster = self.w_slot;
+  makevectors(self.angles);
+  while( cluster != world ){
+    cluster.origin = self.origin + (v_forward * cluster.compOffset_z) + (v_right * cluster.compOffset_x) + (v_up * cluster.compOffset_y);
+    if(cluster.traileffectnum != 0 && cluster.origin2 ){
+      trailparticles(cluster, self.traileffectnum, cluster.origin2, cluster.origin);
+    }
+    cluster.origin2 = cluster.origin;
+    cluster.scale = 0.9;
+    cluster = cluster.w_slot;
+  }
+  return FALSE;
 };
 
 

@@ -24,16 +24,12 @@ void() te_muzzle_latc={
   traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
   endOrg = trace_endpos;
   
-  norm = normalize(endOrg - startOrg);
-  ang = vectoangles(endOrg - startOrg);
-  makevectors(ang);
+  norm = normalize(startOrg - endOrg);
   pointsound( startOrg, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM);
   if( vlen(endOrg - startOrg) >= 1500 ){
     pointsound( endOrg, "sound/weapons/atc_fire.ogg", 0.5, ATTN_NORM);
   }
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), startOrg, norm * 4, 1);
-  pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg, norm * 1400, 1);
-  
 };
 #endif
 void() data_ini_light_atc_={
@@ -89,7 +85,7 @@ void() data_ini_attack_latc_={
         t_damage_shield(trace_ent, self,self.owner, self.damageValue, trace_endpos, FALSE); 
       }
       else{
-        t_damage(trace_ent, self, FIRE_ENT, self.damageValue * 1.75, FIRE_ENDPOINT, '0 0 0');
+        t_damage(trace_ent, self, FIRE_ENT, self.damageValue * 1.5, FIRE_ENDPOINT, '0 0 0');
       } 
     }
   } 

@@ -131,7 +131,6 @@ void( float mech_id ) sendevent_player_mech={
   
   switch(mech_id){
     case UID_MECH_balaket:
-      //data_ini_balaket_offsets();
       data_ini_balaket_();
       break;
     case UID_MECH_matok:

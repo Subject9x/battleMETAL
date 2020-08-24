@@ -118,7 +118,7 @@ void() player_makeMech={
   self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
   self.armRight.effects = self.armRight.effects | EF_NODRAW;
   //self.legs.exteriormodeltoclient = self;
-  self.legs.customizeentityforclient = customize_part_for_client;
+  //self.legs.customizeentityforclient = customize_part_for_client;
   
   self.hud_mode = cvar("cl_hud_sway");
   util_updateViewBob();

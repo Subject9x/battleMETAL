@@ -30,13 +30,13 @@ void() data_ini_missile_activeradar_={
 
   self.data_idx = 10;  
   
-  self.w_clipsize = 4;  //3
-  self.reloadRate = 0.18;
-  self.reloadMax = 5;
+  self.w_clipsize = 1;    //4
+  self.reloadRate = 5; //0.18
+  self.reloadMax = 5;     //5
   self.energyRate = 0;
   
-  self.w_range = 4000;  //3000
-  self.damageValue = 33;
+  self.w_range = 4000;
+  self.damageValue = 99;  //33
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;
@@ -58,7 +58,6 @@ void() data_ini_missile_activeradar_={
   #ifndef CSQC
     self.w_isburst = FALSE;
     self.burstRate = 1;
-    self.model = "q3mdl/weapons/w_arh.md3";
     self.w_attack = data_ini_attack_missile_activeradar_;
     self.think = default_weapon_think;
     self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
@@ -89,7 +88,7 @@ void() data_ini_attack_missile_activeradar_={
   }
   
   if( canFire ){
-    ctrl_weapon_updateAmmo( TRUE );
+    ctrl_weapon_updateAmmo( FALSE );
   
     ctrl_weapon_fireOffset();
     

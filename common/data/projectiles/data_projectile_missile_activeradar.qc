@@ -27,24 +27,65 @@ void() projectile_marh_expl={
   if( self.impactType == IMPACT_SHIELD ){
     hitColor = '0 0.2 0.67';
     hitBloom = -0.01;
-    hitScale = 0.5;
+    hitScale = 0.33;
     pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
   }
   else{
     hitColor = '0.969 0.996 0.18';
     hitBloom = 0.01;
-    hitScale = 1;
+    hitScale = 0.66;
     pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
   }
   te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
+  
+  local entity cluster;
+  local entity rem;
+  
+  cluster = self.w_slot;
+  while( cluster != world ){
+    cluster.traileffectnum = 0;
+    te_missile_explode( rem.origin, hitScale, hitColor, hitBloom ); 
+    rem = cluster;
+    cluster = rem.w_slot;
+    remove(rem);
+  }
+  
+};
+
+/*
+  clusters of missiles are actually CSQC ents, and the SSQC handles shotgun-style damage pattern.
+*/
+void() projectile_marh_multi={
+  local entity newMis;
+  local entity chainPtr;
+  local float misTotal;
+  
+  misTotal = 5;
+  chainPtr = self;
+  while( misTotal > -1 ){
+    newMis = spawn();
+    newMis.drawmask = MASK_NORMAL;
+    newMis.model = self.model;
+    setmodel(newMis, newMis.model);
+    newMis.compOffset = '0 0 0';
+    newMis.compOffset_x = crandom() * 10;
+    newMis.compOffset_y = crandom() * 10;
+    newMis.compOffset_z = crandom() * 5;
+    newMis.angles = self.angles;
+    newMis.traileffectnum = self.traileffectnum;
+    chainPtr.w_slot = newMis;
+    newMis.owner = self;
+    chainPtr = newMis;
+    misTotal = misTotal - 1;
+  }
 };
 #endif
 
 void() data_projectile_ini_missile_active_radar_={
   self.classname = "missile";
-  self.data_velocity = 1800;  //1200
-  self.data_lifetime = 1.75;   //3
-  self.compOffset = '0 0 0';   
+  self.data_velocity = 1800;
+  self.data_lifetime = 1.75;
+  self.compOffset = '0 0 0';
   
   #ifdef CSQC
     //cosmetics
@@ -54,6 +95,8 @@ void() data_projectile_ini_missile_active_radar_={
     self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
     self.pcl_explode = projectile_marh_expl;
     self.scale = 1.25;
+    self.predraw_projectile = predraw_marh;
+    projectile_marh_multi();
   #endif
   
   #ifndef CSQC
@@ -109,7 +152,7 @@ void() data_projectile_missile_activeradar_think={
   }
   
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
-  self.nextthink = time + 0.05;
+  self.nextthink = time + 0.1;
 };
 
 void() data_projectile_missile_activeradar_delay={

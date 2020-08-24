@@ -446,6 +446,7 @@ void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_latc={
   ang = vectoangles(muzzleVel - muzzleOrg);
   makevectors(ang);
   
+  pointparticles( particleeffectnum("TE_ATC_TRACER"), muzzleOrg, norm * 1400, 1);
   switch(impactStyle){
     case IMPACT_SHIELD:
       pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), muzzleVel, normalize(muzzleVel - muzzleOrg)* -2, random() * 2);
@@ -455,7 +456,7 @@ void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_latc={
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), muzzleVel + v_forward * -3, norm * 4, 3);
       break;
     case IMPACT_DIRT:
-      pointparticles( particleeffectnum("TE_ATC_DIRT"), muzzleVel + (v_up *1), normalize( (muzzleVel + (v_up *1)) - muzzleVel ) * 20, 1);
+      pointparticles( particleeffectnum("TE_ATC_DIRT"), muzzleVel + (v_up *1), normalize( (muzzleVel + (v_up *1)) - muzzleOrg ) * 20, 1);
       break;
     default:
       return;
