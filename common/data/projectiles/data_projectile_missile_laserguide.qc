@@ -57,7 +57,8 @@ void() data_projectile_ini_missile_laserguide_={
   
   #ifndef CSQC
     self.touch = data_projectile_missile_laserguide_touch;
-    self.think = data_projectile_missile_laserguide_think;  
+    self.think = data_projectile_missile_laserguide_think;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 #ifndef CSQC

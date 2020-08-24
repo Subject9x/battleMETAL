@@ -46,6 +46,7 @@ void() data_projectile_ini_ion_={
   #ifndef CSQC
     self.think = data_projectile_ion_think_;
     self.touch = data_projectile_ion_touch;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 #ifndef CSQC

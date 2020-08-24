@@ -58,6 +58,7 @@ void() data_projectile_ini_snub_artillery_={
     self.gravity = 0.03;
     self.movetype = MOVETYPE_TOSS;
     self.w_range = DAT_PRJ_SFGA_RAD;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 

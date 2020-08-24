@@ -6,7 +6,7 @@ Overview: definition file for the client -> server command layer
 */
 
 void(float totalWeps, string wepList) cl_setweapon;
-void(float sz, float id) cl_setmech;
+void(float id) cl_setmech;
 void() cl_spawnmech;
 void(float group1, float group2, float group3, float group4 ) cl_setweapongroup;
 void(float nav_id) cl_setspawnpoint;

@@ -67,6 +67,7 @@ void() mechSelectListener={
       if( !(LAUNCH_VALIDATION & VALID_MECH) ){
         LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_MECH;
       }
+      cl_setmech(found);
     }
   }
 };

@@ -77,6 +77,7 @@ void() navSelectListener={
       if( !(LAUNCH_VALIDATION & VALID_NODE) ){
         LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
     }
     else{
       LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
@@ -119,6 +120,7 @@ void() navListSelectListener={
     if( !(LAUNCH_VALIDATION & VALID_NODE) ){
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
     }
+    cl_setspawnpoint( CLIENT_MENU_nav_pnt );
   }
   else{
     if( (LAUNCH_VALIDATION & VALID_NODE) ){

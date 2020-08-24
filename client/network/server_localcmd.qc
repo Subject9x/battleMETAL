@@ -17,9 +17,9 @@ void(float totalWeps, string wepList) cl_setweapon={
   localcmd(cmd);
 };
 
-void(float sz, float id) cl_setmech={
+void(float id) cl_setmech={
   local string cmd;
-  cmd = strcat("cmd m sm ", ftos(sz)," ", ftos(id), " ");
+  cmd = strcat("cmd m sm ", ftos(id), " ");
   cmd = strcat(cmd, ftos(cvar("cl_tint_r")), " ", ftos(cvar("cl_tint_g")));
   cmd = strcat(cmd,  " ", ftos(cvar("cl_tint_b")), "\n");
   localcmd(cmd);

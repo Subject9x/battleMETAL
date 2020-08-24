@@ -100,7 +100,8 @@ void() data_projectile_ini_missile_active_radar_={
   #endif
   
   #ifndef CSQC
-    self.think = data_projectile_missile_activeradar_delay;  
+    self.think = data_projectile_missile_activeradar_delay;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 #ifndef CSQC

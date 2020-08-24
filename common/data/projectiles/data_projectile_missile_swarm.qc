@@ -59,6 +59,7 @@ void() data_projectile_ini_missile_swarm_={
     self.touch = data_projectile_missile_swarm_touch;      
     self.gravity = 0.04;
     self.movetype = MOVETYPE_TOSS;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 #ifndef CSQC

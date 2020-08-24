@@ -47,6 +47,7 @@ void() data_projectile_ini_quantum_bit_={
   #ifndef CSQC
     self.touch = data_projectile_ini_quantum_bit_touch_;
     self.think = data_projectile_quantum_bit_th;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 

@@ -55,6 +55,7 @@ void() data_projectile_ini_rocket_={
   #ifndef CSQC
     self.touch = data_prj_mis_touch;
     self.think = data_projectile_rocket_think_;  
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 

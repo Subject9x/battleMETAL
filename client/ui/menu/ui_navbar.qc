@@ -184,6 +184,10 @@ void( vector ofs ) ui_navbutton_deploy_draw={
 void() ui_navbutton_deploy_click={
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
     data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
+    cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
+  }
+  if( CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE ){
+    cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
   }
   
   if( CLIENT_MENU_deploy == world ){
@@ -261,11 +265,9 @@ void() ui_navbutton_launch_click={
   local float turboTotalPerc;
   if( servertime > MENU_respawn_cool ){
     if( (LAUNCH_VALIDATION &  VALID_NODE) ){      
-      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
       
       ui_data_load_hud( MECH_DATA_ID );
-      cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
       
       bit = 1;
       totalHardpoints = 1;
@@ -341,7 +343,6 @@ void() ui_navbutton_launch_click={
         CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 | bit;
       }
       
-      cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
       cl_spawnmech();
       client_event_mission_name( MSN_DISP );
       CLIENT_spawn_time = servertime; //mark for when palyer dies.
