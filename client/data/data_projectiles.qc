@@ -85,11 +85,11 @@ float() predraw_marh={
   makevectors(self.angles);
   while( cluster != world ){
     cluster.origin = self.origin + (v_forward * cluster.compOffset_z) + (v_right * cluster.compOffset_x) + (v_up * cluster.compOffset_y);
-    if(cluster.traileffectnum != 0 && cluster.origin2 ){
-      trailparticles(cluster, self.traileffectnum, cluster.origin2, cluster.origin);
+    if( cluster.traileffectnum != 0 && cluster.origin2 != '0 0 0' ){
+      trailparticles(cluster, cluster.traileffectnum, cluster.origin2, cluster.origin);
     }
     cluster.origin2 = cluster.origin;
-    cluster.scale = 0.9;
+    cluster.scale = 0.95;
     cluster = cluster.w_slot;
   }
   return FALSE;

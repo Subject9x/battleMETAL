@@ -15,5 +15,3 @@ void() player_unmakeMech;
 void() player_setup_hudconsole;
 
 float() customize_part_for_client;
-
-void(entity wepThing, entity hudWep ) player_set_hud_weapon;

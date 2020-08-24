@@ -258,7 +258,8 @@ float EF_DELTA = 8388608;
 //fields:
 .entity exteriormodeltoclient;
 //description:
-//the entity is visible to all clients with one exception: if the specified client is using first person view (not using chase_active) the entity will not be shown.  Also if tag attachments are supported any entities attached to the player entity will not be drawn in first person.
+//the entity is visible to all clients with one exception: if the specified client is using first person view (not using chase_active) 
+//the entity will not be shown.  Also if tag attachments are supported any entities attached to the player entity will not be drawn in first person.
 
 //DP_ENT_GLOW
 //idea: LordHavoc

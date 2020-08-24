@@ -49,18 +49,20 @@ void() player_setup_hudconsole={
   self.hud_ent = newmis;
 };
 
-float() customize_part_for_client ={
+float() customize_part_for_client={
   local vector chunkOfs;
   if( self.owner != other ){
     return FALSE;
   }
   makevectors(other.angles);
-  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward *(self.compOffset_z - fabs(other.cockpit.compOffset_z)));
+  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - fabs(other.cockpit.compOffset_z * 2.5)));
   setorigin(self, chunkOfs);
+  
   return TRUE;
 };
 
 void() player_makeMech={
+  local entity wep, hudWepStart;
   
   self.data_idx = self.nextVecChoice;
   
@@ -91,7 +93,6 @@ void() player_makeMech={
  
   player_setup_hudconsole();
   //configure player mech bits visibility
-  local entity wep, hudWepStart;
   hudWepStart = self;
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
     switch(cvar("skill")){
@@ -118,7 +119,7 @@ void() player_makeMech={
   self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
   self.armRight.effects = self.armRight.effects | EF_NODRAW;
   //self.legs.exteriormodeltoclient = self;
-  //self.legs.customizeentityforclient = customize_part_for_client;
+  self.legs.customizeentityforclient = customize_part_for_client;
   
   self.hud_mode = cvar("cl_hud_sway");
   util_updateViewBob();
@@ -131,7 +132,6 @@ void() player_makeMech={
 };
 
 void() player_unmakeMech={
-  //self.clientData.effects = self.clientData.effects - ( self.clientData.effects & EF_NODEPTHTEST);
   self.viewzoom = 1;
   self.nextVecChoice = 0;
   self.vec_size = 0;
