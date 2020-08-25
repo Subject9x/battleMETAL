@@ -29,6 +29,7 @@ data/headers/local_savefile.qh
 
 util/headers/particle_sys.qh
 model/models_buildings.qh
+model/mech_legs.qh
 
 network/headers/client_globals.qh
 network/headers/server_localcmd.qh
@@ -160,7 +161,6 @@ ui/hud/hud_tacmap.qc
 ui/hud/hud_system_sound.qc
 ui/hud/hud_system_event.qc
 
-
 //Client / Server CMD===
   network/server_localcmd.qc
   network/receive_entities.qc
@@ -198,6 +198,7 @@ ui/hud/hud_system_event.qc
   model/hangar_medium.qc
   model/guard_tower.qc
   model/radar_post.qc
+  model/mech_legs.qc
 //=======================
 
 input_events.qc

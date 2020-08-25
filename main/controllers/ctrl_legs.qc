@@ -10,8 +10,11 @@ Overview:
 */
 
 void() ctrl_updateLegs={
+  local float prevDir;
   local vector adj, nextDirs;
   local float playerDir, velDir, left, right;
+  
+  prevDir == self.angles_y;
   if( self.deadflag == DEAD_NO ){
     if((self.owner.movement_x == 0) && (self.owner.movement_y == 0)){
       self.movetype = MOVETYPE_NONE;
@@ -20,7 +23,6 @@ void() ctrl_updateLegs={
       setorigin(self, adj);
       if( self.ai_dir != 0 ){
         self.ai_dir = 0;  // animation switch -> 'stand'
-        leg_stand1();
         return;
       }
     }
@@ -39,18 +41,19 @@ void() ctrl_updateLegs={
         nextDirs_y = nextDirs_y * -1;
         if( self.ai_dir != 1 ){
           self.ai_dir = 1; // animation switch -> 'forward'
-          leg_walk5();
         }
       }
       else{
         nextDirs_y = anglemod( nextDirs_y + 180) * -1;
         if( self.ai_dir != -1 ){
           self.ai_dir = -1; // animation switch -> 'reverse'
-          leg_back4();
         }
       }
       self.angles =  nextDirs;
       self.v_angle = self.angles;
+    }
+    if( self.angles_y != prevDir ){
+      self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_IMPACT;
     }
   }
 };

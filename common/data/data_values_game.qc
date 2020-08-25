@@ -169,11 +169,13 @@ float PLAYER_POWERUP_END    = 11;  // Client mech has completed powerup sequence
 float PLAYER_ACTIVE         = 12;  // Client is controlling mech, and may move/fire freely.
 float PLAYER_SPRINT_ON      = 13;
 
-float MOVE_NORM             = 0;  //normal walking without +button8
-float MOVE_SPRINT           = 1;  // Client has engaged the 'sprint' 
-float MOVE_RAM_ON           = 2;
-float MOVE_RAM_CHARGE       = 3;
-float MOVE_RAM_COOL         = 4;
+//float MOVE_STAND            = 0;  //  declared in AI API
+float MOVE_DEAD             = 1;  //
+float MOVE_NORM             = 2;  //normal walking without +button8
+float MOVE_SPRINT           = 3;  // Client has engaged the 'sprint' 
+float MOVE_RAM_ON           = 4;
+float MOVE_RAM_CHARGE       = 5;
+float MOVE_RAM_COOL         = 6;
 
 //============================
 //         DATA_TYPE           

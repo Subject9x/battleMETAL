@@ -101,6 +101,17 @@ float() player_predraw={
       self.armLeft.angles_x = self.angles_x * -1;
       player_part_predaw(self.armRight);
       self.armRight.angles_x = self.angles_x * -1;
+      player_part_predaw(self.legs);
+      
+      if( time > self.legs.nextthink){
+        wep = self;
+        self = self.legs;
+          if(self.think){
+            self.think();
+          }
+        self = wep;
+      }
+      predraw_legs();
       
       if( !(self.damageValue & M_LEGS) ){
         offset = self.origin + (v_forward * self.leg_z) + (v_right * self.leg_x) + (v_up * self.leg_y);
@@ -148,12 +159,14 @@ void( float mech_id ) sendevent_player_mech={
   setmodel(self.torsoRight, self.torsoRight.model);
   setmodel(self.armLeft, self.armLeft.model);
   setmodel(self.armRight, self.armRight.model);
+  setmodel(self.legs, self.legs.model);
   
   self.torsoCenter.colormod = self.colormod;
   self.torsoLeft.colormod = self.colormod;
   self.torsoRight.colormod = self.colormod;
   self.armLeft.colormod = self.colormod;
   self.armRight.colormod = self.colormod;
+  self.legs.colormod = self.colormod;
   
   this = self;
   weps = self.w_slot;
@@ -195,6 +208,7 @@ void() sendevent_handle_player_death={
   remove(self.armLeft);
   remove(self.armRight);
   remove(self.cockpit);
+  remove(self.legs);
   
   wep = self.w_slot;
   while( (wep != world) ){
@@ -220,6 +234,33 @@ void( float prevFac, float newFaction ) sendevent_handle_faction={
   }
   else if( newFaction == FACTION_MILITAR ){
     TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+  }
+};
+
+/*
+  HANDLE EVENT - player has changed factions during a team game.
+*/
+void() sendevent_handle_moveChange={
+  if(self.legs!=world){
+    self.legs.nextthink = time + 0.1;
+    switch(self.moveState){
+      case 0:
+        self.legs.think = leg_stand1;
+        break;
+      case MOVE_NORM:
+        self.legs.think = leg_walk1;
+        break;
+      case MOVE_SPRINT:
+        self.legs.think = leg_run1;
+        break;
+      case MOVE_RAM_ON:
+        self.legs.think = leg_run1;
+        break;
+      default:
+        //dead
+        self.legs.think = leg_die1;
+        break;
+    }
   }
 };
 
@@ -296,6 +337,7 @@ void( float criticalBits ) sendevent_player_burn={
 };
 
 void( float isNew, float changeFlags) sendent_handle_player={
+  local vector prevOrg;
   local float prevShield;
   local float prevCrit;
   local float prevType;
@@ -304,6 +346,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevFaction;
   local float prevDeadFlag;
   local float prevAttackFlag;
+  local float prevMoveState;
   
   prevShield = self.shield;
   prevCrit = self.damageValue;
@@ -311,18 +354,18 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevFaction = self.faction;
   prevDeadFlag = self.deadflag;
   prevAttackFlag = self.attackFlag;
+  prevMoveState = self.moveState;
+  prevOrg = self.origin;
   
   self.ping = stof( getplayerkeyvalue(self.entId - 1, "ping") );
   self.kills = stof( getplayerkeyvalue(self.entId - 1, "frags") );
   self.netname = getplayerkeyvalue(self.entId - 1, "name");
+  
   /*
     EVENT - per-frame update
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
-    
-    self.flags = ReadLong();
-    self.radar_range = ReadLong();
     self.stat_rdr_mode = ReadByte();
     self.shield = ReadShort();
     
@@ -330,15 +373,14 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
     self.attackFlag = ReadLong();
+    self.moveState = ReadByte();
   }
   
   /*
-    EVENT - player has fired weapons
+    EVENT - Track player move state?
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    if(self.attackFlag != FALSE){
-      
-    }
+    self.legDir = ReadShort();
   }
   
   /*
@@ -475,5 +517,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
+  }
+  
+  if( prevMoveState != self.moveState ){
+    sendevent_handle_moveChange();
   }
 };

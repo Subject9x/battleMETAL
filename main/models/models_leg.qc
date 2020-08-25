@@ -11,13 +11,6 @@ Overview:
 */
 
 /*
-  Leg animation state controller.
-  uses FrameStart / end to track between animation groups
-*/
-void( entity unitLegs ) anim_leg_control={
-  //TODO?
-};
-/*
   Client Leg Animations - Stand
 */
 void() leg_stand1= [$l_stand1, leg_stand1]{

@@ -42,6 +42,7 @@ Overview:
 
 .float ramUpMax;
 .float ramCooldown;
+.float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
 
 #ifndef CSQC
 .float missionStatus; //moved to player level for network
@@ -88,8 +89,6 @@ Overview:
 .float laser_sight_timer;
 .vector laser_sight_org;
 
-
-.float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
 .vector ramAngle;
 .float ramCharge;
 .float ramCool;

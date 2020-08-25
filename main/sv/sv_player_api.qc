@@ -131,10 +131,16 @@ void() PlayerPostThink = {
     PlayerPostThink_powerup();
     return;
   }
-    
-  if( self.impulse ){
-		ImpulseCommands ();
+  if( (self.movement_x || self.movement_y) ){
+    self.moveState = MOVE_NORM;
   }
+  else{
+    self.moveState = MOVE_STAND;
+  }
+  if( self.impulse ){
+    ImpulseCommands ();
+  }
+  
   ButtonCommands();
   
   if(self.data_type != DATA_POBS){ 

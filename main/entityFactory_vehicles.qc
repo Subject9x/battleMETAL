@@ -533,7 +533,7 @@ void() build_mech_legs={
     if( (this.flags & FL_CLIENT) ){
       self.aiment = this;
     }
-    macro_set_model(self.model, this.skin, 0)
+    setmodel(self, "q3mdl/testball.md3");
     setsize(self, '-1 -1 -1','1 1 1');
     macro_set_offset(this, self.compOffset)
     self.owner = this;
@@ -545,15 +545,12 @@ void() build_mech_legs={
     self.laser_sight_org = '0 0 0';
     self.laser_sight_timer = time + 0.5; 
     self.w_firerate = 0; //used to track data_speed_accel changes
-    self.th_stand = leg_stand1;
-    self.th_walk = leg_walk1;
     self.th_die = ctrl_dieLegs;
     //we pack the unit's original speed values here, to allow us to restore them if the unit repairs its legs
     self.data_speed_forward = this.data_speed_forward;
     self.data_speed_backward = this.data_speed_backward;
     self.data_speed_strafe = this.data_speed_strafe;
     self.data_speed_accel = this.data_speed_accel;  
-    leg_stand1();
     self.colormod = this.colormod;
   self = this;
 };

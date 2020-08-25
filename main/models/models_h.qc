@@ -31,8 +31,6 @@ Overview:
 float FRAMEGROUP_LEG_WALK = 1;
 float FRAMEGROUP_LEG_RUN  = 2;
 
-void( entity unitLegs ) anim_leg_control;
-
 .float legFrameState;
 .float legFramePrev;
 

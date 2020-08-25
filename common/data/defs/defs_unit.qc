@@ -76,6 +76,7 @@ Overview:
 #ifdef CSQC
 .float pitchMin;
 .float pitchMax;
+.float legDir;
 
 /*.vector torsoCenterOffset;
 .vector torsoCenterAngles;

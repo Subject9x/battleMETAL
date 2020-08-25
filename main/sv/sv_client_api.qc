@@ -582,8 +582,6 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.view_ofs_y );
     WriteCoord( MSG_ENTITY, self.view_ofs_z );
     
-    WriteLong( MSG_ENTITY, player.flags );
-    WriteLong( MSG_ENTITY, self.radar_range );
     WriteByte( MSG_ENTITY, self.stat_rdr_mode );
     WriteShort( MSG_ENTITY, self.stat_client_shield );
     
@@ -591,15 +589,14 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteAngle( MSG_ENTITY, player.v_angle_y);
     WriteAngle( MSG_ENTITY, player.v_angle_z);
     WriteLong( MSG_ENTITY, player.attackFlag);
+    WriteByte( MSG_ENTITY, player.moveState );
   }
   
   /*
     EVENT - player has fired weapons
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    if(player.attackFlag != FALSE){
-      
-    }
+    WriteShort( MSG_ENTITY, player.legs.angles_y);
   }
   
   /*
