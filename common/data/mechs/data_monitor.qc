@@ -44,6 +44,10 @@ void() data_ini_monitor_={
   self.data_speed_accel = 2;
   self.ramUpMax = 2;
   self.ramCooldown = 2;
+#ifdef CSQC
+  self.legMoveRate = 8;
+  self.legRunRate = 12;
+#endif
 #ifndef CSQC
   self.yaw_speed = 2;    // AI-only 
   self.turret_yaw_speed = 3;// AI-only

@@ -151,14 +151,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );  
-  if( isNew ){      
-    if( self.torsoCenter ){
-      this = self;
-      self = this.torsoCenter;
-        sendent_ini_interpolate();
-      self = this;
-    }
-  }
+  
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
   }

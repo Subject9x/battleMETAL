@@ -597,6 +597,7 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
     WriteShort( MSG_ENTITY, player.legs.angles_y);
+    WriteShort( MSG_ENTITY, player.legs.ai_dir);
   }
   
   /*

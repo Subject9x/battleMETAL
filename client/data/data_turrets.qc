@@ -35,9 +35,8 @@ void() data_turret_light={
   data_ini_light_turret_();
   
   setmodel(self, self.model);
-
   
-  self.torsoCenter.drawmask = MASK_NORMAL;
+  self.torsoCenter.drawmask = MASK_ENGINE;
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
@@ -53,7 +52,7 @@ void() data_turret_heavy={
   
   setmodel(self, self.model);
 
-  self.torsoCenter.drawmask = MASK_NORMAL;
+  self.torsoCenter.drawmask = MASK_ENGINE;
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
@@ -69,7 +68,7 @@ void() data_turret_missile={
   
   setmodel(self, self.model);
 
-  self.torsoCenter.drawmask = MASK_NORMAL;
+  self.torsoCenter.drawmask = MASK_ENGINE;
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);

@@ -41,9 +41,13 @@ void() data_ini_matok_={
   self.data_speed_forward = 155;  //150
   self.data_speed_strafe = 155; //100
   self.data_speed_backward = 80;  //90
-  self.data_speed_accel = 1.67; //1.5
+  self.data_speed_accel = 1.45; //1.5
   self.ramUpMax = 2;
   self.ramCooldown = 3;
+#ifdef CSQC
+  self.legMoveRate = 12;
+  self.legRunRate = 18;
+#endif
 #ifndef CSQC
   self.yaw_speed = 3;    // AI-only 
   self.turret_yaw_speed = 3.75;// AI-only

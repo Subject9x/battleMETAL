@@ -99,6 +99,8 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
         }
         self.netname = strzone(newName);
       }
+      self.think = sendent_empty_think;
+      self.nextthink = time + 0.05;
       self.deadflag = DEAD_NO;
       self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.data_type = DATA_VEHC;
@@ -156,14 +158,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     sendevent_tank_move();
   }
   
-  if( isNew ){      
-    if( self.torsoCenter ){
-      parent = self;
-      self = parent.torsoCenter;
-        sendent_ini_interpolate();
-      self = parent;
-    }
-  }
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
   }
@@ -184,12 +178,6 @@ void() interpolate_tank={
   if( self.torsoCenter ){
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      addentity(self);
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
     self = parent;
   }
   
@@ -209,17 +197,9 @@ void() interpolate_tank={
         self.angles = parent.torsoCenter.angles + self.w_adj_ang;
       }
       self.origin = saved;
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
     wepn = wepn.w_slot;
   }
-  self.think = SUB_Null;
-  self.nextthink = time + 0.01;
 };
 
 float() predraw_tank={

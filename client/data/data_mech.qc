@@ -37,6 +37,9 @@ void( float dataID ) data_sync_new_mech_ai={
   if( self.armRight ){
     data_mech_setup_part( self.armRight );
   }
+  if( self.legs ){
+    data_mech_setup_part( self.legs );
+  }
 
 };
 
@@ -46,5 +49,5 @@ void( entity setPart ) data_mech_setup_part={
   setPart.origin = self.origin + (v_right * setPart.compOffset_x) + (v_forward * setPart.compOffset_z) + (v_up * setPart.compOffset_y);
   setPart.angles = self.angles;
   setorigin(setPart, setPart.origin);
-  setPart.drawmask = MASK_NORMAL;
+  setPart.drawmask = MASK_ENGINE;
 };

@@ -71,16 +71,15 @@ void(entity piece) player_part_predaw={
   }
   
   piece.origin = offset;
+  
   piece.angles = self.angles;
   piece.angles_x = 0;
-  if( (self.damageValue & piece.partTypeId) ){
-    piece.alpha = 0;
-    piece.drawmask = MASK_NORMAL;
-  }
-  else{
-    piece.alpha = 1;
-    piece.drawmask = MASK_ENGINE;
-  }
+};
+
+//merely exists to satisfy interpolation
+void() player_think={
+  self.think = player_think;
+  self.nextthink = time + 0.1;
 };
 
 float() player_predraw={
@@ -89,6 +88,22 @@ float() player_predraw={
   local entity wep;
   
   if( self.data_type == DATA_MECH ){
+  
+    if (self.nextthink != self.frame1time){
+      self.frame2time = self.frame1time;
+      self.frame1time = self.nextthink;
+      self.frame2 = self.frame1;
+      self.frame1 = self.frame;
+      self.origin2 = self.origin1;
+      self.origin1 = self.origin;
+      self.angle2 = self.angle1;
+      self.angle1 = self.angles_y;
+    }
+    self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
+    self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+  
+    self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+  
     if( self.deadflag == DEAD_NO ){
       entAng = self.angles;
       entAng_x = 0;
@@ -243,24 +258,6 @@ void( float prevFac, float newFaction ) sendevent_handle_faction={
 void() sendevent_handle_moveChange={
   if(self.legs!=world){
     self.legs.nextthink = time + 0.1;
-    switch(self.moveState){
-      case 0:
-        self.legs.think = leg_stand1;
-        break;
-      case MOVE_NORM:
-        self.legs.think = leg_walk1;
-        break;
-      case MOVE_SPRINT:
-        self.legs.think = leg_run1;
-        break;
-      case MOVE_RAM_ON:
-        self.legs.think = leg_run1;
-        break;
-      default:
-        //dead
-        self.legs.think = leg_die1;
-        break;
-    }
   }
 };
 
@@ -275,18 +272,22 @@ void( float criticalBits ) sendevent_player_critical={
   if( (criticalBits & M_TOR_LEFT) ){
     offset = self.origin + (v_forward * self.leftTorso_z) + (v_right * self.leftTorso_x) + (v_up * self.leftTorso_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    self.torsoLeft.drawmask = MASK_NORMAL;
   }
   if( (criticalBits & M_TOR_RIGHT) ){
     offset = self.origin + (v_forward * self.rightTorso_z) + (v_right * self.rightTorso_x) + (v_up * self.rightTorso_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    self.torsoRight.drawmask = MASK_NORMAL;
   }
   if( (criticalBits & M_ARM_LEFT) ){
     offset = self.origin + (v_forward * self.leftArm_z) + (v_right * self.leftArm_x) + (v_up * self.leftArm_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    self.armLeft.drawmask = MASK_NORMAL;
   }
   if( (criticalBits & M_ARM_RIGHT) ){
     offset = self.origin + (v_forward * self.rightArm_z) + (v_right * self.rightArm_x) + (v_up * self.rightArm_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    self.armRight.drawmask = MASK_NORMAL;
   }
   if( (criticalBits & M_LEGS) ){
     offset = self.origin + (v_forward * self.leg_z) + (v_right * self.leg_x) + (v_up * self.leg_y);
@@ -296,7 +297,7 @@ void( float criticalBits ) sendevent_player_critical={
   wep = self.w_slot;
   while( wep != world ){
     if( (criticalBits & wep.partParentId) ){
-      wep.alpha = 0;
+      wep.drawmask = MASK_NORMAL;
     }
     wep = wep.w_slot;
   }
@@ -381,6 +382,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.legDir = ReadShort();
+    self.ai_dir = ReadShort();
   }
   
   /*
@@ -408,6 +410,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
         self.damageValue = rint(0);
         sendevent_player_mech(self.data_idx);
         self.predraw = player_predraw;
+        self.think = player_think;
+        self.nextthink = time + 0.1;
       }
       else{
         //debug - do player ent cleanup?

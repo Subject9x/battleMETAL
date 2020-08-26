@@ -71,13 +71,14 @@ Overview:
 .float critBits;
 
 .float isActive;
-
+.float ai_dir;          //chassis facing vs .angles
 
 #ifdef CSQC
 .float pitchMin;
 .float pitchMax;
 .float legDir;
-
+.float legMoveRate;
+.float legRunRate;
 /*.vector torsoCenterOffset;
 .vector torsoCenterAngles;
 .float torsoCenterHealth;

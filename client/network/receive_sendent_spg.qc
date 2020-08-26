@@ -82,6 +82,8 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       if( newName != "" ){
         self.netname = strzone(newName);
       }
+      self.think = sendent_empty_think;
+      self.nextthink = time + 0.05;
       self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.data_type = DATA_VEHC;
       self.skin =  self.faction - 1;

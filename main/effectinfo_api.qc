@@ -338,9 +338,9 @@ void( entity parent, vector wishVel, vector wishAngl, float trailnum, float life
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
   local vector fx, vel;
   local vector leftMin;
-  if( !(self.owner.flags & FL_ONGROUND) ){
-    return;
-  }
+  //if( !(self.owner.flags & FL_ONGROUND) ){
+  //  return;
+  //}
   makevectors( angl ); 
   fx = org ;
   fx_z = fx_z + unitMins_z;

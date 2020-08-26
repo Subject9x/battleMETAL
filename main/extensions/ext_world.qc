@@ -196,6 +196,7 @@ void() world_ini_serverinfo={
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
     serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
   }
+  serverInfo = strcat(serverInfo, ftos(world.worldtype)," ");
   SERVER_INFO = strzone(serverInfo);
 };
 

@@ -394,6 +394,48 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
   self = this;
 };
 
+void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBool) te_foot_stomp={
+  local vector fx, vel;
+  local vector leftMin;
+  local float effType;
+  
+  if( !(self.flags & FL_ONGROUND) ){
+    return;
+  }
+  makevectors( entAngl ); 
+  fx = entOrg ;
+  fx_z = fx_z + entMins_z;
+  leftMin = v_right * (entMins_x * 0.8);
+  if( leftBool ){
+     fx = fx + leftMin;
+  }
+  else{
+     fx = fx - leftMin;
+  }
+  
+  vel = fx + (v_up * 2);
+  traceline(self.origin, self.origin + (v_up * (entMins_z - 16)), FALSE, self);
+  pointsound(fx, "sound/mech_stomp.ogg", 0.25 + (random() * 0.33), ATTN_NORM);
+    switch( SV_WORLDTYPE ){
+    case 1:
+      effType = particleeffectnum("TE_STOMP_ICE");
+      break;
+    case 2:
+      effType = particleeffectnum("TE_STOMP_CITY");
+      break;
+    case 3:
+      effType = particleeffectnum("TE_STOMP_BADLANDS");
+      break;
+    case 4:
+      effType = particleeffectnum("TE_STOMP_TUNDRA");
+      break;
+    default:
+      effType = particleeffectnum("TE_STOMP_SAND");
+      break;
+  }
+  pointparticles( effType, fx, normalize(vel - fx) * 5,  entSize * 3);
+};
+
 void( float flashId, float entityId, vector flashVel ) particle_weapon_flash={
   local entity this;
   local entity scan;

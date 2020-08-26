@@ -77,6 +77,8 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.next_wepn9 = ReadByte();
     setorigin( self, self.origin );
     if( isNew ){
+      self.think = sendent_empty_think;
+      self.nextthink = time + 0.05;
       self.flags = self.flags | FL_MONSTER ;
       self.data_type = DATA_BLD;
       self.colormod = '1 1 1';
@@ -143,15 +145,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
   }
-  
-  if( isNew ){      
-    if( self.torsoCenter ){
-      this = self;
-      self = this.torsoCenter;
-        sendent_ini_interpolate();
-      self = this;
-    }
-  }
 };
 
 void() interpolate_turret={
@@ -168,12 +161,6 @@ void() interpolate_turret={
   if( self.torsoCenter ){
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
   }
   
@@ -192,12 +179,6 @@ void() interpolate_turret={
         self.origin = parent.origin + saved ;
         self.angles = parent.torsoCenter.angles;
       }
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
     wepn = wepn.w_slot;
   }

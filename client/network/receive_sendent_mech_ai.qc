@@ -9,6 +9,11 @@ Overview:
     sv/main/controllers/ctrl_mech.ctrl_send_mech_ai()
 */
 
+void() mech_ai_think={
+  self.think = mech_ai_think;
+  self.nextthink = time + 0.1;
+};
+
 /*
   EVENT - MOVE =====================================
 */
@@ -161,6 +166,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   self.angles_y = anglemod(ReadAngle());
   self.angles_z = anglemod(ReadAngle());
   
+  self.legDir = ReadShort();
+  
   //self.flags = ReadLong(); // DEBUG - disabled for now.
   self.shield = ReadShort();
   
@@ -194,6 +201,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.critBits = 0;
       setmodel(self, "q3mdl/testball.md3");
       setsize(self, self.mins, self.maxs);
+      self.think = mech_ai_think;
+      self.nextthink = time + 0.1;
       sendent_ini_interpolate();
       sendent_setup_weapons();
     }
@@ -243,42 +252,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   //Shield Explode event
   sendevent_shield_explode( prevShield );
   if( isNew ){      
-    if( self.torsoCenter ){
-      this = self;
-      self = this.torsoCenter;
-        sendent_ini_interpolate();
-      self = this;
-    }
-    if( self.torsoLeft ){
-      this = self;
-      self = this.torsoLeft;
-        sendent_ini_interpolate();
-      self = this;
-    }
-    if( self.torsoRight ){
-      this = self;
-      self = this.torsoRight;
-        sendent_ini_interpolate();
-      self = this;
-    }
-    if( self.armRight ){
-      this = self;
-      self = this.armRight;
-        sendent_ini_interpolate();
-      self = this;
-    }
-    if( self.armLeft ){
-      this = self;
-      self = this.armLeft;
-        sendent_ini_interpolate();
-      self = this;
-    }
-    if( self.legs ){
-      this = self;
-      self = this.legs;
-        sendent_ini_interpolate();
-      self = this;
-    }
+    
   }
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
@@ -286,7 +260,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
 };
 
 void() interpolate_mech_ai={
-    local entity parent;
+  local entity parent;
   local entity wepn;
   local vector saved;
   
@@ -299,24 +273,12 @@ void() interpolate_mech_ai={
   if( self.torsoCenter ){
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
   }
   if( self.legs ){
     self = self.legs;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.angles;
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
   }
   makevectors(parent.torsoCenter.angles);
@@ -324,48 +286,32 @@ void() interpolate_mech_ai={
     self = self.torsoLeft;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
   }
   if( !(self.critBits & M_TOR_RIGHT) && self.torsoRight != world ){
     self = self.torsoRight;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
   }
   if( !(self.critBits & M_ARM_RIGHT) && self.armRight != world ){
     self = self.armRight;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
     self = parent;
   }
   if( !(self.critBits & M_ARM_LEFT) && self.armLeft != world ){
     self = self.armLeft;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
-      interpolate_origin();
-      interpolate_angle();
-      interpolate_ground();
-      self.think = SUB_Null;
-      self.nextthink = time + 0.01;
-      addentity(self);
+    self = parent;
+  }
+  
+  if( self.legs != world ){
+    self = self.legs;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.angles;
+      self.angles_y = parent.legDir;
     self = parent;
   }
   
@@ -383,19 +329,10 @@ void() interpolate_mech_ai={
           saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
           self.origin = parent.torsoCenter.origin + saved;
         }
-        interpolate_origin();
-        interpolate_angle();
-        interpolate_ground();
-        self.think = SUB_Null;
-        self.nextthink = time + 0.01;
-        addentity(self);
       }
     self = parent;
     wepn = wepn.w_slot;
   }
-  self.think = SUB_Null;
-  self.nextthink = time + 0.01;
-
 };
 
 float() predraw_mech_ai={

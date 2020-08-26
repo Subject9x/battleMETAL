@@ -63,7 +63,6 @@ void(entity newAttacker) ai_react_generic;
 .vector ai_angleLimits;       //x = min, y= max, z = pitch speed
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
-.float ai_dir;          //chassis facing vs .angles
 .entity ai_node_recall;
 .float ai_patrol_speed; //a fraction of forward speed for any unit speed > 100
 .float voiceTime; //when next to say something

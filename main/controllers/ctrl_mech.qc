@@ -419,6 +419,8 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
+  
+  WriteShort( MSG_ENTITY, self.legs.angles_y);
 
   //  WriteLong( MSG_ENTITY, self.flags ); // DEBUG - disabled for now.
   WriteShort( MSG_ENTITY, self.shield );

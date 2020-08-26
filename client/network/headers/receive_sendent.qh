@@ -47,6 +47,7 @@ float() predraw_dmg_zone;
 */
 void( entity removeMe ) sendent_handle_remove={
   if( !wasfreed(removeMe) ){
+    removeMe.drawmask = MASK_NORMAL;
     remove(removeMe);
   }
 };

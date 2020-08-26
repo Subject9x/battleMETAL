@@ -481,6 +481,7 @@ void(string s) CSQC_Parse_StuffCmd =
       if(CLIENT_player_state == PLAYER_CONNECT ){
         cl_set_savepath( cvar("gamemode") );
       }
+      SV_WORLDTYPE = stof(argv(7));
     }
     else if( argv(0) == "fog" ){
       cl_get_new_fog( s );

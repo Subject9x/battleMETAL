@@ -7,6 +7,12 @@ Overview:
   I don't even know if it's worth it to try this.
 */
 
+
+void() sendent_empty_think={
+  self.think = sendent_empty_think;
+  self.nextthink = time + 0.05;
+};
+
 //implementing parts of Spike's CSQC-only mod code here
 void() interpolate_origin={
   //interpolate origins and angles so that they're synced to the thinks.
@@ -38,7 +44,7 @@ void() interpolate_angle={
   else if (dir < -180){
     dir += 360;
   }
-  //self.angles_y = self.angle1 + (dir*self.lerpfrac);
+  self.angles_y = self.angle1 + (dir*self.lerpfrac);
 };
 
 void() interpolate_ground={
@@ -107,6 +113,11 @@ void( float isNew ) sendent_handle_update={
 /*
   SendEntity - Projectile ====================================
 */
+void() sendent_missile_think={
+  self.think = sendent_missile_think;
+  self.nextthink = time + 0.025;
+};
+
 void( float isNew, float changeFlags) sendent_handle_missile={
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
@@ -157,6 +168,8 @@ void( float isNew, float changeFlags) sendent_handle_missile={
     setmodel(self, self.model);
     self.nextthink = time + 0.1;
     self.predraw = predraw_missile;
+    self.think = sendent_missile_think;
+    self.nextthink = time + 0.025;
   }
   self.angles = vectoangles(self.velocity);
 };
@@ -208,14 +221,18 @@ void( vector turretAngles ) sendevent_turret_update={
 };
 
 void() sendent_ini_interpolate={
-  self.frame2time = time + 0.05;
-  self.frame1time = time + 0.05;
-  self.frame2 = self.frame1;
-  self.frame1 = self.frame;
-  self.origin2 = self.origin1;
-  self.origin1 = self.origin;
-  self.nextthink = time + 0.01;
-  self.angle2 = self.angle1 = self.angles_y;
+  if (self.nextthink != self.frame1time){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    self.frame2 = self.frame1;
+    self.frame1 = self.frame;
+    self.origin2 = self.origin1;
+    self.origin1 = self.origin;
+    self.angle2 = self.angle1;
+    self.angle1 = self.angles_y;
+  }
+  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
 };
 
 void() sendent_setup_weapons={
@@ -249,7 +266,6 @@ void() sendent_setup_weapons={
         setorigin(self, this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
         self.angles = this.torsoCenter.angles;
       }
-      sendent_ini_interpolate();
     self = this;
     weps = weps.w_slot;
   }

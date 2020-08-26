@@ -84,7 +84,7 @@ void() build_unit_camera={
     self.view_ofs = self.origin - partParent.origin;
     self.angles = partParent.angles;
     self.v_angle = self.angles - partParent.angles;
-    self.effects = self.effects | (EF_LOWPRECISION | EF_NODRAW);
+    self.effects = self.effects | EF_NODRAW;
   self = this;
 };
 
@@ -423,6 +423,7 @@ void() build_mech_bot={
     self.legs.yaw_speed = self.yaw_speed * 2.5;
     self.legs.attack_state = TR_NORM;
     self.legs.ai_dir = self.angles_y;
+    self.legs.effects = self.legs.effects | EF_NODRAW;
   }
   
   if( (self.cockpit) ){

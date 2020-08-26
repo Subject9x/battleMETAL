@@ -78,6 +78,8 @@ void( vector org, float total ) te_field_quantum_light;
 void( vector org, float total ) te_unit_dust;
 void() te_unit_dust_set;
 
+void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBool) te_foot_stomp;
+
 /*
   Client-side explosion shells
 */
