@@ -49,6 +49,7 @@ entity controls_chat_team;
 entity controls_chat_all;
 entity controls_zoom;
 entity controls_regen;
+entity controls_camera;
 
 //controls constants
 string IMG_CONTROLS_TITLE = "gfx/menu/options/options_title.png";
@@ -202,6 +203,10 @@ void() txt_control_bind_chat_all={
 void() txt_control_bind_zoom={
   menu_keybind_change ("+button9");
 };
+void() txt_control_bind_camera={
+  menu_keybind_change ("impulse 30");
+};
+
 
 void() click_controls_back={
   menu_clear_items(M_STATE);
@@ -290,18 +295,20 @@ void() m_controls_i={
 
   controls_regen = inp_keybindfield('199 218', '14 14 0', txt_control_bind_regen, "Shield Regen:  ", "+button10", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  //movement
-  controls_forward = inp_keybindfield('220 265', '14 14 0', txt_control_bind_forward, "Forward:  ", "+forward", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-
-  controls_backward = inp_keybindfield('213 285', '14 14 0', txt_control_bind_backward, "Backward:  ", "+back", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-
-  controls_strafe_left = inp_keybindfield('210 305', '14 14 0', txt_control_bind_strafeleft, "Strafe Left:  ", "+moveleft", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-
-  controls_strafe_right = inp_keybindfield('204 325', '14 14 0', txt_control_bind_straferight, "Strafe Right:  ", "+moveright", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_camera = inp_keybindfield('199 238', '14 14 0', txt_control_bind_camera, "External Camera: ", "impulse 30", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  controls_sprint = inp_keybindfield('230 345', '14 14 0', txt_control_bind_sprint, "Sprint:  ", "+button8", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  //movement
+  controls_forward = inp_keybindfield('220 285', '14 14 0', txt_control_bind_forward, "Forward:  ", "+forward", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_ram = inp_keybindfield('205 365', '14 14 0', txt_control_bind_ram, "Ram Attack:  ", "impulse 27", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_backward = inp_keybindfield('213 305', '14 14 0', txt_control_bind_backward, "Backward:  ", "+back", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
+  controls_strafe_left = inp_keybindfield('210 325', '14 14 0', txt_control_bind_strafeleft, "Strafe Left:  ", "+moveleft", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
+  controls_strafe_right = inp_keybindfield('204 345', '14 14 0', txt_control_bind_straferight, "Strafe Right:  ", "+moveright", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  
+  controls_sprint = inp_keybindfield('230 365', '14 14 0', txt_control_bind_sprint, "Sprint:  ", "+button8", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
+  controls_ram = inp_keybindfield('205 385', '14 14 0', txt_control_bind_ram, "Ram Attack:  ", "impulse 27", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
   controls_back = btn_img_callback('25 435', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_controls_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   controls_accept = btn_img_callback('255 435', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_controls_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -342,7 +349,7 @@ void() m_controls_d={
   gui_renderString("-Piloting-", gui_percentToPixelRawVec('225 60'), CLR_DEF_IIF_FRIEND_BLD, '16 16 0', 1, 0);
 
   //movement
-  gui_renderString("-Movement-", gui_percentToPixelRawVec('215 235'), CLR_DEF_GREEN, '16 16 0', 1, 0);
+  gui_renderString("-Movement-", gui_percentToPixelRawVec('215 255'), CLR_DEF_GREEN, '16 16 0', 1, 0);
 
   drawfont = drawfont_prev;
   

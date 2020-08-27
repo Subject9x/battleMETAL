@@ -138,6 +138,17 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     else if( strstrofs(findkeysforcommand("impulse 24", 0), ftos(scanx),0) != -1 ){
       //scoreboard_sort(scoreHead);
     }
+    else if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
+      if( HUD_EXTERNAL_CAM_ACTIVE == TRUE ){
+        HUD_EXTERNAL_CAM_ACTIVE = FALSE;
+        localcmd("chase_active 0\n");
+      }
+      else{
+        HUD_EXTERNAL_CAM_ACTIVE = TRUE;
+        localcmd("chase_active 1\n");
+      }
+      return TRUE;
+    }
   }
   else if(inputEventType == INPUT_EVENT_MOUSE_POS){
     if(MENU_ACTIVE){

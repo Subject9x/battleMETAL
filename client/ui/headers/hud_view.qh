@@ -80,6 +80,7 @@ float HUD_UID_MSN_CLOCK     = 20;
   float HUD_SHIELD_FLASH_RATE = 0.15;
   
   float HUD_ZOOM_ACTIVE;
+  float HUD_EXTERNAL_CAM_ACTIVE;
   
   string HUD_SPRINT_ON = "[EVASION ON]";
   string HUD_SPRINT_OFF = "!- EVASION OFFLINE -!";
