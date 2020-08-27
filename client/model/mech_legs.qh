@@ -8,5 +8,7 @@ Overview:
 
 float LEG_WALK_STEP_LEFT = 2;
 float LEG_WALK_STEP_RIGHT = 6;
+float LEG_WALK_FIRSTFRAME = 1;
+float LEG_WALK_NUMFRAMES = 8;
 
 void() predraw_legs;

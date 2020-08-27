@@ -28,8 +28,6 @@ Overview:
 /*
   LEGS
 */
-float FRAMEGROUP_LEG_WALK = 1;
-float FRAMEGROUP_LEG_RUN  = 2;
 
 .float legFrameState;
 .float legFramePrev;

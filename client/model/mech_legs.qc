@@ -7,8 +7,6 @@ Overview:
 */
 
 
-float FIRSTFRAME = 1;
-float NUMFRAMES = 8;
 
 void() predraw_legs={
   local float savedang;
@@ -45,11 +43,11 @@ void() predraw_legs={
       self.legs.frame2 = self.legs.frame; //if we're at 0, frame2 became redundant anyway
       self.legs.frame = self.legs.frame + self.ai_dir;	//move on to the next frame
       
-      if (self.legs.frame >= FIRSTFRAME+NUMFRAMES){//this should be relative to the current animation that should be shown
-        self.legs.frame = FIRSTFRAME;	//restart it.
+      if (self.legs.frame >= LEG_WALK_FIRSTFRAME+LEG_WALK_NUMFRAMES){//this should be relative to the current animation that should be shown
+        self.legs.frame = LEG_WALK_FIRSTFRAME;	//restart it.
       }
-      else if(self.legs.frame < FIRSTFRAME){
-        self.legs.frame = FIRSTFRAME+NUMFRAMES;	//restart it.
+      else if(self.legs.frame < LEG_WALK_FIRSTFRAME){
+        self.legs.frame = LEG_WALK_FIRSTFRAME+LEG_WALK_NUMFRAMES;	//restart it.
       }
       
       if( self.legs.frame == LEG_WALK_STEP_LEFT ){

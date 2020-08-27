@@ -72,6 +72,21 @@ void( float critical ) sendevent_mech_ai_crit={
   local entity rem;
   local entity prev;
   
+  weps = self.w_slot;
+  prev = self;
+  while(weps != world ){
+    if( (weps.partParentId & critical) ){
+      rem = weps;
+      prev.w_slot = weps.w_slot;
+      weps = weps.w_slot;
+      remove(rem);
+    }
+    else{
+      prev = weps;
+      weps = weps.w_slot;
+    }
+  }
+  
   if( (critical & M_TOR_LEFT) ){
     if( self.torsoLeft != world ){
       te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
@@ -98,20 +113,6 @@ void( float critical ) sendevent_mech_ai_crit={
   }
   if( (critical & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-  }
-  weps = self.w_slot;
-  prev = self;
-  while(weps != world ){
-    if( (weps.partParentId & critical) ){
-      rem = weps;
-      prev.w_slot = weps.w_slot;
-      weps = weps.w_slot;
-      remove(rem);
-    }
-    else{
-      prev = weps;
-      weps = weps.w_slot;
-    }
   }
   pointsound( self.origin, "sound/fx_boom.ogg", 0.5 + (random() * 0.5) , ATTN_NORM );
 };
@@ -157,6 +158,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local float prevAttackFlag;
   
   prevShield = self.shield;
+  critical = self.damageValue;
   
   self.origin_x = ReadCoord();
   self.origin_y = ReadCoord();
@@ -165,8 +167,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   self.angles_x = anglemod(ReadAngle());
   self.angles_y = anglemod(ReadAngle());
   self.angles_z = anglemod(ReadAngle());
-  
-  self.legDir = ReadShort();
   
   //self.flags = ReadLong(); // DEBUG - disabled for now.
   self.shield = ReadShort();
@@ -190,6 +190,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     newName = ReadString();
     setorigin(self, self.origin);
     if( isNew ){ 
+      sendent_empty_think();
       if( newName != "" ){
         self.netname = strzone(newName);
       }   
@@ -197,14 +198,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.skin =  self.faction - 1;
       self.movetype = MOVETYPE_STEP;
       data_sync_new_mech_ai( self.data_idx );
-      self.deadflag = DEAD_NO;
-      self.critBits = 0;
-      setmodel(self, "q3mdl/testball.md3");
-      setsize(self, self.mins, self.maxs);
-      self.think = mech_ai_think;
-      self.nextthink = time + 0.1;
-      sendent_ini_interpolate();
-      sendent_setup_weapons();
     }
     self.alpha = 0.001;
     self.scale = 0.001;
@@ -224,7 +217,15 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   if( (changeFlags & SENDFLAG_MOVE) ){
     prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadLong();
+    self.legDir = ReadShort();
     sendevent_mech_ai_move();
+    self.moveState = ReadByte();
+    if(self.moveState > 0 ){
+      self.ai_dir = 1;
+    }
+    else{
+      self.ai_dir = 0;
+    }
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -236,8 +237,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
 
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.critBits = ReadByte();
-    if( self.critBits > 0 ){
+    self.damageValue = ReadByte();
+    if( critical < self.damageValue ){
+      critical = self.damageValue - (self.damageValue & critical);
       sendevent_mech_ai_crit( critical );
     }
   }
@@ -251,9 +253,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
-  if( isNew ){      
-    
-  }
+  
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
   }
@@ -313,6 +313,7 @@ void() interpolate_mech_ai={
       self.angles = parent.angles;
       self.angles_y = parent.legDir;
     self = parent;
+    predraw_legs();
   }
   
   wepn = self.w_slot;

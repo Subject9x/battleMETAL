@@ -396,26 +396,22 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
 
 void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBool) te_foot_stomp={
   local vector fx, vel;
-  local vector leftMin;
+  local float leftMin;
   local float effType;
   
-  if( !(self.flags & FL_ONGROUND) ){
-    return;
-  }
-  makevectors( entAngl ); 
+  makevectors( entAngl );
   fx = entOrg ;
-  fx_z = fx_z + entMins_z;
-  leftMin = v_right * (entMins_x * 0.8);
+  leftMin = entMins_x * 0.8;
   if( leftBool ){
-     fx = fx + leftMin;
+     fx = fx + (v_right * leftMin);
   }
   else{
-     fx = fx - leftMin;
+     fx = fx - (v_right * leftMin);
   }
   
-  vel = fx + (v_up * 2);
-  traceline(self.origin, self.origin + (v_up * (entMins_z - 16)), FALSE, self);
-  pointsound(fx, "sound/mech_stomp.ogg", 0.25 + (random() * 0.33), ATTN_NORM);
+  fx = fx + (v_up * (entMins_z + 8));
+  vel = fx + (v_up * 16);
+  pointsound(fx, "sound/mech_stomp.ogg", 0.45 + (random() * 0.25), ATTN_NORM);
     switch( SV_WORLDTYPE ){
     case 1:
       effType = particleeffectnum("TE_STOMP_ICE");
@@ -433,7 +429,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
       effType = particleeffectnum("TE_STOMP_SAND");
       break;
   }
-  pointparticles( effType, fx, normalize(vel - fx) * 5,  entSize * 3);
+  pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
 };
 
 void( float flashId, float entityId, vector flashVel ) particle_weapon_flash={

@@ -174,6 +174,9 @@ void() ai_combat_move_frame={
       self.ai_movedist = 4;
     }
   }
+  if( self.ai_move > MOVE_STAND_FACE ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  }
 };
 
 /*

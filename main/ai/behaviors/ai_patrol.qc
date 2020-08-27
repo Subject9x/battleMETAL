@@ -25,6 +25,8 @@ void() ai_stand_generic={
       self.legs.nextthink = time + 0.1;
     }
     self.goalentity = world;
+    self.moveState = 0;
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     return;
   }
   //-----------------
@@ -78,8 +80,6 @@ void() ai_patrol={
     
     if( self.legs ){
       self.legs.attack_state = TR_GOAL;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_GOAL;
@@ -90,6 +90,7 @@ void() ai_patrol={
       self.ai_state_next = ST_COMBAT;
       return;
     }
+    self.moveState = MOVE_NORM;
     return;
   }
 };
@@ -101,9 +102,11 @@ void() ai_ptr_pause={
   
   //entered pause state
   if( self.ai_state == ST_PTR_PAUSE && self.ai_state_last != ST_PTR_PAUSE ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
       //prepare for war....
       self.ai_state_next = ST_COMBAT;
+      self.moveState = MOVE_NORM;
       return;
     }
     if( self.legs ){
@@ -111,6 +114,7 @@ void() ai_ptr_pause={
       self.legs.nextthink = time + 0.1;
     }
     self.pausetime = time + self.pausetime;
+    self.moveState = 0;
     return;
   }
   //--------------------------
@@ -127,6 +131,8 @@ void() ai_ptr_pause={
   STATE : PATROL TRAVEL TO NODE
 */
 void() ai_ptr_travel_node={
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.moveState = MOVE_NORM;
   
   ai_update_accuracy( TRUE );
   
@@ -165,6 +171,9 @@ void() ai_ptr_travel_node={
 */
 void() ai_ptr_travel_blocked={
   if( self.ai_state == ST_PTR_TRAVEL_NODEBLOCK && self.ai_state_last != ST_PTR_TRAVEL_NODEBLOCK ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.moveState = 0;
+  
     if( ai_blocked_teleport() ){
       if( self.legs ){
         self.legs.think = bot_leg_stand1;

@@ -112,8 +112,6 @@ float() ai_move_charge={
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
       self.legs.ai_dir = self.ai_dir;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -159,8 +157,6 @@ float() ai_move_charge_left={
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
       self.legs.ai_dir = self.ai_dir;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -209,8 +205,6 @@ float() ai_move_charge_right={
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
       self.legs.ai_dir = self.ai_dir;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -258,8 +252,6 @@ float() ai_move_strafe_left={
     if( self.legs ){
       self.legs.ai_dir = self.ai_dir;
       self.legs.attack_state = TR_TARG;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -305,8 +297,6 @@ float() ai_move_strafe_right={
     if( self.legs ){
       self.legs.ai_dir = self.ai_dir;
       self.legs.attack_state = TR_TARG;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -353,8 +343,6 @@ float() ai_move_circle_left={
     
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -399,8 +387,6 @@ float() ai_move_circle_right={
     
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -646,8 +632,6 @@ float(float outRadius) ai_move_patrol_node={
     
     if( self.legs ){
       self.legs.attack_state = TR_GOAL;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     return -1;
   }
@@ -690,8 +674,6 @@ void() ai_move_node_radius={
     
     if( self.legs ){
       self.legs.attack_state = TR_GOAL;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     self.ai_movewait = time + (self.ai_rank * 4);
     return;
@@ -732,8 +714,6 @@ void() ai_move_node_tactical={
     
     if( self.legs ){
       self.legs.attack_state = TR_GOAL;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
     self.ai_movewait = time + (self.ai_rank * 4);
     return;

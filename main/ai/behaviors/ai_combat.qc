@@ -344,6 +344,13 @@ void() ai_combat_start={
 void() ai_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    if( self.ai_move > MOVE_STAND_FACE){
+      self.moveState = MOVE_NORM;
+    }
+    else{
+      self.moveState = 0;
+    }
     return;
   }
   //------------------------------------------------------------------

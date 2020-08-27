@@ -38,21 +38,13 @@ void(entity item) predraw_player_weapon={
   makevectors(entAng);
   offset = offset + (v_up * item.compOffset_y) + (v_right * item.compOffset_x);
   
-  if(self.entId == player_localentnum){
+  if(self.entId == player_localentnum && cvar("chase_active") == FALSE){
     offset = offset + (v_forward * (item.compOffset_z - fabs(self.cockpit.compOffset_z) ));
   }
   else{
     offset = offset + (v_forward * item.compOffset_z);
   }
   item.origin = offset;
-  if( (self.damageValue & item.partParentId) ){
-    item.alpha = 0;
-    item.drawmask = MASK_NORMAL;
-  }
-  else{
-    item.alpha = 1;
-    item.drawmask = MASK_ENGINE;
-  }
 };
 
 /*
@@ -63,7 +55,7 @@ void(entity piece) player_part_predaw={
   
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
   
-  if(self.entId == player_localentnum){
+  if(self.entId == player_localentnum && cvar("chase_active") == FALSE){
     offset = offset + (v_forward * (piece.compOffset_z - fabs(self.cockpit.compOffset_z) ));
   }
   else{
@@ -149,6 +141,7 @@ float() player_predraw={
   we just care about part offsets for special effects.
 */
 void( float mech_id ) sendevent_player_mech={
+  local vector minSave, maxSave;
   local entity weps;
   local entity this;
   
@@ -169,6 +162,8 @@ void( float mech_id ) sendevent_player_mech={
       cons_logAFloat("Error: failed to build mech with id", mech_id);
       break;
   }
+  minSave = self.mins;
+  maxSave = self.maxs;
   setmodel(self.torsoCenter, self.torsoCenter.model);
   setmodel(self.torsoLeft, self.torsoLeft.model);
   setmodel(self.torsoRight, self.torsoRight.model);
@@ -200,6 +195,7 @@ void( float mech_id ) sendevent_player_mech={
     self = this;
     weps = weps.w_slot;
   }
+  setsize(self, minSave, maxSave);
 };
 
 /*
@@ -272,22 +268,22 @@ void( float criticalBits ) sendevent_player_critical={
   if( (criticalBits & M_TOR_LEFT) ){
     offset = self.origin + (v_forward * self.leftTorso_z) + (v_right * self.leftTorso_x) + (v_up * self.leftTorso_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoLeft.drawmask = MASK_NORMAL;
+    self.torsoLeft.drawmask = 0;
   }
   if( (criticalBits & M_TOR_RIGHT) ){
     offset = self.origin + (v_forward * self.rightTorso_z) + (v_right * self.rightTorso_x) + (v_up * self.rightTorso_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoRight.drawmask = MASK_NORMAL;
+    self.torsoRight.drawmask = 0;
   }
   if( (criticalBits & M_ARM_LEFT) ){
     offset = self.origin + (v_forward * self.leftArm_z) + (v_right * self.leftArm_x) + (v_up * self.leftArm_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armLeft.drawmask = MASK_NORMAL;
+    self.armLeft.drawmask = 0;
   }
   if( (criticalBits & M_ARM_RIGHT) ){
     offset = self.origin + (v_forward * self.rightArm_z) + (v_right * self.rightArm_x) + (v_up * self.rightArm_y);
     te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armRight.drawmask = MASK_NORMAL;
+    self.armRight.drawmask = 0;
   }
   if( (criticalBits & M_LEGS) ){
     offset = self.origin + (v_forward * self.leg_z) + (v_right * self.leg_x) + (v_up * self.leg_y);
@@ -297,7 +293,7 @@ void( float criticalBits ) sendevent_player_critical={
   wep = self.w_slot;
   while( wep != world ){
     if( (criticalBits & wep.partParentId) ){
-      wep.drawmask = MASK_NORMAL;
+      wep.drawmask = 0;
     }
     wep = wep.w_slot;
   }
@@ -426,9 +422,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.damageValue = ReadShort();
     if( prevCrit < self.damageValue ){
       prevCrit = self.damageValue - (self.damageValue & prevCrit);
-      if( self.entId != player_localentnum ){
-        sendevent_player_critical( prevCrit );
-      }
+      sendevent_player_critical( prevCrit );
     }
   }
   

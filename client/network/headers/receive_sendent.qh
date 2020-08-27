@@ -46,9 +46,8 @@ float() predraw_dmg_zone;
   the idea here is to do some 'manual' garbage collection on the desired entity..
 */
 void( entity removeMe ) sendent_handle_remove={
-  if( !wasfreed(removeMe) ){
-    removeMe.drawmask = MASK_NORMAL;
-    remove(removeMe);
+  if( removeMe != world ){
+    removeMe.drawmask = 0;
   }
 };
 

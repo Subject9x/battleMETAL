@@ -43,6 +43,7 @@ void() ai_tether={
 void() ai_thr_pause={
   //State entry block------------------------------------------------
   if(self.ai_state==ST_THR_PAUSE && self.ai_state_last != ST_THR_PAUSE){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     if( self.legs ){
       self.legs.attack_state = TR_NORM;
       self.legs.think = bot_leg_stand1;
@@ -55,9 +56,11 @@ void() ai_thr_pause={
     if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
       //prepare for war....
       self.ai_state_next = ST_COMBAT;
+      self.moveState = MOVE_NORM;
       return;
     }
     self.ai_movewait = time + 30;
+    self.moveState = 0;
     return;
   }
   //-------------------------------------------------------------
@@ -89,9 +92,9 @@ void() ai_thr_travel={
     self.ai_movewait = time + 30;
     if(self.legs){
       self.legs.attack_state = TR_GOAL;
-      self.legs.think = bot_leg_walk1;
-      self.legs.nextthink = time + 0.1;
     }
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.moveState = MOVE_NORM;
     return;
   }
   //-------------------------------------------------------------

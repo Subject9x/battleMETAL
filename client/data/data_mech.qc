@@ -8,6 +8,8 @@ Overview:
 
 
 void( float dataID ) data_sync_new_mech_ai={
+  local vector maxSave, minSave;
+  
   weaponList = self;  //prepare to build unit's weapon list
   self.hardpoint_cnt = 0;
   switch( dataID ){
@@ -40,7 +42,14 @@ void( float dataID ) data_sync_new_mech_ai={
   if( self.legs ){
     data_mech_setup_part( self.legs );
   }
-
+  self.deadflag = DEAD_NO;
+  self.critBits = 0;
+  maxSave = self.maxs;
+  minSave = self.mins;
+  setmodel(self, "q3mdl/testball.md3");
+  setsize(self, minSave, maxSave);
+  sendent_ini_interpolate();
+  sendent_setup_weapons();
 };
 
 void( entity setPart ) data_mech_setup_part={
