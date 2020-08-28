@@ -205,7 +205,6 @@ void() sendevent_handle_player_death={
   local entity wep, nextWep;
   
   te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
-  self.flags = 0;
   self.origin = '0 0 0';
   self.damageValue = 0;
   self.data_type = 0;
@@ -356,7 +355,13 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   self.ping = stof( getplayerkeyvalue(self.entId - 1, "ping") );
   self.kills = stof( getplayerkeyvalue(self.entId - 1, "frags") );
-  self.netname = getplayerkeyvalue(self.entId - 1, "name");
+  
+  if(self.netname != "" ){
+    local string pass;
+    pass = self.netname;
+    strunzone(pass);
+  }
+  self.netname = strzone(getplayerkeyvalue(self.entId - 1, "name"));
   
   /*
     EVENT - per-frame update
@@ -369,6 +374,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
+    
     self.attackFlag = ReadLong();
     self.moveState = ReadByte();
   }
@@ -377,7 +383,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - Track player move state?
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    self.legDir = ReadShort();
+    self.legDir = anglemod(ReadShort());
     self.ai_dir = ReadShort();
   }
   
@@ -388,7 +394,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     prevType = self.data_type;
     self.data_type = ReadByte();
     self.faction = ReadByte();
-    self.vec_size = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
@@ -438,7 +443,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   /*
     EVENT - DEAD
-  */  if( (changeFlags & SENDFLAG_DEAD) ){
+  */ 
+  if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
     SV_MISSIONSTATUS = ReadByte();
     
@@ -463,11 +469,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     setorigin(self, self.origin);
     self.alpha = 0.01;
     self.scale = 0.01;
-    if( isNew ){
-      //addentity(self);
-      scoreboard_push( self.entId, self.kills );
-      scoreboard_sort();
-    }
   }
   
   /*
@@ -477,12 +478,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
     prevTarget = self.targetEntId;
     self.kills = stof(getplayerkeyvalue(self.entId - 1, "frags"));
     
-    //TODO
     self.particleCubeFlag = ReadByte();
     self.targetEntId = ReadLong();
     
     if( prevKills != self.kills ){
-      scoreboard_push( self.entId, self.kills );
       scoreboard_sort();
     }
     
@@ -519,5 +518,44 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   if( prevMoveState != self.moveState ){
     sendevent_handle_moveChange();
+  }
+  if( isNew ){
+    scoreboard_push( self.entId, self.kills );
+    scoreboard_sort();
+  }
+  
+  //perform data binds
+  if( self.entId == player_localentnum ){
+    CLIENT_flags = self.flags;
+    CLIENT_player_deadflag = self.deadflag;
+    CLIENT_faction = self.faction;
+    CLIENT_data_type = self.data_type;
+    CLIENT_data_idx = self.data_idx;
+    CLIENT_move_state = self.moveState;
+    CLIENT_shield = self.shield;
+    if( self.enemy != world ){
+      CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
+      CLIENT_stat_trg_ddflg = self.enemy.deadflag;
+      CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
+      CLIENT_stat_trg_ent_id = self.enemy.entId;
+      CLIENT_stat_trg_dataidx = self.enemy.data_idx;
+      CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
+      CLIENT_target_datatype_prev = CLIENT_target_datatype;
+      CLIENT_target_datatype = self.enemy.data_type;
+      CLIENT_target_faction = self.enemy.faction;
+      CLIENT_target_origin_x = self.enemy.origin_x;
+      CLIENT_target_origin_y = self.enemy.origin_y;
+      CLIENT_target_origin_z = self.enemy.origin_z;
+      CLIENT_target_vecsize = self.enemy.vec_size;
+      CLIENT_target_shield = self.enemy.shield;
+      if(CLIENT_target_shield < 0){
+        CLIENT_target_shield = 0;
+      }
+      CLIENT_target_dist_prev = CLIENT_target_dist;
+      CLIENT_target_dist = vlen(self.enemy.origin - self.origin);
+      CLIENT_target_size_x = self.enemy.maxs_x;
+      CLIENT_target_size_y = self.enemy.maxs_y;
+      CLIENT_target_size_z = self.enemy.maxs_z;
+    }
   }
 };

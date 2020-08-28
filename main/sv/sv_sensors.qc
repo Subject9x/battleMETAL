@@ -47,7 +47,7 @@ void() sv_getTarget={
     }
     self.lock_timer = 0;  //make sure to reset the timer
   }
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_IMPACT;
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
 };
 
 /*
@@ -68,7 +68,7 @@ void() sv_updateTargetInfo={
     if( prevDeadFlags == DEAD_NO && self.enemy.deadflag > DEAD_NO ){
       self.stat_trg_ent_id = -1;
       self.enemy = world;
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_IMPACT;
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
       return;
     }
   }
@@ -95,7 +95,7 @@ void() sv_updateTargetInfo={
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
     }
     self.stat_target_name = "";
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_IMPACT;
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
     return;
   }
   
@@ -216,7 +216,6 @@ void() radarSweepAdv={
   }
   inv = self.radar_range * 0.05;
   self.radar_time = self.radar_time + inv;
-  
   
   for(blip = findradius( self.origin, self.radar_range ); blip != world;  blip = blip.chain){
     if( !(blip.flags & FL_MONSTER) || !(blip.flags & FL_CLIENT) ){

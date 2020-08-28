@@ -14,7 +14,7 @@ void() ctrl_updateLegs={
   local vector adj, nextDirs;
   local float playerDir, velDir, left, right;
   
-  prevDir == self.angles_y;
+  prevDir = self.ai_dir;
   if( self.deadflag == DEAD_NO ){
     if((self.owner.movement_x == 0) && (self.owner.movement_y == 0)){
       self.movetype = MOVETYPE_NONE;
@@ -23,7 +23,6 @@ void() ctrl_updateLegs={
       setorigin(self, adj);
       if( self.ai_dir != 0 ){
         self.ai_dir = 0;  // animation switch -> 'stand'
-        return;
       }
     }
     else{
@@ -52,9 +51,7 @@ void() ctrl_updateLegs={
       self.angles =  nextDirs;
       self.v_angle = self.angles;
     }
-    if( self.angles_y != prevDir ){
-      self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_IMPACT;
-    }
+    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_IMPACT;
   }
 };
 

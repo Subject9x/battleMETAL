@@ -416,9 +416,6 @@ void() build_mech_bot={
     self.legs.partPrev = unitPartList;
     unitPartList.partNext = self.legs;
     unitPartList = unitPartList.partNext;
-    self.legs.th_walk = bot_leg_walk1;
-    self.legs.th_run = bot_leg_back1;
-    self.legs.th_stand = bot_leg_stand1;
     self.legs.movetype = MOVETYPE_NONE;
     self.legs.yaw_speed = self.yaw_speed * 2.5;
     self.legs.attack_state = TR_NORM;
@@ -529,7 +526,6 @@ void() build_mech_legs={
   self = self.legs;
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE;
-    self.walkframe = 1;
     macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
     if( (this.flags & FL_CLIENT) ){
       self.aiment = this;
@@ -552,7 +548,6 @@ void() build_mech_legs={
     self.data_speed_backward = this.data_speed_backward;
     self.data_speed_strafe = this.data_speed_strafe;
     self.data_speed_accel = this.data_speed_accel;  
-    self.colormod = this.colormod;
   self = this;
 };
 

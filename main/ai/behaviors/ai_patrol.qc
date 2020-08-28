@@ -21,8 +21,6 @@ void() ai_stand_generic={
     }
     if( self.legs ){
       self.legs.attack_state = TR_NORM;
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
     }
     self.goalentity = world;
     self.moveState = 0;
@@ -109,10 +107,6 @@ void() ai_ptr_pause={
       self.moveState = MOVE_NORM;
       return;
     }
-    if( self.legs ){
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
-    }
     self.pausetime = time + self.pausetime;
     self.moveState = 0;
     return;
@@ -175,10 +169,6 @@ void() ai_ptr_travel_blocked={
     self.moveState = 0;
   
     if( ai_blocked_teleport() ){
-      if( self.legs ){
-        self.legs.think = bot_leg_stand1;
-        self.legs.nextthink = time + 0.1;
-      }
       self.tetherOrg = self.patrolNode.origin;
       self.ai_state_next = ST_PTR;
       return;
@@ -187,10 +177,6 @@ void() ai_ptr_travel_blocked={
     return;
   }
   if( ai_blocked_teleport() ){
-    if( self.legs ){
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
-    }
     self.tetherOrg = self.patrolNode.origin;
     self.ai_state_next = ST_PTR;
     return;

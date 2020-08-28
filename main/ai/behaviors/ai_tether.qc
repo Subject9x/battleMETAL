@@ -46,8 +46,6 @@ void() ai_thr_pause={
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     if( self.legs ){
       self.legs.attack_state = TR_NORM;
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_YAW;

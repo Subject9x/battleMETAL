@@ -264,8 +264,12 @@ void() ui_navbutton_launch_click={
   local string weaponsList;
   local float totalHardpoints;
   local float turboTotalPerc;
+  if( MECH_DATA_ID == 0 ){
+    return;
+  }
   if( servertime > MENU_respawn_cool ){
-    if( (LAUNCH_VALIDATION &  VALID_NODE) ){      
+    if( (LAUNCH_VALIDATION &  VALID_NODE) ){
+      cl_setmech(MECH_DATA_ID);
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
       
       ui_data_load_hud( MECH_DATA_ID );

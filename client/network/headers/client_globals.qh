@@ -107,6 +107,8 @@ float CLIENT_stat_trg_la_hp;
 float CLIENT_stat_trg_ra_hp;
 float CLIENT_target_vecsize;
 
+vector CLIENT_target_size;
+
 float CLIENT_ram_max;
 
 float CLIENT_spawn_time;  //start marker for tracking best time

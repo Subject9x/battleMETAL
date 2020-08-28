@@ -16,7 +16,7 @@ void() client_push_player_info={
   local float targShield;
   local float myShield;
   
-  self.ammo_rockets = self.flags;
+  //self.ammo_rockets = self.flags;
   if(self.data_type == DATA_MECH){
     self.stat_client_energy = (self.energy / self.energyMax) * 100;
     
@@ -118,7 +118,7 @@ void() client_push_player_info={
   sends just player state and stuff
 */
 void() client_push_player_info_thin={
-  self.ammo_rockets = self.flags;
+ // self.ammo_rockets = self.flags;
 }
 void( entity targetClient ) server_push_player_info={
   local entity this;
@@ -217,18 +217,26 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   
   if(argv(1) == "sp"){
-    if(self.data_type == DATA_POBS){
-      player_unmakeObserver();
-      if( self.playerState == PLAYER_SPAWN ){
-        PutClientInServer();
+    if(self.nextVecChoice > 0) {
+      if(self.data_type == DATA_POBS){
+        player_unmakeObserver();
+        if( self.playerState == PLAYER_SPAWN ){
+          PutClientInServer();
+        }
+        sv_client_spawnpoint_select();
+        player_makeMech();
+        client_playTrack( world.sounds, TRUE );
+        if( self.client_num < 1){
+          CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
+          self.client_num = CLIENTS;  //book keeping for multiplayer
+        }
       }
-      sv_client_spawnpoint_select();
-      player_makeMech();
-      client_playTrack( world.sounds, TRUE );
-      if( self.client_num < 1){
-        CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
-        self.client_num = CLIENTS;  //book keeping for multiplayer
-      }
+    }
+    else{
+      //packet drop?
+      player_makeObserver();
+      self.playerState = PLAYER_SPAWN;
+      self.th_die();
     }
     return;
   }

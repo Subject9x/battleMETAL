@@ -37,8 +37,7 @@ void() ctrl_update_mechplayer={
     if( piece.deadflag <= DEAD_NO ){
       hp = piece.health / piece.max_health;
       if( hp < 0.6){
-        self.clientData.burnBits = self.clientData.burnBits | piece.partTypeId;
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
+        self.burnBits = self.burnBits | piece.partTypeId;
       }
     }
   }

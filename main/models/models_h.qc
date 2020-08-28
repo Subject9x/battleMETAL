@@ -45,70 +45,10 @@ $frame l_die1 l_die2 l_die3 l_die4
 void() leg_stand1;
 void() leg_die1;
 
-void() leg_walk1;
-void() leg_walk2;
-void() leg_walk3;
-void() leg_walk4;
-void() leg_walk5;
-void() leg_walk6;
-void() leg_walk7;
-void() leg_walk8;
-
-void() leg_run1;
-void() leg_run2;
-void() leg_run3;
-void() leg_run4;
-void() leg_run5;
-
-//not sure how easy it is to reverse anims here;
-void() leg_back1;
-void() leg_back2;
-void() leg_back3;
-void() leg_back4;
-void() leg_back5;
-void() leg_back6;
-void() leg_back7;
-void() leg_back8;
-
-
-
-
-
-void() bot_leg_stand1;
-
 void() leg_die_touch;
 void() bot_leg_die1;
 void() bot_leg_die2;
 void() bot_leg_die3;
-
-void() bot_leg_walk1;
-void() bot_leg_walk2;
-void() bot_leg_walk3;
-void() bot_leg_walk4;
-void() bot_leg_walk5;
-void() bot_leg_walk6;
-void() bot_leg_walk7;
-void() bot_leg_walk8;
-void() bot_leg_back1;
-void() bot_leg_back2;
-void() bot_leg_back3;
-void() bot_leg_back4;
-void() bot_leg_back5;
-void() bot_leg_back6;
-void() bot_leg_back7;
-void() bot_leg_back8;
-
-void() bot_leg_pivot1;
-void() bot_leg_pivot2;
-void() bot_leg_pivot3;
-void() bot_leg_pivot4;
-void() bot_leg_pivot5;
-void() bot_leg_pivot6;
-void() bot_leg_pivot7;
-void() bot_leg_pivot8;
-void() bot_leg_pivot9;
-void() bot_leg_pivot10;
-void() bot_leg_pivot11;
 
 /*
   CENTER TORSO

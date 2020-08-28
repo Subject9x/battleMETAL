@@ -240,6 +240,7 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
   explode.avelocity = randomvec() * 300;
   explode.angles = randomvec() * 30;
   explode.pcl_count = bloom;
+  explode.drawmask = MASK_NORMAL;
   
   if( explodeColor != '0 0 0' ){
     explode.colormod = explodeColor;
@@ -273,6 +274,7 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.scale = 0.1 + (vecSize / 3);
   explode.alpha = 0.75;
   explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
+  explode.drawmask = MASK_NORMAL;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
   te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22');
@@ -307,6 +309,7 @@ void( vector org, float explodeSize, vector explodeColor, float onShield  ) part
   explode.alpha = 1;
   explode.effects = explode.effects | EF_NOSHADOW;
   explode.avelocity = randomvec() * 300;
+  explode.drawmask = MASK_NORMAL;
   if( onShield == TRUE ){
     explode.scale = explodeSize / 2;
     explode.alpha = 0.8;
@@ -391,6 +394,7 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
     self.pcl_count = 1;
     self.nextthink = time + (random() * 1);
     self.think = particle_vehicle_wreck_th;
+    self.drawmask = MASK_NORMAL;
   self = this;
 };
 

@@ -588,6 +588,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
     WriteAngle( MSG_ENTITY, player.v_angle_z);
+    
     WriteLong( MSG_ENTITY, player.attackFlag);
     WriteByte( MSG_ENTITY, player.moveState );
   }
@@ -606,7 +607,6 @@ float( float isNew, float changeFlags ) send_client_data={
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteByte( MSG_ENTITY, self.data_type );
     WriteByte( MSG_ENTITY, player.faction );
-    WriteByte( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, player.next_wepn1);
     WriteByte( MSG_ENTITY, player.next_wepn2);

@@ -195,9 +195,14 @@ void( entity dep , float prevFac ) data_deploy_changeFaction={
   
   //deploy point was added to player's queue
   if( prevFac != CLIENT_faction && dep.faction == CLIENT_faction ){
-    FACTION_DEPLOY.prevPoint = dep;
-    dep.nextPoint = FACTION_DEPLOY;
-    FACTION_DEPLOY = dep;
+    if(FACTION_DEPLOY){
+      FACTION_DEPLOY.prevPoint = dep;
+      dep.nextPoint = FACTION_DEPLOY;
+      FACTION_DEPLOY = dep;
+    }
+    else{
+      FACTION_DEPLOY = dep;
+    }
   }
 };
 

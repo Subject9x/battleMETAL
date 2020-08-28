@@ -181,6 +181,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
+  if(self.shield > self.shieldMax ){
+    self.shield = self.shieldMax;
+  }
 };
 
 float() predraw_building={

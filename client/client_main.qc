@@ -575,39 +575,42 @@ void() CSQC_Ent_Remove ={
     rem = weps;
     weps = next;
     if( rem.owner == self ){
-      sendent_handle_remove(rem);
+      remove(rem);
     }
   }
   if( self.torsoCenter.owner == self && self.torsoCenter.model ){
-    sendent_handle_remove(self.torsoCenter);
+    remove(self.torsoCenter);
   }
   if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
     if( self.torsoLeft.owner == self && self.torsoLeft.model ){
-      sendent_handle_remove(self.torsoLeft);
+      remove(self.torsoLeft);
     }
     if( self.torsoRight.owner == self && self.torsoRight.model ){
-      sendent_handle_remove(self.torsoRight);
+      remove(self.torsoRight);
     }
     if( self.armLeft.owner == self && self.armLeft.model ){
-      sendent_handle_remove(self.armLeft);
+      remove(self.armLeft);
     }
     if( self.armRight.owner == self && self.armRight.model ){
-      sendent_handle_remove( self.armRight);
+      remove( self.armRight);
     }
     if( self.legs.owner == self && self.legs.model ){
-      sendent_handle_remove(self.legs );
+      remove(self.legs );
     }
   }
   if( self.data_type == DATA_BLD ){
     if( self.effect1.owner == self && self.effect1.pcl_effectnum > 0){
-      sendent_handle_remove(self.effect1);
+      remove(self.effect1);
     }
     if( self.effect2.owner == self && self.effect2.pcl_effectnum > 0 ){
-      sendent_handle_remove(self.effect2);
+      remove(self.effect2);
     }
     if( self.effect3.owner == self && self.effect3.pcl_effectnum > 0){
-      sendent_handle_remove(self.effect3);
+      remove(self.effect3);
     }
+  }
+  if(self.netname != "" ){
+    strunzone(self.netname);
   }
 	//if (self.t_remove)
 		//if (self.t_remove())

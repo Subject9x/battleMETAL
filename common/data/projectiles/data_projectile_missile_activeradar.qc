@@ -102,6 +102,7 @@ void() data_projectile_ini_missile_active_radar_={
   #ifndef CSQC
     self.think = data_projectile_missile_activeradar_delay;
     self.effects = self.effects | EF_LOWPRECISION;
+    self.ai_dir = 1.0;
   #endif
 };
 #ifndef CSQC
@@ -145,6 +146,10 @@ void() data_projectile_missile_activeradar_think={
   else{
     dir = normalize( self.dest - self.origin);
   }
+  if( time > self.data_lifetime * 0.5){
+    self.ai_dir = self.ai_dir - 0.15;
+  }
+  dir = dir * self.ai_dir;
   self.velocity = dir * self.data_velocity;
 
   self.think = data_projectile_missile_activeradar_think;

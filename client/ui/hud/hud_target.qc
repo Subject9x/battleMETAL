@@ -102,9 +102,9 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   local vector viewAngle;
   local vector imgSize, factionColor;
   
-  targSizeX = getstatf(ADDSTAT_TARGETSIZE_X);
-  targSizeY = getstatf(ADDSTAT_TARGETSIZE_Y); 
-  targSizeZ = getstatf(ADDSTAT_TARGETSIZE_Z);
+  targSizeX = CLIENT_target_size_x;
+  targSizeY = CLIENT_target_size_y; 
+  targSizeZ = CLIENT_target_size_z;
   
   if( targSizeZ < 1 ){
     targZbottom = 0;

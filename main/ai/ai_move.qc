@@ -72,8 +72,6 @@ void() ai_move_stand={
     self.ai_movewait = time + self.ai_movedist;
     if(self.legs){
       self.legs.attack_state = TR_YAW;
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
     }
     ai_face_targ();
     ai_attack();
@@ -433,8 +431,6 @@ float() ai_move_back={
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
       self.legs.ai_dir = anglemod(self.ai_dir + 180);
-      self.legs.think = bot_leg_back1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -476,8 +472,6 @@ float() ai_move_back_left={
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
       self.legs.ai_dir = anglemod(self.ai_dir + 180);
-      self.legs.think = bot_leg_back1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -519,8 +513,6 @@ float() ai_move_back_right={
     if( self.legs ){
       self.legs.attack_state = TR_TARG;
       self.legs.ai_dir = anglemod(self.ai_dir + 180);
-      self.legs.think = bot_leg_back1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -548,8 +540,6 @@ void() ai_move_snapshot={
     if( self.legs ){
       self.legs.attack_state = TR_NORM;
       self.legs.ai_dir = anglemod(self.angles_y);
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -577,8 +567,6 @@ void() ai_move_snipeshot={
     if( self.legs ){
       self.legs.attack_state = TR_NORM;
       self.legs.ai_dir = anglemod(self.angles_y);
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
@@ -599,8 +587,6 @@ void() ai_move_standface={
     if( self.legs ){
       self.legs.attack_state = TR_NORM;
       self.legs.ai_dir = anglemod(self.angles_y);
-      self.legs.think = bot_leg_stand1;
-      self.legs.nextthink = time + 0.1;
     }
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_TARG;
