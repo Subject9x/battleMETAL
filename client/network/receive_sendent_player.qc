@@ -78,6 +78,7 @@ float() player_predraw={
   local vector offset;
   local vector entAng;
   local entity wep;
+  local vector cacheOrg;
   
   if( self.data_type == DATA_MECH ){
   
@@ -95,7 +96,12 @@ float() player_predraw={
     self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
   
     self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  
+    
+    if(self.entId == player_localentnum){
+      cacheOrg = self.origin;
+      self.origin = pmove_org;
+    }
+    
     if( self.deadflag == DEAD_NO ){
       entAng = self.angles;
       entAng_x = 0;
@@ -131,6 +137,9 @@ float() player_predraw={
     }
     else{
     
+    }
+    if(cacheOrg){
+      self.origin = cacheOrg;
     }
   }
   return FALSE;
@@ -263,30 +272,24 @@ void( float criticalBits ) sendevent_player_critical={
   local vector offset;
   local entity wep;
   
-  makevectors( self.angles );
   if( (criticalBits & M_TOR_LEFT) ){
-    offset = self.origin + (v_forward * self.leftTorso_z) + (v_right * self.leftTorso_x) + (v_up * self.leftTorso_y);
-    te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.torsoLeft.drawmask = 0;
   }
   if( (criticalBits & M_TOR_RIGHT) ){
-    offset = self.origin + (v_forward * self.rightTorso_z) + (v_right * self.rightTorso_x) + (v_up * self.rightTorso_y);
-    te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.torsoRight.drawmask = 0;
   }
   if( (criticalBits & M_ARM_LEFT) ){
-    offset = self.origin + (v_forward * self.leftArm_z) + (v_right * self.leftArm_x) + (v_up * self.leftArm_y);
-    te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.armLeft.drawmask = 0;
   }
   if( (criticalBits & M_ARM_RIGHT) ){
-    offset = self.origin + (v_forward * self.rightArm_z) + (v_right * self.rightArm_x) + (v_up * self.rightArm_y);
-    te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.armRight.drawmask = 0;
   }
   if( (criticalBits & M_LEGS) ){
-    offset = self.origin + (v_forward * self.leg_z) + (v_right * self.leg_x) + (v_up * self.leg_y);
-    te_missile_explode( offset, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
   
   wep = self.w_slot;
@@ -356,12 +359,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   self.ping = stof( getplayerkeyvalue(self.entId - 1, "ping") );
   self.kills = stof( getplayerkeyvalue(self.entId - 1, "frags") );
   
-  if(self.netname != "" ){
-    local string pass;
-    pass = self.netname;
-    strunzone(pass);
-  }
-  self.netname = strzone(getplayerkeyvalue(self.entId - 1, "name"));
+  self.netname = getplayerkeyvalue(self.entId - 1, "name");
   
   /*
     EVENT - per-frame update
@@ -536,6 +534,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
     if( self.enemy != world ){
       CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
       CLIENT_stat_trg_ddflg = self.enemy.deadflag;
+      if(CLIENT_stat_trg_ddflg >= DEAD_DYING && CLIENT_stat_trg_ddflg != CLIENT_stat_trg_ddflg_prev){
+        self.enemy = world;
+        return;
+      }
       CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
       CLIENT_stat_trg_ent_id = self.enemy.entId;
       CLIENT_stat_trg_dataidx = self.enemy.data_idx;
@@ -548,8 +550,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
       CLIENT_target_origin_z = self.enemy.origin_z;
       CLIENT_target_vecsize = self.enemy.vec_size;
       CLIENT_target_shield = self.enemy.shield;
-      if(CLIENT_target_shield < 0){
+     if( CLIENT_target_shield <= 0 ){
         CLIENT_target_shield = 0;
+      }
+      else{
+        CLIENT_target_shield = (self.enemy.shield / self.enemy.shieldMax) * 100;
       }
       CLIENT_target_dist_prev = CLIENT_target_dist;
       CLIENT_target_dist = vlen(self.enemy.origin - self.origin);

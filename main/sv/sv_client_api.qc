@@ -119,7 +119,7 @@ void() ClientConnect = {
   self.accuracy = 0;
   self.accuracyMod = 0;
   self.stat_plr_fir = FIRE_GROUP;
-  self.stat_lck_stt = LOCK_NONE;
+  self.targLockState = LOCK_NONE;
   
   self.next_wepn1 = 0;
   self.next_wepn2 = 0;

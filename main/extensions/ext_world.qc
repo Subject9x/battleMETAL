@@ -113,7 +113,7 @@ void() mh_world_ini={
   //addstat(STAT_TARGET_SIZE, AS_INT, stat_target_size);
     
   addstat(STAT_RAM_VALUE, AS_FLOAT, ramTracker);
-  addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
+  addstat(STAT_LCK_STT, AS_INT, targLockState);
   
   //addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
   

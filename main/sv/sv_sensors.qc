@@ -88,11 +88,11 @@ void() sv_updateTargetInfo={
     self.stat_target_orgy = 0;
     self.stat_target_orgz = 0;
     self.stat_target_size = 0;
-    if( (self.stat_lck_stt & LOCK_TARG_START)){
-      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
+    if( (self.targLockState & LOCK_TARG_START)){
+      self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
     }
-    if( (self.stat_lck_stt & LOCK_TARG_HAS)){
-      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
+    if( (self.targLockState & LOCK_TARG_HAS)){
+      self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_HAS);
     }
     self.stat_target_name = "";
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
@@ -122,35 +122,48 @@ void() sv_updateTargetInfo={
   
   //can only lock-on to enemy units
   if( self.enemy.faction != self.faction ){
+    local float canLock;
+    canLock = FALSE;
     if( util_lockOnChoke(self.enemy.origin) ){
-      if( !(self.stat_lck_stt & LOCK_TARG_START) && !(self.stat_lck_stt & LOCK_TARG_HAS) ){
-        self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_START;
-        self.power_timer_segment = time;
-        if(self.stat_rdr_mode){
-          self.lock_timer = time + self.w_firetime;
-        }
-        else{
-          self.lock_timer = time + (self.w_firetime * 2);
+      traceline(self.origin, self.enemy.origin, FALSE, self);
+      if( (self.enemy.flags & FL_CLIENT) ){
+        if( self.enemy.stat_rdr_mode == TRUE || trace_fraction == 1.0 ){
+          canLock = TRUE;
         }
       }
-      if( time > self.lock_timer ){
-        if( !(self.stat_lck_stt & LOCK_TARG_HAS) ){
-          self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
-          self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_HAS;
+      else{
+        canLock = TRUE;
+      }
+      if(canLock){
+        if( !(self.targLockState & LOCK_TARG_START) && !(self.targLockState & LOCK_TARG_HAS) ){
+          self.targLockState = self.targLockState | LOCK_TARG_START;
+          self.power_timer_segment = time;
+          if(self.stat_rdr_mode){
+            self.lock_timer = time + self.w_firetime;
+          }
+          else{
+            self.lock_timer = time + (self.w_firetime * 2);
+          }
         }
+        if( time > self.lock_timer ){
+          if( !(self.targLockState & LOCK_TARG_HAS) ){
+            self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
+            self.targLockState = self.targLockState | LOCK_TARG_HAS;
+          }
+        }
+        return;
       }
     }
-    else{
-      if( (self.stat_lck_stt & LOCK_TARG_START) ){
-        self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
-      }
-      if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
-        self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
-      } 
-      if( (self.enemy.stat_lck_stt & LOCK_PLAYER) ){
-        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLAYER);
-      }
+    if( (self.targLockState & LOCK_TARG_START) ){
+      self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
     }
+    if( (self.targLockState & LOCK_TARG_HAS) ){
+      self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_HAS);
+    } 
+    if( (self.enemy.targLockState & LOCK_PLAYER) ){
+      self.enemy.targLockState = self.enemy.targLockState - (self.enemy.targLockState & LOCK_PLAYER);
+    }
+    
   }
 };
 

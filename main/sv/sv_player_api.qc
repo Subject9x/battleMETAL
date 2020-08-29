@@ -176,10 +176,10 @@ void() PlayerPostThink = {
     self.stat_ret_dist = (self.stat_rdr_rng * trace_fraction);
     
     //TODO notify target of lock
-    /*if((self.stat_lck_stt & LOCK_TARG)){
+    /*if((self.targLockState & LOCK_TARG)){
       if(self.enemy != world){
-        if(!(self.enemy.stat_lck_stt & LOCK_PLAYER)){
-          self.enemy.stat_lck_stt = self.enemy.stat_lck_stt | LOCK_PLAYER;
+        if(!(self.enemy.targLockState & LOCK_PLAYER)){
+          self.enemy.targLockState = self.enemy.targLockState | LOCK_PLAYER;
         }
       }
     }*/

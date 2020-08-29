@@ -100,6 +100,52 @@ void() cl_particles_fogFrame={
   }
 };
 
+
+float() te_explode_mech_piece_predraw={
+  if (self.nextthink != self.frame1time){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    self.frame2 = self.frame1;
+    self.frame1 = self.frame;
+    self.origin2 = self.origin1;
+    self.origin1 = self.origin;
+    self.angle2 = self.angle1;
+    self.angle1 = self.angles_y;
+  }
+  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+
+  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+  return FALSE;
+};
+
+void() te_explode_mech_piece_th={
+  self.think = te_explode_mech_piece_th;
+  self.nextthink = time + 0.05;
+};
+
+//maybe at some point someone can figure out MOVETYPE_BOUNCE for csqc.
+void(entity piece) te_explode_mech_piece={
+  local entity t;
+  makevectors(piece.angles);
+  t = spawn();
+  t.drawmask = MASK_NORMAL;
+  setmodel(t, piece.model);
+  setsize(t, '0 0 0', '0 0 0');
+  setorigin(t, piece.origin);
+  t.colormod = piece.colormod;
+  t.movetype = MOVETYPE_BOUNCE;
+  t.solid = SOLID_BBOX;
+  t.velocity = normalize((piece.origin + v_up * 10) - piece.origin);
+  t.velocity = t.velocity * 300;
+  t.velocity_z = 400;
+  t.avelocity = '100 100 100';
+  t.angles = piece.angles;
+  t.think = te_explode_mech_piece_th;
+  t.nextthink = time + 0.05;
+  t.predraw = te_explode_mech_piece_predraw;
+};
+
 void(entity item) te_weapon_fire_handler={
   local entity this;
   this = self;

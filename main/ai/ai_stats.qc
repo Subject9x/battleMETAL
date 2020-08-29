@@ -29,7 +29,7 @@ void() ai_unit_ini_var={
   
   self.accuracy = 0;
   self.accuracyMod = 0;
-  self.stat_lck_stt = LOCK_NONE;
+  self.targLockState = LOCK_NONE;
   self.power_timer = 0;
   self.ideal_yaw = self.angles * '0 1 0';
   self.ai_viewcheck = 0;

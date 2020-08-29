@@ -65,7 +65,7 @@ void(entity wep) ctrl_weapon_think_ai={
         }
         else{
           //Weapon REQUIRES a target lock to work, see if owner has a Target Lock
-          if( (self.damageType & EFF_LOK) && !(weaponOwner.stat_lck_stt & LOCK_TARG_HAS) ){
+          if( (self.damageType & EFF_LOK) && !(weaponOwner.targLockState & LOCK_TARG_HAS) ){
             stackWeapon = FALSE;
           }
           
@@ -89,7 +89,7 @@ void(entity wep) ctrl_weapon_think_ai={
           if( stackWeapon ){
             if( weaponOwner.ai_rank > AI_RANK_REG ){
               if( !(self.damageType & EFF_PTR) ){
-                if( self.damageValue > 100 && !(weaponOwner.stat_lck_stt & LOCK_TARG_HAS)){
+                if( self.damageValue > 100 && !(weaponOwner.targLockState & LOCK_TARG_HAS)){
                   //magic number describing high-damage attacks.
                   spreadRange = weaponOwner.spreadDefault_x + (weaponOwner.spreadDefault_x * 0.33);
                   if( weaponOwner.accuracy >= spreadRange ){
@@ -220,7 +220,6 @@ void() ctrl_die_weapon={
   local entity prev;
   if(self.deadflag == DEAD_NO){
     self.deadflag = DEAD_DEAD;
-    self.effects = self.effects | EF_NODRAW; 
     
     if( (self.damageType & DMG_MSC) ){
       //weapon is equip, run death func which undoes the module's upgrades

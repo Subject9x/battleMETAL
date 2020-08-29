@@ -105,7 +105,7 @@ void() map_projectile_shooter={
   self.owner.stat_rdr_mode = TRUE;
   self.isActive = TRUE;
   self.reloadMax = self.count3;
-  self.owner.stat_lck_stt = self.owner.stat_lck_stt | LOCK_TARG_HAS;
+  self.owner.targLockState = self.owner.targLockState | LOCK_TARG_HAS;
   
   if( (self.flags & FL_MONSTER) ){
     self.damageValue = ai_pilot_mod_damage( skill, self.damageValue);

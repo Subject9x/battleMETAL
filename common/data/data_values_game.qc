@@ -388,7 +388,7 @@ float RADAR_SWEEP = 2.5;
 .float stat_trg_face;
 
 .float stat_plr_fir;
-.float stat_lck_stt;
+.float targLockState;
 .float stat_trg_ddflg;
 .float stat_ret_dist;
 
