@@ -79,6 +79,7 @@ Overview:
 .float legDir;
 .float legMoveRate;
 .float legRunRate;
+
 /*.vector torsoCenterOffset;
 .vector torsoCenterAngles;
 .float torsoCenterHealth;

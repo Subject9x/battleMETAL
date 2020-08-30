@@ -59,24 +59,24 @@ void() data_ini_quantum_={
  
   self.spreadDefault = '0.033 0.033 0';
   self.wepFireOffset = '0 0 2';
+  self.burstRate = 0;
+
+#ifdef CSQC
+  self.w_name = "Quantum Rifle";
+  self.fire_sound = "sound/weapons/qrfl_fire.ogg";
+  self.model = "q3mdl/weapons/w_qrf.md3";
+  self.abbrev = "QRF";
+  self.description = "+ Single-fire projectile. + Better against <Armor> + Targets without <Shields> will cause projectile to shatter and deal additional radius damage to nearby targets.";
+  self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
+  self.itemMuzzleFlash = te_muzzle_qrf;
+#endif 
   
-  #ifdef CSQC
-    self.w_name = "Quantum Rifle";
-    self.fire_sound = "sound/weapons/qrfl_fire.ogg";
-    self.model = "q3mdl/weapons/w_qrf.md3";
-    self.abbrev = "QRF";
-    self.description = "+ Single-fire projectile. + Better against <Armor> + Targets without <Shields> will cause projectile to shatter and deal additional radius damage to nearby targets.";
-    self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
-    self.itemMuzzleFlash = te_muzzle_qrf;
-  #endif 
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.model = "q3mdl/weapons/w_qrf.md3";
-    self.w_attack = data_ini_attack_quantum_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_quantum_bit_;
-  #endif
+#ifndef CSQC
+  self.w_attack = data_ini_attack_quantum_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_quantum_bit_;
+  self.w_isburst = FALSE;
+#endif
 };
 
 #ifndef CSQC

@@ -155,15 +155,15 @@ void(float vec_id) initialize_data_turret_;
 void() default_weapon_think={
   local float delta, lim;
   
-  if(self.w_state == RECOIL){
+  if(self.wepReloadState == RECOIL){
     if(time > self.w_firetime){
-      self.w_state = READY;
+      self.wepReloadState = READY;
     }
   }
-  else if(self.w_state == RELOADING){
+  else if(self.wepReloadState == RELOADING){
     if(time > self.w_firetime){
       self.reloadValue = 100;
-      self.w_state = READY;
+      self.wepReloadState = READY;
       if( (self.owner.flags & FL_MONSTER) ){
         //AI re-fire timing is offset to be more fair to the player.
         self.ai_nextFireTime = self.owner.ai_attack_chance + self.reloadMax;  //ai_attack_chance set by ai_stats.qc

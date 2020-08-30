@@ -204,6 +204,7 @@ void() sendevent_handle_weaponfire={
   while( equip != world ){
     if( (self.attackFlag & equip.w_group) ){
       te_weapon_fire_handler(equip);
+      sendent_start_reload(equip);
     }
     equip = equip.w_slot;
   }
@@ -329,4 +330,56 @@ void() sendent_set_weapon={
       self.data_idx = 0;
       break;
   }
+};
+
+void() sendent_item_think={
+  local float delta, lim;
+  if(self.wepReloadState == RECOIL){
+    if(servertime > self.w_firetime){
+      self.wepReloadState = READY;
+      self.reloadValue = 100;
+      return;
+    }
+    else{
+      delta = time - self.count1;
+      lim = self.reloadRate / self.burstRate;
+      self.reloadValue = (delta / lim) * 100;
+    }
+  }
+  else if(self.wepReloadState == RELOADING){
+    if(servertime > self.w_firetime){
+      self.reloadValue = 100;
+      self.wepReloadState = READY;
+      return;
+    }
+    else{
+      delta = servertime - self.count1;
+      lim = self.reloadMax;
+      self.reloadValue = (delta / lim) * 100;
+    }
+  } 
+  self.think = sendent_item_think;
+  self.nextthink = time + 0.1;
+};
+
+void(entity item) sendent_start_reload={
+  item.w_currentammo = item.w_currentammo - 1;
+  if(item.w_currentammo < 1){
+    item.reloadValue = 0;
+    item.w_currentammo = item.w_clipsize;
+    item.wepReloadState = RELOADING;
+    item.w_firetime = servertime + item.reloadMax;
+    item.count1 = servertime;
+  }
+  else{
+    item.w_firetime = servertime + item.reloadRate / item.burstRate;
+    item.wepReloadState = RECOIL;
+    if(item.data_idx == UID_ITEM_light_autocannon){
+      cons_logAFloat("item.burstRate", item.burstRate); //debug
+      cons_logAFloat("item.wepReloadState", item.wepReloadState); //debug
+      cons_logAFloat("item.reloadRate", item.reloadRate); //debug
+    }
+  }
+  item.think = sendent_item_think;
+  item.nextthink = time + 0.1;
 };

@@ -44,24 +44,24 @@ void() data_ini_missile_activeradar_={
   
   self.spreadDefault = '0.03 0.03 0';
   self.wepFireOffset = '0 0 2';
+  self.burstRate = 1;
   
-  #ifdef CSQC  
-    self.w_name = "Missile - Active Radar";
-    self.fire_sound = "sound/weapons/arh_fire.ogg";
-    self.model = "q3mdl/weapons/w_arh.md3";
-    self.abbrev = "MARH";
-    self.description = "+ target <shields> reduce damage. + Requires <Active Radar> on. + Minimum Range of 300m. + stronger against [small] targets.";
-    self.icon = "gfx/ui/wep_icons/wi_marh.png";
-    self.itemMuzzleFlash = te_muzzle_marh;
-  #endif
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 1;
-    self.w_attack = data_ini_attack_missile_activeradar_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
-  #endif
+#ifdef CSQC  
+  self.w_name = "Missile - Active Radar";
+  self.fire_sound = "sound/weapons/arh_fire.ogg";
+  self.model = "q3mdl/weapons/w_arh.md3";
+  self.abbrev = "MARH";
+  self.description = "+ target <shields> reduce damage. + Requires <Active Radar> on. + Minimum Range of 300m. + stronger against [small] targets.";
+  self.icon = "gfx/ui/wep_icons/wi_marh.png";
+  self.itemMuzzleFlash = te_muzzle_marh;
+#endif
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_missile_activeradar_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
+#endif
 };
 
 #ifndef CSQC

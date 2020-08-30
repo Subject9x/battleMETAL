@@ -43,25 +43,24 @@ void() data_ini_emp_={
   
   self.wepFireOffset = '0 0.1 7';
   self.spreadDefault = '0 0 0';
+  self.burstRate = 0;
   
-  #ifdef CSQC
-    self.w_name = "EMP Cannon";
-    self.fire_sound = "sound/weapons/emp_fire.ogg";
-    self.model = "q3mdl/weapons/w_emp.md3";
-    self.abbrev = "EMP";
-    self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + Small proximity detonation.";
-    self.icon = "gfx/ui/wep_icons/wi_emp.png";
-    self.itemMuzzleFlash = te_muzzle_emp;
-  #endif
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 0;
-    self.model = "q3mdl/weapons/w_emp.md3";
-    self.w_attack = data_ini_attack_emp_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_emp_;
-  #endif
+#ifdef CSQC
+  self.w_name = "EMP Cannon";
+  self.fire_sound = "sound/weapons/emp_fire.ogg";
+  self.model = "q3mdl/weapons/w_emp.md3";
+  self.abbrev = "EMP";
+  self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + Small proximity detonation.";
+  self.icon = "gfx/ui/wep_icons/wi_emp.png";
+  self.itemMuzzleFlash = te_muzzle_emp;
+#endif
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_emp_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_emp_;
+#endif
 };
 
 #ifndef CSQC

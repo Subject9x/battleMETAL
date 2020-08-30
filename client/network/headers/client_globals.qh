@@ -78,16 +78,6 @@ float CLIENT_health_arm_right_prev;
 
 float CLIENT_hardpoint_cnt;
 
-float CLIENT_stat_w1_rel;
-float CLIENT_stat_w2_rel;
-float CLIENT_stat_w3_rel;
-float CLIENT_stat_w4_rel;
-float CLIENT_stat_w5_rel;
-float CLIENT_stat_w6_rel;
-float CLIENT_stat_w7_rel;
-float CLIENT_stat_w8_rel;
-float CLIENT_stat_w9_rel;
-
 float CLIENT_weapon_state;  //where weapon_bit present == 'ok'
 
 float CLIENT_stat_trg_ent_id;

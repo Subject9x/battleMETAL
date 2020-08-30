@@ -383,10 +383,13 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   RENDER A SINGLE WEAPON AND ITS RELOAD BAR
   Weapon Icon over the Reload bar
 */
-void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon={
+void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_renderWeapon={
+  local entity theWeapon;
   local vector iofs, ofs, metSize, wepState;
   
-  data_get_client_item_( HUD_DATA_weapon, w_id );
+  theWeapon = gui_get_weapon(w_bit);
+  
+  //data_get_client_item_( HUD_DATA_weapon, w_id );
   
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
@@ -400,7 +403,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
       wepState = CLR_DEF_WHITE;  
     }
     
-    if(w_rel < 100){
+    if(theWeapon.reloadValue < 100){
       //weapon reloading
       if((wepGrp & w_bit)){ 
         wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
@@ -409,7 +412,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
         wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
       }
     }
-    if( HUD_ENERGY_ACTUAL < HUD_DATA_weapon.energyRate ){
+    if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
       wepState = CLR_DEF_WEP_LOWENG;
     }
   }
@@ -422,8 +425,8 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
   
-  if( HUD_DATA_weapon.icon != ""){
-    drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, HUD_ALPHA, 0);
+  if( theWeapon.icon != ""){
+    drawpic(iofs, theWeapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
   if( wepState != CLR_DEF_TXT_CANTSELECT){
@@ -432,22 +435,23 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
     metSize_x = imgSz_x;
     metSize_y = gui_percentYRaw(20);
     ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
-    gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+    gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
   }
   else{
     drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
   }
-  
 };
 
 /*
   RENDER A SINGLE WEAPON AND ITS RELOAD BAR
   Weapon Icon is right to Reload Bar
 */
-void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon2={
+void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_renderWeapon2={
+  local entity theWeapon;
+  
   local vector iofs, ofs, metSize, wepState;
   
-  data_get_client_item_( HUD_DATA_weapon, w_id );
+  theWeapon = gui_get_weapon(w_bit);
   
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
@@ -461,7 +465,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
       wepState = CLR_DEF_WHITE;  
     }
     
-    if(w_rel < 100){
+    if(theWeapon.reloadValue < 100){
       //weapon reloading
       if((wepGrp & w_bit)){ 
         wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
@@ -470,7 +474,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
         wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
       }
     }
-    if( HUD_ENERGY_ACTUAL < HUD_DATA_weapon.energyRate ){
+    if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
       wepState = CLR_DEF_WEP_LOWENG;
     }
   }
@@ -482,8 +486,8 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
-  if( HUD_DATA_weapon.icon != ""){
-    drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, HUD_ALPHA, 0);
+  if( theWeapon.icon != ""){
+    drawpic(iofs, theWeapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
   if( wepState != CLR_DEF_TXT_CANTSELECT){
@@ -492,7 +496,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
     metSize_x = gui_percentXRaw(-20);
     metSize_y = imgSz_y;
     ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
-    gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+    gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
   }
   else{
     drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
@@ -648,49 +652,6 @@ void() hud_render_info={
   if( time > HUD_INFO_MARK ){
     HUD_INFO_ON = FALSE;
   }
-};
-
-vector( float wbit ) hud_data_weapon_info={
-  local vector wep;
-  switch( wbit ){
-    case WEAPON1:
-      wep_x = CLIENT_stat_w1_id;
-      wep_y = CLIENT_stat_w1_rel;
-      break;
-    case WEAPON2:
-      wep_x = CLIENT_stat_w2_id;
-      wep_y = CLIENT_stat_w2_rel;
-      break;
-    case WEAPON3:
-      wep_x = CLIENT_stat_w3_id;
-      wep_y = CLIENT_stat_w3_rel;
-      break;
-    case WEAPON4:
-      wep_x = CLIENT_stat_w4_id;
-      wep_y = CLIENT_stat_w4_rel;
-      break;
-    case WEAPON5:
-      wep_x = CLIENT_stat_w5_id;
-      wep_y = CLIENT_stat_w5_rel;
-      break;
-    case WEAPON6:
-      wep_x = CLIENT_stat_w6_id;
-      wep_y = CLIENT_stat_w6_rel;
-      break;
-    case WEAPON7:
-      wep_x = CLIENT_stat_w7_id;
-      wep_y = CLIENT_stat_w7_rel;
-      break;
-    case WEAPON8:
-      wep_x = CLIENT_stat_w8_id;
-      wep_y = CLIENT_stat_w8_rel;
-      break;
-    case WEAPON9:
-      wep_x = CLIENT_stat_w9_id;
-      wep_y = CLIENT_stat_w9_rel;
-      break;
-  }
-  return wep;
 };
 
 /*
@@ -891,7 +852,7 @@ void() data_hud_frame={
   local float hasTarget;
   local float playerAccuracy;
 
-  HUD_ENERGY_ACTUAL = (CLIENT_energy / 100) * UI_HANGAR_DATA_mech.energyMax;
+  HUD_ENERGY_ACTUAL = CLIENT_energy / 100;
 
   //Alpha fade-in of HUD as mech powers up.
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
@@ -1003,8 +964,7 @@ void() data_hud_frame={
           if( vsize == '0 0 0' ){
             vsize = '32 32 0';  //default here
           }
-          wep = hud_data_weapon_info( wbit );
-          hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
+          hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wbit);
         }
         break;
       case HUD_UID_WEP_TYPE2:  
@@ -1016,8 +976,7 @@ void() data_hud_frame={
           if( vsize == '0 0 0' ){
             vsize = '32 32 0';  //default here
           }
-          wep = hud_data_weapon_info( wbit );
-          hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
+          hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wbit);
         }
         break;
       case HUD_UID_RADAR_TYPE1: 

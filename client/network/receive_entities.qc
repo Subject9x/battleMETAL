@@ -31,18 +31,6 @@ void() client_get_info={
     CLIENT_health_torso_right_prev = CLIENT_health_torso_right;
     CLIENT_health_arm_left_prev = CLIENT_health_arm_left;
     CLIENT_health_arm_right_prev = CLIENT_health_arm_right;
-    
-    CLIENT_weapon_state = getstati(STAT_PLAYER_WEAPONS_STATE);
-    
-    CLIENT_stat_w1_rel = getstatf(STAT_CLIENT_WEAPON1_RELOAD);
-    CLIENT_stat_w2_rel = getstatf(STAT_CLIENT_WEAPON2_RELOAD);
-    CLIENT_stat_w3_rel = getstatf(STAT_CLIENT_WEAPON3_RELOAD);
-    CLIENT_stat_w4_rel = getstatf(STAT_CLIENT_WEAPON4_RELOAD);
-    CLIENT_stat_w5_rel = getstatf(STAT_CLIENT_WEAPON5_RELOAD);
-    CLIENT_stat_w6_rel = getstatf(STAT_CLIENT_WEAPON6_RELOAD);
-    CLIENT_stat_w7_rel = getstatf(STAT_CLIENT_WEAPON7_RELOAD);
-    CLIENT_stat_w8_rel = getstatf(STAT_CLIENT_WEAPON8_RELOAD);
-    CLIENT_stat_w9_rel = getstatf(STAT_CLIENT_WEAPON9_RELOAD);
   }
 };
 
@@ -54,14 +42,9 @@ void() receive_ent_bindData={
   local float oldTargetType;
   
   name = cvar_string("_cl_name");
-
-  //CLIENT_flags = getstati( STAT_ROCKETS );
-  //CLIENT_faction = getstati( STAT_PLAYER_FACTION );
+  
   CLIENT_player_state = getstati( STAT_PLAYER_STATE );
-  //CLIENT_player_deadflag = getstati(STAT_PLAYER_DEADFLAG);
-  //CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
-  //CLIENT_data_idx = getstati(STAT_PLR_DATA_IDX);
-
+  
   if( CLIENT_data_type == DATA_MECH ){
     if( name != CLIENT_netname){
       if( CLIENT_netname != ""){
@@ -69,15 +52,6 @@ void() receive_ent_bindData={
       }
       CLIENT_netname = strzone( name );
     }
-
-    if( getstatf(STAT_CLIENT_ENERGY) > 0 ){
-      CLIENT_energy = getstatf(STAT_CLIENT_ENERGY);
-    }
-    else{
-      CLIENT_energy = 0;
-    }
-    
-    //CLIENT_move_state = getstati(STAT_MOVE_STATE);
     
     CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
     CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
@@ -93,25 +67,9 @@ void() receive_ent_bindData={
 
     //Last Frame Target info cache
     CLIENT_target_health_prev = CLIENT_stat_trg_ct_hp;
-
-    //CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
     
-    //CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
-    //CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
-    
-    //CLIENT_target_origin_x = getstatf(STAT_TARGET_ORIGINX);
-    //CLIENT_target_origin_y = getstatf(STAT_TARGET_ORIGINY);
-    //CLIENT_target_origin_z = getstatf(STAT_TARGET_ORIGINZ);
-    //CLIENT_target_shield = getstatf(STAT_TARGET_SHIELDS);
-    //CLIENT_target_dist = getstati(STAT_TRG_DIST);
-    //CLIENT_target_vecsize = getstati(STAT_TARGET_SIZE);
-
-    //CLIENT_stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
     CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
     CLIENT_target_datatype_prev = CLIENT_target_datatype;
-    //CLIENT_target_datatype = getstati(STAT_TRG_DATATYPE);
-    //CLIENT_target_faction = getstati(STAT_TRG_FACTION);
-    //CLIENT_stat_trg_ddflg = getstati(STAT_TRG_DDFLG);
     
     CLIENT_stat_trg_ct_hp = getstatf(STAT_TARGET_HP_TORSOCENTER);
     CLIENT_stat_trg_lt_hp = getstatf(STAT_TARGET_HP_TORSOLEFT); 

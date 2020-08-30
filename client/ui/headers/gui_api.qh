@@ -107,6 +107,9 @@ float( float desiredColor, float startColor, float colorRate ) gui_colorFadeTo;
 
 void( vector lOrg, string label, string value, vector labelColor, vector valueColor, vector fonts, vector fontSize ) gui_labelKeyPair;
 void() gui_drawversion;
+
+entity(float wepBit) gui_get_weapon;
+
 //console logging
 void(string msg, float val) cons_logAFloat;
 void(string msg, vector v1) cons_logAVector;

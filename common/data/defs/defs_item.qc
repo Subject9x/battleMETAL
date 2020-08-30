@@ -15,19 +15,14 @@ Overview
 #ifndef CSQC
 .void() w_attack;     //actual attack func
 .void() w_think;     //implementable update function
-.float burstRate; //percentage of reloadRate to use for burst-fire intervals.
 .float state_2;
 .float w_proj;       //pointer to projectile entity data
 .float w_firerate;
-.float w_currentammo;
-.float w_isburst;   //ugh
-.float w_state;   //double ugh
 .float ai_weaponEnergy; //current max energy cost.
 .float ai_attackPreviousEnergy; //cached every attack call, compared when new attack is made.
 .float ai_nextFireTime; //last time this WEAPON was fired.
 .vector spreadCache;
 .float damageCache;
-.float reloadValue;
 #endif
 
 #ifdef CSQC
@@ -37,6 +32,11 @@ Overview
 .void() itemMuzzleFlash;
 #endif
 
+.float w_isburst;   //ugh
+.float w_currentammo;
+.float burstRate; //percentage of reloadRate to use for burst-fire intervals.
+.float wepReloadState;   //double ugh
+.float reloadValue;
 .float aState;
 .vector wepFireOffset;     //offset for proj. origin
 .vector wepFireOffsetCache; //cached offset for constant reference

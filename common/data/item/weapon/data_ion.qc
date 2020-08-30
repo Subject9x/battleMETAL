@@ -44,25 +44,24 @@ void() data_ini_ion_={
   
   self.spreadDefault = '0.025 0.05 0';
   self.wepFireOffset = '0 0 4';
+  self.burstRate = 1;
   
-  #ifdef CSQC
-    self.w_name = "Ion Coil";
-    self.fire_sound = "sound/weapons/emp_fire.ogg";
-    self.model = "q3mdl/weapons/w_ion.md3";
-    self.abbrev = "ION";
-    self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + 3-Round burst.";
-    self.icon = "gfx/ui/wep_icons/wi_ion.png";
-    self.itemMuzzleFlash = te_muzzle_ion;
-  #endif
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 1;
-    self.model = "q3mdl/weapons/w_ion.md3";
-    self.w_attack = data_ini_attack_ion_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_ion_;
-  #endif
+#ifdef CSQC
+  self.w_name = "Ion Coil";
+  self.fire_sound = "sound/weapons/emp_fire.ogg";
+  self.model = "q3mdl/weapons/w_ion.md3";
+  self.abbrev = "ION";
+  self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + 3-Round burst.";
+  self.icon = "gfx/ui/wep_icons/wi_ion.png";
+  self.itemMuzzleFlash = te_muzzle_ion;
+#endif
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_ion_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_ion_;
+#endif
 };
 
 #ifndef CSQC

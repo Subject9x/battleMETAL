@@ -153,7 +153,7 @@ void( float burstFire ) ctrl_weapon_updateAmmo={
   if(self.w_currentammo <= 0){
     self.reloadValue = 0;
     self.w_currentammo = self.w_clipsize;
-    self.w_state = RELOADING;
+    self.wepReloadState = RELOADING;
     self.w_isburst = FALSE;
     self.w_firetime = time + self.reloadMax;
     self.count1 = time;
@@ -165,7 +165,7 @@ void( float burstFire ) ctrl_weapon_updateAmmo={
     else{
       self.w_firetime = time + self.reloadRate / self.burstRate;
     }
-    self.w_state = RECOIL;
+    self.wepReloadState = RECOIL;
     self.w_isburst = burstFire;
   }
 };
@@ -236,11 +236,6 @@ void() ctrl_die_weapon={
       }
       self.think = SUB_Remove;
       self.nextthink = time + 0.01;
-    }
-    else{
-      if( (self.owner.stat_player_weapons_state & self.w_group) ){
-        self.owner.stat_player_weapons_state = self.owner.stat_player_weapons_state - (self.owner.stat_player_weapons_state & self.w_group);
-      }
     }
   }
 };

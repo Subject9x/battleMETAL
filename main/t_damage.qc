@@ -31,6 +31,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( (attacker.flags & FL_CLIENT) ){
     if( !attacker.enemy ){
       attacker.enemy = dmgTrg;
+      attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
       attacker.targLockState = attacker.targLockState | LOCK_TARG_HAS;
     }
   }

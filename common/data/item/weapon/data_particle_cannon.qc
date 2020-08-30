@@ -51,23 +51,23 @@ void() data_ini_particle_cannon_={
   
   self.spreadDefault = '0.0025 0.0025 0';
   self.wepFireOffset = '0 0 6.75'; 
+  self.burstRate = 0;
   
-  #ifdef CSQC
-    self.w_name = "PAC";
-    self.fire_sound = "sound/weapons/pac_fire.ogg";
-    self.model = "q3mdl/weapons/w_pac.md3";
-    self.abbrev = "PAC";
-    self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Lower shields on target yields higher armor damage. + better against [large] targets.";
-    self.icon = "gfx/ui/wep_icons/wi_pac.png";
-    self.itemMuzzleFlash = te_muzzle_pac;
-  #endif 
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 0;
-    self.think = default_weapon_think;
-    self.w_attack = data_ini_attack_particle_cannon_;
-  #endif
+#ifdef CSQC
+  self.w_name = "PAC";
+  self.fire_sound = "sound/weapons/pac_fire.ogg";
+  self.model = "q3mdl/weapons/w_pac.md3";
+  self.abbrev = "PAC";
+  self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Lower shields on target yields higher armor damage. + better against [large] targets.";
+  self.icon = "gfx/ui/wep_icons/wi_pac.png";
+  self.itemMuzzleFlash = te_muzzle_pac;
+#endif 
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.think = default_weapon_think;
+  self.w_attack = data_ini_attack_particle_cannon_;
+#endif
 };
 
 #ifndef CSQC

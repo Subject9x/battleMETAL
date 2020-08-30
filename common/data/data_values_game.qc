@@ -357,26 +357,6 @@ float RADAR_SWEEP = 2.5;
 .float stat_client_hp_armRight;
 .float stat_client_hp_legs;
 
-.float stat_w1_id;
-.float stat_w2_id;
-.float stat_w3_id;
-.float stat_w4_id;
-.float stat_w5_id;
-.float stat_w6_id;
-.float stat_w7_id;
-.float stat_w8_id;
-.float stat_w9_id;
-
-.float stat_w1_rel;
-.float stat_w2_rel;
-.float stat_w3_rel;
-.float stat_w4_rel;
-.float stat_w5_rel;
-.float stat_w6_rel;
-.float stat_w7_rel;
-.float stat_w8_rel;
-.float stat_w9_rel;
-
 .float stat_trg_ent_id;
 .float stat_trg_dataidx;
 .float stat_trg_dat;
@@ -392,46 +372,38 @@ float RADAR_SWEEP = 2.5;
 .float stat_trg_ddflg;
 .float stat_ret_dist;
 
-.float addStat_targetSize_x;
-.float addStat_targetSize_y;
-.float addStat_targetSize_z;
 .float stat_plr_rep;
-.float stat_player_weapons_state;
 .string stat_target_name;
 
-.float stat_target_orgx;
-.float stat_target_orgy;
-.float stat_target_orgz;
-.float stat_target_size;
 #endif
 //============================
 //     ADDSTAT SLOT NUMBERS        
 //============================
-float STAT_PLAYER_DEADFLAG = 32;
+//float    = 32;
 float STAT_ACCURACY = 33;
 float STAT_RAM = 34;
-float STAT_CLIENT_ENERGY = 35;
-float STAT_CLIENT_SHIELD = 36;
-//float STAT_RAM_MAX = 37;
+//float    = 35;
+//float    = 36;
+//float    = 37;
 float STAT_PLAYER_STATE = 38;
-float STAT_PLAYER_WEAPONS_STATE = 39;
-float STAT_PLAYER_FACTION = 40;
+//float STAT_PLAYER_WEAPONS_STATE = 39;
+//float    = 40;
 float STAT_PLAYER_DEATHS = 41;
-float STAT_MOVE_STATE = 42;
+//float    = 42;
 
 //43;
-float STAT_PLAYER_DATA_TYPE = 44;
-float STAT_PLR_DATA_IDX = 46;
+//float    = 44;
+//float    = 46;
 float STAT_PLR_RADMOD = 47;
 float STAT_PLR_HITDIR = 48;
 float STAT_PLR_RETDIST = 49;
 
-float STAT_TRG_ENT_ID = 50;
-float STAT_TRG_DATATYPE = 53;
-float STAT_TRG_DATAIDX = 54;
-float STAT_TRG_DIST = 55;
+//float    = 50;
+//float    = 53;
+//float    = 54;
+//float    = 55;
 float STAT_TRG_FACE = 56;
-float STAT_TRG_FACTION = 57;
+//float    = 57;
 
 float STAT_TARGET_HP_TORSOCENTER = 61;
 float STAT_TARGET_HP_TORSOLEFT = 62;
@@ -447,31 +419,31 @@ float STAT_CLIENT_HP_ARMLEFT = 70;
 float STAT_CLIENT_HP_ARMRIGHT = 71;
 float STAT_CLIENT_HP_LEGS = 72;
 
-float STAT_TARGET_SHIELDS = 73;
-float STAT_TARGET_NAME = 74;
-float STAT_TARGET_ORIGINX = 75;
-float STAT_TARGET_ORIGINY = 76;
-float STAT_TARGET_ORIGINZ = 77;
-float STAT_TARGET_SIZE = 78;
+//float    = 73;
+//float    = 74;
+//float    = 75;
+//float    = 76;
+//float    = 77;
+//float    = 78;
 
 float STAT_RAM_VALUE = 79;
 float STAT_LCK_STT = 80;
-float STAT_TRG_DDFLG = 81;
+//float    = 81;
 
-float STAT_CLIENT_WEAPON1_RELOAD = 82;
-float STAT_CLIENT_WEAPON2_RELOAD = 83;
-float STAT_CLIENT_WEAPON3_RELOAD = 84;
-float STAT_CLIENT_WEAPON4_RELOAD = 85;
-float STAT_CLIENT_WEAPON5_RELOAD = 86;
-float STAT_CLIENT_WEAPON6_RELOAD = 87;
-float STAT_CLIENT_WEAPON7_RELOAD = 88;
-float STAT_CLIENT_WEAPON8_RELOAD = 89;
-float STAT_CLIENT_WEAPON9_RELOAD = 90;
+/*float    = 82;
+float    = 83;
+float    = 84;
+float    = 85;
+float    = 86;
+float    = 87;
+float    = 88;
+float    = 89;
+float    = 90;*/
 
-float STAT_RAD_SWEEP = 91;
-float ADDSTAT_TARGETSIZE_X = 100;
-float ADDSTAT_TARGETSIZE_Y = 101;
-float ADDSTAT_TARGETSIZE_Z = 102;
+//float    = 91;
+//float    = 100;
+//float    = 101;
+//float    = 102;
 float STAT_PLR_REP = 103; //remaining repair delta
 //104;
 

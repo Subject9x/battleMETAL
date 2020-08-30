@@ -200,6 +200,8 @@ void( float mech_id ) sendevent_player_mech={
         self.alpha = 0.01;
         self.scale = 0.01;
       }
+      self.reloadValue = 100;
+      self.icon = strzone(self.icon);
       setmodel(self, self.model);
     self = this;
     weps = weps.w_slot;
@@ -296,6 +298,40 @@ void( float criticalBits ) sendevent_player_critical={
   while( wep != world ){
     if( (criticalBits & wep.partParentId) ){
       wep.drawmask = 0;
+      if(self.entId == player_localentnum){
+        CLIENT_weapon_state = CLIENT_weapon_state - (CLIENT_weapon_state & wep.w_group);
+      }
+    }
+    wep = wep.w_slot;
+  }
+};
+
+/*
+  HANDLE EVENT - player mech pieces are dying
+*/
+void(float repairValue) sendevent_player_repair={
+  local entity wep;
+  
+  if( !(repairValue & M_TOR_LEFT) ){
+    self.torsoLeft.drawmask = MASK_ENGINE;
+  }
+  if( !(repairValue & M_TOR_RIGHT) ){
+    self.torsoRight.drawmask = MASK_ENGINE;
+  }
+  if( !(repairValue & M_ARM_LEFT) ){
+    self.armLeft.drawmask = MASK_ENGINE;
+  }
+  if( !(repairValue & M_ARM_RIGHT) ){
+    self.armRight.drawmask = MASK_ENGINE;
+  }
+  
+  wep = self.w_slot;
+  while( wep != world ){
+    if( !(repairValue & wep.partParentId) ){
+      wep.drawmask = MASK_ENGINE;
+      if(self.entId == player_localentnum){
+        CLIENT_weapon_state = CLIENT_weapon_state | wep.w_group;
+      }
     }
     wep = wep.w_slot;
   }
@@ -367,7 +403,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
     self.stat_rdr_mode = ReadByte();
-    self.shield = ReadShort();
+    self.shield = ReadByte();
+    self.energy = ReadByte();
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
@@ -427,6 +464,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
       prevCrit = self.damageValue - (self.damageValue & prevCrit);
       sendevent_player_critical( prevCrit );
     }
+    else if( prevCrit > self.damageValue){
+      //handle repair event
+      sendevent_player_repair( self.damageValue );
+    }
   }
   
   /*
@@ -483,7 +524,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
       scoreboard_sort();
     }
     
-    if( self.targetEntId != 0 ){
+    if( self.targetEntId > 0 ){
       self.enemy = findfloat(world, entId, self.targetEntId);
     }
     else{
@@ -531,11 +572,20 @@ void( float isNew, float changeFlags) sendent_handle_player={
     CLIENT_data_idx = self.data_idx;
     CLIENT_move_state = self.moveState;
     CLIENT_shield = self.shield;
-    if( self.enemy != world ){
+    if( self.energy > 0 ){
+      CLIENT_energy = self.energy;
+    }
+    else{
+      CLIENT_energy = 0;
+    }
+    
+    if( self.targetEntId > 0 ){
       CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
       CLIENT_stat_trg_ddflg = self.enemy.deadflag;
-      if(CLIENT_stat_trg_ddflg >= DEAD_DYING && CLIENT_stat_trg_ddflg != CLIENT_stat_trg_ddflg_prev){
+      if(CLIENT_stat_trg_ddflg > DEAD_NO ){
         self.enemy = world;
+        CLIENT_stat_trg_ent_id = 0;
+        CLIENT_stat_trg_dataidx = 0;
         return;
       }
       CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
@@ -549,18 +599,25 @@ void( float isNew, float changeFlags) sendent_handle_player={
       CLIENT_target_origin_y = self.enemy.origin_y;
       CLIENT_target_origin_z = self.enemy.origin_z;
       CLIENT_target_vecsize = self.enemy.vec_size;
-      CLIENT_target_shield = self.enemy.shield;
-     if( CLIENT_target_shield <= 0 ){
+      if( self.enemy.shield <= 0 ){
         CLIENT_target_shield = 0;
       }
       else{
-        CLIENT_target_shield = (self.enemy.shield / self.enemy.shieldMax) * 100;
+        CLIENT_target_shield = self.enemy.shield;
       }
       CLIENT_target_dist_prev = CLIENT_target_dist;
       CLIENT_target_dist = vlen(self.enemy.origin - self.origin);
       CLIENT_target_size_x = self.enemy.maxs_x;
       CLIENT_target_size_y = self.enemy.maxs_y;
       CLIENT_target_size_z = self.enemy.maxs_z;
+    }
+    else{
+      CLIENT_stat_trg_ent_id = 0;
+      CLIENT_stat_trg_dataidx = 0;
+      CLIENT_target_origin = '0 0 0';
+      CLIENT_target_faction = 0;
+      CLIENT_target_shield = 0;
+      CLIENT_target_vecsize = 0;
     }
   }
 };

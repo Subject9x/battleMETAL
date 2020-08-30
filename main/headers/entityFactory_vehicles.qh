@@ -9,7 +9,7 @@ Overview: used to build vehicles for players, this is the header
 //Basic unit assembly functions
 void() build_unit_camera;
 void(entity own) build_unit_component;
-void(float nex_wep, entity own, .float stat) build_unit_weapon;
+void(float nex_wep, entity own) build_unit_weapon;
 void() build_unit_weapon_list;
 
 //mech-specific assembly functions

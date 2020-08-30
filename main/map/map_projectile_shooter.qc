@@ -25,7 +25,7 @@ void() map_projectile_shooter_think={
   
   map_projectile_shooter_use();
   self.energy = 100000;
-  self.w_state = READY;
+  self.wepReloadState = READY;
   self.reloadValue = self.reloadMax;
   self.w_currentammo = self.w_clipsize;
   

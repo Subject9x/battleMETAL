@@ -63,7 +63,7 @@ void() playerAttack={
     if( wep_chain.w_attack ){
       if( (weaponGroup > 0) && (self.playerState == PLAYER_ACTIVE) ){
         if( (weaponGroup & wgrp) ){
-          if(wep_chain.w_state == READY || wep_chain.w_state == WAITING){
+          if(wep_chain.wepReloadState == READY || wep_chain.wepReloadState == WAITING){
             self = wep_chain;
               self.w_attack();
             self = oself;
@@ -71,7 +71,7 @@ void() playerAttack={
         }
         else{
           if(wep_chain.w_isburst == TRUE){
-            if(wep_chain.w_state == READY){
+            if(wep_chain.wepReloadState == READY){
               self = wep_chain;
                 self.w_attack();
               self = oself;
@@ -81,7 +81,7 @@ void() playerAttack={
       }
       else{
         if(wep_chain.w_isburst == TRUE){
-          if(wep_chain.w_state == READY){
+          if(wep_chain.wepReloadState == READY){
             self = wep_chain;
               self.w_attack();
             self = oself;

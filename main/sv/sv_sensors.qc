@@ -66,7 +66,7 @@ void() sv_updateTargetInfo={
   //target killed
   if( self.enemy != world ){
     if( prevDeadFlags == DEAD_NO && self.enemy.deadflag > DEAD_NO ){
-      self.stat_trg_ent_id = -1;
+      self.stat_trg_ent_id = 0;
       self.enemy = world;
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
       return;
@@ -76,18 +76,11 @@ void() sv_updateTargetInfo={
   //lost OR killed target.
   if( !(ai_valid_target(self.enemy)) ){
     
-    self.stat_trg_ent_id = -1;
+    self.stat_trg_ent_id = 0;
     self.stat_trg_dataidx = 0;
     self.stat_trg_dist = 0;
     self.stat_trg_face = -1;
     self.stat_trg_faction = 0;
-    self.addStat_targetSize_x = 0;
-    self.addStat_targetSize_y = 0;
-    self.addStat_targetSize_z = 0;
-    self.stat_target_orgx = 0;
-    self.stat_target_orgy = 0;
-    self.stat_target_orgz = 0;
-    self.stat_target_size = 0;
     if( (self.targLockState & LOCK_TARG_START)){
       self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
     }
@@ -112,13 +105,6 @@ void() sv_updateTargetInfo={
   self.stat_trg_ddflg = self.enemy.deadflag;
   self.stat_trg_dist = dst;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
-  self.addStat_targetSize_x = self.enemy.maxs_x;
-  self.addStat_targetSize_y = self.enemy.maxs_y;
-  self.addStat_targetSize_z = self.enemy.maxs_z;
-  self.stat_target_orgx = self.enemy.origin_x;
-  self.stat_target_orgy = self.enemy.origin_y;
-  self.stat_target_orgz = self.enemy.origin_z;
-  self.stat_target_size = self.enemy.maxs_z * 2;
   
   //can only lock-on to enemy units
   if( self.enemy.faction != self.faction ){

@@ -193,7 +193,6 @@ void() PlayerPostThink = {
       }
       ctrl_weapon_think(wep_chain);
     }
-    client_updateWeaponReloads();
     
     //REPAIR BAY
     self.repair_request = FALSE;
@@ -327,7 +326,6 @@ void() PlayerPostThink_powerup={
     }
     ctrl_weapon_think(wep_chain);
   }
-  client_updateWeaponReloads();
 
   //DEBUG / DEV ONLY!
   if( cvar("developer") ){
@@ -363,7 +361,7 @@ void() PlayerDie={
   client_send_server_info_update();
   client_send_campaign_end_data( self );
   
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
   
   self.effects = 0;
 	self.deadflag = DEAD_DYING;

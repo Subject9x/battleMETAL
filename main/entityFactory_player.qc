@@ -16,7 +16,6 @@ void() player_makeObserver={
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
-  self.stat_player_weapons_state = 0;
   self.view_ofs = '0 0 1';
   self.damageValue = 0;
   self.clientData.SendFlags =  self.clientData.SendFlags | SENDFLAG_TURRET;
@@ -161,16 +160,6 @@ void() player_unmakeMech={
   self.stat_client_hp_armRight = 1;
   self.stat_client_hp_legs = 1;
   
-  self.stat_w1_id = 0;
-  self.stat_w2_id = 0;
-  self.stat_w3_id = 0;
-  self.stat_w4_id = 0;
-  self.stat_w5_id = 0;
-  self.stat_w6_id = 0;
-  self.stat_w7_id = 0;
-  self.stat_w8_id = 0;
-  self.stat_w9_id = 0;
-  
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;
@@ -213,12 +202,8 @@ void() player_unmakeMech={
   self.ramUpMax = 1;
   self.repair_request = 0;
   self.enemy = world; //explicit assignment here
-  self.stat_player_weapons_state = 0;
   self.stat_plr_rep = 0;
   self.stat_target_name = "";
-  self.stat_target_orgx = 0;
-  self.stat_target_orgy = 0;
-  self.stat_target_orgz = 0;
   
   self.hud_ent.modelindex = 0;
   self.hud_ent.effects = EF_NODRAW;

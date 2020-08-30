@@ -83,16 +83,6 @@ void() ClientConnect = {
   self.stat_client_hp_armRight = 1;
   self.stat_client_hp_legs = 1;
   
-  self.stat_w1_id = 0;
-  self.stat_w2_id = 0;
-  self.stat_w3_id = 0;
-  self.stat_w4_id = 0;
-  self.stat_w5_id = 0;
-  self.stat_w6_id = 0;
-  self.stat_w7_id = 0;
-  self.stat_w8_id = 0;
-  self.stat_w9_id = 0;
-  
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;
@@ -138,13 +128,9 @@ void() ClientConnect = {
   self.playerState = PLAYER_CONNECT;  //so we can detect a first-connect state.
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here
-  self.stat_player_weapons_state = 0;
   self.stat_plr_rep = -1;
   self.stat_target_name = "";
-  self.stat_target_orgx = 0;
-  self.stat_target_orgy = 0;
-  self.stat_target_orgz = 0;
-
+  
   self.attackFlag = 0;
 
   if( world.animaticOnly ) {
@@ -557,6 +543,7 @@ float( float isNew, float changeFlags ) send_client_data={
     self.radar_range = player.radar_range;
     self.stat_rdr_mode = player.stat_rdr_mode;
     self.stat_client_shield = player.stat_client_shield;
+    self.stat_client_energy = player.stat_client_energy;
     self.vec_size = player.vec_size;
     self.damageValue = player.damageValue;
     self.data_idx = player.data_idx; 
@@ -583,7 +570,8 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.view_ofs_z );
     
     WriteByte( MSG_ENTITY, self.stat_rdr_mode );
-    WriteShort( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.stat_client_energy );
     
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
@@ -657,7 +645,7 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     WriteByte( MSG_ENTITY, (player.particleCube == world));
-    WriteLong( MSG_ENTITY, num_for_edict(player.enemy) );
+    WriteLong( MSG_ENTITY, player.stat_trg_ent_id );
   }
   return TRUE;
 };

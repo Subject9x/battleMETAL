@@ -43,24 +43,24 @@ void() data_ini_snub_artillery_={
 
   self.wepFireOffset = '0 0 9';
   self.spreadDefault = '0.02 0.02 0';
+  self.burstRate = 0;
   
-  #ifdef CSQC
-    self.w_name = "Snub Field Artillery";
-    self.fire_sound = "sound/fx_boom.ogg";
-    self.model = "q3mdl/weapons/w_sfga.md3";
-    self.abbrev = "SFGA";
-    self.description = "+ Minor parabolic arc. + Shot has Blast Radius on open ground.";
-    self.icon = "gfx/ui/wep_icons/wi_sfg.png";
-    self.itemMuzzleFlash = te_muzzle_sfg;
-  #endif 
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 0;
-    self.w_attack = data_ini_attack_snub_artillery_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_snub_artillery_;
-  #endif
+#ifdef CSQC
+  self.w_name = "Snub Field Artillery";
+  self.fire_sound = "sound/fx_boom.ogg";
+  self.model = "q3mdl/weapons/w_sfga.md3";
+  self.abbrev = "SFGA";
+  self.description = "+ Minor parabolic arc. + Shot has Blast Radius on open ground.";
+  self.icon = "gfx/ui/wep_icons/wi_sfg.png";
+  self.itemMuzzleFlash = te_muzzle_sfg;
+#endif 
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_snub_artillery_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_snub_artillery_;
+#endif
 };
 #ifndef CSQC
 void() data_ini_attack_snub_artillery_={

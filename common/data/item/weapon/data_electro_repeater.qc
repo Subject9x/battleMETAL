@@ -32,10 +32,10 @@ void() weapon_esr_think={
   local float lim;
   local float prevState;
   
-  prevState = self.w_state;
+  prevState = self.wepReloadState;
 
   //Reloading - overheated, full cooldown
-  if( self.w_state == RELOADING ){
+  if( self.wepReloadState == RELOADING ){
     if( time > self.w_firetime ){
       if( self.w_currentammo < self.reloadMax ){
         self.w_currentammo = self.w_currentammo + ESR_HEAT_UP;
@@ -43,7 +43,7 @@ void() weapon_esr_think={
       }
       else{
         self.reloadValue = 100;
-        self.w_state = READY;
+        self.wepReloadState = READY;
       }
     }
   }
@@ -51,13 +51,13 @@ void() weapon_esr_think={
     //Recoil - Just fired
     if( prevState == RECOIL ){
       if( time > self.w_firetime ){
-        self.w_state = READY;
+        self.wepReloadState = READY;
         self.reloadValue = 100;
       }
     }
     //Waiting - has not been fired recently, cooling down
     if( prevState == WAITING || time > self.count2 ){
-      if( self.w_state == WAITING ){
+      if( self.wepReloadState == WAITING ){
         //proper cool down
         if( time > self.count4 ){
           //spin down the fire rate
@@ -77,7 +77,7 @@ void() weapon_esr_think={
         }
       }
       else{
-        self.w_state = WAITING;
+        self.wepReloadState = WAITING;
         self.count4 = time + 0.1;
       }
     }
@@ -122,35 +122,34 @@ void() data_ini_electro_repeater_={
 
   self.spreadDefault = '0.015 0.015 0';
   self.wepFireOffset = '0 0 6'; 
+  self.burstRate = 0;
   
-  #ifdef CSQC  
-    self.w_name = "Electro-Static Repeater";
-    self.fire_sound = "sound/weapons/esr_fire.ogg";
-    self.model = "q3mdl/weapons/w_esr.md3";
-    self.abbrev = "ESR";
-    self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage split when target is <shielded>";
-    self.icon = "gfx/ui/wep_icons/wi_esr.png";
-    self.itemMuzzleFlash = te_muzzle_esr;
-  #endif
+#ifdef CSQC  
+  self.w_name = "Electro-Static Repeater";
+  self.fire_sound = "sound/weapons/esr_fire.ogg";
+  self.model = "q3mdl/weapons/w_esr.md3";
+  self.abbrev = "ESR";
+  self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage split when target is <shielded>";
+  self.icon = "gfx/ui/wep_icons/wi_esr.png";
+  self.itemMuzzleFlash = te_muzzle_esr;
+#endif
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  if( (self.owner.flags & FL_MONSTER) ){
+    self.reloadMax = 1;
+    self.energyRate = self.energyRate / 2;
+    self.think = default_weapon_think;
+  }
+  else{
+    self.think = weapon_esr_think;
+  }
   
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 0;
-    if( (self.owner.flags & FL_MONSTER) ){
-      self.reloadMax = 1;
-      self.energyRate = self.energyRate / 2;
-      self.think = default_weapon_think;
-    }
-    else{
-      self.think = weapon_esr_think;
-    }
-    
-    self.w_attack = data_ini_attack_electro_repeater_;
-    self.spreadCache = self.spreadDefault;
-    self.damageCache = self.damageValue;
-    self.count3 = self.reloadRate;
-  #endif
-  
+  self.w_attack = data_ini_attack_electro_repeater_;
+  self.spreadCache = self.spreadDefault;
+  self.damageCache = self.damageValue;
+  self.count3 = self.reloadRate;
+#endif
 };
 
 #ifndef CSQC
@@ -158,12 +157,12 @@ void() data_ini_attack_electro_repeater_={
   local float damage;
   
   if( self.owner.energy <= self.energyRate ){
-    self.w_state = RELOADING;
+    self.wepReloadState = RELOADING;
     self.w_currentammo = self.reloadMax / 1.125;
     return;
   }
   
-  self.w_state = RECOIL;
+  self.wepReloadState = RECOIL;
   self.count1 = time;
   self.count2 = time + self.reloadRate * 2;
   
@@ -183,7 +182,7 @@ void() data_ini_attack_electro_repeater_={
   
   self.w_currentammo = self.w_currentammo - ESR_HEAT_UP;
   if( self.w_currentammo < 0 ){
-    self.w_state = RELOADING;
+    self.wepReloadState = RELOADING;
     self.count2 = time;
     self.count3 = self.reloadRate;
     self.spreadDefault = self.spreadCache * 4;

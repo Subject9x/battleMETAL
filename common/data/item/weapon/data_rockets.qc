@@ -44,25 +44,24 @@ void() data_ini_rockets_={
   
   self.wepFireOffset = '0 0 3';
   self.spreadDefault = '0.02 0.025 0';
+  self.burstRate = 1.75;
   
-  #ifdef CSQC
-    self.w_name = "Rocket Launcher";
-    self.fire_sound = "sound/weapons/rckt_fire.ogg";
-    self.model = "q3mdl/weapons/w_mis.md3";
-    self.abbrev = "RCK";
-    self.description = "+ target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
-    self.icon = "gfx/ui/wep_icons/wi_rck.png";
-    self.itemMuzzleFlash = te_muzzle_rck;
-  #endif 
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 1.75;
-    self.model = "q3mdl/weapons/w_mis.md3";
-    self.w_attack = data_ini_attack_rockets_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_rocket_;
-  #endif
+#ifdef CSQC
+  self.w_name = "Rocket Launcher";
+  self.fire_sound = "sound/weapons/rckt_fire.ogg";
+  self.model = "q3mdl/weapons/w_mis.md3";
+  self.abbrev = "RCK";
+  self.description = "+ target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+  self.icon = "gfx/ui/wep_icons/wi_rck.png";
+  self.itemMuzzleFlash = te_muzzle_rck;
+#endif 
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_rockets_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_rocket_;
+#endif
 };
 
 #ifndef CSQC

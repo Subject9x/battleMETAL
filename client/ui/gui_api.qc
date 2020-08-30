@@ -731,6 +731,25 @@ void() gui_drawversion={
   drawfont = drawfont_prev;
 };
 
+entity(float wepBit) gui_get_weapon={
+  local entity item;
+  local entity found;
+  
+  item = findfloat(world, entId, player_localentnum);
+  item = item.w_slot;
+  while( item != world ){
+    if(item.w_group == wepBit){
+      found = item;
+    }
+    item = item.w_slot;
+  }
+  if(found){
+    return found;
+  }
+  return world;
+};
+
+
 void(string msg, float val) cons_logAFloat={
   print(strcat(msg,":", ftos(val),"\n"));
 };

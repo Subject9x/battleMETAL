@@ -52,25 +52,24 @@ void() data_ini_missile_laserguide_={
 
   self.spreadDefault = '0.03 0.03 0';
   self.wepFireOffset = '0 0 2';
+  self.burstRate = 1;
   
-  #ifdef CSQC
-    self.w_name = "Missile - Self-Guided";
-    self.fire_sound = "sound/weapons/mis_fire.ogg";
-    self.model = "q3mdl/weapons/w_lgm.md3"; 
-    self.abbrev = "MLGD";
-    self.description = "+ target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
-    self.icon = "gfx/ui/wep_icons/wi_mlgd.png"; 
-    self.itemMuzzleFlash = te_muzzle_lgm;
-  #endif 
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 1;
-    self.model = "q3mdl/weapons/w_lgm.md3";  
-    self.w_attack = data_ini_attack_missile_laserguide_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_missile_laserguide_;
-  #endif
+#ifdef CSQC
+  self.w_name = "Missile - Self-Guided";
+  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.model = "q3mdl/weapons/w_lgm.md3"; 
+  self.abbrev = "MLGD";
+  self.description = "+ target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+  self.icon = "gfx/ui/wep_icons/wi_mlgd.png"; 
+  self.itemMuzzleFlash = te_muzzle_lgm;
+#endif 
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_missile_laserguide_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_missile_laserguide_;
+#endif
 };
 
 #ifndef CSQC

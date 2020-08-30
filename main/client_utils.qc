@@ -43,41 +43,6 @@ void() client_push_player_info={
     self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
     self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
     
-    wepItr = 1;
-    for( wep = self.w_slot; wep != world; wep = wep.w_slot){
-      //why can't we iterate over entity fields again?
-      switch(wepItr){
-        case 1:
-          self.stat_w1_rel = wep.reloadValue;
-          break;
-        case 2:
-          self.stat_w2_rel = wep.reloadValue;
-          break;
-        case 3:
-          self.stat_w3_rel = wep.reloadValue;
-          break;
-        case 4:
-          self.stat_w4_rel = wep.reloadValue;
-          break;
-        case 5:
-          self.stat_w5_rel = wep.reloadValue;
-          break;
-        case 6:
-          self.stat_w6_rel = wep.reloadValue;
-          break;
-        case 7:
-          self.stat_w7_rel = wep.reloadValue;
-          break;
-        case 8:
-          self.stat_w8_rel = wep.reloadValue;
-          break;
-        case 9:
-          self.stat_w9_rel = wep.reloadValue;
-          break;
-      }
-      wepItr = wepItr + 1;
-    }
-    
     if( self.stat_trg_ent_id != 0 ){
       //this is silly but precludes forcing the csqc to know the target's max shields
       if( time <= self.enemy.shieldHitRegen ) {
@@ -460,39 +425,30 @@ void(string cmd, float tokens) client_setWeapon={
     switch(totalWeps){
       case 1:
         self.next_wepn1 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 2:
         self.next_wepn2 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 3:
         self.next_wepn3 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 4:
         self.next_wepn4 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 5:
         self.next_wepn5 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 6:
         self.next_wepn6 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 7:
         self.next_wepn7 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 8:
         self.next_wepn8 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
       case 9:
         self.next_wepn9 = new_id;
-        self.stat_player_weapons_state = self.stat_player_weapons_state | bitCount;
         break;
     }
     itr = itr + 1;
@@ -793,49 +749,6 @@ void() legacy_PlayerDie={
 	//self.invincible_finished = 0;
 	//self.super_damage_finished = 0;
 	//self.radsuit_finished = 0;
-};
-
-void() client_updateWeaponReloads={
-  local entity e;
-  local float idx;
-  idx = 1;
-  e = self.w_slot;
-  while(e){
-    local float delta, wid;
-    delta = e.reloadValue;
-    wid = e.data_idx;
-    switch(idx){
-      case 1: 
-        self.stat_w1_id = wid;
-        break;
-      case 2:
-        self.stat_w2_id = wid;
-        break;
-      case 3:
-        self.stat_w3_id = wid;
-        break;
-      case 4:
-        self.stat_w4_id = wid;
-        break;
-      case 5:
-        self.stat_w5_id = wid;
-        break;
-      case 6:
-        self.stat_w6_id = wid;
-        break;
-      case 7:
-        self.stat_w7_id = wid;
-        break;
-      case 8:
-        self.stat_w8_id = wid;
-        break;
-      case 9:
-        self.stat_w9_id = wid;
-        break;
-    }
-    idx = idx + 1;
-    e = e.w_slot;
-  }
 };
 
 float(entity piece) csqc_updateCompStat={

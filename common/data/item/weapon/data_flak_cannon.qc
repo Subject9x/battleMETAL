@@ -50,24 +50,24 @@ void() data_ini_flak_cannon_={
   
   self.spreadDefault = '0.07 0.07 0';
   self.wepFireOffset = '0 0 5';
+  self.burstRate = 1;
   
-  #ifdef CSQC
-    self.w_name = "Flak Cannon";
-    self.fire_sound = "sound/weapons/flak_fire.ogg";
-    self.model = "q3mdl/weapons/w_flk.md3";
-    self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
-    self.abbrev = "FLAK";
-    self.description = "+ Instant-impact weapon. +4-rnd burst and 4 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
-    self.icon = "gfx/ui/wep_icons/wi_flak.png";
-    self.itemMuzzleFlash = te_muzzle_flk;
-  #endif
-  
-  #ifndef CSQC
-    self.burstRate = 1;
-    self.w_isburst = FALSE;
-    self.w_attack = data_ini_attack_flak_;
-    self.think = default_weapon_think;
-  #endif
+#ifdef CSQC
+  self.w_name = "Flak Cannon";
+  self.fire_sound = "sound/weapons/flak_fire.ogg";
+  self.model = "q3mdl/weapons/w_flk.md3";
+  self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
+  self.abbrev = "FLAK";
+  self.description = "+ Instant-impact weapon. +4-rnd burst and 4 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
+  self.icon = "gfx/ui/wep_icons/wi_flak.png";
+  self.itemMuzzleFlash = te_muzzle_flk;
+#endif
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_flak_;
+  self.think = default_weapon_think;
+#endif
 };
 
 #ifndef CSQC

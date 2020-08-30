@@ -34,7 +34,7 @@ void() ai_ranged_attack={
       if(wep_chain.deadflag > DEAD_NO){
         continue;
       }
-      if(wep_chain.w_state != READY){
+      if(wep_chain.wepReloadState != READY){
         continue;
       }
       if( !(self.currentWeaponGroup & wep_chain.w_group) ){
@@ -59,7 +59,7 @@ void() ai_ranged_attack={
       if(wep_chain.w_isburst != TRUE){
         continue;
       }
-      if(wep_chain.w_state != READY){
+      if(wep_chain.wepReloadState != READY){
         continue;
       }
       self = wep_chain;

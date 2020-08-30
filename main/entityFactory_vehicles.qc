@@ -100,58 +100,31 @@ void() build_unit_weapon_list={
       weaponBuild = weaponMount;
       switch( weaponCount ){
         case 1:
-          build_unit_weapon( self.next_wepn1, self, stat_w1_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w1_rel = 100;
-          }
+          build_unit_weapon( self.next_wepn1, self );
           break;
         case 2:
-          build_unit_weapon( self.next_wepn2, self, stat_w2_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w2_rel = 100;
-          }
+          build_unit_weapon( self.next_wepn2, self );
           break;
         case 3:
-          build_unit_weapon( self.next_wepn3, self, stat_w3_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w3_rel = 100;
-          }
+          build_unit_weapon( self.next_wepn3, self );
           break;
         case 4:
-          build_unit_weapon( self.next_wepn4, self, stat_w4_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w4_rel = 100;
-          }
+          build_unit_weapon( self.next_wepn4, self );
           break;
         case 5:
-          build_unit_weapon( self.next_wepn5, self, stat_w5_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w5_rel = 100;
-          }
+          build_unit_weapon( self.next_wepn5, self );
           break;
         case 6:
-          build_unit_weapon( self.next_wepn6, self, stat_w6_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w6_rel = 100;
-          }
+          build_unit_weapon( self.next_wepn6, self );
           break;
         case 7:
-          build_unit_weapon( self.next_wepn7, self, stat_w7_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w7_rel = 100;
-          }
+          build_unit_weapon( self.next_wepn7, self );
           break;
         case 8:
-          build_unit_weapon( self.next_wepn8, self, stat_w8_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w8_rel = 100;
-          }
-          break;
+          build_unit_weapon( self.next_wepn8, self );
+          break;
         case 9:
-          build_unit_weapon( self.next_wepn9, self, stat_w9_id);
-          if( (self.flags & FL_CLIENT)){
-            self.stat_w9_rel = 100;
-          }
+          build_unit_weapon( self.next_wepn9, self );
           break;
       }
       weaponCount = weaponCount + 1;
@@ -165,20 +138,20 @@ void() build_unit_weapon_list={
   }
 };
 
-void( float nex_wep, entity own, .float stat) build_unit_weapon={
+void( float nex_wep, entity own ) build_unit_weapon={
   local entity parentEntity, partParent;
   local vector ofs;
   parentEntity = self;
   
   self = weaponBuild;
-    self.data_idx = own.stat = nex_wep;
+    self.data_idx = nex_wep;
     self.damageType = 0; //zero-out this stat
     initialize_data_item_(nex_wep);
     
     self.reloadValue = 100; // bug fix - weapon reload indicator not starting at correct value
     self.w_firetime = 0;
     self.w_currentammo = self.w_clipsize;
-    self.w_state = READY;
+    self.wepReloadState = READY;
     self.health = 1;
     self.max_health = 1;
   

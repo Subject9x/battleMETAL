@@ -80,3 +80,6 @@ void( vector turretAngles ) sendevent_turret_update;
 void() sendevent_handle_weaponfire;
 
 void() sendevent_building_die;
+
+void() sendent_item_think;
+void(entity item) sendent_start_reload;

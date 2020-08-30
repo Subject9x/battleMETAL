@@ -34,7 +34,7 @@ void() te_muzzle_latc={
 #endif
 void() data_ini_light_atc_={
 
-  self.data_idx = 1;  
+  self.data_idx = 1;
   
   self.w_clipsize = 3;
   self.reloadRate = 0.12;
@@ -42,31 +42,31 @@ void() data_ini_light_atc_={
   self.energyRate = 0;
   
   self.w_range = 3200;
-  self.damageValue = 12;
+  self.damageValue = 10.5;
   self.damageType = DMG_BAL;
 
   self.techLevel = 1;
   self.equipSize = BAL1;
   
   self.spreadDefault = '0.025 0.025 0';
-  self.wepFireOffset = '0 0.5 5'; 
+  self.wepFireOffset = '0 0.5 5';
+  self.burstRate = 1;
   
-  #ifdef CSQC  
-    self.w_name = "Light Autocannon";
-    self.abbrev = "ATC";
-    self.description = "+ Instant-impact weapon. + 3-round burst. + Better against <Armor>.";
-    self.icon = "gfx/ui/wep_icons/wi_atc.png";
-    self.model = "q3mdl/weapons/w_atc.md3";
-    self.fire_sound = "sound/weapons/atc_fire.ogg";
-    self.itemMuzzleFlash = te_muzzle_latc;
-  #endif
-  
-  #ifndef CSQC  
-    self.w_attack = data_ini_attack_latc_;
-    self.think = default_weapon_think;
-    self.w_isburst = FALSE;
-    self.burstRate = 1;
-  #endif
+#ifdef CSQC  
+  self.w_name = "Light Autocannon";
+  self.abbrev = "ATC";
+  self.description = "+ Instant-impact weapon. + 3-round burst. + Better against <Armor>.";
+  self.icon = "gfx/ui/wep_icons/wi_atc.png";
+  self.model = "q3mdl/weapons/w_atc.md3";
+  self.fire_sound = "sound/weapons/atc_fire.ogg";
+  self.itemMuzzleFlash = te_muzzle_latc;
+#endif
+
+#ifndef CSQC  
+  self.w_attack = data_ini_attack_latc_;
+  self.think = default_weapon_think;
+  self.w_isburst = FALSE;
+#endif
 };
 
 #ifndef CSQC

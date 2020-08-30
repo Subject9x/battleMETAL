@@ -52,7 +52,7 @@ void() hrepair_rep = [0, hrepair_rep]{
     if( self.trigger_field ){
       client_send_event_repairs( self.trigger_field, FALSE ) ;
       if( self.startupDelay == FL_NOSHOOT ){
-        self.trigger_field.flags = self.trigger_field.flags - FL_NOSHOOT;
+        self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
       }
       self.trigger_field.stat_plr_rep = -1;
       self.trigger_field = world;
@@ -103,16 +103,17 @@ void() hrepair_rep = [0, hrepair_rep]{
             self.deadflag = DEAD_DYING;
             if(fix.deadflag != DEAD_NO ){
               fix.deadflag = DEAD_NO;
-              fix.effects = fix.effects - (fix.effects & EF_NODRAW);
               repairMe.damageValue = repairMe.damageValue - (repairMe.damageValue & fix.partTypeId);
               repairMe.critBits = repairMe.critBits - (repairMe.critBits & fix.partTypeId);
+              
+              if( (repairMe.flags & FL_CLIENT) ){
+                repairMe.clientData.SendFlags = repairMe.clientData.SendFlags | SENDFLAG_CRIT;
+              }
               
               part = repairMe.w_slot;
               while( part != world ){
                 if( part.partParentId == fix.partTypeId && part.deadflag != DEAD_NO ){
                   part.deadflag = DEAD_NO;
-                  part.effects = part.effects - (part.effects & EF_NODRAW);
-                  repairMe.stat_player_weapons_state = repairMe.stat_player_weapons_state | part.w_group;
                   part.think = part.w_think;
                   if( part.item_run_upgrade ){
                     self = part;

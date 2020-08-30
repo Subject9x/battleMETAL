@@ -44,25 +44,25 @@ void() data_ini_plasma_={
   
   self.wepFireOffset = '0 0 6';
   self.spreadDefault = '0.0075 0.0075 0';
+  self.burstRate = 1.5;
   
-  #ifdef CSQC  
-    self.w_name = "Rotary Plasma Chamber";
-    self.fire_sound = "sound/weapons/rpls_fire.ogg";
-    self.model = "q3mdl/weapons/w_rpc.md3";
-    self.abbrev = "RPC";
-    self.description = "+ Will burn over time on unshielded hit. + inhibits target shield regen when burning.";
-    self.icon = "gfx/ui/wep_icons/wi_rpc.png";
-    self.itemMuzzleFlash = te_muzzle_rpc;
-  #endif 
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 1.5;
-    self.w_attack = data_ini_attack_plasma_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_plasma_;
-    self.spreadCache = self.spreadDefault;
-  #endif
+#ifdef CSQC  
+  self.w_name = "Rotary Plasma Chamber";
+  self.fire_sound = "sound/weapons/rpls_fire.ogg";
+  self.model = "q3mdl/weapons/w_rpc.md3";
+  self.abbrev = "RPC";
+  self.description = "+ Will burn over time on unshielded hit. + inhibits target shield regen when burning.";
+  self.icon = "gfx/ui/wep_icons/wi_rpc.png";
+  self.itemMuzzleFlash = te_muzzle_rpc;
+#endif 
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_plasma_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_plasma_;
+  self.spreadCache = self.spreadDefault;
+#endif
 };
 
 #ifndef CSQC

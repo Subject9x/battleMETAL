@@ -53,25 +53,24 @@ void() data_ini_missile_swarm_={
 
   self.spreadDefault = '0.01 0.01 0';
   self.wepFireOffset = '0 0 1';
+  self.burstRate = 1;
   
-  #ifdef CSQC
-    self.w_name = "Missile - Swarm";
-    self.fire_sound = "sound/weapons/arh_fire.ogg";
-    self.model = "q3mdl/weapons/w_swrm.md3";
-    self.abbrev = "SWRM";
-    self.description = "+ target <shields> reduce damage. + Burst-fire. + Shots will home on any target when fired. + Does NOT require <Target Lock>.";
-    self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
-    self.itemMuzzleFlash = te_muzzle_swrm;
-  #endif 
-  
-  #ifndef CSQC
-    self.w_isburst = FALSE;
-    self.burstRate = 1;
-    self.model = "q3mdl/weapons/w_swrm.md3";
-    self.w_attack = data_ini_attack_missile_swarm_;
-    self.think = default_weapon_think;
-    self.data_ini_projectile = data_projectile_ini_missile_swarm_;
-  #endif
+#ifdef CSQC
+  self.w_name = "Missile - Swarm";
+  self.fire_sound = "sound/weapons/arh_fire.ogg";
+  self.model = "q3mdl/weapons/w_swrm.md3";
+  self.abbrev = "SWRM";
+  self.description = "+ target <shields> reduce damage. + Burst-fire. + Shots will home on any target when fired. + Does NOT require <Target Lock>.";
+  self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
+  self.itemMuzzleFlash = te_muzzle_swrm;
+#endif 
+
+#ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_attack = data_ini_attack_missile_swarm_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_missile_swarm_;
+#endif
 };
 
 #ifndef CSQC
