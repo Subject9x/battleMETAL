@@ -78,7 +78,7 @@ void() player_think={
   self.laser_sight_org = trace_endpos;
 
   self.think = player_think;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.05;
 };
 
 float() player_predraw={
@@ -579,6 +579,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
     CLIENT_data_idx = self.data_idx;
     CLIENT_move_state = self.moveState;
     CLIENT_shield = self.shield;
+    if( self.shield > 0 ){
+      CLIENT_shield = (self.shield / self.shieldMax) * 100;
+    }
+    else{
+      CLIENT_shield = 0;
+    }
     if( self.energy > 0 ){
       CLIENT_energy = self.energy;
     }
@@ -610,7 +616,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
         CLIENT_target_shield = 0;
       }
       else{
-        CLIENT_target_shield = self.enemy.shield;
+        CLIENT_target_shield = (self.enemy.shield / self.enemy.shieldMax) * 100;
       }
       CLIENT_target_dist_prev = CLIENT_target_dist;
       CLIENT_target_dist = vlen(self.enemy.origin - self.origin);

@@ -75,7 +75,6 @@ void() sv_updateTargetInfo={
   
   //lost OR killed target.
   if( !(ai_valid_target(self.enemy)) ){
-    
     self.stat_trg_ent_id = 0;
     self.stat_trg_dataidx = 0;
     self.stat_trg_dist = 0;

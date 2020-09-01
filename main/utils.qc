@@ -201,15 +201,19 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   
   adj = self.compOffset + self.wepFireOffset;
   src = self.owner.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);  
-  acc = weaponSpread;
-  acc_x = acc_x * playerAcc;
-  acc_y = acc_y * playerAcc;
   
-  acc_x = acc_x * crandom();
-  acc_y = acc_y * crandom();
-  direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
-    
-  traceline (src, src + direction*idealRange, FALSE, self);
+  //08-2020: shot dispersion has been disabled because I can't find a clean/lightweight
+  //means of sending this information over the network
+  
+  //acc = weaponSpread;
+  //acc_x = acc_x * playerAcc;
+  //acc_y = acc_y * playerAcc;
+  
+  //acc_x = acc_x * crandom();
+  //acc_y = acc_y * crandom();
+  //direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
+  
+  traceline (src, src + wepAim*idealRange, FALSE, self);
   
   return trace_endpos;
 };

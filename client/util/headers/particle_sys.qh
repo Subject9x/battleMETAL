@@ -113,12 +113,5 @@ void( vector org, float explodeSize, vector explodeColor, float onShield ) parti
 
 float(vector endPos, entity endEnt) te_impact_type;
 
-/*
-  Muzzle flash
-*/
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_esr;
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_flak;
-
-
 vector( vector startOrg ) te_apply_wind;
 vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge;

@@ -8,6 +8,7 @@ Overview:
 
 
 void( float dataID ) data_sync_new_vehicle={
+  self.solid = SOLID_BBOX;
   switch(dataID){
     case UID_VEHICLE_foslager:
       data_vehicle_foslager();

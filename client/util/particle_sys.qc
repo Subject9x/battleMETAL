@@ -509,44 +509,6 @@ float(vector endPos, entity endEnt) te_impact_type={
   return IMPACT_SKY;
 };
 
-
-//Electro Static ID 8
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_esr={
-  local vector norm;
-  local float impactStyle;
-  
-  norm = normalize(muzzleVel - muzzleOrg);
-
-
-};
-
-
-//Flak Cannon ID 12
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_flak={  
-  local vector ang;
-  local vector norm;
-  local float impactStyle;
-  
-  norm = normalize(muzzleVel - muzzleOrg);
-  ang = vectoangles(muzzleVel - muzzleOrg);
-  makevectors(ang);
-  
-  switch(impactStyle){
-    case IMPACT_SHIELD:  
-      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), muzzleVel, norm * 2, random() * 2);
-      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
-      return;
-    case IMPACT_ARMOR:
-      pointparticles( particleeffectnum("TE_FLK_IMPACT"), muzzleVel + (v_forward * -32), norm * 4, 1);
-      break;
-    case IMPACT_DIRT:
-      pointparticles( particleeffectnum("TE_FLK_DIRT"), muzzleVel + (v_up * 3) + (v_forward * -7), norm * 20, 1);
-      break;
-    default:
-      return;
-  }
-};
-
 vector( vector startOrg ) te_apply_wind={
   local vector windVel;
   

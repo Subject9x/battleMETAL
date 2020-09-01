@@ -96,13 +96,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
     if( isNew ){
       self.scale = 1;
       self.alpha = 1;
-      
       makevectors(self.angles);
       data_sync_new_building(self.data_idx);
       self.data_type = DATA_BLD;
       self.flags = self.flags | FL_MONSTER; 
       self.colormod = '1 1 1';
-      
+      setorigin(self, self.origin);
       if( self.th_walk ){
         self.th_walk();
       }
