@@ -12,6 +12,7 @@ Overview:
   self is building
 */
 void( float dataID ) data_sync_new_building={
+  self.solid = SOLID_BBOX;
   switch(dataID){
     case UI_BUILDING_radar:
       data_building_radar();

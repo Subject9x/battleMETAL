@@ -43,7 +43,7 @@ float TE_AI_VOICE = 100;
 float TE_MISSION_END = 106;
 //107;
 
-float TE_WEAPON_FLASH = 108;
+//108;
 //109;
 
 float TE_VFX_EXPLODE = 110;

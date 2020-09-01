@@ -45,8 +45,8 @@ void() data_ini_balaket_={
   self.ramUpMax = 3;
   self.ramCooldown = 6;
 #ifdef CSQC
-  self.legMoveRate = 13;
-  self.legRunRate = 20;
+  self.legMoveRate = 9.5;
+  self.legRunRate = 12;
 #endif
 #ifndef CSQC
   //self.yaw_speed = 3.75;    // AI-only 

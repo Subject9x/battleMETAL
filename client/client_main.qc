@@ -161,6 +161,8 @@ void() CSQC_Init =
   MENU_DEBRIEF_unlocks_mechs = ""; 
   MENU_DEBRIEF_unlocks_equip = ""; 
   SV_NEXTMAP = "";
+  
+  initparticlespawner(16);
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -411,11 +413,7 @@ float() CSQC_Parse_TempEntity =
     case TE_MISSION_END:
       client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
-    
-    case TE_WEAPON_FLASH:
-      particle_weapon_flash( ReadByte(), ReadLong(), te_read_vector() ) ;
-      return TRUE;
-    
+      
     case TE_VFX_EXPLODE:
       particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
       return TRUE;

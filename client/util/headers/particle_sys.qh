@@ -111,13 +111,11 @@ void( vector org, float explodeSize, vector explodeColor, float onShield ) parti
 //void() particle_mech_chunk_th;
 //void( float modelIndex, float skinNum, float vecSize, vector entOrg, vector entAngl ) particle_mech_chunk;
 
+float(vector endPos, entity endEnt) te_impact_type;
+
 /*
   Muzzle flash
 */
-void( float flashId, float entityId, vector flashVel ) particle_weapon_flash;
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_latc;
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_las;
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_pac;
 void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_esr;
 void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_flak;
 

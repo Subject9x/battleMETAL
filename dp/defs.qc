@@ -290,7 +290,6 @@ float	DEAD_RESPAWNABLE		= 3;
 float	DEAD_RESPAWNING			= 4; // dead, waiting for buttons to be released
 
 // takedamage values
-
 float	DAMAGE_NO				= 0;
 float	DAMAGE_YES				= 1;
 float	DAMAGE_AIM				= 2;

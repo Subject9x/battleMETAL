@@ -198,6 +198,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.skin =  self.faction - 1;
       self.movetype = MOVETYPE_STEP;
       data_sync_new_mech_ai( self.data_idx );
+      self.takedamage = DAMAGE_AIM;
     }
     self.alpha = 0.001;
     self.scale = 0.001;

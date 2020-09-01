@@ -339,6 +339,10 @@ const float CONTENT_SLIME					= -4;
 const float CONTENT_LAVA					= -5;
 const float CONTENT_SKY						= -6;
 
+// takedamage values
+const float DAMAGE_NO				= 0;
+const float DAMAGE_YES				= 1;
+const float DAMAGE_AIM				= 2;
 
 // edict.flags
 const float	FL_FLY					= 1;

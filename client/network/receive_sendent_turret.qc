@@ -84,6 +84,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       self.colormod = '1 1 1';
       data_sync_new_turret(self.data_idx);
       sendent_setup_weapons();
+      self.takedamage = DAMAGE_AIM;
     }
     sendent_ini_interpolate();
     self.interpolate_entity = interpolate_turret;

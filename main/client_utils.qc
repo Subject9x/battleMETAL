@@ -791,17 +791,6 @@ void( float entityId, float particleEffectId, vector particleOrg, vector particl
   WriteCoord(MSG_BROADCAST, particleEnd_z);
 };
 
-void( float wepId, float entId, vector flashVel ) client_send_weapon_flash={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_WEAPON_FLASH );
-  WriteByte( MSG_BROADCAST, wepId );
-  WriteLong( MSG_BROADCAST, entId );
-  WriteCoord( MSG_BROADCAST, flashVel_x);
-  WriteCoord( MSG_BROADCAST, flashVel_y);
-  WriteCoord( MSG_BROADCAST, flashVel_z);
-};
-
-
 /*
   Losses is mostly just a campaign fluff text thing, gives player perspective.
 */

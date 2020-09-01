@@ -148,11 +148,15 @@ void(entity piece) te_explode_mech_piece={
 
 void(entity item) te_weapon_fire_handler={
   local entity this;
+  local vector view;
+  
   this = self;
   self = item;
     if( self.itemMuzzleFlash ){
-      makevectors(self.angles);
-      self.itemMuzzleFlash();    
+      view = self.angles;
+      view_x = view_x * -1;
+      makevectors(view);
+      self.itemMuzzleFlash();
     }
   self = this;
 };
@@ -462,7 +466,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   fx = fx + (v_up * (entMins_z + 8));
   vel = fx + (v_up * 16);
   pointsound(fx, "sound/mech_stomp.ogg", 0.45 + (random() * 0.25), ATTN_NORM);
-    switch( SV_WORLDTYPE ){
+  switch( SV_WORLDTYPE ){
     case 1:
       effType = particleeffectnum("TE_STOMP_ICE");
       break;
@@ -482,121 +486,29 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
 };
 
-void( float flashId, float entityId, vector flashVel ) particle_weapon_flash={
-  local entity this;
-  local entity scan;
-  local entity wep;
-  local float weaponDataIdx;
-  
-  this = findfloat(world, entId, entityId);
-  if( !this ){
-    cons_logAFloat("entity with index not found",entityId);
-    return;
-  }
-  scan = this.w_slot;
-  while( scan != world ){
-    if( flashId == scan.w_group ){
-      weaponDataIdx = scan.data_idx;
-      wep = scan;
+/*
+  Particle Determinant for impact types of weapon fire
+*/
+float(vector endPos, entity endEnt) te_impact_type={
+  if(endEnt){
+    if(endEnt.takedamage == DAMAGE_AIM){
+      if(endEnt.shield > 0 ){
+        return IMPACT_SHIELD;
+      }
+      return IMPACT_ARMOR;
     }
-    scan = scan.w_slot;
+    else{
+      return IMPACT_DIRT;
+    }
   }
-  
-  switch(weaponDataIdx){
-    case UID_ITEM_light_autocannon:
-      particle_muzzleflash_latc( wep.origin, flashVel );
-      break;
-    case UID_ITEM_light_laser:
-      particle_muzzleflash_las( wep.origin, flashVel );
-      break;
-    case UID_ITEM_particle_cannon:
-      particle_muzzleflash_pac( wep.origin, flashVel );
-      break;
-    case UID_ITEM_electro_repeater:
-      particle_muzzleflash_esr( wep.origin, flashVel ) ;
-      break;
-    case UID_ITEM_flak:
-      particle_muzzleflash_flak( wep.origin, flashVel ) ;
-      break;
-    default:
-      cons_logAFloat("weapon with flashId not found",flashId);
-      break;
+  else{
+    if(pointcontents(endPos) == CONTENT_SOLID){
+      return IMPACT_DIRT;
+    }
   }
+  return IMPACT_SKY;
 };
 
-//Light Autocannon ID 1
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_latc={
-  local vector ang;
-  local vector norm;
-  local float impactStyle;
-  
-  norm = normalize(muzzleVel - muzzleOrg);
-  ang = vectoangles(muzzleVel - muzzleOrg);
-  makevectors(ang);
-  
-  pointparticles( particleeffectnum("TE_ATC_TRACER"), muzzleOrg, norm * 1400, 1);
-  switch(impactStyle){
-    case IMPACT_SHIELD:
-      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), muzzleVel, normalize(muzzleVel - muzzleOrg)* -2, random() * 2);
-      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
-      return;
-    case IMPACT_ARMOR:
-      pointparticles( particleeffectnum("TE_ATC_ARMOR"), muzzleVel + v_forward * -3, norm * 4, 3);
-      break;
-    case IMPACT_DIRT:
-      pointparticles( particleeffectnum("TE_ATC_DIRT"), muzzleVel + (v_up *1), normalize( (muzzleVel + (v_up *1)) - muzzleOrg ) * 20, 1);
-      break;
-    default:
-      return;
-  }
-};
-
-
-//Light Laser ID 3
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_las={
-  local float impactStyle;
-  trailparticles( world, particleeffectnum("TE_LAS_RAIL"), muzzleOrg, muzzleVel );
-  
-  switch(impactStyle){
-    default:
-      return;
-    case IMPACT_SHIELD:
-      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), muzzleVel, normalize(muzzleVel - muzzleOrg)* -2, random() * 2);
-      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
-      return;
-    case IMPACT_ARMOR:
-      pointparticles(particleeffectnum("TE_LAS_HIT"), muzzleVel, normalize( muzzleOrg - muzzleVel ), 1);
-      break;
-    case IMPACT_DIRT:
-      pointparticles(particleeffectnum("TE_LAS_DIRT"), muzzleVel , '0 0 0', 1);
-      break;
-  }
-};
-
-//Particle Cannon ID 7
-void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_pac={
-  local vector norm;
-  local float impactStyle;
-  norm = normalize(muzzleVel - muzzleOrg);
-  
-  trailparticles( world, particleeffectnum("TE_PAC_RAIL"), muzzleOrg, muzzleVel );
-  
-  switch(impactStyle){
-    default:
-      return;
-    case IMPACT_SHIELD:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), muzzleVel, norm * -2, 1);
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), muzzleVel, '0 0 0', 1);
-      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
-      break;
-    case IMPACT_ARMOR:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), muzzleVel, norm * -6, 1);
-      break;
-    case IMPACT_DIRT:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), muzzleVel, norm * -4, 1);
-      break;
-  }
-};
 
 //Electro Static ID 8
 void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_esr={
@@ -605,21 +517,7 @@ void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_esr={
   
   norm = normalize(muzzleVel - muzzleOrg);
 
-  trailparticles( world, particleeffectnum("TE_ESR_RAIL"), muzzleOrg, muzzleVel );
-  switch(impactStyle){
-    default:
-      return;
-    case IMPACT_SHIELD:
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), muzzleVel, norm * -2, 1);
-      pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
-      break;
-    case IMPACT_ARMOR:
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), muzzleVel, norm * -6, 1);
-      break;
-    case IMPACT_DIRT:
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), muzzleVel, norm * -4, 1);
-      break;
-  }
+
 };
 
 
@@ -634,8 +532,6 @@ void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_flak={
   makevectors(ang);
   
   switch(impactStyle){
-    default:
-      return;
     case IMPACT_SHIELD:  
       pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), muzzleVel, norm * 2, random() * 2);
       pointsound( muzzleVel, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
@@ -646,6 +542,8 @@ void( vector muzzleOrg, vector muzzleVel ) particle_muzzleflash_flak={
     case IMPACT_DIRT:
       pointparticles( particleeffectnum("TE_FLK_DIRT"), muzzleVel + (v_up * 3) + (v_forward * -7), norm * 20, 1);
       break;
+    default:
+      return;
   }
 };
 

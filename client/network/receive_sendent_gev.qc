@@ -101,6 +101,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       sendent_setup_weapons();
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
+      self.takedamage = DAMAGE_AIM;
     }
     sendent_ini_interpolate();
     te_unit_dust_set();

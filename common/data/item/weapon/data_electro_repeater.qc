@@ -95,13 +95,35 @@ void() data_ini_attack_electro_repeater_;
 void() te_muzzle_esr={
   local vector startOrg;
   local vector endOrg;
+  local vector norm;
+  local float impactStyle;
   
   startOrg = self.origin + v_forward * self.wepFireOffset_z + v_up * 0.1;
-  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
+  norm = normalize(endOrg - startOrg);
+  
   pointsound( startOrg, "sound/weapons/esr_fire.ogg", 0.5 + (random() * 0.5), ATTN_NORM);
-  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 1, 1);
+  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
+  
+  impactStyle = te_impact_type(endOrg, trace_ent);
+    
+  trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
+  switch(impactStyle){
+    case IMPACT_SHIELD:
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), endOrg, norm * -2, 1);
+      pointsound( endOrg, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
+      break;
+    case IMPACT_ARMOR:
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
+      break;
+    case IMPACT_DIRT:
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
+      break;
+    default:
+      return;
+  }
 };
 #endif
 void() data_ini_electro_repeater_={
@@ -202,7 +224,6 @@ void() data_ini_attack_electro_repeater_={
       t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
     }
   }
-  client_send_weapon_flash( self.w_group, num_for_edict(self.owner), FIRE_ENDPOINT);
   self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

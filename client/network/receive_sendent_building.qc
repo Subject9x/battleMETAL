@@ -102,7 +102,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.data_type = DATA_BLD;
       self.flags = self.flags | FL_MONSTER; 
       self.colormod = '1 1 1';
-
+      
       if( self.th_walk ){
         self.th_walk();
       }
@@ -118,6 +118,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
           lastMapKeyObject = self;
         }
       }
+      self.takedamage = DAMAGE_AIM;
     }
   }
   

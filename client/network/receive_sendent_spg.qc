@@ -92,6 +92,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       self.deadflag = DEAD_NO;
       sendent_setup_weapons();
       sendent_ini_interpolate();
+      self.takedamage = DAMAGE_AIM;
     }
     setmodel(self, self.model);
     setsize(self, self.mins, self.maxs);

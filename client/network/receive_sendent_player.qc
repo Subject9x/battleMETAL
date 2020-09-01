@@ -70,6 +70,13 @@ void(entity piece) player_part_predaw={
 
 //merely exists to satisfy interpolation
 void() player_think={
+  local vector v1;
+  
+  makevectors(self.angles);
+  v1 = self.origin + (v_up * self.cockpit.compOffset_y);
+  traceline(v1, v1 + v_forward*10000, FALSE, self);
+  self.laser_sight_org = trace_endpos;
+
   self.think = player_think;
   self.nextthink = time + 0.1;
 };

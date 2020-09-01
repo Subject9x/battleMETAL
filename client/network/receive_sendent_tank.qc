@@ -110,6 +110,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       sendent_setup_weapons();
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
+      self.takedamage = DAMAGE_AIM;
     }
     sendent_ini_interpolate();
     self.interpolate_entity = interpolate_tank;

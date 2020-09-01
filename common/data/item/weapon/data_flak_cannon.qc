@@ -20,16 +20,48 @@ void() data_ini_attack_flak_;
 void() te_muzzle_flk={
   local vector startOrg;
   local vector endOrg;
+  local float impactStyle;
+  local float shrap;
+  local vector norm;
+  local vector ang;
+  local vector v;
   
   startOrg = self.origin + v_forward * self.wepFireOffset_z;
-  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
-  if( vlen(endOrg - startOrg) >= 1500 ){
-    pointsound( endOrg, "sound/weapons/flak_fire.ogg", 0.5, ATTN_NORM);
-  }
+  norm = normalize(endOrg - startOrg);
+  ang = vectoangles(endOrg - startOrg);
+  makevectors(ang);
+  
   pointsound( startOrg, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
+  
+  shrap = DAT_FLAK_SHRAP_TOTAL;
+  while( shrap > 0 ){
+    v = endOrg + crandom()*self.spreadDefault_x*v_right + crandom()*self.spreadDefault_y*v_up;
+    
+    traceline(startOrg, v, FALSE, self.owner);
+    impactStyle = te_impact_type(v, trace_ent);
+    
+    trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, v);
+    
+    switch(impactStyle){
+      case IMPACT_SHIELD:  
+        pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), endOrg, norm * 2, random() * 2);
+        pointsound( endOrg, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
+        return;
+      case IMPACT_ARMOR:
+        pointparticles( particleeffectnum("TE_FLK_IMPACT"), endOrg + (v_forward * -32), norm * 4, 1);
+        break;
+      case IMPACT_DIRT:
+        pointparticles( particleeffectnum("TE_FLK_DIRT"), endOrg + (v_up * 3) + (v_forward * -7), norm * 20, 1);
+        break;
+      default:
+        return;
+    }
+    shrap = shrap - 1;
+  }
 };
 #endif
 void() data_ini_flak_cannon_={
@@ -103,9 +135,6 @@ void() data_ini_attack_flak_={
   while (totes > 0){
     direction = dir + crandom()*self.spreadDefault_x*v_right + crandom()*self.spreadDefault_y*v_up;
     traceline (src, src + direction*self.w_range, FALSE, self.owner);
-    if( (random() * 1) <= 0.3 ){
-      client_send_weapon_flash( self.w_group, num_for_edict(self.owner), src + direction*self.w_range);
-    }
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0){
         t_damage_shield(trace_ent, self,self.owner, ((self.damageValue * damageBuff)* 0.9), trace_endpos, FALSE);

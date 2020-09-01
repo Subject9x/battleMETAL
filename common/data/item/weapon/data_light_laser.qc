@@ -18,9 +18,11 @@ void() data_ini_attack_laser_;
 void() te_muzzle_las={
   local vector startOrg;
   local vector endOrg;
+  local float impactStyle;
+  local vector norm;
   
   startOrg = self.origin + v_forward * self.wepFireOffset_z;
-  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
   pointsound( startOrg, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM);
@@ -28,7 +30,29 @@ void() te_muzzle_las={
     pointsound( endOrg, "sound/weapons/laser_fire.ogg", 0.5, ATTN_NORM);
   }
   pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, normalize(startOrg - endOrg) * 2, 1);
-  //trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, muzzleVel );
+  
+  impactStyle = te_impact_type(endOrg, trace_ent);
+  
+  trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
+  
+  norm = normalize(endOrg - startOrg);
+  
+  impactStyle = te_impact_type(endOrg, trace_ent);
+  
+  switch(impactStyle){
+    case IMPACT_SHIELD:
+      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), endOrg, norm * -2, random() * 2);
+      pointsound( endOrg, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
+      return;
+    case IMPACT_ARMOR:
+      pointparticles(particleeffectnum("TE_LAS_HIT"), endOrg, norm, 1);
+      break;
+    case IMPACT_DIRT:
+      pointparticles(particleeffectnum("TE_LAS_DIRT"), endOrg , '0 0 0', 1);
+      break;
+    default:
+      return;
+  }
 };
 #endif
 void() data_ini_light_laser_={
@@ -92,7 +116,6 @@ void() data_ini_attack_laser_={
       t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');  
     }
   }
-  client_send_weapon_flash( self.w_group, num_for_edict(self.owner), FIRE_ENDPOINT);
   self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

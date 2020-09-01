@@ -271,4 +271,5 @@ void() SV_PlayerPhysics =
 				self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
 		}
 	}
+  self.prevMovement = self.movement;
 };

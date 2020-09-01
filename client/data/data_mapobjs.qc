@@ -521,6 +521,7 @@ void( float isNew, float entFlags ) data_map_damage={
       if( self.isActive ){
         self.nextthink = time + 0.1;
       }
+      self.solid = SOLID_BBOX;
       switch( self.damageType ){
         case 1:
           hazard_ini_rad( self.data_idx );

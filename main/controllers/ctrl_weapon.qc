@@ -248,20 +248,10 @@ void() ctrl_weapon_remove_all={
   local entity removeHudWeapon;
   local entity nextHudWeapon;
   //call remove() in list order, no going back from this.
-
-  if( (self.flags & FL_CLIENT) ){
-    removeHudWeapon = self.hudWeapon;
-  }
+  
   for( removeChain = self.w_slot; removeChain != world; removeChain = removeChain.w_slot ){
     removeChain.think = SUB_Remove;
     removeChain.nextthink = time + 0.01;
-    if( (self.flags & FL_CLIENT) ){
-      nextHudWeapon = removeHudWeapon.hudWeapon;
-      if( removeHudWeapon ){    
-        remove(removeHudWeapon);
-      }
-      removeHudWeapon = nextHudWeapon;
-    }
   }
 };
 

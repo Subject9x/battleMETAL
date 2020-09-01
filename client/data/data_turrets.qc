@@ -13,6 +13,7 @@ Overview:
 */
 void( float dataID ) data_sync_new_turret={
   self.flags = FL_MONSTER | FL_UNIT;
+  self.solid = SOLID_BBOX;
   switch( dataID ){
     case UID_TURRET_light_turret:
       data_turret_light();
@@ -41,6 +42,7 @@ void() data_turret_light={
 
   makevectors(self.angles);
   offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
+  setsize(self, self.mins, self.maxs);
   setorigin(self.torsoCenter, offset);
   self.vec_size = 1;
 };
@@ -57,6 +59,7 @@ void() data_turret_heavy={
 
   makevectors(self.angles);
   offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
+  setsize(self, self.mins, self.maxs);
   setorigin(self.torsoCenter, offset);
   self.vec_size = 2;
 };
@@ -73,6 +76,7 @@ void() data_turret_missile={
 
   makevectors(self.angles);
   offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
+  setsize(self, self.mins, self.maxs);
   setorigin(self.torsoCenter, offset);
   self.vec_size = 2;
 };

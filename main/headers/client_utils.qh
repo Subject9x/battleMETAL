@@ -60,7 +60,6 @@ void(string cmd, float tokens) client_setWeaponGroup;
 void(string cmd, float tokens) client_setNavPoint;
 void(string cmd, float tokens) client_setMission;
 
-void( float wepId, float entId, vector flashVel ) client_send_weapon_flash;
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle;
 void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail;
 
