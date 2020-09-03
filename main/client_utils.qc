@@ -23,7 +23,7 @@ void() client_push_player_info={
     if( time <= self.shieldHitRegen ) {
       myShield = self.shieldHitRegen - self.shieldHitRegenStart;
       myShield = (time - self.shieldHitRegenStart) / myShield;
-      myShield =  -100 - (myShield * -100);
+      myShield =  100 - (myShield * 100) + 100;
     }
     else{
       myShield = self.shield;
@@ -48,7 +48,7 @@ void() client_push_player_info={
       if( time <= self.enemy.shieldHitRegen ) {
         targShield = self.enemy.shieldHitRegen - self.enemy.shieldHitRegenStart;
         targShield = (time - self.enemy.shieldHitRegenStart) / targShield;
-        targShield =  -100 - (targShield * -100);
+        targShield =  100 - (targShield * 100) + 100;
       }
       else{
         targShield = self.enemy.shield;

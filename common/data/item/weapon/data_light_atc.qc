@@ -41,10 +41,6 @@ void() te_muzzle_latc={
   
   pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg, norm * 1600, 1);
   switch(impactStyle){
-    case IMPACT_SHIELD:
-      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), endOrg, normalize(endOrg - startOrg)* -2, random() * 2);
-      pointsound( endOrg, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
-      return;
     case IMPACT_ARMOR:
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), endOrg + v_forward * -3, norm * 4, 3);
       break;

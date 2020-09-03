@@ -88,6 +88,14 @@ void() hshield_die9 = [9, hshield_die10]{
       if( head.shield < 0 ){
         head.shield = 0;
       }
+      if( !head.stat_client_shield ){
+        head.stat_client_shield = (head.shield / head.shieldMax) * 100;
+      }
+      if( head.data_type == DATA_BLD ){
+        head.SendFlags = head.SendFlags | SENDFLAG_IMPACT;
+      }
+      
+    
       head.shieldHitDelay = time + ((self.energy / self.energyMax) / 2);
       self.energy  = self.energy - ((self.energy / self.energyMax) / 5);
     }
@@ -128,6 +136,12 @@ void() hshield_th = [0, hshield_th]{
           t.shield = t.shieldMax;
         }
         cost = cost + (self.shieldRate * 0.05);
+        if( !t.stat_client_shield ){
+          t.stat_client_shield = (t.shield / t.shieldMax) * 100;
+        }
+        if( t.data_type == DATA_BLD ){
+          t.SendFlags = t.SendFlags | SENDFLAG_IMPACT;
+        }
       }
     }
   }
@@ -144,8 +158,9 @@ void() hshield_th = [0, hshield_th]{
       self.shield = self.shieldMax;
     }  
   }
+  self.stat_client_shield = (self.shield / self.shieldMax) * 100;
   building_burn();
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
 }
 
 /*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP

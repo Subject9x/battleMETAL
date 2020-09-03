@@ -94,6 +94,7 @@ void() ai_state_frame={
       ai_leg_control();
     }
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.think = ai_state_frame;
   self.nextthink = time + 0.06;
 };

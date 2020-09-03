@@ -9,7 +9,6 @@ Overview:
     sv/main/sv/sv_client_api.send_client_data()
 */
 
-
 void(entity item) predraw_player_weapon={
   local entity this;
   local vector entAng;
@@ -52,7 +51,6 @@ void(entity item) predraw_player_weapon={
 */
 void(entity piece) player_part_predaw={
   local vector offset;
-  
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
   
   if(self.entId == player_localentnum && cvar("chase_active") == FALSE){
@@ -152,6 +150,7 @@ float() player_predraw={
   return FALSE;
 };
 
+
 /*
   poor workaround, OTHER player mechs aren't fully formed mech data, lack of interpolation.
   we just care about part offsets for special effects.
@@ -213,7 +212,7 @@ void( float mech_id ) sendevent_player_mech={
     self = this;
     weps = weps.w_slot;
   }
-  setsize(self, minSave, maxSave);
+  setsize(self, minSave, maxSave);  
 };
 
 /*
@@ -412,6 +411,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.stat_rdr_mode = ReadByte();
     self.shield = ReadByte();
     self.energy = ReadByte();
+    self.shieldHitFlag = ReadByte(); 
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
@@ -455,9 +455,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
         self.predraw = player_predraw;
         self.think = player_think;
         self.nextthink = time + 0.1;
-      }
-      else{
-        //debug - do player ent cleanup?
       }
     }
   }
@@ -555,6 +552,14 @@ void( float isNew, float changeFlags) sendent_handle_player={
     sendevent_handle_faction( prevFaction, self.faction );
   }
   
+  //Shield strike event
+  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
+    if( time > self.shieldEffectTime ){
+      self.shieldEffectTime = time + 0.5;
+      te_shield_hit();
+    }
+  }
+  
   //Shield Explode event
   sendevent_shield_explode( prevShield );
   
@@ -580,11 +585,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
     CLIENT_move_state = self.moveState;
     CLIENT_shield = self.shield;
     if( self.shield > 0 ){
-      CLIENT_shield = (self.shield / self.shieldMax) * 100;
+      CLIENT_shield = self.shield;
     }
     else{
       CLIENT_shield = 0;
     }
+    
     if( self.energy > 0 ){
       CLIENT_energy = self.energy;
     }
@@ -611,12 +617,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
       CLIENT_target_origin_x = self.enemy.origin_x;
       CLIENT_target_origin_y = self.enemy.origin_y;
       CLIENT_target_origin_z = self.enemy.origin_z;
-      CLIENT_target_vecsize = self.enemy.vec_size;
-      if( self.enemy.shield <= 0 ){
-        CLIENT_target_shield = 0;
+      CLIENT_target_vecsize = self.enemy.vec_size * self.enemy.maxs_z;
+      if( self.enemy.shield > 0 ){
+        CLIENT_target_shield = self.enemy.shield;
       }
       else{
-        CLIENT_target_shield = (self.enemy.shield / self.enemy.shieldMax) * 100;
+        CLIENT_target_shield = 0;
       }
       CLIENT_target_dist_prev = CLIENT_target_dist;
       CLIENT_target_dist = vlen(self.enemy.origin - self.origin);

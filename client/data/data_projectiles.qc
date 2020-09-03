@@ -44,23 +44,17 @@ void( float dataID ) data_sync_new_projectile={
       data_projectile_ini_quantum_bit_();
       break;
   }
+  self.effects = self.effects | EF_NOSHADOW;
 };
 
 float() predraw_missile={
   if( wasfreed(self) ){
     return FALSE;
   }
-  if( self.nextthink != self.frame1time ){
-    self.frame2time = self.frame1time;
-    self.frame1time = self.nextthink;
-  }
-  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
-  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
 
-  if( self.traileffectnum && self.origin2 != self.origin ){
-    trailparticles(self, self.traileffectnum, self.origin2, self.origin);
-    self.origin2 = self.origin;
-  }  
+  interpolate_origin();
+  interpolate_angle();
+  
   if( self.predraw_projectile ){
     self.predraw_projectile();
   }

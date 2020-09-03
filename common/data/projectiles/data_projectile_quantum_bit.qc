@@ -20,7 +20,6 @@ void() projectile_qbit_expl={
   }
   if( self.impactType == IMPACT_SHIELD ){
     pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, normalize(self.origin - self.origin1) * 2, 1);
-    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
   }
   else if( self.impactType == IMPACT_ARMOR ){
     pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, normalize(self.origin - self.origin1) * 2, 1);

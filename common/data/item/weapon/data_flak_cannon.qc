@@ -47,10 +47,6 @@ void() te_muzzle_flk={
     trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, v);
     
     switch(impactStyle){
-      case IMPACT_SHIELD:  
-        pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), endOrg, norm * 2, random() * 2);
-        pointsound( endOrg, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
-        return;
       case IMPACT_ARMOR:
         pointparticles( particleeffectnum("TE_FLK_IMPACT"), endOrg + (v_forward * -32), norm * 4, 1);
         break;

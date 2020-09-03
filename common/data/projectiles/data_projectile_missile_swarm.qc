@@ -28,7 +28,6 @@ void() projectile_swarm_expl={
     hitColor = '0 1.25 0.67';
     hitBloom = -0.01;
     hitScale = 0.5;
-    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
   }
   else{
     hitColor = '0.663 0.886 0.953';

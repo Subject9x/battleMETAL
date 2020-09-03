@@ -40,11 +40,6 @@ void() te_muzzle_pac={
   impactStyle = te_impact_type(endOrg, trace_ent);
   
   switch(impactStyle){
-    case IMPACT_SHIELD:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), endOrg, norm * -2, 1);
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), endOrg, '0 0 0', 1);
-      pointsound( endOrg, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
-      break;
     case IMPACT_ARMOR:
       pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), endOrg, norm * -6, 1);
       break;

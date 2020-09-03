@@ -167,7 +167,8 @@ void() ai_ctrl_updateCenterTorso={
   local float diff;
   local entity cam;
   local vector v1;
-
+  local float myShield;
+  
   makevectors(self.torsoCenter.angles);
   v1 = self.origin + (v_right * cam.compOffset_x) + (v_up*cam.compOffset_y) + (v_forward*cam.compOffset_z);
   traceline(v1, v1 + v_forward * 10000, FALSE, self);
@@ -183,19 +184,29 @@ void() ai_ctrl_updateCenterTorso={
       }
       self.energy = self.energy + diff;
     }
-    if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
-      if(self.shield < self.shieldMax){
-        if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-          if(self.energy > 0){
-            self.shield = self.shield + (self.shieldRate * 0.5);
-            self.energy = self.energy - (self.shieldRate * 2);
-            if(self.shield > self.shieldMax){
-              self.shield = self.shieldMax;
+    
+    if( time <= self.shieldHitRegen ) {
+      myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+      myShield = (time - self.shieldHitRegenStart) / myShield;
+      self.stat_client_shield =  100 - (myShield * 100) + 100;
+    }
+    else{
+      if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
+        if(self.shield < self.shieldMax){
+          if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+            if(self.energy > 0){
+              self.shield = self.shield + (self.shieldRate * 0.5);
+              self.energy = self.energy - (self.shieldRate * 2);
+              if(self.shield > self.shieldMax){
+                self.shield = self.shieldMax;
+              }
             }
           }
         }
       }
+      self.stat_client_shield = (self.shield / self.shieldMax) * 100;
     }
+
     if(self.energy < 0){
       self.energy = 0;
     }
@@ -424,9 +435,6 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
-  
-  //  WriteLong( MSG_ENTITY, self.flags ); // DEBUG - disabled for now.
-  WriteShort( MSG_ENTITY, self.shield );
 
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, num_for_edict(self));
@@ -444,6 +452,12 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
     WriteString( MSG_ENTITY, self.netname );
+  }
+  
+  //  WriteLong( MSG_ENTITY, self.flags ); // DEBUG - disabled for now.
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
   if( (changeFlags & SENDFLAG_DEAD) ){
@@ -469,5 +483,6 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   if( (changeFlags & SENDFLAG_BURN) ){
     WriteLong( MSG_ENTITY, self.burnBits );
   }
+  self.shieldHitFlag = 0;
   return TRUE;
 };

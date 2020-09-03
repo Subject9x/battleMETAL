@@ -12,6 +12,7 @@ void() ctrl_updateTank={
   local entity wep;
   local vector v1;
   local float hp;
+  local float myShield;
   
   cam = self.cockpit;
   
@@ -40,6 +41,26 @@ void() ctrl_updateTank={
     else if(self.energy > self.energyMax){
       self.energy = self.energyMax;
     }
+  }
+  
+  if( time <= self.shieldHitRegen ) {
+    myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+    myShield = (time - self.shieldHitRegenStart) / myShield;
+    self.stat_client_shield =  100 - (myShield * 100) + 100;
+  }
+  else{
+    if(self.shield < self.shieldMax){
+      if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+        if(self.energy > 0){
+          self.shield = self.shield + (self.shieldRate * 0.5);
+          self.energy = self.energy - (self.shieldRate * 2);
+          if(self.shield > self.shieldMax){
+            self.shield = self.shieldMax;
+          }
+        }
+      }
+    }
+    self.stat_client_shield = (self.shield / self.shieldMax) * 100;
   }
   
   self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
@@ -115,7 +136,8 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
     WriteString( MSG_ENTITY, self.netname );
   }
   
-  WriteShort( MSG_ENTITY, self.shield );
+  WriteByte( MSG_ENTITY, self.stat_client_shield );
+  WriteByte( MSG_ENTITY, self.shieldHitFlag );
     
   if( changedflags & SENDFLAG_TURRET ){
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
@@ -131,6 +153,7 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
   if( changedflags & SENDFLAG_MOVE ){
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
+  self.shieldHitFlag = 0;
   return TRUE;
 };
 
@@ -163,7 +186,8 @@ float( entity targEnt, float changedflags ) ctrl_send_spg={
     WriteString( MSG_ENTITY, self.netname );
   }
   
-  WriteShort( MSG_ENTITY, self.shield );
+  WriteByte( MSG_ENTITY, self.stat_client_shield );
+  WriteByte( MSG_ENTITY, self.shieldHitFlag );
 
   if( changedflags & SENDFLAG_DEAD ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -174,6 +198,7 @@ float( entity targEnt, float changedflags ) ctrl_send_spg={
   if( changedflags & SENDFLAG_MOVE ){
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
+  self.shieldHitFlag = 0;
   return TRUE;
 };
 
@@ -205,7 +230,8 @@ float( entity targEnt, float changedflags ) ctrl_send_gev={
     WriteString( MSG_ENTITY, self.netname );
   }
   
-  WriteShort( MSG_ENTITY, self.shield );
+  WriteByte( MSG_ENTITY, self.stat_client_shield );
+  WriteByte( MSG_ENTITY, self.shieldHitFlag );
   
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
@@ -222,5 +248,6 @@ float( entity targEnt, float changedflags ) ctrl_send_gev={
   if( changedflags & SENDFLAG_MOVE ){
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
+  self.shieldHitFlag = 0;
   return TRUE;
 };

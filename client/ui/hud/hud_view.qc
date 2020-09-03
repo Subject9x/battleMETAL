@@ -131,6 +131,9 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
 void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient) hud_renderShield={
   local vector meterSize, label_org;
   local vector meterColor;
+  local float scopeVal;
+  
+  scopeVal = rint(val);
   
   meterSize = gui_percentToPixelRawVec(mSize);
   pos = gui_percentToPixelRawVec(pos);
@@ -138,7 +141,7 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
  
   meterColor = CLR_DEF_ARM_DED;
   if( isClient ){
-    if( val <= 0 ){
+    if( scopeVal <= 0 ){
       if( !HUD_SHIELD_FLASH_ON ){
         HUD_SHIELD_FLASH_ON = TRUE;
       }
@@ -162,13 +165,14 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
     }
   }
   
-  if( val < 0 ){
+  if( scopeVal > 100 ){
     //regen cooldown
-    val = (val * -1);
-    gui_renderMeter(val, pos, meterSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, meterAxis, 0);
+    scopeVal = 100 - scopeVal;
+    scopeVal = (scopeVal * -1);
+    gui_renderMeter(scopeVal, pos, meterSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, meterAxis, 0);
   }
   else{
-    gui_renderMeter(val, pos, meterSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, meterAxis, 0);
+    gui_renderMeter(scopeVal, pos, meterSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, meterAxis, 0);
   }
 
   

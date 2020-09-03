@@ -439,6 +439,8 @@ void() build_mech_bot={
   else{
     self.ai_patrol_speed = self.data_speed_forward;
   }
+  self.shield = self.shieldMax;
+  self.stat_client_shield = self.shield;
 };
 
 void() build_unit_turret={

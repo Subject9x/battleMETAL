@@ -12,7 +12,9 @@ Date: 3/30/2020
 void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
   local float dist;
   local vector vpos, nofs, aSize;
-  if(val != 0){
+  local float scopeVal;
+  scopeVal = rint(val);
+  if(scopeVal != 0){
     dist = vlen(org - torg);
     dist = dist / radRange;
     dist = (1 / (dist * dist));    
@@ -26,7 +28,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       aSize_y = mSize_y;
     }
     vpos = org;
-    vpos_z = vpos_z + CLIENT_target_vecsize;
+    vpos_z = vpos_z + (CLIENT_target_vecsize * 1.5);
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);
@@ -40,12 +42,13 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       pos = gui_calcAlign(pos, algn);
      
       meterColor = CLR_DEF_ARM_DED;
-      if( val < 0 ){
+      if( scopeVal > 100 ){
         //render delay regen
-        gui_renderMeter( (val * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE); 
+        scopeVal = 100 - scopeVal;
+        gui_renderMeter( (scopeVal * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE); 
       }
       else{
-        gui_renderMeter(val, pos, aSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, AXIS_H, FALSE); 
+        gui_renderMeter(scopeVal, pos, aSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, AXIS_H, FALSE); 
       }
     }
     cs_unproject(vpos);

@@ -111,10 +111,6 @@ void() te_muzzle_esr={
     
   trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
   switch(impactStyle){
-    case IMPACT_SHIELD:
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), endOrg, norm * -2, 1);
-      pointsound( endOrg, "sound/fx_shieldhit.ogg", 0.67 + (random() * 0.33), ATTN_NORM );
-      break;
     case IMPACT_ARMOR:
       pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
       break;

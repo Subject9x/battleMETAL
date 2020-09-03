@@ -24,6 +24,8 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     return world;
   }
 
+  self.shieldHitFlag = 0;
+  
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
@@ -186,9 +188,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
+  trg.shieldHitFlag = 1;
+  
   trg.shield = trg.shield - dmgAmt;
   if( trg.shield < 0 ){
     trg.shield = 0;
+    trg.shieldHitFlag = 2;
   }
   
   trg.dmg_inflictor = inflictor;

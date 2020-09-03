@@ -24,11 +24,7 @@ void() projectile_plasma_expl={
     return;
   }
   
-  if( self.impactType == IMPACT_SHIELD ){
-    pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), self.origin, normalize(self.velocity)* -2, random() * 2);
-    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.8 + (random() * 0.2), ATTN_NORM );
-  }
-  else if( self.impactType == IMPACT_ARMOR ){
+  if( self.impactType == IMPACT_ARMOR ){
     pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   }
   else{

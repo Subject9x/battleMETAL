@@ -30,6 +30,8 @@ void() interpolate_origin={
   }
   self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
   self.lerpfrac = 1 - bound(0, self.lerpfrac, 1);
+  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+
 };
 
 void() interpolate_angle={
@@ -114,21 +116,17 @@ void( float isNew ) sendent_handle_update={
   SendEntity - Projectile ====================================
 */
 void() sendent_missile_think={
+  if(!self.predraw){
+    self.predraw = predraw_missile;
+  }
+  if( self.traileffectnum ){
+    trailparticles(world, self.traileffectnum, self.origin2, self.origin1);
+  }
   self.think = sendent_missile_think;
   self.nextthink = time + 0.025;
 };
 
 void( float isNew, float changeFlags) sendent_handle_missile={
-  
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.data_idx = ReadByte();
-    self.damageValue = ReadByte();
-    self.origin2 = self.origin;
-    self.origin1 = self.origin;
-  }
   
   if( changeFlags & SENDFLAG_MOVE ){
     self.origin_x = ReadCoord();
@@ -159,18 +157,23 @@ void( float isNew, float changeFlags) sendent_handle_missile={
       self.pcl_explode();
     }
   }
-  
-  if( isNew ){
-    self.solid = SOLID_NOT;
-    self.alpha = 1;
-    self.scale = 1;
-    data_sync_new_projectile(self.data_idx);
-    setmodel(self, self.model);
-    self.nextthink = time + 0.1;
-    self.predraw = predraw_missile;
-    self.think = sendent_missile_think;
-    self.nextthink = time + 0.025;
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.data_idx = ReadByte();
+    self.damageValue = ReadByte();
+    if( isNew ){
+      self.solid = SOLID_BBOX;
+      self.alpha = 1;
+      self.scale = 1;
+      data_sync_new_projectile(self.data_idx);
+      setmodel(self, self.model);
+      setsize(self, '0 0 0', '0 0 0');
+      self.think = sendent_missile_think;
+      self.nextthink = time + 0.025;
+      self.drawmask = MASK_ENGINE;
+      interpolate_origin();
+    }
   }
+  
   self.angles = vectoangles(self.velocity);
 };
 
@@ -179,10 +182,11 @@ void( float isNew, float changeFlags) sendent_handle_missile={
 */
 void( float prevShield ) sendevent_shield_explode={
   //Shield Explode event
-  if( self.shield <= 0 && prevShield > 0 ){
+  if( self.shield > 100 && prevShield <= 100 ){
     if( time > self.shieldExplodeCool ){
       te_shield_explode( self.origin, self.vec_size);
       self.shieldExplodeCool = time + self.vec_size;
+      
     }
   }
 };

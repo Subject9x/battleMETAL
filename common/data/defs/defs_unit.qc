@@ -11,25 +11,12 @@ Overview:
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
 
-//SSQC only
-#ifndef CSQC
-.vector lastorigin; //mostly AI move tracker
-
 .float shieldHitDelay;  //when shield > 
 .float shieldHitDelayStart;  //when shield > 
 .float shieldHitRegen;  //cool down before shield recharge begins
 .float shieldHitRegenStart;
-.float accuracyMod;
-.float accuracy; 
+.float shieldHitFlag;   //sent over network.
 
-.float turret_yaw_speed;
-.float ai_attack_chance;
-
-.float shieldRateMod; //field for modules.
-.float radar_time;
-.float was_hit; //used for hit direction calculation mostly
-.float hitdir_buffer; //used for hit direction, is cleared every frame
-#endif
 .float attackFlag;  //a bitflag set every frame that a unit has fired weapons, where it is weapon bits, WEAPON1 | WEAPON2 etc
                     //the csqc then processes the rest of the particle attacks.
 .float burnBits;    //bitflags sent to client for fire/burning effects on ents.
@@ -73,7 +60,23 @@ Overview:
 .float isActive;
 .float ai_dir;          //chassis facing vs .angles
 
+//SSQC only
+#ifndef CSQC
+.vector lastorigin; //mostly AI move tracker
+.float accuracyMod;
+.float accuracy; 
+
+.float turret_yaw_speed;
+.float ai_attack_chance;
+
+.float shieldRateMod; //field for modules.
+.float radar_time;
+.float was_hit; //used for hit direction calculation mostly
+.float hitdir_buffer; //used for hit direction, is cleared every frame
+#endif
+
 #ifdef CSQC
+.float shieldEffectTime;
 .float pitchMin;
 .float pitchMax;
 .float legDir;

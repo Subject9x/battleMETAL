@@ -11,7 +11,7 @@ Overview:
 
 void() mech_ai_think={
   self.think = mech_ai_think;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.005;
 };
 
 /*
@@ -168,9 +168,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   self.angles_y = anglemod(ReadAngle());
   self.angles_z = anglemod(ReadAngle());
   
-  //self.flags = ReadLong(); // DEBUG - disabled for now.
-  self.shield = ReadShort();
-  
   if( (changeFlags & SENDFLAG_NEWENT) ){   
     self.entId = ReadLong(); 
     self.flags = ReadLong();
@@ -190,7 +187,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     newName = ReadString();
     setorigin(self, self.origin);
     if( isNew ){ 
-      sendent_empty_think();
+      self.think = mech_ai_think;
+      self.nextthink = time + 0.005;
       if( newName != "" ){
         self.netname = strzone(newName);
       }   
@@ -199,12 +197,18 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.movetype = MOVETYPE_STEP;
       data_sync_new_mech_ai( self.data_idx );
       self.takedamage = DAMAGE_AIM;
+      self.alpha = 0.001;
+      self.scale = 0.001;
+      self.interpolate_entity = interpolate_mech_ai;
+      self.drawmask = MASK_ENGINE;
+      self.predraw = predraw_mech_ai;
     }
-    self.alpha = 0.001;
-    self.scale = 0.001;
-    self.interpolate_entity = interpolate_mech_ai;
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_mech_ai;
+  }
+    
+   //self.flags = ReadLong(); // DEBUG - disabled for now.
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    self.shield = ReadByte();
+    self.shieldHitFlag = ReadByte();
   }
     
   if( (changeFlags & SENDFLAG_DEAD) ){
@@ -252,8 +256,19 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
   }
   
+  //Shield strike event
+  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
+    if( time > self.shieldEffectTime ){
+      self.shieldEffectTime = time + 0.5;
+      te_shield_hit();
+    }
+  }
+  
   //Shield Explode event
-  sendevent_shield_explode( prevShield );
+  if( !isNew ){
+    sendevent_shield_explode( prevShield );
+  }
+  
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
@@ -266,6 +281,7 @@ void() interpolate_mech_ai={
   local vector saved;
   
   interpolate_origin();
+  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   interpolate_angle();
   interpolate_ground();
   

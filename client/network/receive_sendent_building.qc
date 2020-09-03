@@ -74,7 +74,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
   prevDeadflag = self.deadflag;
   
   self.energy = ReadShort();
-  self.shield = ReadShort();
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
@@ -119,6 +118,11 @@ void( float isNew, float changeFlags) sendent_handle_building={
       }
       self.takedamage = DAMAGE_AIM;
     }
+  }
+  
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    self.shield = ReadByte();
+    self.shieldHitFlag = ReadByte();
   }
   
   //rider for desired stat changes
@@ -181,8 +185,13 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
-  if(self.shield > self.shieldMax ){
-    self.shield = self.shieldMax;
+  
+  //Shield strike event
+  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
+    if( time > self.shieldEffectTime ){
+      self.shieldEffectTime = time + 0.5;
+      te_shield_hit();
+    }
   }
 };
 

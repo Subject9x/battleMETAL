@@ -85,23 +85,29 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       data_sync_new_turret(self.data_idx);
       sendent_setup_weapons();
       self.takedamage = DAMAGE_AIM;
+      sendent_ini_interpolate();
+      self.interpolate_entity = interpolate_turret;
+      self.drawmask = MASK_ENGINE;
+      self.predraw = predraw_turret;
     }
-    sendent_ini_interpolate();
-    self.interpolate_entity = interpolate_turret;
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_turret;
   }
   
   //EVENT - MOVE - for turrets, this means a general update tic.
   prevShield = self.shield;
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    self.shield = ReadByte();
+    self.shieldHitFlag = ReadByte();
+  }
+  
   if( (changeFlags & SENDFLAG_MOVE) ){
-    self.shield = ReadShort();
+    self.shield = ReadByte();
+    self.shieldHitFlag = ReadByte();
     prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadLong();
   }
   
   //EVENT - faction changed
-  if( (changeFlags & SENDFLAG_VELOCITY) ){     
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
     self.faction = ReadByte();
   }
   
@@ -145,6 +151,14 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
+  }
+  
+  //Shield strike event
+  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
+    if( time > self.shieldEffectTime ){
+      self.shieldEffectTime = time + 0.5;
+      te_shield_hit();
+    }
   }
 };
 

@@ -27,7 +27,6 @@ void() projectile_rocket_expl={
     hitColor = '0 1.25 0.67';
     hitBloom = -0.01;
     hitScale = 0.5;
-    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
   }
   else{
     hitColor = '0.99 0.6 0.18';
@@ -70,7 +69,7 @@ void(entity theOther ) data_prj_mis_hit={
   self.velocity = '0 0 0';
   
   self.impactType = IMPACT_DIRT;
-  debris = rint(3 + random() * 5);
+  //debris = rint(3 + random() * 5);
 	if ( pointcontents(self.origin) == CONTENT_SKY){
     self.impactType = IMPACT_SKY;
 	}
@@ -91,13 +90,13 @@ void(entity theOther ) data_prj_mis_hit={
       damage = damage + (damage * 0.25);
       t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
       self.impactType = IMPACT_ARMOR;
-      debris = rint(4 + random() * 6);
-      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
+      //debris = rint(4 + random() * 6);
+      //te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
     }
     debris = 0;
   }
   if( debris > 0 ){
-    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, debrisType );
+   // te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, debrisType );
   }
   
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;

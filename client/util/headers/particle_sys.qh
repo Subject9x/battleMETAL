@@ -88,8 +88,15 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
 */
 void() te_missile_explode_th;
 void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode;
+
+float() te_shield_hit_predraw;
+void() te_shield_hit_th;
+void() te_shield_hit;
+
 void() te_shield_explode_th;
 void( vector org, float vecSize ) te_shield_explode;
+
+
 void( vector explodeColor ) te_object_explode;
 
 /*

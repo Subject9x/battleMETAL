@@ -100,7 +100,6 @@ void() cl_particles_fogFrame={
   }
 };
 
-
 float() te_explode_mech_piece_predraw={
   if (self.nextthink != self.frame1time){
     self.frame2time = self.frame1time;
@@ -299,9 +298,73 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
   setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
   setorigin( explode, org);
 
-  te_customflash( org, explodeSize * 50, 1, explodeColor); 
+  te_customflash( org, explodeSize * 50, 1, explodeColor);
+  
+  local float debris;
+  local vector back;
+  local vector launch;
+  
+  makevectors(vectoangles(self.velocity));
+  back = org + (v_forward * -10);
+  back = normalize(back - org);
+  
+  debris = explodeSize / 2;
+  debris = debris + (random() * debris);
+  debris = rint(ceil(debris));
+  while( debris > 0 ){
+    launch_x = (back_x * 100) + (random() * 50);
+    launch_y = (back_y * 100) + (random() * 50);
+    launch_z = (back_z + 50) + (random() * 50);
+    trailparticles(world, particleeffectnum("TE_DEBRIS_TRAIL_SMALL"), back, launch);
+    debris = debris - 1;
+  }
+  
 };
 
+/*
+  Unit's shields have been struck but still holding
+*/
+float() te_shield_hit_predraw={
+  interpolate_origin();
+  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+  self.alpha = 0.075;
+  return FALSE;
+};
+
+void() te_shield_hit_th={
+  self.origin = self.owner.origin;
+  self.alpha = 0.075;
+  if( time > self.data_lifetime ){
+    remove(self);
+    return;
+  }
+  self.think = te_shield_hit_th;
+  self.nextthink = time + 0.025;
+};
+
+void() te_shield_hit={
+  local entity explode;
+ 
+  explode = spawn();
+  explode.think = te_shield_hit_th;
+  explode.nextthink = time + 0.025;
+  explode.data_lifetime = time + 0.5;
+  explode.scale = self.vec_size * 0.75;
+  explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
+  explode.drawmask = MASK_NORMAL;
+  explode.predraw = te_shield_hit_predraw;
+  explode.owner = self;
+  setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
+  setorigin( explode, self.origin);
+  explode.alpha = 0.075;
+  te_customflash( self.origin, self.vec_size * 25, 0.25, '0.003 0.87 0.22');
+  pointsound(  self.origin, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
+};
+
+
+/*
+  Unit's shields have broken (reduced to 0), play an expanding explosion shell effect.
+*/
 void() te_shield_explode_th={
   self.alpha = self.alpha - 0.012;
   self.scale = self.scale + 0.015;
@@ -322,12 +385,12 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.nextthink = time + 0.05;
   explode.data_lifetime = 10;
   explode.scale = 0.1 + (vecSize / 3);
-  explode.alpha = 0.75;
+  explode.alpha = 0.6;
   explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
   explode.drawmask = MASK_NORMAL;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
-  te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22');
+  te_customflash( org, vecSize * 100, 1, '0.003 0.87 0.22');
 };
 
 /*

@@ -546,7 +546,8 @@ float( float isNew, float changeFlags ) send_client_data={
     self.stat_client_energy = player.stat_client_energy;
     self.vec_size = player.vec_size;
     self.damageValue = player.damageValue;
-    self.data_idx = player.data_idx; 
+    self.data_idx = player.data_idx;
+    self.shieldHitFlag = player.shieldHitFlag;
   }
   else{
     self.data_type = DATA_POBS;
@@ -572,6 +573,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, self.stat_rdr_mode );
     WriteByte( MSG_ENTITY, self.stat_client_shield );
     WriteByte( MSG_ENTITY, self.stat_client_energy );
+    WriteByte( MSG_ENTITY, self.shieldHitFlag); 
     
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
@@ -647,5 +649,6 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, (player.particleCube == world));
     WriteLong( MSG_ENTITY, player.stat_trg_ent_id );
   }
+  player.shieldHitFlag = 0;
   return TRUE;
 };

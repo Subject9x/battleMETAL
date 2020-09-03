@@ -21,7 +21,6 @@ void() projectile_sfga_expl={
     return;
   }
   if( self.impactType == IMPACT_SHIELD ){
-    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.9, ATTN_NORM );
     pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
     te_missile_explode( self.origin, 2, '0 0 1', -0.05 ); 
   }

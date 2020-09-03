@@ -92,8 +92,14 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.next_wepn9);
   }
   
+  if( (changedflags & SENDFLAG_IMPACT) ){
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.shieldHitFlag );
+  }
+  
   if( (changedflags & SENDFLAG_MOVE) ){
-    WriteShort( MSG_ENTITY, self.shield );
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.shieldHitFlag );
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
   if( (changedflags & SENDFLAG_VELOCITY) ){
@@ -110,7 +116,7 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
   if( (changedflags & SENDFLAG_BURN) ){
     WriteLong( MSG_ENTITY, self.burnBits );
   }
-  
+  self.shieldHitFlag = 0;
   return TRUE;
 };
 
@@ -121,7 +127,6 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
   //=================
   
   WriteShort( MSG_ENTITY, self.energy );
-  WriteShort( MSG_ENTITY, self.shield );
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -135,6 +140,11 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
     WriteLong( MSG_ENTITY, num_for_edict(self) );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.spawnflags );
+  }
+  
+  if( (changedflags & SENDFLAG_IMPACT) ){
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){
@@ -173,6 +183,6 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
       WriteAngle( MSG_ENTITY, self.angles_z );
     }
   }
-  
+  self.shieldHitFlag = 0;
   return TRUE;
 };

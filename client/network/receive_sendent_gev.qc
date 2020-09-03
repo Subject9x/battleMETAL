@@ -110,7 +110,8 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.predraw = predraw_gev;
   }
   
-  self.shield = ReadShort();
+  self.shield = ReadByte();
+  self.shieldHitFlag = ReadByte();
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     sendevent_gev_move();
@@ -155,6 +156,14 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
+  }
+  
+  //Shield strike event
+  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
+    if( time > self.shieldEffectTime ){
+      self.shieldEffectTime = time + 0.5;
+      te_shield_hit();
+    }
   }
 };
 

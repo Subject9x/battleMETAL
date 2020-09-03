@@ -117,7 +117,8 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_tank;
   }
-  self.shield = ReadShort();
+  self.shield = ReadByte();
+  self.shieldHitFlag = ReadByte();
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
@@ -161,6 +162,17 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
+  }
+  
+  //Shield Explode event
+  sendevent_shield_explode( prevShield );  
+  
+  //Shield strike event
+  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
+    if( time > self.shieldEffectTime ){
+      self.shieldEffectTime = time + 0.5;
+      te_shield_hit();
+    }
   }
 };
 

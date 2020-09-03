@@ -40,10 +40,6 @@ void() te_muzzle_las={
   impactStyle = te_impact_type(endOrg, trace_ent);
   
   switch(impactStyle){
-    case IMPACT_SHIELD:
-      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), endOrg, norm * -2, random() * 2);
-      pointsound( endOrg, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
-      return;
     case IMPACT_ARMOR:
       pointparticles(particleeffectnum("TE_LAS_HIT"), endOrg, norm, 1);
       break;

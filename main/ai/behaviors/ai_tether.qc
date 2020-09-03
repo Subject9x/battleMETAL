@@ -96,6 +96,7 @@ void() ai_thr_travel={
     return;
   }
   //-------------------------------------------------------------
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //prepare for war....
     self.ai_state_next = ST_COMBAT;

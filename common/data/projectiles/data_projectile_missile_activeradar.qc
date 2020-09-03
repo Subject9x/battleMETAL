@@ -28,7 +28,6 @@ void() projectile_marh_expl={
     hitColor = '0 0.2 0.67';
     hitBloom = -0.01;
     hitScale = 0.33;
-    pointsound( self.origin, "sound/fx_shieldhit.ogg", 0.6, ATTN_NORM );
   }
   else{
     hitColor = '0.969 0.996 0.18';
