@@ -63,6 +63,8 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   self.angles_y = anglemod(ReadAngle());
   self.angles_z = anglemod(ReadAngle());
   
+  self.v_angle = self.angles;
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = ReadLong();
     self.faction = ReadByte();
@@ -82,8 +84,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       if( newName != "" ){
         self.netname = strzone(newName);
       }
-      self.think = sendent_empty_think;
-      self.nextthink = time + 0.05;
       self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.data_type = DATA_VEHC;
       self.skin =  self.faction - 1;
@@ -91,18 +91,22 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       data_sync_new_vehicle(self.data_idx);
       self.deadflag = DEAD_NO;
       sendent_setup_weapons();
-      sendent_ini_interpolate();
       self.takedamage = DAMAGE_AIM;
+      self.think = sendent_ai_think;
+      self.nextthink = time + 0.01;
+      setmodel(self, self.model);
+      setsize(self, self.mins, self.maxs);
+      self.interpolate_entity = interpolate_tank;
+      self.drawmask = MASK_ENGINE;
+      self.predraw = predraw_spg;
+      sendent_ini_interpolate();
     }
-    setmodel(self, self.model);
-    setsize(self, self.mins, self.maxs);
-    self.interpolate_entity = interpolate_tank;
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_spg;
   }
   
-  self.shield = ReadByte();
-  self.shieldHitFlag = ReadByte();
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    self.shield = ReadByte();
+    self.shieldHitFlag = ReadByte();
+  }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     sendevent_spg_move();

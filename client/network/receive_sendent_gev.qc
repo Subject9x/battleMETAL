@@ -102,16 +102,20 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
       self.takedamage = DAMAGE_AIM;
+      self.interpolate_entity = interpolate_tank;
+      self.drawmask = MASK_ENGINE;
+      self.predraw = predraw_gev;
+      self.think = sendent_ai_think;
+      self.nextthink = time + 0.01;
+      sendent_ini_interpolate();
+      te_unit_dust_set();
     }
-    sendent_ini_interpolate();
-    te_unit_dust_set();
-    self.interpolate_entity = interpolate_tank;
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_gev;
   }
   
-  self.shield = ReadByte();
-  self.shieldHitFlag = ReadByte();
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    self.shield = ReadByte();
+    self.shieldHitFlag = ReadByte();
+  }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     sendevent_gev_move();
@@ -121,6 +125,9 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     turretAng_x = anglemod(ReadAngle());
     turretAng_y = anglemod(ReadAngle());
     turretAng_z = anglemod(ReadAngle());
+    self.v_angle = turretAng;
+    self.v_angle_x = self.v_angle_x * -1;
+    turretAng_x = 0;
     sendevent_turret_update( turretAng );
   }
   

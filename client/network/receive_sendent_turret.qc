@@ -75,10 +75,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    setorigin( self, self.origin );
     if( isNew ){
-      self.think = sendent_empty_think;
-      self.nextthink = time + 0.05;
+      self.think = sendent_ai_think;
+      self.nextthink = time + 0.01;
       self.flags = self.flags | FL_MONSTER ;
       self.data_type = DATA_BLD;
       self.colormod = '1 1 1';
@@ -89,6 +88,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       self.interpolate_entity = interpolate_turret;
       self.drawmask = MASK_ENGINE;
       self.predraw = predraw_turret;
+      setorigin( self, self.origin );
     }
   }
   
@@ -113,7 +113,15 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //EVENT - turret rotated
   if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng = te_read_vector();
+    turretAng_x = anglemod(ReadAngle());
+    turretAng_y = anglemod(ReadAngle());
+    turretAng_z = anglemod(ReadAngle());
+    self.v_angle = turretAng;
+    self.v_angle_x = self.v_angle_x * -1;
+    turretAng_x = 0;
+    sendevent_turret_update( turretAng );
+    //HANDLE EVENT - turret rotate
+    sendevent_turret_update( turretAng );
   }
   
   //EVENT - death
@@ -146,8 +154,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
   
-  //HANDLE EVENT - turret rotate
-  sendevent_turret_update( turretAng );
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();

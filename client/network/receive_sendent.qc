@@ -9,10 +9,22 @@ Overview:
 
 
 void() sendent_empty_think={
+  
   self.think = sendent_empty_think;
   self.nextthink = time + 0.05;
 };
 
+void() sendent_ai_think={
+  local vector v1;
+  
+  makevectors(self.v_angle);
+  v1 = self.origin;
+  traceline(v1, v1 + v_forward*10000, FALSE, self);
+  self.laser_sight_org = trace_endpos;
+  
+  self.think = sendent_ai_think;
+  self.nextthink = time + 0.01;
+};
 //implementing parts of Spike's CSQC-only mod code here
 void() interpolate_origin={
   //interpolate origins and angles so that they're synced to the thinks.

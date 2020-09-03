@@ -107,6 +107,7 @@ void		end_sys_globals;		// flag for structure dumping
 .vector		oldorigin;		// ***
 .vector		velocity;
 .vector		angles;
+.vector		v_angle;		// view / targeting angle for players
 .vector		avelocity;
 
 .string		classname;		// spawn function

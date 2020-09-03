@@ -471,7 +471,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }

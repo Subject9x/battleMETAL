@@ -318,7 +318,6 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
     trailparticles(world, particleeffectnum("TE_DEBRIS_TRAIL_SMALL"), back, launch);
     debris = debris - 1;
   }
-  
 };
 
 /*
@@ -327,19 +326,26 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
 float() te_shield_hit_predraw={
   interpolate_origin();
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+  self.angles_y = self.angles_y + 5;
   self.alpha = 0.075;
   return FALSE;
 };
 
 void() te_shield_hit_th={
-  self.origin = self.owner.origin;
+  if(self.owner.entId == player_localentnum){
+    self.origin = pmove_org;
+  }
+  else{
+    self.origin = self.owner.origin;
+  }
+  
   self.alpha = 0.075;
   if( time > self.data_lifetime ){
     remove(self);
     return;
   }
   self.think = te_shield_hit_th;
-  self.nextthink = time + 0.025;
+  self.nextthink = time + 0.01;
 };
 
 void() te_shield_hit={
@@ -347,7 +353,7 @@ void() te_shield_hit={
  
   explode = spawn();
   explode.think = te_shield_hit_th;
-  explode.nextthink = time + 0.025;
+  explode.nextthink = time + 0.01;
   explode.data_lifetime = time + 0.5;
   explode.scale = self.vec_size * 0.75;
   explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
@@ -357,7 +363,7 @@ void() te_shield_hit={
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, self.origin);
   explode.alpha = 0.075;
-  te_customflash( self.origin, self.vec_size * 25, 0.25, '0.003 0.87 0.22');
+  te_customflash( self.origin, self.vec_size * 50, 0.25, '0.003 0.87 0.22');
   pointsound(  self.origin, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
 };
 

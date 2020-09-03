@@ -609,6 +609,7 @@ void() build_vehicle_unit={
   else{
     self.ai_patrol_speed = self.data_speed_forward;
   }
+  self.stat_client_shield = 0;
 };
 
 //TODO - deprecated, needs rebuild

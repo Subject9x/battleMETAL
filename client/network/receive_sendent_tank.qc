@@ -99,8 +99,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
         }
         self.netname = strzone(newName);
       }
-      self.think = sendent_empty_think;
-      self.nextthink = time + 0.05;
       self.deadflag = DEAD_NO;
       self.flags = self.flags | (FL_MONSTER | FL_UNIT);
       self.data_type = DATA_VEHC;
@@ -111,14 +109,19 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
       self.takedamage = DAMAGE_AIM;
+      self.interpolate_entity = interpolate_tank;
+      self.drawmask = MASK_ENGINE;
+      self.predraw = predraw_tank;
+      self.think = sendent_ai_think;
+      self.nextthink = time + 0.01;
+      sendent_ini_interpolate();
     }
-    sendent_ini_interpolate();
-    self.interpolate_entity = interpolate_tank;
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_tank;
   }
-  self.shield = ReadByte();
-  self.shieldHitFlag = ReadByte();
+  
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    self.shield = ReadByte();
+    self.shieldHitFlag = ReadByte();
+  }
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );
@@ -128,6 +131,9 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     turretAng_x = anglemod(ReadAngle());
     turretAng_y = anglemod(ReadAngle());
     turretAng_z = anglemod(ReadAngle());
+    self.v_angle = turretAng;
+    self.v_angle_x = self.v_angle_x * -1;
+    turretAng_x = 0;
     sendevent_turret_update( turretAng );
   }
   

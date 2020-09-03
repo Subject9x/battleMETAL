@@ -46,7 +46,7 @@ void() ctrl_updateTank={
   if( time <= self.shieldHitRegen ) {
     myShield = self.shieldHitRegen - self.shieldHitRegenStart;
     myShield = (time - self.shieldHitRegenStart) / myShield;
-    self.stat_client_shield =  100 - (myShield * 100) + 100;
+    self.stat_client_shield =  (100 - (myShield * 100) ) + 100;
   }
   else{
     if(self.shield < self.shieldMax){
@@ -119,7 +119,7 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
   WriteAngle( MSG_ENTITY, self.angles_y );
   WriteAngle( MSG_ENTITY, self.angles_z );
   
-  if( changedflags & SENDFLAG_NEWENT ){
+  if( (changedflags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
@@ -136,21 +136,23 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
     WriteString( MSG_ENTITY, self.netname );
   }
   
-  WriteByte( MSG_ENTITY, self.stat_client_shield );
-  WriteByte( MSG_ENTITY, self.shieldHitFlag );
-    
-  if( changedflags & SENDFLAG_TURRET ){
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+  if( (changedflags & SENDFLAG_IMPACT) ){
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.shieldHitFlag );
+  }
+  
+  if( (changedflags & SENDFLAG_TURRET) ){
+    WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
-  if( changedflags & SENDFLAG_DEAD ){
+  if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
   }
-  if( changedflags & SENDFLAG_CRIT ){
+  if( (changedflags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
-  if( changedflags & SENDFLAG_MOVE ){
+  if( (changedflags & SENDFLAG_MOVE) ){
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
   self.shieldHitFlag = 0;
@@ -186,16 +188,18 @@ float( entity targEnt, float changedflags ) ctrl_send_spg={
     WriteString( MSG_ENTITY, self.netname );
   }
   
-  WriteByte( MSG_ENTITY, self.stat_client_shield );
-  WriteByte( MSG_ENTITY, self.shieldHitFlag );
+  if( (changedflags & SENDFLAG_IMPACT) ){
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.shieldHitFlag );
+  }
 
-  if( changedflags & SENDFLAG_DEAD ){
+  if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
   }
-  if( changedflags & SENDFLAG_CRIT ){
+  if( (changedflags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
-  if( changedflags & SENDFLAG_MOVE ){
+  if( (changedflags & SENDFLAG_MOVE) ){
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
   self.shieldHitFlag = 0;
@@ -230,22 +234,24 @@ float( entity targEnt, float changedflags ) ctrl_send_gev={
     WriteString( MSG_ENTITY, self.netname );
   }
   
-  WriteByte( MSG_ENTITY, self.stat_client_shield );
-  WriteByte( MSG_ENTITY, self.shieldHitFlag );
+  if( (changedflags & SENDFLAG_IMPACT) ){
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+    WriteByte( MSG_ENTITY, self.shieldHitFlag );
+  }
   
   if( (changedflags & SENDFLAG_TURRET) ){
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_x );
+    WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
-  if( changedflags & SENDFLAG_DEAD ){
+  if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
   }
-  if( changedflags & SENDFLAG_CRIT ){
+  if( (changedflags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
   
-  if( changedflags & SENDFLAG_MOVE ){
+  if( (changedflags & SENDFLAG_MOVE) ){
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
   self.shieldHitFlag = 0;

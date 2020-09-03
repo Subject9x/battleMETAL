@@ -10,6 +10,13 @@ Overview:
 */
 
 void() mech_ai_think={
+  local vector v1;
+  
+  makevectors(self.v_angle);
+  v1 = self.origin + (v_up * self.cockpit.compOffset_y);
+  traceline(v1, v1 + v_forward*10000, FALSE, self);
+  self.laser_sight_org = trace_endpos;
+  
   self.think = mech_ai_think;
   self.nextthink = time + 0.005;
 };
@@ -237,6 +244,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     turretAng_x = anglemod(ReadAngle());
     turretAng_y = anglemod(ReadAngle());
     turretAng_z = anglemod(ReadAngle());
+    self.v_angle = turretAng;
+    self.v_angle_x = self.v_angle_x * -1;
+    turretAng_x = 0;
     sendevent_turret_update( turretAng );
   }
 
