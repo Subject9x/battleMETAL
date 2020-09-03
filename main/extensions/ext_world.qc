@@ -155,10 +155,10 @@ void() world_ini_serverinfo={
   serverInfo = strcat(serverInfo, ftos(GAMETYPE)," ");
   serverInfo = strcat(serverInfo, ftos(serverflags)," ");
   serverInfo = strcat(serverInfo, ftos(cvar("timelimit"))," ");
+  serverInfo = strcat(serverInfo, ftos(world.worldtype)," ");
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
     serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
   }
-  serverInfo = strcat(serverInfo, ftos(world.worldtype)," ");
   SERVER_INFO = strzone(serverInfo);
 };
 

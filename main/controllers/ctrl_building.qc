@@ -106,9 +106,9 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.faction );
   }
   if( (changedflags & SENDFLAG_TURRET) ){
-    WriteCoord( MSG_ENTITY, self.v_angle_x );
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteCoord( MSG_ENTITY, self.torsoCenter.angles_z );
+    WriteAngle( MSG_ENTITY, self.v_angle_x );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );

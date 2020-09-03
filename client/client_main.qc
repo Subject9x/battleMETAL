@@ -470,8 +470,9 @@ void(string s) CSQC_Parse_StuffCmd =
       cvar_set("gamemode", argv(3) );
       SV_SERVERFLAGS = stof(argv(4) );
       SV_TIMELIMIT = stof(argv(5));
+      SV_WORLDTYPE = stof(argv(6));
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){        
-        cvar_set("saveslot", argv(6) );
+        cvar_set("saveslot", argv(7) );
       }
       else{
         cvar_set("saveslot", "0");
@@ -479,7 +480,6 @@ void(string s) CSQC_Parse_StuffCmd =
       if(CLIENT_player_state == PLAYER_CONNECT ){
         cl_set_savepath( cvar("gamemode") );
       }
-      SV_WORLDTYPE = stof(argv(7));
     }
     else if( argv(0) == "fog" ){
       cl_get_new_fog( s );
