@@ -856,7 +856,7 @@ void() data_hud_frame={
   local float hasTarget;
   local float playerAccuracy;
 
-  HUD_ENERGY_ACTUAL = CLIENT_energy / 100;
+  HUD_ENERGY_ACTUAL = CLIENT_energy_total;
 
   //Alpha fade-in of HUD as mech powers up.
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
