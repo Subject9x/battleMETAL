@@ -69,18 +69,46 @@ void(entity piece) player_part_predaw={
 //merely exists to satisfy interpolation
 void() player_think={
   local vector v1;
+  local vector boostLeft, boostRight, backLeft, backRight;
+  local string te;
   
   makevectors(self.angles);
   v1 = self.origin + (v_up * self.cockpit.compOffset_y);
   traceline(v1, v1 + v_forward*10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
 
+  if( self.legs != world ){
+    if( self.moveState > MOVE_SPRINT ){
+      makevectors(self.legs.angles);
+      boostLeft = boostRight = self.origin + (v_up * (self.mins_z * 0.85));
+      boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
+      boostRight = boostRight + (v_right * self.maxs_x * 0.5);
+      
+      backLeft = backRight = self.origin2 + (v_up * (self.mins_z * 0.67));
+      backLeft = backLeft + (v_right * self.mins_x * 0.5);
+      backRight = backRight + (v_right * self.maxs_x * 0.5);
+      
+      switch(self.vec_size){
+        case 2:
+          te = "TE_FIRE_2";
+          break;
+        case 3:
+          te = "TE_FIRE_3";
+          break;
+        default:
+          te = "TE_FIRE_1";
+          break;
+      }
+      trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
+      trailparticles(world, particleeffectnum(te), boostRight, backRight);
+    }
+
+  }
   self.think = player_think;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + 0.01;
 };
 
 float() player_predraw={
-  local vector offset;
   local vector entAng;
   local entity wep;
   local vector cacheOrg;
@@ -130,10 +158,6 @@ float() player_predraw={
         self = wep;
       }
       predraw_legs();
-      
-      if( !(self.damageValue & M_LEGS) ){
-        offset = self.origin + (v_forward * self.leg_z) + (v_right * self.leg_x) + (v_up * self.leg_y);
-      }
       wep = self.w_slot;
       while( wep != world ){
         predraw_player_weapon(wep);
