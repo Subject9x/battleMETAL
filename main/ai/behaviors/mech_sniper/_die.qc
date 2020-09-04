@@ -66,6 +66,10 @@ void() ai_mech_sniper_die={
   
   ai_alert_close( self.enemy );
   
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  
   self.think = ai_mech_sniper_die2;
   self.nextthink = time + 1;
 };
