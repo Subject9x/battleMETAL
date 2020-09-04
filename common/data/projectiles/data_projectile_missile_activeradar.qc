@@ -10,6 +10,7 @@ Overview:
 */
 
 #ifndef CSQC
+float PROJ_MARH_TURN_FADE = 0.02; //turn speed decay rate.
 void() data_projectile_missile_activeradar_think;
 void() data_projectile_missile_activeradar_delay;
 void() data_projectile_missile_activeradar_touch;
@@ -145,8 +146,14 @@ void() data_projectile_missile_activeradar_think={
   else{
     dir = normalize( self.dest - self.origin);
   }
-  if( time > self.data_lifetime * 0.5){
-    self.ai_dir = self.ai_dir - 0.15;
+  if( time > self.data_lifetime * 0.67){
+    if(self.ai_dir > 0.1){
+      self.ai_dir = self.ai_dir - PROJ_MARH_TURN_FADE;
+    }
+    else{
+      self.ai_dir = 0.1;
+    }
+    
   }
   dir = dir * self.ai_dir;
   self.velocity = dir * self.data_velocity;
