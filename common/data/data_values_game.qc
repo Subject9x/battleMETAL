@@ -300,6 +300,9 @@ float SENDTYPE_BUILD = 8;
 float SENDTYPE_CHUNK = 9; //Vehicle / Turret / Mech debris
 float SENDTYPE_PROJ = 10;  //projectiles - missiles, etc
 float SENDTYPE_MAP = 11;
+float SENDTYPE_TERRAIN = 12;
+float SENDTYPE_MISC = 13;
+float SENDTYPE_MISC_BLD = 14;
 //SendFlags-------------------
 //note: sendEnt is capped to 7 bitflags + NEWENT 
 //      and uses WriteByte, to add more flags, try switching

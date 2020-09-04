@@ -10,6 +10,24 @@ Overview:
   spawnflag[2] = random yaw 
 */
 
+float( float isNew, float changeFlags ) send_scenery={
+
+  WriteByte( MSG_ENTITY, SENDTYPE_MISC );
+  WriteByte( MSG_ENTITY, changeFlags );
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteShort( MSG_ENTITY, self.modelindex );
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+  }
+
+  return TRUE;
+};
+
 /*
   root spawn function
 */
@@ -36,6 +54,8 @@ void() doodad_rocks_desert_small_1={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -24));
+  self.SendEntity = send_scenery;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 void() doodad_rocks_desert_small_2={
   self.model = "q3mdl/map/rocks/rock2.obj";
@@ -47,6 +67,8 @@ void() doodad_rocks_desert_small_2={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -24));
+  self.SendEntity = send_scenery;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 void() doodad_rocks_desert_small_3={
   self.model = "q3mdl/map/rocks/rock3.obj";
@@ -58,6 +80,8 @@ void() doodad_rocks_desert_small_3={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -12));
+  self.SendEntity = send_scenery;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 void() doodad_rocks_desert_small_random={

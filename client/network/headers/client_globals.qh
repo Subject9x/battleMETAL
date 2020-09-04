@@ -58,6 +58,7 @@ float CLIENT_stat_w9_id;
 
 float CLIENT_radar_range;
 float CLIENT_energy;
+float CLIENT_energy_total;
 float CLIENT_shield;
 float CLIENT_repair_value;
 

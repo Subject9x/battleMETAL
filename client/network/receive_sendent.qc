@@ -121,6 +121,97 @@ void( float isNew ) sendent_handle_update={
     case SENDTYPE_MAP:
       sendent_handle_map( isNew, entFlags );
       break;
+    case SENDTYPE_TERRAIN:
+      sendent_handle_terrain( isNew, entFlags );
+      break;
+    case SENDTYPE_MISC:
+      sendent_handle_misc( isNew, entFlags );
+      break;
+    case SENDTYPE_MISC_BLD:
+      sendent_handle_misc_bld( isNew, entFlags );
+      break;
+  }
+};
+
+/*
+  SendEntity - Map Objects ====================================
+*/
+void( float isNew, float changeFlags ) sendent_handle_terrain={
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    setmodel( self, modelnameforindex(ReadShort()) );
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+    if(isNew){
+      self.drawmask = MASK_ENGINE;
+      self.solid = SOLID_BSP;
+      self.movetype = MOVETYPE_NONE;
+    }
+  }
+};
+
+/*
+  SendEntity - Map Objects ====================================
+*/
+void( float isNew, float changeFlags ) sendent_handle_misc={
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    setmodel( self, modelnameforindex(ReadShort()) );
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+    if(isNew){
+      self.drawmask = MASK_ENGINE;
+      self.solid = SOLID_BSP;
+      self.movetype = MOVETYPE_NONE;
+      self.deadflag = DEAD_NO;
+    }
+  }
+};
+
+
+/*
+  SendEntity - Map Objects ====================================
+*/
+void( float isNew, float changeFlags ) sendent_handle_misc_bld={
+  local float prevDeadflag;
+  local float newModelIndex;
+  
+  prevDeadflag = self.deadflag;
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    setmodel( self, modelnameforindex(ReadShort()) );
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+    if(isNew){
+      self.drawmask = MASK_ENGINE;
+      self.solid = SOLID_BSP;
+      self.movetype = MOVETYPE_NONE;
+    }
+  }
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+    newModelIndex = ReadShort();
+    if( self.deadflag == DEAD_DEAD && prevDeadflag == DEAD_NO ){
+      setmodel( self, modelnameforindex(newModelIndex) );
+      setsize( self, self.mins, self.maxs );
+      setorigin(self, self.origin);
+    }
   }
 };
 
@@ -128,19 +219,18 @@ void( float isNew ) sendent_handle_update={
   SendEntity - Projectile ====================================
 */
 void() sendent_missile_think={
-  if(!self.predraw){
-    self.predraw = predraw_missile;
-  }
-  if( self.traileffectnum ){
-    trailparticles(world, self.traileffectnum, self.origin2, self.origin1);
+  if( (self.origin1 != world.origin) && (self.origin2 != world.origin) ){
+    if( self.traileffectnum ){
+      trailparticles(world, self.traileffectnum, self.origin2, self.origin1);
+    }
   }
   self.think = sendent_missile_think;
   self.nextthink = time + 0.025;
 };
 
-void( float isNew, float changeFlags) sendent_handle_missile={
+void( float isNew, float changeFlags ) sendent_handle_missile={
   
-  if( changeFlags & SENDFLAG_MOVE ){
+  if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
@@ -179,10 +269,13 @@ void( float isNew, float changeFlags) sendent_handle_missile={
       data_sync_new_projectile(self.data_idx);
       setmodel(self, self.model);
       setsize(self, '0 0 0', '0 0 0');
-      self.think = sendent_missile_think;
-      self.nextthink = time + 0.025;
+      setorigin(self, self.origin);
+      //self.think = sendent_missile_think;
+      //self.nextthink = time + 0.025;
+      sendent_missile_think();
       self.drawmask = MASK_ENGINE;
-      interpolate_origin();
+      //interpolate_origin();
+      self.predraw = predraw_missile;
     }
   }
   
@@ -198,7 +291,6 @@ void( float prevShield ) sendevent_shield_explode={
     if( time > self.shieldExplodeCool ){
       te_shield_explode( self.origin, self.vec_size);
       self.shieldExplodeCool = time + self.vec_size;
-      
     }
   }
 };
@@ -390,11 +482,7 @@ void(entity item) sendent_start_reload={
   else{
     item.w_firetime = servertime + item.reloadRate / item.burstRate;
     item.wepReloadState = RECOIL;
-    if(item.data_idx == UID_ITEM_light_autocannon){
-      cons_logAFloat("item.burstRate", item.burstRate); //debug
-      cons_logAFloat("item.wepReloadState", item.wepReloadState); //debug
-      cons_logAFloat("item.reloadRate", item.reloadRate); //debug
-    }
+    item.count1 = time;
   }
   item.think = sendent_item_think;
   item.nextthink = time + 0.1;

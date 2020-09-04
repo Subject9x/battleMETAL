@@ -41,8 +41,12 @@ void() sendevent_mech_ai_move={
 void() sendevent_mech_ai_die={
   local entity weps;
   local entity rem;
+  
+  makevectors(self.angles);
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 ) ;
+  
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  
   if( self.torsoCenter.owner == self &&  self.torsoLeft.partTypeId == M_TOR_CENTER){
     sendent_handle_remove(self.torsoCenter);
   }
@@ -163,8 +167,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local float critical;
   local string newName;
   local float prevAttackFlag;
+  local float prevDeadFlag;
   
   prevShield = self.shield;
+  prevDeadFlag = self.deadflag;
   critical = self.damageValue;
   
   self.origin_x = ReadCoord();
@@ -220,9 +226,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    if( self.deadflag > DEAD_NO ){
-      sendevent_mech_ai_die();
-    }
   }
   
   //EVENT - MOVE
@@ -282,6 +285,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
+  }
+  
+  if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
+    sendevent_mech_ai_die();
   }
 };
 

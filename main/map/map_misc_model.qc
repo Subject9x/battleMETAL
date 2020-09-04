@@ -9,6 +9,24 @@ Overview:
 Line 20 - MAP_TERRAIN_MODEL
 */
 
+float( float isNew, float changeFlags) terrain_model_send={
+
+  WriteByte( MSG_ENTITY, SENDTYPE_TERRAIN );
+  WriteByte( MSG_ENTITY, changeFlags );
+
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteShort( MSG_ENTITY, self.modelindex );
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+  }
+
+  return TRUE;
+};
+
 /*QUAKED map_terrain_model (0.75 0.2 0.75) (-24 -24 -24) (24 24 24) - OVERRIDE_ALPHA EF_NOSHADOW
   this is for injecting large 3D terrain meshes into a bsp file.
   If a level needs large outdoor terrain pieces, but this right after worldspawn.
@@ -46,6 +64,8 @@ void() map_terrain_model={
   if( (self.spawnflags & 4) ){
     self.effects = EF_NOSHADOW;
   }
+  self.SendEntity = terrain_model_send;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 

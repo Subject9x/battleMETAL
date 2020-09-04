@@ -434,7 +434,7 @@ void(float dataIdx) hazard_ini_static={
       setsize( self, '-20 -20 0', '20 20 25' );
       break;
   }
-  self.effects = self.effects | EF_NOSHADOW;
+  self.effects = self.effects | (EF_NOSHADOW | EF_BLUE);
   if( self.isActive ){
     self.think = hazard_crs_think;
     self.nextthink = servertime + (random() * self.wait);

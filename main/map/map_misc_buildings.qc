@@ -6,6 +6,28 @@ Overview:
   misc buildings that really serve no direct purpose
 */
 
+
+float( float isNew, float changeFlags ) sendent_misc_building={
+  WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
+  WriteByte( MSG_ENTITY, changeFlags );
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteShort( MSG_ENTITY, self.modelindex );
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+  }
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+    WriteShort( MSG_ENTITY, self.modelindex );
+  }
+  return TRUE;
+};
+
 void() misc_build_die2={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
@@ -21,6 +43,9 @@ void() misc_build_die2={
       setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
       break;
   }
+  setsize( self, self.mins, self.maxs );
+  setorigin( self, self.origin);
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 
 void() misc_build_die1={
@@ -63,6 +88,9 @@ void() misc_building={
   self.th_die = misc_build_die1;
   self.think = building_burn_th;
   self.nextthink = time + random() * 3;
+  
+  self.SendEntity = sendent_misc_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 /*QUAKED building_misc_apartment (0 0 1) (-20 -20 0) (20 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP

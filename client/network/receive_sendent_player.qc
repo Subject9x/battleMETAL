@@ -212,6 +212,7 @@ void( float mech_id ) sendevent_player_mech={
     self = this;
     weps = weps.w_slot;
   }
+  self.solid = SOLID_BBOX;
   setsize(self, minSave, maxSave);  
 };
 
@@ -593,6 +594,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     
     if( self.energy > 0 ){
       CLIENT_energy = self.energy;
+      CLIENT_energy_total = (self.energy / 100) * self.energyMax;
     }
     else{
       CLIENT_energy = 0;

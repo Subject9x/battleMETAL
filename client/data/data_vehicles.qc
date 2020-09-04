@@ -30,60 +30,88 @@ void( float dataID ) data_sync_new_vehicle={
       data_vehicle_dunerunner();
       break;
   }
+  
 };
 
 void() data_vehicle_foslager = {
+  local vector minc,maxc;
   
   data_ini_foslager_();
+  
+  minc = self.mins;
+  maxc = self.maxs;
+  
   setmodel(self, self.model);
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
   self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
   
+  setsize(self, minc, maxc);
 };
 
 void() data_vehicle_dunerunner = {
+  local vector minc,maxc;
   
   data_ini_dunerunner_();
+  
+  minc = self.mins;
+  maxc = self.maxs;
   
   setmodel(self, self.model);
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
   self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+  setsize(self, minc, maxc);
 };
 
 void() data_vehicle_onnek = {
+  local vector minc,maxc;
 
   data_ini_onnek_();
+  
+  minc = self.mins;
+  maxc = self.maxs;
       
   setmodel(self, self.model);
+  setsize(self, minc, maxc);
 };
 
 void() data_vehicle_sorcerer = {
+  local vector minc,maxc;
   
   data_ini_sorcerer_();
+  
+  minc = self.mins;
+  maxc = self.maxs;
       
   setmodel(self, self.model);
+  setsize(self, minc, maxc);
 
 };
 
 void() data_vehicle_trowel = {
+  local vector minc,maxc;
 
   data_ini_trowel_();
+  
+  minc = self.mins;
+  maxc = self.maxs;
   
   setmodel(self, self.model);
   setmodel(self.torsoCenter, self.torsoCenter.model);
 
   makevectors(self.angles);
   self.torsoCenter.origin = self.origin + (v_right * self.torsoCenter.compOffset_x) + (v_forward * self.torsoCenter.compOffset_z) + (v_up * self.torsoCenter.compOffset_y);
+  setsize(self, minc, maxc);
 };
 
 /*
   Vehicle wrecks now client-side to optimize server traffic.
 */
 void() data_vehicle_wreck={
+  local vector minc,maxc;
   local entity shell;
   
   makevectors(self.angles);  

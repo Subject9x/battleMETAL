@@ -44,6 +44,7 @@ void( float dataID ) data_sync_new_mech_ai={
   }
   self.deadflag = DEAD_NO;
   self.critBits = 0;
+  self.solid = SOLID_BBOX;
   maxSave = self.maxs;
   minSave = self.mins;
   setmodel(self, "q3mdl/testball.md3");
