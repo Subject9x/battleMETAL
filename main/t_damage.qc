@@ -24,11 +24,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     return world;
   }
 
-  self.shieldHitFlag = 0;
   
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
+  
+  dmgTrg.shieldHitFlag = 0;
   
   if( (attacker.flags & FL_CLIENT) ){
     if( !attacker.enemy ){
@@ -37,7 +38,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
       attacker.targLockState = attacker.targLockState | LOCK_TARG_HAS;
     }
   }
-  
+  if( (dmgTrg.flags & FL_CLIENT) ){
+    dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
+  }
   //reduce friendly fire damage on easier settings
   if( (trg.faction != FACTION_ALL) ){
     if( trg.faction == attacker.faction ){
@@ -188,21 +191,31 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
-  trg.shieldHitFlag = 1;
-  
-  trg.shield = trg.shield - dmgAmt;
-  if( trg.shield < 0 ){
-    trg.shield = 0;
-    trg.shieldHitFlag = 2;
+  dmgTrg.shield = dmgTrg.shield - dmgAmt;
+  if( dmgTrg.shield < 0 ){
+    dmgTrg.shield = 0;
+    if(shieldBreaker){
+      dmgTrg.shieldHitFlag = 3;
+    }
+    else{
+      dmgTrg.shieldHitFlag = 2;
+    }
+  }
+  else{
+    dmgTrg.shieldHitFlag = 1;
   }
   
-  trg.dmg_inflictor = inflictor;
-  if(trg.was_hit < time){
-    trg.was_hit = time + 1;
+  if( (dmgTrg.flags & FL_CLIENT) ){
+    dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
+  }
+  
+  dmgTrg.dmg_inflictor = inflictor;
+  if(dmgTrg.was_hit < time){
+    dmgTrg.was_hit = time + 1;
   }
 
   //calculate hit time and angle
-  util_chekPointToHitDir(trg, dmg_point);
+  util_chekPointToHitDir(dmgTrg, dmg_point);
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.w_proj = time + 0.2;
@@ -218,35 +231,35 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   */
   //shield delay should be communicated to the player
   //ION / EMP should be better than most for messing with delay
-  if( trg.shield <= 0 ){
-    if( time > trg.shieldHitRegen ){
+  if( dmgTrg.shield <= 0 ){
+    if( time > dmgTrg.shieldHitRegen ){
       //fresh hit
       if( shieldBreaker ){
-        trg.shieldHitRegen = time + (SHIELD_DELAY * 2);
+        dmgTrg.shieldHitRegen = time + (SHIELD_DELAY * 2);
       }
       else{
-        trg.shieldHitRegen = time + SHIELD_DELAY;
+        dmgTrg.shieldHitRegen = time + SHIELD_DELAY;
       }
-      trg.shieldHitRegenStart = time;
+      dmgTrg.shieldHitRegenStart = time;
     }
   }
   else{
-    if( time > trg.shieldHitDelay ){
+    if( time > dmgTrg.shieldHitDelay ){
       if( shieldBreaker ){
-        trg.shieldHitDelay = time + (SHIELD_DELAY * 0.75);
+        dmgTrg.shieldHitDelay = time + (SHIELD_DELAY * 0.75);
       }
       else{
-        trg.shieldHitDelay = time + (SHIELD_DELAY * 0.33);
+        dmgTrg.shieldHitDelay = time + (SHIELD_DELAY * 0.33);
       }
-      trg.shieldHitDelayStart = time;
+      dmgTrg.shieldHitDelayStart = time;
     }
     else{
-      if( (trg.shieldHitDelay - trg.shieldHitDelayStart ) < SHIELD_DELAY ){
+      if( (dmgTrg.shieldHitDelay - dmgTrg.shieldHitDelayStart ) < SHIELD_DELAY ){
         if( shieldBreaker ){
-          trg.shieldHitDelay = trg.shieldHitDelay + (SHIELD_DELAY * 0.75);
+          dmgTrg.shieldHitDelay = dmgTrg.shieldHitDelay + (SHIELD_DELAY * 0.75);
         }
         else{
-          trg.shieldHitDelay = trg.shieldHitDelay + (SHIELD_DELAY * 0.33);
+          dmgTrg.shieldHitDelay = dmgTrg.shieldHitDelay + (SHIELD_DELAY * 0.33);
         }
       }
     }
@@ -254,7 +267,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   //================================================
   
   //AI react to Damage
-  if( (trg.flags & FL_MONSTER) ){
+  if( (dmgTrg.flags & FL_MONSTER) ){
     notTarg = self;
     self = dmgTrg;
     if( self.th_pain ){  
@@ -276,35 +289,35 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
 /*
   finds closest sub-entity
 */
-entity(vector point, entity trg) t_find_part={
+entity(vector point, entity trgUnit) t_find_part={
   local entity part;
   local float radi;
   
-  part = trg;
-  radi = vlen(trg.torsoCenter.hitOffset - point);
+  part = trgUnit;
+  radi = vlen(trgUnit.torsoCenter.hitOffset - point);
     
-  if( vlen(trg.armLeft.hitOffset - point ) < radi ){
-    part = trg.armLeft;
-    radi = vlen(point - trg.armLeft.hitOffset);
+  if( vlen(trgUnit.armLeft.hitOffset - point ) < radi ){
+    part = trgUnit.armLeft;
+    radi = vlen(point - trgUnit.armLeft.hitOffset);
   }
-  if( vlen(trg.armRight.hitOffset - point ) < radi ){
-    part = trg.armRight;
-    radi = vlen(point - trg.armRight.hitOffset);
+  if( vlen(trgUnit.armRight.hitOffset - point ) < radi ){
+    part = trgUnit.armRight;
+    radi = vlen(point - trgUnit.armRight.hitOffset);
   }
-  if( vlen(trg.torsoLeft.hitOffset - point ) < radi ){
-    part = trg.torsoLeft;
-    radi = vlen(point - trg.torsoLeft.hitOffset);
+  if( vlen(trgUnit.torsoLeft.hitOffset - point ) < radi ){
+    part = trgUnit.torsoLeft;
+    radi = vlen(point - trgUnit.torsoLeft.hitOffset);
   }
-  if( vlen(trg.torsoRight.hitOffset - point ) < radi ){
-    part = trg.torsoRight;
-    radi = vlen(point - trg.torsoRight.hitOffset);
+  if( vlen(trgUnit.torsoRight.hitOffset - point ) < radi ){
+    part = trgUnit.torsoRight;
+    radi = vlen(point - trgUnit.torsoRight.hitOffset);
   }
 
   if( part.deadflag > DEAD_NO ){
     part = part.realowner;
   }
-  if( part == trg.torsoCenter ){
-    part = trg;
+  if( part == trgUnit.torsoCenter ){
+    part = trgUnit;
   }
   return part;
 };

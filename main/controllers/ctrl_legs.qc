@@ -51,7 +51,6 @@ void() ctrl_updateLegs={
       self.angles =  nextDirs;
       self.v_angle = self.angles;
     }
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_IMPACT;
   }
 };
 

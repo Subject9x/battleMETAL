@@ -580,19 +580,19 @@ void() CSQC_Ent_Remove ={
     remove(self.torsoCenter);
   }
   if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
-    if( self.torsoLeft.owner == self && self.torsoLeft.model ){
+    if( self.torsoLeft.owner == self ){
       remove(self.torsoLeft);
     }
-    if( self.torsoRight.owner == self && self.torsoRight.model ){
+    if( self.torsoRight.owner == self ){
       remove(self.torsoRight);
     }
-    if( self.armLeft.owner == self && self.armLeft.model ){
+    if( self.armLeft.owner == self ){
       remove(self.armLeft);
     }
-    if( self.armRight.owner == self && self.armRight.model ){
+    if( self.armRight.owner == self ){
       remove( self.armRight);
     }
-    if( self.legs.owner == self && self.legs.model ){
+    if( self.legs.owner == self ){
       remove(self.legs );
     }
   }

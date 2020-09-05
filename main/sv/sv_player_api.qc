@@ -90,7 +90,6 @@ void() PlayerPreThink = {
       self.viewzoom = 1;
     }
   }
-  
 };
 
 /*
@@ -277,7 +276,7 @@ void() PlayerPostThink = {
 	if (!(self.flags & FL_ONGROUND)){
 		self.jump_flag = self.velocity_z;
   }
-  if( self.clientData ){
+  if( self.clientData != world ){
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_MOVE;
     if( self.damageValue > 0 ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;

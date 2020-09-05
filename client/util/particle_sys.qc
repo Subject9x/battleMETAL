@@ -332,37 +332,46 @@ float() te_shield_hit_predraw={
 };
 
 void() te_shield_hit_th={
+  if( servertime > self.data_lifetime ){
+    self.owner.shieldHitFlag = FALSE;
+    remove(self);
+    return;
+  }
   if(self.owner.entId == player_localentnum){
     self.origin = pmove_org;
   }
   else{
     self.origin = self.owner.origin;
   }
-  
-  self.alpha = 0.075;
-  if( time > self.data_lifetime ){
-    remove(self);
-    return;
-  }
+
   self.think = te_shield_hit_th;
-  self.nextthink = time + 0.01;
+  self.nextthink = servertime + 0.025;
 };
 
 void() te_shield_hit={
   local entity explode;
+  local float hitTime;
+  
+  hitTime = 0.33;
+  
+  self.shieldEffectTime = servertime + hitTime;
  
   explode = spawn();
   explode.think = te_shield_hit_th;
-  explode.nextthink = time + 0.01;
-  explode.data_lifetime = time + 0.5;
+  explode.nextthink = servertime + 0.01;
+  explode.data_lifetime = servertime + hitTime;
   explode.scale = self.vec_size * 0.75;
   explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
   explode.drawmask = MASK_NORMAL;
   explode.predraw = te_shield_hit_predraw;
   explode.owner = self;
+  explode.solid = SOLID_NOT;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
+  setsize(explode, explode.mins, explode.maxs);
   setorigin( explode, self.origin);
   explode.alpha = 0.075;
+  
+  
   te_customflash( self.origin, self.vec_size * 50, 0.25, '0.003 0.87 0.22');
   pointsound(  self.origin, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
 };
@@ -371,19 +380,61 @@ void() te_shield_hit={
 /*
   Unit's shields have broken (reduced to 0), play an expanding explosion shell effect.
 */
-void() te_shield_explode_th={
-  self.alpha = self.alpha - 0.012;
-  self.scale = self.scale + 0.015;
-  self.think = te_shield_explode_th;
-  if( self.alpha < 0.01 ){
-    self.think = SUB_Remove;
+
+float() predraw_shield_explode={
+
+  self.colormod = self.compOffset;
+  self.angles_y = self.angles_y - 3;
+  if (self.nextthink != self.frame1time){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    
+    self.frame2 = self.frame1;
+    self.frame1 = self.alpha;
+    
+    self.angle2 = self.angle1;
+    self.angle1 = self.angles_y;
+    
+    self.origin2 = self.origin1;
+    self.origin1 = self.origin;
   }
+  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+  
+  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+  
+  self.angles_y = self.angle1 + (self.angle2-self.angle1)*self.lerpfrac;
+  self.angles_y = anglemod(self.angles_y);
+  
+  self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
+  
+  return FALSE;
+};
+
+void() te_shield_explode_th={
+  if( self.alpha < 0.01 ){
+    remove(self);
+    return;
+  }
+  self.alpha = self.alpha - 0.02;
+  self.scale = self.scale + 0.015;
+  
+  if(self.owner.entId == player_localentnum){
+    self.origin = pmove_org;
+  }
+  else{
+    self.origin = self.owner.origin;
+  }
+  
+  self.think = te_shield_explode_th;
   self.nextthink = time + 0.01;
 };
 
 void( vector org, float vecSize ) te_shield_explode={
   local entity explode;
- 
+  local vector flashCol;
+  local vector shellCol;
+  
   explode = spawn();
   explode.movetype = MOVETYPE_NONE;
   explode.solid = SOLID_NOT;
@@ -396,7 +447,20 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.drawmask = MASK_NORMAL;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
-  te_customflash( org, vecSize * 100, 1, '0.003 0.87 0.22');
+  explode.owner = self;
+  
+  if(self.shieldHitFlag == 3){
+    flashCol = '1.0 0.39 0.0';
+    shellCol = '0.99 0.0 0.39';
+  }
+  else{
+    flashCol = '0.003 0.87 0.22';
+    shellCol = '0.41 1.0 0.199';
+  }
+  explode.colormod = shellCol;
+  explode.compOffset = shellCol;
+  te_customflash( org, vecSize * 100, 2, flashCol);
+  
 };
 
 /*

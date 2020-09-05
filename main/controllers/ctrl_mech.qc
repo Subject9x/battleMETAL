@@ -29,19 +29,25 @@ void() ctrl_update_mechplayer={
   self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
-  self.burnBits = 0;
+  local float newBurn;
+  newBurn = 0;
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
       continue;
     }
-    if( piece.deadflag <= DEAD_NO ){
-      hp = piece.health / piece.max_health;
-      if( hp < 0.6){
-        self.burnBits = self.burnBits | piece.partTypeId;
-      }
+    if( (self.burnBits & piece.partTypeId) ){
+      continue;
+    }
+    if( piece.deadflag != DEAD_NO ){
+      continue;
+    }
+    hp = piece.health / piece.max_health;
+    if( hp < 0.67){
+      newBurn = newBurn | piece.partTypeId;
     }
   }
-  if( self.burnBits > 0 ){
+  if( newBurn > 0 ){
+    self.burnBits = self.burnBits | newBurn;
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
   }
 };
@@ -68,19 +74,24 @@ void() ai_ctrl_update_mechplayer={
   self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
-  self.burnBits = 0;
+  local float newBurn;
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
       continue;
     }
-    if( piece.deadflag <= DEAD_NO ){
-      hp = piece.health / piece.max_health;
-      if( hp < 0.6){
-        self.burnBits = self.burnBits | piece.partTypeId;
-      }
+    if( (self.burnBits & piece.partTypeId) ){
+      continue;
+    }
+    if( piece.deadflag != DEAD_NO ){
+      continue;
+    }
+    hp = piece.health / piece.max_health;
+    if( hp < 0.67){
+      newBurn = newBurn | piece.partTypeId;
     }
   }
-  if( self.burnBits > 0 ){
+  if( !(self.burnBits & newBurn) ){
+    self.burnBits = self.burnBits | newBurn;
     self.SendFlags = self.SendFlags | SENDFLAG_BURN;
   }
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);

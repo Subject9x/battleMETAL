@@ -9,6 +9,35 @@ Overview:
     sv/main/sv/sv_client_api.send_client_data()
 */
 
+
+/*
+  HANDLE EVENT - player mech pieces are dying
+*/
+void() sendevent_player_burn={
+  local vector offset;
+
+  if( (self.burnBits & M_TOR_LEFT) ){
+    te_mech_crit( self.torsoLeft.origin , '0 0 10');
+  }
+  if( (self.burnBits & M_TOR_RIGHT) ){
+    te_mech_crit( self.torsoRight.origin , '0 0 10');
+  }
+  if( (self.burnBits & M_ARM_LEFT) ){
+    if( !(self.damageValue & M_TOR_LEFT) ){
+      te_mech_crit( self.armLeft.origin , '0 0 10');
+    }
+  }
+  if( (self.burnBits & M_ARM_RIGHT) ){
+    if( !(self.damageValue & M_TOR_RIGHT) ){
+      te_mech_crit( self.armRight.origin , '0 0 10');
+    }
+  }
+  if( (self.burnBits & M_LEGS) ){
+    te_mech_crit( self.legs.origin , '0 0 10');
+  }
+};
+
+
 void(entity item) predraw_player_weapon={
   local entity this;
   local vector entAng;
@@ -76,11 +105,13 @@ void() player_think={
   v1 = self.origin + (v_up * self.cockpit.compOffset_y);
   traceline(v1, v1 + v_forward*10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
-
+  
+  sendevent_player_burn();
+  
   if( self.legs != world ){
     if( self.moveState > MOVE_SPRINT ){
       makevectors(self.legs.angles);
-      boostLeft = boostRight = self.origin + (v_up * (self.mins_z * 0.85));
+      boostLeft = boostRight = self.origin + (v_up * (self.mins_z * 0.75));
       boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
       boostRight = boostRight + (v_right * self.maxs_x * 0.5);
       
@@ -89,23 +120,19 @@ void() player_think={
       backRight = backRight + (v_right * self.maxs_x * 0.5);
       
       switch(self.vec_size){
-        case 2:
-          te = "TE_FIRE_2";
-          break;
         case 3:
           te = "TE_FIRE_3";
           break;
         default:
-          te = "TE_FIRE_1";
+          te = "TE_FIRE_2";
           break;
       }
       trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
       trailparticles(world, particleeffectnum(te), boostRight, backRight);
     }
-
   }
   self.think = player_think;
-  self.nextthink = time + 0.01;
+  self.nextthink = servertime + 0.01;
 };
 
 float() player_predraw={
@@ -322,7 +349,7 @@ void( float criticalBits ) sendevent_player_critical={
     self.armRight.drawmask = 0;
   }
   if( (criticalBits & M_LEGS) ){
-    te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    te_missile_explode( self.legs.origin, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
   }
   
   wep = self.w_slot;
@@ -368,40 +395,6 @@ void(float repairValue) sendevent_player_repair={
   }
 };
 
-
-/*
-  HANDLE EVENT - player mech pieces are dying
-*/
-void( float criticalBits ) sendevent_player_burn={
-  local vector offset;
-
-  makevectors( self.angles );
-  if( (criticalBits & M_TOR_LEFT) ){
-    offset = self.origin + (v_forward * self.leftTorso_z) + (v_right * self.leftTorso_x) + (v_up * self.leftTorso_y);
-    te_mech_crit( offset, '0 0 10');
-  }
-  if( (criticalBits & M_TOR_RIGHT) ){
-    offset = self.origin + (v_forward * self.rightTorso_z) + (v_right * self.rightTorso_x) + (v_up * self.rightTorso_y);
-    te_mech_crit( offset, '0 0 10');
-  }
-  if( (criticalBits & M_ARM_LEFT) ){
-    if( !(self.damageValue & M_TOR_LEFT) ){
-      offset = self.origin + (v_forward * self.leftArm_z) + (v_right * self.leftArm_x) + (v_up * self.leftArm_y);
-      te_mech_crit( offset, '0 0 10');
-    }
-  }
-  if( (criticalBits & M_ARM_RIGHT) ){
-    if( !(self.damageValue & M_TOR_RIGHT) ){
-      offset = self.origin + (v_forward * self.rightArm_z) + (v_right * self.rightArm_x) + (v_up * self.rightArm_y);
-      te_mech_crit( offset, '0 0 10');
-    }
-  }
-  if( (criticalBits & M_LEGS) ){
-    offset = self.origin + (v_forward * self.leg_z) + (v_right * self.leg_x) + (v_up * self.leg_y);
-    te_mech_crit( offset, '0 0 10');
-  }
-};
-
 void( float isNew, float changeFlags) sendent_handle_player={
   local vector prevOrg;
   local float prevShield;
@@ -413,7 +406,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevDeadFlag;
   local float prevAttackFlag;
   local float prevMoveState;
+  local float prevBurn;
   
+  prevBurn = self.burnBits;
   prevShield = self.shield;
   prevCrit = self.damageValue;
   prevKills = self.kills;
@@ -422,6 +417,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevAttackFlag = self.attackFlag;
   prevMoveState = self.moveState;
   prevOrg = self.origin;
+  prevType = self.data_type;
   
   self.ping = stof( getplayerkeyvalue(self.entId - 1, "ping") );
   self.kills = stof( getplayerkeyvalue(self.entId - 1, "frags") );
@@ -434,9 +430,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
     self.stat_rdr_mode = ReadByte();
+    
     self.shield = ReadByte();
+    
     self.energy = ReadByte();
-    self.shieldHitFlag = ReadByte(); 
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
@@ -444,21 +441,26 @@ void( float isNew, float changeFlags) sendent_handle_player={
     
     self.attackFlag = ReadLong();
     self.moveState = ReadByte();
+    //Track player move state?
+    self.legDir = anglemod(ReadShort());
+    self.ai_dir = ReadShort();
   }
   
   /*
-    EVENT - Track player move state?
+    EVENT - Player has taken fire
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    self.legDir = anglemod(ReadShort());
-    self.ai_dir = ReadShort();
+    local float nextHit;
+    nextHit = ReadByte();
+    if( self.shieldHitFlag == FALSE || nextHit == 3){
+      self.shieldHitFlag = nextHit;
+    }
   }
   
   /*
     EVENT - player info change 
   */
   if( (changeFlags & SENDFLAG_TURRET) ){
-    prevType = self.data_type;
     self.data_type = ReadByte();
     self.faction = ReadByte();
     self.data_idx = ReadByte();
@@ -471,15 +473,18 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    self.colormod = te_read_vector();
+    self.colormod_x = ReadCoord();
+    self.colormod_y = ReadCoord();
+    self.colormod_z = ReadCoord();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         self.deadflag = DEAD_NO;
         self.damageValue = rint(0);
         sendevent_player_mech(self.data_idx);
+        self.shieldEffectTime = 0;
         self.predraw = player_predraw;
         self.think = player_think;
-        self.nextthink = time + 0.1;
+        self.nextthink = servertime + 0.01;
       }
     }
   }
@@ -503,10 +508,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadByte();
-    if( self.burnBits > 0 ){
-      sendevent_player_burn( self.burnBits );
-    }
+    self.burnBits = ReadShort();
+    self.burnBits = self.burnBits | prevBurn;
   }
   
   /*
@@ -529,14 +532,17 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = ReadLong();
-    self.data_type = ReadByte();
-    self.origin = te_read_vector();
     self.faction = ReadByte();
     self.flags = ReadLong();
-    setmodel(self, "q3mdl/testball.md3");
-    setorigin(self, self.origin);
-    self.alpha = 0.01;
-    self.scale = 0.01;
+    if( isNew ){
+      if(self.data_type != DATA_MECH){
+        self.data_type = DATA_POBS;
+        setmodel(self, "q3mdl/testball.md3");
+        setorigin(self, self.origin);
+        self.alpha = 0.01;
+        self.scale = 0.01;
+      }
+    }
   }
   
   /*
@@ -578,9 +584,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   //Shield strike event
-  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
-    if( time > self.shieldEffectTime ){
-      self.shieldEffectTime = time + 0.5;
+  if(servertime > self.shieldEffectTime ){
+    if( self.shieldHitFlag == 1 && (self.shield > 0 && self.shield < 100.01)){
       te_shield_hit();
     }
   }

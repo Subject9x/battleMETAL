@@ -98,6 +98,7 @@ void( float isNew, float entFlags ) data_nav_point={
       self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
       self.predraw = predraw_navpoint;
       self.colormod = '0 1 0';
+      self.drawmask = MASK_ENGINE;
     }
   }
   

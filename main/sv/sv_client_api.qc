@@ -510,17 +510,18 @@ void() client_data={
   data = spawn();
   setmodel(data, "q3mdl/testball.md3");
   setsize(data, '-1 -1 -1', '1 1 1');
-  setorigin(data, world.origin);
+  setorigin(data, self.origin);
   data.owner = self;
   data.alpha = 0.01;
   data.scale = 0.01;
   data.effects = data.effects | EF_NODEPTHTEST;
-  data.origin = world.origin;
+  data.origin = self.origin;
   data.data_type = self.data_type;
   data.flags = self.flags;
   data.radar_range = self.radar_range;
   data.stat_rdr_mode = self.stat_rdr_mode;
   data.stat_client_shield = self.stat_client_shield;
+  data.shieldHitFlag = self.shieldHitFlag;
   data.SendEntity = send_client_data;
   data.SendFlags = data.SendFlags | SENDFLAG_NEWENT;
   data.vec_size = self.vec_size;
@@ -537,6 +538,7 @@ float( float isNew, float changeFlags ) send_client_data={
   player = self.owner;
   self.view_ofs = player.origin;
   
+
   prevType = self.data_type;
   if( player.deadflag == DEAD_NO ){
     self.data_type = player.data_type;
@@ -558,6 +560,7 @@ float( float isNew, float changeFlags ) send_client_data={
     self.damageValue = 0;
     self.data_idx = 0; 
     self.w_group = 0;
+    self.shieldHitFlag = 0;
   }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
@@ -571,9 +574,10 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.view_ofs_z );
     
     WriteByte( MSG_ENTITY, self.stat_rdr_mode );
+    
     WriteByte( MSG_ENTITY, self.stat_client_shield );
+    
     WriteByte( MSG_ENTITY, self.stat_client_energy );
-    WriteByte( MSG_ENTITY, self.shieldHitFlag); 
     
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
@@ -581,14 +585,16 @@ float( float isNew, float changeFlags ) send_client_data={
     
     WriteLong( MSG_ENTITY, player.attackFlag);
     WriteByte( MSG_ENTITY, player.moveState );
+    
+    WriteShort( MSG_ENTITY, player.legs.angles_y);
+    WriteShort( MSG_ENTITY, player.legs.ai_dir);
   }
   
   /*
-    EVENT - player has fired weapons
+    EVENT - Player takes hit to their shields.
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    WriteShort( MSG_ENTITY, player.legs.angles_y);
-    WriteShort( MSG_ENTITY, player.legs.ai_dir);
+    WriteByte( MSG_ENTITY, self.shieldHitFlag); 
   }
   
   /*
@@ -621,7 +627,7 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    WriteByte( MSG_ENTITY, self.burnBits );
+    WriteShort( MSG_ENTITY, player.burnBits );
   }
   /*
     EVENT - DEAD
@@ -635,10 +641,6 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, num_for_edict(player) );
-    WriteByte( MSG_ENTITY, self.data_type );
-    WriteCoord( MSG_ENTITY, player.origin_x );
-    WriteCoord( MSG_ENTITY, player.origin_y );
-    WriteCoord( MSG_ENTITY, player.origin_z );
     WriteByte( MSG_ENTITY, player.faction );
     WriteLong( MSG_ENTITY, player.flags );
   }
@@ -649,6 +651,5 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, (player.particleCube == world));
     WriteLong( MSG_ENTITY, player.stat_trg_ent_id );
   }
-  player.shieldHitFlag = 0;
   return TRUE;
 };
