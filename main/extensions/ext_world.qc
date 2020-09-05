@@ -619,3 +619,71 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
     }
   }
 };
+
+
+/*
+  used with server flag (SV_SERVERFLAGS & SVFLAG_SPAWNFAR)
+  gathers all the deathmatch nodes.
+*/
+entity() world_deathmatch_random_spawn={
+  local entity node;
+  local entity baddies;
+  local float proxCount;
+  local float runTotal;
+  local entity theNode;
+  local entity rando;
+  local float allNodes;
+  local float nodeId;
+  local float emptyNodes;
+  runTotal = 16;
+  
+  for(node = nextent(world); node != world; node = nextent(node) ){
+    if(node.classname != "map_deploy_point"){
+      continue;
+    }
+    if(node.faction != FACTION_ALL){
+      continue;
+    }
+    proxCount = 0;
+    for(baddies = nextent(world); baddies != world; baddies = nextent(baddies) ){
+      if( !(baddies.flags & FL_CLIENT) ){
+        continue;
+      }
+      if( baddies.data_type != DATA_MECH ){
+        continue;
+      }
+      traceline(node.origin, baddies.origin, FALSE, node);
+      if(trace_fraction == 1.0){
+        proxCount = proxCount + 1;
+      }
+      else{
+        if(vlen(baddies.origin - node.origin) < AI_RANGE_S){
+          proxCount = proxCount + 1;
+        }
+      }
+    }
+    if(proxCount <= runTotal){
+      runTotal = rint(proxCount * 0.85);
+      theNode = node;
+      if( proxCount == 0){
+        emptyNodes = emptyNodes + 1;
+      }
+    }
+    allNodes = allNodes + 1;
+  }
+  if( theNode && emptyNodes < (allNodes * 0.5) ){
+    return theNode;
+  }
+  
+  nodeId = rint(random() * allNodes);
+  rando = nextent(world);
+  while( rando != world ){
+    if( rando.classname == "map_deploy_point" ){
+      if(rando.data_idx == nodeId){
+        theNode = rando;
+      }
+    }
+    rando = nextent(rando);
+  }
+  return theNode;
+};

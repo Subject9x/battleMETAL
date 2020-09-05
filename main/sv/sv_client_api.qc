@@ -466,6 +466,10 @@ void() sv_client_respawn={
 void() sv_client_spawnpoint_select={
   local entity spot;
 
+  if( (serverflags & SVFLAG_SPAWNFAR) ){
+    self.goalentity = spot = world_deathmatch_random_spawn();
+  }
+
   if(self.goalentity){
     if( coop ){
       spot = spawnpoint_coop();

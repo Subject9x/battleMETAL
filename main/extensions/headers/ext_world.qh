@@ -86,3 +86,4 @@ void( vector org, entity parent, float id, vector colr, float stile, float pFlag
 void( entity parent ) world_remove_dlight;
 void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight;
 
+entity() world_deathmatch_random_spawn;
