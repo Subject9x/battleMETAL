@@ -3,13 +3,13 @@
 //img stored in data/map_scripts/
   'img' : 'o1m1/o1m1.png'
   'name'  : 'OP-CODE 1 Exec'
-  'display' : 'Light the torches'
+  'display' : 'Drums in the deep'
   'type'  : 'Recon'
   'points' : '1'
-  'sector' : 'Habzone Outskirts'
-  'location' : 'Commercia Band 1'
+  'sector' : 'Habzone'
+  'location' : 'Commercia Band 3'
   'time' : '04;12;37;91'
-  'brief' : '--SYSTEM BOOT- | reason[OP-CODE 1] | elapsed time[7 ye*#-err] | --DECLARE-- | Ranking Command has fired tripwire signal rockets. | --ALERT-- | [elapsed delta] has exceeded [stand-down window] | ...beginning main boot sequence... | --DECLARE-- | Perimetra System Control (PSC) is now activated. | ... | PSC context-parser reports Compact has been eliminated in First-Strike scenario. | PSC now bringing its rapid-response nodes out of cold storage. | --ALERT-- | Boot sequence initializing PSC logicka server cores. | ... | --ECHO-- | Arise, DEAD_HAND, from your slumber. Know that the souls of your nation forgive you for what you must do...'
+  'brief' : '-COMM INTERCEPT- | Lord Gavir> Ok barons, lets check the damage, what are we looking at? | | SRV.OFC> Hab-Block 19 base reporting in; all quiet since yesterday, we`re at 63% casualties. | | L.Gavir> -sigh- That bad, well how about the Militar garrison? | | SRV.OFC> They appear to be in similar straits, I sent out a patrol to keep tabs on them. | | L.Gavir> Good enough, I`m rebuilding Royal Command with survivors, but your orders for now are to start salvaging equipment in the city. Anything else? | | SRV.OFC> Understood my Lord, there is one other thing - a few listening posts have picked up heavily encrypted radio signals coming from the Deep Wastes. One <METAL> squad also reported flares about 8 kliks out from our position. Certain key hashes matched this...`PSC` series of radio bands? | | L.Gavir> That...name... I may have heard something about it years ago. Something about early-warning systems in case of planetary invasion <snort>. Just keep an eye or two on it for now, probably a nuke-triggered malfunction. | | SRV.OFC> roger, my lord, ending comm. | <TRANSMISSION TERMINATED>'
   'intel' : 'PSC lacks necessary data to provide accurate prediction models for weapons and equipment. | PSC recommends lightest possible metal node to reduce material risk at this crucial juncture. | | Engaging Hostile Forces is not advised at this time.'
   'objtotal' : '5'
   'anim' : ''
@@ -17,28 +17,26 @@
 // objectives section
 {
   'objid' : '1'
-  'objtype': 'primary'
-  'objdesc' : 'Activate allied METALS by reaching (Nav) Alpha'
+  'objtype': 'secondary'
+  'objdesc' : 'Activate allied <METALS> by reaching (ALPHA).'
 }
 {
   'objid' : '2'
-  'objtype': 'primary'
-  'objdesc' : 'Activate allied METALS by reaching (Nav) Beta'
+  'objtype': 'secondary'
+  'objdesc' : 'Activate allied <METALS> by reaching (BETA).'
 }
 {
   'objid' : '3'
-  'objtype': 'primary'
-  'objdesc' : 'Activate allied METALS by reaching (Nav) Delta'
+  'objtype': 'secondary'
+  'objdesc' : 'Activate allied <METALS> by reaching (DELTA).'
 }
 {
   'objid' : '4'
-  'objtype': 'primary'
-  'objdesc' : 'Activate allied METALS by reaching (Nav) Epsilon'
+  'objtype': 'secondary'
+  'objdesc' : 'Activate allied <METALS> by reaching (EPSILON).'
 }
 {
   'objid' : '5'
   'objtype': 'primary'
-  'objdesc' : 'Escape to (Nav) Gamma'
-  'items' : '9 10 13 14 15 19 21'
-  'mechs' : '2'
+  'objdesc' : 'Escape to (ETA).'
 }

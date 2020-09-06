@@ -1,0 +1,38 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o2m4/o2m4.png'
+  'name'  : 'Operation Sable Sword'
+  'display' : 'Of ashen countenance'
+  'type'  : 'Combat Patrol'
+  'points' : '1'
+  'sector' : 'Glacian Edge'
+  'location' : 'Frost Horizon'
+  'time' : '26;23;19;95'
+  'brief' : '-COMM INTERCEPT- | L.Gavir> Still in one piece? | | I.Varaci> I....yes...but... Wilkins, Lucre... they`re all dead... | | L.Gavir> I`m...sorry...Our convoys will be linking up in a few hours. I`ve assembled whats left of my Royal House guards. | | I.Varaci> Right, I no longer have funds to pay for anything, however some of the remaining mercenaries have realized that cash won`t matter in a few weeks. | | L.Gavir> <sigh> yes, I have a NAV we`ll be headed to in advance of the refugee columns. At this point it`s got more radiation but buried in the rubble are some ancient data warehouses. | | I.Varaci> Going over your previous notes, you do not believe this is an outside attack? || L.Gavir> No, my studies point to something we made...<TRANSMISSION TERMINATED>'
+  'intel' : 'Enemy has retreated to several strongpoints closer to the Terminus. | | Headhunter units have been assigned to knock out all enemy convoys. | | You, however, have a higher purpose. | | Your record is commendable. | | You shall raze this following strongpoint to the ground. | | This should force the enemy to flee back to our resurrected units on STORMSIDE... | | Recommended Strike Package; <N\A> you have proven you know what you are doing.'
+  'objtotal' : '4'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy enemy fuel reserves at (ALPHA).'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Ambush Relief Column at (BETA).'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Level entire base at (DELTA).'
+  'items' : '2 17'
+}
+{
+  'objid' : '4'
+  'objtype': 'primary'
+  'objdesc' : 'Clear (EPSILON) of enemy reserve forces.'
+}

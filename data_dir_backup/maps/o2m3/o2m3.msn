@@ -1,0 +1,38 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o2m3/o2m3.png'
+  'name'  : 'Operation Brittle Water'
+  'display' : 'Engine kill'
+  'type'  : 'Assassination'
+  'points' : '1'
+  'sector' : 'Glacian Edge'
+  'location' : 'Glacis Strata'
+  'time' : '12;25;18;40'
+  'brief' : '-COMM INTERCEPT- | L.Gavir> I told you it would not be enough. Each of these pale METALS fights with the skill and ferocity of a squadron of our units... | | I.Varaci> I am painfully aware of this information, thank you very much. | What can you do about it? | | L.Gavir> From what I have salvaged from my family archives, there may be some critical knowledge about these...things that we can locate. | | I.Varaci> that`s it!? | | L.Gavir> what else do you want? the disection reports? the scant salvage we have collected? My House and most others have been wiped out. All of our Starport zones are destroyed too. We are fleeing into the lands of our once-allies, now hated enemies.. | | I.Varaci> Ok, ok. I apologize, these are extreme times we find ourselves in and I failed to appreciate it more. I have paid a transport service to bring you to my villa higher up in the Glacis Strata. | I will assist your mission as I can... | | <TRANSMISSION TERMINATED>'
+  'intel' : 'DEAD_HAND forces have achieved an opening in the Enemy`s defense line. | | We are tasking you with crippling their leadership before they can evacuate. | | Find the VIP targets in this zone, and eliminate them with extreme prejudice. | | Recommended Strike Package; | 1x Monitor METAL | OR | 1x Matok METAL'
+  'objtotal' : '4'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy VIP buildings at (OMEGA) to lure out <CEO.Lucre>.'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Devalue Supply Base at (IOTA) to draw out <CEO.Albaster>.'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Search area near (RHO) for <CFO.Wilkins>.'
+}
+{
+  'objid' : '4'
+  'objtype': 'primary'
+  'objdesc' : 'Capture Repair Base at (IOTA) by destroying the [Barracks].'
+  'items' : '14'
+}

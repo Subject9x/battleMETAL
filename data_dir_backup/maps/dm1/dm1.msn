@@ -1,0 +1,22 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'dm1/dm1.png'
+  'name'  : 'Operation Recursive Lash'
+  'display' : 'Belt Sander'
+  'type'  : 'Damage King'
+  'points' : '1'
+  'sector' : 'Badlands'
+  'location' : 'Stormside'
+  'time' : '26;23;19;95'
+  'brief' : 'You are on your own in this theater.'
+  'intel' : 'Unknown parameters, what you can find in the Hangar is probably what you will also encounter on this field.'
+  'objtotal' : '1'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy all opposition you encounter.'
+}

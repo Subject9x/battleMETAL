@@ -1,0 +1,29 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o1m4/o1m4.png'
+  'name'  : 'Operation Rust Titan'
+  'display' : 'Find us on the nightline'
+  'type'  : 'Rescue'
+  'points' : ''
+  'sector' : 'Stormside'
+  'location' : 'Deep Wastes'
+  'time' : '04;12;37;91'
+  'brief' : '-COMM INTERCEPT- | | L.Yunver> Rollet Gavir. | | L.Gavir> Shilo Yunver...interesting times we find ourselves in, eh? | | L.Yunver> Hm, How goes negotiating with whats left of the MILITAR? | | L.Gavir> not well at all, they believe these wraith <METAL>s are our handiwork. Doesn`t help that our initial missile attacks knocked out their Stock Exchange Halls. | | L.Yunver> You must double your efforts, I have ordered my Landser Commands to organize for a major strike. My intel reports they have found some major enemy firebases within distance to one of my strongholds. | | L.Gavir> Excellent, I  don`t have much else I can spare. My House Guards have their hands full with supply bases along the Deep Wastes but I will see what I can do. | | L.Yunver> I do appreciate this, Gavir. oh and one more thing; do we have any newer intel on this enemy? its not MILITAR, right? | | L.Gavir> My surviving archivists are poring over historical data - whats left of it. I`ll update you by tomorrow... | <TRANSMISSION TERMINATED>'
+  'intel' : 'Survest forces are moving to capture on of our lost Repair Facilities in this zone. You need to make sure they fail. | | You have somewhere between 2 to 5 minutes to reach (RHO) to secure the facility. | | Enemy force disposition is mostly armored vehicles with a <METAL> group as a blocking unit near the deployment zone. | | The salvaged MONITOR-class <METAL> will be unarmed, we strongly recommend dealing with some of the enemy force groups on your way to (RHO). | | When you reach the (RHO), the friendly base will automatically deploy the MONITOR units and they will begin their evac. | | Recommended Strike Package; + 1x BALAKET <METAL> + at least 1x anti-shield weapon.'
+  'objtotal' : '2'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Reach (RHO) before enemy forces capture the base.'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Protect <DEAD_HAND> units as they evac to (ZETA).'
+  'items' : '2 5 21'
+  'mechs' : '3'
+}

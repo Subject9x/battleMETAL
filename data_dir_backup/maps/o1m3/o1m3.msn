@@ -1,39 +1,28 @@
 //mission info section
 {
 //img stored in data/map_scripts/
-  'img' : 'o1m2/o1m2.png'
-  'name'  : 'Operation Stolen Ground'
-  'display' : 'Damage king'
-  'type'  : 'Base Defense'
-  'points' : '1'
-  'sector' : 'Badlands'
-  'location' : 'Stormside Edge'
-  'time' : '33;12;09;72'
-  'brief' : 'Exquisite job in acquiring this enemy firebase. PSC has however detected aggressor movements in the adjoining sector. We calculate odds of a counter-attack by local enemy forces at 87% probability. | PSC notes that many nodes on the response network still need activating. This particular base will allow us to secure more nodes in the system to increase our area of operations. | | PSC reports that other DEAD_HANDs have begun eliminating enemy command sites and personnel. | | The enemy will pay for breaking faith with the Compact.'
-  'intel' : 'Enemy believed to have massed into 3 primary assault Groups. | | Each group is a mix of tanks and metals. | | Combat in Low-light conditions expected. | | Recommended Defense Package - 1x Monitor metal. | | A Repair Bay may also be available.'
-  'objtotal' : '4'
+  'img' : 'o1m3/o1m3.png'
+  'name'  : 'Operation '
+  'display' : 'Radiant Cavalcade'
+  'type'  : 'Recon'
+  'points' : ''
+  'sector' : 'Stormside'
+  'location' : 'Sundered Highlands'
+  'time' : '04;45;09;16'
+  'brief' : '-COMM INTERCEPT- | L.Gavir> Yes I am aware of that! what? hang on, General Kelmud what do you have for me? | | SRV.GEN> You requested a sit-rep for sectors south of the royal territores. | | L.Gavir> I did, sorry, the loss of our Imp-Net outposts has thrown my House into disarray. | | SRV.GEN> Understandable, my lord, I`ll be brief; L.Roset and L.Yunver are starting their evac from their baronies. <METAL>s of unknown heraldry have savaged their manorial sectors and estates. L.Roset himself is reporting 76% civilian casualties with L.Yunver demanding reinforcements for her shattered legion. | | L.Gavir> ... | | SRV.GEN> uh, result is that both Houses are sending their civilians through your trade routes and convoy resupply sectors without noble parlay. | | L.Gavir> Formalities don`t seem to matter much these days apparently. Tell Royal Command to let the convoys through and double the guard on bases near the cravasse zone - we`re getting more <METAL> skirmishes over there. | | SRV.GEN> Affirmative, my liege. Those bases contain critical reserves of drinking water and food-stuffs, without these bases many convoys will not make it to our fall-back sector. | | L.Gavir> Hm, I`ll need an update on those resources soon as well then. These ghost-metals don`t appear to be after territory... | <TRANSMISSION TERMINATED>'
+  'intel' : 'This area is heavily fortified with enemies. | | Speed is of the utmost importance here. | | PSC opfor modeling suggests the longer you spend in the area the more enemy forces will move in to stop you. | | Radio intercepts from the base near (ALPHA) indicate it is a larger nexus of command/control in the area. | | Destroying this base is NOT ADVISED at this time, it will attract more attention than 1x Metal can handle.'
+  'objtotal' : '2'
   'anim' : ''
 }
 // objectives section
 {
   'objid' : '1'
   'objtype': 'primary'
-  'objdesc' : 'Protect all base structures at (NAV) Alpha.'
-  'mechs' : '2'
-  'items' : '5 10 15'
+  'objdesc' : 'Recon all (NAV) points'
 }
 {
   'objid' : '2'
   'objtype': 'primary'
-  'objdesc' : 'Defeat first wave.'
-}
-{
-  'objid' : '3'
-  'objtype': 'primary'
-  'objdesc' : 'Defeat second wave.'
-}
-{
-  'objid' : '4'
-  'objtype': 'primary'
-  'objdesc' : 'Defeat third wave.'
+  'objdesc' : 'Fall back to (LAMBDA).'
+  'items' : '6 8 20'
 }

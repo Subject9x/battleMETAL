@@ -2,38 +2,28 @@
 {
 //img stored in data/map_scripts/
   'img' : 'o1m2/o1m2.png'
-  'name'  : 'Operation Sable Sword'
-  'display' : 'Of ashen countenance'
-  'type'  : 'Combat Patrol'
-  'points' : '1'
-  'sector' : 'Badlands'
-  'location' : 'Stormside Edge'
-  'time' : '26;23;19;95'
-  'brief' : 'PSC has determined that hostile force strength greater than anticipated. Only 58% of rapid-response nodes survived enemy contact and escaped the cold-storage facilities. | | PSC will escalate to OP-CODE 3. | | PSC requires this DEAD_HAND to scour the nearby sector of enemy units. Eliminate all resistance with prejudice. Take care to preserve enemy base structures for future operations. | | We have only begun to strike back.'
-  'intel' : 'Drone LIDAR reports this sector consists of uneven ground; flat areas broken up by small gullies and rock ridges. | | There is a chasm on the edge of the zone and the DEAD_HAND should avoid falling into it. | | Enemy resistance is medium and dispersed over a wide area; Bases are defended but plenty of room to maneuver.'
-  'objtotal' : '4'
+  'name'  : 'Operation Doggerbank'
+  'display' : 'Damn my eyes'
+  'type'  : 'Assassinate'
+  'points' : ''
+  'sector' : 'Stormside'
+  'location' : 'Sundered Highlands'
+  'time' : '12;04;14;58'
+  'brief' : '-COMM INTERCEPT- | Survest Officer> Any word from that assault group that was sent in the Deep Wastes  recently? | | Survest Captain> Not yet sir, They were marked as late last week and at this point L.Gavir wants to write them off as a loss. | | SRV.OFC> I agree with them in this case, have Imp-Net send the update to them as soon as possible. Speaking of which, how is the activity near Comms Base 5G? | | | SRV.CPT> Busy, we are routing large chunks of Royal network traffic to assist in the recovery effort. Whatever happened out in the Hab-Blocks occurred all over the planet - rumors of <METAL> rising from abanandoned hangars and something like graves!  | | | SRV.OFC> I still cannot believe the intel myself, and the MILITAR forces seem just as much in the dark as we are.... | | SRV.CPT> Best not to dwell on ghost stories right now, we`re all missing folks since the initial bombardments. | | SRV.OFC> You`re right, Captain, we must focus on making those MILITAR pay for their treachery. Stay alert on those comms too, L.Gavir wants us to report any suspicious signals. | <TRANSMISSION TERMINATED>'
+  'intel' : 'A large enemy strongpoint dominates the area of operations. | | PSC estimates that the enemy will be able to reinforce any [Listening Post] that is threatened. | | Sensor overflight scans report that each [Listening Post] is also equipped with a small garrison. | | Recommended Strike Package; + 1x Balakett Metal moving at speed to avoid counter-fire.'
+  'objtotal' : '2'
   'anim' : ''
 }
 // objectives section
 {
   'objid' : '1'
   'objtype': 'primary'
-  'objdesc' : 'Capture enemy fuel tanks at (Nav) Alpha, destroy hostile units and towers.'
+  'objdesc' : 'Destroy [Listening Posts] around enemy firebase.'
 }
 {
   'objid' : '2'
   'objtype': 'primary'
-  'objdesc' : 'Eliminate any resistance at (Nav) Beta.'
-}
-{
-  'objid' : '3'
-  'objtype': 'primary'
-  'objdesc' : 'Capture base at (Nav) Delta, destroy hostile vehicles and towers.'
-}
-{
-  'objid' : '4'
-  'objtype': 'primary'
-  'objdesc' : 'Clear (Nav) Epsilon of enemy reserve forces.'
-  'mechs' : '3'
-  'items' : '2 5 6 7 11 17 20'
+  'objdesc' : 'Escape back to (ETA)'
+  'mechs' : '2'
+  'items' : '1 17 15'
 }
