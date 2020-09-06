@@ -92,16 +92,10 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       if( newName != "" ){
         self.netname = strzone(newName);
       }
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-      self.skin =  self.faction - 1;
-      self.data_type = DATA_VEHC;
-      self.movetype = MOVETYPE_STEP;
       data_sync_new_vehicle(self.data_idx);
-      self.deadflag = DEAD_NO;
       sendent_setup_weapons();
       setmodel(self, self.model);
       setsize(self, self.mins, self.maxs);
-      self.takedamage = DAMAGE_AIM;
       self.interpolate_entity = interpolate_tank;
       self.drawmask = MASK_ENGINE;
       self.predraw = predraw_gev;

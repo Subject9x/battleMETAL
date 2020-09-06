@@ -279,11 +279,13 @@ void() m_join_d={
     if( (itr >= SERVER_PAGE_LIST_START) && (itr < SERVER_PAGE_LIST_END) ){
       cons_logAFloat(gethostcachestring(gethostcacheindexforkey("cname"), itr), itr);  //debug
       if(itr < total_servers  && gethostcachenumber(gethostcacheindexforkey("ping"), itr) > -1){
-        pos_x = SERVER_LIST_ORG_x;
-        pos_y = SERVER_LIST_ORG_y + gui_percentYRaw(SERVER_ROW_ITR * 26);
-        
-        join_render_serverinfo( itr, pos );
-        SERVER_ROW_ITR = SERVER_ROW_ITR + 1;
+        if( gethostcacheindexforkey("maxplayers") > 1){
+          pos_x = SERVER_LIST_ORG_x;
+          pos_y = SERVER_LIST_ORG_y + gui_percentYRaw(SERVER_ROW_ITR * 26);
+          
+          join_render_serverinfo( itr, pos );
+          SERVER_ROW_ITR = SERVER_ROW_ITR + 1;
+        }
       }
     }
   }

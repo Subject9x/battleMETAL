@@ -84,14 +84,8 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       if( newName != "" ){
         self.netname = strzone(newName);
       }
-      self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-      self.data_type = DATA_VEHC;
-      self.skin =  self.faction - 1;
-      self.movetype = MOVETYPE_STEP;
       data_sync_new_vehicle(self.data_idx);
-      self.deadflag = DEAD_NO;
       sendent_setup_weapons();
-      self.takedamage = DAMAGE_AIM;
       self.think = sendent_ai_think;
       self.nextthink = time + 0.01;
       setmodel(self, self.model);

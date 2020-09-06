@@ -44,13 +44,16 @@ void( float dataID ) data_sync_new_mech_ai={
   }
   self.deadflag = DEAD_NO;
   self.critBits = 0;
-  self.solid = SOLID_BBOX;
   maxSave = self.maxs;
   minSave = self.mins;
   setmodel(self, "q3mdl/testball.md3");
+  self.takedamage = DAMAGE_AIM;
+  self.alpha = 0.001;
+  self.scale = 0.001;
   setsize(self, minSave, maxSave);
   sendent_ini_interpolate();
   sendent_setup_weapons();
+  self.solid = SOLID_BBOX;
 };
 
 void( entity setPart ) data_mech_setup_part={

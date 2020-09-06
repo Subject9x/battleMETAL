@@ -8,7 +8,13 @@ Overview:
 
 
 void( float dataID ) data_sync_new_vehicle={
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.skin =  self.faction - 1;
+  self.data_type = DATA_VEHC;
+  self.movetype = MOVETYPE_STEP;
   self.solid = SOLID_BBOX;
+  self.deadflag = DEAD_NO;
+  self.takedamage = DAMAGE_AIM;
   switch(dataID){
     case UID_VEHICLE_foslager:
       data_vehicle_foslager();

@@ -51,36 +51,19 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     if( vlen(blip.origin - RADAR_ORG) > radarRange ){
       continue;
     }
-    
+    testCheck = TRUE;
     //passive radar cannot see through walls or buildings
     if( CLIENT_stat_rdr_mode == FALSE ){
-      traceline( RADAR_ORG, blip.origin, MOVE_WORLDONLY, entitybyindex(player_localentnum));
-      if( trace_fraction != 1 ){
-        continue;
-      }
-      testOrg = RADAR_ORG;
-      testCheck = TRUE;
-      test = entitybyindex(player_localentnum);
-      do{
-        traceline( test.origin, blip.origin, MOVE_NORMAL, test);
-        test = trace_ent;
-        if( test == blip ){
-          test = world;
-          testCheck = TRUE;
+      traceline(RADAR_ORG, blip.origin, FALSE, entitybyindex(player_localentnum));
+      if( trace_fraction != 1.0 ){
+        if( vlen(blip.origin - RADAR_ORG) > (radarRange * 0.5) ){
+          continue;
         }
-        else{
-          if( test.data_type == DATA_BLD || test.classname == "map_terrain"){
-            test = world;
-            testCheck = FALSE;
-          }
-          else{
-            test = test;
-            testCheck = TRUE;
+        if( (blip.flags & FL_CLIENT) ){
+          if( blip.stat_rdr_mode == FALSE ){
+            continue;
           }
         }
-      }while(test != world);
-      if( !testCheck ){
-        continue;
       }
     }
     hud_renderRadarContact( blip, plrFaction, radarRange );

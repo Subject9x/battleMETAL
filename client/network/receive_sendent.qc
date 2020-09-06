@@ -174,6 +174,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
       self.solid = SOLID_BSP;
       self.movetype = MOVETYPE_NONE;
       self.deadflag = DEAD_NO;
+      self.data_type = DATA_BLD;
     }
   }
 };

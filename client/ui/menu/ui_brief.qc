@@ -437,7 +437,7 @@ void(vector ofs) menu_briefMissionText={
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
   fpos = ofs + gui_percentToPixelRawVec('24 133');
-  gui_wrapText(fpos, '245 332', MSN_BRIEF, '11 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+  gui_wrapText(fpos, '245 332', MSN_BRIEF, '10 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
   
   drawfont = drawfont_prev;
 };
