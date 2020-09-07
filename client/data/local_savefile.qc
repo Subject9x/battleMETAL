@@ -43,26 +43,31 @@ void( string fileName ) cl_load_savefile={
   cl_load_items_all();
 };
 
-void( float gameType ) cl_set_savepath={
+void( float gameType, float overrideFlag ) cl_set_savepath={
   local string filePath;
   
-  switch( gameType ){
-    case GAMEMODE_CAMPAIGN:
-      filePath = strcat(PATH_DATA_SAVE,"/",SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
-      break;
-    
-    case GAMEMODE_COOP:
-      filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/coop", SAVE_FILE_EXT);
-      break;
+  if(overrideFlag){
+    filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/", MAP_NAME, SAVE_FILE_EXT);
+  }
+  else{
+    switch( gameType ){
+      case GAMEMODE_CAMPAIGN:
+        filePath = strcat(PATH_DATA_SAVE,"/",SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
+        break;
       
-    case GAMEMODE_DM:
-       filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
-      break;
-     
-    case GAMEMODE_TEAMDM:
-      //TODO - teams
-       filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
-      break;
+      case GAMEMODE_COOP:
+        filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/coop", SAVE_FILE_EXT);
+        break;
+        
+      case GAMEMODE_DM:
+         filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
+        break;
+       
+      case GAMEMODE_TEAMDM:
+        //TODO - teams
+         filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
+        break;
+    }
   }
   cl_load_savefile( filePath );
 };

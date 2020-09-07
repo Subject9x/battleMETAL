@@ -318,12 +318,7 @@ void() PutClientInServer_Campaign={
     }
   }
   if( world.animaticOnly == FALSE ){
-    if( world.itemOverrideFile != "" ){
-      savefile_load( TRUE );
-    }
-    else{
-      savefile_load( FALSE );
-    }
+    savefile_load( world.itemOverride );
   }
   
   self.movetype = MOVETYPE_NONE;

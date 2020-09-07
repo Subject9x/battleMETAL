@@ -18,7 +18,7 @@ void() mech_ai_think={
   self.laser_sight_org = trace_endpos;
   
   self.think = mech_ai_think;
-  self.nextthink = time + 0.06;
+  self.nextthink = time + 0.001;
 };
 
 /*
@@ -201,7 +201,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     setorigin(self, self.origin);
     if( isNew ){ 
       self.think = mech_ai_think;
-      self.nextthink = time + 0.005;
+      self.nextthink = time + 0.001;
       if( newName != "" ){
         self.netname = strzone(newName);
       }   

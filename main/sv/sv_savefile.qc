@@ -26,7 +26,7 @@ void(float override) savefile_load={
     else{
       map_name = mapname;
     }
-    file = strcat(PATH_DATA_MAP, map_name, "/", world.itemOverrideFile, SAVE_FILE_EXT);
+    file = strcat(PATH_DATA_MAP, map_name, "/", map_name, SAVE_FILE_EXT);
   }
   else{
     file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);

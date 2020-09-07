@@ -18,13 +18,23 @@ Overview:
 // next cool check == self.count4
 // reload counter = self.count
 // overheat counter = self.count5
-float DATA_ESR_BEAM_COUNT = 3;
-float DATA_ESR_COOLDOWN_MAX = 2;
+//float DATA_ESR_COOLDOWN_MAX = 2;
 
-float ESR_HEAT_UP = 0.05;    //count5
+/*float ESR_HEAT_UP = 0.05;    //count5
 float ESR_MAX_RATE = 0.09;  //count3
 float ESR_RATE_UP = 0.0065;   //count3
 float ESR_RATE_DN = 0.01;   //count3
+float ESR_SPREAD_UP = 1.15;
+float ESR_SPREAD_DN = 0.95;*/
+
+float DATA_ESR_COOLDOWN_MAX = 2;
+
+float ESR_HEAT_UP = 0.05;    //count5
+
+float ESR_MAX_RATE = 0.09;  //count3
+float ESR_RATE_UP = 0.0065;   //count3
+float ESR_RATE_DN = 0.01;   //count3
+
 float ESR_SPREAD_UP = 1.15;
 float ESR_SPREAD_DN = 0.95;
 

@@ -225,7 +225,7 @@ void() sendent_missile_think={
     }
   }
   self.think = sendent_missile_think;
-  self.nextthink = time + 0.025;
+  self.nextthink = time + 0.001;
 };
 
 void( float isNew, float changeFlags ) sendent_handle_missile={
@@ -250,6 +250,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( changeFlags & SENDFLAG_IMPACT ){
+    self.angles = vectoangles(self.velocity); //override cause impact causes wierd rotation bug
     self.impactType = ReadByte();
     self.damageValue = ReadByte();
     if( self.impactType > 0 ){
@@ -270,8 +271,6 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
       setmodel(self, self.model);
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, self.origin);
-      //self.think = sendent_missile_think;
-      //self.nextthink = time + 0.025;
       sendent_missile_think();
       self.drawmask = MASK_ENGINE;
       //interpolate_origin();

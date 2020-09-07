@@ -53,6 +53,7 @@ float() predraw_missile={
   }
 
   interpolate_origin();
+  setorigin(self, self.origin);
   interpolate_angle();
   
   if( self.predraw_projectile ){

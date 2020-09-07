@@ -455,6 +455,7 @@ float() CSQC_Parse_TempEntity =
 void(string s) CSQC_Parse_StuffCmd =
 {
   local float argc;
+  local float itemOverFlag;
 
   argc = tokenize(s);
   if(argv(0) == "m"){
@@ -481,7 +482,7 @@ void(string s) CSQC_Parse_StuffCmd =
         cvar_set("saveslot", "0");
       }
       if(CLIENT_player_state == PLAYER_CONNECT ){
-        cl_set_savepath( cvar("gamemode") );
+        cl_set_savepath( cvar("gamemode"), (SV_SERVERFLAGS & SVFLAG_ITEMOVER) );
       }
     }
     else if( argv(0) == "fog" ){

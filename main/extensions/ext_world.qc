@@ -49,7 +49,13 @@ void() mh_world_ini={
   MISSION_LOSSES_MILITAR = 0;
 
   serverflags = cvar("sv_serverflags");
-
+  if(world.itemOverride){
+    serverflags = serverflags | SVFLAG_ITEMOVER;
+  }
+  if(world.ignoreSave || world.animaticOnly ){
+    serverflags = serverflags | SVFLAG_NOSAVE;
+  }
+  
   STARTTIME = time;
   if( cvar("timelimit") > FALSE ){
     ENDTIME_LIMIT = time + (cvar("timelimit") * 60);

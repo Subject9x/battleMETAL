@@ -14,7 +14,7 @@ string SAVEFILE_CAMPAIGN;
 
 
 void( string fileName ) cl_load_savefile;
-void( float gameType ) cl_set_savepath;
+void( float gameType, float overrideFlag ) cl_set_savepath;
 void() cl_get_mechs_sort;
 void() cl_load_mechs_all;
 void() cl_load_items_all;
