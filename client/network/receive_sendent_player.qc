@@ -14,8 +14,6 @@ Overview:
   HANDLE EVENT - player mech pieces are dying
 */
 void() sendevent_player_burn={
-  local vector offset;
-
   if( (self.burnBits & M_TOR_LEFT) ){
     te_mech_crit( self.torsoLeft.origin , '0 0 10');
   }
@@ -101,6 +99,7 @@ void() player_think={
   local vector boostLeft, boostRight, backLeft, backRight;
   local string te;
   
+
   makevectors(self.angles);
   v1 = self.origin + (v_up * self.cockpit.compOffset_y);
   traceline(v1, v1 + v_forward*10000, FALSE, self);
@@ -132,7 +131,7 @@ void() player_think={
     }
   }
   self.think = player_think;
-  self.nextthink = servertime + 0.01;
+  self.nextthink = time + 0.01;
 };
 
 float() player_predraw={
@@ -197,6 +196,7 @@ float() player_predraw={
     if(cacheOrg){
       self.origin = cacheOrg;
     }
+    setorigin(self, self.origin);
   }
   return FALSE;
 };
@@ -329,7 +329,6 @@ void() sendevent_handle_moveChange={
   HANDLE EVENT - player mech parts destroyed
 */
 void( float criticalBits ) sendevent_player_critical={
-  local vector offset;
   local entity wep;
   
   if( (criticalBits & M_TOR_LEFT) ){
@@ -483,8 +482,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
         sendevent_player_mech(self.data_idx);
         self.shieldEffectTime = 0;
         self.predraw = player_predraw;
-        self.think = player_think;
-        self.nextthink = servertime + 0.01;
       }
     }
   }
@@ -533,7 +530,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = ReadLong();
     self.faction = ReadByte();
-    self.flags = ReadLong();
+    self.flags = ReadShort();
+    self.think = player_think;
+    self.nextthink = time + 0.01;
     if( isNew ){
       if(self.data_type != DATA_MECH){
         self.data_type = DATA_POBS;
@@ -554,6 +553,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     
     self.particleCubeFlag = ReadByte();
     self.targetEntId = ReadLong();
+    self.flags = ReadShort();
     
     if( prevKills != self.kills ){
       scoreboard_sort();
@@ -607,6 +607,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   //perform data binds
   if( self.entId == player_localentnum ){
+    if(isNew){
+      CLIENT_flags = 0;
+      CLIENT_flags_prev = 0;
+    }
+    CLIENT_flags_prev = CLIENT_flags;
     CLIENT_flags = self.flags;
     CLIENT_player_deadflag = self.deadflag;
     CLIENT_faction = self.faction;

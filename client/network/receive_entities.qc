@@ -22,7 +22,7 @@ void() client_get_info={
   
   CLIENT_player_state_prev = CLIENT_player_state;
   CLIENT_player_deadflag_prev = CLIENT_player_deadflag;
-  CLIENT_flags_prev = CLIENT_flags;
+  //CLIENT_flags_prev = CLIENT_flags;
   
   if( CLIENT_data_type == DATA_MECH ){
     CLIENT_health_center_prev = CLIENT_health_center;

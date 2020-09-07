@@ -11,7 +11,7 @@ Overview:
 void() sendent_empty_think={
   
   self.think = sendent_empty_think;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + 0.1;
 };
 
 void() sendent_ai_think={
@@ -23,7 +23,7 @@ void() sendent_ai_think={
   self.laser_sight_org = trace_endpos;
   
   self.think = sendent_ai_think;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.001;
 };
 //implementing parts of Spike's CSQC-only mod code here
 void() interpolate_origin={
@@ -43,7 +43,6 @@ void() interpolate_origin={
   self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
   self.lerpfrac = 1 - bound(0, self.lerpfrac, 1);
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-
 };
 
 void() interpolate_angle={

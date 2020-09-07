@@ -47,6 +47,9 @@ void() map_noshoot_use={
         //simple revert code
         e.flags = e.flags | self.partTypeId;
       }
+      if( (e.flags & FL_CLIENT) ){
+        e.clientData.SendFlags = e.clientData.SendFlags | SENDFLAG_VELOCITY;
+      }
       e = e.chain;
     }
     

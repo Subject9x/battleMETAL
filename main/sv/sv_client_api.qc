@@ -646,7 +646,7 @@ float( float isNew, float changeFlags ) send_client_data={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteLong( MSG_ENTITY, num_for_edict(player) );
     WriteByte( MSG_ENTITY, player.faction );
-    WriteLong( MSG_ENTITY, player.flags );
+    WriteShort( MSG_ENTITY, player.flags );
   }
   /*
     EVENT - second data rider used for non-critical stuff
@@ -654,6 +654,7 @@ float( float isNew, float changeFlags ) send_client_data={
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     WriteByte( MSG_ENTITY, (player.particleCube == world));
     WriteLong( MSG_ENTITY, player.stat_trg_ent_id );
+    WriteShort( MSG_ENTITY, player.flags );
   }
   return TRUE;
 };

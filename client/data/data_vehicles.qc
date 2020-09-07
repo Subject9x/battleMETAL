@@ -15,6 +15,8 @@ void( float dataID ) data_sync_new_vehicle={
   self.solid = SOLID_BBOX;
   self.deadflag = DEAD_NO;
   self.takedamage = DAMAGE_AIM;
+  self.drawmask = MASK_ENGINE;
+  self.interpolate_entity = interpolate_tank;
   switch(dataID){
     case UID_VEHICLE_foslager:
       data_vehicle_foslager();
@@ -36,7 +38,11 @@ void( float dataID ) data_sync_new_vehicle={
       data_vehicle_dunerunner();
       break;
   }
-  
+  self.think = sendent_ai_think;
+  self.nextthink = time + 0.001;
+  sendent_setup_weapons();
+  sendent_ini_interpolate();
+  setorigin(self, self.origin);
 };
 
 void() data_vehicle_foslager = {
@@ -113,6 +119,12 @@ void() data_vehicle_trowel = {
   setsize(self, minc, maxc);
 };
 
+
+float() data_vehicle_wreck_predraw={
+  setorigin(self, self.origin);
+  return FALSE;
+};
+
 /*
   Vehicle wrecks now client-side to optimize server traffic.
 */
@@ -120,14 +132,18 @@ void() data_vehicle_wreck={
   local vector minc,maxc;
   local entity shell;
   
-  makevectors(self.angles);  
+  makevectors(self.angles);
   shell = spawn();
   shell.angles = self.angles;
   setmodel(shell, self.model);
   setsize(shell, self.mins, self.maxs);
   setorigin(shell,  self.origin + (v_up * -2));
-  shell.colormod = '0.33 0.33 0.33';
+  shell.skin = self.skin;
+  shell.solid = SOLID_CORPSE;
+  shell.colormod = '0.45 0.45 0.45';
   shell.vec_size = self.vec_size;
+  shell.drawmask = MASK_NORMAL;
+  shell.predraw = data_vehicle_wreck_predraw;
   
   self.alpha = 0;
   self.effects = self.effects | EF_NODRAW;

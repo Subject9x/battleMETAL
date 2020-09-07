@@ -18,7 +18,7 @@ void() mech_ai_think={
   self.laser_sight_org = trace_endpos;
   
   self.think = mech_ai_think;
-  self.nextthink = time + 0.005;
+  self.nextthink = time + 0.06;
 };
 
 /*
@@ -372,6 +372,7 @@ float() predraw_mech_ai={
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
+    setorigin(self, self.origin);
   }
   return FALSE;
 };

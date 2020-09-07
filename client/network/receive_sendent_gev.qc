@@ -93,15 +93,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
         self.netname = strzone(newName);
       }
       data_sync_new_vehicle(self.data_idx);
-      sendent_setup_weapons();
-      setmodel(self, self.model);
-      setsize(self, self.mins, self.maxs);
-      self.interpolate_entity = interpolate_tank;
-      self.drawmask = MASK_ENGINE;
       self.predraw = predraw_gev;
-      self.think = sendent_ai_think;
-      self.nextthink = time + 0.01;
-      sendent_ini_interpolate();
       te_unit_dust_set();
     }
   }

@@ -80,20 +80,12 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.next_wepn9 = ReadByte();
     
     newName = ReadString();
-    if( isNew ){    
+    if( isNew ){
       if( newName != "" ){
         self.netname = strzone(newName);
       }
       data_sync_new_vehicle(self.data_idx);
-      sendent_setup_weapons();
-      self.think = sendent_ai_think;
-      self.nextthink = time + 0.01;
-      setmodel(self, self.model);
-      setsize(self, self.mins, self.maxs);
-      self.interpolate_entity = interpolate_tank;
-      self.drawmask = MASK_ENGINE;
       self.predraw = predraw_spg;
-      sendent_ini_interpolate();
     }
   }
   
