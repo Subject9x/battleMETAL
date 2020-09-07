@@ -115,132 +115,170 @@ void(string fileToOpen) anm_parseFile={
 };
 
 
-void() anm_execute_frame={
-  if(time > ANM_FRAME_TIME){
-    ANM_FRAME_TIME = 0;
-    ANM_FRAME_CUR_FADE_STEP = 0;
-    ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA[ANM_FRAME_CUR];
-    
-    if(ANM_FRAME_CUR == 0){
-      //first frame, handle meta data
-      if(ANM_META_DATA[1] == "1"){
-        localcmd("cd pause");
-      }
-      if(ANM_META_DATA[0] != ""){
-        pointsound(pmove_org, ANM_META_DATA[0], 1, ATTN_NORM); 
-      }
-    }
-    
-    ANM_FRAME_CUR = ANM_FRAME_CUR + 1;
-    
-    if( ANM_FRAME_CUR == ANM_FRAME_TOTAL ){
-      anm_cleanup();
-      localcmd("cd resume");
-      sound7(self, CHAN_WEAPON, "", 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
-      return;
-    }
-    
-    if(ANM_FRAME_SND[ANM_FRAME_CUR] != ""){
-      pointsound(pmove_org, ANM_FRAME_SND[ANM_FRAME_CUR], 1, ATTN_NONE);
-    }
-    
-    ANM_FRAME_TIME = time + ANM_FRAME_TIM[ANM_FRAME_CUR];
-    
-    if(ANM_META_DATA[2] != ""){
-      drawpic('0 0', ANM_META_DATA[2] , VIEW_MAX, '1 1 1', 1, 0); 
-    }
-    
-    //fade is pre-baked amount of 2 seconds on fade-in and fade-out, 
-    //set 'fade' 1 for just fade in, 2 for just fade out, 4 for both
-    local float fadeFlag;
-    fadeFlag = ANM_FRAME_FADE[ANM_FRAME_CUR];
-    
-    local float frameSlice;
-    frameSlice = 0.1 * ANM_FRAME_ALPHA[ANM_FRAME_CUR];
-    ANM_FRAME_CUR_FADE_RATE = frameSlice / 2;
-    
-    if( (fadeFlag & 1) || (fadeFlag & 4) ){
-      ANM_FRAME_ALPHA_CUR = 0;
-      ANM_FRAME_CUR_FADE_START = time + 2;
-      ANM_FRAME_TIME = ANM_FRAME_TIME + 2;
-    }
-    else{
-      ANM_FRAME_CUR_FADE_START = 0;
-    }
-    
-    if( (fadeFlag & 2) || (fadeFlag & 4) ){
-      ANM_FRAME_CUR_FADE_END = time + ANM_FRAME_TIM[ANM_FRAME_CUR] + 2;
-      ANM_FRAME_TIME = ANM_FRAME_TIME + 2;
-    }
-    else{
-      ANM_FRAME_CUR_FADE_END = 0;
-    }
+/*
+  Frame 0 is always the metadata frame of the anim file - 2020 Roohr
+*/
+void() anm_execute_metadata={
+  //first frame, handle meta data
+  if(ANM_META_DATA[1] == "1"){
+    localcmd("cd pause");
+  }
+  if(ANM_META_DATA[0] != ""){
+    pointsound(pmove_org, ANM_META_DATA[0], 1, ATTN_NORM); 
+  }
+
+  ANM_FRAME_TIME = 0;
+  ANM_FRAME_CUR_FADE_STEP = 0;
+};
+
+/*
+  Loads next frame where
+    next frame = ANM_FRAME_CUR + 1;
+*/
+void(float timeVal) anm_new_frame={
+  ANM_FRAME_CUR = rint(ANM_FRAME_CUR + 1);
+  
+  //check for end-of-anim first
+  if( ANM_FRAME_CUR == ANM_FRAME_TOTAL + 1){
+    anm_cleanup();
+    localcmd("cd resume");
+    sound7(self, CHAN_WEAPON, "", 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+    return;
+  }
+  ANM_FRAME_CUR_FADE_STEP = 0;
+  
+  ANM_FRAME_ALPHA_CUR = rint(0);
+  
+  ANM_FRAME_TIME = rint(0);
+  ANM_FRAME_TIME = ANM_FRAME_TIM[ANM_FRAME_CUR];
+  
+  ANM_FRAME_CUR_FADE_RATE = rint(0);
+  
+  if(ANM_FRAME_SND[ANM_FRAME_CUR] != ""){
+    pointsound(pmove_org, ANM_FRAME_SND[ANM_FRAME_CUR], 1, ATTN_NONE);
+  }
+  
+  //fade is pre-baked amount of 2 seconds on fade-in and fade-out, 
+  //set 'fade' 1 for just fade in, 2 for just fade out, 4 for both
+  local float fadeFlag;
+  fadeFlag = rint(ANM_FRAME_FADE[ANM_FRAME_CUR]);
+  
+  local float frameSlice;
+  frameSlice = 0.1 * ANM_FRAME_ALPHA[ANM_FRAME_CUR];
+  ANM_FRAME_CUR_FADE_RATE = frameSlice / 2.0;
+  
+  if( fadeFlag == TRUE || fadeFlag == 4 ){
+    ANM_FRAME_CUR_FADE_START = rint(timeVal + 2);
+    ANM_FRAME_TIME = ANM_FRAME_TIME + 2;
   }
   else{
-    local vector siz, org, frm_color, txt_color;
-    
-    if(ANM_META_DATA[2] != ""){
-      drawpic('0 0', ANM_META_DATA[2] , VIEW_MAX, '1 1 1', 1, 0); 
-    }
-    
-    org = ANM_FRAME_POS[ANM_FRAME_CUR];
-    org_x = org_x * VIEW_MAX_x;
-    org_y = org_y * VIEW_MAX_y;
-    
-    if(ANM_FRAME_IMG[ANM_FRAME_CUR] != ""){
-      if(time < ANM_FRAME_CUR_FADE_START){
-        if( time > ANM_FRAME_CUR_FADE_STEP ){
-          ANM_FRAME_CUR_FADE_STEP = time + ANM_FRAME_SLICE;
-          if(ANM_FRAME_ALPHA_CUR < ANM_FRAME_ALPHA[ANM_FRAME_CUR] ){
-            ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA_CUR + ANM_FRAME_CUR_FADE_RATE;
-          }
+    ANM_FRAME_CUR_FADE_START = FALSE;
+    ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA[ANM_FRAME_CUR];
+  }
+  
+  if( fadeFlag == 2 || fadeFlag == 4 ){
+    ANM_FRAME_CUR_FADE_END = rint(ANM_FRAME_TIME + timeVal);
+    ANM_FRAME_TIME = ANM_FRAME_TIME + 2;
+  }
+  else{
+    ANM_FRAME_CUR_FADE_END = FALSE;
+    ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA[ANM_FRAME_CUR];
+  }
+  ANM_FRAME_TIME = ANM_FRAME_TIME + timeVal;
+};
+
+
+/*
+  Render frame text if it is present.
+*/
+void(string frameText) anm_render_frame_text={
+  local vector txtstart;
+  local vector txt_color;
+  local string line;
+  local float tokens, tcnt;
+  
+  txt_color = '1 1 1';
+  if(ANM_FRAME_TXT_CLR[ANM_FRAME_CUR] != '0 0 0'){
+    txt_color = ANM_FRAME_TXT_CLR[ANM_FRAME_CUR];
+  }
+  tcnt = 0;
+  line = frameText;
+  tokens = tokenizebyseparator(line, "|");
+  txtstart = '0 0';
+  txtstart_x = VIEW_CTR_x;
+  txtstart_y = VIEW_MAX_y - (tokens * 10);
+  while( tcnt <= tokens){
+    local float width;
+    local vector linepos;
+    width = stringwidth(argv(tcnt), 0, '8 8 0');
+    linepos_x = txtstart_x - (width / 2);
+    linepos_y = txtstart_y + gui_percentYRaw(tcnt * 10);
+    drawstring(linepos, argv(tcnt), '8 8 0', txt_color, 0.85, 0);
+    tcnt = tcnt + 1;
+  }
+};
+
+/*
+  Renders the current frame where
+    current = ANM_FRAME_CUR global
+*/
+void(float timeVal) anm_render_frame_current={
+  local vector siz, org, frm_color, txt_color;
+  
+  org = ANM_FRAME_POS[ANM_FRAME_CUR];
+  org_x = org_x * VIEW_MAX_x;
+  org_y = org_y * VIEW_MAX_y;
+  
+  if(ANM_FRAME_IMG[ANM_FRAME_CUR] != ""){
+    if(ANM_FRAME_CUR_FADE_START > FALSE && timeVal <= ANM_FRAME_CUR_FADE_START){
+      if(ANM_FRAME_ALPHA_CUR <= ANM_FRAME_ALPHA[ANM_FRAME_CUR] ){
+        if( timeVal > ANM_FRAME_CUR_FADE_STEP ){
+          ANM_FRAME_CUR_FADE_STEP = timeVal + ANM_FRAME_SLICE;
+          ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA_CUR + ANM_FRAME_CUR_FADE_RATE;
         }
       }
-      if( time >= ANM_FRAME_CUR_FADE_END ){
-        if( time > ANM_FRAME_CUR_FADE_STEP ){
-          ANM_FRAME_CUR_FADE_STEP = time + ANM_FRAME_SLICE;
-          if(ANM_FRAME_ALPHA_CUR > 0){
-            ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA_CUR - ANM_FRAME_CUR_FADE_RATE;
-          }
+    }
+    if( ANM_FRAME_CUR_FADE_END != FALSE && timeVal > ANM_FRAME_CUR_FADE_END ){
+      if(ANM_FRAME_ALPHA_CUR > 0){
+        if( timeVal >= ANM_FRAME_CUR_FADE_STEP ){
+          ANM_FRAME_CUR_FADE_STEP = timeVal + ANM_FRAME_SLICE;
+          ANM_FRAME_ALPHA_CUR = fabs(ANM_FRAME_ALPHA_CUR - ANM_FRAME_CUR_FADE_RATE);
         }
       }
-      
-      frm_color = '1 1 1';
-      if(ANM_FRAME_COLOR[ANM_FRAME_CUR] != '0 0 0'){
-        frm_color = ANM_FRAME_COLOR[ANM_FRAME_CUR];
-      }
-      
-      siz = ANM_FRAME_SIZE[ANM_FRAME_CUR];
-      siz_x = siz_x * VIEW_MAX_x;
-      siz_y = siz_y * VIEW_MAX_y;
-      cons_logAFloat( ANM_FRAME_IMG[ANM_FRAME_CUR], ANM_FRAME_CUR); //debug
-      
-      drawpic(org, ANM_FRAME_IMG[ANM_FRAME_CUR], siz, frm_color, ANM_FRAME_ALPHA_CUR, 0);
-    } 
-    if(ANM_FRAME_MSG[ANM_FRAME_CUR] != ""){
-      local vector txtstart;
-      local string line;
-      local float tokens, tcnt;
-      txt_color = '1 1 1';
-      if(ANM_FRAME_TXT_CLR[ANM_FRAME_CUR] != '0 0 0'){
-        txt_color = ANM_FRAME_TXT_CLR[ANM_FRAME_CUR];
-      }
-      tcnt = 0;
-      line = ANM_FRAME_MSG[ANM_FRAME_CUR];
-      tokens = tokenizebyseparator(line, "|");
-      txtstart = '0 0';
-      txtstart_x = VIEW_CTR_x;
-      txtstart_y = VIEW_MAX_y - (tokens * 10);
-      while( tcnt <= tokens){
-        local float width;
-        local vector linepos;
-        width = stringwidth(argv(tcnt), 0, '8 8 0');
-        linepos_x = txtstart_x - (width / 2);
-        linepos_y = txtstart_y + gui_percentYRaw(tcnt * 10);
-        drawstring(linepos, argv(tcnt), '8 8 0', txt_color, 0.85, 0);
-        tcnt = tcnt + 1;
-      }
     }
+    
+    frm_color = '1 1 1';
+    if(ANM_FRAME_COLOR[ANM_FRAME_CUR] != '0 0 0'){
+      frm_color = ANM_FRAME_COLOR[ANM_FRAME_CUR];
+    }
+    
+    siz = ANM_FRAME_SIZE[ANM_FRAME_CUR];
+    siz_x = siz_x * VIEW_MAX_x;
+    siz_y = siz_y * VIEW_MAX_y;
+    
+    drawpic(org, ANM_FRAME_IMG[ANM_FRAME_CUR], siz, frm_color, ANM_FRAME_ALPHA_CUR, 0);
+  } 
+  if(ANM_FRAME_MSG[ANM_FRAME_CUR] != ""){
+    anm_render_frame_text( ANM_FRAME_MSG[ANM_FRAME_CUR] );
+  }
+};
+
+/*
+  API hook to client_main.CSQC_UpdateView();
+  
+*/
+void() anm_execute_frame={
+  local float frameTime;
+  //frameTime = servertime + (servertime - time);
+  frameTime = time;
+  if(ANM_META_DATA[2] != ""){
+    drawpic('0 0', ANM_META_DATA[2] , VIEW_MAX, '1 1 1', 1, 0); 
+  }
+  if(frameTime > ANM_FRAME_TIME){
+    anm_new_frame(frameTime);
+  }
+  else{
+    anm_render_frame_current(frameTime);
   }
 };
 
@@ -254,9 +292,12 @@ void() anm_cleanup={
     ANM_FRAME_IMG[clean] = "";
     ANM_FRAME_SND[clean] = "";
     ANM_FRAME_TIM[clean] = 0 ;
+    ANM_FRAME_POS[clean] = '0 0 0';
+    ANM_FRAME_COLOR[clean] = '0 0 0';
+    ANM_FRAME_ALPHA[clean] = 0;
     clean = clean + 1;
   }
-  ANM_FILE_STATUS = -1; 
+  ANM_FILE_STATUS = -1;
 };
 
 /*
@@ -268,11 +309,11 @@ float() anm_total_runtime={
   while( itr <= ANM_FRAME_TOTAL){
     total = total + ANM_FRAME_TIM[itr];
     fadeFlag = ANM_FRAME_FADE[itr];
-    if( (fadeFlag & 1) || (fadeFlag & 4) ){
+    if( fadeFlag == TRUE || fadeFlag == 4 ){
       
       total = total + 2;
     }
-    if( (fadeFlag & 2) || (fadeFlag & 4) ){
+    if( fadeFlag == 2 || fadeFlag == 4 ){
       total = total + 2;
     }
     itr = itr + 1;

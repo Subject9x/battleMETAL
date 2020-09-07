@@ -353,6 +353,9 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   //put this last on the rendering order to make sure it 
   //plays above all
   if(ANM_FILE_STATUS == TRUE){
+    if(ANM_FRAME_CUR == FALSE){
+      anm_execute_metadata();
+    }
     anm_execute_frame();
   }
   

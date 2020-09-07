@@ -61,6 +61,11 @@ float ANM_FRAME_FADE[20];
 
 void(string fileToOpen) anm_getFile;
 void(string fileToOpen) anm_parseFile;
+void() anm_execute_metadata;
 void() anm_execute_frame;
 void() anm_cleanup;
 float() anm_total_runtime;
+
+void(float timeVal) anm_render_frame_current;
+void(string frameText) anm_render_frame_text;
+void(float timeVal) anm_new_frame;

@@ -36,6 +36,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   if( ANM_FILE_STATUS == 1 ){
     if( scanx == K_SPACE ){
       cl_exit_animatic();
+      return TRUE;
     }
   }
 //=====================

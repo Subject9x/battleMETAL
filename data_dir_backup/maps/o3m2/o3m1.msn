@@ -1,0 +1,43 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o3m1/o3m1.png'
+  'name'  : 'Operation Datablock'
+  'display' : 'The Hollow Mountain'
+  'type'  : 'Offensive'
+  'points' : '1'
+  'sector' : 'Glacian Edge'
+  'location' : 'Basalt Jags'
+  'time' : '08;26;11;09'
+  'brief' : '-COMM INTERCEPT- | <TRANSMISSION TERMINATED>'
+  'intel' : ''
+  'objtotal' : '5'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Eliminate <MILITAR> base at (BETA).'
+  'items' : '11 19'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Cripple <MILITAR> [Vehicle Hangars] at (DELTA).'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Capture [Supply Base] by reaching (LAMBDA).'
+}
+{
+  'objid' : '4'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy <MILITAR> [Commercial Depot] at (MU)'
+}
+{
+  'objid' : '5'
+  'objtype': 'primary'
+  'objdesc' : 'Knock out [Power Station] near (TAU).'
+}

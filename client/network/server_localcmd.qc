@@ -74,7 +74,7 @@ void(string fileName) cl_get_animfile={
 
 void() cl_exit_animatic={
   local string cmd;    
-  if( ANM_FILE_STATUS == 1 ){
+  if( ANM_FILE_STATUS == TRUE ){
     //animation is playing;
     anm_cleanup();
     cmd = "cmd m exan\n";
