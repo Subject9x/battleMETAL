@@ -12,7 +12,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   local vector map_size;
   local vector radarLineLeft, radarLineRight;
   local entity blip;
-
+  
   RADAR_ORG = radarOrg;
   
   map_size = '0 0';

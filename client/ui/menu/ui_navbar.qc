@@ -353,6 +353,9 @@ void() ui_navbutton_launch_click={
       CLIENT_spawn_time = servertime; //mark for when palyer dies.
       CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
       menu_exit();
+      if(cvar("chase_active") == TRUE ){
+        HUD_EXTERNAL_CAM_ACTIVE = TRUE;
+      }
     }
   }
 };

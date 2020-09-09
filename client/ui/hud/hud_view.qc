@@ -390,13 +390,14 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
 void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_renderWeapon={
   local entity theWeapon;
   local vector iofs, ofs, metSize, wepState;
+  local vector rOrg;
   
   theWeapon = gui_get_weapon(w_bit);
   
   //data_get_client_item_( HUD_DATA_weapon, w_id );
   
-  torg = gui_percentToPixelRawVec(torg);
-  torg = gui_calcAlign(torg, algn);
+  rOrg = gui_percentToPixelRawVec(torg);
+  rOrg = gui_calcAlign(rOrg, algn);
   
   if( (CLIENT_weapon_state & w_bit) ){
     //weapon selected
@@ -427,7 +428,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
   imgSz = gui_percentToPixelRawVec(imgSz);
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
-  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
+  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), rOrg);
   
   if( theWeapon.icon != ""){
     drawpic(iofs, theWeapon.icon, imgSz, wepState, HUD_ALPHA, 0);
@@ -435,10 +436,10 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
   
   if( wepState != CLR_DEF_TXT_CANTSELECT){
     ofs_x = imgSz_x / 2;
-    ofs_y = (imgSz_y * 2) + gui_percentYRaw(2);
+    ofs_y = (imgSz_y * 2);
     metSize_x = imgSz_x;
     metSize_y = gui_percentYRaw(20);
-    ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
+    ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), rOrg); 
     gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
   }
   else{
@@ -817,7 +818,7 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   Render Sprint STATE
   
 */
-void() hud_render_sprint={
+void(vector porg) hud_render_sprint={
   local float slen;
   local vector spos;
   local string msg;
@@ -840,8 +841,8 @@ void() hud_render_sprint={
     }
     slen = stringwidth(msg, 0, '16 14 0');
     slen = gui_percentXRaw(slen);
-    spos_x = VIEW_CTR_x - slen / 2;
-    spos_y = VIEW_CTR_y + gui_percentYRaw(56);
+    spos_x = porg_x - slen / 2;
+    spos_y = porg_y + gui_percentYRaw(56);
     drawstring(spos, msg, '16 14 0', msgClr, max(HUD_ALPHA + 0.33, 0.8), 0);
     drawfont_prev = drawfont;
   }
@@ -852,8 +853,6 @@ void() hud_render_sprint={
   Main API call for new text-based HUD system
 */
 void() data_hud_frame={
-  local float uid;
-  local float hasTarget;
   local float playerAccuracy;
 
   HUD_ENERGY_ACTUAL = CLIENT_energy_total;
@@ -898,6 +897,173 @@ void() data_hud_frame={
       HUD_COLOR_DEF = CLR_HUD_WHITE;
       break;
   }
+  
+  if( HUD_EXTERNAL_CAM_ACTIVE ){
+    data_hud_external_cam_frame();
+  }
+  else{
+    data_hud_fps_cam();
+  }
+   
+    
+  if( CLIENT_stat_trg_dataidx > 0 ){
+    hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
+    hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H);
+  }  
+
+  //CROSSHAIR AND DETAILS
+  hud_renderDirectionHit(CLIENT_stat_hit_dirs);
+  if( (CLIENT_flags & FL_NOSHOOT) ){
+    hud_renderCrosshairDisabled();
+  }
+  else{
+    hud_lock_frame();
+    switch( cvar("crosshair") ){
+      case 1:
+        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        break;
+      case 2:
+        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        break;
+      case 3:
+        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        break;
+      case 4:
+        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        break;
+      case 5:
+        hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        break;
+      default:
+        //no crosshair? bold move
+        break;
+    }
+  }
+
+  hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
+  hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
+  hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
+  
+  //ZOOM ACTIVE cleans up the HUD when the player is zooming in on an object by hiding
+  //various elements that would get in the way.
+  //these funcs can be moved out of this check as desired.
+  if( !HUD_ZOOM_ACTIVE ){
+    //repair sits above all
+    hud_render_vip_overlay();
+    hud_renderRepairValue();
+    hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
+    hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
+    hud_event_frame();
+    if( HUD_EXTERNAL_CAM_ACTIVE == FALSE ){
+      hud_render_sprint(VIEW_CTR);
+    }
+    
+    hud_render_info();
+  }
+  
+  if( HUD_TACMAP_ON ){
+    hud_render_tactical_map();
+  }
+  if( HUD_SCORES_ON ){
+    hud_render_scoreboard();
+  }
+  if( HUD_TACMAP_ON || HUD_SCORES_ON ){
+    hud_renderNavOverlay();
+    //only loop clients once per hud frame
+  }
+  local entity player;
+  for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
+    if( !(player.flags & FL_CLIENT) ){continue;}
+    if( player.entId == player_localentnum ){continue;}
+    if( player.data_type == DATA_POBS ){continue;}
+    if( player.faction != CLIENT_faction ){continue;}
+    if( player.faction == FACTION_ALL){continue;}
+    hud_render_ally_names( player );
+    
+    if( player.targetEntId <= 0 ){continue;}
+    if( player.enemy.deadflag != DEAD_NO ){continue;}
+    hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
+  }
+};
+
+/*
+  This is generally triggered by the player being given the FL_NOSHOOT flag from the server.
+*/
+void() hud_renderCrosshairDisabled={
+  local vector stopOrg;
+  local vector lblOrg;
+  
+  local vector stopSize;
+  local float lblSize;
+  
+  local string lbl;
+
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+
+  lbl = "!- FIRE CONTROL OVERRIDE -!";
+  
+  stopSize = gui_percentToPixelRawVec('24 24');
+  stopOrg_x = VIEW_CTR_x - (stopSize_x / 2);
+  stopOrg_y = VIEW_CTR_y - (stopSize_y / 2);
+
+  lblSize = stringwidth(lbl, 0, '14 14 0');
+  lblSize = gui_percentXRaw( lblSize );
+  
+  lblOrg_x = VIEW_CTR_x - (lblSize / 2);
+  lblOrg_y = VIEW_CTR_y - gui_percentYRaw( 32 );
+  
+  drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, HUD_ALPHA - 0.15, DRAWFLAG_NORMAL);  
+  
+  drawstring(lblOrg, lbl, '14 14 0', CLR_DEF_RED,  HUD_ALPHA - 0.15, 0);
+  drawfont = drawfont_prev;
+};
+
+/*
+  received lock start event, setup controller
+*/
+void(float lockTime) hud_lock_control_start={
+  HUD_LOCK_TIME_START = time;
+  HUD_LOCK_TIME_END = time + lockTime;
+  HUD_LOCK_STEP_RATE = lockTime / 100;
+  
+  HUD_LOCK_ALPHA = 0.01;
+  
+  HUD_LOCK_SIZE = 2;
+  HUD_LOCK_ALPHA_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
+  HUD_LOCK_SIZE_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
+  HUD_LOCK_COLOR = CLR_DEF_RET_GETLOCK;
+};
+
+/*
+  per-frame function for hud lock state.
+*/ 
+void() hud_lock_frame={
+  //cases
+    //1) started lock
+    if( !(HUD_LOCK_STATE_PREV & (LOCK_TARG_START | LOCK_TARG_HAS)) ){
+      if( (CLIENT_stat_lock_state & LOCK_TARG_START) ){
+        hud_lock_control_start( MECH_DATA_LOCKON ); 
+      }
+    }
+  //2) just acquired lock
+  if( (CLIENT_stat_lock_state & LOCK_TARG_START) ){
+    if( (time > HUD_LOCK_STEP) && (time < HUD_LOCK_TIME_END) ){
+      HUD_LOCK_ALPHA = HUD_LOCK_ALPHA + HUD_LOCK_ALPHA_RATE * 0.85;
+      HUD_LOCK_SIZE = HUD_LOCK_SIZE - HUD_LOCK_SIZE_RATE;
+      HUD_LOCK_STEP = time + HUD_LOCK_STEP_RATE;
+    }
+  }
+  else if( (CLIENT_stat_lock_state & LOCK_TARG_HAS) && (HUD_LOCK_STATE_PREV & LOCK_TARG_START) ){
+    HUD_LOCK_ALPHA = 0.85;
+    HUD_LOCK_COLOR = CLR_DEF_RET_HASLOCK;
+  }
+  HUD_LOCK_STATE_PREV = CLIENT_stat_lock_state;
+};
+
+void() data_hud_fps_cam={
+  local float uid;
+  local float hasTarget;
   
   hasTarget = FALSE;
   if( CLIENT_stat_trg_dataidx > 0 ){
@@ -1081,411 +1247,4 @@ void() data_hud_frame={
     }
     uid = uid + 1;
   }
-   
-    
-  if( CLIENT_stat_trg_dataidx > 0 ){
-    hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
-    hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H);
-  }  
-
-  //CROSSHAIR AND DETAILS
-  hud_renderDirectionHit(CLIENT_stat_hit_dirs);
-  if( (CLIENT_flags & FL_NOSHOOT) ){
-    hud_renderCrosshairDisabled();
-  }
-  else{
-    hud_lock_frame();
-    switch( cvar("crosshair") ){
-      case 1:
-        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
-        break;
-      case 2:
-        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
-        break;
-      case 3:
-        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
-        break;
-      case 4:
-        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
-        break;
-      case 5:
-        hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
-        break;
-      default:
-        //no crosshair? bold move
-        break;
-    }
-  }
-
-  hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
-  hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
-  hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
-  
-  //ZOOM ACTIVE cleans up the HUD when the player is zooming in on an object by hiding
-  //various elements that would get in the way.
-  //these funcs can be moved out of this check as desired.
-  if( !HUD_ZOOM_ACTIVE ){
-    //repair sits above all
-    hud_render_vip_overlay();
-    hud_renderRepairValue();
-    hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
-    hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
-    hud_event_frame();
-    hud_render_sprint();
-    hud_render_info();
-  }
-  
-  if( HUD_TACMAP_ON ){
-    hud_render_tactical_map();
-  }
-  if( HUD_SCORES_ON ){
-    hud_render_scoreboard();
-  }
-  if( HUD_TACMAP_ON || HUD_SCORES_ON ){
-    hud_renderNavOverlay();
-     //only loop clients once per hud frame
-  }
-  local entity player;
-  for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
-    if( !(player.flags & FL_CLIENT) ){continue;}
-    if( player.entId == player_localentnum ){continue;}
-    if( player.data_type == DATA_POBS ){continue;}
-    if( player.faction != CLIENT_faction ){continue;}
-    if( player.faction == FACTION_ALL){continue;}
-    hud_render_ally_names( player );
-    
-    if( player.targetEntId <= 0 ){continue;}
-    if( player.enemy.deadflag != DEAD_NO ){continue;}
-    hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
-  }
-};
-
-/*
-  This is generally triggered by the player being given the FL_NOSHOOT flag from the server.
-*/
-void() hud_renderCrosshairDisabled={
-  local vector stopOrg;
-  local vector lblOrg;
-  
-  local vector stopSize;
-  local float lblSize;
-  
-  local string lbl;
-
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-
-  lbl = "!- FIRE CONTROL OVERRIDE -!";
-  
-  stopSize = gui_percentToPixelRawVec('24 24');
-  stopOrg_x = VIEW_CTR_x - (stopSize_x / 2);
-  stopOrg_y = VIEW_CTR_y - (stopSize_y / 2);
-
-  lblSize = stringwidth(lbl, 0, '14 14 0');
-  lblSize = gui_percentXRaw( lblSize );
-  
-  lblOrg_x = VIEW_CTR_x - (lblSize / 2);
-  lblOrg_y = VIEW_CTR_y - gui_percentYRaw( 32 );
-  
-  drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, HUD_ALPHA - 0.15, DRAWFLAG_NORMAL);  
-  
-  drawstring(lblOrg, lbl, '14 14 0', CLR_DEF_RED,  HUD_ALPHA - 0.15, 0);
-  drawfont = drawfont_prev;
-};
-
-/*
-  received lock start event, setup controller
-*/
-void(float lockTime) hud_lock_control_start={
-  HUD_LOCK_TIME_START = time;
-  HUD_LOCK_TIME_END = time + lockTime;
-  HUD_LOCK_STEP_RATE = lockTime / 100;
-  
-  HUD_LOCK_ALPHA = 0.01;
-  
-  HUD_LOCK_SIZE = 2;
-  HUD_LOCK_ALPHA_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
-  HUD_LOCK_SIZE_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
-  HUD_LOCK_COLOR = CLR_DEF_RET_GETLOCK;
-};
-
-/*
-  per-frame function for hud lock state.
-*/ 
-void() hud_lock_frame={
-  //cases
-    //1) started lock
-    if( !(HUD_LOCK_STATE_PREV & (LOCK_TARG_START | LOCK_TARG_HAS)) ){
-      if( (CLIENT_stat_lock_state & LOCK_TARG_START) ){
-        hud_lock_control_start( MECH_DATA_LOCKON ); 
-      }
-    }
-  //2) just acquired lock
-  if( (CLIENT_stat_lock_state & LOCK_TARG_START) ){
-    if( (time > HUD_LOCK_STEP) && (time < HUD_LOCK_TIME_END) ){
-      HUD_LOCK_ALPHA = HUD_LOCK_ALPHA + HUD_LOCK_ALPHA_RATE * 0.85;
-      HUD_LOCK_SIZE = HUD_LOCK_SIZE - HUD_LOCK_SIZE_RATE;
-      HUD_LOCK_STEP = time + HUD_LOCK_STEP_RATE;
-    }
-  }
-  else if( (CLIENT_stat_lock_state & LOCK_TARG_HAS) && (HUD_LOCK_STATE_PREV & LOCK_TARG_START) ){
-    HUD_LOCK_ALPHA = 0.85;
-    HUD_LOCK_COLOR = CLR_DEF_RET_HASLOCK;
-  }
-  HUD_LOCK_STATE_PREV = CLIENT_stat_lock_state;
-};
-
-/*
-  I have no regrets for these
-  yes its a bespoke function for each crosshair style...because a generic system for
-  crosshairs was egregious - ha.
-*/
-/*
-  Crosshair Type 1
-*/
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair1={
-  local float hitAlpha;
-  local vector hitColor;
-  
-  local vector imgSize;
-  local vector lockSize;
-  local vector pipSizeH;
-  local vector pipSizeV;
-  local vector drift;
-  
-  local vector imgCenter;
-  local vector lockCenter;
-  local vector pipLeft;
-  local vector pipRight;
-  local vector pipTop;
-  local vector pipBottom;
-  
-  hitColor = HUD_COLOR_DEF;
-  hitAlpha = HUD_ALPHA;
-  
-  drift = gui_percentToPixelRaw( 8 * unitAccuracy, 8 * unitAccuracy );
-  imgSize = gui_percentToPixelRawVec('28 28');
-  pipSizeH = gui_percentToPixelRawVec('8 3');
-  pipSizeV = gui_percentToPixelRawVec('3 8');
-  
-  if( (hitdirection & STAT_HIT_TRG) ){
-    if(trg_shield > 0){
-      hitColor = CLR_DEF_ARM_OK;
-      hitAlpha = 1;
-    }
-    else{
-      hitColor = hitColor + '0.8 0.8 0.8';
-      hitAlpha = 1;
-    }
-  }
-  
-  //base image
-  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
-  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  if( !(lockval & LOCK_TARG_HAS) ){
-    drawpic(imgCenter, "gfx/hud/ret/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
-  }
-
-  //convergence
-  pipLeft = VIEW_CTR - gui_percentToPixelRawVec('11 1.5');
-  pipLeft_x = pipLeft_x - drift_x;
-    
-  pipRight = VIEW_CTR + gui_percentToPixelRawVec('3 -1.5');
-  pipRight_x = pipRight_x + drift_x;
-  
-  pipTop = VIEW_CTR - gui_percentToPixelRawVec('1.5 11');
-  pipTop_y = pipTop_y - drift_y;
-  
-  pipBottom = VIEW_CTR + gui_percentToPixelRawVec('-1.5 3');
-  pipBottom_y = pipBottom_y + drift_y;
-  
-  drawpic(pipLeft, "gfx/hud/ret/crosshair1_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipRight, "gfx/hud/ret/crosshair1_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  
-  drawpic(pipTop, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipBottom, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-
-  //lock on indicators
-  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('34 34') * HUD_LOCK_SIZE;
-    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
-    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    drawpic(lockCenter, "gfx/hud/ret/crosshair1_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
-  }
-}; 
-
-/*
-  Crosshair Type 2
-*/
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair2={
-  local float hitAlpha;
-  local vector hitColor;
-  
-  local vector imgSize;
-  local vector lockSize;
-  local vector pipSizeH;
-  local vector pipSizeV;
-  local vector drift;
-  
-  local vector imgCenter;
-  local vector lockCenter;
-  local vector pipLeft;
-  local vector pipRight;
-  local vector pipTop;
-  local vector pipBottom;
-  
-  hitColor = HUD_COLOR_DEF;
-  hitAlpha = HUD_ALPHA;
-  
-  drift = gui_percentToPixelRaw( 8 * unitAccuracy, 8 * unitAccuracy );
-  imgSize = gui_percentToPixelRawVec('28 28');
-  pipSizeH = gui_percentToPixelRawVec('15 3');
-  pipSizeV = gui_percentToPixelRawVec('3 15');
-  
-  if( (hitdirection & STAT_HIT_TRG) ){
-    if(trg_shield > 0){
-      hitColor = CLR_DEF_ARM_OK;
-      hitAlpha = 1;
-    }
-    else{
-      hitColor = hitColor + '0.8 0.8 0.8';
-      hitAlpha = 1;
-    }
-  }
-  
-  //base image
-  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
-  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  if( !(lockval & LOCK_TARG_HAS) ){
-    drawpic(imgCenter, "gfx/hud/ret/crosshair2.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
-  }
-
-  //convergence
-  pipLeft = VIEW_CTR - gui_percentToPixelRawVec('17 1.5');
-  pipLeft_x = pipLeft_x - drift_x;
-    
-  pipRight = VIEW_CTR + gui_percentToPixelRawVec('2 -1.5');
-  pipRight_x = pipRight_x + drift_x;
-  
-  pipTop = VIEW_CTR - gui_percentToPixelRawVec('1.5 17');
-  pipTop_y = pipTop_y - drift_y;
-  
-  pipBottom = VIEW_CTR + gui_percentToPixelRawVec('-1.5 2');
-  pipBottom_y = pipBottom_y + drift_y;
-  
-  drawpic(pipLeft, "gfx/hud/ret/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipRight, "gfx/hud/ret/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  
-  drawpic(pipTop, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipBottom, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-
-  //lock on indicators
-  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('34 34') * HUD_LOCK_SIZE;
-    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
-    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    drawpic(lockCenter, "gfx/hud/ret/crosshair2_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
-  }
-};
-
-/*
-  Crosshair Type 3
-*/
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair3={
-  local float hitAlpha;
-  local vector hitColor;
-  
-  local vector imgSize;
-  local vector lockSize;
-  local vector pipSizeH;
-  local vector hitSize;
-  
-  local vector imgCenter;
-  local vector lockCenter;
-  local vector pipLeft;
-  local vector hitCenter;
-  
-  imgSize = gui_percentToPixelRawVec('28 28');
-  pipSizeH = gui_percentToPixelRawVec('34 34');
- 
-  //base image
-  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
-  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  if( !(lockval & LOCK_TARG_HAS) ){
-    drawpic(imgCenter, "gfx/hud/ret/crosshair3.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
-  }
-  
-  //accuracy pips
-  pipSizeH_x = pipSizeH_x * unitAccuracy;
-  pipSizeH_y = pipSizeH_y * unitAccuracy;
-  pipLeft_x = VIEW_CTR_x - pipSizeH_x / 2;
-  pipLeft_y = VIEW_CTR_y - pipSizeH_y / 2;
-  drawpic(pipLeft, "gfx/hud/ret/crosshair3_r.png", pipSizeH, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);
-  
-  //lock on indicators  
-  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('36 36') * HUD_LOCK_SIZE;
-    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
-    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    drawpic(lockCenter, "gfx/hud/ret/crosshair3_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
-  }
-  
-  if( (hitdirection & STAT_HIT_TRG) ){
-    hitSize = gui_percentToPixelRawVec('27 27');
-    hitCenter_x = VIEW_CTR_x - hitSize_x / 2;
-    hitCenter_y = VIEW_CTR_y - hitSize_y / 2;
-    if(trg_shield > 0){
-      hitColor = CLR_DEF_ARM_OK;
-      hitAlpha = 1;
-    }
-    else{
-      hitColor = hitColor + '0.8 0.8 0.8';
-      hitAlpha = 1;
-    }
-    drawpic(hitCenter, "gfx/hud/ret/crosshair3_hit.png", hitSize, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  }
-};
-
-/*
-  Crosshair Type 4
-*/
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair4={  
-  local vector imgSize;
-  local vector lockSize;
-  local vector pipSizeH;
-  
-  local vector imgCenter;
-  local vector lockCenter;
-  local vector pipLeft;
-  
-  imgSize = gui_percentToPixelRawVec('32 32');
-  pipSizeH = gui_percentToPixelRawVec('34 34');
- 
-  //base image
-  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
-  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  if( !(lockval & LOCK_TARG_HAS)  ){
-    drawpic(imgCenter, "gfx/hud/ret/crosshair4.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
-  }
-  
-  pipSizeH_x = pipSizeH_x * unitAccuracy;
-  pipSizeH_y = pipSizeH_y * unitAccuracy;
-  pipLeft_x = VIEW_CTR_x - pipSizeH_x / 2;
-  pipLeft_y = VIEW_CTR_y - pipSizeH_y / 2;
-  drawpic(pipLeft, "gfx/hud/ret/crosshair4_r.png", pipSizeH, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);
-  
-  //lock on indicators  
-  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('36 36') * HUD_LOCK_SIZE;
-    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
-    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    drawpic(lockCenter, "gfx/hud/ret/crosshair4_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
-  }
-};
-
-/*
-  Crosshair Type 5
-*/
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair5={
-
 };

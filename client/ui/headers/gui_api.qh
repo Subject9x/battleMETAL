@@ -38,7 +38,6 @@ float VIEW_RGT = 8;
 float VIEW_CTX = 16;
 float VIEW_CTY = 32;
 
-
 float AXIS_H = 1;	
 float AXIS_V = 2;
 float AXIS_LEFT = 4;

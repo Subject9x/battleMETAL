@@ -91,6 +91,12 @@ float HUD_UID_MSN_CLOCK     = 20;
   float HUD_SCORE_HEIGHT;
   float HUD_SCORE_SURVEST_HEIGHT;
   float HUD_SCORE_MILITAR_HEIGHT;
+  
+  vector HUD_OFFSET;
+  vector HUD_OFFSET_PREV;
+  vector HUD_OFFSET_LAST;
+  vector HUD_OFFSET_ORG;
+  
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -183,7 +189,7 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram;
 void( entity box ) hud_renderHighlight;
 void() hud_renderHighlight_frame;
-void() hud_render_sprint;
+void(vector porg) hud_render_sprint;
 void( entity thePlayer ) hud_render_ally_names;
 void(vector org, entity allyTarget, float algn, float faction1, float radRange) hud_renderTargetOverlay_Ally;
 
@@ -200,3 +206,5 @@ void() hud_render_info;
 void( float uid, float targetId ) hud_data_renderTarget_Shield;
 vector( float wbit ) hud_data_weapon_info;
 void() data_hud_frame;
+void() data_hud_fps_cam;
+void() data_hud_external_cam_frame;

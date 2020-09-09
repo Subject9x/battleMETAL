@@ -14,12 +14,13 @@ void() hud_render_tactical_map={
   local float unavailableLen;
   local vector unavailableOrg;
   local vector map_size;
+  
   // render satellite view
-  mapOrg = VIEW_ORG + gui_percentToPixelRawVec('2 2');
-  mapImgSize = gui_percentToPixelRawVec('200 200');
+  mapOrg = VIEW_ORG + gui_percentToPixelRawVec('2 48');
+  mapImgSize = gui_percentToPixelRawVec('175 175');
   
   if( MSN_MAPPIC != "" ){
-    drawpic(mapOrg, MSN_MAPPIC, mapImgSize, '1 1 1', 1, 0);
+    drawpic(mapOrg, MSN_MAPPIC, mapImgSize, '1 1 1', HUD_ALPHA, 0);
   }
   else{
     unavailableLen = stringwidth( "!- Satellite Data unavailable -!", 0 ,'16 16 0');

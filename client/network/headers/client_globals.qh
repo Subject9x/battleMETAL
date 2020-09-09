@@ -69,6 +69,8 @@ float CLIENT_health_torso_right;
 float CLIENT_health_arm_left;
 float CLIENT_health_arm_right;
 
+float CLIENT_lerp;
+
 //for critical hit events
 float CLIENT_health_center_prev;
 float CLIENT_health_legs_prev;

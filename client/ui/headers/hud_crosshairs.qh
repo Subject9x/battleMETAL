@@ -1,0 +1,11 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 09/09/2020
+Overview:
+  header for all crosshair types
+*/
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair1;
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair2;
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair3;
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair4;

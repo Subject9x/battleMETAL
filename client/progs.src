@@ -122,6 +122,8 @@ util/headers/input_events.qh
   ui/headers/anim.qh
   ui/headers/hud_system_sound.qh
   ui/headers/hud_system_event.qh
+  ui/headers/hud_external.qh
+  ui/headers/hud_crosshairs.qh
 //================
 
 //CSQC Menu Headers
@@ -160,6 +162,11 @@ ui/hud/hud_target.qc
 ui/hud/hud_tacmap.qc
 ui/hud/hud_system_sound.qc
 ui/hud/hud_system_event.qc
+ui/hud/hud_external.qc
+ui/hud/crosshair/hud_crosshair1.qc
+ui/hud/crosshair/hud_crosshair2.qc
+ui/hud/crosshair/hud_crosshair3.qc
+ui/hud/crosshair/hud_crosshair4.qc
 
 //Client / Server CMD===
   network/server_localcmd.qc

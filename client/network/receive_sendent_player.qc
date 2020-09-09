@@ -154,6 +154,10 @@ float() player_predraw={
     self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
     self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
   
+    if(self.entId == player_localentnum ){
+      CLIENT_lerp = self.lerpfrac;
+    }
+  
     self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
     
     if(self.entId == player_localentnum){
