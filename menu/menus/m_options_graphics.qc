@@ -660,8 +660,8 @@ void() click_graphics_accept={
   cvar_set("saved2", ftos(graphics_gfx_lbl.len));
   
   cmd("saveconfig\n");
+  cmd("exec config.cfg\n"); //apparently also loads autoexec.cfg and .rc
   cmd("vid_restart\n");
-  cmd("loadconfig\n");
 };
 
 // ini function, called by '_f' function as a setup func
