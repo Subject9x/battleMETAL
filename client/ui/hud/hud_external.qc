@@ -49,9 +49,10 @@ void() data_hud_external_cam_frame={
           hud_renderArmorBuilding('85 54', 10, '48 64', CLIENT_stat_trg_ct_hp);
           break;
       }
-      hud_renderTargetName('0 126', 10);
-      hud_renderTargetRange('0 116', CLIENT_target_origin, pmove_org, 10);
+      hud_renderTargetName('100 126', 10);
+      hud_renderTargetRange('100 116', CLIENT_target_origin, pmove_org, 10);
       hud_renderShield('110 92', 10, CLIENT_target_shield, '18 75', 1, 5, '2 6', 2, FALSE);
+      
     }
     
     //Screen - Center Top
@@ -68,15 +69,22 @@ void() data_hud_external_cam_frame={
     
     local vector drawOrg;
     local float wepBit;
+    local float realWeapons;
+    local entity theWep;
     
     weaponId = 0;
+    realWeapons = 0;
     while( weaponId < 10 ){
       wepBit =  bitshift(1, weaponId);
       if( (CLIENT_weapon_state & wepBit) ){
-        drawOrg = '0 0';
-        drawOrg_x = drawOrg_x + (weaponId * 28);
-        drawOrg_y = drawOrg_y - 20;
-        hud_renderWeapon(drawOrg, '24 24', 0, CLIENT_currentWeaponGroup, wepBit );
+        theWep = gui_get_weapon(wepBit);
+        if( theWep.data_idx > 0 ){
+          drawOrg = '0 0';
+          drawOrg_x = drawOrg_x + (realWeapons * 28);
+          drawOrg_y = drawOrg_y - 20;
+          hud_renderWeapon(drawOrg, '24 24', 0, CLIENT_currentWeaponGroup, wepBit );
+          realWeapons = realWeapons + 1;
+        }
       }
       weaponId = weaponId + 1;
     }

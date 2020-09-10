@@ -434,13 +434,15 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
     drawpic(iofs, theWeapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
-  if( wepState != CLR_DEF_TXT_CANTSELECT){
-    ofs_x = imgSz_x / 2;
-    ofs_y = (imgSz_y * 2);
-    metSize_x = imgSz_x;
-    metSize_y = gui_percentYRaw(20);
-    ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), rOrg); 
-    gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
+  if( wepState != CLR_DEF_TXT_CANTSELECT ){
+    if( theWeapon.data_idx > 0 ){
+      ofs_x = imgSz_x / 2;
+      ofs_y = (imgSz_y * 2);
+      metSize_x = imgSz_x;
+      metSize_y = gui_percentYRaw(20);
+      ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), rOrg); 
+      gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
+    }
   }
   else{
     drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
