@@ -10,14 +10,13 @@ Overview:
 */
 
 void(entity newAttacker) ai_react_generic={
-  
-  if( (!(newAttacker.flags & FL_MONSTER) && !(newAttacker.flags & FL_CLIENT)) || (self.flags & FL_DISARMED) ){
-    ai_call_for_help(newAttacker);
+  //AI has taken friendly fire
+  if( newAttacker.faction == self.faction ){
     return;
   }
   
-  //AI has taken friendly fire
-  if( newAttacker.faction == self.faction ){
+  if( (!(newAttacker.flags & FL_MONSTER) && !(newAttacker.flags & FL_CLIENT)) || (self.flags & FL_DISARMED) ){
+    ai_call_for_help(newAttacker);
     return;
   }
   

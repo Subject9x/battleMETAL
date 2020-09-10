@@ -259,11 +259,8 @@ void() ai_combat_start={
     /*
       Combat Frame State Checks
     */
-    enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-    enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = ai_check_node_radius_targdist();
+    
     enemy_dist = ai_check_node_radius(self.enemy);
-    combat_dist = ai_check_node_radius(self);
     
     if(enemy_vis == VIS_FAIL){
       self.enemy = world;
@@ -283,9 +280,24 @@ void() ai_combat_start={
           return;
         }
       }
+      else{
+        self.ai_move_next = MOVE_NODE_TACTICAL;
+        return;
+      }
     }
     
-    combat_roll = random() * 1.0;
+    enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
+    enemy_vis = ai_check_vis( self.enemy );
+    enemy_range = ai_check_node_radius_targdist();
+    combat_dist = ai_check_node_radius(self);
+    combat_roll = random() * 1;
+    
+    //fight state dump - useful for debug
+    //cons_logAFloat("enemy_vis", enemy_vis); //debug
+    //cons_logAFloat("enemy_range", enemy_range); //debug
+    //cons_logAFloat("enemy_dist", enemy_dist); //debug
+    //cons_logAFloat("combat_dist", combat_dist); //debug
+    
     //AI is in bounds, but target is out of bounds
     if( 1.0 < enemy_dist ){
       if( combat_dist <= 1.0 ){
@@ -351,6 +363,7 @@ void() ai_com_moveStart={
     else{
       self.moveState = 0;
     }
+    self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
   }
   //------------------------------------------------------------------

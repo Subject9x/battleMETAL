@@ -94,6 +94,11 @@ void() ai_state_frame={
       ai_leg_control();
     }
   }
+  
+  //state info dump - use for debug
+  //cons_logAString("current STATE-----------", dbg_state(self.ai_state)); //debug
+  //cons_logAString("current move-----------", dbg_move(self.ai_move)); //debug  
+  
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.think = ai_state_frame;
   self.nextthink = time + 0.06;

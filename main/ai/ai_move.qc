@@ -20,7 +20,9 @@ float() ai_move_director={
   
   moveLen = (self.ai_movedist * self.data_speed_forward) * 10;
   thisAng = self.angles;
+  
   thisAng_y = vectoyaw(self.enemy.origin - self.origin);
+  
   moveItr = 0;
   goodLen = 0;
   goodMove = 0;
@@ -38,11 +40,13 @@ float() ai_move_director={
 
   if( ai_check_face_origin(self.enemy.origin, 0.45, FALSE) == FALSE ){
     if(goodMove == MOVE_CHARGE || goodMove == MOVE_CHARGE_RIGHT || goodMove == MOVE_CHARGE_LEFT || goodMove == MOVE_CIRCLE_LEFT || goodMove == MOVE_CIRCLE_RIGHT){
+      self.ai_movedist = self.ai_rank * 1.25;
       goodMove = MOVE_STAND_FACE;
     }
   }
   else{    
     if(goodMove == MOVE_BACK || goodMove == MOVE_BACK_LEFT || goodMove == MOVE_BACK_RIGHT ){
+      self.ai_movedist = self.ai_rank * 1.25;
       goodMove = MOVE_STAND_FACE;
     }
   }
