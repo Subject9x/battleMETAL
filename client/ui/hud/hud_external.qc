@@ -55,7 +55,7 @@ void() data_hud_external_cam_frame={
     }
     
     //Screen - Center Top
-      hud_renderNavHeading( '8 12', 17, input_angles);
+      //hud_renderNavHeading( '8 12', 17, input_angles);
       
       HUD_TXT_ORG = '0 45 0';
       HUD_TXT_SIZE = '16 16';

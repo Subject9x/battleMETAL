@@ -1137,7 +1137,7 @@ void() data_hud_fps_cam={
           hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wbit);
         }
         break;
-      case HUD_UID_WEP_TYPE2:  
+      case HUD_UID_WEP_TYPE2:
         if( HUD_ZOOM_ACTIVE == FALSE){
           porg = UI_DATA_POS[uid];
           algn = UI_DATA_ALIGN[uid];
@@ -1171,11 +1171,11 @@ void() data_hud_fps_cam={
           hud_renderRadar(porg, algn, CLIENT_faction, pmove_org, CLIENT_radar_range, CLIENT_stat_rdr_mode, vsize);
         }
         break;
-      case HUD_UID_NAV:      
+      /*case HUD_UID_NAV:      
         porg = UI_DATA_POS[uid]; 
         algn = UI_DATA_ALIGN[uid];
         hud_renderNavHeading( porg, algn, input_angles);
-        break;
+        break;*/
       case HUD_UID_TARGET_NAME:
         if( HUD_ZOOM_ACTIVE == FALSE){
           if( hasTarget){
