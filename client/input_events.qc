@@ -140,6 +140,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       //scoreboard_sort(scoreHead);
     }
     else if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
+      if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
+        return TRUE;
+      }
       if( HUD_EXTERNAL_CAM_ACTIVE == TRUE ){
         HUD_EXTERNAL_CAM_ACTIVE = FALSE;
         localcmd("chase_active 0\n");

@@ -354,7 +354,13 @@ void() ui_navbutton_launch_click={
       CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
       menu_exit();
       if(cvar("chase_active") == TRUE ){
-        HUD_EXTERNAL_CAM_ACTIVE = TRUE;
+        if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
+          HUD_EXTERNAL_CAM_ACTIVE = FALSE;
+          cvar_set("chase_active", "0");
+        }
+        else{
+          HUD_EXTERNAL_CAM_ACTIVE = TRUE;
+        }
       }
     }
   }

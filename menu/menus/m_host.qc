@@ -78,6 +78,7 @@ entity host_flag_nolives;
 entity host_flag_nomap;
 entity host_flag_noradar;
 entity host_flag_nostatus;
+entity host_flag_nocam;
 
 //images
 string IMG_HOST_TITLE = "gfx/menu/host/host_title.png";
@@ -407,6 +408,15 @@ void() host_check_flag_nostatus={
   }
 };
 
+void() host_check_flag_nocamera={
+  if( host_flag_nocam.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_FPSONLY;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_FPSONLY);
+  }
+};
+
 void() click_host_back={
   cvar_set("sv_serverflags", "0");
   menu_clear_items(M_STATE);
@@ -528,6 +538,9 @@ void() m_host_i={
   
   host_flag_nostatus = btn_check_callback('80 353', '14 14', 0, M_HOST, host_check_flag_nostatus, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_nostatus.label = strzone("Hide Menu Status");
+  
+  host_flag_nocam = btn_check_callback('180 353', '14 14', 0, M_HOST, host_check_flag_nocamera, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_nocam.label = strzone("No Ext. Camera");
   
   //LAAAAAAAAUNCH!
   host_launch = btn_img_callback('140 400 0', '96 16', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_launch, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL));

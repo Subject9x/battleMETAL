@@ -209,6 +209,10 @@ void( vector menuOrg ) menu_connect_draw_rules_dm={
     drawstring( ruleRow, "Hide Player Status", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
+  if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
+    drawstring( ruleRow, "No External Cam", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  }
   drawfont = drawfont_prev;
 };
 
@@ -378,6 +382,17 @@ void( vector menuOrg ) menu_connect_draw_rules_team={
     drawstring( ruleRow, "Hide Player Status", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 4 ){
       ruleRow_x = ruleRow_x + gui_percentXRaw(64);
+      ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
+    }
+    else{
+      ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+    }
+    listCount = listCount + 1;
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
+    drawstring( ruleRow, "No External Cam", '10 10', CLR_DEF_WHITE, 1, 0);
+    if( listCount == 4 ){
+      ruleRow_x = ruleRow_x + gui_percentXRaw(85);
       ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
     }
     else{
@@ -620,6 +635,17 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   }
   if( (SV_SERVERFLAGS & SVFLAG_NORADAR) ){
     drawstring( ruleRow, "Passive Radar Only", '10 10', CLR_DEF_WHITE, 1, 0);
+    if( listCount == 3 ){
+      ruleRow_x = ruleRow_x + gui_percentXRaw(85);
+      ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
+    }
+    else{
+      ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+    }
+    listCount = listCount + 1;
+  }
+  if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
+    drawstring( ruleRow, "No External Cam", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 3 ){
       ruleRow_x = ruleRow_x + gui_percentXRaw(85);
       ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);

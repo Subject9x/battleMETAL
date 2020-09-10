@@ -655,3 +655,4 @@ float SVFLAG_NORADAR    = 64; //  no radar allowed
 float SVFLAG_NOSTATUS   = 128; // hide player status in menus
 float SVFLAG_ITEMOVER   = 256; //used when world.itemOverride = 1; tells game to load the override file
 float SVFLAG_NOSAVE     = 512; //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
+float SVFLAG_FPSONLY    = 1024; //disables third person / chase_active commands.
