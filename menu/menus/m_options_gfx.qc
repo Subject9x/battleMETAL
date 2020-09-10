@@ -476,7 +476,7 @@ void() click_gfx_save={
   
   
   cvar_set("saved2", "0");
-  
+  cmd("saveconfig\n");
   menu_clear_items(M_STATE);
   m_graphics_f();
 };
