@@ -27,24 +27,24 @@ void() te_muzzle_flk={
   local vector v;
   
   startOrg = self.origin + v_forward * self.wepFireOffset_z;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
+  traceline(startOrg, self.owner.origin + (v_forward*10000), FALSE, self.owner);
   endOrg = trace_endpos;
   
   norm = normalize(endOrg - startOrg);
   ang = vectoangles(endOrg - startOrg);
-  makevectors(ang);
   
   pointsound( startOrg, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
   
+  makevectors(ang);
   shrap = DAT_FLAK_SHRAP_TOTAL;
   while( shrap > 0 ){
-    v = endOrg + crandom()*self.spreadDefault_x*v_right + crandom()*self.spreadDefault_y*v_up;
+    v = norm + ((crandom()*self.spreadDefault_x)*v_right) + ((crandom()*self.spreadDefault_y)*v_up);
     
-    traceline(startOrg, v, FALSE, self.owner);
-    impactStyle = te_impact_type(v, trace_ent);
+    traceline (startOrg, startOrg + (v * self.w_range), FALSE, self.owner);
+    impactStyle = te_impact_type(trace_endpos, trace_ent);
     
-    trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, v);
+    trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, trace_endpos);
     
     switch(impactStyle){
       case IMPACT_ARMOR:

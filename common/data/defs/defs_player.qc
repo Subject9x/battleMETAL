@@ -25,6 +25,8 @@ Overview:
 .float hud_bob_speed;
 .string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
 .vector hud_StrutsOffset; //  origin offset of struts model
+.vector laser_sight_org1;
+.vector laser_sight_org2;
 #endif 
 
 .float faction;   //which faction? consult table

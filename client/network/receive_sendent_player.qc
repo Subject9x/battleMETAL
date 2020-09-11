@@ -99,7 +99,6 @@ void() player_think={
   local vector boostLeft, boostRight, backLeft, backRight;
   local string te;
   
-
   makevectors(self.angles);
   v1 = self.origin + (v_up * self.cockpit.compOffset_y);
   traceline(v1, v1 + v_forward*10000, FALSE, self);
@@ -150,9 +149,13 @@ float() player_predraw={
       self.origin1 = self.origin;
       self.angle2 = self.angle1;
       self.angle1 = self.angles_y;
+      self.laser_sight_org2 =   self.laser_sight_org1;
+      self.laser_sight_org1 =   self.laser_sight_org;
     }
     self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
     self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+    
+    self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2-self.laser_sight_org1)*self.lerpfrac;
   
     if(self.entId == player_localentnum ){
       CLIENT_lerp = self.lerpfrac;
