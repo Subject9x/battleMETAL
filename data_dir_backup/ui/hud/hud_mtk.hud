@@ -10,7 +10,7 @@
 //Player Energy
 {
   'uid'     : 2,
-  'pos'     : 51 98 0,
+  'pos'     : 36 98 0,
   'valign'  : 6,
   'size'    : 22 88 0,
   'lflag'   : 1,
@@ -21,8 +21,8 @@
 //Player Shield
 {
   'uid'     : 4,
-  'pos'     : 74 98 0,
-  'valign'  : 10,
+  'pos'     : 145 98 0,
+  'valign'  : 6,
   'size'    : 22 88 0,
   'lflag'   : 1,
   'lalign'  : 5,
@@ -32,13 +32,13 @@
 //Player Armor
 {
   'uid'     : 3,
-  'pos'     : 148 70 0,
+  'pos'     : 103 65 0,
   'valign'  : 6,
 }
 //Weapon 1 - Style 2
 {
   'uid'     : 8,
-  'pos'     : -126 -53 0,
+  'pos'     : -156 -62 0,
   'size'    : 24 26 0,
   'valign'  : 48,
   'wbit'    : 1,
@@ -46,7 +46,7 @@
 //Weapon 2 - Style 2
 {
   'uid'     : 8,
-  'pos'     : 155 -53 0,
+  'pos'     : 185 -62 0,
   'size'    : 24 26 0,
   'valign'  : 48,
   'wbit'    : 2,
@@ -54,7 +54,7 @@
 //Weapon 3 - Style 2
 {
   'uid'     : 8,
-  'pos'     : -169 -53 0,
+  'pos'     : -205 -62 0,
   'size'    : 24 26 0,
   'valign'  : 48,
   'wbit'    : 4,
@@ -62,7 +62,7 @@
 //Weapon 4 - Style 2
 {
   'uid'     : 8,
-  'pos'     : 197 -53 0,
+  'pos'     : 232 -62 0,
   'size'    : 24 26 0,
   'valign'  : 48,
   'wbit'    : 8,
@@ -70,28 +70,36 @@
 //Weapon 5 - Style 2
 {
   'uid'     : 8,
-  'pos'     : 79 -62 0,
-  'size'    : 25 25 0,
+  'pos'     : 138 -62 0,
+  'size'    : 24 26 0,
   'valign'  : 48,
   'wbit'    : 16,
+}
+//Weapon 6 - Style 2
+{
+  'uid'     : 8,
+  'pos'     : -109 -62 0,
+  'size'    : 24 26 0,
+  'valign'  : 48,
+  'wbit'    : 32,
 }
 //Radar Graph
 {
   'uid'     : 11,
-  'pos'     : 190 108 0,
+  'pos'     : 140 98 0,
   'valign'  : 10,
-  'size'    : 85 85 0,
+  'size'    : 80 80 0,
 }
-//Radar Status - Style 1
+//Radar Status - Style 2
 {
-  'uid'     : 9,
-  'pos'     : 185 25 0,
+  'uid'     : 10,
+  'pos'     : 180 100 0,
   'valign'  : 10,
 }
 //Target Shield
 {
   'uid'     : 6,
-  'pos'     : -75 92 0,
+  'pos'     : -45 92 0,
   'valign'  : 18,
   'size'    : 18 75 0,
   'lflag'   : 1,
@@ -102,10 +110,10 @@
 //Target Armor - Mech
 {
   'uid'     : 5,
-  'pos'     : -28 64 0,
+  'pos'     : 0 64 0,
   'valign'  : 18,
 }
-//Nav Heading
+//Nav Heading - unused for now - Beta 2
 {
   'uid'     : 12,
   'pos'     : 8 16 0,
@@ -114,13 +122,13 @@
 //Target Name
 {
   'uid'     : 13,
-  'pos'     : 0 126 0,
+  'pos'     : 32 126 0,
   'valign'  : 18,
 }
 //Target Range
 {
   'uid'     : 14,
-  'pos'     : 0 116 0,
+  'pos'     : 32 116 0,
   'valign'  : 18,
 }
 //Target Armor - Vec
@@ -133,7 +141,7 @@
 //Target Armor - Building
 {
   'uid'     : 16,
-  'pos'     : 0 54 0,
+  'pos'     : 48 54 0,
   'valign'  : 18,
   'size'    : 48 64 0,
 }
@@ -147,17 +155,17 @@
 //Enviro damage
 {
   'uid'     : 18,
-  'pos'     : -164 16 0,
+  'pos'     : 0 -235 0,
 }
 //Ram Charge Meter
 {
   'uid'     : 19,
-  'pos'     : 96 116,
+  'pos'     : 145 98,
   'valign'  : 18,
-  'size'    : 24 96,
+  'size'    : 16 88,
   'axis'    : 2,
   'lalign'  : 17,
-  'lblofs'  : 2 10 0,
+  'lblofs'  : 2 8 0,
 }
 //Mission Clock
 {

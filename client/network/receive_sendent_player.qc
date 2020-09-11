@@ -216,7 +216,7 @@ float() player_predraw={
       strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
       setorigin(hudStruts, strutOrg);
       
-      consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.48);
+      consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.52);
       setorigin(hudConsole, consOrg);
       hudConsole.angles_y = input_angles_y;
       hudConsole.angles_x = 33;
@@ -295,6 +295,7 @@ void( float mech_id ) sendevent_player_mech={
     HUD_VIEW_OFS = self.cockpit.compOffset_z;
     hudStruts = spawn();
     hudStruts.drawmask = MASK_ENGINE;
+    hudStruts.effects = hudStruts.effects | EF_NOSHADOW;
     setmodel(hudStruts, self.weaponmodel);
     setorigin(hudStruts, pmove_org);
     hudStruts.angles_y = input_angles_y;
@@ -303,6 +304,7 @@ void( float mech_id ) sendevent_player_mech={
     
     hudConsole = spawn();
     hudConsole.drawmask = MASK_ENGINE;
+    hudConsole.effects = hudConsole.effects | EF_NOSHADOW;
     setmodel(hudConsole, self.hud_model);
     setorigin(hudConsole, pmove_org);
     hudConsole.angles_y = input_angles_y;
