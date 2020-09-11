@@ -117,11 +117,10 @@ void() data_ini_matok_={
 //=====================================
 
 //HUD Data=============================
-#ifndef CSQC
-  self.weaponmodel = "q3mdl/mechs/matok/matok_hud.md3";
-  self.hud_model = "q3mdl/mechs/matok/matok_hud.obj";
-#endif
 #ifdef CSQC
+  self.weaponmodel = "q3mdl/mechs/matok/matok_view.obj";
+  self.hud_model = "q3mdl/mechs/matok/matok_hud.obj";
+  self.hud_StrutsOffset = '0 -2 -0.75';
   self.pitchMax = 55;
   self.pitchMin = -45;
   self.hud_rollangle = 3.25;

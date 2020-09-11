@@ -201,6 +201,27 @@ float() player_predraw={
       self.origin = cacheOrg;
     }
     setorigin(self, self.origin);
+    
+    if(self.entId == player_localentnum){
+      local vector hudAng;
+      local vector strutOrg;
+      local vector consOrg;
+      
+      hudAng = input_angles;
+      hudAng_x = 0;
+      makevectors(hudAng);
+      hudStruts.angles_y = input_angles_y;
+      hudStruts.angles_x = 0;
+      hudStruts.angles_z = 0;
+      strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
+      setorigin(hudStruts, strutOrg);
+      
+      consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.48);
+      setorigin(hudConsole, consOrg);
+      hudConsole.angles_y = input_angles_y;
+      hudConsole.angles_x = 33;
+      hudConsole.angles_z = 0;
+    }
   }
   return FALSE;
 };
@@ -268,7 +289,28 @@ void( float mech_id ) sendevent_player_mech={
     weps = weps.w_slot;
   }
   self.solid = SOLID_BBOX;
-  setsize(self, minSave, maxSave);  
+  setsize(self, minSave, maxSave);
+  if( self.entId == player_localentnum ){
+    HUD_VIEW_CL_ANGLES = self.angles;
+    HUD_VIEW_OFS = self.cockpit.compOffset_z;
+    hudStruts = spawn();
+    hudStruts.drawmask = MASK_ENGINE;
+    setmodel(hudStruts, self.weaponmodel);
+    setorigin(hudStruts, pmove_org);
+    hudStruts.angles_y = input_angles_y;
+    hudStruts.angles_x = 0;
+    hudStruts.angles_z = 0;
+    
+    hudConsole = spawn();
+    hudConsole.drawmask = MASK_ENGINE;
+    setmodel(hudConsole, self.hud_model);
+    setorigin(hudConsole, pmove_org);
+    hudConsole.angles_y = input_angles_y;
+    hudConsole.angles_x = 45;
+    hudConsole.angles_z = 0;
+  }
+  
+  
 };
 
 /*
@@ -299,6 +341,12 @@ void() sendevent_handle_player_death={
     nextWep = nextWep.w_slot;
     remove(wep);
     wep = nextWep;
+  }
+  if( hudConsole != world ){
+    remove(hudConsole);
+  }
+  if( hudStruts != world ){
+    remove(hudStruts);
   }
 };
 

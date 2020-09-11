@@ -34,6 +34,11 @@ float HUD_UID_MSN_CLOCK     = 20;
 
 
 //HUD GLOBALS===============================
+  entity hudStruts;
+  entity hudConsole;
+  
+  float HUD_VIEW_OFS;
+  vector HUD_VIEW_CL_ANGLES;
   float HUD_ENERGY_ACTUAL;  //actual energy amount of player.
   
   vector RADAR_VORG;

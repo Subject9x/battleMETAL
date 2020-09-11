@@ -23,6 +23,8 @@ Overview:
 .float hud_bob_side;
 .float hud_bob_model_up;
 .float hud_bob_speed;
+.string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
+.vector hud_StrutsOffset; //  origin offset of struts model
 #endif 
 
 .float faction;   //which faction? consult table
@@ -50,7 +52,6 @@ Overview:
 .float missionStatus; //moved to player level for network
 .float hud_mode;  //sway mode
 .string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
-.entity hud_ent;  //fixes sway mode set bug
 
 .float missionLosses; //mostly campaign related.
 .float botKills;      //campaign/coop tracking of bot kills.

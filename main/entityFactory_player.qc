@@ -32,22 +32,6 @@ void() player_makeVec={
   //<chuckle> oh we'll get here soon
 };
 
-//creates the 3D hud boxes for the player
-//TODO - move me to clientside.
-void() player_setup_hudconsole={
-  newmis = spawn();
-  newmis.movetype = MOVETYPE_NONE;
-  newmis.solid = SOLID_NOT;
-  newmis.viewmodelforclient = self;
-  newmis.owner = self;
-  newmis.alpha = 1;
-  setmodel(newmis, self.hud_model);
-  setsize(newmis, '0 0 0', '0 0 0');
-  setorigin(newmis, '0 0 0');
-  newmis.frame = self.weaponframe;
-  self.hud_ent = newmis;
-};
-
 float() customize_part_for_client={
   local vector chunkOfs;
   if( self.owner != other ){
@@ -90,7 +74,7 @@ void() player_makeMech={
   
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
  
-  player_setup_hudconsole();
+  //player_setup_hudconsole();
   //configure player mech bits visibility
   hudWepStart = self;
   if( GAMETYPE == GAMEMODE_CAMPAIGN ){
@@ -118,11 +102,6 @@ void() player_makeMech={
   self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
   self.armRight.effects = self.armRight.effects | EF_NODRAW;
   self.legs.effects = self.legs.effects | EF_NODRAW;
-  //self.legs.exteriormodeltoclient = self;
-  //self.legs.customizeentityforclient = customize_part_for_client;
-  
-  self.hud_mode = cvar("cl_hud_sway");
-  util_updateViewBob();
   
   self.view_ofs = '0 0 0';
   self.view_ofs_z = self.cockpit.compOffset_y;  //set player view offset to where the cockpit ent is.
@@ -204,11 +183,6 @@ void() player_unmakeMech={
   self.enemy = world; //explicit assignment here
   self.stat_plr_rep = 0;
   self.stat_target_name = "";
-  
-  self.hud_ent.modelindex = 0;
-  self.hud_ent.effects = EF_NODRAW;
-  self.hud_ent.think = SUB_Remove;
-  self.hud_ent.nextthink = time + 0.01;
   
   if( self.particleCube != world){
     remove(self.particleCube);

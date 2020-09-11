@@ -605,27 +605,6 @@ void() util_DeveloperNodeMark={
   }
 };
 
-
-void() util_updateViewBob={
-  self.hud_mode = cvar("cl_hud_sway");
-  if( self.hud_mode == 0){
-    self.hud_ent.effects = self.hud_ent.effects | EF_NOGUNBOB;
-    //client_update_viewBob( 0, 0, 0);
-    //client_update_modelBob( 0, 0, 0, 0);
-  }
-  else if( self.hud_mode == 1 ){
-    self.hud_ent.effects = self.hud_ent.effects | EF_NOGUNBOB;
-    //client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
-    //client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed, self.hud_bob_model_up);
-  }
-  else{
-    self.hud_ent.effects = self.hud_ent.effects - (self.hud_ent.effects & EF_NOGUNBOB);
-    //client_update_viewBob(self.hud_bob, self.hud_bob_cycle / 2, self.hud_bob_up / 4);
-    //client_update_modelBob(self.hud_bob_model, self.hud_bob_side * 0.5, self.hud_bob_speed * 0.5, self.hud_bob_model_up * 0.33);
-  }
-};
-
-
 /*
   Cast out 6 rays to find random furthest point from an origin
 */

@@ -143,11 +143,6 @@ void() PlayerPostThink = {
   ButtonCommands();
   
   if(self.data_type != DATA_POBS){ 
-    local float hudSwayCheck;
-    hudSwayCheck = cvar("cl_hud_sway");
-    if( self.hud_mode != hudSwayCheck ){
-      util_updateViewBob();
-    }
     //power up sequence
     if(time > self.power_timer){
       self.power_timer = 0;

@@ -124,11 +124,10 @@ void() data_ini_monitor_={
 //=====================================
 
 //HUD Data=============================
-#ifndef CSQC
-  self.weaponmodel = "q3mdl/mechs/monitor/monitor_hud.md3";
-  self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
-#endif
 #ifdef CSQC
+  self.weaponmodel = "q3mdl/mechs/monitor/monitor_view.obj";
+  self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
+  self.hud_StrutsOffset = '0 -1.05 0.33';
   self.pitchMax = 45;
   self.pitchMin = -25;
   self.hud_rollangle = 2.75;

@@ -498,12 +498,14 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
   }
   
   if( wepState != CLR_DEF_TXT_CANTSELECT){
-    ofs_x = imgSz_x / 2;
-    ofs_y = imgSz_y;
-    metSize_x = gui_percentXRaw(-20);
-    metSize_y = imgSz_y;
-    ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
-    gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
+    if( theWeapon.data_idx > 0 ){
+      ofs_x = imgSz_x / 2;
+      ofs_y = imgSz_y;
+      metSize_x = gui_percentXRaw(-20);
+      metSize_y = imgSz_y;
+      ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
+      gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
+    }
   }
   else{
     drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
@@ -986,6 +988,39 @@ void() data_hud_frame={
     if( player.enemy.deadflag != DEAD_NO ){continue;}
     hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
   }
+  
+  /*
+    test doesnt really work
+    void(string texturename, float flag[, float is2d, float lines]) R_BeginPolygon = #306;
+    void(string texturename, float flag, ...) R_BeginPolygon = #306;
+    void(vector org, vector texcoords, vector rgb, float alpha) R_PolygonVertex = #307;
+    void() R_EndPolygon = #308;
+    R_BeginPolygon("q3mdl/mechs/matok/hud/matok_hud.tga", DRAWFLAG_2XMODULATE, 0);
+      R_PolygonVertex(gui_percentToPixelRawVec('10 10'), '0 0', '1 1 1', 1) ;
+      R_PolygonVertex(gui_percentToPixelRawVec('10 100'), '0 1', '1 1 1', 1) ;
+      R_PolygonVertex(gui_percentToPixelRawVec('100 100'), '1 1', '1 1 1', 1) ;
+      
+      
+      R_PolygonVertex(gui_percentToPixelRawVec('100 100'), '1 1', '1 1 1', 1) ;
+      R_PolygonVertex(gui_percentToPixelRawVec('100 10'), '1 0', '1 1 1', 1) ;
+      R_PolygonVertex(gui_percentToPixelRawVec('10 10'), '0 0', '1 1 1', 1) ;
+    R_EndPolygon();
+  */
+  
+  local vector test1, prjTest1, tAng;
+  
+  tAng =  input_angles;
+  
+  //cons_logAFloat("tAng_x", tAng_x); //debug
+  // = tAng_x * -1;
+  makevectors(tAng);
+  test1 = getpropertyvec(VF_ORIGIN);
+//  test1 = test1 + v_up * 32;
+  
+  prjTest1 = cs_project(test1);
+  prjTest1_z = 0;
+  //hud_renderShield(prjTest1, 0, CLIENT_shield, '22 88', 1, 17, '0 6', 2, TRUE);
+  
 };
 
 /*

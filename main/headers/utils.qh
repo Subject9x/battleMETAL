@@ -66,8 +66,6 @@ void() BecomeExplosion;
 
 void() dropToFloorCorners;
 
-void() util_updateViewBob;
-
 float(entity targ) infront;
 
 entity(entity t) util_findMechCrit;

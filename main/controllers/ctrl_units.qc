@@ -36,7 +36,6 @@ void() ctrl_unit_cleanup_player={
   ctrl_unit_remove_piece(self.legs);
   
   ctrl_weapon_remove_all();
-  remove(self.hud_ent);
 };
 
 void() ctrl_unit_cleanup_mech={

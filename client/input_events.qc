@@ -146,10 +146,22 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       if( HUD_EXTERNAL_CAM_ACTIVE == TRUE ){
         HUD_EXTERNAL_CAM_ACTIVE = FALSE;
         localcmd("chase_active 0\n");
+        if(hudStruts != world ){
+          hudStruts.drawmask = MASK_ENGINE;
+        }
+        if(hudConsole != world ){
+          hudConsole.drawmask = MASK_ENGINE;
+        }
       }
       else{
         HUD_EXTERNAL_CAM_ACTIVE = TRUE;
         localcmd("chase_active 1\n");
+        if(hudStruts != world ){
+          hudStruts.drawmask = 0;
+        }
+        if(hudConsole != world ){
+          hudConsole.drawmask = 0;
+        }
       }
       return TRUE;
     }

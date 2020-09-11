@@ -115,11 +115,10 @@ void() data_ini_balaket_={
 
 
 //HUD DATA=============================
-#ifndef CSQC
-  self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.md3";
-  self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
-#endif
 #ifdef CSQC
+  self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.obj";
+  self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
+  self.hud_StrutsOffset = '0 -1.5 -1';
   self.pitchMax = 30; //pitch down limit
   self.pitchMin = -35;//pitch up limit
   self.hud_rollangle = 4;
