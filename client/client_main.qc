@@ -244,17 +244,24 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   
-  //note: demonstrates the basics for player-observer mode where you follow another player
-  if( VIEW_OBS_ID == 2 ){
-    local entity e;
-    e = entitybyindex(stof(getplayerkeyvalue(VIEW_OBS_ID+1, "viewentity")));
-    setproperty(VF_ORIGIN, e.origin);
-    setproperty(VF_ANGLES, e.angles);
+  //overide so player cannot look around while powering up, 
+  //solves a lame visual issue with player mech shadows and player input during power up.
+  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+    setproperty(VF_ANGLES, HUD_FIXED_ANGLE); 
   }
   else{
-    //setproperty(VF_ORIGIN, pmove_org);
-    setproperty(VF_ANGLES, input_angles);
-    //setproperty(VF_CL_VIEWANGLES, input_angles);
+    //note: demonstrates the basics for player-observer mode where you follow another player
+    if( VIEW_OBS_ID == 2 ){
+      local entity e;
+      e = entitybyindex(stof(getplayerkeyvalue(VIEW_OBS_ID+1, "viewentity")));
+      setproperty(VF_ORIGIN, e.origin);
+      setproperty(VF_ANGLES, e.angles);
+    }
+    else{
+      //setproperty(VF_ORIGIN, pmove_org);
+      setproperty(VF_ANGLES, input_angles);
+      //setproperty(VF_CL_VIEWANGLES, input_angles);
+    }
   }
   
   setproperty(VF_FOV, fovvec);

@@ -211,20 +211,34 @@ float() player_predraw={
         local vector strutOrg;
         local vector consOrg;
         
-        hudAng = input_angles;
-        hudAng_x = 0;
+        if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+          hudAng = HUD_FIXED_ANGLE;
+          hudStruts.angles_y = HUD_FIXED_ANGLE_y;
+          hudStruts.angles_x = 0;
+          hudStruts.angles_z = 0;
+          
+          hudConsole.angles_y = HUD_FIXED_ANGLE_y;
+          hudConsole.angles_x = 33;
+          hudConsole.angles_z = 0;
+        }
+        else{
+          hudAng = input_angles;
+          hudAng_x = 0;
+          
+          hudStruts.angles_y = input_angles_y;
+          hudStruts.angles_x = 0;
+          hudStruts.angles_z = 0;
+          
+          hudConsole.angles_y = input_angles_y;
+          hudConsole.angles_x = 33;
+          hudConsole.angles_z = 0;
+        }
         makevectors(hudAng);
-        hudStruts.angles_y = input_angles_y;
-        hudStruts.angles_x = 0;
-        hudStruts.angles_z = 0;
         strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
         setorigin(hudStruts, strutOrg);
         
         consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
         setorigin(hudConsole, consOrg);
-        hudConsole.angles_y = input_angles_y;
-        hudConsole.angles_x = 33;
-        hudConsole.angles_z = 0;
       }
     }
   }
@@ -551,6 +565,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
         sendevent_player_mech(self.data_idx);
         self.shieldEffectTime = 0;
         self.predraw = player_predraw;
+        if(self.entId == player_localentnum){
+          HUD_FIXED_ANGLE = self.angles;
+        }
       }
     }
   }
