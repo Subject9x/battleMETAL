@@ -211,7 +211,7 @@ float() player_predraw={
         local vector strutOrg;
         local vector consOrg;
         
-        if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+        if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
           hudAng = HUD_FIXED_ANGLE;
           hudStruts.angles_y = HUD_FIXED_ANGLE_y;
           hudStruts.angles_x = 0;

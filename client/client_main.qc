@@ -247,7 +247,9 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   //overide so player cannot look around while powering up, 
   //solves a lame visual issue with player mech shadows and player input during power up.
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
-    setproperty(VF_ANGLES, HUD_FIXED_ANGLE); 
+    if( cvar("chase_active") == FALSE ){
+      setproperty(VF_ANGLES, HUD_FIXED_ANGLE); 
+    }
   }
   else{
     //note: demonstrates the basics for player-observer mode where you follow another player
