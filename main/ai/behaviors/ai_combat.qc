@@ -271,18 +271,18 @@ void() ai_combat_start={
     
     //out of bounds, do move override
     if( 1.0 < enemy_dist ){
-      //run
-      if(self.tetherStatus == TETHER_PATROL ){
-        prox = ai_node_to_target(self.enemy);
-        if(prox != self.patrolNode){
-          self.patrolNode = prox;
+      if(self.ai_move_last != MOVE_NODE_TACTICAL ){
+        if( self.patrolState != PATROL_ARRIVE ){
+          //run
+          if(self.tetherStatus == TETHER_PATROL ){
+            prox = ai_node_to_target(self.enemy);
+            if(prox != self.patrolNode){
+              self.patrolNode = prox;
+            }
+          }
           self.ai_move_next = MOVE_NODE_TACTICAL;
           return;
         }
-      }
-      else{
-        self.ai_move_next = MOVE_NODE_TACTICAL;
-        return;
       }
     }
     

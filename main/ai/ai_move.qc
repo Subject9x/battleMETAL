@@ -76,6 +76,8 @@ void() ai_move_stand={
     self.ai_movewait = time + self.ai_movedist;
     if(self.legs){
       self.legs.attack_state = TR_YAW;
+      self.moveState = 0;
+      self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     }
     ai_face_targ();
     ai_attack();
@@ -705,12 +707,12 @@ void() ai_move_node_tactical={
     if( self.legs ){
       self.legs.attack_state = TR_GOAL;
     }
-    self.ai_movewait = time + (self.ai_rank * 4);
+    self.ai_movewait = time + 4;
     return;
   }
   self.patrolStateLast = self.patrolState;
   ai_attack();
-  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.95 );
+  self.patrolState = ai_move_patrol_node( self.goalentity.ai_view * 0.33 );
   
   if( self.patrolState == PATROL_ARRIVE ){
     self.ai_state_next = ST_COM_MOVE_END;

@@ -29,9 +29,6 @@ void(entity newAttacker) ai_react_generic={
     return;
   }
   //AI currently has target
-  if( self.enemy ){
-    return;
-  }
   
   if( ai_check_vis(self.enemy) == VIS_FRAC ){
     if( (self.enemy.flags & FL_CLIENT) ){
@@ -47,6 +44,7 @@ void(entity newAttacker) ai_react_generic={
   self.ai_react_buffer = time + self.ai_react_time * 3.75;
   
   self.enemy = newAttacker;
+  
   if(self.ai_state_next != ST_COMBAT ){
     self.ai_state_next = ST_COMBAT;
   }

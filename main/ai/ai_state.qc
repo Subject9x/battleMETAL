@@ -32,6 +32,12 @@ void() ai_state_frame={
     self.ai_move_last = self.ai_move;
     self.ai_move = self.ai_move_next;
     
+    //state info dump - use for debug
+      //cons_logAFloat("current STATE--------------------------------", 0); //debug
+      //cons_logAString("           state", dbg_state(self.ai_state)); //debug
+      //cons_logAString("           move", dbg_move(self.ai_move)); //debug  
+      //cons_logAFloat("++++++++++++++++++++++++++++++++++++++++++++++", 1); //debug
+
     //state machine
     switch(self.ai_state){
       case ST_STAND:
@@ -94,17 +100,6 @@ void() ai_state_frame={
       ai_leg_control();
     }
   }
-  
-  //state info dump - use for debug
-  //cons_logAString("current STATE-----------", dbg_state(self.ai_state)); //debug
-  //cons_logAString("current move-----------", dbg_move(self.ai_move)); //debug  
-  
-  /*if(self.ai_fight_take_fire == mech_sniper_fight_target_fire){
-    if( self.ai_move != MOVE_STAND ){
-      cons_logAString("current STATE-----------", dbg_state(self.ai_state)); //debug
-      cons_logAString("current move-----------", dbg_move(self.ai_move)); //debug  
-    }
-  }*/
   
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.think = ai_state_frame;
