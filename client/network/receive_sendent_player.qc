@@ -64,7 +64,7 @@ void(entity item) predraw_player_weapon={
   makevectors(entAng);
   offset = offset + (v_up * item.compOffset_y) + (v_right * item.compOffset_x);
   
-  if(self.entId == player_localentnum && cvar("chase_active") == FALSE){
+  if( self.entId == player_localentnum && !cvar("chase_active") ){
     offset = offset + (v_forward * (item.compOffset_z - fabs(self.cockpit.compOffset_z) ));
   }
   else{
@@ -113,7 +113,7 @@ void() player_think={
       boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
       boostRight = boostRight + (v_right * self.maxs_x * 0.5);
       
-      backLeft = backRight = self.origin2 + (v_up * (self.mins_z * 0.67));
+      backLeft = backRight = self.origin + (v_forward * -32) + (v_up * (self.mins_z * 0.67));
       backLeft = backLeft + (v_right * self.mins_x * 0.5);
       backRight = backRight + (v_right * self.maxs_x * 0.5);
       
@@ -206,24 +206,26 @@ float() player_predraw={
     setorigin(self, self.origin);
     
     if(self.entId == player_localentnum){
-      local vector hudAng;
-      local vector strutOrg;
-      local vector consOrg;
-      
-      hudAng = input_angles;
-      hudAng_x = 0;
-      makevectors(hudAng);
-      hudStruts.angles_y = input_angles_y;
-      hudStruts.angles_x = 0;
-      hudStruts.angles_z = 0;
-      strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
-      setorigin(hudStruts, strutOrg);
-      
-      consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.52);
-      setorigin(hudConsole, consOrg);
-      hudConsole.angles_y = input_angles_y;
-      hudConsole.angles_x = 33;
-      hudConsole.angles_z = 0;
+      if( self.deadflag == DEAD_NO ){
+        local vector hudAng;
+        local vector strutOrg;
+        local vector consOrg;
+        
+        hudAng = input_angles;
+        hudAng_x = 0;
+        makevectors(hudAng);
+        hudStruts.angles_y = input_angles_y;
+        hudStruts.angles_x = 0;
+        hudStruts.angles_z = 0;
+        strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
+        setorigin(hudStruts, strutOrg);
+        
+        consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
+        setorigin(hudConsole, consOrg);
+        hudConsole.angles_y = input_angles_y;
+        hudConsole.angles_x = 33;
+        hudConsole.angles_z = 0;
+      }
     }
   }
   return FALSE;
@@ -253,7 +255,7 @@ void( float mech_id ) sendevent_player_mech={
       data_ini_monitor_();
       break;
     default :
-      cons_logAFloat("Error: failed to build mech with id", mech_id);
+      cons_logAFloat("client.receive_sendent_player.sendevent_player_mech()-Error: failed to build mech with id", mech_id);
       break;
   }
   minSave = self.mins;
@@ -293,6 +295,8 @@ void( float mech_id ) sendevent_player_mech={
   }
   self.solid = SOLID_BBOX;
   setsize(self, minSave, maxSave);
+  
+  //hud shenanigans
   if( self.entId == player_localentnum ){
     HUD_VIEW_CL_ANGLES = self.angles;
     HUD_VIEW_OFS = self.cockpit.compOffset_z;
@@ -313,9 +317,24 @@ void( float mech_id ) sendevent_player_mech={
     hudConsole.angles_y = input_angles_y;
     hudConsole.angles_x = 45;
     hudConsole.angles_z = 0;
+    if( cvar("chase_active") ){
+      if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
+        HUD_EXTERNAL_CAM_ACTIVE = FALSE;
+        cvar_set("chase_active", "0");
+        hudConsole.drawmask = MASK_ENGINE;
+        hudStruts.drawmask = MASK_ENGINE;
+      }
+      else{
+        HUD_EXTERNAL_CAM_ACTIVE = TRUE;
+        hudConsole.drawmask = 0;
+        hudStruts.drawmask = 0;
+      }
+    }
+    else{
+      hudConsole.drawmask = MASK_ENGINE;
+      hudStruts.drawmask = MASK_ENGINE;
+    }
   }
-  
-  
 };
 
 /*
@@ -347,10 +366,8 @@ void() sendevent_handle_player_death={
     remove(wep);
     wep = nextWep;
   }
-  if( hudConsole != world ){
+  if(self.entId == player_localentnum){
     remove(hudConsole);
-  }
-  if( hudStruts != world ){
     remove(hudStruts);
   }
 };
@@ -475,11 +492,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevOrg = self.origin;
   prevType = self.data_type;
   
-  self.ping = stof( getplayerkeyvalue(self.entId - 1, "ping") );
-  self.kills = stof( getplayerkeyvalue(self.entId - 1, "frags") );
-  
-  self.netname = getplayerkeyvalue(self.entId - 1, "name");
-  
   /*
     EVENT - per-frame update
   */
@@ -578,6 +590,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
     if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
       sendevent_handle_player_death();
+      scoreboard_sort();
     }
   }
   
@@ -586,11 +599,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = ReadLong();
+    self.clientLocalId = self.entId - 1;
     self.faction = ReadByte();
     self.flags = ReadShort();
-    self.think = player_think;
-    self.nextthink = time + 0.01;
     if( isNew ){
+      scoreboard_push( self.entId, self.kills );
       if(self.data_type != DATA_MECH){
         self.data_type = DATA_POBS;
         setmodel(self, "q3mdl/testball.md3");
@@ -598,23 +611,24 @@ void( float isNew, float changeFlags) sendent_handle_player={
         self.alpha = 0.01;
         self.scale = 0.01;
       }
+      self.think = player_think;
+      self.nextthink = time + 0.01;
+      self.t_remove = remove_client;
     }
   }
+  
+  self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
+  self.netname = getplayerkeyvalue(self.clientLocalId, "name");
   
   /*
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     prevTarget = self.targetEntId;
-    self.kills = stof(getplayerkeyvalue(self.entId - 1, "frags"));
-    
+      
     self.particleCubeFlag = ReadByte();
     self.targetEntId = ReadLong();
     self.flags = ReadShort();
-    
-    if( prevKills != self.kills ){
-      scoreboard_sort();
-    }
     
     if( self.targetEntId > 0 ){
       self.enemy = findfloat(world, entId, self.targetEntId);
@@ -657,10 +671,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( prevMoveState != self.moveState ){
     sendevent_handle_moveChange();
   }
-  if( isNew ){
-    scoreboard_push( self.entId, self.kills );
-    scoreboard_sort();
-  }
+  
+  self.kills = stof(getplayerkeyvalue(self.clientLocalId, "frags"));
+  scoreboard_sort();
   
   //perform data binds
   if( self.entId == player_localentnum ){
@@ -732,4 +745,45 @@ void( float isNew, float changeFlags) sendent_handle_player={
       CLIENT_target_vecsize = 0;
     }
   }
+};
+
+float() remove_client={
+  local entity weps;
+  local entity next;
+  local entity rem;
+  
+  scoreboard_stitch(self);
+  scoreboard_sort();
+
+  if( self.data_type == DATA_MECH ){
+    weps = self.w_slot;
+    while( weps.data_idx ){
+      next = weps.w_slot;
+      rem = weps;
+      weps = next;
+      if( rem ){
+        remove(rem);
+      }
+    }
+    if( self.torsoCenter ){
+      remove(self.torsoCenter);
+    }
+    if( self.torsoLeft ){
+      remove(self.torsoLeft);
+    }
+    if( self.torsoRight ){
+      remove(self.torsoRight);
+    }
+    if( self.armLeft ){
+      remove(self.armLeft);
+    }
+    if( self.armRight ){
+      remove( self.armRight);
+    }
+    if( self.legs ){
+      remove(self.legs );
+    }
+  }
+  
+  return TRUE;
 };

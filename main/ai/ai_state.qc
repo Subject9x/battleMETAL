@@ -99,6 +99,13 @@ void() ai_state_frame={
   //cons_logAString("current STATE-----------", dbg_state(self.ai_state)); //debug
   //cons_logAString("current move-----------", dbg_move(self.ai_move)); //debug  
   
+  /*if(self.ai_fight_take_fire == mech_sniper_fight_target_fire){
+    if( self.ai_move != MOVE_STAND ){
+      cons_logAString("current STATE-----------", dbg_state(self.ai_state)); //debug
+      cons_logAString("current move-----------", dbg_move(self.ai_move)); //debug  
+    }
+  }*/
+  
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.think = ai_state_frame;
   self.nextthink = time + 0.06;

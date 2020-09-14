@@ -174,7 +174,7 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   
   if(argv(1) == "sm"){
-    self.nextVecChoice = stof(argv(2));
+    self.nextVecChoice = rint(stof(argv(2)));
     self.colormod_x = stof(argv(3));
     self.colormod_y = stof(argv(4));
     self.colormod_z = stof(argv(5));

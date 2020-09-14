@@ -313,6 +313,7 @@ void( vector menuOrg ) menu_draw_players_basic={
   listOfs_x = listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
   listOfs_y = menuOrg_y + gui_percentYRaw(14);
   playerRowItr = 1;
+  
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
     if( SCOREBOARD[itr] != 0 ){
       player = findfloat(world, entId, SCOREBOARD[itr]);
@@ -349,7 +350,7 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   local float playerNameLen;
   local string playerName;
   playerNameOfs = rowOfs + gui_percentToPixelRawVec('14 0');
-  playerName = getplayerkeyvalue(playerRow.entId - 1, "name");
+  playerName = getplayerkeyvalue(playerRow.clientLocalId, "name");
   if( playerName != "" ){
     playerNameLen = strlen(playerName);
     if( playerNameLen > 28 ){
@@ -361,9 +362,9 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   local float pingLen;
   local vector pingColor;
   local float pingVal;
-  local entity ent;
-  ent = entitybyindex(playerRow.entId);
-  pingVal = ent.ping;
+  //local entity ent;
+  //ent = entitybyindex(playerRow.entId);
+  pingVal = playerRow.ping;
   if( pingVal <= 50 ){
     pingColor = CLR_DEF_IIF_FRIEND_BLD;
   }

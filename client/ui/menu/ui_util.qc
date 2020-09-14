@@ -275,15 +275,19 @@ void() scoreboard_sort={
 /*
   sendent_handle_player()-> SENDFLAG_NEWENT && isNew
   scope: self == player data ent
+  player data ent's ID at this point IS the player's Server EntID
+    therefore scoreId is then decremented to equal player's local entId;
 */
 void( float scoreId, float score ) scoreboard_push={
   local float i, j;
   local float exist;
+  local float realId;
   
   exist = FALSE;
+  realId = scoreId;
   
   for( i = 0; i < SCOREBOARDMAX; i = i + 1){
-    if( SCOREBOARD[i] == scoreId ){
+    if( SCOREBOARD[i] == realId ){
       exist = TRUE;
       SCORESTACK = i;
     }
@@ -298,30 +302,30 @@ void( float scoreId, float score ) scoreboard_push={
     }
   }
   if( !exist ){
-    SCOREBOARD[SCORESTACK] = scoreId;
+    SCOREBOARD[SCORESTACK] = realId;
   }
-  SCORETABLE[scoreId] = score;
-};
-
-void( entity newScore ) scoreboard_sort_push={
-
+  SCORETABLE[realId] = score;
 };
 
 void( entity removed ) scoreboard_stitch={
   local float i;
   local float exist;
+  local float removeId;
   
-  exist = -1;
+  exist = 0;
+  removeId = removed.entId;
   
-  for( i = 0; i < SCOREBOARDMAX; i = i + 1){
-    if( SCOREBOARD[i] == removed.entId ){
-      exist = i;
+  for( i = 1; i <= SCOREBOARDMAX; i = i + 1){
+    if( SCOREBOARD[i] != removeId ){
+      continue;
     }
+    exist = i;
   }
-  if( exist > -1){
+  if( exist > 0){
     SCOREBOARD[exist] = 0;
-    SCORETABLE[removed.entId] = 0;
-    SCORESTACK = SCORESTACK - 1;
+    SCORETABLE[removeId] = 0;
+    //SCORESTACK = SCORESTACK - 1;
+    scoreboard_sort();
   }
 };
 

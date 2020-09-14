@@ -30,7 +30,7 @@ void(float mech_id) initialize_data_mech_={
       data_ini_monitor_();
       break;
     default :
-      dprint(strcat("Error: failed to build mech with id", ftos(mech_id),"\n"));
+      dprint(strcat("main.data_system.initialize_data_mech_()-Error: failed to build mech with id", ftos(mech_id),"\n"));
       remove(self);
       return;
   }

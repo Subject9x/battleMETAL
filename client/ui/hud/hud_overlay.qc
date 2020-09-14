@@ -77,7 +77,7 @@ void( entity thePlayer ) hud_render_ally_names={
   }
   
   local string playerName;
-  playerName = getplayerkeyvalue(thePlayer.entId - 1, "name");
+  playerName = getplayerkeyvalue(thePlayer.clientLocalId, "name");
   namelen = stringwidth(playerName, 0, drawSize);
   namepos = thePlayer.origin;
   namepos_z = namepos_z + (gui_percentYRaw(thePlayer.vec_size * adj));

@@ -148,9 +148,9 @@ void() txt_control_bind_sel_grp3={
 void() txt_control_bind_sel_grp4={
   menu_keybind_change ("impulse 23");
 };
-void() txt_control_bind_sel_grp5={
-  menu_keybind_change ("impulse 24");
-};
+//void() txt_control_bind_sel_grp5={
+//  menu_keybind_change ("impulse 24");
+//};
 void() txt_control_bind_fire_grp={
   menu_keybind_change ("impulse 10");
 };

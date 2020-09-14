@@ -89,3 +89,5 @@ void(entity item) sendent_start_reload;
 
 void() player_think;
 void() sendent_ai_think;
+
+float() remove_client;

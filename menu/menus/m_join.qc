@@ -277,9 +277,9 @@ void() m_join_d={
   
   for(itr=0; itr < total_servers; itr=itr+1){
     if( (itr >= SERVER_PAGE_LIST_START) && (itr < SERVER_PAGE_LIST_END) ){
-      cons_logAFloat(gethostcachestring(gethostcacheindexforkey("cname"), itr), itr);  //debug
+      //cons_logAFloat(gethostcachestring(gethostcacheindexforkey("cname"), itr), itr);  //debug
       if(itr < total_servers  && gethostcachenumber(gethostcacheindexforkey("ping"), itr) > -1){
-        if( gethostcacheindexforkey("maxplayers") > 1){
+        if( gethostcacheindexforkey("maxplayers") > 1 && gethostcachenumber(gethostcacheindexforkey("ping"), itr) < 9999){
           pos_x = SERVER_LIST_ORG_x;
           pos_y = SERVER_LIST_ORG_y + gui_percentYRaw(SERVER_ROW_ITR * 26);
           

@@ -89,8 +89,10 @@ void() data_ini_monitor_={
 #ifndef CSQC
   data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  
   data_ini_unitHardpoint_3( M_ARM_LEFT, '-22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_4( M_ARM_LEFT, '-15 3 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  
   data_ini_unitHardpoint_5( M_TOR_RIGHT, '9.45 15.9 6', '0 0 0', 3, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_6( M_TOR_LEFT, '-9.45 15.9 6', '0 0 0', 3, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 5.5', '0 0 0', 3, DMG_EXP);
@@ -103,10 +105,11 @@ void() data_ini_monitor_={
   //bad, late-in-the-game hack frauds
   //see predraw_player_weapon()
   if((self.flags&FL_CLIENT)){
-    data_ini_unitHardpoint_1( M_ARM_RIGHT, '5 -14 10', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE));
-    data_ini_unitHardpoint_2( M_ARM_RIGHT, '-0.5 -14 10', '0 0 0', (BAL1|BAL2|ENE1|ENE2), (DMG_BAL | DMG_ENE));
-    data_ini_unitHardpoint_3( M_ARM_LEFT, '-5 -14 10', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE));
-    data_ini_unitHardpoint_4( M_ARM_LEFT, '0.5 -14 10', '0 0 0', (BAL1|BAL2|ENE1|ENE2), (DMG_BAL | DMG_ENE));
+    data_ini_unitHardpoint_1( M_ARM_RIGHT, '3.75 -14 12', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE));
+    data_ini_unitHardpoint_2( M_ARM_RIGHT, '-0.075 -14 12', '0 0 0', (BAL1|BAL2|ENE1|ENE2), (DMG_BAL | DMG_ENE));
+    
+    data_ini_unitHardpoint_3( M_ARM_LEFT, '-3.75 -14 12', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE));
+    data_ini_unitHardpoint_4( M_ARM_LEFT, '0.075 -14 12', '0 0 0', (BAL1|BAL2|ENE1|ENE2), (DMG_BAL | DMG_ENE));
   }
   else{
     data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE));

@@ -10,6 +10,7 @@ void() CSQC_Init =
   registercvar("cl_tint_g", "1", 1);
   registercvar("cl_tint_b", "1", 1);
   registercvar("cl_ismenu", "0", 0);
+  registercvar("chase_active", "0", 0);
 
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
@@ -163,6 +164,7 @@ void() CSQC_Init =
   SV_NEXTMAP = "";
   
   initparticlespawner(16);
+  VIEW_OBS_ID = 1;
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -242,14 +244,23 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   
-  //setproperty(VF_ORIGIN, pmove_org);
-  setproperty(VF_ANGLES, input_angles);
-  //setproperty(VF_CL_VIEWANGLES, input_angles);
+  //note: demonstrates the basics for player-observer mode where you follow another player
+  if( VIEW_OBS_ID == 2 ){
+    local entity e;
+    e = entitybyindex(stof(getplayerkeyvalue(VIEW_OBS_ID+1, "viewentity")));
+    setproperty(VF_ORIGIN, e.origin);
+    setproperty(VF_ANGLES, e.angles);
+  }
+  else{
+    //setproperty(VF_ORIGIN, pmove_org);
+    setproperty(VF_ANGLES, input_angles);
+    //setproperty(VF_CL_VIEWANGLES, input_angles);
+  }
   
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
-	setproperty(VF_DRAWCROSSHAIR, 0);
-	setproperty(VF_DRAWENGINESBAR, 0);
+  setproperty(VF_DRAWCROSSHAIR, 0);
+  setproperty(VF_DRAWENGINESBAR, 0);
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
@@ -568,56 +579,73 @@ void() CSQC_Ent_Remove ={
   local entity rem;
   
   if( (self.flags & FL_CLIENT) ){
-    scoreboard_stitch(self);
-    scoreboard_sort();
-  }
-  
-  weps = self.w_slot;
-  while( weps.data_idx ){
-    next = weps.w_slot;
-    rem = weps;
-    weps = next;
-    if( rem.owner == self ){
-      remove(rem);
+    if(self.t_remove){
+      if(self.t_remove()){
+        remove(self);
+      }
+    }
+    else{
+      remove(self);
     }
   }
-  if( self.torsoCenter.owner == self && self.torsoCenter.model ){
-    remove(self.torsoCenter);
+  else{  
+    if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
+      weps = self.w_slot;
+      while( weps.data_idx ){
+        next = weps.w_slot;
+        rem = weps;
+        weps = next;
+        if( rem ){
+          remove(rem);
+        }
+      }
+      if( self.torsoCenter ){
+        remove(self.torsoCenter);
+      }
+      if( self.torsoLeft ){
+        remove(self.torsoLeft);
+      }
+      if( self.torsoRight ){
+        remove(self.torsoRight);
+      }
+      if( self.armLeft ){
+        remove(self.armLeft);
+      }
+      if( self.armRight ){
+        remove( self.armRight);
+      }
+      if( self.legs ){
+        remove(self.legs );
+      }
+    }
+    if( self.data_type == DATA_BLD ){
+      weps = self.w_slot;
+      while( weps.data_idx ){
+        next = weps.w_slot;
+        rem = weps;
+        weps = next;
+        if( rem ){
+          remove(rem);
+        }
+      }
+      if( self.torsoCenter ){
+        remove(self.torsoCenter);
+      }
+      if( self.effect1 ){
+        remove(self.effect1);
+      }
+      if( self.effect2 ){
+        remove(self.effect2);
+      }
+      if( self.effect3 ){
+        remove(self.effect3);
+      }
+    }
+    if(self.netname != "" ){
+      strunzone(self.netname);
+    }
+    remove(self);
   }
-  if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
-    if( self.torsoLeft.owner == self ){
-      remove(self.torsoLeft);
-    }
-    if( self.torsoRight.owner == self ){
-      remove(self.torsoRight);
-    }
-    if( self.armLeft.owner == self ){
-      remove(self.armLeft);
-    }
-    if( self.armRight.owner == self ){
-      remove( self.armRight);
-    }
-    if( self.legs.owner == self ){
-      remove(self.legs );
-    }
-  }
-  if( self.data_type == DATA_BLD ){
-    if( self.effect1.owner == self && self.effect1.pcl_effectnum > 0){
-      remove(self.effect1);
-    }
-    if( self.effect2.owner == self && self.effect2.pcl_effectnum > 0 ){
-      remove(self.effect2);
-    }
-    if( self.effect3.owner == self && self.effect3.pcl_effectnum > 0){
-      remove(self.effect3);
-    }
-  }
-  if(self.netname != "" ){
-    strunzone(self.netname);
-  }
-	//if (self.t_remove)
-		//if (self.t_remove())
-  remove(self);
 };
 
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)

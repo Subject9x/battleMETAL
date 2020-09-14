@@ -203,7 +203,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   
   local float playerNameLen;
   local string playerName;
-  playerName = getplayerkeyvalue(playerRow.entId - 1, "name");
+  playerName = getplayerkeyvalue(playerRow.clientLocalId, "name");
   playerNameOfs = rowOfs + gui_percentToPixelRawVec('14 0');
   if( playerName != "" ){
     playerNameLen = strlen(playerName);
@@ -243,7 +243,7 @@ void( vector panelOfs ) hud_render_scoreboard_dm={
   playerRowItr = 0;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
     if( SCOREBOARD[itr] != 0 ){
-      player = findfloat(world, entId, SCOREBOARD[itr]);
+      player = findfloat(world, entId, SCOREBOARD[itr] + 1);
       listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(12) );
       hud_render_score_row( listRowOfs, playerRowItr + 1, player );
       playerRowItr = playerRowItr + 1;

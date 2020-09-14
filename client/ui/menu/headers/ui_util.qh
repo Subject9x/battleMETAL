@@ -62,7 +62,7 @@ float SCORESTACK;
 
 void() scoreboard_sort;
 void( float scoreId, float score ) scoreboard_push;
-void( entity newScore ) scoreboard_sort_push;
+void( entity removed ) scoreboard_stitch;
 
 /*
   Campaign / coop stuff

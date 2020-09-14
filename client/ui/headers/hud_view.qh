@@ -34,6 +34,7 @@ float HUD_UID_MSN_CLOCK     = 20;
 
 
 //HUD GLOBALS===============================
+  float VIEW_OBS_ID;
   entity hudStruts;
   entity hudConsole;
   

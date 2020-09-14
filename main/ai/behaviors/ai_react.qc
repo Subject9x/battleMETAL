@@ -10,6 +10,11 @@ Overview:
 */
 
 void(entity newAttacker) ai_react_generic={
+  
+  if( time < self.ai_react_buffer ){
+    return;
+  }
+  
   //AI has taken friendly fire
   if( newAttacker.faction == self.faction ){
     return;

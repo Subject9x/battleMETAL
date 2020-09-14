@@ -186,7 +186,7 @@ void() client_state_events={
     //EVENT - CLIENT ENTERS MECH---
     if( (CLIENT_player_state_prev == PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_POWERUP_BEGIN) ){
       if( MECH_DATA_ID != CLIENT_data_idx ){
-        ui_data_load_mech(CLIENT_data_idx);
+        ui_data_load_mech(MECH_DATA_ID);
       }
       hud_event_clear();
       hud_event_enqueue( HUD_EVENT_POWERUP, 1);

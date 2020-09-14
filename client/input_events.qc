@@ -136,10 +136,8 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
       return FALSE;
     }
-    else if( strstrofs(findkeysforcommand("impulse 24", 0), ftos(scanx),0) != -1 ){
-      //scoreboard_sort(scoreHead);
-    }
     else if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
+      //INPUT - HUD - set chase_active
       if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
         return TRUE;
       }
@@ -165,6 +163,20 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
       return TRUE;
     }
+    /*else if(scanx == K_K){
+      cons_logAFloat("VIEW_OBS_ID", VIEW_OBS_ID); //debug
+      if( VIEW_OBS_ID == 2 ){
+        VIEW_OBS_ID = 1;
+      }
+      return TRUE;
+    }
+    else if(scanx == K_L ){
+      cons_logAFloat("VIEW_OBS_ID", VIEW_OBS_ID); //debug
+      if(VIEW_OBS_ID == 1){
+        VIEW_OBS_ID = 2;
+      }
+      return TRUE;
+    }*/
   }
   else if(inputEventType == INPUT_EVENT_MOUSE_POS){
     if(MENU_ACTIVE){
@@ -258,7 +270,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     }
     
     return FALSE;
-  } 
+  }
    
   if(MENU_ACTIVE){
     return TRUE;

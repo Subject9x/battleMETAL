@@ -210,6 +210,7 @@ void() mech_sniper_fight_full={
       self.ai_move_next = MOVE_CHARGE_LEFT;
       return;
     }
+    self.ai_movedist = self.ai_rank;
     self.ai_move_next = MOVE_SNAPSHOT;
     if(enemy_infront){
       self.ai_movedist = 3;
