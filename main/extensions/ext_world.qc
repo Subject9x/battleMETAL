@@ -61,7 +61,7 @@ void() mh_world_ini={
     ENDTIME_LIMIT = time + (cvar("timelimit") * 60);
   }
   else{
-    ENDTIME_LIMIT = -1;
+    ENDTIME_LIMIT = 0;
   }
   ENDROUND = 0;
   
@@ -308,7 +308,7 @@ void() sv_rules_tdm={
   
   //Game TimeLimit hit  
   if( ENDTIME_LIMIT != -1 ){
-    if( time >= ENDTIME_LIMIT ){
+    if( time > ENDTIME_LIMIT ){
       MISSION_STATUS = MISSION_STATUS_OVER;
       return;
     }
