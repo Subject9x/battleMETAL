@@ -42,6 +42,9 @@ void() sendevent_mech_ai_die={
   local entity weps;
   local entity rem;
   
+  self.alpha = 0.01;
+  self.scale = 0.01;
+  
   makevectors(self.angles);
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 ) ;
   

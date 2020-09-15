@@ -52,7 +52,7 @@ void() ai_tank_sk_die={
   ctrl_unit_part_death(self.cockpit);
   ctrl_unit_part_death(self.torsoLeft);
   ctrl_unit_part_death(self.torsoRight);
-  ctrl_unit_part_death(self.torsoCenter);  
+  ctrl_unit_part_death(self.torsoCenter);
 
   if( self.ai_node_recall ){
     remove(self.ai_node_recall);
@@ -63,7 +63,7 @@ void() ai_tank_sk_die={
   
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 
   self.think = ai_tank_sk_clean;
   self.nextthink = time + 0.1;
