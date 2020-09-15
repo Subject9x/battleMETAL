@@ -26,6 +26,10 @@ void() ai_tether={
       self.ai_state_next = ST_THR_TRAVEL;
       return;
     }
+    if( ai_valid_target(self.enemy) ){
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
     if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
       //prepare for war....
       self.ai_state_next = ST_COMBAT;

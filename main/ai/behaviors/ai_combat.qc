@@ -256,11 +256,12 @@ void() ai_combat_start={
       return;
     }
     self.ai_state_next = ST_COM_MOVE_START;
+    
     /*
       Combat Frame State Checks
     */
-    
     enemy_dist = ai_check_node_radius(self.enemy);
+    enemy_vis = ai_check_vis( self.enemy );
     
     if(enemy_vis == VIS_FAIL){
       self.enemy = world;
@@ -287,7 +288,6 @@ void() ai_combat_start={
     }
     
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-    enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_node_radius_targdist();
     combat_dist = ai_check_node_radius(self);
     combat_roll = random() * 1;
@@ -398,6 +398,16 @@ void() ai_com_moveExec={
       self.ai_state_next = ST_COM_MOVE_END;
       return;
     }
+    if( !ai_valid_target(self.enemy) ){
+      if( self.tetherStatus == TETHER_PATROL ){
+        self.ai_state_next = ST_PTR;
+      }
+      else{
+        self.ai_state_next = ST_THR;
+      }
+      self.ai_move_next = MOVE_STAND; //just nulls out the move, due to shifting to Tether or Patrol
+      return;
+    }
   }
   //node_radius
   //node_tactical
@@ -436,7 +446,9 @@ void() ai_com_moveEnd={
 void() ai_com_blocked={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
+    ai_face_targ();
     ai_attack();
+    
     if( 1.0 < ai_check_node_radius(self) ){
       self.patrolState = 0;
       self.goalentity = self.patrolNode;

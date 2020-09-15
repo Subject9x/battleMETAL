@@ -10,6 +10,7 @@ Overview:
 */
 
 void(entity newAttacker) ai_react_generic={
+  local float vischeck;
   
   if( time < self.ai_react_buffer ){
     return;
@@ -29,14 +30,14 @@ void(entity newAttacker) ai_react_generic={
     return;
   }
   //AI currently has target
-  
-  if( ai_check_vis(self.enemy) == VIS_FRAC ){
-    if( (self.enemy.flags & FL_CLIENT) ){
+  vischeck = ai_check_vis(self.enemy);
+  if( (self.enemy.flags & FL_CLIENT) ){
+    if( vischeck == VIS_FRAC || vischeck == VIS_FRN){
       return;
     }
   }
-  if( ai_check_vis(self.enemy) == VIS_FRN ){
-    if( (self.enemy.flags & FL_CLIENT) ){
+  if( (self.enemy.flags & FL_MONSTER) ){
+    if( vischeck == VIS_FRAC ){
       return;
     }
   }
@@ -44,8 +45,10 @@ void(entity newAttacker) ai_react_generic={
   self.ai_react_buffer = time + self.ai_react_time * 3.75;
   
   self.enemy = newAttacker;
-  
-  if(self.ai_state_next != ST_COMBAT ){
-    self.ai_state_next = ST_COMBAT;
+  if( self.ai_state_next != ST_COM_MOVE_START && self.ai_state_next != ST_COM_MOVE_EXEC && self.ai_state_next != ST_COM_MOVE_END && self.ai_state_next != ST_COM_MOVE_BLOCK){
+
+    if(self.ai_state_next != ST_COMBAT ){
+      self.ai_state_next = ST_COMBAT;
+    }
   }
 };
