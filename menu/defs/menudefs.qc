@@ -145,26 +145,26 @@ float SQS_REFRESHING = 4;
 
 //Server List Field(FLD) Enums -> mvm_cmds.q-Line 334
 //  ->gethostcachestring(float type, float hostnr);
-float SLIF_CNAME = 0;
-float SLIF_GAME = 2;
-float SLIF_MOD = 3;
-float SLIF_MAP = 4;
-float SLIF_NAME = 5;
-float SLIF_QCSTATUS = 12;
-float SLIF_PLAYERS = 13;
+float SLIF_CNAME = 0;      // "cname"
+float SLIF_GAME = 2;      // "game"
+float SLIF_MOD = 3;       // "mod"
+float SLIF_MAP = 4;       // "map"
+float SLIF_NAME = 5;      // "name"
+float SLIF_QCSTATUS = 12; // "qcstatus"
+float SLIF_PLAYERS = 13;  // "players"
 float SLIF_LEGACY_LINE1 	= 1024;
 float SLIF_LEGACY_LINE2 	= 1025;
 //  ->gethostcachenumber(float fld, float hostnr)
-float SLIF_PING = 1;
-float SLIF_MAXPLAYERS = 6;
-float SLIF_NUMPLAYERS = 7;
-float SLIF_PROTOCOL = 8;
-float SLIF_NUMBOTS = 9;
-float SLIF_NUMHUMANS = 10;
-float SLIF_FREESLOTS = 11;
-float SLIF_CATEGORY = 14;
-float SLIF_ISFAVORITE = 15;
-float SLIF_COUNT = 16;
+float SLIF_PING = 1;      // "ping"
+float SLIF_MAXPLAYERS = 6;// "maxplayers"
+float SLIF_NUMPLAYERS = 7;// "numplayers"
+float SLIF_PROTOCOL = 8;  // "protocol"
+float SLIF_NUMBOTS = 9;   // "numbots"
+float SLIF_NUMHUMANS = 10;// "numhumans"
+float SLIF_FREESLOTS = 11;// "freeslots"
+float SLIF_CATEGORY = 14; // "category" 
+float SLIF_ISFAVORITE = 15;// "isfavorite"
+float SLIF_COUNT = 16;  // 
 
 //DP_GFX_FONTS
 //idea: Blub\0, divVerent
@@ -636,6 +636,8 @@ void 	resorthostcache(void) = #618;
 void	sethostcachesort(float fld, float slsf) = #619;
 void	refreshhostcache(...) = #620;  // optional boolean argument "clear_list"
 float	gethostcachenumber(float fld, float hostnr) = #621;
+
+//see SLIF_* valus
 float	gethostcacheindexforkey(string key) = #622;
 void	addwantedhostcachekey(string key) = #623;
 string	getextresponse(void) = #624;
