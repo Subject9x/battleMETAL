@@ -26,6 +26,9 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   RADAR_VCENTER_x = RADAR_VORG_x + (RADAR_VSIZE_x / 2);
   RADAR_VCENTER_y = RADAR_VORG_y + (RADAR_VSIZE_y / 2);
   
+  
+  //nice background image for visibility
+  drawpic(RADAR_VORG, UI_DEF_BOX_256, RADAR_VSIZE, '0.25 0.25 0.25', max(0.75, HUD_ALPHA - 0.5), 0);
   //drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   radarLineLeft_x = RADAR_VSIZE_x / 2.25;
