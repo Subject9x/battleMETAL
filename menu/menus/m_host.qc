@@ -104,6 +104,7 @@ void() host_update_playeramount={
     cvar_set("coop", "1");
     cvar_set("deathmatch", "0");
     cvar_set("teamplay", "0");
+    cvar_set("gamemode", "2");
     if( SELECT_PLAYERS > PLRS_MAX_COOP ){
       SELECT_PLAYERS = PLRS_MAX_COOP;
     }
@@ -118,6 +119,7 @@ void() host_update_playeramount={
     cvar_set("coop", "0");
     cvar_set("deathmatch", "1");
     cvar_set("teamplay", "1");
+    cvar_set("gamemode", "4");
     if( SELECT_PLAYERS > PLRS_MAX_TDM ){
       SELECT_PLAYERS = PLRS_MAX_TDM;
     }
@@ -132,6 +134,7 @@ void() host_update_playeramount={
     cvar_set("coop", "0");
     cvar_set("deathmatch", "1");
     cvar_set("teamplay", "0");
+    cvar_set("gamemode", "3");
     if( SELECT_PLAYERS > PLRS_MAX_TDM ){
       SELECT_PLAYERS = PLRS_MAX_TDM;
     }
@@ -435,6 +438,7 @@ void() click_host_launch={
     cvar_set("skill", ftos(SELECT_SKILL));
   }
   cvar_set("sv_serverflags", ftos(rint(SERVER_FLAGS)));
+  
   menu_exit_togame();
   cmd("map", strcat(" ", host_map_lbl.label));
 };

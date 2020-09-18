@@ -277,6 +277,7 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
   
   local float playerRowItr;
   local float itr;
+  local string nameCheck;
   
   uiParentSize = '244 100';
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec(uiParentSize), CLR_UI_PSC_BRIEF * 0.9, 1, 0);
@@ -289,12 +290,15 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
 
   playerRowItr = 1;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
-    if( SCOREBOARD[itr] != 0 ){
-      player = findfloat(world, entId, SCOREBOARD[itr]);
-      listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
-      listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
-      menu_player_row_basic( listRowOfs, playerRowItr, player, FALSE );
-      playerRowItr = playerRowItr + 1;
+    if( SCOREBOARD[itr] > -1 ){
+      nameCheck = getplayerkeyvalue(itr, "name");
+      if( nameCheck != "" || nameCheck ){
+        player = findfloat(world, entId, SCOREBOARD[itr] + 1);
+        listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
+        listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
+        menu_player_row_basic( listRowOfs, playerRowItr, player, FALSE );
+        playerRowItr = playerRowItr + 1;
+      }
     }
   }
   drawfont = drawfont_prev;

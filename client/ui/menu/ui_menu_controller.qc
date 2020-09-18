@@ -364,7 +364,7 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   local float pingVal;
   //local entity ent;
   //ent = entitybyindex(playerRow.entId);
-  pingVal = playerRow.ping;
+  pingVal = stof(getplayerkeyvalue(playerRow.clientLocalId, "ping"));
   if( pingVal <= 50 ){
     pingColor = CLR_DEF_IIF_FRIEND_BLD;
   }
