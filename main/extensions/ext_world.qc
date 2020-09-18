@@ -61,7 +61,7 @@ void() mh_world_ini={
     ENDTIME_LIMIT = time + (cvar("timelimit") * 60);
   }
   else{
-    ENDTIME_LIMIT = 0;
+    ENDTIME_LIMIT = -1; //no time limit
   }
   ENDROUND = 0;
   
