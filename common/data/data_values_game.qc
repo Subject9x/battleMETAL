@@ -180,6 +180,17 @@ float MOVE_RAM_ON           = 4;
 float MOVE_RAM_CHARGE       = 5;
 float MOVE_RAM_COOL         = 6;
 
+//MOVE / UNIT DATA MODALS as bitflags
+//float MOVE_STAND            = 0;  //  declared in AI API
+float MV_DEAD = 1;
+float MV_NORM = 2;
+float MV_SPRINT = 4;
+float MV_RAM_ON = 8;
+float MV_RAM_CHARGE = 16;
+float MV_RAM_COOL = 32;
+float MV_CHASE_ON = 64;
+float MV_RADAR_ACTIVE = 128;
+//float MOVE_DEAD = 256;
 //============================
 //         DATA_TYPE           
 //============================

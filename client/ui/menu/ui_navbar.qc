@@ -269,7 +269,6 @@ void() ui_navbutton_launch_click={
   }
   if( servertime > MENU_respawn_cool ){
     if( (LAUNCH_VALIDATION &  VALID_NODE) ){
-      cl_setmech(MECH_DATA_ID);
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
       
       ui_data_load_hud( MECH_DATA_ID );
@@ -342,17 +341,24 @@ void() ui_navbutton_launch_click={
       CLIENT_health_arm_left_prev = CLIENT_health_arm_left = MECH_DATA_HPAR;
       CLIENT_health_arm_right_prev = CLIENT_health_arm_right = MECH_DATA_HPAR; 
       
+      cl_setmech(MECH_DATA_ID);
       cl_set_hud_vars(UI_HANGAR_DATA_mech, turboTotalPerc);
       cl_setweapon(totalHardpoints, weaponsList);
+      
+      cl_spawnmech();
+      cl_set_chase();
+      
+      //TODO: try a big chunky string instead of multiple small calls to server
+      
       if( CLIENT_MENU_nex_grp1 < 1 ){
         CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 | bit;
       }
       
-      cl_spawnmech();
       client_event_mission_name( MSN_DISP );
       CLIENT_spawn_time = servertime; //mark for when palyer dies.
       CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
       menu_exit();
+      
     }
   }
 };

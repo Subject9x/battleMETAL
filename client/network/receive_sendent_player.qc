@@ -95,13 +95,21 @@ void(entity piece) player_part_predaw={
 
 //merely exists to satisfy interpolation
 void() player_think={
-  local vector v1;
   local vector boostLeft, boostRight, backLeft, backRight;
   local string te;
   
+  local vector laserHit;
+  local vector laserOrg;
+  
   makevectors(self.angles);
-  v1 = self.origin + (v_up * self.cockpit.compOffset_y);
-  traceline(v1, v1 + v_forward*10000, FALSE, self);
+  if(self.chaseActive){
+    laserOrg = self.origin + (v_up * 16) + (v_forward * -96);
+  }
+  else{
+    laserOrg = self.origin + (v_up * self.cockpit.compOffset_y);
+  }
+  laserHit = laserOrg + (v_forward * 10000);
+  traceline(laserOrg, laserHit, FALSE, self);
   self.laser_sight_org = trace_endpos;
   
   sendevent_player_burn();
@@ -505,7 +513,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevMoveState = self.moveState;
   prevOrg = self.origin;
   prevType = self.data_type;
-  
+    
   /*
     EVENT - per-frame update
   */
@@ -526,6 +534,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     //Track player move state?
     self.legDir = anglemod(ReadShort());
     self.ai_dir = ReadShort();
+    self.chaseActive = ReadByte();
   }
   
   /*
@@ -544,7 +553,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_TURRET) ){
     self.data_type = ReadByte();
-    self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
@@ -616,8 +624,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = ReadLong();
-    self.clientLocalId = self.entId - 1;
-    self.faction = ReadByte();
     self.flags = ReadShort();
     if( isNew ){
       if(self.data_type != DATA_MECH){
@@ -633,6 +639,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
+  self.clientLocalId = max(0,self.entId - 1);
+  self.faction = rint(stof(getplayerkeyvalue(self.clientLocalId, "colors")));
   self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
   self.netname = getplayerkeyvalue(self.clientLocalId, "name");
   

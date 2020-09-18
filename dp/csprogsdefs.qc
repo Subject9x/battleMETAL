@@ -691,7 +691,7 @@ void(...) runstandardplayerphysics = #347; // this may or may not take a player 
     pl - qw_packetloss
     movementloss - qw_movementloss
     entertime - qw_entertime
-    colors - 
+    colors - MODIFIED - battleMETAL uses this to track player faction
     topcolor - colors & 0xf0
     bottomcolor -  (cl.scores[i].colors &15)<<4)
     viewentity - 

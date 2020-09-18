@@ -101,13 +101,21 @@ void() ctrl_updateCenterTorso={
   local float diff;
   local float mx, my;
   local float rate;
-  local vector v1;
-
+  local vector laserHit;
+  local vector laserOrg;
+  
   if( time > self.laser_sight_timer ){
     makevectors(self.v_angle);
-    v1 = self.cockpit.origin;
-    traceline(v1, v1 + v_forward*10000, FALSE, self);
+    if(self.chaseActive){
+      laserOrg = self.origin + (v_up * 16) + (v_forward * -96);
+    }
+    else{
+      laserOrg = self.cockpit.origin;
+    }
+    laserHit = laserOrg + (v_forward * 10000);
+    traceline(laserOrg, laserHit, FALSE, self);    
     self.laser_sight_org = trace_endpos;
+    
     self.laser_sight_timer = time + 0.1;
   }
 

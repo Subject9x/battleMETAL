@@ -44,6 +44,7 @@ Overview:
 .float next_wepn8;
 .float next_wepn9;
 
+.float chaseActive; //tracks player chase cam status on the server.
 
 .float ramUpMax;
 .float ramCooldown;
