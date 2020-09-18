@@ -383,6 +383,7 @@ void() PutClientInServer_Deathmatch={
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
     self.faction = FACTION_ALL; //deathmatch has no real teams
+    self.clientcolors = 1;
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  
@@ -416,10 +417,12 @@ void() PutClientInServer_TeamDeathmatch={
     if( TEAM_SURVEST_TOTAL < 9 ){
       self.faction = FACTION_SURVEST;
       TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
+      self.clientcolors = 2;
     }
     else{
       self.faction = FACTION_MILITAR;
       TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+      self.clientcolors = 3;
     }
   }
   client_push_mapobjects(); //refreshes map object data for everyone

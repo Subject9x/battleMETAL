@@ -148,11 +148,13 @@ void() CSQC_Init =
   loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, TRUE, FALSE);
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, TRUE, FALSE);
   
+  SCOREBOARDMAX = maxclients;
   SCORESTACK = 0;
+  
   for( i=0; i < SCOREBOARDMAX; i=i+1){
-    SCOREBOARD[i] = 0;
-    SCORETABLE[i] = 0;
+      SCOREBOARD[i] = -1;
   }
+  scoreboard_think();
   
   cl_set_hud_vars_obs();
   

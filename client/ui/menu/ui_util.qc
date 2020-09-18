@@ -254,17 +254,33 @@ string() ui_label_mission_status={
 */
 /*
   SCOREBOARD[]; <k, v> = itr, .entId
-  SCORETABLE[]; <k, v> = .entId, .kills
 */
 void() scoreboard_sort={
   local float i, j, key, key2;
+  local float scoreI, scoreJ;
+  
+  SCOREBOARDMAX = maxclients;
   
   for( i=1; i < SCOREBOARDMAX; i=i+1){
     // entId from scoreboard
     key = SCOREBOARD[i];
     j = i - 1;
-    while( ((j >= 0) && (SCORETABLE[key2] < SCORETABLE[key])) ){
+    
+    if(key > -1){
+      scoreI = rint(stof(getplayerkeyvalue(key, "frags")));
+    }
+    else{
+      scoreI = 0;
+    }
+    
+    while( ((j >= 0) && (scoreJ < scoreI)) ){
       key2 = SCOREBOARD[j];
+      if(key2 > -1){
+        scoreJ = rint(stof(getplayerkeyvalue(key, "frags")));
+      }
+      else{
+        scoreJ = 0;
+      }
       SCOREBOARD[j+1] = SCOREBOARD[j];
       j = j - 1;
     }
@@ -278,54 +294,39 @@ void() scoreboard_sort={
   player data ent's ID at this point IS the player's Server EntID
     therefore scoreId is then decremented to equal player's local entId;
 */
-void( float scoreId, float score ) scoreboard_push={
-  local float i, j;
-  local float exist;
-  local float realId;
+
+
+/*
+  I'm gating scoreboard thinks to run at a servertime+interval.
   
-  exist = FALSE;
-  realId = scoreId;
+  its a damn shame that DP doesn't allow access to the internal scoreboard code seeing as how
+    everytime you call getplayerkeyvalue(), it also calls SB_SortFrags().
+    
+    See for yourself:
+      VM_CL_getplayerkey() in clvm_cmds.c, Line 570 in xonotic/darkplaces.
+      why! why!?
+    
+  and this doesnt even address the fact that local player ent can be 0
+  which does not play nice at all with arrays. :|
+*/
+void() scoreboard_think={
+  local float playerId;
+  local string nameCheck;
   
-  for( i = 0; i < SCOREBOARDMAX; i = i + 1){
-    if( SCOREBOARD[i] == realId ){
-      exist = TRUE;
-      SCORESTACK = i;
-    }
-    else{
-      if( (i + 1) <= SCOREBOARDMAX ){
-        j = i + 1;
-        if( SCOREBOARD[i] != 0 && SCOREBOARD[j] == 0 ){
-          SCORESTACK = j;
-          break;
-        }
+  //(float playernum, string keyname) getplayerkeyvalue
+  if( servertime > SCOREBOARD_NEXT_UPDATE ){
+    //stand up the scoreboard every cycle to account for players leaving
+    for(playerId = 0; playerId < maxclients; playerId = playerId + 1){
+      nameCheck = getplayerkeyvalue(playerId, "name");
+      if(nameCheck != "" || nameCheck){
+        SCOREBOARD[playerId] = playerId;
+      }
+      else{
+        SCOREBOARD[playerId] = -1;
       }
     }
-  }
-  if( !exist ){
-    SCOREBOARD[SCORESTACK] = realId;
-  }
-  SCORETABLE[realId] = score;
-};
-
-void( entity removed ) scoreboard_stitch={
-  local float i;
-  local float exist;
-  local float removeId;
-  
-  exist = 0;
-  removeId = removed.entId;
-  
-  for( i = 1; i <= SCOREBOARDMAX; i = i + 1){
-    if( SCOREBOARD[i] != removeId ){
-      continue;
-    }
-    exist = i;
-  }
-  if( exist > 0){
-    SCOREBOARD[exist] = 0;
-    SCORETABLE[removeId] = 0;
-    //SCORESTACK = SCORESTACK - 1;
     scoreboard_sort();
+    SCOREBOARD_NEXT_UPDATE = servertime + SCOREBOARD_UPDATE_RATE;
   }
 };
 

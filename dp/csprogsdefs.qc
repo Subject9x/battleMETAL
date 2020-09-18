@@ -153,8 +153,11 @@ void		end_sys_fields;			// flag for structure dumping
 ==============================================================================
 */
 
+float sb_showscores;
+
 float servertime;
 float serverprevtime;
+float serverdeltatime;
 
 // Additional OPTIONAL Fields and Globals
 float		intermission; // indicates intermission state (0 = normal, 1 = scores, 2 = finale text)
@@ -700,8 +703,6 @@ float() isserver = #350;
 void(vector origin, vector forward, vector right, vector up) SetListener = #351;
 void(string cmdname) registercommand = #352;
 float(entity ent) wasfreed = #353;
-
-
 
 /*
   Key Types

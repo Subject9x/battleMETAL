@@ -35,16 +35,19 @@ void() menu_connect_drawFrame;
 //------------------
 
 //Deathmatch layout
+void( vector rootTop ) menu_connect_render_dm;
 void( vector menuOrg ) menu_connect_draw_rules_dm;
 void( vector menuOrg ) menu_connect_draw_about_dm;
 
 //Team Deathmatch Layout
+void( vector rootTop ) menu_connect_render_teamdm;
 void( vector menuOrg ) menu_connect_draw_mission_info_team;
 void( vector menuOrg ) menu_connect_draw_rules_team
 void( vector menuOrg ) menu_connect_draw_about_team;
 void( vector menuOrg ) menu_connect_draw_players_team;
 
 //Cooperative Layout
+void( vector rootTop ) menu_connect_render_coop;
 void( vector menuOrg ) menu_connect_draw_mission_info_coop;
 void( vector menuOrg ) menu_connet_draw_coop_about;
 void( vector menuOrg ) menu_connect_draw_coop_rules;

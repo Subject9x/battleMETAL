@@ -620,7 +620,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.faction = ReadByte();
     self.flags = ReadShort();
     if( isNew ){
-      scoreboard_push( self.entId, self.kills );
       if(self.data_type != DATA_MECH){
         self.data_type = DATA_POBS;
         setmodel(self, "q3mdl/testball.md3");
@@ -768,9 +767,6 @@ float() remove_client={
   local entity weps;
   local entity next;
   local entity rem;
-  
-  scoreboard_stitch(self);
-  scoreboard_sort();
 
   if( self.data_type == DATA_MECH ){
     weps = self.w_slot;

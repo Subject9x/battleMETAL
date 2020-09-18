@@ -434,8 +434,11 @@ void( vector ofs ) ui_navbutton_disconnect_draw={
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_disconnect_click={
-  cvar_set("cl_ismenu", "1");
   cvar_set("sv_public", "-2");
+  cvar_set("deathmatch", "0");
+  cvar_set("teamplay", "0");
+  cvar_set("coop", "0");
+  cvar_set("cl_ismenu", "1");
   localcmd("map cin_menu.bsp\n");
 };
 
