@@ -300,6 +300,7 @@ void( vector menuOrg ) menu_draw_players_basic={
   local vector fontColor;  
   local float playerRowItr;
   local float itr;
+  local string nameCheck;
   
   menuLabelOfs = '0 0';
   listOfs = '0 0';
@@ -315,11 +316,14 @@ void( vector menuOrg ) menu_draw_players_basic={
   playerRowItr = 1;
   
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
-    if( SCOREBOARD[itr] != 0 ){
-      player = findfloat(world, entId, SCOREBOARD[itr]);
-      listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
-      menu_player_row_basic( listRowOfs, playerRowItr, player, TRUE );
-      playerRowItr = playerRowItr + 1;
+    if( SCOREBOARD[itr] > -1 ){
+      nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
+      if( nameCheck != "" || nameCheck){
+        player = findfloat(world, entId, SCOREBOARD[itr]+1);
+        listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
+        menu_player_row_basic( listRowOfs, playerRowItr, player, TRUE );
+        playerRowItr = playerRowItr + 1;
+      }
     }
   }
   
