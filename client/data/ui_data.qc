@@ -35,8 +35,8 @@ void() ui_data_load_mechsizes={
     ui_data_load_mech_info( total, UI_HANGAR_DATA_mech_list );
     MECH_DATA_SIZES[total] = MECH_DATA_SIZE;
     total = total + 1;
+    ui_data_cleanup_mechlist_entity( UI_HANGAR_DATA_mech_list );
   }
-  ui_data_cleanup_mechlist_entity( UI_HANGAR_DATA_mech_list );
 };
 //the easy part is the clearing function
 void() ui_data_clear_mechdata={
@@ -81,6 +81,7 @@ void() ui_data_clear_mechdata={
 */
 void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
   local entity mech_piece;
+  local entity rem;
   local float itr;
   
   itr = 1;
@@ -94,7 +95,9 @@ void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
         MECH_DATA_GRPS[itr] = 0;
     }
     itr = itr + 1;
+    rem = mech_piece;
     mech_piece = mech_piece.w_slot;
+    remove(rem);
   }
   
   if( mechEntity.legs ){
