@@ -22,6 +22,7 @@ void() projectile_marh_expl={
   local float hitBloom;
   local float hitScale;
   
+  
   if( self.impactType == IMPACT_SKY ){
     return;
   }
@@ -42,14 +43,15 @@ void() projectile_marh_expl={
   local entity rem;
   
   cluster = self.w_slot;
-  while( cluster != world ){
+  while( cluster.owner == self ){
     cluster.traileffectnum = 0;
-    te_missile_explode( rem.origin, hitScale, hitColor, hitBloom ); 
+    te_missile_explode( cluster.origin, hitScale, hitColor, hitBloom );
+    cluster.drawmask = 0;
+    cluster.model = "";
+    cluster.modelindex = 0;
     rem = cluster;
     cluster = rem.w_slot;
-    remove(rem);
   }
-  
 };
 
 /*
@@ -62,7 +64,7 @@ void() projectile_marh_multi={
   
   misTotal = 5;
   chainPtr = self;
-  while( misTotal > -1 ){
+  while( misTotal > 0 ){
     newMis = spawn();
     newMis.drawmask = MASK_NORMAL;
     newMis.model = self.model;
