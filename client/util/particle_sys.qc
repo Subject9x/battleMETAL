@@ -328,6 +328,12 @@ float() te_shield_hit_predraw={
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.angles_y = self.angles_y + 5;
   self.alpha = 0.075;
+  if(self.owner.entId == player_localentnum){
+    if( self.owner.chaseActive == FALSE ){
+      self.alpha = 0.02;
+    }
+  }
+  
   return FALSE;
 };
 
