@@ -46,10 +46,8 @@ void() projectile_marh_expl={
   while( cluster.owner == self ){
     cluster.traileffectnum = 0;
     te_missile_explode( cluster.origin, hitScale, hitColor, hitBloom );
-    cluster.drawmask = 0;
-    cluster.model = "";
-    cluster.modelindex = 0;
     rem = cluster;
+    remove(rem);
     cluster = rem.w_slot;
   }
 };
@@ -66,7 +64,6 @@ void() projectile_marh_multi={
   chainPtr = self;
   while( misTotal > 0 ){
     newMis = spawn();
-    newMis.drawmask = MASK_NORMAL;
     newMis.model = self.model;
     setmodel(newMis, newMis.model);
     newMis.compOffset = '0 0 0';
