@@ -97,8 +97,6 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){
-    WriteByte( MSG_ENTITY, self.stat_client_shield );
-    WriteByte( MSG_ENTITY, self.shieldHitFlag );
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
   if( (changedflags & SENDFLAG_VELOCITY) ){

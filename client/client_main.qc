@@ -583,20 +583,31 @@ void(float isnew) CSQC_Ent_Update =
   sendent_handle_update( isnew );
 };
 
-// called when a network slot is emptied, you may choose to remove(self) or not
+// 
+/*
+  called when a network slot is emptied, you may choose to remove(self) or not - Darkplaces
+  
+  context: CSQC DOES NOT know the 'why' behind calling the Remove() function, but its important
+    to know the 2 main 'whys'.
+      1) Entity was removed/deallocated from the Server, ie SSQC.remove(entity);
+      2) Entity fell out of client's view scope, and no longer visible to client.
+      
+    knowing these 2 cases makes all the difference about executing this function.
+    
+
+*/
 void() CSQC_Ent_Remove ={
   local entity weps;
   local entity next;
   local entity rem;
+  
+  self.entnum = 0; //clears out old reference, must have!
   
   if( (self.flags & FL_CLIENT) ){
     if(self.t_remove){
       if(self.t_remove()){
         remove(self);
       }
-    }
-    else{
-      remove(self);
     }
   }
   else{  
@@ -641,8 +652,8 @@ void() CSQC_Ent_Remove ={
     if(self.netname != "" ){
       strunzone(self.netname);
     }
-    remove(self);
   }
+  remove(self);
 };
 
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)

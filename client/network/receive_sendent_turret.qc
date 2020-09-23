@@ -49,6 +49,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   prevShield = self.shield;
   
+  turretAng = self.v_angle;
+  turretAng_x = 0;
+  
   //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
@@ -74,20 +77,21 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( isNew ){
+    self.think = sendent_ai_think;
+    self.nextthink = time + 0.01;
     setorigin(self, self.origin);
     data_sync_new_turret(self.data_idx);
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_turret;
   }
-  //EVENT - MOVE - for turrets, this means a general update tic.
+  
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shield = ReadByte();
     self.shieldHitFlag = ReadByte();
   }
   
+  //EVENT - MOVE - for turrets, this means a general update tic.
   if( (changeFlags & SENDFLAG_MOVE) ){
-    self.shield = ReadByte();
-    self.shieldHitFlag = ReadByte();
     prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadLong();
   }
@@ -105,8 +109,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.v_angle = turretAng;
     self.v_angle_x = self.v_angle_x * -1;
     turretAng_x = 0;
-    sendevent_turret_update( turretAng );
-    //HANDLE EVENT - turret rotate
   }
   
   //EVENT - death
@@ -136,6 +138,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     }
   }
   
+  //HANDLE EVENT - turret rotate
+  sendevent_turret_update( turretAng );
+    
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
   
@@ -165,14 +170,15 @@ void() interpolate_turret={
   parent = self;
   makevectors(parent.angles);
   if( self.torsoCenter ){
+    addentity(self.torsoCenter);
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
-    addentity(wepn);
   }
   
   wepn = self.w_slot;
   while( (wepn != world) ){
+    addentity(wepn);
     self = wepn;
       if( self.partParentId == M_LEGS ){
         makevectors(parent.angles);
@@ -187,7 +193,6 @@ void() interpolate_turret={
         self.angles = parent.torsoCenter.angles;
       }
     self = parent;
-    addentity(wepn);
     wepn = wepn.w_slot;
   }
   self.think = SUB_Null;

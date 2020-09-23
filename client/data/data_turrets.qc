@@ -18,12 +18,9 @@ void( float dataID ) data_sync_new_turret={
   weaponList = self;  //prepare to build unit's weapon list
   self.hardpoint_cnt = 0;
   
-  self.think = sendent_ai_think;
-  self.nextthink = time + 0.01;
   self.data_type = DATA_BLD;
   self.colormod = '1 1 1';
   setorigin( self, self.origin );
-  
   
   switch( dataID ){
     case UID_TURRET_light_turret:

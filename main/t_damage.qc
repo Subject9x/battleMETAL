@@ -419,8 +419,6 @@ void(entity targ, entity attacker) killed={
           attacker.frags = attacker.frags + 1;
         }
       }
-      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
     }
     
     self.doobits = 0;
