@@ -77,6 +77,10 @@ void(entity item) predraw_player_weapon={
   assumes you've already made a makevectors() call
 */
 void(entity piece) player_part_predaw={
+  if( (self.damageValue & piece.partTypeId) ){
+    return;
+  }
+  addentity(piece);
   local vector offset;
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
   
@@ -91,6 +95,7 @@ void(entity piece) player_part_predaw={
   
   piece.angles = self.angles;
   piece.angles_x = 0;
+  piece.colormod = self.colormod;
 };
 
 //merely exists to satisfy interpolation
@@ -185,8 +190,10 @@ float() player_predraw={
       player_part_predaw(self.torsoLeft);
       player_part_predaw(self.torsoRight);
       player_part_predaw(self.armLeft);
+      
       self.armLeft.angles_x = self.angles_x * -1;
       player_part_predaw(self.armRight);
+      
       self.armRight.angles_x = self.angles_x * -1;
       player_part_predaw(self.legs);
       
@@ -202,12 +209,11 @@ float() player_predraw={
       wep = self.w_slot;
       while( wep != world ){
         predraw_player_weapon(wep);
+        addentity(wep);
         wep = wep.w_slot;
       }
     }
-    else{
     
-    }
     if(cacheOrg){
       self.origin = cacheOrg;
     }
@@ -218,7 +224,6 @@ float() player_predraw={
         local vector hudAng;
         local vector strutOrg;
         local vector consOrg;
-        
         if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
           hudAng = HUD_FIXED_ANGLE;
           hudStruts.angles_y = HUD_FIXED_ANGLE_y;
@@ -247,6 +252,10 @@ float() player_predraw={
         
         consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
         setorigin(hudConsole, consOrg);
+        if( cvar("chase_active") == FALSE ){
+          addentity(hudStruts);
+          addentity(hudConsole);
+        }
       }
     }
   }
@@ -289,13 +298,6 @@ void( float mech_id ) sendevent_player_mech={
   setmodel(self.armRight, self.armRight.model);
   setmodel(self.legs, self.legs.model);
   
-  self.torsoCenter.colormod = self.colormod;
-  self.torsoLeft.colormod = self.colormod;
-  self.torsoRight.colormod = self.colormod;
-  self.armLeft.colormod = self.colormod;
-  self.armRight.colormod = self.colormod;
-  self.legs.colormod = self.colormod;
-  
   this = self;
   weps = self.w_slot;
   while( weps != world ){
@@ -323,7 +325,6 @@ void( float mech_id ) sendevent_player_mech={
     HUD_VIEW_CL_ANGLES = self.angles;
     HUD_VIEW_OFS = self.cockpit.compOffset_z;
     hudStruts = spawn();
-    hudStruts.drawmask = MASK_ENGINE;
     hudStruts.effects = hudStruts.effects | EF_NOSHADOW;
     setmodel(hudStruts, self.weaponmodel);
     setorigin(hudStruts, pmove_org);
@@ -332,7 +333,6 @@ void( float mech_id ) sendevent_player_mech={
     hudStruts.angles_z = 0;
     
     hudConsole = spawn();
-    hudConsole.drawmask = MASK_ENGINE;
     hudConsole.effects = hudConsole.effects | EF_NOSHADOW;
     setmodel(hudConsole, self.hud_model);
     setorigin(hudConsole, pmove_org);
@@ -343,18 +343,10 @@ void( float mech_id ) sendevent_player_mech={
       if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
         HUD_EXTERNAL_CAM_ACTIVE = FALSE;
         cvar_set("chase_active", "0");
-        hudConsole.drawmask = MASK_ENGINE;
-        hudStruts.drawmask = MASK_ENGINE;
       }
       else{
         HUD_EXTERNAL_CAM_ACTIVE = TRUE;
-        hudConsole.drawmask = 0;
-        hudStruts.drawmask = 0;
       }
-    }
-    else{
-      hudConsole.drawmask = MASK_ENGINE;
-      hudStruts.drawmask = MASK_ENGINE;
     }
   }
 };
@@ -429,19 +421,15 @@ void( float criticalBits ) sendevent_player_critical={
   
   if( (criticalBits & M_TOR_LEFT) ){
     te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoLeft.drawmask = 0;
   }
   if( (criticalBits & M_TOR_RIGHT) ){
     te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoRight.drawmask = 0;
   }
   if( (criticalBits & M_ARM_LEFT) ){
     te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armLeft.drawmask = 0;
   }
   if( (criticalBits & M_ARM_RIGHT) ){
     te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armRight.drawmask = 0;
   }
   if( (criticalBits & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
@@ -450,8 +438,7 @@ void( float criticalBits ) sendevent_player_critical={
   wep = self.w_slot;
   while( wep != world ){
     if( (criticalBits & wep.partParentId) ){
-      wep.drawmask = 0;
-      if(self.entId == player_localentnum){
+      if(self.entnum == player_localentnum){
         CLIENT_weapon_state = CLIENT_weapon_state - (CLIENT_weapon_state & wep.w_group);
       }
     }
@@ -460,28 +447,30 @@ void( float criticalBits ) sendevent_player_critical={
 };
 
 /*
-  HANDLE EVENT - player mech pieces are dying
+  HANDLE EVENT - player mech pieces are being repair
 */
 void(float repairValue) sendevent_player_repair={
   local entity wep;
   
+  if( !(repairValue & M_TOR_CENTER) ){
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
+  }
   if( !(repairValue & M_TOR_LEFT) ){
-    self.torsoLeft.drawmask = MASK_ENGINE;
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
   }
   if( !(repairValue & M_TOR_RIGHT) ){
-    self.torsoRight.drawmask = MASK_ENGINE;
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
   }
   if( !(repairValue & M_ARM_LEFT) ){
-    self.armLeft.drawmask = MASK_ENGINE;
+    self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
   }
   if( !(repairValue & M_ARM_RIGHT) ){
-    self.armRight.drawmask = MASK_ENGINE;
+    self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
   }
   
   wep = self.w_slot;
   while( wep != world ){
     if( !(repairValue & wep.partParentId) ){
-      wep.drawmask = MASK_ENGINE;
       if(self.entId == player_localentnum){
         CLIENT_weapon_state = CLIENT_weapon_state | wep.w_group;
       }
@@ -527,7 +516,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
-    self.angles_z = anglemod(ReadAngle());
+    self.angles_z = 0;
     
     self.attackFlag = ReadLong();
     self.moveState = ReadByte();
@@ -536,7 +525,26 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.ai_dir = ReadShort();
     self.chaseActive = ReadByte();
   }
-  
+  /*
+    EVENT - Client Data is new/spawned
+  */
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.entId = ReadLong();
+    self.flags = ReadShort();
+  }
+  if( isNew ){
+    if(self.data_type != DATA_MECH){
+      self.data_type = DATA_POBS;
+      setmodel(self, "q3mdl/testball.md3");
+      setsize(self, '-4 -4 -4', '4 4 4');
+      setorigin(self, self.origin);
+      self.alpha = 0.01;
+      self.scale = 0.01;
+    }
+    self.think = player_think;
+    self.nextthink = time + 0.01;
+    self.t_remove = remove_client;
+  }
   /*
     EVENT - Player has taken fire
   */
@@ -619,26 +627,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
-  /*
-    EVENT - Client Data is new/spawned
-  */
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadLong();
-    self.flags = ReadShort();
-    if( isNew ){
-      if(self.data_type != DATA_MECH){
-        self.data_type = DATA_POBS;
-        setmodel(self, "q3mdl/testball.md3");
-        setorigin(self, self.origin);
-        self.alpha = 0.01;
-        self.scale = 0.01;
-      }
-      self.think = player_think;
-      self.nextthink = time + 0.01;
-      self.t_remove = remove_client;
-    }
-  }
-  
   self.clientLocalId = max(0,self.entId - 1);
   self.faction = rint(stof(getplayerkeyvalue(self.clientLocalId, "colors")));
   self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
@@ -650,12 +638,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     prevTarget = self.targetEntId;
       
-    self.particleCubeFlag = ReadByte();
+    //self.particleCubeFlag = ReadByte();
     self.targetEntId = ReadLong();
     self.flags = ReadShort();
     
     if( self.targetEntId > 0 ){
-      self.enemy = findfloat(world, entId, self.targetEntId);
+      self.enemy = findfloat(world, entnum, self.targetEntId);
     }
     else{
       self.enemy = world;

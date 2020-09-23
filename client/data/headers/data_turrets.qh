@@ -12,6 +12,3 @@ Overview:
   self is building
 */
 void( float dataID ) data_sync_new_turret;
-void() data_turret_light;
-void() data_turret_heavy;
-void() data_turret_missile;

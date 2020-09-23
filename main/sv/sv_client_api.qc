@@ -586,7 +586,6 @@ float( float isNew, float changeFlags ) send_client_data={
     
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
-    WriteAngle( MSG_ENTITY, player.v_angle_z);
     
     WriteLong( MSG_ENTITY, player.attackFlag);
     WriteByte( MSG_ENTITY, player.moveState );
@@ -595,7 +594,13 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteShort( MSG_ENTITY, player.legs.ai_dir);
     WriteByte( MSG_ENTITY, player.chaseActive);
   }
-  
+  /*
+    EVENT - Client Data is new/spawned
+  */
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(player) );
+    WriteShort( MSG_ENTITY, player.flags );
+  }
   /*
     EVENT - Player takes hit to their shields.
   */
@@ -642,17 +647,10 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, MISSION_STATUS );
   }
   /*
-    EVENT - Client Data is new/spawned
-  */
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(player) );
-    WriteShort( MSG_ENTITY, player.flags );
-  }
-  /*
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    WriteByte( MSG_ENTITY, (player.particleCube == world));
+    //WriteByte( MSG_ENTITY, (player.particleCube == world));
     WriteLong( MSG_ENTITY, player.stat_trg_ent_id );
     WriteShort( MSG_ENTITY, player.flags );
   }

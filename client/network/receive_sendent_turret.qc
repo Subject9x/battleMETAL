@@ -12,6 +12,7 @@ Overview:
 void() sendevent_turret_die={
   local entity weps;
   local entity rem;
+  local float wId;
   
   makevectors(self.angles);
   setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
@@ -19,28 +20,22 @@ void() sendevent_turret_die={
   
   self.origin = self.origin + (v_up * (self.maxs_z * -0.5));
   setorigin(self, self.origin);
-  if( self.torsoCenter.owner == self ){
-    sendent_handle_remove(self.torsoCenter);
-  }
+  
+  sendent_handle_remove(self.torsoCenter);
+  
   weps = self.w_slot;
-  while( weps ){
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     rem = weps;
     weps = rem.w_slot;
-    if( rem.owner == self ){
-      sendent_handle_remove(rem);
-    }
+    sendent_handle_remove(rem);
   }
+  
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
-  if( self.effect1.owner == self && self.effect1 != world ){
-    sendent_handle_remove(self.effect1);
-  }
-  if( self.effect2.owner == self && self.effect2 != world ){
-    sendent_handle_remove(self.effect2);
-  }
-  if( self.effect3.owner == self && self.effect3 != world ){
-    sendent_handle_remove(self.effect3);
-  }
+
+  sendent_handle_remove(self.effect1);
+  sendent_handle_remove(self.effect2);
+  sendent_handle_remove(self.effect3);
 };
 
 /*
@@ -52,7 +47,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   local float prevShield;
   local float prevAttackFlag;
   
-    //EVENT - New to player
+  prevShield = self.shield;
+  
+  //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -62,7 +59,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
     
-    self.entId = ReadLong();
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
     
@@ -75,25 +71,15 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    if( isNew ){
-      self.think = sendent_ai_think;
-      self.nextthink = time + 0.01;
-      self.flags = self.flags | FL_MONSTER ;
-      self.data_type = DATA_BLD;
-      self.colormod = '1 1 1';
-      data_sync_new_turret(self.data_idx);
-      sendent_setup_weapons();
-      self.takedamage = DAMAGE_AIM;
-      sendent_ini_interpolate();
-      self.interpolate_entity = interpolate_turret;
-      self.drawmask = MASK_ENGINE;
-      self.predraw = predraw_turret;
-      setorigin( self, self.origin );
-    }
   }
   
+  if( isNew ){
+    setorigin(self, self.origin);
+    data_sync_new_turret(self.data_idx);
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_turret;
+  }
   //EVENT - MOVE - for turrets, this means a general update tic.
-  prevShield = self.shield;
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shield = ReadByte();
     self.shieldHitFlag = ReadByte();
@@ -115,13 +101,12 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   if( (changeFlags & SENDFLAG_TURRET) ){
     turretAng_x = anglemod(ReadAngle());
     turretAng_y = anglemod(ReadAngle());
-    turretAng_z = anglemod(ReadAngle());
+    turretAng_z = 0;
     self.v_angle = turretAng;
     self.v_angle_x = self.v_angle_x * -1;
     turretAng_x = 0;
     sendevent_turret_update( turretAng );
     //HANDLE EVENT - turret rotate
-    sendevent_turret_update( turretAng );
   }
   
   //EVENT - death
@@ -183,6 +168,7 @@ void() interpolate_turret={
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
+    addentity(wepn);
   }
   
   wepn = self.w_slot;
@@ -201,6 +187,7 @@ void() interpolate_turret={
         self.angles = parent.torsoCenter.angles;
       }
     self = parent;
+    addentity(wepn);
     wepn = wepn.w_slot;
   }
   self.think = SUB_Null;

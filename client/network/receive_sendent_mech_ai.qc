@@ -41,6 +41,14 @@ void() sendevent_mech_ai_move={
 void() sendevent_mech_ai_die={
   local entity weps;
   local entity rem;
+  local float wId;
+  
+  weps = self.w_slot;
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
+    rem = weps;
+    weps = rem.w_slot;
+    sendent_handle_remove(rem);
+  }
   
   self.alpha = 0.01;
   self.scale = 0.01;
@@ -50,56 +58,18 @@ void() sendevent_mech_ai_die={
   
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
   
-  if( self.torsoCenter.owner == self &&  self.torsoLeft.partTypeId == M_TOR_CENTER){
-    sendent_handle_remove(self.torsoCenter);
-  }
-  if( self.torsoLeft.owner == self &&  self.torsoLeft.partTypeId == M_TOR_LEFT){
-    sendent_handle_remove(self.torsoLeft);
-  }
-  if( self.torsoRight.owner == self &&  self.torsoRight.partTypeId == M_TOR_RIGHT){
-    sendent_handle_remove(self.torsoRight);
-  }
-  if( self.armLeft.owner == self &&  self.armLeft.partTypeId == M_ARM_LEFT){
-    sendent_handle_remove(self.armLeft);
-  }
-  if( self.armRight.owner == self &&  self.armRight.partTypeId == M_ARM_RIGHT){
-    sendent_handle_remove(self.armRight);
-  }
-  if( self.legs.owner == self &&  self.legs.partTypeId == M_LEGS){
-    sendent_handle_remove(self.legs);
-  }
-  weps = self.w_slot;
-  while( weps != world ){
-    rem = weps;
-    weps = rem.w_slot;
-    if( rem.data_idx && rem.owner == self ){
-      sendent_handle_remove(rem);
-    }
-  }
+  sendent_handle_remove(self.torsoCenter);
+  sendent_handle_remove(self.torsoLeft);
+  sendent_handle_remove(self.torsoRight);
+  sendent_handle_remove(self.armLeft);
+  sendent_handle_remove(self.armRight);
+  sendent_handle_remove(self.legs);
 };
 
 /*
   EVENT - CRITICAL =====================================
 */
-void( float critical ) sendevent_mech_ai_crit={
-  local entity weps;
-  local entity rem;
-  local entity prev;
-  
-  weps = self.w_slot;
-  prev = self;
-  while(weps != world ){
-    if( (weps.partParentId & critical) ){
-      rem = weps;
-      prev.w_slot = weps.w_slot;
-      weps = weps.w_slot;
-      remove(rem);
-    }
-    else{
-      prev = weps;
-      weps = weps.w_slot;
-    }
-  }
+void( float critical ) sendevent_mech_ai_crit={  
   
   if( (critical & M_TOR_LEFT) ){
     if( self.torsoLeft != world ){
@@ -182,10 +152,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   self.angles_x = anglemod(ReadAngle());
   self.angles_y = anglemod(ReadAngle());
-  self.angles_z = anglemod(ReadAngle());
+  self.angles_z = 0;
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){   
-    self.entId = ReadLong(); 
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.entId = self.entnum ; 
     self.flags = ReadLong();
     self.faction = ReadByte();
     self.data_idx = ReadByte();
@@ -199,25 +169,25 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte(); 
-    
     newName = ReadString();
-    setorigin(self, self.origin);
-    if( isNew ){ 
-      self.think = mech_ai_think;
-      self.nextthink = time + 0.001;
-      if( newName != "" ){
-        self.netname = strzone(newName);
-      }   
-      self.data_type = DATA_MECH;
-      self.skin =  self.faction - 1;
-      self.movetype = MOVETYPE_STEP;
-      data_sync_new_mech_ai( self.data_idx );
-      self.interpolate_entity = interpolate_mech_ai;
-      self.drawmask = MASK_ENGINE;
-      self.predraw = predraw_mech_ai;
-    }
   }
-    
+  
+  if( isNew ){
+    setorigin(self, self.origin);
+    self.think = mech_ai_think;
+    self.nextthink = time + 0.001;
+    if( newName != "" ){
+      self.netname = strzone(newName);
+    }
+    self.data_type = DATA_MECH;
+    self.skin =  self.faction - 1;
+    self.movetype = MOVETYPE_STEP;
+    data_sync_new_mech_ai( self.data_idx );
+    self.interpolate_entity = interpolate_mech_ai;
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_mech_ai;
+  }
+  
    //self.flags = ReadLong(); // DEBUG - disabled for now.
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shield = ReadByte();
@@ -298,7 +268,6 @@ void() interpolate_mech_ai={
   local vector saved;
   
   interpolate_origin();
-  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   interpolate_angle();
   interpolate_ground();
   
@@ -308,39 +277,8 @@ void() interpolate_mech_ai={
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
+    addentity(self.torsoCenter);
   }
-  if( self.legs ){
-    self = self.legs;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.angles;
-    self = parent;
-  }
-  makevectors(parent.torsoCenter.angles);
-  if( !(self.critBits & M_TOR_LEFT) && self.torsoLeft != world){
-    self = self.torsoLeft;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.torsoCenter.angles;
-    self = parent;
-  }
-  if( !(self.critBits & M_TOR_RIGHT) && self.torsoRight != world ){
-    self = self.torsoRight;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.torsoCenter.angles;
-    self = parent;
-  }
-  if( !(self.critBits & M_ARM_RIGHT) && self.armRight != world ){
-    self = self.armRight;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.torsoCenter.angles;
-    self = parent;
-  }
-  if( !(self.critBits & M_ARM_LEFT) && self.armLeft != world ){
-    self = self.armLeft;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.torsoCenter.angles;
-    self = parent;
-  }
-  
   if( self.legs != world ){
     self = self.legs;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
@@ -348,12 +286,44 @@ void() interpolate_mech_ai={
       self.angles_y = parent.legDir;
     self = parent;
     predraw_legs();
+    addentity(self.legs);
+  }
+  
+  makevectors(parent.torsoCenter.angles);
+  if( !(self.damageValue & M_TOR_LEFT) && self.torsoLeft != world){
+    self = self.torsoLeft;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.torsoCenter.angles;
+    self = parent;
+    addentity(self.torsoLeft);
+  }
+  if( !(self.damageValue & M_TOR_RIGHT) && self.torsoRight != world ){
+    self = self.torsoRight;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.torsoCenter.angles;
+    self = parent;
+    addentity(self.torsoRight);
+  }
+  if( !(self.damageValue & M_ARM_RIGHT) && self.armRight != world ){
+    self = self.armRight;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.torsoCenter.angles;
+    self = parent;
+    addentity(self.armRight);
+  }
+  if( !(self.damageValue & M_ARM_LEFT) && self.armLeft != world ){
+    self = self.armLeft;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.torsoCenter.angles;
+    self = parent;
+    addentity(self.armLeft);
   }
   
   wepn = self.w_slot;
   while( (wepn != world) ){
     self = wepn;
-      if( !(parent.critBits & wepn.partParentId) ){
+      if( !(parent.damageValue & wepn.partParentId) ){
+        addentity(wepn);
         if( self.partParentId == M_LEGS ){
           makevectors(parent.angles);
           saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);

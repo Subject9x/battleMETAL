@@ -32,20 +32,15 @@ void() sendevent_tank_move={
 void() sendevent_tank_die={
   local entity weps;
   local entity rem;
+  local float wId;
   
-  if( (self.flags & FL_TURRET) ){
-    if( self.torsoCenter.partTypeId && self.torsoCenter != world ){
-      sendent_handle_remove(self.torsoCenter);
-    }     
-  }
   weps = self.w_slot;
-  while( weps ){
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     rem = weps;
     weps = rem.w_slot;
-    if( rem.data_idx && rem.owner == self ){
-      sendent_handle_remove(rem);
-    }
+    sendent_handle_remove(rem);
   }
+  sendent_handle_remove(self.torsoCenter);
   
   data_vehicle_wreck();
   
@@ -72,11 +67,11 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   self.angles_x = anglemod(ReadAngle());
   self.angles_y = anglemod(ReadAngle());
-  self.angles_z = anglemod(ReadAngle());
+  self.angles_z = 0;
   
   //EVENT - NEW ENTITY
   if( changeFlags & SENDFLAG_NEWENT ){
-    self.entId = ReadLong();
+    self.entId = self.entnum;
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
@@ -90,18 +85,15 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.next_wepn9 = ReadByte();
     
     newName = ReadString();
-    if( isNew ){
-      if( newName != "" ){
-        if( self.netname != "" ){
-          local string s;
-          s = self.netname;
-          strunzone(s);
-        }
-        self.netname = strzone(newName);
-      }
-      data_sync_new_vehicle( self.data_idx );
-      self.predraw = predraw_tank;
+  }
+  
+  if( isNew ){
+    setorigin(self, self.origin);
+    if( newName != "" ){
+      self.netname = strzone(newName);
     }
+    data_sync_new_vehicle( self.data_idx );
+    self.predraw = predraw_tank;
   }
   
   if( (changeFlags & SENDFLAG_IMPACT) ){
@@ -116,7 +108,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   if( changeFlags & SENDFLAG_TURRET ){
     turretAng_x = anglemod(ReadAngle());
     turretAng_y = anglemod(ReadAngle());
-    turretAng_z = anglemod(ReadAngle());
+    turretAng_z = 0;
     self.v_angle = turretAng;
     self.v_angle_x = self.v_angle_x * -1;
     turretAng_x = 0;
@@ -175,13 +167,13 @@ void() interpolate_tank={
   
   interpolate_origin();
   interpolate_angle();
-  //interpolate_ground();
-  setorigin(self, self.origin);
+  interpolate_ground();
   
   parent = self;
   makevectors(self.angles);
   
-  if( self.torsoCenter ){
+  if( self.torsoCenter != world ){
+    addentity(self.torsoCenter);
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
@@ -190,6 +182,7 @@ void() interpolate_tank={
   wepn = self.w_slot;
   while( (wepn != world) ){
     self = wepn;
+      addentity(wepn);
       if( self.partParentId == M_LEGS ){
         makevectors(parent.angles);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
@@ -213,6 +206,7 @@ float() predraw_tank={
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
+    setorigin(self, self.origin);
   }
   return FALSE;
 };

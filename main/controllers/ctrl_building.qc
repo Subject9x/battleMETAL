@@ -76,8 +76,7 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
-
-    WriteLong( MSG_ENTITY, num_for_edict(self));
+    
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.spawnflags );
     
@@ -108,7 +107,6 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -137,7 +135,6 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
     
-    WriteLong( MSG_ENTITY, num_for_edict(self) );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.spawnflags );
   }

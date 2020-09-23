@@ -34,18 +34,20 @@ void() sendevent_gev_move={
   EVENT - DEATH
 */
 void() sendevent_gev_die={
+  te_missile_explode( self.origin, self.vec_size, '0.9 0.67 0.33', 0.02 );
+  
   local entity weps;
   local entity rem;
-
-  te_missile_explode( self.origin, self.vec_size, '0.9 0.67 0.33', 0.02 ) ;
+  local float wId;
+  
   weps = self.w_slot;
-  while( weps ){
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     rem = weps;
     weps = rem.w_slot;
-    if( rem.data_idx && rem.owner == self ){
-      sendent_handle_remove(rem);
-    }
+    sendent_handle_remove(rem);
   }
+  
+  sendent_handle_remove(self.torsoCenter);
   
   data_vehicle_wreck();
   
@@ -72,10 +74,10 @@ void( float isNew, float changeFlags) sendent_handle_gev={
  
   self.angles_x = anglemod(ReadAngle());
   self.angles_y = anglemod(ReadAngle());
-  self.angles_z = anglemod(ReadAngle());
+  self.angles_z = 0;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadLong();
+    self.entId = self.entnum;
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
@@ -88,16 +90,18 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
     newName = ReadString();
-    if( isNew ){
-      if( newName != "" ){
-        self.netname = strzone(newName);
-      }
-      data_sync_new_vehicle(self.data_idx);
-      self.predraw = predraw_gev;
-      te_unit_dust_set();
-    }
   }
   
+  if( isNew ){
+    setorigin(self, self.origin);
+    if( newName != "" ){
+      self.netname = strzone(newName);
+    }
+    data_sync_new_vehicle(self.data_idx);
+    self.predraw = predraw_gev;
+    te_unit_dust_set();
+  }
+    
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shield = ReadByte();
     self.shieldHitFlag = ReadByte();
@@ -110,7 +114,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   if( (changeFlags & SENDFLAG_TURRET) ){
     turretAng_x = anglemod(ReadAngle());
     turretAng_y = anglemod(ReadAngle());
-    turretAng_z = anglemod(ReadAngle());
+    turretAng_z = 0;
     self.v_angle = turretAng;
     self.v_angle_x = self.v_angle_x * -1;
     turretAng_x = 0;

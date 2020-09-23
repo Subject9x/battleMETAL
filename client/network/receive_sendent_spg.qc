@@ -25,17 +25,15 @@ void() sendevent_spg_move={
 /*
   EVENT - DEATH
 */
-void() sendevent_spg_die={
-  local entity weps;
+void() sendevent_spg_die={  local entity weps;
   local entity rem;
-
+  local float wId;
+  
   weps = self.w_slot;
-  while( weps ){
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     rem = weps;
     weps = rem.w_slot;
-    if( rem.data_idx && rem.owner == self ){
-      sendent_handle_remove(rem);
-    }
+    sendent_handle_remove(rem);
   }
   
   data_vehicle_wreck();
@@ -61,12 +59,12 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   
   self.angles_x = anglemod(ReadAngle());
   self.angles_y = anglemod(ReadAngle());
-  self.angles_z = anglemod(ReadAngle());
+  self.angles_z = 0;
   
   self.v_angle = self.angles;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadLong();
+    self.entId = self.entnum;
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
@@ -80,13 +78,15 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.next_wepn9 = ReadByte();
     
     newName = ReadString();
-    if( isNew ){
-      if( newName != "" ){
-        self.netname = strzone(newName);
-      }
-      data_sync_new_vehicle(self.data_idx);
-      self.predraw = predraw_spg;
+  }
+  
+  if( isNew ){
+    setorigin(self, self.origin);
+    if( newName != "" ){
+      self.netname = strzone(newName);
     }
+    data_sync_new_vehicle(self.data_idx);
+    self.predraw = predraw_spg;
   }
   
   if( (changeFlags & SENDFLAG_IMPACT) ){

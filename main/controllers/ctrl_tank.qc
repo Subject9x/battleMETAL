@@ -117,10 +117,8 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
   
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
-  WriteAngle( MSG_ENTITY, self.angles_z );
   
   if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     
@@ -144,7 +142,6 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -169,10 +166,8 @@ float( entity targEnt, float changedflags ) ctrl_send_spg={
   
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
-  WriteAngle( MSG_ENTITY, self.angles_z );
   
   if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     
@@ -216,10 +211,8 @@ float( entity targEnt, float changedflags ) ctrl_send_gev={
   
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
-  WriteAngle( MSG_ENTITY, self.angles_z );
   
   if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.next_wepn1);
@@ -242,7 +235,6 @@ float( entity targEnt, float changedflags ) ctrl_send_gev={
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );

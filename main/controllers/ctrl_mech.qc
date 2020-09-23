@@ -453,10 +453,8 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
-  WriteAngle( MSG_ENTITY, self.angles_z );
 
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );

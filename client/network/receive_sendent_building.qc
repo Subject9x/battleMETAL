@@ -30,15 +30,9 @@ void() sendevent_building_die={
   }
   setorigin(self, self.origin + (v_up * -3));
   
-  if( self.effect1.count && self.effect1 != world ){
-    sendent_handle_remove(self.effect1);
-  }
-  if( self.effect2.count && self.effect2 != world ){
-    sendent_handle_remove(self.effect2);
-  }
-  if( self.effect3.count && self.effect3 != world ){
-    sendent_handle_remove(self.effect3);
-  }
+  sendent_handle_remove(self.effect1);
+  sendent_handle_remove(self.effect2);
+  sendent_handle_remove(self.effect3);
   
   if( (self.spawnflags & 4194304) ){
     self.spawnflags = self.spawnflags - (self.spawnflags & 4194304);
@@ -83,41 +77,39 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
-
-    self.entId = ReadLong();
+    
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
-    
+  }
+  
+  if( isNew ){
     self.deadflag = DEAD_NO;
-    setorigin(self, self.origin);
     self.predraw = predraw_building;
     self.drawmask = MASK_ENGINE;
-    if( isNew ){
-      self.scale = 1;
-      self.alpha = 1;
-      makevectors(self.angles);
-      data_sync_new_building(self.data_idx);
-      self.data_type = DATA_BLD;
-      self.flags = self.flags | FL_MONSTER; 
-      self.colormod = '1 1 1';
-      setorigin(self, self.origin);
-      if( self.th_walk ){
-        self.th_walk();
-      }
-      if( (self.spawnflags & 4194304) ){
-        if( lastMapKeyObject ){
-          //build linked list backwards for later forward iteration.
-          lastMapKeyObject.w_slot = self;
-          lastMapKeyObject = self;
-        }
-        else{
-          //start chain
-          mapKeyObject = self;
-          lastMapKeyObject = self;
-        }
-      }
-      self.takedamage = DAMAGE_AIM;
+    self.scale = 1;
+    self.alpha = 1;
+    makevectors(self.angles);
+    data_sync_new_building(self.data_idx);
+    self.data_type = DATA_BLD;
+    self.flags = self.flags | FL_MONSTER; 
+    self.colormod = '1 1 1';
+    setorigin(self, self.origin);
+    if( self.th_walk ){
+      self.th_walk();
     }
+    if( (self.spawnflags & 4194304) ){
+      if( lastMapKeyObject ){
+        //build linked list backwards for later forward iteration.
+        lastMapKeyObject.w_slot = self;
+        lastMapKeyObject = self;
+      }
+      else{
+        //start chain
+        mapKeyObject = self;
+        lastMapKeyObject = self;
+      }
+    }
+    self.takedamage = DAMAGE_AIM;
   }
   
   if( (changeFlags & SENDFLAG_IMPACT) ){
