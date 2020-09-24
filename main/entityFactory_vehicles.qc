@@ -272,7 +272,6 @@ void() build_mech_unit={
   }
   self.energy = self.energyMax;
   self.shield = self.shieldMax;
-  //self.doRadarSweep = radarSweepBasic;
   
   if( self.hardpoint_cnt > 0 ){
     build_unit_weapon_list();

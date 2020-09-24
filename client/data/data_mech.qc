@@ -53,7 +53,12 @@ void( float dataID ) data_sync_new_mech_ai={
   setsize(self, minSave, maxSave);
   sendent_ini_interpolate();
   sendent_setup_weapons();
-  self.solid = SOLID_BBOX;
+  if( (self.flags & FL_CLIENT) ){
+    self.solid = SOLID_BBOX;
+  }
+  else{
+    self.solid = SOLID_SLIDEBOX;
+  }
 };
 
 void( entity setPart ) data_mech_setup_part={

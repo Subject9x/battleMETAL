@@ -35,7 +35,6 @@ void() sendevent_player_burn={
   }
 };
 
-
 void(entity item) predraw_player_weapon={
   local entity this;
   local vector entAng;
@@ -98,7 +97,9 @@ void(entity piece) player_part_predaw={
   piece.colormod = self.colormod;
 };
 
-//merely exists to satisfy interpolation
+/*
+  I'm not really sure when this runs because CSQC's time variable appears to be super-unreliable.
+*/
 void() player_think={
   local vector boostLeft, boostRight, backLeft, backRight;
   local string te;
@@ -142,6 +143,47 @@ void() player_think={
       trailparticles(world, particleeffectnum(te), boostRight, backRight);
     }
   }
+  
+  /*
+    Horrible things done to get targeting working again, although I fixed the multi-copy CSQC ent issue...it broke
+    this part of the code quite completely.
+  */
+  if( self.getTarget == TRUE ){
+    makevectors(self.angles);
+    traceline(laserOrg,laserOrg + (v_forward * CLIENT_radar_range), FALSE, self);
+    local entity hunt, targ;
+    local float testDist;
+    local float entDist;
+    if( trace_ent.data_type == DATA_MECH || trace_ent.data_type == DATA_VEHC || trace_ent.data_type == DATA_BLD){
+      targ = trace_ent;
+    }
+    else{
+      hunt = findradius(trace_endpos, 64);
+      testDist = vlen(trace_endpos - self.origin);
+      while( hunt != world ){
+        if( hunt.data_type == DATA_MECH || hunt.data_type == DATA_VEHC || hunt.data_type == DATA_BLD){
+          entDist = vlen(hunt.origin - trace_endpos);
+          if( entDist <= testDist ){
+            testDist = entDist;
+            targ = hunt;
+          }
+        }
+        hunt = hunt.chain;
+      }
+    }
+    if( self.entId == player_localentnum && targ != world){
+      CLIENT_target_ent = targ;
+      CLIENT_target_origin = CLIENT_target_ent.origin;
+      if( CLIENT_target_ent != world ){
+        CLIENT_stat_trg_ddflg_prev = CLIENT_target_ent.deadflag;
+      }
+    }
+    else{
+      CLIENT_target_ent = world;
+    }
+    self.getTarget = FALSE;
+  }
+  
   self.think = player_think;
   self.nextthink = time + 0.01;
 };
@@ -481,6 +523,7 @@ void(float repairValue) sendevent_player_repair={
 
 void( float isNew, float changeFlags) sendent_handle_player={
   local vector prevOrg;
+  local vector targetOrg;
   local float prevShield;
   local float prevCrit;
   local float prevType;
@@ -491,6 +534,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevAttackFlag;
   local float prevMoveState;
   local float prevBurn;
+  local float prevGetTarg;
   
   prevBurn = self.burnBits;
   prevShield = self.shield;
@@ -502,6 +546,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevMoveState = self.moveState;
   prevOrg = self.origin;
   prevType = self.data_type;
+  prevGetTarg = self.getTarget;
     
   /*
     EVENT - per-frame update
@@ -551,7 +596,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_IMPACT) ){
     local float nextHit;
     nextHit = ReadByte();
-    if( self.shieldHitFlag == FALSE || nextHit == 3){
+    if( self.shieldHitFlag == 0 || nextHit == 3){
       self.shieldHitFlag = nextHit;
     }
   }
@@ -636,19 +681,14 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    prevTarget = self.targetEntId;
-      
+    self.getTarget = ReadByte();
     //self.particleCubeFlag = ReadByte();
-    self.targetEntId = ReadLong();
     self.flags = ReadShort();
-    
-    if( self.targetEntId > 0 ){
-      self.enemy = findfloat(world, entnum, self.targetEntId);
+    if( self.getTarget == TRUE && prevGetTarg != FALSE ){
+      self.getTarget = FALSE; // flag for getting target clientside.
     }
-    else{
-      self.enemy = world;
-    }
-    
+    /*
+      Particle Cubes are disable by Beta 2 v1.0.0 - will require a patch to get working again.
     if( self.particleCubeFlag == 0 ){
       //remove cube
     }
@@ -656,7 +696,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
       //if( player_localentnum == self.data_idx ){
         //add cube
       //}
-    }
+    }*/
   }
   
   /*
@@ -714,47 +754,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
     else{
       CLIENT_energy = 0;
-    }
-    
-    if( self.targetEntId > 0 ){
-      CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
-      CLIENT_stat_trg_ddflg = self.enemy.deadflag;
-      if(CLIENT_stat_trg_ddflg > DEAD_NO ){
-        self.enemy = world;
-        CLIENT_stat_trg_ent_id = 0;
-        CLIENT_stat_trg_dataidx = 0;
-        return;
-      }
-      CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
-      CLIENT_stat_trg_ent_id = self.enemy.entId;
-      CLIENT_stat_trg_dataidx = self.enemy.data_idx;
-      CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
-      CLIENT_target_datatype_prev = CLIENT_target_datatype;
-      CLIENT_target_datatype = self.enemy.data_type;
-      CLIENT_target_faction = self.enemy.faction;
-      CLIENT_target_origin_x = self.enemy.origin_x;
-      CLIENT_target_origin_y = self.enemy.origin_y;
-      CLIENT_target_origin_z = self.enemy.origin_z;
-      CLIENT_target_vecsize = self.enemy.vec_size * self.enemy.maxs_z;
-      if( self.enemy.shield > 0 ){
-        CLIENT_target_shield = self.enemy.shield;
-      }
-      else{
-        CLIENT_target_shield = 0;
-      }
-      CLIENT_target_dist_prev = CLIENT_target_dist;
-      CLIENT_target_dist = vlen(self.enemy.origin - self.origin);
-      CLIENT_target_size_x = self.enemy.maxs_x;
-      CLIENT_target_size_y = self.enemy.maxs_y;
-      CLIENT_target_size_z = self.enemy.maxs_z;
-    }
-    else{
-      CLIENT_stat_trg_ent_id = 0;
-      CLIENT_stat_trg_dataidx = 0;
-      CLIENT_target_origin = '0 0 0';
-      CLIENT_target_faction = 0;
-      CLIENT_target_shield = 0;
-      CLIENT_target_vecsize = 0;
     }
   }
 };

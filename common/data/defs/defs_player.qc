@@ -28,8 +28,9 @@ Overview:
 .vector hud_StrutsOffset; //  origin offset of struts model
 .vector laser_sight_org1;
 .vector laser_sight_org2;
-#endif 
+#endif
 
+.float getTarget;   //switch for sendEnt
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
 .float equipSize;
@@ -52,6 +53,8 @@ Overview:
 .vector laser_sight_org;
 
 #ifndef CSQC
+.float targetValid;
+.float targetDist;
 .vector prevMovement; //the .movement of last frame
 .float missionStatus; //moved to player level for network
 .float hud_mode;  //sway mode

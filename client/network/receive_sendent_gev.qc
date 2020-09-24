@@ -77,7 +77,6 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   self.angles_z = 0;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = self.entnum;
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();

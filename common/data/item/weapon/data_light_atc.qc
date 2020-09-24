@@ -26,6 +26,7 @@ void() te_muzzle_latc={
   endOrg = trace_endpos;
   
   norm = normalize(endOrg - startOrg);
+  ang = vectoangles(endOrg - startOrg);
   pointsound( startOrg, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM);
   
   if( vlen(endOrg - startOrg) >= 1500 ){
@@ -34,7 +35,6 @@ void() te_muzzle_latc={
   
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), startOrg, norm * 4, 1);
   
-  ang = vectoangles(endOrg - startOrg);
   makevectors(ang);
   
   impactStyle = te_impact_type(endOrg, trace_ent);

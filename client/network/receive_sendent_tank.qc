@@ -71,7 +71,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   //EVENT - NEW ENTITY
   if( changeFlags & SENDFLAG_NEWENT ){
-    self.entId = self.entnum;
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
@@ -83,7 +82,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    
     newName = ReadString();
   }
   
@@ -199,6 +197,8 @@ void() interpolate_tank={
     self = parent;
     wepn = wepn.w_slot;
   }
+  
+  setorigin(self, self.origin);
 };
 
 float() predraw_tank={

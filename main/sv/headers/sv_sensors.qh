@@ -10,8 +10,8 @@ Overview:
 
 .void() doRadarSweep; 
 
-void() radarSweepBasic;
-void() radarSweepAdv;
+//void() radarSweepBasic;
+//void() radarSweepAdv;
 
 void() sv_getTarget;
 void() sv_updateTargetInfo;

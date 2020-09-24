@@ -40,7 +40,6 @@ void( float dataID ) data_sync_new_vehicle={
   
   self.skin =  self.faction - 1;
   self.data_type = DATA_VEHC;
-  self.movetype = MOVETYPE_STEP;
   self.deadflag = DEAD_NO;
   self.critBits = 0;
   minc = self.mins;
@@ -51,7 +50,8 @@ void( float dataID ) data_sync_new_vehicle={
   setorigin(self, self.origin);
   sendent_ini_interpolate();
   sendent_setup_weapons();
-  self.solid = SOLID_BBOX;
+  self.solid = SOLID_SLIDEBOX;
+  self.movetype = MOVETYPE_STEP;
   self.interpolate_entity = interpolate_tank;
   self.drawmask = MASK_ENGINE;
 };

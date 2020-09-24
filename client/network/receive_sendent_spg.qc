@@ -64,7 +64,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   self.v_angle = self.angles;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = self.entnum;
     self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();

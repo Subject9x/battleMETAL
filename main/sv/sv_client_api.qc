@@ -540,10 +540,11 @@ void() client_data={
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   local float prevType;
+  local vector targetOrg;
+  
   player = self.owner;
   self.view_ofs = player.origin;
   
-
   prevType = self.data_type;
   if( player.deadflag == DEAD_NO ){
     self.data_type = player.data_type;
@@ -555,6 +556,7 @@ float( float isNew, float changeFlags ) send_client_data={
     self.damageValue = player.damageValue;
     self.data_idx = player.data_idx;
     self.shieldHitFlag = player.shieldHitFlag;
+    self.getTarget = player.getTarget;
   }
   else{
     self.data_type = DATA_POBS;
@@ -566,6 +568,7 @@ float( float isNew, float changeFlags ) send_client_data={
     self.data_idx = 0; 
     self.w_group = 0;
     self.shieldHitFlag = 0;
+    self.getTarget = 0;
   }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
   WriteByte( MSG_ENTITY, changeFlags );
@@ -651,8 +654,11 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     //WriteByte( MSG_ENTITY, (player.particleCube == world));
-    WriteLong( MSG_ENTITY, player.stat_trg_ent_id );
+    WriteByte( MSG_ENTITY, self.getTarget );
     WriteShort( MSG_ENTITY, player.flags );
   }
+  
+  self.getTarget = 0;
+  self.shieldHitFlag = 0;
   return TRUE;
 };

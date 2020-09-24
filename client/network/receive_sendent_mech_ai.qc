@@ -135,10 +135,10 @@ void(float criticalHits) sendevent_mech_burn={
 */
 void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local entity this;
-  local float prevShield;
   local vector turretAng;
   local float critical;
   local string newName;
+  local float prevShield;
   local float prevAttackFlag;
   local float prevDeadFlag;
   
@@ -155,7 +155,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   self.angles_z = 0;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = self.entnum ; 
     self.flags = ReadLong();
     self.faction = ReadByte();
     self.data_idx = ReadByte();
