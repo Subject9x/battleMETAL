@@ -605,9 +605,12 @@ void() CSQC_Ent_Remove ={
   
   if( (self.flags & FL_CLIENT) ){
     if(self.t_remove){
-      if(self.t_remove()){
+      if(!self.t_remove()){
         remove(self);
       }
+    }
+    else{
+      remove(self);
     }
   }
   else{  

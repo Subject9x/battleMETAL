@@ -109,7 +109,9 @@ void() player_think={
   
   makevectors(self.angles);
   if(self.chaseActive){
-    laserOrg = self.origin + (v_up * 16) + (v_forward * -96);
+    laserOrg = self.origin + (v_up * 20) + (v_forward * -96);
+    traceline(self.origin, laserOrg, TRUE, self);
+    laserOrg = trace_endpos;
   }
   else{
     laserOrg = self.origin + (v_up * self.cockpit.compOffset_y);
@@ -792,6 +794,6 @@ float() remove_client={
       remove(self.legs );
     }
   }
-  
+  remove(self);
   return TRUE;
 };
