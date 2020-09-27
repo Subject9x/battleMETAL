@@ -78,7 +78,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
       attacker.enemy = dmgTrg;
       attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
       attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
-      attacker.getTarget = TRUE;
       attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
     }
     attacker.w_proj = time + 0.2;
@@ -226,7 +225,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
       attacker.enemy = dmgTrg;
       attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
       attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
-      attacker.getTarget = TRUE;
       attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
     }
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){

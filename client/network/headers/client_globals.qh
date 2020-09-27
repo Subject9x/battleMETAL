@@ -13,7 +13,6 @@ entity CLIENT_MENU_deploy;
 float CLIENT_currentWeaponGroup;
 
 //float CLIENT_mission_status;
-float CLIENT_get_target;
 
 float CLIENT_flags;
 float CLIENT_flags_prev;

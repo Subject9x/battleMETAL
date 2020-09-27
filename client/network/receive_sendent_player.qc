@@ -146,54 +146,6 @@ void() player_think={
     }
   }
   
-  /*
-    Horrible things done to get targeting working again, although I fixed the multi-copy CSQC ent issue...it broke
-    this part of the code quite completely.
-  */
-  if( self.enemy.deadflag != DEAD_NO){
-    self.enemy = world;
-  }
-  if( self.getTargetPrev == FALSE && (self.getTarget > 0 && self.getTarget <= TARGET_HIT) ){
-    if( self.getTarget == TARGET_SCOPE ){
-      makevectors(self.angles);
-      traceline(laserOrg,laserOrg + (v_forward * CLIENT_radar_range), FALSE, self);
-      local entity hunt, targ;
-      local float testDist;
-      local float entDist;
-      if( trace_ent.data_type == DATA_MECH || trace_ent.data_type == DATA_VEHC || trace_ent.data_type == DATA_BLD){
-        targ = trace_ent;
-      }
-      else{
-        hunt = findradius(trace_endpos, 64);
-        testDist = vlen(trace_endpos - self.origin);
-        while( hunt != world ){
-          if( hunt.data_type == DATA_MECH || hunt.data_type == DATA_VEHC || hunt.data_type == DATA_BLD){
-            entDist = vlen(hunt.origin - trace_endpos);
-            if( entDist <= testDist ){
-              testDist = entDist;
-              targ = hunt;
-            }
-          }
-          hunt = hunt.chain;
-        }
-      }
-      if( targ.canTarget > 0 ){
-        self.enemy = targ;
-      }
-    }
-    if( self.enemy ){
-      self.getTarget = FALSE;
-      if( self.entId == player_localentnum ){
-        CLIENT_target_ent = self.enemy;
-        CLIENT_target_origin = CLIENT_target_ent.origin;
-        if( CLIENT_target_ent != world ){
-          CLIENT_stat_trg_ddflg_prev = CLIENT_target_ent.deadflag;
-        }
-      }
-    }
-  }
-  self.getTargetPrev = self.getTarget;
-  
   self.think = player_think;
   self.nextthink = time + 0.01;
 };
@@ -694,13 +646,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    self.getTarget = ReadByte();
     //self.particleCubeFlag = ReadByte();
+    //player has tried to acquire target
+    self.getTarget = ReadCoord();
+    self.enemy = findfloat(world, entnum, self.getTarget);
     self.flags = ReadShort();
     
-    if( self.getTarget > TARGET_HIT && self.getTargetPrev < TARGET_LOST ){
-      self.getTarget = FALSE;
-    }
     /*
       Particle Cubes are disable by Beta 2 v1.0.0 - will require a patch to get working again.
     if( self.particleCubeFlag == 0 ){
@@ -743,10 +694,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   //perform data binds
   if( self.entId == player_localentnum ){
-    //if( CLIENT_get_target == TRUE ){
-      //self.getTarget = TRUE;
-      //CLIENT_get_target = FALSE;
-    //}
     if(isNew){
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;
@@ -773,6 +720,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     else{
       CLIENT_energy = 0;
     }
+    CLIENT_target_ent = self.enemy ;
   }
 };
 

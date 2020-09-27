@@ -180,12 +180,6 @@ float MOVE_RAM_ON           = 4;
 float MOVE_RAM_CHARGE       = 5;
 float MOVE_RAM_COOL         = 6;
 
-//Get Target events
-float TARGET_SCOPE          = 1;  //Player has Impulse 7'd the target
-float TARGET_HIT            = 2;  //Player gained target via hitting it with weapons fire
-float TARGET_LOST           = 3;  //Player lost target because target fell off radar.
-float TARGET_DEAD           = 4;  //Player lost target because target was killed.
-
 //MOVE / UNIT DATA MODALS as bitflags
 //float MOVE_STAND            = 0;  //  declared in AI API
 float MV_DEAD = 1;

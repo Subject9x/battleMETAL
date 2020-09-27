@@ -163,12 +163,11 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
       return FALSE; //we pass the event to the server for correct player aiming.
     }
-    else if( strstrofs(findkeysforcommand("impulse 7", 0), ftos(scanx),0) != -1 ){
+    /*else if( strstrofs(findkeysforcommand("impulse 7", 0), ftos(scanx),0) != -1 ){
       //INPUT - player wants target
-      //CLIENT_get_target = TRUE;
       return FALSE; //we pass the event to the server for correct player aiming.
     }
-    /*else if(scanx == K_K){
+    else if(scanx == K_K){
       cons_logAFloat("VIEW_OBS_ID", VIEW_OBS_ID); //debug
       if( VIEW_OBS_ID == 2 ){
         VIEW_OBS_ID = 1;

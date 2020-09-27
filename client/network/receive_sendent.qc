@@ -284,15 +284,6 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   
   if( changeFlags & SENDFLAG_IMPACT ){
     self.impactType = ReadByte();
-    self.targetEntId = ReadCoord();
-    self.enemy = findfloat(world, entnum, self.targetEntId);
-    if( self.owner && self.owner.enemy == world){
-      if( self.enemy.canTarget > 0 ){
-        self.owner.enemy = self.enemy;
-        self.owner.getTarget = TARGET_HIT;
-        self.owner.getTargetPrev = FALSE;
-      }
-    }
   }
   
   self.angles = vectoangles(self.velocity);

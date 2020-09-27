@@ -51,7 +51,6 @@ float( float isNew, float changedFlags ) te_send_missile={
     
   if( (changedFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.impactType );
-    WriteCoord( MSG_ENTITY, self.stat_trg_ent_id);
   }
   
   return TRUE;

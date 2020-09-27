@@ -16,11 +16,21 @@ Overview:
 void() sv_getTarget={
   local entity src;
   local string targName;
+  local vector viewOfs;
   
   makevectors(self.v_angle);
   src = self;
 
-  traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
+  if( self.chaseActive ){
+    viewOfs = src.origin + (v_up * 20) + (v_forward * -96);
+    traceline(src.origin, viewOfs, FALSE, self);
+    viewOfs = trace_endpos;
+  }
+  else{
+    viewOfs = self.cockpit.origin;
+  }
+  traceline(viewOfs, viewOfs + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
+  
   if( ai_valid_target(trace_ent) ){
     if( trace_ent == self.enemy ){
       //already have this target.
@@ -48,7 +58,6 @@ void() sv_getTarget={
     self.lock_timer = 0;  //make sure to reset the timer
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
     self.stat_trg_ent_id = num_for_edict(self.enemy);
-    self.getTarget = TARGET_SCOPE;
   }
 };
 
@@ -76,7 +85,7 @@ void() sv_updateTargetInfo={
       self.stat_trg_ent_id = 0;
       self.enemy = world;
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
-      self.getTarget = TARGET_DEAD;
+      self.stat_trg_ent_id = 0;
       return;
     }
     local float dst;
@@ -98,7 +107,7 @@ void() sv_updateTargetInfo={
       }
       self.stat_target_name = "";
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
-      self.getTarget = TARGET_LOST;
+      self.stat_trg_ent_id = 0;
       return;
     }
     self.stat_trg_dataidx = self.enemy.data_idx;
