@@ -347,6 +347,10 @@ void() building_human_radar={
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
+  self.canTarget = TRUE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.canTarget = FALSE;
+  }
   self.think = building_radar_patrol1;
   self.nextthink = time + 1;
 };

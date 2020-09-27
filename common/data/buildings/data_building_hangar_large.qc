@@ -203,6 +203,10 @@ void() building_human_hangar={
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
+  self.canTarget = TRUE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.canTarget = FALSE;
+  }
   self.think = building_burn_th;
   self.nextthink = time + random() * 3;
 };

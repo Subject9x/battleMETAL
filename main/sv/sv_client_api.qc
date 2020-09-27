@@ -601,9 +601,10 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(player) );
+    WriteCoord( MSG_ENTITY, num_for_edict(player) );
     WriteShort( MSG_ENTITY, player.flags );
   }
+    
   /*
     EVENT - Player takes hit to their shields.
   */

@@ -23,7 +23,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( trg.deadflag != DEAD_NO ){
     return world;
   }
-
   
   dmgTrg = trg;
   dmgInflictor = inflictor;
@@ -31,16 +30,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   
   dmgTrg.shieldHitFlag = 0;
   
-  if( (attacker.flags & FL_CLIENT) ){
-    if( !attacker.enemy ){
-      attacker.enemy = dmgTrg;
-      attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
-      attacker.targLockState = attacker.targLockState | LOCK_TARG_HAS;
-    }
-  }
-  if( (dmgTrg.flags & FL_CLIENT) ){
-    dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
-  }
   //reduce friendly fire damage on easier settings
   if( (trg.faction != FACTION_ALL) ){
     if( trg.faction == attacker.faction ){
@@ -52,6 +41,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
           dmgAmt = dmgAmt * 0.33;
         }
       }
+    }
+  }
+  
+  if( (dmgTrg.flags & FL_CLIENT) ){
+    if( trg.faction == FACTION_ALL && trg.data_type != DATA_BLD ){
+      dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
     }
   }
   
@@ -75,12 +70,17 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   }
   //================================================
   
-
-
   //calculate hit time and angle
   util_chekPointToHitDir(trg, dmg_point);
   
   if( (attacker.flags & FL_CLIENT) ){
+    if( !attacker.enemy && dmgTrg.canTarget ){
+      attacker.enemy = dmgTrg;
+      attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
+      attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
+      attacker.getTarget = TRUE;
+      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
+    }
     attacker.w_proj = time + 0.2;
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
@@ -173,6 +173,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( trg.deadflag != DEAD_NO ){
     return world;
   }
+  
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
@@ -206,7 +207,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   }
   
   if( (dmgTrg.flags & FL_CLIENT) ){
-    dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
+    if( trg.faction == FACTION_ALL && trg.data_type != DATA_BLD ){
+      dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
+    }
   }
   
   dmgTrg.dmg_inflictor = inflictor;
@@ -219,6 +222,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.w_proj = time + 0.2;
+    if( !attacker.enemy && dmgTrg.canTarget ){
+      attacker.enemy = dmgTrg;
+      attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
+      attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
+      attacker.getTarget = TRUE;
+      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_VELOCITY;
+    }
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
     }

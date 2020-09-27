@@ -150,41 +150,49 @@ void() player_think={
     Horrible things done to get targeting working again, although I fixed the multi-copy CSQC ent issue...it broke
     this part of the code quite completely.
   */
-  if( self.getTarget == TRUE ){
-    makevectors(self.angles);
-    traceline(laserOrg,laserOrg + (v_forward * CLIENT_radar_range), FALSE, self);
-    local entity hunt, targ;
-    local float testDist;
-    local float entDist;
-    if( trace_ent.data_type == DATA_MECH || trace_ent.data_type == DATA_VEHC || trace_ent.data_type == DATA_BLD){
-      targ = trace_ent;
-    }
-    else{
-      hunt = findradius(trace_endpos, 64);
-      testDist = vlen(trace_endpos - self.origin);
-      while( hunt != world ){
-        if( hunt.data_type == DATA_MECH || hunt.data_type == DATA_VEHC || hunt.data_type == DATA_BLD){
-          entDist = vlen(hunt.origin - trace_endpos);
-          if( entDist <= testDist ){
-            testDist = entDist;
-            targ = hunt;
-          }
-        }
-        hunt = hunt.chain;
-      }
-    }
-    if( self.entId == player_localentnum && targ != world){
-      CLIENT_target_ent = targ;
-      CLIENT_target_origin = CLIENT_target_ent.origin;
-      if( CLIENT_target_ent != world ){
-        CLIENT_stat_trg_ddflg_prev = CLIENT_target_ent.deadflag;
-      }
-    }
-    else{
-      CLIENT_target_ent = world;
-    }
-    self.getTarget = FALSE;
+  if( self.enemy.deadflag != DEAD_NO){
+    self.enemy = world;
   }
+  if( self.getTargetPrev == FALSE && (self.getTarget > 0 && self.getTarget <= TARGET_HIT) ){
+    if( self.getTarget == TARGET_SCOPE ){
+      makevectors(self.angles);
+      traceline(laserOrg,laserOrg + (v_forward * CLIENT_radar_range), FALSE, self);
+      local entity hunt, targ;
+      local float testDist;
+      local float entDist;
+      if( trace_ent.data_type == DATA_MECH || trace_ent.data_type == DATA_VEHC || trace_ent.data_type == DATA_BLD){
+        targ = trace_ent;
+      }
+      else{
+        hunt = findradius(trace_endpos, 64);
+        testDist = vlen(trace_endpos - self.origin);
+        while( hunt != world ){
+          if( hunt.data_type == DATA_MECH || hunt.data_type == DATA_VEHC || hunt.data_type == DATA_BLD){
+            entDist = vlen(hunt.origin - trace_endpos);
+            if( entDist <= testDist ){
+              testDist = entDist;
+              targ = hunt;
+            }
+          }
+          hunt = hunt.chain;
+        }
+      }
+      if( targ.canTarget > 0 ){
+        self.enemy = targ;
+      }
+    }
+    if( self.enemy ){
+      self.getTarget = FALSE;
+      if( self.entId == player_localentnum ){
+        CLIENT_target_ent = self.enemy;
+        CLIENT_target_origin = CLIENT_target_ent.origin;
+        if( CLIENT_target_ent != world ){
+          CLIENT_stat_trg_ddflg_prev = CLIENT_target_ent.deadflag;
+        }
+      }
+    }
+  }
+  self.getTargetPrev = self.getTarget;
   
   self.think = player_think;
   self.nextthink = time + 0.01;
@@ -252,8 +260,8 @@ float() player_predraw={
       predraw_legs();
       wep = self.w_slot;
       while( wep != world ){
-        predraw_player_weapon(wep);
         addentity(wep);
+        predraw_player_weapon(wep);
         wep = wep.w_slot;
       }
     }
@@ -548,7 +556,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevMoveState = self.moveState;
   prevOrg = self.origin;
   prevType = self.data_type;
-  prevGetTarg = self.getTarget;
     
   /*
     EVENT - per-frame update
@@ -576,9 +583,21 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadLong();
+    self.entId = ReadCoord();
     self.flags = ReadShort();
   }
+  
+  /*
+    EVENT - Player has taken fire
+  */
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    local float nextHit;
+    nextHit = ReadByte();
+    if( self.shieldHitFlag == 0 || nextHit == 3){
+      self.shieldHitFlag = nextHit;
+    }
+  }
+  
   if( isNew ){
     if(self.data_type != DATA_MECH){
       self.data_type = DATA_POBS;
@@ -591,16 +610,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.think = player_think;
     self.nextthink = time + 0.01;
     self.t_remove = remove_client;
-  }
-  /*
-    EVENT - Player has taken fire
-  */
-  if( (changeFlags & SENDFLAG_IMPACT) ){
-    local float nextHit;
-    nextHit = ReadByte();
-    if( self.shieldHitFlag == 0 || nextHit == 3){
-      self.shieldHitFlag = nextHit;
-    }
   }
   
   /*
@@ -631,6 +640,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
         if(self.entId == player_localentnum){
           HUD_FIXED_ANGLE = self.angles;
         }
+        self.canTarget = TRUE;
       }
     }
   }
@@ -671,6 +681,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
       sendevent_handle_player_death();
       scoreboard_sort();
+      self.canTarget = FALSE;
     }
   }
   
@@ -686,8 +697,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.getTarget = ReadByte();
     //self.particleCubeFlag = ReadByte();
     self.flags = ReadShort();
-    if( self.getTarget == TRUE && prevGetTarg != FALSE ){
-      self.getTarget = FALSE; // flag for getting target clientside.
+    
+    if( self.getTarget > TARGET_HIT && self.getTargetPrev < TARGET_LOST ){
+      self.getTarget = FALSE;
     }
     /*
       Particle Cubes are disable by Beta 2 v1.0.0 - will require a patch to get working again.
@@ -731,6 +743,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   //perform data binds
   if( self.entId == player_localentnum ){
+    //if( CLIENT_get_target == TRUE ){
+      //self.getTarget = TRUE;
+      //CLIENT_get_target = FALSE;
+    //}
     if(isNew){
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;

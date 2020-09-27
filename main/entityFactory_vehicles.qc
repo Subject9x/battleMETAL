@@ -220,6 +220,8 @@ void() build_mech_unit={
     build_mech_bot();
     return;
   }
+  
+  self.canTarget = TRUE;
 
   tempMin = self.mins;
   tempMax = self.maxs;
@@ -330,6 +332,7 @@ void() build_mech_bot={
   local vector hmins, hmaxs;
   
   self.flags = self.flags | FL_MONSTER;
+  self.canTarget = TRUE;
   
   hmaxs = self.maxs;
   hmins = self.mins;
@@ -530,6 +533,7 @@ void() build_vehicle_unit={
   
   self.data_type = DATA_VEHC;
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.canTarget = TRUE;
   
   hmaxs = self.maxs;
   hmins = self.mins;

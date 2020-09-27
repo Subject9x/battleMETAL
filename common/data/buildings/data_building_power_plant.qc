@@ -217,6 +217,10 @@ void() building_human_power={
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
+  self.canTarget = TRUE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.canTarget = FALSE;
+  }
   
   hpower_th();
 };

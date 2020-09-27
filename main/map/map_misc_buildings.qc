@@ -11,20 +11,30 @@ float( float isNew, float changeFlags ) sendent_misc_building={
   WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
   WriteByte( MSG_ENTITY, changeFlags );
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteShort( MSG_ENTITY, self.modelindex );
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteAngle( MSG_ENTITY, self.angles_x );
-    WriteAngle( MSG_ENTITY, self.angles_y );
-    WriteAngle( MSG_ENTITY, self.angles_z );
-  }
-  
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
     WriteShort( MSG_ENTITY, self.modelindex );
   }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    if(self.deadflag  == DEAD_NO ){
+      WriteShort( MSG_ENTITY, self.modelindex );
+      WriteCoord( MSG_ENTITY, self.origin_x );
+      WriteCoord( MSG_ENTITY, self.origin_y );
+      WriteCoord( MSG_ENTITY, self.origin_z );
+      WriteAngle( MSG_ENTITY, self.angles_x );
+      WriteAngle( MSG_ENTITY, self.angles_y );
+      WriteAngle( MSG_ENTITY, self.angles_z );
+      if( self.faction ){
+        WriteByte( MSG_ENTITY, self.faction );
+      }
+      else{
+        WriteByte( MSG_ENTITY, 255 );
+      }
+      WriteByte( MSG_ENTITY, self.canTarget );
+    }
+  }
+  
   return TRUE;
 };
 
@@ -89,6 +99,12 @@ void() misc_building={
   self.think = building_burn_th;
   self.nextthink = time + random() * 3;
   
+  self.data_type = DATA_BLD;
+  self.getTarget = FALSE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.getTarget = TRUE;
+  }
+  
   self.SendEntity = sendent_misc_building;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
@@ -114,6 +130,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -149,6 +166,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -185,6 +203,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -222,6 +241,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -257,6 +277,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -293,6 +314,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -329,6 +351,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -366,6 +389,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
 NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state

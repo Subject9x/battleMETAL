@@ -23,6 +23,12 @@ float( float isNew, float changedFlags ) te_send_missile={
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.damageValue );
+    if( (self.owner.flags & FL_CLIENT) ){
+      WriteCoord( MSG_ENTITY, num_for_edict(self.owner.clientData));
+    }
+    else{
+      WriteCoord( MSG_ENTITY, num_for_edict(self.owner));
+    }
   }
   
   if( (changedFlags & SENDFLAG_MOVE) ){
@@ -45,10 +51,8 @@ float( float isNew, float changedFlags ) te_send_missile={
     
   if( (changedFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.impactType );
-    WriteByte( MSG_ENTITY, self.damageValue );
+    WriteCoord( MSG_ENTITY, self.stat_trg_ent_id);
   }
-  
-
   
   return TRUE;
 };

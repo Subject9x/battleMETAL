@@ -31,6 +31,8 @@ Overview:
 #endif
 
 .float getTarget;   //switch for sendEnt
+.float getTargetPrev;   //switch for sendEnt
+.float canTarget; //everything ends up a field value eventually... - sage words.
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
 .float equipSize;

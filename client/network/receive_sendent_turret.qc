@@ -46,34 +46,43 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   local entity this;
   local float prevShield;
   local float prevAttackFlag;
+  local float prevDeadFlag;
   
   prevShield = self.shield;
+  prevDeadFlag = self.deadflag;
   
   turretAng = self.v_angle;
   turretAng_x = 0;
   
+  //EVENT - death
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+  }
+  
   //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.angles_x = anglemod(ReadAngle());
-    self.angles_y = anglemod(ReadAngle());
-    self.angles_z = anglemod(ReadAngle());
-    
     self.data_idx = ReadByte();
-    self.spawnflags = ReadLong();
-    
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
+    if( self.deadflag == DEAD_NO ){
+      self.origin_x = ReadCoord();
+      self.origin_y = ReadCoord();
+      self.origin_z = ReadCoord();
+      
+      self.angles_x = anglemod(ReadAngle());
+      self.angles_y = anglemod(ReadAngle());
+      self.angles_z = anglemod(ReadAngle());
+      
+      self.spawnflags = ReadLong();
+      
+      self.next_wepn1 = ReadByte();
+      self.next_wepn2 = ReadByte();
+      self.next_wepn3 = ReadByte();
+      self.next_wepn4 = ReadByte();
+      self.next_wepn5 = ReadByte();
+      self.next_wepn6 = ReadByte();
+      self.next_wepn7 = ReadByte();
+      self.next_wepn8 = ReadByte();
+      self.next_wepn9 = ReadByte();
+    }
   }
   
   if( isNew ){
@@ -83,6 +92,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     data_sync_new_turret(self.data_idx);
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_turret;
+    self.canTarget = TRUE;
   }
   
   if( (changeFlags & SENDFLAG_IMPACT) ){
@@ -111,14 +121,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     turretAng_x = 0;
   }
   
-  //EVENT - death
-  if( (changeFlags & SENDFLAG_DEAD) ){ 
-    self.deadflag = ReadByte();
-    if( self.deadflag > DEAD_NO ){
-      sendevent_turret_die() ;
-    }
-  }
-  
   //EVENT - health dropped below threshold
   if( (changeFlags & SENDFLAG_BURN) ){
     self.burnBits = ReadLong();
@@ -138,12 +140,16 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     }
   }
   
+  //HANDLE EVENT - dead
+  if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
+    sendevent_turret_die() ;
+  }
+  
   //HANDLE EVENT - turret rotate
   sendevent_turret_update( turretAng );
     
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
-  
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();

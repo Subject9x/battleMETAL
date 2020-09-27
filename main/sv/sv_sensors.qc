@@ -48,7 +48,7 @@ void() sv_getTarget={
     self.lock_timer = 0;  //make sure to reset the timer
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
     self.stat_trg_ent_id = num_for_edict(self.enemy);
-    self.getTarget = 1;
+    self.getTarget = TARGET_SCOPE;
   }
 };
 
@@ -76,15 +76,13 @@ void() sv_updateTargetInfo={
       self.stat_trg_ent_id = 0;
       self.enemy = world;
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
-      self.getTarget = 2;
+      self.getTarget = TARGET_DEAD;
       return;
     }
     local float dst;
     dst = vlen( self.enemy.origin - self.origin );
 
     self.targetValid = ai_valid_target(self.enemy);
-    //lost OR killed target.
-    //todo - prevState values for validity and distance
     if( (prevValid && !self.targetValid) || (dst > self.stat_rdr_rng && prevDist <= self.stat_rdr_rng) ){
       self.enemy = world;
       self.stat_trg_ent_id = 0;
@@ -100,15 +98,16 @@ void() sv_updateTargetInfo={
       }
       self.stat_target_name = "";
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
-      self.getTarget = 3;
+      self.getTarget = TARGET_LOST;
       return;
     }
     self.stat_trg_dataidx = self.enemy.data_idx;
-    self.stat_trg_dat = self.enemy.data_type;
-    self.stat_trg_faction = self.enemy.faction;  
+    self.stat_trg_dataType = self.enemy.data_type;
+    self.stat_trg_faction = self.enemy.faction;
     self.stat_trg_ddflg = self.enemy.deadflag;
     self.stat_trg_dist = dst;
     self.stat_trg_face = util_checkPointAngle(self.enemy);
+    
     //can only lock-on to enemy units
     if( self.enemy.faction != self.faction ){
       local float canLock;

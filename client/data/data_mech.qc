@@ -42,7 +42,11 @@ void( float dataID ) data_sync_new_mech_ai={
   if( self.legs ){
     data_mech_setup_part( self.legs );
   }
-  self.deadflag = DEAD_NO;
+  
+  if(!self.deadflag){
+    self.deadflag = DEAD_NO;
+  }
+  
   self.critBits = 0;
   maxSave = self.maxs;
   minSave = self.mins;

@@ -180,6 +180,12 @@ float MOVE_RAM_ON           = 4;
 float MOVE_RAM_CHARGE       = 5;
 float MOVE_RAM_COOL         = 6;
 
+//Get Target events
+float TARGET_SCOPE          = 1;  //Player has Impulse 7'd the target
+float TARGET_HIT            = 2;  //Player gained target via hitting it with weapons fire
+float TARGET_LOST           = 3;  //Player lost target because target fell off radar.
+float TARGET_DEAD           = 4;  //Player lost target because target was killed.
+
 //MOVE / UNIT DATA MODALS as bitflags
 //float MOVE_STAND            = 0;  //  declared in AI API
 float MV_DEAD = 1;
@@ -344,6 +350,9 @@ float LIFETIME = 2; //lifetime
 float REACTIVATE = 4; //reactivate after countdown
 float REMOVE_FIRSTUSE = 8; //remove after first countdown
 float REMOVE_ONTOUCH = 16; //remove on first touch
+
+float BUILDING_TARGET_FLAG = 16;  //used by building and misc_building for allowing self to be targeted
+
 float ACTIVE_ONTOUCH = 32; //activate on-touch
 float IS_MAPKEY = 4194304; //mark's this entity on player's briefing map.
 float IS_VIP = 8388608; //faction-allied player will be notified of this entity's state
@@ -376,7 +385,9 @@ float RADAR_SWEEP = 2.5;
 
 .float stat_trg_ent_id;
 .float stat_trg_dataidx;
-.float stat_trg_dat;
+
+.float stat_trg_dataType;
+
 .float stat_trg_faction;
 
 .float stat_hit_dirs;
@@ -436,10 +447,10 @@ float STAT_CLIENT_HP_ARMLEFT = 70;
 float STAT_CLIENT_HP_ARMRIGHT = 71;
 float STAT_CLIENT_HP_LEGS = 72;
 
-//float    = 73;
-//float    = 74;
-//float    = 75;
-//float    = 76;
+//float   = 73;
+//float   = 74;
+//float   = 75;
+//float   = 76;
 //float    = 77;
 //float    = 78;
 

@@ -69,6 +69,10 @@ void( float isNew, float changeFlags) sendent_handle_building={
   
   self.energy = ReadShort();
   
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -80,6 +84,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
+    setorigin(self, self.origin);
   }
   
   if( isNew ){
@@ -108,6 +113,11 @@ void( float isNew, float changeFlags) sendent_handle_building={
         mapKeyObject = self;
         lastMapKeyObject = self;
       }
+    }
+    
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
     }
     self.takedamage = DAMAGE_AIM;
   }
@@ -155,26 +165,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
       }
     }
   }
-
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO){
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
-      
-      self.angles_x = anglemod(ReadAngle());
-      self.angles_y = anglemod(ReadAngle());
-      self.angles_z = anglemod(ReadAngle());
-      setorigin(self, self.origin);
-      if( self.th_die ){
-        self.th_die();
-      }
-      else{
-        data_building_death1(); 
-      }
-    }
-  }
+  
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
   
@@ -183,6 +174,16 @@ void( float isNew, float changeFlags) sendent_handle_building={
     if( time > self.shieldEffectTime ){
       self.shieldEffectTime = time + 0.5;
       te_shield_hit();
+    }
+  }
+  
+  //HANDLE EVENT - dead
+  if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO){
+    if( self.th_die ){
+      self.th_die();
+    }
+    else{
+      data_building_death1(); 
     }
   }
 };

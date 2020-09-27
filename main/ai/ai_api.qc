@@ -99,7 +99,7 @@ void( entity t ) ai_call_for_help={
 float(entity t) ai_valid_target={  
   if( t != self ){
     if( (t.flags & (FL_UNIT|FL_MONSTER)) && (t.deadflag == DEAD_NO) ){
-      return TRUE;
+      return t.canTarget;
     }
   }
   return FALSE;

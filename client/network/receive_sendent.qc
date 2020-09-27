@@ -189,14 +189,23 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   
   prevDeadflag = self.deadflag;
   
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+    newModelIndex = ReadShort();
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    setmodel( self, modelnameforindex(ReadShort()) );
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
+    if( self.deadflag == DEAD_NO ){
+      setmodel( self, modelnameforindex(ReadShort()) );
+      self.origin_x = ReadCoord();
+      self.origin_y = ReadCoord();
+      self.origin_z = ReadCoord();
+      self.angles_x = ReadAngle();
+      self.angles_y = ReadAngle();
+      self.angles_z = ReadAngle();
+      self.faction = ReadByte();
+      self.canTarget = ReadByte();
+    }
   }
   
   if(isNew){
@@ -207,14 +216,10 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
     self.movetype = MOVETYPE_NONE;
   }
   
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    newModelIndex = ReadShort();
-    if( self.deadflag == DEAD_DEAD && prevDeadflag == DEAD_NO ){
-      setmodel( self, modelnameforindex(newModelIndex) );
-      setsize( self, self.mins, self.maxs );
-      setorigin(self, self.origin);
-    }
+  if( self.deadflag == DEAD_DEAD && prevDeadflag == DEAD_NO ){
+    setmodel( self, modelnameforindex(newModelIndex) );
+    setsize( self, self.mins, self.maxs );
+    setorigin(self, self.origin);
   }
 };
 
@@ -232,10 +237,16 @@ void() sendent_missile_think={
 };
 
 void( float isNew, float changeFlags ) sendent_handle_missile={
+  local float ownerId;
+  local float prevImpactType;
+  
+  prevImpactType = self.impactType;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
+    ownerId = ReadCoord();
+    self.owner = findfloat(world, entnum, ownerId);
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -272,18 +283,26 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( changeFlags & SENDFLAG_IMPACT ){
-    self.angles = vectoangles(self.velocity); //override cause impact causes wierd rotation bug
     self.impactType = ReadByte();
-    self.damageValue = ReadByte();
-    if( self.impactType > 0 ){
-      self.velocity = '0 0 0';
-    }
-    if( self.pcl_explode ){
-      self.pcl_explode();
+    self.targetEntId = ReadCoord();
+    self.enemy = findfloat(world, entnum, self.targetEntId);
+    if( self.owner && self.owner.enemy == world){
+      if( self.enemy.canTarget > 0 ){
+        self.owner.enemy = self.enemy;
+        self.owner.getTarget = TARGET_HIT;
+        self.owner.getTargetPrev = FALSE;
+      }
     }
   }
   
   self.angles = vectoangles(self.velocity);
+  //HANDLE EVENT - projectile hit.
+  if( self.impactType > 0 && prevImpactType == FALSE ){
+    self.velocity = '0 0 0';
+    if( self.pcl_explode ){
+      self.pcl_explode();
+    }
+  }
 };
 
 /*

@@ -154,21 +154,26 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   self.angles_y = anglemod(ReadAngle());
   self.angles_z = 0;
   
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.flags = ReadLong();
-    self.faction = ReadByte();
     self.data_idx = ReadByte();
-   
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte(); 
-    newName = ReadString();
+    if(self.deadflag == DEAD_NO){
+      self.flags = ReadLong();
+      self.faction = ReadByte();
+      self.next_wepn1 = ReadByte();
+      self.next_wepn2 = ReadByte();
+      self.next_wepn3 = ReadByte();
+      self.next_wepn4 = ReadByte();
+      self.next_wepn5 = ReadByte();
+      self.next_wepn6 = ReadByte();
+      self.next_wepn7 = ReadByte();
+      self.next_wepn8 = ReadByte();
+      self.next_wepn9 = ReadByte(); 
+      newName = ReadString();
+    }
   }
   
   if( isNew ){
@@ -185,16 +190,13 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.interpolate_entity = interpolate_mech_ai;
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_mech_ai;
+    self.canTarget = TRUE;
   }
   
    //self.flags = ReadLong(); // DEBUG - disabled for now.
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shield = ReadByte();
     self.shieldHitFlag = ReadByte();
-  }
-    
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
   }
   
   //EVENT - MOVE

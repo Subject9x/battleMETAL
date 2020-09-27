@@ -295,14 +295,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);
 
   // add any polygons we want here
-
-  //DATA - Update local Client data vars from Server
-  
-  client_get_info();
-  
-  receive_ent_bindData();
-  
-  client_state_events();
   makevectors(input_angles);
   //=================================================
   
@@ -336,7 +328,13 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     addentities( (MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
     renderscene();
   }
-
+  
+  //DATA - Update local Client data vars from Server
+  //note - make sure this is called AFTER addentities(), hehe
+  client_get_info();
+  receive_ent_bindData();
+  client_state_events();
+  
   /*
     special rant: the fact that the client itself, isn't a faffing global entity in the CLIENT
     module of all things is the height of idiocy.
@@ -568,7 +566,10 @@ float(float event) CSQC_Event =
 // OPTIONAL, probably should be deprecated as well
 entity(float entNum) CSQC_Ent_Spawn =
 {
-  return spawn();
+  local entity e;
+  e = spawn();
+  e.entnum = entNum;
+  return e;
 };
 
 
@@ -593,8 +594,6 @@ void(float isnew) CSQC_Ent_Update =
       2) Entity fell out of client's view scope, and no longer visible to client.
       
     knowing these 2 cases makes all the difference about executing this function.
-    
-
 */
 void() CSQC_Ent_Remove ={
   local entity weps;

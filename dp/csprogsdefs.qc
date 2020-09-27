@@ -88,59 +88,40 @@ void		end_sys_globals;		// flag for structure dumping
 
 ==============================================================================
 */
-
 //
 // system fields (*** = do not set in prog code, maintained by C code)
 //
 .float		modelindex;		// *** model index in the precached list
 .vector		absmin, absmax;	// *** origin + mins / maxs
 .vector maxs, mins;
-
-.float		entnum;	// *** the ent number as on the server
+.float		entnum;	// *** the ent number as on the server BUT if you implement CSQC_Ent_Spawn(float entNum) yourself, you must assign it! or, well ya shoud -> csprogs.c Line 849
 .float		drawmask;
 .float()		predraw;
-
 .float		movetype;
 .float		solid;
-
 .vector		origin;			// ***
 .vector		oldorigin;		// ***
 .vector		velocity;
 .vector		angles;
-.vector		v_angle;		// view / targeting angle for players
 .vector		avelocity;
-
 .string		classname;		// spawn function
 .string		model;
 .float		frame;
 .float		skin;
 .float		effects;
-
 .vector		mins, maxs;		// bounding box extents reletive to origin
 .vector		size;			// maxs - mins
-
 .void()		touch;
 .void()		use;
 .void()		think;
 .void()		blocked;		// for doors or plats, called when can't push other
-
 .float		nextthink;
-
 .entity		chain;
-
 .string		netname;
-
 .entity 	enemy;
-
 .float		flags;
-
 .float		colormap;
-
 .entity		owner;		// who launched a missile
-
-//
-.float() t_remove; // called by CSQC_Ent_Remove to clean up this entity, return TRUE if remove(self) should be performed afterward
-
 //================================================
 void		end_sys_fields;			// flag for structure dumping
 //================================================
@@ -152,6 +133,11 @@ void		end_sys_fields;			// flag for structure dumping
 
 ==============================================================================
 */
+
+.vector v_angle; // view / targeting angle for players
+
+//
+.float() t_remove; // called by CSQC_Ent_Remove to clean up this entity, return TRUE if remove(self) should be performed afterward
 
 float sb_showscores;
 

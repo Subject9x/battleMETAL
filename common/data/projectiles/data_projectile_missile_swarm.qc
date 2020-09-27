@@ -95,7 +95,7 @@ void() data_projectile_missile_swarm_touch={
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 3, 1 );
       self.impactType = IMPACT_ARMOR;
     }
-    
+    self.stat_trg_ent_id = num_for_edict(other);
     debris = 0;
   }
   if( debris > 0 ){
