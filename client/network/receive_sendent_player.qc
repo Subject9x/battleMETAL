@@ -545,7 +545,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_IMPACT) ){
     local float nextHit;
     nextHit = ReadByte();
-    if( self.shieldHitFlag == 0 || nextHit == 3){
+    cons_logAFloat("nextHit", nextHit); //debug
+    if( self.shieldHitFlag == FALSE || nextHit == SHIELD_HIT_EXP){
       self.shieldHitFlag = nextHit;
     }
   }
@@ -673,7 +674,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   //Shield strike event
   if(servertime > self.shieldEffectTime ){
-    if( self.shieldHitFlag == 1 && (self.shield > 0 && self.shield < 100.01)){
+    if( self.shieldHitFlag == SHIELD_HIT_UP && (self.shield > 0 && self.shield < 100.01)){
       te_shield_hit();
     }
   }

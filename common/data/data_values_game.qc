@@ -510,6 +510,13 @@ float FACTION_MILITAR = 3;
 float FACTION_ALL = 255;  //buildings don't show up on radar, deploy and nav points are rendered to everyone.
 
 //============================
+//     SHIELD HIT FLAGS
+//============================
+float SHIELD_HIT_UP   = 1;
+float SHIELD_HIT_DN = 2;
+float SHIELD_HIT_EXP  = 3;
+
+//============================
 //     AI VOICE SYSTEM
 //============================
 //Voice group IDs

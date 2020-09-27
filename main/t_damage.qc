@@ -28,8 +28,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
   
-  dmgTrg.shieldHitFlag = 0;
-  
   //reduce friendly fire damage on easier settings
   if( (trg.faction != FACTION_ALL) ){
     if( trg.faction == attacker.faction ){
@@ -195,20 +193,18 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( dmgTrg.shield < 0 ){
     dmgTrg.shield = 0;
     if(shieldBreaker){
-      dmgTrg.shieldHitFlag = 3;
+      dmgTrg.shieldHitFlag = SHIELD_HIT_EXP;
     }
     else{
-      dmgTrg.shieldHitFlag = 2;
+      dmgTrg.shieldHitFlag = SHIELD_HIT_DN;
     }
   }
   else{
-    dmgTrg.shieldHitFlag = 1;
+    dmgTrg.shieldHitFlag = SHIELD_HIT_UP;
   }
   
   if( (dmgTrg.flags & FL_CLIENT) ){
-    if( trg.faction == FACTION_ALL && trg.data_type != DATA_BLD ){
-      dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
-    }
+    dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
   }
   
   dmgTrg.dmg_inflictor = inflictor;

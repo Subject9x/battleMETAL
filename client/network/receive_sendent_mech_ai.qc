@@ -241,7 +241,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   //Shield strike event
-  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
+  if( self.shieldHitFlag == SHIELD_HIT_UP && (self.shield > 0 && self.shield < 100.01)){
     if( time > self.shieldEffectTime ){
       self.shieldEffectTime = time + 0.5;
       te_shield_hit();
