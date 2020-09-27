@@ -545,7 +545,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_IMPACT) ){
     local float nextHit;
     nextHit = ReadByte();
-    cons_logAFloat("nextHit", nextHit); //debug
     if( self.shieldHitFlag == FALSE || nextHit == SHIELD_HIT_EXP){
       self.shieldHitFlag = nextHit;
     }
