@@ -363,6 +363,9 @@ void( vector menuOrg ) menu_score_coop_server_info={
   local vector fontsStyle;
   local vector leftAnchor;
   
+  local string serverStatus;
+  local string serverTime;
+  
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('200 80'), '0.65 0.65 0.65', 1, 0);
   
   //commented out sections are intentional
@@ -405,11 +408,19 @@ void( vector menuOrg ) menu_score_coop_server_info={
   }
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 70'), "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );*/
   
+  serverStatus = ui_label_mission_status();
+  
   //Time Limit
-  //gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('10.5 70'), "Time :", ui_calculate_time_string(SV_ENDTIME), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10');  
+  if( serverStatus == "Complete" ){
+    serverTime =  ui_calculate_time_string(SV_TIMELIMIT);
+  }
+  else{
+    serverTime = ui_calculate_time_string(SV_ENDTIME);
+  }
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('10.5 70'), "Time :", serverTime, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10');
   
   //Game Status
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('5.5 56'), "Server :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('5.5 56'), "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
 };
 
 void( vector menuOrg ) menu_score_coop_mission_info={

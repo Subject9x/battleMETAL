@@ -237,6 +237,8 @@ void( vector menuOrg ) menu_serverinfo_basic={
   local vector fontsStyle;
   local vector leftAnchor;
   
+  local string serverStatus;
+  
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('225 150'), '0.65 0.65 0.65', 1, 0);
   
   // Server Name
@@ -278,17 +280,18 @@ void( vector menuOrg ) menu_serverinfo_basic={
   }
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('8 90'), "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
+  serverStatus = ui_label_mission_status();
   //Time Limit
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+  if( serverStatus == "Complete" ){
+    gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_time_string(SV_TIMELIMIT), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+  }
+  else{
+    gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+  }
   
   //Game Status
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('6 126'), "Server :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('6 126'), "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
 }; 
-
-// connect_dm and score_dm ui.
-void( vector menuOrg ) menu_playerlist_basic={
-
-};
 
 //arranges player rows for dm
 void( vector menuOrg ) menu_draw_players_basic={

@@ -122,6 +122,7 @@ void() StartFrame =
 	teamplay = cvar("teamplay");
 	skill = cvar("skill");
 	framecount = framecount + 1;
+  sv_checkRules(); //ported over here for fairness and synchronization
 };
 
 /*
@@ -130,5 +131,4 @@ void() StartFrame =
   it really should be here even if you DONT use it - its handy to have.
 */
 void() EndFrame={
-  sv_checkRules(); //ported over here for fairness and synchronization
 };
