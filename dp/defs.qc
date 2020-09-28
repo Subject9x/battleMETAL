@@ -431,6 +431,7 @@ float		skill;
 // world fields (FIXME: make globals)
 //
 //.string		wad;
+void() EndFrame;  //so this is actually declared in the C-code, but missing from the defs up top.
 .string 	map;
 .float		worldtype;	// 0=medieval 1=metal 2=base
 

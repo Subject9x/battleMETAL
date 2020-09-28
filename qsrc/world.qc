@@ -67,7 +67,7 @@ void() worldspawn =
   //see q1/precache_world.q1_precache_sound();
   
   FRIK_FILE_precaches();
-    
+  
   mh_world_ini();
 //
 // Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
@@ -122,5 +122,13 @@ void() StartFrame =
 	teamplay = cvar("teamplay");
 	skill = cvar("skill");
 	framecount = framecount + 1;
+};
+
+/*
+  Engine Entry point for end of server frame, curiously enough the engine makes the call to the progs 
+  but this is not defined anywhere else. I swear I remember reading about this years ago, and yeah, 
+  it really should be here even if you DONT use it - its handy to have.
+*/
+void() EndFrame={
   sv_checkRules(); //ported over here for fairness and synchronization
 };
