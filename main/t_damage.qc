@@ -72,6 +72,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   util_chekPointToHitDir(trg, dmg_point);
   
   if( (attacker.flags & FL_CLIENT) ){
+    attacker.playerDMdamage = attacker.playerDMdamage + dmgAmt;
     if( !attacker.enemy && dmgTrg.canTarget ){
       attacker.enemy = dmgTrg;
       attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
