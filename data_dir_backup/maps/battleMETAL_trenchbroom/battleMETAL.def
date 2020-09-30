@@ -5831,3 +5831,45 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
+
+/*QUAKED doodad_mech_static_balaket (0 0.25 1) (-18 -18 -35) (18 18 16) TRIGGER_REMOVE
+  { model("models/mechs/balaket/balaket.md3"); }
+  misc. mech models used for decoration.
+  these are static models, with no collision, no AI.
+  they dont get any weapons, and aren't animated.
+  
+  DEFAULT - a PSC 
+-------- KEYS -------- 
+ .faction = <float> faction id to set skin type.
+
+-------- SPAWNFLAGS -------- 
+TRIGGER_REMOVE 1: remove this when given a targetname
+*/
+
+/*QUAKED doodad_mech_static_matok (0 0.25 1) (-18 -18 -40) (18 18 22) TRIGGER_REMOVE
+  { model("models/mechs/matok/matok.md3"); }
+  misc. mech models used for decoration.
+  these are static models, with no collision, no AI.
+  they dont get any weapons, and aren't animated.
+  
+  DEFAULT - a PSC 
+-------- KEYS -------- 
+ .faction = <float> faction id to set skin type.
+
+-------- SPAWNFLAGS -------- 
+TRIGGER_REMOVE 1: remove this when given a targetname
+*/
+
+/*QUAKED doodad_mech_static_monitor (0 0.25 1) (-22 -22 -44) (22 22 24) TRIGGER_REMOVE
+  { model("models/mechs/monitor/monitor.md3"); }
+  misc. mech models used for decoration.
+  these are static models, with no collision, no AI.
+  they dont get any weapons, and aren't animated.
+  
+  DEFAULT - a PSC 
+-------- KEYS -------- 
+ .faction = <float> faction id to set skin type.
+
+-------- SPAWNFLAGS -------- 
+TRIGGER_REMOVE 1: remove this when given a targetname
+*/

@@ -122,6 +122,102 @@ void() map_mismodelPath_solid={
   setorigin(self, self.origin);
 };
 
+
+void() doodad_static_mech_use={
+  self.use = SUB_Null;
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+};
+
+
+//generic ini
+void() doodad_static_mech={
+  if(!self.data_idx){
+    self.data_idx = 1;
+  }
+  
+  self.skin = self.faction - 1;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  
+  if( self.targetname && (self.spawnflags & 1) ){
+    self.use = doodad_static_mech_use;
+  }
+};
+
+/*QUAKED doodad_mech_static_balaket (0 0.25 1) (-18 -18 -35) (18 18 16) TRIGGER_REMOVE
+  { model("models/mechs/balaket/balaket.md3"); }
+  misc. mech models used for decoration.
+  these are static models, with no collision, no AI.
+  they dont get any weapons, and aren't animated.
+  
+  DEFAULT - a PSC 
+-------- KEYS -------- 
+ .faction = <float> faction id to set skin type.
+
+-------- SPAWNFLAGS -------- 
+TRIGGER_REMOVE 1: remove this when given a targetname
+*/
+void() doodad_mech_static_balaket={
+  self.data_idx = 1;
+  if(!self.faction){
+    self.faction = 1;
+  }
+  setmodel(self, "models/mechs/balaket/balaket.md3");
+  setsize(self, '-18 -18 -35', '18 18 16');
+  setorigin(self, self.origin);
+  doodad_static_mech();
+};
+
+/*QUAKED doodad_mech_static_matok (0 0.25 1) (-18 -18 -40) (18 18 22) TRIGGER_REMOVE
+  { model("models/mechs/matok/matok.md3"); }
+  misc. mech models used for decoration.
+  these are static models, with no collision, no AI.
+  they dont get any weapons, and aren't animated.
+  
+  DEFAULT - a PSC 
+-------- KEYS -------- 
+ .faction = <float> faction id to set skin type.
+
+-------- SPAWNFLAGS -------- 
+TRIGGER_REMOVE 1: remove this when given a targetname
+*/
+void() doodad_mech_static_matok={
+  self.data_idx = 2;
+  if(!self.faction){
+    self.faction = 1;
+  }
+  setmodel(self, "models/mechs/matok/matok.md3");
+  setsize(self, '-18 -18 -40', '18 18 22');
+  setorigin(self, self.origin);
+  
+  doodad_static_mech();
+};
+
+/*QUAKED doodad_mech_static_monitor (0 0.25 1) (-22 -22 -44) (22 22 24) TRIGGER_REMOVE
+  { model("models/mechs/monitor/monitor.md3"); }
+  misc. mech models used for decoration.
+  these are static models, with no collision, no AI.
+  they dont get any weapons, and aren't animated.
+  
+  DEFAULT - a PSC 
+-------- KEYS -------- 
+ .faction = <float> faction id to set skin type.
+
+-------- SPAWNFLAGS -------- 
+TRIGGER_REMOVE 1: remove this when given a targetname
+*/
+void() doodad_mech_static_monitor={
+  self.data_idx = 3;
+  if(!self.faction){
+    self.faction = 1;
+  }
+  setmodel(self, "models/mechs/monitor/monitor.md3");
+  setsize(self, '-22 -22 -44', '22 22 24');
+  setorigin(self, self.origin);
+  doodad_static_mech();
+};
+
 /*
   A model on the map that is destructible
 */
