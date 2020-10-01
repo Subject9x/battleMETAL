@@ -31,7 +31,7 @@ https://github.com/Subject9x/battleMETAL/wiki
 + A bespoke solution that replaces the original _Quake_ AI code.
 + Packaged into an API for ease of maintenance.
 + AI uses most of the gameplay features listed here, almost on parity with player.
-+ AI behavior is boken down by unit type, each leveraging the API in a few unique ways.
++ AI behavior is broken down by unit type, each leveraging the API in a few unique ways.
 
 
 ### HUD
