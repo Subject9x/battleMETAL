@@ -20,6 +20,7 @@ void() te_muzzle_latc={
   local vector ang;
   local vector norm;
   local float impactStyle;
+  local float beamLen;
   
   startOrg = self.origin + (v_forward * self.wepFireOffset_z);
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
@@ -29,7 +30,8 @@ void() te_muzzle_latc={
   ang = vectoangles(endOrg - startOrg);
   pointsound( startOrg, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM);
   
-  if( vlen(endOrg - startOrg) >= 1500 ){
+  beamLen = vlen(endOrg - startOrg);
+  if( beamLen >= 1500 ){
     pointsound( endOrg, "sound/weapons/atc_fire.ogg", 0.5, ATTN_NORM);
   }
   
@@ -39,7 +41,12 @@ void() te_muzzle_latc={
   
   impactStyle = te_impact_type(endOrg, trace_ent);
   
-  pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg, norm * 1600, 1);
+  
+  if( beamLen > 100 ){
+    pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg, norm * 1600, 1);
+  }
+  
+  
   switch(impactStyle){
     case IMPACT_ARMOR:
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), endOrg + v_forward * -3, norm * 4, 3);
