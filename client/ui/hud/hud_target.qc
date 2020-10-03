@@ -217,7 +217,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   if( nameproj_z >= 0 ){
     nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
     nameproj_z = 0;
-    drawstring(nameproj, playerName, drawSize, CLR_DEF_IFF_ENEMY * 1.5, 1, 0);
+    drawstring(nameproj, playerName, drawSize, factionColor * 1.5, 1, 0);
   }
   namepos = cs_unproject(nameproj);
   
