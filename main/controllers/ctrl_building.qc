@@ -149,11 +149,11 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
   
   if( (changedflags & SENDFLAG_MOVE) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
-      WriteByte( MSG_ENTITY, self.cockpit.attack_state);
-      WriteShort( MSG_ENTITY, self.compAltOffset_x );
-      WriteShort( MSG_ENTITY, self.compAltOffset_y );
-      WriteShort( MSG_ENTITY, self.compAltOffset_z );
-      WriteShort( MSG_ENTITY, self.reloadValue );
+      WriteByte( MSG_ENTITY, self.burstRate );
+      WriteByte( MSG_ENTITY, self.attack_state);  //send the partTypeId value to the client
+      if( self.attack_state > FALSE ){
+        WriteCoord( MSG_ENTITY, num_for_edict(self.trigger_field.clientData) );
+      }
     }
     if( self.data_idx == UI_BUILDING_radar ){
       WriteByte( MSG_ENTITY, self.attack_state );

@@ -130,11 +130,11 @@ void( float isNew, float changeFlags) sendent_handle_building={
   //rider for desired stat changes
   if( (changeFlags & SENDFLAG_MOVE) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
+      self.burstRate = ReadByte();
       self.w_firetime = ReadByte();
-      self.compAltOffset_x = ReadShort();
-      self.compAltOffset_y = ReadShort();
-      self.compAltOffset_z = ReadShort();
-      self.energy = ReadShort();
+      if(self.w_firetime > FALSE ){
+        self.targetEntId = ReadCoord();
+      }
     }
     if( self.data_idx == UI_BUILDING_radar ){
       self.w_firetime = ReadByte();
@@ -190,5 +190,10 @@ void( float isNew, float changeFlags) sendent_handle_building={
 
 float() predraw_building={
   setorigin(self, self.origin);
+  
+  if(self.render_dlights){
+    self.render_dlights();
+  }
+  
   return FALSE;
 };
