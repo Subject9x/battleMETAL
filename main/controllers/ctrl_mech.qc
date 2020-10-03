@@ -43,7 +43,9 @@ void() ctrl_update_mechplayer={
     }
     hp = piece.health / piece.max_health;
     if( hp < 0.67){
-      newBurn = newBurn | piece.partTypeId;
+      if( !(self.burnBits & piece.partTypeId) ){
+        newBurn = newBurn | piece.partTypeId; 
+      }
     }
   }
   if( newBurn > 0 ){

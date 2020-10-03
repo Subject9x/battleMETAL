@@ -118,6 +118,7 @@ void() building_repair_select={
       if( !(player.flags & FL_NOSHOOT) ){
         player.flags = player.flags | FL_NOSHOOT;
         self.moveState = TRUE; //preserve client FL_NOSHOOT setting
+        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_NEWENT;
       }
       client_send_event_repairs( player, TRUE );
     }
@@ -203,11 +204,7 @@ void() building_repair_fixing={
         if(fix.deadflag != DEAD_NO ){
           fix.deadflag = DEAD_NO;
           player.damageValue = player.damageValue - (player.damageValue & fix.partTypeId);
-          player.critBits = player.critBits - (player.critBits & fix.partTypeId);
-          
-          if( (player.flags & FL_CLIENT) ){
-            player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_CRIT;
-          }
+          player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_CRIT;
           
           part = player.w_slot;
           while( part != world ){
@@ -253,12 +250,12 @@ void() building_repair_fixing={
       }
     }
   }
-  //really dumb fix, sorry
   player.stat_plr_rep = (self.reloadValue / self.reloadMax) * 100;
   
-  if(end_repair){
+  if(end_repair){  
+    player.burnBits = player.burnBits - (player.burnBits & fix.partTypeId);
+          player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
     fix.deadflag = DEAD_NO;
-    player.critBits = player.critBits - (player.critBits & fix.partTypeId);
     self.ai_state_next = PLAYER_CONNECT;
   }
 };
@@ -272,6 +269,12 @@ void() building_repair_idle={
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self.burstRate = 1;
     if( self.ai_state_last != PLAYER_RESPAWN ){
+      if( self.moveState == TRUE){
+        //player's FL_NOSHOOT was only for the repair action, so we remove it now.
+        self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
+         self.trigger_field.clientData.SendFlags = self.trigger_field.clientData.SendFlags | SENDFLAG_NEWENT;
+        self.moveState = FALSE;
+      }
       self.goalentity = world;
       self.attack_state = 0;
       if(self.trigger_field != world){
@@ -292,6 +295,7 @@ void() building_repair_cooldown={
     if( self.moveState == TRUE){
       //player's FL_NOSHOOT was only for the repair action, so we remove it now.
       self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
+       self.trigger_field.clientData.SendFlags = self.trigger_field.clientData.SendFlags | SENDFLAG_NEWENT;
       self.moveState = FALSE;
     }
     client_send_event_repairs( self.trigger_field, FALSE );

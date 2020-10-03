@@ -617,7 +617,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_BURN) ){
     self.burnBits = ReadShort();
-    self.burnBits = self.burnBits | prevBurn;
+    if( self.burnBits < prevBurn ){
+      self.burnBits = self.burnBits - (self.burnBits & prevBurn);
+    }
   }
   
   /*
