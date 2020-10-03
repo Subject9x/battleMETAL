@@ -254,14 +254,27 @@ void() train_next =
 {
 	local entity	targ;
 
-	targ = find (world, targetname, self.target);
-	self.target = targ.target;
-	if (!self.target)
-		objerror ("train_next: no next target");
-	if (targ.wait)
-		self.wait = targ.wait;
-	else
-		self.wait = 0;
+  targ = find (world, targetname, self.target);
+  self.target = targ.target;
+  if (!self.target){
+    objerror ("train_next: no next target");
+  }
+  if(targ.speed){
+    self.old_speed = self.speed;
+    self.speed = targ.speed;
+  }
+  else{
+    if(self.old_speed){
+      self.speed = self.old_speed;
+    }
+  }
+   
+  if (targ.wait){
+    self.wait = targ.wait;
+  }
+  else{
+    self.wait = 0;
+  }
 	sound (self, CHAN_VOICE, self.noise1, 1, ATTN_NORM);
 	SUB_CalcMove (targ.origin - self.mins, self.speed, train_wait);
 };
@@ -287,10 +300,12 @@ The targets origin specifies the min point of the train at each corner.
 The train spawns at the first target it is pointing at.
 If the train is the target of a button or trigger, it will not begin moving until activated.
 speed	default 100
+  target .speed value will be given to the train when it touches the target.
+    any target without speed will default train speed back to its original value.
+
 dmg		default	2
 sounds
 1) ratchet metal
-
 */
 void() func_train =
 {	
