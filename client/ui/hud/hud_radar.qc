@@ -54,6 +54,9 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     if( vlen(blip.origin - RADAR_ORG) > radarRange ){
       continue;
     }
+    if( !blip.canTarget ){
+      continue;
+    }
     testCheck = TRUE;
     //passive radar cannot see through walls or buildings
     if( CLIENT_stat_rdr_mode == FALSE ){
