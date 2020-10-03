@@ -16,24 +16,29 @@ void() repair_bay_dlights={
   if( self.deadflag == DEAD_NO ){
     if( self.faction == CLIENT_faction ){
       if( self.burstRate == 1 ){
-        lightColor = '0.25 0.85 0.35';
+        lightColor = '0.25 0.95 0.35';
+        lightStyle = 11;
       }
       else if( self.burstRate == 2 ){
         lightColor = '1 0.6 0';
+        lightStyle = 6;
       }
       else{
         lightColor = '0.25 0.25 0.25';
+        lightStyle = 1;
       }
     }
     else{
       if( self.burstRate > 0 ){
         lightColor = '0 0 0';
+        lightStyle = 1;
       }
       else{
         lightColor = '0.95 0.25 0.15';
+        lightStyle = 4;
       }
     }
-    adddynamiclight2( self.origin, 150, lightColor, PFLAGS_FULLDYNAMIC); 
+    adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
   }
 };
 
