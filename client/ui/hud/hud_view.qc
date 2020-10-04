@@ -1067,7 +1067,7 @@ void(float lockTime) hud_lock_control_start={
   
   HUD_LOCK_ALPHA = 0.01;
   
-  HUD_LOCK_SIZE = 2;
+  HUD_LOCK_SIZE = 1;
   HUD_LOCK_ALPHA_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
   HUD_LOCK_SIZE_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
   HUD_LOCK_COLOR = CLR_DEF_RET_GETLOCK;

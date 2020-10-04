@@ -37,7 +37,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   
   //lock on indicators  
   if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('36 36') * HUD_LOCK_SIZE;
+    lockSize = gui_percentToPixelRawVec('34 34');
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
     drawpic(lockCenter, "gfx/hud/ret/crosshair4_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);

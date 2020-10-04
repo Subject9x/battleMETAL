@@ -134,7 +134,7 @@ void() sendevent_mech_ai_die_standing={
   mechRoot = spawn();
   mechRoot.solid = SOLID_NOT;
   mechRoot.movetype = MOVETYPE_NONE;
-  mechRoot.origin = self.torsoCenter.origin + '0 0 -8';
+  mechRoot.origin = self.torsoCenter.origin + '0 0 -4';
   
   mechRoot.compOffset = self.torsoCenter.compOffset;
   mechRoot.angles = self.torsoCenter.angles;
