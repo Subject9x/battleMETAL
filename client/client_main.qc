@@ -655,6 +655,9 @@ void() CSQC_Ent_Remove ={
       strunzone(self.netname);
     }
   }
+  if( wasfreed(self) ){
+    return;
+  }
   remove(self);
 };
 
