@@ -44,10 +44,6 @@ void() ai_mech_sniper_die={
   self.legs.compAltOffset = self.maxs;
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
-
-  if( self.ai_node_recall.owner == self ){
-    remove(self.ai_node_recall);
-  }
   
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );

@@ -44,10 +44,6 @@ void() ai_mech_sk_die={
   self.legs.compAltOffset = self.maxs;
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
-
-  if( self.ai_node_recall.owner == self ){
-    remove(self.ai_node_recall);
-  }
   
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
@@ -66,15 +62,20 @@ void() ai_mech_sk_die={
   
   ai_alert_close( self.enemy );
   
-  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD| SENDFLAG_BURN | SENDFLAG_MOVE);
+  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
   
   self.think = ai_mech_sk_die2;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.1;
 };
 
 //explode
 void() ai_mech_sk_die2={
+  self.think = ai_mech_sk_die3;
+  self.nextthink = time + 0.1;
+};
+
+void() ai_mech_sk_die3={
   ctrl_unit_cleanup_mech();
   self.think = SUB_Remove;
-  self.nextthink = time + 1;
+  self.nextthink = time + 2;
 };

@@ -67,9 +67,6 @@ void() ai_gev_die={
   if( (self.flags & FL_TURRET) ){
     ctrl_unit_part_death(self.torsoCenter);
   }
-  if( self.ai_node_recall ){
-    remove(self.ai_node_recall);
-  }
   
   makevectors( self.angles );
   
