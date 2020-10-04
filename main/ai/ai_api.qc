@@ -73,7 +73,7 @@ void( entity t ) ai_call_for_help={
   allies = 0;
   
   if((t.flags&FL_CLIENT)){
-    ai_sfx_help();  
+    ai_sfx_help();
   }
   for(ally=nextent(world); ally != world; ally = nextent(ally)){
     if( !ai_valid_target(ally) ){
@@ -90,6 +90,11 @@ void( entity t ) ai_call_for_help={
     }
     if( vlen( ally.origin - self.origin ) > self.ai_view ){
       continue;
+    }
+    if(alarm_ent != world){
+      if( ally == alarm_ent ){
+        continue;
+      }
     }
     ai_give_target( ally, t, (t.flags&FL_CLIENT) );
     allies = allies + 1;
@@ -129,6 +134,10 @@ void( entity t) ai_alert_close={
   
   local entity ally;
   
+  if( alarm_ent == world ){
+    alarm_ent = self;
+  }
+  
   if((t.flags&FL_CLIENT)){
     ai_sfx_help();
   }
@@ -143,6 +152,9 @@ void( entity t) ai_alert_close={
       continue;
     }
     ai_give_target( ally, t, (t.flags&FL_CLIENT) );
+  }      
+  if(alarm_ent == self){
+    alarm_ent = world;
   }
 };
 

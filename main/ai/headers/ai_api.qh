@@ -40,16 +40,19 @@ float enemy_vis;      //enum, Line of Sight to target
 float combat_roll;    //per-state-frame dice roll for random movement selection.
 vector ai_angle;      //used for temporary angle calcs that preclude overriding the AI's current yaw
 float yawCache;       //used to quickly cache yaw to do some per-frame mods
-//////////////////this are set every frame by every AI, do not rely on these OUTSIDE the function they're called (like all the trace_* globals)
-
 entity friend_blocker;
 float friend_blocker_dist;
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
 vector selfSensorOrg;
 entity lastNode;        //minor optimization
+void(entity newAttacker) ai_react_generic;
+entity alarm_ent; //per-frame global used to prevent near-endless alarm loops
+float alarm_depth;  //per-frame global used to prevent near-endless alarm loops;
+
+//////////////////this are set every frame by every AI, do not rely on these OUTSIDE the function they're called (like all the trace_* globals)
+
 
 //ENTITY VARS
-void(entity newAttacker) ai_react_generic;
 .float ai_react_buffer;             //prevents too many runs of th_react;
 .float ai_react_time;               //stat for react buffer
 
