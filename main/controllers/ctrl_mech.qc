@@ -459,6 +459,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
+    WriteByte( MSG_ENTITY, self.critBits);
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){

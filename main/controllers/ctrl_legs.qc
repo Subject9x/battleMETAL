@@ -106,8 +106,7 @@ void() ctrl_dieLegs={
   }
   
   if( self.deadflag == DEAD_NO ){
-    //create visible duplicate
-    te_vehicle_chunk( self, self.owner.velocity, self.angles,  particleeffectnum("TE_DEBRIS_TRAIL_MED"), 3600, 1 );
+    //te_vehicle_chunk( self, self.owner.velocity, self.angles,  particleeffectnum("TE_DEBRIS_TRAIL_MED"), 3600, 1 );
     
     self.health = 0;
     self.deadflag = DEAD_DEAD;

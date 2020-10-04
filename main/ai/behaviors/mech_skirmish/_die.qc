@@ -48,15 +48,15 @@ void() ai_mech_sk_die={
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
   
-  ctrl_unit_part_death(self.torsoCenter);
-  ctrl_unit_part_death(self.torsoLeft);
-  ctrl_unit_part_death(self.torsoRight);
-  ctrl_unit_part_death(self.armLeft);
-  ctrl_unit_part_death(self.armRight);
+  if( self.ai_move > MOVE_STAND_FACE ){
+    ctrl_unit_part_death(self.torsoCenter);
+    ctrl_unit_part_death(self.torsoLeft);
+    ctrl_unit_part_death(self.torsoRight);
+    ctrl_unit_part_death(self.armLeft);
+    ctrl_unit_part_death(self.armRight);
+  }
   ctrl_unit_part_death(self.cockpit);
   
-  self.model = "";
-  setmodel(self, self.model);
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);
   
@@ -70,12 +70,8 @@ void() ai_mech_sk_die={
 
 //explode
 void() ai_mech_sk_die2={
-  self.think = ai_mech_sk_die3;
-  self.nextthink = time + 0.1;
-};
-
-void() ai_mech_sk_die3={
   ctrl_unit_cleanup_mech();
+  self.effects = self.effects | EF_LOWPRECISION;
   self.think = SUB_Remove;
-  self.nextthink = time + 2;
+  self.nextthink = time + 0.1;
 };

@@ -122,3 +122,8 @@ float(vector endPos, entity endEnt) te_impact_type;
 
 vector( vector startOrg ) te_apply_wind;
 vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge;
+
+/*
+  mech corpse-piece
+*/
+entity(entity root, entity part) te_mech_chunk_stand;

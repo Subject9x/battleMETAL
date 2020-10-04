@@ -676,3 +676,21 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
   newpos = newpos + (v_up *  hight);
   return newpos;
 };
+
+entity(entity root, entity part) te_mech_chunk_stand={
+  local entity aPiece;
+  
+  aPiece = spawn();
+  
+  aPiece.solid = SOLID_NOT;
+  aPiece.movetype = MOVETYPE_NONE;
+  aPiece.origin = part.origin;
+  aPiece.compOffset = part.compOffset;
+  aPiece.angles = part.angles;
+  aPiece.model = modelnameforindex(part.modelindex);
+  setmodelindex(aPiece, part.modelindex);
+  aPiece.skin = root.skin;
+  aPiece.colormod = '0.45 0.45 0.45';
+  
+  return aPiece;
+};
