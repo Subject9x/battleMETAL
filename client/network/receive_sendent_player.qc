@@ -361,6 +361,10 @@ void( float mech_id ) sendevent_player_mech={
 void() sendevent_handle_player_death={
   local entity wep, nextWep;
   
+  if(self == CLIENT_target_ent){
+    hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  }
+  
   te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
   self.origin = '0 0 0';
   self.damageValue = 0;

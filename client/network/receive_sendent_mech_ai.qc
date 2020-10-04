@@ -43,6 +43,10 @@ void() sendevent_mech_ai_die={
   local entity rem;
   local float wId;
   
+  if(self == CLIENT_target_ent){
+    hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  }
+  
   weps = self.w_slot;
   for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     rem = weps;

@@ -14,6 +14,10 @@ void() sendevent_turret_die={
   local entity rem;
   local float wId;
   
+  if(self == CLIENT_target_ent){
+    hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  }
+  
   makevectors(self.angles);
   setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
   self.colormod = '0.85 0.85 0.85';
@@ -142,7 +146,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //HANDLE EVENT - dead
   if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
-    sendevent_turret_die() ;
+    sendevent_turret_die();
   }
   
   //HANDLE EVENT - turret rotate

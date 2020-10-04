@@ -13,6 +13,11 @@ Overview:
   EVENT - Death
 */
 void() sendevent_building_die={
+  
+  if(self == CLIENT_target_ent){
+    hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  }
+  
   self.scale = 1; //just in case you altered scale during other deaths anim, <cough>
   self.alpha = 1; //just in case you altered scale during other deaths anim, <cough>
   self.colormod = '0.75 0.75 0.75';

@@ -104,13 +104,6 @@ void() receive_ent_bindData={
     if( (CLIENT_flags_prev & FL_NOSHOOT) && !(CLIENT_flags & FL_NOSHOOT) ){
       hud_event_enqueue( HUD_EVENT_WEAPONS_ON, 1) ;
     }
-
-    if( CLIENT_stat_trg_ent_id_prev != 0 && CLIENT_stat_trg_ent_id == -1 ){
-      //target is lost
-      if( CLIENT_stat_trg_ddflg_prev > DEAD_NO && CLIENT_target_datatype_prev != DATA_VEHC ){
-        hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
-      }
-    }
     
     // hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
     CLIENT_repair_value = getstati(STAT_PLR_REP);
