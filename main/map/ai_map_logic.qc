@@ -26,15 +26,16 @@ void() ai_change_faction_use={
   }
   if(self.target){
     e = world;
-		do{
-			e = find(e, targetname, self.target);
-			if (!e)
-				return;
-			e.faction = self.faction;
+    do{
+      e = find(e, targetname, self.target);
+      if (!e){
+        return;
+      }
+      e.faction = self.faction;
       if( e.data_type == DATA_BLD ){
         e.SendFlags = e.SendFlags | SENDFLAG_VELOCITY;
       }
-		} while ( 1 );
+    } while ( 1 );
   }
   if( (self.spawnflags & 2) ){
     self.think = SUB_Remove;
