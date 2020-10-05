@@ -8,6 +8,11 @@ An 'anim' or 'animatic' file is for playing simple
 slideshow-esque animatics
 */
 
+//flags value
+float ANM_FLAG_FADE_IN    = 1;
+float ANM_FLAG_FADE_OUT   = 2;
+float ANM_FLAG_FADE_BOTH  = 4;
+float ANM_FLAG_FULL_SCR   = 8;  //interpret size as 'fullscreen' regardless of aspect rato
 
 //meta tags
 string ANM_FILE_META_MUS = "music";
@@ -25,7 +30,7 @@ string ANM_FILE_TAG_MSG = "text";
 string ANM_FILE_TAG_ALPHA = "alpha";
 string ANM_FILE_TAG_COLOR = "color";
 string ANM_FILE_TAG_TXT_CLR = "text_color";
-string ANM_FILE_TAG_FADE = "fade";
+string ANM_FILE_TAG_FLAGS = "flags";
 
 float ANM_FRAME_MAX = 20; //this is here for reference, but if modified, MODIFY THE FOLLOWING ARRAY LIMITS!
 float ANM_FRAME_SLICE = 0.1; //used for alpha blending timer
@@ -41,6 +46,10 @@ float ANM_FRAME_CUR_FADE_START;
 float ANM_FRAME_CUR_FADE_STEP;
 float ANM_FRAME_CUR_FADE_END;
 float ANM_FRAME_CUR_FADE_RATE;
+float ANM_FRAME_CUR_FLAGS;
+vector ANM_FRAME_CUR_SIZE;
+vector ANM_FRAME_CUR_ORG;
+
 /*
 Animatic frames are expressed by 3 things;
   frame_image = the image to display for this frame
@@ -57,7 +66,7 @@ string ANM_FRAME_MSG[20];
 float ANM_FRAME_ALPHA[20];
 vector ANM_FRAME_COLOR[20];
 vector ANM_FRAME_TXT_CLR[20];
-float ANM_FRAME_FADE[20];
+float ANM_FRAME_FLAGS[20];
 
 void(string fileToOpen) anm_getFile;
 void(string fileToOpen) anm_parseFile;
