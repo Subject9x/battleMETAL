@@ -197,7 +197,6 @@ void() click_graphics_resolution_less={
   if(vid < 0){
     vid = VID_RESO_TOTAL - 1;
   }
-  cons_logAFloat("click_graphics_resolution_less()->vid", vid); //DEBUG
   VID_NEXT = VID_RESO_SIZE[vid];
   VID_CNEXT = VID_RESO_HALF[vid];
   strunzone(graphics_resolution_lbl.label);
@@ -210,7 +209,7 @@ void() click_graphics_resolution_more={
   local float vid;
   vid = graphics_resolution_lbl.len;
   vid = vid + 1;
-  if(vid > VID_RESO_TOTAL){
+  if(vid > VID_RESO_TOTAL - 1){
     vid = 0;
   }
   VID_NEXT = VID_RESO_SIZE[vid];
