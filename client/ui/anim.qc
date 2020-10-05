@@ -196,32 +196,44 @@ void(float timeVal) anm_new_frame={
   */
    
   if( (ANM_FRAME_CUR_FLAGS & ANM_FLAG_FULL_SCR) ){
+    //blast image to screen regardless of size ratios
     frameSize = VIEW_MAX;
     frameOrg = '0 0';
   }
   else{
+    local vector consoleSize;
+    local float aspectRatio;
+    local vector imageAspect;
+    local vector calcSize;
+    
+    consoleSize_x = cvar("vid_conwidth");
+    consoleSize_y = cvar("vid_conheight");
+    
     imageSize = draw_getimagesize(ANM_FRAME_IMG[ANM_FRAME_CUR]);
     frameSize = ANM_FRAME_SIZE[ANM_FRAME_CUR];
     frameOrg = ANM_FRAME_POS[ANM_FRAME_CUR];
     
-    if( imageSize_x < cvar("vid_width") && frameSize_x >= 1.0 ){
-      frameSize_x = (imageSize_x / cvar("vid_width")) * VIEW_MAX_x;
-      frameOrg_x = VIEW_CTR_x - (frameSize_x / 2);
-    }
-    else{
-      frameSize_x = frameSize_x * VIEW_MAX_x;
-      frameOrg_x = frameOrg_x * VIEW_MAX_x;
-    }
+    imageAspect_x = consoleSize_x / imageSize_x;
+    imageAspect_y = consoleSize_y / imageSize_y;
+    aspectRatio = min(imageAspect_x, imageAspect_y);
     
-    if( imageSize_y < cvar("vid_height") && frameSize_x >= 1.0 ){
-      frameSize_y = (imageSize_y / cvar("vid_height")) * VIEW_MAX_y;
-      frameOrg_y = VIEW_CTR_y - (frameSize_y / 2);
-    }
-    else{
-      frameSize_y = frameSize_y * VIEW_MAX_y;
-      frameOrg_y = frameOrg_y * VIEW_MAX_y;
+    calcSize_x = imageSize_x * aspectRatio;
+    calcSize_y = imageSize_y * aspectRatio;
+    
+    frameSize_x = min(frameSize_x, (calcSize_x / consoleSize_x));
+    frameSize_y = min(frameSize_y, (calcSize_y / consoleSize_y));
+    
+    frameSize_x = calcSize_x * frameSize_x;
+    frameSize_y = calcSize_y * frameSize_y;
+    
+    
+    if( (ANM_FRAME_CUR_FLAGS & ANM_FLAG_CENTER) ){
+      frameOrg_x = 0.5 - ((frameSize_x / 2) / consoleSize_x);
+      frameOrg_y = 0.5 - ((frameSize_y / 2) / consoleSize_y);
     }
   }
+  frameOrg_x = frameOrg_x * VIEW_MAX_x;
+  frameOrg_y = frameOrg_y * VIEW_MAX_y;
   ANM_FRAME_CUR_SIZE = frameSize;
   ANM_FRAME_CUR_ORG = frameOrg;
 };
