@@ -109,7 +109,7 @@ void() misc_building={
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
-/*QUAKED building_misc_apartment (0 0 1) (-20 -20 0) (20 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apartment (0 0 1) (-36 -36 0) (36 36 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -136,6 +136,12 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_apartment={
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
+
   if( !self.health) {
     self.health = self.max_health = 200;
   }
@@ -172,6 +178,17 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_factory_med={
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
+	
   if( !self.health) {
     self.health = self.max_health = 350;
   }
@@ -209,6 +226,11 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_lodge={
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
   if( !self.health) {
     self.health = self.max_health = 200;
   }
@@ -247,6 +269,11 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_off_pyra={
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
   if( !self.health) {
     self.health = self.max_health = 200;
   }
@@ -283,6 +310,11 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_off_large={
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
   if( !self.health) {
     self.health = self.max_health = 250;
   }
@@ -293,7 +325,7 @@ void() building_misc_off_large={
 };
 
 
-/*QUAKED building_misc_off_small (0 0 1) (-36 -36 0) (36 36 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_off_small (0 0 1) (-56 -56 0) (56 56 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -320,6 +352,11 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_off_small={
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
   if( !self.health) {
     self.health = self.max_health = 100;
   }
@@ -357,6 +394,11 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_fact_steam={
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
   if( !self.health) {
     self.health = self.max_health = 100;
   }
@@ -368,7 +410,7 @@ void() building_misc_fact_steam={
 
 
 
-/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_larg (0 0 1) (-96 -96 0) (96 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -395,6 +437,11 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 void() building_misc_apt_larg={
+	self.nextVecChoice = TRUE; //ai_can_spawn compatability
+	if( ai_can_spawn() == FALSE ){
+		remove(self);
+		return;
+	}
   if( !self.health) {
     self.health = self.max_health = 200;
   }
