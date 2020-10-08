@@ -5666,7 +5666,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 
-/*QUAKED building_misc_apartment (0 0 1) (-20 -20 0) (20 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apartment (0 0 1) (-96 -96 0) (96 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5749,7 +5749,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 
-/*QUAKED building_misc_off_small (0 0 1) (-36 -36 0) (36 36 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_off_small (0 0 1) (-56 -56 0) (56 56 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
