@@ -24,6 +24,11 @@ void() guard_tower_die1={
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
   
+  self.model = "q3mdl/map/ruins/ruin_small.obj";
+  setmodel(self, self.model);
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
   local vector shoot;

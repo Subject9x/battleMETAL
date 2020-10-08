@@ -5610,7 +5610,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 
-/*QUAKED building_misc_factory_med (0 0 1) (-36 -36 0) (36 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_factory_med (0 0 1) (-36 -36 0) (36 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5631,14 +5631,22 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 CAN_TARGET 16: turns building from scenery to valid target.
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_lodge(0 0 1) (-38 -38 0) (38 38 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_lodge(0 0 1) (-38 -38 0) (38 38 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5659,14 +5667,22 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 CAN_TARGET 16: turns building from scenery to valid target.
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_apartment (0 0 1) (-96 -96 0) (96 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apartment (0 0 1) (-96 -96 0) (96 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5687,12 +5703,20 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 CAN_TARGET 16: turns building from scenery to valid target.
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
-/*QUAKED building_misc_off_pyra (0 0 1) (-68 -68 0) (68 68 72) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_off_pyra (0 0 1) (-68 -68 0) (68 68 72) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5713,14 +5737,22 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 CAN_TARGET 16: turns building from scenery to valid target.
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_off_large (0 0 1) (-88 -88 0) (88 88 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_off_large (0 0 1) (-88 -88 0) (88 88 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5741,7 +5773,15 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 CAN_TARGET 16: turns building from scenery to valid target.
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
@@ -5749,7 +5789,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 
-/*QUAKED building_misc_off_small (0 0 1) (-56 -56 0) (56 56 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_off_small (0 0 1) (-56 -56 0) (56 56 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5770,7 +5810,15 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 CAN_TARGET 16: turns building from scenery to valid target.
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
@@ -5778,7 +5826,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 
 
 
-/*QUAKED building_misc_fact_steam (0 0 1) (-36 -36 0) (36 36 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_fact_steam (0 0 1) (-36 -36 0) (36 36 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5799,14 +5847,22 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 CAN_TARGET 16: turns building from scenery to valid target.
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
 
-/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - - - - - - NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 Base Decoration building.
@@ -5829,7 +5885,15 @@ NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 CAN_TARGET 16: turns building from scenery to valid target.
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */

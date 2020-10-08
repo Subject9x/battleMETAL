@@ -191,12 +191,11 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    newModelIndex = ReadShort();
+    newModelIndex = fabs(ReadCoord());
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     if( self.deadflag == DEAD_NO ){
-      setmodel( self, modelnameforindex(ReadShort()) );
       self.origin_x = ReadCoord();
       self.origin_y = ReadCoord();
       self.origin_z = ReadCoord();
@@ -209,6 +208,8 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   }
   
   if(isNew){
+    self.model = modelnameforindex(newModelIndex);
+    setmodel( self, self.model );
     setsize(self, self.mins, self.maxs);
     setorigin(self, self.origin);
     self.drawmask = MASK_ENGINE;

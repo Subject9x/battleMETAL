@@ -19,10 +19,15 @@ float COLD_START = 16;   //on-spawn, bot will ignore friendly help calls
 float HAS_RADAR = 64;   //radar is expensive to use, use sparingly
                                         //generally this is for mech units
 float DEBUG_MODE = 128; //dont do anything
+
+//warning! these are tied to engine-specific values, and for now, there's no changing it
 float NO_NOVICE = 4096;  //remove from Novice Difficulty
 float NO_REGULAR = 8192; //remove from Regular Difficulty
 float NO_VETERAN = 16384; //remove from Veteran Difficulty
 float NO_ELITE = 32768;  //remove from Elit Difficulty
+//-------------------
+
+float MISC_NO_DROP = 65536; //overloaded flag, this is for misc_* ents
 float PROMOTE = 65536;  //AI rank is set by skill, this spawnflag bumps it up by 1
 float DEMOTE = 131072;  //AI rank is set by skill, this spawnflag debuffs it up by 1
 float NO_DROP = 262144; //don't drop bot to the floor onspawn
