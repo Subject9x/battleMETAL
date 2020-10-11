@@ -86,6 +86,7 @@ void() data_projectile_plasma_burn_th={
   }
   
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
+  self.stat_trg_ent_id = 0;
   self.impactType = IMPACT_ARMOR;
 
   self.think = data_projectile_plasma_burn_th;
@@ -110,6 +111,7 @@ void() data_projectile_plasma_touch={
   
   if(other.takedamage){
     damage = self.damageValue;
+    self.stat_trg_ent_id = num_for_edict(other);
     if(other.shield > 0){
       proc = FALSE;
       if( other.shield <= (other.shieldMax * 0.1) ){
@@ -136,7 +138,7 @@ void() data_projectile_plasma_touch={
       self.avelocity = '0 0 0';
       self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
       self.think = data_projectile_plasma_burn_ini_;
-      self.nextthink = time + 0.05;      
+      self.nextthink = time + 0.05;
       self.impactType = IMPACT_ARMOR;
       return;
     }

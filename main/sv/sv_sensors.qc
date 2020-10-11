@@ -16,11 +16,21 @@ Overview:
 void() sv_getTarget={
   local entity src;
   local string targName;
+  local vector viewOfs;
   
   makevectors(self.v_angle);
   src = self;
 
-  traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
+  if( self.chaseActive ){
+    viewOfs = src.origin + (v_up * 20) + (v_forward * -96);
+    traceline(src.origin, viewOfs, FALSE, self);
+    viewOfs = trace_endpos;
+  }
+  else{
+    viewOfs = self.cockpit.origin;
+  }
+  traceline(viewOfs, viewOfs + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
+  
   if( ai_valid_target(trace_ent) ){
     if( trace_ent == self.enemy ){
       //already have this target.
@@ -46,8 +56,9 @@ void() sv_getTarget={
       trigger_event( self, self.trigOnTarget );
     }
     self.lock_timer = 0;  //make sure to reset the timer
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
+    self.stat_trg_ent_id = num_for_edict(self.enemy);
   }
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
 };
 
 /*
@@ -57,10 +68,15 @@ void() sv_getTarget={
 */
 void() sv_updateTargetInfo={
   local float prevDeadFlags;
+  local float prevDist;
+  local float prevValid;
   
   self.stat_trg_ent_id = num_for_edict(self.enemy);
   
   prevDeadFlags = self.stat_trg_ddflg;
+  prevDist = self.stat_trg_dist;
+  prevValid = self.targetValid;
+  
   self.stat_trg_ddflg = self.enemy.deadflag;
   
   //target killed
@@ -69,89 +85,84 @@ void() sv_updateTargetInfo={
       self.stat_trg_ent_id = 0;
       self.enemy = world;
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
+      self.stat_trg_ent_id = 0;
       return;
     }
-  }
-  
-  //lost OR killed target.
-  if( !(ai_valid_target(self.enemy)) ){
-    self.stat_trg_ent_id = 0;
-    self.stat_trg_dataidx = 0;
-    self.stat_trg_dist = 0;
-    self.stat_trg_face = -1;
-    self.stat_trg_faction = 0;
-    if( (self.targLockState & LOCK_TARG_START)){
-      self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
-    }
-    if( (self.targLockState & LOCK_TARG_HAS)){
-      self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_HAS);
-    }
-    self.stat_target_name = "";
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
-    return;
-  }
-  
-  local float dst;
-  dst = vlen( self.enemy.origin - self.origin );
-  if(dst > self.stat_rdr_rng){
-    self.enemy = world;
-    return;
-  }
+    local float dst;
+    dst = vlen( self.enemy.origin - self.origin );
 
-  self.stat_trg_dataidx = self.enemy.data_idx;
-  self.stat_trg_dat = self.enemy.data_type;
-  self.stat_trg_faction = self.enemy.faction;  
-  self.stat_trg_ddflg = self.enemy.deadflag;
-  self.stat_trg_dist = dst;
-  self.stat_trg_face = util_checkPointAngle(self.enemy);
-  
-  //can only lock-on to enemy units
-  if( self.enemy.faction != self.faction ){
-    local float canLock;
-    canLock = FALSE;
-    if( util_lockOnChoke(self.enemy.origin) ){
-      traceline(self.origin, self.enemy.origin, FALSE, self);
-      if( (self.enemy.flags & FL_CLIENT) ){
-        if( self.enemy.stat_rdr_mode == TRUE || trace_fraction == 1.0 ){
+    self.targetValid = ai_valid_target(self.enemy);
+    if( (prevValid && !self.targetValid) || (dst > self.stat_rdr_rng && prevDist <= self.stat_rdr_rng) ){
+      self.enemy = world;
+      self.stat_trg_ent_id = 0;
+      self.stat_trg_dataidx = 0;
+      self.stat_trg_dist = 0;
+      self.stat_trg_face = -1;
+      self.stat_trg_faction = 0;
+      if( (self.targLockState & LOCK_TARG_START)){
+        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
+      }
+      if( (self.targLockState & LOCK_TARG_HAS)){
+        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_HAS);
+      }
+      self.stat_target_name = "";
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
+      self.stat_trg_ent_id = 0;
+      return;
+    }
+    self.stat_trg_dataidx = self.enemy.data_idx;
+    self.stat_trg_dataType = self.enemy.data_type;
+    self.stat_trg_faction = self.enemy.faction;
+    self.stat_trg_ddflg = self.enemy.deadflag;
+    self.stat_trg_dist = dst;
+    self.stat_trg_face = util_checkPointAngle(self.enemy);
+    
+    //can only lock-on to enemy units
+    if( self.enemy.faction != self.faction ){
+      local float canLock;
+      canLock = FALSE;
+      if( util_lockOnChoke(self.enemy.origin) ){
+        traceline(self.origin, self.enemy.origin, FALSE, self);
+        if( (self.enemy.flags & FL_CLIENT) ){
+          if( self.enemy.stat_rdr_mode == TRUE || trace_fraction == 1.0 ){
+            canLock = TRUE;
+          }
+        }
+        else{
           canLock = TRUE;
         }
-      }
-      else{
-        canLock = TRUE;
-      }
-      if(canLock){
-        if( !(self.targLockState & LOCK_TARG_START) && !(self.targLockState & LOCK_TARG_HAS) ){
-          self.targLockState = self.targLockState | LOCK_TARG_START;
-          self.power_timer_segment = time;
-          if(self.stat_rdr_mode){
-            self.lock_timer = time + self.w_firetime;
+        if(canLock){
+          if( !(self.targLockState & LOCK_TARG_START) && !(self.targLockState & LOCK_TARG_HAS) ){
+            self.targLockState = self.targLockState | LOCK_TARG_START;
+            self.power_timer_segment = time;
+            if(self.stat_rdr_mode){
+              self.lock_timer = time + self.w_firetime;
+            }
+            else{
+              self.lock_timer = time + (self.w_firetime * 2);
+            }
           }
-          else{
-            self.lock_timer = time + (self.w_firetime * 2);
+          if( time > self.lock_timer ){
+            if( !(self.targLockState & LOCK_TARG_HAS) ){
+              self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
+              self.targLockState = self.targLockState | LOCK_TARG_HAS;
+            }
           }
+          return;
         }
-        if( time > self.lock_timer ){
-          if( !(self.targLockState & LOCK_TARG_HAS) ){
-            self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
-            self.targLockState = self.targLockState | LOCK_TARG_HAS;
-          }
-        }
-        return;
+      }
+      if( (self.targLockState & LOCK_TARG_START) ){
+        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
+      }
+      if( (self.targLockState & LOCK_TARG_HAS) ){
+        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_HAS);
+      } 
+      if( (self.enemy.targLockState & LOCK_PLAYER) ){
+        self.enemy.targLockState = self.enemy.targLockState - (self.enemy.targLockState & LOCK_PLAYER);
       }
     }
-    if( (self.targLockState & LOCK_TARG_START) ){
-      self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
-    }
-    if( (self.targLockState & LOCK_TARG_HAS) ){
-      self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_HAS);
-    } 
-    if( (self.enemy.targLockState & LOCK_PLAYER) ){
-      self.enemy.targLockState = self.enemy.targLockState - (self.enemy.targLockState & LOCK_PLAYER);
-    }
-    
   }
 };
-
 
 /*
   -DEPRECATED-
@@ -159,7 +170,7 @@ void() sv_updateTargetInfo={
   this sweeps in a circle around the player, whenever a unit is near the
   sweep-line, the player is pinged on that unit.
 */
-void() radarSweepBasic={
+/*void() radarSweepBasic={
   local float sweep, yaw, low, high;
   local entity blip;
   
@@ -193,7 +204,7 @@ void() radarSweepBasic={
       //client_push_radar_ping( blip );
     }
   }
-};
+};*/
 
 /*
   -DEPRECATED-
@@ -203,7 +214,7 @@ void() radarSweepBasic={
   is pinged, the 360 direction gives the player more info than 
   the sweep pattern.
 */
-void() radarSweepAdv={
+/*void() radarSweepAdv={
   //TODO - Magic numbers
   local float inv;
   local entity blip;
@@ -239,3 +250,4 @@ void() radarSweepAdv={
     //client_push_radar_ping( blip );
   }
 };
+*/

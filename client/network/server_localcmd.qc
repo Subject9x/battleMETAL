@@ -149,3 +149,14 @@ void( string musicSet ) cl_get_new_music={
     localcmd( musicSet );
   }
 };
+
+//one-off, don't use normally.
+//use normal keybinds and cvars to track chase_active, this is here for when
+// the player specfically spawns into their mech.
+void() cl_set_chase={
+  local string cmd;
+  if(cvar("chase_active") == TRUE ){
+    cmd = "impulse 30\n";
+    localcmd(cmd);
+  }
+}; 

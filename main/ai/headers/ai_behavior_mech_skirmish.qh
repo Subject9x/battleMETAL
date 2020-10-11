@@ -11,6 +11,7 @@ void() ai_mech_skirmish;
 
 void() ai_mech_sk_die;
 void() ai_mech_sk_die2;
+void() ai_mech_sk_die3;
 
 void() mech_sk_fight_target_fire;
 void() mech_sk_fight_out_radius;

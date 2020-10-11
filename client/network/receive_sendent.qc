@@ -144,13 +144,13 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
     self.angles_x = ReadAngle();
     self.angles_y = ReadAngle();
     self.angles_z = ReadAngle();
+  }
+  if(isNew){
     setsize(self, self.mins, self.maxs);
     setorigin(self, self.origin);
-    if(isNew){
-      self.drawmask = MASK_ENGINE;
-      self.solid = SOLID_BSP;
-      self.movetype = MOVETYPE_NONE;
-    }
+    self.drawmask = MASK_ENGINE;
+    self.solid = SOLID_BSP;
+    self.movetype = MOVETYPE_NONE;
   }
 };
 
@@ -166,15 +166,16 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
     self.angles_x = ReadAngle();
     self.angles_y = ReadAngle();
     self.angles_z = ReadAngle();
+  }
+  
+  if(isNew){
     setsize(self, self.mins, self.maxs);
     setorigin(self, self.origin);
-    if(isNew){
-      self.drawmask = MASK_ENGINE;
-      self.solid = SOLID_BSP;
-      self.movetype = MOVETYPE_NONE;
-      self.deadflag = DEAD_NO;
-      self.data_type = DATA_BLD;
-    }
+    self.drawmask = MASK_ENGINE;
+    self.solid = SOLID_BSP;
+    self.movetype = MOVETYPE_NONE;
+    self.deadflag = DEAD_NO;
+    self.data_type = DATA_BLD;
   }
 };
 
@@ -188,30 +189,38 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   
   prevDeadflag = self.deadflag;
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    setmodel( self, modelnameforindex(ReadShort()) );
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
-    setsize(self, self.mins, self.maxs);
-    setorigin(self, self.origin);
-    if(isNew){
-      self.drawmask = MASK_ENGINE;
-      self.solid = SOLID_BSP;
-      self.movetype = MOVETYPE_NONE;
-    }
-  }
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    newModelIndex = ReadShort();
-    if( self.deadflag == DEAD_DEAD && prevDeadflag == DEAD_NO ){
-      setmodel( self, modelnameforindex(newModelIndex) );
-      setsize( self, self.mins, self.maxs );
-      setorigin(self, self.origin);
+    newModelIndex = fabs(ReadCoord());
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    if( self.deadflag == DEAD_NO ){
+      self.origin_x = ReadCoord();
+      self.origin_y = ReadCoord();
+      self.origin_z = ReadCoord();
+      self.angles_x = ReadAngle();
+      self.angles_y = ReadAngle();
+      self.angles_z = ReadAngle();
+      self.faction = ReadByte();
+      self.canTarget = ReadByte();
     }
+  }
+  
+  if(isNew){
+    self.model = modelnameforindex(newModelIndex);
+    setmodel( self, self.model );
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+    self.drawmask = MASK_ENGINE;
+    self.solid = SOLID_BSP;
+    self.movetype = MOVETYPE_NONE;
+  }
+  
+  if( self.deadflag == DEAD_DEAD && prevDeadflag == DEAD_NO ){
+    setmodel( self, modelnameforindex(newModelIndex) );
+    setsize( self, self.mins, self.maxs );
+    setorigin(self, self.origin);
   }
 };
 
@@ -229,6 +238,17 @@ void() sendent_missile_think={
 };
 
 void( float isNew, float changeFlags ) sendent_handle_missile={
+  local float ownerId;
+  local float prevImpactType;
+  
+  prevImpactType = self.impactType;
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.data_idx = ReadByte();
+    self.damageValue = ReadByte();
+    ownerId = ReadCoord();
+    self.owner = findfloat(world, entnum, ownerId);
+  }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin_x = ReadCoord();
@@ -249,36 +269,32 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.angles_z = anglemod(ReadAngle());
   }
   
+  if( isNew ){
+    self.solid = SOLID_BBOX;
+    self.alpha = 1;
+    self.scale = 1;
+    data_sync_new_projectile(self.data_idx);
+    setmodel(self, self.model);
+    setsize(self, '0 0 0', '0 0 0');
+    setorigin(self, self.origin);
+    sendent_missile_think();
+    self.drawmask = MASK_ENGINE;
+    interpolate_origin();
+    self.predraw = predraw_missile;
+  }
+  
   if( changeFlags & SENDFLAG_IMPACT ){
-    self.angles = vectoangles(self.velocity); //override cause impact causes wierd rotation bug
     self.impactType = ReadByte();
-    self.damageValue = ReadByte();
-    if( self.impactType > 0 ){
-      self.velocity = '0 0 0';
-    }
+  }
+  
+  self.angles = vectoangles(self.velocity);
+  //HANDLE EVENT - projectile hit.
+  if( self.impactType > 0 && prevImpactType == FALSE ){
+    self.velocity = '0 0 0';
     if( self.pcl_explode ){
       self.pcl_explode();
     }
   }
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.data_idx = ReadByte();
-    self.damageValue = ReadByte();
-    if( isNew ){
-      self.solid = SOLID_BBOX;
-      self.alpha = 1;
-      self.scale = 1;
-      data_sync_new_projectile(self.data_idx);
-      setmodel(self, self.model);
-      setsize(self, '0 0 0', '0 0 0');
-      setorigin(self, self.origin);
-      sendent_missile_think();
-      self.drawmask = MASK_ENGINE;
-      //interpolate_origin();
-      self.predraw = predraw_missile;
-    }
-  }
-  
-  self.angles = vectoangles(self.velocity);
 };
 
 /*
@@ -356,9 +372,7 @@ void() sendent_setup_weapons={
         initialize_data_item_(self.data_idx);
       }
       else{
-        self.model = "q3mdl/testball.md3";
-        self.alpha = 0.01;
-        self.scale = 0.01;
+        initialize_data_item_(UID_ITEM_EMPTY);
       }
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;

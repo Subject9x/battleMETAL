@@ -418,13 +418,6 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     
     drawfont = drawfont_prev;
   }
-  
-  //draw compass
-  local vector compass;
-  compass = DEPLOY_MAP_ORG;
-  compass_y = compass_y + gui_percentYRaw(380) - gui_percentYRaw(64);
-  drawpic(compass, UI_COMPASS, gui_percentToPixelRawVec('64 64'), '0.75 1 1', 0.9, 0);
-  
 };
 
 void(vector ofs) menu_deploy_mapKeyPanel={

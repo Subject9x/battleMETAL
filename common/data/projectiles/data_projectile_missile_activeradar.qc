@@ -22,6 +22,7 @@ void() projectile_marh_expl={
   local float hitBloom;
   local float hitScale;
   
+  
   if( self.impactType == IMPACT_SKY ){
     return;
   }
@@ -42,14 +43,13 @@ void() projectile_marh_expl={
   local entity rem;
   
   cluster = self.w_slot;
-  while( cluster != world ){
+  while( cluster.owner == self ){
     cluster.traileffectnum = 0;
-    te_missile_explode( rem.origin, hitScale, hitColor, hitBloom ); 
+    te_missile_explode( cluster.origin, hitScale, hitColor, hitBloom );
     rem = cluster;
-    cluster = rem.w_slot;
     remove(rem);
+    cluster = rem.w_slot;
   }
-  
 };
 
 /*
@@ -62,9 +62,8 @@ void() projectile_marh_multi={
   
   misTotal = 5;
   chainPtr = self;
-  while( misTotal > -1 ){
+  while( misTotal > 0 ){
     newMis = spawn();
-    newMis.drawmask = MASK_NORMAL;
     newMis.model = self.model;
     setmodel(newMis, newMis.model);
     newMis.compOffset = '0 0 0';
@@ -243,6 +242,7 @@ void() data_projectile_missile_activeradar_touch={
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 6, 1 );
       self.impactType = IMPACT_ARMOR;
     }
+    self.stat_trg_ent_id = num_for_edict(other);
     debris = 0;
   }
   if( debris > 0 ){

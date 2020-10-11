@@ -27,7 +27,7 @@ void() campaign_loadfiles={
   if( files > 0 ){
     while( itr < files ){
       filename = search_getfilename(searchHandle, itr);
-      cons_logAString("filename", filename);  //debug
+      //cons_logAString("filename", filename);  //debug
       
       if( filename && filename != "" ){
         flannel = fopen(filename, FILE_READ);

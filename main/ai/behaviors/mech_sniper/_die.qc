@@ -44,34 +44,28 @@ void() ai_mech_sniper_die={
   self.legs.compAltOffset = self.maxs;
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
-
-  if( self.ai_node_recall.owner == self ){
-    remove(self.ai_node_recall);
-  }
   
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
   
-  ctrl_unit_part_death(self.torsoCenter);
-  ctrl_unit_part_death(self.torsoLeft);
-  ctrl_unit_part_death(self.torsoRight);
-  ctrl_unit_part_death(self.armLeft);
-  ctrl_unit_part_death(self.armRight);
+  if( self.ai_move > MOVE_STAND_FACE ){
+    ctrl_unit_part_death(self.torsoCenter);
+    ctrl_unit_part_death(self.torsoLeft);
+    ctrl_unit_part_death(self.torsoRight);
+    ctrl_unit_part_death(self.armLeft);
+    ctrl_unit_part_death(self.armRight);
+  }
   ctrl_unit_part_death(self.cockpit);
   
-  self.model = "";
-  setmodel(self, self.model);
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);
   
   ai_alert_close( self.enemy );
   
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
   
   self.think = ai_mech_sniper_die2;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.1;
 };
 
 //explode

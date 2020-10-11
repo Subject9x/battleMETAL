@@ -8,28 +8,37 @@ Overview:
 
 
 void() repair_bay_dlights={
-  makevectors(self.angles);
   local vector lightColor;
+  local float lightStyle;
+  
+  makevectors(self.angles);
+  
   if( self.deadflag == DEAD_NO ){
-    if( self.energy > 0 ){
-      if( self.faction == CLIENT_faction ){
-        if( self.energy < 0 ){
-          lightColor = '1 0.6 0';
-        }
-        else{
-          lightColor = '0.25 0.85 0.35';
-        }
+    if( self.faction == CLIENT_faction ){
+      if( self.burstRate == 1 ){
+        lightColor = '0.25 0.95 0.35';
+        lightStyle = 11;
+      }
+      else if( self.burstRate == 2 ){
+        lightColor = '1 0.6 0';
+        lightStyle = 6;
       }
       else{
-        if( self.energy < 0 ){
-          lightColor = '0 0 0';
-        }
-        else{
-          lightColor = '0.95 0.25 0.15';
-        }
+        lightColor = '0.25 0.25 0.25';
+        lightStyle = 1;
       }
-      adddynamiclight2( self.origin, 128, lightColor, 2, "", PFLAGS_FULLDYNAMIC); 
     }
+    else{
+      if( self.burstRate > 0 ){
+        lightColor = '0 0 0';
+        lightStyle = 1;
+      }
+      else{
+        lightColor = '0.95 0.25 0.15';
+        lightStyle = 4;
+      }
+    }
+    adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
   }
 };
 
@@ -37,18 +46,16 @@ void() repair_bay_dlights={
   Repair Bay - Active
 */
 void() repair_bay_active={
-  if( self.energy < 0 ){
+  
+  if( self.reloadValue < 0 ){
     self.think = repair_bay_idle;
     self.nextthink = time + 0.1;
     return;
   }
-  if( self.w_firetime == 2 ){
-    //see sv/main/ai/ai_api.qh -> ST_WALK for the '2' value.
-    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( self.compAltOffset - self.compOffset ) * 2, 1);
-    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), self.compAltOffset, normalize( self.compOffset - self.compAltOffset ) * -2, 1);
-    trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, self.compAltOffset);
-  }
 
+  if(self.w_firetime > TRUE ){
+    sendevent_repair_beam();
+  }
   self.think = repair_bay_active;
   self.nextthink = time + 0.1;
 };
@@ -58,7 +65,7 @@ void() repair_bay_active={
 */
 void() repair_bay_idle={
 
-  if( self.energy > 0 ){
+  if( self.reloadValue > 0 ){
     self.think = repair_bay_active;
     self.nextthink = time + 0.1;
     return;
@@ -71,8 +78,42 @@ void() repair_bay_idle={
 /*
   Repair Bay - Repair
 */
-void() repair_bay_repair={
+void() sendevent_repair_beam={
+  local entity unit;
+  local vector ofs;
   
+  unit = findfloat(world, entnum, self.targetEntId );
+  if( unit != world ){
+    switch(self.w_firetime){
+      case M_ARM_LEFT:
+        ofs = unit.armLeft.origin;
+        break;
+        
+      case M_ARM_RIGHT:
+        ofs = unit.armRight.origin;
+        break;
+        
+      case M_TOR_LEFT:
+        ofs = unit.torsoLeft.origin;
+        break;
+        
+      case M_TOR_RIGHT:
+        ofs = unit.torsoRight.origin;
+        break;
+        
+      case M_LEGS:
+        ofs = unit.legs.origin;
+        break;
+        
+      default:
+        ofs = unit.torsoCenter.origin;
+        break;
+    }
+    self.compAltOffset = ofs;
+  }
+  pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( self.compAltOffset - self.compOffset ) * 2, 1);
+  pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), self.compAltOffset, normalize( self.compOffset - self.compAltOffset ) * -2, 1);
+  trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, self.compAltOffset);
 };
 
 /*

@@ -18,6 +18,7 @@ entity weaponBuild; //used by vehicle factory to build current weapon
 .void() item_remove_upgrade;
 .void() item_run_upgrade;
 #endif
+
 entity weaponList;  //used by data functions to populate weapon lists for units
 
 /*
@@ -27,6 +28,7 @@ entity weaponList;  //used by data functions to populate weapon lists for units
 */
 void( float partId, string pathToModel, float maxHp, vector partOffset, entity parentPart, .entity partSlot, vector altOffsett ) data_ini_unitPiece_={
   local entity piece;
+
   piece = spawn();
   piece.partTypeId = partId;
   piece.partParentId = parentPart.partTypeId;
@@ -36,10 +38,8 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece.hitOffset = '0 0 0';
   piece.compAltOffset = piece.compAltOffsetCache = altOffsett;
   #ifdef CSQC
-    piece.drawmask = MASK_ENGINE;
     piece.nextthink = time + 0.1;
-  #endif
-  #ifndef CSQC
+  #else
     if( (self.flags & FL_MONSTER) ){
       if( piece.partTypeId != M_LEGS ){
         piece.effects = piece.effects | EF_NODRAW;
@@ -83,9 +83,6 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
     weaponList.w_slot = item;
     notItem = self;
     self = item;
-    #ifdef CSQC
-      self.drawmask = MASK_ENGINE;
-    #endif
     #ifndef CSQC
       self.effects = self.effects | EF_NODRAW;
     #endif

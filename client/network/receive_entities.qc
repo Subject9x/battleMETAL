@@ -22,7 +22,6 @@ void() client_get_info={
   
   CLIENT_player_state_prev = CLIENT_player_state;
   CLIENT_player_deadflag_prev = CLIENT_player_deadflag;
-  //CLIENT_flags_prev = CLIENT_flags;
   
   if( CLIENT_data_type == DATA_MECH ){
     CLIENT_health_center_prev = CLIENT_health_center;
@@ -105,18 +104,46 @@ void() receive_ent_bindData={
     if( (CLIENT_flags_prev & FL_NOSHOOT) && !(CLIENT_flags & FL_NOSHOOT) ){
       hud_event_enqueue( HUD_EVENT_WEAPONS_ON, 1) ;
     }
-
-    if( CLIENT_stat_trg_ent_id_prev != 0 && CLIENT_stat_trg_ent_id == -1 ){
-      //target is lost
-      if( CLIENT_stat_trg_ddflg_prev > DEAD_NO && CLIENT_target_datatype_prev != DATA_VEHC ){
-        hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
-      }
-    }
     
     // hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
     CLIENT_repair_value = getstati(STAT_PLR_REP);
+    //Client targeting data
+    if( CLIENT_target_ent != world ){
+      CLIENT_stat_trg_ent_id = num_for_edict(CLIENT_target_ent);
+      CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
+      CLIENT_stat_trg_ddflg = CLIENT_target_ent.deadflag;
+      if(CLIENT_stat_trg_ddflg > DEAD_NO ){
+        CLIENT_target_ent = world;
+        CLIENT_stat_trg_ent_id = 0;
+        CLIENT_stat_trg_dataidx = 0;
+        return;
+      }
+      CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
+      CLIENT_stat_trg_ent_id = CLIENT_target_ent.entId;
+      CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
+      CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
+      CLIENT_target_datatype_prev = CLIENT_target_datatype;
+      CLIENT_target_datatype = CLIENT_target_ent.data_type;
+      CLIENT_target_faction = CLIENT_target_ent.faction;
+      CLIENT_target_origin = CLIENT_target_ent.origin;
+      CLIENT_target_vecsize = CLIENT_target_ent.vec_size * CLIENT_target_ent.maxs_z;
+      CLIENT_target_shield = CLIENT_target_ent.shield;
+      if( CLIENT_target_shield <= 0 ){
+        CLIENT_target_shield = 0;
+      }
+      CLIENT_target_dist_prev = CLIENT_target_dist;
+      CLIENT_target_dist = vlen(CLIENT_target_ent.origin - pmove_org);
+      CLIENT_target_size = CLIENT_target_ent.maxs;
+    }
+    else{
+      CLIENT_stat_trg_ent_id = 0;
+      CLIENT_stat_trg_dataidx = 0;
+      CLIENT_target_origin = '0 0 0';
+      CLIENT_target_faction = 0;
+      CLIENT_target_shield = 0;
+      CLIENT_target_vecsize = 0;
+    }
     
-    CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
   }
 };
 

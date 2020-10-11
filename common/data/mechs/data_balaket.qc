@@ -42,7 +42,7 @@ void() data_ini_balaket_={
   self.data_speed_strafe = 120;
   self.data_speed_backward = 90;
   self.data_speed_accel = 2;
-  self.ramUpMax = 3;
+  self.ramUpMax = 2;
   self.ramCooldown = 6;
 #ifdef CSQC
   self.legMoveRate = 9.5;

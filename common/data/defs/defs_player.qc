@@ -28,8 +28,10 @@ Overview:
 .vector hud_StrutsOffset; //  origin offset of struts model
 .vector laser_sight_org1;
 .vector laser_sight_org2;
-#endif 
+#endif
 
+.float getTarget;   //switch for sendEnt
+.float canTarget; //everything ends up a field value eventually... - sage words.
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
 .float equipSize;
@@ -44,6 +46,7 @@ Overview:
 .float next_wepn8;
 .float next_wepn9;
 
+.float chaseActive; //tracks player chase cam status on the server.
 
 .float ramUpMax;
 .float ramCooldown;
@@ -51,6 +54,8 @@ Overview:
 .vector laser_sight_org;
 
 #ifndef CSQC
+.float targetValid;
+.float targetDist;
 .vector prevMovement; //the .movement of last frame
 .float missionStatus; //moved to player level for network
 .float hud_mode;  //sway mode

@@ -29,6 +29,8 @@ void() WeatherDominator_think;
 
 float TE_STOMP_TYPE;  //set by world type
 
+.float old_speed; //used for some func_train fun.
+
 //EXTENSIONS
 .float ignoreSave;  //tells savefile system to NOT save any progress data from this
 .float client_num;

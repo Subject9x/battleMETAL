@@ -148,11 +148,13 @@ void() CSQC_Init =
   loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, TRUE, FALSE);
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, TRUE, FALSE);
   
+  SCOREBOARDMAX = maxclients;
   SCORESTACK = 0;
+  
   for( i=0; i < SCOREBOARDMAX; i=i+1){
-    SCOREBOARD[i] = 0;
-    SCORETABLE[i] = 0;
+      SCOREBOARD[i] = -1;
   }
+  scoreboard_think();
   
   cl_set_hud_vars_obs();
   
@@ -293,14 +295,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);
 
   // add any polygons we want here
-
-  //DATA - Update local Client data vars from Server
-  
-  client_get_info();
-  
-  receive_ent_bindData();
-  
-  client_state_events();
   makevectors(input_angles);
   //=================================================
   
@@ -334,7 +328,13 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     addentities( (MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
     renderscene();
   }
-
+  
+  //DATA - Update local Client data vars from Server
+  //note - make sure this is called AFTER addentities(), hehe
+  client_get_info();
+  receive_ent_bindData();
+  client_state_events();
+  
   /*
     special rant: the fact that the client itself, isn't a faffing global entity in the CLIENT
     module of all things is the height of idiocy.
@@ -387,11 +387,10 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     porg_x = pang_x = torg_x = VIEW_ORG_x;
     porg_y = pang_y = torg_y = VIEW_MAX_y;
     drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
+    //version wille eventually be only displayed as needed.
+    gui_drawversion();
   }
   
-  //FIXME / TODO / DEBUG
-  //version wille eventually be only displayed as needed.
-  gui_drawversion();
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!
@@ -566,7 +565,10 @@ float(float event) CSQC_Event =
 // OPTIONAL, probably should be deprecated as well
 entity(float entNum) CSQC_Ent_Spawn =
 {
-  return spawn();
+  local entity e;
+  e = spawn();
+  e.entnum = entNum;
+  return e;
 };
 
 
@@ -581,15 +583,27 @@ void(float isnew) CSQC_Ent_Update =
   sendent_handle_update( isnew );
 };
 
-// called when a network slot is emptied, you may choose to remove(self) or not
+// 
+/*
+  called when a network slot is emptied, you may choose to remove(self) or not - Darkplaces
+  
+  context: CSQC DOES NOT know the 'why' behind calling the Remove() function, but its important
+    to know the 2 main 'whys'.
+      1) Entity was removed/deallocated from the Server, ie SSQC.remove(entity);
+      2) Entity fell out of client's view scope, and no longer visible to client.
+      
+    knowing these 2 cases makes all the difference about executing this function.
+*/
 void() CSQC_Ent_Remove ={
   local entity weps;
   local entity next;
   local entity rem;
   
+  self.entnum = 0; //clears out old reference, must have!
+  
   if( (self.flags & FL_CLIENT) ){
     if(self.t_remove){
-      if(self.t_remove()){
+      if(!self.t_remove()){
         remove(self);
       }
     }
@@ -598,63 +612,52 @@ void() CSQC_Ent_Remove ={
     }
   }
   else{  
-    if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH ){
+    if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH || self.data_type == DATA_BLD ){
       weps = self.w_slot;
-      while( weps.data_idx ){
+      while( weps ){
         next = weps.w_slot;
         rem = weps;
         weps = next;
-        if( rem ){
+        if( rem.owner == self ){
           remove(rem);
         }
       }
-      if( self.torsoCenter ){
+      if( self.torsoCenter.owner == self ){
         remove(self.torsoCenter);
       }
-      if( self.torsoLeft ){
+      if( self.torsoLeft.owner == self ){
         remove(self.torsoLeft);
       }
-      if( self.torsoRight ){
+      if( self.torsoRight.owner == self ){
         remove(self.torsoRight);
       }
-      if( self.armLeft ){
+      if( self.armLeft.owner == self ){
         remove(self.armLeft);
       }
-      if( self.armRight ){
+      if( self.armRight.owner == self ){
         remove( self.armRight);
       }
-      if( self.legs ){
+      if( self.legs.owner == self ){
         remove(self.legs );
       }
-    }
-    if( self.data_type == DATA_BLD ){
-      weps = self.w_slot;
-      while( weps.data_idx ){
-        next = weps.w_slot;
-        rem = weps;
-        weps = next;
-        if( rem ){
-          remove(rem);
-        }
+      if( self.effect1.owner == self ){
+        remove(self.effect1 );
       }
-      if( self.torsoCenter ){
-        remove(self.torsoCenter);
+      if( self.effect2.owner == self ){
+        remove(self.effect2 );
       }
-      if( self.effect1 ){
-        remove(self.effect1);
-      }
-      if( self.effect2 ){
-        remove(self.effect2);
-      }
-      if( self.effect3 ){
-        remove(self.effect3);
+      if( self.effect3.owner == self ){
+        remove(self.effect3 );
       }
     }
     if(self.netname != "" ){
       strunzone(self.netname);
     }
-    remove(self);
   }
+  if( wasfreed(self) ){
+    return;
+  }
+  remove(self);
 };
 
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)

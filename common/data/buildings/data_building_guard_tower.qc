@@ -24,6 +24,11 @@ void() guard_tower_die1={
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
   
+  self.model = "q3mdl/map/ruins/ruin_small.obj";
+  setmodel(self, self.model);
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
   local vector shoot;
@@ -123,6 +128,10 @@ void() building_guard_tower={
   self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_VELOCITY);
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
+  }
+  self.canTarget = TRUE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.canTarget = FALSE;
   }
   self.think = building_burn_th;
   self.nextthink = time + random() * 3;

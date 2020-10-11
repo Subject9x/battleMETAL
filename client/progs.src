@@ -191,6 +191,9 @@ ui/hud/crosshair/hud_crosshair4.qc
   ui/menu/ui_objectives.qc
   ui/menu/ui_debrief.qc
   ui/menu/ui_connect.qc
+  ui/menu/ui_connect_dm.qc
+  ui/menu/ui_connect_teamdm.qc
+  ui/menu/ui_connect_coop.qc
   ui/menu/ui_navbar.qc
   ui/menu/ui_score.qc
 //=======================

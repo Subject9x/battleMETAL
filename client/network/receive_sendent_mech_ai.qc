@@ -38,68 +38,191 @@ void() sendevent_mech_ai_move={
 /*
   EVENT - DEATH =====================================
 */
+void() mech_corpse_remove={
+
+  if( self.legs != world ){
+    remove(self.legs);
+  }
+  if( self.torsoLeft != world ){
+    remove(self.torsoLeft);
+  }
+  if( self.torsoRight != world ){
+    remove(self.torsoRight);
+  }
+  if( self.armLeft != world ){
+    remove(self.armLeft);
+  }
+  if( self.armRight != world ){
+    remove(self.armRight);
+  }
+  if(self.effect1 != world ){
+    remove(self.effect1);
+  }
+  self.drawmask = 0;
+  remove(self);
+};
+
+
+void() mech_corpse_th={
+  self.think = mech_corpse_th;
+  if( time > self.critBits ){
+    self.think = mech_corpse_remove;
+  }
+  self.nextthink = time + 0.1;
+};
+//watch this
+float() predraw_mech_corpse={
+  local entity parent;
+  local vector orgOfs;
+  local vector modAngle;
+  
+  parent = self;
+  modAngle = parent.angles;
+  makevectors(parent.compAltOffset);
+  orgOfs = parent.origin + (v_right * parent.compOffset_x) + (v_forward * parent.compOffset_z) + (v_up * parent.compOffset_y);
+  
+  if( self.legs != world ){
+    self = self.legs;
+      self.origin = orgOfs + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.compAltOffset;
+      self.angles_y = parent.legDir;
+    self = parent;
+    addentity(self.legs);
+  }
+  if( !(self.damageValue & M_TOR_LEFT) && self.torsoLeft != world){
+    self = self.torsoLeft;
+      self.origin = orgOfs + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles =modAngle;
+    self = parent;
+    addentity(self.torsoLeft);
+  }
+  if( !(self.damageValue & M_TOR_RIGHT) && self.torsoRight != world ){
+    self = self.torsoRight;
+      self.origin = orgOfs + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = modAngle;
+    self = parent;
+    addentity(self.torsoRight);
+  }
+  if( !(self.damageValue & M_ARM_RIGHT) && self.armRight != world ){
+    self = self.armRight;
+      self.origin = orgOfs + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = modAngle;
+    self = parent;
+    addentity(self.armRight);
+  }
+  if( !(self.damageValue & M_ARM_LEFT) && self.armLeft != world ){
+    self = self.armLeft;
+      self.origin = orgOfs + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = modAngle;
+    self = parent;
+    addentity(self.armLeft);
+  }
+  
+  return FALSE;
+};
+void() sendevent_mech_ai_die_standing={
+  local entity mechRoot;
+  local entity mechTorLeft;
+  local entity mechTorRight;
+  local entity mechArmLeft;
+  local entity mechArmRight;
+  local entity mechLegs;
+  local entity pass;
+  
+  pass = self;
+  
+  mechRoot = spawn();
+  mechRoot.solid = SOLID_NOT;
+  mechRoot.movetype = MOVETYPE_NONE;
+  mechRoot.origin = self.torsoCenter.origin + '0 0 -4';
+  
+  mechRoot.compOffset = self.torsoCenter.compOffset;
+  mechRoot.angles = self.torsoCenter.angles;
+  mechRoot.angles_x = anglemod(mechRoot.angles_x + (crandom() * 20));
+  mechRoot.angles_y = anglemod(mechRoot.angles_y + (crandom() * 10));
+  mechRoot.compAltOffset = self.angles;
+  mechRoot.model = modelnameforindex(self.torsoCenter.modelindex);
+  setmodel(mechRoot, self.torsoCenter.model);
+  setsize(mechRoot, '-1 -1 -1', '1 1 1');
+  mechRoot.skin = self.skin;
+  mechRoot.colormod = '0.45 0.45 0.45';
+  mechRoot.predraw = predraw_mech_corpse;
+  mechRoot.damageValue = self.damageValue;
+  mechRoot.drawmask = MASK_ENGINE;
+  
+  mechLegs = te_mech_chunk_stand(pass, pass.legs);
+  mechLegs.frame = self.legs.frame;
+  mechRoot.legs = mechLegs;
+  mechRoot.legs.angles = self.legs.angles;
+  mechRoot.legs.angles_y = self.legDir;
+  
+  if( !(mechRoot.damageValue & M_TOR_LEFT) ){
+    mechTorLeft = te_mech_chunk_stand(pass, pass.torsoLeft);
+    mechRoot.torsoLeft = mechTorLeft;
+    if( !(mechRoot.damageValue & M_ARM_LEFT) ){
+      mechArmLeft = te_mech_chunk_stand(pass, pass.armLeft);
+      mechRoot.armLeft = mechArmLeft;
+    }
+  }
+  
+  if( !(mechRoot.damageValue & M_TOR_RIGHT) ){
+    mechTorRight = te_mech_chunk_stand(pass, pass.torsoRight);
+    mechRoot.torsoRight = mechTorRight;
+    if( !(mechRoot.damageValue & M_ARM_RIGHT) ){
+      mechArmRight = te_mech_chunk_stand(pass, pass.armRight);
+      mechRoot.armRight = mechArmRight;
+    }
+  }
+  
+  mechRoot.vec_size = self.vec_size;
+  mechRoot.effect1 = te_building_fire_start( mechRoot );
+  mechRoot.effect1.origin = mechRoot.origin;
+  mechRoot.effect1.origin_z = mechRoot.effect1.origin_z + self.maxs_z;
+  
+  mechRoot.critBits = time + 360 + (random() * 180);
+  mechRoot.think = mech_corpse_th;
+  mechRoot.nextthink = time + 0.1;
+  
+};
+
 void() sendevent_mech_ai_die={
   local entity weps;
   local entity rem;
+  local float wId;
   
-  self.alpha = 0.01;
-  self.scale = 0.01;
+  if(self == CLIENT_target_ent){
+    hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  }
   
-  makevectors(self.angles);
-  te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 ) ;
-  
-  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
-  
-  if( self.torsoCenter.owner == self &&  self.torsoLeft.partTypeId == M_TOR_CENTER){
-    sendent_handle_remove(self.torsoCenter);
-  }
-  if( self.torsoLeft.owner == self &&  self.torsoLeft.partTypeId == M_TOR_LEFT){
-    sendent_handle_remove(self.torsoLeft);
-  }
-  if( self.torsoRight.owner == self &&  self.torsoRight.partTypeId == M_TOR_RIGHT){
-    sendent_handle_remove(self.torsoRight);
-  }
-  if( self.armLeft.owner == self &&  self.armLeft.partTypeId == M_ARM_LEFT){
-    sendent_handle_remove(self.armLeft);
-  }
-  if( self.armRight.owner == self &&  self.armRight.partTypeId == M_ARM_RIGHT){
-    sendent_handle_remove(self.armRight);
-  }
-  if( self.legs.owner == self &&  self.legs.partTypeId == M_LEGS){
-    sendent_handle_remove(self.legs);
-  }
   weps = self.w_slot;
-  while( weps != world ){
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     rem = weps;
     weps = rem.w_slot;
-    if( rem.data_idx && rem.owner == self ){
-      sendent_handle_remove(rem);
-    }
+    sendent_handle_remove(rem);
+  }
+  makevectors(self.angles);
+  te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 );
+  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  
+  if( self.moveState == FALSE ){
+    sendevent_mech_ai_die_standing();
+  }
+  else{
+    self.alpha = 0.01;
+    self.scale = 0.01;
+    sendent_handle_remove(self.torsoCenter);
+    sendent_handle_remove(self.torsoLeft);
+    sendent_handle_remove(self.torsoRight);
+    sendent_handle_remove(self.armLeft);
+    sendent_handle_remove(self.armRight);
+    sendent_handle_remove(self.legs);
   }
 };
 
 /*
   EVENT - CRITICAL =====================================
 */
-void( float critical ) sendevent_mech_ai_crit={
-  local entity weps;
-  local entity rem;
-  local entity prev;
-  
-  weps = self.w_slot;
-  prev = self;
-  while(weps != world ){
-    if( (weps.partParentId & critical) ){
-      rem = weps;
-      prev.w_slot = weps.w_slot;
-      weps = weps.w_slot;
-      remove(rem);
-    }
-    else{
-      prev = weps;
-      weps = weps.w_slot;
-    }
-  }
+void( float critical ) sendevent_mech_ai_crit={  
   
   if( (critical & M_TOR_LEFT) ){
     if( self.torsoLeft != world ){
@@ -165,10 +288,10 @@ void(float criticalHits) sendevent_mech_burn={
 */
 void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local entity this;
-  local float prevShield;
   local vector turretAng;
   local float critical;
   local string newName;
+  local float prevShield;
   local float prevAttackFlag;
   local float prevDeadFlag;
   
@@ -182,50 +305,52 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   self.angles_x = anglemod(ReadAngle());
   self.angles_y = anglemod(ReadAngle());
-  self.angles_z = anglemod(ReadAngle());
+  self.angles_z = 0;
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){   
-    self.entId = ReadLong(); 
-    self.flags = ReadLong();
-    self.faction = ReadByte();
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+    self.damageValue = ReadByte();
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-   
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte(); 
-    
-    newName = ReadString();
-    setorigin(self, self.origin);
-    if( isNew ){ 
-      self.think = mech_ai_think;
-      self.nextthink = time + 0.001;
-      if( newName != "" ){
-        self.netname = strzone(newName);
-      }   
-      self.data_type = DATA_MECH;
-      self.skin =  self.faction - 1;
-      self.movetype = MOVETYPE_STEP;
-      data_sync_new_mech_ai( self.data_idx );
-      self.interpolate_entity = interpolate_mech_ai;
-      self.drawmask = MASK_ENGINE;
-      self.predraw = predraw_mech_ai;
+    if(self.deadflag == DEAD_NO){
+      self.flags = ReadLong();
+      self.faction = ReadByte();
+      self.next_wepn1 = ReadByte();
+      self.next_wepn2 = ReadByte();
+      self.next_wepn3 = ReadByte();
+      self.next_wepn4 = ReadByte();
+      self.next_wepn5 = ReadByte();
+      self.next_wepn6 = ReadByte();
+      self.next_wepn7 = ReadByte();
+      self.next_wepn8 = ReadByte();
+      self.next_wepn9 = ReadByte(); 
+      newName = ReadString();
     }
   }
-    
+  
+  if( isNew ){
+    setorigin(self, self.origin);
+    self.think = mech_ai_think;
+    self.nextthink = time + 0.001;
+    if( newName != "" ){
+      self.netname = strzone(newName);
+    }
+    self.data_type = DATA_MECH;
+    self.skin =  self.faction - 1;
+    self.movetype = MOVETYPE_STEP;
+    data_sync_new_mech_ai( self.data_idx );
+    self.interpolate_entity = interpolate_mech_ai;
+    self.drawmask = MASK_ENGINE;
+    self.predraw = predraw_mech_ai;
+    self.canTarget = TRUE;
+  }
+  
    //self.flags = ReadLong(); // DEBUG - disabled for now.
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shield = ReadByte();
     self.shieldHitFlag = ReadByte();
-  }
-    
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
   }
   
   //EVENT - MOVE
@@ -270,7 +395,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   //Shield strike event
-  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
+  if( self.shieldHitFlag == SHIELD_HIT_UP && (self.shield > 0 && self.shield < 100.01)){
     if( time > self.shieldEffectTime ){
       self.shieldEffectTime = time + 0.5;
       te_shield_hit();
@@ -298,7 +423,6 @@ void() interpolate_mech_ai={
   local vector saved;
   
   interpolate_origin();
-  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   interpolate_angle();
   interpolate_ground();
   
@@ -308,39 +432,8 @@ void() interpolate_mech_ai={
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
+    addentity(self.torsoCenter);
   }
-  if( self.legs ){
-    self = self.legs;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.angles;
-    self = parent;
-  }
-  makevectors(parent.torsoCenter.angles);
-  if( !(self.critBits & M_TOR_LEFT) && self.torsoLeft != world){
-    self = self.torsoLeft;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.torsoCenter.angles;
-    self = parent;
-  }
-  if( !(self.critBits & M_TOR_RIGHT) && self.torsoRight != world ){
-    self = self.torsoRight;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.torsoCenter.angles;
-    self = parent;
-  }
-  if( !(self.critBits & M_ARM_RIGHT) && self.armRight != world ){
-    self = self.armRight;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.torsoCenter.angles;
-    self = parent;
-  }
-  if( !(self.critBits & M_ARM_LEFT) && self.armLeft != world ){
-    self = self.armLeft;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles = parent.torsoCenter.angles;
-    self = parent;
-  }
-  
   if( self.legs != world ){
     self = self.legs;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
@@ -348,12 +441,44 @@ void() interpolate_mech_ai={
       self.angles_y = parent.legDir;
     self = parent;
     predraw_legs();
+    addentity(self.legs);
+  }
+  
+  makevectors(parent.torsoCenter.angles);
+  if( !(self.damageValue & M_TOR_LEFT) && self.torsoLeft != world){
+    self = self.torsoLeft;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.torsoCenter.angles;
+    self = parent;
+    addentity(self.torsoLeft);
+  }
+  if( !(self.damageValue & M_TOR_RIGHT) && self.torsoRight != world ){
+    self = self.torsoRight;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.torsoCenter.angles;
+    self = parent;
+    addentity(self.torsoRight);
+  }
+  if( !(self.damageValue & M_ARM_RIGHT) && self.armRight != world ){
+    self = self.armRight;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.torsoCenter.angles;
+    self = parent;
+    addentity(self.armRight);
+  }
+  if( !(self.damageValue & M_ARM_LEFT) && self.armLeft != world ){
+    self = self.armLeft;
+      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles = parent.torsoCenter.angles;
+    self = parent;
+    addentity(self.armLeft);
   }
   
   wepn = self.w_slot;
   while( (wepn != world) ){
     self = wepn;
-      if( !(parent.critBits & wepn.partParentId) ){
+      if( !(parent.damageValue & wepn.partParentId) ){
+        addentity(wepn);
         if( self.partParentId == M_LEGS ){
           makevectors(parent.angles);
           saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);

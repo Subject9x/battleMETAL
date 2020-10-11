@@ -153,6 +153,10 @@ void() building_radar_alert1=[0, building_radar_alert1]{
   local entity ally, this;
   this = self;
   ai_sfx_help();
+  
+  if(alarm_ent == world){
+    alarm_ent = self;
+  } 
   for( ally = findchainfloat(faction, self.faction); ally != world; ally = ally.chain){
     if( vlen( ally.origin - self.origin ) > (self.radar_range / 2) ){
       continue;
@@ -168,7 +172,9 @@ void() building_radar_alert1=[0, building_radar_alert1]{
     }
     ai_give_target( ally, self.enemy, (self.ai_rank > AI_RANK_REG));
   }
-    
+  if(alarm_ent == this ){
+    alarm_ent = world;
+  }
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.attack_state = ST_RUN;
   
@@ -346,6 +352,10 @@ void() building_human_radar={
   self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
+  }
+  self.canTarget = TRUE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.canTarget = FALSE;
   }
   self.think = building_radar_patrol1;
   self.nextthink = time + 1;

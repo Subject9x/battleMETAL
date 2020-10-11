@@ -38,6 +38,7 @@ void() data_ini_empty_weapon_={
     self.icon = "gfx/ui/wep_icons/eqp_empty.png";
     self.alpha = 0.01;
     self.scale = 0.01;
+    self.drawmask = 0;
   #endif
   
   #ifndef CSQC  

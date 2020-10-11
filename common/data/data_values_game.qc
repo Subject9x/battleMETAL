@@ -180,6 +180,17 @@ float MOVE_RAM_ON           = 4;
 float MOVE_RAM_CHARGE       = 5;
 float MOVE_RAM_COOL         = 6;
 
+//MOVE / UNIT DATA MODALS as bitflags
+//float MOVE_STAND            = 0;  //  declared in AI API
+float MV_DEAD = 1;
+float MV_NORM = 2;
+float MV_SPRINT = 4;
+float MV_RAM_ON = 8;
+float MV_RAM_CHARGE = 16;
+float MV_RAM_COOL = 32;
+float MV_CHASE_ON = 64;
+float MV_RADAR_ACTIVE = 128;
+//float MOVE_DEAD = 256;
 //============================
 //         DATA_TYPE           
 //============================
@@ -333,6 +344,9 @@ float LIFETIME = 2; //lifetime
 float REACTIVATE = 4; //reactivate after countdown
 float REMOVE_FIRSTUSE = 8; //remove after first countdown
 float REMOVE_ONTOUCH = 16; //remove on first touch
+
+float BUILDING_TARGET_FLAG = 16;  //used by building and misc_building for allowing self to be targeted
+
 float ACTIVE_ONTOUCH = 32; //activate on-touch
 float IS_MAPKEY = 4194304; //mark's this entity on player's briefing map.
 float IS_VIP = 8388608; //faction-allied player will be notified of this entity's state
@@ -365,7 +379,9 @@ float RADAR_SWEEP = 2.5;
 
 .float stat_trg_ent_id;
 .float stat_trg_dataidx;
-.float stat_trg_dat;
+
+.float stat_trg_dataType;
+
 .float stat_trg_faction;
 
 .float stat_hit_dirs;
@@ -425,10 +441,10 @@ float STAT_CLIENT_HP_ARMLEFT = 70;
 float STAT_CLIENT_HP_ARMRIGHT = 71;
 float STAT_CLIENT_HP_LEGS = 72;
 
-//float    = 73;
-//float    = 74;
-//float    = 75;
-//float    = 76;
+//float   = 73;
+//float   = 74;
+//float   = 75;
+//float   = 76;
 //float    = 77;
 //float    = 78;
 
@@ -492,6 +508,13 @@ float FACTION_PSC = 1;
 float FACTION_SURVEST = 2;
 float FACTION_MILITAR = 3;
 float FACTION_ALL = 255;  //buildings don't show up on radar, deploy and nav points are rendered to everyone.
+
+//============================
+//     SHIELD HIT FLAGS
+//============================
+float SHIELD_HIT_UP   = 1;
+float SHIELD_HIT_DN = 2;
+float SHIELD_HIT_EXP  = 3;
 
 //============================
 //     AI VOICE SYSTEM

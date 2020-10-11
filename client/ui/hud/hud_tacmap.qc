@@ -145,19 +145,20 @@ void() hud_render_tactical_map={
 
 void() hud_render_scoreboard={
   local vector panelOrg;
+  local float gameMode;
   
   panelOrg_x = VIEW_MAX_x - gui_percentXRaw(150);
   panelOrg_y = VIEW_ORG_y + gui_percentYRaw(2);
 
-  
-  if( cvar("gamemode") == GAMEMODE_TEAMDM ){
+  gameMode = cvar("gamemode");
+  if( gameMode == GAMEMODE_TEAMDM ){
     hud_render_scoreboard_tdm( panelOrg );
   }
-  else if( cvar("gamemode") == GAMEMODE_DM ){
+  else if( gameMode == GAMEMODE_DM ){
     hud_render_scoreboard_dm( panelOrg );
   }
-  else if( cvar("gamemode") == GAMEMODE_COOP ){
-    hud_render_scoreboard_coop( panelOrg );
+  else if( gameMode == GAMEMODE_COOP ){
+    hud_render_scoreboard_dm( panelOrg );
   }
 }; 
 
@@ -215,9 +216,10 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   
   local float scoreLen;
   playerScoreOfs = playerNameOfs + gui_percentToPixelRawVec('120 0');
-  scoreLen = stringwidth(ftos(playerRow.kills), 0, fontSize);
+  playerRow.kills = stof(getplayerkeyvalue(playerRow.clientLocalId, "frags"));
+  scoreLen = stringwidth(getplayerkeyvalue(playerRow.clientLocalId, "frags"), 0, fontSize);
   playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
-  drawstring(playerScoreOfs, ftos(playerRow.kills), fontSize, rowColor, 1, 0);
+  drawstring(playerScoreOfs, getplayerkeyvalue(playerRow.clientLocalId, "frags"), fontSize, rowColor, 1, 0);
 };
 
 void( vector panelOfs ) hud_render_scoreboard_dm={
@@ -230,6 +232,9 @@ void( vector panelOfs ) hud_render_scoreboard_dm={
   
   local float playerRowItr;
   local float itr;
+  
+  local string nameCheck;
+  
   panelSize_x = gui_percentXRaw(150);
   panelSize_y = HUD_SCORE_HEIGHT;
   drawpic(panelOfs, UI_DEF_BOX_512, panelSize, CLR_DEF_WHITE * 0.75, HUD_ALPHA * 1.15, 0);
@@ -242,11 +247,14 @@ void( vector panelOfs ) hud_render_scoreboard_dm={
   listOfs_y = panelOfs_y + gui_percentYRaw(2);
   playerRowItr = 0;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
-    if( SCOREBOARD[itr] != 0 ){
-      player = findfloat(world, entId, SCOREBOARD[itr] + 1);
-      listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(12) );
-      hud_render_score_row( listRowOfs, playerRowItr + 1, player );
-      playerRowItr = playerRowItr + 1;
+    if( SCOREBOARD[itr] > -1 ){
+      nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
+      if( nameCheck != "" || nameCheck ){
+        player = findfloat(world, entId, SCOREBOARD[itr] + 1);
+        listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(12) );
+        hud_render_score_row( listRowOfs, playerRowItr + 1, player );
+        playerRowItr = playerRowItr + 1;
+      }
     }
   }
   HUD_SCORE_HEIGHT = gui_percentYRaw( playerRowItr * 14 );
@@ -267,17 +275,19 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
   
   local float playerRowItr;
   local float itr;
+  local string nameCheck;
+  
   if( HUD_SCORE_SURVEST_HEIGHT > 0){
     panelSurvestSize_x = panelMilitarSize_x = gui_percentXRaw(150);
     panelSurvestSize_y = HUD_SCORE_SURVEST_HEIGHT;
-    drawpic(panelOfs, UI_DEF_BOX_512, panelSurvestSize, CLR_UI_PSC_BRIEF * 0.9, HUD_ALPHA * 1.15, 0);
+    drawpic(panelOfs, UI_DEF_BOX_512, panelSurvestSize, CLR_UI_PSC_BRIEF * 0.9, max(HUD_ALPHA, 0.8), 0);
   }
   
   if( HUD_SCORE_MILITAR_HEIGHT > 0 ){
     panelMOfs_x = panelOfs_x;
     panelMOfs_y = panelOfs_y + panelSurvestSize_y;
     panelMilitarSize_y = HUD_SCORE_MILITAR_HEIGHT;
-    drawpic(panelMOfs, UI_DEF_BOX_512, panelMilitarSize, CLR_UI_MIL_BRIEF, HUD_ALPHA * 1.15, 0);
+    drawpic(panelMOfs, UI_DEF_BOX_512, panelMilitarSize, CLR_UI_MIL_BRIEF, max(HUD_ALPHA, 0.8), 0);
   }
   
   drawfont_prev = drawfont;
@@ -290,27 +300,26 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
   teamCount1 = 0;
   teamCount2 = 0;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
-    if( SCOREBOARD[itr] != 0 ){
-      player = findfloat(world, entId, SCOREBOARD[itr]);
-      if( player.faction == FACTION_SURVEST ){
-        listRowOfs_y = listOfs_y + ( teamCount1 * gui_percentYRaw(12) );
-        playerRowItr = teamCount1;
-        teamCount1 = teamCount1 + 1;
+    if( SCOREBOARD[itr] > -1 ){
+      nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
+      if( nameCheck != "" || nameCheck ){
+        player = findfloat(world, entId, SCOREBOARD[itr] + 1);
+        if( player.faction == FACTION_SURVEST ){
+          listRowOfs_y = listOfs_y + ( teamCount1 * gui_percentYRaw(12) );
+          playerRowItr = teamCount1;
+          teamCount1 = teamCount1 + 1;
+        }
+        else if(player.faction == FACTION_MILITAR){
+          listRowOfs_y = panelMOfs_y + ( teamCount2 * gui_percentYRaw(12) );
+          playerRowItr = teamCount2;
+          teamCount2 = teamCount2 + 1;
+        }
+        listRowOfs_x = panelOfs_x + gui_percentXRaw(2);
+        hud_render_score_row( listRowOfs, playerRowItr + 1, player );
       }
-      else if(player.faction == FACTION_MILITAR){
-        listRowOfs_y = panelMOfs_y + ( teamCount2 * gui_percentYRaw(12) );
-        playerRowItr = teamCount2;
-        teamCount2 = teamCount2 + 1;
-      }
-      listRowOfs_x = panelOfs_x + gui_percentXRaw(2);
-      hud_render_score_row( listRowOfs, playerRowItr + 1, player );
     }
   }
   HUD_SCORE_SURVEST_HEIGHT = gui_percentYRaw( teamCount1 * 12 );
   HUD_SCORE_MILITAR_HEIGHT = gui_percentYRaw( teamCount2 * 12 );
   drawfont = drawfont_prev;
-};
-
-void( vector panelOfs ) hud_render_scoreboard_coop={
-
 };

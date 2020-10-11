@@ -14,9 +14,6 @@ void() ai_tank_sk_clean={
   
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
-  
-  //self.think = ai_tank_sk_die1;
-  //self.nextthink = time + 0.25;  
 };
 
 void() ai_tank_sk_die={
@@ -53,18 +50,12 @@ void() ai_tank_sk_die={
   ctrl_unit_part_death(self.torsoLeft);
   ctrl_unit_part_death(self.torsoRight);
   ctrl_unit_part_death(self.torsoCenter);
-
-  if( self.ai_node_recall ){
-    remove(self.ai_node_recall);
-  }
+  
   ai_alert_close( self.enemy );
-
+  
   te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
   
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-
+  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD| SENDFLAG_BURN | SENDFLAG_MOVE);
   self.think = ai_tank_sk_clean;
   self.nextthink = time + 0.1;
 };

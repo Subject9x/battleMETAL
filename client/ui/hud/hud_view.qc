@@ -969,6 +969,7 @@ void() data_hud_frame={
     hud_render_tactical_map();
   }
   if( HUD_SCORES_ON ){
+    scoreboard_think();
     hud_render_scoreboard();
   }
   if( HUD_TACMAP_ON || HUD_SCORES_ON ){
@@ -1066,7 +1067,7 @@ void(float lockTime) hud_lock_control_start={
   
   HUD_LOCK_ALPHA = 0.01;
   
-  HUD_LOCK_SIZE = 2;
+  HUD_LOCK_SIZE = 1;
   HUD_LOCK_ALPHA_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
   HUD_LOCK_SIZE_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
   HUD_LOCK_COLOR = CLR_DEF_RET_GETLOCK;

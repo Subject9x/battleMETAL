@@ -63,6 +63,7 @@ void() repair_bay_dlights;
   Repair Bay - Active
 */
 void() repair_bay_active;
+void() sendevent_repair_beam;
 
 /*
   Repair Bay - Idle

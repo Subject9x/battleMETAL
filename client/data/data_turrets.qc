@@ -14,69 +14,37 @@ Overview:
 void( float dataID ) data_sync_new_turret={
   self.flags = FL_MONSTER | FL_UNIT;
   self.solid = SOLID_BBOX;
+ 
+  weaponList = self;  //prepare to build unit's weapon list
+  self.hardpoint_cnt = 0;
+  
+  self.data_type = DATA_BLD;
+  self.colormod = '1 1 1';
+  setorigin( self, self.origin );
+  
   switch( dataID ){
     case UID_TURRET_light_turret:
-      data_turret_light();
+      data_ini_light_turret_();
+      self.vec_size = 1;
       break;
       
     case UID_TURRET_missile_turret:
-      data_turret_missile();
+      data_ini_missile_turret_();
+      self.vec_size = 2;
       break;
       
     case UID_TURRET_heavy_turret:
-      data_turret_heavy();
+      data_ini_heavy_turret_();
+      self.vec_size = 3;
       break;
   }
+  setmodel(self, self.model);
   
+  makevectors(self.angles);
+  data_mech_setup_part(self.torsoCenter);
+  
+  sendent_setup_weapons();
+  sendent_ini_interpolate();
+  self.takedamage = DAMAGE_AIM;
+  self.interpolate_entity = interpolate_turret;
 }
-
-void() data_turret_light={
-  local vector offset;
-  
-  data_ini_light_turret_();
-  
-  setmodel(self, self.model);
-  
-  self.torsoCenter.drawmask = MASK_ENGINE;
-  setmodel(self.torsoCenter, self.torsoCenter.model);
-
-  makevectors(self.angles);
-  offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
-  setsize(self, self.mins, self.maxs);
-  setorigin(self.torsoCenter, offset);
-  self.vec_size = 1;
-};
-
-void() data_turret_heavy={
-  local vector offset;
-  
-  data_ini_heavy_turret_();
-  
-  setmodel(self, self.model);
-
-  self.torsoCenter.drawmask = MASK_ENGINE;
-  setmodel(self.torsoCenter, self.torsoCenter.model);
-
-  makevectors(self.angles);
-  offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
-  setsize(self, self.mins, self.maxs);
-  setorigin(self.torsoCenter, offset);
-  self.vec_size = 2;
-};
-
-void() data_turret_missile={
-  local vector offset;
-  
-  data_ini_missile_turret_();
-  
-  setmodel(self, self.model);
-
-  self.torsoCenter.drawmask = MASK_ENGINE;
-  setmodel(self.torsoCenter, self.torsoCenter.model);
-
-  makevectors(self.angles);
-  offset = self.origin + (v_up * self.torsoCenter.compOffset_y);
-  setsize(self, self.mins, self.maxs);
-  setorigin(self.torsoCenter, offset);
-  self.vec_size = 2;
-};

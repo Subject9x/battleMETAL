@@ -11,8 +11,7 @@ Overview: ai unit
 */
 
 void() ai_gev_die1={
-  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_MOVE);
   self.think = ai_gev_die1;
   if( time > self.ai_action_time ){
     self.ai_action_time = time + (random() * 7200);
@@ -23,18 +22,13 @@ void() ai_gev_die1={
 
 /* quick garbage collect before rest of death funcs */
 void() ai_gev_die_clean={
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   ctrl_unit_cleanup_tank();
   
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
-  
-  //self.think = ai_gev_die1;
-  //self.nextthink = time + 0.1;
 };
 
 void() ai_gev_touch_death={
-  //local vector vel;
   if( other == world ){
     self.movetype = MOVETYPE_NONE;
     self.SendFlags = self.SendFlags | SENDFLAG_BURN;
@@ -73,9 +67,6 @@ void() ai_gev_die={
   if( (self.flags & FL_TURRET) ){
     ctrl_unit_part_death(self.torsoCenter);
   }
-  if( self.ai_node_recall ){
-    remove(self.ai_node_recall);
-  }
   
   makevectors( self.angles );
   
@@ -101,7 +92,5 @@ void() ai_gev_die={
   ai_alert_close( self.enemy );
   te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
   
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD| SENDFLAG_BURN | SENDFLAG_MOVE);
 };

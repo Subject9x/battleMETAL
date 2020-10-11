@@ -83,49 +83,43 @@ void() ai_turret_touch={
   TH_PAIN
     what to do when hit by fire
 */
-void( entity attacker ) ai_turret_react={  
-  local float enemyvis;
-
-  self.ai_react_buffer = time + self.ai_react_time;
+void( entity newAttacker ) ai_turret_react={  
+  local float vischeck;
+  
+  if( time < self.ai_react_buffer ){
+    return;
+  }
   
   //AI has taken friendly fire
-  if( attacker.faction == self.faction ){
-    return;
-  }
-  //AI currently has no target
-  if( (!ai_valid_target(self.enemy)) ){
-    self.ai_react_buffer = time + self.ai_react_time * 5;
-    self.enemy = attacker;
-    self.torsoCenter.ai_dir = TR_TARG;
-    self.torsoCenter.enemy = self.enemy;
-    if(self.ai_state_next != ST_COMBAT){
-      self.ai_state_next = ST_COMBAT;
-    }
+  if( newAttacker.faction == self.faction ){
     return;
   }
   
-  enemyvis = ai_check_vis(self.enemy);
-  if( enemyvis == VIS_FAIL ){
-    self.oldenemy = self.enemy;
-    self.enemy = attacker;
-    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-    self.ai_react_buffer = time + self.ai_react_time * 5;
-    if(self.ai_state_next != ST_COMBAT){
-      self.ai_state_next = ST_COMBAT;
-    }
+  if( (!(newAttacker.flags & FL_MONSTER) && !(newAttacker.flags & FL_CLIENT)) || (self.flags & FL_DISARMED) ){
+    ai_call_for_help(newAttacker);
     return;
   }
   
-  if( ai_check_targ_infront( attacker, self.ai_fov, TRUE) ){
-    self.oldenemy = self.enemy;
-    self.enemy = attacker;
-    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-    self.ai_react_buffer = time + self.ai_react_time * 5;
-    if(self.ai_state_next != ST_COMBAT){
-      self.ai_state_next = ST_COMBAT;
-    }
+  if( newAttacker == self.enemy ){
     return;
   }
+  //AI currently has target
+  vischeck = ai_check_vis(self.enemy);
+  if( (self.enemy.flags & FL_CLIENT) ){
+    if( vischeck == VIS_FRAC || vischeck == VIS_FRN){
+      return;
+    }
+  }
+  if( (self.enemy.flags & FL_MONSTER) ){
+    if( vischeck == VIS_FRAC ){
+      return;
+    }
+  }
   
-  self.ai_react_buffer = time + self.ai_react_time * 2;
+  self.ai_react_buffer = time + self.ai_react_time * 3.75;
+  
+  self.enemy = newAttacker;
+  if(self.ai_state_next != ST_COMBAT ){
+    self.ai_state_next = ST_COMBAT;
+  }
 };

@@ -80,9 +80,6 @@ void(float vec_id) initialize_data_turret_={
 
 void(float wep_id) initialize_data_item_={ 
   switch(wep_id){
-    default:
-      data_ini_empty_weapon_();
-      break;
     case UID_ITEM_light_autocannon:
       data_ini_light_atc_();
       break;
@@ -145,6 +142,9 @@ void(float wep_id) initialize_data_item_={
       break;
     case UID_ITEM_turbo_charger:
       data_ini_equip_turbo_charger_();
+      break;
+    default:
+      data_ini_empty_weapon_();
       break;
   }
 };

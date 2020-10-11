@@ -22,7 +22,13 @@ void(entity newAttacker) ai_react_generic={
   }
   
   if( (!(newAttacker.flags & FL_MONSTER) && !(newAttacker.flags & FL_CLIENT)) || (self.flags & FL_DISARMED) ){
+    if(alarm_ent == world ){
+      alarm_ent = self;
+    }
     ai_call_for_help(newAttacker);
+    if(alarm_ent == self){
+      alarm_ent = world;
+    }
     return;
   }
   
@@ -46,7 +52,6 @@ void(entity newAttacker) ai_react_generic={
   
   self.enemy = newAttacker;
   if( self.ai_state_next != ST_COM_MOVE_START && self.ai_state_next != ST_COM_MOVE_EXEC && self.ai_state_next != ST_COM_MOVE_END && self.ai_state_next != ST_COM_MOVE_BLOCK){
-
     if(self.ai_state_next != ST_COMBAT ){
       self.ai_state_next = ST_COMBAT;
     }

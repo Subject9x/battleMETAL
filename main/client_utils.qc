@@ -227,6 +227,7 @@ void(string str, float tokens) client_ParseMechCommand={
           if( TEAM_MILITAR_TOTAL < 9 ){
             TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
             TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+            self.clientcolors = 3;
           }
           else{
             self.faction = prevFaction;
@@ -236,6 +237,7 @@ void(string str, float tokens) client_ParseMechCommand={
           if( TEAM_SURVEST_TOTAL < 9 ){
             TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
             TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL - 1;
+            self.clientcolors = 2;
           }
           else{
             self.faction = prevFaction;

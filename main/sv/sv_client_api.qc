@@ -131,6 +131,8 @@ void() ClientConnect = {
   self.stat_plr_rep = -1;
   self.stat_target_name = "";
   
+  self.clientcolors = FACTION_PSC;  //faction tracker for network.
+  
   self.attackFlag = 0;
 
   if( world.animaticOnly ) {
@@ -351,6 +353,7 @@ void() PutClientInServer_Coop={
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
     self.faction = FACTION_PSC; //campaign default
+    self.clientcolors = FACTION_PSC;
   }
   client_push_mapobjects(); //refreshes map object data for everyone
 
@@ -383,6 +386,7 @@ void() PutClientInServer_Deathmatch={
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
     self.faction = FACTION_ALL; //deathmatch has no real teams
+    self.clientcolors = FACTION_ALL;
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  
@@ -416,10 +420,12 @@ void() PutClientInServer_TeamDeathmatch={
     if( TEAM_SURVEST_TOTAL < 9 ){
       self.faction = FACTION_SURVEST;
       TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
+      self.clientcolors = FACTION_SURVEST;
     }
     else{
       self.faction = FACTION_MILITAR;
       TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+      self.clientcolors = FACTION_MILITAR;
     }
   }
   client_push_mapobjects(); //refreshes map object data for everyone
@@ -534,11 +540,13 @@ void() client_data={
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   local float prevType;
+  local vector targetOrg;
+  
   player = self.owner;
   self.view_ofs = player.origin;
   
-
   prevType = self.data_type;
+  self.stat_trg_ent_id = player.stat_trg_ent_id;
   if( player.deadflag == DEAD_NO ){
     self.data_type = player.data_type;
     self.radar_range = player.radar_range;
@@ -580,15 +588,22 @@ float( float isNew, float changeFlags ) send_client_data={
     
     WriteAngle( MSG_ENTITY, player.v_angle_x);
     WriteAngle( MSG_ENTITY, player.v_angle_y);
-    WriteAngle( MSG_ENTITY, player.v_angle_z);
     
     WriteLong( MSG_ENTITY, player.attackFlag);
     WriteByte( MSG_ENTITY, player.moveState );
     
     WriteShort( MSG_ENTITY, player.legs.angles_y);
     WriteShort( MSG_ENTITY, player.legs.ai_dir);
+    WriteByte( MSG_ENTITY, player.chaseActive);
   }
-  
+  /*
+    EVENT - Client Data is new/spawned
+  */
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, num_for_edict(player) );
+    WriteShort( MSG_ENTITY, player.flags );
+  }
+    
   /*
     EVENT - Player takes hit to their shields.
   */
@@ -601,7 +616,6 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteByte( MSG_ENTITY, self.data_type );
-    WriteByte( MSG_ENTITY, player.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, player.next_wepn1);
     WriteByte( MSG_ENTITY, player.next_wepn2);
@@ -636,20 +650,14 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, MISSION_STATUS );
   }
   /*
-    EVENT - Client Data is new/spawned
-  */
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(player) );
-    WriteByte( MSG_ENTITY, player.faction );
-    WriteShort( MSG_ENTITY, player.flags );
-  }
-  /*
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    WriteByte( MSG_ENTITY, (player.particleCube == world));
-    WriteLong( MSG_ENTITY, player.stat_trg_ent_id );
+    //WriteByte( MSG_ENTITY, (player.particleCube == world));
+    WriteCoord( MSG_ENTITY, self.stat_trg_ent_id );
     WriteShort( MSG_ENTITY, player.flags );
   }
+  
+  self.shieldHitFlag = 0;
   return TRUE;
 };

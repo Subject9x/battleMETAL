@@ -54,15 +54,13 @@ void( vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_ren
   Player scoreboard stuff
 */
 //hard limit of 255 >.> see Line 142 of quakedef.h
-float SCOREBOARD[16]; //  <k, v> = itr, .entId
-float SCORETABLE[1024]; //  <k, v> = .entId, .kills
-float SCOREBOARDMAX = 16;
-
+float SCOREBOARD_NEXT_UPDATE; //timer based on servertime
+float SCOREBOARD_UPDATE_RATE = 2; //timer for update
+float SCOREBOARD[16]; //  <k, v> = itr, player_localnum
+float SCOREBOARDMAX;
 float SCORESTACK;
-
+void() scoreboard_think;
 void() scoreboard_sort;
-void( float scoreId, float score ) scoreboard_push;
-void( entity removed ) scoreboard_stitch;
 
 /*
   Campaign / coop stuff

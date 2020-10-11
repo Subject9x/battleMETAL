@@ -18,10 +18,6 @@ void() building_turret_light_survest_zapper={
   ai_promote();
 
   switch( self.ai_rank ){
-    default:
-      ai_ini_weapons(UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_PRIMITVE;
-      break;
     case 1:
       ai_ini_weapons(UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -34,6 +30,10 @@ void() building_turret_light_survest_zapper={
       ai_ini_weapons(UID_ITEM_ion_coil, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
+    default:
+      ai_ini_weapons(UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_PRIMITVE;
+      break;
   }
   building_turret_ini();
 };
@@ -43,10 +43,6 @@ void() building_turret_light_militar_zapper={
   ai_promote();
 
   switch( self.ai_rank ){
-    default:
-      ai_ini_weapons(UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_PRIMITVE;
-      break;
     case 1:
       ai_ini_weapons(UID_ITEM_ion_coil, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -59,6 +55,10 @@ void() building_turret_light_militar_zapper={
       ai_ini_weapons(UID_ITEM_emp, UID_ITEM_ion_coil, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
+    default:
+      ai_ini_weapons(UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_PRIMITVE;
+      break;
   }
   building_turret_ini();
 };
@@ -68,10 +68,6 @@ void() building_turret_light_psc_zapper={
   ai_promote();
   ai_promote();
   switch( self.ai_rank ){
-    default:
-      ai_ini_weapons(UID_ITEM_quantum_rifle, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_PRIMITVE;
-      break;
     case 1:
       ai_ini_weapons(UID_ITEM_ion_coil, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -83,6 +79,10 @@ void() building_turret_light_psc_zapper={
     case 3:
       ai_ini_weapons(UID_ITEM_particle_cannon, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    default:
+      ai_ini_weapons(UID_ITEM_quantum_rifle, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_PRIMITVE;
       break;
   }
   building_turret_ini();
@@ -96,10 +96,6 @@ void() building_turret_light_survest_gunner={
   ai_promote();
 
   switch( self.ai_rank ){
-    default:
-      ai_ini_weapons(UID_ITEM_light_autocannon, UID_ITEM_light_autocannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_PRIMITVE;
-      break;
     case 1:
       ai_ini_weapons(UID_ITEM_light_autocannon, UID_ITEM_flak, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -112,6 +108,10 @@ void() building_turret_light_survest_gunner={
       ai_ini_weapons(UID_ITEM_flak, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
+    default:
+      ai_ini_weapons(UID_ITEM_light_autocannon, UID_ITEM_light_autocannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_PRIMITVE;
+      break;
   }
   building_turret_ini();
 };
@@ -121,10 +121,6 @@ void() building_turret_light_militar_gunner={
   ai_promote();
 
   switch( self.ai_rank ){
-    default:
-      ai_ini_weapons(UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_PRIMITVE;
-      break;
     case 1:
       ai_ini_weapons(UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -136,6 +132,10 @@ void() building_turret_light_militar_gunner={
     case 3:
       ai_ini_weapons(UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    default:
+      ai_ini_weapons(UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_PRIMITVE;
       break;
   }
   building_turret_ini();
@@ -146,10 +146,6 @@ void() building_turret_light_psc_gunner={
   ai_promote();
 
   switch( self.ai_rank ){
-    default:
-      ai_ini_weapons(UID_ITEM_flak, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
-      self.spreadDefault = ACCURACY_PRIMITVE;
-      break;
     case 1:
       ai_ini_weapons(UID_ITEM_flak, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -161,6 +157,10 @@ void() building_turret_light_psc_gunner={
     case 3:
       ai_ini_weapons(UID_ITEM_rotary_plasma, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    default:
+      ai_ini_weapons(UID_ITEM_flak, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_PRIMITVE;
       break;
   }
   building_turret_ini();

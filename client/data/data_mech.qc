@@ -42,6 +42,7 @@ void( float dataID ) data_sync_new_mech_ai={
   if( self.legs ){
     data_mech_setup_part( self.legs );
   }
+  
   self.deadflag = DEAD_NO;
   self.critBits = 0;
   maxSave = self.maxs;
@@ -53,7 +54,12 @@ void( float dataID ) data_sync_new_mech_ai={
   setsize(self, minSave, maxSave);
   sendent_ini_interpolate();
   sendent_setup_weapons();
-  self.solid = SOLID_BBOX;
+  if( (self.flags & FL_CLIENT) ){
+    self.solid = SOLID_BBOX;
+  }
+  else{
+    self.solid = SOLID_SLIDEBOX;
+  }
 };
 
 void( entity setPart ) data_mech_setup_part={
@@ -62,5 +68,4 @@ void( entity setPart ) data_mech_setup_part={
   setPart.origin = self.origin + (v_right * setPart.compOffset_x) + (v_forward * setPart.compOffset_z) + (v_up * setPart.compOffset_y);
   setPart.angles = self.angles;
   setorigin(setPart, setPart.origin);
-  setPart.drawmask = MASK_ENGINE;
 };

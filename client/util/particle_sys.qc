@@ -328,6 +328,12 @@ float() te_shield_hit_predraw={
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.angles_y = self.angles_y + 5;
   self.alpha = 0.075;
+  if(self.owner.entId == player_localentnum){
+    if( self.owner.chaseActive == FALSE ){
+      self.alpha = 0.02;
+    }
+  }
+  
   return FALSE;
 };
 
@@ -669,4 +675,22 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
   newpos = newpos + (v_forward * len);
   newpos = newpos + (v_up *  hight);
   return newpos;
+};
+
+entity(entity root, entity part) te_mech_chunk_stand={
+  local entity aPiece;
+  
+  aPiece = spawn();
+  
+  aPiece.solid = SOLID_NOT;
+  aPiece.movetype = MOVETYPE_NONE;
+  aPiece.origin = part.origin;
+  aPiece.compOffset = part.compOffset;
+  aPiece.angles = part.angles;
+  aPiece.model = modelnameforindex(part.modelindex);
+  setmodelindex(aPiece, part.modelindex);
+  aPiece.skin = root.skin;
+  aPiece.colormod = '0.45 0.45 0.45';
+  
+  return aPiece;
 };

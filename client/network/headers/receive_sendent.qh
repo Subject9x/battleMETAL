@@ -26,11 +26,6 @@ float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
 
 .float shieldExplodeCool;
 
-float() predraw_remove={
-  self.alpha = 0;
-  return TRUE;
-};
-
 float() predraw_missile;
 float() predraw_tank;
 float() predraw_spg;
@@ -48,6 +43,8 @@ float() predraw_dmg_zone;
 void( entity removeMe ) sendent_handle_remove={
   if( removeMe != world ){
     removeMe.drawmask = 0;
+    removeMe.think = SUB_Remove;
+    removeMe.nextthink = time + 0.01;
   }
 };
 

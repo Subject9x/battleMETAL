@@ -127,6 +127,7 @@ void() data_projectile_ini_quantum_bit_touch_={
       t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       self.impactType = IMPACT_ARMOR;
     }
+    self.stat_trg_ent_id = num_for_edict(other);
   }  
   if(self.aState == TRUE){
     self.enemy = other;

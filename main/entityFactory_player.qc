@@ -19,6 +19,7 @@ void() player_makeObserver={
   self.view_ofs = '0 0 1';
   self.damageValue = 0;
   self.clientData.SendFlags =  self.clientData.SendFlags | SENDFLAG_TURRET;
+  self.canTarget = FALSE;
 };
 
 void() player_unmakeObserver={

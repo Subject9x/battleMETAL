@@ -43,7 +43,9 @@ void() ctrl_update_mechplayer={
     }
     hp = piece.health / piece.max_health;
     if( hp < 0.67){
-      newBurn = newBurn | piece.partTypeId;
+      if( !(self.burnBits & piece.partTypeId) ){
+        newBurn = newBurn | piece.partTypeId; 
+      }
     }
   }
   if( newBurn > 0 ){
@@ -101,14 +103,23 @@ void() ctrl_updateCenterTorso={
   local float diff;
   local float mx, my;
   local float rate;
-  local vector v1;
-
+  local vector laserHit;
+  local vector laserOrg;
+  
   if( time > self.laser_sight_timer ){
     makevectors(self.v_angle);
-    v1 = self.cockpit.origin;
-    traceline(v1, v1 + v_forward*10000, FALSE, self);
+    if(self.chaseActive){
+      laserOrg = self.origin + (v_up * 20) + (v_forward * -96);
+      traceline(self.origin, laserOrg, TRUE, self);
+      laserOrg = trace_endpos;
+    }
+    else{
+      laserOrg = self.cockpit.origin;
+    }
+    laserHit = laserOrg + (v_forward * 10000);
+    traceline(laserOrg, laserHit, FALSE, self);
     self.laser_sight_org = trace_endpos;
-    self.laser_sight_timer = time + 0.1;
+    self.laser_sight_timer = time + 0.05;
   }
 
   if( time > self.count4 ){
@@ -438,41 +449,42 @@ void() touch_mechPiece={
 float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
   WriteByte( MSG_ENTITY, changeFlags );
-
+  
   WriteCoord( MSG_ENTITY, self.origin_x );
   WriteCoord( MSG_ENTITY, self.origin_y );
   WriteCoord( MSG_ENTITY, self.origin_z );
   
   WriteAngle( MSG_ENTITY, self.angles_x );
   WriteAngle( MSG_ENTITY, self.angles_y );
-  WriteAngle( MSG_ENTITY, self.angles_z );
-
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+    WriteByte( MSG_ENTITY, self.critBits);
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
-    WriteLong( MSG_ENTITY, self.flags );
-    WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.data_idx );
+    if(self.deadflag == DEAD_NO){
+      WriteLong( MSG_ENTITY, self.flags );
+      WriteByte( MSG_ENTITY, self.faction );
 
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
-    WriteString( MSG_ENTITY, self.netname );
+      WriteByte( MSG_ENTITY, self.next_wepn1);
+      WriteByte( MSG_ENTITY, self.next_wepn2);
+      WriteByte( MSG_ENTITY, self.next_wepn3);
+      WriteByte( MSG_ENTITY, self.next_wepn4);
+      WriteByte( MSG_ENTITY, self.next_wepn5);
+      WriteByte( MSG_ENTITY, self.next_wepn6);
+      WriteByte( MSG_ENTITY, self.next_wepn7);
+      WriteByte( MSG_ENTITY, self.next_wepn8);
+      WriteByte( MSG_ENTITY, self.next_wepn9);
+      WriteString( MSG_ENTITY, self.netname );
+    }
   }
   
   //  WriteLong( MSG_ENTITY, self.flags ); // DEBUG - disabled for now.
   if( (changeFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
-  }
-  
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){

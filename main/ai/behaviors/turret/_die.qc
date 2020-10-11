@@ -41,9 +41,8 @@ void() ai_turret_die={
     return; //double play prevention
   }
   
-  ai_sfx_dead();
+  //ai_sfx_dead();
   
-  self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
   self.colormod = '0.33 0.33 0.33';
@@ -80,6 +79,7 @@ void() ai_turret_die={
   
   te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
   
+  self.deadflag = DEAD_DEAD;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.effects = self.effects | EF_LOWPRECISION;
 };

@@ -94,8 +94,8 @@ void(string fileToOpen) anm_parseFile={
         clr = stov(argv(3));
         ANM_FRAME_TXT_CLR[frame_count] = clr;
       }
-      if( (argv(1) == ANM_FILE_TAG_FADE) ){
-        ANM_FRAME_FADE[frame_count] =  stof(argv(3));
+      if( (argv(1) == ANM_FILE_TAG_FLAGS) ){
+        ANM_FRAME_FLAGS[frame_count] =  stof(argv(3));
       }
       
     }
@@ -160,14 +160,13 @@ void(float timeVal) anm_new_frame={
   
   //fade is pre-baked amount of 2 seconds on fade-in and fade-out, 
   //set 'fade' 1 for just fade in, 2 for just fade out, 4 for both
-  local float fadeFlag;
-  fadeFlag = rint(ANM_FRAME_FADE[ANM_FRAME_CUR]);
+  ANM_FRAME_CUR_FLAGS = rint(ANM_FRAME_FLAGS[ANM_FRAME_CUR]);
   
   local float frameSlice;
   frameSlice = 0.1 * ANM_FRAME_ALPHA[ANM_FRAME_CUR];
   ANM_FRAME_CUR_FADE_RATE = frameSlice / 2.0;
   
-  if( fadeFlag == TRUE || fadeFlag == 4 ){
+  if( (ANM_FRAME_CUR_FLAGS & 1) || (ANM_FRAME_CUR_FLAGS & 4) ){
     ANM_FRAME_CUR_FADE_START = rint(timeVal + 2);
     ANM_FRAME_TIME = ANM_FRAME_TIME + 2;
   }
@@ -176,7 +175,7 @@ void(float timeVal) anm_new_frame={
     ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA[ANM_FRAME_CUR];
   }
   
-  if( fadeFlag == 2 || fadeFlag == 4 ){
+  if( (ANM_FRAME_CUR_FLAGS & 2) || (ANM_FRAME_CUR_FLAGS & 4) ){
     ANM_FRAME_CUR_FADE_END = rint(ANM_FRAME_TIME + timeVal);
     ANM_FRAME_TIME = ANM_FRAME_TIME + 2;
   }
@@ -185,6 +184,58 @@ void(float timeVal) anm_new_frame={
     ANM_FRAME_ALPHA_CUR = ANM_FRAME_ALPHA[ANM_FRAME_CUR];
   }
   ANM_FRAME_TIME = ANM_FRAME_TIME + timeVal;
+  
+  local vector imageSize, frameSize, frameOrg;
+  
+  /*
+    an effort to enhance the image sizing behavior of the animatic system.
+    there's a new flag to override image size vs screen size, which will blast an image to fullscreen.
+    DEFAULT behavior though is the following:
+      image will be scaled to screen as normal UNLESS image is 100%x100% AND the image is smaller than the the view.
+      
+  */
+   
+  if( (ANM_FRAME_CUR_FLAGS & ANM_FLAG_FULL_SCR) ){
+    //blast image to screen regardless of size ratios
+    frameSize = VIEW_MAX;
+    frameOrg = '0 0';
+  }
+  else{
+    local vector consoleSize;
+    local float aspectRatio;
+    local vector imageAspect;
+    local vector calcSize;
+    
+    consoleSize_x = cvar("vid_conwidth");
+    consoleSize_y = cvar("vid_conheight");
+    
+    imageSize = draw_getimagesize(ANM_FRAME_IMG[ANM_FRAME_CUR]);
+    frameSize = ANM_FRAME_SIZE[ANM_FRAME_CUR];
+    frameOrg = ANM_FRAME_POS[ANM_FRAME_CUR];
+    
+    imageAspect_x = consoleSize_x / imageSize_x;
+    imageAspect_y = consoleSize_y / imageSize_y;
+    aspectRatio = min(imageAspect_x, imageAspect_y);
+    
+    calcSize_x = imageSize_x * aspectRatio;
+    calcSize_y = imageSize_y * aspectRatio;
+    
+    frameSize_x = min(frameSize_x, (calcSize_x / consoleSize_x));
+    frameSize_y = min(frameSize_y, (calcSize_y / consoleSize_y));
+    
+    frameSize_x = calcSize_x * frameSize_x;
+    frameSize_y = calcSize_y * frameSize_y;
+    
+    
+    if( (ANM_FRAME_CUR_FLAGS & ANM_FLAG_CENTER) ){
+      frameOrg_x = 0.5 - ((frameSize_x / 2) / consoleSize_x);
+      frameOrg_y = 0.5 - ((frameSize_y / 2) / consoleSize_y);
+    }
+  }
+  frameOrg_x = frameOrg_x * VIEW_MAX_x;
+  frameOrg_y = frameOrg_y * VIEW_MAX_y;
+  ANM_FRAME_CUR_SIZE = frameSize;
+  ANM_FRAME_CUR_ORG = frameOrg;
 };
 
 
@@ -225,10 +276,6 @@ void(string frameText) anm_render_frame_text={
 void(float timeVal) anm_render_frame_current={
   local vector siz, org, frm_color, txt_color;
   
-  org = ANM_FRAME_POS[ANM_FRAME_CUR];
-  org_x = org_x * VIEW_MAX_x;
-  org_y = org_y * VIEW_MAX_y;
-  
   if(ANM_FRAME_IMG[ANM_FRAME_CUR] != ""){
     if(ANM_FRAME_CUR_FADE_START > FALSE && timeVal <= ANM_FRAME_CUR_FADE_START){
       if(ANM_FRAME_ALPHA_CUR <= ANM_FRAME_ALPHA[ANM_FRAME_CUR] ){
@@ -252,11 +299,7 @@ void(float timeVal) anm_render_frame_current={
       frm_color = ANM_FRAME_COLOR[ANM_FRAME_CUR];
     }
     
-    siz = ANM_FRAME_SIZE[ANM_FRAME_CUR];
-    siz_x = siz_x * VIEW_MAX_x;
-    siz_y = siz_y * VIEW_MAX_y;
-    
-    drawpic(org, ANM_FRAME_IMG[ANM_FRAME_CUR], siz, frm_color, ANM_FRAME_ALPHA_CUR, 0);
+    drawpic(ANM_FRAME_CUR_ORG, ANM_FRAME_IMG[ANM_FRAME_CUR], ANM_FRAME_CUR_SIZE, frm_color, ANM_FRAME_ALPHA_CUR, 0);
   } 
   if(ANM_FRAME_MSG[ANM_FRAME_CUR] != ""){
     anm_render_frame_text( ANM_FRAME_MSG[ANM_FRAME_CUR] );
@@ -297,6 +340,8 @@ void() anm_cleanup={
     ANM_FRAME_ALPHA[clean] = 0;
     clean = clean + 1;
   }
+  ANM_FRAME_CUR_FLAGS = rint(0);
+  ANM_FRAME_CUR_SIZE = '0 0';
   ANM_FILE_STATUS = -1;
 };
 
@@ -308,12 +353,12 @@ float() anm_total_runtime={
   itr = 0;
   while( itr <= ANM_FRAME_TOTAL){
     total = total + ANM_FRAME_TIM[itr];
-    fadeFlag = ANM_FRAME_FADE[itr];
-    if( fadeFlag == TRUE || fadeFlag == 4 ){
+    fadeFlag = ANM_FRAME_FLAGS[itr];
+    if( (fadeFlag & 1) || (fadeFlag & 4) ){
       
       total = total + 2;
     }
-    if( fadeFlag == 2 || fadeFlag == 4 ){
+    if( (fadeFlag & 2) || (fadeFlag & 4) ){
       total = total + 2;
     }
     itr = itr + 1;

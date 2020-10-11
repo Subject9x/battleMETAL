@@ -48,12 +48,7 @@ void( float dataID ) data_sync_new_projectile={
 };
 
 float() predraw_missile={
-  if( wasfreed(self) ){
-    return FALSE;
-  }
-
   interpolate_origin();
-  setorigin(self, self.origin);
   interpolate_angle();
   
   if( self.predraw_projectile ){
@@ -63,13 +58,15 @@ float() predraw_missile={
 };
 
 float() predraw_plasma={
+  local float tScale;
   if( self.impactType == IMPACT_ARMOR ){
     self.alpha = 0.33;
     self.scale = 0.33;
   }
   else{
-    self.scale = self.scale + 0.075;
-    self.alpha = self.alpha - 0.025;
+    tScale = self.scale;
+    self.scale = tScale + ((tScale + 0.005) - tScale)*self.lerpfrac;
+    self.alpha = self.alpha + ((self.alpha - 0.005) - self.alpha)*self.lerpfrac;
   }
   return FALSE;
 };
@@ -79,6 +76,7 @@ float() predraw_marh={
   cluster = self.w_slot;
   makevectors(self.angles);
   while( cluster != world ){
+    addentity(cluster);
     cluster.origin = self.origin + (v_forward * cluster.compOffset_z) + (v_right * cluster.compOffset_x) + (v_up * cluster.compOffset_y);
     if( cluster.traileffectnum != 0 && cluster.origin2 != '0 0 0' ){
       trailparticles(cluster, cluster.traileffectnum, cluster.origin2, cluster.origin);

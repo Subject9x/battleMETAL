@@ -60,6 +60,10 @@ Overview:
 .float isActive;
 .float ai_dir;          //chassis facing vs .angles
 
+
+.float shieldEffectTime;  //bumping this up to help reduce net traffic by preventing spamming at the server level.
+                          //sure dropped packet do real, but its better than flooding 
+
 //SSQC only
 #ifndef CSQC
 .vector lastorigin; //mostly AI move tracker
@@ -76,7 +80,6 @@ Overview:
 #endif
 
 #ifdef CSQC
-.float shieldEffectTime;
 .float pitchMin;
 .float pitchMax;
 .float legDir;

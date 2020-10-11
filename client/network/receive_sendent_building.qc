@@ -13,6 +13,11 @@ Overview:
   EVENT - Death
 */
 void() sendevent_building_die={
+  
+  if(self == CLIENT_target_ent){
+    hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  }
+  
   self.scale = 1; //just in case you altered scale during other deaths anim, <cough>
   self.alpha = 1; //just in case you altered scale during other deaths anim, <cough>
   self.colormod = '0.75 0.75 0.75';
@@ -30,15 +35,9 @@ void() sendevent_building_die={
   }
   setorigin(self, self.origin + (v_up * -3));
   
-  if( self.effect1.count && self.effect1 != world ){
-    sendent_handle_remove(self.effect1);
-  }
-  if( self.effect2.count && self.effect2 != world ){
-    sendent_handle_remove(self.effect2);
-  }
-  if( self.effect3.count && self.effect3 != world ){
-    sendent_handle_remove(self.effect3);
-  }
+  sendent_handle_remove(self.effect1);
+  sendent_handle_remove(self.effect2);
+  sendent_handle_remove(self.effect3);
   
   if( (self.spawnflags & 4194304) ){
     self.spawnflags = self.spawnflags - (self.spawnflags & 4194304);
@@ -75,6 +74,10 @@ void( float isNew, float changeFlags) sendent_handle_building={
   
   self.energy = ReadShort();
   
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -83,41 +86,45 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
-
-    self.entId = ReadLong();
+    
     self.data_idx = ReadByte();
     self.spawnflags = ReadLong();
-    
-    self.deadflag = DEAD_NO;
     setorigin(self, self.origin);
+  }
+  
+  if( isNew ){
+    self.deadflag = DEAD_NO;
     self.predraw = predraw_building;
     self.drawmask = MASK_ENGINE;
-    if( isNew ){
-      self.scale = 1;
-      self.alpha = 1;
-      makevectors(self.angles);
-      data_sync_new_building(self.data_idx);
-      self.data_type = DATA_BLD;
-      self.flags = self.flags | FL_MONSTER; 
-      self.colormod = '1 1 1';
-      setorigin(self, self.origin);
-      if( self.th_walk ){
-        self.th_walk();
-      }
-      if( (self.spawnflags & 4194304) ){
-        if( lastMapKeyObject ){
-          //build linked list backwards for later forward iteration.
-          lastMapKeyObject.w_slot = self;
-          lastMapKeyObject = self;
-        }
-        else{
-          //start chain
-          mapKeyObject = self;
-          lastMapKeyObject = self;
-        }
-      }
-      self.takedamage = DAMAGE_AIM;
+    self.scale = 1;
+    self.alpha = 1;
+    makevectors(self.angles);
+    data_sync_new_building(self.data_idx);
+    self.data_type = DATA_BLD;
+    self.flags = self.flags | FL_MONSTER; 
+    self.colormod = '1 1 1';
+    setorigin(self, self.origin);
+    if( self.th_walk ){
+      self.th_walk();
     }
+    if( (self.spawnflags & 4194304) ){
+      if( lastMapKeyObject ){
+        //build linked list backwards for later forward iteration.
+        lastMapKeyObject.w_slot = self;
+        lastMapKeyObject = self;
+      }
+      else{
+        //start chain
+        mapKeyObject = self;
+        lastMapKeyObject = self;
+      }
+    }
+    
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
+    }
+    self.takedamage = DAMAGE_AIM;
   }
   
   if( (changeFlags & SENDFLAG_IMPACT) ){
@@ -128,11 +135,11 @@ void( float isNew, float changeFlags) sendent_handle_building={
   //rider for desired stat changes
   if( (changeFlags & SENDFLAG_MOVE) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
+      self.burstRate = ReadByte();
       self.w_firetime = ReadByte();
-      self.compAltOffset_x = ReadShort();
-      self.compAltOffset_y = ReadShort();
-      self.compAltOffset_z = ReadShort();
-      self.energy = ReadShort();
+      if(self.w_firetime > FALSE ){
+        self.targetEntId = ReadCoord();
+      }
     }
     if( self.data_idx == UI_BUILDING_radar ){
       self.w_firetime = ReadByte();
@@ -163,26 +170,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
       }
     }
   }
-
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO){
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
-      
-      self.angles_x = anglemod(ReadAngle());
-      self.angles_y = anglemod(ReadAngle());
-      self.angles_z = anglemod(ReadAngle());
-      setorigin(self, self.origin);
-      if( self.th_die ){
-        self.th_die();
-      }
-      else{
-        data_building_death1(); 
-      }
-    }
-  }
+  
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
   
@@ -193,9 +181,24 @@ void( float isNew, float changeFlags) sendent_handle_building={
       te_shield_hit();
     }
   }
+  
+  //HANDLE EVENT - dead
+  if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO){
+    if( self.th_die ){
+      self.th_die();
+    }
+    else{
+      data_building_death1(); 
+    }
+  }
 };
 
 float() predraw_building={
   setorigin(self, self.origin);
+  
+  if(self.render_dlights){
+    self.render_dlights();
+  }
+  
   return FALSE;
 };

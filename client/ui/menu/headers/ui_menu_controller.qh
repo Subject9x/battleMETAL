@@ -32,7 +32,6 @@ vector uiParentSize; //use this as scope-1 size pointer
 
 //some generics
 void( vector menuOrg ) menu_serverinfo_basic; // connect_dm and score_dm ui.
-void( vector menuOrg ) menu_playerlist_basic; // connect_dm and score_dm ui.
 void( vector menuOrg ) menu_draw_players_basic;
 void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_row_basic;
 
@@ -91,7 +90,6 @@ string UI_DEF_BOX_64;
 string UI_DEF_REC_64;
 string UI_BTN_ARR_RIGHT;
 string UI_BTN_ARR_LEFT;
-string UI_COMPASS;
 string UI_DEF_NAVPOINT;
 string UI_DEF_DEPLOYPOINT;
 string UI_HANGAR_BOX;

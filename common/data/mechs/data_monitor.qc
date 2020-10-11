@@ -19,8 +19,8 @@ void() data_ini_monitor_={
   self.vec_name = "Monitor";
  
   self.max_health = 864;
-  self.mins = '-22 -22 -44';
-  self.maxs = '22 22 24';
+  self.mins = '-20 -20 -44';
+  self.maxs = '20 20 24';
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 600;
@@ -42,7 +42,7 @@ void() data_ini_monitor_={
   self.data_speed_strafe = 90; //85
   self.data_speed_backward = 90; //85
   self.data_speed_accel = 2;
-  self.ramUpMax = 2;
+  self.ramUpMax = 1;
   self.ramCooldown = 2;
 #ifdef CSQC
   self.legMoveRate = 8;

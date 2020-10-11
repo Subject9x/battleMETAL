@@ -237,6 +237,8 @@ void( vector menuOrg ) menu_serverinfo_basic={
   local vector fontsStyle;
   local vector leftAnchor;
   
+  local string serverStatus;
+  
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('225 150'), '0.65 0.65 0.65', 1, 0);
   
   // Server Name
@@ -278,17 +280,18 @@ void( vector menuOrg ) menu_serverinfo_basic={
   }
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('8 90'), "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
+  serverStatus = ui_label_mission_status();
   //Time Limit
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+  if( serverStatus == "Complete" ){
+    gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_time_string(SV_TIMELIMIT), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+  }
+  else{
+    gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+  }
   
   //Game Status
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('6 126'), "Server :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('6 126'), "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
 }; 
-
-// connect_dm and score_dm ui.
-void( vector menuOrg ) menu_playerlist_basic={
-
-};
 
 //arranges player rows for dm
 void( vector menuOrg ) menu_draw_players_basic={
@@ -300,6 +303,7 @@ void( vector menuOrg ) menu_draw_players_basic={
   local vector fontColor;  
   local float playerRowItr;
   local float itr;
+  local string nameCheck;
   
   menuLabelOfs = '0 0';
   listOfs = '0 0';
@@ -315,11 +319,14 @@ void( vector menuOrg ) menu_draw_players_basic={
   playerRowItr = 1;
   
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
-    if( SCOREBOARD[itr] != 0 ){
-      player = findfloat(world, entId, SCOREBOARD[itr]);
-      listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
-      menu_player_row_basic( listRowOfs, playerRowItr, player, TRUE );
-      playerRowItr = playerRowItr + 1;
+    if( SCOREBOARD[itr] > -1 ){
+      nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
+      if( nameCheck != "" || nameCheck){
+        player = findfloat(world, entId, SCOREBOARD[itr]+1);
+        listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
+        menu_player_row_basic( listRowOfs, playerRowItr, player, TRUE );
+        playerRowItr = playerRowItr + 1;
+      }
     }
   }
   
@@ -364,7 +371,7 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   local float pingVal;
   //local entity ent;
   //ent = entitybyindex(playerRow.entId);
-  pingVal = playerRow.ping;
+  pingVal = stof(getplayerkeyvalue(playerRow.clientLocalId, "ping"));
   if( pingVal <= 50 ){
     pingColor = CLR_DEF_IIF_FRIEND_BLD;
   }

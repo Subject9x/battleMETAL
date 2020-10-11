@@ -65,18 +65,16 @@ void(vector ofs, float algn) hud_renderTargetName={
   else{
     factionColor = CLR_DEF_IIF_FRIEND;
   }
-
-  local entity playerTarg;
-  playerTarg = findfloat(world, entId, CLIENT_stat_trg_ent_id);
-  if( (playerTarg.flags & FL_CLIENT) ){
-    targType = getplayerkeyvalue(CLIENT_stat_trg_ent_id - 1, "name");
+  
+  if( (CLIENT_target_ent.flags & FL_CLIENT) ){
+    targType = getplayerkeyvalue(CLIENT_target_ent.entnum - 1, "name");
   }
   else{
-    if( playerTarg.netname != "" || strlen(playerTarg.netname) > 0 ){
-      targType = playerTarg.netname;
+    if( CLIENT_target_ent.netname != "" || strlen(CLIENT_target_ent.netname) > 0 ){
+      targType = CLIENT_target_ent.netname;
     }
     else{
-      targType = playerTarg.vec_name;
+      targType = CLIENT_target_ent.vec_name;
     }
   }
   msgSize = '0 0';
@@ -185,14 +183,9 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
   }
   
-  local entity thePlayer;
   local vector namepos, nameproj, drawSize;
   local float namelen, drawdist, adj;
-  thePlayer = entitybyindex(CLIENT_stat_trg_ent_id);
-  if( !(thePlayer.flags& FL_CLIENT) ){
-    thePlayer = findfloat(world, entId, CLIENT_stat_trg_ent_id);
-  }
-  drawdist = vlen(pmove_org - thePlayer.origin);
+  drawdist = vlen(pmove_org - CLIENT_target_ent.origin);
   if( drawdist < CLIENT_radar_range * 0.25 ){
     drawSize = '10 10 0';
     adj = 26;
@@ -206,25 +199,25 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     adj = 42;
   }
   local string playerName;
-  if( (thePlayer.flags & FL_CLIENT) ){
+  if( (CLIENT_target_ent.flags & FL_CLIENT) ){
     playerName = getplayerkeyvalue(CLIENT_stat_trg_ent_id - 1, "name");
   }
   else{
-    if( thePlayer.netname != "" || strlen(thePlayer.netname) > 0 ){
-      playerName = thePlayer.netname;
+    if( CLIENT_target_ent.netname != "" || strlen(CLIENT_target_ent.netname) > 0 ){
+      playerName = CLIENT_target_ent.netname;
     }
     else{
-      playerName = thePlayer.vec_name;
+      playerName = CLIENT_target_ent.vec_name;
     }
   }
   namelen = stringwidth(playerName, 0, drawSize);
-  namepos = thePlayer.origin;
-  namepos_z = namepos_z + (gui_percentYRaw(thePlayer.vec_size * adj));
+  namepos = CLIENT_target_ent.origin;
+  namepos_z = namepos_z + (gui_percentYRaw(CLIENT_target_ent.vec_size * adj));
   nameproj = cs_project(namepos);
   if( nameproj_z >= 0 ){
     nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
     nameproj_z = 0;
-    drawstring(nameproj, playerName, drawSize, CLR_DEF_IFF_ENEMY * 1.5, 1, 0);
+    drawstring(nameproj, playerName, drawSize, factionColor * 1.5, 1, 0);
   }
   namepos = cs_unproject(nameproj);
   

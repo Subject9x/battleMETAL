@@ -219,6 +219,15 @@ void() ImpulseCommands ={
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
   }
 
+  if(self.impulse == IMP_EXTERNAL_CAMERA){
+    if(self.chaseActive){
+      self.chaseActive = FALSE;
+    }
+    else{
+      self.chaseActive = TRUE;
+    }
+  }
+
 	self.impulse = 0;
 };
 

@@ -22,3 +22,5 @@ void() cl_exit_animatic;
 
 void( entity mech, float turboMod ) cl_set_hud_vars;
 void() cl_set_hud_vars_obs;
+
+void() cl_set_chase;  //one-off, don't use normally.

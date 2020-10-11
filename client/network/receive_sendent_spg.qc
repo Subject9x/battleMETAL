@@ -25,17 +25,15 @@ void() sendevent_spg_move={
 /*
   EVENT - DEATH
 */
-void() sendevent_spg_die={
-  local entity weps;
+void() sendevent_spg_die={  local entity weps;
   local entity rem;
-
+  local float wId;
+  
   weps = self.w_slot;
-  while( weps ){
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     rem = weps;
     weps = rem.w_slot;
-    if( rem.data_idx && rem.owner == self ){
-      sendent_handle_remove(rem);
-    }
+    sendent_handle_remove(rem);
   }
   
   data_vehicle_wreck();
@@ -52,8 +50,10 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   local float pclEffect;
   local string newName;
   local float prevAttackFlag;
+  local float prevDeadFlag;
   
   prevShield = self.shield;
+  prevDeadFlag = self.deadflag;
   
   self.origin_x = ReadCoord();
   self.origin_y = ReadCoord();
@@ -61,32 +61,42 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   
   self.angles_x = anglemod(ReadAngle());
   self.angles_y = anglemod(ReadAngle());
-  self.angles_z = anglemod(ReadAngle());
+  self.angles_z = 0;
   
   self.v_angle = self.angles;
   
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadLong();
-    self.faction = ReadByte();
     self.data_idx = ReadByte();
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
-    
-    newName = ReadString();
-    if( isNew ){
-      if( newName != "" ){
-        self.netname = strzone(newName);
-      }
-      data_sync_new_vehicle(self.data_idx);
-      self.predraw = predraw_spg;
+    if( self.deadflag == DEAD_NO ){
+      self.faction = ReadByte();
+      self.next_wepn1 = ReadByte();
+      self.next_wepn2 = ReadByte();
+      self.next_wepn3 = ReadByte();
+      self.next_wepn4 = ReadByte();
+      self.next_wepn5 = ReadByte();
+      self.next_wepn6 = ReadByte();
+      self.next_wepn7 = ReadByte();
+      self.next_wepn8 = ReadByte();
+      self.next_wepn9 = ReadByte();
+      newName = ReadString();
     }
+    else{
+      self.faction = FALSE;
+    }
+  }
+  
+  if( isNew ){
+    setorigin(self, self.origin);
+    if( newName != "" ){
+      self.netname = strzone(newName);
+    }
+    data_sync_new_vehicle(self.data_idx);
+    self.predraw = predraw_spg;
+    self.canTarget = TRUE;
   }
   
   if( (changeFlags & SENDFLAG_IMPACT) ){
@@ -96,13 +106,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     sendevent_spg_move();
-  }
-  
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if( self.deadflag > DEAD_NO ){
-      sendevent_spg_die();
-    }
   }
   
   if( changeFlags & SENDFLAG_CRIT ){
@@ -138,6 +141,11 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       self.shieldEffectTime = time + 0.5;
       te_shield_hit();
     }
+  }
+  
+  //HANDLE EVENT - dead
+  if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
+    sendevent_spg_die();
   }
 };
 

@@ -35,7 +35,6 @@ void() sendevent_player_burn={
   }
 };
 
-
 void(entity item) predraw_player_weapon={
   local entity this;
   local vector entAng;
@@ -77,6 +76,10 @@ void(entity item) predraw_player_weapon={
   assumes you've already made a makevectors() call
 */
 void(entity piece) player_part_predaw={
+  if( (self.damageValue & piece.partTypeId) ){
+    return;
+  }
+  addentity(piece);
   local vector offset;
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
   
@@ -91,17 +94,30 @@ void(entity piece) player_part_predaw={
   
   piece.angles = self.angles;
   piece.angles_x = 0;
+  piece.colormod = self.colormod;
 };
 
-//merely exists to satisfy interpolation
+/*
+  I'm not really sure when this runs because CSQC's time variable appears to be super-unreliable.
+*/
 void() player_think={
-  local vector v1;
   local vector boostLeft, boostRight, backLeft, backRight;
   local string te;
   
+  local vector laserHit;
+  local vector laserOrg;
+  
   makevectors(self.angles);
-  v1 = self.origin + (v_up * self.cockpit.compOffset_y);
-  traceline(v1, v1 + v_forward*10000, FALSE, self);
+  if(self.chaseActive){
+    laserOrg = self.origin + (v_up * 20) + (v_forward * -96);
+    traceline(self.origin, laserOrg, TRUE, self);
+    laserOrg = trace_endpos;
+  }
+  else{
+    laserOrg = self.origin + (v_up * self.cockpit.compOffset_y);
+  }
+  laserHit = laserOrg + (v_forward * 10000);
+  traceline(laserOrg, laserHit, FALSE, self);
   self.laser_sight_org = trace_endpos;
   
   sendevent_player_burn();
@@ -129,6 +145,7 @@ void() player_think={
       trailparticles(world, particleeffectnum(te), boostRight, backRight);
     }
   }
+  
   self.think = player_think;
   self.nextthink = time + 0.01;
 };
@@ -177,8 +194,10 @@ float() player_predraw={
       player_part_predaw(self.torsoLeft);
       player_part_predaw(self.torsoRight);
       player_part_predaw(self.armLeft);
+      
       self.armLeft.angles_x = self.angles_x * -1;
       player_part_predaw(self.armRight);
+      
       self.armRight.angles_x = self.angles_x * -1;
       player_part_predaw(self.legs);
       
@@ -193,13 +212,12 @@ float() player_predraw={
       predraw_legs();
       wep = self.w_slot;
       while( wep != world ){
+        addentity(wep);
         predraw_player_weapon(wep);
         wep = wep.w_slot;
       }
     }
-    else{
     
-    }
     if(cacheOrg){
       self.origin = cacheOrg;
     }
@@ -210,7 +228,6 @@ float() player_predraw={
         local vector hudAng;
         local vector strutOrg;
         local vector consOrg;
-        
         if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
           hudAng = HUD_FIXED_ANGLE;
           hudStruts.angles_y = HUD_FIXED_ANGLE_y;
@@ -239,6 +256,10 @@ float() player_predraw={
         
         consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
         setorigin(hudConsole, consOrg);
+        if( cvar("chase_active") == FALSE ){
+          addentity(hudStruts);
+          addentity(hudConsole);
+        }
       }
     }
   }
@@ -281,13 +302,6 @@ void( float mech_id ) sendevent_player_mech={
   setmodel(self.armRight, self.armRight.model);
   setmodel(self.legs, self.legs.model);
   
-  self.torsoCenter.colormod = self.colormod;
-  self.torsoLeft.colormod = self.colormod;
-  self.torsoRight.colormod = self.colormod;
-  self.armLeft.colormod = self.colormod;
-  self.armRight.colormod = self.colormod;
-  self.legs.colormod = self.colormod;
-  
   this = self;
   weps = self.w_slot;
   while( weps != world ){
@@ -315,7 +329,6 @@ void( float mech_id ) sendevent_player_mech={
     HUD_VIEW_CL_ANGLES = self.angles;
     HUD_VIEW_OFS = self.cockpit.compOffset_z;
     hudStruts = spawn();
-    hudStruts.drawmask = MASK_ENGINE;
     hudStruts.effects = hudStruts.effects | EF_NOSHADOW;
     setmodel(hudStruts, self.weaponmodel);
     setorigin(hudStruts, pmove_org);
@@ -324,7 +337,6 @@ void( float mech_id ) sendevent_player_mech={
     hudStruts.angles_z = 0;
     
     hudConsole = spawn();
-    hudConsole.drawmask = MASK_ENGINE;
     hudConsole.effects = hudConsole.effects | EF_NOSHADOW;
     setmodel(hudConsole, self.hud_model);
     setorigin(hudConsole, pmove_org);
@@ -335,18 +347,10 @@ void( float mech_id ) sendevent_player_mech={
       if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
         HUD_EXTERNAL_CAM_ACTIVE = FALSE;
         cvar_set("chase_active", "0");
-        hudConsole.drawmask = MASK_ENGINE;
-        hudStruts.drawmask = MASK_ENGINE;
       }
       else{
         HUD_EXTERNAL_CAM_ACTIVE = TRUE;
-        hudConsole.drawmask = 0;
-        hudStruts.drawmask = 0;
       }
-    }
-    else{
-      hudConsole.drawmask = MASK_ENGINE;
-      hudStruts.drawmask = MASK_ENGINE;
     }
   }
 };
@@ -356,6 +360,10 @@ void( float mech_id ) sendevent_player_mech={
 */
 void() sendevent_handle_player_death={
   local entity wep, nextWep;
+  
+  if(self == CLIENT_target_ent){
+    hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
+  }
   
   te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
   self.origin = '0 0 0';
@@ -421,19 +429,15 @@ void( float criticalBits ) sendevent_player_critical={
   
   if( (criticalBits & M_TOR_LEFT) ){
     te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoLeft.drawmask = 0;
   }
   if( (criticalBits & M_TOR_RIGHT) ){
     te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoRight.drawmask = 0;
   }
   if( (criticalBits & M_ARM_LEFT) ){
     te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armLeft.drawmask = 0;
   }
   if( (criticalBits & M_ARM_RIGHT) ){
     te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armRight.drawmask = 0;
   }
   if( (criticalBits & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
@@ -442,8 +446,7 @@ void( float criticalBits ) sendevent_player_critical={
   wep = self.w_slot;
   while( wep != world ){
     if( (criticalBits & wep.partParentId) ){
-      wep.drawmask = 0;
-      if(self.entId == player_localentnum){
+      if(self.entnum == player_localentnum){
         CLIENT_weapon_state = CLIENT_weapon_state - (CLIENT_weapon_state & wep.w_group);
       }
     }
@@ -452,28 +455,30 @@ void( float criticalBits ) sendevent_player_critical={
 };
 
 /*
-  HANDLE EVENT - player mech pieces are dying
+  HANDLE EVENT - player mech pieces are being repair
 */
 void(float repairValue) sendevent_player_repair={
   local entity wep;
   
+  if( !(repairValue & M_TOR_CENTER) ){
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
+  }
   if( !(repairValue & M_TOR_LEFT) ){
-    self.torsoLeft.drawmask = MASK_ENGINE;
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
   }
   if( !(repairValue & M_TOR_RIGHT) ){
-    self.torsoRight.drawmask = MASK_ENGINE;
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
   }
   if( !(repairValue & M_ARM_LEFT) ){
-    self.armLeft.drawmask = MASK_ENGINE;
+    self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
   }
   if( !(repairValue & M_ARM_RIGHT) ){
-    self.armRight.drawmask = MASK_ENGINE;
+    self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
   }
   
   wep = self.w_slot;
   while( wep != world ){
     if( !(repairValue & wep.partParentId) ){
-      wep.drawmask = MASK_ENGINE;
       if(self.entId == player_localentnum){
         CLIENT_weapon_state = CLIENT_weapon_state | wep.w_group;
       }
@@ -484,6 +489,7 @@ void(float repairValue) sendevent_player_repair={
 
 void( float isNew, float changeFlags) sendent_handle_player={
   local vector prevOrg;
+  local vector targetOrg;
   local float prevShield;
   local float prevCrit;
   local float prevType;
@@ -494,6 +500,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevAttackFlag;
   local float prevMoveState;
   local float prevBurn;
+  local float prevGetTarg;
   
   prevBurn = self.burnBits;
   prevShield = self.shield;
@@ -505,7 +512,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevMoveState = self.moveState;
   prevOrg = self.origin;
   prevType = self.data_type;
-  
+    
   /*
     EVENT - per-frame update
   */
@@ -519,13 +526,21 @@ void( float isNew, float changeFlags) sendent_handle_player={
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
-    self.angles_z = anglemod(ReadAngle());
+    self.angles_z = 0;
     
     self.attackFlag = ReadLong();
     self.moveState = ReadByte();
     //Track player move state?
     self.legDir = anglemod(ReadShort());
     self.ai_dir = ReadShort();
+    self.chaseActive = ReadByte();
+  }
+  /*
+    EVENT - Client Data is new/spawned
+  */
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.entId = ReadCoord();
+    self.flags = ReadShort();
   }
   
   /*
@@ -534,9 +549,23 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_IMPACT) ){
     local float nextHit;
     nextHit = ReadByte();
-    if( self.shieldHitFlag == FALSE || nextHit == 3){
+    if( self.shieldHitFlag == FALSE || nextHit == SHIELD_HIT_EXP){
       self.shieldHitFlag = nextHit;
     }
+  }
+  
+  if( isNew ){
+    if(self.data_type != DATA_MECH){
+      self.data_type = DATA_POBS;
+      setmodel(self, "q3mdl/testball.md3");
+      setsize(self, '-4 -4 -4', '4 4 4');
+      setorigin(self, self.origin);
+      self.alpha = 0.01;
+      self.scale = 0.01;
+    }
+    self.think = player_think;
+    self.nextthink = time + 0.01;
+    self.t_remove = remove_client;
   }
   
   /*
@@ -544,7 +573,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_TURRET) ){
     self.data_type = ReadByte();
-    self.faction = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
@@ -568,6 +596,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
         if(self.entId == player_localentnum){
           HUD_FIXED_ANGLE = self.angles;
         }
+        self.canTarget = TRUE;
       }
     }
   }
@@ -592,7 +621,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_BURN) ){
     self.burnBits = ReadShort();
-    self.burnBits = self.burnBits | prevBurn;
+    if( self.burnBits < prevBurn ){
+      self.burnBits = self.burnBits - (self.burnBits & prevBurn);
+    }
   }
   
   /*
@@ -608,32 +639,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
     if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
       sendevent_handle_player_death();
       scoreboard_sort();
+      self.canTarget = FALSE;
     }
   }
   
-  /*
-    EVENT - Client Data is new/spawned
-  */
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadLong();
-    self.clientLocalId = self.entId - 1;
-    self.faction = ReadByte();
-    self.flags = ReadShort();
-    if( isNew ){
-      scoreboard_push( self.entId, self.kills );
-      if(self.data_type != DATA_MECH){
-        self.data_type = DATA_POBS;
-        setmodel(self, "q3mdl/testball.md3");
-        setorigin(self, self.origin);
-        self.alpha = 0.01;
-        self.scale = 0.01;
-      }
-      self.think = player_think;
-      self.nextthink = time + 0.01;
-      self.t_remove = remove_client;
-    }
-  }
-  
+  self.clientLocalId = max(0,self.entId - 1);
+  self.faction = rint(stof(getplayerkeyvalue(self.clientLocalId, "colors")));
   self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
   self.netname = getplayerkeyvalue(self.clientLocalId, "name");
   
@@ -641,19 +652,14 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    prevTarget = self.targetEntId;
-      
-    self.particleCubeFlag = ReadByte();
-    self.targetEntId = ReadLong();
+    //self.particleCubeFlag = ReadByte();
+    //player has tried to acquire target
+    self.getTarget = ReadCoord();
+    self.enemy = findfloat(world, entnum, self.getTarget);
     self.flags = ReadShort();
     
-    if( self.targetEntId > 0 ){
-      self.enemy = findfloat(world, entId, self.targetEntId);
-    }
-    else{
-      self.enemy = world;
-    }
-    
+    /*
+      Particle Cubes are disable by Beta 2 v1.0.0 - will require a patch to get working again.
     if( self.particleCubeFlag == 0 ){
       //remove cube
     }
@@ -661,7 +667,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
       //if( player_localentnum == self.data_idx ){
         //add cube
       //}
-    }
+    }*/
   }
   
   /*
@@ -673,7 +679,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   //Shield strike event
   if(servertime > self.shieldEffectTime ){
-    if( self.shieldHitFlag == 1 && (self.shield > 0 && self.shield < 100.01)){
+    if( self.shieldHitFlag == SHIELD_HIT_UP && (self.shield > 0 && self.shield < 100.01)){
       te_shield_hit();
     }
   }
@@ -720,47 +726,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     else{
       CLIENT_energy = 0;
     }
-    
-    if( self.targetEntId > 0 ){
-      CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
-      CLIENT_stat_trg_ddflg = self.enemy.deadflag;
-      if(CLIENT_stat_trg_ddflg > DEAD_NO ){
-        self.enemy = world;
-        CLIENT_stat_trg_ent_id = 0;
-        CLIENT_stat_trg_dataidx = 0;
-        return;
-      }
-      CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
-      CLIENT_stat_trg_ent_id = self.enemy.entId;
-      CLIENT_stat_trg_dataidx = self.enemy.data_idx;
-      CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
-      CLIENT_target_datatype_prev = CLIENT_target_datatype;
-      CLIENT_target_datatype = self.enemy.data_type;
-      CLIENT_target_faction = self.enemy.faction;
-      CLIENT_target_origin_x = self.enemy.origin_x;
-      CLIENT_target_origin_y = self.enemy.origin_y;
-      CLIENT_target_origin_z = self.enemy.origin_z;
-      CLIENT_target_vecsize = self.enemy.vec_size * self.enemy.maxs_z;
-      if( self.enemy.shield > 0 ){
-        CLIENT_target_shield = self.enemy.shield;
-      }
-      else{
-        CLIENT_target_shield = 0;
-      }
-      CLIENT_target_dist_prev = CLIENT_target_dist;
-      CLIENT_target_dist = vlen(self.enemy.origin - self.origin);
-      CLIENT_target_size_x = self.enemy.maxs_x;
-      CLIENT_target_size_y = self.enemy.maxs_y;
-      CLIENT_target_size_z = self.enemy.maxs_z;
-    }
-    else{
-      CLIENT_stat_trg_ent_id = 0;
-      CLIENT_stat_trg_dataidx = 0;
-      CLIENT_target_origin = '0 0 0';
-      CLIENT_target_faction = 0;
-      CLIENT_target_shield = 0;
-      CLIENT_target_vecsize = 0;
-    }
+    CLIENT_target_ent = self.enemy ;
   }
 };
 
@@ -768,9 +734,6 @@ float() remove_client={
   local entity weps;
   local entity next;
   local entity rem;
-  
-  scoreboard_stitch(self);
-  scoreboard_sort();
 
   if( self.data_type == DATA_MECH ){
     weps = self.w_slot;
@@ -801,6 +764,6 @@ float() remove_client={
       remove(self.legs );
     }
   }
-  
+  remove(self);
   return TRUE;
 };
