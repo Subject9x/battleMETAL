@@ -13,12 +13,22 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
   local float dist;
   local vector vpos, nofs, aSize;
   local float scopeVal;
+  local float adj;
+  
   scopeVal = rint(val);
   if(scopeVal != 0){
-    dist = vlen(org - torg);
-    dist = dist / radRange;
-    dist = (1 / (dist * dist));    
-    dist = dist / 10;
+  
+    dist = vlen(pmove_org - CLIENT_target_ent.origin);
+    if( dist < CLIENT_radar_range * 0.25 ){
+      adj = 40;
+    }
+    else if( dist < CLIENT_radar_range * 0.5 ){
+      adj = 50;
+    }
+    else{
+      adj = 60;
+    }
+    
     aSize_x = mSize_x * dist;
     if(aSize_x > mSize_x){
       aSize_x = mSize_x;
@@ -28,7 +38,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       aSize_y = mSize_y;
     }
     vpos = org;
-    vpos_z = vpos_z + (CLIENT_target_vecsize * 1.5);
+    vpos_z = vpos_z + (CLIENT_target_vecsize * adj);
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);
@@ -45,7 +55,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       if( scopeVal > 100 ){
         //render delay regen
         scopeVal = 100 - scopeVal;
-        gui_renderMeter( (scopeVal * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE); 
+        gui_renderMeter( (scopeVal * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE);
       }
       else{
         gui_renderMeter(scopeVal, pos, aSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, AXIS_H, FALSE); 

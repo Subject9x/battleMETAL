@@ -198,6 +198,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     drawSize = '14 14 0';
     adj = 42;
   }
+  
   local string playerName;
   if( (CLIENT_target_ent.flags & FL_CLIENT) ){
     playerName = getplayerkeyvalue(CLIENT_stat_trg_ent_id - 1, "name");
