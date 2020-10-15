@@ -188,15 +188,15 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   drawdist = vlen(pmove_org - CLIENT_target_ent.origin);
   if( drawdist < CLIENT_radar_range * 0.25 ){
     drawSize = '10 10 0';
-    adj = 26;
+    adj = 30;
   }
   else if( drawdist < CLIENT_radar_range * 0.5 ){
     drawSize = '12 12 0';
-    adj = 34;
+    adj = 40;
   }
   else{
     drawSize = '14 14 0';
-    adj = 42;
+    adj = 50;
   }
   
   local string playerName;
