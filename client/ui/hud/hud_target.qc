@@ -98,7 +98,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   local float dist;
   local float targSizeX, targSizeY, targSizeZ, targZbottom;
   local vector viewAngle;
-  local vector imgSize, factionColor;
+  local vector imgSize, factionColor, lockColor;
   
   targSizeX = CLIENT_target_size_x;
   targSizeY = CLIENT_target_size_y; 
@@ -113,9 +113,16 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   
   if( (faction1 == faction2) && (faction2 != FACTION_ALL && faction1 != FACTION_ALL) ){
     factionColor = CLR_DEF_IIF_FRIEND;
+    lockColor = CLR_DEF_IIF_FRIEND;
   }
   else{
     factionColor = CLR_DEF_IFF_ENEMY;
+    if( (CLIENT_stat_lock_state & LOCK_TARG_START) || (CLIENT_stat_lock_state & LOCK_TARG_HAS) ){
+      lockColor = HUD_LOCK_COLOR;
+    }
+    else{
+      lockColor = CLR_DEF_IFF_ENEMY;
+    }
   }
   dist = vlen(org - torg);
   if( dist > radRange ){
@@ -156,7 +163,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     c_tl_x = c_tl_x - (imgSize_x / 2);
     c_tl_y = c_tl_y - (imgSize_y / 2);
     c_tl_z = 0;
-    gui_renderTintImage(TRUE, c_tl, HUD_TARGET_BOX_TL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+    gui_renderTintImage(TRUE, c_tl, HUD_TARGET_BOX_TL, imgSize, lockColor, HUD_ALPHA + 0.25, 0);
   }
 
   c_tr = cs_project(tr);
@@ -164,7 +171,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     c_tr_x = c_tr_x - (imgSize_x / 2);
     c_tr_y = c_tr_y - (imgSize_y / 2);
     c_tr_z = 0;
-    gui_renderTintImage(TRUE, c_tr, HUD_TARGET_BOX_TR, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+    gui_renderTintImage(TRUE, c_tr, HUD_TARGET_BOX_TR, imgSize, lockColor, HUD_ALPHA + 0.25, 0);
   }
   
   c_br = cs_project(br);
@@ -172,7 +179,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     c_br_x = c_br_x - (imgSize_x / 2);
     c_br_y = c_br_y - (imgSize_y / 2);
     c_br_z = 0;
-    gui_renderTintImage(TRUE, c_br, HUD_TARGET_BOX_BR, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+    gui_renderTintImage(TRUE, c_br, HUD_TARGET_BOX_BR, imgSize, lockColor, HUD_ALPHA + 0.25, 0);
   }
   
   c_bl = cs_project(bl);
@@ -180,7 +187,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     c_bl_x = c_bl_x - (imgSize_x / 2);
     c_bl_y = c_bl_y - (imgSize_y / 2);
     c_bl_z = 0;
-    gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+    gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, lockColor, HUD_ALPHA + 0.25, 0);
   }
   
   local vector namepos, nameproj, drawSize;
