@@ -51,6 +51,9 @@ float WORLD_DATA_ITEMS_SURVEST[64];
 float WORLD_DATA_MECHS_MILITAR[64];
 float WORLD_DATA_ITEMS_MILITAR[64];
 
+void() SV_Shutdown;
+void() RestoreGame;
+
 void() sv_world_load_items;
 void() sv_checkRules;
 void() sv_endServer;
@@ -89,3 +92,6 @@ void( entity parent ) world_remove_dlight;
 void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight;
 
 entity() world_deathmatch_random_spawn;
+
+string WORLD_MAP_LIST;
+void() world_get_maplist; //TDM/DM network games use this list.

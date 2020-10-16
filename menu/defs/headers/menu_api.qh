@@ -146,7 +146,7 @@ void() dynamic_precache =
 			ln = fgets(f);
 		} 
     fclose(f);
-	}                                           
+	}
 };
 
 string(float typ) map_list_getmap ={

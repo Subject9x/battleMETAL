@@ -152,6 +152,8 @@ void() mh_world_ini={
   enemy_dist = 1.0;
   combat_dist = 1.0;
   combat_roll = 1.0;
+  
+  world_get_maplist();
 };
 
 void() world_ini_serverinfo={
@@ -243,6 +245,22 @@ void() WeatherDominator_think={
   
   WeatherDominator.think = WeatherDominator_think;
   WeatherDominator.nextthink = time + 0.05;
+};
+
+/*
+  Darkplaces extension, added for completeness.
+    when progs exits, not on errors though!
+*/
+void() SV_Shutdown={
+
+};
+
+/*
+  Darkplaces extension, added for completeness.
+    when a savegame is loaded, this function is called
+*/
+void() RestoreGame={
+
 };
 
 /*
@@ -430,6 +448,24 @@ void() sv_endServer={
         self = this;
       }
       MISSION_STATUS = MISSION_STATUS_DONE;
+      
+      local float mapCount;
+      local float itr;
+      local string nextMap;
+      mapCount = tokenizebyseparator(WORLD_MAP_LIST, " ");
+      for( itr = 0; itr < mapCount; itr = itr + 1 ){
+        if( argv(itr) == mapname ){
+          if( itr == mapCount ){
+            sv_nextmap = argv(0);
+          }
+          else{
+            sv_nextmap = argv(itr + 1);
+          }
+          sv_nextmap = strzone(sv_nextmap);
+          break;
+        }
+      }
+      
       if( GAMETYPE == GAMEMODE_CAMPAIGN ){
         ENDROUND_TIME = time + 2;
       }
@@ -692,4 +728,36 @@ entity() world_deathmatch_random_spawn={
     rando = nextent(rando);
   }
   return theNode;
+};
+
+//TDM/DM network games use this list.
+//string WORLD_MAP_LIST;
+void() world_get_maplist={
+  local string handOff;
+  local float fileHandle;
+  local string ln;
+  
+  if( WORLD_MAP_LIST != "" ){
+    handOff = WORLD_MAP_LIST;
+    strunzone(handOff);
+    WORLD_MAP_LIST = "";
+  }
+  
+  fileHandle = fopen("sv_maplist.txt", FILE_READ);
+  
+  if(fileHandle != -1){
+    ln = fgets(fileHandle);
+    while(ln != ""){ 
+      if( substring(ln,0, 2) != "//" ){
+        WORLD_MAP_LIST = strcat(WORLD_MAP_LIST, " ", ln);
+      }
+      ln = fgets(fileHandle);
+    } 
+    fclose(fileHandle);
+  }
+  
+  WORLD_MAP_LIST = strzone(WORLD_MAP_LIST);
+  if( cvar("developer") ){
+    dprint("WORLD_MAP_LIST ", WORLD_MAP_LIST, "\n"); //debug
+  }
 };
