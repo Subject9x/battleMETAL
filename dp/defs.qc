@@ -100,7 +100,7 @@ void		end_sys_globals;		// flag for structure dumping
 ==============================================================================
 
 			SOURCE FOR ENTVARS_T C STRUCTURE
-
+			MUST NOT BE MODIFIED, OR CRC ERRORS WILL APPEAR
 ==============================================================================
 */
 

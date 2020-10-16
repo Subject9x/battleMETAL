@@ -2482,4 +2482,21 @@ float(string url, float id, string content_type, string delim, float buf, float 
 .float SendFlags;
 void(float buf, float fl) WriteFloat = #280;
 
+//darkMETAL Extension
+//DM_NOSAVE
+//idea: Subject9x
+//darkplaces implementation: Subject9x
+//field definitions: (SVQC)
+.float skipsave;
+//if set to 1/TRUE, this entity will NOT be saved to the savegame file.
+//darkMETAL Extension
+//DM_NOSAVE
+//idea: Subject9x
+//darkplaces implementation: Subject9x
+//field definitions: (SVQC)
+.float skipsave;
+//if set to 1/TRUE, this entity will NOT be saved to the savegame file.
+//use-case : quake savegame files DO NOT presever .entity field links, to this end
+//if you have a child ent that's irrelevant to the gamestate, you can skip saving it here,
+//and relink a new instance using RestoreGame() function.
  

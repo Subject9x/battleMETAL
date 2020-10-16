@@ -260,7 +260,13 @@ void() SV_Shutdown={
     when a savegame is loaded, this function is called
 */
 void() RestoreGame={
-
+  //I wish there was time to rebuild this feature - I didn't know it existed until recently.
+  //I've adjusted darkMETAL engine to work more closely with this, but alas.
+  // wishlist:
+    // + rebuild player client data on restart
+    // -> ALL vehicle data sent to client.
+    // -> restore any child ents like Repair Bay's repairNode.
+    // -> relink any ai_nodes.
 };
 
 /*
