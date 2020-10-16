@@ -111,7 +111,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     targZbottom = targSizeZ;
   }
   
-  if( (faction1 == faction2) && (faction2 != FACTION_ALL) ){
+  if( (faction1 == faction2) && (faction2 != FACTION_ALL && faction1 != FACTION_ALL) ){
     factionColor = CLR_DEF_IIF_FRIEND;
   }
   else{

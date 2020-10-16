@@ -326,6 +326,7 @@ void( float mech_id ) sendevent_player_mech={
   
   //hud shenanigans
   if( self.entId == player_localentnum ){
+    CLIENT_server_ent = self;
     HUD_VIEW_CL_ANGLES = self.angles;
     HUD_VIEW_OFS = self.cockpit.compOffset_z;
     hudStruts = spawn();
@@ -654,7 +655,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     //self.particleCubeFlag = ReadByte();
     //player has tried to acquire target
-    self.getTarget = ReadCoord();
+    self.getTarget = rint(ReadCoord());
     self.enemy = findfloat(world, entnum, self.getTarget);
     self.flags = ReadShort();
     

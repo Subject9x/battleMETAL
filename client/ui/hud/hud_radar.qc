@@ -59,18 +59,23 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     }
     testCheck = TRUE;
     //passive radar cannot see through walls or buildings
-    if( CLIENT_stat_rdr_mode == FALSE ){
-      traceline(RADAR_ORG, blip.origin, FALSE, entitybyindex(player_localentnum));
-      if( trace_fraction != 1.0 ){
-        if( vlen(blip.origin - RADAR_ORG) > (radarRange * 0.5) ){
+    traceline(RADAR_ORG, blip.origin, FALSE, CLIENT_server_ent);
+    if( (blip.flags & FL_CLIENT) ){
+      if( CLIENT_stat_rdr_mode == FALSE && blip.stat_rdr_mode == FALSE ){
+        //case: both scanner and player are running passive radar.
+        if( trace_fraction != 1.0 ){
+          //trace hit something else
           continue;
         }
-        if( (blip.flags & FL_CLIENT) ){
-          if( blip.stat_rdr_mode == FALSE ){
-            continue;
-          }
-        }
       }
+      else if( CLIENT_stat_rdr_mode == FALSE && blip.stat_rdr_mode == TRUE ){        
+        if( trace_fraction < 0.5 ){
+          //trace hit something else
+          continue;
+        }
+      
+      }
+    
     }
     hud_renderRadarContact( blip, plrFaction, radarRange );
   }

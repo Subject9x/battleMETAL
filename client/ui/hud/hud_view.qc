@@ -983,7 +983,9 @@ void() data_hud_frame={
     if( player.data_type == DATA_POBS ){continue;}
     if( player.faction != CLIENT_faction ){continue;}
     if( player.faction == FACTION_ALL){continue;}
-    hud_render_ally_names( player );
+    if( player != CLIENT_target_ent ){
+      hud_render_ally_names( player );
+    }
     
     if( player.targetEntId <= 0 ){continue;}
     if( player.enemy.deadflag != DEAD_NO ){continue;}
@@ -1007,21 +1009,6 @@ void() data_hud_frame={
       R_PolygonVertex(gui_percentToPixelRawVec('10 10'), '0 0', '1 1 1', 1) ;
     R_EndPolygon();
   */
-  
-  local vector test1, prjTest1, tAng;
-  
-  tAng =  input_angles;
-  
-  //cons_logAFloat("tAng_x", tAng_x); //debug
-  // = tAng_x * -1;
-  makevectors(tAng);
-  test1 = getpropertyvec(VF_ORIGIN);
-//  test1 = test1 + v_up * 32;
-  
-  prjTest1 = cs_project(test1);
-  prjTest1_z = 0;
-  //hud_renderShield(prjTest1, 0, CLIENT_shield, '22 88', 1, 17, '0 6', 2, TRUE);
-  
 };
 
 /*

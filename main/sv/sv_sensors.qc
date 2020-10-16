@@ -36,13 +36,18 @@ void() sv_getTarget={
       //already have this target.
       return;
     }
-    if( (trace_ent.flags & FL_CLIENT) ){
-      targName = trace_ent.netname;
+    self.enemy = trace_ent;
+    if( (self.enemy.flags & FL_CLIENT) ){
+      targName = self.enemy.netname;
+      self.stat_trg_ent_id = num_for_edict(self.enemy.clientData);
     }
     else{
-      targName = trace_ent.vec_name;
+      targName = self.enemy.vec_name;
+      self.stat_trg_ent_id = num_for_edict(self.enemy);
     }
-    self.enemy = trace_ent;
+    
+    self.lock_timer = 0;  //make sure to reset the timer
+    self.targLockState = 0;
     if(self.stat_rdr_mode){
       self.lock_timer = time + self.w_firetime;
     }
@@ -55,9 +60,7 @@ void() sv_getTarget={
     else{
       trigger_event( self, self.trigOnTarget );
     }
-    self.lock_timer = 0;  //make sure to reset the timer
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
-    self.stat_trg_ent_id = num_for_edict(self.enemy);
   }
 };
 
@@ -71,7 +74,12 @@ void() sv_updateTargetInfo={
   local float prevDist;
   local float prevValid;
   
-  self.stat_trg_ent_id = num_for_edict(self.enemy);
+  if( (self.enemy.flags & FL_CLIENT) ){
+    self.stat_trg_ent_id = num_for_edict(self.enemy.clientData);
+  }
+  else{
+    self.stat_trg_ent_id = num_for_edict(self.enemy);
+  }
   
   prevDeadFlags = self.stat_trg_ddflg;
   prevDist = self.stat_trg_dist;
@@ -118,7 +126,7 @@ void() sv_updateTargetInfo={
     self.stat_trg_face = util_checkPointAngle(self.enemy);
     
     //can only lock-on to enemy units
-    if( self.enemy.faction != self.faction ){
+    if( self.enemy.faction != self.faction && (self.faction != FACTION_ALL && self.enemy.faction != FACTION_ALL) ){
       local float canLock;
       canLock = FALSE;
       if( util_lockOnChoke(self.enemy.origin) ){

@@ -109,6 +109,7 @@ void() player_makeMech={
   self.stat_rdr_mode = 1; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
   self.damageValue = 0;
+  self.canTarget = TRUE;
 };
 
 void() player_unmakeMech={
