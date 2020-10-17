@@ -34,3 +34,6 @@ float UID_ITEM_large_sensors        = 18;
 float UID_ITEM_shield_capacitor     = 19;
 float UID_ITEM_recharge_capacitor   = 20;
 float UID_ITEM_turbo_charger        = 21;
+
+//---------MISC-------------
+float UID_ITEM_debris                = 22;

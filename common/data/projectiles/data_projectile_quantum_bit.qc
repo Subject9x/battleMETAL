@@ -61,7 +61,7 @@ void() data_projectile_quantum_bit_th={
     remove(self);
     return;
   }
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_VELOCITY);
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
 }
 
 

@@ -80,7 +80,7 @@ void() data_projectile_snub_artillery_touch_={
   
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
   self.impactType = IMPACT_DIRT;
-  debris = rint(random() * 7);
+  debris = ceil(random() * 4);
   if( pointcontents(self.origin) == CONTENT_SKY ){
     self.impactType = IMPACT_SKY;
     debris = 0;
@@ -100,7 +100,7 @@ void() data_projectile_snub_artillery_touch_={
     }
     else{
       t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      debris = rint(random() * 4);
+      debris = ceil(random() * 3);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 2 );
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 2, 1 );
       self.impactType = IMPACT_ARMOR;
@@ -112,8 +112,8 @@ void() data_projectile_snub_artillery_touch_={
     data_projectile_snub_artillery_radiusDamage();
   }
   if( debris > 0 ){
-    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, rint(0.5 + random() * 2));
-    te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 1.25, rint(0.5 + random() * 2) );
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, ceil(0.5 + random() * 2));
+    te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 1.25, ceil(0.5 + random() * 2) );
   }
   self.think = SUB_Remove;
   self.nextthink = time + 0.05;

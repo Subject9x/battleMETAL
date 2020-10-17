@@ -69,7 +69,7 @@ void(entity theOther ) data_prj_mis_hit={
   self.velocity = '0 0 0';
   
   self.impactType = IMPACT_DIRT;
-  //debris = rint(3 + random() * 5);
+  debris = rint(1 + random() * 3);
 	if ( pointcontents(self.origin) == CONTENT_SKY){
     self.impactType = IMPACT_SKY;
 	}
@@ -90,14 +90,14 @@ void(entity theOther ) data_prj_mis_hit={
       damage = damage + (damage * 0.25);
       t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
       self.impactType = IMPACT_ARMOR;
-      //debris = rint(4 + random() * 6);
-      //te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
+      debris = rint(1 + random() * 3);
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
     }
     self.stat_trg_ent_id = num_for_edict(other);
     debris = 0;
   }
   if( debris > 0 ){
-   // te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, debrisType );
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, debrisType );
   }
   
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;

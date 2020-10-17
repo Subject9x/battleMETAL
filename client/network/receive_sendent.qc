@@ -258,6 +258,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
+    self.oldvelocity = self.velocity;
     self.velocity_x = ReadShort();
     self.velocity_y = ReadShort();
     self.velocity_z = ReadShort();
@@ -270,11 +271,20 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.angles_z = anglemod(ReadAngle());
   }
   
+  if( (changeFlags & SENDFLAG_BURN) ){
+    self.vec_size = ReadByte();
+  }
+  
   if( isNew ){
     self.solid = SOLID_BBOX;
     self.alpha = 1;
     self.scale = 1;
-    data_sync_new_projectile(self.data_idx);
+    if( self.data_idx == UID_ITEM_debris ){
+      data_sync_new_debris( self );
+    }
+    else{
+      data_sync_new_projectile(self.data_idx);
+    }
     setmodel(self, self.model);
     setsize(self, '0 0 0', '0 0 0');
     setorigin(self, self.origin);

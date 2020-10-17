@@ -47,6 +47,32 @@ void( float dataID ) data_sync_new_projectile={
   self.effects = self.effects | EF_NOSHADOW;
 };
 
+
+void( entity e ) data_sync_new_debris={
+  
+  e.effects = e.effects | EF_NOSHADOW;
+    switch( e.vec_size ){
+    case 2:
+      e.model = "q3mdl/fx/debris2/mdl_debris_2.md3";
+      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
+      break;
+    case 3:
+      e.model = "q3mdl/fx/debris3/mdl_debris_3.md3";
+      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
+      break;
+    default:
+      e.model = "q3mdl/fx/debris1/mdl_debris_1.md3";
+      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
+      break;
+  }
+  setmodel(e, e.model);
+  self.angles = vectoangles(self.velocity);
+  self.avelocity_x = random()*525;
+  self.avelocity_y = random()*525;
+  self.avelocity_z = random()*525;
+  self.predraw_projectile = predraw_debris;
+  
+};
 float() predraw_missile={
   interpolate_origin();
   interpolate_angle();
@@ -95,5 +121,13 @@ float() predraw_quantum={
   self.colormod_x = max(0.1, random() * 1);
   self.colormod_y = max(0.1, random() * 1);
   self.colormod_z = max(0.1, random() * 1);
+  return TRUE;
+};
+
+float() predraw_debris={
+  self.angles_x = self.angles_x + ( (random() * 0.5) * self.lerpfrac);
+  self.angles_y = self.angles_y + ( (random() * 0.5) * self.lerpfrac);
+  self.angles_z = self.angles_z + ( (random() * 0.5) * self.lerpfrac);
+  
   return TRUE;
 };

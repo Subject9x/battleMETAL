@@ -73,7 +73,7 @@ void() data_projectile_missile_swarm_touch={
   
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.impactType = IMPACT_DIRT;
-  debris = rint( 2 + random() * 4);
+  debris = ceil( 1 + random() * 3);
 	if (pointcontents(self.origin) == CONTENT_SKY){
     self.impactType = IMPACT_SKY;
     debris = 0;
@@ -140,7 +140,7 @@ void() data_projectile_missile_swarm_think={
       }
       self.velocity = dir * self.data_velocity;
       self.angles = vectoangles(self.velocity);
-      self.SendFlags = self.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_TURRET);
+      self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
     }
     self.nextthink = time + 0.075;
     self.think = data_projectile_missile_swarm_think;

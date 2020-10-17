@@ -5,6 +5,17 @@
   Overview: custom TE_'s using the effectinfo.txt system
 */
 
+/*
+  I can't get MOVETYPE_BOUNCE to work in csqc.
+  The engine code for MOVETYPE_BOUNCE is strongly coupled to SV functionality.
+  the effectinfo.txt can't provide nice looking, bouncing debris chunks, 
+  so
+  solution: poorly network debris chunks that only last a few frames AND
+    a limit controller to max sure the network doesn't die.
+*/
+float MAX_DEBRIS_COUNT = 64;
+float DEBRIS_COUNT;
+
 .float pcl_effectnum;
 
 float( float isNew, float changedFlags ) te_send_missile;

@@ -76,7 +76,7 @@ void() data_projectile_missile_laserguide_touch={
   }
   else{
     self.impactType = IMPACT_DIRT;
-    debris = 4;
+    debris = ceil(2 + random() * 3);
     if(other.takedamage){
       damage = self.damageValue;
       if( other.shield > 0 ){
