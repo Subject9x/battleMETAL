@@ -118,8 +118,8 @@ void() data_projectile_missile_activeradar_think={
     self.touch = SUB_Null;
     self.think = BecomeExplosion;
     self.nextthink = time + 1 + random();
-		return;
-	}
+    return;
+  }
   if(self.enemy == world){
     self.solid = SOLID_NOT;
     self.touch = SUB_Null;
@@ -128,23 +128,30 @@ void() data_projectile_missile_activeradar_think={
     return;
   }
   
-  lock = TRUE;
-  //enemy players switching to passive radar dumps the lock-on
+  self.isActive =  self.owner.enemy.stat_rdr_mode;
   if( (self.enemy.flags & FL_CLIENT) ){
-    if((self.stat_rdr_mode == TRUE) && (self.enemy.stat_rdr_mode == FALSE) ){
-      lock = FALSE;
+    if( self.stat_rdr_mode == TRUE && self.owner.enemy.stat_rdr_mode == FALSE ){
+      //target has switched to passive radar
+      lock = 1;
     }
-    self.stat_rdr_mode = self.enemy.stat_rdr_mode;  //cache previous enemy radar mode.
+    else if(self.stat_rdr_mode == TRUE && self.owner.enemy.stat_rdr_mode == TRUE) {
+      lock = 2;
+    }
+  }else{
+    lock = 2;
   }
-  if( lock ){
+  self.stat_rdr_mode = self.owner.enemy.stat_rdr_mode;
+  if( lock == 2 ){
     vtemp = self.enemy.origin + '0 0 10';
     vtemp = randompos( vtemp + self.enemy.mins, vtemp + self.enemy.maxs );
-    dir = normalize(vtemp - self.origin);
-    self.dest = vtemp;
+    self.lastorigin = self.enemy.origin;
   }
   else{
-    dir = normalize( self.dest - self.origin);
+    vtemp = self.lastorigin;
   }
+  
+  dir = normalize(vtemp - self.origin);
+  
   if( time > self.data_lifetime * 0.67){
     if(self.ai_dir > 0.1){
       self.ai_dir = self.ai_dir - PROJ_MARH_TURN_FADE;
@@ -152,7 +159,6 @@ void() data_projectile_missile_activeradar_think={
     else{
       self.ai_dir = 0.1;
     }
-    
   }
   dir = dir * self.ai_dir;
   self.velocity = dir * self.data_velocity;
@@ -185,11 +191,11 @@ void() data_projectile_missile_activeradar_touch={
   local float debris;
   local float damage;
   
-  local vector shotpoint;
-  local vector shrapPoint;
-  local vector shotDir;
-  local vector shrapDir;
   local float totes;
+  local float startOfs;
+  local float rollDice;
+  local float part;
+  local entity hit;
   
   if( other == self.owner ){
     return;
@@ -201,10 +207,10 @@ void() data_projectile_missile_activeradar_touch={
   
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
   debris = 0;
-	if (pointcontents(self.origin) == CONTENT_SKY){
+  if (pointcontents(self.origin) == CONTENT_SKY){
     self.impactType = IMPACT_SKY;
     debris = 0;
-	}
+  }
  
   if(other.takedamage){
     damage = self.damageValue;
@@ -222,25 +228,25 @@ void() data_projectile_missile_activeradar_touch={
       self.impactType = IMPACT_SHIELD;
     }
     else{
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 6, 1 );
+      self.impactType = IMPACT_ARMOR;
       if( other.data_type == DATA_MECH ){
-        makevectors(self.angles);
         totes = DAT_MARH_SHRAP_TOTAL;
-        shotpoint = self.origin + (v_forward * -48);
-        shotDir = normalize(self.origin - shotpoint);
+        startOfs = 2;
         while(totes > 0){
-          shrapDir = shotDir + (crandom()*0.4*v_right) + (crandom()*0.4*v_up);
-          shrapPoint = shotpoint + (shrapDir*128);
-          traceline( shotpoint, shrapPoint, FALSE, self.owner);
-          t_damage(trace_ent, self, self.owner, self.damageValue /DAT_MARH_SHRAP_TOTAL, trace_endpos, '0 0 0');
+          rollDice = floor(startOfs + (random() * 5));
+          if(rollDice > 5){
+            rollDice = 5;
+          }
+          part = bitshift(2, rollDice);
+          hit = util_getPartFromName(part, other);
+          t_damage(trace_ent, self, self.owner, self.damageValue / DAT_MARH_SHRAP_TOTAL, hit.origin, '0 0 0');
           totes = totes - 1;
         }
       }
       else{
         t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       }
-    
-      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 6, 1 );
-      self.impactType = IMPACT_ARMOR;
     }
     self.stat_trg_ent_id = num_for_edict(other);
     debris = 0;

@@ -37,7 +37,7 @@ void() te_muzzle_swrm={
 #endif
 void() data_ini_missile_swarm_={
 
-  self.data_idx = 14;  
+  self.data_idx = 14;
   
   self.w_clipsize = 9;
   self.reloadRate = 0.13;
@@ -91,6 +91,7 @@ void() data_ini_attack_missile_swarm_={
     self = hold.owner;
     if( util_checkPointAngleImpl(self.enemy.origin) ){
       NEWSHOT.enemy = self.enemy;
+      NEWSHOT.stat_rdr_mode = NEWSHOT.enemy.stat_rdr_mode;
     }
     self = hold;
   }

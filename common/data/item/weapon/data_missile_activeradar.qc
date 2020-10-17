@@ -81,7 +81,9 @@ void() data_ini_attack_missile_activeradar_={
       hold = self;
       self = hold.owner;
       if( util_checkPointAngleImpl(self.enemy.origin) ){
-        canFire = TRUE;
+        if( (self.targLockState & LOCK_TARG_HAS) ){
+          canFire = TRUE;
+        }
       }
       self = hold;
     }
@@ -107,6 +109,8 @@ void() data_ini_attack_missile_activeradar_={
     NEWSHOT.avelocity = '0 0 45';
     NEWSHOT.w_isburst = time + 0.65; //use to track curving behavior
     NEWSHOT.stat_rdr_mode = self.owner.enemy.stat_rdr_mode;
+    NEWSHOT.isActive =  self.owner.enemy.stat_rdr_mode;
+    NEWSHOT.lastorigin = self.owner.enemy.origin;
     NEWSHOT.dest = FIRE_ENDPOINT;
     setorigin(NEWSHOT, start);
     NEWSHOT = world;

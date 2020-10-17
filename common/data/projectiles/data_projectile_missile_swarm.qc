@@ -59,6 +59,7 @@ void() data_projectile_ini_missile_swarm_={
     self.gravity = 0.04;
     self.movetype = MOVETYPE_TOSS;
     self.effects = self.effects | EF_LOWPRECISION;
+    self.isActive = TRUE;
   #endif
 };
 #ifndef CSQC
@@ -107,7 +108,7 @@ void() data_projectile_missile_swarm_touch={
 };
 
 void() data_projectile_missile_swarm_think={
-	local vector	dir, vtemp;
+  local vector  dir, vtemp;
   
   if(time > self.data_lifetime){
     self.think = ctrl_missile_dud;
@@ -115,9 +116,28 @@ void() data_projectile_missile_swarm_think={
   }
   else{
     if( ai_valid_target( self.enemy ) ){
-      vtemp = self.enemy.origin + '0 0 10';
-      vtemp = randompos(vtemp + (self.enemy.mins * 0.75), vtemp + (self.enemy.maxs * 0.75));
-      dir = normalize(vtemp - self.origin) * 0.75;
+      if( (self.enemy.flags & FL_CLIENT) ){
+        if( self.stat_rdr_mode == TRUE && self.owner.enemy.stat_rdr_mode == FALSE ){
+          //target went passive
+          vtemp = self.lastorigin;
+        }
+        else if( self.stat_rdr_mode == TRUE && self.owner.enemy.stat_rdr_mode == TRUE ){
+          vtemp = self.enemy.origin + '0 0 10';
+          vtemp = randompos(vtemp + (self.enemy.mins * 0.75), vtemp + (self.enemy.maxs * 0.75));
+          dir = normalize(vtemp - self.origin) * 0.75;
+          self.lastorigin = self.enemy.origin;
+        }
+        else{
+          makevectors(self.angles);
+          dir = normalize((self.origin + (v_forward * 10)) - self.origin) * 0.75;
+        }
+      }
+      else{
+        vtemp = self.enemy.origin + '0 0 10';
+        vtemp = randompos(vtemp + (self.enemy.mins * 0.75), vtemp + (self.enemy.maxs * 0.75));
+        self.lastorigin = self.enemy.origin;
+        dir = normalize(vtemp - self.origin) * 0.75;
+      }
       self.velocity = dir * self.data_velocity;
       self.angles = vectoangles(self.velocity);
       self.SendFlags = self.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_TURRET);

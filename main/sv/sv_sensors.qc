@@ -87,13 +87,14 @@ void() sv_updateTargetInfo={
   
   self.stat_trg_ddflg = self.enemy.deadflag;
   
-  //target killed
   if( self.enemy != world ){
+    //target killed
     if( prevDeadFlags == DEAD_NO && self.enemy.deadflag > DEAD_NO ){
       self.stat_trg_ent_id = 0;
       self.enemy = world;
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
       self.stat_trg_ent_id = 0;
+      self.targLockState = 0;
       return;
     }
     local float dst;
@@ -107,12 +108,7 @@ void() sv_updateTargetInfo={
       self.stat_trg_dist = 0;
       self.stat_trg_face = -1;
       self.stat_trg_faction = 0;
-      if( (self.targLockState & LOCK_TARG_START)){
-        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
-      }
-      if( (self.targLockState & LOCK_TARG_HAS)){
-        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_HAS);
-      }
+      self.targLockState = 0;
       self.stat_target_name = "";
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
       self.stat_trg_ent_id = 0;
