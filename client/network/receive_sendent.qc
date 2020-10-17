@@ -192,10 +192,11 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    newModelIndex = fabs(ReadCoord());
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.vec_size = ReadByte();
+    self.modelindex = ReadShort();
     if( self.deadflag == DEAD_NO ){
       self.origin_x = ReadCoord();
       self.origin_y = ReadCoord();
@@ -209,7 +210,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   }
   
   if(isNew){
-    self.model = modelnameforindex(newModelIndex);
+    self.model = modelnameforindex(self.modelindex);
     setmodel( self, self.model );
     setsize(self, self.mins, self.maxs);
     setorigin(self, self.origin);
@@ -218,8 +219,18 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
     self.movetype = MOVETYPE_NONE;
   }
   
-  if( self.deadflag == DEAD_DEAD && prevDeadflag == DEAD_NO ){
-    setmodel( self, modelnameforindex(newModelIndex) );
+  if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO ){
+    switch(self.vec_size){
+      case 2:
+        setmodel( self, "q3mdl/map/ruins/ruin_medium.obj");
+        break;
+      case 3:
+        setmodel( self, "q3mdl/map/ruins/ruin_large.obj");
+        break;
+      default:
+        setmodel( self, "q3mdl/map/ruins/ruin_small.obj");
+        break;
+    }
     setsize( self, self.mins, self.maxs );
     setorigin(self, self.origin);
   }

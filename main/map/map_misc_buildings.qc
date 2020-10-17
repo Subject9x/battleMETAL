@@ -13,11 +13,12 @@ float( float isNew, float changeFlags ) sendent_misc_building={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
-    WriteCoord( MSG_ENTITY, self.modelindex );
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, self.vec_size );
     if(self.deadflag  == DEAD_NO ){
+      WriteShort( MSG_ENTITY, self.modelindex );
       WriteCoord( MSG_ENTITY, self.origin_x );
       WriteCoord( MSG_ENTITY, self.origin_y );
       WriteCoord( MSG_ENTITY, self.origin_z );
@@ -351,7 +352,7 @@ void() building_misc_off_large={
   if( !self.health) {
     self.health = self.max_health = 250;
   }
-  self.vec_size = 2;
+  self.vec_size = 3;
   
   misc_building("q3mdl/buildings/misc/misc_off_large.obj");
 };
