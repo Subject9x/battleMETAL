@@ -60,18 +60,6 @@ entity join_server_pagenext;
 entity join_server_pageprev;
 entity join_refresh_btn;
 
-entity join_favs;
-entity join_fav1;
-entity join_fav1_btn;
-entity join_fav2;
-entity join_fav2_btn;
-entity join_fav3;
-entity join_fav3_btn;
-entity join_fav4;
-entity join_fav4_btn;
-entity join_fav5;
-entity join_fav5_btn;
-
 entity join_back;
 
 //join constants
@@ -192,19 +180,18 @@ void() m_join_i={
   SERVER_PAGE_LIST_END = 0;
   
   join_title = lbl_img('10 30', '1 1 0', IMG_JOIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_JOIN, 1, (UI_FLAG_SIZE_IMG) );
-  join_favs = lbl_text('64 60', '14 14 0', "-Favorites-", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_JOIN, 1, 0);
-
-  join_server_pageprev = btn_img_callback('10 160', '16 16', UI_IMG_ARW_LFT, 0, M_JOIN, join_server_page_prev, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
-  join_server_pagenext = btn_img_callback('52 160', '16 16', UI_IMG_ARW_RGT, 0, M_JOIN, join_server_page_next, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
-  join_refresh_btn =  btn_text_callback('100 160', '16 16', "[Refresh]", 0, M_JOIN, join_refresh_action, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
   
-  join_server_name = btn_text_callback('10 180', '16 16', "[Server]", 0, M_JOIN, join_sort_name, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_ping = btn_text_callback('135 180', '16 16', "[Ping]", 0, M_JOIN, join_sort_ping, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_map = btn_text_callback('185 180', '16 16', "[Map]", 0, M_JOIN, join_sort_map, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_numplayer = btn_text_callback('235 180', '16 16', "[Players]", 0, M_JOIN, join_sort_numplayer, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_mods = btn_text_callback('285 180', '16 16', "[Mod]", 0, M_JOIN, join_sort_players, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);  
+  join_server_pageprev = btn_img_callback('10 70', '16 16', UI_IMG_ARW_LFT, 0, M_JOIN, join_server_page_prev, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
+  join_server_pagenext = btn_img_callback('52 70', '16 16', UI_IMG_ARW_RGT, 0, M_JOIN, join_server_page_next, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
+  join_refresh_btn =  btn_text_callback('100 70', '16 16', "[Refresh]", 0, M_JOIN, join_refresh_action, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
   
-  join_back = btn_img_callback('25 435 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_JOIN, join_back_click, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  join_server_name = btn_text_callback('10 90', '16 16', "[Server]", 0, M_JOIN, join_sort_name, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_ping = btn_text_callback('135 90', '16 16', "[Ping]", 0, M_JOIN, join_sort_ping, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_map = btn_text_callback('185 90', '16 16', "[Map]", 0, M_JOIN, join_sort_map, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_numplayer = btn_text_callback('235 90', '16 16', "[Players]", 0, M_JOIN, join_sort_numplayer, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_mods = btn_text_callback('285 90', '16 16', "[Mod]", 0, M_JOIN, join_sort_players, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);  
+  
+  join_back = btn_img_callback('25 345 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_JOIN, join_back_click, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
 /*
@@ -282,7 +269,7 @@ void() m_join_d={
   //serverId = SERVER_PAGE_LIST_START;
   SERVER_ROW_ITR = 0;
   
-  SERVER_LIST_ORG = gui_percentToPixelRawVec('10 200');
+  SERVER_LIST_ORG = gui_percentToPixelRawVec('10 110');
   
   total_servers = gethostcachevalue(SLIST_HOSTCACHEVIEWCOUNT);
   join_page_update();
