@@ -72,6 +72,8 @@ entity join_fav4_btn;
 entity join_fav5;
 entity join_fav5_btn;
 
+entity join_back;
+
 //join constants
 string IMG_JOIN_TITLE = "gfx/menu/join/title_join.png";
 float SERVER_NAME_MAX = 24;
@@ -168,6 +170,13 @@ void() join_refresh_action={
 };
 
 
+void() join_back_click={
+  localsound("sound/misc/menu2.wav");
+  menu_clear_items(M_STATE);
+  M_STATE = M_MULTI;
+  m_multi_f();
+};
+
 // ini function, called by '_f' function as a setup func
 void() m_join_i={
   menu_setup_mainservers();
@@ -195,6 +204,7 @@ void() m_join_i={
   join_server_numplayer = btn_text_callback('235 180', '16 16', "[Players]", 0, M_JOIN, join_sort_numplayer, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
   join_server_mods = btn_text_callback('285 180', '16 16', "[Mod]", 0, M_JOIN, join_sort_players, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);  
   
+  join_back = btn_img_callback('25 435 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_JOIN, join_back_click, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
 /*
