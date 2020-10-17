@@ -24,6 +24,11 @@ void() m_init={
   registercvar("sv_serverflags", "0", 0);
   registercvar("cl_ismenu", "0", 0);
   
+  registercvar("cl_net_fav1", "0", 0);
+  registercvar("cl_net_fav2", "0", 0);
+  registercvar("cl_net_fav3", "0", 0);
+  registercvar("cl_net_fav4", "0", 0);
+  
   menu_setup_mainservers();
   
   VIEW_SCALE = 0.35;

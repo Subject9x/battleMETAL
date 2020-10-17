@@ -235,7 +235,7 @@ void(float serverCacheId, vector ofset, float svPing, float svMaxPlayers, string
   playerCount = strcat(playerCount, ftos(svMaxPlayers));
   
   modName = gethostcachestring(gethostcacheindexforkey("mod"), serverCacheId);
-  if( modName == "id1" ){
+  if( modName == "base" ){
     modName = "none";
   }
   
