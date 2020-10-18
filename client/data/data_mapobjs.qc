@@ -80,28 +80,28 @@ void( float isNew, float entFlags ) data_nav_point={
   //EVENT - new to player
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    if( isNew ){
-      if( MENU_NAV_LIST ){
-        MENU_NAV_LIST.partNext = self;
-        self.partPrev = MENU_NAV_LIST;
-        MENU_NAV_LIST = self;
-      }
-      else{
-        MENU_NAV_LIST = self;
-      }
-      
-      self.vec_name = NAVNAMES[self.data_idx];
-      setmodel(self, "q3mdl/map/nav_point.obj");
-      setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
-      setorigin( self, self.origin ); 
-      setorigin(self, self.origin);
-      self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
-      self.predraw = predraw_navpoint;
-      self.colormod = '0 1 0';
-      self.drawmask = MASK_ENGINE;
-    }
   }
   
+  if( isNew ){
+    if( MENU_NAV_LIST ){
+      MENU_NAV_LIST.partNext = self;
+      self.partPrev = MENU_NAV_LIST;
+      MENU_NAV_LIST = self;
+    }
+    else{
+      MENU_NAV_LIST = self;
+    }
+    
+    self.vec_name = NAVNAMES[self.data_idx];
+    setmodel(self, "q3mdl/map/nav_point.obj");
+    setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
+    setorigin( self, self.origin ); 
+    setorigin(self, self.origin);
+    self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
+    self.predraw = predraw_navpoint;
+    self.colormod = '0 1 0';
+    self.drawmask = MASK_ENGINE;
+  }
   //HANDLE - nav point reched?
   if( (prevState == TRUE) && (self.isActive == 2) ){
     //previous state was 'active unvisit' and next state is 'active and visit'
@@ -123,9 +123,9 @@ void( float isNew, float entFlags ) data_nav_point={
 void( float isNew, float entFlags ) data_objective={
   local float prevState;
   
+  prevState = self.isActive;
  //EVENT - isActive change
   if( (entFlags & SENDFLAG_TURRET) ){
-    prevState = self.isActive;
     self.isActive = ReadByte();
     self.aState = ReadByte();
     OBJECTIVES[self.data_idx] = self.isActive;
@@ -147,13 +147,14 @@ void( float isNew, float entFlags ) data_objective={
   if( entFlags & SENDFLAG_NEWENT ){
     self.data_idx = ReadByte();
     self.data_type = DATA_OBJT;
-    if( isNew ){
-      setmodel(self, "q3mdl/testball.md3");
-      setorigin(self, self.origin);
-      self.alpha = 0.01;
-    }
   }
   
+  if( isNew ){
+    self.effects = self.effects | (EF_NODEPTHTEST | EF_NOSHADOW);
+    setmodel(self, "q3mdl/testball.md3");
+    setorigin(self, self.origin);
+    self.alpha = 0.01;
+  }
   //HANDLE EVENT - objective status
   if( self.faction == CLIENT_faction ){
     if( (prevState == OBJECTIVE_ACTIVE) && (self.isActive == OBJECTIVE_WIN) ){
@@ -214,9 +215,10 @@ void( float isNew, float entFlags ) data_deploy={
   local float prevState;
   local float prevFaction;
   
+  prevState = self.isActive;
+  prevFaction = self.faction;
  //EVENT - isActive change
   if( (entFlags & SENDFLAG_TURRET) ){
-    prevState = self.isActive;
     self.isActive = ReadByte();
   }
   
@@ -229,7 +231,6 @@ void( float isNew, float entFlags ) data_deploy={
   
   //EVENT - Change Faction
   if( (entFlags & SENDFLAG_CRIT) ){
-    prevFaction = self.faction;
     self.faction = ReadByte();
     if( prevFaction != self.faction && self.faction != FACTION_ALL ){
       data_deploy_changeFaction(self, prevFaction);
@@ -239,28 +240,28 @@ void( float isNew, float entFlags ) data_deploy={
   //EVENT - new to player
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    if( isNew ){
-      if( cvar("developer") ){
-        self.alpha = 0.9;
-        self.scale = 1;
-      }
-      else{
-        self.alpha = 0.01;
-        self.scale = 0.01;
-      }
-      
-      setmodel(self, "q3mdl/testball.md3");
-      setorigin(self, self.origin);
-      if( DEPLOY_POINTS.data_idx ){
-        DEPLOY_POINTS.partNext = self;
-        self.partPrev = DEPLOY_POINTS;
-        DEPLOY_POINTS = self;
-      }
-      else{
-        //first deploy point received.
-        DEPLOY_POINTS = self;
-        DEPLOYPOINT = self; //first
-      }
+  }
+  if( isNew ){
+    if( cvar("developer") ){
+      self.alpha = 0.9;
+      self.scale = 1;
+    }
+    else{
+      self.alpha = 0.01;
+      self.scale = 0.01;
+    }
+    
+    setmodel(self, "q3mdl/testball.md3");
+    setorigin(self, self.origin);
+    if( DEPLOY_POINTS.data_idx ){
+      DEPLOY_POINTS.partNext = self;
+      self.partPrev = DEPLOY_POINTS;
+      DEPLOY_POINTS = self;
+    }
+    else{
+      //first deploy point received.
+      DEPLOY_POINTS = self;
+      DEPLOYPOINT = self; //first
     }
   }
 };
@@ -518,33 +519,34 @@ void( float isNew, float entFlags ) data_map_damage={
     self.predraw = predraw_dmg_zone;
     self.effects = self.effects - (self.effects & EF_NODEPTHTEST);
     self.renderflags = self.renderflags - (self.renderflags & RF_DEPTHHACK);
-    if( isNew ){
-      if( self.isActive ){
-        self.nextthink = time + 0.1;
+    setorigin(self, self.origin);
+  }
+  if( isNew ){
+    if( self.isActive ){
+      self.nextthink = time + 0.1;
+    }
+    self.solid = SOLID_BBOX;
+    switch( self.damageType ){
+      case 1:
+        hazard_ini_rad( self.data_idx );
+        break;
+      case 2:
+        hazard_ini_static( self.data_idx );
+        break;
+      case 3:
+        hazard_ini_quant( self.data_idx );
+        break;
+    }
+    if( (self.spawnflags & IS_MAPKEY) ){
+      if( lastMapKeyObject ){
+        //build linked list backwards for later forward iteration.
+        lastMapKeyObject.w_slot = self;
+        lastMapKeyObject = self;
       }
-      self.solid = SOLID_BBOX;
-      switch( self.damageType ){
-        case 1:
-          hazard_ini_rad( self.data_idx );
-          break;
-        case 2:
-          hazard_ini_static( self.data_idx );
-          break;
-        case 3:
-          hazard_ini_quant( self.data_idx );
-          break;
-      }
-      if( (self.spawnflags & IS_MAPKEY) ){
-        if( lastMapKeyObject ){
-          //build linked list backwards for later forward iteration.
-          lastMapKeyObject.w_slot = self;
-          lastMapKeyObject = self;
-        }
-        else{
-          //start chain
-          mapKeyObject = self;
-          lastMapKeyObject = self;
-        }
+      else{
+        //start chain
+        mapKeyObject = self;
+        lastMapKeyObject = self;
       }
     }
     setorigin(self, self.origin);
