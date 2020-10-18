@@ -34,7 +34,7 @@ void() mh_world_ini={
   registercvar("gamemode", "0", 0);
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
-  registercvar("cl_hud_sway", "0", 1);
+  //registercvar("cl_hud_sway", "0", 1);
   registercvar("cl_team", "0", 2);
   registercvar("sv_serverflags", "0", 0);
   

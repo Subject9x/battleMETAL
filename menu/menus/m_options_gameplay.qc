@@ -269,7 +269,7 @@ void() click_gameplay_hudcolor_pr={
   gameplay_hudcolor_nx.drawme = TRUE;
 };
 
-void() click_gameplay_hudsway_less={
+/*void() click_gameplay_hudsway_less={
   gameplay_hud_sway_set.len = gameplay_hud_sway_set.len - 1;
   if( gameplay_hud_sway_set.len < 0 ){
     gameplay_hud_sway_set.len = 0;
@@ -288,7 +288,7 @@ void() click_gameplay_hudsway_more={
   gameplay_hud_sway_set.label = strzone(gameplay_hud_sway_mode(gameplay_hud_sway_set.len));
   cvar_set("cl_hud_sway", ftos(gameplay_hud_sway_set.len));
   
-};
+};*/
 
 // ini function, called by '_f' function as a setup func
 void() m_gameplay_i={
@@ -361,10 +361,10 @@ void() m_gameplay_i={
   gameplay_hudcolor_nx = btn_img_callback('245 242', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_hudcolor_pr = btn_img_callback('176 242', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  gameplay_hud_sway_set = lbl_text('190 263', '14 14 0', strzone(gameplay_hud_sway_mode(cvar("cl_hud_sway"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
-  gameplay_hud_sway_set.len = cvar("cl_hud_sway");
-  gameplay_hud_sway_more = btn_img_callback('220 263', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_hud_sway_less = btn_img_callback('176 263', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  //gameplay_hud_sway_set = lbl_text('190 263', '14 14 0', strzone(gameplay_hud_sway_mode(cvar("cl_hud_sway"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  //gameplay_hud_sway_set.len = cvar("cl_hud_sway");
+  //gameplay_hud_sway_more = btn_img_callback('220 263', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  //gameplay_hud_sway_less = btn_img_callback('176 263', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   gameplay_back = btn_img_callback('10 285 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
