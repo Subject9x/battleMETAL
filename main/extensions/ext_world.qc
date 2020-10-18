@@ -9,6 +9,7 @@ Overview:
 */
 
 void() mh_world_ini={
+  DEPLOY_ID_COUNT = 0;
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;
   }

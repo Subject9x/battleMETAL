@@ -77,6 +77,9 @@ NO_DM 4 : removed from deathmatch games
 NO_TDM 8 : removed from deathmatch 1 / teamplay 1 games.
 */
 void() map_deploy_point={
+  DEPLOY_ID_COUNT = DEPLOY_ID_COUNT + 1;
+  self.data_idx = DEPLOY_ID_COUNT;
+  
   self.data_type = DATA_DEPL;
   self.flags = self.flags | FL_NODE;
   
