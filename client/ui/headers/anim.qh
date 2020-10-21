@@ -13,7 +13,7 @@ float ANM_FLAG_FADE_IN    = 1;
 float ANM_FLAG_FADE_OUT   = 2;
 float ANM_FLAG_FADE_BOTH  = 4;
 float ANM_FLAG_FULL_SCR   = 8;  //interpret size as 'fullscreen' regardless of aspect rato
-float ANM_FLAG_CENTER    = 16;  //center alignment - EXCLUSIVE AGANST fullscreen flag
+float ANM_FLAG_CENTER    = 16;  //center alignment - EXCLUSIVE AGAINST fullscreen flag
 
 //meta tags
 string ANM_FILE_META_MUS = "music";

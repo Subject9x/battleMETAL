@@ -28,7 +28,7 @@ void() te_muzzle_rpc={
 #endif
 void() data_ini_plasma_={
 
-  self.data_idx = 6;  
+  self.data_idx = UID_ITEM_rotary_plasma;
   
   self.w_clipsize = 1;
   self.reloadRate = 0.45;

@@ -134,7 +134,7 @@ void() te_muzzle_esr={
 #endif
 void() data_ini_electro_repeater_={
   
-  self.data_idx = 8;
+  self.data_idx = UID_ITEM_electro_repeater;
   
   self.w_clipsize = 1;
   self.reloadRate = 0.2;

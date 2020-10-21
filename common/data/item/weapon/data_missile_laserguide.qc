@@ -36,7 +36,7 @@ void() te_muzzle_lgm={
 #endif
 void() data_ini_missile_laserguide_={
 
-  self.data_idx = 9;
+  self.data_idx = UID_ITEM_missile_laserguide;
   
   self.w_clipsize = 1;
   self.reloadRate = 0.22;

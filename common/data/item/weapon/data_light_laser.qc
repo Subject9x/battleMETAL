@@ -53,7 +53,7 @@ void() te_muzzle_las={
 #endif
 void() data_ini_light_laser_={
   
-  self.data_idx = 3;
+  self.data_idx = UID_ITEM_light_laser;
   
   self.w_clipsize = 1;
   self.reloadRate = 1.5;

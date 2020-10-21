@@ -28,15 +28,15 @@ void() te_muzzle_marh={
 #endif
 void() data_ini_missile_activeradar_={
 
-  self.data_idx = 10;  
+  self.data_idx = UID_ITEM_missile_activeradar;
   
-  self.w_clipsize = 1;    //4
-  self.reloadRate = 5; //0.18
-  self.reloadMax = 5;     //5
+  self.w_clipsize = 1;
+  self.reloadRate = 5;
+  self.reloadMax = 5;
   self.energyRate = 0;
   
   self.w_range = 4000;
-  self.damageValue = 99;  //33
+  self.damageValue = 99;
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;

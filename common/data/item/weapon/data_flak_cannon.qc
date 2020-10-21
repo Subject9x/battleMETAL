@@ -62,7 +62,7 @@ void() te_muzzle_flk={
 #endif
 void() data_ini_flak_cannon_={
 
-  self.data_idx = 12;  
+  self.data_idx = UID_ITEM_flak;
   
   self.w_clipsize = 4;
   self.reloadRate = 0.15;

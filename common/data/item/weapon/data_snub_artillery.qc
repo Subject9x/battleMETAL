@@ -27,7 +27,7 @@ void() te_muzzle_sfg={
 #endif
 void() data_ini_snub_artillery_={
 
-  self.data_idx = 11;  
+  self.data_idx = UID_ITEM_snub_artillery;
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;

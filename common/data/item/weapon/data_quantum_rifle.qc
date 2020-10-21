@@ -43,7 +43,7 @@ void() te_muzzle_qrf={
 #endif
 void() data_ini_quantum_={
 
-  self.data_idx = UID_ITEM_quantum_rifle;  
+  self.data_idx = UID_ITEM_quantum_rifle;
   
   self.w_clipsize = 1;
   self.reloadRate = 1.33;

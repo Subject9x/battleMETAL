@@ -27,7 +27,7 @@ void() te_muzzle_emp={
 #endif
 void() data_ini_emp_={
 
-  self.data_idx = 2;  
+  self.data_idx = UID_ITEM_emp;
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;

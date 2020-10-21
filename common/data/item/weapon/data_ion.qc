@@ -28,7 +28,7 @@ void() te_muzzle_ion={
 #endif
 void() data_ini_ion_={
 
-  self.data_idx = 13;  
+  self.data_idx = UID_ITEM_ion_coil;
   
   self.w_clipsize = 3;
   self.reloadRate = 0.15;

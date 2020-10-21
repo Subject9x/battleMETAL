@@ -28,15 +28,15 @@ void() te_muzzle_rck={
 #endif
 void() data_ini_rockets_={
 
-  self.data_idx = 4;  
+  self.data_idx = UID_ITEM_rocket_launcher;  
   
   self.w_clipsize = 1;
-  self.reloadRate = 1.25;  //
-  self.reloadMax = 1.25;   //
+  self.reloadRate = 1.25;
+  self.reloadMax = 1.25;
   self.energyRate = 0;
   
   self.w_range = 1800;
-  self.damageValue = 67;//50
+  self.damageValue = 67;
   self.damageType = DMG_EXP;
   
   self.techLevel = 1;

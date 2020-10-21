@@ -37,7 +37,7 @@ void() te_muzzle_swrm={
 #endif
 void() data_ini_missile_swarm_={
 
-  self.data_idx = 14;
+  self.data_idx = UID_ITEM_missile_swarm;
   
   self.w_clipsize = 9;
   self.reloadRate = 0.13;

@@ -61,7 +61,7 @@ void() te_muzzle_latc={
 #endif
 void() data_ini_light_atc_={
 
-  self.data_idx = 1;
+  self.data_idx = UID_ITEM_light_autocannon;
   
   self.w_clipsize = 3;
   self.reloadRate = 0.12;
