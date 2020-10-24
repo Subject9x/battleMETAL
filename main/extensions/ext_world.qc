@@ -154,6 +154,12 @@ void() mh_world_ini={
   combat_dist = 1.0;
   combat_roll = 1.0;
   
+  nodegraph_edgelinker = spawn();
+  nodegraph_edgelinker.classname = strzone("nodegraph_edgelinker");
+  setmodel(nodegraph_edgelinker, "q3mdl/testball.md3");
+  setsize(nodegraph_edgelinker, nodegraph_edgelinker.mins, nodegraph_edgelinker.maxs);
+  setorigin(nodegraph_edgelinker, world.origin);
+  
   world_get_maplist();
 };
 
@@ -667,6 +673,182 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
       }
     }
   }
+};
+
+
+/**
+  Nodegraph suite of functions and support.
+*/
+
+void() nodegraph_edgelinker_th={
+  
+  cons_logAString("[INFO]-world_export_nodegraph() edgelinker run ", ftos(self.wait));  //DEBUG
+    
+  local string fileName;
+  local float fileExists;
+  
+  self.owner = NODEGRAPH_EXPORT_NODE[self.count];
+  
+  self.delay = 0; //reset edge id counter
+  world_export_node_write(self.owner, fileExists );
+  
+  self.count = self.count + 1;
+  if( self.count == self.wait ){
+    cons_logAString("[INFO]-world_export_nodegraph()", "Write complete.");  //DEBUG
+     fclose(self.data_idx);
+    return;
+  }
+
+  self.think = nodegraph_edgelinker_th;
+  self.nextthink = time + 1;
+};
+
+void( float overrideFlag ) world_export_nodegraph={
+  local string fileName;
+  local float fileExists;
+  local float developer;
+  local entity nodes;
+  local float nodeItr;
+  local float nodeTotal;
+  
+  developer = cvar("developer");
+  fileName = strcat(mapname, ".nodes");
+  if( developer ){
+    cons_logAString("[INFO]-world_export_nodegraph()|[", fileName);  //DEBUG
+  }
+ 
+  fileExists = fopen(fileName, FILE_WRITE);
+ 
+  //fclose(fileExists);
+  //overrideFlag was false but file exists! so don't overwrite
+  if( (fileExists == TRUE) && !overrideFlag ){
+    if( developer ){
+      cons_logAString("[WARN]-world_export_nodegraph()|", " Failed to write nodes file, overrideFlag = FALSE but file already exists!");  //DEBUG
+    }
+    return;
+  }
+  
+  //batch nodes
+  for(nodes = nextent(world); nodes != world; nodes = nextent(nodes) ){
+    if( nodes.classname != "ai_node_path" )
+      continue;
+    NODEGRAPH_EXPORT_NODE[nodeItr] = nodes;
+    nodeItr = nodeItr + 1;
+  }
+  nodeTotal = nodeItr;
+  
+  //process
+  if( NODEGRAPH_EXPORT_NODE[0] == world ){
+    cons_logAString("[WARN]-world_export_nodegraph()", "No {ai_node_path} entities found in map file.");  //DEBUG
+  }
+  else{
+    nodegraph_edgelinker.data_idx = fileExists;
+    nodegraph_edgelinker.count = 0;
+    nodegraph_edgelinker.wait = nodeTotal;
+    nodegraph_edgelinker.think = nodegraph_edgelinker_th;
+    nodegraph_edgelinker.nextthink = time + 0.1;
+    cons_logAString("[INFO]-world_export_nodegraph() total nodes ", ftos(nodeTotal));  //DEBUG
+  }
+  //fclose(fileExists); dangerous, deferring to linker entity 
+};
+
+/*
+  attempts to link 2 nodes together and set edge data.
+    RULES
+      1) check direct LoS
+        hit on SOLID_BSP, SOLID_BBOX, BOTCLIP
+      2) 
+*/
+float( entity node, entity targNode ) world_export_nodegraph_link={
+  local vector edgeAngle;
+  local float edgeLen;
+  local float edgeLenquant;
+  local float edgeLenItr;
+  
+  local vector edgeSegA;
+  local vector edgeSegB;
+  
+  local vector trEdgeApos;
+  local vector trEdgeBpos;
+  
+  local vector trEdgeAngl;
+  
+  local float edgeCheck;
+  
+  traceline( node.origin, targNode.origin, FALSE, node );
+  
+  if( trace_fraction == 1.0 ){
+    edgeAngle = vectoangles(targNode.origin - node.origin);
+    if( edgeAngle_x >= 40 && edgeAngle_x <= 320){
+      //rule out steep inclines right away.
+      cons_logAString(ftos(node.data_idx), strcat("fail for ", ftos(targNode.data_idx), " pitch angle ", ftos(edgeAngle_x)));//debug
+      return FALSE;
+    }
+    //clear Los, get more granular.
+    edgeLen = vlen(targNode.origin - node.origin);
+    edgeLenquant = ceil(edgeLen / NODEGRAPH_EDGE_GRID);
+    //now run the terrain poller
+    edgeSegA = node.origin;
+    makevectors(edgeAngle);
+    edgeCheck = TRUE;
+    for(edgeLenItr = 0; edgeLenItr < edgeLenquant; edgeLenItr = edgeLenItr + 1){
+      if( !edgeCheck )
+        continue;
+      edgeSegB = edgeSegA + (v_forward * ((edgeLenItr + 1)));
+      
+      trailparticles(world, particleeffectnum("TE_ESR_RAIL"), edgeSegA, edgeSegB);  //debug
+      
+      traceline(edgeSegA, edgeSegA + (v_up * -512), TRUE, node);
+      trEdgeApos = trace_endpos;
+      //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegA, trEdgeApos);  //debug
+      
+      traceline(edgeSegB, edgeSegB + (v_up * -512), TRUE, node);
+      trEdgeBpos = trace_endpos;
+      //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegB, trEdgeBpos);  //debug
+      
+      trEdgeAngl = vectoangles(trEdgeBpos - trEdgeApos);
+      if( trEdgeAngl_x >= 40 && trEdgeAngl_x <= 320){
+      cons_logAString(ftos(node.data_idx), strcat("fail for ", ftos(targNode.data_idx), " pitch angle ", ftos(edgeAngle_x), "seg ", ftos(edgeLenItr)));//debug
+        edgeCheck = FALSE;
+      }
+      edgeSegA = edgeSegB;
+    }
+    cons_logAString(ftos(node.data_idx), strcat("linked for ", ftos(targNode.data_idx)));//debug
+    return edgeCheck;
+  }
+  else{
+    //no proper Los based on 
+    //self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY);
+    cons_logAString(ftos(node.data_idx), strcat(ftos(targNode.data_idx), " fail trace fraction ", ftos(trace_fraction)));//debug
+    return FALSE;
+  }
+};
+void(entity node, float fileData ) world_export_node_write={
+  local string nodeData;
+  local entity edgeNode;
+  
+  fputs(fileData, "{\n");
+  fputs(fileData, strcat("\"id\" \"",ftos(node.data_idx),"\"\n"));
+  fputs(fileData, "\"origin\" \"");
+    fputs(fileData, strcat(ftos(node.origin_x), " "));
+    fputs(fileData, strcat(ftos(node.origin_y), " "));
+    fputs(fileData, ftos(node.origin_z));
+  fputs(fileData, "\"\n");
+  fputs(fileData, "\"edges\" \" ");
+  
+  for(self.delay = 0; self.delay < self.wait; self.delay = self.delay + 1 ){
+    edgeNode = NODEGRAPH_EXPORT_NODE[self.delay];
+    if( edgeNode == node )
+      continue;
+    if( !world_export_nodegraph_link(node, edgeNode) )
+      continue;
+    trailparticles(world, particleeffectnum("TE_ESR_RAIL"), node.origin, edgeNode.origin);  //debug
+    fputs(fileData, strcat(ftos(edgeNode.data_idx), "-", ftos(vlen(edgeNode.origin - node.origin))));
+    fputs(fileData, " ");
+  }
+  
+  fputs(fileData, "\"\n");
+  fputs(fileData, "}\n");
 };
 
 

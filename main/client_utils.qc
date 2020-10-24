@@ -288,6 +288,10 @@ void(string str, float tokens) client_ParseMechCommand={
     world_export_realtimelights( stof(argv(2)) );
     return;
   }
+  if( argv(1) == "nodexprt" ){
+    world_export_nodegraph( stof(argv(2)) );
+    return;
+  }
 };  
 
 void() client_update_faction={

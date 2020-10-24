@@ -925,6 +925,18 @@ faction = faction matching, [default] FACTION_ALL == 255
 
 
 
+/*QUAKED ai_node_path (0.988 0.75 0.5) (-10 -10 -18) (10 10 18)
+  used with generating .nodes files for maps.
+  
+  AI will use this node data to pathfind their way to targets, and other ai_node types.
+-------- KEYS -------- 
+
+-------- SPAWNFLAGS -------- 
+*/
+
+
+
+
 /*QUAKED ai_exec_order (0.85 0.976 0.267) (-10 -10 -18) (10 10 18) - IN_RADIUS
   Super primitive order execution system:
   

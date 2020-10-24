@@ -255,6 +255,43 @@ void() ai_node_tether={
   self.nextthink = time + 1;
 };
 
+/*QUAKED ai_node_path (0.988 0.75 0.5) (-10 -10 -18) (10 10 18)
+  used with generating .nodes files for maps.
+  
+  AI will use this node data to pathfind their way to targets, and other ai_node types.
+-------- KEYS -------- 
+
+-------- SPAWNFLAGS -------- 
+*/
+void() ai_node_path={
+  local vector sMin, sMax;
+  
+  if( cvar("developer") ){
+    self.effects = self.effects | (EF_FULLBRIGHT | EF_NOSHADOW | EF_BLUE);
+  }
+  else{
+    remove(self);
+    return;
+  }
+  
+  //assign then increment global node id counter, this saves us a for-loop at the export phase to establish IDs.
+  NODE_ID_COUNT = NODE_ID_COUNT + 1;
+  self.data_idx = NODE_ID_COUNT;
+  
+  sMin = '-10 -10 -18';
+  sMax = '10 10 18';
+  
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  
+  setmodel(self, "q3mdl/testball.md3");
+  setsize(self, sMin, sMax);
+  setorigin(self, self.origin);
+  
+
+  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY);
+};
+
 void() ai_exec_order_use={
   local entity ent;
   local entity thisNode;
@@ -289,7 +326,7 @@ void() ai_exec_order_use={
     if( hasPatrol ){
       ent.target = strzone(self.trigOnSpawn);
     }
-    if( hasPatrol ){
+    if( hasEnemy ){
       ent.enemy = find(world, targetname, self.trigOnAttack);
     }
     if( ent.use ){

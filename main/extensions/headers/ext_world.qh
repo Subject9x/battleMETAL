@@ -83,7 +83,6 @@ void() world_get_fog;
   2 = normalmode NO && realtimemode YES
   3 = normalmode YES && realtimemode YES
 */
-
 void( float overrideFlag ) world_export_realtimelights;
 void( entity light, float fileData ) world_export_realtimelights_write;
 
@@ -93,7 +92,21 @@ void( vector org, entity parent, float id, vector colr, float stile, float pFlag
 void( entity parent ) world_remove_dlight;
 void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight;
 
-entity() world_deathmatch_random_spawn;
+//AI NODEGRAPH system--------------------------------------------------------
+float NODEGRAPH_MAX = 4096;
+float NODEGRAPH_EDGE_GRID = 64; // when checking edge links
+float NODEGRAPH_EDGE_CHECK_NORM[4096];  //basically a chasm / valley checker for node edge linking
+entity NODEGRAPH_EXPORT_NODE[4096];
+float NODE_ID_COUNT;
 
+void() nodegraph_edgelinker_th;
+entity nodegraph_edgelinker;  //lock the processing time to the game timer so we don't kill temp buffers
+
+void( float overrideFlag ) world_export_nodegraph;
+void(entity node, float fileData ) world_export_node_write;
+float( entity node, entity targNode ) world_export_nodegraph_link;
+
+//MISC
+entity() world_deathmatch_random_spawn;
 string WORLD_MAP_LIST;
 void() world_get_maplist; //TDM/DM network games use this list.
