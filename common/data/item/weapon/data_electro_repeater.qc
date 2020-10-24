@@ -108,7 +108,7 @@ void() te_muzzle_esr={
   local vector norm;
   local float impactStyle;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z + v_up * 0.1;
+  startOrg = self.origin + v_forward * self.wepFireOffset_z;
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
