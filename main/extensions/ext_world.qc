@@ -690,7 +690,7 @@ void() nodegraph_edgelinker_th={
   self.owner = NODEGRAPH_EXPORT_NODE[self.count];
   
   self.delay = 0; //reset edge id counter
-  world_export_node_write(self.owner, fileExists );
+  world_nodegraph_export_write_node(self.owner, fileExists );
   
   self.count = self.count + 1;
   if( self.count == self.wait ){
@@ -703,7 +703,7 @@ void() nodegraph_edgelinker_th={
   self.nextthink = time + 1;
 };
 
-void( float overrideFlag ) world_export_nodegraph={
+void( float overrideFlag ) world_nodegraph_export_data={
   local string fileName;
   local float fileExists;
   local float developer;
@@ -759,7 +759,7 @@ void( float overrideFlag ) world_export_nodegraph={
         hit on SOLID_BSP, SOLID_BBOX, BOTCLIP
       2) 
 */
-float( entity node, entity targNode ) world_export_nodegraph_link={
+float( entity node, entity targNode ) world_nodegraph_export_edgelink={
   local vector edgeAngle;
   local float edgeLen;
   local float edgeLenquant;
@@ -779,11 +779,15 @@ float( entity node, entity targNode ) world_export_nodegraph_link={
   
   if( trace_fraction == 1.0 ){
     edgeAngle = vectoangles(targNode.origin - node.origin);
-    if( edgeAngle_x >= 40 && edgeAngle_x <= 320){
+    if( edgeAngle_x < NODEGRAPH_EDGE_ANGLE_MAX ){
+      edgeAngle_x = 360 - edgeAngle_x;  //fixes a pitch-angle problem where sometimes the angle was inverted!
+    }
+    if( edgeAngle_x > NODEGRAPH_EDGE_ANGLE_MIN && edgeAngle_x < NODEGRAPH_EDGE_ANGLE_MAX){
       //rule out steep inclines right away.
-      cons_logAString(ftos(node.data_idx), strcat("fail for ", ftos(targNode.data_idx), " pitch angle ", ftos(edgeAngle_x)));//debug
+      //cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(edgeAngle_x)));//debug
       return FALSE;
     }
+    
     //clear Los, get more granular.
     edgeLen = vlen(targNode.origin - node.origin);
     edgeLenquant = ceil(edgeLen / NODEGRAPH_EDGE_GRID);
@@ -794,38 +798,45 @@ float( entity node, entity targNode ) world_export_nodegraph_link={
     for(edgeLenItr = 0; edgeLenItr < edgeLenquant; edgeLenItr = edgeLenItr + 1){
       if( !edgeCheck )
         continue;
-      edgeSegB = edgeSegA + (v_forward * ((edgeLenItr + 1)));
-      
-      trailparticles(world, particleeffectnum("TE_ESR_RAIL"), edgeSegA, edgeSegB);  //debug
+      edgeSegB = edgeSegA + (v_forward * NODEGRAPH_EDGE_GRID);
       
       traceline(edgeSegA, edgeSegA + (v_up * -512), TRUE, node);
       trEdgeApos = trace_endpos;
-      //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegA, trEdgeApos);  //debug
       
       traceline(edgeSegB, edgeSegB + (v_up * -512), TRUE, node);
       trEdgeBpos = trace_endpos;
+      
+      //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegA, trEdgeApos);  //debug
       //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegB, trEdgeBpos);  //debug
       
       trEdgeAngl = vectoangles(trEdgeBpos - trEdgeApos);
-      if( trEdgeAngl_x >= 40 && trEdgeAngl_x <= 320){
-      cons_logAString(ftos(node.data_idx), strcat("fail for ", ftos(targNode.data_idx), " pitch angle ", ftos(edgeAngle_x), "seg ", ftos(edgeLenItr)));//debug
+      /*if(node.data_idx == NODEGRAPH_DBG_ID1 && targNode.data_idx == NODEGRAPH_DBG_ID2){
+        trailparticles(world, particleeffectnum("TE_ESR_RAIL"), node.origin, targNode.origin);  //debug
+        trailparticles(world, particleeffectnum("TE_REPAIR_RAIL"), edgeSegA, trEdgeApos);  //debug
+        trailparticles(world, particleeffectnum("TE_REPAIR_RAIL"), edgeSegB, trEdgeBpos);  //debug
+        trailparticles(world, particleeffectnum("TE_LAS_RAIL"), trEdgeApos, trEdgeBpos);  //debug
+        cons_logAFloat("trEdgeAngl_x", trEdgeAngl_x);  //debug
+      }*/
+      
+      if( trEdgeAngl_x > NODEGRAPH_EDGE_ANGLE_MIN && trEdgeAngl_x < NODEGRAPH_EDGE_ANGLE_MAX){
+        //cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(trEdgeAngl_x), "| seg ", ftos(edgeLenItr)));//debug
         edgeCheck = FALSE;
       }
       edgeSegA = edgeSegB;
     }
-    cons_logAString(ftos(node.data_idx), strcat("linked for ", ftos(targNode.data_idx)));//debug
     return edgeCheck;
   }
   else{
     //no proper Los based on 
     //self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY);
-    cons_logAString(ftos(node.data_idx), strcat(ftos(targNode.data_idx), " fail trace fraction ", ftos(trace_fraction)));//debug
+    //cons_logAString(ftos(node.data_idx), strcat(ftos(targNode.data_idx), " fail trace fraction ", ftos(trace_fraction)));//debug
     return FALSE;
   }
 };
-void(entity node, float fileData ) world_export_node_write={
+void(entity node, float fileData ) world_nodegraph_export_write_node={
   local string nodeData;
   local entity edgeNode;
+  local float edgeMax;
   
   fputs(fileData, "{\n");
   fputs(fileData, strcat("\"id\" \"",ftos(node.data_idx),"\"\n"));
@@ -836,17 +847,23 @@ void(entity node, float fileData ) world_export_node_write={
   fputs(fileData, "\"\n");
   fputs(fileData, "\"edges\" \" ");
   
+  edgeMax = 0;
   for(self.delay = 0; self.delay < self.wait; self.delay = self.delay + 1 ){
     edgeNode = NODEGRAPH_EXPORT_NODE[self.delay];
+    if( edgeMax >= 6)
+      break;
     if( edgeNode == node )
       continue;
-    if( !world_export_nodegraph_link(node, edgeNode) )
+    if( !world_nodegraph_export_edgelink(node, edgeNode) )
       continue;
-    trailparticles(world, particleeffectnum("TE_ESR_RAIL"), node.origin, edgeNode.origin);  //debug
+    edgeMax = edgeMax + 1;
+    //cons_logAString(ftos(node.data_idx), strcat("linked for ", ftos(edgeNode.data_idx)));//debug
     fputs(fileData, strcat(ftos(edgeNode.data_idx), "-", ftos(vlen(edgeNode.origin - node.origin))));
     fputs(fileData, " ");
   }
-  
+  if( edgeMax == 0 ){
+    fputs(fileData, "NO EDGES FOUND");
+  }
   fputs(fileData, "\"\n");
   fputs(fileData, "}\n");
 };

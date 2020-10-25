@@ -289,7 +289,7 @@ void(string str, float tokens) client_ParseMechCommand={
     return;
   }
   if( argv(1) == "nodexprt" ){
-    world_export_nodegraph( stof(argv(2)) );
+    world_nodegraph_export_data( stof(argv(2)) );
     return;
   }
 };  
