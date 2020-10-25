@@ -1,8 +1,8 @@
 ../../menu.dat
-  ../common/ui/ui_color_constants.qc
-  ../common/data/camp_loader.qh
 //HEADERS---------------
 defs/menudefs.qc
+../common/ui/ui_color_constants.qc
+../common/data/camp_loader.qh
 defs/keycodes.qc
 defs/headers/menu.qh
 defs/headers/utils.qh
