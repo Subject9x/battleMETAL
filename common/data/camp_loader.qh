@@ -21,7 +21,7 @@ float CAMP_TOTAL    = 17; //max number of campaigns (16).
 float CAMP_PAGE_MAX = 8;  //max results per page
 
 //GLOBALS
-#ifndef CSQC
+#ifdef QCMENU
 string CAMP_SELECT_MAP;
 string CAMP_SELECT_NAME;
 string CAMP_SELECT_MECHS;
