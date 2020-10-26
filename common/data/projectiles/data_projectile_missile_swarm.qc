@@ -13,7 +13,7 @@ Overview:
 void() data_projectile_missile_swarm_touch;
 void() data_projectile_missile_swarm_think;
 void() data_projectile_missile_swarm_delay;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_swarm_expl={
@@ -169,5 +169,5 @@ void() data_projectile_missile_swarm_delay={
   self.think = data_projectile_missile_swarm_delay_int; 
   self.nextthink = time + 0.05;
 };
-#endif CSQC
+#endif
 

@@ -16,7 +16,7 @@ void() data_projectile_plasma_touch;
 void() data_projectile_plasma_burn_ini_;
 void() data_projectile_plasma_burn_th;
 void() data_projectile_plasma_think_;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_plasma_expl={
@@ -159,5 +159,4 @@ void() data_projectile_plasma_think_={
   self.think = data_projectile_plasma_think_;
   self.nextthink = time + 0.01;
 };
-#endif CSQC
-
+#endif
