@@ -4,7 +4,7 @@ Author: Peter Roohr
 Date: 05/28/2019
 Overview: 
     Implements any 'data' related functions here,
-    many depending on common/data/*
+    many depending on common/data/
 */
 
 /*

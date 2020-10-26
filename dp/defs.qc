@@ -1146,7 +1146,9 @@ vector raddamage_lasthit;
 .float health; // if this goes below 1 the thing is dead
 .float bodyhealth; // used for gibbing
 
-void(entity targ, entity attacker, string dmsg, float dtype, void(entity t, entity a, string m, float dtyp) obitfunc) ClientObituary;
+void(entity targ, entity attacker, string dmsg, float dtype, void(entity t, entity a, string m, float dtyp) obitfunc) ClientObituary={
+
+};
 
 //void() monster_death_use;
 
