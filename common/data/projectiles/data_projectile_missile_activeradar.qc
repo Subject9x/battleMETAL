@@ -9,7 +9,7 @@ Overview:
     needs player lock-on to follow target.
 */
 
-#ifndef CSQC
+#ifdef SSQC
 float PROJ_MARH_TURN_FADE = 0.02; //turn speed decay rate.
 void() data_projectile_missile_activeradar_think;
 void() data_projectile_missile_activeradar_delay;
@@ -98,13 +98,13 @@ void() data_projectile_ini_missile_active_radar_={
     projectile_marh_multi();
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.think = data_projectile_missile_activeradar_delay;
     self.effects = self.effects | EF_LOWPRECISION;
     self.ai_dir = 1.0;
   #endif
 };
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_missile_activeradar_think={
 	local vector	dir, vtemp;
   local float lock;

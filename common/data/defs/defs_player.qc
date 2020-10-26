@@ -53,7 +53,7 @@ Overview:
 .float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
 .vector laser_sight_org;
 
-#ifndef CSQC
+#ifdef SSQC
 .float targetValid;
 .float targetDist;
 .vector prevMovement; //the .movement of last frame

@@ -48,7 +48,7 @@ void() data_ini_balaket_={
   self.legMoveRate = 9.5;
   self.legRunRate = 12;
 #endif
-#ifndef CSQC
+#ifdef SSQC
   //self.yaw_speed = 3.75;    // AI-only 
   self.yaw_speed = 5;    // AI-only 
   self.turret_yaw_speed = 4.25;// AI-only
@@ -88,7 +88,7 @@ void() data_ini_balaket_={
 //=====================================
  
 //HARDPOINTS==========================
-#ifndef CSQC
+#ifdef SSQC
   data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );

@@ -65,7 +65,7 @@ Overview:
                           //sure dropped packet do real, but its better than flooding 
 
 //SSQC only
-#ifndef CSQC
+#ifdef SSQC
 .vector lastorigin; //mostly AI move tracker
 .float accuracyMod;
 .float accuracy; 

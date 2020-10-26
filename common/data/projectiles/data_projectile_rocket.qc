@@ -8,7 +8,7 @@ Overview:
     Explodes on touch
 */
 
-#ifndef CSQC
+#ifdef SSQC
 float DAT_ROCKET_PROXY_RAD = 25;
 void() data_prj_mis_touch;
 void() data_projectile_rocket_think_;
@@ -51,14 +51,14 @@ void() data_projectile_ini_rocket_={
     self.pcl_explode = projectile_rocket_expl;
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.touch = data_prj_mis_touch;
     self.think = data_projectile_rocket_think_;  
     self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void(entity theOther ) data_prj_mis_hit={  
   local float debris, debrisType;
   local float damage; 

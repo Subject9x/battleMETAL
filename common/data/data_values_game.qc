@@ -53,12 +53,12 @@ string PATH_DATA_ANIM = "anim";
 string PATH_DATA_SAVE = "saves";
 string PATH_DATA_UI = "ui";
 string NEWLINE = "\n";
-#ifndef CSQC
+#ifdef SSQC
 float FLAG_NEWGAME;
 #endif
 //globals
 string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
-#ifndef CSQC
+#ifdef SSQC
 string SAVE_MAP;
 string SAVE_MECHS_LIST;
 string SAVE_ITEMS_ALL;
@@ -356,7 +356,7 @@ float IS_VIP = 8388608; //faction-allied player will be notified of this entity'
 float RADAR_SWEEP = 2.5;
 
 .float stat_rdr_mode;
-#ifndef CSQC
+#ifdef SSQC
 .float playerState;
 .float stat_client_energy;
 .float stat_client_shield;

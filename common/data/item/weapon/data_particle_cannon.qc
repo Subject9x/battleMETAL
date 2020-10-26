@@ -11,7 +11,7 @@ Overview:
       Single shot
       hit scan
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_particle_cannon_;
 #endif
 
@@ -81,14 +81,14 @@ void() data_ini_particle_cannon_={
   self.itemMuzzleFlash = te_muzzle_pac;
 #endif 
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.think = default_weapon_think;
   self.w_attack = data_ini_attack_particle_cannon_;
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_particle_cannon_={
   local vector strikePoint;
   local float oldShields;

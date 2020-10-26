@@ -10,7 +10,7 @@ Overview:
       Arcing
       Needs radar lock
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_missile_activeradar_;
 #endif 
 
@@ -56,7 +56,7 @@ void() data_ini_missile_activeradar_={
   self.itemMuzzleFlash = te_muzzle_marh;
 #endif
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.w_attack = data_ini_attack_missile_activeradar_;
   self.think = default_weapon_think;
@@ -64,7 +64,7 @@ void() data_ini_missile_activeradar_={
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_missile_activeradar_={
   local vector arc; //calculate the initial arc value before lock-on adjustment
   local vector start;

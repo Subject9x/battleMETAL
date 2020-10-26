@@ -39,7 +39,7 @@ void() data_ini_trowel_={
   self.data_speed_strafe = 10;
   self.data_speed_backward = 10;
   self.data_speed_accel = 1;
-#ifndef CSQC
+#ifdef SSQC
   self.yaw_speed = 1.5;//1;    //AI-only 
   self.turret_yaw_speed = 2;//1.5;//AI-only
   self.ai_angleLimits = '-160 160 0';
@@ -70,7 +70,7 @@ void() data_ini_trowel_={
   data_ini_unitHardpoint_6( M_LEGS, '-7 7.5 20', '0 0 0', 3, (DMG_ENE | DMG_BAL));
   data_ini_unitHardpoint_7( M_TOR_CENTER, '0 -1 -15.5', '0 180 0', 3, (DMG_ENE | DMG_BAL));
 #endif
-#ifndef CSQC
+#ifdef SSQC
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 12 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 16.75 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
   data_ini_unitHardpoint_3( M_TOR_CENTER, '2 -8 10.5', '90 0 0', 3, (DMG_ENE | DMG_BAL));

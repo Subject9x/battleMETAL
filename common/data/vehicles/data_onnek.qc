@@ -40,7 +40,7 @@ void() data_ini_onnek_={
   self.data_speed_strafe = 20;
   self.data_speed_backward = 15;
   self.data_speed_accel = 1;
-#ifndef CSQC
+#ifdef SSQC
   self.yaw_speed = 2.75;  //2.5;    //AI-only 
 #endif
 //=====================================

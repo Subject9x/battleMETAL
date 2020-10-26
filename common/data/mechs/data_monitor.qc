@@ -48,7 +48,7 @@ void() data_ini_monitor_={
   self.legMoveRate = 8;
   self.legRunRate = 12;
 #endif
-#ifndef CSQC
+#ifdef SSQC
   self.yaw_speed = 2;    // AI-only 
   self.turret_yaw_speed = 3;// AI-only
   self.ai_angleLimits = '-150 150 0';
@@ -86,7 +86,7 @@ void() data_ini_monitor_={
 //=====================================
  
 //HARDPOINT DATA======================
-#ifndef CSQC
+#ifdef SSQC
   data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   

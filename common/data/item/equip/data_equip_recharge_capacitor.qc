@@ -8,7 +8,7 @@ Overview:
       Increases Unit's Energy recharge speed.
       
 */
-#ifndef CSQC
+#ifdef SSQC
 void() recharge_capacitor_upgrade_;
 void() recharge_capacitor_remove_;
 #endif
@@ -44,7 +44,7 @@ void() data_ini_equip_recharge_capacitor_={
     self.icon = "gfx/ui/wep_icons/eqp_recap.png";
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.item_run_upgrade = recharge_capacitor_upgrade_;
     self.think = SUB_Null;
     self.item_remove_upgrade = recharge_capacitor_remove_;

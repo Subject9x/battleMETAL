@@ -10,7 +10,7 @@ Overview:
       Small AoE.
       Consumes Energy.
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_ion_;
 #endif
 
@@ -56,7 +56,7 @@ void() data_ini_ion_={
   self.itemMuzzleFlash = te_muzzle_ion;
 #endif
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.w_attack = data_ini_attack_ion_;
   self.think = default_weapon_think;
@@ -64,7 +64,7 @@ void() data_ini_ion_={
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_ion_={
 
   if( !ctrl_weapon_checkEnergy() ){

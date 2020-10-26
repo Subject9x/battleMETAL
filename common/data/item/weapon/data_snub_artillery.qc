@@ -9,7 +9,7 @@ Overview:
       Medium AoE
       Arcing
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_snub_artillery_;
 #endif
 #ifdef CSQC
@@ -55,14 +55,14 @@ void() data_ini_snub_artillery_={
   self.itemMuzzleFlash = te_muzzle_sfg;
 #endif 
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.w_attack = data_ini_attack_snub_artillery_;
   self.think = default_weapon_think;
   self.data_ini_projectile = data_projectile_ini_snub_artillery_;
 #endif
 };
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_snub_artillery_={
 
   ctrl_weapon_fireOffset();

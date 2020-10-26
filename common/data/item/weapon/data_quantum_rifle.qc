@@ -10,7 +10,7 @@ Overview:
       Submunitions
       Affects shields only
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_quantum_;
 #endif
 #ifdef CSQC
@@ -71,7 +71,7 @@ void() data_ini_quantum_={
   self.itemMuzzleFlash = te_muzzle_qrf;
 #endif 
   
-#ifndef CSQC
+#ifdef SSQC
   self.w_attack = data_ini_attack_quantum_;
   self.think = default_weapon_think;
   self.data_ini_projectile = data_projectile_ini_quantum_bit_;
@@ -79,7 +79,7 @@ void() data_ini_quantum_={
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_quantum_={
   
   ctrl_weapon_fireOffset();

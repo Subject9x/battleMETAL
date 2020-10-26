@@ -7,7 +7,7 @@ Overview:
     Turbo Charger
       increases Unit's EVADE speed, but increases EVADE cost;
 */
-#ifndef CSQC
+#ifdef SSQC
 void() turbo_charger_upgrade_;
 void() turbo_charger_remove_;
 #endif
@@ -46,7 +46,7 @@ void() data_ini_equip_turbo_charger_={
     self.icon = "gfx/ui/wep_icons/eqp_tchr.png";
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.item_run_upgrade = turbo_charger_upgrade_;
     self.think = SUB_Null;
     self.item_remove_upgrade = turbo_charger_remove_;
@@ -54,7 +54,7 @@ void() data_ini_equip_turbo_charger_={
   #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() turbo_charger_upgrade_={
   local entity module;
   local float perc;

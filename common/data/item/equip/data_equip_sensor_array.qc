@@ -8,7 +8,7 @@ Overview:
       30% increase in Unit's max radar range.
       
 */
-#ifndef CSQC
+#ifdef SSQC
 void() sensor_array_upgrade_;
 void() sensor_array_remove_;
 #endif
@@ -44,7 +44,7 @@ void() data_ini_equip_sensor_array_={
     self.icon = "gfx/ui/wep_icons/eqp_lsar.png";
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.item_remove_upgrade = sensor_array_remove_;
     self.item_run_upgrade = sensor_array_upgrade_;
     self.think = SUB_Null;
@@ -52,7 +52,7 @@ void() data_ini_equip_sensor_array_={
   #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() sensor_array_upgrade_={
   self.energyMax = self.owner.radar_range;
   self.owner.radar_range  = self.owner.radar_range  + (self.owner.radar_range  * self.energyRate);

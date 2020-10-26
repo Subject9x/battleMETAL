@@ -8,7 +8,7 @@ Overview:
     Explodes on touch
 */
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_ini_quantum_bit_touch_;
 void() data_projectile_quantum_bit_th;
 #endif CSQC
@@ -43,14 +43,14 @@ void() data_projectile_ini_quantum_bit_={
     self.predraw_projectile = predraw_quantum;
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.touch = data_projectile_ini_quantum_bit_touch_;
     self.think = data_projectile_quantum_bit_th;
     self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_quantum_bit_th={
   
   self.think = data_projectile_quantum_bit_th;

@@ -40,7 +40,7 @@ void() data_ini_foslager_={
   self.data_speed_strafe = 20;
   self.data_speed_backward = 15;
   self.data_speed_accel = 1;
-#ifndef CSQC
+#ifdef SSQC
   self.yaw_speed = 3.75;        //3.5;    //AI-only 
   self.turret_yaw_speed = 4.25; //3.75;//AI-only
   self.ai_angleLimits = '-180 180 0'; //-160 160
@@ -67,7 +67,7 @@ void() data_ini_foslager_={
   data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 0.75 5.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 1.25 6', '0 0 0', 1, (DMG_BAL | DMG_ENE));
 #endif
-#ifndef CSQC
+#ifdef SSQC
   data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 11 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 11.5 2.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
 #endif

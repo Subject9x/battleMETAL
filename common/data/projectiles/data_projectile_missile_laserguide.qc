@@ -9,7 +9,7 @@ Overview:
     follows player reticle
 */
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_missile_laserguide_touch;
 void() data_projectile_missile_laserguide_think;
 #endif CSQC
@@ -54,13 +54,13 @@ void() data_projectile_ini_missile_laserguide_={
     self.scale = 2;
   #endif 
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.touch = data_projectile_missile_laserguide_touch;
     self.think = data_projectile_missile_laserguide_think;
     self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_missile_laserguide_touch={
   local float debris;
   local float damage; 

@@ -18,7 +18,7 @@ Overview:
       long-range
       slight arc
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_missile_swarm_;
 #endif
 
@@ -65,7 +65,7 @@ void() data_ini_missile_swarm_={
   self.itemMuzzleFlash = te_muzzle_swrm;
 #endif 
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.w_attack = data_ini_attack_missile_swarm_;
   self.think = default_weapon_think;
@@ -73,7 +73,7 @@ void() data_ini_missile_swarm_={
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_missile_swarm_={
   local entity hold;
   

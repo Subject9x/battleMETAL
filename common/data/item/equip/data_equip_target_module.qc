@@ -8,7 +8,7 @@ Overview:
       significant upgrade to unit's accuracy variables.
       
 */
-#ifndef CSQC
+#ifdef SSQC
 void() target_module_upgrade_;
 void() target_module_remove_;
 #endif
@@ -44,7 +44,7 @@ void() data_ini_equip_target_module_={
     self.icon = "gfx/ui/wep_icons/eqp_atgm.png";
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.spreadDefault = '0.5 0.5 0.33';  //upgrades Unit's accuracy
     self.item_run_upgrade = target_module_upgrade_;
     self.item_remove_upgrade = target_module_remove_;
@@ -54,7 +54,7 @@ void() data_ini_equip_target_module_={
 
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() target_module_upgrade_={
   local float lock;
   
