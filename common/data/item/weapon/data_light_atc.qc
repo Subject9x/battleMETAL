@@ -9,7 +9,7 @@ Overview:
       Rapid fire
       low accuracy
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_latc_;
 #endif
 
@@ -89,14 +89,14 @@ void() data_ini_light_atc_={
   self.itemMuzzleFlash = te_muzzle_latc;
 #endif
 
-#ifndef CSQC  
+#ifdef SSQC  
   self.w_attack = data_ini_attack_latc_;
   self.think = default_weapon_think;
   self.w_isburst = FALSE;
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_latc_={
   
   ctrl_weapon_fireOffset();

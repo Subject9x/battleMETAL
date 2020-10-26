@@ -7,7 +7,7 @@ Overview:
     High Strength Shield Emitters
       Increases Unit's shieldRate, ie shield recharge buff
 */
-#ifndef CSQC
+#ifdef SSQC
 void() shield_emitter_upgrade_;
 void() shield_emitter_remove_;
 #endif
@@ -43,7 +43,7 @@ void() data_ini_equip_shield_emitter_={
     self.icon = "gfx/ui/wep_icons/eqp_hsem.png";
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.item_remove_upgrade = shield_capacitor_remove_;
     self.item_run_upgrade = shield_emitter_upgrade_;
     self.think = SUB_Null;
@@ -52,7 +52,7 @@ void() data_ini_equip_shield_emitter_={
   
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() shield_emitter_upgrade_={
   self.shieldRateMod = self.owner.shieldRateMod;
   self.owner.shieldRateMod = 1.2;

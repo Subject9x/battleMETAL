@@ -8,7 +8,7 @@ Overview:
       Increases Unit's Energy maximum
       
 */
-#ifndef CSQC
+#ifdef SSQC
 void() energy_battery_upgrade_;
 void() energy_battery_remove_;
 #endif
@@ -44,7 +44,7 @@ void() data_ini_equip_energy_battery_={
     self.icon = "gfx/ui/wep_icons/eqp_enbat.png";
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.think = SUB_Null;
     self.item_run_upgrade = energy_battery_upgrade_;
     self.item_remove_upgrade = energy_battery_remove_;
@@ -52,7 +52,7 @@ void() data_ini_equip_energy_battery_={
   #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() energy_battery_upgrade_={
   self.energyMax = self.owner.energyMax;
   self.owner.energyMax = self.owner.energyMax + (self.owner.energyMax * self.energyRate);

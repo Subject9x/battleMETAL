@@ -8,7 +8,7 @@ Overview:
       AoE radius.
       
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_prj_emp_touch;
 void() data_projectile_emp_think_;
 void() data_prj_emp_explode;
@@ -46,14 +46,14 @@ void() data_projectile_ini_emp_={
     self.pcl_explode = projectile_emp_expl;
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.model = "q3mdl/testball.md3";
     self.touch = data_prj_emp_touch;
     self.think = data_projectile_emp_think_;
     self.effects = self.effects | EF_LOWPRECISION;
   #endif CSQC
 };
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_emp_think_={
   local float explode;
 

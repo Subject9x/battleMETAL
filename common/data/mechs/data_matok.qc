@@ -48,7 +48,7 @@ void() data_ini_matok_={
   self.legMoveRate = 12;
   self.legRunRate = 18;
 #endif
-#ifndef CSQC
+#ifdef SSQC
   self.yaw_speed = 3;    // AI-only 
   self.turret_yaw_speed = 3.75;// AI-only
   self.ai_angleLimits = '-180 180 0';
@@ -87,7 +87,7 @@ void() data_ini_matok_={
 //=====================================
  
 //HARDPOINT DATA======================
-#ifndef CSQC
+#ifdef SSQC
   data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
   data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
   data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );

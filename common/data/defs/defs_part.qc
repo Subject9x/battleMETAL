@@ -11,7 +11,7 @@ Overview:
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
 
-#ifndef CSQC
+#ifdef SSQC
 .string modelPath;
 #endif
 

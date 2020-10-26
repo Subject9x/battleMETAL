@@ -11,7 +11,7 @@ Overview:
   
 */
 
-#ifndef CSQC
+#ifdef SSQC
 entity unitPartList;  //used by vehicle factory to build full list of unit's parts as a chain.
 entity weaponBuild; //used by vehicle factory to build current weapon
 .void() unit_ini;
@@ -83,7 +83,7 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
     weaponList.w_slot = item;
     notItem = self;
     self = item;
-    #ifndef CSQC
+    #ifdef SSQC
       self.effects = self.effects | EF_NODRAW;
     #endif
       self.data_idx = 0;
@@ -148,7 +148,7 @@ void(float vec_id) initialize_data_turret_;
   by defining another function before assignment.
   -Roohr
 */
-#ifndef CSQC
+#ifdef SSQC
 void() default_weapon_think={
   local float delta, lim;
   

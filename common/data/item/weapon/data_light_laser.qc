@@ -10,7 +10,7 @@ Overview:
       Mild Dmg buff against shields
 
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_laser_;
 #endif
  
@@ -81,14 +81,14 @@ void() data_ini_light_laser_={
   self.itemMuzzleFlash = te_muzzle_las;
 #endif
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.think = default_weapon_think;
   self.w_attack = data_ini_attack_laser_;
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_laser_={
   local float damage;
   

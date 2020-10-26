@@ -8,7 +8,7 @@ Overview:
       AoE radius.
       
 */
-#ifndef CSQC
+#ifdef SSQC
 float DAT_PRJ_SFGA_RAD        = 300;
 void() data_projectile_snub_artillery_radiusDamage;
 void() data_projectile_snub_artillery_touch_;
@@ -51,7 +51,7 @@ void() data_projectile_ini_snub_artillery_={
     self.scale = 1.25;
   #endif
     
-  #ifndef CSQC
+  #ifdef SSQC
     self.think = data_projectile_snub_artillery_th;
     self.touch = data_projectile_snub_artillery_touch_;
     self.gravity = 0.03;
@@ -61,7 +61,7 @@ void() data_projectile_ini_snub_artillery_={
   #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_snub_artillery_th={
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.think = data_projectile_snub_artillery_th;

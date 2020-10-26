@@ -10,7 +10,7 @@ Overview:
       follow's player reticle
       Arcing
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_missile_laserguide_;
 #endif
 
@@ -64,7 +64,7 @@ void() data_ini_missile_laserguide_={
   self.itemMuzzleFlash = te_muzzle_lgm;
 #endif 
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.w_attack = data_ini_attack_missile_laserguide_;
   self.think = default_weapon_think;
@@ -72,7 +72,7 @@ void() data_ini_missile_laserguide_={
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_missile_laserguide_={
   local entity hold;
   local vector lasOrg;

@@ -9,7 +9,7 @@ Overview:
     follows player reticle
 */
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_missile_swarm_touch;
 void() data_projectile_missile_swarm_think;
 void() data_projectile_missile_swarm_delay;
@@ -53,7 +53,7 @@ void() data_projectile_ini_missile_swarm_={
     self.scale = 1.5;
   #endif 
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.think = data_projectile_missile_swarm_think;
     self.touch = data_projectile_missile_swarm_touch;      
     self.gravity = 0.04;
@@ -62,7 +62,7 @@ void() data_projectile_ini_missile_swarm_={
     self.isActive = TRUE;
   #endif
 };
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_missile_swarm_touch={
   local float debris;
   local float damage;

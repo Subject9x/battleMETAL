@@ -9,7 +9,7 @@ Overview:
       6rnd Burst.
       low accuracy.
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_rockets_;
 #endif
 
@@ -56,7 +56,7 @@ void() data_ini_rockets_={
   self.itemMuzzleFlash = te_muzzle_rck;
 #endif 
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.w_attack = data_ini_attack_rockets_;
   self.think = default_weapon_think;
@@ -64,7 +64,7 @@ void() data_ini_rockets_={
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_rockets_={
 
   ctrl_weapon_fireOffset();

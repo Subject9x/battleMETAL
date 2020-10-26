@@ -12,7 +12,7 @@ Overview
 */
 
 //SSQC only
-#ifndef CSQC
+#ifdef SSQC
 .void() w_attack;     //actual attack func
 .void() w_think;     //implementable update function
 .float state_2;

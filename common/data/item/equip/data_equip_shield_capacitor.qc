@@ -7,7 +7,7 @@ Overview:
     Shield Capacitor
       Increases Unit's MAX shield capacity
 */
-#ifndef CSQC
+#ifdef SSQC
 void() shield_capacitor_upgrade_;
 void() shield_capacitor_remove_;
 #endif
@@ -43,7 +43,7 @@ void() data_ini_equip_shield_capacitor_={
     self.icon = "gfx/ui/wep_icons/eqp_lscap.png";
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.item_remove_upgrade = shield_capacitor_remove_;
     self.item_run_upgrade = shield_capacitor_upgrade_;
     self.think = SUB_Null;
@@ -51,7 +51,7 @@ void() data_ini_equip_shield_capacitor_={
   #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() shield_capacitor_upgrade_={
   self.energyMax = self.owner.shieldMax;
   

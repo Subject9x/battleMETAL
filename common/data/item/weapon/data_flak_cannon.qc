@@ -11,7 +11,7 @@ Overview:
       small AoE when shields are gone
 */
 float DAT_FLAK_SHRAP_TOTAL  = 4;
-#ifndef CSQC
+#ifdef SSQC
 vector DAT_FLAK_SHRAP_SPREAD  = '0.2 0.2 64';
 void() data_ini_attack_flak_;
 #endif
@@ -91,14 +91,14 @@ void() data_ini_flak_cannon_={
   self.itemMuzzleFlash = te_muzzle_flk;
 #endif
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.w_attack = data_ini_attack_flak_;
   self.think = default_weapon_think;
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_flak_={
   local vector cacheSpread;
   local vector direction;

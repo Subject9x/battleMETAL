@@ -41,7 +41,7 @@ void() data_ini_empty_weapon_={
     self.drawmask = 0;
   #endif
   
-  #ifndef CSQC  
+  #ifdef SSQC  
     self.spreadDefault = '0 0 0';
     self.w_attack = SUB_Null;
     self.think = SUB_Null;

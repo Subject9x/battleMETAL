@@ -40,7 +40,7 @@ void() data_ini_dunerunner_={
   self.data_speed_strafe = 113;
   self.data_speed_backward = 133;
   self.data_speed_accel = 1;
-  #ifndef CSQC
+  #ifdef SSQC
   self.yaw_speed = 5;    //AI-only 
   self.turret_yaw_speed = 4;//AI-only
   self.ai_angleLimits = '-360 360 0';
@@ -66,7 +66,7 @@ void() data_ini_dunerunner_={
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 -0.1 0.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 -0.1 0.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
 #endif
-#ifndef CSQC
+#ifdef SSQC
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 5.25 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 5.25 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
 #endif

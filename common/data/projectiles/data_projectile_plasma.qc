@@ -8,7 +8,7 @@ Overview:
     burns-over-time on unshielded targets.
 */
 
-#ifndef CSQC
+#ifdef SSQC
 float data_projectile_plasma_burn_time = 0.5;
 float data_projectile_plasma_burn_dmg = 0.1;
 
@@ -48,13 +48,13 @@ void() data_projectile_ini_plasma_={
     self.pcl_explode = projectile_plasma_expl;
   #endif
   
-  #ifndef CSQC
+  #ifdef SSQC
     self.touch = data_projectile_plasma_touch;
     self.think = data_projectile_plasma_think_;
     self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
-#ifndef CSQC
+#ifdef SSQC
 void() data_projectile_plasma_burn_ini_={
   self.movetype = MOVETYPE_FOLLOW;
   self.aiment = self.cockpit;

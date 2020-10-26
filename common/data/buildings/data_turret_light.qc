@@ -35,7 +35,7 @@ void() data_ini_light_turret_={
 //=====================================
 
 //SPEED================================
-  #ifndef CSQC
+  #ifdef SSQC
   //only yaw speeds because turrets can't move...
   self.yaw_speed = 0;    //AI-only 
   self.turret_yaw_speed = 4;//AI-only

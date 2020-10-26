@@ -11,7 +11,7 @@ Overview:
       Inaccurate
       spin up and cooldown
 */
-#ifndef CSQC
+#ifdef SSQC
 // last fire time == self.count1
 // cooldown check == self.count2;
 // last fire rate = self.count3
@@ -162,7 +162,7 @@ void() data_ini_electro_repeater_={
   self.itemMuzzleFlash = te_muzzle_esr;
 #endif
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   if( (self.owner.flags & FL_MONSTER) ){
     self.reloadMax = 1;
@@ -180,7 +180,7 @@ void() data_ini_electro_repeater_={
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_electro_repeater_={
   local float damage;
   

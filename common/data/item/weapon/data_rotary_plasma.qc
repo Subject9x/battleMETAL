@@ -10,7 +10,7 @@ Overview:
       medium accuracy.
       projectiles burn unshielded targets.
 */
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_plasma_;
 #endif
 #ifdef CSQC
@@ -56,7 +56,7 @@ void() data_ini_plasma_={
   self.itemMuzzleFlash = te_muzzle_rpc;
 #endif 
 
-#ifndef CSQC
+#ifdef SSQC
   self.w_isburst = FALSE;
   self.w_attack = data_ini_attack_plasma_;
   self.think = default_weapon_think;
@@ -65,7 +65,7 @@ void() data_ini_plasma_={
 #endif
 };
 
-#ifndef CSQC
+#ifdef SSQC
 void() data_ini_attack_plasma_={
 
   ctrl_weapon_fireOffset();
