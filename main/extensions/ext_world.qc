@@ -8,7 +8,7 @@ Overview:
   these functions are here for their abstraction level.
 */
 
-void() mh_world_ini={
+void() world_metal_ini={
   DEPLOY_ID_COUNT = 0;
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;
@@ -146,6 +146,7 @@ void() mh_world_ini={
   
   MAP_UNLOCK_MECHS = world.unlockMechs;
   MAP_UNLOCK_EQUIP = world.unlockEquip;
+  
   //ini AI globals
   enemy_infront = 1.0;
   enemy_vis = 1.0;
@@ -160,7 +161,11 @@ void() mh_world_ini={
   setsize(nodegraph_edgelinker, nodegraph_edgelinker.mins, nodegraph_edgelinker.maxs);
   setorigin(nodegraph_edgelinker, world.origin);
   
-  world_get_maplist();
+  world_get_maplist();  
+  
+  world_nodegraph_read_file();
+  NODEGRAPH_LOADED = FALSE;
+  cons_logAString("file", "bugger");  //debug
 };
 
 void() world_ini_serverinfo={
@@ -589,31 +594,31 @@ void( float overrideFlag ) world_export_realtimelights={
   fclose(fileExists);
 };
 
-void( entity light, float fileData ) world_export_realtimelights_write={
+void( entity lightEnt, float fileData ) world_export_realtimelights_write={
   local string lightData;
   
-  if( light.rtlShadows == FALSE){
+  if( lightEnt.rtlShadows == FALSE){
     fputs(fileData, "!");
   }    
-  lightData = strcat( lightData, ftos(light.origin_x), " ", ftos(light.origin_y), " ", ftos(light.origin_z));
-  lightData = strcat( lightData, " ", ftos(light.rtlRadius) );
-  lightData = strcat( lightData, " ", ftos(light.color_x)," ", ftos(light.color_y)," ", ftos(light.color_z) );
-  lightData = strcat( lightData, " ", ftos(light.rtlStyle) );
-  lightData = strcat( lightData, " \"", light.vec_name,"\" " );
-  lightData = strcat( lightData, " ", ftos(light.rtlCorona) );
-  lightData = strcat( lightData, " ", ftos(light.angles_x), " ", ftos(light.angles_y), " ", ftos(light.angles_z) );
-  lightData = strcat( lightData, " ", ftos(light.rtlCoronaSize) );
-  lightData = strcat( lightData, " ", ftos(light.rtlAmbient) );
-  lightData = strcat( lightData, " ", ftos(light.rtlDiffuse) );
-  lightData = strcat( lightData, " ", ftos(light.rtlSpecular) );
-  lightData = strcat( lightData, " ", ftos(light.rtlMode));
+  lightData = strcat( lightData, ftos(lightEnt.origin_x), " ", ftos(lightEnt.origin_y), " ", ftos(lightEnt.origin_z));
+  lightData = strcat( lightData, " ", ftos(lightEnt.rtlRadius) );
+  lightData = strcat( lightData, " ", ftos(lightEnt.color_x)," ", ftos(lightEnt.color_y)," ", ftos(lightEnt.color_z) );
+  lightData = strcat( lightData, " ", ftos(lightEnt.rtlStyle) );
+  lightData = strcat( lightData, " \"", lightEnt.vec_name,"\" " );
+  lightData = strcat( lightData, " ", ftos(lightEnt.rtlCorona) );
+  lightData = strcat( lightData, " ", ftos(lightEnt.angles_x), " ", ftos(lightEnt.angles_y), " ", ftos(lightEnt.angles_z) );
+  lightData = strcat( lightData, " ", ftos(lightEnt.rtlCoronaSize) );
+  lightData = strcat( lightData, " ", ftos(lightEnt.rtlAmbient) );
+  lightData = strcat( lightData, " ", ftos(lightEnt.rtlDiffuse) );
+  lightData = strcat( lightData, " ", ftos(lightEnt.rtlSpecular) );
+  lightData = strcat( lightData, " ", ftos(lightEnt.rtlMode));
   if( lightData != "" ){
     fputs(fileData, lightData);
   }
   fputs(fileData, "\n");  //INFO - .rtlights files ALWAYS end with a \n
   
   if( cvar("developer") ){
-    cons_log2Strings("[INFO]-{Writing RTLight Data} ", "-line-", "origin", vtos(light.origin)); //DEBUG
+    cons_log2Strings("[INFO]-{Writing RTLight Data} ", "-line-", "origin", vtos(lightEnt.origin)); //DEBUG
   }
 };
 
@@ -623,7 +628,7 @@ void( entity light, float fileData ) world_export_realtimelights_write={
   fashion. Maybe no more than a handful of lights per entity you want to attach them to, and definetly make sure they're
   removed with their parent ent.
 */
-void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angl, float skinNum, float lightRadius) world_make_dlight={
+void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angl, float skinNum, float lightRadius) world_dlight_make={
   local entity newLight;
   newLight = spawn();
   newLight.classname = "dynamicLight";
@@ -639,7 +644,7 @@ void( vector org, entity parent, float id, vector colr, float stile, float pFlag
   setorigin( newLight, org );
 };
 
-void( entity parent ) world_remove_dlight={
+void( entity parent ) world_dlight_remove={
   local entity chaine;
   
   for( chaine = nextent(world); chaine.owner == parent; chaine = nextent(chaine) ){
@@ -654,7 +659,7 @@ void( entity parent ) world_remove_dlight={
 /*
   send negative values to ignore changes, otherwise, 0 as a value will be used!
 */
-void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight={
+void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_dlight_update={
   local entity myLight;
   
   for( myLight = findchainentity( owner, parent ); myLight != world; myLight = myLight.chain){
@@ -868,6 +873,81 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
   fputs(fileData, "}\n");
 };
 
+/*
+  Called by w
+*/
+void() world_nodegraph_import={
+  
+};
+
+/*
+  The specific function to read "data/<map>/*.node"
+*/
+void() world_nodegraph_read_file={
+  local float fileHandle;
+  local string fileName;
+  local string fileLine;
+  local string line;
+  
+  local float nodeCounter;
+  
+  local float tokens;
+  local float itr;
+  
+  local float nodeid;
+  local vector org;
+  
+  local string edgeData;
+  
+  fileName = strcat(mapname,"/",mapname,".nodes");
+  fileHandle = fopen(fileName, FILE_READ);
+  
+  dprint(strcat("NODEGHRAPH FILE=", fileName,"\n"));  //debug
+  
+  if( fileHandle > -1 ){
+    nodeCounter = 0;
+    fileLine = fgets(fileHandle);
+    while( fileLine != ""){
+      if( nodeCounter >= NODEGRAPH_MAX ){
+        break;
+      }
+      line = fileLine;
+      fileLine = fgets(fileHandle);
+      if( line == "{" ){
+        //node ID
+        line = fileLine;
+        tokens = tokenizebyseparator(fileLine, "\"", "\"", " \"", "\"\n");
+        nodeid = rint(stof(argv(3)));
+        
+        //node origin
+        fileLine = fgets(fileHandle);
+        tokens = tokenizebyseparator(fileLine, "\"", "\"", " \"", " ", "\"");
+        org_x = stof(argv(3));
+        org_y = stof(argv(4));
+        org_z = stof(argv(5));
+        
+        //edge data
+        fileLine = fgets(fileHandle);
+        tokens = tokenizebyseparator(fileLine, "\"", "\" ", "\"", "\"");
+        edgeData = argv(3);
+        
+        //node edge data for processing.
+        world_nodegraph_read_node( nodeCounter, nodeid, '0 0 0', edgeData);
+        line = fgets(fileHandle);
+      }
+      if( line == "}" ){
+        nodeCounter = nodeCounter + 1;
+        continue;
+      }
+    }
+    
+    fclose(fileHandle);
+  }
+};
+
+void( float nodeCounter, float nodeId, vector org, string edgeDat) world_nodegraph_read_node={
+  NODEGHRAPH_DATA[nodeCounter].id = nodeid;
+};
 
 /*
   used with server flag (SV_SERVERFLAGS & SVFLAG_SPAWNFAR)

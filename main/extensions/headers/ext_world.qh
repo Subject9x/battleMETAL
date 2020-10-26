@@ -60,7 +60,7 @@ void() sv_world_load_items;
 void() sv_checkRules;
 void() sv_endServer;
 
-void() mh_world_ini;
+void() world_metal_ini;
 void() world_get_fog;
 
 //RTLight converter system---------------------------------------------
@@ -84,13 +84,13 @@ void() world_get_fog;
   3 = normalmode YES && realtimemode YES
 */
 void( float overrideFlag ) world_export_realtimelights;
-void( entity light, float fileData ) world_export_realtimelights_write;
+void( entity lightEnt, float fileData ) world_export_realtimelights_write;
 
 //dynamic lights (dlights)
 //extends classic lightmap lights into a more dynamic/controllable format.
-void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angles, float skinNum, float lightRadius ) world_make_dlight;
-void( entity parent ) world_remove_dlight;
-void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight;
+void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angles, float skinNum, float lightRadius ) world_dlight_make;
+void( entity parent ) world_dlight_remove;
+void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_dlight_update;
 
 //AI NODEGRAPH system--------------------------------------------------------
 /*
@@ -101,6 +101,7 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
   5) To run a pathfinding algorithm in the AI
 */
 
+float NODEGRAPH_LOADED;
 float NODEGRAPH_MAX = 1024;
 //Edge validation rules
 float NODEGRAPH_DBG_ID1 = 6;
@@ -111,6 +112,16 @@ float NODEGRAPH_EDGE_ANGLE_MAX = 315;
 float NODEGRAPH_EDGE_ANGLE_MIN = 45;
 float NODEGRAPH_EDGE_CHECK_CACHE[6];
 entity NODEGRAPH_EXPORT_NODE[1024];
+
+typedef struct
+{
+  float id;
+  vector orig;
+  float nodes[6];
+  float edges[6];
+} node_t;
+
+node_t NODEGRAPH_DATA[1024];
 
 /*vector NODEGRAPH_SEARCH_QUEUE[512];
 vector NODEGRAPH_ORIGIN[1024];
@@ -128,12 +139,6 @@ float NODEGRAPH_EDGES_LEN4[1024];
 float NODEGRAPH_EDGES_LEN5[1024];
 float NODEGRAPH_EDGES_LEN6[1024];*/
 
-typedef struct
-{
-  vector rgb;
-  float a;
-} rgba_t;
-
 float NODE_ID_COUNT;
 
 void() nodegraph_edgelinker_th;
@@ -144,6 +149,8 @@ void(entity node, float fileData ) world_nodegraph_export_write_node;
 float( entity node, entity targNode ) world_nodegraph_export_edgelink;
 
 void() world_nodegraph_import;
+void() world_nodegraph_read_file;
+void( float nodeCounter, float nodeId, vector org, string edgeDat) world_nodegraph_read_node;
 
 //MISC
 entity() world_deathmatch_random_spawn;

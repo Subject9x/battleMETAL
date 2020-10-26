@@ -68,7 +68,7 @@ void() worldspawn =
   
   FRIK_FILE_precaches();
   
-  mh_world_ini();
+  world_metal_ini();  //
 //
 // Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
 //
