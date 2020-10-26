@@ -11,7 +11,7 @@ Overview:
 #ifdef SSQC
 void() data_projectile_ini_quantum_bit_touch_;
 void() data_projectile_quantum_bit_th;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_qbit_expl={
@@ -139,4 +139,4 @@ void() data_projectile_ini_quantum_bit_touch_={
     self.nextthink = time + 0.01;
   }
 };
-#endif CSQC
+#endif

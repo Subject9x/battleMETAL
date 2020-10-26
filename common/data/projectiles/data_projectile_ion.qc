@@ -14,7 +14,7 @@ void() data_projectile_ion_think_;
 void() data_projectile_ion_explode;
 
 float DAT_PRJ_ION_EXPRAD = 100;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_ion_expl={
@@ -121,4 +121,4 @@ void() data_projectile_ion_touch={
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
 };
-#endif CSQC
+#endif

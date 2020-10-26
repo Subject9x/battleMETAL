@@ -12,7 +12,7 @@ Overview:
 #ifdef SSQC
 void() data_projectile_missile_laserguide_touch;
 void() data_projectile_missile_laserguide_think;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_mlg_expl={
@@ -120,5 +120,5 @@ void() data_projectile_missile_laserguide_think={
   }
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
-#endif CSQC
+#endif
 

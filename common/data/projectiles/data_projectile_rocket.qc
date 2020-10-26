@@ -12,7 +12,7 @@ Overview:
 float DAT_ROCKET_PROXY_RAD = 25;
 void() data_prj_mis_touch;
 void() data_projectile_rocket_think_;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_rocket_expl={
@@ -150,4 +150,4 @@ void() data_projectile_rocket_think_={
     }
   }
 };
-#endif CSQC
+#endif

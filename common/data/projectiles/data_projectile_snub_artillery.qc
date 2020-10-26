@@ -13,7 +13,7 @@ float DAT_PRJ_SFGA_RAD        = 300;
 void() data_projectile_snub_artillery_radiusDamage;
 void() data_projectile_snub_artillery_touch_;
 void() data_projectile_snub_artillery_th;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_sfga_expl={
@@ -140,4 +140,4 @@ void() data_projectile_snub_artillery_radiusDamage={
     }
   }
 };
-#endif CSQC
+#endif

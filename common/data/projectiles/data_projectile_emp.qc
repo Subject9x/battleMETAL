@@ -15,7 +15,7 @@ void() data_prj_emp_explode;
 
 float DAT_PRJ_EMP_PROXYRAD    = 30;  //200
 float DAT_PRJ_EMP_EXPRAD      = 300;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_emp_expl={
@@ -51,7 +51,7 @@ void() data_projectile_ini_emp_={
     self.touch = data_prj_emp_touch;
     self.think = data_projectile_emp_think_;
     self.effects = self.effects | EF_LOWPRECISION;
-  #endif CSQC
+  #endif
 };
 #ifdef SSQC
 void() data_projectile_emp_think_={
@@ -182,4 +182,4 @@ void() data_prj_emp_touch={
   self.think = SUB_Remove;
   self.nextthink = time + 0.05;
 };
-#endif CSQC
+#endif

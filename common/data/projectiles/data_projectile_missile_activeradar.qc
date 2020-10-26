@@ -14,7 +14,7 @@ float PROJ_MARH_TURN_FADE = 0.02; //turn speed decay rate.
 void() data_projectile_missile_activeradar_think;
 void() data_projectile_missile_activeradar_delay;
 void() data_projectile_missile_activeradar_touch;
-#endif CSQC
+#endif
 
 #ifdef CSQC
 void() projectile_marh_expl={
@@ -258,4 +258,4 @@ void() data_projectile_missile_activeradar_touch={
   self.think = SUB_Remove;
   self.nextthink = time + 0.05;
 };
-#endif CSQC
+#endif
