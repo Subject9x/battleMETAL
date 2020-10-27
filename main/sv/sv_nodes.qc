@@ -10,8 +10,8 @@ Overview:
 */
 
 
-void( node_t node, float nodeCounter, float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
-  //NODEGHRAPH_DATA[nodeCounter].id = nodeid;
+void(float nodeCount, float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
+  
   local string edgeString;
   local float edgetokens;
   local float edgeItr;
@@ -19,19 +19,46 @@ void( node_t node, float nodeCounter, float nodeId, vector org, string edgeDat) 
   local float edgeCount;
   local float edgeNum;
   
-  node.id = nodeId;
-  node.orig = org;
+  local vector reflectOrg;
+  
+  local float reflectNode;
+  local float reflectEdge;
+  
+  node_t theNode;;
+  
+  theNode.id = nodeId;
+  
+  reflectOrg = org;
+  theNode.orig = reflectOrg;
   
   edgeString = edgeDat;
   edgetokens = tokenizebyseparator(edgeString, " ", "-");
-  edgeCount = 1;
-  
+  //dprint("EDGE START---------------------------\n"); //debug
+  //dprint(strcat("edgetokens: ", ftos(edgetokens), "\n")); //debug
   for(edgeNum = 0; edgeNum < 6; edgeNum = edgeNum + 1){
-    node.nodes[edgeNum] = stof(argv(edgeItr));
-    edgeItr = edgeItr + 1;
-    node.edge[edgeNum] = stof(argv(edgeItr));
-    edgeItr = edgeItr + 1;
+    edgeItr = edgeNum * 2;
+    //dprint(strcat("edgeItr(", ftos(edgeItr), ")= ", argv(edgeItr), "\n")); //debug
+    //dprint(strcat("edgeItr+1(", ftos(edgeItr+1),")= ", argv(edgeItr+1),"\n")); //debug
+    if( edgeItr <= edgetokens ){
+      reflectNode = stof(argv(edgeItr));
+      theNode.nodes[edgeNum] = reflectNode;
+      //dprint(strcat(argv(edgeItr),"\n")); //debug
+      
+      reflectEdge = stof(argv(edgeItr+1));
+      theNode.edge[edgeNum] = reflectEdge;
+      //dprint(strcat(argv(edgeItr+1),"\n")); //debug
+    }
+    else{
+      theNode.nodes[edgeNum] = 0;
+      theNode.edge[edgeNum] = 0;
+    }
   }
+  //dprint("EDGE END---------------------------\n"); //debug
+  
+  //dprint(strcat(ftos(theNode.id),"\n")); //debug
+  //dprint(strcat(vtos(theNode.orig),"\n")); //debug
+  //dprint("NODE LOADED---------------------------\n"); //debug
+  NODEGRAPH_DATA[nodeCount] = theNode;
 };
 
 /*
@@ -47,3 +74,24 @@ void( node_t aNode ) nodegraph_test={
   //dprint(strcat(vtos(aNode.orig), "\n"));
 
 };
+
+//NODEGRAPH debugger--------------------------------------------------------
+/*
+  An entity that 'walks' the entire node graph
+*/
+void() nodegraph_debugger_th_node={
+
+  self.think = nodegraph_debugger_th_node;
+  self.nextthink = time + 1;
+};
+
+void() nodegraph_debugger_th_edge={
+
+  self.think = nodegraph_debugger_th_edge;
+  self.nextthink = time + 1.25;
+};
+
+void() nodegraph_debug_graph={
+  
+};
+//--------------

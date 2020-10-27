@@ -292,6 +292,10 @@ void(string str, float tokens) client_ParseMechCommand={
     world_nodegraph_export_data( stof(argv(2)) );
     return;
   }
+  if( argv(1) == "dbgnode" ){
+    nodegraph_debug_graph();
+    return;
+  }
 };  
 
 void() client_update_faction={

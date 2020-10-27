@@ -162,14 +162,8 @@ void() world_metal_ini={
   setorigin(nodegraph_edgelinker, world.origin);
   
   world_get_maplist();
-  if( cvar("developer") ){
-    dprint("WORLD_MAP_LIST ", WORLD_MAP_LIST, "\n"); //debug
-  }
   
-  NODEGRAPH_LOADED = world_nodegraph_read_file();
-  if( cvar("developer") ){
-    dprint("NODEGHRAPH LOADED ", ftos(NODEGRAPH_LOADED), "\n"); //debug
-  }
+  world_nodegraph_import();
 };
 
 void() world_ini_serverinfo={
@@ -691,7 +685,7 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
 
 void() world_nodegraph_export_edgelinker_th={
   
-  cons_logAString("[INFO]-world_export_nodegraph() edgelinker run ", ftos(self.wait));  //DEBUG
+  cons_logAString("[INFO]-world_export_nodegraph() edgelinker run ", ftos(self.count));  //DEBUG
     
   local string fileName;
   local float fileExists;
@@ -854,7 +848,7 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
     fputs(fileData, strcat(ftos(node.origin_y), " "));
     fputs(fileData, ftos(node.origin_z));
   fputs(fileData, "\"\n");
-  fputs(fileData, "\"edges\" \" ");
+  fputs(fileData, "\"edges\" \"");
   
   edgeMax = 0;
   for(self.delay = 0; self.delay < self.wait; self.delay = self.delay + 1 ){
@@ -868,6 +862,7 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
     edgeMax = edgeMax + 1;
     //cons_logAString(ftos(node.data_idx), strcat("linked for ", ftos(edgeNode.data_idx)));//debug
     fputs(fileData, strcat(ftos(edgeNode.data_idx), "-", ftos(vlen(edgeNode.origin - node.origin))));
+    
     fputs(fileData, " ");
   }
   if( edgeMax == 0 ){
@@ -878,9 +873,40 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
 };
 
 /*
-  Called by w
+  Called by world
 */
 void() world_nodegraph_import={
+  local float checkNodeItr;
+  local float checkEdgeItr;
+  
+  local float edgeId;
+  local float edgeLen;
+  node_t check;
+  
+  NODEGRAPH_LOADED = world_nodegraph_read_file();
+  
+  if( cvar("developer") ){
+    dprint("NODEGHRAPH LOADED ", ftos(NODEGRAPH_LOADED), "\n"); //debug
+    dprint("VERIFY NODEGRAPH ARRAY", ftos(NODEGRAPH_LOADED), "\n"); //debug
+    
+    for(checkNodeItr = 0; checkNodeItr < NODEGRAPH_MAX; checkNodeItr = checkNodeItr + 1){
+      check = NODEGRAPH_DATA[checkNodeItr];
+      if(check.id != 0){
+        dprint("NODE START---------------------------\n"); //debug
+        dprint(strcat(ftos(check.id),"\n")); //debug
+        dprint(strcat(vtos(check.orig),"\n")); //debug
+        checkEdgeItr = 0;
+        for(checkEdgeItr = 0; checkEdgeItr < 6; checkEdgeItr = checkEdgeItr + 1){
+          edgeId = check.nodes[checkEdgeItr];
+          if(edgeId != 0){
+            edgeLen = check.edge[checkEdgeItr];
+            dprint(strcat("(",ftos(edgeId),"-",ftos(edgeLen),")")); //debug
+          }
+        }
+        dprint("\nEDGE END---------------------------\n"); //debug
+      }
+    }
+  }
   
 };
 
@@ -939,10 +965,10 @@ float() world_nodegraph_read_file={
         edgeData = argv(3);
         
         //node edge data for processing.
-        nodegraph_read_new_node( NODEGRAPH_DATA[nodeCounter], nodeCounter, nodeid, '0 0 0', edgeData);
-        line = fgets(fileHandle);
+        nodegraph_read_new_node( nodeCounter, nodeid, org, edgeData);
+        fileLine = fgets(fileHandle);
       }
-      if( line == "}" ){
+      if( fileLine == "}" ){
         nodeCounter = nodeCounter + 1;
         continue;
       }
@@ -1046,6 +1072,7 @@ void() world_get_maplist={
   }
   
   WORLD_MAP_LIST = strzone(WORLD_MAP_LIST);
+  
   if( cvar("developer") ){
     dprint("WORLD_MAP_LIST ", WORLD_MAP_LIST, "\n"); //debug
   }
