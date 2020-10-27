@@ -99,7 +99,7 @@ void(entity node, float fileData ) world_nodegraph_export_write_node;
 void( float overrideFlag ) world_nodegraph_export_data;
 void() world_nodegraph_import;
 float() world_nodegraph_read_file;
-void( float nodeCounter, float nodeId, vector org, string edgeDat) world_nodegraph_read_node;
+
 
 //MISC
 entity() world_deathmatch_random_spawn;

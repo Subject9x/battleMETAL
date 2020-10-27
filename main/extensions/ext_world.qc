@@ -885,7 +885,7 @@ void() world_nodegraph_import={
 };
 
 /*
-  The specific function to read "data/<map>/*.node"
+  The specific function to read "data/<map>/.node"
 */
 float() world_nodegraph_read_file={
   local float fileHandle;
@@ -939,7 +939,7 @@ float() world_nodegraph_read_file={
         edgeData = argv(3);
         
         //node edge data for processing.
-        world_nodegraph_read_node( nodeCounter, nodeid, '0 0 0', edgeData);
+        nodegraph_read_new_node( NODEGRAPH_DATA[nodeCounter], nodeCounter, nodeid, '0 0 0', edgeData);
         line = fgets(fileHandle);
       }
       if( line == "}" ){
@@ -950,46 +950,6 @@ float() world_nodegraph_read_file={
     fclose(fileHandle);
   }
   return nodeCounter;
-};
-
-void( float nodeCounter, float nodeId, vector org, string edgeDat) world_nodegraph_read_node={
-  //NODEGHRAPH_DATA[nodeCounter].id = nodeid;
-  local string edges;
-  local float edgetokens;
-  local float edgeItr;
-  
-  NODEGRAPH_ORIGIN[nodeCounter] = org;
-  
-  edges = edgeDat;
-  edgetokens = tokenizebyseparator(edges, " ", "-");
-  for(edgeItr = 0; edgeItr < edgetokens; edgeItr = edgeItr + 1){
-   switch(edgeItr){
-    default:
-      NODEGRAPH_EDGES1[nodeId] = stof(argv(edgeItr));
-      NODEGRAPH_EDGES_LEN1[nodeId] = stof(argv(edgeItr+1));
-      break;
-    case 1:
-      NODEGRAPH_EDGES2[nodeId] = stof(argv(edgeItr));
-      NODEGRAPH_EDGES_LEN2[nodeId] = stof(argv(edgeItr+1));
-      break;
-    case 2:
-      NODEGRAPH_EDGES3[nodeId] = stof(argv(edgeItr));
-      NODEGRAPH_EDGES_LEN3[nodeId] = stof(argv(edgeItr+1));
-      break;
-    case 3:
-      NODEGRAPH_EDGES4[nodeId] = stof(argv(edgeItr));
-      NODEGRAPH_EDGES_LEN4[nodeId] = stof(argv(edgeItr+1));
-      break;
-    case 4:
-      NODEGRAPH_EDGES5[nodeId] = stof(argv(edgeItr));
-      NODEGRAPH_EDGES_LEN5[nodeId] = stof(argv(edgeItr+1));
-      break;
-    case 5:
-      NODEGRAPH_EDGES6[nodeId] = stof(argv(edgeItr));
-      NODEGRAPH_EDGES_LEN6[nodeId] = stof(argv(edgeItr+1));
-      break;
-   }
-  }
 };
 
 /*

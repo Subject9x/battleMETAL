@@ -30,18 +30,20 @@ float NODEGRAPH_EDGE_ANGLE_MIN = 45;
 float NODEGRAPH_EDGE_CHECK_CACHE[6];
 entity NODEGRAPH_EXPORT_NODE[1024];
 
+
+#pragma target dp
 typedef struct
 {
   float id;
   vector orig;
   float nodes[6];
-  float edges[6];
+  float edge[6];
 } node_t;
 
-node_t NODEGRAPH_DATA[1024];
+node_t NODEGRAPH_DATA[512];
 
 vector NODEGRAPH_SEARCH_QUEUE[512];
-vector NODEGRAPH_ORIGIN[1024];
+/*vector NODEGRAPH_ORIGIN[1024];
 float NODEGRAPH_EDGES1[1024];
 float NODEGRAPH_EDGES2[1024];
 float NODEGRAPH_EDGES3[1024];
@@ -54,11 +56,13 @@ float NODEGRAPH_EDGES_LEN2[1024];
 float NODEGRAPH_EDGES_LEN3[1024];
 float NODEGRAPH_EDGES_LEN4[1024];
 float NODEGRAPH_EDGES_LEN5[1024];
-float NODEGRAPH_EDGES_LEN6[1024];
+float NODEGRAPH_EDGES_LEN6[1024];*/
 
 float NODE_ID_COUNT;
+void(  node_t node, float nodeCounter, float nodeId, vector org, string edgeDat) nodegraph_read_new_node;
 
 float( entity node, entity targNode ) world_nodegraph_export_edgelink;
 
+void( vector start, vector end ) nodegraph_trace_route;
 
-
+void( node_t aNode ) nodegraph_test;
