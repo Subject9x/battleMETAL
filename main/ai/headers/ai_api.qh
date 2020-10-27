@@ -116,6 +116,8 @@ float(entity toCheck) ai_check_node_radius;
 float() ai_check_node_radius_targdist;
 entity() ai_node_tether_find;
 float( vector source, vector trgdst ) ai_check_terrain_move;
+void(entity none) ai_NULL_pain={ };
+void(entity none) ai_NULL_missile={ };
 
 ////////////////////////////////
 //AI COMBAT FUNCTIONS - ai_combat.qc

@@ -2499,4 +2499,3 @@ void(float buf, float fl) WriteFloat = #280;
 //use-case : quake savegame files DO NOT presever .entity field links, to this end
 //if you have a child ent that's irrelevant to the gamestate, you can skip saving it here,
 //and relink a new instance using RestoreGame() function.
- 

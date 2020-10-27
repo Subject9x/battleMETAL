@@ -226,7 +226,6 @@ void		end_sys_fields;			// flag for structure dumping
 ==============================================================================
 */
 #define SSQC
-
 //
 // constants
 //

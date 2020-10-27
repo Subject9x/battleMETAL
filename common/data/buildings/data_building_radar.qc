@@ -15,7 +15,7 @@ Overview: data file for building
 */
 void() building_radar_detect1;  //th_stand
 void() building_radar_patrol1;  //th_walk
-void() building_radar_alert1;   //th_missile
+float() building_radar_alert1;   //th_missile
 void() building_radar_alert2;   //th_missile
 void() building_radar_cool1;    //th_melee
 void() building_radar_touch;    //touch
@@ -149,7 +149,7 @@ void() building_radar_patrol1=[0, building_radar_patrol1]{
   Sound the alarm!
   
 */
-void() building_radar_alert1=[0, building_radar_alert1]{
+float() building_radar_alert1={
   local entity ally, this;
   this = self;
   ai_sfx_help();
@@ -181,7 +181,7 @@ void() building_radar_alert1=[0, building_radar_alert1]{
   self.ai_action_time = time + 5;
   self.think = building_radar_alert2;
   self.nextthink = time + 0.1;
-  return;
+  return 0;
 };
 
 //simply strobe at 'alarm' for a spell;

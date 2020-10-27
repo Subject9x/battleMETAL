@@ -19,7 +19,7 @@ void() ai_mech_sk_die={
   }
   
   ai_sfx_dead();
-  self.th_pain = SUB_Null;
+  self.th_pain = ai_NULL_pain;
   self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;

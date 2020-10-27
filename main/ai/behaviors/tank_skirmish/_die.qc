@@ -22,8 +22,8 @@ void() ai_tank_sk_die={
   }
   
   ai_sfx_dead();
-  self.th_pain = SUB_Null;
-  self.th_missile = SUB_Null;
+  self.th_pain = ai_NULL_pain;
+  self.th_missile = ai_NULL_missile;
   self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
