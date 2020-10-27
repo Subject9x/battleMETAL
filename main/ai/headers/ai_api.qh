@@ -115,6 +115,7 @@ entity(float checkDir) ai_get_next_node;
 float(entity toCheck) ai_check_node_radius;
 float() ai_check_node_radius_targdist;
 entity() ai_node_tether_find;
+float( vector source, vector trgdst ) ai_check_terrain_move;
 
 ////////////////////////////////
 //AI COMBAT FUNCTIONS - ai_combat.qc
@@ -163,6 +164,7 @@ float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
 void() ai_setup_patrol;
+
 
 //movement
 .entity patrolNode;

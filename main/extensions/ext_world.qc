@@ -161,11 +161,15 @@ void() world_metal_ini={
   setsize(nodegraph_edgelinker, nodegraph_edgelinker.mins, nodegraph_edgelinker.maxs);
   setorigin(nodegraph_edgelinker, world.origin);
   
-  world_get_maplist();  
+  world_get_maplist();
+  if( cvar("developer") ){
+    dprint("WORLD_MAP_LIST ", WORLD_MAP_LIST, "\n"); //debug
+  }
   
-  world_nodegraph_read_file();
-  NODEGRAPH_LOADED = FALSE;
-  cons_logAString("file", "bugger");  //debug
+  NODEGRAPH_LOADED = world_nodegraph_read_file();
+  if( cvar("developer") ){
+    dprint("NODEGHRAPH LOADED ", ftos(NODEGRAPH_LOADED), "\n"); //debug
+  }
 };
 
 void() world_ini_serverinfo={
@@ -685,7 +689,7 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
   Nodegraph suite of functions and support.
 */
 
-void() nodegraph_edgelinker_th={
+void() world_nodegraph_export_edgelinker_th={
   
   cons_logAString("[INFO]-world_export_nodegraph() edgelinker run ", ftos(self.wait));  //DEBUG
     
@@ -704,7 +708,7 @@ void() nodegraph_edgelinker_th={
     return;
   }
 
-  self.think = nodegraph_edgelinker_th;
+  self.think = world_nodegraph_export_edgelinker_th;
   self.nextthink = time + 1;
 };
 
@@ -750,7 +754,7 @@ void( float overrideFlag ) world_nodegraph_export_data={
     nodegraph_edgelinker.data_idx = fileExists;
     nodegraph_edgelinker.count = 0;
     nodegraph_edgelinker.wait = nodeTotal;
-    nodegraph_edgelinker.think = nodegraph_edgelinker_th;
+    nodegraph_edgelinker.think = world_nodegraph_export_edgelinker_th;
     nodegraph_edgelinker.nextthink = time + 0.1;
     cons_logAString("[INFO]-world_export_nodegraph() total nodes ", ftos(nodeTotal));  //DEBUG
   }
@@ -883,7 +887,7 @@ void() world_nodegraph_import={
 /*
   The specific function to read "data/<map>/*.node"
 */
-void() world_nodegraph_read_file={
+float() world_nodegraph_read_file={
   local float fileHandle;
   local string fileName;
   local string fileLine;
@@ -902,6 +906,9 @@ void() world_nodegraph_read_file={
   fileName = strcat(mapname,"/",mapname,".nodes");
   fileHandle = fopen(fileName, FILE_READ);
   
+  if( cvar("developer") ){
+  
+  }
   dprint(strcat("NODEGHRAPH FILE=", fileName,"\n"));  //debug
   
   if( fileHandle > -1 ){
@@ -940,13 +947,49 @@ void() world_nodegraph_read_file={
         continue;
       }
     }
-    
     fclose(fileHandle);
   }
+  return nodeCounter;
 };
 
 void( float nodeCounter, float nodeId, vector org, string edgeDat) world_nodegraph_read_node={
-  NODEGHRAPH_DATA[nodeCounter].id = nodeid;
+  //NODEGHRAPH_DATA[nodeCounter].id = nodeid;
+  local string edges;
+  local float edgetokens;
+  local float edgeItr;
+  
+  NODEGRAPH_ORIGIN[nodeCounter] = org;
+  
+  edges = edgeDat;
+  edgetokens = tokenizebyseparator(edges, " ", "-");
+  for(edgeItr = 0; edgeItr < edgetokens; edgeItr = edgeItr + 1){
+   switch(edgeItr){
+    default:
+      NODEGRAPH_EDGES1[nodeId] = stof(argv(edgeItr));
+      NODEGRAPH_EDGES_LEN1[nodeId] = stof(argv(edgeItr+1));
+      break;
+    case 1:
+      NODEGRAPH_EDGES2[nodeId] = stof(argv(edgeItr));
+      NODEGRAPH_EDGES_LEN2[nodeId] = stof(argv(edgeItr+1));
+      break;
+    case 2:
+      NODEGRAPH_EDGES3[nodeId] = stof(argv(edgeItr));
+      NODEGRAPH_EDGES_LEN3[nodeId] = stof(argv(edgeItr+1));
+      break;
+    case 3:
+      NODEGRAPH_EDGES4[nodeId] = stof(argv(edgeItr));
+      NODEGRAPH_EDGES_LEN4[nodeId] = stof(argv(edgeItr+1));
+      break;
+    case 4:
+      NODEGRAPH_EDGES5[nodeId] = stof(argv(edgeItr));
+      NODEGRAPH_EDGES_LEN5[nodeId] = stof(argv(edgeItr+1));
+      break;
+    case 5:
+      NODEGRAPH_EDGES6[nodeId] = stof(argv(edgeItr));
+      NODEGRAPH_EDGES_LEN6[nodeId] = stof(argv(edgeItr+1));
+      break;
+   }
+  }
 };
 
 /*

@@ -35,6 +35,7 @@ main/controllers/headers/controllers.qh
   main/sv/headers/sv_savefile.qh
   main/sv/headers/sv_client_api.qh
   main/sv/headers/sv_player_api.qh
+  main/sv/headers/sv_nodes.qh
   main/headers/utils.qh
   main/headers/t_damage.qh
   main/headers/entityFactory_player.qh
@@ -198,6 +199,7 @@ main/controllers/headers/controllers.qh
   main/sv/sv_playermovement.qc
   main/sv/sv_client_api.qc
   main/sv/sv_player_api.qc
+  main/sv/sv_nodes.qc
   
   main/extensions/ext_world.qc
   

@@ -545,3 +545,84 @@ entity() ai_node_tether_find={
   }
   return found;
 };
+
+/*
+  Very similar to ext_world.world_nodegraph_export_edgelink()
+  
+  this bad boi scans the underlying terrain in addition to checking normal tracelines for possible move
+  
+*/
+float( vector source, vector trgdst ) ai_check_terrain_move={
+  local vector edgeAngle;
+  local float edgeLen;
+  local float edgeLenquant;
+  local float edgeLenItr;
+  
+  local vector edgeSegA;
+  local vector edgeSegB;
+  
+  local vector trEdgeApos;
+  local vector trEdgeBpos;
+  
+  local vector trEdgeAngl;
+  
+  local float edgeCheck;
+  
+  traceline( source,trgdst, FALSE, self );
+  
+  if( trace_fraction == 1.0 ){
+    edgeAngle = vectoangles(trgdst - source);
+    if( edgeAngle_x < NODEGRAPH_EDGE_ANGLE_MAX ){
+      edgeAngle_x = 360 - edgeAngle_x;  //fixes a pitch-angle problem where sometimes the angle was inverted!
+    }
+    if( edgeAngle_x > NODEGRAPH_EDGE_ANGLE_MIN && edgeAngle_x < NODEGRAPH_EDGE_ANGLE_MAX){
+      //rule out steep inclines right away.
+      //cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(edgeAngle_x)));//debug
+      return FALSE;
+    }
+    
+    //clear Los, get more granular.
+    edgeLen = vlen(trgdst - source);
+    edgeLenquant = ceil(edgeLen / NODEGRAPH_EDGE_GRID);
+    //now run the terrain poller
+    edgeSegA = source;
+    makevectors(edgeAngle);
+    edgeCheck = TRUE;
+    for(edgeLenItr = 0; edgeLenItr < edgeLenquant; edgeLenItr = edgeLenItr + 1){
+      if( !edgeCheck )
+        continue;
+      edgeSegB = edgeSegA + (v_forward * NODEGRAPH_EDGE_GRID);
+      
+      traceline(edgeSegA, edgeSegA + (v_up * -512), TRUE, self);
+      trEdgeApos = trace_endpos;
+      
+      traceline(edgeSegB, edgeSegB + (v_up * -512), TRUE, self);
+      trEdgeBpos = trace_endpos;
+      
+      //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegA, trEdgeApos);  //debug
+      //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegB, trEdgeBpos);  //debug
+      
+      trEdgeAngl = vectoangles(trEdgeBpos - trEdgeApos);
+      /*if(node.data_idx == NODEGRAPH_DBG_ID1 && targNode.data_idx == NODEGRAPH_DBG_ID2){
+        trailparticles(world, particleeffectnum("TE_ESR_RAIL"), node.origin, targNode.origin);  //debug
+        trailparticles(world, particleeffectnum("TE_REPAIR_RAIL"), edgeSegA, trEdgeApos);  //debug
+        trailparticles(world, particleeffectnum("TE_REPAIR_RAIL"), edgeSegB, trEdgeBpos);  //debug
+        trailparticles(world, particleeffectnum("TE_LAS_RAIL"), trEdgeApos, trEdgeBpos);  //debug
+        cons_logAFloat("trEdgeAngl_x", trEdgeAngl_x);  //debug
+      }*/
+      
+      if( trEdgeAngl_x > NODEGRAPH_EDGE_ANGLE_MIN && trEdgeAngl_x < NODEGRAPH_EDGE_ANGLE_MAX){
+        //cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(trEdgeAngl_x), "| seg ", ftos(edgeLenItr)));//debug
+        edgeCheck = FALSE;
+      }
+      edgeSegA = edgeSegB;
+    }
+    return edgeCheck;
+  }
+  else{
+    //no proper Los based on 
+    //self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY);
+    //cons_logAString(ftos(node.data_idx), strcat(ftos(targNode.data_idx), " fail trace fraction ", ftos(trace_fraction)));//debug
+    return FALSE;
+  }
+};
