@@ -173,6 +173,7 @@ void() tank_sk_fight_building={
     my node dist
 */
 void() tank_sk_fight_full={
+  local float nodeYaw;
   if(combat_dist < 0.4 ){
     if(enemy_infront){
       if( enemy_range > 0.25 ){
@@ -247,7 +248,6 @@ void() tank_sk_fight_full={
   if(combat_dist < 1.0 ){
     if(enemy_infront){
       if(enemy_range > 0.2){
-        local float nodeYaw;
         nodeYaw = vectoyaw(self.patrolNode.origin - self.origin);
         self.ai_movedist = 12;
         if( nodeYaw > self.angles_y ){
