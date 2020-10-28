@@ -27,9 +27,7 @@ float NODEGRAPH_DBG_ID2 = 5;
 float NODEGRAPH_EDGE_GRID = 32; // when checking edge links
 float NODEGRAPH_EDGE_ANGLE_MAX = 315;
 float NODEGRAPH_EDGE_ANGLE_MIN = 45;
-float NODEGRAPH_EDGE_CHECK_CACHE[6];
 entity NODEGRAPH_EXPORT_NODE[1024];
-
 
 #pragma target dp
 typedef struct
@@ -41,41 +39,36 @@ typedef struct
 } node_t;
 
 node_t NODEGRAPH_DATA[1024];
+node_t NODE_found; //structs can't be return types I think...
+node_t NODE_check;
 
-vector NODEGRAPH_SEARCH_QUEUE[512];
+float NODEGRAPH_SEARCH_QUEUE[1024];
+float NODEGRAPH_SEARCH_CAME_FROM[1024]; //where arr[nodeId] = (came from) old nodeId
+
 float NODEGRAPH_MAX_REQUEST[6]; //how many ents can use the system at a time? needs refinement, but the point is to gate
                                   //this very costly code behind some limits.
 
-/*vector NODEGRAPH_ORIGIN[1024];
-float NODEGRAPH_EDGES1[1024];
-float NODEGRAPH_EDGES2[1024];
-float NODEGRAPH_EDGES3[1024];
-float NODEGRAPH_EDGES4[1024];
-float NODEGRAPH_EDGES5[1024];
-float NODEGRAPH_EDGES6[1024];
-
-float NODEGRAPH_EDGES_LEN1[1024];
-float NODEGRAPH_EDGES_LEN2[1024];
-float NODEGRAPH_EDGES_LEN3[1024];
-float NODEGRAPH_EDGES_LEN4[1024];
-float NODEGRAPH_EDGES_LEN5[1024];
-float NODEGRAPH_EDGES_LEN6[1024];*/
-
 float NODE_ID_COUNT;
-
+float NODE_ID_EXPORT_COUNT; //specific for ai_node_path entities
 //NODEGRAPH debugger--------------------------------------------------------
 entity nodegraph_debugger;
 void() nodegraph_debugger_th_node;
 void() nodegraph_debugger_th_edge;
-void() nodegraph_debug_graph;
+void( vector src, vector dst ) nodegraph_debug_graph;
 //--------------
 
-void(float nodeCount, float nodeId, vector org, string edgeDat) nodegraph_read_new_node;
+void( float nodeId, vector org, string edgeDat) nodegraph_read_new_node;
 
 //Export Nodegraph data
 float( entity node, entity targNode ) world_nodegraph_export_edgelink;
 
 
-void( vector start, vector end ) nodegraph_trace_route;
+//API------------------------------------------------------------------------
+void() nodegraph_clear_search_queue;
 
-void( node_t aNode ) nodegraph_test;
+vector( float nodeId ) nodegraph_get_node_origin;
+void( vector org ) nodegraph_node_by_origin;
+void( float nodeId ) nodegraph_get_node_byid;
+
+float( float thisId, float newId ) nodegraph_check_visited;
+void( vector start, vector end ) nodegraph_trace_route;

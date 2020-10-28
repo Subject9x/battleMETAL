@@ -293,7 +293,7 @@ void(string str, float tokens) client_ParseMechCommand={
     return;
   }
   if( argv(1) == "dbgnode" ){
-    nodegraph_debug_graph();
+    world_nodegraph_test_graph( stof(argv(2)), stof(argv(3)) );
     return;
   }
 };  

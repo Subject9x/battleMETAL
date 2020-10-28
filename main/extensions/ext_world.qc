@@ -698,7 +698,10 @@ void() world_nodegraph_export_edgelinker_th={
   self.count = self.count + 1;
   if( self.count == self.wait ){
     cons_logAString("[INFO]-world_export_nodegraph()", "Write complete.");  //DEBUG
-     fclose(self.data_idx);
+    fclose(self.data_idx);
+    strunzone(self.classname);
+    self.think = SUB_Remove;
+    self.nextthink = time + 1;
     return;
   }
 
@@ -886,19 +889,20 @@ void() world_nodegraph_import={
   NODEGRAPH_LOADED = world_nodegraph_read_file();
   
   if( cvar("developer") ){
+    //just a double back check that data was loaded proper.
     dprint("NODEGHRAPH LOADED ", ftos(NODEGRAPH_LOADED), "\n"); //debug
     dprint("VERIFY NODEGRAPH ARRAY", ftos(NODEGRAPH_LOADED), "\n"); //debug
     
-    for(checkNodeItr = 0; checkNodeItr < NODEGRAPH_MAX; checkNodeItr = checkNodeItr + 1){
+    for(checkNodeItr = 0; checkNodeItr < NODE_ID_COUNT; checkNodeItr = checkNodeItr + 1){
       check = NODEGRAPH_DATA[checkNodeItr];
-      if(check.id != 0){
+      if(check.id > -1){
         dprint("NODE START---------------------------\n"); //debug
         dprint(strcat(ftos(check.id),"\n")); //debug
         dprint(strcat(vtos(check.orig),"\n")); //debug
         checkEdgeItr = 0;
         for(checkEdgeItr = 0; checkEdgeItr < 6; checkEdgeItr = checkEdgeItr + 1){
           edgeId = check.nodes[checkEdgeItr];
-          if(edgeId != 0){
+          if(edgeId > -1){
             edgeLen = check.edge[checkEdgeItr];
             dprint(strcat("(",ftos(edgeId),"-",ftos(edgeLen),")")); //debug
           }
@@ -918,10 +922,9 @@ float() world_nodegraph_read_file={
   local string fileName;
   local string fileLine;
   local string line;
-  
+  local string val;
   local float nodeCounter;
   
-  local float tokens;
   local float itr;
   
   local float nodeid;
@@ -933,9 +936,8 @@ float() world_nodegraph_read_file={
   fileHandle = fopen(fileName, FILE_READ);
   
   if( cvar("developer") ){
-  
+    dprint(strcat("NODEGHRAPH FILE=", fileName,"\n"));  //debug
   }
-  dprint(strcat("NODEGHRAPH FILE=", fileName,"\n"));  //debug
   
   if( fileHandle > -1 ){
     nodeCounter = 0;
@@ -949,33 +951,61 @@ float() world_nodegraph_read_file={
       if( line == "{" ){
         //node ID
         line = fileLine;
-        tokens = tokenizebyseparator(fileLine, "\"", "\"", " \"", "\"\n");
+        tokenizebyseparator(fileLine, "\"", "\"", " \"", "\"\n");
         nodeid = rint(stof(argv(3)));
         
         //node origin
         fileLine = fgets(fileHandle);
-        tokens = tokenizebyseparator(fileLine, "\"", "\"", " \"", " ", "\"");
+        tokenizebyseparator(fileLine, "\"", "\"", " \"", " ", "\"");
         org_x = stof(argv(3));
         org_y = stof(argv(4));
         org_z = stof(argv(5));
         
         //edge data
         fileLine = fgets(fileHandle);
-        tokens = tokenizebyseparator(fileLine, "\"", "\" ", "\"", "\"");
+        tokenizebyseparator(fileLine, "\"", "\" ", "\"", "\"");
         edgeData = argv(3);
         
         //node edge data for processing.
-        nodegraph_read_new_node( nodeCounter, nodeid, org, edgeData);
-        fileLine = fgets(fileHandle);
-      }
-      if( fileLine == "}" ){
+        nodegraph_read_new_node(nodeid, org, edgeData);
         nodeCounter = nodeCounter + 1;
-        continue;
+        fileLine = fgets(fileHandle);
       }
     }
     fclose(fileHandle);
   }
+  if( nodeCounter > 0 && nodeCounter < NODEGRAPH_MAX ){
+    itr = NODEGRAPH_MAX - nodeCounter;
+    itr = itr + 1;
+    while( itr < NODEGRAPH_MAX ){
+      NODE_check = NODEGRAPH_DATA[itr];
+      NODE_check.id = -1;
+      NODEGRAPH_DATA[itr] = NODE_check;
+      itr = itr + 1;
+    }
+  }
+  NODE_ID_COUNT = nodeCounter;
+  
   return nodeCounter;
+};
+
+void( float start, float end ) world_nodegraph_test_graph={
+  if( NODEGRAPH_LOADED ){
+    node_t nodeStart;
+    node_t nodeEnd;
+    
+    nodegraph_get_node_byid(start);
+    nodeStart = NODE_found;
+    
+    nodegraph_get_node_byid(end);
+    nodeEnd = NODE_found;
+    
+    dprint(strcat("NODEGHRAPH DEBUG(", vtos(nodeStart.orig),")-(", vtos(nodeEnd.orig),")\n"));  //debug
+    nodegraph_debug_graph(nodeStart.orig, nodeEnd.orig);
+  }
+  else{
+    dprint("NODEGHRAPH not loaded!\n"); //debug
+  }
 };
 
 /*

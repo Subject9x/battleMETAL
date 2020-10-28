@@ -275,9 +275,10 @@ void() ai_node_path={
   }
   
   //assign then increment global node id counter, this saves us a for-loop at the export phase to establish IDs.
-  NODE_ID_COUNT = NODE_ID_COUNT + 1;
-  self.data_idx = NODE_ID_COUNT;
-  
+  //do not mess with these...ever
+  self.data_idx = NODE_ID_EXPORT_COUNT;
+  NODE_ID_EXPORT_COUNT = NODE_ID_EXPORT_COUNT + 1;
+    
   sMin = '-10 -10 -18';
   sMax = '10 10 18';
   
