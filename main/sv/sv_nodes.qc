@@ -106,7 +106,10 @@ float( vector start, vector end ) nodegraph_trace_route={
   queue = 0;
   while( bEnd == FALSE ){
     currentId = NODEGRAPH_SEARCH_QUEUE[queue];
-    if( currentId == -1 ){
+    if( currentId == endId ){
+      bEnd = TRUE;  //early exit
+    }
+    else if( currentId == -1 ){
       bEnd = TRUE;
     }
     else{
