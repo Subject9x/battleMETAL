@@ -79,4 +79,4 @@ void( float nodeId ) nodegraph_get_node_byid;
 //the actual pathfinding and tracing
 float( vector start, vector end ) nodegraph_trace_route;
 float( float thisId, float newId ) nodegraph_check_visited;
-void( float startNode, float endArrIdx, float endId ) nodegraph_build_path;
+float( float startNode, float endArrIdx, float endId ) nodegraph_build_path;

@@ -149,12 +149,13 @@ float( vector start, vector end ) nodegraph_trace_route={
 /**
 
 */
-void( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path={
+float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path={
   
   local float stack;
   local float endId;
   local float pathId;
   local float reflectPath;
+  local float stackTotal;
   
   dprint(sprintf("nodegraph_build_path( startNode[%u], endArrIdx[%u], endNodeId[%u] )\n", startNode, endArrIdx, endNodeId));  //debug
   stack = 0;
@@ -182,11 +183,14 @@ void( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path={
   }
   
   dprint("===Unwinding path stack\n");  //debug
+  stackTotal = stack;
+  NODEGRAPH_SEARCH_PATH[stack] = startNode;
   while( stack >= 0 ){
     dprint(sprintf("    itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_PATH[stack]));
     stack = stack - 1;
   }
   dprint("============================\n"); //debug
+  return stackTotal;
 };
 
 
@@ -222,21 +226,14 @@ void() nodegraph_clear_search_queue={
 };
 
 vector( float nodeId ) nodegraph_get_node_origin={
-  local float itr;
   local vector foundOrg;
   
-  itr = 0;
-  
-  while( itr < NODE_ID_COUNT ){
-    NODE_check = NODEGRAPH_DATA[itr];
-    if( NODE_check.id < 0 ){
-      continue;
-    }
-    if( NODE_check.id == nodeId ){
-      foundOrg = NODE_check.orig;
-      break;
-    }
-    itr = itr + 1;
+  NODE_check = NODEGRAPH_DATA[nodeId];
+  if(NODE_check.id > -1){
+    foundOrg = NODE_check.orig;
+  }
+  else{
+    foundOrg = '0 0 0';
   }
   return foundOrg;
 };
@@ -278,15 +275,48 @@ void( float nodeId ) nodegraph_get_node_byid={
   An entity that 'walks' the entire node graph
 */
 void() nodegraph_debugger_th_node={
+  local float nd;
+  local float nd2;
+  
+  if( nodegraph_debugger.count < 0 ){
+    dprint("NODEGRAPH_DEBUGGER complete\n");  
+    self.think = SUB_Remove;
+    self.nextthink = time + 1;
+    return;
+  }
+  
+  nd = NODEGRAPH_SEARCH_PATH[nodegraph_debugger.count];
+  
+  nodegraph_debugger.count = nodegraph_debugger.count - 1;
+  
+  if( nodegraph_debugger.count < 0 ){
+    dprint("NODEGRAPH_DEBUGGER complete\n");  
+    self.think = SUB_Remove;
+    self.nextthink = time + 1;
+    return;
+  }
+  
+  nd2 = NODEGRAPH_SEARCH_PATH[nodegraph_debugger.count];
+  
+  nodegraph_debugger.origin = nodegraph_get_node_origin(nd);
+  nodegraph_debugger.compOffset = nodegraph_get_node_origin(nd2);
 
-  self.think = nodegraph_debugger_th_node;
-  self.nextthink = time + 1;
+  self.data_lifetime = time + 4;
+  self.think = nodegraph_debugger_th_edge;
+  self.nextthink = time + 0.1;
 };
 
 void() nodegraph_debugger_th_edge={
 
+  if( time > self.data_lifetime ){
+    self.think = nodegraph_debugger_th_node;
+    self.nextthink = time + 0.1;
+    return;
+  }
+  trailparticles(self, particleeffectnum("TE_LAS_RAIL"), self.origin, self.compOffset);
+
   self.think = nodegraph_debugger_th_edge;
-  self.nextthink = time + 1.25;
+  self.nextthink = time + 0.1;
 };
 
 /*
@@ -299,6 +329,7 @@ void( vector src, vector dst ) nodegraph_debug_graph={
   local float strId;
   local float enId;
   local float edgeTotal;
+  local float pathCnt;
   
   nodegraph_debugger = spawn();
   nodegraph_debugger.classname = strzone("nodegraph_debugger");
@@ -314,8 +345,11 @@ void( vector src, vector dst ) nodegraph_debug_graph={
   nodegraph_node_by_origin(src);
   strId = NODE_found.id;
   
-  nodegraph_build_path( strId, edgeTotal, enId );
+  pathCnt = nodegraph_build_path( strId, edgeTotal, enId );
   
-
+  nodegraph_debugger.count = pathCnt;
+  
+  nodegraph_debugger.think = nodegraph_debugger_th_node;
+  nodegraph_debugger.nextthink = time + 1;
 };
 //--------------
