@@ -839,10 +839,85 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
     return FALSE;
   }
 };
+
+/*
+  prep edge cache for distance sorting
+*/
+void(entity thatNode) world_nodegraph_edge_empty_cache={
+  local float eitr;
+  local entity ecache;
+  local vector ivec;
+  
+  local vector noZOrgA, noZOrgb;
+  
+  NODEGRAPH_edge_counter = 0;
+  eitr = 0;
+  while(eitr < NODE_ID_EXPORT_COUNT){
+    ecache = NODEGRAPH_EXPORT_NODE[eitr];
+    ivec_x = thatNode.data_idx;
+    ivec_y = ecache.data_idx;
+    
+    noZOrgA_x = thatNode.origin_x;
+    noZOrgA_y = thatNode.origin_y;
+    
+    noZOrgb_x = ecache.origin_x;
+    noZOrgb_y = ecache.origin_y;
+    
+    ivec_z = vlen(noZOrgb - noZOrgA);
+    NODEGRAPH_EXPORT_EDGE[eitr] = ivec;
+    eitr = eitr + 1;
+  }
+};
+
+void( entity iEdgNode, float weight ) world_nodegraph_edge_check_len={
+  local float i, j;
+  local float len1, len2;
+  local vector eKey, eKey2;
+  local vector ivec;
+  local vector ecache;
+  local float iFlag;
+  
+  for( i=1; i <= NODE_ID_EXPORT_COUNT - 1; i=i+1){
+    eKey = NODEGRAPH_EXPORT_EDGE[i];
+    j = i - 1;
+    
+    len1 = eKey_z;
+    
+    iFlag = FALSE;
+    
+    for(j = i - 1; j >= 0; j = j - 1){
+    //while( ((j >= 0) && (len2 < len1)) ){
+      eKey2 = NODEGRAPH_EXPORT_EDGE[j];
+      len2 = eKey2_z;
+      if( len2 > len1 ){
+        ivec = NODEGRAPH_EXPORT_EDGE[j];
+        NODEGRAPH_EXPORT_EDGE[j+1] = ivec;
+        iFlag = TRUE;
+      }
+      else{
+        break;
+      }
+      //j = j - 1;
+    }
+    if(iFlag){
+      NODEGRAPH_EXPORT_EDGE[j + 1] = eKey;
+    }
+  }
+  dprint("SORTED NODE BY DIST\n");  //debug
+  for( i=0; i < NODE_ID_EXPORT_COUNT; i=i+1){
+    ecache = NODEGRAPH_EXPORT_EDGE[i];
+    dprint(sprintf("node[%u]- EDGE(%u)-WEIGHT{ %f }\n", ecache_x,ecache_y, ecache_z)); //debug
+  }
+  dprint("=============================\n");  //debug
+};
+
 void(entity node, float fileData ) world_nodegraph_export_write_node={
   local string nodeData;
   local entity edgeNode;
   local float edgeMax;
+  local float minDist;
+  local float checkDist;
+  local vector iEdge;
   
   fputs(fileData, "{\n");
   fputs(fileData, strcat("\"id\" \"",ftos(node.data_idx),"\"\n"));
@@ -853,20 +928,33 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
   fputs(fileData, "\"\n");
   fputs(fileData, "\"edges\" \"");
   
+  world_nodegraph_edge_empty_cache(node);
+  world_nodegraph_edge_check_len(node, 512);
+  
+  minDist = 0;
   edgeMax = 0;
   for(self.delay = 0; self.delay < self.wait; self.delay = self.delay + 1 ){
-    edgeNode = NODEGRAPH_EXPORT_NODE[self.delay];
+    iEdge = NODEGRAPH_EXPORT_EDGE[self.delay];
     if( edgeMax >= 6)
       break;
-    if( edgeNode == node )
+    if( iEdge_y == node.data_idx )
       continue;
+    edgeNode = NODEGRAPH_EXPORT_NODE[iEdge_y];
     if( !world_nodegraph_export_edgelink(node, edgeNode) )
       continue;
+    checkDist = iEdge_z;
+    if( checkDist > 512 )
+      continue;
+    
     edgeMax = edgeMax + 1;
     //cons_logAString(ftos(node.data_idx), strcat("linked for ", ftos(edgeNode.data_idx)));//debug
-    fputs(fileData, strcat(ftos(edgeNode.data_idx), "-", ftos(vlen(edgeNode.origin - node.origin))));
+    fputs(fileData, strcat(ftos(iEdge_y), "-", ftos(iEdge_z)));
     
-    fputs(fileData, " ");
+    //clean formatting
+    iEdge = NODEGRAPH_EXPORT_EDGE[self.delay + 1];
+    if( edgeMax < 6 && iEdge_y != node.data_idx){
+      fputs(fileData, " ");
+    }
   }
   if( edgeMax == 0 ){
     fputs(fileData, "NO EDGES FOUND");
@@ -899,14 +987,12 @@ void() world_nodegraph_import={
         dprint("NODE START---------------------------\n"); //debug
         dprint(strcat(ftos(check.id),"\n")); //debug
         dprint(strcat(vtos(check.orig),"\n")); //debug
-        checkEdgeItr = 0;
-        for(checkEdgeItr = 0; checkEdgeItr < 6; checkEdgeItr = checkEdgeItr + 1){
-          edgeId = check.nodes[checkEdgeItr];
-          if(edgeId > -1){
-            edgeLen = check.edge[checkEdgeItr];
-            dprint(strcat("(",ftos(edgeId),"-",ftos(edgeLen),")")); //debug
-          }
-        }
+        dprint(strcat("(",ftos(check.nodes[0]),"-",ftos(check.edge[0]),")")); //debug
+        dprint(strcat("(",ftos(check.nodes[1]),"-",ftos(check.edge[1]),")")); //debug
+        dprint(strcat("(",ftos(check.nodes[2]),"-",ftos(check.edge[2]),")")); //debug
+        dprint(strcat("(",ftos(check.nodes[3]),"-",ftos(check.edge[3]),")")); //debug
+        dprint(strcat("(",ftos(check.nodes[4]),"-",ftos(check.edge[4]),")")); //debug
+        dprint(strcat("(",ftos(check.nodes[5]),"-",ftos(check.edge[5]),")")); //debug
         dprint("\nEDGE END---------------------------\n"); //debug
       }
     }
@@ -953,6 +1039,7 @@ float() world_nodegraph_read_file={
         line = fileLine;
         tokenizebyseparator(fileLine, "\"", "\"", " \"", "\"\n");
         nodeid = rint(stof(argv(3)));
+        nodeid = fabs(nodeid);
         
         //node origin
         fileLine = fgets(fileHandle);
@@ -976,7 +1063,6 @@ float() world_nodegraph_read_file={
   }
   if( nodeCounter > 0 && nodeCounter < NODEGRAPH_MAX ){
     itr = NODEGRAPH_MAX - nodeCounter;
-    itr = itr + 1;
     while( itr < NODEGRAPH_MAX ){
       NODE_check = NODEGRAPH_DATA[itr];
       NODE_check.id = -1;
@@ -994,12 +1080,11 @@ void( float start, float end ) world_nodegraph_test_graph={
     node_t nodeStart;
     node_t nodeEnd;
     
-    nodegraph_get_node_byid(start);
-    nodeStart = NODE_found;
+    nodeStart = NODEGRAPH_DATA[start];
+
+    nodeEnd = NODEGRAPH_DATA[end];
     
-    nodegraph_get_node_byid(end);
-    nodeEnd = NODE_found;
-    
+    dprint(strcat("NODEGHRAPH DEBUG(",ftos(start),")-(", ftos(end),")\n"));  //debug
     dprint(strcat("NODEGHRAPH DEBUG(", vtos(nodeStart.orig),")-(", vtos(nodeEnd.orig),")\n"));  //debug
     nodegraph_debug_graph(nodeStart.orig, nodeEnd.orig);
   }

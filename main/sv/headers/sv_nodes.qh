@@ -27,7 +27,12 @@ float NODEGRAPH_DBG_ID2 = 5;
 float NODEGRAPH_EDGE_GRID = 32; // when checking edge links
 float NODEGRAPH_EDGE_ANGLE_MAX = 315;
 float NODEGRAPH_EDGE_ANGLE_MIN = 45;
+float NODEGRAPH_EDGE_MAX = 6;
+float NODEGRAPH_EDGE_DIST = 512;
+
 entity NODEGRAPH_EXPORT_NODE[1024];
+vector NODEGRAPH_EXPORT_EDGE[1024]; //used by exporter to find closest nodes
+float NODEGRAPH_edge_counter;   //same
 
 #pragma target dp
 typedef struct
@@ -44,7 +49,7 @@ node_t NODE_check;
 
 float NODEGRAPH_SEARCH_QUEUE[1024];
 float NODEGRAPH_SEARCH_CAME_FROM[1024]; //where arr[nodeId] = (came from) old nodeId
-
+float NODEGRAPH_SEARCH_PATH[1024];
 float NODEGRAPH_MAX_REQUEST[6]; //how many ents can use the system at a time? needs refinement, but the point is to gate
                                   //this very costly code behind some limits.
 
@@ -66,9 +71,12 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink;
 //API------------------------------------------------------------------------
 void() nodegraph_clear_search_queue;
 
+//find node by
 vector( float nodeId ) nodegraph_get_node_origin;
 void( vector org ) nodegraph_node_by_origin;
 void( float nodeId ) nodegraph_get_node_byid;
 
+//the actual pathfinding and tracing
+float( vector start, vector end ) nodegraph_trace_route;
 float( float thisId, float newId ) nodegraph_check_visited;
-void( vector start, vector end ) nodegraph_trace_route;
+void( float startNode, float endArrIdx, float endId ) nodegraph_build_path;

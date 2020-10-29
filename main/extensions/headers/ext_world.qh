@@ -95,6 +95,8 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
 //AI NODEGRAPH system--------------------------------------------------------
 void() world_nodegraph_export_edgelinker_th;
 entity nodegraph_edgelinker;  //lock the processing time to the game timer so we don't kill temp buffers
+void(entity thatNode) world_nodegraph_edge_empty_cache;
+void( entity iEdgNode, float weight ) world_nodegraph_edge_check_len;
 void(entity node, float fileData ) world_nodegraph_export_write_node;
 void( float overrideFlag ) world_nodegraph_export_data;
 void() world_nodegraph_import;
