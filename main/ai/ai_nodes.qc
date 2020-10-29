@@ -3,9 +3,69 @@ battleMETAL
 Author: Peter Roohr
 Date: 7/17/2018
 mod - 01/20/2019
+mod - 10/29/2020 - nodegraph
 Overview: ai nodes
   all the various nodes needed for the game
 */
+
+
+
+//NODEGRAPH API-----------------------------------
+
+/*
+  updates .nodeQueue slots, returns FALSE if there are more nodes to go.
+*/
+float() ai_nodegraph_next={
+
+  self.nodeQueue1 = self.nodeQueue2;
+  self.nodeQueue2 = self.nodeQueue3;
+  self.nodeQueue3 = self.nodeQueue4;
+  self.nodeQueue4 = self.nodeQueue5;
+  self.nodeQueue5 = self.nodeQueue6;
+  self.nodeQueue6 = -1;
+  
+  if( self.nodeQueue1 == -1 ){
+    return FALSE;
+  }
+  return TRUE;
+};
+
+/*
+  entry to nodegraph
+*/
+float( vector startPos, vector endPos ) ai_nodegraph_trace={
+
+  return FALSE;
+};
+
+
+/*
+  find closest node to AI's desired patrol point.
+*/
+float( vector patrlNodeOrg ) ai_nodegraph_to_patrol={
+
+  return FALSE;
+};
+
+
+/*
+  find closest node to self;
+*/
+float( vector entOrg ) ai_nodegraph_find_node={
+
+  return FALSE;
+};
+
+
+//=================================================
+
+
+
+
+
+
+
+
 
 void() ai_node_counter_th={
   local entity nearbot;

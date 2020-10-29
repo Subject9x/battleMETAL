@@ -88,6 +88,17 @@ void() ai_pilot_ini_ace;
 
 //AI NODES
 void() node_setup;
+.float nodeQueue1; //to keep per-AI pathfinding costs low, we cache the next 4 nodes that the bot must go to
+.float nodeQueue2; //here, so that they're not asking the nodegraph to pathfind every frame for every bot.
+.float nodeQueue3;
+.float nodeQueue4;
+.float nodeQueue5;
+.float nodeQueue6;
+
+float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
+float( vector startPos, vector endPos ) ai_nodegraph_trace; //entry to nodegraph
+float(vector patrlNodeOrg) ai_nodegraph_to_patrol; //find closest node to AI's desired patrol point.
+float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
 
 //AI TETHER FUNCTIONALITY
 float TETHER_NONE   = 0;  //-> .tetherStatus
