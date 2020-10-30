@@ -16,21 +16,27 @@ Overview: ai nodes
   updates .nodeQueue slots, returns FALSE if there are more nodes to go.
 */
 float() ai_nodegraph_next={
-
-  self.nq1 = self.nq2;
   
-  if( self.nq1 == -1 ){
+  if( self.nq2 == -1 ){
     //early exit - end of queue
     return FALSE;
   }
-  
+  self.nq1 = self.nq2;
   self.nq2 = self.nq3;
   self.nq3 = self.nq4;
   self.nq4 = self.nq5;
   self.nq5 = self.nq6;
   self.nq6 = self.nq7;
   self.nq7 = self.nq8;
-  self.nq8 = -1;
+  self.nq8 = self.nq9;
+  self.nq9 = self.nq10;
+  self.nq10 = self.nq11;
+  self.nq11 = self.nq12;
+  self.nq12 = self.nq13;
+  self.nq13 = self.nq14;
+  self.nq14 = self.nq15;
+  self.nq15 = self.nq16;
+  self.nq16 = -1;
   
   return TRUE;
 };
@@ -62,13 +68,27 @@ float( vector startPos, vector endPos ) ai_nodegraph_trace={
     nEndOrg = NODE_check.orig;
   }
   
-  dprint(sprintf("ai_nodegraph_trace() startNode= %f\n",startNode)); //debug
-  dprint(sprintf("ai_nodegraph_trace() startNode= %f\n",endNode)); //debug
-  
   qCount = nodegraph_trace_route(nStartOrg, nEndOrg);
   if( qCount > 0 ){
     pathCnt = nodegraph_build_path( startNode, qCount, endNode );
     if( pathCnt > -1 ){
+      self.nq1 = -1;  //clear out the queue before populating
+      self.nq2 = -1;
+      self.nq3 = -1;
+      self.nq4 = -1;
+      self.nq5 = -1;
+      self.nq6 = -1;
+      self.nq7 = -1;
+      self.nq8 = -1;
+      self.nq9 = -1;
+      self.nq10 = -1;
+      self.nq11 = -1;
+      self.nq12 = -1;
+      self.nq13 = -1;
+      self.nq14 = -1;
+      self.nq15 = -1;
+      self.nq16 = -1;
+    
       self.nq1 =  NODEGRAPH_SEARCH_PATH[pathCnt];
       pathCnt = max(-1, pathCnt - 1);
       self.nq2 =  NODEGRAPH_SEARCH_PATH[pathCnt];
@@ -84,6 +104,22 @@ float( vector startPos, vector endPos ) ai_nodegraph_trace={
       self.nq7 =  NODEGRAPH_SEARCH_PATH[pathCnt];
       pathCnt = max(-1, pathCnt - 1);
       self.nq8 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq9 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq10 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq11 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq12 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq13 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq14 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq15 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq16 =  NODEGRAPH_SEARCH_PATH[pathCnt];
       pathCnt = max(-1, pathCnt - 1);
       
       if( self.nq1 > -1 ){

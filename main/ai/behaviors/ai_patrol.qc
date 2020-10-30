@@ -38,7 +38,7 @@ void() ai_stand_generic={
   }
   
   if( self.patrolNode != world ){
-    if( self.patrolNode.classname == "ai_node" && self.tetherStatus == TETHER_PATROL ){
+    if( self.patrolNode.classname == "ai_node" && self.tether == TETHER_PATROL ){
       if( time > self.pausetime ){
         self.ai_state_next = ST_PTR;
         return;
@@ -74,20 +74,24 @@ void() ai_patrol={
   
   ai_update_accuracy( TRUE );
   if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
+    //nodegraph
     if( NODEGRAPH_LOADED ){
       if( !ai_check_terrain_move(self.origin, self.patrolNode.origin) ){
-        dprint("AI - failed to see patrol node, pathfinding!\n");
-        pathFind = ai_nodegraph_trace( self.origin, self.patrolNode.origin );
-        if( pathFind ){
-          self.ai_state_next = ST_NODEGRAPH;
-          return;
+        dprint("AI - failed to see tether node, pathfinding!\n");
+        if( NODEGRAPH_queue_total < NODEGRAPH_MAX_REQUEST ){
+          pathFind = ai_nodegraph_trace( self.origin, self.patrolNode.origin );
+          if( pathFind ){
+            self.ai_state_next = ST_NODEGRAPH;
+            NODEGRAPH_queue_total = NODEGRAPH_queue_total + 1;
+            return;
+          }
         }
       }
     }
     
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
     self.goalentity = self.patrolNode;
-    self.tetherStatus = TETHER_PATROL;
+    self.tether = TETHER_PATROL;
     self.patrolState = PATROL_WALKING;
     
     if( self.legs ){
@@ -156,7 +160,7 @@ void() ai_ptr_travel_node={
   }
   
   if(self.patrolState == PATROL_ARRIVE){
-    if(self.tetherStatus == TETHER_PATROL){
+    if(self.tether == TETHER_PATROL){
       self.ai_state_next = ST_PTR;
     }
     else{

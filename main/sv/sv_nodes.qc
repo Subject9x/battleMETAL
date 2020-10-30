@@ -120,15 +120,17 @@ float( vector start, vector end ) nodegraph_trace_route={
       while( itrEdge < 6 ){
         nextId = trace.nodes[itrEdge];
         if( nextId != -1 ){
-          
+          moveCost = NODEGRAPH_SEARCH_COST[currentId] + trace.edge[itrEdge];
           visit = NODEGRAPH_SEARCH_CAME_FROM[nextId];
           dprint(sprintf("      nextId(%u)\n", nextId )); //debug
           dprint(sprintf("      visit(%f)\n", visit )); //debug
-          if( visit < 0 ){
-          
+          dprint(sprintf("      current cost(%f)\n", NODEGRAPH_SEARCH_COST[nextId])); //debug
+          dprint(sprintf("      add cost(%f)\n", moveCost )); //debug
+          if( visit < 0 || moveCost < NODEGRAPH_SEARCH_COST[nextId]){
             queueNext = queueNext + 1;  //error: something to do with iterating queueNext;
             NODEGRAPH_SEARCH_QUEUE[queueNext] = nextId;
             NODEGRAPH_SEARCH_CAME_FROM[nextId] = currentId;
+            NODEGRAPH_SEARCH_COST[nextId] = moveCost;
             dprint(sprintf("             queueNext(%u)-nextId(%u)<-currentId{%f}\n", queueNext, NODEGRAPH_SEARCH_QUEUE[queueNext], NODEGRAPH_SEARCH_CAME_FROM[nextId] )); //debug
           }
           else{
@@ -227,7 +229,7 @@ void() nodegraph_clear_search_queue={
   for(queueCount = 0; queueCount < NODE_ID_COUNT; queueCount = queueCount + 1){
     NODEGRAPH_SEARCH_QUEUE[queueCount] = -1;
     NODEGRAPH_SEARCH_CAME_FROM[queueCount] = -1;
-    NODEGRAPH_SEARCH_COST[queueCount] = -1;
+    NODEGRAPH_SEARCH_COST[queueCount] = 0;
     NODEGRAPH_SEARCH_PATH[queueCount] = -1;
   }
 };

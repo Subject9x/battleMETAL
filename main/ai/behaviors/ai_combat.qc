@@ -237,10 +237,10 @@ void() ai_combat_start={
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
       if( self.patrolNode ){
         self.goalentity = self.patrolNode;
-        if( self.tetherStatus == TETHER_NODE ){
+        if( self.tether == TETHER_NODE ){
           self.ai_state_next = ST_THR;
         }
-        if( self.tetherStatus == TETHER_PATROL ){
+        if( self.tether == TETHER_PATROL ){
           self.ai_state_next = ST_PTR;
         }
         return;
@@ -275,7 +275,7 @@ void() ai_combat_start={
       if(self.ai_move_last != MOVE_NODE_TACTICAL ){
         if( self.patrolState != PATROL_ARRIVE ){
           //run
-          if(self.tetherStatus == TETHER_PATROL ){
+          if(self.tether == TETHER_PATROL ){
             prox = ai_node_to_target(self.enemy);
             if(prox != self.patrolNode){
               self.patrolNode = prox;
@@ -384,7 +384,7 @@ void() ai_com_moveExec={
   if( MOVE_NODE_TACTICAL < self.ai_move ){
     nodeMove = ai_check_node_radius(self);
     if( 1.0 < nodeMove ){
-      if( self.tetherStatus == TETHER_PATROL ){
+      if( self.tether == TETHER_PATROL ){
         nodeCheck = ai_node_to_target(self);
         if(nodeCheck != self.patrolNode){
           self.patrolNode = nodeCheck;
@@ -399,7 +399,7 @@ void() ai_com_moveExec={
       return;
     }
     if( !ai_valid_target(self.enemy) ){
-      if( self.tetherStatus == TETHER_PATROL ){
+      if( self.tether == TETHER_PATROL ){
         self.ai_state_next = ST_PTR;
       }
       else{

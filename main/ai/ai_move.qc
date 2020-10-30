@@ -720,7 +720,7 @@ void() ai_move_node_tactical={
   }
   if( time > self.ai_movewait ){
     if( ai_blocked_teleport() ){
-      if( self.tetherStatus == TETHER_PATROL ){
+      if( self.tether == TETHER_PATROL ){
         self.ai_state_next = ST_PTR;
         return;
       }

@@ -43,6 +43,7 @@ typedef struct
   float edge[6];
 } node_t;
 
+float NODEGRAPH_DATA_BLOCK[1024];
 node_t NODEGRAPH_DATA[1024];
 node_t NODE_found; //structs can't be return types I think...
 node_t NODE_check;
@@ -51,7 +52,13 @@ float NODEGRAPH_SEARCH_QUEUE[1024];
 float NODEGRAPH_SEARCH_CAME_FROM[1024]; //where arr[nodeId] = (came from) old nodeId
 float NODEGRAPH_SEARCH_COST[1024]; //where arr[nodeId] = (came from) old nodeId
 float NODEGRAPH_SEARCH_PATH[1024];
-float NODEGRAPH_MAX_REQUEST[6]; //how many ents can use the system at a time? needs refinement, but the point is to gate
+
+//Search Queue
+//this is to reduce spam of the very costly pathfinding, so we have a max request queue thats cleared every few seonds
+float NODEGRAPH_queue_timeout = 2;
+float NODEGRAPH_queue_timer;
+float NODEGRAPH_queue_total;
+float NODEGRAPH_MAX_REQUEST = 6; //how many ents can use the system at a time? needs refinement, but the point is to gate
                                   //this very costly code behind some limits.
 
 float NODE_ID_COUNT;

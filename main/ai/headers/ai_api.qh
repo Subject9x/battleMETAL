@@ -50,8 +50,6 @@ entity alarm_ent; //per-frame global used to prevent near-endless alarm loops
 float alarm_depth;  //per-frame global used to prevent near-endless alarm loops;
 
 //////////////////this are set every frame by every AI, do not rely on these OUTSIDE the function they're called (like all the trace_* globals)
-
-
 //ENTITY VARS
 .float ai_react_buffer;             //prevents too many runs of th_react;
 .float ai_react_time;               //stat for react buffer
@@ -86,7 +84,7 @@ void() ai_pilot_ini_reg;
 void() ai_pilot_ini_vet;
 void() ai_pilot_ini_ace;
 
-//AI NODES
+//AI NODEGRAPH
 void() node_setup;
 .float nq1; //to keep per-AI pathfinding costs low, we cache the next 4 nodes that the bot must go to
 .float nq2; //here, so that they're not asking the nodegraph to pathfind every frame for every bot.
@@ -96,6 +94,14 @@ void() node_setup;
 .float nq6;
 .float nq7;
 .float nq8;
+.float nq9;
+.float nq10;
+.float nq11;
+.float nq12;
+.float nq13;
+.float nq14;
+.float nq15;
+.float nq16;
 
 float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
 float( vector startPos, vector endPos ) ai_nodegraph_trace; //entry to nodegraph
@@ -103,13 +109,22 @@ float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired p
 float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
 
 //AI TETHER FUNCTIONALITY
-float TETHER_NONE   = 0;  //-> .tetherStatus
-float TETHER_NODE   = 1;  //-> .tetherStatus
-float TETHER_PATROL = 2;  //-> .tetherStatus
-float TETHER_ENT    = 3;  //-> .tetherStatus
-float TETHER_SELF   = 4;  //-> .tetherStatus
-.float tetherStatus; //TETHER_NONE = 0, TETHER_NODE = 1, TETHER_PATROL = 2, TETHER_ENT = 3, TETHER_SELF = 4;
-.vector tetherOrg;  //either closest tether-node, patrol node, or starting origin.
+ //no valid targets, AI will chill in a spot if it loses target, it  looks for new ones near it. no real fixed position.
+float TETHER_NONE   = 0; 
+
+//must have valid {ai_node_tether} to target, and will maintain that area. (ai_tether.qc).
+float TETHER_NODE   = 1;  //no target, default -> TETHER_NONE || skill > REG on mechs, TETHER_NOMAD;
+
+//must have valid {ai_node} to target, this will give it a patrol path (ai_patrol.qc).
+float TETHER_PATROL = 2;  
+
+//will wander the map randomly, finding random nodes to move to.  TODO
+float TETHER_NOMAD   = 3; 
+
+//marks its own starting origin as the original point to move back to.
+float TETHER_SELF   = 4;  
+.float tether;      //can be set by mapper too
+.vector tetherOrg;        //either closest tether-node, patrol node, or starting origin.
 
 ////////////////////////////////
 //AI interaction functionality - ai_api.qc
@@ -200,7 +215,7 @@ float MOVE_SNIPESHOT      = 2;
 float MOVE_STAND_FACE     = 3;
 float MOVE_PATROLNODE     = 4;  //AI moves at patrol_frame style movement to get back to node distance.
 float MOVE_NODE_RADIUS    = 5; // AI is 'ring-out' on their current node
-float MOVE_NODE_TACTICAL  = 6;  // tetherStatus == TETHER_PATROL, and target is beyond patrol nbode
+float MOVE_NODE_TACTICAL  = 6;  // tether == TETHER_PATROL, and target is beyond patrol nbode
 
 float MOVE_CHARGE         = 8;
 float MOVE_CHARGE_RIGHT   = 16;
@@ -296,7 +311,6 @@ void() ai_state_nodegraph;
 void() ai_state_nodegraph_pause;
 void() ai_state_nodegraph_travel;
 void() ai_state_nodegraph_travel_block;
-
 
 .void() ai_fight_take_fire;
 .void() ai_fight_out_radius;
@@ -466,10 +480,8 @@ string(float tether) dbg_tether={
       return "TETHER_NODE";
     case TETHER_PATROL:
       return "TETHER_PATROL";
-    case TETHER_ENT:
-      return "TETHER_ENT";
-    case TETHER_SELF:
-      return "TETHER_SELF";
+    case TETHER_NOMAD:
+      return "TETHER_NOMAD";
     case TETHER_NONE:
       return "TETHER_NONE";
   }

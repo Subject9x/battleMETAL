@@ -40,18 +40,18 @@ float() ai_blocked_teleport={
     node = ai_node_to_target(self);
     if( node ){
       self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
-      self.tetherStatus = TETHER_NODE;
+      self.tether = TETHER_NODE;
       return TRUE;
     }
     else{
       if( self.patrolNode ){
         if( self.patrolNode.partPrev ){
           self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
-          self.tetherStatus = TETHER_NODE;
+          self.tether = TETHER_NODE;
         }
         else{
           self.tetherOrg = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.15,32), 24);
-          self.tetherStatus = TETHER_NODE;
+          self.tether = TETHER_NODE;
           
         }
         setorigin(self, self.tetherOrg);
@@ -256,7 +256,7 @@ void() ai_patrol_state_frame={
     if(nextNode == self.patrolNode ){
       //IF an ai_node is missing a .target , then we 'error correct' here by cutting the AI over to ST_THR sub system.
       //the AI will treat this final destination node as if it were ai_node_tether.
-      self.tetherStatus = TETHER_NODE;
+      self.tether = TETHER_NODE;
     }
     else{
       self.patrolNode = nextNode;
@@ -457,96 +457,97 @@ float() ai_attack={
 */
 void() ai_setup_patrol={
   local entity node;
+  local float nodeFail;
   
   //make a single call reference here, instead of in every ai_setup func.
   trigger_event( find(world, classname, "player"), self.trigOnSpawn ); //event interface
+  
+  if( (self.spawnflags & NO_DROP) ){
+    self.flags = self.flags - (self.flags & FL_ONGROUND);
+  }
+  else{
+    droptofloor();
+  }
+  if( (self.flags & FL_TURRET) ){
+    util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
+  }
+  if( self.legs != world ){
+    util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
+  }
   
   //Check for spawnflag: DEBUG_MODE
   if( (self.spawnflags & DEBUG_MODE) ){
     self.ai_state_next = ST_STAND;
   }
   else{
-    //AI is a patrol-type
-    if( self.target || self.target != "" ){
-      if( lastNode && lastNode.targetname == self.target ){
-        node = lastNode;
-      }
-      else{
-        node = find(world, targetname, self.target);
-      }
-      if( node ){
-        self.tetherStatus = TETHER_PATROL;
-        self.tetherOrg = node.origin;
-        self.patrolNode = node;
-        self.ai_state_next = ST_PTR;
-        lastNode = node;
-        if( cvar("developer") ){
-          cons_logAVector(node.classname, node.origin); //debug
-          cons_logAString(node.classname, node.targetname);
-          cons_logAString("///////////////////", "////////////");
+    //validate the proposed tether type coming in from AI
+    if( self.tether ){
+      if( self.tether == TETHER_NODE ){
+        //AI wants to be anchored to a spot.
+        if( self.target || self.target != "" ){
+          //AI is an area-tethered type
+          node = find(world, targetname, self.target);
+        }
+        if( node != world ){
+          self.tether = TETHER_NODE;
+          self.patrolNode = node;
+          self.ai_state_next = ST_THR;
+          if( cvar("developer") ){
+            cons_logAVector(self.classname, self.origin);
+            cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
+            cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);
+            cons_logAString("-------------------", "-------------");
+          }
+        }
+        else{
+          nodeFail = TRUE;
         }
       }
-      else{
-        self.deadflag = DEAD_DYING;
-      }
-    }
-    else{
-      //AI is an area-tethered type
-      node = ai_node_tether_find();
-      if( node ){
-        self.tetherStatus = TETHER_NODE;
-        self.patrolNode = node;
-        self.ai_state_next = ST_THR;
-        if( cvar("developer") ){
-          cons_logAVector(self.classname, self.origin);
-          cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
-          cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);
-          cons_logAString("-------------------", "-------------");
+      else if( self.tether == TETHER_PATROL ){
+        //AI wants to run a patrol route.
+        if( self.target || self.target != "" ){
+          if( lastNode && lastNode.targetname == self.target ){
+            node = lastNode;
+          }
+          else{
+            node = find(world, targetname, self.target);
+          }
+          if( node != world ){
+            self.tetherOrg = node.origin;
+            self.patrolNode = node;
+            self.ai_state_next = ST_PTR;
+            lastNode = node;
+            if( cvar("developer") ){
+              cons_logAVector(node.classname, node.origin); //debug
+              cons_logAString(node.classname, node.targetname);
+              cons_logAString("///////////////////", "////////////");
+            }
+          }
+          else{
+            nodeFail = TRUE;
+          }
         }
       }
-      else{
-        self.deadflag = DEAD_DYING;
+      else if( self.tether == TETHER_SELF ){
+        self.tetherOrg = self.origin;
       }
     }
   }
-  if( self.ai_state_next == ST_STAND || self.deadflag != DEAD_DYING ){
-    if( (self.spawnflags & NO_DROP) ){
-      self.flags = self.flags - (self.flags & FL_ONGROUND);
-    }
-    else{
-      droptofloor();
-    }
-    if( (self.flags & FL_TURRET) ){
-      util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
-    }
-    if( self.legs != world ){
-      util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
-    }
+
+  if( nodeFail ){
+    self.tether = TETHER_NONE;
+    self.patrolNode = world;
+    self.goalentity = world;
   }
   
-  if(self.deadflag == DEAD_DYING){
-    //AI failed to have either a PATROL NODE or TETHER NODE, so kill it.
-    if( cvar("developer") ){
-      cons_logAString("///////////////", "----------");
-      cons_logAVector(self.classname, self.origin); //debug
-      cons_logAString(self.classname, self.vec_name);
-      cons_logAString(self.classname, self.patrolNode.classname); //debug
-      cons_logAVector(self.classname, self.patrolNode.origin); //debug
-      cons_logAString("///////////////", "^ REMOVED ^");
-    }
-    self.think = self.th_die;
-    self.nextthink = time + 0.1;
+  if( (self.spawnflags & COLD_START) ){
+    self.spawnflags = self.spawnflags - (self.spawnflags&COLD_START);
+    self.nextthink = (random() * 0.5) + 7;
   }
   else{
-    if( (self.spawnflags & COLD_START) ){
-      self.spawnflags = self.spawnflags - (self.spawnflags&COLD_START);
-      self.nextthink = 7;
-    }
-    else{
-      self.nextthink = 2;
-    }
-    self.think = ai_state_frame;
-    self.nextthink = self.nextthink + time;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    self.nextthink = 1.0 + (random() * 2);
   }
+  self.think = ai_state_frame;
+  self.nextthink = self.nextthink + time;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };

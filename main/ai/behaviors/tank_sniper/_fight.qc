@@ -52,7 +52,7 @@ void() spg_fight_target_fire={
 void() spg_fight_out_radius={
   if( enemy_vis == VIS_FAIL ){
     self.enemy = world;
-    if(self.tetherStatus == TETHER_PATROL){
+    if(self.tether == TETHER_PATROL){
       self.ai_state_next = ST_PTR;
     }
     else{

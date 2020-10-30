@@ -123,6 +123,11 @@ void() StartFrame =
   skill = cvar("skill");
   framecount = framecount + 1;
   sv_checkRules(); //ported over here for fairness and synchronization
+  
+  if( time > NODEGRAPH_queue_timer ){
+    NODEGRAPH_queue_timer = time + NODEGRAPH_queue_timeout;
+    NODEGRAPH_queue_total = max(0, NODEGRAPH_MAX_REQUEST - 1);
+  }
 };
 
 /*
