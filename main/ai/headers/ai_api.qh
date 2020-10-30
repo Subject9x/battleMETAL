@@ -88,16 +88,18 @@ void() ai_pilot_ini_ace;
 
 //AI NODES
 void() node_setup;
-.float nodeQueue1; //to keep per-AI pathfinding costs low, we cache the next 4 nodes that the bot must go to
-.float nodeQueue2; //here, so that they're not asking the nodegraph to pathfind every frame for every bot.
-.float nodeQueue3;
-.float nodeQueue4;
-.float nodeQueue5;
-.float nodeQueue6;
+.float nq1; //to keep per-AI pathfinding costs low, we cache the next 4 nodes that the bot must go to
+.float nq2; //here, so that they're not asking the nodegraph to pathfind every frame for every bot.
+.float nq3;
+.float nq4;
+.float nq5;
+.float nq6;
+.float nq7;
+.float nq8;
 
 float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
 float( vector startPos, vector endPos ) ai_nodegraph_trace; //entry to nodegraph
-float(vector patrlNodeOrg) ai_nodegraph_to_patrol; //find closest node to AI's desired patrol point.
+float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
 float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
 
 //AI TETHER FUNCTIONALITY
@@ -239,6 +241,16 @@ float ST_COM_MOVE_EXEC        = 12; //execute a prescribed combat maneuver
 float ST_COM_MOVE_END         = 13; //completed a combat maneuver
 float ST_COM_MOVE_BLOCK       = 14; //combat move was blocked for some reason
 
+//stub - unimplemented unblocking behavior
+//  was an idea to have units do a move-stack thing where they could unwind their
+//    current move stack as a means to both pathfind and get themselves unstuck.
+float ST_NODEGRAPH            = 15;
+float ST_NODEGRAPH_PAUSE      = 16;
+float ST_NODEGRAPH_MOVE       = 17;
+float ST_NODEGRAPH_BLOCK      = 18;
+float ST_NODEGRAPH_ROLLBACK   = 19;
+float ST_NODEGRAPH_ROLLBLOCK  = 20;
+
 //stub - unimplemented hunting behavior
 // Quake C can't really DO good unit pathfinding across complex terrain,
 //    ergo hunting isn't really possible without a massive expenditure of labor.
@@ -246,14 +258,6 @@ float ST_COM_MOVE_BLOCK       = 14; //combat move was blocked for some reason
 //float ST_TRACK_BLOCK          = 16;
 //float ST_TRACK_ROLLBACK       = 17;
 //float ST_TRACK_ROLLBLOCK      = 18;
-
-//stub - unimplemented unblocking behavior
-//  was an idea to have units do a move-stack thing where they could unwind their
-//    current move stack as a means to both pathfind and get themselves unstuck.
-//float ST_TRAIL_MOVE           = 19;
-//float ST_TRAIL_BLOCK          = 20;
-//float ST_TRAIL_ROLLBACK       = 21;
-//float ST_TRAIL_ROLLBLOCK      = 22;
 
 ////////////////////////////////
 //AI STATE FUNCTIONS - ai_state.qc
@@ -286,6 +290,13 @@ void() ai_state_frame;
 .void() ai_state_tether_pause;
 .void() ai_state_tether_travel;
 .void() ai_state_tether_travel_block;
+
+//these are not interfaces, there's no alternative to funcs for the nodegraph
+void() ai_state_nodegraph;       
+void() ai_state_nodegraph_pause;
+void() ai_state_nodegraph_travel;
+void() ai_state_nodegraph_travel_block;
+
 
 .void() ai_fight_take_fire;
 .void() ai_fight_out_radius;

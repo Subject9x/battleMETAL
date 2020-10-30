@@ -23,7 +23,7 @@ void() ai_state_frame={
   if( !self.deadflag ){
     ai_update();
   }
-  if( !(self.spawnflags&DEBUG_MODE) ){
+  if( !(self.spawnflags & DEBUG_MODE) ){
     //State update
     self.ai_state_last = self.ai_state;
     self.ai_state = self.ai_state_next;
@@ -82,6 +82,18 @@ void() ai_state_frame={
       case ST_COM_MOVE_BLOCK:
         self.ai_run_state_now = self.ai_state_combat_blocked;
         break;
+      case ST_NODEGRAPH:
+        self.ai_run_state_now = ai_state_nodegraph;
+       break;
+      case ST_NODEGRAPH_PAUSE:
+        self.ai_run_state_now = ai_state_nodegraph_pause;
+       break;
+      case ST_NODEGRAPH_MOVE:
+        self.ai_run_state_now = ai_state_nodegraph_travel;
+       break;
+      case ST_NODEGRAPH_BLOCK:
+        self.ai_run_state_now = ai_state_nodegraph_travel_block;
+       break;
     }
     
     if( self.ai_run_state_now ){

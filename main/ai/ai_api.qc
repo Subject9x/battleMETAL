@@ -549,7 +549,8 @@ entity() ai_node_tether_find={
 /*
   Very similar to ext_world.world_nodegraph_export_edgelink()
   
-  this bad boi scans the underlying terrain in addition to checking normal tracelines for possible move
+  this bad boi scans the underlying terrain in addition to checking normal tracelines for possible move,
+    and for finding the closest valid node.
   
 */
 float( vector source, vector trgdst ) ai_check_terrain_move={
@@ -573,7 +574,7 @@ float( vector source, vector trgdst ) ai_check_terrain_move={
   if( trace_fraction == 1.0 ){
     edgeAngle = vectoangles(trgdst - source);
     if( edgeAngle_x < NODEGRAPH_EDGE_ANGLE_MAX ){
-      edgeAngle_x = 360 - edgeAngle_x;  //fixes a pitch-angle problem where sometimes the angle was inverted!
+      edgeAngle_x = 360 - edgeAngle_x;  //makevectors is not the same as vectoangles, it is not pitch-corrected
     }
     if( edgeAngle_x > NODEGRAPH_EDGE_ANGLE_MIN && edgeAngle_x < NODEGRAPH_EDGE_ANGLE_MAX){
       //rule out steep inclines right away.
@@ -583,7 +584,7 @@ float( vector source, vector trgdst ) ai_check_terrain_move={
     
     //clear Los, get more granular.
     edgeLen = vlen(trgdst - source);
-    edgeLenquant = ceil(edgeLen / NODEGRAPH_EDGE_GRID);
+    edgeLenquant = ceil(edgeLen / (NODEGRAPH_EDGE_GRID * 2)); //inflate the edge grid * 2; we don't need that much precision.
     //now run the terrain poller
     edgeSegA = source;
     makevectors(edgeAngle);
@@ -591,7 +592,7 @@ float( vector source, vector trgdst ) ai_check_terrain_move={
     for(edgeLenItr = 0; edgeLenItr < edgeLenquant; edgeLenItr = edgeLenItr + 1){
       if( !edgeCheck )
         continue;
-      edgeSegB = edgeSegA + (v_forward * NODEGRAPH_EDGE_GRID);
+      edgeSegB = edgeSegA + (v_forward * (NODEGRAPH_EDGE_GRID * 2));
       
       traceline(edgeSegA, edgeSegA + (v_up * -512), TRUE, self);
       trEdgeApos = trace_endpos;

@@ -81,6 +81,8 @@ float( vector start, vector end ) nodegraph_trace_route={
   local float queueNext;
   local float currentId;
   
+  local float moveCost;
+  
   local float itrEdge;
   local float nextId;
   
@@ -93,14 +95,13 @@ float( vector start, vector end ) nodegraph_trace_route={
   
   nodegraph_node_by_origin(start);
   NODEGRAPH_SEARCH_QUEUE[0] = NODE_found.id;
-  NODEGRAPH_SEARCH_CAME_FROM[ NODE_found.id] = NODE_found.id;
+  NODEGRAPH_SEARCH_CAME_FROM[NODE_found.id] = NODE_found.id;
+  NODEGRAPH_SEARCH_COST[NODE_found.id] = 0;
   dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", start_x,start_y,start_z, NODE_found.id, NODEGRAPH_SEARCH_QUEUE[0])); //debug
   
   nodegraph_node_by_origin(end);
   endId = NODE_found.id;
   dprint(sprintf("End org: %f %f %f | nodeid: %u\n",end_x,end_y,end_z, NODE_found.id)); //debug
-  
-  //todo - early exit
   
   bEnd = FALSE;
   queue = 0;
@@ -119,10 +120,12 @@ float( vector start, vector end ) nodegraph_trace_route={
       while( itrEdge < 6 ){
         nextId = trace.nodes[itrEdge];
         if( nextId != -1 ){
+          
           visit = NODEGRAPH_SEARCH_CAME_FROM[nextId];
           dprint(sprintf("      nextId(%u)\n", nextId )); //debug
           dprint(sprintf("      visit(%f)\n", visit )); //debug
           if( visit < 0 ){
+          
             queueNext = queueNext + 1;  //error: something to do with iterating queueNext;
             NODEGRAPH_SEARCH_QUEUE[queueNext] = nextId;
             NODEGRAPH_SEARCH_CAME_FROM[nextId] = currentId;
@@ -224,6 +227,7 @@ void() nodegraph_clear_search_queue={
   for(queueCount = 0; queueCount < NODE_ID_COUNT; queueCount = queueCount + 1){
     NODEGRAPH_SEARCH_QUEUE[queueCount] = -1;
     NODEGRAPH_SEARCH_CAME_FROM[queueCount] = -1;
+    NODEGRAPH_SEARCH_COST[queueCount] = -1;
     NODEGRAPH_SEARCH_PATH[queueCount] = -1;
   }
 };

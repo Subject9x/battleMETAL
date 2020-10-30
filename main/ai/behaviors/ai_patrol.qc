@@ -69,8 +69,22 @@ void() ai_stand_generic={
   STATE : PATROL START
 */
 void() ai_patrol={
+  local float pNodeId;
+  local float pathFind;
+  
   ai_update_accuracy( TRUE );
   if( self.ai_state == ST_PTR && self.ai_state_last != ST_PTR ){
+    if( NODEGRAPH_LOADED ){
+      if( !ai_check_terrain_move(self.origin, self.patrolNode.origin) ){
+        dprint("AI - failed to see patrol node, pathfinding!\n");
+        pathFind = ai_nodegraph_trace( self.origin, self.patrolNode.origin );
+        if( pathFind ){
+          self.ai_state_next = ST_NODEGRAPH;
+          return;
+        }
+      }
+    }
+    
     self.ai_state_next = ST_PTR_TRAVEL_NODE;
     self.goalentity = self.patrolNode;
     self.tetherStatus = TETHER_PATROL;

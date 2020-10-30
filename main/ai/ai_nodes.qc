@@ -17,16 +17,21 @@ Overview: ai nodes
 */
 float() ai_nodegraph_next={
 
-  self.nodeQueue1 = self.nodeQueue2;
-  self.nodeQueue2 = self.nodeQueue3;
-  self.nodeQueue3 = self.nodeQueue4;
-  self.nodeQueue4 = self.nodeQueue5;
-  self.nodeQueue5 = self.nodeQueue6;
-  self.nodeQueue6 = -1;
+  self.nq1 = self.nq2;
   
-  if( self.nodeQueue1 == -1 ){
+  if( self.nq1 == -1 ){
+    //early exit - end of queue
     return FALSE;
   }
+  
+  self.nq2 = self.nq3;
+  self.nq3 = self.nq4;
+  self.nq4 = self.nq5;
+  self.nq5 = self.nq6;
+  self.nq6 = self.nq7;
+  self.nq7 = self.nq8;
+  self.nq8 = -1;
+  
   return TRUE;
 };
 
@@ -35,16 +40,101 @@ float() ai_nodegraph_next={
 */
 float( vector startPos, vector endPos ) ai_nodegraph_trace={
 
+  local float startNode;
+  local float endNode;
+  
+  local vector nStartOrg;
+  local vector nEndOrg;
+  
+  local float qCount;
+  local float pathCnt;
+
+  startNode = ai_nodegraph_to_org( startPos );
+  endNode = ai_nodegraph_to_org( endPos );
+  
+  if( startNode != -1 ){
+    nodegraph_get_node_byid( startNode );
+    nStartOrg = NODE_check.orig;
+  }
+  
+  if( endNode != -1 ){
+    nodegraph_get_node_byid( endNode );
+    nEndOrg = NODE_check.orig;
+  }
+  
+  dprint(sprintf("ai_nodegraph_trace() startNode= %f\n",startNode)); //debug
+  dprint(sprintf("ai_nodegraph_trace() startNode= %f\n",endNode)); //debug
+  
+  qCount = nodegraph_trace_route(nStartOrg, nEndOrg);
+  if( qCount > 0 ){
+    pathCnt = nodegraph_build_path( startNode, qCount, endNode );
+    if( pathCnt > -1 ){
+      self.nq1 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq2 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq3 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq4 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq5 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq6 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq7 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq8 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      
+      if( self.nq1 > -1 ){
+        return TRUE;
+      }
+    }
+  }
+  
   return FALSE;
 };
 
 
 /*
-  find closest node to AI's desired patrol point.
+  Find closest node to a desire map point (usually self, or target ai_node).
+  Make sure that node is WALKABLE to that spot.
 */
-float( vector patrlNodeOrg ) ai_nodegraph_to_patrol={
+float( vector testOrg ) ai_nodegraph_to_org={
 
-  return FALSE;
+  local float minDist;
+  local float nodeItr;
+  
+  local float aNode;
+  
+  local vector test1;
+  local vector test2;
+  local vector ndOrg;
+  local float testDist;
+  local float testVis;
+  
+  aNode = -1;
+  minDist = 1024;
+  test1_x = testOrg_x;
+  test1_y = testOrg_y;
+  
+  while( nodeItr < NODE_ID_COUNT ){
+    ndOrg = nodegraph_get_node_origin(nodeItr);
+    if( ndOrg != '0 0 0' ){
+      test2 = ndOrg;
+      test2_z = 0;
+      testDist = vlen(test2 - test1);
+      if( testDist < minDist ){
+        testVis = ai_check_terrain_move( testOrg, ndOrg );
+        if( testVis ){
+          minDist = testDist;
+          aNode = nodeItr;
+        }
+      }
+    }
+    nodeItr = nodeItr + 1;
+  }
+  return aNode;
 };
 
 
@@ -58,13 +148,6 @@ float( vector entOrg ) ai_nodegraph_find_node={
 
 
 //=================================================
-
-
-
-
-
-
-
 
 
 void() ai_node_counter_th={
