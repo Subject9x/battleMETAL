@@ -81,6 +81,7 @@ void() ai_patrol={
         if( NODEGRAPH_queue_total < NODEGRAPH_MAX_REQUEST ){
           pathFind = ai_nodegraph_trace( self.origin, self.patrolNode.origin );
           if( pathFind ){
+            self.ai_state_save = self.ai_state;
             self.ai_state_next = ST_NODEGRAPH;
             NODEGRAPH_queue_total = NODEGRAPH_queue_total + 1;
             return;

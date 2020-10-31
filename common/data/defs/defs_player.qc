@@ -54,6 +54,11 @@ Overview:
 .vector laser_sight_org;
 
 #ifdef SSQC
+.float posFadeTimer;  //breadcrumbs for the AI....
+.vector position1;
+.vector position2;
+.vector position3;
+
 .float targetValid;
 .float targetDist;
 .vector prevMovement; //the .movement of last frame

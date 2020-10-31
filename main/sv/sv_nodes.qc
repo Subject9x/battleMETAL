@@ -81,7 +81,8 @@ float( vector start, vector end ) nodegraph_trace_route={
   local float queueNext;
   local float currentId;
   
-  local float moveCost;
+  //local float moveCost;
+  local float block;
   
   local float itrEdge;
   local float nextId;
@@ -120,17 +121,19 @@ float( vector start, vector end ) nodegraph_trace_route={
       while( itrEdge < 6 ){
         nextId = trace.nodes[itrEdge];
         if( nextId != -1 ){
-          moveCost = NODEGRAPH_SEARCH_COST[currentId] + trace.edge[itrEdge];
+          //todo - would be nice to figure out something closer to A*
+          //moveCost = NODEGRAPH_SEARCH_COST[currentId] + trace.edge[itrEdge];
           visit = NODEGRAPH_SEARCH_CAME_FROM[nextId];
           dprint(sprintf("      nextId(%u)\n", nextId )); //debug
           dprint(sprintf("      visit(%f)\n", visit )); //debug
-          dprint(sprintf("      current cost(%f)\n", NODEGRAPH_SEARCH_COST[nextId])); //debug
-          dprint(sprintf("      add cost(%f)\n", moveCost )); //debug
-          if( visit < 0 || moveCost < NODEGRAPH_SEARCH_COST[nextId]){
+          //dprint(sprintf("      current cost(%f)\n", NODEGRAPH_SEARCH_COST[nextId])); //debug
+          //dprint(sprintf("      add cost(%f)\n", moveCost )); //debug
+          //if( visit < 0 || moveCost < NODEGRAPH_SEARCH_COST[nextId]){
+          if( visit < 0 && NODEGRAPH_DATA_BLOCK[nextId] == FALSE){
             queueNext = queueNext + 1;  //error: something to do with iterating queueNext;
             NODEGRAPH_SEARCH_QUEUE[queueNext] = nextId;
             NODEGRAPH_SEARCH_CAME_FROM[nextId] = currentId;
-            NODEGRAPH_SEARCH_COST[nextId] = moveCost;
+            //NODEGRAPH_SEARCH_COST[nextId] = moveCost;
             dprint(sprintf("             queueNext(%u)-nextId(%u)<-currentId{%f}\n", queueNext, NODEGRAPH_SEARCH_QUEUE[queueNext], NODEGRAPH_SEARCH_CAME_FROM[nextId] )); //debug
           }
           else{
@@ -191,6 +194,7 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   }
   
   dprint("===Unwinding path stack\n");  //debug
+  dprint(sprintf("                stack(%f)\n",stack));  //debug
   stackTotal = stack;
   NODEGRAPH_SEARCH_PATH[stack] = startNode;
   while( stack >= 0 ){

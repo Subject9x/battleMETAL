@@ -228,6 +228,7 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
 */
 void() ai_combat_start={
   local entity prox;
+  local float pathFind;
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
@@ -235,15 +236,16 @@ void() ai_combat_start={
     //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
-      if( self.patrolNode ){
-        self.goalentity = self.patrolNode;
-        if( self.tether == TETHER_NODE ){
-          self.ai_state_next = ST_THR;
-        }
-        if( self.tether == TETHER_PATROL ){
-          self.ai_state_next = ST_PTR;
-        }
+      if( self.tether == TETHER_NODE ){
+        self.ai_state_next = ST_THR;
         return;
+      }
+      if( self.tether == TETHER_PATROL ){
+        self.ai_state_next = ST_PTR;
+        return;
+      }
+      if( self.tether == TETHER_SELF ){
+        //todo 
       }
       self.ai_state_next = ST_STAND;
       self.ai_dampen = 0;
@@ -260,18 +262,49 @@ void() ai_combat_start={
     /*
       Combat Frame State Checks
     */
-    enemy_dist = ai_check_node_radius(self.enemy);
+    
+    /*
+      NODEGRAPH new set
+      1) check for proper LoS
+        VIS_FAIL ->
+        VIS_FRN ->
+        
+      2) range check
+        out of range
+        
+        > range / 2
+        
+        < range / 2
+        
+          250
+          
+       3) facing
+    */
+    
+    
+    
+    //enemy_dist = ai_check_node_radius(self.enemy);
     enemy_vis = ai_check_vis( self.enemy );
     
     if(enemy_vis == VIS_FAIL){
+      self.ai_state_save = self.ai_state;
       self.enemy = world;
       self.ai_move_next = MOVE_NODE_RADIUS;
       self.ai_movedist = 15;
       return;
     }
     
+    if(enemy_vis == VIS_FRN){
+        
+    }
+    
+    if(enemy_vis == VIS_ENEMY){
+    
+    }
+    
+    
     //out of bounds, do move override
-    if( 1.0 < enemy_dist ){
+    /*if( 1.0 < enemy_dist ){
       if(self.ai_move_last != MOVE_NODE_TACTICAL ){
         if( self.patrolState != PATROL_ARRIVE ){
           //run
@@ -285,12 +318,28 @@ void() ai_combat_start={
           return;
         }
       }
-    }
+    }*/
     
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-    enemy_range = ai_check_node_radius_targdist();
-    combat_dist = ai_check_node_radius(self);
+    //enemy_range = ai_check_node_radius_targdist();
+    //combat_dist = ai_check_node_radius(self);
     combat_roll = random() * 1;
+    
+    enemy_range = vlen(self.enemy.origin - self.origin);
+    enemy_dist = ai_check_terrain_move(self.origin, self.enemy.origin);
+    if( enemy_range > self.ai_minrange ){
+      
+      return;
+    }
+    
+    if( enemy_range > 400 ){
+    
+    }
+    
+    //enemy_range <= 400
+    
+    
+    
     
     //fight state dump - useful for debug
     //cons_logAFloat("enemy_vis", enemy_vis); //debug
@@ -299,7 +348,7 @@ void() ai_combat_start={
     //cons_logAFloat("combat_dist", combat_dist); //debug
     
     //AI is in bounds, but target is out of bounds
-    if( 1.0 < enemy_dist ){
+    /*if( 1.0 < enemy_dist ){
       if( combat_dist <= 1.0 ){
         //AI is on edge of bounds but inside radius
         self.ai_fight_take_fire();
@@ -323,25 +372,25 @@ void() ai_combat_start={
         self.ai_move_next = ai_move_director();
       }
       return;
-    }
+    }*/
     
     //target == building - those things don't really move or fight back...
-    if(self.enemy.data_type == DATA_BLD){
+    /*if(self.enemy.data_type == DATA_BLD){
       self.ai_fight_building();
       if(self.ai_move_next > MOVE_NODE_TACTICAL){
         self.ai_move_next = ai_move_director();
       }
       return;
-    }
+    }*/
     //target < 1.0
     //combat_dist < 1.0
     //get fighting
-    self.ai_move_next = MOVE_NODE_RADIUS;
-    self.ai_movedist = 5;
-    self.ai_fight_target();
-    if(self.ai_move_next > MOVE_NODE_TACTICAL){
-      self.ai_move_next = ai_move_director();
-    }
+    //self.ai_move_next = MOVE_NODE_RADIUS;
+    //self.ai_movedist = 5;
+    //self.ai_fight_target();
+    //if(self.ai_move_next > MOVE_NODE_TACTICAL){
+    //  self.ai_move_next = ai_move_director();
+    //}
     return;
   //---------------------------------------------------------------------------
   }

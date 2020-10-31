@@ -25,10 +25,10 @@ float TR_LEFT               = 5;  //Turret ideal yaw is left-side away from ai_d
 float TR_RIGHT              = 6;  //Turret ideal yaw is right-side awa from ai_dir;
 
 //VIS CONSTANTS
-float VIS_FAIL = 0;
-float VIS_FRAC = 1;
-float VIS_TRG = 2;
-float VIS_FRN = 3;
+float VIS_FAIL  = 0;  //complete LOS block via map, building, doodad
+float VIS_FRAC  = 1;  //LOS is solid, clear shot
+float VIS_FRN   = 2;  //A friendly is blocking the way
+float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
 
 //GLOBALS
 //--> these are populated in AI _combat.qc -> ST_COMBAT state
@@ -149,6 +149,9 @@ void(entity none) ai_NULL_missile={ };
 
 ////////////////////////////////
 //AI COMBAT FUNCTIONS - ai_combat.qc
+.float prevVis;
+.float prevFacing;
+
 float( float scan_mode) ai_check_scan;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
@@ -195,8 +198,8 @@ float(entity targ) ai_check_vis;
 float() ai_attack;
 void() ai_setup_patrol;
 
-
 //movement
+.vector moveDest;       //combat moves, target destination
 .entity patrolNode;
 .float ai_wishSpeed;    //calculated on entering a new move
 
@@ -228,6 +231,7 @@ float MOVE_CIRCLE_LEFT    = 1024;
 float MOVE_STRAFE_LEFT    = 2048;
 float MOVE_CHARGE_LEFT    = 4096;
 
+.float ai_state_save; //  used by NODEGRAPH to determine who called the state.
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_last; //  used for per-frame comparisons
 .float ai_state_next; //  AI-CODE-SET this one to decide the next STATE.

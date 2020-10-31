@@ -701,12 +701,12 @@ void() world_nodegraph_export_edgelinker_th={
     fclose(self.data_idx);
     strunzone(self.classname);
     self.think = SUB_Remove;
-    self.nextthink = time + 1;
+    self.nextthink = time + 0.1;
     return;
   }
 
   self.think = world_nodegraph_export_edgelinker_th;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.5;
 };
 
 void( float overrideFlag ) world_nodegraph_export_data={

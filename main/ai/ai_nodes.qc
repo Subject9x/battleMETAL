@@ -446,7 +446,7 @@ void() ai_node_path={
   local vector sMin, sMax;
   
   if( cvar("developer") ){
-    self.effects = self.effects | (EF_FULLBRIGHT | EF_NOSHADOW | EF_BLUE);
+    self.effects = self.effects | EF_NOSHADOW;
   }
   else{
     remove(self);

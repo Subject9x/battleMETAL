@@ -433,6 +433,12 @@ float( entity targ ) ai_check_vis={
     return VIS_FRN;
   }
   
+  if( trace_ent.faction != self.faction && trace_ent.faction > 0){
+    if(trace_ent.data_type != DATA_BLD){
+      return VIS_ENEMY;
+    }
+  }
+  
   return VIS_FAIL;
 };
 
