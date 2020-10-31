@@ -689,6 +689,7 @@ void() world_nodegraph_export_edgelinker_th={
     
   local string fileName;
   local float fileExists;
+  local entity nodes;
   
   self.owner = NODEGRAPH_EXPORT_NODE[self.count];
   
@@ -702,6 +703,15 @@ void() world_nodegraph_export_edgelinker_th={
     strunzone(self.classname);
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
+    
+    //unfreeze and let AI act normally;
+    for(nodes = nextent(world); nodes != world; nodes = nextent(nodes) ){
+      if( nodes.data_type == DATA_MECH || nodes.data_type == DATA_VEHC ){
+        nodes.spawnflags = nodes.spawnflags - (nodes.spawnflags & DEBUG_MODE);
+        nodes.solid = SOLID_SLIDEBOX;
+        nodes.movetype = MOVETYPE_STEP;
+      }
+    }
     return;
   }
 
@@ -748,6 +758,15 @@ void( float overrideFlag ) world_nodegraph_export_data={
     cons_logAString("[WARN]-world_export_nodegraph()", "No {ai_node_path} entities found in map file.");  //DEBUG
   }
   else{
+    for(nodes = nextent(world); nodes != world; nodes = nextent(nodes) ){
+      //edge links need to account for buildings but not moving units, instead we freeze and make them non-solid.
+      if( nodes.data_type == DATA_MECH || nodes.data_type == DATA_VEHC ){
+        nodes.spawnflags = nodes.spawnflags | DEBUG_MODE;
+        nodes.solid = SOLID_NOT;
+        nodes.movetype = MOVETYPE_NONE;
+      }
+    }
+  
     nodegraph_edgelinker.data_idx = fileExists;
     nodegraph_edgelinker.count = 0;
     nodegraph_edgelinker.wait = nodeTotal;
