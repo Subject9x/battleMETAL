@@ -83,7 +83,7 @@ float() predraw_missile={
   return FALSE;
 };
 
-float() predraw_plasma={
+void() predraw_plasma={
   local float tScale;
   if( self.impactType == IMPACT_ARMOR ){
     self.alpha = 0.33;
@@ -94,10 +94,9 @@ float() predraw_plasma={
     self.scale = tScale + ((tScale + 0.005) - tScale)*self.lerpfrac;
     self.alpha = self.alpha + ((self.alpha - 0.005) - self.alpha)*self.lerpfrac;
   }
-  return FALSE;
 };
 
-float() predraw_marh={
+void() predraw_marh={
   local entity cluster;
   cluster = self.w_slot;
   makevectors(self.angles);
@@ -111,23 +110,19 @@ float() predraw_marh={
     cluster.scale = 0.95;
     cluster = cluster.w_slot;
   }
-  return FALSE;
 };
 
 
-float() predraw_quantum={
+void() predraw_quantum={
   self.scale = max(0.5, random() * 1.25);
   self.alpha = max(0.33, random() * 1);
   self.colormod_x = max(0.1, random() * 1);
   self.colormod_y = max(0.1, random() * 1);
   self.colormod_z = max(0.1, random() * 1);
-  return TRUE;
 };
 
-float() predraw_debris={
+void() predraw_debris={
   self.angles_x = self.angles_x + ( (random() * 0.5) * self.lerpfrac);
   self.angles_y = self.angles_y + ( (random() * 0.5) * self.lerpfrac);
   self.angles_z = self.angles_z + ( (random() * 0.5) * self.lerpfrac);
-  
-  return TRUE;
 };

@@ -105,7 +105,6 @@ void() CSQC_Init =
   NAVNAMES[18] = "Xi";
   NAVNAMES[19] = "Phi";
   NAVNAMES[20] = "Omega";
-  NAVNAMES[21] = "RANDOM";
   
   ANM_FILE_STATUS = 0;
   
@@ -284,15 +283,16 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   //alter fog settings if needed
   cl_particles_fogFrame();
   
-  setproperty(VF_FOG_DENSITY, FOG_DENSITY);
-  setproperty(VF_FOG_COLOR_R, FOG_RED);
-  setproperty(VF_FOG_COLOR_G, FOG_GREEN);
-  setproperty(VF_FOG_COLOR_B, FOG_BLUE);
-  setproperty(VF_FOG_ALPHA,FOG_ALPHA );
-  setproperty(VF_FOG_START, FOG_DIST_MIN);
-  setproperty(VF_FOG_END, FOG_DIST_MAX);
-  setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
-  setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);
+  //TODO - fog is now different in latest DP build
+  //setproperty(VF_FOG_DENSITY, FOG_DENSITY);
+  //setproperty(VF_FOG_COLOR_R, FOG_RED);
+  //setproperty(VF_FOG_COLOR_G, FOG_GREEN);
+  //setproperty(VF_FOG_COLOR_B, FOG_BLUE);
+  //setproperty(VF_FOG_ALPHA,FOG_ALPHA );
+  //setproperty(VF_FOG_START, FOG_DIST_MIN);
+  //setproperty(VF_FOG_END, FOG_DIST_MAX);
+  //setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
+  //setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);
 
   // add any polygons we want here
   makevectors(input_angles);

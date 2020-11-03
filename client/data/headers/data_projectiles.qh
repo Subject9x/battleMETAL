@@ -15,10 +15,10 @@ void( entity e ) data_sync_new_debris;
 .void() predraw_projectile; //called inside global predraw_missile()
 float() predraw_missile;  //root predraw call, all other predraws below this are under this one.
 
-float() predraw_plasma;
-float() predraw_quantum;
-float() predraw_marh;
+void() predraw_plasma;
+void() predraw_quantum;
+void() predraw_marh;
 
-float() predraw_debris;
+void() predraw_debris;
 
-void() execute_toss;  //MOVETYPE_BOUNCE, ported from engine
+//void() execute_toss;  //MOVETYPE_BOUNCE, ported from engine

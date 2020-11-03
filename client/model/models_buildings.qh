@@ -73,7 +73,7 @@ void() repair_bay_idle;
 /*
   Repair Bay - Repair
 */
-void() repair_bay_repair;
+//void() repair_bay_repair;
 
 /*
   Repair Bay - DEATH

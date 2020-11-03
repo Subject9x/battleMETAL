@@ -935,9 +935,9 @@ void() data_hud_frame={
       case 4:
         hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
         break;
-      case 5:
-        hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
-        break;
+      //case 5:
+        //hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        //break;
       default:
         //no crosshair? bold move
         break;

@@ -10,7 +10,7 @@ Overview:
 
 /**/
 void( string imageICon, vector org, float selected, float allow) ui_renderHardPointGraphic;
-void(float navid) ui_renderNav;
+//void(float navid) ui_renderNav;
 void(float num, vector org) ui_renderHardPointNumber;
 void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 void( vector org, vector imgSize, float wepType, vector highColor ) ui_renderHardpoint_class_pair;

@@ -6,7 +6,6 @@
 
 ==============================================================================
 */
-#define CSQC
 //
 // system globals
 //
@@ -88,12 +87,13 @@ void		end_sys_globals;		// flag for structure dumping
 
 ==============================================================================
 */
+
 //
 // system fields (*** = do not set in prog code, maintained by C code)
 //
 .float		modelindex;		// *** model index in the precached list
 .vector		absmin, absmax;	// *** origin + mins / maxs
-.vector maxs, mins;
+
 .float		entnum;	// *** the ent number as on the server BUT if you implement CSQC_Ent_Spawn(float entNum) yourself, you must assign it! or, well ya shoud -> csprogs.c Line 849
 .float		drawmask;
 .float()		predraw;
@@ -133,7 +133,8 @@ void		end_sys_fields;			// flag for structure dumping
 
 ==============================================================================
 */
-
+#define CSQC
+.vector maxs, mins;
 .vector v_angle; // view / targeting angle for players
 
 //
@@ -187,8 +188,8 @@ const float MASK_NORMAL			= 4;
 //casts no shadows.
 
 //no proof these render flags are accessible by DP's flavor of QuakeC - Roohr :|
-const float RF_EXTERNALMODEL	= 2; // The entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
 const float RF_VIEWMODEL	= 1; // The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
+const float RF_EXTERNALMODEL	= 2; // The entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
 const float RF_DEPTHHACK	= 4; // The entity appears closer to the view than normal, either by scaling it wierdly or by just using a depthrange. This will usually be found in conjunction with RF_VIEWMODEL
 const float RF_ADDITIVE		= 8;// Add the entity acording to it's alpha values instead of the normal blend
 const float RF_USEAXIS		= 16; // When set, the entity will use the v_forward, v_right and v_up globals instead of it's angles field for orientation. Angles will be ignored compleatly.
@@ -473,9 +474,9 @@ void(entity e, vector o) setorigin = #2;
 void(entity e, string m) setmodel = #3;
 void(entity e, vector min, vector max) setsize = #4;
 
-void() break = #6;
+void() break_to_debugger = #6;
 float() random = #7;
-void(entity e, float chan, string samp) sound = #8;
+void(entity e, float chan, string samp, float volume, float atten, ...) sound = #8;
 vector(vector v) normalize = #9;
 void(string e) error = #10;
 void(string e) objerror = #11;
@@ -629,7 +630,7 @@ vector (vector v) cs_unproject = #310;  //Project 3D coordinate into 2D space! d
 vector (vector v) cs_project = #311;  //Project 2D coordinate into 3D space! discard z value after calling func
 
 //void(float width, vector pos1, vector pos2, float flag) drawline = #315;
-void (float width, vector pos1, vector pos2, vector rgb, float alpha, float flags)drawline = #315;
+void(float width, vector pos1, vector pos2, vector rgb, float alpha, float flag) drawline = #315;
 
 float(string name) iscachedpic = #316;
 string(string name, ...) precache_pic = #317;
@@ -715,7 +716,7 @@ float() ReadAngle = #365;
 string() ReadString = #366;
 float() ReadFloat = #367;
 
-// LordHavoc's range #400-#499
+// LadyHavoc's range #400-#499
 void(entity from, entity to) copyentity = #400;
 
 entity(.string fld, string match) findchain = #402;
@@ -750,12 +751,12 @@ void(entity own, vector start, vector end) te_lightning3 = #430;
 void(entity own, vector start, vector end) te_beam = #431;
 void(vector dir) vectorvectors = #432;
 void(vector org) te_plasmaburn = #433;
-//float(entity e, float s) getsurfacenumpoints = #434;
-//vector(entity e, float s, float n) getsurfacepoint = #435;
-//vector(entity e, float s) getsurfacenormal = #436;
-//string(entity e, float s) getsurfacetexture = #437;
-//float(entity e, vector p) getsurfacenearpoint = #438;
-//vector(entity e, float s, vector p) getsurfaceclippedpoint = #439;
+float(entity e, float s) getsurfacenumpoints = #434;
+vector(entity e, float s, float n) getsurfacepoint = #435;
+vector(entity e, float s) getsurfacenormal = #436;
+string(entity e, float s) getsurfacetexture = #437;
+float(entity e, vector p) getsurfacenearpoint = #438;
+vector(entity e, float s, vector p) getsurfaceclippedpoint = #439;
 
 float(string s) tokenize = #441;
 string(float n) argv = #442;
@@ -784,11 +785,11 @@ void(float bufhandle, float string_index, string str) bufstr_set = #467;
 float(float bufhandle, string str, float order) bufstr_add = #468;
 void(float bufhandle, float string_index) bufstr_free = #469;
 
-//float(float s) asin = #471;
-//float(float c) acos = #472;
-//float(float t) atan = #473;
-//float(float c, float s) atan2 = #474;
-//float(float a) tan = #475;
+float(float s) asin = #471;
+float(float c) acos = #472;
+float(float t) atan = #473;
+float(float c, float s) atan2 = #474;
+float(float a) tan = #475;
 float(string s) strippedstringlen = #476;
 float(string s) strlennocol = #476; // This is the correct name for the function, but not removing the decolorizedstring mapping.
 string(string s) decolorizedstring = #477;
@@ -800,7 +801,7 @@ string(string s) cvar_defstring = #482;
 void(vector origin, string sample, float volume, float attenuation) pointsound = #483;
 string(string search, string replace, string subject) strreplace = #484;
 string(string search, string replace, string subject) strireplace = #485;
-//vector(entity e, float s, float n, float a) getsurfacepointattribute = #486;
+vector(entity e, float s, float n, float a) getsurfacepointattribute = #486;
 #ifdef SUPPORT_GECKO
 float gecko_create( string name ) = #487;
 void gecko_destroy( string name ) = #488;
@@ -1137,13 +1138,13 @@ vector	drawgetimagesize(string pic) = #318;
 #define SPA_TEXCOORDS0 4
 #define SPA_LIGHTMAP0_TEXCOORDS 5
 #define SPA_LIGHTMAP_COLOR 6
-float (entity e, float s)						getsurfacenumpoints = #434;
-vector (entity e, float s, float n)					getsurfacepoint = #435;
-vector (entity e, float s)						getsurfacenormal = #436;
-string (entity e, float s)						getsurfacetexture = #437;
-float (entity e, vector p)						getsurfacenearpoint = #438;
-vector (entity e, float s, vector p)					getsurfaceclippedpoint = #439;
-vector(entity e, float s, float n, float a) getsurfacepointattribute = #486;
+//float (entity e, float s)						getsurfacenumpoints = #434;
+//vector (entity e, float s, float n)					getsurfacepoint = #435;
+//vector (entity e, float s)						getsurfacenormal = #436;
+//string (entity e, float s)						getsurfacetexture = #437;
+//float (entity e, vector p)						getsurfacenearpoint = #438;
+//vector (entity e, float s, vector p)					getsurfaceclippedpoint = #439;
+//vector(entity e, float s, float n, float a) getsurfacepointattribute = #486;
 float(entity e, float s) getsurfacenumtriangles = #628;
 vector(entity e, float s, float n) getsurfacetriangle = #629;
 
@@ -1155,11 +1156,11 @@ float DEG2RAD = 0.01745329251994329576923690768488612713442871888541725456097191
 float RAD2DEG = 57.2957795130823208767981548141051703324054724665643215491602438612;
 float PI      = 3.1415926535897932384626433832795028841971693993751058209749445923;
 //builtin definitions:
-float(float s) asin = #471; // returns angle in radians for a given sin() value, the result is in the range -PI*0.5 to PI*0.5
-float(float c) acos = #472; // returns angle in radians for a given cos() value, the result is in the range 0 to PI
-float(float t) atan = #473; // returns angle in radians for a given tan() value, the result is in the range -PI*0.5 to PI*0.5
-float(float c, float s) atan2 = #474; // returns angle in radians for a given cos() and sin() value pair, the result is in the range -PI to PI (this is identical to vectoyaw except it returns radians rather than degrees)
-float(float a) tan = #475; // returns tangent value (which is simply sin(a)/cos(a)) for the given angle in radians, the result is in the range -infinity to +infinity
+//float(float s) asin = #471; // returns angle in radians for a given sin() value, the result is in the range -PI*0.5 to PI*0.5
+//float(float c) acos = #472; // returns angle in radians for a given cos() value, the result is in the range 0 to PI
+//float(float t) atan = #473; // returns angle in radians for a given tan() value, the result is in the range -PI*0.5 to PI*0.5
+//float(float c, float s) atan2 = #474; // returns angle in radians for a given cos() and sin() value pair, the result is in the range -PI to PI (this is identical to vectoyaw except it returns radians rather than degrees)
+//float(float a) tan = #475; // returns tangent value (which is simply sin(a)/cos(a)) for the given angle in radians, the result is in the range -infinity to +infinity
 //description:
 //useful math functions for analyzing vectors, note that these all use angles in radians (just like the cos/sin functions) not degrees unlike makevectors/vectoyaw/vectoangles, so be sure to do the appropriate conversions (multiply by DEG2RAD or RAD2DEG as needed).
 //note: atan2 can take unnormalized vectors (just like vectoyaw), and the function was included only for completeness (more often you want vectoyaw or vectoangles), atan2(v_x,v_y) * RAD2DEG gives the same result as vectoyaw(v)
@@ -1656,14 +1657,40 @@ void(float fh, entity e) writetofile = #606;
 float(string s) isfunction = #607;
 void(entity e, string s) parseentitydata = #608;
 
+//DP_COVERAGE
+//idea: divVerent
+//darkplaces implementation: divVerent
+//function definitions:
+void coverage() = #642;  // Reports a coverage event. The engine counts for each of the calls to this builtin whether it has been called.
+
+//DP_QC_FS_SEARCH_PACKFILE
+//idea: Mario
+//darkplaces implementation: Mario
+//builtin definitions:
+float(string pattern, float caseinsensitive, float quiet, string packfile) search_packfile_begin = #444;
+//description:
+//extension to search_begin (DP_QC_FS_SEARCH), performs a filename search with the specified pattern (for example "maps/*.bsp") and stores the results in a search slot (minimum of 128 supported by any engine with this extension), the other functions take this returned search slot number, be sure to search_free when done (they are also freed on progs reload).
+//only searches for files within the specified packfile, which is expected to match the results of whichpack().
+
+// assorted builtins
+const float		STAT_MOVEVARS_TICRATE           = 240;
+const float		STAT_MOVEVARS_TIMESCALE         = 241;
+const float		STAT_FRAGLIMIT					= 235;
+const float		STAT_TIMELIMIT					= 236;
+const float     STAT_MOVEVARS_GRAVITY           = 242;                                                 
 string(void)						ReadPicture = #501;
 float PARTICLES_USEALPHA = 1;
 float particles_alphamin, particles_alphamax;
 float PARTICLES_USECOLOR = 2;
 vector particles_colormin, particles_colormax;
+float PARTICLES_USEFADE = 4;  // fades the COUNT (fade alpha using alphamin/alphamax)
+float particles_fade;
+float PARTICLES_DRAWASTRAIL = 128;                                                                                     
 void(float effectindex, entity own, vector org_from, vector org_to, vector dir_from, vector dir_to, float countmultiplier, float flags) boxparticles = #502;
 float trace_networkentity;
-
+const float RF_FULLBRIGHT	= 256;
+const float RF_NOSHADOW	= 512;
+float RF_DYNAMICMODELLIGHT = 8192;
 
 float gettaginfo_parent;
 string gettaginfo_name;
@@ -1672,6 +1699,7 @@ vector gettaginfo_forward;
 vector gettaginfo_right;
 vector gettaginfo_up;
 float checkpvs(vector viewpos, entity viewee) = #240;
+float mod(float dividend, float divisor) = #245;
 
 //compatability with common/data stuff - Roohr
 float() crandom ={
