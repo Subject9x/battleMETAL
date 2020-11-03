@@ -8,8 +8,8 @@ Overview: header for the mission file handler.
 */
 
 //constants
-float MSN_FILEFOUND = FALSE;
-float MSN_LOADED = FALSE;
+float MSN_FILEFOUND;
+float MSN_LOADED;
 
 //file tags
 string MSN_FILE_NAME = "name";          //mission name

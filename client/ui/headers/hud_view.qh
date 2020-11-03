@@ -158,7 +158,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair2;
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair3;
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair4;
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair5;
+//void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair5;
 
 void(float hitDirBit) hud_renderDirectionHit;
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection;
@@ -210,7 +210,7 @@ void() hud_render_info;
 
 //new text-based hud system
 void( float uid, float targetId ) hud_data_renderTarget_Shield;
-vector( float wbit ) hud_data_weapon_info;
+//vector( float wbit ) hud_data_weapon_info;
 void() data_hud_frame;
 void() data_hud_fps_cam;
 void() data_hud_external_cam_frame;

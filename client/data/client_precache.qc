@@ -34,10 +34,10 @@ void() dynamic_precache =
           precache_file(ln);
         }
         else if( strstrofs(ln, ".png", 0) != -1){
-          precache_pic(ln, 0);
+          precache_pic(ln, 8);
         }
         else if( strstrofs(ln, ".tga", 0) != -1){
-          precache_pic(ln, 0);
+          precache_pic(ln, 8);
         }
       }
 			ln = fgets(f);                      // get a new line from the file
@@ -47,21 +47,21 @@ void() dynamic_precache =
 };
 
 void() cs_precache={
-  HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret/ret_pip_hrz.png", 0);
-  HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret/ret_pip_vrt.png", 0);
-  HUT_RET_LOK = precache_pic("gfx/hud/ret/ret_lock.png", 0);
-  HUD_RET_HIT = precache_pic("gfx/hud/ret/ret_hit.png", 0);
-  HUD_RAD_PIP_BLD = precache_pic("gfx/hud/rad_bld.png", 0);
-  HUD_RAD_PIP_MCH = precache_pic("gfx/hud/rad_mch.png", 0);
-  HUD_RAD_PIP_NAV = precache_pic("gfx/hud/rad_nav.png", 0);
-  HUD_RAD_PIP_VEC = precache_pic("gfx/hud/rad_vec.png", 0);
+  HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret/ret_pip_hrz.png", 8);
+  HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret/ret_pip_vrt.png", 8);
+  HUT_RET_LOK = precache_pic("gfx/hud/ret/ret_lock.png", 8);
+  HUD_RET_HIT = precache_pic("gfx/hud/ret/ret_hit.png", 8);
+  HUD_RAD_PIP_BLD = precache_pic("gfx/hud/rad_bld.png", 8);
+  HUD_RAD_PIP_MCH = precache_pic("gfx/hud/rad_mch.png", 8);
+  HUD_RAD_PIP_NAV = precache_pic("gfx/hud/rad_nav.png", 8);
+  HUD_RAD_PIP_VEC = precache_pic("gfx/hud/rad_vec.png", 8);
   
-  HUD_TRG_PIP_L = precache_pic("gfx/hud/trg_pip_lft.png", 0);
-  HUD_TRG_PIP_R = precache_pic("gfx/hud/trg_pip_rgt.png", 0);
-  HUD_TRG_PIP_B = precache_pic("gfx/hud/trg_pip_bot.png", 0);
-  HUD_TRG_PIP_U = precache_pic("gfx/hud/trg_pip_up.png", 0);
+  HUD_TRG_PIP_L = precache_pic("gfx/hud/trg_pip_lft.png", 8);
+  HUD_TRG_PIP_R = precache_pic("gfx/hud/trg_pip_rgt.png", 8);
+  HUD_TRG_PIP_B = precache_pic("gfx/hud/trg_pip_bot.png", 8);
+  HUD_TRG_PIP_U = precache_pic("gfx/hud/trg_pip_up.png", 8);
   
-  HUD_DMG_PIP_H = precache_pic("gfx/hud/ret/dmg_pip_hrz.png", 0);
+  HUD_DMG_PIP_H = precache_pic("gfx/hud/ret/dmg_pip_hrz.png", 8);
 
   //cockpit voice
   SND_MCH_SFX_REACT = precache_sound2("sound/mech_react.ogg");
@@ -92,38 +92,38 @@ void() cs_precache={
   
   //UI GRAPHICS
   UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png", 8);
-  UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png", 0);
-  UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png", 0);
-  UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",0);
-  UI_DEF_BOX_256_BOX = precache_pic("gfx/ui/box_256_select.png", 0);
-  UI_DEF_BOX_256_THICK = precache_pic("gfx/ui/box_256_select_wide.png", 0);
+  UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png", 8);
+  UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png", 8);
+  UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",8);
+  UI_DEF_BOX_256_BOX = precache_pic("gfx/ui/box_256_select.png", 8);
+  UI_DEF_BOX_256_THICK = precache_pic("gfx/ui/box_256_select_wide.png", 8);
   UI_DEF_BOX_256_BTN = precache_pic("gfx/ui/box_256_btn.png",8);
-  UI_DEF_BOX_64 = precache_pic("gfx/ui/box_64.png",0);
-  UI_DEF_REC_64 = precache_pic("gfx/ui/box_64_rec.png",0);
-  UI_BTN_ARR_RIGHT = precache_pic("gfx/ui/btn_arr_right.png",0);
-  UI_BTN_ARR_LEFT = precache_pic("gfx/ui/btn_arr_left.png",0);
-  HUD_TARGET_BOX = precache_pic("gfx/hud/target_box.png",0);
+  UI_DEF_BOX_64 = precache_pic("gfx/ui/box_64.png",8);
+  UI_DEF_REC_64 = precache_pic("gfx/ui/box_64_rec.png",8);
+  UI_BTN_ARR_RIGHT = precache_pic("gfx/ui/btn_arr_right.png",8);
+  UI_BTN_ARR_LEFT = precache_pic("gfx/ui/btn_arr_left.png",8);
+  HUD_TARGET_BOX = precache_pic("gfx/hud/target_box.png",8);
   
-  HUD_TARGET_BOX_TL = precache_pic("gfx/hud/target_box_tl.png",0);
-  HUD_TARGET_BOX_TR = precache_pic("gfx/hud/target_box_tr.png",0);
-  HUD_TARGET_BOX_BR = precache_pic("gfx/hud/target_box_br.png",0);
-  HUD_TARGET_BOX_BL = precache_pic("gfx/hud/target_box_bl.png",0);
+  HUD_TARGET_BOX_TL = precache_pic("gfx/hud/target_box_tl.png",8);
+  HUD_TARGET_BOX_TR = precache_pic("gfx/hud/target_box_tr.png",8);
+  HUD_TARGET_BOX_BR = precache_pic("gfx/hud/target_box_br.png",8);
+  HUD_TARGET_BOX_BL = precache_pic("gfx/hud/target_box_bl.png",8);
   
-  UI_DEF_NAVPOINT = precache_pic("gfx/ui/hud_navpoint.png",0);
-  UI_DEF_DEPLOYPOINT = precache_pic("gfx/ui/hud_deploypoint.png", 0);
-  UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",0);
-  UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",0);
-  UI_HELP_IMG = precache_pic("gfx/ui/box_64_help.png", 0);
+  UI_DEF_NAVPOINT = precache_pic("gfx/ui/hud_navpoint.png",8);
+  UI_DEF_DEPLOYPOINT = precache_pic("gfx/ui/hud_deploypoint.png", 8);
+  UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",8);
+  UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",8);
+  UI_HELP_IMG = precache_pic("gfx/ui/box_64_help.png", 8);
  
-  UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png", 0);
-  UI_WEP_BAL = precache_pic("gfx/ui/wep_icons/wep_bal.png", 0);
-  UI_WEP_EXP = precache_pic("gfx/ui/wep_icons/wep_exp.png", 0);
-  UI_WEP_MSC = precache_pic("gfx/ui/wep_icons/wep_msc.png", 0);
+  UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png", 8);
+  UI_WEP_BAL = precache_pic("gfx/ui/wep_icons/wep_bal.png", 8);
+  UI_WEP_EXP = precache_pic("gfx/ui/wep_icons/wep_exp.png", 8);
+  UI_WEP_MSC = precache_pic("gfx/ui/wep_icons/wep_msc.png", 8);
   
-  SPRITE_deploy_point_FRAMES[1] = "gfx/ui/sprite/deploy_1.tga";
-  SPRITE_deploy_point_FRAMES[2] = "gfx/ui/sprite/deploy_2.tga";
-  SPRITE_deploy_point_FRAMES[3] = "gfx/ui/sprite/deploy_3.tga";
-  SPRITE_deploy_point_FRAMES[4] = "gfx/ui/sprite/deploy_4.tga";
+  SPRITE_deploy_point_FRAMES[0] = "gfx/ui/sprite/deploy_1.tga";
+  SPRITE_deploy_point_FRAMES[1] = "gfx/ui/sprite/deploy_2.tga";
+  SPRITE_deploy_point_FRAMES[2] = "gfx/ui/sprite/deploy_3.tga";
+  SPRITE_deploy_point_FRAMES[3] = "gfx/ui/sprite/deploy_4.tga";
   
   //STANDUP VOICES
   AI_VOICE_A[0] = "sound/voice/voiceA/voiceA_die.ogg";
