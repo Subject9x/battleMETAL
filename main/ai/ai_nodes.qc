@@ -57,7 +57,7 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
     return FALSE;
   }
   
-  if( endNode == -1 ){
+  if( endId == -1 ){
     return FALSE;
   }
   
@@ -260,7 +260,6 @@ float( vector src, float len, float angMin, float angMax, float furtherFlag) ai_
   srcMin = anglemod(srcAng - angMin);
   srcMax = anglemod(srcAng + angMax);
   
-  
   dprint(sprintf("srcAng: %f\n", srcAng));  //debug
   dprint(sprintf("srcMin: %f\n", srcMin));  //debug
   dprint(sprintf("srcMax: %f\n", srcMax));  //debug
@@ -269,30 +268,29 @@ float( vector src, float len, float angMin, float angMax, float furtherFlag) ai_
   
   if( furtherFlag ){
     checkDist = 128;
-    startDist = 1024;
+    startDist = len;
   }
   else{
-    checkDist = 1024;
-    startDist = 128;
+    checkDist = len;
+    startDist = 64;
   }
   
   found = -1;
   
-  nodegraph_clear_short_list();
   while( nodeItr < NODE_ID_COUNT ){
     node = NODEGRAPH_DATA[nodeItr];
     nodeItr = nodeItr + 1;
-    if( node.id != -1 )
+    if( node.id == -1 )
       continue;
     
     nodeLen = vlen(node.orig - src);
     if( furtherFlag ){
-      if( nodeLen < startDist && nodeLen > checkDist )
+      if( nodeLen < startDist && nodeLen >= checkDist )
         continue;
     }
     else{
       // < startDist is a bit too close for fighting to be compelling, so its mostly here as a 'floor'.
-      if( nodeLen > startDist && nodeLen < checkDist )
+      if( nodeLen >= startDist && nodeLen <= checkDist )
         continue;
     }
     
@@ -306,8 +304,10 @@ float( vector src, float len, float angMin, float angMax, float furtherFlag) ai_
     
     checkDist = nodeLen;
     found = nodeItr;
+    dprint(sprintf("          node found: %u\n", nodeItr)); //debug
   }
   
+  dprint(sprintf("          ACTUAL found: %u\n", nodeItr)); //debug
   return found;  //no nodes found;
 };
 //=================================================

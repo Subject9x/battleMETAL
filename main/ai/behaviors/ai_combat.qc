@@ -262,11 +262,13 @@ void() ai_combat_start={
     self.ai_state_next = ST_COM_MOVE_START;
     
     if( NODEGRAPH_LOADED ){
-      pathFind = ai_nodegraph_attack_node_close( self.enemy.origin, 512, 45, 90, FALSE ); //debug - this will be the 'scriptable' part of the combat funcs
-      
+      pathFind = -1;
+      pathFind = ai_nodegraph_attack_node_close( self.enemy.origin, 1024, 0, 360, FALSE ); //debug - this will be the 'scriptable' part of the combat funcs
+      dprint(sprintf("ai_combat_start().pathFind %u \n", pathFind));  //debug
       //pathFind == found node id from data set
-      if( pathFind ){
+      if( pathFind != -1){
         pathExec = ai_nodegraph_trace_vecToNode( self.origin, pathFind );
+        dprint(sprintf("ai_combat_start().pathExec %u \n", pathExec));  //debug
         if( pathExec ){
           self.ai_state_next = ST_COM_MOVE_START;
           return;
@@ -445,9 +447,12 @@ void() ai_com_moveExec={
   local entity nodeCheck;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
-    self.ai_state_next = ST_COM_MOVE_EXEC;
-    
-    return;
+      if( (self.flags & FL_TURRET) ){
+      self.torsoCenter.attack_state = TR_NORM;
+    }
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+    }
   }
   //-----------------------------------------------------------------
   local float dist;
@@ -460,15 +465,6 @@ void() ai_com_moveExec={
   self.moveState = MOVE_NORM;
   
   ai_update_accuracy( TRUE );
-  if(self.ai_state == ST_NODEGRAPH_MOVE &&  self.ai_state_last != ST_NODEGRAPH_MOVE ){
-    if( (self.flags & FL_TURRET) ){
-      self.torsoCenter.attack_state = TR_NORM;
-    }
-    if( self.legs ){
-      self.legs.attack_state = TR_NORM;
-    }
-    //return; - make the state-ini seamless by processing node movement on the first tic as well.
-  }
   
   if( self.ai_state_save == ST_COMBAT ){
     if( !ai_valid_target(self.enemy) ){
@@ -527,6 +523,7 @@ void() ai_com_moveExec={
         pathFind = ai_nodegraph_trace_vecToNode( self.origin, self.pathEndId );
         if( pathFind ){
           self.ai_state_next = ST_COM_MOVE_START;
+          dprint("travel complete->ST_COM_MOVE_START \n");  //debug
           return;
         }
       }
