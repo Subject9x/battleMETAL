@@ -238,7 +238,7 @@ float( vector entOrg ) ai_nodegraph_find_node={
     hiding, 
     strafing.
 */
-float( vector src, float len, float angMin, float angMax, float furtherFlag) ai_nodegraph_attack_node_close={
+float( vector src, float len, float atkAngle, float furtherFlag) ai_nodegraph_attack_node_close={
   
   local float checkDist;
   local float startDist;
@@ -251,14 +251,17 @@ float( vector src, float len, float angMin, float angMax, float furtherFlag) ai_
   local float srcMin;
   local float srcMax;
   
+  local vector v1;
+  local vector v2;
+  
   dprint(sprintf("len: %f\n", len));  //debug
-  dprint(sprintf("angMin: %f\n", angMin));  //debug
-  dprint(sprintf("angMax: %f\n", angMax));  //debug
+  dprint(sprintf("angMin: %f\n", atkAngle));  //debug
   dprint(sprintf("furtherFlag: %f\n", furtherFlag));  //debug
   
   srcAng = vectoyaw(src - self.origin);
-  srcMin = anglemod(srcAng - angMin);
-  srcMax = anglemod(srcAng + angMax);
+  srcAng = srcAng + atkAngle;
+  srcMin = srcAng - 22.5;
+  srcMax = srcAng + 22.5;
   
   dprint(sprintf("srcAng: %f\n", srcAng));  //debug
   dprint(sprintf("srcMin: %f\n", srcMin));  //debug
@@ -267,12 +270,12 @@ float( vector src, float len, float angMin, float angMax, float furtherFlag) ai_
   node_t node;
   
   if( furtherFlag ){
-    checkDist = 128;
+    checkDist = 32;
     startDist = len;
   }
   else{
     checkDist = len;
-    startDist = 64;
+    startDist = 32;
   }
   
   found = -1;
@@ -280,35 +283,91 @@ float( vector src, float len, float angMin, float angMax, float furtherFlag) ai_
   while( nodeItr < NODE_ID_COUNT ){
     node = NODEGRAPH_DATA[nodeItr];
     nodeItr = nodeItr + 1;
-    if( node.id == -1 )
+    if( node.id == -1 ){
       continue;
-    
-    nodeLen = vlen(node.orig - src);
+    }
+    v1 = node.orig;
+    v1_z = 0;
+    v2 = src;
+    v2_z = 0;
+    nodeLen = vlen(v1 - v2);
     if( furtherFlag ){
-      if( nodeLen < startDist && nodeLen >= checkDist )
+      if( nodeLen < startDist && nodeLen >= checkDist ){
         continue;
+      }
     }
     else{
       // < startDist is a bit too close for fighting to be compelling, so its mostly here as a 'floor'.
-      if( nodeLen >= startDist && nodeLen <= checkDist )
+      if( nodeLen >= startDist && nodeLen <= checkDist ){
         continue;
+      }
     }
     
     traceline( src, node.orig, TRUE, self);
-    if( trace_fraction != 1.0 )
+    if( trace_fraction != 1.0 ){
       continue;
-    
+    }
     nodeYaw = vectoyaw(node.orig - src);
-    if( nodeYaw > srcMax || nodeYaw < srcMin )
+    dprint(sprintf("          nodeYaw: %f\n", nodeYaw)); //debug
+    if( nodeYaw > srcMax || nodeYaw < srcMin ){
       continue;
-    
+    }
     checkDist = nodeLen;
     found = nodeItr;
-    dprint(sprintf("          node found: %u\n", nodeItr)); //debug
+    dprint(sprintf("          node found: %f\n", nodeItr)); //debug
   }
   
-  dprint(sprintf("          ACTUAL found: %u\n", nodeItr)); //debug
+  dprint(sprintf("          ACTUAL found: %f\n", found)); //debug
   return found;  //no nodes found;
+};
+
+/*
+  Attempt to find a node further away from the source spot, and hidden.
+  
+*/
+float(vector testOrg, float len) ai_nodegraph_find_hide_node={
+  local float nodeItr;
+  local vector v1;
+  local vector v2;
+  local float checkDist;
+  local float checkLen;
+  local float found;
+  node_t node;
+  
+  checkDist = len;
+  
+  found = -1;
+  
+  while( nodeItr < NODE_ID_COUNT){
+    node = NODEGRAPH_DATA[nodeItr];
+    nodeItr = nodeItr + 1;
+    
+    if(node.id == -1){
+      continue;
+    }
+    traceline(node.orig, testOrg, FALSE, self);
+    
+    if(trace_fraction > 0.95){
+      continue;
+    }
+    
+    if(NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != num_for_edict(self) ){
+      continue;
+    }
+    
+    v1 = node.orig;
+    v1_z = 0;
+    v2 = testOrg;
+    v2_z = 0;
+    checkLen = vlen(v2 - v1);
+    if( checkLen <= checkDist ){
+      continue;
+    }
+    found = nodeItr;
+    checkDist = checkLen;
+  }
+  
+  return found;
 };
 //=================================================
 

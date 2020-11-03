@@ -194,12 +194,12 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   
   dprint(sprintf("nodegraph_build_path( startNode[%u], endArrIdx[%u], endNodeId[%u] )\n", startNode, endArrIdx, endNodeId));  //debug
   stack = 0;
-  dprint("NODEGRAPH_SEARCH_CAME_FROM[] integrity check\n"); //debug
-  while( stack < NODE_ID_COUNT ){
-    dprint(sprintf("itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_CAME_FROM[stack]));//debug
-    stack = stack + 1;//debug
-  }//debug
-  dprint("============================\n"); //debug
+  //dprint("NODEGRAPH_SEARCH_CAME_FROM[] integrity check\n"); //debug
+  //while( stack < NODE_ID_COUNT ){
+  //  dprint(sprintf("itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_CAME_FROM[stack]));//debug
+  //  stack = stack + 1;//debug
+  //}//debug
+  //dprint("============================\n"); //debug
   
   stack = 0;
   reflectPath = 0;

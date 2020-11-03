@@ -259,20 +259,21 @@ void() ai_combat_start={
       self.ai_dampen = 0;
       return;
     }
-    self.ai_state_next = ST_COM_MOVE_START;
     
     if( NODEGRAPH_LOADED ){
       pathFind = -1;
-      pathFind = ai_nodegraph_attack_node_close( self.enemy.origin, 1024, 0, 360, FALSE ); //debug - this will be the 'scriptable' part of the combat funcs
-      dprint(sprintf("ai_combat_start().pathFind %u \n", pathFind));  //debug
+      pathFind = ai_nodegraph_attack_node_close( self.enemy.origin, 1024, 90, FALSE ); //debug - this will be the 'scriptable' part of the combat funcs
+      dprint(sprintf("ai_combat_start().pathFind %f \n", pathFind));  //debug
       //pathFind == found node id from data set
-      if( pathFind != -1){
-        pathExec = ai_nodegraph_trace_vecToNode( self.origin, pathFind );
-        dprint(sprintf("ai_combat_start().pathExec %u \n", pathExec));  //debug
-        if( pathExec ){
-          self.ai_state_next = ST_COM_MOVE_START;
-          return;
-        }
+      if( pathFind == -1){
+        self.ai_state_next = ST_COM_MOVE_BLOCK;
+        return;
+      }
+      pathExec = ai_nodegraph_trace_vecToNode( self.origin, pathFind );
+      dprint(sprintf("ai_combat_start().pathExec %u \n", pathExec));  //debug
+      if( pathExec ){
+        self.ai_state_next = ST_COM_MOVE_START;
+        return;
       }
     }
    
@@ -611,23 +612,24 @@ void() ai_com_moveEnd={
   STATE : COMBAT MANEUVER BLOCKED
 */
 void() ai_com_blocked={
+  local float nodeItr;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
-    ai_face_targ();
-    ai_attack();
-    
-    if( 1.0 < ai_check_node_radius(self) ){
-      self.patrolState = 0;
-      self.goalentity = self.patrolNode;
-      self.ai_move_next = MOVE_NODE_RADIUS;
-      self.ai_state_next = ST_COM_MOVE_START;
-      self.ai_movewait = time + 8;
-      return;
+    while( nodeItr < NODE_ID_COUNT ){
+      
     }
-    self.ai_movedist = 3;
-    self.ai_move_next = ai_move_director();
-    self.ai_state_next = ST_COM_MOVE_START;
+    self.ai_movewait = time + 5;
     return;
   }
  //------------------------------------------------------------------
+  ai_face_targ();
+  ai_attack();
+  if( time > self.ai_movewait ){
+    if(self.pathEndId != -1 && self.nq1 != -1 ){
+      self.ai_state_next = ST_COM_MOVE_EXEC;
+      return;
+    }
+    self.ai_state_next = ST_COMBAT;
+    return;
+  }
 };

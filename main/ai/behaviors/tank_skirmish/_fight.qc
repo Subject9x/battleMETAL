@@ -15,6 +15,35 @@ Overview:
     float combat_dist;    //AI's distance to its patrolNode
     float combat_roll;    //per-state-frame dice roll for random movement selection.
 */
+/*
+  NODEGRAPH case system
+  
+  +->RANGE < 400
+    +->FACE FORWARD
+    | +->HIDDEN/PREV NOT
+    | 
+    +->BEHIND
+      +->HIDDEN/PREV NOT
+  
+  +->RANGE < MINRANGE
+    +->FACE FORWARD
+    | +->HIDDEN/PREV NOT
+    |
+    +->BEHIND
+      +->HIDDEN/PREV NOT
+  
+  
+  ->RANGE > MINRANGE
+    +->FACE FORWARD
+    | +->HIDDEN/PREV NOT
+    |
+    +->BEHIND
+      +->HIDDEN/PREV NOT
+  
+
+*/
+
+
 
 /*
   CASE:
