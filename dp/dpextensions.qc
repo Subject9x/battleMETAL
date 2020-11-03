@@ -1,4 +1,4 @@
-
+#pragma target dp
 //DarkPlaces supported extension list, draft version 1.04
 
 //things that don't have extensions yet:
@@ -2478,7 +2478,7 @@ float(string url, float id, string content_type, string delim, float buf, float 
   //-Roohr (I dont take credit, just adding here)
 
 #define MSG_ENTITY 5
-.float(entity playerent, float changedflags) SendEntity;
+.float( float isNew, float changedflags) SendEntity;
 .float SendFlags;
 void(float buf, float fl) WriteFloat = #280;
 

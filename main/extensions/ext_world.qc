@@ -408,6 +408,9 @@ void() sv_endServer={
   local entity spot;
   local float sendPlayerState;
   
+  local float mapCount;
+  local float itr;
+  
   if( MISSION_STATUS == MISSION_STATUS_OVER ){
     client_send_server_info_update();
     //send game over data
@@ -465,9 +468,6 @@ void() sv_endServer={
       }
       MISSION_STATUS = MISSION_STATUS_DONE;
       
-      local float mapCount;
-      local float itr;
-      local string nextMap;
       mapCount = tokenizebyseparator(WORLD_MAP_LIST, " ");
       for( itr = 0; itr < mapCount; itr = itr + 1 ){
         if( argv(itr) == mapname ){
@@ -686,8 +686,7 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
 void() world_nodegraph_export_edgelinker_th={
   
   cons_logAString("[INFO]-world_export_nodegraph() edgelinker run ", ftos(self.count));  //DEBUG
-    
-  local string fileName;
+  
   local float fileExists;
   local entity nodes;
   
@@ -931,7 +930,7 @@ void( entity iEdgNode, float weight ) world_nodegraph_edge_check_len={
 };
 
 void(entity node, float fileData ) world_nodegraph_export_write_node={
-  local string nodeData;
+  
   local entity edgeNode;
   local float edgeMax;
   local float minDist;
@@ -987,10 +986,6 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
 */
 void() world_nodegraph_import={
   local float checkNodeItr;
-  local float checkEdgeItr;
-  
-  local float edgeId;
-  local float edgeLen;
   node_t check;
   
   NODEGRAPH_LOADED = world_nodegraph_read_file();
@@ -1027,7 +1022,6 @@ float() world_nodegraph_read_file={
   local string fileName;
   local string fileLine;
   local string line;
-  local string val;
   local float nodeCounter;
   
   local float itr;

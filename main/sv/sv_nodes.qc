@@ -12,13 +12,10 @@ Overview:
 
 void(float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
   
-  local float arrIdx;
-  
   local string edgeString;
   local float edgetokens;
   local float edgeItr;
   
-  local float edgeCount;
   local float edgeNum;
   
   local vector reflectOrg;
@@ -85,8 +82,6 @@ float( float startId, float endId ) nodegraph_trace={
   local float currentId;
   
   //local float moveCost;
-  local float block;
-  
   local float itrEdge;
   local float nextId;
   
@@ -236,7 +231,6 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
 float( float thisId, float newId ) nodegraph_check_visited={
   
   local float bVal;
-  local float iitr;
   
   bVal = NODEGRAPH_SEARCH_CAME_FROM[newId];
   if( bVal != -1 ){
