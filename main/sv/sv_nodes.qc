@@ -70,12 +70,15 @@ void(float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
 
 //NODEGRAPH API--------------------------------------------------------
 /*
-  The entry func for the AI to access the nodegraph system.
-    They have an end vector they want to get to, and will use the nodegraph to get there.
+  the core trace, takes a start nodeID and end nodeID, runs the pathfinding algorithm
+  and returns the nodeId of the first node that the bot needs to go to.
+  
 */
-float( vector start, vector end ) nodegraph_trace_route={
+float( float startId, float endId ) nodegraph_trace={
   
   local float bEnd;
+  local vector vStart;
+  local vector vEnd;
   
   local float queue;
   local float queueNext;
@@ -88,21 +91,20 @@ float( vector start, vector end ) nodegraph_trace_route={
   local float nextId;
   
   local float visit;
-  local float endId;
   
   node_t trace;
   
   nodegraph_clear_search_queue();
   
-  nodegraph_node_by_origin(start);
-  NODEGRAPH_SEARCH_QUEUE[0] = NODE_found.id;
-  NODEGRAPH_SEARCH_CAME_FROM[NODE_found.id] = NODE_found.id;
-  NODEGRAPH_SEARCH_COST[NODE_found.id] = 0;
-  dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", start_x,start_y,start_z, NODE_found.id, NODEGRAPH_SEARCH_QUEUE[0])); //debug
+  NODEGRAPH_SEARCH_QUEUE[0] = startId;
+  NODEGRAPH_SEARCH_CAME_FROM[startId] = startId;
+  //NODEGRAPH_SEARCH_COST[NODE_found.id] = 0;
   
-  nodegraph_node_by_origin(end);
-  endId = NODE_found.id;
-  dprint(sprintf("End org: %f %f %f | nodeid: %u\n",end_x,end_y,end_z, NODE_found.id)); //debug
+  vStart = nodegraph_get_node_origin( startId );
+  vEnd = nodegraph_get_node_origin( endId );
+  
+  dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", vStart_x,vStart_y,vStart_z, startId, NODEGRAPH_SEARCH_QUEUE[0])); //debug
+  dprint(sprintf("End org: %f %f %f | nodeid: %u\n",vEnd_x,vEnd_y,vEnd_z, endId)); //debug
   
   bEnd = FALSE;
   queue = 0;
@@ -153,12 +155,34 @@ float( vector start, vector end ) nodegraph_trace_route={
       dprint("-------------------------\n"); //debug
     }
   }
-  
   return queue;
 };
 
-/**
+/*
+  Wraps nodegraph_trace() by supplying just the start and end VECTORS. 
+*/
+float( vector start, vector end ) nodegraph_trace_vec={
+  
+  local float idStart;
+  local float path;
+  
+  nodegraph_clear_search_queue();
+  
+  nodegraph_node_by_origin(start);
+  idStart = NODE_found.id;
+  dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", start_x,start_y,start_z, NODE_found.id, NODEGRAPH_SEARCH_QUEUE[0])); //debug
+  
+  nodegraph_node_by_origin(end);
+  
+  path = nodegraph_trace( idStart, NODE_found.id );
+  
+  return path;
+};
 
+/**
+  The trace_route builds a path of GOAL -> START, 
+    this verifies the path, and converts the values from CAME_FROM[]
+    to the path list.
 */
 float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path={
   
@@ -172,9 +196,9 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   stack = 0;
   dprint("NODEGRAPH_SEARCH_CAME_FROM[] integrity check\n"); //debug
   while( stack < NODE_ID_COUNT ){
-    dprint(sprintf("itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_CAME_FROM[stack]));
-    stack = stack + 1;
-  }
+    dprint(sprintf("itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_CAME_FROM[stack]));//debug
+    stack = stack + 1;//debug
+  }//debug
   dprint("============================\n"); //debug
   
   stack = 0;
@@ -224,8 +248,9 @@ float( float thisId, float newId ) nodegraph_check_visited={
   return bVal;
 };
 
+
 /*
-  Clear the search queue
+  Utility, clear out any lingering nodeId's before the next re-population of the array.
 */
 void() nodegraph_clear_search_queue={
   local float queueCount;
@@ -233,7 +258,7 @@ void() nodegraph_clear_search_queue={
   for(queueCount = 0; queueCount < NODE_ID_COUNT; queueCount = queueCount + 1){
     NODEGRAPH_SEARCH_QUEUE[queueCount] = -1;
     NODEGRAPH_SEARCH_CAME_FROM[queueCount] = -1;
-    NODEGRAPH_SEARCH_COST[queueCount] = 0;
+    //NODEGRAPH_SEARCH_COST[queueCount] = 0;
     NODEGRAPH_SEARCH_PATH[queueCount] = -1;
   }
 };
@@ -284,8 +309,10 @@ void( float nodeId ) nodegraph_get_node_byid={
 };
 
 //NODEGRAPH debugger--------------------------------------------------------
+//call via console "cmd m dbgnode X Y" 
+                                //X = 
 /*
-  An entity that 'walks' the entire node graph
+  An entity that 'walks' the entire node graph, going from node-to-node every .think
 */
 void() nodegraph_debugger_th_node={
   local float nd;
@@ -350,7 +377,7 @@ void( vector src, vector dst ) nodegraph_debug_graph={
   setsize(nodegraph_debugger, nodegraph_debugger.mins, nodegraph_debugger.maxs);
   setorigin(nodegraph_debugger, world.origin);
   
-  edgeTotal = nodegraph_trace_route( src, dst );
+  edgeTotal = nodegraph_trace_vec( src, dst );
   
   nodegraph_node_by_origin(dst);
   enId = NODE_found.id;

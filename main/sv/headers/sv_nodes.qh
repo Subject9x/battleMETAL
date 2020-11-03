@@ -50,8 +50,11 @@ node_t NODE_check;
 
 float NODEGRAPH_SEARCH_QUEUE[1024];
 float NODEGRAPH_SEARCH_CAME_FROM[1024]; //where arr[nodeId] = (came from) old nodeId
-float NODEGRAPH_SEARCH_COST[1024]; //where arr[nodeId] = (came from) old nodeId
 float NODEGRAPH_SEARCH_PATH[1024];
+//float NODEGRAPH_SEARCH_COST[1024]; //where arr[nodeId] = (came from) old nodeId - note: without digging deeper and somehow standing up a PriorityQueue data structure, this feature doesn't work.
+                                                                                   //still, the bot pathfinds well-enough, because edge link lenght has been precomputed by the export process, providing
+                                                                                   //a degree of shortest-path-selection behavior.
+
 
 //Search Queue
 //this is to reduce spam of the very costly pathfinding, so we have a max request queue thats cleared every few seonds
@@ -85,6 +88,7 @@ void( vector org ) nodegraph_node_by_origin;
 void( float nodeId ) nodegraph_get_node_byid;
 
 //the actual pathfinding and tracing
-float( vector start, vector end ) nodegraph_trace_route;
+float( float startId, float endId ) nodegraph_trace;
+float( vector start, vector end ) nodegraph_trace_vec;
 float( float thisId, float newId ) nodegraph_check_visited;
 float( float startNode, float endArrIdx, float endId ) nodegraph_build_path;

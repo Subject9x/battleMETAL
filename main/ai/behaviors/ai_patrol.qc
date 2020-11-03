@@ -79,7 +79,7 @@ void() ai_patrol={
       if( !ai_check_terrain_move(self.origin, self.patrolNode.origin) ){
         dprint("AI - failed to see tether node, pathfinding!\n");
         if( NODEGRAPH_queue_total < NODEGRAPH_MAX_REQUEST ){
-          pathFind = ai_nodegraph_trace( self.origin, self.patrolNode.origin );
+          pathFind = ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );
           if( pathFind ){
             self.ai_state_save = self.ai_state;
             self.ai_state_next = ST_NODEGRAPH;

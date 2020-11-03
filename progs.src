@@ -1,17 +1,17 @@
+../progs.dat
+
 //battleMETAL
 //Peter Roohr
 //Mainfest file for PROGS.DAT (the server code module)
-
-../progs.dat
 
 dp/defs.qc          //original Quake defs, should always be first.
 dp/dpextensions.qc  //DPExtensions that most of the magic work.
 
 //Common Defs=====================
   common/data/defs/defs_player.qc     //AI/player top-level vars.
-  common/data/defs/defs_unit.qc		    //all fields related specifically to unit data.
-  common/data/defs/defs_part.qc		    //all fields related to unit sub components.
-  common/data/defs/defs_item.qc		    //all fields related to items.
+  common/data/defs/defs_unit.qc       //all fields related specifically to unit data.
+  common/data/defs/defs_part.qc       //all fields related to unit sub components.
+  common/data/defs/defs_item.qc       //all fields related to items.
   common/data/defs/defs_projectile.qc //all fields related to projectiles.
 //================================
 

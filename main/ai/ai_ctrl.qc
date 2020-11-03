@@ -114,14 +114,14 @@ void() ai_touch={
     else if(other.enemy){
       self.enemy = other.enemy;
     }
-    self.ai_move_next = MOVE_STAND_FACE;
-    self.ai_state_next = ST_COM_MOVE_START;
+    //self.ai_move_next = MOVE_STAND_FACE;
+    //self.ai_state_next = ST_COM_MOVE_START;
     return;
   }
   
   //AI DOES have a current enemy
   enemyFront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET) );
-  distanc = ai_check_node_radius(self.enemy);
+  //distanc = ai_check_node_radius(self.enemy);
   vis = ai_check_vis(self.enemy);
   
   if( !enemyFront && otherFront ){
@@ -330,8 +330,6 @@ void( float alt_low, float alt_max) ai_fly_update={
     setorigin( self, flydir );
   } 
 }
-
-
 
 /*
   Checks to see if Entity T is in the ANG arc of self

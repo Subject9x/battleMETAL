@@ -109,28 +109,30 @@ void() ai_state_nodegraph_travel={
     //arriving at path node
     if( self.nq2 == -1 ){
       //completed pathfinding?
-      if( self.tether == TETHER_PATROL || self.tether == TETHER_NODE){
-        if( ai_check_terrain_move(self.origin, self.patrolNode.origin) ){
-          if( self.tether == TETHER_PATROL ){
-            self.ai_state_next = ST_PTR;
-          }
-          else{
-            self.ai_state_next = ST_THR;
-          }
-          if( NODEGRAPH_DATA_BLOCK[self.nq1] != FALSE ){
-            NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
-          }
-          dprint("travel complete back to patrol \n");  //debug
-          return;
-        }
-        else{
-          //can't get path? ok, maybe the original path was > queue size
-          dprint("AI - failed to see patrol node, pathfinding!\n");
-          pathFind = ai_nodegraph_trace( self.origin, self.patrolNode.origin );
-          if( pathFind ){
-            self.ai_state_next = ST_NODEGRAPH;
+      if( self.nq1 == self.pathEndId){
+        if( self.tether == TETHER_PATROL || self.tether == TETHER_NODE){
+          if( ai_check_terrain_move(self.origin, self.patrolNode.origin) ){
+            if( self.tether == TETHER_PATROL ){
+              self.ai_state_next = ST_PTR;
+            }
+            else{
+              self.ai_state_next = ST_THR;
+            }
+            if( NODEGRAPH_DATA_BLOCK[self.nq1] != FALSE ){
+              NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
+            }
+            dprint("travel complete back to patrol \n");  //debug
             return;
           }
+        }
+      }
+      else{
+        //can't get path? ok, maybe the original path was > queue size
+        dprint("AI - failed to see patrol node, pathfinding!\n");
+        pathFind = ai_nodegraph_trace_vecToNode( self.origin, self.pathEndId );
+        if( pathFind ){
+          self.ai_state_next = ST_NODEGRAPH;
+          return;
         }
       }
     }

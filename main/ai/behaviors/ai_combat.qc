@@ -223,12 +223,14 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
 */
 
 /*
+  ST_COMBAT
   STATE : COMBAT START
     used to filter out what the AI should do before entering combat sub-system
 */
 void() ai_combat_start={
   local entity prox;
   local float pathFind;
+  local float pathExec;
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
@@ -259,6 +261,21 @@ void() ai_combat_start={
     }
     self.ai_state_next = ST_COM_MOVE_START;
     
+    if( NODEGRAPH_LOADED ){
+      pathFind = ai_nodegraph_attack_node_close( self.enemy.origin, 512, 45, 90, FALSE ); //debug - this will be the 'scriptable' part of the combat funcs
+      
+      //pathFind == found node id from data set
+      if( pathFind ){
+        pathExec = ai_nodegraph_trace_vecToNode( self.origin, pathFind );
+        if( pathExec ){
+          self.ai_state_next = ST_COM_MOVE_START;
+          return;
+        }
+      }
+    }
+   
+    //
+    
     /*
       Combat Frame State Checks
     */
@@ -284,23 +301,23 @@ void() ai_combat_start={
     
     
     //enemy_dist = ai_check_node_radius(self.enemy);
-    enemy_vis = ai_check_vis( self.enemy );
+    //enemy_vis = ai_check_vis( self.enemy );
     
-    if(enemy_vis == VIS_FAIL){
+    /*if(enemy_vis == VIS_FAIL){
       self.ai_state_save = self.ai_state;
       self.enemy = world;
       self.ai_move_next = MOVE_NODE_RADIUS;
       self.ai_movedist = 15;
       return;
-    }
+    }*/
     
-    if(enemy_vis == VIS_FRN){
+   //if(enemy_vis == VIS_FRN){
         
-    }
+   // }
     
-    if(enemy_vis == VIS_ENEMY){
+    //if(enemy_vis == VIS_ENEMY){
     
-    }
+   // }
     
     
     //out of bounds, do move override
@@ -320,21 +337,21 @@ void() ai_combat_start={
       }
     }*/
     
-    enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
+    //enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
     //enemy_range = ai_check_node_radius_targdist();
     //combat_dist = ai_check_node_radius(self);
-    combat_roll = random() * 1;
+    //combat_roll = random() * 1;
     
-    enemy_range = vlen(self.enemy.origin - self.origin);
-    enemy_dist = ai_check_terrain_move(self.origin, self.enemy.origin);
-    if( enemy_range > self.ai_minrange ){
+    //enemy_range = vlen(self.enemy.origin - self.origin);
+    //enemy_dist = ai_check_terrain_move(self.origin, self.enemy.origin);
+    //if( enemy_range > self.ai_minrange ){
       
-      return;
-    }
+     // return;
+    //}
     
-    if( enemy_range > 400 ){
+    //if( enemy_range > 400 ){
     
-    }
+    //}
     
     //enemy_range <= 400
     
@@ -401,6 +418,7 @@ void() ai_combat_start={
 
 /*
   STATE : COMBAT FIGHTING
+  ST_COM_MOVE_START
 */
 void() ai_com_moveStart={
   //ENTER STATE------------------------------------------------------------------
@@ -420,6 +438,7 @@ void() ai_com_moveStart={
 
 /*
   STATE : COMBAT MANEUVER
+  ST_COM_MOVE_EXEC
 */
 void() ai_com_moveExec={
   local float nodeMove;
@@ -427,10 +446,112 @@ void() ai_com_moveExec={
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
     self.ai_state_next = ST_COM_MOVE_EXEC;
+    
     return;
   }
   //-----------------------------------------------------------------
-  if( MOVE_NODE_TACTICAL < self.ai_move ){
+  local float dist;
+  local float walkSpeed;
+  local vector nqOrg;
+  local float turnSpeed;
+  local float pathFind;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.moveState = MOVE_NORM;
+  
+  ai_update_accuracy( TRUE );
+  if(self.ai_state == ST_NODEGRAPH_MOVE &&  self.ai_state_last != ST_NODEGRAPH_MOVE ){
+    if( (self.flags & FL_TURRET) ){
+      self.torsoCenter.attack_state = TR_NORM;
+    }
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+    }
+    //return; - make the state-ini seamless by processing node movement on the first tic as well.
+  }
+  
+  if( self.ai_state_save == ST_COMBAT ){
+    if( !ai_valid_target(self.enemy) ){
+      //was in combat, had a target, now we don't.
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
+  }
+  
+  if( self.nq1 == -1){
+    dprint("ai_state_nodegraph_travel() nq1 == -1!\n");  //debug
+    return;
+  }
+  
+  nqOrg = nodegraph_get_node_origin( self.nq1 );
+  //dprint(sprintf("curret node: %f\n", self.nq1));
+  //dprint(sprintf("curret origin: %f %f %f\n", nqOrg_x, nqOrg_y, nqOrg_z));
+  if( vectoyaw(nqOrg - self.origin) != self.angles_y ){
+    self.ideal_yaw = vectoyaw(nqOrg - self.origin) ;
+    yawCache = self.yaw_speed;
+    self.yaw_speed = self.yaw_speed * 2;
+    ChangeYaw();  //double 
+    self.yaw_speed = yawCache;
+    turnSpeed = TRUE;
+  }
+  
+  dist = vlen(nqOrg - self.origin);
+  
+  if( dist >= 128 ){
+    if( NODEGRAPH_DATA_BLOCK[self.nq1] == num_for_edict(self) ){
+      NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
+    }
+  }
+  
+  if( dist <= 64 ){
+    if( NODEGRAPH_DATA_BLOCK[self.nq1] == FALSE ){
+      NODEGRAPH_DATA_BLOCK[self.nq1] = num_for_edict(self);
+    }
+  }
+  if( dist <= 32 ){
+    //arriving at path node
+    if( self.nq2 == -1 ){
+      //completed pathfinding?
+      if( self.pathEndId == self.nq1 ){
+        //full completion of path.
+        if( NODEGRAPH_DATA_BLOCK[self.nq1] == num_for_edict(self) ){
+          NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
+        }
+        self.ai_state_next = ST_COM_MOVE_END;
+        dprint("travel complete->ST_COM_MOVE_END \n");  //debug
+        return;
+      }
+      else{
+        //can't get path? ok, maybe the original path was > queue size
+        dprint("AI - failed to see patrol node, pathfinding!\n");
+        pathFind = ai_nodegraph_trace_vecToNode( self.origin, self.pathEndId );
+        if( pathFind ){
+          self.ai_state_next = ST_COM_MOVE_START;
+          return;
+        }
+      }
+    }
+    else{
+      //still in the pathfinding
+      if( ai_nodegraph_next() ){
+        dprint(sprintf("path next: %f\n", self.nq2));
+      }
+    }
+  }
+  
+  //not at node yet, keep moving.
+  if( turnSpeed ){
+    walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
+  }
+  else{
+    walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 1.5;
+  }
+  if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+    dprint("TODO blocked in ai_state_nodegraph_travel() \n");  //debug
+  }
+  
+  
+  /*if( MOVE_NODE_TACTICAL < self.ai_move ){
     nodeMove = ai_check_node_radius(self);
     if( 1.0 < nodeMove ){
       if( self.tether == TETHER_PATROL ){
@@ -457,17 +578,17 @@ void() ai_com_moveExec={
       self.ai_move_next = MOVE_STAND; //just nulls out the move, due to shifting to Tether or Patrol
       return;
     }
-  }
+  }*/
   //node_radius
   //node_tactical
   //this have their OWN timers for ending, set on the first frame of ST_COM_MOVE_START
-  if( self.ai_move < MOVE_PATROLNODE ){
+  /*if( self.ai_move < MOVE_PATROLNODE ){
     //all the _STAND move timers here
     if( time > self.ai_movewait ){
       self.ai_state_next = ST_COM_MOVE_END;
       return;
     }
-  }
+  }*/
 };
 
 /*

@@ -42,36 +42,31 @@ float() ai_nodegraph_next={
 };
 
 /*
-  entry to nodegraph
-*/
-float( vector startPos, vector endPos ) ai_nodegraph_trace={
-
-  local float startNode;
-  local float endNode;
+  ai_nodegraph_trace_vec_route() is the core tracing func for the AI.
   
-  local vector nStartOrg;
-  local vector nEndOrg;
+  generally maintain 1 func that calls most of the nodegraph stuff to keep func jumps low.
+    Its advised that you wrap nodegraph_trace() with other functions though, which
+    is more maintainable.
+*/
+float( float startId, float endId ) ai_nodegraph_trace_route={
   
   local float qCount;
   local float pathCnt;
-
-  startNode = ai_nodegraph_to_org( startPos );
-  endNode = ai_nodegraph_to_org( endPos );
   
-  if( startNode != -1 ){
-    nodegraph_get_node_byid( startNode );
-    nStartOrg = NODE_check.orig;
+  if( startId == -1 ){
+    return FALSE;
   }
   
-  if( endNode != -1 ){
-    nodegraph_get_node_byid( endNode );
-    nEndOrg = NODE_check.orig;
+  if( endNode == -1 ){
+    return FALSE;
   }
   
-  qCount = nodegraph_trace_route(nStartOrg, nEndOrg);
+  qCount = nodegraph_trace(startId, endId);
   if( qCount > 0 ){
-    pathCnt = nodegraph_build_path( startNode, qCount, endNode );
+    pathCnt = nodegraph_build_path( startId, qCount, endId );
     if( pathCnt > -1 ){
+      self.pathEndId = NODEGRAPH_SEARCH_PATH[1];  //set the end node so we can remember the end if we need to.
+      dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
       self.nq1 = -1;  //clear out the queue before populating
       self.nq2 = -1;
       self.nq3 = -1;
@@ -131,6 +126,53 @@ float( vector startPos, vector endPos ) ai_nodegraph_trace={
   return FALSE;
 };
 
+/*
+  Wraps ai_nodegraph_trace_route() by allowing VECTOR input
+*/
+float( vector startPos, vector endPos ) ai_nodegraph_trace_vec={
+  
+  local float traceStat;
+  local float startNode;
+  local float endNode;
+  
+  startNode = ai_nodegraph_to_org( startPos );
+  endNode = ai_nodegraph_to_org( endPos );
+  
+  traceStat = ai_nodegraph_trace_route( startNode, endNode );
+  
+  return traceStat;
+};
+
+/*
+  Wraps ai_nodegraph_trace_route() by allowing VECTOR input for src, but you know the endId
+*/
+float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode={
+  
+  local float traceStat;
+  local float startNode;
+  
+  startNode = ai_nodegraph_to_org( startPos );
+  
+  traceStat = ai_nodegraph_trace_route( startNode, endId );
+  
+  return traceStat;
+};
+//given a known endId, and a map org
+
+/*
+  Wraps ai_nodegraph_trace_route() by allowing NODE ID input for start, and you want to find closest node to a map position.
+*/
+float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec={
+  
+  local float traceStat;
+  local float endNode;
+  
+  endNode = ai_nodegraph_to_org( endPos );
+  
+  traceStat = ai_nodegraph_trace_route( startId, endNode );
+  
+  return traceStat;
+};
 
 /*
   Find closest node to a desire map point (usually self, or target ai_node).
@@ -183,6 +225,91 @@ float( vector entOrg ) ai_nodegraph_find_node={
 };
 
 
+/*
+  used for combat moves.
+  The AI gives a target location, the radius from that location to check for nodes,
+  and the angle of attack TOWARDS the location.
+  
+  this function then finds the CLOSEST node to the vector SRC (or furtherFlag, furthest).
+  
+  use-case is to allow bots to move on the nodegraph, BUT semi-planned.
+    flanking,
+    retreating,
+    hiding, 
+    strafing.
+*/
+float( vector src, float len, float angMin, float angMax, float furtherFlag) ai_nodegraph_attack_node_close={
+  
+  local float checkDist;
+  local float startDist;
+  local float nodeItr;
+  local float nodeLen;
+  local float nodeYaw;
+  local float found;
+  
+  local float srcAng;
+  local float srcMin;
+  local float srcMax;
+  
+  dprint(sprintf("len: %f\n", len));  //debug
+  dprint(sprintf("angMin: %f\n", angMin));  //debug
+  dprint(sprintf("angMax: %f\n", angMax));  //debug
+  dprint(sprintf("furtherFlag: %f\n", furtherFlag));  //debug
+  
+  srcAng = vectoyaw(src - self.origin);
+  srcMin = anglemod(srcAng - angMin);
+  srcMax = anglemod(srcAng + angMax);
+  
+  
+  dprint(sprintf("srcAng: %f\n", srcAng));  //debug
+  dprint(sprintf("srcMin: %f\n", srcMin));  //debug
+  dprint(sprintf("srcMax: %f\n", srcMax));  //debug
+  
+  node_t node;
+  
+  if( furtherFlag ){
+    checkDist = 128;
+    startDist = 1024;
+  }
+  else{
+    checkDist = 1024;
+    startDist = 128;
+  }
+  
+  found = -1;
+  
+  nodegraph_clear_short_list();
+  while( nodeItr < NODE_ID_COUNT ){
+    node = NODEGRAPH_DATA[nodeItr];
+    nodeItr = nodeItr + 1;
+    if( node.id != -1 )
+      continue;
+    
+    nodeLen = vlen(node.orig - src);
+    if( furtherFlag ){
+      if( nodeLen < startDist && nodeLen > checkDist )
+        continue;
+    }
+    else{
+      // < startDist is a bit too close for fighting to be compelling, so its mostly here as a 'floor'.
+      if( nodeLen > startDist && nodeLen < checkDist )
+        continue;
+    }
+    
+    traceline( src, node.orig, TRUE, self);
+    if( trace_fraction != 1.0 )
+      continue;
+    
+    nodeYaw = vectoyaw(node.orig - src);
+    if( nodeYaw > srcMax || nodeYaw < srcMin )
+      continue;
+    
+    checkDist = nodeLen;
+    found = nodeItr;
+  }
+  
+  return found;  //no nodes found;
+};
 //=================================================
 
 

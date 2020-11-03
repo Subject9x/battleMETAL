@@ -423,6 +423,8 @@ entity(float checkDir) ai_get_next_node={
   return foundNode;
 };
 
+//OLD NODE CODE=========================================
+
 /*
   Check if entity <toCheck> is outside of 
   
