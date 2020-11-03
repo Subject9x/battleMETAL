@@ -34,7 +34,6 @@ entity NODEGRAPH_EXPORT_NODE[1024];
 vector NODEGRAPH_EXPORT_EDGE[1024]; //used by exporter to find closest nodes
 float NODEGRAPH_edge_counter;   //same
 
-#pragma target dp
 typedef struct
 {
   float id;

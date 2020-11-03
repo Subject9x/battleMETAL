@@ -21,6 +21,12 @@ float() ai_nodegraph_next={
     //early exit - end of queue
     return FALSE;
   }
+  
+  if( NODEGRAPH_DATA_BLOCK[self.nq2] > FALSE && NODEGRAPH_DATA_BLOCK[self.nq2] != self.entnum ){
+    //requested next node was occupied by someone else.
+    return FALSE;
+  }
+  
   self.nq1 = self.nq2;
   self.nq2 = self.nq3;
   self.nq3 = self.nq4;
@@ -37,6 +43,8 @@ float() ai_nodegraph_next={
   self.nq14 = self.nq15;
   self.nq15 = self.nq16;
   self.nq16 = -1;
+  
+  NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
   
   return TRUE;
 };
@@ -198,19 +206,25 @@ float( vector testOrg ) ai_nodegraph_to_org={
   
   while( nodeItr < NODE_ID_COUNT ){
     ndOrg = nodegraph_get_node_origin(nodeItr);
-    if( ndOrg != '0 0 0' ){
-      test2 = ndOrg;
-      test2_z = 0;
-      testDist = vlen(test2 - test1);
-      if( testDist < minDist ){
-        testVis = ai_check_terrain_move( testOrg, ndOrg );
-        if( testVis ){
-          minDist = testDist;
-          aNode = nodeItr;
-        }
-      }
-    }
     nodeItr = nodeItr + 1;
+    if( ndOrg == '0 0 0' ){
+      continue;
+    }
+    test2 = ndOrg;
+    test2_z = 0;
+    testDist = vlen(test2 - test1);
+    if( testDist >= minDist ){
+      continue;
+    }
+    testVis = ai_check_terrain_move( testOrg, ndOrg );
+    if( !testVis ){
+      continue;
+    }
+    if( NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
+      continue;
+    }
+    minDist = testDist;
+    aNode = nodeItr;
   }
   return aNode;
 };
@@ -351,7 +365,7 @@ float(vector testOrg, float len) ai_nodegraph_find_hide_node={
       continue;
     }
     
-    if(NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != num_for_edict(self) ){
+    if(NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
       continue;
     }
     
@@ -487,10 +501,10 @@ void() ai_node_check={
       self.ai_view = max(minDist / 12, 100);
       self.dphitcontentsmask = contentCache;
     }
-    if( cvar("developer") ){
-      cons_logAVector(self.classname, self.origin); //debug
-      cons_logAFloat(self.classname, self.ai_view);
-    }
+    //if( cvar("developer") ){
+     // cons_logAVector(self.classname, self.origin); //debug
+      //cons_logAFloat(self.classname, self.ai_view);
+    //}
   }
 };
 

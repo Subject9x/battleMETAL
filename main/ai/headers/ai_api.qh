@@ -38,13 +38,17 @@ float enemy_dist;     //target's distance to patrolNode
 float combat_dist;    //AI's distance to its patrolNode
 float enemy_vis;      //enum, Line of Sight to target
 float combat_roll;    //per-state-frame dice roll for random movement selection.
+
 vector ai_angle;      //used for temporary angle calcs that preclude overriding the AI's current yaw
 float yawCache;       //used to quickly cache yaw to do some per-frame mods
 entity friend_blocker;
 float friend_blocker_dist;
+
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
 vector selfSensorOrg;
-entity lastNode;        //minor optimization
+
+entity lastNode;        //minor optimization for assigning ai_nodes for patrols by reducing lookup times.
+
 void(entity newAttacker) ai_react_generic;
 entity alarm_ent; //per-frame global used to prevent near-endless alarm loops
 float alarm_depth;  //per-frame global used to prevent near-endless alarm loops;
@@ -54,6 +58,7 @@ float alarm_depth;  //per-frame global used to prevent near-endless alarm loops;
 .float ai_react_buffer;             //prevents too many runs of th_react;
 .float ai_react_time;               //stat for react buffer
 
+.float entnum;
 .float ai_rank;
 .float ai_action_time;  //for executing action states
 .float ai_action_mod;   //how many times to repeat a frameset before adjusting
@@ -151,12 +156,22 @@ float() ai_check_node_radius_targdist;
 entity() ai_node_tether_find;
 float( vector source, vector trgdst ) ai_check_terrain_move;
 void(entity none) ai_NULL_pain={ };
-void(entity none) ai_NULL_missile={ };
+float() ai_NULL_missile={ return FALSE;};
 
 ////////////////////////////////
 //AI COMBAT FUNCTIONS - ai_combat.qc
+float COMBAT_CLOSE     = 1;
+float COMBAT_MID       = 2;
+float COMBAT_LONG      = 4;
+float COMBAT_FRONT     = 8;
+float COMBAT_VIS       = 16;
+float COMBAT_FRIEND    = 32;
+
 .float prevVis;
 .float prevFacing;
+.float combatFlags; //populated by ai_combat_state_frame()
+
+void() ai_combat_state_frame; //tracks the changes of combat state vars for each unit
 
 float( float scan_mode) ai_check_scan;
 void() ai_ranged_attack;

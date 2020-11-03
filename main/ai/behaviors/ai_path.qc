@@ -28,6 +28,8 @@ void() ai_state_nodegraph={
     dprint(sprintf("path 15: %f\n", self.nq15));
     dprint(sprintf("path 16: %f\n", self.nq16));
     
+    
+    
     self.ai_state_next = ST_NODEGRAPH_MOVE;
     return;
   }
@@ -37,8 +39,73 @@ void() ai_state_nodegraph={
   ST_NODEGRAPH_PAUSE = 16
 */
 void() ai_state_nodegraph_pause={
-  if(self.ai_state == ST_NODEGRAPH_PAUSE &&  self.ai_state_last != ST_NODEGRAPH_PAUSE ){
+  local vector terrainScan;
+  local float nextState;
+  local float pathFind;
   
+  if(self.ai_state == ST_NODEGRAPH_PAUSE &&  self.ai_state_last != ST_NODEGRAPH_PAUSE ){
+    if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+      //prepare for war....
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
+    
+    //null node id error check.
+    if(self.nq1 == -1){
+      self.ai_state_next = ST_STAND;
+      return;
+    }
+    
+    //release node lock
+    NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
+    
+    //at verified end of path
+    if( self.pathEndId == self.nq1 ){
+      if( self.tether ){
+        switch( self.tether ){
+          case TETHER_PATROL:
+            terrainScan = self.patrolNode.origin;
+            nextState = ST_PTR;
+            break;
+          case TETHER_NODE:
+            terrainScan = self.patrolNode.origin;
+            nextState = ST_THR;
+            break;
+          case TETHER_SELF:
+            terrainScan = self.tetherOrg;
+            break;
+        }
+        if( terrainScan ){
+          if( ai_check_terrain_move(self.origin, terrainScan) ){
+            self.ai_state_next = nextState;
+            return;
+          }
+        }
+      }
+      self.ai_state_next = ST_STAND;
+      return;
+    }
+    
+    //end of path BUT not desired destination
+    if( self.nq2 == -1 ){
+      dprint("AI - failed to see patrol node, pathfinding!\n");
+      pathFind = ai_nodegraph_trace_vecToNode( self.origin, self.pathEndId );
+      if( pathFind ){
+        self.ai_state_next = ST_COM_MOVE_START;
+        dprint("travel complete->ST_COM_MOVE_START \n");  //debug
+        return;
+      }
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
+    
+    //end of path, ready to go again
+    pathFind = ai_nodegraph_next();
+    if( pathFind ){
+      dprint(sprintf("ai_combat() path next: %f\n", self.nq2));
+      self.ai_state_next = ST_COM_MOVE_START;
+    }
+    self.ai_state_next = ST_COMBAT;
     return;
   }
 };
@@ -51,12 +118,12 @@ void() ai_state_nodegraph_travel={
   local float walkSpeed;
   local vector nqOrg;
   local float turnSpeed;
-  local float pathFind;
   
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.moveState = MOVE_NORM;
-  
   ai_update_accuracy( TRUE );
+  
+  //ENTER STATE=====================================================
   if(self.ai_state == ST_NODEGRAPH_MOVE &&  self.ai_state_last != ST_NODEGRAPH_MOVE ){
     if( (self.flags & FL_TURRET) ){
       self.torsoCenter.attack_state = TR_NORM;
@@ -66,13 +133,12 @@ void() ai_state_nodegraph_travel={
     }
     //return; - make the state-ini seamless by processing node movement on the first tic as well.
   }
+  //=================================================================
   
-  if( self.ai_state_save == ST_COMBAT ){
-    if( !ai_valid_target(self.enemy) ){
-      //was in combat, had a target, now we don't.
-      self.ai_state_next = ST_COMBAT;
-      return;
-    }
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
+    //prepare for war....
+    self.ai_state_next = ST_COMBAT;
+    return;
   }
   
   if( self.nq1 == -1){
@@ -91,68 +157,24 @@ void() ai_state_nodegraph_travel={
     self.yaw_speed = yawCache;
     turnSpeed = TRUE;
   }
-  
-  dist = vlen(nqOrg - self.origin);
-  
-  if( dist >= 128 ){
-    if( NODEGRAPH_DATA_BLOCK[self.nq1] == num_for_edict(self) ){
-      NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
-    }
-  }
-  
-  if( dist <= 64 ){
-    if( NODEGRAPH_DATA_BLOCK[self.nq1] == FALSE ){
-      NODEGRAPH_DATA_BLOCK[self.nq1] = num_for_edict(self);
-    }
-  }
-  if( dist <= 48 ){
-    //arriving at path node
-    if( self.nq2 == -1 ){
-      //completed pathfinding?
-      if( self.nq1 == self.pathEndId){
-        if( self.tether == TETHER_PATROL || self.tether == TETHER_NODE){
-          if( ai_check_terrain_move(self.origin, self.patrolNode.origin) ){
-            if( self.tether == TETHER_PATROL ){
-              self.ai_state_next = ST_PTR;
-            }
-            else{
-              self.ai_state_next = ST_THR;
-            }
-            if( NODEGRAPH_DATA_BLOCK[self.nq1] != FALSE ){
-              NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
-            }
-            dprint("travel complete back to patrol \n");  //debug
-            return;
-          }
-        }
-      }
-      else{
-        //can't get path? ok, maybe the original path was > queue size
-        dprint("AI - failed to see patrol node, pathfinding!\n");
-        pathFind = ai_nodegraph_trace_vecToNode( self.origin, self.pathEndId );
-        if( pathFind ){
-          self.ai_state_next = ST_NODEGRAPH;
-          return;
-        }
-      }
-    }
-    else{
-      //still in the pathfinding
-      if( ai_nodegraph_next() ){
-        dprint(sprintf("path next: %f\n", self.nq2));
-      }
-    }
-  }
-  
   //not at node yet, keep moving.
   if( turnSpeed ){
-    walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 3;
+    walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 3.75;
   }
   else{
     walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
   }
   if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+    dprint(sprintf("class %s\n", self.classname));
     dprint("TODO blocked in ai_state_nodegraph_travel() \n");  //debug
+    self.ai_state_next = ST_COM_MOVE_BLOCK;
+    return;
+  }
+  
+  dist = vlen(nqOrg - self.origin);
+  if( dist <= 32 ){
+    self.ai_state_next = ST_COM_MOVE_END;
+    return;
   }
 };
 

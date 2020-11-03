@@ -11,7 +11,7 @@ Overview:
   Check Game Mode and Difficulty Skill
   remove AI if they're flagged to not be in a category; 
 */
-float() ai_can_spawn={  
+float() ai_can_spawn={
 
   if( self.netname ){
     self.netname = strzone(self.netname);

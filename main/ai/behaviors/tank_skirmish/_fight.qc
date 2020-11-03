@@ -43,7 +43,34 @@ Overview:
 
 */
 
+float() tank_sk_combat_script={
+  // COMBAT_FRONT | COMBAT_VIS
+  if( (self.combatFlags & COMBAT_CLOSE) ){
+    if( (self.combatFlags & COMBAT_VIS) ){
+      if( (self.combatFlags & COMBAT_FRONT) ){
+      
+      }
+      else{
+      
+      }
+    }
+    else{
+    
+    }
+    return;
+  }
 
+  if( (self.combatFlags & COMBAT_MID) ){
+    
+    return;
+  }
+  
+  if( (self.combatFlags & COMBAT_LONG) ){
+    
+    return;
+  }
+
+};
 
 /*
   CASE:

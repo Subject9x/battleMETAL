@@ -345,6 +345,7 @@ void() build_mech_bot={
   self.shieldHitDelay = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
+  self.entnum = num_for_edict(self);
   
   self.energy = self.energyMax;
   self.shield = self.shieldMax;
@@ -534,6 +535,7 @@ void() build_vehicle_unit={
   self.data_type = DATA_VEHC;
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.canTarget = TRUE;
+  self.entnum = num_for_edict(self);
   
   hmaxs = self.maxs;
   hmins = self.mins;

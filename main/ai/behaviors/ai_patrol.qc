@@ -28,7 +28,7 @@ void() ai_stand_generic={
     return;
   }
   //-----------------
-  if( ai_valid_target(self.enemy) ){
+  if( self.enemy ){
     self.ai_state_next = ST_COMBAT;
     return;
   }
@@ -38,13 +38,13 @@ void() ai_stand_generic={
   }
   
   if( self.patrolNode != world ){
-    if( self.patrolNode.classname == "ai_node" && self.tether == TETHER_PATROL ){
+    if( self.tether == TETHER_PATROL ){
       if( time > self.pausetime ){
         self.ai_state_next = ST_PTR;
         return;
       }
     }
-    else{
+    else if( self.tether == TETHER_NODE ){
       self.ai_state_next = ST_THR;
       return;
     }
@@ -69,7 +69,7 @@ void() ai_stand_generic={
   STATE : PATROL START
 */
 void() ai_patrol={
-  local float pNodeId;
+  
   local float pathFind;
   
   ai_update_accuracy( TRUE );

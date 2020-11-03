@@ -536,8 +536,11 @@ void() ai_setup_patrol={
         self.tetherOrg = self.origin;
       }
     }
+    else{
+      self.ai_state_next = ST_STAND;
+    }
   }
-
+  
   if( nodeFail ){
     self.tether = TETHER_NONE;
     self.patrolNode = world;
