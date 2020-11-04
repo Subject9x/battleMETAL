@@ -1,13 +1,19 @@
 //here we can define what WE consider to be Lighting: Normal settings
 //menu will load this in and run each command
+r_ambient 8
 r_coronas 1
+r_bloom 0
+r_fxaa 2
+r_glsl_postprocess 0
+r_hdr_glowintensity 2
+r_hdr_scenebrightness 0.5
 gl_flashblend 0
 r_shadow_gloss 1
 r_shadow_realtime_dlight 1
 r_shadow_realtime_dlight_shadows 0
 r_shadow_realtime_world 1
+r_shadow_realtime_world_compileportalculling 1
+r_shadow_realtime_world_compilesvbsp 0
 r_shadow_realtime_world_lightmaps 0
 r_shadow_realtime_world_shadows 1
-r_bloom 0
-r_hdr_scenebrightness 0.5
-r_hdr_glowintensity 1
+r_shadow_shadowmapping_bias 0.01

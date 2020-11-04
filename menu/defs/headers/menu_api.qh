@@ -16,7 +16,7 @@ entity TEXTFIELD_TARGET;
 entity KEYBIND_TARGET;
 float UI_INPUT_ACTIVE;  //buffer to track textfields
 float UI_INPUT_SHIFT; //detect shift input
-float UI_INPUT_FILTER_MAX = 110;
+float UI_INPUT_FILTER_MAX = 111;
 float UI_INPUT_FILTER[UI_INPUT_FILTER_MAX];  //filter out these chars;
 float UI_KEYBIND_ACTIVE;
 
@@ -25,7 +25,7 @@ vector VID_RESO_HALF[36];
 string VID_RESO_NAME[36];
 float VID_RESO_TOTAL;
 
-float HOST_RATE_TABLE[12];
+float HOST_RATE_TABLE[13];
 
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL     = 1;  //don't render label
