@@ -166,6 +166,7 @@ float COMBAT_LONG      = 4;
 float COMBAT_FRONT     = 8;
 float COMBAT_VIS       = 16;
 float COMBAT_FRIEND    = 32;
+float COMBAT_LEFT      = 64;
 
 .float prevVis;
 .float prevFacing;

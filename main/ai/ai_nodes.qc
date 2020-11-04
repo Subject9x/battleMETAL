@@ -335,6 +335,14 @@ float( vector src, float len, float atkAngle, float furtherFlag) ai_nodegraph_at
   return found;  //no nodes found;
 };
 
+
+/*
+  
+*/
+float( vector src, float len, float atkAngle, float furtherFlag) ai_nodegraph_find_node_to_angle={
+
+};
+
 /*
   Attempt to find a node further away from the source spot, and hidden.
   

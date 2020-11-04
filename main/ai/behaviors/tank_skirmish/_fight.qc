@@ -39,13 +39,38 @@ Overview:
     |
     +->BEHIND
       +->HIDDEN/PREV NOT
-  
-
 */
-
 float() tank_sk_combat_script={
+  local float found;
   // COMBAT_FRONT | COMBAT_VIS
   if( (self.combatFlags & COMBAT_CLOSE) ){
+    if( (self.combatFlags & COMBAT_VIS) ){
+      if( (self.combatFlags & COMBAT_FRONT) ){
+        makevectors(self.angles);
+        found = ai_nodegraph_attack_node_close( self.origin, 512, 180, FALSE);
+      }
+      else{
+        found = -1;
+      }
+    }
+    else{
+      found = ai_nodegraph_to_org( self.enemy.position3);
+    }
+  }
+  else if( (self.combatFlags & COMBAT_MID) ){
+    if( (self.combatFlags & COMBAT_VIS) ){
+      if( (self.combatFlags & COMBAT_FRONT) ){
+        
+      }
+      else{
+      
+      }
+    }
+    else{
+    
+    }
+  }
+  else if( (self.combatFlags & COMBAT_LONG) ){
     if( (self.combatFlags & COMBAT_VIS) ){
       if( (self.combatFlags & COMBAT_FRONT) ){
       
@@ -57,19 +82,9 @@ float() tank_sk_combat_script={
     else{
     
     }
-    return;
-  }
-
-  if( (self.combatFlags & COMBAT_MID) ){
-    
-    return;
   }
   
-  if( (self.combatFlags & COMBAT_LONG) ){
-    
-    return;
-  }
-
+  return found;
 };
 
 /*

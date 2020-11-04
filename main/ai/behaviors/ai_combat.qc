@@ -403,6 +403,8 @@ void() ai_com_moveExec={
   if( walkmove(self.angles_y, walkSpeed) == FALSE ){
     dprint(sprintf("class %s\n", self.classname));
     dprint("TODO blocked in ai_state_nodegraph_travel() \n");  //debug
+    //-> set self.ai_blockflag = time + X
+    //check for timeout in THIS state first
     self.ai_state_next = ST_COM_MOVE_BLOCK;
     return;
   }
