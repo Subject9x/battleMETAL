@@ -451,7 +451,9 @@ void() click_graphics_texture_compression_on={
   if( !graphics_texture_compress_off.drawme ){
     graphics_texture_compress_off.drawme = TRUE;
   }
-  strunzone(graphics_texture_compress_lbl.label); 
+  
+  strunzone(graphics_texture_compress_lbl.label);
+  
   graphics_texture_compress_lbl.label = strzone("ON");
   graphics_texture_compress_lbl.color = CLR_DEF_GRAY_H;
 };
@@ -805,14 +807,15 @@ void() m_graphics_i={
 
   if(graphics_texture_compress_lbl.label == "0"){
     graphics_texture_compress_lbl.len = FALSE;
-    graphics_texture_compress_lbl.label = strzone("OFF");
+    graphics_texture_compress_lbl.label = "OFF";
     graphics_texture_compress_off.drawme = FALSE;
   }
   else if(graphics_texture_compress_lbl.label == "1"){
     graphics_texture_compress_lbl.len = TRUE;
-    graphics_texture_compress_lbl.label = strzone("ON");
     graphics_texture_compress_on.drawme = FALSE;
+    graphics_texture_compress_lbl.label = "ON";
   }
+  graphics_texture_compress_lbl.label = strzone(graphics_texture_compress_lbl.label);
   
   //effects settings
   graphics_effects_lbl = lbl_text('345 93', '14 14 0', strzone(graphics_get_detail(cvar("saved1"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);

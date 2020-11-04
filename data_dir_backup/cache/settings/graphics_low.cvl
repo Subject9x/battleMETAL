@@ -1,10 +1,12 @@
 //here we can define what WE consider to be 'low' graphics
 //menu will load this in and run each command
 cl_particles 1
-cl_particles_quake 1
+cl_particles_alpha 0
+cl_particles_collisions 0
+cl_particles_quake 0
 cl_particles_quality 1
 cl_particles_explosions_shell 0
-r_explosionclip 1
+cl_particles_explosions_sparks 0
 cl_stainmaps 0
 cl_stainmaps_clearonload 1
 cl_decals 0
@@ -19,12 +21,17 @@ cl_beams_polygons 0
 cl_beams_instantaimhack 0
 cl_beams_quakepositionhack 1
 cl_beams_lightatend 0
-r_lerpmodels 1
-r_lerpsprites 1
+r_coronas 0
+r_deformvertexes 0
+r_explosionclip 0
+r_lerpmodels 0
+r_lerpsprites 0
 r_lerplightstyles 0
-gl_polyblend 1
+r_lerpimages 0
 r_skyscroll1 1
 r_skyscroll2 2
 r_waterwarp 1
-r_wateralpha 1
+r_water 0
+r_wateralpha 0
 r_waterscroll 1
+gl_polyblend 0

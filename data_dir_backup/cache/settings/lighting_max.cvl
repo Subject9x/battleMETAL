@@ -1,13 +1,19 @@
 //here we can define what WE consider to be Lighting: Full
 //menu will load this in and run each command
+r_ambient 2
 r_coronas 1
+r_bloom 1
+r_fxaa 4
+r_glsl_postprocess 1
+r_hdr_glowintensity 3
+r_hdr_scenebrightness 0.75
 gl_flashblend 0
 r_shadow_gloss 1
 r_shadow_realtime_dlight 1
 r_shadow_realtime_dlight_shadows 1
 r_shadow_realtime_world 1
-r_shadow_realtime_world_lightmaps 1
+r_shadow_realtime_world_compileportalculling 0
+r_shadow_realtime_world_compilesvbsp 1
+r_shadow_realtime_world_lightmaps 0
 r_shadow_realtime_world_shadows 1
-r_bloom 1
-r_hdr_scenebrightness 2
-r_hdr_glowintensity 4
+r_shadow_shadowmapping_bias 0.005
