@@ -16,6 +16,7 @@ void() ai_stand_generic={
   ai_update_accuracy( FALSE );
   //Enter state
   if(self.ai_state == ST_STAND &&  self.ai_state_last != ST_STAND ){
+    dprint("->ST_COMBAT\n");  //debug
     if( self.torsoCenter ){
       self.torsoCenter.attack_state = TR_NORM;
     }

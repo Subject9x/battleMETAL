@@ -21,7 +21,7 @@ Overview:
   +->RANGE < 400
     +->FACE FORWARD
     | +->HIDDEN/PREV NOT
-    | 
+    |   
     +->BEHIND
       +->HIDDEN/PREV NOT
   
@@ -42,12 +42,37 @@ Overview:
 */
 float() tank_sk_combat_script={
   local float found;
+  local float attackAngle;
   // COMBAT_FRONT | COMBAT_VIS
   if( (self.combatFlags & COMBAT_CLOSE) ){
     if( (self.combatFlags & COMBAT_VIS) ){
       if( (self.combatFlags & COMBAT_FRONT) ){
-        makevectors(self.angles);
-        found = ai_nodegraph_attack_node_close( self.origin, 512, 180, FALSE);
+        if( self.ai_rank == AI_RANK_ROK){
+          attackAngle = 135 + (combat_roll * 90);
+        }
+        else if(  self.ai_rank != AI_RANK_ACE ){
+          if( combat_roll < 0.6 ){
+            attackAngle = 90;
+          }
+          else{
+            attackAngle = -90;
+          }
+        }
+        else{
+          if( combat_roll < 0.3 ){
+            attackAngle = 60;
+          }
+          else if( combat_roll < 0.6 ){
+            attackAngle = -60;
+          }
+          else if( combat_roll < 0.8 ){
+            attackAngle = 90;
+          }
+          else{
+            attackAngle = -90;
+          }
+        }
+        //found = ai_nodegraph_find_node_to_angle( self.origin, 512, anglemod(self.angles_y + attackAngle), FALSE);  //backing up 
       }
       else{
         found = -1;

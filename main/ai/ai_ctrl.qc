@@ -290,6 +290,11 @@ void() ai_face_targ={
 	ChangeYaw ();
 };
 
+void() ai_face_targ_fade={
+	self.ideal_yaw = vectoyaw(self.enemy.position3 - self.origin);
+	ChangeYaw ();
+};
+
 /*
   rolled together all the flying code to a one-off call.
   this should be made everytime a flyer makes an engine-based move.
@@ -423,7 +428,7 @@ float( entity targ ) ai_check_vis={
   if ( trace_fraction == 1.0 ){
     return VIS_FRAC;
   }
-
+  
   //case: los hit a friendly entity, who is blocking los
   if( trace_ent.faction == self.faction ){
     friend_blocker = trace_ent;

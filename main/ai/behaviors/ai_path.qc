@@ -28,8 +28,6 @@ void() ai_state_nodegraph={
     dprint(sprintf("path 15: %f\n", self.nq15));
     dprint(sprintf("path 16: %f\n", self.nq16));
     
-    
-    
     self.ai_state_next = ST_NODEGRAPH_MOVE;
     return;
   }

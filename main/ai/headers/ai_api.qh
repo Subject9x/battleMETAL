@@ -90,6 +90,7 @@ void() ai_pilot_ini_vet;
 void() ai_pilot_ini_ace;
 
 //AI NODEGRAPH
+.float reverseFlag;
 void() node_setup;
 .float nq1; //to keep per-AI pathfinding costs low, we cache the next 4 nodes that the bot must go to
 .float nq2; //here, so that they're not asking the nodegraph to pathfind every frame for every bot.
@@ -116,8 +117,18 @@ float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode; //given a ma
 float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec; //given a known endId, and a map org
 float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
 float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
-float(vector testOrg, float len) ai_nodegraph_find_hide_node;
-float( vector src, float len, float atkAngle, float furtherFlag) ai_nodegraph_attack_node_close;  //given an attack angle, and a target origin, find the closest node
+float(vector testOrg, float radius) ai_nodegraph_find_hide_node;
+
+float( vector src, float radius, float atkAngle, float furtherFlag) ai_nodegraph_attack_node_close;  //given an attack angle, and a target origin, find the closest node
+float( vector src, float radius, float offSet, float atkAngle, float furtherFlag) ai_nodegraph_find_node_to_angle
+float( vector src, float radius ) ai_nodegraph_attack_strafe_left;
+float( vector src, float radius ) ai_nodegraph_attack_strafe_right;
+float( vector src, float radius ) ai_nodegraph_attack_flank_rear;
+float( vector src, float radius ) ai_nodegraph_attack_flank_left;
+float( vector src, float radius ) ai_nodegraph_attack_flank_right;
+float( vector src, float radius ) ai_nodegraph_retreat;
+float( vector src, float radius ) ai_nodegraph_attack_charge;
+float( float angl, float range, float radius ) ai_nodegraph_free_move;
 
 //AI TETHER FUNCTIONALITY
  //no valid targets, AI will chill in a spot if it loses target, it  looks for new ones near it. no real fixed position.
@@ -173,7 +184,6 @@ float COMBAT_LEFT      = 64;
 .float combatFlags; //populated by ai_combat_state_frame()
 
 void() ai_combat_state_frame; //tracks the changes of combat state vars for each unit
-
 float( float scan_mode) ai_check_scan;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
@@ -211,6 +221,7 @@ void() ai_patrol_state_frame;
 void() ai_face_goal;
 void(vector v) ai_face_origin;
 void() ai_face_targ;
+void() ai_face_targ_fade; //uses last-known position
 void( float alt_low, float alt_max ) ai_fly_update;
 float(entity targ, float ang_limit, float useTurret) ai_check_face;
 float(vector v, float ang_limit, float useTurret) ai_check_face_origin;
@@ -253,6 +264,20 @@ float MOVE_CIRCLE_LEFT    = 1024;
 float MOVE_STRAFE_LEFT    = 2048;
 float MOVE_CHARGE_LEFT    = 4096;
 
+//new moves
+float MOVE_NEXT_STAND         = 1;
+float MOVE_NEXT_TRACK         = 2;
+float MOVE_NEXT_STRAFE_LEFT   = 3;
+float MOVE_NEXT_STRAFE_RIGHT  = 4;
+float MOVE_NEXT_FLANK_REAR    = 5;
+float MOVE_NEXT_FLANK_LEFT    = 6;
+float MOVE_NEXT_FLANK_RIGHT   = 7;
+float MOVE_NEXT_RETREAT       = 8;
+float MOVE_NEXT_FORWARD       = 9;
+float MOVE_NEXT_FOR_LEFT      = 10;
+float MOVE_NEXT_FOR_RIGHT     = 11;
+float MOVE_NEXT_HUNT          = 12;
+
 .float ai_state_save; //  used by NODEGRAPH to determine who called the state.
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_last; //  used for per-frame comparisons
@@ -282,23 +307,15 @@ float ST_COM_MOVE_EXEC        = 12; //execute a prescribed combat maneuver
 float ST_COM_MOVE_END         = 13; //completed a combat maneuver
 float ST_COM_MOVE_BLOCK       = 14; //combat move was blocked for some reason
 
-//stub - unimplemented unblocking behavior
-//  was an idea to have units do a move-stack thing where they could unwind their
-//    current move stack as a means to both pathfind and get themselves unstuck.
 float ST_NODEGRAPH            = 15;
 float ST_NODEGRAPH_PAUSE      = 16;
 float ST_NODEGRAPH_MOVE       = 17;
 float ST_NODEGRAPH_BLOCK      = 18;
-float ST_NODEGRAPH_ROLLBACK   = 19;
-float ST_NODEGRAPH_ROLLBLOCK  = 20;
 
-//stub - unimplemented hunting behavior
-// Quake C can't really DO good unit pathfinding across complex terrain,
-//    ergo hunting isn't really possible without a massive expenditure of labor.
-//float ST_TRACK_MOVE           = 15;
-//float ST_TRACK_BLOCK          = 16;
-//float ST_TRACK_ROLLBACK       = 17;
-//float ST_TRACK_ROLLBLOCK      = 18;
+float ST_HUNT                 = 19;
+float ST_HUNT_MOVE            = 20;
+float ST_HUNT_NODE            = 20;
+float ST_HUNT_BLOCK           = 21;
 
 ////////////////////////////////
 //AI STATE FUNCTIONS - ai_state.qc
@@ -339,6 +356,7 @@ void() ai_state_nodegraph_travel;
 void() ai_state_nodegraph_travel_block;
 
 //combat script function impl
+.float() ai_fight_script;
 .void() ai_fight_take_fire;
 .void() ai_fight_out_radius;
 .void() ai_fight_vis_friend;
@@ -391,6 +409,13 @@ void() ai_thr_pause;
 void() ai_thr_travel;
 void() ai_thr_travel_block;
 
+////////////////////////////////
+//GENERIC TETHER IMPL - ai_tether.qc
+void() ai_hunt_start;
+void() ai_hunt_move;
+void() ai_hunt_check_node;
+void() ai_hunt_block;
+
 //DEBUG functions
 //when you need the var-name for a global var value.
 string(float stateId) dbg_state={
@@ -438,6 +463,18 @@ string(float stateId) dbg_state={
       break;
     case ST_COM_MOVE_BLOCK:
       val =  "ST_COM_MOVE_BLOCK";
+      break;
+    case ST_HUNT:
+      val =  "ST_HUNT";
+      break;
+    case ST_HUNT_MOVE:
+      val =  "ST_HUNT_MOVE";
+      break;
+    case ST_HUNT_NODE:
+      val =  "ST_HUNT_NODE";
+      break;
+    case ST_HUNT_BLOCK:
+      val =  "ST_HUNT_BLOCK";
       break;
   }
   return val;

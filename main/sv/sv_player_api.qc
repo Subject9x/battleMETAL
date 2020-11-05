@@ -100,6 +100,9 @@ called after running player input frame
 ============
 */
 void() PlayerPostThink = {
+  local float proxNode;
+  local vector proxNodeOrg;
+  
   if (self.deadflag >= DEAD_DYING){
     return;
   }
@@ -559,4 +562,4 @@ void() PlayerJump={
 // player jumping sound
 	//sound (self, CHAN_BODY, "player/plyrjmp8.wav", 1, ATTN_NORM);
 	self.velocity_z = self.velocity_z + 0;
- };
+};

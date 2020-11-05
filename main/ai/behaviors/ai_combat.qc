@@ -231,24 +231,24 @@ void() ai_combat_state_frame={
   combat_roll = random() * 1.0;
   
   if( self.prevVis != VIS_FRAC && enemy_vis == VIS_FRAC ){
-    self.combatFlags = self.combatFlags & COMBAT_VIS;
+    self.combatFlags = self.combatFlags | COMBAT_VIS;
   }
   else if( self.prevVis == VIS_FRAC && enemy_vis == VIS_FRAC ){
-    self.combatFlags = self.combatFlags & COMBAT_VIS;
+    self.combatFlags = self.combatFlags | COMBAT_VIS;
   }
   
   if(enemy_dist < 300){
-    self.combatFlags = self.combatFlags & COMBAT_CLOSE;
+    self.combatFlags = self.combatFlags | COMBAT_CLOSE;
   }
   else if( enemy_dist <= self.ai_minrange ){
-    self.combatFlags = self.combatFlags & COMBAT_MID;
+    self.combatFlags = self.combatFlags | COMBAT_MID;
   }
   else{
-    self.combatFlags = self.combatFlags & COMBAT_LONG;
+    self.combatFlags = self.combatFlags | COMBAT_LONG;
   }
   
   if( enemy_infront ){
-    self.combatFlags = self.combatFlags & COMBAT_FRONT;
+    self.combatFlags = self.combatFlags | COMBAT_FRONT;
   }
   self.prevVis = enemy_vis;
   self.prevFacing = enemy_infront;
@@ -259,14 +259,13 @@ void() ai_combat_state_frame={
     used to filter out what the AI should do before entering combat sub-system
 */
 void() ai_combat_start={
-  local entity prox;
   local float pathFind;
   local float nearNode;
   local float pathExec;
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-    
+    dprint("->ST_COMBAT\n");  //debug
     //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
@@ -286,32 +285,61 @@ void() ai_combat_start={
       return;
     }
     
+    //todo - disarmed?
     if( (self.flags & FL_DISARMED) ){
       self.ai_state_next = ST_STAND;
       self.ai_dampen = 0;
       return;
     }
+    
+    //build combat frame start data
     ai_combat_state_frame();
     
+    /*
+      TODO
+      Fight script determines the MOVE_ to make
+        MOVE_STAND
+        
+        MOVE_TRACK_TARGET
+        
+        MOVE_STRAFE_LEFT
+        
+        MOVE_STRAFE_RIGHT
+        
+        MOVE_FLANK_LEFT
+        
+        MOVE_FLANK_RIGHT
+        
+        MOVE_FLANK_REAR
+        
+        MOVE_RETREAT
+    */
+    //you better hope its loaded...
     if( NODEGRAPH_LOADED ){
       pathFind = -1;
-      pathFind = ai_nodegraph_attack_node_close( self.enemy.origin, 1024, 90, FALSE ); //debug - this will be the 'scriptable' part of the combat funcs
-      dprint(sprintf("ai_combat_start().pathFind %f \n", pathFind));  //debug
-      //pathFind == found node id from data set
-      if( pathFind == -1 ){
-        self.ai_state_next = ST_COM_MOVE_BLOCK;
-        return;
+      if( self.ai_fight_script ){
+        self.ai_move_next = self.ai_fight_script();
+        dprint(sprintf("fight script %f\n", self.ai_move_next));  //debug
       }
-      nearNode = ai_nodegraph_to_org(self.origin);
-      if( nearNode == -1 ){
-        self.ai_state_next = ST_COM_MOVE_BLOCK;
-        return;
-      }
-      pathExec = ai_nodegraph_trace_route( nearNode, pathFind );
-      dprint(sprintf("ai_combat_start().pathExec %u \n", pathExec));  //debug
-      if( pathExec == FALSE ){
-        self.ai_state_next = ST_COM_MOVE_BLOCK;
-        return;
+      else{
+        pathFind = ai_nodegraph_attack_node_close( self.enemy.origin, 1024, 90, FALSE ); //debug - this will be the 'scriptable' part of the combat funcs
+        dprint(sprintf("ai_combat_start().pathFind %f \n", pathFind));  //debug
+        //pathFind == found node id from data set
+        if( !pathFind || pathFind == -1 ){
+          self.ai_state_next = ST_COM_MOVE_BLOCK;
+          return;
+        }
+        nearNode = ai_nodegraph_to_org(self.origin);
+        if( nearNode == -1 ){
+          self.ai_state_next = ST_COM_MOVE_BLOCK;
+          return;
+        }
+        pathExec = ai_nodegraph_trace_route( nearNode, pathFind );
+        dprint(sprintf("ai_combat_start().pathExec %u \n", pathExec));  //debug
+        if( pathExec == FALSE ){
+          self.ai_state_next = ST_COM_MOVE_BLOCK;
+          return;
+        }
       }
       self.ai_state_next = ST_COM_MOVE_START;
     }
@@ -328,16 +356,69 @@ void() ai_combat_start={
   ST_COM_MOVE_START
 */
 void() ai_com_moveStart={
+  local vector nqOrg;
+  local float nodeYaw;
+  local float nodeExec;
+  
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  self.moveState = MOVE_NORM;
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-    if( self.ai_move > MOVE_STAND_FACE){
-      self.moveState = MOVE_NORM;
+    self.ai_move = self.ai_move_next;
+    
+    //CHECK - HUNTING
+    if( self.ai_move == MOVE_NEXT_HUNT ){
+      self.ai_state_next = ST_HUNT;
+      return;
+    }
+    
+    ai_attack();
+  
+    //CHECK - NON NODE MOVES
+    if( self.ai_move == MOVE_NEXT_STAND ){
+      self.ai_movewait = time + 5;
+    }
+    else if( self.ai_move == MOVE_NEXT_TRACK ){
+      self.ai_movewait = time + 10;
     }
     else{
-      self.moveState = 0;
+      switch(self.ai_move){
+        case MOVE_NEXT_STRAFE_LEFT:
+          nodeExec = ai_nodegraph_attack_strafe_left( self.enemy.origin, 768 );
+          if( !nodeExec ){
+            nodeExec = ai_nodegraph_attack_flank_right( self.enemy.origin, 1024 );
+          }
+          break;
+        case MOVE_NEXT_STRAFE_RIGHT:
+          nodeExec = ai_nodegraph_attack_strafe_right( self.enemy.origin, 768);
+          if( !nodeExec ){
+            nodeExec = ai_nodegraph_attack_flank_left( self.enemy.origin, 1024 );
+          }
+          break;
+        case MOVE_NEXT_FLANK_REAR:
+          nodeExec = ai_nodegraph_attack_flank_rear( self.enemy.origin, 2048 );
+          break;
+        case MOVE_NEXT_FLANK_LEFT:
+          nodeExec = ai_nodegraph_attack_flank_left(self.enemy.origin, 1024 );
+          break;
+        case MOVE_NEXT_FLANK_RIGHT:
+          nodeExec = ai_nodegraph_attack_flank_right( self.enemy.origin, 1024 );
+          break;
+        case MOVE_NEXT_RETREAT:
+          nodeExec = ai_nodegraph_retreat( self.enemy.origin, 1024 );
+          break;
+        case MOVE_NEXT_FORWARD:
+          nodeExec = ai_nodegraph_attack_charge( self.enemy.origin, 2048 );
+          break;
+        case MOVE_NEXT_FOR_LEFT:
+          nodeExec = ai_nodegraph_free_move( -67, 1024, 768 );
+          break;
+        case MOVE_NEXT_FOR_RIGHT:
+          nodeExec = ai_nodegraph_free_move( 67, 1024, 768 );
+          break;
+      }
+      if( !nodeExec ){
+        self.ai_move = MOVE_NEXT_TRACK;
+      }
     }
     self.ai_state_next = ST_COM_MOVE_EXEC;
     return;
@@ -350,8 +431,11 @@ void() ai_com_moveStart={
   ST_COM_MOVE_EXEC
 */
 void() ai_com_moveExec={
+  local float checkVis;
+  
   local float nodeMove;
-  local entity nodeCheck;  
+  local entity nodeCheck;
+  local float nodeYaw;
   
   local float dist;
   local float walkSpeed;
@@ -360,7 +444,6 @@ void() ai_com_moveExec={
   local float pathFind;
   
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-  self.moveState = MOVE_NORM;
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
@@ -374,6 +457,35 @@ void() ai_com_moveExec={
   }
   //-----------------------------------------------------------------
   
+  checkVis = ai_check_vis(self.enemy);
+  if( checkVis != VIS_FRAC || checkVis != VIS_FRN ){
+    self.ai_state_next = ST_HUNT;
+    return;
+  }
+  ai_attack();
+  
+  if( self.ai_move == MOVE_NEXT_STAND ){
+    ai_update_accuracy( FALSE );
+    self.moveState = 0;
+    //todo dead enemy check
+    if( time > self.ai_movewait ){
+      self.ai_state_next = ST_COM_MOVE_END;
+    }
+    return;
+  }
+  else if( self.ai_move == MOVE_NEXT_TRACK ){
+    ai_update_accuracy( FALSE );
+    self.moveState = 0;
+    ai_face_targ();
+    //todo dead enemy check
+    if( time > self.ai_movewait ){
+      self.ai_state_next = ST_COM_MOVE_END;
+    }
+    return;
+  }
+  
+  self.moveState = MOVE_NORM;
+  
   ai_update_accuracy( TRUE );
   
   if( self.nq1 == -1){
@@ -385,7 +497,8 @@ void() ai_com_moveExec={
   nqOrg = nodegraph_get_node_origin( self.nq1 );
   //dprint(sprintf("curret node: %f\n", self.nq1));
   //dprint(sprintf("curret origin: %f %f %f\n", nqOrg_x, nqOrg_y, nqOrg_z));
-  if( vectoyaw(nqOrg - self.origin) != self.angles_y ){
+  nodeYaw = vectoyaw(nqOrg - self.origin);
+  if( nodeYaw != self.angles_y ){
     self.ideal_yaw = vectoyaw(nqOrg - self.origin) ;
     yawCache = self.yaw_speed;
     self.yaw_speed = self.yaw_speed * 2;
@@ -393,13 +506,15 @@ void() ai_com_moveExec={
     self.yaw_speed = yawCache;
     turnSpeed = TRUE;
   }
+
   //not at node yet, keep moving.
-  if( turnSpeed ){
+  if( turnSpeed || self.reverseFlag ){
     walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 3;
   }
   else{
-    walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 1.15;
+    walkSpeed = self.data_speed_forward * 0.85;
   }
+  
   if( walkmove(self.angles_y, walkSpeed) == FALSE ){
     dprint(sprintf("class %s\n", self.classname));
     dprint("TODO blocked in ai_state_nodegraph_travel() \n");  //debug
@@ -408,7 +523,8 @@ void() ai_com_moveExec={
     self.ai_state_next = ST_COM_MOVE_BLOCK;
     return;
   }
-  
+
+  //ARRIVED AT NODE
   dist = vlen(nqOrg - self.origin);
   if( dist <= 32 ){
     self.ai_state_next = ST_COM_MOVE_END;
@@ -423,9 +539,33 @@ void() ai_com_moveExec={
 void() ai_com_moveEnd={
   local float nodeLen;
   local float pathFind;
+  local float checkVis;
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
+    self.reverseFlag = FALSE;
+    //early exit if target dead
+    if( !ai_valid_target(self.enemy) ){
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
+    
+    checkVis = ai_check_vis(self.enemy);
+    if( checkVis != VIS_FRAC || checkVis != VIS_FRN ){
+      self.ai_state_next = ST_HUNT;
+      return;
+    }
+    ai_attack();
+    
+    if( self.ai_move == MOVE_NEXT_STAND ){
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
+    else if( self.ai_move == MOVE_NEXT_TRACK ){
+      self.ai_state_next = ST_COMBAT;
+      return;
+    }
+    
     //null node id error check.
     if(self.nq1 == -1){
       self.ai_state_next = ST_COMBAT;
@@ -459,6 +599,7 @@ void() ai_com_moveEnd={
     if( pathFind ){
       dprint(sprintf("ai_combat() path next: %f\n", self.nq2));
       self.ai_state_next = ST_COM_MOVE_START;
+      return;
     }
     self.ai_state_next = ST_COMBAT;
     return;
@@ -467,22 +608,43 @@ void() ai_com_moveEnd={
 };
 
 /*
+  STATE: COMBAT POST NODE MOVE
+    move was successful
+*/
+
+
+
+/*
   STATE : COMBAT MANEUVER BLOCKED
 */
 void() ai_com_blocked={
-  local float nodeItr;
+  local float pathFind;
+  local float checkVis;
+  
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
-    while( nodeItr < NODE_ID_COUNT ){
-      
-      nodeItr = nodeItr + 1;
+    
+    pathFind = ai_nodegraph_trace_vecToNode( self.origin, self.pathEndId );
+    if(pathFind){
+      self.ai_state_next = ST_COM_MOVE_START;
+      return;
     }
     self.ai_movewait = time + 5;
     return;
   }
  //------------------------------------------------------------------
-  ai_face_targ();
-  ai_attack();
+  if( self.enemy != world ){
+    checkVis = ai_check_vis( self.enemy );
+    if( checkVis == VIS_FRAC || checkVis == VIS_FRN ){
+      ai_face_targ();
+      ai_attack();
+    }
+    else{
+      ai_face_targ_fade();
+      ai_attack();
+    }
+  }
+  
   if( time > self.ai_movewait ){
     self.ai_state_next = ST_COMBAT;
     return;

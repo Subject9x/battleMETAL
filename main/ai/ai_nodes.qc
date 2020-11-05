@@ -337,17 +337,153 @@ float( vector src, float len, float atkAngle, float furtherFlag) ai_nodegraph_at
 
 
 /*
-  
+  like the ai_nodegraph_attack_node_close(), 
+    except take the raw input angle as the angle to use.
 */
-float( vector src, float len, float atkAngle, float furtherFlag) ai_nodegraph_find_node_to_angle={
+float( vector src, float radius, float offSet, float atkAngle, float furtherFlag) ai_nodegraph_find_node_to_angle={
+  
+  local float checkDist;
+  local float startDist;
+  local float nodeItr;
+  local float nodeLen;
+  local float nodeYaw;
+  local float found;
+  
+  local vector srcAng;
+  local vector srcMod;
+  
+  local vector v1;
+  local vector v2;
+  
+  dprint(sprintf("radius: %f\n", radius));  //debug
+  dprint(sprintf("angMin: %f\n", atkAngle));  //debug
+  dprint(sprintf("furtherFlag: %f\n", furtherFlag));  //debug
+  
+  srcAng = vectoangles(src - self.origin);
+  srcAng_y = anglemod(srcAng_y + atkAngle);
+  
+  makevectors(srcAng);
+  srcMod = src + (v_forward * offSet);
+  
+  node_t node;
+  
+  if( furtherFlag ){
+    checkDist = 32;
+    startDist = radius;
+  }
+  else{
+    checkDist = radius;
+    startDist = 32;
+  }
+  
+  found = -1;
+  
+  while( nodeItr < NODE_ID_COUNT ){
+    node = NODEGRAPH_DATA[nodeItr];
+    nodeItr = nodeItr + 1;
+    if( node.id == -1 ){
+      continue;
+    }
+    v1 = node.orig;
+    v1_z = 0;
+    v2 = srcMod;
+    v2_z = 0;
+    nodeLen = vlen(v1 - v2);
+    if( furtherFlag ){
+      if( nodeLen < startDist && nodeLen >= checkDist ){
+        continue;
+      }
+    }
+    else{
+      // < startDist is a bit too close for fighting to be compelling, so its mostly here as a 'floor'.
+      if( nodeLen >= startDist && nodeLen <= checkDist ){
+        continue;
+      }
+    }
+    
+    traceline( srcMod, node.orig, TRUE, self);
+    if( trace_fraction != 1.0 ){
+      continue;
+    }
+    checkDist = nodeLen;
+    found = nodeItr;
+    dprint(sprintf("          node found: %f\n", nodeItr)); //debug
+  }
+  
+  dprint(sprintf("          ACTUAL found: %f\n", found)); //debug
+  return found;  //no nodes found;
+};
 
+
+float( vector src, float radius ) ai_nodegraph_attack_strafe_left={
+  dprint("ai_nodegraph_attack_strafe_left()\n");  //debug
+  local float found;
+  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, -90, FALSE);
+  return found;
+};
+
+float( vector src, float radius ) ai_nodegraph_attack_strafe_right={
+  dprint("ai_nodegraph_attack_strafe_right()\n");  //debug
+  local float found;
+  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 90, FALSE);
+  return found;
+};
+
+float( vector src, float radius ) ai_nodegraph_attack_flank_rear={
+  dprint("ai_nodegraph_attack_flank_rear()\n");  //debug
+  local float found;
+  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 180, FALSE);
+  return found;
+};
+
+float( vector src, float radius ) ai_nodegraph_attack_flank_left={
+  dprint("ai_nodegraph_attack_flank_left()\n");  //debug
+  local float found;
+  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, -45, FALSE);
+  return found;
+};
+
+float( vector src, float radius ) ai_nodegraph_attack_flank_right={
+  dprint("ai_nodegraph_attack_flank_right()\n");  //debug
+  local float found;
+  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 45, FALSE);
+  return found;
+};
+
+float( vector src, float radius ) ai_nodegraph_attack_charge={
+  dprint("ai_nodegraph_attack_charge()\n");  //debug
+  local float found;
+  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 0, FALSE);
+  return found;
+};
+
+float( vector src, float radius ) ai_nodegraph_retreat={
+  dprint("ai_nodegraph_retreat()\n");  //debug
+  local float found;
+  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 180, FALSE);
+  return found;
+};
+
+float( float angl, float range, float radius ) ai_nodegraph_free_move={
+  local vector dir;
+  local vector dst;
+  local float found;
+  
+  dir = self.angles;
+  dir_y = anglemod(self.angles_y + angl);
+  makevectors(dir);
+  
+  dst = self.origin + (v_forward * radius);
+  
+  found = ai_nodegraph_find_node_to_angle( dst, radius, 1024, angl, FALSE);
+  return found;
 };
 
 /*
   Attempt to find a node further away from the source spot, and hidden.
   
 */
-float(vector testOrg, float len) ai_nodegraph_find_hide_node={
+float(vector testOrg, float radius) ai_nodegraph_find_hide_node={
   local float nodeItr;
   local vector v1;
   local vector v2;
@@ -356,7 +492,7 @@ float(vector testOrg, float len) ai_nodegraph_find_hide_node={
   local float found;
   node_t node;
   
-  checkDist = len;
+  checkDist = radius;
   
   found = -1;
   

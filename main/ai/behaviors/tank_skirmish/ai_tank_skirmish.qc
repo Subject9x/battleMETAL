@@ -63,6 +63,7 @@ void() ai_tank_skirmish={
   self.ai_state_combat_moveEnd = ai_com_moveEnd;
   self.ai_state_combat_blocked = ai_com_blocked;
   
+  self.ai_fight_script = tank_sk_combat_script;
   self.ai_fight_take_fire = tank_sk_fight_target_fire;
   self.ai_fight_out_radius = tank_sk_fight_out_radius;
   self.ai_fight_vis_friend = tank_sk_fight_vis_friend;

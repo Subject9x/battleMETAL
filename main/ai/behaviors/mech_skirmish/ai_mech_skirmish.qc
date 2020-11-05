@@ -60,6 +60,9 @@ void() ai_mech_skirmish={
   self.ai_state_combat_moveEnd = ai_com_moveEnd;
   self.ai_state_combat_blocked = ai_com_blocked;
   
+  //todo setup by skill
+  self.ai_fight_script = mech_sk_fight_script_easy;
+  
   self.ai_fight_take_fire = mech_sk_fight_target_fire;
   self.ai_fight_out_radius = mech_sk_fight_out_radius;
   self.ai_fight_vis_friend = mech_sk_fight_vis_friend;

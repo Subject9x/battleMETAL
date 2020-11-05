@@ -94,6 +94,15 @@ void() ai_state_frame={
       case ST_NODEGRAPH_BLOCK:
         self.ai_run_state_now = ai_state_nodegraph_travel_block;
        break;
+      case ST_HUNT:
+        self.ai_run_state_now = ai_hunt_start;
+        break;
+      case ST_HUNT_MOVE:
+        self.ai_run_state_now = ai_hunt_move;
+        break;
+      case ST_HUNT_BLOCK:
+        self.ai_run_state_now = ai_hunt_block;
+        break;
     }
     
     if( self.ai_run_state_now ){
@@ -102,7 +111,7 @@ void() ai_state_frame={
     
     if( self.ai_state == ST_COM_MOVE_START || self.ai_state == ST_COM_MOVE_EXEC ){
       //optimization to reduce nesting of switch/case calls
-      ai_combat_move_frame();
+      //ai_combat_move_frame();
     }
     
     if( (self.flags&FL_TURRET) ){
