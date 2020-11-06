@@ -450,7 +450,7 @@ void() EndFrame;  //so this is actually declared in the C-code, but missing from
 //
 .void()		th_stand;
 .void()		th_walk;
-.void()		th_run;
+//.void()		th_run;
 .float()	th_missile; // LordHavoc: changed from void() to float(), returns true if attacking
 .void()		th_melee;
 //deprecated this .void(entity attacker, float damage, float damgtype, string dethtype)		th_pain;

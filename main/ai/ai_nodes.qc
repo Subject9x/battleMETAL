@@ -12,6 +12,17 @@ Overview: ai nodes
 
 //NODEGRAPH API-----------------------------------
 
+float( float nodeId ) ai_nodegraph_distance_check={
+  if( nodeId == -1 ){
+    return -1;
+  }
+  
+  node_t node;
+  node = NODEGRAPH_DATA[nodeId];
+  
+  return vlen(node.orig - self.origin);
+};
+
 /*
   updates .nodeQueue slots, returns FALSE if there are more nodes to go.
 */

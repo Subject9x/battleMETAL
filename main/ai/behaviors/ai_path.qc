@@ -6,6 +6,54 @@ Overview:
   special state for using the nodegraph system
 */
 
+
+/*
+  
+*/
+void() ai_nodegraph_frame={
+  local float pathFind;
+  local float nodeDist;
+  local vector nqOrg;
+  local float turnSpeed;
+  local float walkSpeed;
+  
+  if( self.nq1 == -1 ){
+    //fresh path
+    ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+  }
+  else{
+    nodeDist = ai_nodegraph_distance_check( self.nq1 );
+    if( nodeDist != -1 ){
+      //todo - path error
+    }
+    if( nodeDist <= 32 ){
+      //arrived at node
+      ai_nodegraph_next();
+    }
+    else{
+      nqOrg = nodegraph_get_node_origin( self.nq1 );
+      //still traveling to node
+      if( vectoyaw(nqOrg - self.origin) != self.angles_y ){
+        self.ideal_yaw = vectoyaw(nqOrg - self.origin) ;
+        yawCache = self.yaw_speed;
+        self.yaw_speed = self.yaw_speed * 2;
+        ChangeYaw();  //double 
+        self.yaw_speed = yawCache;
+        turnSpeed = TRUE;
+      }
+      if( turnSpeed ){
+        walkSpeed = self.data_speed_strafe;
+      }
+      else{
+        walkSpeed = self.data_speed_forward;
+      }
+      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+        ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+      }
+    }
+  }
+};
+
 /*
   ST_NODEGRAPH = 15;
 */

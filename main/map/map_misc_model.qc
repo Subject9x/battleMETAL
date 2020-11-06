@@ -64,8 +64,8 @@ void() map_terrain_model={
   if( (self.spawnflags & 4) ){
     self.effects = EF_NOSHADOW;
   }
-  self.SendEntity = terrain_model_send;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendEntity = terrain_model_send;
+  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 

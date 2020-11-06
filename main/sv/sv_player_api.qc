@@ -208,11 +208,11 @@ void() PlayerPostThink = {
   
   if( time > self.posFadeTimer ){
     self.posFadeTimer = time + POSITION_FADE_TIME;
-    self.position1 = self.origin;
-    self.position2 = self.position1;
     self.position3 = self.position2;
+    self.position2 = self.position1;
+    self.position1 = self.origin;
   }
-  
+
 // check to see if player landed and play landing sound	
   if ((self.jump_flag < self.fall_dist) && (self.flags & FL_ONGROUND) && (self.health > 0)){
     //if (self.watertype == CONTENT_WATER)

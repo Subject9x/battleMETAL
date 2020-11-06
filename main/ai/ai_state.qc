@@ -122,9 +122,9 @@ void() ai_state_frame={
     }
     if( time > self.posFadeTimer ){
       self.posFadeTimer = time + POSITION_FADE_TIME;
-      self.position1 = self.origin;
-      self.position2 = self.position1;
       self.position3 = self.position2;
+      self.position2 = self.position1;
+      self.position1 = self.origin;
     }
   }
   
@@ -132,6 +132,106 @@ void() ai_state_frame={
   self.think = ai_state_frame;
   self.nextthink = time + 0.06;
 };
+
+/*
+  atomic state solution, per-frame updates are run as small header funcs inside a state
+*/
+void() ai_frame_update={
+  self.ai_unit_update();
+  if( !self.deadflag ){
+    //ai_update();
+    if( ai_valid_target(self.enemy) ){
+      ai_turret_set_state(TR_TARG);
+      self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+      ai_lock_on();
+    }
+    else{ 
+      self.enemy = world;
+      self.button0 = FALSE;
+    }
+    self.attackFlag = 0;
+    ai_ranged_attack();
+    self.button0 = FALSE;
+  }
+  if( !(self.spawnflags & DEBUG_MODE) ){
+    //State update
+    self.ai_state_last = self.ai_state;
+    self.ai_state = self.ai_state_next;
+  }
+  if( time > self.posFadeTimer ){
+    self.posFadeTimer = time + POSITION_FADE_TIME;
+    self.position3 = self.position2;
+    self.position2 = self.position1;
+    self.position1 = self.origin;
+  }
+};
+
+/*
+  Tear-down and rebuild of AI.
+    things got overcomplicated (see the commit history, haha)
+    
+    ty EMR for helping me think through it.
+*/
+void() ai_state_frame_2={
+  local float checkVis;
+  
+  ai_frame_update();
+  if( ai_valid_target(self.enemy) ){
+    checkVis = ai_check_vis(self.enemy);
+    if( checkVis == VIS_FRAC ){
+      ai_attack();
+      enemy_range = ai_check_range(self.enemy);
+      //if( enemy_range > self.ai_minrange || rushBase){
+      if( enemy_range > self.ai_minrange ){
+        //================================================
+        //MOVE THIS TO ITS OWN FUNCTION
+        ai_nodegraph_frame();
+        ///////////////////////////////////////////////////////
+      }
+      else if( enemy_range <= self.ai_minrange ){
+        //stop-to-shoot vs dont stop-to-shoot
+          //rushBase
+          ai_face_targ();
+      }
+      else{
+        ai_face_targ();
+      }
+    }
+    else{
+      self.enemy = world;
+    }
+  }
+  else{
+    //do_patrol
+    if( !ai_check_scan( self.stat_rdr_mode ) ){
+      
+    }
+  }
+  self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  self.think = ai_state_frame_2;
+  self.nextthink = time + 0.05;
+};
+
+
+/*
+  Bot is exiting combat and needs to re-establish what it was doing pre-combat
+*/
+void() ai_exit_combat={
+  if( self.tether == TETHER_PATROL ){
+    self.goalentity = self.patrolNode;
+    self.tetherOrg = self.goalentity.origin;
+    
+  }
+  else if( self.tether == TETHER_NODE ){
+    self.goalentity = self.patrolNode;
+    self.tetherOrg = self.goalentity.origin;
+  }
+  else if( self.tether == TETHER_SELF ){
+  
+  }
+};
+
+//
 
 /*
   Combat Sub-state; this should only be run by self.ai_state_combat_moveExec();

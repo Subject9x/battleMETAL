@@ -391,7 +391,7 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
 };
 
 float(entity t) ai_check_range={
-  return vlen( self.origin - t.origin );
+  return vlen( t.origin - self.origin);
 };
 
 float( entity targ ) ai_check_vis={
@@ -399,12 +399,12 @@ float( entity targ ) ai_check_vis={
   local float contentBuffer;
   
   makevectors(self.angles);
-  spot1 = self.cockpit.origin + (v_forward * 10) + (v_up * 5);
+  spot1 = self.cockpit.origin + (v_forward * 10) + (v_up * 3);
   if( targ.data_type == DATA_BLD ){
     spot2 = targ.hitOffset;
   }
   else{
-    spot2 = targ.origin + '0 0 5';
+    spot2 = targ.origin + '0 0 3';
   }
   contentBuffer = self.dphitcontentsmask;
   self.dphitcontentsmask = 0;
@@ -560,6 +560,10 @@ void() ai_setup_patrol={
     self.nextthink = 1.0 + (random() * 2);
   }
   self.think = ai_state_frame;
+  //DEBUG TODO this is a test
+  if( self.classname == "unit_onnek_survest_lobber"){
+    self.think = ai_state_frame_2;
+  }
   self.nextthink = self.nextthink + time;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };

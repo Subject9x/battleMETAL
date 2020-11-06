@@ -60,7 +60,7 @@ float NODEGRAPH_SEARCH_PATH[1024];
 float NODEGRAPH_queue_timeout = 2;
 float NODEGRAPH_queue_timer;
 float NODEGRAPH_queue_total;
-float NODEGRAPH_MAX_REQUEST = 6; //how many ents can use the system at a time? needs refinement, but the point is to gate
+float NODEGRAPH_MAX_REQUEST = 16; //how many ents can use the system at a time? needs refinement, but the point is to gate
                                   //this very costly code behind some limits.
 
 float NODE_ID_COUNT;

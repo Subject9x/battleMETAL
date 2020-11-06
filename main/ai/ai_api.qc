@@ -553,7 +553,6 @@ entity() ai_node_tether_find={
   
   this bad boi scans the underlying terrain in addition to checking normal tracelines for possible move,
     and for finding the closest valid node.
-  
 */
 float( vector source, vector trgdst ) ai_check_terrain_move={
   local vector edgeAngle;
