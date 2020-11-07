@@ -31,6 +31,14 @@ void() ai_nodegraph_clear_path={
   self.nq14 = -1;
   self.nq15 = -1;
   self.nq16 = -1;
+  self.nq17 = -1;
+  self.nq18 = -1;
+  self.nq19 = -1;
+  self.nq20 = -1;
+  self.nq21 = -1;
+  self.nq22 = -1;
+  self.nq23 = -1;
+  self.nq24 = -1;
 };
 
 
@@ -76,7 +84,15 @@ float() ai_nodegraph_next={
   self.nq13 = self.nq14;
   self.nq14 = self.nq15;
   self.nq15 = self.nq16;
-  self.nq16 = -1;
+  self.nq16 = self.nq17;
+  self.nq17 = self.nq18;
+  self.nq18 = self.nq19;
+  self.nq19 = self.nq20;
+  self.nq20 = self.nq21;
+  self.nq21 = self.nq22;
+  self.nq22 = self.nq23;
+  self.nq23 = self.nq24;
+  self.nq24 = -1;
   
   NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
   
@@ -103,6 +119,7 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
     return FALSE;
   }
   
+  dprint(sprintf("ai_nodegraph_trace_route( %f %f )\n", startId, endId)); //debug
   qCount = nodegraph_trace(startId, endId);
   if( qCount > 0 ){
     pathCnt = nodegraph_build_path( startId, qCount, endId );
@@ -143,6 +160,22 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
       self.nq15 =  NODEGRAPH_SEARCH_PATH[pathCnt];
       pathCnt = max(-1, pathCnt - 1);
       self.nq16 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq17 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq18 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq19 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq20 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq21 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq22 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq23 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq24 =  NODEGRAPH_SEARCH_PATH[pathCnt];
       pathCnt = max(-1, pathCnt - 1);
       
       if( self.nq1 > -1 ){
@@ -223,10 +256,10 @@ float( vector testOrg ) ai_nodegraph_to_org={
   minDist = 1024;
   test1_x = testOrg_x;
   test1_y = testOrg_y;
-  
+  nodeItr = -1;
   while( nodeItr < NODE_ID_COUNT ){
-    ndOrg = nodegraph_get_node_origin(nodeItr);
     nodeItr = nodeItr + 1;
+    ndOrg = nodegraph_get_node_origin(nodeItr);
     if( ndOrg == '0 0 0' ){
       continue;
     }

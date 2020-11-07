@@ -200,7 +200,7 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   reflectPath = 0;
   pathId = endNodeId;
   dprint(sprintf("===BULDING PATH===stack{%u}\n", stack));  //debug
-  while( pathId != startNode ){
+  while( pathId != startNode && stack < endArrIdx ){
     NODEGRAPH_SEARCH_PATH[stack] = pathId;
       dprint(sprintf("    itr[%u]-node(%d)\n", stack, pathId));
     reflectPath = pathId;

@@ -60,10 +60,10 @@ void() ai_patrol_frame_2={
       }
     }
     else{
-      dprint("patrol -> FALSE ai_check_terrain_move \n"); //debug
+      //dprint("patrol -> FALSE ai_check_terrain_move \n"); //debug
       //blocked, use nodegraph
       if( self.nq1 == -1 ){
-        dprint("patrol -> FALSE ai_check_terrain_move \n"); //debug
+        //dprint("patrol -> FALSE ai_check_terrain_move \n"); //debug
         //fresh path
         ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );
       }

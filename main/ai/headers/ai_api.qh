@@ -107,6 +107,14 @@ void() node_setup;
 .float nq14;
 .float nq15;
 .float nq16;
+.float nq17;
+.float nq18;
+.float nq19;
+.float nq20;
+.float nq21;
+.float nq22;
+.float nq23;
+.float nq24;
 .float pathEndId; //actual end node to the path, used for early exit / check of nq1-16 path cache.
 
 void() ai_nodegraph_clear_path; //mostly just for ini.

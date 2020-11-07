@@ -130,6 +130,14 @@ void() ai_state_nodegraph={
     dprint(sprintf("path 14: %f\n", self.nq14));
     dprint(sprintf("path 15: %f\n", self.nq15));
     dprint(sprintf("path 16: %f\n", self.nq16));
+    dprint(sprintf("path 16: %f\n", self.nq17));
+    dprint(sprintf("path 16: %f\n", self.nq18));
+    dprint(sprintf("path 16: %f\n", self.nq19));
+    dprint(sprintf("path 16: %f\n", self.nq20));
+    dprint(sprintf("path 16: %f\n", self.nq21));
+    dprint(sprintf("path 16: %f\n", self.nq22));
+    dprint(sprintf("path 16: %f\n", self.nq23));
+    dprint(sprintf("path 16: %f\n", self.nq24));
     
     self.ai_state_next = ST_NODEGRAPH_MOVE;
     return;
