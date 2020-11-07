@@ -13,7 +13,6 @@ void() ai_tank_skirmish;
 void() ai_tank_sk_die;
 void() ai_tank_sk_die1;
 
-float() tank_sk_combat_script;
 void() tank_sk_fight_target_fire;
 void() tank_sk_fight_out_radius;
 void() tank_sk_fight_vis_friend;

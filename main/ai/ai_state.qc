@@ -177,34 +177,37 @@ void() ai_state_frame_2={
   
   ai_frame_update();
   if( ai_valid_target(self.enemy) ){
+  //has enemy -> combat stuff
     checkVis = ai_check_vis(self.enemy);
     if( checkVis == VIS_FRAC ){
+    //enemy is visible, 
       ai_attack();
       enemy_range = ai_check_range(self.enemy);
-      //if( enemy_range > self.ai_minrange || rushBase){
+      //is enemy reachable from my firing position?
       if( enemy_range > self.ai_minrange ){
-        //================================================
-        //MOVE THIS TO ITS OWN FUNCTION
-        ai_nodegraph_frame();
-        ///////////////////////////////////////////////////////
+        ai_nodegraph_combat_frame();
       }
       else if( enemy_range <= self.ai_minrange ){
-        //stop-to-shoot vs dont stop-to-shoot
-          //rushBase
-          ai_face_targ();
+      //stop-to-shoot vs dont stop-to-shoot
+        ai_face_targ();
       }
       else{
+        //bare minimum
         ai_face_targ();
       }
     }
     else{
+      //TODO - yes drop the enemy for now
       self.enemy = world;
     }
   }
   else{
-    //do_patrol
+  //No ENEMY, what was I doing before?
+    //do_patrol?
     if( !ai_check_scan( self.stat_rdr_mode ) ){
-      
+      if( self.tether == TETHER_PATROL ){
+        ai_patrol_frame_2();
+      }
     }
   }
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
@@ -212,24 +215,32 @@ void() ai_state_frame_2={
   self.nextthink = time + 0.05;
 };
 
+/*
+  Lowest energy AI behavior.
+    Only chases target while target is actually visible,
+    will return to normal behavior without target.
+*/
+void() ai_state_lurker_frame={
+
+
+};
 
 /*
-  Bot is exiting combat and needs to re-establish what it was doing pre-combat
-*/
-void() ai_exit_combat={
-  if( self.tether == TETHER_PATROL ){
-    self.goalentity = self.patrolNode;
-    self.tetherOrg = self.goalentity.origin;
-    
-  }
-  else if( self.tether == TETHER_NODE ){
-    self.goalentity = self.patrolNode;
-    self.tetherOrg = self.goalentity.origin;
-  }
-  else if( self.tether == TETHER_SELF ){
+  Designed to pursue player up till lost line of sight.
+  these brawl with players constantly.
   
-  }
+*/
+void() ai_state_brawler_frame={
+
 };
+
+/*
+  like a brawler, but with the ability to chase them around corners.
+
+*/
+void() ai_state_hunter_frame={
+};
+
 
 //
 

@@ -121,8 +121,8 @@ float( float startId, float endId ) nodegraph_trace={
           //todo - would be nice to figure out something closer to A*
           //moveCost = NODEGRAPH_SEARCH_COST[currentId] + trace.edge[itrEdge];
           visit = NODEGRAPH_SEARCH_CAME_FROM[nextId];
-          dprint(sprintf("      nextId(%u)\n", nextId )); //debug
-          dprint(sprintf("      visit(%f)\n", visit )); //debug
+          //dprint(sprintf("      nextId(%u)\n", nextId )); //debug
+          //dprint(sprintf("      visit(%f)\n", visit )); //debug
           //dprint(sprintf("      current cost(%f)\n", NODEGRAPH_SEARCH_COST[nextId])); //debug
           //dprint(sprintf("      add cost(%f)\n", moveCost )); //debug
           //if( visit < 0 || moveCost < NODEGRAPH_SEARCH_COST[nextId]){

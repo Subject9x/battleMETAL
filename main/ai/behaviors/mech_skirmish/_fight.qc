@@ -15,67 +15,6 @@ Overview:
     float combat_roll;    //per-state-frame dice roll for random movement selection.
 */
 
-float() mech_sk_fight_script_easy={
-  if( (self.combatFlags & COMBAT_CLOSE) ){
-  //COMBAT RANGE <= 300 --------------------------------------------------------
-    if( (self.combatFlags & COMBAT_VIS) ){
-      if( (self.combatFlags & COMBAT_FRONT) ){
-        if( combat_roll < 0.4 ){
-          return MOVE_NEXT_STRAFE_LEFT;
-        }
-        else if( combat_roll < 0.7 ){
-          return MOVE_NEXT_STRAFE_RIGHT;
-        }
-        return MOVE_NEXT_RETREAT;
-      }
-    }
-    return MOVE_NEXT_HUNT;
-  //=============================================================================
-  }
-  else if( (self.combatFlags & COMBAT_MID) ){
-  //COMBAT RANGE > 300   --------------------------------------------------------
-    if( (self.combatFlags & COMBAT_VIS) ){
-      if( (self.combatFlags & COMBAT_FRONT) ){
-        if( combat_roll < 0.3 ){
-          return MOVE_NEXT_STRAFE_LEFT;
-        }
-        else if( combat_roll < 0.6 ){
-          return MOVE_NEXT_STRAFE_RIGHT;
-        }
-        else if( combat_roll < 0.8 ){
-          return MOVE_NEXT_FLANK_LEFT;
-        }
-        return MOVE_NEXT_FLANK_RIGHT;
-      }
-    }
-    return MOVE_NEXT_HUNT;
-  //=============================================================================
-  }
-  else if( (self.combatFlags & COMBAT_LONG) ){
-  //COMBAT RANGE > AI_MINRANGE----------------------------------------------------
-    if( (self.combatFlags & COMBAT_VIS) ){
-      if( (self.combatFlags & COMBAT_FRONT) ){
-        if( combat_roll < 0.5 ){
-        
-        }
-        return MOVE_NEXT_FORWARD;
-      }
-    }
-    return MOVE_NEXT_HUNT;
-  //=============================================================================
-  }
-  return MOVE_NEXT_STAND;
-};
-
-
-float() mech_sk_fight_script_med={
-
-};
-
-float() mech_sk_fight_script_hard={
-
-};
-
 //AI is on edge of bounds but inside radius
 void() mech_sk_fight_target_fire={
   self.ai_movedist = 4;

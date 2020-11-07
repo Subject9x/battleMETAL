@@ -8,9 +8,12 @@ Overview:
 
 
 /*
-  
+  A more stateless implementation of the nodegraph state from earlier;
+    if the AI arrives here, it merely checks if a path exists -
+      if there's a path, run it,
+      if no path, make a new one
 */
-void() ai_nodegraph_frame={
+void() ai_nodegraph_combat_frame={
   local float pathFind;
   local float nodeDist;
   local vector nqOrg;
@@ -42,7 +45,7 @@ void() ai_nodegraph_frame={
         turnSpeed = TRUE;
       }
       if( turnSpeed ){
-        walkSpeed = self.data_speed_strafe;
+        walkSpeed = self.data_speed_strafe * 0.75;
       }
       else{
         walkSpeed = self.data_speed_forward;
@@ -53,6 +56,58 @@ void() ai_nodegraph_frame={
     }
   }
 };
+
+/*
+  Same deal as ai_nodegraph_combat_frame() 
+    BUT!
+    it checks AI's patrol node references instead of enemy position.
+    
+    this is used when a bot gets stuck trying to patrol
+*/
+void() ai_nodegraph_patrol_frame={
+  local float pathFind;
+  local float nodeDist;
+  local vector nqOrg;
+  local float turnSpeed;
+  local float walkSpeed;
+  
+  if( self.nq1 == -1 ){
+    //fresh path
+    ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );
+  }
+  else{
+    nodeDist = ai_nodegraph_distance_check( self.nq1 );
+    if( nodeDist != -1 ){
+      //todo - path error
+    }
+    if( nodeDist <= 32 ){
+      //arrived at node
+      ai_nodegraph_next();
+    }
+    else{
+      nqOrg = nodegraph_get_node_origin( self.nq1 );
+      //still traveling to node
+      if( vectoyaw(nqOrg - self.origin) != self.angles_y ){
+        self.ideal_yaw = vectoyaw(nqOrg - self.origin) ;
+        yawCache = self.yaw_speed;
+        self.yaw_speed = self.yaw_speed * 2;
+        ChangeYaw();  //double 
+        self.yaw_speed = yawCache;
+        turnSpeed = TRUE;
+      }
+      if( turnSpeed ){
+        walkSpeed = self.data_speed_strafe * 0.5;
+      }
+      else{
+        walkSpeed = self.data_speed_forward * 0.67;
+      }
+      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+        ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );
+      }
+    }
+  }
+};
+
 
 /*
   ST_NODEGRAPH = 15;

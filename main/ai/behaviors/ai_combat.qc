@@ -218,41 +218,7 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
   }
 };
 
-/*
-  Called before entering a bot's fighting script.
-  This sets the bot's combat-frame state so that it can read the combat situation better.
-*/
-void() ai_combat_state_frame={
-  self.combatFlags = 0;
-  
-  enemy_vis = ai_check_vis(self.enemy);
-  enemy_infront = ai_check_targ_infront(self.enemy, self.ai_fov, (self.flags&FL_TURRET));
-  enemy_dist = ai_check_range(self.enemy);
-  combat_roll = random() * 1.0;
-  
-  if( self.prevVis != VIS_FRAC && enemy_vis == VIS_FRAC ){
-    self.combatFlags = self.combatFlags | COMBAT_VIS;
-  }
-  else if( self.prevVis == VIS_FRAC && enemy_vis == VIS_FRAC ){
-    self.combatFlags = self.combatFlags | COMBAT_VIS;
-  }
-  
-  if(enemy_dist < 300){
-    self.combatFlags = self.combatFlags | COMBAT_CLOSE;
-  }
-  else if( enemy_dist <= self.ai_minrange ){
-    self.combatFlags = self.combatFlags | COMBAT_MID;
-  }
-  else{
-    self.combatFlags = self.combatFlags | COMBAT_LONG;
-  }
-  
-  if( enemy_infront ){
-    self.combatFlags = self.combatFlags | COMBAT_FRONT;
-  }
-  self.prevVis = enemy_vis;
-  self.prevFacing = enemy_infront;
-};
+
 /*
   ST_COMBAT
   STATE : COMBAT START
@@ -265,7 +231,6 @@ void() ai_combat_start={
   
   //ENTER STATE------------------------------------------------------------------
   if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-    dprint("->ST_COMBAT\n");  //debug
     //check if target is blown up in between frames
     if( !ai_valid_target(self.enemy) ){
       //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
@@ -291,9 +256,6 @@ void() ai_combat_start={
       self.ai_dampen = 0;
       return;
     }
-    
-    //build combat frame start data
-    ai_combat_state_frame();
     
     /*
       TODO

@@ -109,6 +109,7 @@ void() node_setup;
 .float nq16;
 .float pathEndId; //actual end node to the path, used for early exit / check of nq1-16 path cache.
 
+void() ai_nodegraph_clear_path; //mostly just for ini.
 float( float nodeId ) ai_nodegraph_distance_check;  //get distance to desired node
 float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
 float( float startId, float endId ) ai_nodegraph_trace_route;
@@ -183,7 +184,6 @@ float COMBAT_LEFT      = 64;
 .float prevFacing;
 .float combatFlags; //populated by ai_combat_state_frame()
 
-void() ai_combat_state_frame; //tracks the changes of combat state vars for each unit
 float( float scan_mode) ai_check_scan;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
@@ -357,11 +357,12 @@ void() ai_state_nodegraph_travel;
 void() ai_state_nodegraph_travel_block;
 
 //atomic impl
+
 void() ai_frame_update;
 void() ai_state_frame_2;
+void() ai_patrol_frame_2;
 
-void() ai_exit_combat;
-void() ai_nodegraph_frame;
+void() ai_nodegraph_combat_frame;
 
 //combat script function impl
 .float() ai_fight_script;

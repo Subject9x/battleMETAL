@@ -12,11 +12,6 @@ void() ai_mech_skirmish;
 void() ai_mech_sk_die;
 void() ai_mech_sk_die2;
 
-float() mech_sk_fight_script_easy;
-float() mech_sk_fight_script_med;
-float() mech_sk_fight_script_hard;
-
-
 void() mech_sk_fight_target_fire;
 void() mech_sk_fight_out_radius;
 void() mech_sk_fight_vis_friend;

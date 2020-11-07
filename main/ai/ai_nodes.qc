@@ -12,6 +12,28 @@ Overview: ai nodes
 
 //NODEGRAPH API-----------------------------------
 
+//simple, clears out entire path, used generally when bot spawns,
+//because values MUST be -1; (nodeID 0 is a valid ID).
+void() ai_nodegraph_clear_path={
+  self.nq1 = -1;
+  self.nq2 = -1;
+  self.nq3 = -1;
+  self.nq4 = -1;
+  self.nq5 = -1;
+  self.nq6 = -1;
+  self.nq7 = -1;
+  self.nq8 = -1;
+  self.nq9 = -1;
+  self.nq10 = -1;
+  self.nq11 = -1;
+  self.nq12 = -1;
+  self.nq13 = -1;
+  self.nq14 = -1;
+  self.nq15 = -1;
+  self.nq16 = -1;
+};
+
+
 float( float nodeId ) ai_nodegraph_distance_check={
   if( nodeId == -1 ){
     return -1;
@@ -37,6 +59,7 @@ float() ai_nodegraph_next={
     //requested next node was occupied by someone else.
     return FALSE;
   }
+  NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
   
   self.nq1 = self.nq2;
   self.nq2 = self.nq3;
@@ -84,24 +107,10 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
   if( qCount > 0 ){
     pathCnt = nodegraph_build_path( startId, qCount, endId );
     if( pathCnt > -1 ){
-      self.pathEndId = NODEGRAPH_SEARCH_PATH[1];  //set the end node so we can remember the end if we need to.
+      self.pathEndId = NODEGRAPH_SEARCH_PATH[0];  //set the end node so we can remember the end if we need to.
       dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
-      self.nq1 = -1;  //clear out the queue before populating
-      self.nq2 = -1;
-      self.nq3 = -1;
-      self.nq4 = -1;
-      self.nq5 = -1;
-      self.nq6 = -1;
-      self.nq7 = -1;
-      self.nq8 = -1;
-      self.nq9 = -1;
-      self.nq10 = -1;
-      self.nq11 = -1;
-      self.nq12 = -1;
-      self.nq13 = -1;
-      self.nq14 = -1;
-      self.nq15 = -1;
-      self.nq16 = -1;
+      
+      ai_nodegraph_clear_path();
     
       self.nq1 =  NODEGRAPH_SEARCH_PATH[pathCnt];
       pathCnt = max(-1, pathCnt - 1);

@@ -561,9 +561,12 @@ void() ai_setup_patrol={
   }
   self.think = ai_state_frame;
   //DEBUG TODO this is a test
-  if( self.classname == "unit_onnek_survest_lobber"){
+  if( self.classname == "unit_onnek_survest_gunner"){
     self.think = ai_state_frame_2;
   }
+  
+  ai_nodegraph_clear_path();
+  
   self.nextthink = self.nextthink + time;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
