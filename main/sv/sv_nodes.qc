@@ -59,9 +59,9 @@ void(float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
   }
   //dprint("EDGE END---------------------------\n"); //debug
   
-  dprint(strcat(ftos(NODE_found.id),"\n")); //debug
+  //dprint(strcat(ftos(NODE_found.id),"\n")); //debug
   //dprint(strcat(vtos(NODE_found.orig),"\n")); //debug
-  dprint("NODE LOADED---------------------------\n"); //debug
+  //dprint("NODE LOADED---------------------------\n"); //debug
   NODEGRAPH_DATA[nodeId] = NODE_found;
 };
 
@@ -98,8 +98,8 @@ float( float startId, float endId ) nodegraph_trace={
   vStart = nodegraph_get_node_origin( startId );
   vEnd = nodegraph_get_node_origin( endId );
   
-  dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", vStart_x,vStart_y,vStart_z, startId, NODEGRAPH_SEARCH_QUEUE[0])); //debug
-  dprint(sprintf("End org: %f %f %f | nodeid: %u\n",vEnd_x,vEnd_y,vEnd_z, endId)); //debug
+  //dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", vStart_x,vStart_y,vStart_z, startId, NODEGRAPH_SEARCH_QUEUE[0])); //debug
+  //dprint(sprintf("End org: %f %f %f | nodeid: %u\n",vEnd_x,vEnd_y,vEnd_z, endId)); //debug
   
   bEnd = FALSE;
   queue = 0;
@@ -113,7 +113,7 @@ float( float startId, float endId ) nodegraph_trace={
     }
     else{
       trace = NODEGRAPH_DATA[currentId];
-      dprint(sprintf("queue(%u)-node[%u] \n", queue, trace.id)); //debug
+      //dprint(sprintf("queue(%u)-node[%u] \n", queue, trace.id)); //debug
       itrEdge = 0;
       while( itrEdge < 6 ){
         nextId = trace.nodes[itrEdge];
@@ -131,7 +131,7 @@ float( float startId, float endId ) nodegraph_trace={
             NODEGRAPH_SEARCH_QUEUE[queueNext] = nextId;
             NODEGRAPH_SEARCH_CAME_FROM[nextId] = currentId;
             //NODEGRAPH_SEARCH_COST[nextId] = moveCost;
-            dprint(sprintf("             queueNext(%u)-nextId(%u)<-currentId{%f}\n", queueNext, NODEGRAPH_SEARCH_QUEUE[queueNext], NODEGRAPH_SEARCH_CAME_FROM[nextId] )); //debug
+            //dprint(sprintf("             queueNext(%u)-nextId(%u)<-currentId{%f}\n", queueNext, NODEGRAPH_SEARCH_QUEUE[queueNext], NODEGRAPH_SEARCH_CAME_FROM[nextId] )); //debug
           }
           else{
             //print(sprintf("            XXXXXXXXXXXXXX already visit!-nextId(%f)\n", nextId)); //debug
@@ -147,7 +147,7 @@ float( float startId, float endId ) nodegraph_trace={
       if( queue == NODE_ID_COUNT ){
         bEnd = TRUE;
       }
-      dprint("-------------------------\n"); //debug
+      //dprint("-------------------------\n"); //debug
     }
   }
   return queue;
@@ -202,25 +202,25 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   dprint(sprintf("===BULDING PATH===stack{%u}\n", stack));  //debug
   while( pathId != startNode && stack < endArrIdx ){
     NODEGRAPH_SEARCH_PATH[stack] = pathId;
-      dprint(sprintf("    itr[%u]-node(%d)\n", stack, pathId));
+      //dprint(sprintf("    itr[%u]-node(%d)\n", stack, pathId));
     reflectPath = pathId;
     
     pathId = NODEGRAPH_SEARCH_CAME_FROM[reflectPath];
-      dprint(sprintf("            cameFrom(%d)\n", pathId));
+      //dprint(sprintf("            cameFrom(%d)\n", pathId));
     
     stack = stack + 1;
-      dprint("-------------------------\n"); //debug
+      //dprint("-------------------------\n"); //debug
   }
   
-  dprint("===Unwinding path stack\n");  //debug
-  dprint(sprintf("                stack(%f)\n",stack));  //debug
+  //dprint("===Unwinding path stack\n");  //debug
+  //dprint(sprintf("                stack(%f)\n",stack));  //debug
   stackTotal = stack;
   NODEGRAPH_SEARCH_PATH[stack] = startNode;
   while( stack >= 0 ){
-    dprint(sprintf("    itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_PATH[stack]));
+    //dprint(sprintf("    itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_PATH[stack]));
     stack = stack - 1;
   }
-  dprint("============================\n"); //debug
+  //dprint("============================\n"); //debug
   return stackTotal;
 };
 

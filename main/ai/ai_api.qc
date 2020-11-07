@@ -102,12 +102,15 @@ void( entity t ) ai_call_for_help={
 }; 
 
 float(entity t) ai_valid_target={
+  if( !t ){
+    return FALSE;
+  }
   if( t != self ){
     if( (t.flags & (FL_UNIT|FL_MONSTER)) && (t.deadflag == DEAD_NO) ){
       return t.canTarget;
     }
   }
-  return 0;
+  return FALSE;
 };
 
 entity( float radiius) ai_find_friend={

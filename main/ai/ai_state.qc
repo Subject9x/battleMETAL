@@ -139,30 +139,23 @@ void() ai_state_frame={
 void() ai_frame_update={
   self.ai_unit_update();
   if( !self.deadflag ){
-    //ai_update();
     if( ai_valid_target(self.enemy) ){
       ai_turret_set_state(TR_TARG);
       self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
       ai_lock_on();
     }
     else{ 
-      self.enemy = world;
       self.button0 = FALSE;
     }
     self.attackFlag = 0;
     ai_ranged_attack();
     self.button0 = FALSE;
-  }
-  if( !(self.spawnflags & DEBUG_MODE) ){
-    //State update
-    self.ai_state_last = self.ai_state;
-    self.ai_state = self.ai_state_next;
-  }
-  if( time > self.posFadeTimer ){
-    self.posFadeTimer = time + POSITION_FADE_TIME;
-    self.position3 = self.position2;
-    self.position2 = self.position1;
-    self.position1 = self.origin;
+    if( time > self.posFadeTimer ){
+      self.posFadeTimer = time + POSITION_FADE_TIME;
+      self.position3 = self.position2;
+      self.position2 = self.position1;
+      self.position1 = self.origin;
+    }
   }
 };
 
@@ -173,21 +166,24 @@ void() ai_frame_update={
     ty EMR for helping me think through it.
 */
 void() ai_state_frame_2={
-  local float checkVis;
+  
   
   ai_frame_update();
   if( ai_valid_target(self.enemy) ){
   //has enemy -> combat stuff
-    checkVis = ai_check_vis(self.enemy);
-    if( checkVis == VIS_FRAC ){
+    enemy_vis = ai_check_vis(self.enemy);
+    if( enemy_vis == VIS_FRAC ){
+      dprint(sprintf("VIS ------------- %f\n", enemy_vis));  //debug
     //enemy is visible, 
       ai_attack();
-      enemy_range = ai_check_range(self.enemy);
+      enemy_range = self.stat_trg_dist;
+        dprint(sprintf("enemy_range ------------- %f\n", enemy_range));  //debug
       //is enemy reachable from my firing position?
-      if( enemy_range > self.ai_minrange ){
+      if( self.ai_minrange < enemy_range ){
+        dprint(sprintf("mirange ------------- %f\n", self.ai_minrange));  //debug
         ai_nodegraph_combat_frame();
       }
-      else if( enemy_range <= self.ai_minrange ){
+      else if( self.ai_minrange >= enemy_range ){
       //stop-to-shoot vs dont stop-to-shoot
         ai_face_targ();
       }
@@ -199,6 +195,7 @@ void() ai_state_frame_2={
     else{
       //TODO - yes drop the enemy for now
       self.enemy = world;
+      dprint(sprintf("LOST TARGET------------- %f\n", enemy_vis));  //debug
     }
   }
   else{

@@ -270,12 +270,16 @@ float() ai_pilot_minrange={
   local float total;
   
   for( weaponEnt = self.w_slot; weaponEnt != world; weaponEnt = weaponEnt.w_slot){
-    if( weaponEnt.deadflag == DEAD_NO ){
-      minrange = minrange + weaponEnt.w_range;
-      total = total + 1;
+    if( weaponEnt.deadflag != DEAD_NO ){
+      continue;
     }
+    if( weaponEnt.damageType == DMG_MSC ){
+      continue;
+    }
+    minrange = minrange + weaponEnt.w_range;
+    total = total + 1;
   }
   
-  minrange = minrange / total;
+  minrange = ceil(minrange / total);
   return minrange;
 };

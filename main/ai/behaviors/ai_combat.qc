@@ -277,7 +277,7 @@ void() ai_combat_start={
         MOVE_RETREAT
     */
     //you better hope its loaded...
-    if( NODEGRAPH_LOADED ){
+   /*if( NODEGRAPH_LOADED ){
       pathFind = -1;
       if( self.ai_fight_script ){
         self.ai_move_next = self.ai_fight_script();
@@ -304,7 +304,7 @@ void() ai_combat_start={
         }
       }
       self.ai_state_next = ST_COM_MOVE_START;
-    }
+    }*/
     return;
   //---------------------------------------------------------------------------
   }

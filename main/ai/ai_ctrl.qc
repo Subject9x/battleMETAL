@@ -408,15 +408,15 @@ float( entity targ ) ai_check_vis={
   }
   contentBuffer = self.dphitcontentsmask;
   self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY);
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_OPAQUE | DPCONTENTS_SKY);
   
   traceline (spot1, spot2, MOVE_NORMAL, self);
   
-  self.dphitcontentsmask = contentBuffer;
+  self.dphitcontentsmask = rint(contentBuffer);
 
   //case: los crossed content - ported q1
   if ( trace_inopen && trace_inwater ){
-    return VIS_FAIL;     // sight line crossed contents
+    return VIS_FAIL;  // sight line crossed contents
   }
 
   //case: los hit desired target
@@ -431,8 +431,8 @@ float( entity targ ) ai_check_vis={
   
   //case: los hit a friendly entity, who is blocking los
   if( trace_ent.faction == self.faction ){
-    friend_blocker = trace_ent;
-    friend_blocker_dist = vlen(friend_blocker.origin - spot1);
+    //friend_blocker = trace_ent;
+    //friend_blocker_dist = vlen(friend_blocker.origin - spot1);
     return VIS_FRN;
   }
   
@@ -559,11 +559,11 @@ void() ai_setup_patrol={
   else{
     self.nextthink = 1.0 + (random() * 2);
   }
-  self.think = ai_state_frame;
+  //self.think = ai_state_frame;
   //DEBUG TODO this is a test
-  if( self.classname == "unit_onnek_survest_gunner"){
+  //if( self.classname == "unit_onnek_survest_gunner"){
     self.think = ai_state_frame_2;
-  }
+  //}
   
   ai_nodegraph_clear_path();
   
