@@ -117,6 +117,7 @@ void() node_setup;
 .float nq24;
 .float pathEndId; //actual end node to the path, used for early exit / check of nq1-16 path cache.
 
+void() ai_nodegraph_clear_locks;
 void() ai_nodegraph_clear_path; //mostly just for ini.
 float( float nodeId ) ai_nodegraph_distance_check;  //get distance to desired node
 float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
@@ -180,13 +181,13 @@ float() ai_NULL_missile={ return FALSE;};
 
 ////////////////////////////////
 //AI COMBAT FUNCTIONS - ai_combat.qc
-float COMBAT_CLOSE     = 1;
-float COMBAT_MID       = 2;
-float COMBAT_LONG      = 4;
-float COMBAT_FRONT     = 8;
-float COMBAT_VIS       = 16;
-float COMBAT_FRIEND    = 32;
-float COMBAT_LEFT      = 64;
+float COMBAT_RANGE_CLOSE     = 1;
+float COMBAT_RANGE_MID       = 2;
+float COMBAT_RANGE_LONG      = 4;
+float COMBAT_FRONT           = 8;
+float COMBAT_VIS             = 16;
+float COMBAT_FRIEND          = 32;
+float COMBAT_LEFT            = 64;
 
 .float prevVis;
 .float prevFacing;
@@ -365,11 +366,14 @@ void() ai_state_nodegraph_travel;
 void() ai_state_nodegraph_travel_block;
 
 //atomic impl
-
+.void() ai_set_state;
 void() ai_frame_update;
-void() ai_state_frame_2;
-void() ai_patrol_frame_2;
 
+void() ai_state_frame_2;
+void() ai_state_brawler_frame;
+void() ai_state_hunter_frame;
+
+void() ai_patrol_frame_2;
 void() ai_nodegraph_combat_frame;
 
 //combat script function impl

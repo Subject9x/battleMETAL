@@ -71,6 +71,7 @@ void() ai_tank_skirmish={
   self.ai_fight_target = tank_sk_fight_full;
   
   //--------------------------------------------------------------------------
+  self.ai_set_state = ai_state_brawler_frame;
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;
 };

@@ -74,6 +74,7 @@ void() ai_vec_dest={
   self.ai_fight_target = spg_fight_full;
   
   //--------------------------------------------------------------------------
+  self.ai_set_state = ai_state_frame_2;
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;
 };

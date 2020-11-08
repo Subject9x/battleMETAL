@@ -1,17 +1,12 @@
 /*
 battleMETAL 
 Author: Peter Roohr
-Date: 7/17/2018
-mod - 01/20/2019
-mod - 10/29/2020 - nodegraph
+10/29/2020 - nodegraph
 Overview: ai nodes
   all the various nodes needed for the game
 */
 
-
-
 //NODEGRAPH API-----------------------------------
-
 //simple, clears out entire path, used generally when bot spawns,
 //because values MUST be -1; (nodeID 0 is a valid ID).
 void() ai_nodegraph_clear_path={
@@ -39,6 +34,20 @@ void() ai_nodegraph_clear_path={
   self.nq22 = -1;
   self.nq23 = -1;
   self.nq24 = -1;
+};
+
+/*
+  makes sure to clear any lingering node block flags
+*/
+void() ai_nodegraph_clear_locks={
+  local float nodeItr;
+  
+  while( nodeItr < NODE_ID_COUNT ){
+    if( NODEGRAPH_DATA_BLOCK[nodeItr] == self.entnum ){
+      NODEGRAPH_DATA_BLOCK[nodeItr] = FALSE;
+    }
+    nodeItr = nodeItr + 1;
+  }
 };
 
 
@@ -110,6 +119,8 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
   
   local float qCount;
   local float pathCnt;
+  
+  ai_nodegraph_clear_locks();
   
   if( startId == -1 ){
     return FALSE;
@@ -375,16 +386,16 @@ float( vector src, float len, float atkAngle, float furtherFlag) ai_nodegraph_at
       continue;
     }
     nodeYaw = vectoyaw(node.orig - src);
-    dprint(sprintf("          nodeYaw: %f\n", nodeYaw)); //debug
+    //dprint(sprintf("          nodeYaw: %f\n", nodeYaw)); //debug
     if( nodeYaw > srcMax || nodeYaw < srcMin ){
       continue;
     }
     checkDist = nodeLen;
     found = nodeItr;
-    dprint(sprintf("          node found: %f\n", nodeItr)); //debug
+    //dprint(sprintf("          node found: %f\n", nodeItr)); //debug
   }
   
-  dprint(sprintf("          ACTUAL found: %f\n", found)); //debug
+  //dprint(sprintf("          ACTUAL found: %f\n", found)); //debug
   return found;  //no nodes found;
 };
 

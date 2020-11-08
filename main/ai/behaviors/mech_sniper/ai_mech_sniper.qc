@@ -67,6 +67,7 @@ void() ai_mech_sniper={
   self.ai_fight_target = mech_sniper_fight_full;
   
   //--------------------------------------------------------------------------
+  self.ai_set_state = ai_state_frame_2;
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;
 };
