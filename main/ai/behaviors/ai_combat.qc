@@ -18,6 +18,8 @@ void() ai_ranged_attack={
   local entity wep_chain, this;
   local float fired;
   local vector diff;
+  local float blockShot;
+  local float allWeps;
   
   self.ai_weaponEnergy = 0;
   this = self;
@@ -40,10 +42,11 @@ void() ai_ranged_attack={
       if( !(self.currentWeaponGroup & wep_chain.w_group) ){
         continue;
       }
-      if( ai_attack_blockcheck(wep_chain) ){
+      if( !ai_check_face(this.enemy, 0.9, (self.flags&FL_TURRET)) ){
         continue;
       }
-      if( !ai_check_face(this.enemy, 0.85, (self.flags&FL_TURRET)) ){
+      if( ai_attack_blockcheck(wep_chain) ){
+        blockShot = blockShot + 1;
         continue;
       }
       self = wep_chain;
@@ -69,6 +72,12 @@ void() ai_ranged_attack={
   }
   if( fired > 0 ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  }
+  if( blockShot >= fired ){
+    self.combatFlags = TRUE;
+  }
+  else{
+    self.combatFlags = FALSE;
   }
   self.currentWeaponGroup = 0;
 };

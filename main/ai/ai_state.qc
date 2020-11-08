@@ -150,6 +150,12 @@ void() ai_frame_update={
     self.attackFlag = 0;
     ai_ranged_attack();
     self.button0 = FALSE;
+    if( (self.flags&FL_TURRET) ){
+      ai_turret_control();
+    }
+    if( self.legs ){
+      ai_leg_control();
+    }
     if( time > self.posFadeTimer ){
       self.posFadeTimer = time + POSITION_FADE_TIME;
       self.position3 = self.position2;
@@ -166,36 +172,48 @@ void() ai_frame_update={
     ty EMR for helping me think through it.
 */
 void() ai_state_frame_2={
-  
+  local float visCheck;
   
   ai_frame_update();
   if( ai_valid_target(self.enemy) ){
   //has enemy -> combat stuff
-    enemy_vis = ai_check_vis(self.enemy);
-    if( enemy_vis == VIS_FRAC ){
-      dprint(sprintf("VIS ------------- %f\n", enemy_vis));  //debug
+    visCheck = ai_check_vis(self.enemy);
+    if( visCheck == VIS_FRAC ){
+      //dprint(sprintf("VIS ------------- %f\n", visCheck));  //debug
+      //dprint(sprintf("combatFlags ------------- %f\n", self.combatFlags));  //debug
     //enemy is visible, 
       ai_attack();
-      enemy_range = self.stat_trg_dist;
-        dprint(sprintf("enemy_range ------------- %f\n", enemy_range));  //debug
+        //dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
       //is enemy reachable from my firing position?
-      if( self.ai_minrange < enemy_range ){
-        dprint(sprintf("mirange ------------- %f\n", self.ai_minrange));  //debug
+      if( self.ai_minrange < self.stat_trg_dist || !self.combatFlags ){
+        //dprint(sprintf("mirange ------------- %f\n", self.ai_minrange));  //debug
         ai_nodegraph_combat_frame();
+        self.moveState = MOVE_NORM;
       }
-      else if( self.ai_minrange >= enemy_range ){
+      else if( self.stat_trg_dist <= self.ai_minrange ){
       //stop-to-shoot vs dont stop-to-shoot
         ai_face_targ();
+        if( self.legs ){
+          self.legs.attack_state = TR_YAW;
+          self.moveState = MOVE_STAND;
+        }
       }
       else{
         //bare minimum
         ai_face_targ();
+        if( self.legs ){
+          self.legs.attack_state = TR_YAW;
+          self.moveState = MOVE_STAND;
+        }
       }
+    }
+    else if( visCheck == VIS_FRN ){
+      ai_nodegraph_combat_frame();
     }
     else{
       //TODO - yes drop the enemy for now
       self.enemy = world;
-      dprint(sprintf("LOST TARGET------------- %f\n", enemy_vis));  //debug
+      //dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
     }
   }
   else{
@@ -206,6 +224,8 @@ void() ai_state_frame_2={
         ai_patrol_frame_2();
       }
     }
+    //timer -> track last position
+    
   }
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   self.think = ai_state_frame_2;
@@ -228,7 +248,55 @@ void() ai_state_lurker_frame={
   
 */
 void() ai_state_brawler_frame={
-
+  local float visCheck;
+  
+  ai_frame_update();
+  if( ai_valid_target(self.enemy) ){
+  //has enemy -> combat stuff
+    visCheck = ai_check_vis(self.enemy);
+    if( visCheck == VIS_FAIL){
+      //TODO - yes drop the enemy for now
+      self.enemy = world;
+      dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
+    }
+    else{
+      dprint(sprintf("VIS ------------- %f\n", visCheck));  //debug
+      dprint(sprintf("combatFlags ------------- %f\n", self.combatFlags));  //debug
+    //enemy is visible, 
+      ai_attack();
+        dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
+      //is enemy reachable from my firing position?
+     // if( !self.combatFlags ){
+        ai_nodegraph_combat_frame();
+        self.moveState = MOVE_NORM;
+        if( self.legs ){
+          self.legs.attack_state = TR_NORM;
+        }
+      //}
+      /*else{
+        //bare minimum
+        ai_face_targ();
+        if( self.legs ){
+          self.legs.attack_state = TR_YAW;
+          self.moveState = MOVE_STAND;
+        }
+      }*/
+    }
+  }
+  else{
+  //No ENEMY, what was I doing before?
+    //do_patrol?
+    if( !ai_check_scan( self.stat_rdr_mode ) ){
+      if( self.tether == TETHER_PATROL ){
+        ai_patrol_frame_2();
+      }
+    }
+    //timer -> track last position
+    
+  }
+  self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  self.think = ai_state_brawler_frame;
+  self.nextthink = time + 0.05;
 };
 
 /*
@@ -236,6 +304,55 @@ void() ai_state_brawler_frame={
 
 */
 void() ai_state_hunter_frame={
+  local float visCheck;
+  
+  ai_frame_update();
+  if( ai_valid_target(self.enemy) ){
+  //has enemy -> combat stuff
+    visCheck = ai_check_vis(self.enemy);
+    if( visCheck == VIS_FAIL){
+      //TODO - yes drop the enemy for now
+      self.enemy = world;
+      dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
+    }
+    else{
+      dprint(sprintf("VIS ------------- %f\n", visCheck));  //debug
+      dprint(sprintf("combatFlags ------------- %f\n", self.combatFlags));  //debug
+    //enemy is visible, 
+      ai_attack();
+        dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
+      //is enemy reachable from my firing position?
+     // if( !self.combatFlags ){
+        ai_nodegraph_combat_frame();
+        self.moveState = MOVE_NORM;
+        if( self.legs ){
+          self.legs.attack_state = TR_NORM;
+        }
+      //}
+      /*else{
+        //bare minimum
+        ai_face_targ();
+        if( self.legs ){
+          self.legs.attack_state = TR_YAW;
+          self.moveState = MOVE_STAND;
+        }
+      }*/
+    }
+  }
+  else{
+  //No ENEMY, what was I doing before?
+    //do_patrol?
+    if( !ai_check_scan( self.stat_rdr_mode ) ){
+      if( self.tether == TETHER_PATROL ){
+        ai_patrol_frame_2();
+      }
+    }
+    //timer -> track last position
+    
+  }
+  self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  self.think = ai_state_brawler_frame;
+  self.nextthink = time + 0.05;
 };
 
 

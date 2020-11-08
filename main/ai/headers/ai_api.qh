@@ -369,12 +369,22 @@ void() ai_state_nodegraph_travel_block;
 .void() ai_set_state;
 void() ai_frame_update;
 
-void() ai_state_frame_2;
+void() ai_state_frame_2;    //todo - rename, move to 'lurker'
 void() ai_state_brawler_frame;
 void() ai_state_hunter_frame;
 
 void() ai_patrol_frame_2;
+
 void() ai_nodegraph_combat_frame;
+
+.float ai_timer_checkTurn; // if yawspeed too low for ideal_yaw over X time, this makes the bot turn harder.
+.float ai_hardTurn; // 
+
+//hold off on these for a sec
+//void() ai_turn_node;
+//void() ai_turn_patrol;
+//void() ai_turn_combat;
+
 
 //combat script function impl
 .float() ai_fight_script;
