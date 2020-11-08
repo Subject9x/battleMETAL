@@ -64,6 +64,8 @@ void() ai_mech_sniper_die={
   
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
   
+  ai_nodegraph_clear_locks();
+  
   self.think = ai_mech_sniper_die2;
   self.nextthink = time + 0.1;
 };

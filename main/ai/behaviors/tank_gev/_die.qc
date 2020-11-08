@@ -91,6 +91,8 @@ void() ai_gev_die={
   self.touch = ai_gev_touch_death;
   ai_alert_close( self.enemy );
   te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
+    
+  ai_nodegraph_clear_locks();
   
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD| SENDFLAG_BURN | SENDFLAG_MOVE);
 };

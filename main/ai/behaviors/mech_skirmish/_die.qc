@@ -62,6 +62,8 @@ void() ai_mech_sk_die={
   
   ai_alert_close( self.enemy );
   
+  ai_nodegraph_clear_locks();
+  
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
   
   self.think = ai_mech_sk_die2;
