@@ -107,6 +107,10 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.canTarget = TRUE;
   }
   
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    sendevent_tank_move();
+  }
+  
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shield = ReadByte();
     self.shieldHitFlag = ReadByte();
@@ -145,7 +149,10 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   if( changeFlags & SENDFLAG_MOVE ){
     prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadLong();
-    sendevent_tank_move();
+    if( self.attackFlag > FALSE ){
+      self.getTarget = rint(ReadCoord());
+      self.enemy = findfloat(world, entnum, self.getTarget);
+    }
   }
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){

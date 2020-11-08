@@ -99,13 +99,13 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.canTarget = TRUE;
   }
   
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    sendevent_spg_move();
+  }
+  
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shield = ReadByte();
     self.shieldHitFlag = ReadByte();
-  }
-  
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    sendevent_spg_move();
   }
   
   if( changeFlags & SENDFLAG_CRIT ){
@@ -126,6 +126,10 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   if( changeFlags & SENDFLAG_MOVE ){
     prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadLong();
+    if( self.attackFlag > FALSE ){
+      self.getTarget = rint(ReadCoord());
+      self.enemy = findfloat(world, entnum, self.getTarget);
+    }
   }
   
   //Shield Explode event

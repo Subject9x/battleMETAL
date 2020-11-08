@@ -112,14 +112,14 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     te_unit_dust_set();
     self.canTarget = TRUE;
   }
-    
-  if( (changeFlags & SENDFLAG_IMPACT) ){
-    self.shield = ReadByte();
-    self.shieldHitFlag = ReadByte();
-  }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
     sendevent_gev_move();
+  }
+  
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    self.shield = ReadByte();
+    self.shieldHitFlag = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -150,6 +150,10 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   if( changeFlags & SENDFLAG_MOVE ){
     prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadLong();
+    if( self.attackFlag > FALSE ){
+      self.getTarget = rint(ReadCoord());
+      self.enemy = findfloat(world, entnum, self.getTarget);
+    }
   }
   
   //Shield Explode event
