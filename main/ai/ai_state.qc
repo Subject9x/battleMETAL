@@ -68,7 +68,8 @@ void() ai_state_lurker_frame={
       //is enemy reachable from my firing position?
       if( self.ai_minrange < self.stat_trg_dist || !self.combatFlags ){
         //dprint(sprintf("mirange ------------- %f\n", self.ai_minrange));  //debug
-        ai_nodegraph_combat_frame();
+        //ai_nodegraph_combat_frame();
+        ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 3);
         self.moveState = MOVE_NORM;
       }
       else if( self.stat_trg_dist <= self.ai_minrange ){
@@ -89,7 +90,8 @@ void() ai_state_lurker_frame={
       }
     }
     else if( visCheck == VIS_FRN ){
-      ai_nodegraph_combat_frame();
+      //ai_nodegraph_combat_frame();
+      ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
     }
     else{
       //TODO - yes drop the enemy for now
@@ -102,7 +104,7 @@ void() ai_state_lurker_frame={
     //do_patrol?
     if( !ai_check_scan( self.stat_rdr_mode ) ){
       if( self.tether == TETHER_PATROL ){
-        ai_patrol_frame_2();
+        ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75, 8 );
       }
     }
     //timer -> track last position
@@ -138,7 +140,8 @@ void() ai_state_brawler_frame={
         dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
       //is enemy reachable from my firing position?
      // if( !self.combatFlags ){
-        ai_nodegraph_combat_frame();
+        //ai_nodegraph_combat_frame();
+        ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
         self.moveState = MOVE_NORM;
         if( self.legs ){
           self.legs.attack_state = TR_NORM;
@@ -159,7 +162,7 @@ void() ai_state_brawler_frame={
     //do_patrol?
     if( !ai_check_scan( self.stat_rdr_mode ) ){
       if( self.tether == TETHER_PATROL ){
-        ai_patrol_frame_2();
+        ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75, 8 );
       }
     }
     //timer -> track last position
@@ -173,6 +176,14 @@ void() ai_state_brawler_frame={
 /*
   like a brawler, but with the ability to chase them around corners.
 
+  - todo
+    -> IF no-LOS -> moveDest == target.position1/2
+    -> set hunt timer
+    
+    -> have a working hunt timer / state var
+    
+    -> maybe damage threshold too if under attack while hunting
+
 */
 void() ai_state_hunter_frame={
   local float visCheck;
@@ -185,7 +196,8 @@ void() ai_state_hunter_frame={
       //TODO - yes drop the enemy for now
       self.enemy = world;
       dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
-      ai_nodegraph_combat_frame();
+      //ai_nodegraph_combat_frame();
+      ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
       self.moveState = MOVE_NORM;
       if( self.legs ){
         self.legs.attack_state = TR_NORM;
@@ -199,7 +211,8 @@ void() ai_state_hunter_frame={
         dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
       //is enemy reachable from my firing position?
      // if( !self.combatFlags ){
-        ai_nodegraph_combat_frame();
+        //ai_nodegraph_combat_frame();
+        ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
         self.moveState = MOVE_NORM;
         if( self.legs ){
           self.legs.attack_state = TR_NORM;
@@ -220,7 +233,7 @@ void() ai_state_hunter_frame={
     //do_patrol?
     if( !ai_check_scan( self.stat_rdr_mode ) ){
       if( self.tether == TETHER_PATROL ){
-        ai_patrol_frame_2();
+        ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75, 8 );
       }
     }
     //timer -> track last position

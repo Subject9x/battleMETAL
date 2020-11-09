@@ -207,6 +207,11 @@ float( vector startPos, vector endPos ) ai_nodegraph_trace_vec={
   local float startNode;
   local float endNode;
   
+  if( time <= self.ai_timer_tracepath ){
+    return FALSE;
+  }
+  self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
+  
   startNode = ai_nodegraph_to_org( startPos );
   endNode = ai_nodegraph_to_org( endPos );
   
@@ -223,6 +228,11 @@ float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode={
   local float traceStat;
   local float startNode;
   
+  if( time <= self.ai_timer_tracepath ){
+    return FALSE;
+  }
+  self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
+  
   startNode = ai_nodegraph_to_org( startPos );
   
   traceStat = ai_nodegraph_trace_route( startNode, endId );
@@ -238,6 +248,11 @@ float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec={
   
   local float traceStat;
   local float endNode;
+  
+if( time <= self.ai_timer_tracepath ){
+    return FALSE;
+  }
+  self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
   
   endNode = ai_nodegraph_to_org( endPos );
   
@@ -293,7 +308,6 @@ float( vector testOrg ) ai_nodegraph_to_org={
   return aNode;
 };
 
-
 /*
   find closest node to self;
 */
@@ -301,298 +315,6 @@ float( vector entOrg ) ai_nodegraph_find_node={
 
   return FALSE;
 };
-
-
-/*
-  used for combat moves.
-  The AI gives a target location, the radius from that location to check for nodes,
-  and the angle of attack TOWARDS the location.
-  
-  this function then finds the CLOSEST node to the vector SRC (or furtherFlag, furthest).
-  
-  use-case is to allow bots to move on the nodegraph, BUT semi-planned.
-    flanking,
-    retreating,
-    hiding, 
-    strafing.
-*/
-float( vector src, float len, float atkAngle, float furtherFlag) ai_nodegraph_attack_node_close={
-  
-  local float checkDist;
-  local float startDist;
-  local float nodeItr;
-  local float nodeLen;
-  local float nodeYaw;
-  local float found;
-  
-  local float srcAng;
-  local float srcMin;
-  local float srcMax;
-  
-  local vector v1;
-  local vector v2;
-  
-  dprint(sprintf("len: %f\n", len));  //debug
-  dprint(sprintf("angMin: %f\n", atkAngle));  //debug
-  dprint(sprintf("furtherFlag: %f\n", furtherFlag));  //debug
-  
-  srcAng = vectoyaw(src - self.origin);
-  srcAng = srcAng + atkAngle;
-  srcMin = srcAng - 22.5;
-  srcMax = srcAng + 22.5;
-  
-  dprint(sprintf("srcAng: %f\n", srcAng));  //debug
-  dprint(sprintf("srcMin: %f\n", srcMin));  //debug
-  dprint(sprintf("srcMax: %f\n", srcMax));  //debug
-  
-  node_t node;
-  
-  if( furtherFlag ){
-    checkDist = 32;
-    startDist = len;
-  }
-  else{
-    checkDist = len;
-    startDist = 32;
-  }
-  
-  found = -1;
-  
-  while( nodeItr < NODE_ID_COUNT ){
-    node = NODEGRAPH_DATA[nodeItr];
-    nodeItr = nodeItr + 1;
-    if( node.id == -1 ){
-      continue;
-    }
-    v1 = node.orig;
-    v1_z = 0;
-    v2 = src;
-    v2_z = 0;
-    nodeLen = vlen(v1 - v2);
-    if( furtherFlag ){
-      if( nodeLen < startDist && nodeLen >= checkDist ){
-        continue;
-      }
-    }
-    else{
-      // < startDist is a bit too close for fighting to be compelling, so its mostly here as a 'floor'.
-      if( nodeLen >= startDist && nodeLen <= checkDist ){
-        continue;
-      }
-    }
-    
-    traceline( src, node.orig, TRUE, self);
-    if( trace_fraction != 1.0 ){
-      continue;
-    }
-    nodeYaw = vectoyaw(node.orig - src);
-    //dprint(sprintf("          nodeYaw: %f\n", nodeYaw)); //debug
-    if( nodeYaw > srcMax || nodeYaw < srcMin ){
-      continue;
-    }
-    checkDist = nodeLen;
-    found = nodeItr;
-    //dprint(sprintf("          node found: %f\n", nodeItr)); //debug
-  }
-  
-  //dprint(sprintf("          ACTUAL found: %f\n", found)); //debug
-  return found;  //no nodes found;
-};
-
-
-/*
-  like the ai_nodegraph_attack_node_close(), 
-    except take the raw input angle as the angle to use.
-*/
-float( vector src, float radius, float offSet, float atkAngle, float furtherFlag) ai_nodegraph_find_node_to_angle={
-  
-  local float checkDist;
-  local float startDist;
-  local float nodeItr;
-  local float nodeLen;
-  local float nodeYaw;
-  local float found;
-  
-  local vector srcAng;
-  local vector srcMod;
-  
-  local vector v1;
-  local vector v2;
-  
-  dprint(sprintf("radius: %f\n", radius));  //debug
-  dprint(sprintf("angMin: %f\n", atkAngle));  //debug
-  dprint(sprintf("furtherFlag: %f\n", furtherFlag));  //debug
-  
-  srcAng = vectoangles(src - self.origin);
-  srcAng_y = anglemod(srcAng_y + atkAngle);
-  
-  makevectors(srcAng);
-  srcMod = src + (v_forward * offSet);
-  
-  node_t node;
-  
-  if( furtherFlag ){
-    checkDist = 32;
-    startDist = radius;
-  }
-  else{
-    checkDist = radius;
-    startDist = 32;
-  }
-  
-  found = -1;
-  
-  while( nodeItr < NODE_ID_COUNT ){
-    node = NODEGRAPH_DATA[nodeItr];
-    nodeItr = nodeItr + 1;
-    if( node.id == -1 ){
-      continue;
-    }
-    v1 = node.orig;
-    v1_z = 0;
-    v2 = srcMod;
-    v2_z = 0;
-    nodeLen = vlen(v1 - v2);
-    if( furtherFlag ){
-      if( nodeLen < startDist && nodeLen >= checkDist ){
-        continue;
-      }
-    }
-    else{
-      // < startDist is a bit too close for fighting to be compelling, so its mostly here as a 'floor'.
-      if( nodeLen >= startDist && nodeLen <= checkDist ){
-        continue;
-      }
-    }
-    
-    traceline( srcMod, node.orig, TRUE, self);
-    if( trace_fraction != 1.0 ){
-      continue;
-    }
-    checkDist = nodeLen;
-    found = nodeItr;
-    dprint(sprintf("          node found: %f\n", nodeItr)); //debug
-  }
-  
-  dprint(sprintf("          ACTUAL found: %f\n", found)); //debug
-  return found;  //no nodes found;
-};
-
-
-float( vector src, float radius ) ai_nodegraph_attack_strafe_left={
-  dprint("ai_nodegraph_attack_strafe_left()\n");  //debug
-  local float found;
-  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, -90, FALSE);
-  return found;
-};
-
-float( vector src, float radius ) ai_nodegraph_attack_strafe_right={
-  dprint("ai_nodegraph_attack_strafe_right()\n");  //debug
-  local float found;
-  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 90, FALSE);
-  return found;
-};
-
-float( vector src, float radius ) ai_nodegraph_attack_flank_rear={
-  dprint("ai_nodegraph_attack_flank_rear()\n");  //debug
-  local float found;
-  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 180, FALSE);
-  return found;
-};
-
-float( vector src, float radius ) ai_nodegraph_attack_flank_left={
-  dprint("ai_nodegraph_attack_flank_left()\n");  //debug
-  local float found;
-  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, -45, FALSE);
-  return found;
-};
-
-float( vector src, float radius ) ai_nodegraph_attack_flank_right={
-  dprint("ai_nodegraph_attack_flank_right()\n");  //debug
-  local float found;
-  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 45, FALSE);
-  return found;
-};
-
-float( vector src, float radius ) ai_nodegraph_attack_charge={
-  dprint("ai_nodegraph_attack_charge()\n");  //debug
-  local float found;
-  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 0, FALSE);
-  return found;
-};
-
-float( vector src, float radius ) ai_nodegraph_retreat={
-  dprint("ai_nodegraph_retreat()\n");  //debug
-  local float found;
-  found = ai_nodegraph_find_node_to_angle( src, radius, 1024, 180, FALSE);
-  return found;
-};
-
-float( float angl, float range, float radius ) ai_nodegraph_free_move={
-  local vector dir;
-  local vector dst;
-  local float found;
-  
-  dir = self.angles;
-  dir_y = anglemod(self.angles_y + angl);
-  makevectors(dir);
-  
-  dst = self.origin + (v_forward * radius);
-  
-  found = ai_nodegraph_find_node_to_angle( dst, radius, 1024, angl, FALSE);
-  return found;
-};
-
-/*
-  Attempt to find a node further away from the source spot, and hidden.
-  
-*/
-float(vector testOrg, float radius) ai_nodegraph_find_hide_node={
-  local float nodeItr;
-  local vector v1;
-  local vector v2;
-  local float checkDist;
-  local float checkLen;
-  local float found;
-  node_t node;
-  
-  checkDist = radius;
-  
-  found = -1;
-  
-  while( nodeItr < NODE_ID_COUNT){
-    node = NODEGRAPH_DATA[nodeItr];
-    nodeItr = nodeItr + 1;
-    
-    if(node.id == -1){
-      continue;
-    }
-    traceline(node.orig, testOrg, FALSE, self);
-    
-    if(trace_fraction > 0.95){
-      continue;
-    }
-    
-    if(NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
-      continue;
-    }
-    
-    v1 = node.orig;
-    v1_z = 0;
-    v2 = testOrg;
-    v2_z = 0;
-    checkLen = vlen(v2 - v1);
-    if( checkLen <= checkDist ){
-      continue;
-    }
-    found = nodeItr;
-    checkDist = checkLen;
-  }
-  
-  return found;
-};
-//=================================================
-
 
 void() ai_node_counter_th={
   local entity nearbot;
@@ -876,8 +598,7 @@ void() ai_node_path={
   setsize(self, sMin, sMax);
   setorigin(self, self.origin);
   
-
-  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY);
+  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY | DPCONTENTS_OPAQUE);
 };
 
 void() ai_exec_order_use={

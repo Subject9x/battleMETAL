@@ -123,19 +123,6 @@ float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode; //given a ma
 float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec; //given a known endId, and a map org
 float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
 float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
-float(vector testOrg, float radius) ai_nodegraph_find_hide_node;
-
-float( vector src, float radius, float atkAngle, float furtherFlag) ai_nodegraph_attack_node_close;  //given an attack angle, and a target origin, find the closest node
-float( vector src, float radius, float offSet, float atkAngle, float furtherFlag) ai_nodegraph_find_node_to_angle
-float( vector src, float radius ) ai_nodegraph_attack_strafe_left;
-float( vector src, float radius ) ai_nodegraph_attack_strafe_right;
-float( vector src, float radius ) ai_nodegraph_attack_flank_rear;
-float( vector src, float radius ) ai_nodegraph_attack_flank_left;
-float( vector src, float radius ) ai_nodegraph_attack_flank_right;
-float( vector src, float radius ) ai_nodegraph_retreat;
-float( vector src, float radius ) ai_nodegraph_attack_charge;
-float( float angl, float range, float radius ) ai_nodegraph_free_move;
-
 //AI TETHER FUNCTIONALITY
  //no valid targets, AI will chill in a spot if it loses target, it  looks for new ones near it. no real fixed position.
 float TETHER_NONE   = 0; 
@@ -175,18 +162,6 @@ float( vector source, vector trgdst ) ai_check_terrain_move;
 void(entity none) ai_NULL_pain={ };
 float() ai_NULL_missile={ return FALSE;};
 
-////////////////////////////////
-//AI COMBAT FUNCTIONS - ai_combat.qc
-float COMBAT_RANGE_CLOSE     = 1;
-float COMBAT_RANGE_MID       = 2;
-float COMBAT_RANGE_LONG      = 4;
-float COMBAT_FRONT           = 8;
-float COMBAT_VIS             = 16;
-float COMBAT_FRIEND          = 32;
-float COMBAT_LEFT            = 64;
-
-.float prevVis;
-.float prevFacing;
 .float combatFlags; //populated by ai_combat_state_frame()
 
 float( float scan_mode) ai_check_scan;
@@ -218,7 +193,6 @@ void() ai_sfx_help;
 float() ai_blocked_teleport;
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
 void() ai_touch;
-void() ai_patrol_state_frame;
 void() ai_face_goal;
 void(vector v) ai_face_origin;
 void() ai_face_targ;
@@ -236,15 +210,6 @@ void() ai_setup_patrol;
 .vector moveDest;       //combat moves, target destination
 .entity patrolNode;
 .float ai_wishSpeed;    //calculated on entering a new move
-
-float PATROL_PAUSE        = 1;  //Paused at node because node had .float paustime
-float PATROL_WALKING      = 2;  //walking to a node where dist > AI_RANGE_S
-float PATROL_ARRIVE       = 3;  //dist <= AI_NODE_DISTANCE
-float PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && dist > AI_NODE_DISTANCE
-float PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
-.float patrolState;
-.float patrolStateLast;
-
 
 .float ai_state;      //  the current state, usually not accessed directly.
 .float ai_state_next;
@@ -266,22 +231,32 @@ void( float move ) ai_update_accuracy;
 
 .void() ai_unit_update;
 
-//atomic impl
+//Lightweight state implementation
+//todo: semi-random timer to nodegraph tracing
+//soft queue for being able to request a nodepath.
 .void() ai_set_state;
 void() ai_frame_update;
 
-void() ai_state_lurker_frame;    //todo - rename, move to 'lurker'
+//Behavior state functions.
+void() ai_state_turret_frame;   //just for turrets.
+void() ai_state_lurker_frame;
 void() ai_state_brawler_frame;
 void() ai_state_hunter_frame;
 
-void() ai_patrol_frame_2;
+//Per-Frame behavior functions
+void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_frame;
+void( float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_patrol_frame;
 
-void() ai_state_turret_frame;
+void() ai_nodegraph_combat_frame; //todo - deprecated
 
-void() ai_nodegraph_combat_frame;
+//Timers
+.float ai_timer_tracepath;  //probably the most important.
+.float ai_timer_checkTurn;  // if yawspeed too low for ideal_yaw over X time, this makes the bot turn harder.
+.float ai_timer_checkHunt;  // used by ai_state_hunter_frame() for hunting targets.
 
-.float ai_timer_checkTurn; // if yawspeed too low for ideal_yaw over X time, this makes the bot turn harder.
-.float ai_hardTurn; // 
+//Values
+.float ai_findPath;   //part of the queue system for 
+.float ai_hardTurn;   //when target destination yaw >= 90 from bot's angles_y
 
 //hold off on these for a sec
 //void() ai_turn_node;
@@ -303,22 +278,6 @@ string(float tether) dbg_tether={
       return "TETHER_NOMAD";
     case TETHER_NONE:
       return "TETHER_NONE";
-  }
-  return "null";
-};
-
-string(float patrol) dbg_patrol={
-  switch(patrol){
-    case PATROL_ADJUST:
-      return "PATROL_ADJUST";
-    case PATROL_ARRIVE:
-      return "PATROL_ARRIVE";
-    case PATROL_BLOCK:
-      return "PATROL_BLOCK";
-    case PATROL_PAUSE:
-      return "PATROL_PAUSE";
-    case PATROL_WALKING:
-      return "PATROL_WALKING";
   }
   return "null";
 };

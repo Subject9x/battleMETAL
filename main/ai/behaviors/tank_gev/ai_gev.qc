@@ -31,13 +31,14 @@ void() ai_gev={
   }  
   self.torsoCenter.effects = EF_NODRAW;
   
-  self.ai_state_last = 0;
-  
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   
   self.ai_unit_update = ctrl_updateTank;
-
+  
+  self.ai_timer_tracepath = 1 + random() * 5; //seed the nodegraph timer check
+  self.ai_findPath = TRUE;
+  
   self.ai_set_state = ai_state_brawler_frame;
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;

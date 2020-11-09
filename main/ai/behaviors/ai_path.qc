@@ -8,23 +8,26 @@ Overview:
 
 
 /*
-  A more stateless implementation of the nodegraph state from earlier;
-    if the AI arrives here, it merely checks if a path exists -
-      if there's a path, run it,
-      if no path, make a new one
-  -> move to ai_combat
+  Generic impl of the nodegraph_frame.
+    What this does
+      1) check to see if bot already is running a path
+        if-not, build a path
+      2) when running a path, walk towards the origin of self.nq1
+        check yaw angle, if the angle is beyond the forward arc, stop moving and pivot only.
+        
 */
-void() ai_nodegraph_combat_frame={
+void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_frame={
   local float pathFind;
   local float nodeDist;
   local vector nqOrg;
   local float nodeYaw;
-  local float turnSpeed;
-  local float walkSpeed;
+  local float moveSpeed;
+  local float turnFlag;
   
   if( self.nq1 == -1 ){
     //fresh path
-    ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+    //todo - queue and timer 
+    ai_nodegraph_trace_vec( self.origin, targDest );
   }
   else{
     makevectors(self.angles);
@@ -38,19 +41,23 @@ void() ai_nodegraph_combat_frame={
       //arrived at node
       pathFind = ai_nodegraph_next();
       if( !pathFind ){
-        ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+        //todo - queue and timer 
+        ai_nodegraph_trace_vec( self.origin, targDest );
       }
     }
     else{
-      nodeYaw = vectoyaw(nqOrg - self.origin);
       //still traveling to node
+      nodeYaw = vectoyaw(nqOrg - self.origin);
+      //check yaw-to-node
       if( nodeYaw != self.angles_y ){
         self.ideal_yaw = vectoyaw(nqOrg - self.origin);
         
+        //yaw is too wide, stop moving and just pivot to node
+        dprint(sprintf("nodeYaw %f\n", fabs(self.ideal_yaw - self.angles_y))); //debug
         if( fabs(self.ideal_yaw - self.angles_y) >= 90 ){
           if( time > self.ai_timer_checkTurn ){
             self.ai_hardTurn = TRUE;
-            self.ai_timer_checkTurn = self.ai_timer_checkTurn + 5;
+            self.ai_timer_checkTurn = self.ai_timer_checkTurn + turnTime;
           }
         }
         else{
@@ -58,107 +65,27 @@ void() ai_nodegraph_combat_frame={
         }
         
         ChangeYaw();
-        turnSpeed = TRUE;
+        turnFlag = TRUE;
         if( self.legs ){
           self.legs.attack_state = TR_TARG;
           self.legs.ai_dir = nodeYaw;
         }
       }
-      if( !self.ai_hardTurn ){
-        if( turnSpeed ){
-          walkSpeed = self.data_speed_strafe * 0.5;
-        }
-        else{
-          walkSpeed = self.data_speed_forward * 0.67;
-        }
-        if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-          ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
-        }
-      }
-    }
-  }
-};
-
-/*
-  Same deal as ai_nodegraph_combat_frame() 
-    BUT!
-    it checks AI's patrol node references instead of enemy position.
-    
-    this is used when a bot gets stuck trying to patrol
-    
--> move to ai_patrol
-*/
-void() ai_nodegraph_patrol_frame={
-  local float pathFind;
-  local float nodeDist;
-  local float nodeYaw;
-  local vector nqOrg;
-  local float turnSpeed;
-  local float walkSpeed;
-  
-  if( self.nq1 == -1 ){
-    //fresh path
-    ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );
-  }
-  else{
-    makevectors(self.angles);
-    nqOrg = nodegraph_get_node_origin( self.nq1 );
-    nqOrg = nqOrg + (v_forward * 16);
-    nodeDist = vlen(nqOrg - self.origin);
-    if( nodeDist != -1 ){
-      //todo - path error
-    }
-    if( nodeDist <= 32 ){
-      //arrived at node
-      pathFind = ai_nodegraph_next();
-      if( !pathFind ){
-        ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );
-      }
-      self.moveState = MOVE_STAND;
-    }
-    else{
-      nodeYaw = vectoyaw(nqOrg - self.origin);
-      //still traveling to node
-      if( nodeYaw != self.angles_y ){
-        self.ideal_yaw = vectoyaw(nqOrg - self.origin);
+      if( self.ai_hardTurn == TRUE ){
+        self.moveState = MOVE_STAND;
         
-        //if node angle is 
-        if( fabs(self.ideal_yaw - self.angles_y) >= 90 ){
-          if( time > self.ai_timer_checkTurn ){
-            self.ai_hardTurn = TRUE;
-            self.ai_timer_checkTurn = self.ai_timer_checkTurn + 5;
-          }
-        }
-        else{
-          self.ai_hardTurn = FALSE;
-        }
-        
-        yawCache = self.yaw_speed;
-        self.yaw_speed = self.yaw_speed * 2;
-        ChangeYaw();
-        self.yaw_speed = yawCache;
-        turnSpeed = TRUE;
-        if( self.legs ){
-          self.legs.attack_state = TR_TARG;
-          self.legs.ai_dir = nodeYaw;
-        }
-        
-      }
-      //turning hard to node.
-      if( !self.ai_hardTurn ){
-        self.moveState = MOVE_NORM;
-        if( turnSpeed ){
-          walkSpeed = self.data_speed_strafe * 0.5;
-        }
-        else{
-          walkSpeed = self.data_speed_forward * 0.67;
-        }
-        if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-          ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );
-        }
       }
       else{
-        self.moveState = MOVE_STAND;
+        if( turnFlag ){
+          moveSpeed = turnSpeed;//self.data_speed_strafe * 0.5;
+        }
+        else{
+          moveSpeed = walkSpeed;//self.data_speed_forward * 0.67;
+        }
+        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+          //todo - queue and timer 
+          ai_nodegraph_trace_vec( self.origin, offsetTargDest );
+        }
       }
     }
   }

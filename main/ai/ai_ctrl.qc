@@ -161,108 +161,6 @@ void(entity atk) ai_react={
   self.ai_react_buffer = time + self.ai_react_time * 5;
 };
 
-/*
-  PATROL SUB STATE
-    PATROL_PAUSE        = 1;  //Paused at node because node had .float paustime
-    PATROL_WALKING      = 2;  //walking to a node where dist > AI_RANGE_S
-    PATROL_ARRIVE       = 3;  //dist <= AI_NODE_DISTANCE
-    PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && dist > AI_NODE_DISTANCE
-    PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
-    void() ai_patrol_state_frame;
-  .float patrolState;
-*/
-void() ai_patrol_state_frame={
-  local entity nextNode;
-  local float distLeft;
-  local vector cacheOrg;
-  local float walkSpeed, cornerSpeed;
-  
-  walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
-  walkSpeed = max(walkSpeed, 2);
-  cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 3.5;
-  cornerSpeed = max(cornerSpeed, 1);
-  
-  //PAUSED AT NODE
-  if( time < self.pausetime ){
-    self.patrolState = PATROL_PAUSE;
-    return;
-  }
-  
-  cacheOrg = self.goalentity.origin;
-  self.lastorigin = self.origin;
-  distLeft = vlen(self.goalentity.origin - self.origin); 
-
-  //GOING TO NODE-----------------------------------
-  if( distLeft > self.goalentity.ai_view ){
-    ai_face_goal();
-    if( ai_check_face(self.goalentity, 0.85, FALSE) ){
-      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-        movetogoal( walkSpeed );
-      }
-    }
-    else{
-      if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-        movetogoal( cornerSpeed );
-      }
-    }
-    self.patrolState = PATROL_WALKING;
-    return;
-  }
-  //------------------------------------------------
-  
-  //PATROL - ARRIVING AT NODE
-  if( distLeft > min(self.goalentity.ai_view * 0.25,64) ){
-    ai_face_goal();
-    if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-      if(!self.legs){
-        ChangeYaw();
-      }
-      movetogoal( cornerSpeed );
-    }
-    self.patrolState = PATROL_WALKING;
-    return;
-  }
-  if( distLeft > min(self.goalentity.ai_view * 0.1,32) ){
-    ai_face_goal();
-    if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-      if(!self.legs){
-        ChangeYaw();
-      }
-      movetogoal( cornerSpeed );
-    }
-  }
-  //PATROL - ARRIVED AT NODE, set pause and next node
-  if(self.goalentity.pausetime > 0.0){
-    self.pausetime = self.goalentity.pausetime;
-    self.pausetime = max(5, self.pausetime - (self.ai_rank / 2));
-    self.patrolState = PATROL_PAUSE;
-  }
-  else{
-    self.pausetime = 0;
-    self.patrolState = PATROL_ARRIVE;
-  }
-  
-  if(self.patrolState == PATROL_ARRIVE){
-    if( self.goalentity.partNext ){
-      //case - there's the next node
-      nextNode = self.goalentity.partNext;
-    }
-    else{
-      nextNode = self.patrolNode;
-    }
-    if(nextNode == self.patrolNode ){
-      //IF an ai_node is missing a .target , then we 'error correct' here by cutting the AI over to ST_THR sub system.
-      //the AI will treat this final destination node as if it were ai_node_tether.
-      self.tether = TETHER_NODE;
-    }
-    else{
-      self.patrolNode = nextNode;
-    }
-  }
-  self.tetherOrg = self.patrolNode.origin;
-};
-
-
 void() ai_face_goal={
   self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
   ChangeYaw();
@@ -563,6 +461,7 @@ void() ai_setup_patrol={
   }
 
   ai_nodegraph_clear_path();
+  self.ai_timer_tracepath = time + self.ai_timer_tracepath;
   
   self.nextthink = self.nextthink + time;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;

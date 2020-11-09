@@ -30,15 +30,15 @@ void() ai_mech_sniper={
   }  
   self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   
-  //new state stuff
-  self.ai_state_last = 0;
-  
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   
   self.ai_unit_update = ai_ctrl_update_mechplayer;
   
-  self.ai_set_state = ai_state_lurker_frame;
+  self.ai_timer_tracepath = 1 + random() * 5; //seed the nodegraph timer check
+  self.ai_findPath = TRUE;
+  
+  self.ai_set_state = ai_state_lurker_frame;  //TODO - mech snipers don't really work as lurkers
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;
 };
