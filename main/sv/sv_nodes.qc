@@ -23,13 +23,14 @@ void(float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
   local float reflectNode;
   local float reflectEdge;
   
-  //node_t theNode;
-  nodegraph_get_node_byid( nodeId );
+  node_t nodeData;
+  node_t checkData;
   
-  NODE_found.id = nodeId;
+  //nodeData = NODE_found;
+  nodeData.id = nodeId;
   
   reflectOrg = org;
-  NODE_found.orig = reflectOrg;
+  nodeData.orig = reflectOrg;
   
   edgeString = edgeDat;
   edgetokens = tokenizebyseparator(edgeString, " ", "-");
@@ -42,27 +43,29 @@ void(float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
     //dprint(strcat("edgeItr+1(", ftos(edgeItr+1),")= ", argv(edgeItr+1),"\n")); //debug
     if( edgeItr <= edgetokens - 1 ){
       reflectNode = stof(argv(edgeItr));
-      NODE_found.nodes[edgeNum] = reflectNode;
+      nodeData.nodes[edgeNum] = reflectNode;
       //dprint(strcat(argv(edgeItr),"\n")); //debug
       
       reflectEdge = stof(argv(edgeItr+1));
-      NODE_found.edge[edgeNum] = reflectEdge;
+      nodeData.edge[edgeNum] = reflectEdge;
       //dprint(strcat(argv(edgeItr+1),"\n")); //debug
-      //dprint(sprintf("NODE_found.nodes[%u]=%f\n", edgeNum, NODE_found.nodes[edgeNum] )); //debug
-      //dprint(sprintf("NODE_found.edge[%u]=%f\n", edgeNum, NODE_found.edge[edgeNum] )); //debug
+      //dprint(sprintf("nodeData.nodes[%u]=%f\n", edgeNum, nodeData.nodes[edgeNum] )); //debug
+      //dprint(sprintf("nodeData.edge[%u]=%f\n", edgeNum, nodeData.edge[edgeNum] )); //debug
     }
     else{
-      NODE_found.nodes[edgeNum] = -1;
-      NODE_found.edge[edgeNum] = 0;
+      nodeData.nodes[edgeNum] = -1;
+      nodeData.edge[edgeNum] = 0;
     }
     edgeNum = edgeNum + 1;
   }
   //dprint("EDGE END---------------------------\n"); //debug
   
-  //dprint(strcat(ftos(NODE_found.id),"\n")); //debug
-  //dprint(strcat(vtos(NODE_found.orig),"\n")); //debug
-  //dprint("NODE LOADED---------------------------\n"); //debug
-  NODEGRAPH_DATA[nodeId] = NODE_found;
+  NODEGRAPH_DATA[nodeId] = nodeData;
+  checkData = NODEGRAPH_DATA[nodeId];
+  dprint("NODE LOADED---------------------------\n"); //debug
+  dprint(strcat(ftos(checkData.id),"\n")); //debug
+  dprint(strcat(vtos(checkData.orig),"\n")); //debug
+  dprint("--------------------------------------\n"); //debug
 };
 
 //NODEGRAPH API--------------------------------------------------------
@@ -165,7 +168,7 @@ float( vector start, vector end ) nodegraph_trace_vec={
   
   nodegraph_node_by_origin(start);
   idStart = NODE_found.id;
-  dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", start_x,start_y,start_z, NODE_found.id, NODEGRAPH_SEARCH_QUEUE[0])); //debug
+  //dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", start_x,start_y,start_z, NODE_found.id, NODEGRAPH_SEARCH_QUEUE[0])); //debug
   
   nodegraph_node_by_origin(end);
   
@@ -187,7 +190,7 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   local float reflectPath;
   local float stackTotal;
   
-  dprint(sprintf("nodegraph_build_path( startNode[%u], endArrIdx[%u], endNodeId[%u] )\n", startNode, endArrIdx, endNodeId));  //debug
+  //dprint(sprintf("nodegraph_build_path( startNode[%u], endArrIdx[%u], endNodeId[%u] )\n", startNode, endArrIdx, endNodeId));  //debug
   stack = 0;
   //dprint("NODEGRAPH_SEARCH_CAME_FROM[] integrity check\n"); //debug
   //while( stack < NODE_ID_COUNT ){
@@ -199,7 +202,7 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   stack = 0;
   reflectPath = 0;
   pathId = endNodeId;
-  dprint(sprintf("===BULDING PATH===stack{%u}\n", stack));  //debug
+  //dprint(sprintf("===BULDING PATH===stack{%u}\n", stack));  //debug
   while( pathId != startNode && stack < endArrIdx ){
     NODEGRAPH_SEARCH_PATH[stack] = pathId;
       //dprint(sprintf("    itr[%u]-node(%d)\n", stack, pathId));
@@ -297,8 +300,8 @@ void( vector org ) nodegraph_node_by_origin={
 */
 void( float nodeId ) nodegraph_get_node_byid={
   if( nodeId > -1 ){
-    NODE_check = NODEGRAPH_DATA[nodeId];
-    dprint(strcat("nodegraph_get_node_byid(",ftos(nodeId),")-(", ftos(NODE_check.id),")\n"));  //debug
+    NODE_found = NODEGRAPH_DATA[nodeId];
+    //dprint(strcat("nodegraph_get_node_byid(",ftos(nodeId),")-(", ftos(NODE_check.id),")\n"));  //debug
   }
 };
 

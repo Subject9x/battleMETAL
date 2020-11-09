@@ -715,7 +715,7 @@ void() world_nodegraph_export_edgelinker_th={
   }
 
   self.think = world_nodegraph_export_edgelinker_th;
-  self.nextthink = time + 0.5;
+  self.nextthink = time + 0.1;
 };
 
 void( float overrideFlag ) world_nodegraph_export_data={
@@ -986,32 +986,46 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
 */
 void() world_nodegraph_import={
   local float checkNodeItr;
+  
   node_t check;
   
-  NODEGRAPH_LOADED = world_nodegraph_read_file();
+  checkNodeItr = 0;
+  //prepare the data
+  while( checkNodeItr < NODEGRAPH_MAX ){
+    NODE_check = NODEGRAPH_DATA[checkNodeItr];
+    NODE_check.id = -1;
+    checkNodeItr = checkNodeItr + 1;
+  }
   
-  if( cvar("developer") ){
-    //just a double back check that data was loaded proper.
-    dprint("NODEGHRAPH LOADED ", ftos(NODEGRAPH_LOADED), "\n"); //debug
-    dprint("VERIFY NODEGRAPH ARRAY", ftos(NODEGRAPH_LOADED), "\n"); //debug
-    
-    for(checkNodeItr = 0; checkNodeItr < NODE_ID_COUNT; checkNodeItr = checkNodeItr + 1){
-      check = NODEGRAPH_DATA[checkNodeItr];
-      if(check.id > -1){
-        dprint("NODE START---------------------------\n"); //debug
-        dprint(strcat(ftos(check.id),"\n")); //debug
-        dprint(strcat(vtos(check.orig),"\n")); //debug
-        dprint(strcat("(",ftos(check.nodes[0]),"-",ftos(check.edge[0]),")")); //debug
-        dprint(strcat("(",ftos(check.nodes[1]),"-",ftos(check.edge[1]),")")); //debug
-        dprint(strcat("(",ftos(check.nodes[2]),"-",ftos(check.edge[2]),")")); //debug
-        dprint(strcat("(",ftos(check.nodes[3]),"-",ftos(check.edge[3]),")")); //debug
-        dprint(strcat("(",ftos(check.nodes[4]),"-",ftos(check.edge[4]),")")); //debug
-        dprint(strcat("(",ftos(check.nodes[5]),"-",ftos(check.edge[5]),")")); //debug
-        dprint("\nEDGE END---------------------------\n"); //debug
+  checkNodeItr = 0;
+  
+  //load the actual file
+  NODE_ID_COUNT = world_nodegraph_read_file();
+  dprint("VERIFY NODEGRAPH ARRAY SIZE (NODE_ID_COUNT): ", ftos(NODE_ID_COUNT), "\n"); //debug
+  if( NODE_ID_COUNT > 0 ){
+    NODEGRAPH_LOADED = TRUE;
+    if( cvar("developer") ){
+      //just a double back check that data was loaded proper.
+      //dprint("NODEGHRAPH LOADED ", ftos(NODEGRAPH_LOADED), "\n"); //debug
+      
+      
+      for(checkNodeItr = 0; checkNodeItr < NODE_ID_COUNT; checkNodeItr = checkNodeItr + 1){
+        check = NODEGRAPH_DATA[checkNodeItr];
+        if(check.id > -1){
+          //dprint("NODE START---------------------------\n"); //debug
+          dprint(strcat(ftos(check.id),"\n")); //debug
+          //dprint(strcat(vtos(check.orig),"\n")); //debug
+          //dprint(strcat("(",ftos(check.nodes[0]),"-",ftos(check.edge[0]),")")); //debug
+          //dprint(strcat("(",ftos(check.nodes[1]),"-",ftos(check.edge[1]),")")); //debug
+          //dprint(strcat("(",ftos(check.nodes[2]),"-",ftos(check.edge[2]),")")); //debug
+          //dprint(strcat("(",ftos(check.nodes[3]),"-",ftos(check.edge[3]),")")); //debug
+          //dprint(strcat("(",ftos(check.nodes[4]),"-",ftos(check.edge[4]),")")); //debug
+          //dprint(strcat("(",ftos(check.nodes[5]),"-",ftos(check.edge[5]),")")); //debug
+         // dprint("\nEDGE END---------------------------\n"); //debug
+        }
       }
     }
   }
-  
 };
 
 /*
@@ -1026,12 +1040,12 @@ float() world_nodegraph_read_file={
   
   local float itr;
   
-  local float nodeid;
-  local vector org;
+  local float nodeDataId;
+  local vector nodeDataOrg;
   
   local string edgeData;
   
-  fileName = strcat(mapname,"/",mapname,".nodes");
+  fileName = strcat("maps/",mapname,"/",mapname,".nodes");
   fileHandle = fopen(fileName, FILE_READ);
   
   if( cvar("developer") ){
@@ -1051,15 +1065,15 @@ float() world_nodegraph_read_file={
         //node ID
         line = fileLine;
         tokenizebyseparator(fileLine, "\"", "\"", " \"", "\"\n");
-        nodeid = rint(stof(argv(3)));
-        nodeid = fabs(nodeid);
+        nodeDataId = rint(stof(argv(3)));
+        nodeDataId = fabs(nodeDataId);
         
         //node origin
         fileLine = fgets(fileHandle);
         tokenizebyseparator(fileLine, "\"", "\"", " \"", " ", "\"");
-        org_x = stof(argv(3));
-        org_y = stof(argv(4));
-        org_z = stof(argv(5));
+        nodeDataOrg_x = stof(argv(3));
+        nodeDataOrg_y = stof(argv(4));
+        nodeDataOrg_z = stof(argv(5));
         
         //edge data
         fileLine = fgets(fileHandle);
@@ -1067,24 +1081,13 @@ float() world_nodegraph_read_file={
         edgeData = argv(3);
         
         //node edge data for processing.
-        nodegraph_read_new_node(nodeid, org, edgeData);
+        nodegraph_read_new_node(nodeDataId, nodeDataOrg, edgeData);
         nodeCounter = nodeCounter + 1;
         fileLine = fgets(fileHandle);
       }
     }
     fclose(fileHandle);
   }
-  if( nodeCounter > 0 && nodeCounter < NODEGRAPH_MAX ){
-    itr = NODEGRAPH_MAX - nodeCounter;
-    while( itr < NODEGRAPH_MAX ){
-      NODE_check = NODEGRAPH_DATA[itr];
-      NODE_check.id = -1;
-      NODEGRAPH_DATA[itr] = NODE_check;
-      itr = itr + 1;
-    }
-  }
-  NODE_ID_COUNT = nodeCounter;
-  
   return nodeCounter;
 };
 
