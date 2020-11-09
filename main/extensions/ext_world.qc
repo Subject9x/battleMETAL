@@ -715,7 +715,7 @@ void() world_nodegraph_export_edgelinker_th={
   }
 
   self.think = world_nodegraph_export_edgelinker_th;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.33;
 };
 
 void( float overrideFlag ) world_nodegraph_export_data={
@@ -733,8 +733,7 @@ void( float overrideFlag ) world_nodegraph_export_data={
   }
  
   fileExists = fopen(fileName, FILE_WRITE);
- 
-  //fclose(fileExists);
+  
   //overrideFlag was false but file exists! so don't overwrite
   if( (fileExists == TRUE) && !overrideFlag ){
     if( developer ){
@@ -773,7 +772,6 @@ void( float overrideFlag ) world_nodegraph_export_data={
     nodegraph_edgelinker.nextthink = time + 0.1;
     cons_logAString("[INFO]-world_export_nodegraph() total nodes ", ftos(nodeTotal));  //DEBUG
   }
-  //fclose(fileExists); dangerous, deferring to linker entity 
 };
 
 /*
@@ -793,7 +791,10 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
   local vector edgeSegB;
   
   local vector trEdgeApos;
+  //local float trEdgeAContents;
+  
   local vector trEdgeBpos;
+  //local float trEdgeBContents;
   
   local vector trEdgeAngl;
   
@@ -826,10 +827,11 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
       
       traceline(edgeSegA, edgeSegA + (v_up * -512), TRUE, node);
       trEdgeApos = trace_endpos;
+      //trEdgeAContents = trace_dphitcontents;
       
       traceline(edgeSegB, edgeSegB + (v_up * -512), TRUE, node);
       trEdgeBpos = trace_endpos;
-      
+      //trEdgeBContents = trace_dphitcontents;
       //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegA, trEdgeApos);  //debug
       //trailparticles(world, particleeffectnum("TE_LAS_RAIL"), edgeSegB, trEdgeBpos);  //debug
       
@@ -846,6 +848,10 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
         //cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(trEdgeAngl_x), "| seg ", ftos(edgeLenItr)));//debug
         edgeCheck = FALSE;
       }
+      //holding off on this change for a second.
+      //if( (trEdgeAContents & (DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_LIQUIDSMASK | DPCONTENTS_WATER | DPCONTENTS_BODY)) || (trEdgeBContents & (DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_LIQUIDSMASK | DPCONTENTS_WATER | DPCONTENTS_BODY)) ){
+      //  edgeCheck = FALSE;
+      //}
       edgeSegA = edgeSegB;
     }
     return edgeCheck;
@@ -921,12 +927,12 @@ void( entity iEdgNode, float weight ) world_nodegraph_edge_check_len={
       NODEGRAPH_EXPORT_EDGE[j + 1] = eKey;
     }
   }
-  dprint("SORTED NODE BY DIST\n");  //debug
-  for( i=0; i < NODE_ID_EXPORT_COUNT; i=i+1){
-    ecache = NODEGRAPH_EXPORT_EDGE[i];
-    dprint(sprintf("node[%u]- EDGE(%u)-WEIGHT{ %f }\n", ecache_x,ecache_y, ecache_z)); //debug
-  }
-  dprint("=============================\n");  //debug
+  //dprint("SORTED NODE BY DIST\n");  //debug
+  //for( i=0; i < NODE_ID_EXPORT_COUNT; i=i+1){
+    //ecache = NODEGRAPH_EXPORT_EDGE[i];
+    //dprint(sprintf("node[%u]- EDGE(%u)-WEIGHT{ %f }\n", ecache_x,ecache_y, ecache_z)); //debug
+  //}
+  //dprint("=============================\n");  //debug
 };
 
 void(entity node, float fileData ) world_nodegraph_export_write_node={
@@ -937,17 +943,24 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
   local float checkDist;
   local vector iEdge;
   
-  fputs(fileData, "{\n");
-  fputs(fileData, strcat("\"id\" \"",ftos(node.data_idx),"\"\n"));
-  fputs(fileData, "\"origin\" \"");
-    fputs(fileData, strcat(ftos(node.origin_x), " "));
-    fputs(fileData, strcat(ftos(node.origin_y), " "));
-    fputs(fileData, ftos(node.origin_z));
-  fputs(fileData, "\"\n");
-  fputs(fileData, "\"edges\" \"");
+  local string strLineData;
+  local string strEdgeData;
+ 
+  strLineData = "";
+  
+  //actually, line number mostly matches the ID's because they're exported in order
+  //strLineData = strcat(strLineData, ftos(node.data_idx), " ");
+  
+  strLineData = strcat(strLineData, ftos(node.origin_x), " ");
+  
+  strLineData = strcat(strLineData, ftos(node.origin_y), " ");
+  
+  strLineData = strcat(strLineData, ftos(node.origin_z), " ");
   
   world_nodegraph_edge_empty_cache(node);
   world_nodegraph_edge_check_len(node, 512);
+  
+  strEdgeData = " ";
   
   minDist = 0;
   edgeMax = 0;
@@ -966,19 +979,19 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
     
     edgeMax = edgeMax + 1;
     //cons_logAString(ftos(node.data_idx), strcat("linked for ", ftos(edgeNode.data_idx)));//debug
-    fputs(fileData, strcat(ftos(iEdge_y), "-", ftos(iEdge_z)));
+    strLineData = strcat(strLineData,ftos(iEdge_y), " ",ftos(iEdge_z));
     
     //clean formatting
     iEdge = NODEGRAPH_EXPORT_EDGE[self.delay + 1];
     if( edgeMax < 6 && iEdge_y != node.data_idx){
-      fputs(fileData, " ");
+      strLineData = strcat(strLineData, " ")
     }
   }
   if( edgeMax == 0 ){
-    fputs(fileData, "NO EDGES FOUND");
+    //fputs(fileData, "NO EDGES FOUND");
   }
-  fputs(fileData, "\"\n");
-  fputs(fileData, "}\n");
+  strLineData = strcat(strLineData, "\n");
+  fputs(fileData, strLineData);
 };
 
 /*
@@ -1009,11 +1022,11 @@ void() world_nodegraph_import={
       //dprint("NODEGHRAPH LOADED ", ftos(NODEGRAPH_LOADED), "\n"); //debug
       
       
-      for(checkNodeItr = 0; checkNodeItr < NODE_ID_COUNT; checkNodeItr = checkNodeItr + 1){
-        check = NODEGRAPH_DATA[checkNodeItr];
-        if(check.id > -1){
+     // for(checkNodeItr = 0; checkNodeItr < NODE_ID_COUNT; checkNodeItr = checkNodeItr + 1){
+        //check = NODEGRAPH_DATA[checkNodeItr];
+        //if(check.id > -1){
           //dprint("NODE START---------------------------\n"); //debug
-          dprint(strcat(ftos(check.id),"\n")); //debug
+          //dprint(strcat(ftos(check.id),"\n")); //debug
           //dprint(strcat(vtos(check.orig),"\n")); //debug
           //dprint(strcat("(",ftos(check.nodes[0]),"-",ftos(check.edge[0]),")")); //debug
           //dprint(strcat("(",ftos(check.nodes[1]),"-",ftos(check.edge[1]),")")); //debug
@@ -1022,8 +1035,8 @@ void() world_nodegraph_import={
           //dprint(strcat("(",ftos(check.nodes[4]),"-",ftos(check.edge[4]),")")); //debug
           //dprint(strcat("(",ftos(check.nodes[5]),"-",ftos(check.edge[5]),")")); //debug
          // dprint("\nEDGE END---------------------------\n"); //debug
-        }
-      }
+        //}
+      //}
     }
   }
 };
@@ -1035,15 +1048,17 @@ float() world_nodegraph_read_file={
   local float fileHandle;
   local string fileName;
   local string fileLine;
-  local string line;
   local float nodeCounter;
   
-  local float itr;
-  
+  local float tknTotal;
+  local float tknCount;
   local float nodeDataId;
   local vector nodeDataOrg;
   
-  local string edgeData;
+  local float edgeItr;
+  local float edgeCount;
+  local float edgeDataId;
+  local float edgeDataLen;
   
   fileName = strcat("maps/",mapname,"/",mapname,".nodes");
   fileHandle = fopen(fileName, FILE_READ);
@@ -1059,32 +1074,56 @@ float() world_nodegraph_read_file={
       if( nodeCounter >= NODEGRAPH_MAX ){
         break;
       }
-      line = fileLine;
-      fileLine = fgets(fileHandle);
-      if( line == "{" ){
-        //node ID
-        line = fileLine;
-        tokenizebyseparator(fileLine, "\"", "\"", " \"", "\"\n");
-        nodeDataId = rint(stof(argv(3)));
-        nodeDataId = fabs(nodeDataId);
+      
+      tknTotal = rint(0);
+      tknTotal = tokenizebyseparator(fileLine, " ");
+      tknCount = 0;
+      if( tknTotal >= 3 ){
+        //valid node, just possibly no edge data.
         
-        //node origin
-        fileLine = fgets(fileHandle);
-        tokenizebyseparator(fileLine, "\"", "\"", " \"", " ", "\"");
-        nodeDataOrg_x = stof(argv(3));
-        nodeDataOrg_y = stof(argv(4));
-        nodeDataOrg_z = stof(argv(5));
+        //node id is only considered in engine,
+        //the order of nodes exported is also set by engine.
+        //hopefully no one scrambled the .nodes file.
+        nodeDataId = nodeCounter;
+        
+        //populate origin
+        nodeDataOrg_x = stof(argv(tknCount));
+        tknCount = tknCount + 1;
+        
+        nodeDataOrg_y = stof(argv(tknCount));
+        tknCount = tknCount + 1;
+        
+        nodeDataOrg_z = stof(argv(tknCount));
+        tknCount = tknCount + 1;
+        
+        nodegraph_read_new_node(nodeDataId, nodeDataOrg);
         
         //edge data
-        fileLine = fgets(fileHandle);
-        tokenizebyseparator(fileLine, "\"", "\" ", "\"", "\"");
-        edgeData = argv(3);
+        tknTotal = tknTotal - tknCount;
+        edgeCount = 4;
+        edgeItr = 0;
+        edgeDataId = 0;
         
-        //node edge data for processing.
-        nodegraph_read_new_node(nodeDataId, nodeDataOrg, edgeData);
+        edgeDataLen = 0;
+        while( edgeItr < 6 ){
+          if(edgeCount < tknTotal){
+            edgeDataId = stof(argv(edgeCount));
+            edgeCount = edgeCount + 1;
+            
+            edgeDataLen =  stof(argv(edgeCount));
+            edgeCount = edgeCount + 1;
+          }
+          else{
+            edgeDataId = -1;
+            edgeDataLen = 0;
+          }
+          nodegraph_read_edge( nodeDataId, edgeItr, edgeDataId, edgeDataLen );
+          edgeItr = edgeItr + 1;
+        }
+        
         nodeCounter = nodeCounter + 1;
-        fileLine = fgets(fileHandle);
       }
+      fileLine = fgets(fileHandle);
     }
     fclose(fileHandle);
   }

@@ -10,14 +10,7 @@ Overview:
 */
 
 
-void(float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
-  
-  local string edgeString;
-  local float edgetokens;
-  local float edgeItr;
-  
-  local float edgeNum;
-  
+void(float dataNodeId, vector dataOrg ) nodegraph_read_new_node={
   local vector reflectOrg;
   
   local float reflectNode;
@@ -27,46 +20,30 @@ void(float nodeId, vector org, string edgeDat) nodegraph_read_new_node={
   node_t checkData;
   
   //nodeData = NODE_found;
-  nodeData.id = nodeId;
+  nodeData.id = dataNodeId;
   
-  reflectOrg = org;
+  reflectOrg = dataOrg;
   nodeData.orig = reflectOrg;
   
-  edgeString = edgeDat;
-  edgetokens = tokenizebyseparator(edgeString, " ", "-");
-  //dprint("EDGE START---------------------------\n"); //debug
-  //dprint(strcat("edgetokens: ", ftos(edgetokens), "\n")); //debug
-  edgeNum = 0;
-  while(edgeNum < 6){
-    edgeItr = edgeNum * 2;
-    //dprint(strcat("edgeItr(", ftos(edgeItr), ")= ", argv(edgeItr), "\n")); //debug
-    //dprint(strcat("edgeItr+1(", ftos(edgeItr+1),")= ", argv(edgeItr+1),"\n")); //debug
-    if( edgeItr <= edgetokens - 1 ){
-      reflectNode = stof(argv(edgeItr));
-      nodeData.nodes[edgeNum] = reflectNode;
-      //dprint(strcat(argv(edgeItr),"\n")); //debug
-      
-      reflectEdge = stof(argv(edgeItr+1));
-      nodeData.edge[edgeNum] = reflectEdge;
-      //dprint(strcat(argv(edgeItr+1),"\n")); //debug
-      //dprint(sprintf("nodeData.nodes[%u]=%f\n", edgeNum, nodeData.nodes[edgeNum] )); //debug
-      //dprint(sprintf("nodeData.edge[%u]=%f\n", edgeNum, nodeData.edge[edgeNum] )); //debug
-    }
-    else{
-      nodeData.nodes[edgeNum] = -1;
-      nodeData.edge[edgeNum] = 0;
-    }
-    edgeNum = edgeNum + 1;
-  }
-  //dprint("EDGE END---------------------------\n"); //debug
-  
-  NODEGRAPH_DATA[nodeId] = nodeData;
-  checkData = NODEGRAPH_DATA[nodeId];
-  dprint("NODE LOADED---------------------------\n"); //debug
-  dprint(strcat(ftos(checkData.id),"\n")); //debug
-  dprint(strcat(vtos(checkData.orig),"\n")); //debug
-  dprint("--------------------------------------\n"); //debug
+  NODEGRAPH_DATA[dataNodeId] = nodeData;
+  checkData = NODEGRAPH_DATA[dataNodeId];
+  //dprint("NODE LOADED---------------------------\n"); //debug
+  //dprint(strcat(ftos(checkData.id),"\n")); //debug
+  //dprint(strcat(vtos(checkData.orig),"\n")); //debug
+  //dprint("--------------------------------------\n"); //debug
 };
+
+void( float dataNodeId, float edgeNum, float edgeId, float lenVal ) nodegraph_read_edge={
+  
+  node_t nodeData;
+  
+  nodeData = NODEGRAPH_DATA[dataNodeId];
+  if( nodeData.id != -1 ){
+    nodeData.nodes[edgeNum] = edgeId;
+    nodeData.edge[edgeNum] = lenVal;
+  }
+};
+
 
 //NODEGRAPH API--------------------------------------------------------
 /*

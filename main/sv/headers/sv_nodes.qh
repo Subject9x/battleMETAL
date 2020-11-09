@@ -72,7 +72,8 @@ void() nodegraph_debugger_th_edge;
 void( vector src, vector dst ) nodegraph_debug_graph;
 //--------------
 
-void( float nodeId, vector org, string edgeDat) nodegraph_read_new_node;
+void( float dataNodeId, vector dataOrg ) nodegraph_read_new_node;
+void( float dataNodeId, float edgeNum, float edgeId, float lenVal ) nodegraph_read_edge;
 
 //Export Nodegraph data
 float( entity node, entity targNode ) world_nodegraph_export_edgelink;
