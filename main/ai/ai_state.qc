@@ -314,6 +314,11 @@ void() ai_state_hunter_frame={
       //TODO - yes drop the enemy for now
       self.enemy = world;
       dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
+      ai_nodegraph_combat_frame();
+      self.moveState = MOVE_NORM;
+      if( self.legs ){
+        self.legs.attack_state = TR_NORM;
+      }
     }
     else{
       dprint(sprintf("VIS ------------- %f\n", visCheck));  //debug
