@@ -2665,15 +2665,15 @@ fog cvar
 .fog_alpha = <float> [alpha] - new alpha value
 .fog_dist = <vector> [dist min, dist max, height] - new fog distance
 .fade = <float> [fade depth] - transition time
-
-Globals
-.stat_wep_state = <float> event
-    0 = do nothing
-    1 = transition to new fog
     
 -------- SPAWNFLAGS -------- 
 REMOVE_ONTOUCH 1: remove on first touch
 */
+
+
+
+
+
 
 /*QUAKED map_change_music (0.431 0.788 0.753) (-12 -12 -12) (12 12 12) REMOVE_FIRSTUSE LOOP
 Primarily a map wrapper for the SVC_CDTRACK message, but also a manager of  it as well. 
