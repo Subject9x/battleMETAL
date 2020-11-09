@@ -709,7 +709,7 @@ void() gui_drawversion={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  lbl = strcat("Beta 2 v",cvar_string("gameversion"));
+  lbl = strcat("Release ",cvar_string("gameversion"));
   
   lblAlpha = 0.4;
   
