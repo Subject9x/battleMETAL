@@ -203,7 +203,6 @@ void() tele_source_touch={
           self.target = strzone(lastTeleTarg.targetname);
           self.movetarget = lastTeleTarg;
           self.goalentity = self.movetarget;
-          self.ai_state_next = ST_PTR;
         self = shortTemp;
       }
     }

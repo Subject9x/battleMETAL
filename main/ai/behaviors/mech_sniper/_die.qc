@@ -48,7 +48,7 @@ void() ai_mech_sniper_die={
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
   
-  if( self.ai_move > MOVE_STAND_FACE ){
+  if( self.moveState > MOVE_STAND ){
     ctrl_unit_part_death(self.torsoCenter);
     ctrl_unit_part_death(self.torsoLeft);
     ctrl_unit_part_death(self.torsoRight);

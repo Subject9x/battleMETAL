@@ -146,7 +146,6 @@ main/controllers/headers/controllers.qh
   main/ai/ai_stats.qc
   main/ai/ai_api.qc
   main/ai/ai_ctrl.qc
-  main/ai/ai_move.qc
   main/ai/ai_state.qc
   main/ai/ai_nodes.qc
   main/ai/ai_voice.qc
@@ -159,28 +158,21 @@ main/controllers/headers/controllers.qh
   main/ai/behaviors/ai_hunt.qc
   
   main/ai/behaviors/turret/ai_turret.qc
-    main/ai/behaviors/turret/_combat.qc
-    main/ai/behaviors/turret/_patrol.qc
     main/ai/behaviors/turret/_die.qc
   
   main/ai/behaviors/mech_skirmish/ai_mech_skirmish.qc
     main/ai/behaviors/mech_skirmish/_die.qc
-    main/ai/behaviors/mech_skirmish/_fight.qc
     
   main/ai/behaviors/mech_sniper/ai_mech_sniper.qc
     main/ai/behaviors/mech_sniper/_die.qc
-    main/ai/behaviors/mech_sniper/_fight.qc
   
   main/ai/behaviors/tank_gev/ai_gev.qc
     main/ai/behaviors/tank_gev/_die.qc
-    main/ai/behaviors/tank_gev/_fight.qc
     
   main/ai/behaviors/tank_sniper/ai_destroyer.qc
-    main/ai/behaviors/tank_sniper/_fight.qc
     main/ai/behaviors/tank_sniper/_die.qc
   
   main/ai/behaviors/tank_skirmish/ai_tank_skirmish.qc
-    main/ai/behaviors/tank_skirmish/_fight.qc
     main/ai/behaviors/tank_skirmish/_die.qc
   
   //main/ai/behaviors/ai_noncom.qc TODO

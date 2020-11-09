@@ -159,9 +159,6 @@ void(entity atk) ai_react={
   }
   self.enemy = atk;
   self.ai_react_buffer = time + self.ai_react_time * 5;
-  if(self.ai_state_next != ST_COMBAT ){
-    self.ai_state_next = ST_COMBAT;
-  }
 };
 
 /*
@@ -500,7 +497,6 @@ void() ai_setup_patrol={
         if( node != world ){
           self.tether = TETHER_NODE;
           self.patrolNode = node;
-          self.ai_state_next = ST_THR;
           if( cvar("developer") ){
             cons_logAVector(self.classname, self.origin);
             cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
@@ -524,7 +520,6 @@ void() ai_setup_patrol={
           if( node != world ){
             self.tetherOrg = node.origin;
             self.patrolNode = node;
-            self.ai_state_next = ST_PTR;
             lastNode = node;
             if( cvar("developer") ){
               cons_logAVector(node.classname, node.origin); //debug
@@ -559,19 +554,14 @@ void() ai_setup_patrol={
   else{
     self.nextthink = 1.0 + (random() * 2);
   }
-  //self.think = ai_state_frame;
-  //DEBUG TODO this is a test
-  //if( self.classname == "unit_onnek_survest_gunner"){
+
   if( self.ai_set_state ){
     self.think = self.ai_set_state;
   }
   else{
-    self.think = ai_state_frame_2;
+    self.think = ai_state_lurker_frame;
   }
-   
-    //self.think = ai_state_frame_2;
-  //}
-  
+
   ai_nodegraph_clear_path();
   
   self.nextthink = self.nextthink + time;

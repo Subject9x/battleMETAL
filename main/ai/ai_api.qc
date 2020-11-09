@@ -302,9 +302,6 @@ void( entity ally, entity targ, float override ) ai_give_target={
   //providing clause where ally has no target
     if( override ){
       self.enemy = targ;
-      if(self.ai_state_next != ST_COMBAT ){
-        self.ai_state_next = ST_COMBAT;
-      }
     }
     else{
       if( self.th_pain ){

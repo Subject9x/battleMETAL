@@ -11,129 +11,6 @@ Overview:
 */
 
 /*
-  THE BRAIN of all AI's - the top-level state controller.
-  important vars:
-    .ai_state       - the current state, usually no need to operate on this
-    .ai_state_next  - set/operate on this to send the AI into a NEW state.
-    .ai_state_last  - delta-tracking of AI's state choice, get this for compares.
-*/
-void() ai_state_frame={
-  //run unit frame updates
-  self.ai_unit_update();
-  if( !self.deadflag ){
-    ai_update();
-  }
-  if( !(self.spawnflags & DEBUG_MODE) ){
-    //State update
-    self.ai_state_last = self.ai_state;
-    self.ai_state = self.ai_state_next;
-    
-    //Move tracker update
-    self.ai_move_last = self.ai_move;
-    self.ai_move = self.ai_move_next;
-    
-    //state info dump - use for debug
-      //cons_logAFloat("current STATE--------------------------------", 0); //debug
-      //cons_logAString("           state", dbg_state(self.ai_state)); //debug
-      //cons_logAString("           move", dbg_move(self.ai_move)); //debug  
-      //cons_logAFloat("++++++++++++++++++++++++++++++++++++++++++++++", 1); //debug
-
-    //state machine
-    switch(self.ai_state){
-      case ST_STAND:
-        self.ai_run_state_now = self.ai_state_stand;
-        break;
-      case ST_PTR:
-        self.ai_run_state_now = self.ai_state_patrol;
-        break;
-      case ST_PTR_PAUSE:
-        self.ai_run_state_now = self.ai_state_patrol_pause;
-        break;
-      case ST_PTR_TRAVEL_NODE:
-        self.ai_run_state_now = self.ai_state_patrol_travel_node;
-        break;
-      case ST_PTR_TRAVEL_NODEBLOCK:
-        self.ai_run_state_now = self.ai_state_patrol_travel_blocked;
-        break;
-      case ST_THR:
-        self.ai_run_state_now = self.ai_state_tether;
-        break;
-      case ST_THR_PAUSE:
-        self.ai_run_state_now = self.ai_state_tether_pause;
-        break;
-      case ST_THR_TRAVEL:
-        self.ai_run_state_now = self.ai_state_tether_travel;
-        break;
-      case ST_THR_TRAVEL_BLOCK:
-        self.ai_run_state_now = self.ai_state_tether_travel_block;
-        break;
-      case ST_COMBAT:
-        self.ai_run_state_now = self.ai_state_combat;
-        break;
-      case ST_COM_MOVE_START:
-        self.ai_run_state_now = self.ai_state_combat_moveStart;
-        break;
-      case ST_COM_MOVE_EXEC:
-        self.ai_run_state_now = self.ai_state_combat_moveExec;
-        break;
-      case ST_COM_MOVE_END:
-        self.ai_run_state_now = self.ai_state_combat_moveEnd;
-        break;
-      case ST_COM_MOVE_BLOCK:
-        self.ai_run_state_now = self.ai_state_combat_blocked;
-        break;
-      case ST_NODEGRAPH:
-        self.ai_run_state_now = ai_state_nodegraph;
-       break;
-      case ST_NODEGRAPH_PAUSE:
-        self.ai_run_state_now = ai_state_nodegraph_pause;
-       break;
-      case ST_NODEGRAPH_MOVE:
-        self.ai_run_state_now = ai_state_nodegraph_travel;
-       break;
-      case ST_NODEGRAPH_BLOCK:
-        self.ai_run_state_now = ai_state_nodegraph_travel_block;
-       break;
-      case ST_HUNT:
-        self.ai_run_state_now = ai_hunt_start;
-        break;
-      case ST_HUNT_MOVE:
-        self.ai_run_state_now = ai_hunt_move;
-        break;
-      case ST_HUNT_BLOCK:
-        self.ai_run_state_now = ai_hunt_block;
-        break;
-    }
-    
-    if( self.ai_run_state_now ){
-      self.ai_run_state_now();
-    }
-    
-    if( self.ai_state == ST_COM_MOVE_START || self.ai_state == ST_COM_MOVE_EXEC ){
-      //optimization to reduce nesting of switch/case calls
-      //ai_combat_move_frame();
-    }
-    
-    if( (self.flags&FL_TURRET) ){
-      ai_turret_control();
-    }
-    if( self.legs ){
-      ai_leg_control();
-    }
-    if( time > self.posFadeTimer ){
-      self.posFadeTimer = time + POSITION_FADE_TIME;
-      self.position3 = self.position2;
-      self.position2 = self.position1;
-      self.position1 = self.origin;
-    }
-  }
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  self.think = ai_state_frame;
-  self.nextthink = time + 0.06;
-};
-
-/*
   atomic state solution, per-frame updates are run as small header funcs inside a state
 */
 void() ai_frame_update={
@@ -170,8 +47,12 @@ void() ai_frame_update={
     things got overcomplicated (see the commit history, haha)
     
     ty EMR for helping me think through it.
+    
+  Lowest energy AI behavior.
+    Only chases target while target is actually visible,
+    will return to normal behavior without target.
 */
-void() ai_state_frame_2={
+void() ai_state_lurker_frame={
   local float visCheck;
   
   ai_frame_update();
@@ -228,18 +109,8 @@ void() ai_state_frame_2={
     
   }
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
-  self.think = ai_state_frame_2;
+  self.think = ai_state_lurker_frame;
   self.nextthink = time + 0.05;
-};
-
-/*
-  Lowest energy AI behavior.
-    Only chases target while target is actually visible,
-    will return to normal behavior without target.
-*/
-void() ai_state_lurker_frame={
-
-
 };
 
 /*
@@ -361,87 +232,77 @@ void() ai_state_hunter_frame={
 };
 
 
-//
-
 /*
-  Combat Sub-state; this should only be run by self.ai_state_combat_moveExec();
-  important vars:
-    .ai_move      -  the current move, usually no need to operate on this.
-    .ai_move_last - delta-tracking of AI's move choice, get this for compares.
-    .ai_move_next - set/operate on this to create a new move order.
-    .ai_movewait  - timer used for [ST_COM_MOVE_EXEC], set this in [ST_COM_MOVE_START], when expired, it goes to [ST_COM_MOVE_END]
+  Atomic, less-stateful turret behavior frame func.
 */
-void() ai_combat_move_frame={
-  local float moveStatus;
-  moveStatus = TRUE;
-  switch(self.ai_move){
-    case MOVE_STAND:
-      ai_move_stand();
-      break;
-    case MOVE_CHARGE:
-      moveStatus = ai_move_charge();
-      break;
-    case MOVE_CHARGE_LEFT:
-      moveStatus = ai_move_charge_left();
-      break;
-    case MOVE_CHARGE_RIGHT:
-      moveStatus = ai_move_charge_right();
-      break;
-    case MOVE_STRAFE_LEFT:
-      moveStatus = ai_move_strafe_left();
-      break;
-    case MOVE_STRAFE_RIGHT:
-      moveStatus = ai_move_strafe_right();
-      break;
-    case MOVE_CIRCLE_LEFT:
-      moveStatus = ai_move_circle_left();
-      break;
-    case MOVE_CIRCLE_RIGHT:
-      moveStatus = ai_move_circle_right();
-      break;
-    case MOVE_BACK:
-      moveStatus = ai_move_back();
-      break;
-    case MOVE_BACK_LEFT:
-      moveStatus = ai_move_back_left();
-      break;
-    case MOVE_BACK_RIGHT:
-      moveStatus = ai_move_back_right();
-      break;
-    case MOVE_PATROLNODE:
-      moveStatus = ai_move_patrol_node( self.goalentity.ai_view * 0.85 );
-      break;
-    case MOVE_SNAPSHOT:
-      ai_move_snapshot();
-      break;
-    case MOVE_SNIPESHOT:
-      ai_move_snipeshot();
-      break;
-    case MOVE_STAND_FACE:
-      ai_move_standface();
-      break;
-    case MOVE_NODE_TACTICAL:
-      ai_move_node_tactical();  //hackfrauds
-      break;
-    case MOVE_NODE_RADIUS:
-      ai_move_node_radius();
-      break;
-  }
+void() ai_state_turret_frame={
+  local float visCheck;
   
-  if( moveStatus == FALSE ){
-    self.ai_blockflag = TRUE;
-    if( self.ai_state_combat_blocked ){
-      self.ai_state_next = ST_COM_MOVE_BLOCK;
+  //turrets are wonky edge cases
+  self.ai_unit_update();
+  if( !self.deadflag ){
+    if( ai_valid_target(self.enemy) ){
+      ai_turret_set_state(TR_TARG);
+      self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+      ai_lock_on();
+    }
+    else{ 
+      self.button0 = FALSE;
+    }
+    self.attackFlag = 0;
+    ai_ranged_attack();
+    self.button0 = FALSE;
+    if( (self.flags&FL_TURRET) ){
+      ai_turret_control();
+    }
+  }
+  //---------------------------
+  
+  if( ai_valid_target(self.enemy) ){
+    //has enemy -> combat stuff
+    visCheck = ai_check_vis(self.enemy);
+    if( visCheck == VIS_FRAC ){
+      //enemy is visible, 
+      ai_attack();
+      //is enemy reachable from my firing position?
+      if( self.stat_trg_dist > self.ai_minrange ){
+        self.enemy = world;
+      }
+      else{
+      //stop-to-shoot vs dont stop-to-shoot
+        ai_face_targ();
+      }
     }
     else{
-      self.ai_move_next = MOVE_STAND;
-      self.ai_blockflag = 0;
-      self.ai_movedist = 4;
+      //TODO - yes drop the enemy for now
+      self.torsoCenter.ai_dir = vectoyaw(self.enemy.position1 - self.origin);
+      self.torsoCenter.attack_state = TR_YAW;
+      self.ai_movewait = time + ((self.ai_rank + 1) * 2);
+      self.enemy = world;
     }
   }
-  if( self.ai_move > MOVE_STAND_FACE ){
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  else{
+    //No ENEMY, what was I doing before?
+    //do_patrol?
+    if( !ai_check_scan( self.stat_rdr_mode ) ){
+      if( self.torsoCenter.angles_y == self.torsoCenter.ai_dir ){
+        //self.torsoCenter.ai_dir = self.torsoCenter.angles_y + (crandom() * (25 + random() * 75));
+        //self.torsoCenter.attack_state = TR_YAW;
+        if( time > self.ai_movewait ){
+          self.ai_movewait = time + 10;
+        }
+        else{
+          
+        }
+      }
+    }
+    else{
+      self.torsoCenter.attack_state = TR_TARG;
+    }
   }
+  self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  self.think = ai_state_turret_frame;
+  self.nextthink = time + 0.05;
 };
 
 /*
