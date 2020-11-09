@@ -984,7 +984,7 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
     //clean formatting
     iEdge = NODEGRAPH_EXPORT_EDGE[self.delay + 1];
     if( edgeMax < 6 && iEdge_y != node.data_idx){
-      strLineData = strcat(strLineData, " ")
+      strLineData = strcat(strLineData, " ");
     }
   }
   if( edgeMax == 0 ){
