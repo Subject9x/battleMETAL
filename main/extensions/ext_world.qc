@@ -152,8 +152,6 @@ void() world_metal_ini={
   enemy_vis = 1.0;
   enemy_range = 1.0;
   enemy_dist = 1.0;
-  combat_dist = 1.0;
-  combat_roll = 1.0;
   
   nodegraph_edgelinker = spawn();
   nodegraph_edgelinker.classname = strzone("nodegraph_edgelinker");
@@ -769,7 +767,7 @@ void( float overrideFlag ) world_nodegraph_export_data={
     nodegraph_edgelinker.count = 0;
     nodegraph_edgelinker.wait = nodeTotal;
     nodegraph_edgelinker.think = world_nodegraph_export_edgelinker_th;
-    nodegraph_edgelinker.nextthink = time + 0.1;
+    nodegraph_edgelinker.nextthink = time + 0.075;
     cons_logAString("[INFO]-world_export_nodegraph() total nodes ", ftos(nodeTotal));  //DEBUG
   }
 };
@@ -979,7 +977,8 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
     
     edgeMax = edgeMax + 1;
     //cons_logAString(ftos(node.data_idx), strcat("linked for ", ftos(edgeNode.data_idx)));//debug
-    strLineData = strcat(strLineData,ftos(iEdge_y), " ",ftos(iEdge_z));
+    
+    strLineData = strcat(strLineData,ftos(iEdge_y), " ",sprintf("%0.3f",iEdge_z));
     
     //clean formatting
     iEdge = NODEGRAPH_EXPORT_EDGE[self.delay + 1];
@@ -1055,8 +1054,10 @@ float() world_nodegraph_read_file={
   local float nodeDataId;
   local vector nodeDataOrg;
   
+  local string tknEdgeId;
+  local string tknEdgeLen;
+  
   local float edgeItr;
-  local float edgeCount;
   local float edgeDataId;
   local float edgeDataLen;
   
@@ -1099,19 +1100,18 @@ float() world_nodegraph_read_file={
         nodegraph_read_new_node(nodeDataId, nodeDataOrg);
         
         //edge data
-        tknTotal = tknTotal - tknCount;
-        edgeCount = 4;
         edgeItr = 0;
         edgeDataId = 0;
         
         edgeDataLen = 0;
         while( edgeItr < 6 ){
-          if(edgeCount < tknTotal){
-            edgeDataId = stof(argv(edgeCount));
-            edgeCount = edgeCount + 1;
+          if(tknCount < tknTotal){
+            tknEdgeId = argv(tknCount);
+            edgeDataId = stof(tknEdgeId);
+            tknCount = tknCount + 1;
             
-            edgeDataLen =  stof(argv(edgeCount));
-            edgeCount = edgeCount + 1;
+            edgeDataLen =  stof(argv(tknCount));
+            tknCount = tknCount + 1;
           }
           else{
             edgeDataId = -1;
