@@ -147,12 +147,6 @@ void() world_metal_ini={
   MAP_UNLOCK_MECHS = world.unlockMechs;
   MAP_UNLOCK_EQUIP = world.unlockEquip;
   
-  //ini AI globals
-  enemy_infront = 1.0;
-  enemy_vis = 1.0;
-  enemy_range = 1.0;
-  enemy_dist = 1.0;
-  
   nodegraph_edgelinker = spawn();
   nodegraph_edgelinker.classname = strzone("nodegraph_edgelinker");
   setmodel(nodegraph_edgelinker, "q3mdl/testball.md3");

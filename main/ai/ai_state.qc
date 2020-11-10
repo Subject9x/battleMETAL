@@ -70,7 +70,6 @@ void() ai_state_lurker_frame={
         //dprint(sprintf("mirange ------------- %f\n", self.ai_minrange));  //debug
         //ai_nodegraph_combat_frame();
         ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 3);
-        self.moveState = MOVE_NORM;
       }
       else if( self.stat_trg_dist <= self.ai_minrange ){
       //stop-to-shoot vs dont stop-to-shoot
@@ -110,6 +109,7 @@ void() ai_state_lurker_frame={
     //timer -> track last position
     
   }
+  self.ai_lastVis = visCheck;
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   self.think = ai_state_lurker_frame;
   self.nextthink = time + 0.05;
@@ -130,22 +130,22 @@ void() ai_state_brawler_frame={
     if( visCheck == VIS_FAIL){
       //TODO - yes drop the enemy for now
       self.enemy = world;
-      dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
+      //dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
     }
     else{
-      dprint(sprintf("VIS ------------- %f\n", visCheck));  //debug
-      dprint(sprintf("combatFlags ------------- %f\n", self.combatFlags));  //debug
+      //dprint(sprintf("VIS ------------- %f\n", visCheck));  //debug
+      //dprint(sprintf("combatFlags ------------- %f\n", self.combatFlags));  //debug
     //enemy is visible, 
       ai_attack();
-        dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
+      //dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
       //is enemy reachable from my firing position?
      // if( !self.combatFlags ){
-        //ai_nodegraph_combat_frame();
-        ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
-        self.moveState = MOVE_NORM;
-        if( self.legs ){
-          self.legs.attack_state = TR_NORM;
-        }
+      //ai_nodegraph_combat_frame();
+      ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
+      self.moveState = MOVE_NORM;
+      if( self.legs ){
+        self.legs.attack_state = TR_NORM;
+      }
       //}
       /*else{
         //bare minimum
@@ -168,6 +168,7 @@ void() ai_state_brawler_frame={
     //timer -> track last position
     
   }
+  self.ai_lastVis = visCheck;
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   self.think = ai_state_brawler_frame;
   self.nextthink = time + 0.05;
@@ -193,39 +194,28 @@ void() ai_state_hunter_frame={
   //has enemy -> combat stuff
     visCheck = ai_check_vis(self.enemy);
     if( visCheck == VIS_FAIL){
-      //TODO - yes drop the enemy for now
-      self.enemy = world;
-      dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
-      //ai_nodegraph_combat_frame();
-      ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
-      self.moveState = MOVE_NORM;
+      if( self.ai_lastVis != VIS_FAIL ){
+       //dprint("VIS_FAIL && prev !VIS_FAIL = ai_nodegraph_clear_path()\n"); //debug
+       ai_nodegraph_clear_path();
+      }
+      ai_nodegraph_frame( self.enemy.position1, self.enemy.position2, self.data_speed_strafe, self.data_speed_forward, 2);
       if( self.legs ){
         self.legs.attack_state = TR_NORM;
       }
     }
     else{
-      dprint(sprintf("VIS ------------- %f\n", visCheck));  //debug
-      dprint(sprintf("combatFlags ------------- %f\n", self.combatFlags));  //debug
-    //enemy is visible, 
+      if( self.ai_lastVis != VIS_FRAC ){
+      //tee this up to trigger a new path.
+       //dprint("VIS_TRUE && prev VIS_FAIL = ai_nodegraph_clear_path()\n"); //debug
+       ai_nodegraph_clear_path();
+      }
+      //enemy is visible, 
       ai_attack();
-        dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
       //is enemy reachable from my firing position?
-     // if( !self.combatFlags ){
-        //ai_nodegraph_combat_frame();
-        ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
-        self.moveState = MOVE_NORM;
-        if( self.legs ){
-          self.legs.attack_state = TR_NORM;
-        }
-      //}
-      /*else{
-        //bare minimum
-        ai_face_targ();
-        if( self.legs ){
-          self.legs.attack_state = TR_YAW;
-          self.moveState = MOVE_STAND;
-        }
-      }*/
+      ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
+      if( self.legs ){
+        self.legs.attack_state = TR_NORM;
+      }
     }
   }
   else{
@@ -239,8 +229,9 @@ void() ai_state_hunter_frame={
     //timer -> track last position
     
   }
+  self.ai_lastVis = visCheck;
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
-  self.think = ai_state_brawler_frame;
+  self.think = ai_state_hunter_frame;
   self.nextthink = time + 0.05;
 };
 
@@ -313,6 +304,7 @@ void() ai_state_turret_frame={
       self.torsoCenter.attack_state = TR_TARG;
     }
   }
+  self.ai_lastVis = visCheck;
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   self.think = ai_state_turret_frame;
   self.nextthink = time + 0.05;

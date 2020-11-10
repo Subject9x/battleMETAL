@@ -50,6 +50,44 @@ void() ai_nodegraph_clear_locks={
   }
 };
 
+/*
+  AI spawn edge-case.
+  Assists mappers when placing AI, it scans for the closest node to the AI when the AI spawns in.
+  
+  IF that node is too close (128 units or less) AND the node is not blocked by another ent, mark it as blocked.
+  
+  This way, bots have a better idea of the nodegraph state as they spawn in, allowing moving bots to know
+  if a just-ini'd bot is in the way.
+*/
+void() ai_nodegraph_mark_start={
+  local float nodeItr;
+  local float nodeDist;
+  local float foundNode;
+  local float testLen;
+  
+  node_t proxNode;
+  nodeDist = 128;
+  foundNode = -1;
+  
+  while( nodeItr < NODE_ID_COUNT ){
+    proxNode = NODEGRAPH_DATA[nodeItr];
+    if( proxNode.id != -1 ){
+      testLen = ai_check_dist_node( self.origin, proxNode.orig );
+      if( testLen < nodeDist ){
+        if( NODEGRAPH_DATA_BLOCK[nodeItr] == FALSE ){
+          nodeDist = testLen;
+          foundNode = nodeItr;
+        }
+      }
+    }
+    nodeItr = nodeItr + 1;
+  }
+  if( foundNode > -1 ){
+    //mark as blocked, set nq1 reference to node id, so that it will be cleared when the AI calls their trace_route for the first time.
+    NODEGRAPH_DATA_BLOCK[nodeItr] = self.entnum;
+    self.nq1 = nodeItr;
+  }
+};
 
 float( float nodeId ) ai_nodegraph_distance_check={
   if( nodeId == -1 ){

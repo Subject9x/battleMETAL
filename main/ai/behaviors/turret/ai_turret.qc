@@ -29,8 +29,6 @@ void() ai_turret={
   }  
   self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   
-  self.ai_state_last = 0;
-  self.ai_state_next = ST_PTR;
   self.ai_movewait = 0;
   
   self.ai_unit_update = ctrl_updateTank;

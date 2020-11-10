@@ -19,59 +19,73 @@ void() ai_nodegraph_hunter_frame={
   local float nodeDist;
   local vector nqOrg;
   local float nodeYaw;
-  local float turnSpeed;
-  local float walkSpeed;
+  local float moveYaw;
+  local float moveSpeed;
+  local float turnFlag;
   
   if( self.nq1 == -1 ){
-    //fresh path
-    ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+    //dprint("ai_nodegraph_frame()->self.nq1 == -1\n");  //debug
+    ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
   }
   else{
-    makevectors(self.angles);
+    //dprint(sprintf("CURRENT NQ1 %0.0f\n", self.nq1));  //debug
     nqOrg = nodegraph_get_node_origin( self.nq1 );
-    nqOrg = nqOrg + (v_forward * 16);
-    nodeDist = vlen(nqOrg - self.origin);
-    if( nodeDist != -1 ){
-      //todo - path error
-    }
-    if( nodeDist <= 32 ){
+    nodeDist = ai_check_dist_node(self.origin, nqOrg);
+    if( nodeDist <= 16 ){
       //arrived at node
+      //dprint(sprintf("ARRIVED NODE %0.0f\n", self.nq1));  //debug
       pathFind = ai_nodegraph_next();
+      //dprint(sprintf("NEXT NODE %0.0f\n", self.nq1));  //debug
       if( !pathFind ){
-        ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+        //dprint(sprintf("!FAILED-----NEXT NODE %0.0f || RETRACING \n", self.nq1));  //debug
+        ai_nodegraph_trace_vec( self.origin, self.enemy.position2 );
       }
     }
     else{
-      nodeYaw = vectoyaw(nqOrg - self.origin);
+     //dprint(sprintf("WALKING TO %0.0f\n", self.nq1));  //debug
+      moveSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
       //still traveling to node
+      nodeYaw = vectoyaw(nqOrg - self.origin);
+      //check yaw-to-node
       if( nodeYaw != self.angles_y ){
-        self.ideal_yaw = vectoyaw(nqOrg - self.origin);
+        self.ideal_yaw = nodeYaw;
         
-        if( fabs(self.ideal_yaw - self.angles_y) >= 90 ){
-          if( time > self.ai_timer_checkTurn ){
-            self.ai_hardTurn = TRUE;
-            self.ai_timer_checkTurn = self.ai_timer_checkTurn + 5;
-          }
+        moveSpeed = self.data_speed_strafe;
+        //yaw is too wide, stop moving and just pivot to node
+        //dprint(sprintf("ideal_yaw %f\n",self.ideal_yaw)); //debug
+        //dprint(sprintf("nodeYaw %f\n", fabs(self.ideal_yaw - self.angles_y))); //debug
+        moveYaw = fabs(self.ideal_yaw - self.angles_y);
+        if( moveYaw >= 180 ){
+          self.ai_hardTurn = TRUE;
         }
         else{
           self.ai_hardTurn = FALSE;
+          if( moveYaw >= 90 ){
+            moveSpeed = moveSpeed * 0.33;
+          }
+          else if( moveYaw >= 35 ){
+            moveSpeed = moveSpeed * 0.5;
+          }
         }
         
         ChangeYaw();
-        turnSpeed = TRUE;
         if( self.legs ){
           self.legs.attack_state = TR_TARG;
           self.legs.ai_dir = nodeYaw;
         }
       }
-      if( !self.ai_hardTurn ){
-        if( turnSpeed ){
-          walkSpeed = self.data_speed_strafe * 0.5;
+      if( self.ai_hardTurn ){
+        //dprint("HARD TURN ACTIVE\n");  //debug
+        self.moveState = MOVE_STAND;
+        ChangeYaw();
+        if( self.angles_y == nodeYaw ){
+          self.ai_hardTurn = FALSE;
         }
-        else{
-          walkSpeed = self.data_speed_forward * 0.67;
-        }
-        if( walkmove(self.angles_y, walkSpeed) == FALSE ){
+      }
+      else{
+        //dprint("NORM MOVE\n");  //debug
+        self.moveState = MOVE_NORM;
+        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
           ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
         }
       }

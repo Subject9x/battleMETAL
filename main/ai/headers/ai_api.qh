@@ -34,14 +34,13 @@ float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
 float enemy_infront;  //boolean, on-this-frame check if target is in AI's forward arc.
 float enemy_range;    //distance to AI relative to patrolNode.ai_view (radius)
 float enemy_dist;     //target's distance to patrolNode
-float combat_dist;    //AI's distance to its patrolNode
 float enemy_vis;      //enum, Line of Sight to target
-float combat_roll;    //per-state-frame dice roll for random movement selection.
 
 float yawCache;       //used to quickly cache yaw to do some per-frame mods
 
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
 vector selfSensorOrg;
+vector orgCheckNode;    //discard _z
 
 entity lastNode;        //minor optimization for assigning ai_nodes for patrols by reducing lookup times.
 
@@ -114,6 +113,7 @@ void() node_setup;
 .float pathEndId; //actual end node to the path, used for early exit / check of nq1-16 path cache.
 
 void() ai_nodegraph_clear_locks;
+void() ai_nodegraph_mark_start; //if a bot starts too close to a node, mark that node occupied.
 void() ai_nodegraph_clear_path; //mostly just for ini.
 float( float nodeId ) ai_nodegraph_distance_check;  //get distance to desired node
 float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
@@ -205,6 +205,9 @@ float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
 void() ai_setup_patrol;
+float( vector testA, vector testB ) ai_check_dist_node; // discard _z because we really don't / can't use it for distance checks- 
+                                                        //the core of the issue is the unit's z-height compared to the z-height of the node's origin.
+                                                        //if they differ too much, some units will NEVER 'reach' the node because of the z-height.
 
 //movement
 .vector moveDest;       //combat moves, target destination
@@ -217,7 +220,6 @@ void() ai_setup_patrol;
 
 .float ai_movewait;   //  set by ai_calc_move when entering a new move, this will be checked for completed move.
 .float ai_movedist;   //  AI-CODE-SET to desired number of frames for desired movement
-.float ai_blockflag;
 
 float ST_STAND                = 1;  //th_stand
 float ST_PTR                  = 2;
@@ -229,17 +231,14 @@ void() ai_leg_control;
 void( float estate ) ai_turret_set_state;
 void( float move ) ai_update_accuracy;
 
-.void() ai_unit_update;
-
 //Lightweight state implementation
-//todo: semi-random timer to nodegraph tracing
-//soft queue for being able to request a nodepath.
-.void() ai_set_state;
+.void() ai_unit_update;
+.void() ai_set_state;           //simply a cache to hold the state_frame() and allow code to use .think() freely.
 void() ai_frame_update;
 
 //Behavior state functions.
 void() ai_state_turret_frame;   //just for turrets.
-void() ai_state_lurker_frame;
+void() ai_state_lurker_frame;   // 'the basic', if no other behavior is set, run this one
 void() ai_state_brawler_frame;
 void() ai_state_hunter_frame;
 
@@ -253,21 +252,17 @@ void() ai_nodegraph_combat_frame; //todo - deprecated
 .float ai_timer_tracepath;  //probably the most important.
 .float ai_timer_checkTurn;  // if yawspeed too low for ideal_yaw over X time, this makes the bot turn harder.
 .float ai_timer_checkHunt;  // used by ai_state_hunter_frame() for hunting targets.
+.float ai_timer_checkTargFade;  //allows AI to turn to face target's last origin
 
 //Values
 .float ai_findPath;   //part of the queue system for 
 .float ai_hardTurn;   //when target destination yaw >= 90 from bot's angles_y
+.float ai_lastVis;    //used for to get per-frame state of target visiblity
+.float ai_is_targetfade;  //currently rotating to prev. target's cached position.
+.float ai_flee;       //is fleeing contact
 
-//hold off on these for a sec
-//void() ai_turn_node;
-//void() ai_turn_patrol;
-//void() ai_turn_combat;
-
-
-//DEBUG functions
+//DEBUG function
 //when you need the var-name for a global var value.
-
-
 string(float tether) dbg_tether={
   switch(tether){
     case TETHER_NODE:

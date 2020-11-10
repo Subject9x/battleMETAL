@@ -21,8 +21,14 @@ void( float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_patrol_fra
   local float moveSpeed;
   local float turnFlag;
   
-  makevectors(self.angles);
-  if( vlen((self.patrolNode.origin + (v_forward * 16)) - self.origin) <= 32 ){
+  nodeDist = vlen( self.patrolNode.origin - self.origin );
+  //debug
+  if( self.classname == "unit_matok_survest_gunner" ){
+    dprint(sprintf("node dist %f\n", nodeDist));  //debug
+  }
+  //TODO - adjust node target origin to ent's height
+  //something like 
+  if( nodeDist <= 16 ){
     //arrived at node.
     if( self.patrolNode.partNext ){
       //set the next node if it exists
@@ -64,10 +70,10 @@ void( float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_patrol_fra
       if( !self.ai_hardTurn ){
         self.moveState = MOVE_NORM;
         if( turnFlag ){
-          moveSpeed = turnSpeed;//self.data_speed_strafe * 0.5;
+          moveSpeed = turnSpeed;
         }
         else{
-          moveSpeed = walkSpeed;//self.data_speed_forward * 0.67;
+          moveSpeed = walkSpeed;
         }
         if( walkmove(self.angles_y, moveSpeed) == FALSE ){
           ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );

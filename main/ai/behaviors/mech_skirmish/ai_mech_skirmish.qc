@@ -39,7 +39,7 @@ void() ai_mech_skirmish={
   self.ai_timer_tracepath = 1 + random() * 5; //seed the nodegraph timer check
   self.ai_findPath = TRUE;
   
-  self.ai_set_state = ai_state_brawler_frame;
+  self.ai_set_state = ai_state_hunter_frame;
   self.think = ai_setup_patrol;
   self.nextthink = time + 2;
 };

@@ -114,8 +114,6 @@ void() ai_touch={
     else if(other.enemy){
       self.enemy = other.enemy;
     }
-    //self.ai_move_next = MOVE_STAND_FACE;
-    //self.ai_state_next = ST_COM_MOVE_START;
     return;
   }
   
@@ -345,6 +343,24 @@ float() ai_attack={
   return self.button0;
 };
 
+
+float( vector testA, vector testB ) ai_check_dist_node={
+  local float testVal;
+  
+  makevectors(self.angles);
+  
+  selfSensorOrg_x = testA_x;
+  selfSensorOrg_y = testA_y;
+  
+  orgCheckNode_x = testB_x;
+  orgCheckNode_y = testB_y;
+  
+  testVal = vlen( orgCheckNode - selfSensorOrg );
+  
+  return testVal;
+};
+
+
 /*
 ===================================================
 */
@@ -381,7 +397,7 @@ void() ai_setup_patrol={
   
   //Check for spawnflag: DEBUG_MODE
   if( (self.spawnflags & DEBUG_MODE) ){
-    self.ai_state_next = ST_STAND;
+    nodeFail = TRUE;
   }
   else{
     //validate the proposed tether type coming in from AI
@@ -434,9 +450,6 @@ void() ai_setup_patrol={
         self.tetherOrg = self.origin;
       }
     }
-    else{
-      self.ai_state_next = ST_STAND;
-    }
   }
   
   if( nodeFail ){
@@ -457,10 +470,12 @@ void() ai_setup_patrol={
     self.think = self.ai_set_state;
   }
   else{
-    self.think = ai_state_lurker_frame;
+    self.think = ai_state_lurker_frame; //default
   }
 
   ai_nodegraph_clear_path();
+  ai_nodegraph_mark_start();
+  
   self.ai_timer_tracepath = time + self.ai_timer_tracepath;
   
   self.nextthink = self.nextthink + time;
