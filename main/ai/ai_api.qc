@@ -585,7 +585,7 @@ float( vector source, vector trgdst ) ai_check_terrain_move={
     
     //clear Los, get more granular.
     edgeLen = vlen(trgdst - source);
-    edgeLenquant = ceil(edgeLen / (NODEGRAPH_EDGE_GRID * 2)); //inflate the edge grid * 2; we don't need that much precision.
+    edgeLenquant = ceil(edgeLen / (NODEGRAPH_EDGE_GRID * 1.5)); //inflate the edge grid * 2; we don't need that much precision.
     //now run the terrain poller
     edgeSegA = source;
     makevectors(edgeAngle);
