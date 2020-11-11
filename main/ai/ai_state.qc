@@ -128,17 +128,12 @@ void() ai_state_brawler_frame={
   
   ai_frame_update();
   if( ai_valid_target(self.enemy) ){
-  //has enemy -> combat stuff
     visCheck = ai_check_vis(self.enemy);
     if( visCheck == VIS_FRAC){
-      //dprint(sprintf("VIS ------------- %f\n", visCheck));  //debug
-      //dprint(sprintf("combatFlags ------------- %f\n", self.combatFlags));  //debug
-    //enemy is visible, 
+      //enemy is visible, 
       ai_attack();
-      //dprint(sprintf("enemy_range ------------- %f\n", self.stat_trg_dist));  //debug
       //is enemy reachable from my firing position?
       ai_nodegraph_combat_frame();
-      //ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
       self.moveState = MOVE_NORM;
       if( self.legs ){
         self.legs.attack_state = TR_NORM;
@@ -147,7 +142,6 @@ void() ai_state_brawler_frame={
     else{
       //TODO - yes drop the enemy for now
       self.enemy = world;
-      //dprint(sprintf("LOST TARGET------------- %f\n", visCheck));  //debug
     }
   }
   else{
@@ -158,8 +152,6 @@ void() ai_state_brawler_frame={
         ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75, 8 );
       }
     }
-    //timer -> track last position
-    
   }
   self.ai_lastVis = visCheck;
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);

@@ -218,16 +218,6 @@ float(entity wep) ai_attack_checkEne={
   return FALSE;
 };
 
-void(float dst, float grp, float bracket) ai_wep_group_track={
-  if( dst <= bracket ){
-    self.currentWeaponGroup = self.currentWeaponGroup | grp;
-  }
-  else{
-    self.currentWeaponGroup = self.currentWeaponGroup - self.currentWeaponGroup & grp;
-  }
-};
-
-
 /*
   A more stateless implementation of the nodegraph state from earlier;
     if the AI arrives here, it merely checks if a path exists -

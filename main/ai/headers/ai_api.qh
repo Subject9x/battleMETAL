@@ -2,6 +2,7 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 7/9/2018
+rebuilt: 11/11/2020 - nodegraphs and full state refactor.
 Overview: 
   AI API Header, covers multiple impl files
 */
@@ -30,12 +31,6 @@ float VIS_FRN   = 2;  //A friendly is blocking the way
 float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
 
 //GLOBALS
-//--> these are populated in AI _combat.qc -> ST_COMBAT state
-float enemy_infront;  //boolean, on-this-frame check if target is in AI's forward arc.
-float enemy_range;    //distance to AI relative to patrolNode.ai_view (radius)
-float enemy_dist;     //target's distance to patrolNode
-float enemy_vis;      //enum, Line of Sight to target
-
 float yawCache;       //used to quickly cache yaw to do some per-frame mods
 
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
@@ -123,6 +118,8 @@ float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode; //given a ma
 float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec; //given a known endId, and a map org
 float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
 float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
+
+
 //AI TETHER FUNCTIONALITY
  //no valid targets, AI will chill in a spot if it loses target, it  looks for new ones near it. no real fixed position.
 float TETHER_NONE   = 0; 
@@ -167,7 +164,6 @@ float() ai_NULL_missile={ return FALSE;};
 float( float scan_mode) ai_check_scan;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
-void(float dst, float grp, float bracket) ai_wep_group_track;
 float(entity wep) ai_attack_checkEne;
 float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
@@ -223,6 +219,7 @@ float( vector testA, vector testB ) ai_check_dist_node; // discard _z because we
 
 float ST_STAND                = 1;  //th_stand
 float ST_PTR                  = 2;
+
 ////////////////////////////////
 //AI STATE FUNCTIONS - ai_state.qc
 void() ai_update;
@@ -260,8 +257,6 @@ void() ai_nodegraph_combat_frame; //todo - deprecated
 .float ai_is_targetfade;  //currently rotating to prev. target's cached position.
 .vector ai_fadePos;       //used for last known position rotate.
 .float ai_flee;       //is fleeing contact
-
-
 
 //DEBUG function
 //when you need the var-name for a global var value.
