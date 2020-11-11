@@ -245,7 +245,6 @@ void() ai_state_hunter_frame;
 //Per-Frame behavior functions
 void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_frame;
 void( float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_patrol_frame;
-
 void() ai_nodegraph_combat_frame; //todo - deprecated
 
 //Timers
@@ -259,7 +258,10 @@ void() ai_nodegraph_combat_frame; //todo - deprecated
 .float ai_hardTurn;   //when target destination yaw >= 90 from bot's angles_y
 .float ai_lastVis;    //used for to get per-frame state of target visiblity
 .float ai_is_targetfade;  //currently rotating to prev. target's cached position.
+.vector ai_fadePos;       //used for last known position rotate.
 .float ai_flee;       //is fleeing contact
+
+
 
 //DEBUG function
 //when you need the var-name for a global var value.

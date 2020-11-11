@@ -184,7 +184,7 @@ void() ai_face_targ={
 };
 
 void() ai_face_targ_fade={
-	self.ideal_yaw = vectoyaw(self.enemy.position3 - self.origin);
+	self.ideal_yaw = vectoyaw(self.ai_fadePos - self.origin);
 	ChangeYaw ();
 };
 
