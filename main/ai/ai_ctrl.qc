@@ -376,7 +376,7 @@ float( vector testA, vector testB ) ai_check_dist_node={
       no wiggle room.
 */
 void() ai_setup_patrol={
-  local entity node;
+  local entity entFindTarget;
   local float nodeFail;
   
   //make a single call reference here, instead of in every ai_setup func.
@@ -401,54 +401,41 @@ void() ai_setup_patrol={
   }
   else{
     //validate the proposed tether type coming in from AI
-    if( self.tether ){
-      if( self.tether == TETHER_NODE ){
-        //AI wants to be anchored to a spot.
-        if( self.target || self.target != "" ){
-          //AI is an area-tethered type
-          node = find(world, targetname, self.target);
-        }
-        if( node != world ){
-          self.tether = TETHER_NODE;
-          self.patrolNode = node;
-          if( cvar("developer") ){
-            cons_logAVector(self.classname, self.origin);
-            cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
-            cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);
-            cons_logAString("-------------------", "-------------");
-          }
-        }
-        else{
-          nodeFail = TRUE;
-        }
-      }
-      else if( self.tether == TETHER_PATROL ){
+    //auto-validate so we don't have to set much in the editor.
+    if( self.target ){
+      entFindTarget = find(world, targetname, self.target);
+      if( entFindTarget.classname == "ai_node" ){
         //AI wants to run a patrol route.
-        if( self.target || self.target != "" ){
-          if( lastNode && lastNode.targetname == self.target ){
-            node = lastNode;
-          }
-          else{
-            node = find(world, targetname, self.target);
-          }
-          if( node != world ){
-            self.tetherOrg = node.origin;
-            self.patrolNode = node;
-            lastNode = node;
-            if( cvar("developer") ){
-              cons_logAVector(node.classname, node.origin); //debug
-              cons_logAString(node.classname, node.targetname);
-              cons_logAString("///////////////////", "////////////");
-            }
-          }
-          else{
-            nodeFail = TRUE;
-          }
+        if( lastNode && lastNode.targetname == self.target ){
+          entFindTarget = lastNode;
+        }
+        self.tether = TETHER_PATROL;
+        self.patrolNode = entFindTarget;
+        self.tetherOrg = entFindTarget.origin;
+        lastNode = entFindTarget;
+        if( cvar("developer") ){
+          cons_logAVector(entFindTarget.classname, entFindTarget.origin); //debug
+          cons_logAString(entFindTarget.classname, entFindTarget.targetname);
+          cons_logAString("///////////////////", "////////////");
         }
       }
-      else if( self.tether == TETHER_SELF ){
-        self.tetherOrg = self.origin;
+      else if( entFindTarget.classname == "ai_node_tether" ){
+        self.tether = TETHER_NODE;
+        self.patrolNode = entFindTarget;
+        self.tetherOrg = entFindTarget.origin;
+        if( cvar("developer") ){
+          cons_logAVector(self.classname, self.origin);
+          cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
+          cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);
+          cons_logAString("-------------------", "-------------");
+        }
       }
+      else{
+        nodeFail = TRUE;
+      }
+    }
+    else{
+      nodeFail = TRUE;
     }
   }
   
@@ -463,7 +450,7 @@ void() ai_setup_patrol={
     self.nextthink = (random() * 0.5) + 7;
   }
   else{
-    self.nextthink = 1.0 + (random() * 2);
+    self.nextthink = 1.0 + (random() * 1);
   }
 
   if( self.ai_set_state ){
@@ -476,7 +463,7 @@ void() ai_setup_patrol={
   ai_nodegraph_clear_path();
   ai_nodegraph_mark_start();
   
-  self.ai_timer_tracepath = time + self.ai_timer_tracepath;
+  self.ai_timer_tracepath = time + 0.1;
   
   self.nextthink = self.nextthink + time;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;

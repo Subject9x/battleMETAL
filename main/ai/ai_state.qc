@@ -61,41 +61,32 @@ void() ai_state_lurker_frame={
     visCheck = ai_check_vis(self.enemy);
     if( visCheck == VIS_FRAC ){
     //enemy is visible, 
-      if( self.ai_lastVis == VIS_FAIL){
+      if( self.ai_lastVis == VIS_FAIL ){
         ai_nodegraph_clear_path();
       }
       ai_attack();
       //is enemy reachable from my firing position?
       if( self.ai_minrange < self.stat_trg_dist || !self.combatFlags ){
-        //dprint(sprintf("mirange ------------- %f\n", self.ai_minrange));  //debug
         ai_nodegraph_combat_frame();
       }
       else if( self.stat_trg_dist <= self.ai_minrange ){
         //stop-to-shoot vs dont stop-to-shoot
         ai_face_targ();
-        if( self.legs ){
-          self.legs.attack_state = TR_YAW;
-          self.moveState = MOVE_STAND;
-        }
       }
       else{
         //bare minimum
         ai_face_targ();
-        if( self.legs ){
-          self.legs.attack_state = TR_YAW;
-          self.moveState = MOVE_STAND;
-        }
       }
     }
     else if( visCheck == VIS_FRN ){
       ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
     }
     else{
-      if( self.ai_lastVis == VIS_FRN || self.ai_lastVis == VIS_FRAC ){
+      if( self.ai_lastVis != VIS_FAIL ){
         self.ai_timer_checkTargFade = time + (1 + (self.ai_rank * 1.25));
         self.ai_fadePos = self.enemy.origin;
-        self.enemy = world;
       }
+      self.enemy = world;
     }
   }
   else{
@@ -107,7 +98,9 @@ void() ai_state_lurker_frame={
     else{
       if( !ai_check_scan( self.stat_rdr_mode ) ){
         if( self.tether == TETHER_PATROL ){
-          ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75, 8 );
+          if( self.patrolNode ){
+            ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+          }
         }
       }
     }
@@ -134,22 +127,40 @@ void() ai_state_brawler_frame={
       ai_attack();
       //is enemy reachable from my firing position?
       ai_nodegraph_combat_frame();
-      self.moveState = MOVE_NORM;
-      if( self.legs ){
-        self.legs.attack_state = TR_NORM;
-      }
     }
     else{
-      //TODO - yes drop the enemy for now
-      self.enemy = world;
+      if( self.ai_lastVis != VIS_FAIL && visCheck == VIS_FAIL ){
+        //go to last reported position
+        self.ai_timer_checkTargFade = time + (1 + (self.ai_rank * 2));
+        self.ai_fadePos = self.enemy.origin;
+        self.enemy = world;
+        ai_nodegraph_clear_path();
+        ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67, 5 );
+      }
+      else{
+        //TODO - yes drop the enemy for now
+        self.enemy = world;
+      }
     }
   }
   else{
   //No ENEMY, what was I doing before?
-    //do_patrol?
-    if( !ai_check_scan( self.stat_rdr_mode ) ){
-      if( self.tether == TETHER_PATROL ){
-        ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75, 8 );
+    if( time < self.ai_timer_checkTargFade ){
+      if(self.nq1 != -1 ){
+        ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67, 5 );
+      }
+      else{
+        ai_face_targ_fade();
+      }
+    }
+    else{
+      //do_patrol?
+      if( !ai_check_scan( self.stat_rdr_mode ) ){
+        if( self.tether == TETHER_PATROL ){
+          if( self.patrolNode ){
+            ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+          }
+        }
       }
     }
   }
@@ -181,39 +192,30 @@ void() ai_state_hunter_frame={
     if( visCheck == VIS_FRAC){
       if( self.ai_lastVis != VIS_FRAC ){
         //tee this up to trigger a new path.
-        //dprint("VIS_TRUE && prev VIS_FAIL = ai_nodegraph_clear_path()\n"); //debug
         ai_nodegraph_clear_path();
       }
       //enemy is visible, 
       ai_attack();
       //is enemy reachable from my firing position?
       ai_nodegraph_combat_frame();
-      //ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
-      if( self.legs ){
-        self.legs.attack_state = TR_NORM;
-      }
     }
     else{
       if( self.ai_lastVis != VIS_FAIL ){
-       //dprint("VIS_FAIL && prev !VIS_FAIL = ai_nodegraph_clear_path()\n"); //debug
        ai_nodegraph_clear_path();
       }
       ai_nodegraph_frame( self.enemy.origin, self.enemy.position1, self.data_speed_strafe, self.data_speed_forward, 2);
-      if( self.legs ){
-        self.legs.attack_state = TR_NORM;
-      }
     }
   }
   else{
-  //No ENEMY, what was I doing before?
-    //do_patrol?
+    //No ENEMY, what was I doing before?
+      //do_patrol?
     if( !ai_check_scan( self.stat_rdr_mode ) ){
       if( self.tether == TETHER_PATROL ){
-        ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75, 8 );
+        if( self.patrolNode ){
+          ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+        }
       }
     }
-    //timer -> track last position
-    
   }
   self.ai_lastVis = visCheck;
   self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);

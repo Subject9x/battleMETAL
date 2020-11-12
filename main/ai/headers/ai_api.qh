@@ -241,7 +241,7 @@ void() ai_state_hunter_frame;
 
 //Per-Frame behavior functions
 void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_frame;
-void( float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_patrol_frame;
+void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame;
 void() ai_nodegraph_combat_frame; //todo - deprecated
 
 //Timers

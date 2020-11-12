@@ -243,6 +243,11 @@ void() ai_nodegraph_combat_frame={
     ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
   }
   else{
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+      self.moveState = MOVE_NORM;
+    }
+  
     nqOrg = nodegraph_get_node_origin( self.nq1 );
     nodeDist = ai_check_dist_node(self.origin, nqOrg);
     if( nodeDist <= 16 ){
@@ -253,8 +258,6 @@ void() ai_nodegraph_combat_frame={
       }
     }
     else{
-     //dprint(sprintf("WALKING TO %0.0f\n", self.nq1));  //debug
-      
       moveSpeed = self.data_speed_forward;
       //still traveling to node
       nodeYaw = vectoyaw(nqOrg - self.origin);
@@ -263,9 +266,8 @@ void() ai_nodegraph_combat_frame={
         self.ideal_yaw = nodeYaw;
         
         moveSpeed = self.data_speed_strafe;
+        
         //yaw is too wide, stop moving and just pivot to node
-        //dprint(sprintf("ideal_yaw %f\n",self.ideal_yaw)); //debug
-        //dprint(sprintf("nodeYaw %f\n", fabs(self.ideal_yaw - self.angles_y))); //debug
         moveYaw = fabs(self.ideal_yaw - self.angles_y);
         if( moveYaw >= 90 ){
           self.ai_hardTurn = TRUE;
@@ -287,16 +289,17 @@ void() ai_nodegraph_combat_frame={
         }
       }
       if( self.ai_hardTurn ){
-        //dprint("HARD TURN ACTIVE\n");  //debug
-        self.moveState = MOVE_STAND;
-        ChangeYaw();
-        if( self.angles_y == nodeYaw ){
-          self.ai_hardTurn = FALSE;
+        if( self.legs ){
+          self.legs.attack_state = TR_YAW;
+          self.moveState = MOVE_NORM;
         }
+        ChangeYaw();
       }
       else{
-        //dprint("NORM MOVE\n");  //debug
-        self.moveState = MOVE_NORM;
+        if( self.legs ){
+          self.legs.attack_state = TR_NORM;
+          self.moveState = MOVE_NORM;
+        }
         if( walkmove(self.angles_y, moveSpeed) == FALSE ){
           ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
         }
