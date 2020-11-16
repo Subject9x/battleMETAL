@@ -129,6 +129,9 @@ void() ai_touch={
   }
 };
 
+/*
+  Generic th_pain reaction filter.
+*/
 void(entity atk) ai_react={
   if( !(atk.flags & FL_MONSTER) && !(atk.flags & FL_CLIENT)){
     return;
@@ -177,6 +180,17 @@ void(vector v) ai_face_origin={
 ===================================================
 */
 
+/*
+
+*/
+float() ai_check_pause={
+  if( (time - self.ai_timer_breathe) >= self.ai_pauseTime_check ){
+    if( (random() * 1.0) >= self.ai_pauseTime_chance ){
+      return TRUE;
+    }
+  }
+  return FALSE;
+};
 
 void() ai_face_targ={
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
@@ -191,8 +205,10 @@ void() ai_face_targ_fade={
 /*
   rolled together all the flying code to a one-off call.
   this should be made everytime a flyer makes an engine-based move.
+  
+  DEPRECATED - release version - Roohr
 */
-void( float alt_low, float alt_max) ai_fly_update={
+/*void( float alt_low, float alt_max) ai_fly_update={
   local vector delta, flydir;
   local float dist, fdir;
   local float fspd, sspd, bspd;
@@ -227,7 +243,7 @@ void( float alt_low, float alt_max) ai_fly_update={
     
     setorigin( self, flydir );
   } 
-}
+}*/
 
 /*
   Checks to see if Entity T is in the ANG arc of self
@@ -287,6 +303,14 @@ float(entity t) ai_check_range={
   return vlen( t.origin - self.origin);
 };
 
+/*
+  The main Line of Sight (LoS) calculator for AI.
+    returns an ENUM
+      VIS_FRAC    comes from trace_fraction == 1
+      VIS_FAIL    trace ended in contents, or water.
+      VIS_FRN     trace hit a FRIENDLY bbox.
+      VIS_ENEMY   trace hit a SECOND enemy bbox.
+*/
 float( entity targ ) ai_check_vis={
   local vector spot1, spot2;
   local float contentBuffer;
@@ -338,12 +362,21 @@ float( entity targ ) ai_check_vis={
   return VIS_FAIL;
 };
 
+/*
+  Triggers the AI to try an attack next frame, this is THE func to make an AI fire at its target.
+*/
 float() ai_attack={
   self.button0 = 1;
   return self.button0;
 };
 
 
+/*
+  Get flat distance from an origin to a destination. we discard Z
+  because AI units vary in their total bbox height - using full coords means
+  that some AI could never 'reach' a node unless there were additional hit-box distance
+  calculations.
+*/
 float( vector testA, vector testB ) ai_check_dist_node={
   local float testVal;
   

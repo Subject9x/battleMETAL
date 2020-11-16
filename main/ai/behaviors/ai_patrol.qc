@@ -33,6 +33,10 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       //we're at the end, shut it all down.
       self.tether = TETHER_NONE;
       self.moveState = MOVE_STAND;
+      pathFind = ai_nodegraph_to_org(self.origin);
+      if( pathFind ){
+        ai_nodegraph_trace_vecToNode( self.origin, pathFind );
+      }
     }
   }
   else{

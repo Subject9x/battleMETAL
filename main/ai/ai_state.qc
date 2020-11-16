@@ -123,34 +123,49 @@ void() ai_state_brawler_frame={
   if( ai_valid_target(self.enemy) ){
     visCheck = ai_check_vis(self.enemy);
     if( visCheck == VIS_FRAC){
+      //set via ai_check_pause() in ai_nodegraph_combat_brawler_frame();
+      if( self.ai_fight_pause == TRUE && time > self.ai_timer_breathe ){
+        ai_state_set_pause();
+        return;
+      }
+      
       //enemy is visible, 
       ai_attack();
       //is enemy reachable from my firing position?
-      ai_nodegraph_combat_frame();
+      ai_nodegraph_combat_brawler_frame();
     }
     else{
-      if( self.ai_lastVis != VIS_FAIL && visCheck == VIS_FAIL ){
+      if( visCheck == VIS_FAIL  && self.ai_lastVis != VIS_FAIL ){
         //go to last reported position
         self.ai_timer_checkTargFade = time + (1 + (self.ai_rank * 2));
-        self.ai_fadePos = self.enemy.origin;
-        self.enemy = world;
+        switch(self.ai_rank){
+          case AI_RANK_REG:
+            self.ai_fadePos = self.enemy.position2;
+            break;
+          case AI_RANK_VET:
+            self.ai_fadePos = self.enemy.position1;
+            break;
+          case AI_RANK_ACE:
+            self.ai_fadePos = self.enemy.origin;
+            break;
+          default:
+            self.ai_fadePos = self.enemy.position3;
+            break;
+        }
         ai_nodegraph_clear_path();
         ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67, 5 );
       }
-      else{
-        //TODO - yes drop the enemy for now
-        self.enemy = world;
-      }
+      self.enemy = world;
     }
   }
   else{
   //No ENEMY, what was I doing before?
     if( time < self.ai_timer_checkTargFade ){
-      if(self.nq1 != -1 ){
-        ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67, 5 );
+      if(self.nq1 == -1 ){
+        ai_face_targ_fade();
       }
       else{
-        ai_face_targ_fade();
+        ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67, 5 );
       }
     }
     else{
@@ -172,15 +187,7 @@ void() ai_state_brawler_frame={
 
 /*
   like a brawler, but with the ability to chase them around corners.
-
-  - todo
-    -> IF no-LOS -> moveDest == target.position1/2
-    -> set hunt timer
-    
-    -> have a working hunt timer / state var
-    
     -> maybe damage threshold too if under attack while hunting
-
 */
 void() ai_state_hunter_frame={
   local float visCheck;
@@ -190,10 +197,17 @@ void() ai_state_hunter_frame={
   //has enemy -> combat stuff
     visCheck = ai_check_vis(self.enemy);
     if( visCheck == VIS_FRAC){
+      //set via ai_check_pause() in ai_nodegraph_combat_brawler_frame();
+      if( self.ai_fight_pause == TRUE && time > self.ai_timer_breathe ){
+        ai_state_set_pause();
+        return;
+      }
+      
+      //tee this up to trigger a new path.
       if( self.ai_lastVis != VIS_FRAC ){
-        //tee this up to trigger a new path.
         ai_nodegraph_clear_path();
       }
+      
       //enemy is visible, 
       ai_attack();
       //is enemy reachable from my firing position?
@@ -223,6 +237,53 @@ void() ai_state_hunter_frame={
   self.nextthink = time + 0.05;
 };
 
+/*
+  AI takes a bit of a breather, easing the pace of combat and giving the player a break too.
+*/
+void() ai_state_pause={
+  local float visCheck;
+  
+  ai_frame_update();
+  
+  if( ai_valid_target(self.enemy) ){
+    visCheck = ai_check_vis(self.enemy);
+    if( visCheck != VIS_FAIL ){
+      ai_face_targ();
+    }
+    else{
+      self.think = self.ai_set_state;
+      self.nextthink = time + 0.05;
+      return;
+    }
+  }
+  
+  if( time > self.ai_timer_breathe ){
+    self.think = self.ai_set_state;
+  }
+  else{
+    self.think = ai_state_pause;
+  }
+  self.nextthink = time + 0.05;
+};
+
+
+/*
+  Transition AI to the PAUSE state
+*/
+void() ai_state_set_pause={
+  ai_nodegraph_clear_path();
+  self.ai_timer_breathe = time + self.ai_pauseTime_wait;
+  self.think = ai_state_pause;
+  self.nextthink = time + 0.05;
+  self.ai_fight_pause = FALSE;
+  self.moveState = MOVE_STAND;
+  if( (self.flags&FL_TURRET) ){
+    self.torsoCenter.attack_state = TR_NORM;
+  }
+  if( self.legs ){
+    self.legs.attack_state = TR_NORM;
+  }
+};
 
 /*
   Atomic, less-stateful turret behavior frame func.
@@ -373,7 +434,6 @@ void( float estate ) ai_turret_set_state={
     self.torsoCenter.attack_state = estate;
   }
 };
-
 
 /*
   refer to macro macro_ai_

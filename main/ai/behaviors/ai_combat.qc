@@ -252,6 +252,10 @@ void() ai_nodegraph_combat_frame={
     nodeDist = ai_check_dist_node(self.origin, nqOrg);
     if( nodeDist <= 16 ){
       //arrived at node
+      //check for pause first
+      if( ai_check_pause() ){
+        self.ai_fight_pause = TRUE;
+      }
       pathFind = ai_nodegraph_next();
       if( !pathFind ){
         ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
@@ -288,6 +292,9 @@ void() ai_nodegraph_combat_frame={
           self.legs.ai_dir = nodeYaw;
         }
       }
+      else{
+        self.ai_hardTurn = FALSE;
+      }
       if( self.ai_hardTurn ){
         if( self.legs ){
           self.legs.attack_state = TR_YAW;
@@ -302,6 +309,98 @@ void() ai_nodegraph_combat_frame={
         }
         if( walkmove(self.angles_y, moveSpeed) == FALSE ){
           ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+        }
+      }
+    }
+  }
+};
+
+/*
+  Special brawler frame - priotizes enemy.position1 so as to give a feeling that the bot is flanking the target.
+  
+*/
+void() ai_nodegraph_combat_brawler_frame={
+  local float pathFind;
+  local float nodeDist;
+  local vector nqOrg;
+  local float nodeYaw;
+  local float moveYaw;
+  local float moveSpeed;
+  local float turnSpeed;
+  local float walkSpeed;
+  
+  if( self.nq1 == -1 ){
+    //fresh path
+    ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+  }
+  else{
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+      self.moveState = MOVE_NORM;
+    }
+  
+    nqOrg = nodegraph_get_node_origin( self.nq1 );
+    nodeDist = ai_check_dist_node(self.origin, nqOrg);
+    if( nodeDist <= 16 ){
+      //arrived at node
+      
+      //check for pause first
+      if( ai_check_pause() ){
+        self.ai_fight_pause = TRUE;
+      }
+      pathFind = ai_nodegraph_next();
+      if( !pathFind ){
+        ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+      }
+    }
+    else{
+      moveSpeed = self.data_speed_forward;
+      //still traveling to node
+      nodeYaw = vectoyaw(nqOrg - self.origin);
+      //check yaw-to-node
+      if( nodeYaw != self.angles_y ){
+        self.ideal_yaw = nodeYaw;
+        
+        moveSpeed = self.data_speed_strafe;
+        
+        //yaw is too wide, stop moving and just pivot to node
+        moveYaw = fabs(self.ideal_yaw - self.angles_y);
+        if( moveYaw >= 90 ){
+          self.ai_hardTurn = TRUE;
+        }
+        else{
+          self.ai_hardTurn = FALSE;
+          if( moveYaw >= 45 ){
+            moveSpeed = moveSpeed * 0.5;
+          }
+          else if( moveYaw >= 15 ){
+            moveSpeed = moveSpeed * 0.75;
+          }
+        }
+        
+        ChangeYaw();
+        if( self.legs ){
+          self.legs.attack_state = TR_TARG;
+          self.legs.ai_dir = nodeYaw;
+        }
+      }
+      else{
+        self.ai_hardTurn = FALSE;
+      }
+      if( self.ai_hardTurn ){
+        if( self.legs ){
+          self.legs.attack_state = TR_YAW;
+          self.moveState = MOVE_NORM;
+        }
+        ChangeYaw();
+      }
+      else{
+        if( self.legs ){
+          self.legs.attack_state = TR_NORM;
+          self.moveState = MOVE_NORM;
+        }
+        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+          ai_nodegraph_trace_vec( self.origin, self.enemy.position2 );
         }
       }
     }

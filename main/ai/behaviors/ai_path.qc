@@ -68,6 +68,9 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, 
         }
         ChangeYaw();
       }
+      else{
+        self.ai_hardTurn = FALSE;
+      }
       if( self.ai_hardTurn ){
         if( self.legs ){
           self.legs.attack_state = TR_YAW;

@@ -63,6 +63,9 @@ entity alarm_ent; //per-frame global used to prevent near-endless alarm loops
 .float ai_voice_group;
 .float helpTime;  //prevents flooding of help calls
 .float helpTimeDelay;
+.float ai_pauseTime_check; //time interval to check for pauses.
+.float ai_pauseTime_chance;  //chance that AI will pause.
+.float ai_pauseTime_wait;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -78,7 +81,7 @@ void() ai_pilot_ini_reg;
 void() ai_pilot_ini_vet;
 void() ai_pilot_ini_ace;
 
-//AI NODEGRAPH
+//AI NODEGRAPH====================================
 .float reverseFlag;
 void() node_setup;
 .float nq1; //to keep per-AI pathfinding costs low, we cache the next 4 nodes that the bot must go to
@@ -118,7 +121,6 @@ float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode; //given a ma
 float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec; //given a known endId, and a map org
 float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
 float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
-
 
 //AI TETHER FUNCTIONALITY
  //no valid targets, AI will chill in a spot if it loses target, it  looks for new ones near it. no real fixed position.
@@ -191,9 +193,10 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
 void() ai_touch;
 void() ai_face_goal;
 void(vector v) ai_face_origin;
+float() ai_check_pause;
 void() ai_face_targ;
 void() ai_face_targ_fade; //uses last-known position
-void( float alt_low, float alt_max ) ai_fly_update;
+//void( float alt_low, float alt_max ) ai_fly_update;  DEPRECATED - release version - Roohr
 float(entity targ, float ang_limit, float useTurret) ai_check_face;
 float(vector v, float ang_limit, float useTurret) ai_check_face_origin;
 float(entity t, float ang, float useTurret) ai_check_targ_infront;
@@ -234,29 +237,34 @@ void( float move ) ai_update_accuracy;
 void() ai_frame_update;
 
 //Behavior state functions.
+void() ai_state_pause;
 void() ai_state_turret_frame;   //just for turrets.
 void() ai_state_lurker_frame;   // 'the basic', if no other behavior is set, run this one
 void() ai_state_brawler_frame;
 void() ai_state_hunter_frame;
 
 //Per-Frame behavior functions
+void() ai_state_set_pause;
 void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_frame;
 void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame;
-void() ai_nodegraph_combat_frame; //todo - deprecated
+void() ai_nodegraph_combat_frame;
+void() ai_nodegraph_combat_brawler_frame;
 
 //Timers
-.float ai_timer_tracepath;  //probably the most important.
+.float ai_timer_tracepath;  //probably the most important. the interval for querying the nodegraph for paths.
+.float ai_timer_breathe;    //used with fight_pause.
 .float ai_timer_checkTurn;  // if yawspeed too low for ideal_yaw over X time, this makes the bot turn harder.
 .float ai_timer_checkHunt;  // used by ai_state_hunter_frame() for hunting targets.
 .float ai_timer_checkTargFade;  //allows AI to turn to face target's last origin
 
 //Values
-.float ai_findPath;   //part of the queue system for 
-.float ai_hardTurn;   //when target destination yaw >= 90 from bot's angles_y
-.float ai_lastVis;    //used for to get per-frame state of target visiblity
-.float ai_is_targetfade;  //currently rotating to prev. target's cached position.
-.vector ai_fadePos;       //used for last known position rotate.
-.float ai_flee;       //is fleeing contact
+.float ai_fight_pause;  //important part of the fighting step, the AI pauses, turns toward their target, not firing, allows player to 'breathe'
+.float ai_findPath;     //part of the queue system for 
+.float ai_hardTurn;     //when target destination yaw >= 90 from bot's angles_y
+.float ai_lastVis;      //used for to get per-frame state of target visiblity
+.float ai_is_targetfade;//currently rotating to prev. target's cached position.
+.vector ai_fadePos;     //used for last known position rotate.
+.float ai_flee;         //is fleeing contact
 
 //DEBUG function
 //when you need the var-name for a global var value.

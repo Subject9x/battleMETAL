@@ -65,6 +65,9 @@ void() ai_nodegraph_hunter_frame={
         }
         ChangeYaw();
       }
+      else{
+        self.ai_hardTurn = FALSE;
+      }
       if( self.ai_hardTurn ){
         if( self.legs ){
           self.legs.attack_state = TR_YAW;
