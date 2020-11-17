@@ -79,7 +79,7 @@ void() ai_state_lurker_frame={
       }
     }
     else if( visCheck == VIS_FRN ){
-      ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward, 5);
+      ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward );
     }
     else{
       if( self.ai_lastVis != VIS_FAIL ){
@@ -100,6 +100,9 @@ void() ai_state_lurker_frame={
         if( self.tether == TETHER_PATROL ){
           if( self.patrolNode ){
             ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+          }
+          else{
+            self.tether = TETHER_NONE;
           }
         }
       }
@@ -153,7 +156,7 @@ void() ai_state_brawler_frame={
             break;
         }
         ai_nodegraph_clear_path();
-        ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67, 5 );
+        ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67 );
       }
       self.enemy = world;
     }
@@ -165,7 +168,7 @@ void() ai_state_brawler_frame={
         ai_face_targ_fade();
       }
       else{
-        ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67, 5 );
+        ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67 );
       }
     }
     else{
@@ -174,6 +177,9 @@ void() ai_state_brawler_frame={
         if( self.tether == TETHER_PATROL ){
           if( self.patrolNode ){
             ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+          }
+          else{
+            self.tether = TETHER_NONE;
           }
         }
       }
@@ -217,7 +223,7 @@ void() ai_state_hunter_frame={
       if( self.ai_lastVis != VIS_FAIL ){
        ai_nodegraph_clear_path();
       }
-      ai_nodegraph_frame( self.enemy.origin, self.enemy.position1, self.data_speed_strafe, self.data_speed_forward, 2);
+      ai_nodegraph_frame( self.enemy.origin, self.enemy.position1, self.data_speed_strafe, self.data_speed_forward );
     }
   }
   else{
@@ -227,6 +233,9 @@ void() ai_state_hunter_frame={
       if( self.tether == TETHER_PATROL ){
         if( self.patrolNode ){
           ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+        }
+        else{
+          self.tether = TETHER_NONE;
         }
       }
     }
@@ -249,6 +258,9 @@ void() ai_state_pause={
     visCheck = ai_check_vis(self.enemy);
     if( visCheck != VIS_FAIL ){
       ai_face_targ();
+      if( (random() * 1.0) > 0.8 ){
+        ai_attack();
+      }
     }
     else{
       self.think = self.ai_set_state;

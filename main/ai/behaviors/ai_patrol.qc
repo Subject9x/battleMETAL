@@ -24,6 +24,7 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
   
   nodeDist = ai_check_dist_node(self.origin, self.patrolNode.origin);
   if( nodeDist <= 16 ){
+  dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_patrol_frame()  - patrol node %s\n", self.classname, self.origin_x, self.origin_y, self.origin_z, self.patrolNode.targetname));  //debug
     //arrived at node.
     if( self.patrolNode.partNext ){
       //set the next node if it exists
@@ -33,10 +34,6 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       //we're at the end, shut it all down.
       self.tether = TETHER_NONE;
       self.moveState = MOVE_STAND;
-      pathFind = ai_nodegraph_to_org(self.origin);
-      if( pathFind ){
-        ai_nodegraph_trace_vecToNode( self.origin, pathFind );
-      }
     }
   }
   else{
@@ -84,7 +81,7 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       }
     }
     else{
-      ai_nodegraph_frame( self.patrolNode.origin, self.patrolNode.origin, self.data_speed_strafe, self.data_speed_forward * 0.75, 5);
+      ai_nodegraph_frame( self.patrolNode.origin, self.patrolNode.origin, self.data_speed_strafe, self.data_speed_forward * 0.75 );
     }
   }
 };

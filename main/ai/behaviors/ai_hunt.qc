@@ -57,10 +57,13 @@ void() ai_nodegraph_hunter_frame={
         else{
           self.ai_hardTurn = FALSE;
           if( moveYaw >= 90 ){
+            moveSpeed = moveSpeed * 0.15;
+          }
+          else if( moveYaw >= 45 ){
             moveSpeed = moveSpeed * 0.33;
           }
-          else if( moveYaw >= 35 ){
-            moveSpeed = moveSpeed * 0.5;
+          else if( moveYaw >= 15 ){
+            moveSpeed = moveSpeed * 0.66;
           }
         }
         ChangeYaw();
@@ -79,8 +82,32 @@ void() ai_nodegraph_hunter_frame={
         }
       }
       else{
-        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
-          ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+        if( self.legs ){
+          self.legs.attack_state = TR_NORM;
+        }
+        
+        if( self.ai_last_pathWait ){
+          if( time > self.ai_timer_pathWait ){
+            ai_nodegraph_clear_path();
+            pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+            if( pathFind ){
+              self.ai_last_pathWait = FALSE;
+              self.moveState = MOVE_NORM;
+            }
+            self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+          }
+          else{
+            self.moveState = MOVE_STAND;
+          }
+        }
+        else{
+          if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+            if( time > self.ai_timer_pathWait ){
+              self.ai_last_pathWait = TRUE;
+              self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+              dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_hunter_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
+            }
+          }
         }
       }
     }

@@ -16,7 +16,7 @@ Overview:
         check yaw angle, if the angle is beyond the forward arc, stop moving and pivot only.
         
 */
-void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_frame={
+void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame={
   local float pathFind;
   local float nodeDist;
   local vector nqOrg;
@@ -54,16 +54,16 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, 
         moveSpeed = turnSpeed;
         //yaw is too wide, stop moving and just pivot to node
         moveYaw = fabs(self.ideal_yaw - self.angles_y);
-        if( moveYaw >= 180 ){
+        if( moveYaw >= 90 ){
           self.ai_hardTurn = TRUE;
         }
         else{
           self.ai_hardTurn = FALSE;
-          if( moveYaw >= 90 ){
-            moveSpeed = moveSpeed * 0.33;
+          if( moveYaw >= 45 ){
+            moveSpeed = moveSpeed * 0.15;
           }
-          else if( moveYaw >= 35 ){
-            moveSpeed = moveSpeed * 0.5;
+          else if( moveYaw >= 15 ){
+            moveSpeed = moveSpeed * 0.33;
           }
         }
         ChangeYaw();
@@ -81,11 +81,35 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, 
       else{
         if( self.legs ){
           self.legs.attack_state = TR_NORM;
-          self.moveState = MOVE_NORM;
         }
+        
         if( walkmove(self.angles_y, moveSpeed) == FALSE ){
-          ai_nodegraph_trace_vec( self.origin, offsetTargDest );
+            ai_nodegraph_trace_vec( self.origin, offsetTargDest );
+            dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
         }
+        /*if( self.ai_last_pathWait ){
+          if( time > self.ai_timer_pathWait ){
+            ai_nodegraph_clear_path();
+            pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
+            if( pathFind ){
+              self.ai_last_pathWait = FALSE;
+              self.moveState = MOVE_NORM;
+            }
+            self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+          }
+          else{
+            self.moveState = MOVE_STAND;
+          }
+        }
+        else{
+          if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+            if( time > self.ai_timer_pathWait ){
+              self.ai_last_pathWait = TRUE;
+              self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+              dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
+            }
+          }
+        }*/
       }
     }
   }

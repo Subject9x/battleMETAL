@@ -168,13 +168,13 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
     return FALSE;
   }
   
-  dprint(sprintf("ai_nodegraph_trace_route( %f %f )\n", startId, endId)); //debug
+  //dprint(sprintf("ai_nodegraph_trace_route( %f %f )\n", startId, endId)); //debug
   qCount = nodegraph_trace(startId, endId);
   if( qCount > 0 ){
     pathCnt = nodegraph_build_path( startId, qCount, endId );
     if( pathCnt > -1 ){
       self.pathEndId = NODEGRAPH_SEARCH_PATH[0];  //set the end node so we can remember the end if we need to.
-      dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
+      //dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
       
       ai_nodegraph_clear_path();
     

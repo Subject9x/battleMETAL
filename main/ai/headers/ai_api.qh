@@ -245,7 +245,7 @@ void() ai_state_hunter_frame;
 
 //Per-Frame behavior functions
 void() ai_state_set_pause;
-void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed, float turnTime ) ai_nodegraph_frame;
+void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame;
 void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame;
 void() ai_nodegraph_combat_frame;
 void() ai_nodegraph_combat_brawler_frame;
@@ -256,15 +256,17 @@ void() ai_nodegraph_combat_brawler_frame;
 .float ai_timer_checkTurn;  // if yawspeed too low for ideal_yaw over X time, this makes the bot turn harder.
 .float ai_timer_checkHunt;  // used by ai_state_hunter_frame() for hunting targets.
 .float ai_timer_checkTargFade;  //allows AI to turn to face target's last origin
+.float ai_timer_pathWait;     //if path finding failed on the frame AI requested it, wait a random amount of time.
 
 //Values
-.float ai_fight_pause;  //important part of the fighting step, the AI pauses, turns toward their target, not firing, allows player to 'breathe'
-.float ai_findPath;     //part of the queue system for 
-.float ai_hardTurn;     //when target destination yaw >= 90 from bot's angles_y
-.float ai_lastVis;      //used for to get per-frame state of target visiblity
-.float ai_is_targetfade;//currently rotating to prev. target's cached position.
-.vector ai_fadePos;     //used for last known position rotate.
-.float ai_flee;         //is fleeing contact
+.float ai_fight_pause;    //important part of the fighting step, the AI pauses, turns toward their target, not firing, allows player to 'breathe'
+.float ai_findPath;       //part of the queue system for 
+.float ai_hardTurn;       //when target destination yaw >= 90 from bot's angles_y
+.float ai_lastVis;        //used for to get per-frame state of target visiblity
+.float ai_is_targetfade;  //currently rotating to prev. target's cached position.
+.vector ai_fadePos;       //used for last known position rotate.
+.float ai_flee;           //is fleeing contact
+.float ai_last_pathWait;  //
 
 //DEBUG function
 //when you need the var-name for a global var value.

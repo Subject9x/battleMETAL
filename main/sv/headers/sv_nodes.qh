@@ -84,7 +84,7 @@ void() nodegraph_clear_search_queue;
 
 //find node by
 vector( float nodeId ) nodegraph_get_node_origin;
-void( vector org ) nodegraph_node_by_origin;
+float( vector org ) nodegraph_node_by_origin;
 void( float nodeId ) nodegraph_get_node_byid;
 
 //the actual pathfinding and tracing

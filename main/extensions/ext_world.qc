@@ -804,7 +804,7 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
       //cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(edgeAngle_x)));//debug
       return FALSE;
     }
-    
+    self.dphitcontentsmask =  self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY);
     //clear Los, get more granular.
     edgeLen = vlen(targNode.origin - node.origin);
     edgeLenquant = ceil(edgeLen / NODEGRAPH_EDGE_GRID);
@@ -846,12 +846,14 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
       //}
       edgeSegA = edgeSegB;
     }
+    self.dphitcontentsmask = rint(0);
     return edgeCheck;
   }
   else{
     //no proper Los based on 
     //self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY);
     //cons_logAString(ftos(node.data_idx), strcat(ftos(targNode.data_idx), " fail trace fraction ", ftos(trace_fraction)));//debug
+    self.dphitcontentsmask = rint(0);
     return FALSE;
   }
 };

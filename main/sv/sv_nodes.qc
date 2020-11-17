@@ -95,7 +95,7 @@ float( float startId, float endId ) nodegraph_trace={
     }
     else{
       trace = NODEGRAPH_DATA[currentId];
-      dprint(sprintf("queue(%u) :: node[%u] \n", queue, trace.id)); //debug
+      //dprint(sprintf("queue(%u) :: node[%u] \n", queue, trace.id)); //debug
       itrEdge = 0;
       while( itrEdge < 6 ){
         nextId = trace.nodes[itrEdge];
@@ -140,26 +140,32 @@ float( float startId, float endId ) nodegraph_trace={
 */
 float( vector start, vector end ) nodegraph_trace_vec={
   
-  local float idStart;
-  local float path;
+  local float startNodeId;
+  local float endNodeId;
   
+  local float path;
   local float dbgItr;
   
   nodegraph_clear_search_queue();
   
-  nodegraph_node_by_origin(start);
-  idStart = NODE_found.id;
+  startNodeId = nodegraph_node_by_origin(start);
+  endNodeId = nodegraph_node_by_origin(end);
+    
   //dprint(sprintf("Start org: %f %f %f | nodeid: %u | arr val %u\n", start_x,start_y,start_z, NODE_found.id, NODEGRAPH_SEARCH_QUEUE[0])); //debug
-  
-  nodegraph_node_by_origin(end);
-  
   //debug
   //while(dbgItr < NODE_ID_COUNT){
   //  dprint(sprintf("node(%0.0f) - block num[%0.0f]\n", dbgItr, NODEGRAPH_DATA_BLOCK[dbgItr]));
   //  dbgItr = dbgItr + 1;
   //}
+  if( startNodeId == -1 ){
+    return -1;
+  }
   
-  path = nodegraph_trace( idStart, NODE_found.id );
+  if( endNodeId == -1 ){
+    return -1;
+  }
+  
+  path = nodegraph_trace( startNodeId, endNodeId );
   
   return path;
 };
@@ -178,7 +184,7 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   local float stackTotal;
   local vector dbgOrg;
   
-  dprint(sprintf("nodegraph_build_path( startNode[%u], endArrIdx[%u], endNodeId[%u] )\n", startNode, endArrIdx, endNodeId));  //debug
+  //dprint(sprintf("nodegraph_build_path( startNode[%u], endArrIdx[%u], endNodeId[%u] )\n", startNode, endArrIdx, endNodeId));  //debug
   stack = 0;
   //dprint("NODEGRAPH_SEARCH_CAME_FROM[] integrity check\n"); //debug
   //while( stack < NODE_ID_COUNT ){
@@ -194,7 +200,7 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   while( pathId != startNode && stack < endArrIdx ){
     NODEGRAPH_SEARCH_PATH[stack] = pathId;
     dbgOrg = nodegraph_get_node_origin(pathId);
-      dprint(sprintf("    itr[%u]-node(%d)-ORIGIN %0.3f %0.3f %0.3f\n", stack, pathId, dbgOrg_x, dbgOrg_y, dbgOrg_z));
+     // dprint(sprintf("    itr[%u]-node(%d)-ORIGIN %0.3f %0.3f %0.3f\n", stack, pathId, dbgOrg_x, dbgOrg_y, dbgOrg_z));
     reflectPath = pathId;
     
     pathId = NODEGRAPH_SEARCH_CAME_FROM[reflectPath];
@@ -209,7 +215,7 @@ float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path=
   stackTotal = stack;
   NODEGRAPH_SEARCH_PATH[stack] = startNode;
   while( stack >= 0 ){
-    dprint(sprintf("    itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_PATH[stack]));
+    //dprint(sprintf("    itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_PATH[stack]));
     stack = stack - 1;
   }
   //dprint("============================\n"); //debug
@@ -252,9 +258,11 @@ void() nodegraph_clear_search_queue={
 vector( float nodeId ) nodegraph_get_node_origin={
   local vector foundOrg;
   
-  NODE_check = NODEGRAPH_DATA[nodeId];
-  if(NODE_check.id > -1){
-    foundOrg = NODE_check.orig;
+  node_t testNode;
+  
+  testNode = NODEGRAPH_DATA[nodeId];
+  if(testNode.id > -1){
+    foundOrg = testNode.orig;
   }
   else{
     foundOrg = '0 0 0';
@@ -265,22 +273,29 @@ vector( float nodeId ) nodegraph_get_node_origin={
 /*
   Search nodegraph via origin, and sets the node_t globals CHECK and FOUND
 */
-void( vector org ) nodegraph_node_by_origin={
+float( vector org ) nodegraph_node_by_origin={
   local float itr;
   local vector checkOrg;
+  local float foundId;
+  
+  node_t testNode;
+  
+  foundId = -1;
   
   itr = 0;
   while(itr < NODE_ID_COUNT){
-    NODE_check = NODEGRAPH_DATA[itr];
-    if( NODE_check.id < 0 ){
+    testNode = NODEGRAPH_DATA[itr];
+    if( testNode.id < 0 ){
       continue;
     }
-    checkOrg = NODE_check.orig;
+    checkOrg = testNode.orig;
     if( checkOrg == org ){
-      NODE_found = NODE_check;
+      foundId = testNode.id;
     }
     itr = itr + 1;
   }
+  
+  return foundId;
 };
 
 
@@ -357,6 +372,11 @@ void( vector src, vector dst ) nodegraph_debug_graph={
   local float edgeTotal;
   local float pathCnt;
   
+  local float startNodeId;
+  local float endNodeId;
+  
+  local entity t;
+  
   nodegraph_debugger = spawn();
   nodegraph_debugger.classname = strzone("nodegraph_debugger");
   setmodel(nodegraph_debugger, "q3mdl/testball.md3");
@@ -365,15 +385,31 @@ void( vector src, vector dst ) nodegraph_debug_graph={
   
   edgeTotal = nodegraph_trace_vec( src, dst );
   
-  nodegraph_node_by_origin(dst);
-  enId = NODE_found.id;
+  startNodeId = nodegraph_node_by_origin(dst);
   
-  nodegraph_node_by_origin(src);
-  strId = NODE_found.id;
+  endNodeId = nodegraph_node_by_origin(src);
   
-  pathCnt = nodegraph_build_path( strId, edgeTotal, enId );
+  pathCnt = nodegraph_build_path( startNodeId, edgeTotal, endNodeId );
+  
+  dprint(sprintf("debugger pathCnt %f", pathCnt));  //debug
   
   nodegraph_debugger.count = pathCnt;
+  
+  //freeze out everyone else
+  for( t = nextent(world); t != world; t = nextent(t) ){
+    if( !(t.flags & FL_UNIT) ){
+      continue;
+    }
+    if( !ai_valid_target(t) ){
+      continue;
+    }
+    if( (t.spawnflags & DEBUG_MODE) ){
+      continue;
+    }
+    t.solid = SOLID_NOT;
+    t.movetype = MOVETYPE_NONE;
+    t.spawnflags = t.spawnflags | DEBUG_MODE;
+  }
   
   nodegraph_debugger.think = nodegraph_debugger_th_node;
   nodegraph_debugger.nextthink = time + 1;

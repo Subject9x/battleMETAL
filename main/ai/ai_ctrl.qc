@@ -494,7 +494,7 @@ void() ai_setup_patrol={
   }
 
   ai_nodegraph_clear_path();
-  ai_nodegraph_mark_start();
+  //ai_nodegraph_mark_start();
   
   self.ai_timer_tracepath = time + 0.1;
   

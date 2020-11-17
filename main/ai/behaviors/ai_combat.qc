@@ -235,8 +235,6 @@ void() ai_nodegraph_combat_frame={
   local float nodeYaw;
   local float moveYaw;
   local float moveSpeed;
-  local float turnSpeed;
-  local float walkSpeed;
   
   if( self.nq1 == -1 ){
     //fresh path
@@ -278,11 +276,14 @@ void() ai_nodegraph_combat_frame={
         }
         else{
           self.ai_hardTurn = FALSE;
-          if( moveYaw >= 45 ){
-            moveSpeed = moveSpeed * 0.5;
+          if( moveYaw >= 90 ){
+            moveSpeed = moveSpeed * 0.15;
+          }
+          else if( moveYaw >= 45 ){
+            moveSpeed = moveSpeed * 0.33;
           }
           else if( moveYaw >= 15 ){
-            moveSpeed = moveSpeed * 0.75;
+            moveSpeed = moveSpeed * 0.66;
           }
         }
         
@@ -305,10 +306,30 @@ void() ai_nodegraph_combat_frame={
       else{
         if( self.legs ){
           self.legs.attack_state = TR_NORM;
-          self.moveState = MOVE_NORM;
         }
-        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
-          ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+        
+        if( self.ai_last_pathWait ){
+          if( time > self.ai_timer_pathWait ){
+            ai_nodegraph_clear_path();
+            pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+            if( pathFind ){
+              self.ai_last_pathWait = FALSE;
+              self.moveState = MOVE_NORM;
+            }
+            self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+          }
+          else{
+            self.moveState = MOVE_STAND;
+          }
+        }
+        else{
+          if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+            if( time > self.ai_timer_pathWait ){
+              self.ai_last_pathWait = TRUE;
+              self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+              dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_combat_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
+            }
+          }
         }
       }
     }
@@ -326,8 +347,6 @@ void() ai_nodegraph_combat_brawler_frame={
   local float nodeYaw;
   local float moveYaw;
   local float moveSpeed;
-  local float turnSpeed;
-  local float walkSpeed;
   
   if( self.nq1 == -1 ){
     //fresh path
@@ -355,8 +374,10 @@ void() ai_nodegraph_combat_brawler_frame={
     }
     else{
       moveSpeed = self.data_speed_forward;
+      
       //still traveling to node
       nodeYaw = vectoyaw(nqOrg - self.origin);
+      
       //check yaw-to-node
       if( nodeYaw != self.angles_y ){
         self.ideal_yaw = nodeYaw;
@@ -370,11 +391,14 @@ void() ai_nodegraph_combat_brawler_frame={
         }
         else{
           self.ai_hardTurn = FALSE;
-          if( moveYaw >= 45 ){
-            moveSpeed = moveSpeed * 0.5;
+          if( moveYaw >= 90 ){
+            moveSpeed = moveSpeed * 0.15;
+          }
+          else if( moveYaw >= 45 ){
+            moveSpeed = moveSpeed * 0.33;
           }
           else if( moveYaw >= 15 ){
-            moveSpeed = moveSpeed * 0.75;
+            moveSpeed = moveSpeed * 0.66;
           }
         }
         
@@ -387,6 +411,7 @@ void() ai_nodegraph_combat_brawler_frame={
       else{
         self.ai_hardTurn = FALSE;
       }
+      
       if( self.ai_hardTurn ){
         if( self.legs ){
           self.legs.attack_state = TR_YAW;
@@ -397,10 +422,30 @@ void() ai_nodegraph_combat_brawler_frame={
       else{
         if( self.legs ){
           self.legs.attack_state = TR_NORM;
-          self.moveState = MOVE_NORM;
         }
-        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
-          ai_nodegraph_trace_vec( self.origin, self.enemy.position2 );
+        
+        if( self.ai_last_pathWait ){
+          if( time > self.ai_timer_pathWait ){
+            ai_nodegraph_clear_path();
+            pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.position2 );
+            if( pathFind ){
+              self.ai_last_pathWait = FALSE;
+              self.moveState = MOVE_NORM;
+            }
+            self.ai_timer_pathWait = time + (0.5 + random() * 0.5);
+          }
+          else{
+            self.moveState = MOVE_STAND;
+          }
+        }
+        else{
+          if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+            if( time > self.ai_timer_pathWait ){
+              self.ai_last_pathWait = TRUE;
+              self.ai_timer_pathWait = time + (0.5 + random() * 0.5);
+              dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_combat_brawler_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
+            }
+          }
         }
       }
     }
