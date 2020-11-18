@@ -14,40 +14,71 @@ void() model_misc_building_set={
   switch( self.data_idx ){
     default:
       //building_misc_apartment
-      modelPath = "q3mdl/buildings/misc/misc_apt_sm.obj";
+      setmodel(self, "q3mdl/buildings/misc/misc_apt_sm.obj");
+      if( self.angles_y == 90 ){
+        setsize(self, '-20 -36 0', '20 36 52');
+      }
+      else{
+        setsize(self, '-36 -20 0', '36 20 52');
+      }
       break;
     case 2:
       //building_misc_factory_med
-      modelPath = "q3mdl/buildings/misc/misc_fact_med.obj";
+      setmodel(self, "q3mdl/buildings/misc/misc_fact_med.obj");
+      if( self.angles_y == 90 ){
+        setsize(self, '-88 -36 0', '88 36 76');
+      }
+      else{
+        setsize(self, '-36 -88 0', '36 88 76');
+      }
       break;
     case 3:
       //building_misc_lodge
-      modelPath = "q3mdl/buildings/misc/misc_lodge.obj";
+      setmodel(self, "q3mdl/buildings/misc/misc_lodge.obj");
+      setsize(self, self.mins, self.maxs);
       break;
     case 4:
       //building_misc_off_pyra
-      modelPath = "q3mdl/buildings/misc/misc_off_pyramid.obj";
+      setmodel(self, "q3mdl/buildings/misc/misc_off_pyramid.obj");
+      setsize(self, self.mins, self.maxs);
       break;
     case 5:
       //building_misc_off_large
-      modelPath = "q3mdl/buildings/misc/misc_off_large.obj";
+      setmodel(self, "q3mdl/buildings/misc/misc_off_large.obj");
+      setsize(self, self.mins, self.maxs);
       break;
     case 6:
       //building_misc_off_small
-      modelPath = "q3mdl/buildings/misc/misc_off_sm.obj";
+       setmodel(self, "q3mdl/buildings/misc/misc_off_sm.obj");
+      if( self.angles_y == 90 ){
+        setsize(self, '-56 -36 0', '56 36 80');
+      }
+      else{
+        setsize(self, '-36 -56 0', '36 56 80');
+      }
       break;
     case 7:
       //building_misc_fact_steam
-      modelPath = "q3mdl/buildings/misc/misc_fact_steam.obj";
+      setmodel(self, "q3mdl/buildings/misc/misc_fact_steam.obj");
+      setsize(self, self.mins, self.maxs);
       break;
     case 8:
       //building_misc_apt_larg
-      modelPath = "q3mdl/buildings/misc/misc_apt_larg.obj";
+      setmodel(self, "q3mdl/buildings/misc/misc_apt_larg.obj");
+      if( self.angles_y == 90 ){
+        setsize(self, '-96 -57 0', '96 63 56');
+      }
+      else if( self.angles_y == 180 ){
+        setsize(self, '-63 -96 0', '57 96 56');
+      }
+      else if( self.angles_y == 270 ){
+        setsize(self, '-96 -63 0', '96 57 56');
+      }
+      else{
+        setsize(self, '-57 -96 0', '63 96 56');
+      }
       break;
   }
-  
-  setmodel(self, modelPath);
-  setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
 };
 
