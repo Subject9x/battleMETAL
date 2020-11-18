@@ -70,6 +70,8 @@ entity nodegraph_debugger;
 void() nodegraph_debugger_th_node;
 void() nodegraph_debugger_th_edge;
 void( vector src, vector dst ) nodegraph_debug_graph;
+
+void( float srcId ) nodegraph_debug_edges;
 //--------------
 
 void( float dataNodeId, vector dataOrg ) nodegraph_read_new_node;

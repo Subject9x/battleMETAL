@@ -318,30 +318,44 @@ void( float nodeId ) nodegraph_get_node_byid={
 void() nodegraph_debugger_th_node={
   local float nd;
   local float nd2;
+  local vector nodeOrg;
+  local entity t;
   
-  if( nodegraph_debugger.count < 0 ){
+  if( self.nq1 == -1 ){
+    ai_nodegraph_trace_vec( self.origin, self.count );
+  }
+  
+  if( self.nq1 == self.count ){
     dprint("NODEGRAPH_DEBUGGER complete\n");  
     self.think = SUB_Remove;
     self.nextthink = time + 1;
+    for( t = nextent(world); t != world; t = nextent(t) ){
+      if( !(t.flags & FL_UNIT) ){
+        continue;
+      }
+      if( !ai_valid_target(t) ){
+        continue;
+      }
+      if( (t.spawnflags & DEBUG_MODE) ){
+        continue;
+      }
+      t.solid = SOLID_SLIDEBOX;
+      t.movetype = MOVETYPE_STEP;
+      t.ai_freeze = FALSE;
+    }
     return;
   }
   
-  nd = NODEGRAPH_SEARCH_PATH[nodegraph_debugger.count];
-  
-  nodegraph_debugger.count = nodegraph_debugger.count - 1;
-  
-  if( nodegraph_debugger.count < 0 ){
-    dprint("NODEGRAPH_DEBUGGER complete\n");  
-    self.think = SUB_Remove;
-    self.nextthink = time + 1;
-    return;
-  }
-  
-  nd2 = NODEGRAPH_SEARCH_PATH[nodegraph_debugger.count];
-  
-  nodegraph_debugger.origin = nodegraph_get_node_origin(nd);
-  nodegraph_debugger.compOffset = nodegraph_get_node_origin(nd2);
+  self.origin = nodegraph_get_node_origin(self.nq1);
+  setorigin(self, self.origin);
+  self.compOffset = nodegraph_get_node_origin(self.nq2);
 
+  if( !ai_nodegraph_next() ){
+    ai_nodegraph_trace_vec( self.origin, self.count );
+  }
+  dprint(sprintf("NODEGRAPH_DEBUGGER_TH_NODE(NQ1 %s) - ( NQ2 %s)\n", ftos(self.nq1), ftos(self.nq2)));//debug
+  dprint(sprintf("NODEGRAPH_DEBUGGER_TH_EDGE(%s) - (%s)\n", vtos(self.origin), vtos(self.compOffset)));//debug
+    
   self.data_lifetime = time + 4;
   self.think = nodegraph_debugger_th_edge;
   self.nextthink = time + 0.1;
@@ -355,6 +369,8 @@ void() nodegraph_debugger_th_edge={
     return;
   }
   trailparticles(self, particleeffectnum("TE_LAS_RAIL"), self.origin, self.compOffset);
+
+
 
   self.think = nodegraph_debugger_th_edge;
   self.nextthink = time + 0.1;
@@ -377,23 +393,27 @@ void( vector src, vector dst ) nodegraph_debug_graph={
   
   local entity t;
   
+  local entity oslf;
+  
   nodegraph_debugger = spawn();
   nodegraph_debugger.classname = strzone("nodegraph_debugger");
   setmodel(nodegraph_debugger, "q3mdl/testball.md3");
   setsize(nodegraph_debugger, nodegraph_debugger.mins, nodegraph_debugger.maxs);
-  setorigin(nodegraph_debugger, world.origin);
-  
-  edgeTotal = nodegraph_trace_vec( src, dst );
   
   startNodeId = nodegraph_node_by_origin(dst);
   
   endNodeId = nodegraph_node_by_origin(src);
   
-  pathCnt = nodegraph_build_path( startNodeId, edgeTotal, endNodeId );
+  oslf = self;
+  self = nodegraph_debugger;
+    pathCnt = ai_nodegraph_trace_route( startNodeId, endNodeId );
+  self = oslf;
   
-  dprint(sprintf("debugger pathCnt %f", pathCnt));  //debug
+  dprint(sprintf("debugger pathCnt %f\n", pathCnt));  //debug
   
-  nodegraph_debugger.count = pathCnt;
+  //nodegraph_debugger.count = pathCnt;
+  nodegraph_debugger.data_idx = startNodeId;
+  nodegraph_debugger.count = endNodeId;
   
   //freeze out everyone else
   for( t = nextent(world); t != world; t = nextent(t) ){
@@ -408,10 +428,40 @@ void( vector src, vector dst ) nodegraph_debug_graph={
     }
     t.solid = SOLID_NOT;
     t.movetype = MOVETYPE_NONE;
-    t.spawnflags = t.spawnflags | DEBUG_MODE;
+    t.ai_freeze = TRUE;
   }
   
+  nodegraph_debugger.origin = nodegraph_get_node_origin(nodegraph_debugger.nq1);
+  setorigin(nodegraph_debugger, nodegraph_debugger.origin);
   nodegraph_debugger.think = nodegraph_debugger_th_node;
   nodegraph_debugger.nextthink = time + 1;
 };
+
+
+void( float srcId ) nodegraph_debug_edges={
+  node_t test;
+  node_t nEdge;
+  
+  local float edgeNum;
+  local vector vTestOrg;
+  local vector vEdgeOrg;
+  
+  test = NODEGRAPH_DATA[srcId];
+  
+  if( test.id == -1 ){
+    dprint(sprintf("nodegraph_debug_edges ERROR - %s doesn't exist\n", ftos(srcId)));  //debug
+    return;
+  }
+  
+  vTestOrg = nodegraph_get_node_origin(test.id);
+  
+  for( edgeNum = 0; edgeNum < 6; edgeNum = edgeNum + 1){
+    if( test.nodes[edgeNum] == -1){
+      continue;
+    }
+    vEdgeOrg = nodegraph_get_node_origin( test.nodes[edgeNum] );
+    trailparticles( world, particleeffectnum("TE_ESR_RAIL"), vTestOrg, vEdgeOrg);
+  }
+};
+
 //--------------
