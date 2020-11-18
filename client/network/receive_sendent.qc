@@ -196,7 +196,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.vec_size = ReadByte();
-    self.modelindex = ReadShort();
+    self.data_idx = ReadByte();
     if( self.deadflag == DEAD_NO ){
       self.origin_x = ReadCoord();
       self.origin_y = ReadCoord();
@@ -210,29 +210,19 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   }
   
   if(isNew){
-    self.model = modelnameforindex(self.modelindex);
-    setmodel( self, self.model );
-    setsize(self, self.mins, self.maxs);
-    setorigin(self, self.origin);
     self.drawmask = MASK_ENGINE;
-    self.solid = SOLID_BSP;
-    self.movetype = MOVETYPE_NONE;
+    if( self.deadflag == DEAD_NO ){
+      model_misc_building_set();
+      self.solid = SOLID_BSP;
+      self.movetype = MOVETYPE_NONE;
+    }
+    else{
+      model_misc_building_ruins_set();
+    }
   }
   
   if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO ){
-    switch(self.vec_size){
-      case 2:
-        setmodel( self, "q3mdl/map/ruins/ruin_medium.obj");
-        break;
-      case 3:
-        setmodel( self, "q3mdl/map/ruins/ruin_large.obj");
-        break;
-      default:
-        setmodel( self, "q3mdl/map/ruins/ruin_small.obj");
-        break;
-    }
-    setsize( self, self.mins, self.maxs );
-    setorigin(self, self.origin);
+    model_misc_building_ruins_set();
   }
 };
 

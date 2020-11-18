@@ -355,8 +355,8 @@ void (void() thinkst) SUB_CheckRefire =
 		return;
 	if (self.cnt == 1)
 		return;
-	if (!visible (self.enemy))
-		return;
+	//if (!visible (self.enemy))
+		//return;
 
 	self.cnt = 1;
 	self.think = thinkst;
