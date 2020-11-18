@@ -113,7 +113,6 @@ void() node_setup;
 void() ai_nodegraph_clear_locks;
 void() ai_nodegraph_mark_start; //if a bot starts too close to a node, mark that node occupied.
 void() ai_nodegraph_clear_path; //mostly just for ini.
-float( float nodeId ) ai_nodegraph_distance_check;  //get distance to desired node
 float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
 float( float startId, float endId ) ai_nodegraph_trace_route;
 float( vector startPos, vector endPos ) ai_nodegraph_trace_vec;     // wraps nodegraph_trace() by allowing start / end pos
@@ -245,7 +244,7 @@ void() ai_state_hunter_frame;
 
 //Per-Frame behavior functions
 void() ai_state_set_pause;
-void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame;
+float( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame;
 void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame;
 void() ai_nodegraph_combat_frame;
 void() ai_nodegraph_combat_brawler_frame;
@@ -259,6 +258,8 @@ void() ai_nodegraph_combat_brawler_frame;
 .float ai_timer_pathWait;     //if path finding failed on the frame AI requested it, wait a random amount of time.
 
 //Values
+.float ai_patrol_arrive;  //has arrived at patrolNode
+.float ai_freeze;         //debug tool, freezes AI
 .float ai_fight_pause;    //important part of the fighting step, the AI pauses, turns toward their target, not firing, allows player to 'breathe'
 .float ai_findPath;       //part of the queue system for 
 .float ai_hardTurn;       //when target destination yaw >= 90 from bot's angles_y

@@ -16,27 +16,35 @@ Overview:
         check yaw angle, if the angle is beyond the forward arc, stop moving and pivot only.
         
 */
-void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame={
+float( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame={
   local float pathFind;
   local float nodeDist;
   local vector nqOrg;
-  local float nodeYaw;
   local float moveYaw;
   local float moveSpeed;
-  local float turnFlag;
   
   if( self.nq1 == -1 ){
-    ai_nodegraph_clear_path();
+    //maybe the destination > the 24 node-queue vars.
     ai_nodegraph_trace_vec( self.origin, targDest );
+    return TRUE;
   }
   else{
     nqOrg = nodegraph_get_node_origin( self.nq1 );
     nodeDist = ai_check_dist_node(self.origin, nqOrg);
     if( nodeDist <= 16 ){
       //arrived at node
-      pathFind = ai_nodegraph_next();
-      if( !pathFind ){
-        ai_nodegraph_trace_vec( self.origin, targDest );
+      if( self.pathEndId == self.nq1 ){
+        //AI has finished its nodegraph run
+        ai_nodegraph_clear_path();
+        ai_nodegraph_clear_locks();
+        return FALSE;
+      }
+      else{
+        pathFind = ai_nodegraph_next();
+        if( !pathFind ){
+          ai_nodegraph_trace_vec( self.origin, targDest );
+        }
+        return TRUE;
       }
     }
     else{
@@ -46,24 +54,20 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       }
       moveSpeed = walkSpeed;
       //still traveling to node
-      nodeYaw = vectoyaw(nqOrg - self.origin);
+      self.ideal_yaw = vectoyaw(nqOrg - self.origin);
       //check yaw-to-node
-      if( nodeYaw != self.angles_y ){
-        self.ideal_yaw = nodeYaw;
-        
+      if( self.angles_y != self.ideal_yaw ){
         moveSpeed = turnSpeed;
         //yaw is too wide, stop moving and just pivot to node
-        moveYaw = fabs(self.ideal_yaw - self.angles_y);
-        if( moveYaw >= 90 ){
+        moveYaw = anglemod(self.angles_y - self.ideal_yaw);
+        if( moveYaw > 45 && moveYaw < 315 ){
           self.ai_hardTurn = TRUE;
         }
         else{
           self.ai_hardTurn = FALSE;
-          if( moveYaw >= 45 ){
-            moveSpeed = moveSpeed * 0.15;
-          }
-          else if( moveYaw >= 15 ){
-            moveSpeed = moveSpeed * 0.33;
+          moveSpeed = turnSpeed;
+          if( moveYaw > 15 && moveYaw < 345 ){
+            moveSpeed = turnSpeed * 0.25;
           }
         }
         ChangeYaw();
@@ -83,13 +87,8 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
           self.legs.attack_state = TR_NORM;
         }
         
-        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
-            ai_nodegraph_trace_vec( self.origin, offsetTargDest );
-            dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
-        }
-        /*if( self.ai_last_pathWait ){
+        if( self.ai_last_pathWait ){
           if( time > self.ai_timer_pathWait ){
-            ai_nodegraph_clear_path();
             pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
             if( pathFind ){
               self.ai_last_pathWait = FALSE;
@@ -109,8 +108,10 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
               dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
             }
           }
-        }*/
+        }
       }
     }
+    return TRUE;
   }
+  return FALSE;
 };

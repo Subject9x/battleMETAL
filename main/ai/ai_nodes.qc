@@ -89,17 +89,6 @@ void() ai_nodegraph_mark_start={
   }
 };
 
-float( float nodeId ) ai_nodegraph_distance_check={
-  if( nodeId == -1 ){
-    return -1;
-  }
-  
-  node_t node;
-  node = NODEGRAPH_DATA[nodeId];
-  
-  return vlen(node.orig - self.origin);
-};
-
 /*
   updates .nodeQueue slots, returns FALSE if there are more nodes to go.
 */
@@ -168,13 +157,13 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
     return FALSE;
   }
   
-  //dprint(sprintf("ai_nodegraph_trace_route( %f %f )\n", startId, endId)); //debug
+  dprint(sprintf("%s(%s) - ai_nodegraph_trace_route( %f %f )\n", self.classname, vtos(self.origin), startId, endId)); //debug
   qCount = nodegraph_trace(startId, endId);
   if( qCount > 0 ){
     pathCnt = nodegraph_build_path( startId, qCount, endId );
     if( pathCnt > -1 ){
       self.pathEndId = NODEGRAPH_SEARCH_PATH[0];  //set the end node so we can remember the end if we need to.
-      //dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
+      dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
       
       ai_nodegraph_clear_path();
     
@@ -330,7 +319,7 @@ float( vector testOrg ) ai_nodegraph_to_org={
     test2 = ndOrg;
     test2_z = 0;
     testDist = vlen(test2 - test1);
-    if( testDist >= minDist ){
+    if( testDist > minDist ){
       continue;
     }
     testVis = ai_check_terrain_move( testOrg, ndOrg );
@@ -427,14 +416,15 @@ void() ai_node_check={
   local entity nexNode;
   local float contentCache;
 
-  if( self.target || self.target != "" ){
+  self.pathEndId = ai_nodegraph_to_org( self.origin );  //snap patrolnode to nodegraph
+  
+  if( self.target ){
     nexNode = find(world, targetname, self.target );
     if( nexNode ){
-      if( nexNode.data_idx <= 0){
-        nexNode.partTypeId = self.partTypeId + 1;
-        nexNode.partPrev = self;
-        self.partNext = nexNode;
-      }
+      //nexNode.partTypeId = self.partTypeId + 1;
+      //nexNode.partPrev = self;
+      self.partNext = nexNode;
+     //dprint(sprintf("%s - nearby node id %s - and next node %s \n", self.targetname, ftos(self.pathEndId), self.partNext.targetname ));  //debug 
     }
     else{
       if( cvar("developer") ){
@@ -507,7 +497,7 @@ void() ai_node={
   //set the collision filter to help AI when making traceline calls.
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   self.think = ai_node_check;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.1;
 };
 
 

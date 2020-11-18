@@ -3,8 +3,6 @@ battleMETAL
 Author: Peter Roohr
 Date: 07/07/2020
 Overview: 
-  
-  
 */
 
 /*
@@ -16,72 +14,40 @@ Overview:
 */
 void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
   local float pathFind;
+  local vector nqOrg;
   local float nodeDist;
   local float nodeYaw;
   local float moveSpeed;
   local float turnFlag;
   local float moveYaw;
-  
-  nodeDist = ai_check_dist_node(self.origin, self.patrolNode.origin);
+    
+  /*
+    note: ai_node entities are now mostly just 'meta' entities, the AI does not directly path to the
+      entity itself, rather; the AI locates the nearest NODEGRAPH node to the patrolNode.
+      
+      the patrolNode itself also holds the closest NODEGRAPH node ID as well.
+  */
+  nqOrg = nodegraph_get_node_origin( self.patrolNode.pathEndId );
+  nodeDist = ai_check_dist_node(self.origin, nqOrg);
   if( nodeDist <= 16 ){
-  dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_patrol_frame()  - patrol node %s\n", self.classname, self.origin_x, self.origin_y, self.origin_z, self.patrolNode.targetname));  //debug
+    dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_patrol_frame()  - patrol node %s\n", self.classname, self.origin_x, self.origin_y, self.origin_z, self.patrolNode.targetname));  //debug
     //arrived at node.
+    ai_nodegraph_clear_path();
+    ai_nodegraph_clear_locks();
     if( self.patrolNode.partNext ){
       //set the next node if it exists
       self.patrolNode = self.patrolNode.partNext;
+      ai_nodegraph_trace_vecToNode( self.origin, self.patrolNode.pathEndId );
     }
     else{
       //we're at the end, shut it all down.
       self.tether = TETHER_NONE;
       self.moveState = MOVE_STAND;
     }
+    return;
   }
-  else{
-    //moving to node
-    if( ai_check_terrain_move(self.origin, self.patrolNode.origin) ){
-      //still traveling to node
-      nodeYaw = vectoyaw(self.patrolNode.origin - self.origin);
-      moveSpeed = walkSpeed;
-      //check yaw-to-node
-      if( nodeYaw != self.angles_y ){
-        self.ideal_yaw = nodeYaw;
-        moveSpeed = turnSpeed;
-        //yaw is too wide, stop moving and just pivot to node
-        moveYaw = fabs(self.ideal_yaw - self.angles_y);
-        if( moveYaw >= 180 ){
-          self.ai_hardTurn = TRUE;
-        }
-        else{
-          self.ai_hardTurn = FALSE;
-          if( moveYaw >= 90 ){
-            moveSpeed = turnSpeed * 0.33;
-          }
-          else if( moveYaw >= 35 ){
-            moveSpeed = turnSpeed * 0.5;
-          }
-        }
-        ChangeYaw();
-      }
-      
-      if( self.ai_hardTurn ){
-        if( self.legs ){
-          self.legs.attack_state = TR_YAW;
-          self.moveState = MOVE_NORM;
-        }
-        ChangeYaw();
-      }
-      else{
-        if( self.legs ){
-          self.legs.attack_state = TR_NORM;
-          self.moveState = MOVE_NORM;
-        }
-        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
-          ai_nodegraph_trace_vec( self.origin, self.patrolNode.origin );
-        }
-      }
-    }
-    else{
-      ai_nodegraph_frame( self.patrolNode.origin, self.patrolNode.origin, self.data_speed_strafe, self.data_speed_forward * 0.75 );
-    }
-  }
+  //-----------------
+  ai_nodegraph_frame( self.patrolNode.origin, self.patrolNode.origin, self.data_speed_strafe, self.data_speed_forward * 0.75 );
+  
 };
+

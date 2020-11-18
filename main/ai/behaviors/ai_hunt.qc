@@ -18,10 +18,8 @@ void() ai_nodegraph_hunter_frame={
   local float pathFind;
   local float nodeDist;
   local vector nqOrg;
-  local float nodeYaw;
   local float moveYaw;
   local float moveSpeed;
-  local float turnFlag;
   
   if( self.nq1 == -1 ){
     ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
@@ -43,27 +41,24 @@ void() ai_nodegraph_hunter_frame={
       }
       moveSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
       //still traveling to node
-      nodeYaw = vectoyaw(nqOrg - self.origin);
+      self.ideal_yaw = vectoyaw(nqOrg - self.origin);
       //check yaw-to-node
-      if( nodeYaw != self.angles_y ){
-        self.ideal_yaw = nodeYaw;
-        
+      if( self.angles_y != self.ideal_yaw){
         moveSpeed = self.data_speed_strafe;
+        
         //yaw is too wide, stop moving and just pivot to node
-        moveYaw = fabs(self.ideal_yaw - self.angles_y);
-        if( moveYaw >= 180 ){
+        moveYaw = anglemod(self.angles_y - self.ideal_yaw);
+        
+        if( moveYaw > 90 && moveYaw < 270 ){
           self.ai_hardTurn = TRUE;
         }
         else{
           self.ai_hardTurn = FALSE;
-          if( moveYaw >= 90 ){
+          if( moveYaw > 45 && moveYaw < 315){
             moveSpeed = moveSpeed * 0.15;
           }
-          else if( moveYaw >= 45 ){
+          else if( moveYaw > 15 && moveYaw < 345 ){
             moveSpeed = moveSpeed * 0.33;
-          }
-          else if( moveYaw >= 15 ){
-            moveSpeed = moveSpeed * 0.66;
           }
         }
         ChangeYaw();
@@ -76,10 +71,6 @@ void() ai_nodegraph_hunter_frame={
           self.legs.attack_state = TR_YAW;
           self.moveState = MOVE_STAND;
         }
-        ChangeYaw();
-        if( self.angles_y == nodeYaw ){
-          self.ai_hardTurn = FALSE;
-        }
       }
       else{
         if( self.legs ){
@@ -88,7 +79,6 @@ void() ai_nodegraph_hunter_frame={
         
         if( self.ai_last_pathWait ){
           if( time > self.ai_timer_pathWait ){
-            ai_nodegraph_clear_path();
             pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
             if( pathFind ){
               self.ai_last_pathWait = FALSE;
