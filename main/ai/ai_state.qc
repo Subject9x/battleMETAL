@@ -80,7 +80,9 @@ void() ai_state_lurker_frame={
         }
       }
       else if( visCheck == VIS_FRN ){
-        ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward );
+        if( trace_ent.think == ai_state_lurker_frame ){
+          ai_nodegraph_combat_frame();
+        }
       }
       else{
         if( self.ai_lastVis != VIS_FAIL ){
@@ -89,6 +91,7 @@ void() ai_state_lurker_frame={
         }
         self.enemy = world;
       }
+      self.ai_lastVis = visCheck;
     }
     else{
     //No ENEMY, what was I doing before?
@@ -109,7 +112,6 @@ void() ai_state_lurker_frame={
         }
       }
     }
-    self.ai_lastVis = visCheck;
     self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   }
   self.think = ai_state_lurker_frame;
@@ -132,6 +134,7 @@ void() ai_state_brawler_frame={
         //set via ai_check_pause() in ai_nodegraph_combat_brawler_frame();
         if( self.ai_fight_pause == TRUE && time > self.ai_timer_breathe ){
           ai_state_set_pause();
+          self.ai_lastVis = visCheck;
           return;
         }
         
@@ -141,7 +144,7 @@ void() ai_state_brawler_frame={
         ai_nodegraph_combat_brawler_frame();
       }
       else{
-        if( visCheck == VIS_FAIL  && self.ai_lastVis != VIS_FAIL ){
+        if( visCheck == VIS_FAIL && self.ai_lastVis != VIS_FAIL ){
           //go to last reported position
           self.ai_timer_checkTargFade = time + (1 + (self.ai_rank * 2));
           switch(self.ai_rank){
@@ -158,11 +161,11 @@ void() ai_state_brawler_frame={
               self.ai_fadePos = self.enemy.position3;
               break;
           }
-          ai_nodegraph_clear_path();
           ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67 );
         }
         self.enemy = world;
       }
+      self.ai_lastVis = visCheck;
     }
     else{
     //No ENEMY, what was I doing before?
@@ -188,7 +191,6 @@ void() ai_state_brawler_frame={
         }
       }
     }
-    self.ai_lastVis = visCheck;
     self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   }
   self.think = ai_state_brawler_frame;
@@ -211,6 +213,7 @@ void() ai_state_hunter_frame={
         //set via ai_check_pause() in ai_nodegraph_combat_brawler_frame();
         if( self.ai_fight_pause == TRUE && time > self.ai_timer_breathe ){
           ai_state_set_pause();
+          self.ai_lastVis = visCheck;
           return;
         }
         
@@ -228,8 +231,9 @@ void() ai_state_hunter_frame={
         if( self.ai_lastVis != VIS_FAIL ){
          ai_nodegraph_clear_path();
         }
-        ai_nodegraph_frame( self.enemy.origin, self.enemy.position1, self.data_speed_strafe, self.data_speed_forward );
+        ai_nodegraph_frame( self.enemy.position1, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward );
       }
+      self.ai_lastVis = visCheck;
     }
     else{
       //No ENEMY, what was I doing before?
@@ -245,7 +249,6 @@ void() ai_state_hunter_frame={
         }
       }
     }
-    self.ai_lastVis = visCheck;
     self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   }
   self.think = ai_state_hunter_frame;

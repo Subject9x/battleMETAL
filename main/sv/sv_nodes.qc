@@ -108,7 +108,7 @@ float( float startId, float endId ) nodegraph_trace={
           //dprint(sprintf("      current cost(%f)\n", NODEGRAPH_SEARCH_COST[nextId])); //debug
           //dprint(sprintf("      add cost(%f)\n", moveCost )); //debug
           //if( visit < 0 || moveCost < NODEGRAPH_SEARCH_COST[nextId]){
-          if( visit < 0 && NODEGRAPH_DATA_BLOCK[nextId] == FALSE){
+          if( visit < 0 && (NODEGRAPH_DATA_BLOCK[nextId] == FALSE || NODEGRAPH_DATA_BLOCK[nextId] == self.entnum)){
             queueNext = queueNext + 1;  //error: something to do with iterating queueNext;
             NODEGRAPH_SEARCH_QUEUE[queueNext] = nextId;
             NODEGRAPH_SEARCH_CAME_FROM[nextId] = currentId;

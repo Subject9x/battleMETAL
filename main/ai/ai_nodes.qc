@@ -66,7 +66,7 @@ void() ai_nodegraph_mark_start={
   local float testLen;
   
   node_t proxNode;
-  nodeDist = 128;
+  nodeDist = 64;
   foundNode = -1;
   
   while( nodeItr < NODE_ID_COUNT ){
@@ -234,7 +234,7 @@ float( vector startPos, vector endPos ) ai_nodegraph_trace_vec={
   local float startNode;
   local float endNode;
   
-  if( time <= self.ai_timer_tracepath ){
+  if( time < self.ai_timer_tracepath ){
     return FALSE;
   }
   self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
@@ -255,7 +255,7 @@ float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode={
   local float traceStat;
   local float startNode;
   
-  if( time <= self.ai_timer_tracepath ){
+  if( time < self.ai_timer_tracepath ){
     return FALSE;
   }
   self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
@@ -276,7 +276,7 @@ float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec={
   local float traceStat;
   local float endNode;
   
-if( time <= self.ai_timer_tracepath ){
+  if( time < self.ai_timer_tracepath ){
     return FALSE;
   }
   self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
@@ -297,38 +297,38 @@ float( vector testOrg ) ai_nodegraph_to_org={
   local float minDist;
   local float nodeItr;
   
+  node_t closeNode;
+  
   local float aNode;
   
-  local vector test1;
-  local vector test2;
   local vector ndOrg;
   local float testDist;
   local float testVis;
   
   aNode = -1;
   minDist = 1024;
-  test1_x = testOrg_x;
-  test1_y = testOrg_y;
-  nodeItr = -1;
-  while( nodeItr < NODE_ID_COUNT ){
-    nodeItr = nodeItr + 1;
-    ndOrg = nodegraph_get_node_origin(nodeItr);
-    if( ndOrg == '0 0 0' ){
+  for( nodeItr = 0; nodeItr < NODE_ID_COUNT; nodeItr = nodeItr + 1){
+    closeNode = NODEGRAPH_DATA[nodeItr];
+    
+    if( closeNode.id == -1 ){
       continue;
     }
-    test2 = ndOrg;
-    test2_z = 0;
-    testDist = vlen(test2 - test1);
-    if( testDist > minDist ){
-      continue;
-    }
-    testVis = ai_check_terrain_move( testOrg, ndOrg );
-    if( !testVis ){
-      continue;
-    }
+    
     if( NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
       continue;
     }
+    
+    ndOrg = closeNode.orig;
+    testDist = ai_check_dist_node(testOrg, ndOrg);
+    if( testDist > minDist ){
+      continue;
+    }
+    
+    testVis = ai_check_terrain_move( testOrg, ndOrg ); 
+    if( !testVis ){
+      continue;
+    }
+    
     minDist = testDist;
     aNode = nodeItr;
   }

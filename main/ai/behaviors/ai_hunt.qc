@@ -27,7 +27,7 @@ void() ai_nodegraph_hunter_frame={
   else{
     nqOrg = nodegraph_get_node_origin( self.nq1 );
     nodeDist = ai_check_dist_node(self.origin, nqOrg);
-    if( nodeDist <= 16 ){
+    if( nodeDist <= 8 ){
       //arrived at node
       pathFind = ai_nodegraph_next();
       if( !pathFind ){
@@ -50,10 +50,17 @@ void() ai_nodegraph_hunter_frame={
         moveYaw = anglemod(self.angles_y - self.ideal_yaw);
         
         if( moveYaw > 90 && moveYaw < 270 ){
-          self.ai_hardTurn = TRUE;
+          moveSpeed = 0;
+          if( self.legs ){
+            self.legs.attack_state = TR_NORM;
+            self.moveState = MOVE_STAND;
+          }
         }
         else{
-          self.ai_hardTurn = FALSE;
+          if( self.legs ){
+            self.legs.attack_state = TR_NORM;
+            self.moveState = MOVE_NORM;
+          }
           if( moveYaw > 45 && moveYaw < 315){
             moveSpeed = moveSpeed * 0.15;
           }
@@ -63,43 +70,33 @@ void() ai_nodegraph_hunter_frame={
         }
         ChangeYaw();
       }
-      else{
-        self.ai_hardTurn = FALSE;
+      if( self.legs ){
+        self.legs.attack_state = TR_NORM;
       }
-      if( self.ai_hardTurn ){
-        if( self.legs ){
-          self.legs.attack_state = TR_YAW;
+      
+      if( self.ai_last_pathWait ){
+        if( time > self.ai_timer_pathWait ){
+          self.ai_last_pathWait = FALSE;
+          self.ai_timer_pathWait = time + 1;
+          pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+          if( pathFind ){
+            self.moveState = MOVE_NORM;
+          }
+        }
+        else{
           self.moveState = MOVE_STAND;
         }
       }
       else{
-        if( self.legs ){
-          self.legs.attack_state = TR_NORM;
-        }
-        
-        if( self.ai_last_pathWait ){
+        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
           if( time > self.ai_timer_pathWait ){
-            pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
-            if( pathFind ){
-              self.ai_last_pathWait = FALSE;
-              self.moveState = MOVE_NORM;
-            }
+            self.ai_last_pathWait = TRUE;
             self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
-          }
-          else{
-            self.moveState = MOVE_STAND;
-          }
-        }
-        else{
-          if( walkmove(self.angles_y, moveSpeed) == FALSE ){
-            if( time > self.ai_timer_pathWait ){
-              self.ai_last_pathWait = TRUE;
-              self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
-              dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_hunter_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
-            }
+            dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_combat_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
           }
         }
       }
+  
     }
   }
 };
