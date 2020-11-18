@@ -19,7 +19,7 @@ void() ai_mech_sniper_die={
   }
   
   ai_sfx_dead();
-  self.th_pain = SUB_Null;
+  self.th_pain = ai_NULL_pain;
   self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -48,7 +48,7 @@ void() ai_mech_sniper_die={
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
   
-  if( self.ai_move > MOVE_STAND_FACE ){
+  if( self.moveState > MOVE_STAND ){
     ctrl_unit_part_death(self.torsoCenter);
     ctrl_unit_part_death(self.torsoLeft);
     ctrl_unit_part_death(self.torsoRight);
@@ -63,6 +63,8 @@ void() ai_mech_sniper_die={
   ai_alert_close( self.enemy );
   
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
+  
+  ai_nodegraph_clear_locks();
   
   self.think = ai_mech_sniper_die2;
   self.nextthink = time + 0.1;

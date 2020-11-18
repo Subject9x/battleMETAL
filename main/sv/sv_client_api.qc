@@ -51,7 +51,7 @@ void() ClientConnect = {
   if( MISSION_STATUS == MISSION_STATUS_READY ){
     MISSION_STATUS = MISSION_STATUS_ACTIVE;
   }
-  
+  self.entnum = num_for_edict(self);
   self.weaponmodel = "";
   self.viewzoom = 1;
   self.nextVecChoice = 0;

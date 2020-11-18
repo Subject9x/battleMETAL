@@ -62,11 +62,11 @@ void() ai_noncom_run={
     local float friend_range;
     local entity friend;
     
-    enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = self.stat_trg_dist;
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov, FALSE);
+    //enemy_vis = ai_check_vis( self.enemy );
+    //enemy_range = self.stat_trg_dist;
+    //enemy_infront = ai_check_face( self.enemy, self.ai_fov, FALSE);
     
-    friend = ai_find_friend( AI_RANGE_L );
+    /*friend = ai_find_friend( AI_RANGE_L );
     friend_range = -1;
     if( friend ){
       friend_range = ai_check_range( friend );
@@ -115,7 +115,7 @@ void() ai_noncom_run={
       return;
     }
   }
-  //ai_next_state( ST_WALK );
+  //ai_next_state( ST_WALK );*/
   return;
 };
 

@@ -11,180 +11,370 @@ Overview:
 */
 
 /*
-  THE BRAIN of all AI's - the top-level state controller.
-  important vars:
-    .ai_state       - the current state, usually no need to operate on this
-    .ai_state_next  - set/operate on this to send the AI into a NEW state.
-    .ai_state_last  - delta-tracking of AI's state choice, get this for compares.
+  atomic state solution, per-frame updates are run as small header funcs inside a state
 */
-void() ai_state_frame={
-  //run unit frame updates
+void() ai_frame_update={
   self.ai_unit_update();
   if( !self.deadflag ){
-    ai_update();
-  }
-  if( !(self.spawnflags&DEBUG_MODE) ){
-    //State update
-    self.ai_state_last = self.ai_state;
-    self.ai_state = self.ai_state_next;
-    
-    //Move tracker update
-    self.ai_move_last = self.ai_move;
-    self.ai_move = self.ai_move_next;
-    
-    //state info dump - use for debug
-      //cons_logAFloat("current STATE--------------------------------", 0); //debug
-      //cons_logAString("           state", dbg_state(self.ai_state)); //debug
-      //cons_logAString("           move", dbg_move(self.ai_move)); //debug  
-      //cons_logAFloat("++++++++++++++++++++++++++++++++++++++++++++++", 1); //debug
-
-    //state machine
-    switch(self.ai_state){
-      case ST_STAND:
-        self.ai_run_state_now = self.ai_state_stand;
-        break;
-      case ST_PTR:
-        self.ai_run_state_now = self.ai_state_patrol;
-        break;
-      case ST_PTR_PAUSE:
-        self.ai_run_state_now = self.ai_state_patrol_pause;
-        break;
-      case ST_PTR_TRAVEL_NODE:
-        self.ai_run_state_now = self.ai_state_patrol_travel_node;
-        break;
-      case ST_PTR_TRAVEL_NODEBLOCK:
-        self.ai_run_state_now = self.ai_state_patrol_travel_blocked;
-        break;
-      case ST_THR:
-        self.ai_run_state_now = self.ai_state_tether;
-        break;
-      case ST_THR_PAUSE:
-        self.ai_run_state_now = self.ai_state_tether_pause;
-        break;
-      case ST_THR_TRAVEL:
-        self.ai_run_state_now = self.ai_state_tether_travel;
-        break;
-      case ST_THR_TRAVEL_BLOCK:
-        self.ai_run_state_now = self.ai_state_tether_travel_block;
-        break;
-      case ST_COMBAT:
-        self.ai_run_state_now = self.ai_state_combat;
-        break;
-      case ST_COM_MOVE_START:
-        self.ai_run_state_now = self.ai_state_combat_moveStart;
-        break;
-      case ST_COM_MOVE_EXEC:
-        self.ai_run_state_now = self.ai_state_combat_moveExec;
-        break;
-      case ST_COM_MOVE_END:
-        self.ai_run_state_now = self.ai_state_combat_moveEnd;
-        break;
-      case ST_COM_MOVE_BLOCK:
-        self.ai_run_state_now = self.ai_state_combat_blocked;
-        break;
+    if( ai_valid_target(self.enemy) ){
+      ai_turret_set_state(TR_TARG);
+      self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+      ai_lock_on();
     }
-    
-    if( self.ai_run_state_now ){
-      self.ai_run_state_now();
+    else{ 
+      self.button0 = FALSE;
     }
-    
-    if( self.ai_state == ST_COM_MOVE_START || self.ai_state == ST_COM_MOVE_EXEC ){
-      //optimization to reduce nesting of switch/case calls
-      ai_combat_move_frame();
-    }
-    
+    self.attackFlag = 0;
+    ai_ranged_attack();
+    self.button0 = FALSE;
     if( (self.flags&FL_TURRET) ){
       ai_turret_control();
     }
     if( self.legs ){
       ai_leg_control();
     }
+    if( time > self.posFadeTimer ){
+      self.posFadeTimer = time + POSITION_FADE_TIME;
+      self.position3 = self.position2;
+      self.position2 = self.position1;
+      self.position1 = self.origin;
+    }
   }
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  self.think = ai_state_frame;
-  self.nextthink = time + 0.06;
 };
 
 /*
-  Combat Sub-state; this should only be run by self.ai_state_combat_moveExec();
-  important vars:
-    .ai_move      -  the current move, usually no need to operate on this.
-    .ai_move_last - delta-tracking of AI's move choice, get this for compares.
-    .ai_move_next - set/operate on this to create a new move order.
-    .ai_movewait  - timer used for [ST_COM_MOVE_EXEC], set this in [ST_COM_MOVE_START], when expired, it goes to [ST_COM_MOVE_END]
+  Tear-down and rebuild of AI.
+    things got overcomplicated (see the commit history, haha)
+    
+    ty EMR for helping me think through it.
+    
+  Lowest energy AI behavior.
+    Only chases target while target is actually visible,
+    will return to normal behavior without target.
 */
-void() ai_combat_move_frame={
-  local float moveStatus;
-  moveStatus = TRUE;
-  switch(self.ai_move){
-    case MOVE_STAND:
-      ai_move_stand();
-      break;
-    case MOVE_CHARGE:
-      moveStatus = ai_move_charge();
-      break;
-    case MOVE_CHARGE_LEFT:
-      moveStatus = ai_move_charge_left();
-      break;
-    case MOVE_CHARGE_RIGHT:
-      moveStatus = ai_move_charge_right();
-      break;
-    case MOVE_STRAFE_LEFT:
-      moveStatus = ai_move_strafe_left();
-      break;
-    case MOVE_STRAFE_RIGHT:
-      moveStatus = ai_move_strafe_right();
-      break;
-    case MOVE_CIRCLE_LEFT:
-      moveStatus = ai_move_circle_left();
-      break;
-    case MOVE_CIRCLE_RIGHT:
-      moveStatus = ai_move_circle_right();
-      break;
-    case MOVE_BACK:
-      moveStatus = ai_move_back();
-      break;
-    case MOVE_BACK_LEFT:
-      moveStatus = ai_move_back_left();
-      break;
-    case MOVE_BACK_RIGHT:
-      moveStatus = ai_move_back_right();
-      break;
-    case MOVE_PATROLNODE:
-      moveStatus = ai_move_patrol_node( self.goalentity.ai_view * 0.85 );
-      break;
-    case MOVE_SNAPSHOT:
-      ai_move_snapshot();
-      break;
-    case MOVE_SNIPESHOT:
-      ai_move_snipeshot();
-      break;
-    case MOVE_STAND_FACE:
-      ai_move_standface();
-      break;
-    case MOVE_NODE_TACTICAL:
-      ai_move_node_tactical();  //hackfrauds
-      break;
-    case MOVE_NODE_RADIUS:
-      ai_move_node_radius();
-      break;
-  }
+void() ai_state_lurker_frame={
+  local float visCheck;
   
-  if( moveStatus == FALSE ){
-    self.ai_blockflag = TRUE;
-    if( self.ai_state_combat_blocked ){
-      self.ai_state_next = ST_COM_MOVE_BLOCK;
+  if( !self.ai_freeze ){
+    ai_frame_update();
+    if( ai_valid_target(self.enemy) ){
+    //has enemy -> combat stuff
+      visCheck = ai_check_vis(self.enemy);
+      if( visCheck == VIS_FRAC ){
+      //enemy is visible, 
+        if( self.ai_lastVis == VIS_FAIL ){
+          ai_nodegraph_clear_path();
+        }
+        ai_attack();
+        //is enemy reachable from my firing position?
+        if( self.ai_minrange < self.stat_trg_dist || !self.combatFlags ){
+          ai_nodegraph_combat_frame();
+        }
+        else if( self.stat_trg_dist <= self.ai_minrange ){
+          //stop-to-shoot vs dont stop-to-shoot
+          ai_face_targ();
+        }
+        else{
+          //bare minimum
+          ai_face_targ();
+        }
+      }
+      else if( visCheck == VIS_FRN ){
+        ai_nodegraph_frame( self.enemy.origin, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward );
+      }
+      else{
+        if( self.ai_lastVis != VIS_FAIL ){
+          self.ai_timer_checkTargFade = time + (1 + (self.ai_rank * 1.25));
+          self.ai_fadePos = self.enemy.origin;
+        }
+        self.enemy = world;
+      }
     }
     else{
-      self.ai_move_next = MOVE_STAND;
-      self.ai_blockflag = 0;
-      self.ai_movedist = 4;
+    //No ENEMY, what was I doing before?
+      if( time < self.ai_timer_checkTargFade ){
+        //complete the fade turn; game is mostly single player :P
+        ai_face_targ_fade();
+      }
+      else{
+        if( !ai_check_scan( self.stat_rdr_mode ) ){
+          if( self.tether == TETHER_PATROL ){
+            if( self.patrolNode ){
+              ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+            }
+            else{
+              self.tether = TETHER_NONE;
+            }
+          }
+        }
+      }
+    }
+    self.ai_lastVis = visCheck;
+    self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  }
+  self.think = ai_state_lurker_frame;
+  self.nextthink = time + 0.05;
+};
+
+/*
+  Designed to pursue player up till lost line of sight.
+  these brawl with players constantly.
+  
+*/
+void() ai_state_brawler_frame={
+  local float visCheck;
+  
+  if( !self.ai_freeze ){
+    ai_frame_update();
+    if( ai_valid_target(self.enemy) ){
+      visCheck = ai_check_vis(self.enemy);
+      if( visCheck == VIS_FRAC){
+        //set via ai_check_pause() in ai_nodegraph_combat_brawler_frame();
+        if( self.ai_fight_pause == TRUE && time > self.ai_timer_breathe ){
+          ai_state_set_pause();
+          return;
+        }
+        
+        //enemy is visible, 
+        ai_attack();
+        //is enemy reachable from my firing position?
+        ai_nodegraph_combat_brawler_frame();
+      }
+      else{
+        if( visCheck == VIS_FAIL  && self.ai_lastVis != VIS_FAIL ){
+          //go to last reported position
+          self.ai_timer_checkTargFade = time + (1 + (self.ai_rank * 2));
+          switch(self.ai_rank){
+            case AI_RANK_REG:
+              self.ai_fadePos = self.enemy.position2;
+              break;
+            case AI_RANK_VET:
+              self.ai_fadePos = self.enemy.position1;
+              break;
+            case AI_RANK_ACE:
+              self.ai_fadePos = self.enemy.origin;
+              break;
+            default:
+              self.ai_fadePos = self.enemy.position3;
+              break;
+          }
+          ai_nodegraph_clear_path();
+          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67 );
+        }
+        self.enemy = world;
+      }
+    }
+    else{
+    //No ENEMY, what was I doing before?
+      if( time < self.ai_timer_checkTargFade ){
+        if(self.nq1 == -1 ){
+          ai_face_targ_fade();
+        }
+        else{
+          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67 );
+        }
+      }
+      else{
+        //do_patrol?
+        if( !ai_check_scan( self.stat_rdr_mode ) ){
+          if( self.tether == TETHER_PATROL ){
+            if( self.patrolNode ){
+              ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+            }
+            else{
+              self.tether = TETHER_NONE;
+            }
+          }
+        }
+      }
+    }
+    self.ai_lastVis = visCheck;
+    self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  }
+  self.think = ai_state_brawler_frame;
+  self.nextthink = time + 0.05;
+};
+
+/*
+  like a brawler, but with the ability to chase them around corners.
+    -> maybe damage threshold too if under attack while hunting
+*/
+void() ai_state_hunter_frame={
+  local float visCheck;
+  
+  if( !self.ai_freeze ){
+    ai_frame_update();
+    if( ai_valid_target(self.enemy) ){
+    //has enemy -> combat stuff
+      visCheck = ai_check_vis(self.enemy);
+      if( visCheck == VIS_FRAC){
+        //set via ai_check_pause() in ai_nodegraph_combat_brawler_frame();
+        if( self.ai_fight_pause == TRUE && time > self.ai_timer_breathe ){
+          ai_state_set_pause();
+          return;
+        }
+        
+        //tee this up to trigger a new path.
+        if( self.ai_lastVis != VIS_FRAC ){
+          ai_nodegraph_clear_path();
+        }
+        
+        //enemy is visible, 
+        ai_attack();
+        //is enemy reachable from my firing position?
+        ai_nodegraph_combat_frame();
+      }
+      else{
+        if( self.ai_lastVis != VIS_FAIL ){
+         ai_nodegraph_clear_path();
+        }
+        ai_nodegraph_frame( self.enemy.origin, self.enemy.position1, self.data_speed_strafe, self.data_speed_forward );
+      }
+    }
+    else{
+      //No ENEMY, what was I doing before?
+        //do_patrol?
+      if( !ai_check_scan( self.stat_rdr_mode ) ){
+        if( self.tether == TETHER_PATROL ){
+          if( self.patrolNode ){
+            ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+          }
+          else{
+            self.tether = TETHER_NONE;
+          }
+        }
+      }
+    }
+    self.ai_lastVis = visCheck;
+    self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  }
+  self.think = ai_state_hunter_frame;
+  self.nextthink = time + 0.05;
+};
+
+/*
+  AI takes a bit of a breather, easing the pace of combat and giving the player a break too.
+*/
+void() ai_state_pause={
+  local float visCheck;
+  
+  ai_frame_update();
+  
+  if( ai_valid_target(self.enemy) ){
+    visCheck = ai_check_vis(self.enemy);
+    if( visCheck != VIS_FAIL ){
+      ai_face_targ();
+      if( (random() * 1.0) > 0.8 ){
+        ai_attack();
+      }
+    }
+    else{
+      self.think = self.ai_set_state;
+      self.nextthink = time + 0.05;
+      return;
     }
   }
-  if( self.ai_move > MOVE_STAND_FACE ){
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  
+  if( time > self.ai_timer_breathe ){
+    self.think = self.ai_set_state;
   }
+  else{
+    self.think = ai_state_pause;
+  }
+  self.nextthink = time + 0.05;
+};
+
+
+/*
+  Transition AI to the PAUSE state
+*/
+void() ai_state_set_pause={
+  ai_nodegraph_clear_path();
+  self.ai_timer_breathe = time + self.ai_pauseTime_wait;
+  self.think = ai_state_pause;
+  self.nextthink = time + 0.05;
+  self.ai_fight_pause = FALSE;
+  self.moveState = MOVE_STAND;
+  if( (self.flags&FL_TURRET) ){
+    self.torsoCenter.attack_state = TR_NORM;
+  }
+  if( self.legs ){
+    self.legs.attack_state = TR_NORM;
+  }
+};
+
+/*
+  Atomic, less-stateful turret behavior frame func.
+*/
+void() ai_state_turret_frame={
+  local float visCheck;
+  
+  //turrets are wonky edge cases
+  self.ai_unit_update();
+  if( !self.deadflag ){
+    if( ai_valid_target(self.enemy) ){
+      ai_turret_set_state(TR_TARG);
+      self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+      ai_lock_on();
+    }
+    else{ 
+      self.button0 = FALSE;
+    }
+    self.attackFlag = 0;
+    ai_ranged_attack();
+    self.button0 = FALSE;
+    if( (self.flags&FL_TURRET) ){
+      ai_turret_control();
+    }
+  }
+  //---------------------------
+  
+  if( ai_valid_target(self.enemy) ){
+    //has enemy -> combat stuff
+    visCheck = ai_check_vis(self.enemy);
+    if( visCheck == VIS_FRAC ){
+      //enemy is visible, 
+      ai_attack();
+      //is enemy reachable from my firing position?
+      if( self.stat_trg_dist > self.ai_minrange ){
+        self.enemy = world;
+      }
+      else{
+      //stop-to-shoot vs dont stop-to-shoot
+        ai_face_targ();
+      }
+    }
+    else{
+      //TODO - yes drop the enemy for now
+      self.torsoCenter.ai_dir = vectoyaw(self.enemy.position1 - self.origin);
+      self.torsoCenter.attack_state = TR_YAW;
+      self.ai_movewait = time + ((self.ai_rank + 1) * 2);
+      self.enemy = world;
+    }
+  }
+  else{
+    //No ENEMY, what was I doing before?
+    //do_patrol?
+    if( !ai_check_scan( self.stat_rdr_mode ) ){
+      if( self.torsoCenter.angles_y == self.torsoCenter.ai_dir ){
+        //self.torsoCenter.ai_dir = self.torsoCenter.angles_y + (crandom() * (25 + random() * 75));
+        //self.torsoCenter.attack_state = TR_YAW;
+        if( time > self.ai_movewait ){
+          self.ai_movewait = time + 10;
+        }
+        else{
+          
+        }
+      }
+    }
+    else{
+      self.torsoCenter.attack_state = TR_TARG;
+    }
+  }
+  self.ai_lastVis = visCheck;
+  self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  self.think = ai_state_turret_frame;
+  self.nextthink = time + 0.05;
 };
 
 /*
@@ -262,7 +452,6 @@ void( float estate ) ai_turret_set_state={
     self.torsoCenter.attack_state = estate;
   }
 };
-
 
 /*
   refer to macro macro_ai_

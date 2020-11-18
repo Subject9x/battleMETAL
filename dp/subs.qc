@@ -5,6 +5,7 @@ author: iD Software
 */
 
 void() SUB_Null = {};
+void(entity attacker) SUB_Null_pain = {};
 
 void() SUB_Remove = {remove(self);};
 

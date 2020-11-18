@@ -1,17 +1,17 @@
+../progs.dat
+
 //battleMETAL
 //Peter Roohr
 //Mainfest file for PROGS.DAT (the server code module)
-
-../progs.dat
 
 dp/defs.qc          //original Quake defs, should always be first.
 dp/dpextensions.qc  //DPExtensions that most of the magic work.
 
 //Common Defs=====================
   common/data/defs/defs_player.qc     //AI/player top-level vars.
-  common/data/defs/defs_unit.qc		    //all fields related specifically to unit data.
-  common/data/defs/defs_part.qc		    //all fields related to unit sub components.
-  common/data/defs/defs_item.qc		    //all fields related to items.
+  common/data/defs/defs_unit.qc       //all fields related specifically to unit data.
+  common/data/defs/defs_part.qc       //all fields related to unit sub components.
+  common/data/defs/defs_item.qc       //all fields related to items.
   common/data/defs/defs_projectile.qc //all fields related to projectiles.
 //================================
 
@@ -35,6 +35,7 @@ main/controllers/headers/controllers.qh
   main/sv/headers/sv_savefile.qh
   main/sv/headers/sv_client_api.qh
   main/sv/headers/sv_player_api.qh
+  main/sv/headers/sv_nodes.qh
   main/headers/utils.qh
   main/headers/t_damage.qh
   main/headers/entityFactory_player.qh
@@ -145,7 +146,6 @@ main/controllers/headers/controllers.qh
   main/ai/ai_stats.qc
   main/ai/ai_api.qc
   main/ai/ai_ctrl.qc
-  main/ai/ai_move.qc
   main/ai/ai_state.qc
   main/ai/ai_nodes.qc
   main/ai/ai_voice.qc
@@ -154,30 +154,25 @@ main/controllers/headers/controllers.qh
   main/ai/behaviors/ai_patrol.qc
   main/ai/behaviors/ai_combat.qc
   main/ai/behaviors/ai_react.qc
+  main/ai/behaviors/ai_path.qc
+  main/ai/behaviors/ai_hunt.qc
   
   main/ai/behaviors/turret/ai_turret.qc
-    main/ai/behaviors/turret/_combat.qc
-    main/ai/behaviors/turret/_patrol.qc
     main/ai/behaviors/turret/_die.qc
   
   main/ai/behaviors/mech_skirmish/ai_mech_skirmish.qc
     main/ai/behaviors/mech_skirmish/_die.qc
-    main/ai/behaviors/mech_skirmish/_fight.qc
     
   main/ai/behaviors/mech_sniper/ai_mech_sniper.qc
     main/ai/behaviors/mech_sniper/_die.qc
-    main/ai/behaviors/mech_sniper/_fight.qc
   
   main/ai/behaviors/tank_gev/ai_gev.qc
     main/ai/behaviors/tank_gev/_die.qc
-    main/ai/behaviors/tank_gev/_fight.qc
     
   main/ai/behaviors/tank_sniper/ai_destroyer.qc
-    main/ai/behaviors/tank_sniper/_fight.qc
     main/ai/behaviors/tank_sniper/_die.qc
   
   main/ai/behaviors/tank_skirmish/ai_tank_skirmish.qc
-    main/ai/behaviors/tank_skirmish/_fight.qc
     main/ai/behaviors/tank_skirmish/_die.qc
   
   //main/ai/behaviors/ai_noncom.qc TODO
@@ -198,6 +193,7 @@ main/controllers/headers/controllers.qh
   main/sv/sv_playermovement.qc
   main/sv/sv_client_api.qc
   main/sv/sv_player_api.qc
+  main/sv/sv_nodes.qc
   
   main/extensions/ext_world.qc
   

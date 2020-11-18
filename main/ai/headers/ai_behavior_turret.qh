@@ -14,14 +14,3 @@ void() ai_turret_die;
 void( entity attacker ) ai_turret_react;
 void() temp_chunk_burn;
 void() ai_turret_touch;
-
-void() turret_patrol;
-void() turret_patrol_pause;
-void() turret_patrol_travel;
-void() turret_patrol_travel_block;
-
-void() turret_combat;
-void() turret_com_moveStart;
-void() turret_com_moveExec;
-void() turret_com_moveEnd;
-void() turret_com_blocked;

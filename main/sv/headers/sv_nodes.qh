@@ -1,0 +1,96 @@
+/*
+battleMETAL 
+Author: Peter Roohr
+Date: 10/26/2020
+Overview: 
+  Ferris Bueller: what are you all still doing here? movies over...
+    we're in overtime.
+    
+    nodegraph impl to get the bots to move very well.
+*/
+
+//AI NODEGRAPH system--------------------------------------------------------
+/*
+  1) ai_node_paths are placed in map editor
+  2) export using quake C and precompute valid edges
+  3) map load -> load nodegraph data
+  4) Use the resulting data structure (ents? Arrays of ints?)
+  5) To run a pathfinding algorithm in the AI
+*/
+
+float NODEGRAPH_LOADED;
+float NODEGRAPH_MAX = 1024;
+//Edge validation rules
+float NODEGRAPH_DBG_ID1 = 6;
+float NODEGRAPH_DBG_ID2 = 5;
+
+float NODEGRAPH_EDGE_GRID = 32; // when checking edge links
+float NODEGRAPH_EDGE_ANGLE_MAX = 315;
+float NODEGRAPH_EDGE_ANGLE_MIN = 45;
+float NODEGRAPH_EDGE_MAX = 6;
+float NODEGRAPH_EDGE_DIST = 512;
+
+entity NODEGRAPH_EXPORT_NODE[1024];
+vector NODEGRAPH_EXPORT_EDGE[1024]; //used by exporter to find closest nodes
+float NODEGRAPH_edge_counter;   //same
+
+typedef struct
+{
+  float id;
+  vector orig;
+  float nodes[6];
+  float edge[6];
+} node_t;
+
+float NODEGRAPH_DATA_BLOCK[1024];
+node_t NODEGRAPH_DATA[1024];
+node_t NODE_found; //structs can't be return types I think...
+node_t NODE_check;
+
+float NODEGRAPH_SEARCH_QUEUE[1024];
+float NODEGRAPH_SEARCH_CAME_FROM[1024]; //where arr[nodeId] = (came from) old nodeId
+float NODEGRAPH_SEARCH_PATH[1024];
+//float NODEGRAPH_SEARCH_COST[1024]; //where arr[nodeId] = (came from) old nodeId - note: without digging deeper and somehow standing up a PriorityQueue data structure, this feature doesn't work.
+                                                                                   //still, the bot pathfinds well-enough, because edge link lenght has been precomputed by the export process, providing
+                                                                                   //a degree of shortest-path-selection behavior.
+
+
+//Search Queue
+//this is to reduce spam of the very costly pathfinding, so we have a max request queue thats cleared every few seonds
+float NODEGRAPH_queue_timeout = 2;
+float NODEGRAPH_queue_timer;
+float NODEGRAPH_queue_total;
+float NODEGRAPH_MAX_REQUEST = 16; //how many ents can use the system at a time? needs refinement, but the point is to gate
+                                  //this very costly code behind some limits.
+
+float NODE_ID_COUNT;
+float NODE_ID_EXPORT_COUNT; //specific for ai_node_path entities
+//NODEGRAPH debugger--------------------------------------------------------
+entity nodegraph_debugger;
+void() nodegraph_debugger_th_node;
+void() nodegraph_debugger_th_edge;
+void( vector src, vector dst ) nodegraph_debug_graph;
+
+void( float srcId ) nodegraph_debug_edges;
+//--------------
+
+void( float dataNodeId, vector dataOrg ) nodegraph_read_new_node;
+void( float dataNodeId, float edgeNum, float edgeId, float lenVal ) nodegraph_read_edge;
+
+//Export Nodegraph data
+float( entity node, entity targNode ) world_nodegraph_export_edgelink;
+
+
+//API------------------------------------------------------------------------
+void() nodegraph_clear_search_queue;
+
+//find node by
+vector( float nodeId ) nodegraph_get_node_origin;
+float( vector org ) nodegraph_node_by_origin;
+void( float nodeId ) nodegraph_get_node_byid;
+
+//the actual pathfinding and tracing
+float( float startId, float endId ) nodegraph_trace;
+float( vector start, vector end ) nodegraph_trace_vec;
+float( float thisId, float newId ) nodegraph_check_visited;
+float( float startNode, float endArrIdx, float endId ) nodegraph_build_path;

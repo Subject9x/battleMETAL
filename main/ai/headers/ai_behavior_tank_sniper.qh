@@ -12,9 +12,3 @@ Overview:
 void() ai_vec_dest;
 
 void() ai_vec_dest_die;
-
-void() spg_fight_target_fire;
-void() spg_fight_out_radius;
-void() spg_fight_vis_friend;
-void() spg_fight_building;
-void() spg_fight_full;

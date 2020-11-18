@@ -13,9 +13,3 @@ Overview: ai unit
 void() ai_gev;
 
 void() ai_gev_die;
-
-void() gev_fight_target_fire;
-void() gev_fight_out_radius;
-void() gev_fight_vis_friend;
-void() gev_fight_building;
-void() gev_fight_full;

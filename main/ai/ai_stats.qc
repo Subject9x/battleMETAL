@@ -114,6 +114,9 @@ void() ai_pilot_ini_rok={
   self.ai_leading = AI_LEAD_ROK;
   self.ai_attack_chance = 0.05 + AI_ATTACK_ROK;
   self.w_firetime = self.w_firetime * 2;
+  self.ai_pauseTime_check = AI_PAUSE_TIME_ROK;
+  self.ai_pauseTime_chance = AI_PAUSE_CHANCE_ROK;
+  self.ai_pauseTime_wait = AI_PAUSE_WAIT_ROK;
 };
 void() ai_pilot_ini_reg={
   self.helpTimeDelay = AI_HELP_COOL_REG;
@@ -124,7 +127,9 @@ void() ai_pilot_ini_reg={
   self.ai_leading = AI_LEAD_REG;
   self.ai_attack_chance = 0.1 + AI_ATTACK_REG;
   self.w_firetime = self.w_firetime * 1;
-
+  self.ai_pauseTime_check = AI_PAUSE_TIME_REG;
+  self.ai_pauseTime_chance = AI_PAUSE_CHANCE_REG;
+  self.ai_pauseTime_wait = AI_PAUSE_WAIT_REG;
 };
 void() ai_pilot_ini_vet={
   self.helpTimeDelay = AI_HELP_COOL_VET;
@@ -141,6 +146,9 @@ void() ai_pilot_ini_vet={
   self.ai_leading = AI_LEAD_VET;
   self.ai_attack_chance = 0.2 + AI_ATTACK_VET;
   self.w_firetime = self.w_firetime * 0.75;
+  self.ai_pauseTime_check = AI_PAUSE_TIME_VET;
+  self.ai_pauseTime_chance = AI_PAUSE_CHANCE_VET;
+  self.ai_pauseTime_wait = AI_PAUSE_WAIT_VET;
 };
 void() ai_pilot_ini_ace={
   self.helpTimeDelay = AI_HELP_COOL_ACE;
@@ -157,6 +165,9 @@ void() ai_pilot_ini_ace={
   self.ai_leading = AI_LEAD_ACE;
   self.ai_attack_chance = 0.3 + AI_ATTACK_ACE;
   self.w_firetime = self.w_firetime * 0.6;
+  self.ai_pauseTime_check = AI_PAUSE_TIME_ACE;
+  self.ai_pauseTime_chance = AI_PAUSE_CHANCE_ACE;
+  self.ai_pauseTime_wait = AI_PAUSE_WAIT_ACE;
 };
 
 /*
@@ -270,12 +281,16 @@ float() ai_pilot_minrange={
   local float total;
   
   for( weaponEnt = self.w_slot; weaponEnt != world; weaponEnt = weaponEnt.w_slot){
-    if( weaponEnt.deadflag == DEAD_NO ){
-      minrange = minrange + weaponEnt.w_range;
-      total = total + 1;
+    if( weaponEnt.deadflag != DEAD_NO ){
+      continue;
     }
+    if( weaponEnt.damageType == DMG_MSC ){
+      continue;
+    }
+    minrange = minrange + weaponEnt.w_range;
+    total = total + 1;
   }
   
-  minrange = minrange / total;
+  minrange = ceil(minrange / total);
   return minrange;
 };

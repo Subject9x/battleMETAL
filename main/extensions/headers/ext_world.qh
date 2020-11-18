@@ -60,7 +60,7 @@ void() sv_world_load_items;
 void() sv_checkRules;
 void() sv_endServer;
 
-void() mh_world_ini;
+void() world_metal_ini;
 void() world_get_fog;
 
 //RTLight converter system---------------------------------------------
@@ -83,17 +83,27 @@ void() world_get_fog;
   2 = normalmode NO && realtimemode YES
   3 = normalmode YES && realtimemode YES
 */
-
 void( float overrideFlag ) world_export_realtimelights;
-void( entity light, float fileData ) world_export_realtimelights_write;
+void( entity lightEnt, float fileData ) world_export_realtimelights_write;
 
 //dynamic lights (dlights)
 //extends classic lightmap lights into a more dynamic/controllable format.
-void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angles, float skinNum, float lightRadius ) world_make_dlight;
-void( entity parent ) world_remove_dlight;
-void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight;
+void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angles, float skinNum, float lightRadius ) world_dlight_make;
+void( entity parent ) world_dlight_remove;
+void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_dlight_update;
 
+//AI NODEGRAPH system--------------------------------------------------------
+void() world_nodegraph_export_edgelinker_th;
+entity nodegraph_edgelinker;  //lock the processing time to the game timer so we don't kill temp buffers
+void(entity thatNode) world_nodegraph_edge_empty_cache;
+void( entity iEdgNode, float weight ) world_nodegraph_edge_check_len;
+void(entity node, float fileData ) world_nodegraph_export_write_node;
+void( float overrideFlag ) world_nodegraph_export_data;
+void() world_nodegraph_import;
+float() world_nodegraph_read_file;
+void( float start, float end ) world_nodegraph_test_graph;
+
+//MISC
 entity() world_deathmatch_random_spawn;
-
 string WORLD_MAP_LIST;
 void() world_get_maplist; //TDM/DM network games use this list.

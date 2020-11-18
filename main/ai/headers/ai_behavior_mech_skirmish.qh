@@ -11,9 +11,3 @@ void() ai_mech_skirmish;
 
 void() ai_mech_sk_die;
 void() ai_mech_sk_die2;
-
-void() mech_sk_fight_target_fire;
-void() mech_sk_fight_out_radius;
-void() mech_sk_fight_vis_friend;
-void() mech_sk_fight_building;
-void() mech_sk_fight_full;

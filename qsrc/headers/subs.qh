@@ -19,6 +19,8 @@ void() SUB_CalcAngleMoveDone;
 void() DelayThink;
 void() SUB_UseTargets;
 void(float normal) SUB_AttackFinished;
+float (entity targ) visible={ return FALSE; };
+
 void (void() thinkst) SUB_CheckRefire;
 vector (vector ang) SUB_NormalizeAngles;
 

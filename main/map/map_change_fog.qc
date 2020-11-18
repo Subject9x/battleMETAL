@@ -28,7 +28,7 @@ void() map_changefog_use={
     
     if( (self.spawnflags & 1) ){
       self.think = SUB_Remove;
-      self.nextthink = 0.001;
+      self.nextthink = 0.01;
     }
   }
 };
@@ -46,11 +46,6 @@ fog cvar
 .fog_alpha = <float> [alpha] - new alpha value
 .fog_dist = <vector> [dist min, dist max, height] - new fog distance
 .fade = <float> [fade depth] - transition time
-
-Globals
-.stat_wep_state = <float> event
-    0 = do nothing
-    1 = transition to new fog
     
 -------- SPAWNFLAGS -------- 
 REMOVE_ONTOUCH 1: remove on first touch
@@ -66,7 +61,6 @@ void() map_change_fog={
   self.movetype = MOVETYPE_NONE;
   self.use = map_changefog_use;
   self.touch = map_changefog_touch;
-  //self.stat_player_weapons_state = TRUE;
   
   util_MapDeveloperMarker();
   util_DeveloperNodeMark();

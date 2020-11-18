@@ -22,8 +22,8 @@ void() ai_vec_dest_die={
   }
   
   ai_sfx_dead();
-  self.th_pain = SUB_Null;
-  self.th_missile = SUB_Null;
+  self.th_pain = ai_NULL_pain;
+  self.th_missile = ai_NULL_missile;
   self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -54,6 +54,8 @@ void() ai_vec_dest_die={
 
   ai_alert_close( self.enemy );
   te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
+  
+  ai_nodegraph_clear_locks();
   
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_BURN | SENDFLAG_MOVE);
   self.nextthink = time + 0.1;

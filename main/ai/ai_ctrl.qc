@@ -40,18 +40,18 @@ float() ai_blocked_teleport={
     node = ai_node_to_target(self);
     if( node ){
       self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
-      self.tetherStatus = TETHER_NODE;
+      self.tether = TETHER_NODE;
       return TRUE;
     }
     else{
       if( self.patrolNode ){
         if( self.patrolNode.partPrev ){
           self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
-          self.tetherStatus = TETHER_NODE;
+          self.tether = TETHER_NODE;
         }
         else{
           self.tetherOrg = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.15,32), 24);
-          self.tetherStatus = TETHER_NODE;
+          self.tether = TETHER_NODE;
           
         }
         setorigin(self, self.tetherOrg);
@@ -114,14 +114,12 @@ void() ai_touch={
     else if(other.enemy){
       self.enemy = other.enemy;
     }
-    self.ai_move_next = MOVE_STAND_FACE;
-    self.ai_state_next = ST_COM_MOVE_START;
     return;
   }
   
   //AI DOES have a current enemy
   enemyFront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET) );
-  distanc = ai_check_node_radius(self.enemy);
+  //distanc = ai_check_node_radius(self.enemy);
   vis = ai_check_vis(self.enemy);
   
   if( !enemyFront && otherFront ){
@@ -131,6 +129,9 @@ void() ai_touch={
   }
 };
 
+/*
+  Generic th_pain reaction filter.
+*/
 void(entity atk) ai_react={
   if( !(atk.flags & FL_MONSTER) && !(atk.flags & FL_CLIENT)){
     return;
@@ -142,7 +143,12 @@ void(entity atk) ai_react={
   }
   
   if( atk == self.enemy ){
-    self.ai_react_buffer = time + self.ai_react_time * 5;
+    self.ai_react_buffer = time + self.ai_react_time * 1;
+    return;
+  }
+
+  if( atk.data_type == DATA_BLD && self.enemy.data_type != DATA_BLD ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
     return;
   }
 
@@ -159,112 +165,7 @@ void(entity atk) ai_react={
   }
   self.enemy = atk;
   self.ai_react_buffer = time + self.ai_react_time * 5;
-  if(self.ai_state_next != ST_COMBAT ){
-    self.ai_state_next = ST_COMBAT;
-  }
 };
-
-/*
-  PATROL SUB STATE
-    PATROL_PAUSE        = 1;  //Paused at node because node had .float paustime
-    PATROL_WALKING      = 2;  //walking to a node where dist > AI_RANGE_S
-    PATROL_ARRIVE       = 3;  //dist <= AI_NODE_DISTANCE
-    PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && dist > AI_NODE_DISTANCE
-    PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
-    void() ai_patrol_state_frame;
-  .float patrolState;
-*/
-void() ai_patrol_state_frame={
-  local entity nextNode;
-  local float distLeft;
-  local vector cacheOrg;
-  local float walkSpeed, cornerSpeed;
-  
-  walkSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 2;
-  walkSpeed = max(walkSpeed, 2);
-  cornerSpeed = (self.data_speed_forward + self.data_speed_strafe ) / 3.5;
-  cornerSpeed = max(cornerSpeed, 1);
-  
-  //PAUSED AT NODE
-  if( time < self.pausetime ){
-    self.patrolState = PATROL_PAUSE;
-    return;
-  }
-  
-  cacheOrg = self.goalentity.origin;
-  self.lastorigin = self.origin;
-  distLeft = vlen(self.goalentity.origin - self.origin); 
-
-  //GOING TO NODE-----------------------------------
-  if( distLeft > self.goalentity.ai_view ){
-    ai_face_goal();
-    if( ai_check_face(self.goalentity, 0.85, FALSE) ){
-      if( walkmove(self.angles_y, walkSpeed) == FALSE ){
-        movetogoal( walkSpeed );
-      }
-    }
-    else{
-      if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-        movetogoal( cornerSpeed );
-      }
-    }
-    self.patrolState = PATROL_WALKING;
-    return;
-  }
-  //------------------------------------------------
-  
-  //PATROL - ARRIVING AT NODE
-  if( distLeft > min(self.goalentity.ai_view * 0.25,64) ){
-    ai_face_goal();
-    if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-      if(!self.legs){
-        ChangeYaw();
-      }
-      movetogoal( cornerSpeed );
-    }
-    self.patrolState = PATROL_WALKING;
-    return;
-  }
-  if( distLeft > min(self.goalentity.ai_view * 0.1,32) ){
-    ai_face_goal();
-    if( walkmove(self.angles_y, cornerSpeed) == FALSE ){
-      if(!self.legs){
-        ChangeYaw();
-      }
-      movetogoal( cornerSpeed );
-    }
-  }
-  //PATROL - ARRIVED AT NODE, set pause and next node
-  if(self.goalentity.pausetime > 0.0){
-    self.pausetime = self.goalentity.pausetime;
-    self.pausetime = max(5, self.pausetime - (self.ai_rank / 2));
-    self.patrolState = PATROL_PAUSE;
-  }
-  else{
-    self.pausetime = 0;
-    self.patrolState = PATROL_ARRIVE;
-  }
-  
-  if(self.patrolState == PATROL_ARRIVE){
-    if( self.goalentity.partNext ){
-      //case - there's the next node
-      nextNode = self.goalentity.partNext;
-    }
-    else{
-      nextNode = self.patrolNode;
-    }
-    if(nextNode == self.patrolNode ){
-      //IF an ai_node is missing a .target , then we 'error correct' here by cutting the AI over to ST_THR sub system.
-      //the AI will treat this final destination node as if it were ai_node_tether.
-      self.tetherStatus = TETHER_NODE;
-    }
-    else{
-      self.patrolNode = nextNode;
-    }
-  }
-  self.tetherOrg = self.patrolNode.origin;
-};
-
 
 void() ai_face_goal={
   self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
@@ -284,17 +185,35 @@ void(vector v) ai_face_origin={
 ===================================================
 */
 
+/*
+
+*/
+float() ai_check_pause={
+  if( (time - self.ai_timer_breathe) >= self.ai_pauseTime_check ){
+    if( (random() * 1.0) >= self.ai_pauseTime_chance ){
+      return TRUE;
+    }
+  }
+  return FALSE;
+};
 
 void() ai_face_targ={
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
 	ChangeYaw ();
 };
 
+void() ai_face_targ_fade={
+	self.ideal_yaw = vectoyaw(self.ai_fadePos - self.origin);
+	ChangeYaw ();
+};
+
 /*
   rolled together all the flying code to a one-off call.
   this should be made everytime a flyer makes an engine-based move.
+  
+  DEPRECATED - release version - Roohr
 */
-void( float alt_low, float alt_max) ai_fly_update={
+/*void( float alt_low, float alt_max) ai_fly_update={
   local vector delta, flydir;
   local float dist, fdir;
   local float fspd, sspd, bspd;
@@ -329,9 +248,7 @@ void( float alt_low, float alt_max) ai_fly_update={
     
     setorigin( self, flydir );
   } 
-}
-
-
+}*/
 
 /*
   Checks to see if Entity T is in the ANG arc of self
@@ -388,32 +305,40 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
 };
 
 float(entity t) ai_check_range={
-  return vlen( self.origin - t.origin );
+  return vlen( t.origin - self.origin);
 };
 
+/*
+  The main Line of Sight (LoS) calculator for AI.
+    returns an ENUM
+      VIS_FRAC    comes from trace_fraction == 1
+      VIS_FAIL    trace ended in contents, or water.
+      VIS_FRN     trace hit a FRIENDLY bbox.
+      VIS_ENEMY   trace hit a SECOND enemy bbox.
+*/
 float( entity targ ) ai_check_vis={
   local vector spot1, spot2;
   local float contentBuffer;
   
   makevectors(self.angles);
-  spot1 = self.cockpit.origin + (v_forward * 10) + (v_up * 5);
+  spot1 = self.cockpit.origin + (v_forward * 10) + (v_up * 3);
   if( targ.data_type == DATA_BLD ){
     spot2 = targ.hitOffset;
   }
   else{
-    spot2 = targ.origin + '0 0 5';
+    spot2 = targ.origin + '0 0 3';
   }
   contentBuffer = self.dphitcontentsmask;
   self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY);
+  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_OPAQUE | DPCONTENTS_SKY);
   
   traceline (spot1, spot2, MOVE_NORMAL, self);
   
-  self.dphitcontentsmask = contentBuffer;
+  self.dphitcontentsmask = rint(contentBuffer);
 
   //case: los crossed content - ported q1
   if ( trace_inopen && trace_inwater ){
-    return VIS_FAIL;     // sight line crossed contents
+    return VIS_FAIL;  // sight line crossed contents
   }
 
   //case: los hit desired target
@@ -425,21 +350,57 @@ float( entity targ ) ai_check_vis={
   if ( trace_fraction == 1.0 ){
     return VIS_FRAC;
   }
-
+  
   //case: los hit a friendly entity, who is blocking los
   if( trace_ent.faction == self.faction ){
-    friend_blocker = trace_ent;
-    friend_blocker_dist = vlen(friend_blocker.origin - spot1);
+    //friend_blocker = trace_ent;
+    //friend_blocker_dist = vlen(friend_blocker.origin - spot1);
     return VIS_FRN;
+  }
+  
+  if( trace_ent.faction != self.faction && trace_ent.faction > 0){
+    if(trace_ent.data_type != DATA_BLD){
+      return VIS_ENEMY;
+    }
   }
   
   return VIS_FAIL;
 };
 
+/*
+  Triggers the AI to try an attack next frame, this is THE func to make an AI fire at its target.
+*/
 float() ai_attack={
   self.button0 = 1;
   return self.button0;
 };
+
+
+/*
+  Get flat distance from an origin to a destination. we discard Z
+  because AI units vary in their total bbox height - using full coords means
+  that some AI could never 'reach' a node unless there were additional hit-box distance
+  calculations.
+*/
+float( vector testA, vector testB ) ai_check_dist_node={
+  local float testVal;
+  
+  local vector flatVecA;
+  local vector flatVecB;
+  
+  flatVecA_x = testA_x;
+  flatVecA_y = testA_y;
+  flatVecA_z = 0;
+  
+  flatVecB_x = testB_x;
+  flatVecB_y = testB_y;
+  flatVecB_z = 0;
+  
+  testVal = vlen( flatVecB - flatVecA );
+  
+  return testVal;
+};
+
 
 /*
 ===================================================
@@ -456,47 +417,53 @@ float() ai_attack={
       no wiggle room.
 */
 void() ai_setup_patrol={
-  local entity node;
+  local entity entFindTarget;
+  local float nodeFail;
   
   //make a single call reference here, instead of in every ai_setup func.
   trigger_event( find(world, classname, "player"), self.trigOnSpawn ); //event interface
   
-  //Check for spawnflag: DEBUG_MODE
-  if( (self.spawnflags & DEBUG_MODE) ){
-    self.ai_state_next = ST_STAND;
+  if( (self.spawnflags & NO_DROP) ){
+    self.flags = self.flags - (self.flags & FL_ONGROUND);
   }
   else{
-    //AI is a patrol-type
-    if( self.target || self.target != "" ){
-      if( lastNode && lastNode.targetname == self.target ){
-        node = lastNode;
-      }
-      else{
-        node = find(world, targetname, self.target);
-      }
-      if( node ){
-        self.tetherStatus = TETHER_PATROL;
-        self.tetherOrg = node.origin;
-        self.patrolNode = node;
-        self.ai_state_next = ST_PTR;
-        lastNode = node;
+    droptofloor();
+  }
+  if( (self.flags & FL_TURRET) ){
+    util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
+  }
+  if( self.legs != world ){
+    util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
+  }
+  
+  //Check for spawnflag: DEBUG_MODE
+  if( (self.spawnflags & DEBUG_MODE) ){
+    nodeFail = TRUE;
+  }
+  else{
+    //validate the proposed tether type coming in from AI
+    //auto-validate so we don't have to set much in the editor.
+    if( self.target ){
+      entFindTarget = find(world, targetname, self.target);
+      if( entFindTarget.classname == "ai_node" ){
+        //AI wants to run a patrol route.
+        if( lastNode && lastNode.targetname == self.target ){
+          entFindTarget = lastNode;
+        }
+        self.tether = TETHER_PATROL;
+        self.patrolNode = entFindTarget;
+        self.tetherOrg = entFindTarget.origin;
+        lastNode = entFindTarget;
         if( cvar("developer") ){
-          cons_logAVector(node.classname, node.origin); //debug
-          cons_logAString(node.classname, node.targetname);
+          cons_logAVector(entFindTarget.classname, entFindTarget.origin); //debug
+          cons_logAString(entFindTarget.classname, entFindTarget.targetname);
           cons_logAString("///////////////////", "////////////");
         }
       }
-      else{
-        self.deadflag = DEAD_DYING;
-      }
-    }
-    else{
-      //AI is an area-tethered type
-      node = ai_node_tether_find();
-      if( node ){
-        self.tetherStatus = TETHER_NODE;
-        self.patrolNode = node;
-        self.ai_state_next = ST_THR;
+      else if( entFindTarget.classname == "ai_node_tether" ){
+        self.tether = TETHER_NODE;
+        self.patrolNode = entFindTarget;
+        self.tetherOrg = entFindTarget.origin;
         if( cvar("developer") ){
           cons_logAVector(self.classname, self.origin);
           cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
@@ -505,48 +472,40 @@ void() ai_setup_patrol={
         }
       }
       else{
-        self.deadflag = DEAD_DYING;
+        nodeFail = TRUE;
       }
     }
-  }
-  if( self.ai_state_next == ST_STAND || self.deadflag != DEAD_DYING ){
-    if( (self.spawnflags & NO_DROP) ){
-      self.flags = self.flags - (self.flags & FL_ONGROUND);
-    }
     else{
-      droptofloor();
-    }
-    if( (self.flags & FL_TURRET) ){
-      util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
-    }
-    if( self.legs != world ){
-      util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
+      nodeFail = TRUE;
     }
   }
   
-  if(self.deadflag == DEAD_DYING){
-    //AI failed to have either a PATROL NODE or TETHER NODE, so kill it.
-    if( cvar("developer") ){
-      cons_logAString("///////////////", "----------");
-      cons_logAVector(self.classname, self.origin); //debug
-      cons_logAString(self.classname, self.vec_name);
-      cons_logAString(self.classname, self.patrolNode.classname); //debug
-      cons_logAVector(self.classname, self.patrolNode.origin); //debug
-      cons_logAString("///////////////", "^ REMOVED ^");
-    }
-    self.think = self.th_die;
-    self.nextthink = time + 0.1;
+  if( nodeFail ){
+    self.tether = TETHER_NONE;
+    self.patrolNode = world;
+    self.goalentity = world;
+  }
+  
+  if( (self.spawnflags & COLD_START) ){
+    self.spawnflags = self.spawnflags - (self.spawnflags&COLD_START);
+    self.nextthink = (random() * 0.5) + 7;
   }
   else{
-    if( (self.spawnflags & COLD_START) ){
-      self.spawnflags = self.spawnflags - (self.spawnflags&COLD_START);
-      self.nextthink = 7;
-    }
-    else{
-      self.nextthink = 2;
-    }
-    self.think = ai_state_frame;
-    self.nextthink = self.nextthink + time;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    self.nextthink = 1.0 + (random() * 1);
   }
+
+  if( self.ai_set_state ){
+    self.think = self.ai_set_state;
+  }
+  else{
+    self.think = ai_state_lurker_frame; //default
+  }
+
+  ai_nodegraph_clear_path();
+  //ai_nodegraph_mark_start();
+  
+  self.ai_timer_tracepath = time + 0.1;
+  
+  self.nextthink = self.nextthink + time;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };

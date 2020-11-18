@@ -1,11 +1,347 @@
 /*
 battleMETAL 
 Author: Peter Roohr
-Date: 7/17/2018
-mod - 01/20/2019
+10/29/2020 - nodegraph
 Overview: ai nodes
   all the various nodes needed for the game
 */
+
+//NODEGRAPH API-----------------------------------
+//simple, clears out entire path, used generally when bot spawns,
+//because values MUST be -1; (nodeID 0 is a valid ID).
+void() ai_nodegraph_clear_path={
+  self.nq1 = -1;
+  self.nq2 = -1;
+  self.nq3 = -1;
+  self.nq4 = -1;
+  self.nq5 = -1;
+  self.nq6 = -1;
+  self.nq7 = -1;
+  self.nq8 = -1;
+  self.nq9 = -1;
+  self.nq10 = -1;
+  self.nq11 = -1;
+  self.nq12 = -1;
+  self.nq13 = -1;
+  self.nq14 = -1;
+  self.nq15 = -1;
+  self.nq16 = -1;
+  self.nq17 = -1;
+  self.nq18 = -1;
+  self.nq19 = -1;
+  self.nq20 = -1;
+  self.nq21 = -1;
+  self.nq22 = -1;
+  self.nq23 = -1;
+  self.nq24 = -1;
+};
+
+/*
+  makes sure to clear any lingering node block flags
+*/
+void() ai_nodegraph_clear_locks={
+  local float nodeItr;
+  
+  while( nodeItr < NODE_ID_COUNT ){
+    if( NODEGRAPH_DATA_BLOCK[nodeItr] == self.entnum ){
+      NODEGRAPH_DATA_BLOCK[nodeItr] = FALSE;
+    }
+    nodeItr = nodeItr + 1;
+  }
+};
+
+/*
+  AI spawn edge-case.
+  Assists mappers when placing AI, it scans for the closest node to the AI when the AI spawns in.
+  
+  IF that node is too close (128 units or less) AND the node is not blocked by another ent, mark it as blocked.
+  
+  This way, bots have a better idea of the nodegraph state as they spawn in, allowing moving bots to know
+  if a just-ini'd bot is in the way.
+*/
+void() ai_nodegraph_mark_start={
+  local float nodeItr;
+  local float nodeDist;
+  local float foundNode;
+  local float testLen;
+  
+  node_t proxNode;
+  nodeDist = 128;
+  foundNode = -1;
+  
+  while( nodeItr < NODE_ID_COUNT ){
+    proxNode = NODEGRAPH_DATA[nodeItr];
+    if( proxNode.id != -1 ){
+      testLen = ai_check_dist_node( self.origin, proxNode.orig );
+      if( testLen < nodeDist ){
+        if( NODEGRAPH_DATA_BLOCK[nodeItr] == FALSE ){
+          nodeDist = testLen;
+          foundNode = nodeItr;
+        }
+      }
+    }
+    nodeItr = nodeItr + 1;
+  }
+  if( foundNode > -1 ){
+    //mark as blocked, set nq1 reference to node id, so that it will be cleared when the AI calls their trace_route for the first time.
+    NODEGRAPH_DATA_BLOCK[nodeItr] = self.entnum;
+    self.nq1 = nodeItr;
+  }
+};
+
+/*
+  updates .nodeQueue slots, returns FALSE if there are more nodes to go.
+*/
+float() ai_nodegraph_next={
+  
+  if( self.nq2 == -1 ){
+    //early exit - end of queue
+    return FALSE;
+  }
+  
+  if( NODEGRAPH_DATA_BLOCK[self.nq2] > FALSE && NODEGRAPH_DATA_BLOCK[self.nq2] != self.entnum ){
+    //requested next node was occupied by someone else.
+    return FALSE;
+  }
+  NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
+  
+  self.nq1 = self.nq2;
+  self.nq2 = self.nq3;
+  self.nq3 = self.nq4;
+  self.nq4 = self.nq5;
+  self.nq5 = self.nq6;
+  self.nq6 = self.nq7;
+  self.nq7 = self.nq8;
+  self.nq8 = self.nq9;
+  self.nq9 = self.nq10;
+  self.nq10 = self.nq11;
+  self.nq11 = self.nq12;
+  self.nq12 = self.nq13;
+  self.nq13 = self.nq14;
+  self.nq14 = self.nq15;
+  self.nq15 = self.nq16;
+  self.nq16 = self.nq17;
+  self.nq17 = self.nq18;
+  self.nq18 = self.nq19;
+  self.nq19 = self.nq20;
+  self.nq20 = self.nq21;
+  self.nq21 = self.nq22;
+  self.nq22 = self.nq23;
+  self.nq23 = self.nq24;
+  self.nq24 = -1;
+  
+  NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
+  
+  return TRUE;
+};
+
+/*
+  ai_nodegraph_trace_vec_route() is the core tracing func for the AI.
+  
+  generally maintain 1 func that calls most of the nodegraph stuff to keep func jumps low.
+    Its advised that you wrap nodegraph_trace() with other functions though, which
+    is more maintainable.
+*/
+float( float startId, float endId ) ai_nodegraph_trace_route={
+  
+  local float qCount;
+  local float pathCnt;
+  
+  ai_nodegraph_clear_locks();
+  
+  if( startId == -1 ){
+    return FALSE;
+  }
+  
+  if( endId == -1 ){
+    return FALSE;
+  }
+  
+  dprint(sprintf("%s(%s) - ai_nodegraph_trace_route( %f %f )\n", self.classname, vtos(self.origin), startId, endId)); //debug
+  qCount = nodegraph_trace(startId, endId);
+  if( qCount > 0 ){
+    pathCnt = nodegraph_build_path( startId, qCount, endId );
+    if( pathCnt > -1 ){
+      self.pathEndId = NODEGRAPH_SEARCH_PATH[0];  //set the end node so we can remember the end if we need to.
+      dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
+      
+      ai_nodegraph_clear_path();
+    
+      self.nq1 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq2 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq3 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq4 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq5 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq6 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq7 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq8 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq9 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq10 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq11 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq12 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq13 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq14 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq15 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq16 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq17 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq18 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq19 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq20 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq21 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq22 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq23 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      self.nq24 =  NODEGRAPH_SEARCH_PATH[pathCnt];
+      pathCnt = max(-1, pathCnt - 1);
+      
+      if( self.nq1 > -1 ){
+        return TRUE;
+      }
+    }
+  }
+  
+  return FALSE;
+};
+
+/*
+  Wraps ai_nodegraph_trace_route() by allowing VECTOR input
+*/
+float( vector startPos, vector endPos ) ai_nodegraph_trace_vec={
+  
+  local float traceStat;
+  local float startNode;
+  local float endNode;
+  
+  if( time <= self.ai_timer_tracepath ){
+    return FALSE;
+  }
+  self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
+  
+  startNode = ai_nodegraph_to_org( startPos );
+  endNode = ai_nodegraph_to_org( endPos );
+  
+  traceStat = ai_nodegraph_trace_route( startNode, endNode );
+  
+  return traceStat;
+};
+
+/*
+  Wraps ai_nodegraph_trace_route() by allowing VECTOR input for src, but you know the endId
+*/
+float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode={
+  
+  local float traceStat;
+  local float startNode;
+  
+  if( time <= self.ai_timer_tracepath ){
+    return FALSE;
+  }
+  self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
+  
+  startNode = ai_nodegraph_to_org( startPos );
+  
+  traceStat = ai_nodegraph_trace_route( startNode, endId );
+  
+  return traceStat;
+};
+//given a known endId, and a map org
+
+/*
+  Wraps ai_nodegraph_trace_route() by allowing NODE ID input for start, and you want to find closest node to a map position.
+*/
+float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec={
+  
+  local float traceStat;
+  local float endNode;
+  
+if( time <= self.ai_timer_tracepath ){
+    return FALSE;
+  }
+  self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
+  
+  endNode = ai_nodegraph_to_org( endPos );
+  
+  traceStat = ai_nodegraph_trace_route( startId, endNode );
+  
+  return traceStat;
+};
+
+/*
+  Find closest node to a desire map point (usually self, or target ai_node).
+  Make sure that node is WALKABLE to that spot.
+*/
+float( vector testOrg ) ai_nodegraph_to_org={
+
+  local float minDist;
+  local float nodeItr;
+  
+  local float aNode;
+  
+  local vector test1;
+  local vector test2;
+  local vector ndOrg;
+  local float testDist;
+  local float testVis;
+  
+  aNode = -1;
+  minDist = 1024;
+  test1_x = testOrg_x;
+  test1_y = testOrg_y;
+  nodeItr = -1;
+  while( nodeItr < NODE_ID_COUNT ){
+    nodeItr = nodeItr + 1;
+    ndOrg = nodegraph_get_node_origin(nodeItr);
+    if( ndOrg == '0 0 0' ){
+      continue;
+    }
+    test2 = ndOrg;
+    test2_z = 0;
+    testDist = vlen(test2 - test1);
+    if( testDist > minDist ){
+      continue;
+    }
+    testVis = ai_check_terrain_move( testOrg, ndOrg );
+    if( !testVis ){
+      continue;
+    }
+    if( NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
+      continue;
+    }
+    minDist = testDist;
+    aNode = nodeItr;
+  }
+  return aNode;
+};
+
+/*
+  find closest node to self;
+*/
+float( vector entOrg ) ai_nodegraph_find_node={
+
+  return FALSE;
+};
 
 void() ai_node_counter_th={
   local entity nearbot;
@@ -80,14 +416,15 @@ void() ai_node_check={
   local entity nexNode;
   local float contentCache;
 
-  if( self.target || self.target != "" ){
+  self.pathEndId = ai_nodegraph_to_org( self.origin );  //snap patrolnode to nodegraph
+  
+  if( self.target ){
     nexNode = find(world, targetname, self.target );
     if( nexNode ){
-      if( nexNode.data_idx <= 0){
-        nexNode.partTypeId = self.partTypeId + 1;
-        nexNode.partPrev = self;
-        self.partNext = nexNode;
-      }
+      //nexNode.partTypeId = self.partTypeId + 1;
+      //nexNode.partPrev = self;
+      self.partNext = nexNode;
+     //dprint(sprintf("%s - nearby node id %s - and next node %s \n", self.targetname, ftos(self.pathEndId), self.partNext.targetname ));  //debug 
     }
     else{
       if( cvar("developer") ){
@@ -122,10 +459,10 @@ void() ai_node_check={
       self.ai_view = max(minDist / 12, 100);
       self.dphitcontentsmask = contentCache;
     }
-    if( cvar("developer") ){
-      cons_logAVector(self.classname, self.origin); //debug
-      cons_logAFloat(self.classname, self.ai_view);
-    }
+    //if( cvar("developer") ){
+     // cons_logAVector(self.classname, self.origin); //debug
+      //cons_logAFloat(self.classname, self.ai_view);
+    //}
   }
 };
 
@@ -160,7 +497,7 @@ void() ai_node={
   //set the collision filter to help AI when making traceline calls.
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   self.think = ai_node_check;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.1;
 };
 
 
@@ -255,6 +592,43 @@ void() ai_node_tether={
   self.nextthink = time + 1;
 };
 
+/*QUAKED ai_node_path (0.988 0.75 0.5) (-10 -10 -18) (10 10 18)
+  used with generating .nodes files for maps.
+  
+  AI will use this node data to pathfind their way to targets, and other ai_node types.
+-------- KEYS -------- 
+
+-------- SPAWNFLAGS -------- 
+*/
+void() ai_node_path={
+  local vector sMin, sMax;
+  
+  if( cvar("developer") ){
+    self.effects = self.effects | EF_NOSHADOW;
+  }
+  else{
+    remove(self);
+    return;
+  }
+  
+  //assign then increment global node id counter, this saves us a for-loop at the export phase to establish IDs.
+  //do not mess with these...ever
+  self.data_idx = NODE_ID_EXPORT_COUNT;
+  NODE_ID_EXPORT_COUNT = NODE_ID_EXPORT_COUNT + 1;
+    
+  sMin = '-10 -10 -18';
+  sMax = '10 10 18';
+  
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  
+  setmodel(self, "q3mdl/testball.md3");
+  setsize(self, sMin, sMax);
+  setorigin(self, self.origin);
+  
+  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY | DPCONTENTS_OPAQUE);
+};
+
 void() ai_exec_order_use={
   local entity ent;
   local entity thisNode;
@@ -289,7 +663,7 @@ void() ai_exec_order_use={
     if( hasPatrol ){
       ent.target = strzone(self.trigOnSpawn);
     }
-    if( hasPatrol ){
+    if( hasEnemy ){
       ent.enemy = find(world, targetname, self.trigOnAttack);
     }
     if( ent.use ){

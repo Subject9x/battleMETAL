@@ -54,7 +54,7 @@ void() ai_vtol_walk={
 };
 
 void() ai_vtol_run={
-  self.attack_finished = 0;
+ /* self.attack_finished = 0;
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = self.stat_trg_dist;
@@ -129,7 +129,7 @@ void() ai_vtol_run={
   else{
     ai_next_state( ST_STAND );
     return;
-  }
+  }*/
 };
 
 
@@ -328,9 +328,9 @@ void() ai_vtol_th={
     if( self.enemy ){
       if( ai_valid_target( self.enemy ) ){
         self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
-        ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
-        ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
-        ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
+        //ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
+        //ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
+        //ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
         ai_lock_on();
       }
       else{ 

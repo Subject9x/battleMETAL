@@ -1,4 +1,4 @@
-
+#pragma target dp
 //DarkPlaces supported extension list, draft version 1.04
 
 //things that don't have extensions yet:
@@ -2478,7 +2478,7 @@ float(string url, float id, string content_type, string delim, float buf, float 
   //-Roohr (I dont take credit, just adding here)
 
 #define MSG_ENTITY 5
-.float(entity playerent, float changedflags) SendEntity;
+.float( float isNew, float changedflags) SendEntity;
 .float SendFlags;
 void(float buf, float fl) WriteFloat = #280;
 
@@ -2499,4 +2499,3 @@ void(float buf, float fl) WriteFloat = #280;
 //use-case : quake savegame files DO NOT presever .entity field links, to this end
 //if you have a child ent that's irrelevant to the gamestate, you can skip saving it here,
 //and relink a new instance using RestoreGame() function.
- 

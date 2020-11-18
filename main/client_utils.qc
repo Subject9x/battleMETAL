@@ -288,6 +288,18 @@ void(string str, float tokens) client_ParseMechCommand={
     world_export_realtimelights( stof(argv(2)) );
     return;
   }
+  if( argv(1) == "nodexprt" ){
+    world_nodegraph_export_data( stof(argv(2)) );
+    return;
+  }
+  if( argv(1) == "dbgnode" ){
+    world_nodegraph_test_graph( stof(argv(2)), stof(argv(3)) );
+    return;
+  }
+  if( argv(1) == "dbgedge" ){
+    nodegraph_debug_edges(  stof(argv(2)) );
+    return;
+  }
 };  
 
 void() client_update_faction={

@@ -2,6 +2,7 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 7/9/2018
+rebuilt: 11/11/2020 - nodegraphs and full state refactor.
 Overview: 
   AI API Header, covers multiple impl files
 */
@@ -10,7 +11,6 @@ Overview:
 #define macro_ai_setup(iniFunc) if(!(self.nextVecChoice)||self.nextVecChoice<=0){self.think=SUB_Remove;self.nextthink=time+0.05;return;}if((self.spawnflags&TRIGGER_ME)&&(self.targetname)){self.wait=1;if(self.delay>0){self.wait=self.delay;self.delay=0;}self.use=ai_unit_make_trigger;self.unit_ini=iniFunc;}else{self.think=iniFunc;self.nextthink=time+0.05;}
 
 //AI STATE (LEGACY) CONSTANTS
-float ST_STAND              = 1;  //th_stand
 float ST_WALK               = 2;  //th_walk
 float ST_RUN                = 4;  //th_run
 float ST_MISSILE            = 7;  //th_missile
@@ -25,37 +25,29 @@ float TR_LEFT               = 5;  //Turret ideal yaw is left-side away from ai_d
 float TR_RIGHT              = 6;  //Turret ideal yaw is right-side awa from ai_dir;
 
 //VIS CONSTANTS
-float VIS_FAIL = 0;
-float VIS_FRAC = 1;
-float VIS_TRG = 2;
-float VIS_FRN = 3;
+float VIS_FAIL  = 0;  //complete LOS block via map, building, doodad
+float VIS_FRAC  = 1;  //LOS is solid, clear shot
+float VIS_FRN   = 2;  //A friendly is blocking the way
+float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
 
 //GLOBALS
-//--> these are populated in AI _combat.qc -> ST_COMBAT state
-float enemy_infront;  //boolean, on-this-frame check if target is in AI's forward arc.
-float enemy_range;    //distance to AI relative to patrolNode.ai_view (radius)
-float enemy_dist;     //target's distance to patrolNode
-float combat_dist;    //AI's distance to its patrolNode
-float enemy_vis;      //enum, Line of Sight to target
-float combat_roll;    //per-state-frame dice roll for random movement selection.
-vector ai_angle;      //used for temporary angle calcs that preclude overriding the AI's current yaw
 float yawCache;       //used to quickly cache yaw to do some per-frame mods
-entity friend_blocker;
-float friend_blocker_dist;
+
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
 vector selfSensorOrg;
-entity lastNode;        //minor optimization
+vector orgCheckNode;    //discard _z
+
+entity lastNode;        //minor optimization for assigning ai_nodes for patrols by reducing lookup times.
+
 void(entity newAttacker) ai_react_generic;
 entity alarm_ent; //per-frame global used to prevent near-endless alarm loops
-float alarm_depth;  //per-frame global used to prevent near-endless alarm loops;
 
 //////////////////this are set every frame by every AI, do not rely on these OUTSIDE the function they're called (like all the trace_* globals)
-
-
 //ENTITY VARS
 .float ai_react_buffer;             //prevents too many runs of th_react;
 .float ai_react_time;               //stat for react buffer
 
+.float entnum;
 .float ai_rank;
 .float ai_action_time;  //for executing action states
 .float ai_action_mod;   //how many times to repeat a frameset before adjusting
@@ -71,6 +63,9 @@ float alarm_depth;  //per-frame global used to prevent near-endless alarm loops;
 .float ai_voice_group;
 .float helpTime;  //prevents flooding of help calls
 .float helpTimeDelay;
+.float ai_pauseTime_check; //time interval to check for pauses.
+.float ai_pauseTime_chance;  //chance that AI will pause.
+.float ai_pauseTime_wait;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -86,17 +81,63 @@ void() ai_pilot_ini_reg;
 void() ai_pilot_ini_vet;
 void() ai_pilot_ini_ace;
 
-//AI NODES
+//AI NODEGRAPH====================================
+.float reverseFlag;
 void() node_setup;
+.float nq1; //to keep per-AI pathfinding costs low, we cache the next 4 nodes that the bot must go to
+.float nq2; //here, so that they're not asking the nodegraph to pathfind every frame for every bot.
+.float nq3;
+.float nq4;
+.float nq5;
+.float nq6;
+.float nq7;
+.float nq8;
+.float nq9;
+.float nq10;
+.float nq11;
+.float nq12;
+.float nq13;
+.float nq14;
+.float nq15;
+.float nq16;
+.float nq17;
+.float nq18;
+.float nq19;
+.float nq20;
+.float nq21;
+.float nq22;
+.float nq23;
+.float nq24;
+.float pathEndId; //actual end node to the path, used for early exit / check of nq1-16 path cache.
+
+void() ai_nodegraph_clear_locks;
+void() ai_nodegraph_mark_start; //if a bot starts too close to a node, mark that node occupied.
+void() ai_nodegraph_clear_path; //mostly just for ini.
+float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
+float( float startId, float endId ) ai_nodegraph_trace_route;
+float( vector startPos, vector endPos ) ai_nodegraph_trace_vec;     // wraps nodegraph_trace() by allowing start / end pos
+float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode; //given a map org, and a known endId
+float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec; //given a known endId, and a map org
+float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
+float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
 
 //AI TETHER FUNCTIONALITY
-float TETHER_NONE   = 0;  //-> .tetherStatus
-float TETHER_NODE   = 1;  //-> .tetherStatus
-float TETHER_PATROL = 2;  //-> .tetherStatus
-float TETHER_ENT    = 3;  //-> .tetherStatus
-float TETHER_SELF   = 4;  //-> .tetherStatus
-.float tetherStatus; //TETHER_NONE = 0, TETHER_NODE = 1, TETHER_PATROL = 2, TETHER_ENT = 3, TETHER_SELF = 4;
-.vector tetherOrg;  //either closest tether-node, patrol node, or starting origin.
+ //no valid targets, AI will chill in a spot if it loses target, it  looks for new ones near it. no real fixed position.
+float TETHER_NONE   = 0; 
+
+//must have valid {ai_node_tether} to target, and will maintain that area. (ai_tether.qc).
+float TETHER_NODE   = 1;  //no target, default -> TETHER_NONE || skill > REG on mechs, TETHER_NOMAD;
+
+//must have valid {ai_node} to target, this will give it a patrol path (ai_patrol.qc).
+float TETHER_PATROL = 2;  
+
+//will wander the map randomly, finding random nodes to move to.  TODO
+float TETHER_NOMAD   = 3; 
+
+//marks its own starting origin as the original point to move back to.
+float TETHER_SELF   = 4;  
+.float tether;      //can be set by mapper too
+.vector tetherOrg;        //either closest tether-node, patrol node, or starting origin.
 
 ////////////////////////////////
 //AI interaction functionality - ai_api.qc
@@ -115,23 +156,21 @@ entity(float checkDir) ai_get_next_node;
 float(entity toCheck) ai_check_node_radius;
 float() ai_check_node_radius_targdist;
 entity() ai_node_tether_find;
+float( vector source, vector trgdst ) ai_check_terrain_move;
+void(entity none) ai_NULL_pain={ };
+float() ai_NULL_missile={ return FALSE;};
 
-////////////////////////////////
-//AI COMBAT FUNCTIONS - ai_combat.qc
+.float combatFlags; //populated by ai_combat_state_frame()
+
 float( float scan_mode) ai_check_scan;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
-void(float dst, float grp, float bracket) ai_wep_group_track;
 float(entity wep) ai_attack_checkEne;
 float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
 
 //AI MAP FUNCS
 void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
-
-//DEPRECATED-----------
-void() ai_move_physics;
-//---------------
 
 ////////////////////////////////
 //AI VOICE STUFF - ai_voice.qc
@@ -151,11 +190,12 @@ void() ai_sfx_help;
 float() ai_blocked_teleport;
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
 void() ai_touch;
-void() ai_patrol_state_frame;
 void() ai_face_goal;
 void(vector v) ai_face_origin;
+float() ai_check_pause;
 void() ai_face_targ;
-void( float alt_low, float alt_max ) ai_fly_update;
+void() ai_face_targ_fade; //uses last-known position
+//void( float alt_low, float alt_max ) ai_fly_update;  DEPRECATED - release version - Roohr
 float(entity targ, float ang_limit, float useTurret) ai_check_face;
 float(vector v, float ang_limit, float useTurret) ai_check_face_origin;
 float(entity t, float ang, float useTurret) ai_check_targ_infront;
@@ -163,82 +203,24 @@ float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
 void() ai_setup_patrol;
+float( vector testA, vector testB ) ai_check_dist_node; // discard _z because we really don't / can't use it for distance checks- 
+                                                        //the core of the issue is the unit's z-height compared to the z-height of the node's origin.
+                                                        //if they differ too much, some units will NEVER 'reach' the node because of the z-height.
 
 //movement
+.vector moveDest;       //combat moves, target destination
 .entity patrolNode;
 .float ai_wishSpeed;    //calculated on entering a new move
 
-float PATROL_PAUSE        = 1;  //Paused at node because node had .float paustime
-float PATROL_WALKING      = 2;  //walking to a node where dist > AI_RANGE_S
-float PATROL_ARRIVE       = 3;  //dist <= AI_NODE_DISTANCE
-float PATROL_ADJUST       = 4;  //arriving at a node where dist < AI_RANGE_S && dist > AI_NODE_DISTANCE
-float PATROL_BLOCK        = 5;  // the walkmove() calls returned FALSE, indicating a blockage
-.float patrolState;
-.float patrolStateLast;
-
-//special mapped moves
-float MOVE_STAND          = 0;  //every AI has this
-float MOVE_SNAPSHOT       = 1;
-float MOVE_SNIPESHOT      = 2;
-float MOVE_STAND_FACE     = 3;
-float MOVE_PATROLNODE     = 4;  //AI moves at patrol_frame style movement to get back to node distance.
-float MOVE_NODE_RADIUS    = 5; // AI is 'ring-out' on their current node
-float MOVE_NODE_TACTICAL  = 6;  // tetherStatus == TETHER_PATROL, and target is beyond patrol nbode
-
-float MOVE_CHARGE         = 8;
-float MOVE_CHARGE_RIGHT   = 16;
-float MOVE_STRAFE_RIGHT   = 32;
-float MOVE_CIRCLE_RIGHT   = 64;
-float MOVE_BACK_RIGHT     = 128;
-float MOVE_BACK           = 256;
-float MOVE_BACK_LEFT      = 512;
-float MOVE_CIRCLE_LEFT    = 1024;
-float MOVE_STRAFE_LEFT    = 2048;
-float MOVE_CHARGE_LEFT    = 4096;
-
 .float ai_state;      //  the current state, usually not accessed directly.
-.float ai_state_last; //  used for per-frame comparisons
-.float ai_state_next; //  AI-CODE-SET this one to decide the next STATE.
+.float ai_state_next;
+.float ai_state_last;
 
-.float ai_dampen;     //  psuedo-velocity, prevents AI from pivoting on a dime, which is hard to players to fight.
 .float ai_movewait;   //  set by ai_calc_move when entering a new move, this will be checked for completed move.
 .float ai_movedist;   //  AI-CODE-SET to desired number of frames for desired movement
-.float ai_move;       //  the current move, usually not accessed directly.
-.float ai_move_last;  //  used for per-frame comparisons
-.float ai_move_next;  //  AI-CODE-SET this one to decide the next move.
-.float ai_blockflag;
 
-float ST_PTR                  = 2;  //ENTER -> PATROL
-float ST_PTR_PAUSE            = 3;  //arrived at ai_node
-float ST_PTR_TRAVEL_NODE      = 4;  //traveling to an ai_node
-float ST_PTR_TRAVEL_NODEBLOCK = 5;  //travel to node was blocked for some reason
-
-float ST_THR                  = 6;
-float ST_THR_PAUSE            = 7;
-float ST_THR_TRAVEL           = 8;
-float ST_THR_TRAVEL_BLOCK     = 9;
-
-float ST_COMBAT               = 10;  //ENTER -> COMBAT
-float ST_COM_MOVE_START       = 11;  //begin combat maneuver
-float ST_COM_MOVE_EXEC        = 12; //execute a prescribed combat maneuver
-float ST_COM_MOVE_END         = 13; //completed a combat maneuver
-float ST_COM_MOVE_BLOCK       = 14; //combat move was blocked for some reason
-
-//stub - unimplemented hunting behavior
-// Quake C can't really DO good unit pathfinding across complex terrain,
-//    ergo hunting isn't really possible without a massive expenditure of labor.
-//float ST_TRACK_MOVE           = 15;
-//float ST_TRACK_BLOCK          = 16;
-//float ST_TRACK_ROLLBACK       = 17;
-//float ST_TRACK_ROLLBLOCK      = 18;
-
-//stub - unimplemented unblocking behavior
-//  was an idea to have units do a move-stack thing where they could unwind their
-//    current move stack as a means to both pathfind and get themselves unstuck.
-//float ST_TRAIL_MOVE           = 19;
-//float ST_TRAIL_BLOCK          = 20;
-//float ST_TRAIL_ROLLBACK       = 21;
-//float ST_TRAIL_ROLLBLOCK      = 22;
+float ST_STAND                = 1;  //th_stand
+float ST_PTR                  = 2;
 
 ////////////////////////////////
 //AI STATE FUNCTIONS - ai_state.qc
@@ -248,220 +230,57 @@ void() ai_leg_control;
 void( float estate ) ai_turret_set_state;
 void( float move ) ai_update_accuracy;
 
-void() ai_state_frame;
-.void() ai_run_state_now;
-
+//Lightweight state implementation
 .void() ai_unit_update;
-.void() ai_state_stand;
+.void() ai_set_state;           //simply a cache to hold the state_frame() and allow code to use .think() freely.
+void() ai_frame_update;
 
-.void() ai_state_patrol;
-.void() ai_state_patrol_pause;
-.void() ai_state_patrol_travel_node;
-.void() ai_state_patrol_travel_blocked;
-.void() ai_state_patrol_tether;
-.void() ai_state_patrol_tether_blocked;
+//Behavior state functions.
+void() ai_state_pause;
+void() ai_state_turret_frame;   //just for turrets.
+void() ai_state_lurker_frame;   // 'the basic', if no other behavior is set, run this one
+void() ai_state_brawler_frame;
+void() ai_state_hunter_frame;
 
-.void() ai_state_combat;
-.void() ai_state_combat_moveStart;
-.void() ai_state_combat_moveExec;
-.void() ai_state_combat_moveEnd;
-.void() ai_state_combat_blocked;
+//Per-Frame behavior functions
+void() ai_state_set_pause;
+float( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame;
+void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame;
+void() ai_nodegraph_combat_frame;
+void() ai_nodegraph_combat_brawler_frame;
 
-.void() ai_state_tether;
-.void() ai_state_tether_pause;
-.void() ai_state_tether_travel;
-.void() ai_state_tether_travel_block;
+//Timers
+.float ai_timer_tracepath;  //probably the most important. the interval for querying the nodegraph for paths.
+.float ai_timer_breathe;    //used with fight_pause.
+.float ai_timer_checkTurn;  // if yawspeed too low for ideal_yaw over X time, this makes the bot turn harder.
+.float ai_timer_checkHunt;  // used by ai_state_hunter_frame() for hunting targets.
+.float ai_timer_checkTargFade;  //allows AI to turn to face target's last origin
+.float ai_timer_pathWait;     //if path finding failed on the frame AI requested it, wait a random amount of time.
 
-.void() ai_fight_take_fire;
-.void() ai_fight_out_radius;
-.void() ai_fight_vis_friend;
-.void() ai_fight_building;
-.void() ai_fight_target;
+//Values
+.float ai_patrol_arrive;  //has arrived at patrolNode
+.float ai_freeze;         //debug tool, freezes AI
+.float ai_fight_pause;    //important part of the fighting step, the AI pauses, turns toward their target, not firing, allows player to 'breathe'
+.float ai_findPath;       //part of the queue system for 
+.float ai_hardTurn;       //when target destination yaw >= 90 from bot's angles_y
+.float ai_lastVis;        //used for to get per-frame state of target visiblity
+.float ai_is_targetfade;  //currently rotating to prev. target's cached position.
+.vector ai_fadePos;       //used for last known position rotate.
+.float ai_flee;           //is fleeing contact
+.float ai_last_pathWait;  //
 
-////////////////////////////////
-//GENERIC PATROL IMPL - ai_move.qc
-float() ai_move_director;
-void() ai_combat_move_frame;  //sub-state for combat maneuverin'
-void() ai_move_stand;
-float() ai_move_charge;
-float() ai_move_charge_left;
-float() ai_move_charge_right;
-float() ai_move_strafe_left;
-float() ai_move_strafe_right;
-float() ai_move_circle_left;
-float() ai_move_circle_right;
-float() ai_move_back;
-float() ai_move_back_left;
-float() ai_move_back_right;
-void() ai_move_snapshot;
-void() ai_move_standface;
-void() ai_move_node_tactical;
-void() ai_move_node_radius;
-float(float outRadius) ai_move_patrol_node;
-
-////////////////////////////////
-//GENERIC PATROL IMPL - ai_patrol.qc
-void() ai_stand_generic;
-void() ai_patrol;
-void() ai_ptr_pause;
-void() ai_ptr_travel_node;
-void() ai_ptr_travel_blocked;
-void() ai_ptr_tether;
-void() ai_ptr_tether_blocked;
-
-////////////////////////////////
-//GENERIC COMBAT IMPL - ai_combat.qc
-void() ai_combat_start;
-void() ai_com_moveStart;
-void() ai_com_moveExec;
-void() ai_com_moveEnd;
-void() ai_com_blocked;
-
-////////////////////////////////
-//GENERIC TETHER IMPL - ai_tether.qc
-void() ai_tether;
-void() ai_thr_pause;
-void() ai_thr_travel;
-void() ai_thr_travel_block;
-
-//DEBUG functions
+//DEBUG function
 //when you need the var-name for a global var value.
-string(float stateId) dbg_state={
-  local string val;
-  val = "null";
-  switch(stateId){
-    case ST_STAND:
-      val =  "ST_STAND";
-      break;
-    case ST_PTR:
-      val =  "ST_PTR";
-      break;
-    case ST_PTR_PAUSE:
-      val =  "ST_PTR_PAUSE";
-      break;
-    case ST_PTR_TRAVEL_NODE:
-      val =  "ST_PTR_TRAVEL_NODE";
-      break;
-    case ST_PTR_TRAVEL_NODEBLOCK:
-      val =  "ST_PTR_TRAVEL_NODEBLOCK";
-      break;
-    case ST_THR:
-      val =  "ST_THR";
-      break;
-    case ST_THR_PAUSE:
-      val =  "ST_THR_PAUSE";
-      break;
-    case ST_THR_TRAVEL:
-      val =  "ST_THR_TRAVEL";
-      break;
-    case ST_THR_TRAVEL_BLOCK:
-      val =  "ST_THR_TRAVEL_BLOCK";
-      break;
-    case ST_COMBAT:
-      val =  "ST_COMBAT";
-      break;
-    case ST_COM_MOVE_START:
-      val =  "ST_COM_MOVE_START";
-      break;
-    case ST_COM_MOVE_EXEC:
-      val =  "ST_COM_MOVE_EXEC";
-      break;
-    case ST_COM_MOVE_END:
-      val =  "ST_COM_MOVE_END";
-      break;
-    case ST_COM_MOVE_BLOCK:
-      val =  "ST_COM_MOVE_BLOCK";
-      break;
-  }
-  return val;
-}
-string(float moveId) dbg_move={
-  string move;
-  move = "null";
-  switch(moveId){
-    case MOVE_STAND:
-      move = "MOVE_STAND";
-      break;
-    case MOVE_CHARGE:
-      move = "MOVE_CHARGE";
-      break;
-    case MOVE_CHARGE_LEFT:
-      move = "MOVE_CHARGE_LEFT";
-      break;
-    case MOVE_CHARGE_RIGHT:
-      move = "MOVE_CHARGE_RIGHT";
-      break;
-    case MOVE_STRAFE_LEFT:
-      move = "MOVE_STRAFE_LEFT";
-      break;
-    case MOVE_STRAFE_RIGHT:
-      move = "MOVE_STRAFE_RIGHT";
-      break;
-    case MOVE_CIRCLE_LEFT:
-      move = "MOVE_CIRCLE_LEFT";
-      break;
-    case MOVE_CIRCLE_RIGHT:
-      move = "MOVE_CIRCLE_RIGHT";
-      break;
-    case MOVE_BACK:
-      move = "MOVE_BACK";
-      break;
-    case MOVE_BACK_LEFT:
-      move = "MOVE_BACK_LEFT";
-      break;
-    case MOVE_BACK_RIGHT:
-      move = "MOVE_BACK_RIGHT";
-      break;
-    case MOVE_PATROLNODE:
-      move = "MOVE_PATROLNODE";
-      break;
-    case MOVE_SNAPSHOT:
-      move = "MOVE_SNAPSHOT";
-      break;
-    case MOVE_SNIPESHOT:
-      move = "MOVE_SNIPESHOT";
-      break;
-    case MOVE_STAND_FACE:
-      move = "MOVE_STAND_FACE";
-      break;
-    case MOVE_NODE_TACTICAL:
-      move = "MOVE_NODE_TACTICAL";
-      break;
-    case MOVE_NODE_RADIUS:
-      move = "MOVE_NODE_RADIUS";
-      break;
-  }
-  return move;
-}
-
 string(float tether) dbg_tether={
   switch(tether){
     case TETHER_NODE:
       return "TETHER_NODE";
     case TETHER_PATROL:
       return "TETHER_PATROL";
-    case TETHER_ENT:
-      return "TETHER_ENT";
-    case TETHER_SELF:
-      return "TETHER_SELF";
+    case TETHER_NOMAD:
+      return "TETHER_NOMAD";
     case TETHER_NONE:
       return "TETHER_NONE";
-  }
-  return "null";
-};
-
-string(float patrol) dbg_patrol={
-  switch(patrol){
-    case PATROL_ADJUST:
-      return "PATROL_ADJUST";
-    case PATROL_ARRIVE:
-      return "PATROL_ARRIVE";
-    case PATROL_BLOCK:
-      return "PATROL_BLOCK";
-    case PATROL_PAUSE:
-      return "PATROL_PAUSE";
-    case PATROL_WALKING:
-      return "PATROL_WALKING";
   }
   return "null";
 };

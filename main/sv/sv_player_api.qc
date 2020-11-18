@@ -100,6 +100,9 @@ called after running player input frame
 ============
 */
 void() PlayerPostThink = {
+  local float proxNode;
+  local vector proxNodeOrg;
+  
   if (self.deadflag >= DEAD_DYING){
     return;
   }
@@ -202,6 +205,13 @@ void() PlayerPostThink = {
 // check for attack
   self.attackFlag = 0; //zero-out the attackFlag every frame to prevent multiple overdraws of muzzle flash and trailparticles on the clients.
   playerAttack();
+  
+  if( time > self.posFadeTimer ){
+    self.posFadeTimer = time + POSITION_FADE_TIME;
+    self.position3 = self.position2;
+    self.position2 = self.position1;
+    self.position1 = self.origin;
+  }
 
 // check to see if player landed and play landing sound	
   if ((self.jump_flag < self.fall_dist) && (self.flags & FL_ONGROUND) && (self.health > 0)){
@@ -223,13 +233,13 @@ void() PlayerPostThink = {
           t_damage( self, world, world, centerTorsoDmg, self.origin, '0 0 0');
         }
       }
-		}
-		else{
+    }
+    else{
       //TODO
       //sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
     }
-		self.jump_flag = 0;
-	}
+    self.jump_flag = 0;
+  }
 
   if( time > self.ramCool ){
     if( self.moveState > MOVE_NORM ){
@@ -552,4 +562,4 @@ void() PlayerJump={
 // player jumping sound
 	//sound (self, CHAN_BODY, "player/plyrjmp8.wav", 1, ATTN_NORM);
 	self.velocity_z = self.velocity_z + 0;
- };
+};

@@ -154,6 +154,9 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
   }
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteLong( MSG_ENTITY, self.attackFlag );
+    if( self.attackFlag != FALSE ){
+      WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    }
   }
   self.shieldHitFlag = 0;
   return TRUE;
@@ -201,6 +204,9 @@ float( entity targEnt, float changedflags ) ctrl_send_spg={
   }
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteLong( MSG_ENTITY, self.attackFlag );
+    if( self.attackFlag != FALSE ){
+      WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    }
   }
   self.shieldHitFlag = 0;
   return TRUE;
@@ -253,6 +259,9 @@ float( entity targEnt, float changedflags ) ctrl_send_gev={
   
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteLong( MSG_ENTITY, self.attackFlag );
+    if( self.attackFlag != FALSE ){
+      WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    }
   }
   self.shieldHitFlag = 0;
   return TRUE;

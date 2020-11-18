@@ -18,6 +18,8 @@ void() ai_ranged_attack={
   local entity wep_chain, this;
   local float fired;
   local vector diff;
+  local float blockShot;
+  local float allWeps;
   
   self.ai_weaponEnergy = 0;
   this = self;
@@ -40,10 +42,11 @@ void() ai_ranged_attack={
       if( !(self.currentWeaponGroup & wep_chain.w_group) ){
         continue;
       }
-      if( ai_attack_blockcheck(wep_chain) ){
+      if( !ai_check_face(this.enemy, 0.9, (self.flags&FL_TURRET)) ){
         continue;
       }
-      if( !ai_check_face(this.enemy, 0.85, (self.flags&FL_TURRET)) ){
+      if( ai_attack_blockcheck(wep_chain) ){
+        blockShot = blockShot + 1;
         continue;
       }
       self = wep_chain;
@@ -69,6 +72,12 @@ void() ai_ranged_attack={
   }
   if( fired > 0 ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  }
+  if( blockShot >= fired ){
+    self.combatFlags = TRUE;
+  }
+  else{
+    self.combatFlags = FALSE;
   }
   self.currentWeaponGroup = 0;
 };
@@ -209,258 +218,220 @@ float(entity wep) ai_attack_checkEne={
   return FALSE;
 };
 
-void(float dst, float grp, float bracket) ai_wep_group_track={
-  if( dst <= bracket ){
-    self.currentWeaponGroup = self.currentWeaponGroup | grp;
+/*
+  A more stateless implementation of the nodegraph state from earlier;
+    if the AI arrives here, it merely checks if a path exists -
+      if there's a path, run it,
+      if no path, make a new one
+*/
+
+//generic
+// targetDest, nextTargetDest, turnSpeed, walkSpeed, 
+
+void() ai_nodegraph_combat_frame={
+  local float pathFind;
+  local float nodeDist;
+  local vector nqOrg;
+  local float moveYaw;
+  local float moveSpeed;
+  
+  if( self.nq1 == -1 ){
+    //fresh path
+    ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
   }
   else{
-    self.currentWeaponGroup = self.currentWeaponGroup - self.currentWeaponGroup & grp;
-  }
-};
-
-/*
-
-*/
-
-/*
-  STATE : COMBAT START
-    used to filter out what the AI should do before entering combat sub-system
-*/
-void() ai_combat_start={
-  local entity prox;
-  
-  //ENTER STATE------------------------------------------------------------------
-  if( self.ai_state == ST_COMBAT && self.ai_state_last != ST_COMBAT ){
-    
-    //check if target is blown up in between frames
-    if( !ai_valid_target(self.enemy) ){
-      //AI no longer has target, so execute stand behavior, don't worry about patrol state here.
-      if( self.patrolNode ){
-        self.goalentity = self.patrolNode;
-        if( self.tetherStatus == TETHER_NODE ){
-          self.ai_state_next = ST_THR;
-        }
-        if( self.tetherStatus == TETHER_PATROL ){
-          self.ai_state_next = ST_PTR;
-        }
-        return;
-      }
-      self.ai_state_next = ST_STAND;
-      self.ai_dampen = 0;
-      return;
-    }
-    
-    if( (self.flags & FL_DISARMED) ){
-      self.ai_state_next = ST_STAND;
-      self.ai_dampen = 0;
-      return;
-    }
-    self.ai_state_next = ST_COM_MOVE_START;
-    
-    /*
-      Combat Frame State Checks
-    */
-    enemy_dist = ai_check_node_radius(self.enemy);
-    enemy_vis = ai_check_vis( self.enemy );
-    
-    if(enemy_vis == VIS_FAIL){
-      self.enemy = world;
-      self.ai_move_next = MOVE_NODE_RADIUS;
-      self.ai_movedist = 15;
-      return;
-    }
-    
-    //out of bounds, do move override
-    if( 1.0 < enemy_dist ){
-      if(self.ai_move_last != MOVE_NODE_TACTICAL ){
-        if( self.patrolState != PATROL_ARRIVE ){
-          //run
-          if(self.tetherStatus == TETHER_PATROL ){
-            prox = ai_node_to_target(self.enemy);
-            if(prox != self.patrolNode){
-              self.patrolNode = prox;
-            }
-          }
-          self.ai_move_next = MOVE_NODE_TACTICAL;
-          return;
-        }
-      }
-    }
-    
-    enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-    enemy_range = ai_check_node_radius_targdist();
-    combat_dist = ai_check_node_radius(self);
-    combat_roll = random() * 1;
-    
-    //fight state dump - useful for debug
-    //cons_logAFloat("enemy_vis", enemy_vis); //debug
-    //cons_logAFloat("enemy_range", enemy_range); //debug
-    //cons_logAFloat("enemy_dist", enemy_dist); //debug
-    //cons_logAFloat("combat_dist", combat_dist); //debug
-    
-    //AI is in bounds, but target is out of bounds
-    if( 1.0 < enemy_dist ){
-      if( combat_dist <= 1.0 ){
-        //AI is on edge of bounds but inside radius
-        self.ai_fight_take_fire();
-        if(self.ai_move_next > MOVE_NODE_TACTICAL){
-          self.ai_move_next = ai_move_director();
-        }
-        return;
-      }
-      if( combat_dist > 1.0 ){
-        self.ai_fight_out_radius();
-        if(self.ai_move_next > MOVE_NODE_TACTICAL){
-          self.ai_move_next = ai_move_director();
-        }
-        return;
-      }
-    }
-    
-    if( enemy_vis == VIS_FRN ){
-      self.ai_fight_vis_friend();
-      if(self.ai_move_next > MOVE_NODE_TACTICAL){
-        self.ai_move_next = ai_move_director();
-      }
-      return;
-    }
-    
-    //target == building - those things don't really move or fight back...
-    if(self.enemy.data_type == DATA_BLD){
-      self.ai_fight_building();
-      if(self.ai_move_next > MOVE_NODE_TACTICAL){
-        self.ai_move_next = ai_move_director();
-      }
-      return;
-    }
-    //target < 1.0
-    //combat_dist < 1.0
-    //get fighting
-    self.ai_move_next = MOVE_NODE_RADIUS;
-    self.ai_movedist = 5;
-    self.ai_fight_target();
-    if(self.ai_move_next > MOVE_NODE_TACTICAL){
-      self.ai_move_next = ai_move_director();
-    }
-    return;
-  //---------------------------------------------------------------------------
-  }
-  //can't find WHY its sometimes ending up here, but it is.
-  self.ai_state_last = 0;
-  self.ai_state_next = ST_COMBAT;
-};
-
-/*
-  STATE : COMBAT FIGHTING
-*/
-void() ai_com_moveStart={
-  //ENTER STATE------------------------------------------------------------------
-  if( self.ai_state == ST_COM_MOVE_START && self.ai_state_last != ST_COM_MOVE_START ){
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-    if( self.ai_move > MOVE_STAND_FACE){
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
       self.moveState = MOVE_NORM;
     }
-    else{
-      self.moveState = 0;
+  
+    nqOrg = nodegraph_get_node_origin( self.nq1 );
+    nodeDist = ai_check_dist_node(self.origin, nqOrg);
+    if( nodeDist <= 16 ){
+      //arrived at node
+      //check for pause first
+      if( ai_check_pause() ){
+        self.ai_fight_pause = TRUE;
+      }
+      pathFind = ai_nodegraph_next();
+      if( !pathFind ){
+        ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+      }
     }
-    self.ai_state_next = ST_COM_MOVE_EXEC;
-    return;
-  }
-  //------------------------------------------------------------------
-};
-
-/*
-  STATE : COMBAT MANEUVER
-*/
-void() ai_com_moveExec={
-  local float nodeMove;
-  local entity nodeCheck;
-  //ENTER STATE------------------------------------------------------------------
-  if( self.ai_state == ST_COM_MOVE_EXEC && self.ai_state_last != ST_COM_MOVE_EXEC ){
-    self.ai_state_next = ST_COM_MOVE_EXEC;
-    return;
-  }
-  //-----------------------------------------------------------------
-  if( MOVE_NODE_TACTICAL < self.ai_move ){
-    nodeMove = ai_check_node_radius(self);
-    if( 1.0 < nodeMove ){
-      if( self.tetherStatus == TETHER_PATROL ){
-        nodeCheck = ai_node_to_target(self);
-        if(nodeCheck != self.patrolNode){
-          self.patrolNode = nodeCheck;
+    else{
+      moveSpeed = self.data_speed_forward;
+      //still traveling to node
+      self.ideal_yaw = vectoyaw(nqOrg - self.origin);
+      
+      //check yaw-to-node
+      if( self.angles_y != self.ideal_yaw ){
+        moveSpeed = self.data_speed_strafe;
+        
+        //yaw is too wide, stop moving and just pivot to node
+        moveYaw = anglemod(self.angles_y - self.ideal_yaw);
+        if( moveYaw > 90 && moveYaw < 270 ){
+          self.ai_hardTurn = TRUE;
+        }
+        else{
+          self.ai_hardTurn = FALSE;
+          if( moveYaw > 45 && moveYaw < 315){
+            moveSpeed = moveSpeed * 0.33;
+          }
+          else if( moveYaw > 15 && moveYaw < 345 ){
+            moveSpeed = moveSpeed * 0.67;
+          }
+        }
+        ChangeYaw();
+        if( self.legs ){
+          self.legs.attack_state = TR_TARG;
+          self.legs.ai_dir = self.ideal_yaw;
         }
       }
-      self.ai_move_next = MOVE_NODE_RADIUS;
-      self.ai_state_next = ST_COM_MOVE_START;
-      return;
-    }
-    if( time > self.ai_movewait ){
-      self.ai_state_next = ST_COM_MOVE_END;
-      return;
-    }
-    if( !ai_valid_target(self.enemy) ){
-      if( self.tetherStatus == TETHER_PATROL ){
-        self.ai_state_next = ST_PTR;
+      else{
+        self.ai_hardTurn = FALSE;
+      }
+      if( self.ai_hardTurn ){
+        if( self.legs ){
+          self.legs.attack_state = TR_YAW;
+          self.moveState = MOVE_NORM;
+        }
+        ChangeYaw();
       }
       else{
-        self.ai_state_next = ST_THR;
+        if( self.legs ){
+          self.legs.attack_state = TR_NORM;
+        }
+        
+        if( self.ai_last_pathWait ){
+          if( time > self.ai_timer_pathWait ){
+            pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+            if( pathFind ){
+              self.ai_last_pathWait = FALSE;
+              self.moveState = MOVE_NORM;
+            }
+            self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+          }
+          else{
+            self.moveState = MOVE_STAND;
+          }
+        }
+        else{
+          if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+            if( time > self.ai_timer_pathWait ){
+              self.ai_last_pathWait = TRUE;
+              self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+              dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_combat_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
+            }
+          }
+        }
       }
-      self.ai_move_next = MOVE_STAND; //just nulls out the move, due to shifting to Tether or Patrol
-      return;
-    }
-  }
-  //node_radius
-  //node_tactical
-  //this have their OWN timers for ending, set on the first frame of ST_COM_MOVE_START
-  if( self.ai_move < MOVE_PATROLNODE ){
-    //all the _STAND move timers here
-    if( time > self.ai_movewait ){
-      self.ai_state_next = ST_COM_MOVE_END;
-      return;
     }
   }
 };
 
 /*
-  STATE : COMBAT MANEUVER COMPLETED
+  Special brawler frame - priotizes enemy.position1 so as to give a feeling that the bot is flanking the target.
+  
 */
-void() ai_com_moveEnd={
-  //ENTER STATE------------------------------------------------------------------
-  if( self.ai_state == ST_COM_MOVE_END && self.ai_state_last != ST_COM_MOVE_END ){
-    if( self.ai_blockflag ){
-      self.ai_blockflag = 0;
-      self.ai_state_next = ST_COM_MOVE_START;
-      self.ai_move_next = MOVE_NODE_RADIUS;
-      return;
-    }
-    self.ai_state_next = ST_COMBAT;
-    self.ai_move_next = 0;
-    return;
+void() ai_nodegraph_combat_brawler_frame={
+  local float pathFind;
+  local float nodeDist;
+  local vector nqOrg;
+  local float moveYaw;
+  local float moveSpeed;
+  
+  if( self.nq1 == -1 ){
+    //fresh path
+    ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
   }
- //------------------------------------------------------------------
-};
-
-/*
-  STATE : COMBAT MANEUVER BLOCKED
-*/
-void() ai_com_blocked={
-  //ENTER STATE------------------------------------------------------------------
-  if( self.ai_state == ST_COM_MOVE_BLOCK && self.ai_state_last != ST_COM_MOVE_BLOCK ){
-    ai_face_targ();
-    ai_attack();
-    
-    if( 1.0 < ai_check_node_radius(self) ){
-      self.patrolState = 0;
-      self.goalentity = self.patrolNode;
-      self.ai_move_next = MOVE_NODE_RADIUS;
-      self.ai_state_next = ST_COM_MOVE_START;
-      self.ai_movewait = time + 8;
-      return;
+  else{
+    if( self.legs ){
+      self.legs.attack_state = TR_NORM;
+      self.moveState = MOVE_NORM;
     }
-    self.ai_movedist = 3;
-    self.ai_move_next = ai_move_director();
-    self.ai_state_next = ST_COM_MOVE_START;
-    return;
+  
+    nqOrg = nodegraph_get_node_origin( self.nq1 );
+    nodeDist = ai_check_dist_node(self.origin, nqOrg);
+    if( nodeDist <= 16 ){
+      //arrived at node
+      
+      //check for pause first
+      if( ai_check_pause() ){
+        self.ai_fight_pause = TRUE;
+      }
+      pathFind = ai_nodegraph_next();
+      if( !pathFind ){
+        ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+      }
+    }
+    else{
+      moveSpeed = self.data_speed_forward;
+      
+      //still traveling to node
+      self.ideal_yaw = vectoyaw(nqOrg - self.origin);
+      
+      //check yaw-to-node
+      if( self.angles_y != self.ideal_yaw){
+        moveSpeed = self.data_speed_strafe;
+        //yaw is too wide, stop moving and just pivot to node
+        moveYaw = anglemod(self.angles_y - self.ideal_yaw);
+        if( moveYaw > 90 && moveYaw < 270 ){
+          self.ai_hardTurn = TRUE;
+        }
+        else{
+          self.ai_hardTurn = FALSE;
+          if( moveYaw > 45 && moveYaw < 315){
+            moveSpeed = moveSpeed * 0.33;
+          }
+          else if( moveYaw > 15 && moveYaw < 345 ){
+            moveSpeed = moveSpeed * 0.67;
+          }
+        }
+        ChangeYaw();
+        if( self.legs ){
+          self.legs.attack_state = TR_TARG;
+          self.legs.ai_dir = self.ideal_yaw;
+        }
+      }
+      else{
+        self.ai_hardTurn = FALSE;
+      }
+      
+      if( self.ai_hardTurn ){
+        if( self.legs ){
+          self.legs.attack_state = TR_YAW;
+          self.moveState = MOVE_NORM;
+        }
+        ChangeYaw();
+      }
+      else{
+        if( self.legs ){
+          self.legs.attack_state = TR_NORM;
+        }
+        
+        if( self.ai_last_pathWait ){
+          if( time > self.ai_timer_pathWait ){
+            pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.position2 );
+            if( pathFind ){
+              self.ai_last_pathWait = FALSE;
+              self.moveState = MOVE_NORM;
+            }
+            self.ai_timer_pathWait = time + (0.5 + random() * 0.5);
+          }
+          else{
+            self.moveState = MOVE_STAND;
+          }
+        }
+        else{
+          if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+            if( time > self.ai_timer_pathWait ){
+              self.ai_last_pathWait = TRUE;
+              self.ai_timer_pathWait = time + (0.5 + random() * 0.5);
+              dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_combat_brawler_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
+            }
+          }
+        }
+      }
+    }
   }
- //------------------------------------------------------------------
 };

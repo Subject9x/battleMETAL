@@ -51,9 +51,4 @@ void(entity newAttacker) ai_react_generic={
   self.ai_react_buffer = time + self.ai_react_time * 3.75;
   
   self.enemy = newAttacker;
-  if( self.ai_state_next != ST_COM_MOVE_START && self.ai_state_next != ST_COM_MOVE_EXEC && self.ai_state_next != ST_COM_MOVE_END && self.ai_state_next != ST_COM_MOVE_BLOCK){
-    if(self.ai_state_next != ST_COMBAT ){
-      self.ai_state_next = ST_COMBAT;
-    }
-  }
 };

@@ -172,7 +172,7 @@ float PLAYER_POWERUP_END    = 11;  // Client mech has completed powerup sequence
 float PLAYER_ACTIVE         = 12;  // Client is controlling mech, and may move/fire freely.
 float PLAYER_SPRINT_ON      = 13;
 
-//float MOVE_STAND            = 0;  //  declared in AI API
+float MOVE_STAND            = 0;  
 float MOVE_DEAD             = 1;  //
 float MOVE_NORM             = 2;  //normal walking without +button8
 float MOVE_SPRINT           = 3;  // Client has engaged the 'sprint' 
@@ -246,6 +246,7 @@ float WEAPON9 = 256;
 //============================
 //     COMBAT STATS
 //============================
+float POSITION_FADE_TIME = 2;
 float MAX_VEHICLE_SIZE = 4;
 float FALL_THRESHOLD = 200;
 float FALL_DMG_MULTIPLIER = 2;
