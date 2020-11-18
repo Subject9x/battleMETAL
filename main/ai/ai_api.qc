@@ -593,7 +593,7 @@ float( vector source, vector trgdst ) ai_check_terrain_move={
     for(edgeLenItr = 0; edgeLenItr < edgeLenquant; edgeLenItr = edgeLenItr + 1){
       if( !edgeCheck )
         continue;
-      edgeSegB = edgeSegA + (v_forward * (NODEGRAPH_EDGE_GRID * 2));
+      edgeSegB = edgeSegA + (v_forward * (NODEGRAPH_EDGE_GRID * 1.5));
       
       traceline(edgeSegA, edgeSegA + (v_up * -512), TRUE, self);
       trEdgeApos = trace_endpos;

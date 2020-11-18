@@ -75,28 +75,26 @@ void( entity newAttacker ) ai_turret_react={
     return;
   }
   
-  if( (!(newAttacker.flags & FL_MONSTER) && !(newAttacker.flags & FL_CLIENT)) || (self.flags & FL_DISARMED) ){
+  if( (self.flags & FL_DISARMED) ){
+    self.ai_react_buffer = time + self.ai_react_time * 4;
     ai_call_for_help(newAttacker);
     return;
   }
   
   if( newAttacker == self.enemy ){
+    self.ai_react_buffer = time + self.ai_react_time;
     return;
   }
   //AI currently has target
-  vischeck = ai_check_vis(self.enemy);
-  if( (self.enemy.flags & FL_CLIENT) ){
-    if( vischeck == VIS_FRAC || vischeck == VIS_FRN){
-      return;
-    }
-  }
-  if( (self.enemy.flags & FL_MONSTER) ){
-    if( vischeck == VIS_FRAC ){
+  if( ai_valid_target(self.enemy) ){
+    vischeck = ai_check_vis(self.enemy);
+    if( vischeck == VIS_FRAC){
+      self.ai_react_buffer = time + self.ai_react_time * 1.25;
       return;
     }
   }
   
-  self.ai_react_buffer = time + self.ai_react_time * 3.75;
+  self.ai_react_buffer = time + self.ai_react_time * 2;
   
   self.enemy = newAttacker;
 };

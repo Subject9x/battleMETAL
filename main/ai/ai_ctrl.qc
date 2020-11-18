@@ -143,7 +143,12 @@ void(entity atk) ai_react={
   }
   
   if( atk == self.enemy ){
-    self.ai_react_buffer = time + self.ai_react_time * 5;
+    self.ai_react_buffer = time + self.ai_react_time * 1;
+    return;
+  }
+
+  if( atk.data_type == DATA_BLD && self.enemy.data_type != DATA_BLD ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
     return;
   }
 
@@ -380,15 +385,18 @@ float() ai_attack={
 float( vector testA, vector testB ) ai_check_dist_node={
   local float testVal;
   
-  makevectors(self.angles);
+  local vector flatVecA;
+  local vector flatVecB;
   
-  selfSensorOrg_x = testA_x;
-  selfSensorOrg_y = testA_y;
+  flatVecA_x = testA_x;
+  flatVecA_y = testA_y;
+  flatVecA_z = 0;
   
-  orgCheckNode_x = testB_x;
-  orgCheckNode_y = testB_y;
+  flatVecB_x = testB_x;
+  flatVecB_y = testB_y;
+  flatVecB_z = 0;
   
-  testVal = vlen( orgCheckNode - selfSensorOrg );
+  testVal = vlen( flatVecB - flatVecA );
   
   return testVal;
 };
