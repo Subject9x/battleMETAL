@@ -563,13 +563,13 @@ float(float event) CSQC_Event =
 // called when a network slot was previously empty, before parsing begins
 // this basically lets you do extra work before returning the result of spawn()
 // OPTIONAL, probably should be deprecated as well
-entity(float entNum) CSQC_Ent_Spawn =
+/*entity(float entNum) CSQC_Ent_Spawn =
 {
   local entity e;
   e = spawn();
   e.entnum = entNum;
   return e;
-};
+};*/
 
 
 // parse a network update, isnew indicates this network slot was previously empty
