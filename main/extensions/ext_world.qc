@@ -670,7 +670,6 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
   }
 };
 
-
 /**
   Nodegraph suite of functions and support.
 */
@@ -1136,7 +1135,7 @@ void( float start, float end ) world_nodegraph_test_graph={
     nodeEnd = NODEGRAPH_DATA[end];
     
     dprint(strcat("NODEGHRAPH DEBUG(",ftos(start),")-(", ftos(end),")\n"));  //debug
-    dprint(strcat("NODEGHRAPH DEBUG(", vtos(nodeStart.orig),")-(", vtos(nodeEnd.orig),")\n"));  //debug
+    dprint(sprintf("NODEGHRAPH DEBUG[%s](%s) - [%s](%s)\n", ftos(nodeStart.id), vtos(nodeStart.orig), ftos(nodeEnd.id), vtos(nodeEnd.orig)));//debug
     nodegraph_debug_graph(nodeStart.orig, nodeEnd.orig);
   }
   else{
