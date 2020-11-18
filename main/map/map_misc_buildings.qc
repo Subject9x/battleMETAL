@@ -18,7 +18,7 @@ float( float isNew, float changeFlags ) sendent_misc_building={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.vec_size );
     if(self.deadflag  == DEAD_NO ){
-      WriteShort( MSG_ENTITY, self.modelindex );
+      WriteByte( MSG_ENTITY, self.data_idx );
       WriteCoord( MSG_ENTITY, self.origin_x );
       WriteCoord( MSG_ENTITY, self.origin_y );
       WriteCoord( MSG_ENTITY, self.origin_z );
@@ -117,8 +117,10 @@ void( string modelName ) misc_building={
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
-/*QUAKED building_misc_apartment (0 0 1) (-96 -96 0) (96 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apartment (0 0 1) (-36 -20 0) (36 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
 
 Base Decoration building.
 Does not require power.
@@ -145,7 +147,7 @@ DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
 NO_NOVICE 4096: remove from Novice Difficulty
 NO_REGULAR 8192: remove from Regular Difficulty
 NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -156,17 +158,25 @@ void() building_misc_apartment={
     remove(self);
     return;
   }
-
+  
+  self.data_idx = 1;
+  
   if( !self.health) {
     self.health = self.max_health = 200;
   }
   self.vec_size = 1;
   
   misc_building("q3mdl/buildings/misc/misc_apt_sm.obj");
+  dprint(sprintf("min - %s|| max - %s\n", vtos(self.mins), vtos(self.maxs))); //debug
+  setsize(self, '-36 -20 0', '36 20 52');
+  setorigin(self, self.origin);
 };
 
-/*QUAKED building_misc_factory_med (0 0 1) (-36 -36 0) (36 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+
+/*QUAKED building_misc_apartment_wide (0 0 1) (-20 -36 0) (20 36 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
 
 Base Decoration building.
 Does not require power.
@@ -193,7 +203,63 @@ DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
 NO_NOVICE 4096: remove from Novice Difficulty
 NO_REGULAR 8192: remove from Regular Difficulty
 NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
+*/
+void() building_misc_apartment_wide={
+  self.nextVecChoice = TRUE; //ai_can_spawn compatability
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  
+  self.data_idx = 1;
+  
+  if( !self.health) {
+    self.health = self.max_health = 200;
+  }
+  self.vec_size = 1;
+  
+  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj");
+  setsize(self, '-20 -36 0', '20 36 52');
+  setorigin(self, self.origin);
+  self.angles = '0 90 0';
+};
+
+
+/*QUAKED building_misc_factory_med (0 0 1) (-88 -36 0) (88 36 0 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 200. (default)
+
+-------- KEYS --------
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -205,13 +271,76 @@ void() building_misc_factory_med={
     return;
   }
   
+  self.data_idx = 2;
+  
   if( !self.health) {
     self.health = self.max_health = 350;
   }
   self.vec_size = 2;
 
   misc_building("q3mdl/buildings/misc/misc_fact_med.obj");
+  setsize(self, '-88 -36 0', '88 36 76');
+  setorigin(self, self.origin);
+  self.angles = '0 0 0';
 };
+
+
+/*QUAKED building_misc_factory_med_wide (0 0 1) (-36 -88 0) (36 88 0 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 200. (default)
+
+-------- KEYS --------
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
+*/
+void() building_misc_factory_med_wide={
+  self.nextVecChoice = TRUE; //ai_can_spawn compatability
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  
+  self.data_idx = 2;
+  
+  if( !self.health) {
+    self.health = self.max_health = 350;
+  }
+  self.vec_size = 2;
+  misc_building("q3mdl/buildings/misc/misc_fact_med.obj");
+  setsize(self, '-36 -88 0', '36 88 76');
+  setorigin(self, self.origin);
+  self.angles = '0 90 0';
+};
+
+
+
 
 
 /*QUAKED building_misc_lodge(0 0 1) (-38 -38 0) (38 38 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
@@ -242,7 +371,7 @@ DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
 NO_NOVICE 4096: remove from Novice Difficulty
 NO_REGULAR 8192: remove from Regular Difficulty
 NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -253,6 +382,9 @@ void() building_misc_lodge={
     remove(self);
     return;
   }
+  
+  self.data_idx = 3;
+  
   if( !self.health) {
     self.health = self.max_health = 200;
   }
@@ -291,7 +423,7 @@ DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
 NO_NOVICE 4096: remove from Novice Difficulty
 NO_REGULAR 8192: remove from Regular Difficulty
 NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -302,6 +434,8 @@ void() building_misc_off_pyra={
     remove(self);
     return;
   }
+  
+  self.data_idx = 4;
   if( !self.health) {
     self.health = self.max_health = 200;
   }
@@ -338,7 +472,7 @@ DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
 NO_NOVICE 4096: remove from Novice Difficulty
 NO_REGULAR 8192: remove from Regular Difficulty
 NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -349,6 +483,8 @@ void() building_misc_off_large={
     remove(self);
     return;
   }
+  
+  self.data_idx = 5;
   if( !self.health) {
     self.health = self.max_health = 250;
   }
@@ -357,8 +493,10 @@ void() building_misc_off_large={
   misc_building("q3mdl/buildings/misc/misc_off_large.obj");
 };
 
-/*QUAKED building_misc_off_small (0 0 1) (-56 -56 0) (56 56 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_off_small (0 0 1) (-36 -56 0) (36 56 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
 
 Base Decoration building.
 Does not require power.
@@ -385,7 +523,7 @@ DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
 NO_NOVICE 4096: remove from Novice Difficulty
 NO_REGULAR 8192: remove from Regular Difficulty
 NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -396,14 +534,70 @@ void() building_misc_off_small={
     remove(self);
     return;
   }
+  
+  self.data_idx = 6;
   if( !self.health) {
     self.health = self.max_health = 100;
   }
   self.vec_size = 2;
   
   misc_building( "q3mdl/buildings/misc/misc_off_sm.obj" );
+  setsize( self, '-36 -56 0', '36 56 80');
+  setorigin(self, self.origin);
 };
+/*QUAKED building_misc_off_small_wide (0 0 1) (-56 -36 0) (56 36 80)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+{ model("models/buildings/towersmall/guardtower.md3"); }
 
+warning: don't arbitrarily rotate, non-uniform bbox size.
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 100. (default)
+
+-------- KEYS --------
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
+*/
+void() building_misc_off_small_wide={
+  self.nextVecChoice = TRUE; //ai_can_spawn compatability
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  
+  self.data_idx = 6;
+  if( !self.health) {
+    self.health = self.max_health = 100;
+  }
+  self.vec_size = 2;
+  
+  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj" );
+  setsize( self, '-56 -36 0', '56 36 80');
+  setorigin(self, self.origin);
+  self.angles = '0 90 0';
+};
 
 /*QUAKED building_misc_fact_steam (0 0 1) (-36 -36 0) (36 36 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
@@ -433,7 +627,7 @@ DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
 NO_NOVICE 4096: remove from Novice Difficulty
 NO_REGULAR 8192: remove from Regular Difficulty
 NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
@@ -444,6 +638,8 @@ void() building_misc_fact_steam={
     remove(self);
     return;
   }
+  
+  self.data_idx = 7;
   if( !self.health) {
     self.health = self.max_health = 100;
   }
@@ -452,9 +648,10 @@ void() building_misc_fact_steam={
 };
 
 
-
-/*QUAKED building_misc_apt_larg (0 0 1) (-60 -60 0) (60 60 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_north(0 0 1) (-96 -63 0) (96 57 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
 
 Base Decoration building.
 Does not require power.
@@ -483,21 +680,192 @@ DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
 NO_NOVICE 4096: remove from Novice Difficulty
 NO_REGULAR 8192: remove from Regular Difficulty
 NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-void() building_misc_apt_larg={
+void() building_misc_apt_large_north={
   self.nextVecChoice = TRUE; //ai_can_spawn compatability
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
+  
+  self.data_idx = 8;
   if( !self.health) {
     self.health = self.max_health = 200;
   }
   self.vec_size = 3;
   
   misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj");
+  setsize( self, '-96 -63 0', '96 57 56');
+  setorigin(self, self.origin);
+  self.angles = '0 270 0';
+};
+/*QUAKED building_misc_apt_large_east (0 0 1) (-63 -96 0) (57 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 200. (default)
+note: flatside direction == arrow direction.
+
+-------- KEYS --------
+.faction : <float> 
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
+*/
+void() building_misc_apt_large_east={
+  self.nextVecChoice = TRUE; //ai_can_spawn compatability
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  
+  self.data_idx = 8;
+  if( !self.health) {
+    self.health = self.max_health = 200;
+  }
+  self.vec_size = 3;
+  
+  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj");
+  setsize( self, '-63 -96 0', '57 96 56');
+  setorigin(self, self.origin);
+  self.angles = '0 180 0';
+};
+/*QUAKED building_misc_apt_large_west (0 0 1) (-57 -96 0) (63 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 200. (default)
+note: flatside direction == arrow direction.
+
+-------- KEYS --------
+.faction : <float> 
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
+*/
+void() building_misc_apt_large_west={
+  self.nextVecChoice = TRUE; //ai_can_spawn compatability
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  
+  self.data_idx = 8;
+  if( !self.health) {
+    self.health = self.max_health = 200;
+  }
+  self.vec_size = 3;
+  
+  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj");
+  setsize( self, '-57 -96 0', '63 96 56');
+  setorigin(self, self.origin);
+  self.angles = '0 0 0';
+};
+
+/*QUAKED building_misc_apt_large_south(0 0 1) (-96 -57 0) (96 63 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+{ model("models/buildings/towersmall/guardtower.md3"); }
+
+warning: don't arbitrarily rotate, non-uniform bbox size.
+
+Base Decoration building.
+Does not require power.
+
+Max Health = 200. (default)
+note: flatside direction == arrow direction.
+
+-------- KEYS --------
+.faction : <float> 
+.targetname : <string>, used for trigger calls from other ents
+.target : <string> name of ent to go to, usually a patrol node
+.trigOnSpawn: <string> target, fire this ENTITY when activated
+.trigOnDeath: <string> target, fire this ENTITY when killed
+.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+CAN_TARGET 16: turns building from scenery to valid target.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
+NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+IS_VIP 8388608: faction-allied player will be notified of this entity's state
+*/
+void() building_misc_apt_large_south={
+  self.nextVecChoice = TRUE; //ai_can_spawn compatability
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  
+  self.data_idx = 8;
+  if( !self.health) {
+    self.health = self.max_health = 200;
+  }
+  self.vec_size = 3;
+  
+  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj");
+  setsize( self, '-96 -57 0', '96 63 56');
+  setorigin(self, self.origin);
+  self.angles = '0 90 0';
 };

@@ -151,6 +151,8 @@ data/data_projectiles.qc
 data/data_mapobjs.qc
 data/data_mech.qc
 
+model/misc_buildings.qc
+
 data/local_savefile.qc
 
 ui/anim.qc
