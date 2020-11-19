@@ -35,9 +35,9 @@ void() ai_nodegraph_hunter_frame={
       }
     }
     else{
+      self.moveState = MOVE_NORM;
       if( self.legs ){
         self.legs.attack_state = TR_NORM;
-        self.moveState = MOVE_NORM;
       }
       moveSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
       //still traveling to node
@@ -48,39 +48,33 @@ void() ai_nodegraph_hunter_frame={
         
         //yaw is too wide, stop moving and just pivot to node
         moveYaw = anglemod(self.angles_y - self.ideal_yaw);
-        
-        if( moveYaw > 90 && moveYaw < 270 ){
+        if( moveYaw > 15 && moveYaw < 345 ){
+          self.moveState = MOVE_STAND;
           moveSpeed = 0;
           if( self.legs ){
             self.legs.attack_state = TR_NORM;
-            self.moveState = MOVE_STAND;
           }
         }
         else{
-          if( self.legs ){
-            self.legs.attack_state = TR_NORM;
-            self.moveState = MOVE_NORM;
-          }
-          if( moveYaw > 45 && moveYaw < 315){
+          if( moveYaw > 10 && moveYaw < 350){
             moveSpeed = moveSpeed * 0.15;
           }
-          else if( moveYaw > 15 && moveYaw < 345 ){
+          else if( moveYaw > 5 && moveYaw < 355 ){
             moveSpeed = moveSpeed * 0.33;
           }
         }
         ChangeYaw();
       }
-      if( self.legs ){
-        self.legs.attack_state = TR_NORM;
-      }
       
       if( self.ai_last_pathWait ){
         if( time > self.ai_timer_pathWait ){
-          self.ai_last_pathWait = FALSE;
-          self.ai_timer_pathWait = time + 1;
           pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
           if( pathFind ){
             self.moveState = MOVE_NORM;
+            self.ai_last_pathWait = FALSE;
+          }
+          else{
+            self.ai_timer_pathWait = time + 1;
           }
         }
         else{
@@ -92,11 +86,9 @@ void() ai_nodegraph_hunter_frame={
           if( time > self.ai_timer_pathWait ){
             self.ai_last_pathWait = TRUE;
             self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
-            dprint(sprintf("[%s]( %0.2f %0.2f %0.2f) :: ai_nodegraph_combat_frame()  - ai_last_pathWait\n", self.classname, self.origin_x, self.origin_y, self.origin_z));  //debug
           }
         }
       }
-  
     }
   }
 };

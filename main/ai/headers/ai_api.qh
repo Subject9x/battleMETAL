@@ -244,7 +244,7 @@ void() ai_state_hunter_frame;
 
 //Per-Frame behavior functions
 void() ai_state_set_pause;
-float( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame;
+void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed ) ai_nodegraph_frame;
 void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame;
 void() ai_nodegraph_combat_frame;
 void() ai_nodegraph_combat_brawler_frame;

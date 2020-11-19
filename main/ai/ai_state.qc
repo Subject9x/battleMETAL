@@ -161,7 +161,7 @@ void() ai_state_brawler_frame={
               self.ai_fadePos = self.enemy.position3;
               break;
           }
-          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67 );
+          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.5, self.data_speed_forward * 0.8 );
         }
         self.enemy = world;
       }
@@ -174,7 +174,7 @@ void() ai_state_brawler_frame={
           ai_face_targ_fade();
         }
         else{
-          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.33, self.data_speed_forward * 0.67 );
+          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.5, self.data_speed_forward * 0.8 );
         }
       }
       else{
