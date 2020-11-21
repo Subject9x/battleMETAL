@@ -148,6 +148,11 @@ void( float move ) ai_update_accuracy={
 
 float( float scan_mode) ai_check_scan={
   local float scanned;
+  
+  if( (self.spawnflags & UNARMED) ){
+    return FALSE;
+  }
+  
   scanned = FALSE;
   if( time > self.ai_viewtime ){
     self.ai_viewtime = time + self.ai_viewcheck;
@@ -262,6 +267,7 @@ void() ai_nodegraph_combat_frame={
       if( self.legs ){
         self.legs.attack_state = TR_NORM;
       }
+      self.yawCache = self.yaw_speed;
       moveSpeed = self.data_speed_forward;
       //still traveling to node
       self.ideal_yaw = vectoyaw(nqOrg - self.origin);
@@ -278,6 +284,7 @@ void() ai_nodegraph_combat_frame={
           if( self.legs ){
             self.legs.attack_state = TR_NORM;
           }
+          self.yaw_speed = self.yaw_speed * 2;
         }
         else{
           if( moveYaw > 10 && moveYaw < 350){
@@ -286,8 +293,10 @@ void() ai_nodegraph_combat_frame={
           else if( moveYaw > 5 && moveYaw < 355 ){
             moveSpeed = moveSpeed * 0.5;
           }
+          self.yaw_speed = self.yaw_speed * 1.5;
         }
         ChangeYaw();
+        self.yaw_speed = self.yawCache;
       }
       
       if( self.ai_last_pathWait ){
@@ -338,7 +347,7 @@ void() ai_nodegraph_combat_brawler_frame={
   
     nqOrg = nodegraph_get_node_origin( self.nq1 );
     nodeDist = ai_check_dist_node(self.origin, nqOrg);
-    if( nodeDist <= 8 ){
+    if( nodeDist <= 16 ){
       //arrived at node
       
       //check for pause first
@@ -362,6 +371,7 @@ void() ai_nodegraph_combat_brawler_frame={
       
       //check yaw-to-node
       if( self.angles_y != self.ideal_yaw){
+        self.yawCache = self.yaw_speed;
         moveSpeed = self.data_speed_strafe;
         //yaw is too wide, stop moving and just pivot to node
         moveYaw = anglemod(self.angles_y - self.ideal_yaw);
@@ -371,6 +381,7 @@ void() ai_nodegraph_combat_brawler_frame={
           if( self.legs ){
             self.legs.attack_state = TR_NORM;
           }
+          self.yaw_speed = self.yaw_speed * 3;
         }
         else{
           if( moveYaw > 10 && moveYaw < 350){
@@ -379,8 +390,10 @@ void() ai_nodegraph_combat_brawler_frame={
           else if( moveYaw > 5 && moveYaw < 355 ){
             moveSpeed = moveSpeed * 0.67;
           }
+          self.yaw_speed = self.yaw_speed * 2;
         }
         ChangeYaw();
+        self.yaw_speed = self.yawCache;
       }
       if( self.ai_last_pathWait ){
         if( time > self.ai_timer_pathWait ){

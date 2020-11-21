@@ -229,7 +229,7 @@ void() ai_state_hunter_frame={
       }
       else{
         if( self.ai_lastVis != VIS_FAIL ){
-         ai_nodegraph_clear_path();
+          ai_nodegraph_clear_path();
         }
         ai_nodegraph_frame( self.enemy.position1, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward );
       }
@@ -284,6 +284,7 @@ void() ai_state_pause={
   else{
     self.think = ai_state_pause;
   }
+  self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   self.nextthink = time + 0.05;
 };
 

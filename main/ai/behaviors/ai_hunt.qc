@@ -27,7 +27,7 @@ void() ai_nodegraph_hunter_frame={
   else{
     nqOrg = nodegraph_get_node_origin( self.nq1 );
     nodeDist = ai_check_dist_node(self.origin, nqOrg);
-    if( nodeDist <= 8 ){
+    if( nodeDist <= 16 ){
       //arrived at node
       pathFind = ai_nodegraph_next();
       if( !pathFind ){
@@ -39,6 +39,7 @@ void() ai_nodegraph_hunter_frame={
       if( self.legs ){
         self.legs.attack_state = TR_NORM;
       }
+      self.yawCache = self.yaw_speed;
       moveSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
       //still traveling to node
       self.ideal_yaw = vectoyaw(nqOrg - self.origin);
@@ -54,6 +55,7 @@ void() ai_nodegraph_hunter_frame={
           if( self.legs ){
             self.legs.attack_state = TR_NORM;
           }
+          self.yaw_speed = self.yaw_speed * 3;
         }
         else{
           if( moveYaw > 10 && moveYaw < 350){
@@ -62,8 +64,10 @@ void() ai_nodegraph_hunter_frame={
           else if( moveYaw > 5 && moveYaw < 355 ){
             moveSpeed = moveSpeed * 0.33;
           }
+          self.yaw_speed = self.yaw_speed * 2;
         }
         ChangeYaw();
+        self.yaw_speed = self.yawCache;
       }
       
       if( self.ai_last_pathWait ){

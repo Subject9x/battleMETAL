@@ -69,18 +69,20 @@ void() ai_nodegraph_mark_start={
   nodeDist = 64;
   foundNode = -1;
   
-  while( nodeItr < NODE_ID_COUNT ){
+  for( nodeItr = 0; nodeItr < NODE_ID_COUNT; nodeItr = nodeItr + 1){
     proxNode = NODEGRAPH_DATA[nodeItr];
-    if( proxNode.id != -1 ){
-      testLen = ai_check_dist_node( self.origin, proxNode.orig );
-      if( testLen < nodeDist ){
-        if( NODEGRAPH_DATA_BLOCK[nodeItr] == FALSE ){
-          nodeDist = testLen;
-          foundNode = nodeItr;
-        }
-      }
+    if( proxNode.id == -1 ){
+      continue;
     }
-    nodeItr = nodeItr + 1;
+    testLen = ai_check_dist_node( self.origin, proxNode.orig );
+    if( testLen > nodeDist ){
+      continue;
+    }
+    if( NODEGRAPH_DATA_BLOCK[nodeItr] == FALSE ){
+      continue;
+    }
+    nodeDist = testLen;
+    foundNode = nodeItr;
   }
   if( foundNode > -1 ){
     //mark as blocked, set nq1 reference to node id, so that it will be cleared when the AI calls their trace_route for the first time.
@@ -90,9 +92,13 @@ void() ai_nodegraph_mark_start={
 };
 
 /*
-  updates .nodeQueue slots, returns FALSE if there are more nodes to go.
+  updates .nodeQueue slots, returns FALSE if there are no nodes left in the path.
 */
 float() ai_nodegraph_next={
+  
+  local float unlockId;
+  
+  NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE; //always make sure AI clears the last node because AI has arrived here.
   
   if( self.nq2 == -1 ){
     //early exit - end of queue
@@ -103,7 +109,6 @@ float() ai_nodegraph_next={
     //requested next node was occupied by someone else.
     return FALSE;
   }
-  NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
   
   self.nq1 = self.nq2;
   self.nq2 = self.nq3;
@@ -311,6 +316,52 @@ float( vector testOrg ) ai_nodegraph_to_org={
     closeNode = NODEGRAPH_DATA[nodeItr];
     
     if( closeNode.id == -1 ){
+      continue;
+    }
+    
+    if( NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
+      continue;
+    }
+    
+    ndOrg = closeNode.orig;
+    testDist = ai_check_dist_node(testOrg, ndOrg);
+    if( testDist > minDist ){
+      continue;
+    }
+    
+    testVis = ai_check_terrain_move( testOrg, ndOrg ); 
+    if( !testVis ){
+      continue;
+    }
+    
+    minDist = testDist;
+    aNode = nodeItr;
+  }
+  return aNode;
+};
+
+float( vector testOrg , float ignoreId ) ai_nodegraph_to_org_filter={
+    local float minDist;
+  local float nodeItr;
+  
+  node_t closeNode;
+  
+  local float aNode;
+  
+  local vector ndOrg;
+  local float testDist;
+  local float testVis;
+  
+  aNode = -1;
+  minDist = 1024;
+  for( nodeItr = 0; nodeItr < NODE_ID_COUNT; nodeItr = nodeItr + 1){
+    closeNode = NODEGRAPH_DATA[nodeItr];
+    
+    if( closeNode.id == -1 ){
+      continue;
+    }
+    
+    if( ignoreId != -1 && closeNode.id == ignoreId ){
       continue;
     }
     

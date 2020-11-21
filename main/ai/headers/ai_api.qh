@@ -31,8 +31,6 @@ float VIS_FRN   = 2;  //A friendly is blocking the way
 float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
 
 //GLOBALS
-float yawCache;       //used to quickly cache yaw to do some per-frame mods
-
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
 vector selfSensorOrg;
 vector orgCheckNode;    //discard _z
@@ -59,10 +57,11 @@ entity alarm_ent; //per-frame global used to prevent near-endless alarm loops
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
 .float ai_patrol_speed; //a fraction of forward speed for any unit speed > 100
-.float voiceTime; //when next to say something
+.float voiceTime;       //when next to say something
 .float ai_voice_group;
-.float helpTime;  //prevents flooding of help calls
+.float helpTime;        //prevents flooding of help calls
 .float helpTimeDelay;
+.float yawCache;          //used to quickly cache yaw to do some per-frame mods
 .float ai_pauseTime_check; //time interval to check for pauses.
 .float ai_pauseTime_chance;  //chance that AI will pause.
 .float ai_pauseTime_wait;
@@ -119,6 +118,7 @@ float( vector startPos, vector endPos ) ai_nodegraph_trace_vec;     // wraps nod
 float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode; //given a map org, and a known endId
 float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec; //given a known endId, and a map org
 float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
+float( vector testOrg , float ignoreId ) ai_nodegraph_to_org_filter; //find closest node to AI's desired patrol point but ignore a specific node
 float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
 
 //AI TETHER FUNCTIONALITY

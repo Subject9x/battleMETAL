@@ -298,17 +298,6 @@ float( vector org ) nodegraph_node_by_origin={
   return foundId;
 };
 
-
-/*
-  Search nodegraph via nodeid, and sets the node_t globals CHECK and FOUND
-*/
-void( float nodeId ) nodegraph_get_node_byid={
-  if( nodeId > -1 ){
-    NODE_found = NODEGRAPH_DATA[nodeId];
-    //dprint(strcat("nodegraph_get_node_byid(",ftos(nodeId),")-(", ftos(NODE_check.id),")\n"));  //debug
-  }
-};
-
 //NODEGRAPH debugger--------------------------------------------------------
 //call via console "cmd m dbgnode X Y" 
                                 //X = 
