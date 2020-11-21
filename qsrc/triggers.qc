@@ -41,12 +41,17 @@ void( entity active, string event) trigger_event={
     SUB_UseTargets();
   }
   else{
-    oldTarget = self.target;
-    thisTarget = event;
-    
-    self.target = thisTarget;
+    if( self.target != event ){
+      oldTarget = self.target;
+      thisTarget = event;
+      
+      self.target = thisTarget;
+        SUB_UseTargets();
+      self.target = oldTarget;
+    }
+    else{
       SUB_UseTargets();
-    self.target = oldTarget;
+    }
   }
 };
 

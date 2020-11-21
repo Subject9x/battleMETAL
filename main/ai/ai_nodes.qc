@@ -466,9 +466,9 @@ void() node_setup={
 void() ai_node_check={
   local entity nexNode;
   local float contentCache;
-
-  self.pathEndId = ai_nodegraph_to_org( self.origin );  //snap patrolnode to nodegraph
   
+  self.pathEndId = ai_nodegraph_to_org( self.origin );  //snap patrolnode to nodegraph
+  self.compOffset = nodegraph_get_node_origin( self.pathEndId );
   if( self.target ){
     nexNode = find(world, targetname, self.target );
     if( nexNode ){

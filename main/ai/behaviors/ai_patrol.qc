@@ -59,7 +59,8 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
   }
   //-----------------
   //run the nodegraph frame on the current trace path.
-  ai_nodegraph_frame( self.patrolNode.origin, self.patrolNode.origin, self.data_speed_strafe, self.data_speed_forward * 0.75 );
+  
+  ai_nodegraph_frame( self.patrolNode.compOffset, self.patrolNode.compOffset, self.data_speed_strafe, self.data_speed_forward * 0.75 );
   
 };
 

@@ -134,18 +134,19 @@ void(vector ofs) menu_briefMissionInfo={
   //mission type
   drawstring( ofs + gui_percentToPixelRawVec('7 24'), "Type:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0); 
   drawstring( ofs + gui_percentToPixelRawVec('42 24'), MSN_TYPE,fontSizeMedium, '1 1 1', 1, 0); 
-  //reserves
-  drawstring( ofs + gui_percentToPixelRawVec('7 34'), "Reserves:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs + gui_percentToPixelRawVec('42 34'), strcat(ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
+  //reserves - one of the original ideas was to let the player respawn in fresh mechs with possibly new equipment...but I couldn't get that to 
+  //work in Quake's jank-ass player lifecycle....
+  //drawstring( ofs + gui_percentToPixelRawVec('7 34'), "Reserves:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  //drawstring( ofs + gui_percentToPixelRawVec('42 34'), strcat(ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
   //sector
-  drawstring( ofs+ gui_percentToPixelRawVec('7 44'), "Sector:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs+ gui_percentToPixelRawVec('42 44'), MSN_SECTOR, fontSizeMedium, '1 1 1', 1, 0);
+  drawstring( ofs+ gui_percentToPixelRawVec('7 34'), "Sector:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs+ gui_percentToPixelRawVec('42 34'), MSN_SECTOR, fontSizeMedium, '1 1 1', 1, 0);
   //location
-  drawstring( ofs + gui_percentToPixelRawVec('7 54'), "Location:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs + gui_percentToPixelRawVec('42 54'), MSN_LOCATION, fontSizeMedium, '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('7 44'), "Location:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('42 44'), MSN_LOCATION, fontSizeMedium, '1 1 1', 1, 0);
   //local time
-  drawstring( ofs + gui_percentToPixelRawVec('7 64'), "Local time:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs + gui_percentToPixelRawVec('42 64'), MSN_LOCALTIME, fontSizeMedium, '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('7 54'), "Local time:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('42 54'), MSN_LOCALTIME, fontSizeMedium, '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
   

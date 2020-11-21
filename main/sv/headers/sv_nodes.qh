@@ -80,7 +80,6 @@ void( float dataNodeId, float edgeNum, float edgeId, float lenVal ) nodegraph_re
 //Export Nodegraph data
 float( entity node, entity targNode ) world_nodegraph_export_edgelink;
 
-
 //API------------------------------------------------------------------------
 void() nodegraph_clear_search_queue;
 
