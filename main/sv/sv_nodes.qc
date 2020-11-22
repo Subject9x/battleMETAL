@@ -108,7 +108,7 @@ float( float startId, float endId ) nodegraph_trace={
           //dprint(sprintf("      current cost(%f)\n", NODEGRAPH_SEARCH_COST[nextId])); //debug
           //dprint(sprintf("      add cost(%f)\n", moveCost )); //debug
           //if( visit < 0 || moveCost < NODEGRAPH_SEARCH_COST[nextId]){
-          if( visit < 0 && (NODEGRAPH_DATA_BLOCK[nextId] == FALSE || NODEGRAPH_DATA_BLOCK[nextId] == self.entnum)){
+          if( visit < 0 && NODEGRAPH_DATA_BLOCK[nextId] == FALSE){
             queueNext = queueNext + 1;  //error: something to do with iterating queueNext;
             NODEGRAPH_SEARCH_QUEUE[queueNext] = nextId;
             NODEGRAPH_SEARCH_CAME_FROM[nextId] = currentId;
@@ -132,7 +132,59 @@ float( float startId, float endId ) nodegraph_trace={
       //dprint("-------------------------\n"); //debug
     }
   }
-  return queue;
+  return currentId;
+};
+
+/**
+  The trace_route builds a path of GOAL -> START, 
+    this verifies the path, and converts the values from CAME_FROM[]
+    to the path list.
+*/
+float( float startNode, float endIdTrace ) nodegraph_build_path={
+  
+  local float stack;
+  local float endId;
+  local float pathId;
+  local float reflectPath;
+  local float stackTotal;
+  local vector dbgOrg;
+  
+  //dprint(sprintf("nodegraph_build_path( startNode[%u], endIdTrace[%u] )\n", startNode, endIdTrace));  //debug
+  stack = 0;
+  //dprint("NODEGRAPH_SEARCH_CAME_FROM[] integrity check\n"); //debug
+  //while( stack < NODE_ID_COUNT ){
+  //  dprint(sprintf("itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_CAME_FROM[stack]));//debug
+  //  stack = stack + 1;//debug
+  //}//debug
+  //dprint("============================\n"); //debug
+  
+  stack = 0;
+  reflectPath = 0;
+  pathId = endIdTrace;
+  //dprint(sprintf("===BULDING PATH===stack{%u}\n", stack));  //debug
+  while( pathId != startNode && stack < endIdTrace ){
+    NODEGRAPH_SEARCH_PATH[stack] = pathId;
+    //dbgOrg = nodegraph_get_node_origin(pathId);
+     // dprint(sprintf("    itr[%u]-node(%d)-ORIGIN %0.3f %0.3f %0.3f\n", stack, pathId, dbgOrg_x, dbgOrg_y, dbgOrg_z));
+    reflectPath = pathId;
+    
+    pathId = NODEGRAPH_SEARCH_CAME_FROM[reflectPath];
+    //dprint(sprintf("            cameFrom(%d)\n", pathId));
+    stack = stack + 1;
+    //dprint("-------------------------\n"); //debug
+  }
+  //dprint("============================================\n"); //debug
+  
+  //dprint("===Unwinding path stack\n");  //debug
+  //dprint(sprintf("                stack(%f)\n",stack));  //debug
+  //stackTotal = stack;
+  NODEGRAPH_SEARCH_PATH[stack] = startNode;
+  //while( stackTotal > -1 ){
+    //dprint(sprintf("    NODEGRAPH_SEARCH_PATH[ %u ] - node( %d )\n", stackTotal, NODEGRAPH_SEARCH_PATH[stackTotal]));
+    //stackTotal = stackTotal - 1;
+  //}
+  //dprint("============================\n"); //debug
+  return stack;
 };
 
 /*
@@ -143,7 +195,7 @@ float( vector start, vector end ) nodegraph_trace_vec={
   local float startNodeId;
   local float endNodeId;
   
-  local float path;
+  local float traceEndId;
   local float dbgItr;
   
   nodegraph_clear_search_queue();
@@ -165,63 +217,10 @@ float( vector start, vector end ) nodegraph_trace_vec={
     return -1;
   }
   
-  path = nodegraph_trace( startNodeId, endNodeId );
+  traceEndId = nodegraph_trace( startNodeId, endNodeId );
   
-  return path;
+  return traceEndId;
 };
-
-/**
-  The trace_route builds a path of GOAL -> START, 
-    this verifies the path, and converts the values from CAME_FROM[]
-    to the path list.
-*/
-float( float startNode, float endArrIdx, float endNodeId ) nodegraph_build_path={
-  
-  local float stack;
-  local float endId;
-  local float pathId;
-  local float reflectPath;
-  local float stackTotal;
-  local vector dbgOrg;
-  
-  //dprint(sprintf("nodegraph_build_path( startNode[%u], endArrIdx[%u], endNodeId[%u] )\n", startNode, endArrIdx, endNodeId));  //debug
-  stack = 0;
-  //dprint("NODEGRAPH_SEARCH_CAME_FROM[] integrity check\n"); //debug
-  //while( stack < NODE_ID_COUNT ){
-  //  dprint(sprintf("itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_CAME_FROM[stack]));//debug
-  //  stack = stack + 1;//debug
-  //}//debug
-  //dprint("============================\n"); //debug
-  
-  stack = 0;
-  reflectPath = 0;
-  pathId = endNodeId;
-  //dprint(sprintf("===BULDING PATH===stack{%u}\n", stack));  //debug
-  while( pathId != startNode && stack < endArrIdx ){
-    NODEGRAPH_SEARCH_PATH[stack] = pathId;
-    dbgOrg = nodegraph_get_node_origin(pathId);
-     // dprint(sprintf("    itr[%u]-node(%d)-ORIGIN %0.3f %0.3f %0.3f\n", stack, pathId, dbgOrg_x, dbgOrg_y, dbgOrg_z));
-    reflectPath = pathId;
-    
-    pathId = NODEGRAPH_SEARCH_CAME_FROM[reflectPath];
-      //dprint(sprintf("            cameFrom(%d)\n", pathId));
-    
-    stack = stack + 1;
-      //dprint("-------------------------\n"); //debug
-  }
-  
-  //dprint("===Unwinding path stack\n");  //debug
-  //dprint(sprintf("                stack(%f)\n",stack));  //debug
-  stackTotal = stack;
-  NODEGRAPH_SEARCH_PATH[stack] = startNode;
-  while( stack >= 0 ){
-    //dprint(sprintf("    itr[%u]-node(%d)\n", stack, NODEGRAPH_SEARCH_PATH[stack]));
-    stack = stack - 1;
-  }
-  //dprint("============================\n"); //debug
-  return stackTotal;
-};
-
 
 /**
   Runs a 0 - index scan of NODEGRAPH_SEARCH_QUEUE[] to see if we've already been at this node
@@ -389,9 +388,9 @@ void( vector src, vector dst ) nodegraph_debug_graph={
   setmodel(nodegraph_debugger, "q3mdl/testball.md3");
   setsize(nodegraph_debugger, nodegraph_debugger.mins, nodegraph_debugger.maxs);
   
-  startNodeId = nodegraph_node_by_origin(dst);
+  startNodeId = nodegraph_node_by_origin(src);
   
-  endNodeId = nodegraph_node_by_origin(src);
+  endNodeId = nodegraph_node_by_origin(dst);
   
   oslf = self;
   self = nodegraph_debugger;

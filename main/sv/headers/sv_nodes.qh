@@ -91,4 +91,4 @@ float( vector org ) nodegraph_node_by_origin;
 float( float startId, float endId ) nodegraph_trace;
 float( vector start, vector end ) nodegraph_trace_vec;
 float( float thisId, float newId ) nodegraph_check_visited;
-float( float startNode, float endArrIdx, float endId ) nodegraph_build_path;
+float( float startNode, float endIdTrace ) nodegraph_build_path;
