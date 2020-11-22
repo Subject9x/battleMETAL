@@ -28,67 +28,76 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
     ai_nodegraph_trace_vec( self.origin, targDest );
   }
   else{
-    nqOrg = nodegraph_get_node_origin( self.nq1 );
-    nodeDist = ai_check_dist_node(self.origin, nqOrg);
-    if( nodeDist <= 8 ){
-      //arrived at node
-      if( self.pathEndId == self.nq1 ){
-        //AI has finished its nodegraph run
-        ai_nodegraph_clear_path();
-        ai_nodegraph_clear_locks();
+    if( !self.ai_last_pathWait ){
+      nqOrg = nodegraph_get_node_origin( self.nq1 );
+      nodeDist = ai_check_dist_node(self.origin, nqOrg);
+      if( nodeDist <= 8 ){
+        //arrived at node
+        if( self.pathEndId == self.nq1 ){
+          //AI has finished its nodegraph run
+          ai_nodegraph_clear_path();
+          ai_nodegraph_clear_locks();
+        }
+        else{
+          pathFind = ai_nodegraph_next();
+          if( !pathFind ){
+            ai_nodegraph_trace_vec( self.origin, targDest );
+          }
+        }
       }
       else{
-        pathFind = ai_nodegraph_next();
-        if( !pathFind ){
-          ai_nodegraph_trace_vec( self.origin, targDest );
+        self.moveState = MOVE_NORM;
+        if( self.legs ){
+          self.legs.attack_state = TR_NORM;
+        }
+        moveSpeed = walkSpeed;
+        //still traveling to node
+        self.ideal_yaw = vectoyaw(nqOrg - self.origin);
+        //check yaw-to-node
+        if( self.angles_y != self.ideal_yaw ){
+          moveSpeed = turnSpeed;
+          //yaw is too wide, stop moving and just pivot to node
+          moveYaw = anglemod(self.angles_y - self.ideal_yaw);
+          if( moveYaw > 15 && moveYaw < 345 ){
+            self.moveState = MOVE_STAND;
+            moveSpeed = 0;
+            if( self.legs ){
+              self.legs.attack_state = TR_NORM;
+            }
+          }
+          else{
+            if( moveYaw > 10 && moveYaw < 350){
+              moveSpeed = moveSpeed * 0.33;
+            }
+            else if( moveYaw > 5 && moveYaw < 355 ){
+              moveSpeed = moveSpeed * 0.67;
+            }
+          }
+          ChangeYaw();
         }
       }
     }
-    else{
-      self.moveState = MOVE_NORM;
-      if( self.legs ){
-        self.legs.attack_state = TR_NORM;
-      }
-      moveSpeed = walkSpeed;
-      //still traveling to node
-      self.ideal_yaw = vectoyaw(nqOrg - self.origin);
-      //check yaw-to-node
-      if( self.angles_y != self.ideal_yaw ){
-        moveSpeed = turnSpeed;
-        //yaw is too wide, stop moving and just pivot to node
-        moveYaw = anglemod(self.angles_y - self.ideal_yaw);
-        if( moveYaw > 15 && moveYaw < 345 ){
-          self.moveState = MOVE_STAND;
-          moveSpeed = 0;
-          if( self.legs ){
-            self.legs.attack_state = TR_NORM;
-          }
-        }
-        else{
-          if( moveYaw > 10 && moveYaw < 350){
-            moveSpeed = moveSpeed * 0.33;
-          }
-          else if( moveYaw > 5 && moveYaw < 355 ){
-            moveSpeed = moveSpeed * 0.67;
-          }
-        }
-        ChangeYaw();
-      }
-      if( self.ai_last_pathWait ){
-        if( time > self.ai_timer_pathWait ){
-          self.ai_last_pathWait = FALSE;
-          self.ai_timer_pathWait = time + 1;
-          pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
-          if( pathFind ){
-            self.moveState = MOVE_NORM;
-          }
-        }
-        else{
-          self.moveState = MOVE_STAND;
+    if( self.ai_last_pathWait ){
+      dprint("if( self.ai_last_pathWait ) \n");  //debug
+      if( time > self.ai_timer_pathWait ){
+        self.ai_last_pathWait = FALSE;
+        self.ai_timer_pathWait = time + 1;
+        pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
+        if( pathFind ){
+          self.moveState = MOVE_NORM;
         }
       }
       else{
-        if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+        self.moveState = MOVE_STAND;
+      }
+    }
+    else{
+      if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+        dprint("walkmove(self.angles_y, moveSpeed) == FALSE \n");  //debug
+        if( self.tether == TETHER_PATROL ){
+          pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
+        }
+        else{
           if( time > self.ai_timer_pathWait ){
             self.ai_last_pathWait = TRUE;
             self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
