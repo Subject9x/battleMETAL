@@ -14,29 +14,32 @@ Overview:
 */
 void() nav_point_touch={
   
-  if(self.isActive == TRUE){
-    //nav points are a player-only thing
-    if( !(other.flags & FL_CLIENT) ){
-      return;
-    }
-    if( other.faction == self.faction ){
-      self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
-      self.enemy = other;
-      self.isActive = 2;
-
-      // trigOnTarget is used specifically here to trigger an objective
-      activator = other;
-      trigger_event( other, self.target );
-      
-      if( (self.spawnflags & 2) ){
-        self.isActive = 1;
-      }
-      if( (self.spawnflags & 4) ){
-        self.isActive = -1;
-      }
-      self.solid = SOLID_NOT;
-    }
+  if( self.isActive != TRUE){
+    return;
   }
+  //nav points are a player-only thing
+  if( !(other.flags & FL_CLIENT) ){
+    return;
+  }
+  if( other.faction != self.faction ){
+    return;
+  }
+  self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+  self.enemy = other;
+  self.isActive = 2;
+
+  // trigOnTarget is used specifically here to trigger an objective
+  activator = other;
+  trigger_event( other, self.target );
+  
+  if( (self.spawnflags & 2) ){
+    self.isActive = 1;
+  }
+  if( (self.spawnflags & 4) ){
+    self.isActive = -1;
+  }
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
 };
 
 /*
@@ -99,20 +102,19 @@ void() map_nav_point={
 
   self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;
-  
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_TRIGGER;
+
   setmodel(self, "q3mdl/testball.md3");
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
-  self.movetype = MOVETYPE_FLY;
-  droptofloor();
   
   //wild-  EF_NODEPTHTEST allows SendEnt to blast this through to all clients!
   self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
   self.alpha = 0.01;
   self.scale = 0.01;
   
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_TRIGGER;
+
   
   if( (self.spawnflags & 1) ){
     self.isActive = FALSE;
@@ -241,6 +243,7 @@ void() map_nav_point_remote_query={
   }
 };
 
+//possibly deprecated by EF_NODEPTHTEST flag on nav points
 /*QUAKED map_nav_point_remote (0.753 0.788 0.431) (-10 -10 -10) (10 10 10) - VISIT_PER_CLIENT OFF_AFTER_USE
 REMOTE: quirk in server code means not all ents are sent to the player on-connect IF
 they're not in the same BSP volume. IF nav points are not visible to [info_player_start]
