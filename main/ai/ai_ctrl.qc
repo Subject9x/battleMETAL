@@ -480,14 +480,20 @@ void() ai_setup_patrol={
     }
   }
   
+  ai_nodegraph_clear_path();
+  ai_nodegraph_mark_start();
+  
   if( nodeFail ){
     self.tether = TETHER_NONE;
     self.patrolNode = world;
     self.goalentity = world;
   }
+  else{
+    ai_nodegraph_trace_vecToNode( self.origin, self.patrolNode.pathEndId );
+  }
   
   if( (self.spawnflags & COLD_START) ){
-    self.spawnflags = self.spawnflags - (self.spawnflags&COLD_START);
+    self.spawnflags = self.spawnflags - (self.spawnflags & COLD_START);
     self.nextthink = (random() * 0.5) + 7;
   }
   else{
@@ -501,9 +507,6 @@ void() ai_setup_patrol={
     self.think = ai_state_lurker_frame; //default
   }
 
-  ai_nodegraph_clear_path();
-  ai_nodegraph_mark_start();
-  
   self.ai_timer_tracepath = time + 0.1;
   
   self.nextthink = self.nextthink + time;
