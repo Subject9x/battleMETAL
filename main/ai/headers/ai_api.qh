@@ -109,6 +109,7 @@ void() node_setup;
 .float nq24;
 .float pathEndId; //actual end node to the path, used for early exit / check of nq1-16 path cache.
 
+float( .float queueVar, float pathCountVal ) ai_nodegraph_set_queue_val;
 void() ai_nodegraph_clear_locks;
 void() ai_nodegraph_mark_start; //if a bot starts too close to a node, mark that node occupied.
 void() ai_nodegraph_clear_path; //mostly just for ini.

@@ -149,7 +149,7 @@ float() ai_nodegraph_next={
 */
 float( float startId, float endId ) ai_nodegraph_trace_route={
   
-  local float qCount;
+  local float traceEndId;
   local float pathCnt;
   
   ai_nodegraph_clear_locks();
@@ -163,63 +163,39 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
   }
   
   dprint(sprintf("%s(%s) - ai_nodegraph_trace_route( %f %f )\n", self.classname, vtos(self.origin), startId, endId)); //debug
-  qCount = nodegraph_trace(startId, endId);
-  if( qCount > 0 ){
-    pathCnt = nodegraph_build_path( startId, qCount, endId );
+  traceEndId = nodegraph_trace(startId, endId);
+  if( traceEndId > -1 ){
+    pathCnt = nodegraph_build_path( startId, traceEndId );
     if( pathCnt > -1 ){
       self.pathEndId = NODEGRAPH_SEARCH_PATH[0];  //set the end node so we can remember the end if we need to.
       dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
       
       ai_nodegraph_clear_path();
-    
-      self.nq1 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq2 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq3 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq4 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq5 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq6 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq7 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq8 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq9 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq10 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq11 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq12 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq13 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq14 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq15 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq16 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq17 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq18 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq19 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq20 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq21 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq22 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq23 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
-      self.nq24 =  NODEGRAPH_SEARCH_PATH[pathCnt];
-      pathCnt = max(-1, pathCnt - 1);
+      
+      pathCnt = ai_nodegraph_set_queue_val( nq1, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq2, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq3, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq4, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq5, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq6, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq7, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq8, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq9, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq10, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq11, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq12, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq13, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq14, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq15, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq16, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq17, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq18, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq19, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq20, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq21, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq22, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq23, pathCnt );
+      pathCnt = ai_nodegraph_set_queue_val( nq24, pathCnt );
       
       if( self.nq1 > -1 ){
         return TRUE;
@@ -228,6 +204,16 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
   }
   
   return FALSE;
+};
+
+float( .float queueVar, float pathCountVal ) ai_nodegraph_set_queue_val={
+  local float countMod;
+  
+  if( -1 < pathCountVal ){
+    self.queueVar = NODEGRAPH_SEARCH_PATH[pathCountVal];
+    return pathCountVal - 1;
+  }
+  return -1;
 };
 
 /*
