@@ -26,7 +26,7 @@ void( entity active, string event) trigger_event={
   local string oldTarget;
   local string thisTarget;  //something something method arg stack
   
-  if( event == "" ){
+  if( !event ){
     return;
   }
   if( !active ){
@@ -36,7 +36,7 @@ void( entity active, string event) trigger_event={
     activator = active;
   }
   
-  if( self.target == "" || !self.target ){
+  if( !self.target ){
     self.target = event;
     SUB_UseTargets();
   }

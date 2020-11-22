@@ -315,16 +315,17 @@ void() SUB_UseTargets =
   if( self.target ){
     act = activator;
     for(t = nextent(world); t != world; t = nextent(t) ){
-      if( !t.targetname || t.targetname != self.target ){
+      if( t.targetname != self.target ){
+        continue;
+      }
+      if(!t.use){
         continue;
       }
       tempSelf = self;
       tempOther = other;
       self = t;
       other = tempSelf;
-      if(self.use){
         self.use();
-      }
       self = tempSelf;
       other = tempOther;
     }
