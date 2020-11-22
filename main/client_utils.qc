@@ -300,6 +300,10 @@ void(string str, float tokens) client_ParseMechCommand={
     nodegraph_debug_edges(  stof(argv(2)) );
     return;
   }
+  if( argv(1) == "dbgtarg" ){
+    world_debug_targ( argv(2) );
+    return;
+  }
 };  
 
 void() client_update_faction={

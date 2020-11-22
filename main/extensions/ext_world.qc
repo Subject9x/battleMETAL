@@ -1143,6 +1143,59 @@ void( float start, float end ) world_nodegraph_test_graph={
   }
 };
 
+
+
+/*
+  fires a chosen target entity if it exists
+*/
+void( string targName ) world_debug_targ={
+
+  local entity t;
+  local entity c;
+  local entity oslf;
+  
+  local float fire;
+  
+  fire = FALSE;
+  
+  c = find(world, classname, "player");
+  
+  for( t = nextent(world); t != world; t = nextent(t) ){
+    if( t.targetname != targName ){
+      if( t.classname == targName ){
+        fire = TRUE;
+      }
+      else{
+        continue; 
+      }
+    }
+    else{
+      fire = TRUE;
+    }
+    if( fire ){
+      if( t.classname == "nav_rho" ){
+        if( t.touch ){
+          other = c;
+          oslf = self;
+          self = t;
+            self.touch();
+          self = oslf;
+        }
+      }
+      else if( t.classname == "trigger_once" || t.classname == "trigger_multi" ){
+        if( t.target ){
+          other = c;
+          oslf = self;
+          self = t;
+            self.use();
+          self = oslf;
+        }
+      }
+    }
+  }
+
+};
+
 /*
   used with server flag (SV_SERVERFLAGS & SVFLAG_SPAWNFAR)
   gathers all the deathmatch nodes.
