@@ -310,7 +310,7 @@ void() nodegraph_debugger_th_node={
   local entity t;
   
   if( self.nq1 == -1 ){
-    ai_nodegraph_trace_vec( self.origin, self.count );
+    ai_nodegraph_trace_vecToNode( self.origin, self.count );
   }
   
   if( self.nq1 == self.count ){
@@ -339,7 +339,7 @@ void() nodegraph_debugger_th_node={
   self.compOffset = nodegraph_get_node_origin(self.nq2);
 
   if( !ai_nodegraph_next() ){
-    ai_nodegraph_trace_vec( self.origin, self.count );
+    ai_nodegraph_trace_vecToNode( self.origin, self.count );
   }
   dprint(sprintf("NODEGRAPH_DEBUGGER_TH_NODE(NQ1 %s) - ( NQ2 %s)\n", ftos(self.nq1), ftos(self.nq2)));//debug
   dprint(sprintf("NODEGRAPH_DEBUGGER_TH_EDGE(%s) - (%s)\n", vtos(self.origin), vtos(self.compOffset)));//debug

@@ -248,10 +248,6 @@ void() ai_nodegraph_combat_frame={
     nqOrg = nodegraph_get_node_origin( self.nq1 );
     nodeDist = ai_check_dist_node(self.origin, nqOrg);
     if( nodeDist <= 8 ){
-      //debug
-      if( self.classname == "unit_dunerunner_h" ){
-        dprint(sprintf("AT NODE %s\n", ftos(self.nq1)));  //debug
-      }
       //arrived at node
       //check for pause first
       if( ai_check_pause() ){

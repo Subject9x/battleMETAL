@@ -22,6 +22,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
   local vector nqOrg;
   local float moveYaw;
   local float moveSpeed;
+  local float blockCheck;
   
   if( self.nq1 == -1 ){
     //maybe the destination > the 24 node-queue vars.
@@ -78,7 +79,6 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       }
     }
     if( self.ai_last_pathWait ){
-      dprint("if( self.ai_last_pathWait ) \n");  //debug
       if( time > self.ai_timer_pathWait ){
         self.ai_last_pathWait = FALSE;
         self.ai_timer_pathWait = time + 1;
@@ -93,9 +93,15 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
     }
     else{
       if( walkmove(self.angles_y, moveSpeed) == FALSE ){
-        dprint("walkmove(self.angles_y, moveSpeed) == FALSE \n");  //debug
         if( self.tether == TETHER_PATROL ){
-          pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
+          blockCheck = NODEGRAPH_DATA_BLOCK[self.patrolNode.pathEndId];
+          if( blockCheck != FALSE || blockCheck != self.entnum ){
+            pathFind = ai_nodegraph_trace_vec( self.origin, self.patrolNode.compOffset );
+          }
+          else{
+            self.ai_last_pathWait = TRUE;
+            self.ai_timer_pathWait = time + (0.5 + random() * 1.0);
+          }
         }
         else{
           if( time > self.ai_timer_pathWait ){

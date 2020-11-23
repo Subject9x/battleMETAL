@@ -115,12 +115,14 @@ void() ai_nodegraph_mark_start; //if a bot starts too close to a node, mark that
 void() ai_nodegraph_clear_path; //mostly just for ini.
 float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
 float( float startId, float endId ) ai_nodegraph_trace_route;
+float( float nodeStartId, float nodeEndId ) ai_nodegraph_trace_norm;  //used mostly by patrol
 float( vector startPos, vector endPos ) ai_nodegraph_trace_vec;     // wraps nodegraph_trace() by allowing start / end pos
 float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode; //given a map org, and a known endId
 float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec; //given a known endId, and a map org
-float(vector testOrg) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
-float( vector testOrg , float ignoreId ) ai_nodegraph_to_org_filter; //find closest node to AI's desired patrol point but ignore a specific node
-float(vector entOrg) ai_nodegraph_find_node; //find closest node to self;
+float(vector testOrg, float checkLock) ai_nodegraph_to_org; //find closest node to AI's desired patrol point.
+float( vector testOrg , float ignoreId, float checkLock ) ai_nodegraph_to_org_filter; //find closest node to AI's desired patrol point but ignore a specific node
+
+void() ai_nodegraph_debug_queue;  //just dump queue to console
 
 //AI TETHER FUNCTIONALITY
  //no valid targets, AI will chill in a spot if it loses target, it  looks for new ones near it. no real fixed position.

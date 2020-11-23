@@ -96,20 +96,8 @@ void() ai_nodegraph_mark_start={
 */
 float() ai_nodegraph_next={
   
-  local float unlockId;
-  
   NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE; //always make sure AI clears the last node because AI has arrived here.
-  
-  if( self.nq2 == -1 ){
-    //early exit - end of queue
-    return FALSE;
-  }
-  
-  if( NODEGRAPH_DATA_BLOCK[self.nq2] > FALSE && NODEGRAPH_DATA_BLOCK[self.nq2] != self.entnum ){
-    //requested next node was occupied by someone else.
-    return FALSE;
-  }
-  
+    
   self.nq1 = self.nq2;
   self.nq2 = self.nq3;
   self.nq3 = self.nq4;
@@ -134,6 +122,16 @@ float() ai_nodegraph_next={
   self.nq22 = self.nq23;
   self.nq23 = self.nq24;
   self.nq24 = -1;
+  
+  if( self.nq1 == -1 ){
+    //end of queue
+    return FALSE;
+  }
+  
+  if( NODEGRAPH_DATA_BLOCK[self.nq1] > FALSE && NODEGRAPH_DATA_BLOCK[self.nq1] != self.entnum ){
+    //requested next node was occupied by someone else.
+    return FALSE;
+  }
   
   NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
   
@@ -161,15 +159,11 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
   if( endId == -1 ){
     return FALSE;
   }
-  
-  dprint(sprintf("%s(%s) - ai_nodegraph_trace_route( %f %f )\n", self.classname, vtos(self.origin), startId, endId)); //debug
   traceEndId = nodegraph_trace(startId, endId);
   if( traceEndId > -1 ){
     pathCnt = nodegraph_build_path( startId, traceEndId );
     if( pathCnt > -1 ){
       self.pathEndId = NODEGRAPH_SEARCH_PATH[0];  //set the end node so we can remember the end if we need to.
-      dprint(sprintf("self.pathEndId %f\n", self.pathEndId)); //debug
-      
       ai_nodegraph_clear_path();
       
       pathCnt = ai_nodegraph_set_queue_val( nq1, pathCnt );
@@ -207,13 +201,27 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
 };
 
 float( .float queueVar, float pathCountVal ) ai_nodegraph_set_queue_val={
-  local float countMod;
-  
   if( -1 < pathCountVal ){
     self.queueVar = NODEGRAPH_SEARCH_PATH[pathCountVal];
     return pathCountVal - 1;
   }
   return -1;
+};
+
+float( float nodeStartId, float nodeEndId ) ai_nodegraph_trace_norm={
+  
+  local float traceStat;
+  local float startNode;
+  local float endNode;
+  
+  if( time < self.ai_timer_tracepath ){
+    return FALSE;
+  }
+  self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
+  
+  traceStat = ai_nodegraph_trace_route( nodeStartId, nodeEndId );
+  
+  return traceStat;
 };
 
 /*
@@ -230,8 +238,8 @@ float( vector startPos, vector endPos ) ai_nodegraph_trace_vec={
   }
   self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
   
-  startNode = ai_nodegraph_to_org( startPos );
-  endNode = ai_nodegraph_to_org( endPos );
+  startNode = ai_nodegraph_to_org( startPos, TRUE );
+  endNode = ai_nodegraph_to_org( endPos, TRUE );
   
   traceStat = ai_nodegraph_trace_route( startNode, endNode );
   
@@ -251,7 +259,7 @@ float( vector startPos, float endId ) ai_nodegraph_trace_vecToNode={
   }
   self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
   
-  startNode = ai_nodegraph_to_org( startPos );
+  startNode = ai_nodegraph_to_org( startPos, TRUE );
   
   traceStat = ai_nodegraph_trace_route( startNode, endId );
   
@@ -272,7 +280,7 @@ float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec={
   }
   self.ai_timer_tracepath = time + (0.5 + (random() * 1.5));
   
-  endNode = ai_nodegraph_to_org( endPos );
+  endNode = ai_nodegraph_to_org( endPos, TRUE );
   
   traceStat = ai_nodegraph_trace_route( startId, endNode );
   
@@ -283,7 +291,7 @@ float( float startId, vector endPos ) ai_nodegraph_trace_nodeToVec={
   Find closest node to a desire map point (usually self, or target ai_node).
   Make sure that node is WALKABLE to that spot.
 */
-float( vector testOrg ) ai_nodegraph_to_org={
+float( vector testOrg, float checkLock ) ai_nodegraph_to_org={
 
   local float minDist;
   local float nodeItr;
@@ -305,8 +313,10 @@ float( vector testOrg ) ai_nodegraph_to_org={
       continue;
     }
     
-    if( NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
-      continue;
+    if( checkLock ){
+      if( NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
+        continue;
+      }
     }
     
     ndOrg = closeNode.orig;
@@ -326,7 +336,7 @@ float( vector testOrg ) ai_nodegraph_to_org={
   return aNode;
 };
 
-float( vector testOrg , float ignoreId ) ai_nodegraph_to_org_filter={
+float( vector testOrg , float ignoreId, float checkLock ) ai_nodegraph_to_org_filter={
     local float minDist;
   local float nodeItr;
   
@@ -351,8 +361,10 @@ float( vector testOrg , float ignoreId ) ai_nodegraph_to_org_filter={
       continue;
     }
     
-    if( NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
-      continue;
+    if( checkLock ){
+      if( NODEGRAPH_DATA_BLOCK[nodeItr] > FALSE && NODEGRAPH_DATA_BLOCK[nodeItr] != self.entnum ){
+        continue;
+      }
     }
     
     ndOrg = closeNode.orig;
@@ -372,14 +384,38 @@ float( vector testOrg , float ignoreId ) ai_nodegraph_to_org_filter={
   return aNode;
 };
 
-/*
-  find closest node to self;
-*/
-float( vector entOrg ) ai_nodegraph_find_node={
+void() ai_nodegraph_debug_queue={
 
-  return FALSE;
+  dprint("*****************NODE QUEUE THIS FRAME ************************\n");  //debug
+  dprint(sprintf("    nq1 = %s\n", ftos(self.nq1)));  //debug
+  dprint(sprintf("    nq2 = %s\n", ftos(self.nq2)));  //debug
+  dprint(sprintf("    nq3 = %s\n", ftos(self.nq3)));  //debug
+  dprint(sprintf("    nq4 = %s\n", ftos(self.nq4)));  //debug
+  dprint(sprintf("    nq5 = %s\n", ftos(self.nq5)));  //debug
+  dprint(sprintf("    nq6 = %s\n", ftos(self.nq6)));  //debug
+  dprint(sprintf("    nq7 = %s\n", ftos(self.nq7)));  //debug
+  dprint(sprintf("    nq8 = %s\n", ftos(self.nq8)));  //debug
+  dprint(sprintf("    nq9 = %s\n", ftos(self.nq9)));  //debug
+  dprint(sprintf("    nq10 = %s\n", ftos(self.nq10)));  //debug
+  dprint(sprintf("    nq11 = %s\n", ftos(self.nq11)));  //debug
+  dprint(sprintf("    nq12 = %s\n", ftos(self.nq12)));  //debug
+  dprint(sprintf("    nq13 = %s\n", ftos(self.nq13)));  //debug
+  dprint(sprintf("    nq14 = %s\n", ftos(self.nq14)));  //debug
+  dprint(sprintf("    nq15 = %s\n", ftos(self.nq15)));  //debug
+  dprint(sprintf("    nq16 = %s\n", ftos(self.nq16)));  //debug
+  dprint(sprintf("    nq17 = %s\n", ftos(self.nq17)));  //debug
+  dprint(sprintf("    nq18 = %s\n", ftos(self.nq18)));  //debug
+  dprint(sprintf("    nq19 = %s\n", ftos(self.nq19)));  //debug
+  dprint(sprintf("    nq20 = %s\n", ftos(self.nq20)));  //debug
+  dprint(sprintf("    nq21 = %s\n", ftos(self.nq21)));  //debug
+  dprint(sprintf("    nq22 = %s\n", ftos(self.nq22)));  //debug
+  dprint(sprintf("    nq23 = %s\n", ftos(self.nq23)));  //debug
+  dprint(sprintf("    nq24 = %s\n", ftos(self.nq24)));  //debug
+  dprint("*****************************************\n");  //debug
+
 };
 
+//=============MAP NODE ENTS===========================================
 void() ai_node_counter_th={
   local entity nearbot;
   local float countCheck;
@@ -428,7 +464,7 @@ void() node_use={
 */
 void() node_setup={
 
-  self.flags = FL_NODE;
+  self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NODE;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -453,7 +489,7 @@ void() ai_node_check={
   local entity nexNode;
   local float contentCache;
   
-  self.pathEndId = ai_nodegraph_to_org( self.origin );  //snap patrolnode to nodegraph
+  self.pathEndId = ai_nodegraph_to_org( self.origin, FALSE );  //snap patrolnode to nodegraph
   self.compOffset = nodegraph_get_node_origin( self.pathEndId );
   if( self.target ){
     nexNode = find(world, targetname, self.target );

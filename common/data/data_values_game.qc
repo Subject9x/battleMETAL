@@ -246,7 +246,7 @@ float WEAPON9 = 256;
 //============================
 //     COMBAT STATS
 //============================
-float POSITION_FADE_TIME = 2;
+float POSITION_FADE_TIME = 1;
 float MAX_VEHICLE_SIZE = 4;
 float FALL_THRESHOLD = 200;
 float FALL_DMG_MULTIPLIER = 2;

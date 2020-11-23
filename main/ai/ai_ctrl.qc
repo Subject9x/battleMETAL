@@ -481,15 +481,12 @@ void() ai_setup_patrol={
   }
   
   ai_nodegraph_clear_path();
-  ai_nodegraph_mark_start();
+  //ai_nodegraph_mark_start();
   
   if( nodeFail ){
     self.tether = TETHER_NONE;
     self.patrolNode = world;
     self.goalentity = world;
-  }
-  else{
-    ai_nodegraph_trace_vecToNode( self.origin, self.patrolNode.pathEndId );
   }
   
   if( (self.spawnflags & COLD_START) ){
