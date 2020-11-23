@@ -42,9 +42,10 @@ void() scenery_obj={
   if( (self.spawnflags & 16) ){
     droptofloor();
   }
+  self.effects = self.effects | EF_LOWPRECISION;
 };
 
-void() doodad_rocks_desert_small_1={
+void() doodad_rocks_desert_1={
   self.model = "q3mdl/map/rocks/rock1t.obj";
   if( (self.spawnflags & 1)) {
     self.angles_x = self.angles_x + (5 + (crandom() * 5) );
@@ -54,10 +55,11 @@ void() doodad_rocks_desert_small_1={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -24));
+  dprint(sprintf("%s - min - %s|| max - %s\n", self.model, vtos(self.mins), vtos(self.maxs))); //debug
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
-void() doodad_rocks_desert_small_2={
+void() doodad_rocks_desert_2={
   self.model = "q3mdl/map/rocks/rock2.obj";
   if( (self.spawnflags & 1)) {
     self.angles_x = self.angles_x + (5 + (crandom() * 5) );
@@ -67,10 +69,11 @@ void() doodad_rocks_desert_small_2={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -24));
+  dprint(sprintf("%s - min - %s|| max - %s\n", self.model, vtos(self.mins), vtos(self.maxs))); //debug
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
-void() doodad_rocks_desert_small_3={
+void() doodad_rocks_desert_3={
   self.model = "q3mdl/map/rocks/rock3.obj";
   if( (self.spawnflags & 1)) {
     self.angles_x = self.angles_x + (5 + (crandom() * 5) );
@@ -80,20 +83,21 @@ void() doodad_rocks_desert_small_3={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -12));
+  dprint(sprintf("%s - min - %s|| max - %s\n", self.model, vtos(self.mins), vtos(self.maxs))); //debug
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
-void() doodad_rocks_desert_small_random={
+void() doodad_rocks_desert_random={
   switch(  ceil(random() * 3) ){
     default:
-      doodad_rocks_desert_small_1();
+      doodad_rocks_desert_1();
       return;
     case 2:
-      doodad_rocks_desert_small_2();
+      doodad_rocks_desert_2();
       return;
     case 3:
-      doodad_rocks_desert_small_3();
+      doodad_rocks_desert_3();
       return;
   }
 };

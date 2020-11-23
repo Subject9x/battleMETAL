@@ -3191,9 +3191,8 @@ usually pair this will a killbox if player wanders outside map.
 //    battleMETAL  Misc Objects
 //===========================================================
 
-/*QUAKED doodad_rocks_desert_small_1 (0.431 0.788 0.753) (-32 -32 8) (32 32 64) ANGLE_RANDOM ? ? ? DROPTOFLOOR
-A 'small' desert rock, model #1.
-Where 'small' = a little larger than the BALAKET.
+/*QUAKED doodad_rocks_desert_1 (0.431 0.788 0.753) (-74 -74 -14) (74 74 104) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+A desert rock, model #1.
 Doodad is static, BSP collision, non-interactive.
 -------- KEYS -------- 
 .angles = <vector> directional angles
@@ -3201,9 +3200,8 @@ Doodad is static, BSP collision, non-interactive.
 -------- SPAWNFLAGS -------- 
 ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
-/*QUAKED doodad_rocks_desert_small_2 (0.431 0.788 0.753) (-32 -32 8) (32 32 64) ANGLE_RANDOM ? ? ? DROPTOFLOOR
-A 'small' desert rock, model #2.
-Where 'small' = a little larger than the BALAKET.
+/*QUAKED doodad_rocks_desert_2 (0.431 0.788 0.753) (-79 -79 -27) (79 79 120) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+A  desert rock, model #2.
 Doodad is static, BSP collision, non-interactive.
 -------- KEYS -------- 
 .angles = <vector> directional angles.
@@ -3211,9 +3209,8 @@ Doodad is static, BSP collision, non-interactive.
 -------- SPAWNFLAGS -------- 
 ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
-/*QUAKED doodad_rocks_desert_small_3 (0.431 0.788 0.753) (-32 -32 8) (32 32 64) ANGLE_RANDOM ? ? ? DROPTOFLOOR
-A 'small' desert rock, model #3.
-Where 'small' = a little larger than the BALAKET.
+/*QUAKED doodad_rocks_desert_3 (0.431 0.788 0.753) (-68 -68 -7) (68 68 72) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+A desert rock, model #3.
 Doodad is static, BSP collision, non-interactive.
 -------- KEYS -------- 
 .angles = <vector> directional angles.
@@ -3221,9 +3218,8 @@ Doodad is static, BSP collision, non-interactive.
 -------- SPAWNFLAGS -------- 
 ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
-/*QUAKED doodad_rocks_desert_small_random (0.431 0.788 0.753) (-32 -32 8) (32 32 64) ANGLE_RANDOM ? ? ? DROPTOFLOOR 
-A 'small' desert rock, model is randomized 1-3.
-Where 'small' = a little larger than the BALAKET.
+/*QUAKED doodad_rocks_desert_random (0.431 0.788 0.753) (-79 -79 -27) (79 79 104) ANGLE_RANDOM ? ? ? DROPTOFLOOR 
+A desert rock, model is randomized 1-3.
 Doodad is static, BSP collision, non-interactive.
 -------- KEYS -------- 
 .angles = <vector> directional angles.

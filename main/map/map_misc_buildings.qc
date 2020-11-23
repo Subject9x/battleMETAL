@@ -167,7 +167,7 @@ void() building_misc_apartment={
   self.vec_size = 1;
   
   misc_building("q3mdl/buildings/misc/misc_apt_sm.obj");
-  dprint(sprintf("min - %s|| max - %s\n", vtos(self.mins), vtos(self.maxs))); //debug
+  //dprint(sprintf("min - %s|| max - %s\n", vtos(self.mins), vtos(self.maxs))); //debug
   setsize(self, '-36 -20 0', '36 20 52');
   setorigin(self, self.origin);
 };
