@@ -5,6 +5,226 @@ Date: 3/2/2018
 Overview: ai objects used for map logic
 */
 
+
+
+void() ai_exec_order_use={
+  local entity ent;
+  local entity thisNode;
+  local float entDist;
+  local float hasPatrol;
+  local float hasEnemy;
+  
+  if( self.delay ){
+    self.think = self.use;
+    self.nextthink = time + self.delay;
+    self.use = SUB_Null;
+    return;
+  }
+  thisNode = self;
+  if( self.trigOnSpawn || self.trigOnSpawn != "" ){
+    hasPatrol = TRUE;
+  }
+    if( self.trigOnAttack || self.trigOnAttack != "" ){
+    hasEnemy = TRUE;
+  }
+  for( ent = nextent(world); ent.faction == self.faction; ent = nextent(ent) ){
+    if( !(ent.flags & FL_UNIT) ){
+      continue;
+    }
+    if( ent.deadflag != DEAD_NO ){
+      continue;
+    }
+    if( hasPatrol ){
+      ent.target = strzone(self.trigOnSpawn);
+    }
+    if( hasEnemy ){
+      ent.enemy = find(world, targetname, self.trigOnAttack);
+    }
+    if( ent.use ){
+      self = ent;
+        ent.use();
+      self = thisNode;
+    }
+  }
+};
+
+/*QUAKED ai_exec_order (0.85 0.976 0.267) (-10 -10 -18) (10 10 18) - IN_RADIUS
+  Super primitive order execution system:
+  
+
+targetname = [REQUIRED]
+target = fires the desired trigger
+trigOnAttack = update AI to target THIS enemy.
+trigOnSpawn = update AI to THIS patrol node.
+trigOnDeath = update AI's tether node to THIS.
+
+faction = faction matching, [default] FACTION_ALL == 255
+-------- KEYS -------- 
+.targetname = <string> used by AI to find node
+.faction = <float> [faction number]
+.delay = <float> game seconds before firing.
+.ai_view = <float> only for IN_RADIUS, default 100
+
+-------- SPAWNFLAGS --------
+IN_RADIUS 2 : will find any <faction> units in .ai_vew
+*/
+void() ai_exec_order={
+  if ( !self.targetname || self.targetname == "" ){
+    objerror (strcat("[ERROR] ai_exec_order (", vtos(self.origin),") - missing targetname!"));
+    return;
+  }
+  if ( !self.target || self.target == "" ){
+    objerror (strcat("[ERROR] ai_exec_order (", vtos(self.origin),") - missing target!"));
+    return;
+  }
+  node_setup();
+  self.pausetime = 0;
+  
+  if( !self.ai_view ){
+    self.ai_view = 100;
+  }
+  self.use = ai_exec_order_use;
+};
+
+
+
+/*
+  used by 
+    ai_order_patrol()
+    ai_order_exec_tether()
+    
+    given self.tether, pass this on to .target entities, and set them off to those behaviors.
+*/
+void() ai_order_exec_tether={
+  local entity t;
+  local entity ptrTarg;
+  
+  ptrTarg = find( world, targetname, self.message );
+  
+  if( !ptrTarg ){
+    objerror (sprintf("[ERROR] ai_order_exec_tether (%s) - message entity [%s] not found!\n", vtos(self.origin), self.message));
+    return;
+  }
+  if( ptrTarg.classname != "ai_node" || ptrTarg.classname != "ai_node_tether" ){
+    objerror (sprintf("[ERROR] ai_order_exec_tether (%s) - message entity [%s] had wrong classname %s!\n", vtos(self.origin), self.message, ptrTarg.classname));
+    return;
+  }
+  
+  for(t = nextent(world); t != world; t = nextent(t) ){
+    if( !(t.flags & FL_UNIT) ){
+      continue;
+    }
+    if( t.deadflag != DEAD_NO ){
+      continue;
+    }
+    if( t.targetname != self.target ){
+      continue;
+    }
+    t.tether = self.tether;
+    t.patrolNode = ptrTarg;
+  }
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+};
+/*QUAKED ai_order_patrol (0.85 0.976 0.267) (-10 -10 -18) (10 10 18) ? ? NO_EASY NO_NORM NO_HARD NO_NIGHT
+  single-use, removed after use!
+  
+  finds ALL entities of <TARGET>.
+  FOR EACH
+    + set self.tether = TETHER_PATROL
+    + set self.target = <MESSAGE>
+  
+targetname = [REQUIRED]
+target = [REQUIRED]
+message = [REQUIRED]
+
+-------- KEYS -------- 
+.targetname = <string> used by AI to find node
+.target = <string> 
+.message = <string> the target [ai_node] path.
+.delay = <float> game seconds before firing.
+-------- SPAWNFLAGS --------
+NO_EASY 2 : remove when skill = 0
+NO_NORM 4 : remove when skill = 1
+NO_HARD 8 : remove when skill = 2
+NO_NIGHT 16 : remove when skill = 3
+*/
+void() ai_order_patrol={
+  if ( !self.targetname || self.targetname == "" ){
+    objerror (strcat("[ERROR] ai_order_patrol (", vtos(self.origin),") - missing targetname!"));
+    return;
+  }
+  if ( !self.target || self.target == "" ){
+    objerror (strcat("[ERROR] ai_order_patrol (", vtos(self.origin),") - missing target!"));
+    return;
+  }
+  if ( !self.message ){
+    objerror (strcat("[ERROR] ai_order_patrol (", vtos(self.origin),") - missing message!"));
+    return;
+  }
+  node_setup();
+  
+  self.pausetime = 0;
+  self.tether = TETHER_PATROL;
+  
+  self.use = ai_order_exec_tether;
+};
+
+
+
+/*QUAKED ai_order_tether(0.85 0.976 0.267) (-10 -10 -18) (10 10 18) ? ? NO_EASY NO_NORM NO_HARD NO_NIGHT
+  single-use, removed after use!
+  
+  finds ALL entities of <TARGET>.
+  FOR EACH
+    + set self.tether = TETHER_PATROL
+    + set self.target = <MESSAGE>
+  
+  
+targetname = [REQUIRED]
+target = [REQUIRED]
+message = [REQUIRED]
+
+-------- KEYS -------- 
+.targetname = <string> used by AI to find node
+.target = <string> 
+.message = <string> the target [ai_node] path.
+.delay = <float> game seconds before firing.
+-------- SPAWNFLAGS --------
+NO_EASY 2 : remove when skill = 0
+NO_NORM 4 : remove when skill = 1
+NO_HARD 8 : remove when skill = 2
+NO_NIGHT 16 : remove when skill = 3
+*/
+void() ai_order_tether={
+  if ( !self.targetname || self.targetname == "" ){
+    objerror (strcat("[ERROR] ai_order_tether (", vtos(self.origin),") - missing targetname!"));
+    return;
+  }
+  if ( !self.target || self.target == "" ){
+    objerror (strcat("[ERROR] ai_order_tether (", vtos(self.origin),") - missing target!"));
+    return;
+  }
+  if ( !self.message ){
+    objerror (strcat("[ERROR] ai_order_tether (", vtos(self.origin),") - missing message!"));
+    return;
+  }
+  node_setup();
+  
+  self.pausetime = 0;
+  self.tether = TETHER_NODE;
+  
+  self.use = ai_order_exec_tether;
+};
+
+
+
+
+
+
+
+
 void() ai_change_faction_use={
   local entity e;
   if( (self.spawnflags & 4) ){

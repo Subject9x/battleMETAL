@@ -96,6 +96,8 @@ void() ai_nodegraph_mark_start={
 */
 float() ai_nodegraph_next={
   
+  local float unlockId;
+  
   NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE; //always make sure AI clears the last node because AI has arrived here.
     
   self.nq1 = self.nq2;
@@ -159,11 +161,13 @@ float( float startId, float endId ) ai_nodegraph_trace_route={
   if( endId == -1 ){
     return FALSE;
   }
+  
   traceEndId = nodegraph_trace(startId, endId);
   if( traceEndId > -1 ){
     pathCnt = nodegraph_build_path( startId, traceEndId );
     if( pathCnt > -1 ){
       self.pathEndId = NODEGRAPH_SEARCH_PATH[0];  //set the end node so we can remember the end if we need to.
+      
       ai_nodegraph_clear_path();
       
       pathCnt = ai_nodegraph_set_queue_val( nq1, pathCnt );
@@ -700,87 +704,4 @@ void() ai_node_path={
   setorigin(self, self.origin);
   
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP | DPCONTENTS_BODY | DPCONTENTS_OPAQUE);
-};
-
-void() ai_exec_order_use={
-  local entity ent;
-  local entity thisNode;
-  local float entDist;
-  local float hasPatrol;
-  local float hasEnemy;
-  
-  if( self.delay ){
-    self.think = self.use;
-    self.nextthink = time + self.delay;
-    self.use = SUB_Null;
-    return;
-  }
-  thisNode = self;
-  if( self.trigOnSpawn || self.trigOnSpawn != "" ){
-    hasPatrol = TRUE;
-  }
-    if( self.trigOnAttack || self.trigOnAttack != "" ){
-    hasEnemy = TRUE;
-  }
-  for( ent = nextent(world); ent.faction == self.faction; ent = nextent(ent) ){
-    if( !(ent.flags & FL_UNIT) ){
-      continue;
-    }
-    if( ent.deadflag != DEAD_NO ){
-      continue;
-    }
-    entDist = vlen(ent.origin - self.origin);
-    if( entDist > self.ai_view ){
-      continue;
-    }
-    if( hasPatrol ){
-      ent.target = strzone(self.trigOnSpawn);
-    }
-    if( hasEnemy ){
-      ent.enemy = find(world, targetname, self.trigOnAttack);
-    }
-    if( ent.use ){
-      self = ent;
-        ent.use();
-      self = thisNode;
-    }
-  }
-};
-
-/*QUAKED ai_exec_order (0.85 0.976 0.267) (-10 -10 -18) (10 10 18) - IN_RADIUS
-  Super primitive order execution system:
-  
-
-targetname = [REQUIRED]
-target = fires the desired trigger
-trigOnAttack = update AI to target THIS enemy.
-trigOnSpawn = update AI to THIS patrol node.
-trigOnDeath = update AI's tether node to THIS.
-
-faction = faction matching, [default] FACTION_ALL == 255
--------- KEYS -------- 
-.targetname = <string> used by AI to find node
-.faction = <float> [faction number]
-.delay = <float> game seconds before firing.
-.ai_view = <float> only for IN_RADIUS, default 100
-
--------- SPAWNFLAGS --------
-IN_RADIUS 2 : will find any <faction> units in .ai_vew
-*/
-void() ai_exec_order={
-  if ( !self.targetname || self.targetname == "" ){
-    objerror (strcat("[ERROR] ai_exec_order (", vtos(self.origin),") - missing targetname!"));
-    return;
-  }
-  if ( !self.target || self.target == "" ){
-    objerror (strcat("[ERROR] ai_exec_order (", vtos(self.origin),") - missing target!"));
-    return;
-  }
-  node_setup();
-  self.pausetime = 0;
-  
-  if( !self.ai_view ){
-    self.ai_view = 100;
-  }
-  self.use = ai_exec_order_use;
 };
