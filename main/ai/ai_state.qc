@@ -218,12 +218,6 @@ void() ai_state_hunter_frame={
           self.ai_lastVis = visCheck;
           return;
         }
-        
-        //tee this up to trigger a new path.
-        if( self.ai_lastVis != VIS_FRAC ){
-          ai_nodegraph_clear_path();
-        }
-        
         //enemy is visible, 
         ai_attack();
         //is enemy reachable from my firing position?
@@ -233,7 +227,7 @@ void() ai_state_hunter_frame={
         if( self.ai_lastVis != VIS_FAIL ){
           ai_nodegraph_clear_path();
         }
-        ai_nodegraph_frame( self.enemy.position1, self.enemy.origin, self.data_speed_strafe, self.data_speed_forward );
+        ai_nodegraph_frame( self.enemy.origin, self.enemy.position1, self.data_speed_strafe, self.data_speed_forward );
       }
       self.ai_lastVis = visCheck;
     }
@@ -393,7 +387,7 @@ void() ai_turret_control={
   local entity turretOwner;
   local float oldAng;
   
-  if( self.torsoCenter ){
+  if( self.torsoCenter && self.torsoCenter.owner == self ){
     turretOwner = self;
     self = self.torsoCenter;
       oldAng = self.angles_y;
