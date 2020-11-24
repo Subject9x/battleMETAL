@@ -66,6 +66,8 @@ entity alarm_ent; //per-frame global used to prevent near-endless alarm loops
 .float ai_pauseTime_chance;  //chance that AI will pause.
 .float ai_pauseTime_wait;
 
+.float powerup;  //extra time to start up
+
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 void() ai_promote;

@@ -493,17 +493,20 @@ void() ai_setup_patrol={
     self.spawnflags = self.spawnflags - (self.spawnflags & COLD_START);
     self.nextthink = (random() * 0.5) + 7;
   }
+  else if(self.powerup){
+    self.nextthink = self.powerup + (random() * 1);
+  }
   else{
     self.nextthink = 1.0 + (random() * 1);
   }
-
+  
   if( self.ai_set_state ){
     self.think = self.ai_set_state;
   }
   else{
     self.think = ai_state_lurker_frame; //default
   }
-
+  
   self.ai_timer_tracepath = time + 0.1;
   
   self.nextthink = self.nextthink + time;
