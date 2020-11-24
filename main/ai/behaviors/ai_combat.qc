@@ -72,6 +72,13 @@ void() ai_ranged_attack={
   }
   if( fired > 0 ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    
+    if( (self.enemy.flags & FL_CLIENT) ){
+      if( self.trigOnAttack ){
+        trigger_event( self.enemy, self.trigOnAttack );
+        self.target = "";
+      }
+    }
   }
   if( blockShot >= fired ){
     self.combatFlags = TRUE;
@@ -300,6 +307,7 @@ void() ai_nodegraph_combat_frame={
         if( time > self.ai_timer_pathWait ){
           self.ai_last_pathWait = FALSE;
           self.ai_timer_pathWait = time + 1;
+          NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
           pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
           if( pathFind ){
             self.moveState = MOVE_NORM;
@@ -348,12 +356,10 @@ void() ai_nodegraph_combat_brawler_frame={
       self.legs.attack_state = TR_NORM;
       self.moveState = MOVE_NORM;
     }
-  
     nqOrg = nodegraph_get_node_origin( self.nq1 );
     nodeDist = ai_check_dist_node(self.origin, nqOrg);
     if( nodeDist <= 16 ){
       //arrived at node
-      
       //check for pause first
       if( ai_check_pause() ){
         self.ai_fight_pause = TRUE;
@@ -406,6 +412,7 @@ void() ai_nodegraph_combat_brawler_frame={
         if( time > self.ai_timer_pathWait ){
           self.ai_last_pathWait = FALSE;
           self.ai_timer_pathWait = time + 1;
+          NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
           pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
           if( pathFind ){
             self.moveState = MOVE_NORM;

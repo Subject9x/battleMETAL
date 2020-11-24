@@ -82,6 +82,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       if( time > self.ai_timer_pathWait ){
         self.ai_last_pathWait = FALSE;
         self.ai_timer_pathWait = time + 1;
+        NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
         pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
         if( pathFind ){
           self.moveState = MOVE_NORM;

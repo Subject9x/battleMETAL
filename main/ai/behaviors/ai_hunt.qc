@@ -72,6 +72,7 @@ void() ai_nodegraph_hunter_frame={
       
       if( self.ai_last_pathWait ){
         if( time > self.ai_timer_pathWait ){
+          NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
           pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
           if( pathFind ){
             self.moveState = MOVE_NORM;

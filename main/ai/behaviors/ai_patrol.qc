@@ -47,6 +47,7 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
   
   if( self.nq1 == -1 ){
     //maybe the destination > the 24 node-queue vars.
+    dprint(sprintf("%s || ai_nodegraph_patrol_frame()->\n self.nq1 == -1\n        pathEndId = %s\n        patrol.end = %s\n       ", self.classname, ftos(self.pathEndId), ftos(self.patrolNode.pathEndId))); //debug
     ai_nodegraph_trace_vecToNode( self.origin, self.patrolNode.pathEndId );
   }
   else{
@@ -54,10 +55,16 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       nqOrg = nodegraph_get_node_origin( self.nq1 );
       nodeDist = ai_check_dist_node(self.origin, nqOrg);
       if( nodeDist <= 8 ){
+      
+        ai_nodegraph_debug_queue(); //debug
+        
         //arrived at node
-        if( self.nq1 == self.patrolNode.pathEndId ){ 
+        if( self.nq1 == self.patrolNode.pathEndId ){
+          dprint(sprintf("%s || ai_nodegraph_patrol_frame()->\n  self.nq1 == self.patrolNode.pathEndId\n", self.classname)); //debug
+          
           //arrived at patrol node
           if( self.patrolNode.partNext ){
+            dprint(sprintf("      self.patrolNode.partNext = %s\n", ftos(self.patrolNode.partNext.pathEndId))); //debug
             oldNode = self.patrolNode.pathEndId;
             //continue the patrol route
             self.patrolNode = self.patrolNode.partNext;
@@ -65,6 +72,7 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
             ai_nodegraph_trace_norm( oldNode, self.patrolNode.pathEndId );
           }
           else{
+            dprint("      end of line\n"); //debug
             //end of line
             self.tether = TETHER_NONE;
             self.moveState = MOVE_STAND;
@@ -77,9 +85,11 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
             }
             self.patrolNode = world;
           }
+          NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
         }
         else{
           pathFind = ai_nodegraph_next();
+          dprint(sprintf("%s || ai_nodegraph_patrol_frame()->\n   ai_nodegraph_next() = %s\n", self.classname, ftos(pathFind))); //debug
         }
       }
       else{
