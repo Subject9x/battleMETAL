@@ -275,11 +275,9 @@ void() SUB_UseTargets =
 // kill the killtagets
 //
   if (self.killtarget){
-    t = world;
-    do{
-      t = find(t, targetname, self.killtarget);
-      if (!t){
-        return;
+    for( t = nextent(world); t != world; t = nextent(t) ){
+      if( t.targetname != self.killtarget ){
+        continue;
       }
       if( t.data_type && t.th_die){
         t.think = t.th_die;
@@ -288,7 +286,7 @@ void() SUB_UseTargets =
       else{
         remove (t);
       }
-    } while ( 1 );
+    }
   }
 //
 // fire targets
