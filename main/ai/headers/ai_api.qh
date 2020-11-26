@@ -83,7 +83,6 @@ void() ai_pilot_ini_vet;
 void() ai_pilot_ini_ace;
 
 //AI NODEGRAPH====================================
-.float reverseFlag;
 void() node_setup;
 .float nq1; //to keep per-AI pathfinding costs low, we cache the next 4 nodes that the bot must go to
 .float nq2; //here, so that they're not asking the nodegraph to pathfind every frame for every bot.
@@ -110,6 +109,7 @@ void() node_setup;
 .float nq23;
 .float nq24;
 .float pathEndId; //actual end node to the path, used for early exit / check of nq1-16 path cache.
+.float nqLast;  //important, records nq1 AFTER visiting a node, and holds it locked until a certain time/distance.
 
 float( .float queueVar, float pathCountVal ) ai_nodegraph_set_queue_val;
 void() ai_nodegraph_clear_locks;
@@ -263,6 +263,7 @@ void() ai_nodegraph_combat_brawler_frame;
 .float ai_timer_pathWait;     //if path finding failed on the frame AI requested it, wait a random amount of time.
 
 //Values
+.float ai_path_tries;     //super edge case, try different paths during combat if truly stuck, only combat though!
 .float ai_patrol_arrive;  //has arrived at patrolNode
 .float ai_freeze;         //debug tool, freezes AI
 .float ai_fight_pause;    //important part of the fighting step, the AI pauses, turns toward their target, not firing, allows player to 'breathe'

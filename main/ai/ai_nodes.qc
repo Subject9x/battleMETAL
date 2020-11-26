@@ -95,13 +95,9 @@ void() ai_nodegraph_mark_start={
   updates .nodeQueue slots, returns FALSE if there are no nodes left in the path.
 */
 float() ai_nodegraph_next={
-  
-  local float unlockId;
-  
   //NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE; //always make sure AI clears the last node because AI has arrived here.
  
-  //ai_last_node
-  self.ai_last_node = self.nq1;
+  self.nqLast = self.nq1;
   
   self.nq1 = self.nq2;
   self.nq2 = self.nq3;
@@ -138,7 +134,7 @@ float() ai_nodegraph_next={
     return FALSE;
   }
   
-  NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
+  NODEGRAPH_DATA_BLOCK[self.nqLast] = self.entnum;
   
   return TRUE;
 };

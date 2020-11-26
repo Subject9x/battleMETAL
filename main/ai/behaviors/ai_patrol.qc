@@ -44,10 +44,21 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
   local float moveSpeed;
   local float blockCheck;
   local float oldNode;
+  local vector lastNodeOrg;
+  local float lastNodeDist;
+  
+  if( self.nqLast != -1 ){
+    lastNodeOrg = nodegraph_get_node_origin( self.nqLast );
+    lastNodeDist = ai_check_dist_node(self.origin, lastNodeOrg);
+    if( lastNodeDist > 128 ){
+      NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
+    }
+  }
   
   if( self.nq1 == -1 ){
     //maybe the destination > the 24 node-queue vars.
     dprint(sprintf("%s || ai_nodegraph_patrol_frame()->\n self.nq1 == -1\n        pathEndId = %s\n        patrol.end = %s\n       ", self.classname, ftos(self.pathEndId), ftos(self.patrolNode.pathEndId))); //debug
+    ai_nodegraph_clear_locks();
     ai_nodegraph_trace_vecToNode( self.origin, self.patrolNode.pathEndId );
   }
   else{
@@ -55,7 +66,6 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       nqOrg = nodegraph_get_node_origin( self.nq1 );
       nodeDist = ai_check_dist_node(self.origin, nqOrg);
       if( nodeDist <= 8 ){
-      
         ai_nodegraph_debug_queue(); //debug
         
         //arrived at node
@@ -85,7 +95,7 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
             }
             self.patrolNode = world;
           }
-          NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
+          NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
         }
         else{
           pathFind = ai_nodegraph_next();

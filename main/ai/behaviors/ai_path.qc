@@ -23,9 +23,20 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
   local float moveYaw;
   local float moveSpeed;
   local float blockCheck;
+  local vector lastNodeOrg;
+  local float lastNodeDist;
+  
+  if( self.nqLast != -1 ){
+    lastNodeOrg = nodegraph_get_node_origin( self.nqLast );
+    lastNodeDist = ai_check_dist_node(self.origin, lastNodeOrg);
+    if( lastNodeDist > 128 ){
+      NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
+    }
+  }
   
   if( self.nq1 == -1 ){
     //maybe the destination > the 24 node-queue vars.
+    ai_nodegraph_clear_locks();
     ai_nodegraph_trace_vec( self.origin, targDest );
   }
   else{
