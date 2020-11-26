@@ -49,6 +49,11 @@ vector CLR_UI_DM_HANGAR = '0.26 0.4 0.0';
 vector CLR_UI_DM_ARMING = '0.26 0.4 0.0';
 vector CLR_UI_DM_DEPLOY = '0.26 0.4 0.0';
 
+
+//Objectives
+vector CLR_UI_OBJT_SECOND = '0.7 0.55 0.0';
+vector CLR_UI_OBJT_THIRD = '0.85 0.85 0.0';
+
 //HUD Colors
 vector CLR_HUD_WHITE = '0.9 0.9 0.9';     //0
 vector CLR_HUD_GREEN = '0.2 0.8 0.2';     //1

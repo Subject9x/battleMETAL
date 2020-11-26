@@ -370,6 +370,8 @@ void(vector ofs) menu_briefObjectivePanel={
   local vector objectiveOffset;
   local string desc;
   local string text;
+  local entity eObj;
+  local vector objColor;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -383,7 +385,19 @@ void(vector ofs) menu_briefObjectivePanel={
   while(eol){
     desc = MSN_OBJ_DESC[lst_idx];
     text = strcat( ftos(lst_idx),") ", desc);
-    line_rtn = gui_wrapText(objectiveOffset, '265 332', text, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+    eObj = data_objective_find( lst_idx );
+    
+    objColor = CLR_DEF_TXT_GRAY_SMOOTH;
+    if( eObj ){
+      if( eObj.aState == 2 ){
+        objColor = CLR_UI_OBJT_SECOND;
+      }
+      if(  eObj.aState == 3 ){
+        objColor = CLR_UI_OBJT_THIRD;
+      }
+    }
+    
+    line_rtn = gui_wrapText(objectiveOffset, '265 332', text, '12 12 0', objColor, 1);
     
     if(MSN_OBJ_DESC[(lst_idx+1)] == ""){
       eol = FALSE;

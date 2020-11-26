@@ -117,6 +117,23 @@ void( float isNew, float entFlags ) data_nav_point={
   }  
 };
 
+
+entity( float objId ) data_objective_find={
+  local entity t;
+  local entity e;
+  for( t = nextent(world); t != world; t = nextent(t) ){
+    if( t.data_type != DATA_OBJT ){
+      continue;
+    }
+    if( t.data_idx != objId ){
+      continue;
+    }
+    e = t;
+  }
+  
+  return e;
+};
+
 /*
   OBJECT - Mission Objective
 */

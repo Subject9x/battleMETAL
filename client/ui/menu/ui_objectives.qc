@@ -9,6 +9,7 @@ void(vector org) ui_objective_frame={
   if(UI_OBJECTIVE_ACTIVE){
     local float lst_idx, itr;
     local vector torg;
+    local entity eObj;
     
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -24,10 +25,20 @@ void(vector org) ui_objective_frame={
 
       complete = OBJECTIVES[itr];
       if( complete != OBJECTIVE_DISABLE ){
+        
+        eObj = data_objective_find( itr );
         line = torg;
         line_y = line_y + gui_percentYRaw( (lst_idx+1) * 16);
         obj = strcat(ftos(lst_idx+1),") ",MSN_OBJ_DESC[itr]); 
         colr = HUD_COLOR_DEF;
+        if( eObj ){
+          if( eObj.aState == 2 ){
+            colr = CLR_UI_OBJT_SECOND;
+          }
+          if(  eObj.aState == 3 ){
+            colr = CLR_UI_OBJT_THIRD;
+          }
+        }
         if( complete == OBJECTIVE_FAIL ){
           colr = CLR_DEF_RED;
           obj = strcat(obj, " !FAILED!");
