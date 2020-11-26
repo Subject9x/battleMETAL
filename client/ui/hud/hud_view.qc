@@ -455,13 +455,13 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
 */
 void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_renderWeapon2={
   local entity theWeapon;
-  
+  local vector rOrg;
   local vector iofs, ofs, metSize, wepState;
   
   theWeapon = gui_get_weapon(w_bit);
   
-  torg = gui_percentToPixelRawVec(torg);
-  torg = gui_calcAlign(torg, algn);
+  rOrg = gui_percentToPixelRawVec(torg);
+  rOrg = gui_calcAlign(torg, algn);
   
   if( (CLIENT_weapon_state & w_bit) ){
     //weapon selected
@@ -492,18 +492,18 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
   imgSz = gui_percentToPixelRawVec(imgSz);
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
-  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
+  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), rOrg);
   if( theWeapon.icon != ""){
     drawpic(iofs, theWeapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
   if( wepState != CLR_DEF_TXT_CANTSELECT){
     if( theWeapon.data_idx > 0 ){
-      ofs_x = imgSz_x / 2;
+      ofs_x = imgSz_x * -0.375;
       ofs_y = imgSz_y;
-      metSize_x = gui_percentXRaw(-20);
+      metSize_x = gui_percentXRaw(20);
       metSize_y = imgSz_y;
-      ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
+      ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), rOrg); 
       gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
     }
   }
