@@ -1074,13 +1074,13 @@ void() hud_lock_frame={
   //2) just acquired lock
   if( (CLIENT_stat_lock_state & LOCK_TARG_START) ){
     if( (time > HUD_LOCK_STEP) && (time < HUD_LOCK_TIME_END) ){
-      HUD_LOCK_ALPHA = HUD_LOCK_ALPHA + HUD_LOCK_ALPHA_RATE * 0.55;
+      HUD_LOCK_ALPHA = HUD_LOCK_ALPHA + HUD_LOCK_ALPHA_RATE * 0.4;
       HUD_LOCK_SIZE = HUD_LOCK_SIZE - HUD_LOCK_SIZE_RATE;
       HUD_LOCK_STEP = time + HUD_LOCK_STEP_RATE;
     }
   }
   else if( (CLIENT_stat_lock_state & LOCK_TARG_HAS) && (HUD_LOCK_STATE_PREV & LOCK_TARG_START) ){
-    HUD_LOCK_ALPHA = 0.55;
+    HUD_LOCK_ALPHA = 0.4;
     HUD_LOCK_COLOR = CLR_DEF_RET_HASLOCK;
   }
   HUD_LOCK_STATE_PREV = CLIENT_stat_lock_state;
