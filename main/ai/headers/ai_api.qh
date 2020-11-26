@@ -116,6 +116,7 @@ void() ai_nodegraph_clear_locks;
 void() ai_nodegraph_mark_start; //if a bot starts too close to a node, mark that node occupied.
 void() ai_nodegraph_clear_path; //mostly just for ini.
 float() ai_nodegraph_next; //updates .nodeQueue slots, returns FALSE if there are more nodes to go.
+void() ai_nodegraph_check_lastnode;
 float( float startId, float endId ) ai_nodegraph_trace_route;
 float( float nodeStartId, float nodeEndId ) ai_nodegraph_trace_norm;  //used mostly by patrol
 float( vector startPos, vector endPos ) ai_nodegraph_trace_vec;     // wraps nodegraph_trace() by allowing start / end pos
@@ -156,14 +157,15 @@ float() ai_find_target_radar;
 void( entity ally, entity targ, float override ) ai_give_target;
 void() ai_unit_make_trigger;
 float(vector destOrg, float wishSpeed) ai_calc_move;
-entity(entity node) ai_node_to_target;
 entity(float checkDir) ai_get_next_node;
-float(entity toCheck) ai_check_node_radius;
-float() ai_check_node_radius_targdist;
 entity() ai_node_tether_find;
 float( vector source, vector trgdst ) ai_check_terrain_move;
 void(entity none) ai_NULL_pain={ };
 float() ai_NULL_missile={ return FALSE;};
+
+//entity(entity node) ai_node_to_target;  DEPRECATED - release v1.0.0
+//float(entity toCheck) ai_check_node_radius; DEPRECATED - release v1.0.0
+//float() ai_check_node_radius_targdist;  DEPRECATED - release v1.0.0
 
 .float combatFlags; //populated by ai_combat_state_frame()
 
@@ -192,7 +194,7 @@ void() ai_sfx_help;
 
 ////////////////////////////////
 //AI-CONTROL FUNCTIONS - ai_ctrl.qc
-float() ai_blocked_teleport;
+//float() ai_blocked_teleport; DEPRECATED - release v1.0.0
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
 void() ai_touch;
 void() ai_face_goal;
@@ -273,7 +275,8 @@ void() ai_nodegraph_combat_brawler_frame;
 .float ai_is_targetfade;  //currently rotating to prev. target's cached position.
 .vector ai_fadePos;       //used for last known position rotate.
 .float ai_flee;           //is fleeing contact
-.float ai_last_pathWait;  //
+.float ai_last_pathWait;  //further stipples pathfinding by making AI wait a bit before trying to path to a spot again.
+.float ai_reverse;        //used when node angle is in the rear 90d of facing, potentially reducing move time.
 
 //DEBUG function
 //when you need the var-name for a global var value.

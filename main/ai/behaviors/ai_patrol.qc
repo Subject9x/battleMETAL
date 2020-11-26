@@ -21,21 +21,8 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       
       the patrolNode itself also holds the closest NODEGRAPH node ID as well.
   */
- 
-    //check if we're actually closer to the NEXT node
-  /*if( self.patrolNode.partNext ){
   
-    nqOrg = nodegraph_get_node_origin( self.patrolNode.partNext.pathEndId );
-    nextDist = ai_check_dist_node(self.origin, nqOrg);    
-    if( nextDist <= nodeDist ){
-      self.patrolNode = self.patrolNode.partNext;
-      pathFind = ai_nodegraph_to_org_filter( self.origin , self.patrolNode.pathEndId, TRUE );
-      ai_nodegraph_trace_vecToNode( self.origin, pathFind );
-      return;
-    }
-  }*/
   //-----------------
-  
   
   local float pathFind;
   local float nodeDist;
@@ -44,20 +31,14 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
   local float moveSpeed;
   local float blockCheck;
   local float oldNode;
-  local vector lastNodeOrg;
-  local float lastNodeDist;
+  local float walkAngle;
   
   if( self.nqLast != -1 ){
-    lastNodeOrg = nodegraph_get_node_origin( self.nqLast );
-    lastNodeDist = ai_check_dist_node(self.origin, lastNodeOrg);
-    if( lastNodeDist > 128 ){
-      NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
-    }
+    ai_nodegraph_check_lastnode();
   }
   
   if( self.nq1 == -1 ){
     //maybe the destination > the 24 node-queue vars.
-    dprint(sprintf("%s || ai_nodegraph_patrol_frame()->\n self.nq1 == -1\n        pathEndId = %s\n        patrol.end = %s\n       ", self.classname, ftos(self.pathEndId), ftos(self.patrolNode.pathEndId))); //debug
     ai_nodegraph_clear_locks();
     ai_nodegraph_trace_vecToNode( self.origin, self.patrolNode.pathEndId );
   }
@@ -65,16 +46,12 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
     if( !self.ai_last_pathWait ){
       nqOrg = nodegraph_get_node_origin( self.nq1 );
       nodeDist = ai_check_dist_node(self.origin, nqOrg);
+      //------------------------------------------------------------------------------------------------------------------------------------------
       if( nodeDist <= 8 ){
-        ai_nodegraph_debug_queue(); //debug
-        
         //arrived at node
         if( self.nq1 == self.patrolNode.pathEndId ){
-          dprint(sprintf("%s || ai_nodegraph_patrol_frame()->\n  self.nq1 == self.patrolNode.pathEndId\n", self.classname)); //debug
-          
           //arrived at patrol node
           if( self.patrolNode.partNext ){
-            dprint(sprintf("      self.patrolNode.partNext = %s\n", ftos(self.patrolNode.partNext.pathEndId))); //debug
             oldNode = self.patrolNode.pathEndId;
             //continue the patrol route
             self.patrolNode = self.patrolNode.partNext;
@@ -82,7 +59,6 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
             ai_nodegraph_trace_norm( oldNode, self.patrolNode.pathEndId );
           }
           else{
-            dprint("      end of line\n"); //debug
             //end of line
             self.tether = TETHER_NONE;
             self.moveState = MOVE_STAND;
@@ -99,8 +75,8 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
         }
         else{
           pathFind = ai_nodegraph_next();
-          dprint(sprintf("%s || ai_nodegraph_patrol_frame()->\n   ai_nodegraph_next() = %s\n", self.classname, ftos(pathFind))); //debug
         }
+      //------------------------------------------------------------------------------------------------------------------------------------------
       }
       else{
         self.moveState = MOVE_NORM;
@@ -115,7 +91,20 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
           moveSpeed = turnSpeed;
           //yaw is too wide, stop moving and just pivot to node
           moveYaw = anglemod(self.angles_y - self.ideal_yaw);
-          if( moveYaw > 15 && moveYaw < 345 ){
+          if(moveYaw > 135 && moveYaw < 225 ){
+            if( self.nq2 == -1 ){
+              self.ai_reverse = TRUE;
+              moveSpeed = self.data_speed_backward;
+            }
+            else{
+              nqOrg = nodegraph_get_node_origin( self.nq2 );
+              if( ai_check_face_origin(nqOrg, 0.75, FALSE) ){
+                self.ai_reverse = TRUE;
+                moveSpeed = self.data_speed_backward;
+              }
+            }
+          }
+          else  if( moveYaw > 15 && moveYaw < 345 ){
             self.moveState = MOVE_STAND;
             moveSpeed = 0;
             if( self.legs ){
@@ -148,7 +137,13 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       }
     }
     else{
-      if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+      if( self.ai_reverse ){
+        walkAngle = anglemod(self.angles_y - 180);
+      }
+      else{
+        walkAngle = self.angles_y;
+      }
+      if( walkmove(walkAngle, moveSpeed) == FALSE ){
         if( time > self.ai_timer_pathWait ){
           self.ai_last_pathWait = TRUE;
           self.ai_timer_pathWait = time + (0.5 + random() * 1.0);

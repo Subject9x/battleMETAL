@@ -44,7 +44,9 @@ void() ai_nodegraph_clear_locks={
   
   while( nodeItr < NODE_ID_COUNT ){
     if( NODEGRAPH_DATA_BLOCK[nodeItr] == self.entnum ){
-      NODEGRAPH_DATA_BLOCK[nodeItr] = FALSE;
+      if( nodeItr != self.nqLast ){
+        NODEGRAPH_DATA_BLOCK[nodeItr] = FALSE;
+      }
     }
     nodeItr = nodeItr + 1;
   }
@@ -87,7 +89,7 @@ void() ai_nodegraph_mark_start={
   if( foundNode > -1 ){
     //mark as blocked, set nq1 reference to node id, so that it will be cleared when the AI calls their trace_route for the first time.
     NODEGRAPH_DATA_BLOCK[nodeItr] = self.entnum;
-    self.nq1 = nodeItr;
+    self.nqLast = nodeItr;
   }
 };
 
@@ -95,10 +97,8 @@ void() ai_nodegraph_mark_start={
   updates .nodeQueue slots, returns FALSE if there are no nodes left in the path.
 */
 float() ai_nodegraph_next={
-  //NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE; //always make sure AI clears the last node because AI has arrived here.
- 
-  self.nqLast = self.nq1;
   
+  self.nqLast = self.nq1;
   self.nq1 = self.nq2;
   self.nq2 = self.nq3;
   self.nq3 = self.nq4;
@@ -134,9 +134,35 @@ float() ai_nodegraph_next={
     return FALSE;
   }
   
-  NODEGRAPH_DATA_BLOCK[self.nqLast] = self.entnum;
+  //simple safety check
+  if( self.nqLast != -1 ){
+    NODEGRAPH_DATA_BLOCK[self.nqLast] = self.entnum;
+  }
+  
+  NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
   
   return TRUE;
+};
+
+
+/*
+  To reduce traffic jams further, self.nqLast holds the lock on THE
+    last node an AI visited. 
+    
+  This function, run every nodegraph frame, we check to see if the AI is a good enough distance
+  from the last node, if they are, clear the lock, otherwise the lock is held.
+*/
+void() ai_nodegraph_check_lastnode={
+  local vector lastNodeOrg;
+  local float lastNodeDist;
+  
+  lastNodeOrg = nodegraph_get_node_origin( self.nqLast );
+  lastNodeDist = ai_check_dist_node(self.origin, lastNodeOrg);
+  
+  if( lastNodeDist > 64 ){
+    NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
+    self.nqLast = -1;
+  }
 };
 
 /*
@@ -390,6 +416,7 @@ float( vector testOrg , float ignoreId, float checkLock ) ai_nodegraph_to_org_fi
 void() ai_nodegraph_debug_queue={
 
   dprint("*****************NODE QUEUE THIS FRAME ************************\n");  //debug
+  dprint(sprintf("------------%s-------------------\n", self.classname));  //debug
   dprint(sprintf("    nq1 = %s\n", ftos(self.nq1)));  //debug
   dprint(sprintf("    nq2 = %s\n", ftos(self.nq2)));  //debug
   dprint(sprintf("    nq3 = %s\n", ftos(self.nq3)));  //debug

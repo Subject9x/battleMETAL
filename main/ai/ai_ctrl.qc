@@ -5,11 +5,10 @@ Date: 7/9/2018
 rebuild: 07/12/2020
 Overview: 
   AI Controller functions
-
 */
 
-
 /*
+  DEPRECATED - release v1.0.0
   Teleport when blocked.
   Simple garbage-collect, place AI either
     NEAR closest ai_node_tether
@@ -18,7 +17,7 @@ Overview:
   
   ONLY if the player is far away and obscured!
 */
-float() ai_blocked_teleport={
+/*float() ai_blocked_teleport={
   local entity clients;
   local entity node;
   local float canPort;
@@ -61,7 +60,7 @@ float() ai_blocked_teleport={
     }
   }
   return FALSE;
-};
+};*/
 
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw={
   local float angleMin, angleMax;
@@ -119,7 +118,6 @@ void() ai_touch={
   
   //AI DOES have a current enemy
   enemyFront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET) );
-  //distanc = ai_check_node_radius(self.enemy);
   vis = ai_check_vis(self.enemy);
   
   if( !enemyFront && otherFront ){
@@ -143,26 +141,39 @@ void(entity atk) ai_react={
   }
   
   if( atk == self.enemy ){
-    self.ai_react_buffer = time + self.ai_react_time * 1;
+    self.ai_react_buffer = time + (self.ai_react_time * 1);
     return;
   }
 
   if( atk.data_type == DATA_BLD && self.enemy.data_type != DATA_BLD ){
-    self.ai_react_buffer = time + self.ai_react_time * 2;
+    //ignore turrets because they're lower priority.
+    self.ai_react_buffer = time + (self.ai_react_time * 2);
     return;
   }
 
   //AI currently has target
-  if( ai_check_vis(self.enemy) == VIS_FRAC ){
-    if( ai_check_node_radius(self.enemy) > 1.0 ){
+  if( ai_valid_target(self.enemy) ){
+    if( atk.data_type == DATA_BLD && self.enemy.data_type != DATA_BLD ){
+      //buildings are always low priority.
+      self.ai_react_buffer = time + (self.ai_react_time * 2);
       return;
     }
-  }
-  if( ai_check_vis(self.enemy) == VIS_FRN ){
-    if( ai_check_node_radius(self.enemy) <= 1.0 ){
-      return;
+    if( (self.enemy.flags & FL_CLIENT) ){
+      if( !ai_check_targ_infront(self.enemy, self.ai_fov, (self.flags & FL_TURRET)) ){
+        if( !(atk.flags & FL_CLIENT) ){
+          self.ai_react_buffer = time + (self.ai_react_time * 2);
+          return;
+        }
+      }
+    }
+    else{
+      if( ai_check_vis(self.enemy) != VIS_FAIL || !ai_check_targ_infront(self.enemy, self.ai_fov, (self.flags & FL_TURRET)) ){
+        self.ai_react_buffer = time + (self.ai_react_time * 1);
+        return;
+      }
     }
   }
+  
   self.enemy = atk;
   self.ai_react_buffer = time + self.ai_react_time * 5;
 };
@@ -481,7 +492,7 @@ void() ai_setup_patrol={
   }
   
   ai_nodegraph_clear_path();
-  //ai_nodegraph_mark_start();
+  ai_nodegraph_mark_start();
   
   if( nodeFail ){
     self.tether = TETHER_NONE;

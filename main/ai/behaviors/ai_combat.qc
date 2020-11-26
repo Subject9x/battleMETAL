@@ -246,15 +246,9 @@ void() ai_nodegraph_combat_frame={
   local vector nqOrg;
   local float moveYaw;
   local float moveSpeed;
-  local vector lastNodeOrg;
-  local float lastNodeDist;
   
   if( self.nqLast != -1 ){
-    lastNodeOrg = nodegraph_get_node_origin( self.nqLast );
-    lastNodeDist = ai_check_dist_node(self.origin, lastNodeOrg);
-    if( lastNodeDist > 128 ){
-      NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
-    }
+    ai_nodegraph_check_lastnode();
   }
   
   if( self.nq1 == -1 ){
@@ -271,9 +265,11 @@ void() ai_nodegraph_combat_frame={
       if( ai_check_pause() ){
         self.ai_fight_pause = TRUE;
       }
-      pathFind = ai_nodegraph_next();
-      if( !pathFind ){
-        ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+      else{
+        pathFind = ai_nodegraph_next();
+        if( !pathFind ){
+          ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
+        }
       }
     }
     else{ 
@@ -318,7 +314,6 @@ void() ai_nodegraph_combat_frame={
         if( time > self.ai_timer_pathWait ){
           self.ai_last_pathWait = FALSE;
           self.ai_timer_pathWait = time + 1;
-          NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
           pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
           if( pathFind ){
             self.moveState = MOVE_NORM;
@@ -357,15 +352,9 @@ void() ai_nodegraph_combat_brawler_frame={
   local vector nqOrg;
   local float moveYaw;
   local float moveSpeed;
-  local vector lastNodeOrg;
-  local float lastNodeDist;
   
   if( self.nqLast != -1 ){
-    lastNodeOrg = nodegraph_get_node_origin( self.nqLast );
-    lastNodeDist = ai_check_dist_node(self.origin, lastNodeOrg);
-    if( lastNodeDist > 128 ){
-      NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
-    }
+    ai_nodegraph_check_lastnode();
   }
   
   if( self.nq1 == -1 ){
@@ -391,9 +380,11 @@ void() ai_nodegraph_combat_brawler_frame={
       if( ai_check_pause() ){
         self.ai_fight_pause = TRUE;
       }
-      pathFind = ai_nodegraph_next();
-      if( !pathFind ){
-        ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+      else{
+        pathFind = ai_nodegraph_next();
+        if( !pathFind ){
+          ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
+        }
       }
     }
     else{
@@ -439,7 +430,6 @@ void() ai_nodegraph_combat_brawler_frame={
         if( time > self.ai_timer_pathWait ){
           self.ai_last_pathWait = FALSE;
           self.ai_timer_pathWait = time + 1;
-          NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
           pathFind = ai_nodegraph_trace_vec( self.origin, self.enemy.origin );
           if( pathFind ){
             self.ai_path_tries = 0;

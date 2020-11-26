@@ -23,15 +23,10 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
   local float moveYaw;
   local float moveSpeed;
   local float blockCheck;
-  local vector lastNodeOrg;
-  local float lastNodeDist;
+  local float walkAngle;
   
   if( self.nqLast != -1 ){
-    lastNodeOrg = nodegraph_get_node_origin( self.nqLast );
-    lastNodeDist = ai_check_dist_node(self.origin, lastNodeOrg);
-    if( lastNodeDist > 128 ){
-      NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
-    }
+    ai_nodegraph_check_lastnode();
   }
   
   if( self.nq1 == -1 ){
@@ -58,6 +53,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
         }
       }
       else{
+        self.ai_reverse = FALSE;
         self.moveState = MOVE_NORM;
         if( self.legs ){
           self.legs.attack_state = TR_NORM;
@@ -70,7 +66,20 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
           moveSpeed = turnSpeed;
           //yaw is too wide, stop moving and just pivot to node
           moveYaw = anglemod(self.angles_y - self.ideal_yaw);
-          if( moveYaw > 15 && moveYaw < 345 ){
+          if(moveYaw > 135 && moveYaw < 225 ){
+            if( self.nq2 == -1 ){
+              self.ai_reverse = TRUE;
+              moveSpeed = self.data_speed_backward;
+            }
+            else{
+              nqOrg = nodegraph_get_node_origin( self.nq2 );
+              if( ai_check_face_origin(nqOrg, 0.75, FALSE) ){
+                self.ai_reverse = TRUE;
+                moveSpeed = self.data_speed_backward;
+              }
+            }
+          }
+          else  if( moveYaw > 15 && moveYaw < 345 ){
             self.moveState = MOVE_STAND;
             moveSpeed = 0;
             if( self.legs ){
@@ -93,7 +102,6 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       if( time > self.ai_timer_pathWait ){
         self.ai_last_pathWait = FALSE;
         self.ai_timer_pathWait = time + 1;
-        NODEGRAPH_DATA_BLOCK[self.nq1] = FALSE;
         pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
         if( pathFind ){
           self.moveState = MOVE_NORM;
@@ -104,7 +112,13 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       }
     }
     else{
-      if( walkmove(self.angles_y, moveSpeed) == FALSE ){
+      if( self.ai_reverse ){
+        walkAngle = anglemod(self.angles_y + 180);
+      }
+      else{
+        walkAngle = self.angles_y;
+      }
+      if( walkmove(walkAngle, moveSpeed) == FALSE ){
         if( self.tether == TETHER_PATROL ){
           blockCheck = NODEGRAPH_DATA_BLOCK[self.patrolNode.pathEndId];
           if( blockCheck != FALSE || blockCheck != self.entnum ){

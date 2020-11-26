@@ -20,15 +20,9 @@ void() ai_nodegraph_hunter_frame={
   local vector nqOrg;
   local float moveYaw;
   local float moveSpeed;
-  local vector lastNodeOrg;
-  local float lastNodeDist;
   
   if( self.nqLast != -1 ){
-    lastNodeOrg = nodegraph_get_node_origin( self.nqLast );
-    lastNodeDist = ai_check_dist_node(self.origin, lastNodeOrg);
-    if( lastNodeDist > 128 ){
-      NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
-    }
+    ai_nodegraph_check_lastnode();
   }
   
   if( self.nq1 == -1 ){

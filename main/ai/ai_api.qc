@@ -365,11 +365,12 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
 };
 
 /*
+  DEPRECATED - release v1.0.0
   WHEN: AI are set to TETHER_PATROL, they can query their patrol nodes for better positioning data.
     This checks to see if patrolNode.partNext or patrolNode.partPrev are CLOSER to the desired target.
     If they are, then the AI executes MOVE_NODE_TACTICAL to get there.
 */
-entity(entity targ) ai_node_to_target={
+/*entity(entity targ) ai_node_to_target={
   local entity hold;
   local entity found;
   local float dist;
@@ -401,7 +402,7 @@ entity(entity targ) ai_node_to_target={
     found = self.patrolNode;
   }
   return found;
-};
+};*/
 
 /*
   Simply moves up/down the AI's patrolNode chain (if possible)
@@ -426,6 +427,7 @@ entity(float checkDir) ai_get_next_node={
 //OLD NODE CODE=========================================
 
 /*
+  DEPRECATED - release v1.0.0
   Check if entity <toCheck> is outside of 
   
   AI's current patrolNode.ai_view radius.
@@ -434,7 +436,7 @@ entity(float checkDir) ai_get_next_node={
   
   a value > 1 is out of node radius
 */
-float(entity toCheck) ai_check_node_radius={
+/*float(entity toCheck) ai_check_node_radius={
   local float distance;
   distance = vlen(toCheck.origin - self.patrolNode.origin);
   if( self.patrolNode.ai_view != 0 ){
@@ -444,14 +446,15 @@ float(entity toCheck) ai_check_node_radius={
     distance = max(distance / AI_RANGE_S, 0.01);
   }
   return distance;
-};
+};*/
 
 /*
+  DEPRECATED - release v1.0.0
   A soft-wrapper for ai_check_node_radius();
     this converts self.stat_trg_dst (target distance to self)
     in a percentage of node radius.
 */
-float() ai_check_node_radius_targdist={
+/*float() ai_check_node_radius_targdist={
   local float distance;
   if( self.patrolNode.ai_view != 0 ){
     distance = max(self.stat_trg_dist / self.patrolNode.ai_view, 0.01);
@@ -460,7 +463,7 @@ float() ai_check_node_radius_targdist={
     distance = 1.0;
   }
   return distance;
-};
+};*/
 
 /*
   initialize weapon loadout default IF
