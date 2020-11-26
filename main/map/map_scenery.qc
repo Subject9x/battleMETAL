@@ -55,7 +55,6 @@ void() doodad_rocks_desert_1={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -24));
-  dprint(sprintf("%s - min - %s|| max - %s\n", self.model, vtos(self.mins), vtos(self.maxs))); //debug
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
@@ -69,7 +68,6 @@ void() doodad_rocks_desert_2={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -24));
-  dprint(sprintf("%s - min - %s|| max - %s\n", self.model, vtos(self.mins), vtos(self.maxs))); //debug
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
@@ -83,7 +81,6 @@ void() doodad_rocks_desert_3={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin + (v_up * -12));
-  dprint(sprintf("%s - min - %s|| max - %s\n", self.model, vtos(self.mins), vtos(self.maxs))); //debug
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
