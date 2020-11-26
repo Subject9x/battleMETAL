@@ -189,6 +189,7 @@ void() sendevent_mech_ai_die={
   local entity weps;
   local entity rem;
   local float wId;
+  local entity deadLegs;
   
   if(self == CLIENT_target_ent){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
@@ -216,6 +217,16 @@ void() sendevent_mech_ai_die={
     sendent_handle_remove(self.armLeft);
     sendent_handle_remove(self.armRight);
     sendent_handle_remove(self.legs);
+    deadLegs = spawn();
+    deadLegs.drawmask = MASK_NORMAL;
+    setmodel(deadLegs, self.legs.model);
+    setsize(deadLegs, deadLegs.mins, deadLegs.maxs);
+    setorigin(deadLegs, self.legs.origin);
+    deadLegs.solid = SOLID_NOT;
+    deadLegs.colormod = 0.25;
+    deadLegs.frame = 1;
+    deadLegs.think = SUB_Remove;
+    deadLegs.nextthink = time + 450 + (random() * 250);
   }
 };
 
