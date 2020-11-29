@@ -51,6 +51,7 @@ void() data_projectile_ini_missile_swarm_={
     self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL"); 
     self.pcl_explode = projectile_swarm_expl;
     self.scale = 1.5;
+    self.effects = self.effects | EF_FULLBRIGHT;
   #endif 
   
   #ifdef SSQC
@@ -58,7 +59,7 @@ void() data_projectile_ini_missile_swarm_={
     self.touch = data_projectile_missile_swarm_touch;      
     self.gravity = 0.04;
     self.movetype = MOVETYPE_TOSS;
-    self.effects = self.effects | EF_LOWPRECISION;
+    self.effects = self.effects | EF_FULLBRIGHT;
     self.isActive = TRUE;
   #endif
 };

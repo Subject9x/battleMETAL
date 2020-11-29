@@ -52,12 +52,13 @@ void() data_projectile_ini_missile_laserguide_={
     self.traileffectnum = particleeffectnum("TE_LGM_TRAIL");
     self.pcl_explode = projectile_mlg_expl;
     self.scale = 2;
+    self.effects = self.effects | EF_FULLBRIGHT;
   #endif 
   
   #ifdef SSQC
     self.touch = data_projectile_missile_laserguide_touch;
     self.think = data_projectile_missile_laserguide_think;
-    self.effects = self.effects | EF_LOWPRECISION;
+    self.effects = self.effects | EF_FULLBRIGHT;
   #endif
 };
 #ifdef SSQC

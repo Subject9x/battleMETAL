@@ -49,6 +49,7 @@ void() data_projectile_ini_snub_artillery_={
     self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
     self.pcl_explode = projectile_sfga_expl;
     self.scale = 1.25;
+    self.effects = self.effects | EF_FULLBRIGHT;
   #endif
     
   #ifdef SSQC
@@ -57,7 +58,7 @@ void() data_projectile_ini_snub_artillery_={
     self.gravity = 0.03;
     self.movetype = MOVETYPE_TOSS;
     self.w_range = DAT_PRJ_SFGA_RAD;
-    self.effects = self.effects | EF_LOWPRECISION;
+    self.effects = self.effects | EF_FULLBRIGHT;
   #endif
 };
 

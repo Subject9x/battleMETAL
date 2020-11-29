@@ -95,12 +95,13 @@ void() data_projectile_ini_missile_active_radar_={
     self.pcl_explode = projectile_marh_expl;
     self.scale = 1.25;
     self.predraw_projectile = predraw_marh;
+    self.effects = self.effects | EF_FULLBRIGHT;
     projectile_marh_multi();
   #endif
   
   #ifdef SSQC
     self.think = data_projectile_missile_activeradar_delay;
-    self.effects = self.effects | EF_LOWPRECISION;
+    self.effects = self.effects | EF_FULLBRIGHT;
     self.ai_dir = 1.0;
   #endif
 };
