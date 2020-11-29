@@ -818,12 +818,12 @@ void() func_rain_think={
 	
 	if( (self.spawnflags & 2) ){
 		if( time > self.data_lifetime ){
-		  if( self.trigOnDeath )
+		  if( self.trigOnDeath != string_null ){
         trigger_event( self, self.trigOnDeath );
-		  
-		  if( (self.spawnflags & 64) )
+		  }
+		  if( (self.spawnflags & 64) ){
         remove(self);
-        
+      }
 		  return;
 		}
 	}

@@ -52,7 +52,7 @@ void() ai_gev_die={
   self.enemy = world;
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
  
   // run weapon death animation
   local entity w_chain;

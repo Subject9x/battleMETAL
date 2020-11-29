@@ -211,7 +211,7 @@ void() ai_noncom_die={
   self.attack_state = -1;
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
 
   self.think = BecomeExplosion;
   self.nextthink = time + 2;

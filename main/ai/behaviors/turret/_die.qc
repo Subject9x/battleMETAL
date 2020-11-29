@@ -69,7 +69,7 @@ void() ai_turret_die={
   ctrl_unit_part_death(self.torsoCenter);
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
 
   makevectors( self.angles );
   

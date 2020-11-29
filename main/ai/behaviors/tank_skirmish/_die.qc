@@ -36,7 +36,7 @@ void() ai_tank_sk_die={
   droptofloor();
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
 
   // run weapon death animation
   local entity w_chain;

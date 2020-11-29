@@ -314,7 +314,7 @@ void() ai_vtol_die={
   }
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
   
   self.touch = ai_vtol_crash;
   

@@ -46,7 +46,7 @@ void() ai_mech_sk_die={
   self.legs.nextthink = time + 0.05;
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
   
   if( self.moveState != MOVE_STAND ){
     ctrl_unit_part_death(self.torsoCenter);

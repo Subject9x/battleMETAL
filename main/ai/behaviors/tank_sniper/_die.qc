@@ -47,7 +47,7 @@ void() ai_vec_dest_die={
   ctrl_unit_part_death(self.cockpit);
   
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
 
   self.think = ai_vec_dest_clean;
   self.ai_action_time = time + 600;
