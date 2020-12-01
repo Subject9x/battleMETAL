@@ -46,7 +46,7 @@ float		trace_inwater;
 void()		CSQC_Init;
 void()		CSQC_Shutdown;
 float(float evtype, float scanx, float chary, float devid)	CSQC_InputEvent;
-void(float w, float h, float m)		CSQC_UpdateView;
+void(float w, float h, float menuView)		CSQC_UpdateView;
 float(string s)	CSQC_ConsoleCommand;
 void(float isnew) CSQC_Ent_Update;
 void() CSQC_Ent_Remove;

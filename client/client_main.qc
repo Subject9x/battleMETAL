@@ -200,7 +200,7 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 
 
 // the most important function in CSQC...
-void(float w, float h, float menushown) CSQC_UpdateView =
+void(float w, float h, float menuView) CSQC_UpdateView =
 {
 
   //oh this is an ugly hack

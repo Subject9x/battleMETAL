@@ -21,7 +21,6 @@ void() PlayerPreThink = {
   client_update_losses();
   
   if( self.playerState == PLAYER_INTERMSN ){
-    client_push_player_info_thin();
     if( MISSION_STATUS == MISSION_STATUS_ENDING ){
       return;
     }
@@ -40,7 +39,6 @@ void() PlayerPreThink = {
 	}
   
   if( self.playerState == PLAYER_INTERMSN ){
-    client_push_player_info_thin();
     if(world.animaticOnly){
       return;
     }
@@ -100,8 +98,6 @@ called after running player input frame
 ============
 */
 void() PlayerPostThink = {
-  local float proxNode;
-  local vector proxNodeOrg;
   
   if (self.deadflag >= DEAD_DYING){
     return;
@@ -123,7 +119,6 @@ void() PlayerPostThink = {
   }
   
   if( self.playerState == PLAYER_INTERMSN ){
-    client_push_player_info_thin();
     if(world.animaticOnly){
       return;
     }

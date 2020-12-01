@@ -79,12 +79,6 @@ void() client_push_player_info={
   }
 };
 
-/*
-  sends just player state and stuff
-*/
-void() client_push_player_info_thin={
- // self.ammo_rockets = self.flags;
-}
 void( entity targetClient ) server_push_player_info={
   local entity this;
   this = self;

@@ -45,7 +45,7 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
 };
 
 /*
-  RENDERS A LABEL 'TARGET' AND THE TARGET'S NAME
+  2D HUD - RENDERS A LABEL 'TARGET' AND THE TARGET'S NAME
 */
 void(vector ofs, float algn) hud_renderTargetName={
   local float msgLen;
@@ -198,15 +198,15 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   drawdist = vlen(pmove_org - CLIENT_target_ent.origin);
   if( drawdist < CLIENT_radar_range * 0.25 ){
     drawSize = '10 10 0';
-    adj = 30;
+    adj = 50;
   }
   else if( drawdist < CLIENT_radar_range * 0.5 ){
     drawSize = '12 12 0';
-    adj = 40;
+    adj = 100;
   }
   else{
     drawSize = '14 14 0';
-    adj = 50;
+    adj = 150;
   }
   
   local string playerName;
@@ -228,7 +228,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   if( nameproj_z >= 0 ){
     nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
     nameproj_z = 0;
-    drawstring(nameproj, playerName, drawSize, factionColor * 1.5, boxAlpha, 0);
+    drawstring(nameproj, playerName, drawSize, factionColor * 1.5, max(0.75, HUD_ALPHA), 0);
   }
   namepos = cs_unproject(nameproj);
   

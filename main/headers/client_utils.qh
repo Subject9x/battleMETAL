@@ -30,7 +30,6 @@ entity() spawnpoint_coop;
 
 //SendEnt
 void() client_push_player_info;
-void() client_push_player_info_thin;
 void( entity targetClient ) server_push_player_info; //simply wraps client_push_player_info()
 void( entity targetClient ) client_push_hud_highlight;
 void( entity targetClient ) client_send_boundary_warning;
