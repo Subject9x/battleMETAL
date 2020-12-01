@@ -495,7 +495,7 @@ void(string s) CSQC_Parse_StuffCmd =
       SV_SERVERFLAGS = stof(argv(4) );
       SV_TIMELIMIT = stof(argv(5));
       SV_WORLDTYPE = stof(argv(6));
-      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){        
+      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
         cvar_set("saveslot", argv(7) );
       }
       else{

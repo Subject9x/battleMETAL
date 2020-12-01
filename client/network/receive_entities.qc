@@ -247,7 +247,8 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF DEATH
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
-      MENU_button_delay = servertime + 2;
+      MENU_button_delay = servertime + 1;
+      MENU_DEBRIEF_time_elapsed = -1;
       ui_set_mission_status( SV_MISSION_RESULT );
       return;
     }

@@ -20,7 +20,7 @@ void() menu_debriefListener_onClick={
         if( !MSN_NOSAVE || !(SV_SERVERFLAGS & SVFLAG_NOSAVE)){
           cl_savefile_save();
         }
-        MENU_DEBRIEF_time_elapsed = time + 0.1;
+        MENU_DEBRIEF_time_elapsed = time + 1;
         return;
       }
       //DEATHMATCH AND COOP
@@ -42,7 +42,7 @@ void() menu_debrief_drawFrame={
   topleftroot = VIEW_ORG;
 
   if( MENU_DEBRIEF_time_elapsed != -1 ){
-    if( time > MENU_DEBRIEF_time_elapsed ){
+    if( servertime > MENU_DEBRIEF_time_elapsed ){
       cl_set_mission( MENU_DEBRIEF_status );
       MENU_DEBRIEF_time_elapsed = 999999;
     }

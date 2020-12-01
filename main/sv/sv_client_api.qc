@@ -430,33 +430,30 @@ void() PutClientInServer_TeamDeathmatch={
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;
-    
-  //if( cvar("developer") ){
-  // self.playerState = PLAYER_ACTIVE;
-  //}
 };
 
-void() sv_client_respawn={ 
+void() sv_client_respawn={
+  
   if( GAMETYPE == GAMEMODE_COOP ){
-		// get the spawn parms as they were at level start
-		//setspawnparms (self);
+    // get the spawn parms as they were at level start
+    //setspawnparms (self);
     if(self.data_type == DATA_MECH ){
       player_makeObserver();
     }
     self.playerState = PLAYER_SPAWN;
-		// respawn		
-		PutClientInServer ();
+    // respawn		
+    PutClientInServer ();
     return;
-	}
-	if ( GAMETYPE == GAMEMODE_DM || GAMETYPE == GAMEMODE_TEAMDM ){
-		// set default spawn parms
-		//SetNewParms ();
+  }
+  if ( GAMETYPE == GAMEMODE_DM || GAMETYPE == GAMEMODE_TEAMDM ){
+    // set default spawn parms
+    //SetNewParms ();
     if(self.data_type == DATA_MECH ){
       player_makeObserver();
     }
     self.playerState = PLAYER_SPAWN;
-		// respawn		
-		PutClientInServer ();
+    // respawn		
+    PutClientInServer ();
     return;
   }
   
