@@ -677,7 +677,7 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
   return newpos;
 };
 
-entity(entity root, entity part) te_mech_chunk_stand={
+entity(entity root, entity part, vector setAngle) te_mech_chunk_stand={
   local entity aPiece;
   
   aPiece = spawn();
@@ -686,11 +686,61 @@ entity(entity root, entity part) te_mech_chunk_stand={
   aPiece.movetype = MOVETYPE_NONE;
   aPiece.origin = part.origin;
   aPiece.compOffset = part.compOffset;
-  aPiece.angles = part.angles;
+  aPiece.angles = setAngle;
   aPiece.model = modelnameforindex(part.modelindex);
   setmodelindex(aPiece, part.modelindex);
   aPiece.skin = root.skin;
   aPiece.colormod = '0.45 0.45 0.45';
   
   return aPiece;
+};
+
+/*
+  burning mech legs
+*/
+void( entity mechLegs ) te_mech_dead_legs={
+  local entity deadLegs;
+  
+  deadLegs = spawn();
+  deadLegs.drawmask = MASK_NORMAL;
+  setmodel(deadLegs, mechLegs.model);
+  setsize(deadLegs, deadLegs.mins, deadLegs.maxs);
+  setorigin(deadLegs, mechLegs.origin);
+  deadLegs.frame = mechLegs.frame;
+  deadLegs.solid = SOLID_NOT;
+  deadLegs.colormod = 0.45;
+  deadLegs.frame = 1;
+  deadLegs.think = te_mech_dead_legs_burn;
+  deadLegs.nextthink = time + 0.5;
+  deadLegs.data_lifetime = time + 300 + (random() * 200);
+  deadLegs.angles = mechLegs.angles;
+  deadLegs.vec_size = mechLegs.owner.vec_size;
+};
+
+void() te_mech_dead_legs_burn={
+  local vector fireOrg;
+  
+  if( time > self.data_lifetime ){
+    self.think = te_mech_dead_legs_smoke;
+    self.nextthink = time + 0.1;
+    self.data_lifetime = time + 500 + (random() * 300);
+    return;
+  }
+  makevectors(self.angles);
+  fireOrg = self.origin + (v_up * self.maxs_z);
+  
+  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 2));
+  
+  
+  self.think = te_mech_dead_legs_burn;
+  self.nextthink = time + 0.25;
+};
+
+void() te_mech_dead_legs_smoke={
+  if( time > self.data_lifetime ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+    return;
+  }
+
 };

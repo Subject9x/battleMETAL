@@ -363,19 +363,21 @@ void() PlayerDie={
   self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
   
   self.effects = 0;
-	self.deadflag = DEAD_DYING;
-	self.solid = SOLID_CORPSE;
-	self.flags = self.flags - (self.flags & FL_ONGROUND);
-	self.movetype = MOVETYPE_TOSS;
+  self.deadflag = DEAD_DYING;
+  self.solid = SOLID_CORPSE;
+  self.flags = self.flags - (self.flags & FL_ONGROUND);
+  self.movetype = MOVETYPE_TOSS;
   setsize(self, '-4 -4 -4', '4 4 4');
-	setorigin(self, self.origin);
+  setorigin(self, self.origin);
   
-  if (self.velocity_z < 10){
-    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
+  if( self.moveState != MOVE_STAND ){
+    if (self.velocity_z < 10){
+      self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
+    }
   }
   
-	self.angles_x = 0;
-	self.angles_z = 0;
+  self.angles_x = 0;
+  self.angles_z = 0;
   self.angles_y = 0;
   self.avelocity = '0 0 0';
   
@@ -418,21 +420,23 @@ void() PlayerDieNetwork={
   client_send_server_info_update();
   
   self.effects = 0;
-	self.deadflag = DEAD_DYING;
-	self.solid = SOLID_CORPSE;
-	self.flags = self.flags - (self.flags & FL_ONGROUND);
-	self.movetype = MOVETYPE_TOSS;
+  self.deadflag = DEAD_DYING;
+  self.solid = SOLID_CORPSE;
+  self.flags = self.flags - (self.flags & FL_ONGROUND);
+  self.movetype = MOVETYPE_TOSS;
   setsize(self, '-8 -8 -8', '8 8 8');
-	setorigin(self, self.origin);
+  setorigin(self, self.origin);
   
-  if (self.velocity_z < 10){
-    self.velocity_x = self.velocity_x + (crandom() * ((4 - self.vec_size) * 100));
-    self.velocity_y = self.velocity_y + (crandom() * ((4 - self.vec_size) * 100));
-    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
+  if( self.moveState != MOVE_STAND ){
+    if (self.velocity_z < 10){
+      self.velocity_x = self.velocity_x + (crandom() * ((4 - self.vec_size) * 100));
+      self.velocity_y = self.velocity_y + (crandom() * ((4 - self.vec_size) * 100));
+      self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
+    }
   }
   
-	self.angles_x = 0;
-	self.angles_z = 0;
+  self.angles_x = 0;
+  self.angles_z = 0;
   self.angles_y = 0;
   self.avelocity = '0 0 0';
   

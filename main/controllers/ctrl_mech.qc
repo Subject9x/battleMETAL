@@ -257,9 +257,6 @@ void() ctrl_mech_die_player={
   ctrl_unit_part_death(self.armLeft);
   ctrl_unit_part_death(self.armRight);
   
-  if( (self.flags & FL_CLIENT) ){
-    ctrl_unit_part_death(self.legs);
-  }
   self.alpha = 0.01;
   self.scale = 0.01;
 };
@@ -339,7 +336,7 @@ void() ctrl_arm_die={
       te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
     }
     
-    self.owner.critBits = self.owner.critBits & self.partTypeId;
+    self.owner.critBits = self.owner.critBits | self.partTypeId;
     if( self.partTypeId == M_ARM_LEFT && !(self.owner.damageValue & M_ARM_LEFT) ){
       self.owner.damageValue = self.owner.damageValue | M_ARM_LEFT;
     }
@@ -500,7 +497,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   }
 
   if( (changeFlags & SENDFLAG_CRIT) ){
-    WriteByte( MSG_ENTITY, self.damageValue );
+    WriteByte( MSG_ENTITY, self.critBits );
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){

@@ -126,4 +126,11 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
 /*
   mech corpse-piece
 */
-entity(entity root, entity part) te_mech_chunk_stand;
+entity(entity root, entity part, vector setAngle) te_mech_chunk_stand;
+
+/*
+  burning mech legs
+*/
+void( entity mechLegs ) te_mech_dead_legs;
+void() te_mech_dead_legs_burn;
+void() te_mech_dead_legs_smoke;
