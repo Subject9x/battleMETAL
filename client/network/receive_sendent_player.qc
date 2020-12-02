@@ -21,12 +21,12 @@ void() sendevent_player_burn={
     te_mech_crit( self.torsoRight.origin , '0 0 10');
   }
   if( (self.burnBits & M_ARM_LEFT) ){
-    if( !(self.damageValue & M_TOR_LEFT) ){
+    if( !(self.critBits & M_TOR_LEFT) ){
       te_mech_crit( self.armLeft.origin , '0 0 10');
     }
   }
   if( (self.burnBits & M_ARM_RIGHT) ){
-    if( !(self.damageValue & M_TOR_RIGHT) ){
+    if( !(self.critBits & M_TOR_RIGHT) ){
       te_mech_crit( self.armRight.origin , '0 0 10');
     }
   }
@@ -76,7 +76,7 @@ void(entity item) predraw_player_weapon={
   assumes you've already made a makevectors() call
 */
 void(entity piece) player_part_predaw={
-  if( (self.damageValue & piece.partTypeId) ){
+  if( (self.critBits & piece.partTypeId) ){
     return;
   }
   addentity(piece);
@@ -212,8 +212,10 @@ float() player_predraw={
       predraw_legs();
       wep = self.w_slot;
       while( wep != world ){
-        addentity(wep);
-        predraw_player_weapon(wep);
+        if( !(self.critBits & wep.partParentId) ){
+          addentity(wep);
+          predraw_player_weapon(wep);
+        }
         wep = wep.w_slot;
       }
     }
@@ -368,11 +370,11 @@ void() sendevent_handle_player_death={
   
   te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
   self.origin = '0 0 0';
-  self.damageValue = 0;
+  self.critBits = 0;
   self.data_type = 0;
   self.data_idx = 0;
   
-  self.damageValue = self.damageValue | (M_TOR_CENTER | M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT);
+  self.critBits = self.critBits | (M_TOR_CENTER | M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT);
   
   remove(self.torsoCenter);
   remove(self.torsoLeft);
@@ -492,7 +494,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local vector prevOrg;
   local vector targetOrg;
   local float prevShield;
-  local float prevCrit;
   local float prevType;
   local float prevTarget; 
   local float prevKills;
@@ -502,10 +503,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevMoveState;
   local float prevBurn;
   local float prevGetTarg;
+  local float critical;
   
   prevBurn = self.burnBits;
   prevShield = self.shield;
-  prevCrit = self.damageValue;
   prevKills = self.kills;
   prevFaction = self.faction;
   prevDeadFlag = self.deadflag;
@@ -590,7 +591,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         self.deadflag = DEAD_NO;
-        self.damageValue = rint(0);
+        self.critBits = rint(0);
         sendevent_player_mech(self.data_idx);
         self.shieldEffectTime = 0;
         self.predraw = player_predraw;
@@ -606,14 +607,17 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech is blown off
   */
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.damageValue = ReadShort();
-    if( prevCrit < self.damageValue ){
-      prevCrit = self.damageValue - (self.damageValue & prevCrit);
-      sendevent_player_critical( prevCrit );
+    critical = ReadByte();
+    if( self.critBits < critical ){
+      critical = critical - (critical & self.critBits);
+      sendevent_mech_ai_crit( critical );
+      self.critBits = self.critBits | critical;
     }
-    else if( prevCrit > self.damageValue){
+    else{
       //handle repair event
-      sendevent_player_repair( self.damageValue );
+      self.critBits = rint(0);
+      self.critBits = critical;
+      sendevent_player_repair( self.critBits );
     }
   }
   
@@ -621,7 +625,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadShort();
+    self.burnBits = ReadByte();
     if( self.burnBits < prevBurn ){
       self.burnBits = self.burnBits - (self.burnBits & prevBurn);
     }

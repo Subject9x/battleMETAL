@@ -631,13 +631,13 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - pieces of player mech is blown off
   */
   if( (changeFlags & SENDFLAG_CRIT) ){
-    WriteShort( MSG_ENTITY, self.damageValue );
+    WriteByte( MSG_ENTITY, self.damageValue );
   }
   /*
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    WriteShort( MSG_ENTITY, player.burnBits );
+    WriteByte( MSG_ENTITY, player.burnBits );
   }
   /*
     EVENT - DEAD
