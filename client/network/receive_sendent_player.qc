@@ -21,12 +21,12 @@ void() sendevent_player_burn={
     te_mech_crit( self.torsoRight.origin , '0 0 10');
   }
   if( (self.burnBits & M_ARM_LEFT) ){
-    if( !(self.critBits & M_TOR_LEFT) ){
+    if( !(self.criticalHits & M_TOR_LEFT) ){
       te_mech_crit( self.armLeft.origin , '0 0 10');
     }
   }
   if( (self.burnBits & M_ARM_RIGHT) ){
-    if( !(self.critBits & M_TOR_RIGHT) ){
+    if( !(self.criticalHits & M_TOR_RIGHT) ){
       te_mech_crit( self.armRight.origin , '0 0 10');
     }
   }
@@ -76,7 +76,7 @@ void(entity item) predraw_player_weapon={
   assumes you've already made a makevectors() call
 */
 void(entity piece) player_part_predaw={
-  if( (self.critBits & piece.partTypeId) ){
+  if( (self.criticalHits & piece.partTypeId) ){
     return;
   }
   addentity(piece);
@@ -91,7 +91,6 @@ void(entity piece) player_part_predaw={
   }
   
   piece.origin = offset;
-  
   piece.angles = self.angles;
   piece.angles_x = 0;
   piece.colormod = self.colormod;
@@ -156,7 +155,6 @@ float() player_predraw={
   local vector cacheOrg;
   
   if( self.data_type == DATA_MECH ){
-  
     if (self.nextthink != self.frame1time){
       self.frame2time = self.frame1time;
       self.frame1time = self.nextthink;
@@ -170,7 +168,7 @@ float() player_predraw={
       self.laser_sight_org1 =   self.laser_sight_org;
     }
     self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
-    self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+    self.lerpfrac = 1 - bound(0, self.lerpfrac, 1);
     
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2-self.laser_sight_org1)*self.lerpfrac;
   
@@ -193,13 +191,14 @@ float() player_predraw={
       player_part_predaw(self.torsoCenter);
       player_part_predaw(self.torsoLeft);
       player_part_predaw(self.torsoRight);
-      player_part_predaw(self.armLeft);
-      
-      self.armLeft.angles_x = self.angles_x * -1;
-      player_part_predaw(self.armRight);
-      
-      self.armRight.angles_x = self.angles_x * -1;
+
       player_part_predaw(self.legs);
+      
+      player_part_predaw(self.armLeft);
+      self.armLeft.angles_x = self.angles_x * -1;
+      
+      player_part_predaw(self.armRight);
+      self.armRight.angles_x = self.angles_x * -1;
       
       if( time > self.legs.nextthink){
         wep = self;
@@ -212,7 +211,7 @@ float() player_predraw={
       predraw_legs();
       wep = self.w_slot;
       while( wep != world ){
-        if( !(self.critBits & wep.partParentId) ){
+        if( !(self.criticalHits & wep.partParentId) ){
           addentity(wep);
           predraw_player_weapon(wep);
         }
@@ -370,11 +369,11 @@ void() sendevent_handle_player_death={
   
   te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
   self.origin = '0 0 0';
-  self.critBits = 0;
+  self.criticalHits = 0;
   self.data_type = 0;
   self.data_idx = 0;
   
-  self.critBits = self.critBits | (M_TOR_CENTER | M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT);
+  self.criticalHits = self.criticalHits | (M_TOR_CENTER | M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT);
   
   remove(self.torsoCenter);
   remove(self.torsoLeft);
@@ -445,13 +444,13 @@ void( float criticalBits ) sendevent_player_critical={
   if( (criticalBits & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
   }
-  
+  if(self.entId != player_localentnum){
+    return;
+  }
   wep = self.w_slot;
   while( wep != world ){
     if( (criticalBits & wep.partParentId) ){
-      if(self.entnum == player_localentnum){
-        CLIENT_weapon_state = CLIENT_weapon_state - (CLIENT_weapon_state & wep.w_group);
-      }
+      CLIENT_weapon_state = CLIENT_weapon_state - (CLIENT_weapon_state & wep.w_group);
     }
     wep = wep.w_slot;
   }
@@ -463,28 +462,29 @@ void( float criticalBits ) sendevent_player_critical={
 void(float repairValue) sendevent_player_repair={
   local entity wep;
   
-  if( !(repairValue & M_TOR_CENTER) ){
+  if( (repairValue & M_TOR_CENTER) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
   }
-  if( !(repairValue & M_TOR_LEFT) ){
+  if( (repairValue & M_TOR_LEFT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
   }
-  if( !(repairValue & M_TOR_RIGHT) ){
+  if( (repairValue & M_TOR_RIGHT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
   }
-  if( !(repairValue & M_ARM_LEFT) ){
+  if( (repairValue & M_ARM_LEFT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
   }
-  if( !(repairValue & M_ARM_RIGHT) ){
+  if( (repairValue & M_ARM_RIGHT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
   }
   
+  if(self.entId != player_localentnum){
+    return;
+  }
   wep = self.w_slot;
   while( wep != world ){
     if( !(repairValue & wep.partParentId) ){
-      if(self.entId == player_localentnum){
-        CLIENT_weapon_state = CLIENT_weapon_state | wep.w_group;
-      }
+      CLIENT_weapon_state = CLIENT_weapon_state | wep.w_group;
     }
     wep = wep.w_slot;
   }
@@ -503,7 +503,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevMoveState;
   local float prevBurn;
   local float prevGetTarg;
-  local float critical;
+  local float newCrits;
   
   prevBurn = self.burnBits;
   prevShield = self.shield;
@@ -591,7 +591,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         self.deadflag = DEAD_NO;
-        self.critBits = rint(0);
+        self.criticalHits = rint(0);
         sendevent_player_mech(self.data_idx);
         self.shieldEffectTime = 0;
         self.predraw = player_predraw;
@@ -607,17 +607,18 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech is blown off
   */
   if( (changeFlags & SENDFLAG_CRIT) ){
-    critical = ReadByte();
-    if( self.critBits < critical ){
-      critical = critical - (critical & self.critBits);
-      sendevent_mech_ai_crit( critical );
-      self.critBits = self.critBits | critical;
-    }
-    else{
-      //handle repair event
-      self.critBits = rint(0);
-      self.critBits = critical;
-      sendevent_player_repair( self.critBits );
+    self.critBits = ReadByte();
+    if( self.critBits != 0 ){
+      if( (self.critBits & M_REPAIR) ){
+        //handle repair event
+        self.critBits =  self.critBits - (self.critBits & M_REPAIR);
+        sendevent_player_repair( self.critBits );
+        self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
+      }
+      else{
+        sendevent_player_critical( self.critBits );
+        self.criticalHits = self.criticalHits | self.critBits;
+      }
     }
   }
   

@@ -227,10 +227,8 @@ float M_TOR_LEFT    = 8;
 float M_ARM_LEFT    = 16;
 float M_ARM_RIGHT   = 32;
 float M_LEGS        = 64;
-float M_CAMERA      = 128;
-float M_LEG_L       = 256;
-float M_LEG_R       = 512;
-float M_ITEM        = 1024;
+float M_REPAIR      = 128;//sends repair flag over network to repair pieces
+float M_ITEM        = 256;
 //============================
 //     WEAPON SLOT BITS           
 //============================

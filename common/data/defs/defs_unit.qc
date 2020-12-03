@@ -55,7 +55,8 @@ Overview:
 .entity torsoRight;
 .entity armRight;  //arms can be optional
 
-.float critBits;
+.float critBits;      //  SV-> used to track critical hits over frames
+.float criticalHits;  //  the actual value sent over the network
 
 .float isActive;
 .float ai_dir;          //chassis facing vs .angles

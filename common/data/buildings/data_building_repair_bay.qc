@@ -87,7 +87,7 @@ void() building_repair_select={
       part = player.partNext;
       lowHP = 99.99;
       while(part){
-        if( part.partTypeId != M_ITEM || part.partTypeId != M_CAMERA ){
+        if( part.partTypeId != M_ITEM ){
           hp = csqc_updateCompStat(part);
           if( hp < lowHP){
             lowHP = hp;
@@ -194,6 +194,10 @@ void() building_repair_fixing={
       //part is not critical'd, repair as normal.
       fix.health = fix.health + self.reloadRate;
       self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.25));
+      if( fix.health >= fix.max_health * 0.5 ){
+        player.burnBits = player.burnBits - (player.burnBits & fix.partTypeId);
+        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
+      }
     }
     else{
       //part has been blown off / destroyed.
@@ -203,7 +207,7 @@ void() building_repair_fixing={
         fix.deadflag = DEAD_DYING;
         if(fix.deadflag != DEAD_NO ){
           fix.deadflag = DEAD_NO;
-          player.damageValue = player.damageValue - (player.damageValue & fix.partTypeId);
+          player.critBits = (fix.partTypeId | M_REPAIR);
           player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_CRIT;
           
           part = player.w_slot;
@@ -225,10 +229,10 @@ void() building_repair_fixing={
       else if(fix.deadflag == DEAD_DYING){
         if(fix.health > fix.max_health * 0.5){
           fix.deadflag = DEAD_NO;
-          if( !(fix.owner.damageValue & M_TOR_LEFT) ){
+          if( !(fix.owner.criticalHits & M_TOR_LEFT) ){
             fix.owner.shieldMax = fix.owner.shieldMax * 0.5;
           }
-          if( !(fix.owner.damageValue & M_TOR_LEFT) ){
+          if( !(fix.owner.criticalHits & M_TOR_LEFT) ){
             fix.owner.shieldMax = fix.owner.shieldMax * 0.5;
           }
         }
@@ -254,7 +258,7 @@ void() building_repair_fixing={
   
   if(end_repair){  
     player.burnBits = player.burnBits - (player.burnBits & fix.partTypeId);
-          player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
+    player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
     fix.deadflag = DEAD_NO;
     self.ai_state_next = PLAYER_CONNECT;
   }

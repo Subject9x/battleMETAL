@@ -538,12 +538,16 @@ float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   local float prevType;
   local vector targetOrg;
+  local float sendCrit;
   
   player = self.owner;
   self.view_ofs = player.origin;
   
   prevType = self.data_type;
   self.stat_trg_ent_id = player.stat_trg_ent_id;
+  
+  sendCrit = 0;
+  
   if( player.deadflag == DEAD_NO ){
     self.data_type = player.data_type;
     self.radar_range = player.radar_range;
@@ -551,7 +555,6 @@ float( float isNew, float changeFlags ) send_client_data={
     self.stat_client_shield = player.stat_client_shield;
     self.stat_client_energy = player.stat_client_energy;
     self.vec_size = player.vec_size;
-    self.damageValue = player.damageValue;
     self.data_idx = player.data_idx;
     self.shieldHitFlag = player.shieldHitFlag;
   }
@@ -561,8 +564,7 @@ float( float isNew, float changeFlags ) send_client_data={
     self.stat_rdr_mode = 0;
     self.stat_client_shield = 0;
     self.vec_size = 0;
-    self.damageValue = 0;
-    self.data_idx = 0; 
+    self.data_idx = 0;
     self.w_group = 0;
     self.shieldHitFlag = 0;
   }
@@ -631,7 +633,19 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - pieces of player mech is blown off
   */
   if( (changeFlags & SENDFLAG_CRIT) ){
-    WriteByte( MSG_ENTITY, self.damageValue );
+    //placed here for just-in-time calculation
+    // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
+    if( player.critBits != 0 ){
+      sendCrit = player.critBits;
+      if( (player.critBits & M_REPAIR) ){
+        player.criticalHits = player.criticalHits - (player.criticalHits & player.critBits);
+      }
+      else{
+        player.criticalHits = player.criticalHits | player.critBits;
+      }
+      player.critBits = 0;
+    }
+    WriteByte( MSG_ENTITY, sendCrit );
   }
   /*
     EVENT - pieces of player mech are low on health and burning

@@ -80,37 +80,51 @@ void() repair_bay_idle={
 */
 void() sendevent_repair_beam={
   local entity unit;
-  local vector ofs;
+  local vector unitAngl;
+  local vector partOfs;
+  local vector beamEnd;
   
   unit = findfloat(world, entnum, self.targetEntId );
   if( unit != world ){
     switch(self.w_firetime){
       case M_ARM_LEFT:
-        ofs = unit.armLeft.origin;
+        partOfs = unit.armLeft.compOffset;
         break;
         
       case M_ARM_RIGHT:
-        ofs = unit.armRight.origin;
+        partOfs = unit.armRight.compOffset;
         break;
         
       case M_TOR_LEFT:
-        ofs = unit.torsoLeft.origin;
+        partOfs = unit.torsoLeft.compOffset;
         break;
         
       case M_TOR_RIGHT:
-        ofs = unit.torsoRight.origin;
+        partOfs = unit.torsoRight.compOffset;
         break;
         
       case M_LEGS:
-        ofs = unit.legs.origin;
+        partOfs = unit.legs.compOffset;
         break;
         
       default:
-        ofs = unit.torsoCenter.origin;
+        partOfs = unit.torsoCenter.compOffset;
         break;
     }
-    self.compAltOffset = ofs;
+    unitAngl = unit.angles;
+    unitAngl_x = 0;
+
+    makevectors(unitAngl);
+    beamEnd = unit.origin + (v_forward * partOfs_z);
+    beamEnd = beamEnd + (v_right * partOfs_x);
+    beamEnd = beamEnd + (v_up *partOfs_y);
+
+    beamEnd_x = beamEnd_x + (crandom() * 2);
+    beamEnd_y = beamEnd_y + (crandom() * 2);
+    beamEnd_z = beamEnd_z + (crandom() * 2);
+    self.compAltOffset = beamEnd;
   }
+  
   pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( self.compAltOffset - self.compOffset ) * 2, 1);
   pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), self.compAltOffset, normalize( self.compOffset - self.compAltOffset ) * -2, 1);
   trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, self.compAltOffset);

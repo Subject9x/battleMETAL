@@ -96,6 +96,15 @@ void() ai_ctrl_update_mechplayer={
     self.burnBits = self.burnBits | newBurn;
     self.SendFlags = self.SendFlags | SENDFLAG_BURN;
   }
+  
+  if( self.critBits != 0 ){ 
+    if( self.criticalHits != self.critBits ){
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+      self.criticalHits = self.criticalHits | self.critBits;
+      self.critBits = rint(0);
+    }
+  }
+  
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
@@ -269,59 +278,60 @@ void() ctrl_component_die={
   local entity piece;
   local entity this;
   local entity c;
-  if( self.deadflag <= DEAD_NO ){
-    piece = self;
-    if( GAMETYPE == GAMEMODE_CAMPAIGN){
-      te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
-    }
-    self.owner.critBits = self.owner.critBits | self.partTypeId;
-    self.deadflag = DEAD_DEAD;
-    self.effects = EF_NODRAW;
-    self.health = 0;
+  if( self.deadflag != DEAD_NO ){
+    return;
+  }
+  piece = self;
+  if( GAMETYPE == GAMEMODE_CAMPAIGN){
+    te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
+  }
+  self.owner.critBits = self.owner.critBits | self.partTypeId;
+  self.owner.burnBits = self.owner.burnBits - (self.owner.burnBits & self.partTypeId);
+  if( (self.owner.flags & FL_CLIENT) ){
+    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_BURN;
+    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
+  }
+  self.deadflag = DEAD_DEAD;
+  self.effects = EF_NODRAW;
+  self.health = 0;
 
-    if( self.partTypeId == M_TOR_LEFT ){
-      self.owner.armLeft.think = self.owner.armLeft.th_die;
-      self.owner.armLeft.nextthink = time + 0.1;
-      self.owner.armLeft.realowner = self.owner;
-      self.owner.damageValue = self.owner.damageValue | (M_TOR_LEFT | M_ARM_LEFT);
-      if( (self.owner.damageValue & (M_TOR_RIGHT | M_ARM_RIGHT) ) ){
-        self.owner.shieldMax = self.owner.shieldMax * 0.5;
-      }
+  if( self.partTypeId == M_TOR_LEFT ){
+    self.owner.armLeft.think = self.owner.armLeft.th_die;
+    self.owner.armLeft.nextthink = time + 0.1;
+    self.owner.armLeft.realowner = self.owner;
+    if( (self.owner.critBits & (M_TOR_RIGHT | M_ARM_RIGHT) ) ){
+      self.owner.shieldMax = self.owner.shieldMax * 0.5;
     }
-    else if( self.partTypeId == M_TOR_RIGHT ){
-      self.owner.armRight.think = self.owner.armRight.th_die;
-      self.owner.armRight.nextthink = time + 0.1;
-      self.owner.armRight.realowner = self.owner;
-      self.owner.damageValue = self.owner.damageValue | (M_TOR_RIGHT | M_ARM_RIGHT);
-      if( (self.owner.damageValue & (M_TOR_LEFT | M_ARM_LEFT) ) ){
-        self.owner.shieldMax = self.owner.shieldMax * 0.5;
-      }
+  }
+  else if( self.partTypeId == M_TOR_RIGHT ){
+    self.owner.armRight.think = self.owner.armRight.th_die;
+    self.owner.armRight.nextthink = time + 0.1;
+    self.owner.armRight.realowner = self.owner;
+    if( (self.owner.critBits & (M_TOR_LEFT | M_ARM_LEFT) ) ){
+      self.owner.shieldMax = self.owner.shieldMax * 0.5;
     }
-    if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
-      self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
+  }
+  
+  this = self;
+  for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
+    if( c == world ){
+      continue;
     }
-    
-    this = self;
-    for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
-      if( c == world ){
-        continue;
-      }
-      if(c.partParentId != this.partTypeId){
-        continue;
-      }
-      if( c.th_die ){
-        c.think = c.th_die;
-        c.nextthink = time + (random() * 0.5);
-      }
+    if(c.partParentId != this.partTypeId){
+      continue;
     }
-    
-    if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
-      if( self.owner.th_pain && self.owner.health > 0){
-        //if the bot loses all guns, have it panic
-        self = this.owner;
-          self.th_pain( self.enemy );
-        self = this;
-      }
+    if( c.th_die ){
+      c.think = c.th_die;
+      c.nextthink = time + (random() * 0.5);
+    }
+  }
+  
+  if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
+    if( self.owner.th_pain && self.owner.health > 0){
+      //if the bot loses all guns, have it panic
+      self = this.owner;
+        self.th_pain( self.enemy );
+      self = this;
     }
   }
 };
@@ -330,39 +340,34 @@ void() ctrl_arm_die={
   local entity this;
   local entity c;
   
-  if( self.deadflag == DEAD_NO ){
-    
-    if( GAMETYPE == GAMEMODE_CAMPAIGN){
-      te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
+  if( self.deadflag != DEAD_NO ){
+    return;
+  }
+  if( GAMETYPE == GAMEMODE_CAMPAIGN){
+    te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
+  }
+  
+  self.owner.critBits = self.owner.critBits | self.partTypeId;
+  self.owner.burnBits = self.owner.burnBits - (self.owner.burnBits & self.partTypeId);
+  if( (self.owner.flags & FL_CLIENT) ){
+    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_BURN;
+    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
+  }
+  self.deadflag = DEAD_DEAD;
+  self.effects = EF_NODRAW;
+  self.health = 0;
+  
+  this = self;
+  for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
+    if( c == world ){
+      continue;
     }
-    
-    self.owner.critBits = self.owner.critBits | self.partTypeId;
-    if( self.partTypeId == M_ARM_LEFT && !(self.owner.damageValue & M_ARM_LEFT) ){
-      self.owner.damageValue = self.owner.damageValue | M_ARM_LEFT;
+    if(c.partParentId != this.partTypeId){
+      continue;
     }
-    else if( self.partTypeId == M_ARM_RIGHT && !(self.owner.damageValue & M_ARM_LEFT) ){
-      self.owner.damageValue = self.owner.damageValue | M_ARM_RIGHT;
-    }
-    if( !(self.owner.SendFlags & SENDFLAG_CRIT) ){
-      self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_CRIT;
-    }
-
-    self.deadflag = DEAD_DEAD;
-    self.effects = EF_NODRAW;
-    self.health = 0;
-    
-    this = self;
-    for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
-      if( c == world ){
-        continue;
-      }
-      if(c.partParentId != this.partTypeId){
-        continue;
-      }
-      if( c.th_die ){
-        c.think = c.th_die;
-        c.nextthink = time + (random() * 0.5);
-      }
+    if( c.th_die ){
+      c.think = c.th_die;
+      c.nextthink = time + (random() * 0.5);
     }
   }
 };

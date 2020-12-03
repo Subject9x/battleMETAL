@@ -121,11 +121,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( dmgTrg.health > 0 ){
     if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
       if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
-        if( (trg.critBits & M_TOR_LEFT) ){
-          dmgAmt = dmgAmt * 2;
+        if( (trg.criticalHits & M_TOR_LEFT) ){
+          dmgAmt = dmgAmt * 1.25;
         }
-        if( (trg.critBits & M_TOR_RIGHT) ){
-          dmgAmt = dmgAmt * 2;
+        if( (trg.criticalHits & M_TOR_RIGHT) ){
+          dmgAmt = dmgAmt * 1.25;
         }
       }
     }
