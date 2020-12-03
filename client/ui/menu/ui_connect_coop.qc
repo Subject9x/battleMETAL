@@ -108,15 +108,17 @@ void( vector menuOrg ) menu_connet_draw_coop_about={
   drawfont = FONT_NUM_ROBOT_MEDIUM;
     labelLen = stringwidth("- About -", 0, '10 10');
     labelOrg = menuOrg;
-    labelOrg_x = menuOrg_x + gui_percentXRaw(210) - gui_percentXRaw(labelLen / 2);
+    labelOrg_x = menuOrg_x + gui_percentXRaw(188) - gui_percentXRaw(labelLen / 2);
     labelOrg_y = menuOrg_y + gui_percentYRaw(4);
     drawstring(labelOrg, "- About -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
   
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_MEDIUM;
-    drawstring(menuOrg + gui_percentToPixelRawVec('125 18'), "< work in progress >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawfont = drawfont_prev;
+  if( strlen(SV_ABOUT) > 0 ){
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_MEDIUM;
+      gui_wrapText(menuOrg + gui_percentToPixelRawVec('6 16'), gui_percentToPixelRawVec('368 128'), SV_ABOUT, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+    drawfont = drawfont_prev;
+  }
 };
 
 void( vector menuOrg ) menu_connect_draw_coop_rules={  

@@ -571,9 +571,13 @@ void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector l
   see ui_brief_c.menu_briefObjectivePanel() for a use-case
 */
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText={
+  
   local float totes, token, line_row, line_length;
   local vector varea, textOrg;
- 
+  local vector charpos;
+  local float charlen, pipe;
+  local string toke;
+  
   varea = gui_percentToPixelRawVec(area);
   totes = tokenizebyseparator(text, " ");
   
@@ -581,11 +585,9 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   textOrg = loc;
   line_row = 0;
   line_length = 0;
-  while(token <= totes){
-    local vector charpos;
-    local float charlen, pipe;
-    local string toke;
-    
+  toke = argv(token);
+  
+  while( strlen(toke) > 0 ){
     toke = argv(token);
     
     if( toke == "|" ){
@@ -619,6 +621,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
       line_length = 0;
     }
     token = token + 1;
+    toke = argv(token);
   }
   
   return (line_row+1) * (fsize_y + (fsize_y * 0.15));

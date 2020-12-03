@@ -213,10 +213,12 @@ void( vector menuOrg ) menu_connect_draw_about_team={
     drawstring(labelOrg, "- About -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
   
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_MEDIUM;
-    drawstring(menuOrg + gui_percentToPixelRawVec('250 18'), "< work in progress >", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawfont = drawfont_prev;
+  if( strlen(SV_ABOUT) > 0 ){
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_MEDIUM;
+      gui_wrapText(menuOrg + gui_percentToPixelRawVec('10 16'), gui_percentToPixelRawVec('604 55'), SV_ABOUT, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+    drawfont = drawfont_prev;
+  }
 };
 
 void( vector menuOrg ) menu_connect_draw_players_team={

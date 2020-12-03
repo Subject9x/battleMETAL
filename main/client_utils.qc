@@ -485,6 +485,10 @@ void() client_sendServerInfo={
   stuffcmd(self, SERVER_INFO);
 };
 
+void() client_sendServerAbout={
+  stuffcmd(self, SERVER_ABOUT);
+};
+
 void() client_sendMissionFileName={
   local string cmd, msnFile;
   

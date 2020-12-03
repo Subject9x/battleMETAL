@@ -38,6 +38,7 @@ void() world_metal_ini={
   //registercvar("cl_hud_sway", "0", 1);
   registercvar("cl_team", "0", 2);
   registercvar("sv_serverflags", "0", 0);
+  registercvar("sv_about", "Default About Message", 0);
   
   //Mission unit stat totals
   MISSION_STATUS = MISSION_STATUS_READY;
@@ -158,6 +159,9 @@ void() world_metal_ini={
   world_nodegraph_import();
 };
 
+/*
+  SERVER feature - current states of server that's sent to all players when they connect.
+*/
 void() world_ini_serverinfo={
   local string serverInfo;
   serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
@@ -170,6 +174,7 @@ void() world_ini_serverinfo={
     serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
   }
   SERVER_INFO = strzone(serverInfo);
+  SERVER_ABOUT = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
 };
 
 /*
@@ -254,7 +259,12 @@ void() WeatherDominator_think={
     when progs exits, not on errors though!
 */
 void() SV_Shutdown={
-
+  if( strlen(SERVER_INFO) > 0 ){
+    strunzone(SERVER_INFO);
+  }
+  if( strlen(SERVER_ABOUT) > 0 ){
+    strunzone(SERVER_ABOUT);
+  } 
 };
 
 /*

@@ -186,6 +186,7 @@ void() CSQC_Shutdown =
   if( SV_NEXTMAP != "" ){
     strunzone(SV_NEXTMAP);
   }
+  
   localcmd("cd stop\n");
 };
 
@@ -475,15 +476,18 @@ float() CSQC_Parse_TempEntity =
 void(string s) CSQC_Parse_StuffCmd =
 {
   local float argc;
-  local float itemOverFlag;
-
+  local string tempAbout;
+  local float lenAdjust;
+  
   argc = tokenize(s);
   if(argv(0) == "m"){
     if(argv(1) == "msn"){
       cl_get_msnfile( argv(2) );
+      return;
     }
-    else if(argv(1) == "anm"){
+    if(argv(1) == "anm"){
       cl_get_animfile( argv(2) );
+      return;
     }
   }
   else{
@@ -504,21 +508,29 @@ void(string s) CSQC_Parse_StuffCmd =
       if(CLIENT_player_state == PLAYER_CONNECT ){
         cl_set_savepath( cvar("gamemode"), (SV_SERVERFLAGS & SVFLAG_ITEMOVER) );
       }
+      return;
     }
-    else if( argv(0) == "fog" ){
+    if( argv(0) == "svabout" ){
+      lenAdjust = strlen(s) - 8;
+      tempAbout = substring(s, 8, lenAdjust );
+      SV_ABOUT = strzone(tempAbout);
+      return;
+    }
+    if( argv(0) == "fog" ){
       cl_get_new_fog( s );
+      return;
     }
-    else if( argv(0) == "cd" ){  
+    if( argv(0) == "cd" ){  
       cl_get_new_music( s ) ;
+      return;
     }
-    else if( argv(0) == "ismenu"){
+    if( argv(0) == "ismenu"){
       cvar_set("cl_ismenu", "1");
       setcursormode(0);
       localcmd("togglemenu\n");
-    }
-    else{
-      localcmd(s);
-    }
+      return;
+    }   
+    localcmd(s);
   }
 };
 
@@ -534,7 +546,7 @@ void(string s) CSQC_Parse_CenterPrint =
   //TODO - how much string meta-data can we handle to actually take advantage of this function? <grumble>
   if( cvar("developer") ){
     if( strstrofs(s, " to go...", 0) != -1 ){
-      cons_logAFloat("caught fun string", 1); //debug
+      //cons_logAFloat("caught fun string", 1); //debug
     }
   }
 	centerprint(s);
@@ -563,6 +575,7 @@ float(float event) CSQC_Event =
 // called when a network slot was previously empty, before parsing begins
 // this basically lets you do extra work before returning the result of spawn()
 // OPTIONAL, probably should be deprecated as well
+// do. not. use. - tis borked - Roohr
 /*entity(float entNum) CSQC_Ent_Spawn =
 {
   local entity e;
