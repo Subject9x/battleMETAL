@@ -4,6 +4,20 @@ author: iD software.
 Overview:
   This is the collection of the Player think() functions originally found in client.qc
   I decided to separate out player_ functions from client_ functions for my own clarity.
+  
+engine notes; 
+  thanks Mankrip
+    prethink happens before the physics are updated (which is why it should not be used for camera work, since its position will be modified by the physics afterwards before the frame is rendered).
+    .think() and .touch() happens during the entity physics cycle. 
+    IIRC think is run after the physics, because .think with .nextthink=time will run in the current frame (which should not be done if you're trying to modify entities other than self, 
+      because the next entities in the current frame's cycle can conflict with that. Quake engine entity management lacks atomization).
+
+    postthink happens after the physics and all entities have been updated. 
+    It's the ideal place for code that should run on the current frame with no risk of being overridden by the entities' physics (cameras, hitscan weapons, etc).
+    
+   and thanks, Spoike.
+    the player's think functions happens at a (mostly) well defined interval. playerXthink functions happen at some arbitrary controlled-by-engine rate that varies between singleplayer and multiplayer.
+    thus the .think is rather handy for controlling animations, while the playerXthink functions are handy for things that must be run more often than a measly 10 times a second.
 
 ** - this has been modified to be incorporated into battleMETAL and is not compatible with
       other code bases.

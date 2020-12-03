@@ -53,7 +53,6 @@ float( entity targEnt, float changedflags ) ctrl_send_gev;
 void() ctrl_die_weapon;
 void() ctrl_component_die;
 void() ctrl_arm_die;
-void() ctrl_component_burn;
 void() ctrl_component_drop;
 
 float( float isNew, float changedFlags ) send_deploy_point;

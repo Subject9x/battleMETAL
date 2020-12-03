@@ -10,6 +10,7 @@ void() ctrl_update_mechplayer={
   local entity parent;
   local entity piece;
   local float hp;
+  local float newBurn;
   
   parent = self;
   
@@ -29,7 +30,6 @@ void() ctrl_update_mechplayer={
   self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
-  local float newBurn;
   newBurn = 0;
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
@@ -58,6 +58,7 @@ void() ai_ctrl_update_mechplayer={
   local entity wep;
   local entity piece;
   local float hp;
+  local float newBurn;
   
   ai_ctrl_updateCenterTorso();
   
@@ -76,7 +77,6 @@ void() ai_ctrl_update_mechplayer={
   self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
-  local float newBurn;
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
       continue;
@@ -95,14 +95,6 @@ void() ai_ctrl_update_mechplayer={
   if( !(self.burnBits & newBurn) ){
     self.burnBits = self.burnBits | newBurn;
     self.SendFlags = self.SendFlags | SENDFLAG_BURN;
-  }
-  
-  if( self.critBits != 0 ){ 
-    if( self.criticalHits != self.critBits ){
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
-      self.criticalHits = self.criticalHits | self.critBits;
-      self.critBits = rint(0);
-    }
   }
   
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
@@ -291,6 +283,9 @@ void() ctrl_component_die={
     self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_BURN;
     self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
   }
+  else{
+    self.owner.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
+  }
   self.deadflag = DEAD_DEAD;
   self.effects = EF_NODRAW;
   self.health = 0;
@@ -352,6 +347,9 @@ void() ctrl_arm_die={
   if( (self.owner.flags & FL_CLIENT) ){
     self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_BURN;
     self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
+  }
+  else{
+    self.owner.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
   }
   self.deadflag = DEAD_DEAD;
   self.effects = EF_NODRAW;
@@ -420,20 +418,6 @@ void() ctrl_player_mech_touch={
   }
 };
 
-void() ctrl_component_burn={
-  local vector spark;
-  spark = te_apply_wind( self.origin );
-  pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - self.origin) * WINDDIR_z, 1);
-  self.think = ctrl_component_burn;
-  self.nextthink = time + 0.1;
-  if( time > self.ai_action_time ){
-    self.think = ctrl_component_drop;
-    self.nextthink = time + 0.1;
-    self.ai_action_time = time + 300;  //burn for 5min
-    return;
-  }
-};
-
 void() ctrl_component_drop={
   self.think = SUB_Remove;
   self.nextthink = self.ai_action_time;
@@ -449,6 +433,8 @@ void() touch_mechPiece={
 };
 
 float( float isNew, float changeFlags ) ctrl_send_mech_ai={
+  local float sendCrit;
+  
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
   WriteByte( MSG_ENTITY, changeFlags );
   
@@ -461,7 +447,12 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
-    WriteByte( MSG_ENTITY, self.critBits);
+    //placed here for just-in-time calculation
+    // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
+    sendCrit = self.critBits;
+    self.criticalHits = self.criticalHits | self.critBits;
+    self.critBits = 0;
+    WriteByte( MSG_ENTITY, sendCrit );
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
@@ -502,7 +493,12 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   }
 
   if( (changeFlags & SENDFLAG_CRIT) ){
-    WriteByte( MSG_ENTITY, self.critBits );
+    //placed here for just-in-time calculation
+    // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
+    sendCrit = self.critBits;
+    self.criticalHits = self.criticalHits | self.critBits;
+    self.critBits = 0;
+    WriteByte( MSG_ENTITY, sendCrit );
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
