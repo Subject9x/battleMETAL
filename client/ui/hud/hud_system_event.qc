@@ -146,7 +146,7 @@ void() hud_event_critical_left_arm={
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 1);
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITARM, 1); 
   }
-  hud_render_message( HUD_TXT_ORG, HUD_TEXT_TARGET_KILLED, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_CRITICAL_ARM_LEFT, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
 };
 
 void() hud_event_critical_right_arm={
