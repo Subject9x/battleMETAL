@@ -708,7 +708,7 @@ void( entity mechLegs ) te_mech_dead_legs={
   setorigin(deadLegs, mechLegs.origin);
   deadLegs.frame = mechLegs.frame;
   deadLegs.solid = SOLID_NOT;
-  deadLegs.colormod = 0.45;
+  deadLegs.colormod = '0.45 0.45 0.45';
   deadLegs.frame = 1;
   deadLegs.think = te_mech_dead_legs_burn;
   deadLegs.nextthink = time + 0.5;
