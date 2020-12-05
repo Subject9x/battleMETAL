@@ -607,9 +607,6 @@ void() m_host_d={
       host_gametype.color = CLR_DEF_IIF_FRIEND;
       gui_renderString("Difficulty  :", host_skill_lbl.origin + gui_percentToPixelRawVec('-90 1'), '1 1 1', '12 12 0', 1, 0);
       gui_renderString("Start Map  :", host_map_lbl.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      if( host_map_lbl.label != "" ){
-        drawpic(host_map_lbl.origin + gui_percentToPixelRawVec('120 -64'), strcat("data/maps/",host_map_lbl.label,"/",host_map_lbl.label,".png"), '256 256', '1 1 1', 1, 0);
-      }
       break;
     
     case SUB_TDM:
@@ -619,9 +616,6 @@ void() m_host_d={
       gui_renderString("Start Map  :", host_map_lbl.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
       gui_renderString("Frag Limit  :", host_dm_fraglim.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
       gui_renderString("Time Limit  :", host_dm_timelim.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      if( host_map_lbl.label != "" ){
-        drawpic(host_map_lbl.origin + gui_percentToPixelRawVec('120 -64'), strcat("data/maps/",host_map_lbl.label,"/",host_map_lbl.label,".png"), '256 256', '1 1 1', 1, 0);
-      }
       break;
       
     case SUB_DM:
@@ -631,10 +625,13 @@ void() m_host_d={
       gui_renderString("Start Map  :", host_map_lbl.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
       gui_renderString("Frag Limit  :", host_dm_fraglim.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
       gui_renderString("Time Limit  :", host_dm_timelim.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      if( host_map_lbl.label != "" ){
-        drawpic(host_map_lbl.origin + gui_percentToPixelRawVec('120 -64'), strcat("data/maps/",host_map_lbl.label,"/",host_map_lbl.label,".png"), '256 256', '1 1 1', 1, 0);
-      }
       break;
+  }
+  if( strlen(host_map_lbl.label) != 0 ){
+    drawpic(host_map_lbl.origin + gui_percentToPixelRawVec('120 -64'), strcat("data/maps/",host_map_lbl.label,"/",host_map_lbl.label,".png"), '256 256', '1 1 1', 1, 0);
+  }
+  else{
+    gui_renderString("No Map Image Found", host_map_lbl.origin + gui_percentToPixelRawVec('200 32'), '1 1 1', '12 12 0', 1, 0);
   }
   gui_renderString("-Server Flags-", gui_percentToPixelRawVec('80 273'), '1 1 0.33', '14 14 0', 1, 0);
   

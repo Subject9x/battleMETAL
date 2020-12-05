@@ -161,42 +161,29 @@ string(float typ) map_list_getmap ={
   else{
     f = fopen("data/cache/maps_coop.txt", FILE_READ);
   }
-	if (f != -1){ 
-		ln = fgets(f); 
-		while(ln != ""){ 
-			if(strstrofs(ln, "//",0) == -1){
+  if (f != -1){ 
+    ln = fgets(f); 
+    while( strlen(ln) != 0 ){
+      if(strstrofs(ln, "//",0) == -1){
         if(typ){
-          if(MAPS_TDM[itr] != ""){
+          if( strlen(MAPS_TDM[itr]) != 0){
             strunzone(MAPS_TDM[itr]);
           }
           MAPS_TDM[itr] = strzone(ln);
         }
         else{
-          if(MAPS_COOP[itr] != ""){
+          if( strlen(MAPS_COOP[itr]) != 0){
             strunzone(MAPS_COOP[itr]);
           }
           MAPS_COOP[itr] = strzone(ln);
         }
         print(strcat("loaded menu img : ", ln, "\n"));  //DEBUG
-			}
-      itr = itr + 1;
-			ln = fgets(f);
-		}
-    while( itr <= 128 ){
-      if(typ){
-        if(MAPS_TDM[itr] != ""){
-          strunzone(MAPS_TDM[itr]);
-        }
-      }
-      else{
-        if(MAPS_COOP[itr] != ""){
-          strunzone(MAPS_COOP[itr]);
-        }
       }
       itr = itr + 1;
+      ln = fgets(f);
     }
+    fclose(f);
 	} 
-	fclose(f);
   return found;
 };
 
