@@ -94,6 +94,9 @@ void() ai_state_lurker_frame={
       self.ai_lastVis = visCheck;
     }
     else{
+      if( (self.flags&FL_TURRET) ){
+        self.torsoCenter.attack_state = TR_NORM;
+      }
     //No ENEMY, what was I doing before?
       if( time < self.ai_timer_checkTargFade ){
         //complete the fade turn; game is mostly single player :P
@@ -169,6 +172,9 @@ void() ai_state_brawler_frame={
       self.ai_lastVis = visCheck;
     }
     else{
+      if( (self.flags&FL_TURRET) ){
+        self.torsoCenter.attack_state = TR_NORM;
+      }
     //No ENEMY, what was I doing before?
       if( time < self.ai_timer_checkTargFade ){
         if(self.nq1 == -1 ){
@@ -232,6 +238,9 @@ void() ai_state_hunter_frame={
       self.ai_lastVis = visCheck;
     }
     else{
+      if( (self.flags&FL_TURRET) ){
+        self.torsoCenter.attack_state = TR_NORM;
+      }
       //No ENEMY, what was I doing before?
         //do_patrol?
       if( !ai_check_scan( self.stat_rdr_mode ) ){
