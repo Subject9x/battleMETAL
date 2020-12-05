@@ -392,7 +392,7 @@ void() m_gameplay_d={
   gui_renderString("Crosshair Style:", gui_percentToPixelRawVec('83 197'), CLR_DEF_WHITE, '14 14 0', 1, 0);
   gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('108 221'), CLR_DEF_WHITE, '14 14 0', 1, 0);
   gui_renderString("HUD Color:", gui_percentToPixelRawVec('108 243'), CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("HUD Sway Mode:", gui_percentToPixelRawVec('74 263'), CLR_DEF_WHITE, '14 14 0', 1, 0);
+  //gui_renderString("HUD Sway Mode:", gui_percentToPixelRawVec('74 263'), CLR_DEF_WHITE, '14 14 0', 1, 0);
 
   crossColor_x = cvar("crosshair_color_red");
   crossColor_y = cvar("crosshair_color_green");
