@@ -205,8 +205,6 @@ void() interpolate_turret={
     self = parent;
     wepn = wepn.w_slot;
   }
-  self.think = SUB_Null;
-  self.nextthink = time + 0.01;
 };
 
 float() predraw_turret={
