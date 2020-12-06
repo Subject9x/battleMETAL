@@ -541,7 +541,8 @@ void() building_misc_off_small={
   }
   self.vec_size = 2;
   
-  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", FALSE);
+  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", TRUE);
+  self.solid = SOLID_SLIDEBOX;
   setsize( self, '-36 -56 0', '36 56 80');
   setorigin(self, self.origin);
 };
@@ -593,7 +594,8 @@ void() building_misc_off_small_wide={
   }
   self.vec_size = 2;
   
-  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", FALSE );
+  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", TRUE );
+  self.solid = SOLID_SLIDEBOX;
   setsize( self, '-56 -36 0', '56 36 80');
   setorigin(self, self.origin);
   self.angles = '0 90 0';
