@@ -230,7 +230,7 @@ void() building_misc_apartment_wide={
 };
 
 
-/*QUAKED building_misc_factory_med (0 0 1) (-36 -88 0) (36 88 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_factory_med (0 0 1) (-88 -36 0) (88 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -280,13 +280,12 @@ void() building_misc_factory_med={
   self.vec_size = 2;
 
   misc_building("q3mdl/buildings/misc/misc_fact_med.obj", FALSE);
-  setsize(self, '-36 -88 0', '36 88 76');
+  self.solid = SOLID_SLIDEBOX;
+  setsize(self, '-88 -36 0', '88 36 76');
   setorigin(self, self.origin);
   self.angles = '0 90 0';
 };
-
-
-/*QUAKED building_misc_factory_med_wide (0 0 1) (-88 -36 0) (88 36 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_factory_med_wide (0 0 1) (-36 -88 0) (36 88 76) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -335,7 +334,8 @@ void() building_misc_factory_med_wide={
   }
   self.vec_size = 2;
   misc_building("q3mdl/buildings/misc/misc_fact_med.obj", FALSE);
-  setsize(self, '-88 -36 0', '88 36 76');
+  self.solid = SOLID_SLIDEBOX;
+  setsize(self, '-36 -88 0', '36 88 76');
   setorigin(self, self.origin);
   self.angles = '0 0 0';
 };
