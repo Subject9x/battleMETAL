@@ -66,16 +66,16 @@ void() model_misc_building_set={
       //building_misc_apt_larg
       setmodel(self, "q3mdl/buildings/misc/misc_apt_larg.obj");
       if( self.angles_y == 90 ){
-        setsize(self, '-96 -57 0', '96 63 56');
+        setsize( self, '-96 -120 0', '96 0 56');
       }
       else if( self.angles_y == 180 ){
-        setsize(self, '-63 -96 0', '57 96 56');
+        setsize( self, '0 -96 0', '120 96 56');
       }
       else if( self.angles_y == 270 ){
-        setsize(self, '-96 -63 0', '96 57 56');
+        setsize( self, '-96 0 0', '96 120 56');
       }
       else{
-        setsize(self, '-57 -96 0', '63 96 56');
+        setsize( self, '-120 -96 0', '0 96 56');
       }
       break;
   }

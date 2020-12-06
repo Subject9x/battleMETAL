@@ -6011,7 +6011,7 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
 
 
-/*QUAKED building_misc_apt_large_east (0 0 1) (-63 -96 0) (57 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_east (0 0 1) (0 -96 0) (120 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -6048,7 +6048,7 @@ NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED building_misc_apt_large_west (0 0 1) (-57 -96 0) (63 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_west (0 0 1) (-120 -96 0) (0 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -6085,7 +6085,7 @@ NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED building_misc_apt_large_north(0 0 1) (-96 -63 0) (96 57 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_north(0 0 1) (-96 0 0) (96 120 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -6122,7 +6122,7 @@ NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-/*QUAKED building_misc_apt_large_south(0 0 1) (-96 -57 0) (96 63 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_south(0 0 1) (-96 -120 0) (96 0 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -6159,7 +6159,6 @@ NODROP 65536: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-
 
 
 

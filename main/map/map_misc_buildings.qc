@@ -75,7 +75,6 @@ void() misc_build_die1={
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
   
 	self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-	
   self.think = misc_build_die2;
   self.nextthink = time + 0.1;
 };
@@ -83,11 +82,13 @@ void() misc_build_die1={
 /*
   Generic ini func for misc_buildings
 */
-void( string modelName ) misc_building={
+void( string modelName, float setSizeFlag ) misc_building={
   
   setmodel(self, modelName);
-  setsize(self, self.mins, self.maxs);
-  setorigin(self, self.origin);
+  if( setSizeFlag ){
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+  }
   
   if( !(self.spawnflags & MISC_NO_DROP) ){
     droptofloor();
@@ -166,7 +167,7 @@ void() building_misc_apartment={
   }
   self.vec_size = 1;
   
-  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj");
+  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", FALSE);
   //dprint(sprintf("min - %s|| max - %s\n", vtos(self.mins), vtos(self.maxs))); //debug
   setsize(self, '-36 -20 0', '36 20 52');
   setorigin(self, self.origin);
@@ -222,7 +223,7 @@ void() building_misc_apartment_wide={
   }
   self.vec_size = 1;
   
-  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj");
+  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", FALSE);
   setsize(self, '-20 -36 0', '20 36 52');
   setorigin(self, self.origin);
   self.angles = '0 90 0';
@@ -278,7 +279,7 @@ void() building_misc_factory_med={
   }
   self.vec_size = 2;
 
-  misc_building("q3mdl/buildings/misc/misc_fact_med.obj");
+  misc_building("q3mdl/buildings/misc/misc_fact_med.obj", FALSE);
   setsize(self, '-36 -88 0', '36 88 76');
   setorigin(self, self.origin);
   self.angles = '0 90 0';
@@ -333,7 +334,7 @@ void() building_misc_factory_med_wide={
     self.health = self.max_health = 350;
   }
   self.vec_size = 2;
-  misc_building("q3mdl/buildings/misc/misc_fact_med.obj");
+  misc_building("q3mdl/buildings/misc/misc_fact_med.obj", FALSE);
   setsize(self, '-88 -36 0', '88 36 76');
   setorigin(self, self.origin);
   self.angles = '0 0 0';
@@ -390,7 +391,7 @@ void() building_misc_lodge={
   }
   self.vec_size = 1;
   
-  misc_building("q3mdl/buildings/misc/misc_lodge.obj");
+  misc_building("q3mdl/buildings/misc/misc_lodge.obj", TRUE);
 };
 
 
@@ -441,7 +442,7 @@ void() building_misc_off_pyra={
   }
   self.vec_size = 2;
   
-  misc_building("q3mdl/buildings/misc/misc_off_pyramid.obj");
+  misc_building("q3mdl/buildings/misc/misc_off_pyramid.obj", TRUE);
 };
 
 /*QUAKED building_misc_off_large (0 0 1) (-88 -88 0) (88 88 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
@@ -490,7 +491,7 @@ void() building_misc_off_large={
   }
   self.vec_size = 3;
   
-  misc_building("q3mdl/buildings/misc/misc_off_large.obj");
+  misc_building("q3mdl/buildings/misc/misc_off_large.obj", TRUE);
 };
 
 /*QUAKED building_misc_off_small (0 0 1) (-36 -56 0) (36 56 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
@@ -541,7 +542,7 @@ void() building_misc_off_small={
   }
   self.vec_size = 2;
   
-  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj" );
+  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", FALSE);
   setsize( self, '-36 -56 0', '36 56 80');
   setorigin(self, self.origin);
 };
@@ -593,7 +594,7 @@ void() building_misc_off_small_wide={
   }
   self.vec_size = 2;
   
-  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj" );
+  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", FALSE );
   setsize( self, '-56 -36 0', '56 36 80');
   setorigin(self, self.origin);
   self.angles = '0 90 0';
@@ -644,11 +645,11 @@ void() building_misc_fact_steam={
     self.health = self.max_health = 100;
   }
   self.vec_size = 2;
-  misc_building("q3mdl/buildings/misc/misc_fact_steam.obj");
+  misc_building("q3mdl/buildings/misc/misc_fact_steam.obj", TRUE);
 };
 
 
-/*QUAKED building_misc_apt_large_north(0 0 1) (-96 -63 0) (96 57 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_north(0 0 1) (-96 0 0) (96 120 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -697,13 +698,13 @@ void() building_misc_apt_large_north={
     self.health = self.max_health = 200;
   }
   self.vec_size = 3;
-  
-  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj");
-  setsize( self, '-96 -63 0', '96 57 56');
-  setorigin(self, self.origin);
+  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", FALSE);
+  self.solid = SOLID_SLIDEBOX;
   self.angles = '0 270 0';
+  setsize( self, '-96 0 0', '96 120 56');
+  setorigin(self, self.origin);
 };
-/*QUAKED building_misc_apt_large_east (0 0 1) (-63 -96 0) (57 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_east (0 0 1) (0 -96 0) (120 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -753,12 +754,13 @@ void() building_misc_apt_large_east={
   }
   self.vec_size = 3;
   
-  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj");
-  setsize( self, '-63 -96 0', '57 96 56');
+  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", FALSE);
+  self.solid = SOLID_SLIDEBOX;
+  setsize( self, '0 -96 0', '120 96 56');
   setorigin(self, self.origin);
   self.angles = '0 180 0';
 };
-/*QUAKED building_misc_apt_large_west (0 0 1) (-57 -96 0) (63 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_west (0 0 1) (-120 -96 0) (0 96 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -808,13 +810,13 @@ void() building_misc_apt_large_west={
   }
   self.vec_size = 3;
   
-  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj");
-  setsize( self, '-57 -96 0', '63 96 56');
+  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", FALSE);
+  self.solid = SOLID_SLIDEBOX;
+  setsize( self, '-120 -96 0', '0 96 56');
   setorigin(self, self.origin);
   self.angles = '0 0 0';
 };
-
-/*QUAKED building_misc_apt_large_south(0 0 1) (-96 -57 0) (96 63 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_misc_apt_large_south(0 0 1) (-96 -120 0) (96 0 56) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
 warning: don't arbitrarily rotate, non-uniform bbox size.
@@ -864,8 +866,9 @@ void() building_misc_apt_large_south={
   }
   self.vec_size = 3;
   
-  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj");
-  setsize( self, '-96 -57 0', '96 63 56');
+  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", FALSE);
+  self.solid = SOLID_SLIDEBOX;
+  setsize( self, '-96 -120 0', '96 0 56');
   setorigin(self, self.origin);
   self.angles = '0 90 0';
 };

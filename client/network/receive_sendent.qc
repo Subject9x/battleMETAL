@@ -212,9 +212,9 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   if(isNew){
     self.drawmask = MASK_ENGINE;
     if( self.deadflag == DEAD_NO ){
-      model_misc_building_set();
       self.solid = SOLID_BSP;
       self.movetype = MOVETYPE_NONE;
+      model_misc_building_set();
     }
     else{
       model_misc_building_ruins_set();
