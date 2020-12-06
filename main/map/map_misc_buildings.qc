@@ -167,13 +167,12 @@ void() building_misc_apartment={
   }
   self.vec_size = 1;
   
-  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", FALSE);
-  //dprint(sprintf("min - %s|| max - %s\n", vtos(self.mins), vtos(self.maxs))); //debug
+  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", TRUE);
+  self.solid = SOLID_SLIDEBOX;
   setsize(self, '-36 -20 0', '36 20 52');
   setorigin(self, self.origin);
+  self.angles = '0 90 0';
 };
-
-
 /*QUAKED building_misc_apartment_wide (0 0 1) (-20 -36 0) (20 36 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/towersmall/guardtower.md3"); }
 
@@ -223,10 +222,10 @@ void() building_misc_apartment_wide={
   }
   self.vec_size = 1;
   
-  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", FALSE);
+  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", TRUE);
+  self.solid = SOLID_SLIDEBOX;
   setsize(self, '-20 -36 0', '20 36 52');
   setorigin(self, self.origin);
-  self.angles = '0 90 0';
 };
 
 
