@@ -177,7 +177,6 @@ string(float typ) map_list_getmap ={
           }
           MAPS_COOP[itr] = strzone(ln);
         }
-        print(strcat("loaded menu img : ", ln, "\n"));  //DEBUG
       }
       itr = itr + 1;
       ln = fgets(f);

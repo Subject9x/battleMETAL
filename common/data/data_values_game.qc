@@ -252,7 +252,11 @@ float FALL_CT_MULTIPLIER = 3;
 float FALL_KILL_MULTIPLIER = 3; 
 float FALL_DAMAGE_FRACTION = 0.2;
 float SHIELD_DELAY = 5; //game timer to pause before shields are brought backonline
-float CHAIN_FIRE_INTERVAL = 0.15; 
+float CHAIN_FIRE_INTERVAL = 0.15;
+
+float DMG_TORSO_CRIT_MULTI = 1.5; // t_damage() - line 124, damage multiplier when mechs have torsos destroyed.
+float DMG_FRIENDLY_FIRE_REDUCE = 0.67;  // t_damage() - line 35, damage reduction for friendly fire when the flag is on.
+float DMG_FRIENDLY_FIRE_REDUCE_SKILL = 0.33;
 //============================
 //     WEAPON FLAGS
 //============================
@@ -319,7 +323,7 @@ float SENDTYPE_MISC_BLD = 14;
 //SendFlags-------------------
 //note: sendEnt is capped to 7 bitflags + NEWENT 
 //      and uses WriteByte, to add more flags, try switching
-//      to WriteShort for ChangeFlags
+//      to WriteShort for ChangeFlags if you want to increase total SENDFLAG size.
 float SENDFLAG_MOVE = 1;  //update .origin and .angles of main piece 
 float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.
 float SENDFLAG_VELOCITY = 4; //unit is stood up by server
@@ -333,8 +337,6 @@ float SENDFLAG_NEWENT = 128;
   //.faction
   //.data_type
   //.data_idx
-
-
 //============================
 //     COMMON SPAWNFLAGS
 //============================
@@ -411,21 +413,18 @@ float STAT_PLAYER_STATE = 38;
 //float    = 40;
 float STAT_PLAYER_DEATHS = 41;
 //float    = 42;
-
-//43;
+//float    = 43;
 //float    = 44;
 //float    = 46;
 float STAT_PLR_RADMOD = 47;
 float STAT_PLR_HITDIR = 48;
 float STAT_PLR_RETDIST = 49;
-
 //float    = 50;
 //float    = 53;
 //float    = 54;
 //float    = 55;
 float STAT_TRG_FACE = 56;
 //float    = 57;
-
 float STAT_TARGET_HP_TORSOCENTER = 61;
 float STAT_TARGET_HP_TORSOLEFT = 62;
 float STAT_TARGET_HP_TORSORIGHT = 63;
@@ -439,18 +438,15 @@ float STAT_CLIENT_HP_TORSORIGHT = 69;
 float STAT_CLIENT_HP_ARMLEFT = 70;
 float STAT_CLIENT_HP_ARMRIGHT = 71;
 float STAT_CLIENT_HP_LEGS = 72;
-
 //float   = 73;
 //float   = 74;
 //float   = 75;
 //float   = 76;
 //float    = 77;
 //float    = 78;
-
 float STAT_RAM_VALUE = 79;
 float STAT_LCK_STT = 80;
 //float    = 81;
-
 /*float    = 82;
 float    = 83;
 float    = 84;
@@ -514,22 +510,3 @@ float FACTION_ALL = 255;  //buildings don't show up on radar, deploy and nav poi
 float SHIELD_HIT_UP   = 1;
 float SHIELD_HIT_DN = 2;
 float SHIELD_HIT_EXP  = 3;
-
-//============================
-//     AI VOICE SYSTEM
-//============================
-//Voice group IDs
-float AI_VOICE_GROUP_A = 2;
-float AI_VOICE_GROUP_B = 3;
-float AI_VOICE_GROUP_C = 1;
-
-float AI_VOICE_DEAD       = 0;
-float AI_VOICE_DYING      = 1;
-float AI_VOICE_HELP       = 2;
-float AI_VOICE_HUNT_END   = 3;
-float AI_VOICE_HUNT_START = 4;
-float AI_VOICE_KILL       = 5;
-float AI_VOICE_NOSPOT     = 6;
-float AI_VOICE_ROGER      = 7;
-float AI_VOICE_SPOTTED    = 8;
-float AI_VOICE_WARN       = 9;

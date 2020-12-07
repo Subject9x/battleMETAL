@@ -20,7 +20,15 @@ float HAS_RADAR = 64;   //radar is expensive to use, use sparingly
                                         //generally this is for mech units
 float DEBUG_MODE = 128; //dont do anything
 
-//warning! these are tied to engine-specific values, and for now, there's no changing it
+//warning! these are tied to engine-specific values, and for now, there's no changing it for now.
+//this is a hold over from classic Quake, and I'm torn on whether I want this to be used EVERYWHERE in battleMETAL....
+//or just using my own defines in NO_NOVICE, etc.
+//if the decision is made to remove these from the engine, then hey, we get 4 spawnflag slots back.
+//float NO_EASY = 256;
+//float NO_NORMAL = 512;
+//float NO_HARD = 1024;
+//float NO_NIGHT = 2048;
+
 float NO_NOVICE = 4096;  //remove from Novice Difficulty
 float NO_REGULAR = 8192; //remove from Regular Difficulty
 float NO_VETERAN = 16384; //remove from Veteran Difficulty
@@ -35,7 +43,25 @@ float TRIGGER_ME = 524288;  //ai only spawns when triggered
 float MUTE_ME = 1048576;  //ai ignores sending voice effects / radio sounds.
 float UNARMED = 2097152; //ai spawns with no weapons, skip build_weapons() factory step;
 
+//============================
+//     AI VOICE SYSTEM
+//============================
 float AI_VOICE_TIME = 32;
+//Voice group IDs
+float AI_VOICE_GROUP_A = 2;
+float AI_VOICE_GROUP_B = 3;
+float AI_VOICE_GROUP_C = 1;
+
+float AI_VOICE_DEAD       = 0;
+float AI_VOICE_DYING      = 1;
+float AI_VOICE_HELP       = 2;
+float AI_VOICE_HUNT_END   = 3;
+float AI_VOICE_HUNT_START = 4;
+float AI_VOICE_KILL       = 5;
+float AI_VOICE_NOSPOT     = 6;
+float AI_VOICE_ROGER      = 7;
+float AI_VOICE_SPOTTED    = 8;
+float AI_VOICE_WARN       = 9;
 
 //this works to balance AI mech stats vs player mech stats.
 float AI_ADJUST_ENERGY = 0.85;
@@ -44,12 +70,12 @@ float AI_ADJUST_SHIELD = 0.85;  //rate, this is applied to .shieldRate
 //Armor Values
 //hp = hp * AI_ARMOR
 //AI mechs share initial stats with the player, so we have to detune them now.
-float AI_ARMOR_MECH = 0.5;
+float AI_ARMOR_MECH = 0.7;  //pre-release 0.5
 
 //Shield Values
 //shield = shield * AI_SHIELD
 //AI mechs share initial stats with player, so we have to detune them now.
-float AI_SHIELD_MECH = 0.67;  //applied to .shieldMax
+float AI_SHIELD_MECH = 0.8;  //applied to .shieldMax pre-release 0.67
 
 //AI TH_REACT cooldown
 float AI_REACT_ROK = 2;
@@ -57,7 +83,7 @@ float AI_REACT_REG = 1.5;
 float AI_REACT_VET = 1;
 float AI_REACT_ACE = 0.5;
 
-//AI movement speed ratio 
+//AI movement speed ratio - AI movement is every 0.01 game tic, so speeds need to be ratio'd down to that scale.
 float AI_WALK_SPD = 0.09;
 float AI_RUN_SPD = 0.19;
 float AI_RUN_FACTOR = 1.25;
@@ -117,7 +143,7 @@ float AI_ATTACK_REG = 0.1;
 float AI_ATTACK_VET = 0.075;
 float AI_ATTACK_ACE = 0.05;
 
-//WEAPON TWEAKS
+//WEAPON TWEAKS - AI thinks are every 0.01 game tic, so weapon reload need to be ratio'd down to that scale.
 float AI_WEAPON_RPS_MOD = 1500;
 
 //Minimum convergence modifier
@@ -149,7 +175,7 @@ float AI_RANGE_S = 400;
 float AI_RANGE_M = 1000;
 float AI_RANGE_L = 1600;
 
-//Patrol Node Chec Range
+//Patrol Node Check Range
 float AI_NODE_DISTANCE = 67;
 
 //Help call cooldowns
@@ -158,10 +184,13 @@ float AI_HELP_COOL_REG = 9;
 float AI_HELP_COOL_VET = 7;
 float AI_HELP_COOL_ACE = 5;
 
+//COMBAT PAUSING
+//  during firefights with targets, a 'pause' will make the AI  stand still for a bit and fire a little less frequently.
+//  this is used to give the player more breathing room, otherwise bots will just bury the player in weapons fire.
 //COMBAT PAUSE CHANCE
-float AI_PAUSE_CHANCE_ROK = 0.67;
-float AI_PAUSE_CHANCE_REG = 0.5;
-float AI_PAUSE_CHANCE_VET = 0.35;
+float AI_PAUSE_CHANCE_ROK = 0.5; //0.67
+float AI_PAUSE_CHANCE_REG = 0.4;  //0.5
+float AI_PAUSE_CHANCE_VET = 0.3; //0.35
 float AI_PAUSE_CHANCE_ACE = 0.2;
 
 //COMBAT PAUSE CHECK
@@ -171,7 +200,7 @@ float AI_PAUSE_TIME_VET = 15;
 float AI_PAUSE_TIME_ACE = 10;
 
 //COMBAT PAUSE WAIT
-float AI_PAUSE_WAIT_ROK = 7;
-float AI_PAUSE_WAIT_REG = 5;
-float AI_PAUSE_WAIT_VET = 3;
+float AI_PAUSE_WAIT_ROK = 5;  //7
+float AI_PAUSE_WAIT_REG = 4;  //5
+float AI_PAUSE_WAIT_VET = 2;  //3
 float AI_PAUSE_WAIT_ACE = 1;

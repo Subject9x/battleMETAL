@@ -33,10 +33,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     if( trg.faction == attacker.faction ){
       if( (serverflags & SVFLAG_FIREON) ){
         if( skill < 2 ){
-          dmgAmt = dmgAmt * 0.67;
+          dmgAmt = dmgAmt * DMG_FRIENDLY_FIRE_REDUCE;
         }
         else{
-          dmgAmt = dmgAmt * 0.33;
+          dmgAmt = dmgAmt * DMG_FRIENDLY_FIRE_REDUCE_SKILL;
         }
       }
     }
@@ -122,10 +122,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
       if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
         if( (trg.criticalHits & M_TOR_LEFT) ){
-          dmgAmt = dmgAmt * 1.25;
+          dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
         }
         if( (trg.criticalHits & M_TOR_RIGHT) ){
-          dmgAmt = dmgAmt * 1.25;
+          dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
         }
       }
     }
@@ -137,7 +137,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   }
   
   if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){    
-    if( util_getMechHpAverage(dmgTrg) <= 0.4){
+    if( util_getMechHpAverage(dmgTrg) < 0.5){
       notTarg = self;
       self = dmgTrg;
         ai_call_for_help( attacker );
