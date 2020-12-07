@@ -2814,13 +2814,12 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED map_deploy_point (0.753 0.788 0.431) (-26 -26 -44) (26 26 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM
+/*QUAKED map_deploy_point (0.753 0.788 0.431) (-26 -26 -44) (26 26 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET ? ? ? DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE
 Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
 Deploy points can be tailored to specific factions, and can be activated/deactivated.
 
 -------- KEYS -------- 
 .faction = <float> - Deploy Point only appears for this faction
-.data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
 .isActive = <float> [bool] - if active, allow players to spawn here.  
 .trigOnSpawn = <string> [target] - map object to fire when this is created
 -------SPAWNFLAGS-----
@@ -2828,6 +2827,14 @@ NO_CAMPAIGN 1 : removed from singleplayer
 NO_COOP 2 : removed from co-operative games
 NO_DM 4 : removed from deathmatch games
 NO_TDM 8 : removed from deathmatch 1 / teamplay 1 games.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elite Difficulty
 */
 
 
