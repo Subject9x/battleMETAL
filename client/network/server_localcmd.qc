@@ -19,9 +19,24 @@ void(float totalWeps, string wepList) cl_setweapon={
 
 void(float id) cl_setmech={
   local string cmd;
+  local string factionColors;
+  
+  switch( CLIENT_faction ){
+    case 2:
+      factionColors = cvar_string("cl_color_srv");
+      break;
+      
+    case 3:
+      factionColors = cvar_string("cl_color_mil");
+      break;
+      
+    default:
+      factionColors = cvar_string("cl_color_psc");
+      break;
+  }
+  
   cmd = strcat("cmd m sm ", ftos(id), " ");
-  cmd = strcat(cmd, ftos(cvar("cl_tint_r")), " ", ftos(cvar("cl_tint_g")));
-  cmd = strcat(cmd,  " ", ftos(cvar("cl_tint_b")), "\n");
+  cmd = strcat(cmd, factionColors,"\n");
   localcmd(cmd);
 };
 

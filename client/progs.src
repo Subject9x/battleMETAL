@@ -39,6 +39,7 @@ network/headers/receive_sendent.qh
 //Common Game Data================
   ../common/data/data_values_particles.qc
   ../common/ui/ui_color_constants.qc
+  ../common/ui/ui_color_player.qc
   ../common/data/data_values_game.qc
   ../common/data/data_header.qc
   

@@ -93,7 +93,6 @@ void(entity piece) player_part_predaw={
   piece.origin = offset;
   piece.angles = self.angles;
   piece.angles_x = 0;
-  piece.colormod = self.colormod;
 };
 
 /*
@@ -296,6 +295,14 @@ void( float mech_id ) sendevent_player_mech={
   }
   minSave = self.mins;
   maxSave = self.maxs;
+  
+  self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
+  self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
+  self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
+  self.armLeft.colormod = CLR_PLAYER_LIST[self.unitColorLA];
+  self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
+  self.legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
+  
   setmodel(self.torsoCenter, self.torsoCenter.model);
   setmodel(self.torsoLeft, self.torsoLeft.model);
   setmodel(self.torsoRight, self.torsoRight.model);
@@ -585,9 +592,13 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    self.colormod_x = ReadCoord();
-    self.colormod_y = ReadCoord();
-    self.colormod_z = ReadCoord();
+    //custom colors
+    self.unitColorCT = ReadByte();
+    self.unitColorLT = ReadByte();
+    self.unitColorRT = ReadByte();
+    self.unitColorLA = ReadByte();
+    self.unitColorRA = ReadByte();
+    self.unitColorLG = ReadByte();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         self.deadflag = DEAD_NO;

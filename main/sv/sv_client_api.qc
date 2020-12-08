@@ -626,9 +626,13 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.next_wepn7);
     WriteByte( MSG_ENTITY, player.next_wepn8);
     WriteByte( MSG_ENTITY, player.next_wepn9);
-    WriteCoord( MSG_ENTITY, player.colormod_x);
-    WriteCoord( MSG_ENTITY, player.colormod_y);
-    WriteCoord( MSG_ENTITY, player.colormod_z);
+    //custom colors
+    WriteByte( MSG_ENTITY, player.unitColorCT );
+    WriteByte( MSG_ENTITY, player.unitColorLT );
+    WriteByte( MSG_ENTITY, player.unitColorRT );
+    WriteByte( MSG_ENTITY, player.unitColorLA );
+    WriteByte( MSG_ENTITY, player.unitColorRA );
+    WriteByte( MSG_ENTITY, player.unitColorLG );
   }
   /*
     EVENT - pieces of player mech is blown off

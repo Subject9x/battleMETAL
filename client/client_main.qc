@@ -11,7 +11,11 @@ void() CSQC_Init =
   registercvar("cl_tint_b", "1", 1);
   registercvar("cl_ismenu", "0", 0);
   registercvar("chase_active", "0", 0);
-
+  
+  registercvar("cl_color_mil", "21 21 21 21 21 21", 0);
+  registercvar("cl_color_srv", "21 21 21 21 21 21", 0);
+  registercvar("cl_color_psc", "21 21 21 21 21 21", 0);
+  
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
 		maxclients = maxclients + 1;
@@ -166,6 +170,7 @@ void() CSQC_Init =
   
   initparticlespawner(16);
   VIEW_OBS_ID = 1;
+  ui_colors_set_player_list();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
