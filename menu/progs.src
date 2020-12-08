@@ -2,6 +2,7 @@
 //HEADERS---------------
 defs/menudefs.qc
 ../common/ui/ui_color_constants.qc
+../common/ui/ui_color_player.qc
 ../common/data/camp_loader.qh
 defs/keycodes.qc
 defs/headers/menu.qh

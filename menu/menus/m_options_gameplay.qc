@@ -37,9 +37,9 @@ entity gameplay_hudcolor_lbl;
 entity gameplay_hudcolor_nx;
 entity gameplay_hudcolor_pr;
 
-entity gameplay_hud_sway_less;
-entity gameplay_hud_sway_more;
-entity gameplay_hud_sway_set;
+//entity gameplay_hud_sway_less;
+//entity gameplay_hud_sway_more;
+//entity gameplay_hud_sway_set;
 
 entity gameplay_back;
 
@@ -90,7 +90,7 @@ string( float id)gameplay_crosshair_img={
   }
 };
 
-string( float val ) gameplay_hud_sway_mode={
+/*string( float val ) gameplay_hud_sway_mode={
   switch(val){
     default:
       return "OFF";
@@ -99,7 +99,7 @@ string( float val ) gameplay_hud_sway_mode={
     case 2:
       return "FULL";
   }
-};
+};*/
 
 //gameplay callbacks
 void() click_gameplay_fov_more={

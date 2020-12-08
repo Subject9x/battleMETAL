@@ -61,7 +61,6 @@ Overview:
 .float isActive;
 .float ai_dir;          //chassis facing vs .angles
 
-
 .float shieldEffectTime;  //bumping this up to help reduce net traffic by preventing spamming at the server level.
                           //sure dropped packet do real, but its better than flooding 
 
@@ -78,6 +77,13 @@ Overview:
 .float radar_time;
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame
+
+.float unitColorCT;
+.float unitColorLT;
+.float unitColorRT;
+.float unitColorLA;
+.float unitColorRA;
+.float unitColorLG;
 #endif
 
 #ifdef CSQC

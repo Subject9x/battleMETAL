@@ -29,6 +29,11 @@ void() m_init={
   registercvar("cl_net_fav3", "0", 0);
   registercvar("cl_net_fav4", "0", 0);
   
+  registercvar("cl_color_mil", "21 21 21 21 21 21", 0);
+  registercvar("cl_color_srv", "21 21 21 21 21 21", 0);
+  registercvar("cl_color_psc", "21 21 21 21 21 21", 0);
+  
+  ui_colors_set_player_list();
   menu_setup_mainservers();
   
   VIEW_SCALE = 0.35;
