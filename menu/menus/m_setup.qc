@@ -108,12 +108,9 @@ void(float factionType) setup_set_tint={
 void() setup_save_color_scheme={
   local string colorSet;
   
-  colorSet = strcat(ftos(setup_pic_ct.len));
-  colorSet = strcat(colorSet, " ", ftos(setup_pic_lt.len));
-  colorSet = strcat(colorSet, " ", ftos(setup_pic_rt.len));
-  colorSet = strcat(colorSet, " ", ftos(setup_pic_la.len));
-  colorSet = strcat(colorSet, " ", ftos(setup_pic_ra.len));
-  colorSet = strcat(colorSet, " ", ftos(setup_pic_lg.len));
+  colorSet = strcat(ftos(fabs(setup_pic_ct.len)), " ", ftos(fabs(setup_pic_lt.len))," ", ftos(fabs(setup_pic_rt.len)));
+  colorSet = strcat(colorSet, " ", ftos(fabs(setup_pic_la.len)), " ", ftos(fabs(setup_pic_ra.len)), " ");
+  colorSet = strcat(colorSet, ftos(fabs(setup_pic_lg.len)));
   
   switch(setup_team_value.len){
     case 2:
@@ -190,6 +187,9 @@ void() setup_color_next={
 
 void() setup_color_prev={
   self.targ.len = self.targ.len - 1;
+  if( self.targ.len < 1 && self.targ.len > -1 ){
+    self.targ.len = fabs(self.targ.len);  // blech, -0.0 bug
+  }
   if( self.targ.len < 0 ){
     self.targ.len = 21;
   }
@@ -314,6 +314,7 @@ void(float key, float ascii) m_setup_k={
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
       setup_save_color_scheme();
+      cmd("saveconfig\n");
       if( MAIN_MISSION ) {
         m_main_f();
       }
