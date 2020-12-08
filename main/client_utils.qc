@@ -169,9 +169,12 @@ void(string str, float tokens) client_ParseMechCommand={
   
   if(argv(1) == "sm"){
     self.nextVecChoice = rint(stof(argv(2)));
-    self.colormod_x = stof(argv(3));
-    self.colormod_y = stof(argv(4));
-    self.colormod_z = stof(argv(5));
+    self.unitColorCT = rint(stof(argv(3)));
+    self.unitColorLT = rint(stof(argv(4)));
+    self.unitColorRT = rint(stof(argv(5)));
+    self.unitColorLA = rint(stof(argv(6)));
+    self.unitColorRA = rint(stof(argv(7)));
+    self.unitColorLG = rint(stof(argv(8)));
     return;
   }
   
