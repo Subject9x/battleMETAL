@@ -47,21 +47,6 @@ float UNARMED = 2097152; //ai spawns with no weapons, skip build_weapons() facto
 //     AI VOICE SYSTEM
 //============================
 float AI_VOICE_TIME = 32;
-//Voice group IDs
-float AI_VOICE_GROUP_A = 2;
-float AI_VOICE_GROUP_B = 3;
-float AI_VOICE_GROUP_C = 1;
-
-float AI_VOICE_DEAD       = 0;
-float AI_VOICE_DYING      = 1;
-float AI_VOICE_HELP       = 2;
-float AI_VOICE_HUNT_END   = 3;
-float AI_VOICE_HUNT_START = 4;
-float AI_VOICE_KILL       = 5;
-float AI_VOICE_NOSPOT     = 6;
-float AI_VOICE_ROGER      = 7;
-float AI_VOICE_SPOTTED    = 8;
-float AI_VOICE_WARN       = 9;
 
 //this works to balance AI mech stats vs player mech stats.
 float AI_ADJUST_ENERGY = 0.85;
