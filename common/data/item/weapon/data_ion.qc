@@ -36,7 +36,7 @@ void() data_ini_ion_={
   self.energyRate = 125;
   
   self.w_range = 1500;
-  self.damageValue = 90;
+  self.damageValue = 75;  //pre-release 90
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
 
   self.techLevel = 1;
