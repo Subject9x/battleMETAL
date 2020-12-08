@@ -146,8 +146,8 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
       newmis.SendEntity = te_send_missile;
       newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
       newmis.partTypeId = trailNum;
-      totals = totals - 1;
     }
+    totals = totals - 1;
   }
 };
 
@@ -201,8 +201,8 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
       newmis.data_idx = UID_ITEM_debris;
       newmis.SendEntity = te_send_missile;
       newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
-      totals = totals - 1;
     }
+    totals = totals - 1;
   }
 };
 
