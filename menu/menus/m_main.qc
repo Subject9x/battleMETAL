@@ -106,7 +106,7 @@ void() click_main_leave={
   cvar_set("deathmatch", "0");
   cvar_set("teamplay", "0");
   cvar_set("coop", "0");
-  cmd("map cin_menu.bsp\n");
+  cmd("map cin_menu\n");
 };
 
 void() click_main_player_setup={
