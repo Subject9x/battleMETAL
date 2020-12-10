@@ -175,7 +175,12 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
     gui_renderMeter(scopeVal, pos, meterSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, meterAxis, 0);
   }
 
-  
+  if(  (meterAxis & AXIS_H) ){
+    drawpic(pos, "gfx/hud/hud_meter_cover3.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  }
+  else{
+    drawpic(pos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  }
   
   if(bool_label){
     label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos);
@@ -195,6 +200,7 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
   gui_renderMeter(val, pos, meterSize, CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA, 0, meterAxis, 0);
+  drawpic(pos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
   if(bool_label){
     label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos);
     drawfont_prev = drawfont;
@@ -232,8 +238,10 @@ void( vector pos, vector grpCtr, float val, vector mSize, float lbl_algn, vector
   pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), shofs);
   
   gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, meterAxis, 0);
-  label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), (VIEW_LFT | VIEW_TOP), pos);
   
+  drawpic(pos, "gfx/hud/hud_meter_cover2.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  
+  label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), (VIEW_LFT | VIEW_TOP), pos);
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
     drawstring(label_org, label, '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
@@ -529,6 +537,8 @@ void() hud_renderRepairValue={
     torg_x = VIEW_CTR_x - gui_percentXRaw( len / 2 ) ;
     torg_y = torg_y - gui_percentYRaw(16);
     gui_renderMeter(CLIENT_repair_value, vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA + 0.33, 0, AXIS_H, 0);
+    
+    drawpic(vorg, "gfx/hud/hud_meter_cover3.png", gui_percentToPixelRawVec('256 24'), '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
     drawstring(torg, str, '14 14 0', HUD_COLOR_DEF, HUD_ALPHA + 0.33, 0);
     drawfont = drawfont_prev;
   }
@@ -808,6 +818,14 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   }
   
   gui_renderMeter(ramValue, ramPos, meterSize, HUD_COLOR_DEF - '0.5 0.5 0.5', ramColor, HUD_ALPHA, 0, meterAxis, 0);
+  
+  if(  (meterAxis & AXIS_H) ){
+    drawpic(ramPos, "gfx/hud/hud_meter_cover3.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  }
+  else{
+    drawpic(ramPos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  }
+  
 
   label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, ramPos);
   drawfont_prev = drawfont;

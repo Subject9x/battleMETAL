@@ -257,6 +257,7 @@ void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
   meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
   
   gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, AXIS_V, 0);
+  drawpic(meter, "gfx/hud/hud_meter_cover2.png", siz, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
 };
 
 /*

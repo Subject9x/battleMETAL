@@ -60,6 +60,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       else{
         gui_renderMeter(scopeVal, pos, aSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, AXIS_H, FALSE); 
       }
+      drawpic(pos, "gfx/hud/hud_meter_cover3.png", aSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
     }
     cs_unproject(vpos);
   }
