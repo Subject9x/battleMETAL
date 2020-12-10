@@ -200,6 +200,23 @@ float FONT_USER6 = 14;     // 'user6', userdefined fonts
 float FONT_USER7 = 15;     // 'user7' slot, userdefined fonts
 
 
+// CVAR Command BitFlags
+//  cmd.h - Line 60
+float CF_NONE                 = 0;
+float CF_CLIENT               = 1;  // cvar/command that only the client can change/execute
+float CF_SERVER               = 2;  // cvar/command that only the server can change/execute
+float CF_CLIENT_FROM_SERVER   = 4;  // command that the server is allowed to execute on the client
+float CF_SERVER_FROM_CLIENT   = 8;  // command the client is allowed to execute on the server as a stringcmd
+float CF_CHEAT                = 16;  // command or cvar that gives an unfair advantage over other players and is blocked unless sv_cheats is 1
+float CF_ARCHIVE              = 32;  // cvar should have its set value saved to config.cfg and persist across sessions
+float CF_READONLY             = 64; // cvar cannot be changed from the console or the command buffer
+float CF_NOTIFY               = 128;  // cvar should trigger a chat notification to all connected clients when changed
+float CF_SERVERINFO           = 256;  // command or cvar relevant to serverinfo string handling
+float CF_USERINFO             = 512;  // command or cvar used to communicate userinfo to the server
+float CF_PERSISTENT           = 1024; // cvar must not be reset on gametype switch (such as scr_screenshot_name, which otherwise isn't set to the mod name properly)
+float CF_PRIVATE              = 2048; // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
+float CF_MAXFLAGSVAL          = 4095;    // used to determine if flags is valid
+
 /* not supported at the moment
 ///////////////////////////
 // os constants

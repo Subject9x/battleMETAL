@@ -194,8 +194,8 @@ void() m_help_d={
   }
 };
 
-void(float key, float ascii) m_help_k={
-  switch(key){
+void(float ky, float ascii) m_help_k={
+  switch(ky){
     case K_ESCAPE:
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
