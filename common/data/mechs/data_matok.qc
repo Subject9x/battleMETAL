@@ -103,8 +103,8 @@ void() data_ini_matok_={
   //bad, late-in-the-game hack frauds
   //see predraw_player_weapon()
   if((self.flags&FL_CLIENT)){
-    data_ini_unitHardpoint_3( M_ARM_RIGHT, '7.5 -9 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_4( M_ARM_LEFT, '-7.5 -9 2.25', '0 0 -90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
+    data_ini_unitHardpoint_3( M_ARM_RIGHT, '7.5 -8.5 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
+    data_ini_unitHardpoint_4( M_ARM_LEFT, '-7.5 -8.5 2.25', '0 0 -90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
   }
   else{
     data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
