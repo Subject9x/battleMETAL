@@ -277,13 +277,19 @@ void() m_setup_d={
     widget.draw(widget);
     widget = widget.chain;
   }
-  if( setup_team_value.len == 2 ){
-    drawpic( gui_percentToPixelRawVec('175 110'), IMG_TEAM_SURVEST, gui_percentToPixelRawVec('75 64'), '1 1 1', 1, 0);
+  switch(setup_team_value.len){
+    case 2:
+      drawpic( gui_percentToPixelRawVec('175 110'), IMG_TEAM_SURVEST, gui_percentToPixelRawVec('75 60'), '1 1 1', 1, 0);
+      break;
+    
+    case 3:
+      drawpic( gui_percentToPixelRawVec('175 110'), IMG_TEAM_MILITAR, gui_percentToPixelRawVec('75 55'), '1 1 1', 1, 0);
+      break;
+    
+    default:
+      drawpic( gui_percentToPixelRawVec('175 110'), IMG_TEAM_PSC, gui_percentToPixelRawVec('75 60'), '1 1 1', 1, 0);
+      break;
   }
-  else{
-    drawpic( gui_percentToPixelRawVec('175 110'), IMG_TEAM_MILITAR, gui_percentToPixelRawVec('75 64'), '1 1 1', 1, 0);
-  }
-  
   gui_renderString("Center Torso", setup_color_ct_dn.origin + gui_percentToPixelRawVec('-64 3'), '1 1 1', '12 12 0', 1, 0);
   drawfill(setup_color_ct_dn.origin + gui_percentToPixelRawVec('24 0'), gui_percentToPixelRawVec('32 16'), CLR_PLAYER_LIST[setup_pic_ct.len], 1, 0);
   

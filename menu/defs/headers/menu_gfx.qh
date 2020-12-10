@@ -20,3 +20,4 @@ string UI_BOX_512 = "gfx/ui/box_512.png";
 
 string IMG_TEAM_SURVEST = "gfx/ui/ui_icon_survest.png";
 string IMG_TEAM_MILITAR = "gfx/ui/ui_icon_militar.png";
+string IMG_TEAM_PSC = "gfx/ui/ui_icon_psc.png";
