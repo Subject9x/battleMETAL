@@ -12,10 +12,6 @@ void() CSQC_Init =
   registercvar("cl_ismenu", "0", 0);
   registercvar("chase_active", "0", 0);
   
-  registercvar("cl_color_mil", "21 21 21 21 21 21", 0);
-  registercvar("cl_color_srv", "21 21 21 21 21 21", 0);
-  registercvar("cl_color_psc", "21 21 21 21 21 21", 0);
-  
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
 		maxclients = maxclients + 1;
