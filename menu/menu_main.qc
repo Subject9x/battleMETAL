@@ -17,7 +17,7 @@ void() m_init={
   registercvar("cl_hud_alpha", "0", CF_ARCHIVE);
   registercvar("cl_hud_color", "0", CF_ARCHIVE);
   //registercvar("cl_hud_sway", "0", 1);
-  registercvar("cl_team", "1", 2);
+  registercvar("cl_team", "1", CF_ARCHIVE);
   registercvar("sv_serverflags", "0", 0);
   registercvar("cl_ismenu", "0", 0);
   
@@ -26,9 +26,9 @@ void() m_init={
   registercvar("cl_net_fav3", "0", CF_ARCHIVE);
   registercvar("cl_net_fav4", "0", CF_ARCHIVE);
   
-  registercvar("cl_color_mil", "21 21 21 21 21 21", CF_ARCHIVE);
-  registercvar("cl_color_srv", "21 21 21 21 21 21", CF_ARCHIVE);
-  registercvar("cl_color_psc", "21 21 21 21 21 21", CF_ARCHIVE);
+  registercvar("cl_color_mil", "0", CF_ARCHIVE);
+  registercvar("cl_color_srv", "0", CF_ARCHIVE);
+  registercvar("cl_color_psc", "0", CF_ARCHIVE);
   
   ui_colors_set_player_list();
   menu_setup_mainservers();
