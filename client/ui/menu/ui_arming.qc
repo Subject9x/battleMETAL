@@ -689,6 +689,10 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = WEPNGRP_SIZE_D_x = groupButtonSize_x;
   WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = WEPNGRP_SIZE_D_y = gui_percentYRaw((lst_idx - 1) * 20);
   
+  if( time < UI_ARMING_GROUP_WARN_TIMER ) {
+    drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), '1 0 0', 0.67, 0);
+  }
+  
   local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(150) - gui_percentXRaw(12);

@@ -32,6 +32,10 @@ float UI_ARMING_weapon_rolloverID;
 
 float UI_TOTAL_WEAPONS = 24; //weapon id's
 
+float UI_ARMING_GROUP_WARN;
+float UI_ARMING_GROUP_WARN_TIMER;
+float UI_ARMING_GROUP_WARN_DECAY = 2;
+
 //Tooltips
   vector ARMING_HELP_HARDPOINT_GRAPH;
   vector ARMING_HELP_WEAPON_GROUPS;
