@@ -29,6 +29,9 @@ float	gethostcachenumber(float fld, float hostnr)
 */
 
 //join Globals
+
+string SERVER_BASE_DATA_DIR = "metaldata";
+
 float SERVER_CURRENT;
 float SERVER_TOTAL;
 
@@ -222,7 +225,7 @@ void(float serverCacheId, vector ofset, float svPing, float svMaxPlayers, string
   playerCount = strcat(playerCount, ftos(svMaxPlayers));
   
   modName = gethostcachestring(gethostcacheindexforkey("mod"), serverCacheId);
-  if( modName == "base" ){
+  if( modName == SERVER_BASE_DATA_DIR ){
     modName = "none";
   }
   

@@ -201,7 +201,6 @@ string(float typ) map_list_getmap ={
     cvar_set("sv_master4", fgets(f));
     cvar_set("sv_masterextra1", fgets(f));
     cvar_set("sv_masterextra2", fgets(f));
-    cvar_set("sv_masterextra3", fgets(f));
   }
   fclose(f);
 };
