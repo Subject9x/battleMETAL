@@ -13,7 +13,7 @@ Overview:
 float( float isNew, float changeFlags ) send_scenery={
 
   WriteByte( MSG_ENTITY, SENDTYPE_MISC );
-  WriteByte( MSG_ENTITY, changeFlags );
+  WriteCoord( MSG_ENTITY, changeFlags );
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteShort( MSG_ENTITY, self.modelindex );

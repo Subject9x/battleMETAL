@@ -91,6 +91,9 @@ void() playerAttack={
     }
     wep_chain = wep_chain.w_slot;
   }
+  if( self.attackFlag > 0 ){
+    self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_ATTACK | SENDFLAG_TURRET);
+  }
 };
 
 void() ImpulseCommands ={

@@ -109,7 +109,7 @@ void() ctrl_updateTank={
 
 float( entity targEnt, float changedflags ) ctrl_send_tank={
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
-  WriteByte( MSG_ENTITY, changedflags );
+  WriteCoord( MSG_ENTITY, changedflags );
   
   WriteCoord( MSG_ENTITY, self.origin_x );
   WriteCoord( MSG_ENTITY, self.origin_y );
@@ -164,7 +164,7 @@ float( entity targEnt, float changedflags ) ctrl_send_tank={
 
 float( entity targEnt, float changedflags ) ctrl_send_spg={
   WriteByte( MSG_ENTITY, SENDTYPE_SPG );
-  WriteByte( MSG_ENTITY, changedflags );
+  WriteCoord( MSG_ENTITY, changedflags );
   
   WriteCoord( MSG_ENTITY, self.origin_x );
   WriteCoord( MSG_ENTITY, self.origin_y );
@@ -214,7 +214,7 @@ float( entity targEnt, float changedflags ) ctrl_send_spg={
 
 float( entity targEnt, float changedflags ) ctrl_send_gev={
   WriteByte( MSG_ENTITY, SENDTYPE_GEV );
-  WriteByte( MSG_ENTITY, changedflags );
+  WriteCoord( MSG_ENTITY, changedflags );
   
   WriteCoord( MSG_ENTITY, self.origin_x );
   WriteCoord( MSG_ENTITY, self.origin_y );

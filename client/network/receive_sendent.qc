@@ -90,7 +90,7 @@ void( float isNew ) sendent_handle_update={
   local float entFlags;
   
   entType = ReadByte();
-  entFlags = ReadByte();
+  entFlags = ReadCoord(); //expanding entFlags values -> data/common
   
   switch(entType){
     case SENDTYPE_PLAYER:

@@ -527,23 +527,48 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
-    self.stat_rdr_mode = ReadByte();
+    //self.stat_rdr_mode = ReadByte();
     
-    self.shield = ReadByte();
+    //self.shield = ReadByte();
     
-    self.energy = ReadByte();
+    //self.energy = ReadByte();
     
-    self.angles_x = anglemod(ReadAngle());
-    self.angles_y = anglemod(ReadAngle());
-    self.angles_z = 0;
+    //self.angles_x = anglemod(ReadAngle());
+    //self.angles_y = anglemod(ReadAngle());
+    //self.angles_z = 0;
     
-    self.attackFlag = ReadLong();
+    //self.attackFlag = ReadLong();
     self.moveState = ReadByte();
     //Track player move state?
     self.legDir = anglemod(ReadShort());
     self.ai_dir = ReadShort();
+    //self.chaseActive = ReadByte();
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = 0;
+  }
+  
+  
+  if( (changeFlags & SENDFLAG_RADAR) ){
+    self.stat_rdr_mode = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_SHIELD) ){
+    self.shield = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_ENERGY) ){
+    self.energy = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_ATTACK) ){
+    self.attackFlag = ReadLong();
+  }
+  if( (changeFlags & SENDFLAG_CAMERA) ){
     self.chaseActive = ReadByte();
   }
+  
+  
   /*
     EVENT - Client Data is new/spawned
   */
@@ -580,7 +605,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   /*
     EVENT - player info change 
   */
-  if( (changeFlags & SENDFLAG_TURRET) ){
+  if( (changeFlags & SENDFLAG_NEWUNIT) ){
     self.data_type = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
@@ -593,12 +618,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
     //custom colors
-    self.unitColorCT = ReadByte();
-    self.unitColorLT = ReadByte();
-    self.unitColorRT = ReadByte();
-    self.unitColorLA = ReadByte();
-    self.unitColorRA = ReadByte();
-    self.unitColorLG = ReadByte();
+    //self.unitColorCT = ReadByte();
+    //self.unitColorLT = ReadByte();
+    //self.unitColorRT = ReadByte();
+    //self.unitColorLA = ReadByte();
+    //self.unitColorRA = ReadByte();
+    //self.unitColorLG = ReadByte();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         self.deadflag = DEAD_NO;
@@ -612,6 +637,15 @@ void( float isNew, float changeFlags) sendent_handle_player={
         self.canTarget = TRUE;
       }
     }
+  }
+  
+  if( (changeFlags & SENDFLAG_COLORS) ){
+    self.unitColorCT = ReadByte();
+    self.unitColorLT = ReadByte();
+    self.unitColorRT = ReadByte();
+    self.unitColorLA = ReadByte();
+    self.unitColorRA = ReadByte();
+    self.unitColorLG = ReadByte();
   }
   
   /*
@@ -671,10 +705,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     //self.particleCubeFlag = ReadByte();
     //player has tried to acquire target
-    self.getTarget = rint(ReadCoord());
-    self.enemy = findfloat(world, entnum, self.getTarget);
-    self.flags = ReadShort();
+    //self.getTarget = rint(ReadCoord());
+    //self.enemy = findfloat(world, entnum, self.getTarget);
+    //self.flags = ReadShort();
     
+    //self.flags = ReadShort();
     /*
       Particle Cubes are disable by Beta 2 v1.0.0 - will require a patch to get working again.
     if( self.particleCubeFlag == 0 ){
@@ -685,6 +720,16 @@ void( float isNew, float changeFlags) sendent_handle_player={
         //add cube
       //}
     }*/
+  }
+  
+  if( (changeFlags & SENDFLAG_EFLAGS) ){
+    self.flags = ReadCoord();
+  }
+  
+  if( (changeFlags & SENDFLAG_TARGET) ){
+    //player has tried to acquire target
+    self.getTarget = rint(ReadCoord());
+    self.enemy = findfloat(world, entnum, self.getTarget);
   }
   
   /*
@@ -704,8 +749,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
   //Shield Explode event
   sendevent_shield_explode( prevShield );
   
-  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+  //if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+  if( self.attackFlag != 0 ){
     sendevent_handle_weaponfire();
+    self.attackFlag = 0;
   }
   
   if( prevMoveState != self.moveState ){

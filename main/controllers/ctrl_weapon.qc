@@ -190,7 +190,12 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
         self.nextthink = time + updateDelay;
       }
       else{
-        self.nextthink = time + 0.01;
+        if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+          self.nextthink = time + 0.01;
+        }
+        else{
+          self.nextthink = time + 0.033;  //network compromise
+        }
       }
       if( !self.movetype ){
         self.movetype = MOVETYPE_FLYMISSILE;
@@ -224,7 +229,7 @@ void() ctrl_die_weapon={
     if( (self.damageType & DMG_MSC) ){
       //weapon is equip, run death func which undoes the module's upgrades
       if( self.item_remove_upgrade ){
-        self.item_remove_upgrade();      
+        self.item_remove_upgrade();
       }
     }
     //attempt to garbage collect AI

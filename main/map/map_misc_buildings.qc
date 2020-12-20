@@ -9,7 +9,7 @@ Overview:
 
 float( float isNew, float changeFlags ) sendent_misc_building={
   WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
-  WriteByte( MSG_ENTITY, changeFlags );
+  WriteCoord( MSG_ENTITY, changeFlags );
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );

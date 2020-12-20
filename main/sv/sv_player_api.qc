@@ -30,7 +30,9 @@ called before running player input frame
 ============
 */
 void() PlayerPreThink = {
-
+  
+  
+  
   //keep losses up-to-date
   client_update_losses();
   
@@ -112,13 +114,12 @@ called after running player input frame
 ============
 */
 void() PlayerPostThink = {
-  
   if (self.deadflag >= DEAD_DYING){
     return;
   }
   
   if (intermission_running){
-		return;		// intermission or finale
+    return;		// intermission or finale
   }
   
   //can't stop mech players with cutscenes, instead use triggered clipping objects
@@ -287,16 +288,22 @@ void() PlayerPostThink = {
   //after server processes everything, push data to client
   client_push_player_info();
  
-	if (!(self.flags & FL_ONGROUND)){
-		self.jump_flag = self.velocity_z;
+  if (!(self.flags & FL_ONGROUND)){
+    self.jump_flag = self.velocity_z;
   }
   if( self.clientData != world ){
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_MOVE;
+    if( self.lastorigin != self.origin ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_MOVE;
+    }
+    if( self.lastangle != self.v_angle ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+    }
     if( self.damageValue > 0 ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
     }
   }
-    //DEBUG / DEV ONLY!
+  
+  //DEBUG / DEV ONLY!
   if( cvar("developer") ){
     //if(self.button3){
       //makevectors(self.v_angle);
@@ -308,6 +315,9 @@ void() PlayerPostThink = {
     //}
   }
   //========================================  
+  
+  self.lastorigin = self.origin; //used for SENDFLAG_MOVE delta
+  self.lastangle = self.v_angle;
 };
 
 void() PlayerPreThink_powerup={

@@ -131,8 +131,10 @@ void() ctrl_updateCenterTorso={
         diff = diff - self.evasionDrain;
       }
       self.energy = self.energy + diff;
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ENERGY;
     }  
     if(self.shield < self.shieldMax){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
       if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
         if(self.energy > 0){
           self.shield = self.shield + self.shieldRate;
@@ -436,7 +438,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   local float sendCrit;
   
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
-  WriteByte( MSG_ENTITY, changeFlags );
+  WriteCoord( MSG_ENTITY, changeFlags );
   
   WriteCoord( MSG_ENTITY, self.origin_x );
   WriteCoord( MSG_ENTITY, self.origin_y );

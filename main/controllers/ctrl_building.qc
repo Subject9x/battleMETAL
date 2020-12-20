@@ -65,9 +65,8 @@ void() building_burn={
 float( entity targEnt, float changedflags ) ctrl_send_turret={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
-  WriteByte( MSG_ENTITY, changedflags );
+  WriteCoord( MSG_ENTITY, changedflags );
   //=================
-  
   
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -120,7 +119,7 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
 float( entity targEnt, float changedflags ) ctrl_send_building={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
-  WriteByte( MSG_ENTITY, changedflags );
+  WriteCoord( MSG_ENTITY, changedflags );
   //=================
   
   WriteShort( MSG_ENTITY, self.energy );

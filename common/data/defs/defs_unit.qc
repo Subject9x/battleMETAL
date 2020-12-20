@@ -66,6 +66,7 @@ Overview:
 
 //SSQC only
 #ifdef SSQC
+.vector lastangle;
 .vector lastorigin; //mostly AI move tracker
 .float accuracyMod;
 .float accuracy; 

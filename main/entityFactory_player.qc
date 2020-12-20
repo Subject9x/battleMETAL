@@ -18,7 +18,7 @@ void() player_makeObserver={
   self.scale = 0.005;
   self.view_ofs = '0 0 1';
   self.damageValue = 0;
-  self.clientData.SendFlags =  self.clientData.SendFlags | SENDFLAG_TURRET;
+  self.clientData.SendFlags =  self.clientData.SendFlags | SENDFLAG_NEWUNIT;
   self.canTarget = FALSE;
 };
 
@@ -71,7 +71,7 @@ void() player_makeMech={
   
   client_push_player_info();
   self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_IMPACT);
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_IMPACT | SENDFLAG_COLORS | SENDFLAG_RADAR | SENDFLAG_TARGET | SENDFLAG_CAMERA);
   
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
  

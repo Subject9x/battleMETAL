@@ -101,7 +101,7 @@ void(entity unitCam) ctrl_unit_remove_cam={
 float( float isNew, float changedFlags ) send_nav_point={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_NAVP );
   //--------
   
@@ -143,7 +143,7 @@ float( float isNew, float changedFlags ) send_nav_point={
 float( float isNew, float changedFlags ) send_objective={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_OBJT );
   //--------
   
@@ -180,7 +180,7 @@ float( float isNew, float changedFlags ) send_objective={
 float( float isNew, float changedFlags ) send_deploy_point={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_DEPL );
   //============
   
@@ -220,7 +220,7 @@ float( float isNew, float changedFlags ) send_deploy_point={
 float( float isNew, float changedFlags ) send_damage_zone={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_MAP_DMG );
   //============
   
