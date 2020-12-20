@@ -80,17 +80,18 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   if( changeFlags & SENDFLAG_NEWENT ){
     self.data_idx = ReadByte();
     if( self.deadflag == DEAD_NO ){
-      self.faction = ReadByte();
-      self.next_wepn1 = ReadByte();
-      self.next_wepn2 = ReadByte();
-      self.next_wepn3 = ReadByte();
-      self.next_wepn4 = ReadByte();
-      self.next_wepn5 = ReadByte();
-      self.next_wepn6 = ReadByte();
-      self.next_wepn7 = ReadByte();
-      self.next_wepn8 = ReadByte();
-      self.next_wepn9 = ReadByte();
-      newName = ReadString();
+        self.flags = ReadCoord();
+        self.faction = ReadByte();
+        self.next_wepn1 = ReadByte();
+        self.next_wepn2 = ReadByte();
+        self.next_wepn3 = ReadByte();
+        self.next_wepn4 = ReadByte();
+        self.next_wepn5 = ReadByte();
+        self.next_wepn6 = ReadByte();
+        self.next_wepn7 = ReadByte();
+        self.next_wepn8 = ReadByte();
+        self.next_wepn9 = ReadByte();
+        newName = ReadString();
     }
     else{
       self.faction = FALSE;
@@ -145,14 +146,13 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     }
   }
   
-  //EVENT - UNIT MOVE
-  if( changeFlags & SENDFLAG_MOVE ){
+  if( (changeFlags & SENDFLAG_TARGET) ){
+    self.getTarget = rint(ReadCoord());
+    self.enemy = findfloat(world, entnum, self.getTarget);
+  }
+  if( (changeFlags & SENDFLAG_ATTACK) ){
     prevAttackFlag = self.attackFlag;
-    self.attackFlag = ReadLong();
-    if( self.attackFlag > FALSE ){
-      self.getTarget = rint(ReadCoord());
-      self.enemy = findfloat(world, entnum, self.getTarget);
-    }
+    self.attackFlag = ReadCoord();
   }
   
   if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){

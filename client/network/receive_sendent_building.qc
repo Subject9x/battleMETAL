@@ -72,7 +72,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
   prevShield = self.shield;
   prevDeadflag = self.deadflag;
   
-  self.energy = ReadShort();
+  if( (changeFlags & SENDFLAG_ENERGY) ){
+    self.energy = ReadShort();
+  }
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
@@ -82,13 +84,13 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-    
-    self.angles_x = anglemod(ReadAngle());
-    self.angles_y = anglemod(ReadAngle());
-    self.angles_z = anglemod(ReadAngle());
-    
-    self.data_idx = ReadByte();
-    self.spawnflags = ReadLong();
+    if( self.deadflag == DEAD_NO ){
+      self.angles_x = anglemod(ReadAngle());
+      self.angles_y = anglemod(ReadAngle());
+      self.angles_z = anglemod(ReadAngle());
+      self.spawnflags = ReadCoord();
+      self.data_idx = ReadByte();
+    }
     setorigin(self, self.origin);
   }
   
@@ -133,7 +135,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   
   //rider for desired stat changes
-  if( (changeFlags & SENDFLAG_MOVE) ){
+  if( (changeFlags & SENDFLAG_EXDATA) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       self.burstRate = ReadByte();
       self.w_firetime = ReadByte();
@@ -149,12 +151,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   
-  if( (changeFlags & SENDFLAG_VELOCITY) ){
+  if( (changeFlags & SENDFLAG_FACTION) ){
     self.faction = ReadByte();
   }
 
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadLong();
+    self.burnBits = ReadCoord();
     if( self.burnBits > 0 ){
       if( (self.burnBits & WEAPON1) && self.effect1.owner != self ){
         self.effect1 = te_building_fire_start( self );

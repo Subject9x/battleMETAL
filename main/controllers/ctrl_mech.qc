@@ -439,6 +439,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
   WriteCoord( MSG_ENTITY, changeFlags );
+  //======================
   
   WriteCoord( MSG_ENTITY, self.origin_x );
   WriteCoord( MSG_ENTITY, self.origin_y );
@@ -454,13 +455,13 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     sendCrit = self.critBits;
     self.criticalHits = self.criticalHits | self.critBits;
     self.critBits = 0;
-    WriteByte( MSG_ENTITY, sendCrit );
+    WriteCoord( MSG_ENTITY, sendCrit );
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     if(self.deadflag == DEAD_NO){
-      WriteLong( MSG_ENTITY, self.flags );
+      WriteCoord( MSG_ENTITY, self.flags );
       WriteByte( MSG_ENTITY, self.faction );
 
       WriteByte( MSG_ENTITY, self.next_wepn1);
@@ -482,8 +483,11 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
+  if( (changeFlags & SENDFLAG_ATTACK) ){
+    WriteCoord( MSG_ENTITY, self.attackFlag );
+  }
+  
   if( (changeFlags & SENDFLAG_MOVE) ){
-    WriteLong( MSG_ENTITY, self.attackFlag );
     WriteShort( MSG_ENTITY, self.legs.angles_y);
     WriteByte( MSG_ENTITY, self.moveState);
   }
@@ -500,11 +504,11 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     sendCrit = self.critBits;
     self.criticalHits = self.criticalHits | self.critBits;
     self.critBits = 0;
-    WriteByte( MSG_ENTITY, sendCrit );
+    WriteCoord( MSG_ENTITY, sendCrit );
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.burnBits );
+    WriteCoord( MSG_ENTITY, self.burnBits );
   }
   self.shieldHitFlag = 0;
   return TRUE;

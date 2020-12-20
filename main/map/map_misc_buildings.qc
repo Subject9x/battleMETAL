@@ -19,12 +19,14 @@ float( float isNew, float changeFlags ) sendent_misc_building={
     WriteByte( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
     if(self.deadflag  == DEAD_NO ){
-      WriteCoord( MSG_ENTITY, self.origin_x );
-      WriteCoord( MSG_ENTITY, self.origin_y );
-      WriteCoord( MSG_ENTITY, self.origin_z );
-      WriteAngle( MSG_ENTITY, self.angles_x );
-      WriteAngle( MSG_ENTITY, self.angles_y );
-      WriteAngle( MSG_ENTITY, self.angles_z );
+      
+        WriteCoord( MSG_ENTITY, self.origin_x );
+        WriteCoord( MSG_ENTITY, self.origin_y );
+        WriteCoord( MSG_ENTITY, self.origin_z );
+        WriteAngle( MSG_ENTITY, self.angles_x );
+        WriteAngle( MSG_ENTITY, self.angles_y );
+        WriteAngle( MSG_ENTITY, self.angles_z );
+      
       if( self.faction ){
         WriteByte( MSG_ENTITY, self.faction );
       }

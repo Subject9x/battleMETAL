@@ -347,7 +347,8 @@ float SENDFLAG_TARGET = 8192; //target change delta.
 float SENDFLAG_EFLAGS = 16384;//client .flags delta.
 float SENDFLAG_COLORS = 32768;//player changed colors
 float SENDFLAG_NEWUNIT = 65536; //players go from non-mech to mech
-  
+float SENDFLAG_EXDATA = 131072; //any additional info an ent wants to send (usually custom per class)
+float SENDFLAG_FACTION  = 262144; //this should have been its own long ago.
 //============================
 //     COMMON SPAWNFLAGS
 //============================

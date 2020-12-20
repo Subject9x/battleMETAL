@@ -288,7 +288,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    self.critBits = ReadByte();
+    self.critBits = ReadCoord();
     if( self.critBits != 0 ){
       sendevent_mech_ai_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
@@ -297,7 +297,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
     if(self.deadflag == DEAD_NO){
-      self.flags = ReadLong();
+      self.flags = ReadCoord();
       self.faction = ReadByte();
       self.next_wepn1 = ReadByte();
       self.next_wepn2 = ReadByte();
@@ -335,10 +335,13 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.shieldHitFlag = ReadByte();
   }
   
+  if( (changeFlags & SENDFLAG_ATTACK) ){
+    prevAttackFlag = self.attackFlag;
+    self.attackFlag = ReadCoord();
+  }
+  
   //EVENT - MOVE
   if( (changeFlags & SENDFLAG_MOVE) ){
-    prevAttackFlag = self.attackFlag;
-    self.attackFlag = ReadLong();
     self.legDir = ReadShort();
     sendevent_mech_ai_move();
     self.moveState = ReadByte();
@@ -362,7 +365,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
 
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.critBits = ReadByte();
+    self.critBits = ReadCoord();
     if( self.critBits != 0 ){
       sendevent_mech_ai_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
@@ -370,7 +373,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadLong();
+    self.burnBits = ReadCoord();
     if( self.burnBits > 0 ){
       sendevent_mech_burn( self.burnBits );
     }

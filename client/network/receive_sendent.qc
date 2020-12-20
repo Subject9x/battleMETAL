@@ -160,13 +160,15 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
 */
 void( float isNew, float changeFlags ) sendent_handle_misc={
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    setmodel( self, modelnameforindex(ReadShort()) );
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
+    setmodel( self, modelnameforindex(ReadCoord()) );
+    
+      self.origin_x = ReadCoord();
+      self.origin_y = ReadCoord();
+      self.origin_z = ReadCoord();
+      self.angles_x = ReadAngle();
+      self.angles_y = ReadAngle();
+      self.angles_z = ReadAngle();
+    
   }
   
   if(isNew){
@@ -198,12 +200,14 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
     self.vec_size = ReadByte();
     self.data_idx = ReadByte();
     if( self.deadflag == DEAD_NO ){
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
-      self.angles_x = ReadAngle();
-      self.angles_y = ReadAngle();
-      self.angles_z = ReadAngle();
+      
+        self.origin_x = ReadCoord();
+        self.origin_y = ReadCoord();
+        self.origin_z = ReadCoord();
+        self.angles_x = ReadAngle();
+        self.angles_y = ReadAngle();
+        self.angles_z = ReadAngle();
+      
       self.faction = ReadByte();
       self.canTarget = ReadByte();
     }

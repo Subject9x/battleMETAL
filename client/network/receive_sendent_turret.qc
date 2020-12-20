@@ -67,25 +67,27 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
     if( self.deadflag == DEAD_NO ){
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
+
+        self.origin_x = ReadCoord();
+        self.origin_y = ReadCoord();
+        self.origin_z = ReadCoord();
+        
+        self.angles_x = anglemod(ReadAngle());
+        self.angles_y = anglemod(ReadAngle());
+        self.angles_z = anglemod(ReadAngle());
+        
+        self.spawnflags = ReadCoord();
+        
+        self.next_wepn1 = ReadByte();
+        self.next_wepn2 = ReadByte();
+        self.next_wepn3 = ReadByte();
+        self.next_wepn4 = ReadByte();
+        self.next_wepn5 = ReadByte();
+        self.next_wepn6 = ReadByte();
+        self.next_wepn7 = ReadByte();
+        self.next_wepn8 = ReadByte();
+        self.next_wepn9 = ReadByte();
       
-      self.angles_x = anglemod(ReadAngle());
-      self.angles_y = anglemod(ReadAngle());
-      self.angles_z = anglemod(ReadAngle());
-      
-      self.spawnflags = ReadLong();
-      
-      self.next_wepn1 = ReadByte();
-      self.next_wepn2 = ReadByte();
-      self.next_wepn3 = ReadByte();
-      self.next_wepn4 = ReadByte();
-      self.next_wepn5 = ReadByte();
-      self.next_wepn6 = ReadByte();
-      self.next_wepn7 = ReadByte();
-      self.next_wepn8 = ReadByte();
-      self.next_wepn9 = ReadByte();
     }
   }
   
@@ -105,13 +107,13 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   //EVENT - MOVE - for turrets, this means a general update tic.
-  if( (changeFlags & SENDFLAG_MOVE) ){
+  if( (changeFlags & SENDFLAG_ATTACK) ){
     prevAttackFlag = self.attackFlag;
-    self.attackFlag = ReadLong();
+    self.attackFlag = ReadCoord();
   }
   
   //EVENT - faction changed
-  if( (changeFlags & SENDFLAG_VELOCITY) ){
+  if( (changeFlags & SENDFLAG_FACTION) ){
     self.faction = ReadByte();
   }
   
@@ -127,7 +129,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //EVENT - health dropped below threshold
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadLong();
+    self.burnBits = ReadCoord();
     if( self.burnBits > 0 ){
       if( (self.burnBits & WEAPON1) && !self.effect1.count ){
         self.effect1 = te_building_fire_start( self );

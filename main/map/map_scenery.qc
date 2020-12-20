@@ -16,13 +16,15 @@ float( float isNew, float changeFlags ) send_scenery={
   WriteCoord( MSG_ENTITY, changeFlags );
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteShort( MSG_ENTITY, self.modelindex );
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    WriteAngle( MSG_ENTITY, self.angles_x );
-    WriteAngle( MSG_ENTITY, self.angles_y );
-    WriteAngle( MSG_ENTITY, self.angles_z );
+    WriteCoord( MSG_ENTITY, self.modelindex );
+    
+      WriteCoord( MSG_ENTITY, self.origin_x );
+      WriteCoord( MSG_ENTITY, self.origin_y );
+      WriteCoord( MSG_ENTITY, self.origin_z );
+      WriteAngle( MSG_ENTITY, self.angles_x );
+      WriteAngle( MSG_ENTITY, self.angles_y );
+      WriteAngle( MSG_ENTITY, self.angles_z );
+    
   }
 
   return TRUE;

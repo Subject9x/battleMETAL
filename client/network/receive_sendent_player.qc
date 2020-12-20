@@ -527,22 +527,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
-    //self.stat_rdr_mode = ReadByte();
-    
-    //self.shield = ReadByte();
-    
-    //self.energy = ReadByte();
-    
-    //self.angles_x = anglemod(ReadAngle());
-    //self.angles_y = anglemod(ReadAngle());
-    //self.angles_z = 0;
-    
-    //self.attackFlag = ReadLong();
     self.moveState = ReadByte();
-    //Track player move state?
     self.legDir = anglemod(ReadShort());
     self.ai_dir = ReadShort();
-    //self.chaseActive = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -550,7 +537,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = 0;
   }
-  
   
   if( (changeFlags & SENDFLAG_RADAR) ){
     self.stat_rdr_mode = ReadByte();
@@ -562,19 +548,18 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.energy = ReadByte();
   }
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadLong();
+    self.attackFlag = ReadCoord();
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
     self.chaseActive = ReadByte();
   }
-  
   
   /*
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = ReadCoord();
-    self.flags = ReadShort();
+    self.flags = ReadCoord();
   }
   
   /*
@@ -617,13 +602,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    //custom colors
-    //self.unitColorCT = ReadByte();
-    //self.unitColorLT = ReadByte();
-    //self.unitColorRT = ReadByte();
-    //self.unitColorLA = ReadByte();
-    //self.unitColorRA = ReadByte();
-    //self.unitColorLG = ReadByte();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         self.deadflag = DEAD_NO;
@@ -652,7 +630,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech is blown off
   */
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.critBits = ReadByte();
+    self.critBits = ReadCoord();
     if( self.critBits != 0 ){
       if( (self.critBits & M_REPAIR) ){
         //handle repair event
@@ -671,7 +649,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadByte();
+    self.burnBits = ReadCoord();
     if( self.burnBits < prevBurn ){
       self.burnBits = self.burnBits - (self.burnBits & prevBurn);
     }
@@ -703,13 +681,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - second data rider used for non-critical stuff
   */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    //self.particleCubeFlag = ReadByte();
-    //player has tried to acquire target
-    //self.getTarget = rint(ReadCoord());
-    //self.enemy = findfloat(world, entnum, self.getTarget);
-    //self.flags = ReadShort();
-    
-    //self.flags = ReadShort();
     /*
       Particle Cubes are disable by Beta 2 v1.0.0 - will require a patch to get working again.
     if( self.particleCubeFlag == 0 ){

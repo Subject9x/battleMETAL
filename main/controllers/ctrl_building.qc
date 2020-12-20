@@ -62,7 +62,7 @@ void() building_burn={
   }
 };
 
-float( entity targEnt, float changedflags ) ctrl_send_turret={
+float( float isNew, float changedflags ) ctrl_send_turret={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
   WriteCoord( MSG_ENTITY, changedflags );
@@ -75,22 +75,27 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     if( self.deadflag == DEAD_NO ){
-      WriteCoord( MSG_ENTITY, self.origin_x );
-      WriteCoord( MSG_ENTITY, self.origin_y );
-      WriteCoord( MSG_ENTITY, self.origin_z );
-      WriteAngle( MSG_ENTITY, self.angles_x );
-      WriteAngle( MSG_ENTITY, self.angles_y );
-      WriteAngle( MSG_ENTITY, self.angles_z );
-      WriteLong( MSG_ENTITY, self.spawnflags );
-      WriteByte( MSG_ENTITY, self.next_wepn1);
-      WriteByte( MSG_ENTITY, self.next_wepn2);
-      WriteByte( MSG_ENTITY, self.next_wepn3);
-      WriteByte( MSG_ENTITY, self.next_wepn4);
-      WriteByte( MSG_ENTITY, self.next_wepn5);
-      WriteByte( MSG_ENTITY, self.next_wepn6);
-      WriteByte( MSG_ENTITY, self.next_wepn7);
-      WriteByte( MSG_ENTITY, self.next_wepn8);
-      WriteByte( MSG_ENTITY, self.next_wepn9);
+      
+        WriteCoord( MSG_ENTITY, self.origin_x );
+        WriteCoord( MSG_ENTITY, self.origin_y );
+        WriteCoord( MSG_ENTITY, self.origin_z );
+        
+        WriteAngle( MSG_ENTITY, self.angles_x );
+        WriteAngle( MSG_ENTITY, self.angles_y );
+        WriteAngle( MSG_ENTITY, self.angles_z );
+        
+        WriteCoord( MSG_ENTITY, self.spawnflags );
+        
+        WriteByte( MSG_ENTITY, self.next_wepn1);
+        WriteByte( MSG_ENTITY, self.next_wepn2);
+        WriteByte( MSG_ENTITY, self.next_wepn3);
+        WriteByte( MSG_ENTITY, self.next_wepn4);
+        WriteByte( MSG_ENTITY, self.next_wepn5);
+        WriteByte( MSG_ENTITY, self.next_wepn6);
+        WriteByte( MSG_ENTITY, self.next_wepn7);
+        WriteByte( MSG_ENTITY, self.next_wepn8);
+        WriteByte( MSG_ENTITY, self.next_wepn9);
+      
     }
   }
   
@@ -99,10 +104,10 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
-  if( (changedflags & SENDFLAG_MOVE) ){
-    WriteLong( MSG_ENTITY, self.attackFlag );
+  if( (changedflags & SENDFLAG_ATTACK) ){
+    WriteCoord( MSG_ENTITY, self.attackFlag );
   }
-  if( (changedflags & SENDFLAG_VELOCITY) ){
+  if( (changedflags & SENDFLAG_FACTION) ){
     WriteByte( MSG_ENTITY, self.faction );
   }
   if( (changedflags & SENDFLAG_TURRET) ){
@@ -110,20 +115,20 @@ float( entity targEnt, float changedflags ) ctrl_send_turret={
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
   }
   if( (changedflags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.burnBits );
+    WriteCoord( MSG_ENTITY, self.burnBits );
   }
   self.shieldHitFlag = 0;
   return TRUE;
 };
 
-float( entity targEnt, float changedflags ) ctrl_send_building={
+float( float isNew, float changedflags ) ctrl_send_building={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
   WriteCoord( MSG_ENTITY, changedflags );
   //=================
-  
-  WriteShort( MSG_ENTITY, self.energy );
-  
+  if( (changedflags & SENDFLAG_ENERGY) ){
+    WriteShort( MSG_ENTITY, self.energy );
+  }
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
   }
@@ -132,13 +137,13 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
-    
-    WriteAngle( MSG_ENTITY, self.angles_x );
-    WriteAngle( MSG_ENTITY, self.angles_y );
-    WriteAngle( MSG_ENTITY, self.angles_z );
-    
-    WriteByte( MSG_ENTITY, self.data_idx );
-    WriteLong( MSG_ENTITY, self.spawnflags );
+    if( self.deadflag == DEAD_NO ){
+      WriteAngle( MSG_ENTITY, self.angles_x );
+      WriteAngle( MSG_ENTITY, self.angles_y );
+      WriteAngle( MSG_ENTITY, self.angles_z );
+      WriteCoord( MSG_ENTITY, self.spawnflags );
+      WriteByte( MSG_ENTITY, self.data_idx );
+    }
   }
   
   if( (changedflags & SENDFLAG_IMPACT) ){
@@ -146,7 +151,7 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
-  if( (changedflags & SENDFLAG_MOVE) ){
+  if( (changedflags & SENDFLAG_EXDATA) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       WriteByte( MSG_ENTITY, self.burstRate );
       WriteByte( MSG_ENTITY, self.attack_state);  //send the partTypeId value to the client
@@ -162,12 +167,12 @@ float( entity targEnt, float changedflags ) ctrl_send_building={
     }
   }
   
-  if( (changedflags & SENDFLAG_VELOCITY) ){
+  if( (changedflags & SENDFLAG_FACTION) ){
     WriteByte( MSG_ENTITY, self.faction );
   }
   
   if( (changedflags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.burnBits );
+    WriteCoord( MSG_ENTITY, self.burnBits );
   }
   
   self.shieldHitFlag = 0;
