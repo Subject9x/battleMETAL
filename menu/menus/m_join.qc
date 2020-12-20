@@ -302,7 +302,7 @@ void() m_join_d={
 */
 void(float key, float ascii) m_join_k={
   local float hostNumber;
-  
+  local string joinCmd;
   if(key == K_MOUSE1){
     SERVER_SELECTED = listListener(SERVER_LIST_ORG, SERVER_LIST_SIZE, gui_percentToPixelRawVec('350 26'), SERVER_ROW_ITR+1, 0);
     if( SERVER_SELECTED != -1 ){
@@ -310,7 +310,8 @@ void(float key, float ascii) m_join_k={
       SERVER_SELECTED = SERVER_PAGE_LIST_START + SERVER_SELECTED;
       menu_clear_items(M_STATE);
       menu_exit_togame();
-      cmd("connect ", gethostcachestring(gethostcacheindexforkey("cname"), SERVER_SELECTED) );
+      joinCmd = strcat("connect ", gethostcachestring(gethostcacheindexforkey("cname"), SERVER_SELECTED), "\n");
+      cmd(joinCmd);
     }
     return;
   }
