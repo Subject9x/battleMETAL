@@ -104,19 +104,22 @@ void() ctrl_updateTank={
       }
     }
   }
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
 float( float isNew, float changedflags ) ctrl_send_tank={
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
   WriteCoord( MSG_ENTITY, changedflags );
   
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
+  if( (changedflags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+  }
   
-  WriteAngle( MSG_ENTITY, self.angles_x );
-  WriteAngle( MSG_ENTITY, self.angles_y );
+  if( (changedflags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+  }
   
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -140,8 +143,11 @@ float( float isNew, float changedflags ) ctrl_send_tank={
     }
   }
   
-  if( (changedflags & SENDFLAG_IMPACT) ){
+  if( (changedflags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  
+  if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
@@ -167,12 +173,16 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   WriteByte( MSG_ENTITY, SENDTYPE_SPG );
   WriteCoord( MSG_ENTITY, changedflags );
   
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
+  if( (changedflags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+  }
   
-  WriteAngle( MSG_ENTITY, self.angles_x );
-  WriteAngle( MSG_ENTITY, self.angles_y );
+  if( (changedflags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+  }
   
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -198,8 +208,11 @@ float( float isNew, float changedflags ) ctrl_send_spg={
     }
   }
   
-  if( (changedflags & SENDFLAG_IMPACT) ){
+  if( (changedflags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  
+  if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
@@ -220,12 +233,16 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   WriteByte( MSG_ENTITY, SENDTYPE_GEV );
   WriteCoord( MSG_ENTITY, changedflags );
   
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
+  if( (changedflags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+  }
   
-  WriteAngle( MSG_ENTITY, self.angles_x );
-  WriteAngle( MSG_ENTITY, self.angles_y );
+  if( (changedflags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+  }
   
   if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -251,8 +268,11 @@ float( float isNew, float changedflags ) ctrl_send_gev={
     }
   }
   
-  if( (changedflags & SENDFLAG_IMPACT) ){
+  if( (changedflags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  
+  if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   

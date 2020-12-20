@@ -80,14 +80,19 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.deadflag = ReadByte();
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
     if( self.deadflag == DEAD_NO ){
-      self.angles_x = anglemod(ReadAngle());
-      self.angles_y = anglemod(ReadAngle());
-      self.angles_z = anglemod(ReadAngle());
       self.spawnflags = ReadCoord();
       self.data_idx = ReadByte();
     }

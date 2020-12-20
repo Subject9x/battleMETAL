@@ -63,32 +63,33 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.deadflag = ReadByte();
   }
   
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
+  }
+  
+  if( (changeFlags & SENDFLAG_EXDATA) ){
+    self.spawnflags = ReadCoord();
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte();
+  }
+  
   //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    if( self.deadflag == DEAD_NO ){
-
-        self.origin_x = ReadCoord();
-        self.origin_y = ReadCoord();
-        self.origin_z = ReadCoord();
-        
-        self.angles_x = anglemod(ReadAngle());
-        self.angles_y = anglemod(ReadAngle());
-        self.angles_z = anglemod(ReadAngle());
-        
-        self.spawnflags = ReadCoord();
-        
-        self.next_wepn1 = ReadByte();
-        self.next_wepn2 = ReadByte();
-        self.next_wepn3 = ReadByte();
-        self.next_wepn4 = ReadByte();
-        self.next_wepn5 = ReadByte();
-        self.next_wepn6 = ReadByte();
-        self.next_wepn7 = ReadByte();
-        self.next_wepn8 = ReadByte();
-        self.next_wepn9 = ReadByte();
-      
-    }
   }
   
   if( isNew ){
@@ -106,10 +107,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.shieldHitFlag = ReadByte();
   }
   
-  //EVENT - MOVE - for turrets, this means a general update tic.
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadCoord();
+    sendevent_handle_weaponfire();
   }
   
   //EVENT - faction changed
@@ -125,6 +125,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.v_angle = turretAng;
     self.v_angle_x = self.v_angle_x * -1;
     turretAng_x = 0;
+    sendevent_turret_update( turretAng );
   }
   
   //EVENT - health dropped below threshold
@@ -151,15 +152,10 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     sendevent_turret_die();
   }
   
-  //HANDLE EVENT - turret rotate
-  sendevent_turret_update( turretAng );
+
     
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
-  
-  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
-    sendevent_handle_weaponfire();
-  }
   
   //Shield strike event
   if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){

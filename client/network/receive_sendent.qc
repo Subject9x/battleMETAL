@@ -196,18 +196,21 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
     self.deadflag = ReadByte();
   }
   
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.vec_size = ReadByte();
     self.data_idx = ReadByte();
     if( self.deadflag == DEAD_NO ){
-      
-        self.origin_x = ReadCoord();
-        self.origin_y = ReadCoord();
-        self.origin_z = ReadCoord();
-        self.angles_x = ReadAngle();
-        self.angles_y = ReadAngle();
-        self.angles_z = ReadAngle();
-      
       self.faction = ReadByte();
       self.canTarget = ReadByte();
     }

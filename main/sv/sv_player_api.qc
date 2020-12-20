@@ -292,14 +292,18 @@ void() PlayerPostThink = {
     self.jump_flag = self.velocity_z;
   }
   if( self.clientData != world ){
-    if( self.lastorigin != self.origin ){
+    if( self.last_origin != self.origin ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_MOVE;
     }
-    if( self.lastangle != self.v_angle ){
+    if( self.last_angle != self.v_angle ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
     }
     if( self.damageValue > 0 ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
+    }
+    if( self.last_shield != self.stat_client_shield ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
+      self.last_shield = self.stat_client_shield;
     }
   }
   
@@ -316,8 +320,8 @@ void() PlayerPostThink = {
   }
   //========================================  
   
-  self.lastorigin = self.origin; //used for SENDFLAG_MOVE delta
-  self.lastangle = self.v_angle;
+  self.last_origin = self.origin; //used for SENDFLAG_MOVE delta
+  self.last_angle = self.v_angle;
 };
 
 void() PlayerPreThink_powerup={

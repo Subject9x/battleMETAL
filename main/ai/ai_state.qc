@@ -40,6 +40,7 @@ void() ai_frame_update={
       self.position1 = self.origin;
     }
   }
+  
 };
 
 /*
@@ -116,8 +117,11 @@ void() ai_state_lurker_frame={
         }
       }
     }
-    self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   }
+  
+  //network delta
+  ai_frame_net_send();
+  
   self.think = ai_state_lurker_frame;
   self.nextthink = time + 0.05;
 };
@@ -199,8 +203,10 @@ void() ai_state_brawler_frame={
         }
       }
     }
-    self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   }
+  //network delta
+  ai_frame_net_send();
+  
   self.think = ai_state_brawler_frame;
   self.nextthink = time + 0.05;
 };
@@ -255,8 +261,10 @@ void() ai_state_hunter_frame={
         }
       }
     }
-    self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   }
+  //network delta
+  ai_frame_net_send();
+  
   self.think = ai_state_hunter_frame;
   self.nextthink = time + 0.05;
 };
@@ -290,7 +298,9 @@ void() ai_state_pause={
   else{
     self.think = ai_state_pause;
   }
-  self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
+  //network delta
+  ai_frame_net_send();
+  
   self.nextthink = time + 0.05;
 };
 
@@ -381,8 +391,10 @@ void() ai_state_turret_frame={
       self.torsoCenter.attack_state = TR_TARG;
     }
   }
+  //network delta
+  ai_frame_net_send();
+  
   self.ai_lastVis = visCheck;
-  self.SendFlags = self.SendFlags | (SENDFLAG_IMPACT | SENDFLAG_MOVE);
   self.think = ai_state_turret_frame;
   self.nextthink = time + 0.05;
 };

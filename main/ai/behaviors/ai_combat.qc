@@ -71,8 +71,6 @@ void() ai_ranged_attack={
     }
   }
   if( fired > 0 ){
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-    
     if( (self.enemy.flags & FL_CLIENT) ){
       if( self.trigOnAttack ){
         trigger_event( self.enemy, self.trigOnAttack );

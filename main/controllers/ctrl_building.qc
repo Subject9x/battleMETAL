@@ -63,6 +63,11 @@ void() building_burn={
 };
 
 float( float isNew, float changedflags ) ctrl_send_turret={
+  if( isNew ){
+    //sweet hacks?
+    self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_EXDATA);
+  }
+  
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
   WriteCoord( MSG_ENTITY, changedflags );
@@ -72,31 +77,33 @@ float( float isNew, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
+  if( (changedflags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+  }
+  if( (changedflags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+  }
+  
+  if( (changedflags & SENDFLAG_EXDATA) ){
+    WriteCoord( MSG_ENTITY, self.spawnflags );
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+  }
+  
+  
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    if( self.deadflag == DEAD_NO ){
-      
-        WriteCoord( MSG_ENTITY, self.origin_x );
-        WriteCoord( MSG_ENTITY, self.origin_y );
-        WriteCoord( MSG_ENTITY, self.origin_z );
-        
-        WriteAngle( MSG_ENTITY, self.angles_x );
-        WriteAngle( MSG_ENTITY, self.angles_y );
-        WriteAngle( MSG_ENTITY, self.angles_z );
-        
-        WriteCoord( MSG_ENTITY, self.spawnflags );
-        
-        WriteByte( MSG_ENTITY, self.next_wepn1);
-        WriteByte( MSG_ENTITY, self.next_wepn2);
-        WriteByte( MSG_ENTITY, self.next_wepn3);
-        WriteByte( MSG_ENTITY, self.next_wepn4);
-        WriteByte( MSG_ENTITY, self.next_wepn5);
-        WriteByte( MSG_ENTITY, self.next_wepn6);
-        WriteByte( MSG_ENTITY, self.next_wepn7);
-        WriteByte( MSG_ENTITY, self.next_wepn8);
-        WriteByte( MSG_ENTITY, self.next_wepn9);
-      
-    }
   }
   
   if( (changedflags & SENDFLAG_IMPACT) ){
@@ -122,6 +129,10 @@ float( float isNew, float changedflags ) ctrl_send_turret={
 };
 
 float( float isNew, float changedflags ) ctrl_send_building={
+  if( isNew ){
+    //sweet hacks?
+    self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE);
+  }
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
   WriteCoord( MSG_ENTITY, changedflags );
@@ -133,14 +144,20 @@ float( float isNew, float changedflags ) ctrl_send_building={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
+    
+  if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
+  }
+  if( (changedflags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+  }
+  
+  if( (changedflags & SENDFLAG_NEWENT) ){
     if( self.deadflag == DEAD_NO ){
-      WriteAngle( MSG_ENTITY, self.angles_x );
-      WriteAngle( MSG_ENTITY, self.angles_y );
-      WriteAngle( MSG_ENTITY, self.angles_z );
       WriteCoord( MSG_ENTITY, self.spawnflags );
       WriteByte( MSG_ENTITY, self.data_idx );
     }

@@ -207,6 +207,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( (dmgTrg.flags & FL_CLIENT) ){
     dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
   }
+  else{
+    dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
+  }
   
   dmgTrg.dmg_inflictor = inflictor;
   if(dmgTrg.was_hit < time){

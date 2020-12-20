@@ -440,13 +440,19 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
   WriteCoord( MSG_ENTITY, changeFlags );
   //======================
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteByte( MSG_ENTITY, self.moveState);
+  }
   
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
-  
-  WriteAngle( MSG_ENTITY, self.angles_x );
-  WriteAngle( MSG_ENTITY, self.angles_y );
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteShort( MSG_ENTITY, self.legs.angles_y);
+  }
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -477,19 +483,16 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     }
   }
   
-  //  WriteLong( MSG_ENTITY, self.flags ); // DEBUG - disabled for now.
-  if( (changeFlags & SENDFLAG_IMPACT) ){
+  if( (changeFlags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  
+  if( (changeFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
     WriteCoord( MSG_ENTITY, self.attackFlag );
-  }
-  
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    WriteShort( MSG_ENTITY, self.legs.angles_y);
-    WriteByte( MSG_ENTITY, self.moveState);
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){

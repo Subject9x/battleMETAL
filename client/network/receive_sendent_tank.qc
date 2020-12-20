@@ -63,13 +63,17 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
   
-  self.origin_x = ReadCoord();
-  self.origin_y = ReadCoord();
-  self.origin_z = ReadCoord();
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
   
-  self.angles_x = anglemod(ReadAngle());
-  self.angles_y = anglemod(ReadAngle());
-  self.angles_z = 0;
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = 0;
+  }
   
   //EVENT - DEATH
   if( changeFlags & SENDFLAG_DEAD ){
@@ -80,18 +84,18 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   if( changeFlags & SENDFLAG_NEWENT ){
     self.data_idx = ReadByte();
     if( self.deadflag == DEAD_NO ){
-        self.flags = ReadCoord();
-        self.faction = ReadByte();
-        self.next_wepn1 = ReadByte();
-        self.next_wepn2 = ReadByte();
-        self.next_wepn3 = ReadByte();
-        self.next_wepn4 = ReadByte();
-        self.next_wepn5 = ReadByte();
-        self.next_wepn6 = ReadByte();
-        self.next_wepn7 = ReadByte();
-        self.next_wepn8 = ReadByte();
-        self.next_wepn9 = ReadByte();
-        newName = ReadString();
+      self.flags = ReadCoord();
+      self.faction = ReadByte();
+      self.next_wepn1 = ReadByte();
+      self.next_wepn2 = ReadByte();
+      self.next_wepn3 = ReadByte();
+      self.next_wepn4 = ReadByte();
+      self.next_wepn5 = ReadByte();
+      self.next_wepn6 = ReadByte();
+      self.next_wepn7 = ReadByte();
+      self.next_wepn8 = ReadByte();
+      self.next_wepn9 = ReadByte();
+      newName = ReadString();
     }
     else{
       self.faction = FALSE;
@@ -112,14 +116,13 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     sendevent_tank_move();
   }
   
-  if( (changeFlags & SENDFLAG_IMPACT) ){
+  if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
   }
   
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
-
   //EVENT - TURRET ROTATES
   if( changeFlags & SENDFLAG_TURRET ){
     turretAng_x = anglemod(ReadAngle());
@@ -151,11 +154,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.enemy = findfloat(world, entnum, self.getTarget);
   }
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadCoord();
-  }
-  
-  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
     sendevent_handle_weaponfire();
   }
   

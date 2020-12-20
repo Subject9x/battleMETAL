@@ -8,6 +8,12 @@ Overview:
 
 
 float( float isNew, float changeFlags ) sendent_misc_building={
+  
+  if( isNew ){
+    //sweet hacks?
+    self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE);
+  }
+  
   WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
   WriteCoord( MSG_ENTITY, changeFlags );
   
@@ -15,18 +21,21 @@ float( float isNew, float changeFlags ) sendent_misc_building={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
-    if(self.deadflag  == DEAD_NO ){
-      
-        WriteCoord( MSG_ENTITY, self.origin_x );
-        WriteCoord( MSG_ENTITY, self.origin_y );
-        WriteCoord( MSG_ENTITY, self.origin_z );
-        WriteAngle( MSG_ENTITY, self.angles_x );
-        WriteAngle( MSG_ENTITY, self.angles_y );
-        WriteAngle( MSG_ENTITY, self.angles_z );
-      
+    if( self.deadflag == DEAD_NO ){    
       if( self.faction ){
         WriteByte( MSG_ENTITY, self.faction );
       }
@@ -76,7 +85,6 @@ void() misc_build_die1={
   shoot = randompos(self.absmin * 0.67, self.absmax * 0.67);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
   
-	self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.think = misc_build_die2;
   self.nextthink = time + 0.1;
 };

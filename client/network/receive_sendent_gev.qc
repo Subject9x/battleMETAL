@@ -70,13 +70,17 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
   
-  self.origin_x = ReadCoord();
-  self.origin_y = ReadCoord();
-  self.origin_z = ReadCoord();
- 
-  self.angles_x = anglemod(ReadAngle());
-  self.angles_y = anglemod(ReadAngle());
-  self.angles_z = 0;
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
+  
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = 0;
+  }
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
@@ -120,8 +124,10 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     sendevent_gev_move();
   }
   
-  if( (changeFlags & SENDFLAG_IMPACT) ){
+  if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
   }
   
@@ -154,17 +160,14 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.getTarget = rint(ReadCoord());
     self.enemy = findfloat(world, entnum, self.getTarget);
   }
+
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    prevAttackFlag = self.attackFlag;
     self.attackFlag = ReadCoord();
+    sendevent_handle_weaponfire();
   }
   
   //Shield Explode event
   sendevent_shield_explode( prevShield );  
-  
-  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
-    sendevent_handle_weaponfire();
-  }
   
   //Shield strike event
   if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){

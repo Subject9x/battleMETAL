@@ -66,8 +66,12 @@ Overview:
 
 //SSQC only
 #ifdef SSQC
-.vector lastangle;
-.vector lastorigin; //mostly AI move tracker
+//network frame stuff
+.vector last_angle;
+.vector last_origin; //mostly AI move tracker
+.float last_energy;
+.float last_shield;
+
 .float accuracyMod;
 .float accuracy; 
 

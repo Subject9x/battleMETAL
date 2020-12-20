@@ -324,31 +324,32 @@ float SENDTYPE_MISC_BLD = 14;
 //note: sendEnt is capped to 7 bitflags + NEWENT 
 //      and uses WriteByte, to add more flags, try switching
 //      to WriteShort for ChangeFlags if you want to increase total SENDFLAG size.
-float SENDFLAG_MOVE   = 1;  //update .origin and .angles of main piece 
-float SENDFLAG_TURRET = 2; //unit's turret entity has rotated angle.
+float SENDFLAG_MOVE     = 1;  //update .origin and .angles of main piece 
+float SENDFLAG_TURRET   = 2; //unit's turret entity has rotated angle.
 float SENDFLAG_VELOCITY = 4; //unit is stood up by server
-float SENDFLAG_DEAD   = 8; //marks as dead, run death anim.
-float SENDFLAG_CRIT   = 16; //what component(s) blew off.
-float SENDFLAG_BURN   = 32; //what is starting to burn.
-float SENDFLAG_IMPACT = 64; //specifically missile strike on something.
-float SENDFLAG_NEWENT = 128;  //engine-set value, do not modify
+float SENDFLAG_DEAD     = 8; //marks as dead, run death anim.
+float SENDFLAG_CRIT     = 16; //what component(s) blew off.
+float SENDFLAG_BURN     = 32; //what is starting to burn.
+float SENDFLAG_IMPACT   = 64; //specifically missile strike on something.
+float SENDFLAG_NEWENT   = 128;  //engine-set value, do not modify
   //128 is hardcoded as isNew, dont change
   //.modelindex
   //.faction
   //.data_type
   //.data_idx
 //expanded flags, WriteByte upped to WriteLong?
-float SENDFLAG_CAMERA = 256;  //third person delta
-float SENDFLAG_RADAR  = 512;  //radar mode delta
-float SENDFLAG_ATTACK = 1024; //attack trigger
-float SENDFLAG_SHIELD = 2048; //shield change delta
-float SENDFLAG_ENERGY = 4096; //energy change delta.
-float SENDFLAG_TARGET = 8192; //target change delta.
-float SENDFLAG_EFLAGS = 16384;//client .flags delta.
-float SENDFLAG_COLORS = 32768;//player changed colors
-float SENDFLAG_NEWUNIT = 65536; //players go from non-mech to mech
-float SENDFLAG_EXDATA = 131072; //any additional info an ent wants to send (usually custom per class)
+float SENDFLAG_CAMERA   = 256;  //third person delta
+float SENDFLAG_RADAR    = 512;  //radar mode delta
+float SENDFLAG_ATTACK   = 1024; //attack trigger
+float SENDFLAG_SHIELD   = 2048; //shield change delta
+float SENDFLAG_ENERGY   = 4096; //energy change delta.
+float SENDFLAG_TARGET   = 8192; //target change delta.
+float SENDFLAG_EFLAGS   = 16384;//client .flags delta.
+float SENDFLAG_COLORS   = 32768;//player changed colors
+float SENDFLAG_NEWUNIT  = 65536; //players go from non-mech to mech
+float SENDFLAG_EXDATA   = 131072; //any additional info an ent wants to send (usually custom per class)
 float SENDFLAG_FACTION  = 262144; //this should have been its own long ago.
+float SENDFLAG_ANGLE    = 524288; //specifically .angles / .v_angle 
 //============================
 //     COMMON SPAWNFLAGS
 //============================

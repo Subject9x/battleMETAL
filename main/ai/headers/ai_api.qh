@@ -162,7 +162,7 @@ entity() ai_node_tether_find;
 float( vector source, vector trgdst ) ai_check_terrain_move;
 void(entity none) ai_NULL_pain={ };
 float() ai_NULL_missile={ return FALSE;};
-
+void() ai_frame_net_send;
 //entity(entity node) ai_node_to_target;  DEPRECATED - release v1.0.0
 //float(entity toCheck) ai_check_node_radius; DEPRECATED - release v1.0.0
 //float() ai_check_node_radius_targdist;  DEPRECATED - release v1.0.0

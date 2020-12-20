@@ -145,10 +145,10 @@ void() data_projectile_missile_activeradar_think={
   if( lock == 2 ){
     vtemp = self.enemy.origin + '0 0 10';
     vtemp = randompos( vtemp + self.enemy.mins, vtemp + self.enemy.maxs );
-    self.lastorigin = self.enemy.origin;
+    self.last_origin = self.enemy.origin;
   }
   else{
-    vtemp = self.lastorigin;
+    vtemp = self.last_origin;
   }
   
   dir = normalize(vtemp - self.origin);

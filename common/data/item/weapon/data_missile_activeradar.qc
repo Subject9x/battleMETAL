@@ -110,7 +110,7 @@ void() data_ini_attack_missile_activeradar_={
     NEWSHOT.w_isburst = time + 0.65; //use to track curving behavior
     NEWSHOT.stat_rdr_mode = self.owner.enemy.stat_rdr_mode;
     NEWSHOT.isActive =  self.owner.enemy.stat_rdr_mode;
-    NEWSHOT.lastorigin = self.owner.enemy.origin;
+    NEWSHOT.last_origin = self.owner.enemy.origin;
     NEWSHOT.dest = FIRE_ENDPOINT;
     setorigin(NEWSHOT, start);
     NEWSHOT = world;
