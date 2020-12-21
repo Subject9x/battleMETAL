@@ -1018,7 +1018,9 @@ void() world_nodegraph_import={
   
   //load the actual file
   NODE_ID_COUNT = world_nodegraph_read_file();
-  dprint("VERIFY NODEGRAPH ARRAY SIZE (NODE_ID_COUNT): ", ftos(NODE_ID_COUNT), "\n"); //debug
+  if( cvar("developer") ){
+    dprint("VERIFY NODEGRAPH ARRAY SIZE (NODE_ID_COUNT): ", ftos(NODE_ID_COUNT), "\n"); //debug
+  }
   if( NODE_ID_COUNT > 0 ){
     NODEGRAPH_LOADED = TRUE;
     if( cvar("developer") ){
@@ -1143,13 +1145,16 @@ void( float start, float end ) world_nodegraph_test_graph={
     nodeStart = NODEGRAPH_DATA[start];
 
     nodeEnd = NODEGRAPH_DATA[end];
-    
-    dprint(strcat("NODEGHRAPH DEBUG(",ftos(start),")-(", ftos(end),")\n"));  //debug
-    dprint(sprintf("NODEGHRAPH DEBUG[%s](%s) - [%s](%s)\n", ftos(nodeStart.id), vtos(nodeStart.orig), ftos(nodeEnd.id), vtos(nodeEnd.orig)));//debug
+    if( cvar("developer") ){
+      dprint(strcat("NODEGHRAPH DEBUG(",ftos(start),")-(", ftos(end),")\n"));  //debug
+      dprint(sprintf("NODEGHRAPH DEBUG[%s](%s) - [%s](%s)\n", ftos(nodeStart.id), vtos(nodeStart.orig), ftos(nodeEnd.id), vtos(nodeEnd.orig)));//debug
+    }
     nodegraph_debug_graph(nodeStart.orig, nodeEnd.orig);
   }
   else{
-    dprint("NODEGHRAPH not loaded!\n"); //debug
+    if( cvar("developer") ){
+      dprint("NODEGHRAPH not loaded!\n"); //debug
+    }
   }
 };
 
