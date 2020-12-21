@@ -519,26 +519,28 @@ void( float isNew, float entFlags ) data_map_damage={
     }
   }
   
-  if( (entFlags & SENDFLAG_NEWENT) ){
-    self.data_idx = ReadByte();
-    self.spawnflags = ReadLong();
-    
+  if( (entFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
-    
+  }
+  if( (entFlags & SENDFLAG_ANGLE) ){
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
-    
+  }
+  
+  if( (entFlags & SENDFLAG_NEWENT) ){
+    self.data_idx = ReadByte();
+    self.spawnflags = ReadCoord();
     self.damageType = ReadByte();
     self.alpha = ReadShort();
-    self.wait = ReadAngle();
+    self.wait = ReadCoord();
+  }
+  if( isNew ){
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_dmg_zone;
     self.effects = self.effects - (self.effects & EF_NODEPTHTEST);
     self.renderflags = self.renderflags - (self.renderflags & RF_DEPTHHACK);
     setorigin(self, self.origin);
-  }
-  if( isNew ){
     if( self.isActive ){
       self.nextthink = time + 0.1;
     }

@@ -159,16 +159,20 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
   SendEntity - Map Objects ====================================
 */
 void( float isNew, float changeFlags ) sendent_handle_misc={
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     setmodel( self, modelnameforindex(ReadCoord()) );
-    
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
-      self.angles_x = ReadAngle();
-      self.angles_y = ReadAngle();
-      self.angles_z = ReadAngle();
-    
   }
   
   if(isNew){
