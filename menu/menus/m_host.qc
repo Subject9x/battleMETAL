@@ -143,8 +143,7 @@ void() host_update_playeramount={
     }
   }
   
-  cvar_set("maxplayers", rint(ftos(SELECT_PLAYERS))
-  cmd(cmdString);
+  cvar_set("maxplayers", ftos(rint(SELECT_PLAYERS)));
   strunzone(host_playernum.label);
   host_playernum.label = strzone(ftos(SELECT_PLAYERS));
   host_playernum.subid = SUB_MENU;
