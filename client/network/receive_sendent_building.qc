@@ -92,10 +92,8 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    if( self.deadflag == DEAD_NO ){
-      self.spawnflags = ReadCoord();
-      self.data_idx = ReadByte();
-    }
+    self.spawnflags = ReadCoord();
+    self.data_idx = ReadByte();
     setorigin(self, self.origin);
   }
   

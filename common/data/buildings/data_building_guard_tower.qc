@@ -125,7 +125,7 @@ void() building_guard_tower={
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
   self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_FACTION);
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }

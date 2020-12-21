@@ -531,7 +531,7 @@ void() building_human_repair={
   }
   
   self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_FACTION);
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   
   self.ai_state_next = PLAYER_DEBRIEF;
   self.think = building_repair_state;
