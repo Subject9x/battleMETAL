@@ -526,7 +526,7 @@ void() ai_change_faction_use={
     while(e){
       e.faction = self.faction;
       if( e.data_type == DATA_BLD ){
-        e.SendFlags = e.SendFlags | SENDFLAG_VELOCITY;
+        e.SendFlags = e.SendFlags | SENDFLAG_FACTION;
       }
       e = e.chain;
     }
@@ -540,7 +540,7 @@ void() ai_change_faction_use={
       }
       e.faction = self.faction;
       if( e.data_type == DATA_BLD ){
-        e.SendFlags = e.SendFlags | SENDFLAG_VELOCITY;
+        e.SendFlags = e.SendFlags | SENDFLAG_FACTION;
       }
     } while ( 1 );
   }
