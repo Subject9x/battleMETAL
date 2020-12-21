@@ -111,6 +111,10 @@ void() data_projectile_missile_swarm_touch={
 void() data_projectile_missile_swarm_think={
   local vector  dir, vtemp;
   
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
   if(time > self.data_lifetime){
     self.think = ctrl_missile_dud;
     self.nextthink = time + 0.1;
@@ -146,11 +150,13 @@ void() data_projectile_missile_swarm_think={
     self.nextthink = time + 0.075;
     self.think = data_projectile_missile_swarm_think;
   }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 
 void() data_projectile_missile_swarm_delay_int={
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
   if( time > self.ai_action_time ){
     self.think = data_projectile_missile_swarm_think;
     self.nextthink = time + 0.01;

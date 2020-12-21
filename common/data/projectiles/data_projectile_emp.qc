@@ -57,7 +57,10 @@ void() data_projectile_ini_emp_={
 void() data_projectile_emp_think_={
   local float explode;
 
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
   explode = FALSE;
   if(time > self.w_firetime){
     local entity proxy;
@@ -150,7 +153,7 @@ void()data_prj_emp_explode={
 
   }
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  self.impactType = IMPACT_SKY;  
+  self.impactType = IMPACT_SKY;
   
   self.think = SUB_Remove;
   self.nextthink = time + 0.05;

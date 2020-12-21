@@ -110,7 +110,11 @@ void() data_prj_mis_touch={
 };
 
 void() data_projectile_rocket_think_={
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
+  
   self.think = data_projectile_rocket_think_;
   self.nextthink = time + 0.025;
   self.angles = vectoangles(self.velocity);

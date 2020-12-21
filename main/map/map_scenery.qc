@@ -11,27 +11,29 @@ Overview:
 */
 
 float( float isNew, float changeFlags ) send_scenery={
-
+  local float newFlags;
+  
+  newFlags = changeFlags;
   if( isNew ){
-    self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE);
+    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE);
   }
-
+  
   WriteByte( MSG_ENTITY, SENDTYPE_MISC );
-  WriteCoord( MSG_ENTITY, changeFlags );
+  WriteCoord( MSG_ENTITY, newFlags );
   //======================================
   
-  if( (changeFlags & SENDFLAG_MOVE) ){
+  if( (newFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
   }
-  if( (changeFlags & SENDFLAG_ANGLE) ){
+  if( (newFlags & SENDFLAG_ANGLE) ){
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (newFlags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.modelindex );
   }
 

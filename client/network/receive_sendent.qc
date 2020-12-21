@@ -214,10 +214,8 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.vec_size = ReadByte();
     self.data_idx = ReadByte();
-    if( self.deadflag == DEAD_NO ){
-      self.faction = ReadByte();
-      self.canTarget = ReadByte();
-    }
+    self.faction = ReadByte();
+    self.canTarget = ReadByte();
   }
   
   if(isNew){
@@ -285,6 +283,10 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.angles_z = anglemod(ReadAngle());
   }
   
+  if( changeFlags & SENDFLAG_IMPACT ){
+    self.impactType = ReadByte();
+  }
+  
   if( (changeFlags & SENDFLAG_BURN) ){
     self.vec_size = ReadByte();
   }
@@ -306,10 +308,6 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.drawmask = MASK_ENGINE;
     interpolate_origin();
     self.predraw = predraw_missile;
-  }
-  
-  if( changeFlags & SENDFLAG_IMPACT ){
-    self.impactType = ReadByte();
   }
   
   self.angles = vectoangles(self.velocity);

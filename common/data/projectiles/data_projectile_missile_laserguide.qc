@@ -105,6 +105,11 @@ void() data_projectile_missile_laserguide_touch={
 void() data_projectile_missile_laserguide_think={
   local vector vtemp;
   
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
+  
   vtemp = normalize(self.owner.laser_sight_org - self.origin);
   self.velocity = vtemp * 0.5;
   self.velocity = self.velocity * self.data_velocity;
@@ -119,7 +124,6 @@ void() data_projectile_missile_laserguide_think={
     self.nextthink = time + 0.025;
     self.think = data_projectile_missile_laserguide_think;
   }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
 };
 #endif
 

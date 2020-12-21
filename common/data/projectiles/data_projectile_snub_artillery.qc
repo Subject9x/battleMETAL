@@ -64,7 +64,16 @@ void() data_projectile_ini_snub_artillery_={
 
 #ifdef SSQC
 void() data_projectile_snub_artillery_th={
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
+  
+  if( self.last_angle != self.angles ){
+    
+  }
+  
   self.think = data_projectile_snub_artillery_th;
   self.nextthink = time + 0.01;
 };
