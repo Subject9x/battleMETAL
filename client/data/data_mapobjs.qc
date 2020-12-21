@@ -494,10 +494,6 @@ void( float isNew, float entFlags ) data_map_damage={
   
   prevActive = self.isActive;
   
-  if( (entFlags & SENDFLAG_MOVE) ){
-    //changes damage types / boundary size
-  }
-  
   if( (entFlags & SENDFLAG_BURN) ){
     //use to adjust isActive, toggling the field
     if( self.isActive ){

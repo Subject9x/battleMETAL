@@ -127,20 +127,18 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    if( self.deadflag == DEAD_NO ){
-        WriteCoord( MSG_ENTITY, self.flags );
-        WriteByte( MSG_ENTITY, self.faction );
-        WriteByte( MSG_ENTITY, self.next_wepn1);
-        WriteByte( MSG_ENTITY, self.next_wepn2);
-        WriteByte( MSG_ENTITY, self.next_wepn3);
-        WriteByte( MSG_ENTITY, self.next_wepn4);
-        WriteByte( MSG_ENTITY, self.next_wepn5);
-        WriteByte( MSG_ENTITY, self.next_wepn6);
-        WriteByte( MSG_ENTITY, self.next_wepn7);
-        WriteByte( MSG_ENTITY, self.next_wepn8);
-        WriteByte( MSG_ENTITY, self.next_wepn9);
-        WriteString( MSG_ENTITY, self.netname );
-    }
+    WriteCoord( MSG_ENTITY, self.flags );
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
   if( (changedflags & SENDFLAG_SHIELD) ){
@@ -158,7 +156,12 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   
   if( (changedflags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
-  }
+  } 
+  
+  //if( (changedflags & SENDFLAG_BURN) ){
+  //  <no-writes>
+  //}
+  
   if( (changedflags & SENDFLAG_TARGET) ){
     WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
   }
@@ -190,22 +193,18 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    if( self.deadflag == DEAD_NO ){
-
-        WriteCoord( MSG_ENTITY, self.flags );
-        WriteByte( MSG_ENTITY, self.faction );
-        WriteByte( MSG_ENTITY, self.next_wepn1);
-        WriteByte( MSG_ENTITY, self.next_wepn2);
-        WriteByte( MSG_ENTITY, self.next_wepn3);
-        WriteByte( MSG_ENTITY, self.next_wepn4);
-        WriteByte( MSG_ENTITY, self.next_wepn5);
-        WriteByte( MSG_ENTITY, self.next_wepn6);
-        WriteByte( MSG_ENTITY, self.next_wepn7);
-        WriteByte( MSG_ENTITY, self.next_wepn8);
-        WriteByte( MSG_ENTITY, self.next_wepn9);
-        WriteString( MSG_ENTITY, self.netname );
-      
-    }
+    WriteCoord( MSG_ENTITY, self.flags );
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
   if( (changedflags & SENDFLAG_SHIELD) ){
@@ -219,6 +218,11 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   if( (changedflags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
+  
+  //if( (changedflags & SENDFLAG_BURN) ){
+  //  <no-writes>
+  //}
+  
   if( (changedflags & SENDFLAG_TARGET) ){
     WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
   }
@@ -250,22 +254,18 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    if( self.deadflag == DEAD_NO ){
-    
-        WriteCoord( MSG_ENTITY, self.flags );
-        WriteByte( MSG_ENTITY, self.faction );
-        WriteByte( MSG_ENTITY, self.next_wepn1);
-        WriteByte( MSG_ENTITY, self.next_wepn2);
-        WriteByte( MSG_ENTITY, self.next_wepn3);
-        WriteByte( MSG_ENTITY, self.next_wepn4);
-        WriteByte( MSG_ENTITY, self.next_wepn5);
-        WriteByte( MSG_ENTITY, self.next_wepn6);
-        WriteByte( MSG_ENTITY, self.next_wepn7);
-        WriteByte( MSG_ENTITY, self.next_wepn8);
-        WriteByte( MSG_ENTITY, self.next_wepn9);
-        WriteString( MSG_ENTITY, self.netname );
-      
-    }
+    WriteCoord( MSG_ENTITY, self.flags );
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
   if( (changedflags & SENDFLAG_SHIELD) ){
@@ -283,6 +283,10 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   if( (changedflags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
   }
+    
+  //if( (changedflags & SENDFLAG_BURN) ){
+  //  <no-writes>
+  //}
   
   if( (changedflags & SENDFLAG_TARGET) ){
     WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));

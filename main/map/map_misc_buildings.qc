@@ -8,42 +8,42 @@ Overview:
 
 
 float( float isNew, float changeFlags ) sendent_misc_building={
+  local float newFlags;
+  newFlags = changeFlags;
   
   if( isNew ){
-    //sweet hacks?
-    self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE);
+    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD);
   }
   
   WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
-  WriteCoord( MSG_ENTITY, changeFlags );
+  WriteCoord( MSG_ENTITY, newFlags );
+  //======================
   
-  if( (changeFlags & SENDFLAG_DEAD) ){
+  if( (newFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (changeFlags & SENDFLAG_MOVE) ){
+  if( (newFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
   }
-  if( (changeFlags & SENDFLAG_ANGLE) ){
+  if( (newFlags & SENDFLAG_ANGLE) ){
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (newFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
-    if( self.deadflag == DEAD_NO ){    
-      if( self.faction ){
-        WriteByte( MSG_ENTITY, self.faction );
-      }
-      else{
-        WriteByte( MSG_ENTITY, 255 );
-      }
-      WriteByte( MSG_ENTITY, self.canTarget );
+    if( self.faction ){
+      WriteByte( MSG_ENTITY, self.faction );
     }
+    else{
+      WriteByte( MSG_ENTITY, 255 );
+    }
+    WriteByte( MSG_ENTITY, self.canTarget );
   }
   return TRUE;
 };
@@ -125,7 +125,6 @@ void( string modelName, float setSizeFlag ) misc_building={
   }
   
   self.SendEntity = sendent_misc_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 /*QUAKED building_misc_apartment (0 0 1) (-36 -20 0) (36 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP

@@ -74,6 +74,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+    sendevent_gev_move();
   }
   
   if( (changeFlags & SENDFLAG_ANGLE) ){
@@ -88,25 +89,18 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    if( self.deadflag == DEAD_NO ){
-
-        self.flags = ReadCoord();
-        self.faction = ReadByte();
-        self.next_wepn1 = ReadByte();
-        self.next_wepn2 = ReadByte();
-        self.next_wepn3 = ReadByte();
-        self.next_wepn4 = ReadByte();
-        self.next_wepn5 = ReadByte();
-        self.next_wepn6 = ReadByte();
-        self.next_wepn7 = ReadByte();
-        self.next_wepn8 = ReadByte();
-        self.next_wepn9 = ReadByte();
-        newName = ReadString();
-
-    }
-    else{
-      self.faction = FALSE;
-    }
+    self.flags = ReadCoord();
+    self.faction = ReadByte();
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte();
+    newName = ReadString();
   }
   
   if( isNew ){
@@ -118,10 +112,6 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.predraw = predraw_gev;
     te_unit_dust_set();
     self.canTarget = TRUE;
-  }
-  
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    sendevent_gev_move();
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
@@ -141,14 +131,14 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     sendevent_turret_update( turretAng );
   }
   
-  if( changeFlags & SENDFLAG_CRIT ){
+  if( (changeFlags & SENDFLAG_CRIT) ){
     pclEffect = ReadByte();
     if( pclEffect > 0 ){
       self.pcl_effectnum = pclEffect;
     }
   }
   
-  if( changeFlags & SENDFLAG_BURN ){
+  if( (changeFlags & SENDFLAG_BURN) ){
     if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
       makevectors(self.angles);
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);

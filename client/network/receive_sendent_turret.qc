@@ -153,8 +153,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     sendevent_turret_die();
   }
   
-
-    
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
   
