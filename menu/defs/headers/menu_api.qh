@@ -25,7 +25,8 @@ vector VID_RESO_HALF[36];
 string VID_RESO_NAME[36];
 float VID_RESO_TOTAL;
 
-float HOST_RATE_TABLE[13];
+float HOST_RATE_TABLE[12];
+string HOST_RATE_TABLE_NAME[12];
 
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL     = 1;  //don't render label
@@ -208,21 +209,26 @@ string(float typ) map_list_getmap ={
 };
 
 /*
-  following Darkplaces standards
+ DEPRECATE - following Darkplaces standards
+ 
+ new:
+ no, we need better standards because its not 2000 anymore.
 */
 void() menu_ini_ratelist={
-  HOST_RATE_TABLE[1] = 1000;  //"28.8 bad"
-  HOST_RATE_TABLE[2] = 1500;  //"28.8 mediocre"
-  HOST_RATE_TABLE[3] = 2000;  //"28.8 good"
-  HOST_RATE_TABLE[4] = 2500;  //"33.6 mediocre"
-  HOST_RATE_TABLE[5] = 3000;  //"33.6 good"
-  HOST_RATE_TABLE[6] = 3500;  //"56k bad"
-  HOST_RATE_TABLE[7] = 4000;  //"56k mediocre"
-  HOST_RATE_TABLE[8] = 4500;  //"56k adequate"
-  HOST_RATE_TABLE[9] = 5000;  //"56k good"
-  HOST_RATE_TABLE[10] = 7000;  // "64k ISDN"
-  HOST_RATE_TABLE[11] = 15000; //"128k ISDN"
-  HOST_RATE_TABLE[12] = 25000; //"broadband"
+  HOST_RATE_TABLE[0] = 5000;  //"56k good"
+  HOST_RATE_TABLE[1] = 7000;  // "64k ISDN"
+  HOST_RATE_TABLE[2] = 15000; //"128k ISDN"
+  HOST_RATE_TABLE[3] = 25000; //"broadband"
+  HOST_RATE_TABLE[4] = 30000; //"SuperFast"
+  HOST_RATE_TABLE[5] = 50000; //"Ultra"
+  
+  HOST_RATE_TABLE_NAME[0] = "Lowest - 5 MBps";
+  HOST_RATE_TABLE_NAME[1] = "Low - 7 MBps";
+  HOST_RATE_TABLE_NAME[2] = "Medium - 15 MBps";
+  HOST_RATE_TABLE_NAME[3] = "High - 25 MBps";
+  HOST_RATE_TABLE_NAME[4] = "Superfast - 30 MBps";
+  HOST_RATE_TABLE_NAME[5] = "Ultra - 50 MBps";
+  
 };
 
 /*

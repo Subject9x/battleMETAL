@@ -142,7 +142,9 @@ void() host_update_playeramount={
       SELECT_PLAYERS = PLRS_MIN_TDM;
     }
   }
-  cmd("maxplayers ", ftos(SELECT_PLAYERS));
+  
+  cvar_set("maxplayers", rint(ftos(SELECT_PLAYERS))
+  cmd(cmdString);
   strunzone(host_playernum.label);
   host_playernum.label = strzone(ftos(SELECT_PLAYERS));
   host_playernum.subid = SUB_MENU;
@@ -175,9 +177,25 @@ void(float skl) host_update_skilllbl={
 };
 
 void(float rte) host_update_rate={
-  
-  cmd("rate ", ftos(HOST_RATE_TABLE[rte]));
+  local string cmdString;
+  cmdString = strcat("rate ", ftos(HOST_RATE_TABLE[rte]),"\n");
+  cmd(cmdString);
   host_serverrate.len = HOST_RATE_TABLE[rte];
+};
+
+float( float rateVal ) host_rate_find={
+  local float itr;
+  local float rateFind;
+  
+  rateFind = 0;
+  while( itr < 7 ){
+    if( HOST_RATE_TABLE[itr] == rateVal ){
+      rateFind = itr;
+    }
+    itr = itr + 1;
+  }
+  
+  return rateFind;
 };
 
 //callbacks
@@ -217,16 +235,19 @@ void() click_host_public_prev={
 
 void() click_host_rate_up={
   SELECT_RATE = SELECT_RATE + 1;
-  if( SELECT_RATE > 10 ){
-    SELECT_RATE = 11;
+  if( SELECT_RATE > 6 ){
+    SELECT_RATE = 0;
   }
   host_update_rate(SELECT_RATE);
 };
 void() click_host_rate_down={
-  SELECT_RATE = SELECT_RATE - 1;
-  if( SELECT_RATE < 2){
-    SELECT_RATE = 1;
+  if( SELECT_RATE != 0 ){
+    SELECT_RATE = SELECT_RATE - 1;
   }
+  else{
+    SELECT_RATE = 6;
+  }
+  
   host_update_rate(SELECT_RATE);
 };
 
@@ -444,6 +465,8 @@ void() click_host_launch={
 };
 
 void() m_host_i={
+  local float rate;
+  
   PUBLIC_TYPE = "debug";
   SERVER_FLAGS = cvar("sv_serverflags");
   
@@ -467,11 +490,12 @@ void() m_host_i={
   cvar_set("sv_public", "1");
   
   host_serverrate = lbl_text('120 153', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
-  local float rate;
+
   rate = cvar("rate");
-  host_serverrate.len = SELECT_RATE = rate;
+  host_serverrate.len = rate;
+  SELECT_RATE = host_rate_find( rate );
   
-  host_rate_up = btn_img_callback('200 153 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_rate_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_rate_up = btn_img_callback('180 153 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_rate_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_rate_dn = btn_img_callback('100 153 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_rate_down, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   SUB_MENU = SUB_COOP;
@@ -595,8 +619,11 @@ void() m_host_d={
   
   gui_renderString(PUBLIC_TYPE, host_public.origin + gui_percentToPixelRawVec('85 1'), '1 1 0.1', '12 12 0', 1, 0);
   
-  host_serverrate.label = strcat(sprintf("%2.2f", host_serverrate.len / 1000), " Kbps");
+  host_serverrate.label = strcat(sprintf("%2.0f", host_serverrate.len / 1000), " mBps");
   gui_renderString("Server Rate  :", host_serverrate.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
+  gui_renderString("[Make sure this matches your internet speed or is lower than it.]", host_serverrate.origin + gui_percentToPixelRawVec('85 1'), '1 1 0.1', '12 12 0', 1, 0);
+  
+  
   gui_renderString("Game Type  :", host_gametype.origin + gui_percentToPixelRawVec('-95 1'), '1 1 1', '12 12 0', 1, 0);
 
   //kids, this is why implemnt _d funcs for every menu, some need a little extra functionality
@@ -628,7 +655,7 @@ void() m_host_d={
       break;
   }
   if( strlen(host_map_lbl.label) != 0 ){
-    drawpic(host_map_lbl.origin + gui_percentToPixelRawVec('120 -64'), strcat("data/maps/",host_map_lbl.label,"/",host_map_lbl.label,".png"), '256 256', '1 1 1', 1, 0);
+    drawpic(host_map_lbl.origin + gui_percentToPixelRawVec('130 -32'), strcat("data/maps/",host_map_lbl.label,"/",host_map_lbl.label,".png"), '256 256', '1 1 1', 1, 0);
   }
   else{
     gui_renderString("No Map Image Found", host_map_lbl.origin + gui_percentToPixelRawVec('200 32'), '1 1 1', '12 12 0', 1, 0);
