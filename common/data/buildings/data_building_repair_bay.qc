@@ -124,7 +124,7 @@ void() building_repair_select={
     }
     self.attack_state = typeId;
     self.goalentity = repairCheck;
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.ai_state_next = PLAYER_ACTIVE;
   }
 };
@@ -270,7 +270,7 @@ void() building_repair_fixing={
 void() building_repair_idle={
   if( self.ai_state == PLAYER_DEBRIEF && self.ai_state_last != PLAYER_DEBRIEF ){
     self.cockpit.touch = building_repair_touch;
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 1;
     if( self.ai_state_last != PLAYER_RESPAWN ){
       if( self.moveState == TRUE){
@@ -291,9 +291,6 @@ void() building_repair_idle={
   building_repair_recharge_frame();
 };
 
-/*
-  STATE: PLAYER_RESPAWN
-*/
 void() building_repair_cooldown={
   if( self.ai_state == PLAYER_RESPAWN && self.ai_state_last != PLAYER_RESPAWN ){
     if( self.moveState == TRUE){
@@ -306,7 +303,7 @@ void() building_repair_cooldown={
     self.trigger_field.stat_plr_rep = -1;
     self.goalentity = world;
     self.attack_state = 0;
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 2;
     if(self.trigger_field != world){
       self.trigger_field.stat_plr_rep = -1;
@@ -386,6 +383,11 @@ void() building_repair_state={
   }
   
   building_burn();
+    
+  if( self.last_shield != self.stat_client_shield ){
+    self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
+    self.last_shield = self.stat_client_shield;
+  }
   self.think = building_repair_state;
   self.nextthink = time + 0.1;
 };
@@ -529,7 +531,7 @@ void() building_human_repair={
   }
   
   self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_FACTION);
   
   self.ai_state_next = PLAYER_DEBRIEF;
   self.think = building_repair_state;

@@ -677,22 +677,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
   self.netname = getplayerkeyvalue(self.clientLocalId, "name");
   
-  /*
-    EVENT - second data rider used for non-critical stuff
-  */
-  if( (changeFlags & SENDFLAG_VELOCITY) ){
-    /*
-      Particle Cubes are disable by Beta 2 v1.0.0 - will require a patch to get working again.
-    if( self.particleCubeFlag == 0 ){
-      //remove cube
-    }
-    else if( self.particleCubeFlag && isNew ){
-      //if( player_localentnum == self.data_idx ){
-        //add cube
-      //}
-    }*/
-  }
-  
   if( (changeFlags & SENDFLAG_EFLAGS) ){
     self.flags = ReadCoord();
   }

@@ -218,6 +218,10 @@ float( float isNew, float changedFlags ) send_deploy_point={
 
 
 float( float isNew, float changedFlags ) send_damage_zone={
+  
+  if( isNew ){
+    self.SendFlags = self.SendFlags | (SENDFLAG_ANGLE | SENDFLAG_MOVE);
+  }
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteCoord( MSG_ENTITY, changedFlags );
@@ -241,21 +245,23 @@ float( float isNew, float changedFlags ) send_damage_zone={
     WriteByte( MSG_ENTITY, 1 );
   }
   
-  if( (changedFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, self.data_idx );
-    WriteLong( MSG_ENTITY, self.spawnflags );
-    
+  if( (changedFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
-    
+  } 
+  if( (changedFlags & SENDFLAG_ANGLE) ){
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
-    
+  }
+  
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteCoord( MSG_ENTITY, self.spawnflags );
     WriteByte( MSG_ENTITY, self.damageType );
     WriteShort( MSG_ENTITY, self.alpha );
-    WriteAngle( MSG_ENTITY, self.wait );
+    WriteCoord( MSG_ENTITY, self.wait );
   }
   return TRUE;
 };

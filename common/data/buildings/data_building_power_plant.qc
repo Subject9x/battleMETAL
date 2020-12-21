@@ -82,7 +82,7 @@ void() hpower_die14 = [14, hpower_die15]{
 };
 void() hpower_die15 = [15, SUB_Null]{};
 
-void() hpower_th = [0, hpower_th]{
+void() hpower_th ={
   local entity t;
   local float cost;
   
@@ -116,7 +116,16 @@ void() hpower_th = [0, hpower_th]{
   }
     
   building_burn();
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_ENERGY;
+  
+  if( self.last_shield != self.stat_client_shield ){
+    self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
+    self.last_shield = self.stat_client_shield;
+  }
+  
+  self.think = hpower_th;
+  self.nextthink = time + 0.1;
 }; 
 
 
@@ -213,7 +222,7 @@ void() building_human_power={
   self.use = multi_trigger;
   
   self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_FACTION);
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }

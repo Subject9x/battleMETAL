@@ -134,8 +134,11 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.takedamage = DAMAGE_AIM;
   }
   
-  if( (changeFlags & SENDFLAG_IMPACT) ){
+  if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
+  }
+  
+  if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
   }
   

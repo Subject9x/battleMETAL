@@ -32,6 +32,16 @@ void() building_burn_th={
   
   building_burn();
   
+  if( self.last_energy != self.energy ){
+    self.SendFlags = self.SendFlags | SENDFLAG_ENERGY;
+    self.last_energy = self.energy;
+  }
+  
+  if( self.last_shield != self.stat_client_shield ){
+    self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
+    self.last_shield != self.stat_client_shield;
+  }
+  
   self.think = building_burn_th;
   self.nextthink = time + 1 + (random() * 0.5);
 };
@@ -54,7 +64,7 @@ void() building_burn={
     }
     
   }
-  if( self.health < self.max_health *0.33){
+  if( self.health < self.max_health * 0.33){
     if( !(self.burnBits & WEAPON3) ){
       self.burnBits = self.burnBits | WEAPON3;
       self.SendFlags = self.SendFlags | SENDFLAG_BURN;
@@ -101,13 +111,15 @@ float( float isNew, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.next_wepn9);
   }
   
-  
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
   }
   
-  if( (changedflags & SENDFLAG_IMPACT) ){
+  if( (changedflags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  
+  if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
@@ -144,7 +156,6 @@ float( float isNew, float changedflags ) ctrl_send_building={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-    
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
@@ -163,8 +174,10 @@ float( float isNew, float changedflags ) ctrl_send_building={
     }
   }
   
-  if( (changedflags & SENDFLAG_IMPACT) ){
+  if( (changedflags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
