@@ -559,7 +559,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = ReadCoord();
-    self.flags = ReadCoord();
   }
   
   /*
@@ -676,6 +675,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
   self.faction = rint(stof(getplayerkeyvalue(self.clientLocalId, "colors")));
   self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
   self.netname = getplayerkeyvalue(self.clientLocalId, "name");
+  
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
+    self.velocity_x = ReadCoord();
+    self.velocity_y = ReadCoord();
+    self.velocity_z = ReadCoord();
+  }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
     self.flags = ReadCoord();

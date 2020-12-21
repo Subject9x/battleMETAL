@@ -610,7 +610,6 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, num_for_edict(player) );
-    WriteCoord( MSG_ENTITY, player.flags );
   }
     
   /*
@@ -677,10 +676,11 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.deadflag );
     WriteByte( MSG_ENTITY, MISSION_STATUS );
   }
-  /*
-    EVENT - second data rider used for non-critical stuff
-  */
+  
   if( (changeFlags & SENDFLAG_VELOCITY) ){
+    WriteCoord( MSG_ENTITY, player.velocity_x);
+    WriteCoord( MSG_ENTITY, player.velocity_y);
+    WriteCoord( MSG_ENTITY, player.velocity_z);
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
