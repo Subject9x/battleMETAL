@@ -282,10 +282,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-    
-
-    sendevent_mech_ai_move();
     self.moveState = ReadByte();
+    
+    sendevent_mech_ai_move();
     if(self.moveState > 0 ){
       self.ai_dir = 1;
     }
@@ -311,20 +310,18 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    if(self.deadflag == DEAD_NO){
-      self.flags = ReadCoord();
-      self.faction = ReadByte();
-      self.next_wepn1 = ReadByte();
-      self.next_wepn2 = ReadByte();
-      self.next_wepn3 = ReadByte();
-      self.next_wepn4 = ReadByte();
-      self.next_wepn5 = ReadByte();
-      self.next_wepn6 = ReadByte();
-      self.next_wepn7 = ReadByte();
-      self.next_wepn8 = ReadByte();
-      self.next_wepn9 = ReadByte(); 
-      newName = ReadString();
-    }
+    self.flags = ReadCoord();
+    self.faction = ReadByte();
+    self.next_wepn1 = ReadByte();
+    self.next_wepn2 = ReadByte();
+    self.next_wepn3 = ReadByte();
+    self.next_wepn4 = ReadByte();
+    self.next_wepn5 = ReadByte();
+    self.next_wepn6 = ReadByte();
+    self.next_wepn7 = ReadByte();
+    self.next_wepn8 = ReadByte();
+    self.next_wepn9 = ReadByte(); 
+    newName = ReadString();
   }
   
   if( isNew ){

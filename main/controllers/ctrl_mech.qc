@@ -96,8 +96,6 @@ void() ai_ctrl_update_mechplayer={
     self.burnBits = self.burnBits | newBurn;
     self.SendFlags = self.SendFlags | SENDFLAG_BURN;
   }
-  
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
 void() ctrl_updateCenterTorso={
@@ -466,21 +464,18 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    if(self.deadflag == DEAD_NO){
-      WriteCoord( MSG_ENTITY, self.flags );
-      WriteByte( MSG_ENTITY, self.faction );
-
-      WriteByte( MSG_ENTITY, self.next_wepn1);
-      WriteByte( MSG_ENTITY, self.next_wepn2);
-      WriteByte( MSG_ENTITY, self.next_wepn3);
-      WriteByte( MSG_ENTITY, self.next_wepn4);
-      WriteByte( MSG_ENTITY, self.next_wepn5);
-      WriteByte( MSG_ENTITY, self.next_wepn6);
-      WriteByte( MSG_ENTITY, self.next_wepn7);
-      WriteByte( MSG_ENTITY, self.next_wepn8);
-      WriteByte( MSG_ENTITY, self.next_wepn9);
-      WriteString( MSG_ENTITY, self.netname );
-    }
+    WriteCoord( MSG_ENTITY, self.flags );
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
