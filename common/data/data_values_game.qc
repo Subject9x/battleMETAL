@@ -16,9 +16,13 @@ void( ) FRIK_FILE_precaches =
 		ln = fgets(f);                              // this line sets ln to the string read from the file with the file handle of f
     
     while( ln != "EOF" ){                     // while there is still text to be read do the following
-      dprint(strcat("line value (",ln,")\n"));  //DEBUG
+      if( cvar("developer") ){
+        dprint(strcat("line value (",ln,")\n"));  //DEBUG
+      }
       if( ln != "" && substring(ln,0, 2) != "//" ){
-        dprint(strcat("loaded [",ln,"]\n"));  //DEBUG
+        if( cvar("developer") ){
+          dprint(strcat("loaded [",ln,"]\n"));  //DEBUG
+        }
         if(strstrofs(ln, ".wav",0) != -1)   // this checks if the file extension is .wav for a sound file
         {
           precache_sound(ln);         // if it is a sound, then it precaches said sound
