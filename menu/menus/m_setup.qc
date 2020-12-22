@@ -89,19 +89,6 @@ void(float factionType) setup_set_tint={
     TINT_LA = rint(stof(argv(3)));
     TINT_RA = rint(stof(argv(4)));
     TINT_LG = rint(stof(argv(5)));
-    setup_pic_ct.len = TINT_CT;
-    setup_pic_lt.len = TINT_LT;
-    setup_pic_rt.len = TINT_RT;
-    setup_pic_la.len = TINT_LA;
-    setup_pic_ra.len = TINT_RA;
-    setup_pic_lg.len = TINT_LG;
-    
-    setup_pic_ct.color = CLR_PLAYER_LIST[TINT_CT];
-    setup_pic_lt.color = CLR_PLAYER_LIST[TINT_LT];
-    setup_pic_rt.color = CLR_PLAYER_LIST[TINT_RT];
-    setup_pic_la.color = CLR_PLAYER_LIST[TINT_LA];
-    setup_pic_ra.color = CLR_PLAYER_LIST[TINT_RA];
-    setup_pic_lg.color = CLR_PLAYER_LIST[TINT_LG];
   }
 };
 
@@ -163,6 +150,25 @@ void() setup_team_prev_f={
     setup_team_value.len = 3;
   }
   setup_set_tint( setup_team_value.len);
+  
+  setup_pic_ct.color = CLR_PLAYER_LIST[TINT_CT];
+  setup_pic_ct.len = TINT_CT;
+  
+  setup_pic_lt.color =  CLR_PLAYER_LIST[TINT_LT];
+  setup_pic_lt.len = TINT_LT;
+  
+  setup_pic_rt.color =  CLR_PLAYER_LIST[TINT_RT];
+  setup_pic_rt.len = TINT_RT;
+  
+  setup_pic_la.color =  CLR_PLAYER_LIST[TINT_LA];
+  setup_pic_la.len = TINT_LA;
+  
+  setup_pic_ra.color =  CLR_PLAYER_LIST[TINT_RA];
+  setup_pic_ra.len = TINT_RA;
+  
+  setup_pic_lg.color =  CLR_PLAYER_LIST[TINT_LG];
+  setup_pic_lg.len = TINT_LG;
+  
   cvar_set("cl_team", ftos(setup_team_value.len) );
 };
 
@@ -173,6 +179,25 @@ void() setup_team_next_f={
     setup_team_value.len = 1;
   }
   setup_set_tint( setup_team_value.len);
+    
+  setup_pic_ct.color = CLR_PLAYER_LIST[TINT_CT];
+  setup_pic_ct.len = TINT_CT;
+  
+  setup_pic_lt.color =  CLR_PLAYER_LIST[TINT_LT];
+  setup_pic_lt.len = TINT_LT;
+  
+  setup_pic_rt.color =  CLR_PLAYER_LIST[TINT_RT];
+  setup_pic_rt.len = TINT_RT;
+  
+  setup_pic_la.color =  CLR_PLAYER_LIST[TINT_LA];
+  setup_pic_la.len = TINT_LA;
+  
+  setup_pic_ra.color =  CLR_PLAYER_LIST[TINT_RA];
+  setup_pic_ra.len = TINT_RA;
+  
+  setup_pic_lg.color =  CLR_PLAYER_LIST[TINT_LG];
+  setup_pic_lg.len = TINT_LG;
+  
   cvar_set("cl_team", ftos(setup_team_value.len) );
 };
 
@@ -212,12 +237,25 @@ void() m_setup_i={
   
   setup_pic_label = lbl_text('10 160 0', '12 12 0', "Player Color Tint : ", '1 1 1', 0, M_SETUP, 1, 0);
   
+  setup_set_tint(setup_team_value.len);
+  
   setup_pic_ct = lbl_img('175 195', '2 2 0', "gfx/ui/tint/tint_torso_center.png", CLR_PLAYER_LIST[TINT_CT], (VIEW_CTX | VIEW_CTY), M_SETUP, 1, UI_FLAG_SIZE_IMG );
+  setup_pic_ct.len = TINT_CT;
+  
   setup_pic_lt = lbl_img('175 195', '2 2 0', "gfx/ui/tint/tint_torso_left.png", CLR_PLAYER_LIST[TINT_LT], (VIEW_CTX | VIEW_CTY), M_SETUP, 1, UI_FLAG_SIZE_IMG );
+  setup_pic_lt.len = TINT_LT;
+  
   setup_pic_rt = lbl_img('175 195', '2 2 0', "gfx/ui/tint/tint_torso_right.png", CLR_PLAYER_LIST[TINT_RT], (VIEW_CTX | VIEW_CTY), M_SETUP, 1, UI_FLAG_SIZE_IMG );
+  setup_pic_rt.len = TINT_RT;
+  
   setup_pic_la = lbl_img('175 195', '2 2 0', "gfx/ui/tint/tint_arm_left.png", CLR_PLAYER_LIST[TINT_LA], (VIEW_CTX | VIEW_CTY), M_SETUP, 1, UI_FLAG_SIZE_IMG );
+  setup_pic_la.len = TINT_LA;
+  
   setup_pic_ra = lbl_img('175 195', '2 2 0', "gfx/ui/tint/tint_arm_right.png", CLR_PLAYER_LIST[TINT_RA], (VIEW_CTX | VIEW_CTY), M_SETUP, 1, UI_FLAG_SIZE_IMG );
+  setup_pic_ra.len = TINT_RA;
+  
   setup_pic_lg = lbl_img('175 195', '2 2 0', "gfx/ui/tint/tint_legs.png", CLR_PLAYER_LIST[TINT_LG], (VIEW_CTX | VIEW_CTY), M_SETUP, 1, UI_FLAG_SIZE_IMG );
+  setup_pic_lg.len = TINT_LG;
 
   setup_color_ct_dn = btn_img_callback('75 195 0', '14 18', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_SETUP, setup_color_prev, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   setup_color_ct_up = btn_img_callback('140 195 0', '14 18', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_SETUP, setup_color_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
