@@ -328,6 +328,9 @@ void() PutClientInServer_Campaign={
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;
+    if(self.clientData != world ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
+    }
   }
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;

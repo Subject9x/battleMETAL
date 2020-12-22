@@ -41,14 +41,14 @@ void() map_noshoot_use={
     e = findchainflags(flags, FL_CLIENT);
     while( e ){
       if( (e.flags & self.partTypeId) ){
-        e.flags = e.flags - e.flags & self.partTypeId;
+        e.flags = e.flags - (e.flags & self.partTypeId);
       }
       else{
         //simple revert code
         e.flags = e.flags | self.partTypeId;
       }
       if( (e.flags & FL_CLIENT) ){
-        e.clientData.SendFlags = e.clientData.SendFlags | SENDFLAG_VELOCITY;
+        e.clientData.SendFlags = e.clientData.SendFlags | SENDFLAG_EFLAGS;
       }
       e = e.chain;
     }

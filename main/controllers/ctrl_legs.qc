@@ -86,6 +86,9 @@ void() ctrl_dieLegs={
             self.owner.data_speed_forward = self.owner.data_speed_forward * 0.7;
             self.owner.data_speed_strafe = self.owner.data_speed_strafe * 0.8;
             self.owner.data_speed_backward = self.owner.data_speed_backward;
+            if(self.clientData != world ){
+              self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
+            }
           }
           else{
             //AI suffers way more for blown legs
