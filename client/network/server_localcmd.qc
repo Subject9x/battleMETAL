@@ -23,15 +23,15 @@ void(float id) cl_setmech={
   
   switch( CLIENT_faction ){
     case 2:
-      factionColors = cvar_string("cl_color_srv");
+      factionColors = PLAYER_COLOR_SRV;
       break;
       
     case 3:
-      factionColors = cvar_string("cl_color_mil");
+      factionColors = PLAYER_COLOR_MIL;
       break;
       
     default:
-      factionColors = cvar_string("cl_color_psc");
+      factionColors = PLAYER_COLOR_PSC;
       break;
   }
   

@@ -6,6 +6,12 @@ Overview:
   GUI API header
 */
 
+float ISMENU_PREV;
+
+string PLAYER_COLOR_PSC;
+string PLAYER_COLOR_SRV;
+string PLAYER_COLOR_MIL;
+
 float FONT_NUM_ROBOT_LIGHT;
 float FONT_NUM_ROBOT_THIN;
 float FONT_NUM_ROBOT_REGULAR;

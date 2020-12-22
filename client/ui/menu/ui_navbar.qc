@@ -354,10 +354,8 @@ void() ui_navbutton_launch_click={
       
       //TODO: try a big chunky string instead of multiple small calls to server
       
-      
       //super smaht weapon group testing
       if( CLIENT_MENU_nex_grp1 == 0){
-        
         CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 | bit;
       }
       
