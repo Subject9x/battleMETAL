@@ -291,6 +291,8 @@ void() PlayerPostThink = {
   if (!(self.flags & FL_ONGROUND)){
     self.jump_flag = self.velocity_z;
   }
+  
+  //network SendFlags 
   if( self.clientData != world ){
     if( self.last_origin != self.origin ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_MOVE;
@@ -304,6 +306,14 @@ void() PlayerPostThink = {
     if( self.last_shield != self.stat_client_shield ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
       self.last_shield = self.stat_client_shield;
+    }
+    if( self.last_crit != self.critBits ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
+      self.last_crit = self.critBits;
+    }
+    if( self.last_burn != self.burnBits ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
+      self.last_burn = self.burnBits;
     }
   }
   

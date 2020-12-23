@@ -171,7 +171,7 @@ void() ImpulseCommands ={
     }
   } 
 
-  if(self.impulse == IMP_SLIDE){    
+  if(self.impulse == IMP_SLIDE){
     if( time > self.ramCool ){
       if( self.ramUp >= self.ramUpMax ){
         if( self.energy >= (self.energyMax * (self.ramUpMax / 25)) ){

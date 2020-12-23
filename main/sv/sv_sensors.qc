@@ -22,7 +22,7 @@ void() sv_getTarget={
   src = self;
 
   if( self.chaseActive ){
-    viewOfs = src.origin + (v_up * 20) + (v_forward * -96);
+    viewOfs = src.origin + (v_up * 22) + (v_forward * -96);
     traceline(src.origin, viewOfs, FALSE, self);
     viewOfs = trace_endpos;
   }
