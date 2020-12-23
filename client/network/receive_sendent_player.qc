@@ -183,6 +183,13 @@ float() player_predraw={
     }
     
     if( self.deadflag == DEAD_NO ){
+      self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
+      self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
+      self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
+      self.armLeft.colormod = CLR_PLAYER_LIST[self.unitColorLA];
+      self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
+      self.legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
+  
       entAng = self.angles;
       entAng_x = 0;
       makevectors( entAng );
@@ -295,7 +302,7 @@ void( float mech_id ) sendevent_player_mech={
   }
   minSave = self.mins;
   maxSave = self.maxs;
-  
+    
   self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
   self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
   self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];

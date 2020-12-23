@@ -175,9 +175,7 @@ void(string str, float tokens) client_ParseMechCommand={
     self.unitColorLA = rint(stof(argv(6)));
     self.unitColorRA = rint(stof(argv(7)));
     self.unitColorLG = rint(stof(argv(8)));
-    if(self.clientData != world ){
-      //self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_COLOR;
-    }
+    self.new_color = TRUE;
     return;
   }
   

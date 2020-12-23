@@ -59,6 +59,9 @@ Overview:
 .vector position2;
 .vector position3;
 
+.float new_color;
+.float last_color;
+
 .float targetValid;
 .float targetDist;
 .vector prevMovement; //the .movement of last frame

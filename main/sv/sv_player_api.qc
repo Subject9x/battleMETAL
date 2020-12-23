@@ -315,6 +315,11 @@ void() PlayerPostThink = {
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
       self.last_burn = self.burnBits;
     }
+    if( self.last_color != self.new_color ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_COLORS;
+      self.new_color = FALSE;
+      self.last_color = self.new_color;
+    }
   }
   
   //DEBUG / DEV ONLY!
