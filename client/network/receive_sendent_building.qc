@@ -68,6 +68,7 @@ void() sendevent_building_die={
 void( float isNew, float changeFlags) sendent_handle_building={
   local float prevShield;
   local float prevDeadflag;
+  local float buildingSize;
   
   prevShield = self.shield;
   prevDeadflag = self.deadflag;
@@ -78,6 +79,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
+    if(self.deadflag != DEAD_NO){
+      self.vec_size = ReadByte();
+    }
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -98,38 +102,42 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   
   if( isNew ){
-    self.deadflag = DEAD_NO;
     self.predraw = predraw_building;
     self.drawmask = MASK_ENGINE;
     self.scale = 1;
     self.alpha = 1;
     makevectors(self.angles);
-    data_sync_new_building(self.data_idx);
-    self.data_type = DATA_BLD;
-    self.flags = self.flags | FL_MONSTER; 
-    self.colormod = '1 1 1';
+    if( self.deadflag == DEAD_NO ){
+      data_sync_new_building(self.data_idx);
+      self.data_type = DATA_BLD;
+      self.flags = self.flags | FL_MONSTER; 
+      self.colormod = '1 1 1';
+      if( self.th_walk ){
+        self.th_walk();
+      }
+      if( (self.spawnflags & 4194304) ){
+        if( lastMapKeyObject ){
+          //build linked list backwards for later forward iteration.
+          lastMapKeyObject.w_slot = self;
+          lastMapKeyObject = self;
+        }
+        else{
+          //start chain
+          mapKeyObject = self;
+          lastMapKeyObject = self;
+        }
+      }
+      
+      self.canTarget = TRUE;
+      if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+        self.canTarget = FALSE;
+      }
+      self.takedamage = DAMAGE_AIM;
+    }
+    else{
+      model_misc_building_ruins_set();
+    }
     setorigin(self, self.origin);
-    if( self.th_walk ){
-      self.th_walk();
-    }
-    if( (self.spawnflags & 4194304) ){
-      if( lastMapKeyObject ){
-        //build linked list backwards for later forward iteration.
-        lastMapKeyObject.w_slot = self;
-        lastMapKeyObject = self;
-      }
-      else{
-        //start chain
-        mapKeyObject = self;
-        lastMapKeyObject = self;
-      }
-    }
-    
-    self.canTarget = TRUE;
-    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-      self.canTarget = FALSE;
-    }
-    self.takedamage = DAMAGE_AIM;
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){

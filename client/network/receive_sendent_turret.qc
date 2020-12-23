@@ -61,6 +61,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   //EVENT - death
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
+    if(self.deadflag != DEAD_NO){
+      self.vec_size = ReadByte();
+    }
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -75,7 +78,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( (changeFlags & SENDFLAG_EXDATA) ){
-    self.spawnflags = ReadCoord();
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
     self.next_wepn3 = ReadByte();
@@ -89,17 +91,23 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.spawnflags = ReadCoord();
     self.data_idx = ReadByte();
   }
   
   if( isNew ){
-    self.think = sendent_ai_think;
-    self.nextthink = time + 0.01;
     setorigin(self, self.origin);
-    data_sync_new_turret(self.data_idx);
+    if( self.deadflag == DEAD_NO){
+      self.think = sendent_ai_think;
+      self.nextthink = time + 0.01;
+      data_sync_new_turret(self.data_idx);
+      self.canTarget = TRUE;
+    }
+    else{
+      model_misc_building_ruins_set();
+    }
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_turret;
-    self.canTarget = TRUE;
   }
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();

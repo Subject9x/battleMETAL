@@ -22,6 +22,8 @@ void() building_die={
   self.deadflag = DEAD_DEAD;
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 
 
@@ -73,28 +75,37 @@ void() building_burn={
 };
 
 float( float isNew, float changedflags ) ctrl_send_turret={
-  //HEADER
-  WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
-  WriteCoord( MSG_ENTITY, changedflags );
-  //=================
-  
-  if( (changedflags & SENDFLAG_DEAD) ){
-    WriteByte( MSG_ENTITY, self.deadflag );
+  local float scopeFlags;
+  scopeFlags = 0;
+  if( isNew ){
+    scopeFlags = scopeFlags | changedflags;
+    scopeFlags = scopeFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD | SENDFLAG_FACTION | SENDFLAG_EXDATA);
   }
   
-  if( (changedflags & SENDFLAG_MOVE) ){
+  //HEADER
+  WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
+  WriteCoord( MSG_ENTITY, scopeFlags );
+  //=================
+  
+  if( (scopeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+    if(self.deadflag != DEAD_NO){
+      WriteByte( MSG_ENTITY, self.vec_size );
+    }
+  }
+  
+  if( (scopeFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
   }
-  if( (changedflags & SENDFLAG_ANGLE) ){
+  if( (scopeFlags & SENDFLAG_ANGLE) ){
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
   }
   
-  if( (changedflags & SENDFLAG_EXDATA) ){
-    WriteCoord( MSG_ENTITY, self.spawnflags );
+  if( (scopeFlags & SENDFLAG_EXDATA) ){
     WriteByte( MSG_ENTITY, self.next_wepn1);
     WriteByte( MSG_ENTITY, self.next_wepn2);
     WriteByte( MSG_ENTITY, self.next_wepn3);
@@ -106,29 +117,30 @@ float( float isNew, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.next_wepn9);
   }
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( (scopeFlags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.spawnflags );
     WriteByte( MSG_ENTITY, self.data_idx );
   }
   
-  if( (changedflags & SENDFLAG_SHIELD) ){
+  if( (scopeFlags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
   }
   
-  if( (changedflags & SENDFLAG_IMPACT) ){
+  if( (scopeFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
-  if( (changedflags & SENDFLAG_ATTACK) ){
+  if( (scopeFlags & SENDFLAG_ATTACK) ){
     WriteCoord( MSG_ENTITY, self.attackFlag );
   }
-  if( (changedflags & SENDFLAG_FACTION) ){
+  if( (scopeFlags & SENDFLAG_FACTION) ){
     WriteByte( MSG_ENTITY, self.faction );
   }
-  if( (changedflags & SENDFLAG_TURRET) ){
+  if( (scopeFlags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
   }
-  if( (changedflags & SENDFLAG_BURN) ){
+  if( (scopeFlags & SENDFLAG_BURN) ){
     WriteCoord( MSG_ENTITY, self.burnBits );
   }
   self.shieldHitFlag = 0;
@@ -137,20 +149,25 @@ float( float isNew, float changedflags ) ctrl_send_turret={
 
 float( float isNew, float changedflags ) ctrl_send_building={
   local float newFlags;
-  newFlags = changedflags;
-  
+  newFlags = 0;
   if( isNew ){
-    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD | SENDFLAG_FACTION | SENDFLAG_EXDATA | SENDFLAG_NEWENT);
+    newFlags = newFlags | changedflags;
+    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD | SENDFLAG_FACTION | SENDFLAG_EXDATA);
   }
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
   WriteCoord( MSG_ENTITY, newFlags );
   //=================
+  
   if( (newFlags & SENDFLAG_ENERGY) ){
     WriteShort( MSG_ENTITY, self.energy );
   }
+  
   if( (newFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
+    if(self.deadflag != DEAD_NO){
+      WriteByte( MSG_ENTITY, self.vec_size );
+    }
   }
   
   if( (newFlags & SENDFLAG_MOVE) ){

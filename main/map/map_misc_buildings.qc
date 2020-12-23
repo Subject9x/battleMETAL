@@ -9,9 +9,10 @@ Overview:
 
 float( float isNew, float changeFlags ) sendent_misc_building={
   local float newFlags;
-  newFlags = changeFlags;
   
+  newFlags = 0;
   if( isNew ){
+    newFlags = changeFlags;
     newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD);
   }
   
@@ -21,6 +22,9 @@ float( float isNew, float changeFlags ) sendent_misc_building={
   
   if( (newFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
+    if(self.deadflag != DEAD_NO){
+      WriteByte( MSG_ENTITY, self.vec_size );
+    }
   }
   
   if( (newFlags & SENDFLAG_MOVE) ){
@@ -66,7 +70,6 @@ void() misc_build_die2={
 	setmodel(self, self.model);
   setsize( self, self.mins, self.maxs );
   setorigin( self, self.origin);
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 
 void() misc_build_die1={
@@ -87,6 +90,7 @@ void() misc_build_die1={
   
   self.think = misc_build_die2;
   self.nextthink = time + 0.1;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 
 /*
@@ -449,6 +453,11 @@ void() building_misc_off_pyra={
     self.health = self.max_health = 200;
   }
   self.vec_size = 2;
+  
+  if( self.angles_y ){
+    self.angles_y = 0;
+    //quick hack to fix a BBOX issue: if this model is rotated, somehow players can fall INTO them...
+  }
   
   misc_building("q3mdl/buildings/misc/misc_off_pyramid.obj", TRUE);
 };

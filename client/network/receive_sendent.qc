@@ -198,6 +198,9 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
+    if(self.deadflag != DEAD_NO){
+      self.vec_size = ReadByte();
+    }
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
