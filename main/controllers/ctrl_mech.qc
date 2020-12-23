@@ -108,7 +108,7 @@ void() ctrl_updateCenterTorso={
   if( time > self.laser_sight_timer ){
     makevectors(self.v_angle);
     if(self.chaseActive){
-      laserOrg = self.origin + (v_up * 20) + (v_forward * -96);
+      laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
       traceline(self.origin, laserOrg, TRUE, self);
       laserOrg = trace_endpos;
     }
