@@ -52,6 +52,11 @@ void() data_projectile_ini_quantum_bit_={
 
 #ifdef SSQC
 void() data_projectile_quantum_bit_th={
+  self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
   
   self.think = data_projectile_quantum_bit_th;
   self.nextthink = time + 0.025;
@@ -61,7 +66,6 @@ void() data_projectile_quantum_bit_th={
     remove(self);
     return;
   }
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
 }
 
 

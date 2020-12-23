@@ -110,6 +110,11 @@ void() data_projectile_missile_activeradar_think={
 	local vector	dir, vtemp;
   local float lock;
   
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
+  
   if( !self.touch ){
     self.touch = data_projectile_missile_activeradar_touch;
   }
@@ -145,10 +150,10 @@ void() data_projectile_missile_activeradar_think={
   if( lock == 2 ){
     vtemp = self.enemy.origin + '0 0 10';
     vtemp = randompos( vtemp + self.enemy.mins, vtemp + self.enemy.maxs );
-    self.lastorigin = self.enemy.origin;
+    self.last_origin = self.enemy.origin;
   }
   else{
-    vtemp = self.lastorigin;
+    vtemp = self.last_origin;
   }
   
   dir = normalize(vtemp - self.origin);
@@ -169,12 +174,15 @@ void() data_projectile_missile_activeradar_think={
     self.think = BecomeExplosion;
   }
   
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
+  self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
   self.nextthink = time + 0.1;
 };
 
 void() data_projectile_missile_activeradar_delay={
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
   if( time > self.w_isburst ){
     self.data_velocity = 1500;
     self.data_lifetime = time + 1.56;

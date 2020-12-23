@@ -551,6 +551,61 @@ entity() ai_node_tether_find={
   return found;
 };
 
+
+/*
+  Checks end-of-think change values for sending data to the client
+*/
+void() ai_frame_net_send={
+  
+  //physical move check
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  }
+  
+  //angle change
+  if( self.last_angle != self.angles ){
+    self.SendFlags = self.SendFlags | SENDFLAG_ANGLE;
+    self.last_angle = self.angles;
+  }
+  
+  //turret angles check
+  if( (self.flags & FL_TURRET) ){
+    if( self.torsoCenter.last_angle != self.torsoCenter.angles ){
+      self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+    }
+    self.torsoCenter.last_angle = self.torsoCenter.angles;
+  }
+  
+  //target check
+  if( self.oldenemy != self.enemy ){
+    self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
+    self.oldenemy = self.enemy;
+  }
+  
+  //send shield delta
+  if( self.last_shield != self.stat_client_shield ){
+    self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
+    self.last_shield = self.stat_client_shield;
+  }
+  
+  //attack delta
+  if( self.attackFlag != 0 ){
+    self.SendFlags = self.SendFlags | SENDFLAG_ATTACK;
+  }
+  
+  if( self.last_crit != self.critBits ){
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
+    self.last_crit = self.critBits;
+  }
+  
+  if( self.last_burn != self.burnBits ){
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
+    self.last_burn = self.burnBits;
+  }
+  
+};
+
+
 /*
   Very similar to ext_world.world_nodegraph_export_edgelink()
   

@@ -101,7 +101,7 @@ void(entity unitCam) ctrl_unit_remove_cam={
 float( float isNew, float changedFlags ) send_nav_point={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_NAVP );
   //--------
   
@@ -143,7 +143,7 @@ float( float isNew, float changedFlags ) send_nav_point={
 float( float isNew, float changedFlags ) send_objective={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_OBJT );
   //--------
   
@@ -180,7 +180,7 @@ float( float isNew, float changedFlags ) send_objective={
 float( float isNew, float changedFlags ) send_deploy_point={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_DEPL );
   //============
   
@@ -218,44 +218,48 @@ float( float isNew, float changedFlags ) send_deploy_point={
 
 
 float( float isNew, float changedFlags ) send_damage_zone={
+  local float newFlags;
+  
+  newFlags = changedFlags;
+  if( isNew ){
+    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE);
+  }
+  
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, newFlags );
   WriteByte( MSG_ENTITY, DATA_MAP_DMG );
   //============
   
-  if( (changedFlags & SENDFLAG_MOVE) ){
-    //changes damage types / boundary size
-    
-  }
-  
-  if( (changedFlags & SENDFLAG_BURN) ){
+  if( (newFlags & SENDFLAG_BURN) ){
     //use to adjust isActive, toggling the field
   }
   
-  if( (changedFlags & SENDFLAG_DEAD) ){
+  if( (newFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.isActive );
   }
   
-  if( (changedFlags & SENDFLAG_CRIT) ){
+  if( (newFlags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, 1 );
+  }
+  
+  if( (newFlags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+  } 
+  if( (newFlags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
   }
   
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteLong( MSG_ENTITY, self.spawnflags );
-    
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-    
-    WriteAngle( MSG_ENTITY, self.angles_x );
-    WriteAngle( MSG_ENTITY, self.angles_y );
-    WriteAngle( MSG_ENTITY, self.angles_z );
-    
+    WriteCoord( MSG_ENTITY, self.spawnflags );
     WriteByte( MSG_ENTITY, self.damageType );
     WriteShort( MSG_ENTITY, self.alpha );
-    WriteAngle( MSG_ENTITY, self.wait );
+    WriteCoord( MSG_ENTITY, self.wait );
   }
   return TRUE;
 };

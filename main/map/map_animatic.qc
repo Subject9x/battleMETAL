@@ -13,18 +13,18 @@ Overview:
 
 void() animatic_event_trigger={
   SUB_UseTargets();
-      //Set to remove when complete
-    if( (self.spawnflags & 4) ){
-      self.think = SUB_Remove;
-      self.nextthink = time + 0.05;
-      return;
-    }
-    
-    if( (self.spawnflags & 64) ){
-      self.think = self.use;
-      self.nextthink = time + self.wait;
-      return;
-    }
+  //Set to remove when complete
+  if( (self.spawnflags & 4) ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.05;
+    return;
+  }
+  
+  if( (self.spawnflags & 64) ){
+    self.think = self.use;
+    self.nextthink = time + self.wait;
+    return;
+  }
 };
 
 void() animatic_event_execute={
@@ -33,8 +33,8 @@ void() animatic_event_execute={
   
   if( self.isActive ){
     this = self;
-    client = findchainflags(flags, (FL_CLIENT));
-    while(client){
+    //client = findchainflags(flags, (FL_CLIENT));
+    for(client = findchainflags(flags, (FL_CLIENT)); client != world; client = client.chain){
       //FACTION_ONLY setting
       if( (self.spawnflags & 8) ){
         if(self.faction != client.faction){
@@ -90,9 +90,9 @@ void() animatic_event_use={
     self.isActive = TRUE;
     
     //wait for touch event
-    if( (self.spawnflags & 2) )
+    if( (self.spawnflags & 2) ){
       return;
-    
+    }
     self.think = animatic_event_execute;
     self.nextthink = time + 0.01;
   }
@@ -105,8 +105,9 @@ void() animatic_event_touch={
   if( (other.flags & FL_CLIENT) ){
     if( time > self.dmgtime){
       self.dmgtime = time + 120; //2 minute cool down on refiring anims
-      if(self.isActive)
+      if(self.isActive){
         animatic_event_execute();
+      }
     }
   }
 };
@@ -170,21 +171,24 @@ void() map_animatic={
   
   self.isActive = TRUE;
   //START_OFF
-  if( (self.spawnflags & 1) )
+  if( (self.spawnflags & 1) ){
     self.isActive = FALSE;
-  
+  }
   if( (self.spawnflags & 32) ){
     //set default freeze time
-    if( !self.count1 )
+    if( !self.count1 ){
       self.count1 = 15;
+    }
   }
 
   if( (self.spawnflags & 64) ){
     //no default for cooldown behavior;
-    if( !self.wait )
+    if( !self.wait ){
       self.spawnflags = self.spawnflags - (self.spawnflags & 64);
+    }
   }
   
-  if( (self.spawnflags & 1) )
+  if( (self.spawnflags & 1) ){
     self.touch = animatic_event_touch;
+  }
 };

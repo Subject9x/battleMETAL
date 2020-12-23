@@ -109,7 +109,7 @@ void() hshield_die14 = [14, hshield_die15]{};
 void() hshield_die15 = [15, SUB_Null]{};
 
 
-void() hshield_th = [0, hshield_th]{
+void() hshield_th ={
   local entity t;
   local float mod;
   local float cost;
@@ -139,9 +139,6 @@ void() hshield_th = [0, hshield_th]{
         if( !t.stat_client_shield ){
           t.stat_client_shield = (t.shield / t.shieldMax) * 100;
         }
-        if( t.data_type == DATA_BLD ){
-          t.SendFlags = t.SendFlags | SENDFLAG_IMPACT;
-        }
       }
     }
   }
@@ -160,7 +157,13 @@ void() hshield_th = [0, hshield_th]{
   }
   self.stat_client_shield = (self.shield / self.shieldMax) * 100;
   building_burn();
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
+  
+  if( self.last_shield != self.stat_client_shield ){
+    self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
+    self.last_shield = self.stat_client_shield;
+  }
+  self.think = hshield_th;
+  self.nextthink = time + 0.1;
 }
 
 /*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
@@ -262,7 +265,7 @@ void() building_human_shield={
   hshield_th();
   
   self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }

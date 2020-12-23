@@ -37,17 +37,17 @@ void() touch_mechPiece;
 float( float isNew, float changeFlags ) ctrl_send_mech_ai;
 
 //Building entity controllers
-float( entity targEnt, float changedflags ) ctrl_send_turret;
-float( entity targEnt, float changedflags ) ctrl_send_building;
+float( float isNew, float changedflags ) ctrl_send_turret;
+float( float isNew, float changedflags ) ctrl_send_building;
 void() building_burn_th;  //generic check-for-burning think
 void() building_burn;
 void() building_die;
 
 //Vehicle entity controllers
 void() ctrl_updateTank;
-float( entity targEnt, float changedflags ) ctrl_send_tank;
-float( entity targEnt, float changedflags ) ctrl_send_spg;
-float( entity targEnt, float changedflags ) ctrl_send_gev;
+float( float isNew, float changedflags ) ctrl_send_tank;
+float( float isNew, float changedflags ) ctrl_send_spg;
+float( float isNew, float changedflags ) ctrl_send_gev;
 
 //Generic entity controllers
 void() ctrl_die_weapon;

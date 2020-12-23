@@ -22,7 +22,7 @@ void() sv_getTarget={
   src = self;
 
   if( self.chaseActive ){
-    viewOfs = src.origin + (v_up * 20) + (v_forward * -96);
+    viewOfs = src.origin + (v_up * 22) + (v_forward * -96);
     traceline(src.origin, viewOfs, FALSE, self);
     viewOfs = trace_endpos;
   }
@@ -60,7 +60,7 @@ void() sv_getTarget={
     else{
       trigger_event( self, self.trigOnTarget );
     }
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
   }
 };
 
@@ -92,7 +92,7 @@ void() sv_updateTargetInfo={
     if( prevDeadFlags == DEAD_NO && self.enemy.deadflag > DEAD_NO ){
       self.stat_trg_ent_id = 0;
       self.enemy = world;
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
       self.stat_trg_ent_id = 0;
       self.targLockState = 0;
       return;
@@ -110,7 +110,7 @@ void() sv_updateTargetInfo={
       self.stat_trg_faction = 0;
       self.targLockState = 0;
       self.stat_target_name = "";
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_VELOCITY;
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
       self.stat_trg_ent_id = 0;
       return;
     }

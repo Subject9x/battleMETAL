@@ -18,7 +18,7 @@ vector( vector startOrg ) te_apply_wind={
 
 float( float isNew, float changedFlags ) te_send_missile={
   WriteByte( MSG_ENTITY, SENDTYPE_PROJ );
-  WriteByte( MSG_ENTITY, changedFlags );
+  WriteCoord( MSG_ENTITY, changedFlags );
   
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
@@ -108,6 +108,11 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
   local string debrisMdl;
   local float trailNum;
   
+  //<sigh> these little buggers dump on the net traffic.
+  if( cvar("gamemode") != GAMEMODE_CAMPAIGN ){
+    return;
+  }
+  
   switch( debrType ){
     case 2:
       debrisMdl = "q3mdl/fx/debris2/mdl_debris_2.md3";
@@ -160,6 +165,11 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
   local string debrisMdl;
   local float trailNum;
   local vector back;
+  
+  //<sigh> these little buggers dump on the net traffic.
+  if( cvar("gamemode") != GAMEMODE_CAMPAIGN ){
+    return;
+  }
   
   switch( debrType ){
     case 2:
@@ -296,6 +306,11 @@ void() te_vehicle_chunk_th={
 
 void( entity parent, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk={
   local entity piece;
+  
+  //<sigh> these little buggers dump on the net traffic.
+  if( cvar("gamemode") != GAMEMODE_CAMPAIGN ){
+    return;
+  }
   
   piece = spawn();
   setmodel(piece, parent.model);

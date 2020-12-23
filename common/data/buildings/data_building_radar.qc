@@ -75,7 +75,7 @@ void() building_radar_detect1=[0, building_radar_detect1]{
     return;
   }
   
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
   self.attack_state = ST_STAND;
   
   if( time > self.pausetime ){
@@ -132,7 +132,7 @@ void() building_radar_patrol1=[0, building_radar_patrol1]{
     found = blip;
   }
   building_burn();
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
   self.attack_state = ST_WALK;
   
   if( found != world){
@@ -175,7 +175,7 @@ float() building_radar_alert1={
   if(alarm_ent == this ){
     alarm_ent = world;
   }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
   self.attack_state = ST_RUN;
   
   self.ai_action_time = time + 5;
@@ -192,7 +192,7 @@ void() building_radar_alert2={
     return;
   }
   
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
   self.attack_state = ST_RUN;
   self.think = building_radar_alert2;
   self.nextthink = time + 0.1;
@@ -207,7 +207,7 @@ void() building_radar_cool1=[0, building_radar_cool1]{
     self.th_walk();
     return;
   }
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
   self.attack_state = ST_STAND;
 };
 
@@ -349,7 +349,7 @@ void() building_human_radar={
   }
   
   self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_VELOCITY);
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   if( (self.spawnflags & IT_QUAD) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }

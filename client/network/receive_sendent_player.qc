@@ -107,7 +107,7 @@ void() player_think={
   
   makevectors(self.angles);
   if(self.chaseActive){
-    laserOrg = self.origin + (v_up * 20) + (v_forward * -96);
+    laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
     traceline(self.origin, laserOrg, TRUE, self);
     laserOrg = trace_endpos;
   }
@@ -509,8 +509,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevAttackFlag;
   local float prevMoveState;
   local float prevBurn;
-  local float prevGetTarg;
   local float newCrits;
+  local float nextHit;
   
   prevBurn = self.burnBits;
   prevShield = self.shield;
@@ -527,36 +527,44 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
-    self.stat_rdr_mode = ReadByte();
-    
-    self.shield = ReadByte();
-    
-    self.energy = ReadByte();
-    
+    self.moveState = ReadByte();
+    self.legDir = anglemod(ReadShort());
+    self.ai_dir = ReadShort();
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = 0;
-    
-    self.attackFlag = ReadLong();
-    self.moveState = ReadByte();
-    //Track player move state?
-    self.legDir = anglemod(ReadShort());
-    self.ai_dir = ReadShort();
+  }
+  
+  if( (changeFlags & SENDFLAG_RADAR) ){
+    self.stat_rdr_mode = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_SHIELD) ){
+    self.shield = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_ENERGY) ){
+    self.energy = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_ATTACK) ){
+    self.attackFlag = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_CAMERA) ){
     self.chaseActive = ReadByte();
   }
+  
   /*
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = ReadCoord();
-    self.flags = ReadShort();
   }
   
   /*
     EVENT - Player has taken fire
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    local float nextHit;
     nextHit = ReadByte();
     if( self.shieldHitFlag == FALSE || nextHit == SHIELD_HIT_EXP){
       self.shieldHitFlag = nextHit;
@@ -580,7 +588,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   /*
     EVENT - player info change 
   */
-  if( (changeFlags & SENDFLAG_TURRET) ){
+  if( (changeFlags & SENDFLAG_NEWUNIT) ){
     self.data_type = ReadByte();
     self.data_idx = ReadByte();
     self.next_wepn1 = ReadByte();
@@ -592,13 +600,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
-    //custom colors
-    self.unitColorCT = ReadByte();
-    self.unitColorLT = ReadByte();
-    self.unitColorRT = ReadByte();
-    self.unitColorLA = ReadByte();
-    self.unitColorRA = ReadByte();
-    self.unitColorLG = ReadByte();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         self.deadflag = DEAD_NO;
@@ -614,20 +615,29 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
+  if( (changeFlags & SENDFLAG_COLORS) ){
+    self.unitColorCT = ReadByte();
+    self.unitColorLT = ReadByte();
+    self.unitColorRT = ReadByte();
+    self.unitColorLA = ReadByte();
+    self.unitColorRA = ReadByte();
+    self.unitColorLG = ReadByte();
+  }
+  
   /*
     EVENT - pieces of player mech is blown off
   */
+  newCrits = 0;
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.critBits = ReadByte();
+    self.critBits = ReadCoord();
     if( self.critBits != 0 ){
+      newCrits = newCrits | self.critBits;
       if( (self.critBits & M_REPAIR) ){
         //handle repair event
         self.critBits =  self.critBits - (self.critBits & M_REPAIR);
-        sendevent_player_repair( self.critBits );
         self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
       }
       else{
-        sendevent_player_critical( self.critBits );
         self.criticalHits = self.criticalHits | self.critBits;
       }
     }
@@ -637,7 +647,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadByte();
+    self.burnBits = ReadCoord();
     if( self.burnBits < prevBurn ){
       self.burnBits = self.burnBits - (self.burnBits & prevBurn);
     }
@@ -665,26 +675,25 @@ void( float isNew, float changeFlags) sendent_handle_player={
   self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
   self.netname = getplayerkeyvalue(self.clientLocalId, "name");
   
-  /*
-    EVENT - second data rider used for non-critical stuff
-  */
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    //self.particleCubeFlag = ReadByte();
+    self.velocity_x = ReadCoord();
+    self.velocity_y = ReadCoord();
+    self.velocity_z = ReadCoord();
+  }
+  
+  if( (changeFlags & SENDFLAG_EFLAGS) ){
+    self.flags = ReadCoord();
+  }
+  
+  if( (changeFlags & SENDFLAG_TARGET) ){
     //player has tried to acquire target
     self.getTarget = rint(ReadCoord());
-    self.enemy = findfloat(world, entnum, self.getTarget);
-    self.flags = ReadShort();
-    
-    /*
-      Particle Cubes are disable by Beta 2 v1.0.0 - will require a patch to get working again.
-    if( self.particleCubeFlag == 0 ){
-      //remove cube
+    if( self.getTarget != 0 ){
+      self.enemy = findfloat(world, entnum, self.getTarget);
     }
-    else if( self.particleCubeFlag && isNew ){
-      //if( player_localentnum == self.data_idx ){
-        //add cube
-      //}
-    }*/
+    else{
+      self.enemy = world;
+    }
   }
   
   /*
@@ -704,8 +713,19 @@ void( float isNew, float changeFlags) sendent_handle_player={
   //Shield Explode event
   sendevent_shield_explode( prevShield );
   
-  if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+  //if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
+  if( self.attackFlag != 0 ){
     sendevent_handle_weaponfire();
+    self.attackFlag = 0;
+  }
+  
+  if( newCrits != 0 ){
+    if( (newCrits & M_REPAIR) ){
+      sendevent_player_repair( newCrits );
+    }
+    else{
+      sendevent_player_critical( newCrits );
+    }
   }
   
   if( prevMoveState != self.moveState ){

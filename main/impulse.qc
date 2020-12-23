@@ -91,6 +91,9 @@ void() playerAttack={
     }
     wep_chain = wep_chain.w_slot;
   }
+  if( self.attackFlag > 0 ){
+    self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_ATTACK | SENDFLAG_TURRET);
+  }
 };
 
 void() ImpulseCommands ={
@@ -163,9 +166,12 @@ void() ImpulseCommands ={
         self.stat_rdr_rng = self.radar_range * 2;
       }
     }
+    if(self.clientData != world){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_RADAR;
+    }
   } 
 
-  if(self.impulse == IMP_SLIDE){    
+  if(self.impulse == IMP_SLIDE){
     if( time > self.ramCool ){
       if( self.ramUp >= self.ramUpMax ){
         if( self.energy >= (self.energyMax * (self.ramUpMax / 25)) ){
@@ -199,7 +205,7 @@ void() ImpulseCommands ={
         PutClientInServer();
       }
     }
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_FACTION;
   }
   
   if(self.impulse == IMP_FAC_PREV){
@@ -216,7 +222,7 @@ void() ImpulseCommands ={
         PutClientInServer();
       }
     }
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_FACTION;
   }
 
   if(self.impulse == IMP_EXTERNAL_CAMERA){
@@ -225,6 +231,9 @@ void() ImpulseCommands ={
     }
     else{
       self.chaseActive = TRUE;
+    }
+    if(self.clientData != world){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CAMERA;
     }
   }
 

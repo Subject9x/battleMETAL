@@ -118,13 +118,13 @@ void() building_repair_select={
       if( !(player.flags & FL_NOSHOOT) ){
         player.flags = player.flags | FL_NOSHOOT;
         self.moveState = TRUE; //preserve client FL_NOSHOOT setting
-        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_NEWENT;
+        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_EFLAGS;
       }
       client_send_event_repairs( player, TRUE );
     }
     self.attack_state = typeId;
     self.goalentity = repairCheck;
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.ai_state_next = PLAYER_ACTIVE;
   }
 };
@@ -270,13 +270,13 @@ void() building_repair_fixing={
 void() building_repair_idle={
   if( self.ai_state == PLAYER_DEBRIEF && self.ai_state_last != PLAYER_DEBRIEF ){
     self.cockpit.touch = building_repair_touch;
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 1;
     if( self.ai_state_last != PLAYER_RESPAWN ){
       if( self.moveState == TRUE){
         //player's FL_NOSHOOT was only for the repair action, so we remove it now.
         self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
-         self.trigger_field.clientData.SendFlags = self.trigger_field.clientData.SendFlags | SENDFLAG_NEWENT;
+         self.trigger_field.clientData.SendFlags = self.trigger_field.clientData.SendFlags | SENDFLAG_EFLAGS;
         self.moveState = FALSE;
       }
       self.goalentity = world;
@@ -291,22 +291,19 @@ void() building_repair_idle={
   building_repair_recharge_frame();
 };
 
-/*
-  STATE: PLAYER_RESPAWN
-*/
 void() building_repair_cooldown={
   if( self.ai_state == PLAYER_RESPAWN && self.ai_state_last != PLAYER_RESPAWN ){
     if( self.moveState == TRUE){
       //player's FL_NOSHOOT was only for the repair action, so we remove it now.
       self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
-       self.trigger_field.clientData.SendFlags = self.trigger_field.clientData.SendFlags | SENDFLAG_NEWENT;
+       self.trigger_field.clientData.SendFlags = self.trigger_field.clientData.SendFlags | SENDFLAG_EFLAGS;
       self.moveState = FALSE;
     }
     client_send_event_repairs( self.trigger_field, FALSE );
     self.trigger_field.stat_plr_rep = -1;
     self.goalentity = world;
     self.attack_state = 0;
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 2;
     if(self.trigger_field != world){
       self.trigger_field.stat_plr_rep = -1;
@@ -386,6 +383,11 @@ void() building_repair_state={
   }
   
   building_burn();
+    
+  if( self.last_shield != self.stat_client_shield ){
+    self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
+    self.last_shield = self.stat_client_shield;
+  }
   self.think = building_repair_state;
   self.nextthink = time + 0.1;
 };

@@ -71,6 +71,11 @@ void() data_projectile_plasma_burn_ini_={
 
 void() data_projectile_plasma_burn_th={
   
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
+  
   if( self.enemy.deadflag > DEAD_NO || self.cockpit.deadflag > DEAD_NO ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
@@ -85,7 +90,7 @@ void() data_projectile_plasma_burn_th={
     return;
   }
   
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.stat_trg_ent_id = 0;
   self.impactType = IMPACT_ARMOR;
 
@@ -148,7 +153,10 @@ void() data_projectile_plasma_touch={
 };
 
 void() data_projectile_plasma_think_={
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
   if( time > self.data_lifetime ){
     client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
     self.touch = SUB_Null;

@@ -90,7 +90,7 @@ void( float isNew ) sendent_handle_update={
   local float entFlags;
   
   entType = ReadByte();
-  entFlags = ReadByte();
+  entFlags = ReadCoord(); //expanding entFlags values -> data/common
   
   switch(entType){
     case SENDTYPE_PLAYER:
@@ -159,14 +159,20 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
   SendEntity - Map Objects ====================================
 */
 void( float isNew, float changeFlags ) sendent_handle_misc={
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    setmodel( self, modelnameforindex(ReadShort()) );
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
     self.angles_x = ReadAngle();
     self.angles_y = ReadAngle();
     self.angles_z = ReadAngle();
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    setmodel( self, modelnameforindex(ReadCoord()) );
   }
   
   if(isNew){
@@ -194,19 +200,22 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
     self.deadflag = ReadByte();
   }
   
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+  }
+  
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.vec_size = ReadByte();
     self.data_idx = ReadByte();
-    if( self.deadflag == DEAD_NO ){
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
-      self.angles_x = ReadAngle();
-      self.angles_y = ReadAngle();
-      self.angles_z = ReadAngle();
-      self.faction = ReadByte();
-      self.canTarget = ReadByte();
-    }
+    self.faction = ReadByte();
+    self.canTarget = ReadByte();
   }
   
   if(isNew){
@@ -274,6 +283,10 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.angles_z = anglemod(ReadAngle());
   }
   
+  if( changeFlags & SENDFLAG_IMPACT ){
+    self.impactType = ReadByte();
+  }
+  
   if( (changeFlags & SENDFLAG_BURN) ){
     self.vec_size = ReadByte();
   }
@@ -295,10 +308,6 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.drawmask = MASK_ENGINE;
     interpolate_origin();
     self.predraw = predraw_missile;
-  }
-  
-  if( changeFlags & SENDFLAG_IMPACT ){
-    self.impactType = ReadByte();
   }
   
   self.angles = vectoangles(self.velocity);

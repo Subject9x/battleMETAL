@@ -96,8 +96,6 @@ void() ai_ctrl_update_mechplayer={
     self.burnBits = self.burnBits | newBurn;
     self.SendFlags = self.SendFlags | SENDFLAG_BURN;
   }
-  
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET);
 };
 
 void() ctrl_updateCenterTorso={
@@ -110,7 +108,7 @@ void() ctrl_updateCenterTorso={
   if( time > self.laser_sight_timer ){
     makevectors(self.v_angle);
     if(self.chaseActive){
-      laserOrg = self.origin + (v_up * 20) + (v_forward * -96);
+      laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
       traceline(self.origin, laserOrg, TRUE, self);
       laserOrg = trace_endpos;
     }
@@ -131,8 +129,10 @@ void() ctrl_updateCenterTorso={
         diff = diff - self.evasionDrain;
       }
       self.energy = self.energy + diff;
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ENERGY;
     }  
     if(self.shield < self.shieldMax){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
       if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
         if(self.energy > 0){
           self.shield = self.shield + self.shieldRate;
@@ -279,13 +279,7 @@ void() ctrl_component_die={
   }
   self.owner.critBits = self.owner.critBits | self.partTypeId;
   self.owner.burnBits = self.owner.burnBits - (self.owner.burnBits & self.partTypeId);
-  if( (self.owner.flags & FL_CLIENT) ){
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_BURN;
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
-  }
-  else{
-    self.owner.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
-  }
+
   self.deadflag = DEAD_DEAD;
   self.effects = EF_NODRAW;
   self.health = 0;
@@ -344,13 +338,7 @@ void() ctrl_arm_die={
   
   self.owner.critBits = self.owner.critBits | self.partTypeId;
   self.owner.burnBits = self.owner.burnBits - (self.owner.burnBits & self.partTypeId);
-  if( (self.owner.flags & FL_CLIENT) ){
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_BURN;
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
-  }
-  else{
-    self.owner.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
-  }
+
   self.deadflag = DEAD_DEAD;
   self.effects = EF_NODRAW;
   self.health = 0;
@@ -436,14 +424,21 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
   local float sendCrit;
   
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
-  WriteByte( MSG_ENTITY, changeFlags );
+  WriteCoord( MSG_ENTITY, changeFlags );
+  //======================
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteByte( MSG_ENTITY, self.moveState);
+  }
   
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
-  
-  WriteAngle( MSG_ENTITY, self.angles_x );
-  WriteAngle( MSG_ENTITY, self.angles_y );
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteShort( MSG_ENTITY, self.legs.angles_y);
+  }
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
@@ -452,38 +447,35 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     sendCrit = self.critBits;
     self.criticalHits = self.criticalHits | self.critBits;
     self.critBits = 0;
-    WriteByte( MSG_ENTITY, sendCrit );
+    WriteCoord( MSG_ENTITY, sendCrit );
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    if(self.deadflag == DEAD_NO){
-      WriteLong( MSG_ENTITY, self.flags );
-      WriteByte( MSG_ENTITY, self.faction );
-
-      WriteByte( MSG_ENTITY, self.next_wepn1);
-      WriteByte( MSG_ENTITY, self.next_wepn2);
-      WriteByte( MSG_ENTITY, self.next_wepn3);
-      WriteByte( MSG_ENTITY, self.next_wepn4);
-      WriteByte( MSG_ENTITY, self.next_wepn5);
-      WriteByte( MSG_ENTITY, self.next_wepn6);
-      WriteByte( MSG_ENTITY, self.next_wepn7);
-      WriteByte( MSG_ENTITY, self.next_wepn8);
-      WriteByte( MSG_ENTITY, self.next_wepn9);
-      WriteString( MSG_ENTITY, self.netname );
-    }
+    WriteCoord( MSG_ENTITY, self.flags );
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.next_wepn1);
+    WriteByte( MSG_ENTITY, self.next_wepn2);
+    WriteByte( MSG_ENTITY, self.next_wepn3);
+    WriteByte( MSG_ENTITY, self.next_wepn4);
+    WriteByte( MSG_ENTITY, self.next_wepn5);
+    WriteByte( MSG_ENTITY, self.next_wepn6);
+    WriteByte( MSG_ENTITY, self.next_wepn7);
+    WriteByte( MSG_ENTITY, self.next_wepn8);
+    WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteString( MSG_ENTITY, self.netname );
   }
   
-  //  WriteLong( MSG_ENTITY, self.flags ); // DEBUG - disabled for now.
-  if( (changeFlags & SENDFLAG_IMPACT) ){
+  if( (changeFlags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  
+  if( (changeFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    WriteLong( MSG_ENTITY, self.attackFlag );
-    WriteShort( MSG_ENTITY, self.legs.angles_y);
-    WriteByte( MSG_ENTITY, self.moveState);
+  if( (changeFlags & SENDFLAG_ATTACK) ){
+    WriteCoord( MSG_ENTITY, self.attackFlag );
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -498,11 +490,11 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     sendCrit = self.critBits;
     self.criticalHits = self.criticalHits | self.critBits;
     self.critBits = 0;
-    WriteByte( MSG_ENTITY, sendCrit );
+    WriteCoord( MSG_ENTITY, sendCrit );
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.burnBits );
+    WriteCoord( MSG_ENTITY, self.burnBits );
   }
   self.shieldHitFlag = 0;
   return TRUE;

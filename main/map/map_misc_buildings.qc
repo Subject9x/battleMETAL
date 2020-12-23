@@ -8,31 +8,42 @@ Overview:
 
 
 float( float isNew, float changeFlags ) sendent_misc_building={
-  WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
-  WriteByte( MSG_ENTITY, changeFlags );
+  local float newFlags;
+  newFlags = changeFlags;
   
-  if( (changeFlags & SENDFLAG_DEAD) ){
+  if( isNew ){
+    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD);
+  }
+  
+  WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
+  WriteCoord( MSG_ENTITY, newFlags );
+  //======================
+  
+  if( (newFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (newFlags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+  }
+  if( (newFlags & SENDFLAG_ANGLE) ){
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+  }
+  
+  if( (newFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
-    if(self.deadflag  == DEAD_NO ){
-      WriteCoord( MSG_ENTITY, self.origin_x );
-      WriteCoord( MSG_ENTITY, self.origin_y );
-      WriteCoord( MSG_ENTITY, self.origin_z );
-      WriteAngle( MSG_ENTITY, self.angles_x );
-      WriteAngle( MSG_ENTITY, self.angles_y );
-      WriteAngle( MSG_ENTITY, self.angles_z );
-      if( self.faction ){
-        WriteByte( MSG_ENTITY, self.faction );
-      }
-      else{
-        WriteByte( MSG_ENTITY, 255 );
-      }
-      WriteByte( MSG_ENTITY, self.canTarget );
+    if( self.faction ){
+      WriteByte( MSG_ENTITY, self.faction );
     }
+    else{
+      WriteByte( MSG_ENTITY, 255 );
+    }
+    WriteByte( MSG_ENTITY, self.canTarget );
   }
   return TRUE;
 };
@@ -74,7 +85,6 @@ void() misc_build_die1={
   shoot = randompos(self.absmin * 0.67, self.absmax * 0.67);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
   
-	self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.think = misc_build_die2;
   self.nextthink = time + 0.1;
 };
@@ -115,7 +125,6 @@ void( string modelName, float setSizeFlag ) misc_building={
   }
   
   self.SendEntity = sendent_misc_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 /*QUAKED building_misc_apartment (0 0 1) (-36 -20 0) (36 20 52) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - IS_MAPKEY IS_VIP

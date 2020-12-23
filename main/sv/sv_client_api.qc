@@ -243,7 +243,7 @@ void() ClientKill = {
     self.frags = 0;
   }
   
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_TURRET);
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS ;
   self.health = 0;
   self.th_die();
 };
@@ -256,6 +256,8 @@ called when a player disconnects from a server
 ============
 */
 void() ClientDisconnect = {
+  local entity client;
+  local float clnum;
   if(gameover){
     return;
   }
@@ -269,10 +271,8 @@ void() ClientDisconnect = {
   }
   //update client numbers
   CLIENTS = CLIENTS - 1;
-  local entity client;
   client = findchainflags(flags, FL_CLIENT);
   while(client){
-    local float clnum;
     clnum = client.client_num;
     if(clnum > self.client_num){
       client.client_num = client.client_num - 1;
@@ -328,6 +328,9 @@ void() PutClientInServer_Campaign={
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;
+    if(self.clientData != world ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
+    }
   }
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
@@ -391,7 +394,7 @@ void() PutClientInServer_Deathmatch={
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_VELOCITY);
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_MOVE | SENDFLAG_EFLAGS);
   
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
@@ -570,8 +573,8 @@ float( float isNew, float changeFlags ) send_client_data={
     self.shieldHitFlag = 0;
   }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
-  WriteByte( MSG_ENTITY, changeFlags );
-  
+  WriteCoord( MSG_ENTITY, changeFlags );
+  //=============================================
   /*
     EVENT - per-frame update
   */
@@ -579,29 +582,37 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, self.view_ofs_x );
     WriteCoord( MSG_ENTITY, self.view_ofs_y );
     WriteCoord( MSG_ENTITY, self.view_ofs_z );
-    
-    WriteByte( MSG_ENTITY, self.stat_rdr_mode );
-    
-    WriteByte( MSG_ENTITY, self.stat_client_shield );
-    
-    WriteByte( MSG_ENTITY, self.stat_client_energy );
-    
-    WriteAngle( MSG_ENTITY, player.v_angle_x);
-    WriteAngle( MSG_ENTITY, player.v_angle_y);
-    
-    WriteLong( MSG_ENTITY, player.attackFlag);
     WriteByte( MSG_ENTITY, player.moveState );
-    
     WriteShort( MSG_ENTITY, player.legs.angles_y);
     WriteShort( MSG_ENTITY, player.legs.ai_dir);
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    WriteAngle( MSG_ENTITY, player.v_angle_x);
+    WriteAngle( MSG_ENTITY, player.v_angle_y);
+  }
+  
+  if( (changeFlags & SENDFLAG_RADAR) ){
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode );
+  }
+  if( (changeFlags & SENDFLAG_SHIELD) ){
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  if( (changeFlags & SENDFLAG_ENERGY) ){
+    WriteByte( MSG_ENTITY, self.stat_client_energy );
+  }
+  if( (changeFlags & SENDFLAG_ATTACK) ){
+    WriteCoord( MSG_ENTITY, player.attackFlag);
+  }
+  if( (changeFlags & SENDFLAG_CAMERA) ){
     WriteByte( MSG_ENTITY, player.chaseActive);
   }
+  
   /*
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, num_for_edict(player) );
-    WriteShort( MSG_ENTITY, player.flags );
   }
     
   /*
@@ -614,7 +625,7 @@ float( float isNew, float changeFlags ) send_client_data={
   /*
     EVENT - player info change 
   */
-  if( (changeFlags & SENDFLAG_TURRET) ){
+  if( (changeFlags & SENDFLAG_NEWUNIT) ){
     WriteByte( MSG_ENTITY, self.data_type );
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, player.next_wepn1);
@@ -626,7 +637,9 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.next_wepn7);
     WriteByte( MSG_ENTITY, player.next_wepn8);
     WriteByte( MSG_ENTITY, player.next_wepn9);
-    //custom colors
+  }
+  
+  if( (changeFlags & SENDFLAG_COLORS) ){
     WriteByte( MSG_ENTITY, player.unitColorCT );
     WriteByte( MSG_ENTITY, player.unitColorLT );
     WriteByte( MSG_ENTITY, player.unitColorRT );
@@ -634,6 +647,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.unitColorRA );
     WriteByte( MSG_ENTITY, player.unitColorLG );
   }
+  
   /*
     EVENT - pieces of player mech is blown off
   */
@@ -650,13 +664,13 @@ float( float isNew, float changeFlags ) send_client_data={
       }
       player.critBits = 0;
     }
-    WriteByte( MSG_ENTITY, sendCrit );
+    WriteCoord( MSG_ENTITY, sendCrit );
   }
   /*
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    WriteByte( MSG_ENTITY, player.burnBits );
+    WriteCoord( MSG_ENTITY, player.burnBits );
   }
   /*
     EVENT - DEAD
@@ -665,13 +679,19 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.deadflag );
     WriteByte( MSG_ENTITY, MISSION_STATUS );
   }
-  /*
-    EVENT - second data rider used for non-critical stuff
-  */
+  
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    //WriteByte( MSG_ENTITY, (player.particleCube == world));
-    WriteCoord( MSG_ENTITY, self.stat_trg_ent_id );
-    WriteShort( MSG_ENTITY, player.flags );
+    WriteCoord( MSG_ENTITY, player.velocity_x);
+    WriteCoord( MSG_ENTITY, player.velocity_y);
+    WriteCoord( MSG_ENTITY, player.velocity_z);
+  }
+  
+  if( (changeFlags & SENDFLAG_EFLAGS) ){
+    WriteCoord( MSG_ENTITY, player.flags );
+  }
+  
+  if( (changeFlags & SENDFLAG_TARGET) ){
+    WriteCoord( MSG_ENTITY, self.stat_trg_ent_id ); //->SENDFLAG_TARGET
   }
   
   self.shieldHitFlag = 0;
