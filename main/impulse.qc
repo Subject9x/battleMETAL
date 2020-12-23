@@ -166,6 +166,9 @@ void() ImpulseCommands ={
         self.stat_rdr_rng = self.radar_range * 2;
       }
     }
+    if(self.clientData != world){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_RADAR;
+    }
   } 
 
   if(self.impulse == IMP_SLIDE){    
@@ -202,7 +205,7 @@ void() ImpulseCommands ={
         PutClientInServer();
       }
     }
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_FACTION;
   }
   
   if(self.impulse == IMP_FAC_PREV){
@@ -219,7 +222,7 @@ void() ImpulseCommands ={
         PutClientInServer();
       }
     }
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_FACTION;
   }
 
   if(self.impulse == IMP_EXTERNAL_CAMERA){
@@ -228,6 +231,9 @@ void() ImpulseCommands ={
     }
     else{
       self.chaseActive = TRUE;
+    }
+    if(self.clientData != world){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CAMERA;
     }
   }
 
