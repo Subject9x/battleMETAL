@@ -10,7 +10,7 @@ Overview:
 */
 
 void() map_noshoot_th={
-  if( !self.isActive ){    
+  if( !self.isActive ){
     self.isActive = TRUE;
     
     if( (self.spawnflags & 16) ){
@@ -48,7 +48,9 @@ void() map_noshoot_use={
         e.flags = e.flags | self.partTypeId;
       }
       if( (e.flags & FL_CLIENT) ){
-        e.clientData.SendFlags = e.clientData.SendFlags | SENDFLAG_EFLAGS;
+        if(e.clientData != world ){
+          e.clientData.SendFlags = e.clientData.SendFlags | SENDFLAG_EFLAGS;
+        }
       }
       e = e.chain;
     }
@@ -116,8 +118,9 @@ void() map_no_shoot={
 
   //default wait
   if( (self.spawnflags & 4) ){
-    if( !self.wait )
+    if( !self.wait ){
       self.wait = 10;
+    }
   }
   
   //START_OFF
