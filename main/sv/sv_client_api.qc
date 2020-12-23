@@ -243,7 +243,7 @@ void() ClientKill = {
     self.frags = 0;
   }
   
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_EFLAGS | SENDFLAG_NEWUNIT);
+  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS ;
   self.health = 0;
   self.th_die();
 };
@@ -256,6 +256,8 @@ called when a player disconnects from a server
 ============
 */
 void() ClientDisconnect = {
+  local entity client;
+  local float clnum;
   if(gameover){
     return;
   }
@@ -269,10 +271,8 @@ void() ClientDisconnect = {
   }
   //update client numbers
   CLIENTS = CLIENTS - 1;
-  local entity client;
   client = findchainflags(flags, FL_CLIENT);
   while(client){
-    local float clnum;
     clnum = client.client_num;
     if(clnum > self.client_num){
       client.client_num = client.client_num - 1;
@@ -394,7 +394,7 @@ void() PutClientInServer_Deathmatch={
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;  
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_MOVE | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS);
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_MOVE | SENDFLAG_EFLAGS);
   
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
