@@ -71,6 +71,8 @@ Overview:
 .vector last_origin; //mostly AI move tracker
 .float last_energy;
 .float last_shield;
+.float last_crit;
+.float last_burn;
 
 .float accuracyMod;
 .float accuracy; 

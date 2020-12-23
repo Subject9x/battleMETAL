@@ -77,7 +77,7 @@ void() ctrl_updateTank={
   if( self.deadflag <= DEAD_NO ){
     hp = self.health / self.max_health;
     if( hp <= 0.25 ){
-      self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
+      
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
       if( self.data_type == DATA_BLD ){
         if( !(self.burnBits & WEAPON3) ){
@@ -86,7 +86,7 @@ void() ctrl_updateTank={
       }
     }
     else if( hp <= 0.5 ){
-      self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
+      
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
       if( self.data_type == DATA_BLD ){
         if( !(self.burnBits & WEAPON2) ){
@@ -95,7 +95,7 @@ void() ctrl_updateTank={
       }
     }
     else if( hp <= 0.75 ){
-      self.SendFlags = self.SendFlags | (SENDFLAG_BURN | SENDFLAG_CRIT);
+     
       self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       if( self.data_type == DATA_BLD ){
         if( !(self.burnBits & WEAPON1) ){

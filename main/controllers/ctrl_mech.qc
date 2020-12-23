@@ -279,13 +279,7 @@ void() ctrl_component_die={
   }
   self.owner.critBits = self.owner.critBits | self.partTypeId;
   self.owner.burnBits = self.owner.burnBits - (self.owner.burnBits & self.partTypeId);
-  if( (self.owner.flags & FL_CLIENT) ){
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_BURN;
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
-  }
-  else{
-    self.owner.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
-  }
+
   self.deadflag = DEAD_DEAD;
   self.effects = EF_NODRAW;
   self.health = 0;
@@ -344,13 +338,7 @@ void() ctrl_arm_die={
   
   self.owner.critBits = self.owner.critBits | self.partTypeId;
   self.owner.burnBits = self.owner.burnBits - (self.owner.burnBits & self.partTypeId);
-  if( (self.owner.flags & FL_CLIENT) ){
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_BURN;
-    self.owner.clientData.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
-  }
-  else{
-    self.owner.SendFlags = self.owner.clientData.SendFlags | SENDFLAG_CRIT;
-  }
+
   self.deadflag = DEAD_DEAD;
   self.effects = EF_NODRAW;
   self.health = 0;

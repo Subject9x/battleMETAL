@@ -69,9 +69,11 @@ void() player_makeMech={
   //self.power_timer_segment = time + (self.startupDelay / 100 ); not sure why this was needed
   self.playerState = PLAYER_POWERUP_BEGIN;
   
+  self.enemy = world;
+  
   client_push_player_info();
   self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS  | SENDFLAG_COLORS | SENDFLAG_CAMERA);
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS  | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION);
   
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
  

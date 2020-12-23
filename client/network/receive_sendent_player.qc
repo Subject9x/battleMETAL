@@ -509,8 +509,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevAttackFlag;
   local float prevMoveState;
   local float prevBurn;
-  local float prevGetTarg;
   local float newCrits;
+  local float nextHit;
   
   prevBurn = self.burnBits;
   prevShield = self.shield;
@@ -565,7 +565,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - Player has taken fire
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    local float nextHit;
     nextHit = ReadByte();
     if( self.shieldHitFlag == FALSE || nextHit == SHIELD_HIT_EXP){
       self.shieldHitFlag = nextHit;
@@ -628,17 +627,17 @@ void( float isNew, float changeFlags) sendent_handle_player={
   /*
     EVENT - pieces of player mech is blown off
   */
+  newCrits = 0;
   if( (changeFlags & SENDFLAG_CRIT) ){
     self.critBits = ReadCoord();
     if( self.critBits != 0 ){
+      newCrits = newCrits | self.critBits;
       if( (self.critBits & M_REPAIR) ){
         //handle repair event
         self.critBits =  self.critBits - (self.critBits & M_REPAIR);
-        sendevent_player_repair( self.critBits );
         self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
       }
       else{
-        sendevent_player_critical( self.critBits );
         self.criticalHits = self.criticalHits | self.critBits;
       }
     }
@@ -689,7 +688,12 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_TARGET) ){
     //player has tried to acquire target
     self.getTarget = rint(ReadCoord());
-    self.enemy = findfloat(world, entnum, self.getTarget);
+    if( self.getTarget != 0 ){
+      self.enemy = findfloat(world, entnum, self.getTarget);
+    }
+    else{
+      self.enemy = world;
+    }
   }
   
   /*
@@ -713,6 +717,15 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( self.attackFlag != 0 ){
     sendevent_handle_weaponfire();
     self.attackFlag = 0;
+  }
+  
+  if( newCrits != 0 ){
+    if( (newCrits & M_REPAIR) ){
+      sendevent_player_repair( newCrits );
+    }
+    else{
+      sendevent_player_critical( newCrits );
+    }
   }
   
   if( prevMoveState != self.moveState ){
