@@ -594,12 +594,12 @@ void() ai_frame_net_send={
   }
   
   if( self.last_crit != self.critBits ){
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
+    self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
     self.last_crit = self.critBits;
   }
   
   if( self.last_burn != self.burnBits ){
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
+    self.SendFlags = self.SendFlags | SENDFLAG_BURN;
     self.last_burn = self.burnBits;
   }
   
