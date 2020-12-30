@@ -106,8 +106,8 @@ void() click_gameplay_fov_more={
   local float val;
   val = gameplay_fov_lbl.len;
   val = val + 10;
-  if(val >= 130){
-    val = 130;
+  if(val > 100 ){
+    val = 100;
     gameplay_fov_more.drawme = FALSE;
   }
   gameplay_fov_lbl.len = val;
