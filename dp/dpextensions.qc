@@ -113,6 +113,14 @@ float EF_DOUBLESIDED = 32768;
 //description:
 //render entity as double sided (backfaces are visible, I.E. you see the 'interior' of the model, rather than just the front), can be occasionally useful on transparent stuff.
 
+//DP_EF_DYNAMICMODELLIGHT
+//idea: C.Brutail, divVerent, maikmerten
+//darkplaces implementation: divVerent
+//effects bit:
+float   EF_DYNAMICMODELLIGHT     = 131072;
+//description:
+//force dynamic model light on the entity, even if it's a BSP model (or anything else with lightmaps or light colors)
+
 //DP_EF_FLAME
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
@@ -559,6 +567,13 @@ void(entity e, entity tagentity, string tagname) setattachment = #443; // attach
 //description:
 //MOVETYPE_BOUNCE but without gravity, and with full reflection (no speed loss like grenades have), in other words - bouncing laser bolts.
 
+//DP_MOVETYPEFLYWORLDONLY
+//idea: Samual
+//darkplaces implementation: Samual
+//movetype definitions:
+float MOVETYPE_FLY_WORLDONLY = 33;
+//description:
+//like MOVETYPE_FLY, but does all traces with MOVE_WORLDONLY, and is ignored by MOVETYPE_PUSH. Should only be combined with SOLID_NOT and SOLID_TRIGGER.
 //DP_NULL_MODEL
 //idea: Chris
 //darkplaces implementation: divVerent
@@ -652,6 +667,13 @@ void(entity from, entity to) copyentity = #400;
 //description:
 //copies all data in the entity to another entity.
 
+//DP_QC_CRC16
+//idea: divVerent
+//darkplaces implementation: divVerent
+//Some hash function to build hash tables with. This has to be be the CRC-16-CCITT that is also required for the QuakeWorld download protocol.
+//When caseinsensitive is set, the CRC is calculated of the lower cased string.
+float(float caseinsensitive, string s, ...) crc16 = #494;
+
 //DP_QC_CVAR_DEFSTRING
 //idea: id Software (Doom3), LordHavoc
 //darkplaces implementation: LordHavoc
@@ -688,6 +710,23 @@ float CVAR_TYPEFLAG_ENGINE = 8;
 float CVAR_TYPEFLAG_HASDESCRIPTION = 16;
 float CVAR_TYPEFLAG_READONLY = 32;
 
+//DP_QC_DIGEST
+//idea: motorsep, Spike
+//DarkPlaces implementation: divVerent
+//builtin definitions:
+string(string digest, string data, ...) digest_hex = #639;
+//description:
+//returns a given hex digest of given data
+//the returned digest is always encoded in hexadecimal
+//only the "MD4" digest is always supported!
+//if the given digest is not supported, string_null is returned
+//the digest string is matched case sensitively, use "MD4", not "md4"!
+
+//DP_QC_DIGEST_SHA256
+//idea: motorsep, Spike
+//DarkPlaces implementation: divVerent
+//description:
+//"SHA256" is also an allowed digest type
 //DP_QC_EDICT_NUM
 //idea: 515
 //DarkPlaces implementation: LordHavoc
@@ -917,6 +956,31 @@ float GETTIME_CDTRACK = 4;
 //returns the playing time of the current cdtrack when passed to gettime()
 //see DP_END_GETSOUNDTIME for similar functionality but for entity sound channels
 
+//DP_QC_I18N
+//idea: divVerent
+//darkplaces implementation: divVerent
+//description:
+//
+//The engine supports translating by gettext compatible .po files.
+//progs.dat uses progs.dat.<LANGUAGE>.po
+//menu.dat uses menu.dat.<LANGUAGE>.po
+//csprogs.dat uses csprogs.dat.<LANGUAGE>.po
+//
+//To create a string that can be translated, define it as
+//  string dotranslate_FILENOTFOUND = "File not found";
+//Note: if the compiler does constant folding, this will only work if there is
+//no other "File not found" string in the progs!
+//
+//Alternatively, if using the Xonotic patched fteqcc compiler, you can simplify
+//this by using _("File not found") directly in the source code.
+//
+//The language is set by the "prvm_language" cvar: if prvm_language is set to
+//"de", it will read progs.dat.de.po for translating strings in progs.dat.
+//
+//If prvm_language is set to the special name "dump", progs.dat.pot will be
+//written, which is a translation template to be edited by filling out the
+//msgstr entries.
+
 //DP_QC_LOG
 //darkplaces implementation: divVerent
 //builtin definitions:
@@ -935,7 +999,7 @@ float(float a, float b, float c, float d, float e) min5 = #94;
 float(float a, float b, float c, float d, float e, float f) min6 = #94;
 float(float a, float b, float c, float d, float e, float f, float g) min7 = #94;
 float(float a, float b, float c, float d, float e, float f, float g, float h) min8 = #94;
-float(float a, float b) max = #95;
+float(float a, float b, ...) max = #95;
 float(float a, float b, float c) max3 = #95;
 float(float a, float b, float c, float d) max4 = #95;
 float(float a, float b, float c, float d, float e) max5 = #95;
@@ -997,23 +1061,24 @@ string(string format, ...) sprintf = #627;
 //you know sprintf :P
 //supported stuff:
 //  %
-//  optional: <argpos>$ for the argument to format
+//  optional: <argpos>$ for the argument to format (the arg counter then is not increased)
 //  flags: #0- +
-//  optional: <width>, *, or *<argpos>$ for the field width
-//  optional: .<precision>, .*, or .*<argpos>$ for the precision
-//  length modifiers: h for forcing a float, l for forcing an int/entity (by default, %d etc. cast a float to int)
+//  optional: <width>, *, or *<argpos>$ for the field width (width is read before value and precision)
+//  optional: .<precision>, .*, or .*<argpos>$ for the precision (precision is read before value)
+//  length modifiers: h for forcing a float, l for forcing an entity (by default, %d etc. cast a float to int), ll for forcing an int
 //  conversions:
-//    d takes a float if no length is specified or h is, and an int/entity if l is specified as length, and cast it to an int
-//    i takes an int/entity if no length is specified or i is, and a float if h is specified as length, and cast it to an int
-//    ouxXc take a float if no length is specified or h is, and an int/entity if l is specified as length, and cast it to an unsigned int
-//    eEfFgG take a float if no length is specified or h is, and an int/entity if l is specified as length, and cast it to a double
+//    d takes a float if no length is specified or h is, and an entity if l is specified as length, and an int if ll is specified as length, and cast it to an int
+//    i takes an entity if no length is specified or l is, and a float if h is specified as length, and an int if ll is specified as length, and cast it to an int
+//    ouxXc take a float if no length is specified or h is, and an entity if l is specified as length, and an int if ll is specified as length, and cast it to an unsigned int
+//    eEfFgG take a float if no length is specified or h is, and an entity if l is specified as length, and an int if ll is specified as length, and cast it to a double
 //    s takes a string
 //    vV takes a vector, and processes the three components as if it were a gG for all three components, separated by space
 //    For conversions s and c, the flag # makes precision and width interpreted
 //      as byte count, by default it is interpreted as character count in UTF-8
 //      enabled engines. No other conversions can create wide characters, and #
-//      has another meaning in these.
-
+//      has another meaning in these. When in character count mode, color codes
+//      are ignored. To get UTF-8 semantics WITHOUT color code parsing, use
+//      the + flag.
 //DP_QC_STRFTIME
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
@@ -1250,6 +1315,34 @@ float(string name, string value, float norm) registercvar = #93;
 //the engine plays sound/cdtracks/track001.wav instead of cd track 1 and so on if found, this allows games and mods to have music tracks without using ambientsound.
 //Note: also plays .ogg with DP_SND_OGGVORBIS extension.
 
+//DP_SND_SOUND7_WIP1
+//DP_SND_SOUND7_WIP2
+//idea: divVerent
+//darkplaces implementation: divVerent
+//builtin definitions:
+void(entity e, float chan, string samp, float vol, float atten, float speed, float flags) sound7 = #8;
+float SOUNDFLAG_RELIABLE = 1;
+//description:
+//plays a sound, with some more flags
+//extensions to sound():
+//- channel may be in the range from -128 to 127; channels -128 to 0 are "auto",
+//  i.e. support multiple sounds at once, but cannot be stopped/restarted
+//- a value 0 in the speed parameter means no change; otherwise, it is a
+//  percentage of playback speed ("pitch shifting"). 100 is normal pitch, 50 is
+//  half speed, 200 is double speed, etc. (DP_SND_SOUND7_WIP2)
+//- the flag SOUNDFLAG_RELIABLE can be specified, which makes the sound send
+//  to MSG_ALL (reliable) instead of MSG_BROADCAST (unreliable, default);
+//  similarily, SOUNDFLAG_RELIABLE_TO_ONE sends to MSG_ONE
+//- channel 0 is controlled by snd_channel0volume; channel 1 and -1 by
+//  snd_channel1volume, etc. (so, a channel shares the cvar with its respective
+//  auto-channel); however, the mod MUST define snd_channel8volume and upwards
+//  in default.cfg if they are to be used, as the engine does not create them
+//  to not litter the cvar list
+//- this extension applies to CSQC as well; CSQC_Event_Sound will get speed and
+//  flags as extra 7th and 8th argument
+//- WIP2 ideas: SOUNDFLAG_RELIABLE_TO_ONE, SOUNDFLAG_NOPHS, SOUNDFLAG_FORCELOOP
+//- NOTE: to check for this, ALSO OR a check with DP_SND_SOUND7 to also support
+//  the finished extension once done
 //DP_SND_OGGVORBIS
 //idea: Transfusion
 //darkplaces implementation: Elric
@@ -1437,6 +1530,36 @@ float(entity clent) clienttype = #455; // returns one of the CLIENTTYPE_* consta
 //implementation notes:
 //entity customization is done before per-client culling (visibility for instance) because the entity may be doing setorigin to display itself in different locations on different clients, may be altering its .modelindex, .effects and other fields important to culling, so customized entities increase cpu usage (non-customized entities can use all the early culling they want however, as they are not changing on a per client basis).
 
+//DP_SV_DISABLECLIENTPREDICTION
+//idea: LadyHavoc, Mario
+//darkplaces implementation: LadyHavoc, Mario
+//field definitions:
+.float disableclientprediction;
+//description:
+//By default, player entities are enabled for prediction by the engine if the
+//engine assumes the client can sensibly predict them. As the NQ and DarkPlaces
+//protocol does not network movetype, this in particular allows for client
+//prediction only if movetype == MOVETYPE_WALK.
+//Setting this field to 1 disables prediction in any case - this is useful when
+//the client cannot sensibly predict the server's idea of how the player moves
+//(common in case of pure serverside grappling hook or jetpack
+//implementations).
+//Setting this field to -1 forces prediction even if the server assumes the
+//client cannot predict the current movetype of a player entity (obviously,
+//this then requires matching client-side prediction code in CSQC, as the
+//engine's own client prediction will sure not handle these cases right due to
+//not knowing the serverside value of movetype). This is allowed in combination
+//with the following movetypes:
+// MOVETYPE_NONE (useful to have full QC control over movement)
+// MOVETYPE_WALK (redundant but harmless)
+// MOVETYPE_STEP
+// MOVETYPE_FLY (useful for spectators)
+// MOVETYPE_TOSS
+// MOVETYPE_NOCLIP (useful for spectators)
+// MOVETYPE_FLYMISSILE
+// MOVETYPE_BOUNCE
+// MOVETYPE_BOUNCEMISSILE
+// MOVETYPE_FLY_WORLDONLY (useful for spectators)
 //DP_SV_DISCARDABLEDEMO
 //idea: parasti
 //darkplaces implementation: parasti
@@ -1626,26 +1749,50 @@ void() SV_PlayerPhysics;
 //.movement vector contains the movement input from the player, allowing QC to do as it wishs with the input, and SV_PlayerPhysics will completely replace the player physics if present (works for all MOVETYPE's), see darkplaces mod source for example of this function (in playermovement.qc, adds HalfLife ladders support, as well as acceleration/deceleration while airborn (rather than the quake sudden-stop while airborn), and simplifies the physics a bit)
 
 //DP_PHYSICS_ODE
-//idea: LordHavoc
-//darkplaces implementation: LordHavoc
+//idea: LadyHavoc
+//darkplaces implementation: LadyHavoc
 //globals:
 //new movetypes:
 const float MOVETYPE_PHYSICS = 32; // need to be set before any physics_* builtins applied
-//new solid types:
+//new solid types (deprecated):
 const float SOLID_PHYSICS_BOX = 32;
 const float SOLID_PHYSICS_SPHERE = 33;
 const float SOLID_PHYSICS_CAPSULE = 34;
-//SOLID_BSP;
+const float SOLID_PHYSICS_TRIMESH = 35;
+const float SOLID_PHYSICS_CYLINDER = 36;
+//geometry types:
+const float GEOMTYPE_NONE = -1;       // entity will be entirely skipped by ODE
+const float GEOMTYPE_SOLID = 0;       // geometry type will be set based on .solid field
+const float GEOMTYPE_BOX = 1;         // entity bound box
+const float GEOMTYPE_SPHERE = 2;      // sphere with radius picked from x axis of entity bound box
+const float GEOMTYPE_CAPSULE = 3;     // with leading axis automatically determined from longest one, radius is picked as minimal of the rest 2 axes
+const float GEOMTYPE_TRIMESH = 4;     // triangle mesh
+const float GEOMTYPE_CYLINDER = 5;    // like capsule but not capped
+                                      // note that ODE's builtin cylinder support is experimental, somewhat bugged and unfinished (no cylinder-cylinder collision)
+									  // to use properly working cylinder should build ODE with LIBCCD extension
+const float GEOMTYPE_CAPSULE_X = 6;   // capsule with fixed leading axis
+const float GEOMTYPE_CAPSULE_Y = 7;
+const float GEOMTYPE_CAPSULE_Z = 8;
+const float GEOMTYPE_CYLINDER_X	= 9;  // cylinder with fixed leading axis
+const float GEOMTYPE_CYLINDER_Y	= 10;
+const float GEOMTYPE_CYLINDER_Z	= 11;
 //joint types:
+const float JOINTTYPE_NONE = 0;
 const float JOINTTYPE_POINT = 1;
 const float JOINTTYPE_HINGE = 2;
 const float JOINTTYPE_SLIDER = 3;
 const float JOINTTYPE_UNIVERSAL = 4;
 const float JOINTTYPE_HINGE2 = 5;
 const float JOINTTYPE_FIXED = -1;
+//force types:
+const float FORCETYPE_NONE = 0;
+const float FORCETYPE_FORCE = 1; // applied at center of mass
+const float FORCETYPE_FORCEATPOS = 2;
+const float FORCETYPE_TORQUE = 3;
 // common joint properties:
-.entity aiment, enemy; // connected objects
-.vector movedir;
+// .entity aiment; // connected objects
+// .entity enemy; // connected objects, forces
+// .vector movedir;
 //   for a spring:
 //     movedir_x = spring constant (force multiplier, must be > 0)
 //     movedir_y = spring dampening constant to prevent oscillation (must be > 0)
@@ -1655,11 +1802,22 @@ const float JOINTTYPE_FIXED = -1;
 //     movedir_y = -1 * max motor force to use
 //     movedir_z = stop position (+/-), set to 0 for no stop
 //   note that ODE does not support both in one anyway
+//   for a force:
+//     force vector to apply
 //field definitions:
-.float mass; // ODE mass, standart value is 1
-.float bouncefactor;
-.float bouncestop;
-.float jointtype;
+.float  geomtype;     // see GEOMTYPE_*, a more correct way to set collision shape, allows to set SOLID_CORPSE and trimesh collisions
+.float  maxcontacts;  // maximum number of contacts to make for this object, lesser = faster (but setting it too low will could make object pass though walls), default is 16, maximum is 32
+.float  mass;         // ODE mass, standart value is 1
+.vector massofs;      // offsets a mass center out of object center, if not set a center of model bounds is used
+.float  friction;     // a friction of object, get multiplied by second objects's friction on contact
+.float  bouncefactor;
+.float  bouncestop; 
+.float  jointtype;    // type of joint
+.float  forcetype;    // type of force
+.float  erp;          // error restitution parameter, makes ODE solver attempt to fix errors in contacts, 
+                      // bringing together 2 joints or fixing object being stuch in other object, 
+			          // a value of 0.1 will fix slightly, a value of 1.0 attempts to fix whole error in one frame
+			          // use with care as high values makes system unstable and likely to explode
 //builtin definitions:
 void(entity e, float physics_enabled) physics_enable = #540; // enable or disable physics on object
 void(entity e, vector force, vector force_pos) physics_addforce = #541; // apply a force from certain origin, length of force vector is power of force
@@ -1668,6 +1826,9 @@ void(entity e, vector torque) physics_addtorque = #542; // add relative torque
 //be sure to checkextension for it to know if library is loaded and ready, also to enable physics set "physics_ode" cvar to 1
 //note: this extension is highly experimental and may be unstable
 //note: use SOLID_BSP on entities to get a trimesh collision models on them
+
+.entity aiment, enemy;
+.vector movedir;
 
 //DP_SV_PRINT
 //idea: id Software (QuakeWorld Server)
@@ -2348,7 +2509,7 @@ string(float c, ...) chr2str = #223; // returns a string representing the charac
 string(float ccase, float calpha, float cnum, string s, ...) strconv = #224; // reformat a string with special color characters in the font, DO NOT USE THIS ON UTF8 ENGINES (if you are lucky they will emit ^4 and such color codes instead), the parameter values are 0=same/1=lower/2=upper for ccase, 0=same/1=white/2=red/5=alternate/6=alternate-alternate for redalpha, 0=same/1=white/2=red/3=redspecial/4=whitespecial/5=alternate/6=alternate-alternate for rednum.
 string(float chars, string s, ...) strpad = #225; // pad string with spaces to a specified length, < 0 = left padding, > 0 = right padding
 string(string info, string key, string value, ...) infoadd = #226; // sets or adds a key/value pair to an infostring - note: forbidden characters are \ and "
-string(string info, string key) infoget = #227; // gets a key/value pair in an infostring, returns value or null if not found
+string(string info, string key) infoget = #227; // gets a key/value pair in an infostring, returns value or null if not found                                                                                       
 float(string s1, string s2, float len) strncmp = #228; // compare two strings up to the specified number of characters, if their length differs and is within the specified limit the result will be negative, otherwise it is the difference in value of their first non-matching character.
 float(string s1, string s2) strcasecmp = #229; // compare two strings with case-insensitive matching, characters a-z are considered equivalent to the matching A-Z character, no other differences, and this does not consider special characters equal even if they look similar
 float(string s1, string s2, float len) strncasecmp = #230; // same as strcasecmp but with a length limit, see strncmp
@@ -2410,6 +2571,27 @@ void(float bufhandle, float string_index) bufstr_free = #469;
 //cvars that start with pattern but not with antipattern will be stored into the buffer
 void(float bufhandle, string pattern, string antipattern) buf_cvarlist = #517;
 
+//DP_QC_STRINGBUFFERS_EXT_WIP
+//idea: VorteX
+//darkplaces implementation: VorteX
+//constant definitions:
+const float MATCH_AUTO = 0;
+const float MATCH_WHOLE = 1;
+const float MATCH_LEFT = 2;
+const float MATCH_RIGHT = 3;
+const float MATCH_MIDDLE = 4;
+const float MATCH_PATTERN = 5;
+//builtin definitions:
+float(string filename, float bufhandle) buf_loadfile = #535; // append each line of file as new buffer string, return 1 if succesful
+float(float filehandle, float bufhandle, float startpos, float numstrings) buf_writefile = #536; // writes buffer strings as lines, returns 1 if succesful
+float(float bufhandle, string match, float matchrule, float startpos, float step) bufstr_find = #537; // returns string index
+float(string s, string pattern, float matchrule) matchpattern = #538; // returns 0/1
+float(string s, string pattern, float matchrule, float pos) matchpatternofs = #538;
+//description:
+//provides a set of functions to manipulate with string buffers
+//pattern wildcards: * - any character (or no characters), ? - any 1 character
+//Warning: This extension is work-in-progress, it may be changed/revamped/removed at any time, dont use it if you dont want any trouble
+//wip note: UTF8 is not supported yet
 //DP_QC_STRREPLACE
 //idea: Sajt
 //darkplaces implementation: Sajt
@@ -2452,8 +2634,11 @@ void(float pause) setpause = #531;
 //
 //Note: it is worth considering that network-related functions may be called during the pause (including customizeentityforclient for example), and it is also important to consider the continued use of the KRIMZON_SV_PARSECLIENTCOMMAND extension while paused (chatting players, etc), players may also join/leave during the pause.  In other words, the only things that are not called are think and other time-related functions.
 
-
-
+//DP_COVERAGE
+//idea: divVerent
+//darkplaces implementation: divVerent
+//function definitions:
+void coverage() = #642;  // Reports a coverage event. The engine counts for each of the calls to this builtin whether it has been called.
 
 // EXPERIMENTAL (not finalized) EXTENSIONS:
 
@@ -2461,9 +2646,10 @@ void(float pause) setpause = #531;
 //idea: divVerent
 //darkplaces implementation: divVerent
 //field definitions: (SVQC)
-.string crypto_keyfp; // fingerprint of CA key the player used to authenticate, or string_null if not verified
-.string crypto_mykeyfp; // fingerprint of CA key the server used to authenticate to the player, or string_null if not verified
+.string crypto_keyfp; // fingerprint of CA key the player used to authenticate
+.string crypto_mykeyfp; // fingerprint of CA key the server used to authenticate to the player
 .string crypto_idfp; // fingerprint of ID used by the player entity, or string_null if not identified
+.float crypto_idfp_signed; // set if the player's ID has been signed
 .string crypto_encryptmethod; // the string "AES128" if encrypting, and string_null if plaintext
 .string crypto_signmethod; // the string "HMAC-SHA256" if signing, and string_null if plaintext
 // there is no field crypto_myidfp, as that info contains no additional information the QC may have a use for

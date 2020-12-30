@@ -21,6 +21,7 @@ void() hud_render_tactical_map={
   
   if( MSN_MAPPIC != "" ){
     drawpic(mapOrg, MSN_MAPPIC, mapImgSize, '1 1 1', HUD_ALPHA, 0);
+    //drawrotpic(mapOrg, MSN_MAPPIC, mapImgSize, mapOrg + (mapImgSize * 0.5), input_angles_y, '1 1 1', HUD_ALPHA, 0); -> TODO - get this working.
   }
   else{
     unavailableLen = stringwidth( "!- Satellite Data unavailable -!", 0 ,'16 16 0');
