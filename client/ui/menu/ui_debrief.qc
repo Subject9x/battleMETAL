@@ -17,7 +17,7 @@ void() menu_debriefListener_onClick={
     if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
       //Single player 
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-        if( !MSN_NOSAVE || !(SV_SERVERFLAGS & SVFLAG_NOSAVE)){
+        if( MSN_NOSAVE == FALSE ){
           cl_savefile_save();
         }
         MENU_DEBRIEF_time_elapsed = time + 1;
