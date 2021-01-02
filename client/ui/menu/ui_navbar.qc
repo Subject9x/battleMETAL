@@ -218,7 +218,10 @@ void() ui_navbutton_deploy_click={
         LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
     }
-    cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+    
+    if( !(SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+    }
   }
   SPRITE_deploy_point_FRAME = 1;
   CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;

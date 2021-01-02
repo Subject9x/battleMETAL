@@ -247,9 +247,11 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF DEATH
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
-      MENU_button_delay = servertime + 1;
       MENU_DEBRIEF_time_elapsed = -1;
       ui_set_mission_status( SV_MISSION_RESULT );
+      MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
+      MENU_respawn_cool_start = servertime;
+      MENU_button_delay = MENU_respawn_cool;
       return;
     }
     //------------------------------------
@@ -257,9 +259,11 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF MISSION END
     if( (CLIENT_player_state_prev != PLAYER_DEBRIEF) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
-      MENU_button_delay = servertime + 2;
       MENU_DEBRIEF_time_elapsed = -1;
       ui_set_mission_status( SV_MISSION_RESULT );
+      MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
+      MENU_respawn_cool_start = servertime;
+      MENU_button_delay = MENU_respawn_cool;
       if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
         msn_unlock_stuff();
         menu_debrief_sort_unlocks();
