@@ -470,19 +470,28 @@ void() sv_endServer={
       }
       MISSION_STATUS = MISSION_STATUS_DONE;
       
+      //treats WORLD_MAP_LIST like a pseudo-array (Strings are just arrays, right?)
+      if( sv_nextmap != "" || strlen(sv_nextmap) > 0 ){
+        strunzone(sv_nextmap);
+      }
       mapCount = tokenizebyseparator(WORLD_MAP_LIST, " ");
-      for( itr = 0; itr < mapCount; itr = itr + 1 ){
-        if( argv(itr) == mapname ){
-          if( itr == mapCount ){
-            sv_nextmap = argv(0);
+      if( mapCount > 1 ){
+        for( itr = 1; itr < mapCount; itr = itr + 1 ){
+          if( argv(itr) == mapname ){
+            if( itr == (mapCount - 1) ){
+              sv_nextmap = argv(1);
+            }
+            else{
+              sv_nextmap = argv(itr + 1);
+            }
+            break;
           }
-          else{
-            sv_nextmap = argv(itr + 1);
-          }
-          sv_nextmap = strzone(sv_nextmap);
-          break;
         }
       }
+      else{
+        sv_nextmap = argv(0) ;
+      }
+      sv_nextmap = strzone(sv_nextmap);
       
       if( GAMETYPE == GAMEMODE_CAMPAIGN ){
         ENDROUND_TIME = time + 2;
@@ -1305,7 +1314,7 @@ void() world_get_maplist={
   local float fileHandle;
   local string ln;
   
-  if( WORLD_MAP_LIST != "" ){
+  if( WORLD_MAP_LIST != "" || strlen(WORLD_MAP_LIST) > 0){
     handOff = WORLD_MAP_LIST;
     strunzone(handOff);
     WORLD_MAP_LIST = "";
@@ -1315,7 +1324,7 @@ void() world_get_maplist={
   
   if(fileHandle != -1){
     ln = fgets(fileHandle);
-    while(ln != ""){ 
+    while(ln != "" || strlen(ln) > 0){ 
       if( substring(ln,0, 2) != "//" ){
         WORLD_MAP_LIST = strcat(WORLD_MAP_LIST, " ", ln);
       }
