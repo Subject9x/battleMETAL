@@ -1216,17 +1216,19 @@ void( string targName ) world_debug_targ={
   gathers all the deathmatch nodes.
 */
 entity() world_deathmatch_random_spawn={
+  local entity nodeHead;
   local entity node;
   local entity baddies;
   local float proxCount;
   local float runTotal;
   local entity theNode;
   local entity rando;
-  local float allNodes;
-  local float nodeId;
+  local float nodeDice;
   local float emptyNodes;
-  runTotal = 16;
   
+  runTotal = 16;  //total players possible in ANY server config
+  rando = world;
+  emptyNodes = 0;
   for(node = nextent(world); node != world; node = nextent(node) ){
     if(node.classname != "map_deploy_point"){
       continue;
@@ -1235,47 +1237,65 @@ entity() world_deathmatch_random_spawn={
       continue;
     }
     proxCount = 0;
-    for(baddies = nextent(world); baddies != world; baddies = nextent(baddies) ){
-      if( !(baddies.flags & FL_CLIENT) ){
-        continue;
-      }
-      if( baddies.data_type != DATA_MECH ){
-        continue;
-      }
-      traceline(node.origin, baddies.origin, FALSE, node);
-      if(trace_fraction == 1.0){
-        proxCount = proxCount + 1;
-      }
-      else{
-        if(vlen(baddies.origin - node.origin) < AI_RANGE_S){
-          proxCount = proxCount + 1;
+    baddies = nextent(world);
+    while( baddies != world ){
+      if( (baddies.flags & FL_CLIENT) ){
+        if( baddies.data_type == DATA_MECH ){
+          if( baddies != self ){
+            traceline(node.origin, baddies.origin, FALSE, node);
+            if(trace_fraction == 1.0){
+              proxCount = proxCount + 1;
+            }
+            else{
+              if(vlen(baddies.origin - node.origin) <= AI_RANGE_S){
+                proxCount = proxCount + 1;
+              }
+            }
+          }
         }
       }
+      baddies = nextent(baddies);
     }
     if(proxCount <= runTotal){
-      runTotal = rint(proxCount * 0.85);
+      runTotal = proxCount;
       theNode = node;
       if( proxCount == 0){
         emptyNodes = emptyNodes + 1;
+        if( rando != world ){
+          rando.partNext = node;
+          node.partPrev = rando;
+          rando = node;
+        }
+        else{
+          //first time find
+          nodeHead = rando = node;
+          nodeHead.partPrev = world;
+        }
       }
     }
-    allNodes = allNodes + 1;
   }
-  if( theNode && emptyNodes < (allNodes * 0.5) ){
+  if( emptyNodes == 0 ){
     return theNode;
   }
   
-  nodeId = rint(random() * allNodes);
-  rando = nextent(world);
+  nodeDice = 0.9;
+  rando = nodeHead;
   while( rando != world ){
     if( rando.classname == "map_deploy_point" ){
-      if(rando.data_idx == nodeId){
-        theNode = rando;
+      if( random() > 0.5 ) {
+        return rando;
+      }
+      else{
+        if( random() > nodeDice ){
+          return rando;
+        }
+        else{
+          nodeDice = nodeDice - 0.15; //creates math certainty to pick any node.
+        }
       }
     }
-    rando = nextent(rando);
+    rando = rando.partNext;
   }
-  return theNode;
 };
 
 //TDM/DM network games use this list.
