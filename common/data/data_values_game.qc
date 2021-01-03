@@ -104,7 +104,7 @@ float SERVER_RESPAWN_COOL_CAMP = 5;
 float SERVER_RESPAWN_COOL_DM = 15;
 float SERVER_RESPAWN_COOL_COOP = 7;
 float SERVER_SCORE_TIME_DM = 30;
-float SERVER_SCORE_TIME_COOP = 60;
+float SERVER_SCORE_TIME_COOP = 30;
 
 //Multiplayer Server Flags
 float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
