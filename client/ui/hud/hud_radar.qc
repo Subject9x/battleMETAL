@@ -26,7 +26,6 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   RADAR_VCENTER_x = RADAR_VORG_x + (RADAR_VSIZE_x / 2);
   RADAR_VCENTER_y = RADAR_VORG_y + (RADAR_VSIZE_y / 2);
   
-  
   //nice background image for visibility
   drawpic(RADAR_VORG, UI_DEF_BOX_256, RADAR_VSIZE, '0.25 0.25 0.25', max(0.75, HUD_ALPHA - 0.5), 0);
   //drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
@@ -51,31 +50,31 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     if( blip.deadflag > DEAD_NO ){
       continue;
     }
-    if( vlen(blip.origin - RADAR_ORG) > radarRange ){
-      continue;
-    }
-    if( !blip.canTarget ){
-      continue;
-    }
-    testCheck = TRUE;
-    //passive radar cannot see through walls or buildings
-    traceline(RADAR_ORG, blip.origin, FALSE, CLIENT_server_ent);
-    if( (blip.flags & FL_CLIENT) ){
-      if( CLIENT_stat_rdr_mode == FALSE && blip.stat_rdr_mode == FALSE ){
-        //case: both scanner and player are running passive radar.
-        if( trace_fraction != 1.0 ){
-          //trace hit something else
-          continue;
+    if( (blip.flags & FL_CLIENT) && blip.faction != CLIENT_faction ){
+      if( vlen(blip.origin - RADAR_ORG) > radarRange ){
+        continue;
+      }
+      if( !blip.canTarget ){
+        continue;
+      }
+      testCheck = TRUE;
+      //passive radar cannot see through walls or buildings
+      traceline(RADAR_ORG, blip.origin, FALSE, CLIENT_server_ent);
+      if( (blip.flags & FL_CLIENT) ){
+        if( CLIENT_stat_rdr_mode == FALSE && blip.stat_rdr_mode == FALSE ){
+          //case: both scanner and player are running passive radar.
+          if( trace_fraction != 1.0 ){
+            //trace hit something else
+            continue;
+          }
+        }
+        else if( CLIENT_stat_rdr_mode == FALSE && blip.stat_rdr_mode == TRUE ){        
+          if( trace_fraction < 0.5 ){
+            //trace hit something else
+            continue;
+          }
         }
       }
-      else if( CLIENT_stat_rdr_mode == FALSE && blip.stat_rdr_mode == TRUE ){        
-        if( trace_fraction < 0.5 ){
-          //trace hit something else
-          continue;
-        }
-      
-      }
-    
     }
     hud_renderRadarContact( blip, plrFaction, radarRange );
   }
