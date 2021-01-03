@@ -342,8 +342,9 @@ void(string cmd, float tokens) client_setMission={
     if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       savefile_changemap(sv_nextmap); //TODO - fix me
-      if( sv_nextmap == "" ){
-        stuffcmd(self, "map cin_menu.bsp;togglemenu,cl_ismenu 1;\n");
+      dprint(sprintf("sv_nextmap@client_setMission = %s\n", sv_nextmap)); //debug
+      if( sv_nextmap == "" || strlen(sv_nextmap) == 0 ){
+        stuffcmd(self, "map cin_menu.bsp;togglemenu;cl_ismenu 1;\n");
         return;
       }
       changelevel (sv_nextmap);  //possibly altered by map_objective objects.

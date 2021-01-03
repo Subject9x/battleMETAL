@@ -13,14 +13,14 @@ Overview:
 //menu hooks
 void() menu_debriefListener_onClick={
   //next/retry mission button
-  if( servertime >= MENU_respawn_cool ){
+  if( servertime > MENU_respawn_cool ){
     if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
       //Single player 
       if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
         if( MSN_NOSAVE == FALSE ){
           cl_savefile_save();
         }
-        MENU_DEBRIEF_time_elapsed = time + 1;
+        MENU_DEBRIEF_time_elapsed = servertime + 0.25;
         return;
       }
       //DEATHMATCH AND COOP
@@ -44,7 +44,7 @@ void() menu_debrief_drawFrame={
   if( MENU_DEBRIEF_time_elapsed != -1 ){
     if( servertime > MENU_DEBRIEF_time_elapsed ){
       cl_set_mission( MENU_DEBRIEF_status );
-      MENU_DEBRIEF_time_elapsed = 999999;
+      MENU_DEBRIEF_time_elapsed = -1;
     }
   }
 

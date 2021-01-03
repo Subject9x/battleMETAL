@@ -470,28 +470,31 @@ void() sv_endServer={
       }
       MISSION_STATUS = MISSION_STATUS_DONE;
       
-      //treats WORLD_MAP_LIST like a pseudo-array (Strings are just arrays, right?)
-      if( sv_nextmap != "" || strlen(sv_nextmap) > 0 ){
-        strunzone(sv_nextmap);
-      }
-      mapCount = tokenizebyseparator(WORLD_MAP_LIST, " ");
-      if( mapCount > 1 ){
-        for( itr = 1; itr < mapCount; itr = itr + 1 ){
-          if( argv(itr) == mapname ){
-            if( itr == (mapCount - 1) ){
-              sv_nextmap = argv(1);
+      //only cycle maps if non-campaign/co-op
+      if( GAMETYPE != GAMEMODE_CAMPAIGN && GAMETYPE != GAMEMODE_COOP){
+        //treats WORLD_MAP_LIST like a pseudo-array (Strings are just arrays, right?)
+        if( sv_nextmap != "" || strlen(sv_nextmap) > 0 ){
+          strunzone(sv_nextmap);
+        }
+        mapCount = tokenizebyseparator(WORLD_MAP_LIST, " ");
+        if( mapCount > 1 ){
+          for( itr = 1; itr < mapCount; itr = itr + 1 ){
+            if( argv(itr) == mapname ){
+              if( itr == (mapCount - 1) ){
+                sv_nextmap = argv(1);
+              }
+              else{
+                sv_nextmap = argv(itr + 1);
+              }
+              break;
             }
-            else{
-              sv_nextmap = argv(itr + 1);
-            }
-            break;
           }
         }
+        else{
+          sv_nextmap = argv(0) ;
+        }
+        sv_nextmap = strzone(sv_nextmap);
       }
-      else{
-        sv_nextmap = argv(0) ;
-      }
-      sv_nextmap = strzone(sv_nextmap);
       
       if( GAMETYPE == GAMEMODE_CAMPAIGN ){
         ENDROUND_TIME = time + 2;
