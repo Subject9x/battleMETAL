@@ -19,9 +19,9 @@ void() click_newsave_back={
 };
 
 void() click_saveslot={
+  cvar_set("saveslot", ftos(self.data_bind));
   menu_clear_items(M_STATE);
   m_newg_f();
-  cvar_set("saveslot", ftos(self.data_bind));
 };
 
 void() m_newsave_i={

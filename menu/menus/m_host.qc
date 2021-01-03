@@ -460,7 +460,7 @@ void() click_host_launch={
   cvar_set("sv_serverflags", ftos(rint(SERVER_FLAGS)));
   
   menu_exit_togame();
-  cmd("map", strcat(" ", host_map_lbl.label));
+  cmd(strcat("map ", host_map_lbl.label, "\n"));
 };
 
 void() m_host_i={

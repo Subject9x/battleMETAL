@@ -65,7 +65,7 @@ void() click_main_train={
   cvar_set("coop", "0");
   cvar_set("teamplay", "0");
   cvar_set("maxplayers", "1");
-  cmd("map", " training_only\n");
+  cmd("map training_only\n");
 };
 
 void() click_main_multi={
