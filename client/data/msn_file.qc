@@ -29,11 +29,6 @@ void() msn_getfile={
     MSN_BRIEF = "FILE NOT FOUND";
     MSN_INTEL = "FILE NOT FOUND";
   }
-  
-  //server overrides save state.
-  if( (SV_SERVERFLAGS & SVFLAG_NOSAVE) ){
-    MSN_NOSAVE = TRUE;
-  }
 };
 
 void() msn_parsefile={
@@ -109,10 +104,10 @@ void() msn_parsefile={
         }
       }
       if( argv(1) == MSN_FILE_NOSAVE ){
-        MSN_NOSAVE = stof(argv(token));
+        MSN_SAVE = stof(argv(token));
       }
       else{
-        MSN_NOSAVE = FALSE;
+        MSN_SAVE = TRUE;
       }
 
       //objectives section

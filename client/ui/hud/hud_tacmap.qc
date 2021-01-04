@@ -182,7 +182,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
       fontSize = '10 10 0';
     }
     else{
-    fontSize = '8 8 0';
+      fontSize = '8 8 0';
     }
   }
   else{

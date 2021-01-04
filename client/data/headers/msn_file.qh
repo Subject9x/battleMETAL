@@ -39,7 +39,7 @@ string MSN_MAPPIC;
 string MSN_NAME;
 string MSN_DISP;
 string MSN_TYPE;
-float MSN_NOSAVE;
+float MSN_SAVE;
 string MSN_RESERVETOTAL;
 string MSN_SECTOR;
 string MSN_LOCATION;
