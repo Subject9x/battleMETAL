@@ -51,14 +51,14 @@ void() click_newg_back={
 };
 
 void() click_newg_launch={
-  menu_write_new_save(CAMP_SELECT_MAP, CAMP_SELECT_ITEMS, CAMP_SELECT_MECHS, CAMP_SELECT_NAME);
+  menu_write_new_save();
   menu_clear_items(M_STATE);
   menu_exit_togame();
   cmd("deathmatch 0\n");
   cmd("coop 0\n");
   cmd("cd stop\n");
   cvar_set("cl_ismenu","0");
-  cmd("map", strcat(" ", CAMP_SELECT_MAP,"\n")); 
+  cmd(strcat("map ", CAMP_SELECT_MAP,"\n")); 
   strunzone(CAMP_SELECT_MAP);
   strunzone(CAMP_SELECT_NAME);
   strunzone(CAMP_SELECT_MECHS);
