@@ -54,7 +54,7 @@ void() world_metal_ini={
   if(world.itemOverride){
     serverflags = serverflags | SVFLAG_ITEMOVER;
   }
-  if(world.ignoreSave || world.animaticOnly ){
+  if( world.ignoreSave || world.animaticOnly ){
     serverflags = serverflags | SVFLAG_NOSAVE;
   }
   
@@ -163,17 +163,6 @@ void() world_metal_ini={
   SERVER feature - current states of server that's sent to all players when they connect.
 */
 void() world_ini_serverinfo={
-  local string serverInfo;
-  serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
-  serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
-  serverInfo = strcat(serverInfo, ftos(GAMETYPE)," ");
-  serverInfo = strcat(serverInfo, ftos(serverflags)," ");
-  serverInfo = strcat(serverInfo, ftos(cvar("timelimit"))," ");
-  serverInfo = strcat(serverInfo, ftos(world.worldtype)," ");
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-    serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
-  }
-  SERVER_INFO = strzone(serverInfo);
   SERVER_ABOUT = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
 };
 
@@ -259,9 +248,6 @@ void() WeatherDominator_think={
     when progs exits, not on errors though!
 */
 void() SV_Shutdown={
-  if( strlen(SERVER_INFO) > 0 ){
-    strunzone(SERVER_INFO);
-  }
   if( strlen(SERVER_ABOUT) > 0 ){
     strunzone(SERVER_ABOUT);
   } 

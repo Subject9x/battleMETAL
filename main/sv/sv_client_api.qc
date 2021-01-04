@@ -151,7 +151,7 @@ void() ClientConnect = {
   if (intermission_running){
     ExitIntermission();
   }
-  client_sendServerInfo();
+  client_send_server_info_update();
   client_sendServerAbout();
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
 };

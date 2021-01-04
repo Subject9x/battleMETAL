@@ -15,12 +15,14 @@ void() menu_debriefListener_onClick={
   //next/retry mission button
   if( servertime > MENU_respawn_cool ){
     if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
-      //Single player 
-      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-        if( MSN_NOSAVE == FALSE ){
-          cl_savefile_save();
+      if( servertime > MENU_DEBRIEF_time_elapsed ){
+        //Single player 
+        if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+          if( !(SV_SERVERFLAGS & SVFLAG_NOSAVE) ){
+            cl_savefile_save();
+          }
         }
-        MENU_DEBRIEF_time_elapsed = servertime + 0.25;
+        MENU_DEBRIEF_time_elapsed = servertime + 0.15;
         return;
       }
       //DEATHMATCH AND COOP

@@ -23,6 +23,7 @@ void( vector org, vector imgSize, float wepType, vector highColor ) ui_renderHar
     + missing info they prescribe to have
   c'mon....
 */
+float SV_GAMETYPE;
 float SV_MISSIONSTATUS;
 float SV_MISSION_RESULT;
 float SV_STARTTIME;

@@ -486,10 +486,6 @@ void(float track, float loop) client_playTrack={
   stuffcmd(self, cmd);
 };
 
-void() client_sendServerInfo={
-  stuffcmd(self, SERVER_INFO);
-};
-
 void() client_sendServerAbout={
   stuffcmd(self, SERVER_ABOUT);
 };
@@ -595,9 +591,15 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
 void() client_send_server_info_update={
   WriteByte( MSG_ALL, SVC_TEMPENTITY );
   WriteByte( MSG_ALL, TE_SERVERINFO );
-  WriteByte( MSG_ALL, MISSION_STATUS );
   WriteLong( MSG_ALL, STARTTIME );
+  WriteByte( MSG_ALL, MISSION_STATUS );
+  WriteByte( MSG_ALL, GAMETYPE );
   WriteLong( MSG_ALL, serverflags );
+  WriteCoord( MSG_ALL, cvar("timelimit") );
+  WriteByte( MSG_ALL, world.worldtype );
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    WriteByte( MSG_ALL, cvar("saveslot") );
+  }
   WriteByte( MSG_ALL, MISSION_RESULT );
   WriteString( MSG_ALL, sv_nextmap );
 };

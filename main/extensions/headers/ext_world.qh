@@ -19,7 +19,6 @@ float ENDROUND_TIME;      //sv_checkRules sets this so ending is next frame-ish;
 
 float OBJECTIVE_FAILED;   //global to handle map objective state changes on fail.
 
-string SERVER_INFO;
 string SERVER_ABOUT;
 
 void() world_ini_serverinfo;

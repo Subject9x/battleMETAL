@@ -515,18 +515,29 @@ void() client_get_serverinfo={
   
   SV_MISSION_STATUS_PREV = SV_MISSIONSTATUS;
   
-  SV_MISSIONSTATUS = ReadByte();
   SV_STARTTIME = ReadLong();
+  SV_MISSIONSTATUS = ReadByte();
+  SV_GAMETYPE = ReadByte();
   SV_SERVERFLAGS = ReadLong();
+  dprint(sprintf("SV_SERVERFLAGS = %s \n", ftos(SV_SERVERFLAGS)));  //debug
+  SV_TIMELIMIT = ReadCoord();
+  SV_WORLDTYPE = ReadByte();
+  if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
+    cvar_set("saveslot", ftos(ReadByte()));
+  }
   SV_MISSION_RESULT = ReadByte();
   if( SV_MISSIONSTATUS == MISSION_STATUS_OVER ){
     SV_ENDTIME = servertime;
   }
   name = ReadString();
-  if( SV_NEXTMAP == "" ){
+  if( SV_NEXTMAP == "" || strlen(SV_NEXTMAP) == 0 ){
     SV_NEXTMAP = strzone(name);
   }
   
+  cvar_set("gamemode", ftos(SV_GAMETYPE));
+  if(CLIENT_player_state == PLAYER_CONNECT ){
+    cl_set_savepath( cvar("gamemode"), (SV_SERVERFLAGS & SVFLAG_ITEMOVER) );
+  }
 };
 
 
