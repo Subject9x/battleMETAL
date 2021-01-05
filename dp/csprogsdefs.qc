@@ -48,9 +48,7 @@ void()		CSQC_Shutdown;
 float(float evtype, float scanx, float chary, float devid)	CSQC_InputEvent;
 void(float w, float h, float menuView)		CSQC_UpdateView;
 float(string s)	CSQC_ConsoleCommand;
-void(float isnew) CSQC_Ent_Update;
-void() CSQC_Ent_Remove;
-//float() CSQC_Parse_Event; // darkplaces doesn't implement this, apparently.
+
 
 
 //these fields are read and set by the default player physics
@@ -96,7 +94,7 @@ void		end_sys_globals;		// flag for structure dumping
 
 .float		entnum;	// *** the ent number as on the server BUT if you implement CSQC_Ent_Spawn(float entNum) yourself, you must assign it! or, well ya shoud -> csprogs.c Line 849
 .float		drawmask;
-.float()		predraw;
+.void()		predraw;
 .float		movetype;
 .float		solid;
 .vector		origin;			// ***
@@ -133,6 +131,9 @@ void		end_sys_fields;			// flag for structure dumping
 
 ==============================================================================
 */
+void(float isnew) CSQC_Ent_Update;
+void() CSQC_Ent_Remove;
+//float() CSQC_Parse_Event; // darkplaces doesn't implement this, apparently.
 #define CSQC
 .vector maxs, mins;
 .vector v_angle; // view / targeting angle for players
@@ -607,7 +608,6 @@ string(float chars, string s, ...) strpad = #225;
 */
 string(string info, string key, string value, ...) infoadd = #226;
 string(string info, string key) infoget = #227;
-
 float(string s1, string s2, float len) strncmp = #228;
 float(string s1, string s2) strcasecmp = #229;
 float(string s1, string s2, float len) strncasecmp = #230;
@@ -784,6 +784,8 @@ string(float bufhandle, float string_index) bufstr_get = #466;
 void(float bufhandle, float string_index, string str) bufstr_set = #467;
 float(float bufhandle, string str, float order) bufstr_add = #468;
 void(float bufhandle, float string_index) bufstr_free = #469;
+
+
 
 float(float s) asin = #471;
 float(float c) acos = #472;
@@ -1130,6 +1132,7 @@ float REFDEFFLAG_INTERMISSION = 8;
 
 // assorted builtins
 float	(vector position, vector size, string pic, vector srcPosition, vector srcSize, vector rgb, float alpha, float flag)drawsubpic = #328;
+float (vector position, string pic, vector size, vector org, float angle, vector rgb, float alpha, float flag) drawrotpic = #329;
 vector	drawgetimagesize(string pic) = #318;
 #define SPA_POSITION 0
 #define SPA_S_AXIS 1

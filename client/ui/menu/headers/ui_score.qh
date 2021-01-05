@@ -18,7 +18,7 @@ void() menu_scoreListener_onHover;
 
 void() menu_score_drawFrame;
 //------------------
-vector MENU_SCORE_READY_ORG;
+//vector MENU_SCORE_READY_ORG;
 void( vector menuOrg ) menu_score_draw_bar;
 
 //Deathmatch

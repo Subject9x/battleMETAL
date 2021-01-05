@@ -8,6 +8,7 @@ Overview: header for the mission file handler.
 void() msn_getfile={
   local float flannel;
   local string file;
+  
   file = strcat(PATH_DATA_MAP, MAP_NAME, "/", MSN_FILENAME, ".msn");
   
   if( cvar("developer") ){
@@ -103,7 +104,10 @@ void() msn_parsefile={
         }
       }
       if( argv(1) == MSN_FILE_NOSAVE ){
-        MSN_NOSAVE = stof(argv(token));
+        MSN_SAVE = stof(argv(token));
+      }
+      else{
+        MSN_SAVE = TRUE;
       }
 
       //objectives section

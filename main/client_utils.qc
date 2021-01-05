@@ -342,8 +342,9 @@ void(string cmd, float tokens) client_setMission={
     if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       savefile_changemap(sv_nextmap); //TODO - fix me
-      if( sv_nextmap == "" ){
-        stuffcmd(self, "map cin_menu.bsp;togglemenu,cl_ismenu 1;\n");
+      dprint(sprintf("sv_nextmap@client_setMission = %s\n", sv_nextmap)); //debug
+      if( sv_nextmap == "" || strlen(sv_nextmap) == 0 ){
+        stuffcmd(self, "map cin_menu.bsp;togglemenu;cl_ismenu 1;\n");
         return;
       }
       changelevel (sv_nextmap);  //possibly altered by map_objective objects.
@@ -485,10 +486,6 @@ void(float track, float loop) client_playTrack={
   stuffcmd(self, cmd);
 };
 
-void() client_sendServerInfo={
-  stuffcmd(self, SERVER_INFO);
-};
-
 void() client_sendServerAbout={
   stuffcmd(self, SERVER_ABOUT);
 };
@@ -594,9 +591,15 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
 void() client_send_server_info_update={
   WriteByte( MSG_ALL, SVC_TEMPENTITY );
   WriteByte( MSG_ALL, TE_SERVERINFO );
-  WriteByte( MSG_ALL, MISSION_STATUS );
   WriteLong( MSG_ALL, STARTTIME );
+  WriteByte( MSG_ALL, MISSION_STATUS );
+  WriteByte( MSG_ALL, GAMETYPE );
   WriteLong( MSG_ALL, serverflags );
+  WriteCoord( MSG_ALL, cvar("timelimit") );
+  WriteByte( MSG_ALL, world.worldtype );
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    WriteByte( MSG_ALL, cvar("saveslot") );
+  }
   WriteByte( MSG_ALL, MISSION_RESULT );
   WriteString( MSG_ALL, sv_nextmap );
 };

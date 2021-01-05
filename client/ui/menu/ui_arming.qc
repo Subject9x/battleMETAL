@@ -756,7 +756,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);
   nofs_y = VIEW_CTR_y + gui_percentYRaw(12);
   
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 220'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -871,26 +871,29 @@ void(vector ofs) menu_arming_AssignToHardpoint_btn={
 
 void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector nofs;
+  local string panelLabel;
+  local float panelLabelLen;
+  local vector labelOrg;
+  local vector weaponNameOrg;
+  local float weaponNameLen;
+  local vector icol;
+  local vector smallFont;
+  local vector helpOrg;
   
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);
   nofs_y = ofs_y + gui_percentYRaw(8);
   
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_ARM_THREEQ, 1, 0);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 220'), CLR_DEF_ARM_THREEQ, 1, 0);
 
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  local string panelLabel;
-  local float panelLabelLen;
-  local vector labelOrg;
   panelLabel = "-Weapon In Hardpoint-";
   panelLabelLen = stringwidth(panelLabel, 0, '10 10 0');
   labelOrg = nofs + gui_percentToPixelRawVec('0 6');
   labelOrg_x = nofs_x + gui_percentXRaw(97.5) - gui_percentXRaw( panelLabelLen / 2 );
   drawstring(labelOrg, panelLabel, '10 10 0', '1 1 1', 1, 0);
   
-  local vector weaponNameOrg;
-  local float weaponNameLen;
   if( ITEM2_DATA_ICON != ""){
     drawpic((nofs + gui_percentToPixelRawVec('6 6')), ITEM2_DATA_ICON, gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, 1, 0); 
   }
@@ -902,9 +905,7 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   drawfont = drawfont_prev;
   
   //type
-  local vector icol;
   icol = nofs + gui_percentToPixelRawVec('8 42');
-  local vector smallFont;
   smallFont = '10 10';
   
   if( ITEM2_DATA_DMG > -1 ){
@@ -962,7 +963,6 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
     gui_wrapText(icol, '187 130', ITEM2_DATA_DESC, '12 12 0', '1 1 1', 1);
   }
 
-  local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(195) - gui_percentXRaw(12);
   ARMING_HELP_HARDPOINT_WEAPON = helpOrg;

@@ -92,9 +92,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     if( self.th_pain ){  
       self.th_pain( attacker );
     }
-    if( self.ai_rank > AI_RANK_REG ){
-      if( self.shield <= (self.shieldMax / 2) ){
-        ai_call_for_help(attacker);
+    if( attacker.faction != self.faction ){
+      if( self.ai_rank > AI_RANK_REG ){
+        if( self.shield <= (self.shieldMax / 2) ){
+          ai_call_for_help(attacker);
+        }
       }
     }
     self = notTarg;
@@ -136,15 +138,16 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
-  if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){    
+  if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){
     if( util_getMechHpAverage(dmgTrg) < 0.5){
-      notTarg = self;
-      self = dmgTrg;
-        ai_call_for_help( attacker );
-      self = notTarg;
+      if( attacker.faction != self.faction ){
+        notTarg = self;
+        self = dmgTrg;
+          ai_call_for_help( attacker );
+        self = notTarg;
+      }
     }
   }
-  
   if( dmgTrg.health <= 0 ){
     if( dmgTrg.th_die ){
       killed(dmgTrg, attacker);
@@ -283,9 +286,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
         self.th_pain( attacker );
       }
     }
-    if( self.ai_rank > AI_RANK_REG ){
-      if( self.shield < (self.shieldMax / 2) ){
-        ai_call_for_help(attacker);
+    if( attacker.faction != self.faction ){
+      if( self.ai_rank > AI_RANK_REG ){
+        if( self.shield < (self.shieldMax / 2) ){
+          ai_call_for_help(attacker);
+        }
       }
     }
     self = notTarg;

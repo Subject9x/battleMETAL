@@ -218,7 +218,10 @@ void() ui_navbutton_deploy_click={
         LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
     }
-    cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+    
+    if( !(SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+    }
   }
   SPRITE_deploy_point_FRAME = 1;
   CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
@@ -363,7 +366,6 @@ void() ui_navbutton_launch_click={
       CLIENT_spawn_time = servertime; //mark for when palyer dies.
       CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
       menu_exit();
-      
     }
   }
 };

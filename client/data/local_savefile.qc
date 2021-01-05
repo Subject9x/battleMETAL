@@ -35,7 +35,7 @@ void( string fileName ) cl_load_savefile={
   }
   else{
     if( cvar("developer") ){
-      error(strcat("cl_load_savefile()->: ", fileName, " was not found"));
+      dprint(sprintf("cl_load_savefile()->: %s was not found\n", fileName));  //debug
     }
   }
   

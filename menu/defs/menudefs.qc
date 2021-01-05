@@ -37,18 +37,6 @@ float KEY_GAME 		=	0;
 float KEY_MENU		=	2;
 float KEY_MENU_GRABBED	= 	3;
 
-/////////////////////////////
-// mouse target constants
-
-float MT_MENU = 1;
-float MT_CLIENT = 2;
-
-/////////////////////////
-// client state constants
-
-float CS_DEDICATED 		= 0;
-float CS_DISCONNECTED 	= 1;
-float CS_CONNECTED		= 2;
 ///////////////////////////
 // file constants
 
@@ -75,6 +63,19 @@ float MSG_BROADCAST		= 0;		// unreliable to all
 float MSG_ONE			= 1;		// reliable to one (msg_entity)
 float MSG_ALL			= 2;		// reliable to all
 float MSG_INIT			= 3;		// write to the init string
+
+/////////////////////////////
+// mouse target constants
+
+float MT_MENU = 1;
+float MT_CLIENT = 2;
+
+/////////////////////////
+// client state constants
+
+float CS_DEDICATED 		= 0;
+float CS_DISCONNECTED 	= 1;
+float CS_CONNECTED		= 2;
 
 ///////////////////////////
 // blend flags

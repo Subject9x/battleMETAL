@@ -13,14 +13,16 @@ Overview:
 //menu hooks
 void() menu_debriefListener_onClick={
   //next/retry mission button
-  if( servertime > MENU_button_delay ){
+  if( servertime > MENU_respawn_cool ){
     if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
-      //Single player 
-      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-        if( !MSN_NOSAVE || !(SV_SERVERFLAGS & SVFLAG_NOSAVE)){
-          cl_savefile_save();
+      if( servertime > MENU_DEBRIEF_time_elapsed ){
+        //Single player 
+        if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
+          if( !(SV_SERVERFLAGS & SVFLAG_NOSAVE) ){
+            cl_savefile_save();
+          }
         }
-        MENU_DEBRIEF_time_elapsed = time + 1;
+        MENU_DEBRIEF_time_elapsed = servertime + 0.15;
         return;
       }
       //DEATHMATCH AND COOP
@@ -44,7 +46,7 @@ void() menu_debrief_drawFrame={
   if( MENU_DEBRIEF_time_elapsed != -1 ){
     if( servertime > MENU_DEBRIEF_time_elapsed ){
       cl_set_mission( MENU_DEBRIEF_status );
-      MENU_DEBRIEF_time_elapsed = 999999;
+      MENU_DEBRIEF_time_elapsed = -1;
     }
   }
 
@@ -63,6 +65,12 @@ void(vector panelOffset) menu_debrief_header={
   local vector thisOrg;
   local float statusLen;
   local vector statusOrg;
+  local vector nextMissionOrg;
+  local vector nextMissionLabelOrg;
+  local string missionStat;
+  local float t;
+  local float sec;
+  local string text;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -76,27 +84,34 @@ void(vector panelOffset) menu_debrief_header={
   gui_renderHighlightString(MENU_DEBRIEF_data_mission_status, statusOrg, CLR_DEF_ARM_OK, CLR_DEF_ARM_THREEQ, MENU_DEBRIEF_status, '22 22', 1, 0);
   
   //Next Mission Button
-  local vector nextMissionOrg;
-  local vector nextMissionLabelOrg;
   
   nextMissionOrg_x = VIEW_MAX_x - gui_percentXRaw(138);
   nextMissionOrg_y = gui_percentYRaw(6);
-  drawpic( nextMissionOrg, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
+  
   MENU_DEBRIEF_BUTTON_ORG_mission = nextMissionOrg;
   
-  //TODO - what to do with FAILED missions?
-  local string missionStat;
-  if( MENU_DEBRIEF_status ){
-    missionStat = "[Next Mission]";
-    nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(16);
+  drawpic( nextMissionOrg, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
+  
+  if( servertime < MENU_respawn_cool ){
+    t = SERVER_RESPAWN_COOL_CAMP - (servertime - MENU_respawn_cool_start); 
+    sec = t - floor( t / 60 ) * 60 ;
+    sec = rint(sec);
+    text = sprintf("%02d", sec);
+    gui_renderMeter( ( (SERVER_RESPAWN_COOL_CAMP - sec) / SERVER_RESPAWN_COOL_CAMP) * 100, nextMissionOrg, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, CLR_DEF_IIF_FRIEND_BLD, 0.367, 0, AXIS_H, FALSE);
   }
   else{
-    missionStat = "<< Retry ";
-    nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(32);
+    //TODO - what to do with FAILED missions?
+    if( MENU_DEBRIEF_status ){
+      missionStat = "[Next Mission]";
+      nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(16);
+    }
+    else{
+      missionStat = "<< Retry ";
+      nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(32);
+    }
+    nextMissionLabelOrg_y = gui_percentYRaw(10);
+    drawstring( nextMissionLabelOrg, missionStat, '18 14', '1 1 1', 1, 0);
   }
-  nextMissionLabelOrg_y = gui_percentYRaw(10);
-  drawstring( nextMissionLabelOrg, missionStat, '18 14', '1 1 1', 1, 0);
-  
   drawfont = drawfont_prev;
 };
 
@@ -106,29 +121,8 @@ void(vector panelOffset) menu_debrief_header={
 void(vector panelOffset) menu_debrief_objectives_primary={
   local vector thisOrg;
   local vector panelImageSize;
-  
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-  
-  //background panel image
-  thisOrg = panelOffset;
-  panelImageSize_x = gui_percentXRaw(VIEW_CTR_x);
-  panelImageSize_y = gui_percentYRaw(240);
-  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
-  
-  //panel label
   local vector objectivesLabelOrg;
   local float objectivesLabelLen;
-  objectivesLabelLen = stringwidth( "-Primary Objectives-", 0, '12 12');
-  objectivesLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 4 );
-  objectivesLabelOrg_x = objectivesLabelOrg_x - gui_percentXRaw(10) - gui_percentXRaw( objectivesLabelLen / 2 );
-  objectivesLabelOrg_y = thisOrg_y + gui_percentYRaw(4);
-  drawstring( objectivesLabelOrg, "-Primary Objectives-", '12 12', CLR_DEF_GRAY_H, 1, 0);
-  
-  //objective status
-  drawstring( thisOrg + gui_percentToPixelRaw(VIEW_CTR_x - (VIEW_CTR_x / 4.5), 4), "- Status -", '12 12', CLR_DEF_GRAY_H, 1, 0);
-  
-  //Objectives List
   local vector listStartOrg;
   local float endOfLine;
   local float list_index;
@@ -142,6 +136,27 @@ void(vector panelOffset) menu_debrief_objectives_primary={
   local vector objectiveColor;
   local vector objectiveStatusOrg;
   local float objectiveStatusLen;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  //background panel image
+  thisOrg = panelOffset;
+  panelImageSize_x = gui_percentXRaw(VIEW_CTR_x);
+  panelImageSize_y = gui_percentYRaw(240);
+  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
+  
+  //panel label
+  objectivesLabelLen = stringwidth( "-Primary Objectives-", 0, '12 12');
+  objectivesLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 4 );
+  objectivesLabelOrg_x = objectivesLabelOrg_x - gui_percentXRaw(10) - gui_percentXRaw( objectivesLabelLen / 2 );
+  objectivesLabelOrg_y = thisOrg_y + gui_percentYRaw(4);
+  drawstring( objectivesLabelOrg, "-Primary Objectives-", '12 12', CLR_DEF_GRAY_H, 1, 0);
+  
+  //objective status
+  drawstring( thisOrg + gui_percentToPixelRaw(VIEW_CTR_x - (VIEW_CTR_x / 4.5), 4), "- Status -", '12 12', CLR_DEF_GRAY_H, 1, 0);
+  
+  //Objectives List
   
   listStartOrg = thisOrg + gui_percentToPixelRawVec('6 20');
   list_index = 1;
@@ -197,29 +212,8 @@ void(vector panelOffset) menu_debrief_objectives_primary={
 void(vector panelOffset) menu_debrief_objectives_secondary={
   local vector thisOrg;
   local vector panelImageSize;
-  
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-  
-  //background panel image
-  thisOrg = panelOffset;
-  panelImageSize_x = gui_percentXRaw(VIEW_CTR_x);
-  panelImageSize_y = gui_percentYRaw(160);
-  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
-  
-  //panel label
   local vector objectivesLabelOrg;
   local float objectivesLabelLen;
-  objectivesLabelLen = stringwidth( "-Secondary Objectives-", 0, '12 12');
-  objectivesLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 4 );
-  objectivesLabelOrg_x = objectivesLabelOrg_x - gui_percentXRaw(10) - gui_percentXRaw( objectivesLabelLen / 2 );
-  objectivesLabelOrg_y = thisOrg_y + gui_percentYRaw(4);
-  drawstring( objectivesLabelOrg, "-Secondary Objectives-", '12 12', CLR_DEF_GRAY_H, 1, 0);
-  
-  //objective status
-  drawstring( thisOrg + gui_percentToPixelRaw(VIEW_CTR_x - (VIEW_CTR_x / 4.5), 4), "- Status -", '12 12', CLR_DEF_GRAY_H, 1, 0);
-  
-  //Objectives List
   local vector listStartOrg;
   local float endOfLine;
   local float list_index;
@@ -233,6 +227,27 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
   local vector objectiveColor;
   local vector objectiveStatusOrg;
   local float objectiveStatusLen;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  //background panel image
+  thisOrg = panelOffset;
+  panelImageSize_x = gui_percentXRaw(VIEW_CTR_x);
+  panelImageSize_y = gui_percentYRaw(160);
+  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
+  
+  //panel label
+  objectivesLabelLen = stringwidth( "-Secondary Objectives-", 0, '12 12');
+  objectivesLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 4 );
+  objectivesLabelOrg_x = objectivesLabelOrg_x - gui_percentXRaw(10) - gui_percentXRaw( objectivesLabelLen / 2 );
+  objectivesLabelOrg_y = thisOrg_y + gui_percentYRaw(4);
+  drawstring( objectivesLabelOrg, "-Secondary Objectives-", '12 12', CLR_DEF_GRAY_H, 1, 0);
+  
+  //objective status
+  drawstring( thisOrg + gui_percentToPixelRaw(VIEW_CTR_x - (VIEW_CTR_x / 4.5), 4), "- Status -", '12 12', CLR_DEF_GRAY_H, 1, 0);
+  
+  //Objectives List
   
   listStartOrg = thisOrg + gui_percentToPixelRawVec('6 20');
   list_index = 1;
@@ -289,6 +304,8 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
 void(vector panelOffset) menu_debrief_stats={
   local vector thisOrg;
   local vector panelImageSize;
+  local float statsLabelLen;
+  local vector statsLabelOrg;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -302,8 +319,6 @@ void(vector panelOffset) menu_debrief_stats={
   gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
 
   //stats label
-  local float statsLabelLen;
-  local vector statsLabelOrg;
   statsLabelLen = stringwidth( "-Mission Results-", 0, '10 10');
   statsLabelOrg_x = thisOrg_x + gui_percentXRaw(6);
   statsLabelOrg_x = statsLabelOrg_x + gui_percentXRaw( panelImageSize_x / 2);
@@ -333,6 +348,28 @@ void(vector panelOffset) menu_debrief_stats={
 void(vector panelOffset) menu_debrief_unlocks={
   local vector thisOrg;
   local vector panelImageSize;
+  local float unlocksLabelLen;
+  local vector unlocksLabelOrg;
+  local float tokenId;
+  local float tokenItr;
+  local float tokenMax;
+  local string token;
+  local float tokenValue;
+  local float widthWrapCheck;
+  local float widthWrap;
+  local float weaponY;
+  local vector weaponStartOrg;
+  local vector weaponOrg;
+  local vector equipLabelOrg;
+  local float equipLabelLen;
+  local float equipmentY;
+  local vector equipmentStartOrg;
+  local vector equipmentOrg;
+  local vector mechLabelOrg;
+  local float mechLabelLen;
+  local float mechY;
+  local vector mechStartOrg;
+  local vector mechOrg;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -346,26 +383,14 @@ void(vector panelOffset) menu_debrief_unlocks={
   gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
   
   //unlocks label
-  local float unlocksLabelLen;
-  local vector unlocksLabelOrg;
   unlocksLabelLen = stringwidth( "-New Weapons Unlocked-", 0, '10 10');
   unlocksLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 2) - gui_percentXRaw( unlocksLabelLen / 2 );
   unlocksLabelOrg_y = thisOrg_y + gui_percentYRaw(6);
   drawstring( unlocksLabelOrg, "-New Weapons Unlocked-", '10 10', CLR_DEF_GRAY_H, 1 , 0);
 
 
-  local float tokenId;
-  local float tokenItr;
-  local float tokenMax;
-  local string token;
-  local float tokenValue;
-  local float widthWrapCheck;
-  local float widthWrap;
   tokenItr = 0;
   //New Weapons
-  local float weaponY;
-  local vector weaponStartOrg;
-  local vector weaponOrg;
   weaponStartOrg = thisOrg + gui_percentToPixelRawVec('6 24');
   weaponY = 0;
   tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
@@ -400,16 +425,11 @@ void(vector panelOffset) menu_debrief_unlocks={
   weaponY = gui_percentYRaw(weaponY * 32); //lock in y value
   
   //New Equipment
-  local vector equipLabelOrg;
-  local float equipLabelLen;
   equipLabelLen = stringwidth( "-New Equipment Unlocked-", 0, '10 10 0');
   equipLabelOrg_x = thisOrg_x + gui_percentXRaw(panelImageSize_x / 2) - gui_percentXRaw(equipLabelLen / 2); 
   equipLabelOrg_y = weaponStartOrg_y + gui_percentYRaw(30) + weaponY ;
   drawstring( equipLabelOrg, "-New Equipment Unlocked-", '10 10', CLR_DEF_GRAY_H, 1, 0);
   
-  local float equipmentY;
-  local vector equipmentStartOrg;
-  local vector equipmentOrg;
   equipmentStartOrg_x = thisOrg_x + gui_percentXRaw(6);
   equipmentStartOrg_y = equipLabelOrg_y + gui_percentYRaw(16);
   equipmentY = 0;
@@ -445,16 +465,11 @@ void(vector panelOffset) menu_debrief_unlocks={
   equipmentY = gui_percentYRaw( equipmentY * 32);
   
   //New Mechs
-  local vector mechLabelOrg;
-  local float mechLabelLen;
   mechLabelLen = stringwidth( "-New Metal Unlocked-", 0, '10 10 0');
   mechLabelOrg_x = thisOrg_x + gui_percentXRaw(panelImageSize_x / 2) - gui_percentXRaw(mechLabelLen / 2); 
   mechLabelOrg_y = equipmentStartOrg_y + equipmentY + gui_percentYRaw(16);
   drawstring( mechLabelOrg, "-New Metal Unlocked-", '10 10', CLR_DEF_GRAY_H, 1, 0);
   
-  local float mechY;
-  local vector mechStartOrg;
-  local vector mechOrg;
   mechStartOrg_x = thisOrg_x + gui_percentXRaw(-2);
   mechStartOrg_y = mechLabelOrg_y + gui_percentYRaw(16);
   mechY = 0;

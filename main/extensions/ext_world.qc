@@ -54,7 +54,7 @@ void() world_metal_ini={
   if(world.itemOverride){
     serverflags = serverflags | SVFLAG_ITEMOVER;
   }
-  if(world.ignoreSave || world.animaticOnly ){
+  if( world.ignoreSave || world.animaticOnly ){
     serverflags = serverflags | SVFLAG_NOSAVE;
   }
   
@@ -163,17 +163,6 @@ void() world_metal_ini={
   SERVER feature - current states of server that's sent to all players when they connect.
 */
 void() world_ini_serverinfo={
-  local string serverInfo;
-  serverInfo = strcat("svinfo ", ftos(STARTTIME), " ");
-  serverInfo = strcat(serverInfo, ftos(MISSION_STATUS)," ");
-  serverInfo = strcat(serverInfo, ftos(GAMETYPE)," ");
-  serverInfo = strcat(serverInfo, ftos(serverflags)," ");
-  serverInfo = strcat(serverInfo, ftos(cvar("timelimit"))," ");
-  serverInfo = strcat(serverInfo, ftos(world.worldtype)," ");
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-    serverInfo = strcat(serverInfo, ftos(cvar("saveslot")),"\n");
-  }
-  SERVER_INFO = strzone(serverInfo);
   SERVER_ABOUT = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
 };
 
@@ -259,9 +248,6 @@ void() WeatherDominator_think={
     when progs exits, not on errors though!
 */
 void() SV_Shutdown={
-  if( strlen(SERVER_INFO) > 0 ){
-    strunzone(SERVER_INFO);
-  }
   if( strlen(SERVER_ABOUT) > 0 ){
     strunzone(SERVER_ABOUT);
   } 
@@ -470,18 +456,30 @@ void() sv_endServer={
       }
       MISSION_STATUS = MISSION_STATUS_DONE;
       
-      mapCount = tokenizebyseparator(WORLD_MAP_LIST, " ");
-      for( itr = 0; itr < mapCount; itr = itr + 1 ){
-        if( argv(itr) == mapname ){
-          if( itr == mapCount ){
-            sv_nextmap = argv(0);
-          }
-          else{
-            sv_nextmap = argv(itr + 1);
-          }
-          sv_nextmap = strzone(sv_nextmap);
-          break;
+      //only cycle maps if non-campaign/co-op
+      if( GAMETYPE != GAMEMODE_CAMPAIGN && GAMETYPE != GAMEMODE_COOP){
+        //treats WORLD_MAP_LIST like a pseudo-array (Strings are just arrays, right?)
+        if( sv_nextmap != "" || strlen(sv_nextmap) > 0 ){
+          strunzone(sv_nextmap);
         }
+        mapCount = tokenizebyseparator(WORLD_MAP_LIST, " ");
+        if( mapCount > 1 ){
+          for( itr = 1; itr < mapCount; itr = itr + 1 ){
+            if( argv(itr) == mapname ){
+              if( itr == (mapCount - 1) ){
+                sv_nextmap = argv(1);
+              }
+              else{
+                sv_nextmap = argv(itr + 1);
+              }
+              break;
+            }
+          }
+        }
+        else{
+          sv_nextmap = argv(0) ;
+        }
+        sv_nextmap = strzone(sv_nextmap);
       }
       
       if( GAMETYPE == GAMEMODE_CAMPAIGN ){
@@ -1216,17 +1214,19 @@ void( string targName ) world_debug_targ={
   gathers all the deathmatch nodes.
 */
 entity() world_deathmatch_random_spawn={
+  local entity nodeHead;
   local entity node;
   local entity baddies;
   local float proxCount;
   local float runTotal;
   local entity theNode;
   local entity rando;
-  local float allNodes;
-  local float nodeId;
+  local float nodeDice;
   local float emptyNodes;
-  runTotal = 16;
   
+  runTotal = 16;  //total players possible in ANY server config
+  rando = world;
+  emptyNodes = 0;
   for(node = nextent(world); node != world; node = nextent(node) ){
     if(node.classname != "map_deploy_point"){
       continue;
@@ -1235,47 +1235,65 @@ entity() world_deathmatch_random_spawn={
       continue;
     }
     proxCount = 0;
-    for(baddies = nextent(world); baddies != world; baddies = nextent(baddies) ){
-      if( !(baddies.flags & FL_CLIENT) ){
-        continue;
-      }
-      if( baddies.data_type != DATA_MECH ){
-        continue;
-      }
-      traceline(node.origin, baddies.origin, FALSE, node);
-      if(trace_fraction == 1.0){
-        proxCount = proxCount + 1;
-      }
-      else{
-        if(vlen(baddies.origin - node.origin) < AI_RANGE_S){
-          proxCount = proxCount + 1;
+    baddies = nextent(world);
+    while( baddies != world ){
+      if( (baddies.flags & FL_CLIENT) ){
+        if( baddies.data_type == DATA_MECH ){
+          if( baddies != self ){
+            traceline(node.origin, baddies.origin, FALSE, node);
+            if(trace_fraction == 1.0){
+              proxCount = proxCount + 1;
+            }
+            else{
+              if(vlen(baddies.origin - node.origin) <= AI_RANGE_S){
+                proxCount = proxCount + 1;
+              }
+            }
+          }
         }
       }
+      baddies = nextent(baddies);
     }
     if(proxCount <= runTotal){
-      runTotal = rint(proxCount * 0.85);
+      runTotal = proxCount;
       theNode = node;
       if( proxCount == 0){
         emptyNodes = emptyNodes + 1;
+        if( rando != world ){
+          rando.partNext = node;
+          node.partPrev = rando;
+          rando = node;
+        }
+        else{
+          //first time find
+          nodeHead = rando = node;
+          nodeHead.partPrev = world;
+        }
       }
     }
-    allNodes = allNodes + 1;
   }
-  if( theNode && emptyNodes < (allNodes * 0.5) ){
+  if( emptyNodes == 0 ){
     return theNode;
   }
   
-  nodeId = rint(random() * allNodes);
-  rando = nextent(world);
+  nodeDice = 0.9;
+  rando = nodeHead;
   while( rando != world ){
     if( rando.classname == "map_deploy_point" ){
-      if(rando.data_idx == nodeId){
-        theNode = rando;
+      if( random() > 0.5 ) {
+        return rando;
+      }
+      else{
+        if( random() > nodeDice ){
+          return rando;
+        }
+        else{
+          nodeDice = nodeDice - 0.15; //creates math certainty to pick any node.
+        }
       }
     }
-    rando = nextent(rando);
+    rando = rando.partNext;
   }
-  return theNode;
 };
 
 //TDM/DM network games use this list.
@@ -1285,7 +1303,7 @@ void() world_get_maplist={
   local float fileHandle;
   local string ln;
   
-  if( WORLD_MAP_LIST != "" ){
+  if( WORLD_MAP_LIST != "" || strlen(WORLD_MAP_LIST) > 0){
     handOff = WORLD_MAP_LIST;
     strunzone(handOff);
     WORLD_MAP_LIST = "";
@@ -1295,7 +1313,7 @@ void() world_get_maplist={
   
   if(fileHandle != -1){
     ln = fgets(fileHandle);
-    while(ln != ""){ 
+    while(ln != "" || strlen(ln) > 0){ 
       if( substring(ln,0, 2) != "//" ){
         WORLD_MAP_LIST = strcat(WORLD_MAP_LIST, " ", ln);
       }

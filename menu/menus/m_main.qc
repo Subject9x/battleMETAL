@@ -65,7 +65,7 @@ void() click_main_train={
   cvar_set("coop", "0");
   cvar_set("teamplay", "0");
   cvar_set("maxplayers", "1");
-  cmd("map", " training_only\n");
+  cmd("map training_only\n");
 };
 
 void() click_main_multi={
@@ -106,6 +106,7 @@ void() click_main_leave={
   cvar_set("deathmatch", "0");
   cvar_set("teamplay", "0");
   cvar_set("coop", "0");
+  cvar_set("sv_serverflags", "0");  //accounts for player-hosted servers rather than using dedicated hosting.
   cmd("map cin_menu\n");
 };
 
