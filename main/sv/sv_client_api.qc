@@ -134,7 +134,8 @@ void() ClientConnect = {
   self.clientcolors = FACTION_PSC;  //faction tracker for network.
   
   self.attackFlag = 0;
-
+  client_data();
+  
   if( world.animaticOnly ) {
     client_playTrack(world.sounds, TRUE);  //play desired music for animatic
     if( world.animaticOnly > 1){
@@ -145,13 +146,14 @@ void() ClientConnect = {
     client_playTrack(3, TRUE);  //entering hangar menu
   }
   
+  client_send_server_info_connect( self );
+  client_sendMissionFileName();
+  
   client_push_player_info();
-  client_data();
   
   if (intermission_running){
     ExitIntermission();
   }
-  client_send_server_info_update();
   client_sendServerAbout();
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
 };
@@ -297,7 +299,6 @@ void() PutClientInServer_Campaign={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendMissionFileName();
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
     self.power_timer = 0;
     player_makeObserver();
@@ -351,11 +352,15 @@ void() PutClientInServer_Coop={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendMissionFileName();
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
     self.power_timer = 0;
     player_makeObserver();
-    self.playerState = PLAYER_SPAWN;
+    if(world.animaticOnly > 1){
+      self.playerState = PLAYER_MENU;
+    }
+    else{
+      self.playerState = PLAYER_SPAWN;
+    }
     self.faction = FACTION_PSC; //campaign default
     self.clientcolors = FACTION_PSC;
   }
@@ -364,6 +369,14 @@ void() PutClientInServer_Coop={
   self.th_die = PlayerDieNetwork;
   mapfile_coop_load();
   
+  self.movetype = MOVETYPE_NONE;
+  self.flags = self.flags - (self.flags & FL_FLY);
+  if( world.animaticOnly ){
+    self.playerState = PLAYER_INTERMSN;
+    if(self.clientData != world ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
+    }
+  }
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
   //}
@@ -384,7 +397,6 @@ void() PutClientInServer_Deathmatch={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendMissionFileName();
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
@@ -416,7 +428,6 @@ void() PutClientInServer_TeamDeathmatch={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendMissionFileName();
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
     self.power_timer = 0;
     player_makeObserver();

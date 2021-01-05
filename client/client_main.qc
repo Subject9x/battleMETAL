@@ -2,7 +2,7 @@
 void() CSQC_Init =
 {
   local float i, cnt;
-  registercvar("gamemode", "0");
+  registercvar("gamemode", "1");
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
   registercvar("cl_team", ftos(cvar("cl_team")));
@@ -517,6 +517,9 @@ void(string s) CSQC_Parse_StuffCmd =
   argc = tokenize(s);
   if(argv(0) == "m"){
     if(argv(1) == "msn"){
+      if( cvar("developer") ){
+        dprint(sprintf("CSQC_Parse_StuffCmd().s = %s\n", s));  //debug
+      }
       cl_get_msnfile( argv(2) );
       return;
     }
@@ -526,25 +529,6 @@ void(string s) CSQC_Parse_StuffCmd =
     }
   }
   else{
-    if( argv(0) == "svinfo" ){
-      //receives the SV_SERVERINFO string
-      SV_STARTTIME = stof(argv(1) );
-      SV_MISSIONSTATUS = stof(argv(2) );
-      cvar_set("gamemode", argv(3) );
-      SV_SERVERFLAGS = stof(argv(4) );
-      SV_TIMELIMIT = stof(argv(5));
-      SV_WORLDTYPE = stof(argv(6));
-      if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
-        cvar_set("saveslot", argv(7) );
-      }
-      else{
-        cvar_set("saveslot", "0");
-      }
-      if(CLIENT_player_state == PLAYER_CONNECT ){
-        cl_set_savepath( cvar("gamemode"), (SV_SERVERFLAGS & SVFLAG_ITEMOVER) );
-      }
-      return;
-    }
     if( argv(0) == "svabout" ){
       lenAdjust = strlen(s) - 8;
       tempAbout = substring(s, 8, lenAdjust );

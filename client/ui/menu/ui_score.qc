@@ -51,7 +51,7 @@ void() menu_score_drawFrame={
   //Navbar
   menu_score_draw_bar( VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') );
   
-  if( cvar("gamemode") == GAMEMODE_COOP ){
+  if( SV_GAMETYPE == GAMEMODE_COOP ){
     menu_score_coop_nav( VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') );
     
     menu_score_coop_server_info( topleftroot + gui_percentToPixelRawVec('32 32') );
@@ -64,7 +64,7 @@ void() menu_score_drawFrame={
     
     menu_score_coop_client_stats(topleftroot + gui_percentToPixelRawVec('56 220'));
   }
-  else if( cvar("gamemode") == GAMEMODE_TEAMDM ){
+  else if( SV_GAMETYPE == GAMEMODE_TEAMDM ){
     //nav bar
     menu_score_tdm_nav(  VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') ) ;
     //mission info - TDM
@@ -78,7 +78,7 @@ void() menu_score_drawFrame={
     //player list
     menu_connect_draw_players_team( topleftroot + gui_percentToPixelRawVec('10 282') );
   }
-  else if( cvar("gamemode") == GAMEMODE_DM ){
+  else if( SV_GAMETYPE == GAMEMODE_DM ){
     menu_score_dm_nav( VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') );
     //mission info - DM
     menu_serverinfo_basic(topleftroot + gui_percentToPixelRawVec('10 32'));

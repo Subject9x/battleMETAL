@@ -342,7 +342,6 @@ void(string cmd, float tokens) client_setMission={
     if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       savefile_changemap(sv_nextmap); //TODO - fix me
-      dprint(sprintf("sv_nextmap@client_setMission = %s\n", sv_nextmap)); //debug
       if( sv_nextmap == "" || strlen(sv_nextmap) == 0 ){
         stuffcmd(self, "map cin_menu.bsp;togglemenu;cl_ismenu 1;\n");
         return;
@@ -493,9 +492,11 @@ void() client_sendServerAbout={
 void() client_sendMissionFileName={
   local string cmd, msnFile;
   
-  msnFile = mapname;
-  if( world.missionFile != "" ){
+  if( world.missionFile != "" || strlen(world.missionFile) > 0 ){
     msnFile = world.missionFile;
+  }
+  else{
+    msnFile = mapname;
   }
   
   cmd = strcat("m msn ", msnFile, "\n");
@@ -564,6 +565,7 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
   sends the 'conclusion' data from a mission to the client
 */
 void(entity client, float missionSuccessCheck) client_sendEndMission={
+  
   WriteByte( MSG_ALL, SVC_TEMPENTITY );
   WriteByte( MSG_ALL, TE_MISSION_END );
   WriteByte( MSG_ALL, missionSuccessCheck );
@@ -602,6 +604,24 @@ void() client_send_server_info_update={
   }
   WriteByte( MSG_ALL, MISSION_RESULT );
   WriteString( MSG_ALL, sv_nextmap );
+};
+
+//same thing as above but only on client connect.
+void(entity client) client_send_server_info_connect={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_SERVERINFO );
+  WriteLong( MSG_ONE, STARTTIME );
+  WriteByte( MSG_ONE, MISSION_STATUS );
+  WriteByte( MSG_ONE, GAMETYPE );
+  WriteLong( MSG_ONE, serverflags );
+  WriteCoord( MSG_ONE, cvar("timelimit") );
+  WriteByte( MSG_ONE, world.worldtype );
+  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+    WriteByte( MSG_ONE, cvar("saveslot") );
+  }
+  WriteByte( MSG_ONE, MISSION_RESULT );
+  WriteString( MSG_ONE, sv_nextmap );
 };
 
 /*

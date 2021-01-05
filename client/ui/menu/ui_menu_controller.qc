@@ -213,17 +213,13 @@ void() menu_exit={
 
 float() menu_connect_choice={
   local float choice;
-  switch( cvar("gamemode") ){
+  switch( SV_GAMETYPE ){
     case GAMEMODE_CAMPAIGN:
       choice = MENU_BRIEF_ACTIVE;
       INFO_SWITCH = 1;
       break;
-    case GAMEMODE_COOP:
-      //todo
-      choice = MENU_CONNECT_ACTIVE;
-      break;
     default:
-      choice = MENU_CONNECT_ACTIVE;     
+      choice = MENU_CONNECT_ACTIVE;
       break;
   }
   return choice;
@@ -400,7 +396,7 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   local float statusLen;
   local string playerStatus;
   playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('49 0');
-  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) && (cvar("gamemode") != GAMEMODE_COOP) ){
+  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) && (SV_GAMETYPE != GAMEMODE_COOP) ){
     playerStatus = "<hidden>";
     statusColor = CLR_DEF_ARM_THREEQ;
   }
