@@ -148,19 +148,19 @@ void() hud_render_tactical_map={
 
 void() hud_render_scoreboard={
   local vector panelOrg;
-  local float gameMode;
+  //local float gameMode;
   
   panelOrg_x = VIEW_MAX_x - gui_percentXRaw(150);
   panelOrg_y = VIEW_ORG_y + gui_percentYRaw(2);
 
-  gameMode = cvar("gamemode");
-  if( gameMode == GAMEMODE_TEAMDM ){
+  //gameMode = cvar("gamemode");
+  if( SV_GAMETYPE == GAMEMODE_TEAMDM ){
     hud_render_scoreboard_tdm( panelOrg );
   }
-  else if( gameMode == GAMEMODE_DM ){
+  else if( SV_GAMETYPE == GAMEMODE_DM ){
     hud_render_scoreboard_dm( panelOrg );
   }
-  else if( gameMode == GAMEMODE_COOP ){
+  else if( SV_GAMETYPE == GAMEMODE_COOP ){
     hud_render_scoreboard_dm( panelOrg );
   }
 }; 

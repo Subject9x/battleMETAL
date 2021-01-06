@@ -188,8 +188,8 @@ string() ui_calculate_game_time_string={
   local float t, sec, mint, hr;
   local float endTime;
   endTime = getstatf(STAT_TIMELIMIT) * 60;
-  if( getstatf(STAT_TIMELIMIT) > 0  || cvar("gamemode") == GAMEMODE_COOP ){
-    if( cvar("gamemode") == GAMEMODE_COOP) {
+  if( getstatf(STAT_TIMELIMIT) > 0  || SV_GAMETYPE == GAMEMODE_COOP ){
+    if( SV_GAMETYPE == GAMEMODE_COOP) {
       t = servertime + (servertime - time);
     }
     else{

@@ -152,16 +152,16 @@ void() receive_ent_bindData={
   also Server Mission Status and Results
 */
 void() client_state_events={
-  local float gameType;
+  //local float gameType;
   local float timeVal;
   
-  gameType = cvar("gamemode");
+ //gameType = cvar("gamemode");
   
   //SERVER EVENTS
   if( SV_MISSION_STATUS_PREV != SV_MISSIONSTATUS ){
     //Server Event - end of map
     if( (SV_MISSION_STATUS_PREV != MISSION_STATUS_OVER) && (SV_MISSIONSTATUS == MISSION_STATUS_OVER) ){
-      if( gameType == GAMEMODE_CAMPAIGN ){
+      if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
         if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
           hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1 );
         }
@@ -184,6 +184,9 @@ void() client_state_events={
   
     //EVENT - CLIENT FIRST TIME CONNECT---
     if( (CLIENT_player_state_prev == PLAYER_CONNECT) && (CLIENT_player_state == PLAYER_SPAWN) ){
+      if( cvar("developer") ){
+        dprint(sprintf("EVENT - CLIENT FIRST TIME CONNECT--- SV_GAMETYPE = %s\n", ftos(SV_GAMETYPE))); //debug
+      }
       //mission file load check
       if(MSN_FILEFOUND){
         if(MSN_LOADED == FALSE){
@@ -224,7 +227,7 @@ void() client_state_events={
     
     //EVENT - CLIENT DEATH----------------
     if( (CLIENT_player_state_prev != PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEAD) ){
-      if( gameType == GAMEMODE_CAMPAIGN ){
+      if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
         if( SV_MISSIONSTATUS == MISSION_RESULT_WIN ){
           te_mission_win();
         }
@@ -276,7 +279,7 @@ void() client_state_events={
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_REDEPLOY) ){
       menu_enter( MENU_CONNECT_ACTIVE );
       MENU_button_delay = servertime + 1;
-      if( gameType == GAMEMODE_COOP ){
+      if( SV_GAMETYPE == GAMEMODE_COOP ){
         MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_COOP;
       }
       else{
@@ -289,13 +292,13 @@ void() client_state_events={
     
     //EVENT - CLIENT END OF DM/TDM
     if( (CLIENT_player_state_prev != PLAYER_INTERMSN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
-      if( gameType == GAMEMODE_CAMPAIGN ){
+      if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
         setcursormode( 0 );
         menu_exit();
         return;
       }
       menu_enter( MENU_SCORE_ACTIVE );
-      if(  gameType == GAMEMODE_COOP  ){
+      if(  SV_GAMETYPE == GAMEMODE_COOP  ){
         MENU_DEBRIEF_time_elapsed = -1;
         ui_set_mission_status( SV_MISSION_RESULT );
         MENU_respawn_cool_start = servertime + SERVER_SCORE_TIME_COOP;
@@ -312,7 +315,7 @@ void() client_state_events={
     //EVENT - CLIENT connect during end of round
     if( (CLIENT_player_state_prev != PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
       menu_enter( MENU_SCORE_ACTIVE );
-      if( gameType == GAMEMODE_DM ){
+      if( SV_GAMETYPE == GAMEMODE_DM ){
         
       }
       //MENU_button_delay = servertime + 1;
@@ -519,7 +522,6 @@ void() client_get_serverinfo={
   SV_MISSIONSTATUS = ReadByte();
   SV_GAMETYPE = ReadByte();
   SV_SERVERFLAGS = ReadLong();
-  dprint(sprintf("SV_SERVERFLAGS = %s \n", ftos(SV_SERVERFLAGS)));  //debug
   SV_TIMELIMIT = ReadCoord();
   SV_WORLDTYPE = ReadByte();
   if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
@@ -534,9 +536,9 @@ void() client_get_serverinfo={
     SV_NEXTMAP = strzone(name);
   }
   
-  cvar_set("gamemode", ftos(SV_GAMETYPE));
+  //cvar_set("gamemode", ftos(SV_GAMETYPE));
   if(CLIENT_player_state == PLAYER_CONNECT ){
-    cl_set_savepath( cvar("gamemode"), (SV_SERVERFLAGS & SVFLAG_ITEMOVER) );
+    cl_set_savepath(SV_GAMETYPE, (SV_SERVERFLAGS & SVFLAG_ITEMOVER) );
   }
 };
 

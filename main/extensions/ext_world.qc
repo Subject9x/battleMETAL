@@ -10,6 +10,19 @@ Overview:
 
 void() world_metal_ini={
   DEPLOY_ID_COUNT = 0;
+  
+  sv_world_load_items();
+  
+  registercvar("campaign", "0", 0); 
+  registercvar("saveslot", "0", 0);
+  registercvar("gamemode", "1", 1);
+  registercvar("cl_hud_alpha", "1", 1);
+  registercvar("cl_hud_color", "0", 1);
+  //registercvar("cl_hud_sway", "0", 1);
+  registercvar("cl_team", "0", 2);
+  registercvar("sv_serverflags", "0", 0);
+  registercvar("sv_about", "Default About Message", 0);
+  
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;
   }
@@ -25,20 +38,8 @@ void() world_metal_ini={
   }
   else{
     GAMETYPE = GAMEMODE_CAMPAIGN;
-  } 
+  }
   cvar_set("gamemode", ftos(GAMETYPE));
-
-  sv_world_load_items();
-
-  registercvar("campaign", "0", 0); 
-  registercvar("saveslot", "0", 0);
-  registercvar("gamemode", "0", 0);
-  registercvar("cl_hud_alpha", "1", 1);
-  registercvar("cl_hud_color", "0", 1);
-  //registercvar("cl_hud_sway", "0", 1);
-  registercvar("cl_team", "0", 2);
-  registercvar("sv_serverflags", "0", 0);
-  registercvar("sv_about", "Default About Message", 0);
   
   //Mission unit stat totals
   MISSION_STATUS = MISSION_STATUS_READY;

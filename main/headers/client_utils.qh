@@ -42,6 +42,7 @@ void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
 //client command layer
 void() client_sendServerAbout;
 void() client_send_server_info_update;
+void(entity client) client_send_server_info_connect;
 void( entity client ) client_send_campaign_end_data;
 void( entity client ) client_send_dm_end_data;
 
