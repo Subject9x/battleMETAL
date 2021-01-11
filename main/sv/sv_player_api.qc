@@ -31,8 +31,6 @@ called before running player input frame
 */
 void() PlayerPreThink = {
   
-  
-  
   //keep losses up-to-date
   client_update_losses();
   
@@ -45,6 +43,7 @@ void() PlayerPreThink = {
 	if (self.deadflag == DEAD_DEAD){
 		return;
 	}
+  
 	if (self.deadflag >= DEAD_DYING){
     return;	// dying, so do nothing
   }
@@ -403,7 +402,8 @@ void() PlayerDie={
   client_send_server_info_update();
   client_send_campaign_end_data( self );
   
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
+  self.damageValue = 0;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT);
   
   self.effects = 0;
   self.deadflag = DEAD_DYING;
@@ -483,7 +483,8 @@ void() PlayerDieNetwork={
   self.angles_y = 0;
   self.avelocity = '0 0 0';
   
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
+  self.damageValue = 0;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT);
   
   self.playerDeaths = self.playerDeaths + 1;
   

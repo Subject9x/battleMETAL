@@ -73,8 +73,6 @@ void() player_makeMech={
   self.enemy = world;
   
   client_push_player_info();
-  self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION);
   
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
  
@@ -113,6 +111,9 @@ void() player_makeMech={
   self.stat_rdr_rng = self.radar_range * 2;
   self.damageValue = 0;
   self.canTarget = TRUE;
+  
+  self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION);
 };
 
 void() player_unmakeMech={
