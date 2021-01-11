@@ -110,6 +110,7 @@ void() player_makeMech={
   self.stat_rdr_mode = 1; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
   self.damageValue = 0;
+  self.critBits = 0;
   self.canTarget = TRUE;
   
   self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
