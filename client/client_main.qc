@@ -177,52 +177,52 @@ void() CSQC_Init =
 void() CSQC_Shutdown =
 {
   //server string cleanup
-  client_main_string_cleanup(UNLOCKED_MECHS_DATA);
-  client_main_string_cleanup(UNLOCKED_ITEMS_DATA);
-  client_main_string_cleanup(MENU_DEBRIEF_unlocks_mechs);
-  client_main_string_cleanup(MENU_DEBRIEF_unlocks_equip);
-  client_main_string_cleanup(SV_NEXTMAP);
-  client_main_string_cleanup(SV_ABOUT);
-  client_main_string_cleanup(ENT_SERVER_INFO.nextMap);
+  freeGlobalString(UNLOCKED_MECHS_DATA)
+  freeGlobalString(UNLOCKED_ITEMS_DATA)
+  freeGlobalString(MENU_DEBRIEF_unlocks_mechs)
+  freeGlobalString(MENU_DEBRIEF_unlocks_equip)
+  freeGlobalString(SV_NEXTMAP)
+  freeGlobalString(SV_ABOUT)
+  freeGlobalString(ENT_SERVER_INFO.nextMap)
   
-  client_main_string_cleanup(PLAYER_COLOR_PSC);
-  client_main_string_cleanup(PLAYER_COLOR_SRV);
-  client_main_string_cleanup(PLAYER_COLOR_MIL);
+  freeGlobalString(PLAYER_COLOR_PSC)
+  freeGlobalString(PLAYER_COLOR_SRV)
+  freeGlobalString(PLAYER_COLOR_MIL)
   
-  client_main_string_cleanup(MAP_NAME);
+  freeGlobalString(MAP_NAME);
   
   //config file cleanup
-  client_main_string_cleanup(DATA_CONFIG_BUFFER_NAME);
+  freeGlobalString(DATA_CONFIG_BUFFER_NAME)
   
-  client_main_string_cleanup(UNLOCKED_MECHS_DATA);
-  client_main_string_cleanup(UNLOCKED_ITEMS_DATA);
-  client_main_string_cleanup(SAVEFILE_CAMPAIGN);
-  client_main_string_cleanup(SAVEFILE_CACHE_MAP);
+  freeGlobalString(UNLOCKED_MECHS_DATA)
+  freeGlobalString(UNLOCKED_ITEMS_DATA)
+  freeGlobalString(SAVEFILE_CAMPAIGN)
+  freeGlobalString(SAVEFILE_CACHE_MAP)
   
-  client_main_string_cleanup(MENU_DEBRIEF_unlocks_mechs);
-  client_main_string_cleanup(MENU_DEBRIEF_unlocks_equip);
+  freeGlobalString(MENU_DEBRIEF_unlocks_mechs)
+  freeGlobalString(MENU_DEBRIEF_unlocks_equip)
   
-  client_main_string_cleanup(DATA_CONFIG_BUFFER_NAME);
+  freeGlobalString(DATA_CONFIG_BUFFER_NAME)
   
   //mission file cleanup
-  client_main_string_cleanup(MSN_FILENAME);
-  client_main_string_cleanup(MSN_SFX);
-  client_main_string_cleanup(MSN_MAPPIC);
-  client_main_string_cleanup(MSN_NAME);
-  client_main_string_cleanup(MSN_DISP);
-  client_main_string_cleanup(MSN_TYPE);
-  client_main_string_cleanup(MSN_RESERVETOTAL);
-  client_main_string_cleanup(MSN_SECTOR);
-  client_main_string_cleanup(MSN_LOCATION);
-  client_main_string_cleanup(MSN_LOCALTIME);
-  client_main_string_cleanup(MSN_BRIEF);
-  client_main_string_cleanup(MSN_INTEL);
-  client_main_string_cleanup(MSN_ANIM);
+  freeGlobalString(MSN_FILENAME)
+  freeGlobalString(MSN_SFX)
+  freeGlobalString(MSN_MAPPIC)
+  freeGlobalString(MSN_NAME)
+  freeGlobalString(MSN_DISP)
+  freeGlobalString(MSN_TYPE)
+  freeGlobalString(MSN_RESERVETOTAL)
+  freeGlobalString(MSN_SECTOR)
+  freeGlobalString(MSN_LOCATION)
+  freeGlobalString(MSN_LOCALTIME)
+  freeGlobalString(MSN_BRIEF)
+  freeGlobalString(MSN_INTEL)
+  freeGlobalString(MSN_ANIM)
   
   //Entities
-  client_main_string_cleanup(CLIENT_netname);
-  client_main_string_cleanup(MISSION_NAME);
-  client_main_string_cleanup(HUD_INFO_MSG);
+  freeGlobalString(CLIENT_netname)
+  freeGlobalString(MISSION_NAME)
+  freeGlobalString(HUD_INFO_MSG)
   
   localcmd("cd stop\n");
 };
@@ -710,20 +710,13 @@ void() CSQC_Ent_Remove ={
         remove(self.effect3 );
       }
     }
-    client_main_string_cleanup(self.netname);
+    freeGlobalString(self.netname);
     
   }
   if( wasfreed(self) ){
     return;
   }
   remove(self);
-};
-
-
-void( string unZone ) client_main_string_cleanup={
-  if( strlen(unZone) > 0 ){
-    strunzone( unZone );
-  }
 };
 
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)

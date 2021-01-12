@@ -488,7 +488,6 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   else{
     if( HUD_INFO_MSG != infoMessage ){
       //already on, override message
-      client_main_string_cleanup(HUD_INFO_MSG);
       cacheGlobalString(HUD_INFO_MSG, infoMessage )
     }
   }

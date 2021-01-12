@@ -165,8 +165,8 @@ float() player_predraw={
       self.origin1 = self.origin;
       self.angle2 = self.angle1;
       self.angle1 = self.angles_y;
-      self.laser_sight_org2 =   self.laser_sight_org1;
-      self.laser_sight_org1 =   self.laser_sight_org;
+      self.laser_sight_org2 = self.laser_sight_org1;
+      self.laser_sight_org1 = self.laser_sight_org;
     }
     lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
     lerp = 1 - bound(0, lerpDiff, 1);
@@ -540,8 +540,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - per-frame update
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
-    te_read_vector();
-    self.origin = controlPlayer.origin;
+    self.origin = te_read_vector();
     self.moveState = ReadByte();
     self.legDir = anglemod(ReadShort());
     self.ai_dir = ReadShort();
@@ -698,7 +697,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
   self.netname = getplayerkeyvalue(self.clientLocalId, "name");
   controlPlayer = findfloat(world, entnum, stof(getplayerkeyvalue(self.clientLocalId, "viewentity")));
   if( controlPlayer != world ){
-    controlPlayer.sequence = servercommandframe; 
+    controlPlayer.sequence = servercommandframe;
+    if( self.origin != controlPlayer.origin ){
+      self.origin = controlPlayer.origin;
+    }
   }
   
   if( isNew ){
