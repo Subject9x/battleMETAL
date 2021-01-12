@@ -74,8 +74,6 @@ void() menu_connect_drawFrame={
   //nav bar
   menu_connect_draw_bar( VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') );
   
-  scoreboard_think();
-  
   if( SV_GAMETYPE == GAMEMODE_TEAMDM ){
     menu_connect_render_teamdm( topleftroot );
     return;

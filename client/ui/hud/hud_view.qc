@@ -987,7 +987,6 @@ void() data_hud_frame={
     hud_render_tactical_map();
   }
   if( HUD_SCORES_ON ){
-    scoreboard_think();
     hud_render_scoreboard();
   }
   if( HUD_TACMAP_ON || HUD_SCORES_ON ){

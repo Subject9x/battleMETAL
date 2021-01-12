@@ -15,26 +15,6 @@ void(float num, vector org) ui_renderHardPointNumber;
 void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 void( vector org, vector imgSize, float wepType, vector highColor ) ui_renderHardpoint_class_pair;
 
-/*
-  SV_INFO
-  because serverkey, getplayerkey, infoget, and infoadd are:
-    + pretty much undocumented,
-    + do not seem to work.
-    + missing info they prescribe to have
-  c'mon....
-*/
-float SV_GAMETYPE;
-float SV_MISSIONSTATUS;
-float SV_MISSION_RESULT;
-float SV_STARTTIME;
-float SV_TIMELIMIT; //getstatf(STAT_TIMELIMIT) is not populated until post-ClientConnect()
-float SV_ENDTIME;
-float SV_ENDTIMELIMIT;
-float SV_SERVERFLAGS;
-string SV_NEXTMAP;
-float SV_WORLDTYPE;
-string SV_ABOUT;
-
 //additional clientside SV_vars
 float SV_PLAYERTIME;  //set when player spawns into mech
 float SV_MISSION_STATUS_PREV;
@@ -57,7 +37,7 @@ void( vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_ren
 */
 //hard limit of 255 >.> see Line 142 of quakedef.h
 float SCOREBOARD_NEXT_UPDATE; //timer based on servertime
-float SCOREBOARD_UPDATE_RATE = 2; //timer for update
+float SCOREBOARD_UPDATE_RATE = 1; //timer for update
 float SCOREBOARD[16]; //  <k, v> = itr, player_localnum
 float SCOREBOARDMAX;
 float SCORESTACK;

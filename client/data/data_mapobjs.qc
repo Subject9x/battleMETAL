@@ -27,6 +27,10 @@ void( float isNew, float entFlags ) sendent_handle_map={
     case DATA_MAP_DMG:
       data_map_damage( isNew, entFlags );
       break;
+    case DATA_MAP_RULES:
+      dprint("CSQC->DATA_MAP_RULES\n");//debug
+      world_rules_readEntity( isNew, entFlags);
+      break;
   }
 };
 

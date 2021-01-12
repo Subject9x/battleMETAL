@@ -46,10 +46,7 @@ void() receive_ent_bindData={
   
   if( CLIENT_data_type == DATA_MECH ){
     if( name != CLIENT_netname){
-      if( CLIENT_netname != ""){
-        strunzone( CLIENT_netname );
-      }
-      CLIENT_netname = strzone( name );
+      cacheGlobalString(CLIENT_netname, name )
     }
     
     CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
@@ -454,6 +451,7 @@ void() client_event_mission_name_frame={
   receive map's mission name, and diplay it while the player boots up.
 */
 void( string name ) client_event_mission_name={
+  local string missionName;
   local vector newOrg;
   local float noNewLine;
   local float nameLen;
@@ -467,8 +465,9 @@ void( string name ) client_event_mission_name={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_DYSTOPIAN;
     noNewLine = strstrofs( name, "\n", 0 );
-    MISSION_NAME = substring( name, 0, noNewLine);
-    MISSION_NAME = strzone( MISSION_NAME );
+    missionName = substring( name, 0, noNewLine);
+    cacheGlobalString(MISSION_NAME, missionName )
+    
     nameLen = stringwidth(MISSION_NAME, 0, '16 16 0');
     nameLen = gui_percentXRaw( nameLen / 2 );
     newOrg_x = VIEW_CTR_x - nameLen;
@@ -484,14 +483,13 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   HUD_INFO_MARK = time + infoLifetime;
   if( HUD_INFO_ON != TRUE ){
     HUD_INFO_ON = TRUE;
-    HUD_INFO_MSG = strzone( infoMessage );
+    cacheGlobalString(HUD_INFO_MSG, infoMessage )
   }
   else{
     if( HUD_INFO_MSG != infoMessage ){
       //already on, override message
-      replace = HUD_INFO_MSG;
-      HUD_INFO_MSG = strzone( infoMessage );
-      strunzone(replace);
+      client_main_string_cleanup(HUD_INFO_MSG);
+      cacheGlobalString(HUD_INFO_MSG, infoMessage )
     }
   }
   
@@ -508,40 +506,6 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   drawfont = drawfont_prev;
   
 };
-
-/*
-  server Mapping = client_send_server_info_update()
-  
-*/
-void() client_get_serverinfo={
-  local string name;
-  
-  SV_MISSION_STATUS_PREV = SV_MISSIONSTATUS;
-  
-  SV_STARTTIME = ReadLong();
-  SV_MISSIONSTATUS = ReadByte();
-  SV_GAMETYPE = ReadByte();
-  SV_SERVERFLAGS = ReadLong();
-  SV_TIMELIMIT = ReadCoord();
-  SV_WORLDTYPE = ReadByte();
-  if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
-    cvar_set("saveslot", ftos(ReadByte()));
-  }
-  SV_MISSION_RESULT = ReadByte();
-  if( SV_MISSIONSTATUS == MISSION_STATUS_OVER ){
-    SV_ENDTIME = servertime;
-  }
-  name = ReadString();
-  if( SV_NEXTMAP == "" || strlen(SV_NEXTMAP) == 0 ){
-    SV_NEXTMAP = strzone(name);
-  }
-  
-  //cvar_set("gamemode", ftos(SV_GAMETYPE));
-  if(CLIENT_player_state == PLAYER_CONNECT ){
-    cl_set_savepath(SV_GAMETYPE, (SV_SERVERFLAGS & SVFLAG_ITEMOVER) );
-  }
-};
-
 
 /*
   server Mapping = client_send_campaign_end_data();

@@ -14,7 +14,9 @@ Overview:
 .float data_type;
 
 #ifdef CSQC
+float input_sequence;
 .float clientLocalId; //entId - 1 for FL_CLIENT only
+.float sequence;
 .float particleCubeFlag;
 .float hud_bob;    //bob settings are important for dat immersion
 .float hud_bob_cycle;

@@ -60,7 +60,7 @@ void() player_makeMech={
   
   self.currentWeaponGroup = self.w_group1;
   
-  if( cvar("developer") || (!(serverflags & SVFLAG_POWERUP) && (GAMETYPE != GAMEMODE_CAMPAIGN)) ){
+  if( cvar("developer") || (!(serverflags & SVFLAG_POWERUP) && (ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN)) ){
     self.power_timer = time + POWERUP_DEBUG;
   }
   else{
@@ -79,7 +79,7 @@ void() player_makeMech={
   //player_setup_hudconsole();
   //configure player mech bits visibility
   hudWepStart = self;
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
     switch(cvar("skill")){
       case 1:
         self.energyMax = self.energyMax * 1.5;
@@ -190,6 +190,8 @@ void() player_unmakeMech={
   self.enemy = world; //explicit assignment here
   self.stat_plr_rep = 0;
   self.stat_target_name = "";
+  self.critBits = 0;
+  self.damageValue = 0;
   
   if( self.particleCube != world){
     remove(self.particleCube);

@@ -20,13 +20,16 @@ void( string fileName ) cl_load_savefile={
       if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
         line_tag = tokenizebyseparator(line, "'","'",": ",",");
         if( argv(1) == SAVE_FILE_MECH_LIST ){
-          UNLOCKED_MECHS_DATA = strzone(argv(3));
+          cacheGlobalString( UNLOCKED_MECHS_DATA, argv(3))
         }
         if( argv(1) == SAVE_FILE_ITEMS ){
-          UNLOCKED_ITEMS_DATA = strzone(argv(3));
+          cacheGlobalString( UNLOCKED_ITEMS_DATA, argv(3))
         }
         if( argv(1) == CAMP_SAVE_TAG ){
-          SAVEFILE_CAMPAIGN = strzone(argv(3));
+          cacheGlobalString( SAVEFILE_CAMPAIGN, argv(3))
+        }
+        if( argv(1) == SAVE_TAG_MISSION ){
+          cacheGlobalString( SAVEFILE_CACHE_MAP, argv(3))
         }
       }
       line = fgets(flannel);
@@ -152,20 +155,20 @@ void() cl_savefile_append={
   if(MENU_DEBRIEF_unlocks_mechs != ""){
     if(UNLOCKED_MECHS_DATA != ""){
       s = cl_savefile_insert(MENU_DEBRIEF_unlocks_mechs, UNLOCKED_MECHS_DATA);
-      UNLOCKED_MECHS_DATA = strzone(s);
+      cacheGlobalString( UNLOCKED_MECHS_DATA, s )
     }
     else{
-      UNLOCKED_MECHS_DATA = strzone(MENU_DEBRIEF_unlocks_mechs);
+      cacheGlobalString( UNLOCKED_MECHS_DATA, MENU_DEBRIEF_unlocks_mechs )
     }
   }
   
   if(MENU_DEBRIEF_unlocks_equip != ""){
     if(UNLOCKED_ITEMS_DATA != ""){
       s = cl_savefile_insert(MENU_DEBRIEF_unlocks_equip, UNLOCKED_ITEMS_DATA);
-      UNLOCKED_ITEMS_DATA = strzone(s);
+      cacheGlobalString( UNLOCKED_ITEMS_DATA, s )
     }
     else{
-      UNLOCKED_ITEMS_DATA = strzone(MENU_DEBRIEF_unlocks_equip);
+      cacheGlobalString( UNLOCKED_ITEMS_DATA, MENU_DEBRIEF_unlocks_equip )
     }
   }
 };
@@ -219,7 +222,14 @@ void() cl_savefile_save={
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
   fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
-  fputs(flannel, strcat("  'mission' : ", SV_NEXTMAP, ",\n"));
+  
+  if( strlen(SV_NEXTMAP) > 0 ){
+    fputs(flannel, strcat("  'mission' : ", SV_NEXTMAP, ",\n"));
+  }
+  else{
+    fputs(flannel, strcat("  'mission' : ", SAVEFILE_CACHE_MAP, ",\n"));
+  }
+  
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
   fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));

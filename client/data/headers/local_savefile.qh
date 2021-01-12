@@ -12,6 +12,11 @@ string UNLOCKED_MECHS_DATA; // pulled from cl_load_savefile
 string UNLOCKED_ITEMS_DATA; // pulled from cl_load_savefile
 string SAVEFILE_CAMPAIGN;
 
+string SAVE_TAG_MISSION = "mission";
+
+//Savefile cache - loaded when player connects to a CAMPAIGN MAP
+//primarily used if SV_NEXTMAP has not been determined, makes sure the save is not wiped out.
+string SAVEFILE_CACHE_MAP;
 
 void( string fileName ) cl_load_savefile;
 void( float gameType, float overrideFlag ) cl_set_savepath;

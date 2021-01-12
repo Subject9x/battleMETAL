@@ -52,15 +52,22 @@ Only if MISSION_LOSE or MISSION_WIN.
 */
 void() map_end_mission_conclude={
   //mission can only end if its active.
-  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
-    MISSION_STATUS = MISSION_STATUS_OVER;
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ACTIVE ){
+    ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
     if( self.missionStatus == TRUE ){
-      MISSION_RESULT = MISSION_RESULT_WIN;
+      ENT_SERVER_INFO.missionResult = MISSION_RESULT_WIN;
     }
     else{
-      MISSION_RESULT = MISSION_RESULT_FAIL;
+      ENT_SERVER_INFO.missionResult = MISSION_RESULT_FAIL;
     }
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_RESULT | SENDFLAG_MISSION_STATUS;
     sv_nextmap = self.map;
+    
+    if( strlen(ENT_SERVER_INFO.nextMap) > 0 ){
+      strunzone(ENT_SERVER_INFO.nextMap);
+    }
+    ENT_SERVER_INFO.nextMap = strzone(sv_nextmap);
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MAP_NEXT;
     self.think = map_end_mission_event;
     self.nextthink = time + 4;
   }

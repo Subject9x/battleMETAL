@@ -11,6 +11,8 @@ Date: 3/30/2020
 */ 
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection={
   vector trg_color;
+  local vector lorg;
+  
   trg_color = CLR_DEF_ARM_HALF;
   if( plrFaction == trgfaction ){
     trg_color = CLR_DEF_IIF_FRIEND;
@@ -25,7 +27,6 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
     }
   }
   if(targdir > -1){
-    local vector lorg;
     if(targdir == 0){
       lorg_x = VIEW_ORG_x + gui_percentXRaw(5); 
       lorg_y = VIEW_CTR_y - gui_percentYRaw(24);

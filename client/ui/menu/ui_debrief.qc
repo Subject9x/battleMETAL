@@ -18,7 +18,7 @@ void() menu_debriefListener_onClick={
       if( servertime > MENU_DEBRIEF_time_elapsed ){
         //Single player 
         if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
-          if( !(SV_SERVERFLAGS & SVFLAG_NOSAVE) ){
+          if( !(SV_SERVERFLAGS & SVFLAG_NOSAVE) || strlen(SV_NEXTMAP) > 0 ){
             cl_savefile_save();
           }
         }

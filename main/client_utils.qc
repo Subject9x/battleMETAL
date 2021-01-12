@@ -219,7 +219,7 @@ void(string str, float tokens) client_ParseMechCommand={
   if(argv(1) == "fac"){
     prevFaction = self.faction;
     self.faction = stof( argv(2) );
-    if( GAMETYPE == GAMEMODE_TEAMDM ){
+    if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
       if( prevFaction != self.faction ){
         if( self.faction == FACTION_MILITAR ){
           if( TEAM_MILITAR_TOTAL < 9 ){
@@ -336,7 +336,7 @@ void() client_update_faction={
 
 void(string cmd, float tokens) client_setMission={
   //Single player
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
     self.playerState = PLAYER_ACTIVE;
     self.view_ofs = '0 0 1';
     if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
@@ -357,14 +357,14 @@ void(string cmd, float tokens) client_setMission={
   
   // Network games
   // -Mission is on-going
-  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ACTIVE ){
     //Co-op respawn
-    if( GAMETYPE == GAMEMODE_COOP ){
+    if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
       sv_client_respawn();
       return;
     }
     //DM/TDM respawn
-    if( GAMETYPE == GAMEMODE_TEAMDM || GAMETYPE == GAMEMODE_DM ){
+    if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM || ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
       sv_client_respawn();
       return;
     }
@@ -587,41 +587,35 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
       break;
   }
 };
-/*
-  Send important world data, useful for timed updates like Campaign and Coop.
-*/
-void() client_send_server_info_update={
-  WriteByte( MSG_ALL, SVC_TEMPENTITY );
-  WriteByte( MSG_ALL, TE_SERVERINFO );
-  WriteLong( MSG_ALL, STARTTIME );
-  WriteByte( MSG_ALL, MISSION_STATUS );
-  WriteByte( MSG_ALL, GAMETYPE );
-  WriteLong( MSG_ALL, serverflags );
-  WriteCoord( MSG_ALL, cvar("timelimit") );
-  WriteByte( MSG_ALL, world.worldtype );
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-    WriteByte( MSG_ALL, cvar("saveslot") );
-  }
-  WriteByte( MSG_ALL, MISSION_RESULT );
-  WriteString( MSG_ALL, sv_nextmap );
-};
+
 
 //same thing as above but only on client connect.
 void(entity client) client_send_server_info_connect={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_SERVERINFO );
-  WriteLong( MSG_ONE, STARTTIME );
-  WriteByte( MSG_ONE, MISSION_STATUS );
-  WriteByte( MSG_ONE, GAMETYPE );
-  WriteLong( MSG_ONE, serverflags );
-  WriteCoord( MSG_ONE, cvar("timelimit") );
-  WriteByte( MSG_ONE, world.worldtype );
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-    WriteByte( MSG_ONE, cvar("saveslot") );
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_GAMETYPE;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_STARTTIME;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_ENDTIME;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_SERVERFLAGS;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_SERVERFLAGS;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_RESULT;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MAP_NEXT;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_SAVESLOT;
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_WORLDTYPE;
+
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
+  
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_DM || ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
+    if( ENT_SERVER_INFO.ruleFraglimit > 0 ){
+      ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_FRAG;
+    }
+    if( ENT_SERVER_INFO.ruleTimelimit > 0 ){
+      ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_TIME;
+    }
   }
-  WriteByte( MSG_ONE, MISSION_RESULT );
-  WriteString( MSG_ONE, sv_nextmap );
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_SAVESLOT;
+  }
+  ENT_SERVER_INFO.endRound = 0;
 };
 
 /*
@@ -745,7 +739,7 @@ entity() SelectSpawnPoint={
 void() sv_select_info_start={
   local entity spot;
   
-  switch( GAMETYPE ){
+  switch( ENT_SERVER_INFO.gameType ){
     case GAMEMODE_COOP:
       spot = find(spot, classname, "info_player_coop");
       break;

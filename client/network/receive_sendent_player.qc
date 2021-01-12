@@ -152,6 +152,8 @@ float() player_predraw={
   local vector entAng;
   local entity wep;
   local vector cacheOrg;
+  local float lerpDiff;
+  local float lerp;
   
   if( self.data_type == DATA_MECH ){
     if (self.nextthink != self.frame1time){
@@ -166,8 +168,9 @@ float() player_predraw={
       self.laser_sight_org2 =   self.laser_sight_org1;
       self.laser_sight_org1 =   self.laser_sight_org;
     }
-    self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
-    self.lerpfrac = 1 - bound(0, self.lerpfrac, 1);
+    lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+    lerp = 1 - bound(0, lerpDiff, 1);
+    self.lerpfrac = lerp;
     
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2-self.laser_sight_org1)*self.lerpfrac;
   
@@ -331,7 +334,8 @@ void( float mech_id ) sendevent_player_mech={
         self.scale = 0.01;
       }
       self.reloadValue = 100;
-      self.icon = strzone(self.icon);
+      //self.icon = strzone(self.icon);
+      
       setmodel(self, self.model);
     self = this;
     weps = weps.w_slot;
@@ -360,7 +364,7 @@ void( float mech_id ) sendevent_player_mech={
     hudConsole.angles_x = 45;
     hudConsole.angles_z = 0;
     if( cvar("chase_active") ){
-      if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
+      if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
         HUD_EXTERNAL_CAM_ACTIVE = FALSE;
         cvar_set("chase_active", "0");
       }
@@ -505,6 +509,8 @@ void(float repairValue) sendevent_player_repair={
 };
 
 void( float isNew, float changeFlags) sendent_handle_player={
+  local entity controlPlayer;
+  local entity thisSelf;
   local vector prevOrg;
   local vector targetOrg;
   local float prevShield;
@@ -518,6 +524,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevBurn;
   local float newCrits;
   local float nextHit;
+  local float frameItr;
   
   prevBurn = self.burnBits;
   prevShield = self.shield;
@@ -528,12 +535,13 @@ void( float isNew, float changeFlags) sendent_handle_player={
   prevMoveState = self.moveState;
   prevOrg = self.origin;
   prevType = self.data_type;
-    
+  
   /*
     EVENT - per-frame update
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin = te_read_vector();
+    te_read_vector();
+    self.origin = controlPlayer.origin;
     self.moveState = ReadByte();
     self.legDir = anglemod(ReadShort());
     self.ai_dir = ReadShort();
@@ -576,20 +584,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     if( self.shieldHitFlag == FALSE || nextHit == SHIELD_HIT_EXP){
       self.shieldHitFlag = nextHit;
     }
-  }
-  
-  if( isNew ){
-    if(self.data_type != DATA_MECH){
-      self.data_type = DATA_POBS;
-      setmodel(self, "q3mdl/testball.md3");
-      setsize(self, '-4 -4 -4', '4 4 4');
-      setorigin(self, self.origin);
-      self.alpha = 0.01;
-      self.scale = 0.01;
-    }
-    self.think = player_think;
-    self.nextthink = time + 0.01;
-    self.t_remove = remove_client;
   }
   
   /*
@@ -672,15 +666,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
     if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
       sendevent_handle_player_death();
-      scoreboard_sort();
       self.canTarget = FALSE;
     }
   }
-  
-  self.clientLocalId = max(0,self.entId - 1);
-  self.faction = rint(stof(getplayerkeyvalue(self.clientLocalId, "colors")));
-  self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
-  self.netname = getplayerkeyvalue(self.clientLocalId, "name");
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     self.velocity_x = ReadCoord();
@@ -700,6 +688,45 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
     else{
       self.enemy = world;
+    }
+  }
+  
+  
+  self.clientLocalId = max(0,self.entId - 1);
+  self.faction = rint(stof(getplayerkeyvalue(self.clientLocalId, "colors")));
+  self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
+  self.netname = getplayerkeyvalue(self.clientLocalId, "name");
+  controlPlayer = findfloat(world, entnum, stof(getplayerkeyvalue(self.clientLocalId, "viewentity")));
+  if( controlPlayer != world ){
+    controlPlayer.sequence = servercommandframe; 
+  }
+  
+  if( isNew ){
+    if(self.data_type != DATA_MECH){
+      self.data_type = DATA_POBS;
+      setmodel(self, "q3mdl/testball.md3");
+      setsize(self, '-4 -4 -4', '4 4 4');
+      setorigin(self, self.origin);
+      self.alpha = 0.01;
+      self.scale = 0.01;
+    }
+    self.think = player_think;
+    self.nextthink = time + 0.01;
+    self.t_remove = remove_client;
+  }
+  else{
+    if( controlPlayer != world ){
+      for (frameItr = controlPlayer.sequence+1; frameItr <= servercommandframe; frameItr = frameItr + 1) {
+        if (!getinputstate(frameItr)){
+            break;  //erk?... too old?
+        }
+        input_sequence = frameItr;
+        thisSelf = self;
+        self = controlPlayer;
+          runstandardplayerphysics(self);
+        self = thisSelf;
+        self.origin = controlPlayer.origin;
+      }
     }
   }
   
@@ -740,7 +767,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   self.kills = stof(getplayerkeyvalue(self.clientLocalId, "frags"));
-  scoreboard_sort();
   
   //perform data binds
   if( self.entId == player_localentnum ){

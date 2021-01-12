@@ -203,21 +203,22 @@ float GAME_TOTAL_MECHS = 256; //how many distinct mechs the game should assume m
 float GAME_TOTAL_ITEMS = 64; //how many distinct mechs the game should assume might exist for UI / unit data purposes
   //don't mess with this really unless...no just don't mess with it.
 string DATA = "data";
-float DATA_POBS = 1; //player observer mode
-float DATA_MECH = 2;
-float DATA_VEHC = 3;
-float DATA_WEPN = 4;
-float DATA_PROJ = 5;
-float DATA_HUD = 6;
-float DATA_BLD = 7;
-float DATA_NAVP = 8;
-float DATA_OBJT = 9;
-float DATA_NODE = 10;
-float DATA_DEPL = 11;
-float DATA_WEAPON = 12;
+float DATA_POBS       = 1; //player observer mode
+float DATA_MECH       = 2;
+float DATA_VEHC       = 3;
+float DATA_WEPN       = 4;
+float DATA_PROJ       = 5;
+float DATA_HUD        = 6;
+float DATA_BLD        = 7;
+float DATA_NAVP       = 8;
+float DATA_OBJT       = 9;
+float DATA_NODE       = 10;
+float DATA_DEPL       = 11;
+float DATA_WEAPON     = 12;
 float DATA_INFO_START = 13;//used to send clientdata entity to csqc
-float DATA_INFO_COOP = 14;  //used as ID for info_start_coop
-float DATA_MAP_DMG = 15;
+float DATA_INFO_COOP  = 14;  //used as ID for info_start_coop
+float DATA_MAP_DMG    = 15;
+float DATA_MAP_RULES  = 16;
 
 //============================
 //     UNIT PART BITS          

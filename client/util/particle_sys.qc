@@ -605,7 +605,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   fx = fx + (v_up * (entMins_z + 8));
   vel = fx + (v_up * 16);
   pointsound(fx, "sound/mech_stomp.ogg", 0.45 + (random() * 0.25), ATTN_NORM);
-  switch( SV_WORLDTYPE ){
+  switch( ENT_SERVER_INFO.worldtype ){
     case 1:
       effType = particleeffectnum("TE_STOMP_ICE");
       break;

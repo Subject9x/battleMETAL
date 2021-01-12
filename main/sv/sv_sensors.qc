@@ -111,7 +111,6 @@ void() sv_updateTargetInfo={
       self.targLockState = 0;
       self.stat_target_name = "";
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
-      self.stat_trg_ent_id = 0;
       return;
     }
     self.stat_trg_dataidx = self.enemy.data_idx;

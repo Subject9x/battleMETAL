@@ -606,8 +606,16 @@ string(float chars, string s, ...) strpad = #225;
     frags
     name
 */
+// INFOSTRING userinfo : DISABLED IN DARKPLACES AT THIS TIME 
+// INFOSTRING serverinfo : DISABLED IN DARKPLACES AT THIS TIME
+// INFOSTRING clientinfo : DISABLED IN DARKPLACES AT THIS TIME
+// otherwise, infoadd() treats a string like a map, where its a series of "\key\value\key\value"
+// custom info strings are possible.
+//
 string(string info, string key, string value, ...) infoadd = #226;
 string(string info, string key) infoget = #227;
+//-----------------------------------------------------------------------------------
+
 float(string s1, string s2, float len) strncmp = #228;
 float(string s1, string s2) strcasecmp = #229;
 float(string s1, string s2, float len) strncasecmp = #230;
@@ -1745,3 +1753,6 @@ void() SUB_Remove={
 .float renderflags; //again, lost in documentation somewhere, use RF_* flags on this.
 .float scale;
 .float ping; //client string ping value doesn't seem to work :|
+
+void( string unZone ) client_main_string_cleanup;
+#define cacheGlobalString(var, val) if (strlen(var)>0)strunzone(var); var = strzone(val);

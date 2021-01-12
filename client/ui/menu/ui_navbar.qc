@@ -503,7 +503,6 @@ void() ui_navbutton_team_click={
       TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
       TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
       nextFaction = FACTION_MILITAR;
-      scoreboard_sort();
     }
   }
   else if(CLIENT_faction == FACTION_MILITAR){
@@ -511,7 +510,6 @@ void() ui_navbutton_team_click={
       TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
       TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL - 1;
       nextFaction = FACTION_SURVEST;
-      scoreboard_sort();
     }
   }
   if( nextFaction != CLIENT_faction ){

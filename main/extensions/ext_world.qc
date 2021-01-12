@@ -42,7 +42,7 @@ void() world_metal_ini={
   cvar_set("gamemode", ftos(GAMETYPE));
   
   //Mission unit stat totals
-  MISSION_STATUS = MISSION_STATUS_READY;
+  MISSION_STATUS = 0;
   MISSION_TOTAL_PSC = 0;
   MISSION_TOTAL_SURVEST = 0;
   MISSION_TOTAL_MILITAR = 0;
@@ -58,15 +58,7 @@ void() world_metal_ini={
   if( world.ignoreSave || world.animaticOnly ){
     serverflags = serverflags | SVFLAG_NOSAVE;
   }
-  
-  STARTTIME = time;
-  if( cvar("timelimit") > FALSE ){
-    ENDTIME_LIMIT = time + (cvar("timelimit") * 60);
-  }
-  else{
-    ENDTIME_LIMIT = -1; //no time limit
-  }
-  ENDROUND = 0;
+  ENT_SERVER_INFO = world_ini_serverInfo_ent();
   
   world_ini_serverinfo();
 
@@ -104,24 +96,6 @@ void() world_metal_ini={
   addstat(STAT_LCK_STT, AS_INT, targLockState);
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
-  
-  switch( world.worldtype ){
-    case 1:
-      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_ICE");
-      break;
-    case 2:
-      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_CITY");
-      break;
-    case 3:
-      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_BADLANDS");
-      break;
-    case 4:
-      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_TUNDRA");
-      break;
-    default:
-      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_SAND");
-      break;
-  }
   
   //setup wind settings
   if( !world.wind ){
@@ -164,7 +138,35 @@ void() world_metal_ini={
   SERVER feature - current states of server that's sent to all players when they connect.
 */
 void() world_ini_serverinfo={
+  
   SERVER_ABOUT = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
+  
+  ENT_SERVER_INFO.gameType = GAMETYPE;
+  ENT_SERVER_INFO.timeStart = time;
+  ENT_SERVER_INFO.timeEnd = time + (cvar("timelimit") * 60);
+  ENT_SERVER_INFO.serverFlags = serverflags;
+  ENT_SERVER_INFO.worldtype = world.worldtype;
+  ENT_SERVER_INFO.missionStatus = MISSION_STATUS_READY;
+  ENT_SERVER_INFO.missionResult = 0;
+  ENT_SERVER_INFO.nextMap = strzone(sv_nextmap);
+  
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
+  
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_DM || ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
+    if( cvar("fraglimit") > 0 ){
+      ENT_SERVER_INFO.ruleFraglimit = cvar("fraglimit");
+      ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_FRAG;
+    }
+    if( cvar("timelimit") > 0 ){
+      ENT_SERVER_INFO.ruleTimelimit = cvar("timelimit");
+      ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_TIME;
+    }
+  }
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
+    ENT_SERVER_INFO.saveSlot = cvar("saveslot");
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_SAVESLOT;
+  }
+  ENT_SERVER_INFO.endRound = 0;
 };
 
 /*
@@ -252,6 +254,9 @@ void() SV_Shutdown={
   if( strlen(SERVER_ABOUT) > 0 ){
     strunzone(SERVER_ABOUT);
   } 
+  if( strlen(SERVER_INFO) > 0 ){
+    strunzone(SERVER_INFO);
+  }
 };
 
 /*
@@ -275,26 +280,28 @@ void() sv_rules_dm={
   local entity player;
 
   //Game FragLimit hit
-  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
-    if( cvar("fraglimit") != FALSE ){
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ACTIVE ){
+    if( ENT_SERVER_INFO.ruleFraglimit != FALSE ){
       for( player = nextent(world); player != world; player = nextent(player)){
         if( !(player.flags & FL_CLIENT) ){
           continue;
         }
-        if( player.frags >= cvar("fraglimit") ){
-          MISSION_STATUS = MISSION_STATUS_OVER;
+        if( player.frags >= ENT_SERVER_INFO.ruleFraglimit ){
+          ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
+          ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_FRAG | SENDFLAG_MISSION_STATUS;
         }
       }
       
-      if( MISSION_STATUS ==  MISSION_STATUS_OVER ){
+      if( ENT_SERVER_INFO.missionStatus ==  MISSION_STATUS_OVER ){
       }
     }
   }
   //Game TimeLimit hit
-  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
-    if( ENDTIME_LIMIT != -1 ){
-      if( time >= ENDTIME_LIMIT ){
-        MISSION_STATUS = MISSION_STATUS_OVER;
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ACTIVE ){
+    if( ENT_SERVER_INFO.timeEnd > FALSE ){
+      if( time >= ENT_SERVER_INFO.timeEnd ){
+        ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
+        ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_TIME | SENDFLAG_MISSION_STATUS;
       }
     }
   }
@@ -314,25 +321,27 @@ void() sv_rules_tdm={
   local entity player;
 
   //Game FragLimit hit
-  if( cvar("fraglimit") != FALSE ){
+  if( ENT_SERVER_INFO.ruleFraglimit != FALSE ){
     for( player = nextent(world); player != world; player = nextent(player)){
       if( !(player.flags & FL_CLIENT) ){
         continue;
       }
-      if( player.frags >= cvar("fraglimit") ){
-        MISSION_STATUS = MISSION_STATUS_OVER;
+      if( player.frags >= ENT_SERVER_INFO.ruleFraglimit ){
+        ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
+        ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_FRAG | SENDFLAG_MISSION_STATUS;
       }
     }
     
-    if( MISSION_STATUS == MISSION_STATUS_OVER ){
+    if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_OVER ){
     }
     return;
   }
   
   //Game TimeLimit hit  
-  if( ENDTIME_LIMIT != -1 ){
-    if( time > ENDTIME_LIMIT ){
-      MISSION_STATUS = MISSION_STATUS_OVER;
+  if( ENT_SERVER_INFO.timeEnd != FALSE ){
+    if( time > ENT_SERVER_INFO.timeEnd ){
+      ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
+      ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_FRAG | SENDFLAG_MISSION_STATUS;
       return;
     }
   }
@@ -363,9 +372,8 @@ void() sv_rules_camp={
     ports -> CheckRules()
 */
 void() sv_checkRules={
-  GAMETYPE = cvar("gamemode");
-  if( MISSION_STATUS == MISSION_STATUS_ACTIVE ){
-    switch( GAMETYPE ){
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ACTIVE ){
+    switch( ENT_SERVER_INFO.gameType ){
       case GAMEMODE_CAMPAIGN:
         sv_rules_camp();
         break;
@@ -400,24 +408,25 @@ void() sv_endServer={
   local float mapCount;
   local float itr;
   
-  if( MISSION_STATUS == MISSION_STATUS_OVER ){
-    client_send_server_info_update();
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_OVER ){
     //send game over data
         //TODO
     //Setup end-timer 1 - gives enough time to alert players of end mission, and prepare for score screen.   
-    MISSION_STATUS = MISSION_STATUS_ENDING;
-    if( (GAMETYPE == GAMEMODE_COOP) || (GAMETYPE == GAMEMODE_CAMPAIGN) ){
-      ENDROUND_TIME = time + 8;
+    ENT_SERVER_INFO.missionStatus = MISSION_STATUS_ENDING;
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
+    if( (ENT_SERVER_INFO.gameType == GAMEMODE_COOP) || (ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN) ){
+      ENT_SERVER_INFO.endRoundTime = time + 8;
     }
     else{
-      ENDROUND_TIME = time + 15;
+      ENT_SERVER_INFO.endRoundTime = time + 15;
     }
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_ENDTIME;
     for( player = nextent(world); player.classname == "player"; player = nextent(player)){
       if( !(player.flags & FL_CLIENT) ){
         continue;
       }
       player.flags = player.flags | FL_NOSHOOT;
-      if( GAMETYPE == GAMEMODE_CAMPAIGN || GAMETYPE == GAMEMODE_COOP ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN || ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
         client_send_campaign_end_data( player );
       }
       else{
@@ -427,11 +436,10 @@ void() sv_endServer={
     return;
   }
   
-  if( MISSION_STATUS == MISSION_STATUS_ENDING ){
-    client_send_server_info_update();
-    if( time > ENDROUND_TIME ){
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ENDING ){
+    if( time > ENT_SERVER_INFO.endRoundTime ){
       spot = find(world, classname, "info_player_start");
-      if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
         sendPlayerState = PLAYER_DEBRIEF;
       }
       else{
@@ -455,13 +463,15 @@ void() sv_endServer={
           setorigin( self, spot.origin );
         self = this;
       }
-      MISSION_STATUS = MISSION_STATUS_DONE;
+      ENT_SERVER_INFO.missionStatus = MISSION_STATUS_DONE;
+      ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
       
       //only cycle maps if non-campaign/co-op
-      if( GAMETYPE != GAMEMODE_CAMPAIGN && GAMETYPE != GAMEMODE_COOP){
+      if( ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN && ENT_SERVER_INFO.gameType != GAMEMODE_COOP){
         //treats WORLD_MAP_LIST like a pseudo-array (Strings are just arrays, right?)
         if( sv_nextmap != "" || strlen(sv_nextmap) > 0 ){
           strunzone(sv_nextmap);
+          ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MAP_NEXT;
         }
         mapCount = tokenizebyseparator(WORLD_MAP_LIST, " ");
         if( mapCount > 1 ){
@@ -483,27 +493,27 @@ void() sv_endServer={
         sv_nextmap = strzone(sv_nextmap);
       }
       
-      if( GAMETYPE == GAMEMODE_CAMPAIGN ){
-        ENDROUND_TIME = time + 2;
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
+        ENT_SERVER_INFO.endRoundTime = time + 2;
       }
       else{
-        if( GAMETYPE == GAMEMODE_COOP ){
-          ENDROUND_TIME = time + SERVER_SCORE_TIME_COOP;
+        if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+          ENT_SERVER_INFO.endRoundTime = time + SERVER_SCORE_TIME_COOP;
         }
         else{
-          ENDROUND_TIME = time + SERVER_SCORE_TIME_DM;
+          ENT_SERVER_INFO.endRoundTime = time + SERVER_SCORE_TIME_DM;
         }
       }
-      ENDROUND = TRUE;
+      ENT_SERVER_INFO.endRound = TRUE;
     }
     return;
   }
   
-  if( MISSION_STATUS == MISSION_STATUS_DONE ){
-    if( GAMETYPE != GAMEMODE_CAMPAIGN ){
-      if( time > ENDROUND_TIME ){
-        if( ENDROUND == TRUE ){
-          ENDROUND = FALSE;
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_DONE ){
+    if( ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN ){
+      if( time > ENT_SERVER_INFO.endRoundTime ){
+        if( ENT_SERVER_INFO.endRound == TRUE ){
+          ENT_SERVER_INFO.endRound = FALSE;
           if( sv_nextmap != "" ){
             changelevel(sv_nextmap);
           }
@@ -528,7 +538,7 @@ void() sv_endServer={
     - team2.sav
 */
 void() sv_world_load_items={
-  switch( GAMETYPE ){
+  switch( ENT_SERVER_INFO.gameType ){
     case GAMEMODE_COOP:
       mapfile_coop_load();
       break;

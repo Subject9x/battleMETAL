@@ -35,7 +35,7 @@ void() PlayerPreThink = {
   client_update_losses();
   
   if( self.playerState == PLAYER_INTERMSN ){
-    if( MISSION_STATUS == MISSION_STATUS_ENDING ){
+    if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ENDING ){
       return;
     }
   }
@@ -399,7 +399,6 @@ void() PlayerDie={
   
   client_push_player_info();
   client_push_mapobjects();
-  client_send_server_info_update();
   client_send_campaign_end_data( self );
   
   self.damageValue = 0;
@@ -462,7 +461,6 @@ void() PlayerDieNetwork={
   }
   client_push_player_info();
   client_push_mapobjects();
-  client_send_server_info_update();
   
   self.effects = 0;
   self.deadflag = DEAD_DYING;
@@ -513,13 +511,12 @@ void() PlayerDieNetworkEnd={
   }
   self.movetype = MOVETYPE_NONE;
   
-  
-  if( MISSION_STATUS < MISSION_STATUS_OVER ){
+  if( ENT_SERVER_INFO.missionStatus < MISSION_STATUS_OVER ){
     self.playerState = PLAYER_REDEPLOY;
   }
   else{
     self.playerState = PLAYER_INTERMSN; //short-circuit to intermission
-      //on ending server.
+    //on ending server.
   }
   
   self.think = PlayerDead;

@@ -114,8 +114,7 @@ void() CSQC_Init =
   
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");
-  MAP_NAME = argv(1);
-  MAP_NAME = strzone(MAP_NAME);
+  cacheGlobalString( MAP_NAME, argv(1) )
 
   CFG_INDEX = 1;
   CFG_INDEX_PREV = CFG_INDEX;
@@ -151,7 +150,7 @@ void() CSQC_Init =
   SCORESTACK = 0;
   
   for( i=0; i < SCOREBOARDMAX; i=i+1){
-      SCOREBOARD[i] = -1;
+    SCOREBOARD[i] = -1;
   }
   scoreboard_think();
   
@@ -168,31 +167,62 @@ void() CSQC_Init =
   VIEW_OBS_ID = 1;
   ui_colors_set_player_list();
   ISMENU_PREV = FALSE;
-  
-  PLAYER_COLOR_PSC = strzone(cvar_string("cl_color_psc"));
-  PLAYER_COLOR_SRV = strzone(cvar_string("cl_color_srv"));
-  PLAYER_COLOR_MIL = strzone(cvar_string("cl_color_mil"));
-  
+
+  cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
+  cacheGlobalString( PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
+  cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
 void() CSQC_Shutdown =
 {
-  if( UNLOCKED_MECHS_DATA != "" ){
-    strunzone(UNLOCKED_MECHS_DATA); 
-  }
-  if( UNLOCKED_ITEMS_DATA != "" ){
-    strunzone(UNLOCKED_ITEMS_DATA); 
-  }
-  if( MENU_DEBRIEF_unlocks_mechs != "" ){
-    strunzone(MENU_DEBRIEF_unlocks_mechs); 
-  } 
-  if( MENU_DEBRIEF_unlocks_equip != "" ){
-    strunzone(MENU_DEBRIEF_unlocks_equip); 
-  }
-  if( SV_NEXTMAP != "" ){
-    strunzone(SV_NEXTMAP);
-  }
+  //server string cleanup
+  client_main_string_cleanup(UNLOCKED_MECHS_DATA);
+  client_main_string_cleanup(UNLOCKED_ITEMS_DATA);
+  client_main_string_cleanup(MENU_DEBRIEF_unlocks_mechs);
+  client_main_string_cleanup(MENU_DEBRIEF_unlocks_equip);
+  client_main_string_cleanup(SV_NEXTMAP);
+  client_main_string_cleanup(SV_ABOUT);
+  client_main_string_cleanup(ENT_SERVER_INFO.nextMap);
+  
+  client_main_string_cleanup(PLAYER_COLOR_PSC);
+  client_main_string_cleanup(PLAYER_COLOR_SRV);
+  client_main_string_cleanup(PLAYER_COLOR_MIL);
+  
+  client_main_string_cleanup(MAP_NAME);
+  
+  //config file cleanup
+  client_main_string_cleanup(DATA_CONFIG_BUFFER_NAME);
+  
+  client_main_string_cleanup(UNLOCKED_MECHS_DATA);
+  client_main_string_cleanup(UNLOCKED_ITEMS_DATA);
+  client_main_string_cleanup(SAVEFILE_CAMPAIGN);
+  client_main_string_cleanup(SAVEFILE_CACHE_MAP);
+  
+  client_main_string_cleanup(MENU_DEBRIEF_unlocks_mechs);
+  client_main_string_cleanup(MENU_DEBRIEF_unlocks_equip);
+  
+  client_main_string_cleanup(DATA_CONFIG_BUFFER_NAME);
+  
+  //mission file cleanup
+  client_main_string_cleanup(MSN_FILENAME);
+  client_main_string_cleanup(MSN_SFX);
+  client_main_string_cleanup(MSN_MAPPIC);
+  client_main_string_cleanup(MSN_NAME);
+  client_main_string_cleanup(MSN_DISP);
+  client_main_string_cleanup(MSN_TYPE);
+  client_main_string_cleanup(MSN_RESERVETOTAL);
+  client_main_string_cleanup(MSN_SECTOR);
+  client_main_string_cleanup(MSN_LOCATION);
+  client_main_string_cleanup(MSN_LOCALTIME);
+  client_main_string_cleanup(MSN_BRIEF);
+  client_main_string_cleanup(MSN_INTEL);
+  client_main_string_cleanup(MSN_ANIM);
+  
+  //Entities
+  client_main_string_cleanup(CLIENT_netname);
+  client_main_string_cleanup(MISSION_NAME);
+  client_main_string_cleanup(HUD_INFO_MSG);
   
   localcmd("cd stop\n");
 };
@@ -210,27 +240,34 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 // the most important function in CSQC...
 void(float w, float h, float menuView) CSQC_UpdateView =
 {
+  local vector fovvec, vf_sz, vf_mn;
+  local entity e;
+  local entity oldSelf;
+  local entity eClient;
+  local vector porg, pang, torg;
+  scoreboard_think();
+  
   if(ISMENU_PREV != menuView){
     //check for player bringing up menu delta
     if( ISMENU_PREV == TRUE && menuView == FALSE ){
       if( CLIENT_faction == FACTION_SURVEST){
         if( PLAYER_COLOR_SRV != cvar_string("cl_color_srv") ){
           //player changed Survest color
-          PLAYER_COLOR_SRV = strzone(cvar_string("cl_color_srv"));
+          cacheGlobalString(PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
           cl_setmech( CLIENT_MENU_sel_mech );
         }
       }
       else if( CLIENT_faction == FACTION_MILITAR){
         if( PLAYER_COLOR_MIL != cvar_string("cl_color_mil") ){
           //player changed militar color
-          PLAYER_COLOR_MIL = strzone(cvar_string("cl_color_mil"));
+          cacheGlobalString(PLAYER_COLOR_MIL, cvar_string("cl_color_mil") )
           cl_setmech( CLIENT_MENU_sel_mech );
         }
       }
       else{
         if( PLAYER_COLOR_PSC != cvar_string("cl_color_psc") ){
           //player changed PSC color
-          PLAYER_COLOR_PSC = strzone(cvar_string("cl_color_psc"));
+          cacheGlobalString(PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
           cl_setmech( CLIENT_MENU_sel_mech );
         }
       }
@@ -243,6 +280,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", "1");
   }
+  
   
 	/*
   local vector vf_size;
@@ -264,9 +302,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	// clear the scene information (entities, polygons, etc)
 	clearscene();
   //=====================================================
-  local vector fovvec,
-                vf_sz,
-                vf_mn;
 	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
   vf_sz = getpropertyvec(VF_SIZE);
   vf_mn = getpropertyvec(VF_MIN);
@@ -291,7 +326,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   else{
     //note: demonstrates the basics for player-observer mode where you follow another player
     if( VIEW_OBS_ID == 2 ){
-      local entity e;
       e = entitybyindex(stof(getplayerkeyvalue(VIEW_OBS_ID+1, "viewentity")));
       setproperty(VF_ORIGIN, e.origin);
       setproperty(VF_ANGLES, e.angles);
@@ -339,7 +373,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     // add clientside entities (MASK_NORMAL)
     // add engine networked entities (MASK_ENGINE)
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
-    local entity oldSelf;
     oldSelf = self;
     self = world;
     while( (self = nextent(self)) ){
@@ -417,7 +450,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   }
   
   if( cvar("developer") ){
-    local vector porg, pang, torg;
     pang = '0 0 0'; //sh, compiler.
     torg = '0 0 0';
     porg_x = pang_x = torg_x = VIEW_ORG_x;
@@ -449,10 +481,6 @@ float() CSQC_Parse_TempEntity =
       client_campaign_end_data();
       return TRUE;
       
-    case TE_SERVERINFO:
-      client_get_serverinfo();
-      return TRUE;
-    
     case TE_CLIENT_INFO_DM:
       client_dm_end_data();
       return TRUE;
@@ -532,7 +560,7 @@ void(string s) CSQC_Parse_StuffCmd =
     if( argv(0) == "svabout" ){
       lenAdjust = strlen(s) - 8;
       tempAbout = substring(s, 8, lenAdjust );
-      SV_ABOUT = strzone(tempAbout);
+      cacheGlobalString( SV_ABOUT, tempAbout )
       return;
     }
     if( argv(0) == "fog" ){
@@ -682,14 +710,20 @@ void() CSQC_Ent_Remove ={
         remove(self.effect3 );
       }
     }
-    if(self.netname != "" ){
-      strunzone(self.netname);
-    }
+    client_main_string_cleanup(self.netname);
+    
   }
   if( wasfreed(self) ){
     return;
   }
   remove(self);
+};
+
+
+void( string unZone ) client_main_string_cleanup={
+  if( strlen(unZone) > 0 ){
+    strunzone( unZone );
+  }
 };
 
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)

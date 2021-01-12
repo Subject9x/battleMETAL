@@ -200,7 +200,7 @@ void() ImpulseCommands ={
       client_update_faction();
     }
     else{
-      if( GAMETYPE == GAMEMODE_DM ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
         PutClientInServer();
       }
@@ -217,7 +217,7 @@ void() ImpulseCommands ={
       client_update_faction();
     }
     else{
-      if( GAMETYPE == GAMEMODE_DM ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
         PutClientInServer();
       }

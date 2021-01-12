@@ -37,19 +37,20 @@ called when a player connects to a server
 ============
 */
 void() ClientConnect = {
-  if( GAMETYPE == GAMEMODE_COOP ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     bprint(self.netname);
     bprint(" has arrived to help!\n");
   }
-  else if( GAMETYPE == GAMEMODE_DM ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
     bprint(self.netname);
     bprint(" has entered the combat zone.\n");
   }
-  else if( GAMETYPE == GAMEMODE_TEAMDM ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     bprint(" Unkown contact has entered the AO.\n");
   }
-  if( MISSION_STATUS == MISSION_STATUS_READY ){
-    MISSION_STATUS = MISSION_STATUS_ACTIVE;
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_READY ){
+    ENT_SERVER_INFO.missionStatus = MISSION_STATUS_ACTIVE;
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
   }
   self.entnum = num_for_edict(self);
   self.weaponmodel = "";
@@ -191,7 +192,7 @@ void() PutClientInServer = {
   sv_select_info_start();
 
   //GAME MODE BLOCK
-  switch(GAMETYPE){
+  switch(ENT_SERVER_INFO.gameType){
     case GAMEMODE_CAMPAIGN:
       PutClientInServer_Campaign();
       break;
@@ -209,8 +210,8 @@ void() PutClientInServer = {
       break;
   }
   //Client connected to a round that's ending.
-  if( MISSION_STATUS > MISSION_STATUS_ACTIVE ){
-    if( GAMETYPE != GAMEMODE_CAMPAIGN ){
+  if( ENT_SERVER_INFO.missionStatus > MISSION_STATUS_ACTIVE ){
+    if( ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN ){
       self.playerState = PLAYER_INTERMSN;
     }
   }
@@ -228,7 +229,7 @@ void() ClientKill = {
     return;
   }
   
-  if ( (intermission_running) && ( GAMETYPE != GAMEMODE_CAMPAIGN ) )  // not allowed during intermission
+  if ( (intermission_running) && ( ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN ) )  // not allowed during intermission
 		return;
 
   //if player is an observer and their next class is still observer
@@ -449,7 +450,7 @@ void() PutClientInServer_TeamDeathmatch={
 
 void() sv_client_respawn={
   
-  if( GAMETYPE == GAMEMODE_COOP ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     // get the spawn parms as they were at level start
     //setspawnparms (self);
     if(self.data_type == DATA_MECH ){
@@ -460,7 +461,7 @@ void() sv_client_respawn={
     PutClientInServer ();
     return;
   }
-  if ( GAMETYPE == GAMEMODE_DM || GAMETYPE == GAMEMODE_TEAMDM ){
+  if ( ENT_SERVER_INFO.gameType == GAMEMODE_DM || ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     // set default spawn parms
     //SetNewParms ();
     if(self.data_type == DATA_MECH ){
