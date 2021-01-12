@@ -295,10 +295,7 @@ void() selectNextConfig={
       CFG_INDEX = 1;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
-      if( DATA_CONFIG_BUFFER_NAME != "" ){
-        strunzone( DATA_CONFIG_BUFFER_NAME );
-      }
-      DATA_CONFIG_BUFFER_NAME = strzone(ftos(CFG_INDEX));
+      cacheGlobalString(DATA_CONFIG_BUFFER_NAME, ftos(CFG_INDEX) )
     }
   }
 };
@@ -311,10 +308,7 @@ void() selectPrevConfig={
       CFG_INDEX = 6;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
-      if( DATA_CONFIG_BUFFER_NAME != "" ){
-        strunzone( DATA_CONFIG_BUFFER_NAME );
-      }
-      DATA_CONFIG_BUFFER_NAME = strzone(ftos(CFG_INDEX));
+      cacheGlobalString(DATA_CONFIG_BUFFER_NAME, ftos(CFG_INDEX) )
     }
   }
 };

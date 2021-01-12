@@ -151,7 +151,7 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
     self.drawmask = MASK_ENGINE;
     self.solid = SOLID_BSP;
     self.movetype = MOVETYPE_NONE;
-    self.classname = strzone("map_terrain");
+    cacheGlobalString(self.classname, "map_terrain" )
   }
 };
 

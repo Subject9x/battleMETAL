@@ -327,10 +327,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   if( isNew ){
     setorigin(self, self.origin);
     self.think = mech_ai_think;
-    self.nextthink = time + 0.001;
-    if( newName != "" ){
-      self.netname = strzone(newName);
-    }
+    self.nextthink = time + 0.01;
+    cacheGlobalString(self.netname, newName )
     self.data_type = DATA_MECH;
     self.skin =  self.faction - 1;
     self.movetype = MOVETYPE_STEP;

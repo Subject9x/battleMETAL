@@ -21,13 +21,13 @@ void() msn_getfile={
     fclose(flannel);
   }
   else{
-    MSN_NAME = "FILE NOT FOUND";
+    /*MSN_NAME = "FILE NOT FOUND";
     MSN_TYPE = "FILE NOT FOUND";
     MSN_SECTOR = "FILE NOT FOUND";
     MSN_LOCATION = "FILE NOT FOUND";
     MSN_LOCALTIME ="FILE NOT FOUND";
     MSN_BRIEF = "FILE NOT FOUND";
-    MSN_INTEL = "FILE NOT FOUND";
+    MSN_INTEL = "FILE NOT FOUND";*/
   }
 };
 
@@ -49,59 +49,37 @@ void() msn_parsefile={
         }
       }
       if (argv(1) == MSN_FILE_NAME){
-        if( argv(token) != "" ){
-          MSN_NAME = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_NAME, argv(token))
       }
       if (argv(1) == MSN_FILE_TYPE){
-        if( argv(token) != "" ){
-          MSN_TYPE = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_TYPE, argv(token))
       }
       if (argv(1) == MSN_FILE_POINTS){
-        if( argv(token) != "" ){
-          MSN_RESERVETOTAL = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_RESERVETOTAL, argv(token))
       }
       if (argv(1) == MSN_FILE_SECTOR){
-        if( argv(token) != "" ){
-          MSN_SECTOR = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_SECTOR, argv(token))
       }
       if (argv(1) == MSN_FILE_LOCUS){
-        if( argv(token) != "" ){
-          MSN_LOCATION = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_LOCATION, argv(token))
       }
       if (argv(1) == MSN_FILE_TIME){
-        if( argv(token) != "" ){
-          MSN_LOCALTIME = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_LOCALTIME, argv(token))
       }
       if (argv(1) == MSN_FILE_BRIEF){
-        if( argv(token) != "" ){
-          MSN_BRIEF = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_BRIEF, argv(token))
       }
       if (argv(1) == MSN_FILE_INTEL){
-        if( argv(token) != "" ){
-          MSN_INTEL = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_INTEL, argv(token))
       }
       if (argv(1) == MSN_FILE_OBJS){
-        if( argv(token) != "" ){
-          MSN_OBJ = stof(argv(token));
-        }
+        MSN_OBJ = stof(argv(token));
       }
       if (argv(1) == MSN_FILE_ANIM){
-        if( argv(token) != "" ){
-          MSN_ANIM = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_ANIM, argv(token))
       }
       if (argv(1) == MSN_FILE_DISP){
-        if( argv(token) != "" ){
-          MSN_DISP = strzone(argv(token));
-        }
+        cacheGlobalString( MSN_DISP, argv(token))
       }
       if( argv(1) == MSN_FILE_NOSAVE ){
         MSN_SAVE = stof(argv(token));
@@ -128,9 +106,9 @@ void() msn_parsefile={
 };
 
 void(string line, string val) msn_setmappic={
-  MSN_MAPPIC = strzone(val);
-  if(MSN_MAPPIC != ""){
-    local string s;
+  local string s;
+  if(val != ""){
+    cacheGlobalString( MSN_MAPPIC, val)
     s = precache_pic(MSN_MAPPIC, 0);
     if(s != ""){
       MSN_MAPPIC = s;
@@ -269,11 +247,7 @@ void() msn_unlock_stuff={
       unlockItems = strcat(unlockMechs, MSN_OBJ_ITEMS[obj.data_idx], " ");
     }
   }
-  if( unlockMechs != "" ){
-    MENU_DEBRIEF_unlocks_mechs = strzone( unlockMechs );
-  }
-  if( unlockItems != "" ){
-    MENU_DEBRIEF_unlocks_equip = strzone( unlockItems );
-  }
+  cacheGlobalString(MENU_DEBRIEF_unlocks_mechs, unlockMechs )
+  cacheGlobalString(MENU_DEBRIEF_unlocks_equip, unlockItems )
   cl_savefile_append();
 };

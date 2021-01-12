@@ -91,10 +91,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   }
   
   if( isNew ){
-    setorigin(self, self.origin);
-    if( newName != "" ){
-      self.netname = strzone(newName);
-    }
+    cacheGlobalString(self.netname, newName )
     data_sync_new_vehicle(self.data_idx);
     self.predraw = predraw_spg;
     self.canTarget = TRUE;

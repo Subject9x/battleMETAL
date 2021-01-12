@@ -77,7 +77,7 @@ void(float nextMissionBool) cl_set_mission={
   Getter functions, receives stuffcmd()'s from server.
 */
 void(string fileName) cl_get_msnfile={
-  MSN_FILENAME = strzone(fileName);
+  cacheGlobalString(MSN_FILENAME, fileName )
   msn_getfile();
 };
 

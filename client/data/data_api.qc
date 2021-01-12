@@ -99,7 +99,7 @@ float( float mechId, float configNum ) data_mech_config_load={
           DATA_CONFIG_BUFFER_FILENUM = stof(value);
         }
         if( token == "name"){
-          DATA_CONFIG_BUFFER_NAME = strzone(value);
+          cacheGlobalString(DATA_CONFIG_BUFFER_NAME, value)
         }
         if( strstrofs(token, "hpt",0) != -1 ){
           tokenizebyseparator(token, "_");
