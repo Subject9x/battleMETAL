@@ -1754,5 +1754,5 @@ void() SUB_Remove={
 .float scale;
 .float ping; //client string ping value doesn't seem to work :|
 
-#define cacheGlobalString(var, val) if (strlen(var)>0)strunzone(var); var = strzone(val);
-#define freeGlobalString(var) if (strlen(var)>0)strunzone(var);
+#define cacheGlobalString(var, val) if(val!="" && strlen(val) > 0){if (var!="" && strlen(val) > 0){strunzone(var);} var = strzone(val);}
+#define freeGlobalString(var) if (var!="" && strlen(var) > 0){strunzone(var); var = "";}

@@ -16,10 +16,7 @@ void() data_mech_config_clearBuffer={
   local float itr;
   itr = 1;
   DATA_CONFIG_BUFFER_FILENUM = 0;
-  if( DATA_CONFIG_BUFFER_NAME != "" ){
-    strunzone( DATA_CONFIG_BUFFER_NAME );
-  }
-  DATA_CONFIG_BUFFER_NAME = "";
+  freeGlobalString(DATA_CONFIG_BUFFER_NAME)
   
   while( itr < 10 ){
     DATA_CONFIG_BUFFER_WEPS[itr] = 0;

@@ -206,19 +206,7 @@ void() CSQC_Shutdown =
   freeGlobalString(DATA_CONFIG_BUFFER_NAME)
   
   //mission file cleanup
-  freeGlobalString(MSN_FILENAME)
-  freeGlobalString(MSN_SFX)
-  freeGlobalString(MSN_MAPPIC)
-  freeGlobalString(MSN_NAME)
-  freeGlobalString(MSN_DISP)
-  freeGlobalString(MSN_TYPE)
-  freeGlobalString(MSN_RESERVETOTAL)
-  freeGlobalString(MSN_SECTOR)
-  freeGlobalString(MSN_LOCATION)
-  freeGlobalString(MSN_LOCALTIME)
-  freeGlobalString(MSN_BRIEF)
-  freeGlobalString(MSN_INTEL)
-  freeGlobalString(MSN_ANIM)
+  msn_free_strings();
   
   //Entities
   freeGlobalString(CLIENT_netname)
@@ -276,7 +264,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
           cl_setmech( CLIENT_MENU_sel_mech );
         }
       }
-  
     }
     ISMENU_PREV = menuView;
   }
