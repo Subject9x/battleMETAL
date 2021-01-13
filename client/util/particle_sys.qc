@@ -127,6 +127,9 @@ void() cl_particles_fogFrame={
 };
 
 float() te_explode_mech_piece_predraw={
+  local float lerpDiff;
+  local float lerp;
+  
   if (self.nextthink != self.frame1time){
     self.frame2time = self.frame1time;
     self.frame1time = self.nextthink;
@@ -137,8 +140,9 @@ float() te_explode_mech_piece_predraw={
     self.angle2 = self.angle1;
     self.angle1 = self.angles_y;
   }
-  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
-  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  lerp = bound(0, self.lerpfrac, 1);
+  self.lerpfrac = lerp;
 
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   return FALSE;
@@ -414,7 +418,9 @@ void() te_shield_hit={
 */
 
 float() predraw_shield_explode={
-
+  local float lerpDiff;
+  local float lerp;
+  
   self.colormod = self.compOffset;
   self.angles_y = self.angles_y - 3;
   if (self.nextthink != self.frame1time){
@@ -430,8 +436,9 @@ float() predraw_shield_explode={
     self.origin2 = self.origin1;
     self.origin1 = self.origin;
   }
-  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
-  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  lerp = 1 - bound(0, lerpDiff, 1);
+  self.lerpfrac = lerp;
   
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   

@@ -27,6 +27,7 @@ void() sendent_ai_think={
 };
 //implementing parts of Spike's CSQC-only mod code here
 void() interpolate_origin={
+  local float newLerp;
   //interpolate origins and angles so that they're synced to the thinks.
   //interpolation = latency.
   if (self.nextthink != self.frame1time)
@@ -40,8 +41,9 @@ void() interpolate_origin={
     self.angle2 = self.angle1;
     self.angle1 = self.angles_y;
   }
-  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
-  self.lerpfrac = 1 - bound(0, self.lerpfrac, 1);
+  newLerp = (time - self.frame2time) /(self.frame1time - self.frame2time);
+  newLerp = 1 - bound(0, newLerp, 1);
+  self.lerpfrac = newLerp;
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
 };
 
