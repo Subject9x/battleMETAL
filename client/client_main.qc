@@ -28,7 +28,8 @@ void() CSQC_Init =
   VQSIZE = 6;
   SQUED = FALSE;
   
-  TQSIZE = 8;
+  //Radio Transmission queue size
+  TQSIZE = 4;
   TRTIME = 0;
   TR_TIME_NEXT = 0;
   TQUED = FALSE;
@@ -242,9 +243,13 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 {
   local vector fovvec, vf_sz, vf_mn;
   local entity e;
+  local vector porg, pang, torg;
+  
+  local float clientItr;
+  local float frameItr;
   local entity oldSelf;
   local entity eClient;
-  local vector porg, pang, torg;
+  
   scoreboard_think();
   
   if(ISMENU_PREV != menuView){
@@ -281,6 +286,28 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     cvar_set("r_shadow_realtime_world", "1");
   }
   
+  //run prediction...?
+  eClient = findfloat(world, entnum, clientItr);
+  while( eClient != world ){
+    for (frameItr = eClient.sequence + 1; frameItr <= servercommandframe; frameItr = frameItr + 1) {
+        if (!getinputstate(frameItr)){
+            break;  //erk?... too old?
+        }
+        input_sequence = frameItr;
+        oldSelf = self;
+        self = eClient;
+          runstandardplayerphysics(self);
+          self.clientData.origin = self.origin;
+        self = oldSelf;
+      }
+    clientItr = clientItr + 1;
+    if( clientItr < 17){
+      eClient = findfloat(eClient, entnum, clientItr);
+    }
+    else{
+      eClient = world;
+    }
+  }
   
 	/*
   local vector vf_size;
@@ -452,6 +479,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   if( cvar("developer") ){
     pang = '0 0 0'; //sh, compiler.
     torg = '0 0 0';
+    porg = '0 0 0';
     porg_x = pang_x = torg_x = VIEW_ORG_x;
     porg_y = pang_y = torg_y = VIEW_MAX_y;
     drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
@@ -491,10 +519,6 @@ float() CSQC_Parse_TempEntity =
       
     case TE_MSN_BOUND:
       client_event_boundary();
-      return TRUE;
-      
-    case TE_AI_VOICE:
-      snd_hud_trnsmsn_addtoqueue(ReadByte(), ReadByte(), ReadByte(), ReadLong());
       return TRUE;
       
     case TE_MISSION_END:
@@ -710,8 +734,7 @@ void() CSQC_Ent_Remove ={
         remove(self.effect3 );
       }
     }
-    freeGlobalString(self.netname);
-    
+    freeGlobalString(self.netname)
   }
   if( wasfreed(self) ){
     return;

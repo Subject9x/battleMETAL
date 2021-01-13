@@ -12,6 +12,7 @@ Overview:
 
 .entity w_slot;     //use this for teh linked list goodness
 .float data_type;
+.entity clientData;
 
 #ifdef CSQC
 float input_sequence;
@@ -114,6 +115,4 @@ float input_sequence;
 .vector ramPower;
 .vector ramVelocity;
 .float ramUp;
-
-.entity clientData;
 #endif

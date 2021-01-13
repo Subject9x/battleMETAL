@@ -380,8 +380,8 @@ void() client_event_environment={
   handles mission name if active
 */
 void() client_event_mission_name_frame={
-  
-
+  local vector backpanelOrg, backpanelSize;
+  local float backSize;
   
   //state controller
   switch( MISSION_NAME_STATE ){
@@ -418,7 +418,7 @@ void() client_event_mission_name_frame={
       break;
     default:
       MISSION_NAME_ON = FALSE;
-      strunzone(MISSION_NAME);
+      freeGlobalString(MISSION_NAME)
       drawfont = drawfont_prev;
       return;
   }
@@ -428,9 +428,6 @@ void() client_event_mission_name_frame={
   else if( MISSION_NAME_ALPHA < 0 ){
     MISSION_NAME_ALPHA = 0;
   }
-
-  local vector backpanelOrg, backpanelSize;
-  local float backSize;
   backpanelSize = '34 34 0';
   backpanelOrg = MISSION_NAME_ORG - gui_percentToPixelRawVec('2 2');
 

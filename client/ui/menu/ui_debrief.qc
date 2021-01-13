@@ -517,7 +517,7 @@ void() menu_debrief_sort_unlocks={
   if( MENU_DEBRIEF_unlocks_mechs != "" ){
     tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
     while( tokenItr < tokens ){
-      item = strzone(argv(tokenItr));  
+      item = strzone(argv(tokenItr));
       itemCounter = stof(item);
       UNLOCKED_MECHS[itemCounter] = itemCounter;
       strunzone(item);

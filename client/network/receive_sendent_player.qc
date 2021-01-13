@@ -715,6 +715,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.think = player_think;
     self.nextthink = time + 0.01;
     self.t_remove = remove_client;
+    if( controlPlayer != world && controlPlayer.entnum == self.clientLocalId ){
+      controlPlayer.clientData = self;
+    }
   }
   else{
     if( controlPlayer != world ){
