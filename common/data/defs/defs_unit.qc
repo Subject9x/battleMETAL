@@ -94,6 +94,9 @@ Overview:
 #endif
 
 #ifdef CSQC
+.float ai_voice_group;
+.float ai_voice_limit;
+.float ai_muted;
 .float pitchMin;
 .float pitchMax;
 .float legDir;

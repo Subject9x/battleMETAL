@@ -274,6 +274,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local float prevShield;
   local float prevAttackFlag;
   local float prevDeadFlag;
+  local float voiceId;
   
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
@@ -320,7 +321,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.next_wepn6 = ReadByte();
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte(); 
+    self.next_wepn9 = ReadByte();
+    self.ai_muted = ReadByte();
     newName = ReadString();
   }
   
@@ -337,6 +339,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_mech_ai;
     self.canTarget = TRUE;
+    if( !self.ai_muted ){
+      ai_voice_ini( TRUE );
+      self.ai_voice_limit = 1;
+    }
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
@@ -360,7 +366,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     turretAng_x = 0;
     sendevent_turret_update( turretAng );
   }
-
+  
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
     self.critBits = ReadCoord();
@@ -374,6 +380,14 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.burnBits = ReadCoord();
     if( self.burnBits > 0 ){
       sendevent_mech_burn( self.burnBits );
+    }
+  }
+  
+  //EVENT - voice chatter
+  if( (changeFlags & SENDFLAG_VOICE) ){
+    if( !(changeFlags & SENDFLAG_NEWENT) ){
+      voiceId = ReadByte();
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
     }
   }
   

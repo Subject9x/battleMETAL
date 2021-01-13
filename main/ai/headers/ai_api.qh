@@ -58,7 +58,7 @@ entity alarm_ent; //per-frame global used to prevent near-endless alarm loops
 .float ai_viewcheck;    //interval for checking for enemies
 .float ai_patrol_speed; //a fraction of forward speed for any unit speed > 100
 .float voiceTime;       //when next to say something
-.float ai_voice_group;
+.float ai_voice_id;     //sent to the client for handling, ->see data_values_ai.qc
 .float helpTime;        //prevents flooding of help calls
 .float helpTimeDelay;
 .float yawCache;          //used to quickly cache yaw to do some per-frame mods
@@ -181,7 +181,6 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
 
 ////////////////////////////////
 //AI VOICE STUFF - ai_voice.qc
-void( float randomBool ) ai_voice_ini;
 void() ai_sfx_spotted;
 void() ai_sfx_warning;
 void() ai_sfx_huntStart;

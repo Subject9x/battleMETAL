@@ -57,6 +57,9 @@ void() cl_particles_fogFrame;
 vector() te_read_vector;
 vector() te_read_angle;
 
+//AI voice selector
+void( float randomBool ) ai_voice_ini;
+
 
 //ported from effectinfo_api
 void( vector org, vector windVel ) te_mech_crit;

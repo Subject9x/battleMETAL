@@ -356,20 +356,22 @@ float SENDFLAG_NEWUNIT  = 65536; //players go from non-mech to mech
 float SENDFLAG_EXDATA   = 131072; //any additional info an ent wants to send (usually custom per class)
 float SENDFLAG_FACTION  = 262144; //this should have been its own long ago.
 float SENDFLAG_ANGLE    = 524288; //specifically .angles / .v_angle 
+float SENDFLAG_VOICE    = 1048576; //when an AI wants to emit a radio sound;
 //============================
 //     COMMON SPAWNFLAGS
 //============================
-float START_OFF = 1; //only activated by trigger
-float LIFETIME = 2; //lifetime
-float REACTIVATE = 4; //reactivate after countdown
-float REMOVE_FIRSTUSE = 8; //remove after first countdown
-float REMOVE_ONTOUCH = 16; //remove on first touch
+float START_OFF = 1;        //only activated by trigger
+float LIFETIME = 2;         //lifetime
+float REACTIVATE = 4;       //reactivate after countdown
+float REMOVE_FIRSTUSE = 8;  //remove after first countdown
+float REMOVE_ONTOUCH = 16;  //remove on first touch
 
 float BUILDING_TARGET_FLAG = 16;  //used by building and misc_building for allowing self to be targeted
 
-float ACTIVE_ONTOUCH = 32; //activate on-touch
-float IS_MAPKEY = 4194304; //mark's this entity on player's briefing map.
-float IS_VIP = 8388608; //faction-allied player will be notified of this entity's state
+float ACTIVE_ONTOUCH = 32;  //activate on-touch
+float MUTE_ME = 1048576;    //ai ignores sending voice effects / radio sounds.
+float IS_MAPKEY = 4194304;  //mark's this entity on player's briefing map.
+float IS_VIP = 8388608;     //faction-allied player will be notified of this entity's state
 //============================
 //     SHARED STATS         
 //============================

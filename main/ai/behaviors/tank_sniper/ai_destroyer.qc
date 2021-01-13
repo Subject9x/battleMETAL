@@ -23,7 +23,6 @@ void() ai_vec_dest={
   if( self.vec_size < 3 ){
      self.spawnflags = self.spawnflags | MUTE_ME;
   }
-  ai_voice_ini( TRUE );
   
   self.th_pain = ai_react_generic;
   

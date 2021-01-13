@@ -36,9 +36,6 @@ void( entity targetClient ) client_send_boundary_warning;
 
 void() client_push_mapobjects;
 
-void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice;
-void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
-
 //client command layer
 void() client_sendServerAbout;
 void(entity client) client_send_server_info_connect;

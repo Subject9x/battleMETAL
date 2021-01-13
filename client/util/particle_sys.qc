@@ -29,6 +29,32 @@ vector() te_read_angle={
 };
 
 /*
+  Ported from SSQC, ai_voice system now CSQC implemented, but
+  driven by SendEnt events.
+*/
+void( float randomBool ) ai_voice_ini={
+  local float randoVoice;
+  if( randomBool ){
+    randoVoice = random();
+    if( randoVoice < 0.4 ){
+      //VOICE  A
+      self.ai_voice_group = AI_VOICE_GROUP_A;
+    }
+    else if( randoVoice < 0.7 ){
+      //VOICE  B
+      self.ai_voice_group = AI_VOICE_GROUP_B;
+    }
+    else{
+      self.ai_voice_group = AI_VOICE_GROUP_C;
+    }
+  }
+  else{
+    //VOICE DEBUG
+    //self.ai_voice_group = AI_VOICE_GROUP_C;
+  }
+};
+
+/*
   Fog subsystem
 */
 float( float fogColor, float fogColorTarg ) cl_particles_fogColorAdjust={

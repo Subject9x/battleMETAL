@@ -17,7 +17,6 @@ void() ai_mech_sniper={
   ai_unit_ini_var();
   initialize_data_mech_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
-  ai_voice_ini( TRUE );
   
   self.th_pain = ai_react_generic;
   self.th_die = ai_mech_sniper_die;

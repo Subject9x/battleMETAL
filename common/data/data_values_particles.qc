@@ -34,7 +34,7 @@ float TE_UI_BOX = 84;
 float TE_MSN_BOUND = 99;
 //======================
 
-float TE_AI_VOICE = 100;
+//100;
 //101;
 //102;
 //103;

@@ -51,6 +51,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   local float prevShield;
   local float prevAttackFlag;
   local float prevDeadFlag;
+  local float voiceId;
   
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
@@ -93,6 +94,11 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.spawnflags = ReadCoord();
     self.data_idx = ReadByte();
+    if( !(self.spawnflags & MUTE_ME)  ){
+      self.ai_muted = FALSE;
+      ai_voice_ini( TRUE );
+      self.ai_voice_limit = 1;
+    }
   }
   
   if( isNew ){
@@ -108,6 +114,11 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     }
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_turret;
+    if( !(self.spawnflags & MUTE_ME) ){
+      self.ai_muted = FALSE;
+      ai_voice_ini( TRUE );
+      self.ai_voice_limit = 1;
+    }
   }
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
@@ -153,6 +164,14 @@ void( float isNew, float changeFlags) sendent_handle_turret={
         self.effect3 = te_building_fire_start( self );
         self.colormod = self.colormod * 0.67;
       }
+    }
+  }
+  
+  //EVENT - voice chatter
+  if( (changeFlags & SENDFLAG_VOICE) ){
+    if( !(changeFlags & SENDFLAG_NEWENT) ){
+      voiceId = ReadByte();
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
     }
   }
   

@@ -138,6 +138,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteString( MSG_ENTITY, self.netname );
   }
   
@@ -167,6 +168,11 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   }
   if( (changedflags & SENDFLAG_ATTACK) ){
     WriteCoord( MSG_ENTITY, self.attackFlag );
+  }
+  if( (changedflags & SENDFLAG_VOICE) ){
+    if( !(changedflags & SENDFLAG_NEWENT) ){
+      WriteByte( MSG_ENTITY, self.ai_voice_id );
+    }
   }
   self.shieldHitFlag = 0;
   return TRUE;
@@ -204,6 +210,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteString( MSG_ENTITY, self.netname );
   }
   
@@ -228,6 +235,11 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   }
   if( (changedflags & SENDFLAG_ATTACK) ){
     WriteCoord( MSG_ENTITY, self.attackFlag );
+  }
+  if( (changedflags & SENDFLAG_VOICE) ){
+    if( !(changedflags & SENDFLAG_NEWENT) ){
+      WriteByte( MSG_ENTITY, self.ai_voice_id );
+    }
   }
   self.shieldHitFlag = 0;
   return TRUE;
@@ -265,6 +277,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteString( MSG_ENTITY, self.netname );
   }
   
@@ -294,6 +307,13 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   if( (changedflags & SENDFLAG_ATTACK) ){
     WriteCoord( MSG_ENTITY, self.attackFlag );
   }
+  
+  if( (changedflags & SENDFLAG_VOICE) ){
+    if( !(changedflags & SENDFLAG_NEWENT) ){
+      WriteByte( MSG_ENTITY, self.ai_voice_id );
+    }
+  }
+  
   self.shieldHitFlag = 0;
   return TRUE;
 };

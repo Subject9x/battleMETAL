@@ -134,7 +134,7 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
   if( CLIENT_player_state == PLAYER_BRIEF ){
     return;
   }
-
+  
   switch( voiceGroup ){
     case AI_VOICE_GROUP_A:
       requestedSoundValue = AI_VOICE_A[voiceId];

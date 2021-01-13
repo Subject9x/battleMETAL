@@ -66,6 +66,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   local string newName;
   local float prevAttackFlag;
   local float prevDeadFlag;
+  local float voiceId;
   
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
@@ -100,6 +101,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
+    self.ai_muted = ReadByte();
     newName = ReadString();
   }
   
@@ -110,6 +112,10 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.predraw = predraw_gev;
     te_unit_dust_set();
     self.canTarget = TRUE;
+    if( !self.ai_muted ){
+      ai_voice_ini( TRUE );
+      self.ai_voice_limit = 1;
+    }
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
@@ -152,6 +158,14 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   if( (changeFlags & SENDFLAG_ATTACK) ){
     self.attackFlag = ReadCoord();
     sendevent_handle_weaponfire();
+  }
+  
+  //EVENT - voice chatter
+  if( (changeFlags & SENDFLAG_VOICE) ){
+    if( !(changeFlags & SENDFLAG_NEWENT) ){
+      voiceId = ReadByte();
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
+    }
   }
   
   //Shield Explode event

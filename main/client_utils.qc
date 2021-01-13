@@ -382,32 +382,9 @@ void(string cmd, float tokens) client_setWeaponGroup={
 };
 
 /*
-  Sends an AI voice sample to play for a specific client
-  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
-*/
-void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice={
-  msg_entity = client;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY);
-  WriteByte( MSG_ONE, TE_AI_VOICE );
-  WriteByte( MSG_ONE, voiceGroup);
-  WriteByte( MSG_ONE, voiceId);
-  WriteByte( MSG_ONE, limiter );
-  WriteLong( MSG_ONE, num_for_edict(self) );
-};
-
-/*
   Sends an AI voice sample to play to ALL Clients
   limiter = total copies of 'voiceMessage' that can sit in the voice queue.
 */
-void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY);
-  WriteByte( MSG_BROADCAST, TE_AI_VOICE );
-  WriteByte( MSG_BROADCAST, voiceGroup);
-  WriteByte( MSG_BROADCAST, voiceId);
-  WriteByte( MSG_BROADCAST, limiter );
-  WriteLong( MSG_BROADCAST, num_for_edict(self) );
-};
-
 void(entity client, float weaponsOnOff) client_send_event_repairs={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
