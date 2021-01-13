@@ -274,6 +274,12 @@ void() click_host_nexttype={
   map_list_getmap((SUB_MENU==SUB_COOP));
   SELECT_MAP = 1;
   host_update_playeramount();
+  if( SUB_MENU == SUB_COOP ){
+    host_flag_spawnfar.drawme = FALSE;
+  }
+  else{
+    host_flag_spawnfar.drawme = TRUE;
+  }
 };
 
 void() click_host_prevtype={
@@ -291,6 +297,12 @@ void() click_host_prevtype={
   map_list_getmap((SUB_MENU==SUB_COOP));
   SELECT_MAP = 1;
   host_update_playeramount();
+  if( SUB_MENU == SUB_COOP ){
+    host_flag_spawnfar.drawme = FALSE;
+  }
+  else{
+    host_flag_spawnfar.drawme = TRUE;
+  }
 };
 
 //coop callbacks
@@ -544,6 +556,13 @@ void() m_host_i={
   //serverflags
   host_flag_spawnfar = btn_check_callback('80 293', '14 14', 0, M_HOST, host_check_flag_spawn, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_spawnfar.label = strzone("Spawn Furthest");
+  if( SUB_MENU == SUB_COOP ){
+    host_flag_spawnfar.drawme = FALSE;
+  }
+  else{
+    host_flag_spawnfar.drawme = TRUE;
+  }
+  
   
   host_flag_powerup = btn_check_callback('180 293', '14 14', 0, M_HOST, host_check_flag_powerup, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_powerup.label = strzone("Powerup Delay");

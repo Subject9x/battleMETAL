@@ -452,7 +452,7 @@ void() ui_navbutton_disconnect_click={
   cvar_set("teamplay", "0");
   cvar_set("coop", "0");
   cvar_set("cl_ismenu", "1");
-  localcmd("map cin_menu.bsp\n");
+  localcmd("disconnect;map cin_menu\n");
 };
 
 /*
