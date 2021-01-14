@@ -404,7 +404,8 @@ void() PlayerDie={
   self.damageValue = 0;
   self.critBits = 0;
   self.last_crit = 0;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT);
+  self.stat_trg_ent_id = 0;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
   
   self.effects = 0;
   self.deadflag = DEAD_DYING;
@@ -486,7 +487,8 @@ void() PlayerDieNetwork={
   self.damageValue = 0;
   self.critBits = 0;
   self.last_crit = 0;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT);
+  self.stat_trg_ent_id = 0;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
   
   self.playerDeaths = self.playerDeaths + 1;
   
