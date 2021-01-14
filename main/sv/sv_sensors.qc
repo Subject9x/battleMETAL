@@ -73,6 +73,8 @@ void() sv_updateTargetInfo={
   local float prevDeadFlags;
   local float prevDist;
   local float prevValid;
+  local float canLock;
+  local float dst;
   
   if( (self.enemy.flags & FL_CLIENT) ){
     self.stat_trg_ent_id = num_for_edict(self.enemy.clientData);
@@ -97,7 +99,6 @@ void() sv_updateTargetInfo={
       self.targLockState = 0;
       return;
     }
-    local float dst;
     dst = vlen( self.enemy.origin - self.origin );
 
     self.targetValid = ai_valid_target(self.enemy);
@@ -106,7 +107,6 @@ void() sv_updateTargetInfo={
       self.stat_trg_ent_id = 0;
       self.stat_trg_dataidx = 0;
       self.stat_trg_dist = 0;
-      self.stat_trg_face = -1;
       self.stat_trg_faction = 0;
       self.targLockState = 0;
       self.stat_target_name = "";
@@ -118,11 +118,9 @@ void() sv_updateTargetInfo={
     self.stat_trg_faction = self.enemy.faction;
     self.stat_trg_ddflg = self.enemy.deadflag;
     self.stat_trg_dist = dst;
-    self.stat_trg_face = util_checkPointAngle(self.enemy);
     
     //can only lock-on to enemy units
     if( self.enemy.faction != self.faction && (self.faction != FACTION_ALL && self.enemy.faction != FACTION_ALL) ){
-      local float canLock;
       canLock = FALSE;
       if( util_lockOnChoke(self.enemy.origin) ){
         traceline(self.origin, self.enemy.origin, FALSE, self);

@@ -319,6 +319,7 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
   local vector viewAngle;
   local vector imgSize, factionColor;
   local string img;
+  local vector imgOrg, cImgOrg;
 
   targSizeZ = allyTarget.vec_size * 16;
   
@@ -362,7 +363,6 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
   viewAngle_x = viewAngle_x * -1;
 
   makevectors(viewAngle);
-  local vector imgOrg, cImgOrg;
   
   imgOrg = allyTarget.origin + (v_up * targSizeZ);
   
@@ -387,5 +387,41 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
     cImgOrg_y = cImgOrg_y - (imgSize_y / 2);
     cImgOrg_z = 0;
     drawpic(cImgOrg, img, imgSize, factionColor * 2, 2, 0);
+  }
+};
+
+
+//inspired by original inFront function
+float(entity trg) util_checkPointAngle={
+  local float toSender;
+  toSender = util_checkPointAngleImpl(trg.origin, self.origin, self.angles);
+  return toSender;
+};
+
+//inspired by original inFront function
+float(vector orig, vector srcOrg, vector srcAngl) util_checkPointAngleImpl={
+  
+	local vector	vec;
+	local float		f_dot, s_dot;
+	
+	makevectors (srcAngl);
+	vec = normalize (orig - srcOrg);
+	f_dot = vec * v_forward;
+  s_dot = vec * v_right;
+	if ( f_dot > 0.6 ){
+		return -1;
+	}
+  else{
+    if(f_dot < -0.9 && s_dot <= 0.1){
+      return 2;
+    }
+    else{
+      if(s_dot > 0.1){
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
   }
 };

@@ -95,7 +95,6 @@ void() ClientConnect = {
   self.stat_target_shield = -1;
   self.stat_trg_ddflg = -1;
   self.stat_trg_dist = -1;
-  self.stat_trg_face = -1;
   self.stat_trg_faction = -1;
   
   self.radar_range = 0;

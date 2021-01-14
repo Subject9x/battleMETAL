@@ -50,7 +50,7 @@ void() receive_ent_bindData={
     }
     
     CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
-    CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
+    //CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
     CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
     CLIENT_stat_ret_dist = getstati(STAT_PLR_RETDIST);
     
@@ -60,11 +60,10 @@ void() receive_ent_bindData={
     CLIENT_health_torso_right = getstatf(STAT_CLIENT_HP_TORSORIGHT); 
     CLIENT_health_arm_left = getstatf(STAT_CLIENT_HP_ARMLEFT); 
     CLIENT_health_arm_right = getstatf(STAT_CLIENT_HP_ARMRIGHT);
-
+    
     //Last Frame Target info cache
     CLIENT_target_health_prev = CLIENT_stat_trg_ct_hp;
     
-    CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
     CLIENT_target_datatype_prev = CLIENT_target_datatype;
     
     CLIENT_stat_trg_ct_hp = getstatf(STAT_TARGET_HP_TORSOCENTER);
@@ -113,12 +112,15 @@ void() receive_ent_bindData={
         CLIENT_target_ent = world;
         CLIENT_stat_trg_ent_id = 0;
         CLIENT_stat_trg_dataidx = 0;
+        CLIENT_stat_trg_face = -1;
         return;
       }
       CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
       CLIENT_stat_trg_ent_id = CLIENT_target_ent.entId;
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
-      CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
+      
+      CLIENT_stat_trg_face = util_checkPointAngleImpl(CLIENT_target_ent.origin, pmove_org, input_angles) ;
+      
       CLIENT_target_datatype_prev = CLIENT_target_datatype;
       CLIENT_target_datatype = CLIENT_target_ent.data_type;
       CLIENT_target_faction = CLIENT_target_ent.faction;

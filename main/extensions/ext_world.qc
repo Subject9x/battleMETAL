@@ -63,21 +63,13 @@ void() world_metal_ini={
   world_ini_serverinfo();
 
   //kept in numerical order for easy reference.
-  //addstat(STAT_PLAYER_DEADFLAG, AS_INT, deadflag);
   addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
-  
   addstat(STAT_RAM, AS_FLOAT, ramUp);
-  
   addstat(STAT_PLAYER_STATE, AS_INT, playerState);
-  //addstat(STAT_PLAYER_WEAPONS_STATE, AS_INT, stat_player_weapons_state);
-  
-  addstat(STAT_PLR_RADMOD, AS_INT, stat_rdr_mode);
   addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);
   addstat(STAT_PLR_RETDIST, AS_INT, stat_ret_dist);
-  
-  addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
   addstat(STAT_PLAYER_DEATHS, AS_INT, playerDeaths);
-    
+  
   addstat(STAT_TARGET_HP_TORSOCENTER, AS_FLOAT, stat_target_hp_torsoCenter);
   addstat(STAT_TARGET_HP_TORSOLEFT, AS_FLOAT, stat_target_hp_torsoLeft);
   addstat(STAT_TARGET_HP_TORSORIGHT, AS_FLOAT, stat_target_hp_torsoRight);

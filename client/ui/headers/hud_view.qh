@@ -214,3 +214,8 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield;
 void() data_hud_frame;
 void() data_hud_fps_cam;
 void() data_hud_external_cam_frame;
+
+//inspired by original inFront function
+float(entity trg) util_checkPointAngle;
+//inspired by original inFront function
+float(vector orig, vector srcOrg, vector srcAngl) util_checkPointAngleImpl;

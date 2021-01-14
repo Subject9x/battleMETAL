@@ -38,7 +38,7 @@ float CLIENT_stat_ret_dist;
 float CLIENT_stat_trg_dataidx;
 float CLIENT_stat_trg_ent_id;
 float CLIENT_stat_trg_face;
-       
+
 float CLIENT_target_faction;
 
 float CLIENT_target_shield; 

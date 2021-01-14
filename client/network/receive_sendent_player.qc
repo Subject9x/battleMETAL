@@ -76,11 +76,11 @@ void(entity item) predraw_player_weapon={
   assumes you've already made a makevectors() call
 */
 void(entity piece) player_part_predaw={
+  local vector offset;
   if( (self.criticalHits & piece.partTypeId) ){
     return;
   }
   addentity(piece);
-  local vector offset;
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
   
   if(self.entId == player_localentnum && cvar("chase_active") == FALSE){
@@ -154,6 +154,9 @@ float() player_predraw={
   local vector cacheOrg;
   local float lerpDiff;
   local float lerp;
+  local vector hudAng;
+  local vector strutOrg;
+  local vector consOrg;
   
   if( self.data_type == DATA_MECH ){
     if (self.nextthink != self.frame1time){
@@ -235,9 +238,6 @@ float() player_predraw={
     
     if(self.entId == player_localentnum){
       if( self.deadflag == DEAD_NO ){
-        local vector hudAng;
-        local vector strutOrg;
-        local vector consOrg;
         if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
           hudAng = HUD_FIXED_ANGLE;
           hudStruts.angles_y = HUD_FIXED_ANGLE_y;
@@ -779,6 +779,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;
     }
+    CLIENT_stat_rdr_mode = self.stat_rdr_mode;
     CLIENT_flags_prev = CLIENT_flags;
     CLIENT_flags = self.flags;
     CLIENT_player_deadflag = self.deadflag;
