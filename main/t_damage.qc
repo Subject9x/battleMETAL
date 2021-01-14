@@ -75,7 +75,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     attacker.playerDMdamage = attacker.playerDMdamage + dmgAmt;
     if( !attacker.enemy && dmgTrg.canTarget ){
       attacker.enemy = dmgTrg;
-      attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
+      attacker.targetEntId = num_for_edict(dmgTrg);
       attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
       attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
     }
@@ -226,7 +226,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     attacker.w_proj = time + 0.2;
     if( !attacker.enemy && dmgTrg.canTarget ){
       attacker.enemy = dmgTrg;
-      attacker.stat_trg_ent_id = num_for_edict(dmgTrg);
+      attacker.targetEntId = num_for_edict(dmgTrg);
       attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
       attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
     }

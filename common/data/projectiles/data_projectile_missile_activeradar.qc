@@ -257,7 +257,7 @@ void() data_projectile_missile_activeradar_touch={
         t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       }
     }
-    self.stat_trg_ent_id = num_for_edict(other);
+    self.targetEntId = num_for_edict(other);
     debris = 0;
   }
   if( debris > 0 ){

@@ -115,7 +115,7 @@ void() data_projectile_snub_artillery_touch_={
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 2, 1 );
       self.impactType = IMPACT_ARMOR;
     }
-    self.stat_trg_ent_id = num_for_edict(other);
+    self.targetEntId = num_for_edict(other);
     debris = 0;
   }
   else{

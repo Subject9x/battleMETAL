@@ -93,7 +93,7 @@ void(entity theOther ) data_prj_mis_hit={
       debris = rint(1 + random() * 3);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
     }
-    self.stat_trg_ent_id = num_for_edict(other);
+    self.targetEntId = num_for_edict(other);
     debris = 0;
   }
   if( debris > 0 ){

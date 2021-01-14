@@ -177,7 +177,7 @@ void() data_prj_emp_touch={
       else{        
         self.impactType = IMPACT_ARMOR;
       }
-      self.stat_trg_ent_id = num_for_edict(other);
+      self.targetEntId = num_for_edict(other);
     }
   }
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;

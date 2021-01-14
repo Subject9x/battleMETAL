@@ -119,7 +119,7 @@ void() data_projectile_ion_touch={
     else{
       self.impactType = IMPACT_ARMOR;
     }
-    self.stat_trg_ent_id = num_for_edict(other);
+    self.targetEntId = num_for_edict(other);
   }
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;

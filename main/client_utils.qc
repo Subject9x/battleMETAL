@@ -43,7 +43,7 @@ void() client_push_player_info={
     self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
     self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
     
-    if( self.stat_trg_ent_id != 0 ){
+    if( self.targetEntId != 0 ){
       //this is silly but precludes forcing the csqc to know the target's max shields
       if( time <= self.enemy.shieldHitRegen ) {
         targShield = self.enemy.shieldHitRegen - self.enemy.shieldHitRegenStart;

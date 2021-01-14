@@ -39,11 +39,11 @@ void() sv_getTarget={
     self.enemy = trace_ent;
     if( (self.enemy.flags & FL_CLIENT) ){
       targName = self.enemy.netname;
-      self.stat_trg_ent_id = num_for_edict(self.enemy.clientData);
+      self.targetEntId = num_for_edict(self.enemy.clientData);
     }
     else{
       targName = self.enemy.vec_name;
-      self.stat_trg_ent_id = num_for_edict(self.enemy);
+      self.targetEntId = num_for_edict(self.enemy);
     }
     
     self.lock_timer = 0;  //make sure to reset the timer
@@ -73,14 +73,15 @@ void() sv_updateTargetInfo={
   local float prevDeadFlags;
   local float prevDist;
   local float prevValid;
+  local float lostTarget;
   local float canLock;
   local float dst;
   
   if( (self.enemy.flags & FL_CLIENT) ){
-    self.stat_trg_ent_id = num_for_edict(self.enemy.clientData);
+    self.targetEntId = num_for_edict(self.enemy.clientData);
   }
   else{
-    self.stat_trg_ent_id = num_for_edict(self.enemy);
+    self.targetEntId = num_for_edict(self.enemy);
   }
   
   prevDeadFlags = self.stat_trg_ddflg;
@@ -89,80 +90,93 @@ void() sv_updateTargetInfo={
   
   self.stat_trg_ddflg = self.enemy.deadflag;
   
-  if( self.enemy != world ){
+  lostTarget = FALSE;
+  if( self.enemy == world ){
+    //early-exit if enemy is not valid
+    lostTarget = TRUE;
+  }
+  else if( prevDeadFlags == DEAD_NO && self.enemy.deadflag > DEAD_NO ){
     //target killed
-    if( prevDeadFlags == DEAD_NO && self.enemy.deadflag > DEAD_NO ){
-      self.stat_trg_ent_id = 0;
-      self.enemy = world;
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
-      self.stat_trg_ent_id = 0;
-      self.targLockState = 0;
-      return;
-    }
+    lostTarget = TRUE;
+  }
+  else{
+    //Target falls out of radar range or is no longer valid for any reason
     dst = vlen( self.enemy.origin - self.origin );
-
     self.targetValid = ai_valid_target(self.enemy);
     if( (prevValid && !self.targetValid) || (dst > self.stat_rdr_rng && prevDist <= self.stat_rdr_rng) ){
-      self.enemy = world;
-      self.stat_trg_ent_id = 0;
-      self.stat_trg_dataidx = 0;
-      self.stat_trg_dist = 0;
-      self.stat_trg_faction = 0;
-      self.targLockState = 0;
-      self.stat_target_name = "";
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
-      return;
+      lostTarget = TRUE;
     }
-    self.stat_trg_dataidx = self.enemy.data_idx;
-    self.stat_trg_dataType = self.enemy.data_type;
-    self.stat_trg_faction = self.enemy.faction;
-    self.stat_trg_ddflg = self.enemy.deadflag;
-    self.stat_trg_dist = dst;
-    
+  }
+  
+  if( lostTarget ){
+    self.enemy = world;
+    self.targetEntId = 0;
+    self.targetEntIdPrev = 0;
+    self.stat_trg_dataidx = 0;
+    self.stat_trg_dist = 0;
+    self.stat_trg_faction = 0;
+    self.targLockState = 0;
+    self.stat_target_name = "";
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
+    self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS));
+    return;
+  }
+  
+  self.stat_trg_dataidx = self.enemy.data_idx;
+  self.stat_trg_dataType = self.enemy.data_type;
+  self.stat_trg_faction = self.enemy.faction;
+  self.stat_trg_ddflg = self.enemy.deadflag;
+  self.stat_trg_dist = dst;
+  
+  canLock = TRUE;
+  //regardless of lock-status, if the intended target is outside the choke, drop the lock
+  if( !util_lockOnChoke(self.enemy.origin) ){
+    canLock = FALSE;
+  }
+  else if( self.faction == self.enemy.faction ){
     //can only lock-on to enemy units
-    if( self.enemy.faction != self.faction && (self.faction != FACTION_ALL && self.enemy.faction != FACTION_ALL) ){
+    if( self.faction != FACTION_ALL && self.enemy.faction != FACTION_ALL ){
       canLock = FALSE;
-      if( util_lockOnChoke(self.enemy.origin) ){
-        traceline(self.origin, self.enemy.origin, FALSE, self);
-        if( (self.enemy.flags & FL_CLIENT) ){
-          if( self.enemy.stat_rdr_mode == TRUE || trace_fraction == 1.0 ){
-            canLock = TRUE;
-          }
-        }
-        else{
-          canLock = TRUE;
-        }
-        if(canLock){
-          if( !(self.targLockState & LOCK_TARG_START) && !(self.targLockState & LOCK_TARG_HAS) ){
-            self.targLockState = self.targLockState | LOCK_TARG_START;
-            self.power_timer_segment = time;
-            if(self.stat_rdr_mode){
-              self.lock_timer = time + self.w_firetime;
-            }
-            else{
-              self.lock_timer = time + (self.w_firetime * 2);
-            }
-          }
-          if( time > self.lock_timer ){
-            if( !(self.targLockState & LOCK_TARG_HAS) ){
-              self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
-              self.targLockState = self.targLockState | LOCK_TARG_HAS;
-            }
-          }
-          return;
-        }
-      }
-      if( (self.targLockState & LOCK_TARG_START) ){
-        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
-      }
-      if( (self.targLockState & LOCK_TARG_HAS) ){
-        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_HAS);
-      } 
-      if( (self.enemy.targLockState & LOCK_PLAYER) ){
-        self.enemy.targLockState = self.enemy.targLockState - (self.enemy.targLockState & LOCK_PLAYER);
+    }
+  }
+  else if( self.targetEntIdPrev != self.targetEntId ){
+    //prevents being able to 'transition' the player's Lock State from one target to another.
+    canLock = FALSE;
+  }
+  else{
+    traceline(self.origin, self.enemy.origin, FALSE, self);
+    if( (self.enemy.flags & FL_CLIENT) ){
+      if( self.enemy.stat_rdr_mode != TRUE || trace_fraction != 1.0 ){
+        canLock = FALSE;
       }
     }
   }
+  self.targetEntIdPrev = self.targetEntId;
+  if(canLock){
+    if( !(self.targLockState & LOCK_TARG_START) && !(self.targLockState & LOCK_TARG_HAS) ){
+      self.targLockState = self.targLockState | LOCK_TARG_START;
+      self.power_timer_segment = time;
+      if(self.stat_rdr_mode){
+        self.lock_timer = time + self.w_firetime;
+      }
+      else{
+        self.lock_timer = time + (self.w_firetime * 2);
+      }
+    }
+    if( time > self.lock_timer ){
+      if( !(self.targLockState & LOCK_TARG_HAS) ){
+        self.targLockState = self.targLockState - (self.targLockState & LOCK_TARG_START);
+        self.targLockState = self.targLockState | LOCK_TARG_HAS;
+      }
+    }
+    return;
+  }
+  
+  self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS));
+  if( (self.enemy.targLockState & LOCK_PLAYER) ){
+    self.enemy.targLockState = self.enemy.targLockState - (self.enemy.targLockState & LOCK_PLAYER);
+  }
+
 };
 
 /*

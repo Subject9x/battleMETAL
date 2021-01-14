@@ -399,7 +399,8 @@ float RADAR_SWEEP = 2.5;
 .float stat_client_hp_armRight;
 .float stat_client_hp_legs;
 
-.float stat_trg_ent_id;
+.float targetEntId;
+.float targetEntIdPrev;
 .float stat_trg_dataidx;
 
 .float stat_trg_dataType;
