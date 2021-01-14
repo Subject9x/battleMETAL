@@ -559,7 +559,6 @@ float( float isNew, float changeFlags ) send_client_data={
   self.view_ofs = player.origin;
   
   prevType = self.data_type;
-  self.targetEntId = player.targetEntId;
   
   sendCrit = 0;
   
@@ -702,7 +701,7 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
-    WriteCoord( MSG_ENTITY, self.targetEntId ); //->SENDFLAG_TARGET
+    WriteLong( MSG_ENTITY, player.targetEntId ); //->SENDFLAG_TARGET
   }
   
   self.shieldHitFlag = 0;

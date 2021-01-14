@@ -3,6 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 1/26/2017
 mod: 9/3/2019
+mod: 1/14/2021
 Overview: 
   necessary targeting and radar functions
   scope - self = unit making the target call
@@ -76,6 +77,22 @@ void() sv_updateTargetInfo={
   local float lostTarget;
   local float canLock;
   local float dst;
+  
+  //completely lost target
+  if( self.enemy == world ){
+    self.targetEntId = 0;
+    if( self.targetEntIdPrev != 0){
+      self.targetEntIdPrev = 0;
+      self.stat_trg_dataidx = 0;
+      self.stat_trg_dist = 0;
+      self.stat_trg_faction = 0;
+      self.targLockState = 0;
+      self.stat_target_name = "";
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
+      self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS));
+    }
+    return;
+  }
   
   if( (self.enemy.flags & FL_CLIENT) ){
     self.targetEntId = num_for_edict(self.enemy.clientData);

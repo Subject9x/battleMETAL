@@ -170,7 +170,7 @@ void() PlayerPostThink = {
       self.hitdir_buffer = 0;
     }
   }
-
+  
   //Update Target information
   sv_updateTargetInfo();
   

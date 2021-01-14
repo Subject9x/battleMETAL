@@ -681,8 +681,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   if( (changeFlags & SENDFLAG_TARGET) ){
     //player has tried to acquire target
-    self.getTarget = rint(ReadCoord());
-    if( self.getTarget != 0 ){
+    self.getTarget = fabs(rint(ReadLong()));
+    if( self.getTarget != 0 && self.getTarget != -0 ){
       self.enemy = findfloat(world, entnum, self.getTarget);
     }
     else{
