@@ -427,7 +427,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
-    playerName = getplayerkeyvalue(player.clientLocalId, "name");
+    playerName = getplayerkeyvalue(player.clientLocalNum, "name");
     nameLen = stringwidth( playerName, 0, '14 14 0');
     nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
     drawstring( nameOrg, playerName, '14 14 0', CLR_DEF_IIF_FRIEND, 1, 0);

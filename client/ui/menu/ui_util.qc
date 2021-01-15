@@ -253,7 +253,7 @@ string() ui_label_mission_status={
   Player scoreboard stuff
 */
 /*
-  SCOREBOARD[]; <k, v> = itr, .entId
+  SCOREBOARD[]; <k, v> = itr, .clientLocalId
 */
 void() scoreboard_sort={
   local float i, j, key, key2;
@@ -262,7 +262,7 @@ void() scoreboard_sort={
   SCOREBOARDMAX = maxclients;
   
   for( i=1; i < SCOREBOARDMAX; i=i+1){
-    // entId from scoreboard
+    // clientLocalId from scoreboard
     key = SCOREBOARD[i];
     j = i - 1;
     

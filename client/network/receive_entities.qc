@@ -104,6 +104,7 @@ void() receive_ent_bindData={
     // hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
     CLIENT_repair_value = getstati(STAT_PLR_REP);
     //Client targeting data
+    CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
     if( CLIENT_target_ent != world ){
       CLIENT_stat_trg_ent_id = num_for_edict(CLIENT_target_ent);
       CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
@@ -115,7 +116,6 @@ void() receive_ent_bindData={
         CLIENT_stat_trg_face = -1;
         return;
       }
-      CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
       CLIENT_stat_trg_ent_id = CLIENT_target_ent.entId;
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
       

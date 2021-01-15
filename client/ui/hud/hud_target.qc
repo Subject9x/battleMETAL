@@ -68,7 +68,7 @@ void(vector ofs, float algn) hud_renderTargetName={
   }
   
   if( (CLIENT_target_ent.flags & FL_CLIENT) ){
-    targType = getplayerkeyvalue(CLIENT_target_ent.entnum - 1, "name");
+    targType = getplayerkeyvalue(CLIENT_target_ent.clientLocalNum, "name");
   }
   else{
     if( CLIENT_target_ent.netname != "" || strlen(CLIENT_target_ent.netname) > 0 ){
@@ -212,7 +212,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   
   local string playerName;
   if( (CLIENT_target_ent.flags & FL_CLIENT) ){
-    playerName = getplayerkeyvalue(CLIENT_stat_trg_ent_id - 1, "name");
+    playerName = getplayerkeyvalue(CLIENT_target_ent.clientLocalNum, "name");
   }
   else{
     if( CLIENT_target_ent.netname != "" || strlen(CLIENT_target_ent.netname) > 0 ){

@@ -996,7 +996,7 @@ void() data_hud_frame={
   local entity player;
   for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
     if( !(player.flags & FL_CLIENT) ){continue;}
-    if( player.entId == player_localentnum ){continue;}
+    if( player.clientLocalId == player_localentnum ){continue;}
     if( player.data_type == DATA_POBS ){continue;}
     if( player.faction != CLIENT_faction ){continue;}
     if( player.faction == FACTION_ALL){continue;}

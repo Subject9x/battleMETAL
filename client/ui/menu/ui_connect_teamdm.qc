@@ -257,7 +257,7 @@ void( vector menuOrg ) menu_connect_draw_players_team={
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" || nameCheck ){
         colorsCheck = stof(getplayerkeyvalue(SCOREBOARD[itr], "colors")); //faction detection hack
-        player = findfloat(world, entId, SCOREBOARD[itr]+1);
+        player = findfloat(world, clientLocalId, SCOREBOARD[itr]+1);
         if( colorsCheck == FACTION_SURVEST ){
           listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
           playerRowItr = teamCount1;

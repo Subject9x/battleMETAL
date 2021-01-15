@@ -358,7 +358,7 @@ float() te_shield_hit_predraw={
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.angles_y = self.angles_y + 5;
   self.alpha = 0.075;
-  if(self.owner.entId == player_localentnum){
+  if(self.owner.clientLocalId == player_localentnum){
     if( self.owner.chaseActive == FALSE ){
       self.alpha = 0.02;
     }
@@ -373,7 +373,7 @@ void() te_shield_hit_th={
     remove(self);
     return;
   }
-  if(self.owner.entId == player_localentnum){
+  if(self.owner.clientLocalId == player_localentnum){
     self.origin = pmove_org;
   }
   else{
@@ -458,7 +458,7 @@ void() te_shield_explode_th={
   self.alpha = self.alpha - 0.02;
   self.scale = self.scale + 0.015;
   
-  if(self.owner.entId == player_localentnum){
+  if(self.owner.clientLocalId == player_localentnum){
     self.origin = pmove_org;
   }
   else{

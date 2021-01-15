@@ -63,7 +63,7 @@ void(entity item) predraw_player_weapon={
   makevectors(entAng);
   offset = offset + (v_up * item.compOffset_y) + (v_right * item.compOffset_x);
   
-  if( self.entId == player_localentnum && !cvar("chase_active") ){
+  if( self.clientLocalId == player_localentnum && !cvar("chase_active") ){
     offset = offset + (v_forward * (item.compOffset_z - fabs(self.cockpit.compOffset_z) ));
   }
   else{
@@ -83,7 +83,7 @@ void(entity piece) player_part_predaw={
   addentity(piece);
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
   
-  if(self.entId == player_localentnum && cvar("chase_active") == FALSE){
+  if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
     offset = offset + (v_forward * (piece.compOffset_z - fabs(self.cockpit.compOffset_z) ));
   }
   else{
@@ -177,13 +177,13 @@ float() player_predraw={
     
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2-self.laser_sight_org1)*self.lerpfrac;
   
-    if(self.entId == player_localentnum ){
+    if(self.clientLocalId == player_localentnum ){
       CLIENT_lerp = self.lerpfrac;
     }
   
     self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
     
-    if(self.entId == player_localentnum){
+    if(self.clientLocalId == player_localentnum){
       cacheOrg = self.origin;
       self.origin = pmove_org;
     }
@@ -236,7 +236,7 @@ float() player_predraw={
     }
     setorigin(self, self.origin);
     
-    if(self.entId == player_localentnum){
+    if(self.clientLocalId == player_localentnum){
       if( self.deadflag == DEAD_NO ){
         if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
           hudAng = HUD_FIXED_ANGLE;
@@ -344,7 +344,7 @@ void( float mech_id ) sendevent_player_mech={
   setsize(self, minSave, maxSave);
   
   //hud shenanigans
-  if( self.entId == player_localentnum ){
+  if( self.clientLocalId == player_localentnum ){
     CLIENT_server_ent = self;
     HUD_VIEW_CL_ANGLES = self.angles;
     HUD_VIEW_OFS = self.cockpit.compOffset_z;
@@ -408,7 +408,7 @@ void() sendevent_handle_player_death={
     remove(wep);
     wep = nextWep;
   }
-  if(self.entId == player_localentnum){
+  if(self.clientLocalId == player_localentnum){
     remove(hudConsole);
     remove(hudStruts);
   }
@@ -462,7 +462,7 @@ void( float criticalBits ) sendevent_player_critical={
   if( (criticalBits & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
   }
-  if(self.entId != player_localentnum){
+  if(self.clientLocalId != player_localentnum){
     return;
   }
   wep = self.w_slot;
@@ -496,7 +496,7 @@ void(float repairValue) sendevent_player_repair={
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
   }
   
-  if(self.entId != player_localentnum){
+  if(self.clientLocalId != player_localentnum){
     return;
   }
   wep = self.w_slot;
@@ -572,7 +572,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.entId = ReadCoord();
+    self.entId = self.entnum;
+    self.clientLocalId = ReadShort();
+    self.clientLocalNum = self.clientLocalId - 1;
   }
   
   /*
@@ -607,7 +609,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
         sendevent_player_mech(self.data_idx);
         self.shieldEffectTime = 0;
         self.predraw = player_predraw;
-        if(self.entId == player_localentnum){
+        if(self.clientLocalId == player_localentnum){
           HUD_FIXED_ANGLE = self.angles;
         }
         self.canTarget = TRUE;
@@ -660,7 +662,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.deadflag = ReadByte();
     SV_MISSIONSTATUS = ReadByte();
     
-    if( self.entId == player_localentnum ){
+    if( self.clientLocalId == player_localentnum ){
       CLIENT_player_deadflag = self.deadflag;
     }
     if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
@@ -690,12 +692,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
-  
-  self.clientLocalId = max(0,self.entId - 1);
-  self.faction = rint(stof(getplayerkeyvalue(self.clientLocalId, "colors")));
-  self.ping = stof( getplayerkeyvalue(self.clientLocalId, "ping") );
-  self.netname = getplayerkeyvalue(self.clientLocalId, "name");
-  controlPlayer = findfloat(world, entnum, stof(getplayerkeyvalue(self.clientLocalId, "viewentity")));
+  self.faction = rint(stof(getplayerkeyvalue(self.clientLocalNum, "colors")));
+  self.ping = stof( getplayerkeyvalue(self.clientLocalNum, "ping") );
+  self.netname = getplayerkeyvalue(self.clientLocalNum, "name");
+  controlPlayer = findfloat(world, entnum, self.clientLocalId);
   if( controlPlayer != world ){
     controlPlayer.sequence = servercommandframe;
     if( self.origin != controlPlayer.origin ){
@@ -728,7 +728,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
         input_sequence = frameItr;
         thisSelf = self;
         self = controlPlayer;
-          runstandardplayerphysics(self);
+          runstandardplayerphysics();
         self = thisSelf;
         self.origin = controlPlayer.origin;
       }
@@ -771,10 +771,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
     sendevent_handle_moveChange();
   }
   
-  self.kills = stof(getplayerkeyvalue(self.clientLocalId, "frags"));
+  self.kills = stof(getplayerkeyvalue(self.clientLocalNum, "frags"));
   
   //perform data binds
-  if( self.entId == player_localentnum ){
+  if( self.clientLocalId == player_localentnum ){
     if(isNew){
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;

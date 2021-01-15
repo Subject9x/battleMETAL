@@ -128,7 +128,7 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
         hud_RenderRadar_Vehc(hudorg, blip.vec_size, blip.faction, 0.9);
         break;
       case DATA_MECH:
-        if( blip.entId != player_localentnum ){
+        if( blip.entnum != player_localentnum ){
           hud_RenderRadar_Mech(hudorg, blip.vec_size, blip.faction, 1); 
         }
         break;
