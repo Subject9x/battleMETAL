@@ -107,7 +107,7 @@ void() player_think={
   
   makevectors(self.angles);
   if(self.chaseActive){
-    laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
+    laserOrg = self.origin + (v_up * 22); //+ (v_forward * -96);
     traceline(self.origin, laserOrg, TRUE, self);
     laserOrg = trace_endpos;
   }
