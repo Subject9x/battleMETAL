@@ -100,7 +100,7 @@ void() host_update_type={
 
 void() host_update_playeramount={
   if( SUB_MENU == SUB_COOP ){
-    host_map_lbl.label = strzone(MAPS_COOP[SELECT_MAP]);
+    cacheGlobalString(host_map_lbl.label, MAPS_COOP[SELECT_MAP])
     cvar_set("coop", "1");
     cvar_set("deathmatch", "0");
     cvar_set("teamplay", "0");
@@ -115,7 +115,7 @@ void() host_update_playeramount={
   else if( SUB_MENU == SUB_TDM ){
     host_dm_fraglim.subid = SUB_TDM;  //hack-fraud
     host_dm_timelim.subid = SUB_TDM;
-    host_map_lbl.label = strzone(MAPS_TDM[SELECT_MAP]);
+    cacheGlobalString(host_map_lbl.label, MAPS_TDM[SELECT_MAP])
     cvar_set("coop", "0");
     cvar_set("deathmatch", "1");
     cvar_set("teamplay", "1");
@@ -130,7 +130,7 @@ void() host_update_playeramount={
   else if( SUB_MENU == SUB_DM ){
     host_dm_fraglim.subid = SUB_DM;
     host_dm_timelim.subid = SUB_DM;
-    host_map_lbl.label = strzone(MAPS_TDM[SELECT_MAP]);
+    cacheGlobalString(host_map_lbl.label, MAPS_TDM[SELECT_MAP])
     cvar_set("coop", "0");
     cvar_set("deathmatch", "1");
     cvar_set("teamplay", "0");
@@ -144,8 +144,7 @@ void() host_update_playeramount={
   }
   
   cvar_set("maxplayers", ftos(rint(SELECT_PLAYERS)));
-  strunzone(host_playernum.label);
-  host_playernum.label = strzone(ftos(SELECT_PLAYERS));
+  cacheGlobalString(host_playernum.label, ftos(SELECT_PLAYERS))
   host_playernum.subid = SUB_MENU;
   host_playermor.subid = SUB_MENU;
   host_playerles.subid = SUB_MENU;
@@ -336,8 +335,7 @@ void() click_host_map_nxt={
     test = 128;
   }
   if(check != ""){
-    strunzone(host_map_lbl.label);
-    host_map_lbl.label = strzone(check);
+    cacheGlobalString(host_map_lbl.label, check)
     SELECT_MAP = test;
   }
 };
@@ -356,8 +354,7 @@ void() click_host_map_prv={
     test = 0;
   }
   if(check != ""){
-    strunzone(host_map_lbl.label);
-    host_map_lbl.label = strzone(check);
+    cacheGlobalString(host_map_lbl.label, check)
     SELECT_MAP = test;
   }
 };
@@ -477,6 +474,10 @@ void() click_host_launch={
 
 void() m_host_i={
   local float rate;
+  local string tmpMaxPlayers;
+  local string tmpGetMap;
+  local string tmpFragLimit;
+  local string tmpTimeLimit;
   
   PUBLIC_TYPE = "debug";
   SERVER_FLAGS = cvar("sv_serverflags");
@@ -485,22 +486,22 @@ void() m_host_i={
   
   host_name = inp_textfield('100 93', '14 14 0', 48, host_servername, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC) );
   if( str_cvar("hostname") == ""){
-    host_name.data_text = strzone("UNNAMED");
+    host_name.data_text = "UNNAMED";
   }
   else{
-    host_name.data_text = strzone(str_cvar("hostname"));
+    cacheGlobalString(host_name.data_text,str_cvar("hostname"))
   }
   
   host_port = inp_textfield('100 113', '14 14 0', 16, host_portnum, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
-  host_port.data_text = strzone(str_cvar("port"));
+  cacheGlobalString(host_port.data_text,str_cvar("port"))
   
   SELECT_TYPE = 3;
-  host_public = lbl_text('120 133', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_public = lbl_text('120 133', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
   host_type_nxt = btn_img_callback('180 133 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_public_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_type_prev = btn_img_callback('100 133 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_public_prev, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   cvar_set("sv_public", "1");
   
-  host_serverrate = lbl_text('120 153', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_serverrate = lbl_text('120 153', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
 
   rate = cvar("rate");
   host_serverrate.len = rate;
@@ -511,12 +512,12 @@ void() m_host_i={
   
   SUB_MENU = SUB_COOP;
   
-  host_gametype = lbl_text('120 173', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_gametype = lbl_text('120 173', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
   host_gametype_next = btn_img_callback('230 173 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_nexttype, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_gametype_prev = btn_img_callback('100 173 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_prevtype, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  host_playernum = lbl_text('120 193', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
-  host_playernum.label = strzone(ftos(cvar("maxplayers")));
+  host_playernum = lbl_text('120 193', '14 14 0', ftos(cvar("maxplayers")), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  
   host_playermor = btn_img_callback('140 193 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_more_plrs, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_playerles = btn_img_callback('100 193 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_less_plrs, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
@@ -526,8 +527,7 @@ void() m_host_i={
   
   //map selector
   SELECT_MAP = 1;
-  host_map_lbl = lbl_text('120 213', '14 14 0', " ", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
-  host_map_lbl.label = strzone(map_list_getmap(0));
+  host_map_lbl = lbl_text('120 213', '14 14 0', map_list_getmap(0), CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
   
   host_map_nxt = btn_img_callback('180 213 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_nxt, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_map_prev = btn_img_callback('100 213 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_prv, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -545,10 +545,12 @@ void() m_host_i={
   
   //TDM SUB MENU
   host_dm_fraglim = inp_textfield('140 233', '14 14 0', 3, host_frag_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
-  host_dm_fraglim.data_text = strzone(ftos(cvar("fraglimit")));
+
+  cacheGlobalString(host_dm_fraglim.data_text, ftos(cvar("fraglimit")))
   
   host_dm_timelim = inp_textfield('140 253', '14 14 0', 3, host_time_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
-  host_dm_timelim.data_text = strzone(ftos(cvar("timelimit")));
+
+  cacheGlobalString(host_dm_timelim.data_text,  ftos(cvar("timelimit")))
 
   host_dm_fraglim.subid = SUB_TDM;
   host_dm_timelim.subid = SUB_TDM;
@@ -556,6 +558,9 @@ void() m_host_i={
   //serverflags
   host_flag_spawnfar = btn_check_callback('80 293', '14 14', 0, M_HOST, host_check_flag_spawn, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_spawnfar.label = strzone("Spawn Furthest");
+  
+  cacheGlobalString(host_map_lbl.label, tmpGetMap)
+  
   if( SUB_MENU == SUB_COOP ){
     host_flag_spawnfar.drawme = FALSE;
   }
@@ -607,12 +612,13 @@ void() m_host_f={
 };
 
 void() m_host_d={
-
+  local entity widget;
+  
   PUBLIC_TYPE = "";
-
+  
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
-
+  
   gui_renderString("Server Name  :", host_name.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
   
   gui_renderString("Port Number  :", host_port.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
@@ -680,7 +686,6 @@ void() m_host_d={
   }
   gui_renderString("-Server Flags-", gui_percentToPixelRawVec('80 273'), '1 1 0.33', '14 14 0', 1, 0);
   
-  local entity widget;
   widget = findchainfloat(menuId, M_HOST);
   while(widget){
     if( widget.subid == FALSE){
@@ -702,6 +707,9 @@ void(float key, float ascii) m_host_k={
       SUB_MENU = 0;
       m_multi_f();
       cvar_set("sv_serverflags", "0");  //dont save serverflags
+      cvar_set("sv_public", "-2");
+      cvar_set("maxplayers", "1");
+      
       break;
   }
 };

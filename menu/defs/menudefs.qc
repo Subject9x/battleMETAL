@@ -687,3 +687,5 @@ float SVFLAG_NOSAVE     = 512; //used when world.ignoreSave = 1; tells game to N
 float SVFLAG_FPSONLY    = 1024; //disables third person / chase_active commands.
 
 #define QCMENU
+#define cacheGlobalString(var, val) if(val!="" && strlen(val) > 0){if (var!="" && strlen(val) > 0){strunzone(var);} var = strzone(val);}
+#define freeGlobalString(var) if (var!="" && strlen(var) > 0){strunzone(var); var = "";}

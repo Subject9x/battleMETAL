@@ -227,10 +227,10 @@ void() m_setup_i={
   setup_label_playername = lbl_text('10 72 0', '12 12 0', "Player Name : ", '1 1 1', 0, M_SETUP, 1, 0);
   
   setup_txtfld_playername = inp_textfield('150 70', '14 14 0', 24, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_UPP));
-  setup_txtfld_playername.data_text = strzone(str_cvar("_cl_name"));
+  cacheGlobalString( setup_txtfld_playername.data_text, str_cvar("_cl_name") )
   
   setup_team_label = lbl_text('10 95 0', '12 12 0', "Preferred TDM Team : ", '1 1 1', 0, M_SETUP, 1, 0);
-  setup_team_value = lbl_text('200 115 0', '12 12 0', strzone(ftos(cvar("cl_team"))), '1 1 1', 0, M_SETUP, 1, 0);
+  setup_team_value = lbl_text('200 115 0', '12 12 0', ftos(cvar("cl_team")), '1 1 1', 0, M_SETUP, 1, 0);
   setup_team_value.len = cvar("cl_team");
   setup_team_prev = btn_img_callback('150 105 0', '14 18', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_SETUP, setup_team_next_f, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   setup_team_next = btn_img_callback('265 105 0', '14 18', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_SETUP, setup_team_next_f, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);

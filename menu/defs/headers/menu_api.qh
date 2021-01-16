@@ -29,20 +29,21 @@ float HOST_RATE_TABLE[12];
 string HOST_RATE_TABLE_NAME[12];
 
 //UI ELEMENT FLAGS
-float UI_FLAG_NOLABEL     = 1;  //don't render label
-float UI_FLAG_NEW         = 2;  //is new
-float UI_FLAG_ALIGN       = 4;  //use alignment field
-float UI_FLAG_NOHIGHLIGHT = 8;  //don't render highlight overlay
-float UI_FLAG_SIZE_IMG    = 16; //base item size on img1 field
-float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
-float UI_FLAG_TXTFIELD_NUM = 64;    //allow number in textfields
-float UI_FLAG_TXTFIELD_SPEC = 128;  //alllow special characters
-float UI_FLAG_TXTFIELD_LOW = 256;   //allow lowercase
-float UI_FLAG_TXTFIELD_MOUSE = 512; //allow mouse click reading
-float UI_FLAG_TXTFIELD_FUNC = 1024; //allow function key detection
-float UI_FLAG_TXTFIELD_UPP = 2048; //allow uppercase
-
-
+float UI_FLAG_NOLABEL        = 1;     //don't render label
+float UI_FLAG_NEW            = 2;     //is new
+float UI_FLAG_ALIGN          = 4;     //use alignment field
+float UI_FLAG_NOHIGHLIGHT    = 8;     //don't render highlight overlay
+float UI_FLAG_SIZE_IMG       = 16;    //base item size on img1 field
+float UI_FLAG_CENTER_IMG     = 32;    //centers image on widget
+float UI_FLAG_TXTFIELD_NUM   = 64;    //allow number in textfields
+float UI_FLAG_TXTFIELD_SPEC  = 128;   //alllow special characters
+float UI_FLAG_TXTFIELD_LOW   = 256;   //allow lowercase
+float UI_FLAG_TXTFIELD_MOUSE = 512;   //allow mouse click reading
+float UI_FLAG_TXTFIELD_FUNC  = 1024;  //allow function key detection
+float UI_FLAG_TXTFIELD_UPP   = 2048;  //allow uppercase
+float UI_FLAG_LBL_USELEN     = 4096;  //for lbl_text, use its .len field as the display value .lbl
+float UI_FLAG_LBL_BOOL_ON    = 8192;  //for lbl_text, use its .len field as 1/0 and renders "ON" / "OFF"
+float UI_FLAG_LBL_BOOL_TRUE  = 16384;  //for lbl_text, use its .len field as 1/0 and renders "TRUE" / "FALSE"
 // UI fields
 .string label;
 .float selected;
@@ -170,16 +171,10 @@ string(float typ) map_list_getmap ={
     while( strlen(ln) != 0 ){
       if(strstrofs(ln, "//",0) == -1){
         if(typ){
-          if( strlen(MAPS_TDM[itr]) != 0){
-            strunzone(MAPS_TDM[itr]);
-          }
-          MAPS_TDM[itr] = strzone(ln);
+          cacheGlobalString(MAPS_TDM[itr], ln)
         }
         else{
-          if( strlen(MAPS_COOP[itr]) != 0){
-            strunzone(MAPS_COOP[itr]);
-          }
-          MAPS_COOP[itr] = strzone(ln);
+          cacheGlobalString(MAPS_COOP[itr], ln)
         }
       }
       itr = itr + 1;

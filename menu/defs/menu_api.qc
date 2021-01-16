@@ -275,13 +275,13 @@ entity(vector org, vector siz, float charlen, void() onchange, float algn, float
 
 entity(vector org, vector siz, void() onchange, string lblText, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield={
   local entity newtxt, this;
+  local vector bind;
   this = self;
   newtxt = inp_textfield(org, siz, 0, onchange, 0, menu_id, clr, hclr, alph, flgs);
   self = newtxt;
     self.classname = "bindfield";
     self.drawme = TRUE;
-    self.data_text = strzone(ini_bind_cmd);
-    local vector bind;
+    cacheGlobalString( self.data_text , ini_bind_cmd)
     bind = menu_keybind_keyfor(self.data_text);
     self.len = bind_x;
     self.label = "";
@@ -342,6 +342,7 @@ void(entity btn) render_btn={
 void(entity btn) render_btn_txt={
   local entity this;
   local vector org, sizzle, bclr;
+        local float txt_len;
   
   if(btn.drawme){
     this = self;
@@ -349,7 +350,6 @@ void(entity btn) render_btn_txt={
       org = gui_percentToPixelRawVec(self.origin);
       sizzle = gui_percentToPixelRawVec(self.size);
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
-        local float txt_len;
         txt_len = stringwidth(self.label, 0, self.size);
         sizzle_x = txt_len;
         sizzle_y = self.size_y;
@@ -440,14 +440,33 @@ void(entity btn) render_chkbox={
 void(entity lbl) render_lbl_text={
   local entity this;
   local vector org, sizzle;
+  local float txt_len;
+  
   if(lbl.drawme){
     this = self;
     self = lbl;
       org = gui_percentToPixelRawVec(self.origin);
-      
       sizzle = gui_percentToPixelRawVec(self.size);
+      if( (self.flags & UI_FLAG_LBL_USELEN) ){
+        self.label = ftos(self.len);
+      }
+      else if( (self.flags & UI_FLAG_LBL_BOOL_ON) ){
+        if( self.len == TRUE ){
+          self.label = "ON";
+        }
+        else{
+          self.label = "OFF";
+        }
+      }
+      else if( (self.flags & UI_FLAG_LBL_BOOL_TRUE) ){
+        if( self.len == TRUE ){
+          self.label = "TRUE";
+        }
+        else{
+          self.label = "FALSE";
+        }
+      }
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
-        local float txt_len;
         txt_len = stringwidth(self.label, 0, self.size);
         sizzle_x = txt_len;
         sizzle_y = self.size_y;
@@ -496,11 +515,11 @@ void(entity pnl) render_txt_pnl={
 
 void(entity txt) render_textfield={
   local entity this;
+  local vector org, sizzle, bclr;
+  local float fon;
   if(txt.drawme){
     this = self;
     self = txt;
-      local vector org, sizzle, bclr;
-      local float fon;
       org = gui_percentToPixelRawVec(self.origin);
       fon = stringwidth("  ", 0, self.size );
       sizzle_x = fon * self.len;
@@ -534,10 +553,9 @@ void(entity txt) render_textfield={
         self.label = "DEAD_HAND";
       }
       else{
-        self.label = self.data_text;
+        cacheGlobalString( self.label, self.data_text )
       }
       
-  
       drawpic(org - gui_percentToPixelRawVec('2 2'), "gfx/ui/box_256.png", sizzle + gui_percentToPixelRawVec('4 2'), bclr - '0.5 0.5 0.5', 1, 0);
       drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
     self = this;
@@ -717,15 +735,15 @@ void() menu_scan_saves={
       save_name = strcat("[", save_num,"]", gui_skillAsString(save_skill),"-", campid);
       save_name = strcat(save_name, " mission: ", map_name);
       
-      GAME_SAVES[itr] = strzone(fname);
-      GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
+      cacheGlobalString( GAME_SAVES[itr], fname )
+      cacheGlobalString( GAME_SAVES_DRAWNAME[itr], save_name )
       GAME_SAVES_SKILL[itr] = save_skill;
-      GAME_SAVES_MAP[itr] = strzone(map_name);
+      cacheGlobalString( GAME_SAVES_MAP[itr], map_name)
     }
     else{
-      GAME_SAVES[itr] = strzone(" ");
-      GAME_SAVES_DRAWNAME[itr] = strzone("- NEW SAVE SLOT -");
       GAME_SAVES_SKILL[itr] = 0;
+      GAME_SAVES[itr] = " ";
+      GAME_SAVES_DRAWNAME[itr] = "- NEW SAVE SLOT -";
       GAME_SAVES_MAP[itr] = "";
     }
     itr = itr + 1;
@@ -801,14 +819,15 @@ void() m_sys_doclick={
   garbage collection on menu transition
 */
 void(float menu_id) menu_clear_items={
+  local entity widgets;
+  local entity next;
+  
   MOUSE_TARGET = null_entity;
   TEXTFIELD_TARGET = null_entity;
   UI_INPUT_ACTIVE = FALSE;
   SUB_MENU = FALSE;
-  local entity widgets;
   widgets = findchainfloat(menuId, menu_id);
   while(widgets){
-    local entity next;
     next = widgets.chain;
     remove(widgets);
     widgets = next;
@@ -861,18 +880,18 @@ float(float keynr, float uiFlags) menu_textfilter_validate={
 };
 
 void(float keynr, float ascii) menu_do_textfield={
+  local float txtlen;
+  local string txt;
   if( (keynr == K_ENTER) || (keynr == K_ESCAPE) ){
     TEXTFIELD_TARGET.ischange(TEXTFIELD_TARGET);
     UI_INPUT_ACTIVE = FALSE;
     return;
   }
-  local float txtlen;
-  local string txt;
   txtlen = strlen(TEXTFIELD_TARGET.data_text);
   if( (keynr == K_BACKSPACE) ){
     if( txtlen != 0){
       txt = substring(TEXTFIELD_TARGET.data_text, 0, (txtlen - 1) );
-      TEXTFIELD_TARGET.data_text = strzone(txt);
+      cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
     }
     return;
   }
@@ -887,10 +906,10 @@ void(float keynr, float ascii) menu_do_textfield={
         else{
           txt = strcat(txt, chr(ascii)  );
         }
-        TEXTFIELD_TARGET.data_text = strzone(txt);
+        cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
       } 
     //}
-    TEXTFIELD_TARGET.data_text = strzone(txt);
+    cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
   }
   else{
     if( menu_textfilter_validate(keynr, TEXTFIELD_TARGET.flags) ){
@@ -904,13 +923,14 @@ void(float keynr, float ascii) menu_do_textfield={
             txt = strcat(txt, " ");
             break;
         }
-        TEXTFIELD_TARGET.data_text = strzone(txt);
+        cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
       } 
     }
   }
 };
 
 void(float keynr, float  ascii) menu_do_keybind={
+    local entity this;
   if( keynr == K_ESCAPE ){
     UI_KEYBIND_ACTIVE = FALSE;
     KEYBIND_TARGET = null_entity;
@@ -918,7 +938,6 @@ void(float keynr, float  ascii) menu_do_keybind={
   }
   if( menu_textfilter_validate(keynr, KEYBIND_TARGET.flags) ){
     KEYBIND_TARGET.len = keynr;
-    local entity this;
     this = self;
     self = KEYBIND_TARGET;
       self.ischange(self);
@@ -948,15 +967,14 @@ void(string bind_cmd) menu_keybind_change={
   setkeybind_bindmap(keybound_x, " ", 0);  //unbind desired key first
   setkeybind_bindmap(keybound_y, " ", 0);  //unbind desired key first
   
-  strunzone(self.data_text);
-  self.data_text = strzone(bind_cmd);
+  cacheGlobalString(self.data_text, bind_cmd)
+  
   setkeybind_bindmap(self.len, self.data_text, 0);  //now bind the key
   keybinds = findchainstring(classname, "bindfield");
   while(keybinds){
     if(keybinds != self){
       if( keybinds.len == self.len ){
-        strunzone(keybinds.data_text);
-        keybinds.data_text = strzone(" ");
+        keybinds.data_text = " ";
         keybinds.len = -1;
       }
     }

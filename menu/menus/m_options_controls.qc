@@ -74,8 +74,6 @@ void() click_control_mouse_sense_more={
   }
   controls_mouse_sense_less.drawme = TRUE;
   controls_mouse_sense.len = val;
-  strunzone(controls_mouse_sense.label); 
-  controls_mouse_sense.label = strzone(ftos(val));
   cvar_set("sensitivity", controls_mouse_sense.label);
 };
 void() click_control_mouse_sense_less={
@@ -88,23 +86,17 @@ void() click_control_mouse_sense_less={
   }
   controls_mouse_sense_more.drawme = TRUE;
   controls_mouse_sense.len = val;
-  strunzone(controls_mouse_sense.label); 
-  controls_mouse_sense.label = strzone(ftos(val));
   cvar_set("sensitivity", controls_mouse_sense.label);
 };
 
 void() click_control_mouse_invert_on={
-  strunzone(controls_mouse_invert.label); 
-  controls_mouse_invert.label = strzone("ON");  
   cvar_set("m_pitch", "-0.022");
   controls_mouse_invert_on.drawme = FALSE;
   controls_mouse_invert_off.drawme = TRUE;
 
 };
 void() click_control_mouse_invert_off={
-  strunzone(controls_mouse_invert.label); 
-  controls_mouse_invert.label = strzone("OFF");  
-  cvar_set("m_pitch", "0.022");  
+  cvar_set("m_pitch", "0.022");
   controls_mouse_invert_on.drawme = TRUE;
   controls_mouse_invert_off.drawme = FALSE;
 };
@@ -220,11 +212,10 @@ void() click_controls_accept={
 
 // ini function, called by '_f' function as a setup func
 void() m_controls_i={
-  controls_title = lbl_img('10 10', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, (UI_FLAG_SIZE_IMG) );
+  controls_title = lbl_img('10 10', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, UI_FLAG_SIZE_IMG );
   
-  controls_mouse_sense = lbl_text('108 78', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, 0);
+  controls_mouse_sense = lbl_text('108 78', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, UI_FLAG_LBL_USELEN);
   controls_mouse_sense.len = cvar("sensitivity");
-  controls_mouse_sense.label = strzone(ftos(controls_mouse_sense.len));
   controls_mouse_sense_more = btn_img_callback('134 77', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_sense_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   controls_mouse_sense_less = btn_img_callback('97 77', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_sense_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
@@ -235,17 +226,15 @@ void() m_controls_i={
     controls_mouse_sense_more.drawme = FALSE;
   }
   
-  controls_mouse_invert = lbl_text('108 98', '14 14', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, 0);
+  controls_mouse_invert = lbl_text('108 98', '14 14', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, UI_FLAG_LBL_BOOL_ON);
   controls_mouse_invert.len = cvar("m_pitch");
   controls_mouse_invert_on = btn_img_callback('134 97', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_invert_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   controls_mouse_invert_off = btn_img_callback('97 97', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_invert_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(controls_mouse_invert.len < 0){
-    controls_mouse_invert.label = strzone("ON");
     controls_mouse_invert_on.drawme = FALSE;
   }
   else{
-    controls_mouse_invert.label = strzone("OFF");
     controls_mouse_invert_off.drawme = FALSE;
   }
   
