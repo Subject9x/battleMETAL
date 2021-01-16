@@ -139,7 +139,7 @@ void() textfield_setup_name={
   }
   else{
     cvar_set("_cl_name", "DEAD_HAND");
-    self.data_text = "DEAD_HAND";
+    cacheGlobalString(  self.data_text, str_cvar("_cl_name"));
   }
 };
 

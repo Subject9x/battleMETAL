@@ -143,8 +143,8 @@ void() host_update_playeramount={
     }
   }
   
-  cvar_set("maxplayers", ftos(rint(SELECT_PLAYERS)));
-  cacheGlobalString(host_playernum.label, ftos(SELECT_PLAYERS))
+  cmd(strcat("maxplayers ",  ftos(rint(SELECT_PLAYERS)),"\n"));
+  host_playernum.len = SELECT_PLAYERS;
   host_playernum.subid = SUB_MENU;
   host_playermor.subid = SUB_MENU;
   host_playerles.subid = SUB_MENU;
@@ -450,7 +450,12 @@ void() host_check_flag_nocamera={
 };
 
 void() click_host_back={
-  cvar_set("sv_serverflags", "0");
+  cvar_set("sv_serverflags", "0");  //dont save serverflags
+  cvar_set("sv_public", "-2");
+  cmd("maxplayers 1\n");
+  cvar_set("coop" , "0");
+  cvar_set("deathmatch" , "0");
+  cvar_set("teamplay" , "0");
   menu_clear_items(M_STATE);
   m_multi_f();
 };
@@ -459,7 +464,7 @@ void() click_host_launch={
   if( host_map_lbl.label == "" || !host_map_lbl.label){
     return;
   }
-  menu_clear_items(M_STATE);
+  cmd(strcat("maxplayers ",  ftos(rint(SELECT_PLAYERS)),"\n"));
   if( cvar("deathmatch") ){
     cvar_set("skill", "3");
   }
@@ -467,7 +472,7 @@ void() click_host_launch={
     cvar_set("skill", ftos(SELECT_SKILL));
   }
   cvar_set("sv_serverflags", ftos(rint(SERVER_FLAGS)));
-  
+  menu_clear_items(M_STATE);
   menu_exit_togame();
   cmd(strcat("map ", host_map_lbl.label, "\n"));
 };
@@ -486,11 +491,9 @@ void() m_host_i={
   
   host_name = inp_textfield('100 93', '14 14 0', 48, host_servername, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC) );
   if( str_cvar("hostname") == ""){
-    host_name.data_text = "UNNAMED";
+    cvar_set("hostname", "UNNAMED");
   }
-  else{
-    cacheGlobalString(host_name.data_text,str_cvar("hostname"))
-  }
+  cacheGlobalString(host_name.data_text,str_cvar("hostname"))
   
   host_port = inp_textfield('100 113', '14 14 0', 16, host_portnum, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
   cacheGlobalString(host_port.data_text,str_cvar("port"))
@@ -516,7 +519,11 @@ void() m_host_i={
   host_gametype_next = btn_img_callback('230 173 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_nexttype, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_gametype_prev = btn_img_callback('100 173 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_prevtype, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  host_playernum = lbl_text('120 193', '14 14 0', ftos(cvar("maxplayers")), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_playernum = lbl_text('120 193', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, UI_FLAG_LBL_USELEN);
+  if(host_playernum.len < 2){
+    host_playernum.len = 2;
+  }
+  SELECT_PLAYERS = host_playernum.len;
   
   host_playermor = btn_img_callback('140 193 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_more_plrs, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_playerles = btn_img_callback('100 193 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_less_plrs, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -557,7 +564,7 @@ void() m_host_i={
 
   //serverflags
   host_flag_spawnfar = btn_check_callback('80 293', '14 14', 0, M_HOST, host_check_flag_spawn, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_spawnfar.label = strzone("Spawn Furthest");
+  host_flag_spawnfar.label = "Spawn Furthest";
   
   cacheGlobalString(host_map_lbl.label, tmpGetMap)
   
@@ -570,28 +577,28 @@ void() m_host_i={
   
   
   host_flag_powerup = btn_check_callback('180 293', '14 14', 0, M_HOST, host_check_flag_powerup, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_powerup.label = strzone("Powerup Delay");
+  host_flag_powerup.label = "Powerup Delay";
   
   host_flag_cheats = btn_check_callback('80 313', '14 14', 0, M_HOST, host_check_flag_cheats, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_cheats.label = strzone("Cheats");
+  host_flag_cheats.label = "Cheats";
   
   host_flag_fireon = btn_check_callback('180 313', '14 14', 0, M_HOST, host_check_flag_fireon, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_fireon.label = strzone("Friendly Fire");
+  host_flag_fireon.label = "Friendly Fire";
   
   //host_flag_nolives = btn_check_callback('100 273', '14 14', 0, M_HOST, host_check_flag_nolives, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, UI_FLAG_SIZE_IMG);
   //host_flag_nolives.label = strzone("Respawn");
   
   host_flag_nomap = btn_check_callback('80 333', '14 14', 0, M_HOST, host_check_flag_nomap, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_nomap.label = strzone("No Map ");
+  host_flag_nomap.label = "No Map ";
   
   host_flag_noradar = btn_check_callback('180 333', '14 14', 0, M_HOST, host_check_flag_noradar, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_noradar.label = strzone("No Radar");
+  host_flag_noradar.label = "No Radar";
   
   host_flag_nostatus = btn_check_callback('80 353', '14 14', 0, M_HOST, host_check_flag_nostatus, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_nostatus.label = strzone("Hide Menu Status");
+  host_flag_nostatus.label = "Hide Menu Status";
   
   host_flag_nocam = btn_check_callback('180 353', '14 14', 0, M_HOST, host_check_flag_nocamera, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_nocam.label = strzone("No Ext. Camera");
+  host_flag_nocam.label = "No Ext. Camera";
   
   //LAAAAAAAAUNCH!
   host_launch = btn_img_callback('140 400 0', '96 16', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_launch, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL));
@@ -702,14 +709,17 @@ void() m_host_d={
 void(float key, float ascii) m_host_k={
   switch(key){
     case K_ESCAPE:
+      cvar_set("sv_serverflags", "0");  //dont save serverflags
+      cvar_set("sv_public", "-2");
+      cmd("maxplayers 1\n");
+      cvar_set("coop" , "0");
+      cvar_set("deathmatch" , "0");
+      cvar_set("teamplay" , "0");
+      
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
       SUB_MENU = 0;
       m_multi_f();
-      cvar_set("sv_serverflags", "0");  //dont save serverflags
-      cvar_set("sv_public", "-2");
-      cvar_set("maxplayers", "1");
-      
       break;
   }
 };

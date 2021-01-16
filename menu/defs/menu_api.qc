@@ -548,13 +548,7 @@ void(entity txt) render_textfield={
       if( (TEXTFIELD_TARGET == self) && (UI_INPUT_ACTIVE) ){
         bclr = CLR_DEF_ARM_THREEQ;
       }
-    
-      if( self.data_text == "" ){
-        self.label = "DEAD_HAND";
-      }
-      else{
-        cacheGlobalString( self.label, self.data_text )
-      }
+      self.label = self.data_text;
       
       drawpic(org - gui_percentToPixelRawVec('2 2'), "gfx/ui/box_256.png", sizzle + gui_percentToPixelRawVec('4 2'), bclr - '0.5 0.5 0.5', 1, 0);
       drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
@@ -888,30 +882,7 @@ void(float keynr, float ascii) menu_do_textfield={
     return;
   }
   txtlen = strlen(TEXTFIELD_TARGET.data_text);
-  if( (keynr == K_BACKSPACE) ){
-    if( txtlen != 0){
-      txt = substring(TEXTFIELD_TARGET.data_text, 0, (txtlen - 1) );
-      cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
-    }
-    return;
-  }
-  if( !(TEXTFIELD_TARGET.flags & UI_FLAG_TXTFIELD_MOUSE) ){
-    //this textfield is a pure text input, and not control key setup
-    //if( menu_textfilter_validate(keynr, TEXTFIELD_TARGET.flags) ){
-      if( txtlen < TEXTFIELD_TARGET.len){
-        txt = TEXTFIELD_TARGET.data_text;
-        if( keynr == K_SPACE ){
-          txt = strcat(txt, " ");
-        }
-        else{
-          txt = strcat(txt, chr(ascii)  );
-        }
-        cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
-      } 
-    //}
-    cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
-  }
-  else{
+  if( (TEXTFIELD_TARGET.flags & UI_FLAG_TXTFIELD_MOUSE) ){
     if( menu_textfilter_validate(keynr, TEXTFIELD_TARGET.flags) ){
       if( txtlen < TEXTFIELD_TARGET.len){
         txt = TEXTFIELD_TARGET.data_text;
@@ -926,6 +897,33 @@ void(float keynr, float ascii) menu_do_textfield={
         cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
       } 
     }
+  }
+  else{
+    if( (keynr == K_BACKSPACE) ){
+      if( txtlen > 0){
+        txt = substring(TEXTFIELD_TARGET.data_text, 0, txtlen - 1 );
+        if( strlen(txt) > 0 ){
+          cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
+        }
+        else{
+          TEXTFIELD_TARGET.data_text = "";
+        }
+      }
+      return;
+    }
+    //this textfield is a pure text input, and not control key setup
+    //if( menu_textfilter_validate(keynr, TEXTFIELD_TARGET.flags) ){
+    if( txtlen < TEXTFIELD_TARGET.len){
+      txt = TEXTFIELD_TARGET.data_text;
+      if( keynr == K_SPACE ){
+        txt = strcat(txt, " ");
+      }
+      else{
+        txt = strcat(txt, chr(ascii)  );
+      }
+      cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
+    } 
+    //}
   }
 };
 
