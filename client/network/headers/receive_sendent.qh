@@ -88,3 +88,4 @@ void() player_think;
 void() sendent_ai_think;
 
 float() remove_client;
+void( float hasMoved ) sendevent_player_accuracy;

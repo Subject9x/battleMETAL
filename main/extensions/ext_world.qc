@@ -63,7 +63,6 @@ void() world_metal_ini={
   world_ini_serverinfo();
 
   //kept in numerical order for easy reference.
-  addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
   addstat(STAT_RAM, AS_FLOAT, ramUp);
   addstat(STAT_PLAYER_STATE, AS_INT, playerState);
   addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);

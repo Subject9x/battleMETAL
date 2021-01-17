@@ -875,10 +875,8 @@ void(vector porg) hud_render_sprint={
   Main API call for new text-based HUD system
 */
 void() data_hud_frame={
-  local float playerAccuracy;
 
   HUD_ENERGY_ACTUAL = CLIENT_energy_total;
-
   //Alpha fade-in of HUD as mech powers up.
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     if(HUD_ALPHA_TIME <= 0){
@@ -899,8 +897,6 @@ void() data_hud_frame={
       HUD_ALPHA = cvar("cl_hud_alpha");
     }
   }
-  
-  playerAccuracy = getstatf(STAT_ACCURACY);
   
   switch( cvar("cl_hud_color") ){
     case 1:
@@ -941,19 +937,19 @@ void() data_hud_frame={
     hud_lock_frame();
     switch( cvar("crosshair") ){
       case 1:
-        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       case 2:
-        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       case 3:
-        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       case 4:
-        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       //case 5:
-        //hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        //hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         //break;
       default:
         //no crosshair? bold move

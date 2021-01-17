@@ -425,7 +425,7 @@ float RADAR_SWEEP = 2.5;
 //     ADDSTAT SLOT NUMBERS        
 //============================
 //float    = 32;
-float STAT_ACCURACY = 33;
+//float    = 33;
 float STAT_RAM = 34;
 //float    = 35;
 //float    = 36;

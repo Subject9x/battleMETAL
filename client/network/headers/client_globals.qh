@@ -58,6 +58,8 @@ float CLIENT_stat_w7_id;
 float CLIENT_stat_w8_id;
 float CLIENT_stat_w9_id;
 
+float CLIENT_accuracy;
+
 float CLIENT_radar_range;
 float CLIENT_energy;
 float CLIENT_energy_total;

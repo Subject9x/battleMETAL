@@ -802,8 +802,39 @@ void( float isNew, float changeFlags) sendent_handle_player={
     else{
       CLIENT_energy = 0;
     }
-    CLIENT_target_ent = self.enemy ;
+    CLIENT_target_ent = self.enemy;
+    sendevent_player_accuracy( (prevOrg != self.origin) );
   }
+};
+
+void( float hasMoved ) sendevent_player_accuracy={
+  local float rate;
+  
+  rate = self.spreadDefault_z;
+  //accuracy / spread mechanics
+  if( hasMoved ) {
+    //unit is moving, increase spread factor
+    if( !self.stat_rdr_mode ){
+      rate = rate + ( rate * 0.5 );
+    }
+    rate = rate - self.accuracyMod;
+    self.accuracy = self.accuracy + rate;
+    if( self.accuracy > self.spreadDefault_y ){
+      self.accuracy = self.spreadDefault_y;
+    }
+  }
+  else{
+    //standing still, lessen the spread
+    if( self.stat_rdr_mode ){
+      rate = rate + (rate * 0.25);
+    }
+    rate = rate + self.accuracyMod;
+    self.accuracy = self.accuracy - rate;
+    if( self.accuracy < self.spreadDefault_x ){
+      self.accuracy = self.spreadDefault_x;
+    }
+  }
+  CLIENT_accuracy = self.accuracy;
 };
 
 float() remove_client={
