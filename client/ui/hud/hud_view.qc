@@ -926,9 +926,8 @@ void() data_hud_frame={
   else{
     data_hud_fps_cam();
   }
-   
-    
-  if( CLIENT_stat_trg_dataidx > 0 ){
+  
+  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face != AIM_FACE_FRONT){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
     hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H);
   }  
@@ -963,7 +962,9 @@ void() data_hud_frame={
   }
 
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
-  hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
+  if( CLIENT_target_ent != world ){
+    hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
+  }
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
   
   //ZOOM ACTIVE cleans up the HUD when the player is zooming in on an object by hiding
@@ -979,7 +980,6 @@ void() data_hud_frame={
     if( HUD_EXTERNAL_CAM_ACTIVE == FALSE ){
       hud_render_sprint(VIEW_CTR);
     }
-    
     hud_render_info();
   }
   

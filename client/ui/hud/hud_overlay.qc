@@ -7,66 +7,6 @@ Date: 3/30/2020
 */
 
 /*
-  RENDER A SHIELD METER IN 3d SPACE
-*/
-void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
-  local float dist;
-  local vector vpos, nofs, aSize;
-  local float scopeVal;
-  local float adj;
-  
-  scopeVal = rint(val);
-  if(scopeVal != 0){
-  
-    dist = vlen(pmove_org - CLIENT_target_ent.origin);
-    if( dist < CLIENT_radar_range * 0.25 ){
-      adj = 40;
-    }
-    else if( dist < CLIENT_radar_range * 0.5 ){
-      adj = 50;
-    }
-    else{
-      adj = 60;
-    }
-    
-    aSize_x = mSize_x * dist;
-    if(aSize_x > mSize_x){
-      aSize_x = mSize_x;
-    }
-    aSize_y = mSize_y * dist;
-    if(aSize_y > mSize_y){
-      aSize_y = mSize_y;
-    }
-    vpos = org;
-    vpos_z = vpos_z + (CLIENT_target_vecsize * adj);
-    nofs = cs_project(vpos);
-    if (nofs_z >= 0) {
-      nofs_x = nofs_x - (aSize_x / 2);
-      nofs_z = 0;
-      
-      local vector meterSize, pos;
-      local vector meterColor;
-      
-      meterSize = gui_percentToPixelRawVec(mSize);
-      pos = gui_percentToPixelRawVec(nofs);
-      pos = gui_calcAlign(pos, algn);
-     
-      meterColor = CLR_DEF_ARM_DED;
-      if( scopeVal > 100 ){
-        //render delay regen
-        scopeVal = 100 - scopeVal;
-        gui_renderMeter( (scopeVal * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE);
-      }
-      else{
-        gui_renderMeter(scopeVal, pos, aSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, AXIS_H, FALSE); 
-      }
-      drawpic(pos, "gfx/hud/hud_meter_cover3.png", aSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-    }
-    cs_unproject(vpos);
-  }
-};
-
-/*
   RENDER FRIENDLY CLIENT NAMES IN 3D SPACE
 */
 void( entity thePlayer ) hud_render_ally_names={

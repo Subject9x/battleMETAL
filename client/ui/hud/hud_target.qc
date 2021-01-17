@@ -8,6 +8,11 @@ Date: 3/30/2020
 
 /*
   RENDER TARGET DIRECTION INDICATORS
+  
+  AIM_FACE_FRONT   = 1;
+  AIM_FACE_LEFT    = 2;
+  AIM_FACE_RIGHT   = 3;
+  AIM_FACE_BACK    = 4;
 */ 
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection={
   vector trg_color;
@@ -26,18 +31,18 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
       trg_color = CLR_DEF_IFF_ENEMY_BLD;
     }
   }
-  if(targdir > -1){
-    if(targdir == 0){
+  if(targdir > AIM_FACE_FRONT){
+    if(targdir == AIM_FACE_LEFT){
       lorg_x = VIEW_ORG_x + gui_percentXRaw(5); 
       lorg_y = VIEW_CTR_y - gui_percentYRaw(24);
       gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_L, gui_percentToPixelRawVec('16 48'), trg_color, HUD_ALPHA, 0);
     }
-    else if(targdir == 1){
+    else if(targdir == AIM_FACE_RIGHT){
       lorg_x = (VIEW_ORG_x + VIEW_MAX_x) - gui_percentXRaw(15); 
       lorg_y = VIEW_CTR_y  - gui_percentYRaw(24);
       gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_R, gui_percentToPixelRawVec('16 48'), trg_color, HUD_ALPHA, 0);     
     }
-    else if(targdir == 2){
+    else if(targdir == AIM_FACE_BACK){
       lorg_x = VIEW_CTR_x - gui_percentXRaw(24);
       lorg_y = VIEW_CTR_y + gui_percentYRaw(48);
       gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_B, gui_percentToPixelRawVec('48 16'), trg_color, HUD_ALPHA, 0);
@@ -93,7 +98,7 @@ void(vector ofs, float algn) hud_renderTargetName={
 };
 
 /*
-  RENDER TARGET PIPS OVER AN ORIGIN IN 3D SPACE
+  3D HUD - RENDER TARGET PIPS OVER AN ORIGIN IN 3D SPACE
 */
 void(vector org, vector torg, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay={
   local float dist;
@@ -101,6 +106,14 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   local vector viewAngle;
   local vector imgSize, factionColor, lockColor;
   local float boxAlpha;
+  
+  local vector tl, tr, br, bl;
+  local vector c_tl, c_tr, c_br, c_bl;
+  
+  local vector namepos, nameproj, drawSize;
+  local float namelen, drawdist, adj;
+  
+  local string playerName;
   
   targSizeX = CLIENT_target_size_x;
   targSizeY = CLIENT_target_size_y; 
@@ -154,8 +167,6 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   viewAngle_x = viewAngle_x * -1;
 
   makevectors(viewAngle);
-  local vector tl, tr, br, bl;
-  local vector c_tl, c_tr, c_br, c_bl;
 
   tl = org + (v_right * (targSizeX * -1)) + (v_up * targSizeZ);
   tr = org + (v_right * targSizeX) + (v_up * targSizeZ);
@@ -194,23 +205,28 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, lockColor, boxAlpha, 0);
   }
   
-  local vector namepos, nameproj, drawSize;
-  local float namelen, drawdist, adj;
-  drawdist = vlen(pmove_org - CLIENT_target_ent.origin);
-  if( drawdist < CLIENT_radar_range * 0.25 ){
+  drawdist = vlen(pmove_org - CLIENT_target_ent.origin); 
+  if(drawdist < CLIENT_radar_range * 0.1){
+    adj = 25;
     drawSize = '10 10 0';
-    adj = 50;
+  }
+  else if( drawdist < CLIENT_radar_range * 0.25 ){
+    adj = 40;
+    drawSize = '10 10 0';
   }
   else if( drawdist < CLIENT_radar_range * 0.5 ){
+    adj = 65;
     drawSize = '12 12 0';
-    adj = 100;
+  }
+  else if(  drawdist < CLIENT_radar_range * 0.75 ){
+    adj = 85;
+    drawSize = '12 12 0';
   }
   else{
+    adj = 100;
     drawSize = '14 14 0';
-    adj = 150;
   }
   
-  local string playerName;
   if( (CLIENT_target_ent.flags & FL_CLIENT) ){
     playerName = getplayerkeyvalue(CLIENT_target_ent.clientLocalNum, "name");
   }
@@ -222,9 +238,10 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
       playerName = CLIENT_target_ent.vec_name;
     }
   }
+  
   namelen = stringwidth(playerName, 0, drawSize);
   namepos = CLIENT_target_ent.origin;
-  namepos_z = namepos_z + (gui_percentYRaw(CLIENT_target_ent.vec_size * adj));
+  namepos_z = namepos_z - (adj + drawSize_y);  //magik numbers, :/
   nameproj = cs_project(namepos);
   if( nameproj_z >= 0 ){
     nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
@@ -236,7 +253,75 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
 };
 
 /*
-  RENDER ARMOR DIAGRAM: BUILDING
+  3D HUD - RENDER A SHIELD METER IN 3d SPACE
+*/
+void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
+  local float dist;
+  local vector vpos, nofs, aSize;
+  local float scopeVal;
+  local float adj;
+  
+  local vector meterSize, pos;
+  local vector meterColor;
+  
+  scopeVal = rint(val);
+  if(scopeVal != 0){
+  
+    dist = vlen(pmove_org - CLIENT_target_ent.origin);
+    if(dist < CLIENT_radar_range * 0.1){
+      adj = 25;
+    }
+    else if( dist < CLIENT_radar_range * 0.25 ){
+      adj = 40;
+    }
+    else if( dist < CLIENT_radar_range * 0.5 ){
+      adj = 65;
+    }
+    else if(  dist < CLIENT_radar_range * 0.75 ){
+      adj = 85;
+    }
+    else{
+      adj = 100;
+    }
+    
+    aSize_x = mSize_x * dist;
+    if(aSize_x > mSize_x){
+      aSize_x = mSize_x;
+    }
+    aSize_y = mSize_y * dist;
+    if(aSize_y > mSize_y){
+      aSize_y = mSize_y;
+    }
+    vpos = org;
+    vpos_z = vpos_z + (adj + (aSize_y * 7.5));  //magik numbers, :/
+    nofs = cs_project(vpos);
+    if (nofs_z >= 0) {
+      nofs_x = nofs_x - (aSize_x / 2);
+      nofs_z = 0;
+      
+      meterSize = gui_percentToPixelRawVec(aSize);
+      pos = gui_percentToPixelRawVec(nofs);
+      pos = gui_calcAlign(pos, algn);
+     
+      meterColor = CLR_DEF_ARM_DED;
+      if( scopeVal > 100 ){
+        //render delay regen
+        scopeVal = 100 - scopeVal;
+        gui_renderMeter( (scopeVal * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE);
+      }
+      else{
+        gui_renderMeter(scopeVal, pos, aSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, AXIS_H, FALSE); 
+      }
+      drawpic(pos, "gfx/hud/hud_meter_cover3.png", aSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+    }
+    cs_unproject(vpos);
+  }
+};
+
+
+
+/*
+  2D HUD - RENDER ARMOR DIAGRAM: BUILDING
   you might want to cover this with a nice overlay picture
 */
 void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
@@ -262,7 +347,7 @@ void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
 };
 
 /*
-  RENDER ARMOR DIAGRAM: VEHICLE
+  2D HUD - RENDER ARMOR DIAGRAM: VEHICLE
   you might want to cover this with a nice overlay picture
 */
 void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
@@ -286,7 +371,7 @@ void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
 };
 
 /*
-  RENDERS A LABEL 'RANGE' AND DISTANCE TO ORIGIN
+  2D HUD - RENDERS A LABEL 'RANGE' AND DISTANCE TO ORIGIN
 */
 void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange={
   local float dist, msgLen;
@@ -398,30 +483,41 @@ float(entity trg) util_checkPointAngle={
   return toSender;
 };
 
-//inspired by original inFront function
+/*
+  Given a target origin, and a source origin, and the source's facing;  
+    calculate if the source origin is FACING the target origin.
+    If not, return which quadrant the target is actually in.
+
+  AIM_FACE_FRONT   = 1;
+  AIM_FACE_LEFT    = 2;
+  AIM_FACE_RIGHT   = 3;
+  AIM_FACE_BACK    = 4;
+*/
 float(vector orig, vector srcOrg, vector srcAngl) util_checkPointAngleImpl={
   
-	local vector	vec;
-	local float		f_dot, s_dot;
-	
-	makevectors (srcAngl);
-	vec = normalize (orig - srcOrg);
-	f_dot = vec * v_forward;
-  s_dot = vec * v_right;
-	if ( f_dot > 0.6 ){
-		return -1;
-	}
-  else{
-    if(f_dot < -0.9 && s_dot <= 0.1){
-      return 2;
-    }
-    else{
-      if(s_dot > 0.1){
-        return 1;
-      }
-      else {
-        return 0;
-      }
-    }
+  local float targYaw;
+  local float checkYaw;
+  
+  targYaw = vectoyaw( orig - srcOrg );
+  checkYaw = anglemod( srcAngl_y - targYaw );
+  
+  //Target in Front
+  if( checkYaw >= 305 && checkYaw <= 55){
+    return AIM_FACE_FRONT;
+  }
+  
+  //Target to the Left
+  if( checkYaw > 255 && checkYaw <= 305){
+    return AIM_FACE_LEFT;
+  }
+  
+  //Target to the Right
+  if( checkYaw >= 55 && checkYaw < 110){
+    return AIM_FACE_RIGHT;
+  }
+  
+  //Target to the Rear
+  if( checkYaw > 110 && checkYaw < 255){
+    return AIM_FACE_BACK;
   }
 };

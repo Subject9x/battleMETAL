@@ -30,6 +30,11 @@ float HUD_UID_MESSAGE_BOX   = 17;
 float HUD_UID_ENVIRO_BOX    = 18;
 float HUD_UID_RAM_METER     = 19;
 float HUD_UID_MSN_CLOCK     = 20;
+
+float AIM_FACE_FRONT   = 1;
+float AIM_FACE_LEFT    = 2;
+float AIM_FACE_RIGHT   = 3;
+float AIM_FACE_BACK    = 4;
 //==========================================
 
 
