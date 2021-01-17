@@ -151,10 +151,7 @@ void() receive_ent_bindData={
   also Server Mission Status and Results
 */
 void() client_state_events={
-  //local float gameType;
   local float timeVal;
-  
- //gameType = cvar("gamemode");
   
   //SERVER EVENTS
   if( SV_MISSION_STATUS_PREV != SV_MISSIONSTATUS ){
@@ -226,6 +223,7 @@ void() client_state_events={
     
     //EVENT - CLIENT DEATH----------------
     if( (CLIENT_player_state_prev != PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEAD) ){
+      CLIENT_deaths = CLIENT_deaths + 1;
       if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
         if( SV_MISSIONSTATUS == MISSION_RESULT_WIN ){
           te_mission_win();

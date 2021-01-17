@@ -153,7 +153,7 @@ void( vector menuOrg ) menu_score_dm_client_info={
   gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('22 14'), "Your Kills :", getplayerkeyvalue(player_localnum, "frags"), CLR_DEF_GREEN, CLR_DEF_ARM_OK, fontsStyle, '12 12' );
   
   //Player Death
-  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('10 28'), "Your Deaths :", ftos(getstati(STAT_PLAYER_DEATHS)), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '12 12' );
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('10 28'), "Your Deaths :", ftos(CLIENT_deaths), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '12 12' );
   
   //Best survival time
   gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('20 42'), "Best Time :", ui_calculate_time_string(CLIENT_best_time), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
@@ -308,7 +308,7 @@ void( vector menuOrg ) menu_score_tdm_client_info={
   gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('22 14'), "Your Kills :", getplayerkeyvalue(player_localnum, "frags"), CLR_DEF_GREEN, CLR_DEF_ARM_OK, fontsStyle, '10 10' );
   
   //Player Death
-  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('10 25'), "Your Deaths :", ftos(getstati(STAT_PLAYER_DEATHS)), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '10 10' );
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('10 25'), "Your Deaths :", ftos(CLIENT_deaths), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '10 10' );
   
   //Best survival time
   gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('20 36'), "Best Time :", ui_calculate_time_string(CLIENT_best_time), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
@@ -578,7 +578,7 @@ void( vector menuOrg ) menu_score_coop_client_stats={
   gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('20 14'), "Your Kills :", getplayerkeyvalue(player_localnum, "frags"), CLR_DEF_GREEN, CLR_DEF_ARM_OK, fontsStyle, '12 12' );
   
   //Player Death
-  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('8 28'), "Your Deaths :", ftos(getstati(STAT_PLAYER_DEATHS)), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '12 12' );
+  gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('8 28'), "Your Deaths :", ftos(CLIENT_deaths), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '12 12' );
   
   //Team Score
   gui_labelKeyPair( menuOrg + gui_percentToPixelRawVec('18 42'), "Total Kills :", ftos(MENU_DEBRIEF_total_kills), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );

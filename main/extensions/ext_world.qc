@@ -67,7 +67,6 @@ void() world_metal_ini={
   addstat(STAT_PLAYER_STATE, AS_INT, playerState);
   addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);
   addstat(STAT_PLR_RETDIST, AS_INT, stat_ret_dist);
-  addstat(STAT_PLAYER_DEATHS, AS_INT, playerDeaths);
   
   addstat(STAT_TARGET_HP_TORSOCENTER, AS_FLOAT, stat_target_hp_torsoCenter);
   addstat(STAT_TARGET_HP_TORSOLEFT, AS_FLOAT, stat_target_hp_torsoLeft);

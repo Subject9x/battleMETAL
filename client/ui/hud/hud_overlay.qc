@@ -12,6 +12,7 @@ Date: 3/30/2020
 void( entity thePlayer ) hud_render_ally_names={
   local vector namepos, nameproj, drawSize;
   local float namelen, drawdist, adj;
+  local string playerName;
 
   drawdist = vlen(pmove_org - thePlayer.origin);
   if( drawdist < CLIENT_radar_range * 0.25 ){
@@ -27,7 +28,6 @@ void( entity thePlayer ) hud_render_ally_names={
     adj = 42;
   }
   
-  local string playerName;
   playerName = getplayerkeyvalue(thePlayer.clientLocalNum, "name");
   namelen = stringwidth(playerName, 0, drawSize);
   namepos = thePlayer.origin;
@@ -51,13 +51,13 @@ void() hud_renderNavOverlay={
   local float navDist;
   local float distThreshold;
   local float heat;
+  local entity nav;
 
   distThreshold = CLIENT_radar_range * 4;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
     
-  local entity nav;
   for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
     if( nav.faction != CLIENT_faction ){
       continue;
