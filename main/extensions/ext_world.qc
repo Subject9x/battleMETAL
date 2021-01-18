@@ -295,13 +295,8 @@ void() sv_rules_dm={
       }
     }
   }
-  
   //Objective hit
-  
-  
   //Limited Lives, no one left
-  
-
 };
 
 /*
@@ -309,30 +304,53 @@ void() sv_rules_dm={
 */
 void() sv_rules_tdm={
   local entity player;
-
+  local float teamTotalMil;
+  local float teamTotalSrv;
+  local float presetKillLimit;
+  
+  presetKillLimit = FALSE;
   //Game FragLimit hit
-  if( ENT_SERVER_INFO.ruleFraglimit != FALSE ){
-    for( player = nextent(world); player != world; player = nextent(player)){
-      if( !(player.flags & FL_CLIENT) ){
-        continue;
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ACTIVE ){
+    if( ENT_SERVER_INFO.ruleFraglimit != FALSE ){
+      for( player = nextent(world); player != world; player = nextent(player)){
+        if( !(player.flags & FL_CLIENT) ){
+          continue;
+        }
+        if( player.faction == FACTION_MILITAR ){
+          teamTotalMil = teamTotalMil + player.frags;
+        }
+        else if( player.faction == FACTION_SURVEST ){
+          teamTotalSrv = teamTotalSrv + player.frags;
+        }
+        if( player.frags >= ENT_SERVER_INFO.ruleFraglimit ){
+          presetKillLimit = TRUE;
+        }
       }
-      if( player.frags >= ENT_SERVER_INFO.ruleFraglimit ){
+      if( presetKillLimit ){
         ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
         ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_FRAG | SENDFLAG_MISSION_STATUS;
+        return;
+      }
+      else{
+        if( teamTotalMil >= ENT_SERVER_INFO.ruleFraglimit || teamTotalSrv >= ENT_SERVER_INFO.ruleFraglimit ){
+          ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
+          ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_FRAG | SENDFLAG_MISSION_STATUS;
+          return;
+        }
+      }
+      
+      if( ENT_SERVER_INFO.missionStatus ==  MISSION_STATUS_OVER ){
       }
     }
-    
-    if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_OVER ){
-    }
-    return;
   }
   
   //Game TimeLimit hit  
-  if( ENT_SERVER_INFO.timeEnd != FALSE ){
-    if( time > ENT_SERVER_INFO.timeEnd ){
-      ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
-      ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_FRAG | SENDFLAG_MISSION_STATUS;
-      return;
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ACTIVE ){
+    if( ENT_SERVER_INFO.timeEnd > FALSE ){
+      if( time >= ENT_SERVER_INFO.timeEnd ){
+        ENT_SERVER_INFO.missionStatus = MISSION_STATUS_OVER;
+        ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_RULE_LIMIT_TIME | SENDFLAG_MISSION_STATUS;
+      }
     }
   }
   
@@ -408,7 +426,7 @@ void() sv_endServer={
       ENT_SERVER_INFO.endRoundTime = time + 8;
     }
     else{
-      ENT_SERVER_INFO.endRoundTime = time + 15;
+      ENT_SERVER_INFO.endRoundTime = time + 5;
     }
     ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_ENDTIME;
     for( player = nextent(world); player.classname == "player"; player = nextent(player)){
@@ -416,6 +434,9 @@ void() sv_endServer={
         continue;
       }
       player.flags = player.flags | FL_NOSHOOT;
+      if( player.data_type == DATA_MECH ){
+        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_EFLAGS;
+      }
       if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN || ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
         client_send_campaign_end_data( player );
       }
