@@ -334,8 +334,6 @@ void( float mech_id ) sendevent_player_mech={
         self.scale = 0.01;
       }
       self.reloadValue = 100;
-      //self.icon = strzone(self.icon);
-      
       setmodel(self, self.model);
     self = this;
     weps = weps.w_slot;
@@ -660,8 +658,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */ 
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    SV_MISSIONSTATUS = ReadByte();
-    
+    ENT_SERVER_INFO.missionStatus = ReadByte();
     if( self.clientLocalId == player_localentnum ){
       CLIENT_player_deadflag = self.deadflag;
     }

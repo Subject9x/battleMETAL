@@ -219,7 +219,7 @@ void() ui_navbutton_deploy_click={
       }
     }
     
-    if( !(SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+    if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
       cl_setspawnpoint( CLIENT_MENU_nav_pnt );
     }
   }
@@ -238,6 +238,8 @@ void( vector ofs ) ui_navbutton_launch_draw={
   local vector textPos;
   local float strWidth;
   local string text;
+  local float t;
+  local float sec;
   
   UI_NAVBAR_LAUNCH_ORG = ofs;
   drawfont_prev = drawfont;
@@ -245,8 +247,6 @@ void( vector ofs ) ui_navbutton_launch_draw={
 
   gui_renderTintImage2((LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_LAUNCH_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_LAUNCH_SIZE), CLR_DEF_WEP_INRANGE * 0.85, '0.25 0.25 0.25', 1, 0);
 
-  local float t;
-  local float sec;
   if( servertime < MENU_respawn_cool ){
     t = 15 - (servertime - MENU_respawn_cool_start); 
     sec = t - floor( t / 60 ) * 60 ;

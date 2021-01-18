@@ -187,13 +187,13 @@ string() ui_calculate_game_time_string={
   local string val;
   local float t, sec, mint, hr;
   local float endTime;
-  endTime = getstatf(STAT_TIMELIMIT) * 60;
-  if( getstatf(STAT_TIMELIMIT) > 0  || SV_GAMETYPE == GAMEMODE_COOP ){
-    if( SV_GAMETYPE == GAMEMODE_COOP) {
+  endTime = ENT_SERVER_INFO.ruleTimelimit * 60;
+  if( ENT_SERVER_INFO.ruleTimelimit > 0  || ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+    if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP) {
       t = servertime + (servertime - time);
     }
     else{
-      endTime = endTime + SV_STARTTIME;
+      endTime = endTime + ENT_SERVER_INFO.timeStart;
       t = servertime + (servertime - time);
       t = endTime - t ;
     }
@@ -235,7 +235,7 @@ string(float timeVal ) ui_calculate_time_string={
 string() ui_label_mission_status={
   local string val;
 //TODO fix 
- switch( SV_MISSIONSTATUS ){
+ switch( ENT_SERVER_INFO.missionStatus ){
     case MISSION_STATUS_READY:
       val = "Ready";
       break;

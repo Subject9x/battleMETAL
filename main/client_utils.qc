@@ -462,10 +462,6 @@ void(float track, float loop) client_playTrack={
   stuffcmd(self, cmd);
 };
 
-void() client_sendServerAbout={
-  stuffcmd(self, SERVER_ABOUT);
-};
-
 void() client_sendMissionFileName={
   local string cmd, msnFile;
   

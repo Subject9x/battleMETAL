@@ -183,7 +183,7 @@ void() CSQC_Shutdown =
   freeGlobalString(MENU_DEBRIEF_unlocks_mechs)
   freeGlobalString(MENU_DEBRIEF_unlocks_equip)
   freeGlobalString(SV_NEXTMAP)
-  freeGlobalString(SV_ABOUT)
+  freeGlobalString(ENT_SERVER_INFO.svAbout)
   freeGlobalString(ENT_SERVER_INFO.nextMap)
   
   freeGlobalString(PLAYER_COLOR_PSC)
@@ -568,12 +568,6 @@ void(string s) CSQC_Parse_StuffCmd =
     }
   }
   else{
-    if( argv(0) == "svabout" ){
-      lenAdjust = strlen(s) - 8;
-      tempAbout = substring(s, 8, lenAdjust );
-      cacheGlobalString( SV_ABOUT, tempAbout )
-      return;
-    }
     if( argv(0) == "fog" ){
       cl_get_new_fog( s );
       return;

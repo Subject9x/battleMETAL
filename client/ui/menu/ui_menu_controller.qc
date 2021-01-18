@@ -213,7 +213,7 @@ void() menu_exit={
 
 float() menu_connect_choice={
   local float choice;
-  switch( SV_GAMETYPE ){
+  switch( ENT_SERVER_INFO.gameType ){
     case GAMEMODE_CAMPAIGN:
       choice = MENU_BRIEF_ACTIVE;
       INFO_SWITCH = 1;
@@ -234,19 +234,18 @@ void( vector menuOrg ) menu_serverinfo_basic={
   local vector leftAnchor;
   
   local string serverStatus;
+  local string scoreLimit;
+  
+  local vector statusColor;
   
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('225 150'), '0.65 0.65 0.65', 1, 0);
   
   // Server Name
-  if( cvar_string("hostname") != "" || cvar_string("hostname") != "UNNAMED" ){
-    serverName = cvar_string("hostname");
-  }
-  
   leftAnchor =  menuOrg + gui_percentToPixelRawVec('4 4');
   
   fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;
   fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
-  gui_labelKeyPair( leftAnchor, "Server :", serverName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '14 14' );
+  gui_labelKeyPair( leftAnchor, "Server :", ENT_SERVER_INFO.netname, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '14 14' );
   
   //Server Game Mode
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('10 18'), "Mode :", "Deathmatch", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
@@ -267,9 +266,8 @@ void( vector menuOrg ) menu_serverinfo_basic={
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0 72'), "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Frag Limit
-  local string scoreLimit;
-  if( getstatf(STAT_FRAGLIMIT) > 0 ){
-    scoreLimit = ftos(getstatf(STAT_FRAGLIMIT));
+  if( ENT_SERVER_INFO.ruleFraglimit > 0 ){
+    scoreLimit = ftos(ENT_SERVER_INFO.ruleFraglimit);
   }
   else{
     scoreLimit = "No Limit";
@@ -279,14 +277,24 @@ void( vector menuOrg ) menu_serverinfo_basic={
   serverStatus = ui_label_mission_status();
   //Time Limit
   if( serverStatus == "Complete" ){
-    gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_time_string(SV_TIMELIMIT), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+    gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_time_string(ENT_SERVER_INFO.ruleTimelimit), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
   }
   else{
     gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
   }
-  
+
   //Game Status
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('6 126'), "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  statusColor = '1 1 1';
+  if( serverStatus == "Ready" ){
+    statusColor = CLR_DEF_UI_ARMING;
+  }
+  else if(serverStatus == "In Progress" ){
+    statusColor = CLR_DEF_ARM_OK;
+  }
+  else if( serverStatus == "Complete" ){
+    statusColor = CLR_DEF_ARM_THREEQ;
+  }
+  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('6 126'), "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, statusColor, fontsStyle, '12 12' );
 }; 
 
 //arranges player rows for dm
@@ -339,6 +347,18 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   local vector playerStatusOfs;
   local vector playerScoreOfs;
   
+  local float playerNameLen;
+  local string playerName;
+    
+  local float pingLen;
+  local vector pingColor;
+  local float pingVal;
+  
+  local vector statusColor;
+  local float statusLen;
+  local string playerStatus;
+  local float scoreLen;
+  
   if( playerRow.clientLocalId == player_localentnum ){
     fontSize = '12 12 0';
     rowColor = CLR_DEF_GREEN;
@@ -350,8 +370,6 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   
   drawstring(rowOfs, strcat(ftos(itr),")"), fontSize, rowColor, 1, 0);
   
-  local float playerNameLen;
-  local string playerName;
   playerNameOfs = rowOfs + gui_percentToPixelRawVec('14 0');
   playerName = getplayerkeyvalue(playerRow.clientLocalNum, "name");
   if( playerName != "" ){
@@ -362,9 +380,6 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
     drawstring(playerNameOfs, playerName, fontSize, rowColor, 1, 0);
   }
   
-  local float pingLen;
-  local vector pingColor;
-  local float pingVal;
   pingVal = stof(getplayerkeyvalue(playerRow.clientLocalNum, "ping"));
   if( pingVal <= 50 ){
     pingColor = CLR_DEF_IIF_FRIEND_BLD;
@@ -381,7 +396,6 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   drawstring(playerPingOfs,ftos(pingVal), fontSize, pingColor, 1, 0);
   
   if( showScore ){
-    local float scoreLen;
     playerScoreOfs = playerPingOfs + gui_percentToPixelRawVec('45 0');
     scoreLen = stringwidth(ftos(playerRow.kills), 0, fontSize);
     playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
@@ -390,11 +404,8 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
     playerScoreOfs = playerPingOfs;
   }
   
-  local vector statusColor;
-  local float statusLen;
-  local string playerStatus;
   playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('49 0');
-  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) && (SV_GAMETYPE != GAMEMODE_COOP) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) && (ENT_SERVER_INFO.gameType != GAMEMODE_COOP) ){
     playerStatus = "<hidden>";
     statusColor = CLR_DEF_ARM_THREEQ;
   }

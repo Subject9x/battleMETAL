@@ -13,6 +13,7 @@ entity ENT_SERVER_INFO;
 .float timeEnd;
 .float serverFlags;
 //.float worldtype <- IMPORT
+.float missionStatusPrev;
 .float missionStatus;
 .float missionResult;
 .float ruleFraglimit;
@@ -36,6 +37,7 @@ float SENDFLAG_RULE_LIMIT_TIME  = 256;
 float SENDFLAG_MAP_NEXT         = 512;
 float SENDFLAG_SAVESLOT         = 1024;
 float SENDFLAG_WORLDTYPE        = 2048;
+float SENDFLAG_ENDROUND         = 4096;
 
 #ifdef SSQC
 entity() world_ini_serverInfo_ent;
@@ -54,15 +56,10 @@ void( float isNew, float changeFlags) world_rules_readEntity;
     + missing info they prescribe to have
   c'mon....
 */
-float SV_GAMETYPE;
-float SV_MISSIONSTATUS;
-float SV_MISSION_RESULT;
-float SV_STARTTIME;
 float SV_TIMELIMIT; //getstatf(STAT_TIMELIMIT) is not populated until post-ClientConnect()
 float SV_FRAGLIMIT;
 float SV_ENDTIME;
 float SV_ENDTIMELIMIT;
-float SV_SERVERFLAGS;
 string SV_NEXTMAP;
 float SV_WORLDTYPE;
 string SV_ABOUT;

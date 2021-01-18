@@ -128,9 +128,6 @@ void() world_metal_ini={
   SERVER feature - current states of server that's sent to all players when they connect.
 */
 void() world_ini_serverinfo={
-  
-  SERVER_ABOUT = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
-  
   ENT_SERVER_INFO.gameType = GAMETYPE;
   ENT_SERVER_INFO.timeStart = time;
   ENT_SERVER_INFO.timeEnd = time + (cvar("timelimit") * 60);
@@ -139,6 +136,7 @@ void() world_ini_serverinfo={
   ENT_SERVER_INFO.missionStatus = MISSION_STATUS_READY;
   ENT_SERVER_INFO.missionResult = 0;
   ENT_SERVER_INFO.nextMap = strzone(sv_nextmap);
+  ENT_SERVER_INFO.svAbout = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
   
   ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
   
@@ -241,9 +239,6 @@ void() WeatherDominator_think={
     when progs exits, not on errors though!
 */
 void() SV_Shutdown={
-  if( strlen(SERVER_ABOUT) > 0 ){
-    strunzone(SERVER_ABOUT);
-  } 
   if( strlen(SERVER_INFO) > 0 ){
     strunzone(SERVER_INFO);
   }
@@ -1232,7 +1227,7 @@ void( string targName ) world_debug_targ={
 };
 
 /*
-  used with server flag (SV_SERVERFLAGS & SVFLAG_SPAWNFAR)
+  used with server flag (ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR)
   gathers all the deathmatch nodes.
 */
 entity() world_deathmatch_random_spawn={

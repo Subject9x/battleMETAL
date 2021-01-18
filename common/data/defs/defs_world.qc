@@ -45,37 +45,51 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
   if( (changedFlags & SENDFLAG_GAMETYPE) ){
     WriteByte( MSG_ENTITY, self.gameType );
   }
+  
   if( (changedFlags & SENDFLAG_STARTTIME) ){
     WriteCoord( MSG_ENTITY, self.timeStart );
   }
+  
   if( (changedFlags & SENDFLAG_SERVERFLAGS) ){
     WriteCoord( MSG_ENTITY, self.serverFlags );
   }
+  
   if( (changedFlags & SENDFLAG_MISSION_STATUS) ){
     WriteByte( MSG_ENTITY, self.missionStatus );
   }
+  
   if( (changedFlags & SENDFLAG_MISSION_RESULT) ){
     WriteByte( MSG_ENTITY, self.missionResult );
-  }  
+  }
+  
   if( (changedFlags & SENDFLAG_RULE_LIMIT_FRAG) ){
     //STAT_FRAGLIMIT
   }
+  
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteString( MSG_ENTITY, cvar_string("hostname") );
     WriteString( MSG_ENTITY, cvar_string("sv_about"));
   }
+  
   if( (changedFlags & SENDFLAG_RULE_LIMIT_TIME) ){
     //STAT_TIMELIMIT
   }
+  
   if( (changedFlags & SENDFLAG_MAP_NEXT) ){
     WriteString( MSG_ENTITY, self.nextMap );
   }
+  
   if( (changedFlags & SENDFLAG_SAVESLOT) ){
     WriteByte( MSG_ENTITY, self.saveSlot );
   }
   
   if( (changedFlags & SENDFLAG_WORLDTYPE) ){
     WriteByte( MSG_ENTITY, self.worldtype );
+  }
+  
+  if( (changedFlags & SENDFLAG_ENDROUND) ){
+     //time the round ended.
+     //CSQC tracks as the global servertime
   }
   return TRUE;
 };
@@ -122,7 +136,7 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     self.serverFlags = ReadCoord();
   }
   if( (changeFlags & SENDFLAG_MISSION_STATUS) ){
-    SV_MISSION_STATUS_PREV = self.missionStatus;
+    self.missionStatusPrev = self.missionStatus;
     self.missionStatus = ReadByte();
   }
   
@@ -161,16 +175,14 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   if( (changeFlags & SENDFLAG_SAVESLOT) ){
     self.saveSlot = ReadByte();
   }
-  
   if( (changeFlags & SENDFLAG_WORLDTYPE) ){
     self.worldtype = ReadByte();
   }
   
-  SV_STARTTIME = self.timeStart;
-  SV_MISSIONSTATUS = self.missionStatus;
-  SV_MISSION_RESULT = self.missionResult;
-  SV_GAMETYPE = self.gameType;
-  SV_SERVERFLAGS = self.serverFlags;
+  if( (changeFlags & SENDFLAG_ENDROUND) ){
+    self.endRoundTime = servertime;//time the round ended.
+  }
+  
   SV_WORLDTYPE = self.worldtype;
   
   if( self.missionStatus == MISSION_STATUS_OVER ){

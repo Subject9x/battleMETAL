@@ -154,13 +154,13 @@ void() hud_render_scoreboard={
   panelOrg_y = VIEW_ORG_y + gui_percentYRaw(2);
 
   //gameMode = cvar("gamemode");
-  if( SV_GAMETYPE == GAMEMODE_TEAMDM ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     hud_render_scoreboard_tdm( panelOrg );
   }
-  else if( SV_GAMETYPE == GAMEMODE_DM ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
     hud_render_scoreboard_dm( panelOrg );
   }
-  else if( SV_GAMETYPE == GAMEMODE_COOP ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     hud_render_scoreboard_dm( panelOrg );
   }
 }; 
@@ -176,7 +176,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   local string playerName;
   local float scoreLen;
   
-  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) ){
     rowColor = CLR_DEF_WHITE;
     if( playerRow.clientLocalId == player_localentnum ){
       fontSize = '10 10 0';
