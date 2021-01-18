@@ -21,6 +21,7 @@ entity ENT_SERVER_INFO;
 .float saveSlot;
 .float endRound;
 .float endRoundTime;
+.string svAbout;
 
 //re-targeted SENDFLAG values
 float SENDFLAG_GAMETYPE         = 1;
@@ -34,7 +35,7 @@ float SENDFLAG_RULE_LIMIT_FRAG  = 64;
 float SENDFLAG_RULE_LIMIT_TIME  = 256;
 float SENDFLAG_MAP_NEXT         = 512;
 float SENDFLAG_SAVESLOT         = 1024;
-float SENDFLAG_WORLDTYPE         = 2048;
+float SENDFLAG_WORLDTYPE        = 2048;
 
 #ifdef SSQC
 entity() world_ini_serverInfo_ent;

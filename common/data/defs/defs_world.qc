@@ -58,10 +58,14 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
     WriteByte( MSG_ENTITY, self.missionResult );
   }  
   if( (changedFlags & SENDFLAG_RULE_LIMIT_FRAG) ){
-    WriteCoord( MSG_ENTITY, self.ruleFraglimit );
+    //STAT_FRAGLIMIT
+  }
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteString( MSG_ENTITY, cvar_string("hostname") );
+    WriteString( MSG_ENTITY, cvar_string("sv_about"));
   }
   if( (changedFlags & SENDFLAG_RULE_LIMIT_TIME) ){
-    WriteCoord( MSG_ENTITY, self.ruleTimelimit );
+    //STAT_TIMELIMIT
   }
   if( (changedFlags & SENDFLAG_MAP_NEXT) ){
     WriteString( MSG_ENTITY, self.nextMap );
@@ -87,6 +91,8 @@ entity() world_ini_serverInfo={
 
 };
 void( float isNew, float changeFlags) world_rules_readEntity={
+  local string tempHostName;
+  local string tempAbout;
   local string tempNextMap;
   local float nextGameType;
   local float nextStartTime;
@@ -125,29 +131,31 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   }
   
   if( (changeFlags & SENDFLAG_RULE_LIMIT_FRAG) ){
-    nextRuleFrag = ReadCoord();
     if( self.gameType != GAMEMODE_CAMPAIGN && self.gameType != GAMEMODE_COOP ){
-      self.ruleFraglimit = nextRuleFrag;
+      self.ruleFraglimit = getstatf(STAT_FRAGLIMIT);
     }
   }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    tempHostName = ReadString();
+    tempAbout = ReadString();
+    cacheGlobalString(self.netname, tempHostName)
+    cacheGlobalString(self.svAbout, tempAbout)
+  }
+  
   if( (changeFlags & SENDFLAG_RULE_LIMIT_TIME) ){
-    nextRuleTime = ReadCoord();
     if( self.gameType != GAMEMODE_CAMPAIGN && self.gameType != GAMEMODE_COOP ){
-      self.ruleTimelimit = nextRuleTime;
+      self.ruleTimelimit = getstatf(STAT_TIMELIMIT);
     }
   }
   if( (changeFlags & SENDFLAG_MAP_NEXT) ){
     tempNextMap = ReadString();
-    dprint(sprintf("CSQC().world_rules_readEntity().tempNextMap = %s\n", tempNextMap)); //debug
     if( strlen(self.nextMap) > 0 && strlen(tempNextMap) > 0){
-      dprint(sprintf("CSQC().world_rules_readEntity().self.nextMap UNZONE = %s\n", self.nextMap)); //debug
       strunzone(self.nextMap);
       strunzone(SV_NEXTMAP);
     }
     self.nextMap = strzone(tempNextMap);
     SV_NEXTMAP = strzone(self.nextMap);
-    dprint(sprintf("CSQC().world_rules_readEntity().self.nextMap = %s\n", self.nextMap)); //debug
-    dprint(sprintf("CSQC().world_rules_readEntity().SV_NEXTMAP = %s\n", SV_NEXTMAP)); //debug
   }
   
   if( (changeFlags & SENDFLAG_SAVESLOT) ){
