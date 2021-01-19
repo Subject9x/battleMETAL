@@ -287,3 +287,53 @@ void() ctrl_missile_dud_touch={
   }
   remove(self);
 };
+
+/*
+  binds a Weapon's reloadValue to correct ADDSTAT() of the player.
+  
+  This was a conscious reversion to older logic, why?
+    1) standing up ANY weapon reload logic on the clientside was a lot of extra work.
+    2) given how diverse a weapon's reload logic COULD be, its better just to send 1
+      single state value.
+    3) only alternative would be to add more data sent for player's SENDFLAG_ATTACK
+      Writes, and that isn't really a big gain.
+*/
+void(entity wep) ctrl_weapon_update_player={
+  local float netValue;
+  netValue = wep.reloadValue;
+  if( (wep.damageType & DMG_MSC) ){
+    return;
+  }
+  if( wep.deadflag != DEAD_NO ){
+    netValue = 0;
+  }
+  switch( wep.w_group ){
+    case WEAPON1:
+      self.statWeaponReload1 = netValue;
+      break;
+    case WEAPON2:
+      self.statWeaponReload2 = netValue;
+      break;
+    case WEAPON3:
+      self.statWeaponReload3 = netValue;
+      break;
+    case WEAPON4:
+      self.statWeaponReload4 = netValue;
+      break;
+    case WEAPON5:
+      self.statWeaponReload5 = netValue;
+      break;
+    case WEAPON6:
+      self.statWeaponReload6 = netValue;
+      break;
+    case WEAPON7:
+      self.statWeaponReload7 = netValue;
+      break;
+    case WEAPON8:
+      self.statWeaponReload8 = netValue;
+      break;
+    case WEAPON9:
+      self.statWeaponReload9 = netValue;
+      break;
+  }
+};

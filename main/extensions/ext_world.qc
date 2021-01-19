@@ -63,27 +63,37 @@ void() world_metal_ini={
   world_ini_serverinfo();
 
   //kept in numerical order for easy reference.
-  addstat(STAT_RAM, AS_FLOAT, ramUp);
-  addstat(STAT_PLAYER_STATE, AS_INT, playerState);
-  addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);
-  addstat(STAT_PLR_RETDIST, AS_INT, stat_ret_dist);
+  addstat(STAT_RAM, AS_INT, ramUp);
+  addstat(STAT_PLAYER_STATE, AS_FLOAT, playerState);
+  addstat(STAT_PLR_HITDIR, AS_FLOAT, stat_hit_dirs);
+  addstat(STAT_PLR_RETDIST, AS_FLOAT, stat_ret_dist);
   
-  addstat(STAT_TARGET_HP_TORSOCENTER, AS_FLOAT, stat_target_hp_torsoCenter);
-  addstat(STAT_TARGET_HP_TORSOLEFT, AS_FLOAT, stat_target_hp_torsoLeft);
-  addstat(STAT_TARGET_HP_TORSORIGHT, AS_FLOAT, stat_target_hp_torsoRight);
-  addstat(STAT_TARGET_HP_ARMLEFT, AS_FLOAT, stat_target_hp_armLeft);
-  addstat(STAT_TARGET_HP_ARMRIGHT, AS_FLOAT, stat_target_hp_armRight);
-  addstat(STAT_TARGET_HP_LEGS, AS_FLOAT, stat_target_hp_legs);
+  addstat(STAT_TARGET_HP_TORSOCENTER, AS_INT, stat_target_hp_torsoCenter);
+  addstat(STAT_TARGET_HP_TORSOLEFT, AS_INT, stat_target_hp_torsoLeft);
+  addstat(STAT_TARGET_HP_TORSORIGHT, AS_INT, stat_target_hp_torsoRight);
+  addstat(STAT_TARGET_HP_ARMLEFT, AS_INT, stat_target_hp_armLeft);
+  addstat(STAT_TARGET_HP_ARMRIGHT, AS_INT, stat_target_hp_armRight);
+  addstat(STAT_TARGET_HP_LEGS, AS_INT, stat_target_hp_legs);
     
-  addstat(STAT_CLIENT_HP_TORSOCENTER, AS_FLOAT, stat_client_hp_torsoCenter);
-  addstat(STAT_CLIENT_HP_TORSOLEFT, AS_FLOAT, stat_client_hp_torsoLeft);
-  addstat(STAT_CLIENT_HP_TORSORIGHT, AS_FLOAT, stat_client_hp_torsoRight);
-  addstat(STAT_CLIENT_HP_ARMLEFT, AS_FLOAT, stat_client_hp_armLeft);
-  addstat(STAT_CLIENT_HP_ARMRIGHT, AS_FLOAT, stat_client_hp_armRight);
-  addstat(STAT_CLIENT_HP_LEGS, AS_FLOAT, stat_client_hp_legs);
+  addstat(STAT_CLIENT_HP_TORSOCENTER, AS_INT, stat_client_hp_torsoCenter);
+  addstat(STAT_CLIENT_HP_TORSOLEFT, AS_INT, stat_client_hp_torsoLeft);
+  addstat(STAT_CLIENT_HP_TORSORIGHT, AS_INT, stat_client_hp_torsoRight);
+  addstat(STAT_CLIENT_HP_ARMLEFT, AS_INT, stat_client_hp_armLeft);
+  addstat(STAT_CLIENT_HP_ARMRIGHT, AS_INT, stat_client_hp_armRight);
+  addstat(STAT_CLIENT_HP_LEGS, AS_INT, stat_client_hp_legs);
   
-  addstat(STAT_RAM_VALUE, AS_FLOAT, ramTracker);
-  addstat(STAT_LCK_STT, AS_INT, targLockState);
+  addstat(STAT_WEAPON_RELOAD_1, AS_FLOAT, statWeaponReload1);
+  addstat(STAT_WEAPON_RELOAD_2, AS_FLOAT, statWeaponReload2);
+  addstat(STAT_WEAPON_RELOAD_3, AS_FLOAT, statWeaponReload3);
+  addstat(STAT_WEAPON_RELOAD_4, AS_FLOAT, statWeaponReload4);
+  addstat(STAT_WEAPON_RELOAD_5, AS_FLOAT, statWeaponReload5);
+  addstat(STAT_WEAPON_RELOAD_6, AS_FLOAT, statWeaponReload6);
+  addstat(STAT_WEAPON_RELOAD_7, AS_FLOAT, statWeaponReload7);
+  addstat(STAT_WEAPON_RELOAD_8, AS_FLOAT, statWeaponReload8);
+  addstat(STAT_WEAPON_RELOAD_9, AS_FLOAT, statWeaponReload9);
+  
+  addstat(STAT_RAM_VALUE, AS_INT, ramTracker);
+  addstat(STAT_LCK_STT, AS_FLOAT, targLockState);
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
   

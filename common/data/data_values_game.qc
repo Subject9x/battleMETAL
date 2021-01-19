@@ -305,9 +305,8 @@ float DMG_FRIENDLY_FIRE_REDUCE_SKILL = 0.33;
 //     GETSTAT() TYPES
 //============================
 float AS_STRING = 1;
-float AS_INT = 2;
-float AS_FLOAT_TRUNCATED = 2;
-float AS_FLOAT = 8;
+float AS_FLOAT = 2;
+float AS_INT = 8;
 //============================
 //     SEND ENTITY SHARED
 //============================
@@ -420,6 +419,16 @@ float RADAR_SWEEP = 2.5;
 .float stat_plr_rep;
 .string stat_target_name;
 
+.float statWeaponReload1;
+.float statWeaponReload2;
+.float statWeaponReload3;
+.float statWeaponReload4;
+.float statWeaponReload5;
+.float statWeaponReload6;
+.float statWeaponReload7;
+.float statWeaponReload8;
+.float statWeaponReload9;
+
 #endif
 //============================
 //     ADDSTAT SLOT NUMBERS        
@@ -468,15 +477,16 @@ float STAT_CLIENT_HP_LEGS = 72;
 //float    = 78;
 float STAT_RAM_VALUE = 79;
 float STAT_LCK_STT = 80;
-//float    = 81;
-//float    = 82;
-//float    = 83;
-//float    = 84;
-//float    = 85;
-//float    = 86;
-//float    = 87;
-//float    = 88;
-//float    = 89;
+
+float STAT_WEAPON_RELOAD_1 = 81;
+float STAT_WEAPON_RELOAD_2 = 82;
+float STAT_WEAPON_RELOAD_3 = 83;
+float STAT_WEAPON_RELOAD_4 = 84;
+float STAT_WEAPON_RELOAD_5 = 85;
+float STAT_WEAPON_RELOAD_6 = 86;
+float STAT_WEAPON_RELOAD_7 = 87;
+float STAT_WEAPON_RELOAD_8 = 88;
+float STAT_WEAPON_RELOAD_9 = 89;
 //float    = 90;
 
 //float    = 91;

@@ -156,6 +156,7 @@ void() default_weapon_think={
     if(time > self.w_firetime){
       self.wepReloadState = READY;
     }
+    self.reloadValue = (self.w_currentammo / self.w_clipsize) * 100;
   }
   else if(self.wepReloadState == RELOADING){
     if(time > self.w_firetime){

@@ -105,6 +105,9 @@ void() player_think={
   local vector laserHit;
   local vector laserOrg;
   
+  local entity theWeapon;
+  local entity oldSelf;
+  
   makevectors(self.angles);
   if(self.chaseActive){
     laserOrg = self.origin + (v_up * 22); //+ (v_forward * -96);
@@ -144,6 +147,13 @@ void() player_think={
     }
   }
   
+  if( self.clientLocalId == player_localentnum ){
+    theWeapon = self.w_slot;
+    while( theWeapon ){
+      player_weapon_reload( theWeapon );
+      theWeapon = theWeapon.w_slot;
+    }
+  }
   self.think = player_think;
   self.nextthink = time + 0.01;
 };
@@ -870,4 +880,49 @@ float() remove_client={
   }
   remove(self);
   return TRUE;
+};
+
+/*
+  Updates a player's Weapon reload value.
+  
+  This was a conscious reversion to older logic, why?
+    1) standing up ANY weapon reload logic on the clientside was a lot of extra work.
+    2) given how diverse a weapon's reload logic COULD be, its better just to send 1
+      single state value.
+    3) only alternative would be to add more data sent for player's SENDFLAG_ATTACK
+      Writes, and that isn't really a big gain.
+*/
+void( entity aWeapon ) player_weapon_reload={
+  if( (aWeapon.damageType & DMG_MSC) ){
+    return;
+  }
+  switch( aWeapon.w_group ){
+    case WEAPON1:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_1);
+      break;
+    case WEAPON2:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_2);
+      break;
+    case WEAPON3:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_3);
+      break;
+    case WEAPON4:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_4);
+      break;
+    case WEAPON5:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_5);
+      break;
+    case WEAPON6:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_6);
+      break;
+    case WEAPON7:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_7);
+      break;
+    case WEAPON8:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_8);
+      break;
+    case WEAPON9:
+      aWeapon.reloadValue = getstati(STAT_WEAPON_RELOAD_9);
+      break;
+  }
 };

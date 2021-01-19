@@ -45,7 +45,7 @@ Overview
 .vector w_adj_ang;      //rotate weapon model face correctly
 .float w_firetime;
 .float w_clipsize;
-.float w_group;     //weapon group, only 1-3 - SET BY PARENT
+.float w_group;     //Weapon bitflag value indicator UID for hardpoint, 1,2,4,8 etc
 .float w_range;
 .float damageValue;
 .float damageType;  //  Enumerated Float, see defs_game.qc\

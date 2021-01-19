@@ -88,6 +88,17 @@ void() ClientConnect = {
   self.w_group2 = 0;
   self.w_group3 = 0;
   self.w_group4 = 0;
+  
+  self.statWeaponReload1 = 0;
+  self.statWeaponReload2 = 0;
+  self.statWeaponReload3 = 0;
+  self.statWeaponReload4 = 0;
+  self.statWeaponReload5 = 0;
+  self.statWeaponReload6 = 0;
+  self.statWeaponReload7 = 0;
+  self.statWeaponReload8 = 0;
+  self.statWeaponReload9 = 0;
+  
   self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
   self.state_2 = 0; //unknown what this used to be 
   

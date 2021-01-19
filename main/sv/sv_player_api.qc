@@ -30,7 +30,7 @@ called before running player input frame
 ============
 */
 void() PlayerPreThink = {
-  
+  self.attackFlag = 0;
   //keep losses up-to-date
   client_update_losses();
   
@@ -113,6 +113,8 @@ called after running player input frame
 ============
 */
 void() PlayerPostThink = {
+  local entity wep_chain;
+  local float legDmg, centerTorsoDmg;
   if (self.deadflag >= DEAD_DYING){
     return;
   }
@@ -192,12 +194,12 @@ void() PlayerPostThink = {
     
     ctrl_update_mechplayer();
     
-    local entity wep_chain;
     for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
       if( wep_chain.owner != self ){
         continue;
       }
       ctrl_weapon_think(wep_chain);
+      ctrl_weapon_update_player(wep_chain);
     }
     
     //REPAIR BAY
@@ -212,7 +214,6 @@ void() PlayerPostThink = {
     }
   }
 // check for attack
-  self.attackFlag = 0; //zero-out the attackFlag every frame to prevent multiple overdraws of muzzle flash and trailparticles on the clients.
   playerAttack();
   
   if( time > self.posFadeTimer ){
@@ -234,7 +235,6 @@ void() PlayerPostThink = {
         t_damage( self, world, world, self.health, self.origin, '0 0 0');
       }
       else{
-        local float legDmg, centerTorsoDmg;
         legDmg = self.legs.max_health * (self.fall_dmg * FALL_DAMAGE_FRACTION);
         t_damage( self, world, world, legDmg, self.legs.origin, '0 0 0');
         if( self.legs.health < (self.legs.max_health * 0.33) ){
@@ -318,6 +318,9 @@ void() PlayerPostThink = {
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_COLORS;
       self.new_color = FALSE;
       self.last_color = self.new_color;
+    }
+    if( self.attackFlag > 0 ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ATTACK;
     }
   }
   
