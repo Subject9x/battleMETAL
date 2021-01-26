@@ -25,23 +25,33 @@ void() click_saveslot={
 };
 
 void() m_newsave_i={
-  newsave_title = lbl_img('10 100', '1 1 0', IMG_NEWSAVE_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_NEWSAVE, 1, (UI_FLAG_SIZE_IMG) );
-  newsave_back = btn_img_callback('10 155 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_NEWSAVE, click_newsave_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   local vector start;
-  start = '10 172';
-  
   local float itr;
   local float actual;
+  local entity list;
+  local vector next;
+  local string name;
+  
+  newsave_title = lbl_img('10 100', '1 1 0', IMG_NEWSAVE_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_NEWSAVE, 1, (UI_FLAG_SIZE_IMG) );
+  newsave_back = btn_img_callback('10 155 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_NEWSAVE, click_newsave_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  start = '10 172';
+  
   itr = 0;
   actual = 0;
   
   if(GAME_SAVES[itr] != ""){
     while (itr < GAME_SAVES_MAX ){
-      local entity list;
-      local vector next;
       next = start;
       next_y = next_y + (itr * 20);
-      list = btn_text_callback(next, '14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+      
+      if( GAME_SAVES_DRAWNAME[itr] == "" ){
+        name = "- NEW SAVE SLOT -";
+      }
+      else{
+        name = GAME_SAVES_DRAWNAME[itr];
+      }
+      
+      list = btn_text_callback(next, '14 14 0', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
       list.data_bind = itr; //databind
       itr = itr + 1;
     }
@@ -57,10 +67,10 @@ void() m_newsave_f={
 };
 
 void() m_newsave_d={
+  local entity widget;
 
   gui_renderString("Clicking a SaveSlot will OVERRIDE that save.", gui_percentToPixelRawVec('10 138'), CLR_DEF_WHITE, '14 14 0', 1, 0);
 
-  local entity widget;
   widget = findchainfloat(menuId, M_NEWSAVE);
   while(widget){
     widget.draw(widget);

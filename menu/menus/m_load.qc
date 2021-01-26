@@ -14,6 +14,8 @@ entity load_list;
 //load Constants
 string IMG_LOAD_TITLE = "gfx/menu/load/load_title.png";
 
+//"- EMPTY SAVE -" 
+
 //button callbacks
 void() click_load_back={
   menu_clear_items(M_STATE);
@@ -25,51 +27,48 @@ void() click_load_back={
 void() click_load_loadgame={
   local string mapName;
   
-  if( GAME_SAVES_DRAWNAME[self.data_bind] != "- NEW SAVE SLOT -"){
+  if( GAME_SAVES_DRAWNAME[self.data_bind] != ""){
     menu_clear_items(M_STATE);
     cvar_set("saveslot", ftos(self.data_bind));
     cvar_set("gamemode", ftos(1));
     cvar_set("coop", ftos(0));
     cvar_set("deathmatch", ftos(0));
     cvar_set("skill", ftos(GAME_SAVES_SKILL[self.data_bind]));
+    cmd("maxplayers 1;\n");
     menu_exit_togame();
-    cmd(strcat("map ", GAME_SAVES_MAP[self.data_bind]));
+    cmd(strcat("map ", GAME_SAVES_MAP[self.data_bind]),"\n");
   }
 };
 
 // ini function, called by '_f' function as a setup func
 void() m_load_i={
-  load_title = lbl_img('10 100', '1 1 0', IMG_LOAD_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_LOAD, 1, (UI_FLAG_SIZE_IMG) );
- 
-
   local vector start;
-  start = '10 150';
-
   local float itr;
   local float actual;
+  local entity list;
+  local vector next;
+  local string name;
+  
+  load_title = lbl_img('10 100', '1 1 0', IMG_LOAD_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_LOAD, 1, (UI_FLAG_SIZE_IMG) );
+  
+  start = '10 150';
+  
   itr = 0;
-  actual = 1;
-  
-  if(GAME_SAVES[itr] != ""){
-    load_list = btn_text_callback(start,'14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-    load_list.data_bind = itr; //databind
-    itr = itr + 1;
-    if(GAME_SAVES[itr] != ""){
-      while (itr < GAME_SAVES_MAX ){
-        local entity list;
-        local vector next;
-        if( GAME_SAVES_DRAWNAME[itr] != "- EMPTY SAVE -" ){
-          next = start;
-          next_y = next_y + (actual * 20);
-          list = btn_text_callback(next, '14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-          list.data_bind = itr; //databind
-          actual = actual + 1;
-        }
-        itr = itr + 1;
-      }
+  actual = 0;
+  while (itr < GAME_SAVES_MAX ){
+    next = start;
+    next_y = next_y + (actual * 20);
+    if( GAME_SAVES_DRAWNAME[itr] == ""){
+      name = "- EMPTY SAVE -";
     }
+    else{
+      name = GAME_SAVES_DRAWNAME[itr];
+      actual = actual + 1;
+    }
+    list = btn_text_callback(next, '14 14 0', name, 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+    list.data_bind = itr; //databind
+    itr = itr + 1;
   }
-  
   load_back = btn_img_callback(next + gui_percentToPixelRawVec('0 24'), '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_LOAD, click_load_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   
 };

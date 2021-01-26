@@ -688,21 +688,20 @@ void() btn_onClick_runCommand={
 */
 void() menu_scan_saves={
   local float itr;
+  local string fname;
+  local float flannel;
+  local float line_count, line_tag, save_skill;
+  local string line, save_name, save_num, map_name, contents, campid;
+  
   itr = 0;
   while(itr < GAME_SAVES_MAX){
-    if(GAME_SAVES[itr] != ""){
-      strunzone(GAME_SAVES[itr]);
-    }
-    if(GAME_SAVES_DRAWNAME[itr] != ""){
-      strunzone(GAME_SAVES_DRAWNAME[itr]);
-    }
-    local string fname;
-    local float flannel;
+      
+    freeGlobalString(GAME_SAVES[itr])
+    freeGlobalString(GAME_SAVES_DRAWNAME[itr])
+      
     fname = strcat("saves/save_", ftos(itr), ".sav");
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
-      local float line_count, line_tag, save_skill;
-      local string line, save_name, save_num, map_name, contents, campid;
       line_count = 0;
       contents = fgets(flannel);
       tokenizebyseparator(contents, "{", ",", "}");
@@ -736,8 +735,8 @@ void() menu_scan_saves={
     }
     else{
       GAME_SAVES_SKILL[itr] = 0;
-      GAME_SAVES[itr] = " ";
-      GAME_SAVES_DRAWNAME[itr] = "- NEW SAVE SLOT -";
+      GAME_SAVES[itr] = "";
+      GAME_SAVES_DRAWNAME[itr] = "";
       GAME_SAVES_MAP[itr] = "";
     }
     itr = itr + 1;
@@ -764,7 +763,8 @@ float(vector mpos, vector org, vector sz) menu_checkMouseInBounds={
 float(vector org, vector list_size, vector row_size, float max_items, float space) listListener={
   local float listIndex, toSender;
   local vector listOffset;
-  local float selectCheck; 
+  local float selectCheck;
+  
   if( menu_checkMouseInBounds(VIEW_MPOS, org, list_size) ){
     
     listIndex = 1;

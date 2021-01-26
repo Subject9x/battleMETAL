@@ -684,13 +684,13 @@ float( float isNew, float changeFlags ) send_client_data={
       }
       player.critBits = 0;
     }
-    WriteCoord( MSG_ENTITY, sendCrit );
+    WriteShort( MSG_ENTITY, sendCrit );
   }
   /*
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    WriteCoord( MSG_ENTITY, player.burnBits );
+    WriteShort( MSG_ENTITY, player.burnBits );
   }
   /*
     EVENT - DEAD
