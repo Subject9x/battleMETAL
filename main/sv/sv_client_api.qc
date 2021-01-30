@@ -166,6 +166,7 @@ void() ClientConnect = {
     ExitIntermission();
   }
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_NEWENT;
 };
 
 /*
@@ -697,7 +698,7 @@ float( float isNew, float changeFlags ) send_client_data={
   */
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, player.deadflag );
-    WriteByte( MSG_ENTITY, MISSION_STATUS );
+    WriteByte( MSG_ENTITY, ENT_SERVER_INFO.missionStatus );
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){

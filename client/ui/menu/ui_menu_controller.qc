@@ -13,7 +13,8 @@ Overview:
   renders the NavBar at the top, along with the chosen menu sub function
 */
 void() menu_handleFrame={
-  local vector mpos; 
+  local vector mpos;
+  
   cursorpos = getmousepos();
   
   cursorImageSize = draw_getimagesize(UI_CURSOR_IMG);
@@ -60,13 +61,13 @@ void() menu_handleFrame={
   within the function coords. If they are, return TRUE.
 */
 float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds={
-
   local vector areaSize;
+  
   areaSize = org+sz;
   if( ((mpos_x > org_x) && (mpos_x < areaSize_x)) && ((mpos_y > org_y) && (mpos_y < areaSize_y)) ){
-	if( playClickSound ){
-		pointsound(pmove_org, "sound/misc/menu1.wav", 1, ATTN_NORM); //maybe not the best place for this.
-	}
+    if( playClickSound ){
+      pointsound(pmove_org, "sound/misc/menu1.wav", 1, ATTN_NORM); //maybe not the best place for this.
+    }
     return TRUE;
   }
   return FALSE;
@@ -77,14 +78,14 @@ float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseI
   and returns the index number of the item if any'
 */
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener={
+  local float listIndex, toSender;
+  local vector listOffset;
+  local float selectCheck;
   if( menu_checkMouseInBounds(cursorpos, org, list_size, FALSE) ){
-    local float listIndex, toSender;
-    local vector listOffset;
-    local float selectCheck;
     
-	listIndex = 1;
+    listIndex = 1;
     toSender = 0;
-	
+    
     while(listIndex <= max_items){
       listOffset_x = org_x;
       listOffset_y = org_y + (listIndex * row_size_y);
@@ -325,7 +326,7 @@ void( vector menuOrg ) menu_draw_players_basic={
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
-      if( nameCheck != "" || nameCheck){
+      if( nameCheck != "" ){
         player = findfloat(world, clientLocalId, SCOREBOARD[itr]+1);
         listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
         menu_player_row_basic( listRowOfs, playerRowItr, player, TRUE );

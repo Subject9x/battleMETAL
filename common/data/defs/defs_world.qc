@@ -10,7 +10,7 @@ Overview:
 entity() world_ini_serverInfo_ent={
   local entity eServerInfo;
   eServerInfo = spawn();
-  eServerInfo.classname = strzone("world_rules");
+  eServerInfo.classname = "world_rules";
   eServerInfo.effects = eServerInfo.effects | EF_NODEPTHTEST;
   eServerInfo.solid = SOLID_NOT;
   eServerInfo.movetype = MOVETYPE_NONE;
@@ -31,6 +31,26 @@ entity() world_ini_serverInfo_ent={
 
 void() world_server_rules_frame={
   
+  if( self.gameType != cvar("gamemode") ){
+    self.gameType = cvar("gamemode");
+    self.SendFlags = self.SendFlags | SENDFLAG_GAMETYPE;
+  }
+  
+  if( self.ruleFraglimit != cvar("fraglimit") ){
+    self.ruleFraglimit = cvar("fraglimit");
+    self.SendFlags = self.SendFlags | SENDFLAG_RULE_LIMIT_FRAG;
+  }
+  
+  if( self.ruleTimelimit != cvar("timelimit") ){
+    self.ruleTimelimit = cvar("timelimit");
+    self.SendFlags = self.SendFlags | SENDFLAG_RULE_LIMIT_TIME;
+  }
+  
+  if( self.serverFlags != cvar("serverFlags") ){
+    self.serverFlags = cvar("serverFlags");
+    self.SendFlags = self.SendFlags | SENDFLAG_SERVERFLAGS;
+  }
+  
   self.think = world_server_rules_frame;
   self.nextthink = time + 0.1;
 };
@@ -47,11 +67,11 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
   }
   
   if( (changedFlags & SENDFLAG_STARTTIME) ){
-    WriteCoord( MSG_ENTITY, self.timeStart );
+    WriteLong( MSG_ENTITY, self.timeStart );
   }
   
   if( (changedFlags & SENDFLAG_SERVERFLAGS) ){
-    WriteCoord( MSG_ENTITY, self.serverFlags );
+    WriteLong( MSG_ENTITY, self.serverFlags );
   }
   
   if( (changedFlags & SENDFLAG_MISSION_STATUS) ){
@@ -63,7 +83,9 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
   }
   
   if( (changedFlags & SENDFLAG_RULE_LIMIT_FRAG) ){
-    //STAT_FRAGLIMIT
+    if( self.gameType == GAMEMODE_DM || self.gameType == GAMEMODE_TEAMDM ){
+      WriteShort( MSG_ENTITY, self.ruleFraglimit );
+    }
   }
   
   if( (changedFlags & SENDFLAG_NEWENT) ){
@@ -72,7 +94,9 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
   }
   
   if( (changedFlags & SENDFLAG_RULE_LIMIT_TIME) ){
-    //STAT_TIMELIMIT
+    if( self.gameType == GAMEMODE_DM || self.gameType == GAMEMODE_TEAMDM ){
+      WriteLong( MSG_ENTITY, self.ruleTimelimit );
+    }
   }
   
   if( (changedFlags & SENDFLAG_MAP_NEXT) ){
@@ -122,6 +146,8 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     setmodel(self, "q3mdl/testball.md3");
     setsize(self, self.mins, self.maxs);
     setorigin(self, self.origin);
+    self.scale = 0.01;
+    self.alpha = 0.01;
     ENT_SERVER_INFO = self;
   }
   //SendEnt header
@@ -130,14 +156,15 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     self.gameType = ReadByte();
   }
   if( (changeFlags & SENDFLAG_STARTTIME) ){
-    self.timeStart = ReadCoord();
+    self.timeStart = ReadLong();
   }
   if( (changeFlags & SENDFLAG_SERVERFLAGS) ){
-    self.serverFlags = ReadCoord();
+    self.serverFlags = ReadLong();
   }
   if( (changeFlags & SENDFLAG_MISSION_STATUS) ){
     self.missionStatusPrev = self.missionStatus;
     self.missionStatus = ReadByte();
+    dprint(sprintf("ENT_SERVER_INFO.missionStatus == %s\n", ftos(self.missionStatus))); //debug
   }
   
   if( (changeFlags & SENDFLAG_MISSION_RESULT) ){
@@ -145,8 +172,8 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   }
   
   if( (changeFlags & SENDFLAG_RULE_LIMIT_FRAG) ){
-    if( self.gameType != GAMEMODE_CAMPAIGN && self.gameType != GAMEMODE_COOP ){
-      self.ruleFraglimit = getstatf(STAT_FRAGLIMIT);
+    if( self.gameType == GAMEMODE_DM || self.gameType == GAMEMODE_TEAMDM ){
+      self.ruleFraglimit = ReadShort();
     }
   }
   
@@ -158,18 +185,15 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   }
   
   if( (changeFlags & SENDFLAG_RULE_LIMIT_TIME) ){
-    if( self.gameType != GAMEMODE_CAMPAIGN && self.gameType != GAMEMODE_COOP ){
-      self.ruleTimelimit = getstatf(STAT_TIMELIMIT);
+    if( self.gameType == GAMEMODE_DM || self.gameType == GAMEMODE_TEAMDM ){
+      self.ruleTimelimit = ReadLong();
+      dprint(sprintf("ENT_SERVER_INFO.ruleTimelimit == %s\n", ftos(self.ruleTimelimit))); //debug
     }
   }
   if( (changeFlags & SENDFLAG_MAP_NEXT) ){
     tempNextMap = ReadString();
-    if( strlen(self.nextMap) > 0 && strlen(tempNextMap) > 0){
-      strunzone(self.nextMap);
-      strunzone(SV_NEXTMAP);
-    }
-    self.nextMap = strzone(tempNextMap);
-    SV_NEXTMAP = strzone(self.nextMap);
+    cacheGlobalString( self.nextMap, tempNextMap);
+    cacheGlobalString( SV_NEXTMAP, tempNextMap)
   }
   
   if( (changeFlags & SENDFLAG_SAVESLOT) ){

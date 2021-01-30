@@ -234,7 +234,7 @@ string(float timeVal ) ui_calculate_time_string={
 
 string() ui_label_mission_status={
   local string val;
-//TODO fix 
+  
  switch( ENT_SERVER_INFO.missionStatus ){
     case MISSION_STATUS_READY:
       val = "Ready";

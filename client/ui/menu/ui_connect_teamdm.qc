@@ -36,6 +36,8 @@ void( vector menuOrg ) menu_connect_draw_mission_info_team={
   local string serverTime;
   local vector statusColor;
   
+  local string scoreLimit;
+  
   drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('200 183'), '0.65 0.65 0.65', 1, 0);
   
   // Server Name
@@ -64,7 +66,6 @@ void( vector menuOrg ) menu_connect_draw_mission_info_team={
   gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0 56'), "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
   //Frag Limit
-  local string scoreLimit;
   if( ENT_SERVER_INFO.ruleFraglimit > 0 ){
     scoreLimit = ftos(ENT_SERVER_INFO.ruleFraglimit);
   }

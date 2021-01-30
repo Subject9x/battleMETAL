@@ -489,8 +489,6 @@ void( float playerEntId, float playerCritFlags ) client_handle_crit={
   local entity playerMech;
   local entity nonSelf;
   
-  dprint(sprintf("player %s takes %s crits!\n", ftos(playerEntId), ftos(playerCritFlags))); //debug
-  
   playerMech = findfloat(world, clientLocalId, playerEntId);
   if( playerMech ){
     nonSelf = self;
@@ -686,7 +684,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */ 
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
+    
     ENT_SERVER_INFO.missionStatus = ReadByte();
+    
     if( self.clientLocalId == player_localentnum ){
       CLIENT_player_deadflag = self.deadflag;
     }

@@ -164,6 +164,9 @@ void() world_ini_serverinfo={
     ENT_SERVER_INFO.saveSlot = cvar("saveslot");
     ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_SAVESLOT;
   }
+  
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_STARTTIME;
+  
   ENT_SERVER_INFO.endRound = 0;
 };
 
