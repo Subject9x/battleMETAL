@@ -64,7 +64,7 @@ void() click_main_train={
   cvar_set("deathmatch", "0");
   cvar_set("coop", "0");
   cvar_set("teamplay", "0");
-  cvar_set("maxplayers", "1");
+  cmd("maxplayers 1;\n");
   cmd("map training_only\n");
 };
 
@@ -107,7 +107,8 @@ void() click_main_leave={
   cvar_set("teamplay", "0");
   cvar_set("coop", "0");
   cvar_set("sv_serverflags", "0");  //accounts for player-hosted servers rather than using dedicated hosting.
-  cmd("disconnect;map cin_menu\n");
+  cmd("maxplayers 1;\n");
+  cmd("disconnect;map cin_menu;\n");
 };
 
 void() click_main_player_setup={
@@ -173,8 +174,8 @@ void() m_main_f={
   running on M_STATE to determine which menu_d to execute.
 */
 void() m_main_d={
-
   local entity widget;
+  
   widget = findchainfloat(menuId, M_MAIN);
   while(widget){
     widget.draw(widget);

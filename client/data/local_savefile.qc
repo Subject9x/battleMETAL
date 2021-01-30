@@ -46,14 +46,14 @@ void( string fileName ) cl_load_savefile={
   cl_load_items_all();
 };
 
-void( float gameType, float overrideFlag ) cl_set_savepath={
+void( float serverMode, float overrideFlag ) cl_set_savepath={
   local string filePath;
   
   if(overrideFlag){
     filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/", MAP_NAME, SAVE_FILE_EXT);
   }
   else{
-    switch( gameType ){
+    switch( serverMode ){
       case GAMEMODE_CAMPAIGN:
         filePath = strcat(PATH_DATA_SAVE,"/",SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
         break;
@@ -73,6 +73,10 @@ void( float gameType, float overrideFlag ) cl_set_savepath={
     }
   }
   cl_load_savefile( filePath );
+  if( serverMode == GAMEMODE_CAMPAIGN && cvar_string("sv_worldbasename") != "cin_menu" ){
+    cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
+                                //this is to save player progress on entering a new map, lame hack.
+  }
 };
 
 // all mech unlocks to same array
@@ -215,39 +219,46 @@ string(string item, string source) cl_savefile_insert={
 void() cl_savefile_save={
   local float flannel;
   local string file;
-  //if( strstrofs(sv_nextmap, "anim", 0) != -1 ){
-  //  return;
-  //}
+  
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, ftos(cvar("saveslot")), SAVE_FILE_EXT);
+  flannel = fopen(file, FILE_WRITE);
+  fputs(flannel, "{\n");
+  fputs(flannel, strcat("  'save' : ", ftos(cvar("saveslot")), ",\n"));
+  fputs(flannel, strcat("  'mission' : ", cvar_string("sv_worldbasename"), ",\n"));
+  fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
+  fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
+  fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
+  fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
+  fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
+  fputs(flannel, "}");
+  fclose(flannel);
+}; 
+
+/*
+  dumb work around to make sure the player save file is always updated to the map they're on.
+  This is fired as soon as the player connects toa  single-player server,
+  AND has loaded their local save.
+    why? because we can't just inject
+  
+*/
+void() cl_savefile_save_mission={
+  local float flannel;
+  local string file;
+  local string currentMap;
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
   fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
-  
-  if( strlen(SV_NEXTMAP) > 0 ){
-    fputs(flannel, strcat("  'mission' : ", SV_NEXTMAP, ",\n"));
-  }
-  else{
-    fputs(flannel, strcat("  'mission' : ", SAVEFILE_CACHE_MAP, ",\n"));
-  }
-  
+  fputs(flannel, strcat("  'mission' : ", cvar_string("sv_worldbasename"), ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
   fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
-  //if( strstrofs(MAP_NAME, "o1m3", 0) != -1 ){
-    //TODO - pipe next map to client
-  //  if( strstrofs("", "anim", 0) != -1){
-  //    fputs(flannel, strcat("  'newgame' : ", ftos(0), ",\n"));
-  //    fputs(flannel, "  'mechs' : 1 2 3,\n");
-  //    fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
-  //  }
- // }
-  //else{
-    fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
-    fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
-  //}
+  fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
+  fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
   fputs(flannel, "}");
   fclose(flannel);
 }; 
+
 
 /*
   Default Save File, set when player finishes campaign training.
@@ -255,6 +266,7 @@ void() cl_savefile_save={
 void() cl_savefile_default={
   local float flannel;
   local string file;
+  
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");

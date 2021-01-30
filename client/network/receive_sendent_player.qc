@@ -639,7 +639,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   newCrits = 0;
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.critBits = ReadCoord();
+    self.critBits = ReadShort();
     if( self.critBits != 0 ){
       newCrits = newCrits | self.critBits;
       if( (self.critBits & M_REPAIR) ){
@@ -657,7 +657,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadCoord();
+    self.burnBits = ReadShort();
     if( self.burnBits < prevBurn ){
       self.burnBits = self.burnBits - (self.burnBits & prevBurn);
     }

@@ -690,7 +690,7 @@ void() menu_scan_saves={
   local float itr;
   local string fname;
   local float flannel;
-  local float line_count, line_tag, save_skill;
+  local float line_tag, save_skill;
   local string line, save_name, save_num, map_name, contents, campid;
   
   itr = 0;
@@ -702,11 +702,11 @@ void() menu_scan_saves={
     fname = strcat("saves/save_", ftos(itr), ".sav");
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
-      line_count = 0;
       contents = fgets(flannel);
       tokenizebyseparator(contents, "{", ",", "}");
       line = fgets(flannel);
-      while( (line != "") ){
+      
+      while( line != "" ){
         if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
           line_tag = tokenizebyseparator(line, "'","'",": ",",");
           if( argv(1) == "save" ){
@@ -725,8 +725,7 @@ void() menu_scan_saves={
         line = fgets(flannel);
       }
       fclose(flannel);
-      save_name = strcat("[", save_num,"]", gui_skillAsString(save_skill),"-", campid);
-      save_name = strcat(save_name, " mission: ", map_name);
+      save_name = sprintf("[%s]%s-%s mission: %s",save_num, gui_skillAsString(save_skill), campid, map_name);
       
       cacheGlobalString( GAME_SAVES[itr], fname )
       cacheGlobalString( GAME_SAVES_DRAWNAME[itr], save_name )

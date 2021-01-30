@@ -44,7 +44,6 @@ void() click_load_loadgame={
 void() m_load_i={
   local vector start;
   local float itr;
-  local float actual;
   local entity list;
   local vector next;
   local string name;
@@ -54,23 +53,20 @@ void() m_load_i={
   start = '10 150';
   
   itr = 0;
-  actual = 0;
   while (itr < GAME_SAVES_MAX ){
     next = start;
-    next_y = next_y + (actual * 20);
+    next_y = next_y + (itr * 20);
     if( GAME_SAVES_DRAWNAME[itr] == ""){
       name = "- EMPTY SAVE -";
     }
     else{
       name = GAME_SAVES_DRAWNAME[itr];
-      actual = actual + 1;
     }
     list = btn_text_callback(next, '14 14 0', name, 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
     list.data_bind = itr; //databind
     itr = itr + 1;
   }
   load_back = btn_img_callback(next + gui_percentToPixelRawVec('0 24'), '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_LOAD, click_load_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  
 };
 
 /*
@@ -89,13 +85,13 @@ void() m_load_f={
   running on M_STATE to determine which menu_d to execute.
 */
 void() m_load_d={
+  local entity widget;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
     drawstring(gui_percentToPixelRawVec('10 132'), "", '14 14', '1 1 0.1', 1, 0); 
   drawfont = drawfont_prev;
   
-  local entity widget;
   widget = findchainfloat(menuId, M_LOAD);
   while(widget){
     widget.draw(widget);
