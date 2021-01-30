@@ -483,6 +483,24 @@ void( float criticalBits ) sendevent_player_critical={
 };
 
 /*
+  HANDLE EVENT - Player Critical notifying everyone
+*/
+void( float playerEntId, float playerCritFlags ) client_handle_crit={
+  local entity playerMech;
+  local entity nonSelf;
+  
+  dprint(sprintf("player %s takes %s crits!\n", ftos(playerEntId), ftos(playerCritFlags))); //debug
+  
+  playerMech = findfloat(world, clientLocalId, playerEntId);
+  if( playerMech ){
+    nonSelf = self;
+    self = playerMech;
+      sendevent_player_critical(playerCritFlags);
+    self = nonSelf;
+  }
+};
+
+/*
   HANDLE EVENT - player mech pieces are being repair
 */
 void(float repairValue) sendevent_player_repair={

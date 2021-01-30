@@ -308,7 +308,11 @@ void() PlayerPostThink = {
     }
     if( self.last_crit != self.critBits ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
+      if( !(self.critBits & M_REPAIR) ){
+        client_send_critical_hit( num_for_edict(self), self.critBits );
+      }
       self.last_crit = self.critBits;
+      
     }
     if( self.last_burn != self.burnBits ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;

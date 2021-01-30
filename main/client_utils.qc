@@ -400,6 +400,13 @@ void(entity client, string theMessage, float messageLifetime) client_send_info_m
   WriteLong( MSG_ONE, messageLifetime );
 };
 
+void( float playerId, float playerCritBits ) client_send_critical_hit={
+  WriteByte( MSG_ALL, SVC_TEMPENTITY );
+  WriteByte( MSG_ALL, TE_PLAYER_CRIT );
+  WriteByte( MSG_ALL, playerId );
+  WriteLong( MSG_ALL, playerCritBits );
+};
+
 
 /*
 commmand string: cmd mech setwep X Y
@@ -547,16 +554,16 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
   WriteShort( MSG_ALL, MISSION_TOTAL_MILITAR );
   switch( client.faction ){
     case FACTION_PSC:
-      WriteShort( MSG_ONE, MISSION_LOSSES_PSC );
+      WriteShort( MSG_ALL, MISSION_LOSSES_PSC );
       break;
     case FACTION_SURVEST:
-      WriteShort( MSG_ONE, MISSION_LOSSES_SURVEST );
+      WriteShort( MSG_ALL, MISSION_LOSSES_SURVEST );
       break;
     case FACTION_MILITAR:
-      WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
+      WriteShort( MSG_ALL, MISSION_LOSSES_MILITAR );
       break;
     default:
-      WriteShort( MSG_ONE, 0 );
+      WriteShort( MSG_ALL, 0 );
       break;
   }
 };
@@ -688,15 +695,16 @@ entity() SelectSpawnPoint={
 	if (serverflags)
 	{	// return with a rune to start
 		spot = find (world, classname, "info_player_start2");
-		if (spot)
+		if (spot){
 			return spot;
+    }
 	}
   
   spot = find (world, classname, "info_player_start");
   
-	if (!spot)
+	if (!spot){
 		error ("PutClientInServer: no info_player_start on level");
-
+  }
 	return spot;
 };
 
@@ -766,7 +774,6 @@ float(entity piece) csqc_updateCompStat={
   perc = 0;
   if( piece && piece.health > 0 ){
     perc = (piece.health / piece.max_health)*100;
-    return perc;
   }
   return perc;
 };

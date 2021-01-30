@@ -36,6 +36,8 @@ void( entity targetClient ) client_send_boundary_warning;
 
 void() client_push_mapobjects;
 
+void( float playerId, float playerCritBits ) client_send_critical_hit;
+
 //client command layer
 void(entity client) client_send_server_info_connect;
 void( entity client ) client_send_campaign_end_data;

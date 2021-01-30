@@ -84,6 +84,7 @@ void() sendevent_building_die;
 void() player_think;
 void() sendent_ai_think;
 void( entity aWeapon ) player_weapon_reload;
+void( float playerEntId, float playerCritFlags ) client_handle_crit;
 
 float() remove_client;
 void( float hasMoved ) sendevent_player_accuracy;

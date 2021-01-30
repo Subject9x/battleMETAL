@@ -16,11 +16,11 @@ float IMPACT_ARMOR = 3;
 
 //ALERT: 70-75 are reserved, otherwise go nuts?
 //TE_ ID's
-float TE_CLIENT_INFO = 80;
-float TE_SERVERINFO =  81;
+float TE_CLIENT_INFO    = 80;
+float TE_SERVERINFO     = 81;
 float TE_CLIENT_INFO_DM = 82;
-//83;
-float TE_UI_BOX = 84;
+float TE_PLAYER_CRIT    = 83;
+float TE_UI_BOX         = 84;
 
 //90;
 //91;

@@ -492,6 +492,10 @@ float() CSQC_Parse_TempEntity =
   id = ReadByte();
 
   switch( id ){
+    case TE_PLAYER_CRIT:
+      client_handle_crit( ReadByte(), ReadLong() );
+      return TRUE;
+      
     case TE_CLIENT_INFO:
       client_campaign_end_data();
       return TRUE;
