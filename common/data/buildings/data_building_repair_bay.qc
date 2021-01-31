@@ -522,7 +522,7 @@ void() building_human_repair={
   self.compAltOffset = self.origin;
   self.th_die = hrepair_die;
     
-  if( (self.spawnflags & IT_QUAD) ){
+  if( (self.spawnflags & IS_MAPKEY) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
   self.canTarget = TRUE;
