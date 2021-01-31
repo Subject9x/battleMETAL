@@ -557,12 +557,12 @@ void(string s) CSQC_Parse_StuffCmd =
   local string tempAbout;
   local float lenAdjust;
   
+  if( cvar("developer") ){
+    dprint(sprintf("CSQC_Parse_StuffCmd().s = %s\n", s));  //debug
+  }
   argc = tokenize(s);
   if(argv(0) == "m"){
     if(argv(1) == "msn"){
-      if( cvar("developer") ){
-        dprint(sprintf("CSQC_Parse_StuffCmd().s = %s\n", s));  //debug
-      }
       cl_get_msnfile( argv(2) );
       return;
     }
