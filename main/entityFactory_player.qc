@@ -151,7 +151,6 @@ void() player_unmakeMech={
   self.w_group3 = 0;
   self.w_group4 = 0;
   self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
-  self.state_2 = 0; //unknown what this used to be 
   
   self.stat_trg_dataidx = 0;
   self.stat_target_shield = 0;

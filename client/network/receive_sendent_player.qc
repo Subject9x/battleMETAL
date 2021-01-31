@@ -597,7 +597,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = self.entnum;
-    self.clientLocalId = ReadShort();
+    self.clientLocalId = ReadByte();
     self.clientLocalNum = self.clientLocalId - 1;
   }
   
@@ -673,7 +673,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadShort();
+    self.burnBits = ReadLong();
     if( self.burnBits < prevBurn ){
       self.burnBits = self.burnBits - (self.burnBits & prevBurn);
     }
@@ -697,9 +697,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    self.velocity_x = ReadCoord();
-    self.velocity_y = ReadCoord();
-    self.velocity_z = ReadCoord();
+    //self.velocity_x = ReadCoord();
+    //self.velocity_y = ReadCoord();
+    //self.velocity_z = ReadCoord();
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){

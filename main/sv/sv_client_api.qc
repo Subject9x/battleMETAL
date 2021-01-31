@@ -100,7 +100,6 @@ void() ClientConnect = {
   self.statWeaponReload9 = 0;
   
   self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
-  self.state_2 = 0; //unknown what this used to be 
   
   self.stat_trg_dataidx = -1;
   self.stat_target_shield = -1;
@@ -530,6 +529,12 @@ void() sv_client_spawnpoint_select={
   self.trigOnTarget = spot.trigOnTarget;
 };
 
+
+void() client_data_th={
+  self.think = client_data_th;
+  self.nextthink = time + 0.01;
+};
+
 /*
   Send Ent Fun
 */
@@ -553,6 +558,8 @@ void() client_data={
   data.SendEntity = send_client_data;
   data.SendFlags = data.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_FACTION);
   data.vec_size = self.vec_size;
+  data.think = client_data_th;
+  data.nextthink = time + 0.01;
   self.clientData = data;
 };
 
@@ -600,9 +607,9 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - per-frame update
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
-    WriteCoord( MSG_ENTITY, self.view_ofs_x );
-    WriteCoord( MSG_ENTITY, self.view_ofs_y );
-    WriteCoord( MSG_ENTITY, self.view_ofs_z );
+    WriteCoord( MSG_ENTITY, player.origin_x );
+    WriteCoord( MSG_ENTITY, player.origin_y );
+    WriteCoord( MSG_ENTITY, player.origin_z );
     WriteByte( MSG_ENTITY, player.moveState );
     WriteShort( MSG_ENTITY, player.legs.angles_y);
     WriteShort( MSG_ENTITY, player.legs.ai_dir);
@@ -633,7 +640,7 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteShort( MSG_ENTITY, num_for_edict(player) );
+    WriteByte( MSG_ENTITY, num_for_edict(player) );
   }
     
   /*
@@ -691,7 +698,7 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    WriteShort( MSG_ENTITY, player.burnBits );
+    WriteLong( MSG_ENTITY, player.burnBits );
   }
   /*
     EVENT - DEAD
@@ -702,9 +709,9 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    WriteCoord( MSG_ENTITY, player.velocity_x);
-    WriteCoord( MSG_ENTITY, player.velocity_y);
-    WriteCoord( MSG_ENTITY, player.velocity_z);
+    //WriteCoord( MSG_ENTITY, player.velocity_x);
+    //WriteCoord( MSG_ENTITY, player.velocity_y);
+    //WriteCoord( MSG_ENTITY, player.velocity_z);
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
