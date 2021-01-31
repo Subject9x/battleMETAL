@@ -198,7 +198,7 @@ void() building_human_hangar_vehicle={
   
   self.SendEntity = ctrl_send_building;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  if( (self.spawnflags & IT_QUAD) ){
+  if( (self.spawnflags & IS_MAPKEY) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
   self.canTarget = TRUE;
