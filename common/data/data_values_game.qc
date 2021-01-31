@@ -369,6 +369,7 @@ float BUILDING_TARGET_FLAG = 16;  //used by building and misc_building for allow
 
 float ACTIVE_ONTOUCH = 32;  //activate on-touch
 float MUTE_ME = 1048576;    //ai ignores sending voice effects / radio sounds.
+float NO_DROP = 262144; //don't drop bot/buildingto the floor onspawn
 float IS_MAPKEY = 4194304;  //mark's this entity on player's briefing map.
 float IS_VIP = 8388608;     //faction-allied player will be notified of this entity's state
 //============================

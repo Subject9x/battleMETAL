@@ -22,7 +22,7 @@ void() sendevent_turret_die={
   setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
   self.colormod = '0.85 0.85 0.85';
   
-  self.origin = self.origin + (v_up * (self.maxs_z * -0.5));
+  self.origin = self.origin + (v_up * (self.maxs_z * -0.05));
   setorigin(self, self.origin);
   
   sendent_handle_remove(self.torsoCenter);
@@ -120,6 +120,18 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       self.ai_voice_limit = 1;
     }
   }
+  
+  if( (changeFlags & SENDFLAG_CAMERA) ){
+    self.groundEnt = ReadByte();
+    if( self.groundEnt ){
+      if( !(self.spawnflags & NO_DROP) ){
+        if( isNew ){
+          data_building_generate_foundation();
+        }
+      }
+    }
+  }
+  
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
   }

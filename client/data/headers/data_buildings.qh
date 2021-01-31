@@ -27,3 +27,4 @@ void() data_building_death1;
 void() data_building_death2;
 void() data_building_death_end;
 
+void() data_building_generate_foundation;

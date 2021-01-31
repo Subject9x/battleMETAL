@@ -67,6 +67,7 @@ Overview:
 .float accuracyMod;
 .float accuracy;
 
+.float groundEnt;   //used by buildings to tell their client-entry to generate a ground mesh.
 //SSQC only
 #ifdef SSQC
 //network frame stuff

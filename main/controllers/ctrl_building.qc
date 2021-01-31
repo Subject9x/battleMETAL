@@ -122,6 +122,10 @@ float( float isNew, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.data_idx );
   }
   
+  if( (scopeFlags & SENDFLAG_CAMERA)) {
+    WriteByte( MSG_ENTITY, self.groundEnt );
+  }
+  
   if( (scopeFlags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
   }
@@ -189,6 +193,10 @@ float( float isNew, float changedflags ) ctrl_send_building={
   if( (newFlags & SENDFLAG_NEWENT) ){
     WriteCoord( MSG_ENTITY, self.spawnflags );
     WriteByte( MSG_ENTITY, self.data_idx );
+  }
+  
+  if( (newFlags & SENDFLAG_CAMERA)) {
+    WriteByte( MSG_ENTITY, self.groundEnt );
   }
   
   if( (newFlags & SENDFLAG_SHIELD) ){

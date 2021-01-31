@@ -237,4 +237,54 @@ void() data_building_death_end={
 };
 
 
+void() building_floor_th={
+  local vector checkOrg;
+  
+  makevectors(self.owner.angles);
+  checkOrg = self.owner.origin + (v_up * self.owner.mins_z);
+  
+  if( self.origin != checkOrg ){
+    self.origin = checkOrg;
+  }
+  
+  self.think = building_floor_th;
+  self.nextthink = time + 1;
+};
 
+/*
+  Taken from server, this should be clientside too.
+*/
+void() data_building_generate_foundation={
+  local vector v;
+  local entity foundation;
+  local entity notSelf;
+  
+  foundation = spawn();
+  foundation.owner = self;
+  
+  makevectors(self.angles);
+  v = self.origin + (v_up * self.mins_z);
+  
+  notSelf = self;
+  self = foundation;
+    self.classname = "map_terrain";
+    switch( notSelf.vec_size ){
+      case 1:
+        self.model = "q3mdl/map/plats/plat_small.obj";
+        break;
+      case 2:
+        self.model = "q3mdl/map/plats/plat_medium.obj";
+        break;
+      case 3:
+        self.model = "q3mdl/map/plats/plat_large.obj";
+        break;
+    }
+    self.solid = SOLID_NOT; //just for placement
+    self.movetype = MOVETYPE_NONE;
+    setmodel( self, self.model );
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, v);
+    self.solid = SOLID_BSP; //lock it in.
+    self.drawmask = MASK_NORMAL;
+  self = notSelf;
+};

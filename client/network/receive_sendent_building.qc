@@ -145,6 +145,17 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   
+  if( (changeFlags & SENDFLAG_CAMERA) ){
+    self.groundEnt = ReadByte();
+    if( self.groundEnt ){
+      if( !(self.spawnflags & NO_DROP) ){
+        if( isNew ){
+          data_building_generate_foundation();
+        }
+      }
+    }
+  }
+  
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
   }

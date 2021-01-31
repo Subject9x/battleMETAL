@@ -38,7 +38,6 @@ float NO_ELITE = 32768;  //remove from Elit Difficulty
 float MISC_NO_DROP = 65536; //overloaded flag, this is for misc_* ents
 float PROMOTE = 65536;  //AI rank is set by skill, this spawnflag bumps it up by 1
 float DEMOTE = 131072;  //AI rank is set by skill, this spawnflag debuffs it up by 1
-float NO_DROP = 262144; //don't drop bot to the floor onspawn
 float TRIGGER_ME = 524288;  //ai only spawns when triggered
 float MUTE_ME = 1048576;  //ai ignores sending voice effects / radio sounds.
 float UNARMED = 2097152; //ai spawns with no weapons, skip build_weapons() factory step;
