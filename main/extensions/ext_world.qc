@@ -25,6 +25,9 @@ void() world_metal_ini={
   
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;
+    AI_RATE = AI_RATE_NET;
+    NODEGRAPH_queue_timeout = NODEGRAPH_QUEUE_TIMEOUT_NET;
+    NODEGRAPH_MAX_REQUEST = NODEGRAPH_MAX_REQUEST_NET;
   }
   else if( cvar("deathmatch") ){
     if( cvar("teamplay") ){
@@ -35,9 +38,15 @@ void() world_metal_ini={
     else{
       GAMETYPE = GAMEMODE_DM;
     }
+    AI_RATE = AI_RATE_NET;
+    NODEGRAPH_queue_timeout = NODEGRAPH_QUEUE_TIMEOUT_NET;
+    NODEGRAPH_MAX_REQUEST = NODEGRAPH_MAX_REQUEST_NET;
   }
   else{
     GAMETYPE = GAMEMODE_CAMPAIGN;
+    AI_RATE = AI_RATE_LOCAL;
+    NODEGRAPH_queue_timeout = NODEGRAPH_QUEUE_TIMEOUT_LOCAL;
+    NODEGRAPH_MAX_REQUEST = NODEGRAPH_MAX_REQUEST_LOCAL;
   }
   cvar_set("gamemode", ftos(GAMETYPE));
   
