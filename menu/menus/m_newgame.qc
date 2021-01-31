@@ -55,14 +55,17 @@ void() click_newg_launch={
   menu_clear_items(M_STATE);
   menu_exit_togame();
   cmd("deathmatch 0\n");
+  cmd("teamplay 0\n");
   cmd("coop 0\n");
   cmd("cd stop\n");
+  cmd("maxplayers 1\n");
   cvar_set("cl_ismenu","0");
   cmd(strcat("map ", CAMP_SELECT_MAP,"\n")); 
-  strunzone(CAMP_SELECT_MAP);
-  strunzone(CAMP_SELECT_NAME);
-  strunzone(CAMP_SELECT_MECHS);
-  strunzone(CAMP_SELECT_ITEMS);
+  
+  freeGlobalString(CAMP_SELECT_MAP)
+  freeGlobalString(CAMP_SELECT_NAME)
+  freeGlobalString(CAMP_SELECT_MECHS)
+  freeGlobalString(CAMP_SELECT_ITEMS)
 };
 
 void() click_newg_novice={
@@ -90,25 +93,10 @@ void() click_newg_campaign={
   newgame_back_cacheOrg = new_back.origin;
   new_back.origin = gui_percentToPixelRawVec('10 230 0');
   
-  if(CAMP_SELECT_MAP != ""){
-    strunzone(CAMP_SELECT_MAP);
-  }
-  CAMP_SELECT_MAP = strzone(CAMP_MAP[self.data_bind]);
-
-  if(CAMP_SELECT_NAME != ""){
-    strunzone(CAMP_SELECT_NAME);
-  }
-  CAMP_SELECT_NAME = strzone(CAMP_NAME[self.data_bind]);
-  
-  if(CAMP_SELECT_MECHS != ""){
-    strunzone(CAMP_SELECT_MECHS);
-  }
-  CAMP_SELECT_MECHS = strzone(CAMP_MECHS[self.data_bind]);
-  
-  if(CAMP_SELECT_ITEMS != ""){
-    strunzone(CAMP_SELECT_ITEMS);
-  }
-  CAMP_SELECT_ITEMS = strzone(CAMP_ITEMS[self.data_bind]);
+  cacheGlobalString(CAMP_SELECT_MAP, CAMP_MAP[self.data_bind])
+  cacheGlobalString(CAMP_SELECT_NAME, CAMP_NAME[self.data_bind])
+  cacheGlobalString(CAMP_SELECT_MECHS, CAMP_MECHS[self.data_bind])
+  cacheGlobalString(CAMP_SELECT_ITEMS, CAMP_ITEMS[self.data_bind])
 };
 
 void(vector labelOrg) newmgame_text_rookie={
@@ -177,6 +165,11 @@ void(vector labelOrg) newmgame_text_ace={
 
 // ini functions
 void() m_newg_i={
+  local vector start;
+  local float itr;
+  local float actual;
+  local entity list;
+  local vector next;
   
   newgame_substate = NEWGAME_CAMPAIGN;
   
@@ -191,11 +184,6 @@ void() m_newg_i={
   new_veteran.subid = NEWGAME_SKILL;
   new_elite.subid = NEWGAME_SKILL;
   
-  local vector start;
-  local float itr;
-  local float actual;
-  local entity list;
-  local vector next;
   
   itr = 1;
   

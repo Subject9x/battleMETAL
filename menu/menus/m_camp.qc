@@ -16,7 +16,7 @@ entity camp_back;
 string IMG_CAMP_TITLE   = "gfx/menu/single/camp_label.png";
 string IMG_CAMP_NEW     = "gfx/menu/single/camp_new.png";
 string IMG_CAMP_LOAD    = "gfx/menu/single/camp_load.png";
-string IMG_CAMP_SAVE    = "gfx/menu/save_btn.png";
+//string IMG_CAMP_SAVE    = "gfx/menu/save_btn.png";
 
 //button callbacks
 void() click_camp_new ={
@@ -29,10 +29,10 @@ void() click_camp_load = {
   m_load_f();
 };
 
-void() click_camp_save={
+/*void() click_camp_save={
   menu_clear_items(M_STATE);
   m_save_f();
-};
+};*/
 
 void() click_camp_back={
   menu_clear_items(M_STATE);
@@ -48,11 +48,11 @@ void() m_camp_i={
   camp_title = lbl_img('10 100', '1 1 0', IMG_CAMP_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SINGLE, 1, (UI_FLAG_SIZE_IMG) );
   camp_new = btn_img_callback('10 132', '1 1 0', IMG_CAMP_NEW, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_new, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   camp_load = btn_img_callback('10 151', '1 1 0', IMG_CAMP_LOAD, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_load, '1 1 1', '0 1 0',1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  camp_save = btn_img_callback('10 174', '1 1 0', IMG_CAMP_SAVE, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_save, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  //camp_save = btn_img_callback('10 174', '1 1 0', IMG_CAMP_SAVE, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_save, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   
-  if( isdemo() || (clientstate() != CS_CONNECTED) ){
+  /*if( isdemo() || (clientstate() != CS_CONNECTED) ){
     camp_save.drawme = FALSE;
-  }
+  }*/
   
   camp_back = btn_img_callback('10 200', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
