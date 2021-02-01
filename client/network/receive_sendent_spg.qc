@@ -159,11 +159,10 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   }
 };
 
-float() predraw_spg={
+void() predraw_spg={
   if(self.deadflag == DEAD_NO){
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
   }
-  return FALSE;
 };

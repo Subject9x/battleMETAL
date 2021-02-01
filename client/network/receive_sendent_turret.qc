@@ -243,11 +243,10 @@ void() interpolate_turret={
   }
 };
 
-float() predraw_turret={
+void() predraw_turret={
   if(self.deadflag == DEAD_NO){
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
   }
-  return FALSE;
 };

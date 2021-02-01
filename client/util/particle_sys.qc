@@ -126,7 +126,7 @@ void() cl_particles_fogFrame={
   }
 };
 
-float() te_explode_mech_piece_predraw={
+void() te_explode_mech_piece_predraw={
   local float lerpDiff;
   local float lerp;
   
@@ -145,7 +145,6 @@ float() te_explode_mech_piece_predraw={
   self.lerpfrac = lerp;
 
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  return FALSE;
 };
 
 void() te_explode_mech_piece_th={
@@ -353,7 +352,7 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
 /*
   Unit's shields have been struck but still holding
 */
-float() te_shield_hit_predraw={
+void() te_shield_hit_predraw={
   interpolate_origin();
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.angles_y = self.angles_y + 5;
@@ -363,8 +362,6 @@ float() te_shield_hit_predraw={
       self.alpha = 0.02;
     }
   }
-  
-  return FALSE;
 };
 
 void() te_shield_hit_th={
@@ -417,7 +414,7 @@ void() te_shield_hit={
   Unit's shields have broken (reduced to 0), play an expanding explosion shell effect.
 */
 
-float() predraw_shield_explode={
+void() predraw_shield_explode={
   local float lerpDiff;
   local float lerp;
   
@@ -446,8 +443,6 @@ float() predraw_shield_explode={
   self.angles_y = anglemod(self.angles_y);
   
   self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
-  
-  return FALSE;
 };
 
 void() te_shield_explode_th={

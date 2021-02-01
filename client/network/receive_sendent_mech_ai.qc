@@ -71,7 +71,7 @@ void() mech_corpse_th={
   self.nextthink = time + 0.1;
 };
 //watch this
-float() predraw_mech_corpse={
+void() predraw_mech_corpse={
   local entity parent;
   local entity piece;
   
@@ -95,8 +95,6 @@ float() predraw_mech_corpse={
   if( !(self.criticalHits & M_ARM_LEFT) && self.armLeft != world ){
     addentity(self.armLeft);
   }
-  
-  return FALSE;
 };
 void() sendevent_mech_ai_die_standing={
   local entity mechRoot;
@@ -487,12 +485,11 @@ void() interpolate_mech_ai={
   }
 };
 
-float() predraw_mech_ai={
+void() predraw_mech_ai={
   if(self.deadflag==DEAD_NO){
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
     setorigin(self, self.origin);
   }
-  return FALSE;
 };

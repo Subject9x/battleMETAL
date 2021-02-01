@@ -158,7 +158,7 @@ void() player_think={
   self.nextthink = time + 0.01;
 };
 
-float() player_predraw={
+void() player_predraw={
   local vector entAng;
   local entity wep;
   local vector cacheOrg;
@@ -283,7 +283,6 @@ float() player_predraw={
       }
     }
   }
-  return FALSE;
 };
 
 

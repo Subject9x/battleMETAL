@@ -26,14 +26,14 @@ float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
 
 .float shieldExplodeCool;
 
-float() predraw_missile;
-float() predraw_tank;
-float() predraw_spg;
-float() predraw_gev;
-float() predraw_building;
-float() predraw_turret;
-float() predraw_mech_ai;
-float() predraw_dmg_zone;
+void() predraw_missile;
+void() predraw_tank;
+void() predraw_spg;
+void() predraw_gev;
+void() predraw_building;
+void() predraw_turret;
+void() predraw_mech_ai;
+void() predraw_dmg_zone;
 
 /*
   Potential solution to entity spawn collision caused by new AI requesting

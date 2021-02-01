@@ -56,9 +56,8 @@ void( float dataID ) data_sync_new_vehicle={
   self.drawmask = MASK_ENGINE;
 };
 
-float() data_vehicle_wreck_predraw={
+void() data_vehicle_wreck_predraw={
   setorigin(self, self.origin);
-  return FALSE;
 };
 
 /*

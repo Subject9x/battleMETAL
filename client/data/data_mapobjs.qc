@@ -34,7 +34,7 @@ void( float isNew, float entFlags ) sendent_handle_map={
   }
 };
 
-float() predraw_navpoint={
+void() predraw_navpoint={
   if( self.faction != CLIENT_faction ){
     self.alpha = 0;
     self.effects = 0;
@@ -46,7 +46,6 @@ float() predraw_navpoint={
     self.alpha = 0.2;
     self.scale = 1;
   }
-  return TRUE;
 };
 
 /*
@@ -573,9 +572,7 @@ void( float isNew, float entFlags ) data_map_damage={
 };
 
 
-float() predraw_dmg_zone={
+void() predraw_dmg_zone={
   setorigin(self, self.origin);
   //self.render_dlights();
-  
-  return FALSE;
 };

@@ -233,12 +233,10 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
 };
 
-float() predraw_building={
+void() predraw_building={
   setorigin(self, self.origin);
   
   if(self.render_dlights){
     self.render_dlights();
   }
-  
-  return FALSE;
 };

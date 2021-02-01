@@ -59,7 +59,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   local entity parent;
   local float prevAttackFlag;
   local float prevDeadFlag;
-  local float voiceId
+  local float voiceId;
   
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
@@ -222,12 +222,11 @@ void() interpolate_tank={
   setorigin(self, self.origin);
 };
 
-float() predraw_tank={
+void() predraw_tank={
   if(self.deadflag==DEAD_NO){
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
     setorigin(self, self.origin);
   }
-  return FALSE;
 };

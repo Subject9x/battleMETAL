@@ -185,11 +185,10 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   }
 };
 
-float() predraw_gev={
+void() predraw_gev={
   if(self.deadflag==DEAD_NO){
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
   }
-  return FALSE;
 };

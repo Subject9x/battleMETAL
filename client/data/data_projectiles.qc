@@ -73,14 +73,13 @@ void( entity e ) data_sync_new_debris={
   self.predraw_projectile = predraw_debris;
   
 };
-float() predraw_missile={
+void() predraw_missile={
   interpolate_origin();
   interpolate_angle();
   
   if( self.predraw_projectile ){
     self.predraw_projectile();
   }
-  return FALSE;
 };
 
 void() predraw_plasma={
