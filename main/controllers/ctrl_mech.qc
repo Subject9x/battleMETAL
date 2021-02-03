@@ -258,6 +258,18 @@ void() ctrl_mech_die_player={
   ctrl_unit_part_death(self.armLeft);
   ctrl_unit_part_death(self.armRight);
   
+  //ensures only new weapon data coming upstream is written.
+  self.nextVecChoice = 0;
+  self.next_wepn1 = 0;
+  self.next_wepn2 = 0;
+  self.next_wepn3 = 0;
+  self.next_wepn4 = 0;
+  self.next_wepn5 = 0;
+  self.next_wepn6 = 0;
+  self.next_wepn7 = 0;
+  self.next_wepn8 = 0;
+  self.next_wepn9 = 0;
+  
   self.alpha = 0.01;
   self.scale = 0.01;
 };

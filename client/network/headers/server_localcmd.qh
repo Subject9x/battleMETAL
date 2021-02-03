@@ -10,10 +10,10 @@ Overview: definition file for the client -> server command layer
 string CLIENT_INFO_STRING;
 
 void() cl_ini_infostring;
+void(float changeFlags) cl_send_infostring;
 
-void(float totalWeps, string wepList) cl_setweapon;
+void( float weaponBits ) cl_setweapon;
 void(float id) cl_setmech;
-void() cl_spawnmech;
 void(float group1, float group2, float group3, float group4 ) cl_setweapongroup;
 void(float nav_id) cl_setspawnpoint;
 void(float nextMissionBool) cl_set_mission;

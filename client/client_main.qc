@@ -180,6 +180,8 @@ void() CSQC_Init =
 void() CSQC_Shutdown =
 {
   //server string cleanup
+  freeGlobalString(CLIENT_INFO_STRING)
+  
   freeGlobalString(UNLOCKED_MECHS_DATA)
   freeGlobalString(UNLOCKED_ITEMS_DATA)
   freeGlobalString(MENU_DEBRIEF_unlocks_mechs)

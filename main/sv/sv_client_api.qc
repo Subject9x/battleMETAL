@@ -17,38 +17,78 @@ Overview:
 */
 void(string str) SV_ParseClientCommand={
   local float argc;
+  local float cmdIdx;
   local string cmdCall;
+  local entity trigTarg;
+  local entity notTrig;
   
-  dprint(str);  //debug
+  cmdIdx = strstrofs(str, " ", 0);
+  cmdCall = substring( str, 0, cmdIdx );
   
-  //cmdCall = sub
-  argc = tokenize(str);
-  
-  //SetWeapon List
-  
-  //SetMech
-  
-  //Player Spawn Event
-  
-  //SetFaction
-  
-  //SetWeaponGroups
-  
-  //SetSpawnpoints
-  
-  //SetNextMission
-  
-  //Exit Animatic
-  
-  if(argv(0) == "m"){
-    client_ParseMechCommand(str, argc);
+  //Client info string handle
+  if( cmdCall == CMD_CLIENT_INFO ){
+    client_parse_clientInfoString(str);
+    return;
   }
-  else if( argv(0) == "loadgame"){
-    savefile_load(FALSE);
+  
+  //SetNextMission--------------------
+  if(cmdCall == "nextmission"){
+    argc = tokenize(str);
+    client_setMission(str, argc);
+    return;
   }
-  else{
-    clientcommand(self, str);
+  //Exit Animatic--------------
+  if( cmdCall == "exitanim" ){
+    self.count2 = 0;
+    self.velocity = '0 0 0';
+    self.avelocity = '0 0 0';
+    if( self.animId != world ){
+      if( self.animId.target != "" ){
+        trigTarg = find(world, targetname, self.animId.target );
+        if( trigTarg ){
+          if( trigTarg.use ){
+            notTrig = self;
+            self = trigTarg;
+              trigTarg.use();
+            self = notTrig;
+          }
+        }
+      }
+    }
+    return;
   }
+  if( cmdCall == "setmode" ){
+    argc = tokenize(str);
+    cvar_set("gamemode", argv(1) );
+    return;
+  }
+  
+  if( cmdCall == "rtexport" ){
+    argc = tokenize(str);
+    world_export_realtimelights( stof(argv(1)) );
+    return;
+  }
+  if( cmdCall == "nodexprt" ){
+    argc = tokenize(str);
+    world_nodegraph_export_data( stof(argv(1)) );
+    return;
+  }
+  if( cmdCall == "dbgnode" ){
+    argc = tokenize(str);
+    world_nodegraph_test_graph( stof(argv(1)), stof(argv(2)) );
+    return;
+  }
+  if( cmdCall == "dbgedge" ){
+    argc = tokenize(str);
+    nodegraph_debug_edges(  stof(argv(1)) );
+    return;
+  }
+  if( cmdCall == "dbgtarg" ){
+    argc = tokenize(str);
+    world_debug_targ( argv(1) );
+    return;
+  }
+  clientcommand(self, str);
 };
 
 /*

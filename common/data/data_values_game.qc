@@ -569,6 +569,19 @@ float AI_VOICE_WARN       = 9;
 //      sent by player when choosing items.
 //============================
 /*
+  info string management bitflag
+  entire invoke is 
+    cmd client <changeflags> <infostring>
+    
+*/
+float INFO_FLAG_FACTION = 512;
+float INFO_FLAG_MECH    = 1024;
+float INFO_FLAG_SPAWN   = 2048;
+float INFO_FLAG_COLOR   = 4096;
+float INFO_FLAG_GROUPS  = 8192;
+float INFO_FLAG_DEPLOY  = 16384;
+// WEAPON flags inherit / interoperable with WEAPON1-9 enums above.
+/*
   Info string arch - this is sent to the server
   key     | value
   -----------
@@ -595,7 +608,9 @@ float AI_VOICE_WARN       = 9;
   w8    | float
   w9    | float
 */
-string KEY_DEPLOY  = "spawn";
+string CMD_CLIENT_INFO = "client";
+string KEY_FLAGS  = "flags";
+string KEY_DEPLOY  = "deploy";
 string KEY_FACTION  = "fac";
 string KEY_COLOR1  = "col1";
 string KEY_COLOR2  = "col2";
@@ -617,3 +632,4 @@ string KEY_WEPN6  = "w6";
 string KEY_WEPN7  = "w7";
 string KEY_WEPN8  = "w8";
 string KEY_WEPN9  = "w9";
+string KEY_SPAWN  = "spawn";

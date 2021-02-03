@@ -114,7 +114,6 @@ void( entity targetClient ) client_push_hud_highlight={
   self = this;
 };
 
-
 void( entity targetClient ) client_send_boundary_warning={
   msg_entity = targetClient;
   WriteByte( MSG_ONE, SVC_TEMPENTITY);
@@ -146,73 +145,31 @@ void() client_push_mapobjects={
 };
 
 /*
-  client sends string 'cmd m foo'
-  where foo is the command, first parm must be 'm'
+  Client Info-string processing.
+  This is called by SV_ParseClientCommand()
+    where the found cmdCall == "client"
   
-  so - 'cmd m foo'
+  WARN: only ever call this from SV_ParseClientCommand()
+    because [SELF] MUST be scoped to an actual client!
+  
+  this function expects the String S to be of the following format
+  "client <infostring values>"
+    and it MUST conform to the format found in /common/data/data_values_game.qc!
 */
-void(string str, float tokens) client_ParseMechCommand={
+void(string cmdString) client_parse_clientInfoString={
+  local float changeFlags;
+  local string dataString;
   local float prevFaction;
   
-  if(argv(1) == "sw"){
-    if(self.deadflag >= DEAD_NO){
-      client_setWeapon(str, tokens);
-    }
-    return;
-  }
+  tokenize(cmdString);
   
-  if(argv(1) == "sm"){
-    self.nextVecChoice = rint(stof(argv(2)));
-    self.unitColorCT = rint(stof(argv(3)));
-    self.unitColorLT = rint(stof(argv(4)));
-    self.unitColorRT = rint(stof(argv(5)));
-    self.unitColorLA = rint(stof(argv(6)));
-    self.unitColorRA = rint(stof(argv(7)));
-    self.unitColorLG = rint(stof(argv(8)));
-    self.new_color = TRUE;
-    return;
-  }
+  dataString = argv(1);
   
-  if(argv(1) == "sp"){
-    if(self.nextVecChoice > 0) {
-      if(self.data_type == DATA_POBS){
-        player_unmakeObserver();
-        if( self.playerState == PLAYER_SPAWN ){
-          PutClientInServer();
-        }
-        sv_client_spawnpoint_select();
-        player_makeMech();
-        client_playTrack( self, world.sounds, TRUE );
-        if( self.client_num < 1){
-          CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
-          self.client_num = CLIENTS;  //book keeping for multiplayer
-        }
-      }
-    }
-    else{
-      //packet drop?
-      player_makeObserver();
-      self.playerState = PLAYER_SPAWN;
-      self.th_die();
-    }
-    return;
-  }
-  
-  if(argv(1) == "sg"){
-    client_setWeaponGroup(str, tokens);
-    return;
-  }
-  
-  //
-  if(argv(1) == "sn"){
-    client_setNavPoint(str, tokens);
-    return;
-  }
-  
-  //changes player's .faction var
-  if(argv(1) == "fac"){
+  changeFlags = rint(stof(infoget(dataString, KEY_FLAGS)));
+  //FACTION UPDATE
+  if( (changeFlags & INFO_FLAG_FACTION) ){
     prevFaction = self.faction;
-    self.faction = stof( argv(2) );
+    self.faction = rint(stof( infoget(dataString, KEY_FACTION) ));
     if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
       if( prevFaction != self.faction ){
         if( self.faction == FACTION_MILITAR ){
@@ -237,73 +194,96 @@ void(string str, float tokens) client_ParseMechCommand={
         }
       }
     }
-    
     client_update_faction();
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
-    return;
+    localcmd(strcat("color ", ftos(self.faction), "\n"));
   }
-  
-  if(argv(1) == "nxm"){
-    client_setMission(str, tokens);
-    return;
+  //MECH ID UPDATE
+  if( (changeFlags & INFO_FLAG_MECH) ){
+    self.nextVecChoice = stof(infoget(dataString, KEY_MECH));
   }
-  
-  if( argv(1) == "setmode" ){
-    cvar_set("gamemode", argv(2) );
-    return;
+  //DEPLOY ID UPDATE
+  if( (changeFlags & INFO_FLAG_DEPLOY) ){
+    //set deploy point
+    client_setNavPoint( rint(stof(infoget(dataString, KEY_DEPLOY))) );
   }
-  
-  //player wants to skip an animatic
-  if( argv(1) == "exan" ){
-    self.count2 = 0;
-    self.velocity = '0 0 0';
-    self.avelocity = '0 0 0';
-    if( self.animId != world ){
-      if( self.animId.target != "" ){
-        local entity trigTarg;
-        trigTarg = find(world, targetname, self.animId.target );
-        if( trigTarg ){
-          if( trigTarg.use ){
-            local entity notTrig;
-            notTrig = self;
-            self = trigTarg;
-              trigTarg.use();
-            self = notTrig;
-          }
+  //COLORS UPDATE
+  if( (changeFlags & INFO_FLAG_COLOR) ){
+    self.unitColorCT = rint(stof(infoget(dataString, KEY_COLOR1)));
+    self.unitColorLT = rint(stof(infoget(dataString, KEY_COLOR2)));
+    self.unitColorRT = rint(stof(infoget(dataString, KEY_COLOR3)));
+    self.unitColorLA = rint(stof(infoget(dataString, KEY_COLOR4)));
+    self.unitColorRA = rint(stof(infoget(dataString, KEY_COLOR5)));
+    self.unitColorLG = rint(stof(infoget(dataString, KEY_COLOR6)));
+    self.new_color = TRUE;
+  }
+  //WEAPON GROUPS UPDATE
+  if( (changeFlags & INFO_FLAG_GROUPS) ){
+    self.w_group1 = rint(stof(infoget(dataString, KEY_GROUP1)));
+    self.w_group2 = rint(stof(infoget(dataString, KEY_GROUP2)));
+    self.w_group3 = rint(stof(infoget(dataString, KEY_GROUP3)));
+    self.w_group4 = rint(stof(infoget(dataString, KEY_GROUP4)));
+  }
+  //WEAPON ID SPECIFICS
+  if( (changeFlags & WEAPON1) ){
+    self.next_wepn1 = rint(stof(infoget(dataString, KEY_WEPN1)));
+  }
+  if( (changeFlags & WEAPON2) ){
+    self.next_wepn2 = rint(stof(infoget(dataString, KEY_WEPN2)));
+  }
+  if( (changeFlags & WEAPON3) ){
+    self.next_wepn3 = rint(stof(infoget(dataString, KEY_WEPN3)));
+  }
+  if( (changeFlags & WEAPON4) ){
+    self.next_wepn4 = rint(stof(infoget(dataString, KEY_WEPN4)));
+  }
+  if( (changeFlags & WEAPON5) ){
+    self.next_wepn5 = rint(stof(infoget(dataString, KEY_WEPN5)));
+  }
+  if( (changeFlags & WEAPON6) ){
+    self.next_wepn6 = rint(stof(infoget(dataString, KEY_WEPN6)));
+  }
+  if( (changeFlags & WEAPON7) ){
+    self.next_wepn7 = rint(stof(infoget(dataString, KEY_WEPN7)));
+  }
+  if( (changeFlags & WEAPON8) ){
+    self.next_wepn8 = rint(stof(infoget(dataString, KEY_WEPN8)));
+  }
+  if( (changeFlags & WEAPON9) ){
+    self.next_wepn9 = rint(stof(infoget(dataString, KEY_WEPN9)));
+  }
+  //SPAWN COMMAND
+  if( (changeFlags & INFO_FLAG_SPAWN) ){
+    // replace -> if( cmdCall == "sp" ){
+    if(self.nextVecChoice > 0) {
+      if(self.data_type == DATA_POBS){
+        player_unmakeObserver();
+        if( self.playerState == PLAYER_SPAWN ){
+          PutClientInServer();
+        }
+        sv_client_spawnpoint_select();
+        player_makeMech();
+        client_playTrack( self, world.sounds, TRUE );
+        if( self.client_num < 1){
+          CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
+          self.client_num = CLIENTS;  //book keeping for multiplayer
         }
       }
     }
-    return;
+    else{
+      //packet drop?
+      player_makeObserver();
+      self.playerState = PLAYER_SPAWN;
+      self.th_die();
+    }
   }
-  
-  if( argv(1) == "rtexport" ){
-    world_export_realtimelights( stof(argv(2)) );
-    return;
-  }
-  if( argv(1) == "nodexprt" ){
-    world_nodegraph_export_data( stof(argv(2)) );
-    return;
-  }
-  if( argv(1) == "dbgnode" ){
-    world_nodegraph_test_graph( stof(argv(2)), stof(argv(3)) );
-    return;
-  }
-  if( argv(1) == "dbgedge" ){
-    nodegraph_debug_edges(  stof(argv(2)) );
-    return;
-  }
-  if( argv(1) == "dbgtarg" ){
-    world_debug_targ( argv(2) );
-    return;
-  }
-};  
+};
 
 void() client_update_faction={
   local float newSkinNum;
   
   if( self.skin > 3){
     //Deathmach randomizer;
-    self.skin = min(rint(random()*3),0);
+    self.skin = min(ceil(random()*3),4);
   }
   newSkinNum = self.faction - 1;
   self.skin = newSkinNum;
@@ -333,7 +313,7 @@ void(string cmd, float tokens) client_setMission={
   if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
     self.playerState = PLAYER_ACTIVE;
     self.view_ofs = '0 0 1';
-    if( stof(argv(2)) == MISSION_RESULT_WIN ){ 
+    if( stof(argv(1)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       savefile_changemap(sv_nextmap); //TODO - fix me
       if( sv_nextmap == "" || strlen(sv_nextmap) == 0 ){
@@ -365,20 +345,6 @@ void(string cmd, float tokens) client_setMission={
   }
 };
 
-/*
-  Client set's their weapon groups on the server
-*/
-void(string cmd, float tokens) client_setWeaponGroup={
-  self.w_group1 = stof(argv(2));
-  self.w_group2 = stof(argv(3));
-  self.w_group3 = stof(argv(4));
-  self.w_group4 = stof(argv(5));
-};
-
-/*
-  Sends an AI voice sample to play to ALL Clients
-  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
-*/
 void(entity client, float weaponsOnOff) client_send_event_repairs={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
@@ -419,9 +385,9 @@ void(string cmd, float tokens) client_setWeapon={
   local float totalWeps;
   local float bitCount;
   
-  itr = 3;
+  itr = 2;
   bitCount = 1;
-  for( totalWeps = 1; totalWeps < stof(argv(2)); totalWeps = totalWeps + 1){
+  for( totalWeps = 1; totalWeps < stof(argv(1)); totalWeps = totalWeps + 1){
     new_id = stof(argv(itr));
     switch(totalWeps){
       case 1:
@@ -484,10 +450,11 @@ void(string fileName) client_sendAnimaticFileName={
   stuffcmd(self, cmd);
 };
 
-void(string cmd, float tokens) client_setNavPoint={
+void(float wantNavId) client_setNavPoint={
   local float nav_id;
   local entity nav;
-  nav_id = stof(argv(2));
+  
+  nav_id = wantNavId;
   for( nav = findchainfloat(data_type, DATA_DEPL); nav != world; nav = nav.chain){
     if(!nav.isActive){
       continue;
