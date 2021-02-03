@@ -6,6 +6,39 @@ mod: 07/25/2019
 Overview: class file for the client -> server command layer
 
 */
+void() cl_ini_infostring={
+  local string infoset;
+  
+  infoset = "";
+  
+  infoset = infoadd(infoset, KEY_DEPLOY, ftos(0));
+  infoset = infoadd(infoset, KEY_FACTION,ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR1, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR2, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR3, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR4, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR5, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR6, ftos(0));
+  infoset = infoadd(infoset, KEY_MECH,   ftos(0));
+  infoset = infoadd(infoset, KEY_GROUP1, ftos(0));
+  infoset = infoadd(infoset, KEY_GROUP2, ftos(0));
+  infoset = infoadd(infoset, KEY_GROUP3, ftos(0));
+  infoset = infoadd(infoset, KEY_GROUP4, ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN1,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN2,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN3,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN4,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN5,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN6,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN7,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN8,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN9,  ftos(0));
+  
+  cacheGlobalString(CLIENT_INFO_STRING, infoset)
+  
+  dprint(strcat(CLIENT_INFO_STRING, "\n")); //debug
+};
+
 
 /*
   Setter functions, pipes client data up to server.
@@ -55,10 +88,11 @@ void( float newFaction ) cl_set_faction={
 void(float group1, float group2, float group3, float group4 ) cl_setweapongroup={
 
   local string cmd;
+  local string infoString_Group;
+  
   cmd = strcat("cmd m sg ",ftos(group1), " ", ftos(group2), " ");
   cmd = strcat(cmd,  ftos(group3), " ", ftos(group4), "\n");
   localcmd(cmd);
-  
 };
 
 void(float nav_id) cl_setspawnpoint={
@@ -132,37 +166,19 @@ void() cl_set_hud_vars_obs={
 
 /*
   Receive new fog transition info
+    TE_FOG_SET
 */
-void( string fogSettings ) cl_get_new_fog={
-  
-  tokenizebyseparator( fogSettings, " " );
-
+void() cl_get_new_fog={
   FOG_STATE = 1;
-  FOG_TARG_DENSITY = stof(argv(1));
-  FOG_TARG_RED = stof(argv(2));
-  FOG_TARG_GREEN = stof(argv(3));
-  FOG_TARG_BLUE = stof(argv(4));
-  FOG_TARG_ALPHA = stof(argv(5));
-  FOG_TARG_DIST_MIN = stof(argv(6));
-  FOG_TARG_DIST_MAX = stof(argv(7));
-  FOG_TARG_DIST_TOP = stof(argv(8));
-  FOG_TARG_FADE_DEPTH = stof(argv(9));
-};
-
-/*
-  Receive new music track to jam
-*/
-void( string musicSet ) cl_get_new_music={
-  local float music;
-  
-  tokenizebyseparator( musicSet, " ");
-  
-  music = stof( argv(2) );
-  
-  if( music != MUSICID){
-    MUSICID = music;
-    localcmd( musicSet );
-  }
+  FOG_TARG_DENSITY = ReadShort();
+  FOG_TARG_RED = ReadCoord();
+  FOG_TARG_GREEN = ReadCoord();
+  FOG_TARG_BLUE = ReadCoord();
+  FOG_TARG_ALPHA = ReadShort();
+  FOG_TARG_DIST_MIN = ReadCoord();
+  FOG_TARG_DIST_MAX = ReadCoord();
+  FOG_TARG_DIST_TOP = ReadCoord();
+  FOG_TARG_FADE_DEPTH = ReadShort();
 };
 
 //one-off, don't use normally.
@@ -174,4 +190,18 @@ void() cl_set_chase={
     cmd = "impulse 30\n";
     localcmd(cmd);
   }
-}; 
+};
+
+/*
+  Replaces the stuffcmd() thing
+*/
+void() cl_set_menu={
+  local float menuFlag;
+   
+  menuFlag = ReadByte();
+  if( menuFlag ){
+    setcursormode(0);
+    localcmd("togglemenu\n");
+  }
+  cvar_set("cl_ismenu", ftos(menuFlag));
+};

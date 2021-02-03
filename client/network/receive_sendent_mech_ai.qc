@@ -260,7 +260,6 @@ void(float criticalHits) sendevent_mech_burn={
     te_mech_crit( offset, '0 0 10');
   }
 };
-
 /*
   SendEntity - MECH AI =====================================
 */

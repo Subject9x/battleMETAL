@@ -562,3 +562,58 @@ float AI_VOICE_NOSPOT     = 6;
 float AI_VOICE_ROGER      = 7;
 float AI_VOICE_SPOTTED    = 8;
 float AI_VOICE_WARN       = 9;
+
+
+//============================
+//     CLIENT INFO STRING
+//      sent by player when choosing items.
+//============================
+/*
+  Info string arch - this is sent to the server
+  key     | value
+  -----------
+  spawn   | float
+  fac | float
+  col1  | float
+  col2  | float
+  col3  | float
+  col4  | float
+  col5  | float
+  col6  | float
+  mech    | float
+  grp1   | float
+  grp2   | float
+  grp3  | float
+  grp4   | float
+  w1    | float
+  w2    | float
+  w3    | float
+  w4    | float
+  w5    | float
+  w6    | float
+  w7    | float
+  w8    | float
+  w9    | float
+*/
+string KEY_DEPLOY  = "spawn";
+string KEY_FACTION  = "fac";
+string KEY_COLOR1  = "col1";
+string KEY_COLOR2  = "col2";
+string KEY_COLOR3  = "col3";
+string KEY_COLOR4  = "col4";
+string KEY_COLOR5  = "col5";
+string KEY_COLOR6  = "col6";
+string KEY_MECH    = "mech";
+string KEY_GROUP1  = "grp1";
+string KEY_GROUP2  = "grp2";
+string KEY_GROUP3  = "grp3";
+string KEY_GROUP4  = "grp4";
+string KEY_WEPN1  = "w1";
+string KEY_WEPN2  = "w2";
+string KEY_WEPN3  = "w3";
+string KEY_WEPN4  = "w4";
+string KEY_WEPN5  = "w5";
+string KEY_WEPN6  = "w6";
+string KEY_WEPN7  = "w7";
+string KEY_WEPN8  = "w8";
+string KEY_WEPN9  = "w9";

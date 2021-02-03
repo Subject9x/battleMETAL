@@ -172,6 +172,8 @@ void() CSQC_Init =
   cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
   cacheGlobalString( PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
   cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
+  
+  cl_ini_infostring();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -508,6 +510,14 @@ float() CSQC_Parse_TempEntity =
       client_get_hud_highlight();
       return TRUE;
       
+    case TE_FOG_SET:
+      cl_get_new_fog();
+      return TRUE;
+    
+    case TE_ISMENU:
+      cl_set_menu();
+      return TRUE;
+    
     case TE_MSN_BOUND:
       client_event_boundary();
       return TRUE;
@@ -571,21 +581,7 @@ void(string s) CSQC_Parse_StuffCmd =
       return;
     }
   }
-  else{
-    if( argv(0) == "fog" ){
-      cl_get_new_fog( s );
-      return;
-    }
-    if( argv(0) == "cd" ){  
-      cl_get_new_music( s ) ;
-      return;
-    }
-    if( argv(0) == "ismenu"){
-      cvar_set("cl_ismenu", "1");
-      setcursormode(0);
-      localcmd("togglemenu\n");
-      return;
-    }   
+  else{  
     localcmd(s);
   }
 };

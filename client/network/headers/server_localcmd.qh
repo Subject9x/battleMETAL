@@ -5,6 +5,12 @@ Date: 3/8/2017
 Overview: definition file for the client -> server command layer
 */
 
+
+
+string CLIENT_INFO_STRING;
+
+void() cl_ini_infostring;
+
 void(float totalWeps, string wepList) cl_setweapon;
 void(float id) cl_setmech;
 void() cl_spawnmech;
@@ -16,9 +22,9 @@ void( float newFaction ) cl_set_faction;
 void(string fileName) cl_get_msnfile;
 void(string fileName) cl_get_animfile;
 
-void( string fogSettings ) cl_get_new_fog;
-void( string musicSet ) cl_get_new_music;
+void() cl_get_new_fog;
 void() cl_exit_animatic;
+void() cl_set_menu;
 
 void( entity mech, float turboMod ) cl_set_hud_vars;
 void() cl_set_hud_vars_obs;

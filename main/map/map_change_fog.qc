@@ -7,6 +7,8 @@ Overview:
   This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
 */
 
+entity ENTITY_FOG_TOUCH;
+
 void() map_changefog_touch={
   
   if( (other.flags & FL_CLIENT) ){
@@ -23,6 +25,7 @@ void() map_changefog_touch={
 
 void() map_changefog_use={
   if( (activator.flags & FL_CLIENT) ){
+    
     client_sendFog(other, self.fog_density, self.fog_color, self.fog_alpha, self.fog_dist, self.fade);
     other.fog_alpha = self.fog_alpha;
     

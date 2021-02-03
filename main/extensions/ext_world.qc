@@ -104,7 +104,7 @@ void() world_metal_ini={
   addstat(STAT_RAM_VALUE, AS_INT, ramTracker);
   addstat(STAT_LCK_STT, AS_FLOAT, targLockState);
   
-  addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
+  addstat(STAT_PLR_REP, AS_FLOAT, stat_plr_rep);
   
   //setup wind settings
   if( !world.wind ){

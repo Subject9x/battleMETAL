@@ -112,21 +112,15 @@ void( entity targetClient ) client_push_hud_highlight={
       WriteCoord( MSG_ONE, this.movedir_z );
     }
   self = this;
-}; 
+};
 
 
-//TODO - refactor
 void( entity targetClient ) client_send_boundary_warning={
-  local entity this;
-  
-  this = self;
-  self = targetClient;
-  msg_entity = self;
-    WriteByte( MSG_ONE, SVC_TEMPENTITY);
-    WriteByte( MSG_ONE, TE_MSN_BOUND);
-    WriteByte( MSG_ONE, this.isActive );
-    WriteAngle( MSG_ONE, this.ai_dir );
-  self = this;
+  msg_entity = targetClient;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY);
+  WriteByte( MSG_ONE, TE_MSN_BOUND);
+  WriteByte( MSG_ONE, self.isActive );
+  WriteAngle( MSG_ONE, self.ai_dir );
 };
 
 /*
@@ -188,7 +182,7 @@ void(string str, float tokens) client_ParseMechCommand={
         }
         sv_client_spawnpoint_select();
         player_makeMech();
-        client_playTrack( world.sounds, TRUE );
+        client_playTrack( self, world.sounds, TRUE );
         if( self.client_num < 1){
           CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
           self.client_num = CLIENTS;  //book keeping for multiplayer
@@ -407,6 +401,13 @@ void( float playerId, float playerCritBits ) client_send_critical_hit={
   WriteLong( MSG_ALL, playerCritBits );
 };
 
+void( entity client, float menuFlag ) client_send_menu_flag={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_ISMENU );
+  WriteByte( MSG_ONE, menuFlag );
+};
+
 
 /*
 commmand string: cmd mech setwep X Y
@@ -456,17 +457,11 @@ void(string cmd, float tokens) client_setWeapon={
   }
 };
 
-void(float track, float loop) client_playTrack={
-  local string cmd;
-  cmd = "cd ";
-  if( loop ){
-    cmd = strcat(cmd, "loop ");
-  }
-  else{
-    cmd = strcat(cmd, "play ");
-  }
-  cmd = strcat(cmd, ftos(track), "\n");
-  stuffcmd(self, cmd);
+void(entity client, float track, float loopFlag) client_playTrack={
+  msg_entity = client;  
+  WriteByte(MSG_ONE, SVC_CDTRACK);
+  WriteByte(MSG_ONE, track);
+  WriteByte(MSG_ONE, loopFlag);
 };
 
 void() client_sendMissionFileName={
@@ -513,30 +508,25 @@ void(string cmd, float tokens) client_setNavPoint={
   scope agnostic means of sending 'fog' settings and cmd to the client
 */
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog={
-  local string fogCmd;
-  
-  fogCmd = "fog ";
-  fogCmd = strcat( fogCmd, ftos(fogDense), " " );
-  fogCmd = strcat( fogCmd, ftos(fogColor_x), " " );
-  fogCmd = strcat( fogCmd, ftos(fogColor_y), " " );
-  fogCmd = strcat( fogCmd, ftos(fogColor_z), " " );
-  fogCmd = strcat( fogCmd, ftos(fogAlpha), " " );
-  fogCmd = strcat( fogCmd, ftos(fogDist_x), " " );
-  fogCmd = strcat( fogCmd, ftos(fogDist_y), " " );
-  fogCmd = strcat( fogCmd, ftos(fogDist_z), " " );
-  fogCmd = strcat( fogCmd, ftos(fogFade), "\n" );
-  stuffcmd( client, fogCmd );
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_FOG_SET );
+  WriteShort( MSG_ONE, fogDense );
+  WriteCoord( MSG_ONE, fogColor_x );
+  WriteCoord( MSG_ONE, fogColor_y );
+  WriteCoord( MSG_ONE, fogColor_z );
+  WriteShort( MSG_ONE, fogAlpha );
+  WriteCoord( MSG_ONE, fogDist_x );
+  WriteCoord( MSG_ONE, fogDist_y );
+  WriteCoord( MSG_ONE, fogDist_z );
+  WriteShort( MSG_ONE, fogFade );
 };
 
 /*
   scope agnostic means of sending CD track changes to the client
 */
 void(entity client, float trackNum, float entFlags) client_sendMusic={
-
-  otemp = self;
-  self = client;
-    client_playTrack( trackNum, (entFlags & 2) );
-  self = otemp;
+  client_playTrack( client, trackNum, (entFlags & 2) );
 };
 
 /*

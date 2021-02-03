@@ -33,10 +33,9 @@ void() client_push_player_info;
 void( entity targetClient ) server_push_player_info; //simply wraps client_push_player_info()
 void( entity targetClient ) client_push_hud_highlight;
 void( entity targetClient ) client_send_boundary_warning;
-
 void() client_push_mapobjects;
-
 void( float playerId, float playerCritBits ) client_send_critical_hit;
+void( entity client, float menuFlag ) client_send_menu_flag;
 
 //client command layer
 void(entity client) client_send_server_info_connect;
@@ -50,7 +49,7 @@ void(entity client, float trackNum, float entFlags) client_sendMusic;
 void(entity client, string theMessage, float messageLifetime) client_send_info_message;
 void(entity client, float weaponsOnOff) client_send_event_repairs;
 
-void( float track, float loop) client_playTrack;
+void( entity client, float track, float loopFlag) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
 void(string cmd, float tokens) client_setWeaponGroup;

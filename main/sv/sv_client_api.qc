@@ -17,7 +17,29 @@ Overview:
 */
 void(string str) SV_ParseClientCommand={
   local float argc;
+  local string cmdCall;
+  
+  dprint(str);  //debug
+  
+  //cmdCall = sub
   argc = tokenize(str);
+  
+  //SetWeapon List
+  
+  //SetMech
+  
+  //Player Spawn Event
+  
+  //SetFaction
+  
+  //SetWeaponGroups
+  
+  //SetSpawnpoints
+  
+  //SetNextMission
+  
+  //Exit Animatic
+  
   if(argv(0) == "m"){
     client_ParseMechCommand(str, argc);
   }
@@ -147,13 +169,13 @@ void() ClientConnect = {
   client_data();
   
   if( world.animaticOnly ) {
-    client_playTrack(world.sounds, TRUE);  //play desired music for animatic
+    client_playTrack(self, world.sounds, TRUE);  //play desired music for animatic
     if( world.animaticOnly > 1){
-      stuffcmd(self, "ismenu");
+      client_send_menu_flag( self, TRUE );
     }
   }
   else{
-    client_playTrack(3, TRUE);  //entering hangar menu
+    client_playTrack(self, 3, TRUE);  //entering hangar menu
   }
   
   client_send_server_info_connect( self );
@@ -309,7 +331,7 @@ void() PutClientInServer_Campaign={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     if(world.animaticOnly > 1){
@@ -438,7 +460,7 @@ void() PutClientInServer_TeamDeathmatch={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
