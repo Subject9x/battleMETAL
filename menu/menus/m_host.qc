@@ -186,7 +186,7 @@ float( float rateVal ) host_rate_find={
   local float rateFind;
   
   rateFind = 0;
-  while( itr < 7 ){
+  while( itr < 8 ){
     if( HOST_RATE_TABLE[itr] == rateVal ){
       rateFind = itr;
     }
@@ -233,7 +233,7 @@ void() click_host_public_prev={
 
 void() click_host_rate_up={
   SELECT_RATE = SELECT_RATE + 1;
-  if( SELECT_RATE > 6 ){
+  if( SELECT_RATE > 7 ){
     SELECT_RATE = 0;
   }
   host_update_rate(SELECT_RATE);
@@ -243,7 +243,7 @@ void() click_host_rate_down={
     SELECT_RATE = SELECT_RATE - 1;
   }
   else{
-    SELECT_RATE = 6;
+    SELECT_RATE = 7;
   }
   
   host_update_rate(SELECT_RATE);
@@ -456,6 +456,7 @@ void() click_host_back={
   cvar_set("coop" , "0");
   cvar_set("deathmatch" , "0");
   cvar_set("teamplay" , "0");
+  cmd("rate 250000\n");
   menu_clear_items(M_STATE);
   m_multi_f();
 };
@@ -650,7 +651,7 @@ void() m_host_d={
   
   gui_renderString(PUBLIC_TYPE, host_public.origin + gui_percentToPixelRawVec('85 1'), '1 1 0.1', '12 12 0', 1, 0);
   
-  host_serverrate.label = strcat(sprintf("%2.0f", host_serverrate.len / 1000), " mBps");
+  host_serverrate.label = HOST_RATE_TABLE_NAME[SELECT_RATE];
   gui_renderString("Server Rate  :", host_serverrate.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
   gui_renderString("[Make sure this matches your internet speed or is lower than it.]", host_serverrate.origin + gui_percentToPixelRawVec('85 1'), '1 1 0.1', '12 12 0', 1, 0);
   
@@ -715,6 +716,7 @@ void(float key, float ascii) m_host_k={
       cvar_set("coop" , "0");
       cvar_set("deathmatch" , "0");
       cvar_set("teamplay" , "0");
+      cmd("rate 250000\n");
       
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);

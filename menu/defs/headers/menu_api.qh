@@ -25,8 +25,8 @@ vector VID_RESO_HALF[36];
 string VID_RESO_NAME[36];
 float VID_RESO_TOTAL;
 
-float HOST_RATE_TABLE[12];
-string HOST_RATE_TABLE_NAME[12];
+float HOST_RATE_TABLE[7];
+string HOST_RATE_TABLE_NAME[7];
 
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL        = 1;     //don't render label
@@ -204,26 +204,35 @@ string(float typ) map_list_getmap ={
 };
 
 /*
- DEPRECATE - following Darkplaces standards
- 
- new:
  no, we need better standards because its not 2000 anymore.
+ also, turns out the AI in battleMETAL is REALLY chunky
+ AND this really only affects the transfer rate.
+ 
+ NOTE:
+  this maps to the `_cl_rate` cvar and the `rate X` command.
+  this value is rated in BYTES-PER-SECOND! very imporant.
+  current values I've put in are Megabits-per-second. 2021
+  
+  Co-op especially needs a higher rate for a few reasons:
+    1) AI sends update packets fairly frequently for nice movement.
+    2) many maps have a LOT of active AI on the table.
 */
 void() menu_ini_ratelist={
-  HOST_RATE_TABLE[0] = 5000;  //"56k good"
-  HOST_RATE_TABLE[1] = 7000;  // "64k ISDN"
-  HOST_RATE_TABLE[2] = 15000; //"128k ISDN"
-  HOST_RATE_TABLE[3] = 25000; //"broadband"
-  HOST_RATE_TABLE[4] = 30000; //"SuperFast"
-  HOST_RATE_TABLE[5] = 50000; //"Ultra"
+  HOST_RATE_TABLE[0] = 62500;  //0.5 mbps
+  HOST_RATE_TABLE[1] = 125000; //1   mbps
+  HOST_RATE_TABLE[2] = 187500; //1.5 mbps
+  HOST_RATE_TABLE[3] = 250000; //2   mbps
+  HOST_RATE_TABLE[4] = 312500; //2.5 mbps
+  HOST_RATE_TABLE[5] = 375000; //3   mbps
+  HOST_RATE_TABLE[6] = 625000; //5   mbps
   
-  HOST_RATE_TABLE_NAME[0] = "Lowest - 5 MBps";
-  HOST_RATE_TABLE_NAME[1] = "Low - 7 MBps";
-  HOST_RATE_TABLE_NAME[2] = "Medium - 15 MBps";
-  HOST_RATE_TABLE_NAME[3] = "High - 25 MBps";
-  HOST_RATE_TABLE_NAME[4] = "Superfast - 30 MBps";
-  HOST_RATE_TABLE_NAME[5] = "Ultra - 50 MBps";
-  
+  HOST_RATE_TABLE_NAME[0] = "0.5 MBps";
+  HOST_RATE_TABLE_NAME[1] = "1 MBps";
+  HOST_RATE_TABLE_NAME[2] = "1.5 MBps";
+  HOST_RATE_TABLE_NAME[3] = "2 MBps";
+  HOST_RATE_TABLE_NAME[4] = "2.5 MBps";
+  HOST_RATE_TABLE_NAME[5] = "3 MBps";
+  HOST_RATE_TABLE_NAME[6] = "5 MBps";
 };
 
 /*
