@@ -97,17 +97,17 @@ void() hud_render_tactical_map={
     if(player.faction != CLIENT_faction){
       continue;
     }
-    if( player.entId != player_localentnum ){
+    if( player.clientLocalId != player_localentnum ){
       if( player.faction != FACTION_ALL ){
         friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, mapOrg, mapImgSize);
-        gui_renderTintImage2((player.entId == player_localentnum), friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
+        gui_renderTintImage2(FALSE, friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
         
         nameOrg = friend_org + gui_percentToPixelRawVec('0 -10');
         
         drawfont_prev = drawfont;
         drawfont = FONT_NUM_ROBOT_REGULAR;
         
-        playerName = getplayerkeyvalue(player.clientLocalId, "name");
+        playerName = getplayerkeyvalue(player.clientLocalNum, "name");
         nameLen = stringwidth( playerName, 0, '10 10 0');
         nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
         drawstring( nameOrg, playerName, '10 10 0', CLR_DEF_IIF_FRIEND_BLD, 1, 0);
@@ -154,13 +154,13 @@ void() hud_render_scoreboard={
   panelOrg_y = VIEW_ORG_y + gui_percentYRaw(2);
 
   //gameMode = cvar("gamemode");
-  if( SV_GAMETYPE == GAMEMODE_TEAMDM ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     hud_render_scoreboard_tdm( panelOrg );
   }
-  else if( SV_GAMETYPE == GAMEMODE_DM ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
     hud_render_scoreboard_dm( panelOrg );
   }
-  else if( SV_GAMETYPE == GAMEMODE_COOP ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     hud_render_scoreboard_dm( panelOrg );
   }
 }; 
@@ -176,9 +176,9 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   local string playerName;
   local float scoreLen;
   
-  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) ){
     rowColor = CLR_DEF_WHITE;
-    if( playerRow.entId == player_localentnum ){
+    if( playerRow.clientLocalId == player_localentnum ){
       fontSize = '10 10 0';
     }
     else{
@@ -186,7 +186,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
     }
   }
   else{
-    if( playerRow.entId == player_localentnum ){
+    if( playerRow.clientLocalId == player_localentnum ){
       fontSize = '10 10 0';
       rowColor = CLR_DEF_GREEN;
     }
@@ -209,7 +209,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   
   drawstring(rowOfs, strcat(ftos(itr),")"), fontSize, rowColor, 1, 0);
   
-  playerName = getplayerkeyvalue(playerRow.clientLocalId, "name");
+  playerName = getplayerkeyvalue(playerRow.clientLocalNum, "name");
   playerNameOfs = rowOfs + gui_percentToPixelRawVec('14 0');
   if( playerName != "" ){
     playerNameLen = strlen(playerName);
@@ -220,10 +220,10 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   }
   
   playerScoreOfs = playerNameOfs + gui_percentToPixelRawVec('120 0');
-  playerRow.kills = stof(getplayerkeyvalue(playerRow.clientLocalId, "frags"));
-  scoreLen = stringwidth(getplayerkeyvalue(playerRow.clientLocalId, "frags"), 0, fontSize);
+  playerRow.kills = stof(getplayerkeyvalue(playerRow.clientLocalNum, "frags"));
+  scoreLen = stringwidth(getplayerkeyvalue(playerRow.clientLocalNum, "frags"), 0, fontSize);
   playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
-  drawstring(playerScoreOfs, getplayerkeyvalue(playerRow.clientLocalId, "frags"), fontSize, rowColor, 1, 0);
+  drawstring(playerScoreOfs, getplayerkeyvalue(playerRow.clientLocalNum, "frags"), fontSize, rowColor, 1, 0);
 };
 
 void( vector panelOfs ) hud_render_scoreboard_dm={
@@ -254,7 +254,7 @@ void( vector panelOfs ) hud_render_scoreboard_dm={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" || nameCheck ){
-        player = findfloat(world, entId, SCOREBOARD[itr] + 1);
+        player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
         listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(12) );
         hud_render_score_row( listRowOfs, playerRowItr + 1, player );
         playerRowItr = playerRowItr + 1;
@@ -307,7 +307,7 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" || nameCheck ){
-        player = findfloat(world, entId, SCOREBOARD[itr] + 1);
+        player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
         if( player.faction == FACTION_SURVEST ){
           listRowOfs_y = listOfs_y + ( teamCount1 * gui_percentYRaw(12) );
           playerRowItr = teamCount1;

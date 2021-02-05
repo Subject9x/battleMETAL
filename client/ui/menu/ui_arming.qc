@@ -295,10 +295,7 @@ void() selectNextConfig={
       CFG_INDEX = 1;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
-      if( DATA_CONFIG_BUFFER_NAME != "" ){
-        strunzone( DATA_CONFIG_BUFFER_NAME );
-      }
-      DATA_CONFIG_BUFFER_NAME = strzone(ftos(CFG_INDEX));
+      cacheGlobalString(DATA_CONFIG_BUFFER_NAME, ftos(CFG_INDEX) )
     }
   }
 };
@@ -311,10 +308,7 @@ void() selectPrevConfig={
       CFG_INDEX = 6;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
-      if( DATA_CONFIG_BUFFER_NAME != "" ){
-        strunzone( DATA_CONFIG_BUFFER_NAME );
-      }
-      DATA_CONFIG_BUFFER_NAME = strzone(ftos(CFG_INDEX));
+      cacheGlobalString(DATA_CONFIG_BUFFER_NAME, ftos(CFG_INDEX) )
     }
   }
 };
@@ -355,6 +349,13 @@ void(vector ofs) menu_arming_HardpointGraph={
   local vector hardpointCoord;
   
   local float allowed;
+  
+  local vector nbtn, pbtn, pctr, lctr;
+  local string cfg, warn;
+  local float len;
+  local vector colr;
+  local vector warnOrg;
+  local vector helpOrg;
   
   nofs = ofs + gui_percentToPixelRawVec('10 8');
   panelOffset = nofs + gui_percentToPixelRawVec('4 4');
@@ -420,7 +421,6 @@ void(vector ofs) menu_arming_HardpointGraph={
     }
   }
   
-  local vector nbtn, pbtn, pctr, lctr;
   pctr_x = panelImageSize_x / 2;
   pctr_y = panelImageSize_y / 2;
   nbtn = pbtn = nofs;
@@ -444,10 +444,6 @@ void(vector ofs) menu_arming_HardpointGraph={
   lctr = nofs + pctr;
   lctr_y = lctr_y + pctr_y - gui_percentYRaw(42);
   
-  local string cfg, warn;
-  local float len;
-  local vector colr;
-  local vector warnOrg;
   
   //this is quite hilarious
   cfg = NAVNAMES[CFG_INDEX];
@@ -466,7 +462,6 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   drawfont = drawfont_prev;
   
-  local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(276) - gui_percentXRaw(12);
   ARMING_HELP_HARDPOINT_GRAPH = helpOrg;
@@ -493,6 +488,9 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
   local float itemId;
   local float drawFontLocal;
   
+  local vector listItemOffset, listItemColor, listItemLabelOrg;
+  local float listItemLabelLen;
+    
   nofs = parentOffset;
   nofs = nofs + offsetAdjust;
   
@@ -510,8 +508,6 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
   lst_idx = 0;
  
   while(lst_idx <= UNLOCKED_ITEMS_TOTAL){
-    local vector listItemOffset, listItemColor, listItemLabelOrg;
-    local float listItemLabelLen;
     
     itemId = UNLOCKED_ITEMS[lst_idx];
     if( itemId != 0){
@@ -595,6 +591,10 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   local float groupLabelLen;
   local vector groupLabelOrg;
   
+  local vector lofs;
+    
+  local vector helpOrg;
+  
   nofs = ofs + gui_percentToPixelRawVec('10 0');
   groupButtonSize = gui_percentToPixelRawVec('12 12');
   
@@ -629,7 +629,6 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   bit = 1;
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   while( hardpoint ){
-    local vector lofs;
     lofs_x = nofs_x + gui_percentXRaw(6);
     lofs_y = nofs_y + gui_percentYRaw(lst_idx * 20);
     
@@ -693,7 +692,6 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), '1 0 0', 0.67, 0);
   }
   
-  local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(150) - gui_percentXRaw(12);
   ARMING_HELP_WEAPON_GROUPS = helpOrg;
@@ -705,6 +703,8 @@ void(vector ofs) menu_arming_energydraw={
   
   local float energyLabelLen;
   local vector energyLabelOrg;
+  
+  local vector helpOrg;
   
   drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('126 197'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1,0);
   
@@ -743,7 +743,6 @@ void(vector ofs) menu_arming_energydraw={
     
   drawfont = drawfont_prev;
     
-  local vector helpOrg;
   helpOrg = ofs;
   helpOrg_x = ofs_x + gui_percentXRaw(126) - gui_percentXRaw(12);
   ARMING_HELP_ENERGY_GROUPS = helpOrg;

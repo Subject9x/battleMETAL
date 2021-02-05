@@ -28,7 +28,8 @@ void() CSQC_Init =
   VQSIZE = 6;
   SQUED = FALSE;
   
-  TQSIZE = 8;
+  //Radio Transmission queue size
+  TQSIZE = 4;
   TRTIME = 0;
   TR_TIME_NEXT = 0;
   TQUED = FALSE;
@@ -114,8 +115,7 @@ void() CSQC_Init =
   
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");
-  MAP_NAME = argv(1);
-  MAP_NAME = strzone(MAP_NAME);
+  cacheGlobalString( MAP_NAME, argv(1) )
 
   CFG_INDEX = 1;
   CFG_INDEX_PREV = CFG_INDEX;
@@ -151,7 +151,7 @@ void() CSQC_Init =
   SCORESTACK = 0;
   
   for( i=0; i < SCOREBOARDMAX; i=i+1){
-      SCOREBOARD[i] = -1;
+    SCOREBOARD[i] = -1;
   }
   scoreboard_think();
   
@@ -168,31 +168,54 @@ void() CSQC_Init =
   VIEW_OBS_ID = 1;
   ui_colors_set_player_list();
   ISMENU_PREV = FALSE;
+
+  cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
+  cacheGlobalString( PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
+  cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
   
-  PLAYER_COLOR_PSC = strzone(cvar_string("cl_color_psc"));
-  PLAYER_COLOR_SRV = strzone(cvar_string("cl_color_srv"));
-  PLAYER_COLOR_MIL = strzone(cvar_string("cl_color_mil"));
-  
+  cl_ini_infostring();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
 void() CSQC_Shutdown =
 {
-  if( UNLOCKED_MECHS_DATA != "" ){
-    strunzone(UNLOCKED_MECHS_DATA); 
-  }
-  if( UNLOCKED_ITEMS_DATA != "" ){
-    strunzone(UNLOCKED_ITEMS_DATA); 
-  }
-  if( MENU_DEBRIEF_unlocks_mechs != "" ){
-    strunzone(MENU_DEBRIEF_unlocks_mechs); 
-  } 
-  if( MENU_DEBRIEF_unlocks_equip != "" ){
-    strunzone(MENU_DEBRIEF_unlocks_equip); 
-  }
-  if( SV_NEXTMAP != "" ){
-    strunzone(SV_NEXTMAP);
-  }
+  //server string cleanup
+  freeGlobalString(CLIENT_INFO_STRING)
+  
+  freeGlobalString(UNLOCKED_MECHS_DATA)
+  freeGlobalString(UNLOCKED_ITEMS_DATA)
+  freeGlobalString(MENU_DEBRIEF_unlocks_mechs)
+  freeGlobalString(MENU_DEBRIEF_unlocks_equip)
+  freeGlobalString(SV_NEXTMAP)
+  freeGlobalString(ENT_SERVER_INFO.svAbout)
+  freeGlobalString(ENT_SERVER_INFO.nextMap)
+  
+  freeGlobalString(PLAYER_COLOR_PSC)
+  freeGlobalString(PLAYER_COLOR_SRV)
+  freeGlobalString(PLAYER_COLOR_MIL)
+  
+  freeGlobalString(MAP_NAME);
+  
+  //config file cleanup
+  freeGlobalString(DATA_CONFIG_BUFFER_NAME)
+  
+  freeGlobalString(UNLOCKED_MECHS_DATA)
+  freeGlobalString(UNLOCKED_ITEMS_DATA)
+  freeGlobalString(SAVEFILE_CAMPAIGN)
+  freeGlobalString(SAVEFILE_CACHE_MAP)
+  
+  freeGlobalString(MENU_DEBRIEF_unlocks_mechs)
+  freeGlobalString(MENU_DEBRIEF_unlocks_equip)
+  
+  freeGlobalString(DATA_CONFIG_BUFFER_NAME)
+  
+  //mission file cleanup
+  msn_free_strings();
+  
+  //Entities
+  freeGlobalString(CLIENT_netname)
+  freeGlobalString(MISSION_NAME)
+  freeGlobalString(HUD_INFO_MSG)
   
   localcmd("cd stop\n");
 };
@@ -210,31 +233,41 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 // the most important function in CSQC...
 void(float w, float h, float menuView) CSQC_UpdateView =
 {
+  local vector fovvec, vf_sz, vf_mn;
+  local entity e;
+  local vector porg, pang, torg;
+  
+  local float clientItr;
+  local float frameItr;
+  local entity oldSelf;
+  local entity eClient;
+  
+  scoreboard_think();
+  
   if(ISMENU_PREV != menuView){
     //check for player bringing up menu delta
     if( ISMENU_PREV == TRUE && menuView == FALSE ){
       if( CLIENT_faction == FACTION_SURVEST){
         if( PLAYER_COLOR_SRV != cvar_string("cl_color_srv") ){
           //player changed Survest color
-          PLAYER_COLOR_SRV = strzone(cvar_string("cl_color_srv"));
+          cacheGlobalString(PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
           cl_setmech( CLIENT_MENU_sel_mech );
         }
       }
       else if( CLIENT_faction == FACTION_MILITAR){
         if( PLAYER_COLOR_MIL != cvar_string("cl_color_mil") ){
           //player changed militar color
-          PLAYER_COLOR_MIL = strzone(cvar_string("cl_color_mil"));
+          cacheGlobalString(PLAYER_COLOR_MIL, cvar_string("cl_color_mil") )
           cl_setmech( CLIENT_MENU_sel_mech );
         }
       }
       else{
         if( PLAYER_COLOR_PSC != cvar_string("cl_color_psc") ){
           //player changed PSC color
-          PLAYER_COLOR_PSC = strzone(cvar_string("cl_color_psc"));
+          cacheGlobalString(PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
           cl_setmech( CLIENT_MENU_sel_mech );
         }
       }
-  
     }
     ISMENU_PREV = menuView;
   }
@@ -242,6 +275,29 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", "1");
+  }
+  
+  //run prediction...?
+  eClient = findfloat(world, entnum, clientItr);
+  while( eClient != world ){
+    for (frameItr = eClient.sequence + 1; frameItr <= servercommandframe; frameItr = frameItr + 1) {
+        if (!getinputstate(frameItr)){
+            break;  //erk?... too old?
+        }
+        input_sequence = frameItr;
+        oldSelf = self;
+        self = eClient;
+          runstandardplayerphysics(self);
+          self.clientData.origin = self.origin;
+        self = oldSelf;
+      }
+    clientItr = clientItr + 1;
+    if( clientItr < 17){
+      eClient = findfloat(eClient, entnum, clientItr);
+    }
+    else{
+      eClient = world;
+    }
   }
   
 	/*
@@ -264,9 +320,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	// clear the scene information (entities, polygons, etc)
 	clearscene();
   //=====================================================
-  local vector fovvec,
-                vf_sz,
-                vf_mn;
 	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
   vf_sz = getpropertyvec(VF_SIZE);
   vf_mn = getpropertyvec(VF_MIN);
@@ -291,7 +344,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   else{
     //note: demonstrates the basics for player-observer mode where you follow another player
     if( VIEW_OBS_ID == 2 ){
-      local entity e;
       e = entitybyindex(stof(getplayerkeyvalue(VIEW_OBS_ID+1, "viewentity")));
       setproperty(VF_ORIGIN, e.origin);
       setproperty(VF_ANGLES, e.angles);
@@ -339,7 +391,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     // add clientside entities (MASK_NORMAL)
     // add engine networked entities (MASK_ENGINE)
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
-    local entity oldSelf;
     oldSelf = self;
     self = world;
     while( (self = nextent(self)) ){
@@ -417,9 +468,9 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   }
   
   if( cvar("developer") ){
-    local vector porg, pang, torg;
     pang = '0 0 0'; //sh, compiler.
     torg = '0 0 0';
+    porg = '0 0 0';
     porg_x = pang_x = torg_x = VIEW_ORG_x;
     porg_y = pang_y = torg_y = VIEW_MAX_y;
     drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
@@ -445,14 +496,14 @@ float() CSQC_Parse_TempEntity =
   id = ReadByte();
 
   switch( id ){
+    case TE_PLAYER_CRIT:
+      client_handle_crit( ReadByte(), ReadLong() );
+      return TRUE;
+      
     case TE_CLIENT_INFO:
       client_campaign_end_data();
       return TRUE;
       
-    case TE_SERVERINFO:
-      client_get_serverinfo();
-      return TRUE;
-    
     case TE_CLIENT_INFO_DM:
       client_dm_end_data();
       return TRUE;
@@ -461,12 +512,16 @@ float() CSQC_Parse_TempEntity =
       client_get_hud_highlight();
       return TRUE;
       
+    case TE_FOG_SET:
+      cl_get_new_fog();
+      return TRUE;
+    
+    case TE_ISMENU:
+      cl_set_menu();
+      return TRUE;
+    
     case TE_MSN_BOUND:
       client_event_boundary();
-      return TRUE;
-      
-    case TE_AI_VOICE:
-      snd_hud_trnsmsn_addtoqueue(ReadByte(), ReadByte(), ReadByte(), ReadLong());
       return TRUE;
       
     case TE_MISSION_END:
@@ -514,12 +569,12 @@ void(string s) CSQC_Parse_StuffCmd =
   local string tempAbout;
   local float lenAdjust;
   
+  if( cvar("developer") ){
+    dprint(sprintf("CSQC_Parse_StuffCmd().s = %s\n", s));  //debug
+  }
   argc = tokenize(s);
   if(argv(0) == "m"){
     if(argv(1) == "msn"){
-      if( cvar("developer") ){
-        dprint(sprintf("CSQC_Parse_StuffCmd().s = %s\n", s));  //debug
-      }
       cl_get_msnfile( argv(2) );
       return;
     }
@@ -528,27 +583,7 @@ void(string s) CSQC_Parse_StuffCmd =
       return;
     }
   }
-  else{
-    if( argv(0) == "svabout" ){
-      lenAdjust = strlen(s) - 8;
-      tempAbout = substring(s, 8, lenAdjust );
-      SV_ABOUT = strzone(tempAbout);
-      return;
-    }
-    if( argv(0) == "fog" ){
-      cl_get_new_fog( s );
-      return;
-    }
-    if( argv(0) == "cd" ){  
-      cl_get_new_music( s ) ;
-      return;
-    }
-    if( argv(0) == "ismenu"){
-      cvar_set("cl_ismenu", "1");
-      setcursormode(0);
-      localcmd("togglemenu\n");
-      return;
-    }   
+  else{  
     localcmd(s);
   }
 };
@@ -682,9 +717,7 @@ void() CSQC_Ent_Remove ={
         remove(self.effect3 );
       }
     }
-    if(self.netname != "" ){
-      strunzone(self.netname);
-    }
+    freeGlobalString(self.netname)
   }
   if( wasfreed(self) ){
     return;

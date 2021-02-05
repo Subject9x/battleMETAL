@@ -33,7 +33,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
 //=====================
   
 //Stops animatic playback by pressing space bar
-  if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
     //not sure if skipping cut-scenes during co-op games is even possible.
     if( ANM_FILE_STATUS == 1 ){
       if( scanx == K_SPACE ){
@@ -141,9 +141,6 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     }
     else if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
       //INPUT - HUD - set chase_active
-      if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
-        return TRUE;
-      }
       if( HUD_EXTERNAL_CAM_ACTIVE == TRUE ){
         HUD_EXTERNAL_CAM_ACTIVE = FALSE;
         localcmd("chase_active 0\n");
@@ -155,6 +152,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         }
       }
       else{
+        if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
+          return TRUE;
+        }
         HUD_EXTERNAL_CAM_ACTIVE = TRUE;
         localcmd("chase_active 1\n");
         if(hudStruts != world ){

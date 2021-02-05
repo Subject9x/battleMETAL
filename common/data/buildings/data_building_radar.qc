@@ -333,8 +333,6 @@ void() building_human_radar={
   
   makevectors(self.angles);
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-
-  ai_voice_ini( TRUE );
   
   //allows RADAR to call a specific trigger when it spots something
   if( self.trigOnTarget ){
@@ -350,7 +348,7 @@ void() building_human_radar={
   
   self.SendEntity = ctrl_send_building;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  if( (self.spawnflags & IT_QUAD) ){
+  if( (self.spawnflags & IS_MAPKEY) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
   self.canTarget = TRUE;

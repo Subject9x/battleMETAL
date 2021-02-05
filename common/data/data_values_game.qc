@@ -203,21 +203,22 @@ float GAME_TOTAL_MECHS = 256; //how many distinct mechs the game should assume m
 float GAME_TOTAL_ITEMS = 64; //how many distinct mechs the game should assume might exist for UI / unit data purposes
   //don't mess with this really unless...no just don't mess with it.
 string DATA = "data";
-float DATA_POBS = 1; //player observer mode
-float DATA_MECH = 2;
-float DATA_VEHC = 3;
-float DATA_WEPN = 4;
-float DATA_PROJ = 5;
-float DATA_HUD = 6;
-float DATA_BLD = 7;
-float DATA_NAVP = 8;
-float DATA_OBJT = 9;
-float DATA_NODE = 10;
-float DATA_DEPL = 11;
-float DATA_WEAPON = 12;
+float DATA_POBS       = 1; //player observer mode
+float DATA_MECH       = 2;
+float DATA_VEHC       = 3;
+float DATA_WEPN       = 4;
+float DATA_PROJ       = 5;
+float DATA_HUD        = 6;
+float DATA_BLD        = 7;
+float DATA_NAVP       = 8;
+float DATA_OBJT       = 9;
+float DATA_NODE       = 10;
+float DATA_DEPL       = 11;
+float DATA_WEAPON     = 12;
 float DATA_INFO_START = 13;//used to send clientdata entity to csqc
-float DATA_INFO_COOP = 14;  //used as ID for info_start_coop
-float DATA_MAP_DMG = 15;
+float DATA_INFO_COOP  = 14;  //used as ID for info_start_coop
+float DATA_MAP_DMG    = 15;
+float DATA_MAP_RULES  = 16;
 
 //============================
 //     UNIT PART BITS          
@@ -304,9 +305,8 @@ float DMG_FRIENDLY_FIRE_REDUCE_SKILL = 0.33;
 //     GETSTAT() TYPES
 //============================
 float AS_STRING = 1;
-float AS_INT = 2;
-float AS_FLOAT_TRUNCATED = 2;
-float AS_FLOAT = 8;
+float AS_FLOAT = 2;
+float AS_INT = 8;
 //============================
 //     SEND ENTITY SHARED
 //============================
@@ -355,20 +355,23 @@ float SENDFLAG_NEWUNIT  = 65536; //players go from non-mech to mech
 float SENDFLAG_EXDATA   = 131072; //any additional info an ent wants to send (usually custom per class)
 float SENDFLAG_FACTION  = 262144; //this should have been its own long ago.
 float SENDFLAG_ANGLE    = 524288; //specifically .angles / .v_angle 
+float SENDFLAG_VOICE    = 1048576; //when an AI wants to emit a radio sound;
 //============================
 //     COMMON SPAWNFLAGS
 //============================
-float START_OFF = 1; //only activated by trigger
-float LIFETIME = 2; //lifetime
-float REACTIVATE = 4; //reactivate after countdown
-float REMOVE_FIRSTUSE = 8; //remove after first countdown
-float REMOVE_ONTOUCH = 16; //remove on first touch
+float START_OFF = 1;        //only activated by trigger
+float LIFETIME = 2;         //lifetime
+float REACTIVATE = 4;       //reactivate after countdown
+float REMOVE_FIRSTUSE = 8;  //remove after first countdown
+float REMOVE_ONTOUCH = 16;  //remove on first touch
 
 float BUILDING_TARGET_FLAG = 16;  //used by building and misc_building for allowing self to be targeted
 
-float ACTIVE_ONTOUCH = 32; //activate on-touch
-float IS_MAPKEY = 4194304; //mark's this entity on player's briefing map.
-float IS_VIP = 8388608; //faction-allied player will be notified of this entity's state
+float ACTIVE_ONTOUCH = 32;  //activate on-touch
+float MUTE_ME = 1048576;    //ai ignores sending voice effects / radio sounds.
+float NO_DROP = 262144; //don't drop bot/buildingto the floor onspawn
+float IS_MAPKEY = 4194304;  //mark's this entity on player's briefing map.
+float IS_VIP = 8388608;     //faction-allied player will be notified of this entity's state
 //============================
 //     SHARED STATS         
 //============================
@@ -396,7 +399,8 @@ float RADAR_SWEEP = 2.5;
 .float stat_client_hp_armRight;
 .float stat_client_hp_legs;
 
-.float stat_trg_ent_id;
+.float targetEntId;
+.float targetEntIdPrev;
 .float stat_trg_dataidx;
 
 .float stat_trg_dataType;
@@ -416,12 +420,22 @@ float RADAR_SWEEP = 2.5;
 .float stat_plr_rep;
 .string stat_target_name;
 
+.float statWeaponReload1;
+.float statWeaponReload2;
+.float statWeaponReload3;
+.float statWeaponReload4;
+.float statWeaponReload5;
+.float statWeaponReload6;
+.float statWeaponReload7;
+.float statWeaponReload8;
+.float statWeaponReload9;
+
 #endif
 //============================
 //     ADDSTAT SLOT NUMBERS        
 //============================
 //float    = 32;
-float STAT_ACCURACY = 33;
+//float    = 33;
 float STAT_RAM = 34;
 //float    = 35;
 //float    = 36;
@@ -429,19 +443,19 @@ float STAT_RAM = 34;
 float STAT_PLAYER_STATE = 38;
 //float STAT_PLAYER_WEAPONS_STATE = 39;
 //float    = 40;
-float STAT_PLAYER_DEATHS = 41;
+//float    = 41;
 //float    = 42;
 //float    = 43;
 //float    = 44;
 //float    = 46;
-float STAT_PLR_RADMOD = 47;
+//float    = 47;
 float STAT_PLR_HITDIR = 48;
 float STAT_PLR_RETDIST = 49;
 //float    = 50;
 //float    = 53;
 //float    = 54;
 //float    = 55;
-float STAT_TRG_FACE = 56;
+//float     = 56;
 //float    = 57;
 float STAT_TARGET_HP_TORSOCENTER = 61;
 float STAT_TARGET_HP_TORSOLEFT = 62;
@@ -464,16 +478,17 @@ float STAT_CLIENT_HP_LEGS = 72;
 //float    = 78;
 float STAT_RAM_VALUE = 79;
 float STAT_LCK_STT = 80;
-//float    = 81;
-/*float    = 82;
-float    = 83;
-float    = 84;
-float    = 85;
-float    = 86;
-float    = 87;
-float    = 88;
-float    = 89;
-float    = 90;*/
+
+float STAT_WEAPON_RELOAD_1 = 81;
+float STAT_WEAPON_RELOAD_2 = 82;
+float STAT_WEAPON_RELOAD_3 = 83;
+float STAT_WEAPON_RELOAD_4 = 84;
+float STAT_WEAPON_RELOAD_5 = 85;
+float STAT_WEAPON_RELOAD_6 = 86;
+float STAT_WEAPON_RELOAD_7 = 87;
+float STAT_WEAPON_RELOAD_8 = 88;
+float STAT_WEAPON_RELOAD_9 = 89;
+//float    = 90;
 
 //float    = 91;
 //float    = 100;
@@ -547,3 +562,74 @@ float AI_VOICE_NOSPOT     = 6;
 float AI_VOICE_ROGER      = 7;
 float AI_VOICE_SPOTTED    = 8;
 float AI_VOICE_WARN       = 9;
+
+
+//============================
+//     CLIENT INFO STRING
+//      sent by player when choosing items.
+//============================
+/*
+  info string management bitflag
+  entire invoke is 
+    cmd client <changeflags> <infostring>
+    
+*/
+float INFO_FLAG_FACTION = 512;
+float INFO_FLAG_MECH    = 1024;
+float INFO_FLAG_SPAWN   = 2048;
+float INFO_FLAG_COLOR   = 4096;
+float INFO_FLAG_GROUPS  = 8192;
+float INFO_FLAG_DEPLOY  = 16384;
+// WEAPON flags inherit / interoperable with WEAPON1-9 enums above.
+/*
+  Info string arch - this is sent to the server
+  key     | value
+  -----------
+  spawn   | float
+  fac | float
+  col1  | float
+  col2  | float
+  col3  | float
+  col4  | float
+  col5  | float
+  col6  | float
+  mech    | float
+  grp1   | float
+  grp2   | float
+  grp3  | float
+  grp4   | float
+  w1    | float
+  w2    | float
+  w3    | float
+  w4    | float
+  w5    | float
+  w6    | float
+  w7    | float
+  w8    | float
+  w9    | float
+*/
+string CMD_CLIENT_INFO = "client";
+string KEY_FLAGS  = "flags";
+string KEY_DEPLOY  = "deploy";
+string KEY_FACTION  = "fac";
+string KEY_COLOR1  = "col1";
+string KEY_COLOR2  = "col2";
+string KEY_COLOR3  = "col3";
+string KEY_COLOR4  = "col4";
+string KEY_COLOR5  = "col5";
+string KEY_COLOR6  = "col6";
+string KEY_MECH    = "mech";
+string KEY_GROUP1  = "grp1";
+string KEY_GROUP2  = "grp2";
+string KEY_GROUP3  = "grp3";
+string KEY_GROUP4  = "grp4";
+string KEY_WEPN1  = "w1";
+string KEY_WEPN2  = "w2";
+string KEY_WEPN3  = "w3";
+string KEY_WEPN4  = "w4";
+string KEY_WEPN5  = "w5";
+string KEY_WEPN6  = "w6";
+string KEY_WEPN7  = "w7";
+string KEY_WEPN8  = "w8";
+string KEY_WEPN9  = "w9";
+string KEY_SPAWN  = "spawn";

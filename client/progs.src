@@ -8,11 +8,13 @@ data/defs_entity.qc
 data/defs_linker.qc
 
 //Common Defs=====================
+  ../common/data/data_values_game.qc
   ../common/data/defs/defs_player.qc     //AI/player top-level vars.
   ../common/data/defs/defs_unit.qc		    //all fields related specifically to unit data.
   ../common/data/defs/defs_part.qc		    //all fields related to unit sub components.
   ../common/data/defs/defs_item.qc		    //all fields related to items.
   ../common/data/defs/defs_projectile.qc		    //all fields related to items.
+  ../common/data/defs/defs_world.qh     //world server / rules entity
   ../common/data/camp_loader.qh
 //================================
 
@@ -40,7 +42,6 @@ network/headers/receive_sendent.qh
   ../common/data/data_values_particles.qc
   ../common/ui/ui_color_constants.qc
   ../common/ui/ui_color_player.qc
-  ../common/data/data_values_game.qc
   ../common/data/data_header.qc
   
   //Unique ID listings-------------
@@ -215,4 +216,5 @@ ui/hud/crosshair/hud_crosshair4.qc
 //=======================
 
 input_events.qc
+../common/data/defs/defs_world.qc     //world server / rules entity
 client_main.qc

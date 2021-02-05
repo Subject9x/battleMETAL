@@ -18,6 +18,7 @@ void() toggerRadar={};
 void() playerAttack={
   local entity wep_chain, oself;
   local float weaponGroup;
+  local float wgrp;
   
   if( (self.flags & FL_NOSHOOT) ){
     return;
@@ -58,7 +59,6 @@ void() playerAttack={
   oself = self;
   wep_chain = self.w_slot;
   while(wep_chain){
-    local float wgrp;
     wgrp = wep_chain.w_group;
     if( wep_chain.w_attack ){
       if( (weaponGroup > 0) && (self.playerState == PLAYER_ACTIVE) ){
@@ -90,9 +90,6 @@ void() playerAttack={
       }
     }
     wep_chain = wep_chain.w_slot;
-  }
-  if( self.attackFlag > 0 ){
-    self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_ATTACK | SENDFLAG_TURRET);
   }
 };
 
@@ -200,7 +197,7 @@ void() ImpulseCommands ={
       client_update_faction();
     }
     else{
-      if( GAMETYPE == GAMEMODE_DM ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
         PutClientInServer();
       }
@@ -217,7 +214,7 @@ void() ImpulseCommands ={
       client_update_faction();
     }
     else{
-      if( GAMETYPE == GAMEMODE_DM ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
         self.data_type = DATA_POBS;
         PutClientInServer();
       }

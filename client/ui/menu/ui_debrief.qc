@@ -17,8 +17,8 @@ void() menu_debriefListener_onClick={
     if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
       if( servertime > MENU_DEBRIEF_time_elapsed ){
         //Single player 
-        if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
-          if( !(SV_SERVERFLAGS & SVFLAG_NOSAVE) ){
+        if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
+          if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) || strlen(SV_NEXTMAP) > 0 ){
             cl_savefile_save();
           }
         }
@@ -517,7 +517,7 @@ void() menu_debrief_sort_unlocks={
   if( MENU_DEBRIEF_unlocks_mechs != "" ){
     tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
     while( tokenItr < tokens ){
-      item = strzone(argv(tokenItr));  
+      item = strzone(argv(tokenItr));
       itemCounter = stof(item);
       UNLOCKED_MECHS[itemCounter] = itemCounter;
       strunzone(item);

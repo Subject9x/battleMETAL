@@ -111,9 +111,7 @@ void() click_gameplay_fov_more={
     gameplay_fov_more.drawme = FALSE;
   }
   gameplay_fov_lbl.len = val;
-  strunzone(gameplay_fov_lbl.label);
-  gameplay_fov_lbl.label = strzone(ftos(gameplay_fov_lbl.len));
-  cvar_set("fov", gameplay_fov_lbl.label);
+  cvar_set("fov", ftos(val));
   gameplay_fov_less.drawme = TRUE;
 };
 void() click_gameplay_fov_less={
@@ -125,40 +123,34 @@ void() click_gameplay_fov_less={
     gameplay_fov_less.drawme = FALSE;
   }
   gameplay_fov_lbl.len = val;
-  strunzone(gameplay_fov_lbl.label);
-  gameplay_fov_lbl.label = strzone(ftos(gameplay_fov_lbl.len));
-  cvar_set("fov", gameplay_fov_lbl.label);
+  cvar_set("fov", ftos(val));
   gameplay_fov_more.drawme = TRUE;
 };
 
 void() click_gameplay_date_on={
   cvar_set("showdate", "1");
   cvar_set("showtime", "1");
-  strunzone(gameplay_datetime_lbl.label);
-  gameplay_datetime_lbl.label = strzone("ON");
+  
   gameplay_datetime_on.drawme = FALSE;
   gameplay_datetime_off.drawme = TRUE;
 };
 void() click_gameplay_date_off={
   cvar_set("showdate", "0");
   cvar_set("showtime", "0");
-  strunzone(gameplay_datetime_lbl.label);
-  gameplay_datetime_lbl.label = strzone("OFF");
+  
   gameplay_datetime_on.drawme = TRUE;
   gameplay_datetime_off.drawme = FALSE;
 };
 
 void() click_gameplay_fps_on={
   cvar_set("showfps", "1");
-  strunzone(gameplay_fps_lbl.label);
-  gameplay_fps_lbl.label = strzone("ON");
+  
   gameplay_fps_on.drawme = FALSE;
   gameplay_fps_off.drawme = TRUE;
 };
 void() click_gameplay_fps_off={
   cvar_set("showfps", "0");
-  strunzone(gameplay_fps_lbl.label);
-  gameplay_fps_lbl.label = strzone("OFF");
+  
   gameplay_fps_on.drawme = TRUE;
   gameplay_fps_off.drawme = FALSE;
 };
@@ -294,7 +286,7 @@ void() click_gameplay_hudsway_more={
 void() m_gameplay_i={
   gameplay_title = lbl_img('10 100', '1 1 0', IMG_OPTION_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, (UI_FLAG_SIZE_IMG) );
   
-  gameplay_fov_lbl = lbl_text('190 133', '14 14 0', strzone(ftos(cvar("fov"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_fov_lbl = lbl_text('190 133', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_USELEN);
   gameplay_fov_lbl.len = cvar("fov");
   gameplay_fov_more = btn_img_callback('222 132', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fov_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_fov_less = btn_img_callback('176 132', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fov_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -306,7 +298,7 @@ void() m_gameplay_i={
     gameplay_fov_more.drawme = FALSE;
   }
   
-  gameplay_datetime_lbl = lbl_text('190 155', '14 14 0', strzone(menu_float_bool(cvar("showdate"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_datetime_lbl = lbl_text('190 155', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
   gameplay_datetime_lbl.len = cvar("showdate");
   gameplay_datetime_on = btn_img_callback('222 154', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_date_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_datetime_off = btn_img_callback('176 154', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_date_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -318,7 +310,7 @@ void() m_gameplay_i={
     gameplay_datetime_off.drawme = FALSE;
   }
    
-  gameplay_fps_lbl = lbl_text('190 177', '14 14 0', strzone(menu_float_bool(cvar("showfps"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_fps_lbl = lbl_text('190 177', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
   gameplay_fps_lbl.len = cvar("showfps");
   gameplay_fps_on = btn_img_callback('222 176', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fps_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_fps_off = btn_img_callback('176 176', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fps_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);

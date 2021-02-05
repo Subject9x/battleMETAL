@@ -6,21 +6,158 @@ mod: 07/25/2019
 Overview: class file for the client -> server command layer
 
 */
+void() cl_ini_infostring={
+  local string infoset;
+  
+  infoset = "";
+  infoset = infoadd(infoset, KEY_DEPLOY, ftos(0));
+  infoset = infoadd(infoset, KEY_FACTION,ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR1, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR2, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR3, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR4, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR5, ftos(0));
+  infoset = infoadd(infoset, KEY_COLOR6, ftos(0));
+  infoset = infoadd(infoset, KEY_MECH,   ftos(0));
+  infoset = infoadd(infoset, KEY_GROUP1, ftos(0));
+  infoset = infoadd(infoset, KEY_GROUP2, ftos(0));
+  infoset = infoadd(infoset, KEY_GROUP3, ftos(0));
+  infoset = infoadd(infoset, KEY_GROUP4, ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN1,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN2,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN3,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN4,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN5,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN6,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN7,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN8,  ftos(0));
+  infoset = infoadd(infoset, KEY_WEPN9,  ftos(0));
+  
+  cacheGlobalString(CLIENT_INFO_STRING, infoset)
+};
 
 /*
-  Setter functions, pipes client data up to server.
+  Sends to SV_ParseClientCommand()
+    only sends delta of CLIENT_INFO_STRING changes via flag valeues
 */
-void(float totalWeps, string wepList) cl_setweapon={
+void(float changeFlags) cl_send_infostring={
+  local string serverCmd;
+  local string updateInfoString;
+  local float keyFlags;
+  
+  updateInfoString = "";
+  
+  if( (changeFlags & INFO_FLAG_FACTION) ){
+    updateInfoString = infoadd(updateInfoString, KEY_FACTION, infoget(CLIENT_INFO_STRING, KEY_FACTION));
+  }
+  if( (changeFlags & INFO_FLAG_MECH) ){
+    updateInfoString = infoadd(updateInfoString, KEY_MECH, infoget(CLIENT_INFO_STRING, KEY_MECH));
+  }
+  if( (changeFlags & INFO_FLAG_DEPLOY) ){
+    updateInfoString = infoadd(updateInfoString, KEY_DEPLOY, infoget(CLIENT_INFO_STRING, KEY_DEPLOY));
+  }
+  if( (changeFlags & INFO_FLAG_COLOR) ){
+    updateInfoString = infoadd(updateInfoString, KEY_COLOR1, infoget(CLIENT_INFO_STRING, KEY_COLOR1));
+    updateInfoString = infoadd(updateInfoString, KEY_COLOR2, infoget(CLIENT_INFO_STRING, KEY_COLOR2));
+    updateInfoString = infoadd(updateInfoString, KEY_COLOR3, infoget(CLIENT_INFO_STRING, KEY_COLOR3));
+    updateInfoString = infoadd(updateInfoString, KEY_COLOR4, infoget(CLIENT_INFO_STRING, KEY_COLOR4));
+    updateInfoString = infoadd(updateInfoString, KEY_COLOR5, infoget(CLIENT_INFO_STRING, KEY_COLOR5));
+    updateInfoString = infoadd(updateInfoString, KEY_COLOR6, infoget(CLIENT_INFO_STRING, KEY_COLOR6));
 
-  local string cmd;
-  cmd = strcat("cmd m sw ", ftos(totalWeps), wepList, "\n");
-  localcmd(cmd);
+  }
+  if( (changeFlags & INFO_FLAG_GROUPS) ){
+    updateInfoString = infoadd(updateInfoString, KEY_GROUP1, infoget(CLIENT_INFO_STRING, KEY_GROUP1));
+    updateInfoString = infoadd(updateInfoString, KEY_GROUP2, infoget(CLIENT_INFO_STRING, KEY_GROUP2));
+    updateInfoString = infoadd(updateInfoString, KEY_GROUP3, infoget(CLIENT_INFO_STRING, KEY_GROUP3));
+    updateInfoString = infoadd(updateInfoString, KEY_GROUP4, infoget(CLIENT_INFO_STRING, KEY_GROUP4));
+  }
+  if( (changeFlags & WEAPON1) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN1, infoget(CLIENT_INFO_STRING, KEY_WEPN1));
+  }
+  if( (changeFlags & WEAPON2) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN2, infoget(CLIENT_INFO_STRING, KEY_WEPN2));
+  }
+  if( (changeFlags & WEAPON3) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN3, infoget(CLIENT_INFO_STRING, KEY_WEPN3));
+  }
+  if( (changeFlags & WEAPON4) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN4, infoget(CLIENT_INFO_STRING, KEY_WEPN4));
+  }
+  if( (changeFlags & WEAPON5) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN5, infoget(CLIENT_INFO_STRING, KEY_WEPN5));
+  }
+  if( (changeFlags & WEAPON6) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN6, infoget(CLIENT_INFO_STRING, KEY_WEPN6));
+  }
+  if( (changeFlags & WEAPON7) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN7, infoget(CLIENT_INFO_STRING, KEY_WEPN7));
+  }
+  if( (changeFlags & WEAPON8) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN8, infoget(CLIENT_INFO_STRING, KEY_WEPN8));
+  }
+  if( (changeFlags & WEAPON9) ){
+    updateInfoString = infoadd(updateInfoString, KEY_WEPN9, infoget(CLIENT_INFO_STRING, KEY_WEPN9));
+  }
+  if( (changeFlags & INFO_FLAG_SPAWN) ){
+    //updateInfoString = infoadd(updateInfoString, KEY_DEPLOY, infoget(CLIENT_INFO_STRING, KEY_DEPLOY));
+  }
+  else{
+    //updateInfoString = infoadd(updateInfoString, KEY_DEPLOY, infoget(CLIENT_INFO_STRING, KEY_DEPLOY));
+  }
+  
+  keyFlags = keyFlags | changeFlags;
+  updateInfoString = infoadd(updateInfoString, KEY_FLAGS, ftos(keyFlags));
+  
+  serverCmd = strcat("cmd ", CMD_CLIENT_INFO, " ", updateInfoString, "\n");
+  
+  localcmd(serverCmd);
+};
+
+
+/*
+  Set the right weapon value in the CLIENT_INFO_STRING
+*/
+void( float weaponBits ) cl_setweapon={
+  local string infoString;
+  
+  infoString = CLIENT_INFO_STRING;
+  
+  if( (weaponBits | WEAPON1) ){
+   infoString = infoadd(infoString, KEY_WEPN1, ftos(CLIENT_stat_w1_id));
+  }
+  if( (weaponBits | WEAPON2) ){
+   infoString = infoadd(infoString, KEY_WEPN2, ftos(CLIENT_stat_w2_id));
+  }
+  if( (weaponBits | WEAPON3) ){
+   infoString = infoadd(infoString, KEY_WEPN3, ftos(CLIENT_stat_w3_id));
+  }
+  if( (weaponBits | WEAPON4) ){
+   infoString = infoadd(infoString, KEY_WEPN4, ftos(CLIENT_stat_w4_id));
+  }
+  if( (weaponBits | WEAPON5) ){
+   infoString = infoadd(infoString, KEY_WEPN5, ftos(CLIENT_stat_w5_id));
+  }
+  if( (weaponBits | WEAPON6) ){
+   infoString = infoadd(infoString, KEY_WEPN6, ftos(CLIENT_stat_w6_id));
+  }
+  if( (weaponBits | WEAPON7) ){
+   infoString = infoadd(infoString, KEY_WEPN7, ftos(CLIENT_stat_w7_id));
+  }
+  if( (weaponBits | WEAPON8) ){
+   infoString = infoadd(infoString, KEY_WEPN8, ftos(CLIENT_stat_w8_id));
+  }
+  if( (weaponBits | WEAPON9) ){
+   infoString = infoadd(infoString, KEY_WEPN9, ftos(CLIENT_stat_w9_id));
+  }
+  
+  cacheGlobalString(CLIENT_INFO_STRING, infoString)
+  
 };
 
 void(float id) cl_setmech={
-  local string cmd;
   local string factionColors;
-  
+  local string infoString;
+  local float color1, color2, color3, color4, color5, color6;
   switch( CLIENT_faction ){
     case 2:
       factionColors = PLAYER_COLOR_SRV;
@@ -35,41 +172,58 @@ void(float id) cl_setmech={
       break;
   }
   
-  cmd = strcat("cmd m sm ", ftos(id), " ");
-  cmd = strcat(cmd, factionColors,"\n");
-  localcmd(cmd);
-};
-
-void() cl_spawnmech={
-  local string cmd;
-  cmd = "cmd m sp\n";
-  localcmd(cmd);
+  infoString = CLIENT_INFO_STRING;
+  tokenize(factionColors);
+  
+  color1 = stof(argv(0));
+  color2 = stof(argv(1));
+  color3 = stof(argv(2));
+  color4 = stof(argv(3));
+  color5 = stof(argv(4));
+  color6 = stof(argv(5));
+  
+  infoString = infoadd(infoString, KEY_MECH, ftos(id));
+  
+  infoString = infoadd(infoString, KEY_COLOR1, ftos(color1));
+  infoString = infoadd(infoString, KEY_COLOR2, ftos(color2));
+  infoString = infoadd(infoString, KEY_COLOR3, ftos(color3));
+  infoString = infoadd(infoString, KEY_COLOR4, ftos(color4));
+  infoString = infoadd(infoString, KEY_COLOR5, ftos(color5));
+  infoString = infoadd(infoString, KEY_COLOR6, ftos(color6));
+  
+  cacheGlobalString(CLIENT_INFO_STRING, infoString)
 };
 
 void( float newFaction ) cl_set_faction={
-  local string cmd;
-  cmd = strcat("cmd m fac ", ftos(newFaction),"\n");
-  localcmd(cmd);
+  local string infoString;
+  
+  infoString = CLIENT_INFO_STRING;
+  infoString = infoadd(infoString, KEY_FACTION, ftos(newFaction));
+  cacheGlobalString(CLIENT_INFO_STRING, infoString)
 };
 
 void(float group1, float group2, float group3, float group4 ) cl_setweapongroup={
-
-  local string cmd;
-  cmd = strcat("cmd m sg ",ftos(group1), " ", ftos(group2), " ");
-  cmd = strcat(cmd,  ftos(group3), " ", ftos(group4), "\n");
-  localcmd(cmd);
+  local string infoString;
   
+  infoString = CLIENT_INFO_STRING;
+  infoString = infoadd(infoString, KEY_GROUP1, ftos(group1));
+  infoString = infoadd(infoString, KEY_GROUP2, ftos(group2));
+  infoString = infoadd(infoString, KEY_GROUP3, ftos(group3));
+  infoString = infoadd(infoString, KEY_GROUP4, ftos(group4));
+  cacheGlobalString(CLIENT_INFO_STRING, infoString)
 };
 
 void(float nav_id) cl_setspawnpoint={
-  local string cmd;
-  cmd = strcat("cmd m sn ", ftos(nav_id), "\n");
-  localcmd(cmd);
+  local string infoString;
+  
+  infoString = CLIENT_INFO_STRING;
+  infoString = infoadd(infoString, KEY_DEPLOY, ftos(nav_id));
+  cacheGlobalString(CLIENT_INFO_STRING, infoString)
 };
 
 void(float nextMissionBool) cl_set_mission={
   local string cmd;
-  cmd = strcat("cmd m nxm ", ftos(nextMissionBool),"\n");
+  cmd = strcat("cmd nextmission ", ftos(nextMissionBool),"\n");
   localcmd(cmd);
 };
 
@@ -77,7 +231,7 @@ void(float nextMissionBool) cl_set_mission={
   Getter functions, receives stuffcmd()'s from server.
 */
 void(string fileName) cl_get_msnfile={
-  MSN_FILENAME = strzone(fileName);
+  cacheGlobalString(MSN_FILENAME, fileName )
   msn_getfile();
 };
 
@@ -88,12 +242,10 @@ void(string fileName) cl_get_animfile={
 };
 
 void() cl_exit_animatic={
-  local string cmd;    
   if( ANM_FILE_STATUS == TRUE ){
     //animation is playing;
     anm_cleanup();
-    cmd = "cmd m exan\n";
-    localcmd(cmd);
+    localcmd("cmd exitanim\n");
   }
 };
 
@@ -132,37 +284,19 @@ void() cl_set_hud_vars_obs={
 
 /*
   Receive new fog transition info
+    TE_FOG_SET
 */
-void( string fogSettings ) cl_get_new_fog={
-  
-  tokenizebyseparator( fogSettings, " " );
-
+void() cl_get_new_fog={
   FOG_STATE = 1;
-  FOG_TARG_DENSITY = stof(argv(1));
-  FOG_TARG_RED = stof(argv(2));
-  FOG_TARG_GREEN = stof(argv(3));
-  FOG_TARG_BLUE = stof(argv(4));
-  FOG_TARG_ALPHA = stof(argv(5));
-  FOG_TARG_DIST_MIN = stof(argv(6));
-  FOG_TARG_DIST_MAX = stof(argv(7));
-  FOG_TARG_DIST_TOP = stof(argv(8));
-  FOG_TARG_FADE_DEPTH = stof(argv(9));
-};
-
-/*
-  Receive new music track to jam
-*/
-void( string musicSet ) cl_get_new_music={
-  local float music;
-  
-  tokenizebyseparator( musicSet, " ");
-  
-  music = stof( argv(2) );
-  
-  if( music != MUSICID){
-    MUSICID = music;
-    localcmd( musicSet );
-  }
+  FOG_TARG_DENSITY = ReadShort();
+  FOG_TARG_RED = ReadCoord();
+  FOG_TARG_GREEN = ReadCoord();
+  FOG_TARG_BLUE = ReadCoord();
+  FOG_TARG_ALPHA = ReadShort();
+  FOG_TARG_DIST_MIN = ReadCoord();
+  FOG_TARG_DIST_MAX = ReadCoord();
+  FOG_TARG_DIST_TOP = ReadCoord();
+  FOG_TARG_FADE_DEPTH = ReadShort();
 };
 
 //one-off, don't use normally.
@@ -174,4 +308,18 @@ void() cl_set_chase={
     cmd = "impulse 30\n";
     localcmd(cmd);
   }
-}; 
+};
+
+/*
+  Replaces the stuffcmd() thing
+*/
+void() cl_set_menu={
+  local float menuFlag;
+   
+  menuFlag = ReadByte();
+  if( menuFlag ){
+    setcursormode(0);
+    localcmd("togglemenu\n");
+  }
+  cvar_set("cl_ismenu", ftos(menuFlag));
+};

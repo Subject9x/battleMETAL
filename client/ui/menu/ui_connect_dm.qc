@@ -58,43 +58,43 @@ void( vector menuOrg ) menu_connect_draw_rules_dm={
   leftAnchor = menuOrg + gui_percentToPixelRawVec('8 20');
   ruleRow = leftAnchor;
   
-  if( SV_SERVERFLAGS == 0 ){
+  if( ENT_SERVER_INFO.serverFlags == 0 ){
     drawstring( ruleRow, "None", '12 12', CLR_DEF_WHITE, 1, 0);
   }
   
-  if( (SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
     drawstring( ruleRow, "Spawn Farthest", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  if( (SV_SERVERFLAGS & SVFLAG_POWERUP) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_POWERUP) ){
     drawstring( ruleRow, "Freeze on Power-up", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  if( (SV_SERVERFLAGS & SVFLAG_CHEATS) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_CHEATS) ){
     drawstring( ruleRow, "Cheats Allowed", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  if( (SV_SERVERFLAGS & SVFLAG_FIREON) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FIREON) ){
     drawstring( ruleRow, "Friendly Fire", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  //if( (SV_SERVERFLAGS & SVFLAG_NOLIVES) ){
+  //if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOLIVES) ){
   //  drawstring( ruleRow, "One-life Only", '12 12', CLR_DEF_WHITE, 1, 0);
   //  ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   //}
-  if( (SV_SERVERFLAGS & SVFLAG_NOMAP) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOMAP) ){
     drawstring( ruleRow, "Limited TacMap", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  if( (SV_SERVERFLAGS & SVFLAG_NORADAR) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NORADAR) ){
     drawstring( ruleRow, "Passive Radar Only", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  if( (SV_SERVERFLAGS & SVFLAG_NOSTATUS) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) ){
     drawstring( ruleRow, "Hide Player Status", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
-  if( (SV_SERVERFLAGS & SVFLAG_FPSONLY) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
     drawstring( ruleRow, "No External Cam", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + gui_percentYRaw(14);
   }
@@ -116,10 +116,10 @@ void( vector menuOrg ) menu_connect_draw_about_dm={
     drawstring(labelOrg, "- About -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
   
-  if( strlen(SV_ABOUT) > 0 ){
+  if( strlen(ENT_SERVER_INFO.svAbout) > 0 ){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_MEDIUM;
-      gui_wrapText(menuOrg + gui_percentToPixelRawVec('6 16'), gui_percentToPixelRawVec('284 135'), SV_ABOUT, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+      gui_wrapText(menuOrg + gui_percentToPixelRawVec('6 16'), gui_percentToPixelRawVec('284 135'), ENT_SERVER_INFO.svAbout, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
     drawfont = drawfont_prev;
   }
 };

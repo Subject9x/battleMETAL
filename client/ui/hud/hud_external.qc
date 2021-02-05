@@ -11,6 +11,11 @@ void() data_hud_external_cam_frame={
   local float hasTarget;
   local float weaponId;
   
+  local vector drawOrg;
+  local float wepBit;
+  local float realWeapons;
+  local entity theWep;
+    
   hasTarget = FALSE;
   if( CLIENT_stat_trg_dataidx > 0 ){
     hasTarget = TRUE;
@@ -55,22 +60,17 @@ void() data_hud_external_cam_frame={
       
     }
     
-    //Screen - Center Top
-      //hud_renderNavHeading( '8 12', 17, input_angles);
-      
-      HUD_TXT_ORG = '0 45 0';
-      HUD_TXT_SIZE = '16 16';
-      HUD_TXT_ALIGN = 17;
+  //Screen - Center Top
+    //hud_renderNavHeading( '8 12', 17, input_angles);
     
-    //HUD_UID_ENVIRO_BOX
-      HUD_WARN_ENV_ORG = '0 200';
+    HUD_TXT_ORG = '0 45 0';
+    HUD_TXT_SIZE = '16 16';
+    HUD_TXT_ALIGN = 17;
+  
+  //HUD_UID_ENVIRO_BOX
+    HUD_WARN_ENV_ORG = '0 200';
     
     hud_render_sprint(VIEW_CTR + gui_percentToPixelRawVec('0 -225'));
-    
-    local vector drawOrg;
-    local float wepBit;
-    local float realWeapons;
-    local entity theWep;
     
     weaponId = 0;
     realWeapons = 0;

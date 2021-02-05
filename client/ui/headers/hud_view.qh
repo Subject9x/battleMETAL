@@ -30,6 +30,11 @@ float HUD_UID_MESSAGE_BOX   = 17;
 float HUD_UID_ENVIRO_BOX    = 18;
 float HUD_UID_RAM_METER     = 19;
 float HUD_UID_MSN_CLOCK     = 20;
+
+float AIM_FACE_FRONT   = 1;
+float AIM_FACE_LEFT    = 2;
+float AIM_FACE_RIGHT   = 3;
+float AIM_FACE_BACK    = 4;
 //==========================================
 
 
@@ -214,3 +219,8 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield;
 void() data_hud_frame;
 void() data_hud_fps_cam;
 void() data_hud_external_cam_frame;
+
+//inspired by original inFront function
+float(entity trg) util_checkPointAngle;
+//inspired by original inFront function
+float(vector orig, vector srcOrg, vector srcAngl) util_checkPointAngleImpl;

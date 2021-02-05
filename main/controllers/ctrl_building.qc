@@ -122,6 +122,10 @@ float( float isNew, float changedflags ) ctrl_send_turret={
     WriteByte( MSG_ENTITY, self.data_idx );
   }
   
+  if( (scopeFlags & SENDFLAG_CAMERA)) {
+    WriteByte( MSG_ENTITY, self.groundEnt );
+  }
+  
   if( (scopeFlags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
   }
@@ -142,6 +146,11 @@ float( float isNew, float changedflags ) ctrl_send_turret={
   }
   if( (scopeFlags & SENDFLAG_BURN) ){
     WriteCoord( MSG_ENTITY, self.burnBits );
+  }
+  if( (scopeFlags & SENDFLAG_VOICE) ){
+    if( !(scopeFlags & SENDFLAG_NEWENT) ){
+      WriteByte( MSG_ENTITY, self.ai_voice_id );
+    }
   }
   self.shieldHitFlag = 0;
   return TRUE;
@@ -186,6 +195,10 @@ float( float isNew, float changedflags ) ctrl_send_building={
     WriteByte( MSG_ENTITY, self.data_idx );
   }
   
+  if( (newFlags & SENDFLAG_CAMERA)) {
+    WriteByte( MSG_ENTITY, self.groundEnt );
+  }
+  
   if( (newFlags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
   }
@@ -215,6 +228,11 @@ float( float isNew, float changedflags ) ctrl_send_building={
   
   if( (newFlags & SENDFLAG_BURN) ){
     WriteCoord( MSG_ENTITY, self.burnBits );
+  }
+  if( (newFlags & SENDFLAG_VOICE) ){
+    if( !(newFlags & SENDFLAG_NEWENT) ){
+      WriteByte( MSG_ENTITY, self.ai_voice_id );
+    }
   }
   
   self.shieldHitFlag = 0;

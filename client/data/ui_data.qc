@@ -143,6 +143,7 @@ void() ui_data_clear_huddata={
     UI_DATA_LABEL_OFS[itr] = '0 0 0';
     UI_DATA_COLOR1[itr] = '0 0 0';
     UI_DATA_COLOR2[itr] = '0 0 0';
+    
     if( UI_DATA_IMG[itr] != "" ){
       strunzone( UI_DATA_IMG[itr] );
     }

@@ -60,7 +60,7 @@ void() player_makeMech={
   
   self.currentWeaponGroup = self.w_group1;
   
-  if( cvar("developer") || (!(serverflags & SVFLAG_POWERUP) && (GAMETYPE != GAMEMODE_CAMPAIGN)) ){
+  if( cvar("developer") || (!(serverflags & SVFLAG_POWERUP) && (ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN)) ){
     self.power_timer = time + POWERUP_DEBUG;
   }
   else{
@@ -73,15 +73,13 @@ void() player_makeMech={
   self.enemy = world;
   
   client_push_player_info();
-  self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION);
   
-  client_playTrack(world.sounds, TRUE);  //exiting hangar menu
+  client_playTrack(self, world.sounds, TRUE);  //exiting hangar menu
  
   //player_setup_hudconsole();
   //configure player mech bits visibility
   hudWepStart = self;
-  if( GAMETYPE == GAMEMODE_CAMPAIGN ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
     switch(cvar("skill")){
       case 1:
         self.energyMax = self.energyMax * 1.5;
@@ -112,7 +110,11 @@ void() player_makeMech={
   self.stat_rdr_mode = 1; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
   self.damageValue = 0;
+  self.critBits = 0;
   self.canTarget = TRUE;
+  
+  self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION);
 };
 
 void() player_unmakeMech={
@@ -149,7 +151,6 @@ void() player_unmakeMech={
   self.w_group3 = 0;
   self.w_group4 = 0;
   self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
-  self.state_2 = 0; //unknown what this used to be 
   
   self.stat_trg_dataidx = 0;
   self.stat_target_shield = 0;
@@ -188,6 +189,8 @@ void() player_unmakeMech={
   self.enemy = world; //explicit assignment here
   self.stat_plr_rep = 0;
   self.stat_target_name = "";
+  self.critBits = 0;
+  self.damageValue = 0;
   
   if( self.particleCube != world){
     remove(self.particleCube);

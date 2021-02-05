@@ -31,29 +31,33 @@ void() click_save_savegame={
 
 // ini function, called by '_f' function as a setup func
 void() m_save_i={
+  local vector start;
+  local float itr;
+  local string name;
+  local entity list;
+  local vector next;
+    
   save_title = lbl_img('10 100', '1 1 0', IMG_SAVE_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SAVE, 1, (UI_FLAG_SIZE_IMG) );
   save_back = btn_img_callback('10 132 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_SAVE, click_load_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   
-  local vector start;
   start = '10 150';
-
-  local float itr;
+  
   itr = 0;
   
-  local string slot, name;
-  slot = "--[ NEW SAVE SLOT ]--";
-  name = slot;
-  if(GAME_SAVES_DRAWNAME[itr] != ""){
+  if(GAME_SAVES_DRAWNAME[itr] == ""){
+    name = "--[ NEW SAVE SLOT ]--";
+  }
+  else{
     name = GAME_SAVES_DRAWNAME[itr];
   }
   save_list = btn_text_callback(start,'8 8 0', name, 0, M_SAVE, click_save_savegame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
   save_list.data_bind = itr; //databind
   itr = itr + 1;
   while (itr < GAME_SAVES_MAX ){
-    local entity list;
-    local vector next;
-    name = slot;
-    if(GAME_SAVES_DRAWNAME[itr] != ""){
+    if(GAME_SAVES_DRAWNAME[itr] == ""){
+      name = "--[ NEW SAVE SLOT ]--";
+    }
+    else{
       name = GAME_SAVES_DRAWNAME[itr];
     }
     next = start;

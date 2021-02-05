@@ -333,14 +333,17 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float setAl
   /*
     given target origin, meter size, current meter value
   */
-  local float perc, adj, diff;
+  local float clampVal, perc, adj, diff;
   local vector norg, end;
   norg = gui_calcAxis(org, sz, ax);
   if(clr_bk_x > -1){
     drawfill(norg, sz, clr_bk, setAlpha, flg);
   }
   end = norg;
-  perc = (val / 100);
+  
+  clampVal = min( val, 100);
+  
+  perc = (clampVal / 100);
   if(ax & AXIS_V){
      adj = sz_y * perc;
      diff = sz_y - adj;
@@ -739,7 +742,7 @@ entity(float wepBit) gui_get_weapon={
   local entity item;
   local entity found;
   
-  item = findfloat(world, entId, player_localentnum);
+  item = findfloat(world, clientLocalId, player_localentnum);
   item = item.w_slot;
   while( item != world ){
     if(item.w_group == wepBit){

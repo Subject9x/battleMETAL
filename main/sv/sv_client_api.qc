@@ -17,16 +17,78 @@ Overview:
 */
 void(string str) SV_ParseClientCommand={
   local float argc;
-  argc = tokenize(str);
-  if(argv(0) == "m"){
-    client_ParseMechCommand(str, argc);
+  local float cmdIdx;
+  local string cmdCall;
+  local entity trigTarg;
+  local entity notTrig;
+  
+  cmdIdx = strstrofs(str, " ", 0);
+  cmdCall = substring( str, 0, cmdIdx );
+  
+  //Client info string handle
+  if( cmdCall == CMD_CLIENT_INFO ){
+    client_parse_clientInfoString(str);
+    return;
   }
-  else if( argv(0) == "loadgame"){
-    savefile_load(FALSE);
+  
+  //SetNextMission--------------------
+  if(cmdCall == "nextmission"){
+    argc = tokenize(str);
+    client_setMission(str, argc);
+    return;
   }
-  else{
-    clientcommand(self, str);
+  //Exit Animatic--------------
+  if( cmdCall == "exitanim" ){
+    self.count2 = 0;
+    self.velocity = '0 0 0';
+    self.avelocity = '0 0 0';
+    if( self.animId != world ){
+      if( self.animId.target != "" ){
+        trigTarg = find(world, targetname, self.animId.target );
+        if( trigTarg ){
+          if( trigTarg.use ){
+            notTrig = self;
+            self = trigTarg;
+              trigTarg.use();
+            self = notTrig;
+          }
+        }
+      }
+    }
+    return;
   }
+  if( cmdCall == "setmode" ){
+    argc = tokenize(str);
+    cvar_set("gamemode", argv(1) );
+    return;
+  }
+  
+  if( cmdCall == "rtexport" ){
+    argc = tokenize(str);
+    world_export_realtimelights( stof(argv(1)) );
+    return;
+  }
+  if( cmdCall == "nodexprt" ){
+    argc = tokenize(str);
+    world_nodegraph_export_data( stof(argv(1)) );
+    return;
+  }
+  if( cmdCall == "dbgnode" ){
+    argc = tokenize(str);
+    world_nodegraph_test_graph( stof(argv(1)), stof(argv(2)) );
+    return;
+  }
+  if( cmdCall == "dbgedge" ){
+    argc = tokenize(str);
+    nodegraph_debug_edges(  stof(argv(1)) );
+    return;
+  }
+  if( cmdCall == "dbgtarg" ){
+    argc = tokenize(str);
+    world_debug_targ( argv(1) );
+    return;
+  }
+  clientcommand(self, str);
 };
 
 /*
@@ -37,19 +99,20 @@ called when a player connects to a server
 ============
 */
 void() ClientConnect = {
-  if( GAMETYPE == GAMEMODE_COOP ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     bprint(self.netname);
     bprint(" has arrived to help!\n");
   }
-  else if( GAMETYPE == GAMEMODE_DM ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
     bprint(self.netname);
     bprint(" has entered the combat zone.\n");
   }
-  else if( GAMETYPE == GAMEMODE_TEAMDM ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     bprint(" Unkown contact has entered the AO.\n");
   }
-  if( MISSION_STATUS == MISSION_STATUS_READY ){
-    MISSION_STATUS = MISSION_STATUS_ACTIVE;
+  if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_READY ){
+    ENT_SERVER_INFO.missionStatus = MISSION_STATUS_ACTIVE;
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
   }
   self.entnum = num_for_edict(self);
   self.weaponmodel = "";
@@ -87,14 +150,23 @@ void() ClientConnect = {
   self.w_group2 = 0;
   self.w_group3 = 0;
   self.w_group4 = 0;
+  
+  self.statWeaponReload1 = 0;
+  self.statWeaponReload2 = 0;
+  self.statWeaponReload3 = 0;
+  self.statWeaponReload4 = 0;
+  self.statWeaponReload5 = 0;
+  self.statWeaponReload6 = 0;
+  self.statWeaponReload7 = 0;
+  self.statWeaponReload8 = 0;
+  self.statWeaponReload9 = 0;
+  
   self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
-  self.state_2 = 0; //unknown what this used to be 
   
   self.stat_trg_dataidx = -1;
   self.stat_target_shield = -1;
   self.stat_trg_ddflg = -1;
   self.stat_trg_dist = -1;
-  self.stat_trg_face = -1;
   self.stat_trg_faction = -1;
   
   self.radar_range = 0;
@@ -137,13 +209,13 @@ void() ClientConnect = {
   client_data();
   
   if( world.animaticOnly ) {
-    client_playTrack(world.sounds, TRUE);  //play desired music for animatic
+    client_playTrack(self, world.sounds, TRUE);  //play desired music for animatic
     if( world.animaticOnly > 1){
-      stuffcmd(self, "ismenu");
+      client_send_menu_flag( self, TRUE );
     }
   }
   else{
-    client_playTrack(3, TRUE);  //entering hangar menu
+    client_playTrack(self, 3, TRUE);  //entering hangar menu
   }
   
   client_send_server_info_connect( self );
@@ -154,8 +226,8 @@ void() ClientConnect = {
   if (intermission_running){
     ExitIntermission();
   }
-  client_sendServerAbout();
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
+  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_NEWENT;
 };
 
 /*
@@ -191,7 +263,7 @@ void() PutClientInServer = {
   sv_select_info_start();
 
   //GAME MODE BLOCK
-  switch(GAMETYPE){
+  switch(ENT_SERVER_INFO.gameType){
     case GAMEMODE_CAMPAIGN:
       PutClientInServer_Campaign();
       break;
@@ -209,8 +281,8 @@ void() PutClientInServer = {
       break;
   }
   //Client connected to a round that's ending.
-  if( MISSION_STATUS > MISSION_STATUS_ACTIVE ){
-    if( GAMETYPE != GAMEMODE_CAMPAIGN ){
+  if( ENT_SERVER_INFO.missionStatus > MISSION_STATUS_ACTIVE ){
+    if( ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN ){
       self.playerState = PLAYER_INTERMSN;
     }
   }
@@ -228,7 +300,7 @@ void() ClientKill = {
     return;
   }
   
-  if ( (intermission_running) && ( GAMETYPE != GAMEMODE_CAMPAIGN ) )  // not allowed during intermission
+  if ( (intermission_running) && ( ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN ) )  // not allowed during intermission
 		return;
 
   //if player is an observer and their next class is still observer
@@ -299,7 +371,7 @@ void() PutClientInServer_Campaign={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     if(world.animaticOnly > 1){
@@ -428,7 +500,7 @@ void() PutClientInServer_TeamDeathmatch={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
@@ -449,7 +521,7 @@ void() PutClientInServer_TeamDeathmatch={
 
 void() sv_client_respawn={
   
-  if( GAMETYPE == GAMEMODE_COOP ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     // get the spawn parms as they were at level start
     //setspawnparms (self);
     if(self.data_type == DATA_MECH ){
@@ -460,7 +532,7 @@ void() sv_client_respawn={
     PutClientInServer ();
     return;
   }
-  if ( GAMETYPE == GAMEMODE_DM || GAMETYPE == GAMEMODE_TEAMDM ){
+  if ( ENT_SERVER_INFO.gameType == GAMEMODE_DM || ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     // set default spawn parms
     //SetNewParms ();
     if(self.data_type == DATA_MECH ){
@@ -519,6 +591,12 @@ void() sv_client_spawnpoint_select={
   self.trigOnTarget = spot.trigOnTarget;
 };
 
+
+void() client_data_th={
+  self.think = client_data_th;
+  self.nextthink = time + 0.01;
+};
+
 /*
   Send Ent Fun
 */
@@ -540,8 +618,10 @@ void() client_data={
   data.stat_client_shield = self.stat_client_shield;
   data.shieldHitFlag = self.shieldHitFlag;
   data.SendEntity = send_client_data;
-  data.SendFlags = data.SendFlags | SENDFLAG_NEWENT;
+  data.SendFlags = data.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_FACTION);
   data.vec_size = self.vec_size;
+  data.think = client_data_th;
+  data.nextthink = time + 0.01;
   self.clientData = data;
 };
 
@@ -559,7 +639,6 @@ float( float isNew, float changeFlags ) send_client_data={
   self.view_ofs = player.origin;
   
   prevType = self.data_type;
-  self.stat_trg_ent_id = player.stat_trg_ent_id;
   
   sendCrit = 0;
   
@@ -590,9 +669,9 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - per-frame update
   */
   if( (changeFlags & SENDFLAG_MOVE) ){
-    WriteCoord( MSG_ENTITY, self.view_ofs_x );
-    WriteCoord( MSG_ENTITY, self.view_ofs_y );
-    WriteCoord( MSG_ENTITY, self.view_ofs_z );
+    WriteCoord( MSG_ENTITY, player.origin_x );
+    WriteCoord( MSG_ENTITY, player.origin_y );
+    WriteCoord( MSG_ENTITY, player.origin_z );
     WriteByte( MSG_ENTITY, player.moveState );
     WriteShort( MSG_ENTITY, player.legs.angles_y);
     WriteShort( MSG_ENTITY, player.legs.ai_dir);
@@ -623,7 +702,7 @@ float( float isNew, float changeFlags ) send_client_data={
     EVENT - Client Data is new/spawned
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteCoord( MSG_ENTITY, num_for_edict(player) );
+    WriteByte( MSG_ENTITY, num_for_edict(player) );
   }
     
   /*
@@ -675,26 +754,26 @@ float( float isNew, float changeFlags ) send_client_data={
       }
       player.critBits = 0;
     }
-    WriteCoord( MSG_ENTITY, sendCrit );
+    WriteShort( MSG_ENTITY, sendCrit );
   }
   /*
     EVENT - pieces of player mech are low on health and burning
   */
   if( (changeFlags & SENDFLAG_BURN) ){
-    WriteCoord( MSG_ENTITY, player.burnBits );
+    WriteLong( MSG_ENTITY, player.burnBits );
   }
   /*
     EVENT - DEAD
   */
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, player.deadflag );
-    WriteByte( MSG_ENTITY, MISSION_STATUS );
+    WriteByte( MSG_ENTITY, ENT_SERVER_INFO.missionStatus );
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    WriteCoord( MSG_ENTITY, player.velocity_x);
-    WriteCoord( MSG_ENTITY, player.velocity_y);
-    WriteCoord( MSG_ENTITY, player.velocity_z);
+    //WriteCoord( MSG_ENTITY, player.velocity_x);
+    //WriteCoord( MSG_ENTITY, player.velocity_y);
+    //WriteCoord( MSG_ENTITY, player.velocity_z);
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
@@ -702,7 +781,7 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
-    WriteCoord( MSG_ENTITY, self.stat_trg_ent_id ); //->SENDFLAG_TARGET
+    WriteLong( MSG_ENTITY, player.targetEntId ); //->SENDFLAG_TARGET
   }
   
   self.shieldHitFlag = 0;

@@ -7,7 +7,6 @@ Overview:
   To that end, I've moved all the client-specific data to constants, ugly but necessary.
 */
 
-
 entity CLIENT_MENU_deploy;
 
 entity CLIENT_server_ent; //this is the player's .clientData ent from the server.
@@ -38,7 +37,7 @@ float CLIENT_stat_ret_dist;
 float CLIENT_stat_trg_dataidx;
 float CLIENT_stat_trg_ent_id;
 float CLIENT_stat_trg_face;
-       
+
 float CLIENT_target_faction;
 
 float CLIENT_target_shield; 
@@ -57,6 +56,8 @@ float CLIENT_stat_w6_id;
 float CLIENT_stat_w7_id;
 float CLIENT_stat_w8_id;
 float CLIENT_stat_w9_id;
+
+float CLIENT_accuracy;
 
 float CLIENT_radar_range;
 float CLIENT_energy;
@@ -107,6 +108,7 @@ vector CLIENT_target_size;
 
 float CLIENT_ram_max;
 
+float CLIENT_deaths;      //how many times player died.
 float CLIENT_spawn_time;  //start marker for tracking best time
 float CLIENT_best_time;   //longest survial time in a mech
 float CLIENT_best_mech;   //best mech matched to longest survival time

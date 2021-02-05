@@ -25,7 +25,7 @@ void() menu_connectListener_onClick={
   if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), TRUE)){
     ui_navbutton_connect_click();
   }
-  if( SV_MISSIONSTATUS <= MISSION_STATUS_ACTIVE ){
+  if( ENT_SERVER_INFO.missionStatus <= MISSION_STATUS_ACTIVE ){
     if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_TEAM_ORG, gui_percentToPixelRawVec(UI_NAVBAR_TEAM_SIZE), TRUE)){
       ui_navbutton_team_click();
     }  
@@ -74,17 +74,15 @@ void() menu_connect_drawFrame={
   //nav bar
   menu_connect_draw_bar( VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') );
   
-  scoreboard_think();
-  
-  if( SV_GAMETYPE == GAMEMODE_TEAMDM ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     menu_connect_render_teamdm( topleftroot );
     return;
   }
-  else if( SV_GAMETYPE == GAMEMODE_DM ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
     menu_connect_render_dm(topleftroot);
     return;
   }
-  else if( SV_GAMETYPE == GAMEMODE_COOP ){
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     menu_connect_render_coop( topleftroot );
   }
 };
@@ -100,9 +98,9 @@ void( vector menuOrg ) menu_connect_draw_bar={
   enterOfs_y = menuOrg_y;
   
   ui_navbutton_disconnect_draw( menuOrg );
-  if( SV_MISSIONSTATUS <= MISSION_STATUS_ACTIVE ){
+  if( ENT_SERVER_INFO.missionStatus <= MISSION_STATUS_ACTIVE ){
     ui_navbutton_connect_draw( enterOfs );
-    if( SV_GAMETYPE == GAMEMODE_TEAMDM ){
+    if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
       switchOfs_x = VIEW_CTR_x - gui_percentXRaw( UI_NAVBAR_TEAM_SIZE_x / 2 );
       switchOfs_y = menuOrg_y;
       ui_navbutton_team_draw( switchOfs );

@@ -2508,8 +2508,17 @@ float(string str, float ofs) str2chr = #222; // returns the character at the spe
 string(float c, ...) chr2str = #223; // returns a string representing the character given, if the engine supports UTF8 this may be a multi-byte sequence (length may be more than 1) for characters over 127.
 string(float ccase, float calpha, float cnum, string s, ...) strconv = #224; // reformat a string with special color characters in the font, DO NOT USE THIS ON UTF8 ENGINES (if you are lucky they will emit ^4 and such color codes instead), the parameter values are 0=same/1=lower/2=upper for ccase, 0=same/1=white/2=red/5=alternate/6=alternate-alternate for redalpha, 0=same/1=white/2=red/3=redspecial/4=whitespecial/5=alternate/6=alternate-alternate for rednum.
 string(float chars, string s, ...) strpad = #225; // pad string with spaces to a specified length, < 0 = left padding, > 0 = right padding
+
+// INFOSTRING userinfo : DISABLED IN DARKPLACES AT THIS TIME 
+// INFOSTRING serverinfo : DISABLED IN DARKPLACES AT THIS TIME
+// INFOSTRING clientinfo : DISABLED IN DARKPLACES AT THIS TIME
+// otherwise, infoadd() treats a string like a map, where its a series of "\key\value\key\value"
+// custom info strings are possible.
+//
 string(string info, string key, string value, ...) infoadd = #226; // sets or adds a key/value pair to an infostring - note: forbidden characters are \ and "
 string(string info, string key) infoget = #227; // gets a key/value pair in an infostring, returns value or null if not found                                                                                       
+//-----------------------------------------------------------------------------------
+
 float(string s1, string s2, float len) strncmp = #228; // compare two strings up to the specified number of characters, if their length differs and is within the specified limit the result will be negative, otherwise it is the difference in value of their first non-matching character.
 float(string s1, string s2) strcasecmp = #229; // compare two strings with case-insensitive matching, characters a-z are considered equivalent to the matching A-Z character, no other differences, and this does not consider special characters equal even if they look similar
 float(string s1, string s2, float len) strncasecmp = #230; // same as strcasecmp but with a length limit, see strncmp

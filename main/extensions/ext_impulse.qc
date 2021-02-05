@@ -15,7 +15,7 @@ float IMP_PRVWGRP = 5;  //previous weapon group
 float IMP_SUICIDE = 6;  //debug suicide - DEPRECATE
 float IMP_TARGET = 7; //target under reticule
 float IMP_RADAR = 8;  //toggle radar
-float IMP_GETNAV = 9;
+//float 9;
 float IMP_FGROUP = 10; //toggle group fire
 float IMP_FCHAIN = 11; //toggle chain fire
 float IMP_TACMAP = 12;

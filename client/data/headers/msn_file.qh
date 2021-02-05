@@ -60,16 +60,6 @@ string MSN_OBJ_ITEMS[16];
 void() msn_getfile;
 void() msn_parsefile;
 void(string line, string val) msn_setmappic;
-void(string line, string val) msn_setsound;
-void(string line, string val) msn_setname;
-void(string line, string val) msn_settype;
-void(string line, string val) msn_setresrv;
-void(string line, string val) msn_setsector;
-void(string line, string val) msn_setlocation;
-void(string line, string val) msn_setlocaltime;
-void(string line, string val) msn_setbrief;
-void(string line, string val) msn_setintel;
-void(string line, string val) msn_settotalobjectives;
 float(float currentObjId, string line, string val) msn_mapobjid;
 void(float obj_id, string line, string val) msn_setobjdesc;
 void( float obj_id, string line, string val) msn_setobj_type;
@@ -78,3 +68,4 @@ void( float obj_id, string line, string val) msn_setobj_items;
 
 //ops
 void() msn_unlock_stuff;
+void() msn_free_strings;

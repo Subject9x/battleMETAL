@@ -64,6 +64,10 @@ Overview:
 .float shieldEffectTime;  //bumping this up to help reduce net traffic by preventing spamming at the server level.
                           //sure dropped packet do real, but its better than flooding 
 
+.float accuracyMod;
+.float accuracy;
+
+.float groundEnt;   //used by buildings to tell their client-entry to generate a ground mesh.
 //SSQC only
 #ifdef SSQC
 //network frame stuff
@@ -74,8 +78,6 @@ Overview:
 .float last_crit;
 .float last_burn;
 
-.float accuracyMod;
-.float accuracy; 
 
 .float turret_yaw_speed;
 .float ai_attack_chance;
@@ -94,6 +96,9 @@ Overview:
 #endif
 
 #ifdef CSQC
+.float ai_voice_group;
+.float ai_voice_limit;
+.float ai_muted;
 .float pitchMin;
 .float pitchMax;
 .float legDir;

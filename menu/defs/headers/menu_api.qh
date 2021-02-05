@@ -25,24 +25,25 @@ vector VID_RESO_HALF[36];
 string VID_RESO_NAME[36];
 float VID_RESO_TOTAL;
 
-float HOST_RATE_TABLE[12];
-string HOST_RATE_TABLE_NAME[12];
+float HOST_RATE_TABLE[7];
+string HOST_RATE_TABLE_NAME[7];
 
 //UI ELEMENT FLAGS
-float UI_FLAG_NOLABEL     = 1;  //don't render label
-float UI_FLAG_NEW         = 2;  //is new
-float UI_FLAG_ALIGN       = 4;  //use alignment field
-float UI_FLAG_NOHIGHLIGHT = 8;  //don't render highlight overlay
-float UI_FLAG_SIZE_IMG    = 16; //base item size on img1 field
-float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
-float UI_FLAG_TXTFIELD_NUM = 64;    //allow number in textfields
-float UI_FLAG_TXTFIELD_SPEC = 128;  //alllow special characters
-float UI_FLAG_TXTFIELD_LOW = 256;   //allow lowercase
-float UI_FLAG_TXTFIELD_MOUSE = 512; //allow mouse click reading
-float UI_FLAG_TXTFIELD_FUNC = 1024; //allow function key detection
-float UI_FLAG_TXTFIELD_UPP = 2048; //allow uppercase
-
-
+float UI_FLAG_NOLABEL        = 1;     //don't render label
+float UI_FLAG_NEW            = 2;     //is new
+float UI_FLAG_ALIGN          = 4;     //use alignment field
+float UI_FLAG_NOHIGHLIGHT    = 8;     //don't render highlight overlay
+float UI_FLAG_SIZE_IMG       = 16;    //base item size on img1 field
+float UI_FLAG_CENTER_IMG     = 32;    //centers image on widget
+float UI_FLAG_TXTFIELD_NUM   = 64;    //allow number in textfields
+float UI_FLAG_TXTFIELD_SPEC  = 128;   //alllow special characters
+float UI_FLAG_TXTFIELD_LOW   = 256;   //allow lowercase
+float UI_FLAG_TXTFIELD_MOUSE = 512;   //allow mouse click reading
+float UI_FLAG_TXTFIELD_FUNC  = 1024;  //allow function key detection
+float UI_FLAG_TXTFIELD_UPP   = 2048;  //allow uppercase
+float UI_FLAG_LBL_USELEN     = 4096;  //for lbl_text, use its .len field as the display value .lbl
+float UI_FLAG_LBL_BOOL_ON    = 8192;  //for lbl_text, use its .len field as 1/0 and renders "ON" / "OFF"
+float UI_FLAG_LBL_BOOL_TRUE  = 16384;  //for lbl_text, use its .len field as 1/0 and renders "TRUE" / "FALSE"
 // UI fields
 .string label;
 .float selected;
@@ -170,16 +171,10 @@ string(float typ) map_list_getmap ={
     while( strlen(ln) != 0 ){
       if(strstrofs(ln, "//",0) == -1){
         if(typ){
-          if( strlen(MAPS_TDM[itr]) != 0){
-            strunzone(MAPS_TDM[itr]);
-          }
-          MAPS_TDM[itr] = strzone(ln);
+          cacheGlobalString(MAPS_TDM[itr], ln)
         }
         else{
-          if( strlen(MAPS_COOP[itr]) != 0){
-            strunzone(MAPS_COOP[itr]);
-          }
-          MAPS_COOP[itr] = strzone(ln);
+          cacheGlobalString(MAPS_COOP[itr], ln)
         }
       }
       itr = itr + 1;
@@ -209,26 +204,35 @@ string(float typ) map_list_getmap ={
 };
 
 /*
- DEPRECATE - following Darkplaces standards
- 
- new:
  no, we need better standards because its not 2000 anymore.
+ also, turns out the AI in battleMETAL is REALLY chunky
+ AND this really only affects the transfer rate.
+ 
+ NOTE:
+  this maps to the `_cl_rate` cvar and the `rate X` command.
+  this value is rated in BYTES-PER-SECOND! very imporant.
+  current values I've put in are Megabits-per-second. 2021
+  
+  Co-op especially needs a higher rate for a few reasons:
+    1) AI sends update packets fairly frequently for nice movement.
+    2) many maps have a LOT of active AI on the table.
 */
 void() menu_ini_ratelist={
-  HOST_RATE_TABLE[0] = 5000;  //"56k good"
-  HOST_RATE_TABLE[1] = 7000;  // "64k ISDN"
-  HOST_RATE_TABLE[2] = 15000; //"128k ISDN"
-  HOST_RATE_TABLE[3] = 25000; //"broadband"
-  HOST_RATE_TABLE[4] = 30000; //"SuperFast"
-  HOST_RATE_TABLE[5] = 50000; //"Ultra"
+  HOST_RATE_TABLE[0] = 62500;  //0.5 mbps
+  HOST_RATE_TABLE[1] = 125000; //1   mbps
+  HOST_RATE_TABLE[2] = 187500; //1.5 mbps
+  HOST_RATE_TABLE[3] = 250000; //2   mbps
+  HOST_RATE_TABLE[4] = 312500; //2.5 mbps
+  HOST_RATE_TABLE[5] = 375000; //3   mbps
+  HOST_RATE_TABLE[6] = 625000; //5   mbps
   
-  HOST_RATE_TABLE_NAME[0] = "Lowest - 5 MBps";
-  HOST_RATE_TABLE_NAME[1] = "Low - 7 MBps";
-  HOST_RATE_TABLE_NAME[2] = "Medium - 15 MBps";
-  HOST_RATE_TABLE_NAME[3] = "High - 25 MBps";
-  HOST_RATE_TABLE_NAME[4] = "Superfast - 30 MBps";
-  HOST_RATE_TABLE_NAME[5] = "Ultra - 50 MBps";
-  
+  HOST_RATE_TABLE_NAME[0] = "0.5 MBps";
+  HOST_RATE_TABLE_NAME[1] = "1 MBps";
+  HOST_RATE_TABLE_NAME[2] = "1.5 MBps";
+  HOST_RATE_TABLE_NAME[3] = "2 MBps";
+  HOST_RATE_TABLE_NAME[4] = "2.5 MBps";
+  HOST_RATE_TABLE_NAME[5] = "3 MBps";
+  HOST_RATE_TABLE_NAME[6] = "5 MBps";
 };
 
 /*

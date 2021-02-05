@@ -478,8 +478,17 @@ float(string str, float ofs) str2chr = #222;
 string(float c, ...) chr2str = #223;
 string(float ccase, float calpha, float cnum, string s, ...) strconv = #224;
 string(float chars, string s, ...) strpad = #225;
+
+// INFOSTRING userinfo : DISABLED IN DARKPLACES AT THIS TIME 
+// INFOSTRING serverinfo : DISABLED IN DARKPLACES AT THIS TIME
+// INFOSTRING clientinfo : DISABLED IN DARKPLACES AT THIS TIME
+// otherwise, infoadd() treats a string like a map, where its a series of "\key\value\key\value"
+// custom info strings are possible.
+//
 string(string info, string key, string value, ...) infoadd = #226;
 string(string info, string key) infoget = #227;
+//-----------------------------------------------------------------------------------
+
 float(string s1, string s2) strcmp = #228;
 float(string s1, string s2, float len) strncmp = #228;
 float(string s1, string s2) strcasecmp = #229;
@@ -678,3 +687,5 @@ float SVFLAG_NOSAVE     = 512; //used when world.ignoreSave = 1; tells game to N
 float SVFLAG_FPSONLY    = 1024; //disables third person / chase_active commands.
 
 #define QCMENU
+#define cacheGlobalString(var, val) if(val!=""){if (var!=""){strunzone(var); var="";} var = strzone(val);}
+#define freeGlobalString(var) if (var!=""){strunzone(var); var = "";}

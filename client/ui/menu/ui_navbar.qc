@@ -124,6 +124,10 @@ void() ui_navbutton_arming_click={
   local float itemUnlockCounter;
   local float itemId;
   if(SELECT_MECH != 0){
+    if( CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE ){
+      cl_setmech( SELECT_MECH );
+      cl_send_infostring( INFO_FLAG_MECH );
+    }
     CLIENT_MENU_menu_choice = MENU_ARMING_ACTIVE;
     itemUnlockCounter = 0;
     while( itemUnlockCounter <= UNLOCKED_ITEMS_TOTAL ){
@@ -182,21 +186,26 @@ void( vector ofs ) ui_navbutton_deploy_draw={
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_deploy_click={
+  local entity deploy;
+  local entity previous;
+  
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
     if( CLIENT_MENU_nex_grp1 == 0 && time > UI_ARMING_GROUP_WARN_TIMER){
       UI_ARMING_GROUP_WARN_TIMER = time + UI_ARMING_GROUP_WARN_DECAY;
       return;
     }
     data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
+    
     cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
+    cl_send_infostring( INFO_FLAG_GROUPS );
   }
+  
   if( CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE ){
     cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
+    cl_send_infostring( INFO_FLAG_GROUPS );
   }
   
   if( CLIENT_MENU_deploy == world ){
-    local entity deploy;
-    local entity previous;
     //build list of faction-only deply points
     for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
       if( deploy.faction == CLIENT_faction || deploy.faction == FACTION_ALL ){
@@ -219,8 +228,9 @@ void() ui_navbutton_deploy_click={
       }
     }
     
-    if( !(SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+    if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
       cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+      cl_send_infostring( INFO_FLAG_DEPLOY );
     }
   }
   SPRITE_deploy_point_FRAME = 1;
@@ -238,6 +248,8 @@ void( vector ofs ) ui_navbutton_launch_draw={
   local vector textPos;
   local float strWidth;
   local string text;
+  local float t;
+  local float sec;
   
   UI_NAVBAR_LAUNCH_ORG = ofs;
   drawfont_prev = drawfont;
@@ -245,8 +257,6 @@ void( vector ofs ) ui_navbutton_launch_draw={
 
   gui_renderTintImage2((LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_LAUNCH_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_LAUNCH_SIZE), CLR_DEF_WEP_INRANGE * 0.85, '0.25 0.25 0.25', 1, 0);
 
-  local float t;
-  local float sec;
   if( servertime < MENU_respawn_cool ){
     t = 15 - (servertime - MENU_respawn_cool_start); 
     sec = t - floor( t / 60 ) * 60 ;
@@ -348,14 +358,16 @@ void() ui_navbutton_launch_click={
       CLIENT_health_arm_left_prev = CLIENT_health_arm_left = MECH_DATA_HPAR;
       CLIENT_health_arm_right_prev = CLIENT_health_arm_right = MECH_DATA_HPAR; 
       
-      cl_setmech(MECH_DATA_ID);
       cl_set_hud_vars(UI_HANGAR_DATA_mech, turboTotalPerc);
-      cl_setweapon(totalHardpoints, weaponsList);
       
-      cl_spawnmech();
+      //info string update
+      cl_setmech(MECH_DATA_ID);
+      cl_setweapon(CLIENT_weapon_state);
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+      //send to server
+      cl_send_infostring( (INFO_FLAG_MECH | CLIENT_weapon_state | INFO_FLAG_SPAWN | INFO_FLAG_DEPLOY | INFO_FLAG_SPAWN | INFO_FLAG_COLOR) );
+      
       cl_set_chase();
-      
-      //TODO: try a big chunky string instead of multiple small calls to server
       
       //super smaht weapon group testing
       if( CLIENT_MENU_nex_grp1 == 0){
@@ -363,7 +375,7 @@ void() ui_navbutton_launch_click={
       }
       
       client_event_mission_name( MSN_DISP );
-      CLIENT_spawn_time = servertime; //mark for when palyer dies.
+      CLIENT_spawn_time = servertime; //mark for when player dies.
       CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
       menu_exit();
     }
@@ -452,7 +464,7 @@ void() ui_navbutton_disconnect_click={
   cvar_set("teamplay", "0");
   cvar_set("coop", "0");
   cvar_set("cl_ismenu", "1");
-  localcmd("map cin_menu.bsp\n");
+  localcmd("disconnect;map cin_menu\n");
 };
 
 /*
@@ -503,7 +515,6 @@ void() ui_navbutton_team_click={
       TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
       TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
       nextFaction = FACTION_MILITAR;
-      scoreboard_sort();
     }
   }
   else if(CLIENT_faction == FACTION_MILITAR){
@@ -511,7 +522,6 @@ void() ui_navbutton_team_click={
       TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
       TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL - 1;
       nextFaction = FACTION_SURVEST;
-      scoreboard_sort();
     }
   }
   if( nextFaction != CLIENT_faction ){

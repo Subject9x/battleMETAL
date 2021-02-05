@@ -27,7 +27,7 @@ void() menu_deployDrawFrame={
 void() menu_deployListener_onClick={
   menu_navbBar_listener();
   
-  if( !(SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+  if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
     navListSelectListener();
   }
 };
@@ -197,7 +197,7 @@ void(vector ofs) menu_deploy_navInfoPanel={
 
   drawpic(panelOrg, UI_DEF_BOX_256, gui_percentToPixelRawVec('215 90'), CLR_DEF_UI_DEPLOY, 1, 0);
 
-  if( (SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
     deployLabel = "RANDOM";
     deployColor = CLR_DEF_WHITE;
   }
@@ -379,7 +379,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     }
     tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, deploy.origin, iofs, gui_percentToPixelRawVec('380 380'));
     
-    if( (SV_SERVERFLAGS & SVFLAG_SPAWNFAR) ){
+    if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
       drawpic(nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_HALF, 1, 0) ;
     }
     else{
@@ -427,7 +427,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
-    playerName = getplayerkeyvalue(player.clientLocalId, "name");
+    playerName = getplayerkeyvalue(player.clientLocalNum, "name");
     nameLen = stringwidth( playerName, 0, '14 14 0');
     nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
     drawstring( nameOrg, playerName, '14 14 0', CLR_DEF_IIF_FRIEND, 1, 0);

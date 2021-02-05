@@ -369,30 +369,6 @@ void( entity parent, vector wishVel, vector wishAngl, float trailnum, float life
   
 };
 
-
-void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
-  local vector fx, vel;
-  local vector leftMin;
-  //if( !(self.owner.flags & FL_ONGROUND) ){
-  //  return;
-  //}
-  makevectors( angl ); 
-  fx = org ;
-  fx_z = fx_z + unitMins_z;
-  leftMin = v_right * (unitMins_x * 0.8);
-  if( left ){
-     fx = fx + leftMin;
-  }
-  else{
-     fx = fx - leftMin;
-  }
-  
-  vel = fx + (v_up * 2);
-  traceline(self.owner.origin, self.owner.origin + (v_up * (unitMins_z - 16)), MOVE_HITMODEL, self.owner);
-  sound(self, CHAN_AUTO, "sound/mech_stomp.ogg", 0.25 + (random() * 0.33), ATTN_NORM);
-  client_send_particle( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
-};
-
 void() te_msn_boundary={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );

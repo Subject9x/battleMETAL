@@ -51,6 +51,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   local string newName;
   local float prevAttackFlag;
   local float prevDeadFlag;
+  local float voiceId;
   
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
@@ -87,17 +88,20 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.next_wepn7 = ReadByte();
     self.next_wepn8 = ReadByte();
     self.next_wepn9 = ReadByte();
+    self.ai_muted = ReadByte();
     newName = ReadString();
   }
   
   if( isNew ){
-    setorigin(self, self.origin);
-    if( newName != "" ){
-      self.netname = strzone(newName);
-    }
+    cacheGlobalString(self.netname, newName )
     data_sync_new_vehicle(self.data_idx);
     self.predraw = predraw_spg;
     self.canTarget = TRUE;
+    if( !self.ai_muted ){
+      self.ai_muted = FALSE;
+      ai_voice_ini( TRUE );
+      self.ai_voice_limit = 1;
+    }
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
@@ -130,6 +134,14 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     sendevent_handle_weaponfire();
   }
   
+  //EVENT - voice chatter
+  if( (changeFlags & SENDFLAG_VOICE) ){
+    if( !(changeFlags & SENDFLAG_NEWENT) ){
+      voiceId = ReadByte();
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
+    }
+  }
+  
   //Shield Explode event
   sendevent_shield_explode( prevShield );
   
@@ -147,11 +159,10 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   }
 };
 
-float() predraw_spg={
+void() predraw_spg={
   if(self.deadflag == DEAD_NO){
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
   }
-  return FALSE;
 };

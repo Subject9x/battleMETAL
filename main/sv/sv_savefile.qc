@@ -62,7 +62,7 @@ void(float override) savefile_load={
 };
 
 /*
-  Loads the co-op save file for GAMETYPE == GAMEMODE_COOP games.
+  Loads the co-op save file for ENT_SERVER_INFO.gameType == GAMEMODE_COOP games.
     + this file should be /data/map_scripts/<map>/coop.sav
     + unlocks are handled via sv_nextmap's coop.sav file.
 */
@@ -98,7 +98,7 @@ void() mapfile_coop_load={
 
 
 /*
-  Loads the 2 team deathmatch save files for GAMETYPE == GAMEMODE_TEAMDM games.
+  Loads the 2 team deathmatch save files for ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM games.
     + this file should be /data/map_scripts/<map>/team1.sav
     + this file should be /data/map_scripts/<map>/team2.sav
 */
@@ -162,7 +162,7 @@ void() mapfile_team_load={
 }; 
 
 /*
-  Loads the deathmatch save file for GAMETYPE == GAMEMODE_DM games.
+  Loads the deathmatch save file for ENT_SERVER_INFO.gameType == GAMEMODE_DM games.
     + this file should be /data/map_scripts/<map>/dm.sav
 */
 void() mapfile_dm_load={

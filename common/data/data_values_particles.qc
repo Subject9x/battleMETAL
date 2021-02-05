@@ -14,16 +14,30 @@ float IMPACT_DIRT = 1;
 float IMPACT_SHIELD = 2;
 float IMPACT_ARMOR = 3;
 
+//CD commands stuff
+float MUSIC_ON      = 1;
+float MUSIC_OFF     = 2;
+float MUSIC_RESET   = 3;
+float MUSIC_REMAP   = 4;
+float MUSIC_CLOSE   = 5;
+float MUSIC_PLAY    = 6;
+float MUSIC_LOOP    = 7;
+float MUSIC_STOP    = 8;
+float MUSIC_PAUSE   = 9;
+float MUSIC_RESUME  = 10;
+float MUSIC_EJECT   = 11;
+float MUSIC_INFO    = 12;
+
 //ALERT: 70-75 are reserved, otherwise go nuts?
 //TE_ ID's
-float TE_CLIENT_INFO = 80;
-float TE_SERVERINFO =  81;
+float TE_CLIENT_INFO    = 80;
+float TE_SERVERINFO     = 81;
 float TE_CLIENT_INFO_DM = 82;
-//83;
-float TE_UI_BOX = 84;
+float TE_PLAYER_CRIT    = 83;
+float TE_UI_BOX         = 84;
 
-//90;
-//91;
+float TE_FOG_SET        = 90;
+float TE_ISMENU         = 91;
 //92;
 //93
 //94;
@@ -34,7 +48,7 @@ float TE_UI_BOX = 84;
 float TE_MSN_BOUND = 99;
 //======================
 
-float TE_AI_VOICE = 100;
+//100;
 //101;
 //102;
 //103;

@@ -875,10 +875,8 @@ void(vector porg) hud_render_sprint={
   Main API call for new text-based HUD system
 */
 void() data_hud_frame={
-  local float playerAccuracy;
 
   HUD_ENERGY_ACTUAL = CLIENT_energy_total;
-
   //Alpha fade-in of HUD as mech powers up.
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     if(HUD_ALPHA_TIME <= 0){
@@ -899,8 +897,6 @@ void() data_hud_frame={
       HUD_ALPHA = cvar("cl_hud_alpha");
     }
   }
-  
-  playerAccuracy = getstatf(STAT_ACCURACY);
   
   switch( cvar("cl_hud_color") ){
     case 1:
@@ -926,9 +922,8 @@ void() data_hud_frame={
   else{
     data_hud_fps_cam();
   }
-   
-    
-  if( CLIENT_stat_trg_dataidx > 0 ){
+  
+  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face != AIM_FACE_FRONT){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
     hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H);
   }  
@@ -942,19 +937,19 @@ void() data_hud_frame={
     hud_lock_frame();
     switch( cvar("crosshair") ){
       case 1:
-        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       case 2:
-        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       case 3:
-        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       case 4:
-        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       //case 5:
-        //hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
+        //hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         //break;
       default:
         //no crosshair? bold move
@@ -963,7 +958,9 @@ void() data_hud_frame={
   }
 
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
-  hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
+  if( CLIENT_target_ent != world ){
+    hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
+  }
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
   
   //ZOOM ACTIVE cleans up the HUD when the player is zooming in on an object by hiding
@@ -979,7 +976,6 @@ void() data_hud_frame={
     if( HUD_EXTERNAL_CAM_ACTIVE == FALSE ){
       hud_render_sprint(VIEW_CTR);
     }
-    
     hud_render_info();
   }
   
@@ -987,7 +983,6 @@ void() data_hud_frame={
     hud_render_tactical_map();
   }
   if( HUD_SCORES_ON ){
-    scoreboard_think();
     hud_render_scoreboard();
   }
   if( HUD_TACMAP_ON || HUD_SCORES_ON ){
@@ -997,7 +992,7 @@ void() data_hud_frame={
   local entity player;
   for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
     if( !(player.flags & FL_CLIENT) ){continue;}
-    if( player.entId == player_localentnum ){continue;}
+    if( player.clientLocalId == player_localentnum ){continue;}
     if( player.data_type == DATA_POBS ){continue;}
     if( player.faction != CLIENT_faction ){continue;}
     if( player.faction == FACTION_ALL){continue;}

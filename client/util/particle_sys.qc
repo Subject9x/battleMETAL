@@ -29,6 +29,32 @@ vector() te_read_angle={
 };
 
 /*
+  Ported from SSQC, ai_voice system now CSQC implemented, but
+  driven by SendEnt events.
+*/
+void( float randomBool ) ai_voice_ini={
+  local float randoVoice;
+  if( randomBool ){
+    randoVoice = random();
+    if( randoVoice < 0.4 ){
+      //VOICE  A
+      self.ai_voice_group = AI_VOICE_GROUP_A;
+    }
+    else if( randoVoice < 0.7 ){
+      //VOICE  B
+      self.ai_voice_group = AI_VOICE_GROUP_B;
+    }
+    else{
+      self.ai_voice_group = AI_VOICE_GROUP_C;
+    }
+  }
+  else{
+    //VOICE DEBUG
+    //self.ai_voice_group = AI_VOICE_GROUP_C;
+  }
+};
+
+/*
   Fog subsystem
 */
 float( float fogColor, float fogColorTarg ) cl_particles_fogColorAdjust={
@@ -100,7 +126,10 @@ void() cl_particles_fogFrame={
   }
 };
 
-float() te_explode_mech_piece_predraw={
+void() te_explode_mech_piece_predraw={
+  local float lerpDiff;
+  local float lerp;
+  
   if (self.nextthink != self.frame1time){
     self.frame2time = self.frame1time;
     self.frame1time = self.nextthink;
@@ -111,11 +140,11 @@ float() te_explode_mech_piece_predraw={
     self.angle2 = self.angle1;
     self.angle1 = self.angles_y;
   }
-  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
-  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  lerp = bound(0, self.lerpfrac, 1);
+  self.lerpfrac = lerp;
 
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  return FALSE;
 };
 
 void() te_explode_mech_piece_th={
@@ -323,18 +352,16 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
 /*
   Unit's shields have been struck but still holding
 */
-float() te_shield_hit_predraw={
+void() te_shield_hit_predraw={
   interpolate_origin();
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.angles_y = self.angles_y + 5;
   self.alpha = 0.075;
-  if(self.owner.entId == player_localentnum){
+  if(self.owner.clientLocalId == player_localentnum){
     if( self.owner.chaseActive == FALSE ){
       self.alpha = 0.02;
     }
   }
-  
-  return FALSE;
 };
 
 void() te_shield_hit_th={
@@ -343,7 +370,7 @@ void() te_shield_hit_th={
     remove(self);
     return;
   }
-  if(self.owner.entId == player_localentnum){
+  if(self.owner.clientLocalId == player_localentnum){
     self.origin = pmove_org;
   }
   else{
@@ -387,8 +414,10 @@ void() te_shield_hit={
   Unit's shields have broken (reduced to 0), play an expanding explosion shell effect.
 */
 
-float() predraw_shield_explode={
-
+void() predraw_shield_explode={
+  local float lerpDiff;
+  local float lerp;
+  
   self.colormod = self.compOffset;
   self.angles_y = self.angles_y - 3;
   if (self.nextthink != self.frame1time){
@@ -404,8 +433,9 @@ float() predraw_shield_explode={
     self.origin2 = self.origin1;
     self.origin1 = self.origin;
   }
-  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
-  self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
+  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  lerp = 1 - bound(0, lerpDiff, 1);
+  self.lerpfrac = lerp;
   
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   
@@ -413,8 +443,6 @@ float() predraw_shield_explode={
   self.angles_y = anglemod(self.angles_y);
   
   self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
-  
-  return FALSE;
 };
 
 void() te_shield_explode_th={
@@ -425,7 +453,7 @@ void() te_shield_explode_th={
   self.alpha = self.alpha - 0.02;
   self.scale = self.scale + 0.015;
   
-  if(self.owner.entId == player_localentnum){
+  if(self.owner.clientLocalId == player_localentnum){
     self.origin = pmove_org;
   }
   else{
@@ -605,7 +633,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   fx = fx + (v_up * (entMins_z + 8));
   vel = fx + (v_up * 16);
   pointsound(fx, "sound/mech_stomp.ogg", 0.45 + (random() * 0.25), ATTN_NORM);
-  switch( SV_WORLDTYPE ){
+  switch( ENT_SERVER_INFO.worldtype ){
     case 1:
       effType = particleeffectnum("TE_STOMP_ICE");
       break;

@@ -146,16 +146,12 @@ void() click_gfx_coronas_less={
 
 void() click_gfx_coronas_only_on={
   gfx_corona_only_lbl.len = TRUE;
-  strunzone(gfx_corona_only_lbl.label);
-  gfx_corona_only_lbl.label = strzone(menu_float_bool(gfx_corona_only_lbl.len));
   gfx_corona_only_on.drawme = FALSE;
   gfx_corona_only_off.drawme = TRUE;
   gfx_corona_only_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_gfx_coronas_only_off={
   gfx_corona_only_lbl.len = FALSE;
-  strunzone(gfx_corona_only_lbl.label);
-  gfx_corona_only_lbl.label = strzone(menu_float_bool(gfx_corona_only_lbl.len));
   gfx_corona_only_on.drawme = TRUE;
   gfx_corona_only_off.drawme = FALSE;
   gfx_corona_only_lbl.color = CLR_DEF_GRAY_H;
@@ -170,8 +166,8 @@ void() click_gfx_gloss_mode_next={
     gfx_gloss_mode_next.drawme = FALSE;
   }
   gfx_gloss_mode_lbl.len = select;
-  strunzone(gfx_gloss_mode_lbl.label);
-  gfx_gloss_mode_lbl.label = strzone(gfx_gloss_mode_get(select));
+  
+  gfx_gloss_mode_lbl.label = gfx_gloss_mode_get(select);
   gfx_gloss_mode_prev.drawme = TRUE;
 };
 void() click_gfx_gloss_mode_prev={
@@ -183,15 +179,13 @@ void() click_gfx_gloss_mode_prev={
     gfx_gloss_mode_prev.drawme = FALSE;
   }
   gfx_gloss_mode_lbl.len = select;
-  strunzone(gfx_gloss_mode_lbl.label);
-  gfx_gloss_mode_lbl.label = strzone(gfx_gloss_mode_get(select));
+  
+  gfx_gloss_mode_lbl.label = gfx_gloss_mode_get(select);
   gfx_gloss_mode_next.drawme = TRUE;
 };
 
 void() click_gfx_bloom_on={
   gfx_bloom_lbl.len = TRUE;
-  strunzone(gfx_bloom_lbl.label);
-  gfx_bloom_lbl.label = strzone(menu_float_bool(gfx_bloom_lbl.len));
   gfx_bloom_on.drawme = FALSE;
   gfx_bloom_off.drawme = TRUE;
   gfx_bloom_toggle_menu(TRUE);
@@ -199,8 +193,6 @@ void() click_gfx_bloom_on={
 };
 void() click_gfx_bloom_off={
   gfx_bloom_lbl.len = FALSE;
-  strunzone(gfx_bloom_lbl.label);
-  gfx_bloom_lbl.label = strzone(menu_float_bool(gfx_bloom_lbl.len));
   gfx_bloom_on.drawme = TRUE;
   gfx_bloom_off.drawme = FALSE;
   gfx_bloom_toggle_menu(FALSE);
@@ -340,8 +332,6 @@ void() click_gfx_bloom_color_exponent_more={
     gfx_bloom_clr_exponent_more.drawme = FALSE;
   }
   gfx_bloom_clr_exponent_lbl.len = val;
-  strunzone(gfx_bloom_clr_exponent_lbl.label);
-  gfx_bloom_clr_exponent_lbl.label = strzone(ftos(val));
   gfx_bloom_clr_exponent_less.drawme = TRUE;
 };
 void() click_gfx_bloom_color_exponent_less={
@@ -353,8 +343,6 @@ void() click_gfx_bloom_color_exponent_less={
     gfx_bloom_clr_exponent_less.drawme = FALSE;
   }
   gfx_bloom_clr_exponent_lbl.len = val;
-  strunzone(gfx_bloom_clr_exponent_lbl.label);
-  gfx_bloom_clr_exponent_lbl.label = strzone(ftos(val));
   gfx_bloom_clr_exponent_more.drawme = TRUE;
 };
 
@@ -500,7 +488,7 @@ void() m_gfx_i={
     gfx_corona_intensity_more.drawme = FALSE;
   }
   
-  gfx_corona_only_lbl = lbl_text('150 103', '14 14 0', strzone(menu_float_bool(cvar("gl_flashblend"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, 1, 0);
+  gfx_corona_only_lbl = lbl_text('150 103', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, 1, UI_FLAG_LBL_BOOL_ON);
   gfx_corona_only_lbl.len = cvar("gl_flashblend");
   gfx_corona_only_on = btn_img_callback('200 103', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, click_gfx_coronas_only_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_corona_only_off = btn_img_callback('138 103', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, click_gfx_coronas_only_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -556,7 +544,7 @@ void() m_gfx_i={
   }
 
   //bloom toggle
-  gfx_bloom_lbl = lbl_text('150 183', '14 14 0', strzone(menu_float_bool(cvar("r_bloom"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, 1, 0);
+  gfx_bloom_lbl = lbl_text('150 183', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, 1, UI_FLAG_LBL_BOOL_ON);
   gfx_bloom_lbl.len = cvar("r_bloom");
   gfx_bloom_on = btn_img_callback('200 183', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, click_gfx_bloom_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_off = btn_img_callback('138 183', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, click_gfx_bloom_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -597,9 +585,8 @@ void() m_gfx_i={
     gfx_bloom_clr_subtract_more.drawme = FALSE;
   }
 
-  gfx_bloom_clr_exponent_lbl = lbl_text('150 243', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, 1, 0);
+  gfx_bloom_clr_exponent_lbl = lbl_text('150 243', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, 1, UI_FLAG_LBL_USELEN);
   gfx_bloom_clr_exponent_lbl.len = cvar("r_bloom_colorexponent");
-  gfx_bloom_clr_exponent_lbl.label = strzone(ftos(gfx_bloom_clr_exponent_lbl.len));
   gfx_bloom_clr_exponent_more = btn_img_callback('200 243', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, click_gfx_bloom_color_exponent_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_clr_exponent_less = btn_img_callback('138 243', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, click_gfx_bloom_color_exponent_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
@@ -612,8 +599,7 @@ void() m_gfx_i={
   
   gfx_bloom_intense_lbl = lbl_text('150 263', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, 1, 0);
   gfx_bloom_intense_lbl.len = cvar("r_bloom_brighten");
-  gfx_bloom_intense_lbl.label = sprintf("%0.3f", gfx_bloom_intense_lbl.len);
-  gfx_bloom_intense_lbl.label = strzone(gfx_bloom_intense_lbl.label);
+  gfx_bloom_intense_lbl.label = strzone(sprintf("%0.3f", gfx_bloom_intense_lbl.len));
   gfx_bloom_intense_more = btn_img_callback('200 263', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, click_gfx_bloom_intensity_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_intense_less = btn_img_callback('138 263', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GFX, click_gfx_bloom_intensity_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   

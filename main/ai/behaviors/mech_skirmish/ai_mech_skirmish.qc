@@ -18,7 +18,6 @@ void() ai_mech_skirmish={
   ai_unit_ini_var();
   initialize_data_mech_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
-  ai_voice_ini( TRUE );
   
   self.SendEntity = ctrl_send_mech_ai;
   

@@ -258,6 +258,18 @@ void() ctrl_mech_die_player={
   ctrl_unit_part_death(self.armLeft);
   ctrl_unit_part_death(self.armRight);
   
+  //ensures only new weapon data coming upstream is written.
+  self.nextVecChoice = 0;
+  self.next_wepn1 = 0;
+  self.next_wepn2 = 0;
+  self.next_wepn3 = 0;
+  self.next_wepn4 = 0;
+  self.next_wepn5 = 0;
+  self.next_wepn6 = 0;
+  self.next_wepn7 = 0;
+  self.next_wepn8 = 0;
+  self.next_wepn9 = 0;
+  
   self.alpha = 0.01;
   self.scale = 0.01;
 };
@@ -274,7 +286,7 @@ void() ctrl_component_die={
     return;
   }
   piece = self;
-  if( GAMETYPE == GAMEMODE_CAMPAIGN){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
   }
   self.owner.critBits = self.owner.critBits | self.partTypeId;
@@ -332,7 +344,7 @@ void() ctrl_arm_die={
   if( self.deadflag != DEAD_NO ){
     return;
   }
-  if( GAMETYPE == GAMEMODE_CAMPAIGN){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
   }
   
@@ -420,13 +432,13 @@ void() touch_mechPiece={
   }
 };
 
-float( float isNew, float changeFlags ) ctrl_send_mech_ai={
+float( float isNew, float changedflags ) ctrl_send_mech_ai={
   local float sendCrit;
   
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
-  WriteCoord( MSG_ENTITY, changeFlags );
+  WriteCoord( MSG_ENTITY, changedflags );
   //======================
-  if( (changeFlags & SENDFLAG_MOVE) ){
+  if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
@@ -434,13 +446,13 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.moveState);
   }
   
-  if( (changeFlags & SENDFLAG_ANGLE) ){
+  if( (changedflags & SENDFLAG_ANGLE) ){
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteShort( MSG_ENTITY, self.legs.angles_y);
   }
   
-  if( (changeFlags & SENDFLAG_DEAD) ){
+  if( (changedflags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
     //placed here for just-in-time calculation
     // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
@@ -450,7 +462,7 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteCoord( MSG_ENTITY, sendCrit );
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteCoord( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
@@ -463,28 +475,29 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.next_wepn7);
     WriteByte( MSG_ENTITY, self.next_wepn8);
     WriteByte( MSG_ENTITY, self.next_wepn9);
+    WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteString( MSG_ENTITY, self.netname );
   }
   
-  if( (changeFlags & SENDFLAG_SHIELD) ){
+  if( (changedflags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
   }
   
-  if( (changeFlags & SENDFLAG_IMPACT) ){
+  if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
-  if( (changeFlags & SENDFLAG_ATTACK) ){
+  if( (changedflags & SENDFLAG_ATTACK) ){
     WriteCoord( MSG_ENTITY, self.attackFlag );
   }
   
-  if( (changeFlags & SENDFLAG_TURRET) ){
+  if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
     WriteAngle( MSG_ENTITY, self.torsoCenter.angles_z );
   }
-
-  if( (changeFlags & SENDFLAG_CRIT) ){
+  
+  if( (changedflags & SENDFLAG_CRIT) ){
     //placed here for just-in-time calculation
     // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
     sendCrit = self.critBits;
@@ -493,8 +506,13 @@ float( float isNew, float changeFlags ) ctrl_send_mech_ai={
     WriteCoord( MSG_ENTITY, sendCrit );
   }
   
-  if( (changeFlags & SENDFLAG_BURN) ){
+  if( (changedflags & SENDFLAG_BURN) ){
     WriteCoord( MSG_ENTITY, self.burnBits );
+  }
+  if( (changedflags & SENDFLAG_VOICE) ){
+    if( !(changedflags & SENDFLAG_NEWENT) ){
+      WriteByte( MSG_ENTITY, self.ai_voice_id );
+    }
   }
   self.shieldHitFlag = 0;
   return TRUE;

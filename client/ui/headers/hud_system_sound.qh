@@ -4,10 +4,6 @@ Author: Peter Roohr
 Date: 04/10/2017
 Overview: header file for the hud sound system
 */
-
-//cd track tracker
-float MUSICID;
-
 //sound precache
 string NULL_STRING = "null";
 

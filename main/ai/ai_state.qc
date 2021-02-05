@@ -123,7 +123,7 @@ void() ai_state_lurker_frame={
   ai_frame_net_send();
   
   self.think = ai_state_lurker_frame;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + AI_RATE;
 };
 
 /*
@@ -208,7 +208,7 @@ void() ai_state_brawler_frame={
   ai_frame_net_send();
   
   self.think = ai_state_brawler_frame;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + AI_RATE;
 };
 
 /*
@@ -266,7 +266,7 @@ void() ai_state_hunter_frame={
   ai_frame_net_send();
   
   self.think = ai_state_hunter_frame;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + AI_RATE;
 };
 
 /*
@@ -287,7 +287,7 @@ void() ai_state_pause={
     }
     else{
       self.think = self.ai_set_state;
-      self.nextthink = time + 0.05;
+      self.nextthink = time + AI_RATE;
       return;
     }
   }
@@ -301,7 +301,7 @@ void() ai_state_pause={
   //network delta
   ai_frame_net_send();
   
-  self.nextthink = time + 0.05;
+  self.nextthink = time + AI_RATE;
 };
 
 
@@ -312,7 +312,7 @@ void() ai_state_set_pause={
   ai_nodegraph_clear_path();
   self.ai_timer_breathe = time + self.ai_pauseTime_wait;
   self.think = ai_state_pause;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + AI_RATE;
   self.ai_fight_pause = FALSE;
   self.moveState = MOVE_STAND;
   if( (self.flags&FL_TURRET) ){

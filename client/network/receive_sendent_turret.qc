@@ -22,7 +22,7 @@ void() sendevent_turret_die={
   setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
   self.colormod = '0.85 0.85 0.85';
   
-  self.origin = self.origin + (v_up * (self.maxs_z * -0.5));
+  self.origin = self.origin + (v_up * (self.maxs_z * -0.05));
   setorigin(self, self.origin);
   
   sendent_handle_remove(self.torsoCenter);
@@ -51,6 +51,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   local float prevShield;
   local float prevAttackFlag;
   local float prevDeadFlag;
+  local float voiceId;
   
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
@@ -93,6 +94,11 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.spawnflags = ReadCoord();
     self.data_idx = ReadByte();
+    if( !(self.spawnflags & MUTE_ME)  ){
+      self.ai_muted = FALSE;
+      ai_voice_ini( TRUE );
+      self.ai_voice_limit = 1;
+    }
   }
   
   if( isNew ){
@@ -108,7 +114,24 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     }
     self.drawmask = MASK_ENGINE;
     self.predraw = predraw_turret;
+    if( !(self.spawnflags & MUTE_ME) ){
+      self.ai_muted = FALSE;
+      ai_voice_ini( TRUE );
+      self.ai_voice_limit = 1;
+    }
   }
+  
+  if( (changeFlags & SENDFLAG_CAMERA) ){
+    self.groundEnt = ReadByte();
+    if( self.groundEnt ){
+      if( !(self.spawnflags & NO_DROP) ){
+        if( isNew ){
+          data_building_generate_foundation();
+        }
+      }
+    }
+  }
+  
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
   }
@@ -153,6 +176,14 @@ void( float isNew, float changeFlags) sendent_handle_turret={
         self.effect3 = te_building_fire_start( self );
         self.colormod = self.colormod * 0.67;
       }
+    }
+  }
+  
+  //EVENT - voice chatter
+  if( (changeFlags & SENDFLAG_VOICE) ){
+    if( !(changeFlags & SENDFLAG_NEWENT) ){
+      voiceId = ReadByte();
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
     }
   }
   
@@ -212,11 +243,10 @@ void() interpolate_turret={
   }
 };
 
-float() predraw_turret={
+void() predraw_turret={
   if(self.deadflag == DEAD_NO){
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
   }
-  return FALSE;
 };

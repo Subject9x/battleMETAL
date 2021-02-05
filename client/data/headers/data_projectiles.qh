@@ -13,7 +13,7 @@ void( float dataID ) data_sync_new_projectile;
 void( entity e ) data_sync_new_debris;
 
 .void() predraw_projectile; //called inside global predraw_missile()
-float() predraw_missile;  //root predraw call, all other predraws below this are under this one.
+void() predraw_missile;  //root predraw call, all other predraws below this are under this one.
 
 void() predraw_plasma;
 void() predraw_quantum;

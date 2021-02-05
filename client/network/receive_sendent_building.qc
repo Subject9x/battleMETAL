@@ -14,6 +14,8 @@ Overview:
 */
 void() sendevent_building_die={
   
+  local entity key, parentKey;
+  
   if(self == CLIENT_target_ent){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
   }
@@ -41,9 +43,6 @@ void() sendevent_building_die={
   
   if( (self.spawnflags & 4194304) ){
     self.spawnflags = self.spawnflags - (self.spawnflags & 4194304);
-    
-    local entity key, parentKey;
-    
     key = mapKeyObject;
     parentKey = world;
     while( key ){
@@ -69,6 +68,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   local float prevShield;
   local float prevDeadflag;
   local float buildingSize;
+  local float voiceId;
   
   prevShield = self.shield;
   prevDeadflag = self.deadflag;
@@ -138,6 +138,22 @@ void( float isNew, float changeFlags) sendent_handle_building={
       model_misc_building_ruins_set();
     }
     setorigin(self, self.origin);
+    if( !(self.spawnflags & MUTE_ME)  ){
+      self.ai_muted = FALSE;
+      ai_voice_ini( TRUE );
+      self.ai_voice_limit = 1;
+    }
+  }
+  
+  if( (changeFlags & SENDFLAG_CAMERA) ){
+    self.groundEnt = ReadByte();
+    if( self.groundEnt ){
+      if( !(self.spawnflags & NO_DROP) ){
+        if( isNew ){
+          data_building_generate_foundation();
+        }
+      }
+    }
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
@@ -187,6 +203,14 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   
+  //EVENT - voice chatter
+  if( (changeFlags & SENDFLAG_VOICE) ){
+    if( !(changeFlags & SENDFLAG_NEWENT) ){
+      voiceId = ReadByte();
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
+    }
+  }
+  
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
   
@@ -209,12 +233,10 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
 };
 
-float() predraw_building={
+void() predraw_building={
   setorigin(self, self.origin);
   
   if(self.render_dlights){
     self.render_dlights();
   }
-  
-  return FALSE;
 };

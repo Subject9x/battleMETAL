@@ -491,6 +491,9 @@ void(entity t) util_generateBuildingFoundation={
   local vector v;
   local entity notSelf, n;
   
+  self.SendFlags = self.SendFlags | SENDFLAG_CAMERA;
+  self.groundEnt = TRUE;
+ 
   makevectors(t.angles);
   v = t.origin + (v_up * t.mins_z);
   n = spawn();
@@ -514,7 +517,9 @@ void(entity t) util_generateBuildingFoundation={
     setsize(self, self.mins, self.maxs);
     setorigin(self, v);
     self.solid = SOLID_BSP; //lock it in.
+    self.effects = self.effects | EF_NODRAW;
   self = notSelf;
+  
 };
  
 float(float v) anglemod =

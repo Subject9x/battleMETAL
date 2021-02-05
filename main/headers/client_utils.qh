@@ -5,12 +5,6 @@ Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 this is the header.
 */
-
-// if ever the code want's to try THIS again :/
-//float MSG_ENTITY = 5;
-//.float(entity ent, float changedflags) SendEntity;
-//.float SendFlags;
-
 /*
   ENGINE CONSTANTS
 */
@@ -33,15 +27,12 @@ void() client_push_player_info;
 void( entity targetClient ) server_push_player_info; //simply wraps client_push_player_info()
 void( entity targetClient ) client_push_hud_highlight;
 void( entity targetClient ) client_send_boundary_warning;
-
 void() client_push_mapobjects;
-
-void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice;
-void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
+void( float playerId, float playerCritBits ) client_send_critical_hit;
+void( entity client, float menuFlag ) client_send_menu_flag;
 
 //client command layer
-void() client_sendServerAbout;
-void() client_send_server_info_update;
+void(string data) client_parse_clientInfoString;
 void(entity client) client_send_server_info_connect;
 void( entity client ) client_send_campaign_end_data;
 void( entity client ) client_send_dm_end_data;
@@ -53,15 +44,13 @@ void(entity client, float trackNum, float entFlags) client_sendMusic;
 void(entity client, string theMessage, float messageLifetime) client_send_info_message;
 void(entity client, float weaponsOnOff) client_send_event_repairs;
 
-void( float track, float loop) client_playTrack;
-void(string cmd, float tokens) client_ParseMechCommand;
+void( entity client, float track, float loopFlag) client_playTrack;
 void(string cmd, float tokens) client_setWeapon;
-void(string cmd, float tokens) client_setWeaponGroup;
-void(string cmd, float tokens) client_setNavPoint;
+void(float wantNavId) client_setNavPoint;
 void(string cmd, float tokens) client_setMission;
-
-void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle;
-void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail;
 
 void() client_update_faction;
 void() client_update_losses;
+
+void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle;
+void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail;

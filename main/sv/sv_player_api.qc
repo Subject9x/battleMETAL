@@ -30,14 +30,12 @@ called before running player input frame
 ============
 */
 void() PlayerPreThink = {
-  
-  
-  
+  self.attackFlag = 0;
   //keep losses up-to-date
   client_update_losses();
   
   if( self.playerState == PLAYER_INTERMSN ){
-    if( MISSION_STATUS == MISSION_STATUS_ENDING ){
+    if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ENDING ){
       return;
     }
   }
@@ -45,6 +43,7 @@ void() PlayerPreThink = {
 	if (self.deadflag == DEAD_DEAD){
 		return;
 	}
+  
 	if (self.deadflag >= DEAD_DYING){
     return;	// dying, so do nothing
   }
@@ -114,6 +113,8 @@ called after running player input frame
 ============
 */
 void() PlayerPostThink = {
+  local entity wep_chain;
+  local float legDmg, centerTorsoDmg;
   if (self.deadflag >= DEAD_DYING){
     return;
   }
@@ -171,7 +172,7 @@ void() PlayerPostThink = {
       self.hitdir_buffer = 0;
     }
   }
-
+  
   //Update Target information
   sv_updateTargetInfo();
   
@@ -193,12 +194,12 @@ void() PlayerPostThink = {
     
     ctrl_update_mechplayer();
     
-    local entity wep_chain;
     for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
       if( wep_chain.owner != self ){
         continue;
       }
       ctrl_weapon_think(wep_chain);
+      ctrl_weapon_update_player(wep_chain);
     }
     
     //REPAIR BAY
@@ -213,7 +214,6 @@ void() PlayerPostThink = {
     }
   }
 // check for attack
-  self.attackFlag = 0; //zero-out the attackFlag every frame to prevent multiple overdraws of muzzle flash and trailparticles on the clients.
   playerAttack();
   
   if( time > self.posFadeTimer ){
@@ -235,7 +235,6 @@ void() PlayerPostThink = {
         t_damage( self, world, world, self.health, self.origin, '0 0 0');
       }
       else{
-        local float legDmg, centerTorsoDmg;
         legDmg = self.legs.max_health * (self.fall_dmg * FALL_DAMAGE_FRACTION);
         t_damage( self, world, world, legDmg, self.legs.origin, '0 0 0');
         if( self.legs.health < (self.legs.max_health * 0.33) ){
@@ -309,7 +308,11 @@ void() PlayerPostThink = {
     }
     if( self.last_crit != self.critBits ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
+      if( !(self.critBits & M_REPAIR) ){
+        client_send_critical_hit( num_for_edict(self), self.critBits );
+      }
       self.last_crit = self.critBits;
+      
     }
     if( self.last_burn != self.burnBits ){
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
@@ -319,6 +322,9 @@ void() PlayerPostThink = {
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_COLORS;
       self.new_color = FALSE;
       self.last_color = self.new_color;
+    }
+    if( self.attackFlag > 0 ){
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ATTACK;
     }
   }
   
@@ -400,10 +406,13 @@ void() PlayerDie={
   
   client_push_player_info();
   client_push_mapobjects();
-  client_send_server_info_update();
   client_send_campaign_end_data( self );
   
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
+  self.damageValue = 0;
+  self.critBits = 0;
+  self.last_crit = 0;
+  self.targetEntId = 0;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
   
   self.effects = 0;
   self.deadflag = DEAD_DYING;
@@ -460,7 +469,6 @@ void() PlayerDieNetwork={
   }
   client_push_player_info();
   client_push_mapobjects();
-  client_send_server_info_update();
   
   self.effects = 0;
   self.deadflag = DEAD_DYING;
@@ -483,7 +491,11 @@ void() PlayerDieNetwork={
   self.angles_y = 0;
   self.avelocity = '0 0 0';
   
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_DEAD;
+  self.damageValue = 0;
+  self.critBits = 0;
+  self.last_crit = 0;
+  self.targetEntId = 0;
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
   
   self.playerDeaths = self.playerDeaths + 1;
   
@@ -508,13 +520,12 @@ void() PlayerDieNetworkEnd={
   }
   self.movetype = MOVETYPE_NONE;
   
-  
-  if( MISSION_STATUS < MISSION_STATUS_OVER ){
+  if( ENT_SERVER_INFO.missionStatus < MISSION_STATUS_OVER ){
     self.playerState = PLAYER_REDEPLOY;
   }
   else{
     self.playerState = PLAYER_INTERMSN; //short-circuit to intermission
-      //on ending server.
+    //on ending server.
   }
   
   self.think = PlayerDead;

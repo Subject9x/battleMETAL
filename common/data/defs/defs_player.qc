@@ -12,9 +12,13 @@ Overview:
 
 .entity w_slot;     //use this for teh linked list goodness
 .float data_type;
+.entity clientData;
 
 #ifdef CSQC
-.float clientLocalId; //entId - 1 for FL_CLIENT only
+float input_sequence;
+.float clientLocalId;   //Client Only - player_localentnum but calculated for all players on every client.
+.float clientLocalNum;  //Client Only - player_localnum but calculated for all players on every client.
+.float sequence;
 .float particleCubeFlag;
 .float hud_bob;    //bob settings are important for dat immersion
 .float hud_bob_cycle;
@@ -113,5 +117,4 @@ Overview:
 .vector ramVelocity;
 .float ramUp;
 
-.entity clientData;
 #endif

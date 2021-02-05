@@ -46,14 +46,11 @@ void() receive_ent_bindData={
   
   if( CLIENT_data_type == DATA_MECH ){
     if( name != CLIENT_netname){
-      if( CLIENT_netname != ""){
-        strunzone( CLIENT_netname );
-      }
-      CLIENT_netname = strzone( name );
+      cacheGlobalString(CLIENT_netname, name )
     }
     
     CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
-    CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
+    //CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
     CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
     CLIENT_stat_ret_dist = getstati(STAT_PLR_RETDIST);
     
@@ -63,11 +60,10 @@ void() receive_ent_bindData={
     CLIENT_health_torso_right = getstatf(STAT_CLIENT_HP_TORSORIGHT); 
     CLIENT_health_arm_left = getstatf(STAT_CLIENT_HP_ARMLEFT); 
     CLIENT_health_arm_right = getstatf(STAT_CLIENT_HP_ARMRIGHT);
-
+    
     //Last Frame Target info cache
     CLIENT_target_health_prev = CLIENT_stat_trg_ct_hp;
     
-    CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
     CLIENT_target_datatype_prev = CLIENT_target_datatype;
     
     CLIENT_stat_trg_ct_hp = getstatf(STAT_TARGET_HP_TORSOCENTER);
@@ -108,6 +104,7 @@ void() receive_ent_bindData={
     // hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
     CLIENT_repair_value = getstati(STAT_PLR_REP);
     //Client targeting data
+    CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
     if( CLIENT_target_ent != world ){
       CLIENT_stat_trg_ent_id = num_for_edict(CLIENT_target_ent);
       CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
@@ -116,12 +113,14 @@ void() receive_ent_bindData={
         CLIENT_target_ent = world;
         CLIENT_stat_trg_ent_id = 0;
         CLIENT_stat_trg_dataidx = 0;
+        CLIENT_stat_trg_face = -1;
         return;
       }
-      CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
       CLIENT_stat_trg_ent_id = CLIENT_target_ent.entId;
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
-      CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
+      
+      CLIENT_stat_trg_face = util_checkPointAngleImpl(CLIENT_target_ent.origin, pmove_org, input_angles) ;
+      
       CLIENT_target_datatype_prev = CLIENT_target_datatype;
       CLIENT_target_datatype = CLIENT_target_ent.data_type;
       CLIENT_target_faction = CLIENT_target_ent.faction;
@@ -152,17 +151,15 @@ void() receive_ent_bindData={
   also Server Mission Status and Results
 */
 void() client_state_events={
-  //local float gameType;
   local float timeVal;
   
- //gameType = cvar("gamemode");
-  
   //SERVER EVENTS
-  if( SV_MISSION_STATUS_PREV != SV_MISSIONSTATUS ){
+  
+  if( ENT_SERVER_INFO.missionStatusPrev != ENT_SERVER_INFO.missionStatus ){
     //Server Event - end of map
-    if( (SV_MISSION_STATUS_PREV != MISSION_STATUS_OVER) && (SV_MISSIONSTATUS == MISSION_STATUS_OVER) ){
-      if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
-        if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
+    if( (ENT_SERVER_INFO.missionStatusPrev != MISSION_STATUS_OVER) && (ENT_SERVER_INFO.missionStatus == MISSION_STATUS_OVER) ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
+        if( ENT_SERVER_INFO.missionResult == MISSION_RESULT_WIN ){
           hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1 );
         }
         else{
@@ -171,7 +168,6 @@ void() client_state_events={
       }
     }
   }
-  
   
   //CLIENT EVENTS
   if( CLIENT_player_state != CLIENT_player_state_prev ){
@@ -185,7 +181,7 @@ void() client_state_events={
     //EVENT - CLIENT FIRST TIME CONNECT---
     if( (CLIENT_player_state_prev == PLAYER_CONNECT) && (CLIENT_player_state == PLAYER_SPAWN) ){
       if( cvar("developer") ){
-        dprint(sprintf("EVENT - CLIENT FIRST TIME CONNECT--- SV_GAMETYPE = %s\n", ftos(SV_GAMETYPE))); //debug
+        dprint(sprintf("EVENT - CLIENT FIRST TIME CONNECT--- ENT_SERVER_INFO.gameType = %s\n", ftos(ENT_SERVER_INFO.gameType))); //debug
       }
       //mission file load check
       if(MSN_FILEFOUND){
@@ -227,8 +223,9 @@ void() client_state_events={
     
     //EVENT - CLIENT DEATH----------------
     if( (CLIENT_player_state_prev != PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEAD) ){
-      if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
-        if( SV_MISSIONSTATUS == MISSION_RESULT_WIN ){
+      CLIENT_deaths = CLIENT_deaths + 1;
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
+        if( ENT_SERVER_INFO.missionStatus == MISSION_RESULT_WIN ){
           te_mission_win();
         }
         else{
@@ -251,7 +248,7 @@ void() client_state_events={
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_DEBRIEF_time_elapsed = -1;
-      ui_set_mission_status( SV_MISSION_RESULT );
+      ui_set_mission_status( ENT_SERVER_INFO.missionResult );
       MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
       MENU_respawn_cool_start = servertime;
       MENU_button_delay = MENU_respawn_cool;
@@ -263,11 +260,11 @@ void() client_state_events={
     if( (CLIENT_player_state_prev != PLAYER_DEBRIEF) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
       MENU_DEBRIEF_time_elapsed = -1;
-      ui_set_mission_status( SV_MISSION_RESULT );
+      ui_set_mission_status( ENT_SERVER_INFO.missionResult );
       MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
       MENU_respawn_cool_start = servertime;
       MENU_button_delay = MENU_respawn_cool;
-      if( SV_MISSION_RESULT == MISSION_RESULT_WIN ){
+      if( ENT_SERVER_INFO.missionResult == MISSION_RESULT_WIN ){
         msn_unlock_stuff();
         menu_debrief_sort_unlocks();
       }
@@ -279,7 +276,7 @@ void() client_state_events={
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_REDEPLOY) ){
       menu_enter( MENU_CONNECT_ACTIVE );
       MENU_button_delay = servertime + 1;
-      if( SV_GAMETYPE == GAMEMODE_COOP ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
         MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_COOP;
       }
       else{
@@ -292,15 +289,15 @@ void() client_state_events={
     
     //EVENT - CLIENT END OF DM/TDM
     if( (CLIENT_player_state_prev != PLAYER_INTERMSN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
-      if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
         setcursormode( 0 );
         menu_exit();
         return;
       }
       menu_enter( MENU_SCORE_ACTIVE );
-      if(  SV_GAMETYPE == GAMEMODE_COOP  ){
+      if(  ENT_SERVER_INFO.gameType == GAMEMODE_COOP  ){
         MENU_DEBRIEF_time_elapsed = -1;
-        ui_set_mission_status( SV_MISSION_RESULT );
+        ui_set_mission_status( ENT_SERVER_INFO.missionResult );
         MENU_respawn_cool_start = servertime + SERVER_SCORE_TIME_COOP;
       }
       else{
@@ -315,9 +312,6 @@ void() client_state_events={
     //EVENT - CLIENT connect during end of round
     if( (CLIENT_player_state_prev != PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
       menu_enter( MENU_SCORE_ACTIVE );
-      if( SV_GAMETYPE == GAMEMODE_DM ){
-        
-      }
       //MENU_button_delay = servertime + 1;
       MENU_respawn_cool = servertime + 15;
       MENU_respawn_cool_start = servertime;
@@ -383,8 +377,8 @@ void() client_event_environment={
   handles mission name if active
 */
 void() client_event_mission_name_frame={
-  
-
+  local vector backpanelOrg, backpanelSize;
+  local float backSize;
   
   //state controller
   switch( MISSION_NAME_STATE ){
@@ -421,7 +415,7 @@ void() client_event_mission_name_frame={
       break;
     default:
       MISSION_NAME_ON = FALSE;
-      strunzone(MISSION_NAME);
+      freeGlobalString(MISSION_NAME)
       drawfont = drawfont_prev;
       return;
   }
@@ -431,9 +425,6 @@ void() client_event_mission_name_frame={
   else if( MISSION_NAME_ALPHA < 0 ){
     MISSION_NAME_ALPHA = 0;
   }
-
-  local vector backpanelOrg, backpanelSize;
-  local float backSize;
   backpanelSize = '34 34 0';
   backpanelOrg = MISSION_NAME_ORG - gui_percentToPixelRawVec('2 2');
 
@@ -454,6 +445,7 @@ void() client_event_mission_name_frame={
   receive map's mission name, and diplay it while the player boots up.
 */
 void( string name ) client_event_mission_name={
+  local string missionName;
   local vector newOrg;
   local float noNewLine;
   local float nameLen;
@@ -467,8 +459,9 @@ void( string name ) client_event_mission_name={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_DYSTOPIAN;
     noNewLine = strstrofs( name, "\n", 0 );
-    MISSION_NAME = substring( name, 0, noNewLine);
-    MISSION_NAME = strzone( MISSION_NAME );
+    missionName = substring( name, 0, noNewLine);
+    cacheGlobalString(MISSION_NAME, missionName )
+    
     nameLen = stringwidth(MISSION_NAME, 0, '16 16 0');
     nameLen = gui_percentXRaw( nameLen / 2 );
     newOrg_x = VIEW_CTR_x - nameLen;
@@ -484,14 +477,12 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   HUD_INFO_MARK = time + infoLifetime;
   if( HUD_INFO_ON != TRUE ){
     HUD_INFO_ON = TRUE;
-    HUD_INFO_MSG = strzone( infoMessage );
+    cacheGlobalString(HUD_INFO_MSG, infoMessage )
   }
   else{
     if( HUD_INFO_MSG != infoMessage ){
       //already on, override message
-      replace = HUD_INFO_MSG;
-      HUD_INFO_MSG = strzone( infoMessage );
-      strunzone(replace);
+      cacheGlobalString(HUD_INFO_MSG, infoMessage )
     }
   }
   
@@ -508,40 +499,6 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   drawfont = drawfont_prev;
   
 };
-
-/*
-  server Mapping = client_send_server_info_update()
-  
-*/
-void() client_get_serverinfo={
-  local string name;
-  
-  SV_MISSION_STATUS_PREV = SV_MISSIONSTATUS;
-  
-  SV_STARTTIME = ReadLong();
-  SV_MISSIONSTATUS = ReadByte();
-  SV_GAMETYPE = ReadByte();
-  SV_SERVERFLAGS = ReadLong();
-  SV_TIMELIMIT = ReadCoord();
-  SV_WORLDTYPE = ReadByte();
-  if( SV_GAMETYPE == GAMEMODE_CAMPAIGN ){
-    cvar_set("saveslot", ftos(ReadByte()));
-  }
-  SV_MISSION_RESULT = ReadByte();
-  if( SV_MISSIONSTATUS == MISSION_STATUS_OVER ){
-    SV_ENDTIME = servertime;
-  }
-  name = ReadString();
-  if( SV_NEXTMAP == "" || strlen(SV_NEXTMAP) == 0 ){
-    SV_NEXTMAP = strzone(name);
-  }
-  
-  //cvar_set("gamemode", ftos(SV_GAMETYPE));
-  if(CLIENT_player_state == PLAYER_CONNECT ){
-    cl_set_savepath(SV_GAMETYPE, (SV_SERVERFLAGS & SVFLAG_ITEMOVER) );
-  }
-};
-
 
 /*
   server Mapping = client_send_campaign_end_data();
