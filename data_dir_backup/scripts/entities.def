@@ -1,0 +1,1636 @@
+/*QUAKED map_terrain_model (0.75 0.2 0.75) (-16 -16 -16) (16 16 16)
+ugly hack, change for each terrain? :L
+*/
+/*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8)
+Monsters will continue walking towards the next target corner.
+*/
+/*QUAKED func_button (0 .5 .8) ?
+When a button is touched, it moves some distance in the direction of it's angle, triggers all of it's targets, waits some time, then returns to it's original position where it can be triggered again.
+
+"angle"		determines the opening direction
+"target"	all entities with a matching targetname will be used
+"speed"		override the default 40 speed
+"wait"		override the default 1 second wait (-1 = never return)
+"lip"		override the default 4 pixel lip remaining at end of move
+"health"	if set, the button must be killed instead of touched
+"sounds"
+0) steam metal
+1) wooden clunk
+2) metallic click
+3) in-out
+*/
+/*QUAKED info_intermission (1 0.5 0.5) (-16 -16 -16) (16 16 16)
+This is the camera point for the intermission.
+Use mangle instead of angle, so you can set pitch or roll as well as yaw.  'pitch roll yaw'
+*/
+/*QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION
+When the player touches this, he gets sent to the map listed in the "map" variable.  Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display stats.
+*/
+/*QUAKED info_player_start (1 0 0) (-16 -16 -24) (16 16 24)
+The normal starting point for a level.
+*/
+/*QUAKED info_player_start2 (1 0 0) (-16 -16 -24) (16 16 24)
+Only used on start map for the return point from an episode.
+*/
+/*QUAKED info_player_deathmatch (1 0 1) (-16 -16 -24) (16 16 24)
+potential spawning position for deathmatch games
+
+new in Dark Places:
+"targetname"
+ inactive (skipped) until triggered.
+ (for use in combination with
+  trigger_playercount)
+*/
+/*QUAKED info_player_coop (1 0 1) (-16 -16 -24) (16 16 24)
+potential spawning position for coop games
+*/
+/*QUAKED info_player_team1 (.7 0 0) (-16 -16 -24) (16 16 24)
+potential spawning position for teamplay games
+team #1 - red
+
+new in Dark Places:
+"targetname"
+ inactive (skipped) until triggered.
+ (for use in combination with
+  trigger_playercount)
+*/
+/*QUAKED info_player_team2 (0 0 .7) (-16 -16 -24) (16 16 24)
+potential spawning position for teamplay games
+team #2 - blue
+
+new in Dark Places:
+"targetname"
+ inactive (skipped) until triggered.
+ (for use in combination with
+  trigger_playercount)
+*/
+/*QUAKED info_player_team3 (.7 .7 .7) (-16 -16 -24) (16 16 24)
+potential spawning position for teamplay games
+team #3 - grey
+
+new in Dark Places:
+"targetname"
+ inactive (skipped) until triggered.
+ (for use in combination with
+  trigger_playercount)
+*/
+/*QUAKED info_player_team1 (1 0 0) (-16 -16 -24) (16 16 24)
+CTF Starting point for a player
+in team one (Red).
+
+Keys:
+"angle"
+ viewing angle when spawning
+*/
+/*QUAKED info_player_team2 (1 0 0) (-16 -16 -24) (16 16 24)
+CTF Starting point for a player in
+team two (Blue).
+
+Keys:
+"angle"
+ viewing angle when spawning
+*/
+/*QUAKED func_door (0 .5 .8) ? START_OPEN x DOOR_DONT_LINK GOLD_KEY SILVER_KEY TOGGLE
+if two doors touch, they are assumed to be connected and operate as a unit.
+
+TOGGLE causes the door to wait in both the start and end states for a trigger event.
+
+START_OPEN causes the door to move to its destination when spawned, and operate in reverse.  It is used to temporarily or permanently close off an area when triggered (not usefull for touch or takedamage doors).
+
+Key doors are allways wait -1.
+
+"message"	is printed when the door is touched if it is a trigger door and it hasn't been fired yet
+"angle"		determines the opening direction
+"targetname" if set, no touch field will be spawned and a remote button or trigger field activates the door.
+"health"	if set, door must be shot open
+"speed"		movement speed (100 default)
+"wait"		wait before returning (3 default, -1 = never return)
+"lip"		lip remaining at end of move (8 default)
+"dmg"		damage to inflict when blocked (2 default)
+"sounds"
+0)	no sound
+1)	stone
+2)	base
+3)	stone chain
+4)	screechy metal
+*/
+/*QUAKED func_door_secret (0 .5 .8) ? open_once 1st_left 1st_down no_shoot always_shoot
+Basic secret door. Slides back, then to the side. Angle determines direction.
+wait  = # of seconds before coming back
+1st_left = 1st move is left of arrow
+1st_down = 1st move is down from arrow
+always_shoot = even if targeted, keep shootable
+t_width = override WIDTH to move back (or height if going down)
+t_length = override LENGTH to move sideways
+"dmg"		damage to inflict when blocked (2 default)
+
+If a secret door has a targetname, it will only be opened by it's botton or trigger, not by damage.
+"sounds"
+1) medieval
+2) metal
+3) base
+*/
+/*QUAKED trigger_forcefield (1 .5 0) ? PLAYERONLY SILENT STARTOFF TOGGLE WALL
+anything touching this can be pushed away,
+can be blocked, and can be hurt.
+
+when targeted it will flash off/on
+see STARTOFF, TOGGLE and delay
+
+flags:
+"PLAYERONLY"
+ only affects players, still flashes
+ on monsters, but no effect.
+"SILENT"
+ no hum or push sound.
+"STARTOFF"
+ works in reverse, normally off, on when targeted.
+"TOGGLE"
+ switches on/off when targeted.
+"WALL"
+ is totally solid when on.
+
+keys:
+"dmg"
+ amount of damage to do when touched, default 0
+"delay"
+ how long it will stay switched when
+ targeted, ignored with TOGGLE.
+"speed"
+ how much force, default 0
+"targetname"
+ guess (flashes when targeted)
+"target"
+ triggered on touch
+*/
+/*QUAKED func_invisiblewall (0 .5 .8) ? STARTOFF
+invisible wall,
+toggles on/off when triggered.
+
+better than invisible walls
+made with CLIP texture
+as bullets etc can't go
+through this.
+
+Flags:
+"STARTOFF"
+ uh, guess...
+*/
+/*QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
+prints a warning message when spawned
+*/
+/*QUAKED event_lightning (0 1 1) (-16 -16 -16) (16 16 16)
+Just for boss level.
+*/
+/*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
+Used as a positional target for spotlights, etc.
+*/
+/*QUAKED info_notnull (0 0.5 0) (-4 -4 -4) (4 4 4)
+Used as a positional target for lightning.
+*/
+/*QUAKED info_target (0 0.5 0) (-4 -4 -4) (4 4 4)
+Invisible entity. Used as an optional
+target for trap_spikeshooter etc,
+can follow path_corners as a moving
+target for neat effects.
+
+Keys:
+"targetname"
+ target name.
+"target" (optional)
+ if specified it will start at
+ this path_corner,
+ and follow the path.
+"speed"
+ movement speed (default 100)
+*/
+/*QUAKED light (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
+Non-displayed light.
+Default light value is 300
+Default style is 0
+If targeted, it will toggle between on or off.
+*/
+/*QUAKED light_fluoro (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
+Non-displayed light.
+Default light value is 300
+Default style is 0
+If targeted, it will toggle between on or off.
+Makes steady fluorescent humming sound
+*/
+/*QUAKED light_fluorospark (0 1 0) (-8 -8 -8) (8 8 8)
+Non-displayed light.
+Default light value is 300
+Default style is 10
+Makes sparking, broken fluorescent sound
+*/
+/*QUAKED light_globe (0 1 0) (-8 -8 -8) (8 8 8)
+Sphere globe light.
+Default light value is 300
+Default style is 0
+*/
+/*QUAKED light_torch_small_walltorch (0 .5 0) (-10 -10 -20) (10 10 20)
+Short wall torch
+Default light value is 200
+Default style is 0
+*/
+/*QUAKED light_flame_large_yellow (0 1 0) (-10 -10 -12) (12 12 18)
+Large yellow flame ball
+*/
+/*QUAKED light_flame_small_yellow (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
+Small yellow flame ball
+*/
+/*QUAKED light_flame_small_white (0 1 0) (-10 -10 -40) (10 10 40) START_OFF
+Small white flame ball
+*/
+/*QUAKED misc_thunder (0 1 0) (-8 -8 -8) (8 8 8)
+This controls the brightness of the
+targeted lights, to simulate thunder.
+
+Keys:
+"waitmin"
+ mininum time between strikes
+ (default 1)
+"waitmax"
+ maximum time between strikes
+ (default 8)
+"count"
+ minimum number of flashs per strike
+ (default 2)
+"count1"
+ maximum number of flashs per strike
+ (default 6)
+"count2"
+ minimum time between flashs
+ (default 0.05)
+"count3"
+ maximum time between flashs
+ (default 0.2)
+"count4"
+ how long each flash lasts
+ (default 0.3)
+"count5"
+ minimum sound delay
+ (default 0.3)
+"count6"
+ maximum sound delay
+ (default 0.8)
+"target"
+ must target lights
+*/
+/*QUAKED misc_fireball (0 .5 .8) (-8 -8 -8) (8 8 8)
+Lava Balls
+*/
+/*QUAKED misc_explobox (0 .5 .8) (0 0 0) (32 32 64)
+TESTING THING
+*/
+/*QUAKED misc_explobox2 (0 .5 .8) (0 0 0) (32 32 64)
+Smaller exploding box, REGISTERED ONLY
+*/
+/*QUAKED trap_spikeshooter (0 .5 .8) (-8 -8 -8) (8 8 8) superspike laser lightning x x x x onlystrike
+When triggered, fires a spike in
+the direction determined by angle.
+
+Flags:
+"superspike"
+ fires large spikes
+"laser"
+ fires laser
+"lightning"
+ fires lightning
+ (only fires with a target,
+  either an info_target or when
+  striking something)
+"onlystrike"
+ does not fire unless striking
+ at something
+
+Keys:
+"deathtype"
+ as with nearly all things in
+ Dark Places, deathtype is
+ the kill message.
+ default: depends on shot type
+"angle"
+ angle to fire
+ (can be pitch yaw roll)
+"target"
+ much better than angle setting.
+"speed"
+ speed of shot - default 500
+ (not applicable to lightning)
+"dmg"
+ how much damage the shot does
+ default depends on shot:
+ spike - 9
+ superspike - 18
+ laser - 15
+ lightning - 30
+"count"
+ how many shots are fired per
+ burst.
+"delay"
+ time between shots in a burst.
+"strikedist"
+ max distance for striking.
+ (meaning it acts as a turret)
+*/
+/*QUAKED viewthing (0 .5 .8) (-8 -8 -8) (8 8 8)
+Just for the debugging level.  Don't use
+*/
+/*QUAKED func_wall (0 .5 .8) ?
+This is just a solid wall if not inhibitted
+*/
+/*QUAKED func_vanishwall (0 .5 .8) ?
+Mainly used for changing the 'scale' of a
+dm level based on active player count.
+
+For use in combination with
+trigger_playercount.
+
+Keys:
+"targetname"
+ removes self when triggered.
+*/
+/*QUAKED func_illusionary (0 .5 .8) ?
+A simple entity that looks solid but lets you walk through it.
+*/
+/*QUAKED func_episodegate (0 .5 .8) ? E1 E2 E3 E4
+This bmodel will appear if the episode has allready been completed, so players can't reenter it.
+*/
+/*QUAKED func_bossgate (0 .5 .8) ?
+This bmodel appears unless players have all of the episode sigils.
+*/
+/*QUAKED ambient_suck_wind (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED ambient_drone (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED ambient_flouro_buzz (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED ambient_drip (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED ambient_comp_hum (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED ambient_thunder (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED ambient_light_buzz (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED ambient_swamp1 (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED ambient_swamp2 (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+*/
+/*QUAKED misc_noisemaker (1 0.5 0) (-10 -10 -10) (10 10 10)
+For optimzation testing, starts a lot of sounds.
+*/
+/*QUAKED func_plat (0 .5 .8) ? PLAT_LOW_TRIGGER
+speed	default 150
+
+Plats are always drawn in the extended position, so they will light correctly.
+
+If the plat is the target of another trigger or button, it will start out disabled in the extended position until it is trigger, when it will lower and become a normal plat.
+
+If the "height" key is set, that will determine the amount the plat moves, instead of being implicitly determined by the model's height.
+Set "sounds" to one of the following:
+1) base fast
+2) chain slow
+*/
+/*QUAKED func_train (0 .5 .8) ?
+Trains are moving platforms that players can ride.
+The targets origin specifies the min point of the train at each corner.
+The train spawns at the first target it is pointing at.
+If the train is the target of a button or trigger, it will not begin moving until activated.
+speed	default 100
+dmg		default	2
+sounds
+1) ratchet metal
+
+*/
+/*QUAKED misc_teleporttrain (0 .5 .8) (-8 -8 -8) (8 8 8)
+This is used for the final boss
+*/
+/*QUAKED func_rain (0 .5 .8) ?
+This is an invisible area like a trigger, which rain falls inside of.
+
+Keys:
+"velocity"
+ falling direction (should be something like '0 0 -700', use the X and Y velocity for wind)
+"cnt"
+ sets color of rain (default 12 - white)
+"count"
+ adjusts rain density, this many particles fall every second, experiment to see the effects (default is based on area size)
+*/
+/*QUAKED func_snow (0 .5 .8) ?
+This is an invisible area like a trigger, which snow falls inside of.
+
+Keys:
+"velocity"
+ falling direction (should be something like '0 0 -300', use the X and Y velocity for wind)
+"cnt"
+ sets color of rain (default 12 - white)
+"count"
+ adjusts snow density, this many particles fall every second, experiment to see the effects (default is based on area size)
+*/
+/*QUAKED func_particlecube (0 .5 .8) ? GRAVITY
+This is an invisible area like a trigger, which particles spawn in.
+
+Flags:
+gravity
+ if set the particles will fall.
+
+Keys:
+"velocity"
+ particle velocity. (default is '0 0 0)
+"cnt"
+ sets color of particles (default 12 - white), the colors are actually a range of 4 colors, starting with this color.
+"count"
+ adjusts particle density, this many particles appear every second, experiment to see the effects (default is based on area size).
+"cnt2"
+ random velocity adjustment, default is 0, higher makes the particles more random, 0 makes them follow velocity exactly.
+*/
+/*QUAKED info_rotate (0 .5 0) (-8 -8 -8) (8 8 8)
+rotate_objects target this to
+set center of rotation.
+*/
+/*QUAKED func_rotatingdoor (.6 0 .9) ? TOUCHDMG CRUSH TOGGLE 
+rotating door.
+
+Flags:
+"TOUCHDMG"
+ if set, will do block damage
+ when touched, not just when
+ blocked.
+"CRUSH"
+ will crush things instead of
+ reversing direction when
+ blocked, useful when making a
+ door to block off an area.
+"TOGGLE"
+ opens/closes when triggered,
+ rather than just opening.
+
+Keys:
+"dmg"
+ damage to cause when blocked,
+ default is 2, use -1 for no
+ damage.
+"speed"
+ how fast it rotates,
+ in degrees per second.
+ default: 90
+"angles"
+ start angles (pitch yaw roll).
+"dest"
+ end angles (pitch yaw roll).
+"wait"
+ how long to stay open.
+ (not used with TOGGLE)
+ default: 3 seconds
+"target"
+ must target info_rotate
+ object to define origin
+"targetname"
+ must be targeted, rotating
+ doors operate only when
+ triggered
+"group"
+ you can group rotating doors,
+ when grouped all rotating
+ doors will reverse direction
+ at the same time
+"deathtype"
+ as with basically all things
+ in Dark Places, deathtype
+ is message when something is
+ killed by this.
+ default: " got in the way"
+"sounds"
+1) medieval (default)
+2) metal
+3) base
+*/
+/*QUAKED func_rotatingobject (.6 0 .9) ? TOUCHDMG STARTON NOTSOLID
+a rotating 'thing',
+like a spinning fan.
+
+Flags:
+"TOUCHDMG"
+ cause damage when touched,
+ not just when blocked.
+ (example: blades)
+"STARTON"
+ easy to guess this one,
+ meaningless if it can't be
+ triggered.
+"NOTSOLID"
+ if set, the object is not
+ solid.
+
+Keys:
+"dmg"
+ damage to cause when blocked.
+ default: 0
+"delay"
+ how long it takes
+ to completely spin up/down.
+ default: 0 (instant)
+"rotate"
+ rotation per second
+ (pitch yaw roll, in degrees).
+"target"
+ of course this must be set
+"targetname"
+ if set, it will only
+ start/stop spinning when
+ triggered, rather than
+ simply spinning all the time.
+"deathtype"
+ as with basically all things
+ in Dark Places, deathtype
+ is message when something is
+ killed by this.
+ default: " got in the way"
+*/
+/*QUAKED trigger_shake (1 .5 0) ? PLAYERONLY SILENT STARTON TOGGLE
+any player touching this feels an earthquake.
+
+when targeted it will flash on/off
+see STARTON, TOGGLE and delay
+
+flags:
+"PLAYERONLY"
+ only affects players.
+"SILENT"
+ no sound.
+"STARTON"
+ works in reverse, normally on, off when targeted.
+"TOGGLE"
+ switches on/off when targeted.
+
+keys:
+"delay"
+ how long it will stay switched when
+ targeted, ignored with TOGGLE.
+"targetname"
+ guess (flashes/toggles when targeted)
+*/
+/*QUAKED effect_spinningspotlight (0 1 0) (-8 -8 -8) (8 8 8)
+A spinning spot light,
+nifty disco like effects or anything
+else you think up.
+
+Keys:
+"angles"
+ starting direction in degrees (pitch yaw roll)
+"avelocity"
+ rotation speed in degrees per second (pitch yaw roll)
+*/
+/*QUAKED trigger_multiple (.5 .5 .5) ? notouch
+Variable sized repeatable trigger.  Must be targeted at one or more entities.  If "health" is set, the trigger must be killed to activate each time.
+If "delay" is set, the trigger waits some time after activating before firing.
+"wait" : Seconds between triggerings. (.2 default)
+If notouch is set, the trigger is only fired by other entities, not by touching.
+NOTOUCH has been obsoleted by trigger_relay!
+sounds
+1)	secret
+2)	beep beep
+3)	large switch
+4)
+set "message" to text string
+*/
+/*QUAKED trigger_once (.5 .5 .5) ? notouch
+Variable sized trigger. Triggers once, then removes itself.  You must set the key "target" to the name of another object in the level that has a matching
+"targetname".  If "health" is set, the trigger must be killed to activate.
+If notouch is set, the trigger is only fired by other entities, not by touching.
+if "killtarget" is set, any objects that have a matching "target" will be removed when the trigger is fired.
+if "angle" is set, the trigger will only fire when someone is facing the direction of the angle.  Use "360" for an angle of 0.
+sounds
+1)	secret
+2)	beep beep
+3)	large switch
+4)
+set "message" to text string
+*/
+/*QUAKED trigger_relay (.5 .5 .5) (-8 -8 -8) (8 8 8)
+This fixed size trigger cannot be touched, it can only be fired by other events.  It can contain killtargets, targets, delays, and messages.
+*/
+/*QUAKED trigger_secret (.5 .5 .5) ?
+secret counter trigger
+sounds
+1)	secret
+2)	beep beep
+3)
+4)
+set "message" to text string
+*/
+/*QUAKED trigger_counter (.5 .5 .5) ? nomessage
+Acts as an intermediary for an action that takes multiple inputs.
+
+If nomessage is not set, t will print "1 more.. " etc when triggered and "sequence complete" when finished.
+
+After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
+*/
+/*QUAKED info_teleport_destination (.5 .5 .5) (-8 -8 -8) (8 8 32)
+This is the destination
+marker for a teleporter.
+
+It should have a
+"targetname" field with
+the same value as a
+teleporter's "target"
+field.
+
+Keys:
+"dest"
+ velocity on exiting
+ teleport, nice for
+ tricks.
+ default: normal
+ (throws player out
+  a bit)
+*/
+/*QUAKED trigger_teleport (.5 .5 .5) ? PLAYER_ONLY SILENT
+Any object touching this will be transported to the corresponding info_teleport_destination entity. You must set the "target" field, and create an object with a "targetname" field that matches.
+
+If the trigger_teleport has a targetname, it will only teleport entities when it has been fired.
+*/
+/*QUAKED trigger_setskill (.5 .5 .5) ?
+sets skill level to the value of "message".
+Only used on start map.
+*/
+/*QUAKED trigger_onlyregistered (.5 .5 .5) ?
+Only fires if playing the registered version, otherwise prints the message
+*/
+/*QUAKED trigger_hurt (.5 .5 .5) ?
+Anything touching will be hurt.
+
+Keys:
+"dmg"
+ damage amount
+ default: 5
+"cnt"
+ how many times to trigger,
+ default: unlimited
+*/
+/*QUAKED trigger_push (.5 .5 .5) ? PUSH_ONCE SILENT
+Improved version of normal trigger_push.
+
+Pushes anything that touches it,
+or acts as a jump pad, hitting "target"
+at the apogee (peak) of the jump.
+
+Target should be an info_notnull.
+
+Flags:
+"PUSH_ONCE"
+ removes itself after push
+"SILENT"
+ no 'windtunnel' noise
+Keys:
+"angles"
+ direction to push.
+ (not for jumppad)
+"speed"
+ how fast.
+ (not for jumppad)
+"movedir"
+ direction of push,
+ this is turned into
+ a direction. (no speed)
+ (not for jumppad)
+"target"
+ acts as jump pad, hits this entity
+*/
+/*QUAKED trigger_monsterjump (.5 .5 .5) ?
+Walking monsters touching
+this will jump in the
+direction of the angle.
+
+Keys:
+"speed"
+ horizontal speed
+ default: 200
+"height"
+ upward speed
+ default: 200
+*/
+/*QUAKED trigger_playercount (0 .6 .8) (-8 -8 -8) (8 8 8)
+Triggers targets when enough players
+join the game.
+
+Recommended usage:
+Wall off a room from the rest of the map
+with vanishwalls/doors/etc, place this
+somewhere, target the vanishwalls and
+dm starts.
+(vanishwalls vanish, dm starts activate)
+
+Obviously this can trigger anything you
+like. (func_train, etc)
+
+Keys:
+"count"
+ how many players must join
+"count2"
+ if specified, this will immediately
+ trigger and remove itself if
+ maxplayers is at least this value.
+ (can be used with count as well,
+  although I can't imagine that being
+  useful...)
+"targetname"
+ if targetted, this will not begin
+ checking playercount until it is
+ triggered.
+ (works with count and count2)
+*/
+/*QUAKED trigger_stuffcmd (.5 .5 .5) (-8 -8 -8) (8 8 8)
+Stuffs the supplied commands into the client's console.
+Note: not touchable, must be targetted.
+fields:
+"targetname"
+ must be set
+"wait"
+ seconds between triggerings (.5 default)
+"message"
+ commands (such as "bf", use ; to separate commands)
+*/
+/*QUAKED trigger_ticker (0 .6 .8) (-8 -8 -8) (8 8 8)
+triggers it's targets
+every "delay" seconds.
+
+if targetname is set,
+it will only tick in bursts of
+"count" times and only when
+triggered.
+
+Keys:
+"delay"
+ time between triggers,
+ default 0.1, cannot go below 0.1.
+"count"
+ how many pulses to do when targeted
+ not used unless targetname is set
+ default 1
+"targetname"
+ as mentioned above
+"target"
+ must be set
+*/
+/*QUAKED worldspawn (0 0 0) ?
+Only used for the world entity.
+
+"worldtype"
+  <float> [enum]
+    0: DESERT
+    1: ICE
+    2: CITY
+    3: BADLANDS
+    4: TUNDRA
+  This affects things like environmental smoke puffs, possibly lighting, and fog?
+
+[map scripts]
+  "map_file"
+    <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.sav
+  "msn_file"
+    <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
+
+//COSMETICS
+[lighting]
+  "light"
+   default light level
+[level name]
+  "message"
+    <string> - the in-game name of the level
+    
+[level music]
+  "sounds"
+    <float> [CD track number] - play this track during gameplay
+
+[wind]
+  "c_ofs"
+    <vector> initial wind direction
+  "m_fspeed"
+    <float> initial wind speed
+
+[fog]
+  "fog_density" "1"
+    <float> 
+  "fog_color"
+    <vector> [color] - RGB {0.001 - 1.0} colors of the fog
+  "fog_alpha"
+    <float> [alpha] - {0.001 - 1.0} alpha transparency of the fog
+  "fog_dist"
+    <vector> [min distance, max distance, height] - distances of the fog
+  "fade"
+    <float> [fade depth] - units of fade transition from low alpha to opacity
+*/
+/*QUAKED func_xplowall (0 .5 .8) ? NoHeal SilverKey GoldKey
+
+Normally you must do enough damage
+in one blast to break the wall.
+
+Flags:
+"NoHeal"
+ progressive damage will break
+ this wall.
+"SilverKey"
+ will break if touched by player
+ with silver key.
+"GoldKey"
+ will break if touched by player
+ with gold key.
+
+Keys:
+"targetname"
+ will break if targeted.
+"target"
+ will trigger when destroyed.
+"health"
+ if health is -1 then can only be
+ broken by targeting and keys,
+ default 100
+ (close pipebomb will break).
+"dmg"
+ explosions do this much radius
+ damage if set.
+"count"
+ how many pieces of debris
+ (releases this much debris
+  total, some every explosion)
+ (default is 5, -1 for no debris)
+"count2"
+ how many explosions
+ (will release debris with none)
+ (default is 3, use -1 for none)
+"delay"
+ time between explosions
+ default: 0.1
+"wait"
+ time before respawning
+ (default is no respawn)
+ (this time is counted from the
+  last explosion)
+"style"
+ type of debris,
+ hard to describe these:
+0) red
+1) yellow
+2) green
+3) blue
+4) brown
+5) biege
+6) rock
+*/
+/*QUAKED func_wallchunk (0 .5 .8) ?
+wall chunk, destroyed by damage.
+
+you must do enough damage
+in one blast to break the wall.
+
+simply a nice effect,
+used in Dark Places maps.
+
+make a hole in the wall,
+cover it with a
+func_wallchunk,
+set the style for debris,
+and you've got a wall that
+gets damaged in a fight.
+
+actually just a simplified
+func_xplowall.
+
+normally 3 pieces of debris.
+set count to a dif # if you
+like.
+no explosions.
+
+Keys:
+"count"
+ how many pieces of debris.
+ default is 3.
+"style"
+ type of debris,
+ hard to describe these:
+0) red
+1) yellow
+2) green
+3) blue
+4) brown
+5) biege
+6) rock
+*/
+/*QUAKED func_group (0.6 0.6 1.0) ?
+This is not an entity as such. It is strictly an editor utility to group world brushes and patches together for convenience (selecting, moving, copying, etc). You cannot group entities with this.
+-------- KEYS --------
+None
+-------- SPAWNFLAGS --------
+None
+-------- NOTES --------
+The TAB key can be used to flip through the component pieces of a selected func_group entity, isolating individual components.
+*/
+/*QUAKED misc_model (1 .5 .25) (-16 -16 -16) (16 16 16)
+Place a model in the map.
+If target is set it follows the path defined by the target path_corner ents.
+noise and noise1 then define the noises to play during movement.
+button0 & 1 dont work when target is set.
+
+Keys:
+"angle" 
+ Direction in which model will be oriented.
+"model"
+ Path/name of model to use (eg: models/mapobjects/mymodel.md3).
+"target" 
+ First node to follow.
+"button0"
+ Startframe to play
+"button1"
+ Endframe to play
+"noise"
+ Start and movement sound (eg: sound1start.wav)
+"noise1"
+ Stop sound (eg: sound1stop.wav)
+"noise4"
+ Target name for use with the misc_rotateengine
+*/
+/*QUAKED _skybox (0.77 0.88 1.0) (-4 -4 -4) (4 4 4)
+-------- KEYS --------
+angle : Rotation angle of the sky surfaces.
+angles : Individual control of PITCH, YAW, and ROLL (default 0 0 0).
+_scale : Scaling factor (default 64), good values are between 50 and 300, depending on the map.
+-------- SPAWNFLAGS --------
+(none)
+-------- NOTES --------
+Compiler-only entity that specifies the origin of a skybox (a wholly contained, separate area of the map), similar to some games portal skies. When compiled with Q3Map2, the skybox surfaces will be visible from any place where sky is normally visible. It will cast shadows on the normal parts of the map, and can be used with cloud layers and other effects.
+*/
+//===========================================================
+//    battleMETAL AI objects
+//===========================================================
+
+/*QUAKED ai_node (0.988 0.976 0.267) (-10 -10 -18) (10 10 18) DROP_ONSPAWN REMOVE_ONTOUCH START_INACTIVE INACTIVE_ONTOUCH
+This is used to setup patrol and move paths for AI
+-------- KEYS -------- 
+.i_faction = <float> [faction number]
+.targetname = <string> used by AI to find node
+.target = <string> should target another AI node to form a chain
+.trigOnDeath = <string> [target] trigger this item when node is removed
+.trigOnSpawn = <string> [target] trigger this item when node isActive = true;
+.data_idx = <float> [enum]
+      AI_NODE_PATROL = 1;
+      AI_NODE_DEFEND = 2;
+      AI_NODE_ATTACK = 3;
+
+-------- SPAWNFLAGS -------- 
+DROP_ONSPAWN 1 - drop to floor on spawn
+REMOVE_ONTOUCH 2 - removed when touched
+START_INACTIVE 4 - start with .isActive = FALSE
+INACTIVE_ONTOUCH 8 - shutoff when touched by AI
+*/
+
+
+/*QUAKED ai_change_faction (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
+changes the i_faction field of the targeted objects
+
+-------- KEYS --------
+.i_faction    <float> [faction id] - the faction to set the target to
+.group        <string> [group] objects with this groupId will be affected
+.target        <string> [targetname] objects with this targetname will be affected
+.targetname    <string> [targetname] - for being called by other objects
+.wait        <float> [time] - use with []2 for delay-after-being-called
+-------- SPAWNFLAGS -------- 
+START_OFF 1 - start inactive
+REMOVE_ONUSE 2 - removed after its first use.
+DELAY 4 - wait after fire before execution
+*/
+
+
+/*QUAKED ai_change_rank (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
+changes the i_faction field of the targeted objects
+
+-------- KEYS -------- 
+.group        <string> [group] objects with this groupId will be affected
+.target        <string> [targetname] objects with this targetname will be affected
+.targetname    <string> [targetname] - for being called by other objects
+.ai_rank    <float> [rank] rank to change the targets ai_rank to.
+.wait        <float> [time] - use with []2 for delay-after-being-called
+-------- SPAWNFLAGS -------- 
+REMOVE_ONUSE 2 - removed after its first use.
+START_OFF 1 - start inactive
+REMOVE_ONUSE 2 - removed after its first use.
+DELAY 4 - wait after fire before execution
+*/
+//for galaxy's sake, make sure all parens are closed without spaces!
+
+//===========================================================
+//    battleMETAL Buildings Human
+//===========================================================
+/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26)
+*/
+
+
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5)
+*/
+
+
+/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26)
+*/
+
+
+/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80)
+*/
+
+
+/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40)
+*/
+
+
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40)
+*/
+
+
+/*QUAKED building_turret_light (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) CAMPAIGN COOP DM TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME
+*/
+//=================================================================================================
+//===========================================================
+//    battleMETAL  Debug Objects
+//===========================================================
+/*QUAKED debug_particles (0.988 0.267 0.553) (-3 -3 -3) (3 3 3) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE
+  Debugger for particle effects
+  
+-------- KEYS -------- 
+  .vec_name = <string> [effecinfo.txt name] - the particle effect to spawn
+  .c_ofs = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
+  .dest1 = <vector> [speed] -if effect needs a velocity vector
+  .count = <float> [particle amount] - total number of particles in the effect
+  .p_lifetime = <float> - time to live, use with spawnflags[2]
+  .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+  .count2 = <float> - speed, rate of particle cycle
+  .count3 = <bool> - 0 = pointparticle, 1 = trailparticle
+  .count4 = <float> - velocity multiplier
+-------- SPAWNFLAGS -------- 
+START_OFF 1 -  - only activated by trigger
+LIFETIME 2 - 
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+*/
+//===========================================================
+//    battleMETAL  Map Objects
+//===========================================================
+/*QUAKED map_nav_point (0.431 0.788 0.753) (-10 -10 -10) (10 10 10) - VISIT_PER_CLIENT OFF_AFTER_USE
+Nav Points are points of interest marked on Player maps. Players interact with them by visiting them, which can then fire triggers to additional game logic.
+
+-------- KEYS -------- 
+i_faction: float defines which factions this Nav Point belongs to
+data_idx: float enum  1 to 21, each must be unique because this determines the 'name' of the nav point client-side
+isActive: float enum  1 active unvisit active, faction hasn't visited that nav yet
+                             2 active visit  active, faction has been here
+                             0 hidden  this means hidden from other factions
+                             -1 inactive  hidden from everyone
+target: string ent  fire this map object when visited
+trigOnSpawn:string ent  fire this map object when activated
+trigOnTarget: string ent fire this OBJECTIVE when visited (special event channel for objectives)
+trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off the use function
+
+-------- SPAWNFLAGS -------- 
+VISIT_PER_CLIENT 2: only updates visited state per client
+OFF_AFTER_USE 4: deactivate after use
+*/
+
+
+/*QUAKED map_change_fog (0.431 0.788 0.753) (-4 -4 -4) (4 4 4) REMOVE_ONTOUCH
+A Map Wrapper for the fog cvar. Allows a map to take control of the fog setting in a controllabe way. 
+This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
+  
+fog cvar
+  density red green blue alpha mindist maxdist top fadedepth
+  
+-------- KEYS -------- 
+.fog_density = <float> [density] - new fog thickness
+.fog_color = <vector> [red, green, blue] - new color to transition to
+.fog_alpha = <float> [alpha] - new alpha value
+.fog_dist = <vector> [dist min, dist max, height] - new fog distance
+.fade = <float> [fade depth] - transition time
+
+Globals
+.stat_wep_state = <float> event
+    0 = do nothing
+    1 = transition to new fog
+    
+-------- SPAWNFLAGS -------- 
+REMOVE_ONTOUCH 1: remove on first touch
+*/
+/*QUAKED map_change_music (0.431 0.788 0.753) (-3 -3 -3) (3 3 3) REMOVE_FIRSTUSE LOOP
+Primarily a map wrapper for the SVC_CDTRACK message, but also a manager of  it as well. 
+This map ent provides map-level control of the music playback code and sound channel. 
+It runs exlcusively on the CD tracks using a track number, so it is unable to process arbitrary sounds.
+  
+-------- KEYS -------- 
+.comp_id = <float> [trackid] CD Track to play
+.targetname = <string> [targetname] - make triggerable
+
+-------- SPAWNFLAGS -------- 
+REMOVE_FIRSTUSE 1: remove on first fire
+LOOP 1: loop track
+*/
+
+
+/*QUAKED map_change_wind (0.431 0.788 0.753) (-5 -5 -5) (5 5 5) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE RESTORE_WORLDVAL
+Every map can have a wind direction and velocity that affects VFX like sparks and smoke.
+This map object is to allow the map to alter this value.
+This is NEVER a touchable map object!
+
+world.v_angle = win direction
+world.m_fspeed = wind speed  
+-------- KEYS -------- 
+.c_ofs = <vector> [wind direction] - the 3d direction of the new wind
+.p_velocity = <float> [wind speed] - speed of wind in given direction
+.p_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1 - START_OFF - only activated by trigger
+LIFETIME 2 - lifetime
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+RESTORE_WORLDVAL 16 - restore original wind values
+*/
+
+
+/*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH
+A Damage Zone is an area that hurts all units within the zone.
+  
+-------- KEYS -------- 
+.mins = <vector> lower bounds of box
+.maxs = <vector> upper bounds of box
+.targetname = <string> [targetname] - make triggerable
+.p_damage = <float> - amount of damage to impart
+.p_dmgtype = <float> [flag] 1 - DMG SHIELDS
+.p_dmgtype = <float> [flag] 2 - DMG ARMOR
+.p_dmgtype = <float> [flag] 4 - DMG ENERGY
+.p_dmgtype = <float> [flag] 8 - DMG SPEED
+.p_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1 - START_OFF - only activated by trigger
+LIFETIME 2 - lifetime
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+REMOVE_ONTOUCH 16 - remove on first touch
+ACTIVE_ONTOUCH 32 - activate on-touch
+*/
+
+
+/*QUAKED map_deploy_point (0.431 0.788 0.753) (-12 -12 -12) (12 12 12)
+Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
+Deploy points can be tailored to specific i_factions, and can be activated/deactivated.
+
+-------- KEYS -------- 
+.i_faction = <float> - Deploy Point only appears for this faction
+.data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
+.isActive = <float> [bool] - if active, allow players to spawn here.  
+.trigOnSpawn = <string> [target] - map object to fire when this is created
+*/
+
+
+/*QUAKED map_fail_objective (0.431 0.788 0.753) (-8 -3 -8) (8 3 8) - ON_TOUCH
+Merely a necessary interstitial map object to set a Mission Objective to 'fail'.
+This should be used sparingly, they clean themsleves up after firing.
+
+-------- KEYS -------- 
+.target = <string> [objective targetname] - objective to trigger.
+.mins = <vector> [lower half of bounding box]
+.maxs = <vector> [upper half of bounding box] - use both of these with spawnflags[2]
+
+-------- SPAWNFLAGS -------- 
+ON_TOUCH 2 - ALLOW TRIGGER TOUCH
+*/
+
+
+/*QUAKED map_hud_highlight (0.431 0.788 0.753) (-8 -8 -8) (8 8 8) START_OFF ON_TOUCH REMOVE_FINISH FACTION_ONLY DROPTOFLOOR FREEZE_PLAYER COOLDOWN CALL_BY_TRIGGER
+  HUD Highlighting is a map event sent to chosen clients. This creates a colored box around a portion of the player's screen
+  for a set amount of time. The use case is primarily for information and training purposes, but can be useful in other ways.
+  
+-------- KEYS -------- 
+.movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
+.c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
+.color = <vector> [red, green, blue] - color of the box
+.i_faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+.p_lifetime = <float> [time to draw] - amount of time to draw box for
+
+.target = <string> [ent] - fire this trigger when done
+.wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
+-------- SPAWNFLAGS --------
+START_OFF 1 - will start as deactivated
+ON_TOUCH 2 - will react to being touched by a players
+REMOVE_FINISH 4 - will be removed when finished playing
+FACTION_ONLY 8 - only reacts to this i_faction
+DROPTOFLOOR 16 - object drops to floor for easier touch possibility
+FREEZE_PLAYER 32 - any players that trigger the Animatic are frozen in place
+COOLDOWN 64 - use .wait
+CALL_BY_TRIGGER 128 - must be used with START_OFF
+*/
+
+
+/*QUAKED map_no_shoot (0.431 0.788 0.753) (-3 -3 -3) (3 3 3) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE
+A map object that modifies unit flags, controlling whether and for how long a unit has the given flags.
+this is very powerful and mostly only used for FL_NOSHOOT
+
+-------- KEYS -------- 
+.comp_id = <float> [flags]  flags you want modified
+.p_dmgtype = <float> [flags] 1 - Affect FL_CLIENT ONLY
+.delay = <float> delayed start
+
+-------- SPAWNFLAGS --------
+START_OFF 1 -  - only activated by trigger
+LIFETIME 2 - 
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+*/
+
+/*QUAKED map_objective (0.431 0.788 0.753) (-3 -3 -3) (3 3 3) START_OFF ACTIVE_ONTOUCH
+  An Objective a specific map object.
+  Map Objectives are named triggers that are sent to the client for interaction.
+  Map Objectives MUST map to an Objective ID in the Map's MSN File.
+  These objects don't have to be anywhere specifically, they mostly just help hold game
+  state
+  
+-------- KEYS -------- 
+.data_idx =  <float> [objective id] - must match a number in the msn_file
+.isActive = <float> [enum]  0 = hidden/inactive 
+                            1 = active
+                            2 = complete
+                            -1 = failed
+.i_faction = <float> faction for this objective
+.target = <string> [targetname] - fire THIS trigger when Objective is COMPLETE, isActive == 2
+.state_1 = <float> [enum] - determines which SFX to play when 'completed'
+                  1 = primary 
+                  2 = secondary
+                  3 = tertiary
+.count = <float> [sum] - only complete objective when count is hit;
+.trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
+
+-------- SPAWNFLAGS --------
+START_OFF 1 - 
+ACTIVE_ONTOUCH 2 - ALLOW TRIGGER TOUCH
+*/
+
+
+/*QUAKED map_projectile_shooter (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE DRAW_MODEL LIMITED_FIRE
+Mostly for debug, but could be handy in-general.
+Projectile Shooter that uses weapons-fire.
+  
+-------- KEYS -------- 
+.data_idx = <float> [weapon id] - the weapon to use
+.count = <float> [particle amount] - set a max number of shots
+.count3 = <float> [rate of fire] - interval to try next shot;
+.p_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS --------
+START_OFF 1 - START_OFF - only activated by trigger
+LIFETIME 2 - lifetime
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+DRAW_MODEL 16 - draw the whole weapon model
+LIMITED_FIRE 32 - use limited number of shots
+*/
+/*QUAKED func_mission_boundary (0.95 0.99 0) ?
+Defines the boundaries for a player, this will send warnings about leaving 
+the mission area if player stays inside this bounds.
+usually pair this will a killbox if player wanders outside map.
+
+*/
+//=================================================================================================
+//===========================================================
+//    battleMETAL  Misc Objects
+//===========================================================
+
+
+/*QUAKED scenery_rock_column (0.431 0.788 0.753) (-90 -90 -24) (90 90 142) RANDOM_TYPE RANDOM_ANGLE
+A scenery object, solid bsp
+-------- KEYS -------- 
+data_idx: float tpye 0 3 - which model to load
+
+-------- SPAWNFLAGS -------- 
+RANDOM_TYPE 1: randomizes between 1 and 4
+RANDOM_ANGLE 2: random yaw rotation
+*/
+//===========================================================
+//    battleMETAL AI Units
+//===========================================================
+//
+//  UNIT: DUNERUNNER
+//  TYPE: GEV
+//  SIZE: SMALL
+//  --------------------------------
+//
+/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ATC | ATC
+    PRIMITIVE
+  Skill 2
+    FLAK | ATC
+    LOWTECH
+  Skill 3
+    LAS | LAS
+    SKIRMISH 
+*/
+
+/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    LAS | ATC
+    LOWTECH
+  Skill 2
+    LAS | LAS
+    SKIRMISH
+  Skill 3
+    LAS | QRFL
+    MARKSMAN 
+*/
+
+//
+//  UNIT: FOSLAGER
+//  TYPE: TANK
+//  SIZE: MEDIUM
+//  --------------------------------
+//
+
+/*QUAKED unit_foslager_h (1 0 0.75) (-20 -20 -8) (20 20 12) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    MIS | LATC | LAS
+    LOWTECH
+  Skill 2
+    MLG | LATC | LAS
+    SKIRMISH
+  Skill 3
+    ION | LAT | FLAK
+    MARKSMAN 
+*/
+
+/*QUAKED unit_foslager_m (1 0 0.75) (-20 -20 -8) (20 20 12) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ESR | LATC | LAS
+    SKIRMISH
+  Skill 2
+    PAC | LATC | FLAK
+    MARKSMAN
+  Skill 3
+    ION | RPC | FLAK
+    SNIPER
+*/
+
+//
+//  UNIT: TROWEL
+//  TYPE: TANK
+//  SIZE: HEAVY
+//  --------------------------------
+//
+/*QUAKED unit_trowel_m (1 0 0.75) (-30 -30 -7.75) (30 30 20) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ESR | ESR
+    MARKSMAN
+  Skill 2
+    ESR | SFGA
+    SNIPER
+  Skill 3
+    PAC | SFGA
+    SNIPER
+*/
+/*QUAKED unit_trowel_h (1 0 0.75) (-30 -30 -7.75) (30 30 20) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    MIS | ION
+    LOWTECH
+  Skill 2
+    RPC | ION
+    SKIRMISH
+  Skill 3
+    SFGA | EMP
+    MARKSMAN
+*/
+
+//
+//  UNIT: ONNEK
+//  TYPE: TANK DESTROYER
+//  SIZE: MEDIUM
+//  --------------------------------
+//
+/*QUAKED unit_onnek_h (1 0 0.75) (-25 -25 -10.25) (25 25 14) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ION
+    LOWTECH
+  Skill 2
+    EMP
+    SKIRMISH
+  Skill 3
+    ESR
+    MARKSMAN
+*/
+
+/*QUAKED unit_onnek_m (1 0 0.75) (-25 -25 -10.25) (25 25 14)  CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    PAC
+    SKIRMISH
+  Skill 2
+    EMP
+    MARKSMAN
+  Skill 3
+    SFGA
+    SNIPER
+*/
+
+//
+//  UNIT: SORCERER
+//  TYPE: MISSILE TANK
+//  SIZE: MEDIUM
+//  --------------------------------
+//
+/*QUAKED unit_sorcerer_h (1 0 0.75) (-20 -20 -11) (20 20 14) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    MIS | MIS
+    PRIMITIVE
+  Skill 2
+    MIS | MLG
+    LOWTECH
+  Skill 3
+    MLG | MLG
+    SKIRMISH
+*/
+
+/*QUAKED unit_sorcerer_m (1 0 0.75) (-20 -20 -11) (20 20 14) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ARH | ARH
+    SKIRMISH
+  Skill 2
+    MLG | MLG
+    MARKSMAN
+  Skill 3
+    SWRM | SWRM
+    SNIPER
+*/
+
+//
+//  METAL : BALAKET
+//
+/*QUAKED unit_balaket_sniper_h (1 0 1) (-14 -14 -35) (14 14 16) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ATC | ATC | LAS
+    LOWTECH
+  Skill 2
+    LAS | ATC | FLAK
+    SKIRMISH
+  Skill 3
+    LAS | LAS | LGM
+    MARKSMAN
+*/
+/*QUAKED unit_balaket_sniper_m (1 0 1) (-14 -14 -35) (14 14 16) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ATC | ATC | QRF
+    SKIRMISH
+  Skill 2
+    LAS | LAS | MARH
+    MARKSMAN
+  Skill 3
+    LAS | QRFL | PAC 
+    SNIPER
+*/
+/*QUAKED unit_balaket_brawl_h (1 0 1) (-14 -14 -35) (14 14 16) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    FLAK | FLAK | ION
+    PRIMITIVE
+  Skill 2
+    LAS | LAS | MIS
+    LOWTECH
+  Skill 3
+    ATC | ATC | ESR
+    SKIRMISH
+*/
+/*QUAKED unit_balaket_brawl_m (1 0 1) (-14 -14 -35) (14 14 16) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    LAS | LAS | RPC
+    LOWTECH
+  Skill 2
+    FLAK | FLAK | ESR
+    SKIRMISH
+  Skill 3
+    ATC | ATC | PAC
+    MARKSMAN
+*/
+
+/*QUAKED unit_balaket_brawl_p (1 0 1) (-14 -14 -35) (14 14 16) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    LAS | LAS | RPC
+    LOWTECH
+  Skill 2
+    FLAK | FLAK | ESR
+    SKIRMISH
+  Skill 3
+    ATC | ATC | PAC
+    MARKSMAN
+*/
+
+//
+//  METAL : MATOK
+//
+/*QUAKED unit_matok_sniper_h (1 0 1) (-17 -17 -40) (17 17 22) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ATC | ATC | FLAK | FLAK | ION
+    SKIRMISH
+  Skill 2
+    FLAK | FLAK | ION | LAS | QRF
+    MARKSMAN
+  Skill 3
+    LAS | LAS | LAS | LAS | LAS
+    SNIPER
+*/
+/*QUAKED unit_matok_sniper_m (1 0 1) (-17 -17 -40) (17 17 22) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    LAS | LAS | QRF | FLAK | ION 
+    MARKSMAN
+  Skill 2
+    LAS | LAS | LAS | LAS | MARH
+    SNIPER
+  Skill 3
+    LAS | LAS | QRF | ATC | PAC
+    SNIPER
+*/
+/*QUAKED unit_matok_sniper_p (1 0 1) (-17 -17 -40) (17 17 22) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    LAS | LAS | QRF | FLAK | ION 
+    MARKSMAN
+  Skill 2
+    LAS | LAS | LAS | LAS | MARH
+    SNIPER
+  Skill 3
+    LAS | LAS | QRF | ATC | PAC
+    SNIPER
+*/
+/*QUAKED unit_matok_brawl_h (1 0 1) (-17 -17 -40) (17 17 22) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ATC | FLAK | LAS | MIS | ION
+    LOWTECH
+  Skill 2
+    LAS | LAS | MLG | MIS | SFGA
+    SKIRMISH
+  Skill 3
+    LAS | LAS | ION | LAS | RPC
+    SKIRMISH
+*/
+/*QUAKED unit_matok_brawl_m (1 0 1) (-17 -17 -40) (17 17 22) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ATC | ATC | ESR | ION | MIS
+    SKIRMISH
+  Skill 2
+    QRF | FLAK | ESR | RPC | LGM 
+    MARKSMAN
+  Skill 3
+    QRF | LAS | RPC | RPC | EMP
+    MARKSMAN
+*/
+
+//
+//  METAL : MONITOR
+//
+/*QUAKED unit_monitor_brawl_h (1 0 1) (-22 -22 -44) (22 22 28) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    ATC | FLAK | ATC | FLAK | LAS | LAS | MIS | ARH | MIS
+    PRIMITIVE
+  Skill 2
+    ATC | FLAK | ATC | FLAK | EMP | ESR | MIS | MIS | MIS
+    LOWTECH
+  Skill 3
+    LAS | ATC | LAS | ATC | SFGA | SFGA | MIS | MIS | MIS
+    SKIRMISH
+*/
+/*QUAKED unit_monitor_brawl_m (1 0 1) (-22 -22 -44) (22 22 28) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    FLAK | FLAK | FLAK | FLAK | RPC | EMP | MIS | MARH | MARH
+    LOWTECH
+  Skill 2
+    LAS | ATC | LAS | ATC | EMP | ESR | MLG | MLG | MLG
+    SKIRMISH
+  Skill 3
+    LAS | LAS | LAS | LAS | ESR | ESR | ENBAT | ENBAT | RECAP
+    MARKSMAN
+*/
+/*QUAKED unit_monitor_brawl_p (1 0 1) (-22 -22 -44) (22 22 28) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    FLAK | FLAK | FLAK | FLAK | RPC | EMP | MIS | MARH | MARH
+    LOWTECH
+  Skill 2
+    LAS | ATC | LAS | ATC | EMP | ESR | MLG | MLG | MLG
+    SKIRMISH
+  Skill 3
+    LAS | LAS | LAS | LAS | ESR | ESR | ENBAT | ENBAT | RECAP
+    MARKSMAN
+*/
+/*QUAKED unit_monitor_sniper_m (1 0 1) (-22 -22 -44) (22 22 28) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Skill 0 | 1
+    LAS | ATC | LAS | ATC | PAC | QRF | MARH | ENBAT | ATGM
+    MARKSMAN
+  Skill 2
+    ATC | ATC | ATC | ATC | PAC | PAC | ATGM | ENBAT | HSEM
+    SNIPER
+  Skill 3
+    LAS | LAS | LAS | LAS | LGM | LGM | ENBAT | ATGM | HSEM
+    SNIPER
+*/

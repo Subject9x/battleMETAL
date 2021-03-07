@@ -1,2 +1,5 @@
-//list all desired tdm maps here
-t1m4.bsp
+//list all desired tdm maps here for the menu
+dm1
+dm2
+dm4
+tdm1

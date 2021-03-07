@@ -1,3 +1,14 @@
 //list the FIRST map in each coop campaign
-c1m1.bsp
-c2m1.bsp
+//make sure coop maps have info_player_coop!
+o1m1
+o1m2
+o1m3
+o1m4
+o1m5
+o2m1
+o2m2
+o2m3
+o2m4
+o2m5
+o3m1
+o3m2

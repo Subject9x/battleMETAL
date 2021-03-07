@@ -1,0 +1,16 @@
+//**********************************************************************//
+//	shaderlist.txt modified for battlemetal				//
+//      								//
+//      contains only shaders used in-game.				//
+//**********************************************************************//
+
+// this file lists all the separate shader files
+building
+common
+concrete
+metalskies
+projectile
+radicals
+terrain
+sand
+snow

@@ -9,8 +9,8 @@
   'sector' : 'Habzone'
   'location' : 'Commercia Band 3'
   'time' : '04;12;37;91'
-  'brief' : '-COMM INTERCEPT- | Lord Gavir> Ok barons, lets check the damage, what are we looking at? | | SRV.OFC> Hab-Block 19 base reporting in; all quiet since yesterday, we`re at 63% casualties. | | L.Gavir> -sigh- That bad, well how about the Militar garrison? | | SRV.OFC> They appear to be in similar straits, I sent out a patrol to keep tabs on them. | | L.Gavir> Good enough, I`m rebuilding Royal Command with survivors, but your orders for now are to start salvaging equipment in the city. Anything else? | | SRV.OFC> Understood my Lord, there is one other thing - a few listening posts have picked up heavily encrypted radio signals coming from the Deep Wastes. One <METAL> squad also reported flares about 8 kliks out from our position. Certain key hashes matched this...`PSC` series of radio bands? | | L.Gavir> That...name... I may have heard something about it years ago. Something about early-warning systems in case of planetary invasion <snort>. Just keep an eye or two on it for now, probably a nuke-triggered malfunction. | | SRV.OFC> roger, my lord, ending comm. | <TRANSMISSION TERMINATED>'
-  'intel' : 'PSC lacks necessary data to provide accurate prediction models for weapons and equipment. | PSC recommends lightest possible metal node to reduce material risk at this crucial juncture. | | Engaging Hostile Forces is not advised at this time.'
+  'brief' : '-COMM INTERCEPT- | [Lord Gavir] Ok barons, lets check the damage, what are we looking at? | | [SRV.OFC] Hab-Block 19 base reporting in; all quiet since yesterday, we`re at 63% casualties. | | [L.Gavir] -sigh- That bad, well how about the Militar garrison? | | [SRV.OFC] They appear to be in similar straits, I sent out a patrol to keep tabs on them. | | [L.Gavir] Good enough, I`m rebuilding Royal Command with survivors, but your orders for now are to start salvaging equipment in the city. Anything else? | | [SRV.OFC] Understood my Lord, there is one other thing - a few listening posts have picked up heavily encrypted radio signals coming from the Deep Wastes. One <METAL> squad also reported flares about 8 kliks out from our position. Certain key hashes matched this...`PSC` series of radio bands? | | [L.Gavir] That...name... I may have heard something about it years ago. Something about early-warning systems in case of planetary invasion <snort>. Just keep an eye or two on it for now, probably a nuke-triggered malfunction. | | [SRV.OFC] roger, my lord, ending comm. | <TRANSMISSION LOST>'
+  'intel' : 'PSC lacks necessary data to provide accurate prediction models for weapons and equipment. | | PSC recommends lightest possible metal node to reduce material risk at this crucial juncture. | | Engaging Hostile Forces is not advised at this time.'
   'objtotal' : '5'
   'anim' : ''
 }
@@ -39,4 +39,5 @@
   'objid' : '5'
   'objtype': 'primary'
   'objdesc' : 'Escape to (ETA).'
+  'items' : '10'
 }

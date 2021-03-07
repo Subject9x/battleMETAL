@@ -41,6 +41,7 @@ void() data_projectile_ini_ion_={
     self.alpha = 0.75;
     self.traileffectnum = particleeffectnum("TE_ION_TRAIL");
     self.pcl_explode = projectile_ion_expl;
+    self.scale = 2;
   #endif
     
   #ifdef SSQC

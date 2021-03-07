@@ -1537,15 +1537,14 @@
     blend alpha
     color 0x00FF00 0xACFA58
     tex 48 56
-    size 1 2
-    sizeincrease 1
-    alpha 96 256 256
-    time 0.075 0.2
-    gravity 0.003
+    size 2 3
+    sizeincrease 0.5
+    alpha 96 256 275
+    gravity 0.004
     originjitter 0.25 0.25 0.25
     velocityjitter 0.7 0.7 0.7
     velocitymultiplier -0.001
-    trailspacing 13
+    trailspacing 18
     
   //TE_RPC_TRAIL - GREEN LIGHT
     effect TE_RPC_TRAIL

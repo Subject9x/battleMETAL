@@ -1,0 +1,18 @@
+{
+  'music'   : 12,
+  'nomusic' : 0,
+  'backimg' : ,
+  'trans'   : ,
+}
+{
+  'image' : gfx/anim/anim3/a3f1.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 8,
+  'flags'  : 20,
+}

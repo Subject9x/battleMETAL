@@ -355,7 +355,6 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
 void() te_shield_hit_predraw={
   interpolate_origin();
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  self.angles_y = self.angles_y + 5;
   self.alpha = 0.075;
   if(self.owner.clientLocalId == player_localentnum){
     if( self.owner.chaseActive == FALSE ){
