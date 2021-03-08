@@ -109,10 +109,10 @@ void() data_ini_attack_latc_={
   else{
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0 ){
-        t_damage_shield(trace_ent, self,self.owner, self.damageValue, trace_endpos, FALSE); 
+        t_damage_shield(trace_ent, self,self.owner, self.damageValue * 0.5, trace_endpos, FALSE); 
       }
       else{
-        t_damage(trace_ent, self, FIRE_ENT, self.damageValue * 1.5, FIRE_ENDPOINT, '0 0 0');
+        t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
       } 
     }
   }

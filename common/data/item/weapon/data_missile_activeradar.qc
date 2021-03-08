@@ -31,12 +31,12 @@ void() data_ini_missile_activeradar_={
   self.data_idx = UID_ITEM_missile_activeradar;
   
   self.w_clipsize = 1;
-  self.reloadRate = 5;
-  self.reloadMax = 5;
+  self.reloadRate = 8;  //5
+  self.reloadMax = 8; //5
   self.energyRate = 0;
   
   self.w_range = 4000;
-  self.damageValue = 99;
+  self.damageValue = 125;  //99
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;
@@ -81,9 +81,7 @@ void() data_ini_attack_missile_activeradar_={
       hold = self;
       self = hold.owner;
       if( util_checkPointAngleImpl(self.enemy.origin) ){
-        if( (self.targLockState & LOCK_TARG_HAS) ){
-          canFire = TRUE;
-        }
+        canFire = TRUE;
       }
       self = hold;
     }

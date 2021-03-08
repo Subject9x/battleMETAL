@@ -22,7 +22,7 @@ cl_beams_instantaimhack 0
 cl_beams_quakepositionhack 1
 cl_beams_lightatend 0
 r_coronas 0
-r_deformvertexes 0
+r_deformvertexes 1
 r_explosionclip 0
 r_lerpmodels 1
 r_lerpsprites 0

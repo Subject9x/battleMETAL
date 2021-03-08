@@ -31,8 +31,8 @@ void() data_ini_plasma_={
   self.data_idx = UID_ITEM_rotary_plasma;
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.45;
-  self.reloadMax = 0.45;
+  self.reloadRate = 0.55; //0.45
+  self.reloadMax = 0.55; //0.45
   self.energyRate = 0;
   
   self.w_range = 1800;

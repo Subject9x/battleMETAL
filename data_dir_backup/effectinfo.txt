@@ -900,21 +900,36 @@
     stainalpha 256 512
     stainsize 2 2.5
     staintex 36 36
- 
- //TE_FLK_TRAIL - SMOKE
+
+  //TE_FLK_TRAIL - SMOKE
     effect TE_FLK_TRAIL
     count 1
-    type alphastatic
+    type smoke
     blend alpha
-    color 0x331100 0x662200
+    //color 0x331100 0x662200
+    color 0x000000 0x1C1C1C
     tex 8 15
-    size 1.5 2
-    sizeincrease 0.1
-    alpha 200 300 150
+    size 3 4
+    sizeincrease 0.75
+    alpha 200 300 100
     originjitter 0.33 0.33 0.33
     velocityjitter 0.1 0.1 0.1
-    trailspacing 24
-    airfriction 1.25
+    trailspacing 32
+
+  //TE_FLK_TRAIL - SHRAPNEL
+    effect TE_FLK_TRAIL
+    count 5
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFF8000 0xFE2E2E
+    tex 34 34
+    size 1 2.5
+    sizeincrease -0.25
+    alpha 400 500 425
+    originjitter 0.15 0.15 0.15
+    velocityjitter 0.33 0.33 0.33
+    trailspacing 32
 //=====================================================
 
 
