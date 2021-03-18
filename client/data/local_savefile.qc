@@ -74,8 +74,10 @@ void( float serverMode, float overrideFlag ) cl_set_savepath={
   }
   cl_load_savefile( filePath );
   if( serverMode == GAMEMODE_CAMPAIGN && cvar_string("sv_worldbasename") != "cin_menu" ){
-    cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
+    if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) ){
+      cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
                                 //this is to save player progress on entering a new map, lame hack.
+    }
   }
 };
 

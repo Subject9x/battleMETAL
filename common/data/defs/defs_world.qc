@@ -22,6 +22,7 @@ entity() world_ini_serverInfo_ent={
   setsize(eServerInfo, VEC_HULL_MIN, VEC_HULL_MAX);
   setorigin(eServerInfo, world.origin);
   
+  eServerInfo.serverFlags = serverflags;
   eServerInfo.SendEntity = world_rules_sendEntity;
   eServerInfo.SendFlags = eServerInfo.SendFlags | SENDFLAG_NEWENT;
   eServerInfo.think = world_server_rules_frame;
@@ -46,8 +47,8 @@ void() world_server_rules_frame={
     self.SendFlags = self.SendFlags | SENDFLAG_RULE_LIMIT_TIME;
   }
   
-  if( self.serverFlags != cvar("serverFlags") ){
-    self.serverFlags = cvar("serverFlags");
+  if( self.serverFlags != serverflags ){
+    self.serverFlags = serverflags;
     self.SendFlags = self.SendFlags | SENDFLAG_SERVERFLAGS;
   }
   
@@ -164,7 +165,6 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   if( (changeFlags & SENDFLAG_MISSION_STATUS) ){
     self.missionStatusPrev = self.missionStatus;
     self.missionStatus = ReadByte();
-    dprint(sprintf("ENT_SERVER_INFO.missionStatus == %s\n", ftos(self.missionStatus))); //debug
   }
   
   if( (changeFlags & SENDFLAG_MISSION_RESULT) ){
@@ -187,7 +187,6 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   if( (changeFlags & SENDFLAG_RULE_LIMIT_TIME) ){
     if( self.gameType == GAMEMODE_DM || self.gameType == GAMEMODE_TEAMDM ){
       self.ruleTimelimit = ReadLong();
-      dprint(sprintf("ENT_SERVER_INFO.ruleTimelimit == %s\n", ftos(self.ruleTimelimit))); //debug
     }
   }
   if( (changeFlags & SENDFLAG_MAP_NEXT) ){
@@ -221,7 +220,6 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     SV_TIMELIMIT = self.ruleTimelimit;
   }
   
-  //cvar_set("gamemode", ftos(self.gameType));
   if(CLIENT_player_state == PLAYER_CONNECT ){
     cl_set_savepath(self.gameType, (self.serverFlags & SVFLAG_ITEMOVER) );
   }

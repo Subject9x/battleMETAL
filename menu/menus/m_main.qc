@@ -54,10 +54,6 @@ void() click_main_camp={
 };
 
 void() click_main_train={
-  menu_clear_items(M_STATE);
-  M_STATE = M_MAIN;
-  m_main_f();
-  menu_exit_togame();
   cvar_set("cl_ismenu","0");
   cvar_set("skill", "1");
   cvar_set("sv_public", "-2");
@@ -65,6 +61,10 @@ void() click_main_train={
   cvar_set("coop", "0");
   cvar_set("teamplay", "0");
   cmd("maxplayers 1;\n");
+  
+  menu_clear_items(M_STATE);
+  menu_exit_togame();
+  
   cmd("map training_only\n");
 };
 
