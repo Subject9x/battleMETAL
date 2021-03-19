@@ -263,6 +263,9 @@ float CHAIN_FIRE_INTERVAL = 0.15;
 float DMG_TORSO_CRIT_MULTI = 1.5; // t_damage() - line 124, damage multiplier when mechs have torsos destroyed.
 float DMG_FRIENDLY_FIRE_REDUCE = 0.67;  // t_damage() - line 35, damage reduction for friendly fire when the flag is on.
 float DMG_FRIENDLY_FIRE_REDUCE_SKILL = 0.33;
+
+float MOVE_RAM_SCALAR_UP = 0.004;
+float MOVE_RAM_SCALAR_DN = 0.01;
 //============================
 //     WEAPON FLAGS
 //============================

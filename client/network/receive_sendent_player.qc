@@ -546,7 +546,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local float prevMoveState;
   local float prevBurn;
   local float newCrits;
-  local float nextHit;
   local float frameItr;
   
   prevBurn = self.burnBits;
@@ -604,10 +603,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - Player has taken fire
   */
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    nextHit = ReadByte();
-    if( self.shieldHitFlag == FALSE || nextHit == SHIELD_HIT_EXP){
-      self.shieldHitFlag = nextHit;
-    }
+    self.shieldHitFlag = ReadByte();
   }
   
   /*
@@ -767,8 +763,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   //Shield strike event
-  if(servertime > self.shieldEffectTime ){
-    if( self.shieldHitFlag == SHIELD_HIT_UP && (self.shield > 0 && self.shield < 100.01)){
+  if( self.shieldHitFlag == SHIELD_HIT_UP && (self.shield > 0 && self.shield < 100.01)){
+    if( time > self.shieldEffectTime ){
+      self.shieldEffectTime = time + 0.5;
       te_shield_hit();
     }
   }
