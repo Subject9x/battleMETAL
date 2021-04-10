@@ -17,7 +17,14 @@ textures/radicals/mineral_a
 textures/radicals/radiate_a
 {
 	qer_editorimage textures/radicals/radiate_a.tga
-
+  deformVertexes wave 10 sin 0 .1 0 .25
+  deformVertexes wave -10 sin 0 .1 .25 .5
+  {
+      map q3mdl/map/rads/rad_base_lg.tga
+      tcMod turb 0 0.1 0 .01
+      tcMod rotate 0.25
+      rgbGen lightingDiffuse
+  }
 	{
 		map $lightmap
 		rgbGen identity
@@ -33,11 +40,18 @@ textures/radicals/radiate_a
 textures/radicals/quantum_a
 {
 	qer_editorimage textures/radicals/quantum_a.tga
-
-	{
-		map $lightmap
-		rgbGen identity
-	}
+  tesssize 32
+  deformVertexes wave 10 square 0 .5 0 1
+  {
+		map textures/radicals/quantum_a.tga
+    tcMod turb 0 0.5 0 .05
+    tcMod rotate 1
+  }
+  {
+    map $lightmap
+    blendfunc GL_DST_COLOR GL_ZERO
+    rgbGen vertex
+  }
 	{
 		map textures/radicals/quantum_a.tga
 		tcMod scale 1 1

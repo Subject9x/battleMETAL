@@ -402,7 +402,7 @@ textures/common/lavacaulk
 	surfaceparm lava
 }
 
-textures/common/alpha_000
+textures/common/alpha_0
 {
   qer_editorImage textures/common/alpha_0.tga
   q3map_alphaMod volume
@@ -422,4 +422,11 @@ textures/common/alpha_100
   surfaceparm nonsolid
   surfaceparm trans
   qer_trans 0.7
+}
+
+textures/blend/terrain_base
+{
+  q3map_terrain
+  q3map_nonplanar
+  q3map_shadeangle 179
 }

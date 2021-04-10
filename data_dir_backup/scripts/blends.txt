@@ -1,0 +1,33 @@
+
+//BLENDS
+//  basin_b -> desert_b
+//  basin_b -> rock_b
+
+//  desert_b -> rock_b
+//  desert_b -> basin_b
+//  desert_b -> high_b
+
+//  high_b -> rock_b
+// high_b -> deser_b
+
+
+ice_a -> ice_rock_a
+ice_a -> snow_a
+
+snow_a -> ice_a
+snow_a -> ice_rock_a
+snow_a -> high_snow_a
+
+high_snow_a -> ice_rock_a
+high_snow_a -> snow_a
+
+
+ice_b -> ice_rock_b
+ice_b -> snow_b
+
+snow_b -> ice_b
+snow_b -> ice_rock_b
+snow_b -> high_snow_b
+
+high_snow_b -> ice_rock_b
+high_snow_b -> snow_b

@@ -1,0 +1,25 @@
+textures/terrain/terrain_base
+{
+    q3map_nonplanar    
+    q3map_shadeangle 135
+}
+
+textures/terrain/e1m2_dirt_rock
+{
+    q3map_baseShader textures/terrain/terrain_base
+    {
+        map textures/e1m2/e1m2_drt1_1_l
+    }
+
+    {
+        map textures/e1m2/e1m2_rck1_1
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        alphagen vertex
+    }
+
+    {
+        map $lightmap
+        blendfunc GL_DST_COLOR GL_ZERO
+        rgbGen identity
+    }
+}
