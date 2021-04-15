@@ -8,6 +8,8 @@ _battleMETAL_ brings giant robot combat inspired by the _Mechwarrior_ and _Earth
 
 This is just a repo for the code, the media assets (models, texture, fx) aren't available yet because
 I have not fully decoupled all the original _iD_ assets from the mod. 
+![image](https://user-images.githubusercontent.com/12732481/114804853-fe669b00-9d6f-11eb-884d-4f045ab88247.png)
+![image](https://user-images.githubusercontent.com/12732481/114804865-045c7c00-9d70-11eb-8f14-35af72008949.png)
 
 An important design goal of _battleMETAL_ has been to create a simple SDK for making small mech games. 
 https://github.com/Subject9x/battleMETAL/wiki
@@ -32,6 +34,7 @@ https://github.com/Subject9x/battleMETAL/wiki
 + Packaged into an API for ease of maintenance.
 + AI uses most of the gameplay features listed here, almost on parity with player.
 + AI behavior is boken down by unit type, each leveraging the API in a few unique ways.
++ Implemented a Nodegraph using something close to A* for navigation.
 
 
 ### HUD
@@ -84,6 +87,7 @@ https://github.com/Subject9x/battleMETAL/wiki
 + Weapons have been modeled and are attached to units visibly.
 + Projectile models have also been made from scratch.
 + Particles and special effects have been written using Darkplaces particle system.
++ Completely new terrain textures with normal maps.
 
 
 ### Sound
