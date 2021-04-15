@@ -27,6 +27,7 @@ https://github.com/Subject9x/battleMETAL/wiki
 + Weapons are lost when their parent component is destroyed.
 + Buildings also exist in addition to combat units.
 + Base buildings can be interacted with.
++ Sequential unlocks / progression of mechs and weapons.
 
 ### AI
 ----------------------
@@ -44,10 +45,10 @@ https://github.com/Subject9x/battleMETAL/wiki
 + API for rendering all HUD elements.
 + SFX queue system for playing HUD notification sounds in a defined sequence.
 + HUD can display complex information items such as Unit armor diagrams, targeting boxes, reticles, pitch indicators, radar.
-+ Full RADAR display system supporting both sweep and burst detection patterns.
++ Full RADAR display system.
 + Player can choose between 4 different reticles each with their own style and animation setup.
 + Player can choose between a few different colors for the HUD text
-+ Player can adjust the alpha blendering of their HUD.
++ Player can adjust the alpha blending of their HUD.
 
 
 ### GUI
