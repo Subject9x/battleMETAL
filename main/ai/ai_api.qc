@@ -605,6 +605,39 @@ void() ai_frame_net_send={
   
 };
 
+/*
+  See sv_playermovement.
+  
+  This mirrors player slope friction speed checks.
+*/
+float(float wishAngl, float wishspeed) ai_check_slope={
+  local vector wishDir;
+  local vector stepOne, stepTwo, stepAngles;
+  local float outSpeed;
+//actual terrain test
+  wishDir = '0 0 0';
+  wishDir_y = wishAngl;
+  makevectors(wishDir);
+  traceline(self.origin, self.origin + (v_forward * -128) + (v_up * -1024), MOVE_NORMAL, self);
+  stepOne = trace_endpos;
+  
+  traceline(self.origin, self.origin + (v_forward * 256) + (v_up * -1024), MOVE_NORMAL, self);
+  stepTwo = trace_endpos;
+  
+  stepAngles = vectoangles(stepTwo - stepOne);
+  if( stepAngles_x > 1 && stepAngles_x <=90 ) {
+    //walking up-hill.
+    stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
+    outSpeed = wishspeed * (1.0 - (stepAngles_x / 90));
+  }
+  else if( stepAngles_x > 90 ){
+    //going dowhill
+    outSpeed = wishspeed + (wishspeed * (1.0 - (stepAngles_x / 360)));
+  }
+  outSpeed = max(outSpeed, wishspeed * 0.1);
+  return outSpeed;
+};
+
 
 /*
   Very similar to ext_world.world_nodegraph_export_edgelink()

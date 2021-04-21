@@ -88,10 +88,10 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
           }
           else{
             if( moveYaw > 10 && moveYaw < 350){
-              moveSpeed = moveSpeed * 0.33;
+              moveSpeed = moveSpeed * 0.55; //0.33
             }
             else if( moveYaw > 5 && moveYaw < 355 ){
-              moveSpeed = moveSpeed * 0.67;
+              moveSpeed = moveSpeed * 0.8; //0.67
             }
           }
           ChangeYaw();
@@ -118,6 +118,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       else{
         walkAngle = self.angles_y;
       }
+      moveSpeed = ai_check_slope(walkAngle, moveSpeed);
       if( walkmove(walkAngle, moveSpeed) == FALSE ){
         if( self.tether == TETHER_PATROL ){
           blockCheck = NODEGRAPH_DATA_BLOCK[self.patrolNode.pathEndId];

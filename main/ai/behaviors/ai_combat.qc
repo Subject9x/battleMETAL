@@ -297,10 +297,10 @@ void() ai_nodegraph_combat_frame={
           }
           else{
             if( moveYaw > 10 && moveYaw < 350){
-              moveSpeed = moveSpeed * 0.2;
+              moveSpeed = moveSpeed * 0.5;  //0.2
             }
             else if( moveYaw > 5 && moveYaw < 355 ){
-              moveSpeed = moveSpeed * 0.5;
+              moveSpeed = moveSpeed * 0.75;  //0.5
             }
             self.yaw_speed = self.yaw_speed * 1.5;
           }
@@ -322,6 +322,7 @@ void() ai_nodegraph_combat_frame={
         }
       }
       else{
+        moveSpeed = ai_check_slope(self.angles_y, moveSpeed);
         if( walkmove(self.angles_y, moveSpeed) == FALSE ){
           if( ai_valid_target(self.enemy) ){
             if( time > self.ai_timer_pathWait ){
@@ -412,10 +413,10 @@ void() ai_nodegraph_combat_brawler_frame={
           }
           else{
             if( moveYaw > 10 && moveYaw < 350){
-              moveSpeed = moveSpeed * 0.33;
+              moveSpeed = moveSpeed * 0.55; //0.33
             }
             else if( moveYaw > 5 && moveYaw < 355 ){
-              moveSpeed = moveSpeed * 0.67;
+              moveSpeed = moveSpeed * 0.8; //0.67
             }
             self.yaw_speed = self.yaw_speed * 2;
           }
@@ -442,6 +443,7 @@ void() ai_nodegraph_combat_brawler_frame={
         }
       }
       else{
+        moveSpeed = ai_check_slope(self.angles_y, moveSpeed);
         if( walkmove(self.angles_y, moveSpeed) == FALSE ){
           if( ai_valid_target(self.enemy) ){
             if( time > self.ai_timer_pathWait ){
