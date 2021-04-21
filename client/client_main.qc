@@ -582,6 +582,9 @@ void(string s) CSQC_Parse_StuffCmd =
       cl_get_animfile( argv(2) );
       return;
     }
+    if(argv(1) == "ini"){
+      cl_ini_event(s);
+    }
   }
   else{  
     localcmd(s);

@@ -42,6 +42,11 @@ float DEPLOY_ID_COUNT;  //auto-assign deploy point id's to never have to worry a
 .string unlockMechs;  //determines unlock mechs given to the player.
 .string unlockEquip;  //determines unlock equip given to the player.
 
+.string iniConfig; //generally special case, used for training but possible to leverage elsewhere
+                        //this WILL skip all menus and just drop the player into the game.
+                        //use the schema: "[mech id] [wgrp1-4] [weapon1]...."
+                        //all weapon groups must be there, even if 0
+
 //DEPRECATED
 .entity particleCube; //used by mech/map/map_particlecube_effect.qc
 .vector wind;

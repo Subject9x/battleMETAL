@@ -241,6 +241,75 @@ void(string fileName) cl_get_animfile={
   }
 };
 
+
+void(string iniCmd) cl_ini_event={
+  local entity hardpoint;
+  local float bit;
+  local float hptId;
+/*
+"m ini ", world.iniConfig, "\n"
+*/
+  tokenize(iniCmd);
+  
+  //argv0 = m
+  //argv1 = ini
+  //argv2 = mech id
+  
+  //argv3 = wgrp1
+  //argv4 = wgrp2
+  //argv5 = wgrp3
+  //argv6 = wgrp4
+  
+  //argv7 = wep1
+  //argv8 = wep2
+  //argv9 = wep3
+  //argv10 = wep4
+  //argv11 = wep5
+  //argv12 = wep6
+  //argv13 = wep7
+  //argv14 = wep8
+  //argv15 = wep9
+  
+  MECH_DATA_ID = stof(argv(2));
+  ui_data_load_mech_info(MECH_DATA_ID, UI_HANGAR_DATA_mech);
+  //MECH_DATA_RADAR -^ set.
+  CLIENT_MENU_nex_grp1 = stof(argv(3));
+  CLIENT_MENU_nex_grp2 = stof(argv(4));
+  CLIENT_MENU_nex_grp3 = stof(argv(5));
+  CLIENT_MENU_nex_grp4 = stof(argv(6));
+  
+  bit = 1;
+  hptId = 7;
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  while( hardpoint ){
+    hardpoint.data_idx = stof(argv(hptId));
+    hptId = hptId + 1;
+    bit = floor(bit * 2);
+    CLIENT_weapon_state = CLIENT_weapon_state | bit;
+    hardpoint = hardpoint.w_slot;
+  }
+  
+  
+  CLIENT_stat_w1_id = stof(argv(7));
+  CLIENT_stat_w2_id = stof(argv(8));
+  CLIENT_stat_w3_id = stof(argv(9));
+  CLIENT_stat_w4_id = stof(argv(10));
+  CLIENT_stat_w5_id = stof(argv(11));
+  CLIENT_stat_w6_id = stof(argv(12));
+  CLIENT_stat_w7_id = stof(argv(13));
+  CLIENT_stat_w8_id = stof(argv(14));
+  CLIENT_stat_w9_id = stof(argv(15));
+  
+  cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
+  cl_send_infostring( INFO_FLAG_GROUPS );
+  
+  MENU_respawn_cool = servertime - 1;
+  LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+  //sizeable hack
+  ui_navbutton_launch_click();
+};
+
+
 void() cl_exit_animatic={
   if( ANM_FILE_STATUS == TRUE ){
     //animation is playing;

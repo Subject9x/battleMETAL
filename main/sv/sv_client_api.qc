@@ -405,6 +405,12 @@ void() PutClientInServer_Campaign={
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
     }
   }
+  
+  if( world.iniConfig ){
+    client_sendIniConfig();
+    self.playerState = PLAYER_SPAWN;
+  }
+  
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
   //}
