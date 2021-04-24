@@ -44,9 +44,14 @@ void() campaign_loadfiles={
                 CAMP_NAME[itr+1] = strzone(substring(argv(token),0, 32));
               }
             }
-            if (argv(1) == CAMP_TAG_MAP){
+            if (argv(1) == CAMP_TAG_START){
               if( argv(token) != "" ){
-                CAMP_MAP[itr+1] = strzone(argv(token));
+                CAMP_START[itr+1] = strzone(argv(token));
+              }
+            }
+            if (argv(1) == CAMP_TAG_TRAIN){
+              if( argv(token) != "" ){
+                CAMP_TRAINING[itr+1] = strzone(argv(token));
               }
             }
             if (argv(1) == CAMP_TAG_DESC){
@@ -69,6 +74,7 @@ void() campaign_loadfiles={
                 CAMP_ITEMS[itr+1] = strzone(argv(token));
               }
             }
+            
           }
           line = fgets(flannel);
         }
