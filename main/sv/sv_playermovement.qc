@@ -206,14 +206,14 @@ void() SV_PlayerPhysics =
     if (f > 0){
       self.ramVelocity = self.ramVelocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);
     }
-    if( self.ramVelocity_x > self.data_speed_forward * 3 ){
-      self.ramVelocity_x = self.data_speed_forward * 3;
+    if( self.ramVelocity_x > self.data_speed_forward * 3.5 ){
+      self.ramVelocity_x = self.data_speed_forward * 3.5;
     }
-    if( self.ramVelocity_y > self.data_speed_forward * 3 ){
-      self.ramVelocity_y = self.data_speed_forward * 3;
+    if( self.ramVelocity_y > self.data_speed_forward * 3.5 ){
+      self.ramVelocity_y = self.data_speed_forward * 3.5;
     }
     self.velocity = self.ramVelocity;
-    self.velocity_z = self.velocity_z + (self.ramPower_x * -0.5);
+    self.velocity_z = self.velocity_z + (self.ramPower_x * -0.3);
   }
   //MOVEMENT - REGULAR WALKING------------------------------------------------------------
 	else if (self.flags & FL_ONGROUND)
@@ -266,10 +266,10 @@ void() SV_PlayerPhysics =
         stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
         wishspeed = wishspeed * (1.0 - (stepAngles_x / 90));
       }
-      else if( stepAngles_x > 90 ){
+      else if( stepAngles_x >= 340 && stepAngles_x < 360 ){
         //going dowhill
         stepAngles = vectoangles((stepOne + (v_up * 1.05)) - stepTwo);  //relish factor
-        wishspeed = wishspeed + (wishspeed * (1.0 - (stepAngles_x / 360)));
+        //wishspeed = wishspeed + (wishspeed * (1.0 - (stepAngles_x / 360)));
       }
     }
     
