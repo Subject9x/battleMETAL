@@ -407,8 +407,8 @@ void() PutClientInServer_Campaign={
   }
   
   if( world.iniConfig ){
-    client_sendIniConfig();
     self.playerState = PLAYER_SPAWN;
+    client_sendIniConfig();
   }
   
   //if( cvar("developer") ){
