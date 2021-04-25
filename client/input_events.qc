@@ -77,6 +77,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       return TRUE;
     }
     else if(scanx == K_SHIFT){
+      //INPUT - MOVEMENT - SPRINT
       return FALSE;
     }
     else if( strstrofs(findkeysforcommand("impulse 12", 0), ftos(scanx),0) != -1 ){
@@ -150,11 +151,14 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         if(hudConsole != world ){
           hudConsole.drawmask = MASK_ENGINE;
         }
+        ui_data_load_hud( MECH_DATA_ID );
       }
       else{
         if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
           return TRUE;
         }
+        ui_data_load_hud( 0 );
+        
         HUD_EXTERNAL_CAM_ACTIVE = TRUE;
         localcmd("chase_active 1\n");
         if(hudStruts != world ){

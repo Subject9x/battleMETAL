@@ -662,7 +662,7 @@ void() hud_render_info={
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
   
-    drawpic( HUD_INFO_ORG, UI_DEF_BOX_512, HUD_INFO_SIZE, CLR_DEF_GRAY_H, 1, 0);
+    drawpic( HUD_INFO_ORG - gui_percentToPixelRawVec('4 0'), UI_DEF_BOX_512, HUD_INFO_SIZE, CLR_DEF_GRAY_H, 1, 0);
     gui_wrapText(HUD_INFO_ORG, HUD_INFO_SIZE, HUD_INFO_MSG, '14 14 0', CLR_DEF_TXT_GRAY_SMOOTH, 1) ;
     
     drawfont = drawfont_prev;
@@ -749,7 +749,14 @@ void( entity box ) hud_renderHighlight={
   y = (0.1/100) * VIEW_MAX_y;
   
   if( box.partParentId != 0 ){
-    elmOrg = UI_DATA_POS[box.partParentId];
+    //CASE: player is in 3PS view
+    if( cvar("chase_active") ){
+     elmOrg = UI_DATA_POS[box.partParentId];
+    }
+    else{
+      //CASE: player is in FPS view
+      elmOrg = UI_DATA_POS[box.partParentId];
+    }
     if(elmOrg != '0 0 0'){
       elmAlign = UI_DATA_ALIGN[box.partParentId];
       elmSize = UI_DATA_SIZE[box.partParentId];
@@ -770,6 +777,7 @@ void( entity box ) hud_renderHighlight={
       }
       drawpic( elmOrg, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.75, 0);
     }
+
   }
   else{  
     if( box.origin != '0 0 0'){
@@ -916,11 +924,9 @@ void() data_hud_frame={
       break;
   }
   
+  data_hud_fps_cam();
   if( HUD_EXTERNAL_CAM_ACTIVE ){
-    data_hud_external_cam_frame();
-  }
-  else{
-    data_hud_fps_cam();
+    data_hud_external();
   }
   
   if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face != AIM_FACE_FRONT){
@@ -948,9 +954,6 @@ void() data_hud_frame={
       case 4:
         hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
-      //case 5:
-        //hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
-        //break;
       default:
         //no crosshair? bold move
         break;
@@ -1102,6 +1105,9 @@ void() hud_lock_frame={
 void() data_hud_fps_cam={
   local float uid;
   local float hasTarget;
+  local float objid, algn, lflag, lalign, axis, wbit;
+  local vector porg, vsize, lblofs;
+  local vector wep;
   
   hasTarget = FALSE;
   if( CLIENT_stat_trg_dataidx > 0 ){
@@ -1110,9 +1116,6 @@ void() data_hud_fps_cam={
   
   uid = 1;
   while( uid <= 32 ){
-    local float objid, algn, lflag, lalign, axis, wbit;
-    local vector porg, vsize, lblofs;
-    local vector wep;
     
     objid = UI_DATA_UIDS[uid];
     switch( objid ){

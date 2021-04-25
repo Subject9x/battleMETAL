@@ -9,14 +9,14 @@ Overview: refactor ui data to file loading, impl
 void() ui_data_load_hudnames={
   local float f, idx;
   local string ln;
-  idx = 1;
+  idx = 0;
   f = fopen("ui/hud/dir.meta", FILE_READ);
   if (f != -1){ 
     ln = fgets(f);
     while( ln != "" ){
       if( strstrofs(ln, "//", 0) == -1 ){
         if(idx <= GAME_TOTAL_MECHS){
-          HUD_DATA_NAMES[idx] = strzone(ln);
+          cacheGlobalString( HUD_DATA_NAMES[idx], ln)
         }
         idx = idx + 1;
       }
@@ -144,9 +144,8 @@ void() ui_data_clear_huddata={
     UI_DATA_COLOR1[itr] = '0 0 0';
     UI_DATA_COLOR2[itr] = '0 0 0';
     
-    if( UI_DATA_IMG[itr] != "" ){
-      strunzone( UI_DATA_IMG[itr] );
-    }
+    freeGlobalString(  UI_DATA_IMG[itr] )
+    
     UI_DATA_IMG[itr] = ""; //background image if needed
     itr = itr + 1;
   }
@@ -353,10 +352,15 @@ float(float id) ui_data_load_mech={
   return TRUE;
 };
 
+/*
+  CSQC: Load .hud files from /data/ui/hud/
+*/
 float( float id ) ui_data_load_hud={
-  ui_data_clear_huddata();
   local float flannel, line_tag, hudElementItr;
   local string file, contents, line;
+  local string token, value;
+  ui_data_clear_huddata();
+      
   file = strcat(PATH_DATA_UI, "/hud/", HUD_DATA_NAMES[id], ".hud");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
@@ -368,7 +372,6 @@ float( float id ) ui_data_load_hud={
   line = fgets(flannel);
   while( (line != "") ){ 
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-      local string token, value;
       line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
       token = argv(1);
       value = argv(3);

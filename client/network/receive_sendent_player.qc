@@ -623,6 +623,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.next_wepn9 = ReadByte();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
+        self.flags = self.flags | FL_CLIENT;  //read-order fix
         self.deadflag = DEAD_NO;
         self.criticalHits = rint(0);
         sendevent_player_mech(self.data_idx);
