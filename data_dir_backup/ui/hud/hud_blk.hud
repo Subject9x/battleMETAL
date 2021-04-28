@@ -13,60 +13,58 @@
   'pos'     : 102 87 0,
   'valign'  : 18,
   'size'    : 22 84 0,
-  'lflag'   : 1,
   'lalign'  : 11,
-  'lblofs'  : 0 6 0,
+  'lblofs'  : 0 18 0,
   'axis'    : 2,
 }
 //Player Shield
 {
   'uid'     : 4,
-  'pos'     : 215 92 0,
+  'pos'     : 215 102 0,
   'valign'  : 18,
   'size'    : 90 12 0,
-  'lflag'   : 1,
   'lalign'  : 5,
-  'lblofs'  : 0 10 0,
+  'lblofs'  : 12 0 0,
   'axis'    : 1,
 }
 //Player Armor
 {
   'uid'     : 3,
-  'pos'     : 170 45 0,
+  'pos'     : 170 60 0,
   'valign'  : 18,
 }
 //Weapon 1 - Style 1
 {
   'uid'     : 7,
-  'pos'     : 235 -50 0,
+  'pos'     : 235 -45 0,
   'valign'  : 48,
   'wbit'    : 1,
 }
 //Weapon 2 - Style 1
 {
   'uid'     : 7,
-  'pos'     : 197 -50 0,
+  'pos'     : 197 -45 0,
   'valign'  : 48,
   'wbit'    : 2,
 }
 //Weapon 3 - Style 1
 {
   'uid'     : 7,
-  'pos'     : 160 -50 0,
+  'pos'     : 160 -45 0,
   'valign'  : 48,
   'wbit'    : 4,
 }
 //Weapon 4 - Style 1
 {
   'uid'     : 7,
-  'pos'     : -15 -50 0,
+  'pos'     : -15 -45 0,
   'valign'  : 48,
   'wbit'    : 8,
 }
 //Weapon 5 - Style 1
 {
   'uid'     : 7,
-  'pos'     : -50 -50 0,
+  'pos'     : -50 -45 0,
   'valign'  : 48,
   'wbit'    : 16,
 }
@@ -86,18 +84,17 @@
 //Target Shield
 {
   'uid'     : 6,
-  'pos'     : -125 92 0,
+  'pos'     : -125 102 0,
   'valign'  : 18,
   'size'    : 90 12 0,
-  'lflag'   : 1,
   'lalign'  : 5,
-  'lblofs'  : 0 10 0,
+  'lblofs'  : 12 0 0,
   'axis'    : 1,
 }
 //Target Armor - Mech
 {
   'uid'     : 5,
-  'pos'     : -170 45 0,
+  'pos'     : -170 60 0,
   'valign'  : 18,
 }
 //Nav Heading - unused for now - Beta 2
@@ -109,7 +106,7 @@
 //Target Name
 {
   'uid'     : 13,
-  'pos'     : 195 126 0,
+  'pos'     : 205 140 0,
   'valign'  : 10,
 }
 //Target Range
@@ -147,12 +144,12 @@
 //Ram Charge Meter
 {
   'uid'     : 19,
-  'pos'     : 75 126 0,
+  'pos'     : 48 110 0,
   'valign'  : 18,
   'size'    : 64 16,
   'axis'    : 1,
-  'lalign'  : 17,
-  'lblofs'  : 0 10 0,
+  'lalign'  : 5,
+  'lblofs'  : 0 0 0,
 }
 //Mission Clock
 {

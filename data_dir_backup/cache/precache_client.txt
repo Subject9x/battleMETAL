@@ -173,6 +173,19 @@ gfx/hud/map_ur.png
 gfx/hud/map_dl.png
 gfx/hud/map_dr.png
 
+gfx/hud/hud_icon_power.tga
+gfx/hud/hud_icon_shield.tga
+gfx/hud/hud_icon_ram.tga
+gfx/hud/hud_icon_sprint.tga
+
+gfx/hud/hud_mech_ct.tga
+gfx/hud/hud_mech_st.tga
+gfx/hud/hud_mech_la.tga
+gfx/hud/hud_mech_ra.tga
+gfx/hud/hud_mech_leg.tga
+gfx/hud/hud_vec_arm.tga
+gfx/hud/hud_build_arm.tga
+
 gfx/ui/wep_icons/bal1.tga
 gfx/ui/wep_icons/bal2.tga
 gfx/ui/wep_icons/bal3.tga
@@ -189,6 +202,7 @@ gfx/ui/wep_icons/misc1.tga
 gfx/ui/wep_icons/misc2.tga
 gfx/ui/wep_icons/misc3.tga
 gfx/ui/wep_icons/misc4.tga
+
 
 //hangar splash images
 gfx/ui/hgr_otl.png

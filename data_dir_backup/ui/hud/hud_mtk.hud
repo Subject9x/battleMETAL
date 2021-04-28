@@ -10,12 +10,11 @@
 //Player Energy
 {
   'uid'     : 2,
-  'pos'     : 36 98 0,
+  'pos'     : 55 100 0,
   'valign'  : 6,
   'size'    : 22 88 0,
-  'lflag'   : 1,
   'lalign'  : 17,
-  'lblofs'  : 0 6 0,
+  'lblofs'  : 0 18 0,
   'axis'    : 2,
 }
 //Player Shield
@@ -24,15 +23,14 @@
   'pos'     : 145 98 0,
   'valign'  : 6,
   'size'    : 22 88 0,
-  'lflag'   : 1,
   'lalign'  : 5,
-  'lblofs'  : 0 6 0,
+  'lblofs'  : 0 22 0,
   'axis'    : 2,
 }
 //Player Armor
 {
   'uid'     : 3,
-  'pos'     : 103 65 0,
+  'pos'     : 110 70 0,
   'valign'  : 6,
 }
 //Weapon 1 - Style 2
@@ -102,9 +100,8 @@
   'pos'     : -45 92 0,
   'valign'  : 18,
   'size'    : 18 75 0,
-  'lflag'   : 1,
   'lalign'  : 5,
-  'lblofs'  : 2 6 0,
+  'lblofs'  : 0 18 0,
   'axis'    : 2,
 }
 //Target Armor - Mech
@@ -165,7 +162,7 @@
   'size'    : 16 88,
   'axis'    : 2,
   'lalign'  : 17,
-  'lblofs'  : 2 8 0,
+  'lblofs'  : 0 16 0,
 }
 //Mission Clock
 {

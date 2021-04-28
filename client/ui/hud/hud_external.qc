@@ -9,6 +9,7 @@ Overview:
 */
 
 /*
+  Weapons in External Camera are updated programmatically
 */
 void() data_hud_external={
   local float weaponId;

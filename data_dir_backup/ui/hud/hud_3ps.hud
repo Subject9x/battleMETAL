@@ -1,0 +1,116 @@
+//3rd Person Camera HUD
+//Player Energy
+{
+  'uid'     : 2,
+  'pos'     : 90 88 0,
+  'valign'  : 6,
+  'size'    : 22 88 0,
+  'lalign'  : 17,
+  'lblofs'  : 0 18 0,
+  'axis'    : 2,
+}
+//Player Shield
+{
+  'uid'     : 4,
+  'pos'     : 118 88 0,
+  'valign'  : 6,
+  'size'    : 22 88 0,
+  'lalign'  : 5,
+  'lblofs'  : 0 22 0,
+  'axis'    : 2,
+}
+//Player Armor
+{
+  'uid'     : 3,
+  'pos'     : 55 70 0,
+  'valign'  : 6,
+}
+//Radar Graph
+{
+  'uid'     : 11,
+  'pos'     : 10 185 0,
+  'valign'  : 6,
+  'size'    : 75 75 0,
+}
+//Radar Status - Style 1
+{
+  'uid'     : 10,
+  'pos'     : 133 165 0,
+  'valign'  : 6,
+}
+//Target Shield
+{
+  'uid'     : 6,
+  'pos'     : 110 92 0,
+  'valign'  : 10,
+  'size'    : 18 75 0,
+  'lalign'  : 5,
+  'lblofs'  : 0 18 0,
+  'axis'    : 2,
+}
+//Target Armor - Mech
+{
+  'uid'     : 5,
+  'pos'     : 45 64 0,
+  'valign'  : 10,
+}
+//Nav Heading - unused for now - Beta 2
+{
+  'uid'     : 12,
+  'pos'     : 8 16 0,
+  'valign'  : 17,
+}
+//Target Name
+{
+  'uid'     : 13,
+  'pos'     : 100 126 0,
+  'valign'  : 10,
+}
+//Target Range
+{
+  'uid'     : 14,
+  'pos'     : 100 116 0,
+  'valign'  : 10,
+}
+//Target Armor - Vec
+{
+  'uid'     : 15,
+  'pos'     : 85 64 0,
+  'valign'  : 10,
+  'size'    : 64 28 0,
+}
+//Target Armor - Building
+{
+  'uid'     : 16,
+  'pos'     : 95 54 0,
+  'valign'  : 10,
+  'size'    : 48 64 0,
+}
+//HUD Messages
+{
+  'uid'     : 17,
+  'pos'     : 0 45 0,
+  'valign'  : 17,
+  'size'    : 16 16 0,
+}
+//Enviro damage
+{
+  'uid'     : 18,
+  'pos'     : 0 200 0,
+}
+//Ram Charge Meter
+{
+  'uid'     : 19,
+  'pos'     : 145 98,
+  'valign'  : 6,
+  'size'    : 24 96,
+  'axis'    : 2,
+  'lalign'  : 17,
+  'lblofs'  : 0 24 0,
+}
+//Mission Clock
+{
+  'uid'     : 20,
+  'pos'     : 180 56 0,
+  'valign'  : 6,
+}

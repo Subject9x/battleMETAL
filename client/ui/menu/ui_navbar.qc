@@ -288,8 +288,6 @@ void() ui_navbutton_launch_click={
     if( (LAUNCH_VALIDATION &  VALID_NODE) ){
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
       
-      ui_data_load_hud( MECH_DATA_ID );
-      
       bit = 1;
       totalHardpoints = 1;
       weaponsList = " ";
@@ -368,6 +366,14 @@ void() ui_navbutton_launch_click={
       cl_send_infostring( (INFO_FLAG_MECH | CLIENT_weapon_state | INFO_FLAG_SPAWN | INFO_FLAG_DEPLOY | INFO_FLAG_SPAWN | INFO_FLAG_COLOR) );
       
       cl_set_chase();
+      
+      if( HUD_EXTERNAL_CAM_ACTIVE ){
+        ui_data_load_hud( HUD_EXTERNAL_CAM_DATA );
+      }
+      else{
+      
+        ui_data_load_hud( MECH_DATA_ID );
+      }
       
       //super smaht weapon group testing
       if( CLIENT_MENU_nex_grp1 == 0 ){

@@ -2,7 +2,7 @@
 //
 //list of mech ids -> MECH_DATA_NAMES[]
 //uid[]
-//  1 - 
+//  1 - hud_HelmetImage(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) 
 //  2 - hud_renderEnergy(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) 
 //  3 - hud_renderArmorGraph_player(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) ;
 //  4 - hud_renderShield_player(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) 
@@ -12,8 +12,10 @@
 //  8 - hud_renderWeapon_t2 (vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) 
 //  9 - hud_renderRadarStatus1(vector torg, float algn, float status, float radius, float flag) 
 //  10 - hud_renderRadarStatus2(vector torg, float algn, float status, float radius, float flag) 
-//  11 - hud_renderRadar(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
-//  12 - hud_renderNavHeading(vector pos, float algn, vector angle) 
+//  11 - hud_renderRadar(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
+//  12 - hud_renderNavHeading(vector pos, float algn, vector angle)
+//  17 - HUD messages
+//  18 - enviro damage
 //
 
 //data file for mech huds
@@ -106,7 +108,7 @@
   'flag'  : <float>
 }
 {
-  //hud_renderRadar(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
+  //hud_renderRadar(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
   'uid'   : 11,
   'pos'   : <vector>
   'align' : <float>   //bitflag for alignment
@@ -114,6 +116,7 @@
 }
 {
   //hud_renderNavHeading(vector pos, float algn, vector angle)  
+  //disabled since Beta 2
   'uid'   : 12,
   'pos'   : <vector>
   'align' : <float>   //bitflag for alignment

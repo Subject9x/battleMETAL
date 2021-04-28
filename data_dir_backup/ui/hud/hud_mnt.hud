@@ -13,9 +13,8 @@
   'pos'     : 105 95 0,
   'valign'  : 18,
   'size'    : 21 84 0,
-  'lflag'   : 1,
   'lalign'  : 17,
-  'lblofs'  : -1 6 0,
+  'lblofs'  : 0 18 0,
   'axis'    : 2,
 }
 //Player Shield
@@ -24,15 +23,14 @@
   'pos'     : 135 95 0,
   'valign'  : 18,
   'size'    : 21 84 0,
-  'lflag'   : 1,
   'lalign'  : 5,
-  'lblofs'  : 2 6 0,
+  'lblofs'  : 0 22 0,
   'axis'    : 2,
 }
 //Player Armor
 {
   'uid'     : 3,
-  'pos'     : 180 -175 0,
+  'pos'     : 182 -170 0,
   'valign'  : 48,
 }
 //Weapon 1 - Style 2
@@ -123,18 +121,17 @@
 //Target Shield
 {
   'uid'     : 6,
-  'pos'     : -90 100 0,
+  'pos'     : -90 105 0,
   'valign'  : 18,
   'size'    : 90 12 0,
-  'lflag'   : 1,
   'lalign'  : 5,
-  'lblofs'  : 0 10 0,
+  'lblofs'  : 14 0 0,
   'axis'    : 1,
 }
 //Target Armor - Mech
 {
   'uid'     : 5,
-  'pos'     : -135 55 0,
+  'pos'     : -130 60 0,
   'valign'  : 18,
 }
 //Nav Heading - unused for now - Beta 2
@@ -158,14 +155,14 @@
 //Target Armor - Vec
 {
   'uid'     : 15,
-  'pos'     : -105 55 0,
+  'pos'     : -105 45 0,
   'valign'  : 18,
   'size'    : 32 64 0,
 }
 //Target Armor - Building
 {
   'uid'     : 16,
-  'pos'     : -76 55 0,
+  'pos'     : -76 45 0,
   'valign'  : 18,
   'size'    : 60 60 0,
 }
@@ -188,8 +185,8 @@
   'valign'  : 36,
   'size'    : 64 16,
   'axis'    : 1,
-  'lalign'  : 17,
-  'lblofs'  : 20 6 0,
+  'lalign'  : 48,
+  'lblofs'  : 0 -18 0,
 }
 //Mission Clock
 {

@@ -248,14 +248,12 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     nameproj_z = 0;
     drawstring(nameproj, playerName, drawSize, factionColor * 1.5, max(0.75, HUD_ALPHA), 0);
   }
-  namepos = cs_unproject(nameproj);
-  
 };
 
 /*
   3D HUD - RENDER A SHIELD METER IN 3d SPACE
 */
-void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
+void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis, float targFaction) hud_renderShieldOverlay={
   local float dist;
   local vector vpos, nofs, aSize;
   local float scopeVal;
@@ -264,8 +262,19 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
   local vector meterSize, pos;
   local vector meterColor;
   
+  local vector iconOrg,
+  local vector iconSize;
+  local vector factionColor;
+  
   scopeVal = rint(val);
   if(scopeVal != 0){
+  
+    if( (CLIENT_faction == targFaction) && (targFaction != FACTION_ALL && CLIENT_faction != FACTION_ALL) ){
+      factionColor = CLR_DEF_IIF_FRIEND;
+    }
+    else{
+      factionColor = CLR_DEF_IFF_ENEMY_BLD;
+    }
   
     dist = vlen(pmove_org - CLIENT_target_ent.origin);
     if(dist < CLIENT_radar_range * 0.1){
@@ -312,9 +321,23 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       else{
         gui_renderMeter(scopeVal, pos, aSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, AXIS_H, FALSE); 
       }
-      drawpic(pos, "gfx/hud/hud_meter_cover3.png", aSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+      
+      if( (meterAxis & AXIS_H) ){
+        drawpic(pos, "gfx/hud/hud_meter_cover3.png", aSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+        iconSize_x = meterSize_y;
+        iconSize_y = meterSize_y;
+      }
+      else{
+        drawpic(pos, "gfx/hud/hud_meter_cover.png", aSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+        iconSize_x = meterSize_x;
+        iconSize_y = meterSize_x;
+      }
+      iconSize = iconSize_y * 1.5;
+      iconSize_z = 0;
+      iconOrg = gui_calcAlignCustom(gui_percentToPixelRawVec('10 2'),(VIEW_LFT | VIEW_TOP), pos);
+      iconOrg_z = 0;
+      drawpic(iconOrg, HUD_ICON_SHIELD, iconSize, factionColor, HUD_ALPHA, 0);
     }
-    cs_unproject(vpos);
   }
 };
 
@@ -342,8 +365,9 @@ void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
   meter_y = meter_y / 2;
   meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
   
-  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, AXIS_V, 0);
-  drawpic(meter, "gfx/hud/hud_meter_cover2.png", siz, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  drawpic(meter, HUD_BUILD_TRG, siz, tColor, HUD_ALPHA, 0);
+  
+  
 };
 
 /*
@@ -364,10 +388,12 @@ void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
   vorg = gui_percentToPixelRawVec(vorg);
   vorg = gui_calcAlign(vorg, algn);
   meter = gui_percentToPixelRawVec(siz);
+  
   meter_x = meter_x / 2;
   meter_y = meter_y / 2;
   meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
-  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, AXIS_V, 0);
+  
+  drawpic(meter, HUD_VEC_TRG, siz, tColor, HUD_ALPHA, 0);
 };
 
 /*
