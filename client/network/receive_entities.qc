@@ -322,10 +322,15 @@ void() client_state_events={
 };
 
 
-
+/*
+  SVQC: Map_HUD_Highlight entity
+  this recieves a temp ent message from the server to highlight a part of the player's HUD,
+  usually bound to an existing HUD widget via partTypeId.
+*/
 void() client_get_hud_highlight={
   local entity hfx;
   local float t;
+  local float fnd;
   
   hfx = spawn();
   hfx.data_idx = -3;  //more hacks
@@ -334,7 +339,6 @@ void() client_get_hud_highlight={
   t = ReadShort();
   hfx.partTypeId = ReadByte();
   
-  local float fnd;
   fnd = 0;
   while( fnd < 32 ){
     if( UI_DATA_UIDS[fnd] == hfx.partTypeId ){
@@ -353,7 +357,11 @@ void() client_get_hud_highlight={
   hfx.drawme = time + (t / 3);
 };
 
-
+/*
+  SVQC: TE_MSN_Boundary
+    not really used in the original game, however, if a modder wants arbirary map limits,
+      this is a means to notify the player they're reaching the boundary.
+*/
 void() client_event_boundary={
   HUD_WARN_ON = ReadByte();
   HUD_WARN_DIR = ReadAngle();

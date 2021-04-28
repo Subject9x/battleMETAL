@@ -377,6 +377,7 @@ void() cl_set_chase={
     cmd = "impulse 30\n";
     localcmd(cmd);
   }
+  HUD_EXTERNAL_CAM_ACTIVE = cvar("chase_active");
 };
 
 /*
