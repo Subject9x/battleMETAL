@@ -20,7 +20,7 @@
 //Player Shield
 {
   'uid'     : 4,
-  'pos'     : 215 102 0,
+  'pos'     : 215 115 0,
   'valign'  : 18,
   'size'    : 90 12 0,
   'lalign'  : 5,
@@ -71,56 +71,38 @@
 //Radar Status - Style 1
 {
   'uid'     : 9,
-  'pos'     : -42 100 0,
+  'pos'     : 24 135 0,
   'valign'  : 18,
 }
 //Radar Graph
 {
   'uid'     : 11,
-  'pos'     : 60 90 0,
+  'pos'     : 45 100 0,
   'valign'  : 18,
   'size'    : 90 90 0,
-}
-//Target Shield
-{
-  'uid'     : 6,
-  'pos'     : -125 102 0,
-  'valign'  : 18,
-  'size'    : 90 12 0,
-  'lalign'  : 5,
-  'lblofs'  : 12 0 0,
-  'axis'    : 1,
 }
 //Target Armor - Mech
 {
   'uid'     : 5,
-  'pos'     : -170 60 0,
+  'pos'     : -170 62 0,
   'valign'  : 18,
-}
-//Nav Heading - unused for now - Beta 2
-{
-  'uid'     : 12,
-  'pos'     : 8 16 0,
-  'valign'  : 17,
-}
-//Target Name
-{
-  'uid'     : 13,
-  'pos'     : 205 140 0,
-  'valign'  : 10,
-}
-//Target Range
-{
-  'uid'     : 14,
-  'pos'     : 195 116 0,
-  'valign'  : 10,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -48 -68 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
 }
 //Target Armor - Vec
 {
   'uid'     : 15,
-  'pos'     : -145 48 0,
+  'pos'     : -95 56 0,
   'valign'  : 18,
-  'size'    : 24 60 0,
+  'size'    : 75 40 0,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -12 -56 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
 }
 //Target Armor - Building
 {
@@ -128,6 +110,33 @@
   'pos'     : -110 46 0,
   'valign'  : 18,
   'size'    : 60 60 0,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -19 -56 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
+}
+//Target Shield
+{
+  'uid'     : 6,
+  'pos'     : -137 105 0,
+  'valign'  : 18,
+  'size'    : 75 12 0,
+  'lalign'  : 5,
+  'lblofs'  : 12 0 0,
+  'axis'    : 1,
+}
+//Target Name
+{
+  'uid'     : 13,
+  'pos'     : 194 126 0,
+  'valign'  : 10,
+}
+//Target Range
+{
+  'uid'     : 14,
+  'pos'     : 194 116 0,
+  'valign'  : 10,
 }
 //HUD Messages
 {
@@ -144,7 +153,7 @@
 //Ram Charge Meter
 {
   'uid'     : 19,
-  'pos'     : 48 110 0,
+  'pos'     : 96 135 0,
   'valign'  : 18,
   'size'    : 64 16,
   'axis'    : 1,
@@ -154,6 +163,12 @@
 //Mission Clock
 {
   'uid'     : 20,
-  'pos'     : -42 75 0,
+  'pos'     : 24 145 0,
   'valign'  : 18,
 }
+//Nav Heading - unused for now - Beta 2
+// {
+//  'uid'     : 12,
+//  'pos'     : 8 16 0,
+//  'valign'  : 17,
+// }

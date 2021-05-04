@@ -261,7 +261,7 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float setA
 
 
 vector(float val) gui_getColorForArmor={
-  if((-1<val)&&(val<=25)){
+  if((0<val)&&(val<=25)){
     return CLR_DEF_ARM_ONEQ;
   }
   else if((25<val)&&(val<=50)){
@@ -279,7 +279,7 @@ vector(float val) gui_getColorForArmor={
 };
 
 vector(float val) gui_getColorForArmorTarget={
-  if((-1<val)&&(val<=25)){
+  if((0<val)&&(val<=25)){
     return CLR_DEF_TARG_ARM_ONEQ;
   }
   else if((25<val)&&(val<=50)){

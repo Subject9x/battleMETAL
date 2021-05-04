@@ -97,12 +97,13 @@ string UI_BOX_SELECT;
 string UI_CURSOR_IMG;
 string UI_HELP_IMG;
 
+string UI_CIRCLE_256;
+string UI_CIRCLE_256_SEL;
+
 string UI_WEP_ENE;
 string UI_WEP_BAL;
 string UI_WEP_EXP;
 string UI_WEP_MSC;
-
-
 
 //Navbar buttons
 vector UI_NAVBAR_BRIEF_ORG;

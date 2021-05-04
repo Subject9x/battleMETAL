@@ -24,8 +24,6 @@ void() data_hud_external={
     HUD_TXT_SIZE = '16 16';
     HUD_TXT_ALIGN = 17;
     
-    hud_render_sprint(VIEW_CTR + gui_percentToPixelRawVec('0 -225'));
-    
     weaponId = 0;
     realWeapons = 0;
     while( weaponId < 10 ){

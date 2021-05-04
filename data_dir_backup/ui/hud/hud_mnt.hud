@@ -118,46 +118,28 @@
   'pos'     : 75 -110 0,
   'valign'  : 48,
 }
-//Target Shield
-{
-  'uid'     : 6,
-  'pos'     : -90 105 0,
-  'valign'  : 18,
-  'size'    : 90 12 0,
-  'lalign'  : 5,
-  'lblofs'  : 14 0 0,
-  'axis'    : 1,
-}
 //Target Armor - Mech
 {
   'uid'     : 5,
   'pos'     : -130 60 0,
   'valign'  : 18,
-}
-//Nav Heading - unused for now - Beta 2
-{
-  'uid'     : 12,
-  'pos'     : 8 16 0,
-  'valign'  : 17,
-}
-//Target Name
-{
-  'uid'     : 13,
-  'pos'     : 230 130 0,
-  'valign'  : 10,
-}
-//Target Range
-{
-  'uid'     : 14,
-  'pos'     : 230 120 0,
-  'valign'  : 10,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -54 -82 0,
+// color2 = panel size
+  'color2'  : 108 150 0,
 }
 //Target Armor - Vec
 {
   'uid'     : 15,
-  'pos'     : -105 45 0,
+  'pos'     : -65 55 0,
   'valign'  : 18,
-  'size'    : 32 64 0,
+  'size'    : 64 28 0,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -24 -72 0,
+// color2 = panel size
+  'color2'  : 110 124 0,
 }
 //Target Armor - Building
 {
@@ -165,6 +147,33 @@
   'pos'     : -76 45 0,
   'valign'  : 18,
   'size'    : 60 60 0,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -19 -64 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
+}
+//Target Shield
+{
+  'uid'     : 6,
+  'pos'     : -90 115 0,
+  'valign'  : 18,
+  'size'    : 90 12 0,
+  'lalign'  : 5,
+  'lblofs'  : 14 0 0,
+  'axis'    : 1,
+}
+//Target Name
+{
+  'uid'     : 13,
+  'pos'     : 230 135 0,
+  'valign'  : 10,
+}
+//Target Range
+{
+  'uid'     : 14,
+  'pos'     : 230 125 0,
+  'valign'  : 10,
 }
 //HUD Messages
 {
@@ -194,3 +203,9 @@
   'pos'     : 85 -85 0,
   'valign'  : 36,
 }
+//Nav Heading - unused for now - Beta 2
+// {
+//  'uid'     : 12,
+//  'pos'     : 8 16 0,
+//  'valign'  : 17,
+// }

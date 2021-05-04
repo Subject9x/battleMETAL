@@ -7,7 +7,6 @@ mod: 07/19/2019
 Overview:
   Implementation of HUD functions.
 */
-
 /*
   RENDER CROSSHAIRS - UNIVERSAL
 */
@@ -219,61 +218,6 @@ void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl
   drawpic(iconOrg, HUD_ICON_POWER, iconSize, mColor, HUD_ALPHA, 0);
 };
 
-/*
-  RENDER ARMOR METER
-*/
-void( vector pos, vector grpCtr, float val, vector mSize, string imgPiece, float thatTarget) hud_renderArmorMeter={
-  local vector meterSize, label_org, shofs;
-  
-  local vector tColor;
-  if( thatTarget ){
-    if(CLIENT_target_faction == FACTION_ALL){
-      tColor =  gui_getColorForArmorTarget(val);
-    }
-    else if(CLIENT_target_faction != CLIENT_faction){
-      tColor =  gui_getColorForArmorTarget(val);
-    }
-    else{
-      tColor =  gui_getColorForArmor(val);
-    }
-  }
-  else{
-    tColor =  gui_getColorForArmor(val);
-  }
-  
-  shofs = grpCtr;
-  meterSize = gui_percentToPixelRawVec(mSize);
-  pos = gui_percentToPixelRawVec(pos);
-  pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), shofs);
-  
-  drawpic(pos, imgPiece, meterSize, tColor, max(HUD_ALPHA - 0.25, 0.1), 0);
-  
-  //gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, meterAxis, 0);
-  //drawpic(pos, "gfx/hud/hud_meter_cover2.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-  
-};
-
-/*
-  RENDER ARMOR GRAPH STYLE 1
-  used for mech targets
-*/
-void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, float lg, float isTarget) hud_renderArmorGraph={
-  local vector pnl_ctr;
-  
-  pnl_ctr = gui_percentToPixelRawVec(vorg);
-  pnl_ctr = gui_calcAlign(pnl_ctr, algn);
-  
-  hud_renderArmorMeter('-8 -28', pnl_ctr, ct, '16 28', HUD_MECH_CT, isTarget);
-  
-  hud_renderArmorMeter('-17.5 -28', pnl_ctr, lt, '9 27', HUD_MECH_ST, isTarget);
-  hud_renderArmorMeter('9 -28', pnl_ctr, rt, '9 27', HUD_MECH_ST, isTarget);
-  
-  hud_renderArmorMeter('-28 -18', pnl_ctr, la, '10 24', HUD_MECH_LA, isTarget);
-  hud_renderArmorMeter('18 -18', pnl_ctr, ra, '10 24', HUD_MECH_RA, isTarget);
-  
-  hud_renderArmorMeter('-18 0', pnl_ctr, lg, '36 60', HUD_MECH_LEG, isTarget);
-  
-};
 
 /*
   RENDER RADAR DATA
@@ -852,42 +796,6 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   }
 };
 
-
-/*
-  Render Sprint STATE
-  
-*/
-void(vector porg) hud_render_sprint={
-  local float slen;
-  local vector spos;
-  local string msg;
-  local vector msgClr;
-  
-  if(CLIENT_move_state > MOVE_NORM){
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-    if( cvar("cl_movespeedkey") > 1 ){
-      msg = HUD_SPRINT_ON;
-      msgClr = CLR_DEF_RET_GETLOCK;
-      if( getstatf(STAT_RAM) >= CLIENT_ram_max ){
-        msg = HUD_SPRINT_RAM;
-        msgClr = CLR_DEF_RED;
-      }
-    }
-    else{
-      msg = HUD_SPRINT_OFF;
-      msgClr = CLR_DEF_RED;
-    }
-    slen = stringwidth(msg, 0, '16 14 0');
-    slen = gui_percentXRaw(slen);
-    spos_x = porg_x - slen / 2;
-    spos_y = porg_y + gui_percentYRaw(56);
-    drawstring(spos, msg, '16 14 0', msgClr, max(HUD_ALPHA + 0.33, 0.8), 0);
-    drawfont_prev = drawfont;
-  }
-};
-
-
 /*
   Main API call for new text-based HUD system
 */
@@ -985,9 +893,6 @@ void() data_hud_frame={
     hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
     hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
     hud_event_frame();
-    if( HUD_EXTERNAL_CAM_ACTIVE == FALSE ){
-      hud_render_sprint(VIEW_CTR);
-    }
     hud_render_info();
   }
   
@@ -1116,6 +1021,7 @@ void() data_hud_fps_cam={
   local float hasTarget;
   local float objid, algn, lflag, lalign, axis, wbit;
   local vector porg, vsize, lblofs;
+  local vector color2;
   local vector wep;
   
   hasTarget = FALSE;
@@ -1143,7 +1049,11 @@ void() data_hud_fps_cam={
         if( HUD_ZOOM_ACTIVE == FALSE){
           porg = UI_DATA_POS[uid];
           algn = UI_DATA_ALIGN[uid];
-          hud_renderArmorGraph(porg, algn, CLIENT_health_center, CLIENT_health_torso_left, CLIENT_health_torso_right, CLIENT_health_arm_left, CLIENT_health_arm_right, CLIENT_health_legs, FALSE);
+          lflag = UI_DATA_LABEL_FLAG[uid];
+          lalign = UI_DATA_LABEL_ALIGN[uid];
+          lblofs = UI_DATA_LABEL_OFS[uid];
+          color2 = UI_DATA_COLOR2[uid];
+          hud_renderArmorGraph(porg, algn, lflag, lalign, lblofs, color2, FALSE);
         }
         break;
       case HUD_UID_SHIELD_PLAYER: 
@@ -1163,7 +1073,11 @@ void() data_hud_fps_cam={
             if( CLIENT_target_datatype == DATA_MECH ){
               porg = UI_DATA_POS[uid];
               algn = UI_DATA_ALIGN[uid];
-              hud_renderArmorGraph(porg, algn, CLIENT_stat_trg_ct_hp, CLIENT_stat_trg_lt_hp, CLIENT_stat_trg_rt_hp, CLIENT_stat_trg_la_hp, CLIENT_stat_trg_ra_hp, CLIENT_stat_trg_lg_hp, TRUE);
+              lflag = UI_DATA_LABEL_FLAG[uid];
+              lalign = UI_DATA_LABEL_ALIGN[uid];
+              lblofs = UI_DATA_LABEL_OFS[uid];
+              color2 = UI_DATA_COLOR2[uid];
+              hud_renderArmorGraph(porg, algn, lflag, lalign, lblofs, color2, TRUE);
             }
           }
         }
@@ -1180,7 +1094,7 @@ void() data_hud_fps_cam={
           wbit = UI_DATA_WEPBIT[uid];
           vsize = UI_DATA_SIZE[uid];
           if( vsize == '0 0 0' ){
-            vsize = '32 32 0';  //default here
+            vsize = '24 24 0';  //default here
           }
           hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wbit);
         }
@@ -1192,7 +1106,7 @@ void() data_hud_fps_cam={
           wbit = UI_DATA_WEPBIT[uid];
           vsize = UI_DATA_SIZE[uid];
           if( vsize == '0 0 0' ){
-            vsize = '32 32 0';  //default here
+            vsize = '24 24 0';  //default here
           }
           hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wbit);
         }
@@ -1249,7 +1163,11 @@ void() data_hud_fps_cam={
               porg = UI_DATA_POS[uid];
               algn = UI_DATA_ALIGN[uid];
               vsize = UI_DATA_SIZE[uid];
-              hud_renderArmorVehicle(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
+              lflag = UI_DATA_LABEL_FLAG[uid];
+              lalign = UI_DATA_LABEL_ALIGN[uid];
+              lblofs = UI_DATA_LABEL_OFS[uid];
+              color2 = UI_DATA_COLOR2[uid];
+              hud_renderArmorVehicle(porg, algn, vsize, CLIENT_stat_trg_ct_hp, lflag, lalign, lblofs, color2);
             }
           }
         }
@@ -1261,7 +1179,11 @@ void() data_hud_fps_cam={
               porg = UI_DATA_POS[uid];
               algn = UI_DATA_ALIGN[uid];
               vsize = UI_DATA_SIZE[uid];
-              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
+              lflag = UI_DATA_LABEL_FLAG[uid];
+              lalign = UI_DATA_LABEL_ALIGN[uid];
+              lblofs = UI_DATA_LABEL_OFS[uid];
+              color2 = UI_DATA_COLOR2[uid];
+              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp, lflag, lalign,  lblofs, color2);
             }
           }
         }

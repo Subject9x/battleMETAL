@@ -190,7 +190,7 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading;
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient, vector mColor) hud_renderShield;
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, vector mColor) hud_renderEnergy;
 void(vector grpCtr, vector pos, float val, vector mSize, string imgPiece, float thatTarget) hud_renderArmorMeter;
-void(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg, float isTarget) hud_renderArmorGraph;
+void(vector pos, float algn, float lFlag, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraph;
 void(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
 void(entity blip, float plrFaction, float radRange ) hud_renderRadarContact;
 void(vector navOrg, float navState, float radRange ) hud_renderRadarNav;
@@ -203,8 +203,8 @@ void() hud_render_vip_overlay;
 void(vector org, vector pos, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay;
 void(vector pos, float algn, float flag) hud_render_missionClock;
 void() hud_renderNavOverlay;
-void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding;
-void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle;
+void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorBuilding;
+void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorVehicle;
 void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Mech;
 void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Vehc;
 void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Building;
@@ -218,7 +218,6 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram;
 void( entity box ) hud_renderHighlight;
 void() hud_renderHighlight_frame;
-void(vector porg) hud_render_sprint;
 void( entity thePlayer ) hud_render_ally_names;
 void(vector org, entity allyTarget, float algn, float faction1, float radRange) hud_renderTargetOverlay_Ally;
 
