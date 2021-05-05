@@ -9,6 +9,10 @@ Overview:
 //constants
 float FRAG_MAX = 1000;
 float TIME_MAX = 20;
+
+float TIME_DEF = 30;  //defaults to make sure they're always set.
+float FRAG_DEF = 15;
+
 float SUB_COOP = 1;
 float SUB_DM  = 2;
 float SUB_TDM = 3;
@@ -465,6 +469,15 @@ void() click_host_launch={
   if( host_map_lbl.label == "" || !host_map_lbl.label){
     return;
   }
+  
+  //default protection
+  if( cvar("fraglimit") <= 0 ){
+    cvar_set("fraglimit", ftos(FRAG_DEF));
+  }
+  if( cvar("timelimit") <= 0 ){
+    cvar_set("timelimit", ftos(TIME_DEF));
+  }
+  
   cmd(strcat("maxplayers ",  ftos(rint(SELECT_PLAYERS)),"\n"));
   if( cvar("deathmatch") ){
     cvar_set("skill", "3");
@@ -551,13 +564,18 @@ void() m_host_i={
   host_skill_next.subid = SUB_COOP;
   host_skill_prev.subid = SUB_COOP;
   
-  //TDM SUB MENU
-  host_dm_fraglim = inp_textfield('140 233', '14 14 0', 3, host_frag_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
-
+  //DM / TDM SUB MENU  
+  //default protection
+  if( cvar("fraglimit") <= 0 ){
+    cvar_set("fraglimit", ftos(FRAG_DEF));
+  }
+  host_dm_fraglim = inp_textfield('100 233', '14 14 0', 3, host_frag_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
   cacheGlobalString(host_dm_fraglim.data_text, ftos(cvar("fraglimit")))
   
-  host_dm_timelim = inp_textfield('140 253', '14 14 0', 3, host_time_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
-
+  if( cvar("timelimit") <= 0 ){
+    cvar_set("timelimit", ftos(TIME_DEF));
+  }
+  host_dm_timelim = inp_textfield('100 253', '14 14 0', 3, host_time_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
   cacheGlobalString(host_dm_timelim.data_text,  ftos(cvar("timelimit")))
 
   host_dm_fraglim.subid = SUB_TDM;
@@ -673,8 +691,8 @@ void() m_host_d={
       host_gametype.label = "Team DeathMatch";
       host_gametype.color = CLR_DEF_IFF_ENEMY;
       gui_renderString("Start Map  :", host_map_lbl.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Frag Limit  :", host_dm_fraglim.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Time Limit  :", host_dm_timelim.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Frag Limit  :", host_dm_fraglim.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Time Limit  :                 Minutes", host_dm_timelim.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
       break;
       
     case SUB_DM:
@@ -682,8 +700,8 @@ void() m_host_d={
       host_gametype.label = "DeathMatch";
       host_gametype.color = CLR_DEF_IFF_ENEMY_BLD;
       gui_renderString("Start Map  :", host_map_lbl.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Frag Limit  :", host_dm_fraglim.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Time Limit  :", host_dm_timelim.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Frag Limit  :", host_dm_fraglim.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Time Limit  :                 Minutes", host_dm_timelim.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
       break;
   }
   if( strlen(host_map_lbl.label) != 0 ){
