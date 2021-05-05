@@ -127,7 +127,6 @@ void() newgame_clean_train_maps={
 };
 
 
-
 void() click_newg_info={
   local float mapTotal;
   local float mapCount;
@@ -421,6 +420,7 @@ void(float key, float ascii) m_newg_k={
         menu_clear_items(M_STATE);
         m_camp_f();
         freeGlobalString(TRAINING_LABEL)
+        newgame_clean_train_maps();
       }
       break;
   }

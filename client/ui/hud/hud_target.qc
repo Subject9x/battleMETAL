@@ -408,15 +408,6 @@ void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lb
     backSize = gui_percentToPixelRawVec(lblSize);
     drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
-  /*hud_renderArmorMeter('-8 -28', pnl_ctr, ct, '16 28', HUD_MECH_CT, isTarget);
-  
-  hud_renderArmorMeter('-17.5 -28', pnl_ctr, lt, '9 27', HUD_MECH_ST, isTarget);
-  hud_renderArmorMeter('9 -28', pnl_ctr, rt, '9 27', HUD_MECH_ST, isTarget);
-  
-  hud_renderArmorMeter('-28 -18', pnl_ctr, la, '10 24', HUD_MECH_LA, isTarget);
-  hud_renderArmorMeter('18 -18', pnl_ctr, ra, '10 24', HUD_MECH_RA, isTarget);
-  
-  hud_renderArmorMeter('-18 0', pnl_ctr, lg, '36 60', HUD_MECH_LEG, isTarget);*/
   hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget);
   
   hud_renderArmorMeter('-23 -38', pnl_ctr, lt, '13 31', HUD_MECH_ST, isTarget);
