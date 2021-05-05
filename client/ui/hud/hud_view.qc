@@ -550,52 +550,30 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
 };
 
 /*
-  RENDER
+  RENDER ENVIRONMENT HAZARD 
 */
-void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={
-  local string warnMessage;
-  local string warnTypes;
-  
-  local float messageWidth;
-  
-  local vector warnBoxOrg;
-  local vector warnBoxSize;
-  
-  local vector warnMessageOrg;
-  local vector warnTypesOrg;
+void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={  
+  local vector anchorOrg;
+  local vector shockOrg;
+  local vector radOrg;
+  local vector quantOrg;
   
   if( time < HUD_WARN_ENV_MARK ){
-    warnBoxSize = gui_percentToPixelRawVec('175 38');
-    warnBoxOrg_x = orgCenter_x - warnBoxSize_x / 2;
-    warnBoxOrg_y = orgCenter_y - gui_percentYRaw(2);
-    drawpic( warnBoxOrg, UI_DEF_BOX_256, warnBoxSize, '0.25 0.25 0.25', 1, 0);
+    anchorOrg = gui_percentToPixelRawVec(orgCenter);
     
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-  
-    warnMessage = "!- Environment Damage -!";
-    messageWidth = stringwidth( warnMessage, 0, '18 18');
-    warnMessageOrg_x = orgCenter_x - gui_percentXRaw( messageWidth / 2 );
-    warnMessageOrg_y = orgCenter_y;
-    drawstring( warnMessageOrg, warnMessage, '18 18', CLR_DEF_ARM_HALF, labelAlpha, 0 );
-    
-    warnTypes = "[";
     if( (dmgTypes & 1) ){
-      warnTypes = strcat(warnTypes, " Shields ");
+      shockOrg = gui_calcAlignCustom('48 0', (VIEW_LFT | VIEW_TOP), anchorOrg);
+      drawpic(shockOrg, HUD_HAZ_SHOCK, '32 32', CLR_DEF_IIF_FRIEND_BLD, 0.9, 0);
     }
     if( (dmgTypes & 2) ){
-      warnTypes = strcat(warnTypes, " Armor ");
+      radOrg = gui_calcAlignCustom('-16 0', (VIEW_CTX | VIEW_TOP), anchorOrg);
+      drawpic(radOrg, HUD_HAZ_RAD, '32 32', CLR_DEF_ARM_THREEQ, 0.9, 0);
+      
     }
     if( (dmgTypes & 4) ){
-      warnTypes = strcat(warnTypes, " Energy ");
+      quantOrg = gui_calcAlignCustom('48 0', (VIEW_RGT | VIEW_TOP), anchorOrg);
+      drawpic(quantOrg, HUD_HAZ_QUANT, '32 32', CLR_HUD_PURPLE * 1.25, 0.9, 0);
     }
-    warnTypes = strcat(warnTypes, "]");
-    messageWidth = stringwidth( warnTypes, 0, '16 16' );
-    warnTypesOrg_x = orgCenter_x - gui_percentXRaw( messageWidth / 2 );
-    warnTypesOrg_y = warnMessageOrg_y + gui_percentYRaw(20);
-    drawstring( warnTypesOrg, warnTypes, '16 16', CLR_DEF_ARM_HALF, labelAlpha, 0 );
-    
-    drawfont = drawfont_prev;
   }
   else{
     HUD_WARN_ENV_TYPES = 0;

@@ -147,6 +147,10 @@ string HUD_VEC_TRG  = "gfx/hud/hud_vec_arm.tga";
 
 string HUD_BUILD_TRG = "gfx/hud/hud_build_arm.tga";
 
+string HUD_HAZ_SHOCK = "gfx/hud/hud_icon_shock.tga";
+string HUD_HAZ_RAD = "gfx/hud/hud_icon_rad.tga";
+string HUD_HAZ_QUANT = "gfx/hud/hud_icon_quant.tga";
+
 string HUT_RET_PIP_HRZ;
 string HUT_RET_PIP_VRT;
 string HUT_RET_LOK;
