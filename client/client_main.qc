@@ -387,7 +387,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   //=================================================
   
   // draw the main view
-  if( !MENU_ACTIVE ){
+  if( !MENU_ACTIVE || CLIENT_MENU_menu_choice >= MENU_REBIND_ACTIVE){
     // add clientside entities (MASK_NORMAL)
     // add engine networked entities (MASK_ENGINE)
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
@@ -431,7 +431,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
 
 	// draw custom hud
-  if(CLIENT_data_type == DATA_MECH){    
+  if(CLIENT_data_type == DATA_MECH){
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){

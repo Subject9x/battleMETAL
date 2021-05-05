@@ -114,34 +114,6 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       HUD_ZOOM_ACTIVE = TRUE;
       return FALSE;
     }
-    else if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - TOGGLE RADAR MODE
-      //Toggle Radar
-      CLIENT_stat_rdr_mode = !CLIENT_stat_rdr_mode;
-      if(CLIENT_stat_rdr_mode_prev != CLIENT_stat_rdr_mode){
-        CLIENT_stat_rdr_mode_prev = CLIENT_stat_rdr_mode;
-        if(CLIENT_stat_rdr_mode){
-          hud_event_enqueue(HUD_EVENT_RADAR_ACTIVE, 1); 
-          CLIENT_radar_range = CLIENT_radar_range * 2;
-        }
-        else{
-          hud_event_enqueue(HUD_EVENT_RADAR_PASSIVE, 1); 
-          CLIENT_radar_range = CLIENT_radar_range / 2;
-        }
-      }
-      //return false here to make sure player choice gets up to server.
-      return FALSE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - Toggle Group Fire
-      hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
-      return FALSE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - Toggle Chain Fire
-      hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
-      return FALSE;
-    }
     else if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
       //INPUT - HUD - set chase_active
       if( HUD_EXTERNAL_CAM_ACTIVE == TRUE ){
@@ -244,6 +216,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
           case MENU_SCORE_ACTIVE:
             menu_scoreListener_onClick();
             break;
+          case MENU_REBIND_ACTIVE:
+            menu_rebindListener_onClick();
+            break;
         }
         return TRUE;
       }
@@ -254,21 +229,21 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     if( scanx == K_MOUSE1 ){
       INPUT_mouse_state_prev = INPUT_mouse_state;
       INPUT_mouse_state = MOUSE_UP;
-      MOUSE_drag_timer = 0;      
+      MOUSE_drag_timer = 0;
       if(MENU_ACTIVE){
         switch( CLIENT_MENU_menu_choice ){
-          case MENU_HANGAR_ACTIVE:
+          //case MENU_HANGAR_ACTIVE:
             //menu_hangarListener_onKeyUp();
-            break;
-          case MENU_BRIEF_ACTIVE:
+            //break;
+          //case MENU_BRIEF_ACTIVE:
             //menu_briefListener_onKeyUp();
-            break;
+            //break;
           case MENU_ARMING_ACTIVE:
             menu_armingListener_onKeyUp();
             break;
-          case MENU_DEPLOY_ACTIVE:
+          //case MENU_DEPLOY_ACTIVE:
             //menu_deployListener_onKeyUp();
-            break;
+            //break;
         }
         if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE && CLIENT_MENU_menu_choice != MENU_CONNECT_ACTIVE ){
           menu_mainListener();
@@ -280,6 +255,52 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       //good lord....
       HUD_ZOOM_ACTIVE = FALSE;
       return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
+      //INPUT - HUD - Toggle Group Fire
+      hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
+      return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
+      //INPUT - HUD - Toggle Chain Fire
+      hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
+      return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
+      //INPUT - HUD - TOGGLE RADAR MODE
+      //Toggle Radar
+      CLIENT_stat_rdr_mode = !CLIENT_stat_rdr_mode;
+      if(CLIENT_stat_rdr_mode_prev != CLIENT_stat_rdr_mode){
+        CLIENT_stat_rdr_mode_prev = CLIENT_stat_rdr_mode;
+        if(CLIENT_stat_rdr_mode){
+          hud_event_enqueue(HUD_EVENT_RADAR_ACTIVE, 1); 
+          CLIENT_radar_range = CLIENT_radar_range * 2;
+        }
+        else{
+          hud_event_enqueue(HUD_EVENT_RADAR_PASSIVE, 1); 
+          CLIENT_radar_range = CLIENT_radar_range / 2;
+        }
+      }
+      //return false here to make sure player choice gets up to server.
+      return FALSE;
+    }
+    else if( strstrofs(findkeysforcommand("impulse 31", 0), ftos(scanx),0) != -1 ){
+      //INPUT - MENU - firegroup rebind
+      if( CLIENT_player_state == PLAYER_ACTIVE ){
+        if( CLIENT_MENU_menu_choice == 0 && !MENU_ACTIVE){
+          menu_enter( MENU_REBIND_ACTIVE );
+          REBIND_SEND_TIME = time + REBIND_SEND_TIME_MIN;
+        }
+        else{
+          menu_exit();
+          //spam guard
+          if( time > REBIND_SEND_TIME ){
+            cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
+            cl_send_infostring( INFO_FLAG_GROUPS );
+          }
+        }
+      }
+      return TRUE;
     }
     
     return FALSE;
