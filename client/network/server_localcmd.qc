@@ -313,7 +313,6 @@ void(string iniCmd) cl_ini_event={
 void() cl_exit_animatic={
   if( ANM_FILE_STATUS == TRUE ){
     //animation is playing;
-    anm_cleanup();
     localcmd("cmd exitanim\n");
   }
 };

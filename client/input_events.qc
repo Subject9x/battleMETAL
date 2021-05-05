@@ -36,9 +36,11 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
     //not sure if skipping cut-scenes during co-op games is even possible.
     if( ANM_FILE_STATUS == 1 ){
-      if( scanx == K_SPACE ){
-        cl_exit_animatic();
-        return TRUE;
+      if( inputEventType == INPUT_EVENT_KEYUP ){
+        if( scanx == K_SPACE || scanx == K_MOUSE1){
+           anm_new_frame(time);
+          return TRUE;
+        }
       }
     }
   }

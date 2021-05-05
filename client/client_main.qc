@@ -460,8 +460,8 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   //put this last on the rendering order to make sure it 
   //plays above all
-  if(ANM_FILE_STATUS == TRUE){
-    if(ANM_FRAME_CUR == FALSE){
+  if(ANM_FILE_STATUS == 1){
+    if(ANM_FRAME_CUR == 0){
       anm_execute_metadata();
     }
     anm_execute_frame();
@@ -580,6 +580,7 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     if(argv(1) == "anm"){
       cl_get_animfile( argv(2) );
+      ANM_SERV_TRIG = TRUE;
       return;
     }
     if(argv(1) == "ini"){
