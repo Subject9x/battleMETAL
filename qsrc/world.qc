@@ -119,6 +119,10 @@ void() worldspawn =
 */
 void() StartFrame =
 {
+  local entity unit;
+  local entity notThis;
+  local float diff;
+  
   teamplay = cvar("teamplay");
   skill = cvar("skill");
   framecount = framecount + 1;
@@ -128,6 +132,25 @@ void() StartFrame =
     NODEGRAPH_queue_timer = time + NODEGRAPH_queue_timeout;
     NODEGRAPH_queue_total = max(0, NODEGRAPH_MAX_REQUEST - 1);
   }
+  
+  //test - run every living unit's energy and shield calcs here for goodly fairness
+  notThis = self;
+  unit = nextent(world);
+  for(unit = nextent(world); unit != world; unit = nextent(unit)){
+    if( !(unit.flags & FL_MONSTER) && !(unit.flags & FL_CLIENT) ){
+      continue;
+    }
+    if( unit.deadflag != DEAD_NO ){
+      continue;
+    }
+    if( !unit.energyRate || !unit.energyMax ){
+      continue;
+    }
+    self = unit;
+    ctrl_unit_update_frame();
+  }
+  self = notThis;
+  
 };
 
 /*

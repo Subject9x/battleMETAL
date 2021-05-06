@@ -722,11 +722,11 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
 */
 
 void() world_nodegraph_export_edgelinker_th={
+  local float fileExists;
+  local entity nodes;
   
   cons_logAString("[INFO]-world_export_nodegraph() edgelinker run ", ftos(self.count));  //DEBUG
   
-  local float fileExists;
-  local entity nodes;
   
   self.owner = NODEGRAPH_EXPORT_NODE[self.count];
   
