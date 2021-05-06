@@ -21,7 +21,7 @@ void(string imageIcon, vector org, float selected, float allow) ui_renderHardPoi
   if( imageIcon != ""){
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');
-      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('32 32'), CLR_DEF_ARM_THREEQ + '0.1 0.1 0.1' , 1, 0);
+      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256_THICK, gui_percentToPixelRawVec('32 32'), CLR_DEF_YELLOW * 2, 1, 0);
     }
     allowAlpha = 0.45;
     if( allow ){
@@ -104,6 +104,9 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   local vector pofs, hptNumOrg, hptSizeOrg;
   local string hardpointLabel;
   local float drawfontLocal;
+  local float itr;
+  local float hpointVal;
+  local vector itemColor;
   
   drawfontLocal = drawfont;
   drawfontLocal = FONT_NUM_ROBOT_REGULAR;
@@ -118,9 +121,6 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   
   drawstring(hptNumOrg, hardpointLabel, '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
   
-  local float itr;
-  local float hpointVal;
-  local vector itemColor;
   
   hptSizeOrg = hptNumOrg;
   hptSizeOrg_x = hptSizeOrg_x + gui_percentXRaw(11);

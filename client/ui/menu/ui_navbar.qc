@@ -286,6 +286,8 @@ void() ui_navbutton_launch_click={
   }
   if( servertime > MENU_respawn_cool ){
     if( (LAUNCH_VALIDATION &  VALID_NODE) ){
+      CLIENT_MENU_sel_hrpnt = 0;
+      
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
       
       bit = 1;
