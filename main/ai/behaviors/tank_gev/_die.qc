@@ -37,6 +37,7 @@ void() ai_gev_touch_death={
 };
 
 void() ai_gev_die={
+  local entity w_chain;
   if( self.deadflag > DEAD_NO ){
     return; //double play prevention
   }
@@ -55,7 +56,6 @@ void() ai_gev_die={
   trigger_event( self.enemy, self.trigOnDeath );
  
   // run weapon death animation
-  local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
     ctrl_unit_part_death(w_chain);
