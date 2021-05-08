@@ -45,7 +45,7 @@ void() msn_parsefile={
       line_tag = tokenizebyseparator(line, "'", "'", ": ","'","'");
       if (argv(1) == MSN_FILE_IMG){
         if( argv(token) != "" ){
-          msn_setmappic( argv(1), strcat("data/maps/",argv(token)));
+          msn_setmappic( strcat("data/maps/",argv(token)));
         }
       }
       if (argv(1) == MSN_FILE_NAME){
@@ -105,7 +105,7 @@ void() msn_parsefile={
   fclose(flannel);
 };
 
-void(string line, string val) msn_setmappic={
+void(string val) msn_setmappic={
   local string s;
   if(val != ""){
     cacheGlobalString( MSN_MAPPIC, val)

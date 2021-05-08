@@ -435,11 +435,11 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
-      //Main HUD entry point
-      data_hud_frame();
-      
       //HUD Highlight Boxes
       hud_renderHighlight_frame();
+      
+      //Main HUD entry point
+      data_hud_frame();
       
       //Player has toggled 'Objectives' menu while in-mission.
       ui_objective_frame(VIEW_ORG);

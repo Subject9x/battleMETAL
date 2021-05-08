@@ -590,7 +590,7 @@ void() hud_render_info={
     drawfont = FONT_NUM_ROBOT_REGULAR;
   
     drawpic( HUD_INFO_ORG - gui_percentToPixelRawVec('4 0'), UI_DEF_BOX_512, HUD_INFO_SIZE, CLR_DEF_GRAY_H, 1, 0);
-    gui_wrapText(HUD_INFO_ORG, HUD_INFO_SIZE, HUD_INFO_MSG, '14 14 0', CLR_DEF_TXT_GRAY_SMOOTH, 1) ;
+    gui_wrapText(HUD_INFO_ORG, HUD_INFO_SIZE, HUD_INFO_MSG, '14 14 0', CLR_DEF_ARM_OK * 1.25, 1) ;
     
     drawfont = drawfont_prev;
   }
@@ -652,12 +652,13 @@ void() hud_renderHighlight_frame={
   local entity boxes;
   local entity rem;
   
-  boxes = findchainfloat( data_idx, -3 );
+  boxes = findchain( classname, "UI_HIGHLIGHT" );
   while( boxes ){
     rem = boxes;
     boxes = boxes.chain;
     hud_renderHighlight( rem );
     if( time > rem.drawme ){
+      
       remove( rem );
     }
   }
@@ -676,9 +677,6 @@ void( entity box ) hud_renderHighlight={
   y = (0.1/100) * VIEW_MAX_y;
   
   if( box.partParentId != 0 ){
-    if( box.partParentId == HUD_UID_WEP_TYPE1 || box.partParentId == HUD_UID_WEP_TYPE2 ){
-    
-    }
     elmOrg = UI_DATA_POS[box.partParentId];
     if(elmOrg != '0 0 0'){
       elmAlign = UI_DATA_ALIGN[box.partParentId];
@@ -689,7 +687,7 @@ void( entity box ) hud_renderHighlight={
         elmOrg = gui_calcAlign(elmOrg, elmAlign);
       }
       if( elmSize != '0 0 0' ){
-        boxSize = gui_percentToPixelRawVec(elmSize);
+        boxSize = gui_percentToPixelRawVec(elmSize * 1.33);
       }
       else{
         boxSize_x = box.drawsize_x * VIEW_MAX_x;
@@ -698,7 +696,10 @@ void( entity box ) hud_renderHighlight={
       if(box.partTypeId == HUD_UID_ARM_PLAYER){
         elmOrg = elmOrg - (boxSize*0.5);
       }
-      drawpic( elmOrg, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.75, 0);
+        elmOrg_x = elmOrg_x - (boxSize_x*0.15);
+        elmOrg_y = elmOrg_y - (boxSize_y*0.15);
+      
+      drawpic( elmOrg, UI_DEF_BOX_256_BRIGHT, boxSize, box.drawcolor1, 0.85, 0);
     }
 
   }
@@ -708,7 +709,7 @@ void( entity box ) hud_renderHighlight={
       bx_pos_y = VIEW_ORG_y + ( VIEW_MAX_y * box.origin_y );
       boxSize_x = box.drawsize_x * VIEW_MAX_x;
       boxSize_y = box.drawsize_y * VIEW_MAX_y;
-      drawpic( bx_pos, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.75, 0);
+      drawpic( bx_pos, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.85, 0);
     }
   }
 };
@@ -719,7 +720,6 @@ void( entity box ) hud_renderHighlight={
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram={
   local vector meterSize, label_org, ramPos;
   local vector ramColor;
-  local string ramLabel;
   local vector iconOrg;
   local string ramIcon;
   local vector iconOrg;
@@ -730,7 +730,6 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   ramPos = gui_calcAlign(ramPos, ramAlign);
 
   if( CLIENT_move_state == MOVE_SPRINT ){
-    ramLabel = "SPRINT";
     ramColor = gui_getColorForArmor(ramValue);
     if(ramValue > 100 ){
       ramValue = 100;
@@ -738,19 +737,16 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
     ramIcon = HUD_ICON_SPRINT;
   }
   else if( CLIENT_move_state == MOVE_RAM_CHARGE ){
-    ramLabel = "RAM!";
     ramColor =  '0.9 0.1 0.1';
     ramValue = 100;
     ramIcon = HUD_ICON_RAM;
   }
   else if(CLIENT_move_state == MOVE_RAM_COOL ){
-    ramLabel = "----";
     ramColor =  '0.15 0.15 0.15';
     ramValue = 100;
     ramIcon = "";
   }
   else{
-    ramLabel = "READY";
     ramColor = HUD_COLOR_DEF;
     ramValue = 0;
     ramIcon = "";
@@ -778,6 +774,7 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   Main API call for new text-based HUD system
 */
 void() data_hud_frame={
+  local entity player;
 
   HUD_ENERGY_ACTUAL = CLIENT_energy_total;
   //Alpha fade-in of HUD as mech powers up.
@@ -884,7 +881,6 @@ void() data_hud_frame={
     hud_renderNavOverlay();
     //only loop clients once per hud frame
   }
-  local entity player;
   for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
     if( !(player.flags & FL_CLIENT) ){continue;}
     if( player.clientLocalId == player_localentnum ){continue;}
@@ -934,7 +930,7 @@ void() hud_renderCrosshairDisabled={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  lbl = "!- FIRE CONTROL OVERRIDE -!";
+  lbl = "!-OVERRIDE-!";
   
   stopSize = gui_percentToPixelRawVec('24 24');
   stopOrg_x = VIEW_CTR_x - (stopSize_x / 2);

@@ -50,7 +50,7 @@ void() menu_debrief_drawFrame={
     }
   }
 
-  gui_renderTintImage2(MENU_DEBRIEF_status, topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF - '0.15 0.15 0.15', 1, 0) ;  
+  gui_renderTintImage2(MENU_DEBRIEF_status, topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF * 0.15, 1, 0) ;  
   menu_debrief_header( topleftroot );
   menu_debrief_objectives_primary( topleftroot + gui_percentToPixelRawVec('10 32') );
   menu_debrief_objectives_secondary( topleftroot + gui_percentToPixelRawVec('10 272') );

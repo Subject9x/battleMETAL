@@ -59,7 +59,7 @@ string MSN_OBJ_ITEMS[16];
 
 void() msn_getfile;
 void() msn_parsefile;
-void(string line, string val) msn_setmappic;
+void(string val) msn_setmappic;
 float(float currentObjId, string line, string val) msn_mapobjid;
 void(float obj_id, string line, string val) msn_setobjdesc;
 void( float obj_id, string line, string val) msn_setobj_type;

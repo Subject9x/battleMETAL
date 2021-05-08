@@ -84,14 +84,17 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     }
     else if( strstrofs(findkeysforcommand("impulse 12", 0), ftos(scanx),0) != -1 ){
       //INPUT - HUD - TACTICAL MAP
-      if(HUD_TACMAP_ON){
-        HUD_TACMAP_ON = FALSE;
-      }
-      else{
-        HUD_TACMAP_ON = TRUE;
-        if( UI_OBJECTIVE_ACTIVE ){
-          UI_OBJECTIVE_ACTIVE = FALSE;
+      if( MSN_MAPPIC != "" ){
+        if(HUD_TACMAP_ON){
+          HUD_TACMAP_ON = FALSE;
         }
+        else{
+          HUD_TACMAP_ON = TRUE;
+          if( UI_OBJECTIVE_ACTIVE ){
+            UI_OBJECTIVE_ACTIVE = FALSE;
+          }
+        }
+
       }
       return TRUE;
     }

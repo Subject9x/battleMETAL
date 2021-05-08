@@ -333,11 +333,14 @@ void() client_get_hud_highlight={
   local float fnd;
   
   hfx = spawn();
+  hfx.drawmask = MASK_ENGINE;
   hfx.data_idx = -3;  //more hacks
+  hfx.classname = "UI_HIGHLIGHT"; //constant-in-code so no worry about zoning the value.
   
   hfx.drawcolor1 = te_read_vector();
   t = ReadShort();
   hfx.partTypeId = ReadByte();
+  hfx.partParentId = 0;
   
   fnd = 0;
   while( fnd < 32 ){
