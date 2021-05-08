@@ -4,9 +4,10 @@
 //use | to enforce newlines in desc.
 {
   'name' : 'Main Campaign'
-  'map': 'intro'
   'desc' : 'The main game, new players should start here.'
   'author' : 'original'
   'mechs' : '1'
   'items' : '3 12 13'
+  'training' : 'training_move, training_shoot, training_mission'
+  'start' : 'intro'
 }

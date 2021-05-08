@@ -1,7 +1,8 @@
-mech data file
+//mech data file
 //messing with this without knowing what you're doing WILL blow up your game
 //BACK UP BEFORE MODIFYING
-{ 
+{
+
   //stock loadout
   'hpt_stock_1'  : 1,
   'hpt_stock_2'  : 1,
@@ -18,6 +19,5 @@ mech data file
   'grps_stock_2' : 48,
   'grps_stock_3' : 448,
   'grps_stock_4' : 0,
-  
-  'desc'  : The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. | | The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. | | All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.~
+  'grps_stock_5' : 0,
 }

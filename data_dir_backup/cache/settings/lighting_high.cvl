@@ -14,6 +14,6 @@ r_shadow_realtime_dlight_shadows 1
 r_shadow_realtime_world 1
 r_shadow_realtime_world_compileportalculling 1
 r_shadow_realtime_world_compilesvbsp 0
-r_shadow_realtime_world_lightmaps 0
+r_shadow_realtime_world_lightmaps 0.6
 r_shadow_realtime_world_shadows 1
 r_shadow_shadowmapping_bias 0.0075

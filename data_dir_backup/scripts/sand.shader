@@ -115,7 +115,7 @@ textures/desert/sand_desert_high_b
   q3map_tcGen ivector ( 512 0 0 ) ( 0 512 0 )
 	{
 		map textures/desert/sand_desert_high_b.tga
-    tcMod scale 2 2
+    tcMod scale 1 1
     rgbGen vertex
 	}
 	{

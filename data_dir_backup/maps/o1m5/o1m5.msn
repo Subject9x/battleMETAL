@@ -10,7 +10,7 @@
   'location' : 'Sundered Highlands'
   'time' : '20;45;17;36'
   'brief' : '-TRANSMISSION RECEIVED- | Any survivors receiving this message...repeat; | | All remaining SURVEST forces are retreating to the GLACIAN EDGE region. L.Gavir and L.Roset can only keep the bridgeheads open for the next 48 hrs at most. Any civilian convoys must be on the other side of the MILITAR border before this deadline or they will be on their own. SURVEST House Guards are making final attacks on the <unknown forces> and then retreating to GLACIAN EDGE. | <TRANSMISSION REPEATS> | | -COMM INTERCEPT- | [SRV.OFC] Everything`s in place, my lord; we are waiting for your command group. | | [L.Gavir] Right, We have the drop on at least one of these phantom bases these...THINGS are attacking from. I want us to knock it out before falling back, let`s go. | <TRANSMISSION LOST>'
-  'intel' : ' + Warning - Long range scans indicate base might be reinforced if attacked, be aware of this as you execute the mission. | + Enemy forces have deployed thinly over the area of operations. | + It may be possible to bypass forces if DEAD_HAND moves quickly. | + Be on the look out for salvageable equipment, old map data from the archives points to a friendly Repair Bay lurking in the area.'
+  'intel' : 'Warning - Long range scans indicate base might be reinforced if attacked, be aware of this as you execute the mission. | + Enemy forces have deployed thinly over the area of operations. | + It may be possible to bypass forces if DEAD_HAND moves quickly. | + Be on the look out for salvageable equipment, old map data from the archives points to a friendly Repair Bay lurking in the area.'
   'objtotal' : '1'
   'anim' : ''
 }

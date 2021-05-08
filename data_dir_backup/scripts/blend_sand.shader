@@ -21,7 +21,8 @@ textures/blend/sand/basin_blend_rock_a
   qer_editorimage textures/desert/icon/basin_a_to_rock_a.tga
   q3map_baseShader textures/blend/terrain_base
   q3map_tcGen ivector ( 512 0 0 ) ( 0 512 0 )
-  q3map_alphaMod dotproduct2 ( 0 0 0.9 )
+  q3map_alphaMod dotproduct ( 0 0 0.9 )
+  q3map_alphaMod dotproduct ( 0 0 0.94 )
   
   //the sharp texture that dotproduct2 points to.
   {
@@ -51,7 +52,7 @@ textures/blend/sand/basin_blend_sand_a
   qer_editorimage textures/desert/icon/basin_a_to_sand_a.tga
   q3map_baseShader textures/blend/terrain_base
   q3map_tcGen ivector ( 512 0 0 ) ( 0 512 0 )
-  q3map_alphaMod dotproduct ( 0 0 0.35 )
+  q3map_alphaMod dotproduct ( 0 0 0.45 )
   //the sharp texture that dotproduct2 points to.
   {
     map textures/desert/sand_desert_basin_a.tga
@@ -81,7 +82,7 @@ textures/blend/sand/sand_blend_rock_a
   qer_editorimage textures/desert/icon/sand_a_to_rock_a.tga
   q3map_baseShader textures/blend/terrain_base
   q3map_tcGen ivector ( 512 0 0 ) ( 0 512 0 )
-  q3map_alphaMod dotproduct2 ( 0 0 0.95 )
+  q3map_alphaMod dotproduct2 ( 0 0 0.88 )
   
   //the sharp texture that dotproduct2 points to.
   {
@@ -109,7 +110,7 @@ textures/blend/sand/sand_blend_basin_a
   qer_editorimage textures/desert/icon/sand_a_to_basin_a.tga  
   q3map_baseShader textures/blend/terrain_base
   q3map_tcGen ivector ( 512 0 0 ) ( 0 512 0 )
-  q3map_alphaMod dotproduct2 ( 0 0 0.65 )
+  q3map_alphaMod dotproduct ( 0 0 0.4 )
   
   //the sharp texture that dotproduct2 points to.
   {
@@ -199,7 +200,7 @@ textures/blend/sand/high_blend_rock_a
   qer_editorimage textures/desert/icon/high_a_to_rock_a.tga
   q3map_baseShader textures/blend/terrain_base
   q3map_tcGen ivector ( 512 0 0 ) ( 0 512 0 )
-  q3map_alphaMod dotproduct2 ( 0 0 0.9 )
+  q3map_alphaMod dotproduct2 ( 0 0 0.88 )
   
   //the sharp texture that dotproduct2 points to.
   {

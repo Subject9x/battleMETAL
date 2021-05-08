@@ -177,6 +177,9 @@ gfx/hud/hud_icon_power.tga
 gfx/hud/hud_icon_shield.tga
 gfx/hud/hud_icon_ram.tga
 gfx/hud/hud_icon_sprint.tga
+gfx/hud/hud_icon_shock.tga
+gfx/hud/hud_icon_rad.tga
+gfx/hud/hud_icon_quant.tga
 
 gfx/hud/hud_mech_ct.tga
 gfx/hud/hud_mech_st.tga

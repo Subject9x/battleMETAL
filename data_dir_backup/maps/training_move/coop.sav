@@ -1,0 +1,8 @@
+{
+  'save' : 0,
+  'mission' : b2o1m1,
+  'points' : 1,
+  'skill' : 3,
+  'mechs' : 1,
+  'items' : 1 3 4 10 12 13 15 16 17 19 20,
+}

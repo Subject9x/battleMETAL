@@ -109,7 +109,7 @@ textures/blend/sand/sand_blend_basin_b
   qer_editorimage textures/desert/icon/sand_b_to_basin_b.tga
   q3map_baseShader textures/blend/terrain_base
   q3map_tcGen ivector ( 512 0 0 ) ( 0 512 0 )
-  q3map_alphaMod dotproduct ( 0 0 0.65 )
+  q3map_alphaMod dotproduct ( 0 0 0.55 )
   
   //the sharp texture that dotproduct2 points to.
   {
@@ -143,7 +143,7 @@ textures/blend/sand/sand_blend_high_b
   //the sharp texture that dotproduct2 points to.
   {
     map textures/desert/sand_desert_high_b.tga
-    tcMod scale 2 2
+    tcMod scale 1 1
     rgbGen vertex
   }
   {
@@ -179,7 +179,7 @@ textures/blend/sand/high_blend_sand_b
   }
   {
     map textures/desert/sand_desert_high_b.tga
-    tcMod scale 2 2
+    tcMod scale 1 1
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
@@ -210,7 +210,7 @@ textures/blend/sand/high_blend_rock_b
 
   {
     map textures/desert/sand_desert_high_b.tga
-    tcMod scale 2 2
+    tcMod scale 1 1
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
