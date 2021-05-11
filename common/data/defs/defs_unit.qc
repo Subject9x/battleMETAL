@@ -93,6 +93,11 @@ Overview:
 .float unitColorLA;
 .float unitColorRA;
 .float unitColorLG;
+
+.float damageBuffer;  //damage after calculation is pooled over a frame and then applied on the NEXT frame at the top.
+                      //this should reduce the execution cost of t_damage() by every weapon all the time.
+.float shieldBuffer;  
+
 #endif
 
 #ifdef CSQC
