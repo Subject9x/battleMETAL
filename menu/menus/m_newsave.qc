@@ -39,22 +39,20 @@ void() m_newsave_i={
   itr = 0;
   actual = 0;
   
-  if(GAME_SAVES[itr] != ""){
-    while (itr < GAME_SAVES_MAX ){
-      next = start;
-      next_y = next_y + (itr * 20);
-      
-      if( GAME_SAVES_DRAWNAME[itr] == "" ){
-        name = "- NEW SAVE SLOT -";
-      }
-      else{
-        name = GAME_SAVES_DRAWNAME[itr];
-      }
-      
-      list = btn_text_callback(next, '14 14 0', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-      list.data_bind = itr; //databind
-      itr = itr + 1;
+  while (itr < GAME_SAVES_MAX ){
+    next = start;
+    next_y = next_y + (itr * 20);
+    
+    if( GAME_SAVES_DRAWNAME[itr] == "" ){
+      name = "- NEW SAVE SLOT -";
     }
+    else{
+      name = GAME_SAVES_DRAWNAME[itr];
+    }
+    
+    list = btn_text_callback(next, '14 14 0', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+    list.data_bind = itr; //databind
+    itr = itr + 1;
   }
 };
 
