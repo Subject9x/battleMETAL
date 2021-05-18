@@ -473,24 +473,22 @@ void() hud_renderRepairValue={
   local vector vorg, torg;
   local float len;
   local string str;
-    
-  if(CLIENT_repair_value > 0){
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-    
-    str = "Repair Bay - current energy";
-    len = stringwidth(str, 0, '14 14 0');
-    vorg_x = VIEW_CTR_x - gui_percentXRaw(128);
-    vorg_y = VIEW_CTR_y - gui_percentYRaw(64);
-    torg = vorg;
-    torg_x = VIEW_CTR_x - gui_percentXRaw( len / 2 ) ;
-    torg_y = torg_y - gui_percentYRaw(16);
-    gui_renderMeter(CLIENT_repair_value, vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA + 0.33, 0, AXIS_H, 0);
-    
-    drawpic(vorg, "gfx/hud/hud_meter_cover3.png", gui_percentToPixelRawVec('256 24'), '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-    drawstring(torg, str, '14 14 0', HUD_COLOR_DEF, HUD_ALPHA + 0.33, 0);
-    drawfont = drawfont_prev;
-  }
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  str = "Repair Bay - current energy";
+  len = stringwidth(str, 0, '14 14 0');
+  vorg_x = VIEW_CTR_x - gui_percentXRaw(128);
+  vorg_y = VIEW_CTR_y - gui_percentYRaw(64);
+  torg = vorg;
+  torg_x = VIEW_CTR_x - gui_percentXRaw( len / 2 ) ;
+  torg_y = torg_y - gui_percentYRaw(16);
+  gui_renderMeter(CLIENT_repair_value, vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA + 0.33, 0, AXIS_H, 0);
+  
+  drawpic(vorg, "gfx/hud/hud_meter_cover3.png", gui_percentToPixelRawVec('256 24'), '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  drawstring(torg, str, '14 14 0', HUD_COLOR_DEF, HUD_ALPHA + 0.33, 0);
+  drawfont = drawfont_prev;
 };
 
 void(float warnOn, float warnDir) hud_render_warningBounds={
@@ -607,20 +605,19 @@ void() hud_render_info={
 void( float uid, float targetId ) hud_data_renderTarget_Shield={
   local float algn, lalign, axis;
   local vector porg, vsize, lblofs;
-  if( targetId > 0 ){
-    porg = UI_DATA_POS[uid];
-    vsize = UI_DATA_SIZE[uid];
-    algn = UI_DATA_ALIGN[uid];
-    lalign = UI_DATA_LABEL_ALIGN[uid];
-    lblofs = UI_DATA_LABEL_OFS[uid];
-    axis = UI_DATA_AXIS_FLAG[uid];
-    hud_renderShield(porg, algn, CLIENT_target_shield, vsize, lalign, lblofs, axis, FALSE, CLR_DEF_ARM_HALF);
-  }
+  
+  porg = UI_DATA_POS[uid];
+  vsize = UI_DATA_SIZE[uid];
+  algn = UI_DATA_ALIGN[uid];
+  lalign = UI_DATA_LABEL_ALIGN[uid];
+  lblofs = UI_DATA_LABEL_OFS[uid];
+  axis = UI_DATA_AXIS_FLAG[uid];
+  hud_renderShield(porg, algn, CLIENT_target_shield, vsize, lalign, lblofs, axis, FALSE, CLR_DEF_ARM_HALF);
 };
 
 /*
   Render HUD Message
-    draws a HUD event message sent from the server.
+    draws a HUD event message originates from reading player state, which comes in from the server.
 */
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message={
   local vector messageOrigin;
@@ -722,7 +719,6 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   local vector ramColor;
   local vector iconOrg;
   local string ramIcon;
-  local vector iconOrg;
   local vector iconSize;
   
   meterSize = gui_percentToPixelRawVec(ramSize);
@@ -821,10 +817,14 @@ void() data_hud_frame={
     data_hud_external();
   }
   
-  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face != AIM_FACE_FRONT){
+  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
-    hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
-  }  
+    
+    //func call optimization
+    if( CLIENT_target_shield > 0.0 ){
+      hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
+    }
+  }
 
   //CROSSHAIR AND DETAILS
   hud_renderDirectionHit(CLIENT_stat_hit_dirs);
@@ -864,7 +864,10 @@ void() data_hud_frame={
   if( !HUD_ZOOM_ACTIVE ){
     //repair sits above all
     hud_render_vip_overlay();
-    hud_renderRepairValue();
+    
+    if(CLIENT_repair_value > 0){
+      hud_renderRepairValue();
+    }
     hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
     hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
     hud_event_frame();
@@ -888,7 +891,9 @@ void() data_hud_frame={
     if( player.faction != CLIENT_faction ){continue;}
     if( player.faction == FACTION_ALL){continue;}
     if( player != CLIENT_target_ent ){
-      hud_render_ally_names( player );
+      if( vlen(player.origin - pmove_org) <= (CLIENT_radar_range * 0.3) ){
+        hud_render_ally_names( player );
+      }
     }
     
     if( player.targetEntId <= 0 ){continue;}
@@ -1057,7 +1062,8 @@ void() data_hud_fps_cam={
         }
         break;
       case HUD_UID_SHIELD_TARGET: 
-        if( HUD_ZOOM_ACTIVE == FALSE){
+        if( HUD_ZOOM_ACTIVE == FALSE && CLIENT_stat_trg_dataidx != 0){
+          //func call optimization
           hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
         }
         break;
