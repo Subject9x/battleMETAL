@@ -265,7 +265,11 @@ float(float mechId, entity listEntity) ui_data_load_mech_info={
 float(float id) ui_data_load_mech={
   local float flannel, line_tag;
   local string file, contents, line;
-  local float idx; 
+  local float idx;
+  local string token, value;
+  local entity hardpoint;
+  local float itr;
+  local vector partOffset;
   
   if( UI_HANGAR_DATA_mech.data_idx > 0){
     ui_data_clear_mechdata();
@@ -310,7 +314,6 @@ float(float id) ui_data_load_mech={
   while( (line != "") ){
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
       line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
-      local string token, value;
       token = argv(1);
       value = argv(3);
       if( token != ""){
@@ -332,12 +335,9 @@ float(float id) ui_data_load_mech={
   }
   fclose(flannel);
   
-  local entity hardpoint;
-  local float itr;
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   itr = 1;
   while( hardpoint ){
-    local vector partOffset;
     
     partOffset = hardpoint.compOffset;
     //TODO - migjht be source of hardpoint type bug

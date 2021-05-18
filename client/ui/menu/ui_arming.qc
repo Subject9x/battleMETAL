@@ -632,6 +632,10 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     
   local vector helpOrg;
   
+  local vector colorSel, colorCold;
+  colorSel = CLR_DEF_ARM_OK * 2;
+  colorCold = CLR_DEF_TXT_CANTSELECT * 1.25;
+  
   nofs = ofs + gui_percentToPixelRawVec('10 0');
   groupButtonSize = gui_percentToPixelRawVec('12 12');
   
@@ -676,31 +680,31 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     }
     if( !(hardpoint.damageType & DMG_MSC) && hardpoint.data_idx > 0){
       if(CLIENT_MENU_nex_grp1 & bit){
-        drawpic( lofs + gui_percentToPixelRawVec('40 -3'), HUD_RAD_PIP_BLD, groupButtonSize, CLR_DEF_ARM_OK * 2, 1.5, 0);
+        drawpic( lofs + gui_percentToPixelRawVec('40 -3'), HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }
       else{
-        drawpic( lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_64, groupButtonSize, CLR_DEF_TXT_CANTSELECT, 1, 0);
+        drawpic( lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_64, groupButtonSize, colorCold, 1, 0);
       }
       
       if(CLIENT_MENU_nex_grp2 & bit){ 
-        drawpic( lofs + gui_percentToPixelRawVec('60 -3'), HUD_RAD_PIP_BLD, groupButtonSize, CLR_DEF_ARM_OK * 2, 1.5, 0);
+        drawpic( lofs + gui_percentToPixelRawVec('60 -3'), HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }
       else{
-        drawpic( lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_64, groupButtonSize, CLR_DEF_TXT_CANTSELECT, 1, 0);
+        drawpic( lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_64, groupButtonSize, colorCold, 1, 0);
       }
     
       if(CLIENT_MENU_nex_grp3 & bit){   
-        drawpic( lofs + gui_percentToPixelRawVec('80 -3'), HUD_RAD_PIP_BLD, groupButtonSize, CLR_DEF_ARM_OK * 2, 1.5, 0);
+        drawpic( lofs + gui_percentToPixelRawVec('80 -3'), HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }
       else{
-        drawpic( lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_64, groupButtonSize, CLR_DEF_TXT_CANTSELECT, 1, 0);
+        drawpic( lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_64, groupButtonSize, colorCold, 1, 0);
       }
     
       if(CLIENT_MENU_nex_grp4 & bit){   
-        drawpic(lofs + gui_percentToPixelRawVec('100 -3'), HUD_RAD_PIP_BLD, groupButtonSize, CLR_DEF_ARM_OK * 2, 1.5, 0);
+        drawpic(lofs + gui_percentToPixelRawVec('100 -3'), HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }
       else{
-        drawpic( lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_64, groupButtonSize, CLR_DEF_TXT_CANTSELECT, 1, 0);
+        drawpic( lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_64, groupButtonSize, colorCold, 1, 0);
       }
     }
     
@@ -725,13 +729,6 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   if( time < UI_ARMING_GROUP_WARN_TIMER ) {
     drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), '1 0 0', 0.67, 0);
   }
-  
-  //debug
-  drawpic( WEPNGRP_ORG_A, UI_DEF_BOX_64, WEPNGRP_SIZE_A, '1 1 1', 0.33, 0);
-  drawpic( WEPNGRP_ORG_B, UI_DEF_BOX_64, WEPNGRP_SIZE_A, '1 1 1', 0.33, 0);
-  drawpic( WEPNGRP_ORG_C, UI_DEF_BOX_64, WEPNGRP_SIZE_A, '1 1 1', 0.33, 0);
-  drawpic( WEPNGRP_ORG_D, UI_DEF_BOX_64, WEPNGRP_SIZE_A, '1 1 1', 0.33, 0);
-  
   
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(150) - gui_percentXRaw(12);

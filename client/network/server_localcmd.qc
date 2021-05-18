@@ -283,6 +283,7 @@ void(string iniCmd) cl_ini_event={
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   while( hardpoint ){
     hardpoint.data_idx = stof(argv(hptId));
+    data_get_client_item_( hardpoint, hardpoint.data_idx );
     hptId = hptId + 1;
     bit = floor(bit * 2);
     CLIENT_weapon_state = CLIENT_weapon_state | bit;
@@ -305,6 +306,7 @@ void(string iniCmd) cl_ini_event={
   
   MENU_respawn_cool = servertime - 1;
   LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+  
   //sizeable hack
   ui_navbutton_launch_click();
 };
