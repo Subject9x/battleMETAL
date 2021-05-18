@@ -504,8 +504,8 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   HUD_INFO_SIZE_x = gui_percentXRaw( 256 );
   HUD_INFO_SIZE_y = infoBoxY;
   
-  HUD_INFO_ORG_x = VIEW_CTR_x - (HUD_INFO_SIZE_x / 2);
-  HUD_INFO_ORG_y = VIEW_CTR_y - (HUD_INFO_SIZE_y / 2);
+  HUD_INFO_ORG_x = VIEW_MAX_x - HUD_INFO_SIZE_x;
+  HUD_INFO_ORG_y = VIEW_ORG_y + gui_percentYRaw(64);
   
   drawfont = drawfont_prev;
   
