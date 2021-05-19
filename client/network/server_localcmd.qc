@@ -290,7 +290,6 @@ void(string iniCmd) cl_ini_event={
     hardpoint = hardpoint.w_slot;
   }
   
-  
   CLIENT_stat_w1_id = stof(argv(7));
   CLIENT_stat_w2_id = stof(argv(8));
   CLIENT_stat_w3_id = stof(argv(9));

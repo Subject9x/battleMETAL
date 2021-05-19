@@ -17,7 +17,7 @@ void() menu_deployDrawFrame={
   menu_navBar_drawFrame(VIEW_ORG);
   
   menu_deploy_missionInfoPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
-  menu_deploy_mapOverviewPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
+  menu_deploy_mapOverviewPanel(topleftroot + gui_percentToPixelRawVec('0 64'));
   menu_deploy_mechInfoPanel(topleftroot);
   menu_deploy_navInfoPanel(topleftroot);
   menu_deploy_mapKeyPanel(topleftroot);

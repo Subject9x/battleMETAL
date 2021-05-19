@@ -115,6 +115,7 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
 void(vector ofs) menu_navBar_drawFrame={
   local vector nvpos;
   local vector launchPos;
+  local vector arrowOrg;
   
   nvpos = ofs + gui_percentToPixelRawVec('9.984 7.488');
   
@@ -122,9 +123,24 @@ void(vector ofs) menu_navBar_drawFrame={
   launchPos_y = nvpos_y;
   
   ui_navbutton_brief_draw( nvpos );
+  
+  arrowOrg = nvpos;
+  arrowOrg_y = arrowOrg_y + gui_percentYRaw(4);
+  arrowOrg_x = arrowOrg_x + gui_percentXRaw(UI_NAVBAR_BRIEF_SIZE_x + 4);
+  drawpic( arrowOrg, HUD_TRG_PIP_R, gui_percentToPixelRawVec(UI_NAVAR_ARR_SIZE), '0.75 0.75 0.75', 1, 0);
+  
   ui_navbutton_hangar_draw( nvpos + gui_percentToPixelRawVec('96 0') ) ;
+  
+  arrowOrg_x = arrowOrg_x + gui_percentXRaw(96);
+  drawpic( arrowOrg, HUD_TRG_PIP_R, gui_percentToPixelRawVec(UI_NAVAR_ARR_SIZE), '0.75 0.75 0.75', 1, 0);
+  
   ui_navbutton_arming_draw( nvpos + gui_percentToPixelRawVec('192 0') ) ;
+  
+  arrowOrg_x = arrowOrg_x + gui_percentXRaw(96);
+  drawpic( arrowOrg, HUD_TRG_PIP_R, gui_percentToPixelRawVec(UI_NAVAR_ARR_SIZE), '0.75 0.75 0.75', 1, 0);
+  
   ui_navbutton_deploy_draw( nvpos + gui_percentToPixelRawVec('288 0')) ;
+  
   ui_navbutton_launch_draw( launchPos ) ;
   
 };
