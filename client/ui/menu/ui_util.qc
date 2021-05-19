@@ -22,6 +22,7 @@ void(string imageIcon, vector org, float selected, float allow) ui_renderHardPoi
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');
       gui_renderTintImage(selected, iorg, UI_DEF_BOX_256_THICK, gui_percentToPixelRawVec('32 32'), CLR_DEF_YELLOW * 2, 1, 0);
+      drawfill( iorg, gui_percentToPixelRawVec('32 32'), CLR_DEF_YELLOW * 2, 0.75, 0);
     }
     allowAlpha = 0.45;
     if( allow ){

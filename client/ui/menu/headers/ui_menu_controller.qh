@@ -75,9 +75,9 @@ float CLIENT_MENU_nex_grp4;
 
 //pre-launch validation
 float LAUNCH_VALIDATION;
-float VALID_MECH = 1;
-float VALID_GRPS = 2;
-float VALID_NODE = 4;
+float VALID_MECH = 1; //Player has a chosen mech
+float VALID_GRPS = 2; //Player has at least 1 weapon group populated
+float VALID_NODE = 4; //Player has chosen a valid deploy node
 float VALID_LAUNCH = 8; //setpause looks like it needs at least frame+1 time to unpause, so we have to decouple player spawn server messages from launch validation
 
 //image defs
@@ -118,11 +118,13 @@ vector UI_NAVBAR_INFO_ORG;
 vector UI_NAVBAR_DISCONNECT_ORG;
 vector UI_NAVBAR_TEAM_ORG;
 
-vector UI_NAVBAR_BRIEF_SIZE = '96 24';
-vector UI_NAVBAR_HANGAR_SIZE = '96 24';
-vector UI_NAVBAR_ARMING_SIZE = '96 24';
-vector UI_NAVBAR_DEPLOY_SIZE = '128 24';
-vector UI_NAVBAR_LAUNCH_SIZE = '128 24';
+
+vector UI_NAVAR_ARR_SIZE = '8 18';
+vector UI_NAVBAR_BRIEF_SIZE = '80 24';
+vector UI_NAVBAR_HANGAR_SIZE = '80 24';
+vector UI_NAVBAR_ARMING_SIZE = '80 24';
+vector UI_NAVBAR_DEPLOY_SIZE = '114 24';
+vector UI_NAVBAR_LAUNCH_SIZE = '114 24';
 vector UI_NAVBAR_CONNECT_SIZE = '128 24';
 vector UI_NAVBAR_INFO_SIZE = '96 24';
 vector UI_NAVBAR_DISCONNECT_SIZE = '128 24';

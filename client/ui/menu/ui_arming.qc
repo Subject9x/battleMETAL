@@ -134,16 +134,21 @@ void() menu_armingListener_onHover={
   toolTip.data_idx = FALSE;
 };
 
+/*
+  LISTENER - KEYUP - dropping drag item
+*/
 void() menu_armingListener_onKeyUp={
   local entity hardpoint;
   local float weaponType;
+  local float hardpointId;
+  
   UI_ARMING_weaponclick = FALSE;
   UI_ARMING_hardpoint_click = FALSE;
   
   if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
     if( UI_ARMING_item_drag.data_idx > 0 ){
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
-      
+      hardpointId = 1;
       while( hardpoint ){
         if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), FALSE)){
           weaponType = UI_ARMING_item_drag.damageType;
@@ -155,6 +160,21 @@ void() menu_armingListener_onKeyUp={
               GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
               GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
               GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
+              
+              if( (weaponType & DMG_MSC) ){
+                if( (CLIENT_MENU_nex_grp1 & hardpointId) ){
+                  CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 - (CLIENT_MENU_nex_grp1 & hardpointId);
+                }
+                if( (CLIENT_MENU_nex_grp2 & hardpointId) ){
+                  CLIENT_MENU_nex_grp2 = CLIENT_MENU_nex_grp2 - (CLIENT_MENU_nex_grp2 & hardpointId);
+                }
+                if( (CLIENT_MENU_nex_grp3 & hardpointId) ){
+                  CLIENT_MENU_nex_grp3 = CLIENT_MENU_nex_grp3 - (CLIENT_MENU_nex_grp3 & hardpointId);
+                }
+                if( (CLIENT_MENU_nex_grp4 & hardpointId) ){
+                  CLIENT_MENU_nex_grp4 = CLIENT_MENU_nex_grp4 - (CLIENT_MENU_nex_grp4 & hardpointId);
+                }
+              }
             }
           }
           else{
@@ -164,6 +184,7 @@ void() menu_armingListener_onKeyUp={
             }
           }
         }
+        hardpointId = bitshift(hardpointId, 1);
         hardpoint = hardpoint.w_slot;
       }
       
@@ -314,6 +335,13 @@ void() weaponGroupPanelListener={
       CLIENT_MENU_nex_grp4 = CLIENT_MENU_nex_grp4 | found;
     }
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
+  }
+  
+  if( !CLIENT_MENU_nex_grp1 && !CLIENT_MENU_nex_grp2 && !CLIENT_MENU_nex_grp3 && !CLIENT_MENU_nex_grp4){
+    LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_GRPS);
+  }
+  else{
+  
   }
 };
 
@@ -479,7 +507,7 @@ void(vector ofs) menu_arming_HardpointGraph={
   cfg = NAVNAMES[CFG_INDEX];
   warnOrg = lctr;
   colr = CLR_DEF_ARM_OK;
-  warn = "[Click-and-hold Weapons to Modify]";
+  warn = "[Drag-and-Drop Weapons to Modify]";
   len = stringwidth(warn, 0, '12 12 0');
   warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
   warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
@@ -671,7 +699,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     lofs_y = nofs_y + gui_percentYRaw(lst_idx * 20);
     
     if( CLIENT_MENU_sel_hrpnt == lst_idx){
-      drawpic(lofs + gui_percentToPixelRawVec('-2 -8'), UI_DEF_BOX_256, gui_percentToPixelRawVec('143 20'), '0.85 0.85 0', 1,0);
+      drawfill( lofs + gui_percentToPixelRawVec('-2 -8'), gui_percentToPixelRawVec('143 20'), '0.85 0.85 0', 0.67, 0 );
     }
     
     drawstring(lofs +  gui_percentToPixelRawVec('0 -4'), strcat("{",ftos(lst_idx),"}"), '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
@@ -679,28 +707,28 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
       drawpic(lofs + gui_percentToPixelRawVec('16 -8'), hardpoint.icon, gui_percentToPixelRawVec('20 20'), '1 1 1', 1,0);
     }
     if( !(hardpoint.damageType & DMG_MSC) && hardpoint.data_idx > 0){
-      if(CLIENT_MENU_nex_grp1 & bit){
+      if( (CLIENT_MENU_nex_grp1 & bit) ){
         drawpic( lofs + gui_percentToPixelRawVec('40 -3'), HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }
       else{
         drawpic( lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_64, groupButtonSize, colorCold, 1, 0);
       }
       
-      if(CLIENT_MENU_nex_grp2 & bit){ 
+      if( (CLIENT_MENU_nex_grp2 & bit) ){
         drawpic( lofs + gui_percentToPixelRawVec('60 -3'), HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }
       else{
         drawpic( lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_64, groupButtonSize, colorCold, 1, 0);
       }
     
-      if(CLIENT_MENU_nex_grp3 & bit){   
+      if( (CLIENT_MENU_nex_grp3 & bit) ){
         drawpic( lofs + gui_percentToPixelRawVec('80 -3'), HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }
       else{
         drawpic( lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_64, groupButtonSize, colorCold, 1, 0);
       }
     
-      if(CLIENT_MENU_nex_grp4 & bit){   
+      if( (CLIENT_MENU_nex_grp4 & bit) ){
         drawpic(lofs + gui_percentToPixelRawVec('100 -3'), HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }
       else{
@@ -727,7 +755,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = WEPNGRP_SIZE_D_y = gui_percentYRaw((lst_idx - 1) * 20);
   
   if( time < UI_ARMING_GROUP_WARN_TIMER ) {
-    drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), '1 0 0', 0.67, 0);
+    drawfill( nofs, gui_percentToPixelRawVec('150 198'), '1 0 0', 0.75, 0);
   }
   
   helpOrg = nofs;
