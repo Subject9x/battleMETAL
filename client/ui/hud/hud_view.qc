@@ -820,8 +820,8 @@ void() data_hud_frame={
   if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
     
-    //func call optimization
-    if( CLIENT_target_shield > 0.0 ){
+    //func call optimization, adding shield-down filter, players are confused about a target's shield flashing red to indicate 'time-before-regen' delay.
+    if( CLIENT_target_shield > 0.0 && CLIENT_target_shield <= 100.0){
       hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
     }
   }
@@ -1064,7 +1064,9 @@ void() data_hud_fps_cam={
       case HUD_UID_SHIELD_TARGET: 
         if( HUD_ZOOM_ACTIVE == FALSE && CLIENT_stat_trg_dataidx != 0){
           //func call optimization
-          hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
+          if( CLIENT_target_shield <= 100.0 && CLIENT_target_shield >= 0.0 ){
+            hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
+          }
         }
         break;
       case HUD_UID_WEP_TYPE1:

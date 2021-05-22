@@ -543,9 +543,11 @@ float FACTION_ALL = 255;  //buildings don't show up on radar, deploy and nav poi
 //============================
 //     SHIELD HIT FLAGS
 //============================
-float SHIELD_HIT_UP   = 1;
-float SHIELD_HIT_DN = 2;
-float SHIELD_HIT_EXP  = 3;
+//directs the client to choose the correct color / and shield state for an entity.
+float SHIELD_HIT_REG  = 1;  //tells client that entity's shields are hit, but currently up
+float SHIELD_HIT_EMP  = 2;  //entity hit with EMP round, color differently for readability.
+float SHIELD_HIT_EXP  = 4;  //entity shields have just gone down, cue explosion.
+float SHIELD_HIT_IXP  = 5;  //EMP-based shield explosion.
 
 //============================
 //     AI VOICE SYSTEM

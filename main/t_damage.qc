@@ -203,14 +203,19 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( dmgTrg.shield < 0 ){
     dmgTrg.shield = 0;
     if(shieldBreaker){
-      dmgTrg.shieldHitFlag = SHIELD_HIT_EXP;
+      dmgTrg.shieldHitFlag = SHIELD_HIT_IXP;
     }
     else{
-      dmgTrg.shieldHitFlag = SHIELD_HIT_DN;
+      dmgTrg.shieldHitFlag = SHIELD_HIT_EXP;
     }
   }
   else{
-    dmgTrg.shieldHitFlag = SHIELD_HIT_UP;
+    if(shieldBreaker){
+      dmgTrg.shieldHitFlag = SHIELD_HIT_EMP;
+    }
+    else{
+      dmgTrg.shieldHitFlag = SHIELD_HIT_REG;
+    }
   }
   
   if( (dmgTrg.flags & FL_CLIENT) ){

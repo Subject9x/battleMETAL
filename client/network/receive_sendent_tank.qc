@@ -166,8 +166,8 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   sendevent_shield_explode( prevShield );  
   
   //Shield strike event
-  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
-    if( time > self.shieldEffectTime ){
+  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
       self.shieldEffectTime = time + 0.5;
       te_shield_hit();
     }

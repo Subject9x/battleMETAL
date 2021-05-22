@@ -354,11 +354,12 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
 */
 void() te_shield_hit_predraw={
   interpolate_origin();
+  self.colormod = self.compOffset;
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  self.alpha = 0.075;
+  self.alpha = 0.085;
   if(self.owner.clientLocalId == player_localentnum){
     if( self.owner.chaseActive == FALSE ){
-      self.alpha = 0.02;
+      self.alpha = 0.03;
     }
   }
 };
@@ -383,6 +384,7 @@ void() te_shield_hit_th={
 void() te_shield_hit={
   local entity explode;
   local float hitTime;
+  local vector flashCol;
   
   hitTime = 0.33;
   
@@ -403,8 +405,18 @@ void() te_shield_hit={
   setorigin( explode, self.origin);
   explode.alpha = 0.075;
   
+  if(self.shieldHitFlag == SHIELD_HIT_EMP){
+    flashCol = '1.0 0.4 1.0';
+    explode.colormod = '1.2 0.6 1.2';
+  }
+  else {
+    //SHIELD_HIT_REG
+    explode.colormod = '0 1 0';
+    flashCol = '0.003 0.87 0.22';
+  }
+  explode.compOffset = explode.colormod;
   
-  te_customflash( self.origin, self.vec_size * 50, 0.25, '0.003 0.87 0.22');
+  te_customflash( self.origin, self.vec_size * 50, 0.25, flashCol);
   pointsound(  self.origin, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
 };
 
@@ -473,17 +485,18 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.alpha = 0.6;
   explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
   explode.drawmask = MASK_NORMAL;
+  explode.predraw = predraw_shield_explode;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
   explode.owner = self;
-  explode.predraw = predraw_shield_explode;
   
-  if(self.shieldHitFlag == SHIELD_HIT_EXP){
-    flashCol = '1.0 0.39 0.0';
-    explode.colormod = '1 0 0';
+  if(self.shieldHitFlag == SHIELD_HIT_IXP){
+    flashCol = '1.0 0.0 0.4';
+    explode.colormod = '1.2 0.2 0.6';
   }
-  else{
-    explode.colormod = '1 1 1';
+  else {
+    //SHIELD_HIT_EXP
+    explode.colormod = '1 1 0.1';
     flashCol = '0.003 0.87 0.22';
   }
   explode.compOffset = explode.colormod;
