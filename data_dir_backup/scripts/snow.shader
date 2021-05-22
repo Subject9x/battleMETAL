@@ -24,7 +24,7 @@ textures/ice/snow_a
   q3map_tcGen ivector ( 512 0 0 ) ( 0 512 0 )
   {
     map textures/ice/snow_a.tga
-    tcMod scale 3 3
+    tcMod scale 1 1
     rgbGen vertex
   }
   {
@@ -94,7 +94,7 @@ textures/ice/snow_a_brush
   q3map_shadeangle 179
   {
     map textures/ice/snow_a.tga
-    tcMod scale 3 3
+    tcMod scale 1 1
     rgbGen vertex
   }
   {
@@ -198,6 +198,24 @@ textures/ice/rock_b
 }
 
 //flat surfaces=-==========================================
+textures/ice/rock_a_brush
+{
+
+	qer_editorimage textures/ice/rock_a.tga
+  q3map_shadeangle 179
+	{
+		map textures/ice/rock_a.tga
+    tcMod scale 3 3
+    rgbGen vertex
+	}
+	{
+    map $lightmap
+		blendFunc GL_DST_COLOR GL_ZERO
+		rgbGen identity
+	}
+}
+
+
 textures/ice/rock_b_brush
 {
 	qer_editorimage textures/ice/ice_rock_b.tga

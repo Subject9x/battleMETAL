@@ -23,6 +23,9 @@ void() menu_armingListener_onDrag={
   weaponDragListener();
 };
 
+/*
+  LISTENER - HOVER - when a player's cursor is over a 2D area.
+*/
 void() menu_armingListener_onHover={
   local entity hardpoint;
   local float hardpointItr;
@@ -113,7 +116,6 @@ void() menu_armingListener_onHover={
     if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), FALSE)){
       UI_ARMING_hardpoint_type_roll = hardpoint.hardpointSize;
       
-      //CLIENT_MENU_sel_wid = 0;
       CLIENT_MENU_sel_hrpnt_size = hardpoint.hardpointSize;
       CLIENT_MENU_sel_hrpnt_types = hardpoint.hardpointType;
       CLIENT_MENU_sel_hrpnt = hardpointItr;
@@ -130,12 +132,13 @@ void() menu_armingListener_onHover={
     weaponBitFlag = weaponBitFlag * 2;
   }
   
+  //cleared at the end to make sure no data is cached - hovering is fairly stateless
   UI_ARMING_weapon_rollover = FALSE;
   toolTip.data_idx = FALSE;
 };
 
 /*
-  LISTENER - KEYUP - dropping drag item
+  LISTENER - KEYUP - dropping drag-item
 */
 void() menu_armingListener_onKeyUp={
   local entity hardpoint;
@@ -150,17 +153,17 @@ void() menu_armingListener_onKeyUp={
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
       hardpointId = 1;
       while( hardpoint ){
+        //run collision check with all hardpoints on the mech entity.
         if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), FALSE)){
           weaponType = UI_ARMING_item_drag.damageType;
           if( (UI_ARMING_item_drag.equipSize & hardpoint.hardpointSize) ){
             if( (weaponType & hardpoint.hardpointType) ){
               data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
               ui_date_load_item1(UI_ARMING_item_drag.data_idx);
-              GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
-              GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
-              GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
-              GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
               
+              //update weapon groups for launch-validation
+              //DMG_MSC don't count as weapons for OR against groups, we don't want them to allow a player to bypass group-validation
+              //where the hardpoint was previously grouped because of a valid weapon which is then swapped for a module.
               if( (weaponType & DMG_MSC) ){
                 if( (CLIENT_MENU_nex_grp1 & hardpointId) ){
                   CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 - (CLIENT_MENU_nex_grp1 & hardpointId);
@@ -175,6 +178,11 @@ void() menu_armingListener_onKeyUp={
                   CLIENT_MENU_nex_grp4 = CLIENT_MENU_nex_grp4 - (CLIENT_MENU_nex_grp4 & hardpointId);
                 }
               }
+              //update ENERGY GROUP cost meters
+              GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
+              GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
+              GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
+              GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
             }
           }
           else{
@@ -337,11 +345,12 @@ void() weaponGroupPanelListener={
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
   }
   
+  //LAUNCH_VALIDATION - make sure player is deploying with at least ONE assigned group.
   if( !CLIENT_MENU_nex_grp1 && !CLIENT_MENU_nex_grp2 && !CLIENT_MENU_nex_grp3 && !CLIENT_MENU_nex_grp4){
     LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_GRPS);
   }
   else{
-  
+    LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_GRPS;
   }
 };
 
