@@ -34,7 +34,7 @@ void() data_hud_external={
           drawOrg = '0 0';
           drawOrg_x = drawOrg_x + (realWeapons * 28);
           drawOrg_y = drawOrg_y - 20;
-          hud_renderWeapon(drawOrg, '24 24', 0, CLIENT_currentWeaponGroup, wepBit );
+          hud_renderWeapon(drawOrg, '24 24', 0, wepBit );
           realWeapons = realWeapons + 1;
         }
       }

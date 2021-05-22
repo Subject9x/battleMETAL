@@ -110,9 +110,9 @@
 //Ram Charge Meter
 {
   'uid'     : 19,
-  'pos'     : 145 98,
+  'pos'     : 145 88,
   'valign'  : 6,
-  'size'    : 24 96,
+  'size'    : 22 88,
   'axis'    : 2,
   'lalign'  : 17,
   'lblofs'  : 0 24 0,
