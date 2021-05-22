@@ -14,6 +14,10 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   local entity blip;
   local vector imgRadarSize;
   local vector imgRadarOrg;
+  local entity test;
+  local vector testOrg;
+  local float testCheck;
+  local entity nav;
   
   RADAR_ORG = radarOrg;
   
@@ -33,7 +37,6 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   imgRadarOrg = RADAR_VORG - ((imgRadarSize - RADAR_VSIZE) * 0.5);
   
   drawpic(imgRadarOrg, UI_CIRCLE_256, imgRadarSize, '0.25 0.25 0.25', max(0.85, HUD_ALPHA - 0.5), 0);
-  //drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   radarLineLeft_x = RADAR_VSIZE_x / 2.25;
   radarLineLeft_x = radarLineLeft_x * -1;
@@ -46,9 +49,6 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('3 0'), RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   for( blip = nextent(world); blip != world; blip = nextent(blip)){
-    local entity test;
-    local vector testOrg;
-    local float testCheck;
     if( !(blip.flags & FL_UNIT) && !(blip.flags & FL_MONSTER) ){
       continue;
     }
@@ -84,7 +84,6 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     hud_renderRadarContact( blip, plrFaction, radarRange );
   }
   
-  local entity nav;
   for( nav = MENU_NAV_LIST; nav != world; nav = nav.partPrev ){
     if( (nav.faction != FACTION_ALL) && (nav.faction != CLIENT_faction) ){
       continue;
