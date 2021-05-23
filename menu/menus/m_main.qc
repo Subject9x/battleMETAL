@@ -54,18 +54,9 @@ void() click_main_camp={
 };
 
 void() click_main_train={
-  cvar_set("cl_ismenu","0");
-  cvar_set("skill", "1");
-  cvar_set("sv_public", "-2");
-  cvar_set("deathmatch", "0");
-  cvar_set("coop", "0");
-  cvar_set("teamplay", "0");
-  cmd("maxplayers 1;\n");
-  
   menu_clear_items(M_STATE);
-  menu_exit_togame();
-  
-  cmd("map training_only\n");
+  M_STATE = M_TRAINING;
+  m_train_f();
 };
 
 void() click_main_multi={
@@ -140,8 +131,8 @@ void() m_main_i={
     labelSize = '1 1 0';
     mainTitleFlag = UI_FLAG_SIZE_IMG;
     main_title = lbl_img('10 50', '1 1 0', IMG_MAIN_TITLE, '1.5 0.75 0.35', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
-    main_camp = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_CAMP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_camp, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-    main_training = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_TRAIN, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_train, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_training = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_TRAIN, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_train, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_camp = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_CAMP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_camp, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));    
     main_multi = btn_img_callback('10 170 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     
     orgOptions = '10 189 0';

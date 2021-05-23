@@ -49,9 +49,9 @@ void() campaign_loadfiles={
                 CAMP_START[itr+1] = strzone(argv(token));
               }
             }
-            if (argv(1) == CAMP_TAG_TRAIN){
+            if (argv(1) == CAMP_TAG_INFO){
               if( argv(token) != "" ){
-                CAMP_TRAINING[itr+1] = strzone(argv(token));
+                CAMP_INFO[itr+1] = strzone(argv(token));
               }
             }
             if (argv(1) == CAMP_TAG_DESC){

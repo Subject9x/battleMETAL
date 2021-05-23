@@ -129,6 +129,9 @@ void(float keynr, float ascii) m_keydown={
     case M_HELP:
       m_help_k(keynr, ascii);
       break;
+    case M_TRAINING:
+      m_train_k(keynr, ascii);
+      break;
   }
   if(keynr == K_MOUSE1){
     MOUSE_DOWN = TRUE;
@@ -242,6 +245,9 @@ void(float width, float height) m_draw={
       break;
     case M_HELP:
       m_help_d();
+      break;
+    case M_TRAINING:
+      m_train_d();
       break;
   }
 

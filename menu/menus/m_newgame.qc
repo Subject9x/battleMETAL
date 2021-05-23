@@ -44,7 +44,6 @@ float NEWGAME_ROLL_ACE = 4;
 float TRAIN_MAP_LIST_TOTAL;
 entity new_camp_lbl;
 entity new_camp_train_lbl;
-entity new_camp_train_btn;
 entity new_camp_start_lbl;
 entity new_camp_start_btn;
 
@@ -81,13 +80,7 @@ void() click_newg_back={
 };
 
 
-void() click_newg_launch_map={
-  local float mapCount;
-  mapCount = 0;
-  while( mapCount < TRAIN_MAP_LIST_TOTAL ){
-    
-  }
-  
+void() click_newg_launch_map={  
   menu_write_new_save();
   menu_clear_items(M_STATE);
   menu_exit_togame();
@@ -100,7 +93,7 @@ void() click_newg_launch_map={
   cmd(strcat("map ", self.data_text,"\n")); 
   
   freeGlobalString(CAMP_SELECT_START)
-  freeGlobalString(CAMP_SELECT_TRAINING)
+  freeGlobalString(CAMP_SELECT_INFO)
   freeGlobalString(CAMP_SELECT_NAME)
   freeGlobalString(CAMP_SELECT_MECHS)
   freeGlobalString(CAMP_SELECT_ITEMS)
@@ -110,65 +103,17 @@ void() click_newg_launch_map={
   Sub-Menu: Campaign Briefing
   allow player to skip training here.
 */
-//cleans up training maps
-void() newgame_clean_train_maps={
-  local entity map;
-  
-  if( CAMP_SELECT_TRAINING != "" ){
-    map = findchainfloat( menuId, M_NEWGAME);
-    while( map ){
-      if( map.classname == "button" && map.subid == NEWGAME_BRIEF ){
-        freeGlobalString(map.label);
-        freeGlobalString(map.data_text)
-      }
-      map = map.chain;
-    }
-  }
-};
-
-
 void() click_newg_info={
-  local float mapTotal;
-  local float mapCount;
-  local entity mapButton;
-  
   local vector mapOrg;
   local string subMapName;
   
   newgame_substate = NEWGAME_BRIEF;
   new_camp_lbl.label = CAMP_SELECT_NAME;
   
-  if( CAMP_SELECT_TRAINING != "" ){
-    mapTotal = tokenizebyseparator(CAMP_SELECT_TRAINING, ",");
-  
-    if( mapTotal != 0 ){
-      new_camp_train_lbl.drawme = TRUE;
-    
-      mapCount = 0;
-      mapOrg = '32 170 0';
-      while( mapCount < mapTotal ){
-        subMapName = argv(mapCount);
-        mapButton = btn_text_callback( mapOrg, '12 12 0', subMapName, 0, M_NEWGAME, click_newg_launch_map, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-        
-        mapButton.label = "";
-        cacheGlobalString( mapButton.label, newg_format_map(subMapName) )
-        cacheGlobalString( mapButton.data_text, subMapName )
-        
-        mapButton.data_bind = NEWGAME_BRIEF;
-        mapButton.subid = NEWGAME_BRIEF;
-        if( mapOrg_x < gui_percentXRaw(512) ){
-          mapOrg_x = mapOrg_x + stringwidth(mapButton.label, 0, mapButton.size) + gui_percentXRaw(10);
-        }
-        else{
-          mapOrg_y = mapOrg_y + gui_percentYRaw( 14 );
-        }
-        mapCount = mapCount + 1;
-      }
-      new_camp_start_lbl.drawme = TRUE;
-      new_camp_start_lbl.origin_y = mapOrg_y + gui_percentYRaw(32);
-      
-      new_camp_start_btn.origin_y = new_camp_start_lbl.origin_y + gui_percentYRaw(16);
-    }
+  if( CAMP_SELECT_INFO != "" ){
+    new_camp_train_lbl.label = CAMP_SELECT_INFO;
+    new_camp_train_lbl.drawme = TRUE;
+    new_camp_start_lbl.drawme = TRUE;
   }
   new_camp_start_btn.data_text = CAMP_SELECT_START;
   new_back.origin_y = new_camp_start_btn.origin_y + gui_percentYRaw(48);
@@ -205,7 +150,7 @@ void() click_newg_campaign={
   cacheGlobalString(CAMP_SELECT_NAME, CAMP_NAME[self.data_bind])
   cacheGlobalString(CAMP_SELECT_MECHS, CAMP_MECHS[self.data_bind])
   cacheGlobalString(CAMP_SELECT_ITEMS, CAMP_ITEMS[self.data_bind])
-  cacheGlobalString(CAMP_SELECT_TRAINING, CAMP_TRAINING[self.data_bind])
+  cacheGlobalString(CAMP_SELECT_INFO, CAMP_INFO[self.data_bind])
 };
 
 
@@ -309,15 +254,15 @@ void() m_newg_i={
   new_camp_lbl = lbl_text('10 132 0', '14 14 0', CAMP_SELECT_NAME, '1 1 1', (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
   new_camp_lbl.subid = NEWGAME_BRIEF;
   
-  new_camp_train_lbl = lbl_text('10 151 0', '12 12 0', "This Campaign has training maps, New Players are encouraged to play them before the campaign:", CLR_DEF_ARM_THREEQ, (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
+  new_camp_train_lbl = lbl_text('10 151 0', '12 12 0', CAMP_SELECT_INFO, CLR_DEF_ARM_THREEQ, (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
   new_camp_train_lbl.subid = NEWGAME_BRIEF;
   new_camp_train_lbl.drawme = FALSE;
   
-  new_camp_start_lbl = lbl_text('10 151 0', '12 12 0', "Otherwise click START to skip training and begin the game:", CLR_DEF_ARM_THREEQ, (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
+  new_camp_start_lbl = lbl_text('10 170 0', '12 12 0', "Otherwise click START to skip training and begin the game:", CLR_DEF_ARM_THREEQ, (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
   new_camp_start_lbl.subid = NEWGAME_BRIEF;
   new_camp_start_lbl.drawme = FALSE;
   
-  new_camp_start_btn = btn_text_callback('32 170 0', '14 14 0', "[START CAMPAIGN]", 0, M_NEWGAME, click_newg_launch_map, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  new_camp_start_btn = btn_text_callback('32 189 0', '14 14 0', "[START CAMPAIGN]", 0, M_NEWGAME, click_newg_launch_map, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
   new_camp_start_btn.subid = NEWGAME_BRIEF;
   new_camp_start_btn.drawme = FALSE;
   new_camp_start_btn.data_text = CAMP_SELECT_START;
@@ -420,7 +365,6 @@ void(float key, float ascii) m_newg_k={
         menu_clear_items(M_STATE);
         m_camp_f();
         freeGlobalString(TRAINING_LABEL)
-        newgame_clean_train_maps();
       }
       break;
   }

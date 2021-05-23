@@ -23,6 +23,9 @@ menu_main.qc
 
 //specific menus
   menus/m_main.qc
+  
+  menus/m_training.qc
+  
   menus/m_camp.qc
     menus/m_newsave.qc
       menus/m_newgame.qc
