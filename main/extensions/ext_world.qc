@@ -102,7 +102,7 @@ void() world_metal_ini={
   addstat(STAT_WEAPON_RELOAD_9, AS_FLOAT, statWeaponReload9);
   
   addstat(STAT_RAM_VALUE, AS_INT, ramTracker);
-  addstat(STAT_LCK_STT, AS_FLOAT, targLockState);
+  //addstat(STAT_LCK_STT, AS_FLOAT, targLockState); //2.0.0: lock-on not timer-based anymore
   
   addstat(STAT_PLR_REP, AS_FLOAT, stat_plr_rep);
   
@@ -133,7 +133,7 @@ void() world_metal_ini={
   MAP_UNLOCK_EQUIP = world.unlockEquip;
   
   nodegraph_edgelinker = spawn();
-  nodegraph_edgelinker.classname = strzone("nodegraph_edgelinker");
+  nodegraph_edgelinker.classname = "nodegraph_edgelinker";
   setmodel(nodegraph_edgelinker, "q3mdl/testball.md3");
   setsize(nodegraph_edgelinker, nodegraph_edgelinker.mins, nodegraph_edgelinker.maxs);
   setorigin(nodegraph_edgelinker, world.origin);

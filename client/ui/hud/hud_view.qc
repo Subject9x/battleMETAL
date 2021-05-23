@@ -44,12 +44,10 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
     gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('24 24')), HUD_RET_HIT, gui_percentToPixelRawVec('48 48'), hitclr, HUD_ALPHA, 0);
   }
   
-  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lckclr = CLR_DEF_RET_GETLOCK;
-    if( (lockval & LOCK_TARG_HAS) ){
-      lckclr = CLR_DEF_RET_HASLOCK;
+  if( CLIENT_stat_lock_state ){
+    if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT ){
+      gui_renderTintImage(TRUE, VIEW_CTR - gui_percentToPixelRawVec('16 16'), HUT_RET_LOK, gui_percentToPixelRawVec('32 32'), CLR_DEF_RET_HASLOCK, HUD_ALPHA, 0);
     }
-    gui_renderTintImage(TRUE, VIEW_CTR - gui_percentToPixelRawVec('16 16'), HUT_RET_LOK, gui_percentToPixelRawVec('32 32'), lckclr, HUD_ALPHA, 0);
   }
 };
 
@@ -829,7 +827,13 @@ void() data_hud_frame={
     hud_renderCrosshairDisabled();
   }
   else{
-    hud_lock_frame();
+    //hud_lock_frame();
+    CLIENT_stat_lock_state = FALSE;
+    if( HUD_LOCK_FLAG ){
+      if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT ){
+        CLIENT_stat_lock_state = TRUE;
+      }
+    }
     switch( cvar("crosshair") ){
       case 1:
         hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
@@ -951,8 +955,8 @@ void() hud_renderCrosshairDisabled={
 };
 
 /*
+  //2.0.0: DEPRECATED lock-on not timer-based anymore
   received lock start event, setup controller
-*/
 void(float lockTime) hud_lock_control_start={
   HUD_LOCK_TIME_START = time;
   HUD_LOCK_TIME_END = time + lockTime;
@@ -965,10 +969,10 @@ void(float lockTime) hud_lock_control_start={
   HUD_LOCK_SIZE_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
   HUD_LOCK_COLOR = CLR_DEF_RET_GETLOCK;
 };
-
+*/
 /*
+  DEPRECATED - //2.0.0: lock-on not timer-based anymore
   per-frame function for hud lock state.
-*/ 
 void() hud_lock_frame={
   //cases
     //1) started lock
@@ -991,6 +995,7 @@ void() hud_lock_frame={
   }
   HUD_LOCK_STATE_PREV = CLIENT_stat_lock_state;
 };
+*/ 
 
 void() data_hud_fps_cam={
   local float uid;

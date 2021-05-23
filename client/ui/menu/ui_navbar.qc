@@ -281,6 +281,8 @@ void() ui_navbutton_launch_click={
       
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
       
+      HUD_LOCK_FLAG = FALSE;
+      
       bit = 1;
       totalHardpoints = 1;
       weaponsList = " ";
@@ -292,6 +294,10 @@ void() ui_navbutton_launch_click={
         //turbocharger upgrade...
         if( hardpoint.data_idx == UID_ITEM_turbo_charger ){
           turboTotalPerc = turboTotalPerc + (0.4 - (UI_HANGAR_DATA_mech.vec_size/10));
+        }
+        
+        if( (hardpoint.damageType & EFF_LOK) ){
+          HUD_LOCK_FLAG = TRUE;
         }
         
         //bind weapon data, reduce server traffic

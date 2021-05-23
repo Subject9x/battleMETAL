@@ -480,7 +480,7 @@ float STAT_CLIENT_HP_LEGS = 72;
 //float    = 77;
 //float    = 78;
 float STAT_RAM_VALUE = 79;
-float STAT_LCK_STT = 80;
+//float STAT_LCK_STT = 80;  //2.0.0: lock-on not timer-based anymore
 
 float STAT_WEAPON_RELOAD_1 = 81;
 float STAT_WEAPON_RELOAD_2 = 82;

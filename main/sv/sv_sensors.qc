@@ -47,7 +47,8 @@ void() sv_getTarget={
       self.targetEntId = num_for_edict(self.enemy);
     }
     
-    self.lock_timer = 0;  //make sure to reset the timer
+    //2.0.0: lock-on not timer-based anymore
+    /*self.lock_timer = 0;  //make sure to reset the timer
     self.targLockState = 0;
     if(self.stat_rdr_mode){
       self.lock_timer = time + self.w_firetime;
@@ -60,7 +61,7 @@ void() sv_getTarget={
     }
     else{
       trigger_event( self, self.trigOnTarget );
-    }
+    }*/
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
   }
 };
@@ -89,7 +90,7 @@ void() sv_updateTargetInfo={
       self.targLockState = 0;
       self.stat_target_name = "";
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
-      self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS));
+      //self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS)); //2.0.0: lock-on not timer-based anymore
     }
     return;
   }
@@ -132,10 +133,9 @@ void() sv_updateTargetInfo={
     self.stat_trg_dataidx = 0;
     self.stat_trg_dist = 0;
     self.stat_trg_faction = 0;
-    self.targLockState = 0;
     self.stat_target_name = "";
     self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
-    self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS));
+    //self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS)); //2.0.0: lock-on not timer-based anymore
     return;
   }
   
@@ -169,7 +169,9 @@ void() sv_updateTargetInfo={
     }
   }
   self.targetEntIdPrev = self.targetEntId;
-  if(canLock){
+  
+  //2.0.0: lock-on not timer-based anymore
+  /*if(canLock){
     if( !(self.targLockState & LOCK_TARG_START) && !(self.targLockState & LOCK_TARG_HAS) ){
       self.targLockState = self.targLockState | LOCK_TARG_START;
       self.power_timer_segment = time;
@@ -192,8 +194,7 @@ void() sv_updateTargetInfo={
   self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS));
   if( (self.enemy.targLockState & LOCK_PLAYER) ){
     self.enemy.targLockState = self.enemy.targLockState - (self.enemy.targLockState & LOCK_PLAYER);
-  }
-
+  }*/
 };
 
 /*

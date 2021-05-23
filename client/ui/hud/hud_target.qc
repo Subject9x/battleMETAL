@@ -132,12 +132,15 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   }
   else{
     factionColor = CLR_DEF_IFF_ENEMY;
-    if( (CLIENT_stat_lock_state & LOCK_TARG_START) || (CLIENT_stat_lock_state & LOCK_TARG_HAS) ){
+    //2.0.0: lock-on timer DEPRECATED
+    /*if( (CLIENT_stat_lock_state & LOCK_TARG_START) || (CLIENT_stat_lock_state & LOCK_TARG_HAS) ){
       lockColor = HUD_LOCK_COLOR;
     }
     else{
       lockColor = CLR_DEF_IFF_ENEMY;
-    }
+    }*/
+    
+    lockColor = CLR_DEF_IFF_ENEMY;
   }
   dist = vlen(org - torg);
   if( dist > radRange ){

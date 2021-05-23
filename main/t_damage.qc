@@ -76,7 +76,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     if( !attacker.enemy && dmgTrg.canTarget ){
       attacker.enemy = dmgTrg;
       attacker.targetEntId = num_for_edict(dmgTrg);
-      attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
+      //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
       attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
     }
     attacker.w_proj = time + 0.2;
@@ -238,7 +238,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     if( !attacker.enemy && dmgTrg.canTarget ){
       attacker.enemy = dmgTrg;
       attacker.targetEntId = num_for_edict(dmgTrg);
-      attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
+      //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
       attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
     }
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){

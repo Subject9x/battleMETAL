@@ -48,7 +48,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  if( !(lockval & LOCK_TARG_HAS) ){
+  if( !lockval ){
     drawpic(imgCenter, "gfx/hud/ret/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   }
 
@@ -72,11 +72,11 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   drawpic(pipBottom, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
 
   //lock on indicators
-  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
+  if( lockval ){
     lockSize = gui_percentToPixelRawVec('34 34');
     //lockSize = gui_percentToPixelRawVec('34 34') * HUD_LOCK_SIZE; //couldnt get it working for release.
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    drawpic(lockCenter, "gfx/hud/ret/crosshair1_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
+    drawpic(lockCenter, "gfx/hud/ret/crosshair1_lock.png", lockSize, CLR_DEF_RET_HASLOCK, HUD_ALPHA, DRAWFLAG_NORMAL);
   }
 }; 

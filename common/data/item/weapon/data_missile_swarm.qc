@@ -46,7 +46,7 @@ void() data_ini_missile_swarm_={
   
   self.w_range = 1500;
   self.damageValue = 10;
-  self.damageType = DMG_EXP | EFF_ARC | EFF_PTR;
+  self.damageType = DMG_EXP | EFF_ARC | EFF_PTR | EFF_LOK;
  
   self.techLevel = 3;
   self.equipSize = MIS2;
@@ -60,7 +60,7 @@ void() data_ini_missile_swarm_={
   self.fire_sound = "sound/weapons/arh_fire.ogg";
   self.model = "q3mdl/weapons/w_swrm.md3";
   self.abbrev = "SWRM";
-  self.description = "+ target <shields> reduce damage. + Burst-fire. + Shots will home on any target when fired. + Does NOT require <Target Lock>.";
+  self.description = "+ target <shields> reduce damage. + Burst-fire. + Missiles will either lock-on to your Target | OR | Fire straight forward.";
   self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 
   self.itemMuzzleFlash = te_muzzle_swrm;
 #endif 

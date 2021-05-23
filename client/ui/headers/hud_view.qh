@@ -40,6 +40,8 @@ float AIM_FACE_BACK    = 4;
 
 
 //HUD GLOBALS===============================
+  //CLIENT_stat_lock_state -set if player has lock missiles, this will alter reticle color when acquiring targets
+  float HUD_LOCK_FLAG;
   vector HUD_FIXED_ANGLE;
   float VIEW_OBS_ID;
   entity hudStruts;
@@ -76,16 +78,17 @@ float AIM_FACE_BACK    = 4;
   float HUD_ALPHA_RATE;
   float HUD_ALPHA_INC;
   
-  vector HUD_LOCK_COLOR;
-  float HUD_LOCK_STATE_PREV;
-  float HUD_LOCK_ALPHA;
-  float HUD_LOCK_ALPHA_RATE;
-  float HUD_LOCK_SIZE;
-  float HUD_LOCK_SIZE_RATE;
-  float HUD_LOCK_TIME_START;
-  float HUD_LOCK_TIME_END;
-  float HUD_LOCK_STEP;  //timer step function
-  float HUD_LOCK_STEP_RATE;
+  //2.0.0: lock-on timer deprecated
+  //vector HUD_LOCK_COLOR;
+  //float HUD_LOCK_STATE_PREV;
+  //float HUD_LOCK_ALPHA;   
+  //float HUD_LOCK_ALPHA_RATE;
+  //float HUD_LOCK_SIZE;
+  //float HUD_LOCK_SIZE_RATE;
+  //float HUD_LOCK_TIME_START;
+  //float HUD_LOCK_TIME_END;
+  //float HUD_LOCK_STEP;  //timer step function
+  //float HUD_LOCK_STEP_RATE;
   
   float HUD_SHIELD_FLASH_ON;
   float HUD_SHIELD_FLASH_TIME;
@@ -175,8 +178,8 @@ string HUD_TARGET_BOX_BL;
 
 entity HUD_DATA_weapon;
 
-void(float lockTime) hud_lock_control_start;
-void() hud_lock_frame;
+//void(float lockTime) hud_lock_control_start;  //2.0.0: DEPRECATED lock-on not timer-based anymore
+//void() hud_lock_frame; 
 
 void() hud_renderCrosshairDisabled;
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshairs;

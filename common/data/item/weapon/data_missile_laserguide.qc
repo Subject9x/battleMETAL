@@ -55,7 +55,7 @@ void() data_ini_missile_laserguide_={
   self.burstRate = 1;
   
 #ifdef CSQC
-  self.w_name = "Missile - Self-Guided";
+  self.w_name = "Missile - Guided";
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_lgm.md3"; 
   self.abbrev = "MLGD";

@@ -170,7 +170,7 @@ void() player_unmakeMech={
   self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;
-  self.targLockState = LOCK_NONE;
+  //self.targLockState = LOCK_NONE; //2.0.0: lock-on not timer-based anymore
   
   self.next_wepn1 = 0;
   self.next_wepn2 = 0;
