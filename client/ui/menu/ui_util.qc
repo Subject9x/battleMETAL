@@ -198,15 +198,11 @@ string() ui_calculate_game_time_string={
       t = servertime + (servertime - time);
       t = endTime - t ;
     }
-    
-    sec = t - floor( t / 60 ) * 60 ;
-    sec = rint(sec);
-    
-    mint = (t - floor( t / 3600) * 3600) / 60;
-    mint = rint(mint);
-    
-    hr = t / 3600;
-    hr = rint(hr);
+    t = max(0, t);
+    hr = rint(floor(t/3600));
+    mint = rint(floor((t - hr*3600) / 60));
+    sec = rint(floor(t - (hr*3600) - (mint*60)));
+  
     val = sprintf("%02d:%02d:%02d", hr, mint, sec);
   }else{
     val = "No Limit";
@@ -220,14 +216,13 @@ string(float timeVal ) ui_calculate_time_string={
   local float t, sec, mint, hr;
   
   t = timeVal + (servertime - time);
-  sec = t - floor( t / 60 ) * 60 ;
-  sec = rint(sec);
   
-  mint = (t - floor( t / 3600) * 3600) / 60;
-  mint = rint(mint);
+  t = max(0, t);
   
-  hr = t / 3600;
-  hr = rint(hr);
+  hr = rint(floor(t/3600));
+  mint = rint(floor((t - hr*3600) / 60));
+  sec = rint(floor(t - (hr*3600) - (mint*60)));
+  
   val = sprintf("%02d:%02d:%02d", hr, mint, sec);
   
   return val;

@@ -140,10 +140,10 @@ void( vector menuOrg ) menu_score_dm_client_info={
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
-    labelLen = stringwidth("- Player Stats -", 0, '10 10');
+    labelLen = stringwidth("Player Stats", 0, '10 10');
     labelOrg_x = menuOrg_x + gui_percentXRaw(75) - gui_percentXRaw(labelLen/2);
     labelOrg_y = menuOrg_y + gui_percentYRaw(2);
-    drawstring( labelOrg, "- Player Stats -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawstring( labelOrg, "Player Stats", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
   
   fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;

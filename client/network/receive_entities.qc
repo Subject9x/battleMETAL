@@ -231,7 +231,7 @@ void() client_state_events={
         else{
           te_mission_lose();
         }
-        SV_ENDTIMELIMIT = servertime;
+        SV_ENDTIME = servertime;
       }
       else{
         timeVal = servertime - CLIENT_spawn_time;
@@ -264,6 +264,7 @@ void() client_state_events={
       MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
       MENU_respawn_cool_start = servertime;
       MENU_button_delay = MENU_respawn_cool;
+      SV_ENDTIME = servertime;
       if( ENT_SERVER_INFO.missionResult == MISSION_RESULT_WIN ){
         msn_unlock_stuff();
         menu_debrief_sort_unlocks();
