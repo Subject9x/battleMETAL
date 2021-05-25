@@ -45,7 +45,7 @@ void() click_train_shoot={
 
 void() click_train_brief={
 
-  train_click_launch( "training_brief_anim" );
+  train_click_launch( "train1" );
 };
 
 // ini function, called by '_f' function as a setup func
