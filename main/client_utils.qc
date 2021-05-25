@@ -544,7 +544,6 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
   }
 };
 
-
 //same thing as above but only on client connect.
 void(entity client) client_send_server_info_connect={
   ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_GAMETYPE;
