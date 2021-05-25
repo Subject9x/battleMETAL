@@ -91,6 +91,8 @@ void() navSelectListener={
 void() navListSelectListener={
   local entity deploy;
   local entity found;
+  local float check;
+  check = FALSE;
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_NEXT_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
     for( deploy = CLIENT_MENU_deploy.nextPoint; deploy != world; deploy = deploy.nextPoint ){
       if( found.data_idx ){
@@ -119,15 +121,18 @@ void() navListSelectListener={
       CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
     }
   }
-  if(CLIENT_MENU_nav_pnt > 0){
-    if( !(LAUNCH_VALIDATION & VALID_NODE) ){
-      LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+  //click filter to register clicks in the above 2 buttons only.
+  if( check ){
+    if(CLIENT_MENU_nav_pnt > 0){
+      if( !(LAUNCH_VALIDATION & VALID_NODE) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+      }
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
     }
-    cl_setspawnpoint( CLIENT_MENU_nav_pnt );
-  }
-  else{
-    if( (LAUNCH_VALIDATION & VALID_NODE) ){
-      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
+    else{
+      if( (LAUNCH_VALIDATION & VALID_NODE) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
+      }
     }
   }
 };
