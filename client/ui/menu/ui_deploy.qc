@@ -394,7 +394,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         ui_renderSprite_DeployPoint( tofs, '16 16', CLR_DEF_GREEN, 1 ) ;
       }
       else{
-        drawpic(nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_HALF, 1, 0) ;
+        drawpic(nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_THREEQ * 1.5 , 1, 0) ;
       }
     }
     lineOrg = mpos + gui_percentToPixelRawVec('5 110');
