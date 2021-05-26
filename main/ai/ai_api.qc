@@ -625,7 +625,7 @@ float(float wishAngl, float wishspeed) ai_check_slope={
   stepTwo = trace_endpos;
   
   stepAngles = vectoangles(stepTwo - stepOne);
-  if( stepAngles_x > 1 && stepAngles_x <=90 ) {
+  if( stepAngles_x > 1 && stepAngles_x <= 90 ) {
     //walking up-hill.
     stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
     outSpeed = wishspeed * (1.0 - (stepAngles_x / 90));
@@ -633,6 +633,9 @@ float(float wishAngl, float wishspeed) ai_check_slope={
   else if( stepAngles_x > 90 ){
     //going dowhill
     outSpeed = wishspeed + (wishspeed * (1.0 - (stepAngles_x / 360)));
+  }
+  else{
+    outSpeed = wishspeed;
   }
   outSpeed = max(outSpeed, wishspeed * 0.1);
   return outSpeed;
