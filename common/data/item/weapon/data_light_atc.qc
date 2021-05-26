@@ -64,9 +64,9 @@ void() data_ini_light_atc_={
   
   if( (self.owner.flags & FL_CLIENT) ){
     self.w_clipsize = 1;
-    self.reloadRate = 0.28;
-    self.reloadMax = 0.28;
-    self.damageValue = 4.15;
+    self.reloadRate = 0.3;
+    self.reloadMax = 0.3;
+    self.damageValue = 5;
   }
   else{
     self.w_clipsize = 3;
@@ -91,7 +91,7 @@ void() data_ini_light_atc_={
 #ifdef CSQC  
   self.w_name = "Light Autocannon";
   self.abbrev = "ATC";
-  self.description = "+ Instant-impact weapon. + 3-round burst. + Better against <Armor>.";
+  self.description = "+ Instant-impact weapon. + fully automatic, hold down trigger to fire. + Better against <Armor>.";
   self.icon = "gfx/ui/wep_icons/wi_atc.png";
   self.model = "q3mdl/weapons/w_atc.md3";
   self.fire_sound = "sound/weapons/atc_fire.ogg";
