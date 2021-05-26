@@ -170,8 +170,15 @@ void() cl_savefile_append={
   
   if(MENU_DEBRIEF_unlocks_equip != ""){
     if(UNLOCKED_ITEMS_DATA != ""){
+      cons_logAString("pre--------- UNLOCKED_ITEMS_DATA", UNLOCKED_ITEMS_DATA); //debug
+      cons_logAString("pre--------- MENU_DEBRIEF_unlocks_equip", MENU_DEBRIEF_unlocks_equip); //debug
+      
       s = cl_savefile_insert(MENU_DEBRIEF_unlocks_equip, UNLOCKED_ITEMS_DATA);
+      cons_logAString("MERGE MENU_DEBRIEF_unlocks_equip UNLOCKED_ITEMS_DATA", s); //debug
+      
+      
       cacheGlobalString( UNLOCKED_ITEMS_DATA, s )
+      cons_logAString("POST UNLOCKED_ITEMS_DATA  <- s", UNLOCKED_ITEMS_DATA); //debug
     }
     else{
       cacheGlobalString( UNLOCKED_ITEMS_DATA, MENU_DEBRIEF_unlocks_equip )
@@ -179,42 +186,46 @@ void() cl_savefile_append={
   }
 };
 
-//checks to see if item is already on list
-string(string item, string source) cl_savefile_insert={
-  local string update, tempSource, unlockToken, saveItemId;
-  local float tokens, unlockItr, saveItr, savedItemTotal, exists;
+
+/*
+  Checks to see if unlocks are new to player save data.
+  if they are, merge them into existing string, otherwise return new string
+
+*/
+string(string newItems, string source) cl_savefile_insert={
+
+  local float newItemTotal;
+  local float newItemItr;
   
-  tempSource = source;
-  tokens = tokenizebyseparator(item, " ");
-  update = "";
-  unlockItr = 0;
-  while( unlockItr < tokens){
-    tokenizebyseparator(item, " ");
-    unlockToken = argv(unlockItr);
-    savedItemTotal = tokenizebyseparator(tempSource, " ");
-    saveItr = 0;
-    exists = FALSE;
-    while( saveItr < savedItemTotal ){
-      saveItemId = argv(saveItr);
-      if( !exists ){
-        if( stof(unlockToken) == stof(saveItemId) ){
-          exists = TRUE;
-        }
+  local string newToken;
+  
+  local string append;
+  
+  append = "";
+  
+  newItemTotal = tokenizebyseparator(newItems, " ");
+  newItemItr = 0;
+  
+  while( newItemItr < newItemTotal ){
+    newToken = argv(newItemItr);
+    cons_logAString("==========newToken", newToken);
+    if( strstrofs(source, newToken, 0) == -1 ){
+      if( append == "" ){
+        append = newToken;
       }
-      saveItr = saveItr + 1;
+      else{
+        append = strcat(append, " ", newToken);
+      }
+      cons_logAString("==========append", append);
     }
-    if( !exists ){
-      update = strcat(update, " ", unlockToken);
-      tempSource = strcat(tempSource, " ", unlockToken);
-    }
-    unlockItr = unlockItr + 1;
+    newItemItr = newItemItr + 1;
   }
-  if(update != ""){
-    update = strcat(source, update);
-    return update;
+  
+  if( append == "" ){
+    return strcat(source);
   }
   else{
-    return source;
+    return strcat(append, " ", source);
   }
 };
 
