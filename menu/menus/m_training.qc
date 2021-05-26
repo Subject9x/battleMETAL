@@ -52,9 +52,9 @@ void() click_train_brief={
 void() m_train_i={
   train_title = lbl_text('10 100 0', '16 16 0', "TUTORIALS", '1 1 1', (VIEW_LFT | VIEW_TOP), M_TRAINING, 1, 0);
   
-  train_move_btn = btn_text_callback('10 170', '14 14 0', "Movement", 0, M_TRAINING, click_train_move, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-  train_shoot_btn = btn_text_callback('10 189', '14 14 0', "Shooting", 0, M_TRAINING, click_train_shoot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-  train_brieft_btn = btn_text_callback('10 208', '14 14 0', "Briefing and Arming", 0, M_TRAINING, click_train_brief, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  train_move_btn = btn_text_callback('10 189', '14 14 0', "Movement", 0, M_TRAINING, click_train_move, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  train_shoot_btn = btn_text_callback('10 208', '14 14 0', "Shooting", 0, M_TRAINING, click_train_shoot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  train_brieft_btn = btn_text_callback('10 227', '14 14 0', "Briefing and Arming", 0, M_TRAINING, click_train_brief, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
   
   train_back_btn = btn_img_callback('10 265', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_TRAINING, click_train_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG)); 
 };
