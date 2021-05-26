@@ -666,7 +666,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
 float(vector endPos, entity endEnt) te_impact_type={
   if(endEnt){
     if(endEnt.takedamage == DAMAGE_AIM){
-      if(endEnt.shield > 0 ){
+      if(endEnt.shield > 0 && endEnt.shield <= 100.0){
         return IMPACT_SHIELD;
       }
       return IMPACT_ARMOR;

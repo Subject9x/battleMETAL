@@ -564,10 +564,9 @@
     tex 40 40
     size 3 3
     alpha 768 768 0
-    time 2 2
-    bounce -0
+    time 0.1 0.2
+    bounce -1
     velocitymultiplier 1
-    airfriction 0.25
     
   //TE_ATC_MUZZLE - SPARKS
     effect TE_ATC_MUZZLE
@@ -689,13 +688,13 @@
     
   //TE_ATC_ARMOR - BULLET FRAGS
     effect TE_ATC_ARMOR
-    count 0.25
+    count 1
     type spark
     blend alpha
     orientation spark
     color 0x0D8D8D8 0xF2F2F2
     tex 38 41
-    size 0.25 0.65
+    size 0.5 0.75
     alpha 256 512 2048
     time 0.15 0.25
     originjitter 3 3 3
@@ -709,7 +708,7 @@
     countabsolute 1
     type alphastatic
     blend alpha
-    color 0x424242 0x848484
+    color 0xFFA64D 0xFFCC99
     tex 0 7
     size 0.75 1
     sizeincrease 0.5
@@ -717,6 +716,15 @@
     time 0.25 0.35
     notunderwater
     stretchfactor 3
+    
+   //TE_ATC_ARMOR - LIGHT
+    effect TE_ATC_ARMOR
+    lightradius 50
+    lightradiusfade 200
+    lighttime 0.05
+    lightcolor 1.0 0.8 0.8
+    lightshadow 0
+    notunderwater
 //=====================================================
 
 
