@@ -450,7 +450,6 @@ void() sv_endServer={
       if( !(player.flags & FL_CLIENT) ){
         continue;
       }
-      player.flags = player.flags | FL_NOSHOOT;
       if( player.data_type == DATA_MECH ){
         player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_EFLAGS;
       }
@@ -458,6 +457,8 @@ void() sv_endServer={
         client_send_campaign_end_data( player );
       }
       else{
+          //FL_NOSHOOT here so that players don't wrack up extra kills after the shot-buzzer sounds.
+         player.flags = player.flags | FL_NOSHOOT;
          client_send_dm_end_data( player ); 
       }
     }
