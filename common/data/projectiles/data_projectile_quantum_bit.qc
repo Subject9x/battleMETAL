@@ -87,6 +87,9 @@ void() data_projectile_quantum_shatter={
     if(itr == 0){
       continue;
     }
+    if( thing == self.owner ){
+      continue; //splash is dumb
+    }
     if(thing == self.enemy){
       continue;
     }
