@@ -17,7 +17,8 @@ Overview:
 .float shieldHitRegenStart;
 .float shieldHitFlag;   //sent over network.
 
-.float stunTimeStart; 
+//saving this for future work: have ion damage accrue over time, and then an AI mech will get stun-locked for a certain amount of time.
+.float stunTimeStart;
 .float stunTimeTotal;
 
 .float attackFlag;  //a bitflag set every frame that a unit has fired weapons, where it is weapon bits, WEAPON1 | WEAPON2 etc

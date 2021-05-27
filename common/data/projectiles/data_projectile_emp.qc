@@ -111,11 +111,13 @@ void() data_projectile_emp_think_={
 
 void()data_prj_emp_explode={
   local float damage;
+  local entity lst;
+  local float ln;
+  
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   self.touch = SUB_Null;
   
-  local entity lst;
   for(lst = findradius(self.origin, DAT_PRJ_EMP_EXPRAD); lst != world; lst = lst.chain){
     if(lst.takedamage <= 0){
       continue;
@@ -124,7 +126,6 @@ void()data_prj_emp_explode={
     if(trace_ent == world){
       continue;
     }
-    local float ln;
     ln = vlen(trace_endpos - self.origin);
     if(ln > DAT_PRJ_EMP_EXPRAD){
       continue;
@@ -174,7 +175,8 @@ void() data_prj_emp_touch={
         t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
         self.impactType = IMPACT_SHIELD;
       }
-      else{        
+      else{
+        t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue * 0.1, FIRE_ENDPOINT, TRUE);
         self.impactType = IMPACT_ARMOR;
       }
       self.targetEntId = num_for_edict(other);

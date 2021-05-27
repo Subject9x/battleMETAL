@@ -51,7 +51,7 @@ void() data_ini_ion_={
   self.fire_sound = "sound/weapons/emp_fire.ogg";
   self.model = "q3mdl/weapons/w_ion.md3";
   self.abbrev = "ION";
-  self.description = "+  + + 3-Round burst.";
+  self.description = "+ Anti-shield. + Armor damage greatly reduced. +3-rnd burst fire.";
   self.icon = "gfx/ui/wep_icons/wi_ion.png";
   self.itemMuzzleFlash = te_muzzle_ion;
 #endif

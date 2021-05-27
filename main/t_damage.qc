@@ -85,7 +85,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
                         
-                         //------------> Damage Buffer system
+                         //------------>TODO: Damage Buffer system
                         //AI react to Damage
                         if( (trg.flags & FL_MONSTER) ){
                           notTarg = self;
@@ -123,7 +123,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   }
   
   
-                              //this goes to damage buffer
+                              //TODO: this goes to damage buffer
                               if( dmgTrg.health > 0 ){
                                 if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
                                   if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
