@@ -585,6 +585,7 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     if(argv(1) == "ini"){
       cl_ini_event(s);
+      return;
     }
   }
   else{  

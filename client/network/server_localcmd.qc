@@ -246,6 +246,15 @@ void(string iniCmd) cl_ini_event={
   local entity hardpoint;
   local float bit;
   local float hptId;
+  
+  //populate tac map if exists
+  if(MSN_FILEFOUND){
+    if(MSN_LOADED == FALSE){
+      msn_parsefile();
+      MSN_LOADED = TRUE;
+    }
+  }
+  
 /*
 "m ini ", world.iniConfig, "\n"
 */
