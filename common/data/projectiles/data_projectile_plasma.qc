@@ -145,6 +145,9 @@ void() data_projectile_plasma_touch={
       self.think = data_projectile_plasma_burn_ini_;
       self.nextthink = time + 0.05;
       self.impactType = IMPACT_ARMOR;
+      if( hit.partTypeId && !(self.owner.statTargetHitParts & hit.partTypeId) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit.partTypeId;
+      } 
       return;
     }
 	}

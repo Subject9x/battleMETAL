@@ -214,6 +214,7 @@ void() PlayerPostThink = {
     }
   }
 // check for attack
+  self.statTargetHitParts = 0;
   playerAttack();
   
   if( time > self.posFadeTimer ){

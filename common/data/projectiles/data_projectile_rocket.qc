@@ -62,6 +62,7 @@ void() data_projectile_ini_rocket_={
 void(entity theOther ) data_prj_mis_hit={  
   local float debris, debrisType;
   local float damage; 
+  local entity hitLocation;
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
@@ -88,7 +89,10 @@ void(entity theOther ) data_prj_mis_hit={
     }
     else{
       damage = damage + (damage * 0.25);
-      t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
+      hitLocation = t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
+      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      }
       self.impactType = IMPACT_ARMOR;
       debris = rint(1 + random() * 3);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
@@ -110,6 +114,8 @@ void() data_prj_mis_touch={
 };
 
 void() data_projectile_rocket_think_={
+  local entity close;
+  local float hit;
   if( self.last_origin != self.origin ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self.last_origin = self.origin;
@@ -124,8 +130,6 @@ void() data_projectile_rocket_think_={
     return;
   }
   if( (self.owner.flags & FL_CLIENT) ){
-    local entity close;
-    local float hit;
     hit = FALSE;
     for( close = findradius(self.origin, DAT_ROCKET_PROXY_RAD); close != world; close = close.chain ){
       if( hit ){

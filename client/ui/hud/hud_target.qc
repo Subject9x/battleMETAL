@@ -346,7 +346,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
 /*
   RENDER ARMOR METER
 */
-void( vector pos, vector grpCtr, float val, vector mSize, string imgPiece, float thatTarget) hud_renderArmorMeter={
+void( vector pos, vector grpCtr, float val, vector mSize, string imgPiece, float thatTarget, float partFlag) hud_renderArmorMeter={
   local vector meterSize, label_org, shofs;
   local vector tColor;
 
@@ -367,6 +367,10 @@ void( vector pos, vector grpCtr, float val, vector mSize, string imgPiece, float
   }
   
   drawpic(pos, imgPiece, meterSize, tColor, tAlpha, 0);
+  
+  if( thatTarget && (CLIENT_stat_hit_parts & partFlag) ){
+    drawfill(pos, meterSize, CLR_DEF_RED, max(1.0, HUD_ALPHA * 1.5) , 0);
+  }
 };
 
 /*
@@ -410,15 +414,16 @@ void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lb
     backSize = gui_percentToPixelRawVec(lblSize);
     drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
-  hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget);
   
-  hud_renderArmorMeter('-23 -38', pnl_ctr, lt, '13 31', HUD_MECH_ST, isTarget);
-  hud_renderArmorMeter('10 -38', pnl_ctr, rt, '13 31', HUD_MECH_ST, isTarget);
+  hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget, M_TOR_CENTER );
   
-  hud_renderArmorMeter('-34 -26', pnl_ctr, la, '12 32', HUD_MECH_LA, isTarget);
-  hud_renderArmorMeter('22 -26', pnl_ctr, ra, '12 32', HUD_MECH_RA, isTarget);
+  hud_renderArmorMeter('-23 -38', pnl_ctr, lt, '13 31', HUD_MECH_ST, isTarget, M_TOR_LEFT);
+  hud_renderArmorMeter('10 -38', pnl_ctr, rt, '13 31', HUD_MECH_ST, isTarget, M_TOR_RIGHT);
   
-  hud_renderArmorMeter('-20 -2', pnl_ctr, lg, '40 64', HUD_MECH_LEG, isTarget);
+  hud_renderArmorMeter('-34 -26', pnl_ctr, la, '12 32', HUD_MECH_LA, isTarget, M_ARM_LEFT);
+  hud_renderArmorMeter('22 -26', pnl_ctr, ra, '12 32', HUD_MECH_RA, isTarget, M_ARM_RIGHT);
+  
+  hud_renderArmorMeter('-20 -2', pnl_ctr, lg, '40 64', HUD_MECH_LEG, isTarget, M_LEGS);
   
 };
 

@@ -203,7 +203,7 @@ void() build_mech_unit={
 
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
   self.skin = self.faction - 1;
-
+  
   if( self.skin < 0 ){
     self.skin = 0;
   }
@@ -302,6 +302,7 @@ void() build_mech_torsoCenter={
   else{
     macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
   }
+  self.partTypeId = M_TOR_CENTER;
   
   hmins = self.mins;
   hmaxs = self.maxs;

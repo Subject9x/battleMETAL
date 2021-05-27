@@ -14,6 +14,8 @@ entity NEWSHOT;
 vector FIRE_ORIGIN;
 vector FIRE_ENDPOINT;
 
+entity HIT_LOCATION;
+
 //WEAPON FIRE STATUS
 float READY = 0;
 float RELOADING = 1;

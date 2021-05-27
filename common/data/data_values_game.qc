@@ -433,6 +433,8 @@ float RADAR_SWEEP = 2.5;
 .float statWeaponReload8;
 .float statWeaponReload9;
 
+.float statTargetHitParts;
+
 #endif
 //============================
 //     ADDSTAT SLOT NUMBERS        
@@ -440,11 +442,11 @@ float RADAR_SWEEP = 2.5;
 //float    = 32;
 //float    = 33;
 float STAT_RAM = 34;
-//float    = 35;
+float STAT_TARGET_HIT_PARTS = 35;
 //float    = 36;
 //float    = 37;
 float STAT_PLAYER_STATE = 38;
-//float STAT_PLAYER_WEAPONS_STATE = 39;
+//float    = 39;
 //float    = 40;
 //float    = 41;
 //float    = 42;

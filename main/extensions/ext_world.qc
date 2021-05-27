@@ -73,6 +73,9 @@ void() world_metal_ini={
 
   //kept in numerical order for easy reference.
   addstat(STAT_RAM, AS_INT, ramUp);
+  
+  addstat(STAT_TARGET_HIT_PARTS, AS_FLOAT, statTargetHitParts);
+  
   addstat(STAT_PLAYER_STATE, AS_FLOAT, playerState);
   addstat(STAT_PLR_HITDIR, AS_FLOAT, stat_hit_dirs);
   addstat(STAT_PLR_RETDIST, AS_FLOAT, stat_ret_dist);

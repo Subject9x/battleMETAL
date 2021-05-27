@@ -17,6 +17,9 @@ Overview:
 .float shieldHitRegenStart;
 .float shieldHitFlag;   //sent over network.
 
+.float stunTimeStart; 
+.float stunTimeTotal;
+
 .float attackFlag;  //a bitflag set every frame that a unit has fired weapons, where it is weapon bits, WEAPON1 | WEAPON2 etc
                     //the csqc then processes the rest of the particle attacks.
 .float burnBits;    //bitflags sent to client for fire/burning effects on ents.
