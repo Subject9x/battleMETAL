@@ -31,6 +31,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
   
   if( self.nq1 == -1 ){
     //maybe the destination > the 24 node-queue vars.
+    self.ai_reverse = FALSE;
     ai_nodegraph_clear_locks();
     ai_nodegraph_trace_vec( self.origin, targDest );
   }
@@ -39,6 +40,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       nqOrg = nodegraph_get_node_origin( self.nq1 );
       nodeDist = ai_check_dist_node(self.origin, nqOrg);
       if( nodeDist <= 8 ){
+        self.ai_reverse = FALSE;
         //arrived at node
         if( self.pathEndId == self.nq1 ){
           //AI has finished its nodegraph run
@@ -100,6 +102,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
     }
     if( self.ai_last_pathWait ){
       if( time > self.ai_timer_pathWait ){
+        self.ai_reverse = FALSE;
         self.ai_last_pathWait = FALSE;
         self.ai_timer_pathWait = time + 1;
         pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
