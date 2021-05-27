@@ -8,6 +8,9 @@ Overview:
   Campaign games will load data locally.
 */
 
+
+float SAVE_COMPARE[128];  //lacking regex and other nice ways of digging through a string to find a comma-separated value, argh.
+
 string UNLOCKED_MECHS_DATA; // pulled from cl_load_savefile
 string UNLOCKED_ITEMS_DATA; // pulled from cl_load_savefile
 string SAVEFILE_CAMPAIGN;

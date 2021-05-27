@@ -170,15 +170,8 @@ void() cl_savefile_append={
   
   if(MENU_DEBRIEF_unlocks_equip != ""){
     if(UNLOCKED_ITEMS_DATA != ""){
-      cons_logAString("pre--------- UNLOCKED_ITEMS_DATA", UNLOCKED_ITEMS_DATA); //debug
-      cons_logAString("pre--------- MENU_DEBRIEF_unlocks_equip", MENU_DEBRIEF_unlocks_equip); //debug
-      
       s = cl_savefile_insert(MENU_DEBRIEF_unlocks_equip, UNLOCKED_ITEMS_DATA);
-      cons_logAString("MERGE MENU_DEBRIEF_unlocks_equip UNLOCKED_ITEMS_DATA", s); //debug
-      
-      
       cacheGlobalString( UNLOCKED_ITEMS_DATA, s )
-      cons_logAString("POST UNLOCKED_ITEMS_DATA  <- s", UNLOCKED_ITEMS_DATA); //debug
     }
     else{
       cacheGlobalString( UNLOCKED_ITEMS_DATA, MENU_DEBRIEF_unlocks_equip )
@@ -201,22 +194,53 @@ string(string newItems, string source) cl_savefile_insert={
   
   local string append;
   
-  append = "";
+  local float invItr;
+  local float invTotal;
   
+  local float unique;
+  
+  //prep the compare array
+    //clear it first just in case previous item set was longer.
+  invItr = 0;
+  invTotal = 128;
+  while( invItr < invTotal ){
+    SAVE_COMPARE[invItr] = 0;
+    invItr = invItr + 1;
+  }
+  
+  //copy inv items to the array.
+  invItr = 0;
+  invTotal = tokenizebyseparator(source, " ");
+  while( invItr < invTotal ){
+    SAVE_COMPARE[invItr] = rint(stof(argv(invItr)));
+    invItr = invItr + 1;
+  }
+  
+  append = "";
+  //slice up the unlocks
   newItemTotal = tokenizebyseparator(newItems, " ");
   newItemItr = 0;
   
+  //append only unique new ids.
   while( newItemItr < newItemTotal ){
     newToken = argv(newItemItr);
-    cons_logAString("==========newToken", newToken);
-    if( strstrofs(source, newToken, 0) == -1 ){
+    
+    unique = TRUE;
+    invItr = 0;
+    while( invItr < invTotal ){
+      if( rint(stof(newToken)) == SAVE_COMPARE[invItr]){
+        unique = FALSE;
+      }
+      invItr = invItr + 1;
+    }
+    
+    if( unique ){
       if( append == "" ){
         append = newToken;
       }
       else{
         append = strcat(append, " ", newToken);
       }
-      cons_logAString("==========append", append);
     }
     newItemItr = newItemItr + 1;
   }
