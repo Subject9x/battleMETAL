@@ -662,7 +662,7 @@ float( float isNew, float changeFlags ) send_client_data={
   else{
     self.data_type = DATA_POBS;
     self.radar_range = 0;
-    self.stat_rdr_mode = 0;
+    self.stat_rdr_mode = player.stat_rdr_mode;
     self.stat_client_shield = 0;
     self.vec_size = 0;
     self.data_idx = 0;
