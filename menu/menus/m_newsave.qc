@@ -39,7 +39,7 @@ void() m_newsave_i={
   
   itr = 0;
   actual = 0;
-
+  
   while (itr < GAME_SAVES_MAX ){
     next = start;
     next_y = next_y + (itr * gui_percentYRaw(20));

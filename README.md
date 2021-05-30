@@ -8,6 +8,8 @@ _battleMETAL_ brings giant robot combat inspired by the _Mechwarrior_ and _Earth
 
 This is just a repo for the code, the media assets (models, texture, fx) aren't available yet because
 I have not fully decoupled all the original _iD_ assets from the mod. 
+![image](https://user-images.githubusercontent.com/12732481/114804853-fe669b00-9d6f-11eb-884d-4f045ab88247.png)
+![image](https://user-images.githubusercontent.com/12732481/114804865-045c7c00-9d70-11eb-8f14-35af72008949.png)
 
 An important design goal of _battleMETAL_ has been to create a simple SDK for making small mech games. 
 https://github.com/Subject9x/battleMETAL/wiki
@@ -25,6 +27,7 @@ https://github.com/Subject9x/battleMETAL/wiki
 + Weapons are lost when their parent component is destroyed.
 + Buildings also exist in addition to combat units.
 + Base buildings can be interacted with.
++ Sequential unlocks / progression of mechs and weapons.
 
 ### AI
 ----------------------
@@ -32,6 +35,7 @@ https://github.com/Subject9x/battleMETAL/wiki
 + Packaged into an API for ease of maintenance.
 + AI uses most of the gameplay features listed here, almost on parity with player.
 + AI behavior is boken down by unit type, each leveraging the API in a few unique ways.
++ Implemented a Nodegraph using something close to A* for navigation.
 
 
 ### HUD
@@ -41,10 +45,10 @@ https://github.com/Subject9x/battleMETAL/wiki
 + API for rendering all HUD elements.
 + SFX queue system for playing HUD notification sounds in a defined sequence.
 + HUD can display complex information items such as Unit armor diagrams, targeting boxes, reticles, pitch indicators, radar.
-+ Full RADAR display system supporting both sweep and burst detection patterns.
++ Full RADAR display system.
 + Player can choose between 4 different reticles each with their own style and animation setup.
 + Player can choose between a few different colors for the HUD text
-+ Player can adjust the alpha blendering of their HUD.
++ Player can adjust the alpha blending of their HUD.
 
 
 ### GUI
@@ -84,6 +88,7 @@ https://github.com/Subject9x/battleMETAL/wiki
 + Weapons have been modeled and are attached to units visibly.
 + Projectile models have also been made from scratch.
 + Particles and special effects have been written using Darkplaces particle system.
++ Completely new terrain textures with normal maps.
 
 
 ### Sound
