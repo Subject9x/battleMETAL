@@ -46,7 +46,7 @@ void( string fileName ) cl_load_savefile={
   cl_load_items_all();
 };
 
-void( float serverMode, float overrideFlag ) cl_set_savepath={
+void( float serverMode, float overrideFlag, float ignoreSaveFlag) cl_set_savepath={
   local string filePath;
   
   if(overrideFlag){
@@ -74,7 +74,7 @@ void( float serverMode, float overrideFlag ) cl_set_savepath={
   }
   cl_load_savefile( filePath );
   if( serverMode == GAMEMODE_CAMPAIGN && cvar_string("sv_worldbasename") != "cin_menu" ){
-    if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) ){
+    if( ignoreSaveFlag == FALSE){
       cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
                                 //this is to save player progress on entering a new map, lame hack.
     }

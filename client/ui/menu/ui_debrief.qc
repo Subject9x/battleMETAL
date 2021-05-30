@@ -18,8 +18,10 @@ void() menu_debriefListener_onClick={
       if( servertime > MENU_DEBRIEF_time_elapsed ){
         //Single player 
         if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
-          if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) || strlen(SV_NEXTMAP) > 0 ){
-            cl_savefile_save();
+          if( strlen(SV_NEXTMAP) > 0 ){
+            if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) ){
+              cl_savefile_save();
+            }
           }
         }
         MENU_DEBRIEF_time_elapsed = servertime + 0.15;
