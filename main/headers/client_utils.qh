@@ -48,6 +48,7 @@ void( entity client, float track, float loopFlag) client_playTrack;
 void(string cmd, float tokens) client_setWeapon;
 void(float wantNavId) client_setNavPoint;
 void(string cmd, float tokens) client_setMission;
+void() client_sendIniConfig;
 
 void() client_update_faction;
 void() client_update_losses;

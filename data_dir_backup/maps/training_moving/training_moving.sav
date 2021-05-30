@@ -1,0 +1,7 @@
+//training should ignore save
+{
+  'mission' : foo,
+  'mechs' : 1,
+  'items' : 1 3 13,
+  'points' : 0,
+}

@@ -552,6 +552,8 @@ void(entity txt) render_textfield={
       
       drawpic(org - gui_percentToPixelRawVec('2 2'), "gfx/ui/box_256.png", sizzle + gui_percentToPixelRawVec('4 2'), bclr - '0.5 0.5 0.5', 1, 0);
       drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
+      
+      
     self = this;
   }
 };
@@ -964,6 +966,7 @@ void(string bind_cmd) menu_keybind_change={
   setkeybind_bindmap(keybound_x, " ", 0);  //unbind desired key first
   setkeybind_bindmap(keybound_y, " ", 0);  //unbind desired key first
   
+  self.data_text = "";
   cacheGlobalString(self.data_text, bind_cmd)
   
   setkeybind_bindmap(self.len, self.data_text, 0);  //now bind the key

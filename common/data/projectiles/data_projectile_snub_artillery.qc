@@ -69,11 +69,6 @@ void() data_projectile_snub_artillery_th={
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self.last_origin = self.origin;
   }
-  
-  if( self.last_angle != self.angles ){
-    
-  }
-  
   self.think = data_projectile_snub_artillery_th;
   self.nextthink = time + 0.01;
 };
@@ -81,6 +76,7 @@ void() data_projectile_snub_artillery_th={
 void() data_projectile_snub_artillery_touch_={
   local float debris;
   local float damage;
+  local entity hitLocation;
   
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -109,7 +105,11 @@ void() data_projectile_snub_artillery_touch_={
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      hitLocation = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      } 
+      
       debris = ceil(random() * 3);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 2 );
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 2, 1 );
@@ -132,7 +132,8 @@ void() data_projectile_snub_artillery_touch_={
 void() data_projectile_snub_artillery_radiusDamage={
   local entity radiusTarg;
   local float d, dmg_act;
-        
+  local entity hitLocation;
+  
   for(radiusTarg = findradius(self.origin, self.w_range); radiusTarg != world; radiusTarg = radiusTarg.chain){
     if( !ai_valid_target(radiusTarg) ){
       continue;
@@ -146,7 +147,10 @@ void() data_projectile_snub_artillery_radiusDamage={
       t_damage_shield(radiusTarg, self, self.owner, dmg_act, trace_endpos, FALSE);
     }
     else{
-      t_damage(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
+      hitLocation = t_damage(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
+      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      } 
     }
   }
 };

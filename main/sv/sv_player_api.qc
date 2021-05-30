@@ -214,6 +214,7 @@ void() PlayerPostThink = {
     }
   }
 // check for attack
+  self.statTargetHitParts = 0;
   playerAttack();
   
   if( time > self.posFadeTimer ){
@@ -255,16 +256,16 @@ void() PlayerPostThink = {
       if(self.movement_x > 0 && self.movement_y == 0 ){
         if( self.energy > (self.energyMax * 0.15)){
           if( self.ramUp < self.ramUpMax ){
-            self.ramUp = self.ramUp + self.data_speed_accel / 125;
+            self.ramUp = self.ramUp + self.data_speed_accel * MOVE_RAM_SCALAR_UP;
           }   
         }   
       }
       else{
-        self.ramUp = self.ramUp - self.data_speed_accel / 100;
+        self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
       }
     }
     else{
-        self.ramUp = self.ramUp - self.data_speed_accel / 100;
+        self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
     }
     if( self.ramUp < 0 ){
       self.ramUp = 0;

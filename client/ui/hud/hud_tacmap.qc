@@ -31,8 +31,9 @@ void() hud_render_tactical_map={
   local vector nameOrg;
   local float nameLen;
   local string pipType;
-  local string arrow;
+  local float arrowAng;
   local vector arrowOrg;
+  local vector playerMapOrg;
   
   // render satellite view
   mapOrg = VIEW_ORG + gui_percentToPixelRawVec('2 48');
@@ -97,10 +98,29 @@ void() hud_render_tactical_map={
     if(player.faction != CLIENT_faction){
       continue;
     }
-    if( player.clientLocalId != player_localentnum ){
+    //PLAYER TAC MAP INFO
+    if( player.clientLocalId == player_localentnum ){
+      drawpic(gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize) - gui_percentToPixelRawVec('5 5'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
+      if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
+      if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
+      if(player.enemy == world){continue;}
+      target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
+      if( CLIENT_target_datatype == DATA_MECH ){
+        pipType = HUD_RAD_PIP_MCH;
+      }
+      else if( CLIENT_target_datatype == DATA_VEHC ){
+        pipType = HUD_RAD_PIP_VEC;
+      }
+      else if( CLIENT_target_datatype == DATA_BLD ){
+        pipType = HUD_RAD_PIP_BLD;
+      }
+      drawpic(target_org - gui_percentToPixelRawVec('5 5'), pipType, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
+    }
+    else{
+      //FRIENDLIES TAC MAP INFO
       if( player.faction != FACTION_ALL ){
         friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, mapOrg, mapImgSize);
-        gui_renderTintImage2(FALSE, friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
+        gui_renderTintImage2(FALSE, friend_org - gui_percentToPixelRawVec('5 5'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
         
         nameOrg = friend_org + gui_percentToPixelRawVec('0 -10');
         
@@ -117,33 +137,17 @@ void() hud_render_tactical_map={
         if( player.enemy.deadflag != DEAD_NO ){continue;}
         
         target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
-        drawpic(target_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
+        drawpic(target_org - gui_percentToPixelRawVec('5 5'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
       }
-    }
-    else{
-      gui_renderTintImage2(TRUE, gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'),'0.25 1 2', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
-      if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
-      if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
-      if(player.enemy == world){continue;}
-      target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
-      if( CLIENT_target_datatype == DATA_MECH ){
-        pipType = HUD_RAD_PIP_MCH;
-      }
-      else if( CLIENT_target_datatype == DATA_VEHC ){
-        pipType = HUD_RAD_PIP_VEC;
-      }
-      else if( CLIENT_target_datatype == DATA_BLD ){
-        pipType = HUD_RAD_PIP_BLD;
-      }
-      drawpic(target_org, pipType, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
     }
   }
   
-  //render allied contacts
-  arrow = gui_angleToArrow(input_angles_y);
+  //render player pointer
+  //arrow = gui_angleToArrow(input_angles_y - 90);
+  arrowAng = anglemod( 90 - input_angles_y);
   makevectors(input_angles);
-  arrowOrg = gui_mapCoordToImgCoord(world.mins, map_size, pmove_org + (v_forward * 200), mapOrg, mapImgSize);
-  drawpic(arrowOrg, arrow, gui_percentToPixelRawVec('10 10'), '0.25 1 2', 1, 0);
+  playerMapOrg = gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize);
+  drawrotpic(playerMapOrg, "gfx/hud/map_up.png", gui_percentToPixelRawVec('12 12'), '6 6', arrowAng, '0.25 1 2', 1, 0);
 };
 
 void() hud_render_scoreboard={

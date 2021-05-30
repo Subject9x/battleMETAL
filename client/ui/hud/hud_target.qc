@@ -132,12 +132,15 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   }
   else{
     factionColor = CLR_DEF_IFF_ENEMY;
-    if( (CLIENT_stat_lock_state & LOCK_TARG_START) || (CLIENT_stat_lock_state & LOCK_TARG_HAS) ){
+    //2.0.0: lock-on timer DEPRECATED
+    /*if( (CLIENT_stat_lock_state & LOCK_TARG_START) || (CLIENT_stat_lock_state & LOCK_TARG_HAS) ){
       lockColor = HUD_LOCK_COLOR;
     }
     else{
       lockColor = CLR_DEF_IFF_ENEMY;
-    }
+    }*/
+    
+    lockColor = CLR_DEF_IFF_ENEMY;
   }
   dist = vlen(org - torg);
   if( dist > radRange ){
@@ -238,7 +241,9 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
       playerName = CLIENT_target_ent.vec_name;
     }
   }
-  
+  if( playerName == "" ){
+    return;
+  }
   namelen = stringwidth(playerName, 0, drawSize);
   namepos = CLIENT_target_ent.origin;
   namepos_z = namepos_z - (adj + drawSize_y);  //magik numbers, :/
@@ -248,14 +253,12 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     nameproj_z = 0;
     drawstring(nameproj, playerName, drawSize, factionColor * 1.5, max(0.75, HUD_ALPHA), 0);
   }
-  namepos = cs_unproject(nameproj);
-  
 };
 
 /*
   3D HUD - RENDER A SHIELD METER IN 3d SPACE
 */
-void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
+void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis, float targFaction) hud_renderShieldOverlay={
   local float dist;
   local vector vpos, nofs, aSize;
   local float scopeVal;
@@ -264,76 +267,179 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
   local vector meterSize, pos;
   local vector meterColor;
   
-  scopeVal = rint(val);
-  if(scopeVal != 0){
+  local vector iconOrg;
+  local vector iconSize;
+  local vector factionColor;
   
-    dist = vlen(pmove_org - CLIENT_target_ent.origin);
-    if(dist < CLIENT_radar_range * 0.1){
-      adj = 25;
-    }
-    else if( dist < CLIENT_radar_range * 0.25 ){
-      adj = 40;
-    }
-    else if( dist < CLIENT_radar_range * 0.5 ){
-      adj = 65;
-    }
-    else if(  dist < CLIENT_radar_range * 0.75 ){
-      adj = 85;
+  scopeVal = rint(val);
+  if( (CLIENT_faction == targFaction) && (targFaction != FACTION_ALL && CLIENT_faction != FACTION_ALL) ){
+    factionColor = CLR_DEF_IIF_FRIEND;
+  }
+  else{
+    factionColor = CLR_DEF_IFF_ENEMY_BLD;
+  }
+
+  dist = vlen(pmove_org - CLIENT_target_ent.origin);
+  if(dist < CLIENT_radar_range * 0.1){
+    adj = 25;
+  }
+  else if( dist < CLIENT_radar_range * 0.25 ){
+    adj = 40;
+  }
+  else if( dist < CLIENT_radar_range * 0.5 ){
+    adj = 65;
+  }
+  else if(  dist < CLIENT_radar_range * 0.75 ){
+    adj = 85;
+  }
+  else{
+    adj = 100;
+  }
+  
+  aSize_x = mSize_x * dist;
+  if(aSize_x > mSize_x){
+    aSize_x = mSize_x;
+  }
+  aSize_y = mSize_y * dist;
+  if(aSize_y > mSize_y){
+    aSize_y = mSize_y;
+  }
+  vpos = org;
+  vpos_z = vpos_z + (adj + (aSize_y * 7.5));  //magik numbers, :/
+  nofs = cs_project(vpos);
+  if (nofs_z >= 0) {
+    nofs_x = nofs_x - (aSize_x / 2);
+    nofs_z = 0;
+    
+    meterSize = gui_percentToPixelRawVec(aSize);
+    pos = gui_percentToPixelRawVec(nofs);
+    pos = gui_calcAlign(pos, algn);
+   
+    meterColor = CLR_DEF_ARM_DED;
+    if( scopeVal > 100 ){
+      //render delay regen
+      scopeVal = 100 - scopeVal;
+      gui_renderMeter( (scopeVal * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE);
     }
     else{
-      adj = 100;
+      gui_renderMeter(scopeVal, pos, aSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, AXIS_H, FALSE); 
     }
     
-    aSize_x = mSize_x * dist;
-    if(aSize_x > mSize_x){
-      aSize_x = mSize_x;
-    }
-    aSize_y = mSize_y * dist;
-    if(aSize_y > mSize_y){
-      aSize_y = mSize_y;
-    }
-    vpos = org;
-    vpos_z = vpos_z + (adj + (aSize_y * 7.5));  //magik numbers, :/
-    nofs = cs_project(vpos);
-    if (nofs_z >= 0) {
-      nofs_x = nofs_x - (aSize_x / 2);
-      nofs_z = 0;
-      
-      meterSize = gui_percentToPixelRawVec(aSize);
-      pos = gui_percentToPixelRawVec(nofs);
-      pos = gui_calcAlign(pos, algn);
-     
-      meterColor = CLR_DEF_ARM_DED;
-      if( scopeVal > 100 ){
-        //render delay regen
-        scopeVal = 100 - scopeVal;
-        gui_renderMeter( (scopeVal * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE);
-      }
-      else{
-        gui_renderMeter(scopeVal, pos, aSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, AXIS_H, FALSE); 
-      }
+    if( (meterAxis & AXIS_H) ){
       drawpic(pos, "gfx/hud/hud_meter_cover3.png", aSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+      iconSize_x = meterSize_y;
+      iconSize_y = meterSize_y;
     }
-    cs_unproject(vpos);
+    else{
+      drawpic(pos, "gfx/hud/hud_meter_cover.png", aSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+      iconSize_x = meterSize_x;
+      iconSize_y = meterSize_x;
+    }
+    iconSize_y = iconSize_y * 1.5;
+    iconSize_z = 0;
+    iconOrg = gui_calcAlignCustom(gui_percentToPixelRawVec('10 2'),(VIEW_LFT | VIEW_TOP), pos);
+    iconOrg_z = 0;
+    drawpic(iconOrg, HUD_ICON_SHIELD, iconSize, factionColor, HUD_ALPHA, 0);
   }
 };
 
+/*
+  RENDER ARMOR METER
+*/
+void( vector pos, vector grpCtr, float val, vector mSize, string imgPiece, float thatTarget, float partFlag) hud_renderArmorMeter={
+  local vector meterSize, label_org, shofs;
+  local vector tColor;
 
+  local float tAlpha;
+
+  tColor = gui_getColorForArmor(val);
+  
+  shofs = grpCtr;
+  meterSize = gui_percentToPixelRawVec(mSize);
+  pos = gui_percentToPixelRawVec(pos);
+  pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), shofs);
+  
+  if(thatTarget){
+    tAlpha = max(HUD_ALPHA - 0.25, 0.1);
+  }
+  else{
+    tAlpha = max(0.9, HUD_ALPHA);
+  }
+  
+  drawpic(pos, imgPiece, meterSize, tColor, tAlpha, 0);
+  
+  if( thatTarget && (CLIENT_stat_hit_parts & partFlag) ){
+    drawfill(pos, meterSize, CLR_DEF_RED, max(1.0, HUD_ALPHA * 1.5) , 0);
+  }
+};
+
+/*
+  RENDER ARMOR GRAPH STYLE 1
+  used for mech targets
+*/
+void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraph={
+  local vector pnl_ctr;
+
+  local float ct, lt, rt, la, ra, lg;
+  
+  local vector backOrg;
+  local vector backSize;
+  local vector backColor;
+  
+  pnl_ctr = gui_percentToPixelRawVec(vorg);
+  pnl_ctr = gui_calcAlign(pnl_ctr, algn);
+  
+  if(isTarget){
+    ct = CLIENT_stat_trg_ct_hp;
+    lt = CLIENT_stat_trg_lt_hp;
+    rt = CLIENT_stat_trg_rt_hp;
+    la = CLIENT_stat_trg_la_hp;
+    ra = CLIENT_stat_trg_ra_hp;
+    lg = CLIENT_stat_trg_lg_hp;
+    backColor = CLR_DEF_IFF_ENEMY;
+  }
+  else{
+    ct = CLIENT_health_center;
+    lt = CLIENT_health_torso_left;
+    rt = CLIENT_health_torso_right;
+    la = CLIENT_health_arm_left;
+    ra = CLIENT_health_arm_right;
+    lg = CLIENT_health_legs;
+    backColor = CLR_DEF_IIF_FRIEND;
+  }
+  
+  if(lFlag){
+    backOrg = gui_percentToPixelRawVec(lblOfs);
+    backOrg = gui_calcAlignCustom(backOrg, lalgn, pnl_ctr);
+    backSize = gui_percentToPixelRawVec(lblSize);
+    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+  }
+  
+  hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget, M_TOR_CENTER );
+  
+  hud_renderArmorMeter('-23 -38', pnl_ctr, lt, '13 31', HUD_MECH_ST, isTarget, M_TOR_LEFT);
+  hud_renderArmorMeter('10 -38', pnl_ctr, rt, '13 31', HUD_MECH_ST, isTarget, M_TOR_RIGHT);
+  
+  hud_renderArmorMeter('-34 -26', pnl_ctr, la, '12 32', HUD_MECH_LA, isTarget, M_ARM_LEFT);
+  hud_renderArmorMeter('22 -26', pnl_ctr, ra, '12 32', HUD_MECH_RA, isTarget, M_ARM_RIGHT);
+  
+  hud_renderArmorMeter('-20 -2', pnl_ctr, lg, '40 64', HUD_MECH_LEG, isTarget, M_LEGS);
+  
+};
 
 /*
   2D HUD - RENDER ARMOR DIAGRAM: BUILDING
   you might want to cover this with a nice overlay picture
 */
-void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
+void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorBuilding={
   local vector meter;
   local vector tColor;
   
-  if(CLIENT_target_faction == CLIENT_faction){
-   tColor =  gui_getColorForArmor(val);
-  }
-  else{
-   tColor =  gui_getColorForArmorTarget(val);
-  }
+  local vector backOrg;
+  local vector backSize;
+  local vector backColor;
+  
+  tColor =  gui_getColorForArmor(val);
   
   vorg = gui_percentToPixelRawVec(vorg);
   vorg = gui_calcAlign(vorg, algn);
@@ -342,32 +448,60 @@ void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
   meter_y = meter_y / 2;
   meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
   
-  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, AXIS_V, 0);
-  drawpic(meter, "gfx/hud/hud_meter_cover2.png", siz, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  if(CLIENT_faction != CLIENT_target_faction && CLIENT_faction != FACTION_ALL){
+    backColor = CLR_DEF_IFF_ENEMY;
+  }
+  else{
+    backColor = CLR_DEF_IIF_FRIEND;
+  }
+  
+  if(lFlag){
+    backOrg = gui_percentToPixelRawVec(lblOfs);
+    backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
+    backSize = gui_percentToPixelRawVec(lblSize);
+    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+  }
+  
+  drawpic(meter, HUD_BUILD_TRG, siz, tColor, HUD_ALPHA, 0);
 };
 
 /*
   2D HUD - RENDER ARMOR DIAGRAM: VEHICLE
   you might want to cover this with a nice overlay picture
 */
-void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
+void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, vector lblOfs, vector lblSize)hud_renderArmorVehicle={
   local vector meter;
   local vector tColor;
   
-  if(CLIENT_target_faction == CLIENT_faction){
-   tColor =  gui_getColorForArmor(val);
-  }
-  else{
-   tColor =  gui_getColorForArmorTarget(val);
-  }
+  local vector backOrg;
+  local vector backSize;
+  local vector backColor;
+  
+  tColor =  gui_getColorForArmor(val);
   
   vorg = gui_percentToPixelRawVec(vorg);
   vorg = gui_calcAlign(vorg, algn);
   meter = gui_percentToPixelRawVec(siz);
+  
   meter_x = meter_x / 2;
   meter_y = meter_y / 2;
   meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
-  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, AXIS_V, 0);
+  
+  if(CLIENT_faction != CLIENT_target_faction && CLIENT_faction != FACTION_ALL){
+    backColor = CLR_DEF_IFF_ENEMY;
+  }
+  else{
+    backColor = CLR_DEF_IIF_FRIEND;
+  }
+  
+  if(lFlag){
+    backOrg = gui_percentToPixelRawVec(lblOfs);
+    backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
+    backSize = gui_percentToPixelRawVec(lblSize);
+    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+  }
+  
+  drawpic(meter, HUD_VEC_TRG, siz, tColor, HUD_ALPHA, 0);
 };
 
 /*
@@ -478,9 +612,36 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
 
 //inspired by original inFront function
 float(entity trg) util_checkPointAngle={
-  local float toSender;
-  toSender = util_checkPointAngleImpl(trg.origin, self.origin, self.angles);
-  return toSender;
+  //func call optimization, 
+  //util_checkPointAngleImpl(trg.origin, self.origin, self.angles);
+  
+  local float targYaw;
+  local float checkYaw;
+  
+  targYaw = vectoyaw( trg.origin - self.origin );
+  checkYaw = anglemod( self.angles_y - targYaw );
+  
+  //Target in Front
+  if( checkYaw >= 305 && checkYaw <= 55){
+    return AIM_FACE_FRONT;
+  }
+  
+  //Target to the Left
+  if( checkYaw > 255 && checkYaw <= 305){
+    return AIM_FACE_LEFT;
+  }
+  
+  //Target to the Right
+  if( checkYaw >= 55 && checkYaw < 110){
+    return AIM_FACE_RIGHT;
+  }
+  
+  //Target to the Rear
+  if( checkYaw > 110 && checkYaw < 255){
+    return AIM_FACE_BACK;
+  }
+  
+  return AIM_FACE_FRONT;
 };
 
 /*
@@ -520,4 +681,6 @@ float(vector orig, vector srcOrg, vector srcAngl) util_checkPointAngleImpl={
   if( checkYaw > 110 && checkYaw < 255){
     return AIM_FACE_BACK;
   }
+  
+  return AIM_FACE_FRONT;
 };

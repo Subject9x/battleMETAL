@@ -330,7 +330,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
 */
 void( float prevShield ) sendevent_shield_explode={
   //Shield Explode event
-  if( self.shield > 100 && prevShield <= 100 ){
+  if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
     if( time > self.shieldExplodeCool ){
       te_shield_explode( self.origin, self.vec_size);
       self.shieldExplodeCool = time + self.vec_size;

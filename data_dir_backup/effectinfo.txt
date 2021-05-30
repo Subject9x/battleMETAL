@@ -564,9 +564,9 @@
     tex 40 40
     size 3 3
     alpha 768 768 0
-    time 2 2
+    time 0.1 0.2
+    bounce -1
     velocitymultiplier 1
-    airfriction 2
     
   //TE_ATC_MUZZLE - SPARKS
     effect TE_ATC_MUZZLE
@@ -688,13 +688,13 @@
     
   //TE_ATC_ARMOR - BULLET FRAGS
     effect TE_ATC_ARMOR
-    count 0.25
+    count 1
     type spark
     blend alpha
     orientation spark
     color 0x0D8D8D8 0xF2F2F2
     tex 38 41
-    size 0.25 0.65
+    size 0.5 0.75
     alpha 256 512 2048
     time 0.15 0.25
     originjitter 3 3 3
@@ -708,7 +708,7 @@
     countabsolute 1
     type alphastatic
     blend alpha
-    color 0x424242 0x848484
+    color 0xFFA64D 0xFFCC99
     tex 0 7
     size 0.75 1
     sizeincrease 0.5
@@ -716,6 +716,15 @@
     time 0.25 0.35
     notunderwater
     stretchfactor 3
+    
+   //TE_ATC_ARMOR - LIGHT
+    effect TE_ATC_ARMOR
+    lightradius 50
+    lightradiusfade 200
+    lighttime 0.05
+    lightcolor 1.0 0.8 0.8
+    lightshadow 0
+    notunderwater
 //=====================================================
 
 
@@ -900,21 +909,36 @@
     stainalpha 256 512
     stainsize 2 2.5
     staintex 36 36
- 
- //TE_FLK_TRAIL - SMOKE
+
+  //TE_FLK_TRAIL - SMOKE
     effect TE_FLK_TRAIL
     count 1
-    type alphastatic
+    type smoke
     blend alpha
-    color 0x331100 0x662200
+    //color 0x331100 0x662200
+    color 0x000000 0x1C1C1C
     tex 8 15
-    size 1.5 2
-    sizeincrease 0.1
-    alpha 200 300 150
+    size 3 4
+    sizeincrease 0.75
+    alpha 200 300 100
     originjitter 0.33 0.33 0.33
     velocityjitter 0.1 0.1 0.1
-    trailspacing 24
-    airfriction 1.25
+    trailspacing 72
+
+  //TE_FLK_TRAIL - SHRAPNEL
+    effect TE_FLK_TRAIL
+    count 2
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFF8000 0xFE2E2E
+    tex 34 34
+    size 1 2.5
+    sizeincrease -0.25
+    alpha 400 500 425
+    originjitter 0.15 0.15 0.15
+    velocityjitter 0.33 0.33 0.33
+    trailspacing 96
 //=====================================================
 
 
@@ -1537,15 +1561,14 @@
     blend alpha
     color 0x00FF00 0xACFA58
     tex 48 56
-    size 1 2
-    sizeincrease 1
-    alpha 96 256 256
-    time 0.075 0.2
-    gravity 0.003
+    size 2 3
+    sizeincrease 0.5
+    alpha 96 256 275
+    gravity 0.004
     originjitter 0.25 0.25 0.25
     velocityjitter 0.7 0.7 0.7
     velocitymultiplier -0.001
-    trailspacing 13
+    trailspacing 18
     
   //TE_RPC_TRAIL - GREEN LIGHT
     effect TE_RPC_TRAIL

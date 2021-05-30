@@ -10,12 +10,11 @@
 //Player Energy
 {
   'uid'     : 2,
-  'pos'     : 36 98 0,
+  'pos'     : 50 100 0,
   'valign'  : 6,
   'size'    : 22 88 0,
-  'lflag'   : 1,
   'lalign'  : 17,
-  'lblofs'  : 0 6 0,
+  'lblofs'  : 0 18 0,
   'axis'    : 2,
 }
 //Player Shield
@@ -24,15 +23,14 @@
   'pos'     : 145 98 0,
   'valign'  : 6,
   'size'    : 22 88 0,
-  'lflag'   : 1,
   'lalign'  : 5,
-  'lblofs'  : 0 6 0,
+  'lblofs'  : 0 22 0,
   'axis'    : 2,
 }
 //Player Armor
 {
   'uid'     : 3,
-  'pos'     : 103 65 0,
+  'pos'     : 110 70 0,
   'valign'  : 6,
 }
 //Weapon 1 - Style 2
@@ -96,28 +94,50 @@
   'pos'     : 180 100 0,
   'valign'  : 10,
 }
-//Target Shield
-{
-  'uid'     : 6,
-  'pos'     : -45 92 0,
-  'valign'  : 18,
-  'size'    : 18 75 0,
-  'lflag'   : 1,
-  'lalign'  : 5,
-  'lblofs'  : 2 6 0,
-  'axis'    : 2,
-}
 //Target Armor - Mech
 {
   'uid'     : 5,
   'pos'     : 0 64 0,
   'valign'  : 18,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -35 -68 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
 }
-//Nav Heading - unused for now - Beta 2
+//Target Armor - Vec
 {
-  'uid'     : 12,
-  'pos'     : 8 16 0,
-  'valign'  : 17,
+  'uid'     : 15,
+  'pos'     : 64 64 0,
+  'valign'  : 18,
+  'size'    : 64 28 0,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -3 -55 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
+}
+//Target Armor - Building
+{
+  'uid'     : 16,
+  'pos'     : 48 54 0,
+  'valign'  : 18,
+  'size'    : 48 64 0,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -10 -48 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
+}
+//Target Shield
+{
+  'uid'     : 6,
+  'pos'     : -40 80 0,
+  'valign'  : 18,
+  'size'    : 18 75 0,
+  'lalign'  : 5,
+  'lblofs'  : 0 18 0,
+  'axis'    : 2,
 }
 //Target Name
 {
@@ -130,20 +150,7 @@
   'uid'     : 14,
   'pos'     : 32 116 0,
   'valign'  : 18,
-}
-//Target Armor - Vec
-{
-  'uid'     : 15,
-  'pos'     : 32 64 0,
-  'valign'  : 18,
-  'size'    : 32 68 0,
-}
-//Target Armor - Building
-{
-  'uid'     : 16,
-  'pos'     : 48 54 0,
-  'valign'  : 18,
-  'size'    : 48 64 0,
+  'size'    : 64 28 0,
 }
 //HUD Messages
 {
@@ -165,7 +172,7 @@
   'size'    : 16 88,
   'axis'    : 2,
   'lalign'  : 17,
-  'lblofs'  : 2 8 0,
+  'lblofs'  : 0 16 0,
 }
 //Mission Clock
 {
@@ -173,3 +180,10 @@
   'pos'     : 10 -90 0,
   'valign'  : 48,
 }
+
+//Nav Heading - unused for now - Beta 2
+// {
+//  'uid'     : 12,
+//  'pos'     : 8 16 0,
+//  'valign'  : 17,
+// }

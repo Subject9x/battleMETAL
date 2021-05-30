@@ -8,4 +8,4 @@ Overview:
   the hud file
 */
 
-void() data_hud_external_cam_frame;
+void() data_hud_external;

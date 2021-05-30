@@ -31,12 +31,12 @@ void() data_ini_missile_activeradar_={
   self.data_idx = UID_ITEM_missile_activeradar;
   
   self.w_clipsize = 1;
-  self.reloadRate = 5;
-  self.reloadMax = 5;
+  self.reloadRate = 8;
+  self.reloadMax = 8;
   self.energyRate = 0;
   
   self.w_range = 4000;
-  self.damageValue = 99;
+  self.damageValue = 150; //125
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;
@@ -51,7 +51,7 @@ void() data_ini_missile_activeradar_={
   self.fire_sound = "sound/weapons/arh_fire.ogg";
   self.model = "q3mdl/weapons/w_arh.md3";
   self.abbrev = "MARH";
-  self.description = "+ target <shields> reduce damage. + Requires <Active Radar> on. + Minimum Range of 300m. + stronger against [small] targets.";
+  self.description = "+ Requires <Active Radar> on. + Requires target acquired. + You must be facing target. + stronger against [small] targets.";
   self.icon = "gfx/ui/wep_icons/wi_marh.png";
   self.itemMuzzleFlash = te_muzzle_marh;
 #endif
@@ -80,10 +80,8 @@ void() data_ini_attack_missile_activeradar_={
     if( ai_valid_target(self.owner.enemy) ){
       hold = self;
       self = hold.owner;
-      if( util_checkPointAngleImpl(self.enemy.origin) ){
-        if( (self.targLockState & LOCK_TARG_HAS) ){
-          canFire = TRUE;
-        }
+      if( util_checkPointAngleImpl(self.enemy.origin) && self.stat_rdr_mode == TRUE){
+        canFire = TRUE;
       }
       self = hold;
     }

@@ -1,0 +1,16 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 05/05/2021
+Overview: 
+  Weapon Rebind menu.
+    Allows player to rebind their weapon groups 
+*/
+
+
+
+
+
+void() menu_rebindListener_onClick;
+
+void() menu_rebind_drawFrame;

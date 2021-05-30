@@ -21,7 +21,8 @@ void(string imageIcon, vector org, float selected, float allow) ui_renderHardPoi
   if( imageIcon != ""){
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');
-      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('32 32'), CLR_DEF_ARM_THREEQ + '0.1 0.1 0.1' , 1, 0);
+      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256_THICK, gui_percentToPixelRawVec('32 32'), CLR_DEF_YELLOW * 2, 1, 0);
+      drawfill( iorg, gui_percentToPixelRawVec('32 32'), CLR_DEF_YELLOW * 2, 0.75, 0);
     }
     allowAlpha = 0.45;
     if( allow ){
@@ -104,6 +105,9 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   local vector pofs, hptNumOrg, hptSizeOrg;
   local string hardpointLabel;
   local float drawfontLocal;
+  local float itr;
+  local float hpointVal;
+  local vector itemColor;
   
   drawfontLocal = drawfont;
   drawfontLocal = FONT_NUM_ROBOT_REGULAR;
@@ -118,9 +122,6 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   
   drawstring(hptNumOrg, hardpointLabel, '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
   
-  local float itr;
-  local float hpointVal;
-  local vector itemColor;
   
   hptSizeOrg = hptNumOrg;
   hptSizeOrg_x = hptSizeOrg_x + gui_percentXRaw(11);
@@ -197,15 +198,11 @@ string() ui_calculate_game_time_string={
       t = servertime + (servertime - time);
       t = endTime - t ;
     }
-    
-    sec = t - floor( t / 60 ) * 60 ;
-    sec = rint(sec);
-    
-    mint = (t - floor( t / 3600) * 3600) / 60;
-    mint = rint(mint);
-    
-    hr = t / 3600;
-    hr = rint(hr);
+    t = max(0, t);
+    hr = rint(floor(t/3600));
+    mint = rint(floor((t - hr*3600) / 60));
+    sec = rint(floor(t - (hr*3600) - (mint*60)));
+  
     val = sprintf("%02d:%02d:%02d", hr, mint, sec);
   }else{
     val = "No Limit";
@@ -219,14 +216,13 @@ string(float timeVal ) ui_calculate_time_string={
   local float t, sec, mint, hr;
   
   t = timeVal + (servertime - time);
-  sec = t - floor( t / 60 ) * 60 ;
-  sec = rint(sec);
   
-  mint = (t - floor( t / 3600) * 3600) / 60;
-  mint = rint(mint);
+  t = max(0, t);
   
-  hr = t / 3600;
-  hr = rint(hr);
+  hr = rint(floor(t/3600));
+  mint = rint(floor((t - hr*3600) / 60));
+  sec = rint(floor(t - (hr*3600) - (mint*60)));
+  
   val = sprintf("%02d:%02d:%02d", hr, mint, sec);
   
   return val;

@@ -164,6 +164,7 @@ float(vector destOrg, float wishSpeed) ai_calc_move;
 entity(float checkDir) ai_get_next_node;
 entity() ai_node_tether_find;
 float( vector source, vector trgdst ) ai_check_terrain_move;
+float(float wishAngl,float wishSpeed) ai_check_slope;
 void(entity none) ai_NULL_pain={ };
 float() ai_NULL_missile={ return FALSE;};
 void() ai_frame_net_send;

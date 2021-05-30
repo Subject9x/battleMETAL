@@ -34,35 +34,35 @@ void(string fileToOpen) anm_parseFile={
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{", ",", "}");
   line = fgets(flannel);
-  frame_count = 0;
+  frame_count = -1; // metadata is always frame '0'
+  
   while( (line != "") ){
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
       line_tag = tokenizebyseparator(line, "'", "'", ": ", ",");
       //meta data tags
       if( argv(1) == ANM_FILE_META_MUS ){
         if( argv(3) != ""){
-          ANM_META_DATA[0] = precache_sound2(strzone(argv(3)));
+          cacheGlobalString( ANM_META_DATA[0], precache_sound2(argv(3)) )
         }
       }
       if( argv(1) == ANM_FILE_META_MUS_NO ){
-        ANM_META_DATA[1] = strzone(argv(3));
+        cacheGlobalString( ANM_META_DATA[1], argv(3) )
       }
       if( argv(1) == ANM_FILE_META_BACK ){
         if( argv(3) != ""){
-          ANM_META_DATA[2] = strzone(argv(3));
+          cacheGlobalString( ANM_META_DATA[2], argv(3) )
         }
       }
       if( argv(1) == ANM_FILE_META_TRANS ){
-        ANM_META_DATA[3] = strzone(argv(3));
+        cacheGlobalString( ANM_META_DATA[3], argv(3) )
       }
       if( argv(1) == ANM_FILE_META_SKIP ){
-        ANM_META_DATA[4] = strzone(argv(3));
+        cacheGlobalString( ANM_META_DATA[4], argv(3) )
       }
       //===================
       //frame data
       if( (argv(1) == ANM_FILE_TAG_IMG) ){
-        ANM_FRAME_IMG[frame_count] = argv(3);
-        ANM_FRAME_IMG[frame_count] = strzone(ANM_FRAME_IMG[frame_count]);
+        cacheGlobalString( ANM_FRAME_IMG[frame_count], argv(3) )
       }
       if( (argv(1) == ANM_FILE_TAG_POS) ){
         org = stov(argv(3));
@@ -73,15 +73,13 @@ void(string fileToOpen) anm_parseFile={
         ANM_FRAME_SIZE[frame_count] = siz;
       }
       if( (argv(1) == ANM_FILE_TAG_SND) ){
-        ANM_FRAME_SND[frame_count] = argv(3);
-        ANM_FRAME_SND[frame_count] = strzone(ANM_FRAME_SND[frame_count]);
+        cacheGlobalString( ANM_FRAME_SND[frame_count], argv(3) )
       }
       if( (argv(1) == ANM_FILE_TAG_TIM) ){
         ANM_FRAME_TIM[frame_count] = stof(argv(3));
       }
       if( (argv(1) == ANM_FILE_TAG_MSG) ){
-        ANM_FRAME_MSG[frame_count] = argv(3);
-        ANM_FRAME_MSG[frame_count] = strzone(ANM_FRAME_MSG[frame_count]);
+        cacheGlobalString( ANM_FRAME_MSG[frame_count], argv(3) )
       }
       if( (argv(1) == ANM_FILE_TAG_ALPHA) ){
         ANM_FRAME_ALPHA[frame_count] = stof(argv(3));
@@ -97,7 +95,6 @@ void(string fileToOpen) anm_parseFile={
       if( (argv(1) == ANM_FILE_TAG_FLAGS) ){
         ANM_FRAME_FLAGS[frame_count] =  stof(argv(3));
       }
-      
     }
     if( line == "}"){
       frame_count = frame_count + 1;
@@ -105,12 +102,13 @@ void(string fileToOpen) anm_parseFile={
     line = fgets(flannel);
   }
   fclose(flannel);
-  if(frame_count > 0){
-    ANM_FRAME_TOTAL = frame_count;
-    ANM_FRAME_TIME = time + ANM_FRAME_TIM[ANM_FRAME_CUR];
-    ANM_FRAME_CUR = 0;
+  if(frame_count > -1){
+    ANM_FRAME_TOTAL = frame_count;  //accounts for meta data as first 'frame'
+    ANM_FRAME_CUR = -1;
+    ANM_FRAME_TIME = 0;
     ANM_FILE_STATUS = 1;
     ANM_FRAME_ALPHA_CUR = 0;
+    ANM_FRAME_CUR_FADE_STEP = 0;
   }
 };
 
@@ -126,9 +124,6 @@ void() anm_execute_metadata={
   if(ANM_META_DATA[0] != ""){
     pointsound(pmove_org, ANM_META_DATA[0], 1, ATTN_NORM); 
   }
-
-  ANM_FRAME_TIME = 0;
-  ANM_FRAME_CUR_FADE_STEP = 0;
 };
 
 /*
@@ -136,15 +131,21 @@ void() anm_execute_metadata={
     next frame = ANM_FRAME_CUR + 1;
 */
 void(float timeVal) anm_new_frame={
+  local float frameSlice;
+  local vector imageSize, frameSize, frameOrg;
+  local vector consoleSize;
+  local float aspectRatio;
+  local vector imageAspect;
+  local vector calcSize;
+  
   ANM_FRAME_CUR = rint(ANM_FRAME_CUR + 1);
   
   //check for end-of-anim first
-  if( ANM_FRAME_CUR == ANM_FRAME_TOTAL + 1){
+  if(ANM_FRAME_CUR == ANM_FRAME_TOTAL){
     anm_cleanup();
-    localcmd("cd resume");
-    sound7(self, CHAN_WEAPON, "", 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
     return;
   }
+  
   ANM_FRAME_CUR_FADE_STEP = 0;
   
   ANM_FRAME_ALPHA_CUR = rint(0);
@@ -162,7 +163,6 @@ void(float timeVal) anm_new_frame={
   //set 'fade' 1 for just fade in, 2 for just fade out, 4 for both
   ANM_FRAME_CUR_FLAGS = rint(ANM_FRAME_FLAGS[ANM_FRAME_CUR]);
   
-  local float frameSlice;
   frameSlice = 0.1 * ANM_FRAME_ALPHA[ANM_FRAME_CUR];
   ANM_FRAME_CUR_FADE_RATE = frameSlice / 2.0;
   
@@ -185,8 +185,6 @@ void(float timeVal) anm_new_frame={
   }
   ANM_FRAME_TIME = ANM_FRAME_TIME + timeVal;
   
-  local vector imageSize, frameSize, frameOrg;
-  
   /*
     an effort to enhance the image sizing behavior of the animatic system.
     there's a new flag to override image size vs screen size, which will blast an image to fullscreen.
@@ -201,10 +199,6 @@ void(float timeVal) anm_new_frame={
     frameOrg = '0 0';
   }
   else{
-    local vector consoleSize;
-    local float aspectRatio;
-    local vector imageAspect;
-    local vector calcSize;
     
     consoleSize_x = cvar("vid_conwidth");
     consoleSize_y = cvar("vid_conheight");
@@ -226,7 +220,6 @@ void(float timeVal) anm_new_frame={
     frameSize_x = calcSize_x * frameSize_x;
     frameSize_y = calcSize_y * frameSize_y;
     
-    
     if( (ANM_FRAME_CUR_FLAGS & ANM_FLAG_CENTER) ){
       frameOrg_x = 0.5 - ((frameSize_x / 2) / consoleSize_x);
       frameOrg_y = 0.5 - ((frameSize_y / 2) / consoleSize_y);
@@ -247,6 +240,8 @@ void(string frameText) anm_render_frame_text={
   local vector txt_color;
   local string line;
   local float tokens, tcnt;
+  local float width;
+  local vector linepos;
   
   txt_color = '1 1 1';
   if(ANM_FRAME_TXT_CLR[ANM_FRAME_CUR] != '0 0 0'){
@@ -259,8 +254,6 @@ void(string frameText) anm_render_frame_text={
   txtstart_x = VIEW_CTR_x;
   txtstart_y = VIEW_MAX_y - (tokens * 10);
   while( tcnt <= tokens){
-    local float width;
-    local vector linepos;
     width = stringwidth(argv(tcnt), 0, '8 8 0');
     linepos_x = txtstart_x - (width / 2);
     linepos_y = txtstart_y + gui_percentYRaw(tcnt * 10);
@@ -317,6 +310,7 @@ void() anm_execute_frame={
   if(ANM_META_DATA[2] != ""){
     drawpic('0 0', ANM_META_DATA[2] , VIEW_MAX, '1 1 1', 1, 0); 
   }
+  
   if(frameTime > ANM_FRAME_TIME){
     anm_new_frame(frameTime);
   }
@@ -330,10 +324,14 @@ void() anm_execute_frame={
 */
 void() anm_cleanup={
   local float clean;
+  
+  localcmd("cd resume\n");
+  sound7(self, CHAN_WEAPON, "", 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+  
   clean = 0;
   while(clean <= ANM_FRAME_TOTAL){
-    ANM_FRAME_IMG[clean] = "";
-    ANM_FRAME_SND[clean] = "";
+    freeGlobalString( ANM_FRAME_IMG[clean] )
+    freeGlobalString( ANM_FRAME_SND[clean] )
     ANM_FRAME_TIM[clean] = 0 ;
     ANM_FRAME_POS[clean] = '0 0 0';
     ANM_FRAME_COLOR[clean] = '0 0 0';
@@ -342,7 +340,11 @@ void() anm_cleanup={
   }
   ANM_FRAME_CUR_FLAGS = rint(0);
   ANM_FRAME_CUR_SIZE = '0 0';
+  if( ANM_SERV_TRIG == TRUE){
+    cl_exit_animatic();
+  }
   ANM_FILE_STATUS = -1;
+  
 };
 
 /*
@@ -354,11 +356,10 @@ float() anm_total_runtime={
   while( itr <= ANM_FRAME_TOTAL){
     total = total + ANM_FRAME_TIM[itr];
     fadeFlag = ANM_FRAME_FLAGS[itr];
-    if( (fadeFlag & 1) || (fadeFlag & 4) ){
-      
+    if( (fadeFlag & ANM_FLAG_FADE_IN) || (fadeFlag & ANM_FLAG_FADE_BOTH) ){
       total = total + 2;
     }
-    if( (fadeFlag & 2) || (fadeFlag & 4) ){
+    if( (fadeFlag & ANM_FLAG_FADE_OUT) || (fadeFlag & ANM_FLAG_FADE_BOTH) ){
       total = total + 2;
     }
     itr = itr + 1;

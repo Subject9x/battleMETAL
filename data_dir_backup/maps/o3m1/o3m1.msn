@@ -6,38 +6,27 @@
   'display' : 'The Hollow Mountain'
   'type'  : 'Offensive'
   'points' : '1'
-  'sector' : 'Glacian Edge'
-  'location' : 'Basalt Jags'
+  'sector' : 'ARK-Province'
+  'location' : 'Habitable Sector 3'
   'time' : '08;26;11;09'
-  'brief' : '-COMM INTERCEPT- | <TRANSMISSION TERMINATED>'
-  'intel' : ''
-  'objtotal' : '5'
+  'brief' : '-COMM INTERCEPT- | [I.Varaci] I see them! bring in our last reserves now! | | [L.Gavir] My forces are holding for the moment, what`s the sit-rep on getting the Starport facilities back online? | | [I.Varaci] Total loss, no surface-to-orbit ships left intact and the landing gantries are a shambles. | | [L.Gavir] Our only choice then is to fall back to that `mountain` complex. | | [I.Varaci] agreed, say again? that can`t be right, Gavir - COMSCAN is detecting another wave of these monsters coming in. | | [L.Gavir] We don`t have the numbers anymore, I have one last gamble. Varaci can you take command of all our remaining strength? We may be able to stop the attack if we send a strike team into the complex near the Starport. | | [I.Varaci] Survest to the end, eh? You people always thought your noble birth purchased heroism. We don`t have options anymore, do what you must to end this madness! | | [L.Gavir] I will return, just hold on! | | <TRANSMISSION LOST>'
+  'intel' : 'We have pursued the surviving hostile forces into the remnants of the habitable zone of the planet. | | PSC has tracked TARGET[Gavir] into one of our primary command-and-control nodes. | | You must pursue him into the Facility and eliminate him before he is able to cripple the operation. | | The rest of the DEAD_HANDS are mopping up what is left of the enemy forces. | | May vengeance guide your hand.'
+  'objtotal' : '3'
   'anim' : ''
 }
 // objectives section
 {
   'objid' : '1'
   'objtype': 'primary'
-  'objdesc' : 'Eliminate <MILITAR> base at (BETA).'
-  'items' : '11 19'
+  'objdesc' : 'Reach Entrance to Storage-Deeps Facility 1 at (OMEGA).'
 }
 {
   'objid' : '2'
   'objtype': 'primary'
-  'objdesc' : 'Cripple <MILITAR> [Vehicle Hangars] at (DELTA).'
+  'objdesc' : 'Destroy surface power core near (IOTA).'
 }
 {
   'objid' : '3'
   'objtype': 'primary'
-  'objdesc' : 'Capture [Supply Base] by reaching (LAMBDA).'
-}
-{
-  'objid' : '4'
-  'objtype': 'primary'
-  'objdesc' : 'Destroy <MILITAR> [Commercial Depot] at (MU)'
-}
-{
-  'objid' : '5'
-  'objtype': 'primary'
-  'objdesc' : 'Knock out [Power Station] near (TAU).'
+  'objdesc' : 'Destroy last supply base and command center. (RHO)'
 }

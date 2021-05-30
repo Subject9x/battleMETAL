@@ -41,6 +41,7 @@ void() data_projectile_ini_ion_={
     self.alpha = 0.75;
     self.traileffectnum = particleeffectnum("TE_ION_TRAIL");
     self.pcl_explode = projectile_ion_expl;
+    self.scale = 2;
   #endif
     
   #ifdef SSQC
@@ -68,6 +69,7 @@ void() data_projectile_ion_think_={
 
 void()data_projectile_ion_explode={
   local entity lst;
+  local float ln;
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
@@ -83,7 +85,6 @@ void()data_projectile_ion_explode={
     if(trace_ent == world){
       continue;
     }
-    local float ln;
     ln = vlen(trace_endpos - self.origin);
     if(ln > DAT_PRJ_ION_EXPRAD){
       continue;
@@ -114,9 +115,10 @@ void() data_projectile_ion_touch={
   if(other.takedamage){
     if( other.shield > 0 ){
       t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
-      self.impactType = IMPACT_SKY;
+      self.impactType = IMPACT_SHIELD;
     }
     else{
+      t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue * 0.1, FIRE_ENDPOINT, TRUE);
       self.impactType = IMPACT_ARMOR;
     }
     self.targetEntId = num_for_edict(other);

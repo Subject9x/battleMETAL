@@ -156,6 +156,7 @@ void() SV_PlayerPhysics =
 				self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
 		}
 	}
+  //MOVEMENT - RAM SHOCKS ACTIVE------------------------------------------------------------
   else if( time < self.ramCharge ){
     local float stopSpeedSlide;
     local float frictionSlide;
@@ -205,19 +206,19 @@ void() SV_PlayerPhysics =
     if (f > 0){
       self.ramVelocity = self.ramVelocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);
     }
-    if( self.ramVelocity_x > self.data_speed_forward * 3 ){
-      self.ramVelocity_x = self.data_speed_forward * 3;
+    if( self.ramVelocity_x > self.data_speed_forward * 3.5 ){
+      self.ramVelocity_x = self.data_speed_forward * 3.5;
     }
-    if( self.ramVelocity_y > self.data_speed_forward * 3 ){
-      self.ramVelocity_y = self.data_speed_forward * 3;
+    if( self.ramVelocity_y > self.data_speed_forward * 3.5 ){
+      self.ramVelocity_y = self.data_speed_forward * 3.5;
     }
     self.velocity = self.ramVelocity;
-    self.velocity_z = self.velocity_z + (self.ramPower_x * -0.5);
+    self.velocity_z = self.velocity_z + (self.ramPower_x * -0.3);
   }
+  //MOVEMENT - REGULAR WALKING------------------------------------------------------------
 	else if (self.flags & FL_ONGROUND)
-	{    
+	{
     local vector sprintMove;
-		// walking
 		makevectors(self.v_angle_y * '0 1 0');
     if( self.button8 ){
       sprintMove = v_forward * (self.movement_x * self.data_speed_accel);
@@ -227,6 +228,7 @@ void() SV_PlayerPhysics =
     else{
       wishvel = v_forward * self.movement_x + v_right * self.movement_y;
     }
+    
 		// friction
 		if (self.velocity_x || self.velocity_y)
 		{
@@ -242,9 +244,35 @@ void() SV_PlayerPhysics =
 			else
 				self.velocity = '0 0 0';
 		}
+    
 		// acceleration
 		wishdir = normalize(wishvel);
 		wishspeed = vlen(wishvel);
+    
+    //actual terrain test
+    if( wishvel ){
+      local vector stepOne, stepTwo, stepAngles, stepDir;
+      stepDir = vectoangles(wishvel);
+      makevectors(stepDir);
+      traceline(self.origin, self.origin + (v_up * -1024) + (v_forward * -128), MOVE_NORMAL, self);
+      stepOne = trace_endpos;
+      
+      traceline(self.origin, self.origin + (v_up * -1024) + (v_forward * 512), MOVE_NORMAL, self);
+      stepTwo = trace_endpos;
+      
+      stepAngles = vectoangles(stepTwo - stepOne);
+      if( stepAngles_x > 1 && stepAngles_x <=90 ) {
+        //walking up-hill.
+        stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
+        wishspeed = wishspeed * (1.0 - (stepAngles_x / 90));
+      }
+      else if( stepAngles_x >= 340 && stepAngles_x < 360 ){
+        //going dowhill
+        stepAngles = vectoangles((stepOne + (v_up * 1.05)) - stepTwo);  //relish factor
+        //wishspeed = wishspeed + (wishspeed * (1.0 - (stepAngles_x / 360)));
+      }
+    }
+    
 		if (wishspeed > sv_maxspeed)
 			wishspeed = sv_maxspeed;
 		if (time >= self.teleport_time)
@@ -254,9 +282,9 @@ void() SV_PlayerPhysics =
 				self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
 		}
 	}
+  //MOVEMENT - AIR BORN------------------------------------------------------------
 	else
 	{
-		// airborn
 		makevectors(self.v_angle_y * '0 1 0');
 		wishvel = v_forward * self.movement_x + v_right * self.movement_y;
 		// acceleration

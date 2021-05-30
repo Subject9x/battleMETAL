@@ -37,5 +37,6 @@ float IMP_SLIDE = 27;
 float IMP_FAC_NEXT = 28;
 float IMP_FAC_PREV = 29;
 float IMP_EXTERNAL_CAMERA = 30;
+float IMP_MENU_GROUP = 31;  //mostly clientside only for opening weapon rebind menu
 
 void(float selector) mpls_groupFire;

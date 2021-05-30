@@ -36,7 +36,7 @@ void() data_ini_ion_={
   self.energyRate = 125;
   
   self.w_range = 1500;
-  self.damageValue = 75;  //pre-release 90
+  self.damageValue = 75;
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
 
   self.techLevel = 1;
@@ -51,7 +51,7 @@ void() data_ini_ion_={
   self.fire_sound = "sound/weapons/emp_fire.ogg";
   self.model = "q3mdl/weapons/w_ion.md3";
   self.abbrev = "ION";
-  self.description = "+ Damages <shields> ONLY. + Enemy shield regen slowed down. + 3-Round burst.";
+  self.description = "+ Anti-shield. + Armor damage greatly reduced. +3-rnd burst fire.";
   self.icon = "gfx/ui/wep_icons/wi_ion.png";
   self.itemMuzzleFlash = te_muzzle_ion;
 #endif

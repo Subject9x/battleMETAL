@@ -10,6 +10,8 @@ Overview:
 */
 
 //Generic Unit controllers
+void() ctrl_unit_update_frame;
+
 void() ctrl_unit_clean_wgroups;
 void() ctrl_unit_cleanup_mech;
 void() ctrl_unit_cleanup_player;

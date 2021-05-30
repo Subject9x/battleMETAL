@@ -9,14 +9,14 @@ Overview: refactor ui data to file loading, impl
 void() ui_data_load_hudnames={
   local float f, idx;
   local string ln;
-  idx = 1;
+  idx = 0;
   f = fopen("ui/hud/dir.meta", FILE_READ);
   if (f != -1){ 
     ln = fgets(f);
     while( ln != "" ){
       if( strstrofs(ln, "//", 0) == -1 ){
         if(idx <= GAME_TOTAL_MECHS){
-          HUD_DATA_NAMES[idx] = strzone(ln);
+          cacheGlobalString( HUD_DATA_NAMES[idx], ln)
         }
         idx = idx + 1;
       }
@@ -144,9 +144,8 @@ void() ui_data_clear_huddata={
     UI_DATA_COLOR1[itr] = '0 0 0';
     UI_DATA_COLOR2[itr] = '0 0 0';
     
-    if( UI_DATA_IMG[itr] != "" ){
-      strunzone( UI_DATA_IMG[itr] );
-    }
+    freeGlobalString(  UI_DATA_IMG[itr] )
+    
     UI_DATA_IMG[itr] = ""; //background image if needed
     itr = itr + 1;
   }
@@ -266,7 +265,11 @@ float(float mechId, entity listEntity) ui_data_load_mech_info={
 float(float id) ui_data_load_mech={
   local float flannel, line_tag;
   local string file, contents, line;
-  local float idx; 
+  local float idx;
+  local string token, value;
+  local entity hardpoint;
+  local float itr;
+  local vector partOffset;
   
   if( UI_HANGAR_DATA_mech.data_idx > 0){
     ui_data_clear_mechdata();
@@ -311,7 +314,6 @@ float(float id) ui_data_load_mech={
   while( (line != "") ){
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
       line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
-      local string token, value;
       token = argv(1);
       value = argv(3);
       if( token != ""){
@@ -333,12 +335,9 @@ float(float id) ui_data_load_mech={
   }
   fclose(flannel);
   
-  local entity hardpoint;
-  local float itr;
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   itr = 1;
   while( hardpoint ){
-    local vector partOffset;
     
     partOffset = hardpoint.compOffset;
     //TODO - migjht be source of hardpoint type bug
@@ -353,10 +352,15 @@ float(float id) ui_data_load_mech={
   return TRUE;
 };
 
+/*
+  CSQC: Load .hud files from /data/ui/hud/
+*/
 float( float id ) ui_data_load_hud={
-  ui_data_clear_huddata();
   local float flannel, line_tag, hudElementItr;
   local string file, contents, line;
+  local string token, value;
+  ui_data_clear_huddata();
+      
   file = strcat(PATH_DATA_UI, "/hud/", HUD_DATA_NAMES[id], ".hud");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
@@ -368,7 +372,6 @@ float( float id ) ui_data_load_hud={
   line = fgets(flannel);
   while( (line != "") ){ 
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-      local string token, value;
       line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
       token = argv(1);
       value = argv(3);
@@ -499,10 +502,11 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     CLIENT_MENU_sel_mech = SELECT_MECH;
     CLIENT_MENU_sel_size = UI_HANGAR_DATA_mech.vec_size;
     cleanHardPoints();
-    CLIENT_MENU_nex_grp1 = DATA_CONFIG_BUFFER_GRPS[1];
-    CLIENT_MENU_nex_grp2 = DATA_CONFIG_BUFFER_GRPS[2];
-    CLIENT_MENU_nex_grp3 = DATA_CONFIG_BUFFER_GRPS[3];
-    CLIENT_MENU_nex_grp4 = DATA_CONFIG_BUFFER_GRPS[4];
+    CLIENT_MENU_nex_grp1 = DATA_CONFIG_BUFFER_GRPS[0];
+    CLIENT_MENU_nex_grp2 = DATA_CONFIG_BUFFER_GRPS[1];
+    CLIENT_MENU_nex_grp3 = DATA_CONFIG_BUFFER_GRPS[2];
+    CLIENT_MENU_nex_grp4 = DATA_CONFIG_BUFFER_GRPS[3];
+    
     itr = 1;
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     while( hardpoint ){

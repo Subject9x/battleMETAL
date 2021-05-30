@@ -617,6 +617,10 @@ void() click_graphics_accept={
   cvar_set("gl_texture_anisotropy", ftos(graphics_aniso_lbl.len));
   cvar_set("gl_picmip", ftos(graphics_texture_quality_lbl.len));
   cvar_set("gl_texturecompression", ftos(graphics_texture_compress_lbl.len));
+  cvar_set("saved1", ftos(graphics_effects_lbl.len));
+  cvar_set("saved2", ftos(graphics_gfx_lbl.len));
+  
+  
   if(VID_NEXT != '0 0 0'){
     cvar_set("vid_width", ftos(rint(VID_NEXT_x)));
     cvar_set("vid_height", ftos(rint(VID_NEXT_y)));
@@ -624,12 +628,10 @@ void() click_graphics_accept={
     cvar_set("vid_conwidth", ftos(rint(VID_CNEXT_x)));
     cvar_set("vid_conheight",ftos(rint(VID_CNEXT_y)));
   }
-  cvar_set("saved1", ftos(graphics_effects_lbl.len));
-  cvar_set("saved2", ftos(graphics_gfx_lbl.len));
   
-  cmd("saveconfig;exec config.cfg;vid_restart\n");
+  cmd("vid_restart\n");
+  cmd("saveconfig\n");
   //apparently also loads autoexec.cfg and .rc
-
 };
 
 // ini function, called by '_f' function as a setup func

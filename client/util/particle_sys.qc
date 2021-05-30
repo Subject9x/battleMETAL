@@ -305,6 +305,9 @@ void() te_missile_explode_th={
 };
 void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode={
   local entity explode;
+  local float debris;
+  local vector back;
+  local vector launch;
 
   explode = spawn();
   explode.movetype = MOVETYPE_NONE;
@@ -329,9 +332,6 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
 
   te_customflash( org, explodeSize * 50, 1, explodeColor);
   
-  local float debris;
-  local vector back;
-  local vector launch;
   
   makevectors(vectoangles(self.velocity));
   back = org + (v_forward * -10);
@@ -354,12 +354,12 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
 */
 void() te_shield_hit_predraw={
   interpolate_origin();
+  self.colormod = self.compOffset;
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  self.angles_y = self.angles_y + 5;
-  self.alpha = 0.075;
+  self.alpha = 0.085;
   if(self.owner.clientLocalId == player_localentnum){
     if( self.owner.chaseActive == FALSE ){
-      self.alpha = 0.02;
+      self.alpha = 0.03;
     }
   }
 };
@@ -384,6 +384,7 @@ void() te_shield_hit_th={
 void() te_shield_hit={
   local entity explode;
   local float hitTime;
+  local vector flashCol;
   
   hitTime = 0.33;
   
@@ -404,8 +405,18 @@ void() te_shield_hit={
   setorigin( explode, self.origin);
   explode.alpha = 0.075;
   
+  if(self.shieldHitFlag == SHIELD_HIT_EMP){
+    flashCol = '1.0 0.4 1.0';
+    explode.colormod = '1.2 0.6 1.2';
+  }
+  else {
+    //SHIELD_HIT_REG
+    explode.colormod = '0 1 0';
+    flashCol = '0.003 0.87 0.22';
+  }
+  explode.compOffset = explode.colormod;
   
-  te_customflash( self.origin, self.vec_size * 50, 0.25, '0.003 0.87 0.22');
+  te_customflash( self.origin, self.vec_size * 50, 0.25, flashCol);
   pointsound(  self.origin, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
 };
 
@@ -419,7 +430,6 @@ void() predraw_shield_explode={
   local float lerp;
   
   self.colormod = self.compOffset;
-  self.angles_y = self.angles_y - 3;
   if (self.nextthink != self.frame1time){
     self.frame2time = self.frame1time;
     self.frame1time = self.nextthink;
@@ -438,10 +448,6 @@ void() predraw_shield_explode={
   self.lerpfrac = lerp;
   
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  
-  self.angles_y = self.angle1 + (self.angle2-self.angle1)*self.lerpfrac;
-  self.angles_y = anglemod(self.angles_y);
-  
   self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
 };
 
@@ -450,8 +456,8 @@ void() te_shield_explode_th={
     remove(self);
     return;
   }
-  self.alpha = self.alpha - 0.02;
-  self.scale = self.scale + 0.015;
+  self.alpha = self.alpha - 0.024;
+  self.scale = self.scale + 0.025;
   
   if(self.owner.clientLocalId == player_localentnum){
     self.origin = pmove_org;
@@ -479,20 +485,21 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.alpha = 0.6;
   explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
   explode.drawmask = MASK_NORMAL;
+  explode.predraw = predraw_shield_explode;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
   explode.owner = self;
   
-  if(self.shieldHitFlag == 3){
-    flashCol = '1.0 0.39 0.0';
-    shellCol = '0.99 0.0 0.39';
+  if(self.shieldHitFlag == SHIELD_HIT_IXP){
+    flashCol = '1.0 0.0 0.4';
+    explode.colormod = '1.2 0.2 0.6';
   }
-  else{
+  else {
+    //SHIELD_HIT_EXP
+    explode.colormod = '1 1 0.1';
     flashCol = '0.003 0.87 0.22';
-    shellCol = '0.41 1.0 0.199';
   }
-  explode.colormod = shellCol;
-  explode.compOffset = shellCol;
+  explode.compOffset = explode.colormod;
   te_customflash( org, vecSize * 100, 2, flashCol);
   
 };
@@ -659,7 +666,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
 float(vector endPos, entity endEnt) te_impact_type={
   if(endEnt){
     if(endEnt.takedamage == DAMAGE_AIM){
-      if(endEnt.shield > 0 ){
+      if(endEnt.shield > 0 && endEnt.shield <= 100.0){
         return IMPACT_SHIELD;
       }
       return IMPACT_ARMOR;

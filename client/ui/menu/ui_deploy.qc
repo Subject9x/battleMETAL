@@ -17,7 +17,7 @@ void() menu_deployDrawFrame={
   menu_navBar_drawFrame(VIEW_ORG);
   
   menu_deploy_missionInfoPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
-  menu_deploy_mapOverviewPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
+  menu_deploy_mapOverviewPanel(topleftroot + gui_percentToPixelRawVec('0 64'));
   menu_deploy_mechInfoPanel(topleftroot);
   menu_deploy_navInfoPanel(topleftroot);
   menu_deploy_mapKeyPanel(topleftroot);
@@ -91,6 +91,8 @@ void() navSelectListener={
 void() navListSelectListener={
   local entity deploy;
   local entity found;
+  local float check;
+  check = FALSE;
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_NEXT_ORG, gui_percentToPixelRawVec('20 44'), TRUE) ){
     for( deploy = CLIENT_MENU_deploy.nextPoint; deploy != world; deploy = deploy.nextPoint ){
       if( found.data_idx ){
@@ -119,15 +121,18 @@ void() navListSelectListener={
       CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
     }
   }
-  if(CLIENT_MENU_nav_pnt > 0){
-    if( !(LAUNCH_VALIDATION & VALID_NODE) ){
-      LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+  //click filter to register clicks in the above 2 buttons only.
+  if( check ){
+    if(CLIENT_MENU_nav_pnt > 0){
+      if( !(LAUNCH_VALIDATION & VALID_NODE) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+      }
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
     }
-    cl_setspawnpoint( CLIENT_MENU_nav_pnt );
-  }
-  else{
-    if( (LAUNCH_VALIDATION & VALID_NODE) ){
-      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
+    else{
+      if( (LAUNCH_VALIDATION & VALID_NODE) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
+      }
     }
   }
 };
@@ -389,7 +394,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         ui_renderSprite_DeployPoint( tofs, '16 16', CLR_DEF_GREEN, 1 ) ;
       }
       else{
-        drawpic(nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_HALF, 1, 0) ;
+        drawpic(nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_THREEQ * 1.5 , 1, 0) ;
       }
     }
     lineOrg = mpos + gui_percentToPixelRawVec('5 110');

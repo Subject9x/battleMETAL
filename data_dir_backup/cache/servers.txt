@@ -1,0 +1,10 @@
+serverlist.battlemetal.net
+serverlist.battlemetal.net
+serverlist.battlemetal.net
+serverlist.battlemetal.net
+serverlist.battlemetal.net
+serverlist.battlemetal.net
+serverlist.battlemetal.net
+//deals with sv_master1-4 and sv_masterextra1-3
+//because darkplaces wants to assert its own values regardless of config.cfg settings.
+//you shouldnt adjust this too much because battleMETAL is very much incompatible with vanilla Quake

@@ -20,9 +20,12 @@ void() data_mech_config_clearBuffer={
   
   while( itr < 10 ){
     DATA_CONFIG_BUFFER_WEPS[itr] = 0;
-    if( itr < 6 ){
-      DATA_CONFIG_BUFFER_GRPS[itr] = 0;
-    }
+    itr = itr + 1;
+  }
+  
+  itr = 0;
+  while( itr < 4 ){
+    DATA_CONFIG_BUFFER_GRPS[itr] = 0;
     itr = itr + 1;
   }
 };
@@ -51,18 +54,16 @@ void( float mechId, float configNum ) data_mech_config_save={
     itr = itr + 1;
     hardpoint = hardpoint.w_slot;
   }
-  group = strcat( "  'group_", ftos(1), "' : ", ftos(CLIENT_MENU_nex_grp1), ",\n");
+  group = strcat( "  'group_1' : ", ftos(CLIENT_MENU_nex_grp1), ",\n");
   fputs(flannel, group);
   
-  group = strcat( "  'group_", ftos(2), "' : ", ftos(CLIENT_MENU_nex_grp2), ",\n");
+  group = strcat( "  'group_2' : ", ftos(CLIENT_MENU_nex_grp2), ",\n");
   fputs(flannel, group);
  
-  group = strcat( "  'group_", ftos(3), "' : ", ftos(CLIENT_MENU_nex_grp3), ",\n");
+  group = strcat( "  'group_3' : ", ftos(CLIENT_MENU_nex_grp3), ",\n");
   fputs(flannel, group);
   
-  group = strcat( "  'group_", ftos(4), "' : ", ftos(CLIENT_MENU_nex_grp4), ",\n");
-  fputs(flannel, group);
-  
+  group = strcat( "  'group_4' : ", ftos(CLIENT_MENU_nex_grp4), ",\n");
   fputs(flannel, group);
   
   fputs(flannel, "}");
@@ -73,6 +74,7 @@ float( float mechId, float configNum ) data_mech_config_load={
   local float flannel, line_tag;
   local float idx;
   local string file, contents, line;
+  local string token, value;
   
   file = strcat(PATH_DATA_UI, "/loadouts/", ftos(mechId), "/", ftos(configNum),".dat");
   flannel = fopen(file, FILE_READ);
@@ -82,13 +84,13 @@ float( float mechId, float configNum ) data_mech_config_load={
     }
     return FALSE;
   }
+  
   contents = fgets(flannel);
   //tokenizebyseparator(contents, "{", ",", "}");
   line = fgets(flannel);
   while( (line != "") ){
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
       line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
-      local string token, value;
       token = argv(1);
       value = argv(3);
       if( token != ""){
@@ -106,6 +108,7 @@ float( float mechId, float configNum ) data_mech_config_load={
         if( strstrofs(token, "group",0) != -1 ){
           tokenizebyseparator(token, "_");
           idx = stof(argv(1));
+          idx = idx - 1;  //correct for 0 being array start.
           DATA_CONFIG_BUFFER_GRPS[idx] = stof(value);
         }
       }

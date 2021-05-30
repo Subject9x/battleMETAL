@@ -73,6 +73,9 @@ void() world_metal_ini={
 
   //kept in numerical order for easy reference.
   addstat(STAT_RAM, AS_INT, ramUp);
+  
+  addstat(STAT_TARGET_HIT_PARTS, AS_FLOAT, statTargetHitParts);
+  
   addstat(STAT_PLAYER_STATE, AS_FLOAT, playerState);
   addstat(STAT_PLR_HITDIR, AS_FLOAT, stat_hit_dirs);
   addstat(STAT_PLR_RETDIST, AS_FLOAT, stat_ret_dist);
@@ -102,7 +105,7 @@ void() world_metal_ini={
   addstat(STAT_WEAPON_RELOAD_9, AS_FLOAT, statWeaponReload9);
   
   addstat(STAT_RAM_VALUE, AS_INT, ramTracker);
-  addstat(STAT_LCK_STT, AS_FLOAT, targLockState);
+  //addstat(STAT_LCK_STT, AS_FLOAT, targLockState); //2.0.0: lock-on not timer-based anymore
   
   addstat(STAT_PLR_REP, AS_FLOAT, stat_plr_rep);
   
@@ -450,7 +453,6 @@ void() sv_endServer={
       if( !(player.flags & FL_CLIENT) ){
         continue;
       }
-      player.flags = player.flags | FL_NOSHOOT;
       if( player.data_type == DATA_MECH ){
         player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_EFLAGS;
       }
@@ -458,6 +460,8 @@ void() sv_endServer={
         client_send_campaign_end_data( player );
       }
       else{
+          //FL_NOSHOOT here so that players don't wrack up extra kills after the shot-buzzer sounds.
+         player.flags = player.flags | FL_NOSHOOT;
          client_send_dm_end_data( player ); 
       }
     }
@@ -722,11 +726,11 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
 */
 
 void() world_nodegraph_export_edgelinker_th={
+  local float fileExists;
+  local entity nodes;
   
   cons_logAString("[INFO]-world_export_nodegraph() edgelinker run ", ftos(self.count));  //DEBUG
   
-  local float fileExists;
-  local entity nodes;
   
   self.owner = NODEGRAPH_EXPORT_NODE[self.count];
   

@@ -37,25 +37,23 @@ void() te_muzzle_latc={
   
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), startOrg, norm * 4, 1);
   
-  makevectors(ang);
-  
   impactStyle = te_impact_type(endOrg, trace_ent);
   
-  
-  if( beamLen > 100 ){
-    pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg, norm * 1600, 1);
+  if( beamLen > 150 ){
+    pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg + (v_forward * 48), norm * 2400, 1);
   }
   
-  
+  makevectors(ang);
   switch(impactStyle){
-    case IMPACT_ARMOR:
-      pointparticles( particleeffectnum("TE_ATC_ARMOR"), endOrg + v_forward * -3, norm * 4, 3);
+    case IMPACT_SHIELD:
+      pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), endOrg + v_forward * -3, '0 0 0', 1);
       break;
-    case IMPACT_DIRT:
-      pointparticles( particleeffectnum("TE_ATC_DIRT"), endOrg + (v_up *1), normalize( (endOrg + (v_up *1)) - startOrg ) * 20, 1);
+    case IMPACT_ARMOR:
+      pointparticles( particleeffectnum("TE_ATC_ARMOR"), endOrg + v_forward * -4, norm * 4, 3);
       break;
     default:
-      return;
+      pointparticles( particleeffectnum("TE_ATC_DIRT"), endOrg + (v_up *1) + (v_forward * -4), normalize( (endOrg + (v_up *1)) - startOrg ) * 20, 1);
+      break;
   }
 };
 #endif
@@ -63,15 +61,26 @@ void() data_ini_light_atc_={
 
   self.data_idx = UID_ITEM_light_autocannon;
   
-  self.w_clipsize = 3;
-  self.reloadRate = 0.12;
-  self.reloadMax = 1.5;
-  self.energyRate = 0;
   
+  if( (self.owner.flags & FL_CLIENT) ){
+    self.w_clipsize = 1;
+    self.reloadRate = 0.3;
+    self.reloadMax = 0.3;
+    self.damageValue = 5;
+  }
+  else{
+    self.w_clipsize = 3;
+    self.reloadRate = 0.12;
+    self.reloadMax = 1.5;
+    self.damageValue = 10.0;
+  }
+  
+  self.energyRate = 0;
   self.w_range = 3200;
-  self.damageValue = 10.5;
+  
+  self.damageValue = 4.33;
+  
   self.damageType = DMG_BAL;
-
   self.techLevel = 1;
   self.equipSize = BAL1;
   
@@ -82,7 +91,7 @@ void() data_ini_light_atc_={
 #ifdef CSQC  
   self.w_name = "Light Autocannon";
   self.abbrev = "ATC";
-  self.description = "+ Instant-impact weapon. + 3-round burst. + Better against <Armor>.";
+  self.description = "+ Instant-impact weapon. + fully automatic, hold down trigger to fire. + Better against <Armor>.";
   self.icon = "gfx/ui/wep_icons/wi_atc.png";
   self.model = "q3mdl/weapons/w_atc.md3";
   self.fire_sound = "sound/weapons/atc_fire.ogg";
@@ -109,10 +118,13 @@ void() data_ini_attack_latc_={
   else{
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0 ){
-        t_damage_shield(trace_ent, self,self.owner, self.damageValue, trace_endpos, FALSE); 
+        t_damage_shield(trace_ent, self,self.owner, self.damageValue * 0.5, trace_endpos, FALSE); 
       }
       else{
-        t_damage(trace_ent, self, FIRE_ENT, self.damageValue * 1.5, FIRE_ENDPOINT, '0 0 0');
+        HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
+        if( HIT_LOCATION.partTypeId && !(self.owner.statTargetHitParts & HIT_LOCATION.partTypeId) ){
+          self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION.partTypeId;
+        }
       } 
     }
   }

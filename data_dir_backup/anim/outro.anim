@@ -1,0 +1,42 @@
+{
+  'music'   : 12,
+  'nomusic' : 0,
+  'backimg' : ,
+  'trans'   : ,
+}
+{
+  'image' : gfx/anim/outro/out1.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 2,
+  'flags'  : 17,
+}
+{
+  'image' : gfx/anim/outro/out2.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 24,
+  'flags'  : 16,
+}
+{
+  'image' : gfx/anim/outro/out3.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 24,
+  'flags'  : 18,
+}

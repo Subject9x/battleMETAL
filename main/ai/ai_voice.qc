@@ -19,7 +19,7 @@ AI_VOICE_WARN       = 9;
 */
 
 void() ai_sfx_spotted={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD  ){
     return;
   }
   if( time > self.voiceTime ){
@@ -32,7 +32,7 @@ void() ai_sfx_spotted={
 };
 
 void() ai_sfx_warning={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD  ){
     return;
   }
   if( time > self.voiceTime ){
@@ -45,7 +45,7 @@ void() ai_sfx_warning={
 };
 
 void() ai_sfx_huntStart={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD  ){
     return;
   }
   if( (self.enemy.flags & FL_CLIENT) ){
@@ -56,7 +56,7 @@ void() ai_sfx_huntStart={
 };
 
 void() ai_sfx_huntEnd={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD  ){
     return;
   }
   if( time > self.voiceTime ){
@@ -69,7 +69,7 @@ void() ai_sfx_huntEnd={
 };
 
 void() ai_sfx_dying={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD  ){
     return;
   }
   if( time > self.voiceTime ){
@@ -80,7 +80,7 @@ void() ai_sfx_dying={
 };
 
 void() ai_sfx_dead={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD  ){
     return;
   }
   if( time > self.voiceTime ){
@@ -93,7 +93,7 @@ void() ai_sfx_dead={
 };
 
 void() ai_sfx_kill={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD  ){
     return;
   }
   if( time > self.voiceTime ){
@@ -106,7 +106,7 @@ void() ai_sfx_kill={
 };
 
 void() ai_sfx_roger={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD  ){
     return;
   }
   if( time > self.voiceTime ){
@@ -117,7 +117,7 @@ void() ai_sfx_roger={
 };
 
 void() ai_sfx_help={
-  if( (self.spawnflags & MUTE_ME) ){
+  if( (self.spawnflags & MUTE_ME) || self.data_type == DATA_BLD ){
     return;
   }
   if( time > self.voiceTime ){

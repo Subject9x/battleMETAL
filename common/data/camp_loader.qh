@@ -9,12 +9,12 @@ overview:
 //CONSTANTS
 string PATH_CAMP_FILE = "campaigns/original.dat";
 string CAMP_TAG_NAME = "name";
-string CAMP_TAG_MAP = "map";
 string CAMP_TAG_DESC = "desc";
 string CAMP_TAG_AUTHOR = "author";
 string CAMP_TAG_MECHS = "mechs";
 string CAMP_TAG_ITEMS = "items";
-
+string CAMP_TAG_START = "start";
+string CAMP_TAG_INFO = "info";
 string CAMP_SAVE_TAG = "campaign";
 
 float CAMP_TOTAL    = 17; //max number of campaigns (16).
@@ -22,7 +22,8 @@ float CAMP_PAGE_MAX = 8;  //max results per page
 
 //GLOBALS
 #ifdef QCMENU
-string CAMP_SELECT_MAP;
+string CAMP_SELECT_START;
+string CAMP_SELECT_INFO;
 string CAMP_SELECT_NAME;
 string CAMP_SELECT_MECHS;
 string CAMP_SELECT_ITEMS;
@@ -31,7 +32,8 @@ float CAMP_PAGE;
 float CAMP_PAGE_END;
 
 string CAMP_NAME[16];
-string CAMP_MAP[16];
+string CAMP_START[16];
+string CAMP_INFO[16];
 string CAMP_DESC[16];
 string CAMP_AUTH[16];
 string CAMP_ITEMS[16];

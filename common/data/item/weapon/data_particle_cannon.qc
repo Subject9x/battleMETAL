@@ -131,11 +131,15 @@ void() data_ini_attack_particle_cannon_={
     thisTarget = trace_ent;
     oldShields = thisTarget.shield;
     thisTarget.shield = 0;
-    t_damage(trace_ent, self, FIRE_ENT, dmgArmor, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
+    HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, dmgArmor, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
     if( oldShields > 0 &&  thisTarget.deadflag <= DEAD_NO ){
       thisTarget.shield = oldShields;
     }
+    if( HIT_LOCATION && (thisTarget.shield < 101 && thisTarget.shield > 0) ){
+      self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION.partTypeId;
+    }
   }
+  
   self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

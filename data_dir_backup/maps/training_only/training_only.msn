@@ -1,0 +1,37 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'training/training.png'
+  'name'  : 'Training Refresher'
+  'display' : 'The long dark'
+  'type'  : 'Trainer'
+  'points' : '1'
+  'sector' : 'Outbuilding Facility 32X'
+  'location' : '-CLASSIFIED-'
+  'time' : '-CLASSIFIED-'
+  'brief' : 'This is a duplication of the Training Map that is found in the main campaign. | | Progress in this map is not saved, and it repeats on mission completion.'
+  'intel' : 'Area of Operations-training complex in <REDACTED>. | <TRAINEE> has been granted control any METAL of their choice. | Latest arsenal is also available for testing. | Expected Resistance Values - none.'
+  'objtotal' : '2'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Visit each (Nav) Point'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Listen to Command/Control for instructions.'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Accomplish instructed tasks to finalize training program.'
+}
+{
+  'objid' : '4'
+  'objtype': 'primary'
+  'objdesc' : 'Proceed to Storage-Deeps Facility 1 at Nav (ETA).'
+}

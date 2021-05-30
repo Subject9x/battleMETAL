@@ -29,9 +29,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgAmt = dmg_amt;
   
   //reduce friendly fire damage on easier settings
-  if( (trg.faction != FACTION_ALL) ){
-    if( trg.faction == attacker.faction ){
-      if( (serverflags & SVFLAG_FIREON) ){
+  if( (serverflags & SVFLAG_FIREON) ){
+    if( (trg.faction != FACTION_ALL) ){
+      if( trg.faction == attacker.faction ){
         if( skill < 2 ){
           dmgAmt = dmgAmt * DMG_FRIENDLY_FIRE_REDUCE;
         }
@@ -42,12 +42,14 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
-  if( (dmgTrg.flags & FL_CLIENT) ){
-    if( trg.faction == FACTION_ALL && trg.data_type != DATA_BLD ){
-      dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
-    }
-  }
-  
+                            //------------> Damage Buffer system
+                            if( (dmgTrg.flags & FL_CLIENT) ){
+                              if( trg.faction == FACTION_ALL && trg.data_type != DATA_BLD ){
+                                dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
+                              }
+                            }
+                            //-----------------------
+                            
   trg.dmg_inflictor = inflictor;
   if(trg.was_hit < time){
     trg.was_hit = time + 1;
@@ -59,9 +61,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     IE it doesn't make sense (to the designer) that shield delay is the same whether hit by an autocannon or an EMP blast.
   */
   //shield delay should be communicated to the player
-  if( time > trg.shieldHitRegen ){
-  
-  }
+  //if( time > trg.shieldHitRegen ){} //commenting out no-op
   if( time < trg.shieldHitDelay ){
     //stack
     trg.shieldHitDelay = trg.shieldHitDelay + 0.1;
@@ -76,7 +76,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     if( !attacker.enemy && dmgTrg.canTarget ){
       attacker.enemy = dmgTrg;
       attacker.targetEntId = num_for_edict(dmgTrg);
-      attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
+      //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
       attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
     }
     attacker.w_proj = time + 0.2;
@@ -84,23 +84,25 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
     }
   }
-  
-  //AI react to Damage
-  if( (trg.flags & FL_MONSTER) ){
-    notTarg = self;
-    self = dmgTrg;
-    if( self.th_pain ){  
-      self.th_pain( attacker );
-    }
-    if( attacker.faction != self.faction ){
-      if( self.ai_rank > AI_RANK_REG ){
-        if( self.shield <= (self.shieldMax / 2) ){
-          ai_call_for_help(attacker);
-        }
-      }
-    }
-    self = notTarg;
-  }
+                        
+                         //------------>TODO: Damage Buffer system
+                        //AI react to Damage
+                        if( (trg.flags & FL_MONSTER) ){
+                          notTarg = self;
+                          self = dmgTrg;
+                          if( self.th_pain ){  
+                            self.th_pain( attacker );
+                          }
+                          if( attacker.faction != self.faction ){
+                            if( self.ai_rank > AI_RANK_REG ){
+                              if( self.shield <= (self.shieldMax / 2) ){
+                                ai_call_for_help(attacker);
+                              }
+                            }
+                          }
+                          self = notTarg;
+                        }
+                        //-----------------------------
   
   if( dmgAmt <= 0 ){
     return trg;
@@ -120,39 +122,43 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
-  if( dmgTrg.health > 0 ){
-    if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
-      if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
-        if( (trg.criticalHits & M_TOR_LEFT) ){
-          dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
-        }
-        if( (trg.criticalHits & M_TOR_RIGHT) ){
-          dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
-        }
-      }
-    }
-    
-    dmgTrg.health = dmgTrg.health - dmgAmt;
-    if( dmgTrg.health < 0){
-      dmgTrg.health = 0;
-    }
-  }
   
-  if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){
-    if( util_getMechHpAverage(dmgTrg) < 0.5){
-      if( attacker.faction != self.faction ){
-        notTarg = self;
-        self = dmgTrg;
-          ai_call_for_help( attacker );
-        self = notTarg;
-      }
-    }
-  }
-  if( dmgTrg.health <= 0 ){
-    if( dmgTrg.th_die ){
-      killed(dmgTrg, attacker);
-    }
-  }
+                              //TODO: this goes to damage buffer
+                              if( dmgTrg.health > 0 ){
+                                if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
+                                  if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
+                                    if( (trg.criticalHits & M_TOR_LEFT) ){
+                                      dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
+                                    }
+                                    if( (trg.criticalHits & M_TOR_RIGHT) ){
+                                      dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
+                                    }
+                                  }
+                                }
+                                
+                                dmgTrg.health = dmgTrg.health - dmgAmt;
+                                if( dmgTrg.health < 0){
+                                  dmgTrg.health = 0;
+                                }
+                              }
+                              
+                              
+                              if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){
+                                if( util_getMechHpAverage(dmgTrg) < 0.5){
+                                  if( attacker.faction != self.faction ){
+                                    notTarg = self;
+                                    self = dmgTrg;
+                                      ai_call_for_help( attacker );
+                                    self = notTarg;
+                                  }
+                                }
+                              }
+                              if( dmgTrg.health <= 0 ){
+                                if( dmgTrg.th_die ){
+                                  killed(dmgTrg, attacker);
+                                }
+                              }
+                              //---------------------------------
   return dmgTrg;
 };
 
@@ -180,9 +186,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgAmt = dmg_amt;
   
   //reduce friendly fire damage on easier settings
-  if( (trg.faction != FACTION_ALL) ){
-    if( trg.faction == attacker.faction ){
-      if( (serverflags & SVFLAG_FIREON) ){
+  if( (serverflags & SVFLAG_FIREON) ){
+    if( (trg.faction != FACTION_ALL) ){
+      if( trg.faction == attacker.faction ){
         if( skill < 2 ){
           dmgAmt = dmgAmt * 0.67;
         }
@@ -197,14 +203,19 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   if( dmgTrg.shield < 0 ){
     dmgTrg.shield = 0;
     if(shieldBreaker){
-      dmgTrg.shieldHitFlag = SHIELD_HIT_EXP;
+      dmgTrg.shieldHitFlag = SHIELD_HIT_IXP;
     }
     else{
-      dmgTrg.shieldHitFlag = SHIELD_HIT_DN;
+      dmgTrg.shieldHitFlag = SHIELD_HIT_EXP;
     }
   }
   else{
-    dmgTrg.shieldHitFlag = SHIELD_HIT_UP;
+    if(shieldBreaker){
+      dmgTrg.shieldHitFlag = SHIELD_HIT_EMP;
+    }
+    else{
+      dmgTrg.shieldHitFlag = SHIELD_HIT_REG;
+    }
   }
   
   if( (dmgTrg.flags & FL_CLIENT) ){
@@ -227,7 +238,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     if( !attacker.enemy && dmgTrg.canTarget ){
       attacker.enemy = dmgTrg;
       attacker.targetEntId = num_for_edict(dmgTrg);
-      attacker.targLockState = attacker.targLockState | LOCK_TARG_START;
+      //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
       attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
     }
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){

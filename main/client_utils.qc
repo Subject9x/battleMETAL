@@ -308,6 +308,25 @@ void() client_update_faction={
   }
 };
 
+/*
+  Sends Ini config if it exists
+  string schema
+    mech id
+    wgroups - must have all, even if 0
+    weapon id 1-9
+    
+*/
+void() client_sendIniConfig={
+  local string cmd;
+  if( !world.iniConfig ){
+    return;
+  }
+
+  cmd = strcat("m ini ", world.iniConfig, "\n");
+  stuffcmd(self, cmd);
+
+};
+
 void(string cmd, float tokens) client_setMission={
   //Single player
   if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
@@ -524,7 +543,6 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
       break;
   }
 };
-
 
 //same thing as above but only on client connect.
 void(entity client) client_send_server_info_connect={

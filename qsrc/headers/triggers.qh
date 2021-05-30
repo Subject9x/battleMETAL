@@ -48,8 +48,6 @@ void() teleport_use;
 
 void() info_teleport_destination;
 
-void() trigger_onlyregistered_touch;
-
 void() hurt_on;
 void() hurt_touch;
 
@@ -67,7 +65,6 @@ void() trigger_counter;
 void() trigger_teleport;
 void() trigger_skill_touch;
 void() trigger_setskill;
-void() trigger_onlyregistered;
 void() trigger_hurt;
 void() trigger_push_touch;
 void() trigger_push;

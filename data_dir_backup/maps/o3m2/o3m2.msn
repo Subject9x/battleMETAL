@@ -1,0 +1,32 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o3m1/o3m1.png'
+  'name'  : 'Err-node link flatline'
+  'display' : 'End of Empire'
+  'type'  : '&53?ACK'
+  'points' : '1'
+  'sector' : '---..&->'
+  'location' : 'DWORD_x46'
+  'time' : 'HH;mM;sss..'
+  'brief' : '-BROADCAST DETECTED- | I don`t know if this will reach you but broadcasting on all frequencies anyway. | | The monsters are chasing me through the complex. I`ve dug in with my bodyguards but its only a matter of time before we`re overrun. | | What records I found... WE made these nightmares... | | After dismantling the parliament, both MILITAR and Survest groups agreed that if the planet wasn`t theirs to control then no one gets it. | | Our forefathers built a mutually-assured destruction system that could survive long after they were overthrown. | | This complex is but one of many built across the planet and buried. Volunteers signed on to become man-machine revenants, fed the belief that this was the necessary cost of patriotism.... | | What they failed to account for was our civil war. | | Bloodline or Corporation, Survest or MILITAR, There is no stopping this storm. The power of fear has doomed us all.... | | <SIGNAL LOST>'
+  'intel' : 'Intel + MARH missiles are not advised. + Allied Repair Facilities cannot be confirmed, but stay alert. + Map not found in database or is corrupted. | !ALERT! Connection with primary Perimetra System Control node network lost! | | activating localized PSC sub-node on <this> DEAD_HAND. | | /processing/ | | !ALERT! node has sustained critical damage and may not be functioning properly. | | Enemy invasion force has penetrated one of our primary facilities, compromising our mission. | You, DEAD_HAND must deny the enemy use of this complex. | '
+  'objtotal' : '3'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy ALL [Power Plants] at (RHO).'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Pursue enemy force by reaching (OMICRON).'
+}
+{
+  'objid' : '3'
+  'objtype': 'secondary'
+  'objdesc' : 'Obliterate Enemy-controlled Archives at (ALPHA)'
+}

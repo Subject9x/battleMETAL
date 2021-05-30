@@ -139,6 +139,7 @@ util/headers/input_events.qh
   ui/menu/headers/ui_debrief.qh
   ui/menu/headers/ui_connect.qh
   ui/menu/headers/ui_score.qh
+  ui/menu/headers/ui_rebind.qh
 //================
 
 data/client_precache.qc
@@ -200,6 +201,7 @@ ui/hud/crosshair/hud_crosshair4.qc
   ui/menu/ui_connect_coop.qc
   ui/menu/ui_navbar.qc
   ui/menu/ui_score.qc
+  ui/menu/ui_rebind.qc
 //=======================
 
 //EFFECTS================

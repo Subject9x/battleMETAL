@@ -1,0 +1,5 @@
+//place the maps you want the server to run through here.
+dm1
+dm2
+dm3
+dm4

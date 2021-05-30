@@ -64,10 +64,10 @@ void() ai_nodegraph_hunter_frame={
         }
         else{
           if( moveYaw > 10 && moveYaw < 350){
-            moveSpeed = moveSpeed * 0.15;
+            moveSpeed = moveSpeed * 0.33; //0.15
           }
           else if( moveYaw > 5 && moveYaw < 355 ){
-            moveSpeed = moveSpeed * 0.33;
+            moveSpeed = moveSpeed * 0.67; //0.33
           }
           self.yaw_speed = self.yaw_speed * 2;
         }
@@ -92,6 +92,7 @@ void() ai_nodegraph_hunter_frame={
         }
       }
       else{
+        moveSpeed = ai_check_slope(self.angles_y, moveSpeed);
         if( walkmove(self.angles_y, moveSpeed) == FALSE ){
           if( time > self.ai_timer_pathWait ){
             self.ai_last_pathWait = TRUE;

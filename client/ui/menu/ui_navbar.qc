@@ -11,7 +11,6 @@ Overview:
   BUTTON - Briefing Menu
 */
 void( vector ofs ) ui_navbutton_brief_draw={
-  local vector fontSize;
   local vector textPos;
   local float strWidth;
   
@@ -21,16 +20,14 @@ void( vector ofs ) ui_navbutton_brief_draw={
   
   gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_BRIEF_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_BRIEF_SIZE), CLR_DEF_WEP_INRANGE, 1, 0) ;
   if( CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE ){
-    fontSize = UI_NAVBAR_font_select;
   }
   else{
-    fontSize = UI_NAVBAR_font_unselect;
   }
   textPos = UI_NAVBAR_BRIEF_ORG;
-  strWidth = stringwidth("[BRIEFING]", 0 , fontSize) / 2;
-  textPos_x = (UI_NAVBAR_BRIEF_ORG_x + gui_percentXRaw(48)) - gui_percentXRaw(strWidth);
+  strWidth = stringwidth("BRIEFING", 0 , UI_NAVBAR_font_unselect) / 2;
+  textPos_x = (UI_NAVBAR_BRIEF_ORG_x + gui_percentXRaw(UI_NAVBAR_BRIEF_SIZE_x/2)) - gui_percentXRaw(strWidth);
   textPos_y = UI_NAVBAR_BRIEF_ORG_y + gui_percentYRaw(4);
-  gui_renderHighlightString("[BRIEFING]", textPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), fontSize, 1, 0) ;
+  gui_renderHighlightString("BRIEFING", textPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_font_unselect, 1, 0) ;
   drawfont = drawfont_prev;
 };
 //BRIEFING - onClick
@@ -47,7 +44,6 @@ void() ui_navbutton_brief_click={
   BUTTON - Hangar Menu
 */
 void( vector ofs ) ui_navbutton_hangar_draw={
-  local vector fontSize;
   local vector textPos;
   local float strWidth;
   
@@ -58,15 +54,13 @@ void( vector ofs ) ui_navbutton_hangar_draw={
   gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), UI_NAVBAR_HANGAR_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_HANGAR_SIZE), CLR_DEF_WEP_INRANGE, 1, 0) ;
   textPos = UI_NAVBAR_HANGAR_ORG;
   if( CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE ){
-    fontSize = UI_NAVBAR_font_select;
   }
   else{
-    fontSize = UI_NAVBAR_font_unselect;
   }
-  strWidth = stringwidth("[HANGAR]", 0 , fontSize)/2;
-  textPos_x = (textPos_x + gui_percentXRaw(48)) - gui_percentXRaw(strWidth);
+  strWidth = stringwidth("HANGAR", 0 , UI_NAVBAR_font_unselect)/2;
+  textPos_x = (textPos_x + gui_percentXRaw(UI_NAVBAR_HANGAR_SIZE_x/2)) - gui_percentXRaw(strWidth);
   textPos_y = textPos_y + gui_percentYRaw(4);
-  gui_renderHighlightString("[HANGAR]", textPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), fontSize, 1, 0) ;
+  gui_renderHighlightString("HANGAR", textPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), UI_NAVBAR_font_unselect, 1, 0) ;
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_hangar_click={
@@ -109,15 +103,13 @@ void( vector ofs ) ui_navbutton_arming_draw={
   gui_renderTintImage(arming_flt, UI_NAVBAR_ARMING_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_ARMING_SIZE), arming_clr, 1, 0) ;
   textPos = UI_NAVBAR_ARMING_ORG;
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
-    fontSize = UI_NAVBAR_font_select;
   }
   else{
-    fontSize = UI_NAVBAR_font_unselect;
   }
-  strWidth = stringwidth("[ARMING]", 0 , fontSize )/2;
-  textPos_x = (textPos_x + gui_percentXRaw(48)) - gui_percentXRaw(strWidth);
+  strWidth = stringwidth("ARMING", 0 , UI_NAVBAR_font_unselect )/2;
+  textPos_x = (textPos_x + gui_percentXRaw(UI_NAVBAR_ARMING_SIZE_x/2)) - gui_percentXRaw(strWidth);
   textPos_y = textPos_y + gui_percentYRaw(4);
-  drawstring(textPos, "[ARMING]", fontSize, arming_clr, 1, 0);
+  drawstring(textPos, "ARMING", UI_NAVBAR_font_unselect, arming_clr, 1, 0);
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_arming_click={
@@ -134,7 +126,7 @@ void() ui_navbutton_arming_click={
       if( UNLOCKED_ITEMS[itemUnlockCounter] != 0 ){
         itemId = UNLOCKED_ITEMS[itemUnlockCounter];
         //UI_ARMING_DATA_item_list is used as a sort-of pointer for list-style operations
-        data_get_client_item_( UI_ARMING_DATA_item_list, itemId );	
+        data_get_client_item_( UI_ARMING_DATA_item_list, itemId );
     
         //lists are stateful, so we offload the data we care about to clunky arrays.
         data_WeaponNames[itemId] = UI_ARMING_DATA_item_list.w_name;
@@ -151,7 +143,6 @@ void() ui_navbutton_arming_click={
   BUTTON - Deployment Menu
 */
 void( vector ofs ) ui_navbutton_deploy_draw={
-  local vector fontSize;
   local vector textPos;
   local float strWidth;
   
@@ -173,15 +164,15 @@ void( vector ofs ) ui_navbutton_deploy_draw={
   gui_renderTintImage(deploy_flt, UI_NAVBAR_DEPLOY_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_DEPLOY_SIZE), deploy_clr, 1, 0) ;
   textPos = UI_NAVBAR_DEPLOY_ORG;
   if( CLIENT_MENU_menu_choice == MENU_DEPLOY_ACTIVE ){
-    fontSize = UI_NAVBAR_font_select;
+    
   }
   else{
-    fontSize = UI_NAVBAR_font_unselect;
+  
   }
-  strWidth = stringwidth("[DEPLOYMENT]", 0 , fontSize)/2;
-  textPos_x = (textPos_x +  gui_percentXRaw(64)) - gui_percentXRaw(strWidth);
+  strWidth = stringwidth("DEPLOYMENT", 0 , UI_NAVBAR_font_unselect)/2;
+  textPos_x = (textPos_x +  gui_percentXRaw(UI_NAVBAR_DEPLOY_SIZE_x/2)) - gui_percentXRaw(strWidth);
   textPos_y = textPos_y + gui_percentYRaw(4);
-  gui_renderHighlightString("[DEPLOYMENT]", textPos, deploy_clr, '0.75 0.75 0.75', deploy_flt, fontSize, 1, 0) ;
+  gui_renderHighlightString("DEPLOYMENT", textPos, deploy_clr, '0.75 0.75 0.75', deploy_flt, UI_NAVBAR_font_unselect, 1, 0) ;
   
   drawfont = drawfont_prev;
 };
@@ -269,7 +260,7 @@ void( vector ofs ) ui_navbutton_launch_draw={
   }
   strWidth = stringwidth(text, 0 , UI_NAVBAR_font_select);
   textPos = UI_NAVBAR_LAUNCH_ORG;
-  textPos_x = (textPos_x + gui_percentXRaw(64)) - (strWidth / 2);
+  textPos_x = (textPos_x + gui_percentXRaw(UI_NAVBAR_LAUNCH_SIZE_x/2)) - (strWidth / 2);
   textPos_y = (textPos_y + gui_percentYRaw(4.32));
   
   gui_renderHighlightString(text, textPos, CLR_DEF_GREEN * 2, CLR_DEF_TXT_NONSELECT, (LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_font_select, 1, 0) ;
@@ -285,10 +276,12 @@ void() ui_navbutton_launch_click={
     return;
   }
   if( servertime > MENU_respawn_cool ){
-    if( (LAUNCH_VALIDATION &  VALID_NODE) ){
+    if( (LAUNCH_VALIDATION & (VALID_NODE | VALID_GRPS | VALID_MECH)) ){
+      CLIENT_MENU_sel_hrpnt = 0;
+      
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
       
-      ui_data_load_hud( MECH_DATA_ID );
+      HUD_LOCK_FLAG = FALSE;
       
       bit = 1;
       totalHardpoints = 1;
@@ -301,6 +294,10 @@ void() ui_navbutton_launch_click={
         //turbocharger upgrade...
         if( hardpoint.data_idx == UID_ITEM_turbo_charger ){
           turboTotalPerc = turboTotalPerc + (0.4 - (UI_HANGAR_DATA_mech.vec_size/10));
+        }
+        
+        if( (hardpoint.damageType & EFF_LOK) ){
+          HUD_LOCK_FLAG = TRUE;
         }
         
         //bind weapon data, reduce server traffic
@@ -369,8 +366,16 @@ void() ui_navbutton_launch_click={
       
       cl_set_chase();
       
+      if( HUD_EXTERNAL_CAM_ACTIVE ){
+        ui_data_load_hud( HUD_EXTERNAL_CAM_DATA );
+      }
+      else{
+      
+        ui_data_load_hud( MECH_DATA_ID );
+      }
+      
       //super smaht weapon group testing
-      if( CLIENT_MENU_nex_grp1 == 0){
+      if( CLIENT_MENU_nex_grp1 == 0 ){
         CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 | bit;
       }
       

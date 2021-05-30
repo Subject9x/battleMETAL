@@ -17,6 +17,10 @@ Overview:
 .float shieldHitRegenStart;
 .float shieldHitFlag;   //sent over network.
 
+//saving this for future work: have ion damage accrue over time, and then an AI mech will get stun-locked for a certain amount of time.
+.float stunTimeStart;
+.float stunTimeTotal;
+
 .float attackFlag;  //a bitflag set every frame that a unit has fired weapons, where it is weapon bits, WEAPON1 | WEAPON2 etc
                     //the csqc then processes the rest of the particle attacks.
 .float burnBits;    //bitflags sent to client for fire/burning effects on ents.
@@ -93,6 +97,11 @@ Overview:
 .float unitColorLA;
 .float unitColorRA;
 .float unitColorLG;
+
+.float damageBuffer;  //damage after calculation is pooled over a frame and then applied on the NEXT frame at the top.
+                      //this should reduce the execution cost of t_damage() by every weapon all the time.
+.float shieldBuffer;  
+
 #endif
 
 #ifdef CSQC

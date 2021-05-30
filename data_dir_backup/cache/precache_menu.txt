@@ -1,8 +1,9 @@
 //menu image precaching
 gfx/hud/ret_lock.png
 //general purpose
-gfx/ui/box_512.png
+gfx/ui/box_64.png
 gfx/ui/box_256.png
+gfx/ui/box_512.png
 gfx/menu/btn_back.png
 gfx/menu/btn_accept.png
 gfx/hud/trg_pip_lft.png
@@ -10,6 +11,7 @@ gfx/hud/trg_pip_rgt.png
 gfx/pause.png
 gfx/menu/quit_mission.png
 gfx/menu/exit_game.png
+gfx/hud/rad_bld.png
 
 //main menu images
 gfx/menu/main/main_title.png
@@ -52,6 +54,7 @@ gfx/menu/setup/setup_title.png
 gfx/menu/host/host_title.png
 
 //join game
+gfx/menu/join/title_join.png
 
 //options
 gfx/menu/options/options_title.png
@@ -88,5 +91,12 @@ gfx/hud/ret/crosshair4_r.png
 gfx/hud/ret/crosshair4.png
 gfx/hud/ret/crosshair4_lock.png
 gfx/hud/ret/crosshair4_hit.png
+
+gfx/ui/tint/tint_torso_center.png
+gfx/ui/tint/tint_torso_left.png
+gfx/ui/tint/tint_torso_right.png
+gfx/ui/tint/tint_arm_left.png
+gfx/ui/tint/tint_arm_right.png
+gfx/ui/tint/tint_legs.png
 
 EOF

@@ -8,6 +8,9 @@ Overview:
   Campaign games will load data locally.
 */
 
+
+float SAVE_COMPARE[128];  //lacking regex and other nice ways of digging through a string to find a comma-separated value, argh.
+
 string UNLOCKED_MECHS_DATA; // pulled from cl_load_savefile
 string UNLOCKED_ITEMS_DATA; // pulled from cl_load_savefile
 string SAVEFILE_CAMPAIGN;
@@ -19,12 +22,12 @@ string SAVE_TAG_MISSION = "mission";
 string SAVEFILE_CACHE_MAP;
 
 void( string fileName ) cl_load_savefile;
-void( float serverMode, float overrideFlag ) cl_set_savepath;
+void( float serverMode, float overrideFlag, float ignoreSaveFlag ) cl_set_savepath;
 void() cl_get_mechs_sort;
 void() cl_load_mechs_all;
 void() cl_load_items_all;
 void() cl_savefile_save; //single player only
 void() cl_savefile_save_mission;
 void() cl_savefile_append;
-string(string item, string source) cl_savefile_insert;
+string(string newItems, string source) cl_savefile_insert;
 void() cl_savefile_default;  //single player, but initial start

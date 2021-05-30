@@ -113,10 +113,10 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
           }
           else{
             if( moveYaw > 10 && moveYaw < 350){
-              moveSpeed = moveSpeed * 0.33;
+              moveSpeed = moveSpeed * 0.55; //0.33
             }
             else if( moveYaw > 5 && moveYaw < 355 ){
-              moveSpeed = moveSpeed * 0.67;
+              moveSpeed = moveSpeed * 0.8; //0.67
             }
           }
           ChangeYaw();
@@ -143,6 +143,7 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       else{
         walkAngle = self.angles_y;
       }
+      moveSpeed = ai_check_slope(walkAngle, moveSpeed);
       if( walkmove(walkAngle, moveSpeed) == FALSE ){
         if( time > self.ai_timer_pathWait ){
           self.ai_last_pathWait = TRUE;

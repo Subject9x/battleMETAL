@@ -53,9 +53,6 @@ void() player_makeMech={
   initialize_data_mech_( self.nextVecChoice );
   self.touch = ctrl_player_mech_touch;
   
-  self.stat_rdr_mode = FALSE;
-  self.stat_rdr_rng = self.radar_range;
-  
   droptofloor();
   
   self.currentWeaponGroup = self.w_group1;
@@ -107,7 +104,7 @@ void() player_makeMech={
   
   self.view_ofs = '0 0 0';
   self.view_ofs_z = self.cockpit.compOffset_y;  //set player view offset to where the cockpit ent is.
-  self.stat_rdr_mode = 1; //start with active radar
+  self.stat_rdr_mode = TRUE; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
   self.damageValue = 0;
   self.critBits = 0;
@@ -170,7 +167,7 @@ void() player_unmakeMech={
   self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;
-  self.targLockState = LOCK_NONE;
+  //self.targLockState = LOCK_NONE; //2.0.0: lock-on not timer-based anymore
   
   self.next_wepn1 = 0;
   self.next_wepn2 = 0;

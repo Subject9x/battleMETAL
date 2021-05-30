@@ -31,6 +31,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
   
   if( self.nq1 == -1 ){
     //maybe the destination > the 24 node-queue vars.
+    self.ai_reverse = FALSE;
     ai_nodegraph_clear_locks();
     ai_nodegraph_trace_vec( self.origin, targDest );
   }
@@ -39,6 +40,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       nqOrg = nodegraph_get_node_origin( self.nq1 );
       nodeDist = ai_check_dist_node(self.origin, nqOrg);
       if( nodeDist <= 8 ){
+        self.ai_reverse = FALSE;
         //arrived at node
         if( self.pathEndId == self.nq1 ){
           //AI has finished its nodegraph run
@@ -88,10 +90,10 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
           }
           else{
             if( moveYaw > 10 && moveYaw < 350){
-              moveSpeed = moveSpeed * 0.33;
+              moveSpeed = moveSpeed * 0.55; //0.33
             }
             else if( moveYaw > 5 && moveYaw < 355 ){
-              moveSpeed = moveSpeed * 0.67;
+              moveSpeed = moveSpeed * 0.8; //0.67
             }
           }
           ChangeYaw();
@@ -100,6 +102,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
     }
     if( self.ai_last_pathWait ){
       if( time > self.ai_timer_pathWait ){
+        self.ai_reverse = FALSE;
         self.ai_last_pathWait = FALSE;
         self.ai_timer_pathWait = time + 1;
         pathFind = ai_nodegraph_trace_vec( self.origin, offsetTargDest );
@@ -118,6 +121,7 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       else{
         walkAngle = self.angles_y;
       }
+      moveSpeed = ai_check_slope(walkAngle, moveSpeed);
       if( walkmove(walkAngle, moveSpeed) == FALSE ){
         if( self.tether == TETHER_PATROL ){
           blockCheck = NODEGRAPH_DATA_BLOCK[self.patrolNode.pathEndId];

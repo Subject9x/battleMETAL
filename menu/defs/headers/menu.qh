@@ -39,6 +39,7 @@ float M_MODS    = 21;
 float M_HELP    = 22;
 float M_CREDITS = 23;
 float M_NEWSAVE = 24;
+float M_TRAINING = 25;
 
 float MAIN_MISSION;
 
@@ -73,6 +74,7 @@ void() m_options_i;
 
 void() m_credits_i;
 void() m_help_i;
+void() m_train_i;
 
 void() m_main_f;
 void() m_camp_f;
@@ -95,6 +97,7 @@ void() m_options_f;
   void() m_gameplay_f;
 void() m_credits_f;
 void() m_help_f;
+void() m_train_f;
   
 void() m_main_d;
 void() m_camp_d;
@@ -115,6 +118,7 @@ void() m_options_d;
   void() m_gameplay_d;
 void() m_credits_d;
 void() m_help_d;
+void() m_train_d;
 
 void(float ky, float ascii) m_main_k;
 void(float ky, float ascii) m_camp_k;
@@ -135,3 +139,4 @@ void(float ky, float ascii) m_options_k;
   void(float ky, float ascii) m_gameplay_k;
 void(float ky, float ascii) m_credits_k;
 void(float ky, float ascii) m_help_k;
+void(float ky, float ascii) m_train_k;

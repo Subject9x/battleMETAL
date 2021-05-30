@@ -1,7 +1,7 @@
 {
   'music'   : 12,
   'nomusic' : 0,
-  'backimg' : gfx/anim/anim2/a2fb.png,
+  'backimg' : ,
   'trans'   : ,
 }
 {
@@ -13,71 +13,6 @@
   'alpha' : 1,
   'color' : 1 1 1,
   'text_color' : 0 0 0,
-  'time'  : 3,
-}
-{
-  'image' : gfx/anim/anim2/a2f2.png,
-  'pos'   : 0 0 0,
-  'size'  : 1 1,
-  'sound' : ,
-  'text'  : ,
-  'alpha' : 1,
-  'color' : 1 1 1,
-  'text_color' : 0 0 0,
-  'time'  : 5,
-}
-{
-  'image' : gfx/anim/anim2/a2f3.png,
-  'pos'   : 0 0 0,
-  'size'  : 1 1,
-  'sound' : ,
-  'text'  : ,
-  'alpha' : 1,
-  'color' : 1 1 1,
-  'text_color' : 0 0 0,
-  'time'  : 5,
-}
-{
-  'image' : gfx/anim/anim2/a2f4.png,
-  'pos'   : 0 0 0,
-  'size'  : 1 1,
-  'sound' : ,
-  'text'  : ,
-  'alpha' : 1,
-  'color' : 1 1 1,
-  'text_color' : 0 0 0,
-  'time'  : 5,
-}
-{
-  'image' : gfx/anim/anim2/a2f5.png,
-  'pos'   : 0 0 0,
-  'size'  : 1 1,
-  'sound' : ,
-  'text'  : ,
-  'alpha' : 1,
-  'color' : 1 1 1,
-  'text_color' : 0 0 0,
-  'time'  : 5,
-}
-{
-  'image' : gfx/anim/anim2/a2f6.png,
-  'pos'   : 0 0 0,
-  'size'  : 1 1,
-  'sound' : ,
-  'text'  : ,
-  'alpha' : 1,
-  'color' : 1 1 1,
-  'text_color' : 0 0 0,
-  'time'  : 5,
-}
-{
-  'image' : gfx/anim/anim2/a2f7.png,
-  'pos'   : 0 0 0,
-  'size'  : 1 1,
-  'sound' : ,
-  'text'  : ,
-  'alpha' : 1,
-  'color' : 1 1 1,
-  'text_color' : 0 0 0,
-  'time'  : 7,
+  'time'  : 8,
+  'flags'  : 20,
 }

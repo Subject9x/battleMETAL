@@ -17,6 +17,7 @@ vector CLR_DEF_BLACK = '0 0 0';
 vector CLR_DEF_RED = '1 0 0';
 vector CLR_DEF_GREEN = '0 1 0';
 vector CLR_DEF_BLUE = '0 0 1';
+vector CLR_DEF_YELLOW = '1.0 0.89 0.36';
 
 vector CLR_DEF_GREEN_OK = '0 0.8 0.25';
 //UI Theming
@@ -73,7 +74,7 @@ vector CLR_HUD_DMG_SHIELD = '0.2 0.9 0.2';
   //50%
   vector CLR_DEF_ARM_HALF= '0.99 0.59 0.2';
   //25%
-  vector CLR_DEF_ARM_ONEQ= '0.59 0 0';
+  vector CLR_DEF_ARM_ONEQ= '0.75 0 0';
   //gone
   vector CLR_DEF_ARM_DED= '0.5 0.5 0.5';
 

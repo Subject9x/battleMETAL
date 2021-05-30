@@ -17,6 +17,9 @@ float UI_ARMING_weaponclick;  //registers that the click was on a weapon for ico
 float UI_ARMING_hardpoint_click;
 entity UI_ARMING_hardpoint;
 
+float UI_ARMING_hardpoint_type_roll;  //used for hardpint rollover.
+float UI_ARMING_hardpoint_id_roll;  //used for hardpint rollover.
+
 float UNLOCKED_ITEMS[24];	//populated by server call
 float UNLOCKED_ITEMS_TOTAL;
 

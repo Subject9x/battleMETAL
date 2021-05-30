@@ -261,7 +261,7 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float setA
 
 
 vector(float val) gui_getColorForArmor={
-  if((-1<val)&&(val<=25)){
+  if((0<val)&&(val<=25)){
     return CLR_DEF_ARM_ONEQ;
   }
   else if((25<val)&&(val<=50)){
@@ -279,7 +279,7 @@ vector(float val) gui_getColorForArmor={
 };
 
 vector(float val) gui_getColorForArmorTarget={
-  if((-1<val)&&(val<=25)){
+  if((0<val)&&(val<=25)){
     return CLR_DEF_TARG_ARM_ONEQ;
   }
   else if((25<val)&&(val<=50)){
@@ -360,57 +360,60 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float setAl
 
 /*
 */
-vector(vector vec, float algn) gui_calcAlign={
+vector(vector offSet, float algn) gui_calcAlign={
   if(algn > 0){
     local vector toSender;
     if( (algn & VIEW_TOP) ){
-      toSender_y = VIEW_ORG_y + vec_y;
+      toSender_y = VIEW_ORG_y + offSet_y;
     }
     else if( (algn & VIEW_BOT) ){
-      toSender_y = VIEW_MAX_y - vec_y;
+      toSender_y = VIEW_MAX_y - offSet_y;
     }
     
     if( (algn & VIEW_LFT) ){
-      toSender_x = VIEW_ORG_x + vec_x;
+      toSender_x = VIEW_ORG_x + offSet_x;
     }
     else if( (algn & VIEW_RGT) ){
-      toSender_x = VIEW_MAX_x - vec_x;
+      toSender_x = VIEW_MAX_x - offSet_x;
     }
     
     if( (algn & VIEW_CTX) ){
-      toSender_x = VIEW_CTR_x - vec_x;
+      toSender_x = VIEW_CTR_x - offSet_x;
     }
     if( (algn & VIEW_CTY) ){
-      toSender_y = VIEW_CTR_y - vec_y;
+      toSender_y = VIEW_CTR_y - offSet_y;
     }
     return toSender;
   }
   else{
-    return vec;
+    return offSet;
   }
 };
 
-vector(vector vec, float algn, vector org) gui_calcAlignCustom={
+/*
+  Align to a custom origin instead of TOPLEFT
+*/
+vector(vector offSet, float algn, vector org) gui_calcAlignCustom={
   local vector toSender;
   if((algn & VIEW_TOP)){
-    toSender_y = org_y - vec_y;
+    toSender_y = org_y - offSet_y;
   }
   else if((algn & VIEW_BOT)){
-    toSender_y = org_y + vec_y;
+    toSender_y = org_y + offSet_y;
   }
   
   if((algn & VIEW_LFT)){
-    toSender_x = org_x - vec_x;
+    toSender_x = org_x - offSet_x;
   }
   else if((algn & VIEW_RGT)){
-    toSender_x = org_x + vec_x;
+    toSender_x = org_x + offSet_x;
   }
   
   if((algn & VIEW_CTX)){
-   toSender_x = org_x + vec_x;   
+   toSender_x = org_x + offSet_x;
   }
   if((algn & VIEW_CTY)){
-    toSender_y = org_y + vec_y;
+    toSender_y = org_y + offSet_y;
   }
   
   return toSender;

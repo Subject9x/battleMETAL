@@ -7,7 +7,6 @@ mod: 07/19/2019
 Overview:
   Implementation of HUD functions.
 */
-
 /*
   RENDER CROSSHAIRS - UNIVERSAL
 */
@@ -45,12 +44,10 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
     gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('24 24')), HUD_RET_HIT, gui_percentToPixelRawVec('48 48'), hitclr, HUD_ALPHA, 0);
   }
   
-  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lckclr = CLR_DEF_RET_GETLOCK;
-    if( (lockval & LOCK_TARG_HAS) ){
-      lckclr = CLR_DEF_RET_HASLOCK;
+  if( CLIENT_stat_lock_state ){
+    if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT ){
+      gui_renderTintImage(TRUE, VIEW_CTR - gui_percentToPixelRawVec('16 16'), HUT_RET_LOK, gui_percentToPixelRawVec('32 32'), CLR_DEF_RET_HASLOCK, HUD_ALPHA, 0);
     }
-    gui_renderTintImage(TRUE, VIEW_CTR - gui_percentToPixelRawVec('16 16'), HUT_RET_LOK, gui_percentToPixelRawVec('32 32'), lckclr, HUD_ALPHA, 0);
   }
 };
 
@@ -128,10 +125,12 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
 /*
   RENDER SHIELD METER
 */
-void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient) hud_renderShield={
+void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient, vector mColor) hud_renderShield={
   local vector meterSize, label_org;
   local vector meterColor;
   local float scopeVal;
+  local vector iconOrg;
+  local vector iconSize;
   
   scopeVal = rint(val);
   
@@ -175,100 +174,48 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
     gui_renderMeter(scopeVal, pos, meterSize, meterColor, gui_getColorForShield(scopeVal), HUD_ALPHA, 0, meterAxis, 0);
   }
 
-  if(  (meterAxis & AXIS_H) ){
+  if( (meterAxis & AXIS_H) ){
     drawpic(pos, "gfx/hud/hud_meter_cover3.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+    iconSize_x = meterSize_y;
+    iconSize_y = meterSize_y;
   }
   else{
     drawpic(pos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+    iconSize_x = meterSize_x;
+    iconSize_y = meterSize_x;
   }
   
-  if(bool_label){
-    label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos);
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-      drawstring(label_org, "SHIELD", '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
-    drawfont = drawfont_prev;
-  }
+  iconOrg = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs),lbl_algn, pos);
+  drawpic(iconOrg, HUD_ICON_SHIELD, iconSize, mColor, HUD_ALPHA, 0);
 };
 
 /*
   RENDER ENERGY METER
 */
-void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderEnergy={
+void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, vector mColor) hud_renderEnergy={
   local vector meterSize, label_org;
+  local vector iconOrg;
+  local vector iconSize;
   meterSize = gui_percentToPixelRawVec(mSize);
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
   gui_renderMeter(val, pos, meterSize, CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA, 0, meterAxis, 0);
-  drawpic(pos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-  if(bool_label){
-    label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos);
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-      drawstring(label_org, "ENERGY", '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
-    drawfont = drawfont_prev;
-  }
-};
-
-/*
-  RENDER ARMOR METER
-*/
-void( vector pos, vector grpCtr, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label, float thatTarget) hud_renderArmorMeter={
-  local vector meterSize, label_org, shofs;
   
-  local vector tColor;
-  if( thatTarget ){
-    if(CLIENT_target_faction == FACTION_ALL){
-      tColor =  gui_getColorForArmorTarget(val);
-    }
-    else if(CLIENT_target_faction != CLIENT_faction){
-      tColor =  gui_getColorForArmorTarget(val);
-    }
-    else{
-      tColor =  gui_getColorForArmor(val);
-    }
+  if( (meterAxis & AXIS_H) ){
+    drawpic(pos, "gfx/hud/hud_meter_cover3.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+    iconSize_x = meterSize_y;
+    iconSize_y = meterSize_y;
   }
   else{
-    tColor =  gui_getColorForArmor(val);
+    drawpic(pos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+    iconSize_x = meterSize_x;
+    iconSize_y = meterSize_x;
   }
   
-  shofs = grpCtr;
-  meterSize = gui_percentToPixelRawVec(mSize);
-  pos = gui_percentToPixelRawVec(pos);
-  pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), shofs);
-  
-  gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, tColor, HUD_ALPHA, 0, meterAxis, 0);
-  
-  drawpic(pos, "gfx/hud/hud_meter_cover2.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-  
-  label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), (VIEW_LFT | VIEW_TOP), pos);
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-    drawstring(label_org, label, '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
-  drawfont = drawfont_prev; 
+  iconOrg = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs),lbl_algn, pos);
+  drawpic(iconOrg, HUD_ICON_POWER, iconSize, mColor, HUD_ALPHA, 0);
 };
 
-/*
-  RENDER ARMOR GRAPH STYLE 1
-  used for mech targets
-*/
-void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, float lg, float isTarget) hud_renderArmorGraph={
-  local vector pnl_ctr;
-  pnl_ctr = gui_percentToPixelRawVec(vorg);
-  pnl_ctr = gui_calcAlign(pnl_ctr, algn);
-  
-  hud_renderArmorMeter('-6 -27', pnl_ctr, ct, '12 55', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "CT", isTarget);
-  
-  hud_renderArmorMeter('-22 -24', pnl_ctr, lt, '12 48', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "LT", isTarget);
-  
-  hud_renderArmorMeter('-38 -18', pnl_ctr, la, '12 36', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "LA", isTarget);
-  
-  hud_renderArmorMeter('10 -24', pnl_ctr, rt, '12 48', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "RT", isTarget);
-  
-  hud_renderArmorMeter('26 -18', pnl_ctr, ra, '12 36', (VIEW_CTX | VIEW_TOP),'-2 6', AXIS_V, "RA", isTarget);
-  
-  hud_renderArmorMeter('-28 30', pnl_ctr, lg, '56 12', (VIEW_LFT | VIEW_CTY),'8 -1', AXIS_V, "LG", isTarget);
-};
 
 /*
   RENDER RADAR DATA
@@ -395,7 +342,7 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   RENDER A SINGLE WEAPON AND ITS RELOAD BAR
   Weapon Icon over the Reload bar
 */
-void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_renderWeapon={
+void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
   local entity theWeapon;
   local vector iofs, ofs, metSize, wepState;
   local vector rOrg;
@@ -409,24 +356,23 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
   
   if( (CLIENT_weapon_state & w_bit) ){
     //weapon selected
-    if( (wepGrp & w_bit) ){
-      wepState = CLR_DEF_ARM_OK; 
+    /*if( (wepGrp & w_bit) ){
+      wepState = CLR_DEF_ARM_OK;
     }
     else{
-      wepState = CLR_DEF_WHITE;  
-    }
+      wepState = CLR_DEF_WHITE;
+    }*/
     
+    wepState = '1 1 1';
     if(theWeapon.reloadValue < 100){
       //weapon reloading
-      if((wepGrp & w_bit)){ 
-        wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
-      }
-      else{
-        wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
-      }
+      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
     }
     if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
       wepState = CLR_DEF_WEP_LOWENG;
+    }
+    if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
+      wepState = CLR_DEF_ARM_DED;
     }
   }
   else{
@@ -442,7 +388,10 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
     drawpic(iofs, theWeapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
-  if( wepState != CLR_DEF_TXT_CANTSELECT ){
+  if( wepState == CLR_DEF_TXT_CANTSELECT ){
+    drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
+  }
+  else{
     if( theWeapon.data_idx > 0 ){
       ofs_x = imgSz_x / 2;
       ofs_y = (imgSz_y * 2);
@@ -452,16 +401,13 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
       gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
     }
   }
-  else{
-    drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
-  }
 };
 
 /*
   RENDER A SINGLE WEAPON AND ITS RELOAD BAR
   Weapon Icon is right to Reload Bar
 */
-void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_renderWeapon2={
+void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
   local entity theWeapon;
   local vector rOrg;
   local vector iofs, ofs, metSize, wepState;
@@ -473,24 +419,22 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
   
   if( (CLIENT_weapon_state & w_bit) ){
     //weapon selected
-    if( (wepGrp & w_bit) ){
+    /*if( (wepGrp & w_bit) ){
       wepState = CLR_DEF_ARM_OK; 
     }
     else{
       wepState = CLR_DEF_WHITE;  
-    }
-    
+    }*/
+    wepState = '1 1 1';
     if(theWeapon.reloadValue < 100){
       //weapon reloading
-      if((wepGrp & w_bit)){ 
-        wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
-      }
-      else{
-        wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
-      }
+      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
     }
     if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
       wepState = CLR_DEF_WEP_LOWENG;
+    }
+    if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
+      wepState = CLR_DEF_ARM_DED;
     }
   }
   else{
@@ -505,18 +449,18 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_bit) hud_rende
     drawpic(iofs, theWeapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
-  if( wepState != CLR_DEF_TXT_CANTSELECT){
+  if( wepState == CLR_DEF_TXT_CANTSELECT){
+    drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
+  }
+  else{
     if( theWeapon.data_idx > 0 ){
-      ofs_x = imgSz_x * -0.375;
+      ofs_x = imgSz_x * -0.2;
       ofs_y = imgSz_y;
-      metSize_x = gui_percentXRaw(20);
+      metSize_x = gui_percentXRaw(16);
       metSize_y = imgSz_y;
       ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), rOrg); 
       gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
     }
-  }
-  else{
-    drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
   }
 };
 
@@ -524,24 +468,22 @@ void() hud_renderRepairValue={
   local vector vorg, torg;
   local float len;
   local string str;
-    
-  if(CLIENT_repair_value > 0){
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-    
-    str = "Repair Bay - current energy";
-    len = stringwidth(str, 0, '14 14 0');
-    vorg_x = VIEW_CTR_x - gui_percentXRaw(128);
-    vorg_y = VIEW_CTR_y - gui_percentYRaw(64);
-    torg = vorg;
-    torg_x = VIEW_CTR_x - gui_percentXRaw( len / 2 ) ;
-    torg_y = torg_y - gui_percentYRaw(16);
-    gui_renderMeter(CLIENT_repair_value, vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA + 0.33, 0, AXIS_H, 0);
-    
-    drawpic(vorg, "gfx/hud/hud_meter_cover3.png", gui_percentToPixelRawVec('256 24'), '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-    drawstring(torg, str, '14 14 0', HUD_COLOR_DEF, HUD_ALPHA + 0.33, 0);
-    drawfont = drawfont_prev;
-  }
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  str = "Repair Bay - current energy";
+  len = stringwidth(str, 0, '14 14 0');
+  vorg_x = VIEW_CTR_x - gui_percentXRaw(128);
+  vorg_y = VIEW_CTR_y - gui_percentYRaw(64);
+  torg = vorg;
+  torg_x = VIEW_CTR_x - gui_percentXRaw( len / 2 ) ;
+  torg_y = torg_y - gui_percentYRaw(16);
+  gui_renderMeter(CLIENT_repair_value, vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA + 0.33, 0, AXIS_H, 0);
+  
+  drawpic(vorg, "gfx/hud/hud_meter_cover3.png", gui_percentToPixelRawVec('256 24'), '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+  drawstring(torg, str, '14 14 0', HUD_COLOR_DEF, HUD_ALPHA + 0.33, 0);
+  drawfont = drawfont_prev;
 };
 
 void(float warnOn, float warnDir) hud_render_warningBounds={
@@ -601,52 +543,30 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
 };
 
 /*
-  RENDER
+  RENDER ENVIRONMENT HAZARD 
 */
-void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={
-  local string warnMessage;
-  local string warnTypes;
-  
-  local float messageWidth;
-  
-  local vector warnBoxOrg;
-  local vector warnBoxSize;
-  
-  local vector warnMessageOrg;
-  local vector warnTypesOrg;
+void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={  
+  local vector anchorOrg;
+  local vector shockOrg;
+  local vector radOrg;
+  local vector quantOrg;
   
   if( time < HUD_WARN_ENV_MARK ){
-    warnBoxSize = gui_percentToPixelRawVec('175 38');
-    warnBoxOrg_x = orgCenter_x - warnBoxSize_x / 2;
-    warnBoxOrg_y = orgCenter_y - gui_percentYRaw(2);
-    drawpic( warnBoxOrg, UI_DEF_BOX_256, warnBoxSize, '0.25 0.25 0.25', 1, 0);
+    anchorOrg = gui_percentToPixelRawVec(orgCenter);
     
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-  
-    warnMessage = "!- Environment Damage -!";
-    messageWidth = stringwidth( warnMessage, 0, '18 18');
-    warnMessageOrg_x = orgCenter_x - gui_percentXRaw( messageWidth / 2 );
-    warnMessageOrg_y = orgCenter_y;
-    drawstring( warnMessageOrg, warnMessage, '18 18', CLR_DEF_ARM_HALF, labelAlpha, 0 );
-    
-    warnTypes = "[";
     if( (dmgTypes & 1) ){
-      warnTypes = strcat(warnTypes, " Shields ");
+      shockOrg = gui_calcAlignCustom('48 0', (VIEW_LFT | VIEW_TOP), anchorOrg);
+      drawpic(shockOrg, HUD_HAZ_SHOCK, '32 32', CLR_DEF_IIF_FRIEND_BLD, 0.9, 0);
     }
     if( (dmgTypes & 2) ){
-      warnTypes = strcat(warnTypes, " Armor ");
+      radOrg = gui_calcAlignCustom('-16 0', (VIEW_CTX | VIEW_TOP), anchorOrg);
+      drawpic(radOrg, HUD_HAZ_RAD, '32 32', CLR_DEF_ARM_THREEQ, 0.9, 0);
+      
     }
     if( (dmgTypes & 4) ){
-      warnTypes = strcat(warnTypes, " Energy ");
+      quantOrg = gui_calcAlignCustom('48 0', (VIEW_RGT | VIEW_TOP), anchorOrg);
+      drawpic(quantOrg, HUD_HAZ_QUANT, '32 32', CLR_HUD_PURPLE * 1.25, 0.9, 0);
     }
-    warnTypes = strcat(warnTypes, "]");
-    messageWidth = stringwidth( warnTypes, 0, '16 16' );
-    warnTypesOrg_x = orgCenter_x - gui_percentXRaw( messageWidth / 2 );
-    warnTypesOrg_y = warnMessageOrg_y + gui_percentYRaw(20);
-    drawstring( warnTypesOrg, warnTypes, '16 16', CLR_DEF_ARM_HALF, labelAlpha, 0 );
-    
-    drawfont = drawfont_prev;
   }
   else{
     HUD_WARN_ENV_TYPES = 0;
@@ -662,8 +582,8 @@ void() hud_render_info={
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
   
-    drawpic( HUD_INFO_ORG, UI_DEF_BOX_512, HUD_INFO_SIZE, CLR_DEF_GRAY_H, 1, 0);
-    gui_wrapText(HUD_INFO_ORG, HUD_INFO_SIZE, HUD_INFO_MSG, '14 14 0', CLR_DEF_TXT_GRAY_SMOOTH, 1) ;
+    drawpic( HUD_INFO_ORG - gui_percentToPixelRawVec('4 0'), UI_DEF_BOX_512, HUD_INFO_SIZE, CLR_DEF_GRAY_H, 1, 0);
+    gui_wrapText(HUD_INFO_ORG, HUD_INFO_SIZE, HUD_INFO_MSG, '14 14 0', CLR_DEF_ARM_OK * 1.25, 1) ;
     
     drawfont = drawfont_prev;
   }
@@ -678,23 +598,21 @@ void() hud_render_info={
   the data from the hud file.
 */
 void( float uid, float targetId ) hud_data_renderTarget_Shield={
-  local float algn, lflag, lalign, axis;
+  local float algn, lalign, axis;
   local vector porg, vsize, lblofs;
-  if( targetId > 0 ){
-    porg = UI_DATA_POS[uid];
-    vsize = UI_DATA_SIZE[uid];
-    algn = UI_DATA_ALIGN[uid];
-    lflag = UI_DATA_LABEL_FLAG[uid];
-    lalign = UI_DATA_LABEL_ALIGN[uid];
-    lblofs = UI_DATA_LABEL_OFS[uid];
-    axis = UI_DATA_AXIS_FLAG[uid];
-    hud_renderShield(porg, algn, CLIENT_target_shield, vsize, lflag, lalign, lblofs, axis, FALSE);
-  }
+  
+  porg = UI_DATA_POS[uid];
+  vsize = UI_DATA_SIZE[uid];
+  algn = UI_DATA_ALIGN[uid];
+  lalign = UI_DATA_LABEL_ALIGN[uid];
+  lblofs = UI_DATA_LABEL_OFS[uid];
+  axis = UI_DATA_AXIS_FLAG[uid];
+  hud_renderShield(porg, algn, CLIENT_target_shield, vsize, lalign, lblofs, axis, FALSE, CLR_DEF_ARM_HALF);
 };
 
 /*
   Render HUD Message
-    draws a HUD event message sent from the server.
+    draws a HUD event message originates from reading player state, which comes in from the server.
 */
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message={
   local vector messageOrigin;
@@ -724,13 +642,15 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
 */
 void() hud_renderHighlight_frame={
   local entity boxes;
-  boxes = findchainfloat( data_idx, -3 );
+  local entity rem;
+  
+  boxes = findchain( classname, "UI_HIGHLIGHT" );
   while( boxes ){
-    local entity rem;
     rem = boxes;
     boxes = boxes.chain;
     hud_renderHighlight( rem );
     if( time > rem.drawme ){
+      
       remove( rem );
     }
   }
@@ -759,7 +679,7 @@ void( entity box ) hud_renderHighlight={
         elmOrg = gui_calcAlign(elmOrg, elmAlign);
       }
       if( elmSize != '0 0 0' ){
-        boxSize = gui_percentToPixelRawVec(elmSize);
+        boxSize = gui_percentToPixelRawVec(elmSize * 1.33);
       }
       else{
         boxSize_x = box.drawsize_x * VIEW_MAX_x;
@@ -768,8 +688,12 @@ void( entity box ) hud_renderHighlight={
       if(box.partTypeId == HUD_UID_ARM_PLAYER){
         elmOrg = elmOrg - (boxSize*0.5);
       }
-      drawpic( elmOrg, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.75, 0);
+        elmOrg_x = elmOrg_x - (boxSize_x*0.15);
+        elmOrg_y = elmOrg_y - (boxSize_y*0.15);
+      
+      drawpic( elmOrg, UI_DEF_BOX_256_BRIGHT, boxSize, box.drawcolor1, 0.85, 0);
     }
+
   }
   else{  
     if( box.origin != '0 0 0'){
@@ -777,7 +701,7 @@ void( entity box ) hud_renderHighlight={
       bx_pos_y = VIEW_ORG_y + ( VIEW_MAX_y * box.origin_y );
       boxSize_x = box.drawsize_x * VIEW_MAX_x;
       boxSize_y = box.drawsize_y * VIEW_MAX_y;
-      drawpic( bx_pos, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.75, 0);
+      drawpic( bx_pos, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.85, 0);
     }
   }
 };
@@ -788,93 +712,60 @@ void( entity box ) hud_renderHighlight={
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram={
   local vector meterSize, label_org, ramPos;
   local vector ramColor;
-  local string ramLabel;
+  local vector iconOrg;
+  local string ramIcon;
+  local vector iconSize;
   
   meterSize = gui_percentToPixelRawVec(ramSize);
   ramPos = gui_percentToPixelRawVec(ramOrg);
   ramPos = gui_calcAlign(ramPos, ramAlign);
-  
-  if( ramValue > 0 ){
-    ramLabel = "SPRINT";
+
+  if( CLIENT_move_state == MOVE_SPRINT ){
     ramColor = gui_getColorForArmor(ramValue);
     if(ramValue > 100 ){
       ramValue = 100;
     }
+    ramIcon = HUD_ICON_SPRINT;
   }
   else if( CLIENT_move_state == MOVE_RAM_CHARGE ){
-    ramLabel = "RAM!";
     ramColor =  '0.9 0.1 0.1';
     ramValue = 100;
+    ramIcon = HUD_ICON_RAM;
   }
   else if(CLIENT_move_state == MOVE_RAM_COOL ){
-    ramLabel = "----";
     ramColor =  '0.15 0.15 0.15';
     ramValue = 100;
+    ramIcon = "";
   }
   else{
-    ramLabel = "READY";
     ramColor = HUD_COLOR_DEF;
     ramValue = 0;
+    ramIcon = "";
   }
   
   gui_renderMeter(ramValue, ramPos, meterSize, HUD_COLOR_DEF - '0.5 0.5 0.5', ramColor, HUD_ALPHA, 0, meterAxis, 0);
   
   if(  (meterAxis & AXIS_H) ){
     drawpic(ramPos, "gfx/hud/hud_meter_cover3.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+    iconSize_x = meterSize_y;
+    iconSize_y = meterSize_y;
   }
   else{
     drawpic(ramPos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
+    iconSize_x = meterSize_x;
+    iconSize_y = meterSize_x;
   }
-  
-
-  label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, ramPos);
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-    drawstring(label_org, ramLabel, '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
-  drawfont = drawfont_prev;
-
-};
-
-
-/*
-  Render Sprint STATE
-  
-*/
-void(vector porg) hud_render_sprint={
-  local float slen;
-  local vector spos;
-  local string msg;
-  local vector msgClr;
-  
-  if(CLIENT_move_state > MOVE_NORM){
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-    if( cvar("cl_movespeedkey") > 1 ){
-      msg = HUD_SPRINT_ON;
-      msgClr = CLR_DEF_RET_GETLOCK;
-      if( getstatf(STAT_RAM) >= CLIENT_ram_max ){
-        msg = HUD_SPRINT_RAM;
-        msgClr = CLR_DEF_RED;
-      }
-    }
-    else{
-      msg = HUD_SPRINT_OFF;
-      msgClr = CLR_DEF_RED;
-    }
-    slen = stringwidth(msg, 0, '16 14 0');
-    slen = gui_percentXRaw(slen);
-    spos_x = porg_x - slen / 2;
-    spos_y = porg_y + gui_percentYRaw(56);
-    drawstring(spos, msg, '16 14 0', msgClr, max(HUD_ALPHA + 0.33, 0.8), 0);
-    drawfont_prev = drawfont;
+  if( ramIcon != "" ){
+    iconOrg = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, ramPos);
+    drawpic(iconOrg, ramIcon, iconSize, CLR_DEF_WHITE, HUD_ALPHA, 0);
   }
 };
-
 
 /*
   Main API call for new text-based HUD system
 */
 void() data_hud_frame={
+  local entity player;
 
   HUD_ENERGY_ACTUAL = CLIENT_energy_total;
   //Alpha fade-in of HUD as mech powers up.
@@ -916,17 +807,19 @@ void() data_hud_frame={
       break;
   }
   
+  data_hud_fps_cam();
   if( HUD_EXTERNAL_CAM_ACTIVE ){
-    data_hud_external_cam_frame();
-  }
-  else{
-    data_hud_fps_cam();
+    data_hud_external();
   }
   
-  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face != AIM_FACE_FRONT){
+  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
-    hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H);
-  }  
+    
+    //func call optimization, adding shield-down filter, players are confused about a target's shield flashing red to indicate 'time-before-regen' delay.
+    if( CLIENT_target_shield > 0.0 && CLIENT_target_shield <= 100.0){
+      hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
+    }
+  }
 
   //CROSSHAIR AND DETAILS
   hud_renderDirectionHit(CLIENT_stat_hit_dirs);
@@ -934,7 +827,13 @@ void() data_hud_frame={
     hud_renderCrosshairDisabled();
   }
   else{
-    hud_lock_frame();
+    //hud_lock_frame();
+    CLIENT_stat_lock_state = FALSE;
+    if( HUD_LOCK_FLAG ){
+      if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT ){
+        CLIENT_stat_lock_state = TRUE;
+      }
+    }
     switch( cvar("crosshair") ){
       case 1:
         hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
@@ -948,9 +847,6 @@ void() data_hud_frame={
       case 4:
         hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
-      //case 5:
-        //hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
-        //break;
       default:
         //no crosshair? bold move
         break;
@@ -969,13 +865,13 @@ void() data_hud_frame={
   if( !HUD_ZOOM_ACTIVE ){
     //repair sits above all
     hud_render_vip_overlay();
-    hud_renderRepairValue();
+    
+    if(CLIENT_repair_value > 0){
+      hud_renderRepairValue();
+    }
     hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
     hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
     hud_event_frame();
-    if( HUD_EXTERNAL_CAM_ACTIVE == FALSE ){
-      hud_render_sprint(VIEW_CTR);
-    }
     hud_render_info();
   }
   
@@ -989,7 +885,6 @@ void() data_hud_frame={
     hud_renderNavOverlay();
     //only loop clients once per hud frame
   }
-  local entity player;
   for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
     if( !(player.flags & FL_CLIENT) ){continue;}
     if( player.clientLocalId == player_localentnum ){continue;}
@@ -997,7 +892,9 @@ void() data_hud_frame={
     if( player.faction != CLIENT_faction ){continue;}
     if( player.faction == FACTION_ALL){continue;}
     if( player != CLIENT_target_ent ){
-      hud_render_ally_names( player );
+      if( vlen(player.origin - pmove_org) <= (CLIENT_radar_range * 0.3) ){
+        hud_render_ally_names( player );
+      }
     }
     
     if( player.targetEntId <= 0 ){continue;}
@@ -1039,7 +936,7 @@ void() hud_renderCrosshairDisabled={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  lbl = "!- FIRE CONTROL OVERRIDE -!";
+  lbl = "!-OVERRIDE-!";
   
   stopSize = gui_percentToPixelRawVec('24 24');
   stopOrg_x = VIEW_CTR_x - (stopSize_x / 2);
@@ -1058,8 +955,8 @@ void() hud_renderCrosshairDisabled={
 };
 
 /*
+  //2.0.0: DEPRECATED lock-on not timer-based anymore
   received lock start event, setup controller
-*/
 void(float lockTime) hud_lock_control_start={
   HUD_LOCK_TIME_START = time;
   HUD_LOCK_TIME_END = time + lockTime;
@@ -1072,10 +969,10 @@ void(float lockTime) hud_lock_control_start={
   HUD_LOCK_SIZE_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
   HUD_LOCK_COLOR = CLR_DEF_RET_GETLOCK;
 };
-
+*/
 /*
+  DEPRECATED - //2.0.0: lock-on not timer-based anymore
   per-frame function for hud lock state.
-*/ 
 void() hud_lock_frame={
   //cases
     //1) started lock
@@ -1098,10 +995,15 @@ void() hud_lock_frame={
   }
   HUD_LOCK_STATE_PREV = CLIENT_stat_lock_state;
 };
+*/ 
 
 void() data_hud_fps_cam={
   local float uid;
   local float hasTarget;
+  local float objid, algn, lflag, lalign, axis, wbit;
+  local vector porg, vsize, lblofs;
+  local vector color2;
+  local vector wep;
   
   hasTarget = FALSE;
   if( CLIENT_stat_trg_dataidx > 0 ){
@@ -1110,9 +1012,6 @@ void() data_hud_fps_cam={
   
   uid = 1;
   while( uid <= 32 ){
-    local float objid, algn, lflag, lalign, axis, wbit;
-    local vector porg, vsize, lblofs;
-    local vector wep;
     
     objid = UI_DATA_UIDS[uid];
     switch( objid ){
@@ -1121,18 +1020,21 @@ void() data_hud_fps_cam={
           porg = UI_DATA_POS[uid];
           vsize = UI_DATA_SIZE[uid];
           algn = UI_DATA_ALIGN[uid];
-          lflag = UI_DATA_LABEL_FLAG[uid];
           lalign = UI_DATA_LABEL_ALIGN[uid];
           lblofs = UI_DATA_LABEL_OFS[uid];
           axis = UI_DATA_AXIS_FLAG[uid];
-          hud_renderEnergy(porg, algn, CLIENT_energy, vsize, lflag, lalign, lblofs, axis);
+          hud_renderEnergy(porg, algn, CLIENT_energy, vsize, lalign, lblofs, axis, CLR_HUD_BLUE);
         }
         break;
       case HUD_UID_ARM_PLAYER: 
         if( HUD_ZOOM_ACTIVE == FALSE){
           porg = UI_DATA_POS[uid];
           algn = UI_DATA_ALIGN[uid];
-          hud_renderArmorGraph(porg, algn, CLIENT_health_center, CLIENT_health_torso_left, CLIENT_health_torso_right, CLIENT_health_arm_left, CLIENT_health_arm_right, CLIENT_health_legs, FALSE);
+          lflag = UI_DATA_LABEL_FLAG[uid];
+          lalign = UI_DATA_LABEL_ALIGN[uid];
+          lblofs = UI_DATA_LABEL_OFS[uid];
+          color2 = UI_DATA_COLOR2[uid];
+          hud_renderArmorGraph(porg, algn, lflag, lalign, lblofs, color2, FALSE);
         }
         break;
       case HUD_UID_SHIELD_PLAYER: 
@@ -1140,11 +1042,10 @@ void() data_hud_fps_cam={
           porg = UI_DATA_POS[uid];
           vsize = UI_DATA_SIZE[uid];
           algn = UI_DATA_ALIGN[uid];
-          lflag = UI_DATA_LABEL_FLAG[uid];
           lalign = UI_DATA_LABEL_ALIGN[uid];
           lblofs = UI_DATA_LABEL_OFS[uid];
           axis = UI_DATA_AXIS_FLAG[uid];
-          hud_renderShield(porg, algn, CLIENT_shield, vsize, lflag, lalign, lblofs, axis, TRUE);
+          hud_renderShield(porg, algn, CLIENT_shield, vsize, lalign, lblofs, axis, TRUE, CLR_DEF_ARM_OK);
         }
         break;
       case HUD_UID_ARM_TARGET:
@@ -1153,38 +1054,45 @@ void() data_hud_fps_cam={
             if( CLIENT_target_datatype == DATA_MECH ){
               porg = UI_DATA_POS[uid];
               algn = UI_DATA_ALIGN[uid];
-              hud_renderArmorGraph(porg, algn, CLIENT_stat_trg_ct_hp, CLIENT_stat_trg_lt_hp, CLIENT_stat_trg_rt_hp, CLIENT_stat_trg_la_hp, CLIENT_stat_trg_ra_hp, CLIENT_stat_trg_lg_hp, TRUE);
+              lflag = UI_DATA_LABEL_FLAG[uid];
+              lalign = UI_DATA_LABEL_ALIGN[uid];
+              lblofs = UI_DATA_LABEL_OFS[uid];
+              color2 = UI_DATA_COLOR2[uid];
+              hud_renderArmorGraph(porg, algn, lflag, lalign, lblofs, color2, TRUE);
             }
           }
         }
         break;
       case HUD_UID_SHIELD_TARGET: 
-        if( HUD_ZOOM_ACTIVE == FALSE){
-          hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
+        if( HUD_ZOOM_ACTIVE == FALSE && CLIENT_stat_trg_dataidx != 0){
+          //func call optimization
+          if( CLIENT_target_shield <= 100.0 && CLIENT_target_shield >= 0.0 ){
+            hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
+          }
         }
         break;
       case HUD_UID_WEP_TYPE1:
-        if( HUD_ZOOM_ACTIVE == FALSE){
+        if( HUD_ZOOM_ACTIVE == FALSE && HUD_EXTERNAL_CAM_ACTIVE == FALSE){
           porg = UI_DATA_POS[uid];
           algn = UI_DATA_ALIGN[uid];
           wbit = UI_DATA_WEPBIT[uid];
           vsize = UI_DATA_SIZE[uid];
           if( vsize == '0 0 0' ){
-            vsize = '32 32 0';  //default here
+            vsize = '24 24 0';  //default here
           }
-          hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wbit);
+          hud_renderWeapon(porg, vsize, algn, wbit);
         }
         break;
       case HUD_UID_WEP_TYPE2:
-        if( HUD_ZOOM_ACTIVE == FALSE){
+        if( HUD_ZOOM_ACTIVE == FALSE && HUD_EXTERNAL_CAM_ACTIVE == FALSE){
           porg = UI_DATA_POS[uid];
           algn = UI_DATA_ALIGN[uid];
           wbit = UI_DATA_WEPBIT[uid];
           vsize = UI_DATA_SIZE[uid];
           if( vsize == '0 0 0' ){
-            vsize = '32 32 0';  //default here
+            vsize = '24 24 0';  //default here
           }
-          hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wbit);
+          hud_renderWeapon2(porg, vsize, algn, wbit);
         }
         break;
       case HUD_UID_RADAR_TYPE1: 
@@ -1232,14 +1140,18 @@ void() data_hud_fps_cam={
           }
         }
         break;
-      case HUD_UID_ARM_TARG_VEC:  
+      case HUD_UID_ARM_TARG_VEC:
         if( HUD_ZOOM_ACTIVE == FALSE){
           if( hasTarget ){ 
             if( CLIENT_target_datatype == DATA_VEHC ){
               porg = UI_DATA_POS[uid];
               algn = UI_DATA_ALIGN[uid];
               vsize = UI_DATA_SIZE[uid];
-              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
+              lflag = UI_DATA_LABEL_FLAG[uid];
+              lalign = UI_DATA_LABEL_ALIGN[uid];
+              lblofs = UI_DATA_LABEL_OFS[uid];
+              color2 = UI_DATA_COLOR2[uid];
+              hud_renderArmorVehicle(porg, algn, vsize, CLIENT_stat_trg_ct_hp, lflag, lalign, lblofs, color2);
             }
           }
         }
@@ -1251,7 +1163,11 @@ void() data_hud_fps_cam={
               porg = UI_DATA_POS[uid];
               algn = UI_DATA_ALIGN[uid];
               vsize = UI_DATA_SIZE[uid];
-              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
+              lflag = UI_DATA_LABEL_FLAG[uid];
+              lalign = UI_DATA_LABEL_ALIGN[uid];
+              lblofs = UI_DATA_LABEL_OFS[uid];
+              color2 = UI_DATA_COLOR2[uid];
+              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp, lflag, lalign,  lblofs, color2);
             }
           }
         }

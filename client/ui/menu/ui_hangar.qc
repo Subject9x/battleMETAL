@@ -99,6 +99,7 @@ void(vector ofs) menu_hangar_MechDisplay={
   local vector hardpointCoord;
   local vector mechSize;
   local vector mechMins;
+  local vector helpOrg;
   
   nofs = ofs + gui_percentToPixelRawVec('367 8');
   
@@ -144,7 +145,6 @@ void(vector ofs) menu_hangar_MechDisplay={
     }
   }
   
-  local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(250) - gui_percentXRaw(12);
   HANGAR_HELP_GRAPH = helpOrg;
@@ -155,6 +155,7 @@ void(vector ofs) menu_hangar_MechHPoints={
   local vector nofs, tofs;
   local float tlen, hardpointItr;
   local entity hardpoint;
+  local vector helpOrg;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -178,7 +179,6 @@ void(vector ofs) menu_hangar_MechHPoints={
   }
   drawfont = drawfont_prev;
   
-  local vector helpOrg;
   helpOrg_x = nofs_x + gui_percentXRaw(270) - gui_percentXRaw(12);
   helpOrg_y = nofs_y - gui_percentYRaw(6);
   HANGAR_HELP_HARDPOINT_LIST = helpOrg;
@@ -214,6 +214,8 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   local float labelLen;
   local vector labelOrg;
   local float drawFontLocal;
+  local vector lofs, iofs;
+  local float nameLen;
   
   nofs = ofs;
   
@@ -232,8 +234,6 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   sofs = nofs;
   sofs_y = sofs_y + gui_percentYRaw(4);
   while(ui_lst_cnt <= 24){
-    local vector lofs, iofs;
-    local float nameLen;
     mechId = UNLOCKED_MECHS[ui_lst_cnt];
     if( mechId != 0){
       mechSizeCheck = MECH_DATA_SIZES[mechId];
@@ -336,7 +336,6 @@ void(vector ofs) menu_hangar_MechInfo={
     drawstring(nofs + gui_percentToPixelRawVec('8 129'), "Armor-Arms:", fontSize, CLR_DEF_GRAY_H, 1, 0);
     drawstring(nofs + gui_percentToPixelRawVec('8 139'), "Armor-Legs:", fontSize, CLR_DEF_GRAY_H, 1, 0);
     drawstring(nofs + gui_percentToPixelRawVec('8 151'), "Radar Range:", fontSize,CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 162'), "Lock On Delay:", fontSize,CLR_DEF_GRAY_H, 1, 0);
   drawfont = drawfont_prev;
   
   if(SELECT_MECH > FALSE){
@@ -382,12 +381,12 @@ void(vector ofs) menu_hangar_MechInfo={
     gui_renderMeter((MECH_DATA_RAD/DISP_MAX_RAD_RANGE)*100, nofs + gui_percentToPixelRawVec('85 151'),gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_HALF, 1, 0, AXIS_H, 0);
     drawstring(nofs + gui_percentToPixelRawVec('162 150'), ftos(MECH_DATA_RAD), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
-    //Lock on Time
-    local float lock;
+    //Lock on Time - 2.0.0 - no longer matters
+    /*local float lock;
     lock = 6 - MECH_DATA_LOCKON;
     lock = lock / 6;
     gui_renderMeter(lock*100, nofs + gui_percentToPixelRawVec('85 163'),gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_HALF, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 162'), strcat(ftos(MECH_DATA_LOCKON)," seconds"), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('162 162'), strcat(ftos(MECH_DATA_LOCKON)," seconds"), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);*/
     
     drawfont = drawfont_prev;
   }

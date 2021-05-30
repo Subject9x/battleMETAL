@@ -1,0 +1,54 @@
+{
+  'music'   : 12,
+  'nomusic' : 0,
+  'backimg' : ,
+  'trans'   : ,
+}
+{
+  'image' : gfx/anim/intro/introf1.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 25,
+  'flags'  : 20,
+}
+{
+  'image' : gfx/anim/intro/introf2.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 15,
+  'flags'  : 20,
+}
+{
+  'image' : gfx/anim/intro/introf3.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 1,
+  'flags'  : 17,
+}
+{
+  'image' : gfx/anim/intro/introf4.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 3,
+  'flags'  : 18,
+}

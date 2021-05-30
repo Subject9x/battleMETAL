@@ -173,6 +173,7 @@ void() ClientConnect = {
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
   self.w_proj = 0; //used to track enemy hit time
+  self.statTargetHitParts = 0;
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = 0;
   self.stat_rdr_rng = 0;
@@ -405,6 +406,12 @@ void() PutClientInServer_Campaign={
       self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
     }
   }
+  
+  if( world.iniConfig ){
+    self.playerState = PLAYER_SPAWN;
+    client_sendIniConfig();
+  }
+  
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
   //}
@@ -655,7 +662,7 @@ float( float isNew, float changeFlags ) send_client_data={
   else{
     self.data_type = DATA_POBS;
     self.radar_range = 0;
-    self.stat_rdr_mode = 0;
+    self.stat_rdr_mode = player.stat_rdr_mode;
     self.stat_client_shield = 0;
     self.vec_size = 0;
     self.data_idx = 0;

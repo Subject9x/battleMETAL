@@ -13,32 +13,53 @@ void( entity thePlayer ) hud_render_ally_names={
   local vector namepos, nameproj, drawSize;
   local float namelen, drawdist, adj;
   local string playerName;
-
-  drawdist = vlen(pmove_org - thePlayer.origin);
-  if( drawdist < CLIENT_radar_range * 0.25 ){
+  
+  drawdist = vlen(pmove_org - CLIENT_target_ent.origin);
+  if(drawdist < CLIENT_radar_range * 0.1){
+    adj = 25;
     drawSize = '10 10 0';
-    adj = 26;
+  }
+  else if( drawdist < CLIENT_radar_range * 0.25 ){
+    adj = 40;
+    drawSize = '10 10 0';
   }
   else if( drawdist < CLIENT_radar_range * 0.5 ){
+    adj = 65;
     drawSize = '12 12 0';
-    adj = 34;
+  }
+  else if(  drawdist < CLIENT_radar_range * 0.75 ){
+    adj = 85;
+    drawSize = '12 12 0';
   }
   else{
+    adj = 100;
     drawSize = '14 14 0';
-    adj = 42;
   }
   
-  playerName = getplayerkeyvalue(thePlayer.clientLocalNum, "name");
+  if( (CLIENT_target_ent.flags & FL_CLIENT) ){
+    playerName = getplayerkeyvalue(CLIENT_target_ent.clientLocalNum, "name");
+  }
+  else{
+    if( CLIENT_target_ent.netname != "" || strlen(CLIENT_target_ent.netname) > 0 ){
+      playerName = CLIENT_target_ent.netname;
+    }
+    else{
+      playerName = CLIENT_target_ent.vec_name;
+    }
+  }
+  if( playerName == "" ){
+    return;
+  }
   namelen = stringwidth(playerName, 0, drawSize);
-  namepos = thePlayer.origin;
-  namepos_z = namepos_z + (gui_percentYRaw(thePlayer.vec_size * adj));
+  namepos = CLIENT_target_ent.origin;
+  namepos_z = namepos_z - (adj + drawSize_y);  //magik numbers, :/
   nameproj = cs_project(namepos);
   if( nameproj_z >= 0 ){
     nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
     nameproj_z = 0;
-    drawstring(nameproj, playerName, drawSize, CLR_DEF_GREEN * 1.5, 1, 0);
+    drawstring(nameproj, playerName, drawSize, CLR_DEF_GREEN * 1.5, max(0.75, HUD_ALPHA), 0);
   }
-  namepos = cs_unproject(nameproj);
+  
 };
 
 /*

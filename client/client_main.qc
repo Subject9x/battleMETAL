@@ -387,7 +387,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   //=================================================
   
   // draw the main view
-  if( !MENU_ACTIVE ){
+  if( !MENU_ACTIVE || CLIENT_MENU_menu_choice >= MENU_REBIND_ACTIVE){
     // add clientside entities (MASK_NORMAL)
     // add engine networked entities (MASK_ENGINE)
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
@@ -431,15 +431,15 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
 
 	// draw custom hud
-  if(CLIENT_data_type == DATA_MECH){    
+  if(CLIENT_data_type == DATA_MECH){
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
-      //Main HUD entry point
-      data_hud_frame();
-      
       //HUD Highlight Boxes
       hud_renderHighlight_frame();
+      
+      //Main HUD entry point
+      data_hud_frame();
       
       //Player has toggled 'Objectives' menu while in-mission.
       ui_objective_frame(VIEW_ORG);
@@ -460,8 +460,8 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   //put this last on the rendering order to make sure it 
   //plays above all
-  if(ANM_FILE_STATUS == TRUE){
-    if(ANM_FRAME_CUR == FALSE){
+  if(ANM_FILE_STATUS == 1){
+    if(ANM_FRAME_CUR == 0){
       anm_execute_metadata();
     }
     anm_execute_frame();
@@ -580,6 +580,11 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     if(argv(1) == "anm"){
       cl_get_animfile( argv(2) );
+      ANM_SERV_TRIG = TRUE;
+      return;
+    }
+    if(argv(1) == "ini"){
+      cl_ini_event(s);
       return;
     }
   }

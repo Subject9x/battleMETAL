@@ -120,6 +120,9 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   
   if( (changeFlags & SENDFLAG_BURN) ){
     if( self.pcl_effectnum > 0 || self.deadflag == DEAD_DEAD ){
+      if( self.pcl_effectnum == 0 ){
+        self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
+      }
       makevectors(self.angles);
       pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
     }
@@ -146,8 +149,8 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   sendevent_shield_explode( prevShield );
   
   //Shield strike event
-  if( self.shieldHitFlag == TRUE && (self.shield > 0 && self.shield < 100.01)){
-    if( time > self.shieldEffectTime ){
+  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
       self.shieldEffectTime = time + 0.5;
       te_shield_hit();
     }

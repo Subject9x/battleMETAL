@@ -89,9 +89,10 @@ void() predraw_plasma={
     self.scale = 0.33;
   }
   else{
-    tScale = self.scale;
-    self.scale = tScale + ((tScale + 0.005) - tScale)*self.lerpfrac;
-    self.alpha = self.alpha + ((self.alpha - 0.005) - self.alpha)*self.lerpfrac;
+    self.scale = 1.75;
+    //tScale = self.scale;
+    //self.scale = tScale + ((tScale + 0.005) - tScale)*self.lerpfrac;
+    //self.alpha = self.alpha + ((self.alpha - 0.005) - self.alpha)*self.lerpfrac;
   }
 };
 

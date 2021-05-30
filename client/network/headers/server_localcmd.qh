@@ -21,6 +21,7 @@ void( float newFaction ) cl_set_faction;
 
 void(string fileName) cl_get_msnfile;
 void(string fileName) cl_get_animfile;
+void(string iniCmd) cl_ini_event;
 
 void() cl_get_new_fog;
 void() cl_exit_animatic;

@@ -1,0 +1,31 @@
+//mission info section
+{
+//img stored in data/maps/
+  'img' : 'training_moving/training_moving.png'
+  'name'  : 'Training Refresher'
+  'type'  : 'Trainer'
+  'points' : '1'
+  'sector' : 'Outbuilding Facility 32X'
+  'location' : '-CLASSIFIED-'
+  'time' : '-CLASSIFIED-'
+  'brief' : 'Congratulations, <TRAINEE>, you have survived your initiation into the DEAD_HAND project. This is a time of great crisis for our nation. Our only hope of survival is to adhere to our founding traditions and values. Your sacrifice will preserve the truth this nation is built upon; that law and order comes for all. | | As part of your final training, Command/Control will take you through an overview of your training to date. You will be given a Balakett metal to complete the course. Command/Control has also determined that you may skip this overview at your discretion. | | At the end you will proceed to Storage-Deeps Facility 1 for maintenance tear-down and psychological evaluation. After that you will be cleared for the [ACTIVE] status list. Your will has been duplicated and saved to our automated system. | | You will balance the scales if the worst comes to pass.'
+  'intel' : 'Area of Operations-training complex in <REDACTED>. | | <TRAINEE> has been granted control of x1 Balakett Combat <METAL>. | | Expected Resistance Values - none.'
+  'objtotal' : '2'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Visit each (Nav) Point'
+}
+{
+  'objid' : '2'
+  'objtype': 'secondary'
+  'objdesc' : '[Secondary Objectives are in Yellow]. Accomplish instructed tasks to finalize training program.'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Proceed to Storage-Deeps Facility 1 at Nav (KAPPA).'
+}

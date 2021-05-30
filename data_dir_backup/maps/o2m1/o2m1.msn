@@ -9,9 +9,9 @@
   'sector' : 'Glacian Edge'
   'location' : 'Frost Horizon'
   'time' : '19;37;08;54'
-  'brief' : '-COMM INTERCEPT- | Investen Varaci> I do not believe House Gavir was being underhanded on this. Their refugees that CNINE Corp. has allowed across the border have corroborated the reports. | | CEO.Wilkins> The stories match the situation that our own corporations have seen on the edges of our territory. | The shareholders have voted to activate more of our liquid reserves to the Mercenary Guilds... | | I.Varaci> This may not be enough, get in touch with the crypto-trusts and consider extending credit to the fleeing Survest houses. | L.Gavir and L.Yunver can be persuaded to aid us. | | CEO.Wilkins> Affirmative, I`ll send a notice to Finance now. Anything else? | | I.Varaci> I am meeting with L.Gavir tomorrow as well, he says he has some ideas on what exactly we are fighting. | | CEO.Wilkins> Understood, I await your update. | | <TRANSMISSION TERMINATED>'
-  'intel' : '!ALERT! | + Cryo-stasis failure in Storage-Deeps Facility 1. + Effective Strike force from this facility; 5% of maximum... + Enemy forces are closing in and this firebase must still be defended. | | Recommended Strike Package; 1x Matok | | Enemy composition mostly AFV with some METAL mixed in.'
-  'objtotal' : '1'
+  'brief' : '-COMM INTERCEPT- | Investen Varaci> I do not believe House Gavir was being underhanded on this. Their refugees that CNINE Corp. has allowed across the border have corroborated the reports. | | CEO.Wilkins> The stories match the situation that our own corporations have seen on the edges of our territory. | The shareholders have voted to activate more of our liquid reserves to the Mercenary Guilds... | | [I.Varaci] This may not be enough, get in touch with the crypto-trusts and consider extending credit to the fleeing Survest houses. | L.Gavir and L.Yunver can be persuaded to aid us. | | CEO.Wilkins> Affirmative, I`ll send a notice to Finance now. Anything else? | | [I.Varaci] I am meeting with L.Gavir tomorrow as well, he says he has some ideas on what exactly we are fighting. | | CEO.Wilkins> Understood, I await your update. | | <TRANSMISSION LOST>'
+  'intel' : '!ALERT! | + Cryo-stasis failure in Storage-Deeps Facility 3. + Effective Strike force from this facility; 5% of maximum... + Enemy forces are closing in and this firebase must still be defended. | | Recommended Strike Package; 1x Monitor class | | Enemy is dispersed through out the AO, heavy mix of tanks and <METALS>.'
+  'objtotal' : '2'
   'anim' : ''
 }
 // objectives section
@@ -19,5 +19,10 @@
   'objid' : '1'
   'objtype': 'primary'
   'objdesc' : 'Protect main base buildings at (ALPHA)'
-  'items' : '7 9 16'
+  'items' : '7 16'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy all <METALS> at each nav point.'
 }`

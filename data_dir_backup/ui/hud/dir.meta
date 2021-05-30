@@ -2,7 +2,10 @@
 //MODIFY AT YOUR OWN RISK
 //  this is a proto meta file, CSQC loads this in to create the index of huds
 //    their ID's are mapped to their mech ID's for file-finding reasons
-//    THE ORDER MATTERS, first hud file maps to Mech ID 1 !
+//    THE ORDER MATTERS!
+//    0 - ALWAYS the third-person camera hud
+//    1 = balaket, because mechId = 1
+hud_3ps
 hud_blk
 hud_mtk
 hud_mnt

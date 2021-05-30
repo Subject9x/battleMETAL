@@ -1,0 +1,22 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'tdm1/tdm1.tga'
+  'name'  : 'Operation Eis-stellung'
+  'display' : 'Candles in the dark'
+  'type'  : 'Base Assault'
+  'points' : '1'
+  'sector' : 'Frost-night'
+  'location' : 'Glacial Strata'
+  'time' : '-CLASSIFIED-'
+  'brief' : 'The enemy has small firebase on the other side of centerline ridge. You have been tasked with removing this base from the theater. | | Other divisions have tried for the previous few months to dislodge them to no avail. It seems the enemy and our forces have dug in for the duration of the combat. We expect you to thaw this deadlock. | | Assemble your strike force, and utilize the deploy points we have secured for you. | good luck.'
+  'intel' : '+ Our firease has 2 Repair Bays available for use. | + We and the enemy have built up a few static defense points in the area, be aware of these. | + The AO is cut up by glacial fissures that can conceal Metal and hinder movement, stay frosty.'
+  'objtotal' : '1'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy the enemy base at the nav point.'
+}

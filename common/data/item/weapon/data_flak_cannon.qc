@@ -145,7 +145,10 @@ void() data_ini_attack_flak_={
             damage = self.damageValue * 0.67;
           }
         }
-        t_damage(trace_ent, self, self.owner, damage, trace_endpos, '0 0 0');
+        HIT_LOCATION = t_damage(trace_ent, self, self.owner, damage, trace_endpos, '0 0 0');
+        if( HIT_LOCATION.partTypeId && !(self.owner.statTargetHitParts & HIT_LOCATION.partTypeId) ){
+          self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION.partTypeId;
+        }
       }
     }
     totes = totes - 1;

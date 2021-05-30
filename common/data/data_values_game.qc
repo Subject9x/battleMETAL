@@ -263,6 +263,9 @@ float CHAIN_FIRE_INTERVAL = 0.15;
 float DMG_TORSO_CRIT_MULTI = 1.5; // t_damage() - line 124, damage multiplier when mechs have torsos destroyed.
 float DMG_FRIENDLY_FIRE_REDUCE = 0.67;  // t_damage() - line 35, damage reduction for friendly fire when the flag is on.
 float DMG_FRIENDLY_FIRE_REDUCE_SKILL = 0.33;
+
+float MOVE_RAM_SCALAR_UP = 0.004;
+float MOVE_RAM_SCALAR_DN = 0.01;
 //============================
 //     WEAPON FLAGS
 //============================
@@ -430,6 +433,8 @@ float RADAR_SWEEP = 2.5;
 .float statWeaponReload8;
 .float statWeaponReload9;
 
+.float statTargetHitParts;
+
 #endif
 //============================
 //     ADDSTAT SLOT NUMBERS        
@@ -437,11 +442,11 @@ float RADAR_SWEEP = 2.5;
 //float    = 32;
 //float    = 33;
 float STAT_RAM = 34;
-//float    = 35;
+float STAT_TARGET_HIT_PARTS = 35;
 //float    = 36;
 //float    = 37;
 float STAT_PLAYER_STATE = 38;
-//float STAT_PLAYER_WEAPONS_STATE = 39;
+//float    = 39;
 //float    = 40;
 //float    = 41;
 //float    = 42;
@@ -477,7 +482,7 @@ float STAT_CLIENT_HP_LEGS = 72;
 //float    = 77;
 //float    = 78;
 float STAT_RAM_VALUE = 79;
-float STAT_LCK_STT = 80;
+//float STAT_LCK_STT = 80;  //2.0.0: lock-on not timer-based anymore
 
 float STAT_WEAPON_RELOAD_1 = 81;
 float STAT_WEAPON_RELOAD_2 = 82;
@@ -540,9 +545,11 @@ float FACTION_ALL = 255;  //buildings don't show up on radar, deploy and nav poi
 //============================
 //     SHIELD HIT FLAGS
 //============================
-float SHIELD_HIT_UP   = 1;
-float SHIELD_HIT_DN = 2;
-float SHIELD_HIT_EXP  = 3;
+//directs the client to choose the correct color / and shield state for an entity.
+float SHIELD_HIT_REG  = 1;  //tells client that entity's shields are hit, but currently up
+float SHIELD_HIT_EMP  = 2;  //entity hit with EMP round, color differently for readability.
+float SHIELD_HIT_EXP  = 4;  //entity shields have just gone down, cue explosion.
+float SHIELD_HIT_IXP  = 5;  //EMP-based shield explosion.
 
 //============================
 //     AI VOICE SYSTEM

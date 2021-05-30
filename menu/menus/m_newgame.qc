@@ -21,9 +21,12 @@ float newgame_substate;
 
 vector newgame_back_cacheOrg;
 
+string TRAINING_LABEL;
+
 //Main Menu Constants
 float NEWGAME_CAMPAIGN = 1;
 float NEWGAME_SKILL = 2;
+float NEWGAME_BRIEF = 3;
 
 string IMG_NEW_TITLE  = "gfx/menu/newgame/new_title.png";
 string IMG_NEW_NOVICE  = "gfx/menu/newgame/new_novice.png";
@@ -35,11 +38,37 @@ float NEWGAME_ROLL_ROK = 1;
 float NEWGAME_ROLL_REG = 2;
 float NEWGAME_ROLL_VET = 3;
 float NEWGAME_ROLL_ACE = 4;
+
+
+//Campaign Maps
+float TRAIN_MAP_LIST_TOTAL;
+entity new_camp_lbl;
+entity new_camp_train_lbl;
+entity new_camp_start_lbl;
+entity new_camp_start_btn;
+
+
+string( string mapName ) newg_format_map={
+  local float idx;
+  local string a,b;
+  
+  idx = strstrofs(mapName, "_", 0);
+  
+  a = substring(mapName, 0, idx);
+  b = substring(mapName, idx+1, strlen(mapName) - (idx+1));
+  return strcat(a, "-", b);
+};
+
+
 //button callbacks
 //because we define these right before the menu functions are defined, we 
 //don't have to put them in a header, and they can be 'somewhat' flexibily generated
 void() click_newg_back={
   if( newgame_substate == NEWGAME_SKILL ){
+    newgame_substate = NEWGAME_CAMPAIGN;
+    new_back.origin = newgame_back_cacheOrg;
+  }
+  else if( newgame_substate == NEWGAME_BRIEF ){
     newgame_substate = NEWGAME_CAMPAIGN;
     new_back.origin = newgame_back_cacheOrg;
   }
@@ -50,7 +79,8 @@ void() click_newg_back={
   }
 };
 
-void() click_newg_launch={
+
+void() click_newg_launch_map={  
   menu_write_new_save();
   menu_clear_items(M_STATE);
   menu_exit_togame();
@@ -60,32 +90,55 @@ void() click_newg_launch={
   cmd("cd stop\n");
   cmd("maxplayers 1\n");
   cvar_set("cl_ismenu","0");
-  cmd(strcat("map ", CAMP_SELECT_MAP,"\n")); 
+  cmd(strcat("map ", self.data_text,"\n")); 
   
-  freeGlobalString(CAMP_SELECT_MAP)
+  freeGlobalString(CAMP_SELECT_START)
+  freeGlobalString(CAMP_SELECT_INFO)
   freeGlobalString(CAMP_SELECT_NAME)
   freeGlobalString(CAMP_SELECT_MECHS)
   freeGlobalString(CAMP_SELECT_ITEMS)
 };
 
+/*
+  Sub-Menu: Campaign Briefing
+  allow player to skip training here.
+*/
+void() click_newg_info={
+  local vector mapOrg;
+  local string subMapName;
+  
+  newgame_substate = NEWGAME_BRIEF;
+  new_camp_lbl.label = CAMP_SELECT_NAME;
+  
+  if( CAMP_SELECT_INFO != "" ){
+    new_camp_train_lbl.label = CAMP_SELECT_INFO;
+    new_camp_train_lbl.drawme = TRUE;
+    new_camp_start_lbl.drawme = TRUE;
+  }
+  new_camp_start_btn.data_text = CAMP_SELECT_START;
+  new_back.origin_y = new_camp_start_btn.origin_y + gui_percentYRaw(48);
+  new_camp_start_btn.drawme = TRUE;
+};
+
+
 void() click_newg_novice={
   cvar_set("skill", "0");
-  click_newg_launch();
+  click_newg_info();
 };
 
 void() click_newg_regular={
   cvar_set("skill", "1");
-  click_newg_launch();
+  click_newg_info();
 };
 
 void() click_newg_veteran={
   cvar_set("skill", "2");
-  click_newg_launch();
+  click_newg_info();
 };
 
 void() click_newg_elite={
   cvar_set("skill", "3");
-  click_newg_launch();
+  click_newg_info();
 };
 
 void() click_newg_campaign={
@@ -93,12 +146,24 @@ void() click_newg_campaign={
   newgame_back_cacheOrg = new_back.origin;
   new_back.origin = gui_percentToPixelRawVec('10 230 0');
   
-  cacheGlobalString(CAMP_SELECT_MAP, CAMP_MAP[self.data_bind])
+  cacheGlobalString(CAMP_SELECT_START, CAMP_START[self.data_bind])
   cacheGlobalString(CAMP_SELECT_NAME, CAMP_NAME[self.data_bind])
   cacheGlobalString(CAMP_SELECT_MECHS, CAMP_MECHS[self.data_bind])
   cacheGlobalString(CAMP_SELECT_ITEMS, CAMP_ITEMS[self.data_bind])
+  cacheGlobalString(CAMP_SELECT_INFO, CAMP_INFO[self.data_bind])
 };
 
+
+void() click_newg_skill={
+  newgame_substate = NEWGAME_SKILL;
+  newgame_back_cacheOrg = new_back.origin;
+  new_back.origin = gui_percentToPixelRawVec('10 230 0');
+
+};
+
+/*
+  Game Difficulty Rollovers
+*/
 void(vector labelOrg) newmgame_text_rookie={
   local vector thisOrg;
   
@@ -173,6 +238,7 @@ void() m_newg_i={
   
   newgame_substate = NEWGAME_CAMPAIGN;
   
+  //SUB-MENU: SKILL SELECT
   new_title = lbl_img('10 100', '1 1 0', IMG_NEW_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_NEWGAME, 1, (UI_FLAG_SIZE_IMG) );
   new_novice = btn_img_callback('10 132 0', '1 1 0', IMG_NEW_NOVICE, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_novice, '1 1 1', CLR_DEF_BLUE, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   new_regular = btn_img_callback('10 151 0', '1 1 0', IMG_NEW_REGULAR, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_regular, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
@@ -184,9 +250,25 @@ void() m_newg_i={
   new_veteran.subid = NEWGAME_SKILL;
   new_elite.subid = NEWGAME_SKILL;
   
+  //SUB-MENU: TRAINING SELECT
+  new_camp_lbl = lbl_text('10 132 0', '14 14 0', CAMP_SELECT_NAME, '1 1 1', (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
+  new_camp_lbl.subid = NEWGAME_BRIEF;
   
+  new_camp_train_lbl = lbl_text('10 151 0', '12 12 0', CAMP_SELECT_INFO, CLR_DEF_ARM_THREEQ, (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
+  new_camp_train_lbl.subid = NEWGAME_BRIEF;
+  new_camp_train_lbl.drawme = FALSE;
+  
+  new_camp_start_lbl = lbl_text('10 170 0', '12 12 0', "Otherwise click START to skip training and begin the game:", CLR_DEF_ARM_THREEQ, (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
+  new_camp_start_lbl.subid = NEWGAME_BRIEF;
+  new_camp_start_lbl.drawme = FALSE;
+  
+  new_camp_start_btn = btn_text_callback('32 189 0', '14 14 0', "[START CAMPAIGN]", 0, M_NEWGAME, click_newg_launch_map, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  new_camp_start_btn.subid = NEWGAME_BRIEF;
+  new_camp_start_btn.drawme = FALSE;
+  new_camp_start_btn.data_text = CAMP_SELECT_START;
+  
+  //SUB-MENU: CAMPAIGN SELECT
   itr = 1;
-  
   if(CAMP_NAME[itr] != ""){
     start = gui_percentToPixelRawVec('10 151 0');
     while (itr < CAMP_TOTAL ){
@@ -253,6 +335,9 @@ void() m_newg_d={
       newmgame_text_ace('10 189 0');
     }
   }
+  else if( newgame_substate == NEWGAME_BRIEF){
+    
+  }
   else{
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -265,12 +350,13 @@ void() m_newg_d={
   menu_k functions are the 'listener' functions
 */
 void(float key, float ascii) m_newg_k={
-  //cons_logAFloat("m_newg_k.key", key);  //DEBUG
-  //cons_logAFloat("m_newg_k.ascii", ascii);  //DEBUG
-  
   switch(key){
     case K_ESCAPE:
       if(newgame_substate == NEWGAME_SKILL){
+        newgame_substate = NEWGAME_CAMPAIGN;
+        new_back.origin = newgame_back_cacheOrg;
+      }
+      if(newgame_substate == NEWGAME_BRIEF ){
         newgame_substate = NEWGAME_CAMPAIGN;
         new_back.origin = newgame_back_cacheOrg;
       }
@@ -278,6 +364,7 @@ void(float key, float ascii) m_newg_k={
         localsound("sound/misc/menu2.wav");
         menu_clear_items(M_STATE);
         m_camp_f();
+        freeGlobalString(TRAINING_LABEL)
       }
       break;
   }

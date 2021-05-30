@@ -46,7 +46,7 @@ void( string fileName ) cl_load_savefile={
   cl_load_items_all();
 };
 
-void( float serverMode, float overrideFlag ) cl_set_savepath={
+void( float serverMode, float overrideFlag, float ignoreSaveFlag) cl_set_savepath={
   local string filePath;
   
   if(overrideFlag){
@@ -74,8 +74,10 @@ void( float serverMode, float overrideFlag ) cl_set_savepath={
   }
   cl_load_savefile( filePath );
   if( serverMode == GAMEMODE_CAMPAIGN && cvar_string("sv_worldbasename") != "cin_menu" ){
-    cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
+    if( ignoreSaveFlag == FALSE){
+      cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
                                 //this is to save player progress on entering a new map, lame hack.
+    }
   }
 };
 
@@ -177,42 +179,77 @@ void() cl_savefile_append={
   }
 };
 
-//checks to see if item is already on list
-string(string item, string source) cl_savefile_insert={
-  local string update, tempSource, unlockToken, saveItemId;
-  local float tokens, unlockItr, saveItr, savedItemTotal, exists;
+
+/*
+  Checks to see if unlocks are new to player save data.
+  if they are, merge them into existing string, otherwise return new string
+
+*/
+string(string newItems, string source) cl_savefile_insert={
+
+  local float newItemTotal;
+  local float newItemItr;
   
-  tempSource = source;
-  tokens = tokenizebyseparator(item, " ");
-  update = "";
-  unlockItr = 0;
-  while( unlockItr < tokens){
-    tokenizebyseparator(item, " ");
-    unlockToken = argv(unlockItr);
-    savedItemTotal = tokenizebyseparator(tempSource, " ");
-    saveItr = 0;
-    exists = FALSE;
-    while( saveItr < savedItemTotal ){
-      saveItemId = argv(saveItr);
-      if( !exists ){
-        if( stof(unlockToken) == stof(saveItemId) ){
-          exists = TRUE;
-        }
-      }
-      saveItr = saveItr + 1;
-    }
-    if( !exists ){
-      update = strcat(update, " ", unlockToken);
-      tempSource = strcat(tempSource, " ", unlockToken);
-    }
-    unlockItr = unlockItr + 1;
+  local string newToken;
+  
+  local string append;
+  
+  local float invItr;
+  local float invTotal;
+  
+  local float unique;
+  
+  //prep the compare array
+    //clear it first just in case previous item set was longer.
+  invItr = 0;
+  invTotal = 128;
+  while( invItr < invTotal ){
+    SAVE_COMPARE[invItr] = 0;
+    invItr = invItr + 1;
   }
-  if(update != ""){
-    update = strcat(source, update);
-    return update;
+  
+  //copy inv items to the array.
+  invItr = 0;
+  invTotal = tokenizebyseparator(source, " ");
+  while( invItr < invTotal ){
+    SAVE_COMPARE[invItr] = rint(stof(argv(invItr)));
+    invItr = invItr + 1;
+  }
+  
+  append = "";
+  //slice up the unlocks
+  newItemTotal = tokenizebyseparator(newItems, " ");
+  newItemItr = 0;
+  
+  //append only unique new ids.
+  while( newItemItr < newItemTotal ){
+    newToken = argv(newItemItr);
+    
+    unique = TRUE;
+    invItr = 0;
+    while( invItr < invTotal ){
+      if( rint(stof(newToken)) == SAVE_COMPARE[invItr]){
+        unique = FALSE;
+      }
+      invItr = invItr + 1;
+    }
+    
+    if( unique ){
+      if( append == "" ){
+        append = newToken;
+      }
+      else{
+        append = strcat(append, " ", newToken);
+      }
+    }
+    newItemItr = newItemItr + 1;
+  }
+  
+  if( append == "" ){
+    return strcat(source);
   }
   else{
-    return source;
+    return strcat(append, " ", source);
   }
 };
 

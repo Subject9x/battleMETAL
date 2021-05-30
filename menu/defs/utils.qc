@@ -33,7 +33,7 @@ void() menu_write_new_save={
   flannel = fopen(file, FILE_WRITE);
     fputs(flannel, "{\n");
     fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
-    fputs(flannel, strcat("  'mission' : ", CAMP_SELECT_MAP, ",\n"));
+    fputs(flannel, strcat("  'mission' : ", CAMP_SELECT_START, ",\n"));
     fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
     fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
     fputs(flannel, strcat("  'campaign' : ", CAMP_SELECT_NAME, ",\n"));

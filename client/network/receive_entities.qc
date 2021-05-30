@@ -49,8 +49,9 @@ void() receive_ent_bindData={
       cacheGlobalString(CLIENT_netname, name )
     }
     
-    CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
+    //CLIENT_stat_lock_state = getstati(STAT_LCK_STT); //2.0.0: lock-on not timer-based anymore
     //CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
+    CLIENT_stat_hit_parts = getstati(STAT_TARGET_HIT_PARTS);
     CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
     CLIENT_stat_ret_dist = getstati(STAT_PLR_RETDIST);
     
@@ -231,7 +232,7 @@ void() client_state_events={
         else{
           te_mission_lose();
         }
-        SV_ENDTIMELIMIT = servertime;
+        SV_ENDTIME = servertime;
       }
       else{
         timeVal = servertime - CLIENT_spawn_time;
@@ -264,6 +265,7 @@ void() client_state_events={
       MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
       MENU_respawn_cool_start = servertime;
       MENU_button_delay = MENU_respawn_cool;
+      SV_ENDTIME = servertime;
       if( ENT_SERVER_INFO.missionResult == MISSION_RESULT_WIN ){
         msn_unlock_stuff();
         menu_debrief_sort_unlocks();
@@ -322,19 +324,26 @@ void() client_state_events={
 };
 
 
-
+/*
+  SVQC: Map_HUD_Highlight entity
+  this recieves a temp ent message from the server to highlight a part of the player's HUD,
+  usually bound to an existing HUD widget via partTypeId.
+*/
 void() client_get_hud_highlight={
   local entity hfx;
   local float t;
+  local float fnd;
   
   hfx = spawn();
+  hfx.drawmask = MASK_ENGINE;
   hfx.data_idx = -3;  //more hacks
+  hfx.classname = "UI_HIGHLIGHT"; //constant-in-code so no worry about zoning the value.
   
   hfx.drawcolor1 = te_read_vector();
   t = ReadShort();
   hfx.partTypeId = ReadByte();
+  hfx.partParentId = 0;
   
-  local float fnd;
   fnd = 0;
   while( fnd < 32 ){
     if( UI_DATA_UIDS[fnd] == hfx.partTypeId ){
@@ -353,7 +362,11 @@ void() client_get_hud_highlight={
   hfx.drawme = time + (t / 3);
 };
 
-
+/*
+  SVQC: TE_MSN_Boundary
+    not really used in the original game, however, if a modder wants arbirary map limits,
+      this is a means to notify the player they're reaching the boundary.
+*/
 void() client_event_boundary={
   HUD_WARN_ON = ReadByte();
   HUD_WARN_DIR = ReadAngle();
@@ -493,8 +506,8 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   HUD_INFO_SIZE_x = gui_percentXRaw( 256 );
   HUD_INFO_SIZE_y = infoBoxY;
   
-  HUD_INFO_ORG_x = VIEW_CTR_x - (HUD_INFO_SIZE_x / 2);
-  HUD_INFO_ORG_y = VIEW_CTR_y - (HUD_INFO_SIZE_y / 2);
+  HUD_INFO_ORG_x = VIEW_MAX_x - HUD_INFO_SIZE_x;
+  HUD_INFO_ORG_y = VIEW_ORG_y + gui_percentYRaw(128);
   
   drawfont = drawfont_prev;
   

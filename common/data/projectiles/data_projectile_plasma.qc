@@ -121,10 +121,10 @@ void() data_projectile_plasma_touch={
       proc = FALSE;
       if( other.shield <= (other.shieldMax * 0.1) ){
         proc = TRUE;
-        damage = damage * 0.5;
+        damage = damage * 0.65; //0.5
       }
       else{
-        damage = damage * 0.33;
+        damage = damage * 0.45; //0.33
       }
       t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, proc);
       self.impactType = IMPACT_SHIELD;
@@ -145,6 +145,9 @@ void() data_projectile_plasma_touch={
       self.think = data_projectile_plasma_burn_ini_;
       self.nextthink = time + 0.05;
       self.impactType = IMPACT_ARMOR;
+      if( hit.partTypeId && !(self.owner.statTargetHitParts & hit.partTypeId) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit.partTypeId;
+      } 
       return;
     }
 	}

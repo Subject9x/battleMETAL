@@ -13,117 +13,96 @@
   'pos'     : 102 87 0,
   'valign'  : 18,
   'size'    : 22 84 0,
-  'lflag'   : 1,
   'lalign'  : 11,
-  'lblofs'  : 0 6 0,
+  'lblofs'  : 0 18 0,
   'axis'    : 2,
 }
 //Player Shield
 {
   'uid'     : 4,
-  'pos'     : 215 92 0,
+  'pos'     : 215 115 0,
   'valign'  : 18,
   'size'    : 90 12 0,
-  'lflag'   : 1,
   'lalign'  : 5,
-  'lblofs'  : 0 10 0,
+  'lblofs'  : 12 0 0,
   'axis'    : 1,
 }
 //Player Armor
 {
   'uid'     : 3,
-  'pos'     : 170 45 0,
+  'pos'     : 170 60 0,
   'valign'  : 18,
 }
 //Weapon 1 - Style 1
 {
   'uid'     : 7,
-  'pos'     : 235 -50 0,
+  'pos'     : 235 -45 0,
   'valign'  : 48,
   'wbit'    : 1,
 }
 //Weapon 2 - Style 1
 {
   'uid'     : 7,
-  'pos'     : 197 -50 0,
+  'pos'     : 197 -45 0,
   'valign'  : 48,
   'wbit'    : 2,
 }
 //Weapon 3 - Style 1
 {
   'uid'     : 7,
-  'pos'     : 160 -50 0,
+  'pos'     : 160 -45 0,
   'valign'  : 48,
   'wbit'    : 4,
 }
 //Weapon 4 - Style 1
 {
   'uid'     : 7,
-  'pos'     : -15 -50 0,
+  'pos'     : -15 -45 0,
   'valign'  : 48,
   'wbit'    : 8,
 }
 //Weapon 5 - Style 1
 {
   'uid'     : 7,
-  'pos'     : -50 -50 0,
+  'pos'     : -50 -45 0,
   'valign'  : 48,
   'wbit'    : 16,
 }
 //Radar Status - Style 1
 {
   'uid'     : 9,
-  'pos'     : -42 100 0,
+  'pos'     : 24 135 0,
   'valign'  : 18,
 }
 //Radar Graph
 {
   'uid'     : 11,
-  'pos'     : 60 90 0,
+  'pos'     : 45 100 0,
   'valign'  : 18,
   'size'    : 90 90 0,
-}
-//Target Shield
-{
-  'uid'     : 6,
-  'pos'     : -125 92 0,
-  'valign'  : 18,
-  'size'    : 90 12 0,
-  'lflag'   : 1,
-  'lalign'  : 5,
-  'lblofs'  : 0 10 0,
-  'axis'    : 1,
 }
 //Target Armor - Mech
 {
   'uid'     : 5,
-  'pos'     : -170 45 0,
+  'pos'     : -170 62 0,
   'valign'  : 18,
-}
-//Nav Heading - unused for now - Beta 2
-{
-  'uid'     : 12,
-  'pos'     : 8 16 0,
-  'valign'  : 17,
-}
-//Target Name
-{
-  'uid'     : 13,
-  'pos'     : 195 126 0,
-  'valign'  : 10,
-}
-//Target Range
-{
-  'uid'     : 14,
-  'pos'     : 195 116 0,
-  'valign'  : 10,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -48 -68 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
 }
 //Target Armor - Vec
 {
   'uid'     : 15,
-  'pos'     : -145 48 0,
+  'pos'     : -95 56 0,
   'valign'  : 18,
-  'size'    : 24 60 0,
+  'size'    : 75 40 0,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -12 -56 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
 }
 //Target Armor - Building
 {
@@ -131,6 +110,33 @@
   'pos'     : -110 46 0,
   'valign'  : 18,
   'size'    : 60 60 0,
+  'lflag'   : 1,
+  'lalign'  : 48,
+  'lblofs'  : -19 -56 0,
+// color2 = panel size
+  'color2'  : 96 132 0,
+}
+//Target Shield
+{
+  'uid'     : 6,
+  'pos'     : -137 105 0,
+  'valign'  : 18,
+  'size'    : 75 12 0,
+  'lalign'  : 5,
+  'lblofs'  : 12 0 0,
+  'axis'    : 1,
+}
+//Target Name
+{
+  'uid'     : 13,
+  'pos'     : 194 126 0,
+  'valign'  : 10,
+}
+//Target Range
+{
+  'uid'     : 14,
+  'pos'     : 194 116 0,
+  'valign'  : 10,
 }
 //HUD Messages
 {
@@ -147,16 +153,22 @@
 //Ram Charge Meter
 {
   'uid'     : 19,
-  'pos'     : 75 126 0,
+  'pos'     : 96 135 0,
   'valign'  : 18,
   'size'    : 64 16,
   'axis'    : 1,
-  'lalign'  : 17,
-  'lblofs'  : 0 10 0,
+  'lalign'  : 5,
+  'lblofs'  : 0 0 0,
 }
 //Mission Clock
 {
   'uid'     : 20,
-  'pos'     : -42 75 0,
+  'pos'     : 24 145 0,
   'valign'  : 18,
 }
+//Nav Heading - unused for now - Beta 2
+// {
+//  'uid'     : 12,
+//  'pos'     : 8 16 0,
+//  'valign'  : 17,
+// }

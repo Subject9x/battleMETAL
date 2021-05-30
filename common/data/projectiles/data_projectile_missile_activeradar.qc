@@ -249,7 +249,10 @@ void() data_projectile_missile_activeradar_touch={
           }
           part = bitshift(2, rollDice);
           hit = util_getPartFromName(part, other);
-          t_damage(trace_ent, self, self.owner, self.damageValue / DAT_MARH_SHRAP_TOTAL, hit.origin, '0 0 0');
+          hit = t_damage(trace_ent, self, self.owner, self.damageValue / DAT_MARH_SHRAP_TOTAL, hit.origin, '0 0 0');
+          if( hit.partTypeId && !(self.owner.statTargetHitParts & hit.partTypeId) ){
+            self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit.partTypeId;
+          }
           totes = totes - 1;
         }
       }
