@@ -12,6 +12,9 @@ void( string fileName ) cl_load_savefile={
   local string line, contents;
   local float flannel, line_tag;
   
+  if( cvar("developer") ){
+    dprint(sprintf("cl_load_savefile()->FILENAME = %s\n", fileName));  //debug
+  }
   flannel = fopen(fileName, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);
@@ -38,7 +41,7 @@ void( string fileName ) cl_load_savefile={
   }
   else{
     if( cvar("developer") ){
-      dprint(sprintf("cl_load_savefile()->: %s was not found\n", fileName));  //debug
+      dprint(sprintf("cl_load_savefile()->FILENAME %s was not found\n", fileName));  //debug
     }
   }
   
@@ -46,10 +49,11 @@ void( string fileName ) cl_load_savefile={
   cl_load_items_all();
 };
 
-void( float serverMode, float overrideFlag, float ignoreSaveFlag) cl_set_savepath={
+void( float serverMode, float svFlags ) cl_set_savepath={
   local string filePath;
+  local float flannel;
   
-  if(overrideFlag){
+  if( (svFlags & SVFLAG_ITEMOVER) ){
     filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/", MAP_NAME, SAVE_FILE_EXT);
   }
   else{
@@ -57,24 +61,24 @@ void( float serverMode, float overrideFlag, float ignoreSaveFlag) cl_set_savepat
       case GAMEMODE_CAMPAIGN:
         filePath = strcat(PATH_DATA_SAVE,"/",SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
         break;
-      
+
       case GAMEMODE_COOP:
         filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/coop", SAVE_FILE_EXT);
         break;
-        
+
       case GAMEMODE_DM:
-         filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
+        filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
         break;
-       
+
       case GAMEMODE_TEAMDM:
-        //TODO - teams
-         filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
+        //TODO - figure out team dm lists
+        filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
         break;
     }
   }
   cl_load_savefile( filePath );
   if( serverMode == GAMEMODE_CAMPAIGN && cvar_string("sv_worldbasename") != "cin_menu" ){
-    if( ignoreSaveFlag == FALSE){
+    if( !(svFlags & SVFLAG_NOSAVE) ){
       cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
                                 //this is to save player progress on entering a new map, lame hack.
     }
