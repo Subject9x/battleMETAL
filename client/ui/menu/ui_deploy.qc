@@ -61,6 +61,7 @@ void() menu_deployListener_onHover={
 };
 
 //Listener hooks calle by menu_briefListener
+//  DEPRECATED
 void() navSelectListener={
   local entity nav;
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_MAP_ORG, gui_percentToPixelRawVec('380 380'), TRUE) ){
@@ -81,9 +82,12 @@ void() navSelectListener={
         LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
       cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+      cl_send_infostring( INFO_FLAG_SPAWN );
     }
     else{
       LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
+      cl_setspawnpoint( 0 );
+      cl_send_infostring( INFO_FLAG_SPAWN );
     }
   }
 };
@@ -128,6 +132,7 @@ void() navListSelectListener={
         LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
       cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+      cl_send_infostring( INFO_FLAG_SPAWN );
     }
     else{
       if( (LAUNCH_VALIDATION & VALID_NODE) ){
@@ -404,13 +409,11 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
   }
   
-
   helpOrg = mpos;
   helpOrg_x = helpOrg_x + gui_percentXRaw(405) - gui_percentXRaw(12);
   DEPLOY_HELP_NAV_MAP = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
-
-
+  
   for( player = nextent(world); player != world; player = nextent(player) ){
     if( !(player.flags & FL_CLIENT) ){
       continue;

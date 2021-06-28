@@ -511,16 +511,17 @@ void() PutClientInServer_TeamDeathmatch={
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
-    if( TEAM_SURVEST_TOTAL < 9 ){
-      self.faction = FACTION_SURVEST;
+    if( TEAM_SURVEST_TOTAL <= 7 ){
       TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
       self.clientcolors = FACTION_SURVEST;
+      self.faction = FACTION_SURVEST;
     }
     else{
-      self.faction = FACTION_MILITAR;
       TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
       self.clientcolors = FACTION_MILITAR;
+      self.faction = FACTION_MILITAR;
     }
+    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_FACTION;
   }
   client_push_mapobjects(); //refreshes map object data for everyone
   self.th_die = PlayerDieNetwork;

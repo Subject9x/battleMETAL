@@ -159,7 +159,7 @@ void() client_push_mapobjects={
 void(string cmdString) client_parse_clientInfoString={
   local float changeFlags;
   local string dataString;
-  local float prevFaction;
+  local float nextFaction;
   
   tokenize(cmdString);
   
@@ -168,34 +168,29 @@ void(string cmdString) client_parse_clientInfoString={
   changeFlags = rint(stof(infoget(dataString, KEY_FLAGS)));
   //FACTION UPDATE
   if( (changeFlags & INFO_FLAG_FACTION) ){
-    prevFaction = self.faction;
-    self.faction = rint(stof( infoget(dataString, KEY_FACTION) ));
+    nextFaction = rint(stof( infoget(dataString, KEY_FACTION) ));
     if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
-      if( prevFaction != self.faction ){
-        if( self.faction == FACTION_MILITAR ){
-          if( TEAM_MILITAR_TOTAL < 9 ){
-            TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
-            TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
-            self.clientcolors = 3;
-          }
-          else{
-            self.faction = prevFaction;
-          }
-        }
-        else if( self.faction == FACTION_SURVEST ){
-          if( TEAM_SURVEST_TOTAL < 9 ){
+      if( nextFaction != self.faction ){
+        //SURVEST -> MILITAR
+        if( nextFaction == FACTION_SURVEST ){
+          if( TEAM_SURVEST_TOTAL <= 7 ){
             TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
             TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL - 1;
-            self.clientcolors = 2;
-          }
-          else{
-            self.faction = prevFaction;
           }
         }
+        //MILITAR -> SURVEST
+        else if( nextFaction == FACTION_MILITAR ){
+          if( TEAM_MILITAR_TOTAL <= 7 ){
+            TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
+            TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+          }
+        }
+        ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_FACTION;
       }
     }
+    self.faction = nextFaction;
+    self.clientcolors = nextFaction;
     client_update_faction();
-    localcmd(strcat("color ", ftos(self.faction), "\n"));
   }
   //MECH ID UPDATE
   if( (changeFlags & INFO_FLAG_MECH) ){

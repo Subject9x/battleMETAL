@@ -19,10 +19,9 @@ void( vector ofs ) ui_navbutton_brief_draw={
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
   gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_BRIEF_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_BRIEF_SIZE), CLR_DEF_WEP_INRANGE, 1, 0) ;
-  if( CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE ){
-  }
-  else{
-  }
+  
+  
+  
   textPos = UI_NAVBAR_BRIEF_ORG;
   strWidth = stringwidth("BRIEFING", 0 , UI_NAVBAR_font_unselect) / 2;
   textPos_x = (UI_NAVBAR_BRIEF_ORG_x + gui_percentXRaw(UI_NAVBAR_BRIEF_SIZE_x/2)) - gui_percentXRaw(strWidth);
@@ -163,12 +162,7 @@ void( vector ofs ) ui_navbutton_deploy_draw={
   }
   gui_renderTintImage(deploy_flt, UI_NAVBAR_DEPLOY_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_DEPLOY_SIZE), deploy_clr, 1, 0) ;
   textPos = UI_NAVBAR_DEPLOY_ORG;
-  if( CLIENT_MENU_menu_choice == MENU_DEPLOY_ACTIVE ){
-    
-  }
-  else{
   
-  }
   strWidth = stringwidth("DEPLOYMENT", 0 , UI_NAVBAR_font_unselect)/2;
   textPos_x = (textPos_x +  gui_percentXRaw(UI_NAVBAR_DEPLOY_SIZE_x/2)) - gui_percentXRaw(strWidth);
   textPos_y = textPos_y + gui_percentYRaw(4);
@@ -224,11 +218,15 @@ void() ui_navbutton_deploy_click={
       cl_send_infostring( INFO_FLAG_DEPLOY );
     }
   }
+  
   SPRITE_deploy_point_FRAME = 1;
   CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
   
   if( CLIENT_MENU_nav_pnt != -1 ){
     LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+  }
+  else{
+    LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
   }
 };
 
@@ -276,7 +274,7 @@ void() ui_navbutton_launch_click={
     return;
   }
   if( servertime > MENU_respawn_cool ){
-    if( (LAUNCH_VALIDATION & (VALID_NODE | VALID_GRPS | VALID_MECH)) ){
+    if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_GRPS) && (LAUNCH_VALIDATION & VALID_MECH) ){
       CLIENT_MENU_sel_hrpnt = 0;
       
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
@@ -494,12 +492,12 @@ void( vector ofs ) ui_navbutton_team_draw={
     fontSize = UI_NAVBAR_font_unselect;
   }
   if( CLIENT_faction == FACTION_SURVEST ){
-    if( TEAM_MILITAR_TOTAL > 8 ){
+    if( TEAM_MILITAR_TOTAL > 7 ){
       disColor = CLR_DEF_TXT_NONSELECT;
     }
   }
   if( CLIENT_faction == FACTION_MILITAR ){
-    if( TEAM_SURVEST_TOTAL > 8 ){
+    if( TEAM_SURVEST_TOTAL > 7 ){
       disColor = CLR_DEF_TXT_NONSELECT;
     }
   }
@@ -516,21 +514,13 @@ void( vector ofs ) ui_navbutton_team_draw={
 void() ui_navbutton_team_click={
   local float nextFaction;
   if( CLIENT_faction == FACTION_SURVEST ){
-     if( TEAM_MILITAR_TOTAL < 9 ){
-      TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL - 1;
-      TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
-      nextFaction = FACTION_MILITAR;
-    }
+    nextFaction = FACTION_MILITAR;
   }
   else if(CLIENT_faction == FACTION_MILITAR){
-    if( TEAM_SURVEST_TOTAL < 9 ){
-      TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
-      TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL - 1;
-      nextFaction = FACTION_SURVEST;
-    }
+    nextFaction = FACTION_SURVEST;
   }
-  if( nextFaction != CLIENT_faction ){
-    menu_update_colors( nextFaction );
+  if( nextFaction > 0 ){
     cl_set_faction( nextFaction );
+    cl_send_infostring( INFO_FLAG_FACTION );
   }
 };

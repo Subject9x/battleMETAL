@@ -63,8 +63,8 @@ void(float changeFlags) cl_send_infostring={
     updateInfoString = infoadd(updateInfoString, KEY_COLOR4, infoget(CLIENT_INFO_STRING, KEY_COLOR4));
     updateInfoString = infoadd(updateInfoString, KEY_COLOR5, infoget(CLIENT_INFO_STRING, KEY_COLOR5));
     updateInfoString = infoadd(updateInfoString, KEY_COLOR6, infoget(CLIENT_INFO_STRING, KEY_COLOR6));
-
   }
+  
   if( (changeFlags & INFO_FLAG_GROUPS) ){
     updateInfoString = infoadd(updateInfoString, KEY_GROUP1, infoget(CLIENT_INFO_STRING, KEY_GROUP1));
     updateInfoString = infoadd(updateInfoString, KEY_GROUP2, infoget(CLIENT_INFO_STRING, KEY_GROUP2));

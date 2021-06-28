@@ -118,6 +118,14 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
      //time the round ended.
      //CSQC tracks as the global servertime
   }
+  
+  //TDM team totals changed
+  if( self.gameType == GAMEMODE_TEAMDM){
+    if( (changedFlags & SENDFLAG_FACTION) ){
+      WriteByte( MSG_ENTITY, TEAM_SURVEST_TOTAL);
+      WriteByte( MSG_ENTITY, TEAM_MILITAR_TOTAL);
+    }
+  }
   return TRUE;
 };
 
@@ -209,6 +217,14 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   
   if( (changeFlags & SENDFLAG_ENDROUND) ){
     self.endRoundTime = servertime;//time the round ended.
+  }
+  
+  //TDM team totals changed
+  if( self.gameType == GAMEMODE_TEAMDM){
+    if( (changeFlags & SENDFLAG_FACTION) ){
+      TEAM_SURVEST_TOTAL = ReadByte();
+      TEAM_MILITAR_TOTAL = ReadByte();
+    }
   }
   
   SV_WORLDTYPE = self.worldtype;

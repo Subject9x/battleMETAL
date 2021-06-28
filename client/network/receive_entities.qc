@@ -39,10 +39,34 @@ void() client_get_info={
 void() receive_ent_bindData={
   local string name;
   local float oldTargetType;
+  local float prevFaction;
+  local entity deploy;
+  local entity previous;
   
   name = cvar_string("_cl_name");
   
   CLIENT_player_state = getstati( STAT_PLAYER_STATE );
+  
+  prevFaction = CLIENT_faction;
+  CLIENT_faction = rint(stof(getplayerkeyvalue(player_localentnum - 1, "colors")));
+  if( prevFaction != CLIENT_faction ){
+    menu_update_colors( CLIENT_faction );
+    cl_set_faction( CLIENT_faction );
+    //rebuild nav points
+    for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
+      if( deploy.faction == CLIENT_faction || deploy.faction == FACTION_ALL ){
+        if( !previous.data_idx ){
+          FACTION_DEPLOY = deploy; // first point
+          previous = deploy;
+        }
+        else{
+          previous.nextPoint = deploy;
+          deploy.prevPoint = previous;
+          previous = deploy;
+        }
+      }
+    }
+  }
   
   if( CLIENT_data_type == DATA_MECH ){
     if( name != CLIENT_netname){
@@ -276,6 +300,7 @@ void() client_state_events={
     
     //EVENT - CLIENT NET RESPAWN
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_REDEPLOY) ){
+      CLIENT_MENU_deploy = world;
       menu_enter( MENU_CONNECT_ACTIVE );
       MENU_button_delay = servertime + 1;
       if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
