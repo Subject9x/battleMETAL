@@ -414,6 +414,7 @@ void() interpolate_mech_ai={
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
+	setorigin(self, self.origin);
   
   parent = self;
   makevectors(parent.angles);
@@ -421,7 +422,6 @@ void() interpolate_mech_ai={
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
-    addentity(self.torsoCenter);
   }
   if( self.legs != world ){
     self = self.legs;
@@ -430,7 +430,6 @@ void() interpolate_mech_ai={
       self.angles_y = parent.legDir;
     self = parent;
     predraw_legs();
-    addentity(self.legs);
   }
   
   makevectors(parent.torsoCenter.angles);
@@ -439,35 +438,30 @@ void() interpolate_mech_ai={
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
     self = parent;
-    addentity(self.torsoLeft);
   }
   if( !(self.criticalHits & M_TOR_RIGHT) && self.torsoRight != world ){
     self = self.torsoRight;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
     self = parent;
-    addentity(self.torsoRight);
   }
   if( !(self.criticalHits & M_ARM_RIGHT) && self.armRight != world ){
     self = self.armRight;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
     self = parent;
-    addentity(self.armRight);
   }
   if( !(self.criticalHits & M_ARM_LEFT) && self.armLeft != world ){
     self = self.armLeft;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
     self = parent;
-    addentity(self.armLeft);
   }
   
   wepn = self.w_slot;
   while( (wepn != world) ){
     self = wepn;
       if( !(parent.criticalHits & wepn.partParentId) ){
-        addentity(wepn);
         if( self.partParentId == M_LEGS ){
           makevectors(parent.angles);
           saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
@@ -489,6 +483,5 @@ void() predraw_mech_ai={
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
-    setorigin(self, self.origin);
   }
 };

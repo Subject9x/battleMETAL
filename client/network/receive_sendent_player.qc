@@ -80,7 +80,6 @@ void(entity piece) player_part_predaw={
   if( (self.criticalHits & piece.partTypeId) ){
     return;
   }
-  addentity(piece);
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
   
   if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
@@ -234,7 +233,6 @@ void() player_predraw={
       wep = self.w_slot;
       while( wep != world ){
         if( !(self.criticalHits & wep.partParentId) ){
-          addentity(wep);
           predraw_player_weapon(wep);
         }
         wep = wep.w_slot;
@@ -279,6 +277,8 @@ void() player_predraw={
         if( cvar("chase_active") == FALSE ){
           addentity(hudStruts);
           addentity(hudConsole);
+					//hudStruts.drawmask = -1;
+					//hudConsole.drawmask = -1;
         }
       }
     }
@@ -329,6 +329,13 @@ void( float mech_id ) sendevent_player_mech={
   setmodel(self.armRight, self.armRight.model);
   setmodel(self.legs, self.legs.model);
   
+  self.torsoCenter.drawmask = MASK_NORMAL;
+  self.torsoLeft.drawmask = MASK_NORMAL;
+  self.torsoRight.drawmask = MASK_NORMAL;
+  self.armLeft.drawmask = MASK_NORMAL;
+  self.armRight.drawmask = MASK_NORMAL;
+  self.legs.drawmask = MASK_NORMAL;
+
   this = self;
   weps = self.w_slot;
   while( weps != world ){
@@ -344,6 +351,7 @@ void( float mech_id ) sendevent_player_mech={
       }
       self.reloadValue = 100;
       setmodel(self, self.model);
+			self.drawmask = MASK_NORMAL;
     self = this;
     weps = weps.w_slot;
   }

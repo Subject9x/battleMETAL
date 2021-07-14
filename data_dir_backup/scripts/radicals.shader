@@ -103,13 +103,27 @@ q3mdl/map/rads/rad_base_lg
 //EXPLOSION SHELLS - SHIELD
 q3mdl/fx/explosions/te_shield_explode
 {
-		deformVertexes wave 10 sin 0 .75 0 1.0
-		deformVertexes wave -10 sin 0 .5 .25 .75
+		deformVertexes wave 4 sin 0 .75 0 1.0
 		{
 				map q3mdl/fx/explosions/te_shield_explode.tga
 				tcMod turb 0 0.25 0 0.25
 				tcMod rotate 10
-				rgbGen lightingDiffuse
+				rgbGen vertex
+		}   
+    {
+      map $lightmap
+      blendfunc GL_DST_COLOR GL_ZERO
+      rgbGen vertex
+    }
+}
+q3mdl/fx/explosions/te_shield_explode_red
+{
+		deformVertexes wave 7 sin 0 .75 0 1.0
+		{
+				map q3mdl/fx/explosions/te_shield_explode_red.tga
+				tcMod turb 0 0.25 0 0.25
+				tcMod rotate 10
+				rgbGen vertex
 		}   
     {
       map $lightmap
@@ -120,13 +134,12 @@ q3mdl/fx/explosions/te_shield_explode
 //EXPLOSION SHELLS - EXPLODE
 q3mdl/fx/explosions/te_missile_explode
 {
-		deformVertexes wave 10 sin 0 .75 0 1.0
-		deformVertexes wave -10 sin 0 .5 .25 .75
+		deformVertexes wave 7 sin 0 .75 0 1.0
 		{
 				map q3mdl/fx/explosions/te_missile_explode.tga
 				tcMod turb 0 0.25 0 0.25
 				tcMod rotate 15
-				rgbGen lightingDiffuse
+				rgbGen vertex
 		}
     {
       map $lightmap
@@ -138,8 +151,6 @@ q3mdl/fx/explosions/te_missile_explode
 //DEBRIS - DEBRIS1
 q3mdl/fx/debris1/skin_debris1
 {
-		deformVertexes wave 20 sin 0 2 0 0.25
-		deformVertexes wave -20 sin 0 1 .25 1.0
 		{
 				map q3mdl/fx/debris1/skin_debris1.tga
 				tcMod turb 0 0.25 0 0.25
@@ -155,8 +166,6 @@ q3mdl/fx/debris1/skin_debris1
 //DEBRIS - DEBRIS2
 q3mdl/fx/debris2/skin_debris2
 {
-		deformVertexes wave 20 sin 0 2 0 0.25
-		deformVertexes wave -20 sin 0 1 .25 1.0
 		{
 				map q3mdl/fx/debris1/skin_debris1.tga
 				tcMod turb 0 0.25 0 0.25
@@ -172,8 +181,6 @@ q3mdl/fx/debris2/skin_debris2
 //DEBRIS - DEBRIS3
 q3mdl/fx/debris3/skin_debris3
 {
-		deformVertexes wave 20 sin 0 2 0 0.25
-		deformVertexes wave -20 sin 0 1 .25 1.0
 		{
 				map q3mdl/fx/debris1/skin_debris1.tga
 				tcMod turb 0 0.25 0 0.25

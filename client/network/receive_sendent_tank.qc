@@ -195,7 +195,6 @@ void() interpolate_tank={
   makevectors(self.angles);
   
   if( self.torsoCenter != world ){
-    addentity(self.torsoCenter);
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
@@ -204,7 +203,6 @@ void() interpolate_tank={
   wepn = self.w_slot;
   while( (wepn != world) ){
     self = wepn;
-      addentity(wepn);
       if( self.partParentId == M_LEGS ){
         makevectors(parent.angles);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);

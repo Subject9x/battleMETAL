@@ -68,4 +68,5 @@ void( entity setPart ) data_mech_setup_part={
   setPart.origin = self.origin + (v_right * setPart.compOffset_x) + (v_forward * setPart.compOffset_z) + (v_up * setPart.compOffset_y);
   setPart.angles = self.angles;
   setorigin(setPart, setPart.origin);
+	setPart.drawmask = MASK_NORMAL;
 };

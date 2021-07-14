@@ -395,7 +395,7 @@ void() te_shield_hit={
   explode.nextthink = servertime + 0.01;
   explode.data_lifetime = servertime + hitTime;
   explode.scale = self.vec_size * 0.75;
-  explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
+  explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
   explode.drawmask = MASK_NORMAL;
   explode.predraw = te_shield_hit_predraw;
   explode.owner = self;
@@ -403,7 +403,7 @@ void() te_shield_hit={
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setsize(explode, explode.mins, explode.maxs);
   setorigin( explode, self.origin);
-  explode.alpha = 0.075;
+  explode.alpha = 0.1;
   
   if(self.shieldHitFlag == SHIELD_HIT_EMP){
     flashCol = '1.0 0.4 1.0';
@@ -483,7 +483,7 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.data_lifetime = 10;
   explode.scale = 0.1 + (vecSize / 3);
   explode.alpha = 0.6;
-  explode.effects = explode.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
+  explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
   explode.drawmask = MASK_NORMAL;
   explode.predraw = predraw_shield_explode;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");

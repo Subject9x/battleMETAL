@@ -23,7 +23,7 @@ void() sendent_ai_think={
   self.laser_sight_org = trace_endpos;
   
   self.think = sendent_ai_think;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.01;
 };
 //implementing parts of Spike's CSQC-only mod code here
 void() interpolate_origin={
@@ -71,7 +71,6 @@ void() interpolate_ground={
     if (self.flags & (FL_ONGROUND|FL_PARTIALGROUND)){
       self.origin_z = saved_z;	//try and avoid monsters on plats juddering separately from the plat_center_touch. could probably do something better based on dotproducts with the direction of motion or something. not sure.
     }
-    //addentity(self);
     self.origin = saved;
   }
   else
@@ -79,7 +78,6 @@ void() interpolate_ground={
     //but if its in free-fall, don't lag it.
     //no nasty surprises when it does hit the ground please.
     self.origin2 = self.origin1 = self.origin;
-    //addentity(self);
   }
 };
 //-----------------------------------
@@ -415,6 +413,7 @@ void() sendent_setup_weapons={
         setorigin(self, this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
         self.angles = this.torsoCenter.angles;
       }
+			self.drawmask = MASK_NORMAL;
     self = this;
     weps = weps.w_slot;
   }

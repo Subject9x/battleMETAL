@@ -216,7 +216,6 @@ void() interpolate_turret={
   parent = self;
   makevectors(parent.angles);
   if( self.torsoCenter ){
-    addentity(self.torsoCenter);
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
@@ -224,7 +223,6 @@ void() interpolate_turret={
   
   wepn = self.w_slot;
   while( (wepn != world) ){
-    addentity(wepn);
     self = wepn;
       if( self.partParentId == M_LEGS ){
         makevectors(parent.angles);

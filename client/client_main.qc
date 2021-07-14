@@ -369,7 +369,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   VIEW_SCALE = 0.35;
 
   //alter fog settings if needed
-  cl_particles_fogFrame();
+  //cl_particles_fogFrame();	//fog is disable for the time being (something up with depth-rendering and unit shaders)
   
   //TODO - fog is now different in latest DP build
   //setproperty(VF_FOG_DENSITY, FOG_DENSITY);
@@ -399,12 +399,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
           if( self.interpolate_entity ){
             self.interpolate_entity();
           }
-          addentity(self);
-        }
-        else{
-          if( self.model && !self.partTypeId && !self.w_slot ){
-            addentity(self);
-          }
         }
         if(self.render_dlights){
           self.render_dlights();
@@ -412,7 +406,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       }
     }
     self = oldSelf;
-    addentities( (MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
+    addentities( MASK_ENGINE | MASK_ENGINEVIEWMODELS | MASK_NORMAL );
     renderscene();
   }
   
