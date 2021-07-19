@@ -214,7 +214,8 @@ void() data_building_death1={
   }
   
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
-  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  
+  building_sound_explode();
   
   self.frame = self.frame + 1;
   self.think = data_building_death2;
@@ -249,6 +250,15 @@ void() building_floor_th={
   
   self.think = building_floor_th;
   self.nextthink = time + 1;
+};
+
+
+void() building_sound_explode={
+  local float sizeMod;
+  
+  sizeMod = self.vec_size / 10;
+  sizeMod = 1.0 - (1.0 - (sizeMod * 2) / 2);
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
 };
 
 /*

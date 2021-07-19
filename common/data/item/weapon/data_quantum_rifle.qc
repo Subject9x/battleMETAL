@@ -32,7 +32,9 @@ void() te_muzzle_qrf={
   prtclRail_org = startOrg + (v_forward * 2);
   prtclRail_end = startOrg + (v_forward * 48);
   prtclSpark_org = startOrg + (v_forward * 22);
-  pointsound( startOrg, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM);
+  
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
+  
   pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( endOrg - startOrg ), 1 ) ;
   pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
   pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;

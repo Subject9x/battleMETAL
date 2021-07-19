@@ -28,11 +28,13 @@ void() te_muzzle_latc={
   
   norm = normalize(endOrg - startOrg);
   ang = vectoangles(endOrg - startOrg);
-  pointsound( startOrg, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM);
   
   beamLen = vlen(endOrg - startOrg);
   if( beamLen >= 1500 ){
-    pointsound( endOrg, "sound/weapons/atc_fire.ogg", 0.5, ATTN_NORM);
+    sound7(self, CHAN_AUTO, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 100, 0 );
+  }
+  else{
+    sound7(self, CHAN_AUTO, "sound/weapons/atc_fire.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 125, 0 );
   }
   
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), startOrg, norm * 4, 1);

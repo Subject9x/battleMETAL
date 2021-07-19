@@ -77,7 +77,7 @@ void() radar_post_die1={
 
 void() radar_post_die2={
   te_missile_explode( self.origin, 5, '1 0.75 0.75', 0.01 );
-  pointsound( self.origin, "sound/fx_boom.ogg", (0.3 + random() * 0.3), ATTN_NORM);
+  building_sound_explode();
   self.think = sendevent_building_die;
   self.nextthink = time + 0.1;
 };

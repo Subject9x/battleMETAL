@@ -21,7 +21,8 @@ void() te_muzzle_emp={
   startOrg = self.origin + v_forward * self.wepFireOffset_z + v_up * 0.1;
   traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
   endOrg = trace_endpos;
-  pointsound( startOrg, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM);
+  
+  sound7(self, CHAN_AUTO, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, 0 );
   pointparticles( particleeffectnum("TE_EMP_MUZZLE"), startOrg, normalize( startOrg - endOrg ) * 4, 1);
 };
 #endif

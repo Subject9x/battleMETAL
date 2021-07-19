@@ -57,8 +57,10 @@ void() shield_gen_die1={
   te_field_quantum_light( margin, rint(random()*5) ) ;
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
+  building_sound_explode();
+  
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   self.think = shield_gen_die2;
@@ -74,8 +76,8 @@ void() shield_gen_die2={
   te_field_quantum_light( margin, rint(random()*5) ) ;
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
+  building_sound_explode();
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   
@@ -92,7 +94,7 @@ void() shield_gen_die3={
   te_field_quantum_light( margin, rint(random()*5) ) ;
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   
@@ -109,7 +111,7 @@ void() shield_gen_die4={
   te_field_quantum_light( margin, rint(random()*5) ) ;
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   
@@ -126,8 +128,8 @@ void() shield_gen_die5={
   te_field_quantum_light( margin, rint(random()*5) ) ;
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
+  building_sound_explode();
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   
@@ -144,7 +146,7 @@ void() shield_gen_die6={
   te_field_quantum_light( margin, rint(random()*5) ) ;
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   
@@ -161,7 +163,7 @@ void() shield_gen_die7={
   te_field_quantum_light( margin, rint(random()*5) ) ;
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   
@@ -178,8 +180,8 @@ void() shield_gen_die8={
   pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/weapons/qrfl_fire.ogg", (0.33 + random() * 0.67), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
+  building_sound_explode();
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   
@@ -196,7 +198,7 @@ void() shield_gen_die9={
   pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
   
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.99 0.15 0.85', -0.02 );
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;
   
@@ -225,7 +227,7 @@ void() shield_gen_die11={
   
   te_field_quantum( randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)), randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)) );
   pointparticles( particleeffectnum("TE_EMP_EXPL"), margin, normalize(margin - self.origin) * 1.1, 1);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.scale = self.scale - 0.01;
   self.alpha = self.alpha - 0.01;

@@ -25,9 +25,11 @@ void() te_muzzle_las={
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
-  pointsound( startOrg, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM);
   if( vlen(endOrg - startOrg) >= 1500 ){
-    pointsound( endOrg, "sound/weapons/laser_fire.ogg", 0.5, ATTN_NORM);
+    sound7(self, CHAN_AUTO, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 115, 0 );
+  }
+  else{
+    sound7(self, CHAN_AUTO, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM, (0.45 + (random() * 0.55)) * 175, 0 );
   }
   pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, normalize(startOrg - endOrg) * 2, 1);
   

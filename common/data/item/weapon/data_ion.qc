@@ -22,7 +22,8 @@ void() te_muzzle_ion={
   startOrg = self.origin + v_forward * self.wepFireOffset_z + v_up * 0.1;
   traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
   endOrg = trace_endpos;
-  pointsound( startOrg, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM);
+  
+  sound7(self, CHAN_AUTO, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM, (1.0 + (random() * 0.4)) * 100, 0 );
   pointparticles( particleeffectnum("TE_ION_MUZZLE"), startOrg, normalize( endOrg - startOrg) * 4, 1);
 };
 #endif

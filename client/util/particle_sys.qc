@@ -385,16 +385,20 @@ void() te_shield_hit={
   local entity explode;
   local float hitTime;
   local vector flashCol;
+  local float shieldSize;
+  local float sizeMod;
   
   hitTime = 0.33;
   
   self.shieldEffectTime = servertime + hitTime;
- 
+  
+  sizeMod = self.shield / self.shieldMax;
+  shieldSize = (self.vec_size * 2) * sizeMod;
   explode = spawn();
   explode.think = te_shield_hit_th;
   explode.nextthink = servertime + 0.01;
   explode.data_lifetime = servertime + hitTime;
-  explode.scale = self.vec_size * 0.75;
+  explode.scale = shieldSize;
   explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
   explode.drawmask = MASK_NORMAL;
   explode.predraw = te_shield_hit_predraw;
@@ -417,7 +421,7 @@ void() te_shield_hit={
   explode.compOffset = explode.colormod;
   
   te_customflash( self.origin, self.vec_size * 50, 0.25, flashCol);
-  pointsound(  self.origin, "sound/fx_shieldhit.ogg", 0.55 + (random() * 0.45), ATTN_NORM );
+  sound7(self, CHAN_AUTO, "sound/fx_shieldhit.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 125, 0 );
 };
 
 
@@ -520,9 +524,7 @@ void() particle_missile_explode_th={
 
 void( vector org, float explodeSize, vector explodeColor, float onShield  ) particle_missile_explode={
   local entity explode;
-
-  pointsound(org, "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
- 
+  
   explode = spawn();
   explode.movetype = MOVETYPE_NONE;
   explode.solid = SOLID_NOT;
@@ -546,6 +548,7 @@ void( vector org, float explodeSize, vector explodeColor, float onShield  ) part
   setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
   setorigin( explode, org);
   
+  sound7(explode, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 110, 0 );
   te_customflash( org, explodeSize * 50, 1.5, explodeColor); 
 };
 
@@ -584,7 +587,7 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
   local entity this;
   local float sizeAdjust;
   
-  pointsound( entOrg, "sound/fx_boom.ogg", 1, ATTN_NORM );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1.0, ATTN_NORM, 90 - (self.vec_size * 10), 0 );
   
   this = self;
   wreck = spawn();
@@ -626,6 +629,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   local vector fx, vel;
   local float leftMin;
   local float effType;
+  local float sizeMod;
   
   makevectors( entAngl );
   fx = entOrg ;
@@ -639,7 +643,11 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   
   fx = fx + (v_up * (entMins_z + 8));
   vel = fx + (v_up * 16);
-  pointsound(fx, "sound/mech_stomp.ogg", 0.45 + (random() * 0.25), ATTN_NORM);
+  
+  sizeMod = self.vec_size / 10;
+  sizeMod = 1.0 - (1.0 - sizeMod) / 2;
+  sound7(self.legs, CHAN_AUTO, "sound/mech_stomp.ogg", 1.0, ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
+  
   switch( ENT_SERVER_INFO.worldtype ){
     case 1:
       effType = particleeffectnum("TE_STOMP_ICE");

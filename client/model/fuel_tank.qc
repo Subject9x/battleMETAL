@@ -15,7 +15,7 @@ void() fuel_tank_die1={
   
   pos = randompos(self.absmin, self.absmax);
   te_missile_explode( pos, 1, '1 0.67 0.67', 0.01 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die2;
   self.nextthink = time + 0.1;
@@ -26,7 +26,7 @@ void() fuel_tank_die2={
   
   pos = randompos(self.absmin, self.absmax);
   te_missile_explode( pos, 1, '1 0.67 0.67', 0.01 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   self.think = fuel_tank_die3;
   self.nextthink = time + 0.1;
 };
@@ -39,7 +39,7 @@ void() fuel_tank_die3={
   vfx1 = self.origin + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.5))) + (v_forward * (crandom() * (self.maxs_y * 0.5)));
   pos = randompos(self.origin, vfx1);
   te_missile_explode( pos, 5, '1 0.67 0.67', 0.0015 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   //funny - make wreckage first
   sendevent_building_die();
@@ -56,7 +56,7 @@ void() fuel_tank_die4={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.45))) + (v_forward * (crandom() * (self.maxs_y * 0.45)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.15)), vfx1);
   te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die5;
   self.nextthink = time + 0.1;
@@ -70,7 +70,7 @@ void() fuel_tank_die5={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.45))) + (v_forward * (crandom() * (self.maxs_y * 0.45)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.15)) , vfx1);
   te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die6;
   self.nextthink = time + 0.1;
@@ -84,7 +84,7 @@ void() fuel_tank_die6={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.25)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.65))) + (v_forward * (crandom() * (self.maxs_y * 0.65)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.25)), vfx1);
   te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die7;
   self.nextthink = time + 0.1;
@@ -98,7 +98,7 @@ void() fuel_tank_die7={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.25)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.65))) + (v_forward * (crandom() * (self.maxs_y * 0.65)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.25)), vfx1);
   te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die8;
   self.nextthink = time + 0.1;
@@ -112,7 +112,7 @@ void() fuel_tank_die8={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.75))) + (v_forward * (crandom() * (self.maxs_y * 0.75)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.5)), vfx1);
   te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die9;
   self.nextthink = time + 0.1;
@@ -126,7 +126,7 @@ void() fuel_tank_die9={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.75))) + (v_forward * (crandom() * (self.maxs_y * 0.75)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.5)), vfx1);
   te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die10;
   self.nextthink = time + 0.1;
@@ -140,7 +140,7 @@ void() fuel_tank_die10={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.6)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.75))) + (v_forward * (crandom() * (self.maxs_y * 0.75)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.6)), vfx1);
   te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die11;
   self.nextthink = time + 0.1;
@@ -154,7 +154,7 @@ void() fuel_tank_die11={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.6)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.75))) + (v_forward * (crandom() * (self.maxs_y * 0.75)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.6)), vfx1);
   te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = fuel_tank_die12;
   self.nextthink = time + 0.1;
@@ -168,6 +168,6 @@ void() fuel_tank_die12={
   vfx1 = self.origin + (v_up * (self.maxs_z * 0.6)) + (v_up * (random() * (self.maxs_z * 0.5))) + (v_right * (crandom() * (self.maxs_x * 0.75))) + (v_forward * (crandom() * (self.maxs_y * 0.75)));
   pos = randompos(self.origin + (v_up * (self.maxs_z * 0.6)), vfx1);
   te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  pointsound( pos, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
 };

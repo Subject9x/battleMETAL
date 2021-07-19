@@ -67,7 +67,7 @@ void() power_plant_die1={
   te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
   te_field_mineral_light( margin, rint(random()*3) );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.33 + random() * 0.33), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   
   self.think = power_plant_die2;
   self.nextthink = time + 0.1;
@@ -92,7 +92,7 @@ void() power_plant_die3={
   te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
   te_field_mineral_light( margin, rint(random()*3) ) ;
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.4 + random() * 0.33), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   self.think = power_plant_die4;
   self.nextthink = time + 0.1;
 };
@@ -118,7 +118,7 @@ void() power_plant_die5={
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.5 + random() * 0.33), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   self.think = power_plant_die6;
   self.nextthink = time + 0.1;
 };
@@ -144,7 +144,7 @@ void() power_plant_die7={
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.5 + random() * 0.33), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   self.think = power_plant_die8;
   self.nextthink = time + 0.1;
 };
@@ -158,7 +158,7 @@ void() power_plant_die8={
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.5 + random() * 0.33), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   self.think = power_plant_die9;
   self.nextthink = time + 0.1;
 };
@@ -183,7 +183,7 @@ void() power_plant_die10={
   te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   
   self.think = power_plant_die11;
   self.nextthink = time + 0.1;
@@ -198,8 +198,8 @@ void() power_plant_die11={
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.6 + random() * 0.33), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
+  building_sound_explode();
   self.think = power_plant_die12;
   self.nextthink = time + 0.1;
 };
@@ -212,7 +212,7 @@ void() power_plant_die12={
   te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  building_sound_explode();
   self.think = power_plant_die13;
   self.nextthink = time + 0.1;
 };
@@ -226,8 +226,8 @@ void() power_plant_die13={
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.6 + random() * 0.33), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
+  building_sound_explode();
   self.think = power_plant_die14;
   self.nextthink = time + 0.1;
 };
@@ -240,8 +240,8 @@ void() power_plant_die14={
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.6 + random() * 0.33), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
+  building_sound_explode();
   self.think = power_plant_die15;
   self.nextthink = time + 0.1;
 };
@@ -254,8 +254,8 @@ void() power_plant_die15={
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.6 + random() * 0.33), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
+  building_sound_explode();
   self.think = power_plant_die16;
   self.nextthink = time + 0.1;
 };
@@ -268,8 +268,8 @@ void() power_plant_die16={
   te_field_mineral_light( margin, rint(random()*3) ) ;
   te_missile_explode( randompos(self.absmin, self.absmax), 3, '0.33 1 2', 0.0075 );
   
-  pointsound( margin, "sound/weapons/esr_fire.ogg", (0.6 + random() * 0.33), ATTN_NORM);
-  pointsound( margin, "sound/fx_boom.ogg", (0.3 + random() * 0.6), ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
+  building_sound_explode();
   
   self.think = sendevent_building_die;
   self.nextthink = time + 0.1;

@@ -25,7 +25,9 @@ void() te_muzzle_lgm={
   
   local vector ang;
   ang = vectoangles(endOrg - startOrg);
-  pointsound( startOrg, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM);
+  
+  sound7(self, CHAN_AUTO, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 80, 0 );
+  
   pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * -0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
   pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * 0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
   pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_up * 1), normalize((startOrg + v_up * 2) - startOrg), 1);

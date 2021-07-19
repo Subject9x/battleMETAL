@@ -30,7 +30,10 @@ void() te_muzzle_pac={
   pointsound( startOrg, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM);
   
   if( vlen(endOrg - startOrg) >= 1500 ){
-    pointsound( endOrg, "sound/weapons/pac_fire.ogg", 0.5, ATTN_NORM);
+    sound7(self, CHAN_AUTO, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 185, 0 );
+  }
+  else{
+    sound7(self, CHAN_AUTO, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM, (0.2 + (random() * 0.8)) * 100, 0 );
   }
   
   pointparticles( particleeffectnum("TE_PAC_MUZZLE"), startOrg, norm * 2, 1);

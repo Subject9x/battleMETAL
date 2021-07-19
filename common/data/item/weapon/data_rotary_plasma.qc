@@ -22,7 +22,7 @@ void() te_muzzle_rpc={
   traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
   endOrg = trace_endpos;
   
-  pointsound( startOrg, "sound/weapons/rpls_fire.ogg", 1, ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/rpls_fire.ogg", 1, ATTN_NORM, (0.65 + (random() * 0.35)) * 125, 0 );
   pointparticles( particleeffectnum("TE_RPC_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
 }
 #endif

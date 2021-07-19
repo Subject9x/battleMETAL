@@ -179,7 +179,7 @@ void() sendevent_mech_ai_die={
   }
   makevectors(self.angles);
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 );
-  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
   
   if( self.moveState == FALSE ){
     sendevent_mech_ai_die_standing();
@@ -229,7 +229,7 @@ void( float critical ) sendevent_mech_ai_crit={
   if( (critical & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
-  pointsound( self.origin, "sound/fx_boom.ogg", 0.5 + (random() * 0.5) , ATTN_NORM );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
 };
 
 void(float criticalHits) sendevent_mech_burn={  

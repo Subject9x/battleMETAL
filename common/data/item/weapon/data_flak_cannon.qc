@@ -33,7 +33,7 @@ void() te_muzzle_flk={
   norm = normalize(endOrg - startOrg);
   ang = vectoangles(endOrg - startOrg);
   
-  pointsound( startOrg, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 175, 0 );
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
   
   makevectors(ang);

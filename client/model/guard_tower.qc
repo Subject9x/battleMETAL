@@ -36,7 +36,7 @@ void() guard_post_th={
   Guard Post - DEATH
 */
 void() guard_post_die1={
-  pointsound( self.origin + (v_up * 24), "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM);
+  building_sound_explode();
   
   self.think = guard_post_die2;
   self.nextthink = time + 0.1;
@@ -46,7 +46,7 @@ void() guard_post_die2={
   makevectors(self.angles);
   
   te_missile_explode( self.origin + (v_up * 24), 5, '1 0.75 1', 0.01 );
-  pointsound( self.origin + (v_up * 24), "sound/fx_boom.ogg", (0.3 + random() * 0.3), ATTN_NORM);
+  building_sound_explode();
   
   self.think = sendevent_building_die;
   self.nextthink = time + 0.1;

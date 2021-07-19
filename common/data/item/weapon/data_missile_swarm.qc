@@ -31,7 +31,8 @@ void() te_muzzle_swrm={
   traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
   endOrg = trace_endpos;
   
-  pointsound( startOrg, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM);
+  sound7(self, CHAN_AUTO, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 165, 0 );
+  
   pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), startOrg, normalize( endOrg - startOrg ) * 3, 1);
 }
 #endif

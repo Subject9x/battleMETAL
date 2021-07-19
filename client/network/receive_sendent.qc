@@ -11,7 +11,7 @@ Overview:
 void() sendent_empty_think={
   
   self.think = sendent_empty_think;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.01;
 };
 
 void() sendent_ai_think={
@@ -234,8 +234,8 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   }
   
   if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO ){
-    te_missile_explode( self.origin + (v_up * self.maxs_z * 0.5), self.vec_size, '0.9 0.75 0.45', 0.005 ) ;
-    pointsound(self.origin + (v_up * self.maxs_z * 0.5), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+    te_missile_explode( self.origin + (v_up * self.maxs_z * 0.5), self.vec_size, '0.9 0.75 0.45', 0.005 );
+    sound7(self, CHAN_AUTO, "sound/fire/debris1.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
     model_misc_building_ruins_set();
   }
 };

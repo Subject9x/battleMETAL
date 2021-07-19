@@ -21,7 +21,7 @@ void() te_muzzle_sfg={
   traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
   endOrg = trace_endpos;
   
-  pointsound( startOrg, "sound/weapons/sfga_fire.ogg", 1, ATTN_NORM);
+  sound7(self, CHAN_AUTO,  "sound/weapons/sfga_fire.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, 0 );
   pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
 }
 #endif
