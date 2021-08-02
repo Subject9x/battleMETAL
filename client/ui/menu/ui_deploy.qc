@@ -12,7 +12,8 @@ Overview: class file for the deployment ui
 void() menu_deployDrawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
-  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, 1, 0);
+  
+  drawfill(topleftroot, VIEW_MAX, CLR_DEF_UI_DEPLOY * 0.25, 1, 0 );
   
   menu_navBar_drawFrame(VIEW_ORG);
   
@@ -319,7 +320,6 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   itr = 0;
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(96));
   mpos_y = ofs_y;
-  drawpic(mpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('405 405'), CLR_DEF_UI_DEPLOY, 1, 0);
   
   iofs = mpos + gui_percentToPixelRawVec('12 12');
   DEPLOY_MAP_ORG = iofs;

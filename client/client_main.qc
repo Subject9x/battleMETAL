@@ -218,6 +218,9 @@ void() CSQC_Shutdown =
   freeGlobalString(HUD_INFO_MSG)
   
   localcmd("cd stop\n");
+  
+  gui_set_screen_size();
+  
 };
 
 // typ 0 = keydown (keysym, unicode character but this may be zero) or typed input (-1, unicode character)
@@ -231,6 +234,12 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 
 
 // the most important function in CSQC...
+/*
+  DP engine -> CL_VM_UpdateView()
+    w = vid.width
+    h = vid.height
+    menuView = key_dest = key_game
+*/
 void(float w, float h, float menuView) CSQC_UpdateView =
 {
   local vector fovvec, vf_sz, vf_mn;
@@ -360,16 +369,13 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   setproperty(VF_DRAWCROSSHAIR, 0);
   setproperty(VF_DRAWENGINESBAR, 0);
   VIEW_ORG = '0 0';
-  VIEW_MAX_x = cvar("vid_conwidth");
-  VIEW_MAX_y = cvar("vid_conheight");
-  VIEW_SIZE_x = VIEW_MAX_x * 2;
-  VIEW_SIZE_y = VIEW_MAX_y * 2;
-  VIEW_CTR_x = VIEW_MAX_x / 2;
-  VIEW_CTR_y = VIEW_MAX_y / 2;
+  
   VIEW_SCALE = 0.35;
 
   //alter fog settings if needed
   //cl_particles_fogFrame();	//fog is disable for the time being (something up with depth-rendering and unit shaders)
+  
+  gui_set_screen_size();
   
   //TODO - fog is now different in latest DP build
   //setproperty(VF_FOG_DENSITY, FOG_DENSITY);

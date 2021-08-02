@@ -51,8 +51,14 @@ void() menu_debrief_drawFrame={
       MENU_DEBRIEF_time_elapsed = -1;
     }
   }
-
-  gui_renderTintImage2(MENU_DEBRIEF_status, topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF * 0.15, 1, 0) ;  
+  
+  if(MENU_DEBRIEF_status){
+    drawfill(topleftroot, VIEW_MAX, CLR_DEF_UI_DEPLOY * 0.25, 1, 0 );
+  }
+  else{
+    drawfill(topleftroot, VIEW_MAX, CLR_DEF_ARM_HALF * 0.25, 1, 0 );
+  }
+  
   menu_debrief_header( topleftroot );
   menu_debrief_objectives_primary( topleftroot + gui_percentToPixelRawVec('10 32') );
   menu_debrief_objectives_secondary( topleftroot + gui_percentToPixelRawVec('10 272') );
@@ -92,7 +98,7 @@ void(vector panelOffset) menu_debrief_header={
   
   MENU_DEBRIEF_BUTTON_ORG_mission = nextMissionOrg;
   
-  drawpic( nextMissionOrg, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
+  drawpic( nextMissionOrg, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
   
   if( servertime < MENU_respawn_cool ){
     t = SERVER_RESPAWN_COOL_CAMP - (servertime - MENU_respawn_cool_start); 

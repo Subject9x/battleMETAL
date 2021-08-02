@@ -69,8 +69,7 @@ void() menu_connect_drawFrame={
   //background panel
   topleftroot = VIEW_ORG;
   
-  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, '0.85 0.85 0.85', 1, 0);
-  
+  drawfill(topleftroot, VIEW_MAX, '0.33 0.33 0.33', 1, 0 );
   //nav bar
   menu_connect_draw_bar( VIEW_ORG + gui_percentToPixelRawVec('9.984 7.488') );
   

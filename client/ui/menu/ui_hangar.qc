@@ -18,9 +18,9 @@ void() menu_hangarListener_onDrag={
 };
 
 void() menu_hangarListener_onHover={
-  if( menu_checkMouseInBounds(cursorpos, HANGAR_HELP_GRAPH, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds(cursorpos, HANGAR_HELP_GRAPH, '12 12', FALSE) ){
     toolTip.data_idx = MENU_BRIEF_ACTIVE;
-    toolTip.mins = gui_percentToPixelRawVec('164 56 0');
+    toolTip.mins = '164 56 0';
     toolTip.description = "Hardpoints are where Weapons and Equipment are mounted to your mech. This panel shows where on the mech the weapons will be.";
     toolTip.angles = '0.85 0.85 0.85';
     toolTip.maxs = '12 10 0';
@@ -28,9 +28,9 @@ void() menu_hangarListener_onHover={
     return;
   }
   
-  if( menu_checkMouseInBounds(cursorpos, HANGAR_HELP_HARDPOINT_LIST, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds(cursorpos, HANGAR_HELP_HARDPOINT_LIST, '12 12', FALSE) ){
     toolTip.data_idx = MENU_BRIEF_ACTIVE;
-    toolTip.mins = gui_percentToPixelRawVec('164 64 0');
+    toolTip.mins = '164 64 0';
     toolTip.description = "Hardpoints can only accept certain {Types} and {Sizes} of Weapons and Equipment.";
     toolTip.angles = '0.85 0.85 0.85';
     toolTip.maxs = '12 10 0';
@@ -42,31 +42,28 @@ void() menu_hangarListener_onHover={
 
 void() mechSelectListener={
   local float found;
-  
-  if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.025, 0.0416), gui_percentToPixel(0.075, 0.4166), FALSE)){
-    if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT, TRUE)){
-      found = listListener(MECHLIST_ORG_LIGHT, cursorpos, MECHLIST_SIZE_LIGHT, gui_percentToPixelRawVec('90 16'), MECHLIST_CNT_LIGHT, 0);
-      found = MECHLIST_LIGHT_VAL[found];
+  if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT, TRUE)){
+    found = listListener(MECHLIST_ORG_LIGHT, cursorpos, MECHLIST_SIZE_LIGHT, '90 16', MECHLIST_CNT_LIGHT, 0);
+    found = MECHLIST_LIGHT_VAL[found];
+  }
+  if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_MEDIUM, MECHLIST_SIZE_MEDIUM, TRUE)){
+    found = listListener(MECHLIST_ORG_MEDIUM, cursorpos, MECHLIST_SIZE_MEDIUM, '90 16', MECHLIST_CNT_MEDIUM, 0);
+    found = MECHLIST_MEDIUM_VAL[found];
+  }
+  if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_HEAVY, MECHLIST_SIZE_HEAVY, TRUE)){
+    found = listListener(MECHLIST_ORG_HEAVY, cursorpos, MECHLIST_SIZE_HEAVY, '90 16', MECHLIST_CNT_HEAVY, 0);
+    found = MECHLIST_HEAVY_VAL[found];
+  }
+  if(found > FALSE){
+    if( (LAUNCH_VALIDATION & VALID_MECH) ){
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE)) ;
     }
-    if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_MEDIUM, MECHLIST_SIZE_MEDIUM, TRUE)){
-      found = listListener(MECHLIST_ORG_MEDIUM, cursorpos, MECHLIST_SIZE_MEDIUM, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_MEDIUM, 0);
-      found = MECHLIST_MEDIUM_VAL[found];
+    if( found != CLIENT_MENU_sel_mech ){
+      ui_mech_config_switch( found, 1 );
     }
-    if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_HEAVY, MECHLIST_SIZE_HEAVY, TRUE)){
-      found = listListener(MECHLIST_ORG_HEAVY, cursorpos, MECHLIST_SIZE_HEAVY, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_HEAVY, 0);
-      found = MECHLIST_HEAVY_VAL[found];
-    }
-    if(found > FALSE){
-      if( (LAUNCH_VALIDATION & VALID_MECH) ){
-        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE)) ;
-      }
-      if( found != CLIENT_MENU_sel_mech ){
-        ui_mech_config_switch( found, 1 );
-      }
 
-      if( !(LAUNCH_VALIDATION & VALID_MECH) ){
-        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_MECH;
-      }
+    if( !(LAUNCH_VALIDATION & VALID_MECH) ){
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_MECH;
     }
   }
 };
@@ -79,16 +76,17 @@ void() menu_hangarDrawFrame={
     cleanHardPoints();
   }
   
-  topleftroot = VIEW_ORG;
-  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_HANGAR, 1, 0);
+  topleftroot = VIEW_CTR - Vector2(320, VIEW_MAX_y / 2);
+  
+  drawfill(VIEW_ORG, VIEW_MAX, CLR_DEF_UI_HANGAR * 0.25, 1, 0 );
   
   menu_navBar_drawFrame(VIEW_ORG);
   
-  menu_hangar_MechDisplay(topleftroot + gui_percentToPixelRawVec('0 24'));
-  menu_hangar_MechList(topleftroot + gui_percentToPixelRawVec('0 24'));
-  menu_hangar_MechInfo(topleftroot);
-  menu_hangar_MechFluff(topleftroot);
-  menu_hangar_MechHPoints(topleftroot);
+  menu_hangar_MechDisplay(topleftroot + '367 32');
+  menu_hangar_MechList(topleftroot + '0 24');
+  menu_hangar_MechInfo(topleftroot + '118 32');
+  menu_hangar_MechFluff(topleftroot + '118 208');
+  menu_hangar_MechHPoints(topleftroot + '367 273');
 };
 
 void(vector ofs) menu_hangar_MechDisplay={
@@ -101,29 +99,32 @@ void(vector ofs) menu_hangar_MechDisplay={
   local vector mechMins;
   local vector helpOrg;
   
-  nofs = ofs + gui_percentToPixelRawVec('367 8');
+  nofs = ofs;
   
-  drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('260 250'), CLR_DEF_UI_HANGAR, 1, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('252 242'), CLR_DEF_UI_HANGAR, 1, 0);
+  gui_renderBorder9_1_32(nofs,  '260 250', CLR_DEF_UI_HANGAR, 1, 0) ;
+  
+  nofs = nofs + '10 6';
+  
+  drawpic(nofs, UI_HANGAR_BOX, '252 225', CLR_DEF_UI_HANGAR, 1, 0);
   
   if(SELECT_MECH > FALSE){
-    i_sz = gui_percentToPixelRawVec('250 242');
-    hofs_x = nofs_x;
-    hofs_y = nofs_y;
+    i_sz = '250 225';
+    hofs = Vector2(nofs_x, nofs_y);
+    
     if( MECH_DATA_ICON != "" ){
       drawpic(hofs, MECH_DATA_ICON, i_sz, '1 1 1', 1, 0);	
     }
     
     hardpointGraphCenter_x = hofs_x + (i_sz_x / 2);
     hardpointGraphCenter_y = hofs_y + i_sz_y;
-    hardpointGraphCenter_y = hardpointGraphCenter_y + ( gui_percentYRaw( UI_HANGAR_DATA_mech.mins_z * 3.75) );
+    hardpointGraphCenter_y = hardpointGraphCenter_y + (UI_HANGAR_DATA_mech.mins_z * 3.75);
 
     mechSize_x = (UI_HANGAR_DATA_mech.mins_x * -1) + UI_HANGAR_DATA_mech.maxs_x;
+    
     mechSize_y = UI_HANGAR_DATA_mech.maxs_y;
     mechSize_y = (mechSize_y * 0.75) + UI_HANGAR_DATA_mech.maxs_y;
     
-    mechMins_x = UI_HANGAR_DATA_mech.mins_x;
-    mechMins_y = (UI_HANGAR_DATA_mech.maxs_y * -1.26);
+    mechMins = Vector2( UI_HANGAR_DATA_mech.mins_x, UI_HANGAR_DATA_mech.maxs_y * -1.26);
 
     MECHPANEL_CTR = hardpointGraphCenter;
 
@@ -133,10 +134,10 @@ void(vector ofs) menu_hangar_MechDisplay={
       hardpointOffset = hardpoint.compOffset;
       hardpointOffset_x = hardpointOffset_x * 0.65;
       hardpointOffset_y = hardpointOffset_y * 0.49; 
-      hardpointCoord = gui_mapCoordToImgCoord( mechMins, mechSize, hardpointOffset, hofs, gui_percentToPixelRawVec('250 250') );
+      hardpointCoord = gui_mapCoordToImgCoord( mechMins, mechSize, hardpointOffset, hofs, '250 250' );
 
       if( hardpointCoord_y < hofs_y ){
-        hardpointCoord_y = hofs_y + gui_percentYRaw(6);
+        hardpointCoord_y = hofs_y + 6;
       }
 
       ui_renderHardPointNumber( hardpointItr, hardpointCoord );
@@ -146,7 +147,7 @@ void(vector ofs) menu_hangar_MechDisplay={
   }
   
   helpOrg = nofs;
-  helpOrg_x = nofs_x + gui_percentXRaw(250) - gui_percentXRaw(12);
+  helpOrg_x = nofs_x + 250 - 12;
   HANGAR_HELP_GRAPH = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 };
@@ -160,27 +161,27 @@ void(vector ofs) menu_hangar_MechHPoints={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  nofs = ofs + gui_percentToPixelRawVec('355 262');
-  drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('265 202'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
+  nofs = ofs;
+  gui_renderPatch9_1_32(nofs, '265 220',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
-  tlen = gui_percentXRaw(stringwidth("-Hardpoint Restrictions-", 0, '10 8 0'));
-  tofs_x = nofs_x + gui_percentXRaw(255/2) - (tlen/2);
-  tofs_y = nofs_y + gui_percentYRaw(10);
-  drawstring(tofs + gui_percentToPixelRawVec('9.9 0'), "-Hardpoint Restrictions-", '10 10 0', CLR_DEF_WHITE, 1, 0);
+  tlen = stringwidth("Hardpoint Restrictions", 0, '10 10 0');
+  tofs = Vector2(nofs_x + (255/2) - (tlen/2),  nofs_y + 2);
+  
+  drawstring(tofs + '9.9 0', "-Hardpoint Restrictions-", '10 10 0', CLR_DEF_WHITE, 1, 0);
     
   if(SELECT_MECH > FALSE){
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-      ui_renderHardpointRow((nofs + gui_percentToPixelRawVec('20 20')), hardpointItr - 1, hardpoint.hardpointType, hardpoint.hardpointSize);
+      ui_renderHardpointRow(nofs + '10 10', hardpointItr - 1, hardpoint.hardpointType, hardpoint.hardpointSize);
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
   }
   drawfont = drawfont_prev;
   
-  helpOrg_x = nofs_x + gui_percentXRaw(270) - gui_percentXRaw(12);
-  helpOrg_y = nofs_y - gui_percentYRaw(6);
+  helpOrg_x = nofs_x + 270 - 12;
+  helpOrg_y = nofs_y - 6;
   HANGAR_HELP_HARDPOINT_LIST = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 };
@@ -192,18 +193,18 @@ void(vector ofs) menu_hangar_MechList={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  drawpic(ofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('106 440'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
+  //gui_renderPatch9_1_32(ofs + '9.9 8', '106 448',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
   textLen = stringwidth( "-Available Metal-", 0, '10 10 0');
-  labelOfs = ofs + gui_percentToPixelRawVec('9.9 16');
-  labelOfs_x = labelOfs_x + gui_percentXRaw( 106 / 2 ) - gui_percentXRaw( textLen / 2 );
+  labelOfs = ofs + '10 10';
+  labelOfs_x = labelOfs_x + ( 106 / 2 ) - ( textLen / 2 );
   drawstring(labelOfs, "-Available Metal-", '10 10 0', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
   
-  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('12 24'), 1, "======LIGHT======", CLR_DEF_IFF_ENEMY, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
-  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('12 150'), 2, "======MEDIUM=====", CLR_DEF_ARM_HALF, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
-  menu_hangar_MechList_draw(ofs + gui_percentToPixelRawVec('12 275'), 3, "======HEAVY======", CLR_DEF_ARM_OK, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs + '0 24', 1,  "LIGHT", CLR_DEF_IFF_ENEMY * 1.25, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs + '0 154', 2, "MEDIUM", CLR_DEF_ARM_HALF, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs + '0 284', 3, "HEAVY", CLR_DEF_ARM_OK, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
 };
 
 void(vector ofs, float mechSize, string listName, vector listNameColor, float mechListTotalValue, vector mechListOriginValue, vector mechListSizeValue ) menu_hangar_MechList_draw={
@@ -219,42 +220,42 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   
   nofs = ofs;
   
+  gui_renderPatch9_1_32(nofs, '106 128',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_LIGHT;
   
   labelLen = stringwidth( listName, 0, '12 12 0');
-  labelOrg = nofs;
-  labelOrg_x = labelOrg_x + gui_percentXRaw( 100 / 2) - gui_percentXRaw( labelLen / 2 );
+  labelOrg = Vector2(nofs_x + 10,nofs_y + 2);
   drawstring(labelOrg, listName, '12 12 0', listNameColor, 1, 0);
   
   drawfont = drawfont_prev;
   
   ui_lst_cnt = 0;
   ui_lst_act = 0;
-  sofs = nofs;
-  sofs_y = sofs_y + gui_percentYRaw(4);
+  
+  sofs = Vector2(nofs_x + 4, nofs_y + 6);
+  
   while(ui_lst_cnt <= 24){
     mechId = UNLOCKED_MECHS[ui_lst_cnt];
     if( mechId != 0){
       mechSizeCheck = MECH_DATA_SIZES[mechId];
       if( mechSizeCheck == mechSize ){
-        lofs_x = sofs_x;
-        lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-        if( (mechId == CLIENT_MENU_sel_mech) ){
+        lofs = Vector2(sofs_x, sofs_y + (8 + ui_lst_act * 16));
+        if( mechId == CLIENT_MENU_sel_mech ){
           clr = CLR_DEF_TXT_HIGHLIGHT;
-          gui_renderTintImage(TRUE, lofs - gui_percentToPixelRawVec('0 2'), UI_BOX_SELECT, gui_percentToPixelRawVec('104 13'), CLR_DEF_ARM_OK, 1, 0);
+          gui_renderTintImage(TRUE, lofs, UI_BOX_SELECT, '104 13', CLR_DEF_ARM_OK, 1, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
-        nameLen = stringwidth( MECH_DATA_NAMES[mechId], 0, '14 12 0');
-        iofs = lofs;
-        iofs_x = iofs_x + gui_percentXRaw( 50 - nameLen / 2);
+        nameLen = stringwidth( MECH_DATA_NAMES[mechId], 0, '14 14');
+        iofs = Vector2( lofs_x + ( 50 - nameLen / 2), lofs_y);
         
         drawFontLocal = drawfont;
         drawfont = FONT_NUM_ROBOT_REGULAR;
         
-        drawstring(iofs, MECH_DATA_NAMES[mechId], '14 12 0', clr, 1, 0);
+        drawstring(iofs, MECH_DATA_NAMES[mechId], '14 14', clr, 1, 0);
         
         drawfont = drawFontLocal;
         
@@ -280,24 +281,18 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   switch( mechSize ){
     case 1:
       MECHLIST_CNT_LIGHT = ui_lst_act;
-      MECHLIST_ORG_LIGHT = sofs;
-      MECHLIST_ORG_LIGHT_y = nofs_y + gui_percentYRaw(10);
-      MECHLIST_SIZE_LIGHT_x = gui_percentXRaw(107);
-      MECHLIST_SIZE_LIGHT_y = gui_percentYRaw(ui_lst_act * 16);
+      MECHLIST_ORG_LIGHT = Vector2(sofs_x, nofs_y + 10);
+      MECHLIST_SIZE_LIGHT = Vector2(107,  ui_lst_act * 16);
       break;
     case 2:
       MECHLIST_CNT_MEDIUM = ui_lst_act;
-      MECHLIST_ORG_MEDIUM = sofs;
-      MECHLIST_ORG_MEDIUM_y = nofs_y + gui_percentYRaw(10);
-      MECHLIST_SIZE_MEDIUM_x = gui_percentXRaw(107);
-      MECHLIST_SIZE_MEDIUM_y = gui_percentYRaw(ui_lst_act * 16);
+      MECHLIST_ORG_MEDIUM = Vector2(sofs_x, nofs_y + 10);
+      MECHLIST_SIZE_MEDIUM = Vector2(107,  ui_lst_act * 16);
       break;
     default:
       MECHLIST_CNT_HEAVY = ui_lst_act;
-      MECHLIST_ORG_HEAVY = sofs;
-      MECHLIST_ORG_HEAVY_y = nofs_y + gui_percentYRaw(10);
-      MECHLIST_SIZE_HEAVY_x = gui_percentXRaw(107);
-      MECHLIST_SIZE_HEAVY_y = gui_percentYRaw(ui_lst_act * 16);
+      MECHLIST_ORG_HEAVY = Vector2(sofs_x, nofs_y + 10);
+      MECHLIST_SIZE_HEAVY = Vector2(107,  ui_lst_act * 16);
       break;
   }
 };
@@ -313,29 +308,29 @@ void(vector ofs) menu_hangar_MechInfo={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  nofs = ofs + gui_percentToPixelRawVec('115 32');
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('250 180'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
+  nofs = ofs;
+  gui_renderPatch9_1_32(nofs, '224 180',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
 
   slen = stringwidth("-Metal Info-", 0 ,'10 10 0');
   labelOrg = nofs;
-  labelOrg_x = labelOrg_x + gui_percentXRaw( 125 ) - gui_percentXRaw( slen / 2);
-  labelOrg_y = labelOrg_y + gui_percentYRaw(8);
+  labelOrg_x = labelOrg_x +  125 - ( slen / 2);
+  labelOrg_y = labelOrg_y + 8;
   drawstring(labelOrg, "-Metal Info-", '10 10 0', CLR_DEF_WHITE, 1, 0);
   
   fontSize = fontSizeSmall;
-    drawstring(nofs + gui_percentToPixelRawVec('8 23'), "Type:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 33'), "Speed-Forward:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 43'), "Speed-Strafe:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 53'), "Speed-Reverse:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 65'), "Max Energy:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 75'), "Energy Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 87'), "Max Shield:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 97'), "Shield Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 109'), "Armor-Center:", fontSize,CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 119'), "Armor-Sides:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 129'), "Armor-Arms:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 139'), "Armor-Legs:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('8 151'), "Radar Range:", fontSize,CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 23', "Type:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 33', "Speed-Forward:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 43', "Speed-Strafe:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 53', "Speed-Reverse:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 65', "Max Energy:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 75', "Energy Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 87', "Max Shield:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 97', "Shield Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 109', "Armor-Center:", fontSize,CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 119', "Armor-Sides:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 129', "Armor-Arms:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 139', "Armor-Legs:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + '8 151', "Radar Range:", fontSize,CLR_DEF_GRAY_H, 1, 0);
   drawfont = drawfont_prev;
   
   if(SELECT_MECH > FALSE){
@@ -344,49 +339,49 @@ void(vector ofs) menu_hangar_MechInfo={
 
     //MECH SPEED
     //Forward Speed
-    gui_renderMeter((MECH_DATA_SPEEDF/DISP_MAX_FSPEED)*100, nofs + gui_percentToPixelRawVec('85 32'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 31'), ftos(MECH_DATA_SPEEDF), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_SPEEDF/DISP_MAX_FSPEED)*100, nofs + '85 32', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 31', ftos(MECH_DATA_SPEEDF), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Side Speed
-    gui_renderMeter((MECH_DATA_SPEEDS/DISP_MAX_SSPEED)*100, nofs + gui_percentToPixelRawVec('85 42'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 41'), ftos(MECH_DATA_SPEEDS), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_SPEEDS/DISP_MAX_SSPEED)*100, nofs + '85 42', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 41', ftos(MECH_DATA_SPEEDS), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Reverse
-    gui_renderMeter((MECH_DATA_SPEEDB/DISP_MAX_BSPEED)*100, nofs + gui_percentToPixelRawVec('85 52'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 51'), ftos(MECH_DATA_SPEEDB), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_SPEEDB/DISP_MAX_BSPEED)*100, nofs + '85 52', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 51', ftos(MECH_DATA_SPEEDB), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Energy
-    gui_renderMeter((MECH_DATA_ENMAX/DISP_MAX_ENE)*100, nofs + gui_percentToPixelRawVec('85 65'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ENE_BCK, CLR_DEF_ENE_FRT, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 64'), ftos(MECH_DATA_ENMAX), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    gui_renderMeter((MECH_DATA_ENRATE/DISP_MAX_ENE_RATE)*100, nofs + gui_percentToPixelRawVec('85 75'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ENE_BCK, CLR_DEF_ENE_FRT, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 74'), sprintf("%00.2f", MECH_DATA_ENRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_ENMAX/DISP_MAX_ENE)*100, nofs + '85 65', '67 8', CLR_DEF_ENE_BCK, CLR_DEF_ENE_FRT, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 64', ftos(MECH_DATA_ENMAX), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_ENRATE/DISP_MAX_ENE_RATE)*100, nofs + '85 75', '67 8', CLR_DEF_ENE_BCK, CLR_DEF_ENE_FRT, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 74', sprintf("%00.2f", MECH_DATA_ENRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Shield
-    gui_renderMeter((MECH_DATA_SHMAX/DISP_MAX_SHIELD)*100, nofs + gui_percentToPixelRawVec('85 87'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 86'), ftos(MECH_DATA_SHMAX), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    gui_renderMeter((MECH_DATA_SHRATE/DISP_MAX_SHIELD_RATE)*100, nofs + gui_percentToPixelRawVec('85 97'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 96'), sprintf("%00.2f", MECH_DATA_SHRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_SHMAX/DISP_MAX_SHIELD)*100, nofs + '85 87', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 86', ftos(MECH_DATA_SHMAX), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_SHRATE/DISP_MAX_SHIELD_RATE)*100, nofs + '85 97', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 96', sprintf("%00.2f", MECH_DATA_SHRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Armor rates
-    gui_renderMeter((MECH_DATA_HPCT/DISP_MAX_ARM_CT)*100, nofs + gui_percentToPixelRawVec('85 109'),gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 108'), ftos(MECH_DATA_HPCT), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    gui_renderMeter((MECH_DATA_HPST/DISP_MAX_ARM_ST)*100, nofs + gui_percentToPixelRawVec('85 119'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 118'), ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    gui_renderMeter((MECH_DATA_HPAR/DISP_MAX_ARM_AR)*100, nofs + gui_percentToPixelRawVec('85 129'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);  
-    drawstring(nofs + gui_percentToPixelRawVec('162 128'), ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0); 
-    gui_renderMeter((MECH_DATA_HPLG/DISP_MAX_ARM_LG)*100, nofs + gui_percentToPixelRawVec('85 139'), gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 138'), ftos(MECH_DATA_HPLG), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_HPCT/DISP_MAX_ARM_CT)*100, nofs + '85 109','67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 108', ftos(MECH_DATA_HPCT), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_HPST/DISP_MAX_ARM_ST)*100, nofs + '85 119', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 118', ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_HPAR/DISP_MAX_ARM_AR)*100, nofs + '85 129', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);  
+    drawstring(nofs + '162 128', ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0); 
+    gui_renderMeter((MECH_DATA_HPLG/DISP_MAX_ARM_LG)*100, nofs + '85 139', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 138', ftos(MECH_DATA_HPLG), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Radar Range
-    gui_renderMeter((MECH_DATA_RAD/DISP_MAX_RAD_RANGE)*100, nofs + gui_percentToPixelRawVec('85 151'),gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_HALF, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 150'), ftos(MECH_DATA_RAD), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    gui_renderMeter((MECH_DATA_RAD/DISP_MAX_RAD_RANGE)*100, nofs + '85 151','67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_HALF, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 150', ftos(MECH_DATA_RAD), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Lock on Time - 2.0.0 - no longer matters
     /*local float lock;
     lock = 6 - MECH_DATA_LOCKON;
     lock = lock / 6;
-    gui_renderMeter(lock*100, nofs + gui_percentToPixelRawVec('85 163'),gui_percentToPixelRawVec('67 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_HALF, 1, 0, AXIS_H, 0);
-    drawstring(nofs + gui_percentToPixelRawVec('162 162'), strcat(ftos(MECH_DATA_LOCKON)," seconds"), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);*/
+    gui_renderMeter(lock*100, nofs + '85 163','67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_HALF, 1, 0, AXIS_H, 0);
+    drawstring(nofs + '162 162', strcat(ftos(MECH_DATA_LOCKON)," seconds"), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);*/
     
     drawfont = drawfont_prev;
   }
@@ -399,12 +394,12 @@ void(vector ofs) menu_hangar_MechFluff={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  nofs = ofs + gui_percentToPixelRawVec('105 203');
-  drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('250 261'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
+  nofs = ofs;
+  gui_renderPatch9_1_32(nofs, '224 272',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
   if(SELECT_MECH > FALSE){
-    fpos = nofs + gui_percentToPixelRawVec('22 12');
-    gui_wrapText(fpos, '235 210', MECH_DATA_DESC, '11 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+    fpos = nofs + '8 12';
+    gui_wrapText(fpos, '230 252', MECH_DATA_DESC, '11 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
   }
   
   drawfont = drawfont_prev;

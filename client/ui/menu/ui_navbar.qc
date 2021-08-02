@@ -18,14 +18,12 @@ void( vector ofs ) ui_navbutton_brief_draw={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_BRIEF_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_BRIEF_SIZE), CLR_DEF_WEP_INRANGE, 1, 0) ;
-  
-  
+  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_BRIEF_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_BRIEF_SIZE, CLR_DEF_WEP_INRANGE, 1, 0) ;
   
   textPos = UI_NAVBAR_BRIEF_ORG;
   strWidth = stringwidth("BRIEFING", 0 , UI_NAVBAR_font_unselect) / 2;
   textPos_x = (UI_NAVBAR_BRIEF_ORG_x + gui_percentXRaw(UI_NAVBAR_BRIEF_SIZE_x/2)) - gui_percentXRaw(strWidth);
-  textPos_y = UI_NAVBAR_BRIEF_ORG_y + gui_percentYRaw(4);
+  textPos_y = UI_NAVBAR_BRIEF_ORG_y + gui_percentYRaw(6);
   gui_renderHighlightString("BRIEFING", textPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_font_unselect, 1, 0) ;
   drawfont = drawfont_prev;
 };
@@ -58,7 +56,7 @@ void( vector ofs ) ui_navbutton_hangar_draw={
   }
   strWidth = stringwidth("HANGAR", 0 , UI_NAVBAR_font_unselect)/2;
   textPos_x = (textPos_x + gui_percentXRaw(UI_NAVBAR_HANGAR_SIZE_x/2)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
+  textPos_y = textPos_y + gui_percentYRaw(6);
   gui_renderHighlightString("HANGAR", textPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), UI_NAVBAR_font_unselect, 1, 0) ;
   drawfont = drawfont_prev;
 };
@@ -107,7 +105,7 @@ void( vector ofs ) ui_navbutton_arming_draw={
   }
   strWidth = stringwidth("ARMING", 0 , UI_NAVBAR_font_unselect )/2;
   textPos_x = (textPos_x + gui_percentXRaw(UI_NAVBAR_ARMING_SIZE_x/2)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
+  textPos_y = textPos_y + gui_percentYRaw(6);
   drawstring(textPos, "ARMING", UI_NAVBAR_font_unselect, arming_clr, 1, 0);
   drawfont = drawfont_prev;
 };
@@ -165,7 +163,7 @@ void( vector ofs ) ui_navbutton_deploy_draw={
   
   strWidth = stringwidth("DEPLOYMENT", 0 , UI_NAVBAR_font_unselect)/2;
   textPos_x = (textPos_x +  gui_percentXRaw(UI_NAVBAR_DEPLOY_SIZE_x/2)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
+  textPos_y = textPos_y + gui_percentYRaw(6);
   gui_renderHighlightString("DEPLOYMENT", textPos, deploy_clr, '0.75 0.75 0.75', deploy_flt, UI_NAVBAR_font_unselect, 1, 0) ;
   
   drawfont = drawfont_prev;

@@ -20,15 +20,15 @@ void(string imageIcon, vector org, float selected, float allow) ui_renderHardPoi
   
   if( imageIcon != ""){
     if(selected){
-      iorg = org - gui_percentToPixelRawVec('2 2');
-      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256_THICK, gui_percentToPixelRawVec('32 32'), CLR_DEF_YELLOW * 2, 1, 0);
-      drawfill( iorg, gui_percentToPixelRawVec('32 32'), CLR_DEF_YELLOW * 2, 0.75, 0);
+      iorg = org - '2 2';
+      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256_THICK, '32 32', CLR_DEF_YELLOW * 2, 1, 0);
+      drawfill( iorg, '32 32', CLR_DEF_YELLOW * 2, 0.75, 0);
     }
     allowAlpha = 0.45;
     if( allow ){
       allowAlpha = 1;
     }
-    drawpic( org, imageIcon,  gui_percentToPixelRawVec('28 28'), '1 1 1' - noEditColorAdj, allowAlpha, 0);
+    drawpic( org, imageIcon,  '28 28', '1 1 1' - noEditColorAdj, allowAlpha, 0);
   }
 };
 
@@ -94,7 +94,7 @@ void( vector org, vector imgSize, float wepType, vector highColor ) ui_renderHar
   if( pic == "" ){
     return;
   }
-  drawpic( org, pic, gui_percentToPixelRawVec(imgSize), highColor, 1, 0);
+  drawpic( org, pic, imgSize, highColor, 1, 0);
 };
 
 /*
@@ -112,19 +112,18 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   drawfontLocal = drawfont;
   drawfontLocal = FONT_NUM_ROBOT_REGULAR;
   
-  pofs = org + gui_percentToPixelRawVec('-10 -15');
-  pofs_y = pofs_y + gui_percentYRaw(((hpt_num + 1) * 20));
+  pofs = org + '-10 -15';
+  pofs_y = pofs_y + ((hpt_num + 1) * 20);
   
   hardpointLabel = strcat(ftos(hpt_num + 1),")");
   
   hptNumOrg = pofs;
-  hptNumOrg_x = hptNumOrg_x + gui_percentXRaw(25 / 2) - gui_percentXRaw(stringwidth(hardpointLabel, 0, '12 12 0') / 2);
+  hptNumOrg_x = hptNumOrg_x + (25 / 2) - stringwidth(hardpointLabel, 0, '12 12 0') / 2;
   
   drawstring(hptNumOrg, hardpointLabel, '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
   
-  
   hptSizeOrg = hptNumOrg;
-  hptSizeOrg_x = hptSizeOrg_x + gui_percentXRaw(11);
+  hptSizeOrg_x = hptSizeOrg_x + 11;
   hpointVal = 1;
   for( itr = 0; itr < 16; itr = itr + 1 ){
     if( (sz & hpointVal) ){
@@ -135,7 +134,7 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
     }
     ui_renderHardpoint_class_pair( hptSizeOrg, '14 14', hpointVal, itemColor);
     
-    hptSizeOrg_x = hptSizeOrg_x + gui_percentXRaw(15);
+    hptSizeOrg_x = hptSizeOrg_x + 15;
     hpointVal = hpointVal * 2;
   }
   drawfont = drawfontLocal;
@@ -154,10 +153,10 @@ void(float num, vector org) ui_renderHardPointNumber={
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
   hardpointLabel = ftos(num);
-  width = stringwidth(hardpointLabel, 0, gui_percentToPixelRawVec('16 14'));
+  width = stringwidth(hardpointLabel, 0, '16 14');
   numberOrg = org;
-  numberOrg_x = numberOrg_x - gui_percentXRaw(width / 2);
-  drawstring(numberOrg, hardpointLabel, gui_percentToPixelRawVec('16 14'), CLR_DEF_RET_HASLOCK, 1, 0);
+  numberOrg_x = numberOrg_x - (width / 2);
+  drawstring(numberOrg, hardpointLabel, '16 14', CLR_DEF_RET_HASLOCK, 1, 0);
   
   drawfont = drawfontLocal;
 };

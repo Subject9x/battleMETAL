@@ -14,6 +14,24 @@ float(float v) anglemod =
 	return v;
 };
 
+
+vector(float x, float y, float z) Vector3={
+  local vector v;
+  v_x = x;
+  v_y = y;
+  v_z = z;
+  return v;
+};
+
+
+vector(float x, float y) Vector2={
+  local vector v;
+  v_x = x;
+  v_y = y;
+  return v;
+};
+
+
 string(float anglee) gui_angleToNav={
   anglee = anglemod(anglee);
   if(anglee >= 337.5 || anglee < 22.5){
@@ -76,7 +94,6 @@ string(float anglee) gui_angleToArrow={
   }
 };
 
-
 float(float anglee) gui_angleToEnum={
   anglee = anglemod(anglee);
   if(anglee >= 315 || anglee < 45){
@@ -96,10 +113,54 @@ float(float anglee) gui_angleToEnum={
   }
 };
 
+/*
+  Lame attempt to get aspect ratio applied to UI elements...can this be a built-in 
+  for DP already?
+  
+  (original height / original width) x new width = new height
+    
+  aspect ratio = original width / original height
+  adjusted height = <user chosen width> / aspect ratio
+  
+  adjusted width / (original width / original height) = adjusted height,
+  
+  -> from Darkplaces Engine (vid_conwidthauto)
+  conwidth = floor(conheight * vid.width / (vid.height * vid_pixelheight.value));
+*/
+void() gui_set_screen_size={
+  
+  VIEW_WIDTH = cvar("vid_width");
+  VIEW_HEIGHT = cvar("vid_height");
+  VIEW_PIXELH = cvar("vid_pixelheight");
+
+  UI_ASPECT = VIEW_WIDTH / VIEW_HEIGHT;
+  
+  UI_HEIGHT = 600;
+  UI_WIDTH = floor(UI_HEIGHT * (VIEW_WIDTH / VIEW_HEIGHT)/ VIEW_PIXELH);
+  
+  //UI_WIDTH = bound(320, VIEW_WIDTH*0.5, 640);
+  //UI_HEIGHT = rint((VIEW_HEIGHT / VIEW_WIDTH) * UI_WIDTH);
+  
+
+  //cvar_set("vid_conwidth",  ftos(UI_WIDTH));
+//cvar_set("vid_conheight", ftos(UI_HEIGHT));
+  
+  VIEW_MAX_x = cvar("vid_conwidth");
+  VIEW_MAX_y = cvar("vid_conheight");
+  
+  //VIEW_MAX_x = UI_WIDTH;
+  //VIEW_MAX_y = UI_HEIGHT;
+  
+  VIEW_SIZE = VIEW_MAX;
+  VIEW_CTR = VIEW_MAX * 0.5;  
+};
+
 vector(float pcx, float pcy) gui_percentToPixel={
   local vector pixel;
+  
   pixel_x = VIEW_SIZE_x * pcx;
   pixel_y = VIEW_SIZE_y * pcy;
+  
   pixel_z = 0;
   return pixel;
 };
@@ -114,31 +175,35 @@ float(float pcy) gui_percentY={
 
 //Raw is for dynamically generated values
 //the UI was aligned on a 1280x960 display
-vector(float pcx, float pcy) gui_percentToPixelRaw={
+
+vector(float tX, float tY) gui_percentToPixelRaw={
   local vector pct;
   pct = '0 0 0';
-  if(pcx < 0){
-    pct_x = 0 - pcx;
+  if(tX < 0){
+    pct_x = 0 - tX;
     pct_x = pct_x / 1280;
     pct_x = 0 - pct_x;
   }
   else{
-    pct_x = pcx / 1280;
+    pct_x = tX / 1280;
   }
-  if(pcy < 0){
-    pct_y = 0 - pcy;
+  if(tY < 0){
+    pct_y = 0 - tY;
     pct_y = pct_y / 960;
     pct_y = 0 - pct_y;
   }
   else{
-    pct_y = pcy / 960;
+    pct_y = tY / 960;
   }
-  return gui_percentToPixel(pct_x, pct_y);
+  pct_x = tX;
+  pct_y = tY;
+  //return gui_percentToPixel(pct_x, pct_y);
+  return pct;
 };
 
 vector(vector p) gui_percentToPixelRawVec={
   local vector pct;
-  pct = '0 0 0';
+  /*pct = '0 0 0';
   if(p_x < 0){
     pct_x = 0 - p_x;
     pct_x = pct_x / 1280;
@@ -156,12 +221,13 @@ vector(vector p) gui_percentToPixelRawVec={
     pct_y = p_y / 960;
   }
   
-  return gui_percentToPixel(pct_x, pct_y);
+  return gui_percentToPixel(pct_x, pct_y);*/
+  return p;
 };
 
 float(float pcx) gui_percentXRaw={
   local float pct;
-  if(pcx < 0){
+  /*if(pcx < 0){
     pcx = pcx * -1;
     pct = pcx / 1280;
     pct = gui_percentX(pct);
@@ -170,24 +236,24 @@ float(float pcx) gui_percentXRaw={
   else{
     pct = pcx / 1280;
     pct = gui_percentX(pct);
-  }
-  return pct;
+  }*/
+  return pcx;
 };
 
 
 float(float pcy) gui_percentYRaw={
-  local float pct;
+  /*local float pct;
   if(pcy < 0){
     pcy = pcy * -1;
-    pct = pcy / 960;  //BUG - WAS wrong value, fix all references!
+    pct = pcy / 960;
     pct = gui_percentY(pct);
     pct = pct * -1;
   }
   else{
     pct = pcy / 960;
     pct = gui_percentY(pct);
-  }
-  return pct;
+  }*/
+  return pcy;
 };
 
 float(float pct, float ox, float mx) gui_percentCustom={
@@ -203,6 +269,129 @@ vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec={
   return ret;
 };
 
+string RECT32_TL = "gfx/ui/box32_tl.tga";
+string RECT32_TC = "gfx/ui/box32_tc.tga";
+string RECT32_TR = "gfx/ui/box32_tr.tga";
+string RECT32_ML = "gfx/ui/box32_ml.tga";
+string RECT32_MC = "gfx/ui/box32_mc.tga";
+string RECT32_MR = "gfx/ui/box32_mr.tga";
+string RECT32_BL = "gfx/ui/box32_bl.tga";
+string RECT32_BC = "gfx/ui/box32_bc.tga";
+string RECT32_BR = "gfx/ui/box32_br.tga";
+
+
+void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderPatch9_1_32={
+  
+  local float rows;
+  local float cols;
+  
+  local float celSize;
+  local float i;
+  local float j;
+  
+  cols = floor(siz_x / 16);
+  rows = floor(siz_y / 16);
+  
+  celSize = 16;
+  
+  //top-left corner
+  drawpic(org, RECT32_TL, '16 16', colr, alpha, drawFlag);
+  
+  //top bar
+  for(i=1; i < cols; i=i+1){
+    drawpic(org + Vector2(i*celSize, 0), RECT32_TC, '16 16', colr, alpha, drawFlag);
+  }
+  
+  //top-right corner
+  drawpic(org + Vector2(cols * celSize, 0), RECT32_TR, '16 16', colr, alpha, drawFlag);
+  
+  //bottom left corner
+  drawpic(org + Vector2(0, (rows-1) * celSize), RECT32_BL, '16 16', colr, alpha, drawFlag);
+  
+  //bottoms bar
+  for(i=1; i < cols; i=i+1){
+    drawpic(org + Vector2(i*celSize, (rows-1)* celSize), RECT32_BC, '16 16', colr, alpha, drawFlag);
+  }
+  
+  //bottom right corner
+  drawpic(org + Vector2(cols * celSize, (rows-1)* celSize), RECT32_BR, '16 16', colr, alpha, drawFlag);
+  
+  //left side
+  for(i=1; i < rows-1; i=i+1){
+    drawpic(org + Vector2(0, i * celSize), RECT32_ML, '16 16', colr, alpha, drawFlag);
+  }
+  
+  //right side
+  for(i=1; i < rows-1; i=i+1){
+    drawpic(org + Vector2(cols * celSize, i * celSize), RECT32_MR, '16 16', colr, alpha, drawFlag);
+  }
+  
+  if(cols > 2 && rows > 2 ){
+    for(i=1; i < cols; i=i+1){
+      for(j=1; j < rows-1; j=j+1){
+        drawpic(org + Vector2(i * celSize, j * celSize), RECT32_MC, '16 16', colr, alpha, drawFlag);
+      }
+    }
+  }
+};
+
+
+string BORD32_TL = "gfx/ui/bor32_tl.tga";
+string BORD32_TC = "gfx/ui/bor32_tc.tga";
+string BORD32_TR = "gfx/ui/bor32_tr.tga";
+string BORD32_ML = "gfx/ui/bor32_ml.tga";
+string BORD32_MR = "gfx/ui/bor32_mr.tga";
+string BORD32_BL = "gfx/ui/bor32_bl.tga";
+string BORD32_BC = "gfx/ui/bor32_bc.tga";
+string BORD32_BR = "gfx/ui/bor32_br.tga";
+void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderBorder9_1_32={
+  
+  local float rows;
+  local float cols;
+  
+  local float celSize;
+  local float i;
+  local float j;
+  
+  cols = floor(siz_x / 16);
+  rows = floor(siz_y / 16);
+  
+  celSize = 16;
+  
+  //top-left corner
+  drawpic(org, BORD32_TL, '16 16', colr, alpha, drawFlag);
+  
+  //top bar
+  for(i=1; i < cols; i=i+1){
+    drawpic(org + Vector2(i*celSize, 0), BORD32_TC, '16 16', colr, alpha, drawFlag);
+  }
+  
+  //top-right corner
+  drawpic(org + Vector2(cols * celSize, 0), BORD32_TR, '16 16', colr, alpha, drawFlag);
+  
+  //bottom left corner
+  drawpic(org + Vector2(0, (rows-1) * celSize), BORD32_BL, '16 16', colr, alpha, drawFlag);
+  
+  //bottoms bar
+  for(i=1; i < cols; i=i+1){
+    drawpic(org + Vector2(i*celSize, (rows-1)* celSize), BORD32_BC, '16 16', colr, alpha, drawFlag);
+  }
+  
+  //bottom right corner
+  drawpic(org + Vector2(cols * celSize, (rows-1)* celSize), BORD32_BR, '16 16', colr, alpha, drawFlag);
+  
+  //left side
+  for(i=1; i < rows-1; i=i+1){
+    drawpic(org + Vector2(0, i * celSize), BORD32_ML, '16 16', colr, alpha, drawFlag);
+  }
+  
+  //right side
+  for(i=1; i < rows-1; i=i+1){
+    drawpic(org + Vector2(cols * celSize, i * celSize), BORD32_MR, '16 16', colr, alpha, drawFlag);
+  }
+};
+
+
 vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffsetStart, vector uiAreaSize) gui_mapCoordToImgCoord={
   local vector mapCenter, objectTransform, objectPercent, objectUIOrg;
   
@@ -216,7 +405,7 @@ vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffs
   objectTransform_z = 0;
   
   objectPercent = gui_percentCustomVec(objectTransform, areaMinAndMax, uiAreaSize);
-  objectUIOrg = uiOffsetStart + gui_percentToPixelRawVec(objectPercent);
+  objectUIOrg = uiOffsetStart + objectPercent;
   
   return objectUIOrg;
 };
@@ -509,14 +698,14 @@ void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnL
   local float len;
   len = stringwidth(str, 0, txt_sz);
   local vector tl, tr, bl, br;
-  tl = ofs - gui_percentToPixelRawVec('2 2');
-  tr = ofs - gui_percentToPixelRawVec('2 2');
-  tr_x = tr_x + len + gui_percentXRaw(4);
+  tl = ofs - '2 2';
+  tr = ofs - '2 2';
+  tr_x = tr_x + len + 4;
   bl = ofs;
   bl_x = tl_x;
-  bl_y = bl_y + gui_percentYRaw(6);
+  bl_y = bl_y + 6;
   br = ofs;
-  br_x = ofs_x + len + gui_percentXRaw(2);
+  br_x = ofs_x + len + 2;
   br_y = bl_y;
   
   drawline(ln_sz_x, tl, tr, clr, 1, 0);
@@ -584,7 +773,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   local float charlen, pipe;
   local string toke;
   
-  varea = gui_percentToPixelRawVec(area);
+  varea = area;
   totes = tokenizebyseparator(text, " ");
   
   token = 0;
@@ -613,13 +802,13 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
       toke = strcat(toke, " ");
       charlen = stringwidth(toke, 0, fsize);
       charpos_x = textOrg_x + line_length;
-      line_length = line_length + gui_percentXRaw(charlen);
+      line_length = line_length + charlen;
       if( line_length > varea_x ){
         charpos_x = textOrg_x;
         line_row = line_row + 1;
         line_length = charlen;
       }
-      charpos_y = textOrg_y + (line_row * (fsize_y + (fsize_y * 0.15)));
+      charpos_y = textOrg_y + (line_row * (fsize_y + (fsize_y * 0.12)));
       drawstring(charpos, toke, fsize, clr, alph, 0);
     }
     else{
@@ -661,10 +850,8 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
 	}
 	
 	if( panelImage && (panelImage != "") ){
-		panelAdjust_x = targetSize_x * 0.025;
-		panelAdjust_y = targetSize_y * -0.075;
-		drawpic( toolTipOrigin + panelAdjust - gui_percentToPixelRawVec('2 2'), panelImage, targetSize + gui_percentToPixelRawVec('4 4'), panelColor - (panelColor * 0.85), alph + 0.25, 0 );
-		drawpic( toolTipOrigin + panelAdjust, panelImage, targetSize, panelColor, alph + 0.25, 0 );
+    panelAdjust = Vector2(targetSize_x * 0.025,  targetSize_y * -0.075);
+    gui_renderPatch9_1_32(toolTipOrigin + panelAdjust, targetSize, panelColor, alph + 0.25, 0);
 	}
 	gui_wrapText( toolTipOrigin + panelAdjust, targetSize, tipMessage, fontSize, textColor, alph); 
   drawfont = drawfont_prev;
@@ -684,8 +871,7 @@ void( vector lOrg, string label, string value, vector labelColor, vector valueCo
   
   drawfont = drawfont_prev;
   
-  valueOrg_x = lOrg_x + gui_percentXRaw(labelLen) + fontSize_x;
-  valueOrg_y = lOrg_y;
+  valueOrg = Vector2(lOrg_x + labelLen + fontSize_x, lOrg_y);
   
   drawfont_prev = drawfont;
   drawfont = fonts_y;
@@ -723,19 +909,19 @@ void() gui_drawversion={
   lblAlpha = 0.4;
   
   lblLen = stringwidth(lbl, 0, '12 12 0');
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), lbl, '12 12', '1 1 1', lblAlpha, 0);
+  drawstring(VIEW_ORG + '2 2', lbl, '12 12', '1 1 1', lblAlpha, 0);
   
   lowerLeft = VIEW_ORG;
-  lowerLeft_y = lowerLeft_y + VIEW_MAX_y - gui_percentXRaw(14);
-  drawstring(lowerLeft + gui_percentToPixelRawVec('2 0'), lbl, '12 12', '1 1 1', lblAlpha, 0);
+  lowerLeft_y = lowerLeft_y + VIEW_MAX_y - 14;
+  drawstring(lowerLeft + '2 0', lbl, '12 12', '1 1 1', lblAlpha, 0);
   
   lowerRight = VIEW_MAX;
-  lowerRight_x = lowerRight_x - gui_percentXRaw(lblLen);
-  lowerRight_y = lowerRight_y - gui_percentYRaw(14);
+  lowerRight_x = lowerRight_x - lblLen;
+  lowerRight_y = lowerRight_y - 14;
   drawstring(lowerRight, lbl, '12 12', '1 1 1', lblAlpha, 0);
   
-  upperRight_x = VIEW_MAX_x - gui_percentXRaw(lblLen);
-  upperRight_y = gui_percentYRaw(2);
+  upperRight_x = VIEW_MAX_x - lblLen;
+  upperRight_y = 2;
   drawstring(upperRight, lbl, '12 12', '1 1 1', lblAlpha, 0);
   
   drawfont = drawfont_prev;
@@ -761,13 +947,13 @@ entity(float wepBit) gui_get_weapon={
 
 
 void(string msg, float val) cons_logAFloat={
-  print(strcat(msg,":", ftos(val),"\n"));
+  print(sprintf("%s : %s\n", msg, ftos(val)));
 };
 void(string msg, vector v1) cons_logAVector={
-  print(strcat(msg,":", vtos(v1),"\n"));
+  print(sprintf("%s : %s\n", msg, vtos(v1)));
 };
 void(string msg, string s1) cons_logAString={
-  print(strcat(msg,":", s1,"\n"));
+  print(sprintf("%s : %s\n", msg, s1));
 };
 
 void(string msg, float val, string split, float val2) cons_log2Float={

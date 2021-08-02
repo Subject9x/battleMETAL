@@ -116,30 +116,33 @@ void(vector ofs) menu_navBar_drawFrame={
   local vector nvpos;
   local vector launchPos;
   local vector arrowOrg;
+    
+  nvpos = ofs + '9.984 7.488';
   
-  nvpos = ofs + gui_percentToPixelRawVec('9.984 7.488');
-  
-  launchPos_x = VIEW_MAX_x - gui_percentXRaw(138);
+  launchPos_x = VIEW_MAX_x - 138; //gui_percentXRaw(138);
   launchPos_y = nvpos_y;
   
   ui_navbutton_brief_draw( nvpos );
   
   arrowOrg = nvpos;
-  arrowOrg_y = arrowOrg_y + gui_percentYRaw(4);
-  arrowOrg_x = arrowOrg_x + gui_percentXRaw(UI_NAVBAR_BRIEF_SIZE_x + 4);
-  drawpic( arrowOrg, HUD_TRG_PIP_R, gui_percentToPixelRawVec(UI_NAVAR_ARR_SIZE), '0.75 0.75 0.75', 1, 0);
+  arrowOrg_y = arrowOrg_y + 4;  //gui_percentYRaw(4);
+  arrowOrg_x = arrowOrg_x + (UI_NAVBAR_BRIEF_SIZE_x + 4); //gui_percentXRaw(UI_NAVBAR_BRIEF_SIZE_x + 4);
   
-  ui_navbutton_hangar_draw( nvpos + gui_percentToPixelRawVec('96 0') ) ;
+  //drawpic( arrowOrg, HUD_TRG_PIP_R, gui_percentToPixelRawVec(UI_NAVAR_ARR_SIZE), '0.75 0.75 0.75', 1, 0);
+  drawpic( arrowOrg, HUD_TRG_PIP_R, UI_NAVAR_ARR_SIZE, '0.75 0.75 0.75', 1, 0);
   
-  arrowOrg_x = arrowOrg_x + gui_percentXRaw(96);
-  drawpic( arrowOrg, HUD_TRG_PIP_R, gui_percentToPixelRawVec(UI_NAVAR_ARR_SIZE), '0.75 0.75 0.75', 1, 0);
+  //ui_navbutton_hangar_draw( nvpos + gui_percentToPixelRawVec('96 0') ) ;
+  ui_navbutton_hangar_draw( nvpos + '96 0' ) ;
   
-  ui_navbutton_arming_draw( nvpos + gui_percentToPixelRawVec('192 0') ) ;
+  arrowOrg_x = arrowOrg_x + 96; //gui_percentXRaw(96);
+  drawpic( arrowOrg, HUD_TRG_PIP_R, UI_NAVAR_ARR_SIZE, '0.75 0.75 0.75', 1, 0);
   
-  arrowOrg_x = arrowOrg_x + gui_percentXRaw(96);
-  drawpic( arrowOrg, HUD_TRG_PIP_R, gui_percentToPixelRawVec(UI_NAVAR_ARR_SIZE), '0.75 0.75 0.75', 1, 0);
+  ui_navbutton_arming_draw( nvpos + '192 0' ) ;
   
-  ui_navbutton_deploy_draw( nvpos + gui_percentToPixelRawVec('288 0')) ;
+  arrowOrg_x = arrowOrg_x + 96;
+  drawpic( arrowOrg, HUD_TRG_PIP_R, UI_NAVAR_ARR_SIZE, '0.75 0.75 0.75', 1, 0);
+  
+  ui_navbutton_deploy_draw( nvpos + '288 0') ;
   
   ui_navbutton_launch_draw( launchPos ) ;
   
@@ -154,19 +157,19 @@ void() menu_mainListener={
 
 void() menu_navbBar_listener={
 
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_BRIEF_ORG, gui_percentToPixelRawVec(UI_NAVBAR_BRIEF_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_BRIEF_ORG, UI_NAVBAR_BRIEF_SIZE, TRUE)){
     ui_navbutton_brief_click();
     return;
   }
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_HANGAR_ORG, gui_percentToPixelRawVec(UI_NAVBAR_HANGAR_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_HANGAR_ORG, UI_NAVBAR_HANGAR_SIZE, TRUE)){
     ui_navbutton_hangar_click();
     return;
   }
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_ARMING_ORG, gui_percentToPixelRawVec(UI_NAVBAR_ARMING_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_ARMING_ORG, UI_NAVBAR_ARMING_SIZE, TRUE)){
     ui_navbutton_arming_click();
     return;
   }
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_DEPLOY_ORG, gui_percentToPixelRawVec(UI_NAVBAR_DEPLOY_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_DEPLOY_ORG, UI_NAVBAR_DEPLOY_SIZE, TRUE)){
     ui_navbutton_deploy_click();
     return;
   }
@@ -174,11 +177,11 @@ void() menu_navbBar_listener={
     ui_navbutton_launch_click();
     return;
   }
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_CONNECT_ORG, UI_NAVBAR_CONNECT_SIZE, TRUE)){
     ui_navbutton_connect_click();
     return;
   }
-  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_INFO_ORG, gui_percentToPixelRawVec(UI_NAVBAR_INFO_SIZE), TRUE)){
+  if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_INFO_ORG, UI_NAVBAR_INFO_SIZE, TRUE)){
     ui_navbutton_info_click();
   }
 };
@@ -258,23 +261,23 @@ void( vector menuOrg ) menu_serverinfo_basic={
   
   local vector statusColor;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('225 150'), '0.65 0.65 0.65', 1, 0);
+  drawpic(menuOrg, UI_DEF_BOX_512, '225 150', '0.65 0.65 0.65', 1, 0);
   
   // Server Name
-  leftAnchor =  menuOrg + gui_percentToPixelRawVec('4 4');
+  leftAnchor =  menuOrg + '4 4';
   
   fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;
   fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
   gui_labelKeyPair( leftAnchor, "Server :", ENT_SERVER_INFO.netname, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '14 14' );
   
   //Server Game Mode
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('10 18'), "Mode :", "Deathmatch", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '10 18', "Mode :", "Deathmatch", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Max Players
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0.5 36'), "Players :", ftos(maxclients), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '0.5 36', "Players :", ftos(maxclients), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Map filename
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('14.5 54'), "Map :", MAP_NAME, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '14.5 54', "Map :", MAP_NAME, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Mission Name
   if( MSN_NAME != "" ){
@@ -283,7 +286,7 @@ void( vector menuOrg ) menu_serverinfo_basic={
   else{
     serverMsnName = "[Classified]";
   }
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0 72'), "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '0 72', "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Frag Limit
   if( ENT_SERVER_INFO.ruleFraglimit > 0 ){
@@ -292,15 +295,15 @@ void( vector menuOrg ) menu_serverinfo_basic={
   else{
     scoreLimit = "No Limit";
   }
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('8 90'), "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '8 90', "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   serverStatus = ui_label_mission_status();
   //Time Limit
   if( serverStatus == "Complete" ){
-    gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_time_string(ENT_SERVER_INFO.ruleTimelimit), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+    gui_labelKeyPair( leftAnchor + '12 108', "Time :", ui_calculate_time_string(ENT_SERVER_INFO.ruleTimelimit), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
   }
   else{
-    gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12 108'), "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+    gui_labelKeyPair( leftAnchor + '12 108', "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
   }
 
   //Game Status
@@ -314,7 +317,7 @@ void( vector menuOrg ) menu_serverinfo_basic={
   else if( serverStatus == "Complete" ){
     statusColor = CLR_DEF_ARM_THREEQ;
   }
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('6 126'), "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, statusColor, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '6 126', "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, statusColor, fontsStyle, '12 12' );
 }; 
 
 //arranges player rows for dm
@@ -333,13 +336,13 @@ void( vector menuOrg ) menu_draw_players_basic={
   listOfs = '0 0';
   fontColor = '1 1 1';
   
-  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec(UI_CONNECT_DMLIST_SIZE), '0.65 0.65 0.65', 1, 0);
+  drawpic(menuOrg, UI_DEF_BOX_512, UI_CONNECT_DMLIST_SIZE, '0.65 0.65 0.65', 1, 0);
 
   uiParentSize = UI_CONNECT_DMLIST_SIZE;
   menu_connect_draw_scorebar ( menuOrg, "- Players -", TRUE );
 
-  listOfs_x = listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
-  listOfs_y = menuOrg_y + gui_percentYRaw(14);
+  listOfs_x = listRowOfs_x = menuOrg_x + 8;
+  listOfs_y = menuOrg_y + 14;
   playerRowItr = 1;
   
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
@@ -347,7 +350,7 @@ void( vector menuOrg ) menu_draw_players_basic={
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" ){
         player = findfloat(world, clientLocalId, SCOREBOARD[itr]+1);
-        listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
+        listRowOfs_y = listOfs_y + ( playerRowItr * 16 );
         menu_player_row_basic( listRowOfs, playerRowItr, player, TRUE );
         playerRowItr = playerRowItr + 1;
       }
@@ -390,7 +393,7 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   
   drawstring(rowOfs, strcat(ftos(itr),")"), fontSize, rowColor, 1, 0);
   
-  playerNameOfs = rowOfs + gui_percentToPixelRawVec('14 0');
+  playerNameOfs = rowOfs + '14 0';
   playerName = getplayerkeyvalue(playerRow.clientLocalNum, "name");
   if( playerName != "" ){
     playerNameLen = strlen(playerName);
@@ -411,20 +414,20 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
     pingColor = CLR_DEF_RED;
   }
   pingLen = stringwidth( ftos(pingVal), 0, fontSize );
-  playerPingOfs = playerNameOfs + gui_percentToPixelRawVec('150 0');
-  playerPingOfs_x = playerPingOfs_x - gui_percentXRaw(pingLen / 2);
+  playerPingOfs = playerNameOfs + '150 0';
+  playerPingOfs_x = playerPingOfs_x - (pingLen / 2);
   drawstring(playerPingOfs,ftos(pingVal), fontSize, pingColor, 1, 0);
   
   if( showScore ){
-    playerScoreOfs = playerPingOfs + gui_percentToPixelRawVec('45 0');
+    playerScoreOfs = playerPingOfs + '45 0';
     scoreLen = stringwidth(ftos(playerRow.kills), 0, fontSize);
-    playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
+    playerScoreOfs_x = playerScoreOfs_x - (scoreLen / 2);
     drawstring(playerScoreOfs, ftos(playerRow.kills), fontSize, rowColor, 1, 0);
   }else{
     playerScoreOfs = playerPingOfs;
   }
   
-  playerStatusOfs = playerScoreOfs + gui_percentToPixelRawVec('49 0');
+  playerStatusOfs = playerScoreOfs + '49 0';
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) && (ENT_SERVER_INFO.gameType != GAMEMODE_COOP) ){
     playerStatus = "<hidden>";
     statusColor = CLR_DEF_ARM_THREEQ;
@@ -446,6 +449,6 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
     }
   }
   statusLen = stringwidth(playerStatus, 0, fontSize);
-  playerStatusOfs_x = playerStatusOfs_x - gui_percentXRaw(statusLen / 2);
+  playerStatusOfs_x = playerStatusOfs_x - (statusLen / 2);
   drawstring(playerStatusOfs, playerStatus, fontSize, statusColor, 1, 0);
 }; 

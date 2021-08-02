@@ -37,6 +37,14 @@ vector VIEW_SIZE;
 vector VIEW_CTR;
 float VIEW_SCALE;
 
+float UI_ASPECT;
+float VIEW_WIDTH;
+float VIEW_HEIGHT;
+float VIEW_PIXELH;
+
+float UI_WIDTH;
+float UI_HEIGHT;
+
 float VIEW_TOP = 1;
 float VIEW_BOT = 2;
 float VIEW_LFT = 4;
@@ -66,6 +74,8 @@ float PAT_SPH = 2;
 float PAT_BOX = 3;
 float HUD_ALPHA;
 
+
+void() gui_set_screen_size;
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
 vector(vector offSet, float algn) gui_calcAlign;
@@ -95,12 +105,15 @@ float(float ang) anglemod;
 string(float anglee) gui_angleToNav;
 string(float anglee) gui_angleToArrow;
 
+void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderPatch9_1_32;
+void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderBorder9_1_32;
+
 float(float anglee) gui_angleToEnum;
 vector(float bits, float dead, float ok, float wrange, float prange) gui_getWepStatusColor
 
-vector(float pcx, float pcy) gui_percentToPixelRaw;
-float(float pcx) gui_percentXRaw;
-float(float pcy) gui_percentYRaw;
+vector(float tX, float tY) gui_percentToPixelRaw;
+float(float tX) gui_percentXRaw;
+float(float tY) gui_percentYRaw;
 vector(vector p) gui_percentToPixelRawVec;
 vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec;
 float(float pct, float ox, float mx) gui_percentCustom;
