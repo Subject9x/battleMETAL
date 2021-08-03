@@ -10,26 +10,27 @@ Overview: class file for the deployment ui
 void() menu_briefDrawFrame={
   local vector topleftroot;
   
-  topleftroot = VIEW_ORG;
+  //guard against widescreen high vid_condwidth
+  topleftroot = UI_ORG;
   
-  drawfill(topleftroot, VIEW_MAX, CLR_DEF_UI_BRIEF * 0.25, 1, 0 );
-  menu_navBar_drawFrame(VIEW_ORG);
+  drawfill(VIEW_ORG, VIEW_MAX, CLR_DEF_UI_BRIEF * 0.25, 1, 0 );
+  menu_navBar_drawFrame(topleftroot);
   
-  menu_briefMissionInfo( topleftroot + '10 32' );
+  menu_briefMissionInfo( topleftroot + '2 32' );
   
   menu_briefPlaySound( topleftroot );
   menu_briefMapPanel( topleftroot );
-  menu_brief_text_window( topleftroot );
+  menu_brief_text_window( topleftroot + '2 113' );
   
   switch(INFO_SWITCH){
     default:
-      menu_briefObjectivePanel( topleftroot );
+      menu_briefObjectivePanel( topleftroot + '6 138' );
       break;
     case 2:
-      menu_briefIntelPanel( topleftroot );
+      menu_briefIntelPanel( topleftroot + '6 138' );
       break;
     case 3:
-      menu_briefMissionText( topleftroot );
+      menu_briefMissionText( topleftroot + '8 138' );
   }
 };
 
@@ -114,8 +115,8 @@ void() briefSoundListener={
 void(vector ofs) menu_briefMissionInfo={
   local vector fontSizeSmall, fontSizeMedium;
   
-  fontSizeSmall = '8 8';
-  fontSizeMedium = '10 10';
+  fontSizeSmall = '10 10';
+  fontSizeMedium = '12 12';
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -124,36 +125,36 @@ void(vector ofs) menu_briefMissionInfo={
   
   local float tlen;
   local vector tpos;
-  tlen = stringwidth("-MISSION INFO-", 0, '14 12 0');
+  tlen = stringwidth("MISSION INFO", 0, '14 12 0');
   tpos = ofs + '121 2';
   tpos_x = tpos_x - (tlen/2);
-  drawstring(tpos, "-MISSION INFO-", '14 12 0', '1 1 1', 1, 0);
+  drawstring(tpos, "MISSION INFO", '14 12 0', '1 1 1', 1, 0);
   
   //mission name
-  drawstring( ofs + '7 14', "Name:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs + '42 14', MSN_NAME, fontSizeMedium, '1 1 1', 1, 0);
+  drawstring( ofs + '7 14', "Name", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + '50 14', MSN_NAME, fontSizeMedium, '1 1 1', 1, 0);
   //mission type
-  drawstring( ofs + '7 24', "Type:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0); 
-  drawstring( ofs + '42 24', MSN_TYPE,fontSizeMedium, '1 1 1', 1, 0); 
+  drawstring( ofs + '7 26', "Type", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0); 
+  drawstring( ofs + '50 26', MSN_TYPE,fontSizeMedium, '1 1 1', 1, 0); 
   //reserves - one of the original ideas was to let the player respawn in fresh mechs with possibly new equipment...but I couldn't get that to 
-  //work in Quake's jank-ass player lifecycle....
+    //work in Quake's jank-ass player lifecycle....
   //drawstring( ofs + gui_percentToPixelRawVec('7 34'), "Reserves:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
   //drawstring( ofs + gui_percentToPixelRawVec('42 34'), strcat(ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
   //sector
-  drawstring( ofs+ '7 34', "Sector:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs+ '42 34', MSN_SECTOR, fontSizeMedium, '1 1 1', 1, 0);
+  drawstring( ofs+ '7 38', "Sector", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs+ '50 38', MSN_SECTOR, fontSizeMedium, '1 1 1', 1, 0);
   //location
-  drawstring( ofs + '7 44', "Location:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs + '42 44', MSN_LOCATION, fontSizeMedium, '1 1 1', 1, 0);
+  drawstring( ofs + '7 50', "Location", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + '50 50', MSN_LOCATION, fontSizeMedium, '1 1 1', 1, 0);
   //local time
-  drawstring( ofs + '7 54', "Local time:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  drawstring( ofs + '42 54', MSN_LOCALTIME, fontSizeMedium, '1 1 1', 1, 0);
+  drawstring( ofs + '7 62', "Local time", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + '50 62', MSN_LOCALTIME, fontSizeMedium, '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
   
   local vector helpOrg;
   helpOrg = ofs;
-  helpOrg_x = helpOrg_x + gui_percentXRaw(231);
+  helpOrg_x = helpOrg_x + 256;
   BRIEF_MISSION_HELP_ORG = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 };
@@ -197,89 +198,52 @@ void(vector ofs) menu_briefPlaySound={
     draws background of objectives / intel.
     renders button bar for the panel.
 */
-void(vector ofs) menu_brief_text_window={
-  local vector bpos;
-  
-  bpos = ofs + '10 113';
-  gui_renderPatch9_1_32(bpos, '270 368',  CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, DRAWFLAG_NORMAL);
 
-  bpos = bpos + '18 1';
+//shoulda been like this the whole time.
+vector(vector ofs, float infoSwitch, string txt, vector btnSize) menu_brief_text_window_btn={
   
-  local vector tpos, isz;
-  local float tlen;
   local vector fontSize, fontSizeSmall, fontSizeMedium;
-  
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
+  local vector tpos;
+  local float tlen;
   
   fontSizeSmall = '8 8 0';
   fontSizeMedium = '10 10 0';
   fontSize = fontSizeSmall;
   
-  if( INFO_SWITCH == 1 ){
+  if( INFO_SWITCH == infoSwitch ){
     fontSize = fontSizeMedium;
   }
   
-  isz = '64 16';
+  tlen = stringwidth(txt, 0, fontSize);
+  tpos_x = (ofs_x + (btnSize_x / 2)) - ( tlen / 2 );
+  tpos_y = (ofs_y + (btnSize_y/2)) - ( fontSize_y / 2 );
   
-  tlen = stringwidth("[OBJECTIVES]", 0, fontSize);
-  tpos_x = (bpos_x + 32) - ( tlen / 2 );
-  tpos_y = (bpos_y + 12) - ( fontSize_y / 2 );
+  gui_renderTintImage((INFO_SWITCH==infoSwitch),ofs, UI_DEF_BOX_256_BTN, btnSize, CLR_DEF_IIF_FRIEND_BLD + '0.25 0.25 0.25', 1, 0) ;
   
-  OBJ_BTN_ORG = bpos + '0 4';
-  OBJ_BTN_SZ = isz;
-
-  gui_renderTintImage((INFO_SWITCH==1),OBJ_BTN_ORG, UI_DEF_BOX_256_BTN, isz, CLR_DEF_IIF_FRIEND_BLD + '0.25 0.25 0.25', 1, 0) ;
-  gui_renderHighlightString("[OBJECTIVES]", tpos, CLR_DEF_IIF_FRIEND_BLD + '0.33 0.33 0.33', '0.75 0.75 0.75', (INFO_SWITCH==1), fontSize, 1, 0) ;
-  
-  if( INFO_SWITCH == 2 ){
-    fontSize = fontSizeMedium;
-  }else{
-    fontSize = fontSizeSmall;
-  }
-  
-  local vector intelPos, intelSize, intelLabelPos;
-  local float ilen; 
-  
-  intelPos = bpos + '7 0';
-  intelPos_x = intelPos_x + isz_x;
-  ilen = stringwidth("[INTEL]", 0 , fontSize);
-  
-  intelLabelPos_x = (intelPos_x + 32) - ( ilen / 2 );
-  intelLabelPos_y = (intelPos_y + 12) - (fontSize_y / 2 );
-  
-  intelSize = '64 16';
-  
-  INT_BTN_ORG = intelPos + '-6 4';
-  INT_BTN_SZ = intelSize;
-  gui_renderTintImage((INFO_SWITCH==2), intelPos + '0 4', UI_DEF_BOX_256_BTN, intelSize, CLR_DEF_IIF_FRIEND_BLD + '0.25 0.25 0.25', 1, 0) ;
-  gui_renderHighlightString("[INTEL]", intelLabelPos, CLR_DEF_IIF_FRIEND_BLD + '0.33 0.33 0.33', '0.75 0.75 0.75', (INFO_SWITCH==2), fontSize, 1, 0) ;
-  
-  if( INFO_SWITCH == 3 ){
-    fontSize = fontSizeMedium;
-  }else{
-    fontSize = fontSizeSmall;
-  }
-  
-  local vector briefPos, briefSize, briefLabelPos;
-  local float blen; 
-  
-  briefPos = intelPos + '7 0';
-  briefPos_x = briefPos_x + isz_x;
-  blen = stringwidth("[SITUATION]", 0 , fontSize);
-  
-  briefLabelPos_x = (briefPos_x + 32) - ( blen / 2 );
-  briefLabelPos_y = (briefPos_y + 12) - ( fontSize_y / 2 );
-  
-  briefSize = '64 16';
-  
-  BRF_BTN_ORG = briefPos + '-6 4';
-  BRF_BTN_SZ = briefSize;
-  gui_renderTintImage((INFO_SWITCH==3), briefPos + '0 4', UI_DEF_BOX_256_BTN, briefSize, CLR_DEF_IIF_FRIEND_BLD + '0.25 0.25 0.25', 1, 0) ;
-  gui_renderHighlightString("[SITUATION]", briefLabelPos, CLR_DEF_IIF_FRIEND_BLD + '0.33 0.33 0.33', '0.75 0.75 0.75', (INFO_SWITCH==3), fontSize, 1, 0) ;
-  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  gui_renderHighlightString(txt, tpos, CLR_DEF_IIF_FRIEND_BLD + '0.33 0.33 0.33', '0.75 0.75 0.75', (INFO_SWITCH==infoSwitch), fontSize, 1, 0) ;
   drawfont = drawfont_prev;
+  
+  return ofs;
 };
+
+void(vector ofs) menu_brief_text_window={
+  local vector bpos;
+  
+  bpos = ofs;
+  gui_renderPatch9_1_32(bpos, '270 368',  CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, DRAWFLAG_NORMAL);
+  
+  OBJ_BTN_SZ = INT_BTN_SZ = BRF_BTN_SZ = '64 16';
+  
+  OBJ_BTN_ORG = menu_brief_text_window_btn(bpos + Vector2(32, 5), 1, "OBJECTIVES", OBJ_BTN_SZ);
+  
+  INT_BTN_ORG = menu_brief_text_window_btn(OBJ_BTN_ORG + Vector2(7 + OBJ_BTN_SZ_x, 0), 2, "INTEL", OBJ_BTN_SZ);
+  
+  BRF_BTN_ORG = menu_brief_text_window_btn(INT_BTN_ORG + Vector2(7 + OBJ_BTN_SZ_x, 0), 3, "SITUATION", OBJ_BTN_SZ);
+};
+
+
 
 /*
   Panel - Mission Briefing
@@ -372,7 +336,7 @@ void(vector ofs) menu_briefObjectivePanel={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  lofs = ofs + '18 133';
+  lofs = ofs;
   lst_idx = 1;
   line_rtn = 0;
   
@@ -423,7 +387,7 @@ void(vector ofs) menu_briefIntelPanel={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  fpos = ofs + '22 133';
+  fpos = ofs;
   gui_wrapText(fpos, '255 332', MSN_INTEL, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
   
   drawfont = drawfont_prev;
@@ -442,8 +406,8 @@ void(vector ofs) menu_briefMissionText={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  fpos = ofs + '24 133';
-  gui_wrapText(fpos, '245 332', MSN_BRIEF, '10 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+  fpos = ofs;
+  gui_wrapText(fpos, '265 345', MSN_BRIEF, '10 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
   
   drawfont = drawfont_prev;
 };

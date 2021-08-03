@@ -33,10 +33,11 @@ string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;
-vector VIEW_SIZE;
 vector VIEW_CTR;
 float VIEW_SCALE;
 
+vector UI_ORG;  //aspect-ratio corrected offsets
+vector UI_MAX;
 float UI_ASPECT;
 float VIEW_WIDTH;
 float VIEW_HEIGHT;

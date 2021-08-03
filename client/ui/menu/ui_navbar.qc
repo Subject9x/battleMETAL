@@ -252,7 +252,7 @@ void( vector ofs ) ui_navbutton_launch_draw={
     gui_renderMeter( ( (15 - sec) / 15) * 100, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), CLR_DEF_GRAY_H, CLR_DEF_IIF_FRIEND_BLD, 0.367, 0, AXIS_H, FALSE);
   }
   else{
-    text = ">>[LAUNCH]>>";
+    text = ">>LAUNCH>>";
   }
   strWidth = stringwidth(text, 0 , UI_NAVBAR_font_select);
   textPos = UI_NAVBAR_LAUNCH_ORG;

@@ -76,11 +76,11 @@ void() menu_hangarDrawFrame={
     cleanHardPoints();
   }
   
-  topleftroot = VIEW_CTR - Vector2(320, VIEW_MAX_y / 2);
+  topleftroot = UI_ORG;
   
   drawfill(VIEW_ORG, VIEW_MAX, CLR_DEF_UI_HANGAR * 0.25, 1, 0 );
   
-  menu_navBar_drawFrame(VIEW_ORG);
+  menu_navBar_drawFrame(topleftroot);
   
   menu_hangar_MechDisplay(topleftroot + '367 32');
   menu_hangar_MechList(topleftroot + '0 24');
@@ -90,13 +90,12 @@ void() menu_hangarDrawFrame={
 };
 
 void(vector ofs) menu_hangar_MechDisplay={
+  local vector imgSize;
   local vector nofs, hofs, i_sz, hardpointGraphCenter;
   local float hardpointItr;
   local entity hardpoint;
   local vector hardpointOffset;
   local vector hardpointCoord;
-  local vector mechSize;
-  local vector mechMins;
   local vector helpOrg;
   
   nofs = ofs;
@@ -108,49 +107,55 @@ void(vector ofs) menu_hangar_MechDisplay={
   drawpic(nofs, UI_HANGAR_BOX, '252 225', CLR_DEF_UI_HANGAR, 1, 0);
   
   if(SELECT_MECH > FALSE){
-    i_sz = '250 225';
-    hofs = Vector2(nofs_x, nofs_y);
+    imgSize = draw_getimagesize(MECH_DATA_ICON);
+    
+    i_sz_y = 234;
+    i_sz_x = floor(i_sz_y * (imgSize_x / imgSize_y));
+    
+    hofs = Vector2(ofs_x + 10 + 130 - (i_sz_x/2), ofs_y + 2);
     
     if( MECH_DATA_ICON != "" ){
-      drawpic(hofs, MECH_DATA_ICON, i_sz, '1 1 1', 1, 0);	
+      drawpic(hofs, MECH_DATA_ICON, i_sz, CLR_DEF_ARM_OK * 2, 0.5, 0);
     }
     
-    hardpointGraphCenter_x = hofs_x + (i_sz_x / 2);
-    hardpointGraphCenter_y = hofs_y + i_sz_y;
-    hardpointGraphCenter_y = hardpointGraphCenter_y + (UI_HANGAR_DATA_mech.mins_z * 3.75);
-
-    mechSize_x = (UI_HANGAR_DATA_mech.mins_x * -1) + UI_HANGAR_DATA_mech.maxs_x;
-    
-    mechSize_y = UI_HANGAR_DATA_mech.maxs_y;
-    mechSize_y = (mechSize_y * 0.75) + UI_HANGAR_DATA_mech.maxs_y;
-    
-    mechMins = Vector2( UI_HANGAR_DATA_mech.mins_x, UI_HANGAR_DATA_mech.maxs_y * -1.26);
+    hardpointGraphCenter = Vector2(ofs_x + 130 + 10, ofs_y + (i_sz_y/5.5));
 
     MECHPANEL_CTR = hardpointGraphCenter;
 
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-      hardpointOffset = hardpoint.compOffset;
-      hardpointOffset_x = hardpointOffset_x * 0.65;
-      hardpointOffset_y = hardpointOffset_y * 0.49; 
-      hardpointCoord = gui_mapCoordToImgCoord( mechMins, mechSize, hardpointOffset, hofs, '250 250' );
-
-      if( hardpointCoord_y < hofs_y ){
-        hardpointCoord_y = hofs_y + 6;
-      }
-
-      ui_renderHardPointNumber( hardpointItr, hardpointCoord );
+      hardpoint.ui_org = MECHPANEL_CTR + (hardpoint.uiOffset * (i_sz_y / i_sz_x) * 0.67);
+      
+      drawpic( hardpoint.ui_org +'-8 -2', UI_DEF_BOX_64, '16 16', '1 1 1', 1, 0);
+      ui_renderHardPointNumber( hardpointItr, hardpoint.ui_org );
+      
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
   }
+  //draw hardpoint keys
+  local vector iconOfs;
+  iconOfs = Vector2(ofs_x + 4, ofs_y + 165);
+  
+  drawpic(iconOfs, "gfx/ui/wep_icons/bal1.tga", '16 16', '1 1 1', 1, DRAWFLAG_NORMAL);
+  drawstring(iconOfs + '18 4', "Ballistic", '10 10', CLR_DEF_ARM_HALF, 1, 0);
+  
+  drawpic(iconOfs + '0 18', "gfx/ui/wep_icons/ene1.tga", '16 16', '1 1 1', 1, DRAWFLAG_NORMAL);
+  drawstring(iconOfs + '18 22', "Energy", '10 10', CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2' , 1, 0);
+  
+  drawpic(iconOfs + '0 36',  "gfx/ui/wep_icons/mis1.tga", '16 16', '1 1 1', 1, DRAWFLAG_NORMAL);
+  drawstring(iconOfs + '18 40', "Missile", '10 10', CLR_DEF_ARM_OK, 1, 0);
+  
+  drawpic(iconOfs + '0 54', "gfx/ui/wep_icons/misc1.tga", '16 16', '1 1 1', 1, DRAWFLAG_NORMAL);
+  drawstring(iconOfs + '18 58', " Module", '10 10', CLR_HUD_PURPLE + '0.15 0.15 0.15', 1, 0);  
   
   helpOrg = nofs;
   helpOrg_x = nofs_x + 250 - 12;
   HANGAR_HELP_GRAPH = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 };
+
 
 void(vector ofs) menu_hangar_MechHPoints={
   local vector nofs, tofs;

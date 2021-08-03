@@ -355,7 +355,7 @@ void() weaponGroupPanelListener={
 };
 
 void() selectNextConfig={
-  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_N, '20 38', TRUE )){
+  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_N, '32 32', TRUE )){
     CFG_INDEX_PREV = CFG_INDEX;
     CFG_INDEX = CFG_INDEX + 1;
     if( CFG_INDEX > 6 ){
@@ -368,7 +368,7 @@ void() selectNextConfig={
 };
 
 void() selectPrevConfig={
-  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_P, '20 38', TRUE )){
+  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_P, '32 32', TRUE )){
     CFG_INDEX_PREV = CFG_INDEX;
     CFG_INDEX = CFG_INDEX - 1;
     if( CFG_INDEX < 1 ){
@@ -386,17 +386,19 @@ void() menu_arming_drawFrame={
   if(CLIENT_MENU_sel_mech <= 0){
     cleanHardPoints();
   }
-  topleftroot = VIEW_ORG;
-  drawfill(topleftroot, VIEW_MAX, CLR_DEF_UI_ARMING * 0.25, 1, 0 );
+  topleftroot = UI_ORG;
+  drawfill(VIEW_ORG, VIEW_MAX, CLR_DEF_UI_ARMING * 0.25, 1, 0 );
   
-  menu_navBar_drawFrame(VIEW_ORG);
+  menu_navBar_drawFrame(UI_ORG);
   
-  menu_arming_HardpointGraph(topleftroot + '0 24');
-  menu_arming_WeaponList(topleftroot + '0 24');
-  menu_arming_WeaponGroupPanel(topleftroot + '0 276');
-  menu_arming_energydraw('160 276');
-  menu_arming_WeaponInfo(topleftroot + '0 24');
-  menu_arming_WeaponInHardpoint(topleftroot + '0 24');
+  menu_arming_HardpointGraph(topleftroot + '0 32');
+  menu_arming_WeaponList(topleftroot + '495 32');
+  
+  menu_arming_WeaponGroupPanel(topleftroot + '0 272');
+  menu_arming_energydraw(topleftroot + '145 272');
+  
+  menu_arming_WeaponInHardpoint(topleftroot + '288 32');
+  menu_arming_WeaponInfo(topleftroot + '288 242');
   menu_arming_DrawItemDragIcon();
   
   //menu_arming_AssignToHardpoint_btn(VIEW_CTR);
@@ -407,11 +409,8 @@ void(vector ofs) menu_arming_HardpointGraph={
   local entity hardpoint;
   local float hardpointItr;
   
-  local vector mechSize, iconSize;
-  local vector mechMins, iconMins;
   local vector mechIconOrg;
   local vector mechIconSize;
-  local vector mechIconTopOffset;
   
   local vector hardpointCoord;
   
@@ -424,38 +423,30 @@ void(vector ofs) menu_arming_HardpointGraph={
   local vector warnOrg;
   local vector helpOrg;
   
-  nofs = ofs + '10 8';
+  nofs = ofs;
   panelOffset = nofs + '4 4';
-  panelImageSize = '270 236';
+  panelImageSize = '278 236';
   
-  gui_renderPatch9_1_32(panelOffset, panelImageSize, '0.25 0.25 0.25', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(nofs, panelImageSize, '0.25 0.25 0.25', 1, DRAWFLAG_NORMAL);
   
   if( SELECT_MECH > FALSE ){
-    mechSize_x = (UI_HANGAR_DATA_mech.mins_x * -1) + UI_HANGAR_DATA_mech.maxs_x;
-    mechSize_y = UI_HANGAR_DATA_mech.maxs_y;
-    mechSize_y = (mechSize_y * 0.75) + UI_HANGAR_DATA_mech.maxs_y;
     
-    mechMins = Vector2(UI_HANGAR_DATA_mech.mins_x, (UI_HANGAR_DATA_mech.maxs_y * 0.75) * -1);
+    local vector imgSize;
+    imgSize = draw_getimagesize(MECH_DATA_ICON);
     
-    //pieces
-    iconSize = Vector2(mechSize_x, mechSize_y + (UI_HANGAR_DATA_mech.maxs_y * 0.25));
+    local float w;  
+    w = 236 * imgSize_x / imgSize_y;
     
-    iconMins = Vector2(mechMins_x, UI_HANGAR_DATA_mech.mins_y);
+    mechIconSize = Vector2( w * 1.5, 200);
     
-    mechIconSize = Vector2(panelImageSize_x, panelImageSize_y * 2);
+    mechIconOrg = Vector2(nofs_x + (panelImageSize_x/2) - (mechIconSize_x*0.5), nofs_y);
     
-    mechIconTopOffset = Vector2(mechMins_x, UI_HANGAR_DATA_mech.maxs_y * 0.87);
+    drawsubpic( mechIconOrg, mechIconSize, MECH_DATA_ICON, '0 0', Vector2(1, 0.45), CLR_DEF_ARM_OK * 2, 0.5, DRAWFLAG_NORMAL);
     
-    mechIconOrg = gui_mapCoordToImgCoord( iconMins, iconSize, mechIconTopOffset, panelOffset, mechIconSize );
-    mechIconOrg_x = (panelOffset_x + (panelImageSize_x / 2)) - (360 / 2); //'360' is not a typo, just a lazy screen adjustment.
+    gui_renderBorder9_1_32(nofs, '278 244', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
     
-    drawpic(mechIconOrg, MECH_DATA_ICON, '350 375', CLR_DEF_WHITE - '0.1 0.1 0.1' , 1, 0);
-    drawpic(nofs, UI_DEF_BOX_256_BOX, '278 244', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
+    MECHPANEL_CTR = Vector2(nofs_x + (panelImageSize_x * 0.5), nofs_y + (panelImageSize_y * 0.35));
     
-    MECHPANEL_CTR = mechIconOrg;
-    MECHPANEL_CTR_x = MECHPANEL_CTR_x + (360 / 2);
-    MECHPANEL_CTR_y = MECHPANEL_CTR_y + (mechIconTopOffset_y + (50));
-
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
@@ -471,7 +462,7 @@ void(vector ofs) menu_arming_HardpointGraph={
       }
      
       ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr), allowed );
-
+      
       if( !allowed ){
         drawpic( hardpoint.ui_org, HUD_RAD_PIP_BLD, '28 28', CLR_DEF_RED, 0.85, 0);
       }
@@ -489,26 +480,26 @@ void(vector ofs) menu_arming_HardpointGraph={
   pctr = panelImageSize * 0.5;
   
   nbtn = pbtn = nofs;
-  pbtn_y = pbtn_y + (pctr_y + pctr_y);
-  nbtn_x = nbtn_x + panelImageSize_x - 24;
-  nbtn_y = nbtn_y + (pctr_y + pctr_y);
+  pbtn_y = pbtn_y + panelImageSize_y;
   
-  drawpic( pbtn + '7 -44' , UI_DEF_BOX_512, '265 48', CLR_DEF_UI_ARMING + '0.15 0.15 0.15', 1, 0);
+  nbtn_x = nbtn_x + panelImageSize_x - 24;
+  nbtn_y = nbtn_y + panelImageSize_y;
+  
+  gui_renderPatch9_1_32(nofs + Vector2(0, pbtn_y - 78), '280 57', CLR_DEF_UI_ARMING + '0.15 0.15 0.15', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  BTN_CFG_P = pbtn + '8 -32';
-  drawstring(pbtn + '8 -44', "PREV", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawpic(BTN_CFG_P, UI_BTN_ARR_LEFT, '24 32', CLR_DEF_ARM_THREEQ, 1, 0);      
+  BTN_CFG_P = pbtn + '4 -44';
+  drawpic(BTN_CFG_P, UI_BTN_ARR_LEFT, '32 32', CLR_DEF_ARM_THREEQ, 1, 0);
+  drawstring(pbtn + '10 -12', "PREV", '10 10', CLR_DEF_ARM_HALF, 1, 0);
   
-  BTN_CFG_N = nbtn + '-2 -32';
-  drawstring(nbtn + '-4 -44', "NEXT", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawpic(BTN_CFG_N, UI_BTN_ARR_RIGHT, '24 32', CLR_DEF_ARM_THREEQ, 1, 0);
+  BTN_CFG_N = nbtn + '-2 -44';
+  drawpic(BTN_CFG_N, UI_BTN_ARR_RIGHT, '32 32', CLR_DEF_ARM_THREEQ, 1, 0);
+  drawstring(nbtn + '-2 -12', "NEXT", '10 10', CLR_DEF_ARM_HALF, 1, 0);
   
   lctr = nofs + pctr;
   lctr_y = lctr_y + pctr_y - 42;
-  
   
   //this is quite hilarious
   cfg = NAVNAMES[CFG_INDEX];
@@ -537,15 +528,13 @@ void(vector ofs) menu_arming_WeaponList={
   local vector menuOffset;
   
   menuOffset = ofs;
-  menuOffset_x = VIEW_CTR_x + 150;
-  menuOffset = menuOffset + '12 8';
   
   //drawpic(menuOffset, UI_DEF_BOX_256_TALL, '148 439', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
   
-  menu_arming_WeaponList_draw(menuOffset, '2 6', DMG_BAL, "==BALLISTIC==", CLR_DEF_ARM_HALF );
-  menu_arming_WeaponList_draw(menuOffset, '2 100', DMG_ENE, "==ENERGY==", CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2' );
-  menu_arming_WeaponList_draw(menuOffset, '2 200', DMG_EXP, "==MISSILE==", CLR_DEF_ARM_OK );
-  menu_arming_WeaponList_draw(menuOffset, '2 290', DMG_MSC, "==UPGRADES==", CLR_HUD_PURPLE + '0.15 0.15 0.15' );
+  menu_arming_WeaponList_draw(menuOffset, '2 0', DMG_BAL, "BALLISTIC", CLR_DEF_ARM_HALF );
+  menu_arming_WeaponList_draw(menuOffset, '2 113', DMG_ENE, "ENERGY", CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2' );
+  menu_arming_WeaponList_draw(menuOffset, '2 225', DMG_EXP, "MISSILE", CLR_DEF_ARM_OK );
+  menu_arming_WeaponList_draw(menuOffset, '2 337', DMG_MSC, "UPGRADES", CLR_HUD_PURPLE + '0.15 0.15 0.15' );
 };
 
 void(vector parentOffset, vector offsetAdjust, float weaponType, string listName, vector listNameColor) menu_arming_WeaponList_draw={
@@ -561,15 +550,11 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
   nofs = parentOffset;
   nofs = nofs + offsetAdjust;
   
-  gui_renderPatch9_1_32(nofs, '148 110', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(nofs, '130 112', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_LIGHT;
-    labelLen = stringwidth( listName, 0, '12 12');
-    labelLen = labelLen / 2;
-    labelLen = (138 / 2) - labelLen;
-    labelOrg = nofs + '0 2';
-    labelOrg_x = labelOrg_x + labelLen;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+    labelOrg = nofs + '8 2';
     drawstring(labelOrg , listName, '12 12 0', listNameColor, 1, 0);
   drawfont = drawfont_prev;
   
@@ -582,8 +567,8 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
     if( itemId != 0){
       data_get_client_item_( UI_ARMING_DATA_item_list, itemId );
       if( (UI_ARMING_DATA_item_list.damageType & weaponType) ){
-        listItemOffset_x = nofs_x;
-        listItemOffset_y = nofs_y + (act_idx + 1) * 14;
+        listItemOffset = Vector2(nofs_x, nofs_y + (act_idx + 1) * 14);
+        
         listItemColor = CLR_DEF_TXT_NONSELECT;
         if( itemId == CLIENT_MENU_sel_list_wep){
           listItemColor = CLR_DEF_TXT_HIGHLIGHT;
@@ -673,33 +658,32 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   
   local vector colorSel, colorCold;
   colorSel = CLR_DEF_ARM_OK * 2;
-  colorCold = CLR_DEF_TXT_CANTSELECT * 1.25;
+  colorCold = CLR_DEF_TXT_CANTSELECT * 2;
   
-  nofs = ofs + '10 0';
+  nofs = ofs;
   groupButtonSize = '12 12';
   
-  gui_renderPatch9_1_32(nofs, '150 198', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(nofs, '130 210', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
   //Panel label
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
-    groupLabelOrg = nofs;
-    groupLabelOrg_x = groupLabelOrg_x + 4;
+    groupLabelOrg = Vector2(nofs_x + 32, nofs_y + 2);
     drawstring(groupLabelOrg, "Weapon Groups", '12 12 0', CLR_DEF_RET_GETLOCK * 1.15, 1, 0);
   drawfont = drawfont_prev;
   
-  nofs = nofs + '0 3';
-  col_a = nofs + '46 4';
-  col_b = nofs + '66 4';
-  col_c = nofs + '86 4';
-  col_d = nofs + '106 4';
+  nofs = nofs + '0 10';
+  col_a = nofs + '46 2';
+  col_b = nofs + '66 2';
+  col_c = nofs + '86 2';
+  col_d = nofs + '106 2';
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
-    drawstring(col_a + '4 0', "1", '14 14 0', '1 1 1', 1, 0);
-    drawstring(col_b + '4 0', "2", '14 14 0', '1 1 1', 1, 0);
-    drawstring(col_c + '4 0', "3", '14 14 0', '1 1 1', 1, 0);
-    drawstring(col_d + '4 0', "4", '14 14 0', '1 1 1', 1, 0);
+    drawstring(col_a + '4 1', "1", '12 12 0', '1 1 1', 1, 0);
+    drawstring(col_b + '4 1', "2", '12 12 0', '1 1 1', 1, 0);
+    drawstring(col_c + '4 1', "3", '12 12 0', '1 1 1', 1, 0);
+    drawstring(col_d + '4 1', "4", '12 12 0', '1 1 1', 1, 0);
   drawfont = drawfont_prev;
   
   lst_idx = 1;
@@ -710,10 +694,10 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     lofs_y = nofs_y + (lst_idx * 20);
     
     if( CLIENT_MENU_sel_hrpnt == lst_idx){
-      drawfill( lofs + '-2 -8', '143 20', '0.85 0.85 0', 0.67, 0 );
+      drawfill( lofs + '-2 -8', '130 20', '0.85 0.85 0', 0.67, 0 );
     }
     
-    drawstring(lofs +  '0 -4', strcat("{",ftos(lst_idx),"}"), '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
+    drawstring(lofs +  '0 -4', strcat(ftos(lst_idx),"}"), '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
     if( hardpoint.icon != "" ){
       drawpic(lofs + '16 -8', hardpoint.icon, '20 20', '1 1 1', 1,0);
     }
@@ -746,6 +730,9 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
         drawpic( lofs + '100 -3', UI_DEF_BOX_64, groupButtonSize, colorCold, 1, 0);
       }
     }
+    else{
+      drawstring( lofs + '40 -3', "N/A", '10 10', CLR_DEF_TXT_CANTSELECT, 1, 0);
+    }
     
     bit = bit * 2;
     lst_idx = lst_idx + 1;
@@ -769,8 +756,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     drawfill( nofs, '150 198', '1 0 0', 0.75, 0);
   }
   
-  helpOrg = nofs;
-  helpOrg_x = nofs_x + 150 - 12;
+  helpOrg = Vector2(nofs_x + 130 - 6, nofs_y);
   ARMING_HELP_WEAPON_GROUPS = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 };
@@ -783,7 +769,7 @@ void(vector ofs) menu_arming_energydraw={
   
   local vector helpOrg;
   
-  gui_renderPatch9_1_32(ofs, '126 197', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(ofs, '130 210', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -837,7 +823,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   local vector smallFont;
   local vector helpOrg;
   
-  nofs = Vector2(ofs_x + VIEW_CTR_x - 34, VIEW_CTR_y + 12);
+  nofs = ofs;
   
   gui_renderPatch9_1_32(nofs, '195 220', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
@@ -954,7 +940,7 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector smallFont;
   local vector helpOrg;
   
-  nofs = Vector2(ofs_x + VIEW_CTR_x - 34, ofs_y + 8);
+  nofs = ofs;
   
   gui_renderPatch9_1_32(nofs, '195 220', CLR_DEF_ARM_THREEQ, 1, DRAWFLAG_NORMAL);
 

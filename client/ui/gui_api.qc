@@ -135,42 +135,31 @@ void() gui_set_screen_size={
 
   UI_ASPECT = VIEW_WIDTH / VIEW_HEIGHT;
   
-  UI_HEIGHT = 600;
-  UI_WIDTH = floor(UI_HEIGHT * (VIEW_WIDTH / VIEW_HEIGHT)/ VIEW_PIXELH);
-  
-  //UI_WIDTH = bound(320, VIEW_WIDTH*0.5, 640);
-  //UI_HEIGHT = rint((VIEW_HEIGHT / VIEW_WIDTH) * UI_WIDTH);
-  
-
-  //cvar_set("vid_conwidth",  ftos(UI_WIDTH));
-//cvar_set("vid_conheight", ftos(UI_HEIGHT));
-  
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
   
-  //VIEW_MAX_x = UI_WIDTH;
-  //VIEW_MAX_y = UI_HEIGHT;
+  VIEW_CTR = VIEW_MAX * 0.5;
   
-  VIEW_SIZE = VIEW_MAX;
-  VIEW_CTR = VIEW_MAX * 0.5;  
+  UI_ORG = VIEW_CTR - Vector2(320, VIEW_MAX_y / 2);
+  UI_MAX = Vector2(UI_ORG_x + 640, VIEW_MAX_y);
 };
 
 vector(float pcx, float pcy) gui_percentToPixel={
   local vector pixel;
   
-  pixel_x = VIEW_SIZE_x * pcx;
-  pixel_y = VIEW_SIZE_y * pcy;
+  pixel_x = VIEW_MAX_x * pcx;
+  pixel_y = VIEW_MAX_y * pcy;
   
   pixel_z = 0;
   return pixel;
 };
 
 float(float pcx) gui_percentX={
-  return (VIEW_SIZE_x * pcx);
+  return (VIEW_MAX_x * pcx);
 };
 
 float(float pcy) gui_percentY={
-  return (VIEW_SIZE_y * pcy);
+  return (VIEW_MAX_y * pcy);
 }; 
 
 //Raw is for dynamically generated values
