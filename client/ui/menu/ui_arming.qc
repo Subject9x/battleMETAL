@@ -830,11 +830,10 @@ void(vector ofs) menu_arming_WeaponInfo={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  panelLabel = "-Weapon from List-";
-  panelLabelLen = stringwidth(panelLabel, 0, '10 10 0');
-  labelOrg = nofs + '0 6';
-  labelOrg_x = nofs_x + 97.5 - ( panelLabelLen / 2 );
-  drawstring(labelOrg, panelLabel, '10 10 0', '1 1 1', 1, 0);
+  panelLabel = "LIST";
+  panelLabelLen = stringwidth(panelLabel, 0, '12 12 0');
+  labelOrg = Vector2(nofs_x + 97.5 - ( panelLabelLen / 2 ), nofs_y + 6);
+  drawstring(labelOrg, panelLabel, '12 12 0', '1 1 1', 1, 0);
   
   if( ITEM1_DATA_ICON != ""){
     drawpic((nofs + '6 6'), ITEM1_DATA_ICON, '32 32', CLR_DEF_WHITE, 1, 0); 
@@ -842,7 +841,10 @@ void(vector ofs) menu_arming_WeaponInfo={
   weaponNameLen = stringwidth(ITEM1_DATA_NAME, 0, '14 14 0');
   weaponNameOrg = nofs + '0 20';
   weaponNameOrg_x = (weaponNameOrg_x + 108) - ( weaponNameLen / 2 ); 
-  drawstring(weaponNameOrg, ITEM1_DATA_NAME, '14 14 0', '1 1 1', 1, 0);
+  
+  local vector clr;
+  clr = colorForWepType(ITEM1_DATA_TYPE);
+  drawstring(weaponNameOrg, ITEM1_DATA_NAME, '14 14 0', clr, 1, 0);
   
   drawfont = drawfont_prev;
   
@@ -947,11 +949,10 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  panelLabel = "-Weapon In Hardpoint-";
-  panelLabelLen = stringwidth(panelLabel, 0, '10 10 0');
-  labelOrg = nofs + '0 6';
-  labelOrg_x = nofs_x + 97.5 - ( panelLabelLen / 2 );
-  drawstring(labelOrg, panelLabel, '10 10 0', '1 1 1', 1, 0);
+  panelLabel = "HARDPOINT";
+  panelLabelLen = stringwidth(panelLabel, 0, '12 12 0');
+  labelOrg = Vector2(nofs_x + 97.5 - ( panelLabelLen / 2 ), nofs_y + 6);
+  drawstring(labelOrg, panelLabel, '12 12 0', '1 1 1', 1, 0);
   
   if( ITEM2_DATA_ICON != ""){
     drawpic(nofs + '6 6', ITEM2_DATA_ICON, '32 32', CLR_DEF_WHITE, 1, 0); 
@@ -959,7 +960,10 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   weaponNameLen = stringwidth(ITEM2_DATA_NAME, 0, '14 14 0');
   weaponNameOrg = nofs + '0 20';
   weaponNameOrg_x = (weaponNameOrg_x + 108) - ( weaponNameLen / 2 ); 
-  drawstring(weaponNameOrg, ITEM2_DATA_NAME, '14 14 0', '1 1 1', 1, 0);
+  
+  local vector clr;
+  clr = colorForWepType(ITEM2_DATA_TYPE);
+  drawstring(weaponNameOrg, ITEM2_DATA_NAME, '14 14 0', clr, 1, 0);
   
   drawfont = drawfont_prev;
   
@@ -1004,7 +1008,7 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   
   if(ITEM2_DATA_SIZE > -1 ){
     drawstring(icol,"Hardpoint Size:",smallFont, CLR_DEF_GRAY_H, 1, 0);
-    ui_renderHardpoint_class_pair( icol + '112 0', '14 14', ITEM1_DATA_SIZE, '1 1 1' );
+    ui_renderHardpoint_class_pair( icol + '112 0', '14 14', ITEM2_DATA_SIZE, '1 1 1' );
     icol = icol + '0 12';
   }
 
@@ -1039,6 +1043,22 @@ void() menu_arming_DrawItemDragIcon={
 };
 
 //UTILITY FUNCS
+vector(float bit) colorForWepType={
+  if((bit & DMG_BAL)){
+    return CLR_DEF_ARM_HALF;
+  }
+  else if((bit & DMG_ENE)){
+    return CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2';
+  }
+  else if((bit & DMG_EXP)){
+    return CLR_DEF_ARM_OK;
+  }
+  else if((bit & DMG_MSC)){
+    return CLR_HUD_PURPLE + '0.15 0.15 0.15' ;
+  }
+  return CLR_DEF_TXT_NONSELECT; 
+};
+
 void() cleanHardPoints={
   local entity hardpoint;
   

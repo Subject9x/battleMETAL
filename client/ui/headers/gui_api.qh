@@ -38,6 +38,7 @@ float VIEW_SCALE;
 
 vector UI_ORG;  //aspect-ratio corrected offsets
 vector UI_MAX;
+vector UI_CTR;
 float UI_ASPECT;
 float VIEW_WIDTH;
 float VIEW_HEIGHT;

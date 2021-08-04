@@ -198,8 +198,6 @@ void(vector ofs) menu_hangar_MechList={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  //gui_renderPatch9_1_32(ofs + '9.9 8', '106 448',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
-  
   textLen = stringwidth( "-Available Metal-", 0, '10 10 0');
   labelOfs = ofs + '10 10';
   labelOfs_x = labelOfs_x + ( 106 / 2 ) - ( textLen / 2 );

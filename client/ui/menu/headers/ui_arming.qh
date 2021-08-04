@@ -126,5 +126,6 @@ void(vector ofs) menu_arming_WeaponInfo;
 void(vector ofs) menu_arming_WeaponInHardpoint;
 void() menu_arming_DrawItemDragIcon;
 
+vector(float bit) colorForWepType;
 void() cleanHardPoints;
 string(float bit) getNameOfWepType;
