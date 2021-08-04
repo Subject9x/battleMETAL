@@ -407,10 +407,10 @@ void( vector ofs ) ui_navbutton_connect_draw={
   }
   drawpic(UI_NAVBAR_CONNECT_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), disColor, 1, 0) ;
   textPos = UI_NAVBAR_CONNECT_ORG;
-  strWidth = stringwidth("[Enter Server]", 0 , fontSize)/2;
-  textPos_x = (textPos_x +  gui_percentXRaw(64)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
-  drawstring(textPos, "[Enter Server]", fontSize, disColor, 1, 0) ;
+  strWidth = stringwidth("Enter Server", 0 , fontSize)/2;
+  textPos_x = (textPos_x +  64) - strWidth;
+  textPos_y = textPos_y + 6;
+  drawstring(textPos, "Enter Server", fontSize, disColor, 1, 0) ;
   
   drawfont = drawfont_prev;
 };
@@ -453,10 +453,10 @@ void( vector ofs ) ui_navbutton_disconnect_draw={
   drawpic(UI_NAVBAR_DISCONNECT_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_DISCONNECT_SIZE), disColor, 1, 0) ;
   
   textPos = UI_NAVBAR_DISCONNECT_ORG;
-  strWidth = stringwidth("[Disconnect]", 0 , fontSize)/2;
-  textPos_x = (textPos_x +  gui_percentXRaw(64)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
-  drawstring(textPos, "[Disconnect]", fontSize, disColor, 1, 0) ;
+  strWidth = stringwidth("Disconnect", 0 , fontSize)/2;
+  textPos_x = (textPos_x +  64) - strWidth;
+  textPos_y = textPos_y + 6;
+  drawstring(textPos, "Disconnect", fontSize, disColor, 1, 0) ;
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_disconnect_click={
@@ -502,10 +502,10 @@ void( vector ofs ) ui_navbutton_team_draw={
   
   drawpic(UI_NAVBAR_TEAM_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_TEAM_SIZE), disColor, 1, 0) ;
   textPos = UI_NAVBAR_TEAM_ORG;
-  strWidth = stringwidth("[Switch Team]", 0 , fontSize)/2;
-  textPos_x = (textPos_x +  gui_percentXRaw(64)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
-  drawstring(textPos, "[Switch Team]", fontSize, disColor, 1, 0) ;
+  strWidth = stringwidth("Switch Team", 0 , fontSize)/2;
+  textPos_x = (textPos_x +  64) - strWidth;
+  textPos_y = textPos_y + 6;
+  drawstring(textPos, "Switch Team", fontSize, disColor, 1, 0) ;
   
   drawfont = drawfont_prev;
 };

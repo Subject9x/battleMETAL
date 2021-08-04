@@ -66,12 +66,14 @@ void() menu_connect_drawFrame={
   local vector satMapOrg;
   local vector rulesOrg;
 
-  //background panel
-  topleftroot = VIEW_ORG;
+  //anchor to aspect-corrected offset
+  topleftroot = UI_ORG;
   
-  drawfill(topleftroot, VIEW_MAX, '0.33 0.33 0.33', 1, 0 );
+  //background panel
+  drawfill(VIEW_ORG, VIEW_MAX, '0.1 0.1 0.1', 1, 0 );
+  
   //nav bar
-  menu_connect_draw_bar( VIEW_ORG + '9.984 7.488' );
+  menu_connect_draw_bar( topleftroot + '0 5');
   
   if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     menu_connect_render_teamdm( topleftroot );
@@ -93,7 +95,7 @@ void( vector menuOrg ) menu_connect_draw_bar={
   local vector enterOfs;
   local vector switchOfs;
   
-  enterOfs_x = VIEW_MAX_x - 138;
+  enterOfs_x = UI_MAX_x - 138;
   enterOfs_y = menuOrg_y;
   
   ui_navbutton_disconnect_draw( menuOrg );
@@ -112,7 +114,7 @@ void( vector menuOrg ) menu_connect_draw_objectives={
   local vector labelOrg;
   local float labelLen;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '420 183', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '384 192', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
@@ -142,14 +144,14 @@ void( vector titleOfs, string titleTeam, float showScore ) menu_connect_draw_sco
     menuLabelOfs_y = titleOfs_y + 4;
     
     drawstring(menuLabelOfs, titleTeam, '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
-    drawstring(titleOfs + '6 14', "[Name]", '12 12', CLR_DEF_WHITE, 1, 0);
-    drawstring(titleOfs + '160 14', "[Ping]", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring(titleOfs + '6 16', "[Name]", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring(titleOfs + '160 16', "[Ping]", '12 12', CLR_DEF_WHITE, 1, 0);
     if( showScore ){
-      drawstring(titleOfs + '200 14', "[Score]", '12 12', CLR_DEF_WHITE, 1, 0);
-      drawstring(titleOfs + '240 14', "[Status]", '12 12', CLR_DEF_WHITE, 1, 0);
+      drawstring(titleOfs + '200 16', "[Score]", '12 12', CLR_DEF_WHITE, 1, 0);
+      drawstring(titleOfs + '240 16', "[Status]", '12 12', CLR_DEF_WHITE, 1, 0);
     }
     else{
-      drawstring(titleOfs + '200 14', "[Status]", '12 12', CLR_DEF_WHITE, 1, 0);
+      drawstring(titleOfs + '200 16', "[Status]", '12 12', CLR_DEF_WHITE, 1, 0);
     }
   drawfont = FONT_NUM_ROBOT_REGULAR;
 };
@@ -157,8 +159,15 @@ void( vector titleOfs, string titleTeam, float showScore ) menu_connect_draw_sco
   Takes the MSN_MAPPIC from the mission file and draws it here for reference.
 */
 void( vector menuOrg, vector satMapSize) menu_connect_draw_satmap={
+  local vector imgOrg;
+  local vector imgSize;
+  
   if( MSN_MAPPIC != "" ){
-    drawpic( menuOrg, UI_DEF_BOX_512, satMapSize, CLR_DEF_WHITE, 1, 0);
-    drawpic( menuOrg + (satMapSize*0.013), MSN_MAPPIC, (satMapSize*0.97), CLR_DEF_WHITE, 1, 0);
+    gui_renderBorder9_1_32(menuOrg, satMapSize, CLR_DEF_WHITE, 1, DRAWFLAG_NORMAL);
+    
+    imgSize = (satMapSize + '8 8') * 0.9;
+    imgOrg = menuOrg + (satMapSize * 0.5) - (imgSize * 0.5) + '8 0';
+    
+    drawpic(imgOrg, MSN_MAPPIC, imgSize, CLR_DEF_WHITE, 1, 0);
   }
 };

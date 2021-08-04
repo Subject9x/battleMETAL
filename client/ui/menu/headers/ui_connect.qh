@@ -19,8 +19,8 @@ Overview:
 */
 
 //Globals
-vector UI_CONNECT_DMLIST_SIZE = '310 290';
-vector UI_CONNECT_TEAMLIST_SIZE = '310 190';
+vector UI_CONNECT_DMLIST_SIZE = '304 290';
+vector UI_CONNECT_TEAMLIST_SIZE = '304 190';
 
 //pseudo interface
 void() menu_connectListener_onClick;

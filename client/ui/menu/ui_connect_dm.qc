@@ -15,23 +15,23 @@ void( vector rootTop ) menu_connect_render_dm={
   local vector rulesOrg;
   
   //satmapinfo - DM
-  satMapOrg_x = VIEW_MAX_x - 300;
-  satMapOrg_y = VIEW_ORG_y + 182;
+  satMapOrg_x = UI_MAX_x - 310;
+  satMapOrg_y = UI_ORG_y + 182;
   menu_connect_draw_satmap( satMapOrg,  '290 290' );
   
   //mission info - DM
-  menu_serverinfo_basic(rootTop + '10 32');
+  menu_serverinfo_basic(rootTop + '0 32');
   
   //server flags - DM
-  rulesOrg_x = VIEW_CTR_x;
-  rulesOrg_y = VIEW_ORG_y;
-  menu_connect_draw_rules_dm( rulesOrg + '-85 32' );
+  rulesOrg_x = UI_CTR_x;
+  rulesOrg_y = UI_ORG_y;
+  menu_connect_draw_rules_dm( rulesOrg + '-80 32' );
   
   //Server About - DM
-  menu_connect_draw_about_dm( rulesOrg + '20 32' );
+  menu_connect_draw_about_dm( rulesOrg + '33 32' );
   
   //player list - DM
-  menu_draw_players_basic( rootTop + '10 182' );
+  menu_draw_players_basic( rootTop + '0 182' );
 
 };
 
@@ -44,14 +44,14 @@ void( vector menuOrg ) menu_connect_draw_rules_dm={
   local vector leftAnchor;
   local vector ruleRow;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '105 150', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '105 150', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
   
   labelLen = stringwidth("- Server Rules -", 0, '10 10');
   labelOrg = menuOrg;
-  labelOrg_x = menuOrg_x + 48 - (labelLen / 2);
+  labelOrg_x = menuOrg_x + 56 - (labelLen / 2);
   labelOrg_y = menuOrg_y + 4;
   drawstring(labelOrg, "- Server Rules -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   
@@ -105,7 +105,7 @@ void( vector menuOrg ) menu_connect_draw_about_dm={
   local vector labelOrg;
   local float labelLen;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '290 150', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '278 150', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
@@ -119,7 +119,7 @@ void( vector menuOrg ) menu_connect_draw_about_dm={
   if( strlen(ENT_SERVER_INFO.svAbout) > 0 ){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_MEDIUM;
-      gui_wrapText(menuOrg + '6 16', '284 135', ENT_SERVER_INFO.svAbout, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+      gui_wrapText(menuOrg + '6 16', '278 135', ENT_SERVER_INFO.svAbout, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
     drawfont = drawfont_prev;
   }
 };

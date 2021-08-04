@@ -9,23 +9,24 @@ Overview:
   
 */
 void( vector rootTop ) menu_connect_render_coop={
-  //mission info - COOP
-  menu_connect_draw_mission_info_coop( rootTop + '32 32' );
-  
-  //server flags - COOP
-  menu_connect_draw_coop_rules(  rootTop + '52 132'  );
   
   //server info - COOP
-  menu_connet_draw_coop_about( rootTop + '254 32' );
+  menu_connet_draw_coop_about( rootTop + '256 32' );
   
   //objectives stats - COOP
-  menu_connect_draw_objectives_coop( rootTop + '254 100' );
+  menu_connect_draw_objectives_coop( rootTop + '256 100' );
   
   //player list - COOP
-  menu_connect_draw_players_coop( rootTop + '10 205' );
+  menu_connect_draw_players_coop( rootTop + '0 32' );
+  
+  //mission info - COOP
+  menu_connect_draw_mission_info_coop( rootTop + '22 128' );
+  
+  //server flags - COOP
+  menu_connect_draw_coop_rules(  rootTop + '42 228' );
   
   //satmap - COOP;
-  menu_connect_draw_satmap( VIEW_ORG + '45 305', '168 168' );
+  menu_connect_draw_satmap( rootTop + '22 288', '192 192' );
 };
 
 /*
@@ -41,7 +42,7 @@ void( vector menuOrg ) menu_connect_draw_mission_info_coop={
   local string serverStatus;
   local string serverTime;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '200 173', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '200 173', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   // Server Name
   leftAnchor =  menuOrg + '6 4';
@@ -96,7 +97,7 @@ void( vector menuOrg ) menu_connet_draw_coop_about={
   local vector labelOrg;
   local float labelLen;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '376 68', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg,  '376 68', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
@@ -136,7 +137,9 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   ruleRow = leftAnchor;
   
   if( ENT_SERVER_INFO.serverFlags == 0 ){
-    drawstring( ruleRow, "None", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring( ruleRow + Vector2( 85 - stringwidth("None", 0, '12 12') / 2, -4), "None", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawfont = drawfont_prev;
+    return;
   }
   listCount = 0;
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_POWERUP) ){
@@ -216,7 +219,7 @@ void( vector menuOrg ) menu_connect_draw_objectives_coop={
   local vector objectiveColor;
   local vector objectiveStatusOrg;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '376 373', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg,  '376 373', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
@@ -286,7 +289,8 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
   local string nameCheck;
   
   uiParentSize = '244 100';
-  drawpic(menuOrg, UI_DEF_BOX_512,uiParentSize, CLR_UI_PSC_BRIEF * 0.9, 1, 0);
+  
+  gui_renderPatch9_1_32(menuOrg, uiParentSize, CLR_UI_PSC_BRIEF * 0.9, 1, DRAWFLAG_NORMAL);
 
   menu_connect_draw_scorebar( menuOrg, "- Players -", FALSE);
   

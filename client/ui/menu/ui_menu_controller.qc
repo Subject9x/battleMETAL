@@ -260,23 +260,23 @@ void( vector menuOrg ) menu_serverinfo_basic={
   
   local vector statusColor;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '225 150', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '225 150', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   // Server Name
-  leftAnchor =  menuOrg + '4 4';
+  leftAnchor =  menuOrg + '5 5';
   
   fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;
   fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
   gui_labelKeyPair( leftAnchor, "Server :", ENT_SERVER_INFO.netname, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '14 14' );
   
   //Server Game Mode
-  gui_labelKeyPair( leftAnchor + '10 18', "Mode :", "Deathmatch", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '10 14', "Mode :", "Deathmatch", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Max Players
-  gui_labelKeyPair( leftAnchor + '0.5 36', "Players :", ftos(maxclients), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '0.5 28', "Players :", ftos(maxclients), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Map filename
-  gui_labelKeyPair( leftAnchor + '14.5 54', "Map :", MAP_NAME, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '14.5 42', "Map :", MAP_NAME, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Mission Name
   if( MSN_NAME != "" ){
@@ -285,7 +285,7 @@ void( vector menuOrg ) menu_serverinfo_basic={
   else{
     serverMsnName = "[Classified]";
   }
-  gui_labelKeyPair( leftAnchor + '0 72', "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '0 56', "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Frag Limit
   if( ENT_SERVER_INFO.ruleFraglimit > 0 ){
@@ -294,15 +294,15 @@ void( vector menuOrg ) menu_serverinfo_basic={
   else{
     scoreLimit = "No Limit";
   }
-  gui_labelKeyPair( leftAnchor + '8 90', "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '8 70', "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   serverStatus = ui_label_mission_status();
   //Time Limit
   if( serverStatus == "Complete" ){
-    gui_labelKeyPair( leftAnchor + '12 108', "Time :", ui_calculate_time_string(ENT_SERVER_INFO.ruleTimelimit), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+    gui_labelKeyPair( leftAnchor + '12 84', "Time :", ui_calculate_time_string(ENT_SERVER_INFO.ruleTimelimit), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
   }
   else{
-    gui_labelKeyPair( leftAnchor + '12 108', "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
+    gui_labelKeyPair( leftAnchor + '12 84', "Time :", ui_calculate_game_time_string(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12');  
   }
 
   //Game Status
@@ -316,7 +316,7 @@ void( vector menuOrg ) menu_serverinfo_basic={
   else if( serverStatus == "Complete" ){
     statusColor = CLR_DEF_ARM_THREEQ;
   }
-  gui_labelKeyPair( leftAnchor + '6 126', "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, statusColor, fontsStyle, '12 12' );
+  gui_labelKeyPair( leftAnchor + '6 98', "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, statusColor, fontsStyle, '12 12' );
 }; 
 
 //arranges player rows for dm
@@ -335,13 +335,14 @@ void( vector menuOrg ) menu_draw_players_basic={
   listOfs = '0 0';
   fontColor = '1 1 1';
   
-  drawpic(menuOrg, UI_DEF_BOX_512, UI_CONNECT_DMLIST_SIZE, '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, UI_CONNECT_DMLIST_SIZE, '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
 
-  uiParentSize = UI_CONNECT_DMLIST_SIZE;
+  uiParentSize_x = ceil(UI_CONNECT_DMLIST_SIZE_x / 16) * 16;
+  uiParentSize_y= ceil(UI_CONNECT_DMLIST_SIZE_y / 16) * 16;
   menu_connect_draw_scorebar ( menuOrg, "- Players -", TRUE );
 
   listOfs_x = listRowOfs_x = menuOrg_x + 8;
-  listOfs_y = menuOrg_y + 14;
+  listOfs_y = menuOrg_y + 16;
   playerRowItr = 1;
   
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
