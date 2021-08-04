@@ -670,13 +670,11 @@ void(string src_img, vector tintcolor, float setAlpha, float flg) gui_renderImag
 };
 
 void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float setAlpha, float flg) gui_renderHighlightString={
-
   if(bool){
     gui_renderString(str, ofs, hclr, sz, setAlpha, flg);
+    return;
   }
-  else{
-    gui_renderString(str, ofs, clr, sz, setAlpha, flg);
-  }
+  gui_renderString(str, ofs, clr, sz, setAlpha, flg);
 };
 
 

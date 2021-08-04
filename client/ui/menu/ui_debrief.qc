@@ -14,7 +14,7 @@ Overview:
 void() menu_debriefListener_onClick={
   //next/retry mission button
   if( servertime > MENU_respawn_cool ){
-    if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), TRUE) ){
+    if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, '128 24', TRUE) ){
       if( servertime > MENU_DEBRIEF_time_elapsed ){
         //Single player 
         if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
@@ -43,27 +43,29 @@ void() menu_debriefListener_onHover={
 //menu rendering
 void() menu_debrief_drawFrame={
   local vector topleftroot;
-  topleftroot = VIEW_ORG;
 
   if( MENU_DEBRIEF_time_elapsed != -1 ){
     if( servertime > MENU_DEBRIEF_time_elapsed ){
-      cl_set_mission( MENU_DEBRIEF_status );
+      cl_set_mission( MENU_DEBRIEF_status );  //DEBUG
       MENU_DEBRIEF_time_elapsed = -1;
     }
   }
   
   if(MENU_DEBRIEF_status){
-    drawfill(topleftroot, VIEW_MAX, CLR_DEF_UI_DEPLOY * 0.25, 1, 0 );
+    drawfill(VIEW_ORG, VIEW_MAX, CLR_DEF_UI_DEPLOY * 0.25, 1, 0 );
+    MENU_DEBRIEF_color_base  = CLR_DEF_UI_DEPLOY;
   }
   else{
-    drawfill(topleftroot, VIEW_MAX, CLR_DEF_ARM_HALF * 0.25, 1, 0 );
+    drawfill(VIEW_ORG, VIEW_MAX, CLR_DEF_ARM_HALF * 0.25, 1, 0 );
+    MENU_DEBRIEF_color_base  = CLR_DEF_ARM_HALF;
   }
   
+  topleftroot = UI_ORG;
   menu_debrief_header( topleftroot );
-  menu_debrief_objectives_primary( topleftroot + gui_percentToPixelRawVec('10 32') );
-  menu_debrief_objectives_secondary( topleftroot + gui_percentToPixelRawVec('10 272') );
-  menu_debrief_stats( topleftroot + gui_percentToPixelRaw(VIEW_CTR_x, 32) );
-  menu_debrief_unlocks( topleftroot + gui_percentToPixelRaw(VIEW_CTR_x, 160) );
+  menu_debrief_objectives_primary( topleftroot + '0 32' );
+  menu_debrief_objectives_secondary( topleftroot + '0 272' );
+  menu_debrief_stats( topleftroot + '368 32' );
+  menu_debrief_unlocks( topleftroot + '368 160' );
 };
 
 /*
@@ -73,7 +75,6 @@ void(vector panelOffset) menu_debrief_header={
   local vector thisOrg;
   local float statusLen;
   local vector statusOrg;
-  local vector nextMissionOrg;
   local vector nextMissionLabelOrg;
   local string missionStat;
   local float t;
@@ -86,38 +87,40 @@ void(vector panelOffset) menu_debrief_header={
   thisOrg = panelOffset;
   
   //Mission Status Label
+  if( MENU_DEBRIEF_status > 0 ){
+    MENU_DEBRIEF_data_mission_status = "Mission Successful";
+  }
+  else{
+    MENU_DEBRIEF_data_mission_status = "Mission Failed";
+  }
+  
   statusLen = stringwidth( MENU_DEBRIEF_data_mission_status, 0, '22 22');
-  statusOrg_x = thisOrg_x + gui_percentXRaw( VIEW_MAX_x / 2 ) - gui_percentXRaw( statusLen /2 );
-  statusOrg_y = gui_percentYRaw(10);
+  statusOrg = Vector2(UI_ORG_x + 320 - ( statusLen /2 ), panelOffset_y + 5);
   gui_renderHighlightString(MENU_DEBRIEF_data_mission_status, statusOrg, CLR_DEF_ARM_OK, CLR_DEF_ARM_THREEQ, MENU_DEBRIEF_status, '22 22', 1, 0);
   
   //Next Mission Button
+  MENU_DEBRIEF_BUTTON_ORG_mission = Vector2(UI_MAX_x - 138, 6);
   
-  nextMissionOrg_x = VIEW_MAX_x - gui_percentXRaw(138);
-  nextMissionOrg_y = gui_percentYRaw(6);
-  
-  MENU_DEBRIEF_BUTTON_ORG_mission = nextMissionOrg;
-  
-  drawpic( nextMissionOrg, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
+  drawpic( MENU_DEBRIEF_BUTTON_ORG_mission, UI_DEF_BOX_256_BTN, '128 24', CLR_DEF_GRAY_H, 1, 0);
   
   if( servertime < MENU_respawn_cool ){
     t = SERVER_RESPAWN_COOL_CAMP - (servertime - MENU_respawn_cool_start); 
-    sec = t - floor( t / 60 ) * 60 ;
+    sec = t - floor( t / 60 ) * 60;
     sec = rint(sec);
     text = sprintf("%02d", sec);
-    gui_renderMeter( ( (SERVER_RESPAWN_COOL_CAMP - sec) / SERVER_RESPAWN_COOL_CAMP) * 100, nextMissionOrg, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, CLR_DEF_IIF_FRIEND_BLD, 0.367, 0, AXIS_H, FALSE);
+    gui_renderMeter( ( (SERVER_RESPAWN_COOL_CAMP - sec) / SERVER_RESPAWN_COOL_CAMP) * 100, MENU_DEBRIEF_BUTTON_ORG_mission, '128 24', CLR_DEF_GRAY_H, CLR_DEF_IIF_FRIEND_BLD, 0.367, 0, AXIS_H, FALSE);
   }
   else{
     //TODO - what to do with FAILED missions?
     if( MENU_DEBRIEF_status ){
-      missionStat = "[Next Mission]";
-      nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(16);
+      missionStat = "Next Mission";
+      nextMissionLabelOrg_x = MENU_DEBRIEF_BUTTON_ORG_mission_x + 16;
     }
     else{
       missionStat = "<< Retry ";
-      nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(32);
+      nextMissionLabelOrg_x = MENU_DEBRIEF_BUTTON_ORG_mission_x + 32;
     }
-    nextMissionLabelOrg_y = gui_percentYRaw(10);
+    nextMissionLabelOrg_y = 10;
     drawstring( nextMissionLabelOrg, missionStat, '18 14', '1 1 1', 1, 0);
   }
   drawfont = drawfont_prev;
@@ -150,28 +153,29 @@ void(vector panelOffset) menu_debrief_objectives_primary={
   
   //background panel image
   thisOrg = panelOffset;
-  panelImageSize_x = gui_percentXRaw(VIEW_CTR_x);
-  panelImageSize_y = gui_percentYRaw(240);
-  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
+  panelImageSize_x = 364;
+  panelImageSize_y = 240;
+  
+  gui_renderPatch9_1_32(thisOrg, panelImageSize, MENU_DEBRIEF_color_base, 1, DRAWFLAG_NORMAL);
   
   //panel label
   objectivesLabelLen = stringwidth( "Primary Objectives", 0, '12 12');
-  objectivesLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 4 );
-  objectivesLabelOrg_x = objectivesLabelOrg_x - gui_percentXRaw(10) - gui_percentXRaw( objectivesLabelLen / 2 );
-  objectivesLabelOrg_y = thisOrg_y + gui_percentYRaw(4);
+  objectivesLabelOrg_x = thisOrg_x + ( panelImageSize_x / 4 );
+  objectivesLabelOrg_x = objectivesLabelOrg_x - 10 - ( objectivesLabelLen / 2 );
+  objectivesLabelOrg_y = thisOrg_y + 4;
   drawstring( objectivesLabelOrg, "Primary Objectives", '12 12', CLR_DEF_GRAY_H, 1, 0);
   
   //objective status
-  drawstring( thisOrg + gui_percentToPixelRaw(VIEW_CTR_x - (VIEW_CTR_x / 4.5), 4), "Status", '12 12', CLR_DEF_GRAY_H, 1, 0);
+  drawstring( thisOrg + Vector2(panelImageSize_x - 64, 4), "Status", '12 12', CLR_DEF_GRAY_H, 1, 0);
   
   //Objectives List
   
-  listStartOrg = thisOrg + gui_percentToPixelRawVec('6 20');
+  listStartOrg = thisOrg + '6 20';
   list_index = 1;
   show_index = 0;
   line_return = 0;
   objectiveOffset = listStartOrg;
-  objectiveOffset_y = objectiveOffset_y + line_return + (show_index * gui_percentYRaw(16));
+  objectiveOffset_y = objectiveOffset_y + line_return + (show_index * 16);
   endOfLine = TRUE;
   while(endOfLine){
     objectiveType = MSN_OBJ_TYPES[list_index];
@@ -183,7 +187,7 @@ void(vector panelOffset) menu_debrief_objectives_primary={
         objectiveDesc = MSN_OBJ_DESC[list_index];
         
         drawstring( objectiveOffset, strcat(ftos(show_index),")"), '12 12', CLR_DEF_GRAY_H, 1, 0);
-        line_return = gui_wrapText(objectiveOffset + gui_percentToPixelRawVec('12 0'), '225 150', objectiveDesc, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+        line_return = gui_wrapText(objectiveOffset + '12 0', '225 150', objectiveDesc, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
         
         if( objectiveStatus == OBJECTIVE_WIN ){
           objectiveStatusLabel = "Complete";
@@ -198,10 +202,10 @@ void(vector panelOffset) menu_debrief_objectives_primary={
           objectiveColor = CLR_DEF_ARM_ONEQ;
         }
         objectiveStatusLen = stringwidth( objectiveStatusLabel, 0, '16 16');
-        objectiveStatusOrg_x = (objectiveOffset_x + panelImageSize_x) - gui_percentXRaw(54 + (objectiveStatusLen / 2));
+        objectiveStatusOrg_x = (objectiveOffset_x + panelImageSize_x) - (54 + (objectiveStatusLen / 2));
         objectiveStatusOrg_y = objectiveOffset_y;
         drawstring(objectiveStatusOrg, objectiveStatusLabel, '16 16', objectiveColor, 1, 0);
-        objectiveOffset_y = objectiveOffset_y + line_return + gui_percentYRaw(12);
+        objectiveOffset_y = objectiveOffset_y + line_return + 12;
       }
     }
 
@@ -241,28 +245,29 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
   
   //background panel image
   thisOrg = panelOffset;
-  panelImageSize_x = gui_percentXRaw(VIEW_CTR_x);
-  panelImageSize_y = gui_percentYRaw(160);
-  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
+  panelImageSize_x = 364;
+  panelImageSize_y = 160;
+  
+  gui_renderPatch9_1_32(thisOrg, panelImageSize, MENU_DEBRIEF_color_base, 1, DRAWFLAG_NORMAL);
   
   //panel label
   objectivesLabelLen = stringwidth( "Secondary Objectives", 0, '12 12');
-  objectivesLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 4 );
-  objectivesLabelOrg_x = objectivesLabelOrg_x - gui_percentXRaw(10) - gui_percentXRaw( objectivesLabelLen / 2 );
-  objectivesLabelOrg_y = thisOrg_y + gui_percentYRaw(4);
+  objectivesLabelOrg_x = thisOrg_x + ( panelImageSize_x / 4 );
+  objectivesLabelOrg_x = objectivesLabelOrg_x - 10 - ( objectivesLabelLen / 2 );
+  objectivesLabelOrg_y = thisOrg_y + 4;
   drawstring( objectivesLabelOrg, "Secondary Objectives", '12 12', CLR_DEF_GRAY_H, 1, 0);
   
   //objective status
-  drawstring( thisOrg + gui_percentToPixelRaw(VIEW_CTR_x - (VIEW_CTR_x / 4.5), 4), "Status", '12 12', CLR_DEF_GRAY_H, 1, 0);
+  drawstring( thisOrg + Vector2(panelImageSize_x - 64, 4), "Status", '12 12', CLR_DEF_GRAY_H, 1, 0);
   
   //Objectives List
   
-  listStartOrg = thisOrg + gui_percentToPixelRawVec('6 20');
+  listStartOrg = thisOrg + '6 20';
   list_index = 1;
   show_index = 0;
   line_return = 0;
   objectiveOffset = listStartOrg;
-  objectiveOffset_y = objectiveOffset_y + line_return + (show_index * gui_percentYRaw(16));
+  objectiveOffset_y = objectiveOffset_y + line_return + (show_index * 16);
   endOfLine = TRUE;
   while(endOfLine){
     objectiveType = MSN_OBJ_TYPES[list_index];
@@ -274,7 +279,7 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
         objectiveDesc = MSN_OBJ_DESC[list_index];
         
         drawstring( objectiveOffset, strcat(ftos(show_index),")"), '12 12', CLR_DEF_GRAY_H, 1, 0);
-        line_return = gui_wrapText(objectiveOffset + gui_percentToPixelRawVec('12 0'), '225 150', objectiveDesc, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+        line_return = gui_wrapText(objectiveOffset + '12 0', '225 150', objectiveDesc, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
         
         if( objectiveStatus == OBJECTIVE_WIN ){
           objectiveStatusLabel = "Complete";
@@ -289,10 +294,10 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
           objectiveColor = CLR_DEF_ARM_ONEQ;
         }
         objectiveStatusLen = stringwidth( objectiveStatusLabel, 0, '16 16');
-        objectiveStatusOrg_x = (objectiveOffset_x + panelImageSize_x) - gui_percentXRaw(54 + (objectiveStatusLen / 2));
+        objectiveStatusOrg_x = (objectiveOffset_x + panelImageSize_x) - (54 + (objectiveStatusLen / 2));
         objectiveStatusOrg_y = objectiveOffset_y;
         drawstring(objectiveStatusOrg, objectiveStatusLabel, '16 16', objectiveColor, 1, 0);
-        objectiveOffset_y = objectiveOffset_y + line_return + gui_percentYRaw(12);
+        objectiveOffset_y = objectiveOffset_y + line_return + 12;
       }
     }
 
@@ -320,32 +325,31 @@ void(vector panelOffset) menu_debrief_stats={
   
   //background panel image
   thisOrg = panelOffset;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(10);
-  panelImageSize_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw( VIEW_CTR_x);
-  panelImageSize_x = panelImageSize_x - gui_percentXRaw(20);
-  panelImageSize_y = gui_percentYRaw( 128 );
-  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
+  panelImageSize_x = 240;
+  panelImageSize_y = 128;
+
+  gui_renderPatch9_1_32(thisOrg, panelImageSize, MENU_DEBRIEF_color_base, 1, DRAWFLAG_NORMAL);
 
   //stats label
   statsLabelLen = stringwidth( "Mission Results", 0, '10 10');
-  statsLabelOrg_x = thisOrg_x + gui_percentXRaw(6);
-  statsLabelOrg_x = statsLabelOrg_x + gui_percentXRaw( panelImageSize_x / 2);
-  statsLabelOrg_x = statsLabelOrg_x - gui_percentXRaw(12);
-  statsLabelOrg_x = statsLabelOrg_x - gui_percentXRaw( statsLabelLen / 2 );
-  statsLabelOrg_y = thisOrg_y + gui_percentYRaw(6);
+  statsLabelOrg_x = thisOrg_x + 6;
+  statsLabelOrg_x = statsLabelOrg_x + ( panelImageSize_x / 2);
+  statsLabelOrg_x = statsLabelOrg_x - 12;
+  statsLabelOrg_x = statsLabelOrg_x - ( statsLabelLen / 2 );
+  statsLabelOrg_y = thisOrg_y + 6;
   drawstring( statsLabelOrg, "Mission Results", '10 10', CLR_DEF_GRAY_H, 1 , 0);
 
   //Kills
-  drawstring( thisOrg + gui_percentToPixelRawVec('6 24'), "Kills:", '14 14', CLR_DEF_GRAY_H, 1, 0);
-  drawstring( thisOrg + gui_percentToPixelRawVec('96 24'), strcat(ftos(MENU_DEBRIEF_total_kills),"/", ftos(MENU_DEBRIEF_total_monsters)), '16 16', '1 1 1', 1, 0);
+  drawstring( thisOrg + '6 24', "Kills:", '14 14', CLR_DEF_GRAY_H, 1, 0);
+  drawstring( thisOrg + '96 24', strcat(ftos(MENU_DEBRIEF_total_kills),"/", ftos(MENU_DEBRIEF_total_monsters)), '16 16', '1 1 1', 1, 0);
   
   //Losses
-  drawstring( thisOrg + gui_percentToPixelRawVec('6 48'), "Losses:", '14 14', CLR_DEF_GRAY_H, 1, 0);
-  drawstring( thisOrg + gui_percentToPixelRawVec('96 48'), strcat(ftos(MENU_DEBRIEF_total_losses), "/", ftos(MENU_DEBRIEF_total_allies)), '16 16', '1 1 1', 1, 0);
+  drawstring( thisOrg + '6 48', "Losses:", '14 14', CLR_DEF_GRAY_H, 1, 0);
+  drawstring( thisOrg + '96 48', strcat(ftos(MENU_DEBRIEF_total_losses), "/", ftos(MENU_DEBRIEF_total_allies)), '16 16', '1 1 1', 1, 0);
   
   //Time taken
-  drawstring( thisOrg + gui_percentToPixelRawVec('6 72'), "Mission Time:", '14 14', CLR_DEF_GRAY_H, 1, 0);
-  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), ui_calculate_time_string( SV_ENDTIME - SV_PLAYERTIME ) , '16 16', '1 1 1', 1, 0);
+  drawstring( thisOrg + '6 72', "Mission Time:", '14 14', CLR_DEF_GRAY_H, 1, 0);
+  drawstring( thisOrg + '96 72', ui_calculate_time_string( SV_ENDTIME - SV_PLAYERTIME ) , '16 16', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -384,26 +388,26 @@ void(vector panelOffset) menu_debrief_unlocks={
   
   //background panel image
   thisOrg = panelOffset;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(10);
-  panelImageSize_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw( VIEW_CTR_x);
-  panelImageSize_x = panelImageSize_x - gui_percentXRaw(20);
-  panelImageSize_y = gui_percentYRaw( 300 );
-  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
+  panelImageSize_x = 275;
+  panelImageSize_x = panelImageSize_x - 20;
+  panelImageSize_y = 300;
+  
+  gui_renderPatch9_1_32(thisOrg, panelImageSize, MENU_DEBRIEF_color_base, 1, DRAWFLAG_NORMAL);
   
   //unlocks label
   unlocksLabelLen = stringwidth( "New Weapons Unlocked", 0, '10 10');
-  unlocksLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 2) - gui_percentXRaw( unlocksLabelLen / 2 );
-  unlocksLabelOrg_y = thisOrg_y + gui_percentYRaw(6);
+  unlocksLabelOrg_x = thisOrg_x + ( panelImageSize_x / 2) - ( unlocksLabelLen / 2 );
+  unlocksLabelOrg_y = thisOrg_y + 6;
   drawstring( unlocksLabelOrg, "New Weapons Unlocked", '10 10', CLR_DEF_GRAY_H, 1 , 0);
 
 
   tokenItr = 0;
   //New Weapons
-  weaponStartOrg = thisOrg + gui_percentToPixelRawVec('6 24');
+  weaponStartOrg = thisOrg + '6 24';
   weaponY = 0;
   tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
   tokenId = 0;
-  widthWrap = (weaponStartOrg_x + panelImageSize_x) - gui_percentXRaw(24);
+  widthWrap = (weaponStartOrg_x + panelImageSize_x) - 24;
   while( tokenId < tokenMax ){
     token = argv(tokenId);
     if( token != ""){
@@ -419,7 +423,7 @@ void(vector panelOffset) menu_debrief_unlocks={
           weaponY = weaponY + 1;
           weaponOrg_x = weaponStartOrg_x;
         }
-        weaponOrg_y = weaponOrg_y + gui_percentYRaw( weaponY * 32 );
+        weaponOrg_y = weaponOrg_y + ( weaponY * 32 );
         drawpic( weaponOrg, UI_ARMING_DATA_item_list.icon, '28 28', '1 1 1', 1, 0);
         tokenItr = tokenItr + 1;
       }
@@ -434,17 +438,17 @@ void(vector panelOffset) menu_debrief_unlocks={
   
   //New Equipment
   equipLabelLen = stringwidth( "New Equipment Unlocked", 0, '10 10 0');
-  equipLabelOrg_x = thisOrg_x + gui_percentXRaw(panelImageSize_x / 2) - gui_percentXRaw(equipLabelLen / 2); 
-  equipLabelOrg_y = weaponStartOrg_y + gui_percentYRaw(30) + weaponY ;
+  equipLabelOrg_x = thisOrg_x + (panelImageSize_x / 2) - (equipLabelLen / 2); 
+  equipLabelOrg_y = weaponStartOrg_y + 30 + weaponY ;
   drawstring( equipLabelOrg, "New Equipment Unlocked", '10 10', CLR_DEF_GRAY_H, 1, 0);
   
-  equipmentStartOrg_x = thisOrg_x + gui_percentXRaw(6);
-  equipmentStartOrg_y = equipLabelOrg_y + gui_percentYRaw(16);
+  equipmentStartOrg_x = thisOrg_x + 6;
+  equipmentStartOrg_y = equipLabelOrg_y + 16;
   equipmentY = 0;
   tokenId = 0;
   tokenItr = 0;
   widthWrapCheck = 0;
-  widthWrap = (equipmentStartOrg_x + panelImageSize_x) - gui_percentXRaw(24);
+  widthWrap = (equipmentStartOrg_x + panelImageSize_x) - 24;
   while( tokenId < tokenMax ){
     token = argv(tokenId);
     if( token != ""){
@@ -452,7 +456,7 @@ void(vector panelOffset) menu_debrief_unlocks={
       data_get_client_item_( UI_ARMING_DATA_item_list, tokenValue );
       if( (UI_ARMING_DATA_item_list.damageType & DMG_MSC) ){
         equipmentOrg = equipmentStartOrg;
-        widthWrapCheck = equipmentOrg_x + gui_percentXRaw( tokenItr * 32 );
+        widthWrapCheck = equipmentOrg_x + ( tokenItr * 32 );
         if( widthWrapCheck < widthWrap ){
           equipmentOrg_x = widthWrapCheck;
         }
@@ -460,7 +464,7 @@ void(vector panelOffset) menu_debrief_unlocks={
           equipmentY = equipmentY + 1;
           equipmentOrg_x = equipmentStartOrg_x;
         }
-        equipmentOrg_y = equipmentOrg_y + gui_percentYRaw( equipmentY * 32 );
+        equipmentOrg_y = equipmentOrg_y + ( equipmentY * 32 );
         drawpic( equipmentOrg, UI_ARMING_DATA_item_list.icon, '28 28', '1 1 1', 1, 0);
         tokenItr = tokenItr + 1;
       }
@@ -474,18 +478,18 @@ void(vector panelOffset) menu_debrief_unlocks={
   
   //New Mechs
   mechLabelLen = stringwidth( "New Metal Unlocked", 0, '10 10 0');
-  mechLabelOrg_x = thisOrg_x + gui_percentXRaw(panelImageSize_x / 2) - gui_percentXRaw(mechLabelLen / 2); 
-  mechLabelOrg_y = equipmentStartOrg_y + equipmentY + gui_percentYRaw(16);
+  mechLabelOrg_x = thisOrg_x + (panelImageSize_x / 2) - (mechLabelLen / 2); 
+  mechLabelOrg_y = equipmentStartOrg_y + equipmentY + 16;
   drawstring( mechLabelOrg, "New Metal Unlocked", '10 10', CLR_DEF_GRAY_H, 1, 0);
   
-  mechStartOrg_x = thisOrg_x + gui_percentXRaw(-2);
-  mechStartOrg_y = mechLabelOrg_y + gui_percentYRaw(16);
+  mechStartOrg_x = thisOrg_x - 2;
+  mechStartOrg_y = mechLabelOrg_y + 16;
   mechY = 0;
   tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
   tokenId = 0;
   tokenItr = 0;
   widthWrapCheck = 0;
-  widthWrap = (mechStartOrg_x + panelImageSize_x) - gui_percentXRaw(24);
+  widthWrap = (mechStartOrg_x + panelImageSize_x) - 24;
   while( tokenId < tokenMax ){
     token = argv(tokenId);
     if( token != ""){
@@ -493,7 +497,7 @@ void(vector panelOffset) menu_debrief_unlocks={
       if( tokenValue != 0 ){
         ui_data_load_mech_info( tokenValue, UI_HANGAR_DATA_mech );
         mechOrg = mechStartOrg;
-        widthWrapCheck = mechOrg_x + gui_percentXRaw( tokenItr * 46 );
+        widthWrapCheck = mechOrg_x + ( tokenItr * 46 );
         if( widthWrapCheck < widthWrap ){
           mechOrg_x = widthWrapCheck;
         }
@@ -502,7 +506,7 @@ void(vector panelOffset) menu_debrief_unlocks={
           mechOrg_x = mechOrg_x;
         }
         
-        mechOrg_y = mechOrg_y + gui_percentYRaw( mechY * 64 );
+        mechOrg_y = mechOrg_y + ( mechY * 64 );
         drawpic( mechOrg, MECH_DATA_ICON, '60 64', '1 1 1', 1, 0);
         tokenItr = tokenItr + 1;
       }
@@ -513,6 +517,8 @@ void(vector panelOffset) menu_debrief_unlocks={
   drawfont = drawfont_prev;
 };
 
+
+//UTIL
 void() menu_debrief_sort_unlocks={
   local string item;
   local float tokens;

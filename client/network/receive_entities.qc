@@ -581,13 +581,6 @@ void( float missonSuccessCheck, float pscTotal, float survestTotal, float milita
   
   MENU_DEBRIEF_total_losses = totalLosses;
   
-  if( MENU_DEBRIEF_status > 0 ){
-    MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
-  }
-  else{
-    MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
-  }
-  
   menu_enter( MENU_DEBRIEF_ACTIVE);
   CLIENT_player_state = PLAYER_BRIEF;
 };

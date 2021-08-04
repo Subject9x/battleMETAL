@@ -83,7 +83,7 @@ void() menu_hangarDrawFrame={
   menu_navBar_drawFrame(topleftroot);
   
   menu_hangar_MechDisplay(topleftroot + '367 32');
-  menu_hangar_MechList(topleftroot + '0 24');
+  menu_hangar_MechList(topleftroot + '0 32');
   menu_hangar_MechInfo(topleftroot + '118 32');
   menu_hangar_MechFluff(topleftroot + '118 208');
   menu_hangar_MechHPoints(topleftroot + '367 273');
@@ -195,19 +195,9 @@ void(vector ofs) menu_hangar_MechList={
   local float textLen;
   local vector labelOfs;
   
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-  
-  textLen = stringwidth( "-Available Metal-", 0, '10 10 0');
-  labelOfs = ofs + '10 10';
-  labelOfs_x = labelOfs_x + ( 106 / 2 ) - ( textLen / 2 );
-  drawstring(labelOfs, "-Available Metal-", '10 10 0', '1 1 1', 1, 0);
-  
-  drawfont = drawfont_prev;
-  
-  menu_hangar_MechList_draw(ofs + '0 24', 1,  "LIGHT", CLR_DEF_IFF_ENEMY * 1.25, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
-  menu_hangar_MechList_draw(ofs + '0 154', 2, "MEDIUM", CLR_DEF_ARM_HALF, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
-  menu_hangar_MechList_draw(ofs + '0 284', 3, "HEAVY", CLR_DEF_ARM_OK, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs, 1,  "LIGHT", CLR_DEF_IFF_ENEMY * 1.25, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs + '0 145', 2, "MEDIUM", CLR_DEF_ARM_HALF, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
+  menu_hangar_MechList_draw(ofs + '0 289', 3, "HEAVY", CLR_DEF_ARM_OK, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
 };
 
 void(vector ofs, float mechSize, string listName, vector listNameColor, float mechListTotalValue, vector mechListOriginValue, vector mechListSizeValue ) menu_hangar_MechList_draw={
@@ -223,7 +213,7 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   
   nofs = ofs;
   
-  gui_renderPatch9_1_32(nofs, '106 128',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(nofs, '106 144',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_LIGHT;

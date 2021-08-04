@@ -18,10 +18,10 @@ void() menu_handleFrame={
   cursorpos = getmousepos();
   
   cursorImageSize = draw_getimagesize(UI_CURSOR_IMG);
-  cursorImageSize = gui_percentToPixelRawVec( gui_scaleSize(cursorImageSize, VIEW_SCALE/1.25) );
+  cursorImageSize =  gui_scaleSize(cursorImageSize, VIEW_SCALE/1.25);
   
-  mpos_x = cursorpos_x - gui_percentXRaw(2);
-  mpos_y = cursorpos_y - gui_percentXRaw(4);
+  mpos_x = cursorpos_x - 2;
+  mpos_y = cursorpos_y - 4;
   
   handle_input_drag();
   handle_input_hover();
@@ -54,7 +54,7 @@ void() menu_handleFrame={
   }
 
   if( toolTip.data_idx > FALSE ){
-    gui_toolTipMessage(toolTip.description, toolTip.mins, toolTip.maxs, UI_DEF_BOX_512, gui_percentToPixelRawVec('12 0'), toolTip.angles, '0.85 0.85 0.85', 1 ); 
+    gui_toolTipMessage(toolTip.description, toolTip.mins, toolTip.maxs, UI_DEF_BOX_512, '12 0', toolTip.angles, '0.85 0.85 0.85', 1 ); 
   }
   drawpic(mpos, UI_CURSOR_IMG, cursorImageSize, '1 1 1', 1, 0);
 };
