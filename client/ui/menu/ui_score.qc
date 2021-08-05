@@ -46,10 +46,10 @@ void() menu_score_drawFrame={
   topleftroot = UI_ORG;
   botrightroot = UI_MAX;
   
-  drawpic(VIEW_ORG, UI_DEF_BOX_512, VIEW_MAX, '0.85 0.85 0.85', 1, 0);
+  drawfill(VIEW_ORG, VIEW_MAX, '0.15 0.15 0.15', 1, 0);
   
   //Navbar
-  menu_score_draw_bar( VIEW_ORG + '9.984 7.488' );
+  menu_score_draw_bar( UI_ORG );
   
   if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     menu_score_coop_nav( topleftroot );
@@ -60,7 +60,7 @@ void() menu_score_drawFrame={
     
     menu_score_coop_status( topleftroot + '254 32' );
     
-    menu_score_coop_players( topleftroot + '10 120' );
+    menu_score_coop_players( topleftroot + '0 120' );
     
     menu_score_coop_client_stats(topleftroot + '56 220');
   }
@@ -68,31 +68,31 @@ void() menu_score_drawFrame={
     //nav bar
     menu_score_tdm_nav(topleftroot);
     //mission info - TDM
-    menu_score_tdm_server_info( topleftroot + '10 32' );
+    menu_score_tdm_server_info( topleftroot + '0 32' );
     //server flags - TEAM DM
     menu_connect_draw_rules_team( topleftroot + '24 128' );
     //objectives stats - TEAM DM
-    menu_score_tdm_objectives( topleftroot + '195 32' );
+    menu_score_tdm_objectives( topleftroot + '225 32' );
     //player stats
-    menu_score_tdm_client_info( topleftroot + '10 200' );
+    menu_score_tdm_client_info( topleftroot + '0 208' );
     //player list
-    menu_connect_draw_players_team( topleftroot + '10 282' );
+    menu_connect_draw_players_team( topleftroot + '0 289' );
   }
   else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
     menu_score_dm_nav(topleftroot);
     //mission info - DM
-    menu_serverinfo_basic(topleftroot + '10 32');
+    menu_serverinfo_basic(topleftroot + '0 32');
     
     //server flags - DM
-    rulesOrg_x = VIEW_CTR_x;
-    rulesOrg_y = VIEW_ORG_y;
+    rulesOrg_x = UI_CTR_x;
+    rulesOrg_y = UI_ORG_y;
     menu_connect_draw_rules_dm( rulesOrg + '-85 32' );
     
     //Server About - DM
     menu_connect_draw_about_dm( rulesOrg + '20 32' );
     
     //player list - DM
-    menu_draw_players_basic( topleftroot + '10 182' );
+    menu_draw_players_basic( topleftroot + '0 182' );
     
     //player stats - DM
     menu_score_dm_client_info( topleftroot + '320 182' );
@@ -112,7 +112,6 @@ void( vector menuOrg ) menu_score_dm_nav={
   sec = t - floor( t / 60 ) * 60 ;
   sec = rint(sec);
   text = sprintf("%02d", sec);
-  
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -185,7 +184,6 @@ void( vector menuOrg ) menu_score_tdm_nav={
   sec = rint(sec);
   text = sprintf("%02d", sec);
   
-  
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
     labelOrg = menuOrg + '335 6';
@@ -210,7 +208,8 @@ void( vector menuOrg ) menu_score_tdm_server_info={
   local vector leftAnchor;
   
   local string scoreLimit;
-  drawpic(menuOrg, UI_DEF_BOX_512, '185 168', '0.65 0.65 0.65', 1, 0);
+  
+  gui_renderPatch9_1_32(menuOrg, '208 176', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   // Server Name
   if( cvar_string("hostname") != "" || cvar_string("hostname") != "UNNAMED" ){
@@ -262,7 +261,7 @@ void( vector menuOrg ) menu_score_tdm_objectives={
   local vector labelOrg;
   local float labelLen;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '435 250', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '400 256', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
@@ -291,12 +290,13 @@ void( vector menuOrg ) menu_score_tdm_client_info={
     imgPath = "gfx/ui/ui_icon_militar.png";
   }
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '185 80', backColor * 0.8, 1, 0);
+  
+  gui_renderPatch9_1_32(menuOrg, '208 80', backColor * 0.8, 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
     labelLen = stringwidth("- Player Stats -", 0, '10 10');
-    labelOrg_x = menuOrg_x + 75 - (labelLen/2);
+    labelOrg_x = menuOrg_x + 104 - (labelLen/2);
     labelOrg_y = menuOrg_y + 2;
     drawstring( labelOrg, "- Player Stats -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
@@ -305,13 +305,13 @@ void( vector menuOrg ) menu_score_tdm_client_info={
   fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
   
   //Player Score
-  gui_labelKeyPair( menuOrg + '22 14', "Your Kills :", getplayerkeyvalue(player_localnum, "frags"), CLR_DEF_GREEN, CLR_DEF_ARM_OK, fontsStyle, '10 10' );
+  gui_labelKeyPair( menuOrg + '24 14', "Your Kills :", getplayerkeyvalue(player_localnum, "frags"), CLR_DEF_GREEN, CLR_DEF_ARM_OK, fontsStyle, '10 10' );
   
   //Player Death
-  gui_labelKeyPair( menuOrg + '10 25', "Your Deaths :", ftos(CLIENT_deaths), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '10 10' );
+  gui_labelKeyPair( menuOrg + '12 25', "Your Deaths :", ftos(CLIENT_deaths), CLR_DEF_TXT_NONSELECT, CLR_DEF_ARM_THREEQ, fontsStyle, '10 10' );
   
   //Best survival time
-  gui_labelKeyPair( menuOrg + '20 36', "Best Time :", ui_calculate_time_string(CLIENT_best_time), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( menuOrg + '22 36', "Best Time :", ui_calculate_time_string(CLIENT_best_time), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
   //Best Surviving Mech
   if( CLIENT_best_mech > 0 ){
@@ -320,12 +320,12 @@ void( vector menuOrg ) menu_score_tdm_client_info={
   else{
     mechName = "<none>";
   }
-  gui_labelKeyPair( menuOrg + '18 47', "Best Mech :", MECH_DATA_NAMES[CLIENT_best_mech], CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( menuOrg + '20 47', "Best Mech :", MECH_DATA_NAMES[CLIENT_best_mech], CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
   //Total Damage output
-  gui_labelKeyPair( menuOrg + '4 58', "Total Damage :", ftos(CLIENT_dmg_total), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( menuOrg + '6 58', "Total Damage :", ftos(CLIENT_dmg_total), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
-  drawpic( menuOrg + '110 2', imgPath, '64 64', '0.75 0.75 0.75', 1, 0);
+  drawpic( menuOrg + '148 10', imgPath, '64 64', '0.75 0.75 0.75', 1, 0);
 };
 //-----------------------
 
@@ -370,7 +370,7 @@ void( vector menuOrg ) menu_score_coop_server_info={
   local string serverStatus;
   local string serverTime;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '200 90', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '200 90', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   //commented out sections are intentional
   // Server Name
@@ -432,7 +432,7 @@ void( vector menuOrg ) menu_score_coop_mission_info={
   local float labelLen;
   local vector statusColor;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, '376 373', '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '376 373', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   if( MENU_DEBRIEF_status == MISSION_RESULT_WIN ){
     statusColor = CLR_DEF_ARM_OK;
@@ -533,8 +533,8 @@ void( vector menuOrg ) menu_score_coop_players={
   
   uiParentSize = '244 100';
   
-  drawpic(menuOrg, UI_DEF_BOX_512, uiParentSize, CLR_UI_PSC_BRIEF * 0.9, 1, 0);
-
+  gui_renderPatch9_1_32(menuOrg, uiParentSize, CLR_UI_PSC_BRIEF * 0.9, 1, DRAWFLAG_NORMAL);
+ 
   menu_connect_draw_scorebar( menuOrg, "- Players -", FALSE);
   
   listOfs = '0 0';
@@ -561,7 +561,8 @@ void( vector menuOrg ) menu_score_coop_client_stats={
   local float labelLen;
   
   local vector fontsStyle;
-  drawpic(menuOrg, UI_DEF_BOX_512, '150 90', '0.95 0.95 0.95', 1, 0);
+  
+  gui_renderPatch9_1_32(menuOrg, '150 90','0.95 0.95 0.95', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
