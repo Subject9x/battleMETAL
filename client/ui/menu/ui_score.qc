@@ -54,15 +54,16 @@ void() menu_score_drawFrame={
   if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     menu_score_coop_nav( topleftroot );
     
-    menu_score_coop_server_info( topleftroot + '32 32' );
+    menu_connect_draw_chat( topleftroot+ '256 32', '368 144', '0.35 0.35 0.55', 1);
     
-    menu_score_coop_mission_info( topleftroot + '254 32' );
+    menu_score_coop_players( topleftroot + '0 32' );
     
-    menu_score_coop_status( topleftroot + '254 32' );
+    menu_score_coop_server_info( topleftroot + '0 128' );
     
-    menu_score_coop_players( topleftroot + '0 120' );
+    menu_score_coop_mission_info( topleftroot + '256 176' );
+    menu_score_coop_status( topleftroot + '256 176' );
     
-    menu_score_coop_client_stats(topleftroot + '56 220');
+    menu_score_coop_client_stats(topleftroot + '0 256');
   }
   else if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     //nav bar
@@ -375,7 +376,7 @@ void( vector menuOrg ) menu_score_coop_server_info={
   local string serverStatus;
   local string serverTime;
   
-  gui_renderPatch9_1_32(menuOrg, '200 90', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg, '244 128', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   //commented out sections are intentional
   // Server Name
@@ -383,7 +384,7 @@ void( vector menuOrg ) menu_score_coop_server_info={
     serverName = cvar_string("hostname");
   }
   
-  leftAnchor =  menuOrg + '6 4';
+  leftAnchor =  menuOrg + '8 4';
   
   fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;
   fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
@@ -432,12 +433,15 @@ void( vector menuOrg ) menu_score_coop_server_info={
   gui_labelKeyPair( leftAnchor + '5.5 56', "Server :", serverStatus, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
 };
 
+/*
+  background and anchor for objectives list
+*/ 
 void( vector menuOrg ) menu_score_coop_mission_info={
   local vector labelOrg;
   local float labelLen;
   local vector statusColor;
   
-  gui_renderPatch9_1_32(menuOrg, '376 373', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg, '376 304', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   if( MENU_DEBRIEF_status == MISSION_RESULT_WIN ){
     statusColor = CLR_DEF_ARM_OK;
@@ -456,6 +460,9 @@ void( vector menuOrg ) menu_score_coop_mission_info={
   
 };
 
+/*
+  render objectives list
+*/
 void( vector menuOrg ) menu_score_coop_status={
   local vector labelOrg;
   local float labelLen;
@@ -511,7 +518,7 @@ void( vector menuOrg ) menu_score_coop_status={
     
     desc = MSN_OBJ_DESC[lst_idx];
     text = strcat( ftos(lst_idx),") ", desc);
-    line_rtn = gui_wrapText(objectiveOffset, '300 150', text, '12 12 0', CLR_DEF_TXT_NONSELECT, 1);
+    line_rtn = gui_wrapText(objectiveOffset, '320 150', text, '12 12 0', CLR_DEF_TXT_NONSELECT, 1);
     
     objectiveStatusOrg_x = menuOrg_x + 335;
     objectiveStatusOrg_x = objectiveStatusOrg_x - (stringwidth(objectiveStatusLabel,0,'14 14') / 2); 
@@ -536,7 +543,7 @@ void( vector menuOrg ) menu_score_coop_players={
   local float playerRowItr;
   local float itr;
   
-  uiParentSize = '244 100';
+  uiParentSize = '244 96';
   
   gui_renderPatch9_1_32(menuOrg, uiParentSize, CLR_UI_PSC_BRIEF * 0.9, 1, DRAWFLAG_NORMAL);
  
@@ -567,7 +574,7 @@ void( vector menuOrg ) menu_score_coop_client_stats={
   
   local vector fontsStyle;
   
-  gui_renderPatch9_1_32(menuOrg, '150 90','0.95 0.95 0.95', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg, '150 112','0.95 0.95 0.95', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;

@@ -10,20 +10,23 @@ Overview:
 */
 void( vector rootTop ) menu_connect_render_coop={
   
+  //chat - COOP
+  menu_connect_draw_chat( rootTop + '256 32', '368 144', '0.35 0.35 0.55', 1);
+  
   //server info - COOP
-  menu_connet_draw_coop_about( rootTop + '256 32' );
+  menu_connet_draw_coop_about( rootTop + '256 176' );
   
   //objectives stats - COOP
-  menu_connect_draw_objectives_coop( rootTop + '256 100' );
+  menu_connect_draw_objectives_coop( rootTop + '256 240' );
   
   //player list - COOP
   menu_connect_draw_players_coop( rootTop + '0 32' );
   
   //mission info - COOP
-  menu_connect_draw_mission_info_coop( rootTop + '22 128' );
+  menu_connect_draw_mission_info_coop( rootTop + '0 128' );
   
   //server flags - COOP
-  menu_connect_draw_coop_rules(  rootTop + '42 228' );
+  menu_connect_draw_coop_rules(  rootTop + '42 220' );
   
   //satmap - COOP;
   menu_connect_draw_satmap( rootTop + '22 288', '192 192' );
@@ -42,7 +45,7 @@ void( vector menuOrg ) menu_connect_draw_mission_info_coop={
   local string serverStatus;
   local string serverTime;
   
-  gui_renderPatch9_1_32(menuOrg, '200 173', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg, '244 173', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   // Server Name
   leftAnchor =  menuOrg + '6 4';
@@ -97,7 +100,7 @@ void( vector menuOrg ) menu_connet_draw_coop_about={
   local vector labelOrg;
   local float labelLen;
   
-  gui_renderPatch9_1_32(menuOrg,  '376 68', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg,  '376 64', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
@@ -219,7 +222,7 @@ void( vector menuOrg ) menu_connect_draw_objectives_coop={
   local vector objectiveColor;
   local vector objectiveStatusOrg;
   
-  gui_renderPatch9_1_32(menuOrg,  '376 373', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg,  '376 240', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;

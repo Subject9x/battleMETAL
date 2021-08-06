@@ -52,13 +52,11 @@ void(float modeGame) menu_chat_config={
       }
       
       else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
-        
-        
-        
-        
-        
-        
-        
+        CHAT_LINE_FONT_SIZE = '10 10';
+        CHAT_LINE_TOTAL = 10;
+        CHAT_LINE_COUNT = 0;
+        CHAT_DECAY_TIME = 40;
+        CHAT_LINE_TRUNC = 105;
       }
 
     }
@@ -78,8 +76,6 @@ void(float modeGame) menu_chat_config={
 void(string userName, string newChat) menu_chat_receive_new={
   local float i;
   local string lineRef;
-  
-  
   
   if( CHAT_LINE_COUNT == 0 ){
     lineRef = strcat(userName, newChat);
@@ -144,8 +140,8 @@ void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
   local string line;
   local string userName;
   
-  if(servertime > CHAT_DECAY_MARK ){
-    CHAT_DECAY_MARK = servertime + CHAT_DECAY_TIME;
+  if(time > CHAT_DECAY_MARK ){
+    CHAT_DECAY_MARK = time + CHAT_DECAY_TIME;
     menu_chat_update_tick();
   }
   
