@@ -13,17 +13,20 @@ void( vector rootTop ) menu_connect_render_teamdm={
   //server info - TEAM DM
   menu_connect_draw_about_team( rootTop + '0 32' );
   
+  //chat - dm
+  menu_connect_draw_chat( rootTop + '240 32', '384 144', '0.35 0.35 0.55', 1);
+  
   //mission info - TDM
-  menu_connect_draw_mission_info_team( rootTop + '0 97' );
+  menu_connect_draw_mission_info_team( rootTop + '0 112' );
   
   //server flags - TEAM DM
-  menu_connect_draw_rules_team( rootTop + '32 213' );
+  menu_connect_draw_rules_team( rootTop + '32 224' );
   
   //objectives stats - TEAM DM
-  menu_connect_draw_objectives( rootTop + '240 97' );
+  menu_connect_draw_objectives( rootTop + '240 176' );
   
   //player list
-  menu_connect_draw_players_team( rootTop + '0 290' );
+  menu_connect_draw_players_team( rootTop + '0 304' );
 };
 
 /*
@@ -215,13 +218,13 @@ void( vector menuOrg ) menu_connect_draw_about_team={
   local vector labelOrg;
   local float labelLen;
   
-  gui_renderPatch9_1_32(menuOrg, '634 68', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg, '224 80', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
     labelLen = stringwidth("- About -", 0, '10 10');
     labelOrg = menuOrg;
-    labelOrg_x = menuOrg_x + 310 - (labelLen / 2);
+    labelOrg_x = menuOrg_x + 112 - (labelLen / 2);
     labelOrg_y = menuOrg_y + 4;
     drawstring(labelOrg, "- About -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
@@ -229,7 +232,7 @@ void( vector menuOrg ) menu_connect_draw_about_team={
   if( strlen(ENT_SERVER_INFO.svAbout) > 0 ){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_MEDIUM;
-      gui_wrapText(menuOrg + '10 16', '604 55', ENT_SERVER_INFO.svAbout, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+      gui_wrapText(menuOrg + '8 16', '208 75', ENT_SERVER_INFO.svAbout, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
     drawfont = drawfont_prev;
   }
 };

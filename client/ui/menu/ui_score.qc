@@ -67,16 +67,20 @@ void() menu_score_drawFrame={
   else if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
     //nav bar
     menu_score_tdm_nav(topleftroot);
+    
+    //chat - TDM
+    menu_connect_draw_chat( topleftroot+ '240 32', '384 144', '0.35 0.35 0.55', 1);
+    
     //mission info - TDM
     menu_score_tdm_server_info( topleftroot + '0 32' );
     //server flags - TEAM DM
     menu_connect_draw_rules_team( topleftroot + '24 128' );
     //objectives stats - TEAM DM
-    menu_score_tdm_objectives( topleftroot + '225 32' );
+    menu_score_tdm_objectives( topleftroot + '240 176' );
     //player stats
     menu_score_tdm_client_info( topleftroot + '0 208' );
     //player list
-    menu_connect_draw_players_team( topleftroot + '0 289' );
+    menu_connect_draw_players_team( topleftroot + '0 304' );
   }
   else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
     menu_score_dm_nav(topleftroot);
@@ -262,7 +266,7 @@ void( vector menuOrg ) menu_score_tdm_objectives={
   local vector labelOrg;
   local float labelLen;
   
-  gui_renderPatch9_1_32(menuOrg, '400 256', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg, '384 128', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;

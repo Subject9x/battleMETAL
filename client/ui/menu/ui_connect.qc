@@ -36,13 +36,19 @@ void(float modeGame) menu_chat_config={
   else{
     if( CLIENT_MENU_menu_choice == MENU_CONNECT_ACTIVE ){
       if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
+        CHAT_LINE_FONT_SIZE = '10 10';
+        CHAT_LINE_TOTAL = 10;
+        CHAT_LINE_COUNT = 0;
+        CHAT_DECAY_TIME = 20;
+        CHAT_LINE_TRUNC = 105;
       }
       
       else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
         CHAT_LINE_FONT_SIZE = '10 10';
         CHAT_LINE_TOTAL = 10;
         CHAT_LINE_COUNT = 0;
-        CHAT_DECAY_TIME = 60;
+        CHAT_DECAY_TIME = 10;
+        CHAT_LINE_TRUNC = 73;
       }
       
       else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
@@ -73,14 +79,24 @@ void(string userName, string newChat) menu_chat_receive_new={
   local float i;
   local string lineRef;
   
+  
+  
   if( CHAT_LINE_COUNT == 0 ){
-    CHAT_LINES[0] = strzone(strcat(userName, newChat));
+    lineRef = strcat(userName, newChat);
+    if( CHAT_LINE_TRUNC != 0 ){
+      lineRef = substring(lineRef, 0, CHAT_LINE_TRUNC);
+    }
+    CHAT_LINES[0] = strzone(lineRef);
     CHAT_LINE_COUNT = CHAT_LINE_COUNT + 1;
     return;
   }
   //at least 1 message in the pipe
   if( CHAT_LINE_COUNT < CHAT_LINE_TOTAL) {
-    CHAT_LINES[CHAT_LINE_COUNT] = strzone(strcat(userName, newChat));
+    lineRef = strcat(userName, newChat);
+    if( CHAT_LINE_TRUNC != 0 ){
+      lineRef = substring(lineRef, 0, CHAT_LINE_TRUNC);
+    }
+    CHAT_LINES[CHAT_LINE_COUNT] = strzone(lineRef);
     CHAT_LINE_COUNT = CHAT_LINE_COUNT + 1;
     return;
   }
@@ -93,15 +109,33 @@ void(string userName, string newChat) menu_chat_receive_new={
     }
   }
   if( CHAT_LINES[i-1] != "" ){
-    freeGlobalString(CHAT_LINES[i-1]);
+    freeGlobalString(CHAT_LINES[i-1])
   }
-  CHAT_LINES[i-1] = strzone(strcat(userName, newChat));
+  lineRef = strcat(userName, newChat);
+  if( CHAT_LINE_TRUNC != 0 ){
+    lineRef = substring(lineRef, 0, CHAT_LINE_TRUNC);
+  }
+  CHAT_LINES[i-1] = strzone(lineRef);
 };
 
 //float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
 void() menu_chat_update_tick={
+  local string lineRef;
+  local float i;
+  
+  //we're at capacity, bump off the oldest.
+  for(i=0; i < CHAT_LINE_TOTAL; i = i + 1){
+    if( CHAT_LINES[i+1] != "" ){
+      freeGlobalString(CHAT_LINES[i])
+      lineRef = substring(CHAT_LINES[i+1], 0, strlen(CHAT_LINES[i+1]));
+      CHAT_LINES[i] = strzone(lineRef);
+    }
+    else{
+      CHAT_LINES[i] = "";
+    }
+  }
+  CHAT_LINE_COUNT = CHAT_LINE_COUNT - 1;
 
-  return;
 }; 
 //unless menu_chat_receive_new() was called, timeout the message queue
 void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
@@ -110,11 +144,19 @@ void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
   local string line;
   local string userName;
   
+  if(servertime > CHAT_DECAY_MARK ){
+    CHAT_DECAY_MARK = servertime + CHAT_DECAY_TIME;
+    menu_chat_update_tick();
+  }
+  
   lineOfs = chatOrg + '8 8';
   
   for(i=0; i <= CHAT_LINE_COUNT; i = i + 1){
     line = CHAT_LINES[i];
     if( line != "" ){
+      if( CHAT_LINE_TRUNC != 0 ){
+        line = substring(line, 0, min(strlen(line), CHAT_LINE_TRUNC));
+      }
       userName = substring(line, 0, strstrofs(line, ":") + 1);
       line = substring(line, strstrofs(line, ":"),strlen(line));
       drawfont_prev = drawfont;
@@ -226,14 +268,14 @@ void( vector menuOrg ) menu_connect_draw_objectives={
   local vector labelOrg;
   local float labelLen;
   
-  gui_renderPatch9_1_32(menuOrg, '384 192', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg, '384 128', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
-    labelLen = stringwidth("- Team Objectives -", 0, '10 10');
-    labelOrg_x = menuOrg_x + 210 - (labelLen/2);
+    labelLen = stringwidth("Team Objectives", 0, '10 10');
+    labelOrg_x = menuOrg_x + 192 - (labelLen/2);
     labelOrg_y = menuOrg_y + 2;
-    drawstring( labelOrg, "- Team Objectives -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawstring( labelOrg, "Team Objectives", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
 };
 
