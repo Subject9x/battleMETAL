@@ -143,6 +143,16 @@ void() gui_set_screen_size={
   UI_ORG = VIEW_CTR - Vector2(320, VIEW_MAX_y / 2);
   UI_MAX = Vector2(UI_ORG_x + 640, VIEW_MAX_y);
   UI_CTR = UI_ORG + (UI_MAX * 0.5);
+  
+  //some stuff requires knowing percents rather than values....looking at you con_chatpos  u_u
+  UI_ORG_PERCENT_x = UI_ORG_x / VIEW_MAX_x;
+  UI_ORG_PERCENT_y = UI_ORG_y / VIEW_MAX_y;
+  
+  UI_CTR_PERCENT_x = (UI_CTR_x / VIEW_MAX_x) - (UI_ORG_PERCENT_x * 2);  //left-and-right margins
+  UI_CTR_PERCENT_y = (UI_CTR_y / VIEW_MAX_y) - (UI_ORG_PERCENT_y * 2);
+  
+  UI_MAX_PERCENT_x = (640 / VIEW_MAX_x) + UI_ORG_PERCENT_x;
+  UI_MAX_PERCENT_y = VIEW_MAX_y / VIEW_MAX_y;
 };
 
 vector(float pcx, float pcy) gui_percentToPixel={

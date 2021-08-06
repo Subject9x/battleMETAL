@@ -18,6 +18,119 @@ Overview:
       + map name
 */
 
+
+
+/*
+string CHAT_LINES[20];  //20 is a hard max, but use CHAT_LINE_TOTAL to set a smaller number of lines.
+float CHAT_LINE_TOTAL;
+float CHAT_LINE_COUNT;
+float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
+*/
+//sets chat settings per-menu, run once when entering a _connect menu!
+void(float modeGame) menu_chat_config={
+  local vector scrnOffset;
+  
+  if(modeGame ){
+
+  }
+  else{
+    if( CLIENT_MENU_menu_choice == MENU_CONNECT_ACTIVE ){
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
+      }
+      
+      else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
+        CHAT_LINE_FONT_SIZE = '10 10';
+        CHAT_LINE_TOTAL = 10;
+        CHAT_LINE_COUNT = 0;
+        CHAT_DECAY_TIME = 60;
+      }
+      
+      else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+        
+        
+        
+        
+        
+        
+        
+      }
+
+    }
+    else{
+    
+    }
+    
+  }
+};
+
+
+/*
+  Client has received a new chat line, check to see if there's space in teh queue
+
+  CHAT_LINES array is organized with newest at the bottom
+*/
+void(string userName, string newChat) menu_chat_receive_new={
+  local float i;
+  local string lineRef;
+  
+  if( CHAT_LINE_COUNT == 0 ){
+    CHAT_LINES[0] = strzone(strcat(userName, newChat));
+    CHAT_LINE_COUNT = CHAT_LINE_COUNT + 1;
+    return;
+  }
+  //at least 1 message in the pipe
+  if( CHAT_LINE_COUNT < CHAT_LINE_TOTAL) {
+    CHAT_LINES[CHAT_LINE_COUNT] = strzone(strcat(userName, newChat));
+    CHAT_LINE_COUNT = CHAT_LINE_COUNT + 1;
+    return;
+  }
+  //we're at capacity, bump off the oldest.
+  for(i=0; i < CHAT_LINE_TOTAL; i = i + 1){
+    if( CHAT_LINES[i+1] != "" ){
+      freeGlobalString(CHAT_LINES[i])
+      lineRef = substring(CHAT_LINES[i+1], 0, strlen(CHAT_LINES[i+1]));
+      CHAT_LINES[i] = strzone(lineRef);
+    }
+  }
+  if( CHAT_LINES[i-1] != "" ){
+    freeGlobalString(CHAT_LINES[i-1]);
+  }
+  CHAT_LINES[i-1] = strzone(strcat(userName, newChat));
+};
+
+//float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
+void() menu_chat_update_tick={
+
+  return;
+}; 
+//unless menu_chat_receive_new() was called, timeout the message queue
+void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
+  local float i;
+  local vector lineOfs;
+  local string line;
+  local string userName;
+  
+  lineOfs = chatOrg + '8 8';
+  
+  for(i=0; i <= CHAT_LINE_COUNT; i = i + 1){
+    line = CHAT_LINES[i];
+    if( line != "" ){
+      userName = substring(line, 0, strstrofs(line, ":") + 1);
+      line = substring(line, strstrofs(line, ":"),strlen(line));
+      drawfont_prev = drawfont;
+      drawfont = FONT_NUM_ROBOT_MEDIUM;
+      drawstring(lineOfs + Vector2(0, i * (CHAT_LINE_FONT_SIZE_y + 2)), userName, CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
+      
+      drawfont = FONT_NUM_ROBOT_REGULAR;
+      drawstring(lineOfs + Vector2(stringwidth(userName, 0, CHAT_LINE_FONT_SIZE) - CHAT_LINE_FONT_SIZE_x/2, i * (CHAT_LINE_FONT_SIZE_y + 2)), line, CHAT_LINE_FONT_SIZE, CLR_DEF_TXT_NONSELECT, 1, 0);
+      
+      drawfont = drawfont_prev;
+    }
+    
+  }
+};
+
+
 void() menu_connectListener_onClick={
   if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_DISCONNECT_ORG, UI_NAVBAR_DISCONNECT_SIZE, TRUE)){
     ui_navbutton_disconnect_click();
@@ -35,7 +148,6 @@ void() menu_connectListener_onClick={
 //void() menu_connectListener_onDrag;
 
 void() menu_connectListener_onHover={
-  
   if(menu_checkMouseInBounds(cursorpos, UI_NAVBAR_DISCONNECT_ORG, UI_NAVBAR_DISCONNECT_SIZE, FALSE)){
     UI_NAVBAR_DISCONNECT_HOVER = TRUE;
     return;
@@ -160,14 +272,25 @@ void( vector titleOfs, string titleTeam, float showScore ) menu_connect_draw_sco
 */
 void( vector menuOrg, vector satMapSize) menu_connect_draw_satmap={
   local vector imgOrg;
+  local vector newSize;
   local vector imgSize;
   
   if( MSN_MAPPIC != "" ){
     gui_renderBorder9_1_32(menuOrg, satMapSize, CLR_DEF_WHITE, 1, DRAWFLAG_NORMAL);
     
-    imgSize = (satMapSize + '8 8') * 0.9;
-    imgOrg = menuOrg + (satMapSize * 0.5) - (imgSize * 0.5) + '8 0';
+    imgSize = draw_getimagesize(MSN_MAPPIC);
     
-    drawpic(imgOrg, MSN_MAPPIC, imgSize, CLR_DEF_WHITE, 1, 0);
+    newSize_x = satMapSize_x * 0.85;
+    newSize_y = (imgSize_x / imgSize_y) * newSize_x;
+    
+    imgOrg = menuOrg + ((satMapSize - '8 8') * 0.5) - (newSize * 0.5);
+    
+    drawpic(imgOrg, MSN_MAPPIC, newSize, CLR_DEF_WHITE, 1, 0);
   }
+};
+
+void( vector menuOrg, vector menuSize, vector menuColor, float alpha) menu_connect_draw_chat={
+  
+  gui_renderBorder9_1_32(menuOrg, menuSize, menuColor, alpha, DRAWFLAG_NORMAL);
+  menu_chat_render_frame(menuOrg, menuSize, 20 );
 };

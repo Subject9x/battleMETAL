@@ -84,18 +84,19 @@ void() menu_score_drawFrame={
     menu_serverinfo_basic(topleftroot + '0 32');
     
     //server flags - DM
-    rulesOrg_x = UI_CTR_x;
-    rulesOrg_y = UI_ORG_y;
-    menu_connect_draw_rules_dm( rulesOrg + '-85 32' );
+    menu_connect_draw_rules_dm( topleftroot + '240 32' );
+    
+    //chat - dm
+    menu_connect_draw_chat( topleftroot + '353 32', '262 144', '0.35 0.35 0.55', 1);
     
     //Server About - DM
-    menu_connect_draw_about_dm( rulesOrg + '20 32' );
+    menu_connect_draw_about_dm( topleftroot + '320 182' );
     
     //player list - DM
     menu_draw_players_basic( topleftroot + '0 182' );
     
     //player stats - DM
-    menu_score_dm_client_info( topleftroot + '320 182' );
+    menu_score_dm_client_info( topleftroot + '320 325' );
     return; 
   }
 };
@@ -135,7 +136,7 @@ void( vector menuOrg ) menu_score_dm_client_info={
   local vector fontsStyle;
   local string mechName;
 
-  gui_renderPatch9_1_32(menuOrg, '150 90', CLR_UI_PSC_BRIEF * 0.8, 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(menuOrg, '160 96', CLR_UI_PSC_BRIEF * 0.8, 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;

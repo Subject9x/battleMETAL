@@ -12,6 +12,8 @@ void() CSQC_Init =
   registercvar("cl_ismenu", ftos(cvar("cl_ismenu")));
   registercvar("chase_active", ftos(cvar("chase_active")));
   
+  cvar_set("con_chat", "0");  //force old chat system off
+  
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
 		maxclients = maxclients + 1;
@@ -594,8 +596,29 @@ void(string s) CSQC_Parse_StuffCmd =
 };
 
 // if string is interesting, deal with it, otherwise pass it to print() to invoke the engine code.
+/*
+an svc_print with a leading byte with value 1 will make the text red and play the chat beep sound... I guess you could call such prints as chat...
+just beware that 2 and 3 have meanings too, at least in DP
+this of course means that with sneaky naming you can get all your deaths to play chat sounds too, of course.
+  -Spoike
+  
+  Notify level : leading char of string
+    1 - 
+    2 - 
+    3 - 
+*/
 void(string s) CSQC_Parse_Print =
 {
+  local float charOfs;
+  local string name, msg;
+  local float sayCmd;
+  if( strstrofs(s, "say", 0) != -1){
+    tokenizebyseparator(s, ":");
+    name = substring(s, strstrofs(s, " ", 0), strstrofs(s, ":", 0) - 1);
+    msg = substring(argv(1), 0, strlen(argv(1)) - 1);
+    menu_chat_receive_new(name, msg);
+    return;
+  }
 	print(s);
 };
 
@@ -733,7 +756,6 @@ void() CSQC_Ent_Remove ={
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)
 void(string msg) GameCommand =
 {
-  
 };
 
 // called on each entity each frame if self.nextthink <= time + frametime

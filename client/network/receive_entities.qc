@@ -218,6 +218,7 @@ void() client_state_events={
       if( !MENU_ACTIVE ){
         menu_update_colors( CLIENT_faction );
         menu_enter( menu_connect_choice() );
+        menu_chat_config(FALSE);
       }
       return;
     }
@@ -302,6 +303,7 @@ void() client_state_events={
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_REDEPLOY) ){
       CLIENT_MENU_deploy = world;
       menu_enter( MENU_CONNECT_ACTIVE );
+      menu_chat_config(FALSE);
       MENU_button_delay = servertime + 1;
       if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
         MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_COOP;
@@ -322,6 +324,7 @@ void() client_state_events={
         return;
       }
       menu_enter( MENU_SCORE_ACTIVE );
+      menu_chat_config(FALSE);
       if(  ENT_SERVER_INFO.gameType == GAMEMODE_COOP  ){
         MENU_DEBRIEF_time_elapsed = -1;
         ui_set_mission_status( ENT_SERVER_INFO.missionResult );
@@ -339,6 +342,7 @@ void() client_state_events={
     //EVENT - CLIENT connect during end of round
     if( (CLIENT_player_state_prev != PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
       menu_enter( MENU_SCORE_ACTIVE );
+      menu_chat_config(FALSE);
       //MENU_button_delay = servertime + 1;
       MENU_respawn_cool = servertime + 15;
       MENU_respawn_cool_start = servertime;

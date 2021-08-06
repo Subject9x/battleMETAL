@@ -30,7 +30,11 @@ void(string str) SV_ParseClientCommand={
     client_parse_clientInfoString(str);
     return;
   }
-  
+  if( cmdCall == "say" ){
+    WriteChar(MSG_ALL, SVC_PRINT);
+    WriteString(MSG_ALL, sprintf("%s %s:%s\n", cmdCall, self.netname, substring(str, cmdIdx, strlen(str)-cmdIdx)));
+    return;
+  }
   //SetNextMission--------------------
   if(cmdCall == "nextmission"){
     argc = tokenize(str);

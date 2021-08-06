@@ -34,10 +34,23 @@ void() menu_connectListener_onHover;
 void() menu_connect_drawFrame;
 //------------------
 
+//chat globals
+vector CHAT_LINE_FONT_SIZE;
+string CHAT_LINES[20];  //20 is a hard max, but use CHAT_LINE_TOTAL to set a smaller number of lines.
+float CHAT_LINE_TOTAL;
+float CHAT_LINE_COUNT;
+float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
+
+void(string userName, string newChat) menu_chat_receive_new;
+void(float modeGame) menu_chat_config;  //sets chat settings per-menu, run once when entering a _connect menu!
+void() menu_chat_update_tick; //unless menu_chat_receive_new() was called, timeout the message queue
+void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame;
+
 //Deathmatch layout
 void( vector rootTop ) menu_connect_render_dm;
 void( vector menuOrg ) menu_connect_draw_rules_dm;
 void( vector menuOrg ) menu_connect_draw_about_dm;
+void( vector menuOrg ) menu_connect_draw_chat_dm;
 
 //Team Deathmatch Layout
 void( vector rootTop ) menu_connect_render_teamdm;
@@ -60,3 +73,4 @@ void( vector titleOfs, string titleTeam, float showScore ) menu_connect_draw_sco
 void( vector menuOrg ) menu_connect_draw_objectives;
 void( vector menuOrg ) menu_connect_draw_objectives_row;
 void( vector menuOrg, vector satMapSize ) menu_connect_draw_satmap;
+void( vector menuOrg, vector menuSize, vector menuColor, float alpha) menu_connect_draw_chat;

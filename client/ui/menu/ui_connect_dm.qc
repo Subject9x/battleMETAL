@@ -11,33 +11,38 @@ Overview:
 
 
 void( vector rootTop ) menu_connect_render_dm={
-  local vector satMapOrg;
-  local vector rulesOrg;
   
-  //satmapinfo - DM
-  satMapOrg_x = UI_MAX_x - 310;
-  satMapOrg_y = UI_ORG_y + 182;
-  menu_connect_draw_satmap( satMapOrg,  '290 290' );
   
   //mission info - DM
   menu_serverinfo_basic(rootTop + '0 32');
   
   //server flags - DM
-  rulesOrg_x = UI_CTR_x;
-  rulesOrg_y = UI_ORG_y;
-  menu_connect_draw_rules_dm( rulesOrg + '-80 32' );
+  menu_connect_draw_rules_dm( rootTop + '240 32' );
+  
+  //chat - dm
+  menu_connect_draw_chat( rootTop + '353 32', '262 144', '0.35 0.35 0.55', 1);
   
   //Server About - DM
-  menu_connect_draw_about_dm( rulesOrg + '33 32' );
+  menu_connect_draw_about_dm( rootTop + '320 182' );
   
   //player list - DM
   menu_draw_players_basic( rootTop + '0 182' );
+  
+  //satmapinfo - DM
+  menu_connect_draw_satmap( rootTop + '330 326', '175 175' );
 
 };
 
 /*
   DEATHMATCH INFO PANELS
 */
+
+void( vector menuOrg ) menu_connect_draw_chat_dm={
+
+  gui_renderPatch9_1_32(menuOrg, '105 150', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
+
+};
+
 void( vector menuOrg ) menu_connect_draw_rules_dm={
   local vector labelOrg;
   local float labelLen;
