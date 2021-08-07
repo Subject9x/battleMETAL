@@ -218,5 +218,6 @@ ui/hud/crosshair/hud_crosshair4.qc
 //=======================
 
 input_events.qc
+util/input_api.qc
 ../common/data/defs/defs_world.qc     //world server / rules entity
 client_main.qc
