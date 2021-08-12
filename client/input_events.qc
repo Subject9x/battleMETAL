@@ -57,7 +57,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         newText = strcat(newText, " ");
       }
       else{
-        newText = strcat(newText, keynumtostring(scanx));
+        if( textfilter_validate( scanx, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_UPP) ) ){
+          newText = strcat(newText, keynumtostring(scanx));
+        }
       }
       cacheGlobalString( CHAT_INP_VAL, newText)
       return TRUE;

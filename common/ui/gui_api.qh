@@ -81,6 +81,23 @@ float PAT_BOX = 3;
 float HUD_ALPHA;
 
 
+//UI ELEMENT FLAGS - orig menu_api
+float UI_FLAG_NOLABEL        = 1;     //don't render label
+float UI_FLAG_NEW            = 2;     //is new
+float UI_FLAG_ALIGN          = 4;     //use alignment field
+float UI_FLAG_NOHIGHLIGHT    = 8;     //don't render highlight overlay
+float UI_FLAG_SIZE_IMG       = 16;    //base item size on img1 field
+float UI_FLAG_CENTER_IMG     = 32;    //centers image on widget
+float UI_FLAG_TXTFIELD_NUM   = 64;    //allow number in textfields
+float UI_FLAG_TXTFIELD_SPEC  = 128;   //alllow special characters
+float UI_FLAG_TXTFIELD_LOW   = 256;   //allow lowercase
+float UI_FLAG_TXTFIELD_MOUSE = 512;   //allow mouse click reading
+float UI_FLAG_TXTFIELD_FUNC  = 1024;  //allow function key detection
+float UI_FLAG_TXTFIELD_UPP   = 2048;  //allow uppercase
+float UI_FLAG_LBL_USELEN     = 4096;  //for lbl_text, use its .len field as the display value .lbl
+float UI_FLAG_LBL_BOOL_ON    = 8192;  //for lbl_text, use its .len field as 1/0 and renders "ON" / "OFF"
+float UI_FLAG_LBL_BOOL_TRUE  = 16384;  //for lbl_text, use its .len field as 1/0 and renders "TRUE" / "FALSE"
+
 void() gui_set_screen_size;
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
@@ -142,3 +159,193 @@ void(string msg, string s1) cons_logAString;
 void(string msg, float val, string split, float val2) cons_log2Float;
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
+
+
+float TXT_INPUT_SHIFT; //detect shift input
+float TXT_INPUT_FILTER_MAX = 111;
+float TXT_INPUT_FILTER[TXT_INPUT_FILTER_MAX];  //filter out these chars;
+
+/*
+  normally don't put whole funcs into headers but, this is pretty universal
+*/
+float(float keynr, float uiFlags) textfilter_validate={
+  local float itr, valid;
+  valid = FALSE;
+  while(itr <= TXT_INPUT_FILTER_MAX){
+    if( TXT_INPUT_FILTER[itr] == keynr ){
+      if( (uiFlags & UI_FLAG_TXTFIELD_NUM) ){
+        if( (itr >= 26) && (itr <= 36) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_SPEC) ){
+        if( (itr >= 169) && (itr <= 173) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_LOW) ){
+        if( (itr >= 0) && (itr <= 25) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_MOUSE) ){
+        if( (itr >= 67) && (itr <= 84) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_FUNC) ){
+        if( (itr >= 42) && (itr <= 66) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_UPP) ){
+        if( (itr >= 85) && (itr <= 110) ){
+          valid = TRUE;
+        }
+      }
+      
+      if( keynr == K_SPACE ){
+        valid = TRUE;
+      }
+    }
+    itr = itr + 1;
+  }
+  return valid;
+};
+
+/*
+  only allow these keys when typing in textfield
+  not one of my best moments here...
+  
+  CSQC_init()
+*/
+void() textfilter_ini_keyarray={
+  //lower case  a - z
+  TXT_INPUT_FILTER[0] = 97;
+  TXT_INPUT_FILTER[1] = 98;
+  TXT_INPUT_FILTER[2] = 99;
+  TXT_INPUT_FILTER[3] = 100;
+  TXT_INPUT_FILTER[4] = 101;
+  TXT_INPUT_FILTER[5] = 102;
+  TXT_INPUT_FILTER[6] = 103;
+  TXT_INPUT_FILTER[7] = 104;
+  TXT_INPUT_FILTER[8] = 105;
+  TXT_INPUT_FILTER[9] = 106;
+  TXT_INPUT_FILTER[10] = 107;
+  TXT_INPUT_FILTER[11] = 108;
+  TXT_INPUT_FILTER[12] = 109;
+  TXT_INPUT_FILTER[13] = 110;
+  TXT_INPUT_FILTER[14] = 111;
+  TXT_INPUT_FILTER[15] = 112;
+  TXT_INPUT_FILTER[16] = 113;
+  TXT_INPUT_FILTER[17] = 114;
+  TXT_INPUT_FILTER[18] = 115;
+  TXT_INPUT_FILTER[19] = 116;
+  TXT_INPUT_FILTER[20] = 117;
+  TXT_INPUT_FILTER[21] = 118;
+  TXT_INPUT_FILTER[22] = 119;
+  TXT_INPUT_FILTER[23] = 120;
+  TXT_INPUT_FILTER[24] = 121;
+  TXT_INPUT_FILTER[25] = 122;
+  
+  //keys 0 - 9
+  TXT_INPUT_FILTER[26] = 48;
+  TXT_INPUT_FILTER[27] = 49;
+  TXT_INPUT_FILTER[28] = 50;
+  TXT_INPUT_FILTER[29] = 51;
+  TXT_INPUT_FILTER[30] = 52;
+  TXT_INPUT_FILTER[31] = 53;
+  TXT_INPUT_FILTER[32] = 54;
+  TXT_INPUT_FILTER[33] = 55;
+  TXT_INPUT_FILTER[34] = 56;
+  TXT_INPUT_FILTER[35] = 57;
+  TXT_INPUT_FILTER[36] = 58;
+  
+  //special keys
+  TXT_INPUT_FILTER[37] = K_SPACE;//;
+  TXT_INPUT_FILTER[38] = 169;//K_KP_MULTIPLY;
+  TXT_INPUT_FILTER[39] = 170;//K_KP_MINUS;
+  TXT_INPUT_FILTER[40] = 171;// K_KP_PLUS;
+  TXT_INPUT_FILTER[41] = 173;//K_KP_EQUALS;
+  
+  //arrow keys
+  TXT_INPUT_FILTER[42] = K_UPARROW;
+  TXT_INPUT_FILTER[43] = K_DOWNARROW;
+  TXT_INPUT_FILTER[44] = K_LEFTARROW;
+  TXT_INPUT_FILTER[45] = K_RIGHTARROW;
+  
+  //ctrl
+  TXT_INPUT_FILTER[46] = K_ALT;
+  TXT_INPUT_FILTER[47] = K_CTRL;
+  TXT_INPUT_FILTER[48] = K_SHIFT;
+  
+  //function keys
+  TXT_INPUT_FILTER[49] = K_F1;
+  TXT_INPUT_FILTER[50] = K_F2;
+  TXT_INPUT_FILTER[51] = K_F3;
+  TXT_INPUT_FILTER[52] = K_F4;
+  TXT_INPUT_FILTER[53] = K_F5;
+  TXT_INPUT_FILTER[54] = K_F6;
+  TXT_INPUT_FILTER[55] = K_F7;
+  TXT_INPUT_FILTER[56] = K_F8;
+  TXT_INPUT_FILTER[57] = K_F9;
+  TXT_INPUT_FILTER[58] = K_F10;
+  TXT_INPUT_FILTER[59] = K_F11;
+  TXT_INPUT_FILTER[60] = K_F12;
+  
+  //ins - del
+  TXT_INPUT_FILTER[61] = K_INS;
+  TXT_INPUT_FILTER[62] = K_DEL;
+  TXT_INPUT_FILTER[63] = K_PGDN;
+  TXT_INPUT_FILTER[64] = K_PGUP;
+  TXT_INPUT_FILTER[65] = K_HOME;
+  TXT_INPUT_FILTER[66] = K_END;
+  
+  //mouse input
+  TXT_INPUT_FILTER[67] = K_MOUSE1;
+  TXT_INPUT_FILTER[68] = K_MOUSE2;
+  TXT_INPUT_FILTER[69] = K_MOUSE3;
+  TXT_INPUT_FILTER[70] = K_MWHEELUP;
+  TXT_INPUT_FILTER[71] = K_MWHEELDOWN;
+  TXT_INPUT_FILTER[72] = K_MOUSE4;
+  TXT_INPUT_FILTER[73] = K_MOUSE5;
+  TXT_INPUT_FILTER[74] = K_MOUSE6;
+  TXT_INPUT_FILTER[75] = K_MOUSE7;
+  TXT_INPUT_FILTER[76] = K_MOUSE8;
+  TXT_INPUT_FILTER[77] = K_MOUSE9;
+  TXT_INPUT_FILTER[78] = K_MOUSE10;
+  TXT_INPUT_FILTER[79] = K_MOUSE11;
+  TXT_INPUT_FILTER[80] = K_MOUSE12;
+  TXT_INPUT_FILTER[81] = K_MOUSE13;
+  TXT_INPUT_FILTER[82] = K_MOUSE14;
+  TXT_INPUT_FILTER[83] = K_MOUSE15;
+  TXT_INPUT_FILTER[84] = K_MOUSE16;
+  
+  //upper case
+  TXT_INPUT_FILTER[85] = 65;
+  TXT_INPUT_FILTER[86] = 66;
+  TXT_INPUT_FILTER[87] = 67;
+  TXT_INPUT_FILTER[88] = 68;
+  TXT_INPUT_FILTER[89] = 69;
+  TXT_INPUT_FILTER[90] = 70;
+  TXT_INPUT_FILTER[91] = 71;
+  TXT_INPUT_FILTER[92] = 72;
+  TXT_INPUT_FILTER[93] = 73;
+  TXT_INPUT_FILTER[94] = 74;
+  TXT_INPUT_FILTER[95] = 75;
+  TXT_INPUT_FILTER[96] = 76;
+  TXT_INPUT_FILTER[97] = 77;
+  TXT_INPUT_FILTER[98] = 78;
+  TXT_INPUT_FILTER[99] = 79;
+  TXT_INPUT_FILTER[100] = 80;
+  TXT_INPUT_FILTER[101] = 81;
+  TXT_INPUT_FILTER[102] = 82;
+  TXT_INPUT_FILTER[103] = 83;
+  TXT_INPUT_FILTER[104] = 84;
+  TXT_INPUT_FILTER[105] = 85;
+  TXT_INPUT_FILTER[106] = 86;
+  TXT_INPUT_FILTER[107] = 87;
+  TXT_INPUT_FILTER[108] = 88;
+  TXT_INPUT_FILTER[109] = 89;
+  TXT_INPUT_FILTER[110] = 90;
+};

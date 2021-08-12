@@ -55,6 +55,7 @@ void(float modeGame) menu_chat_config;  //sets chat settings per-menu, run once 
 void() menu_chat_update_tick; //unless menu_chat_receive_new() was called, timeout the message queue
 void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame;
 void(vector chatOrg) menu_chat_render_input;
+void() menu_chat_cleanup;
 
 //Deathmatch layout
 void( vector rootTop ) menu_connect_render_dm;

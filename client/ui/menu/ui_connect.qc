@@ -62,7 +62,6 @@ void(float modeGame) menu_chat_config={
     else{
     
     }
-    
   }
 };
 
@@ -152,8 +151,8 @@ void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
       if( CHAT_LINE_TRUNC != 0 ){
         line = substring(line, 0, min(strlen(line), CHAT_LINE_TRUNC));
       }
-      userName = substring(line, 0, strstrofs(line, ":") + 1);
-      line = substring(line, strstrofs(line, ":"),strlen(line));
+      userName = substring(line, 0, strstrofs(line, ":",0) + 1);
+      line = substring(line, strstrofs(line, ":",0),strlen(line));
       drawfont_prev = drawfont;
       drawfont = FONT_NUM_ROBOT_MEDIUM;
       drawstring(lineOfs + Vector2(0, i * (CHAT_LINE_FONT_SIZE_y + 2)), userName, CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
@@ -181,16 +180,24 @@ void(vector chatOrg ) menu_chat_render_input={
     
     if( strlen(CHAT_INP_VAL) > 0 ){
       drawstring(textOrg, CHAT_INP_VAL, CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
-      
     }
     
     if( time > CHAT_CUR_TIC ){
       CHAT_CUR_TIC = time + 0.5;
-      drawstring(textOrg, "[]", CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
+      drawstring(textOrg + Vector2(stringwidth(CHAT_INP_VAL, 0, CHAT_LINE_FONT_SIZE), 0), "_", CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
     }
   }
   
 }
+
+void() menu_chat_cleanup={
+  local float i;
+  for(i = 0; i < CHAT_LINE_TOTAL; i = i + 1){
+    if( CHAT_LINES[i] != "" ){
+      freeGlobalString( CHAT_LINES[i] )
+    }
+  }
+};
 
 
 void() menu_connectListener_onClick={

@@ -115,6 +115,8 @@ void() CSQC_Init =
   dynamic_precache();
   cs_precache();
   
+  textfilter_ini_keyarray();
+  
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");
   cacheGlobalString( MAP_NAME, argv(1) )
@@ -220,6 +222,8 @@ void() CSQC_Shutdown =
   freeGlobalString(HUD_INFO_MSG)
   
   localcmd("cd stop\n");
+  
+  menu_chat_cleanup();
   
   gui_set_screen_size();
   
