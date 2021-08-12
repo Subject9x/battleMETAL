@@ -920,7 +920,7 @@ void(float keynr, float ascii) menu_do_textfield={
         txt = strcat(txt, " ");
       }
       else{
-        txt = strcat(txt, chr(ascii)  );
+        txt = strcat(txt, chr(ascii) );
       }
       cacheGlobalString( TEXTFIELD_TARGET.data_text, txt )
     } 

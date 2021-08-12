@@ -8,6 +8,11 @@ Overview:
   
   This catch-all function handles all custom mod input events.
   
+  
+  PRVM_G_FLOAT(OFS_PARM0) = eventtype;
+  PRVM_G_FLOAT(OFS_PARM1) = x; // key or x
+  PRVM_G_FLOAT(OFS_PARM2) = y; // ascii or y
+  
   (taken from original CSQC comments)
   typ 0 = keydown (keysym, unicode character but this may be zero) or typed input (-1, unicode character)
   typ 1 = keyup (keysym, may have unicode character but generally not)
@@ -39,7 +44,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     if( CHAT_INP_ON ){
       //TODO - filter ASCII values like menu does.
       if( scanx == K_ENTER ){
-        localcmd(strcat("say ", CHAT_INP_VAL, "\n"));
+        if( strlen(CHAT_INP_VAL) != 0 ){
+          localcmd(strcat("say ", CHAT_INP_VAL, "\n"));
+        }
         CHAT_INP_ON = FALSE;
         freeGlobalString(CHAT_INP_VAL)
         return TRUE;
@@ -58,7 +65,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
       else{
         if( textfilter_validate( scanx, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_UPP) ) ){
-          newText = strcat(newText, keynumtostring(scanx));
+          newText = strcat(newText, keynumtostring(chary));
         }
       }
       cacheGlobalString( CHAT_INP_VAL, newText)
