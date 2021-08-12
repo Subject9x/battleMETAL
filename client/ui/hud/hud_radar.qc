@@ -25,8 +25,8 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
   
-  RADAR_VSIZE = gui_percentToPixelRawVec(siz);
-  RADAR_VORG = gui_percentToPixelRawVec(vorg);
+  RADAR_VSIZE = siz;
+  RADAR_VORG = vorg;
   RADAR_VORG = gui_calcAlign(RADAR_VORG, algn);
   
   RADAR_VCENTER_x = RADAR_VORG_x + (RADAR_VSIZE_x / 2);
@@ -45,8 +45,8 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   
   radarLineRight = radarLineLeft;
   radarLineRight_x = radarLineRight_x * -1;
-  drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('-3 0'), RADAR_VCENTER + radarLineLeft, CLR_DEF_WHITE, HUD_ALPHA, 0);
-  drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('3 0'), RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
+  drawline(1, RADAR_VCENTER + '-3 0', RADAR_VCENTER + radarLineLeft, CLR_DEF_WHITE, HUD_ALPHA, 0);
+  drawline(1, RADAR_VCENTER + '3 0', RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   for( blip = nextent(world); blip != world; blip = nextent(blip)){
     if( !(blip.flags & FL_UNIT) && !(blip.flags & FL_MONSTER) ){
@@ -173,7 +173,7 @@ void( vector navOrg, float navState, float radRange ) hud_renderRadarNav={
       colr = CLR_DEF_TXT_NONSELECT;
       alph = 0.33;
     }
-    drawpic(hudorg - gui_percentToPixelRawVec('3 3'), UI_DEF_NAVPOINT, gui_percentToPixelRawVec('10 10'), colr, alph, 0);
+    drawpic(hudorg - '3 3', UI_DEF_NAVPOINT, '10 10', colr, alph, 0);
   }
 };
 
@@ -191,7 +191,7 @@ void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Mec
     }
   }
   blipSize = e_size * '4 4 4';
-  drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
+  drawpic(post - (blipSize * 0.5), HUD_RAD_PIP_MCH, blipSize, clr, e_alpha, 0);
 };
 
 /*
@@ -207,7 +207,7 @@ void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Veh
   }
   blipSize = e_size * '5 5 5';
   
-  drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_VEC, gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
+  drawpic(post - (blipSize * 0.5), HUD_RAD_PIP_VEC, blipSize, clr, e_alpha, 0);
 };
 
 /*
@@ -222,7 +222,7 @@ void(vector post,float e_size, float e_fact, float e_alpha) hud_RenderRadar_Buil
     clr = CLR_DEF_IIF_FRIEND_BLD;
   }
   blipSize = (e_size * 0.75) * '4 4 4';
-  drawpic(post - gui_percentToPixelRawVec(blipSize * 0.5), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec(blipSize), clr, e_alpha, 0);
+  drawpic(post - (blipSize * 0.5), HUD_RAD_PIP_BLD,  blipSize, clr, e_alpha, 0);
 };
 
 /*
@@ -230,6 +230,6 @@ void(vector post,float e_size, float e_fact, float e_alpha) hud_RenderRadar_Buil
 */
 void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav={
   if(isOn){
-    drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_NAV,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, DRAWFLAG_NORMAL);
+    drawpic(post - '3 3', HUD_RAD_PIP_NAV,  '6 6', fac_clr, HUD_ALPHA, DRAWFLAG_NORMAL);
   }
 };

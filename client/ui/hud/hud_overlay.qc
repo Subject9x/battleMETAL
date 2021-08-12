@@ -55,7 +55,7 @@ void( entity thePlayer ) hud_render_ally_names={
   namepos_z = namepos_z - (adj + drawSize_y);  //magik numbers, :/
   nameproj = cs_project(namepos);
   if( nameproj_z >= 0 ){
-    nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
+    nameproj_x = nameproj_x - (namelen / 2);
     nameproj_z = 0;
     drawstring(nameproj, playerName, drawSize, CLR_DEF_GREEN * 1.5, max(0.75, HUD_ALPHA), 0);
   }
@@ -88,7 +88,7 @@ void() hud_renderNavOverlay={
     }
     i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
     nofs = nav.origin;
-    nofs_z = nofs_z + gui_percentYRaw(14);
+    nofs_z = nofs_z + 14;
     apos = cs_project(nofs);
     tofs = apos;
     navname = NAVNAMES[nav.data_idx];
@@ -97,8 +97,10 @@ void() hud_renderNavOverlay={
       iofs = apos;
       i_sz_x = i_sz_x / 4;
       i_sz_y = i_sz_y / 4;
+      
       iofs_x = iofs_x - (i_sz_x/2);
       iofs_y = iofs_y - (i_sz_y/2);
+      
       tofs_x -= stringwidth(navname, TRUE, '12 12') * 0.5; //align horizontally to centre
       tofs_y = tofs_y - (i_sz_y + 12); //align vertically again
       tofs_z = 0;
