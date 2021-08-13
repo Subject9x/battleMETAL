@@ -30,41 +30,31 @@ float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
 void(float modeGame) menu_chat_config={
   local vector scrnOffset;
   
-  if(modeGame ){
-
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
+    CHAT_LINE_FONT_SIZE = '10 10';
+    CHAT_LINE_TOTAL = 10;
+    CHAT_LINE_COUNT = 0;
+    CHAT_DECAY_TIME = 30;
+    CHAT_LINE_TRUNC = 105;
+    CHAT_INP_MAX = 100;
   }
-  else{
-    if( CLIENT_MENU_menu_choice == MENU_CONNECT_ACTIVE ){
-      if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
-        CHAT_LINE_FONT_SIZE = '10 10';
-        CHAT_LINE_TOTAL = 10;
-        CHAT_LINE_COUNT = 0;
-        CHAT_DECAY_TIME = 30;
-        CHAT_LINE_TRUNC = 105;
-        CHAT_INP_MAX = 100;
-      }
-      
-      else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
-        CHAT_LINE_FONT_SIZE = '10 10';
-        CHAT_LINE_TOTAL = 10;
-        CHAT_LINE_COUNT = 0;
-        CHAT_DECAY_TIME = 50;
-        CHAT_LINE_TRUNC = 73;
-        CHAT_INP_MAX = 65;
-      }
-      
-      else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
-        CHAT_LINE_FONT_SIZE = '10 10';
-        CHAT_LINE_TOTAL = 10;
-        CHAT_LINE_COUNT = 0;
-        CHAT_DECAY_TIME = 50;
-        CHAT_LINE_TRUNC = 105;
-        CHAT_INP_MAX = 100;
-      }
-    }
-    else{
-    
-    }
+  
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
+    CHAT_LINE_FONT_SIZE = '10 10';
+    CHAT_LINE_TOTAL = 10;
+    CHAT_LINE_COUNT = 0;
+    CHAT_DECAY_TIME = 50;
+    CHAT_LINE_TRUNC = 73;
+    CHAT_INP_MAX = 65;
+  }
+  
+  else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+    CHAT_LINE_FONT_SIZE = '10 10';
+    CHAT_LINE_TOTAL = 10;
+    CHAT_LINE_COUNT = 0;
+    CHAT_DECAY_TIME = 50;
+    CHAT_LINE_TRUNC = 105;
+    CHAT_INP_MAX = 100;
   }
 };
 

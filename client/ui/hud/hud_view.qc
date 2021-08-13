@@ -810,6 +810,7 @@ void() data_hud_frame={
   if( HUD_EXTERNAL_CAM_ACTIVE ){
     data_hud_external();
   }
+  menu_chat_render_frame( 10);
   
   if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
@@ -1198,6 +1199,12 @@ void() data_hud_fps_cam={
       case HUD_UID_MSN_CLOCK:
         porg = UI_DATA_POS[uid];
         algn = UI_DATA_ALIGN[uid];
+        hud_render_missionClock( porg, algn, 0);
+        break;
+      case HUD_UID_CHAT_BOX:
+        porg = UI_DATA_POS[uid];
+        algn = UI_DATA_ALIGN[uid];
+        vsize = UI_DATA_SIZE[uid];
         hud_render_missionClock( porg, algn, 0);
         break;
     }

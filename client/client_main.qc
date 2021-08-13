@@ -615,8 +615,14 @@ void(string s) CSQC_Parse_Print =
 {
   local float charOfs;
   local string name, msg;
-  local float sayCmd;
   if( strstrofs(s, "say", 0) != -1){
+    tokenizebyseparator(s, ":");
+    name = substring(s, strstrofs(s, " ", 0), strstrofs(s, ":", 0) - 1);
+    msg = substring(argv(1), 0, strlen(argv(1)) - 1);
+    menu_chat_receive_new(name, msg);
+    return;
+  }
+  if( strstrofs(s, "sayteam", 0) != -1){
     tokenizebyseparator(s, ":");
     name = substring(s, strstrofs(s, " ", 0), strstrofs(s, ":", 0) - 1);
     msg = substring(argv(1), 0, strlen(argv(1)) - 1);

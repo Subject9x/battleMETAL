@@ -35,7 +35,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       return FALSE; 
     }
     //=====================    
-    if( scanx == K_T ){
+    if( strstrofs(findkeysforcommand("messagemode", 0), ftos(scanx),0) != -1 || strstrofs(findkeysforcommand("messagemode2", 0), ftos(scanx),0) != -1 ){
       if( !CHAT_INP_ON ){
         CHAT_INP_ON = TRUE;
         return TRUE;
