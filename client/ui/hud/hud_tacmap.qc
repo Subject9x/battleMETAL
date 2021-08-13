@@ -245,7 +245,8 @@ void( vector panelOfs ) hud_render_scoreboard_dm={
   
   panelSize_x = 150;
   panelSize_y = HUD_SCORE_HEIGHT;
-  drawpic(panelOfs, UI_DEF_BOX_512, panelSize, CLR_DEF_WHITE * 0.75, HUD_ALPHA * 1.15, 0);
+  
+  gui_renderPatch9_1_32(panelOfs, panelSize, CLR_DEF_WHITE * 0.75, HUD_ALPHA * 1.15, 0);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -288,14 +289,14 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
   if( HUD_SCORE_SURVEST_HEIGHT > 0){
     panelSurvestSize_x = panelMilitarSize_x = 150;
     panelSurvestSize_y = HUD_SCORE_SURVEST_HEIGHT;
-    drawpic(panelOfs, UI_DEF_BOX_512, panelSurvestSize, CLR_UI_PSC_BRIEF * 0.9, max(HUD_ALPHA, 0.8), 0);
+    gui_renderPatch9_1_32(panelOfs, panelSurvestSize, CLR_UI_PSC_BRIEF * 0.9, max(HUD_ALPHA, 0.8), 0);
   }
   
   if( HUD_SCORE_MILITAR_HEIGHT > 0 ){
     panelMOfs_x = panelOfs_x;
     panelMOfs_y = panelOfs_y + panelSurvestSize_y;
     panelMilitarSize_y = HUD_SCORE_MILITAR_HEIGHT;
-    drawpic(panelMOfs, UI_DEF_BOX_512, panelMilitarSize, CLR_UI_MIL_BRIEF, max(HUD_ALPHA, 0.8), 0);
+    gui_renderPatch9_1_32(panelMOfs, panelMilitarSize, CLR_UI_MIL_BRIEF, max(HUD_ALPHA, 0.8), 0);
   }
   
   drawfont_prev = drawfont;

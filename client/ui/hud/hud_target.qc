@@ -334,7 +334,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       iconSize_x = meterSize_x;
       iconSize_y = meterSize_x;
     }
-    iconSize_y = iconSize_y * 1.5;
+    iconSize = iconSize * 2;
     iconSize_z = 0;
     iconOrg = gui_calcAlignCustom('10 2',(VIEW_LFT | VIEW_TOP), pos);
     iconOrg_z = 0;
@@ -410,7 +410,7 @@ void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lb
     backOrg = lblOfs;
     backOrg = gui_calcAlignCustom(backOrg, lalgn, pnl_ctr);
     backSize = lblSize;
-    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+    gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
   
   hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget, M_TOR_CENTER );
@@ -456,7 +456,7 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     backOrg = lblOfs;
     backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
     backSize = lblSize;
-    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+    gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
   
   drawpic(meter, HUD_BUILD_TRG, siz, tColor, HUD_ALPHA, 0);
@@ -494,7 +494,7 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
     backOrg = lblOfs;
     backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
     backSize = lblSize;
-    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+    gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
   
   drawpic(meter, HUD_VEC_TRG, siz, tColor, HUD_ALPHA, 0);

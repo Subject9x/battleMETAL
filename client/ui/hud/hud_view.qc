@@ -569,16 +569,19 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
   Renders HUD notification system messages, red text and dark gray background
 */
 void() hud_render_info={
+  local vector panelSize;
   
-  if( HUD_INFO_ON == TRUE ){
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
+  panelSize_x = max(32, HUD_INFO_SIZE_x) - 16;
+  panelSize_y = max(32, HUD_INFO_MSG_Y + 16);
   
-    drawpic( HUD_INFO_ORG - '4 0', UI_DEF_BOX_512, HUD_INFO_SIZE, CLR_DEF_GRAY_H, 1, 0);
-    gui_wrapText(HUD_INFO_ORG, HUD_INFO_SIZE, HUD_INFO_MSG, '14 14 0', CLR_DEF_ARM_OK * 1.25, 1) ;
-    
-    drawfont = drawfont_prev;
-  }
+  gui_renderPatch9_1_32(HUD_INFO_ORG, panelSize, CLR_DEF_GRAY_H, 1, 0);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  HUD_INFO_MSG_Y = gui_wrapText(HUD_INFO_ORG + '8 8', HUD_INFO_SIZE - '16 16', HUD_INFO_MSG, '14 14 0', CLR_DEF_ARM_OK * 1.25, 1) ;
+  
+  drawfont = drawfont_prev;
 
   if( time > HUD_INFO_MARK ){
     HUD_INFO_ON = FALSE;
@@ -624,7 +627,7 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
   boxOrgin_x = VIEW_CTR_x - (width/2);
   boxOrgin_y = messageOrigin_y;
   
-  messageOrigin_x = boxOrgin_x + ( width / 2 ) - (strWidth / 2);
+  messageOrigin_x = boxOrgin_x + ( width / 2 ) - (strWidth / 2) + 8;
   messageOrigin_y = messageOrigin_y + 8;
   
   gui_renderPatch9_1_32(boxOrgin, Vector2(width, 32), '0.45 0.45 0.45', 1, 0);
@@ -684,10 +687,12 @@ void( entity box ) hud_renderHighlight={
       if(box.partTypeId == HUD_UID_ARM_PLAYER){
         elmOrg = elmOrg - (boxSize*0.5);
       }
-        elmOrg_x = elmOrg_x - (boxSize_x*0.15);
-        elmOrg_y = elmOrg_y - (boxSize_y*0.15);
+      elmOrg_x = elmOrg_x - (boxSize_x*0.15);
+      elmOrg_y = elmOrg_y - (boxSize_y*0.15);
       
-      drawpic( elmOrg, UI_DEF_BOX_256_BRIGHT, boxSize, box.drawcolor1, 0.85, 0);
+      boxSize_x = max(32, boxSize_x);
+      boxSize_y =  max(32, boxSize_y);
+      gui_renderPatch9_1_32( elmOrg - '4 4', boxSize, box.drawcolor1, 0.85, 0);
     }
 
   }
@@ -695,9 +700,9 @@ void( entity box ) hud_renderHighlight={
     if( box.origin != '0 0 0'){
       bx_pos_x = VIEW_ORG_x + ( VIEW_MAX_x * box.origin_x );
       bx_pos_y = VIEW_ORG_y + ( VIEW_MAX_y * box.origin_y );
-      boxSize_x = box.drawsize_x * VIEW_MAX_x;
-      boxSize_y = box.drawsize_y * VIEW_MAX_y;
-      drawpic( bx_pos, UI_DEF_BOX_256_THICK, boxSize, box.drawcolor1, 0.85, 0);
+      boxSize_x = max(32, box.drawsize_x * VIEW_MAX_x);
+      boxSize_y = max(32, box.drawsize_y * VIEW_MAX_y);
+      gui_renderPatch9_1_32( bx_pos, boxSize, box.drawcolor1, 0.85, 0);
     }
   }
 };
@@ -743,13 +748,11 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   
   if(  (meterAxis & AXIS_H) ){
     drawpic(ramPos, "gfx/hud/hud_meter_cover3.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-    iconSize_x = meterSize_y;
-    iconSize_y = meterSize_y;
+    iconSize = Vector2(meterSize_y, meterSize_y);
   }
   else{
     drawpic(ramPos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-    iconSize_x = meterSize_x;
-    iconSize_y = meterSize_x;
+    iconSize = Vector2(meterSize_x, meterSize_x);
   }
   if( ramIcon != "" ){
     iconOrg = gui_calcAlignCustom(lbl_ofs, lbl_algn, ramPos);
@@ -868,7 +871,11 @@ void() data_hud_frame={
     hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
     hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + HUD_WARN_ENV_ORG, HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
     hud_event_frame();
-    hud_render_info();
+    
+    if( HUD_INFO_ON == TRUE ){
+      hud_render_info();
+    }
+    
   }
   
   if( HUD_TACMAP_ON ){

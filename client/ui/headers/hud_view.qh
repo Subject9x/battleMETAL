@@ -73,6 +73,7 @@ float AIM_FACE_BACK    = 4;
   vector HUD_INFO_ORG;
   vector HUD_INFO_SIZE;
   string HUD_INFO_MSG;
+  float HUD_INFO_MSG_Y;
   
   float HUD_ALPHA_TIME;
   float HUD_ALPHA_RATE;
