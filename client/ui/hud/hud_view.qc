@@ -537,7 +537,7 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
 /*
   RENDER ENVIRONMENT HAZARD 
 */
-void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={  
+void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={
   local vector anchorOrg;
   local vector shockOrg;
   local vector radOrg;
@@ -610,19 +610,24 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
   local vector messageOrigin;
   local vector boxOrgin;
   local float width;
+  local float strWidth;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
  
   messageOrigin = msgOrg;
   
-  width = stringwidth( messageVal, 0, messageFont);
-  messageOrigin = gui_calcAlign(messageOrigin, labelAlign);
-  messageOrigin_x = messageOrigin_x - ( width / 2 );
+  strWidth = width = stringwidth( messageVal, 0, messageFont);
   
-  boxOrgin_x = VIEW_CTR_x - (128);
-  boxOrgin_y = messageOrigin_y - 4;
-  drawpic( boxOrgin, UI_DEF_BOX_512, '256 24', '0.45 0.45 0.45', 1, 0);
+  width = rint(width / 16) * 16;
+  
+  boxOrgin_x = VIEW_CTR_x - (width/2);
+  boxOrgin_y = messageOrigin_y;
+  
+  messageOrigin_x = boxOrgin_x + ( width / 2 ) - (strWidth / 2);
+  messageOrigin_y = messageOrigin_y + 8;
+  
+  gui_renderPatch9_1_32(boxOrgin, Vector2(width, 32), '0.45 0.45 0.45', 1, 0);
   
   drawstring(messageOrigin, messageVal, messageFont, CLR_DEF_RED * 0.85, 1, 0);
     

@@ -51,6 +51,8 @@ float VIEW_PIXELH;
 float UI_WIDTH;
 float UI_HEIGHT;
 
+//Alignment flags - VIEW/UI
+// VIEW - actual screen size based on vid_width and vid_height
 float VIEW_TOP = 1;
 float VIEW_BOT = 2;
 float VIEW_LFT = 4;
@@ -58,6 +60,17 @@ float VIEW_RGT = 8;
 float VIEW_CTX = 16;
 float VIEW_CTY = 32;
 
+//UI - a widescreen guarded section of the CENTER
+//UI max is (width - 640) and height = 480
+float UI_TOP = 64;
+float UI_BOT = 128;
+float UI_LFT = 256;
+float UI_RGT = 512;
+float UI_CTX = 1024;
+float UI_CTY = 2048;
+//
+
+//Alignment flags - Axis
 float AXIS_H = 1;	
 float AXIS_V = 2;
 float AXIS_LEFT = 4;

@@ -41,6 +41,7 @@ void(float modeGame) menu_chat_config={
         CHAT_LINE_COUNT = 0;
         CHAT_DECAY_TIME = 30;
         CHAT_LINE_TRUNC = 105;
+        CHAT_INP_MAX = 100;
       }
       
       else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
@@ -49,6 +50,7 @@ void(float modeGame) menu_chat_config={
         CHAT_LINE_COUNT = 0;
         CHAT_DECAY_TIME = 50;
         CHAT_LINE_TRUNC = 73;
+        CHAT_INP_MAX = 65;
       }
       
       else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
@@ -57,6 +59,7 @@ void(float modeGame) menu_chat_config={
         CHAT_LINE_COUNT = 0;
         CHAT_DECAY_TIME = 50;
         CHAT_LINE_TRUNC = 105;
+        CHAT_INP_MAX = 100;
       }
     }
     else{

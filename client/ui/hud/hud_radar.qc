@@ -112,7 +112,9 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   hudorg_y = sin(entAngleRadian);
   hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * radDist));
   hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * radDist));
-
+  
+  hudorg_z = 0;
+  
   local float draw;
   draw = TRUE;
   if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
@@ -125,7 +127,7 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
     switch( blip.data_type ){
       case DATA_BLD:
         if( blip.faction != FACTION_ALL ){
-          hud_RenderRadar_Building(hudorg, blip.vec_size, blip.faction, 0.85 );  
+          hud_RenderRadar_Building(hudorg, blip.vec_size, blip.faction, 0.85 );
         }
         break;
       case DATA_VEHC:
@@ -191,6 +193,7 @@ void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Mec
     }
   }
   blipSize = e_size * '4 4 4';
+  blipSize_z = 0;
   drawpic(post - (blipSize * 0.5), HUD_RAD_PIP_MCH, blipSize, clr, e_alpha, 0);
 };
 
@@ -206,7 +209,7 @@ void(vector post, float e_size, float e_fact, float e_alpha) hud_RenderRadar_Veh
     clr = CLR_DEF_IIF_FRIEND;
   }
   blipSize = e_size * '5 5 5';
-  
+  blipSize_z = 0;
   drawpic(post - (blipSize * 0.5), HUD_RAD_PIP_VEC, blipSize, clr, e_alpha, 0);
 };
 
@@ -222,6 +225,7 @@ void(vector post,float e_size, float e_fact, float e_alpha) hud_RenderRadar_Buil
     clr = CLR_DEF_IIF_FRIEND_BLD;
   }
   blipSize = (e_size * 0.75) * '4 4 4';
+  blipSize_z = 0;
   drawpic(post - (blipSize * 0.5), HUD_RAD_PIP_BLD,  blipSize, clr, e_alpha, 0);
 };
 

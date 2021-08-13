@@ -42,7 +42,6 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
     }
     if( CHAT_INP_ON ){
-      //TODO - filter ASCII values like menu does.
       if( scanx == K_ENTER ){
         if( strlen(CHAT_INP_VAL) != 0 ){
           localcmd(strcat("say ", CHAT_INP_VAL, "\n"));
@@ -51,10 +50,13 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         freeGlobalString(CHAT_INP_VAL)
         return TRUE;
       }
-      if( scanx == K_BACKSPACE ){
+      if( scanx == K_BACKSPACE && strlen(CHAT_INP_VAL) != 0){
         newText = substring(CHAT_INP_VAL, 0, strlen(CHAT_INP_VAL) - 1);
         freeGlobalString(CHAT_INP_VAL)
         cacheGlobalString( CHAT_INP_VAL, newText)
+        return TRUE;
+      }
+      if( strlen(CHAT_INP_VAL) > CHAT_INP_MAX){
         return TRUE;
       }
       newText = substring(CHAT_INP_VAL, 0, strlen(CHAT_INP_VAL));
