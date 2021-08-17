@@ -503,6 +503,25 @@ float STAT_PLR_REP = 103; //remaining repair delta
 //104;
 
 //============================
+//  Server<->Client string message layer
+//    use agreed upon common 
+//============================
+//Response Schema
+string RSP_SRC      = "src";
+string RSP_TYPE     = "type";
+string RSP_CID      = "client";
+string RSP_BODY     = "body";
+//Response SOURCE
+string SV_PRINT     = "svpr";
+string CS_PRINT     = "cspr";
+//Response TYPES
+string SAY_MSG1     = "msg1";
+string SAY_MSG2     = "msg2";
+string SV_CL_CONN   = "signon";
+string SV_CL_KSELF  = "lame";
+string SV_CL_DSCON  = "signoff";
+
+//============================
 //     LOCK STATES   
 //============================
 float LOCK_NONE = 1;

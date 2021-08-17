@@ -723,7 +723,9 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   self.faction = rint(stof(getplayerkeyvalue(self.clientLocalNum, "colors")));
   self.ping = stof( getplayerkeyvalue(self.clientLocalNum, "ping") );
+  
   self.netname = getplayerkeyvalue(self.clientLocalNum, "name");
+  
   controlPlayer = findfloat(world, entnum, self.clientLocalId);
   if( controlPlayer != world ){
     controlPlayer.sequence = servercommandframe;

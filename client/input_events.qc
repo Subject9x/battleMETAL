@@ -38,15 +38,25 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     if( strstrofs(findkeysforcommand("messagemode", 0), ftos(scanx),0) != -1 || strstrofs(findkeysforcommand("messagemode2", 0), ftos(scanx),0) != -1 ){
       if( !CHAT_INP_ON ){
         CHAT_INP_ON = TRUE;
+        if(strstrofs(findkeysforcommand("messagemode2", 0), ftos(scanx),0) != -1){
+          CHAT_INP_ON_TEAM = TRUE;
+        }
         return TRUE;
       }
     }
     if( CHAT_INP_ON ){
       if( scanx == K_ENTER ){
         if( strlen(CHAT_INP_VAL) != 0 ){
-          localcmd(strcat("say ", CHAT_INP_VAL, "\n"));
+          if( CHAT_INP_ON_TEAM ){
+            newText = sprintf("%s %s %s\n", CS_PRINT, SAY_MSG2, CHAT_INP_VAL );
+          }
+          else{
+            newText = sprintf("%s %s %s\n", CS_PRINT, SAY_MSG1, CHAT_INP_VAL );
+          }
+          localcmd(strcat("cmd ", newText));
         }
         CHAT_INP_ON = FALSE;
+        CHAT_INP_ON_TEAM = FALSE;
         freeGlobalString(CHAT_INP_VAL)
         return TRUE;
       }

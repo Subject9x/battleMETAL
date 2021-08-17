@@ -605,28 +605,50 @@ an svc_print with a leading byte with value 1 will make the text red and play th
 just beware that 2 and 3 have meanings too, at least in DP
 this of course means that with sneaky naming you can get all your deaths to play chat sounds too, of course.
   -Spoike
+
+I crufted my own message schema
+see:
+  common/data/data_values_game.qc
+    Server<->Client string message layer
   
-  Notify level : leading char of string
-    1 - 
-    2 - 
-    3 - 
+  CHAT_TYPE_MSG1 
+  CHAT_TYPE_MSG2 
+  CHAT_TYPE_SERVR
 */
 void(string s) CSQC_Parse_Print =
 {
   local float charOfs;
-  local string name, msg;
-  if( strstrofs(s, "say", 0) != -1){
-    tokenizebyseparator(s, ":");
-    name = substring(s, strstrofs(s, " ", 0), strstrofs(s, ":", 0) - 1);
-    msg = substring(argv(1), 0, strlen(argv(1)) - 1);
-    menu_chat_receive_new(name, msg);
-    return;
-  }
-  if( strstrofs(s, "sayteam", 0) != -1){
-    tokenizebyseparator(s, ":");
-    name = substring(s, strstrofs(s, " ", 0), strstrofs(s, ":", 0) - 1);
-    msg = substring(argv(1), 0, strlen(argv(1)) - 1);
-    menu_chat_receive_new(name, msg);
+  local string clientId, msg;
+  
+  local float cmdIdx;
+  local float msgOfs;
+  
+  if( infoget(s, RSP_SRC) == SV_PRINT ){
+    if( infoget(s, RSP_TYPE) == SAY_MSG1 ){
+      clientId = infoget(s, RSP_CID);
+      
+      menu_chat_receive_new(CHAT_TYPE_MSG1, getplayerkeyvalue(stof(clientId) - 1, "name"), infoget(s, RSP_BODY));
+      return;
+    }
+    if( infoget(s, RSP_TYPE) == SAY_MSG2 ){
+      clientId = infoget(s, RSP_CID);
+      if( rint(stof(getplayerkeyvalue(stof(clientId) - 1, "colors"))) == CLIENT_faction ){
+        menu_chat_receive_new(CHAT_TYPE_MSG2, getplayerkeyvalue(stof(clientId) - 1, "name"), infoget(s, RSP_BODY));
+      }
+      return;
+    }
+    if( infoget(s, RSP_TYPE) == SV_CL_CONN ){
+      menu_chat_receive_new(CHAT_TYPE_SERVR, "SERVER", infoget(s, RSP_BODY));
+      return;
+    }
+    if( infoget(s, RSP_TYPE) == SV_CL_KSELF ){
+      menu_chat_receive_new(CHAT_TYPE_SERVR, "SERVER", infoget(s, RSP_BODY));
+      return;
+    }
+    if( infoget(s, RSP_TYPE) == SV_CL_DSCON ){
+      menu_chat_receive_new(CHAT_TYPE_SERVR, "SERVER", infoget(s, RSP_BODY));
+      return;
+    }
     return;
   }
 	print(s);

@@ -43,14 +43,26 @@ float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
 float CHAT_DECAY_MARK;
 float CHAT_LINE_TRUNC;  //character truncation limit
 
+//info string const
+string CHAT_MSG_USER = "user";
+string CHAT_MSG_BODY = "val";
+string CHAT_MSG_TYPE = "type";
+
+//chat message types
+string CHAT_TYPE_MSG1  = "msg1";
+string CHAT_TYPE_MSG2  = "msg2";
+string CHAT_TYPE_SERVR  = "sv";
+
+
 //player chat input
 float CHAT_INP_ON;    //toggle for when chatting is active.
+float CHAT_INP_ON_TEAM; //team say
 vector CHAT_INP_ORG;  //on-screen location of chat input.
 float CHAT_INP_MAX;   //max char length of input.
 string CHAT_INP_VAL;
 float CHAT_CUR_TIC;
 
-void(string userName, string newChat) menu_chat_receive_new;
+void(string msgType, string userName, string newChat) menu_chat_receive_new;
 void(float modeGame) menu_chat_config;  //sets chat settings per-menu, run once when entering a _connect menu!
 void() menu_chat_update_tick; //unless menu_chat_receive_new() was called, timeout the message queue
 void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame;

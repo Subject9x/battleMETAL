@@ -63,45 +63,54 @@ void(float modeGame) menu_chat_config={
   Client has received a new chat line, check to see if there's space in teh queue
 
   CHAT_LINES array is organized with newest at the bottom
+    CHAT_MSG_USER = "user";
+    CHAT_MSG_BODY = "val";
+    CHAT_MSG_TYPE = "type";
+
+  //chat message types
+    CHAT_TYPE_MSG1  = "msg1";
+    CHAT_TYPE_MSG2  = "msg2";
+    CHAT_TYPE_SERVR  = "sv";
+
 */
-void(string userName, string newChat) menu_chat_receive_new={
+void(string msgType, string userName, string newChat) menu_chat_receive_new={
   local float i;
   local string lineRef;
+  local string temp;
+  
+  newChat = substring( newChat, 0, strlen(newChat) - 1);  //removes \n terminator
+  
+  lineRef = infoadd(lineRef, CHAT_MSG_TYPE, msgType);
+  lineRef = infoadd(lineRef, CHAT_MSG_USER, userName);
+  lineRef = infoadd(lineRef, CHAT_MSG_BODY, substring(newChat, 0, min(strlen(newChat), CHAT_LINE_TRUNC)));
   
   if( CHAT_LINE_COUNT == 0 ){
-    lineRef = strcat(userName, newChat);
-    if( CHAT_LINE_TRUNC != 0 ){
-      lineRef = substring(lineRef, 0, CHAT_LINE_TRUNC);
-    }
     CHAT_LINES[0] = strzone(lineRef);
     CHAT_LINE_COUNT = CHAT_LINE_COUNT + 1;
     return;
   }
+  
+  
   //at least 1 message in the pipe
   if( CHAT_LINE_COUNT < CHAT_LINE_TOTAL) {
-    lineRef = strcat(userName, newChat);
-    if( CHAT_LINE_TRUNC != 0 ){
-      lineRef = substring(lineRef, 0, CHAT_LINE_TRUNC);
-    }
     CHAT_LINES[CHAT_LINE_COUNT] = strzone(lineRef);
     CHAT_LINE_COUNT = CHAT_LINE_COUNT + 1;
     return;
   }
+  
+  
   //we're at capacity, bump off the oldest.
   for(i=0; i < CHAT_LINE_TOTAL; i = i + 1){
     if( CHAT_LINES[i+1] != "" ){
       freeGlobalString(CHAT_LINES[i])
-      lineRef = substring(CHAT_LINES[i+1], 0, strlen(CHAT_LINES[i+1]));
-      CHAT_LINES[i] = strzone(lineRef);
+      temp = substring(CHAT_LINES[i+1], 0, strlen(CHAT_LINES[i+1]));
+      CHAT_LINES[i] = strzone(temp);
     }
   }
   if( CHAT_LINES[i-1] != "" ){
     freeGlobalString(CHAT_LINES[i-1])
   }
-  lineRef = strcat(userName, newChat);
-  if( CHAT_LINE_TRUNC != 0 ){
-    lineRef = substring(lineRef, 0, CHAT_LINE_TRUNC);
-  }
+  
   CHAT_LINES[i-1] = strzone(lineRef);
 };
 
@@ -130,6 +139,8 @@ void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
   local vector lineOfs;
   local string line;
   local string userName;
+  local string msg;
+  local vector msgColor;
   
   if(time > CHAT_DECAY_MARK ){
     CHAT_DECAY_MARK = time + CHAT_DECAY_TIME;
@@ -144,14 +155,25 @@ void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
       if( CHAT_LINE_TRUNC != 0 ){
         line = substring(line, 0, min(strlen(line), CHAT_LINE_TRUNC));
       }
-      userName = substring(line, 0, strstrofs(line, ":",0) + 1);
-      line = substring(line, strstrofs(line, ":",0),strlen(line));
+      userName = strcat(infoget(line, CHAT_MSG_USER), ":");
+      msg = infoget(line, CHAT_MSG_BODY);
       drawfont_prev = drawfont;
       drawfont = FONT_NUM_ROBOT_MEDIUM;
-      drawstring(lineOfs + Vector2(0, i * (CHAT_LINE_FONT_SIZE_y + 2)), userName, CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
+      
+      if( infoget(line, CHAT_MSG_TYPE) == CHAT_TYPE_MSG1 ){
+        msgColor = CLR_DEF_TXT_NONSELECT;
+      }
+      else if( infoget(line, CHAT_MSG_TYPE) == CHAT_TYPE_MSG2 ){
+        msgColor = CLR_DEF_ARM_OK;
+      }
+      else if( infoget(line, CHAT_MSG_TYPE) == CHAT_TYPE_SERVR ){
+        msgColor = CLR_DEF_YELLOW;
+      }
+      
+      drawstring(lineOfs + Vector2(0, i * (CHAT_LINE_FONT_SIZE_y + 2)), userName, CHAT_LINE_FONT_SIZE, msgColor * 1.25, 1, 0);
       
       drawfont = FONT_NUM_ROBOT_REGULAR;
-      drawstring(lineOfs + Vector2(stringwidth(userName, 0, CHAT_LINE_FONT_SIZE) - CHAT_LINE_FONT_SIZE_x/2, i * (CHAT_LINE_FONT_SIZE_y + 2)), line, CHAT_LINE_FONT_SIZE, CLR_DEF_TXT_NONSELECT, 1, 0);
+      drawstring(lineOfs + Vector2(stringwidth(userName, 0, CHAT_LINE_FONT_SIZE) + CHAT_LINE_FONT_SIZE_x * 0.4, i * (CHAT_LINE_FONT_SIZE_y + 2)), msg, CHAT_LINE_FONT_SIZE, msgColor, 1, 0);
       
       drawfont = drawfont_prev;
     }
