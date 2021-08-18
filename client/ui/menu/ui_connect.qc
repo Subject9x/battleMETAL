@@ -29,32 +29,58 @@ float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
 //sets chat settings per-menu, run once when entering a _connect menu!
 void(float modeGame) menu_chat_config={
   local vector scrnOffset;
-  
-  if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
-    CHAT_LINE_FONT_SIZE = '10 10';
-    CHAT_LINE_TOTAL = 10;
-    CHAT_LINE_COUNT = 0;
-    CHAT_DECAY_TIME = 30;
-    CHAT_LINE_TRUNC = 105;
-    CHAT_INP_MAX = 100;
-  }
-  
-  else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
-    CHAT_LINE_FONT_SIZE = '10 10';
-    CHAT_LINE_TOTAL = 10;
+  local float i;
+  local string temp;
+  if( modeGame ){
+    CHAT_LINE_FONT_SIZE = '8 8';
+    CHAT_LINE_TOTAL = 5;
     CHAT_LINE_COUNT = 0;
     CHAT_DECAY_TIME = 50;
     CHAT_LINE_TRUNC = 73;
     CHAT_INP_MAX = 65;
   }
+  else{
+    if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
+      CHAT_LINE_FONT_SIZE = '10 10';
+      CHAT_LINE_TOTAL = 10;
+      CHAT_LINE_COUNT = 0;
+      CHAT_DECAY_TIME = 30;
+      CHAT_LINE_TRUNC = 105;
+      CHAT_INP_MAX = 100;
+    }
+    
+    else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
+      CHAT_LINE_FONT_SIZE = '10 10';
+      CHAT_LINE_TOTAL = 10;
+      CHAT_LINE_COUNT = 0;
+      CHAT_DECAY_TIME = 50;
+      CHAT_LINE_TRUNC = 73;
+      CHAT_INP_MAX = 65;
+    }
+    
+    else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+      CHAT_LINE_FONT_SIZE = '10 10';
+      CHAT_LINE_TOTAL = 10;
+      CHAT_LINE_COUNT = 0;
+      CHAT_DECAY_TIME = 50;
+      CHAT_LINE_TRUNC = 105;
+      CHAT_INP_MAX = 100;
+    }
+  }
   
-  else if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
-    CHAT_LINE_FONT_SIZE = '10 10';
-    CHAT_LINE_TOTAL = 10;
-    CHAT_LINE_COUNT = 0;
-    CHAT_DECAY_TIME = 50;
-    CHAT_LINE_TRUNC = 105;
-    CHAT_INP_MAX = 100;
+  for(i=0; i < CHAT_LINE_TOTAL; i = i + 1){
+    if( CHAT_LINES[i+1] != "" ){
+      freeGlobalString(CHAT_LINES[i])
+      temp = substring(CHAT_LINES[i+1], 0, strlen(CHAT_LINES[i+1]));
+      CHAT_LINES[i] = strzone(temp);
+    }
+  }
+  if( CHAT_LINE_TOTAL != 20 ){
+    for(i=CHAT_LINE_TOTAL; i < 20; i = i + 1){
+      if( CHAT_LINES[i+1] != "" ){
+        freeGlobalString(CHAT_LINES[i])
+      }
+    }
   }
 };
 
@@ -178,7 +204,14 @@ void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
       drawfont = drawfont_prev;
     }
   }
-  menu_chat_render_input( lineOfs + Vector2(0, CHAT_LINE_TOTAL * (CHAT_LINE_FONT_SIZE_y + 2)) );
+  if( CLIENT_player_state == PLAYER_ACTIVE ){
+    if( CHAT_INP_ON ){
+      menu_chat_render_input( lineOfs + Vector2(0, CHAT_LINE_COUNT * (CHAT_LINE_FONT_SIZE_y + 2)) );
+    }
+  }
+  else{
+    menu_chat_render_input( lineOfs + Vector2(0, CHAT_LINE_TOTAL * (CHAT_LINE_FONT_SIZE_y + 2)) );
+  }
 };
 
 

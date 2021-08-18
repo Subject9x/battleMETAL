@@ -366,7 +366,6 @@ void() ui_navbutton_launch_click={
         ui_data_load_hud( HUD_EXTERNAL_CAM_DATA );
       }
       else{
-      
         ui_data_load_hud( MECH_DATA_ID );
       }
       
@@ -379,6 +378,8 @@ void() ui_navbutton_launch_click={
       CLIENT_spawn_time = servertime; //mark for when player dies.
       CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
       menu_exit();
+      
+      menu_chat_config(TRUE);
     }
   }
 };

@@ -2572,6 +2572,8 @@ string(float bufhandle, float string_index) bufstr_get = #466;
 void(float bufhandle, float string_index, string str) bufstr_set = #467;
 float(float bufhandle, string str, float order) bufstr_add = #468;
 void(float bufhandle, float string_index) bufstr_free = #469;
+//string_index = up to coder
+
 
 //DP_QC_STRINGBUFFERS_CVARLIST
 //idea: divVerent

@@ -238,6 +238,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   }
   
   if( inputEventType == INPUT_EVENT_KEYUP ){
+    if( CHAT_INP_ON ) {
+      return TRUE;
+    }
     if( scanx == K_MOUSE1 ){
       INPUT_mouse_state_prev = INPUT_mouse_state;
       INPUT_mouse_state = MOUSE_UP;

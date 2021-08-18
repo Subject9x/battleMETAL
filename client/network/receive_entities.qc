@@ -273,6 +273,7 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF DEATH
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
+      menu_chat_config( FALSE );
       MENU_DEBRIEF_time_elapsed = -1;
       ui_set_mission_status( ENT_SERVER_INFO.missionResult );
       MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
@@ -285,6 +286,7 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF MISSION END
     if( (CLIENT_player_state_prev != PLAYER_DEBRIEF) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
+      menu_chat_config( FALSE );
       MENU_DEBRIEF_time_elapsed = -1;
       ui_set_mission_status( ENT_SERVER_INFO.missionResult );
       MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
