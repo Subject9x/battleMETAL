@@ -305,7 +305,7 @@ void(entity btn) render_btn={
       self.drawOrg = org;
       sizzle = gui_percentToPixelRawVec(self.size);
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
-        sizzle = drawgetimagesize(self.image1);
+        sizzle = draw_getimagesize(self.image1);
         sizzle = gui_percentToPixelRawVec( gui_scaleSize(sizzle, VIEW_SCALE) );
       }
       self.drawSize = sizzle;

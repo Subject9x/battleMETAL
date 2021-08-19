@@ -12,6 +12,7 @@
   Quake C api hook - initialize menu here
 */
 void() m_init={
+  gui_set_screen_size();
   dynamic_precache();
   
   registercvar("cl_hud_alpha", "0", CF_ARCHIVE);
@@ -154,23 +155,7 @@ void(float keynr, float ascii) m_keyup={
   Quake C api hook - the primary render function, stuff all menu draw calls here
 */
 void(float width, float height) m_draw={
-  //prepare VIEW globals per-frame
-  VIEW_ORG = '0 0';
-  VIEW_MAX_x = cvar("vid_conwidth");
-  VIEW_MAX_y = cvar("vid_conheight");
-  
-  if(VIEW_MAX_x < 640){
-    cvar_set("vid_conwidth", "640");
-    VIEW_MAX_x = 640;
-  }
-  
-  if(VIEW_MAX_y < 480){
-    cvar_set("vid_conheight", "480");
-    VIEW_MAX_y = 480;
-  }
-  
-  VIEW_CTR_x = VIEW_MAX_x / 2;
-  VIEW_CTR_y = VIEW_MAX_y / 2;
+
   VIEW_MPOS = getmousepos();
   VIEW_ACT_x = cvar("vid_width");
   VIEW_ACT_y = cvar("vid_height");

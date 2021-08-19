@@ -6,6 +6,11 @@ Overview:
   GUI API header
 */
 
+vector VIEW_MPOS;
+vector VIEW_ACT;  //todo - deprecate
+vector cursorpos;
+vector cursorImageSize;
+
 float ISMENU_PREV;
 
 string PLAYER_COLOR_PSC;
@@ -19,16 +24,6 @@ float FONT_NUM_ROBOT_MEDIUM;
 float FONT_NUM_DYSTOPIAN;
 float drawfont_prev;
 
-entity DEPLOY_POINTS;  //SendEnt now provides the state data;
-entity DEPLOYPOINT;
-
-.entity nextPoint;
-.entity prevPoint;
-entity FACTION_DEPLOY;
-
-float OBJECTIVES[16];         //  1 = active, 2 = complete, 0 = hidden, -1 = failed.
-
-string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
 
 //system const
 vector VIEW_ORG;
@@ -109,15 +104,10 @@ void(vector ofs, float bit, float state1, vector color1, vector color2, vector s
 void(string str, vector ofs, vector color, vector sz, float setAlpha, float flg) gui_renderString;
 void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float setAlpha, float flg) gui_renderImageReel;
 void(string src_img, vector tintcolor, float setAlpha, float flg) gui_renderImageFullScreen;
-void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel;
-void(vector ofs, vector r_sz, vector ln_sz, vector clr) gui_DrawRect;
-void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector ln_sz2, vector clr2) gui_DrawHighlightRect;
-vector(float val) gui_getColorForArmor;
-vector(float val) gui_getColorForArmorTarget;
-vector(float val) gui_getColorForShield;
+
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float setAlpha, float flg) gui_renderTintImage;
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm_clr, float setAlpha, float flg) gui_renderTintImage2;
-vector(float dmg_type) gui_colorForWeaponType;
+
 void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float setAlpha, float flg) gui_renderHighlightString;
 vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffsetStart, vector uiAreaSize) gui_mapCoordToImgCoord;
 void(vector ofs, float bool, vector color1, vector color2, vector sz, float setAlpha, float flg) gui_renderModalFill;
@@ -132,7 +122,7 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
 void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderBorder9_1_32;
 
 float(float anglee) gui_angleToEnum;
-vector(float bits, float dead, float ok, float wrange, float prange) gui_getWepStatusColor
+
 
 vector(float tX, float tY) gui_percentToPixelRaw;
 float(float tX) gui_percentXRaw;
@@ -142,14 +132,13 @@ vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec;
 float(float pct, float ox, float mx) gui_percentCustom;
 
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText;
-void(string tipMessage, vector targetSize, vector fontSize, string panelImage, vector cursorOffset, vector textColor, vector boxColor, float alph ) gui_toolTipMessage;
-void( vector tipOrg ) gui_renderTooltipIcon;
+
 float( float desiredColor, float startColor, float colorRate ) gui_colorFadeTo;
 
 void( vector lOrg, string label, string value, vector labelColor, vector valueColor, vector fonts, vector fontSize ) gui_labelKeyPair;
 void() gui_drawversion;
 
-entity(float wepBit) gui_get_weapon;
+string(float checkSkill) gui_skillAsString;
 
 //console logging
 void(string msg, float val) cons_logAFloat;

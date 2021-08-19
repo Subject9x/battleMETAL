@@ -7,7 +7,44 @@ void() main =
 	skill = cvar("skill");
   precache_sound2("sound/demon/dland2.wav");
 };
-
+void( ) FRIK_FILE_precaches =
+{
+	local float f;                                      // file handle, basically assigns a number to whatever file is open
+	local string ln;                                    // ln = line of the file being read
+	f = fopen("cache/precache_server.txt" , FILE_READ);        // opens "data/precache.txt" to be read
+	if (f != -1){                                        // if f = -1 then the file could not be found
+		ln = fgets(f);                              // this line sets ln to the string read from the file with the file handle of f
+    
+    while( ln != "EOF" ){                     // while there is still text to be read do the following
+      if( cvar("developer") ){
+        dprint(strcat("line value (",ln,")\n"));  //DEBUG
+      }
+      if( ln != "" && substring(ln,0, 2) != "//" ){
+        if( cvar("developer") ){
+          dprint(strcat("loaded [",ln,"]\n"));  //DEBUG
+        }
+        if(strstrofs(ln, ".wav",0) != -1)   // this checks if the file extension is .wav for a sound file
+        {
+          precache_sound(ln);         // if it is a sound, then it precaches said sound
+        }
+        else if(strstrofs(ln, ".ogg",0) != -1){
+          precache_sound(ln);
+        }
+        else if(strstrofs(ln, ".md3",0) != -1){
+          precache_model(ln);         // so precache the model
+        }
+        else if( strstrofs(ln, ".obj", 0) != -1){
+          precache_model(ln);
+        }
+        else if( strstrofs(ln, ".bsp", 0) != -1){
+          precache_file(ln);
+        }
+      }
+			ln = fgets(f);                      // get a new line from the file
+		}
+    fclose(f);                                          // when the while loop is over (no lines left in file) close file with the handle f    
+	} 
+};
 //=======================
 /*QUAKED worldspawn (0 0 0) ?
 Only used for the world entity.

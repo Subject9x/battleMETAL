@@ -1,0 +1,34 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 08/18/2021
+Overview: 
+  I merged menu.dat and csqc.dat gui_api into a single shared file.
+  
+  some functionality that is CSQC specific has been ported over to here.
+*/
+
+
+entity DEPLOY_POINTS;  //SendEnt now provides the state data;
+entity DEPLOYPOINT;
+
+.entity nextPoint;
+.entity prevPoint;
+entity FACTION_DEPLOY;
+
+string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
+
+float OBJECTIVES[16];         //  1 = active, 2 = complete, 0 = hidden, -1 = failed.
+
+
+void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel;
+void(vector ofs, vector r_sz, vector ln_sz, vector clr) gui_DrawRect;
+void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector ln_sz2, vector clr2) gui_DrawHighlightRect;
+
+vector(float bits, float dead, float ok, float wrange, float prange) gui_getWepStatusColor
+vector(float val) gui_getColorForArmor;
+vector(float val) gui_getColorForArmorTarget;
+vector(float val) gui_getColorForShield;
+vector(float dmg_type) gui_colorForWeaponType;
+entity(float wepBit) gui_get_weapon;
+

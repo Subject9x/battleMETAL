@@ -391,7 +391,9 @@ void	drawsetcliparea(float x, float y, float width, float height) = #458;
 void	drawresetcliparea(void) = #459;
 
 vector  drawgetimagesize(string pic) = #460;
+vector  draw_getimagesize(string pic) = #460;
 
+void(float width, vector pos1, vector pos2, vector rgb, float alpha, float flags) drawline = #466;
 ////////////////////////////////////////////////
 // Menu functions
 ////////////////////////////////////////////////

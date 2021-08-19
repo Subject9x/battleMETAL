@@ -9,9 +9,6 @@ Overview:
 */
 entity toolTip;
 
-vector cursorpos;
-vector cursorImageSize;
-
 entity MENU_NAV_LIST;
 
 float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds;

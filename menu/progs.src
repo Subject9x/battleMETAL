@@ -1,20 +1,21 @@
 ../../menu.dat
 //HEADERS---------------
 defs/menudefs.qc
-../common/ui/ui_color_constants.qc
-../common/ui/ui_color_player.qc
-../common/data/camp_loader.qh
-defs/keycodes.qc
+  ../common/input_keynums.qh
+  ../common/ui/ui_color_constants.qc
+  ../common/ui/ui_color_player.qc
+  ../common/data/camp_loader.qh
+  ../common/ui/gui_api.qh
+  ../common/data/data_values_game.qc
 defs/headers/menu.qh
 defs/headers/utils.qh
-defs/headers/gui_api.qh
 defs/headers/menu_gfx.qh
 defs/headers/menu_api.qh
 
 //=======================
 
 defs/utils.qc
-defs/gui_api.qc
+../common/ui/gui_api.qc
 defs/menu_api.qc
 
 ../common/data/data_campaign.qc
@@ -47,3 +48,5 @@ menu_main.qc
     
   menus/m_credits.qc
   menus/m_help.qc
+  
+  

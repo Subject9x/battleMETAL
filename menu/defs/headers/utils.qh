@@ -12,13 +12,3 @@ string PATH_DATA_UI = "ui";
 string NEWLINE = "\n";
 string SAVE_FILE_EXT = ".sav";
 string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
-
-//console logging==========================================================
-void(string msg, float val) cons_logAFloat;
-void(string msg, vector v1) cons_logAVector;
-void(string msg, string s1) cons_logAString;
-
-void(string msg, float val, string split, float val2) cons_log2Float;
-void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
-void(string msg, string s1, string split, string s2) cons_log2Strings;
-//=========================================================================
