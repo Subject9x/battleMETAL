@@ -176,8 +176,8 @@ void(vector ofs) menu_deploy_missionInfoPanel={
   drawfont = drawfont_prev;
  
   //reserves
-  //drawstring(panelOfs+gui_percentToPixel(0.0109, 0.08), "[RESOURCE POINTS]:", '6 6 0', CLR_DEF_GRAY_H, 1, 0);
-  //drawstring(panelOfs+gui_percentToPixelRawVec('0 0'), ftos(AVAILABLE_RESERVE), '8 8 0', '1 1 1', 1, 0);
+  //drawstring(panelOfs+0.0109, 0.08, "[RESOURCE POINTS]:", '6 6 0', CLR_DEF_GRAY_H, 1, 0);
+  //drawstring(panelOfs, ftos(AVAILABLE_RESERVE), '8 8 0', '1 1 1', 1, 0);
   
   //sector
   //drawstring(ofs+'14 80', strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', CLR_DEF_GRAY_H, 1, 0);

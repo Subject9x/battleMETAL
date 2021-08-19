@@ -27,7 +27,7 @@ void() menu_rebind_drawFrame={
   local vector panelOrg;
   
   panelOrg = gui_calcAlignCustom(REBIND_SIZE * -0.5, (VIEW_CTX | VIEW_CTY), VIEW_CTR);
-  REBIND_ORIGIN = panelOrg = gui_percentToPixelRawVec(panelOrg);
+  REBIND_ORIGIN = panelOrg;
   
   menu_arming_WeaponGroupPanel(REBIND_ORIGIN);
 };

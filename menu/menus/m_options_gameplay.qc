@@ -378,19 +378,19 @@ void() m_gameplay_f={
 void() m_gameplay_d={
   local vector crossColor;
   
-  gui_renderString("Field of View:", gui_percentToPixelRawVec('96 133'), CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("Show Date/Time:", gui_percentToPixelRawVec('74 155'), CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("Show FPS:", gui_percentToPixelRawVec('110 177'), CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("Crosshair Style:", gui_percentToPixelRawVec('83 197'), CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('108 221'), CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("HUD Color:", gui_percentToPixelRawVec('108 243'), CLR_DEF_WHITE, '14 14 0', 1, 0);
-  //gui_renderString("HUD Sway Mode:", gui_percentToPixelRawVec('74 263'), CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("Field of View:", '96 133', CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("Show Date/Time:", '74 155', CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("Show FPS:", '110 177', CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("Crosshair Style:", '83 197', CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("HUD Alpha:", '108 221', CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("HUD Color:", '108 243', CLR_DEF_WHITE, '14 14 0', 1, 0);
+  //gui_renderString("HUD Sway Mode:", '74 263', CLR_DEF_WHITE, '14 14 0', 1, 0);
 
   crossColor_x = cvar("crosshair_color_red");
   crossColor_y = cvar("crosshair_color_green");
   crossColor_z = cvar("crosshair_color_blue");
   
-  drawpic( gui_percentToPixelRawVec('275 167'), gameplay_crosshair_lbl.image1 , gui_percentToPixelRawVec('64 64'), crossColor, gameplay_hudalpha_lbl.len, 0);
+  drawpic( '275 167', gameplay_crosshair_lbl.image1 , '64 64', crossColor, gameplay_hudalpha_lbl.len, 0);
   
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_GAMEPLAY);

@@ -24,8 +24,8 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   local vector pipLeft;
   local vector hitCenter;
   
-  imgSize = gui_percentToPixelRawVec('28 28');
-  pipSizeH = gui_percentToPixelRawVec('34 34');
+  imgSize = '28 28';
+  pipSizeH = '34 34';
  
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
@@ -43,14 +43,14 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   
   //lock on indicators  
   if( lockval ){
-    lockSize = gui_percentToPixelRawVec('34 34');
+    lockSize = '34 34';
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
     drawpic(lockCenter, "gfx/hud/ret/crosshair3_lock.png", lockSize, CLR_DEF_RET_HASLOCK, HUD_ALPHA, DRAWFLAG_NORMAL);
   }
   
   if( (hitdirection & STAT_HIT_TRG) ){
-    hitSize = gui_percentToPixelRawVec('27 27');
+    hitSize = '27 27';
     hitCenter_x = VIEW_CTR_x - hitSize_x / 2;
     hitCenter_y = VIEW_CTR_y - hitSize_y / 2;
     if(trg_shield > 0){

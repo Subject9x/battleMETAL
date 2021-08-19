@@ -85,7 +85,7 @@ void( vector menuOrg ) menu_connect_draw_rules_dm={
   }
   //if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOLIVES) ){
   //  drawstring( ruleRow, "One-life Only", '12 12', CLR_DEF_WHITE, 1, 0);
-  //  ruleRow_y = ruleRow_y + gui_percentYRaw(14);
+  //  ruleRow_y = ruleRow_y + 14;
   //}
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOMAP) ){
     drawstring( ruleRow, "Limited TacMap", '12 12', CLR_DEF_WHITE, 1, 0);

@@ -857,36 +857,36 @@ void() m_graphics_d={
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
   titleLen = stringwidth( "- Graphics Settings -", 0, '16 16 0' );
-  titleOrg_x = gui_percentXRaw( VIEW_CTR_x ) - gui_percentXRaw( titleLen);
-  titleOrg_y = gui_percentYRaw( 48 );
+  titleOrg_x = VIEW_CTR_x - titleLen;
+  titleOrg_y = 48;
   
   gui_renderString("- Graphics Settings -", titleOrg, CLR_DEF_WHITE, '16 16 0', 1, 0);
   
   //display
-  gui_renderString("- Display -", gui_percentToPixelRawVec('90 64'), CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
-    gui_renderString("Current Resolution:", gui_percentToPixelRawVec('48 83'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-      gui_renderString(strcat(ftos(VIEW_ACT_x),"x",ftos(VIEW_ACT_y)), gui_percentToPixelRawVec('150 82'), CLR_DEF_WHITE, '14 14 0', 1, 0);
-    gui_renderString("New Resolution:", gui_percentToPixelRawVec('62 103'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Type:", gui_percentToPixelRawVec('110 122'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bits per pixel:", gui_percentToPixelRawVec('74 142'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Anti-Aliasing:", gui_percentToPixelRawVec('73 162'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Custom Refresh Rate:", gui_percentToPixelRawVec('37 182'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Refresh Rate:", gui_percentToPixelRawVec('74 202'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Fullscreen:", gui_percentToPixelRawVec('86 222'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("V-Sync:", gui_percentToPixelRawVec('98 242'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Anisotropic Filter:", gui_percentToPixelRawVec('56 262'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Texture Quality:", gui_percentToPixelRawVec('64 282'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Texture Compression:", gui_percentToPixelRawVec('37 302'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("- Display -", '90 64', CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
+    gui_renderString("Current Resolution:", '48 83', CLR_DEF_WHITE, '12 12 0', 1, 0);
+      gui_renderString(strcat(ftos(VIEW_ACT_x),"x",ftos(VIEW_ACT_y)), '150 82', CLR_DEF_WHITE, '14 14 0', 1, 0);
+    gui_renderString("New Resolution:", '62 103', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Type:", '110 122', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bits per pixel:", '74 142', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Anti-Aliasing:", '73 162', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Custom Refresh Rate:", '37 182', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Refresh Rate:", '74 202', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Fullscreen:", '86 222', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("V-Sync:", '98 242', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Anisotropic Filter:", '56 262', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Texture Quality:", '64 282', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Texture Compression:", '37 302', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
   //effects
-  gui_renderString("- Graphical Detail -", gui_percentToPixelRawVec('300 64'), CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
+  gui_renderString("- Graphical Detail -", '300 64', CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
   
   //gfx / lighting
-  gui_renderString("- Lighting Detail -", gui_percentToPixelRawVec('300 140'), CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
+  gui_renderString("- Lighting Detail -", '300 140', CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
   
   //contrast
-  gui_renderString("Video Contrast:", gui_percentToPixelRawVec('270 202'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Video Gamma:", gui_percentToPixelRawVec('273 222'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Video Contrast:", '270 202', CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Video Gamma:", '273 222', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
   drawfont = drawfont_prev;
   

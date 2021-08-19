@@ -337,20 +337,20 @@ void() m_controls_d={
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
   titleLen = stringwidth( "Controls - click a key to change it. Hit <ESC> to cancel.", 0, '16 16 0');
-  titleOrg_x = gui_percentXRaw( VIEW_CTR_x ) - gui_percentXRaw( titleLen / 2.5 );
-  titleOrg_y = gui_percentYRaw( 20 );
+  titleOrg_x = VIEW_CTR_x - ( titleLen / 2.5 );
+  titleOrg_y = 20;
   gui_renderString("Controls - click a key to change it. Hit <ESC> to cancel.", titleOrg, '1 1 1', '16 16 0', 1, 0);
   
   //combat
-  gui_renderString("-Combat-", gui_percentToPixelRawVec('46 40'), CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
-    gui_renderString("Mouse Sensitivity:", gui_percentToPixelRawVec('10 59'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Invert Mouse:", gui_percentToPixelRawVec('29 79'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("-Combat-", '46 40', CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
+    gui_renderString("Mouse Sensitivity:", '10 59', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Invert Mouse:", '29 79', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
   //controls
-  gui_renderString("-Piloting-", gui_percentToPixelRawVec('225 40'), CLR_DEF_IIF_FRIEND_BLD, '16 16 0', 1, 0);
+  gui_renderString("-Piloting-", '225 40', CLR_DEF_IIF_FRIEND_BLD, '16 16 0', 1, 0);
 
   //movement
-  gui_renderString("-Movement-", gui_percentToPixelRawVec('215 235'), CLR_DEF_GREEN, '16 16 0', 1, 0);
+  gui_renderString("-Movement-", '215 235', CLR_DEF_GREEN, '16 16 0', 1, 0);
   
   drawfont = drawfont_prev;
   

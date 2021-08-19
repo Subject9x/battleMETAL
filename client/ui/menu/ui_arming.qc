@@ -32,7 +32,7 @@ void() menu_armingListener_onHover={
   local float weaponBitFlag;
   
   //ToolTip - HARDPOINT Graph
-  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_GRAPH, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_GRAPH, '12 12', FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '132 56 0';
     toolTip.description = "Hover on Hardpoints to see weapon info.";
@@ -42,7 +42,7 @@ void() menu_armingListener_onHover={
     return;
   }
   //ToolTip - Weapon Groups
-  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_WEAPON_GROUPS, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_WEAPON_GROUPS, '12 12', FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '200 48 0';
     toolTip.description = "[Groups] are collections of weapons that will fire at the same time when you select that group and press the 'Fire' button.";
@@ -52,7 +52,7 @@ void() menu_armingListener_onHover={
     return;
   }
   //ToolTip - Energy Group Cost
-  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_ENERGY_GROUPS, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_ENERGY_GROUPS, '12 12', FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '156 48 0';
     toolTip.description = "This panel shows you how much <Energy> will be drained from your Reactor when you fire each Group.";
@@ -62,7 +62,7 @@ void() menu_armingListener_onHover={
     return;
   }
   //ToolTip - Weapon In List
-  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_LIST_WEAPON, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_LIST_WEAPON, '12 12', FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '200 32 0';
     toolTip.description = "Click on a weapon to the >Right> to see its statistics in this window.";
@@ -72,7 +72,7 @@ void() menu_armingListener_onHover={
     return;
   }
   //ToolTip - Weapon In HARDPOINT
-  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_WEAPON, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_WEAPON, '12 12', FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '200 40 0';
     toolTip.description = "Click on a HARDPOINT to the <Left< to see the stats for the weapon mounted there, in this window.";
@@ -85,25 +85,25 @@ void() menu_armingListener_onHover={
   //Weapon rollover
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL, FALSE)){
     UI_ARMING_weapon_rollover = TRUE;
-    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_BAL, 0);
+    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, '90 14', WEPNLIST_CNT_BAL, 0);
     UI_ARMING_weapon_rolloverID = WEPLIST_BAL_ARR[UI_ARMING_weapon_rolloverID];
     return;
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_ENE, WEPNLIST_SIZE_ENE, FALSE)){
     UI_ARMING_weapon_rollover = TRUE;
-    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_ENE, cursorpos, WEPNLIST_SIZE_ENE, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_ENE, 0);
+    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_ENE, cursorpos, WEPNLIST_SIZE_ENE, '90 14', WEPNLIST_CNT_ENE, 0);
     UI_ARMING_weapon_rolloverID = WEPLIST_ENE_ARR[UI_ARMING_weapon_rolloverID];
     return;
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_EXP, WEPNLIST_SIZE_EXP, FALSE)){
     UI_ARMING_weapon_rollover = TRUE;
-    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_EXP, 0);
+    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, '90 14', WEPNLIST_CNT_EXP, 0);
     UI_ARMING_weapon_rolloverID = WEPLIST_EXP_ARR[UI_ARMING_weapon_rolloverID];
     return;
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC, FALSE)){
     UI_ARMING_weapon_rollover = TRUE;
-    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_MSC, 0);
+    UI_ARMING_weapon_rolloverID = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, '90 14', WEPNLIST_CNT_MSC, 0);
     UI_ARMING_weapon_rolloverID = WEPLIST_MSC_ARR[UI_ARMING_weapon_rolloverID];
     return;
   }
@@ -113,7 +113,7 @@ void() menu_armingListener_onHover={
   hardpointItr = 1;
   weaponBitFlag = 1;
   while( hardpoint ){
-    if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), FALSE)){
+    if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, '28 28', FALSE)){
       UI_ARMING_hardpoint_type_roll = hardpoint.hardpointSize;
       
       CLIENT_MENU_sel_hrpnt_size = hardpoint.hardpointSize;
@@ -154,7 +154,7 @@ void() menu_armingListener_onKeyUp={
       hardpointId = 1;
       while( hardpoint ){
         //run collision check with all hardpoints on the mech entity.
-        if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), FALSE)){
+        if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, '28 28', FALSE)){
           weaponType = UI_ARMING_item_drag.damageType;
           if( (UI_ARMING_item_drag.equipSize & hardpoint.hardpointSize) ){
             if( (weaponType & hardpoint.hardpointType) ){
@@ -220,7 +220,7 @@ void() weaponDragListener={
 
 //DEPRECATED for now but leaving for reference
 /*void() assignToHardpointListener={
-  if(menu_checkMouseInBounds(cursorpos, VIEW_CTR + gui_percentToPixelRawVec('-34 -14'), gui_percentToPixelRawVec('195 24'))){
+  if(menu_checkMouseInBounds(cursorpos, VIEW_CTR + '-34 -14', '195 24')){
     local float found;
     found = 0;
     if( CFG_INDEX > 0 ){
@@ -924,11 +924,11 @@ void(vector ofs) menu_arming_AssignToHardpoint_btn={
     colr2 = colr2 - '0.4 0.4 0.4';
     colr3 = colr3 - '0.4 0.4 0.4';
   }
-  nofs = ofs + gui_percentToPixelRawVec('-34 -14');
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 24'), colr1, 1, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('8 9'), HUD_TRG_PIP_B, gui_percentToPixelRawVec('16 8'), colr2, 1, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('172 9'), HUD_TRG_PIP_B, gui_percentToPixelRawVec('16 8'), colr2, 1, 0);
-  drawstring(nofs+gui_percentToPixelRawVec('28 2'), "[ASSIGN TO HARDPOINT]", '7 8 0', colr3, 1, 0);
+  nofs = ofs + '-34 -14';
+  drawpic(nofs, UI_DEF_BOX_256, '195 24', colr1, 1, 0);
+  drawpic(nofs + '8 9', HUD_TRG_PIP_B, '16 8', colr2, 1, 0);
+  drawpic(nofs + '172 9', HUD_TRG_PIP_B, '16 8', colr2, 1, 0);
+  drawstring(nofs+'28 2', "[ASSIGN TO HARDPOINT]", '7 8 0', colr3, 1, 0);
 };*/
 
 void(vector ofs) menu_arming_WeaponInHardpoint={

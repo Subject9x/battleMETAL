@@ -169,7 +169,7 @@ string SPRITE_deploy_point_FRAMES[3];
 void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_renderSprite_DeployPoint={
   local vector screenImageSize;
   
-  screenImageSize = gui_percentToPixelRawVec( imageSize );
+  screenImageSize = imageSize;
   if( SPRITE_deploy_point_FRAMES[SPRITE_deploy_point_FRAME] != "" ){
     drawpic( org, SPRITE_deploy_point_FRAMES[SPRITE_deploy_point_FRAME], screenImageSize, imageColor, imageAlpha, 0);
   }

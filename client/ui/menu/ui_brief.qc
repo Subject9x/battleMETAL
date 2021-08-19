@@ -138,8 +138,8 @@ void(vector ofs) menu_briefMissionInfo={
   drawstring( ofs + '50 26', MSN_TYPE,fontSizeMedium, '1 1 1', 1, 0); 
   //reserves - one of the original ideas was to let the player respawn in fresh mechs with possibly new equipment...but I couldn't get that to 
     //work in Quake's jank-ass player lifecycle....
-  //drawstring( ofs + gui_percentToPixelRawVec('7 34'), "Reserves:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
-  //drawstring( ofs + gui_percentToPixelRawVec('42 34'), strcat(ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
+  //drawstring( ofs + '7 34', "Reserves:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  //drawstring( ofs + '42 34', strcat(ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
   //sector
   drawstring( ofs+ '7 38', "Sector", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
   drawstring( ofs+ '50 38', MSN_SECTOR, fontSizeMedium, '1 1 1', 1, 0);
@@ -183,11 +183,11 @@ void(vector ofs) menu_briefPlaySound={
   local vector tpos;
   tlen = stringwidth(label, 0, '14 12 0');
   tpos = spos;
-  tpos_x = tpos_x + gui_percentXRaw( 243 / 2 );
-  tpos_y = tpos_y + gui_percentYRaw( 32 / 2 );
+  tpos_x = tpos_x + ( 243 / 2 );
+  tpos_y = tpos_y + ( 32 / 2 );
   
-  tpos_x = tpos_x - gui_percentXRaw( tlen / 2 );
-  tpos_y = tpos_y - gui_percentYRaw( 6 );
+  tpos_x = tpos_x - ( tlen / 2 );
+  tpos_y = tpos_y - 6;
   drawstring(tpos, label, '14 12 0', color, 1, 0);
   
   drawfont = drawfont_prev;

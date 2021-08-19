@@ -617,20 +617,20 @@ void() m_effects_d={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderString("- Graphics Settings -", gui_percentToPixelRawVec('190 64'), CLR_DEF_WHITE, '16 16 0', 1, 0);
+  gui_renderString("- Graphics Settings -", '190 64', CLR_DEF_WHITE, '16 16 0', 1, 0);
   
-    gui_renderString("Particle Effects:", gui_percentToPixelRawVec('53 83'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Particle Quality:", gui_percentToPixelRawVec('53 103'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Decal Mode:", gui_percentToPixelRawVec('69 123'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bullet Impact:", gui_percentToPixelRawVec('62 143'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Smoke:", gui_percentToPixelRawVec('91 163'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Sparks:", gui_percentToPixelRawVec('91 183'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bubbles:", gui_percentToPixelRawVec('86 203'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Rain:", gui_percentToPixelRawVec('102 223'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Snow:", gui_percentToPixelRawVec('98 243'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Model Interpolation:", gui_percentToPixelRawVec('37 263'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Sprite Interpolation:", gui_percentToPixelRawVec('38 283'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Light Interpolation:", gui_percentToPixelRawVec('41 303'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Particle Effects:", '53 83', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Particle Quality:", '53 103', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Decal Mode:", '69 123', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bullet Impact:", '62 143', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Smoke:", '91 163', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Sparks:", '91 183', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bubbles:", '86 203', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Rain:", '102 223', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Snow:", '98 243', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Model Interpolation:", '37 263', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Sprite Interpolation:", '38 283', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Light Interpolation:", '41 303', CLR_DEF_WHITE, '12 12 0', 1, 0);
 
   drawfont = drawfont_prev;
 

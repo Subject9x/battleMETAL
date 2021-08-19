@@ -323,7 +323,7 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
           playerRowItr = teamCount2;
           teamCount2 = teamCount2 + 1;
         }
-        listRowOfs_x = panelOfs_x + gui_percentXRaw(2);
+        listRowOfs_x = panelOfs_x + 2;
         hud_render_score_row( listRowOfs, playerRowItr + 1, player );
       }
     }

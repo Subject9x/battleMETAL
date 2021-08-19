@@ -317,34 +317,34 @@ void() m_setup_d={
   }
   switch(setup_team_value.len){
     case 2:
-      drawpic( gui_percentToPixelRawVec('175 110'), IMG_TEAM_SURVEST, gui_percentToPixelRawVec('75 60'), '1 1 1', 1, 0);
+      drawpic( '175 110', IMG_TEAM_SURVEST, '75 60', '1 1 1', 1, 0);
       break;
     
     case 3:
-      drawpic( gui_percentToPixelRawVec('175 110'), IMG_TEAM_MILITAR, gui_percentToPixelRawVec('75 55'), '1 1 1', 1, 0);
+      drawpic( '175 110', IMG_TEAM_MILITAR, '75 55', '1 1 1', 1, 0);
       break;
     
     default:
-      drawpic( gui_percentToPixelRawVec('175 110'), IMG_TEAM_PSC, gui_percentToPixelRawVec('75 60'), '1 1 1', 1, 0);
+      drawpic( '175 110', IMG_TEAM_PSC, '75 60', '1 1 1', 1, 0);
       break;
   }
-  gui_renderString("Center Torso", setup_color_ct_dn.origin + gui_percentToPixelRawVec('-64 3'), '1 1 1', '12 12 0', 1, 0);
-  drawfill(setup_color_ct_dn.origin + gui_percentToPixelRawVec('24 0'), gui_percentToPixelRawVec('32 16'), CLR_PLAYER_LIST[setup_pic_ct.len], 1, 0);
+  gui_renderString("Center Torso", setup_color_ct_dn.origin + '-64 3', '1 1 1', '12 12 0', 1, 0);
+  drawfill(setup_color_ct_dn.origin + '24 0', '32 16', CLR_PLAYER_LIST[setup_pic_ct.len], 1, 0);
   
-  gui_renderString("Left Torso", setup_color_lt_dn.origin + gui_percentToPixelRawVec('-64 3'), '1 1 1', '12 12 0', 1, 0);
-  drawfill(setup_color_lt_dn.origin + gui_percentToPixelRawVec('24 0'), gui_percentToPixelRawVec('32 16'), CLR_PLAYER_LIST[setup_pic_lt.len], 1, 0);
+  gui_renderString("Left Torso", setup_color_lt_dn.origin + '-64 3', '1 1 1', '12 12 0', 1, 0);
+  drawfill(setup_color_lt_dn.origin + '24 0', '32 16', CLR_PLAYER_LIST[setup_pic_lt.len], 1, 0);
   
-  gui_renderString("Right Torso", setup_color_rt_dn.origin + gui_percentToPixelRawVec('-64 3'),'1 1 1', '12 12 0', 1, 0);
-  drawfill(setup_color_rt_dn.origin + gui_percentToPixelRawVec('24 0'), gui_percentToPixelRawVec('32 16'), CLR_PLAYER_LIST[setup_pic_rt.len], 1, 0);
+  gui_renderString("Right Torso", setup_color_rt_dn.origin + '-64 3','1 1 1', '12 12 0', 1, 0);
+  drawfill(setup_color_rt_dn.origin + '24 0', '32 16', CLR_PLAYER_LIST[setup_pic_rt.len], 1, 0);
   
-  gui_renderString("Left Arm", setup_color_la_dn.origin + gui_percentToPixelRawVec('-64 3'), '1 1 1', '12 12 0', 1, 0);
-  drawfill(setup_color_la_dn.origin + gui_percentToPixelRawVec('24 0'), gui_percentToPixelRawVec('32 16'), CLR_PLAYER_LIST[setup_pic_la.len], 1, 0);
+  gui_renderString("Left Arm", setup_color_la_dn.origin + '-64 3', '1 1 1', '12 12 0', 1, 0);
+  drawfill(setup_color_la_dn.origin + '24 0', '32 16', CLR_PLAYER_LIST[setup_pic_la.len], 1, 0);
   
-  gui_renderString("Right Arm", setup_color_ra_dn.origin + gui_percentToPixelRawVec('-64 3'), '1 1 1', '12 12 0', 1, 0);
-  drawfill(setup_color_ra_dn.origin + gui_percentToPixelRawVec('24 0'), gui_percentToPixelRawVec('32 16'), CLR_PLAYER_LIST[setup_pic_ra.len], 1, 0);
+  gui_renderString("Right Arm", setup_color_ra_dn.origin + '-64 3', '1 1 1', '12 12 0', 1, 0);
+  drawfill(setup_color_ra_dn.origin + '24 0', '32 16', CLR_PLAYER_LIST[setup_pic_ra.len], 1, 0);
   
-  gui_renderString("Legs", setup_color_lg_dn.origin + gui_percentToPixelRawVec('-64 3'), '1 1 1', '12 12 0', 1, 0);
-  drawfill(setup_color_lg_dn.origin + gui_percentToPixelRawVec('24 0'), gui_percentToPixelRawVec('32 16'), CLR_PLAYER_LIST[setup_pic_lg.len], 1, 0);
+  gui_renderString("Legs", setup_color_lg_dn.origin + '-64 3', '1 1 1', '12 12 0', 1, 0);
+  drawfill(setup_color_lg_dn.origin + '24 0', '32 16', CLR_PLAYER_LIST[setup_pic_lg.len], 1, 0);
   
   drawfont = drawfont_prev;
 };

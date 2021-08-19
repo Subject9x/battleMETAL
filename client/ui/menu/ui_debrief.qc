@@ -415,7 +415,7 @@ void(vector panelOffset) menu_debrief_unlocks={
       data_get_client_item_( UI_ARMING_DATA_item_list, tokenValue );
       if( !(UI_ARMING_DATA_item_list.damageType & DMG_MSC) ){
         weaponOrg = weaponStartOrg;
-        widthWrapCheck = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
+        widthWrapCheck = weaponOrg_x + ( tokenItr * 32 );
         if( widthWrapCheck < widthWrap ){
           weaponOrg_x = widthWrapCheck;
         }
@@ -434,7 +434,7 @@ void(vector panelOffset) menu_debrief_unlocks={
     weaponY = weaponY + 1;
   }
  
-  weaponY = gui_percentYRaw(weaponY * 32); //lock in y value
+  weaponY = weaponY * 32; //lock in y value
   
   //New Equipment
   equipLabelLen = stringwidth( "New Equipment Unlocked", 0, '10 10 0');
@@ -474,7 +474,7 @@ void(vector panelOffset) menu_debrief_unlocks={
   if( equipmentY < 1){
     equipmentY = equipmentY + 1;
   }
-  equipmentY = gui_percentYRaw( equipmentY * 32);
+  equipmentY = equipmentY * 32;
   
   //New Mechs
   mechLabelLen = stringwidth( "New Metal Unlocked", 0, '10 10 0');

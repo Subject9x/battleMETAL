@@ -66,7 +66,7 @@ void() m_load_i={
     list.data_bind = itr; //databind
     itr = itr + 1;
   }
-  load_back = btn_img_callback(next + gui_percentToPixelRawVec('0 24'), '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_LOAD, click_load_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  load_back = btn_img_callback(next + '0 24', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_LOAD, click_load_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
 /*
@@ -89,7 +89,7 @@ void() m_load_d={
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
-    drawstring(gui_percentToPixelRawVec('10 132'), "", '14 14', '1 1 0.1', 1, 0); 
+    drawstring('10 132', "", '14 14', '1 1 0.1', 1, 0); 
   drawfont = drawfont_prev;
   
   widget = findchainfloat(menuId, M_LOAD);

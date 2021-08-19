@@ -470,17 +470,17 @@ void() client_event_mission_name_frame={
     MISSION_NAME_ALPHA = 0;
   }
   backpanelSize = '34 34 0';
-  backpanelOrg = MISSION_NAME_ORG - gui_percentToPixelRawVec('2 2');
+  backpanelOrg = MISSION_NAME_ORG - '2 2';
 
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_DYSTOPIAN;
 
-    backSize = gui_percentXRaw( stringwidth(MISSION_NAME, 0, '18 18 0') / 2 );
+    backSize = stringwidth(MISSION_NAME, 0, '18 18') / 2 ;
     backpanelOrg_x = VIEW_CTR_x - backSize;
-    backpanelOrg_y = VIEW_CTR_y - gui_percentYRaw( 66 );
-    drawstring( backpanelOrg, MISSION_NAME, '18 18 0', '0 0 0', MISSION_NAME_ALPHA - 0.25, 0);
+    backpanelOrg_y = VIEW_CTR_y - 66;
+    drawstring( backpanelOrg, MISSION_NAME, '18 18', '0 0 0', MISSION_NAME_ALPHA - 0.25, 0);
     
-    drawstring( MISSION_NAME_ORG, MISSION_NAME, '16 16 0', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
+    drawstring( MISSION_NAME_ORG, MISSION_NAME, '16 16', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
   drawfont = drawfont_prev;
 };
 
@@ -507,9 +507,10 @@ void( string name ) client_event_mission_name={
     cacheGlobalString(MISSION_NAME, missionName )
     
     nameLen = stringwidth(MISSION_NAME, 0, '16 16 0');
-    nameLen = gui_percentXRaw( nameLen / 2 );
+    nameLen = nameLen / 2 ;
+    
     newOrg_x = VIEW_CTR_x - nameLen;
-    newOrg_y = VIEW_CTR_y - gui_percentYRaw( 64 );
+    newOrg_y = VIEW_CTR_y - 64;
     MISSION_NAME_ORG = newOrg;
   drawfont = drawfont_prev;
 };
@@ -533,12 +534,12 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  infoBoxY = gui_wrapText(VIEW_ORG, gui_percentToPixelRawVec('256 256'), HUD_INFO_MSG, fontSize, infoColor, 1) ;
-  HUD_INFO_SIZE_x = gui_percentXRaw( 256 );
+  infoBoxY = gui_wrapText(VIEW_ORG, '256 256', HUD_INFO_MSG, fontSize, infoColor, 1) ;
+  HUD_INFO_SIZE_x = 256;
   HUD_INFO_SIZE_y = infoBoxY;
   
   HUD_INFO_ORG_x = VIEW_MAX_x - HUD_INFO_SIZE_x;
-  HUD_INFO_ORG_y = VIEW_ORG_y + gui_percentYRaw(128);
+  HUD_INFO_ORG_y = VIEW_ORG_y + 128;
   
   drawfont = drawfont_prev;
   

@@ -148,7 +148,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   dist = 1 * (dist / radRange);
   
   imgSize = draw_getimagesize(HUD_TARGET_BOX_TL) * 0.5 ;
-  imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
+  imgSize = imgSize * dist;
   
   if( imgSize_x > 48 ){
     imgSize_x = 48;

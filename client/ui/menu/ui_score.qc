@@ -529,7 +529,7 @@ void( vector menuOrg ) menu_score_coop_status={
       eol = FALSE;
     }
     lst_idx = lst_idx + 1;
-    objectiveOffset_y = objectiveOffset_y + line_rtn + gui_percentYRaw(12);
+    objectiveOffset_y = objectiveOffset_y + line_rtn + 12;
   }
   drawfont = drawfont_prev;
 };

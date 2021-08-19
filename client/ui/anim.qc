@@ -256,7 +256,7 @@ void(string frameText) anm_render_frame_text={
   while( tcnt <= tokens){
     width = stringwidth(argv(tcnt), 0, '8 8 0');
     linepos_x = txtstart_x - (width / 2);
-    linepos_y = txtstart_y + gui_percentYRaw(tcnt * 10);
+    linepos_y = txtstart_y + (tcnt * 10);
     drawstring(linepos, argv(tcnt), '8 8 0', txt_color, 0.85, 0);
     tcnt = tcnt + 1;
   }

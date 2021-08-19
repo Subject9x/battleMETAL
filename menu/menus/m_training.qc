@@ -85,7 +85,7 @@ void() m_train_d={
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
-    gui_wrapText(gui_percentToPixelRawVec('10 132 0'), gui_percentToPixelRawVec('500 300 0'), "The following maps are tutorials to teach you how to play battleMETAL. It is STRONGLY recommended that you play these tutorials before your first time playing the main campaign.", '14 14', '1 1 0.1', 1);
+    gui_wrapText('10 132 0', '500 300 0', "The following maps are tutorials to teach you how to play battleMETAL. It is STRONGLY recommended that you play these tutorials before your first time playing the main campaign.", '14 14', '1 1 0.1', 1);
   drawfont = drawfont_prev;
 };
 

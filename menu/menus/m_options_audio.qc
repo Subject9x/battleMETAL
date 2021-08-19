@@ -506,12 +506,12 @@ void() m_audio_d={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderString("- Audio Settings -", gui_percentToPixelRawVec('190 64'), CLR_DEF_WHITE, '16 16 0', 1, 0);
+  gui_renderString("- Audio Settings -", '190 64', CLR_DEF_WHITE, '16 16 0', 1, 0);
 
-  gui_renderString("Sound On/Off :", gui_percentToPixelRawVec('65 85'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Sound Volume :", gui_percentToPixelRawVec('62 108'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Music On/Off :", gui_percentToPixelRawVec('66 135'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Music Volume :", gui_percentToPixelRawVec('63 155'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Sound On/Off :", '65 85', CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Sound Volume :", '62 108', CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Music On/Off :", '66 135', CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Music Volume :", '63 155', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
   local string lbl;
   if( !isdemo() && clientstate() == CS_CONNECTED){
@@ -520,10 +520,10 @@ void() m_audio_d={
   else{
     lbl = "Advanced Settings";
   }
-  gui_renderString(lbl, gui_percentToPixelRawVec('25 190'), CLR_DEF_ARM_THREEQ, '12 12 0', 1, 0);
-  gui_renderString("Speaker Mode :", gui_percentToPixelRawVec('62 212'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Mute Minimized :", gui_percentToPixelRawVec('53 234'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Sound Quality :", gui_percentToPixelRawVec('62 256'), CLR_DEF_WHITE, '12 12 0', 1, 0);  
+  gui_renderString(lbl, '25 190', CLR_DEF_ARM_THREEQ, '12 12 0', 1, 0);
+  gui_renderString("Speaker Mode :", '62 212', CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Mute Minimized :", '53 234', CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Sound Quality :", '62 256', CLR_DEF_WHITE, '12 12 0', 1, 0);  
 
   drawfont = drawfont_prev;
 

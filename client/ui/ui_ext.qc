@@ -174,7 +174,7 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
   Simply renders a tooltip help box, enforcing global styling standard.
 */
 void( vector tipOrg ) gui_renderTooltipIcon={
-  drawpic( tipOrg, UI_HELP_IMG, gui_percentToPixelRawVec('14 14'), CLR_DEF_RET_HASLOCK, 1, 0);
+  drawpic( tipOrg, UI_HELP_IMG, '14 14', CLR_DEF_RET_HASLOCK, 1, 0);
 };
 
 entity(float wepBit) gui_get_weapon={

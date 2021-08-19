@@ -116,7 +116,7 @@ void() click_newg_info={
     new_camp_start_lbl.drawme = TRUE;
   }
   new_camp_start_btn.data_text = CAMP_SELECT_START;
-  new_back.origin_y = new_camp_start_btn.origin_y + gui_percentYRaw(48);
+  new_back.origin_y = new_camp_start_btn.origin_y + 48;
   new_camp_start_btn.drawme = TRUE;
 };
 
@@ -144,7 +144,7 @@ void() click_newg_elite={
 void() click_newg_campaign={
   newgame_substate = NEWGAME_SKILL;
   newgame_back_cacheOrg = new_back.origin;
-  new_back.origin = gui_percentToPixelRawVec('10 230 0');
+  new_back.origin = '10 230 0';
   
   cacheGlobalString(CAMP_SELECT_START, CAMP_START[self.data_bind])
   cacheGlobalString(CAMP_SELECT_NAME, CAMP_NAME[self.data_bind])
@@ -157,7 +157,7 @@ void() click_newg_campaign={
 void() click_newg_skill={
   newgame_substate = NEWGAME_SKILL;
   newgame_back_cacheOrg = new_back.origin;
-  new_back.origin = gui_percentToPixelRawVec('10 230 0');
+  new_back.origin = '10 230 0';
 
 };
 
@@ -168,14 +168,14 @@ void(vector labelOrg) newmgame_text_rookie={
   local vector thisOrg;
   
   thisOrg = labelOrg;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(100);
+  thisOrg_x = thisOrg_x + 100;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(thisOrg, "Casual mode - A relaxing romp as a giant robot.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 16'), "+ You have extra energy.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 32'), "+ AI deals less damage.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 48'), "+ AI has less health.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 16', "+ You have extra energy.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 32', "+ AI deals less damage.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ AI has less health.", '14 14 0', '1 1 0.1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -183,15 +183,15 @@ void(vector labelOrg) newmgame_text_regular={
   local vector thisOrg;
   
   thisOrg = labelOrg;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(100);
+  thisOrg_x = thisOrg_x + 100;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(thisOrg, "First Mech game? Welcome to the genre.",'14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 16'), "+ You have slight more energy.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 32'), "+ AI deals balanced damage.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 48'), "+ AI has balanced health.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 64'), "+ Overall a good starting point.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 16', "+ You have slight more energy.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 32', "+ AI deals balanced damage.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ AI has balanced health.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 64', "+ Overall a good starting point.", '14 14 0', '1 1 0.1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -199,15 +199,15 @@ void(vector labelOrg) newmgame_text_veteran={
   local vector thisOrg;
   
   thisOrg = labelOrg;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(100);
+  thisOrg_x = thisOrg_x + 100;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(thisOrg, "Something of a Mech-pilot yourself, eh?", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 16'), "+ You have standard energy amounts.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 32'), "+ AI Damage output just a bit under your own.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 48'), "+ AI health slightly under yours.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 64'), "+ You've played a few other mech games.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 16', "+ You have standard energy amounts.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 32', "+ AI Damage output just a bit under your own.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ AI health slightly under yours.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 64', "+ You've played a few other mech games.", '14 14 0', '1 1 0.1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -215,15 +215,15 @@ void(vector labelOrg) newmgame_text_ace={
   local vector thisOrg;
   
   thisOrg = labelOrg;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(100);
+  thisOrg_x = thisOrg_x + 100;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(thisOrg, "AWAKE, IRON.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 16'), "+ AI mechs equal your own.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 32'), "+ AI accuracy is higher.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 48'), "+ Additional mission objectives.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 64'), "+ can't get enough of battleMETAL's quirks.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 16', "+ AI mechs equal your own.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 32', "+ AI accuracy is higher.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ Additional mission objectives.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 64', "+ can't get enough of battleMETAL's quirks.", '14 14 0', '1 1 0.1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -270,7 +270,7 @@ void() m_newg_i={
   //SUB-MENU: CAMPAIGN SELECT
   itr = 1;
   if(CAMP_NAME[itr] != ""){
-    start = gui_percentToPixelRawVec('10 151 0');
+    start = '10 151';
     while (itr < CAMP_TOTAL ){
       if( CAMP_NAME[itr] != "" ){
         next = start;
@@ -283,7 +283,7 @@ void() m_newg_i={
       itr = itr + 1;
     }
   }
-  new_back = btn_img_callback(next + gui_percentToPixelRawVec('0 24 0'), '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG)); 
+  new_back = btn_img_callback(next + '0 24', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG)); 
 };
 /*
   menu_f functions are like state-transition functions, preparing the menu for the next menu to load
@@ -313,8 +313,8 @@ void() m_newg_d={
         if( menu_checkMouseInBounds(VIEW_MPOS, widget.drawOrg, widget.drawSize)){
           drawfont_prev = drawfont;
           drawfont = FONT_NUM_ROBOT_REGULAR;
-            drawstring(gui_percentToPixelRawVec('150 151 0'), strcat("Author: ", CAMP_AUTH[widget.data_bind]), '12 12', '1 1 1', 1, 0);
-            gui_wrapText(gui_percentToPixelRawVec('150 165 0'), gui_percentToPixelRawVec('300 300 0'), CAMP_DESC[widget.data_bind], '14 14', '1 1 0.1', 1);
+            drawstring('150 151', strcat("Author: ", CAMP_AUTH[widget.data_bind]), '12 12', '1 1 1', 1, 0);
+            gui_wrapText('150 165', '300 300', CAMP_DESC[widget.data_bind], '14 14', '1 1 0.1', 1);
           drawfont = drawfont_prev;
         }
       }
@@ -341,7 +341,7 @@ void() m_newg_d={
   else{
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
-      drawstring(gui_percentToPixelRawVec('10 132 0'), "Select a Campaign to play:", '14 14', '1 1 1', 1, 0);
+      drawstring('10 132', "Select a Campaign to play:", '14 14', '1 1 1', 1, 0);
     drawfont = drawfont_prev;
   }
 };

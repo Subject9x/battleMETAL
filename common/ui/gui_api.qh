@@ -111,9 +111,6 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm
 void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float setAlpha, float flg) gui_renderHighlightString;
 vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffsetStart, vector uiAreaSize) gui_mapCoordToImgCoord;
 void(vector ofs, float bool, vector color1, vector color2, vector sz, float setAlpha, float flg) gui_renderModalFill;
-vector(float pcx, float pcy) gui_percentToPixel;
-float(float pcx) gui_percentX;
-float(float pcy) gui_percentY;
 float(float ang) anglemod;
 string(float anglee) gui_angleToNav;
 string(float anglee) gui_angleToArrow;
@@ -123,11 +120,6 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
 
 float(float anglee) gui_angleToEnum;
 
-
-vector(float tX, float tY) gui_percentToPixelRaw;
-float(float tX) gui_percentXRaw;
-float(float tY) gui_percentYRaw;
-vector(vector p) gui_percentToPixelRawVec;
 vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec;
 float(float pct, float ox, float mx) gui_percentCustom;
 

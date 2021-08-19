@@ -128,7 +128,7 @@ void(vector ofs) menu_navBar_drawFrame={
   arrowOrg_y = arrowOrg_y + 4;
   arrowOrg_x = arrowOrg_x + (UI_NAVBAR_BRIEF_SIZE_x + 4);
   
-  //drawpic( arrowOrg, HUD_TRG_PIP_R, gui_percentToPixelRawVec(UI_NAVAR_ARR_SIZE), '0.75 0.75 0.75', 1, 0);
+  //drawpic( arrowOrg, HUD_TRG_PIP_R, UI_NAVAR_ARR_SIZE, '0.75 0.75 0.75', 1, 0);
   drawpic( arrowOrg, HUD_TRG_PIP_R, UI_NAVAR_ARR_SIZE, '0.75 0.75 0.75', 1, 0);
   
   ui_navbutton_hangar_draw( nvpos + '96 0' ) ;

@@ -645,12 +645,12 @@ void() m_host_d={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderString("Server Name  :", host_name.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
+  gui_renderString("Server Name  :", host_name.origin + '-80 1', '1 1 1', '12 12 0', 1, 0);
   
-  gui_renderString("Port Number  :", host_port.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
-  gui_renderString("[You will need to port-forward this on your router]", host_port.origin + gui_percentToPixelRawVec('110 0'), '1 1 0.1', '12 12 0', 1, 0);
+  gui_renderString("Port Number  :", host_port.origin + '-80 1', '1 1 1', '12 12 0', 1, 0);
+  gui_renderString("[You will need to port-forward this on your router]", host_port.origin + '110 0', '1 1 0.1', '12 12 0', 1, 0);
   
-  gui_renderString("Server Type  :", host_public.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
+  gui_renderString("Server Type  :", host_public.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
   
   switch(SELECT_TYPE){
     case 1:
@@ -667,50 +667,50 @@ void() m_host_d={
       break;
   }
   
-  gui_renderString(PUBLIC_TYPE, host_public.origin + gui_percentToPixelRawVec('85 1'), '1 1 0.1', '12 12 0', 1, 0);
+  gui_renderString(PUBLIC_TYPE, host_public.origin + '85 1', '1 1 0.1', '12 12 0', 1, 0);
   
   host_serverrate.label = HOST_RATE_TABLE_NAME[SELECT_RATE];
-  gui_renderString("Server Rate  :", host_serverrate.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-  gui_renderString("[Make sure this matches your internet speed or is lower than it.]", host_serverrate.origin + gui_percentToPixelRawVec('85 1'), '1 1 0.1', '12 12 0', 1, 0);
+  gui_renderString("Server Rate  :", host_serverrate.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
+  gui_renderString("[Make sure this matches your internet speed or is lower than it.]", host_serverrate.origin + '85 1', '1 1 0.1', '12 12 0', 1, 0);
   
   
-  gui_renderString("Game Type  :", host_gametype.origin + gui_percentToPixelRawVec('-95 1'), '1 1 1', '12 12 0', 1, 0);
+  gui_renderString("Game Type  :", host_gametype.origin + '-95 1', '1 1 1', '12 12 0', 1, 0);
 
   //kids, this is why implemnt _d funcs for every menu, some need a little extra functionality
   switch(SUB_MENU){
     case SUB_COOP:
-      gui_renderString("Max Players  :", host_playernum.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Max Players  :", host_playernum.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
       host_gametype.label = "Cooperative";
       host_gametype.color = CLR_DEF_IIF_FRIEND;
-      gui_renderString("Difficulty  :", host_skill_lbl.origin + gui_percentToPixelRawVec('-90 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Start Map  :", host_map_lbl.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Difficulty  :", host_skill_lbl.origin + '-90 1', '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Start Map  :", host_map_lbl.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
       break;
     
     case SUB_TDM:
-      gui_renderString("Max Players  :", host_playernum.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Max Players  :", host_playernum.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
       host_gametype.label = "Team DeathMatch";
       host_gametype.color = CLR_DEF_IFF_ENEMY;
-      gui_renderString("Start Map  :", host_map_lbl.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Frag Limit  :", host_dm_fraglim.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Time Limit  :                 Minutes", host_dm_timelim.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Start Map  :", host_map_lbl.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Frag Limit  :", host_dm_fraglim.origin + '-80 1', '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Time Limit  :                 Minutes", host_dm_timelim.origin + '-80 1', '1 1 1', '12 12 0', 1, 0);
       break;
       
     case SUB_DM:
-      gui_renderString("Max Players  :", host_playernum.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Max Players  :", host_playernum.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
       host_gametype.label = "DeathMatch";
       host_gametype.color = CLR_DEF_IFF_ENEMY_BLD;
-      gui_renderString("Start Map  :", host_map_lbl.origin + gui_percentToPixelRawVec('-100 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Frag Limit  :", host_dm_fraglim.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
-      gui_renderString("Time Limit  :                 Minutes", host_dm_timelim.origin + gui_percentToPixelRawVec('-80 1'), '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Start Map  :", host_map_lbl.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Frag Limit  :", host_dm_fraglim.origin + '-80 1', '1 1 1', '12 12 0', 1, 0);
+      gui_renderString("Time Limit  :                 Minutes", host_dm_timelim.origin + '-80 1', '1 1 1', '12 12 0', 1, 0);
       break;
   }
   if( strlen(host_map_lbl.label) != 0 ){
-    drawpic(host_map_lbl.origin + gui_percentToPixelRawVec('130 -32'), strcat("data/maps/",host_map_lbl.label,"/",host_map_lbl.label,".png"), '256 256', '1 1 1', 1, 0);
+    drawpic(host_map_lbl.origin + '130 -32', strcat("data/maps/",host_map_lbl.label,"/",host_map_lbl.label,".png"), '256 256', '1 1 1', 1, 0);
   }
   else{
-    gui_renderString("No Map Image Found", host_map_lbl.origin + gui_percentToPixelRawVec('200 32'), '1 1 1', '12 12 0', 1, 0);
+    gui_renderString("No Map Image Found", host_map_lbl.origin + '200 32', '1 1 1', '12 12 0', 1, 0);
   }
-  gui_renderString("-Server Flags-", gui_percentToPixelRawVec('80 273'), '1 1 0.33', '14 14 0', 1, 0);
+  gui_renderString("-Server Flags-", '80 273', '1 1 0.33', '14 14 0', 1, 0);
   
   widget = findchainfloat(menuId, M_HOST);
   while(widget){

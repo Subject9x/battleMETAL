@@ -16,7 +16,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   local vector acc_left, acc_right, acc_up, acc_dn;
   local vector drift;
   
-  drift = gui_percentToPixelRaw( 8 * unitAccuracy, 8 * unitAccuracy );
+  drift = Vector2( 8 * unitAccuracy, 8 * unitAccuracy );
   
   acc_left = VIEW_CTR - '11 1.5';
   acc_left_x = acc_left_x - drift_x;
@@ -913,14 +913,14 @@ void() data_hud_frame={
     void(vector org, vector texcoords, vector rgb, float alpha) R_PolygonVertex = #307;
     void() R_EndPolygon = #308;
     R_BeginPolygon("q3mdl/mechs/matok/hud/matok_hud.tga", DRAWFLAG_2XMODULATE, 0);
-      R_PolygonVertex(gui_percentToPixelRawVec('10 10'), '0 0', '1 1 1', 1) ;
-      R_PolygonVertex(gui_percentToPixelRawVec('10 100'), '0 1', '1 1 1', 1) ;
-      R_PolygonVertex(gui_percentToPixelRawVec('100 100'), '1 1', '1 1 1', 1) ;
+      R_PolygonVertex('10 10', '0 0', '1 1 1', 1) ;
+      R_PolygonVertex('10 100', '0 1', '1 1 1', 1) ;
+      R_PolygonVertex('100 100', '1 1', '1 1 1', 1) ;
       
       
-      R_PolygonVertex(gui_percentToPixelRawVec('100 100'), '1 1', '1 1 1', 1) ;
-      R_PolygonVertex(gui_percentToPixelRawVec('100 10'), '1 0', '1 1 1', 1) ;
-      R_PolygonVertex(gui_percentToPixelRawVec('10 10'), '0 0', '1 1 1', 1) ;
+      R_PolygonVertex('100 100', '1 1', '1 1 1', 1) ;
+      R_PolygonVertex('100 10', '1 0', '1 1 1', 1) ;
+      R_PolygonVertex('10 10', '0 0', '1 1 1', 1) ;
     R_EndPolygon();
   */
 };

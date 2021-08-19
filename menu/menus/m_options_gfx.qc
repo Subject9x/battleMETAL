@@ -663,21 +663,21 @@ void() m_gfx_d={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  gui_renderString("- Lighting Settings -", gui_percentToPixelRawVec('190 64'), CLR_DEF_WHITE, '16 16 0', 1, 0);
+  gui_renderString("- Lighting Settings -", '190 64', CLR_DEF_WHITE, '16 16 0', 1, 0);
   
-    gui_renderString("Corona Intensity:", gui_percentToPixelRawVec('53 83'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Use Only Coronas:", gui_percentToPixelRawVec('47 103'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Gloss Mode:", gui_percentToPixelRawVec('74 123'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("HDR Scene Brightness:", gui_percentToPixelRawVec('27 143'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("HDR Glow Brightness:", gui_percentToPixelRawVec('31 163'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Corona Intensity:", '53 83', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Use Only Coronas:", '47 103', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Gloss Mode:", '74 123', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("HDR Scene Brightness:", '27 143', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("HDR Glow Brightness:", '31 163', CLR_DEF_WHITE, '12 12 0', 1, 0);
     
-    gui_renderString("Bloom Effect:", gui_percentToPixelRawVec('70 183'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bloom Color Scale:", gui_percentToPixelRawVec('46 203'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bloom color Subtract:", gui_percentToPixelRawVec('34 223'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bloom color Exponent:", gui_percentToPixelRawVec('31 243'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bloom Intensity:", gui_percentToPixelRawVec('58 263'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bloom Blur:", gui_percentToPixelRawVec('78 283'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Bloom Fidelity:", gui_percentToPixelRawVec('64 303'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bloom Effect:", '70 183', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bloom Color Scale:", '46 203', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bloom color Subtract:", '34 223', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bloom color Exponent:", '31 243', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bloom Intensity:", '58 263', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bloom Blur:", '78 283', CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bloom Fidelity:", '64 303', CLR_DEF_WHITE, '12 12 0', 1, 0);
 
   drawfont = drawfont_prev;
 
