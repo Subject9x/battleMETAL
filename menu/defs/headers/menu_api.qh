@@ -71,6 +71,7 @@ float UI_FLAG_LBL_BOOL_TRUE  = 16384;  //for lbl_text, use its .len field as 1/0
 .vector drawSize; //computed from .size
 .vector drawOrg; //actual org after adjusting to pixel size
 .entity targ;
+.float fontId;
 //some of this ported over from ui_defs in the client code
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
 float(vector org, vector list_size, vector row_size, float max_items, float space) listListener;

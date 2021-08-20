@@ -16,6 +16,7 @@
 .string classname;
 .string image1;
 .string image2;
+.float fontId;
 .float drawme;
 .void() predraw;
 .void() draw;
@@ -57,6 +58,7 @@ entity() new_ui_elm={
     self.color = '0 0 0';
     self.select_color = '0 0 0';
     self.subid = FALSE;
+    self.fontId = FONT_NUM_ROBOT_REGULAR;
   self = this;
   return element;
 };
@@ -302,13 +304,20 @@ void(entity btn) render_btn={
     this = self;
     self = btn;
       org = self.origin;
-      self.drawOrg = org;
       sizzle = self.size;
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         sizzle = draw_getimagesize(self.image1);
         sizzle = gui_scaleSize(sizzle, VIEW_SCALE);
       }
       self.drawSize = sizzle;
+      
+      if( (self.align & VIEW_CTX) ){
+        org_x = org_x - (sizzle_x / 2);
+      }
+      if( (self.align & VIEW_CTY) ){
+        org_y = org_y - (sizzle_y / 2);
+      }
+      self.drawOrg = org;
       
       if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
         MOUSE_TARGET = self;
@@ -351,12 +360,20 @@ void(entity btn) render_btn_txt={
       sizzle = self.size;
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         txt_len = stringwidth(self.label, 0, self.size);
-        sizzle_x = txt_len;
+        sizzle_x = txt_len * 1.25;  //magik number for width because raw stringwidth() doesn't seem to be accurate?
         sizzle_y = self.size_y;
+      }
+      
+      if( (self.align & VIEW_CTX) ){
+        org_x = org_x - (sizzle_x / 2);
+      }
+      if( (self.align & VIEW_CTY) ){
+        org_y = org_y - (sizzle_y / 2);
       }
       
       self.drawSize = sizzle;
       self.drawOrg = org;
+      
       bclr = self.color;
       if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
         MOUSE_TARGET = self;
@@ -377,8 +394,10 @@ void(entity btn) render_btn_txt={
           bclr = self.select_color;
         }  
       }
-      
-      drawstring(org, self.label, self.size, bclr, self.alpha, 0);
+      drawfont_prev = drawfont;
+      drawfont = self.fontId;
+        drawstring(org, self.label, self.size, bclr, self.alpha, 0);
+      drawfont = drawfont_prev;
     self = this;
   }
 };
@@ -399,6 +418,14 @@ void(entity btn) render_chkbox={
         sizzle = drawgetimagesize(self.image1);
         sizzle = gui_scaleSize(sizzle, VIEW_SCALE);
       }
+      
+      if( (self.align & VIEW_CTX) ){
+        org_x = org_x - (sizzle_x / 2);
+      }
+      if( (self.align & VIEW_CTY) ){
+        org_y = org_y - (sizzle_y / 2);
+      }
+      self.drawOrg = org;
       
       if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
         MOUSE_TARGET = self;
@@ -429,7 +456,10 @@ void(entity btn) render_chkbox={
         labelLen = stringwidth(self.label, 0, '12 12');
         labelOrg = org;
         labelOrg_x = org_x - labelLen;
-        drawstring(labelOrg, self.label, '12 12', '0.85 0.85 0.85', 1, 0);
+        drawfont_prev = drawfont;
+        drawfont = self.fontId;
+          drawstring(labelOrg, self.label, '12 12', '0.85 0.85 0.85', 1, 0);
+        drawfont = drawfont_prev;
       }
       
     self = this; 
@@ -467,10 +497,22 @@ void(entity lbl) render_lbl_text={
       }
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         txt_len = stringwidth(self.label, 0, self.size);
-        sizzle_x = txt_len;
+        sizzle_x = txt_len * 1.25;
         sizzle_y = self.size_y;
       }
-      drawstring(org, self.label, sizzle, self.color, self.alpha, 0);
+      
+      if( (self.align & VIEW_CTX) ){
+        org_x = org_x - (sizzle_x / 2);
+      }
+      if( (self.align & VIEW_CTY) ){
+        org_y = org_y - (sizzle_y / 2);
+      }
+      self.drawOrg = org;
+      
+      drawfont_prev = drawfont;
+      drawfont = self.fontId;
+        drawstring(org, self.label, sizzle, self.color, self.alpha, 0);
+      drawfont = drawfont_prev;
     self = this;
   }
 };
@@ -478,7 +520,7 @@ void(entity lbl) render_lbl_text={
 void(entity lbl) render_lbl_img={
   local entity this;
   local vector org, sizzle;
-  
+
   if(lbl.drawme){
     this = self;
     self = lbl;
@@ -490,9 +532,17 @@ void(entity lbl) render_lbl_img={
         sizzle = gui_scaleSize(sizzle, VIEW_SCALE);
       }
 
+      if( (self.align & VIEW_CTX) ){
+        org_x = org_x - (sizzle_x / 2);
+      }
+      if( (self.align & VIEW_CTY) ){
+        org_y = org_y - (sizzle_y / 2);
+      }
+      self.drawOrg = org;
       if(self.image1 != ""){
         drawpic(org, self.image1, sizzle, self.color, self.alpha, 0);
       }
+      
     self = this;
   }
 };
@@ -505,7 +555,10 @@ void(entity pnl) render_txt_pnl={
     self = pnl;
       org = self.origin;
       sizzle = self.size;
-      gui_wrapText(org, sizzle, self.label, '11 11', self.color, self.alpha);
+      drawfont_prev = drawfont;
+      drawfont = self.fontId;
+        gui_wrapText(org, sizzle, self.label, '11 11', self.color, self.alpha);
+      drawfont = drawfont_prev;
     self = this;
   }
 };
@@ -548,8 +601,11 @@ void(entity txt) render_textfield={
       self.label = self.data_text;
       
       drawpic(org - '2 2', "gfx/ui/box_256.png", sizzle + '4 2', bclr - '0.5 0.5 0.5', 1, 0);
-      drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
       
+      drawfont_prev = drawfont;
+      drawfont = self.fontId;
+        drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
+      drawfont = drawfont_prev;
       
     self = this;
   }
@@ -606,14 +662,18 @@ void(entity txt) render_bindfield={
         bclr = CLR_DEF_ARM_THREEQ;
       }
       
-      drawfont = drawfont_prev;
+      drawfont_prev = drawfont;
       drawfont = FONT_NUM_ROBOT_REGULAR;
         drawstring(self.origin, self.image1, self.size - (self.size * 0.15), self.color + '0.15 0.15 0.15', self.alpha + 0.15, 0); 
       drawfont = drawfont_prev;
       
       drawpic(actionOrg - '2 2', "gfx/ui/box_256.png", sizzle + '4 2', bclr - '0.5 0.5 0.5', 1, 0);
-      drawstring(actionOrg, self.label, self.size, bclr, self.alpha, 0);
-    self = this;
+      
+      drawfont_prev = drawfont;
+      drawfont = self.fontId;
+        drawstring(actionOrg, self.label, self.size, bclr, self.alpha, 0);
+      drawfont = drawfont_prev;
+   self = this;
   }
 };
 

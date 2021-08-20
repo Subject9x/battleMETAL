@@ -52,6 +52,7 @@ void() m_init={
   loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, FALSE, FALSE);
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
   FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
+  FONT_NUM_XOLONIUM_BOLD = loadfont("FatSans Shadow Medium", "gfx/fonts/Xolonium-Bold", "10 12 16 24 32", FONT_USER4, FALSE, FALSE);
   
   menu_ini_ratelist();
   
@@ -166,7 +167,7 @@ void(float width, float height) m_draw={
       local vector p;
       p = VIEW_MAX;
       p_z = 0;
-      drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.85, 0);      
+      //drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.85, 0);      
     }
   }
   
