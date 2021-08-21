@@ -14,9 +14,6 @@ entity camp_back;
 
 //Main Menu Constants
 string IMG_CAMP_TITLE   = "gfx/menu/single/camp_label.png";
-string IMG_CAMP_NEW     = "gfx/menu/single/camp_new.png";
-string IMG_CAMP_LOAD    = "gfx/menu/single/camp_load.png";
-//string IMG_CAMP_SAVE    = "gfx/menu/save_btn.png";
 
 //button callbacks
 void() click_camp_new ={

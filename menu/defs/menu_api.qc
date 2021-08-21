@@ -572,7 +572,7 @@ void(entity txt) render_textfield={
     this = self;
     self = txt;
       org = self.origin;
-      fon = stringwidth("  ", 0, self.size );
+      fon = stringwidth(" ", 0, self.size );
       sizzle_x = fon * self.len;
       sizzle_y = self.size_y;
       
@@ -600,7 +600,7 @@ void(entity txt) render_textfield={
       }
       self.label = self.data_text;
       
-      drawpic(org - '2 2', "gfx/ui/box_256.png", sizzle + '4 2', bclr - '0.5 0.5 0.5', 1, 0);
+      gui_renderTextInput( self.origin, sizzle, self.size, '0.35 0.35 0.35', 1, 0 ) ;
       
       drawfont_prev = drawfont;
       drawfont = self.fontId;

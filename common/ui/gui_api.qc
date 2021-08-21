@@ -290,6 +290,34 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
   }
 };
 
+string TEXT64_LF = "gfx/ui/txt_lf.tga";
+string TEXT64_CT = "gfx/ui/txt_ct.tga";
+string TEXT64_RT = "gfx/ui/txt_rt.tga";
+
+void( vector org, vector siz, vector fontSize, vector colr, float alpha, float drawFlag ) gui_renderTextInput={
+  local float cols;
+  local float celSize;
+  local float i;
+  local vector vOrg;
+  
+  cols = floor(siz_x / 24) + 1;
+  celSize = 24;
+  
+  vOrg = Vector2(org_x - 4, org_y - fontSize_y / 2);
+  
+  //left side
+  drawpic(vOrg, TEXT64_LF, '24 24', colr, alpha, drawFlag);
+  
+  //middles
+  for(i = 1; i < cols; i = i + 1){
+    drawpic(vOrg + Vector2(i * celSize, 0), TEXT64_CT, '24 24', colr, alpha, drawFlag);
+  }
+  
+  //right side
+  drawpic(vOrg + Vector2(cols * celSize, 0), TEXT64_RT, '24 24', colr, alpha, drawFlag);
+  
+};
+
 
 vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffsetStart, vector uiAreaSize) gui_mapCoordToImgCoord={
   local vector mapCenter, objectTransform, objectPercent, objectUIOrg;

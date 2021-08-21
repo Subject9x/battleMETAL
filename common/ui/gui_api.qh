@@ -121,6 +121,7 @@ string(float anglee) gui_angleToArrow;
 
 void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderPatch9_1_32;
 void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderBorder9_1_32;
+void( vector org, vector siz, vector fontSize, vector colr, float alpha, float drawFlag ) gui_renderTextInput;
 
 float(float anglee) gui_angleToEnum;
 
