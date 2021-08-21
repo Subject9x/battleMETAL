@@ -1069,6 +1069,31 @@ string(float val) menu_float_bool={
   return "OFF";
 };
 
+//simple one-off to configure MENU_ORG, MENU_SIZE
+void(vector mOrg, vector mSize) menu_parent_setup={
+  MENU_ORG = mOrg;
+  MENU_SIZE = mSize;
+  MENU_CTR = mOrg + (mSize * 0.5);
+};
+
+vector( float y ) menu_parent_center_width={
+  local vector v;
+  
+  v_x = MENU_CTR_x + 6; //magik number because gui_renderPatch9 is ceil(16 * w)
+  v_y = y;
+  
+  return v;
+};
+
+vector( float x ) menu_parent_center_height={
+  local vector v;
+  
+  v_x = x;
+  v_y = MENU_CTR_y + 6; //magik number because gui_renderPatch9 is ceil(16 * w)
+  
+  return v;
+};
+
 /*
   only allow these keys when typing in textfield
   not one of my best moments here...

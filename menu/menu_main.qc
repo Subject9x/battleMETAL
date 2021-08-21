@@ -48,11 +48,11 @@ void() m_init={
   FONT_NUM_ROBOT_LIGHT = loadfont("Roboto_Light", "gfx/fonts/Roboto_Light", "8 12 16 32", FONT_USER, FALSE, FALSE);
   FONT_NUM_ROBOT_THIN = loadfont("Roboto_Thin", "gfx/fonts/Roboto_Thin", "8 12 16 32", FONT_USER1, FALSE, FALSE);
   FONT_NUM_ROBOT_REGULAR = loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "8 12 16 32", FONT_USER2, FALSE, FALSE);
-  FONT_NUM_ROBOT_MEDIUM = loadfont("Roboto_Medium", "gfx/fonts/Roboto_Medium", "8 12 16 32", FONT_USER2, FALSE, FALSE);
+  FONT_NUM_ROBOT_MEDIUM = loadfont("Roboto_Medium", "gfx/fonts/Roboto_Medium", "8 12 16 32", FONT_USER3, FALSE, FALSE);
   loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, FALSE, FALSE);
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
-  FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
-  FONT_NUM_XOLONIUM_BOLD = loadfont("FatSans Shadow Medium", "gfx/fonts/Xolonium-Bold", "10 12 16 24 32", FONT_USER4, FALSE, FALSE);
+  FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER4, FALSE, FALSE);
+  FONT_NUM_XOLONIUM_BOLD = loadfont("Xolonium Bold", "gfx/fonts/Xolonium-Bold", "10 12 16 24 32", FONT_USER5, FALSE, FALSE);
   
   menu_ini_ratelist();
   

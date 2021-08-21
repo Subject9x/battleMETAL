@@ -10,9 +10,6 @@ Overview:
 on how to use menu.dat. 
 */
 
-//Main Menu Globals
-vector MENU_MAIN_ORG;
-vector MENU_MAIN_SIZE;
 
 entity main_title;
 entity main_label;
@@ -112,7 +109,7 @@ void() m_main_i={
   local float mainTitleFlag;
   
   if( MAIN_MISSION ){
-    MENU_MAIN_ORG =  VIEW_ORG + '0 40';
+    MENU_ORG =  VIEW_ORG + '0 40';
     IMG_TITLE = IMG_MAIN_PAUSE;
     labelSize = '160 24 0';
     mainTitleFlag = 0;
@@ -120,40 +117,36 @@ void() m_main_i={
     orgOptions = '10 151 0';
     orgHelp = '10 170 0';
     main_leave = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_LEAVE, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_leave, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-    //IMG_QUIT = IMG_MAIN_EXIT;
-    
     orgQuit = '10 206 0';
   }
   else{
-    MENU_MAIN_ORG = VIEW_ORG + '0 40';
-    MENU_MAIN_SIZE = '208 256';
+    menu_parent_setup(VIEW_ORG + '0 40', '208 256');
+    
     IMG_TITLE = IMG_MAIN_LBL;
     labelSize = '1 1 0';
     mainTitleFlag = UI_FLAG_SIZE_IMG;
-    main_title = lbl_img(MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 10), '1 1 0', IMG_MAIN_TITLE, '1.5 0.75 0.35', VIEW_CTX, M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
+    main_title = lbl_img(MENU_ORG + menu_parent_center_width(10), '1 1 0', IMG_MAIN_TITLE, '1.5 0.75 0.35', VIEW_CTX, M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
     
-    main_training = btn_text_callback(MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 92), '16 16', "TRAINING", VIEW_CTX, M_MAIN, click_main_train, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+    main_training = btn_text_callback(MENU_ORG + menu_parent_center_width(92), '16 16', "TRAINING", VIEW_CTX, M_MAIN, click_main_train, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
     main_training.fontId = FONT_NUM_XOLONIUM_BOLD;
     
-    main_camp = btn_text_callback(MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 111), '16 16', "CAMPAIGN", VIEW_CTX, M_MAIN, click_main_camp, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_camp = btn_text_callback(MENU_ORG + menu_parent_center_width(111), '16 16', "CAMPAIGN", VIEW_CTX, M_MAIN, click_main_camp, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     main_camp.fontId = FONT_NUM_XOLONIUM_BOLD;
     
-    main_multi = btn_text_callback(MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 130), '16 16', "MULTIPLAYER", VIEW_CTX, M_MAIN, click_main_multi, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_multi = btn_text_callback(MENU_ORG + menu_parent_center_width(130), '16 16', "MULTIPLAYER", VIEW_CTX, M_MAIN, click_main_multi, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     main_multi.fontId = FONT_NUM_XOLONIUM_BOLD;
     
-    orgOptions = MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 149);
-    orgHelp = MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 169);
+    orgOptions = MENU_ORG + menu_parent_center_width(149);
+    orgHelp = MENU_ORG + menu_parent_center_width(169);
     
-    main_credits = btn_text_callback(MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 189), '16 16', "CREDITS", VIEW_CTX, M_MAIN, click_main_credits, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_credits = btn_text_callback(MENU_ORG + menu_parent_center_width(189), '16 16', "CREDITS", VIEW_CTX, M_MAIN, click_main_credits, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     main_credits.fontId = FONT_NUM_XOLONIUM_BOLD;
     
-    //IMG_QUIT = IMG_MAIN_QUIT;
-    
-    orgQuit = MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 209);
+    orgQuit = MENU_ORG + menu_parent_center_width(209);
     
   }
   
-  main_label = lbl_img(MENU_MAIN_ORG + Vector2(MENU_MAIN_SIZE_x/2, 60), labelSize, IMG_TITLE, '1 1 1', VIEW_CTX, M_MAIN, 1, mainTitleFlag );
+  main_label = lbl_img(MENU_ORG + menu_parent_center_width(60), labelSize, IMG_TITLE, '1 1 1', VIEW_CTX, M_MAIN, 1, mainTitleFlag );
   
   main_options = btn_text_callback(orgOptions, '16 16', "OPTIONS", VIEW_CTX, M_MAIN, click_main_options, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   main_options.fontId = FONT_NUM_XOLONIUM_BOLD;
@@ -182,7 +175,7 @@ void() m_main_f={
 void() m_main_d={
   local entity widget;
   
-  gui_renderPatch9_1_32(MENU_MAIN_ORG, MENU_MAIN_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
   
   widget = findchainfloat(menuId, M_MAIN);
   while(widget){

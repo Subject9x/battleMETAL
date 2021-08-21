@@ -6,6 +6,12 @@
 */
 
 //API GLOBALS
+//Main Menu Globals
+vector MENU_ORG;  //'root' menu origin and size, if this was more OO, then this is the 'parent' 
+vector MENU_SIZE;
+vector MENU_CTR;
+
+
 float GAME_SAVES_MAX = 10;
 string GAME_SAVES[GAME_SAVES_MAX];
 string GAME_SAVES_DRAWNAME[GAME_SAVES_MAX];
@@ -129,6 +135,10 @@ void(entity myself) bindfld_ischange;
 
 void() btn_onClick_runCommand;
 
+//smaht menu alignments
+void(vector mOrg, vector mSize) menu_parent_setup;
+vector( float y ) menu_parent_center_width;
+vector( float x ) menu_parent_center_height;
 //clearly super handy
 void() dynamic_precache =
 {

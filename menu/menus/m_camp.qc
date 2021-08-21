@@ -43,18 +43,21 @@ void() click_camp_back={
 
 // ini function, called by '_f' function as a setup func
 void() m_camp_i={
+  
+  menu_parent_setup(VIEW_ORG + '0 80', '208 224');
+  
   campaign_loadfiles();
   
-  camp_title = lbl_img('10 100', '1 1 0', IMG_CAMP_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SINGLE, 1, (UI_FLAG_SIZE_IMG) );
-  camp_new = btn_img_callback('10 132', '1 1 0', IMG_CAMP_NEW, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_new, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  camp_load = btn_img_callback('10 151', '1 1 0', IMG_CAMP_LOAD, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_load, '1 1 1', '0 1 0',1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  //camp_save = btn_img_callback('10 174', '1 1 0', IMG_CAMP_SAVE, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_save, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  camp_title = lbl_img( MENU_ORG + menu_parent_center_width(10), '1 1 0', IMG_CAMP_TITLE, '1 1 1', VIEW_CTX, M_SINGLE, 1, UI_FLAG_SIZE_IMG );
   
-  /*if( isdemo() || (clientstate() != CS_CONNECTED) ){
-    camp_save.drawme = FALSE;
-  }*/
+  camp_new = btn_text_callback(MENU_ORG + menu_parent_center_width(52), '16 16', "NEW GAME", VIEW_CTX, M_SINGLE, click_camp_new, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  camp_new.fontId = FONT_NUM_XOLONIUM_BOLD;
   
-  camp_back = btn_img_callback('10 200', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  camp_load = btn_text_callback(MENU_ORG + menu_parent_center_width(71), '16 16', "LOAD", VIEW_CTX, M_SINGLE, click_camp_load, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0',1,  UI_FLAG_SIZE_IMG);
+  camp_load.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  camp_back = btn_text_callback(MENU_ORG + menu_parent_center_width(109), '16 16', "BACK", VIEW_CTX, M_SINGLE, click_camp_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  camp_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 /*
@@ -73,6 +76,9 @@ void() m_camp_f={
 */
 void() m_camp_d={
   local entity widget;
+  
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
   widget = findchainfloat(menuId, M_SINGLE);
   while(widget){
     widget.draw(widget);
