@@ -48,9 +48,11 @@ void() m_load_i={
   local vector next;
   local string name;
   
-  load_title = lbl_img('10 100', '1 1 0', IMG_LOAD_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_LOAD, 1, (UI_FLAG_SIZE_IMG) );
+  menu_parent_setup(VIEW_ORG + '0 70', '320 288');
   
-  start = '10 150';
+  load_title = lbl_img(MENU_ORG +  menu_parent_center_width(10), '1 1 0', IMG_LOAD_TITLE, '1 1 1', VIEW_CTX, M_LOAD, 1, UI_FLAG_SIZE_IMG );
+  
+  start = MENU_ORG + '10 45';
   
   itr = 0;
   while (itr < GAME_SAVES_MAX ){
@@ -62,11 +64,13 @@ void() m_load_i={
     else{
       name = GAME_SAVES_DRAWNAME[itr];
     }
-    list = btn_text_callback(next, '14 14 0', name, 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+    list = btn_text_callback(next, '14 14 0', name, 0, M_LOAD, click_load_loadgame, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+    list.fontId = FONT_NUM_XOLONIUM_BOLD;
     list.data_bind = itr; //databind
     itr = itr + 1;
   }
-  load_back = btn_img_callback(next + '0 24', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_LOAD, click_load_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  load_back = btn_text_callback(next + '45 24', '16 16 0', "BACK", VIEW_CTX, M_LOAD, click_load_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  load_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 /*
@@ -87,10 +91,7 @@ void() m_load_f={
 void() m_load_d={
   local entity widget;
   
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-    drawstring('10 132', "", '14 14', '1 1 0.1', 1, 0); 
-  drawfont = drawfont_prev;
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
   
   widget = findchainfloat(menuId, M_LOAD);
   while(widget){
