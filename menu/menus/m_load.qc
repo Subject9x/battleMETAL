@@ -65,7 +65,12 @@ void() m_load_i={
       name = GAME_SAVES_DRAWNAME[itr];
     }
     list = btn_text_callback(next, '14 14 0', name, 0, M_LOAD, click_load_loadgame, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-    list.fontId = FONT_NUM_XOLONIUM_BOLD;
+    if( GAME_SAVES_DRAWNAME[itr] == ""){
+      list.fontId = FONT_NUM_ROBOT_THIN;
+    }
+    else{
+      list.fontId = FONT_NUM_XOLONIUM_BOLD;
+    }
     list.data_bind = itr; //databind
     itr = itr + 1;
   }
