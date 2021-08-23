@@ -33,9 +33,11 @@ void() m_newsave_i={
   local string name;
   local vector backOrg;
   
-  newsave_title = lbl_img('10 100', '1 1 0', IMG_NEWSAVE_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_NEWSAVE, 1, (UI_FLAG_SIZE_IMG) );
+  menu_parent_setup(VIEW_ORG + '0 70', '346 304');
   
-  start = '10 157';
+  newsave_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1 0', IMG_NEWSAVE_TITLE, '1 1 1', VIEW_CTX, M_NEWSAVE, 1, UI_FLAG_SIZE_IMG );
+  
+  start = MENU_ORG + '10 65';
   
   itr = 0;
   actual = 0;
@@ -45,21 +47,24 @@ void() m_newsave_i={
     next_x = next_x + 16;
     next_y = next_y + (itr * 20);
     
-    
     if( GAME_SAVES_DRAWNAME[itr] == "" ){
       name = "- NEW SAVE SLOT -";
+      list = btn_text_callback(next, '14 14 0', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+      list.fontId = FONT_NUM_ROBOT_LIGHT;
     }
     else{
       name = GAME_SAVES_DRAWNAME[itr];
+      list = btn_text_callback(next, '14 14 0', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_SIZE_IMG);
+      list.fontId = FONT_NUM_XOLONIUM_BOLD;
     }
     
-    list = btn_text_callback(next, '14 14 0', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
     list.data_bind = itr; //databind
     itr = itr + 1;
   }
-  backOrg = '10 0';
-  backOrg_y = next_y + 19;
-  newsave_back = btn_img_callback(backOrg, '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_NEWSAVE, click_newsave_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  backOrg = MENU_ORG + '40 0';
+  backOrg_y = next_y + 36;
+  newsave_back = btn_text_callback(backOrg, '16 16 0', "BACK", VIEW_CTX, M_NEWSAVE, click_newsave_back, '1 1 1', '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  newsave_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 void() m_newsave_f={
@@ -73,7 +78,9 @@ void() m_newsave_f={
 void() m_newsave_d={
   local entity widget;
 
-  gui_renderString("Clicking a SaveSlot will OVERRIDE that save.", '10 138', CLR_DEF_ARM_THREEQ, '14 14 0', 1, 0);
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+
+  gui_renderString("Clicking a SaveSlot will OVERRIDE that save.", MENU_ORG + '10 45', CLR_DEF_ARM_THREEQ, '14 14 0', 1, 0);
 
   widget = findchainfloat(menuId, M_NEWSAVE);
   while(widget){

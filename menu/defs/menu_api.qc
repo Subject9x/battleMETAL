@@ -782,7 +782,7 @@ void() menu_scan_saves={
         line = fgets(flannel);
       }
       fclose(flannel);
-      save_name = sprintf("[%s]%s-%s mission: %s",save_num, gui_skillAsString(save_skill), campid, map_name);
+      save_name = sprintf("%s) %s-%s mission: %s",save_num, gui_skillAsString(save_skill), campid, map_name);
       
       cacheGlobalString( GAME_SAVES[itr], fname )
       cacheGlobalString( GAME_SAVES_DRAWNAME[itr], save_name )

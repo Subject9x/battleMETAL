@@ -58,23 +58,22 @@ void() m_load_i={
   while (itr < GAME_SAVES_MAX ){
     next = start;
     next_y = next_y + (itr * 20);
-    if( GAME_SAVES_DRAWNAME[itr] == ""){
-      name = "- EMPTY SAVE -";
+    
+    if( GAME_SAVES_DRAWNAME[itr] == "" ){
+      name = "- EMPTY -";
+      list = lbl_text(next, '14 14 0', name, CLR_DEF_TXT_CANTSELECT, 0, M_LOAD, 1, 0) ;
+      list.fontId = FONT_NUM_ROBOT_LIGHT;
     }
     else{
       name = GAME_SAVES_DRAWNAME[itr];
-    }
-    list = btn_text_callback(next, '14 14 0', name, 0, M_LOAD, click_load_loadgame, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-    if( GAME_SAVES_DRAWNAME[itr] == ""){
-      list.fontId = FONT_NUM_ROBOT_THIN;
-    }
-    else{
+      list = btn_text_callback(next, '14 14', name, 0, M_LOAD, click_saveslot, CLR_DEF_WHITE, CLR_DEF_ARM_OK, 1, UI_FLAG_SIZE_IMG);
       list.fontId = FONT_NUM_XOLONIUM_BOLD;
     }
+    
     list.data_bind = itr; //databind
     itr = itr + 1;
   }
-  load_back = btn_text_callback(next + '45 24', '16 16 0', "BACK", VIEW_CTX, M_LOAD, click_load_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  load_back = btn_text_callback(next + '45 24', '16 16', "BACK", VIEW_CTX, M_LOAD, click_load_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   load_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
