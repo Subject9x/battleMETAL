@@ -497,7 +497,7 @@ void(entity lbl) render_lbl_text={
       }
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         txt_len = stringwidth(self.label, 0, self.size);
-        sizzle_x = txt_len * 1.25;
+        sizzle_x = txt_len;
         sizzle_y = self.size_y;
       }
       
@@ -511,7 +511,7 @@ void(entity lbl) render_lbl_text={
       
       drawfont_prev = drawfont;
       drawfont = self.fontId;
-        drawstring(org, self.label, sizzle, self.color, self.alpha, 0);
+        drawstring(org, self.label, self.size, self.color, self.alpha, 0);
       drawfont = drawfont_prev;
     self = this;
   }
