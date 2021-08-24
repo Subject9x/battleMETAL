@@ -53,7 +53,6 @@ void() m_options_i={
 
   options_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1', IMG_OPTION_TITLE, '1 1 1', VIEW_CTX, M_OPTIONS, 1, UI_FLAG_SIZE_IMG );
   
-  
   options_controls = btn_text_callback(MENU_ORG + menu_parent_center_width(45), '16 16', "CONTROLS", VIEW_CTX, M_OPTIONS, click_options_controls, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
   options_controls.fontId = FONT_NUM_XOLONIUM_BOLD;
   

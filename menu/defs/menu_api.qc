@@ -286,7 +286,7 @@ entity(vector org, vector siz, void() onchange, string lblText, string ini_bind_
     cacheGlobalString( self.data_text , ini_bind_cmd)
     bind = menu_keybind_keyfor(self.data_text);
     self.len = bind_x;
-    self.label = "";
+    self.label = keynumtostring(self.len);
     self.image1 = lblText;
     self.draw = render_bindfield;
     self.isclick = bindfld_isclick;
@@ -614,7 +614,7 @@ void(entity txt) render_textfield={
 void(entity txt) render_bindfield={
   local entity this;
   local vector sizzle, bclr;
-  local vector actionOrg;
+  local vector labelOrg;
   
   if(txt.drawme){
     this = self;
@@ -624,23 +624,13 @@ void(entity txt) render_bindfield={
       if(self.len > -1){
         self.label = keynumtostring(self.len);
       }
+      self.label = strtoupper(self.label);
       
-      if( self.image1 != "" ){
-        drawfont = drawfont_prev;
-        drawfont = FONT_NUM_ROBOT_REGULAR;
-        actionOrg_x = stringwidth(self.image1, 0, self.size - (self.size * 0.15));
-        actionOrg_x = self.origin_x + actionOrg_x;
-        actionOrg_y = self.origin_y;
-        drawfont = drawfont_prev;
-      }
-      else{
-        actionOrg = self.origin;
-      }
-      sizzle_x = stringwidth(self.label, 0, self.size);
+      sizzle_x = ceil(stringwidth(self.label, 0, self.size));
       sizzle_y = self.size_y;
       
       bclr = self.color;
-      if(menu_checkMouseInBounds(VIEW_MPOS, actionOrg, sizzle)){
+      if(menu_checkMouseInBounds(VIEW_MPOS, self.origin, sizzle)){
         MOUSE_TARGET = self;
         if( self.rolledover == FALSE){ 
           localsound("sound/misc/menu3.wav");
@@ -657,21 +647,23 @@ void(entity txt) render_bindfield={
       if(self.rolledover){
         bclr = self.select_color;
       }
-      
       if( (KEYBIND_TARGET == self) && (UI_KEYBIND_ACTIVE) ){
         bclr = CLR_DEF_ARM_THREEQ;
       }
       
-      drawfont_prev = drawfont;
-      drawfont = FONT_NUM_ROBOT_REGULAR;
-        drawstring(self.origin, self.image1, self.size - (self.size * 0.15), self.color + '0.15 0.15 0.15', self.alpha + 0.15, 0); 
-      drawfont = drawfont_prev;
+      if( self.image1 != "" ){
+        drawfont_prev = drawfont;
+        drawfont = FONT_NUM_ROBOT_REGULAR;
+          labelOrg = self.origin - Vector2(stringwidth(self.image1, 0, self.size - (self.size * 0.15)), 0);
+          drawstring(labelOrg, self.image1, self.size - (self.size * 0.15), CLR_DEF_TXT_NONSELECT, self.alpha, 0); 
+        drawfont = drawfont_prev;
+      }
       
-      drawpic(actionOrg - '2 2', "gfx/ui/box_256.png", sizzle + '4 2', bclr - '0.5 0.5 0.5', 1, 0);
+      gui_renderTextInput( self.origin, sizzle, self.size, '0.35 0.35 0.35', 1, 0 ) ;
       
       drawfont_prev = drawfont;
       drawfont = self.fontId;
-        drawstring(actionOrg, self.label, self.size, bclr, self.alpha, 0);
+        drawstring(self.origin, self.label, self.size, bclr, self.alpha, 0);
       drawfont = drawfont_prev;
    self = this;
   }
