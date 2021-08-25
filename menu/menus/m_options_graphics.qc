@@ -890,7 +890,7 @@ void() m_graphics_d={
     gui_renderString("Texture Compression:", graphics_texture_compress_off.origin - Vector2(stringwidth("Texture Compression:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   
   //effects
-  gui_renderString("Graphical Detail", MENU_ORG + '300 40', CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
+  gui_renderString("Particle Details", MENU_ORG + '300 40', CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
   
   //gfx / lighting
   gui_renderString("Lighting Detail", MENU_ORG + '300 140', CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
