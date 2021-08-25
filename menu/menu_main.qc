@@ -15,21 +15,23 @@ void() m_init={
   gui_set_screen_size();
   dynamic_precache();
   
-  registercvar("cl_hud_alpha", "0", CF_ARCHIVE);
-  registercvar("cl_hud_color", "0", CF_ARCHIVE);
+  registercvar("cl_hud_alpha", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_hud_color", "0", CF_CLIENT | CF_ARCHIVE);
   //registercvar("cl_hud_sway", "0", 1);
-  registercvar("cl_team", ftos(cvar("cl_team")), CF_ARCHIVE);
-  registercvar("sv_serverflags", "0", 0);
+  registercvar("cl_team", "0", CF_CLIENT);
+  registercvar("sv_serverflags", "0", CF_SERVER);
   registercvar("cl_ismenu", "0", 0);
   
-  registercvar("cl_net_fav1", "0", CF_ARCHIVE);
-  registercvar("cl_net_fav2", "0", CF_ARCHIVE);
-  registercvar("cl_net_fav3", "0", CF_ARCHIVE);
-  registercvar("cl_net_fav4", "0", CF_ARCHIVE);
+  registercvar("cl_net_fav1", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_net_fav2", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_net_fav3", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_net_fav4", "0", CF_CLIENT | CF_ARCHIVE);
   
-  registercvar("cl_color_mil", cvar_string("cl_color_mil"), CF_ARCHIVE);
-  registercvar("cl_color_srv", cvar_string("cl_color_srv"), CF_ARCHIVE);
-  registercvar("cl_color_psc", cvar_string("cl_color_psc"), CF_ARCHIVE);
+  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  
+  registercvar("vid_samples", "1", CF_CLIENT | CF_ARCHIVE);
   
   ui_colors_set_player_list();
   menu_setup_mainservers();

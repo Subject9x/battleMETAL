@@ -2,17 +2,17 @@
 void() CSQC_Init =
 {
   local float i, cnt;
-  registercvar("gamemode", "1");
+  registercvar("gamemode", "1", CF_CLIENT | CF_SERVER | CF_CLIENT_FROM_SERVER | CF_SERVER_FROM_CLIENT);
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
-  registercvar("cl_team", ftos(cvar("cl_team")));
-  registercvar("cl_color_psc", cvar_string("cl_color_psc"));
-  registercvar("cl_color_mil", cvar_string("cl_color_mil"));
-  registercvar("cl_color_srv", cvar_string("cl_color_srv"));
-  registercvar("cl_ismenu", ftos(cvar("cl_ismenu")));
-  registercvar("chase_active", ftos(cvar("chase_active")));
+  registercvar("cl_team", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_ismenu","0", CF_CLIENT | CF_SERVER);
+  registercvar("chase_active", "0", CF_CLIENT | CF_SERVER | CF_ARCHIVE);
   
-  cvar_set("con_chat", "0");  //force old chat system off
+  cvar_set("con_chat", "0", CF_CLIENT | CF_ARCHIVE);  //force old chat system off
   
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
