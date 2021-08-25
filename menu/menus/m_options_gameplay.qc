@@ -130,7 +130,7 @@ void() click_gameplay_fov_less={
 void() click_gameplay_date_on={
   cvar_set("showdate", "1");
   cvar_set("showtime", "1");
-  
+  gameplay_datetime_lbl.len = TRUE;
   gameplay_datetime_on.drawme = FALSE;
   gameplay_datetime_off.drawme = TRUE;
 };
@@ -138,19 +138,20 @@ void() click_gameplay_date_off={
   cvar_set("showdate", "0");
   cvar_set("showtime", "0");
   
+  gameplay_datetime_lbl.len = FALSE;
   gameplay_datetime_on.drawme = TRUE;
   gameplay_datetime_off.drawme = FALSE;
 };
 
 void() click_gameplay_fps_on={
   cvar_set("showfps", "1");
-  
+  gameplay_fps_lbl.len = TRUE;
   gameplay_fps_on.drawme = FALSE;
   gameplay_fps_off.drawme = TRUE;
 };
 void() click_gameplay_fps_off={
   cvar_set("showfps", "0");
-  
+  gameplay_fps_lbl.len = FALSE;
   gameplay_fps_on.drawme = TRUE;
   gameplay_fps_off.drawme = FALSE;
 };
@@ -284,12 +285,15 @@ void() click_gameplay_hudsway_more={
 
 // ini function, called by '_f' function as a setup func
 void() m_gameplay_i={
-  gameplay_title = lbl_img('10 100', '1 1 0', IMG_OPTION_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, (UI_FLAG_SIZE_IMG) );
   
-  gameplay_fov_lbl = lbl_text('190 133', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_USELEN);
+  menu_parent_setup(VIEW_ORG + '0 80', '288 240');
+  
+  gameplay_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1 0', IMG_OPTION_TITLE, '1 1 1', VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, UI_FLAG_SIZE_IMG );
+  
+  gameplay_fov_lbl = lbl_text(MENU_ORG + '125 63', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_USELEN);
   gameplay_fov_lbl.len = cvar("fov");
-  gameplay_fov_more = btn_img_callback('222 132', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fov_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_fov_less = btn_img_callback('176 132', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fov_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_fov_more = btn_img_callback(gameplay_fov_lbl.origin + Vector2(stringwidth("100", 0, gameplay_fov_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fov_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_fov_less = btn_img_callback(gameplay_fov_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fov_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gameplay_fov_lbl.len == 40){
     gameplay_fov_less.drawme = FALSE;
@@ -298,10 +302,10 @@ void() m_gameplay_i={
     gameplay_fov_more.drawme = FALSE;
   }
   
-  gameplay_datetime_lbl = lbl_text('190 155', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
+  gameplay_datetime_lbl = lbl_text(MENU_ORG + '125 83', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
   gameplay_datetime_lbl.len = cvar("showdate");
-  gameplay_datetime_on = btn_img_callback('222 154', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_date_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_datetime_off = btn_img_callback('176 154', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_date_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_datetime_on = btn_img_callback(gameplay_datetime_lbl.origin + Vector2(stringwidth("OFF", 0, gameplay_datetime_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_date_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_datetime_off = btn_img_callback(gameplay_datetime_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_date_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gameplay_datetime_lbl.len){
     gameplay_datetime_on.drawme = FALSE;
@@ -310,10 +314,10 @@ void() m_gameplay_i={
     gameplay_datetime_off.drawme = FALSE;
   }
    
-  gameplay_fps_lbl = lbl_text('190 177', '14 14 0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
+  gameplay_fps_lbl = lbl_text(MENU_ORG + '125 103', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
   gameplay_fps_lbl.len = cvar("showfps");
-  gameplay_fps_on = btn_img_callback('222 176', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fps_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_fps_off = btn_img_callback('176 176', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fps_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_fps_on = btn_img_callback(gameplay_fps_lbl.origin + Vector2(stringwidth("OFF", 0, gameplay_fps_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fps_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_fps_off = btn_img_callback(gameplay_fps_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fps_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gameplay_fps_lbl.len){
     gameplay_fps_on.drawme = FALSE;
@@ -324,17 +328,17 @@ void() m_gameplay_i={
   
   local float clean;
   clean = cvar("crosshair");
-  gameplay_crosshair_lbl = lbl_text('200 199', '14 14 0', strzone(sprintf("%0.0f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_crosshair_lbl = lbl_text(MENU_ORG + '125 123', '14 14', strzone(sprintf("%0.0f", clean)), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_crosshair_lbl.len = cvar("crosshair");
   gameplay_crosshair_lbl.image1 = gameplay_crosshair_img( cvar("crosshair") );
-  gameplay_crosshair_nx = btn_img_callback('230 197', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_crosshair_pr = btn_img_callback('176 197', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_crosshair_nx = btn_img_callback(gameplay_crosshair_lbl.origin + Vector2(stringwidth("5", 0, gameplay_crosshair_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_crosshair_pr = btn_img_callback(gameplay_crosshair_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   clean = cvar("cl_hud_alpha");
-  gameplay_hudalpha_lbl = lbl_text('190 221', '14 14 0', strzone(sprintf("%0.2f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudalpha_lbl = lbl_text(MENU_ORG + '125 143', '14 14', strzone(sprintf("%0.2f", clean)), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_hudalpha_lbl.len = cvar("cl_hud_alpha");
-  gameplay_hudalpha_up = btn_img_callback('230 220', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_hudalpha_dn = btn_img_callback('176 220', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudalpha_up = btn_img_callback(gameplay_hudalpha_lbl.origin + Vector2(stringwidth("9.99", 0, gameplay_crosshair_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudalpha_dn = btn_img_callback(gameplay_hudalpha_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if( gameplay_hudalpha_lbl.len < 0.1 ){
     gameplay_hudalpha_dn.drawme = FALSE;
@@ -345,20 +349,20 @@ void() m_gameplay_i={
   
   local string colr;
   colr = gameplay_hudcolor_name( cvar("cl_hud_color") );
-  gameplay_hudcolor_lbl = lbl_text('190 243', '14 14', strzone(colr), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudcolor_lbl = lbl_text(MENU_ORG + '125 163', '14 14', strzone(colr), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_hudcolor_lbl.len = cvar("cl_hud_color");
   gameplay_hudcolor_lbl.color_x = cvar("crosshair_color_red");
   gameplay_hudcolor_lbl.color_y = cvar("crosshair_color_green");
   gameplay_hudcolor_lbl.color_z = cvar("crosshair_color_blue");
-  gameplay_hudcolor_nx = btn_img_callback('245 242', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_hudcolor_pr = btn_img_callback('176 242', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudcolor_nx = btn_img_callback(gameplay_hudcolor_lbl.origin + Vector2(stringwidth("PURPLE", 0, gameplay_crosshair_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudcolor_pr = btn_img_callback(gameplay_hudcolor_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  //gameplay_hud_sway_set = lbl_text('190 263', '14 14 0', strzone(gameplay_hud_sway_mode(cvar("cl_hud_sway"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  //gameplay_hud_sway_set = lbl_text('150 263', '14 14 0', strzone(gameplay_hud_sway_mode(cvar("cl_hud_sway"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
   //gameplay_hud_sway_set.len = cvar("cl_hud_sway");
   //gameplay_hud_sway_more = btn_img_callback('220 263', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   //gameplay_hud_sway_less = btn_img_callback('176 263', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  gameplay_back = btn_img_callback('10 285 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  gameplay_back = btn_img_callback(MENU_ORG + '45 220 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
 /*
@@ -378,19 +382,31 @@ void() m_gameplay_f={
 void() m_gameplay_d={
   local vector crossColor;
   
-  gui_renderString("Field of View:", '96 133', CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("Show Date/Time:", '74 155', CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("Show FPS:", '110 177', CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("Crosshair Style:", '83 197', CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("HUD Alpha:", '108 221', CLR_DEF_WHITE, '14 14 0', 1, 0);
-  gui_renderString("HUD Color:", '108 243', CLR_DEF_WHITE, '14 14 0', 1, 0);
-  //gui_renderString("HUD Sway Mode:", '74 263', CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  gui_renderString("- Gameplay -", MENU_ORG + menu_parent_center_width(40) - Vector2((stringwidth("- Particle Settings -", 0, '16 16')/2),0), CLR_DEF_WHITE, '16 16', 1, 0);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_LIGHT;
+  
+    gui_renderString("Field of View:", gameplay_fov_less.origin - Vector2(stringwidth("Field of View:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Show Date/Time:", gameplay_fps_off.origin - Vector2(stringwidth("Show Date/Time:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Show FPS:", gameplay_datetime_off.origin - Vector2(stringwidth("Show FPS:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Crosshair Style:", gameplay_crosshair_pr.origin - Vector2(stringwidth("Crosshair Style:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("HUD Alpha:", gameplay_hudalpha_dn.origin - Vector2(stringwidth("HUD Alpha:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("HUD Color:", gameplay_hudcolor_pr.origin - Vector2(stringwidth("HUD Color:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    //gui_renderString("HUD Sway Mode:", '74 263', CLR_DEF_WHITE, '14 14 0', 1, 0);
+
+  drawfont = drawfont_prev;
 
   crossColor_x = cvar("crosshair_color_red");
   crossColor_y = cvar("crosshair_color_green");
   crossColor_z = cvar("crosshair_color_blue");
   
-  drawpic( '275 167', gameplay_crosshair_lbl.image1 , '64 64', crossColor, gameplay_hudalpha_lbl.len, 0);
+  drawpic(MENU_ORG + '200 125', gameplay_crosshair_lbl.image1 , '64 64', crossColor, gameplay_hudalpha_lbl.len, 0);
   
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_GAMEPLAY);
