@@ -790,7 +790,7 @@ void() m_graphics_i={
   }
   
   //gfx / lighting
-  graphics_gfx_lbl = lbl_text(MENU_ORG + '345 160', '14 14', graphics_get_gx(cvar("saved2")), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_gfx_lbl = lbl_text(MENU_ORG + '330 160', '14 14', graphics_get_gx(cvar("saved2")), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
   graphics_gfx_lbl.len = cvar("saved2");
   graphics_gfx_more = btn_img_callback(graphics_gfx_lbl.origin + Vector2(stringwidth(graphics_gfx_lbl.label, 0, graphics_gfx_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_light_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_gfx_less = btn_img_callback(graphics_gfx_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_light_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -803,7 +803,7 @@ void() m_graphics_i={
    
   //contrasts
   
-  graphics_game_contrast_lbl = lbl_text(MENU_ORG + '360 202', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_game_contrast_lbl = lbl_text(MENU_ORG + '360 230', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
   graphics_game_contrast_lbl.len = cvar("v_contrast");
   
   cacheGlobalString( graphics_game_contrast_lbl.label, sprintf("%0.3f", graphics_game_contrast_lbl.len))
@@ -818,7 +818,7 @@ void() m_graphics_i={
     graphics_game_contrast_less.drawme = FALSE;
   }
   
-  graphics_gamma_lbl = lbl_text(MENU_ORG + '360 222', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_gamma_lbl = lbl_text(MENU_ORG + '360 250', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
   graphics_gamma_lbl.len = cvar("v_gamma");
   
   cacheGlobalString( graphics_gamma_lbl.label, sprintf("%0.3f", graphics_gamma_lbl.len))
