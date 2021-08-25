@@ -123,6 +123,7 @@ void() setup_save_color_scheme={
   localsound("sound/misc/menu2.wav");
 };*/
 void() click_setup_accept={
+  localcmd("saveconfig\n");
   setup_save_color_scheme();
   menu_clear_items(M_STATE);
   if( MAIN_MISSION ) {
@@ -358,7 +359,7 @@ void(float key, float ascii) m_setup_k={
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
       setup_save_color_scheme();
-      cmd("saveconfig\n");
+      localcmd("saveconfig\n");
       if( MAIN_MISSION ) {
         m_main_f();
       }

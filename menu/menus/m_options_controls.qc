@@ -77,7 +77,7 @@ void() click_control_mouse_sense_more={
   }
   controls_mouse_sense_less.drawme = TRUE;
   controls_mouse_sense.len = val;
-  cvar_set("sensitivity", controls_mouse_sense.label);
+  cvar_set("sensitivity", ftos(controls_mouse_sense.len));
 };
 void() click_control_mouse_sense_less={
   local float val;
@@ -89,7 +89,7 @@ void() click_control_mouse_sense_less={
   }
   controls_mouse_sense_more.drawme = TRUE;
   controls_mouse_sense.len = val;
-  cvar_set("sensitivity", controls_mouse_sense.label);
+  cvar_set("sensitivity", ftos(controls_mouse_sense.len));
 };
 
 void() click_control_mouse_invert_on={
@@ -213,7 +213,7 @@ void() click_controls_back={
 };
 
 void() click_controls_accept={
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
   click_controls_back();
 };
 
@@ -400,7 +400,7 @@ void(float key, float ascii) m_controls_k={
   switch(key){
     case K_ESCAPE:
       localsound("sound/misc/menu2.wav");
-      cmd("saveconfig\n");
+      localcmd("saveconfig\n");
       menu_clear_items(M_STATE);
       M_STATE = M_OPTIONS;
       m_options_f();

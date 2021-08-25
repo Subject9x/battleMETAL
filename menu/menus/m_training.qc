@@ -17,13 +17,13 @@ entity train_back_btn;
 void( string mapName ) train_click_launch={
   menu_clear_items(M_STATE);
   menu_exit_togame();
-  cmd("deathmatch 0\n");
-  cmd("teamplay 0\n");
-  cmd("coop 0\n");
-  cmd("cd stop\n");
-  cmd("maxplayers 1\n");
+  localcmd("deathmatch 0\n");
+  localcmd("teamplay 0\n");
+  localcmd("coop 0\n");
+  localcmd("cd stop\n");
+  localcmd("maxplayers 1\n");
   cvar_set("cl_ismenu","0");
-  cmd(strcat("map ", mapName,"\n")); 
+  localcmd(strcat("map ", mapName,"\n")); 
 };
 
 void() click_train_back={

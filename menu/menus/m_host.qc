@@ -147,7 +147,7 @@ void() host_update_playeramount={
     }
   }
   
-  cmd(strcat("maxplayers ",  ftos(rint(SELECT_PLAYERS)),"\n"));
+  localcmd(strcat("maxplayers ",  ftos(rint(SELECT_PLAYERS)),"\n"));
   host_playernum.len = SELECT_PLAYERS;
   host_playernum.subid = SUB_MENU;
   host_playermor.subid = SUB_MENU;
@@ -181,7 +181,7 @@ void(float skl) host_update_skilllbl={
 void(float rte) host_update_rate={
   local string cmdString;
   cmdString = strcat("rate ", ftos(HOST_RATE_TABLE[rte]),"\n");
-  cmd(cmdString);
+  localcmd(cmdString);
   host_serverrate.len = HOST_RATE_TABLE[rte];
 };
 
@@ -456,11 +456,11 @@ void() host_check_flag_nocamera={
 void() click_host_back={
   cvar_set("sv_serverflags", "0");  //dont save serverflags
   cvar_set("sv_public", "-2");
-  cmd("maxplayers 1\n");
+  localcmd("maxplayers 1\n");
   cvar_set("coop" , "0");
   cvar_set("deathmatch" , "0");
   cvar_set("teamplay" , "0");
-  cmd("rate 250000\n");
+  localcmd("rate 250000\n");
   menu_clear_items(M_STATE);
   m_multi_f();
 };
@@ -478,7 +478,7 @@ void() click_host_launch={
     cvar_set("timelimit", ftos(TIME_DEF));
   }
   
-  cmd(strcat("maxplayers ",  ftos(rint(SELECT_PLAYERS)),"\n"));
+  localcmd(strcat("maxplayers ",  ftos(rint(SELECT_PLAYERS)),"\n"));
   if( cvar("deathmatch") ){
     cvar_set("skill", "3");
   }
@@ -488,7 +488,7 @@ void() click_host_launch={
   cvar_set("sv_serverflags", ftos(rint(SERVER_FLAGS)));
   menu_clear_items(M_STATE);
   menu_exit_togame();
-  cmd(strcat("map ", host_map_lbl.label, "\n"));
+  localcmd(strcat("map ", host_map_lbl.label, "\n"));
 };
 
 void() m_host_i={
@@ -738,11 +738,11 @@ void(float key, float ascii) m_host_k={
     case K_ESCAPE:
       cvar_set("sv_serverflags", "0");  //dont save serverflags
       cvar_set("sv_public", "-2");
-      cmd("maxplayers 1\n");
+      localcmd("maxplayers 1\n");
       cvar_set("coop" , "0");
       cvar_set("deathmatch" , "0");
       cvar_set("teamplay" , "0");
-      cmd("rate 250000\n");
+      localcmd("rate 250000\n");
       
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);

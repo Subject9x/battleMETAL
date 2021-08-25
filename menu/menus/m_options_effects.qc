@@ -405,7 +405,7 @@ void() click_effects_save={
   cvar_set("r_lerpsprites", ftos(effects_sprite_interpol_lbl.len));
   cvar_set("r_lerplightstyles", ftos(effects_flicker_interpol_lbl.len));
   cvar_set("saved1", "0");
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
   menu_clear_items(M_STATE);
   m_graphics_f();
 };

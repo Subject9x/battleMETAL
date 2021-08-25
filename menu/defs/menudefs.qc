@@ -255,12 +255,12 @@ vector 	vectoangles(vector v)		= #11;
 
 float	random(void)  = #12;
 
-void	cmd(string command, ...) = #13;
+void	localcmd(string command, ...) = #13;
 
 // cvar cmds
 
 float 	cvar(string name) 			= #14;
-const string str_cvar(string name)		= #71;
+string str_cvar(string name)		= #71;
 void	cvar_set(string name, string value)	= #15;
 
 void	dprint(string text,...) = #16;
@@ -342,7 +342,7 @@ float	gettime(void)		= #67;
 void 	loadfromdata(string data) = #68;
 void	loadfromfile(string file) = #69;
 
-float	mod(float val, float m) = #70;
+float	modulo(float val, float m) = #70;
 
 float	search_begin(string pattern, float caseinsensitive, float quiet) = #74;
 void	search_end(float handle) = #75;
@@ -413,6 +413,33 @@ string	keynumtostring(float keynum) = #609;
 float	gethostcachevalue(float type) = #611;
 //not 'type'!, FIELD, as in those SLIF_* values! (grrrr)
 string	gethostcachestring(float fld, float hostnr) = #612;
+
+//Supposedly Cin video file support?
+/*
+VM_cin_open,						// #461
+VM_cin_close,						// #462
+VM_cin_setstate,					// #463
+VM_cin_getstate,					// #464
+VM_cin_restart, 					// #465
+
+VIDEO STATE / TYPE
+  cin_getstate() and cin_setstate()
+*/
+float CLVIDEO_UNUSED        = 0;
+float CLVIDEO_PLAY          = 1;
+float CLVIDEO_LOOP          = 2;
+float CLVIDEO_PAUSE         = 3;
+float CLVIDEO_FIRSTFRAME    = 4;
+float CLVIDEO_RESETONWAKEUP = 5;
+float CLVIDEO_STATECOUNT    = 6;
+
+float() videoplaying = #355;
+
+float cin_open(string file, string name) = #461;
+void cin_close(string name) = #462;
+void cin_setstate(string name, float type) = #463;
+float cin_getstate(string name) = #464;
+void cin_restart(string name) = #465;
 
 //DP_CSQC_BINDMAPS
 //idea: daemon, motorsep

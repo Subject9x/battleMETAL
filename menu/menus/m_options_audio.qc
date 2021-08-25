@@ -200,7 +200,7 @@ void() click_sfx_up={
   
   audio_sfx_dn.drawme = TRUE;
   cvar_set("volume", ftos(audio_sfx_vol_lbl.len));
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
   
 };
 void() click_sfx_dn={
@@ -216,7 +216,7 @@ void() click_sfx_dn={
   
   audio_sfx_up.drawme = TRUE;
   cvar_set("volume", ftos(audio_sfx_vol_lbl.len));
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
 };
 
 void() click_audio_music_on={
@@ -259,7 +259,7 @@ void() click_music_up={
   
   audio_music_dn.drawme = TRUE;
   cvar_set("bgmvolume", ftos(audio_music_vol_lbl.len));
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
 };
 void() click_music_dn={
   local float level;
@@ -274,7 +274,7 @@ void() click_music_dn={
   
   audio_music_up.drawme = TRUE;
   cvar_set("bgmvolume", ftos(audio_music_vol_lbl.len));
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
 };
 
 void() click_speakers_more={
@@ -327,8 +327,11 @@ void() click_quality_up={
     audio_quality_up.drawme = FALSE;
   }
   audio_quality_lbl.len = val;
-  strunzone(audio_quality_lbl.label);
-  audio_quality_lbl.label = strzone(audio_speed_get_val(audio_quality_lbl.len));
+  
+  freeGlobalString(audio_quality_lbl.label)
+  
+  cacheGlobalString(audio_quality_lbl.label, audio_speed_get_val(audio_quality_lbl.len) )
+
   audio_quality_dn.drawme = TRUE;
 };
 void() click_quality_dn={
@@ -340,8 +343,11 @@ void() click_quality_dn={
     audio_quality_dn.drawme = FALSE;
   }
   audio_quality_lbl.len = val;
-  strunzone(audio_quality_lbl.label);
-  audio_quality_lbl.label = strzone(audio_speed_get_val(audio_quality_lbl.len));
+  
+  freeGlobalString(audio_quality_lbl.label)
+  
+  cacheGlobalString(audio_quality_lbl.label, audio_speed_get_val(audio_quality_lbl.len) )
+  
   audio_quality_up.drawme = TRUE;
 };
 
@@ -358,7 +364,7 @@ void() click_audio_save={
   cvar_set("snd_mutewhenidle", ftos(audio_mute_idle_lbl.len));  
   audio_speed_set(audio_quality_lbl.len);
   
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
 
   click_audio_back();
 };
@@ -416,7 +422,7 @@ void() m_audio_i={
   audio_music_toggle_on = btn_img_callback(MENU_ORG + '180 103', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_audio_music_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   audio_music_toggle_off = btn_img_callback(MENU_ORG + '140 103', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_audio_music_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  audio_music_vol_lbl = lbl_text(MENU_ORG + '165 126', '14 14'," ", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  audio_music_vol_lbl = lbl_text(MENU_ORG + '165 126', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
   
   audio_music_up = btn_img_callback(MENU_ORG + '180 125', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_music_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   audio_music_dn = btn_img_callback(MENU_ORG + '140 125', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_music_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -449,7 +455,7 @@ void() m_audio_i={
   }
   
   //speaker mode
-  audio_speakers_lbl = lbl_text(MENU_ORG + '162 182', '14 14'," ", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  audio_speakers_lbl = lbl_text(MENU_ORG + '162 182', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
   audio_speakers_more = btn_img_callback(MENU_ORG + '240 181', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_speakers_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   audio_speakers_less = btn_img_callback(MENU_ORG + '140 181', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_speakers_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
@@ -463,7 +469,7 @@ void() m_audio_i={
     audio_speakers_more.drawme = FALSE;
   }
 
-  audio_mute_idle_lbl = lbl_text(MENU_ORG + '162 204', '14 14'," ", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, UI_FLAG_LBL_BOOL_ON);
+  audio_mute_idle_lbl = lbl_text(MENU_ORG + '162 204', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, UI_FLAG_LBL_BOOL_ON);
   audio_mute_idle_lbl.len = cvar("snd_mutewhenidle");
   audio_mute_idle_on = btn_img_callback(MENU_ORG + '184 203', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_mute_idle_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   audio_mute_idle_off = btn_img_callback(MENU_ORG + '140 203', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_mute_idle_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -475,12 +481,13 @@ void() m_audio_i={
     audio_mute_idle_off.drawme = FALSE;
   }
 
-  audio_quality_lbl = lbl_text(MENU_ORG + '162 226', '14 14 0'," ", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  audio_quality_lbl = lbl_text(MENU_ORG + '162 226', '14 14 0',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
   audio_quality_up = btn_img_callback(MENU_ORG + '200 225', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_quality_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   audio_quality_dn = btn_img_callback(MENU_ORG + '140 225', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_quality_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   audio_quality_lbl.len = audio_speed_get(cvar("snd_speed"));
-  audio_quality_lbl.label = audio_speed_get_val(audio_quality_lbl.len);
+  
+  cacheGlobalString( audio_quality_lbl.label, audio_speed_get_val(audio_quality_lbl.len) )
   
   if(audio_quality_lbl.len == 0){
     audio_quality_dn.drawme = FALSE;

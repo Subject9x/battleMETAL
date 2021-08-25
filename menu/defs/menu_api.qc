@@ -727,7 +727,7 @@ void(entity myself) btn_isclick={
 
 void() btn_onClick_runCommand={
   if(self.command){
-    cmd(self.command);
+    localcmd(self.command);
   }
 };
 

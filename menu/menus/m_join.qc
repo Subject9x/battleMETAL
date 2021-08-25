@@ -332,7 +332,7 @@ void(float key, float ascii) m_join_k={
       menu_clear_items(M_STATE);
       menu_exit_togame();
       joinCmd = strcat("connect ", gethostcachestring(gethostcacheindexforkey("cname"), SERVER_SELECTED), "\n");
-      cmd(joinCmd);
+      localcmd(joinCmd);
     }
     return;
   }

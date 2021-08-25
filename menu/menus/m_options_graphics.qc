@@ -239,10 +239,13 @@ void() click_graphics_bits_more={
 
 void() click_graphics_aa_more={
   local float sampl;
+  local float dir;
+  
+  dir = 1;
   sampl = graphics_aa_lbl.len;
-  sampl = sampl * 2;
-  if(sampl >= 16){
-    sampl = 16;
+  sampl = bound(1, sampl * (dir > 0 ? 2 : 0.5), 32);
+  
+  if(sampl >= 32){
     graphics_aa_more.drawme = FALSE;
   }
   if( !graphics_aa_less.drawme ){
@@ -251,11 +254,13 @@ void() click_graphics_aa_more={
   graphics_aa_lbl.len = sampl;
 };
 void() click_graphics_aa_less={
-  local float sampl;
+  local float sampl;  local float dir;
+  
+  dir = -1;
   sampl = graphics_aa_lbl.len;
-  sampl = rint(sampl / 2);
-  if(sampl <= 1){
-    sampl = 1;
+  sampl = bound(1, sampl * (dir > 0 ? 2 : 0.5), 32);
+  
+  if(sampl == 1){
     graphics_aa_less.drawme = FALSE;
   }
   if( !graphics_aa_more.drawme ){
@@ -603,10 +608,14 @@ void() click_graphics_accept={
   ACCEPT_TIMER = gettime() + ACCEPT_PAUSE;
   
   cvar_set("vid_bitsperpixel", ftos(graphics_bits_lbl.len));
-  cvar_set("vid_samples", ftos(graphics_aa_lbl.len));
+  cvar_set("vid_samples", ftos(rint(graphics_aa_lbl.len)));
+  
+  cons_logAFloat("rint(graphics_aa_lbl.len))", rint(graphics_aa_lbl.len)); //debug
+  cons_logAFloat("cvar(\"vid_samples\")", cvar("vid_samples")); //debug
+  
   if(graphics_refresh_rate_lbl.len != FALSE){
-    cvar_set("vid_userefreshrate", ftos(graphics_refresh_lbl.len));
-    cvar_set("vid_refreshrate", ftos(graphics_refresh_rate_lbl.len));
+    cvar_set("vid_userefreshrate", ftos(rint(graphics_refresh_lbl.len)));
+    cvar_set("vid_refreshrate", ftos(rint(graphics_refresh_rate_lbl.len)));
   }
   else{
     cvar_set("vid_userefreshrate", ftos(0));
@@ -629,8 +638,9 @@ void() click_graphics_accept={
     cvar_set("vid_conheight",ftos(rint(VID_CNEXT_y)));
   }
   
-  cmd("vid_restart\n");
-  cmd("saveconfig\n");
+  
+  localcmd("vid_restart\n");
+  localcmd("saveconfig\n");
   //apparently also loads autoexec.cfg and .rc
 };
 
@@ -673,17 +683,17 @@ void() m_graphics_i={
   }
   
   //anti-alias
-  graphics_aa_lbl = lbl_text(MENU_ORG + '150 162', '14 14', "32", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, UI_FLAG_LBL_USELEN);
+  graphics_aa_lbl = lbl_text(MENU_ORG + '150 162', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, UI_FLAG_LBL_USELEN);
   graphics_aa_lbl.len = cvar("vid_samples");
-  graphics_aa_more = btn_img_callback(graphics_aa_lbl.origin + Vector2(stringwidth(graphics_aa_lbl.label, 0, graphics_aa_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_aa_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_aa_more = btn_img_callback(graphics_aa_lbl.origin + Vector2(stringwidth("32", 0, graphics_aa_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_aa_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_aa_less = btn_img_callback(graphics_aa_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_aa_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(graphics_aa_lbl.len >= 32){
     graphics_aa_lbl.len = 16;
     graphics_aa_more.drawme = FALSE;
   }
-  else if(graphics_aa_lbl.len <= 1){
-    graphics_aa_lbl.len = 1;
+  else if(graphics_aa_lbl.len == 0){
+    graphics_aa_lbl.len = 0;
     graphics_aa_less.drawme = FALSE;
   }
   

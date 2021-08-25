@@ -157,7 +157,7 @@ void() click_gameplay_fps_off={
 };
 
 void() click_gameplay_back={
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
   menu_clear_items(M_STATE);
   m_options_f();
 };
@@ -425,7 +425,7 @@ void(float key, float ascii) m_gameplay_k={
   
   switch(key){
     case K_ESCAPE:
-      cmd("saveconfig\n");
+      localcmd("saveconfig\n");
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
       M_STATE = M_OPTIONS;

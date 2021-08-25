@@ -23,7 +23,7 @@ void() click_save_back={
 
 void() click_save_savegame={
   cvar_set("saveslot", ftos(self.data_bind));
-  cmd("savegame", "\n");
+  localcmd("savegame", "\n");
   menu_scan_saves();  //update's save-game list
   menu_clear_items(M_STATE);
   menu_exit_togame();

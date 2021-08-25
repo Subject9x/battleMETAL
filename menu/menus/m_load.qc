@@ -34,9 +34,9 @@ void() click_load_loadgame={
     cvar_set("coop", ftos(0));
     cvar_set("deathmatch", ftos(0));
     cvar_set("skill", ftos(GAME_SAVES_SKILL[self.data_bind]));
-    cmd("maxplayers 1;\n");
+    localcmd("maxplayers 1;\n");
     menu_exit_togame();
-    cmd(strcat("map ", GAME_SAVES_MAP[self.data_bind]),"\n");
+    localcmd(strcat("map ", GAME_SAVES_MAP[self.data_bind]),"\n");
   }
 };
 
