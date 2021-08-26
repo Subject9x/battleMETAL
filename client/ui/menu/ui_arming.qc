@@ -37,7 +37,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '132 56 0';
     toolTip.description = "Hover on Hardpoints to see weapon info.";
     toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -47,7 +47,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '200 48 0';
     toolTip.description = "[Groups] are collections of weapons that will fire at the same time when you select that group and press the 'Fire' button.";
     toolTip.angles = '0.9 0.9 0.9';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -57,7 +57,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '156 48 0';
     toolTip.description = "This panel shows you how much <Energy> will be drained from your Reactor when you fire each Group.";
     toolTip.angles = '0.9 0.9 0.9';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -67,7 +67,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '200 32 0';
     toolTip.description = "Click on a weapon to the >Right> to see its statistics in this window.";
     toolTip.angles = '0.9 0.9 0.9';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -77,7 +77,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '200 40 0';
     toolTip.description = "Click on a HARDPOINT to the <Left< to see the stats for the weapon mounted there, in this window.";
     toolTip.angles = '0.9 0.9 0.9';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }

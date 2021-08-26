@@ -23,7 +23,7 @@ void() menu_hangarListener_onHover={
     toolTip.mins = '164 56 0';
     toolTip.description = "Hardpoints are where Weapons and Equipment are mounted to your mech. This panel shows where on the mech the weapons will be.";
     toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -33,7 +33,7 @@ void() menu_hangarListener_onHover={
     toolTip.mins = '164 64 0';
     toolTip.description = "Hardpoints can only accept certain {Types} and {Sizes} of Weapons and Equipment.";
     toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -169,10 +169,10 @@ void(vector ofs) menu_hangar_MechHPoints={
   nofs = ofs;
   gui_renderPatch9_1_32(nofs, '265 220',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
-  tlen = stringwidth("Hardpoint Restrictions", 0, '10 10 0');
+  tlen = stringwidth("Hardpoint Restrictions", 0, '10 10');
   tofs = Vector2(nofs_x + (255/2) - (tlen/2),  nofs_y + 2);
   
-  drawstring(tofs + '9.9 0', "-Hardpoint Restrictions-", '10 10 0', CLR_DEF_WHITE, 1, 0);
+  drawstring(tofs + '9.9 0', "-Hardpoint Restrictions-", '10 10', CLR_DEF_WHITE, 1, 0);
     
   if(SELECT_MECH > FALSE){
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
@@ -218,9 +218,9 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_LIGHT;
   
-  labelLen = stringwidth( listName, 0, '12 12 0');
+  labelLen = stringwidth( listName, 0, '12 12');
   labelOrg = Vector2(nofs_x + 10,nofs_y + 2);
-  drawstring(labelOrg, listName, '12 12 0', listNameColor, 1, 0);
+  drawstring(labelOrg, listName, '12 12', listNameColor, 1, 0);
   
   drawfont = drawfont_prev;
   
@@ -304,11 +304,11 @@ void(vector ofs) menu_hangar_MechInfo={
   nofs = ofs;
   gui_renderPatch9_1_32(nofs, '224 180',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
 
-  slen = stringwidth("-Metal Info-", 0 ,'10 10 0');
+  slen = stringwidth("-Metal Info-", 0 ,'10 10');
   labelOrg = nofs;
   labelOrg_x = labelOrg_x +  125 - ( slen / 2);
   labelOrg_y = labelOrg_y + 8;
-  drawstring(labelOrg, "-Metal Info-", '10 10 0', CLR_DEF_WHITE, 1, 0);
+  drawstring(labelOrg, "-Metal Info-", '10 10', CLR_DEF_WHITE, 1, 0);
   
   fontSize = fontSizeSmall;
     drawstring(nofs + '8 23', "Type:", fontSize, CLR_DEF_GRAY_H, 1, 0);
@@ -392,7 +392,7 @@ void(vector ofs) menu_hangar_MechFluff={
   
   if(SELECT_MECH > FALSE){
     fpos = nofs + '8 12';
-    gui_wrapText(fpos, '230 252', MECH_DATA_DESC, '11 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+    gui_wrapText(fpos, '230 252', MECH_DATA_DESC, '12 12', CLR_DEF_TXT_GRAY_SMOOTH, 1);
   }
   
   drawfont = drawfont_prev;

@@ -52,7 +52,7 @@ void() menu_briefListener_onHover={
      toolTip.mins = '164 48';
      toolTip.description = "The -Map Panel- displays (Nav) markers and <Drop Points> for the mission.";
      toolTip.angles = '0.92 0.92 0.92';
-     toolTip.maxs = '12 10 0';
+     toolTip.maxs = '12 12';
      toolTip.alpha = 1;
      return;
   }
@@ -61,7 +61,7 @@ void() menu_briefListener_onHover={
      toolTip.mins = '164 48';
      toolTip.description = "This panel displays the basic information for the mission.";
      toolTip.angles = '0.92 0.92 0.92';
-     toolTip.maxs = '12 10 0';
+     toolTip.maxs = '12 12';
      toolTip.alpha = 1;
      return;
   }
@@ -71,7 +71,7 @@ void() menu_briefListener_onHover={
     toolTip.mins = '196 32';
     toolTip.description = "These are the [Objectives] required to complete the mission.";
     toolTip.angles = '0.92 0.92 0.92';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -81,7 +81,7 @@ void() menu_briefListener_onHover={
     toolTip.mins = '196 48';
     toolTip.description = "[Intel] provides a little bit of foresight into what you might face in the mission or which weapons/equipment might work best.";
     toolTip.angles = '0.92 0.92 0.92';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -125,10 +125,10 @@ void(vector ofs) menu_briefMissionInfo={
   
   local float tlen;
   local vector tpos;
-  tlen = stringwidth("MISSION INFO", 0, '14 12 0');
+  tlen = stringwidth("MISSION INFO", 0, '14 14 0');
   tpos = ofs + '121 2';
   tpos_x = tpos_x - (tlen/2);
-  drawstring(tpos, "MISSION INFO", '14 12 0', '1 1 1', 1, 0);
+  drawstring(tpos, "MISSION INFO", '14 14', '1 1 1', 1, 0);
   
   //mission name
   drawstring( ofs + '7 14', "Name", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
@@ -275,7 +275,7 @@ void(vector ofs) menu_briefMapPanel={
     drawpic(iofs, MSN_MAPPIC, ui_msize_in, '1 1 1', 1, 0);
   }
   else{
-    gui_wrapText(iofs + Vector2(ui_msize_in_x / 4.75, ui_msize_in_y / 3) , '210 32', "Satellite Data: unavailable", '16 14 0', '1 0 0', 1);
+    gui_wrapText(iofs + Vector2(ui_msize_in_x / 4.75, ui_msize_in_y / 3) , '210 32', "Satellite Data: unavailable", '16 16', '1 0 0', 1);
   }
   
   map_size = Vector2( (world.mins_x*-1) + world.maxs_x, (world.mins_y*-1) + world.maxs_y );
@@ -306,7 +306,7 @@ void(vector ofs) menu_briefMapPanel={
     nofs_y = nofs_y - 18;
     gui_renderTintImage(TRUE, tofs - '8 8', UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
       
-    drawstring(nofs, nav.vec_name, '12 12 0', renderColor + '0.4 0.4 0.4', 1, 0);
+    drawstring(nofs, nav.vec_name, '12 12', renderColor + '0.4 0.4 0.4', 1, 0);
       
     drawfont = drawfont_prev;
   }
@@ -358,7 +358,7 @@ void(vector ofs) menu_briefObjectivePanel={
       }
     }
     
-    line_rtn = gui_wrapText(objectiveOffset, '265 332', text, '12 12 0', objColor, 1);
+    line_rtn = gui_wrapText(objectiveOffset, '265 332', text, '12 12', objColor, 1);
     
     if(MSN_OBJ_DESC[(lst_idx+1)] == ""){
       eol = FALSE;
@@ -407,7 +407,7 @@ void(vector ofs) menu_briefMissionText={
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
   fpos = ofs;
-  gui_wrapText(fpos, '265 345', MSN_BRIEF, '10 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+  gui_wrapText(fpos, '265 345', MSN_BRIEF, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
   
   drawfont = drawfont_prev;
 };

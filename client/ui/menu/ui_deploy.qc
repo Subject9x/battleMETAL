@@ -44,7 +44,7 @@ void() menu_deployListener_onHover={
     toolTip.mins = '256 64';
     toolTip.description = "This is the Deployment map. Here you can see all possible <Deploy> points and <NAV> markers. The currently selected <Deploy> point is highlighted in green.";
     toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -54,7 +54,7 @@ void() menu_deployListener_onHover={
     toolTip.mins = '256 64';
     toolTip.description = "<Deploy> points are where you will start the mission. Clicking <| and |> will select different <Deploy> points on the map.";
     toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '12 10 0';
+    toolTip.maxs = '12 12';
     toolTip.alpha = 1;
     return;
   }
@@ -159,19 +159,19 @@ void(vector ofs) menu_deploy_missionInfoPanel={
  
   gui_renderPatch9_1_32(panelOfs, '215 90', CLR_DEF_UI_DEPLOY, 1, DRAWFLAG_NORMAL);
  
-  panelLabelLen = stringwidth("-Misson Status-", 0, '10 10 0');
+  panelLabelLen = stringwidth("-Misson Status-", 0, '10 10');
   pabelLabelOrg = panelOfs + '105 4';
   pabelLabelOrg_x = pabelLabelOrg_x - ( panelLabelLen / 2 );
-  drawstring(pabelLabelOrg, "-Misson Status-", '10 10 0', '1 1 1', 1, 0);
+  drawstring(pabelLabelOrg, "-Misson Status-", '10 10', '1 1 1', 1, 0);
   
   //mission name
-  drawstring(panelOfs + '6 19', "Name:", '10 10 0', CLR_DEF_GRAY_H, 1, 0);
+  drawstring(panelOfs + '6 19', "Name:", '10 10', CLR_DEF_GRAY_H, 1, 0);
   namePos = panelOfs + '32 18';
-  drawstring(namePos, MSN_NAME, '12 12 0', '1 1 1', 1, 0);
+  drawstring(namePos, MSN_NAME, '12 12', '1 1 1', 1, 0);
   
   //mission type
-  drawstring(panelOfs + '6 36', "Type:", '10 10 0', CLR_DEF_GRAY_H, 1, 0); 
-  drawstring(panelOfs + '32 34', MSN_TYPE, '12 12 0', '1 1 1', 1, 0); 
+  drawstring(panelOfs + '6 36', "Type:", '10 10', CLR_DEF_GRAY_H, 1, 0); 
+  drawstring(panelOfs + '32 34', MSN_TYPE, '12 12', '1 1 1', 1, 0); 
   
   drawfont = drawfont_prev;
  
@@ -214,16 +214,16 @@ void(vector ofs) menu_deploy_navInfoPanel={
     deployColor = CLR_DEF_WHITE;
   }
   else{
-    panelLabelLen = stringwidth("-Select Drop Point-", 0, '10 10 0');
+    panelLabelLen = stringwidth("-Select Drop Point-", 0, '10 10');
     panelLabelOrg = panelOrg + '107.5 2';
     panelLabelOrg_x = panelLabelOrg_x - ( panelLabelLen / 2 );
-    drawstring(panelLabelOrg, "-Select Drop Point-", '10 10 0', '1 1 1', 1, 0);
+    drawstring(panelLabelOrg, "-Select Drop Point-", '10 10', '1 1 1', 1, 0);
     
-    drawstring(panelOrg + '200 12', "Next", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
+    drawstring(panelOrg + '200 12', "Next", '10 10', CLR_DEF_ARM_HALF, 1, 0);
     drawpic(panelOrg + '198 20', UI_BTN_ARR_RIGHT, '20 44', '1 1 1', 1, 0);
     DEPLOY_BUTTON_NAV_NEXT_ORG = panelOrg + '198 20';
     
-    drawstring(panelOrg + '8 12', "Prev", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
+    drawstring(panelOrg + '8 12', "Prev", '10 10', CLR_DEF_ARM_HALF, 1, 0);
     drawpic(panelOrg + '6 20', UI_BTN_ARR_LEFT, '20 44', '1 1 1', 1, 0);
     DEPLOY_BUTTON_NAV_PREV_ORG = panelOrg + '6 20';
     if(CLIENT_MENU_nav_pnt > -1){
@@ -235,7 +235,7 @@ void(vector ofs) menu_deploy_navInfoPanel={
       deployColor = CLR_DEF_RED;
     }
   }
-  deployLabelLen = stringwidth( deployLabel, 0, '14 14 0' );
+  deployLabelLen = stringwidth( deployLabel, 0, '14 14' );
   deployLabelOrg = panelOrg;
   deployLabelOrg_x = deployLabelOrg_x + 105.5 - ( deployLabelLen / 2 );
   deployLabelOrg_y = deployLabelOrg_y + 35;
@@ -265,10 +265,10 @@ void(vector ofs) menu_deploy_mechInfoPanel={
   
   gui_renderPatch9_1_32(panelOfs, '215 112', CLR_DEF_UI_DEPLOY, 1, DRAWFLAG_NORMAL);
   
-  tlen = stringwidth("Chosen Metal", 0, '10 10 0');
+  tlen = stringwidth("Chosen Metal", 0, '10 10');
   panelLabelOrg = panelOfs + '107.5 4';
   panelLabelOrg_x = panelLabelOrg_x - ( tlen / 2 );
-  drawstring(panelLabelOrg, "Chosen Metal", '10 10 0', '1 1 1', 1, 0);
+  drawstring(panelLabelOrg, "Chosen Metal", '10 10', '1 1 1', 1, 0);
   
   if(CLIENT_MENU_sel_mech > 0){
     // MECH SIZE
@@ -357,11 +357,11 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawpic(iofs, MSN_MAPPIC, '380 380', '1 1 1', 1, 0);
   }
   else{
-    unavailableLen = stringwidth( "!- Satellite Data unavailable -!", 0 ,'16 16 0');
+    unavailableLen = stringwidth( "!- Satellite Data unavailable -!", 0 ,'16 16');
     unavailableOrg = iofs;
     unavailableOrg_x = unavailableOrg_x + (380 / 2) - ( unavailableLen / 2 );
     unavailableOrg_y = unavailableOrg_y + (380 / 2) -  8 ;
-    gui_wrapText(unavailableOrg, '210 32', "!- Satellite Data unavailable -!", '16 16 0', '1 0 0', 1);
+    gui_wrapText(unavailableOrg, '210 32', "!- Satellite Data unavailable -!", '16 16', '1 0 0', 1);
   }
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
@@ -392,12 +392,12 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
-    nlen = stringwidth(nav.vec_name, 0, '12 12 0');
+    nlen = stringwidth(nav.vec_name, 0, '12 12');
     nofs_x = nofs_x - ( (nlen/2) );
     nofs_y = nofs_y - 18;
     gui_renderTintImage(TRUE, tofs - '8 8', UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
     
-    drawstring(nofs, nav.vec_name, '12 12 0', renderColor, 1, 0);
+    drawstring(nofs, nav.vec_name, '12 12', renderColor, 1, 0);
     
     drawfont = drawfont_prev;
   }
@@ -464,9 +464,9 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
     playerName = getplayerkeyvalue(player.clientLocalNum, "name");
-    nameLen = stringwidth( playerName, 0, '14 14 0');
+    nameLen = stringwidth( playerName, 0, '14 14');
     nameOrg_x = nameOrg_x - ( nameLen / 2 );
-    drawstring( nameOrg, playerName, '14 14 0', CLR_DEF_IIF_FRIEND, 1, 0);
+    drawstring( nameOrg, playerName, '14 14', CLR_DEF_IIF_FRIEND, 1, 0);
     
     drawfont = drawfont_prev;
   }
@@ -494,11 +494,11 @@ void(vector ofs) menu_deploy_mapKeyPanel={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  panelLabelLen = stringwidth( "-Map Icons-", 0, '10 8 0');
+  panelLabelLen = stringwidth( "-Map Icons-", 0, '10 10');
   panelLabelOrg = panelOrg;
   panelLabelOrg_x = panelLabelOrg_x + 107.5 - (panelLabelLen / 2);
   panelLabelOrg_y = panelLabelOrg_y + 4;
-  drawstring( panelLabelOrg, "-Map Icons-", '10 10 0', CLR_DEF_WHITE, 1, 0);
+  drawstring( panelLabelOrg, "-Map Icons-", '10 10', CLR_DEF_WHITE, 1, 0);
 
   deployIconOrg = panelOrg + '8 16';
   drawpic( deployIconOrg, UI_DEF_DEPLOYPOINT, '16 16', CLR_DEF_ARM_HALF, 1, 0) ;
