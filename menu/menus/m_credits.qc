@@ -32,9 +32,15 @@ void() click_credits_back={
 };
 
 // ini function, called by '_f' function as a setup func
-void() m_credits_i={
-  credits_title = lbl_img('10 30', '1 1 0', IMG_CREDITS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_CREDITS, 1, (UI_FLAG_SIZE_IMG) );
-  credits_back = btn_img_callback('10 81 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_CREDITS, click_credits_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+void() m_credits_i={  
+  
+  menu_parent_setup(VIEW_ORG + '0 40', '400 432');
+  
+  credits_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1 0', IMG_CREDITS_TITLE, '1 1 1', VIEW_CTX, M_CREDITS, 1, (UI_FLAG_SIZE_IMG) );
+  
+  
+  credits_back = btn_text_callback(MENU_ORG + '45 380', '16 16', "BACK", VIEW_CTX, M_CREDITS, click_credits_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  credits_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 /*
@@ -52,11 +58,13 @@ void() m_credits_f={
   running on M_STATE to determine which menu_d to execute.
 */
 void() m_credits_d={
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
   local float centerLineX;
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  centerLineX = 180;
+  centerLineX = MENU_SIZE_x / 2;
   
   local float menuTitleLen;
   local vector menuTitleOrg;
