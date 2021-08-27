@@ -305,7 +305,7 @@ void(entity btn) render_btn={
     self = btn;
       org = self.origin;
       sizzle = self.size;
-      if( (self.flags & UI_FLAG_SIZE_IMG) ){
+      if( (self.flags & UI_FLAG_SIZE_IMG) && self.image1 != ""){
         sizzle = draw_getimagesize(self.image1);
         sizzle = gui_scaleSize(sizzle, VIEW_SCALE);
       }
@@ -342,6 +342,9 @@ void(entity btn) render_btn={
       
       if(self.image1 != ""){
         drawpic(org, self.image1, sizzle, bclr, self.alpha, 0);
+      }
+      else{
+        drawfill(org, sizzle, bclr, self.alpha, 0);
       }
     self = this; 
   }

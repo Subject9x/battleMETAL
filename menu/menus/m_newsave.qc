@@ -13,9 +13,9 @@ entity newsave_back;
 //button callbacks
 
 void() click_newsave_back={
-  menu_clear_items(M_STATE);
-  m_main_f();
   localsound("sound/misc/menu2.wav");
+  menu_clear_items(M_STATE);
+  m_camp_f();
 };
 
 void() click_saveslot={
@@ -49,12 +49,12 @@ void() m_newsave_i={
     
     if( GAME_SAVES_DRAWNAME[itr] == "" ){
       name = "- NEW SAVE SLOT -";
-      list = btn_text_callback(next, '14 14 0', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+      list = btn_text_callback(next, '14 14', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
       list.fontId = FONT_NUM_ROBOT_LIGHT;
     }
     else{
       name = GAME_SAVES_DRAWNAME[itr];
-      list = btn_text_callback(next, '14 14 0', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_SIZE_IMG);
+      list = btn_text_callback(next, '14 14', name, 0, M_NEWSAVE, click_saveslot, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_SIZE_IMG);
       list.fontId = FONT_NUM_XOLONIUM_BOLD;
     }
     
@@ -63,7 +63,7 @@ void() m_newsave_i={
   }
   backOrg = MENU_ORG + '40 0';
   backOrg_y = next_y + 36;
-  newsave_back = btn_text_callback(backOrg, '16 16 0', "BACK", VIEW_CTX, M_NEWSAVE, click_newsave_back, '1 1 1', '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  newsave_back = btn_text_callback(backOrg, '16 16', "BACK", VIEW_CTX, M_NEWSAVE, click_newsave_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   newsave_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 

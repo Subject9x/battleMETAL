@@ -362,7 +362,8 @@ void() m_gameplay_i={
   //gameplay_hud_sway_more = btn_img_callback('220 263', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   //gameplay_hud_sway_less = btn_img_callback('176 263', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  gameplay_back = btn_img_callback(MENU_ORG + '45 220 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  gameplay_back = btn_text_callback(MENU_ORG + '45 190', '16 16', "BACK", VIEW_CTX, M_OPTIONS_GAMEPLAY, click_gameplay_back, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  gameplay_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 /*

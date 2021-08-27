@@ -789,7 +789,7 @@ void() m_graphics_i={
   //effects settings
   graphics_effects_lbl = lbl_text(MENU_ORG + '330 60', '14 14', graphics_get_detail(cvar("saved1")), CLR_DEF_WHITE,VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
   graphics_effects_lbl.len = cvar("saved1");
-  graphics_effects_more = btn_img_callback(graphics_effects_lbl.origin + Vector2(stringwidth(graphics_effects_lbl.label, 0, graphics_effects_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_effects_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_effects_more = btn_img_callback(graphics_effects_lbl.origin + Vector2(stringwidth("MEDIUM", 0, graphics_effects_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_effects_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_effects_less = btn_img_callback(graphics_effects_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_effects_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   //graphics_effects_custom
@@ -802,7 +802,7 @@ void() m_graphics_i={
   //gfx / lighting
   graphics_gfx_lbl = lbl_text(MENU_ORG + '330 160', '14 14', graphics_get_gx(cvar("saved2")), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
   graphics_gfx_lbl.len = cvar("saved2");
-  graphics_gfx_more = btn_img_callback(graphics_gfx_lbl.origin + Vector2(stringwidth(graphics_gfx_lbl.label, 0, graphics_gfx_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_light_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_gfx_more = btn_img_callback(graphics_gfx_lbl.origin + Vector2(stringwidth("MEDIUM", 0, graphics_gfx_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_light_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_gfx_less = btn_img_callback(graphics_gfx_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_light_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
    
   graphics_gfx_custom = btn_text_callback(MENU_ORG + '300 180', '14 14', "[Click to Customize]", 0, M_OPTIONS_GRAPHICS, click_graphics_gfx, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
