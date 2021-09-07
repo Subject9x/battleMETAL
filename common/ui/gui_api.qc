@@ -138,6 +138,11 @@ void() gui_set_screen_size={
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
   
+  if(VIEW_MAX_y != 480){
+    VIEW_MAX_y = 480;
+    cvar_set("vid_conheight", "480");
+  }
+  
   VIEW_CTR = VIEW_MAX * 0.5;
   
   UI_ORG = VIEW_CTR - Vector2(320, VIEW_MAX_y / 2);
@@ -153,6 +158,17 @@ void() gui_set_screen_size={
   
   UI_MAX_PERCENT_x = (640 / VIEW_MAX_x) + UI_ORG_PERCENT_x;
   UI_MAX_PERCENT_y = VIEW_MAX_y / VIEW_MAX_y;
+};
+
+
+vector(vector startSize, vector targsize) gui_newAspectRatio={
+  local vector v;
+
+  //adjusted width / (original width / original height) = adjusted height,
+  v_y = targsize_x / (startSize_x / startSize_y);
+  v_x = targsize_x;
+
+  return v;
 };
 
 float(float pct, float ox, float mx) gui_percentCustom={

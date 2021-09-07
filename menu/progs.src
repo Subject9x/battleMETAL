@@ -7,7 +7,6 @@ defs/menudefs.qc
   ../common/ui/gui_api.qh
   ../common/data/data_values_game.qc
 defs/headers/menu.qh
-defs/headers/utils.qh
 defs/headers/menu_gfx.qh
 defs/headers/menu_api.qh
 

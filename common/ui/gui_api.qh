@@ -47,29 +47,29 @@ float VIEW_PIXELH;
 float UI_WIDTH;
 float UI_HEIGHT;
 
-float VIEW_TOP = 1;
-float VIEW_BOT = 2;
-float VIEW_LFT = 4;
-float VIEW_RGT = 8;
-float VIEW_CTX = 16;
-float VIEW_CTY = 32;
+#define VIEW_TOP 1
+#define VIEW_BOT 2
+#define VIEW_LFT 4
+#define VIEW_RGT 8
+#define VIEW_CTX 16
+#define VIEW_CTY 32
 
-float AXIS_H = 1;	
-float AXIS_V = 2;
-float AXIS_LEFT = 4;
-float AXIS_RIGHT = 8;
-float AXIS_UP = 16;
-float AXIS_DOWN = 24;
-float AXIS_CTR = 32;
+#define AXIS_H 1
+#define AXIS_V 2
+#define AXIS_LEFT 4
+#define AXIS_RIGHT 8
+#define AXIS_UP 16
+#define AXIS_DOWN 24
+#define AXIS_CTR 32
 
-float DIR_UP = 1;
-float DIR_DN = 2;
-float DIR_LF = 3;
-float DIR_RT = 4;
+#define DIR_UP 1
+#define DIR_DN 2
+#define DIR_LF 3
+#define DIR_RT 4
 
-float OBJ_METER = 1;
-float OBJ_SLIDER = 2;
-float OBJ_LIST = 3;
+#define OBJ_METER 1
+#define OBJ_SLIDER 2
+#define OBJ_LIST 3
 
 float PAT_BAR = 1;
 float PAT_SPH = 2;
@@ -78,24 +78,26 @@ float HUD_ALPHA;
 
 
 //UI ELEMENT FLAGS - orig menu_api
-float UI_FLAG_NOLABEL        = 1;     //don't render label
-float UI_FLAG_NEW            = 2;     //is new
-float UI_FLAG_ALIGN          = 4;     //use alignment field
-float UI_FLAG_NOHIGHLIGHT    = 8;     //don't render highlight overlay
-float UI_FLAG_SIZE_IMG       = 16;    //base item size on img1 field
-float UI_FLAG_CENTER_IMG     = 32;    //centers image on widget
-float UI_FLAG_TXTFIELD_NUM   = 64;    //allow number in textfields
-float UI_FLAG_TXTFIELD_SPEC  = 128;   //alllow special characters
-float UI_FLAG_TXTFIELD_LOW   = 256;   //allow lowercase
-float UI_FLAG_TXTFIELD_MOUSE = 512;   //allow mouse click reading
-float UI_FLAG_TXTFIELD_FUNC  = 1024;  //allow function key detection
-float UI_FLAG_TXTFIELD_UPP   = 2048;  //allow uppercase
-float UI_FLAG_LBL_USELEN     = 4096;  //for lbl_text, use its .len field as the display value .lbl
-float UI_FLAG_LBL_BOOL_ON    = 8192;  //for lbl_text, use its .len field as 1/0 and renders "ON" / "OFF"
-float UI_FLAG_LBL_BOOL_TRUE  = 16384;  //for lbl_text, use its .len field as 1/0 and renders "TRUE" / "FALSE"
+#define UI_FLAG_NOLABEL        1     //don't render label
+#define UI_FLAG_NEW            2     //is new
+#define UI_FLAG_ALIGN          4     //use alignment field
+#define UI_FLAG_NOHIGHLIGHT    8     //don't render highlight overlay
+#define UI_FLAG_SIZE_IMG       16    //base item size on img1 field
+#define UI_FLAG_CENTER_IMG     32    //centers image on widget
+#define UI_FLAG_TXTFIELD_NUM   64    //allow number in textfields
+#define UI_FLAG_TXTFIELD_SPEC  128   //alllow special characters
+#define UI_FLAG_TXTFIELD_LOW   256   //allow lowercase
+#define UI_FLAG_TXTFIELD_MOUSE 512   //allow mouse click reading
+#define UI_FLAG_TXTFIELD_FUNC  1024  //allow function key detection
+#define UI_FLAG_TXTFIELD_UPP   2048  //allow uppercase
+#define UI_FLAG_LBL_USELEN     4096  //for lbl_text, use its .len field as the display value .lbl
+#define UI_FLAG_LBL_BOOL_ON    8192  //for lbl_text, use its .len field as 1/0 and renders "ON" / "OFF"
+#define UI_FLAG_LBL_BOOL_TRUE  16384  //for lbl_text, use its .len field as 1/0 and renders "TRUE" / "FALSE"
 
 vector(float x, float y) Vector2;
 vector(float x, float y, float z) Vector3;
+
+vector(vector startSize, vector targsize) gui_newAspectRatio;
 
 void() gui_set_screen_size;
 vector(vector vec, float scle) gui_scaleSize;
