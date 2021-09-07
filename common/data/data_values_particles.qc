@@ -9,24 +9,24 @@ Overview:
 */
 
 //Projectile Impact Events
-float IMPACT_SKY = 0;
-float IMPACT_DIRT = 1;
-float IMPACT_SHIELD = 2;
-float IMPACT_ARMOR = 3;
+#define IMPACT_SKY 0
+#define IMPACT_DIRT 1
+#define IMPACT_SHIELD 2
+#define IMPACT_ARMOR 3
 
 //CD commands stuff
-float MUSIC_ON      = 1;
-float MUSIC_OFF     = 2;
-float MUSIC_RESET   = 3;
-float MUSIC_REMAP   = 4;
-float MUSIC_CLOSE   = 5;
-float MUSIC_PLAY    = 6;
-float MUSIC_LOOP    = 7;
-float MUSIC_STOP    = 8;
-float MUSIC_PAUSE   = 9;
-float MUSIC_RESUME  = 10;
-float MUSIC_EJECT   = 11;
-float MUSIC_INFO    = 12;
+#define MUSIC_ON     1
+#define MUSIC_OFF    2
+#define MUSIC_RESET  3
+#define MUSIC_REMAP  4
+#define MUSIC_CLOSE  5
+#define MUSIC_PLAY   6
+#define MUSIC_LOOP   7
+#define MUSIC_STOP   8
+#define MUSIC_PAUSE  9
+#define MUSIC_RESUME 10
+#define MUSIC_EJECT  11
+#define MUSIC_INFO   12
 
 //ALERT: 70-75 are reserved, otherwise go nuts?
 //TE_ ID's

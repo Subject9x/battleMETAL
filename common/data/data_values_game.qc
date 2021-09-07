@@ -15,258 +15,262 @@ Overview:
 string MAP_NAME;  //strips mapname global of junk
 float UNLOCKED_MECHS[256];
 #endif
-string PATH_DATA_MAP = "maps/";
-string PATH_DATA_ANIM = "anim";
-string PATH_DATA_SAVE = "saves";
-string PATH_DATA_UI = "ui";
-string NEWLINE = "\n";
+
+#define PATH_DATA_MAP "maps/"
+#define PATH_DATA_ANIM "anim"
+#define PATH_DATA_SAVE "saves"
+#define PATH_DATA_UI "ui"
+#define NEWLINE "\n"
+
 #ifdef SSQC
 float FLAG_NEWGAME;
 #endif
+
 //globals
-string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
+#define SAVE_FILE_NAME "save_" //bake this in cause the name shouldnt change
 #ifdef SSQC
 string SAVE_MAP;
 string SAVE_MECHS_LIST;
 string SAVE_ITEMS_ALL;
 #endif
-string SAVE_FILE_EXT = ".sav";
+#define SAVE_FILE_EXT ".sav"
 
 //file tags
-string SAVE_FILE_MSN_NAME = "mission";
-string SAVE_FILE_MECH_LIST = "mechs";
-string SAVE_FILE_ITEMS = "items";
-string SAVE_FILES_POINTS = "points";
-string SAVE_FILE_NEWGAME = "newgame";
+#define SAVE_FILE_MSN_NAME "mission"
+#define SAVE_FILE_MECH_LIST "mechs"
+#define SAVE_FILE_ITEMS "items"
+#define SAVE_FILES_POINTS "points"
+#define SAVE_FILE_NEWGAME "newgame"
 
 //============================
 //   GAME MODES
 //============================
-float GAMEMODE_CAMPAIGN = 1;
-float GAMEMODE_COOP = 2;
-float GAMEMODE_DM = 3;
-float GAMEMODE_TEAMDM = 4;
+#define GAMEMODE_CAMPAIGN 1
+#define GAMEMODE_COOP 2
+#define GAMEMODE_DM 3
+#define GAMEMODE_TEAMDM 4
 
 float TEAM_SURVEST_TOTAL;  //team deathmatch
 float TEAM_MILITAR_TOTAL;
 
 //Server Mission Status
-float MISSION_STATUS_READY    = 1;  //server ready to start when the first player connects
-float MISSION_STATUS_ACTIVE   = 2;  //server is running as normal
-float MISSION_STATUS_OVER     = 3;  //sv_checkrules() hit, triggering server end func
-float MISSION_STATUS_ENDING   = 4;  //
-float MISSION_STATUS_DONE     = 5;
-//Server Mission Results
-float MISSION_RESULT_WIN      = 1;
-float MISSION_RESULT_FAIL     = 2;
-float MISSION_RESULT_WIN1     = 3;
-float MISSION_RESULT_WIN2     = 4;
-float MISSION_RESULT_STALEMATE= 5;
+#define MISSION_STATUS_READY  1  //server ready to start when the first player connects
+#define MISSION_STATUS_ACTIVE 2  //server is running as normal
+#define MISSION_STATUS_OVER   3  //sv_checkrules() hit, triggering server end func
+#define MISSION_STATUS_ENDING 4  //
+#define MISSION_STATUS_DONE   5
 
-float SERVER_RESPAWN_COOL_CAMP = 5;
-float SERVER_RESPAWN_COOL_DM = 15;
-float SERVER_RESPAWN_COOL_COOP = 7;
-float SERVER_SCORE_TIME_DM = 30;
-float SERVER_SCORE_TIME_COOP = 30;
+//Server Mission Results
+#define MISSION_RESULT_WIN 1
+#define MISSION_RESULT_FAIL 2
+#define MISSION_RESULT_WIN1 3
+#define MISSION_RESULT_WIN2 4
+#define MISSION_RESULT_STALEMATE 5
+
+#define SERVER_RESPAWN_COOL_CAMP 5
+#define SERVER_RESPAWN_COOL_DM 15
+#define SERVER_RESPAWN_COOL_COOP 7
+#define SERVER_SCORE_TIME_DM 30
+#define SERVER_SCORE_TIME_COOP 30
 
 //Multiplayer Server Flags
-float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
-float SVFLAG_POWERUP    = 2;  //  enforce powerup sequence
-float SVFLAG_CHEATS     = 4;  //  cheaty cheat pants
-float SVFLAG_FIREON     = 8;  //  friendly fire on
-float SVFLAG_NOLIVES    = 16; //  limited lives
-float SVFLAG_NOMAP      = 32; //  only see yourself on tac map
-float SVFLAG_NORADAR    = 64; //  no radar allowed
-float SVFLAG_NOSTATUS   = 128; // hide player status in menus
-float SVFLAG_ITEMOVER   = 256; //used when world.itemOverride = 1; tells game to load the override file
-float SVFLAG_NOSAVE     = 512; //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
-float SVFLAG_FPSONLY    = 1024; //disables third person / chase_active commands.
+#define SVFLAG_SPAWNFAR 1  //  pawn player farthest from other players
+#define SVFLAG_POWERUP  2  //  enforce powerup sequence
+#define SVFLAG_CHEATS   4  //  cheaty cheat pants
+#define SVFLAG_FIREON   8  //  friendly fire on
+#define SVFLAG_NOLIVES  16 //  limited lives
+#define SVFLAG_NOMAP    32 //  only see yourself on tac map
+#define SVFLAG_NORADAR  64 //  no radar allowed
+#define SVFLAG_NOSTATUS 128 // hide player status in menus
+#define SVFLAG_ITEMOVER 256 //used when world.itemOverride = 1; tells game to load the override file
+#define SVFLAG_NOSAVE   512 //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
+#define SVFLAG_FPSONLY  1024 //disables third person / chase_active commands.
 
 //============================
 //   GAME DIFFICULTY
 //============================
-float SKILL_NOV = 0;
-float SKILL_REG = 1;
-float SKILL_VET = 2;
-float SKILL_ELT = 3;
+#define SKILL_NOV 0
+#define SKILL_REG 1
+#define SKILL_VET 2
+#define SKILL_ELT 3
 //============================
 //   WORLD TYPES
 //============================
-float WORLD_DESERT = 0;
-float WORLD_BADLND = 1;
-float WORLD_URBAN = 2;
-float WORLD_TUNDRA = 3;
-float WORLD_ICE = 4;
-float WORLD_CAVE = 5;
+#define WORLD_DESERT 0
+#define WORLD_BADLND 1
+#define WORLD_URBAN 2
+#define WORLD_TUNDRA 3
+#define WORLD_ICE 4
+#define WORLD_CAVE 5
 //============================
 //   PARTICLE CUBE DENSITY RATIO - .Maxs_x / _VALUE
 //============================
-float SHIELD_SMALL = 84;
-float SHIELD_MEDIUM = 200;
-float SHIELD_LARGE = 400;
+#define SHIELD_SMALL 84
+#define SHIELD_MEDIUM 200
+#define SHIELD_LARGE 400
 
-float RAD_SMALL = 64;
-float RAD_MEDIUM = 128;
-float RAD_LARGE = 256;
+#define RAD_SMALL 64
+#define RAD_MEDIUM 128
+#define RAD_LARGE 256
 
-float QUAN_SMALL = 256;
-float QUAN_MEDIUM = 512;
-float QUAN_LARGE = 1024;
+#define QUAN_SMALL 256
+#define QUAN_MEDIUM 512
+#define QUAN_LARGE 1024
 //============================
 //   OBJECTIVE STATE
 //============================
-float OBJECTIVE_DISABLE = 0;
-float OBJECTIVE_ACTIVE = 1;
-float OBJECTIVE_WIN = 2;
-float OBJECTIVE_COMPLETE = 3;
-float OBJECTIVE_FAIL = 4;
+#define OBJECTIVE_DISABLE 0
+#define OBJECTIVE_ACTIVE 1
+#define OBJECTIVE_WIN 2
+#define OBJECTIVE_COMPLETE 3
+#define OBJECTIVE_FAIL 4
 //============================
 //   PLAYER STATE ID's           
 //============================
 //used for client-state syncing between server and client
-float PLAYER_CONNECT        = 0;  // Client just connected to server.
-float PLAYER_SPAWN          = 1;  // Client has been initialized, and spawned in as observer.
-float PLAYER_BRIEF          = 2;  // Client entered the main CSQC menu system.
-float PLAYER_DEAD           = 3;  // player has been killed in combat.
-float PLAYER_REDEPLOY       = 4;  // player use ClientKill().
-float PLAYER_RESPAWN        = 5;  // player is ready to respawn from being dead.
-float PLAYER_DEBRIEF        = 6;  // player has finished a campaign mission.
-float PLAYER_INTERMSN       = 7; // Client has entered an intermission event.
-float PLAYER_MENU           = 8;  //dear galaxy, why is it so hard to summon the main menu via code? >:(
+#define PLAYER_CONNECT  0  // Client just connected to server.
+#define PLAYER_SPAWN    1  // Client has been initialized, and spawned in as observer.
+#define PLAYER_BRIEF    2  // Client entered the main CSQC menu system.
+#define PLAYER_DEAD     3  // player has been killed in combat.
+#define PLAYER_REDEPLOY 4  // player use ClientKill().
+#define PLAYER_RESPAWN  5  // player is ready to respawn from being dead.
+#define PLAYER_DEBRIEF  6  // player has finished a campaign mission.
+#define PLAYER_INTERMSN 7 // Client has entered an intermission event.
+#define PLAYER_MENU     8  //dear galaxy, why is it so hard to summon the main menu via code? >:(
 
-float PLAYER_ANIM_STOP      = 9;  // Client told to stop playing animatic.
-float PLAYER_POWERUP_BEGIN  = 10;  // Client has spawned into their mech, and the mech is powering up.
-float PLAYER_POWERUP_END    = 11;  // Client mech has completed powerup sequence.
-float PLAYER_ACTIVE         = 12;  // Client is controlling mech, and may move/fire freely.
-float PLAYER_SPRINT_ON      = 13;
+#define PLAYER_ANIM_STOP     9  // Client told to stop playing animatic.
+#define PLAYER_POWERUP_BEGIN 10  // Client has spawned into their mech, and the mech is powering up.
+#define PLAYER_POWERUP_END   11  // Client mech has completed powerup sequence.
+#define PLAYER_ACTIVE        12  // Client is controlling mech, and may move/fire freely.
+#define PLAYER_SPRINT_ON     13
 
-float MOVE_STAND            = 0;  
-float MOVE_DEAD             = 1;  //
-float MOVE_NORM             = 2;  //normal walking without +button8
-float MOVE_SPRINT           = 3;  // Client has engaged the 'sprint' 
-float MOVE_RAM_ON           = 4;
-float MOVE_RAM_CHARGE       = 5;
-float MOVE_RAM_COOL         = 6;
+#define MOVE_STAND      0
+#define MOVE_DEAD       1  //
+#define MOVE_NORM       2  //normal walking without +button8
+#define MOVE_SPRINT     3  // Client has engaged the 'sprint' 
+#define MOVE_RAM_ON     4
+#define MOVE_RAM_CHARGE 5
+#define MOVE_RAM_COOL   6
 
 //MOVE / UNIT DATA MODALS as bitflags
 //float MOVE_STAND            = 0;  //  declared in AI API
-float MV_DEAD = 1;
-float MV_NORM = 2;
-float MV_SPRINT = 4;
-float MV_RAM_ON = 8;
-float MV_RAM_CHARGE = 16;
-float MV_RAM_COOL = 32;
-float MV_CHASE_ON = 64;
-float MV_RADAR_ACTIVE = 128;
+#define MV_DEAD 1
+#define MV_NORM 2
+#define MV_SPRINT 4
+#define MV_RAM_ON 8
+#define MV_RAM_CHARGE 16
+#define MV_RAM_COOL 32
+#define MV_CHASE_ON 64
+#define MV_RADAR_ACTIVE 128
 //float MOVE_DEAD = 256;
 //============================
 //         DATA_TYPE           
 //============================
-float GAME_TOTAL_MECHS = 256; //how many distinct mechs the game should assume might exist for UI / unit data purposes
-float GAME_TOTAL_ITEMS = 64; //how many distinct mechs the game should assume might exist for UI / unit data purposes
+#define GAME_TOTAL_MECHS 256  //how many distinct mechs the game should assume might exist for UI / unit data purposes
+#define GAME_TOTAL_ITEMS 64 //how many distinct mechs the game should assume might exist for UI / unit data purposes
   //don't mess with this really unless...no just don't mess with it.
-string DATA = "data";
-float DATA_POBS       = 1; //player observer mode
-float DATA_MECH       = 2;
-float DATA_VEHC       = 3;
-float DATA_WEPN       = 4;
-float DATA_PROJ       = 5;
-float DATA_HUD        = 6;
-float DATA_BLD        = 7;
-float DATA_NAVP       = 8;
-float DATA_OBJT       = 9;
-float DATA_NODE       = 10;
-float DATA_DEPL       = 11;
-float DATA_WEAPON     = 12;
-float DATA_INFO_START = 13;//used to send clientdata entity to csqc
-float DATA_INFO_COOP  = 14;  //used as ID for info_start_coop
-float DATA_MAP_DMG    = 15;
-float DATA_MAP_RULES  = 16;
+#define DATA "data"
+#define DATA_POBS       1 //player observer mode
+#define DATA_MECH       2
+#define DATA_VEHC       3
+#define DATA_WEPN       4
+#define DATA_PROJ       5
+#define DATA_HUD        6
+#define DATA_BLD        7
+#define DATA_NAVP       8
+#define DATA_OBJT       9
+#define DATA_NODE       10
+#define DATA_DEPL       11
+#define DATA_WEAPON     12
+#define DATA_INFO_START 13  //used to send clientdata entity to csqc
+#define DATA_INFO_COOP  14  //used as ID for info_start_coop
+#define DATA_MAP_DMG    15
+#define DATA_MAP_RULES  16
 
 //============================
 //     UNIT PART BITS          
 //============================
 //These should have been floats from the start
 //these are component id's (compid) for model pieces
-string MECH_PIECE    = "mech_piece";
-float M_UNIT        = 1;
-float M_TOR_CENTER  = 2;
-float M_TOR_RIGHT   = 4;
-float M_TOR_LEFT    = 8;
-float M_ARM_LEFT    = 16;
-float M_ARM_RIGHT   = 32;
-float M_LEGS        = 64;
-float M_REPAIR      = 128;//sends repair flag over network to repair pieces
-float M_ITEM        = 256;
+#define MECH_PIECE "mech_piece"
+#define M_UNIT       1
+#define M_TOR_CENTER 2
+#define M_TOR_RIGHT  4
+#define M_TOR_LEFT   8
+#define M_ARM_LEFT   16
+#define M_ARM_RIGHT  32
+#define M_LEGS       64
+#define M_REPAIR     128  //sends repair flag over network to repair pieces
+#define M_ITEM       256
 //============================
 //     WEAPON SLOT BITS           
 //============================
-float WEAPON1 = 1;
-float WEAPON2 = 2;
-float WEAPON3 = 4;
-float WEAPON4 = 8;
-float WEAPON5 = 16;
-float WEAPON6 = 32;
-float WEAPON7 = 64;
-float WEAPON8 = 128;
-float WEAPON9 = 256;
+#define WEAPON1 1
+#define WEAPON2 2
+#define WEAPON3 4
+#define WEAPON4 8
+#define WEAPON5 16
+#define WEAPON6 32
+#define WEAPON7 64
+#define WEAPON8 128
+#define WEAPON9 256
 //============================
 //     COMBAT STATS
 //============================
-float POSITION_FADE_TIME = 1;
-float MAX_VEHICLE_SIZE = 4;
-float FALL_THRESHOLD = 200;
-float FALL_DMG_MULTIPLIER = 2;
-float FALL_CT_MULTIPLIER = 3;
-float FALL_KILL_MULTIPLIER = 3; 
-float FALL_DAMAGE_FRACTION = 0.2;
-float SHIELD_DELAY = 5; //game timer to pause before shields are brought backonline
-float CHAIN_FIRE_INTERVAL = 0.15;
+#define POSITION_FADE_TIME 1
+#define MAX_VEHICLE_SIZE 4
+#define FALL_THRESHOLD 200
+#define FALL_DMG_MULTIPLIER 2
+#define FALL_CT_MULTIPLIER 3
+#define FALL_KILL_MULTIPLIER 3 
+#define FALL_DAMAGE_FRACTION 0.2
+#define SHIELD_DELAY 5 //game timer to pause before shields are brought backonline
+#define CHAIN_FIRE_INTERVAL 0.15
 
-float DMG_TORSO_CRIT_MULTI = 1.5; // t_damage() - line 124, damage multiplier when mechs have torsos destroyed.
-float DMG_FRIENDLY_FIRE_REDUCE = 0.67;  // t_damage() - line 35, damage reduction for friendly fire when the flag is on.
-float DMG_FRIENDLY_FIRE_REDUCE_SKILL = 0.33;
+#define DMG_TORSO_CRIT_MULTI 1.5 // t_damage() - line 124, damage multiplier when mechs have torsos destroyed.
+#define DMG_FRIENDLY_FIRE_REDUCE 0.67  // t_damage() - line 35, damage reduction for friendly fire when the flag is on.
+#define DMG_FRIENDLY_FIRE_REDUCE_SKILL 0.33
 
-float MOVE_RAM_SCALAR_UP = 0.004;
-float MOVE_RAM_SCALAR_DN = 0.01;
+#define MOVE_RAM_SCALAR_UP 0.004
+#define MOVE_RAM_SCALAR_DN 0.01
 //============================
 //     WEAPON FLAGS
 //============================
 //Primary Damage Types
-  float DMG_BAL = 1;  //ballstic damage
-  float DMG_ENE = 2;  //energy damage
-  float DMG_EXP = 4;  //explosive damage
-  float DMG_MSC = 8;  //used for equipment modules
+  #define DMG_BAL 1  //ballstic damage
+  #define DMG_ENE 2  //energy damage
+  #define DMG_EXP 4  //explosive damage
+  #define DMG_MSC 8  //used for equipment modules
 //Secondary Effect Types
-  float EFF_PRC = 16; //
-  float EFF_RAM = 32; //
-  float EFF_STX = 64; //damage only affects shields.
-  float EFF_ENE = 128; //weapon draws energy (client-side flag, really)
+  #define EFF_PRC 16 //
+  #define EFF_RAM 32 //
+  #define EFF_STX 64 //damage only affects shields.
+  #define EFF_ENE 128 //weapon draws energy (client-side flag, really)
   
-  float EFF_ARC = 256;  //AI-ONLY: weapon has an arcing projectile
-  float EFF_LOK = 512;  //AI-ONLY: weapon requires a target lock
-  float EFF_PTR = 1024; //AI-ONLY: weapon follow's unit's laser-dot, so it ignores accuracy mechanics
-  float EFF_SHD = 2048; //for when you want Shield crits but not just shield-only damage of EFF_STX (see light_laser)
+  #define EFF_ARC 256  //AI-ONLY: weapon has an arcing projectile
+  #define EFF_LOK 512  //AI-ONLY: weapon requires a target lock
+  #define EFF_PTR 1024 //AI-ONLY: weapon follow's unit's laser-dot, so it ignores accuracy mechanics
+  #define EFF_SHD 2048 //for when you want Shield crits but not just shield-only damage of EFF_STX (see light_laser)
 //Weapon Sizes
-  float BAL1 = 1;
-  float BAL2 = 2;
-  float BAL3 = 4;
-  float BAL4 = 8;
+  #define BAL1 1
+  #define BAL2 2
+  #define BAL3 4
+  #define BAL4 8
   
-  float ENE1 = 16;
-  float ENE2 = 32;
-  float ENE3 = 64;
-  float ENE4 = 128;
+  #define ENE1 16
+  #define ENE2 32
+  #define ENE3 64
+  #define ENE4 128
   
-  float MIS1 = 256;
-  float MIS2 = 512;
-  float MIS3 = 1024;
-  float MIS4 = 2048;
+  #define MIS1 256
+  #define MIS2 512
+  #define MIS3 1024
+  #define MIS4 2048
   
-  float MSC1 = 4096;
-  float MSC2 = 8192;
-  float MSC3 = 16384;
-  float MSC4 = 32768;
+  #define MSC1 4096
+  #define MSC2 8192
+  #define MSC3 16384
+  #define MSC4 32768
 //============================
 //     GETSTAT() TYPES
 //============================
@@ -277,71 +281,71 @@ float AS_INT = 8;
 //     SEND ENTITY SHARED
 //============================
 //SendTypes-------------------
-float SENDTYPE_PLAYER = 1;
-float SENDTYPE_MECH_AI = 2;
-float SENDTYPE_TANK = 3;
-float SENDTYPE_SPG = 4;
-float SENDTYPE_GEV = 5;
-float SENDTYPE_MECH = 6;
-float SENDTYPE_TURRET = 7;
-float SENDTYPE_BUILD = 8;
-float SENDTYPE_CHUNK = 9; //Vehicle / Turret / Mech debris
-float SENDTYPE_PROJ = 10;  //projectiles - missiles, etc
-float SENDTYPE_MAP = 11;
-float SENDTYPE_TERRAIN = 12;
-float SENDTYPE_MISC = 13;
-float SENDTYPE_MISC_BLD = 14;
+#define SENDTYPE_PLAYER 1
+#define SENDTYPE_MECH_AI 2
+#define SENDTYPE_TANK 3
+#define SENDTYPE_SPG 4
+#define SENDTYPE_GEV 5
+#define SENDTYPE_MECH 6
+#define SENDTYPE_TURRET 7
+#define SENDTYPE_BUILD 8
+#define SENDTYPE_CHUNK 9 //Vehicle / Turret / Mech debris
+#define SENDTYPE_PROJ 10  //projectiles - missiles, etc
+#define SENDTYPE_MAP 11
+#define SENDTYPE_TERRAIN 12
+#define SENDTYPE_MISC 13
+#define SENDTYPE_MISC_BLD 14
 //SendFlags-------------------
 //note: sendEnt is capped to 7 bitflags + NEWENT 
 //      and uses WriteByte, to add more flags, try switching
 //      to WriteShort for ChangeFlags if you want to increase total SENDFLAG size.
-float SENDFLAG_MOVE     = 1;  //update .origin and .angles of main piece 
-float SENDFLAG_TURRET   = 2; //unit's turret entity has rotated angle.
-float SENDFLAG_VELOCITY = 4; //unit is stood up by server
-float SENDFLAG_DEAD     = 8; //marks as dead, run death anim.
-float SENDFLAG_CRIT     = 16; //what component(s) blew off.
-float SENDFLAG_BURN     = 32; //what is starting to burn.
-float SENDFLAG_IMPACT   = 64; //specifically missile strike on something.
-float SENDFLAG_NEWENT   = 128;  //engine-set value, do not modify
+#define SENDFLAG_MOVE 1  //update .origin and .angles of main piece 
+#define SENDFLAG_TURRET 2 //unit's turret entity has rotated angle.
+#define SENDFLAG_VELOCITY 4 //unit is stood up by server
+#define SENDFLAG_DEAD 8 //marks as dead, run death anim.
+#define SENDFLAG_CRIT  16 //what component(s) blew off.
+#define SENDFLAG_BURN  32 //what is starting to burn.
+#define SENDFLAG_IMPACT  64 //specifically missile strike on something.
+#define SENDFLAG_NEWENT  128  //engine-set value, do not modify
   //128 is hardcoded as isNew, dont change
   //.modelindex
   //.faction
   //.data_type
   //.data_idx
 //expanded flags, WriteByte upped to WriteLong?
-float SENDFLAG_CAMERA   = 256;  //third person delta
-float SENDFLAG_RADAR    = 512;  //radar mode delta
-float SENDFLAG_ATTACK   = 1024; //attack trigger
-float SENDFLAG_SHIELD   = 2048; //shield change delta
-float SENDFLAG_ENERGY   = 4096; //energy change delta.
-float SENDFLAG_TARGET   = 8192; //target change delta.
-float SENDFLAG_EFLAGS   = 16384;//client .flags delta.
-float SENDFLAG_COLORS   = 32768;//player changed colors
-float SENDFLAG_NEWUNIT  = 65536; //players go from non-mech to mech
-float SENDFLAG_EXDATA   = 131072; //any additional info an ent wants to send (usually custom per class)
-float SENDFLAG_FACTION  = 262144; //this should have been its own long ago.
-float SENDFLAG_ANGLE    = 524288; //specifically .angles / .v_angle 
-float SENDFLAG_VOICE    = 1048576; //when an AI wants to emit a radio sound;
+#define SENDFLAG_CAMERA  256    //third person delta
+#define SENDFLAG_RADAR   512    //radar mode delta
+#define SENDFLAG_ATTACK  1024  //attack trigger
+#define SENDFLAG_SHIELD  2048  //shield change delta
+#define SENDFLAG_ENERGY  4096  //energy change delta.
+#define SENDFLAG_TARGET  8192  //target change delta.
+#define SENDFLAG_EFLAGS  16384  //client .flags delta.
+#define SENDFLAG_COLORS  32768  //player changed colors
+#define SENDFLAG_NEWUNIT 65536 //players go from non-mech to mech
+#define SENDFLAG_EXDATA  131072 //any additional info an ent wants to send (usually custom per class)
+#define SENDFLAG_FACTION 262144 //this should have been its own long ago.
+#define SENDFLAG_ANGLE   524288 //specifically .angles / .v_angle 
+#define SENDFLAG_VOICE   1048576 //when an AI wants to emit a radio sound;
 //============================
 //     COMMON SPAWNFLAGS
 //============================
-float START_OFF = 1;        //only activated by trigger
-float LIFETIME = 2;         //lifetime
-float REACTIVATE = 4;       //reactivate after countdown
-float REMOVE_FIRSTUSE = 8;  //remove after first countdown
-float REMOVE_ONTOUCH = 16;  //remove on first touch
+#define START_OFF 1        //only activated by trigger
+#define LIFETIME 2         //lifetime
+#define REACTIVATE 4       //reactivate after countdown
+#define REMOVE_FIRSTUSE 8  //remove after first countdown
+#define REMOVE_ONTOUCH 16  //remove on first touch
 
 float BUILDING_TARGET_FLAG = 16;  //used by building and misc_building for allowing self to be targeted
 
-float ACTIVE_ONTOUCH = 32;  //activate on-touch
-float MUTE_ME = 1048576;    //ai ignores sending voice effects / radio sounds.
-float NO_DROP = 262144; //don't drop bot/buildingto the floor onspawn
-float IS_MAPKEY = 4194304;  //mark's this entity on player's briefing map.
-float IS_VIP = 8388608;     //faction-allied player will be notified of this entity's state
+#define ACTIVE_ONTOUCH 32  //activate on-touch
+#define MUTE_ME 1048576    //ai ignores sending voice effects / radio sounds.
+#define NO_DROP 262144 //don't drop bot/buildingto the floor onspawn
+#define IS_MAPKEY 4194304  //mark's this entity on player's briefing map.
+#define IS_VIP 8388608     //faction-allied player will be notified of this entity's state
 //============================
 //     SHARED STATS         
 //============================
-float RADAR_SWEEP = 2.5;
+#define RADAR_SWEEP 2.5
 
 .float stat_rdr_mode;
 #ifdef SSQC
@@ -470,42 +474,42 @@ float STAT_PLR_REP = 103; //remaining repair delta
 //    use agreed upon common 
 //============================
 //Response Schema
-string RSP_SRC      = "src";
-string RSP_TYPE     = "type";
-string RSP_CID      = "client";
-string RSP_BODY     = "body";
-//Response SOURCE
-string SV_PRINT     = "svpr";
-string CS_PRINT     = "cspr";
-//Response TYPES
-string SAY_MSG1     = "msg1";
-string SAY_MSG2     = "msg2";
-string SV_CL_CONN   = "signon";
-string SV_CL_KSELF  = "lame";
-string SV_CL_DSCON  = "signoff";
+#define RSP_SRC     "src"
+#define RSP_TYPE    "type"
+#define RSP_CID     "client"
+#define RSP_BODY    "body"
+//Response SOURCE   
+#define SV_PRINT    "svpr"
+#define CS_PRINT    "cspr"
+//Response TYPES    
+#define SAY_MSG1    "msg1"
+#define SAY_MSG2    "msg2"
+#define SV_CL_CONN  "signon"
+#define SV_CL_KSELF "lame"
+#define SV_CL_DSCON "signoff"
 
 //============================
 //     LOCK STATES   
 //============================
-float LOCK_NONE = 1;
-float LOCK_TARG_START = 2;
-float LOCK_TARG_HAS = 4;
-float LOCK_PLAYER = 8;
+#define LOCK_NONE 1
+#define LOCK_TARG_START 2
+#define LOCK_TARG_HAS 4
+#define LOCK_PLAYER 8
 
 //============================
 //     HIT DIRECTION FLAGS 
 //============================
-float STAT_HIT_CL = 1;
-float STAT_HIT_LF = 2;
-float STAT_HIT_RT = 4;
-float STAT_HIT_BK = 8;
-float STAT_HIT_TRG = 16;
+#define STAT_HIT_CL 1
+#define STAT_HIT_LF 2
+#define STAT_HIT_RT 4
+#define STAT_HIT_BK 8
+#define STAT_HIT_TRG 16
 
 //============================
 //     PLAYER POWER UP TIME  
 //============================
-float POWERUP_DEFAULT = 7;
-float POWERUP_DEBUG   = 0.01;
+#define POWERUP_DEFAULT 7
+#define POWERUP_DEBUG 0.01
 
 //============================
 //     UNIT ACCURACY PROFILES
@@ -519,38 +523,37 @@ vector ACCURACY_PRIMITVE    = '0.45 0.93 0.001';
 //============================
 //     FACTIONS
 //============================
-float FACTION_PSC = 1;
-float FACTION_SURVEST = 2;
-float FACTION_MILITAR = 3;
-float FACTION_ALL = 255;  //buildings don't show up on radar, deploy and nav points are rendered to everyone.
+#define FACTION_PSC 1
+#define FACTION_SURVEST 2
+#define FACTION_MILITAR 3
+#define FACTION_ALL 255 //buildings don't show up on radar, deploy and nav points are rendered to everyone.
 
 //============================
 //     SHIELD HIT FLAGS
 //============================
 //directs the client to choose the correct color / and shield state for an entity.
-float SHIELD_HIT_REG  = 1;  //tells client that entity's shields are hit, but currently up
-float SHIELD_HIT_EMP  = 2;  //entity hit with EMP round, color differently for readability.
-float SHIELD_HIT_EXP  = 4;  //entity shields have just gone down, cue explosion.
-float SHIELD_HIT_IXP  = 5;  //EMP-based shield explosion.
+#define SHIELD_HIT_REG 1  //tells client that entity's shields are hit, but currently up
+#define SHIELD_HIT_EMP 2  //entity hit with EMP round, color differently for readability.
+#define SHIELD_HIT_EXP 4  //entity shields have just gone down, cue explosion.
+#define SHIELD_HIT_IXP 5  //EMP-based shield explosion.
 
 //============================
 //     AI VOICE SYSTEM
 //============================
 //Voice group IDs
-float AI_VOICE_GROUP_A = 2;
-float AI_VOICE_GROUP_B = 3;
-float AI_VOICE_GROUP_C = 1;
-
-float AI_VOICE_DEAD       = 0;
-float AI_VOICE_DYING      = 1;
-float AI_VOICE_HELP       = 2;
-float AI_VOICE_HUNT_END   = 3;
-float AI_VOICE_HUNT_START = 4;
-float AI_VOICE_KILL       = 5;
-float AI_VOICE_NOSPOT     = 6;
-float AI_VOICE_ROGER      = 7;
-float AI_VOICE_SPOTTED    = 8;
-float AI_VOICE_WARN       = 9;
+#define AI_VOICE_GROUP_A 2
+#define AI_VOICE_GROUP_B 3
+#define AI_VOICE_GROUP_C 1
+#define AI_VOICE_DEAD       0
+#define AI_VOICE_DYING      1
+#define AI_VOICE_HELP       2
+#define AI_VOICE_HUNT_END   3
+#define AI_VOICE_HUNT_START 4
+#define AI_VOICE_KILL       5
+#define AI_VOICE_NOSPOT     6
+#define AI_VOICE_ROGER      7
+#define AI_VOICE_SPOTTED    8
+#define AI_VOICE_WARN       9
 
 
 //============================
@@ -563,12 +566,12 @@ float AI_VOICE_WARN       = 9;
     cmd client <changeflags> <infostring>
     
 */
-float INFO_FLAG_FACTION = 512;
-float INFO_FLAG_MECH    = 1024;
-float INFO_FLAG_SPAWN   = 2048;
-float INFO_FLAG_COLOR   = 4096;
-float INFO_FLAG_GROUPS  = 8192;
-float INFO_FLAG_DEPLOY  = 16384;
+#define INFO_FLAG_FACTION 512
+#define INFO_FLAG_MECH   1024
+#define INFO_FLAG_SPAWN  2048
+#define INFO_FLAG_COLOR  4096
+#define INFO_FLAG_GROUPS 8192
+#define INFO_FLAG_DEPLOY 16384
 // WEAPON flags inherit / interoperable with WEAPON1-9 enums above.
 /*
   Info string arch - this is sent to the server
@@ -597,28 +600,28 @@ float INFO_FLAG_DEPLOY  = 16384;
   w8    | float
   w9    | float
 */
-string CMD_CLIENT_INFO = "client";
-string KEY_FLAGS  = "flags";
-string KEY_DEPLOY  = "deploy";
-string KEY_FACTION  = "fac";
-string KEY_COLOR1  = "col1";
-string KEY_COLOR2  = "col2";
-string KEY_COLOR3  = "col3";
-string KEY_COLOR4  = "col4";
-string KEY_COLOR5  = "col5";
-string KEY_COLOR6  = "col6";
-string KEY_MECH    = "mech";
-string KEY_GROUP1  = "grp1";
-string KEY_GROUP2  = "grp2";
-string KEY_GROUP3  = "grp3";
-string KEY_GROUP4  = "grp4";
-string KEY_WEPN1  = "w1";
-string KEY_WEPN2  = "w2";
-string KEY_WEPN3  = "w3";
-string KEY_WEPN4  = "w4";
-string KEY_WEPN5  = "w5";
-string KEY_WEPN6  = "w6";
-string KEY_WEPN7  = "w7";
-string KEY_WEPN8  = "w8";
-string KEY_WEPN9  = "w9";
-string KEY_SPAWN  = "spawn";
+#define CMD_CLIENT_INFO "client"
+#define KEY_FLAGS "flags"
+#define KEY_DEPLOY "deploy"
+#define KEY_FACTION "fac"
+#define KEY_COLOR1 "col1"
+#define KEY_COLOR2 "col2"
+#define KEY_COLOR3 "col3"
+#define KEY_COLOR4 "col4"
+#define KEY_COLOR5 "col5"
+#define KEY_COLOR6 "col6"
+#define KEY_MECH   "mech"
+#define KEY_GROUP1 "grp1"
+#define KEY_GROUP2 "grp2"
+#define KEY_GROUP3 "grp3"
+#define KEY_GROUP4 "grp4"
+#define KEY_WEPN1 "w1"
+#define KEY_WEPN2 "w2"
+#define KEY_WEPN3 "w3"
+#define KEY_WEPN4 "w4"
+#define KEY_WEPN5 "w5"
+#define KEY_WEPN6 "w6"
+#define KEY_WEPN7 "w7"
+#define KEY_WEPN8 "w8"
+#define KEY_WEPN9 "w9"
+#define KEY_SPAWN "spawn"

@@ -7,18 +7,18 @@ overview:
 */
 
 //CONSTANTS
-string PATH_CAMP_FILE = "campaigns/original.dat";
-string CAMP_TAG_NAME = "name";
-string CAMP_TAG_DESC = "desc";
-string CAMP_TAG_AUTHOR = "author";
-string CAMP_TAG_MECHS = "mechs";
-string CAMP_TAG_ITEMS = "items";
-string CAMP_TAG_START = "start";
-string CAMP_TAG_INFO = "info";
-string CAMP_SAVE_TAG = "campaign";
+#define PATH_CAMP_FILE "campaigns/original.dat"
+#define CAMP_TAG_NAME "name"
+#define CAMP_TAG_DESC "desc"
+#define CAMP_TAG_AUTHOR "author"
+#define CAMP_TAG_MECHS "mechs"
+#define CAMP_TAG_ITEMS "items"
+#define CAMP_TAG_START "start"
+#define CAMP_TAG_INFO "info"
+#define CAMP_SAVE_TAG "campaign"
 
-float CAMP_TOTAL    = 17; //max number of campaigns (16).
-float CAMP_PAGE_MAX = 8;  //max results per page
+#define CAMP_TOTAL    17 //max number of campaigns (16).
+#define CAMP_PAGE_MAX 8  //max results per page
 
 //GLOBALS
 #ifdef QCMENU
