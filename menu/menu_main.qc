@@ -15,7 +15,7 @@ void() m_init={
   gui_set_screen_size();
   dynamic_precache();
   
-  localcmd("disconnect;\ntogglemenu;\n");
+  localcmd("disconnect;\ntogglemenu;\ncd play 2;\n");
   
   registercvar("cl_hud_alpha", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_color", "0", CF_CLIENT | CF_ARCHIVE);
@@ -167,15 +167,11 @@ void(float width, float height) m_draw={
   VIEW_ACT_y = cvar("vid_height");
   VIEW_ACT_z = cvar("vid_pixelheight");
   
-  if( (clientstate() == CS_CONNECTED) && (getkeydest() == KEY_MENU) ){
-    if( !isdemo() ){
-      local vector p;
-      p = VIEW_MAX;
-      p_z = 0;
-      //drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.85, 0);      
-    }
+  if(MAIN_MISSION){
+    drawfill(VIEW_ORG, VIEW_MAX, '0.1 0.1 0.1', 0.75, 0);
   }
-  else{
+  
+  if( (clientstate() == CS_DISCONNECTED) && (getkeydest() == KEY_MENU) ){
     bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), VIEW_MAX);
     drawpic(VIEW_ORG, "gfx/menu/splash.tga", bimg, '1 1 1', 1, 0);
   }

@@ -15,7 +15,6 @@ entity main_title;
 entity main_label;
 entity main_leave;
 entity main_camp;
-entity main_backto;
 entity main_training;
 entity main_options;
 entity main_multi;
@@ -32,7 +31,6 @@ string IMG_MAIN_PAUSE  = "gfx/pause.png";
 string IMG_MAIN_LBL    = "gfx/menu/main/main_label.png";
 
 string IMG_MAIN_LEAVE = "gfx/menu/quit_mission.png";
-string IMG_MAIN_EXIT = "gfx/menu/exit_game.png";
 
 string IMG_TITLE;
 string IMG_QUIT;
@@ -92,7 +90,9 @@ void() click_main_leave={
   cvar_set("coop", "0");
   cvar_set("sv_serverflags", "0");  //accounts for player-hosted servers rather than using dedicated hosting.
   localcmd("maxplayers 1;\n");
-  localcmd("disconnect;map cin_menu;\n");
+  localcmd("disconnect;\n");
+  localcmd("togglemenu;\n");
+  localcmd("cd play 2;\n");
 };
 
 void() click_main_player_setup={
@@ -105,27 +105,36 @@ void() m_main_i={
   local vector orgOptions;
   local vector orgHelp;
   local vector orgQuit;
-  local vector labelSize;
   local float mainTitleFlag;
   
   if( MAIN_MISSION ){
-    MENU_ORG =  VIEW_ORG + '0 40';
+    menu_parent_setup(VIEW_ORG + '0 80', '208 192');
+    
     IMG_TITLE = IMG_MAIN_PAUSE;
-    labelSize = '160 24 0';
-    mainTitleFlag = 0;
-    main_player_options = btn_img_callback('10 132 0', '1 1 0', IMG_MULTI_PLAYERSETUP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_player_setup, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-    orgOptions = '10 151 0';
-    orgHelp = '10 170 0';
-    main_leave = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_LEAVE, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_leave, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-    orgQuit = '10 206 0';
+    mainTitleFlag = UI_FLAG_SIZE_IMG;
+    
+    main_label = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1', IMG_TITLE, '1 1 1', VIEW_CTX, M_MAIN, 1, mainTitleFlag );
+    
+    main_player_options = btn_text_callback(MENU_ORG + menu_parent_center_width(45), '16 16', "PLAYER SETUP", VIEW_CTX, M_MAIN, click_main_player_setup, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+    main_player_options.fontId = FONT_NUM_XOLONIUM_BOLD;
+    
+    orgOptions = MENU_ORG + menu_parent_center_width(64);
+    
+    orgHelp = MENU_ORG + menu_parent_center_width(83);
+    
+    main_leave = btn_text_callback(MENU_ORG + menu_parent_center_width(121), '16 16', "LEAVE", VIEW_CTX, M_MAIN, click_main_leave, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+    main_leave.fontId = FONT_NUM_XOLONIUM_BOLD;
+    
+    orgQuit = MENU_ORG + menu_parent_center_width(159);
   }
   else{
     menu_parent_setup(VIEW_ORG + '0 40', '208 256');
     
     IMG_TITLE = IMG_MAIN_LBL;
-    labelSize = '1 1 0';
     mainTitleFlag = UI_FLAG_SIZE_IMG;
-    main_title = lbl_img(MENU_ORG + menu_parent_center_width(10), '1 1 0', IMG_MAIN_TITLE, '1.5 0.75 0.35', VIEW_CTX, M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
+    main_title = lbl_img(MENU_ORG + menu_parent_center_width(10), '1 1 0', IMG_MAIN_TITLE, '1.5 0.75 0.35', VIEW_CTX, M_MAIN, 1, UI_FLAG_SIZE_IMG );
+    
+    main_label = lbl_img(MENU_ORG + menu_parent_center_width(60), '1 1', IMG_TITLE, '1 1 1', VIEW_CTX, M_MAIN, 1, mainTitleFlag );
     
     main_training = btn_text_callback(MENU_ORG + menu_parent_center_width(92), '16 16', "TRAINING", VIEW_CTX, M_MAIN, click_main_train, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
     main_training.fontId = FONT_NUM_XOLONIUM_BOLD;
@@ -146,7 +155,6 @@ void() m_main_i={
     
   }
   
-  main_label = lbl_img(MENU_ORG + menu_parent_center_width(60), labelSize, IMG_TITLE, '1 1 1', VIEW_CTX, M_MAIN, 1, mainTitleFlag );
   
   main_options = btn_text_callback(orgOptions, '16 16', "OPTIONS", VIEW_CTX, M_MAIN, click_main_options, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   main_options.fontId = FONT_NUM_XOLONIUM_BOLD;

@@ -15,10 +15,6 @@ entity options_back;
 
 //options root Constants
 string IMG_OPTION_TITLE = "gfx/menu/options/options_title.png";
-string IMG_OPTION_CONTROLS = "gfx/menu/options/options_controls.png";
-string IMG_OPTION_GRAPHICS = "gfx/menu/options/options_graphics.png";
-string IMG_OPTION_AUDIO = "gfx/menu/options/options_audio.png";
-string IMG_OPTION_GAMEPLAY = "gfx/menu/options/options_gameplay.png";
 
 //options root callbacks
 void() click_options_controls={

@@ -31,7 +31,6 @@ void() ui_colors_set_player_list={
       if( strstrofs(line, "#", 0) == -1){
         if( i < 128 ){
           tokenizebyseparator(line, ",");
-          dprint(sprintf("line : %s\n", line));  //debug
           CLR_PLAYER_LIST[i] = Vector3(stof(argv(0))/255.0,stof(argv(1))/255.0,stof(argv(2))/255.0);
           i = i + 1;
         }
