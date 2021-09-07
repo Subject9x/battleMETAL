@@ -29,10 +29,6 @@ float NEWGAME_SKILL = 2;
 float NEWGAME_BRIEF = 3;
 
 string IMG_NEW_TITLE  = "gfx/menu/newgame/new_title.png";
-string IMG_NEW_NOVICE  = "gfx/menu/newgame/new_novice.png";
-string IMG_NEW_REGULAR  = "gfx/menu/newgame/new_regular.png";
-string IMG_NEW_VETERAN = "gfx/menu/newgame/new_veteran.png";
-string IMG_NEW_ELITE  = "gfx/menu/newgame/new_elite.png";
 
 float NEWGAME_ROLL_ROK = 1;
 float NEWGAME_ROLL_REG = 2;

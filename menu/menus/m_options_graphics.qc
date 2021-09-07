@@ -642,6 +642,7 @@ void() click_graphics_accept={
   localcmd("vid_restart\n");
   localcmd("saveconfig\n");
   //apparently also loads autoexec.cfg and .rc
+  gui_set_screen_size();
 };
 
 // ini function, called by '_f' function as a setup func

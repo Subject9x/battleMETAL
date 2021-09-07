@@ -15,6 +15,8 @@ void() m_init={
   gui_set_screen_size();
   dynamic_precache();
   
+  localcmd("disconnect;\ntogglemenu;\n");
+  
   registercvar("cl_hud_alpha", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_color", "0", CF_CLIENT | CF_ARCHIVE);
   //registercvar("cl_hud_sway", "0", 1);
@@ -158,7 +160,8 @@ void(float keynr, float ascii) m_keyup={
   Quake C api hook - the primary render function, stuff all menu draw calls here
 */
 void(float width, float height) m_draw={
-
+  local vector bimg;
+  
   VIEW_MPOS = getmousepos();
   VIEW_ACT_x = cvar("vid_width");
   VIEW_ACT_y = cvar("vid_height");
@@ -171,6 +174,10 @@ void(float width, float height) m_draw={
       p_z = 0;
       //drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.85, 0);      
     }
+  }
+  else{
+    bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), VIEW_MAX);
+    drawpic(VIEW_ORG, "gfx/menu/splash.tga", bimg, '1 1 1', 1, 0);
   }
   
   //draw the selected Menu_d() function

@@ -66,7 +66,7 @@ void() m_load_i={
     }
     else{
       name = GAME_SAVES_DRAWNAME[itr];
-      list = btn_text_callback(next, '14 14', name, 0, M_LOAD, click_saveslot, CLR_DEF_WHITE, CLR_DEF_ARM_OK, 1, UI_FLAG_SIZE_IMG);
+      list = btn_text_callback(next, '14 14', name, 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_ARM_OK, 1, UI_FLAG_SIZE_IMG);
       list.fontId = FONT_NUM_XOLONIUM_BOLD;
     }
     
