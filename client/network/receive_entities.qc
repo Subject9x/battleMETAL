@@ -229,7 +229,6 @@ void() client_state_events={
     if( (CLIENT_player_state_prev == PLAYER_CONNECT) && (CLIENT_player_state == PLAYER_MENU) ){
       setcursormode( 0 );
       menu_exit();
-      cvar_set("cl_ismenu", "1");
       localcmd("togglemenu\n");
       return;
     }

@@ -15,14 +15,13 @@ void() m_init={
   gui_set_screen_size();
   dynamic_precache();
   
-  localcmd("disconnect;\ntogglemenu;\ncd play 2;\n");
+  localcmd("disconnect;togglemenu;cd play 2;\n");
   
   registercvar("cl_hud_alpha", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_color", "0", CF_CLIENT | CF_ARCHIVE);
   //registercvar("cl_hud_sway", "0", 1);
   registercvar("cl_team", "0", CF_CLIENT);
   registercvar("sv_serverflags", "0", CF_SERVER);
-  registercvar("cl_ismenu", "0", 0);
   
   registercvar("cl_net_fav1", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_net_fav2", "0", CF_CLIENT | CF_ARCHIVE);
@@ -62,6 +61,7 @@ void() m_init={
   
   //setup textfield key filter;
   menu_ini_txtfilter();
+  
 };
 
 /*
@@ -167,13 +167,15 @@ void(float width, float height) m_draw={
   VIEW_ACT_y = cvar("vid_height");
   VIEW_ACT_z = cvar("vid_pixelheight");
   
-  if(MAIN_MISSION){
-    drawfill(VIEW_ORG, VIEW_MAX, '0.1 0.1 0.1', 0.75, 0);
-  }
-  
-  if( (clientstate() == CS_DISCONNECTED) && (getkeydest() == KEY_MENU) ){
-    bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), VIEW_MAX);
-    drawpic(VIEW_ORG, "gfx/menu/splash.tga", bimg, '1 1 1', 1, 0);
+  if( getkeydest() == KEY_MENU ){
+    if(MAIN_MISSION){
+      drawfill(VIEW_ORG, VIEW_MAX, '0.1 0.1 0.1', 0.75, 0);
+    }
+    
+    if( clientstate() == CS_DISCONNECTED){
+      bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), VIEW_MAX);
+      drawpic(VIEW_ORG, "gfx/menu/splash.tga", bimg, '1 1 1', 1, 0);
+    }
   }
   
   //draw the selected Menu_d() function
@@ -254,33 +256,21 @@ void(float width, float height) m_draw={
 /*
   Quake C api hook - called, I believe when 'togglemenu' console command is invoked
 */
-void(float mode) m_toggle={  
+void(float mode) m_toggle={
+  MAIN_MISSION = TRUE;
+  if( clientstate() == CS_DISCONNECTED ){
+    MAIN_MISSION = FALSE;
+    localcmd("cd play 2;\n");
+  }
+  
   if( isdemo() ){
     setkeydest(KEY_MENU);
-    MAIN_MISSION = FALSE;
     menu_clear_items(M_MAIN); 
     m_main_f();
     return;
   }
   
-  if( clientstate() == CS_DISCONNECTED ){
-    setkeydest(KEY_MENU);
-    MAIN_MISSION = FALSE;
-    menu_clear_items(M_MAIN); 
-    m_main_f();
-    return;
-  }
-  
-  if(cvar("cl_ismenu") == 1){
-    setkeydest(KEY_MENU);
-    MAIN_MISSION = FALSE;
-    menu_clear_items(M_MAIN); 
-    m_main_f();
-    return; 
-  }
-
   setkeydest(KEY_MENU);
-  MAIN_MISSION = TRUE;
   menu_clear_items(M_MAIN); 
   m_main_f();
 };
@@ -309,8 +299,8 @@ void() m_shutdown={
 };
 
 void(float drawmous) m_drawmouse={
-  if(drawmous){
     local vector mpos, i_sz;
+  if(drawmous){
     
     i_sz = drawgetimagesize(UI_IMG_MOUSE);
     i_sz = gui_scaleSize(i_sz, VIEW_SCALE / 1.25);

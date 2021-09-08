@@ -703,17 +703,17 @@ const string cvar_defstring(string name) = #89;
 float	stringwidth(string text, float handleColors, vector size) = #468;
 
 //Multiplayer Server Flags
-float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
-float SVFLAG_POWERUP    = 2;  //  enforce powerup sequence
-float SVFLAG_CHEATS     = 4;  //  cheaty cheat pants
-float SVFLAG_FIREON     = 8;  //  friendly fire on
-float SVFLAG_NOLIVES    = 16; //  limited lives
-float SVFLAG_NOMAP      = 32; //  only see yourself on tac map
-float SVFLAG_NORADAR    = 64; //  no radar allowed
-float SVFLAG_NOSTATUS   = 128; // hide player status in menus
-float SVFLAG_ITEMOVER   = 256; //used when world.itemOverride = 1; tells game to load the override file
-float SVFLAG_NOSAVE     = 512; //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
-float SVFLAG_FPSONLY    = 1024; //disables third person / chase_active commands.
+#define SVFLAG_SPAWNFAR 1  //  pawn player farthest from other players
+#define SVFLAG_POWERUP  2  //  enforce powerup sequence
+#define SVFLAG_CHEATS   4  //  cheaty cheat pants
+#define SVFLAG_FIREON   8  //  friendly fire on
+#define SVFLAG_NOLIVES  16 //  limited lives
+#define SVFLAG_NOMAP    32 //  only see yourself on tac map
+#define SVFLAG_NORADAR  64 //  no radar allowed
+#define SVFLAG_NOSTATUS 128 // hide player status in menus
+#define SVFLAG_ITEMOVER 256 //used when world.itemOverride = 1; tells game to load the override file
+#define SVFLAG_NOSAVE   512 //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
+#define SVFLAG_FPSONLY  1024 //disables third person / chase_active commands.
 
 #define QCMENU
 #define cacheGlobalString(var, val) if(val!=""){if (var!=""){strunzone(var); var="";} var = strzone(val);}

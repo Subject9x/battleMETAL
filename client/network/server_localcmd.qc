@@ -400,5 +400,4 @@ void() cl_set_menu={
     setcursormode(0);
     localcmd("togglemenu\n");
   }
-  cvar_set("cl_ismenu", ftos(menuFlag));
 };

@@ -465,8 +465,8 @@ void() ui_navbutton_disconnect_click={
   cvar_set("deathmatch", "0");
   cvar_set("teamplay", "0");
   cvar_set("coop", "0");
-  cvar_set("cl_ismenu", "1");
-  localcmd("disconnect;map cin_menu\n");
+  localcmd("disconnect;\n");
+  localcmd("togglemenu;\n");
 };
 
 /*
