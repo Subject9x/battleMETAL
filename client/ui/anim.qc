@@ -109,6 +109,7 @@ void(string fileToOpen) anm_parseFile={
     ANM_FILE_STATUS = 1;
     ANM_FRAME_ALPHA_CUR = 0;
     ANM_FRAME_CUR_FADE_STEP = 0;
+    gui_set_screen_size();
   }
 };
 
@@ -133,10 +134,6 @@ void() anm_execute_metadata={
 void(float timeVal) anm_new_frame={
   local float frameSlice;
   local vector imageSize, frameSize, frameOrg;
-  local vector consoleSize;
-  local float aspectRatio;
-  local vector imageAspect;
-  local vector calcSize;
   
   ANM_FRAME_CUR = rint(ANM_FRAME_CUR + 1);
   
@@ -199,35 +196,38 @@ void(float timeVal) anm_new_frame={
     frameOrg = '0 0';
   }
   else{
+    /*
+      UI_ORG
+      UI_MAX
+      UI_CTR
+      
+      VIEW_ORG
+      VIEW_MAX
+      VIEW_CTR
     
-    consoleSize_x = cvar("vid_conwidth");
-    consoleSize_y = cvar("vid_conheight");
+    */
+    
     
     imageSize = draw_getimagesize(ANM_FRAME_IMG[ANM_FRAME_CUR]);
     frameSize = ANM_FRAME_SIZE[ANM_FRAME_CUR];
     frameOrg = ANM_FRAME_POS[ANM_FRAME_CUR];
     
-    imageAspect_x = consoleSize_x / imageSize_x;
-    imageAspect_y = consoleSize_y / imageSize_y;
-    aspectRatio = min(imageAspect_x, imageAspect_y);
+    local vector aspectsize;
+    aspectsize = gui_newAspectRatio(imageSize, Vector2(cvar("vid_conwidth"), cvar("vid_conheight")));
     
-    calcSize_x = imageSize_x * aspectRatio;
-    calcSize_y = imageSize_y * aspectRatio;
-    
-    frameSize_x = min(frameSize_x, (calcSize_x / consoleSize_x));
-    frameSize_y = min(frameSize_y, (calcSize_y / consoleSize_y));
-    
-    frameSize_x = calcSize_x * frameSize_x;
-    frameSize_y = calcSize_y * frameSize_y;
+    aspectsize_x = aspectsize_x * frameSize_x;
+    aspectsize_y = aspectsize_y * frameSize_y;
     
     if( (ANM_FRAME_CUR_FLAGS & ANM_FLAG_CENTER) ){
-      frameOrg_x = 0.5 - ((frameSize_x / 2) / consoleSize_x);
-      frameOrg_y = 0.5 - ((frameSize_y / 2) / consoleSize_y);
+      frameOrg_x = VIEW_CTR_x - aspectsize_x / 2;
+      frameOrg_y = VIEW_CTR_y - aspectsize_y / 2;
+    }
+    else{
+      frameOrg_x = frameOrg_x * VIEW_MAX_x;
+      frameOrg_y = frameOrg_y * VIEW_MAX_y;
     }
   }
-  frameOrg_x = frameOrg_x * VIEW_MAX_x;
-  frameOrg_y = frameOrg_y * VIEW_MAX_y;
-  ANM_FRAME_CUR_SIZE = frameSize;
+  ANM_FRAME_CUR_SIZE = aspectsize;
   ANM_FRAME_CUR_ORG = frameOrg;
 };
 

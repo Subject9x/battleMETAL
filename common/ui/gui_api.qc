@@ -163,11 +163,23 @@ void() gui_set_screen_size={
 
 vector(vector startSize, vector targsize) gui_newAspectRatio={
   local vector v;
-
-  //adjusted width / (original width / original height) = adjusted height,
-  v_y = targsize_x / (startSize_x / startSize_y);
-  v_x = targsize_x;
-
+  local float w, h;
+  
+  if (startSize_x > targsize_x) {
+      //scale width to fit
+      w = targsize_x;
+      h = (w * startSize_y) / startSize_x;
+  }
+  
+  if (h > targsize_y) {
+      //scale height to fit instead
+      h = targsize_y;
+      w = (h * startSize_x) / startSize_y;
+  }
+  
+  v_x = w;
+  v_y = h;
+  
   return v;
 };
 
