@@ -36,28 +36,35 @@ void(string fileToOpen) anm_parseFile={
   line = fgets(flannel);
   frame_count = -1; // metadata is always frame '0'
   
+  //failed to load animatic file.
+  if(flannel == -1){
+    anm_cleanup();
+    return;
+  }
+  
   while( (line != "") ){
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
       line_tag = tokenizebyseparator(line, "'", "'", ": ", ",");
       //meta data tags
       if( argv(1) == ANM_FILE_META_MUS ){
         if( argv(3) != ""){
-          cacheGlobalString( ANM_META_DATA[0], precache_sound2(argv(3)) )
+          //can only be a /sounds/cdtracks/ number!
+          cacheGlobalString( ANM_META_DATA[ANM_META_FLAG_OTHER_MUSIC], argv(3) )
         }
       }
       if( argv(1) == ANM_FILE_META_MUS_NO ){
-        cacheGlobalString( ANM_META_DATA[1], argv(3) )
+        cacheGlobalString( ANM_META_DATA[ANM_META_FLAG_NO_MUSIC], argv(3) )
       }
       if( argv(1) == ANM_FILE_META_BACK ){
         if( argv(3) != ""){
-          cacheGlobalString( ANM_META_DATA[2], argv(3) )
+          cacheGlobalString( ANM_META_DATA[ANM_META_FLAG_BKGD], argv(3) )
         }
       }
       if( argv(1) == ANM_FILE_META_TRANS ){
-        cacheGlobalString( ANM_META_DATA[3], argv(3) )
+        cacheGlobalString( ANM_META_DATA[ANM_META_FLAG_TRANSPARENCY], argv(3) )
       }
       if( argv(1) == ANM_FILE_META_SKIP ){
-        cacheGlobalString( ANM_META_DATA[4], argv(3) )
+        cacheGlobalString( ANM_META_DATA[ANM_META_FLAG_SKIP], argv(3) )
       }
       //===================
       //frame data
@@ -109,21 +116,19 @@ void(string fileToOpen) anm_parseFile={
     ANM_FILE_STATUS = 1;
     ANM_FRAME_ALPHA_CUR = 0;
     ANM_FRAME_CUR_FADE_STEP = 0;
+    
+    
+    //first frame, handle meta data
+    if(ANM_META_DATA[ANM_META_FLAG_OTHER_MUSIC] != ""){
+      localcmd(strcat("cd play ", ANM_META_DATA[ANM_META_FLAG_OTHER_MUSIC]," 0\n"));
+    }
+    else{
+      if(ANM_META_DATA[ANM_META_FLAG_NO_MUSIC] == "1"){
+        localcmd("cd stop\n");
+      }
+    }
+    
     gui_set_screen_size();
-  }
-};
-
-
-/*
-  Frame 0 is always the metadata frame of the anim file - 2020 Roohr
-*/
-void() anm_execute_metadata={
-  //first frame, handle meta data
-  if(ANM_META_DATA[1] == "1"){
-    localcmd("cd pause");
-  }
-  if(ANM_META_DATA[0] != ""){
-    pointsound(pmove_org, ANM_META_DATA[0], 1, ATTN_NORM); 
   }
 };
 
@@ -135,7 +140,7 @@ void(float timeVal) anm_new_frame={
   local float frameSlice;
   local vector imageSize, frameSize, frameOrg;
   
-  ANM_FRAME_CUR = rint(ANM_FRAME_CUR + 1);
+  ANM_FRAME_CUR = ANM_FRAME_CUR + 1;
   
   //check for end-of-anim first
   if(ANM_FRAME_CUR == ANM_FRAME_TOTAL){
@@ -152,7 +157,7 @@ void(float timeVal) anm_new_frame={
   
   ANM_FRAME_CUR_FADE_RATE = rint(0);
   
-  if(ANM_FRAME_SND[ANM_FRAME_CUR] != ""){
+  if(ANM_FRAME_SND[ANM_FRAME_CUR] != "" && strlen(ANM_FRAME_SND[ANM_FRAME_CUR]) > 0){
     pointsound(pmove_org, ANM_FRAME_SND[ANM_FRAME_CUR], 1, ATTN_NONE);
   }
   
@@ -196,18 +201,6 @@ void(float timeVal) anm_new_frame={
     frameOrg = '0 0';
   }
   else{
-    /*
-      UI_ORG
-      UI_MAX
-      UI_CTR
-      
-      VIEW_ORG
-      VIEW_MAX
-      VIEW_CTR
-    
-    */
-    
-    
     imageSize = draw_getimagesize(ANM_FRAME_IMG[ANM_FRAME_CUR]);
     frameSize = ANM_FRAME_SIZE[ANM_FRAME_CUR];
     frameOrg = ANM_FRAME_POS[ANM_FRAME_CUR];
@@ -307,8 +300,8 @@ void() anm_execute_frame={
   local float frameTime;
   //frameTime = servertime + (servertime - time);
   frameTime = time;
-  if(ANM_META_DATA[2] != ""){
-    drawpic('0 0', ANM_META_DATA[2] , VIEW_MAX, '1 1 1', 1, 0); 
+  if(ANM_META_DATA[ANM_META_FLAG_BKGD] != ""){
+    drawpic('0 0', ANM_META_DATA[ANM_META_FLAG_BKGD] , VIEW_MAX, '1 1 1', 1, 0); 
   }
   
   if(frameTime > ANM_FRAME_TIME){
@@ -325,7 +318,7 @@ void() anm_execute_frame={
 void() anm_cleanup={
   local float clean;
   
-  localcmd("cd resume\n");
+  localcmd(strcat("cd resume ", ftos(world.sounds), "\n"));
   sound7(self, CHAN_WEAPON, "", 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
   
   clean = 0;
