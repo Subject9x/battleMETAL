@@ -394,8 +394,8 @@ void() m_gameplay_d={
   drawfont = FONT_NUM_ROBOT_LIGHT;
   
     gui_renderString("Field of View:", gameplay_fov_less.origin - Vector2(stringwidth("Field of View:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Show Date/Time:", gameplay_fps_off.origin - Vector2(stringwidth("Show Date/Time:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Show FPS:", gameplay_datetime_off.origin - Vector2(stringwidth("Show FPS:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Show FPS:", gameplay_fps_off.origin - Vector2(stringwidth("Show FPS:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Show Date/Time:", gameplay_datetime_off.origin - Vector2(stringwidth("Show Date/Time:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     gui_renderString("Crosshair Style:", gameplay_crosshair_pr.origin - Vector2(stringwidth("Crosshair Style:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     gui_renderString("HUD Alpha:", gameplay_hudalpha_dn.origin - Vector2(stringwidth("HUD Alpha:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     gui_renderString("HUD Color:", gameplay_hudcolor_pr.origin - Vector2(stringwidth("HUD Color:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
