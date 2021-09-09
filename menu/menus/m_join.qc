@@ -302,7 +302,7 @@ void() m_join_d={
     pingVal = gethostcachenumber(gethostcacheindexforkey("ping"), serverId);
     mapVal = gethostcachestring(gethostcacheindexforkey("map"), serverId);
     //9999 is most likely self-sever, ie the darn main_menu map!
-    if( pingVal > -1 && mapVal != "cin_menu.bsp"){
+    if( pingVal > -1 ){
       maxPlayVal = gethostcachenumber(gethostcacheindexforkey("maxplayers"), serverId);
       if( maxPlayVal > 1 ){
         pos_x = SERVER_LIST_ORG_x;
