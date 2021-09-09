@@ -91,7 +91,7 @@ void(vector ofs, float algn) hud_renderTargetName={
   msgSize_x = msgLen/2;
   msgSize_y = 6;
   tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
-  drawstring(tofs, msg, '10 10 0', factionColor, HUD_ALPHA, 0);
+  drawstring(tofs, msg, '10 10', factionColor, HUD_ALPHA, 0);
   
   drawfont = drawfont_prev;
 };
@@ -456,7 +456,7 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     backOrg = lblOfs;
     backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
     backSize = lblSize;
-    gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+    gui_renderPatch9_1_32(backOrg -'8 0', backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
   
   drawpic(meter, HUD_BUILD_TRG, siz, tColor, HUD_ALPHA, 0);

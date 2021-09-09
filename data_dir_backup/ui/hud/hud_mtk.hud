@@ -4,41 +4,41 @@
   'pos'    : 287.5 170 0,
   'size'   : 575 180 0,
   'icon'   : gfx/hud/hud_mtk_bck.png,
-  'valign' : 18,
+  'valign' : VIEW_CTX|VIEW_BOT,
   'color1' : 1 1 1,
 }
 //Player Energy
 {
   'uid'     : 2,
   'pos'     : 50 100 0,
-  'valign'  : 6,
+  'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 22 88 0,
-  'lalign'  : 17,
+  'lalign'  : VIEW_CTX|VIEW_TOP,
   'lblofs'  : 0 18 0,
-  'axis'    : 2,
+  'axis'    : AXIS_V,
 }
 //Player Shield
 {
   'uid'     : 4,
   'pos'     : 145 98 0,
-  'valign'  : 6,
+  'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 22 88 0,
-  'lalign'  : 5,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 0 22 0,
-  'axis'    : 2,
+  'axis'    : AXIS_V,
 }
 //Player Armor
 {
   'uid'     : 3,
   'pos'     : 110 70 0,
-  'valign'  : 6,
+  'valign'  : VIEW_BOT|VIEW_LFT,
 }
 //Weapon 1 - Style 2
 {
   'uid'     : 8,
   'pos'     : -156 -62 0,
   'size'    : 24 26 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 1,
 }
 //Weapon 2 - Style 2
@@ -46,7 +46,7 @@
   'uid'     : 8,
   'pos'     : 185 -62 0,
   'size'    : 24 26 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 2,
 }
 //Weapon 3 - Style 2
@@ -54,7 +54,7 @@
   'uid'     : 8,
   'pos'     : -205 -62 0,
   'size'    : 24 26 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 4,
 }
 //Weapon 4 - Style 2
@@ -62,7 +62,7 @@
   'uid'     : 8,
   'pos'     : 232 -62 0,
   'size'    : 24 26 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 8,
 }
 //Weapon 5 - Style 2
@@ -70,7 +70,7 @@
   'uid'     : 8,
   'pos'     : 138 -62 0,
   'size'    : 24 26 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 16,
 }
 //Weapon 6 - Style 2
@@ -78,29 +78,29 @@
   'uid'     : 8,
   'pos'     : -109 -62 0,
   'size'    : 24 26 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 32,
 }
 //Radar Graph
 {
   'uid'     : 11,
   'pos'     : 140 98 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
   'size'    : 80 80 0,
 }
 //Radar Status - Style 2
 {
   'uid'     : 10,
   'pos'     : 180 100 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
 }
 //Target Armor - Mech
 {
   'uid'     : 5,
   'pos'     : 0 64 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTX|VIEW_CTY,
   'lblofs'  : -35 -68 0,
 // color2 = panel size
   'color2'  : 96 132 0,
@@ -109,10 +109,10 @@
 {
   'uid'     : 15,
   'pos'     : 64 64 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 64 28 0,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTX|VIEW_CTY,
   'lblofs'  : -3 -55 0,
 // color2 = panel size
   'color2'  : 96 132 0,
@@ -121,10 +121,10 @@
 {
   'uid'     : 16,
   'pos'     : 48 54 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 48 64 0,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTX|VIEW_CTY,
   'lblofs'  : -10 -48 0,
 // color2 = panel size
   'color2'  : 96 132 0,
@@ -133,30 +133,30 @@
 {
   'uid'     : 6,
   'pos'     : -40 80 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 18 75 0,
-  'lalign'  : 5,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 0 18 0,
-  'axis'    : 2,
+  'axis'    : AXIS_V,
 }
 //Target Name
 {
   'uid'     : 13,
   'pos'     : 32 126 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
 }
 //Target Range
 {
   'uid'     : 14,
   'pos'     : 32 116 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 64 28 0,
 }
 //HUD Messages
 {
   'uid'     : 17,
   'pos'     : 0 48 0,
-  'valign'  : 17,
+  'valign'  : VIEW_CTX|VIEW_TOP,
   'size'    : 16 16 0,
 }
 //Enviro damage
@@ -168,22 +168,22 @@
 {
   'uid'     : 19,
   'pos'     : 145 98,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 16 88,
-  'axis'    : 2,
-  'lalign'  : 17,
+  'axis'    : AXIS_V,
+  'lalign'  : VIEW_CTX|VIEW_TOP,
   'lblofs'  : 0 16 0,
 }
 //Mission Clock
 {
   'uid'     : 20,
   'pos'     : 10 -90 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
 }
 
 //Nav Heading - unused for now - Beta 2
 // {
 //  'uid'     : 12,
 //  'pos'     : 8 16 0,
-//  'valign'  : 17,
+//  'valign'  : VIEW_CTX|VIEW_TOP,
 // }

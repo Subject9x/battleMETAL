@@ -3,48 +3,48 @@
 {
   'uid'     : 2,
   'pos'     : 90 88 0,
-  'valign'  : 6,
+  'valign'  : VIEW_LFT|VIEW_BOT,
   'size'    : 22 88 0,
-  'lalign'  : 17,
+  'lalign'  : VIEW_CTX|VIEW_TOP,
   'lblofs'  : 0 18 0,
-  'axis'    : 2,
+  'axis'    : AXIS_V,
 }
 //Player Shield
 {
   'uid'     : 4,
   'pos'     : 118 88 0,
-  'valign'  : 6,
+  'valign'  : VIEW_LFT|VIEW_BOT,
   'size'    : 22 88 0,
-  'lalign'  : 5,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 0 22 0,
-  'axis'    : 2,
+  'axis'    : AXIS_V,
 }
 //Player Armor
 {
   'uid'     : 3,
   'pos'     : 50 65 0,
-  'valign'  : 6,
+  'valign'  : VIEW_LFT|VIEW_BOT,
 }
 //Radar Graph
 {
   'uid'     : 11,
   'pos'     : 10 185 0,
-  'valign'  : 6,
+  'valign'  : VIEW_LFT|VIEW_BOT,
   'size'    : 75 75 0,
 }
 //Radar Status - Style 1
 {
   'uid'     : 10,
   'pos'     : 133 165 0,
-  'valign'  : 6,
+  'valign'  : VIEW_LFT|VIEW_BOT,
 }
 //Target Armor - Mech
 {
   'uid'     : 5,
   'pos'     : 45 64 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTY|VIEW_CTX,
   'lblofs'  : -61 -64 0,
 // color2 = panel size
   'color2'  : 96 128 0,
@@ -53,10 +53,10 @@
 {
   'uid'     : 15,
   'pos'     : 110 64 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
   'size'    : 64 28 0,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTY|VIEW_CTX,
   'lblofs'  : -26 -50 0,
 // color2 = panel size
   'color2'  : 104 128 0,
@@ -65,10 +65,10 @@
 {
   'uid'     : 16,
   'pos'     : 95 54 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
   'size'    : 48 64 0,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTY|VIEW_CTX,
   'lblofs'  : -32 -42 0,
 // color2 = panel size
   'color2'  : 104 128 0,
@@ -77,29 +77,29 @@
 {
   'uid'     : 6,
   'pos'     : 100 80 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
   'size'    : 16 75 0,
-  'lalign'  : 5,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 0 18 0,
-  'axis'    : 2,
+  'axis'    : AXIS_V,
 }
 //Target Name
 {
   'uid'     : 13,
   'pos'     : 100 124 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
 }
 //Target Range
 {
   'uid'     : 14,
   'pos'     : 100 114 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
 }
 //HUD Messages
 {
   'uid'     : 17,
   'pos'     : 0 45 0,
-  'valign'  : 17,
+  'valign'  : VIEW_CTX|VIEW_TOP,
   'size'    : 16 16 0,
 }
 //Enviro damage
@@ -111,21 +111,21 @@
 {
   'uid'     : 19,
   'pos'     : 145 88,
-  'valign'  : 6,
+  'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 22 88,
-  'axis'    : 2,
-  'lalign'  : 17,
+  'axis'    : AXIS_V,
+  'lalign'  : VIEW_CTX|VIEW_TOP,
   'lblofs'  : 0 24 0,
 }
 //Mission Clock
 {
   'uid'     : 20,
   'pos'     : 180 56 0,
-  'valign'  : 6,
+  'valign'  : VIEW_BOT|VIEW_LFT,
 }
 //Nav Heading - unused for now - Beta 2
 // {
 //  'uid'     : 12,
 //  'pos'     : 8 16 0,
-//  'valign'  : 17,
+//  'valign'  : VIEW_CTX|VIEW_TOP,
 // }

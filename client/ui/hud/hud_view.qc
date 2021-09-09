@@ -373,7 +373,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
   else{
     wepState = CLR_DEF_TXT_CANTSELECT;
   }
-
+  
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), rOrg);
@@ -1080,8 +1080,8 @@ void() data_hud_fps_cam={
           algn = UI_DATA_ALIGN[uid];
           wbit = UI_DATA_WEPBIT[uid];
           vsize = UI_DATA_SIZE[uid];
-          if( vsize == '0 0 0' ){
-            vsize = '24 24 0';  //default here
+          if( !vsize || vsize == '0 0 0' ){
+            vsize = '24 24';  //default here
           }
           hud_renderWeapon(porg, vsize, algn, wbit);
         }
@@ -1092,7 +1092,7 @@ void() data_hud_fps_cam={
           algn = UI_DATA_ALIGN[uid];
           wbit = UI_DATA_WEPBIT[uid];
           vsize = UI_DATA_SIZE[uid];
-          if( vsize == '0 0 0' ){
+          if( !vsize || vsize == '0 0 0' ){
             vsize = '24 24 0';  //default here
           }
           hud_renderWeapon2(porg, vsize, algn, wbit);

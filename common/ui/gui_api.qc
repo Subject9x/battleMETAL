@@ -165,16 +165,19 @@ vector(vector startSize, vector targsize) gui_newAspectRatio={
   local vector v;
   local float w, h;
   
+  w = startSize_x;
+  h = startSize_y;
+  
   if (startSize_x > targsize_x) {
-      //scale width to fit
-      w = targsize_x;
-      h = (w * startSize_y) / startSize_x;
+    //scale width to fit
+    w = targsize_x;
+    h = (w * startSize_y) / startSize_x;
   }
   
   if (h > targsize_y) {
-      //scale height to fit instead
-      h = targsize_y;
-      w = (h * startSize_x) / startSize_y;
+    //scale height to fit instead
+    h = targsize_y;
+    w = (h * startSize_x) / startSize_y;
   }
   
   v_x = w;
@@ -461,6 +464,21 @@ vector(vector offSet, float algn) gui_calcAlign={
     if( (algn & VIEW_CTY) ){
       toSender_y = VIEW_CTR_y - offSet_y;
     }
+    
+    if(toSender_x < 0 ){
+      toSender_x = 0;
+    }
+    else if( toSender_x > VIEW_MAX_x){
+      toSender_x = VIEW_MAX_x;
+    }
+    
+    if(toSender_y < 0 ){
+      toSender_y = 0;
+    }
+    else if( toSender_y > VIEW_MAX_y){
+      toSender_y = VIEW_MAX_y;
+    }
+    
     return toSender;
   }
   else{
@@ -741,6 +759,73 @@ string(float checkSkill) gui_skillAsString={
       break;
   }
   return s;
+};
+
+//allows for string literals in data files to be converted to proper flag values, no more mystery flag numbers outside code!
+float(string bitFlags) gui_StringToFlag_Align={
+  local float bits, tagItr, tagCount;
+  local string tag;
+  tagCount = tokenizebyseparator(bitFlags, "|");
+  
+  bits = 0;
+  while(tagItr < tagCount){
+    tag = argv(tagItr) ;
+    if(tag == "VIEW_TOP"){
+      bits = bits | VIEW_TOP;
+    }
+    else if(tag == "VIEW_BOT"){
+      bits = bits | VIEW_BOT;
+    }
+    else if(tag == "VIEW_LFT"){
+      bits = bits | VIEW_LFT;
+    }
+    else if(tag == "VIEW_RGT"){
+      bits = bits | VIEW_RGT;
+    }
+    else if(tag == "VIEW_CTX"){
+      bits = bits | VIEW_CTX;
+    }
+    else if(tag == "VIEW_CTY"){
+      bits = bits | VIEW_CTY;
+    }
+    tagItr = tagItr + 1;
+  }
+  return bits;
+};
+
+//allows for string literals in data files to be converted to proper flag values, no more mystery flag numbers outside code!
+float(string bitFlags) gui_StringToFlag_Axis={
+  local float bits, tagItr, tagCount;
+  local string tag;
+  tagCount = tokenizebyseparator(bitFlags, "|");
+  
+  bits = 0;
+  while(tagItr < tagCount){
+    tag = argv(tagItr) ;
+    if(tag == "AXIS_H"){
+      bits = bits | AXIS_H;
+    }
+    else if(tag == "AXIS_V"){
+      bits = bits | AXIS_V;
+    }
+    else if(tag == "AXIS_LEFT"){
+      bits = bits | AXIS_LEFT;
+    }
+    else if(tag == "AXIS_RIGHT"){
+      bits = bits | AXIS_RIGHT;
+    }
+    else if(tag == "AXIS_UP"){
+      bits = bits | AXIS_UP;
+    }
+    else if(tag == "AXIS_DOWN"){
+      bits = bits | AXIS_DOWN;
+    }
+    else if(tag == "AXIS_CTR"){
+      bits = bits | AXIS_CTR;
+    }
+    tagItr = tagItr + 1;
+  }
+  return bits;
 };
 
 

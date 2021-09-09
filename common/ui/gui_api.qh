@@ -139,6 +139,9 @@ void() gui_drawversion;
 
 string(float checkSkill) gui_skillAsString;
 
+float(string bitFlags) gui_StringToFlag_Align;
+float(string bitFlags) gui_StringToFlag_Axis;
+
 //console logging
 void(string msg, float val) cons_logAFloat;
 void(string msg, vector v1) cons_logAVector;

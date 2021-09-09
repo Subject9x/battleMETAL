@@ -18,6 +18,14 @@
 //  18 - enviro damage
 //
 
+//Alignment string values
+//                    VIEW_TOP, VIEW_BOT, VIEW_LFT, VIEW_RGT, VIEW_CTX, VIEW_CTY
+//format: X|Y|Z|...
+
+//AXIS string values
+//                  AXIS_H, AXIS_V, AXIS_LEFT, AXIS_RIGHT, AXIS_UP, AXIS_DOWN, AXIS_CTR 
+//format: X|Y|Z|...
+
 //data file for mech huds
 //metadata block
 {
@@ -29,7 +37,7 @@
   'pos'   : <vector>
   'size'  : <vector> // % of screen
   'img'   : <string>  //image to render
-  'valign': <float>   //bitflag for alignment
+  'valign': <string>   //bitflag for alignment
   'color1'  : <vector> //color option 1
   //alpha set by game settings
 }
@@ -38,27 +46,27 @@
   'uid'   : 2
   'pos'   : <vector>
   'size'  : <vector> // % of screen
-  'valign': <float>   //bitflag for alignment
+  'valign': <string>   //bitflag for alignment
   'label' : <float> // yes / no on label
-  'lalign': <float> //bitflag for alignment of label
-  'axis'  : <float> //axis direction of meter, Vertical 
+  'lalign': <string> //bitflag for alignment of label
+  'axis'  : <string> //axis direction of meter, Vertical 
   'lblofs': <vector>  //offset for label, Vertical or Horizontal
 }
 {
   //hud_renderArmorGraph for player
   'uid'   : 3
   'pos'   : <vector>
-  'valign': <float>   //bitflag for alignment
+  'valign': <string>   //bitflag for alignment
 }
 {
   //hud_renderShield for player
   'uid'   : 4
   'pos'   : <vector>
   'size'  : <vector> // % of screen
-  'valign': <float>   //bitflag for alignment
+  'valign': <string>   //bitflag for alignment
   'label' : <float> // yes / no on label
-  'lalign': <float> //bitflag for alignment of label
-  'axis'  : <float> //axis direction of meter, Vertical 
+  'lalign': <string> //bitflag for alignment of label
+  'axis'  : <string> //axis direction of meter, Vertical 
   'lblofs': <vector>  //offset for label, Vertical or Horizontal
 }
 {
@@ -66,17 +74,17 @@
   //hud_renderArmorGraph for player
   'uid'   : 5
   'pos'   : <vector>
-  'valign': <float>   //bitflag for alignment
+  'valign': <string>   //bitflag for alignment
 }
 {
   //hud_renderShield for target
   'uid'   : 6
   'pos'   : <vector>
   'size'  : <vector> // % of screen
-  'valign': <float>   //bitflag for alignment
+  'valign': <string>   //bitflag for alignment
   'label' : <float> // yes / no on label
-  'lalign': <float> //bitflag for alignment of label
-  'axis'  : <float> //axis direction of meter, Vertical 
+  'lalign': <string> //bitflag for alignment of label
+  'axis'  : <string> //axis direction of meter, Vertical 
   'lblofs': <vector>  //offset for label, Vertical or Horizontal
 }
 {

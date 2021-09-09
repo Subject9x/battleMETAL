@@ -390,7 +390,7 @@ float( float id ) ui_data_load_hud={
           UI_DATA_IMG[hudElementItr] = strzone(value);
         }
         if( token == "valign"){
-          UI_DATA_ALIGN[hudElementItr] = stof(value);
+          UI_DATA_ALIGN[hudElementItr] = gui_StringToFlag_Align(value);
         }
         if( token == "color1"){
           UI_DATA_COLOR1[hudElementItr] = stov(value);
@@ -402,10 +402,10 @@ float( float id ) ui_data_load_hud={
           UI_DATA_LABEL[hudElementItr] = strzone(value);
         }
         if( token == "lalign"){
-          UI_DATA_LABEL_ALIGN[hudElementItr] = stof(value);
+          UI_DATA_LABEL_ALIGN[hudElementItr] = gui_StringToFlag_Align(value);
         }
         if( token == "axis"){
-          UI_DATA_AXIS_FLAG[hudElementItr] = stof(value);
+          UI_DATA_AXIS_FLAG[hudElementItr] = gui_StringToFlag_Axis(value);
         }
         if( token == "lblofs"){
           UI_DATA_LABEL_OFS[hudElementItr] = stov(value);

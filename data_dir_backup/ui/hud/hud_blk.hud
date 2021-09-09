@@ -4,90 +4,90 @@
   'pos'    : 226 175 0,
   'size'   : 452 180 0,
   'icon'   : gfx/hud/hud_blk_bck.png,
-  'valign' : 18,
+  'valign' : VIEW_CTX|VIEW_BOT,
   'color1' : 1 1 1,
 }
 //Player Energy
 {
   'uid'     : 2,
   'pos'     : 102 87 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 22 84 0,
-  'lalign'  : 11,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 0 18 0,
-  'axis'    : 2,
+  'axis'    : AXIS_V,
 }
 //Player Shield
 {
   'uid'     : 4,
   'pos'     : 215 115 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 90 12 0,
-  'lalign'  : 5,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 12 0 0,
-  'axis'    : 1,
+  'axis'    : AXIS_H,
 }
 //Player Armor
 {
   'uid'     : 3,
   'pos'     : 170 60 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
 }
 //Weapon 1 - Style 1
 {
   'uid'     : 7,
   'pos'     : 235 -45 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 1,
 }
 //Weapon 2 - Style 1
 {
   'uid'     : 7,
   'pos'     : 197 -45 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 2,
 }
 //Weapon 3 - Style 1
 {
   'uid'     : 7,
   'pos'     : 160 -45 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 4,
 }
 //Weapon 4 - Style 1
 {
   'uid'     : 7,
   'pos'     : -15 -45 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 8,
 }
 //Weapon 5 - Style 1
 {
   'uid'     : 7,
   'pos'     : -50 -45 0,
-  'valign'  : 48,
+  'valign'  : VIEW_CTX|VIEW_CTY,
   'wbit'    : 16,
 }
 //Radar Status - Style 1
 {
   'uid'     : 9,
   'pos'     : 24 135 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
 }
 //Radar Graph
 {
   'uid'     : 11,
   'pos'     : 45 100 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 90 90 0,
 }
 //Target Armor - Mech
 {
   'uid'     : 5,
   'pos'     : -170 62 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTX|VIEW_CTY,
   'lblofs'  : -48 -68 0,
 // color2 = panel size
   'color2'  : 96 132 0,
@@ -96,10 +96,10 @@
 {
   'uid'     : 15,
   'pos'     : -95 56 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 75 40 0,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTX|VIEW_CTY,
   'lblofs'  : -12 -56 0,
 // color2 = panel size
   'color2'  : 96 132 0,
@@ -108,10 +108,10 @@
 {
   'uid'     : 16,
   'pos'     : -110 46 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 60 60 0,
   'lflag'   : 1,
-  'lalign'  : 48,
+  'lalign'  : VIEW_CTX|VIEW_CTY,
   'lblofs'  : -19 -56 0,
 // color2 = panel size
   'color2'  : 96 132 0,
@@ -120,29 +120,29 @@
 {
   'uid'     : 6,
   'pos'     : -137 105 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 75 12 0,
-  'lalign'  : 5,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 12 0 0,
-  'axis'    : 1,
+  'axis'    : AXIS_H,
 }
 //Target Name
 {
   'uid'     : 13,
   'pos'     : 194 126 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
 }
 //Target Range
 {
   'uid'     : 14,
   'pos'     : 194 116 0,
-  'valign'  : 10,
+  'valign'  : VIEW_RGT|VIEW_BOT,
 }
 //HUD Messages
 {
   'uid'     : 17,
   'pos'     : 0 48 0,
-  'valign'  : 17,
+  'valign'  : VIEW_CTX|VIEW_TOP,
   'size'    : 16 16 0,
 }
 //Enviro damage
@@ -154,17 +154,17 @@
 {
   'uid'     : 19,
   'pos'     : 96 135 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 64 16,
-  'axis'    : 1,
-  'lalign'  : 5,
+  'axis'    : AXIS_H,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 0 0 0,
 }
 //Mission Clock
 {
   'uid'     : 20,
   'pos'     : 24 145 0,
-  'valign'  : 18,
+  'valign'  : VIEW_CTX|VIEW_BOT,
 }
 //Nav Heading - unused for now - Beta 2
 // {
