@@ -22,7 +22,6 @@ void( string mapName ) train_click_launch={
   localcmd("coop 0\n");
   localcmd("cd stop\n");
   localcmd("maxplayers 1\n");
-  cvar_set("cl_ismenu","0");
   localcmd(strcat("map ", mapName,"\n")); 
 };
 

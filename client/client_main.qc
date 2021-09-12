@@ -9,7 +9,6 @@ void() CSQC_Init =
   registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_ismenu","0", CF_CLIENT | CF_SERVER);
   registercvar("chase_active", "0", CF_CLIENT | CF_SERVER | CF_ARCHIVE);
   
   cvar_set("con_chat", "0", CF_CLIENT | CF_ARCHIVE);  //force old chat system off

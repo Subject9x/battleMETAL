@@ -47,5 +47,5 @@ menu_main.qc
     
   menus/m_credits.qc
   menus/m_help.qc
-  
+  //menus/m_resolution.qc
   

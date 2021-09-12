@@ -123,7 +123,7 @@ void		end_sys_globals;		// flag for structure dumping
 //================================================
 void		end_sys_fields;			// flag for structure dumping
 //================================================
-.float		sounds
+.float		sounds;
 /*
 ==============================================================================
 

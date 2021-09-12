@@ -24,16 +24,16 @@ vector newgame_back_cacheOrg;
 string TRAINING_LABEL;
 
 //Main Menu Constants
-float NEWGAME_CAMPAIGN = 1;
-float NEWGAME_SKILL = 2;
-float NEWGAME_BRIEF = 3;
+#define NEWGAME_CAMPAIGN 1
+#define NEWGAME_SKILL 2
+#define NEWGAME_BRIEF 3
 
-string IMG_NEW_TITLE  = "gfx/menu/newgame/new_title.png";
+#define IMG_NEW_TITLE "gfx/menu/newgame/new_title.png"
 
-float NEWGAME_ROLL_ROK = 1;
-float NEWGAME_ROLL_REG = 2;
-float NEWGAME_ROLL_VET = 3;
-float NEWGAME_ROLL_ACE = 4;
+#define NEWGAME_ROLL_ROK 1
+#define NEWGAME_ROLL_REG 2
+#define NEWGAME_ROLL_VET 3
+#define NEWGAME_ROLL_ACE 4
 
 
 //Campaign Maps
@@ -85,7 +85,6 @@ void() click_newg_launch_map={
   localcmd("coop 0\n");
   localcmd("cd stop\n");
   localcmd("maxplayers 1\n");
-  cvar_set("cl_ismenu","0");
   localcmd(strcat("map ", self.data_text,"\n")); 
   
   freeGlobalString(CAMP_SELECT_START)

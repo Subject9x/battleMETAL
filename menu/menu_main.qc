@@ -279,7 +279,6 @@ void(float mode) m_toggle={
   Quake C api hook - not sure yet
 */
 void() m_newmap={
-  cvar_set("cl_ismenu", "0");
   menu_clear_items(M_STATE); 
 };
 

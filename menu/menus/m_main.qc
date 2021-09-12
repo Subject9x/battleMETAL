@@ -201,10 +201,8 @@ void(float key, float ascii) m_main_k={
   
   switch(key){
     case K_ESCAPE:
-      //if(cvar("cl_ismenu") == FALSE ){
-        menu_clear_items(M_STATE);
-        menu_exit_togame();
-      //}
+      menu_clear_items(M_STATE);
+      menu_exit_togame();
       break;
   }
 };

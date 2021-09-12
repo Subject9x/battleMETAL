@@ -362,13 +362,7 @@ void() m_setup_i={
   local float row, col;
   local vector startOrg;
   local float idx;
-  /*
-  0 1 2 3 4 5 6 7 8 9 10 11 12
-  
-  13 14 15 16 17 18 19 20 21 22 23 24
-  (12 + 1) 
-  
-  */
+
   startOrg = MENU_ORG + '250 195';
   for(row=0; row < 14; row = row + 1){
     for(col=0; col < 10; col = col + 1){
