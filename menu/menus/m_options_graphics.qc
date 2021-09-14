@@ -72,6 +72,9 @@ entity graphics_accept;
 
 
 //graphics constants
+
+float RESO_CHANGE;
+
 float options_graphics_submenu;
 
 #define SUB_GRAPHICS_MAIN 1
@@ -195,6 +198,18 @@ string(float level) graphics_set_aa_value={
 };
 
 
+void() graphics_reso_back={
+  VID_NEXT = '0 0 0';
+  VID_CNEXT = '0 0 0';
+  
+  graphics_resolution_aspect_lbl.len = graphics_resolution_lbl.len = menu_getvideo_modeid();
+  
+  freeGlobalString(graphics_resolution_lbl.label)
+  cacheGlobalString(graphics_resolution_lbl.label, menu_getvideo_clean(graphics_resolution_lbl.len))
+  
+  freeGlobalString(graphics_resolution_aspect_lbl.label)
+  cacheGlobalString(graphics_resolution_aspect_lbl.label, VID_RESO_NAME[graphics_resolution_lbl.len])
+};
 
 void(float choice) graphics_reso_menu={
   local entity reso_list, opt_list;
@@ -210,6 +225,13 @@ void(float choice) graphics_reso_menu={
   }
   else{
     options_graphics_submenu = SUB_GRAPHICS_MAIN;
+    if(graphics_effects_lbl.len > 0){
+      graphics_effects_custom.drawme = FALSE;
+    }
+    if(graphics_gfx_lbl.len > 0){
+      graphics_gfx_custom.drawme = FALSE;
+    }
+    
   }
   
   opt_list = findchainfloat( subid, SUB_GRAPHICS_MAIN);
@@ -233,44 +255,20 @@ void() click_graphics_reso_select={
   
   menu_parent_setup(VIEW_ORG + '0 40', '448 384');
   
+  VID_NEXT = VID_RESO_SIZE[self.len];
+  VID_CNEXT = VID_RESO_HALF[self.len];
+  
+  freeGlobalString(graphics_resolution_lbl.label)
+  cacheGlobalString(graphics_resolution_lbl.label, menu_getvideo_clean(self.len) )
+
+  graphics_resolution_lbl.len = self.len;
+
+  freeGlobalString(graphics_resolution_aspect_lbl.label)
+  cacheGlobalString(graphics_resolution_aspect_lbl.label,VID_RESO_NAME[self.len] )
+  
   graphics_reso_menu(FALSE);
 };
 
-void() click_graphics_resolution_less={
-  local float vid;
-  vid = graphics_resolution_lbl.len;
-  vid = vid - 1;
-  if( vid < 1 && vid > -1 ){
-    vid = 0;
-  }
-  if(vid == 0){
-    vid = VID_RESO_TOTAL - 1;
-  }
-  VID_NEXT = VID_RESO_SIZE[vid];
-  VID_CNEXT = VID_RESO_HALF[vid];
-  
-  cacheGlobalString(graphics_resolution_lbl.label, menu_getvideo_clean(vid) )
-  
-  graphics_resolution_lbl.len = vid;
-  
-  cacheGlobalString(graphics_resolution_aspect_lbl.label,VID_RESO_NAME[vid] )
-};
-void() click_graphics_resolution_more={
-  local float vid;
-  vid = graphics_resolution_lbl.len;
-  vid = vid + 1;
-  if(vid > VID_RESO_TOTAL - 1){
-    vid = 0;
-  }
-  VID_NEXT = VID_RESO_SIZE[vid];
-  VID_CNEXT = VID_RESO_HALF[vid];
-  
-  cacheGlobalString(graphics_resolution_lbl.label, menu_getvideo_clean(vid) )
-    
-  graphics_resolution_lbl.len = vid;
-  
-  cacheGlobalString(graphics_resolution_aspect_lbl.label,VID_RESO_NAME[vid] )
-};
 
 void() click_graphics_bits_less={
   graphics_bits_lbl.len = 16;
@@ -643,9 +641,11 @@ void() click_gamma_dn={
 };
 
 void() click_graphics_back={
-
+  local float cache;
+  
   if(options_graphics_submenu == SUB_GRAPHICS_RESO ){
     graphics_reso_menu(FALSE);
+    graphics_reso_back();
     return;
   }
 
@@ -658,11 +658,6 @@ void() click_graphics_accept={
     return;
   }
   ACCEPT_TIMER = gettime() + ACCEPT_PAUSE;
-  
-  if(options_graphics_submenu == SUB_GRAPHICS_RESO ){
-    graphics_reso_menu(FALSE);
-    return;
-  }
   
   cvar_set("vid_bitsperpixel", ftos(graphics_bits_lbl.len));
   cvar_set("vid_samples", ftos(rint(graphics_aa_lbl.len)));
@@ -693,12 +688,14 @@ void() click_graphics_accept={
     cvar_set("vid_pixelheight", ftos(rint(VID_NEXT_z)));
     cvar_set("vid_conwidth", ftos(rint(VID_CNEXT_x)));
     cvar_set("vid_conheight",ftos(rint(VID_CNEXT_y)));
+    VID_NEXT = '0 0 0';
   }
   
-  localcmd("vid_restart\n");
-  localcmd("saveconfig\n");
+  localcmd("saveconfig;\n");
+  localcmd("vid_restart;\n");
+//  gui_set_screen_size();
+  RESO_CHANGE = TRUE;
   //apparently also loads autoexec.cfg and .rc
-  gui_set_screen_size();
 };
 
 // ini function, called by '_f' function as a setup func
@@ -733,16 +730,18 @@ void() m_graphics_i={
   graphics_resolution_change.fontId = FONT_NUM_XOLONIUM_BOLD;
   graphics_resolution_change.subid = SUB_GRAPHICS_MAIN;
   
-  startOrg = MENU_ORG + '45 125';
+  startOrg = MENU_ORG + '25 125';
   for(row=0; row < 14; row = row + 1){
     for(col=0; col < 4; col = col + 1){
       idx = (row * 4) + col;
       if( idx < VID_RESO_TOTAL ){
-        reso_list = btn_text_callback(startOrg + Vector2(col * stringwidth("       2000 x 2000      ", 0, '14 14'), row * 25), '14 14', "", 0, M_OPTIONS_GRAPHICS, click_graphics_reso_select, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+        tokenizebyseparator(VID_RESO_NAME[idx], " ");
+        reso = strcat("[",menu_getvideo_clean(idx), "] ", argv(1) );
+        reso_list = btn_text_callback(startOrg + Vector2(col * max(stringwidth(reso, 0, '12 12'), 128), row * 25), '12 12', "", 0, M_OPTIONS_GRAPHICS, click_graphics_reso_select, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
         reso_list.len = idx;
         reso_list.subid = SUB_GRAPHICS_RESO;
-        cacheGlobalString( reso_list.label, menu_getvideo_clean(idx))
-        reso_list.fontId = FONT_NUM_XOLONIUM_BOLD;
+        cacheGlobalString( reso_list.label, reso)
+        reso_list.fontId = FONT_NUM_ROBOT_REGULAR;
       }
     }
   }
@@ -921,11 +920,12 @@ void() m_graphics_i={
     graphics_gamma_less.drawme = FALSE;
   }
   
-  graphics_back = btn_text_callback(MENU_ORG + '45 345', '16 16', "BACK", VIEW_CTX, M_OPTIONS_GRAPHICS, click_graphics_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  graphics_back = btn_text_callback(MENU_ORG + '45 365', '16 16', "BACK", VIEW_CTX, M_OPTIONS_GRAPHICS, click_graphics_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   graphics_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 
-  graphics_accept = btn_text_callback(MENU_ORG + '285 345', '16 16', "ACCEPT", VIEW_CTX, M_OPTIONS_GRAPHICS, click_graphics_accept, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  graphics_accept = btn_text_callback(MENU_ORG + '285 365', '16 16', "ACCEPT", VIEW_CTX, M_OPTIONS_GRAPHICS, click_graphics_accept, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   graphics_accept.fontId = FONT_NUM_XOLONIUM_BOLD;
+  graphics_accept.subid = SUB_GRAPHICS_MAIN;
   
   //assign sub menu
   graphics_resolution_change.subid = SUB_GRAPHICS_MAIN;
@@ -1000,7 +1000,12 @@ void() m_graphics_f={
   menu_d functions are the render functions, inside m_draw, there's a select case
   running on M_STATE to determine which menu_d to execute.
 */
-void() m_graphics_d={
+void() m_graphics_d={  
+  if(RESO_CHANGE){
+    RESO_CHANGE = FALSE;
+    gui_set_screen_size();
+  }
+  
   gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
   
   drawfont_prev = drawfont;
@@ -1069,12 +1074,16 @@ void(float key, float ascii) m_graphics_k={
   //cons_logAFloat("m_graphics_k.key", key);  //DEBUG
   //cons_logAFloat("m_graphics_k.ascii", ascii);  //DEBUG   
   
-  switch(key){
-    case K_ESCAPE:
-      localsound("sound/misc/menu2.wav");
-      menu_clear_items(M_STATE);
-      M_STATE = M_OPTIONS;
-      m_options_f();
-      break;
+  if(key == K_ESCAPE){
+    localsound("sound/misc/menu2.wav");
+    if(options_graphics_submenu == SUB_GRAPHICS_RESO ){
+      graphics_reso_menu(FALSE);
+      graphics_reso_back();
+      return;
+    }
+    
+    menu_clear_items(M_STATE);
+    M_STATE = M_OPTIONS;
+    m_options_f();
   }
 };

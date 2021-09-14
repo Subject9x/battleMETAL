@@ -1036,14 +1036,14 @@ string(float id) menu_getvideo_clean={
   local vector v;
   local string s;
   v = VID_RESO_SIZE[id];
-  s = sprintf("%s x %s", ftos(v_x), ftos(v_y));
+  s = sprintf("%sx%s", ftos(v_x), ftos(v_y));
   return s;
 }
 
 float() menu_getvideo_modeid={
   local float itr, found;
   local vector compRes;
-  itr = 1;
+  
   compRes_x = cvar("vid_width");
   compRes_y = cvar("vid_height");
   compRes_z = cvar("vid_pixelheight");
