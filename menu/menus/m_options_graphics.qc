@@ -9,8 +9,7 @@ Overview:
 //graphics Globals
 entity graphics_title;
 entity graphics_resolution_lbl;
-entity graphics_resolution_less;
-entity graphics_resolution_more;
+entity graphics_resolution_change;
 
 entity graphics_resolution_aspect_lbl;
 
@@ -71,7 +70,13 @@ entity graphics_gamma_less;
 entity graphics_back;
 entity graphics_accept;
 
+
 //graphics constants
+float options_graphics_submenu;
+
+#define SUB_GRAPHICS_MAIN 1
+#define SUB_GRAPHICS_RESO 2
+
 vector VID_NEXT;
 vector VID_CNEXT;
 
@@ -189,7 +194,48 @@ string(float level) graphics_set_aa_value={
   return "NORMAL";
 };
 
+
+
+void(float choice) graphics_reso_menu={
+  local entity reso_list, opt_list;
+
+  reso_list = findchainfloat(subid, SUB_GRAPHICS_RESO);
+  while(reso_list){
+    reso_list.drawme = choice;
+    reso_list = reso_list.chain;
+  }
+  
+  if(choice){
+    options_graphics_submenu = SUB_GRAPHICS_RESO;
+  }
+  else{
+    options_graphics_submenu = SUB_GRAPHICS_MAIN;
+  }
+  
+  opt_list = findchainfloat( subid, SUB_GRAPHICS_MAIN);
+  while(opt_list){
+    opt_list.drawme = !choice;
+    opt_list = opt_list.chain;
+  }
+};
+
 //graphics callbacks
+
+void() click_graphics_reso_change={
+
+  menu_parent_setup(VIEW_ORG + '0 40', '512 400');
+  
+  graphics_reso_menu(TRUE);
+
+};
+
+void() click_graphics_reso_select={
+  
+  menu_parent_setup(VIEW_ORG + '0 40', '448 384');
+  
+  graphics_reso_menu(FALSE);
+};
+
 void() click_graphics_resolution_less={
   local float vid;
   vid = graphics_resolution_lbl.len;
@@ -597,6 +643,12 @@ void() click_gamma_dn={
 };
 
 void() click_graphics_back={
+
+  if(options_graphics_submenu == SUB_GRAPHICS_RESO ){
+    graphics_reso_menu(FALSE);
+    return;
+  }
+
   menu_clear_items(M_STATE);
   m_options_f();
 };
@@ -606,6 +658,11 @@ void() click_graphics_accept={
     return;
   }
   ACCEPT_TIMER = gettime() + ACCEPT_PAUSE;
+  
+  if(options_graphics_submenu == SUB_GRAPHICS_RESO ){
+    graphics_reso_menu(FALSE);
+    return;
+  }
   
   cvar_set("vid_bitsperpixel", ftos(graphics_bits_lbl.len));
   cvar_set("vid_samples", ftos(rint(graphics_aa_lbl.len)));
@@ -638,7 +695,6 @@ void() click_graphics_accept={
     cvar_set("vid_conheight",ftos(rint(VID_CNEXT_y)));
   }
   
-  
   localcmd("vid_restart\n");
   localcmd("saveconfig\n");
   //apparently also loads autoexec.cfg and .rc
@@ -648,8 +704,14 @@ void() click_graphics_accept={
 // ini function, called by '_f' function as a setup func
 void() m_graphics_i={
   local float vid;
-  local string reso;
   
+  local string reso;
+  local float row, col;
+  local vector startOrg;
+  local float idx;
+  local entity reso_list;
+  
+  options_graphics_submenu = SUB_GRAPHICS_MAIN;
   menu_parent_setup(VIEW_ORG + '0 40', '448 384');
   
   VID_NEXT = '0 0 0'; //initialize this here so its not null;
@@ -663,12 +725,27 @@ void() m_graphics_i={
   graphics_resolution_lbl.len = vid;
   cacheGlobalString(graphics_resolution_lbl.label, reso)
   
-  graphics_resolution_more = btn_img_callback(graphics_resolution_lbl.origin + Vector2(stringwidth(graphics_resolution_lbl.label, 0, graphics_resolution_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_resolution_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  graphics_resolution_less = btn_img_callback(graphics_resolution_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_resolution_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-
   //new resolution  
   graphics_resolution_aspect_lbl = lbl_text(MENU_ORG + '150 102', '10 10', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
   cacheGlobalString( graphics_resolution_aspect_lbl.label, VID_RESO_NAME[vid])
+  
+  graphics_resolution_change = btn_text_callback(graphics_resolution_aspect_lbl.origin + '0 16', '16 16', "Change", 0, M_OPTIONS_GRAPHICS, click_graphics_reso_change, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG );
+  graphics_resolution_change.fontId = FONT_NUM_XOLONIUM_BOLD;
+  graphics_resolution_change.subid = SUB_GRAPHICS_MAIN;
+  
+  startOrg = MENU_ORG + '45 125';
+  for(row=0; row < 14; row = row + 1){
+    for(col=0; col < 4; col = col + 1){
+      idx = (row * 4) + col;
+      if( idx < VID_RESO_TOTAL ){
+        reso_list = btn_text_callback(startOrg + Vector2(col * stringwidth("       2000 x 2000      ", 0, '14 14'), row * 25), '14 14', "", 0, M_OPTIONS_GRAPHICS, click_graphics_reso_select, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+        reso_list.len = idx;
+        reso_list.subid = SUB_GRAPHICS_RESO;
+        cacheGlobalString( reso_list.label, menu_getvideo_clean(idx))
+        reso_list.fontId = FONT_NUM_XOLONIUM_BOLD;
+      }
+    }
+  }
   
   //bits
   graphics_bits_lbl = lbl_text(MENU_ORG + '150 142', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, UI_FLAG_LBL_USELEN);
@@ -794,7 +871,7 @@ void() m_graphics_i={
   graphics_effects_less = btn_img_callback(graphics_effects_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_effects_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   //graphics_effects_custom
-  graphics_effects_custom = btn_text_callback(MENU_ORG + '300 80', '14 14', "[Click to Customize]", 0, M_OPTIONS_GRAPHICS, click_graphics_effects, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  graphics_effects_custom = btn_text_callback(MENU_ORG + '300 80', '14 14', "[Click to Customize]", 0, M_OPTIONS_GRAPHICS, click_graphics_effects, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   graphics_effects_custom.drawme = FALSE;
   if(graphics_effects_lbl.len == 0){
     graphics_effects_custom.drawme = TRUE;
@@ -806,7 +883,7 @@ void() m_graphics_i={
   graphics_gfx_more = btn_img_callback(graphics_gfx_lbl.origin + Vector2(stringwidth("MEDIUM", 0, graphics_gfx_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_light_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_gfx_less = btn_img_callback(graphics_gfx_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_light_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
    
-  graphics_gfx_custom = btn_text_callback(MENU_ORG + '300 180', '14 14', "[Click to Customize]", 0, M_OPTIONS_GRAPHICS, click_graphics_gfx, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  graphics_gfx_custom = btn_text_callback(MENU_ORG + '300 180', '14 14', "[Click to Customize]", 0, M_OPTIONS_GRAPHICS, click_graphics_gfx, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   graphics_gfx_custom.drawme = FALSE;
   if(graphics_gfx_lbl.len == 0){
     graphics_gfx_custom.drawme = TRUE;
@@ -843,12 +920,69 @@ void() m_graphics_i={
   else if (graphics_game_contrast_lbl.len <= 1){
     graphics_gamma_less.drawme = FALSE;
   }
-   
+  
   graphics_back = btn_text_callback(MENU_ORG + '45 345', '16 16', "BACK", VIEW_CTX, M_OPTIONS_GRAPHICS, click_graphics_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   graphics_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 
   graphics_accept = btn_text_callback(MENU_ORG + '285 345', '16 16', "ACCEPT", VIEW_CTX, M_OPTIONS_GRAPHICS, click_graphics_accept, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   graphics_accept.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  //assign sub menu
+  graphics_resolution_change.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_bits_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_bits_less.subid = SUB_GRAPHICS_MAIN;
+  graphics_bits_more.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_aa_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_aa_more.subid = SUB_GRAPHICS_MAIN;
+  graphics_aa_less.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_refresh_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_refresh_on.subid = SUB_GRAPHICS_MAIN;
+  graphics_refresh_off.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_refresh_rate_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_refresh_rate_up.subid = SUB_GRAPHICS_MAIN;
+  graphics_refresh_rate_dn.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_fullscreen_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_fullscreen_on.subid = SUB_GRAPHICS_MAIN;
+  graphics_fullscreen_off.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_vsync_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_vsync_on.subid = SUB_GRAPHICS_MAIN;
+  graphics_vsync_off.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_aniso_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_aniso_more.subid = SUB_GRAPHICS_MAIN;
+  graphics_aniso_less.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_texture_quality_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_texture_quality_more.subid = SUB_GRAPHICS_MAIN;
+  graphics_texture_quality_less.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_texture_compress_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_texture_compress_on.subid = SUB_GRAPHICS_MAIN;
+  graphics_texture_compress_off.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_effects_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_effects_more.subid = SUB_GRAPHICS_MAIN;
+  graphics_effects_less.subid = SUB_GRAPHICS_MAIN;
+  graphics_effects_custom.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_gfx_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_gfx_more.subid = SUB_GRAPHICS_MAIN;
+  graphics_gfx_less.subid = SUB_GRAPHICS_MAIN;
+  graphics_gfx_custom.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_game_contrast_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_game_contrast_more.subid = SUB_GRAPHICS_MAIN;
+  graphics_game_contrast_less.subid = SUB_GRAPHICS_MAIN;
+  
+  graphics_gamma_lbl.subid = SUB_GRAPHICS_MAIN;
+  graphics_gamma_more.subid = SUB_GRAPHICS_MAIN;
+  graphics_gamma_less.subid = SUB_GRAPHICS_MAIN;
 };
 
 /*
@@ -878,10 +1012,11 @@ void() m_graphics_d={
     gui_renderString("Current Resolution:", MENU_ORG + '36 60', CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
       gui_renderString(strcat(ftos(VIEW_ACT_x),"x",ftos(VIEW_ACT_y)), MENU_ORG + '150 60', CLR_DEF_WHITE, '14 14', 1, 0);
     
-    gui_renderString("New Resolution:", graphics_resolution_less.origin - Vector2(stringwidth("Current Resolution:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("New Resolution:", graphics_resolution_lbl.origin - Vector2(stringwidth("Current Resolution:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     
     gui_renderString("Type:", graphics_resolution_aspect_lbl.origin - Vector2(stringwidth("Type:    ", 0, '12 12'),2), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     
+  if( options_graphics_submenu == SUB_GRAPHICS_MAIN ){
     gui_renderString("Bits per pixel:", graphics_bits_less.origin - Vector2(stringwidth("Bits per pixel:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     
     gui_renderString("Anti-Aliasing:", graphics_aa_less.origin - Vector2(stringwidth("Anti-Aliasing:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
@@ -909,13 +1044,20 @@ void() m_graphics_d={
   //contrast
   gui_renderString("Video Contrast:", graphics_game_contrast_less.origin - Vector2(stringwidth("Video Contrast:    ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12 0', 1, 0);
   gui_renderString("Video Gamma:", graphics_gamma_less.origin - Vector2(stringwidth("Video Contrast:    ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12 0', 1, 0);
-  
+  }
   drawfont = drawfont_prev;
   
   local entity widget;
+  
+  
   widget = findchainfloat(menuId, M_OPTIONS_GRAPHICS);
   while(widget){
-    widget.draw(widget);
+    if( widget.subid == FALSE){
+      widget.draw(widget);
+    }    
+    else if( widget.subid == options_graphics_submenu){
+      widget.draw(widget);
+    }
     widget = widget.chain;
   }
 };

@@ -330,7 +330,7 @@ void(string cmd, float tokens) client_setMission={
     if( stof(argv(1)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       savefile_changemap(sv_nextmap); //TODO - fix me
-      if( sv_nextmap == "" || strlen(sv_nextmap) == 0 ){
+      if( sv_nextmap == "" || strlen(sv_nextmap) == 0 || strstrofs(sv_nextmap, "menu", 0) != -1){
         stuffcmd(self, "disconnect;togglemenu;\n");
         return;
       }
