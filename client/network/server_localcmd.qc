@@ -313,7 +313,7 @@ void(string iniCmd) cl_ini_event={
   cl_send_infostring( INFO_FLAG_GROUPS );
   
   MENU_respawn_cool = servertime - 1;
-  LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+  LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE | VALID_GRPS | VALID_MECH;
   
   //sizeable hack
   ui_navbutton_launch_click();
