@@ -36,12 +36,12 @@ entity setup_pic_label;
 
 
 //color tinting
-string TINT_COLOR_TORSO_CENTER  = "gfx/ui/tint/tint_torso_center.png";
-string TINT_COLOR_TORSO_LEFT    = "gfx/ui/tint/tint_torso_left.png";
-string TINT_COLOR_TORSO_RIGHT   = "gfx/ui/tint/tint_torso_right.png";
-string TINT_COLOR_ARM_LEFT      = "gfx/ui/tint/tint_arm_left.png";
-string TINT_COLOR_ARM_RIGHT     = "gfx/ui/tint/tint_arm_right.png";
-string TINT_COLOR_LEGS          = "gfx/ui/tint/tint_legs.png";
+#define TINT_COLOR_TORSO_CENTER "gfx/ui/tint/tint_torso_center.png"
+#define TINT_COLOR_TORSO_LEFT   "gfx/ui/tint/tint_torso_left.png"
+#define TINT_COLOR_TORSO_RIGHT  "gfx/ui/tint/tint_torso_right.png"
+#define TINT_COLOR_ARM_LEFT     "gfx/ui/tint/tint_arm_left.png"
+#define TINT_COLOR_ARM_RIGHT    "gfx/ui/tint/tint_arm_right.png"
+#define TINT_COLOR_LEGS         "gfx/ui/tint/tint_legs.png"
 
 entity setup_pic_ct;
 entity setup_pic_lt;
@@ -60,7 +60,7 @@ entity setup_color_part_lg_btn;
 entity setup_accept;
 
 //Main Menu Constants
-string IMG_SETUP_TITLE  = "gfx/menu/setup/setup_title.png";
+#define IMG_SETUP_TITLE "gfx/menu/setup/setup_title.png"
 
 string(float factionType) setup_set_icon={
   switch(setup_team_value.len){
@@ -305,11 +305,11 @@ void() m_setup_i={
   setup_txtfld_playername = inp_textfield(setup_label_playername.origin + Vector2(stringwidth("Player Name :   ", 0, '12 12'), 0), '14 14', 24, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_UPP));
   cacheGlobalString( setup_txtfld_playername.data_text, str_cvar("_cl_name") )
   
-  setup_team_label = lbl_text(MENU_ORG + '10 95', '12 12', "Preferred TDM Team : ", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
-  setup_team_value = lbl_text(setup_team_label.origin + Vector2(stringwidth("Preferred TDM Team :  ", 0, '12 12') + 128, 0), '12 12', ftos(cvar("cl_team")), CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
+  setup_team_label = lbl_text(MENU_ORG + '10 115', '12 12', "TDM Team Colors : ", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
+  setup_team_value = lbl_text(setup_team_label.origin + Vector2(stringwidth("TDM Team Colors : ", 0, '12 12') + 128, 0), '12 12', ftos(cvar("cl_team")), CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
   setup_team_value.len = cvar("cl_team");
   
-  setup_team_icon = lbl_img(setup_team_value.origin, '1 1 0', setup_set_icon(setup_team_value.len), '1 1 1', VIEW_CTX | VIEW_CTY, M_SETUP, 1, UI_FLAG_SIZE_IMG );
+  setup_team_icon = lbl_img(setup_team_value.origin, '96 96', setup_set_icon(setup_team_value.len), '1 1 1', 0, M_SETUP, 1, UI_FLAG_IMG_SIZE_ASPECT | UI_FLAG_CENTER_IMG );
   
   setup_team_prev = btn_img_callback(setup_team_value.origin - '64 0', '14 14', UI_IMG_ARW_LFT, 0, M_SETUP, setup_team_prev_f, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   setup_team_next = btn_img_callback(setup_team_value.origin + '64 0', '14 14', UI_IMG_ARW_RGT, 0, M_SETUP, setup_team_next_f, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);

@@ -534,11 +534,16 @@ void(entity lbl) render_lbl_img={
         sizzle = draw_getimagesize(self.image1);
         sizzle = gui_scaleSize(sizzle, VIEW_SCALE);
       }
+      else if( (self.flags & UI_FLAG_IMG_SIZE_ASPECT) ){
+        sizzle = draw_getimagesize(self.image1);
+        sizzle = gui_newAspectRatio(sizzle, self.size);
+        
+      }
 
-      if( (self.align & VIEW_CTX) ){
+      if( (self.align & VIEW_CTX) || (self.flags & UI_FLAG_CENTER_IMG) ){
         org_x = org_x - (sizzle_x / 2);
       }
-      if( (self.align & VIEW_CTY) ){
+      if( (self.align & VIEW_CTY) || (self.flags & UI_FLAG_CENTER_IMG) ){
         org_y = org_y - (sizzle_y / 2);
       }
       self.drawOrg = org;
@@ -574,9 +579,13 @@ void(entity txt) render_textfield={
   if(txt.drawme){
     this = self;
     self = txt;
+      drawfont_prev = drawfont;
+      drawfont = self.fontId;
+      
       org = self.origin;
-      fon = stringwidth(" ", 0, self.size );
-      sizzle_x = fon * self.len;
+      
+      self.label = self.data_text;
+      sizzle_x = ceil(stringwidth(self.label, 0, self.size));
       sizzle_y = self.size_y;
       
       bclr = self.color;
@@ -601,12 +610,9 @@ void(entity txt) render_textfield={
       if( (TEXTFIELD_TARGET == self) && (UI_INPUT_ACTIVE) ){
         bclr = CLR_DEF_ARM_THREEQ;
       }
-      self.label = self.data_text;
       
       gui_renderTextInput( self.origin, sizzle, self.size, '0.35 0.35 0.35', 1, 0 ) ;
       
-      drawfont_prev = drawfont;
-      drawfont = self.fontId;
         drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
       drawfont = drawfont_prev;
       
@@ -622,6 +628,8 @@ void(entity txt) render_bindfield={
   if(txt.drawme){
     this = self;
     self = txt;
+      drawfont_prev = drawfont;
+      drawfont = self.fontId;
       
       self.label = "UNBOUND";
       if(self.len > -1){
@@ -664,8 +672,6 @@ void(entity txt) render_bindfield={
       
       gui_renderTextInput( self.origin, sizzle, self.size, '0.35 0.35 0.35', 1, 0 ) ;
       
-      drawfont_prev = drawfont;
-      drawfont = self.fontId;
         drawstring(self.origin, self.label, self.size, bclr, self.alpha, 0);
       drawfont = drawfont_prev;
    self = this;

@@ -93,6 +93,7 @@ float HUD_ALPHA;
 #define UI_FLAG_LBL_USELEN     4096  //for lbl_text, use its .len field as the display value .lbl
 #define UI_FLAG_LBL_BOOL_ON    8192  //for lbl_text, use its .len field as 1/0 and renders "ON" / "OFF"
 #define UI_FLAG_LBL_BOOL_TRUE  16384  //for lbl_text, use its .len field as 1/0 and renders "TRUE" / "FALSE"
+#define UI_FLAG_IMG_SIZE_ASPECT 32768 //lbl_image, will scale image to size_y height, and calculated width.
 
 vector(float x, float y) Vector2;
 vector(float x, float y, float z) Vector3;

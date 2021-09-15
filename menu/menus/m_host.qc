@@ -7,20 +7,23 @@ Overview:
 */
 
 //constants
-float FRAG_MAX = 1000;
-float TIME_MAX = 20;
+#define FRAG_MAX 1000
+#define TIME_MAX 20
 
-float TIME_DEF = 30;  //defaults to make sure they're always set.
-float FRAG_DEF = 15;
+ //defaults to make sure they're always set.
+#define TIME_DEF 30 
+#define FRAG_DEF 15
 
-float SUB_COOP = 1;
-float SUB_DM  = 2;
-float SUB_TDM = 3;
-float PLRS_MAX_COOP = 4;
-float PLRS_MIN_COOP = 2;
-float PLRS_MAX_TDM = 16;
-float PLRS_MIN_TDM = 2;
-float RATE_MAX = 80000;
+#define SUB_COOP 1
+#define SUB_DM 2
+#define SUB_TDM 3
+
+#define PLRS_MAX_COOP 4
+#define PLRS_MIN_COOP 2
+#define PLRS_MAX_TDM 16
+#define PLRS_MIN_TDM 2
+
+#define RATE_MAX 80000
 
 float SELECT_TYPE;
 float SELECT_PLAYERS;
@@ -85,7 +88,7 @@ entity host_flag_nostatus;
 entity host_flag_nocam;
 
 //images
-string IMG_HOST_TITLE = "gfx/menu/host/host_title.png";
+#define IMG_HOST_TITLE "gfx/menu/host/host_title.png"
 
 //custom funcs
 void() host_update_type={
@@ -504,7 +507,7 @@ void() m_host_i={
   PUBLIC_TYPE = "debug";
   SERVER_FLAGS = cvar("sv_serverflags");
   
-  host_title = lbl_img( MENU_ORG + menu_parent_center_width(10), '1 1 0', IMG_HOST_TITLE, '1 1 1', VIEW_CTX, M_HOST, 1, (UI_FLAG_SIZE_IMG) );
+  host_title = lbl_img( MENU_ORG + menu_parent_center_width(10), '1 1 0', IMG_HOST_TITLE, '1 1 1', VIEW_CTX, M_HOST, 1, UI_FLAG_SIZE_IMG );
   
   host_name = inp_textfield( MENU_ORG + '100 53', '14 14 0', 48, host_servername, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC) );
   if( str_cvar("hostname") == ""){
