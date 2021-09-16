@@ -136,13 +136,10 @@ void() gui_set_screen_size={
 
   UI_ASPECT = VIEW_WIDTH / VIEW_HEIGHT;
   
-  VIEW_MAX_x = cvar("vid_conwidth");
+  //force con_width recalc on-demand
   VIEW_MAX_y = cvar("vid_conheight");
-  
-  if(VIEW_MAX_y != 480){
-    VIEW_MAX_y = 480;
-    cvar_set("vid_conheight", "480");
-  }
+  VIEW_MAX_x = floor(VIEW_MAX_y * VIEW_WIDTH / (VIEW_HEIGHT * VIEW_PIXELH));
+  cvar_set("vid_conwidth", ftos(VIEW_MAX_x));
   
   VIEW_CTR = VIEW_MAX * 0.5;
   

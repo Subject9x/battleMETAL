@@ -11,6 +11,7 @@ vector MENU_ORG;  //'root' menu origin and size, if this was more OO, then this 
 vector MENU_SIZE;
 vector MENU_CTR;
 
+float RESO_CHANGE;
 
 float GAME_SAVES_MAX = 10;
 string GAME_SAVES[GAME_SAVES_MAX];

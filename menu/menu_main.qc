@@ -12,7 +12,6 @@
   Quake C api hook - initialize menu here
 */
 void() m_init={
-  gui_set_screen_size();
   dynamic_precache();
   
   localcmd("disconnect;togglemenu;cd play 2;\n");
@@ -61,6 +60,7 @@ void() m_init={
   
   //setup textfield key filter;
   menu_ini_txtfilter();
+  RESO_CHANGE = TRUE;
   
 };
 
@@ -168,12 +168,16 @@ void(float width, float height) m_draw={
   VIEW_ACT_z = cvar("vid_pixelheight");
   
   if( getkeydest() == KEY_MENU ){
+    if(RESO_CHANGE){
+      RESO_CHANGE = FALSE;
+      gui_set_screen_size();
+    }
     if(MAIN_MISSION){
       drawfill(VIEW_ORG, VIEW_MAX, '0.1 0.1 0.1', 0.75, 0);
     }
     
     if( clientstate() == CS_DISCONNECTED){
-      bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), VIEW_MAX);
+      bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), Vector2(VIEW_WIDTH, VIEW_MAX_y));
       drawpic(VIEW_ORG, "gfx/menu/splash.tga", bimg, '1 1 1', 1, 0);
     }
   }

@@ -72,9 +72,6 @@ entity graphics_accept;
 
 
 //graphics constants
-
-float RESO_CHANGE;
-
 float options_graphics_submenu;
 
 #define SUB_GRAPHICS_MAIN 1
@@ -1000,12 +997,7 @@ void() m_graphics_f={
   menu_d functions are the render functions, inside m_draw, there's a select case
   running on M_STATE to determine which menu_d to execute.
 */
-void() m_graphics_d={  
-  if(RESO_CHANGE){
-    RESO_CHANGE = FALSE;
-    gui_set_screen_size();
-  }
-  
+void() m_graphics_d={
   gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
   
   drawfont_prev = drawfont;
