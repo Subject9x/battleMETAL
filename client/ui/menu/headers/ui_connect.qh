@@ -44,14 +44,14 @@ float CHAT_DECAY_MARK;
 float CHAT_LINE_TRUNC;  //character truncation limit
 
 //info string const
-string CHAT_MSG_USER = "user";
-string CHAT_MSG_BODY = "val";
-string CHAT_MSG_TYPE = "type";
+#define CHAT_MSG_USER "user"
+#define CHAT_MSG_BODY "val"
+#define CHAT_MSG_TYPE "type"
 
 //chat message types
-string CHAT_TYPE_MSG1  = "msg1";
-string CHAT_TYPE_MSG2  = "msg2";
-string CHAT_TYPE_SERVR  = "sv";
+#define CHAT_TYPE_MSG1 "msg1"
+#define CHAT_TYPE_MSG2 "msg2"
+#define CHAT_TYPE_SERVR "sv"
 
 
 //player chat input

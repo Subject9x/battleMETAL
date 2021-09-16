@@ -180,7 +180,7 @@ vector(vector startSize, vector targsize) gui_newAspectRatio={
   
   v_x = w;
   v_y = h;
-  
+  v_z = 0;
   return v;
 };
 
@@ -197,15 +197,15 @@ vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec={
   return ret;
 };
 
-string RECT32_TL = "gfx/ui/box32_tl.tga";
-string RECT32_TC = "gfx/ui/box32_tc.tga";
-string RECT32_TR = "gfx/ui/box32_tr.tga";
-string RECT32_ML = "gfx/ui/box32_ml.tga";
-string RECT32_MC = "gfx/ui/box32_mc.tga";
-string RECT32_MR = "gfx/ui/box32_mr.tga";
-string RECT32_BL = "gfx/ui/box32_bl.tga";
-string RECT32_BC = "gfx/ui/box32_bc.tga";
-string RECT32_BR = "gfx/ui/box32_br.tga";
+#define RECT32_TL "gfx/ui/box32_tl.tga"
+#define RECT32_TC "gfx/ui/box32_tc.tga"
+#define RECT32_TR "gfx/ui/box32_tr.tga"
+#define RECT32_ML "gfx/ui/box32_ml.tga"
+#define RECT32_MC "gfx/ui/box32_mc.tga"
+#define RECT32_MR "gfx/ui/box32_mr.tga"
+#define RECT32_BL "gfx/ui/box32_bl.tga"
+#define RECT32_BC "gfx/ui/box32_bc.tga"
+#define RECT32_BR "gfx/ui/box32_br.tga"
 
 
 void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderPatch9_1_32={
@@ -264,14 +264,15 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
 };
 
 
-string BORD32_TL = "gfx/ui/bor32_tl.tga";
-string BORD32_TC = "gfx/ui/bor32_tc.tga";
-string BORD32_TR = "gfx/ui/bor32_tr.tga";
-string BORD32_ML = "gfx/ui/bor32_ml.tga";
-string BORD32_MR = "gfx/ui/bor32_mr.tga";
-string BORD32_BL = "gfx/ui/bor32_bl.tga";
-string BORD32_BC = "gfx/ui/bor32_bc.tga";
-string BORD32_BR = "gfx/ui/bor32_br.tga";
+#define BORD32_TL "gfx/ui/bor32_tl.tga"
+#define BORD32_TC "gfx/ui/bor32_tc.tga"
+#define BORD32_TR "gfx/ui/bor32_tr.tga"
+#define BORD32_ML "gfx/ui/bor32_ml.tga"
+#define BORD32_MR "gfx/ui/bor32_mr.tga"
+#define BORD32_BL "gfx/ui/bor32_bl.tga"
+#define BORD32_BC "gfx/ui/bor32_bc.tga"
+#define BORD32_BR "gfx/ui/bor32_br.tga"
+
 void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_renderBorder9_1_32={
   
   local float rows;
@@ -319,9 +320,9 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
   }
 };
 
-string TEXT64_LF = "gfx/ui/txt_lf.tga";
-string TEXT64_CT = "gfx/ui/txt_ct.tga";
-string TEXT64_RT = "gfx/ui/txt_rt.tga";
+#define TEXT64_LF "gfx/ui/txt_lf.tga"
+#define TEXT64_CT "gfx/ui/txt_ct.tga"
+#define TEXT64_RT "gfx/ui/txt_rt.tga"
 
 void( vector org, vector siz, vector fontSize, vector colr, float alpha, float drawFlag ) gui_renderTextInput={
   local float cols;
