@@ -31,7 +31,8 @@ void() m_init={
   registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   
-  registercvar("vid_samples", "1", CF_CLIENT | CF_ARCHIVE);
+  cvar_set("r_framedatasize", "16");  //FIXME - issue in engine
+  
   
   ui_colors_set_player_list();
   menu_setup_mainservers();
