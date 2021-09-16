@@ -1,15 +1,6 @@
-//Image background
+//BALAKET
 {
-  'uid'    : 1,
-  'pos'    : 226 175 0,
-  'size'   : 452 180 0,
-  'icon'   : gfx/hud/hud_blk_bck.png,
-  'valign' : VIEW_CTX|VIEW_BOT,
-  'color1' : 1 1 1,
-}
-//Player Energy
-{
-  'uid'     : 2,
+  'uid'     : HUD_TAG_ENERGY,
   'pos'     : 102 87 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 22 84 0,
@@ -17,9 +8,8 @@
   'lblofs'  : 0 18 0,
   'axis'    : AXIS_V,
 }
-//Player Shield
 {
-  'uid'     : 4,
+  'uid'     : HUD_TAG_SHIELD_PLAYER,
   'pos'     : 215 115 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 90 12 0,
@@ -27,63 +17,54 @@
   'lblofs'  : 12 0 0,
   'axis'    : AXIS_H,
 }
-//Player Armor
 {
-  'uid'     : 3,
+  'uid'     : HUD_TAG_ARM_PLAYER,
   'pos'     : 170 60 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
 }
-//Weapon 1 - Style 1
 {
-  'uid'     : 7,
+  'uid'     : HUD_TAG_WEP_TYPE1,
   'pos'     : 235 -45 0,
   'valign'  : VIEW_CTX|VIEW_CTY,
-  'wbit'    : 1,
+  'wbit'    : WEP1,
 }
-//Weapon 2 - Style 1
 {
-  'uid'     : 7,
+  'uid'     : HUD_TAG_WEP_TYPE1,
   'pos'     : 197 -45 0,
   'valign'  : VIEW_CTX|VIEW_CTY,
-  'wbit'    : 2,
+  'wbit'    : WEP2,
 }
-//Weapon 3 - Style 1
 {
-  'uid'     : 7,
+  'uid'     : HUD_TAG_WEP_TYPE1,
   'pos'     : 160 -45 0,
   'valign'  : VIEW_CTX|VIEW_CTY,
-  'wbit'    : 4,
+  'wbit'    : WEP3,
 }
-//Weapon 4 - Style 1
 {
-  'uid'     : 7,
+  'uid'     : HUD_TAG_WEP_TYPE1,
   'pos'     : -15 -45 0,
   'valign'  : VIEW_CTX|VIEW_CTY,
-  'wbit'    : 8,
+  'wbit'    : WEP4,
 }
-//Weapon 5 - Style 1
 {
-  'uid'     : 7,
+  'uid'     : HUD_TAG_WEP_TYPE1,
   'pos'     : -50 -45 0,
   'valign'  : VIEW_CTX|VIEW_CTY,
-  'wbit'    : 16,
+  'wbit'    : WEP5,
 }
-//Radar Status - Style 1
 {
-  'uid'     : 9,
+  'uid'     : HUD_TAG_RADAR_TYPE1,
   'pos'     : 24 135 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
 }
-//Radar Graph
 {
-  'uid'     : 11,
+  'uid'     : HUD_TAG_RADAR_GRAPH,
   'pos'     : 45 100 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 90 90 0,
 }
-//Target Armor - Mech
 {
-  'uid'     : 5,
+  'uid'     : HUD_TAG_ARM_TARGET,
   'pos'     : -170 62 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'lflag'   : 1,
@@ -92,9 +73,8 @@
 // color2 = panel size
   'color2'  : 96 132 0,
 }
-//Target Armor - Vec
 {
-  'uid'     : 15,
+  'uid'     : HUD_TAG_ARM_TARG_VEC,
   'pos'     : -95 56 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 75 40 0,
@@ -104,9 +84,8 @@
 // color2 = panel size
   'color2'  : 96 132 0,
 }
-//Target Armor - Building
 {
-  'uid'     : 16,
+  'uid'     : HUD_TAG_ARM_TARG_BLD,
   'pos'     : -110 46 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 60 60 0,
@@ -115,10 +94,8 @@
   'lblofs'  : -19 -56 0,
 // color2 = panel size
   'color2'  : 96 132 0,
-}
-//Target Shield
-{
-  'uid'     : 6,
+}{
+  'uid'     : HUD_TAG_SHIELD_TARGET,
   'pos'     : -137 105 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 75 12 0,
@@ -126,33 +103,27 @@
   'lblofs'  : 12 0 0,
   'axis'    : AXIS_H,
 }
-//Target Name
 {
-  'uid'     : 13,
-  'pos'     : 194 126 0,
-  'valign'  : VIEW_RGT|VIEW_BOT,
+  'uid'     : HUD_TAG_TARGET_NAME,
+  'pos'     : -137 128 0,
+  'valign'  : VIEW_CTX|VIEW_BOT,
 }
-//Target Range
 {
-  'uid'     : 14,
-  'pos'     : 194 116 0,
-  'valign'  : VIEW_RGT|VIEW_BOT,
+  'uid'     : HUD_TAG_TARGET_RANGE,
+  'pos'     : -137 118 0,
+  'valign'  : VIEW_CTX|VIEW_BOT,
 }
-//HUD Messages
 {
-  'uid'     : 17,
+  'uid'     : HUD_TAG_MESSAGE_BOX,
   'pos'     : 0 48 0,
   'valign'  : VIEW_CTX|VIEW_TOP,
   'size'    : 16 16 0,
-}
-//Enviro damage
-{
-  'uid'     : 18,
+}{
+  'uid'     : HUD_TAG_ENVIRO_BOX,
   'pos'     : 0 -235 0,
 }
-//Ram Charge Meter
 {
-  'uid'     : 19,
+  'uid'     : HUD_TAG_RAM_METER,
   'pos'     : 96 135 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 64 16,
@@ -160,15 +131,8 @@
   'lalign'  : VIEW_LFT|VIEW_TOP,
   'lblofs'  : 0 0 0,
 }
-//Mission Clock
 {
-  'uid'     : 20,
+  'uid'     : HUD_TAG_MSN_CLOCK,
   'pos'     : 24 145 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
 }
-//Nav Heading - unused for now - Beta 2
-// {
-//  'uid'     : 12,
-//  'pos'     : 8 16 0,
-//  'valign'  : 17,
-// }

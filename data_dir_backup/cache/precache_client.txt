@@ -256,16 +256,6 @@ sound/mech_start.ogg
 //ai_voice_kill
 //ai_voice_roger
 //ai_voice_help
-sound/voice/bot/bot_warn.ogg
-sound/voice/bot/bot_spotted.ogg
-sound/voice/bot/bot_huntStart.ogg
-sound/voice/bot/bot_huntEnd.ogg
-sound/voice/bot/bot_dying.ogg
-sound/voice/bot/bot_dead.ogg
-sound/voice/bot/bot_kill.ogg
-sound/voice/bot/bot_roger.ogg
-sound/voice/bot/bot_help.ogg
-
 sound/voice/voiceA/voiceA_scanning.ogg
 sound/voice/voiceA/voiceA_spotted.ogg
 sound/voice/voiceA/voiceA_lostvis.ogg

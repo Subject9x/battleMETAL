@@ -1,0 +1,66 @@
+{
+  'music'   : ,
+  'nomusic' : 1,
+  'backimg' : ,
+  'trans'   : ,
+}
+{
+  'image' : gfx/anim/train1/train0.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 30,
+  'flags'  : 16,
+}
+{
+  'image' : gfx/anim/train1/train1.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 30,
+  'flags'  : 16,
+}
+{
+  'image' : gfx/anim/train1/train2.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 30,
+  'flags'  : 16,
+}
+{
+  'image' : gfx/anim/train1/train3.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 30,
+  'flags'  : 16,
+}
+{
+  'image' : gfx/anim/train1/train4.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 30,
+  'flags'  : 16,
+}
