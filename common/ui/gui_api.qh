@@ -131,6 +131,7 @@ float(float anglee) gui_angleToEnum;
 vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec;
 float(float pct, float ox, float mx) gui_percentCustom;
 
+float(vector loc, vector area, string text, vector fsize) gui_wrapText_getHeight;
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText;
 
 float( float desiredColor, float startColor, float colorRate ) gui_colorFadeTo;

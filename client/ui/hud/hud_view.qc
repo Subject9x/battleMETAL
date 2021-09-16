@@ -579,7 +579,7 @@ void() hud_render_info={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  HUD_INFO_MSG_Y = gui_wrapText(HUD_INFO_ORG + '8 8', HUD_INFO_SIZE - '16 16', HUD_INFO_MSG, '14 14 0', CLR_DEF_ARM_OK * 1.25, 1) ;
+  HUD_INFO_MSG_Y = gui_wrapText(HUD_INFO_ORG + '8 8', HUD_INFO_SIZE - '16 16', HUD_INFO_MSG, '14 14', CLR_DEF_ARM_OK * 1.25, 1) ;
   
   drawfont = drawfont_prev;
 

@@ -521,24 +521,27 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   HUD_INFO_MARK = time + infoLifetime;
   if( HUD_INFO_ON != TRUE ){
     HUD_INFO_ON = TRUE;
+    freeGlobalString(HUD_INFO_MSG)
     cacheGlobalString(HUD_INFO_MSG, infoMessage )
   }
   else{
     if( HUD_INFO_MSG != infoMessage ){
       //already on, override message
+      freeGlobalString(HUD_INFO_MSG)
       cacheGlobalString(HUD_INFO_MSG, infoMessage )
     }
   }
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
-
-  infoBoxY = gui_wrapText(VIEW_ORG, '256 256', HUD_INFO_MSG, fontSize, infoColor, 1) ;
+  
   HUD_INFO_SIZE_x = 256;
-  HUD_INFO_SIZE_y = infoBoxY;
   
   HUD_INFO_ORG_x = VIEW_MAX_x - HUD_INFO_SIZE_x;
   HUD_INFO_ORG_y = VIEW_ORG_y + 128;
+  
+  infoBoxY = gui_wrapText_getHeight(HUD_INFO_ORG + '8 8', HUD_INFO_SIZE - '16 16', HUD_INFO_MSG, fontSize);
+  HUD_INFO_SIZE_y = infoBoxY;
   
   drawfont = drawfont_prev;
   

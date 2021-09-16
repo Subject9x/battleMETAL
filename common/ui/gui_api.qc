@@ -678,6 +678,67 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   return (line_row+1) * (fsize_y + (fsize_y * 0.15));
 }
 
+/*
+  simply crunches the appropriate text size for a gui_wrapText(), generally pre-calc only.
+*/
+float(vector loc, vector area, string text, vector fsize) gui_wrapText_getHeight={
+  
+  local float totes, token, line_row, line_length;
+  local vector varea, textOrg;
+  local vector charpos;
+  local float charlen, pipe;
+  local string toke;
+  
+  varea = area;
+  totes = tokenizebyseparator(text, " ");
+  
+  token = 0;
+  textOrg = loc;
+  line_row = 0;
+  line_length = 0;
+  toke = argv(token);
+  
+  while( strlen(toke) > 0 ){
+    toke = argv(token);
+    
+    if( toke == "|" ){
+      //code can't seem to understand '\n' character read in from a strzone'd string, so use '|' for line breaks on external strings
+      toke = "\n";
+    }
+    pipe = strstrofs(toke, "\n", 0);
+    if( pipe != -1 ){
+      toke = substring(toke, pipe, strlen(toke));
+    }
+    if(toke != "\n"){
+      if( toke == "+" ){
+        //make lists?
+        line_row = line_row + 1;
+        line_length = 0;
+      }
+      toke = strcat(toke, " ");
+      charlen = stringwidth(toke, 0, fsize);
+      charpos_x = textOrg_x + line_length;
+      line_length = line_length + charlen;
+      if( line_length > varea_x ){
+        charpos_x = textOrg_x;
+        line_row = line_row + 1;
+        line_length = charlen;
+      }
+      charpos_y = textOrg_y + (line_row * (fsize_y + (fsize_y * 0.12)));
+    }
+    else{
+      line_row = line_row + 0.75;
+      line_length = 0;
+    }
+    token = token + 1;
+    toke = argv(token);
+  }
+  
+  return (line_row+1) * (fsize_y + (fsize_y * 0.15));
+};
+
+
+
 void( vector lOrg, string label, string value, vector labelColor, vector valueColor, vector fonts, vector fontSize ) gui_labelKeyPair={
   local float labelLen, valueLen;
   

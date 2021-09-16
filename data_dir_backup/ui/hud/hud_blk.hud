@@ -94,7 +94,8 @@
   'lblofs'  : -19 -56 0,
 // color2 = panel size
   'color2'  : 96 132 0,
-}{
+}
+{
   'uid'     : HUD_TAG_SHIELD_TARGET,
   'pos'     : -137 105 0,
   'valign'  : VIEW_CTX|VIEW_BOT,
@@ -118,7 +119,8 @@
   'pos'     : 0 48 0,
   'valign'  : VIEW_CTX|VIEW_TOP,
   'size'    : 16 16 0,
-}{
+}
+{
   'uid'     : HUD_TAG_ENVIRO_BOX,
   'pos'     : 0 -235 0,
 }
