@@ -55,7 +55,7 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
 */
 void(vector ofs, float algn) hud_renderTargetName={
   local float msgLen;
-  local vector tofs, msgSize, factionColor;
+  local vector msgSize, factionColor;
   local string msg;
   local string targType;
   
@@ -90,8 +90,8 @@ void(vector ofs, float algn) hud_renderTargetName={
   msgLen = stringwidth(msg, 0, '10 10 0');
   msgSize_x = msgLen/2;
   msgSize_y = 6;
-  tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
-  drawstring(tofs, msg, '10 10', factionColor, HUD_ALPHA, 0);
+  ofs_z = 0;
+  drawstring(ofs, msg, '10 10', factionColor, HUD_ALPHA, 0);
   
   drawfont = drawfont_prev;
 };

@@ -28,6 +28,7 @@ vector(float x, float y) Vector2={
   local vector v;
   v_x = x;
   v_y = y;
+  v_z = 0;
   return v;
 };
 

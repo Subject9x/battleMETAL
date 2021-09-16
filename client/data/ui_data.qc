@@ -355,12 +355,79 @@ float(float id) ui_data_load_mech={
 /*
   CSQC: Load .hud files from /data/ui/hud/
 */
+/*
+  Ah the sacrifices for easier scripting :)
+*/
+void() ui_data_hud_ini_tags={
+  HUD_TAGS[HUD_UID_IMG_HELM]      = HUD_TAG_IMG_HELM;     
+  HUD_TAGS[HUD_UID_ENERGY]        = HUD_TAG_ENERGY;       
+  HUD_TAGS[HUD_UID_ARM_PLAYER]    = HUD_TAG_ARM_PLAYER;   
+  HUD_TAGS[HUD_UID_SHIELD_PLAYER] = HUD_TAG_SHIELD_PLAYER;
+  HUD_TAGS[HUD_UID_ARM_TARGET]    = HUD_TAG_ARM_TARGET;   
+  HUD_TAGS[HUD_UID_SHIELD_TARGET] = HUD_TAG_SHIELD_TARGET;
+  HUD_TAGS[HUD_UID_WEP_TYPE1]     = HUD_TAG_WEP_TYPE1;    
+  HUD_TAGS[HUD_UID_WEP_TYPE2]     = HUD_TAG_WEP_TYPE2;    
+  HUD_TAGS[HUD_UID_RADAR_TYPE1]   = HUD_TAG_RADAR_TYPE1;  
+  HUD_TAGS[HUD_UID_RADAR_TYPE2]   = HUD_TAG_RADAR_TYPE2;  
+  HUD_TAGS[HUD_UID_RADAR_GRAPH]   = HUD_TAG_RADAR_GRAPH;  
+  HUD_TAGS[HUD_UID_NAV]           = HUD_TAG_NAV;          
+  HUD_TAGS[HUD_UID_TARGET_NAME]   = HUD_TAG_TARGET_NAME;  
+  HUD_TAGS[HUD_UID_TARGET_RANGE]  = HUD_TAG_TARGET_RANGE; 
+  HUD_TAGS[HUD_UID_ARM_TARG_VEC]  = HUD_TAG_ARM_TARG_VEC; 
+  HUD_TAGS[HUD_UID_ARM_TARG_BLD]  = HUD_TAG_ARM_TARG_BLD; 
+  HUD_TAGS[HUD_UID_MESSAGE_BOX]   = HUD_TAG_MESSAGE_BOX;  
+  HUD_TAGS[HUD_UID_ENVIRO_BOX]    = HUD_TAG_ENVIRO_BOX;   
+  HUD_TAGS[HUD_UID_RAM_METER]     = HUD_TAG_RAM_METER;    
+  HUD_TAGS[HUD_UID_MSN_CLOCK]     = HUD_TAG_MSN_CLOCK;   
+  HUD_TAGS[HUD_UID_CHAT_BOX]      = HUD_TAG_CHAT_BOX;     
+};
+
+float(string tag) ui_data_load_hud_tagId={
+  local float itr;
+  local float uid;
+  for(itr = 0; itr < 22; itr = itr + 1){
+    if( tag == HUD_TAGS[itr] ){
+      return itr;
+    }
+  }
+  return 0;
+};
+
+float(string tag) ui_data_load_hud_weaponTag={
+  local float id;
+  id = stof(substring(tag, 3, 4));
+  switch(id){
+    case 1:
+      return WEAPON1;
+    case 2:
+      return WEAPON2;
+    case 3:
+      return WEAPON3;
+    case 4:
+      return WEAPON4;
+    case 5:
+      return WEAPON5;
+    case 6:
+      return WEAPON6;
+    case 7:
+      return WEAPON7;
+    case 8:
+      return WEAPON8;
+    case 9:
+      return WEAPON9;
+    default:
+      return 0;
+  }
+};
+
+
 float( float id ) ui_data_load_hud={
   local float flannel, line_tag, hudElementItr;
   local string file, contents, line;
   local string token, value;
+  
   ui_data_clear_huddata();
-      
+  
   file = strcat(PATH_DATA_UI, "/hud/", HUD_DATA_NAMES[id], ".hud");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
@@ -378,7 +445,7 @@ float( float id ) ui_data_load_hud={
       if( token != ""){
         if( token == "uid"){
           //serves as master switch when iterating through hud elements
-          UI_DATA_UIDS[hudElementItr] = stof(value);
+          UI_DATA_UIDS[hudElementItr] = ui_data_load_hud_tagId(value);
         }
         if( token == "pos"){
           UI_DATA_POS[hudElementItr] = stov(value);
@@ -411,7 +478,7 @@ float( float id ) ui_data_load_hud={
           UI_DATA_LABEL_OFS[hudElementItr] = stov(value);
         }
         if( token == "wbit"){
-          UI_DATA_WEPBIT[hudElementItr] = stof(value);
+          UI_DATA_WEPBIT[hudElementItr] = ui_data_load_hud_weaponTag(value);
         }
         if( token == "lflag"){
           UI_DATA_LABEL_FLAG[hudElementItr] = stof(value);

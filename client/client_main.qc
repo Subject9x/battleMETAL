@@ -172,9 +172,17 @@ void() CSQC_Init =
   ui_colors_set_player_list();
   ISMENU_PREV = FALSE;
 
+  
+  freeGlobalString(PLAYER_COLOR_PSC)
   cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
+  
+  freeGlobalString(PLAYER_COLOR_MIL)
   cacheGlobalString( PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
+  
+  freeGlobalString(PLAYER_COLOR_MIL)
   cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
+  
+  ui_data_hud_ini_tags();
   
   cl_ini_infostring();
 };
