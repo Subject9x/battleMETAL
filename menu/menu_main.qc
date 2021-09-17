@@ -177,9 +177,13 @@ void(float width, float height) m_draw={
       drawfill(VIEW_ORG, VIEW_MAX, '0.1 0.1 0.1', 0.75, 0);
     }
     
+    
     if( clientstate() == CS_DISCONNECTED){
       bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), Vector2(VIEW_WIDTH, VIEW_MAX_y));
       drawpic(VIEW_ORG, "gfx/menu/splash.tga", bimg, '1 1 1', 1, 0);
+    }
+    if(cvar("developer")){
+      gui_drawversion();
     }
   }
   

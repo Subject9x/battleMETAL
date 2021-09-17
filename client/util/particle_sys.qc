@@ -393,7 +393,8 @@ void() te_shield_hit={
   self.shieldEffectTime = servertime + hitTime;
   
   sizeMod = self.shield / self.shieldMax;
-  shieldSize = (self.vec_size * 2) * sizeMod;
+  shieldSize = max(0.8, (self.maxs_x / 64) * sizeMod);
+  
   explode = spawn();
   explode.think = te_shield_hit_th;
   explode.nextthink = servertime + 0.01;
@@ -407,7 +408,7 @@ void() te_shield_hit={
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setsize(explode, explode.mins, explode.maxs);
   setorigin( explode, self.origin);
-  explode.alpha = 0.1;
+  explode.alpha = 0.2;
   
   if(self.shieldHitFlag == SHIELD_HIT_EMP){
     flashCol = '1.0 0.4 1.0';

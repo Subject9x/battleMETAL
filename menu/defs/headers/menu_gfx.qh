@@ -14,9 +14,6 @@
 #define IMG_BTN_ACPT "gfx/menu/btn_accept.png"
 #define UI_IMG_ARW_LFT "gfx/hud/trg_pip_lft.png"
 #define UI_IMG_ARW_RGT "gfx/hud/trg_pip_rgt.png"
-#define UI_BOX_64 "gfx/ui/box_64.png"
-#define UI_BOX_256 "gfx/ui/box_256.png"
-#define UI_BOX_512 "gfx/ui/box_512.png"
 
 #define IMG_TEAM_SURVEST "gfx/ui/ui_icon_survest.png"
 #define IMG_TEAM_MILITAR "gfx/ui/ui_icon_militar.png"
