@@ -39,7 +39,7 @@ void() te_muzzle_latc={
   
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), startOrg, norm * 4, 1);
   
-  impactStyle = te_impact_type(endOrg, trace_ent);
+  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
   
   if( beamLen > 150 ){
     pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg + (v_forward * 48), norm * 2400, 1);

@@ -671,7 +671,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
 /*
   Particle Determinant for impact types of weapon fire
 */
-float(vector endPos, entity endEnt) te_impact_type={
+float(vector endPos, entity endEnt, float contentFlags) te_impact_type={
   if(endEnt){
     if(endEnt.takedamage == DAMAGE_AIM){
       if(endEnt.shield > 0 && endEnt.shield <= 100.0){
@@ -684,6 +684,10 @@ float(vector endPos, entity endEnt) te_impact_type={
     }
   }
   else{
+    if( contentFlags & DPCONTENTS_SOLID){
+      cons_logAString("trace_dphitcontents", "DPCONTENTS_SOLID"); //debug
+      return IMPACT_DIRT;
+    }
     if(pointcontents(endPos) == CONTENT_SOLID){
       return IMPACT_DIRT;
     }

@@ -33,13 +33,13 @@ void() te_muzzle_las={
   }
   pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, normalize(startOrg - endOrg) * 2, 1);
   
-  impactStyle = te_impact_type(endOrg, trace_ent);
+  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
   
   trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
   
   norm = normalize(endOrg - startOrg);
   
-  impactStyle = te_impact_type(endOrg, trace_ent);
+  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
   
   switch(impactStyle){
     case IMPACT_ARMOR:
@@ -47,6 +47,7 @@ void() te_muzzle_las={
       break;
     case IMPACT_DIRT:
       pointparticles(particleeffectnum("TE_LAS_DIRT"), endOrg , '0 0 0', 1);
+      pointparticles(particleeffectnum("TE_LAS_DIRT_IMP"), endOrg , '0 0 0', 1);
       break;
     default:
       return;

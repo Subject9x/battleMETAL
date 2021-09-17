@@ -42,7 +42,7 @@ void() te_muzzle_flk={
     v = norm + ((crandom()*self.spreadDefault_x)*v_right) + ((crandom()*self.spreadDefault_y)*v_up);
     
     traceline (startOrg, startOrg + (v * self.w_range), FALSE, self.owner);
-    impactStyle = te_impact_type(trace_endpos, trace_ent);
+    impactStyle = te_impact_type(trace_endpos, trace_ent, trace_dphitcontents);
     
     trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, trace_endpos);
     
