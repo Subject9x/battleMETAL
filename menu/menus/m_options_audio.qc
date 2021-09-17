@@ -200,7 +200,7 @@ void() click_sfx_up={
   
   audio_sfx_dn.drawme = TRUE;
   cvar_set("volume", ftos(audio_sfx_vol_lbl.len));
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
   
 };
 void() click_sfx_dn={
@@ -216,7 +216,7 @@ void() click_sfx_dn={
   
   audio_sfx_up.drawme = TRUE;
   cvar_set("volume", ftos(audio_sfx_vol_lbl.len));
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
 };
 
 void() click_audio_music_on={
@@ -259,7 +259,7 @@ void() click_music_up={
   
   audio_music_dn.drawme = TRUE;
   cvar_set("bgmvolume", ftos(audio_music_vol_lbl.len));
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
 };
 void() click_music_dn={
   local float level;
@@ -274,7 +274,7 @@ void() click_music_dn={
   
   audio_music_up.drawme = TRUE;
   cvar_set("bgmvolume", ftos(audio_music_vol_lbl.len));
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
 };
 
 void() click_speakers_more={
@@ -327,8 +327,11 @@ void() click_quality_up={
     audio_quality_up.drawme = FALSE;
   }
   audio_quality_lbl.len = val;
-  strunzone(audio_quality_lbl.label);
-  audio_quality_lbl.label = strzone(audio_speed_get_val(audio_quality_lbl.len));
+  
+  freeGlobalString(audio_quality_lbl.label)
+  
+  cacheGlobalString(audio_quality_lbl.label, audio_speed_get_val(audio_quality_lbl.len) )
+
   audio_quality_dn.drawme = TRUE;
 };
 void() click_quality_dn={
@@ -340,8 +343,11 @@ void() click_quality_dn={
     audio_quality_dn.drawme = FALSE;
   }
   audio_quality_lbl.len = val;
-  strunzone(audio_quality_lbl.label);
-  audio_quality_lbl.label = strzone(audio_speed_get_val(audio_quality_lbl.len));
+  
+  freeGlobalString(audio_quality_lbl.label)
+  
+  cacheGlobalString(audio_quality_lbl.label, audio_speed_get_val(audio_quality_lbl.len) )
+  
   audio_quality_up.drawme = TRUE;
 };
 
@@ -358,7 +364,7 @@ void() click_audio_save={
   cvar_set("snd_mutewhenidle", ftos(audio_mute_idle_lbl.len));  
   audio_speed_set(audio_quality_lbl.len);
   
-  cmd("saveconfig\n");
+  localcmd("saveconfig\n");
 
   click_audio_back();
 };
@@ -367,17 +373,21 @@ void() click_audio_save={
 void() m_audio_i={
   local float sfx_vol;
   local float mus_vol;
-  audio_title = lbl_img('10 25', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, (UI_FLAG_SIZE_IMG) );
+  
+  menu_parent_setup(VIEW_ORG + '0 30', '304 304');
+  
+  audio_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', VIEW_CTX, M_OPTIONS_AUDIO, 1, UI_FLAG_SIZE_IMG );
 
   //SFX Volume
-  audio_sfx_toggle_lbl = lbl_text('154 85', '14 14  0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, 0);
+  audio_sfx_toggle_lbl = lbl_text(MENU_ORG + '162 55', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
   
-  audio_sfx_toggle_on = btn_img_callback('180 84', '10 14', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_audio_sfx_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_sfx_toggle_off = btn_img_callback('140 84', '10 14', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_audio_sfx_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_sfx_toggle_on = btn_img_callback(MENU_ORG + '180 55', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_audio_sfx_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_sfx_toggle_off = btn_img_callback(MENU_ORG + '140 55', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_audio_sfx_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  audio_sfx_vol_lbl = lbl_text('154 107', '14 14  0'," ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, 0);
-  audio_sfx_up = btn_img_callback('180 104', '10 14', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_sfx_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_sfx_dn = btn_img_callback('140 104', '10 14', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_sfx_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_sfx_vol_lbl = lbl_text(MENU_ORG + '165 75', '14 14',"", CLR_DEF_TXT_GRAY_SMOOTH, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  
+  audio_sfx_up = btn_img_callback(MENU_ORG + '180 74', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_sfx_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_sfx_dn = btn_img_callback(MENU_ORG + '140 74', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_sfx_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   sfx_vol = cvar("volume");
   if(sfx_vol > 0){
@@ -407,13 +417,15 @@ void() m_audio_i={
   }
   
   // MUSIC VOLUME
-  audio_music_toggle_lbl = lbl_text('154 134', '14 14  0', "", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, 0);
-  audio_music_toggle_on = btn_img_callback('180 133', '10 14', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_audio_music_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_music_toggle_off = btn_img_callback('140 133', '10 14', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_audio_music_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_music_toggle_lbl = lbl_text(MENU_ORG + '162 104', '14 14  0', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  
+  audio_music_toggle_on = btn_img_callback(MENU_ORG + '180 103', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_audio_music_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_music_toggle_off = btn_img_callback(MENU_ORG + '140 103', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_audio_music_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  audio_music_vol_lbl = lbl_text('154 156', '14 14  0'," ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, 0);
-  audio_music_up = btn_img_callback('180 155', '10 14', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_music_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_music_dn = btn_img_callback('140 155', '10 14', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_music_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_music_vol_lbl = lbl_text(MENU_ORG + '165 126', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  
+  audio_music_up = btn_img_callback(MENU_ORG + '180 125', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_music_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_music_dn = btn_img_callback(MENU_ORG + '140 125', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_music_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   mus_vol = cvar("bgmvolume");
   if(mus_vol > 0){
@@ -443,9 +455,9 @@ void() m_audio_i={
   }
   
   //speaker mode
-  audio_speakers_lbl = lbl_text('154 212', '14 14  0'," ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, 0);
-  audio_speakers_more = btn_img_callback('230 211', '10 14', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_speakers_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_speakers_less = btn_img_callback('140 211', '10 14', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_speakers_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_speakers_lbl = lbl_text(MENU_ORG + '162 182', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  audio_speakers_more = btn_img_callback(MENU_ORG + '240 181', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_speakers_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_speakers_less = btn_img_callback(MENU_ORG + '140 181', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_speakers_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   audio_speakers_lbl.len = audio_speakers_mode_get(cvar("snd_channels"), cvar("snd_spatialization_control"));
   audio_speakers_lbl.label = audio_speakers_mode_val(audio_speakers_lbl.len);
@@ -457,10 +469,10 @@ void() m_audio_i={
     audio_speakers_more.drawme = FALSE;
   }
 
-  audio_mute_idle_lbl = lbl_text('154 234', '14 14  0'," ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, UI_FLAG_LBL_BOOL_ON);
+  audio_mute_idle_lbl = lbl_text(MENU_ORG + '162 204', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, UI_FLAG_LBL_BOOL_ON);
   audio_mute_idle_lbl.len = cvar("snd_mutewhenidle");
-  audio_mute_idle_on = btn_img_callback('184 233', '10 14', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_mute_idle_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_mute_idle_off = btn_img_callback('140 233', '10 14', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_mute_idle_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_mute_idle_on = btn_img_callback(MENU_ORG + '184 203', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_mute_idle_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_mute_idle_off = btn_img_callback(MENU_ORG + '140 203', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_mute_idle_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(audio_mute_idle_lbl.len){
     audio_mute_idle_on.drawme = FALSE;
@@ -469,12 +481,13 @@ void() m_audio_i={
     audio_mute_idle_off.drawme = FALSE;
   }
 
-  audio_quality_lbl = lbl_text('154 256', '14 14 0'," ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, 0);
-  audio_quality_up = btn_img_callback('200 255', '10 14', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_quality_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_quality_dn = btn_img_callback('140 255', '10 14', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_quality_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_quality_lbl = lbl_text(MENU_ORG + '162 226', '14 14 0',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  audio_quality_up = btn_img_callback(MENU_ORG + '200 225', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_quality_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_quality_dn = btn_img_callback(MENU_ORG + '140 225', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_quality_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   audio_quality_lbl.len = audio_speed_get(cvar("snd_speed"));
-  audio_quality_lbl.label = audio_speed_get_val(audio_quality_lbl.len);
+  
+  cacheGlobalString( audio_quality_lbl.label, audio_speed_get_val(audio_quality_lbl.len) )
   
   if(audio_quality_lbl.len == 0){
     audio_quality_dn.drawme = FALSE;
@@ -484,8 +497,12 @@ void() m_audio_i={
   }
   
   //operations
-  audio_back = btn_img_callback('25 282 0', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_audio_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_save = btn_img_callback('285 282 0', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_audio_save, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_back = btn_text_callback(MENU_ORG + '40 272', '16 16', "BACK", VIEW_CTX, M_OPTIONS_AUDIO, click_audio_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  audio_back.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  audio_save = btn_text_callback(MENU_ORG + '245 272', '16 16', "ACCEPT", VIEW_CTX, M_OPTIONS_AUDIO, click_audio_save, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  audio_save.fontId = FONT_NUM_XOLONIUM_BOLD;
+
 };
 
 /*
@@ -506,12 +523,14 @@ void() m_audio_d={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderString("- Audio Settings -", gui_percentToPixelRawVec('190 64'), CLR_DEF_WHITE, '16 16 0', 1, 0);
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
+  gui_renderString("- Audio Settings -", MENU_ORG + menu_parent_center_width(35) - Vector2(stringwidth("- Audio Settings -", 0, '16 16')/2,0), CLR_DEF_WHITE, '16 16', 1, 0);
 
-  gui_renderString("Sound On/Off :", gui_percentToPixelRawVec('65 85'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Sound Volume :", gui_percentToPixelRawVec('62 108'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Music On/Off :", gui_percentToPixelRawVec('66 135'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Music Volume :", gui_percentToPixelRawVec('63 155'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Sound On/Off :", audio_sfx_toggle_off.origin - Vector2(stringwidth("Sound On/Off :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Sound Volume :", audio_sfx_dn.origin - Vector2(stringwidth("Sound Volume :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Music On/Off :", audio_music_toggle_off.origin - Vector2(stringwidth("Music On/Off :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Music Volume :", audio_music_dn.origin - Vector2(stringwidth("Music Volume :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   
   local string lbl;
   if( !isdemo() && clientstate() == CS_CONNECTED){
@@ -520,10 +539,10 @@ void() m_audio_d={
   else{
     lbl = "Advanced Settings";
   }
-  gui_renderString(lbl, gui_percentToPixelRawVec('25 190'), CLR_DEF_ARM_THREEQ, '12 12 0', 1, 0);
-  gui_renderString("Speaker Mode :", gui_percentToPixelRawVec('62 212'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Mute Minimized :", gui_percentToPixelRawVec('53 234'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-  gui_renderString("Sound Quality :", gui_percentToPixelRawVec('62 256'), CLR_DEF_WHITE, '12 12 0', 1, 0);  
+  gui_renderString(lbl, MENU_ORG + '25 160', CLR_DEF_ARM_THREEQ, '12 12', 1, 0);
+  gui_renderString("Speaker Mode :", audio_speakers_less.origin - Vector2(stringwidth("Speaker Mode :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Mute Minimized :", audio_mute_idle_off.origin - Vector2(stringwidth("Mute Minimized :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Sound Quality :", audio_quality_dn.origin  - Vector2(stringwidth("Sound Quality :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);  
 
   drawfont = drawfont_prev;
 

@@ -2,15 +2,16 @@
 void() CSQC_Init =
 {
   local float i, cnt;
-  registercvar("gamemode", "1");
+  registercvar("gamemode", "1", CF_CLIENT | CF_SERVER | CF_CLIENT_FROM_SERVER | CF_SERVER_FROM_CLIENT);
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
-  registercvar("cl_team", ftos(cvar("cl_team")));
-  registercvar("cl_color_psc", cvar_string("cl_color_psc"));
-  registercvar("cl_color_mil", cvar_string("cl_color_mil"));
-  registercvar("cl_color_srv", cvar_string("cl_color_srv"));
-  registercvar("cl_ismenu", ftos(cvar("cl_ismenu")));
-  registercvar("chase_active", ftos(cvar("chase_active")));
+  registercvar("cl_team", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("chase_active", "0", CF_CLIENT | CF_SERVER | CF_ARCHIVE);
+  
+  cvar_set("con_chat", "0", CF_CLIENT | CF_ARCHIVE);  //force old chat system off
   
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
@@ -113,6 +114,8 @@ void() CSQC_Init =
   dynamic_precache();
   cs_precache();
   
+  textfilter_ini_keyarray();
+  
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");
   cacheGlobalString( MAP_NAME, argv(1) )
@@ -169,9 +172,17 @@ void() CSQC_Init =
   ui_colors_set_player_list();
   ISMENU_PREV = FALSE;
 
+  
+  freeGlobalString(PLAYER_COLOR_PSC)
   cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
+  
+  freeGlobalString(PLAYER_COLOR_MIL)
   cacheGlobalString( PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
+  
+  freeGlobalString(PLAYER_COLOR_MIL)
   cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
+  
+  ui_data_hud_ini_tags();
   
   cl_ini_infostring();
 };
@@ -218,6 +229,11 @@ void() CSQC_Shutdown =
   freeGlobalString(HUD_INFO_MSG)
   
   localcmd("cd stop\n");
+  
+  menu_chat_cleanup();
+  
+  gui_set_screen_size();
+  
 };
 
 // typ 0 = keydown (keysym, unicode character but this may be zero) or typed input (-1, unicode character)
@@ -231,6 +247,12 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 
 
 // the most important function in CSQC...
+/*
+  DP engine -> CL_VM_UpdateView()
+    w = vid.width
+    h = vid.height
+    menuView = key_dest = key_game
+*/
 void(float w, float h, float menuView) CSQC_UpdateView =
 {
   local vector fovvec, vf_sz, vf_mn;
@@ -360,16 +382,13 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   setproperty(VF_DRAWCROSSHAIR, 0);
   setproperty(VF_DRAWENGINESBAR, 0);
   VIEW_ORG = '0 0';
-  VIEW_MAX_x = cvar("vid_conwidth");
-  VIEW_MAX_y = cvar("vid_conheight");
-  VIEW_SIZE_x = VIEW_MAX_x * 2;
-  VIEW_SIZE_y = VIEW_MAX_y * 2;
-  VIEW_CTR_x = VIEW_MAX_x / 2;
-  VIEW_CTR_y = VIEW_MAX_y / 2;
+  
   VIEW_SCALE = 0.35;
 
   //alter fog settings if needed
   //cl_particles_fogFrame();	//fog is disable for the time being (something up with depth-rendering and unit shaders)
+  
+  gui_set_screen_size();
   
   //TODO - fog is now different in latest DP build
   //setproperty(VF_FOG_DENSITY, FOG_DENSITY);
@@ -455,9 +474,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   //put this last on the rendering order to make sure it 
   //plays above all
   if(ANM_FILE_STATUS == 1){
-    if(ANM_FRAME_CUR == 0){
-      anm_execute_metadata();
-    }
     anm_execute_frame();
   }
   
@@ -467,7 +483,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     porg = '0 0 0';
     porg_x = pang_x = torg_x = VIEW_ORG_x;
     porg_y = pang_y = torg_y = VIEW_MAX_y;
-    drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
+    //drawstring(porg + '1 -30', strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
     //version wille eventually be only displayed as needed.
     gui_drawversion();
   }
@@ -588,8 +604,57 @@ void(string s) CSQC_Parse_StuffCmd =
 };
 
 // if string is interesting, deal with it, otherwise pass it to print() to invoke the engine code.
+/*
+an svc_print with a leading byte with value 1 will make the text red and play the chat beep sound... I guess you could call such prints as chat...
+just beware that 2 and 3 have meanings too, at least in DP
+this of course means that with sneaky naming you can get all your deaths to play chat sounds too, of course.
+  -Spoike
+
+I crufted my own message schema
+see:
+  common/data/data_values_game.qc
+    Server<->Client string message layer
+  
+  CHAT_TYPE_MSG1 
+  CHAT_TYPE_MSG2 
+  CHAT_TYPE_SERVR
+*/
 void(string s) CSQC_Parse_Print =
 {
+  local float charOfs;
+  local string clientId, msg;
+  
+  local float cmdIdx;
+  local float msgOfs;
+  
+  if( infoget(s, RSP_SRC) == SV_PRINT ){
+    if( infoget(s, RSP_TYPE) == SAY_MSG1 ){
+      clientId = infoget(s, RSP_CID);
+      
+      menu_chat_receive_new(CHAT_TYPE_MSG1, getplayerkeyvalue(stof(clientId) - 1, "name"), infoget(s, RSP_BODY));
+      return;
+    }
+    if( infoget(s, RSP_TYPE) == SAY_MSG2 ){
+      clientId = infoget(s, RSP_CID);
+      if( rint(stof(getplayerkeyvalue(stof(clientId) - 1, "colors"))) == CLIENT_faction ){
+        menu_chat_receive_new(CHAT_TYPE_MSG2, getplayerkeyvalue(stof(clientId) - 1, "name"), infoget(s, RSP_BODY));
+      }
+      return;
+    }
+    if( infoget(s, RSP_TYPE) == SV_CL_CONN ){
+      menu_chat_receive_new(CHAT_TYPE_SERVR, "SERVER", infoget(s, RSP_BODY));
+      return;
+    }
+    if( infoget(s, RSP_TYPE) == SV_CL_KSELF ){
+      menu_chat_receive_new(CHAT_TYPE_SERVR, "SERVER", infoget(s, RSP_BODY));
+      return;
+    }
+    if( infoget(s, RSP_TYPE) == SV_CL_DSCON ){
+      menu_chat_receive_new(CHAT_TYPE_SERVR, "SERVER", infoget(s, RSP_BODY));
+      return;
+    }
+    return;
+  }
 	print(s);
 };
 
@@ -727,7 +792,6 @@ void() CSQC_Ent_Remove ={
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)
 void(string msg) GameCommand =
 {
-  
 };
 
 // called on each entity each frame if self.nextthink <= time + frametime

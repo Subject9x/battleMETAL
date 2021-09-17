@@ -55,7 +55,7 @@ void( entity thePlayer ) hud_render_ally_names={
   namepos_z = namepos_z - (adj + drawSize_y);  //magik numbers, :/
   nameproj = cs_project(namepos);
   if( nameproj_z >= 0 ){
-    nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
+    nameproj_x = nameproj_x - (namelen / 2);
     nameproj_z = 0;
     drawstring(nameproj, playerName, drawSize, CLR_DEF_GREEN * 1.5, max(0.75, HUD_ALPHA), 0);
   }
@@ -88,7 +88,7 @@ void() hud_renderNavOverlay={
     }
     i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
     nofs = nav.origin;
-    nofs_z = nofs_z + gui_percentYRaw(14);
+    nofs_z = nofs_z + 14;
     apos = cs_project(nofs);
     tofs = apos;
     navname = NAVNAMES[nav.data_idx];
@@ -97,8 +97,10 @@ void() hud_renderNavOverlay={
       iofs = apos;
       i_sz_x = i_sz_x / 4;
       i_sz_y = i_sz_y / 4;
+      
       iofs_x = iofs_x - (i_sz_x/2);
       iofs_y = iofs_y - (i_sz_y/2);
+      
       tofs_x -= stringwidth(navname, TRUE, '12 12') * 0.5; //align horizontally to centre
       tofs_y = tofs_y - (i_sz_y + 12); //align vertically again
       tofs_z = 0;
@@ -123,12 +125,6 @@ void() hud_renderNavOverlay={
   
   drawfont = drawfont_prev;
 };
-
-void(entity t)hud_render_vip_overlay_target={
-  
-};
-
-
 /*
   RENDER VIP ITEM TARGET BOX
 */
@@ -149,7 +145,6 @@ void() hud_render_vip_overlay={
       continue;
     }
     if( ent.faction != CLIENT_faction ){
-      hud_render_vip_overlay_target( ent );
       continue;
     }
     
@@ -171,19 +166,19 @@ void() hud_render_vip_overlay={
     dist = 1 * (dist / CLIENT_radar_range);
     
     imgSize = draw_getimagesize(HUD_TARGET_BOX_TL) * 0.5 ;
-    imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
+    imgSize = imgSize * dist;
     
-    if( imgSize_x > gui_percentXRaw(32) ){
-      imgSize_x = gui_percentXRaw(32);
+    if( imgSize_x > 32 ){
+      imgSize_x = 32;
     }
-    if(imgSize_x < gui_percentXRaw(32)){
-      imgSize_x = gui_percentXRaw(32);
+    if(imgSize_x < 32){
+      imgSize_x = 32;
     }
-    if( imgSize_y > gui_percentYRaw(24) ){
-      imgSize_y = gui_percentYRaw(24);
+    if( imgSize_y > 24 ){
+      imgSize_y = 24;
     }
-    if(imgSize_y < gui_percentYRaw(16)){
-      imgSize_y = gui_percentYRaw(16);
+    if(imgSize_y < 16){
+      imgSize_y = 16;
     }
     
     viewAngle = input_angles;
@@ -221,8 +216,8 @@ void(float hitDirBit) hud_renderDirectionHit={
   local vector orgLeft;
   local vector orgRight;
   local vector hitColor;
-  icoSize_x = gui_percentXRaw(24);
-  icoSize_y = gui_percentYRaw(VIEW_MAX_y * 0.67);
+  icoSize_x = 24;
+  icoSize_y = VIEW_MAX_y * 0.67;
   orgLeft_y = orgRight_y = VIEW_ORG_y + (VIEW_MAX_y * 0.15);
   
   
@@ -234,12 +229,12 @@ void(float hitDirBit) hud_renderDirectionHit={
   }
   
   if( (hitDirBit & STAT_HIT_LF) ){
-    orgLeft_x = VIEW_ORG_x + gui_percentXRaw(1);
+    orgLeft_x = VIEW_ORG_x + 1;
     gui_renderTintImage(TRUE, orgLeft, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
   }
   
   if( (hitDirBit & STAT_HIT_RT) ){
-    orgRight_x = VIEW_MAX_x - gui_percentXRaw(24);
+    orgRight_x = VIEW_MAX_x - 24;
     gui_renderTintImage(TRUE, orgRight, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
   }
 };

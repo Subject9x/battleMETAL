@@ -18,14 +18,12 @@ void( vector ofs ) ui_navbutton_brief_draw={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_BRIEF_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_BRIEF_SIZE), CLR_DEF_WEP_INRANGE, 1, 0) ;
-  
-  
+  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_BRIEF_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_BRIEF_SIZE, CLR_DEF_WEP_INRANGE, 1, 0) ;
   
   textPos = UI_NAVBAR_BRIEF_ORG;
   strWidth = stringwidth("BRIEFING", 0 , UI_NAVBAR_font_unselect) / 2;
-  textPos_x = (UI_NAVBAR_BRIEF_ORG_x + gui_percentXRaw(UI_NAVBAR_BRIEF_SIZE_x/2)) - gui_percentXRaw(strWidth);
-  textPos_y = UI_NAVBAR_BRIEF_ORG_y + gui_percentYRaw(4);
+  textPos_x = (UI_NAVBAR_BRIEF_ORG_x + (UI_NAVBAR_BRIEF_SIZE_x/2)) - strWidth;
+  textPos_y = UI_NAVBAR_BRIEF_ORG_y + 6;
   gui_renderHighlightString("BRIEFING", textPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), UI_NAVBAR_font_unselect, 1, 0) ;
   drawfont = drawfont_prev;
 };
@@ -50,15 +48,15 @@ void( vector ofs ) ui_navbutton_hangar_draw={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), UI_NAVBAR_HANGAR_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_HANGAR_SIZE), CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), UI_NAVBAR_HANGAR_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_HANGAR_SIZE, CLR_DEF_WEP_INRANGE, 1, 0) ;
   textPos = UI_NAVBAR_HANGAR_ORG;
   if( CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE ){
   }
   else{
   }
   strWidth = stringwidth("HANGAR", 0 , UI_NAVBAR_font_unselect)/2;
-  textPos_x = (textPos_x + gui_percentXRaw(UI_NAVBAR_HANGAR_SIZE_x/2)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
+  textPos_x = (textPos_x + (UI_NAVBAR_HANGAR_SIZE_x/2)) - strWidth;
+  textPos_y = textPos_y + 6;
   gui_renderHighlightString("HANGAR", textPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), UI_NAVBAR_font_unselect, 1, 0) ;
   drawfont = drawfont_prev;
 };
@@ -99,15 +97,15 @@ void( vector ofs ) ui_navbutton_arming_draw={
     arming_clr = '0.25 0.25 0.25';
     arming_flt =  TRUE;
   }
-  gui_renderTintImage(arming_flt, UI_NAVBAR_ARMING_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_ARMING_SIZE), arming_clr, 1, 0) ;
+  gui_renderTintImage(arming_flt, UI_NAVBAR_ARMING_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_ARMING_SIZE, arming_clr, 1, 0) ;
   textPos = UI_NAVBAR_ARMING_ORG;
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
   }
   else{
   }
   strWidth = stringwidth("ARMING", 0 , UI_NAVBAR_font_unselect )/2;
-  textPos_x = (textPos_x + gui_percentXRaw(UI_NAVBAR_ARMING_SIZE_x/2)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
+  textPos_x = (textPos_x + (UI_NAVBAR_ARMING_SIZE_x/2)) - strWidth;
+  textPos_y = textPos_y + 6;
   drawstring(textPos, "ARMING", UI_NAVBAR_font_unselect, arming_clr, 1, 0);
   drawfont = drawfont_prev;
 };
@@ -160,12 +158,12 @@ void( vector ofs ) ui_navbutton_deploy_draw={
     deploy_clr =  '0.25 0.25 0.25';
     deploy_flt = TRUE;
   }
-  gui_renderTintImage(deploy_flt, UI_NAVBAR_DEPLOY_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_DEPLOY_SIZE), deploy_clr, 1, 0) ;
+  gui_renderTintImage(deploy_flt, UI_NAVBAR_DEPLOY_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_DEPLOY_SIZE, deploy_clr, 1, 0) ;
   textPos = UI_NAVBAR_DEPLOY_ORG;
   
   strWidth = stringwidth("DEPLOYMENT", 0 , UI_NAVBAR_font_unselect)/2;
-  textPos_x = (textPos_x +  gui_percentXRaw(UI_NAVBAR_DEPLOY_SIZE_x/2)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
+  textPos_x = (textPos_x +  (UI_NAVBAR_DEPLOY_SIZE_x/2)) - strWidth;
+  textPos_y = textPos_y + 6;
   gui_renderHighlightString("DEPLOYMENT", textPos, deploy_clr, '0.75 0.75 0.75', deploy_flt, UI_NAVBAR_font_unselect, 1, 0) ;
   
   drawfont = drawfont_prev;
@@ -244,22 +242,22 @@ void( vector ofs ) ui_navbutton_launch_draw={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  gui_renderTintImage2((LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_LAUNCH_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_LAUNCH_SIZE), CLR_DEF_WEP_INRANGE * 0.85, '0.25 0.25 0.25', 1, 0);
+  gui_renderTintImage2((LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_LAUNCH_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_LAUNCH_SIZE, CLR_DEF_WEP_INRANGE * 0.85, '0.25 0.25 0.25', 1, 0);
 
   if( servertime < MENU_respawn_cool ){
     t = 15 - (servertime - MENU_respawn_cool_start); 
     sec = t - floor( t / 60 ) * 60 ;
     sec = rint(sec);
     text = sprintf("%02d", sec);
-    gui_renderMeter( ( (15 - sec) / 15) * 100, UI_NAVBAR_CONNECT_ORG, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), CLR_DEF_GRAY_H, CLR_DEF_IIF_FRIEND_BLD, 0.367, 0, AXIS_H, FALSE);
+    gui_renderMeter( ( (15 - sec) / 15) * 100, UI_NAVBAR_CONNECT_ORG, UI_NAVBAR_CONNECT_SIZE, CLR_DEF_GRAY_H, CLR_DEF_IIF_FRIEND_BLD, 0.367, 0, AXIS_H, FALSE);
   }
   else{
-    text = ">>[LAUNCH]>>";
+    text = ">>LAUNCH>>";
   }
   strWidth = stringwidth(text, 0 , UI_NAVBAR_font_select);
   textPos = UI_NAVBAR_LAUNCH_ORG;
-  textPos_x = (textPos_x + gui_percentXRaw(UI_NAVBAR_LAUNCH_SIZE_x/2)) - (strWidth / 2);
-  textPos_y = (textPos_y + gui_percentYRaw(4.32));
+  textPos_x = (textPos_x + (UI_NAVBAR_LAUNCH_SIZE_x/2)) - (strWidth / 2);
+  textPos_y = (textPos_y + 4.32);
   
   gui_renderHighlightString(text, textPos, CLR_DEF_GREEN * 2, CLR_DEF_TXT_NONSELECT, (LAUNCH_VALIDATION & VALID_NODE), UI_NAVBAR_font_select, 1, 0) ;
   drawfont = drawfont_prev;
@@ -368,7 +366,6 @@ void() ui_navbutton_launch_click={
         ui_data_load_hud( HUD_EXTERNAL_CAM_DATA );
       }
       else{
-      
         ui_data_load_hud( MECH_DATA_ID );
       }
       
@@ -381,6 +378,8 @@ void() ui_navbutton_launch_click={
       CLIENT_spawn_time = servertime; //mark for when player dies.
       CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
       menu_exit();
+      
+      menu_chat_config(TRUE);
     }
   }
 };
@@ -407,12 +406,12 @@ void( vector ofs ) ui_navbutton_connect_draw={
     disColor = CLR_DEF_IIF_FRIEND_BLD;
     fontSize = UI_NAVBAR_font_unselect;
   }
-  drawpic(UI_NAVBAR_CONNECT_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_CONNECT_SIZE), disColor, 1, 0) ;
+  drawpic(UI_NAVBAR_CONNECT_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_CONNECT_SIZE, disColor, 1, 0) ;
   textPos = UI_NAVBAR_CONNECT_ORG;
-  strWidth = stringwidth("[Enter Server]", 0 , fontSize)/2;
-  textPos_x = (textPos_x +  gui_percentXRaw(64)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
-  drawstring(textPos, "[Enter Server]", fontSize, disColor, 1, 0) ;
+  strWidth = stringwidth("Enter Server", 0 , fontSize)/2;
+  textPos_x = (textPos_x +  64) - strWidth;
+  textPos_y = textPos_y + 6;
+  drawstring(textPos, "Enter Server", fontSize, disColor, 1, 0) ;
   
   drawfont = drawfont_prev;
 };
@@ -452,13 +451,13 @@ void( vector ofs ) ui_navbutton_disconnect_draw={
   else{
     fontSize = UI_NAVBAR_font_unselect;
   }
-  drawpic(UI_NAVBAR_DISCONNECT_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_DISCONNECT_SIZE), disColor, 1, 0) ;
+  drawpic(UI_NAVBAR_DISCONNECT_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_DISCONNECT_SIZE, disColor, 1, 0) ;
   
   textPos = UI_NAVBAR_DISCONNECT_ORG;
-  strWidth = stringwidth("[Disconnect]", 0 , fontSize)/2;
-  textPos_x = (textPos_x +  gui_percentXRaw(64)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
-  drawstring(textPos, "[Disconnect]", fontSize, disColor, 1, 0) ;
+  strWidth = stringwidth("Disconnect", 0 , fontSize)/2;
+  textPos_x = (textPos_x +  64) - strWidth;
+  textPos_y = textPos_y + 6;
+  drawstring(textPos, "Disconnect", fontSize, disColor, 1, 0) ;
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_disconnect_click={
@@ -466,8 +465,8 @@ void() ui_navbutton_disconnect_click={
   cvar_set("deathmatch", "0");
   cvar_set("teamplay", "0");
   cvar_set("coop", "0");
-  cvar_set("cl_ismenu", "1");
-  localcmd("disconnect;map cin_menu\n");
+  localcmd("disconnect;\n");
+  localcmd("togglemenu;\n");
 };
 
 /*
@@ -502,12 +501,12 @@ void( vector ofs ) ui_navbutton_team_draw={
     }
   }
   
-  drawpic(UI_NAVBAR_TEAM_ORG, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec(UI_NAVBAR_TEAM_SIZE), disColor, 1, 0) ;
+  drawpic(UI_NAVBAR_TEAM_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_TEAM_SIZE, disColor, 1, 0) ;
   textPos = UI_NAVBAR_TEAM_ORG;
-  strWidth = stringwidth("[Switch Team]", 0 , fontSize)/2;
-  textPos_x = (textPos_x +  gui_percentXRaw(64)) - gui_percentXRaw(strWidth);
-  textPos_y = textPos_y + gui_percentYRaw(4);
-  drawstring(textPos, "[Switch Team]", fontSize, disColor, 1, 0) ;
+  strWidth = stringwidth("Switch Team", 0 , fontSize)/2;
+  textPos_x = (textPos_x +  64) - strWidth;
+  textPos_y = textPos_y + 6;
+  drawstring(textPos, "Switch Team", fontSize, disColor, 1, 0) ;
   
   drawfont = drawfont_prev;
 };

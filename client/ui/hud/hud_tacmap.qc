@@ -36,8 +36,8 @@ void() hud_render_tactical_map={
   local vector playerMapOrg;
   
   // render satellite view
-  mapOrg = VIEW_ORG + gui_percentToPixelRawVec('2 48');
-  mapImgSize = gui_percentToPixelRawVec('175 175');
+  mapOrg = VIEW_ORG + '2 48';
+  mapImgSize = '175 175';
   
   if( MSN_MAPPIC != "" ){
     drawpic(mapOrg, MSN_MAPPIC, mapImgSize, '1 1 1', HUD_ALPHA, 0);
@@ -46,8 +46,8 @@ void() hud_render_tactical_map={
   else{
     unavailableLen = stringwidth( "!- Satellite Data unavailable -!", 0 ,'16 16 0');
     unavailableOrg = mapOrg;
-    unavailableOrg_x = unavailableOrg_x + gui_percentXRaw(380 / 2) - gui_percentXRaw( unavailableLen / 2 );
-    unavailableOrg_y = unavailableOrg_y + gui_percentYRaw(380 / 2) - gui_percentYRaw( 8 );
+    unavailableOrg_x = unavailableOrg_x + (380 / 2) - ( unavailableLen / 2 );
+    unavailableOrg_y = unavailableOrg_y + (380 / 2) - 8;
     gui_wrapText(unavailableOrg, '210 32', "!- Satellite Data unavailable -!", '16 16 0', '1 0 0', 1);
   }
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
@@ -58,10 +58,10 @@ void() hud_render_tactical_map={
     keyOrg = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, mapOrg, mapImgSize);
     switch( mapKey.data_type ){
       case DATA_MAP_DMG:
-        drawpic( keyOrg - gui_percentToPixelRawVec('2 2'), UI_DEF_BOX_64, gui_percentToPixelRawVec('4 4'), CLR_DEF_RED * 1.15, 0.85, 0);
+        drawpic( keyOrg - '2 2', UI_DEF_BOX_64, '4 4', CLR_DEF_RED * 1.15, 0.85, 0);
         break;
       case DATA_BLD:
-        gui_renderTintImage2((CLIENT_faction == mapKey.faction), keyOrg - gui_percentToPixelRawVec('4 4'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('8 8'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD + '0.15 0.15 0.15', 1, 0);
+        gui_renderTintImage2((CLIENT_faction == mapKey.faction), keyOrg - '4 4', HUD_RAD_PIP_BLD, '8 8', CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD + '0.15 0.15 0.15', 1, 0);
         break;
     }
   }
@@ -78,9 +78,9 @@ void() hud_render_tactical_map={
     drawfont = FONT_NUM_ROBOT_REGULAR;
     navname = NAVNAMES[nav.data_idx];
     nlen = stringwidth(navname, 0, '8 8 0');
-    navOfs_x = navOfs_x - gui_percentXRaw( (nlen/2) );
-    navOfs_y = navOfs_y - gui_percentYRaw(11);
-    gui_renderTintImage(TRUE, navImgOfs - gui_percentToPixelRawVec('5 5'), UI_DEF_NAVPOINT, '10 10', renderColor, 1, 0) ;
+    navOfs_x = navOfs_x - (nlen/2);
+    navOfs_y = navOfs_y - 11;
+    gui_renderTintImage(TRUE, navImgOfs - '5 5', UI_DEF_NAVPOINT, '10 10', renderColor, 1, 0) ;
     
     drawstring(navOfs, navname, '8 8 0', renderColor, 1, 0);
     
@@ -100,7 +100,7 @@ void() hud_render_tactical_map={
     }
     //PLAYER TAC MAP INFO
     if( player.clientLocalId == player_localentnum ){
-      drawpic(gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize) - gui_percentToPixelRawVec('5 5'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
+      drawpic(gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
       if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
       if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
       if(player.enemy == world){continue;}
@@ -114,22 +114,22 @@ void() hud_render_tactical_map={
       else if( CLIENT_target_datatype == DATA_BLD ){
         pipType = HUD_RAD_PIP_BLD;
       }
-      drawpic(target_org - gui_percentToPixelRawVec('5 5'), pipType, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
+      drawpic(target_org - '5 5', pipType, '10 10', CLR_DEF_IFF_ENEMY, 1, 0);
     }
     else{
       //FRIENDLIES TAC MAP INFO
       if( player.faction != FACTION_ALL ){
         friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, mapOrg, mapImgSize);
-        gui_renderTintImage2(FALSE, friend_org - gui_percentToPixelRawVec('5 5'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
+        gui_renderTintImage2(FALSE, friend_org - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
         
-        nameOrg = friend_org + gui_percentToPixelRawVec('0 -10');
+        nameOrg = friend_org + '0 -10';
         
         drawfont_prev = drawfont;
         drawfont = FONT_NUM_ROBOT_REGULAR;
         
         playerName = getplayerkeyvalue(player.clientLocalNum, "name");
         nameLen = stringwidth( playerName, 0, '10 10 0');
-        nameOrg_x = nameOrg_x - gui_percentXRaw( nameLen / 2 );
+        nameOrg_x = nameOrg_x - ( nameLen / 2 );
         drawstring( nameOrg, playerName, '10 10 0', CLR_DEF_IIF_FRIEND_BLD, 1, 0);
         
         drawfont = drawfont_prev;
@@ -137,7 +137,7 @@ void() hud_render_tactical_map={
         if( player.enemy.deadflag != DEAD_NO ){continue;}
         
         target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
-        drawpic(target_org - gui_percentToPixelRawVec('5 5'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('10 10'), CLR_DEF_IFF_ENEMY, 1, 0);
+        drawpic(target_org - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IFF_ENEMY, 1, 0);
       }
     }
   }
@@ -147,15 +147,15 @@ void() hud_render_tactical_map={
   arrowAng = anglemod( 90 - input_angles_y);
   makevectors(input_angles);
   playerMapOrg = gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize);
-  drawrotpic(playerMapOrg, "gfx/hud/map_up.png", gui_percentToPixelRawVec('12 12'), '6 6', arrowAng, '0.25 1 2', 1, 0);
+  drawrotpic(playerMapOrg, "gfx/hud/map_up.png", '12 12', '6 6', arrowAng, '0.25 1 2', 1, 0);
 };
 
 void() hud_render_scoreboard={
   local vector panelOrg;
   //local float gameMode;
   
-  panelOrg_x = VIEW_MAX_x - gui_percentXRaw(150);
-  panelOrg_y = VIEW_ORG_y + gui_percentYRaw(2);
+  panelOrg_x = VIEW_MAX_x - 150;
+  panelOrg_y = VIEW_ORG_y + 2;
 
   //gameMode = cvar("gamemode");
   if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
@@ -214,7 +214,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   drawstring(rowOfs, strcat(ftos(itr),")"), fontSize, rowColor, 1, 0);
   
   playerName = getplayerkeyvalue(playerRow.clientLocalNum, "name");
-  playerNameOfs = rowOfs + gui_percentToPixelRawVec('14 0');
+  playerNameOfs = rowOfs + '14 0';
   if( playerName != "" ){
     playerNameLen = strlen(playerName);
     if( playerNameLen > 24 ){
@@ -223,10 +223,10 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
     drawstring(playerNameOfs, playerName, fontSize, rowColor, 1, 0);
   }
   
-  playerScoreOfs = playerNameOfs + gui_percentToPixelRawVec('120 0');
+  playerScoreOfs = playerNameOfs + '120 0';
   playerRow.kills = stof(getplayerkeyvalue(playerRow.clientLocalNum, "frags"));
   scoreLen = stringwidth(getplayerkeyvalue(playerRow.clientLocalNum, "frags"), 0, fontSize);
-  playerScoreOfs_x = playerScoreOfs_x - gui_percentXRaw(scoreLen / 2);
+  playerScoreOfs_x = playerScoreOfs_x - (scoreLen / 2);
   drawstring(playerScoreOfs, getplayerkeyvalue(playerRow.clientLocalNum, "frags"), fontSize, rowColor, 1, 0);
 };
 
@@ -243,29 +243,30 @@ void( vector panelOfs ) hud_render_scoreboard_dm={
   
   local string nameCheck;
   
-  panelSize_x = gui_percentXRaw(150);
+  panelSize_x = 150;
   panelSize_y = HUD_SCORE_HEIGHT;
-  drawpic(panelOfs, UI_DEF_BOX_512, panelSize, CLR_DEF_WHITE * 0.75, HUD_ALPHA * 1.15, 0);
+  
+  gui_renderPatch9_1_32(panelOfs, panelSize, CLR_DEF_WHITE * 0.75, HUD_ALPHA * 1.15, 0);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
   listOfs = '0 0';
-  listOfs_x = listRowOfs_x = panelOfs_x + gui_percentXRaw(2);
-  listOfs_y = panelOfs_y + gui_percentYRaw(2);
+  listOfs_x = listRowOfs_x = panelOfs_x + 2;
+  listOfs_y = panelOfs_y + 2;
   playerRowItr = 0;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" || nameCheck ){
         player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
-        listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(12) );
+        listRowOfs_y = listOfs_y + ( playerRowItr * 12 );
         hud_render_score_row( listRowOfs, playerRowItr + 1, player );
         playerRowItr = playerRowItr + 1;
       }
     }
   }
-  HUD_SCORE_HEIGHT = gui_percentYRaw( playerRowItr * 14 );
+  HUD_SCORE_HEIGHT =  playerRowItr * 14;
   drawfont = drawfont_prev;
 };
 
@@ -286,24 +287,24 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
   local string nameCheck;
   
   if( HUD_SCORE_SURVEST_HEIGHT > 0){
-    panelSurvestSize_x = panelMilitarSize_x = gui_percentXRaw(150);
+    panelSurvestSize_x = panelMilitarSize_x = 150;
     panelSurvestSize_y = HUD_SCORE_SURVEST_HEIGHT;
-    drawpic(panelOfs, UI_DEF_BOX_512, panelSurvestSize, CLR_UI_PSC_BRIEF * 0.9, max(HUD_ALPHA, 0.8), 0);
+    gui_renderPatch9_1_32(panelOfs, panelSurvestSize, CLR_UI_PSC_BRIEF * 0.9, max(HUD_ALPHA, 0.8), 0);
   }
   
   if( HUD_SCORE_MILITAR_HEIGHT > 0 ){
     panelMOfs_x = panelOfs_x;
     panelMOfs_y = panelOfs_y + panelSurvestSize_y;
     panelMilitarSize_y = HUD_SCORE_MILITAR_HEIGHT;
-    drawpic(panelMOfs, UI_DEF_BOX_512, panelMilitarSize, CLR_UI_MIL_BRIEF, max(HUD_ALPHA, 0.8), 0);
+    gui_renderPatch9_1_32(panelMOfs, panelMilitarSize, CLR_UI_MIL_BRIEF, max(HUD_ALPHA, 0.8), 0);
   }
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
   listOfs = '0 0';
-  listOfs_x = listRowOfs_x = panelOfs_x + gui_percentXRaw(2);
-  listOfs_y = panelOfs_y + gui_percentYRaw(2);
+  listOfs_x = listRowOfs_x = panelOfs_x + 2;
+  listOfs_y = panelOfs_y + 2;
   playerRowItr = 0;
   teamCount1 = 0;
   teamCount2 = 0;
@@ -313,21 +314,21 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
       if( nameCheck != "" || nameCheck ){
         player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
         if( player.faction == FACTION_SURVEST ){
-          listRowOfs_y = listOfs_y + ( teamCount1 * gui_percentYRaw(12) );
+          listRowOfs_y = listOfs_y + ( teamCount1 * 12 );
           playerRowItr = teamCount1;
           teamCount1 = teamCount1 + 1;
         }
         else if(player.faction == FACTION_MILITAR){
-          listRowOfs_y = panelMOfs_y + ( teamCount2 * gui_percentYRaw(12) );
+          listRowOfs_y = panelMOfs_y + ( teamCount2 * 12 );
           playerRowItr = teamCount2;
           teamCount2 = teamCount2 + 1;
         }
-        listRowOfs_x = panelOfs_x + gui_percentXRaw(2);
+        listRowOfs_x = panelOfs_x + 2;
         hud_render_score_row( listRowOfs, playerRowItr + 1, player );
       }
     }
   }
-  HUD_SCORE_SURVEST_HEIGHT = gui_percentYRaw( teamCount1 * 12 );
-  HUD_SCORE_MILITAR_HEIGHT = gui_percentYRaw( teamCount2 * 12 );
+  HUD_SCORE_SURVEST_HEIGHT = teamCount1 * 12;
+  HUD_SCORE_MILITAR_HEIGHT = teamCount2 * 12;
   drawfont = drawfont_prev;
 };

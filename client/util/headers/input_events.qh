@@ -10,3 +10,17 @@ Overview:
 float(float inputEventType, float scanx, float chary, float devid) handle_input;
 void() handle_input_drag;
 void() handle_input_hover;
+
+//API
+
+//float(float inputEventType, float scanx, float chary, float devid) input_key_down_tab;
+//float(float inputEventType, float scanx, float chary, float devid) input_key_down_impulse;
+
+void() input_key_toggle_score;
+void() input_key_impulse_hud_tacmap;
+void() input_key_impulse_hud_objectives;
+void() input_key_impulse_hud_zoom;
+void() input_key_impulse_hud_radar_toggle;
+void() input_key_impulse_hud_chase_toggle;
+
+void(float event) input_key_chat_event;

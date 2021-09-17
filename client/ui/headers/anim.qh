@@ -9,29 +9,36 @@ slideshow-esque animatics
 */
 
 //flags value
-float ANM_FLAG_FADE_IN    = 1;
-float ANM_FLAG_FADE_OUT   = 2;
-float ANM_FLAG_FADE_BOTH  = 4;
-float ANM_FLAG_FULL_SCR   = 8;  //interpret size as 'fullscreen' regardless of aspect rato
-float ANM_FLAG_CENTER    = 16;  //center alignment - EXCLUSIVE AGAINST fullscreen flag
+#define ANM_FLAG_FADE_IN 1
+#define ANM_FLAG_FADE_OUT 2
+#define ANM_FLAG_FADE_BOTH 4
+#define ANM_FLAG_FULL_SCR 8  //interpret size as 'fullscreen' regardless of aspect rato
+#define ANM_FLAG_CENTER 16 //center alignment - EXCLUSIVE AGAINST fullscreen flag
 
 //meta tags
-string ANM_FILE_META_MUS = "music";
-string ANM_FILE_META_MUS_NO = "nomusic";
-string ANM_FILE_META_BACK = "backimg";
-string ANM_FILE_META_TRANS = "trans";
-string ANM_FILE_META_SKIP  = "skip";
+#define ANM_FILE_META_MUS "music"
+#define ANM_FILE_META_MUS_NO "nomusic"
+#define ANM_FILE_META_BACK "backimg"
+#define ANM_FILE_META_TRANS "trans"
+#define ANM_FILE_META_SKIP  "skip"
 
-string ANM_FILE_TAG_IMG = "image";
-string ANM_FILE_TAG_SND = "sound";
-string ANM_FILE_TAG_TIM = "time";
-string ANM_FILE_TAG_POS = "pos";
-string ANM_FILE_TAG_SIZE = "size";
-string ANM_FILE_TAG_MSG = "text";
-string ANM_FILE_TAG_ALPHA = "alpha";
-string ANM_FILE_TAG_COLOR = "color";
-string ANM_FILE_TAG_TXT_CLR = "text_color";
-string ANM_FILE_TAG_FLAGS = "flags";
+#define ANM_FILE_TAG_IMG "image"
+#define ANM_FILE_TAG_SND "sound"
+#define ANM_FILE_TAG_TIM "time"
+#define ANM_FILE_TAG_POS "pos"
+#define ANM_FILE_TAG_SIZE "size"
+#define ANM_FILE_TAG_MSG "text"
+#define ANM_FILE_TAG_ALPHA "alpha"
+#define ANM_FILE_TAG_COLOR "color"
+#define ANM_FILE_TAG_TXT_CLR "text_color"
+#define ANM_FILE_TAG_FLAGS "flags"
+
+#define ANM_META_FLAG_OTHER_MUSIC 0
+#define ANM_META_FLAG_NO_MUSIC 1
+#define ANM_META_FLAG_BKGD 2
+#define ANM_META_FLAG_TRANSPARENCY 3
+#define ANM_META_FLAG_SKIP 4
+
 
 //Globals
 float ANM_SERV_TRIG;      //set to TRUE when server is sending the anim, which then sends the exit event back to the server.
@@ -73,7 +80,6 @@ float ANM_FRAME_FLAGS[20];
 
 void(string fileToOpen) anm_getFile;
 void(string fileToOpen) anm_parseFile;
-void() anm_execute_metadata;
 void() anm_execute_frame;
 void() anm_cleanup;
 float() anm_total_runtime;

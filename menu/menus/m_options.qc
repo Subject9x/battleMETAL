@@ -15,10 +15,6 @@ entity options_back;
 
 //options root Constants
 string IMG_OPTION_TITLE = "gfx/menu/options/options_title.png";
-string IMG_OPTION_CONTROLS = "gfx/menu/options/options_controls.png";
-string IMG_OPTION_GRAPHICS = "gfx/menu/options/options_graphics.png";
-string IMG_OPTION_AUDIO = "gfx/menu/options/options_audio.png";
-string IMG_OPTION_GAMEPLAY = "gfx/menu/options/options_gameplay.png";
 
 //options root callbacks
 void() click_options_controls={
@@ -48,12 +44,25 @@ void() click_options_back={
 
 // ini function, called by '_f' function as a setup func
 void() m_options_i={
-  options_title = lbl_img('10 100', '1 1 0', IMG_OPTION_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS, 1, (UI_FLAG_SIZE_IMG) );
-  options_controls = btn_img_callback('10 132 0', '1 1 0', IMG_OPTION_CONTROLS, (VIEW_CTX | VIEW_CTY), M_OPTIONS, click_options_controls, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  options_graphics = btn_img_callback('10 151 0', '1 1 0', IMG_OPTION_GRAPHICS, (VIEW_CTX | VIEW_CTY), M_OPTIONS, click_options_graphics, '1 1 1', CLR_DEF_GREEN,1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  options_audio = btn_img_callback('10 170 0', '1 1 0', IMG_OPTION_AUDIO, (VIEW_CTX | VIEW_CTY), M_OPTIONS, click_options_audio, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  options_gameplay = btn_img_callback('10 189 0', '1 1 0', IMG_OPTION_GAMEPLAY, (VIEW_CTX | VIEW_CTY), M_OPTIONS, click_options_gameplay, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  options_back = btn_img_callback('10 230 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS, click_options_back, '1 1 1',CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  
+  menu_parent_setup(VIEW_ORG + '0 80', '208 224');
+
+  options_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1', IMG_OPTION_TITLE, '1 1 1', VIEW_CTX, M_OPTIONS, 1, UI_FLAG_SIZE_IMG );
+  
+  options_controls = btn_text_callback(MENU_ORG + menu_parent_center_width(45), '16 16', "CONTROLS", VIEW_CTX, M_OPTIONS, click_options_controls, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  options_controls.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  options_graphics = btn_text_callback(MENU_ORG + menu_parent_center_width(64), '16 16', "GRAPHICS", VIEW_CTX, M_OPTIONS, click_options_graphics, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN,1, UI_FLAG_SIZE_IMG);
+  options_graphics.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  options_audio = btn_text_callback(MENU_ORG + menu_parent_center_width(83), '16 16', "SOUND", VIEW_CTX, M_OPTIONS, click_options_audio, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  options_audio.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  options_gameplay = btn_text_callback(MENU_ORG + menu_parent_center_width(102), '16 16', "GAMEPLAY", VIEW_CTX, M_OPTIONS, click_options_gameplay, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  options_gameplay.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  options_back = btn_text_callback(MENU_ORG + menu_parent_center_width(178), '16 16', "BACK", VIEW_CTX, M_OPTIONS, click_options_back, CLR_DEF_TXT_GRAY_SMOOTH,CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  options_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 /*
@@ -72,6 +81,9 @@ void() m_options_f={
 */
 void() m_options_d={
   local entity widget;
+  
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
   widget = findchainfloat(menuId, M_OPTIONS);
   while(widget){
     widget.draw(widget);

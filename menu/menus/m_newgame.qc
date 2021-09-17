@@ -24,20 +24,16 @@ vector newgame_back_cacheOrg;
 string TRAINING_LABEL;
 
 //Main Menu Constants
-float NEWGAME_CAMPAIGN = 1;
-float NEWGAME_SKILL = 2;
-float NEWGAME_BRIEF = 3;
+#define NEWGAME_CAMPAIGN 1
+#define NEWGAME_SKILL 2
+#define NEWGAME_BRIEF 3
 
-string IMG_NEW_TITLE  = "gfx/menu/newgame/new_title.png";
-string IMG_NEW_NOVICE  = "gfx/menu/newgame/new_novice.png";
-string IMG_NEW_REGULAR  = "gfx/menu/newgame/new_regular.png";
-string IMG_NEW_VETERAN = "gfx/menu/newgame/new_veteran.png";
-string IMG_NEW_ELITE  = "gfx/menu/newgame/new_elite.png";
+#define IMG_NEW_TITLE "gfx/menu/newgame/new_title.png"
 
-float NEWGAME_ROLL_ROK = 1;
-float NEWGAME_ROLL_REG = 2;
-float NEWGAME_ROLL_VET = 3;
-float NEWGAME_ROLL_ACE = 4;
+#define NEWGAME_ROLL_ROK 1
+#define NEWGAME_ROLL_REG 2
+#define NEWGAME_ROLL_VET 3
+#define NEWGAME_ROLL_ACE 4
 
 
 //Campaign Maps
@@ -84,13 +80,12 @@ void() click_newg_launch_map={
   menu_write_new_save();
   menu_clear_items(M_STATE);
   menu_exit_togame();
-  cmd("deathmatch 0\n");
-  cmd("teamplay 0\n");
-  cmd("coop 0\n");
-  cmd("cd stop\n");
-  cmd("maxplayers 1\n");
-  cvar_set("cl_ismenu","0");
-  cmd(strcat("map ", self.data_text,"\n")); 
+  localcmd("deathmatch 0\n");
+  localcmd("teamplay 0\n");
+  localcmd("coop 0\n");
+  localcmd("cd stop\n");
+  localcmd("maxplayers 1\n");
+  localcmd(strcat("map ", self.data_text,"\n")); 
   
   freeGlobalString(CAMP_SELECT_START)
   freeGlobalString(CAMP_SELECT_INFO)
@@ -110,13 +105,13 @@ void() click_newg_info={
   newgame_substate = NEWGAME_BRIEF;
   new_camp_lbl.label = CAMP_SELECT_NAME;
   
-  if( CAMP_SELECT_INFO != "" ){
+  /*if( CAMP_SELECT_INFO != "" ){
     new_camp_train_lbl.label = CAMP_SELECT_INFO;
     new_camp_train_lbl.drawme = TRUE;
     new_camp_start_lbl.drawme = TRUE;
-  }
+  }*/
   new_camp_start_btn.data_text = CAMP_SELECT_START;
-  new_back.origin_y = new_camp_start_btn.origin_y + gui_percentYRaw(48);
+  new_back.origin_y = new_camp_start_btn.origin_y + 48;
   new_camp_start_btn.drawme = TRUE;
 };
 
@@ -144,7 +139,7 @@ void() click_newg_elite={
 void() click_newg_campaign={
   newgame_substate = NEWGAME_SKILL;
   newgame_back_cacheOrg = new_back.origin;
-  new_back.origin = gui_percentToPixelRawVec('10 230 0');
+  new_back.origin =  MENU_ORG + '36 160';
   
   cacheGlobalString(CAMP_SELECT_START, CAMP_START[self.data_bind])
   cacheGlobalString(CAMP_SELECT_NAME, CAMP_NAME[self.data_bind])
@@ -157,7 +152,7 @@ void() click_newg_campaign={
 void() click_newg_skill={
   newgame_substate = NEWGAME_SKILL;
   newgame_back_cacheOrg = new_back.origin;
-  new_back.origin = gui_percentToPixelRawVec('10 230 0');
+  new_back.origin = MENU_ORG + '36 160 0';
 
 };
 
@@ -168,14 +163,14 @@ void(vector labelOrg) newmgame_text_rookie={
   local vector thisOrg;
   
   thisOrg = labelOrg;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(100);
+  thisOrg_x = thisOrg_x + 100;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(thisOrg, "Casual mode - A relaxing romp as a giant robot.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 16'), "+ You have extra energy.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 32'), "+ AI deals less damage.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 48'), "+ AI has less health.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 16', "+ You have extra energy.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 32', "+ AI deals less damage.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ AI has less health.", '14 14 0', '1 1 0.1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -183,15 +178,15 @@ void(vector labelOrg) newmgame_text_regular={
   local vector thisOrg;
   
   thisOrg = labelOrg;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(100);
+  thisOrg_x = thisOrg_x + 100;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(thisOrg, "First Mech game? Welcome to the genre.",'14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 16'), "+ You have slight more energy.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 32'), "+ AI deals balanced damage.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 48'), "+ AI has balanced health.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 64'), "+ Overall a good starting point.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 16', "+ You have slight more energy.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 32', "+ AI deals balanced damage.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ AI has balanced health.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 64', "+ Overall a good starting point.", '14 14 0', '1 1 0.1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -199,15 +194,15 @@ void(vector labelOrg) newmgame_text_veteran={
   local vector thisOrg;
   
   thisOrg = labelOrg;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(100);
+  thisOrg_x = thisOrg_x + 100;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(thisOrg, "Something of a Mech-pilot yourself, eh?", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 16'), "+ You have standard energy amounts.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 32'), "+ AI Damage output just a bit under your own.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 48'), "+ AI health slightly under yours.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 64'), "+ You've played a few other mech games.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 16', "+ You have standard energy amounts.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 32', "+ AI Damage output just a bit under your own.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ AI health slightly under yours.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 64', "+ You've played a few other mech games.", '14 14 0', '1 1 0.1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -215,15 +210,15 @@ void(vector labelOrg) newmgame_text_ace={
   local vector thisOrg;
   
   thisOrg = labelOrg;
-  thisOrg_x = thisOrg_x + gui_percentXRaw(100);
+  thisOrg_x = thisOrg_x + 100;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(thisOrg, "AWAKE, IRON.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 16'), "+ AI mechs equal your own.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 32'), "+ AI accuracy is higher.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 48'), "+ Additional mission objectives.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + gui_percentToPixelRawVec('0 64'), "+ can't get enough of battleMETAL's quirks.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 16', "+ AI mechs equal your own.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 32', "+ AI accuracy is higher.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ Additional mission objectives.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 64', "+ can't get enough of battleMETAL's quirks.", '14 14 0', '1 1 0.1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -236,14 +231,24 @@ void() m_newg_i={
   local entity list;
   local vector next;
   
+  menu_parent_setup(VIEW_ORG + '0 70', '416 240');
+  
   newgame_substate = NEWGAME_CAMPAIGN;
   
   //SUB-MENU: SKILL SELECT
-  new_title = lbl_img('10 100', '1 1 0', IMG_NEW_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_NEWGAME, 1, (UI_FLAG_SIZE_IMG) );
-  new_novice = btn_img_callback('10 132 0', '1 1 0', IMG_NEW_NOVICE, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_novice, '1 1 1', CLR_DEF_BLUE, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  new_regular = btn_img_callback('10 151 0', '1 1 0', IMG_NEW_REGULAR, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_regular, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  new_veteran = btn_img_callback('10 170 0', '1 1 0', IMG_NEW_VETERAN, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_veteran, '1 1 1', CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  new_elite = btn_img_callback('10 189 0', '1 1 0', IMG_NEW_ELITE, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_elite, '1 1 1', CLR_DEF_RED, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  new_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1 0', IMG_NEW_TITLE, '1 1 1', VIEW_CTX, M_NEWGAME, 1, UI_FLAG_SIZE_IMG );
+  
+  new_novice = btn_text_callback(MENU_ORG + '16 45', '16 16', "NOVICE", 0, M_NEWGAME, click_newg_novice, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_BLUE, 1, UI_FLAG_SIZE_IMG);
+  new_novice.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  new_regular = btn_text_callback(MENU_ORG + '16 64', '16 16', "REGULAR", 0, M_NEWGAME, click_newg_regular, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  new_regular.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  new_veteran = btn_text_callback(MENU_ORG + '16 83', '16 16', "VETERAN", 0, M_NEWGAME, click_newg_veteran, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_SIZE_IMG);
+  new_veteran.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  new_elite = btn_text_callback(MENU_ORG + '16 102', '16 16', "ELITE", 0, M_NEWGAME, click_newg_elite, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_RED, 1, UI_FLAG_SIZE_IMG);
+  new_elite.fontId = FONT_NUM_XOLONIUM_BOLD;
 
   new_novice.subid = NEWGAME_SKILL;
   new_regular.subid = NEWGAME_SKILL;
@@ -251,18 +256,19 @@ void() m_newg_i={
   new_elite.subid = NEWGAME_SKILL;
   
   //SUB-MENU: TRAINING SELECT
-  new_camp_lbl = lbl_text('10 132 0', '14 14 0', CAMP_SELECT_NAME, '1 1 1', (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
+  new_camp_lbl = lbl_text(MENU_ORG + '10 45', '14 14', CAMP_SELECT_NAME, '1 1 1', 0, M_NEWGAME, 1, 0);
   new_camp_lbl.subid = NEWGAME_BRIEF;
   
-  new_camp_train_lbl = lbl_text('10 151 0', '12 12 0', CAMP_SELECT_INFO, CLR_DEF_ARM_THREEQ, (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
-  new_camp_train_lbl.subid = NEWGAME_BRIEF;
-  new_camp_train_lbl.drawme = FALSE;
+  //new_camp_train_lbl = lbl_text(MENU_ORG + '10 64', '12 12', CAMP_SELECT_INFO, CLR_DEF_ARM_THREEQ, 0, M_NEWGAME, 1, 0);
+  //new_camp_train_lbl.subid = NEWGAME_BRIEF;
+  //new_camp_train_lbl.drawme = FALSE;
   
-  new_camp_start_lbl = lbl_text('10 170 0', '12 12 0', "Otherwise click START to skip training and begin the game:", CLR_DEF_ARM_THREEQ, (VIEW_LFT | VIEW_TOP), M_NEWGAME, 1, 0);
+  new_camp_start_lbl = lbl_text(MENU_ORG + '10 83', '12 12', "Otherwise click START to skip training and begin the game:", CLR_DEF_ARM_THREEQ, 0, M_NEWGAME, 1, 0);
   new_camp_start_lbl.subid = NEWGAME_BRIEF;
   new_camp_start_lbl.drawme = FALSE;
   
-  new_camp_start_btn = btn_text_callback('32 189 0', '14 14 0', "[START CAMPAIGN]", 0, M_NEWGAME, click_newg_launch_map, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  new_camp_start_btn = btn_text_callback(MENU_ORG + menu_parent_center_width(121), '14 14', ">START CAMPAIGN<", VIEW_CTX, M_NEWGAME, click_newg_launch_map, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+  new_camp_start_btn.fontId = FONT_NUM_XOLONIUM_BOLD;
   new_camp_start_btn.subid = NEWGAME_BRIEF;
   new_camp_start_btn.drawme = FALSE;
   new_camp_start_btn.data_text = CAMP_SELECT_START;
@@ -270,12 +276,12 @@ void() m_newg_i={
   //SUB-MENU: CAMPAIGN SELECT
   itr = 1;
   if(CAMP_NAME[itr] != ""){
-    start = gui_percentToPixelRawVec('10 151 0');
+    start = MENU_ORG + '16 59';
     while (itr < CAMP_TOTAL ){
       if( CAMP_NAME[itr] != "" ){
         next = start;
         next_y = next_y + ( (itr-1) * 20);
-        list = btn_text_callback(next, '14 14 0', CAMP_NAME[itr], 0, M_NEWGAME, click_newg_campaign, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+        list = btn_text_callback(next, '14 14', CAMP_NAME[itr], 0, M_NEWGAME, click_newg_campaign, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
         list.data_bind = itr; //databind
         list.subid = NEWGAME_CAMPAIGN;
         actual = actual + 1;
@@ -283,7 +289,8 @@ void() m_newg_i={
       itr = itr + 1;
     }
   }
-  new_back = btn_img_callback(next + gui_percentToPixelRawVec('0 24 0'), '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_NEWGAME, click_newg_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG)); 
+  new_back = btn_text_callback(next + '20 24', '16 16', "BACK", VIEW_CTX, M_NEWGAME, click_newg_back,CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  new_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 /*
   menu_f functions are like state-transition functions, preparing the menu for the next menu to load
@@ -302,6 +309,33 @@ void() m_newg_f={
 void() m_newg_d={
   local entity widget;
   
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
+  if( newgame_substate == NEWGAME_SKILL ){
+    if( menu_checkMouseInBounds(VIEW_MPOS, MENU_ORG + '10 45', new_novice.drawSize)){
+      newmgame_text_rookie(MENU_ORG + '10 45');
+    }
+    else if( menu_checkMouseInBounds(VIEW_MPOS, MENU_ORG + '10 64', new_regular.drawSize)){
+      newmgame_text_regular(MENU_ORG + '10 64');
+    }
+    else if( menu_checkMouseInBounds(VIEW_MPOS, MENU_ORG + '10 83', new_veteran.drawSize)){
+      newmgame_text_veteran(MENU_ORG + '10 83');
+    }
+    else if( menu_checkMouseInBounds(VIEW_MPOS, MENU_ORG + '10 102', new_elite.drawSize)){
+      newmgame_text_ace(MENU_ORG + '10 102');
+    }
+  }
+  else if( newgame_substate == NEWGAME_BRIEF){
+    new_camp_start_lbl.origin_y = MENU_ORG_y + gui_wrapText(MENU_ORG + '10 64', '400 300', CAMP_SELECT_INFO, '12 12', CLR_DEF_ARM_THREEQ, 1) + 78;
+    //cons_logAFloat
+  }
+  else{
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+      drawstring(MENU_ORG + '10 40', "Select a Campaign", '14 14', '1 1 1', 1, 0);
+    drawfont = drawfont_prev;
+  }
+  
   for( widget = findchainfloat(menuId, M_NEWGAME); widget != null_entity; widget = widget.chain){
     if( widget.subid == FALSE){
       widget.draw(widget);
@@ -313,36 +347,13 @@ void() m_newg_d={
         if( menu_checkMouseInBounds(VIEW_MPOS, widget.drawOrg, widget.drawSize)){
           drawfont_prev = drawfont;
           drawfont = FONT_NUM_ROBOT_REGULAR;
-            drawstring(gui_percentToPixelRawVec('150 151 0'), strcat("Author: ", CAMP_AUTH[widget.data_bind]), '12 12', '1 1 1', 1, 0);
-            gui_wrapText(gui_percentToPixelRawVec('150 165 0'), gui_percentToPixelRawVec('300 300 0'), CAMP_DESC[widget.data_bind], '14 14', '1 1 0.1', 1);
+            drawstring(MENU_ORG + '150 40', strcat("Author: ", CAMP_AUTH[widget.data_bind]), '12 12', '1 1 1', 1, 0);
+          drawfont = FONT_NUM_ROBOT_LIGHT;
+            gui_wrapText(MENU_ORG + '150 54', '350 300', CAMP_DESC[widget.data_bind], '14 14', '1 1 0.1', 1);
           drawfont = drawfont_prev;
         }
       }
     }
-  }
-  
-  if( newgame_substate == NEWGAME_SKILL ){
-    if( menu_checkMouseInBounds(VIEW_MPOS, '10 132 0', new_novice.drawSize)){
-      newmgame_text_rookie('10 132 0');
-    }
-    else if( menu_checkMouseInBounds(VIEW_MPOS, '10 151 0', new_regular.drawSize)){
-      newmgame_text_regular('10 151 0');
-    }
-    else if( menu_checkMouseInBounds(VIEW_MPOS, '10 170 0', new_veteran.drawSize)){
-      newmgame_text_veteran('10 170 0');
-    }
-    else if( menu_checkMouseInBounds(VIEW_MPOS, '10 189 0', new_elite.drawSize)){
-      newmgame_text_ace('10 189 0');
-    }
-  }
-  else if( newgame_substate == NEWGAME_BRIEF){
-    
-  }
-  else{
-    drawfont_prev = drawfont;
-    drawfont = FONT_NUM_ROBOT_REGULAR;
-      drawstring(gui_percentToPixelRawVec('10 132 0'), "Select a Campaign to play:", '14 14', '1 1 1', 1, 0);
-    drawfont = drawfont_prev;
   }
 };
 

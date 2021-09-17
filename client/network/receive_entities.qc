@@ -218,6 +218,7 @@ void() client_state_events={
       if( !MENU_ACTIVE ){
         menu_update_colors( CLIENT_faction );
         menu_enter( menu_connect_choice() );
+        menu_chat_config(FALSE);
       }
       return;
     }
@@ -228,7 +229,6 @@ void() client_state_events={
     if( (CLIENT_player_state_prev == PLAYER_CONNECT) && (CLIENT_player_state == PLAYER_MENU) ){
       setcursormode( 0 );
       menu_exit();
-      cvar_set("cl_ismenu", "1");
       localcmd("togglemenu\n");
       return;
     }
@@ -272,6 +272,7 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF DEATH
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
+      menu_chat_config( FALSE );
       MENU_DEBRIEF_time_elapsed = -1;
       ui_set_mission_status( ENT_SERVER_INFO.missionResult );
       MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
@@ -284,6 +285,7 @@ void() client_state_events={
     //EVENT - CLIENT CAMPAIGN DEBRIEF MISSION END
     if( (CLIENT_player_state_prev != PLAYER_DEBRIEF) && (CLIENT_player_state == PLAYER_DEBRIEF) ){
       menu_enter( MENU_DEBRIEF_ACTIVE );
+      menu_chat_config( FALSE );
       MENU_DEBRIEF_time_elapsed = -1;
       ui_set_mission_status( ENT_SERVER_INFO.missionResult );
       MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_CAMP;
@@ -302,6 +304,7 @@ void() client_state_events={
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_REDEPLOY) ){
       CLIENT_MENU_deploy = world;
       menu_enter( MENU_CONNECT_ACTIVE );
+      menu_chat_config(FALSE);
       MENU_button_delay = servertime + 1;
       if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
         MENU_respawn_cool = servertime + SERVER_RESPAWN_COOL_COOP;
@@ -322,6 +325,7 @@ void() client_state_events={
         return;
       }
       menu_enter( MENU_SCORE_ACTIVE );
+      menu_chat_config(FALSE);
       if(  ENT_SERVER_INFO.gameType == GAMEMODE_COOP  ){
         MENU_DEBRIEF_time_elapsed = -1;
         ui_set_mission_status( ENT_SERVER_INFO.missionResult );
@@ -339,6 +343,7 @@ void() client_state_events={
     //EVENT - CLIENT connect during end of round
     if( (CLIENT_player_state_prev != PLAYER_SPAWN) && (CLIENT_player_state == PLAYER_INTERMSN) ){
       menu_enter( MENU_SCORE_ACTIVE );
+      menu_chat_config(FALSE);
       //MENU_button_delay = servertime + 1;
       MENU_respawn_cool = servertime + 15;
       MENU_respawn_cool_start = servertime;
@@ -464,17 +469,17 @@ void() client_event_mission_name_frame={
     MISSION_NAME_ALPHA = 0;
   }
   backpanelSize = '34 34 0';
-  backpanelOrg = MISSION_NAME_ORG - gui_percentToPixelRawVec('2 2');
+  backpanelOrg = MISSION_NAME_ORG - '2 2';
 
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_DYSTOPIAN;
 
-    backSize = gui_percentXRaw( stringwidth(MISSION_NAME, 0, '18 18 0') / 2 );
+    backSize = stringwidth(MISSION_NAME, 0, '18 18') / 2 ;
     backpanelOrg_x = VIEW_CTR_x - backSize;
-    backpanelOrg_y = VIEW_CTR_y - gui_percentYRaw( 66 );
-    drawstring( backpanelOrg, MISSION_NAME, '18 18 0', '0 0 0', MISSION_NAME_ALPHA - 0.25, 0);
+    backpanelOrg_y = VIEW_CTR_y - 66;
+    drawstring( backpanelOrg, MISSION_NAME, '18 18', '0 0 0', MISSION_NAME_ALPHA - 0.25, 0);
     
-    drawstring( MISSION_NAME_ORG, MISSION_NAME, '16 16 0', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
+    drawstring( MISSION_NAME_ORG, MISSION_NAME, '16 16', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
   drawfont = drawfont_prev;
 };
 
@@ -501,9 +506,10 @@ void( string name ) client_event_mission_name={
     cacheGlobalString(MISSION_NAME, missionName )
     
     nameLen = stringwidth(MISSION_NAME, 0, '16 16 0');
-    nameLen = gui_percentXRaw( nameLen / 2 );
+    nameLen = nameLen / 2 ;
+    
     newOrg_x = VIEW_CTR_x - nameLen;
-    newOrg_y = VIEW_CTR_y - gui_percentYRaw( 64 );
+    newOrg_y = VIEW_CTR_y - 64;
     MISSION_NAME_ORG = newOrg;
   drawfont = drawfont_prev;
 };
@@ -515,24 +521,27 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   HUD_INFO_MARK = time + infoLifetime;
   if( HUD_INFO_ON != TRUE ){
     HUD_INFO_ON = TRUE;
+    freeGlobalString(HUD_INFO_MSG)
     cacheGlobalString(HUD_INFO_MSG, infoMessage )
   }
   else{
     if( HUD_INFO_MSG != infoMessage ){
       //already on, override message
+      freeGlobalString(HUD_INFO_MSG)
       cacheGlobalString(HUD_INFO_MSG, infoMessage )
     }
   }
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
-
-  infoBoxY = gui_wrapText(VIEW_ORG, gui_percentToPixelRawVec('256 256'), HUD_INFO_MSG, fontSize, infoColor, 1) ;
-  HUD_INFO_SIZE_x = gui_percentXRaw( 256 );
-  HUD_INFO_SIZE_y = infoBoxY;
+  
+  HUD_INFO_SIZE_x = 256;
   
   HUD_INFO_ORG_x = VIEW_MAX_x - HUD_INFO_SIZE_x;
-  HUD_INFO_ORG_y = VIEW_ORG_y + gui_percentYRaw(128);
+  HUD_INFO_ORG_y = VIEW_ORG_y + 128;
+  
+  infoBoxY = gui_wrapText_getHeight(HUD_INFO_ORG + '8 8', HUD_INFO_SIZE - '16 16', HUD_INFO_MSG, fontSize);
+  HUD_INFO_SIZE_y = infoBoxY;
   
   drawfont = drawfont_prev;
   
@@ -580,13 +589,6 @@ void( float missonSuccessCheck, float pscTotal, float survestTotal, float milita
   MENU_DEBRIEF_status = missonSuccessCheck;
   
   MENU_DEBRIEF_total_losses = totalLosses;
-  
-  if( MENU_DEBRIEF_status > 0 ){
-    MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
-  }
-  else{
-    MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
-  }
   
   menu_enter( MENU_DEBRIEF_ACTIVE);
   CLIENT_player_state = PLAYER_BRIEF;

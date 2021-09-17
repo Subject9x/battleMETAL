@@ -68,7 +68,7 @@ entity join_back;
 //join constants
 string IMG_JOIN_TITLE = "gfx/menu/join/title_join.png";
 float SERVER_NAME_MAX = 24;
-float SERVER_PAGE_SIZE = 8;  //technically 8, but PAGE - 1 is the start to account for hostnr 0 being valid
+float SERVER_PAGE_SIZE = 10;  //technically 8, but PAGE - 1 is the start to account for hostnr 0 being valid
 
 void() join_page_update={
   local float totalServer;
@@ -170,6 +170,9 @@ void() join_back_click={
 
 // ini function, called by '_f' function as a setup func
 void() m_join_i={
+  
+  menu_parent_setup(VIEW_ORG + '0 20', '512 416');
+  
   menu_setup_mainservers();
   
   resethostcachemasks();
@@ -182,19 +185,31 @@ void() m_join_i={
   SERVER_PAGE_LIST_START = 0;
   SERVER_PAGE_LIST_END = 0;
   
-  join_title = lbl_img('10 30', '1 1 0', IMG_JOIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_JOIN, 1, (UI_FLAG_SIZE_IMG) );
+  join_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1 0', IMG_JOIN_TITLE, '1 1 1', VIEW_CTX, M_JOIN, 1, (UI_FLAG_SIZE_IMG) );
   
-  join_server_pageprev = btn_img_callback('10 70', '16 16', UI_IMG_ARW_LFT, 0, M_JOIN, join_server_page_prev, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
-  join_server_pagenext = btn_img_callback('52 70', '16 16', UI_IMG_ARW_RGT, 0, M_JOIN, join_server_page_next, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
-  join_refresh_btn =  btn_text_callback('100 70', '16 16', "[Refresh]", 0, M_JOIN, join_refresh_action, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_pageprev = btn_img_callback(MENU_ORG + '10 45', '16 16', UI_IMG_ARW_LFT, 0, M_JOIN, join_server_page_prev, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
+  join_server_pagenext = btn_img_callback(MENU_ORG + '52 45', '16 16', UI_IMG_ARW_RGT, 0, M_JOIN, join_server_page_next, '1 1 1', CLR_DEF_IIF_FRIEND_BLD, 1, 0) ;
   
-  join_server_name = btn_text_callback('10 90', '16 16', "[Server]", 0, M_JOIN, join_sort_name, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_ping = btn_text_callback('135 90', '16 16', "[Ping]", 0, M_JOIN, join_sort_ping, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_map = btn_text_callback('185 90', '16 16', "[Map]", 0, M_JOIN, join_sort_map, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_numplayer = btn_text_callback('235 90', '16 16', "[Players]", 0, M_JOIN, join_sort_numplayer, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
-  join_server_mods = btn_text_callback('285 90', '16 16', "[Mod]", 0, M_JOIN, join_sort_players, CLR_DEF_WHITE, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);  
+  join_refresh_btn =  btn_text_callback(MENU_ORG + '100 45', '16 16', "Refresh", 0, M_JOIN, join_refresh_action, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_refresh_btn.fontId = FONT_NUM_XOLONIUM_BOLD;
   
-  join_back = btn_img_callback('25 345 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_JOIN, join_back_click, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  join_server_name = btn_text_callback(MENU_ORG + '10 65', '16 16', "Server", 0, M_JOIN, join_sort_name, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_name.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  join_server_ping = btn_text_callback(MENU_ORG + '135 65', '16 16', "Ping", 0, M_JOIN, join_sort_ping, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_ping.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  join_server_map = btn_text_callback(MENU_ORG + '185 65', '16 16', "Map", 0, M_JOIN, join_sort_map, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_map.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  join_server_numplayer = btn_text_callback(MENU_ORG + '235 65', '16 16', "Players", 0, M_JOIN, join_sort_numplayer, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);
+  join_server_numplayer.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  join_server_mods = btn_text_callback(MENU_ORG + '300 65', '16 16', "Mod", 0, M_JOIN, join_sort_players, CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_IIF_FRIEND, 1, UI_FLAG_SIZE_IMG);  
+  join_server_mods.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  join_back = btn_text_callback(MENU_ORG + '45 380', '16 16', "BACK", VIEW_CTX, M_JOIN, join_back_click, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  join_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 /*
@@ -233,15 +248,19 @@ void(float serverCacheId, vector ofset, float svPing, float svMaxPlayers, string
   drawfont = FONT_NUM_ROBOT_MEDIUM;
   
     gui_renderString(serverName, ofset , '1 1 1', '12 12 0', 1, 0);
-    gui_renderString(serverIp, ofset + gui_percentToPixelRawVec('0 12'), '1 1 1', '10 10 0', 1, 0);
+  
+  drawfont = FONT_NUM_ROBOT_LIGHT;
+    gui_renderString(serverIp, ofset + '0 12', '1 1 1', '10 10 0', 1, 0);
+  
+  drawfont = FONT_NUM_ROBOT_MEDIUM;
     
-    gui_renderString(ftos(svPing), ofset + gui_percentToPixelRawVec('135 0'), '1 1 1', '12 12 0', 1, 0);
+    gui_renderString(ftos(svPing), ofset + '135 0', '1 1 1', '12 12 0', 1, 0);
     
-    gui_renderString(svMap, ofset + gui_percentToPixelRawVec('180 0'), '1 1 1', '12 12 0', 1, 0);
+    gui_renderString(svMap, ofset + '180 0', '1 1 1', '12 12 0', 1, 0);
     
-    gui_renderString(playerCount, ofset + gui_percentToPixelRawVec('240 0'), '1 1 1', '12 12 0', 1, 0);
+    gui_renderString(playerCount, ofset + '240 0', '1 1 1', '12 12 0', 1, 0);
     
-    gui_renderString(modName, ofset + gui_percentToPixelRawVec('282 0'), '1 1 1', '12 12 0', 1, 0);
+    gui_renderString(modName, ofset + '298 0', '1 1 1', '12 12 0', 1, 0);
   drawfont = drawfont_prev;
 };
 
@@ -258,6 +277,8 @@ void() m_join_d={
   local entity widget;
   local string mapVal;
   
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
   widget = findchainfloat(menuId, M_JOIN);
   while(widget){
     widget.draw(widget);
@@ -266,13 +287,13 @@ void() m_join_d={
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
-    gui_renderString( ftos(SERVER_PAGE), join_server_pageprev.origin + gui_percentToPixelRawVec('26 0'), '1 1 1', '16 16 0', 1, 0);
+    gui_renderString( ftos(SERVER_PAGE), join_server_pageprev.origin + '26 0', '1 1 1', '16 16 0', 1, 0);
   drawfont = drawfont_prev;
   
   //serverId = SERVER_PAGE_LIST_START;
   SERVER_ROW_ITR = 0;
   
-  SERVER_LIST_ORG = gui_percentToPixelRawVec('10 110');
+  SERVER_LIST_ORG = MENU_ORG + '10 90';
   
   total_servers = gethostcachevalue(SLIST_HOSTCACHEVIEWCOUNT);
   join_page_update();
@@ -281,11 +302,11 @@ void() m_join_d={
     pingVal = gethostcachenumber(gethostcacheindexforkey("ping"), serverId);
     mapVal = gethostcachestring(gethostcacheindexforkey("map"), serverId);
     //9999 is most likely self-sever, ie the darn main_menu map!
-    if( pingVal > -1 && mapVal != "cin_menu.bsp"){
+    if( pingVal > -1 ){
       maxPlayVal = gethostcachenumber(gethostcacheindexforkey("maxplayers"), serverId);
       if( maxPlayVal > 1 ){
         pos_x = SERVER_LIST_ORG_x;
-        pos_y = SERVER_LIST_ORG_y + gui_percentYRaw(SERVER_ROW_ITR * 26);
+        pos_y = SERVER_LIST_ORG_y + (SERVER_ROW_ITR * 26);
         
         join_render_serverinfo( serverId, pos, pingVal, maxPlayVal, mapVal); 
         SERVER_ROW_ITR = SERVER_ROW_ITR + 1;
@@ -294,7 +315,7 @@ void() m_join_d={
   }
   SERVER_LIST_SIZE_x = 350;
   SERVER_LIST_SIZE_y = SERVER_ROW_ITR * 26;
-  SERVER_LIST_SIZE = gui_percentToPixelRawVec(SERVER_LIST_SIZE);
+  SERVER_LIST_SIZE = SERVER_LIST_SIZE;
 };
 
 /*
@@ -304,14 +325,13 @@ void(float key, float ascii) m_join_k={
   local float hostNumber;
   local string joinCmd;
   if(key == K_MOUSE1){
-    SERVER_SELECTED = listListener(SERVER_LIST_ORG, SERVER_LIST_SIZE, gui_percentToPixelRawVec('350 26'), SERVER_ROW_ITR+1, 0);
+    SERVER_SELECTED = listListener(SERVER_LIST_ORG, SERVER_LIST_SIZE, '350 26', SERVER_ROW_ITR+1, 0);
     if( SERVER_SELECTED != -1 ){
-      cvar_set("cl_ismenu","0");
       SERVER_SELECTED = SERVER_PAGE_LIST_START + SERVER_SELECTED;
       menu_clear_items(M_STATE);
       menu_exit_togame();
       joinCmd = strcat("connect ", gethostcachestring(gethostcacheindexforkey("cname"), SERVER_SELECTED), "\n");
-      cmd(joinCmd);
+      localcmd(joinCmd);
     }
     return;
   }

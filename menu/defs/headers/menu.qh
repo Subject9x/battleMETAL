@@ -14,32 +14,32 @@ float SUB_MENU; //can only really do 1 sub menu at a time, so
 float MOUSE_DOWN_COUNT;
 
 //MENU STATE CONSTANTS
-float M_NONE    = 0;
-float M_MAIN    = 1;
-float M_SINGLE  = 2;
-float M_NEWGAME = 3;
-float M_LOAD    = 4;
-float M_SAVE    = 5;
-float M_MULTI   = 6;
-float M_SETUP   = 7;
-float M_HOST    = 8;
-float M_JOIN    = 9;
-float M_OPTIONS = 10;
-float M_OPTIONS_CONTROLS = 11;
-float M_OPTIONS_GRAPHICS = 12;
-float M_OPTIONS_AUDIO = 13;
-float M_OPTIONS_GAMEPLAY = 14;
-float M_OPTIONS_EFFECT = 15;
-float M_OPTIONS_GFX = 16;
-float M_OPTIONS_COLOR = 17;
-float M_KEYS    = 18;
-float M_VIDEO   = 19;
-float M_RESET   = 20;
-float M_MODS    = 21;
-float M_HELP    = 22;
-float M_CREDITS = 23;
-float M_NEWSAVE = 24;
-float M_TRAINING = 25;
+#define M_NONE 0
+#define M_MAIN 1
+#define M_SINGLE 2
+#define M_NEWGAME 3
+#define M_LOAD 4
+#define M_SAVE 5
+#define M_MULTI 6
+#define M_SETUP 7
+#define M_HOST 8
+#define M_JOIN 9
+#define M_OPTIONS 10
+#define M_OPTIONS_CONTROLS 11
+#define M_OPTIONS_GRAPHICS 12
+#define M_OPTIONS_AUDIO 13
+#define M_OPTIONS_GAMEPLAY 14
+#define M_OPTIONS_EFFECT 15
+#define M_OPTIONS_GFX 16
+#define M_OPTIONS_COLOR 17
+#define M_KEYS 18
+#define M_VIDEO 19
+#define M_RESET 20
+#define M_MODS  21
+#define M_HELP 22
+#define M_CREDITS 23
+#define M_NEWSAVE 24
+#define M_TRAINING 25
 
 float MAIN_MISSION;
 

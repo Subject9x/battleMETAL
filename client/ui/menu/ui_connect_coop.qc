@@ -9,23 +9,27 @@ Overview:
   
 */
 void( vector rootTop ) menu_connect_render_coop={
-  //mission info - COOP
-  menu_connect_draw_mission_info_coop( rootTop + gui_percentToPixelRawVec('32 32') );
   
-  //server flags - COOP
-  menu_connect_draw_coop_rules(  rootTop + gui_percentToPixelRawVec('52 132')  );
+  //chat - COOP
+  menu_connect_draw_chat( rootTop + '256 32', '368 144', '0.35 0.35 0.55', 1);
   
   //server info - COOP
-  menu_connet_draw_coop_about( rootTop + gui_percentToPixelRawVec('254 32') );
+  menu_connet_draw_coop_about( rootTop + '256 176' );
   
   //objectives stats - COOP
-  menu_connect_draw_objectives_coop( rootTop + gui_percentToPixelRawVec('254 100') );
+  menu_connect_draw_objectives_coop( rootTop + '256 240' );
   
   //player list - COOP
-  menu_connect_draw_players_coop( rootTop + gui_percentToPixelRawVec('10 205') );
+  menu_connect_draw_players_coop( rootTop + '0 32' );
+  
+  //mission info - COOP
+  menu_connect_draw_mission_info_coop( rootTop + '0 128' );
+  
+  //server flags - COOP
+  menu_connect_draw_coop_rules(  rootTop + '42 220' );
   
   //satmap - COOP;
-  menu_connect_draw_satmap( VIEW_ORG + gui_percentToPixelRawVec('45 305'), '168 168' );
+  menu_connect_draw_satmap( rootTop + '22 288', '192 192' );
 };
 
 /*
@@ -41,23 +45,23 @@ void( vector menuOrg ) menu_connect_draw_mission_info_coop={
   local string serverStatus;
   local string serverTime;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('200 173'), '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg, '244 173', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   // Server Name
-  leftAnchor =  menuOrg + gui_percentToPixelRawVec('6 4');
+  leftAnchor =  menuOrg + '6 4';
   
   fontsStyle_x = FONT_NUM_ROBOT_MEDIUM;
   fontsStyle_y = FONT_NUM_ROBOT_REGULAR;
   gui_labelKeyPair( leftAnchor, "Server :", ENT_SERVER_INFO.netname, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '12 12' );
   
   //Server Game Mode
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('8 14'), "Mode :", "Cooperative", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( leftAnchor + '8 14', "Mode :", "Cooperative", CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
   //Max Players
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('1.25 28'), "Players :", strcat(ftos(maxclients),"/4"), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( leftAnchor + '1.25 28', "Players :", strcat(ftos(maxclients),"/4"), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
   //Map filename
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('12.25 42'), "Map :", MAP_NAME, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( leftAnchor + '12.25 42', "Map :", MAP_NAME, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
   //Mission Name
   if( MSN_NAME != "" ){
@@ -66,7 +70,7 @@ void( vector menuOrg ) menu_connect_draw_mission_info_coop={
   else{
     serverMsnName = "[Classified]";
   }
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('0 56'), "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( leftAnchor + '0 56', "Mission :", serverMsnName, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
   
   //Frag Limit
   /*local string scoreLimit;
@@ -76,7 +80,7 @@ void( vector menuOrg ) menu_connect_draw_mission_info_coop={
   else{
     scoreLimit = "No Limit";
   }
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('2 70'), "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );*/
+  gui_labelKeyPair( leftAnchor + '2 70', "Score :", scoreLimit, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );*/
   
   serverStatus = ui_label_mission_status();
   //Time Limit
@@ -86,31 +90,31 @@ void( vector menuOrg ) menu_connect_draw_mission_info_coop={
   else{
     serverTime = ui_calculate_game_time_string();
   }
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('10.5 70'), "Time :", serverTime, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10');
+  gui_labelKeyPair( leftAnchor + '10.5 70', "Time :", serverTime, CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10');
   
   //Game Status
-  gui_labelKeyPair( leftAnchor + gui_percentToPixelRawVec('5.5 84'), "Server :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
+  gui_labelKeyPair( leftAnchor + '5.5 84', "Server :", ui_label_mission_status(), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontsStyle, '10 10' );
 };
 
 void( vector menuOrg ) menu_connet_draw_coop_about={
   local vector labelOrg;
   local float labelLen;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('376 68'), '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg,  '376 64', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
     labelLen = stringwidth("- About -", 0, '10 10');
     labelOrg = menuOrg;
-    labelOrg_x = menuOrg_x + gui_percentXRaw(188) - gui_percentXRaw(labelLen / 2);
-    labelOrg_y = menuOrg_y + gui_percentYRaw(4);
+    labelOrg_x = menuOrg_x + 188 - (labelLen / 2);
+    labelOrg_y = menuOrg_y + 4;
     drawstring(labelOrg, "- About -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
   
   if( strlen(ENT_SERVER_INFO.svAbout) > 0 ){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_MEDIUM;
-      gui_wrapText(menuOrg + gui_percentToPixelRawVec('6 16'), gui_percentToPixelRawVec('368 128'), ENT_SERVER_INFO.svAbout, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+      gui_wrapText(menuOrg + '6 16', '368 128', ENT_SERVER_INFO.svAbout, '10 10', CLR_DEF_TXT_GRAY_SMOOTH, 1);
     drawfont = drawfont_prev;
   }
 };
@@ -128,73 +132,75 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   
   labelLen = stringwidth("- Server Rules -", 0, '12 12');
   labelOrg = menuOrg;
-  labelOrg_x = menuOrg_x + gui_percentXRaw(85) - gui_percentXRaw(labelLen / 2);
-  labelOrg_y = menuOrg_y + gui_percentYRaw(4);
+  labelOrg_x = menuOrg_x + 85 - (labelLen / 2);
+  labelOrg_y = menuOrg_y + 4;
   drawstring(labelOrg, "- Server Rules -", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
   
-  leftAnchor = menuOrg + gui_percentToPixelRawVec('2 20');
+  leftAnchor = menuOrg + '2 20';
   ruleRow = leftAnchor;
   
   if( ENT_SERVER_INFO.serverFlags == 0 ){
-    drawstring( ruleRow, "None", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring( ruleRow + Vector2( 85 - stringwidth("None", 0, '12 12') / 2, -4), "None", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawfont = drawfont_prev;
+    return;
   }
   listCount = 0;
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_POWERUP) ){
     drawstring( ruleRow, "Freeze on Power-up", '10 10', CLR_DEF_WHITE, 1, 0);
-    ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+    ruleRow_y = ruleRow_y + 12;
     listCount = listCount + 1;
   }
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_CHEATS) ){
     drawstring( ruleRow, "Cheats Allowed", '10 10', CLR_DEF_WHITE, 1, 0);
-    ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+    ruleRow_y = ruleRow_y + 12;
     listCount = listCount + 1;
   }
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FIREON) ){
     drawstring( ruleRow, "Friendly Fire", '10 10', CLR_DEF_WHITE, 1, 0);
-    ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+    ruleRow_y = ruleRow_y + 12;
     listCount = listCount + 1;
   }
   /*if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOLIVES) ){
     drawstring( ruleRow, "One-life Only", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 3 ){
-      ruleRow_x = ruleRow_x + gui_percentXRaw(85);
-      ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
+      ruleRow_x = ruleRow_x + 85;
+      ruleRow_y = ruleRow_y - (listCount * 12);
     }
     else{
-      ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+      ruleRow_y = ruleRow_y + 12;
     }
     listCount = listCount + 1;
   }*/
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOMAP) ){
     drawstring( ruleRow, "Limited TacMap", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 3 ){
-      ruleRow_x = ruleRow_x + gui_percentXRaw(85);
-      ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
+      ruleRow_x = ruleRow_x + 85;
+      ruleRow_y = ruleRow_y - (listCount * 12);
     }
     else{
-      ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+      ruleRow_y = ruleRow_y + 12;
     }
     listCount = listCount + 1;
   }
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NORADAR) ){
     drawstring( ruleRow, "Passive Radar Only", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 3 ){
-      ruleRow_x = ruleRow_x + gui_percentXRaw(85);
-      ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
+      ruleRow_x = ruleRow_x + 85;
+      ruleRow_y = ruleRow_y - (listCount * 12);
     }
     else{
-      ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+      ruleRow_y = ruleRow_y + 12;
     }
     listCount = listCount + 1;
   }
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
     drawstring( ruleRow, "No External Cam", '10 10', CLR_DEF_WHITE, 1, 0);
     if( listCount == 3 ){
-      ruleRow_x = ruleRow_x + gui_percentXRaw(85);
-      ruleRow_y = ruleRow_y - gui_percentYRaw(listCount * 12);
+      ruleRow_x = ruleRow_x + 85;
+      ruleRow_y = ruleRow_y - (listCount * 12);
     }
     else{
-      ruleRow_y = ruleRow_y + gui_percentYRaw(12);
+      ruleRow_y = ruleRow_y + 12;
     }
     listCount = listCount + 1;
   }
@@ -216,13 +222,13 @@ void( vector menuOrg ) menu_connect_draw_objectives_coop={
   local vector objectiveColor;
   local vector objectiveStatusOrg;
   
-  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec('376 373'), '0.65 0.65 0.65', 1, 0);
+  gui_renderPatch9_1_32(menuOrg,  '376 240', '0.65 0.65 0.65', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
     labelLen = stringwidth("- Mission Objectives -", 0, '10 10');
-    labelOrg_x = menuOrg_x + gui_percentXRaw(210) - gui_percentXRaw(labelLen/2);
-    labelOrg_y = menuOrg_y + gui_percentYRaw(6);
+    labelOrg_x = menuOrg_x + 210 - (labelLen/2);
+    labelOrg_y = menuOrg_y + 6;
     drawstring( labelOrg, "- Mission Objectives -", '10 10', CLR_DEF_TXT_NONSELECT, 1, 0);
   drawfont = drawfont_prev;
   
@@ -231,11 +237,11 @@ void( vector menuOrg ) menu_connect_draw_objectives_coop={
   
   bpos = menuOrg;
 
-  lofs = bpos + gui_percentToPixelRawVec('8 24');
+  lofs = bpos + '8 24';
   lst_idx = 1;
   line_rtn = 0;
   objectiveOffset_x = lofs_x;
-  objectiveOffset_y = lofs_y + line_rtn + gui_percentYRaw(3);
+  objectiveOffset_y = lofs_y + line_rtn + 3;
   eol = TRUE;
   while(eol){
     objectiveStatus = OBJECTIVES[lst_idx];
@@ -261,8 +267,8 @@ void( vector menuOrg ) menu_connect_draw_objectives_coop={
     text = strcat( ftos(lst_idx),") ", desc);
     line_rtn = gui_wrapText(objectiveOffset, '300 150', text, '12 12 0', CLR_DEF_TXT_NONSELECT, 1);
     
-    objectiveStatusOrg_x = menuOrg_x + gui_percentXRaw(335);
-    objectiveStatusOrg_x = objectiveStatusOrg_x - gui_percentXRaw(stringwidth(objectiveStatusLabel,0,'14 14') / 2); 
+    objectiveStatusOrg_x = menuOrg_x + 335;
+    objectiveStatusOrg_x = objectiveStatusOrg_x - (stringwidth(objectiveStatusLabel,0,'14 14') / 2); 
     objectiveStatusOrg_y = objectiveOffset_y;
     drawstring( objectiveStatusOrg, objectiveStatusLabel, '14 14 0', objectiveColor, 1, 0);
     
@@ -270,7 +276,7 @@ void( vector menuOrg ) menu_connect_draw_objectives_coop={
       eol = FALSE;
     }
     lst_idx = lst_idx + 1;
-    objectiveOffset_y = objectiveOffset_y + line_rtn + gui_percentYRaw(12);
+    objectiveOffset_y = objectiveOffset_y + line_rtn + 12;
   }
   drawfont = drawfont_prev;
 };
@@ -286,13 +292,14 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
   local string nameCheck;
   
   uiParentSize = '244 100';
-  drawpic(menuOrg, UI_DEF_BOX_512, gui_percentToPixelRawVec(uiParentSize), CLR_UI_PSC_BRIEF * 0.9, 1, 0);
+  
+  gui_renderPatch9_1_32(menuOrg, uiParentSize, CLR_UI_PSC_BRIEF * 0.9, 1, DRAWFLAG_NORMAL);
 
   menu_connect_draw_scorebar( menuOrg, "- Players -", FALSE);
   
   listOfs = '0 0';
-  listOfs_x = listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
-  listOfs_y = menuOrg_y + gui_percentYRaw(16);
+  listOfs_x = listRowOfs_x = menuOrg_x + 8;
+  listOfs_y = menuOrg_y + 16;
 
   playerRowItr = 1;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
@@ -300,8 +307,8 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
       nameCheck = getplayerkeyvalue(itr, "name");
       if( nameCheck != "" || nameCheck ){
         player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
-        listRowOfs_x = menuOrg_x + gui_percentXRaw(8);
-        listRowOfs_y = listOfs_y + ( playerRowItr * gui_percentYRaw(16) );
+        listRowOfs_x = menuOrg_x + 8;
+        listRowOfs_y = listOfs_y + ( playerRowItr * 16 );
         menu_player_row_basic( listRowOfs, playerRowItr, player, FALSE );
         playerRowItr = playerRowItr + 1;
       }

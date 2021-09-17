@@ -19,8 +19,8 @@ Overview:
 */
 
 //Globals
-vector UI_CONNECT_DMLIST_SIZE = '310 290';
-vector UI_CONNECT_TEAMLIST_SIZE = '310 190';
+vector UI_CONNECT_DMLIST_SIZE = '304 290';
+vector UI_CONNECT_TEAMLIST_SIZE = '304 190';
 
 //pseudo interface
 void() menu_connectListener_onClick;
@@ -34,10 +34,46 @@ void() menu_connectListener_onHover;
 void() menu_connect_drawFrame;
 //------------------
 
+//chat globals
+vector CHAT_LINE_FONT_SIZE;
+string CHAT_LINES[20];  //20 is a hard max, but use CHAT_LINE_TOTAL to set a smaller number of lines.
+float CHAT_LINE_TOTAL;
+float CHAT_LINE_COUNT;
+float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
+float CHAT_DECAY_MARK;
+float CHAT_LINE_TRUNC;  //character truncation limit
+
+//info string const
+#define CHAT_MSG_USER "user"
+#define CHAT_MSG_BODY "val"
+#define CHAT_MSG_TYPE "type"
+
+//chat message types
+#define CHAT_TYPE_MSG1 "msg1"
+#define CHAT_TYPE_MSG2 "msg2"
+#define CHAT_TYPE_SERVR "sv"
+
+
+//player chat input
+float CHAT_INP_ON;    //toggle for when chatting is active.
+float CHAT_INP_ON_TEAM; //team say
+vector CHAT_INP_ORG;  //on-screen location of chat input.
+float CHAT_INP_MAX;   //max char length of input.
+string CHAT_INP_VAL;
+float CHAT_CUR_TIC;
+
+void(string msgType, string userName, string newChat) menu_chat_receive_new;
+void(float modeGame) menu_chat_config;  //sets chat settings per-menu, run once when entering a _connect menu!
+void() menu_chat_update_tick; //unless menu_chat_receive_new() was called, timeout the message queue
+void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame;
+void(vector chatOrg) menu_chat_render_input;
+void() menu_chat_cleanup;
+
 //Deathmatch layout
 void( vector rootTop ) menu_connect_render_dm;
 void( vector menuOrg ) menu_connect_draw_rules_dm;
 void( vector menuOrg ) menu_connect_draw_about_dm;
+void( vector menuOrg ) menu_connect_draw_chat_dm;
 
 //Team Deathmatch Layout
 void( vector rootTop ) menu_connect_render_teamdm;
@@ -60,3 +96,4 @@ void( vector titleOfs, string titleTeam, float showScore ) menu_connect_draw_sco
 void( vector menuOrg ) menu_connect_draw_objectives;
 void( vector menuOrg ) menu_connect_draw_objectives_row;
 void( vector menuOrg, vector satMapSize ) menu_connect_draw_satmap;
+void( vector menuOrg, vector menuSize, vector menuColor, float alpha) menu_connect_draw_chat;

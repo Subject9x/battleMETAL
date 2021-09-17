@@ -2,12 +2,13 @@
 
 ../dp/csprogsdefs.qc
 
-data/keycodes.qc
 data/defs_clientside.qc
 data/defs_entity.qc
 data/defs_linker.qc
 
 //Common Defs=====================
+  ../common/input_keynums.qh
+  ../common/ui/gui_api.qh
   ../common/data/data_values_game.qc
   ../common/data/defs/defs_player.qc     //AI/player top-level vars.
   ../common/data/defs/defs_unit.qc		    //all fields related specifically to unit data.
@@ -119,7 +120,6 @@ network/headers/receive_sendent.qh
 util/headers/input_events.qh
 
 //CSQC Menu System Headers
-  ui/headers/gui_api.qh
   ui/headers/hud_view.qh
   ui/headers/anim.qh
   ui/headers/hud_system_sound.qh
@@ -128,7 +128,8 @@ util/headers/input_events.qh
   ui/headers/hud_crosshairs.qh
 //================
 
-//CSQC Menu Headers
+//CSQC Menu Header
+  ui/headers/ui_ext.qh
   ui/menu/headers/ui_util.qh
   ui/menu/headers/ui_menu_controller.qh
   ui/menu/headers/ui_hangar.qh
@@ -158,8 +159,10 @@ model/misc_buildings.qc
 
 data/local_savefile.qc
 
+../common/ui/gui_api.qc
+
 ui/anim.qc
-ui/gui_api.qc
+
 ui/hud/hud_view.qc
 ui/hud/hud_overlay.qc
 ui/hud/hud_radar.qc
@@ -187,6 +190,7 @@ ui/hud/crosshair/hud_crosshair4.qc
 //========================
 
 //MENU SYSTEM============
+  ui/ui_ext.qc
   ui/menu/ui_util.qc
   ui/menu/ui_menu_controller.qc
   ui/menu/ui_hangar.qc
@@ -218,5 +222,6 @@ ui/hud/crosshair/hud_crosshair4.qc
 //=======================
 
 input_events.qc
+util/input_api.qc
 ../common/data/defs/defs_world.qc     //world server / rules entity
 client_main.qc

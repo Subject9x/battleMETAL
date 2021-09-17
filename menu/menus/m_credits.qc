@@ -32,9 +32,15 @@ void() click_credits_back={
 };
 
 // ini function, called by '_f' function as a setup func
-void() m_credits_i={
-  credits_title = lbl_img('10 30', '1 1 0', IMG_CREDITS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_CREDITS, 1, (UI_FLAG_SIZE_IMG) );
-  credits_back = btn_img_callback('10 81 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_CREDITS, click_credits_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+void() m_credits_i={  
+  
+  menu_parent_setup(VIEW_ORG + '0 40', '400 432');
+  
+  credits_title = lbl_img(MENU_ORG + menu_parent_center_width(5), '1 1 0', IMG_CREDITS_TITLE, '1 1 1', VIEW_CTX, M_CREDITS, 1, (UI_FLAG_SIZE_IMG) );
+  
+  
+  credits_back = btn_text_callback(MENU_ORG + '45 380', '16 16', "BACK", VIEW_CTX, M_CREDITS, click_credits_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  credits_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 /*
@@ -52,90 +58,92 @@ void() m_credits_f={
   running on M_STATE to determine which menu_d to execute.
 */
 void() m_credits_d={
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
   local float centerLineX;
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  centerLineX = gui_percentXRaw(180);
+  centerLineX = MENU_SIZE_x / 2;
   
   local float menuTitleLen;
   local vector menuTitleOrg;
   menuTitleLen = stringwidth( "battleMETAL Design Team", 0, '16 16 0');
-  menuTitleOrg_x = gui_percentXRaw( centerLineX ) - gui_percentXRaw( menuTitleLen / 2);
-  menuTitleOrg_y = gui_percentYRaw(100);
+  menuTitleOrg_x = centerLineX - ( menuTitleLen / 2);
+  menuTitleOrg_y = 100;
   
   gui_renderString("battleMETAL Design Team", menuTitleOrg, CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
   
   local float leadTitleLen;
   local vector leadTitleOrg;
   leadTitleLen = stringwidth( "Producer | Lead Coder | Principal Artist | Level Designer | Game Designer", 0, '12 12 0');
-  leadTitleOrg_x = gui_percentXRaw( centerLineX ) - gui_percentXRaw( leadTitleLen / 2);
-  leadTitleOrg_y = gui_percentYRaw(119);
+  leadTitleOrg_x = centerLineX - ( leadTitleLen / 2);
+  leadTitleOrg_y = 119;
   gui_renderString("Producer | Lead Coder | Principal Artist | Level Designer | Game Designer", leadTitleOrg, CLR_DEF_IIF_FRIEND_BLD, '12 12 0', 1, 0);
    
     local float authorLen;
     local vector authorOrg;
     authorLen = stringwidth( "Peter Roohr", 0, '16 16 0');
-    authorOrg_x = 0 + gui_percentXRaw( centerLineX ) - gui_percentXRaw( authorLen / 2 );
-    authorOrg_y = gui_percentYRaw(135);
+    authorOrg_x = 0 + centerLineX - ( authorLen / 2 );
+    authorOrg_y = 135;
     gui_renderString("Peter Roohr", authorOrg, '0 0.8 0.6', '16 16 0', 1, 0);
     
     local float authsiteLen;
     local vector authsiteOrg;
     authsiteLen = stringwidth( "http://www.roohrorbitalyards.com/", 0, '10 10 0');
-    authsiteOrg_x = gui_percentXRaw( centerLineX ) - gui_percentXRaw( authsiteLen / 2 );
-    authsiteOrg_y = gui_percentYRaw(155);
+    authsiteOrg_x = centerLineX - ( authsiteLen / 2 );
+    authsiteOrg_y = 155;
     gui_renderString("http://www.roohrorbitalyards.com/", authsiteOrg, CLR_DEF_WHITE, '10 10 0', 1, 0);
     
     local float team1Len;
     local vector team1Org;
     team1Len = stringwidth( "Music | SFX | Design Consultant", 0, '12 12 0' );
-    team1Org_x = gui_percentXRaw( centerLineX ) - gui_percentXRaw( team1Len / 2 );
-    team1Org_y = gui_percentYRaw(180);
+    team1Org_x = centerLineX - ( team1Len / 2 );
+    team1Org_y = 180;
     gui_renderString("Music | SFX | Design Consultant", team1Org, CLR_DEF_IIF_FRIEND_BLD, '12 12 0', 1, 0);
     
     local float author2Len;
     local vector author2Org;
     author2Len = stringwidth( "Eamonn McHugh-Roohr", 0, '16 16 0');
-    author2Org_x = gui_percentXRaw( centerLineX ) - gui_percentXRaw( author2Len / 2 );
-    author2Org_y = gui_percentYRaw(192);
+    author2Org_x = centerLineX - ( author2Len / 2 );
+    author2Org_y = 192;
     gui_renderString("Eamonn McHugh-Roohr", author2Org, '0.27 0.95 0.25', '16 16 0', 0.65, 0);
     
     local float website2Len;
     local vector website2Org;
     website2Len = stringwidth( "http://eamonnmr.com/", 0, '10 10 0');
-    website2Org_x = gui_percentXRaw( centerLineX ) - gui_percentXRaw( website2Len / 2 );
-    website2Org_y = gui_percentYRaw(206);
+    website2Org_x = centerLineX - ( website2Len / 2 );
+    website2Org_y = 206;
     gui_renderString("http://eamonnmr.com/", website2Org, CLR_DEF_WHITE, '10 10 0', 1, 0);
    
   local float resourceLen;
   local vector resourceOrg;
   resourceLen = stringwidth( "Voice Talent", 0, '16 16 0' );
-  resourceOrg_x = gui_percentXRaw( centerLineX ) - gui_percentXRaw( resourceLen / 2 );
-  resourceOrg_y = gui_percentYRaw(230);
+  resourceOrg_x = centerLineX - ( resourceLen / 2 );
+  resourceOrg_y = 230;
   gui_renderString("Voice Talent", resourceOrg, CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
-  gui_renderString("Peter Roohr - Eamonn McHugh-Roohr - Sabrina Farley", gui_percentToPixelRawVec('67 250'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Peter Roohr - Eamonn McHugh-Roohr - Sabrina Farley", '67 250', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
   local float toolsLen;
   local vector toolsOrg;
   toolsLen = stringwidth( "Tools and Tech", 0, '16 16 0' );
-  toolsOrg_x = gui_percentXRaw( centerLineX ) - gui_percentXRaw( toolsLen / 2 );
-  toolsOrg_y = gui_percentYRaw(275);
+  toolsOrg_x = centerLineX - ( toolsLen / 2 );
+  toolsOrg_y = 275;
   gui_renderString("Tools and Tech", toolsOrg, CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
     
-  gui_renderString("Darkplaces              https://icculus.org/twilight/darkplaces/", gui_percentToPixelRawVec('75 290'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Darkplaces              https://icculus.org/twilight/darkplaces/", '75 290', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
-  gui_renderString("Blender                   https://www.blender.org/", gui_percentToPixelRawVec('75 306'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Blender                   https://www.blender.org/", '75 306', CLR_DEF_WHITE, '12 12 0', 1, 0);
     
-  gui_renderString("Trenchbroom          https://kristianduske.com/trenchbroom/", gui_percentToPixelRawVec('75 322'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Trenchbroom          https://kristianduske.com/trenchbroom/", '75 322', CLR_DEF_WHITE, '12 12 0', 1, 0);
     
-  gui_renderString("Ultimate Unwrap    https://www.unwrap3d.com/u3d/index.aspx", gui_percentToPixelRawVec('75 338'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Ultimate Unwrap    https://www.unwrap3d.com/u3d/index.aspx", '75 338', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
-  gui_renderString("Audacity                 https://www.audacityteam.org/", gui_percentToPixelRawVec('75 354'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Audacity                 https://www.audacityteam.org/", '75 354', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
-  gui_renderString("Milkshape                http://www.milkshape3d.com/", gui_percentToPixelRawVec('75 370'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Milkshape                http://www.milkshape3d.com/", '75 370', CLR_DEF_WHITE, '12 12 0', 1, 0);
   
-  gui_renderString("Easygen                   Quake III terrain tool", gui_percentToPixelRawVec('75 386'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("Easygen                   Quake III terrain tool", '75 386', CLR_DEF_WHITE, '12 12 0', 1, 0);
       
   drawfont = drawfont_prev;
   

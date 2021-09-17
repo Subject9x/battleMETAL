@@ -203,20 +203,20 @@ float FONT_USER7 = 15;     // 'user7' slot, userdefined fonts
 
 // CVAR Command BitFlags
 //  cmd.h - Line 60
-float CF_NONE                 = 0;
-float CF_CLIENT               = 1;  // cvar/command that only the client can change/execute
-float CF_SERVER               = 2;  // cvar/command that only the server can change/execute
-float CF_CLIENT_FROM_SERVER   = 4;  // command that the server is allowed to execute on the client
-float CF_SERVER_FROM_CLIENT   = 8;  // command the client is allowed to execute on the server as a stringcmd
-float CF_CHEAT                = 16;  // command or cvar that gives an unfair advantage over other players and is blocked unless sv_cheats is 1
-float CF_ARCHIVE              = 32;  // cvar should have its set value saved to config.cfg and persist across sessions
-float CF_READONLY             = 64; // cvar cannot be changed from the console or the command buffer
-float CF_NOTIFY               = 128;  // cvar should trigger a chat notification to all connected clients when changed
-float CF_SERVERINFO           = 256;  // command or cvar relevant to serverinfo string handling
-float CF_USERINFO             = 512;  // command or cvar used to communicate userinfo to the server
-float CF_PERSISTENT           = 1024; // cvar must not be reset on gametype switch (such as scr_screenshot_name, which otherwise isn't set to the mod name properly)
-float CF_PRIVATE              = 2048; // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
-float CF_MAXFLAGSVAL          = 4095;    // used to determine if flags is valid
+#define CF_NONE               0
+#define CF_CLIENT             1  // cvar/command that only the client can change/execute
+#define CF_SERVER             2  // cvar/command that only the server can change/execute
+#define CF_CLIENT_FROM_SERVER 4  // command that the server is allowed to execute on the client
+#define CF_SERVER_FROM_CLIENT 8  // command the client is allowed to execute on the server as a stringcmd
+#define CF_CHEAT              16  // command or cvar that gives an unfair advantage over other players and is blocked unless sv_cheats is 1
+#define CF_ARCHIVE            32  // cvar should have its set value saved to config.cfg and persist across sessions
+#define CF_READONLY           64 // cvar cannot be changed from the console or the command buffer
+#define CF_NOTIFY             128  // cvar should trigger a chat notification to all connected clients when changed
+#define CF_SERVERINFO         256  // command or cvar relevant to serverinfo string handling
+#define CF_USERINFO           512  // command or cvar used to communicate userinfo to the server
+#define CF_PERSISTENT         1024 // cvar must not be reset on gametype switch (such as scr_screenshot_name, which otherwise isn't set to the mod name properly)
+#define CF_PRIVATE            2048 // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
+#define CF_MAXFLAGSVAL        4096    // used to determine if flags is valid
 
 /* not supported at the moment
 ///////////////////////////
@@ -255,12 +255,12 @@ vector 	vectoangles(vector v)		= #11;
 
 float	random(void)  = #12;
 
-void	cmd(string command, ...) = #13;
+void	localcmd(string command, ...) = #13;
 
 // cvar cmds
 
 float 	cvar(string name) 			= #14;
-const string str_cvar(string name)		= #71;
+string str_cvar(string name)		= #71;
 void	cvar_set(string name, string value)	= #15;
 
 void	dprint(string text,...) = #16;
@@ -342,7 +342,7 @@ float	gettime(void)		= #67;
 void 	loadfromdata(string data) = #68;
 void	loadfromfile(string file) = #69;
 
-float	mod(float val, float m) = #70;
+float	modulo(float val, float m) = #70;
 
 float	search_begin(string pattern, float caseinsensitive, float quiet) = #74;
 void	search_end(float handle) = #75;
@@ -391,7 +391,9 @@ void	drawsetcliparea(float x, float y, float width, float height) = #458;
 void	drawresetcliparea(void) = #459;
 
 vector  drawgetimagesize(string pic) = #460;
+vector  draw_getimagesize(string pic) = #460;
 
+void(float width, vector pos1, vector pos2, vector rgb, float alpha, float flags) drawline = #466;
 ////////////////////////////////////////////////
 // Menu functions
 ////////////////////////////////////////////////
@@ -411,6 +413,33 @@ string	keynumtostring(float keynum) = #609;
 float	gethostcachevalue(float type) = #611;
 //not 'type'!, FIELD, as in those SLIF_* values! (grrrr)
 string	gethostcachestring(float fld, float hostnr) = #612;
+
+//Supposedly Cin video file support?
+/*
+VM_cin_open,						// #461
+VM_cin_close,						// #462
+VM_cin_setstate,					// #463
+VM_cin_getstate,					// #464
+VM_cin_restart, 					// #465
+
+VIDEO STATE / TYPE
+  cin_getstate() and cin_setstate()
+*/
+float CLVIDEO_UNUSED        = 0;
+float CLVIDEO_PLAY          = 1;
+float CLVIDEO_LOOP          = 2;
+float CLVIDEO_PAUSE         = 3;
+float CLVIDEO_FIRSTFRAME    = 4;
+float CLVIDEO_RESETONWAKEUP = 5;
+float CLVIDEO_STATECOUNT    = 6;
+
+float() videoplaying = #355;
+
+float cin_open(string file, string name) = #461;
+void cin_close(string name) = #462;
+void cin_setstate(string name, float type) = #463;
+float cin_getstate(string name) = #464;
+void cin_restart(string name) = #465;
 
 //DP_CSQC_BINDMAPS
 //idea: daemon, motorsep
@@ -674,17 +703,17 @@ const string cvar_defstring(string name) = #89;
 float	stringwidth(string text, float handleColors, vector size) = #468;
 
 //Multiplayer Server Flags
-float SVFLAG_SPAWNFAR   = 1;  //  pawn player farthest from other players
-float SVFLAG_POWERUP    = 2;  //  enforce powerup sequence
-float SVFLAG_CHEATS     = 4;  //  cheaty cheat pants
-float SVFLAG_FIREON     = 8;  //  friendly fire on
-float SVFLAG_NOLIVES    = 16; //  limited lives
-float SVFLAG_NOMAP      = 32; //  only see yourself on tac map
-float SVFLAG_NORADAR    = 64; //  no radar allowed
-float SVFLAG_NOSTATUS   = 128; // hide player status in menus
-float SVFLAG_ITEMOVER   = 256; //used when world.itemOverride = 1; tells game to load the override file
-float SVFLAG_NOSAVE     = 512; //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
-float SVFLAG_FPSONLY    = 1024; //disables third person / chase_active commands.
+#define SVFLAG_SPAWNFAR 1  //  pawn player farthest from other players
+#define SVFLAG_POWERUP  2  //  enforce powerup sequence
+#define SVFLAG_CHEATS   4  //  cheaty cheat pants
+#define SVFLAG_FIREON   8  //  friendly fire on
+#define SVFLAG_NOLIVES  16 //  limited lives
+#define SVFLAG_NOMAP    32 //  only see yourself on tac map
+#define SVFLAG_NORADAR  64 //  no radar allowed
+#define SVFLAG_NOSTATUS 128 // hide player status in menus
+#define SVFLAG_ITEMOVER 256 //used when world.itemOverride = 1; tells game to load the override file
+#define SVFLAG_NOSAVE   512 //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
+#define SVFLAG_FPSONLY  1024 //disables third person / chase_active commands.
 
 #define QCMENU
 #define cacheGlobalString(var, val) if(val!=""){if (var!=""){strunzone(var); var="";} var = strzone(val);}

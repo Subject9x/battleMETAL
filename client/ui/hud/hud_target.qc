@@ -33,19 +33,19 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
   }
   if(targdir > AIM_FACE_FRONT){
     if(targdir == AIM_FACE_LEFT){
-      lorg_x = VIEW_ORG_x + gui_percentXRaw(5); 
-      lorg_y = VIEW_CTR_y - gui_percentYRaw(24);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_L, gui_percentToPixelRawVec('16 48'), trg_color, HUD_ALPHA, 0);
+      lorg_x = VIEW_ORG_x + 5; 
+      lorg_y = VIEW_CTR_y - 24;
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_L, '16 48', trg_color, HUD_ALPHA, 0);
     }
     else if(targdir == AIM_FACE_RIGHT){
-      lorg_x = (VIEW_ORG_x + VIEW_MAX_x) - gui_percentXRaw(15); 
-      lorg_y = VIEW_CTR_y  - gui_percentYRaw(24);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_R, gui_percentToPixelRawVec('16 48'), trg_color, HUD_ALPHA, 0);     
+      lorg_x = (VIEW_ORG_x + VIEW_MAX_x) - 15; 
+      lorg_y = VIEW_CTR_y  - 24;
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_R, '16 48', trg_color, HUD_ALPHA, 0);     
     }
     else if(targdir == AIM_FACE_BACK){
-      lorg_x = VIEW_CTR_x - gui_percentXRaw(24);
-      lorg_y = VIEW_CTR_y + gui_percentYRaw(48);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_B, gui_percentToPixelRawVec('48 16'), trg_color, HUD_ALPHA, 0);
+      lorg_x = VIEW_CTR_x - 24;
+      lorg_y = VIEW_CTR_y + 48;
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_B, '48 16', trg_color, HUD_ALPHA, 0);
     }
   }
 };
@@ -55,7 +55,7 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
 */
 void(vector ofs, float algn) hud_renderTargetName={
   local float msgLen;
-  local vector tofs, msgSize, factionColor;
+  local vector msgSize, factionColor;
   local string msg;
   local string targType;
   
@@ -85,14 +85,13 @@ void(vector ofs, float algn) hud_renderTargetName={
   }
   msgSize = '0 0';
   
-  ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlign(ofs, algn);
   msg = strcat("[TARGET] ", targType);
   msgLen = stringwidth(msg, 0, '10 10 0');
-  msgSize_x = gui_percentXRaw(msgLen/2);
-  msgSize_y = gui_percentYRaw(6);
-  tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
-  drawstring(tofs, msg, '10 10 0', factionColor, HUD_ALPHA, 0);
+  msgSize_x = msgLen/2;
+  msgSize_y = 6;
+  ofs_z = 0;
+  drawstring(ofs, msg, '10 10', factionColor, HUD_ALPHA, 0);
   
   drawfont = drawfont_prev;
 };
@@ -149,19 +148,19 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   dist = 1 * (dist / radRange);
   
   imgSize = draw_getimagesize(HUD_TARGET_BOX_TL) * 0.5 ;
-  imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
+  imgSize = imgSize * dist;
   
-  if( imgSize_x > gui_percentXRaw(48) ){
-    imgSize_x = gui_percentXRaw(48);
+  if( imgSize_x > 48 ){
+    imgSize_x = 48;
   }
-  if(imgSize_x < gui_percentXRaw(32)){
-    imgSize_x = gui_percentXRaw(32);
+  if(imgSize_x < 32){
+    imgSize_x = 32;
   }
-  if( imgSize_y > gui_percentYRaw(48) ){
-    imgSize_y = gui_percentYRaw(48);
+  if( imgSize_y > 48 ){
+    imgSize_y = 48;
   }
-  if(imgSize_y < gui_percentYRaw(32)){
-    imgSize_y = gui_percentYRaw(32);
+  if(imgSize_y < 32){
+    imgSize_y = 32;
   }
   
   boxAlpha  = max(0.25, HUD_ALPHA - 0.15);
@@ -249,7 +248,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   namepos_z = namepos_z - (adj + drawSize_y);  //magik numbers, :/
   nameproj = cs_project(namepos);
   if( nameproj_z >= 0 ){
-    nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
+    nameproj_x = nameproj_x - (namelen / 2);
     nameproj_z = 0;
     drawstring(nameproj, playerName, drawSize, factionColor * 1.5, max(0.75, HUD_ALPHA), 0);
   }
@@ -311,8 +310,8 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
     nofs_x = nofs_x - (aSize_x / 2);
     nofs_z = 0;
     
-    meterSize = gui_percentToPixelRawVec(aSize);
-    pos = gui_percentToPixelRawVec(nofs);
+    meterSize = aSize;
+    pos = nofs;
     pos = gui_calcAlign(pos, algn);
    
     meterColor = CLR_DEF_ARM_DED;
@@ -335,9 +334,9 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       iconSize_x = meterSize_x;
       iconSize_y = meterSize_x;
     }
-    iconSize_y = iconSize_y * 1.5;
+    iconSize = iconSize * 2;
     iconSize_z = 0;
-    iconOrg = gui_calcAlignCustom(gui_percentToPixelRawVec('10 2'),(VIEW_LFT | VIEW_TOP), pos);
+    iconOrg = gui_calcAlignCustom('10 2',(VIEW_LFT | VIEW_TOP), pos);
     iconOrg_z = 0;
     drawpic(iconOrg, HUD_ICON_SHIELD, iconSize, factionColor, HUD_ALPHA, 0);
   }
@@ -355,8 +354,7 @@ void( vector pos, vector grpCtr, float val, vector mSize, string imgPiece, float
   tColor = gui_getColorForArmor(val);
   
   shofs = grpCtr;
-  meterSize = gui_percentToPixelRawVec(mSize);
-  pos = gui_percentToPixelRawVec(pos);
+  meterSize = mSize;
   pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), shofs);
   
   if(thatTarget){
@@ -386,7 +384,7 @@ void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lb
   local vector backSize;
   local vector backColor;
   
-  pnl_ctr = gui_percentToPixelRawVec(vorg);
+  pnl_ctr = vorg;
   pnl_ctr = gui_calcAlign(pnl_ctr, algn);
   
   if(isTarget){
@@ -409,10 +407,10 @@ void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lb
   }
   
   if(lFlag){
-    backOrg = gui_percentToPixelRawVec(lblOfs);
+    backOrg = lblOfs;
     backOrg = gui_calcAlignCustom(backOrg, lalgn, pnl_ctr);
-    backSize = gui_percentToPixelRawVec(lblSize);
-    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+    backSize = lblSize;
+    gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
   
   hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget, M_TOR_CENTER );
@@ -441,9 +439,8 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   
   tColor =  gui_getColorForArmor(val);
   
-  vorg = gui_percentToPixelRawVec(vorg);
   vorg = gui_calcAlign(vorg, algn);
-  meter = gui_percentToPixelRawVec(siz);
+  meter = siz;
   meter_x = meter_x / 2;
   meter_y = meter_y / 2;
   meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
@@ -456,10 +453,10 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   }
   
   if(lFlag){
-    backOrg = gui_percentToPixelRawVec(lblOfs);
+    backOrg = lblOfs;
     backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
-    backSize = gui_percentToPixelRawVec(lblSize);
-    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+    backSize = lblSize;
+    gui_renderPatch9_1_32(backOrg -'8 0', backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
   
   drawpic(meter, HUD_BUILD_TRG, siz, tColor, HUD_ALPHA, 0);
@@ -479,9 +476,8 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
   
   tColor =  gui_getColorForArmor(val);
   
-  vorg = gui_percentToPixelRawVec(vorg);
   vorg = gui_calcAlign(vorg, algn);
-  meter = gui_percentToPixelRawVec(siz);
+  meter = siz;
   
   meter_x = meter_x / 2;
   meter_y = meter_y / 2;
@@ -495,10 +491,10 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
   }
   
   if(lFlag){
-    backOrg = gui_percentToPixelRawVec(lblOfs);
+    backOrg = lblOfs;
     backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
-    backSize = gui_percentToPixelRawVec(lblSize);
-    drawpic(backOrg, UI_DEF_BOX_256, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+    backSize = lblSize;
+    gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   }
   
   drawpic(meter, HUD_VEC_TRG, siz, tColor, HUD_ALPHA, 0);
@@ -515,14 +511,13 @@ void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlign(ofs, algn);
   dist = ceil(vlen(torg - porg));
   msg = strcat("[RANGE] ", ftos(dist));
   msgSize = '0 0';
   msgLen = stringwidth(msg, 0, '10 10 0');
-  msgSize_x = gui_percentXRaw(msgLen/2);
-  msgSize_y = gui_percentYRaw(6);
+  msgSize_x = msgLen/2;
+  msgSize_y = 6;
   tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
   drawstring(tofs, msg, '10 10 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
   
@@ -563,19 +558,19 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
   dist = 1 * (dist / radRange);
   
   imgSize = '4 4 0';
-  imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
+  imgSize = imgSize * dist ;
   
-  if( imgSize_x > gui_percentXRaw(16) ){
-    imgSize_x = gui_percentXRaw(16);
+  if( imgSize_x > 16 ){
+    imgSize_x = 16;
   }
-  if(imgSize_x < gui_percentXRaw(8)){
-    imgSize_x = gui_percentXRaw(8);
+  if(imgSize_x < 8){
+    imgSize_x = 8;
   }
-  if( imgSize_y > gui_percentYRaw(16) ){
-    imgSize_y = gui_percentYRaw(16);
+  if( imgSize_y > 16 ){
+    imgSize_y = 16;
   }
-  if(imgSize_y < gui_percentYRaw(8)){
-    imgSize_y = gui_percentYRaw(8);
+  if(imgSize_y < 8){
+    imgSize_y = 8;
   }
   
   viewAngle = input_angles;

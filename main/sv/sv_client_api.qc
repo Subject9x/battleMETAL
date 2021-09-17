@@ -21,6 +21,7 @@ void(string str) SV_ParseClientCommand={
   local string cmdCall;
   local entity trigTarg;
   local entity notTrig;
+  local string response;
   
   cmdIdx = strstrofs(str, " ", 0);
   cmdCall = substring( str, 0, cmdIdx );
@@ -30,7 +31,30 @@ void(string str) SV_ParseClientCommand={
     client_parse_clientInfoString(str);
     return;
   }
-  
+  //Client Chat stuff
+  if( cmdCall == CS_PRINT ){
+    if( strstrofs(str, SAY_MSG1, 0) != -1 ){
+      cmdIdx = strstrofs(str, SAY_MSG1, cmdIdx) + strlen(SAY_MSG1);
+      WriteChar(MSG_ALL, SVC_PRINT);
+      response = infoadd(response, RSP_SRC, SV_PRINT);
+      response = infoadd(response, RSP_TYPE, SAY_MSG1);
+      response = infoadd(response, RSP_CID, ftos(num_for_edict(self) ));
+      response = infoadd(response, RSP_BODY, substring(str, cmdIdx, strlen(str)-cmdIdx));
+      WriteString(MSG_ALL, strcat(response, "\n"));
+      return;
+    }
+    if( strstrofs(str, SAY_MSG2,0)  != -1 ){
+      cmdIdx = strstrofs(str, SAY_MSG2, cmdIdx) + strlen(SAY_MSG2);
+      WriteChar(MSG_ALL, SVC_PRINT);
+      response = infoadd(response, RSP_SRC, SV_PRINT);
+      response = infoadd(response, RSP_TYPE, SAY_MSG2);
+      response = infoadd(response, RSP_CID, ftos(num_for_edict(self) ));
+      response = infoadd(response, RSP_BODY, substring(str, cmdIdx, strlen(str)-cmdIdx));
+      WriteString(MSG_ALL, strcat(response, "\n"));
+      return;
+    }
+    return;
+  }
   //SetNextMission--------------------
   if(cmdCall == "nextmission"){
     argc = tokenize(str);
@@ -99,17 +123,23 @@ called when a player connects to a server
 ============
 */
 void() ClientConnect = {
+  local string response;
   if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
-    bprint(self.netname);
-    bprint(" has arrived to help!\n");
+    WriteChar(MSG_ALL, SVC_PRINT);
+    response = infoadd(response, RSP_SRC, SV_PRINT);
+    response = infoadd(response, RSP_TYPE, SV_CL_CONN);
+    response = infoadd(response, RSP_BODY, strcat(self.netname, " has arrived to help!"));
+    WriteString(MSG_ALL, strcat(response, "\n"));
   }
-  else if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
-    bprint(self.netname);
-    bprint(" has entered the combat zone.\n");
+  else {
+    WriteChar(MSG_ALL, SVC_PRINT);
+    response = infoadd(response, RSP_SRC, SV_PRINT);
+    response = infoadd(response, RSP_TYPE, SV_CL_CONN);
+    response = infoadd(response, RSP_BODY, strcat(self.netname, " has entered the combat zone."));
+    WriteString(MSG_ALL, strcat(response, "\n"));
   }
-  else if( ENT_SERVER_INFO.gameType == GAMEMODE_TEAMDM ){
-    bprint(" Unkown contact has entered the AO.\n");
-  }
+  
+  
   if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_READY ){
     ENT_SERVER_INFO.missionStatus = MISSION_STATUS_ACTIVE;
     ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
@@ -309,9 +339,12 @@ void() ClientKill = {
   if(self.data_type == DATA_POBS){
     return;
   }
-  
-  bprint (self.netname);
-  bprint (" cowardly self-destructs!\n");
+  local string response;
+  WriteChar(MSG_ALL, SVC_PRINT);
+  response = infoadd(response, RSP_SRC, SV_PRINT);
+  response = infoadd(response, RSP_TYPE, SV_CL_KSELF);
+  response = infoadd(response, RSP_BODY, strcat(self.netname, " cowardly self-destructs!"));
+  WriteString(MSG_ALL, strcat(response, "\n"));
   
   self.frags = self.frags - 2;
   if( self.frags < 0 ){
@@ -333,11 +366,17 @@ called when a player disconnects from a server
 void() ClientDisconnect = {
   local entity client;
   local float clnum;
+  local string response;
+  
   if(gameover){
     return;
   }
-  bprint (self.netname);
-	bprint (" has fled the field of battle!\n");
+  
+  WriteChar(MSG_ALL, SVC_PRINT);
+  response = infoadd(response, RSP_SRC, SV_PRINT);
+  response = infoadd(response, RSP_TYPE, SV_CL_DSCON);
+  response = infoadd(response, RSP_BODY, strcat(self.netname, " has fled the field of battle!"));
+  WriteString(MSG_ALL, strcat(response, "\n"));
   
   if(self.data_type == DATA_MECH){
     ctrl_mech_die_player();

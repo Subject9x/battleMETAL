@@ -8,26 +8,85 @@ Overview:
   
   This catch-all function handles all custom mod input events.
   
+  
+  PRVM_G_FLOAT(OFS_PARM0) = eventtype;
+  PRVM_G_FLOAT(OFS_PARM1) = x; // key or x
+  PRVM_G_FLOAT(OFS_PARM2) = y; // ascii or y
+  
   (taken from original CSQC comments)
   typ 0 = keydown (keysym, unicode character but this may be zero) or typed input (-1, unicode character)
   typ 1 = keyup (keysym, may have unicode character but generally not)
-  typ 2 = mousemove (scanX, charY) if inputmode is off
-  typ 3 = mousepos (scanX, charY) if inputmode is on
+  typ 2 = mousemove (scanx, charY) if inputmode is off
+  typ 3 = mousepos (scanx, charY) if inputmode is on
   return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 */
 
 float(float inputEventType, float scanx, float chary, float devid) handle_input={
-  
-//console override-----
+  local string newText;
+
+//INPUT IMMEDIATES / OVERRIDES
   if(inputEventType == INPUT_EVENT_KEYDOWN){
+    //console override-----
     if( (scanx == K_TIL) || (scanx == K_APOS) || (scanx == K_ESCAPE) ){
+      if( CHAT_INP_ON ){
+        CHAT_INP_ON = FALSE;
+        return TRUE;
+      }
       return FALSE; 
     }
+    //=====================    
+    if( strstrofs(findkeysforcommand("messagemode", 0), ftos(scanx),0) != -1 || strstrofs(findkeysforcommand("messagemode2", 0), ftos(scanx),0) != -1 ){
+      if( !CHAT_INP_ON ){
+        CHAT_INP_ON = TRUE;
+        if(strstrofs(findkeysforcommand("messagemode2", 0), ftos(scanx),0) != -1){
+          CHAT_INP_ON_TEAM = TRUE;
+        }
+        return TRUE;
+      }
+    }
+    if( CHAT_INP_ON ){
+      if( scanx == K_ENTER ){
+        if( strlen(CHAT_INP_VAL) != 0 ){
+          if( CHAT_INP_ON_TEAM ){
+            newText = sprintf("%s %s %s\n", CS_PRINT, SAY_MSG2, CHAT_INP_VAL );
+          }
+          else{
+            newText = sprintf("%s %s %s\n", CS_PRINT, SAY_MSG1, CHAT_INP_VAL );
+          }
+          localcmd(strcat("cmd ", newText));
+        }
+        CHAT_INP_ON = FALSE;
+        CHAT_INP_ON_TEAM = FALSE;
+        freeGlobalString(CHAT_INP_VAL)
+        return TRUE;
+      }
+      if( scanx == K_BACKSPACE && strlen(CHAT_INP_VAL) != 0){
+        newText = substring(CHAT_INP_VAL, 0, strlen(CHAT_INP_VAL) - 1);
+        freeGlobalString(CHAT_INP_VAL)
+        cacheGlobalString( CHAT_INP_VAL, newText)
+        return TRUE;
+      }
+      if( strlen(CHAT_INP_VAL) > CHAT_INP_MAX){
+        return TRUE;
+      }
+      newText = substring(CHAT_INP_VAL, 0, strlen(CHAT_INP_VAL));
+      freeGlobalString(CHAT_INP_VAL)
+      
+      if( scanx == K_SPACE ){
+        newText = strcat(newText, " ");
+      }
+      else{
+        if( textfilter_validate( scanx, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_UPP) ) ){
+          newText = strcat(newText, keynumtostring(chary));
+        }
+      }
+      cacheGlobalString( CHAT_INP_VAL, newText)
+      return TRUE;
+    }
   }
-//=====================
   
 //player mech powerup prevents input events
-  if( (CLIENT_player_state == PLAYER_POWERUP_BEGIN) ){
+  if( (CLIENT_player_state == PLAYER_POWERUP_BEGIN) && inputEventType != INPUT_EVENT_MOUSE_POS ){
     return TRUE;
   }
 //=====================
@@ -50,141 +109,71 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
 
   //keyboard input
   if(inputEventType == INPUT_EVENT_KEYDOWN){
-    if( (scanx == K_TAB) && (CLIENT_data_type == DATA_POBS) ){
-      if( (CLIENT_player_state != PLAYER_INTERMSN) && MENU_ACTIVE ){
-        if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
-          if( cvar("developer") ){
+    //PLAYER :: OBSERVER-------------------------------------------
+    if(CLIENT_data_type == DATA_POBS){
+      if( scanx == K_TAB ){
+        if( (CLIENT_player_state != PLAYER_INTERMSN) && MENU_ACTIVE ){
+          if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
+            if( cvar("developer") ){
+              menu_exit();
+            }
+          }
+        }
+        else{
+          if( CLIENT_player_state != PLAYER_INTERMSN ){
+            cons_logAFloat("CLIENT_player_state != PLAYER_INTERMSN", 1);  //DEBUG
+            menu_enter( CLIENT_MENU_menu_choice );
+          }else{
             menu_exit();
           }
         }
+        return TRUE;
       }
-      else{
-        if( CLIENT_player_state != PLAYER_INTERMSN ){
-        cons_logAFloat("CLIENT_player_state != PLAYER_INTERMSN", 1);  //DEBUG
-          menu_enter( CLIENT_MENU_menu_choice );
-        }else{
-          menu_exit();
-        }
-      }
-      return TRUE;
     }
-    else if( (scanx == K_TAB) && (CLIENT_data_type == DATA_MECH) ){
-      //INPUT - HUD - SHOW SCORES
-      if(HUD_SCORES_ON){
-        HUD_SCORES_ON = FALSE;
+    //---------------------------------------------------------------
+    //PLAYER :: MECH PLAY-------------------------------------------
+    if(CLIENT_data_type == DATA_MECH){
+      if( scanx == K_TAB){
+        input_key_toggle_score();
+        return TRUE;
       }
-      else{
-        HUD_SCORES_ON = TRUE;
+      if(scanx == K_SHIFT){
+        //INPUT - MOVEMENT - SPRINT carve-out
+        //pass to engine to engage sprint
+        return FALSE;
       }
-      return TRUE;
+      
+      if( strstrofs(findkeysforcommand("impulse 12", 0), ftos(scanx),0) != -1 ){
+        input_key_impulse_hud_tacmap();
+        return TRUE;
+      }
+      
+      if( strstrofs(findkeysforcommand("impulse 25", 0), ftos(scanx),0) != -1 ){
+        input_key_impulse_hud_objectives();
+        return TRUE;
+      }
+      
+      if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
+        input_key_impulse_hud_zoom();
+        return FALSE;
+      }
+      
+      if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
+        input_key_impulse_hud_radar_toggle();
+        return FALSE;
+      }
+      
+      if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
+        input_key_impulse_hud_chase_toggle();
+        return FALSE; //we pass the event to the server for correct player aiming.
+      }
     }
-    else if(scanx == K_SHIFT){
-      //INPUT - MOVEMENT - SPRINT
-      return FALSE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 12", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - TACTICAL MAP
-      if( MSN_MAPPIC != "" ){
-        if(HUD_TACMAP_ON){
-          HUD_TACMAP_ON = FALSE;
-        }
-        else{
-          HUD_TACMAP_ON = TRUE;
-          if( UI_OBJECTIVE_ACTIVE ){
-            UI_OBJECTIVE_ACTIVE = FALSE;
-          }
-        }
-
-      }
-      return TRUE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 25", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - OBJECTIVES DISPLAY
-      if(UI_OBJECTIVE_ACTIVE){
-        UI_OBJECTIVE_ACTIVE = FALSE;
-      }
-      else{
-        UI_OBJECTIVE_ACTIVE = TRUE;
-        if( HUD_TACMAP_ON ){
-          HUD_TACMAP_ON = FALSE;
-        }
-      }
-      return TRUE;
-    }
-    else if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - ZOOM WINDOW
-      //good lord....
-      HUD_ZOOM_ACTIVE = TRUE;
-      return FALSE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - TOGGLE RADAR MODE
-      //Toggle Radar
-      CLIENT_stat_rdr_mode = !CLIENT_stat_rdr_mode;
-      if(CLIENT_stat_rdr_mode_prev != CLIENT_stat_rdr_mode){
-        CLIENT_stat_rdr_mode_prev = CLIENT_stat_rdr_mode;
-        if(CLIENT_stat_rdr_mode){
-          hud_event_enqueue(HUD_EVENT_RADAR_ACTIVE, 1); 
-          CLIENT_radar_range = CLIENT_radar_range * 2;
-        }
-        else{
-          hud_event_enqueue(HUD_EVENT_RADAR_PASSIVE, 1); 
-          CLIENT_radar_range = CLIENT_radar_range / 2;
-        }
-      }
-      //return false here to make sure player choice gets up to server.
-      return FALSE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - set chase_active
-      if( HUD_EXTERNAL_CAM_ACTIVE == TRUE ){
-        HUD_EXTERNAL_CAM_ACTIVE = FALSE;
-        localcmd("chase_active 0\n");
-        if(hudStruts != world ){
-          hudStruts.drawmask = MASK_ENGINE;
-        }
-        if(hudConsole != world ){
-          hudConsole.drawmask = MASK_ENGINE;
-        }
-        ui_data_load_hud( MECH_DATA_ID );
-      }
-      else{
-        if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
-          return TRUE;
-        }
-        ui_data_load_hud( 0 );
-        
-        HUD_EXTERNAL_CAM_ACTIVE = TRUE;
-        localcmd("chase_active 1\n");
-        if(hudStruts != world ){
-          hudStruts.drawmask = 0;
-        }
-        if(hudConsole != world ){
-          hudConsole.drawmask = 0;
-        }
-      }
-      return FALSE; //we pass the event to the server for correct player aiming.
-    }
-    /*else if( strstrofs(findkeysforcommand("impulse 7", 0), ftos(scanx),0) != -1 ){
-      //INPUT - player wants target
-      return FALSE; //we pass the event to the server for correct player aiming.
-    }
-    else if(scanx == K_K){
-      cons_logAFloat("VIEW_OBS_ID", VIEW_OBS_ID); //debug
-      if( VIEW_OBS_ID == 2 ){
-        VIEW_OBS_ID = 1;
-      }
-      return TRUE;
-    }
-    else if(scanx == K_L ){
-      cons_logAFloat("VIEW_OBS_ID", VIEW_OBS_ID); //debug
-      if(VIEW_OBS_ID == 1){
-        VIEW_OBS_ID = 2;
-      }
-      return TRUE;
-    }*/
+    //---------------------------------------------------------------
   }
-  else if(inputEventType == INPUT_EVENT_MOUSE_POS){
+  
+  
+  //EVENT - MOUSE CURSOR MOVEMENT---------------------------------
+  if(inputEventType == INPUT_EVENT_MOUSE_POS){
     if(MENU_ACTIVE){
       cursorpos_x = cursorpos_x + scanx;
       cursorpos_y = cursorpos_y + chary;
@@ -207,6 +196,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       return FALSE;
     }
   }
+  //-------------------------------------------------------------
   
   //Mouse input
   if( inputEventType == INPUT_EVENT_KEYDOWN ){
@@ -246,7 +236,11 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     }
     return FALSE;
   }
-  else if( inputEventType == INPUT_EVENT_KEYUP ){
+  
+  if( inputEventType == INPUT_EVENT_KEYUP ){
+    if( CHAT_INP_ON ) {
+      return TRUE;
+    }
     if( scanx == K_MOUSE1 ){
       INPUT_mouse_state_prev = INPUT_mouse_state;
       INPUT_mouse_state = MOUSE_UP;
@@ -305,7 +299,6 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
       return TRUE;
     }
-    
     return FALSE;
   }
    

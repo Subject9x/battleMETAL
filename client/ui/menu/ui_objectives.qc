@@ -16,7 +16,7 @@ void(vector org) ui_objective_frame={
     
     lst_idx = 0;
     itr = 1; 
-    torg = org + gui_percentToPixelRawVec('8 52');
+    torg = org + '8 52';
     drawstring(torg, "[OBJECTIVES]", '14 14 0', HUD_COLOR_DEF, 1.1, 0);
     while( itr < 32 ){
       local float complete;
@@ -28,7 +28,7 @@ void(vector org) ui_objective_frame={
         
         eObj = data_objective_find( itr );
         line = torg;
-        line_y = line_y + gui_percentYRaw( (lst_idx+1) * 16);
+        line_y = line_y + ( (lst_idx+1) * 16);
         obj = strcat(ftos(lst_idx+1),") ",MSN_OBJ_DESC[itr]); 
         colr = HUD_COLOR_DEF;
         if( eObj ){

@@ -51,35 +51,35 @@ float HUD_EVENT_RADAR_ACTIVE = 21;
 float HUD_EVENT_RADAR_PASSIVE = 22;
 
 //DEFS MESSAGE STRINGS
-string HUD_TEXT_CRITICAL_LEGS = "Critical Hit: Legs";
-string HUD_TEXT_CRITICAL_TORSO_LEFT = "Critical Hit: Left Torso.";
-string HUD_TEXT_CRITICAL_TORSO_RIGHT = "Critical Hit: Right Torso.";
-string HUD_TEXT_CRITICAL_ARM_LEFT = "Critical Hit: Left Arm.";
-string HUD_TEXT_CRITICAL_ARM_RIGHT = "Critical Hit: Right Arm.";
-string HUD_TEXT_CRITICAL_WEAPON = "Critical Hit: Weapon Destroyed.";
+#define HUD_TEXT_CRITICAL_LEGS "Critical Hit: Legs"
+#define HUD_TEXT_CRITICAL_TORSO_LEFT "Critical Hit: Left Torso."
+#define HUD_TEXT_CRITICAL_TORSO_RIGHT "Critical Hit: Right Torso."
+#define HUD_TEXT_CRITICAL_ARM_LEFT "Critical Hit: Left Arm."
+#define HUD_TEXT_CRITICAL_ARM_RIGHT "Critical Hit: Right Arm."
+#define HUD_TEXT_CRITICAL_WEAPON "Critical Hit: Weapon Destroyed."
 
-string HUD_TEXT_POWERUP = "Reactor Online. All Systems nominal.";
-string HUD_TEXT_NAV_REACHED = "Nav Point reached.";
+#define HUD_TEXT_POWERUP "Reactor Online. All Systems nominal."
+#define HUD_TEXT_NAV_REACHED "Nav Point reached."
 
-string HUD_TEXT_OBJECTIVE_COMPLETE_PRIME = "Primary Objective complete.";
-string HUD_TEXT_OBJECTIVE_COMPLETE_SECOND = "Secondary Objective complete.";
-string HUD_TEXT_OBJECTIVE_FAILED = "Objective Failed.";
+#define HUD_TEXT_OBJECTIVE_COMPLETE_PRIME "Primary Objective complete."
+#define HUD_TEXT_OBJECTIVE_COMPLETE_SECOND "Secondary Objective complete."
+#define HUD_TEXT_OBJECTIVE_FAILED "Objective Failed."
 
-string HUD_TEXT_MISSION_COMPLETE = "Mission Successful.";
-string HUD_TEXT_MISSION_FAILED = "Mission Failed.";
-string HUD_TEXT_TARGET_KILLED = "Target Destroyed.";
+#define HUD_TEXT_MISSION_COMPLETE "Mission Successful."
+#define HUD_TEXT_MISSION_FAILED "Mission Failed."
+#define HUD_TEXT_TARGET_KILLED "Target Destroyed."
 
-string HUD_TEXT_WEAPONS_ON = "- Weapons: ONLINE -";
-string HUD_TEXT_WEAPONS_OFF = "!- Weapons: OFFLINE -!";
+#define HUD_TEXT_WEAPONS_ON "- Weapons: ONLINE -"
+#define HUD_TEXT_WEAPONS_OFF "!- Weapons: OFFLINE -!"
 
-string HUD_TEXT_REPAIRS_ON = "Initiating Repairs.";
-string HUD_TEXT_REPAIRS_OFF = "Repairs complete.";
+#define HUD_TEXT_REPAIRS_ON "Initiating Repairs."
+#define HUD_TEXT_REPAIRS_OFF "Repairs complete."
 
-string HUD_TEXT_FIREMODE_CHAIN = "Chain-fire Engaged.";
-string HUD_TEXT_FIREMODE_GROUP = "Group-fire Engaged.";
+#define HUD_TEXT_FIREMODE_CHAIN "Chain-fire Engaged."
+#define HUD_TEXT_FIREMODE_GROUP "Group-fire Engaged."
 
-string HUD_TEXT_RADAR_ACTIVE = "Radar: Active";
-string HUD_TEXT_RADAR_PASSIVE = "Radar: Passive";
+#define HUD_TEXT_RADAR_ACTIVE "Radar: Active"
+#define HUD_TEXT_RADAR_PASSIVE "Radar: Passive"
 
 //System Functions
 void() hud_event_frame;

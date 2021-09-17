@@ -10,12 +10,10 @@ float K_ESCAPE		=	27;
 float K_SPACE		=	32;
 
 // normal keys should be passed as lowercased ascii
-
-
-
 float K_C = 99; //ASCII value
 float K_K = 107;
 float K_L = 108;
+float K_T = 116;
 float K_Z = 122;
 float K_TIL = 126;
 float K_APOS = 96;

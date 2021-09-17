@@ -1,0 +1,154 @@
+///////////////////////////
+// key constants
+
+//
+// these are the key numbers that should be passed to Key_Event
+//
+#define K_TAB		 9
+#define K_ENTER	 13
+#define K_ESCAPE	 27
+#define K_SPACE	 32
+
+// normal keys should be passed as lowercased ascii
+#define K_C 99 //ASCII value
+#define K_K 107
+#define K_L 108
+#define K_T 116
+#define K_Z 122
+#define K_TIL 126
+#define K_APOS 96
+
+#define K_BACKSPACE 127
+#define K_UPARROW	 128
+#define K_DOWNARROW 129
+#define K_LEFTARROW 130
+#define K_RIGHTARROW 131
+
+#define K_ALT	 132
+#define K_CTRL 133
+#define K_SHIFT 134
+
+#define K_F1	 135
+#define K_F2	 136
+#define K_F3	 137
+#define K_F4	 138
+#define K_F5	 139
+#define K_F6	 140
+#define K_F7	 141
+#define K_F8	 142
+#define K_F9	 143
+#define K_F10	 144
+#define K_F11	 145
+#define K_F12	 146
+
+#define K_INS	 147
+#define K_DEL	 148
+#define K_PGDN 149
+#define K_PGUP 150
+#define K_HOME 151
+#define K_END	 152
+
+#define K_NUMLOCK	 154
+#define K_CAPSLOCK 155
+#define K_SCROLLLOCK 156
+
+#define K_KP_0 157
+#define K_KP_INS K_KP_0
+#define K_KP_1 158
+#define K_KP_END K_KP_1
+#define K_KP_2 159
+#define K_KP_DOWNARROW K_KP_2
+#define K_KP_3 160
+#define K_KP_PGDN K_KP_3
+#define K_KP_4 161
+#define K_KP_LEFTARROW K_KP_4
+#define K_KP_5 162
+#define K_KP_6 163
+#define K_KP_RIGHTARROW K_KP_6
+#define K_KP_7 164
+#define K_KP_HOME K_KP_7
+#define K_KP_8 165
+#define K_KP_UPARROW K_KP_8
+#define K_KP_9 166
+#define K_KP_PGUP K_KP_9
+#define K_KP_PERIOD 167
+#define K_KP_DEL K_KP_PERIOD
+#define K_KP_DIVIDE 168
+#define K_KP_SLASH K_KP_DIVIDE
+#define K_KP_MULTIPLY 169
+#define K_KP_MINUS 170
+#define K_KP_PLUS	 171
+#define K_KP_ENTER 172
+#define K_KP_EQUALS 173
+
+// mouse buttons generate virtual keys
+#define K_PAUSE 153
+
+//
+// joystick buttons
+//
+#define K_JOY1 768
+#define K_JOY2 769
+#define K_JOY3 770
+#define K_JOY4 771
+
+//
+//
+// aux keys are for multi-buttoned joysticks to generate so they can use
+// the normal binding process
+//
+#define K_AUX1 772
+#define K_AUX2 773
+#define K_AUX3 774
+#define K_AUX4 775
+#define K_AUX5 776
+#define K_AUX6 777
+#define K_AUX7 778
+#define K_AUX8 779
+#define K_AUX9 780
+#define K_AUX10 781
+#define K_AUX11 782
+#define K_AUX12 783
+#define K_AUX13 784
+#define K_AUX14 785
+#define K_AUX15 786
+#define K_AUX16 787
+#define K_AUX17 788
+#define K_AUX18 789
+#define K_AUX19 790
+#define K_AUX20 791
+#define K_AUX21 792
+#define K_AUX22 793
+#define K_AUX23 794
+#define K_AUX24 795
+#define K_AUX25 796
+#define K_AUX26 797
+#define K_AUX27 798
+#define K_AUX28 799
+#define K_AUX29 800
+#define K_AUX30 801
+#define K_AUX31 802
+#define K_AUX32 803
+
+//
+// mouse buttons generate virtual keys
+//
+#define K_MOUSE1	 512
+#define K_MOUSE2	 513
+#define K_MOUSE3	 514
+#define K_MWHEELUP 515
+#define K_MWHEELDOWN 516
+#define K_MOUSE4	 517
+#define K_MOUSE5	 518
+#define K_MOUSE6	 519
+#define K_MOUSE7	 520
+#define K_MOUSE8	 521
+#define K_MOUSE9	 522
+#define K_MOUSE10	 523
+#define K_MOUSE11	 524
+#define K_MOUSE12	 525
+#define K_MOUSE13	 526
+#define K_MOUSE14	 527
+#define K_MOUSE15	 528
+#define K_MOUSE16	 529
+

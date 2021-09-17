@@ -44,6 +44,7 @@ entity() FindIntermission={
 };
 void() GotoNextMap={
   if( time > self.count ){
+    
     if (cvar("samelevel")){	// if samelevel is set, stay on same level
       changelevel (mapname);
     }
@@ -240,7 +241,16 @@ so that the level can do a map switch without needing
 to touch the changelevel trigger
 */
 void() changelevel_use={
+  local entity client;
   if( world.animaticOnly ){
+    if(strstrofs(self.map, "menu", 0) != -1){
+      client = find(world, classname, "player");
+      while(client != world){
+        stuffcmd(client, "disconnect;togglemenu;\n");
+        client = client.chain;
+      }
+      return;
+    }
     sv_nextmap = self.map;
 		GotoNextMap();
 		return;

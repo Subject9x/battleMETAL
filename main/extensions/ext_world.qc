@@ -13,15 +13,10 @@ void() world_metal_ini={
   
   sv_world_load_items();
   
-  registercvar("campaign", "0", 0); 
-  registercvar("saveslot", "0", 0);
-  registercvar("gamemode", "1", 1);
-  registercvar("cl_hud_alpha", "1", 1);
-  registercvar("cl_hud_color", "0", 1);
-  //registercvar("cl_hud_sway", "0", 1);
-  registercvar("cl_team", "0", 2);
-  registercvar("sv_serverflags", "0", 0);
-  registercvar("sv_about", "Default About Message", 0);
+  registercvar("saveslot", "0", CF_SERVER | CF_SERVER_FROM_CLIENT);
+  registercvar("gamemode", "1", CF_SERVER | CF_SERVER_FROM_CLIENT);
+  registercvar("sv_serverflags", "0", CF_ARCHIVE | CF_SERVER | CF_SERVER_FROM_CLIENT);
+  registercvar("sv_about", "Default About Message", CF_ARCHIVE | CF_SERVER | CF_SERVER_FROM_CLIENT);
   
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;

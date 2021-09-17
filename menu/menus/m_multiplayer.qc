@@ -15,8 +15,6 @@ entity multi_back;
 
 //MultiplayerConstants
 string IMG_MULTI_TITLE   = "gfx/menu/multi/multi_title.png";
-string IMG_MULTI_HOSTGAME   = "gfx/menu/multi/multi_hostgame.png";
-string IMG_MULTI_JOINGAME   = "gfx/menu/multi/multi_joingame.png";
 
 //Multiplayer callbacks
 void() click_multi_back={
@@ -42,11 +40,22 @@ void() click_multi_join={
 
 // ini function, called by '_f' function as a setup func
 void() m_multi_i={
-  multi_title = lbl_img('10 100', '1 1 0', IMG_MULTI_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MULTI, 1, (UI_FLAG_SIZE_IMG) );
-  multi_playersetup = btn_img_callback('10 132 0', '1 1 0', IMG_MULTI_PLAYERSETUP, (VIEW_CTX | VIEW_CTY), M_MULTI, click_multi_setup, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  multi_hostgame = btn_img_callback('10 151 0', '1 1 0', IMG_MULTI_HOSTGAME, (VIEW_CTX | VIEW_CTY), M_MULTI, click_multi_host, '1 1 1', '0 1 0',1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  multi_joingame = btn_img_callback('10 170 0', '1 1 0', IMG_MULTI_JOINGAME, (VIEW_CTX | VIEW_CTY), M_MULTI, click_multi_join, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  multi_back = btn_img_callback('10 230 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_MULTI, click_multi_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+
+  menu_parent_setup(VIEW_ORG + '0 70', '288 160');
+
+  multi_title = lbl_img( MENU_ORG + menu_parent_center_width(5), '1 1 0', IMG_MULTI_TITLE, '1 1 1', VIEW_CTX , M_MULTI, 1, UI_FLAG_SIZE_IMG );
+  
+  multi_playersetup = btn_text_callback(MENU_ORG + menu_parent_center_width(45), '16 16', "PLAYER SETUP", VIEW_CTX, M_MULTI, click_multi_setup, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  multi_playersetup.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  multi_hostgame = btn_text_callback(MENU_ORG + menu_parent_center_width(64), '16 16', "HOST GAME", VIEW_CTX, M_MULTI, click_multi_host, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0',1, UI_FLAG_SIZE_IMG);
+  multi_hostgame.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  multi_joingame = btn_text_callback(MENU_ORG + menu_parent_center_width(83), '16 16', "JOIN GAME", VIEW_CTX, M_MULTI, click_multi_join, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  multi_joingame.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  multi_back = btn_text_callback(MENU_ORG + menu_parent_center_width(128), '16 16', "BACK", VIEW_CTX, M_MULTI, click_multi_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  multi_back.fontId = FONT_NUM_XOLONIUM_BOLD;
 };
 
 /*
@@ -65,6 +74,9 @@ void() m_multi_f={
 */
 void() m_multi_d={
   local entity widget;
+  
+  gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
+  
   widget = findchainfloat(menuId, M_MULTI);
   while(widget){
     widget.draw(widget);
