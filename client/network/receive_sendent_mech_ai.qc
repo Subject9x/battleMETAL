@@ -200,7 +200,8 @@ void() sendevent_mech_ai_die={
 /*
   EVENT - CRITICAL =====================================
 */
-void( float critical ) sendevent_mech_ai_crit={  
+void( float critical ) sendevent_mech_ai_crit={
+  local entity wep;
   
   if( (critical & M_TOR_LEFT) ){
     if( self.torsoLeft != world ){
@@ -229,6 +230,16 @@ void( float critical ) sendevent_mech_ai_crit={
   if( (critical & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
+  
+  wep = self.w_slot;
+  while( wep != world ){
+    if( (critical & wep.partParentId) ){
+      wep.drawmask = 0;
+      sendent_handle_remove(wep);
+    }
+    wep = wep.w_slot;
+  }
+  
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
 };
 

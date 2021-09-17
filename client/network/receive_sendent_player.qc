@@ -464,15 +464,19 @@ void( float criticalBits ) sendevent_player_critical={
   
   if( (criticalBits & M_TOR_LEFT) ){
     te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    self.torsoLeft.drawmask = 0;
   }
   if( (criticalBits & M_TOR_RIGHT) ){
     te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    self.torsoRight.drawmask = 0;
   }
   if( (criticalBits & M_ARM_LEFT) ){
     te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    self.armLeft.drawmask = 0;
   }
   if( (criticalBits & M_ARM_RIGHT) ){
     te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+    self.armRight.drawmask = 0;
   }
   if( (criticalBits & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
@@ -484,6 +488,7 @@ void( float criticalBits ) sendevent_player_critical={
   while( wep != world ){
     if( (criticalBits & wep.partParentId) ){
       CLIENT_weapon_state = CLIENT_weapon_state - (CLIENT_weapon_state & wep.w_group);
+      wep.drawmask = 0;
     }
     wep = wep.w_slot;
   }
@@ -513,18 +518,23 @@ void(float repairValue) sendevent_player_repair={
   
   if( (repairValue & M_TOR_CENTER) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
+    self.torsoCenter.drawmask = MASK_NORMAL;
   }
   if( (repairValue & M_TOR_LEFT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
+    self.torsoLeft.drawmask = MASK_NORMAL;
   }
   if( (repairValue & M_TOR_RIGHT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
+    self.torsoRight.drawmask = MASK_NORMAL;
   }
   if( (repairValue & M_ARM_LEFT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
+    self.armLeft.drawmask = MASK_NORMAL;
   }
   if( (repairValue & M_ARM_RIGHT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
+    self.armRight.drawmask = MASK_NORMAL;
   }
   
   if(self.clientLocalId != player_localentnum){
@@ -534,6 +544,7 @@ void(float repairValue) sendevent_player_repair={
   while( wep != world ){
     if( !(repairValue & wep.partParentId) ){
       CLIENT_weapon_state = CLIENT_weapon_state | wep.w_group;
+      wep.drawmask = MASK_NORMAL;
     }
     wep = wep.w_slot;
   }
