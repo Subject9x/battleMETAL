@@ -117,7 +117,7 @@ void() te_muzzle_esr={
   sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
   
-  impactStyle = te_impact_type(endOrg, trace_ent);
+  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
     
   trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
   switch(impactStyle){

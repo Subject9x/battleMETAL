@@ -40,7 +40,7 @@ void() te_muzzle_pac={
   
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), startOrg, endOrg );
   
-  impactStyle = te_impact_type(endOrg, trace_ent);
+  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
   
   switch(impactStyle){
     case IMPACT_ARMOR:
