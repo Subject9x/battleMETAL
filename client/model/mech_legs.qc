@@ -50,11 +50,11 @@ void() predraw_legs={
         self.legs.frame = LEG_WALK_FIRSTFRAME+LEG_WALK_NUMFRAMES;	//restart it.
       }
       
-      if( self.legs.frame == LEG_WALK_STEP_LEFT ){
-        te_foot_stomp( self.origin, self.angles, self.vec_size, self.mins, TRUE);
+      if( rint(self.legs.frame) == LEG_WALK_STEP_LEFT ){
+        te_foot_stomp( self.origin, self.legs.angles, self.vec_size, self.mins, TRUE);
       }
-      if( self.legs.frame == LEG_WALK_STEP_RIGHT ){
-        te_foot_stomp( self.origin, self.angles, self.vec_size, self.mins, FALSE);
+      if( rint(self.legs.frame) == LEG_WALK_STEP_RIGHT ){
+        te_foot_stomp( self.origin, self.legs.angles, self.vec_size, self.mins, FALSE);
       }
       
       self.legs.lerpfrac = self.legs.lerpfrac + 1; //go to the start of the frame

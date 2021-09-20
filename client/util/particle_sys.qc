@@ -692,6 +692,8 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
       break;
   }
   pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
+  traceline(fx, fx + (v_up * -10), MOVE_WORLDONLY, self);
+  pointparticles( particleeffectnum("TE_FOOT_STOMP"), trace_endpos, trace_plane_normal * -1,  1);
 };
 
 /*
