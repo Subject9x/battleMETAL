@@ -5,6 +5,31 @@
   Overview: impl of the client particle system
 */
 
+void() particle_sys_ini_globals={
+  PTC_HIT_DIRT_SHOT_SML = particleeffectnum("TE_HIT_DIRT_SHOT_SML");
+  PTC_HIT_DIRT_SHOT_MED = particleeffectnum("TE_HIT_DIRT_SHOT_MED");
+  PTC_HIT_DIRT_SHOT_LRG = particleeffectnum("TE_HIT_DIRT_SHOT_LRG");
+
+  PTC_HIT_DIRT_ENE_SML = particleeffectnum("TE_HIT_DIRT_ENE_SML");
+  PTC_HIT_DIRT_ENE_MED = particleeffectnum("TE_HIT_DIRT_ENE_MED");
+  PTC_HIT_DIRT_ENE_LRG = particleeffectnum("TE_HIT_DIRT_ENE_LRG");
+  
+  PTC_HIT_DIRT_EXP_SML = particleeffectnum("TE_HIT_DIRT_EXPL_SML");
+  PTC_HIT_DIRT_EXP_MED = particleeffectnum("TE_HIT_DIRT_EXPL_MED");
+  PTC_HIT_DIRT_EXP_LRG = particleeffectnum("TE_HIT_DIRT_EXPL_LRG");
+  
+  PTC_STOMP_ICE = particleeffectnum("TE_STOMP_ICE");
+  PTC_STOMP_CITY = particleeffectnum("TE_STOMP_CITY");
+  PTC_STOMP_BADLND = particleeffectnum("TE_STOMP_BADLANDS");
+  PTC_STOMP_TUNDRA = particleeffectnum("TE_STOMP_TUNDRA");
+  PTC_STOMP_SAND = particleeffectnum("TE_STOMP_SAND");
+  
+  PTC_DUST_ICE = particleeffectnum("TE_DUST_ICE");
+  PTC_DUST_URBAN = particleeffectnum("TE_DUST_URBAN");
+  PTC_DUST_BADLND = particleeffectnum("TE_DUST_BADLANDS");
+  PTC_DUST_TUNDRA = particleeffectnum("TE_DUST_TUNDRA");
+  PTC_DUST_DESERT = particleeffectnum("TE_DUST_DESERT");
+};
 
 /*
   probably should be a utility.
@@ -48,10 +73,10 @@ void( float randomBool ) ai_voice_ini={
       self.ai_voice_group = AI_VOICE_GROUP_C;
     }
   }
-  else{
+  //else{
     //VOICE DEBUG
     //self.ai_voice_group = AI_VOICE_GROUP_C;
-  }
+ // }
 };
 
 /*
@@ -216,19 +241,19 @@ void() te_unit_dust_set={
   dbg = 1;
   switch( dbg ){
     case 1:
-      self.trail_effectnum = particleeffectnum("TE_DUST_ICE");
+      self.trail_effectnum = PTC_DUST_ICE;
       break;
     case 2: 
-      self.trail_effectnum = particleeffectnum("TE_DUST_URBAN");
+      self.trail_effectnum = PTC_DUST_URBAN;
       break;
     case 3:
-      self.trail_effectnum = particleeffectnum("TE_DUST_BADLANDS");
+      self.trail_effectnum = PTC_DUST_BADLND;
       break;
     case 4:
-      self.trail_effectnum = particleeffectnum("TE_DUST_TUNDRA");
+      self.trail_effectnum = PTC_DUST_TUNDRA;
       break;
     default:
-      self.trail_effectnum = particleeffectnum("TE_DUST_DESERT");
+      self.trail_effectnum = PTC_DUST_DESERT;
       break;
   }
 };
@@ -651,19 +676,19 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   
   switch( ENT_SERVER_INFO.worldtype ){
     case 1:
-      effType = particleeffectnum("TE_STOMP_ICE");
+      effType = PTC_STOMP_ICE;
       break;
     case 2:
-      effType = particleeffectnum("TE_STOMP_CITY");
+      effType = PTC_STOMP_CITY;
       break;
     case 3:
-      effType = particleeffectnum("TE_STOMP_BADLANDS");
+      effType = PTC_STOMP_BADLND;
       break;
     case 4:
-      effType = particleeffectnum("TE_STOMP_TUNDRA");
+      effType = PTC_STOMP_TUNDRA;
       break;
     default:
-      effType = particleeffectnum("TE_STOMP_SAND");
+      effType = PTC_STOMP_SAND;
       break;
   }
   pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
@@ -680,13 +705,10 @@ float(vector endPos, entity endEnt, float contentFlags) te_impact_type={
       }
       return IMPACT_ARMOR;
     }
-    else{
-      return IMPACT_DIRT;
-    }
+    return IMPACT_DIRT;
   }
   else{
-    if( contentFlags & DPCONTENTS_SOLID){
-      cons_logAString("trace_dphitcontents", "DPCONTENTS_SOLID"); //debug
+    if( (contentFlags & DPCONTENTS_SOLID) ){
       return IMPACT_DIRT;
     }
     if(pointcontents(endPos) == CONTENT_SOLID){

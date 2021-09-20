@@ -120,15 +120,13 @@ void() te_muzzle_esr={
   impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
     
   trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
-  switch(impactStyle){
-    case IMPACT_ARMOR:
+  
+  if(impactStyle == IMPACT_ARMOR){
       pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
-      break;
-    case IMPACT_DIRT:
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
-      break;
-    default:
-      return;
+  }
+  else if(impactStyle == IMPACT_DIRT){
+    pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
+    pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
   }
 };
 #endif

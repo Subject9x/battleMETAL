@@ -42,15 +42,12 @@ void() te_muzzle_pac={
   
   impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
   
-  switch(impactStyle){
-    case IMPACT_ARMOR:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), endOrg, norm * -6, 1);
-      break;
-    case IMPACT_DIRT:
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), endOrg, norm * -4, 1);
-      break;
-    default:
-      return;
+  if(impactStyle == IMPACT_ARMOR){
+    pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), endOrg, norm * -6, 1);
+  }
+  else if(impactStyle == IMPACT_DIRT){
+    pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), endOrg, norm * -4, 1);
+    pointparticles(PTC_HIT_DIRT_ENE_LRG, endOrg, trace_plane_normal * -1, 1);
   }
 };
 #endif

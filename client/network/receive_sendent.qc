@@ -316,10 +316,10 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   self.angles = vectoangles(self.velocity);
   //HANDLE EVENT - projectile hit.
   if( self.impactType > 0 && prevImpactType == FALSE ){
-    self.velocity = '0 0 0';
     if( self.pcl_explode ){
       self.pcl_explode();
     }
+    self.velocity = '0 0 0';
   }
 };
 

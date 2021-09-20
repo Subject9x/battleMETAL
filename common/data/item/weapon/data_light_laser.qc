@@ -24,6 +24,7 @@ void() te_muzzle_las={
   startOrg = self.origin + v_forward * self.wepFireOffset_z;
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
+  norm = normalize(endOrg - startOrg);
   
   if( vlen(endOrg - startOrg) >= 1500 ){
     sound7(self, CHAN_AUTO, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 115, 0 );
@@ -31,26 +32,18 @@ void() te_muzzle_las={
   else{
     sound7(self, CHAN_AUTO, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM, (0.45 + (random() * 0.55)) * 175, 0 );
   }
-  pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, normalize(startOrg - endOrg) * 2, 1);
+  pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, norm * -2, 1);
   
   impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
   
   trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
   
-  norm = normalize(endOrg - startOrg);
-  
-  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
-  
-  switch(impactStyle){
-    case IMPACT_ARMOR:
-      pointparticles(particleeffectnum("TE_LAS_HIT"), endOrg, norm, 1);
-      break;
-    case IMPACT_DIRT:
-      pointparticles(particleeffectnum("TE_LAS_DIRT"), endOrg , '0 0 0', 1);
-      pointparticles(particleeffectnum("TE_LAS_DIRT_IMP"), endOrg , '0 0 0', 1);
-      break;
-    default:
-      return;
+  if(impactStyle == IMPACT_ARMOR){
+      pointparticles(particleeffectnum("TE_LAS_HIT"), endOrg + (v_forward * -2), norm, 1);
+  }
+  else if(impactStyle == IMPACT_DIRT){
+    pointparticles(particleeffectnum("TE_LAS_DIRT"), endOrg + (v_forward * -2), norm, 1);
+    pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
   }
 };
 #endif

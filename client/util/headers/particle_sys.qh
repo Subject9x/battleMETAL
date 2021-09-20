@@ -33,6 +33,32 @@ float( float fogColor, float fogColorTarg  ) cl_particles_fogColorAdjust;
 float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust;
 void() cl_particles_fogFrame;
 
+
+//Particle globals - reduce func calls
+  //GENERIC
+float PTC_HIT_DIRT_SHOT_SML;
+float PTC_HIT_DIRT_SHOT_MED;
+float PTC_HIT_DIRT_SHOT_LRG;
+
+float PTC_HIT_DIRT_ENE_SML;
+float PTC_HIT_DIRT_ENE_MED;
+float PTC_HIT_DIRT_ENE_LRG;
+
+float PTC_HIT_DIRT_EXP_SML;
+float PTC_HIT_DIRT_EXP_MED;
+float PTC_HIT_DIRT_EXP_LRG;
+
+float PTC_STOMP_ICE;
+float PTC_STOMP_CITY;
+float PTC_STOMP_BADLND;
+float PTC_STOMP_TUNDRA;
+float PTC_STOMP_SAND;
+
+  //MUZZLE FLASH
+float PTC_MUZZLE_ATC;
+float PTC_MUZZLE_FLAK;
+float PTC_MUZZLE_RPC;
+
 //Particle data
 .entity effect1, effect2, effect3;
 
@@ -53,6 +79,9 @@ void() cl_particles_fogFrame;
 //.vector dest;
 
 //===================================
+
+void() particle_sys_ini_globals;
+
 
 vector() te_read_vector;
 vector() te_read_angle;

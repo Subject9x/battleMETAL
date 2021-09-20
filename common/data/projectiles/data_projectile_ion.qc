@@ -18,15 +18,21 @@ float DAT_PRJ_ION_EXPRAD = 100;
 
 #ifdef CSQC
 void() projectile_ion_expl={
-  if( self.impactType == IMPACT_SHIELD ){
-    pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
+  self.angles = vectoangles(self.velocity);
+  makevectors(self.angles);
+  traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+  switch(self.impactType){
+    case IMPACT_SHIELD:
+      pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
+      return;
+    case IMPACT_ARMOR:
+      pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
+      return;
+    case IMPACT_DIRT:
+      pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
+      pointparticles(PTC_HIT_DIRT_ENE_MED, trace_endpos, trace_plane_normal * -1, 1);
+      return;
   }
-  else if( self.impactType == IMPACT_SKY ){
-    pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
-  }
-  else{
-    pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
-  } 
 };
 #endif
 void() data_projectile_ini_ion_={
@@ -103,27 +109,34 @@ void()data_projectile_ion_explode={
 };
 
 void() data_projectile_ion_touch={
-  self.touch = SUB_Null;
-  self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
-  
-	self.impactType = IMPACT_SKY;
+  self.impactType = IMPACT_SKY;
   self.traileffectnum = FALSE;
-
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+  self.touch = SUB_Null;
   
   if(other.takedamage){
     if( other.shield > 0 ){
-      t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
+      t_damage_shield(other, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue * 0.1, FIRE_ENDPOINT, TRUE);
+      t_damage_shield(other, self, FIRE_ENT, self.damageValue * 0.1, FIRE_ENDPOINT, TRUE);
       self.impactType = IMPACT_ARMOR;
     }
     self.targetEntId = num_for_edict(other);
   }
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.01;
+  else{
+    makevectors(self.angles);
+    traceline(self.origin + (v_forward * -4), self.origin + (v_forward * 4), MOVE_WORLDONLY, self);
+    if( (trace_dpstartcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_SOLID) ){
+      self.impactType = IMPACT_DIRT;
+    }
+  }
+  
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
+  self.think = ctrl_missile_lastframe;
+  self.nextthink = time + 0.1;
 };
 #endif

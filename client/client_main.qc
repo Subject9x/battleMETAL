@@ -114,6 +114,8 @@ void() CSQC_Init =
   dynamic_precache();
   cs_precache();
   
+  particle_sys_ini_globals();
+  
   textfilter_ini_keyarray();
   
   //clean up mapname global for file use
