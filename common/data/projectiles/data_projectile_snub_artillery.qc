@@ -31,7 +31,11 @@ void() projectile_sfga_expl={
   }
   else{
     pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
-    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0.05 ); 
+    te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0.05 );
+    self.angles = vectoangles(self.velocity);
+    makevectors(self.angles);
+    traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+    pointparticles(PTC_HIT_DIRT_EXP_LRG, trace_endpos, trace_plane_normal * -1, 1);
   }
 };
 #endif
@@ -78,19 +82,11 @@ void() data_projectile_snub_artillery_touch_={
   local float damage;
   local entity hitLocation;
   
-  self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
-  self.velocity = '0 0 0';
-  self.avelocity = '0 0 0';
   
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
-  self.impactType = IMPACT_DIRT;
-  debris = ceil(random() * 4);
-  if( pointcontents(self.origin) == CONTENT_SKY ){
-    self.impactType = IMPACT_SKY;
-    debris = 0;
-  }
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT;
+  self.impactType = IMPACT_SKY;
   
   if( other.takedamage ){
     damage = self.damageValue;
@@ -119,14 +115,22 @@ void() data_projectile_snub_artillery_touch_={
     debris = 0;
   }
   else{
+    makevectors(self.angles);
+    traceline(self.origin + (v_forward * -4), self.origin + (v_forward * 4), MOVE_WORLDONLY, self);
+    if( (trace_dpstartcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_SOLID) ){
+      self.impactType = IMPACT_DIRT;
+      debris = ceil(random() * 4);
+    }
     data_projectile_snub_artillery_radiusDamage();
   }
   if( debris > 0 ){
     te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, ceil(0.5 + random() * 2));
     te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 1.25, ceil(0.5 + random() * 2) );
   }
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.05;
+  
+  self.movetype = MOVETYPE_NONE;
+  self.think = ctrl_missile_lastframe;
+  self.nextthink = time + 0.1;
 };
 
 void() data_projectile_snub_artillery_radiusDamage={

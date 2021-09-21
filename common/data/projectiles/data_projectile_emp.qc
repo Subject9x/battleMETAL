@@ -29,7 +29,7 @@ void() projectile_emp_expl={
     case IMPACT_DIRT:
       pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
       self.angles = vectoangles(self.velocity);
-      makevectors(self.velocity);
+      makevectors(self.angles);
       traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
       pointparticles(PTC_HIT_DIRT_ENE_MED, trace_endpos, trace_plane_normal * -1, 1);
       return;

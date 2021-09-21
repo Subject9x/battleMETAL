@@ -32,7 +32,7 @@ void() projectile_plasma_expl={
   }
   else if( self.impactType == IMPACT_DIRT ){
     self.angles = vectoangles(self.velocity);
-    makevectors(self.velocity);
+    makevectors(self.angles);
     traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
     pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
     pointparticles( particleeffectnum("TE_RPC_HIT_DIRT"), trace_endpos, trace_plane_normal * -1, 1);
