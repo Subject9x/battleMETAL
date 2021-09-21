@@ -19,9 +19,6 @@ float DAT_PRJ_EMP_EXPRAD      = 300;
 
 #ifdef CSQC
 void() projectile_emp_expl={
-  self.angles = vectoangles(self.velocity);
-  makevectors(self.velocity);
-  traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
   switch(self.impactType){
     case IMPACT_SHIELD:
       pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
@@ -31,6 +28,9 @@ void() projectile_emp_expl={
       return;
     case IMPACT_DIRT:
       pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
+      self.angles = vectoangles(self.velocity);
+      makevectors(self.velocity);
+      traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
       pointparticles(PTC_HIT_DIRT_ENE_MED, trace_endpos, trace_plane_normal * -1, 1);
       return;
   }
@@ -196,7 +196,7 @@ void() data_prj_emp_touch={
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.05;
+  self.think = ctrl_missile_lastframe;
+  self.nextthink = time + 0.01;
 };
 #endif
