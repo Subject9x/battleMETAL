@@ -166,6 +166,17 @@
     lightcolor 0.039 0.133 0.161
     lightshadow 0.25
   
+   //TE_ESR_IMPACT_DIRT - decal
+    effect TE_ESR_IMPACT_DIRT
+    countabsolute 1
+    type decal
+    tex 34 34
+    color 0xFF4000 0xFFBF00
+    size 4 6
+    alpha 128 512 0
+    originjitter 1 1 1
+  
+  
   //TE_ESR_IMPACT_ARMOR - LIGHTNING FRAG
     effect TE_ESR_IMPACT_ARMOR
     count 1
@@ -281,14 +292,6 @@
     trailspacing 32
     stretchfactor -1
 
-  //TE_LAS_RAIL - LIGHT
-    effect TE_LAS_RAIL
-    lightradius 200
-    lightradiusfade 45
-    lighttime 0.1
-    lightcolor 0.49 0.24 0.74
-    lightshadow 0.55
-
   //TE_LAS_HIT - SPARK
     effect TE_LAS_HIT
     count 0.2
@@ -337,20 +340,24 @@
     lightcolor 0.49 0.24 0.74
     lightshadow 0.55
 
-  //TE_LAS_DIR
+  //TE_LAS_DIRT
     effect TE_LAS_DIRT
-    count 1
-    type spark
+    count 2
+    type smoke
     blend alpha
-    color 0xBDBDBD 0xF2F2F2
+    color 0xD84401 0xF65603
     tex 47 55
-    size 0.75 1.25
+    size 2 3
     alpha 256 512 350
-    time 0.25 1
-    originjitter 0.1 1 1
-    velocityjitter 5 1 1
-    velocitymultiplier 3
-    stretchfactor 4
+    originjitter 1 1 1
+    velocityjitter 4 4 4
+    
+    effect TE_LAS_DIRT
+    lightradius 200
+    lightradiusfade 45
+    lighttime 0.1
+    lightcolor 0.49 0.24 0.74
+    lightshadow 0.55
 //=====================================================
 
 
@@ -1656,6 +1663,27 @@
     lightcolor 0 1 0
     lightshadow 0.25
     notunderwater
+    
+  //TE_RPC_HIT_DIRT - GREEN SPLAT
+    effect TE_RPC_HIT_DIRT
+    countabsolute 1
+    type decal
+    color 0xE3CCE1 0xFEE4FC
+    tex 16 32
+    size 4 5
+    alpha 768 1024 0
+    originjitter 5 0 0
+    
+    effect TE_RPC_HIT_DIRT
+    count 3
+    type decal
+    blend alpha
+    color 0x8A008D 0xD200D5
+    tex 16 32
+    size 3 4
+    alpha 512 768 0
+    originjitter 5 0 0
+    
 //==========================================
 
 
@@ -2722,6 +2750,15 @@ velocitymultiplier 1
 //================================================
 
 
+//
+  effect TE_FOOT_STOMP
+  countabsolute 1
+  type decal
+  tex 43 45
+  size 8 10
+  alpha 256 512 2
+  originjitter 5 0 0
+//
 
 
 
@@ -3081,3 +3118,169 @@ velocitymultiplier 2
     lightcolor 1 0.1 0.45
     lightshadow 0.3
 //==========================================
+
+
+
+//IMPACT DIRT BULLET===========================
+  effect TE_HIT_DIRT_SHOT_SML
+  countabsolute 1
+  type decal
+  tex 50 55
+  size 2 3
+  alpha 768 1024 0
+  originjitter 5 0 0
+  
+  effect TE_HIT_DIRT_SHOT_MED
+  countabsolute 1
+  type decal
+  tex 0 6
+  size 3 4
+  alpha 768 1024 0
+  originjitter 5 0 0
+  
+  effect TE_HIT_DIRT_SHOT_LRG
+  countabsolute 1
+  type decal
+  tex 7 13
+  size 7 8
+  alpha 768 1024 0
+  originjitter 5 0 0
+
+//IMPACT DIRT ENERG===========================
+  effect TE_HIT_DIRT_ENE_SML
+  countabsolute 1
+  type decal
+  tex 56 59
+  size 3 4
+  alpha 512 1024 0
+  originjitter 5 0 0
+  
+  effect TE_HIT_DIRT_ENE_MED
+  countabsolute 1
+  type decal
+  tex 43 45
+  size 4 5
+  alpha 1024 1024 0
+  originjitter 5 0 0
+  
+  effect TE_HIT_DIRT_ENE_LRG
+  countabsolute 1
+  type decal
+  tex 32 32
+  size 5 6
+  alpha 256 512 0
+  originjitter 5 0 0
+  
+  effect TE_HIT_DIRT_ENE_LRG
+  countabsolute 1
+  type decal
+  tex 34 34
+  size 4 5
+  alpha 512 1024 0
+  originjitter 5 0 0
+  
+//IMPACT DIRT EXPLODE===========================
+  effect TE_HIT_DIRT_EXPL_SML
+  countabsolute 1
+  type decal
+  color 0x000000 0x000000
+  tex 56 59
+  size 2 3
+  alpha 512 1024 0
+  originjitter 5 0 0
+  
+  //TE_HIT_DIRT_EXPL_MED - center burn
+  effect TE_HIT_DIRT_EXPL_MED
+  countabsolute 1
+  type decal
+  color 0x000000 0x000000
+  tex 35 36
+  size 3 4
+  alpha 512 1024 0
+  originjitter 5 0 0
+  
+  //TE_HIT_DIRT_EXPL_MED - damage ring
+  effect TE_HIT_DIRT_EXPL_MED
+  countabsolute 1
+  type decal
+  tex 34 34
+  size 14 16
+  alpha 256 768 0
+  originjitter 5 0 0
+  
+  //TE_HIT_DIRT_EXPL_MED - shockwave
+  effect TE_HIT_DIRT_EXPL_MED
+  notunderwater
+  countabsolute 1
+  type static
+  blend alpha
+  color 0xC4BBBA 0xDFD8D5
+  tex 32 32
+  size 2 3
+  sizeincrease 350
+  alpha 128 256 450
+  velocityjitter 0 0 1	// must be set to this !!
+  orientation oriented	// must be set to this !!
+  rotate 0 10 -20 20
+  
+  //TE_HIT_DIRT_EXPL_MED - smoke
+  effect TE_HIT_DIRT_EXPL_MED
+  count 3
+  type smoke
+  blend alpha
+  color 0x474545 0x888686
+  tex 8 15
+  size 5 6
+  sizeincrease 0.5
+  alpha 128 256 50
+  originjitter 3 3 3
+  velocityjitter 5 5 5
+  gravity -0.00050
+  
+  
+  //TE_HIT_DIRT_EXPL_LRG - center burn
+  effect TE_HIT_DIRT_EXPL_LRG
+  countabsolute 1
+  type decal
+  tex 35 36
+  size 10 12
+  alpha 512 768 0
+  originjitter 5 0 0
+  
+  //TE_HIT_DIRT_EXPL_LRG - damage ring
+  effect TE_HIT_DIRT_EXPL_LRG
+  countabsolute 1
+  type decal
+  tex 34 34
+  size 14 16
+  alpha 256 768 0
+  originjitter 5 0 0
+  
+  //TE_HIT_DIRT_EXPL_LRG - shockwave
+  effect TE_HIT_DIRT_EXPL_LRG
+  notunderwater
+  countabsolute 1
+  type static
+  blend alpha
+  color 0xC4BBBA 0xDFD8D5
+  tex 32 32
+  size 2 3
+  sizeincrease 350
+  alpha 128 256 450
+  velocityjitter 0 0 1	// must be set to this !!
+  orientation oriented	// must be set to this !!
+  rotate 0 10 -20 20
+  
+  //TE_HIT_DIRT_EXPL_LRG - smoke
+  effect TE_HIT_DIRT_EXPL_LRG
+  count 3
+  type smoke
+  blend alpha
+  color 0x474545 0x888686
+  tex 8 15
+  size 5 6
+  sizeincrease 0.5
+  alpha 128 256 50
+  originjitter 3 3 3
+  velocityjitter 5 5 5
+  gravity -0.00050

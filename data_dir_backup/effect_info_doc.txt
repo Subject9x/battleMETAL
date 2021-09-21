@@ -1,0 +1,49 @@
+https://www.quakewiki.net/darkplaces-wiki/effectinfo-scripting-reference/
+effect NAME				// unique desired name of the effect
+type	alphastatic/static/spark/beam/
+	rain/raindecal/snow/bubble/
+	blood/decal/entityparticle	// type of particle to spawn (defines some aspects of behavior)
+count f					// total count of particles to create
+countabsolute f				// absolute total particles to ever create
+color h h (HEX)				// range of colors to choose from in hex RRGGBB (like HTML color tags), randomly interpolated at spawn
+tex i i 				// a random texture is chosen in this range (note the second value is one past the last choosable
+					// so for example 8,16 chooses any from 8 up and including 15) if start and end of the range are the same
+					// no randomization is done
+size start end timescale (floats)	// range of size values randomly chosen when spawning
+sizeincrease f				// size increase over time
+alpha start end ?			// range of alpha values randomly chosen when spawning, plus alpha fade
+time f f				// how long the particle should live (note it is also removed if alpha drops to 0)
+gravity f				// how much gravity affects this particle (negative makes it fly up!)
+bounce f				// how much bounce the particle has when it hits a surface, if negative the particle is removed on impact
+airfriction f				// if in air this friction is applied, if negative the particle accelerates
+liquidfriction f			// if in liquid (water/slime/lava) this friction is applied, if negative the particle accelerates
+originoffset x y z			// origin offset from the original origin
+velocityoffset x y z			// velocity offset from the original velocity
+originjitter x y z			// random origin for the particle to be spawned at
+velocityjitter x y z			// random velocity for the particle to have
+velocitymultiplier x			// velocity multiplier
+lightradius f				// an effect can also spawn a dlight, light radius
+lightradiusfade f			// light falloff
+lighttime f				// duration of the light
+lightcolor r g b (floats)		// light colour
+lightshadow i				// if the light casts shadows
+lightcubemapnum i			// cubemap to use for the light
+underwater				// effect is for underwater only
+notunderwater				// effect is for out of water only
+trailspacing f				// causes the particle to spawn in an evenly spaced line from originmins to originmaxs
+					// (causing them to describe a trail, not a box)
+    
+rotate 0 10 -20 20
+    
+staincolor <min_color> <max_color>  A randomized color for decal particle.
+
+stainalpha <min_alpha> <max_alpha>    A randomized alpha.
+
+stainsize <min_size> <max_size>    A randomized size.
+
+staintex <min_index> <max_index>    A randomized index into particlefont.
+
+stainless   Disables decal spawning and returns all parms to it's default values. 
+
+NOTE: decal
+  originjitter x y z -> X becomes distance of traceline to findable surface!
