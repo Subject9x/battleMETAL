@@ -195,7 +195,6 @@ void() data_prj_emp_touch={
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
-  
   self.think = ctrl_missile_lastframe;
   self.nextthink = time + 0.01;
 };
