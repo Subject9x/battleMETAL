@@ -29,6 +29,10 @@ void() particle_sys_ini_globals={
   PTC_DUST_BADLND = particleeffectnum("TE_DUST_BADLANDS");
   PTC_DUST_TUNDRA = particleeffectnum("TE_DUST_TUNDRA");
   PTC_DUST_DESERT = particleeffectnum("TE_DUST_DESERT");
+  
+  PTC_HIT_EXPL_SML = particleeffectnum("TE_HIT_EXPL_SML");
+  PTC_HIT_EXPL_MED = particleeffectnum("TE_HIT_EXPL_MED");
+  PTC_HIT_EXPL_LRG = particleeffectnum("TE_HIT_EXPL_LRG");
 };
 
 /*
@@ -372,6 +376,17 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
     trailparticles(world, particleeffectnum("TE_DEBRIS_TRAIL_SMALL"), back, launch);
     debris = debris - 1;
   }
+  
+  if(explodeSize < 2 ){
+    pointparticles( PTC_HIT_EXPL_SML, org, back, 1);
+  }
+  if(explodeSize == 2){
+    pointparticles( PTC_HIT_EXPL_MED, org, back, 1);
+  }
+  else{
+    pointparticles( PTC_HIT_EXPL_LRG, org, back, 1);
+  }
+  
 };
 
 /*
