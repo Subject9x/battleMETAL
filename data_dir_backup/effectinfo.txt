@@ -3284,3 +3284,92 @@ velocitymultiplier 2
   originjitter 3 3 3
   velocityjitter 5 5 5
   gravity -0.00050
+
+//IMPACT OBJECT EXPLODE===========================
+  //TE_HIT_EXPL_SML - shockwave
+  effect TE_HIT_EXPL_SML
+  notunderwater
+  countabsolute 1
+  type static
+  blend alpha
+  color 0xC4BBBA 0xDFD8D5
+  tex 32 32
+  size 1 1.5
+  sizeincrease 350
+  alpha 128 256 650
+  velocityjitter 0 0 1	// must be set to this !!
+  orientation billboard	// must be set to this !!
+  rotate 0 360 -20 20
+  
+  //TE_HIT_EXPL_SML - smoke
+  effect TE_HIT_EXPL_SML
+  count 3
+  type smoke
+  blend alpha
+  color 0x474545 0x888686
+  tex 8 15
+  size 2 3
+  sizeincrease 0.5
+  alpha 64 128 50
+  originjitter 3 3 3
+  velocityjitter 5 5 5
+  gravity -0.00050
+  
+  //TE_HIT_EXPL_MED - shockwave
+  effect TE_HIT_EXPL_MED
+  notunderwater
+  countabsolute 1
+  type static
+  blend alpha
+  color 0xC4BBBA 0xDFD8D5
+  tex 32 32
+  size 1 2
+  sizeincrease 250
+  alpha 128 256 550
+  velocityjitter 0 0 1	// must be set to this !!
+  orientation billboard
+  rotate 0 360 -20 20
+  
+  //TE_HIT_EXPL_MED - smoke
+  effect TE_HIT_EXPL_MED
+  count 5
+  type smoke
+  blend alpha
+  color 0x474545 0x888686
+  tex 8 15
+  size 3 4
+  sizeincrease 0.5
+  alpha 64 128 50
+  originjitter 3 3 3
+  velocityjitter 5 5 5
+  gravity -0.00050
+  
+  
+  //TE_HIT_EXPL_LRG - shockwave
+  effect TE_HIT_EXPL_LRG
+  notunderwater
+  countabsolute 1
+  type static
+  blend alpha
+  color 0xC4BBBA 0xDFD8D5
+  tex 32 32
+  size 2 3
+  sizeincrease 150
+  alpha 128 256 450
+  velocityjitter 0 0 1	// must be set to this !!
+  orientation billboard	// must be set to this !!
+  rotate 0 360 -15 15
+  
+  //TE_HIT_EXPL_LRG - smoke
+  effect TE_HIT_EXPL_LRG
+  count 7
+  type smoke
+  blend alpha
+  color 0x474545 0x888686
+  tex 8 15
+  size 4 5
+  sizeincrease 0.5
+  alpha 64 128 50
+  originjitter 3 3 3
+  velocityjitter 5 5 5
+  gravity -0.00050
