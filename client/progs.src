@@ -219,6 +219,7 @@ ui/hud/crosshair/hud_crosshair4.qc
   model/guard_tower.qc
   model/radar_post.qc
   model/mech_legs.qc
+  model/mech_ai.qc
 //=======================
 
 input_events.qc

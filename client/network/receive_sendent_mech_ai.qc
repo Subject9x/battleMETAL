@@ -96,6 +96,9 @@ void() predraw_mech_corpse={
     addentity(self.armLeft);
   }
 };
+
+void() mech_ai_die_stand1;
+
 void() sendevent_mech_ai_die_standing={
   local entity mechRoot;
   local entity mechTorLeft;
@@ -156,10 +159,8 @@ void() sendevent_mech_ai_die_standing={
   mechRoot.effect1.origin = mechRoot.origin;
   mechRoot.effect1.origin_z = mechRoot.effect1.origin_z + self.maxs_z;
   
-  mechRoot.data_lifetime = time + 360 + (random() * 180);
-  mechRoot.think = mech_corpse_th;
+  mechRoot.think = mech_ai_die_stand1;
   mechRoot.nextthink = time + 0.1;
-  
 };
 
 void() sendevent_mech_ai_die={
