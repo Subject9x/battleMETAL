@@ -37,7 +37,7 @@ void() mech_ai_die_stand1={
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
 
   self.think = mech_ai_die_stand2;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand2={
@@ -58,7 +58,7 @@ void() mech_ai_die_stand2={
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
 
   self.think = mech_ai_die_stand3;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand3={
@@ -79,7 +79,7 @@ void() mech_ai_die_stand3={
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
 
   self.think = mech_ai_die_stand4;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand4={
@@ -100,7 +100,7 @@ void() mech_ai_die_stand4={
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
   
   self.think = mech_ai_die_stand5;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand5={
@@ -115,7 +115,7 @@ void() mech_ai_die_stand5={
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
   
   self.think = mech_ai_die_stand6;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand6={
@@ -128,7 +128,7 @@ void() mech_ai_die_stand6={
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
   self.think = mech_ai_die_stand7;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand7={
@@ -141,7 +141,7 @@ void() mech_ai_die_stand7={
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
   self.think = mech_ai_die_stand8;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand8={
@@ -155,7 +155,7 @@ void() mech_ai_die_stand8={
   te_missile_explode( ofs, self.vec_size * 2, '0.5 0.85 0.96', 0.001 );
 
   self.think = mech_ai_die_stand9;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand9={
@@ -168,7 +168,7 @@ void() mech_ai_die_stand9={
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
   self.think = mech_ai_die_stand10;
-  self.nextthink = time + 0.2;
+  self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand10={
@@ -180,7 +180,7 @@ void() mech_ai_die_stand10={
   ofs = ofs + (v_up * (crandom() * self.maxs));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  self.data_lifetime = time + 360 + (random() * 180);
+  self.data_lifetime = servertime + 360 + (random() * 180);
   self.think = mech_corpse_th;
-  self.nextthink = time + 0.1;
+  self.nextthink = servertime + 0.1;
 };
