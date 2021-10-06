@@ -503,6 +503,36 @@ void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogD
   WriteShort( MSG_ONE, fogFade );
 };
 
+
+void(entity client, entity cube) client_sendParticleCube={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_PARTICLE_CUBE );
+  
+  WriteByte( MSG_ONE, cube.data_idx );
+  
+  WriteCoord( MSG_ONE, cube.compOffset_x );
+  WriteCoord( MSG_ONE, cube.compOffset_y );
+  WriteCoord( MSG_ONE, min(client.mins_z, cube.compOffset_z) );
+  
+  WriteCoord( MSG_ONE, cube.compAltOffset_x );
+  WriteCoord( MSG_ONE, cube.compAltOffset_y );
+  WriteCoord( MSG_ONE, cube.compAltOffset_z );
+  
+  WriteCoord( MSG_ONE, cube.velocity_x );
+  WriteCoord( MSG_ONE, cube.velocity_y );
+  WriteCoord( MSG_ONE, cube.velocity_z );
+  
+  WriteShort( MSG_ONE, cube.count );
+  WriteShort( MSG_ONE, cube.count1 );
+  WriteShort( MSG_ONE, cube.jump_flag );
+  WriteShort( MSG_ONE, cube.count2 );
+  WriteShort( MSG_ONE, time + cube.count3 );
+  
+  //WriteLong( MSG_ONE, cube.spawnflags );
+  
+};
+
 /*
   scope agnostic means of sending CD track changes to the client
 */

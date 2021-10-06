@@ -19,7 +19,6 @@ float input_sequence;
 .float clientLocalId;   //Client Only - player_localentnum but calculated for all players on every client.
 .float clientLocalNum;  //Client Only - player_localnum but calculated for all players on every client.
 .float sequence;
-.float particleCubeFlag;
 .float hud_bob;    //bob settings are important for dat immersion
 .float hud_bob_cycle;
 .float hud_bob_up;  

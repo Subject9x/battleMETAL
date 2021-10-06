@@ -209,12 +209,10 @@ void(entity item) te_weapon_fire_handler={
   
   this = self;
   self = item;
-    if( self.itemMuzzleFlash ){
-      view = self.angles;
-      view_x = view_x * -1;
-      makevectors(view);
-      self.itemMuzzleFlash();
-    }
+    view = self.angles;
+    view_x = view_x * -1;
+    makevectors(view);
+    self.itemMuzzleFlash();
   self = this;
 };
 
@@ -816,7 +814,7 @@ void() te_mech_dead_legs_burn={
   makevectors(self.angles);
   fireOrg = self.origin + (v_up * self.maxs_z);
   
-  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 2));
+  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
   
   
   self.think = te_mech_dead_legs_burn;
@@ -824,6 +822,10 @@ void() te_mech_dead_legs_burn={
 };
 
 void() te_mech_dead_legs_smoke={
+  local vector fireOrg;
+  makevectors(self.angles);
+  fireOrg = self.origin + (v_up * self.maxs_z);
+  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
   if( time > self.data_lifetime ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
@@ -831,3 +833,56 @@ void() te_mech_dead_legs_smoke={
   }
 
 };
+
+//Particle box
+void() particle_box_ini={
+  PTC_CUBE_ON = TRUE;
+  
+  PTC_CUBE_TYPE = ReadByte();
+  
+  PTC_CUBE_MIN = te_read_vector();
+  PTC_CUBE_MAX = te_read_vector();
+  PTC_CUBE_VEL = te_read_vector();
+  
+  PTC_CUBE_COUNT = ReadShort();
+  PTC_CUBE_COLOR = ReadShort();
+  PTC_CUBE_GRAV = ReadShort();
+  PTC_CUBE_VEL_JITTER = ReadShort();
+  PTC_CUBE_LIFETIME = ReadShort();
+  
+  PTC_CUBE_ORG = pmove_org;
+};
+
+void() particle_box_think={
+  
+  local vector amin, amax;
+  local vector playerMove, playerOrgOffset;
+  local float cubeLen;
+  
+  playerMove = vectoangles(pmove_vel);
+  makevectors(playerMove);
+  playerOrgOffset = pmove_org + (v_forward * (PTC_CUBE_MAX_x * 0.5) );
+  cubeLen = vlen( playerOrgOffset - PTC_CUBE_ORG);
+  if( cubeLen > PTC_CUBE_MAX_x ){
+    PTC_CUBE_ORG = pmove_org + (v_forward * (PTC_CUBE_MAX_x * 0.9)); 
+  }
+  
+  amin = PTC_CUBE_ORG + PTC_CUBE_MIN;
+  amax = PTC_CUBE_ORG + PTC_CUBE_MAX;
+  
+  switch( PTC_CUBE_TYPE ){
+    case PTC_CUBE_TYPE_BASIC:
+      te_particlecube(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR, PTC_CUBE_GRAV, PTC_CUBE_VEL_JITTER);
+      break;
+    case PTC_CUBE_TYPE_RAIN:
+      te_particlerain(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR);
+      break;
+    case PTC_CUBE_TYPE_SNOW:
+      te_particlesnow(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR);
+      break;
+  }
+  
+  PTC_CUBE_UPDATE = servertime + 0.1;
+
+};
+

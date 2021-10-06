@@ -466,6 +466,10 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     }
     //HUD sound system
     snd_hud_vfx_frame();
+    
+    if( PTC_CUBE_ON && servertime > PTC_CUBE_UPDATE){
+      particle_box_think();
+    }
   }
   
   //menu system
@@ -563,6 +567,10 @@ float() CSQC_Parse_TempEntity =
       
     case TE_VFX_RAIL:
       trailparticles( world, ReadShort(), te_read_vector(), te_read_vector() );
+      return TRUE;
+     
+    case TE_PARTICLE_CUBE:
+      particle_box_ini();
       return TRUE;
   } 
 	return FALSE;

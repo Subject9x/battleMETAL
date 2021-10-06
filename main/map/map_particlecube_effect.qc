@@ -46,91 +46,29 @@ Inputs
  64 REMOVE = remove on touch
 */
 
-/*
-  Plays the particle effect.
-  checks owner's position, update particleCube origin as necessary.
-*/
-void() map_particlecube_effect_think={
-  local float cubeLen, amount;
-  local vector playerMove, playerOffsetOrigin, particleVelocity;
-
-  playerMove = vectoangles( self.owner.velocity );
-  makevectors( playerMove );
-  playerOffsetOrigin = self.owner.origin + (v_forward * (self.maxs_x * 0.5) );
-  cubeLen = vlen( playerOffsetOrigin - self.origin);
-  if( cubeLen > self.maxs_x ){
-    setorigin( self, self.owner.origin + (v_forward * (self.maxs_x * 0.9)) ) ; 
-  }
-  particleVelocity = te_apply_wind( self.origin );
-  particleVelocity = normalize( particleVelocity - self.origin ) * WINDDIR_z;
-  
-  amount = self.count;
-  if( (self.spawnflags & 32) ){
-    amount = random() * amount;
-  }
-  
-  switch( self.data_idx ){
-    case 1:
-      te_particlerain(self.absmin, self.absmax, particleVelocity, amount, self.count1);
-      break;
-    case 2:
-      te_particlesnow(self.absmin, self.absmax, particleVelocity, amount, self.count1);
-      break;
-    default:
-      te_particlecube(self.absmin, self.absmax, particleVelocity, amount, self.count1, self.jump_flag, self.count2);
-      break;
-  }
-  
-  
-  self.nextthink = time + 0.1;
-  self.think = map_particlecube_effect_think;
-
-  //LIFETIME
-  if( time > self.count3) {
-    self.think = SUB_Remove;
-    self.owner.particleCube = world;
-    return;
-  }
-};
 
 void() map_particlecube_effect_touch={
   local entity newCube;
   local entity trigger;
   
-  if( (other.flags & FL_CLIENT) ){
-    if( !other.particleCube || (other.particleCube == world) ){
-      newCube = spawn();
-      other.particleCube = newCube;
-    }
-    trigger = self;
-    self = other.particleCube;
-      //NOTE: if network-play is ever done, this will need to be pushed up to TE_ messaging and have the actual te_() call be done in csqc.
-      self.drawonlytoclient = other;
-      self.owner = other;
-      self.movetype = MOVETYPE_NONE;
-      self.solid = SOLID_NOT;
-      self.data_idx = trigger.data_idx;
-      self.mins = trigger.compOffset;
-      self.mins_z = other.mins_z; //might be a problem
-      self.maxs = trigger.compAltOffset;
-      self.velocity = trigger.velocity;
-      self.count = trigger.count;
-      self.count1 = trigger.count1;
-      self.jump_flag = trigger.jump_flag;
-      self.count2 = trigger.count2;
-      self.count3 = time + trigger.count3;
-      self.spawnflags = trigger.spawnflags;
-      setsize(self, self.mins, self.maxs);
-      setorigin(self, other.origin);
-      self.think = map_particlecube_effect_think;
-      self.nextthink = time + 0.1;
-    self = trigger;
-    
-    if( (self.spawnflags & 64) ){
-      self.solid = SOLID_NOT;
-      remove(self);
-      return;
-    }
+  if( !(other.flags & FL_CLIENT) ){
+    return;
+  }
+  
+  trigger = self;
+  
+  if( other.particleCube == self ){
+    return;
+  }
+  //any-given client can only have 1 particle cube effect active on them at any time.
+  other.particleCube = self;
+  client_sendParticleCube(other, trigger);
+  
+  if( (self.spawnflags & 64) ){
+    self.solid = SOLID_NOT;
+    other.particleCube = world;
+    remove(self);
+    return;
   }
 };
 
@@ -146,5 +84,7 @@ void() map_particlecube_effect={
   if( !(self.spawnflags & 2) ){
     self.count3 = 999999999;  //worked for iD, right?
   }
+  
+  self.effects = self.effects | EF_NODRAW;
   self.touch = map_particlecube_effect_touch;
 };
