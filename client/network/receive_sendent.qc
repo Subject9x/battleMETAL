@@ -351,7 +351,7 @@ void() sendevent_handle_weaponfire={
   makevectors(self.angles);
   
   while( equip != world ){
-    if( (self.attackFlag & equip.w_group) ){
+    if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
       te_weapon_fire_handler(equip);
     }
     equip = equip.w_slot;
