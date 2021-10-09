@@ -408,6 +408,15 @@ Keys:
 "cnt2"
  random velocity adjustment, default is 0, higher makes the particles more random, 0 makes them follow velocity exactly.
 */
+/*QUAKED func_meta_particlecube (.9 .9 .9) ? 
+  cover interior volumes with this to make sure player particleCube effects do not play
+  INSIDE the room.
+  
+  this only works if a player has a map_particlecube_effect active on them.
+  
+  make sure the brush volume FULLY ENCLOSES the brush work with ample height above.
+  
+*/
 /*QUAKED info_rotate (0 .5 0) (-8 -8 -8) (8 8 8)
 rotate_objects target this to
 set center of rotation.

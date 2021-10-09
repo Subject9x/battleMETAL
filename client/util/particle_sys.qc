@@ -835,6 +835,8 @@ void() te_mech_dead_legs_smoke={
 };
 
 //Particle box
+
+
 void() particle_box_ini={
   PTC_CUBE_ON = TRUE;
   
@@ -850,6 +852,8 @@ void() particle_box_ini={
   PTC_CUBE_VEL_JITTER = ReadShort();
   PTC_CUBE_LIFETIME = ReadShort();
   
+  PTC_CUBE_FLAGS = ReadLong();
+  
   PTC_CUBE_ORG = pmove_org;
 };
 
@@ -858,17 +862,31 @@ void() particle_box_think={
   local vector amin, amax;
   local vector playerMove, playerOrgOffset;
   local float cubeLen;
+  local entity meta;
   
   playerMove = vectoangles(pmove_vel);
   makevectors(playerMove);
+  
   playerOrgOffset = pmove_org + (v_forward * (PTC_CUBE_MAX_x * 0.5) );
+  
   cubeLen = vlen( playerOrgOffset - PTC_CUBE_ORG);
   if( cubeLen > PTC_CUBE_MAX_x ){
     PTC_CUBE_ORG = pmove_org + (v_forward * (PTC_CUBE_MAX_x * 0.9)); 
   }
   
+  traceline(playerOrgOffset, playerOrgOffset + (v_up * PTC_CUBE_MAX_z), TRUE, world);
+  PTC_CUBE_MAX_z = vlen(trace_endpos - PTC_CUBE_ORG) * 0.5;
+  
   amin = PTC_CUBE_ORG + PTC_CUBE_MIN;
   amax = PTC_CUBE_ORG + PTC_CUBE_MAX;
+  
+  for(meta = particleCubeMetaDataList; meta != world; meta = meta.w_slot){
+    if( BoxesOverlap(pmove_org - '2 2 2', pmove_org + '2 2 2', meta.absmin, meta.absmax ) ){
+      amin = meta.absmin;
+      amax = meta.absmax;
+      break;
+    }
+  }
   
   switch( PTC_CUBE_TYPE ){
     case PTC_CUBE_TYPE_BASIC:
@@ -881,8 +899,8 @@ void() particle_box_think={
       te_particlesnow(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR);
       break;
   }
-  
-  PTC_CUBE_UPDATE = servertime + 0.1;
+
+  PTC_CUBE_UPDATE = (time - frametime) + 0.1;
 
 };
 

@@ -72,7 +72,7 @@ void() map_particlecube_effect_touch={
   }
 };
 
-/*QUAKED (.9 .9 .9) (-32 -32 -16) (32 32 16)
+/*QUAKED map_particlecube_effect (.9 .9 .9) (-32 -32 -16) (32 32 16)
 This is to turn the effect on/off/update.
 */
 void() map_particlecube_effect={
@@ -85,6 +85,57 @@ void() map_particlecube_effect={
     self.count3 = 999999999;  //worked for iD, right?
   }
   
+  if( !self.data_idx ){
+    self.data_idx = 1;
+  }
+  
+  if( !self.count ){
+    self.count = 4;
+  }
+  
   self.effects = self.effects | EF_NODRAW;
   self.touch = map_particlecube_effect_touch;
+};
+
+
+void() func_meta_particlecube_th={
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  
+};
+
+float( float isNew, float changedFlags ) send_pcl_cube_meta={
+  //HEADER
+  WriteByte( MSG_ENTITY, SENDTYPE_MAP );
+  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteByte( MSG_ENTITY, DATA_PCL_CUBE );
+  //--------
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteCoord(MSG_ENTITY, self.absmin_x);
+    WriteCoord(MSG_ENTITY, self.absmin_y);
+    WriteCoord(MSG_ENTITY, self.absmin_z);
+    
+    WriteCoord(MSG_ENTITY, self.absmax_x);
+    WriteCoord(MSG_ENTITY, self.absmax_y);
+    WriteCoord(MSG_ENTITY, self.absmax_z);
+  }
+  return TRUE;
+}
+/*QUAKED func_meta_particlecube (.9 .9 .9) ? 
+  cover interior volumes with this to make sure player particleCube effects do not play
+  INSIDE the room.
+  
+  this only works if a player has a map_particlecube_effect active on them.
+  
+  make sure the brush volume FULLY ENCLOSES the brush work with ample height above.
+  
+*/
+void() func_meta_particlecube={
+  self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
+  self.solid = SOLID_NOT;
+  
+  setmodel(self, self.model);
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+
+  self.SendEntity = send_pcl_cube_meta;
 };

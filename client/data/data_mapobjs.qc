@@ -18,6 +18,10 @@ void( float isNew, float entFlags ) sendent_handle_map={
     case DATA_NAVP:
       data_nav_point( isNew, entFlags );
       break;
+    case DATA_PCL_CUBE:
+      dprint("CSQC->DATA_PCL_CUBE\n");//debug
+      data_particle_cube_meta( isNew, entFlags );
+      break;
     case DATA_OBJT:
       data_objective( isNew, entFlags );
       break;
@@ -575,4 +579,28 @@ void( float isNew, float entFlags ) data_map_damage={
 void() predraw_dmg_zone={
   setorigin(self, self.origin);
   //self.render_dlights();
+};
+
+/*
+  OBJECT - Particle Cube Meta Data
+*/
+void( float isNew, float entFlags ) data_particle_cube_meta={
+
+  if(isNew){
+    if( particleCubeMetaData ){
+      particleCubeMetaData.w_slot = self;
+      particleCubeMetaData = self;
+    }
+    else{
+      particleCubeMetaDataList = self;
+      particleCubeMetaData = self;
+    }
+  }
+  if( (entFlags & SENDFLAG_NEWENT) ){
+    self.absmin = te_read_vector();
+    self.absmax = te_read_vector();
+    self.origin = self.absmax - self.absmin;
+    self.mins = self.absmax - self.origin;
+    self.maxs = self.absmin +  self.origin;
+  }
 };

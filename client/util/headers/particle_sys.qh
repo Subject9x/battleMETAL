@@ -5,6 +5,21 @@
   Overview: client particle system header
 */
 
+/*a = ent.absmin
+b = ent.absMax
+c = mins
+d = maxs*/
+/*
+  #define BoxesOverlap(a,b,c,d) (
+  (a)[0] <= (d)[0] && (b)[0] >= (c)[0] && 
+    (a)[1] <= (d)[1] && (b)[1] >= (c)[1] && 
+      (a)[2] <= (d)[2] && (b)[2] >= (c)[2]
+  )
+*/
+float(vector a, vector b, vector c, vector d) BoxesOverlap={
+  return ((a_x <= d_x) && (b_x >= c_x) && (a_y <= d_y) && (b_y >= c_y) && (a_z <= d_z) && (b_z >= c_z));
+};
+
 /*
   Fog fun
 */
@@ -37,10 +52,14 @@ void() cl_particles_fogFrame;
 //Particle Box - clients can only ever have one active at a time.
 // I went with globals because being an entity doesn't really get us much AND, too many parms for the max func size (8)
 
+entity particleCubeMetaData;
+entity particleCubeMetaDataList;
+
 #define PTC_CUBE_TYPE_BASIC 1
 #define PTC_CUBE_TYPE_RAIN 2
 #define PTC_CUBE_TYPE_SNOW 3 
 
+float PTC_CUBE_LAST_TRACE;
 float PTC_CUBE_UPDATE;
 float PTC_CUBE_ON;
 vector PTC_CUBE_ORG;
@@ -53,6 +72,7 @@ float PTC_CUBE_COLOR;
 float PTC_CUBE_GRAV;
 float PTC_CUBE_VEL_JITTER;
 float PTC_CUBE_LIFETIME;
+float PTC_CUBE_FLAGS;
 
 void() particle_box_ini;
 void() particle_box_think;

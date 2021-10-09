@@ -529,7 +529,7 @@ void(entity client, entity cube) client_sendParticleCube={
   WriteShort( MSG_ONE, cube.count2 );
   WriteShort( MSG_ONE, time + cube.count3 );
   
-  //WriteLong( MSG_ONE, cube.spawnflags );
+  WriteLong( MSG_ONE, cube.spawnflags );
   
 };
 
