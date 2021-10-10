@@ -176,9 +176,9 @@ void() mech_ai_die_stand10={
   local vector ofs;
   makevectors(self.angles);
   
-  ofs = self.origin + (v_forward * (crandom() * self.maxs_x));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y));
-  ofs = ofs + (v_up * (crandom() * self.maxs));
+  ofs = self.origin + (v_forward * (crandom() * self.maxs_z));
+  ofs = ofs + (v_right * (crandom() * self.maxs_x));
+  ofs = ofs + (v_up * (crandom() * self.maxs_y));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
   self.data_lifetime = servertime + 360 + (random() * 180);
