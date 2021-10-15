@@ -488,19 +488,26 @@ void(float wantNavId) client_setNavPoint={
 /*
   scope agnostic means of sending 'fog' settings and cmd to the client
 */
-void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog={
+void(entity client, float worldFog, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_FOG_SET );
-  WriteShort( MSG_ONE, fogDense );
+  
+  WriteByte( MSG_ONE, worldFog);
+  
   WriteCoord( MSG_ONE, fogColor_x );
   WriteCoord( MSG_ONE, fogColor_y );
   WriteCoord( MSG_ONE, fogColor_z );
-  WriteShort( MSG_ONE, fogAlpha );
+  
+  
   WriteCoord( MSG_ONE, fogDist_x );
   WriteCoord( MSG_ONE, fogDist_y );
   WriteCoord( MSG_ONE, fogDist_z );
-  WriteShort( MSG_ONE, fogFade );
+  
+  WriteCoord( MSG_ONE, fogAlpha );
+  WriteCoord( MSG_ONE, fogDense );
+  WriteCoord( MSG_ONE, fogFade );
+  
 };
 
 
@@ -530,7 +537,6 @@ void(entity client, entity cube) client_sendParticleCube={
   WriteShort( MSG_ONE, time + cube.count3 );
   
   WriteLong( MSG_ONE, cube.spawnflags );
-  
 };
 
 /*

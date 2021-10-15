@@ -127,32 +127,64 @@ float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust={
 */
 void() cl_particles_fogFrame={
   local string newFog;
-    
-  if( FOG_STATE == TRUE ){
-    FOG_DENSITY = cl_particles_fogColorAdjust( FOG_DENSITY, FOG_TARG_DENSITY);
-    
-    FOG_RED = cl_particles_fogColorAdjust( FOG_RED, FOG_TARG_RED);
-    FOG_GREEN = cl_particles_fogColorAdjust( FOG_GREEN, FOG_TARG_GREEN);
-    FOG_BLUE = cl_particles_fogColorAdjust( FOG_BLUE, FOG_TARG_BLUE);
-    
-    FOG_ALPHA = cl_particles_fogColorAdjust( FOG_ALPHA, FOG_TARG_ALPHA);
-    
-    FOG_DIST_MIN = cl_particles_fogDistAdjust( FOG_DIST_MIN, FOG_TARG_DIST_MIN );
-    FOG_DIST_MAX = cl_particles_fogDistAdjust( FOG_DIST_MAX, FOG_TARG_DIST_MAX );
-    FOG_DIST_TOP = cl_particles_fogDistAdjust( FOG_DIST_TOP, FOG_TARG_DIST_TOP );
-    FOG_FADE_DEPTH = cl_particles_fogDistAdjust( FOG_FADE_DEPTH, FOG_TARG_FADE_DEPTH );
-
-    newFog = strcat("fog ", ftos(FOG_DENSITY)," ");
-    newFog = strcat(newFog, ftos(FOG_RED)," ");
-    newFog = strcat(newFog, ftos(FOG_GREEN)," ");
-    newFog = strcat(newFog, ftos(FOG_BLUE)," ");
-    newFog = strcat(newFog, ftos(FOG_ALPHA)," ");
-    newFog = strcat(newFog, ftos(FOG_DIST_MIN)," ");
-    newFog = strcat(newFog, ftos(FOG_DIST_MAX)," ");
-    newFog = strcat(newFog, ftos(FOG_DIST_TOP)," ");
-    newFog = strcat(newFog, ftos(FOG_FADE_DEPTH),"\n");
-    //localcmd(newFog);
+  local float checkFlag;
+  
+  FOG_DENSITY = cl_particles_fogColorAdjust( FOG_DENSITY, FOG_TARG_DENSITY);
+  
+  FOG_RED = cl_particles_fogColorAdjust( FOG_RED, FOG_TARG_RED);
+  FOG_GREEN = cl_particles_fogColorAdjust( FOG_GREEN, FOG_TARG_GREEN);
+  FOG_BLUE = cl_particles_fogColorAdjust( FOG_BLUE, FOG_TARG_BLUE);
+  
+  FOG_ALPHA = cl_particles_fogColorAdjust( FOG_ALPHA, FOG_TARG_ALPHA);
+  
+  FOG_DIST_MIN = cl_particles_fogDistAdjust( FOG_DIST_MIN, FOG_TARG_DIST_MIN );
+  FOG_DIST_MAX = cl_particles_fogDistAdjust( FOG_DIST_MAX, FOG_TARG_DIST_MAX );
+  FOG_DIST_TOP = cl_particles_fogDistAdjust( FOG_DIST_TOP, FOG_TARG_DIST_TOP );
+  FOG_FADE_DEPTH = cl_particles_fogDistAdjust( FOG_FADE_DEPTH, FOG_TARG_FADE_DEPTH );
+  
+  checkFlag = 0;
+  if( FOG_DENSITY == FOG_TARG_DENSITY ){
+    checkFlag = checkFlag + 1;
   }
+  if( FOG_RED == FOG_TARG_RED ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_GREEN == FOG_TARG_GREEN ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_BLUE == FOG_TARG_BLUE ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_ALPHA == FOG_TARG_ALPHA ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_DIST_MIN == FOG_TARG_DIST_MIN ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_DIST_MAX == FOG_TARG_DIST_MAX ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_DIST_TOP == FOG_TARG_DIST_TOP ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_FADE_DEPTH == FOG_TARG_FADE_DEPTH ){
+    checkFlag = checkFlag + 1;
+  }
+  
+  if( checkFlag == 9){
+    FOG_STATE = FALSE;
+  }
+  
+  newFog = strcat("fog ", ftos(FOG_DENSITY)," ");
+  newFog = strcat(newFog, ftos(FOG_RED)," ");
+  newFog = strcat(newFog, ftos(FOG_GREEN)," ");
+  newFog = strcat(newFog, ftos(FOG_BLUE)," ");
+  newFog = strcat(newFog, ftos(FOG_ALPHA)," ");
+  newFog = strcat(newFog, ftos(FOG_DIST_MIN)," ");
+  newFog = strcat(newFog, ftos(FOG_DIST_MAX)," ");
+  newFog = strcat(newFog, ftos(FOG_DIST_TOP)," ");
+  newFog = strcat(newFog, ftos(FOG_FADE_DEPTH),"\n");
+  localcmd(newFog);
 };
 
 void() te_explode_mech_piece_predraw={

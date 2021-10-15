@@ -44,6 +44,18 @@ float FOG_TARG_DIST_MAX;
 float FOG_TARG_DIST_TOP;
 float FOG_TARG_FADE_DEPTH;
 
+//cache world values
+float FOG_WORLD_VAL;
+float FOG_WORLD_DENSITY;
+float FOG_WORLD_RED;
+float FOG_WORLD_GREEN;
+float FOG_WORLD_BLUE;
+float FOG_WORLD_ALPHA;
+float FOG_WORLD_DIST_MIN;
+float FOG_WORLD_DIST_MAX;
+float FOG_WORLD_DIST_TOP;
+float FOG_WORLD_FADE_DEPTH;
+
 float( float fogColor, float fogColorTarg  ) cl_particles_fogColorAdjust;
 float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust;
 void() cl_particles_fogFrame;
