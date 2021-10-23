@@ -112,8 +112,6 @@ void() player_makeMech={
   
   self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
   self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION);
-  
-  client_sendFog(self, TRUE, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
 };
 
 void() player_unmakeMech={

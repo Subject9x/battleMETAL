@@ -96,7 +96,7 @@ void( entity t ) ai_call_for_help={
         continue;
       }
     }
-    ai_give_target( ally, t, (t.flags&FL_CLIENT) );
+    ai_give_target( ally, t, ((t.flags&FL_CLIENT) && !(ally.enemy.flags & FL_CLIENT)));
     allies = allies + 1;
   }
 }; 
@@ -136,6 +136,10 @@ entity( float radiius) ai_find_friend={
 void( entity t) ai_alert_close={
   
   local entity ally;
+  local float rng;
+  local float fog;
+  local float fogLen;
+  local float alertMax;
   
   if( alarm_ent == world ){
     alarm_ent = self;
@@ -147,14 +151,27 @@ void( entity t) ai_alert_close={
   if(!self.ai_view || self.ai_view < 1){
     self.ai_view = AI_RANGE_M;
   }
-  for(ally = findradius(self.origin, self.ai_view); ally != world; ally = ally.chain){
+  
+  rng =  self.ai_view;
+  if( self.fog_alpha && self.fog_dist_x <= AI_RANGE_L){
+    fogLen = self.fog_dist_y - self.fog_dist_x;
+    fogLen = max(self.ai_view, fogLen);
+   // cons_logAFloat("fogLen", fogLen); //debug
+    fog = bound(0.1, self.fog_alpha + self.fog_density / 2, 1.0);
+    fog = fog * fogLen;
+    rng = max(256, self.ai_view - fogLen);
+    //cons_logAFloat("fog range", rng); //debug
+  }
+  
+  alertMax = self.ai_rank + 2;
+  for(ally = findradius(self.origin, rng); ally != world; ally = ally.chain){
     if( ally.faction != self.faction ){
       continue;
     }
     if( !ai_valid_target(ally) ){
       continue;
     }
-    ai_give_target( ally, t, (t.flags&FL_CLIENT) );
+    ai_give_target( ally, t, ((t.flags&FL_CLIENT) && !(ally.enemy.flags & FL_CLIENT)));
   }      
   if(alarm_ent == self){
     alarm_ent = world;
@@ -171,15 +188,14 @@ float() ai_find_target_visual={
   }
     
   rng =  self.ai_view;
-  if( self.fog_alpha ){
+  if( self.fog_alpha && self.fog_dist_x <= AI_RANGE_L){
     fogLen = self.fog_dist_y - self.fog_dist_x;
-    fog = self.fog_alpha * self.fog_density;
+    fogLen = max(self.ai_view, fogLen);
+    //cons_logAFloat("fogLen", fogLen); //debug
+    fog = bound(0.1, self.fog_alpha + self.fog_density / 2, 1.0);
     fog = fog * fogLen;
-    rng = self.ai_view - fogLen;
-    if( rng < AI_RANGE_M ){
-      rng = AI_RANGE_M;
-    }
-    rng = rng + fog;
+    rng = max(256, self.ai_view - fogLen);
+    //cons_logAFloat("fog range", rng); //debug
   }
   selfSensorOrg_x = self.origin_x;
   selfSensorOrg_y = self.origin_y;

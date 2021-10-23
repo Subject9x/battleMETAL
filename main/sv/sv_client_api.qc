@@ -290,9 +290,10 @@ void() PutClientInServer = {
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
   self.view_ofs = '0 0 1';
-
+  
   sv_select_info_start();
-
+  client_sendFog(self, TRUE, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
+  
   //GAME MODE BLOCK
   switch(ENT_SERVER_INFO.gameType){
     case GAMEMODE_CAMPAIGN:
