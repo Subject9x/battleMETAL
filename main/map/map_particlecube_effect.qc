@@ -36,7 +36,9 @@ Inputs
   .count2 = <float> - velocity jitter for te_particlecube;
   .count3 = <float> - use with LIFETIME spawnflag.
   .sound = <string> - name of sound to play- TODO - implement
+  .group = <string> - batch cubes together so that touches only override DIFFERENT cube ents
   
+    
  1 START_OFF = Requires targetname and a trigger call.
  2 LIFETIME = Func is turned off after .data_lifetime game seconds.
  4 DELAY = wait .delay game seconds after being activated to begin.
@@ -57,7 +59,7 @@ void() map_particlecube_effect_touch={
   
   trigger = self;
   
-  if( other.particleCube == self ){
+  if( other.particleCube == self || other.particleCube.group == self.group){
     return;
   }
   //any-given client can only have 1 particle cube effect active on them at any time.

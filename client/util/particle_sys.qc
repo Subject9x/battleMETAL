@@ -867,8 +867,6 @@ void() te_mech_dead_legs_smoke={
 };
 
 //Particle box
-
-
 void() particle_box_ini={
   PTC_CUBE_ON = TRUE;
   
@@ -895,6 +893,7 @@ void() particle_box_think={
   local vector playerMove, playerOrgOffset;
   local float cubeLen;
   local entity meta;
+  
   
   playerMove = vectoangles(pmove_vel);
   makevectors(playerMove);
@@ -932,7 +931,7 @@ void() particle_box_think={
       break;
   }
 
-  PTC_CUBE_UPDATE = (time - frametime) + 0.1;
+  PTC_CUBE_UPDATE = time + 0.1;
 
 };
 
