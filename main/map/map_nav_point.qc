@@ -69,7 +69,7 @@ void() nav_point_use={
 void() map_nav_point_th={
   
   self.think = map_nav_point_th;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 1;
 };
 
 void() map_nav_point_ini={

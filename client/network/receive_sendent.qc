@@ -316,10 +316,10 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   self.angles = vectoangles(self.velocity);
   //HANDLE EVENT - projectile hit.
   if( self.impactType > 0 && prevImpactType == FALSE ){
-    self.velocity = '0 0 0';
     if( self.pcl_explode ){
       self.pcl_explode();
     }
+    self.velocity = '0 0 0';
   }
 };
 
@@ -351,7 +351,7 @@ void() sendevent_handle_weaponfire={
   makevectors(self.angles);
   
   while( equip != world ){
-    if( (self.attackFlag & equip.w_group) ){
+    if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
       te_weapon_fire_handler(equip);
     }
     equip = equip.w_slot;

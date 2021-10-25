@@ -337,3 +337,18 @@ void(entity wep) ctrl_weapon_update_player={
       break;
   }
 };
+
+/*
+  called after projectile impacts something, gives the server 1 extra frame to send
+  any state data before calling removal.
+*/
+void() ctrl_missile_lastframe={
+
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
+  self.velocity = self.avelocity = '0 0 0';
+  self.alpha = 0.0;
+  self.effects = 0;
+
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
+};

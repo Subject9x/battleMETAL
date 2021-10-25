@@ -35,6 +35,12 @@ void() projectile_mlg_expl={
     hitScale = 1;
     pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
   }
+  if(self.impactType == IMPACT_DIRT){
+    self.angles = vectoangles(self.velocity);
+    makevectors(self.angles);
+    traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+    pointparticles(PTC_HIT_DIRT_EXP_MED, trace_endpos, trace_plane_normal * -1, 1);
+  }
   te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
 };
 #endif
@@ -68,42 +74,45 @@ void() data_projectile_missile_laserguide_touch={
   local entity hitLocation;
   
   self.touch = SUB_Null;
-  self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
+ 
+  self.impactType = IMPACT_SKY;
   
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  
-	if (pointcontents(self.origin) == CONTENT_SKY){
-    self.impactType = IMPACT_SKY;
+  if(other.takedamage){
+    damage = self.damageValue;
+    if( other.shield > 0 ){
+      damage = damage * 0.33;
+      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
+      self.impactType = IMPACT_SHIELD;
+    }
+    else{
+      hitLocation = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      } 
+      te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 3, 2 );
+      self.impactType = IMPACT_ARMOR;
+    }
+    self.targetEntId = num_for_edict(other);
+    debris = 0;
   }
   else{
-    self.impactType = IMPACT_DIRT;
-    debris = ceil(2 + random() * 3);
-    if(other.takedamage){
-      damage = self.damageValue;
-      if( other.shield > 0 ){
-        damage = damage * 0.33;
-        t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
-        self.impactType = IMPACT_SHIELD;
-      }
-      else{
-        hitLocation = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-        if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-          self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
-        } 
-        te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, 3, 2 );
-        self.impactType = IMPACT_ARMOR;
-      }
-      self.targetEntId = num_for_edict(other);
-      debris = 0;
+    makevectors(self.angles);
+    traceline(self.origin + (v_forward * -4), self.origin + (v_forward * 4), MOVE_WORLDONLY, self);
+    if( (trace_dpstartcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_SOLID) ){
+      self.impactType = IMPACT_DIRT;
+      debris = ceil(2 + random() * 3);
     }
   }
+  
   if( debris > 0 ){
     te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, 2 );
   }
 
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.05;
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  self.think = ctrl_missile_lastframe;
+  self.nextthink = time + 0.01;
 };
 
 void() data_projectile_missile_laserguide_think={

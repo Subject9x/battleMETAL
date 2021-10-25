@@ -24,6 +24,7 @@ void() projectile_swarm_expl={
   if( self.impactType == IMPACT_SKY ){
     return;
   }
+  
   if( self.impactType == IMPACT_SHIELD ){
     hitColor = '0 1.25 0.67';
     hitBloom = -0.01;
@@ -35,7 +36,13 @@ void() projectile_swarm_expl={
     hitScale = 1;
     pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
   }
-  te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
+  if(self.impactType == IMPACT_DIRT){
+    self.angles = vectoangles(self.velocity);
+    makevectors(self.angles);
+    traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+    pointparticles(PTC_HIT_DIRT_EXP_SML, trace_endpos, trace_plane_normal * -1, 1);
+  }
+  te_missile_explode( self.origin, hitScale, hitColor, hitBloom );
 };
 #endif
 
@@ -70,16 +77,7 @@ void() data_projectile_missile_swarm_touch={
   local entity hitLocation;
   
   self.touch = SUB_Null;
-  self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  self.impactType = IMPACT_DIRT;
-  debris = ceil( 1 + random() * 3);
-	if (pointcontents(self.origin) == CONTENT_SKY){
-    self.impactType = IMPACT_SKY;
-    debris = 0;
-	}
+  self.impactType = IMPACT_SKY;
 
   if(other.takedamage){
     damage = self.damageValue;
@@ -104,12 +102,23 @@ void() data_projectile_missile_swarm_touch={
     self.targetEntId = num_for_edict(other);
     debris = 0;
   }
+  else{
+    makevectors(self.angles);
+    traceline(self.origin + (v_forward * -4), self.origin + (v_forward * 4), MOVE_WORLDONLY, self);
+    if( (trace_dpstartcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_SOLID) ){
+      self.impactType = IMPACT_DIRT;
+      debris = ceil( 1 + random() * 3);
+    }
+  }
   if( debris > 0 ){
     te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
-  }
+  } 
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.05;
+  self.think = ctrl_missile_lastframe;
+  self.nextthink = time + 0.01;
 };
 
 void() data_projectile_missile_swarm_think={

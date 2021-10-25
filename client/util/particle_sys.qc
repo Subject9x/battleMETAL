@@ -5,6 +5,35 @@
   Overview: impl of the client particle system
 */
 
+void() particle_sys_ini_globals={
+  PTC_HIT_DIRT_SHOT_SML = particleeffectnum("TE_HIT_DIRT_SHOT_SML");
+  PTC_HIT_DIRT_SHOT_MED = particleeffectnum("TE_HIT_DIRT_SHOT_MED");
+  PTC_HIT_DIRT_SHOT_LRG = particleeffectnum("TE_HIT_DIRT_SHOT_LRG");
+
+  PTC_HIT_DIRT_ENE_SML = particleeffectnum("TE_HIT_DIRT_ENE_SML");
+  PTC_HIT_DIRT_ENE_MED = particleeffectnum("TE_HIT_DIRT_ENE_MED");
+  PTC_HIT_DIRT_ENE_LRG = particleeffectnum("TE_HIT_DIRT_ENE_LRG");
+  
+  PTC_HIT_DIRT_EXP_SML = particleeffectnum("TE_HIT_DIRT_EXPL_SML");
+  PTC_HIT_DIRT_EXP_MED = particleeffectnum("TE_HIT_DIRT_EXPL_MED");
+  PTC_HIT_DIRT_EXP_LRG = particleeffectnum("TE_HIT_DIRT_EXPL_LRG");
+  
+  PTC_STOMP_ICE = particleeffectnum("TE_STOMP_ICE");
+  PTC_STOMP_CITY = particleeffectnum("TE_STOMP_CITY");
+  PTC_STOMP_BADLND = particleeffectnum("TE_STOMP_BADLANDS");
+  PTC_STOMP_TUNDRA = particleeffectnum("TE_STOMP_TUNDRA");
+  PTC_STOMP_SAND = particleeffectnum("TE_STOMP_SAND");
+  
+  PTC_DUST_ICE = particleeffectnum("TE_DUST_ICE");
+  PTC_DUST_URBAN = particleeffectnum("TE_DUST_URBAN");
+  PTC_DUST_BADLND = particleeffectnum("TE_DUST_BADLANDS");
+  PTC_DUST_TUNDRA = particleeffectnum("TE_DUST_TUNDRA");
+  PTC_DUST_DESERT = particleeffectnum("TE_DUST_DESERT");
+  
+  PTC_HIT_EXPL_SML = particleeffectnum("TE_HIT_EXPL_SML");
+  PTC_HIT_EXPL_MED = particleeffectnum("TE_HIT_EXPL_MED");
+  PTC_HIT_EXPL_LRG = particleeffectnum("TE_HIT_EXPL_LRG");
+};
 
 /*
   probably should be a utility.
@@ -48,10 +77,10 @@ void( float randomBool ) ai_voice_ini={
       self.ai_voice_group = AI_VOICE_GROUP_C;
     }
   }
-  else{
+  //else{
     //VOICE DEBUG
     //self.ai_voice_group = AI_VOICE_GROUP_C;
-  }
+ // }
 };
 
 /*
@@ -98,32 +127,64 @@ float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust={
 */
 void() cl_particles_fogFrame={
   local string newFog;
-    
-  if( FOG_STATE == TRUE ){
-    FOG_DENSITY = cl_particles_fogColorAdjust( FOG_DENSITY, FOG_TARG_DENSITY);
-    
-    FOG_RED = cl_particles_fogColorAdjust( FOG_RED, FOG_TARG_RED);
-    FOG_GREEN = cl_particles_fogColorAdjust( FOG_GREEN, FOG_TARG_GREEN);
-    FOG_BLUE = cl_particles_fogColorAdjust( FOG_BLUE, FOG_TARG_BLUE);
-    
-    FOG_ALPHA = cl_particles_fogColorAdjust( FOG_ALPHA, FOG_TARG_ALPHA);
-    
-    FOG_DIST_MIN = cl_particles_fogDistAdjust( FOG_DIST_MIN, FOG_TARG_DIST_MIN );
-    FOG_DIST_MAX = cl_particles_fogDistAdjust( FOG_DIST_MAX, FOG_TARG_DIST_MAX );
-    FOG_DIST_TOP = cl_particles_fogDistAdjust( FOG_DIST_TOP, FOG_TARG_DIST_TOP );
-    FOG_FADE_DEPTH = cl_particles_fogDistAdjust( FOG_FADE_DEPTH, FOG_TARG_FADE_DEPTH );
-
-    newFog = strcat("fog ", ftos(FOG_DENSITY)," ");
-    newFog = strcat(newFog, ftos(FOG_RED)," ");
-    newFog = strcat(newFog, ftos(FOG_GREEN)," ");
-    newFog = strcat(newFog, ftos(FOG_BLUE)," ");
-    newFog = strcat(newFog, ftos(FOG_ALPHA)," ");
-    newFog = strcat(newFog, ftos(FOG_DIST_MIN)," ");
-    newFog = strcat(newFog, ftos(FOG_DIST_MAX)," ");
-    newFog = strcat(newFog, ftos(FOG_DIST_TOP)," ");
-    newFog = strcat(newFog, ftos(FOG_FADE_DEPTH),"\n");
-    //localcmd(newFog);
+  local float checkFlag;
+  
+  FOG_DENSITY = cl_particles_fogColorAdjust( FOG_DENSITY, FOG_TARG_DENSITY);
+  
+  FOG_RED = cl_particles_fogColorAdjust( FOG_RED, FOG_TARG_RED);
+  FOG_GREEN = cl_particles_fogColorAdjust( FOG_GREEN, FOG_TARG_GREEN);
+  FOG_BLUE = cl_particles_fogColorAdjust( FOG_BLUE, FOG_TARG_BLUE);
+  
+  FOG_ALPHA = cl_particles_fogColorAdjust( FOG_ALPHA, FOG_TARG_ALPHA);
+  
+  FOG_DIST_MIN = cl_particles_fogDistAdjust( FOG_DIST_MIN, FOG_TARG_DIST_MIN );
+  FOG_DIST_MAX = cl_particles_fogDistAdjust( FOG_DIST_MAX, FOG_TARG_DIST_MAX );
+  FOG_DIST_TOP = cl_particles_fogDistAdjust( FOG_DIST_TOP, FOG_TARG_DIST_TOP );
+  FOG_FADE_DEPTH = cl_particles_fogDistAdjust( FOG_FADE_DEPTH, FOG_TARG_FADE_DEPTH );
+  
+  checkFlag = 0;
+  if( FOG_DENSITY == FOG_TARG_DENSITY ){
+    checkFlag = checkFlag + 1;
   }
+  if( FOG_RED == FOG_TARG_RED ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_GREEN == FOG_TARG_GREEN ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_BLUE == FOG_TARG_BLUE ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_ALPHA == FOG_TARG_ALPHA ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_DIST_MIN == FOG_TARG_DIST_MIN ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_DIST_MAX == FOG_TARG_DIST_MAX ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_DIST_TOP == FOG_TARG_DIST_TOP ){
+    checkFlag = checkFlag + 1;
+  }
+  if( FOG_FADE_DEPTH == FOG_TARG_FADE_DEPTH ){
+    checkFlag = checkFlag + 1;
+  }
+  
+  if( checkFlag == 9){
+    FOG_STATE = FALSE;
+  }
+  
+  newFog = strcat("fog ", ftos(FOG_DENSITY)," ");
+  newFog = strcat(newFog, ftos(FOG_RED)," ");
+  newFog = strcat(newFog, ftos(FOG_GREEN)," ");
+  newFog = strcat(newFog, ftos(FOG_BLUE)," ");
+  newFog = strcat(newFog, ftos(FOG_ALPHA)," ");
+  newFog = strcat(newFog, ftos(FOG_DIST_MIN)," ");
+  newFog = strcat(newFog, ftos(FOG_DIST_MAX)," ");
+  newFog = strcat(newFog, ftos(FOG_DIST_TOP)," ");
+  newFog = strcat(newFog, ftos(FOG_FADE_DEPTH),"\n");
+  localcmd(newFog);
 };
 
 void() te_explode_mech_piece_predraw={
@@ -180,12 +241,10 @@ void(entity item) te_weapon_fire_handler={
   
   this = self;
   self = item;
-    if( self.itemMuzzleFlash ){
-      view = self.angles;
-      view_x = view_x * -1;
-      makevectors(view);
-      self.itemMuzzleFlash();
-    }
+    view = self.angles;
+    view_x = view_x * -1;
+    makevectors(view);
+    self.itemMuzzleFlash();
   self = this;
 };
 
@@ -216,19 +275,19 @@ void() te_unit_dust_set={
   dbg = 1;
   switch( dbg ){
     case 1:
-      self.trail_effectnum = particleeffectnum("TE_DUST_ICE");
+      self.trail_effectnum = PTC_DUST_ICE;
       break;
     case 2: 
-      self.trail_effectnum = particleeffectnum("TE_DUST_URBAN");
+      self.trail_effectnum = PTC_DUST_URBAN;
       break;
     case 3:
-      self.trail_effectnum = particleeffectnum("TE_DUST_BADLANDS");
+      self.trail_effectnum = PTC_DUST_BADLND;
       break;
     case 4:
-      self.trail_effectnum = particleeffectnum("TE_DUST_TUNDRA");
+      self.trail_effectnum = PTC_DUST_TUNDRA;
       break;
     default:
-      self.trail_effectnum = particleeffectnum("TE_DUST_DESERT");
+      self.trail_effectnum = PTC_DUST_DESERT;
       break;
   }
 };
@@ -347,6 +406,17 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
     trailparticles(world, particleeffectnum("TE_DEBRIS_TRAIL_SMALL"), back, launch);
     debris = debris - 1;
   }
+  
+  if(explodeSize < 2 ){
+    pointparticles( PTC_HIT_EXPL_SML, org, back, 1);
+  }
+  if(explodeSize == 2){
+    pointparticles( PTC_HIT_EXPL_MED, org, back, 1);
+  }
+  else{
+    pointparticles( PTC_HIT_EXPL_LRG, org, back, 1);
+  }
+  
 };
 
 /*
@@ -651,28 +721,30 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   
   switch( ENT_SERVER_INFO.worldtype ){
     case 1:
-      effType = particleeffectnum("TE_STOMP_ICE");
+      effType = PTC_STOMP_ICE;
       break;
     case 2:
-      effType = particleeffectnum("TE_STOMP_CITY");
+      effType = PTC_STOMP_CITY;
       break;
     case 3:
-      effType = particleeffectnum("TE_STOMP_BADLANDS");
+      effType = PTC_STOMP_BADLND;
       break;
     case 4:
-      effType = particleeffectnum("TE_STOMP_TUNDRA");
+      effType = PTC_STOMP_TUNDRA;
       break;
     default:
-      effType = particleeffectnum("TE_STOMP_SAND");
+      effType = PTC_STOMP_SAND;
       break;
   }
   pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
+  traceline(fx, fx + (v_up * -10), MOVE_WORLDONLY, self);
+  pointparticles( particleeffectnum("TE_FOOT_STOMP"), trace_endpos, trace_plane_normal * -1,  1);
 };
 
 /*
   Particle Determinant for impact types of weapon fire
 */
-float(vector endPos, entity endEnt) te_impact_type={
+float(vector endPos, entity endEnt, float contentFlags) te_impact_type={
   if(endEnt){
     if(endEnt.takedamage == DAMAGE_AIM){
       if(endEnt.shield > 0 && endEnt.shield <= 100.0){
@@ -680,11 +752,12 @@ float(vector endPos, entity endEnt) te_impact_type={
       }
       return IMPACT_ARMOR;
     }
-    else{
-      return IMPACT_DIRT;
-    }
+    return IMPACT_DIRT;
   }
   else{
+    if( (contentFlags & DPCONTENTS_SOLID) ){
+      return IMPACT_DIRT;
+    }
     if(pointcontents(endPos) == CONTENT_SOLID){
       return IMPACT_DIRT;
     }
@@ -773,7 +846,7 @@ void() te_mech_dead_legs_burn={
   makevectors(self.angles);
   fireOrg = self.origin + (v_up * self.maxs_z);
   
-  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 2));
+  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
   
   
   self.think = te_mech_dead_legs_burn;
@@ -781,6 +854,10 @@ void() te_mech_dead_legs_burn={
 };
 
 void() te_mech_dead_legs_smoke={
+  local vector fireOrg;
+  makevectors(self.angles);
+  fireOrg = self.origin + (v_up * self.maxs_z);
+  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
   if( time > self.data_lifetime ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
@@ -788,3 +865,73 @@ void() te_mech_dead_legs_smoke={
   }
 
 };
+
+//Particle box
+void() particle_box_ini={
+  PTC_CUBE_ON = TRUE;
+  
+  PTC_CUBE_TYPE = ReadByte();
+  
+  PTC_CUBE_MIN = te_read_vector();
+  PTC_CUBE_MAX = te_read_vector();
+  PTC_CUBE_VEL = te_read_vector();
+  
+  PTC_CUBE_COUNT = ReadShort();
+  PTC_CUBE_COLOR = ReadShort();
+  PTC_CUBE_GRAV = ReadShort();
+  PTC_CUBE_VEL_JITTER = ReadShort();
+  PTC_CUBE_LIFETIME = ReadShort();
+  
+  PTC_CUBE_FLAGS = ReadLong();
+  
+  PTC_CUBE_ORG = pmove_org;
+};
+
+void() particle_box_think={
+  
+  local vector amin, amax;
+  local vector playerMove, playerOrgOffset;
+  local float cubeLen;
+  local entity meta;
+  
+  
+  playerMove = vectoangles(pmove_vel);
+  makevectors(playerMove);
+  
+  playerOrgOffset = pmove_org + (v_forward * (PTC_CUBE_MAX_x * 0.5) );
+  
+  cubeLen = vlen( playerOrgOffset - PTC_CUBE_ORG);
+  if( cubeLen > PTC_CUBE_MAX_x ){
+    PTC_CUBE_ORG = pmove_org + (v_forward * (PTC_CUBE_MAX_x * 0.9)); 
+  }
+  
+  traceline(playerOrgOffset, playerOrgOffset + (v_up * PTC_CUBE_MAX_z), TRUE, world);
+  PTC_CUBE_MAX_z = vlen(trace_endpos - PTC_CUBE_ORG) * 0.5;
+  
+  amin = PTC_CUBE_ORG + PTC_CUBE_MIN;
+  amax = PTC_CUBE_ORG + PTC_CUBE_MAX;
+  
+  for(meta = particleCubeMetaDataList; meta != world; meta = meta.w_slot){
+    if( BoxesOverlap(pmove_org - '2 2 2', pmove_org + '2 2 2', meta.absmin, meta.absmax ) ){
+      amin = meta.absmin;
+      amax = meta.absmax;
+      break;
+    }
+  }
+  
+  switch( PTC_CUBE_TYPE ){
+    case PTC_CUBE_TYPE_BASIC:
+      te_particlecube(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR, PTC_CUBE_GRAV, PTC_CUBE_VEL_JITTER);
+      break;
+    case PTC_CUBE_TYPE_RAIN:
+      te_particlerain(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR);
+      break;
+    case PTC_CUBE_TYPE_SNOW:
+      te_particlesnow(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR);
+      break;
+  }
+
+  PTC_CUBE_UPDATE = time + 0.1;
+
+};
+

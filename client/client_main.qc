@@ -114,6 +114,8 @@ void() CSQC_Init =
   dynamic_precache();
   cs_precache();
   
+  particle_sys_ini_globals();
+  
   textfilter_ini_keyarray();
   
   //clean up mapname global for file use
@@ -384,22 +386,22 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   VIEW_ORG = '0 0';
   
   VIEW_SCALE = 0.35;
-
-  //alter fog settings if needed
-  //cl_particles_fogFrame();	//fog is disable for the time being (something up with depth-rendering and unit shaders)
   
   gui_set_screen_size();
   
-  //TODO - fog is now different in latest DP build
-  //setproperty(VF_FOG_DENSITY, FOG_DENSITY);
-  //setproperty(VF_FOG_COLOR_R, FOG_RED);
-  //setproperty(VF_FOG_COLOR_G, FOG_GREEN);
-  //setproperty(VF_FOG_COLOR_B, FOG_BLUE);
-  //setproperty(VF_FOG_ALPHA,FOG_ALPHA );
-  //setproperty(VF_FOG_START, FOG_DIST_MIN);
-  //setproperty(VF_FOG_END, FOG_DIST_MAX);
-  //setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
-  //setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);
+  if(FOG_STATE){
+    //alter fog settings if needed
+    cl_particles_fogFrame();	//fog is disable for the time being (something up with depth-rendering and unit shaders)
+    /*setproperty(VF_FOG_DENSITY, FOG_DENSITY);
+    setproperty(VF_FOG_COLOR_R, FOG_RED);
+    setproperty(VF_FOG_COLOR_G, FOG_GREEN);
+    setproperty(VF_FOG_COLOR_B, FOG_BLUE);
+    setproperty(VF_FOG_ALPHA,FOG_ALPHA );
+    setproperty(VF_FOG_START, FOG_DIST_MIN);
+    setproperty(VF_FOG_END, FOG_DIST_MAX);
+    setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
+    setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);*/
+  }
 
   // add any polygons we want here
   makevectors(input_angles);
@@ -464,6 +466,10 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     }
     //HUD sound system
     snd_hud_vfx_frame();
+    
+    if( PTC_CUBE_ON && servertime > PTC_CUBE_UPDATE){
+      particle_box_think();
+    }
   }
   
   //menu system
@@ -561,6 +567,10 @@ float() CSQC_Parse_TempEntity =
       
     case TE_VFX_RAIL:
       trailparticles( world, ReadShort(), te_read_vector(), te_read_vector() );
+      return TRUE;
+     
+    case TE_PARTICLE_CUBE:
+      particle_box_ini();
       return TRUE;
   } 
 	return FALSE;

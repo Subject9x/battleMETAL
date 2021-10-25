@@ -24,6 +24,14 @@ void() projectile_qbit_expl={
   else if( self.impactType == IMPACT_ARMOR ){
     pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, normalize(self.origin - self.origin1) * 2, 1);
   }
+  else{
+    //dirt
+    pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, '0 0 0', 1);
+    self.angles = vectoangles(self.velocity);
+    makevectors(self.angles);
+    traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+    pointparticles(PTC_HIT_DIRT_ENE_LRG, trace_endpos, trace_plane_normal * -1, 1);
+  }
 };
 #endif
 
@@ -119,7 +127,6 @@ void() data_projectile_quantum_shatter={
 void() data_projectile_ini_quantum_bit_touch_={
   local entity hitLocation;
   
-  self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
   
@@ -143,14 +150,18 @@ void() data_projectile_ini_quantum_bit_touch_={
       self.impactType = IMPACT_ARMOR;
     }
     self.targetEntId = num_for_edict(other);
-  }  
+  }
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
+  self.movetype = MOVETYPE_NONE;
+  
   if(self.aState == TRUE){
     self.enemy = other;
     self.think = data_projectile_quantum_shatter;
     self.nextthink = time + 0.01;
   }
   else{
-    self.think = SUB_Remove;
+    self.think = ctrl_missile_lastframe;
     self.nextthink = time + 0.01;
   }
 };

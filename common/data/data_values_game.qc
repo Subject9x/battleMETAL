@@ -181,7 +181,7 @@ float TEAM_MILITAR_TOTAL;
 #define DATA_OBJT       9
 #define DATA_NODE       10
 #define DATA_DEPL       11
-#define DATA_WEAPON     12
+#define DATA_PCL_CUBE   12
 #define DATA_INFO_START 13  //used to send clientdata entity to csqc
 #define DATA_INFO_COOP  14  //used as ID for info_start_coop
 #define DATA_MAP_DMG    15

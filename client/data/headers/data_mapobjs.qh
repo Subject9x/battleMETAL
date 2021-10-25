@@ -16,6 +16,7 @@ void() predraw_navpoint;
 void( float isNew, float entFlags ) sendent_handle_map;
 
 void( float isNew, float entFlags ) data_nav_point;
+void( float isNew, float entFlags ) data_particle_cube_meta;
 void( float isNew, float entFlags ) data_objective;
 void( float isNew, float entFlags ) data_deploy;
 void( float isNew, float entFlags ) data_map_damage;

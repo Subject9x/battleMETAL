@@ -39,9 +39,9 @@ void() te_muzzle_latc={
   
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), startOrg, norm * 4, 1);
   
-  impactStyle = te_impact_type(endOrg, trace_ent);
+  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
   
-  if( beamLen > 150 ){
+  if( beamLen > 250 ){
     pointparticles( particleeffectnum("TE_ATC_TRACER"), startOrg + (v_forward * 48), norm * 2400, 1);
   }
   
@@ -53,8 +53,9 @@ void() te_muzzle_latc={
     case IMPACT_ARMOR:
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), endOrg + v_forward * -4, norm * 4, 3);
       break;
-    default:
+    case IMPACT_DIRT:
       pointparticles( particleeffectnum("TE_ATC_DIRT"), endOrg + (v_up *1) + (v_forward * -4), normalize( (endOrg + (v_up *1)) - startOrg ) * 20, 1);
+      pointparticles( PTC_HIT_DIRT_SHOT_SML, endOrg, trace_plane_normal * -1, 1);
       break;
   }
 };

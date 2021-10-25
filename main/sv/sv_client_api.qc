@@ -290,9 +290,10 @@ void() PutClientInServer = {
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
   self.view_ofs = '0 0 1';
-
+  
   sv_select_info_start();
-
+  client_sendFog(self, TRUE, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
+  
   //GAME MODE BLOCK
   switch(ENT_SERVER_INFO.gameType){
     case GAMEMODE_CAMPAIGN:
@@ -411,7 +412,6 @@ void() PutClientInServer_Campaign={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     if(world.animaticOnly > 1){
@@ -470,7 +470,6 @@ void() PutClientInServer_Coop={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);     
     self.power_timer = 0;
     player_makeObserver();
     if(world.animaticOnly > 1){
@@ -515,7 +514,6 @@ void() PutClientInServer_Deathmatch={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;
@@ -546,7 +544,6 @@ void() PutClientInServer_TeamDeathmatch={
   
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     self.power_timer = 0;
     player_makeObserver();
     self.playerState = PLAYER_SPAWN;

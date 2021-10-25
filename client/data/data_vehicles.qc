@@ -66,6 +66,7 @@ void() data_vehicle_wreck_predraw={
 void() data_vehicle_wreck={
   local vector minc,maxc;
   local entity shell;
+  local vector impact;
   
   makevectors(self.angles);
   shell = spawn();

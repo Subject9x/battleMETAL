@@ -34,6 +34,12 @@ void() projectile_rocket_expl={
     hitScale = 1;
     pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
   }
+  if(self.impactType == IMPACT_DIRT){
+    self.angles = vectoangles(self.velocity);
+    makevectors(self.angles);
+    traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+    pointparticles(PTC_HIT_DIRT_EXP_MED, trace_endpos, trace_plane_normal * -1, 1);
+  }
   te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
 };
 #endif
@@ -65,16 +71,9 @@ void(entity theOther ) data_prj_mis_hit={
   local entity hitLocation;
   
   self.touch = SUB_Null;
-  self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
+  self.impactType = IMPACT_SKY;
   self.velocity = '0 0 0';
   
-  self.impactType = IMPACT_DIRT;
-  debris = rint(1 + random() * 3);
-	if ( pointcontents(self.origin) == CONTENT_SKY){
-    self.impactType = IMPACT_SKY;
-	}
- 
   if(theOther.takedamage){
     damage = self.damageValue;
     if( theOther.shield > 0 ){
@@ -100,13 +99,23 @@ void(entity theOther ) data_prj_mis_hit={
     self.targetEntId = num_for_edict(other);
     debris = 0;
   }
+  else{
+    makevectors(self.angles);
+    traceline(self.origin + (v_forward * -4), self.origin + (v_forward * 4), MOVE_WORLDONLY, self);
+    if( (trace_dpstartcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_SOLID) ){
+      self.impactType = IMPACT_DIRT;
+      debris = rint(1 + random() * 3);
+    }
+  }
   if( debris > 0 ){
     te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, debrisType );
   }
   
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.05;
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  self.think = ctrl_missile_lastframe;
+  self.nextthink = time + 0.01;
 };
 
 void() data_prj_mis_touch={

@@ -27,8 +27,16 @@ void() projectile_plasma_expl={
   if( self.impactType == IMPACT_ARMOR ){
     pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   }
-  else{
+  else if( self.impactType == IMPACT_SHIELD ){
     pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+  }
+  else if( self.impactType == IMPACT_DIRT ){
+    self.angles = vectoangles(self.velocity);
+    makevectors(self.angles);
+    traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+    pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+    pointparticles( particleeffectnum("TE_RPC_HIT_DIRT"), trace_endpos, trace_plane_normal * -1, 1);
+  
   }
 };
 #endif
@@ -104,15 +112,8 @@ void() data_projectile_plasma_touch={
   local float proc;
   
   self.touch = SUB_Null;
+  self.impactType = IMPACT_SKY;
   self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-      
-  self.impactType = IMPACT_DIRT;
-  if (pointcontents(self.origin) == CONTENT_SKY){  
-    self.impactType = IMPACT_SKY;
-  }
   
   if(other.takedamage){
     damage = self.damageValue;
@@ -121,10 +122,10 @@ void() data_projectile_plasma_touch={
       proc = FALSE;
       if( other.shield <= (other.shieldMax * 0.1) ){
         proc = TRUE;
-        damage = damage * 0.65; //0.5
+        damage = damage * 0.65;
       }
       else{
-        damage = damage * 0.45; //0.33
+        damage = damage * 0.45;
       }
       t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, proc);
       self.impactType = IMPACT_SHIELD;
@@ -151,8 +152,19 @@ void() data_projectile_plasma_touch={
       return;
     }
 	}
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.05;
+  else{
+    makevectors(self.angles);
+    traceline(self.origin + (v_forward * -4), self.origin + (v_forward * 4), MOVE_WORLDONLY, self);
+    if( (trace_dpstartcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_SOLID) ){
+      self.impactType = IMPACT_DIRT;
+    }
+  }
+  
+  self.movetype = MOVETYPE_NONE;
+  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
+ 
+  self.think = ctrl_missile_lastframe;
+  self.nextthink = time + 0.1;
 };
 
 void() data_projectile_plasma_think_={
@@ -163,8 +175,11 @@ void() data_projectile_plasma_think_={
   if( time > self.data_lifetime ){
     client_send_particle( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
     self.touch = SUB_Null;
-    self.think = SUB_Remove;
+    self.think = ctrl_missile_lastframe;
     self.nextthink = time + 0.05;
+    self.solid = SOLID_NOT;
+    self.movetype = MOVETYPE_NONE;
+    self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
     return;
   }
   self.think = data_projectile_plasma_think_;
