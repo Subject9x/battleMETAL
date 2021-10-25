@@ -3184,6 +3184,7 @@ This is to turn the effect on/off/update.
 .count2 = <float> - velocity jitter for te_particlecube;
 .count3 = <float> - use with LIFETIME spawnflag.
 .sound = <string> - name of sound to play- TODO - implement
+.group = <string> - batch cubes together so that touches only override DIFFERENT cube ents
 -------- SPAWNFLAGS --------
 START_OFF 1 : Requires targetname and a trigger call.
 LIFETIME 2 : Func is turned off after .data_lifetime game seconds.
