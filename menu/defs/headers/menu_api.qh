@@ -234,33 +234,30 @@ void() menu_ini_ratelist={
 /*
   Darkplaces source code hardcodes this, I guess quake doesn't actually
   poll the display device for achievable ratios, so here we are :|
+  
+  oh apparently it does, in yet another poorly documented func:
+    getresolution(). <sigh>
 */
 void() menu_ini_display_constants={
-  local vector vsize, vasize;
-  local float f, itr;
-	local string ln, found;
-  found = "";
-  itr = 0;
-  f = fopen("data/cache/precache_resolutions.txt", FILE_READ);
-  if (f != -1){ 
-    ln = fgets(f); 
-    while( ln != "" ){
-      if(strstrofs(ln, "//",0) == -1){
-        tokenizebyseparator(ln, ",");
-        VID_RESO_NAME[itr] = strzone(argv(0));
-        vsize_x = stof(argv(1));
-        vsize_y = stof(argv(2));
-        vasize_x = stof(argv(3));
-        vasize_y = stof(argv(4));
-        vsize_z = stof(argv(5));
-        VID_RESO_SIZE[itr] = vsize;
-        VID_RESO_HALF[itr] = vasize;
-        itr = itr + 1;
-      }
-      ln = fgets(f);
+  local float itr;
+  local vector res;
+  local float i;
+  local vector con;
+  for (i = -1; ; i++){
+    res = getresolution(i);
+    if (i >= 0 && res_x < 1){
+      break;
     }
-	} 
-	fclose(f);
+    if(itr > 0){
+      VID_RESO_NAME[itr] = strzone( sprintf( "%s x %s",ftos( res_x), ftos(res_y)) );
+      VID_RESO_SIZE[itr] = res;
+      con_y = 480;
+      //match "vid_conwidthauto" but as a one-time calculation.
+      con_x = floor(con_y * res_x / (res_y * 1));
+      VID_RESO_HALF[itr] = con;
+    }
+    itr = itr + 1;
+  }
   VID_RESO_TOTAL = itr;
 };
 

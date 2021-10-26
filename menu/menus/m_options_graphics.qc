@@ -738,7 +738,8 @@ void() click_graphics_accept={
     cvar_set("vid_width", ftos(rint(VID_NEXT_x)));
     cvar_set("vid_height", ftos(rint(VID_NEXT_y)));
     cvar_set("vid_pixelheight", ftos(rint(VID_NEXT_z)));
-    cvar_set("vid_conwidth", ftos(rint(VID_CNEXT_x)));
+    cvar_set("vid_conwidthauto", "1"); //enforced
+    //cvar_set("vid_conwidth", ftos(rint(VID_CNEXT_x)));
     cvar_set("vid_conheight",ftos(rint(VID_CNEXT_y)));
     VID_NEXT = '0 0 0';
   }
@@ -786,8 +787,7 @@ void() m_graphics_i={
     for(col=0; col < 4; col = col + 1){
       idx = (row * 4) + col;
       if( idx < VID_RESO_TOTAL ){
-        tokenizebyseparator(VID_RESO_NAME[idx], " ");
-        reso = strcat("[",menu_getvideo_clean(idx), "] ", argv(1) );
+        reso = VID_RESO_NAME[idx];
         reso_list = btn_text_callback(startOrg + Vector2(col * max(stringwidth(reso, 0, '12 12'), 128), row * 25), '12 12', "", 0, M_OPTIONS_GRAPHICS, click_graphics_reso_select, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
         reso_list.len = idx;
         reso_list.subid = SUB_GRAPHICS_RESO;

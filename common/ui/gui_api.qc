@@ -138,8 +138,9 @@ void() gui_set_screen_size={
   
   //force con_width recalc on-demand
   VIEW_MAX_y = cvar("vid_conheight");
-  VIEW_MAX_x = floor(VIEW_MAX_y * VIEW_WIDTH / (VIEW_HEIGHT * VIEW_PIXELH));
-  cvar_set("vid_conwidth", ftos(VIEW_MAX_x));
+  //we enforce vid_conwidthauto, so "vid_conwidth" is automagically updated when "vid_conheight" is set.
+  //VIEW_MAX_x = floor(VIEW_MAX_y * VIEW_WIDTH / (VIEW_HEIGHT * VIEW_PIXELH));
+  VIEW_MAX_x = cvar("vid_conwidth");
   
   VIEW_CTR = VIEW_MAX * 0.5;
   
@@ -890,21 +891,21 @@ float(string bitFlags) gui_StringToFlag_Axis={
 
 
 void(string msg, float val) cons_logAFloat={
-  print(sprintf("%s : %s\n", msg, ftos(val)));
+  dprint(sprintf("%s : %s\n", msg, ftos(val)));
 };
 void(string msg, vector v1) cons_logAVector={
-  print(sprintf("%s : %s\n", msg, vtos(v1)));
+  dprint(sprintf("%s : %s\n", msg, vtos(v1)));
 };
 void(string msg, string s1) cons_logAString={
-  print(sprintf("%s : %s\n", msg, s1));
+  dprint(sprintf("%s : %s\n", msg, s1));
 };
 
 void(string msg, float val, string split, float val2) cons_log2Float={
-  print(strcat(msg,":", ftos(val), " | ", split, ":", ftos(val2),"\n"));
+  dprint(strcat(msg,":", ftos(val), " | ", split, ":", ftos(val2),"\n"));
 };
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
-  print(strcat(msg,":", vtos(v1),"| ", split,vtos(v2),"\n"));
+  dprint(strcat(msg,":", vtos(v1),"| ", split,vtos(v2),"\n"));
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
-  print(strcat(msg," : ",s1," | ", split," : ",s2,"\n"));
+  dprint(strcat(msg," : ",s1," | ", split," : ",s2,"\n"));
 };
