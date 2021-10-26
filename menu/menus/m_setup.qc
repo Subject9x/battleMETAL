@@ -306,7 +306,7 @@ void() m_setup_i={
   cacheGlobalString( setup_txtfld_playername.data_text, str_cvar("_cl_name") )
   
   setup_team_label = lbl_text(MENU_ORG + '10 115', '12 12', "TDM Team Colors : ", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
-  setup_team_value = lbl_text(setup_team_label.origin + Vector2(stringwidth("TDM Team Colors : ", 0, '12 12') + 128, 0), '12 12', ftos(cvar("cl_team")), CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
+  setup_team_value = lbl_text(setup_team_label.origin + Vector2(stringwidth("TDM Team Colors : ", 0, '12 12') + 128, 0), '12 12', "", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
   setup_team_value.len = cvar("cl_team");
   
   setup_team_icon = lbl_img(setup_team_value.origin, '96 96', setup_set_icon(setup_team_value.len), '1 1 1', 0, M_SETUP, 1, UI_FLAG_IMG_SIZE_ASPECT | UI_FLAG_CENTER_IMG );
