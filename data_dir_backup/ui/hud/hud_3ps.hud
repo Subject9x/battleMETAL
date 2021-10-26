@@ -34,7 +34,7 @@
   'valign'  : VIEW_LFT|VIEW_BOT,
 }
 {
-  'uid'     : HUD_UID_ARM_TARGET,
+  'uid'     : HUD_TAG_ARM_TARGET,
   'pos'     : 45 64 0,
   'valign'  : VIEW_RGT|VIEW_BOT,
   'lflag'   : 1,
