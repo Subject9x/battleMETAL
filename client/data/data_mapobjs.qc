@@ -19,7 +19,6 @@ void( float isNew, float entFlags ) sendent_handle_map={
       data_nav_point( isNew, entFlags );
       break;
     case DATA_PCL_CUBE:
-      dprint("CSQC->DATA_PCL_CUBE\n");//debug
       data_particle_cube_meta( isNew, entFlags );
       break;
     case DATA_OBJT:
@@ -32,7 +31,6 @@ void( float isNew, float entFlags ) sendent_handle_map={
       data_map_damage( isNew, entFlags );
       break;
     case DATA_MAP_RULES:
-      dprint("CSQC->DATA_MAP_RULES\n");//debug
       world_rules_readEntity( isNew, entFlags);
       break;
   }

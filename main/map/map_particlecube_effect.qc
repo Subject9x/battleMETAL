@@ -59,7 +59,7 @@ void() map_particlecube_effect_touch={
   
   trigger = self;
   
-  if( other.particleCube == self || other.particleCube.group == self.group){
+  if( other.particleCube == self || (self.group && (other.particleCube.group == self.group)) ){
     return;
   }
   //any-given client can only have 1 particle cube effect active on them at any time.
