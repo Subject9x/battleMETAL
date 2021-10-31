@@ -1,0 +1,38 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 10/30/2021
+Overview: 
+  An attempt to incorporate either MD3 tag nodes, or IQM bones to models?
+  
+*/
+
+#define tag_origin "tag_origin"
+#define tag_torso "tag_torso"
+#define tag_torLeft "tag_torLeft"
+#define tag_torRight "tag_torRight"
+#define tag_armLeft "tag_armLeft"
+#define tag_armRight "tag_armRight"
+
+#define tag_weapon1 "tag_weapon1"
+#define tag_weapon2 "tag_weapon2"
+#define tag_weapon3 "tag_weapon3"
+#define tag_weapon4 "tag_weapon4"
+#define tag_weapon5 "tag_weapon5"
+#define tag_weapon6 "tag_weapon6"
+#define tag_weapon7 "tag_weapon7"
+#define tag_weapon8 "tag_weapon8"
+#define tag_weapon9 "tag_weapon9"
+
+.string tagParent;
+.string tagName;
+.entity tagParentEnt;
+
+void(entity tagEntity, string tagNameVal) md3_tags_info;
+
+void(entity skel) md3_tags_build;
+void(entity skel, entity hpoint) md3_tags_build_weapon;
+
+void(entity part, float pitchFlag) md3_tags_predraw;
+
+void(entity part, float pitchFlag) md3_tags_predraw_tag;

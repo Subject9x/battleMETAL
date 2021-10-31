@@ -179,6 +179,8 @@ void() player_predraw={
       self.angle1 = self.angles_y;
       self.laser_sight_org2 = self.laser_sight_org1;
       self.laser_sight_org1 = self.laser_sight_org;
+      
+      
     }
     lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
     lerp = 1 - bound(0, lerpDiff, 1);
@@ -191,11 +193,12 @@ void() player_predraw={
     }
   
     self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-    
+
     if(self.clientLocalId == player_localentnum){
       cacheOrg = self.origin;
       self.origin = pmove_org;
     }
+    setorigin(self, self.origin);
     
     if( self.deadflag == DEAD_NO ){
       self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
@@ -209,16 +212,21 @@ void() player_predraw={
       entAng_x = 0;
       makevectors( entAng );
       
-      player_part_predaw(self.torsoCenter);
-      player_part_predaw(self.torsoLeft);
-      player_part_predaw(self.torsoRight);
+      //player_part_predaw(self.torsoCenter);
+      //player_part_predaw(self.torsoLeft); // debug commented out
+      //player_part_predaw(self.torsoRight);
+
+      self.torsoLeft.origin = skel_get_boneabs(self.skeletonindex, 7);
+      self.torsoRight.origin = skel_get_boneabs(self.skeletonindex, 3);
+
+      trailparticles(self, particleeffectnum("TE_LAS_RAIL"), self.origin, skel_get_boneabs(self.skeletonindex, 7));
 
       player_part_predaw(self.legs);
       
-      player_part_predaw(self.armLeft);
+      //player_part_predaw(self.armLeft);
       self.armLeft.angles_x = self.angles_x * -1;
       
-      player_part_predaw(self.armRight);
+     // player_part_predaw(self.armRight);
       self.armRight.angles_x = self.angles_x * -1;
       
       if( time > self.legs.nextthink){
@@ -314,7 +322,25 @@ void( float mech_id ) sendevent_player_mech={
   }
   minSave = self.mins;
   maxSave = self.maxs;
-    
+    //debug test
+  precache_model("q3mdl/mechs/sapper/sapper_rig.iqm");
+  setmodel(self, "q3mdl/mechs/sapper/sapper_rig.iqm");
+  
+  self.alpha = 1;
+  self.scale = 1.0;
+
+  skel_delete(self.skeletonindex);
+  self.skeletonindex = skel_create(self.modelindex);
+  cons_logAFloat("self.skeletonindex ", self.skeletonindex ); //debug
+  
+  
+  //cons_logAVector("     b7", skel_get_boneabs(self.skeletonindex, 7));
+  
+  
+  self.legs.scale = 0.85; //debug
+  self.legs.alpha = 0.5; //debug
+
+  
   self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
   self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
   self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
@@ -336,6 +362,9 @@ void( float mech_id ) sendevent_player_mech={
   self.armRight.drawmask = MASK_NORMAL;
   self.legs.drawmask = MASK_NORMAL;
 
+
+  
+  
   this = self;
   weps = self.w_slot;
   while( weps != world ){

@@ -31,6 +31,7 @@ data/headers/data_mech.qh
 data/headers/local_savefile.qh
 
 util/headers/particle_sys.qh
+model/model_bones.qh
 model/models_buildings.qh
 model/mech_legs.qh
 
@@ -155,6 +156,7 @@ data/data_projectiles.qc
 data/data_mapobjs.qc
 data/data_mech.qc
 
+model/model_bones.qc
 model/misc_buildings.qc
 
 data/local_savefile.qc

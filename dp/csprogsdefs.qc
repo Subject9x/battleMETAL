@@ -1720,7 +1720,7 @@ const float RF_FULLBRIGHT	= 256;
 const float RF_NOSHADOW	= 512;
 float RF_DYNAMICMODELLIGHT = 8192;
 
-float gettaginfo_parent;
+float gettaginfo_parent;  //only works on actual .skeletonindex entities, not MD3 tag models
 string gettaginfo_name;
 vector gettaginfo_offset;
 vector gettaginfo_forward;
