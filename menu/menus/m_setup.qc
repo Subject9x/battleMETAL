@@ -227,8 +227,6 @@ void() setup_team_next_f={
 
 
 void() setup_color_pick_color={
-  dprint(sprintf("dbg len : %s\n", ftos(self.len)));  //debug
-  dprint(sprintf("dbg color : %s\n", vtos(CLR_PLAYER_LIST[self.len] * 255)));
   switch(SETUP_COLOR_PART_SELECTED){
     case 2:
       TINT_LT = self.len;

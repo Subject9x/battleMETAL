@@ -191,6 +191,7 @@ void() interpolate_tank={
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
+	setorigin(self, self.origin);
   
   parent = self;
   makevectors(self.angles);
@@ -220,8 +221,6 @@ void() interpolate_tank={
     self = parent;
     wepn = wepn.w_slot;
   }
-  
-  setorigin(self, self.origin);
 };
 
 void() predraw_tank={
@@ -229,6 +228,5 @@ void() predraw_tank={
     if(self.interpolate_entity){
       self.interpolate_entity();
     }
-    setorigin(self, self.origin);
   }
 };
