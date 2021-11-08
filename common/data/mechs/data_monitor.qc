@@ -178,15 +178,3 @@ void() data_ini_monitor_={
 #endif
 //====================================
 };
-#ifdef CSQC
-//oh the things done because csqc interpolation isn't a thing.
-//simply syncs 
-void() data_ini_monitor_offsets={
-  self.centerTorso = '0 0 0';
-  self.leftTorso = '-11.5 11 -0.5';
-  self.rightTorso = '11.5 11 -0.5';
-  self.leftArm = '-18 9 3.5';
-  self.rightArm = '18 9 3.5';
-  self.leg = '0 -22 0';
-};
-#endif

@@ -26,6 +26,9 @@ void(float mech_id) initialize_data_mech_={
     case UID_MECH_matok:
       data_ini_matok_();
       break;
+    case UID_MECH_sapper:
+      data_ini_sapper_();
+      break;
     case UID_MECH_monitor:
       data_ini_monitor_();
       break;

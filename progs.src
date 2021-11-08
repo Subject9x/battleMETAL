@@ -82,6 +82,7 @@ main/controllers/headers/controllers.qh
   common/data/mechs/data_balaket.qc
   common/data/mechs/data_matok.qc
   common/data/mechs/data_monitor.qc
+  common/data/mechs/data_sapper.qc
   //-------------------------------
   
   //Vehicles-----------------------

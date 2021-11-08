@@ -305,6 +305,9 @@ void( float mech_id ) sendevent_player_mech={
     case UID_MECH_matok:
       data_ini_matok_();
       break;
+    case UID_MECH_sapper:
+      data_ini_sapper_();
+      break;
     case UID_MECH_monitor:
       data_ini_monitor_();
       break;
