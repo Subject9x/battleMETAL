@@ -756,6 +756,10 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, self.shieldHitFlag); 
   }
   
+  if( (changeFlags & SENDFLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, player.faction);
+  }
+  
   /*
     EVENT - player info change 
   */

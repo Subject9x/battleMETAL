@@ -322,6 +322,13 @@ void( float mech_id ) sendevent_player_mech={
   self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
   self.legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
   
+  self.torsoCenter.skin = self.faction - 1;
+  self.torsoLeft.skin = self.faction - 1;
+  self.torsoRight.skin = self.faction - 1;
+  self.armLeft.skin = self.faction - 1;
+  self.armRight.skin = self.faction - 1;
+  self.legs.skin = self.faction - 1;
+  
   setmodel(self.torsoCenter, self.torsoCenter.model);
   setmodel(self.torsoLeft, self.torsoLeft.model);
   setmodel(self.torsoRight, self.torsoRight.model);
@@ -335,7 +342,7 @@ void( float mech_id ) sendevent_player_mech={
   self.armLeft.drawmask = MASK_NORMAL;
   self.armRight.drawmask = MASK_NORMAL;
   self.legs.drawmask = MASK_NORMAL;
-
+  
   this = self;
   weps = self.w_slot;
   while( weps != world ){
@@ -444,6 +451,14 @@ void( float prevFac, float newFaction ) sendevent_handle_faction={
   }
   else if( newFaction == FACTION_MILITAR ){
     TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
+  }
+  if( self.data_type == DATA_MECH ){
+    self.torsoCenter.skin = self.faction - 1;
+    self.torsoLeft.skin = self.faction - 1;
+    self.torsoRight.skin = self.faction - 1;
+    self.armLeft.skin = self.faction - 1;
+    self.armRight.skin = self.faction - 1;
+    self.legs.skin = self.faction - 1;
   }
 };
 
@@ -625,6 +640,16 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.shieldHitFlag = ReadByte();
   }
   
+  if( (changeFlags & SENDFLAG_FACTION) ){
+    self.faction = ReadByte();
+  }
+  /*
+    HANDLE - Update Faction totals
+  */
+  if( prevFaction != self.faction ){
+    sendevent_handle_faction( prevFaction, self.faction );
+  }
+  
   /*
     EVENT - player info change 
   */
@@ -732,7 +757,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
-  self.faction = rint(stof(getplayerkeyvalue(self.clientLocalNum, "colors")));
   self.ping = stof( getplayerkeyvalue(self.clientLocalNum, "ping") );
   
   self.netname = getplayerkeyvalue(self.clientLocalNum, "name");
@@ -775,13 +799,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
         self.origin = controlPlayer.origin;
       }
     }
-  }
-  
-  /*
-    HANDLE - Update Faction totals
-  */
-  if( prevFaction != self.faction ){
-    sendevent_handle_faction( prevFaction, self.faction );
   }
   
   //Shield strike event
