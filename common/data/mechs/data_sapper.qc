@@ -28,7 +28,7 @@ void() data_ini_sapper_={
   self.shieldMax   = 800;
   self.shieldRate  = 4.0;
   self.startupDelay = 8;
-  self.evasionDrain = 3.5;
+  self.evasionDrain = 4.5;
 //=====================================
  
 //RADAR================================
@@ -41,8 +41,8 @@ void() data_ini_sapper_={
   self.data_speed_forward = 125;  //150
   self.data_speed_strafe = 105; //100
   self.data_speed_backward = 100;  //90
-  self.data_speed_accel = 1.25; //1.5
-  self.ramUpMax = 1.5;
+  self.data_speed_accel = 2.25; //1.5
+  self.ramUpMax = 1.75;
   self.ramCooldown = 3;
 #ifdef CSQC
   self.legMoveRate = 10;
@@ -90,7 +90,7 @@ void() data_ini_sapper_={
 //HARDPOINT DATA======================
 #ifdef SSQC
   data_ini_unitHardpoint_1( M_ARM_RIGHT, '12.5 0 5', '0 0 0', 1, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );\
+  data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
   
   data_ini_unitHardpoint_3( M_TOR_RIGHT, '8.35 14.75 -1', '0 0 0', 1, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_4( M_TOR_LEFT, '-8.35 14.75 -1', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
@@ -114,7 +114,7 @@ void() data_ini_sapper_={
     data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 90', (BAL1|ENE1), (DMG_BAL | DMG_ENE) );
   }
   
-  data_ini_unitHardpoint_3( M_TOR_RIGHT, '8.35 14.75 -1', '0 0 0', (BAL2|BAL3|MIS1|MIS2|MIS3|ENE2), (DMG_BAL | DMG_ENE | DMG_EXP) );
+  data_ini_unitHardpoint_3( M_TOR_RIGHT, '8.35 14.75 -1', '0 0 0', (BAL2|BAL3|MIS1|MIS2|MIS3|ENE3), (DMG_BAL | DMG_ENE | DMG_EXP) );
   data_ini_unitHardpoint_4( M_TOR_LEFT, '-8.35 14.75 -1', '0 0 -90', (BAL2|BAL3|MIS1|MIS2|MIS3), (DMG_BAL | DMG_EXP) );
   
   data_ini_unitHardpoint_5( M_TOR_CENTER, '3.35 5.5 3',  '0 0 0', (MSC1|MSC2),  DMG_MSC );
@@ -127,9 +127,10 @@ void() data_ini_sapper_={
 //HUD Data=============================
 #ifdef CSQC
   self.weaponmodel = "q3mdl/mechs/sapper/sapper_view.obj";
+  self.hud_model = "q3mdl/mechs/sapper/sapper_hud.obj";
   self.hud_StrutsOffset = '0 -2 -0.75';
-  self.pitchMax = 50;
-  self.pitchMin = -35;
+  self.pitchMax = 40;
+  self.pitchMin = -40;
   self.hud_rollangle = 3.25;
   self.hud_bob = 0.035;
   self.hud_bob_cycle = 0.5;
@@ -142,8 +143,7 @@ void() data_ini_sapper_={
 
 //UI Data=============================
   self.abbrev = "SPR";
-  //self.description = "The MATOK was the second-generation combat mech that Federal Military churned out as the threat of AUTHOR was increasing. MATOKs are the main stay of Federal squadrons today, found in almost every deployment and any combat. | | A dangerous generalist, the MATOK is design to engage targets head on with a slew of direct-fire power and large reactor recharge capacity. | | MATOK operators have to remember not to get surrounded though, the MATOK's defensive capabilities are not as strong as its offense. Its speed is also a problem against more agile targets.";
-  self.description = "todo";
+  self.description = "SAPPER mechs were drafted and produced right before the Federation treaty was ratified. Off-world concerns asked for a strong second-line METAL to support other medium formations. What they got from the factories was dubbed the SAPPER based on its hardpoint configuration and shield output. | | The mech trades a lot of offensive firepower for equipment and shields. Its ability to withstand heavy anti-shield damage allows the mech to move-and-fire against tougher opponents. | | SAPPERs won`t halt an attack by themselves but they remain a powerful force multiplier in both Militar and Survest armies...even if they can no longer be built in large numbers.";
   self.icon = "gfx/ui/mech_icons/icon_sapper.png";
   
   //ui offsets for hangar, not pretty
