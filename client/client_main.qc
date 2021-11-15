@@ -375,6 +375,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     else{
       //setproperty(VF_ORIGIN, pmove_org);
       setproperty(VF_ANGLES, input_angles);
+
       //setproperty(VF_CL_VIEWANGLES, input_angles);
     }
   }
@@ -493,7 +494,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     //version wille eventually be only displayed as needed.
     gui_drawversion();
   }
-  
+  input_angles_prev = input_angles;
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!

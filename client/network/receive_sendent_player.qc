@@ -260,9 +260,13 @@ void() player_predraw={
           hudAng = input_angles;
           hudAng_x = 0;
           
-          hudStruts.angles_y = input_angles_y;
-          hudStruts.angles_x = 0;
-          hudStruts.angles_z = 0;
+          hud_rotate_delay(hudStruts);
+    
+          //hudStruts.angles_y = input_angles_y;
+          //hudStruts.angles_x = 0;
+          //hudStruts.angles_z = 0;
+          
+          
           
           hudConsole.angles_y = input_angles_y;
           hudConsole.angles_x = 33;

@@ -39,6 +39,8 @@ network/headers/server_localcmd.qh
 network/headers/receive_entities.qh
 network/headers/receive_sendent.qh
 
+util/util_vec.qc
+
 //Common Game Data================
   ../common/data/data_values_particles.qc
   ../common/ui/ui_color_constants.qc
