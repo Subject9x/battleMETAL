@@ -26,6 +26,9 @@ void(float mech_id) initialize_data_mech_={
     case UID_MECH_monitor:
       data_ini_monitor_();
       break;
+    case UID_MECH_warden:
+      data_ini_warden_();
+      break;
     default :
       cons_logAFloat("client.data_system.initialize_data_mech_()-Error: failed to build mech with id", mech_id);
       break;

@@ -14,11 +14,11 @@ Overview:
 */
 void() data_ini_warden_={
 
-  self.data_idx = UID_MECH_balaket;
+  self.data_idx = UID_MECH_warden;
   self.vec_size = 1;
   self.vec_name = "Warden";
  
-  self.max_health = 500;
+  self.max_health = 575;
   self.mins = '-18 -18 -35';
   self.maxs = '18 18 16';
   
@@ -61,22 +61,22 @@ void() data_ini_warden_={
 //MECH COMPONENTS====================
 
   //center torso
-  data_ini_torso_center_( "q3mdl/mechs/warden/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );
+  data_ini_torso_center_( "q3mdl/mechs/warden/warden_tor_c.md3", 500, '0 0 0', '0 3 0' );
  
   //left torso
-  data_ini_torso_left_( "q3mdl/mechs/warden/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', '-5.5 5.5 0');
+  data_ini_torso_left_( "q3mdl/mechs/warden/warden_tor_l.md3", 375, '-3.9 8.5 -3', '-5.5 5.5 0');
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/warden/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', '5.5 5.5 0');
+  data_ini_torso_right_( "q3mdl/mechs/warden/warden_tor_r.md3", 375, '3.9 8.5 -3', '5.5 5.5 0');
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/warden/balaket_arm_l.md3", 350, '-10 7 -3', '-10.1 3.5 0');
+  data_ini_arm_left_( "q3mdl/mechs/warden/warden_arm_r.md3", 350, '-14 7.5 -3', '-10.1 3.5 0');
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/warden/balaket_arm_r.md3", 350, '10 7 -3', '10.1 3.5 0');
+  data_ini_arm_right_( "q3mdl/mechs/warden/warden_arm_r.md3", 350, '14 7.5 -3', '10.1 3.5 0');
    
   //legs      
-  data_ini_legs_( "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');
+  data_ini_legs_( "q3mdl/mechs/warden/warden_legs.md3", 700, '0 0 0');
   
   //camera location
 #ifdef CSQC
@@ -133,7 +133,7 @@ void() data_ini_warden_={
 //UI Data=============================
   self.abbrev = "WRD";
   self.description = "null";
-  self.icon = "gfx/ui/mech_icons/icon_balaket.png";
+  self.icon = "gfx/ui/mech_icons/icon_warden.png";
   
   local entity hardpnt;
   hardpnt = self.w_slot;
