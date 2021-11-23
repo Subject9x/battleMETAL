@@ -38,12 +38,12 @@ void() data_ini_warden_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 185;
-  self.data_speed_strafe = 120;
-  self.data_speed_backward = 90;
-  self.data_speed_accel = 2;
-  self.ramUpMax = 2;
-  self.ramCooldown = 6;
+  self.data_speed_forward = 165;
+  self.data_speed_strafe = 165;
+  self.data_speed_backward = 165;
+  self.data_speed_accel = 1.33;
+  self.ramUpMax = 3;
+  self.ramCooldown = 8;
 #ifdef CSQC
   self.legMoveRate = 9.5;
   self.legRunRate = 12;
@@ -117,7 +117,7 @@ void() data_ini_warden_={
 
 //HUD DATA=============================
 #ifdef CSQC
-  self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.obj";
+  self.weaponmodel = "q3mdl/mechs/warden/warden_view.obj";
   self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
   self.hud_StrutsOffset = '0 -1.5 -1';
   self.pitchMax = 20; //pitch down limit
@@ -155,15 +155,3 @@ void() data_ini_warden_={
 //====================================
 #endif
 };
-#ifdef CSQC
-//oh the things done because csqc interpolation isn't a thing.
-//simply syncs 
-void() data_ini_balaket_offsets={
-  self.centerTorso = '0 0 0';
-  self.leftTorso = '-7.5 5.5 -2.5';
-  self.rightTorso = '7.5 5.5 -2.5';
-  self.leftArm = '-12.1 3.5 -3';
-  self.rightArm = '12.1 3.5 -3';
-  self.leg = '0 -16 0';
-};
-#endif
