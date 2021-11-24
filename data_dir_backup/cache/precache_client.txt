@@ -143,12 +143,23 @@ q3mdl/mechs/sapper/sapper_tor_r.md3
 q3mdl/mechs/sapper/sapper_tor_l.md3
 q3mdl/mechs/sapper/sapper_tor_c.md3
 q3mdl/mechs/sapper/sapper_legs.md3
+q3mdl/mechs/sapper/sapper_hud.obj
+
+//Warden
+//warden arms are mirrored, so one mesh only
+q3mdl/mechs/warden/warden_arm_r.md3
+q3mdl/mechs/warden/warden_tor_r.md3
+q3mdl/mechs/warden/warden_tor_l.md3
+q3mdl/mechs/warden/warden_tor_c.md3
+q3mdl/mechs/warden/warden_legs.md3
+//q3mdl/mechs/warden/warden_hud.obj
 
 //new huds
 q3mdl/mechs/balaket/balaket_view.obj
 q3mdl/mechs/matok/matok_view.obj
 q3mdl/mechs/monitor/monitor_view.obj
 q3mdl/mechs/sapper/sapper_view.obj
+q3mdl/mechs/warden/warden_view.obj
 
 //CROSSHAIRS
 gfx/hud/ret/crosshair1.png
