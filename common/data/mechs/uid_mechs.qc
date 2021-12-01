@@ -12,3 +12,4 @@ float UID_MECH_balaket = 1;
 float UID_MECH_matok = 2;
 float UID_MECH_monitor = 3;
 float UID_MECH_sapper = 4;
+float UID_MECH_warden = 5;

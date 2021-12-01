@@ -1,7 +1,7 @@
 //mission info section
 {
 //img stored in data/map_scripts/
-  'img' : 'dm3/dm3.tga'
+  'img' : 'dm3/dm3.png'
   'name'  : 'Operation Eis-stellung'
   'display' : 'Candles in the dark'
   'type'  : 'Base Assault'

@@ -1,0 +1,13 @@
+//Campaign Data Defintion file.
+//add your campaign file to this folder according to the existing specifiation.
+//your campaign will show up on the NEWGAME menu screen.
+//use | to enforce newlines in desc.
+{
+  'name' : 'Extended Main Campaign'
+  'desc' : 'Main game with newer mechs.'
+  'author' : 'original'
+  'mechs' : '1 4 5'
+  'items' : '3 12 13'
+  'start' : 'intro'
+  'info' : 'Main campaign but player starts with new mechs; Warden light mech and Sapper medium mech.'
+}

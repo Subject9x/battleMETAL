@@ -1,0 +1,18 @@
+//mech data file
+//messing with this without knowing what you're doing WILL blow up your game
+//BACK UP BEFORE MODIFYING
+{
+  //stock loadout
+  'hpt_stock_1'  : 0,
+  'hpt_stock_2'  : 0,
+  'hpt_stock_3'  : 0,
+  'hpt_stock_4'  : 0,
+  'hpt_stock_5'  : 0,
+  
+  //stock grouping
+  'grps_stock_1' : 3,
+  'grps_stock_2' : 4,
+  'grps_stock_3' : 0,
+  'grps_stock_4' : 0,
+  'grps_stock_5' : 0,
+}

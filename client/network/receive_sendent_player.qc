@@ -311,6 +311,9 @@ void( float mech_id ) sendevent_player_mech={
     case UID_MECH_monitor:
       data_ini_monitor_();
       break;
+    case UID_MECH_warden:
+      data_ini_warden_();
+      break;
     default :
       cons_logAFloat("client.receive_sendent_player.sendevent_player_mech()-Error: failed to build mech with id", mech_id);
       break;

@@ -21,8 +21,12 @@ void( float dataID ) data_sync_new_mech_ai={
       break;
     case UID_MECH_monitor:
       data_ini_monitor_();
+      break;
     case UID_MECH_sapper:
       data_ini_sapper_();
+      break;
+    case UID_MECH_warden:
+      data_ini_warden_();
       break;
   }
   makevectors(self.angles);
