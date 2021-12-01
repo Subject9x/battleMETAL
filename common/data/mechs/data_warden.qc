@@ -45,8 +45,8 @@ void() data_ini_warden_={
   self.ramUpMax = 3;
   self.ramCooldown = 8;
 #ifdef CSQC
-  self.legMoveRate = 9.5;
-  self.legRunRate = 12;
+  self.legMoveRate = 12;
+  self.legRunRate = 14;
 #endif
 #ifdef SSQC
   self.yaw_speed = 4;    // AI-only 
@@ -104,13 +104,6 @@ void() data_ini_warden_={
   data_ini_unitHardpoint_3( M_TOR_CENTER, '-7.5 2.9 1', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE ) );
   data_ini_unitHardpoint_4( M_TOR_RIGHT, '6.4 10.5 -0.5', '0 0 0', (BAL1|ENE1|MIS1|MSC1), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
   data_ini_unitHardpoint_5( M_TOR_LEFT, '-10 10.8 -2', '0 0 0', (MIS1|MIS2|MIS3|MIS4|MSC2|MSC3|MSC4), (DMG_EXP | DMG_MSC));
-  
-  if((self.flags&FL_CLIENT)){
-
-  }
-  else{
-
-  }
 #endif
 //=====================================
 
@@ -134,24 +127,24 @@ void() data_ini_warden_={
 
 //UI Data=============================
   self.abbrev = "WRD";
-  self.description = "null";
+  self.description = "MILITAR burned out their best hackers on black ICE breaking into a salvaged Federation data core. Amongst the encrypted modules was blueprints for a highly advanced light metal - the WARDEN. | | Tech degradation after the toppling of the Federation meant that MILITAR could not create a perfect copy...but they tried anyway. | | The result is a tough-as-nails light metal. It is not the fastest metal on the planet, but well-protected hardpoints and fast enough movement allow the WARDEN to stay out of most trouble. | | BALAKET pilots have a particular disdain for WARDEN units, frustrated that their vaunted hit-and-run style won`t take a WARDEN down quickly.";
   self.icon = "gfx/ui/mech_icons/icon_warden.png";
   
   local entity hardpnt;
   hardpnt = self.w_slot;
-  hardpnt.uiOffset = '-85 25'; //#1
+  hardpnt.uiOffset = '-50 20'; //#1
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '85 25'; //#2
+  hardpnt.uiOffset = '40 20'; //#2
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '12 -50';//#3
+  hardpnt.uiOffset = '75 20';//#3
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-50 -18.0';//#4
+  hardpnt.uiOffset = '-45 -24.0';//#4
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '50 -18.0'; //#5
+  hardpnt.uiOffset = '65 -24.0'; //#5
 //====================================
 #endif
 };
