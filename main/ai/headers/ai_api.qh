@@ -37,7 +37,6 @@ float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
 //GLOBALS
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
 vector selfSensorOrg;
-vector orgCheckNode;    //discard _z
 
 entity lastNode;        //minor optimization for assigning ai_nodes for patrols by reducing lookup times.
 

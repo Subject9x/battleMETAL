@@ -248,7 +248,6 @@ qsrc/triggers.qc
   
   //models quake c
   main/models/models_leg.qc
-  main/models/models_ctor.qc
   
   //effects
   main/effectinfo_api.qc

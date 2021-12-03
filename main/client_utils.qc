@@ -11,8 +11,6 @@ Overview: client utility methods, pulled from client.qc
   This pushes client data to the owner, every PostPlayerThink() call.
 */
 void() client_push_player_info={
-  local entity wep;
-  local float wepItr;
   local float targShield;
   local float myShield;
   

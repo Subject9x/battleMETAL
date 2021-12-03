@@ -44,7 +44,7 @@ typedef struct
 
 float NODEGRAPH_DATA_BLOCK[1024];
 node_t NODEGRAPH_DATA[1024];
-node_t NODE_found; //structs can't be return types I think...
+//node_t NODE_found; //(for debug) structs can't be return types I think...
 node_t NODE_check;
 
 float NODEGRAPH_SEARCH_QUEUE[1024];

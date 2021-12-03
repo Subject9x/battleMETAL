@@ -250,8 +250,6 @@ void() ctrl_die_weapon={
 */
 void() ctrl_weapon_remove_all={
   local entity removeChain;
-  local entity removeHudWeapon;
-  local entity nextHudWeapon;
   //call remove() in list order, no going back from this.
   
   for( removeChain = self.w_slot; removeChain != world; removeChain = removeChain.w_slot ){

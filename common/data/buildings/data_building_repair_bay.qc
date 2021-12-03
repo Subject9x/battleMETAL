@@ -135,12 +135,9 @@ void() building_repair_select={
 void() building_repair_fixing={
   local entity player;
   local float end_repair;
-  local entity repairThis,fix;
+  local entity fix;
   local entity part;
-  local float lowHP;
-  local float hp;
   local entity altSelf;
-  local float prevDeadFlag;
   
   if( self.reloadValue <= 0 ){
     //cut over to cooldown state;

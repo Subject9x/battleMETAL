@@ -676,7 +676,6 @@ void() client_data={
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   local float prevType;
-  local vector targetOrg;
   local float sendCrit;
   
   player = self.owner;

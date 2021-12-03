@@ -76,8 +76,6 @@ void() data_ini_missile_laserguide_={
 
 #ifdef SSQC
 void() data_ini_attack_missile_laserguide_={
-  local entity hold;
-  local vector lasOrg;
   
   ctrl_weapon_fireOffset();
 

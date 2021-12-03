@@ -86,8 +86,6 @@ void() data_ini_light_laser_={
 
 #ifdef SSQC
 void() data_ini_attack_laser_={
-  local float damage;
-  
   if( !ctrl_weapon_checkEnergy() ){
     return;
   }

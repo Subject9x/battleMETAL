@@ -8,6 +8,28 @@ Overview:
 */
 
 
+
+void(entity enEntity) GetAlignedSurfaceAngles=
+{ // Return Aligned Surface Angles
+	// NOTE: div0 from Team Alientrap completely designed this algorithm.
+	// Thanks div0!
+	// Acquire Surface Normal
+	traceline (enEntity.origin, enEntity.origin - '0 0 128', TRUE, enEntity);
+	
+	if(trace_fraction != 1)
+	{ // Trace Found Surface; Continue
+		local vector vNormal;
+			vNormal = trace_plane_normal;
+		
+		// Derive Vectors
+		makevectors(enEntity.angles);
+			
+		// Assign Aligned Angles
+		enEntity.angles = vectoangles( normalize(v_forward - ( (v_forward * vNormal) / (v_up * vNormal)) * v_up) );
+	}
+}
+
+
 void() sendent_empty_think={
   
   self.think = sendent_empty_think;

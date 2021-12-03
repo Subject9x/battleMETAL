@@ -99,7 +99,6 @@ void() ai_ctrl_update_mechplayer={
 };
 
 void() ctrl_updateCenterTorso={
-  local float diff;
   local float mx, my;
   local float rate;
   local vector laserHit;
@@ -157,10 +156,8 @@ void() ctrl_updateCenterTorso={
 };
 
 void() ai_ctrl_updateCenterTorso={
-  local float diff;
   local entity cam;
   local vector v1;
-  local float myShield;
   
   makevectors(self.torsoCenter.angles);
   v1 = self.origin + (v_right * cam.compOffset_x) + (v_up*cam.compOffset_y) + (v_forward*cam.compOffset_z);

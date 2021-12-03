@@ -50,7 +50,6 @@ Inputs
 
 
 void() map_particlecube_effect_touch={
-  local entity newCube;
   local entity trigger;
   
   if( !(other.flags & FL_CLIENT) ){

@@ -313,7 +313,9 @@ void() build_mech_torsoCenter={
   this = self;
   self = self.torsoCenter;
     macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
-    macro_set_model(self.model, this.skin, 0)
+    self.model = this.model;
+    self.skin = this.skin;
+    setmodel(self, self.model);
     setsize(self, '-1 -1 -1','1 1 1');
     macro_set_offset(this,'0 0 0')
     self.punchangle = self.angles = '0 0 0';

@@ -238,10 +238,7 @@ float( .float queueVar, float pathCountVal ) ai_nodegraph_set_queue_val={
 };
 
 float( float nodeStartId, float nodeEndId ) ai_nodegraph_trace_norm={
-  
   local float traceStat;
-  local float startNode;
-  local float endNode;
   
   if( time < self.ai_timer_tracepath ){
     return FALSE;

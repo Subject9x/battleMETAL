@@ -163,6 +163,7 @@ void() doodad_mech_static_balaket={
   if(!self.faction){
     self.faction = 1;
   }
+  precache_model("models/mechs/balaket/balaket.md3");
   setmodel(self, "models/mechs/balaket/balaket.md3");
   setsize(self, '-18 -18 -35', '18 18 16');
   setorigin(self, self.origin);
@@ -187,6 +188,7 @@ void() doodad_mech_static_matok={
   if(!self.faction){
     self.faction = 1;
   }
+  precache_model("models/mechs/matok/matok.md3");
   setmodel(self, "models/mechs/matok/matok.md3");
   setsize(self, '-18 -18 -40', '18 18 22');
   setorigin(self, self.origin);
@@ -212,6 +214,7 @@ void() doodad_mech_static_monitor={
   if(!self.faction){
     self.faction = 1;
   }
+  precache_model("models/mechs/monitor/monitor.md3");
   setmodel(self, "models/mechs/monitor/monitor.md3");
   setsize(self, '-22 -22 -44', '22 22 24');
   setorigin(self, self.origin);

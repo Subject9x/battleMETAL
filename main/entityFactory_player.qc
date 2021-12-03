@@ -46,7 +46,7 @@ float() customize_part_for_client={
 };
 
 void() player_makeMech={
-  local entity wep, hudWepStart;
+  local entity hudWepStart;
   
   self.data_idx = self.nextVecChoice;
   

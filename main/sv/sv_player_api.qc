@@ -582,7 +582,8 @@ void() PlayerJump={
 	if (self.flags & FL_WATERJUMP)
 		return;
 	
-	if (self.waterlevel >= 2){
+  //Quake 1 water detection / SFX disabled for now.
+	/*if (self.waterlevel >= 2){
 		if (self.watertype == CONTENT_WATER)
 			self.velocity_z = 100;
 		else if (self.watertype == CONTENT_SLIME)
@@ -600,7 +601,7 @@ void() PlayerJump={
 				sound (self, CHAN_BODY, "misc/water2.wav", 1, ATTN_NORM);
 		}
 		return;
-	}
+	}*/
 
 	if (!(self.flags & FL_ONGROUND))
 		return;

@@ -937,7 +937,7 @@ void( entity iEdgNode, float weight ) world_nodegraph_edge_check_len={
   local float len1, len2;
   local vector eKey, eKey2;
   local vector ivec;
-  local vector ecache;
+  //local vector ecache;  //for debug
   local float iFlag;
   
   for( i=1; i <= NODE_ID_EXPORT_COUNT - 1; i=i+1){
@@ -1040,7 +1040,7 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
 void() world_nodegraph_import={
   local float checkNodeItr;
   
-  node_t check;
+  //node_t check; //for debug
   
   checkNodeItr = 0;
   //prepare the data
@@ -1098,7 +1098,6 @@ float() world_nodegraph_read_file={
   local vector nodeDataOrg;
   
   local string tknEdgeId;
-  local string tknEdgeLen;
   
   local float edgeItr;
   local float edgeDataId;
@@ -1332,6 +1331,7 @@ entity() world_deathmatch_random_spawn={
     }
     rando = rando.partNext;
   }
+  return rando;
 };
 
 //TDM/DM network games use this list.

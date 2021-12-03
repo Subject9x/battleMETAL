@@ -12,10 +12,6 @@ Overview:
 
 void(float dataNodeId, vector dataOrg ) nodegraph_read_new_node={
   local vector reflectOrg;
-  
-  local float reflectNode;
-  local float reflectEdge;
-  
   node_t nodeData;
   //node_t checkData;
   
@@ -143,11 +139,10 @@ float( float startId, float endId ) nodegraph_trace={
 float( float startNode, float endIdTrace ) nodegraph_build_path={
   
   local float stack;
-  local float endId;
   local float pathId;
   local float reflectPath;
-  local float stackTotal;
-  local vector dbgOrg;
+  //local float stackTotal; //for debug
+  //local vector dbgOrg;
   
   //dprint(sprintf("nodegraph_build_path( startNode[%u], endIdTrace[%u] )\n", startNode, endIdTrace));  //debug
   stack = 0;
@@ -196,7 +191,6 @@ float( vector start, vector end ) nodegraph_trace_vec={
   local float endNodeId;
   
   local float traceEndId;
-  local float dbgItr;
   
   nodegraph_clear_search_queue();
   
@@ -304,9 +298,6 @@ float( vector org ) nodegraph_node_by_origin={
   An entity that 'walks' the entire node graph, going from node-to-node every .think
 */
 void() nodegraph_debugger_th_node={
-  local float nd;
-  local float nd2;
-  local vector nodeOrg;
   local entity t;
   
   if( self.nq1 == -1 ){
@@ -371,9 +362,6 @@ void() nodegraph_debugger_th_edge={
         and the node setup works.
 */
 void( vector src, vector dst ) nodegraph_debug_graph={
-  local float strId;
-  local float enId;
-  local float edgeTotal;
   local float pathCnt;
   
   local float startNodeId;
@@ -428,7 +416,6 @@ void( vector src, vector dst ) nodegraph_debug_graph={
 
 void( float srcId ) nodegraph_debug_edges={
   node_t test;
-  node_t nEdge;
   
   local float edgeNum;
   local vector vTestOrg;

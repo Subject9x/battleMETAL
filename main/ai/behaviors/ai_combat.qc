@@ -19,7 +19,6 @@ void() ai_ranged_attack={
   local float fired;
   local vector diff;
   local float blockShot;
-  local float allWeps;
   
   self.ai_weaponEnergy = 0;
   this = self;
