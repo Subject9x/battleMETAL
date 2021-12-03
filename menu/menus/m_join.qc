@@ -33,7 +33,6 @@ float	gethostcachenumber(float fld, float hostnr)
 string SERVER_BASE_DATA_DIR = "metaldata";
 
 float SERVER_CURRENT;
-float SERVER_TOTAL;
 
 float SERVER_PAGE;
 float SERVER_PAGE_TOTAL;
@@ -322,8 +321,8 @@ void() m_join_d={
   menu_k functions are the 'listener' functions
 */
 void(float key, float ascii) m_join_k={
-  local float hostNumber;
   local string joinCmd;
+  
   if(key == K_MOUSE1){
     SERVER_SELECTED = listListener(SERVER_LIST_ORG, SERVER_LIST_SIZE, '350 26', SERVER_ROW_ITR+1, 0);
     if( SERVER_SELECTED != -1 ){

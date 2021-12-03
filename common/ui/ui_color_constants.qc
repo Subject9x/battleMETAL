@@ -21,10 +21,12 @@ vector CLR_DEF_RED = '1 0 0';  //explicitly a true global
 
 #define CLR_DEF_GREEN_OK '0 0.8 0.25'
 //UI Theming
+#ifndef MENUQC
 vector CLR_DEF_UI_BRIEF;
 vector CLR_DEF_UI_HANGAR;
 vector CLR_DEF_UI_ARMING;
 vector CLR_DEF_UI_DEPLOY;
+#endif
 
 //PSC theming
 #define CLR_UI_PSC_BRIEF '0.54 0.48 0.39'

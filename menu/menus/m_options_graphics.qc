@@ -690,7 +690,6 @@ void() click_graphics_fxaa_less={
 };
 
 void() click_graphics_back={
-  local float cache;
   
   if(options_graphics_submenu == SUB_GRAPHICS_RESO ){
     graphics_reso_menu(FALSE);

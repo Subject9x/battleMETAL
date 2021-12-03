@@ -9,7 +9,7 @@ Overview: singleplayer menu
 entity camp_title;
 entity camp_new;
 entity camp_load;
-entity camp_save;
+//entity camp_save;
 entity camp_back;
 
 //Main Menu Constants

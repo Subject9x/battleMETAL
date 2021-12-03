@@ -15,8 +15,6 @@ entity new_veteran;
 entity new_elite;
 entity new_back;
 
-float newgame_rollover;
-
 float newgame_substate;
 
 vector newgame_back_cacheOrg;
@@ -37,9 +35,7 @@ string TRAINING_LABEL;
 
 
 //Campaign Maps
-float TRAIN_MAP_LIST_TOTAL;
 entity new_camp_lbl;
-entity new_camp_train_lbl;
 entity new_camp_start_lbl;
 entity new_camp_start_btn;
 
@@ -99,9 +95,6 @@ void() click_newg_launch_map={
   allow player to skip training here.
 */
 void() click_newg_info={
-  local vector mapOrg;
-  local string subMapName;
-  
   newgame_substate = NEWGAME_BRIEF;
   new_camp_lbl.label = CAMP_SELECT_NAME;
   

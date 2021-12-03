@@ -47,7 +47,7 @@ entity controls_radar;
 entity controls_navs;
 entity controls_objectives;
 entity controls_tacmap;
-entity controls_repair;
+//entity controls_repair;
 entity controls_chat_team;
 entity controls_chat_all;
 entity controls_zoom;
@@ -356,8 +356,8 @@ void() m_controls_f={
   running on M_STATE to determine which menu_d to execute.
 */
 void() m_controls_d={
-  local float titleLen;
-  local vector titleOrg;
+  //local float titleLen;
+  //local vector titleOrg;
   local entity widget;
 
   gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);

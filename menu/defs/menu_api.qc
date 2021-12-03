@@ -575,7 +575,7 @@ void(entity pnl) render_txt_pnl={
 void(entity txt) render_textfield={
   local entity this;
   local vector org, sizzle, bclr;
-  local float fon;
+  
   if(txt.drawme){
     this = self;
     self = txt;

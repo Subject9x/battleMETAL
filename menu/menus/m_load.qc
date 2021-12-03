@@ -9,7 +9,6 @@ Overview: load campaign menu
 //load Globals
 entity load_title;
 entity load_back;
-entity load_list;
 
 //load Constants
 string IMG_LOAD_TITLE = "gfx/menu/load/load_title.png";
@@ -25,7 +24,6 @@ void() click_load_back={
 };
 
 void() click_load_loadgame={
-  local string mapName;
   
   if( GAME_SAVES_DRAWNAME[self.data_bind] != ""){
     menu_clear_items(M_STATE);

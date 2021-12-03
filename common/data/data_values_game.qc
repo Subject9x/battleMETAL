@@ -50,8 +50,10 @@ string SAVE_ITEMS_ALL;
 #define GAMEMODE_DM 3
 #define GAMEMODE_TEAMDM 4
 
+#ifndef MENUQC
 float TEAM_SURVEST_TOTAL;  //team deathmatch
 float TEAM_MILITAR_TOTAL;
+#endif 
 
 //Server Mission Status
 #define MISSION_STATUS_READY  1  //server ready to start when the first player connects

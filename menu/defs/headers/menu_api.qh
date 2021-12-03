@@ -22,7 +22,6 @@ string GAME_SAVES_MAP[GAME_SAVES_MAX];
 entity TEXTFIELD_TARGET;
 entity KEYBIND_TARGET;
 float UI_INPUT_ACTIVE;  //buffer to track textfields
-float UI_INPUT_SHIFT; //detect shift input
 float UI_INPUT_FILTER_MAX = 111;
 float UI_INPUT_FILTER[UI_INPUT_FILTER_MAX];  //filter out these chars;
 float UI_KEYBIND_ACTIVE;

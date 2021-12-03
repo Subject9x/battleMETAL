@@ -28,8 +28,10 @@ string CAMP_SELECT_NAME;
 string CAMP_SELECT_MECHS;
 string CAMP_SELECT_ITEMS;
 
+#ifndef MENUQC
 float CAMP_PAGE;
 float CAMP_PAGE_END;
+#endif
 
 string CAMP_NAME[16];
 string CAMP_START[16];
