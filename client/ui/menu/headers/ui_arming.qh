@@ -18,7 +18,6 @@ float UI_ARMING_hardpoint_click;
 entity UI_ARMING_hardpoint;
 
 float UI_ARMING_hardpoint_type_roll;  //used for hardpint rollover.
-float UI_ARMING_hardpoint_id_roll;  //used for hardpint rollover.
 
 float UNLOCKED_ITEMS[24];	//populated by server call
 float UNLOCKED_ITEMS_TOTAL;
@@ -35,7 +34,6 @@ float UI_ARMING_weapon_rolloverID;
 
 float UI_TOTAL_WEAPONS = 24; //weapon id's
 
-float UI_ARMING_GROUP_WARN;
 float UI_ARMING_GROUP_WARN_TIMER;
 float UI_ARMING_GROUP_WARN_DECAY = 2;
 

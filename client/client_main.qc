@@ -586,8 +586,6 @@ float() CSQC_Parse_TempEntity =
 void(string s) CSQC_Parse_StuffCmd =
 {
   local float argc;
-  local string tempAbout;
-  local float lenAdjust;
   
   if( cvar("developer") ){
     dprint(sprintf("CSQC_Parse_StuffCmd().s = %s\n", s));  //debug
@@ -631,11 +629,7 @@ see:
 */
 void(string s) CSQC_Parse_Print =
 {
-  local float charOfs;
-  local string clientId, msg;
-  
-  local float cmdIdx;
-  local float msgOfs;
+  local string clientId;
   
   if( infoget(s, RSP_SRC) == SV_PRINT ){
     if( infoget(s, RSP_TYPE) == SAY_MSG1 ){

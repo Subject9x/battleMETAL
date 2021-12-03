@@ -51,7 +51,6 @@ void( string fileName ) cl_load_savefile={
 
 void( float serverMode, float svFlags ) cl_set_savepath={
   local string filePath;
-  local float flannel;
   
   if( (svFlags & SVFLAG_ITEMOVER) ){
     filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/", MAP_NAME, SAVE_FILE_EXT);
@@ -285,7 +284,7 @@ void() cl_savefile_save={
 void() cl_savefile_save_mission={
   local float flannel;
   local string file;
-  local string currentMap;
+  
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");

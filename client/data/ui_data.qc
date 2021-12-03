@@ -384,7 +384,6 @@ void() ui_data_hud_ini_tags={
 
 float(string tag) ui_data_load_hud_tagId={
   local float itr;
-  local float uid;
   for(itr = 0; itr < 22; itr = itr + 1){
     if( tag == HUD_TAGS[itr] ){
       return itr;

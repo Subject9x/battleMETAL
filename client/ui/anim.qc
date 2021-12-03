@@ -260,7 +260,7 @@ void(string frameText) anm_render_frame_text={
     current = ANM_FRAME_CUR global
 */
 void(float timeVal) anm_render_frame_current={
-  local vector siz, org, frm_color, txt_color;
+  local vector frm_color;
   
   if(ANM_FRAME_IMG[ANM_FRAME_CUR] != ""){
     if(ANM_FRAME_CUR_FADE_START > FALSE && timeVal <= ANM_FRAME_CUR_FADE_START){

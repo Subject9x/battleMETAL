@@ -548,7 +548,6 @@ void() te_shield_explode_th={
 void( vector org, float vecSize ) te_shield_explode={
   local entity explode;
   local vector flashCol;
-  local vector shellCol;
   
   explode = spawn();
   explode.movetype = MOVETYPE_NONE;

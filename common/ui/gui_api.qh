@@ -6,8 +6,11 @@ Overview:
   GUI API header
 */
 
+#ifdef MENUQC
 vector VIEW_MPOS;
 vector VIEW_ACT;  //todo - deprecate
+#endif
+
 vector cursorpos;
 vector cursorImageSize;
 
@@ -22,7 +25,11 @@ float FONT_NUM_ROBOT_THIN;
 float FONT_NUM_ROBOT_REGULAR;
 float FONT_NUM_ROBOT_MEDIUM;
 float FONT_NUM_DYSTOPIAN;
+
+#ifdef MENUQC
 float FONT_NUM_XOLONIUM_BOLD;
+#endif
+
 float drawfont_prev;
 
 
@@ -44,8 +51,10 @@ float VIEW_WIDTH;
 float VIEW_HEIGHT;
 float VIEW_PIXELH;
 
+#ifdef MENUQC
 float UI_WIDTH;
 float UI_HEIGHT;
+#endif
 
 #define VIEW_TOP 1
 #define VIEW_BOT 2
@@ -153,8 +162,6 @@ void(string msg, float val, string split, float val2) cons_log2Float;
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
 
-
-float TXT_INPUT_SHIFT; //detect shift input
 float TXT_INPUT_FILTER_MAX = 111;
 float TXT_INPUT_FILTER[TXT_INPUT_FILTER_MAX];  //filter out these chars;
 

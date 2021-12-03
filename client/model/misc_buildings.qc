@@ -8,8 +8,6 @@ Overview:
 */
 
 void() model_misc_building_set={
-
-  local string modelPath;
   
   switch( self.data_idx ){
     default:

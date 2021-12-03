@@ -12,7 +12,7 @@ Overview:
 */
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshairs={
   //convergence
-  local vector spr_h, hitclr, lckclr;
+  local vector spr_h, hitclr;
   local vector acc_left, acc_right, acc_up, acc_dn;
   local vector drift;
   
@@ -124,7 +124,7 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
   RENDER SHIELD METER
 */
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient, vector mColor) hud_renderShield={
-  local vector meterSize, label_org;
+  local vector meterSize;
   local vector meterColor;
   local float scopeVal;
   local vector iconOrg;
@@ -190,7 +190,7 @@ void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl
   RENDER ENERGY METER
 */
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, vector mColor) hud_renderEnergy={
-  local vector meterSize, label_org;
+  local vector meterSize;
   local vector iconOrg;
   local vector iconSize;
   
@@ -711,7 +711,7 @@ void( entity box ) hud_renderHighlight={
   Renders the RAM-SHOCKS charge up meter and ram state for the player.
 */
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram={
-  local vector meterSize, label_org, ramPos;
+  local vector meterSize, ramPos;
   local vector ramColor;
   local vector iconOrg;
   local string ramIcon;

@@ -106,7 +106,7 @@ void() mech_ai_die_stand4={
 
 void() mech_ai_die_stand5={
   local vector ofs;
-  local vector org;
+  
   makevectors(self.angles);
   
   ofs = self.origin + (v_forward * (crandom() * self.maxs_x));
