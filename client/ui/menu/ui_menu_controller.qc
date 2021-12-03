@@ -249,7 +249,6 @@ float() menu_connect_choice={
 
 // connect_dm and score_dm ui.
 void( vector menuOrg ) menu_serverinfo_basic={
-  local string serverName;
   local string serverMsnName;
   
   local vector fontsStyle;

@@ -214,7 +214,6 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
 */
 void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   local float prevDeadflag;
-  local float newModelIndex;
   
   prevDeadflag = self.deadflag;
   

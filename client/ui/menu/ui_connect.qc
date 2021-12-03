@@ -28,9 +28,9 @@ float CHAT_DECAY_TIME;  //how long before bumping a chat off the end.
 */
 //sets chat settings per-menu, run once when entering a _connect menu!
 void(float modeGame) menu_chat_config={
-  local vector scrnOffset;
   local float i;
   local string temp;
+  
   if( modeGame ){
     CHAT_LINE_FONT_SIZE = '8 8';
     CHAT_LINE_TOTAL = 5;
@@ -292,8 +292,6 @@ void() menu_connectListener_onHover={
 
 void() menu_connect_drawFrame={
   local vector topleftroot;
-  local vector satMapOrg;
-  local vector rulesOrg;
 
   //anchor to aspect-corrected offset
   topleftroot = UI_ORG;

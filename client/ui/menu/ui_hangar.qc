@@ -94,8 +94,6 @@ void(vector ofs) menu_hangar_MechDisplay={
   local vector nofs, hofs, i_sz, hardpointGraphCenter;
   local float hardpointItr;
   local entity hardpoint;
-  local vector hardpointOffset;
-  local vector hardpointCoord;
   local vector helpOrg;
   
   nofs = ofs;
@@ -192,9 +190,6 @@ void(vector ofs) menu_hangar_MechHPoints={
 };
 
 void(vector ofs) menu_hangar_MechList={
-  local float textLen;
-  local vector labelOfs;
-  
   menu_hangar_MechList_draw(ofs, 1,  "LIGHT", CLR_DEF_IFF_ENEMY * 1.25, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
   menu_hangar_MechList_draw(ofs + '0 145', 2, "MEDIUM", CLR_DEF_ARM_HALF, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);
   menu_hangar_MechList_draw(ofs + '0 289', 3, "HEAVY", CLR_DEF_ARM_OK, MECHLIST_CNT_LIGHT, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT);

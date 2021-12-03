@@ -73,13 +73,9 @@ void() mech_corpse_th={
 //watch this
 void() predraw_mech_corpse={
   local entity parent;
-  local entity piece;
-  
-  local vector orgOfs;
-  local vector modAngle;
   
   parent = self;
-
+  
   if( self.legs != world ){
     addentity(self.legs );
   }
@@ -276,12 +272,9 @@ void(float criticalHits) sendevent_mech_burn={
   SendEntity - MECH AI =====================================
 */
 void( float isNew, float changeFlags ) sendent_handle_mech_ai={
-  local entity this;
   local vector turretAng;
-  local float critical;
   local string newName;
   local float prevShield;
-  local float prevAttackFlag;
   local float prevDeadFlag;
   local float voiceId;
   

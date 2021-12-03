@@ -24,7 +24,6 @@ void() hud_render_tactical_map={
   local float nlen;
   local string navname;
   local entity player;
-  local entity enem;
   local vector target_org;
   local vector friend_org;
   local string playerName;
@@ -32,7 +31,6 @@ void() hud_render_tactical_map={
   local float nameLen;
   local string pipType;
   local float arrowAng;
-  local vector arrowOrg;
   local vector playerMapOrg;
   
   // render satellite view

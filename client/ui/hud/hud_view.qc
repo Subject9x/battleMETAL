@@ -1006,7 +1006,6 @@ void() data_hud_fps_cam={
   local float objid, algn, lflag, lalign, axis, wbit;
   local vector porg, vsize, lblofs;
   local vector color2;
-  local vector wep;
   
   hasTarget = FALSE;
   if( CLIENT_stat_trg_dataidx > 0 ){

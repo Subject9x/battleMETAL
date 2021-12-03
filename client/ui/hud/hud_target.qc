@@ -346,7 +346,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
   RENDER ARMOR METER
 */
 void( vector pos, vector grpCtr, float val, vector mSize, string imgPiece, float thatTarget, float partFlag) hud_renderArmorMeter={
-  local vector meterSize, label_org, shofs;
+  local vector meterSize, shofs;
   local vector tColor;
 
   local float tAlpha;

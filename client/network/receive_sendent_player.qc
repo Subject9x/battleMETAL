@@ -105,7 +105,6 @@ void() player_think={
   local vector laserOrg;
   
   local entity theWeapon;
-  local entity oldSelf;
   
   makevectors(self.angles);
   if(self.chaseActive){
@@ -575,10 +574,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local entity controlPlayer;
   local entity thisSelf;
   local vector prevOrg;
-  local vector targetOrg;
   local float prevShield;
   local float prevType;
-  local float prevTarget; 
   local float prevKills;
   local float prevFaction;
   local float prevDeadFlag;

@@ -539,7 +539,6 @@ void(vector ofs) menu_arming_WeaponList={
 
 void(vector parentOffset, vector offsetAdjust, float weaponType, string listName, vector listNameColor) menu_arming_WeaponList_draw={
   local vector nofs, labelOrg;
-  local float labelLen;
   local float lst_idx, act_idx;
   local float itemId;
   local float drawFontLocal;

@@ -67,7 +67,6 @@ void() sendevent_building_die={
 void( float isNew, float changeFlags) sendent_handle_building={
   local float prevShield;
   local float prevDeadflag;
-  local float buildingSize;
   local float voiceId;
   
   prevShield = self.shield;

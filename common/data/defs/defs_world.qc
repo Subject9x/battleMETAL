@@ -127,10 +127,6 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
     }
   }
   
-  if( (changedFlags & SENDFLAG_ABOUT) ){
-    WriteString( MSG_ENTITY, cvar_string("sv_about"));
-  }
-  
   return TRUE;
 };
 
@@ -228,10 +224,6 @@ void( float isNew, float changeFlags) world_rules_readEntity={
       TEAM_SURVEST_TOTAL = ReadByte();
       TEAM_MILITAR_TOTAL = ReadByte();
     }
-  }
-  
-  if( (changeFlags & SENDFLAG_ABOUT) ){
-    cacheGlobalString(SV_ABOUT, ReadString())
   }
   
   SV_WORLDTYPE = self.worldtype;

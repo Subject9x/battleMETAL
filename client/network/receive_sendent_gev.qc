@@ -63,9 +63,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   local float prevShield;
   local float pclEffect;
   local vector turretAng;
-  local entity this;
   local string newName;
-  local float prevAttackFlag;
   local float prevDeadFlag;
   local float voiceId;
   

@@ -57,8 +57,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   local float pclEffect;
   local vector turretAng;
   local string newName;
-  local entity parent;
-  local float prevAttackFlag;
   local float prevDeadFlag;
   local float voiceId;
   

@@ -50,7 +50,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   local float prevShield;
   local float pclEffect;
   local string newName;
-  local float prevAttackFlag;
   local float prevDeadFlag;
   local float voiceId;
   
