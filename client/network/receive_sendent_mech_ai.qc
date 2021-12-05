@@ -79,16 +79,16 @@ void() predraw_mech_corpse={
   if( self.legs != world ){
     addentity(self.legs );
   }
-  if( !(self.criticalHits & M_TOR_LEFT) && self.torsoLeft != world){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.criticalHits & M_TOR_LEFT) ){
     addentity(self.torsoLeft);
   }
-  if( !(self.criticalHits & M_TOR_RIGHT) && self.torsoRight != world ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.criticalHits & M_TOR_RIGHT) ){
     addentity(self.torsoRight);
   }
-  if( !(self.criticalHits & M_ARM_RIGHT) && self.armRight != world ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && !(self.criticalHits & M_ARM_RIGHT) ){
     addentity(self.armRight);
   }
-  if( !(self.criticalHits & M_ARM_LEFT) && self.armLeft != world ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && !(self.criticalHits & M_ARM_LEFT) ){
     addentity(self.armLeft);
   }
 };
@@ -107,6 +107,7 @@ void() sendevent_mech_ai_die_standing={
   pass = self;
   
   mechRoot = spawn();
+  mechRoot.unitModFlags = pass.unitModFlags;
   mechRoot.solid = SOLID_NOT;
   mechRoot.movetype = MOVETYPE_NONE;
   mechRoot.origin = self.torsoCenter.origin;
@@ -132,21 +133,24 @@ void() sendevent_mech_ai_die_standing={
   mechRoot.legs.angles = self.legs.angles;
   mechRoot.legs.angles_y = self.legDir;
   
-  if( !(mechRoot.criticalHits & M_TOR_LEFT) ){
-    mechTorLeft = te_mech_chunk_stand(pass, pass.torsoLeft, mechRoot.angles);
-    mechRoot.torsoLeft = mechTorLeft;
-    if( !(mechRoot.criticalHits & M_ARM_LEFT) ){
-      mechArmLeft = te_mech_chunk_stand(pass, pass.armLeft, mechRoot.angles);
-      mechRoot.armLeft = mechArmLeft;
+  if( (pass.unitModFlags & MOD_HAS_TOR_L) && !(pass.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+    if( !(mechRoot.criticalHits & M_TOR_LEFT) ){
+      mechTorLeft = te_mech_chunk_stand(pass, pass.torsoLeft, mechRoot.angles);
+      mechRoot.torsoLeft = mechTorLeft;
+      if( (pass.unitModFlags & MOD_HAS_ARM_L) && !(mechRoot.criticalHits & M_ARM_LEFT) ){
+        mechArmLeft = te_mech_chunk_stand(pass, pass.armLeft, mechRoot.angles);
+        mechRoot.armLeft = mechArmLeft;
+      }
     }
   }
-  
-  if( !(mechRoot.criticalHits & M_TOR_RIGHT) ){
-    mechTorRight = te_mech_chunk_stand(pass, pass.torsoRight, mechRoot.angles);
-    mechRoot.torsoRight = mechTorRight;
-    if( !(mechRoot.criticalHits & M_ARM_RIGHT) ){
-      mechArmRight = te_mech_chunk_stand(pass, pass.armRight, mechRoot.angles);
-      mechRoot.armRight = mechArmRight;
+  if( (pass.unitModFlags & MOD_HAS_TOR_R) && !(pass.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+    if( !(mechRoot.criticalHits & M_TOR_RIGHT) ){
+      mechTorRight = te_mech_chunk_stand(pass, pass.torsoRight, mechRoot.angles);
+      mechRoot.torsoRight = mechTorRight;
+      if( (pass.unitModFlags & MOD_HAS_ARM_R) && !(mechRoot.criticalHits & M_ARM_RIGHT) ){
+        mechArmRight = te_mech_chunk_stand(pass, pass.armRight, mechRoot.angles);
+        mechRoot.armRight = mechArmRight;
+      }
     }
   }
   
@@ -200,25 +204,25 @@ void() sendevent_mech_ai_die={
 void( float critical ) sendevent_mech_ai_crit={
   local entity wep;
   
-  if( (critical & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_EXPLODE_TOR_L) && (critical & M_TOR_LEFT) ){
     if( self.torsoLeft != world ){
       te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       sendent_handle_remove(self.torsoLeft);
     }
   }
-  if( (critical & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_EXPLODE_TOR_R) && (critical & M_TOR_RIGHT) ){
     if( self.torsoRight != world ){
       te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       sendent_handle_remove(self.torsoRight);
     }
   }
-  if( (critical & M_ARM_LEFT) ){
+  if( (self.unitModFlags & MOD_EXPLODE_ARM_L) && (critical & M_ARM_LEFT) ){
     if( self.armLeft != world ){
       te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       sendent_handle_remove(self.armLeft);
     }
   }
-  if( (critical & M_ARM_RIGHT) ){
+  if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (critical & M_ARM_RIGHT) ){
     if( self.armRight != world ){
       te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       sendent_handle_remove(self.armRight);

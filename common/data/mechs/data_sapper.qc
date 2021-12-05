@@ -14,6 +14,7 @@ Overview:
 */
 void() data_ini_sapper_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_MECH_sapper;
   self.vec_size = 2;
   self.vec_name = "Sapper";
@@ -38,10 +39,10 @@ void() data_ini_sapper_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 125;  //150
-  self.data_speed_strafe = 105; //100
-  self.data_speed_backward = 100;  //90
-  self.data_speed_accel = 2.25; //1.5
+  self.data_speed_forward = 125;
+  self.data_speed_strafe = 105;
+  self.data_speed_backward = 100;
+  self.data_speed_accel = 2.25;
   self.ramUpMax = 1.75;
   self.ramCooldown = 3;
 #ifdef CSQC
@@ -75,8 +76,7 @@ void() data_ini_sapper_={
   data_ini_arm_right_( "q3mdl/mechs/sapper/sapper_arm_r.md3", 450, '10.5 10 -2', '14 7 0' );
   
   //legs
-  data_ini_legs_( "q3mdl/mechs/sapper/sapper_legs.md3", 650, '0 0 0.5' ); //debug
-  //self.legs.scale = 0.8;
+  data_ini_legs_( "q3mdl/mechs/sapper/sapper_legs.md3", 650, '0 0 0.5' );
   
   //camera location
   #ifdef CSQC
@@ -91,32 +91,18 @@ void() data_ini_sapper_={
 #ifdef SSQC
   data_ini_unitHardpoint_1( M_ARM_RIGHT, '12.5 0 5', '0 0 0', 1, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-  
   data_ini_unitHardpoint_3( M_TOR_RIGHT, '8.35 14.75 -1', '0 0 0', 1, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_4( M_TOR_LEFT, '-8.35 14.75 -1', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
-  
   data_ini_unitHardpoint_5( M_TOR_CENTER, '3.35 5.5 3', '0 0 0', 3,  DMG_MSC );
   data_ini_unitHardpoint_6( M_TOR_CENTER, '3.35 8.5 3', '0 0 0', 3, ( DMG_EXP | DMG_MSC) );
   data_ini_unitHardpoint_7( M_TOR_CENTER, '-3.35 5.5 3', '0 0 0', 3, DMG_MSC );
   data_ini_unitHardpoint_8( M_TOR_CENTER, '-3.35 8.5 3', '0 0 0', 3, (DMG_EXP | DMG_MSC) );
 #endif
 #ifdef CSQC
-  //client arms can aim up and down, so we bolt the weapons directly to the parent
-  //bad, late-in-the-game hack frauds
-  //see predraw_player_weapon()
-  if((self.flags&FL_CLIENT)){
-  
-    data_ini_unitHardpoint_1( M_ARM_RIGHT, '2.5 -10 6', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_2( M_ARM_LEFT, '-2.5 -10 6', '0 0 90', (BAL1|ENE1), (DMG_BAL | DMG_ENE) );
-  }
-  else{
-    data_ini_unitHardpoint_1( M_ARM_RIGHT, '12.5 0 5', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 90', (BAL1|ENE1), (DMG_BAL | DMG_ENE) );
-  }
-  
+  data_ini_unitHardpoint_1( M_ARM_RIGHT, '12.5 0 5', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 90', (BAL1|ENE1), (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_3( M_TOR_RIGHT, '8.35 14.75 -1', '0 0 0', (BAL2|BAL3|MIS1|MIS2|MIS3|ENE3), (DMG_BAL | DMG_ENE | DMG_EXP) );
   data_ini_unitHardpoint_4( M_TOR_LEFT, '-8.35 14.75 -1', '0 0 -90', (BAL2|BAL3|MIS1|MIS2|MIS3), (DMG_BAL | DMG_EXP) );
-  
   data_ini_unitHardpoint_5( M_TOR_CENTER, '3.35 5.5 3',  '0 0 0', (MSC1|MSC2),  DMG_MSC );
   data_ini_unitHardpoint_6( M_TOR_CENTER, '3.35 8.5 3',  '0 0 0', (MSC1|MSC3|MIS2), ( DMG_MSC | DMG_EXP) );
   data_ini_unitHardpoint_7( M_TOR_CENTER, '-3.35 5.5 3', '0 0 0', (MSC1|MSC2), DMG_MSC );

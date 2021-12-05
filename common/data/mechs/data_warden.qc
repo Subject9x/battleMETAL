@@ -14,6 +14,7 @@ Overview:
 */
 void() data_ini_warden_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_MECH_warden;
   self.vec_size = 1;
   self.vec_name = "Warden";

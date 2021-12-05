@@ -219,40 +219,32 @@ void() ctrl_unit_update_frame={
         self.energy = self.energy + diff;
       }
       
-      if( time <= self.shieldHitRegen ) {
-        myShield = self.shieldHitRegen - self.shieldHitRegenStart;
-        myShield = (time - self.shieldHitRegenStart) / myShield;
-        self.stat_client_shield =  100 - (myShield * 100) + 100;
-      }
-      else{
-        if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
-          if(self.shield < self.shieldMax){
-            if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-              if(self.energy > 0){
-                self.shield = self.shield + (self.shieldRate * 0.5);
-                self.energy = self.energy - (self.shieldRate * 2);
-                if(self.shield > self.shieldMax){
-                  self.shield = self.shieldMax;
+      if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+        if( time <= self.shieldHitRegen ) {
+          myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+          myShield = (time - self.shieldHitRegenStart) / myShield;
+          self.stat_client_shield =  100 - (myShield * 100) + 100;
+        }
+        else{
+          if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
+            if(self.shield < self.shieldMax){
+              if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+                if(self.energy > 0){
+                  self.shield = self.shield + (self.shieldRate * 0.5);
+                  self.energy = self.energy - (self.shieldRate * 2);
+                  if(self.shield > self.shieldMax){
+                    self.shield = self.shieldMax;
+                  }
                 }
               }
             }
           }
+          self.stat_client_shield = (self.shield / self.shieldMax) * 100;
         }
-        self.stat_client_shield = (self.shield / self.shieldMax) * 100;
       }
-
-      if(self.energy < 0){
-        self.energy = 0;
-      }
-      else if(self.energy > self.energyMax){
-        self.energy = self.energyMax;
-      }
+      self.energy = bound(0, self.energy, self.energyMax);
     }
   }
-
-
-
-
 };
 
 /*
@@ -268,12 +260,21 @@ void() ctrl_mech_die_player={
     ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
-  ctrl_unit_part_death(self.torsoCenter);
-  ctrl_unit_part_death(self.torsoLeft);
-  ctrl_unit_part_death(self.torsoRight);
-  ctrl_unit_part_death(self.armLeft);
-  ctrl_unit_part_death(self.armRight);
   
+  ctrl_unit_part_death(self.torsoCenter);
+  
+  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
+    ctrl_unit_part_death(self.torsoLeft);
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
+    ctrl_unit_part_death(self.torsoRight);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+    ctrl_unit_part_death(self.armLeft);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+    ctrl_unit_part_death(self.armRight);
+  }
   //ensures only new weapon data coming upstream is written.
   self.nextVecChoice = 0;
   self.next_wepn1 = 0;
@@ -302,7 +303,7 @@ void() ctrl_component_die={
     return;
   }
   piece = self;
-  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN && (self.unitModFlags & self.partTypeId) ){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
   }
   self.owner.critBits = self.owner.critBits | self.partTypeId;
@@ -313,18 +314,22 @@ void() ctrl_component_die={
   self.health = 0;
 
   if( self.partTypeId == M_TOR_LEFT ){
-    self.owner.armLeft.think = self.owner.armLeft.th_die;
-    self.owner.armLeft.nextthink = time + 0.1;
-    self.owner.armLeft.realowner = self.owner;
-    if( (self.owner.critBits & (M_TOR_RIGHT | M_ARM_RIGHT) ) ){
+    if( (self.owner.unitModFlags & MOD_HAS_ARM_L) ){
+      self.owner.armLeft.think = self.owner.armLeft.th_die;
+      self.owner.armLeft.nextthink = time + 0.1;
+      self.owner.armLeft.realowner = self.owner;
+    }
+    if( (self.owner.critBits & (M_TOR_RIGHT | M_ARM_RIGHT)) && (self.owner.unitModFlags & MOD_HAS_SHIELD) ){
       self.owner.shieldMax = self.owner.shieldMax * 0.5;
     }
   }
   else if( self.partTypeId == M_TOR_RIGHT ){
-    self.owner.armRight.think = self.owner.armRight.th_die;
-    self.owner.armRight.nextthink = time + 0.1;
-    self.owner.armRight.realowner = self.owner;
-    if( (self.owner.critBits & (M_TOR_LEFT | M_ARM_LEFT) ) ){
+    if( (self.owner.unitModFlags & MOD_HAS_ARM_R) ){
+      self.owner.armRight.think = self.owner.armRight.th_die;
+      self.owner.armRight.nextthink = time + 0.1;
+      self.owner.armRight.realowner = self.owner;
+    }
+    if( (self.owner.critBits & (M_TOR_LEFT | M_ARM_LEFT)) && (self.owner.unitModFlags & MOD_HAS_SHIELD) ){
       self.owner.shieldMax = self.owner.shieldMax * 0.5;
     }
   }
@@ -360,7 +365,7 @@ void() ctrl_arm_die={
   if( self.deadflag != DEAD_NO ){
     return;
   }
-  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN && (self.owner.unitModFlags & self.partTypeId) ){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
   }
   

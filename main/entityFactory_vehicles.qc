@@ -200,7 +200,12 @@ void( float nex_wep, entity own ) build_unit_weapon={
 */
 void() build_mech_unit={
   local vector tempMin, tempMax;
-
+  
+  //modflags safety check
+  if( !self.unitModFlags ){
+    self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
+  }
+  
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
   self.skin = self.faction - 1;
   
@@ -229,34 +234,31 @@ void() build_mech_unit={
   build_mech_torsoCenter();
   
   self.health = self.max_health;
-  self.shieldRateMod = 1.33; //unmodified here.
   
   setsize(self, tempMin, tempMax);
   
-  self.shieldHitDelay = 0;
-  self.shieldHitRegen = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
   unitPartList = self;
-  if( self.torsoRight ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && self.torsoRight ){
     build_mech_torsoRight();
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
   }
-  if( self.torsoLeft ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && self.torsoLeft ){
     build_mech_torsoLeft();
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
   }
-  if( self.armRight ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && self.armRight ){
     build_mech_armRight();
     self.armRight.partPrev = unitPartList;
     unitPartList.partNext = self.armRight;
     unitPartList = unitPartList.partNext;
   }
-  if( self.armLeft ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && self.armLeft ){
     build_mech_armLeft();
     self.armLeft.partPrev = unitPartList;
     unitPartList.partNext = self.armLeft;
@@ -272,9 +274,17 @@ void() build_mech_unit={
   if( self.cockpit ){
     build_unit_camera();
   }
-  self.energy = self.energyMax;
-  self.shield = self.shieldMax;
   
+  if( !(self.unitModFlags & MOD_HEAT_NOT_ENERGY) ){
+    self.energy = self.energyMax;
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+    self.shieldRateMod = 1.33; //unmodified here.
+    self.shield = self.shieldMax;
+    self.shieldHitDelay = 0;
+    self.shieldHitRegen = 0;
+  }
   if( self.hardpoint_cnt > 0 ){
     build_unit_weapon_list();
   }
@@ -334,6 +344,11 @@ void() build_mech_torsoCenter={
 void() build_mech_bot={
   local vector hmins, hmaxs;
   
+  //modflags safety check
+  if( !self.unitModFlags ){
+    self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
+  }
+  
   self.flags = self.flags | FL_MONSTER;
   self.canTarget = TRUE;
   
@@ -350,8 +365,13 @@ void() build_mech_bot={
   self.lock_timer = 0;
   self.entnum = num_for_edict(self);
   
-  self.energy = self.energyMax;
-  self.shield = self.shieldMax;
+  if( !(self.unitModFlags & MOD_HEAT_NOT_ENERGY) ){
+    self.energy = self.energyMax;
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+    self.shield = self.shieldMax;
+  }
   self.health = self.max_health;
   
   unitPartList = self;
@@ -362,28 +382,28 @@ void() build_mech_bot={
   unitPartList = unitPartList.partNext;
   self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   
-  if( self.torsoRight ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && self.torsoRight ){
     build_mech_torsoRight();
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
     self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
   }
-  if( self.torsoLeft ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && self.torsoLeft ){
     build_mech_torsoLeft();
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
     self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
   }
-  if( self.armRight ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && self.armRight ){
     build_mech_armRight();
     self.armRight.partPrev = unitPartList;
     unitPartList.partNext = self.armRight;
     unitPartList = unitPartList.partNext;
     self.armRight.effects = self.armRight.effects | EF_NODRAW;
   }
-  if( self.armLeft ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && self.armLeft ){
     build_mech_armLeft();
     self.armLeft.partPrev = unitPartList;
     unitPartList.partNext = self.armLeft;
@@ -445,8 +465,10 @@ void() build_mech_bot={
   else{
     self.ai_patrol_speed = self.data_speed_forward;
   }
-  self.shield = self.shieldMax;
-  self.stat_client_shield = self.shield;
+  if( (self.unitModFlags & MOD_HAS_SHIELD) ){ 
+    self.shield = self.shieldMax;
+    self.stat_client_shield = self.shield;
+  }
 };
 
 void() build_unit_turret={

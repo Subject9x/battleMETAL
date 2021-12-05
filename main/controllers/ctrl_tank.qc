@@ -43,26 +43,27 @@ void() ctrl_updateTank={
     }
   }
   
-  if( time <= self.shieldHitRegen ) {
-    myShield = self.shieldHitRegen - self.shieldHitRegenStart;
-    myShield = (time - self.shieldHitRegenStart) / myShield;
-    self.stat_client_shield =  (100 - (myShield * 100) ) + 100;
-  }
-  else{
-    if(self.shield < self.shieldMax){
-      if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-        if(self.energy > 0){
-          self.shield = self.shield + (self.shieldRate * 0.5);
-          self.energy = self.energy - (self.shieldRate * 2);
-          if(self.shield > self.shieldMax){
-            self.shield = self.shieldMax;
+  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+    if( time <= self.shieldHitRegen ) {
+      myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+      myShield = (time - self.shieldHitRegenStart) / myShield;
+      self.stat_client_shield =  (100 - (myShield * 100) ) + 100;
+    }
+    else{
+      if(self.shield < self.shieldMax){
+        if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+          if(self.energy > 0){
+            self.shield = self.shield + (self.shieldRate * 0.5);
+            self.energy = self.energy - (self.shieldRate * 2);
+            if(self.shield > self.shieldMax){
+              self.shield = self.shieldMax;
+            }
           }
         }
       }
+      self.stat_client_shield = (self.shield / self.shieldMax) * 100;
     }
-    self.stat_client_shield = (self.shield / self.shieldMax) * 100;
   }
-  
   self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
   self.ai_weaponEnergy = 0;
   self.currentWeaponGroup = 0;

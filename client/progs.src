@@ -7,6 +7,7 @@ data/defs_entity.qc
 data/defs_linker.qc
 
 //Common Defs=====================
+  ../common/data/data_mod_flags.qc
   ../common/input_keynums.qh
   ../common/ui/gui_api.qh
   ../common/data/data_values_game.qc

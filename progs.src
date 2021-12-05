@@ -8,6 +8,7 @@ dp/defs.qc          //original Quake defs, should always be first.
 dp/dpextensions.qc  //DPExtensions that most of the magic work.
 
 //Common Defs=====================
+  common/data/data_mod_flags.qc
   common/data/data_values_game.qc
   common/data/defs/defs_player.qc     //AI/player top-level vars.
   common/data/defs/defs_unit.qc       //all fields related specifically to unit data.

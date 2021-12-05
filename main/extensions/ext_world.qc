@@ -9,6 +9,7 @@ Overview:
 */
 
 void() world_metal_ini={
+  
   DEPLOY_ID_COUNT = 0;
   
   sv_world_load_items();
