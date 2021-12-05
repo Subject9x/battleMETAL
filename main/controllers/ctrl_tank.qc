@@ -26,21 +26,16 @@ void() ctrl_updateTank={
   traceline(v1, v1 + v_forward * 10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
   self.laser_sight_timer = time + 0.05;
-
-  if( time > self.count4 ){
-    self.count4 = time + 0.1;
-    if(self.energy >= 0){
+  
+  if( time > self.energyRegenTimer ){
+    self.energyRegenTimer = time + 0.1;
+    if( (self.unitModFlags & MOD_HEAT_NOT_ENERGY) ){
+      self.energy = self.energy - self.energyRate;
+    }
+    else{
       self.energy = self.energy + self.energyRate;
-      if(self.energy > self.energyMax){
-        self.energy = self.energyMax;
-      }
-    }  
-    if(self.energy < 0){
-      self.energy = 0;
     }
-    else if(self.energy > self.energyMax){
-      self.energy = self.energyMax;
-    }
+    self.energy = bound(0, self.energy, self.energyMax);
   }
   
   if( (self.unitModFlags & MOD_HAS_SHIELD) ){

@@ -15,6 +15,7 @@ Overview:
 */
 void() data_ini_foslager_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_VEHICLE_foslager;  //
   self.vec_size = 2;  //
   self.vec_name = "Foslager";

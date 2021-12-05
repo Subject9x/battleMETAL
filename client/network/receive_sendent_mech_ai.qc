@@ -43,16 +43,16 @@ void() mech_corpse_remove={
   if( self.legs != world ){
     remove(self.legs);
   }
-  if( self.torsoLeft != world ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
     remove(self.torsoLeft);
   }
-  if( self.torsoRight != world ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
     remove(self.torsoRight);
   }
-  if( self.armLeft != world ){
+  if((self.unitModFlags & MOD_HAS_ARM_L)){
     remove(self.armLeft);
   }
-  if( self.armRight != world ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
     remove(self.armRight);
   }
   if(self.effect1 != world ){
@@ -204,13 +204,13 @@ void() sendevent_mech_ai_die={
 void( float critical ) sendevent_mech_ai_crit={
   local entity wep;
   
-  if( (self.unitModFlags & MOD_EXPLODE_TOR_L) && (critical & M_TOR_LEFT) ){
+  if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (critical & M_TOR_LEFT) ){
     if( self.torsoLeft != world ){
       te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       sendent_handle_remove(self.torsoLeft);
     }
   }
-  if( (self.unitModFlags & MOD_EXPLODE_TOR_R) && (critical & M_TOR_RIGHT) ){
+  if( ((self.unitModFlags & MOD_EXPLODE_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) && (critical & M_TOR_RIGHT) ){
     if( self.torsoRight != world ){
       te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       sendent_handle_remove(self.torsoRight);
@@ -247,21 +247,21 @@ void( float critical ) sendevent_mech_ai_crit={
 void(float criticalHits) sendevent_mech_burn={  
   local vector offset;
   
-  if( (criticalHits & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) &&(criticalHits & M_TOR_LEFT) ){
     offset = self.torsoLeft.origin;
     te_mech_crit( offset, '0 0 10');
   }
-  if( (criticalHits & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) &&(criticalHits & M_TOR_RIGHT) ){
     offset = self.torsoRight.origin;
     te_mech_crit( offset, '0 0 10');
   }
-  if( (criticalHits & M_ARM_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) &&(criticalHits & M_ARM_LEFT) ){
     if( !(self.critBits & M_TOR_LEFT) ){
       offset = self.armLeft.origin;
       te_mech_crit( offset, '0 0 10');
     }
   }
-  if( (criticalHits & M_ARM_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) &&(criticalHits & M_ARM_RIGHT) ){
     if( !(self.critBits & M_TOR_RIGHT) ){
     offset = self.armRight.origin;
       te_mech_crit( offset, '0 0 10');
@@ -442,25 +442,25 @@ void() interpolate_mech_ai={
   }
   
   makevectors(parent.torsoCenter.angles);
-  if( !(self.critBits & M_TOR_LEFT) && self.torsoLeft != world){
+  if( !(self.critBits & M_TOR_LEFT) && ((self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_HAS_ARM_L))){
     self = self.torsoLeft;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
     self = parent;
   }
-  if( !(self.criticalHits & M_TOR_RIGHT) && self.torsoRight != world ){
+  if( !(self.criticalHits & M_TOR_RIGHT) && ((self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_HAS_ARM_R)) ){
     self = self.torsoRight;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
     self = parent;
   }
-  if( !(self.criticalHits & M_ARM_RIGHT) && self.armRight != world ){
+  if( !(self.criticalHits & M_ARM_RIGHT) && (self.unitModFlags & MOD_HAS_ARM_R) ){
     self = self.armRight;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
     self = parent;
   }
-  if( !(self.criticalHits & M_ARM_LEFT) && self.armLeft != world ){
+  if( !(self.criticalHits & M_ARM_LEFT) && (self.unitModFlags & MOD_HAS_ARM_L) ){
     self = self.armLeft;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;

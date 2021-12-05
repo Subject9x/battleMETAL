@@ -7,7 +7,6 @@ data/defs_entity.qc
 data/defs_linker.qc
 
 //Common Defs=====================
-  ../common/data/data_mod_flags.qc
   ../common/input_keynums.qh
   ../common/ui/gui_api.qh
   ../common/data/data_values_game.qc
@@ -18,6 +17,7 @@ data/defs_linker.qc
   ../common/data/defs/defs_projectile.qc		    //all fields related to items.
   ../common/data/defs/defs_world.qh     //world server / rules entity
   ../common/data/camp_loader.qh
+  ../common/data/data_mod_flags.qc
 //================================
 
 data/headers/data_api.qh

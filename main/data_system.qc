@@ -40,6 +40,7 @@ void(float mech_id) initialize_data_mech_={
       remove(self);
       return;
   }
+  data_validate_mod_flags(self);
   build_mech_unit();
 };
 

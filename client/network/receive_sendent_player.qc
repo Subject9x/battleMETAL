@@ -385,8 +385,6 @@ void( float mech_id ) sendevent_player_mech={
   weaponList = self;  //prepare to build unit's weapon list
   self.hardpoint_cnt = 0;
   
-  self.unitModFlags = self.unitModFlags | MOD_MODEL_PITCH_TOR_C|MOD_MODEL_PITCH_TOR_R | MOD_MODEL_PITCH_TOR_L ;
-  
   switch(mech_id){
     case UID_MECH_balaket:
       data_ini_balaket_();

@@ -15,6 +15,7 @@ Overview:
 */
 void() data_ini_onnek_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_VEHICLE_onnek;  //
   self.vec_size = 2;  //
   self.vec_name = "Onnek";

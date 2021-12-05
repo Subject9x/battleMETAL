@@ -75,6 +75,8 @@ Overview:
 //SSQC only
 #ifdef SSQC
 //network frame stuff
+.float energyRegenTimer;  //replaces .count4 in AI units
+
 .vector last_angle;
 .vector last_origin; //mostly AI move tracker
 .float last_energy;

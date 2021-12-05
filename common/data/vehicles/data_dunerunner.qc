@@ -15,6 +15,7 @@ Overview:
 */
 void() data_ini_dunerunner_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_VEHICLE_dunerunner;
   self.vec_size = 1;
   self.vec_name = "Dunerunner";

@@ -176,73 +176,93 @@ void() ai_ctrl_updateCenterTorso={
 void() ctrl_unit_update_frame={
   local float diff;
   local float myShield;
+  local float lastShield;
+  local float lastEne;
   
-  if( (self.flags & FL_CLIENT) ){
-    if( time > self.count4 ){
-      self.count4 = time + 0.1;
-      if( self.energy > -1 ){
+  if( time > self.energyRegenTimer ){
+    self.energyRegenTimer = time + 0.1;
+    lastEne = self.energy;
+    if( (self.flags & FL_CLIENT) ){
+      if( (self.unitModFlags & MOD_HEAT_NOT_ENERGY)){
+        diff = self.energyRate;
+        if( self.moveState == MOVE_SPRINT ){
+          diff = diff + self.evasionDrain;
+        }
+        self.energy = self.energy - diff;
+      }
+      else{
+        //vanilla battleMETAL
         diff = self.energyRate;
         if( self.moveState == MOVE_SPRINT ){
           diff = diff - self.evasionDrain;
         }
         self.energy = self.energy + diff;
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ENERGY;
-      }  
-      if(self.shield < self.shieldMax){
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
-        if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-          if(self.energy > 0){
-            self.shield = self.shield + self.shieldRate;
-            self.energy = self.energy - self.shieldRate;
-            if(self.shield > self.shieldMax){
-              self.shield = self.shieldMax;
+      }
+      if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+        lastShield = self.shield;
+        if(self.shield < self.shieldMax){
+          if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+            if(self.energy > 0){
+              self.shield = self.shield + self.shieldRate;
+              self.energy = self.energy - self.shieldRate;
             }
           }
         }
+        self.shield = bound(0, self.shield, self.shieldMax);
+        if( lastShield != self.shield ){
+          //only send delta.
+          self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
+        }
       }
-      if(self.energy < 0){
-        self.energy = 0;
-      }
-      else if(self.energy > self.energyMax){
-        self.energy = self.energyMax;
+      self.energy = bound(0, self.energy, self.energyMax);
+      if( lastEne != self.energy){
+        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ENERGY;
       }
     }
   }
   else{
-    if( time > self.count4 ){
-      self.count4 = time + 0.1;
-      if( self.energy > -1 ){
-        diff = self.energyRate;
-        if( self.moveState == MOVE_SPRINT ){
-          diff = diff - self.evasionDrain;
-        }
-        self.energy = self.energy + diff;
+    //AI
+    if( (self.unitModFlags & MOD_HEAT_NOT_ENERGY)){
+      diff = self.energyRate;
+      if( self.moveState == MOVE_SPRINT ){
+        diff = diff + self.evasionDrain;
       }
-      
-      if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-        if( time <= self.shieldHitRegen ) {
-          myShield = self.shieldHitRegen - self.shieldHitRegenStart;
-          myShield = (time - self.shieldHitRegenStart) / myShield;
-          self.stat_client_shield =  100 - (myShield * 100) + 100;
-        }
-        else{
-          if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
-            if(self.shield < self.shieldMax){
-              if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-                if(self.energy > 0){
-                  self.shield = self.shield + (self.shieldRate * 0.5);
-                  self.energy = self.energy - (self.shieldRate * 2);
-                  if(self.shield > self.shieldMax){
-                    self.shield = self.shieldMax;
-                  }
-                }
+      self.energy = self.energy - diff;
+    }
+    else{
+      //vanilla battleMETAL
+      diff = self.energyRate;
+      if( self.moveState == MOVE_SPRINT ){
+        diff = diff - self.evasionDrain;
+      }
+      self.energy = self.energy + diff;
+    }
+    
+    if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+      lastShield = self.shield;
+      if( time <= self.shieldHitRegen ) {
+        myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+        myShield = (time - self.shieldHitRegenStart) / myShield;
+        self.stat_client_shield =  100 - (myShield * 100) + 100;
+      }
+      else{
+        if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
+          if(self.shield < self.shieldMax){
+            if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+              if(self.energy > 0){
+                self.shield = self.shield + (self.shieldRate * 0.5);
+                self.energy = self.energy - (self.shieldRate * 2);
               }
             }
           }
-          self.stat_client_shield = (self.shield / self.shieldMax) * 100;
         }
+        self.stat_client_shield = (self.shield / self.shieldMax) * 100;
       }
-      self.energy = bound(0, self.energy, self.energyMax);
+      self.shield = max(0, self.shield);
+    }
+    self.energy = bound(0, self.energy, self.energyMax);
+    if( lastEne != self.energy){
+      self.SendFlags = self.SendFlags | SENDFLAG_ENERGY;
     }
   }
 };

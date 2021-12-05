@@ -15,6 +15,7 @@ Overview:
 */
 void() data_ini_sorcerer_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_VEHICLE_sorcerer;
   self.vec_size = 2;
   self.vec_name = "Sorcerer";

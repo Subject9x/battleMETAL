@@ -15,6 +15,7 @@ Overview:
 */
 void() data_ini_trowel_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_VEHICLE_trowel;
   self.vec_size = 3;
   self.vec_name = "Trowel";

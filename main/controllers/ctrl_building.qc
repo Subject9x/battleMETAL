@@ -39,10 +39,11 @@ void() building_burn_th={
     self.last_energy = self.energy;
   }
   
-  
-  if( self.last_shield != self.stat_client_shield ){
-    self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
-    self.last_shield = self.stat_client_shield;
+  if( (self.unitModFlags & MOD_HAS_SHIELD)){
+    if( self.last_shield != self.stat_client_shield ){
+      self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
+      self.last_shield = self.stat_client_shield;
+    }
   }
   
   self.think = building_burn_th;

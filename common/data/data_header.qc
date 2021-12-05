@@ -181,6 +181,44 @@ void() default_weapon_think={
 .void() data_ini_projectile;
 
 #endif
+
+/*
+  modflags provide top-level directives for how mechs are configured for a game,
+    they also pre-empt actual entity checks (sacrifice of readability),
+    so we run this valiadotr
+  
+*/
+void(entity unit) data_validate_mod_flags={
+
+  if( unit.torsoLeft == world || !unit.torsoLeft){
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_EXPLODE_TOR_L);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_PITCH_TOR_L);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_HAS_TOR_L);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_NO_TOR_L);
+  }
+  
+  if( unit.torsoRight == world || !unit.torsoRight){
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_EXPLODE_TOR_R);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_PITCH_TOR_R);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_HAS_TOR_R);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_NO_TOR_R);
+  }
+  
+  if( unit.armRight == world || !unit.armRight ){
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_EXPLODE_TOR_R);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_PITCH_TOR_R);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_HAS_ARM_R);
+  }
+  
+  if( unit.armLeft == world || !unit.armLeft ){
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_EXPLODE_TOR_L);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_PITCH_TOR_L);
+    unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_HAS_ARM_L);
+  }
+};
+
+
+
 /*
 	This was promoted up to common/data because its portable and
 	reuseable in both client and server.
