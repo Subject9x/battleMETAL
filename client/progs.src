@@ -228,4 +228,13 @@ ui/hud/crosshair/hud_crosshair4.qc
 input_events.qc
 util/input_api.qc
 ../common/data/defs/defs_world.qc     //world server / rules entity
-client_main.qc
+
+//CSQC CLIENT API============
+  main/client_init.qc
+  main/client_events.qc
+  main/client_console_command.qc
+  main/client_parse_funcs.qc
+  main/client_update_view.qc
+  main/client_shutdown.qc
+  main/client_entity.qc
+//===========================
