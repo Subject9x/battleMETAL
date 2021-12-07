@@ -57,8 +57,8 @@ void() data_ini_sorcerer_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_LEGS, '-10.5 5 -7', '35 0 0', 1, (DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_2( M_LEGS, '10.5 5 -7', '35 0 0', 1, (DMG_EXP | DMG_MSC));
+  data_ini_unitHardpoint_1( M_LEGS, '-10.5 5 -7', '35 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_LEGS, '10.5 5 -7', '35 0 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

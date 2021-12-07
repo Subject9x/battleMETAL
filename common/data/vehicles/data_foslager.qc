@@ -62,17 +62,9 @@ void() data_ini_foslager_={
 //=====================================
  
 //HARDPOINTS==========================
-#ifdef CSQC
-  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
-  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 0.75 5.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 1.25 6', '0 0 0', 1, (DMG_BAL | DMG_ENE));
-#endif
-#ifdef SSQC
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 11 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 11.5 2.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
-#endif
-  data_ini_unitHardpoint_3( M_LEGS, '-1.5 6 9', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 11 2', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 11.5 2.75', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_3( M_LEGS, '-1.5 6 9', '0 0 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

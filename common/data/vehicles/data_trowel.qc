@@ -60,26 +60,13 @@ void() data_ini_trowel_={
 //=====================================
  
 //HARDPOINTS==========================
-#ifdef CSQC
-  //csqc quirk: offsets_z = (turret_z * -1) + ssqc offsets_z
-  //csqc quirk: offsets_y = (turret_y  - ssqc offsets_y
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 -1.5 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 3.25 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '2 1.5 -7', '90 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_4( M_TOR_CENTER, '2 1.5 -11', '90 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_5( M_LEGS, '7 7.5 20', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_6( M_LEGS, '-7 7.5 20', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 -1 -15.5', '0 180 0', 3, (DMG_ENE | DMG_BAL));
-#endif
-#ifdef SSQC
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 12 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 16.75 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '2 -8 10.5', '90 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_4( M_TOR_CENTER, '2 -8 14', '90 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_5( M_LEGS, '7 7.5 20', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_6( M_LEGS, '-7 7.5 20', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 -1 -15.5', '0 180 0', 3, (DMG_ENE | DMG_BAL));
-#endif
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 -1.5 10.5', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 3.25 10.5', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '2 1.5 -7', '90 0 0', EQP_ALL);
+  data_ini_unitHardpoint_4( M_TOR_CENTER, '2 1.5 -11', '90 0 0', EQP_ALL);
+  data_ini_unitHardpoint_5( M_LEGS, '7 7.5 20', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_6( M_LEGS, '-7 7.5 20', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 -1 -15.5', '0 180 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

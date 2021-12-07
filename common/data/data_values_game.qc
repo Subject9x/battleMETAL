@@ -275,6 +275,9 @@ float TEAM_MILITAR_TOTAL;
   #define MSC2 8192
   #define MSC3 16384
   #define MSC4 32768
+  
+  //primarily for non-player units
+  #define EQP_ALL 65535
 //============================
 //     GETSTAT() TYPES
 //============================

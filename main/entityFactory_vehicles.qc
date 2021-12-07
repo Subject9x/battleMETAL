@@ -44,6 +44,7 @@ void(entity own) build_unit_component={
   
   macro_set_collider(DAMAGE_NO,SOLID_NOT,MOVETYPE_FOLLOW)
   macro_set_model(self.model, own.skin, 0)
+  
   setsize(self, '-1 -1 -1', '1 1 1');
   macro_set_offset(own,self.compOffset)
   
@@ -183,11 +184,9 @@ void( float nex_wep, entity own ) build_unit_weapon={
     self.view_ofs = self.origin - partParent.origin;
     self.v_angle = self.angles - partParent.angles;
     
-    if( (self.damageType & DMG_MSC) ){
-      //Fire Equipment 'upgrade' functions now
-      if( self.item_run_upgrade ){
-        self.item_run_upgrade();
-      }
+    //Fire Equipment 'upgrade' functions now, really should only ever be on MSC equipment
+    if( self.item_run_upgrade ){
+      self.item_run_upgrade();
     }
     self.wepFireOffsetCache = self.wepFireOffset;
     self.th_die = ctrl_die_weapon;
@@ -240,25 +239,25 @@ void() build_mech_unit={
   self.chain_timer = time;
   self.lock_timer = 0;
   unitPartList = self;
-  if( (self.unitModFlags & MOD_HAS_TOR_R) && self.torsoRight ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
     build_mech_torsoRight();
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
   }
-  if( (self.unitModFlags & MOD_HAS_TOR_L) && self.torsoLeft ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
     build_mech_torsoLeft();
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) && self.armRight ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
     build_mech_armRight();
     self.armRight.partPrev = unitPartList;
     unitPartList.partNext = self.armRight;
     unitPartList = unitPartList.partNext;
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) && self.armLeft ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
     build_mech_armLeft();
     self.armLeft.partPrev = unitPartList;
     unitPartList.partNext = self.armLeft;
@@ -382,28 +381,28 @@ void() build_mech_bot={
   unitPartList = unitPartList.partNext;
   self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   
-  if( (self.unitModFlags & MOD_HAS_TOR_R) && self.torsoRight ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
     build_mech_torsoRight();
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
     self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
   }
-  if( (self.unitModFlags & MOD_HAS_TOR_L) && self.torsoLeft ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
     build_mech_torsoLeft();
     self.torsoLeft.partPrev = unitPartList;
     unitPartList.partNext = self.torsoLeft;
     unitPartList = unitPartList.partNext;
     self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) && self.armRight ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R)  ){
     build_mech_armRight();
     self.armRight.partPrev = unitPartList;
     unitPartList.partNext = self.armRight;
     unitPartList = unitPartList.partNext;
     self.armRight.effects = self.armRight.effects | EF_NODRAW;
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) && self.armLeft ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
     build_mech_armLeft();
     self.armLeft.partPrev = unitPartList;
     unitPartList.partNext = self.armLeft;

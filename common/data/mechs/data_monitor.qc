@@ -18,8 +18,11 @@ void() data_ini_monitor_={
   self.data_idx = UID_MECH_monitor;
   self.vec_size = 3;
   self.vec_name = "Monitor";
- 
+  
+  //Center Torso Health / player central health.
   self.max_health = 864;
+  
+  //Hitbox size, X width, Y Length, Z height.
   self.mins = '-20 -20 -44';
   self.maxs = '20 20 24';
   
@@ -46,12 +49,14 @@ void() data_ini_monitor_={
   self.ramUpMax = 1;
   self.ramCooldown = 2;
 #ifdef CSQC
+  //animation playback sync to player move speed.
   self.legMoveRate = 8;
   self.legRunRate = 12;
 #endif
 #ifdef SSQC
-  self.yaw_speed = 2;    // AI-only 
-  self.turret_yaw_speed = 3;// AI-only
+  //AI-only Server values.
+  self.yaw_speed = 2;
+  self.turret_yaw_speed = 3;
   self.ai_angleLimits = '-150 150 0';
   if( (self.flags & FL_MONSTER) ){
     self.data_speed_accel = 0.005;
@@ -87,28 +92,15 @@ void() data_ini_monitor_={
 //=====================================
  
 //HARDPOINT DATA======================
-#ifdef SSQC
-  data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_3( M_ARM_LEFT, '-22 2 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_4( M_ARM_LEFT, '-15 3 10', '0 0 0', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_5( M_TOR_RIGHT, '9.45 15.9 6', '0 0 0', 3, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_6( M_TOR_LEFT, '-9.45 15.9 6', '0 0 0', 3, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 5.5', '0 0 0', 3, DMG_EXP);
-  data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 4.5', '0 0 0', 3, (DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 4.5', '0 0 0', 3, (DMG_EXP | DMG_MSC));
-#endif
-#ifdef CSQC
-  data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0', (BAL1|BAL2|ENE1|ENE2), (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_3( M_ARM_LEFT, '-22 2 10', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_4( M_ARM_LEFT, '-15 3 10', '0 0 0', (BAL1|BAL2|ENE1|ENE2), (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_5( M_TOR_RIGHT, '9.45 15.9 4.5', '0 0 0', (BAL2|BAL3|ENE2|ENE3|MIS3|MSC1|MSC2|MSC3), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_6( M_TOR_LEFT, '-9.45 15.9 4.5', '0 0 0', (BAL2|BAL3|ENE2|ENE3|MIS3|MSC1|MSC2|MSC3), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 6', '0 0 0', (BAL2|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4), (DMG_BAL | DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 5', '0 0 0', (BAL2|BAL4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 5', '0 0 0', (BAL2|BAL4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC));
-#endif
+  data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', (BAL1|ENE1));
+  data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0',(BAL1|BAL2|ENE1|ENE2));
+  data_ini_unitHardpoint_3( M_ARM_LEFT, '-22 2 10', '0 0 0', (BAL1|ENE1));
+  data_ini_unitHardpoint_4( M_ARM_LEFT, '-15 3 10', '0 0 0', (BAL1|BAL2|ENE1|ENE2));
+  data_ini_unitHardpoint_5( M_TOR_RIGHT, '9.45 15.9 6', '0 0 0', (BAL2|BAL3|ENE2|ENE3|MIS3|MSC1|MSC2|MSC3));
+  data_ini_unitHardpoint_6( M_TOR_LEFT, '-9.45 15.9 6', '0 0 0', (BAL2|BAL3|ENE2|ENE3|MIS3|MSC1|MSC2|MSC3));
+  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 5.5', '0 0 0', (BAL2|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
+  data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 4.5', '0 0 0', (BAL2|BAL4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
+  data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 4.5', '0 0 0', (BAL2|BAL4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
 //=====================================
 
 //HUD Data=============================
@@ -132,7 +124,8 @@ void() data_ini_monitor_={
   self.abbrev = "MNT";
   self.description = "The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. | | The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. | | All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.";
   self.icon = "gfx/ui/mech_icons/icon_monitor.png";
-  //ui offsets for hangar, not pretty
+  
+  //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
   hardpnt.uiOffset = '110 40'; //#1

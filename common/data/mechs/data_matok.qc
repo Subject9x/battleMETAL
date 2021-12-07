@@ -13,13 +13,17 @@ Overview:
   Register this in <world_ext_c>
 */
 void() data_ini_matok_={
-
+  
   self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
+  
   self.data_idx = UID_MECH_matok;
   self.vec_size = 2;
   self.vec_name = "Matok";
  
+  //Center Torso Health / player central health.
   self.max_health = 650;
+  
+  //Hitbox size, X width, Y Length, Z height.
   self.mins = '-18 -18 -40';
   self.maxs = '18 18 22';
   
@@ -46,12 +50,14 @@ void() data_ini_matok_={
   self.ramUpMax = 1.5;
   self.ramCooldown = 3;
 #ifdef CSQC
+  //animation playback sync to player move speed.
   self.legMoveRate = 12;
   self.legRunRate = 18;
 #endif
 #ifdef SSQC
-  self.yaw_speed = 3;    // AI-only 
-  self.turret_yaw_speed = 3.75;// AI-only
+  //AI-only Server values.
+  self.yaw_speed = 3;
+  self.turret_yaw_speed = 3.75;
   self.ai_angleLimits = '-180 180 0';
   if( (self.flags & FL_MONSTER) ){
     self.data_speed_accel = 0.015;
@@ -88,22 +94,12 @@ void() data_ini_matok_={
 //=====================================
  
 //HARDPOINT DATA======================
-#ifdef SSQC
-  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
-  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
-  data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  data_ini_unitHardpoint_6( M_TOR_CENTER, '0 6 7', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-#endif
-#ifdef CSQC
-  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1), (DMG_BAL | DMG_ENE | DMG_MSC | DMG_EXP) );
-  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1), (DMG_BAL | DMG_ENE | DMG_MSC | DMG_EXP) );
-  data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', (BAL1|ENE1|ENE2|ENE3), (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  data_ini_unitHardpoint_6( M_TOR_CENTER, '0 6 7', '0 0 0', (MSC1|MSC2|MSC3|MSC4), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-#endif
+  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1) );
+  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1) );
+  data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3) );
+  data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', (BAL1|ENE1|ENE2|ENE3) );
+  data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2) );
+  data_ini_unitHardpoint_6( M_TOR_CENTER, '0 6 7', '0 0 0', (MSC1|MSC2|MSC3|MSC4) );
 //=====================================
 
 //HUD Data=============================
@@ -128,7 +124,7 @@ void() data_ini_matok_={
   self.description = "The MATOK was the second-generation combat mech that Federal Military churned out as the threat of AUTHOR was increasing. MATOKs are the main stay of Federal squadrons today, found in almost every deployment and any combat. | | A dangerous generalist, the MATOK is design to engage targets head on with a slew of direct-fire power and large reactor recharge capacity. | | MATOK operators have to remember not to get surrounded though, the MATOK's defensive capabilities are not as strong as its offense. Its speed is also a problem against more agile targets.";
   self.icon = "gfx/ui/mech_icons/icon_matok.png";
   
-  //ui offsets for hangar, not pretty
+  //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
   hardpnt.uiOffset = '55 5';//#3

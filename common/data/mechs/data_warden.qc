@@ -13,13 +13,18 @@ Overview:
   Register this in <world_ext_c>
 */
 void() data_ini_warden_={
-
+  
   self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
+  
   self.data_idx = UID_MECH_warden;
+  
   self.vec_size = 1;
   self.vec_name = "Warden";
- 
+  
+  //Center Torso Health / player central health.
   self.max_health = 575;
+  
+  //Hitbox size, X width, Y Length, Z height.
   self.mins = '-16 -16 -32';
   self.maxs = '16 16 14';
   
@@ -46,12 +51,14 @@ void() data_ini_warden_={
   self.ramUpMax = 3;
   self.ramCooldown = 8;
 #ifdef CSQC
+  //animation playback sync to player move speed.
   self.legMoveRate = 12;
   self.legRunRate = 14;
 #endif
 #ifdef SSQC
-  self.yaw_speed = 4;    // AI-only 
-  self.turret_yaw_speed = 4.75;// AI-only
+  //AI-only Server values.
+  self.yaw_speed = 4;
+  self.turret_yaw_speed = 4.75;
   self.ai_angleLimits = '-215 215 0';
   if( (self.flags & FL_MONSTER) ){
     self.data_speed_accel = 0.025;
@@ -88,24 +95,11 @@ void() data_ini_warden_={
 //=====================================
  
 //HARDPOINTS==========================
-#ifdef SSQC
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '7.25 3 -0.5', '0 0 0', (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.7 2.9 1', '0 0 0', (DMG_BAL | DMG_ENE ) );
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '-7.5 2.9 1', '0 0 0', (DMG_BAL | DMG_ENE ) );
-  data_ini_unitHardpoint_4( M_TOR_RIGHT, '6.4 10.5 -0.5', '0 0 0', (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC)  );
-  data_ini_unitHardpoint_5( M_TOR_LEFT, '-10 10.8 -2', '0 0 0', (DMG_EXP | DMG_MSC) );
-
-#endif
-#ifdef CSQC
-  //client arms can aim up and down, so we bolt the weapons directly to the parent
-  //bad, late-in-the-game hack frauds
-  //see predraw_player_weapon()
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '7.25 3 -0.5', '0 0 0', (BAL2|BAL3|BAL4|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC2|MSC3|MSC4), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.7 2.9 1', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE ) );
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '-7.5 2.9 1', '0 0 0', (BAL1|ENE1), (DMG_BAL | DMG_ENE ) );
-  data_ini_unitHardpoint_4( M_TOR_RIGHT, '6.4 10.5 -0.5', '0 0 0', (BAL1|ENE1|MIS1|MSC1), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  data_ini_unitHardpoint_5( M_TOR_LEFT, '-10 10.8 -2', '0 0 0', (MIS1|MIS2|MIS3|MIS4|MSC2|MSC3|MSC4), (DMG_EXP | DMG_MSC));
-#endif
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '7.25 3 -0.5', '0 0 0', (BAL2|BAL3|BAL4|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC2|MSC3|MSC4));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.7 2.9 1', '0 0 0', (BAL1|ENE1));
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '-7.5 2.9 1', '0 0 0', (BAL1|ENE1));
+  data_ini_unitHardpoint_4( M_TOR_RIGHT, '6.4 10.5 -0.5', '0 0 0', (BAL1|ENE1|MIS1|MSC1));
+  data_ini_unitHardpoint_5( M_TOR_LEFT, '-10 10.8 -2', '0 0 0', (MIS1|MIS2|MIS3|MIS4|MSC2|MSC3|MSC4));
 //=====================================
 
 
@@ -130,7 +124,8 @@ void() data_ini_warden_={
   self.abbrev = "WRD";
   self.description = "MILITAR burned out their best hackers on black ICE breaking into a salvaged Federation data core. Amongst the encrypted modules was blueprints for a highly advanced light metal - the WARDEN. | | Tech degradation after the toppling of the Federation meant that MILITAR could not create a perfect copy...but they tried anyway. | | The result is a tough-as-nails light metal. It is not the fastest metal on the planet, but well-protected hardpoints and fast enough movement allow the WARDEN to stay out of most trouble. | | BALAKET pilots have a particular disdain for WARDEN units, frustrated that their vaunted hit-and-run style won`t take a WARDEN down quickly.";
   self.icon = "gfx/ui/mech_icons/icon_warden.png";
-  
+
+  //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
   hardpnt.uiOffset = '-50 20'; //#1
