@@ -24,13 +24,13 @@ void() data_ini_equip_target_module_={
   
   self.w_range = 0;
   self.damageValue = 0;
-  self.damageType = (DMG_MSC);
+  self.damageType = DMG_MSC;
 
   self.techLevel = 1;
   self.equipSize = MSC1;
   
   #ifdef CSQC   
-    self.w_name = "Adv. Target Module";  
+    self.w_name = "Adv. Target Module";
     self.model = "q3mdl/weapons/e_atgm.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;

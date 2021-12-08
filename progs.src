@@ -143,7 +143,7 @@ main/controllers/headers/controllers.qh
   //-------------------------------
 //================================
   dp/subs.qc  
-  main/data_system.qc
+  common/data/data_system.qc
 
 //Custom battleMETAL Functionality
 //AI Module---------------------

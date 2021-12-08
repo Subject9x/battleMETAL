@@ -10,39 +10,28 @@ Overview:
 void( float dataID ) data_sync_new_mech_ai={
   local vector maxSave, minSave;
   
-  weaponList = self;  //prepare to build unit's weapon list
-  self.hardpoint_cnt = 0;
-  switch( dataID ){
-    case UID_MECH_balaket:
-      data_ini_balaket_();
-      break;
-    case UID_MECH_matok:
-      data_ini_matok_();
-      break;
-    case UID_MECH_monitor:
-      data_ini_monitor_();
-      break;
-    case UID_MECH_sapper:
-      data_ini_sapper_();
-      break;
-    case UID_MECH_warden:
-      data_ini_warden_();
-      break;
-  }
+  setorigin(self, self.origin);
+    
+  initialize_data_mech_(dataID);
+
+  self.data_type = DATA_MECH;
+  self.skin =  self.faction - 1;
+  self.movetype = MOVETYPE_STEP;
+    
   makevectors(self.angles);
   if( self.torsoCenter ){
     data_mech_setup_part( self.torsoCenter );
   }
-  if( self.torsoLeft ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && self.torsoLeft ){
     data_mech_setup_part( self.torsoLeft );
   }
-  if( self.torsoRight ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && self.torsoRight ){
     data_mech_setup_part( self.torsoRight );
   }
-  if( self.armLeft ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && self.armLeft ){
     data_mech_setup_part( self.armLeft );
   }
-  if( self.armRight ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && self.armRight ){
     data_mech_setup_part( self.armRight );
   }
   if( self.legs ){
@@ -65,6 +54,14 @@ void( float dataID ) data_sync_new_mech_ai={
   }
   else{
     self.solid = SOLID_SLIDEBOX;
+  } 
+  self.interpolate_entity = interpolate_mech_ai;
+  self.drawmask = MASK_ENGINE;
+  self.predraw = predraw_mech_ai;
+  self.canTarget = TRUE;
+  if( !self.ai_muted ){
+    ai_voice_ini( TRUE );
+    self.ai_voice_limit = 1;
   }
 };
 

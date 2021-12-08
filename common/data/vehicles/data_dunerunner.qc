@@ -61,8 +61,8 @@ void() data_ini_dunerunner_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 5.25 2', '0 0 0', EQP_ALL);
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 5.25 2', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 -0.1 2', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 -0.1 2', '0 0 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

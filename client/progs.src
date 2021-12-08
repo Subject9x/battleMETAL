@@ -146,8 +146,9 @@ util/headers/input_events.qh
   ui/menu/headers/ui_rebind.qh
 //================
 
+../common/data/data_system.qc
+data/data_system_ext.qc
 data/client_precache.qc
-data/data_system.qc
 data/data_api.qc
 data/ui_data.qc
 data/msn_file.qc

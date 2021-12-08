@@ -333,22 +333,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   if( isNew ){
-    setorigin(self, self.origin);
+    cacheGlobalString(self.netname, newName )
     self.think = mech_ai_think;
     self.nextthink = time + 0.01;
-    cacheGlobalString(self.netname, newName )
-    self.data_type = DATA_MECH;
-    self.skin =  self.faction - 1;
-    self.movetype = MOVETYPE_STEP;
     data_sync_new_mech_ai( self.data_idx );
-    self.interpolate_entity = interpolate_mech_ai;
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_mech_ai;
-    self.canTarget = TRUE;
-    if( !self.ai_muted ){
-      ai_voice_ini( TRUE );
-      self.ai_voice_limit = 1;
-    }
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
@@ -442,13 +430,13 @@ void() interpolate_mech_ai={
   }
   
   makevectors(parent.torsoCenter.angles);
-  if( !(self.critBits & M_TOR_LEFT) && ((self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_HAS_ARM_L))){
+  if( !(self.critBits & M_TOR_LEFT) && ((self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L))){
     self = self.torsoLeft;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;
     self = parent;
   }
-  if( !(self.criticalHits & M_TOR_RIGHT) && ((self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_HAS_ARM_R)) ){
+  if( !(self.criticalHits & M_TOR_RIGHT) && ((self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) ){
     self = self.torsoRight;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
       self.angles = parent.torsoCenter.angles;

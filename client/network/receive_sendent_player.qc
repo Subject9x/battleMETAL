@@ -14,19 +14,19 @@ Overview:
   HANDLE EVENT - player mech pieces are dying
 */
 void() sendevent_player_burn={
-  if( (self.burnBits & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.burnBits & M_TOR_LEFT) ){
     te_mech_crit( self.torsoLeft.origin , '0 0 10');
   }
-  if( (self.burnBits & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) &&(self.burnBits & M_TOR_RIGHT) ){
     te_mech_crit( self.torsoRight.origin , '0 0 10');
   }
-  if( (self.burnBits & M_ARM_LEFT) ){
-    if( !(self.criticalHits & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) &&(self.burnBits & M_ARM_LEFT) ){
+    if( (self.unitModFlags & MOD_HAS_TOR_L) &&!(self.criticalHits & M_TOR_LEFT) ){
       te_mech_crit( self.armLeft.origin , '0 0 10');
     }
   }
-  if( (self.burnBits & M_ARM_RIGHT) ){
-    if( !(self.criticalHits & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) &&(self.burnBits & M_ARM_RIGHT) ){
+    if( (self.unitModFlags & MOD_HAS_TOR_R) &&!(self.criticalHits & M_TOR_RIGHT) ){
       te_mech_crit( self.armRight.origin , '0 0 10');
     }
   }
@@ -104,16 +104,6 @@ void(entity item) predraw_player_weapon={
     offset = self.origin;
     item.angles = entAng;
   }
-  /*if(item.partParentId == M_ARM_LEFT || item.partParentId == M_ARM_RIGHT){
-    if(item.partParentId == M_ARM_LEFT){
-      offset = self.armLeft.origin;
-    }
-    else{
-      offset = self.armRight.origin;
-    }
-  }
-  else{
-  }*/
   
   makevectors(entAng);
   offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x);
@@ -382,29 +372,12 @@ void( float mech_id ) sendevent_player_mech={
   local entity weps;
   local entity this;
   
-  weaponList = self;  //prepare to build unit's weapon list
-  self.hardpoint_cnt = 0;
+  self.flags = self.flags | FL_CLIENT;  //read-order fix
+  self.deadflag = DEAD_NO;
+  self.criticalHits = rint(0);
   
-  switch(mech_id){
-    case UID_MECH_balaket:
-      data_ini_balaket_();
-      break;
-    case UID_MECH_matok:
-      data_ini_matok_();
-      break;
-    case UID_MECH_sapper:
-      data_ini_sapper_();
-      break;
-    case UID_MECH_monitor:
-      data_ini_monitor_();
-      break;
-    case UID_MECH_warden:
-      data_ini_warden_();
-      break;
-    default :
-      cons_logAFloat("client.receive_sendent_player.sendevent_player_mech()-Error: failed to build mech with id", mech_id);
-      break;
-  }
+  initialize_data_mech_(mech_id);
+  
   minSave = self.mins;
   maxSave = self.maxs;
     
@@ -497,7 +470,12 @@ void( float mech_id ) sendevent_player_mech={
         HUD_EXTERNAL_CAM_ACTIVE = TRUE;
       }
     }
+    HUD_FIXED_ANGLE = self.angles;
   }
+  
+  self.shieldEffectTime = 0;
+  self.predraw = player_predraw;
+  self.canTarget = TRUE;
 };
 
 /*
@@ -778,16 +756,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.next_wepn9 = ReadByte();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
-        self.flags = self.flags | FL_CLIENT;  //read-order fix
-        self.deadflag = DEAD_NO;
-        self.criticalHits = rint(0);
         sendevent_player_mech(self.data_idx);
-        self.shieldEffectTime = 0;
-        self.predraw = player_predraw;
-        if(self.clientLocalId == player_localentnum){
-          HUD_FIXED_ANGLE = self.angles;
-        }
-        self.canTarget = TRUE;
       }
     }
   }
