@@ -40,7 +40,6 @@ void() data_ini_warden_={
 //RADAR================================
   self.radar_range = 2000;
   self.w_firetime = 3;  // lock-on time in seconds
-  self.spreadDefault = ACCURACY_SKIRMISH;
 //=====================================
 
 //SPEED================================
@@ -57,6 +56,7 @@ void() data_ini_warden_={
 #endif
 #ifdef SSQC
   //AI-only Server values.
+  self.spreadDefault = ACCURACY_SKIRMISH;
   self.yaw_speed = 4;
   self.turret_yaw_speed = 4.75;
   self.ai_angleLimits = '-215 215 0';

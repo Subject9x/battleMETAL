@@ -38,13 +38,12 @@ void() data_ini_monitor_={
 //RADAR================================
   self.radar_range = 1400;
   self.w_firetime = 3;  // lock-on time in seconds
-  self.spreadDefault = ACCURACY_LOWTECH;
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 90; //85
-  self.data_speed_strafe = 90; //85
-  self.data_speed_backward = 90; //85
+  self.data_speed_forward = 90;
+  self.data_speed_strafe = 90;
+  self.data_speed_backward = 90;
   self.data_speed_accel = 2;
   self.ramUpMax = 1;
   self.ramCooldown = 2;
@@ -55,6 +54,7 @@ void() data_ini_monitor_={
 #endif
 #ifdef SSQC
   //AI-only Server values.
+  self.spreadDefault = ACCURACY_LOWTECH;
   self.yaw_speed = 2;
   self.turret_yaw_speed = 3;
   self.ai_angleLimits = '-150 150 0';

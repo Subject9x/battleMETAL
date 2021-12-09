@@ -39,7 +39,6 @@ void() data_ini_matok_={
 //RADAR================================
   self.radar_range = 1800;
   self.w_firetime = 2;  //lock-on time in seconds
-  self.spreadDefault = ACCURACY_MARKSMAN;
 //=====================================
 
 //SPEED================================
@@ -56,6 +55,7 @@ void() data_ini_matok_={
 #endif
 #ifdef SSQC
   //AI-only Server values.
+  self.spreadDefault = ACCURACY_MARKSMAN;
   self.yaw_speed = 3;
   self.turret_yaw_speed = 3.75;
   self.ai_angleLimits = '-180 180 0';

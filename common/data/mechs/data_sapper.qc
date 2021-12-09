@@ -38,7 +38,6 @@ void() data_ini_sapper_={
 //RADAR================================
   self.radar_range = 1500;
   self.w_firetime = 1.33;  //lock-on time in seconds
-  self.spreadDefault = ACCURACY_MARKSMAN;
 //=====================================
 
 //SPEED================================
@@ -55,6 +54,7 @@ void() data_ini_sapper_={
 #endif
 #ifdef SSQC
   //AI-only Server values.
+  self.spreadDefault = ACCURACY_MARKSMAN;
   self.yaw_speed = 2.5;
   self.turret_yaw_speed = 3.33;
   self.ai_angleLimits = '-120 120 0';

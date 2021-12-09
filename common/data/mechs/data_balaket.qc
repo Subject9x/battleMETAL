@@ -38,7 +38,6 @@ void() data_ini_balaket_={
 //RADAR================================
   self.radar_range = 1600;
   self.w_firetime = 4;  // lock-on time in seconds
-  self.spreadDefault = ACCURACY_SKIRMISH;
 //=====================================
 
 //SPEED================================
@@ -55,6 +54,7 @@ void() data_ini_balaket_={
 #endif
 #ifdef SSQC
   //AI-only Server values.
+  self.spreadDefault = ACCURACY_SKIRMISH;
   self.yaw_speed = 5;
   self.turret_yaw_speed = 4.25;
   self.ai_angleLimits = '-175 175 0';
