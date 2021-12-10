@@ -62,8 +62,8 @@ void() data_ini_foslager_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 11 2', '0 0 0', EQP_ALL);
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 11.5 2.75', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 0.75 2', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 1.25 2.75', '0 0 0', EQP_ALL);
   data_ini_unitHardpoint_3( M_LEGS, '-1.5 6 9', '0 0 0', EQP_ALL);
 //=====================================
 

@@ -100,7 +100,7 @@ void() data_ini_sapper_={
   data_ini_unitHardpoint_5( M_TOR_CENTER, '3.35 5.5 3', '0 0 0', (MSC1|MSC2) );
   data_ini_unitHardpoint_6( M_TOR_CENTER, '3.35 8.5 3', '0 0 0', (MSC1|MSC3|MIS2));
   data_ini_unitHardpoint_7( M_TOR_CENTER, '-3.35 5.5 3', '0 0 0', (MSC1|MSC2) );
-  data_ini_unitHardpoint_8( M_TOR_CENTER, '-3.35 8.5 3', '0 0 0', (MSC1|MSC3|MIS3));
+  data_ini_unitHardpoint_8( M_TOR_CENTER, '-3.35 8.5 3', '0 0 0', (MSC1|MSC3|MIS4));
 //=====================================
 
 //HUD Data=============================
