@@ -125,7 +125,7 @@ void() sendevent_mech_ai_die_standing={
   mechRoot.colormod = '0.45 0.45 0.45';
   mechRoot.predraw = predraw_mech_corpse;
   mechRoot.criticalHits = self.criticalHits;
-  mechRoot.drawmask = MASK_ENGINE;
+  mechRoot.drawmask = MASK_NORMAL;
   
   mechLegs = te_mech_chunk_stand(pass, pass.legs, pass.angles);
   mechLegs.frame = self.legs.frame;
@@ -177,6 +177,7 @@ void() sendevent_mech_ai_die={
     rem = weps;
     weps = rem.w_slot;
     sendent_handle_remove(rem);
+    remove(rem);
   }
   makevectors(self.angles);
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 );
@@ -203,6 +204,9 @@ void() sendevent_mech_ai_die={
 */
 void( float critical ) sendevent_mech_ai_crit={
   local entity wep;
+  local entity rem;
+  local float wId;
+  local entity prev;
   
   if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (critical & M_TOR_LEFT) ){
     if( self.torsoLeft != world ){
@@ -231,12 +235,15 @@ void( float critical ) sendevent_mech_ai_crit={
   if( (critical & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
-  
+  prev = self;
   wep = self.w_slot;
-  while( wep != world ){
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     if( (critical & wep.partParentId) ){
-      wep.drawmask = 0;
-      sendent_handle_remove(wep);
+      //hide on critical because we can't seem to reliably remove this on the frame they're critical'd.
+      wep.effects = wep.effects | EF_NODRAW;
+      wep.alpha = 0.0;
+      wep.scale = 0.01;
+      wep.drawmask = FALSE;
     }
     wep = wep.w_slot;
   }
@@ -247,21 +254,21 @@ void( float critical ) sendevent_mech_ai_crit={
 void(float criticalHits) sendevent_mech_burn={  
   local vector offset;
   
-  if( (self.unitModFlags & MOD_HAS_TOR_L) &&(criticalHits & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && (criticalHits & M_TOR_LEFT) ){
     offset = self.torsoLeft.origin;
     te_mech_crit( offset, '0 0 10');
   }
-  if( (self.unitModFlags & MOD_HAS_TOR_R) &&(criticalHits & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && (criticalHits & M_TOR_RIGHT) ){
     offset = self.torsoRight.origin;
     te_mech_crit( offset, '0 0 10');
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) &&(criticalHits & M_ARM_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && (criticalHits & M_ARM_LEFT) ){
     if( !(self.critBits & M_TOR_LEFT) ){
       offset = self.armLeft.origin;
       te_mech_crit( offset, '0 0 10');
     }
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) &&(criticalHits & M_ARM_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && (criticalHits & M_ARM_RIGHT) ){
     if( !(self.critBits & M_TOR_RIGHT) ){
     offset = self.armRight.origin;
       te_mech_crit( offset, '0 0 10');
@@ -407,6 +414,7 @@ void() interpolate_mech_ai={
   local entity parent;
   local entity wepn;
   local vector saved;
+  local float wId;
   
   interpolate_origin();
   interpolate_angle();
@@ -455,22 +463,21 @@ void() interpolate_mech_ai={
     self = parent;
   }
   
+  
   wepn = self.w_slot;
-  while( (wepn != world) ){
-    self = wepn;
-      if( !(parent.criticalHits & wepn.partParentId) ){
-        if( self.partParentId == M_LEGS ){
-          makevectors(parent.angles);
-          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-          self.origin = parent.origin + saved ;
-        }
-        else{
-          makevectors(parent.torsoCenter.angles);
-          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-          self.origin = parent.torsoCenter.origin + saved;
-        }
+  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
+    if( !(parent.criticalHits & wepn.partParentId) ){
+      if( wepn.partParentId == M_LEGS ){
+        makevectors(parent.angles);
+        saved = (v_right * wepn.compOffset_x) + (v_forward * wepn.compOffset_z) + (v_up * wepn.compOffset_y);
+        wepn.origin = parent.origin + saved ;
       }
-    self = parent;
+      else{
+        makevectors(parent.torsoCenter.angles);
+        saved = (v_right * wepn.compOffset_x) + (v_forward * wepn.compOffset_z) + (v_up * wepn.compOffset_y);
+        wepn.origin = parent.torsoCenter.origin + saved;
+      }
+    }
     wepn = wepn.w_slot;
   }
 };

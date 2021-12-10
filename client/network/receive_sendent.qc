@@ -408,17 +408,18 @@ void() sendent_ini_interpolate={
 void() sendent_setup_weapons={
   local entity this;
   local entity weps;
+  
   this = self;
   weps = self.w_slot;
   while( weps != world ){
     self = weps;
       self.owner = this;
       sendent_set_weapon();
-      if(!(this.flags & FL_DISARMED)){
-        initialize_data_item_(self.data_idx);
+      if( (this.flags & FL_DISARMED) ){
+        initialize_data_item_(UID_ITEM_EMPTY);
       }
       else{
-        initialize_data_item_(UID_ITEM_EMPTY);
+        initialize_data_item_(self.data_idx);
       }
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
@@ -426,15 +427,15 @@ void() sendent_setup_weapons={
       setmodel(self, self.model);
       if( self.partParentId == M_LEGS ){
         makevectors(this.angles);
-        setorigin(self, this.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
+        self.origin = this.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
         self.angles = this.angles;
       }
       else{
         makevectors(this.torsoCenter.angles);
-        setorigin(self, this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
+        self.origin = this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
         self.angles = this.torsoCenter.angles;
       }
-			self.drawmask = MASK_NORMAL;
+      self.drawmask = MASK_NORMAL;
     self = this;
     weps = weps.w_slot;
   }
