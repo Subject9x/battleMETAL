@@ -8,7 +8,7 @@ Overview: utility functions for menu
 void() menu_write_new_save={
   local float flannel;
   local string file;
-  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, ftos(cvar("saveslot")), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
     fputs(flannel, "{\n");
     fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
