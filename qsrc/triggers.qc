@@ -293,15 +293,7 @@ void() counter_use =
             centerprint (activator, strcat( self.description, " ", ftos(self.count), " ", self.abbrev ));
           }
           else{
-            if (self.count == 3){
-              centerprint (activator, "Only 3 more to go...");
-            }
-            else if (self.count == 2){
-              centerprint (activator, "Only 2 more to go...");
-            }
-            else{
-              centerprint (activator, "Only 1 more to go...");
-            }
+            centerprint( activator, sprintf("Only %u more to go...", self.count));
           }
         }
       }
@@ -316,15 +308,7 @@ void() counter_use =
           }
         }
         else{
-          if (self.count == 3){
-            centerprint (activator, "Only 3 more to go...");
-          }
-          else if (self.count == 2){
-            centerprint (activator, "Only 2 more to go...");
-          }
-          else{
-            centerprint (activator, "Only 1 more to go...");
-          }
+          centerprint( activator, sprintf("Only %u more to go...", self.count));
         }
       }
 		}
