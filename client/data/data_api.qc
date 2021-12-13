@@ -144,7 +144,7 @@ float() data_mech_config_valid={
       }*/
       if( (weaponEnt.equipSize != 0) && !(weaponEnt.equipSize & hardpoint.hardpointSize) ){
         cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Size mismatch");  //DEBUG
-        hardpoint.data_idx = UID_ITEM_EMPTY;
+        DATA_CONFIG_BUFFER_WEPS[itr] = UID_ITEM_EMPTY;
       }
       itemItr = 1;
       unlocked = FALSE;
