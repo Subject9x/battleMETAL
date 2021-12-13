@@ -88,7 +88,7 @@ Overview:
 .float turret_yaw_speed;
 .float ai_attack_chance;
 
-.float shieldRateMod; //field for modules.
+.float shieldRateMod; //field for modules, a bonus percentage
 .float radar_time;
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame
