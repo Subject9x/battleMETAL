@@ -143,6 +143,14 @@ void(vector ofs) menu_navBar_drawFrame={
   
   ui_navbutton_deploy_draw( nvpos + '288 0') ;
   
+  if(  ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN ){
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_MEDIUM;
+       drawstring(nvpos + '420 -1', "Time Left:", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+       drawstring(nvpos + '420 11', ui_calculate_game_time_string(), '14 14', CLR_DEF_WHITE, 1, 0);
+    drawfont = drawfont_prev;
+  }
   ui_navbutton_launch_draw( launchPos ) ;
   
 };
