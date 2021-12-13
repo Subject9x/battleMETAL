@@ -27,7 +27,7 @@ float UID_ITEM_ion_coil             = 13;
 float UID_ITEM_missile_swarm        = 14;
 
 //-----EQUIP------------
-float UID_ITEM_target_module        = 15;
+float UID_ITEM_adv_reload        = 15;
 float UID_ITEM_energy_battery       = 16;
 float UID_ITEM_shield_emitter       = 17;
 float UID_ITEM_large_sensors        = 18;

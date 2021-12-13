@@ -109,20 +109,20 @@ void() unit_onnek_militar_zapper={
       self.next_wepn1 = UID_ITEM_ion_coil;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       break;
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_ion_coil;
       self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_emp;
-      self.next_wepn3 = UID_ITEM_target_module;
+      self.next_wepn3 = UID_ITEM_adv_reload;
       self.next_wepn4 = UID_ITEM_recharge_capacitor;
       break;
     default:
@@ -153,7 +153,7 @@ void() unit_onnek_survest_zapper={
       self.next_wepn1 = UID_ITEM_ion_coil;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       break;
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
@@ -167,7 +167,7 @@ void() unit_onnek_survest_zapper={
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_ion_coil;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       break;
     default:
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -204,14 +204,14 @@ void() unit_onnek_militar_gunner={
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_particle_cannon;
       self.next_wepn2 = UID_ITEM_flak;
-      self.next_wepn3 = UID_ITEM_target_module;
+      self.next_wepn3 = UID_ITEM_adv_reload;
       self.next_wepn4 = UID_ITEM_flak;
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
       self.next_wepn1 = UID_ITEM_particle_cannon;
       self.next_wepn2 = UID_ITEM_particle_cannon;
-      self.next_wepn3 = UID_ITEM_target_module;
+      self.next_wepn3 = UID_ITEM_adv_reload;
       self.next_wepn4 = UID_ITEM_large_sensors;
       break;
     default:
@@ -249,7 +249,7 @@ void() unit_onnek_survest_gunner={
       self.next_wepn1 = UID_ITEM_electro_repeater;
       self.next_wepn2 = UID_ITEM_flak;
       self.next_wepn3 = UID_ITEM_flak;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       break;
     case 3:
       self.spreadDefault = ACCURACY_MARKSMAN;

@@ -122,7 +122,7 @@ void() unit_matok_militar_gunner={
       self.next_wepn2 = UID_ITEM_flak;
       self.next_wepn3 = UID_ITEM_electro_repeater;
       self.next_wepn4 = UID_ITEM_electro_repeater;
-      self.next_wepn5 = UID_ITEM_target_module;
+      self.next_wepn5 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 2:
@@ -134,7 +134,7 @@ void() unit_matok_militar_gunner={
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 3:
-      self.next_wepn1 = UID_ITEM_target_module;
+      self.next_wepn1 = UID_ITEM_adv_reload;
       self.next_wepn2 = UID_ITEM_flak;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_particle_cannon;
@@ -173,7 +173,7 @@ void() unit_matok_survest_gunner={
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_flak;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_rotary_plasma;
       self.next_wepn4 = UID_ITEM_rotary_plasma;
       self.next_wepn5 = UID_ITEM_flak;

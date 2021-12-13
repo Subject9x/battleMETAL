@@ -216,7 +216,7 @@ void() building_turret_light_m={
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_flak;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
@@ -274,7 +274,7 @@ void() building_turret_light_p={
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_flak;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
@@ -443,7 +443,7 @@ void() building_turret_missile_p={
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_missile_activeradar;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:

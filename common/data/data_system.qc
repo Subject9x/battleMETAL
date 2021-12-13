@@ -182,8 +182,8 @@ void(float wep_id) initialize_data_item_={
     case UID_ITEM_missile_swarm:
       data_ini_missile_swarm_();
       return;
-    case UID_ITEM_target_module:
-      data_ini_equip_target_module_();
+    case UID_ITEM_adv_reload:
+      data_ini_equip_adv_reload_();
       return;
     case UID_ITEM_energy_battery:
       data_ini_equip_energy_battery_();

@@ -27,13 +27,13 @@ void() building_turret_missile_survest_lobber={
       self.next_wepn1 = UID_ITEM_missile_laserguide;
       self.next_wepn2 = UID_ITEM_missile_laserguide;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_missile_activeradar;
       self.next_wepn2 = UID_ITEM_large_sensors;
-      self.next_wepn3 = UID_ITEM_target_module;
+      self.next_wepn3 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
@@ -54,28 +54,28 @@ void() building_turret_missile_militar_lobber={
       self.next_wepn1 = UID_ITEM_missile_laserguide;
       self.next_wepn2 = UID_ITEM_missile_laserguide;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_missile_activeradar;
       self.next_wepn2 = UID_ITEM_missile_laserguide;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_missile_activeradar;
       self.next_wepn2 = UID_ITEM_missile_activeradar;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
       self.next_wepn1 = UID_ITEM_missile_laserguide;
       self.next_wepn2 = UID_ITEM_missile_laserguide;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
@@ -91,28 +91,28 @@ void() building_turret_missile_psc_lobber={
       self.next_wepn1 = UID_ITEM_missile_laserguide;
       self.next_wepn2 = UID_ITEM_missile_laserguide;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_PRIMITVE;
       break;
     case 1:
       self.next_wepn1 = UID_ITEM_missile_laserguide;
       self.next_wepn2 = UID_ITEM_missile_laserguide;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_missile_activeradar;
       self.next_wepn2 = UID_ITEM_missile_laserguide;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_missile_activeradar;
       self.next_wepn2 = UID_ITEM_missile_laserguide;
       self.next_wepn3 = UID_ITEM_large_sensors;
-      self.next_wepn4 = UID_ITEM_target_module;
+      self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }

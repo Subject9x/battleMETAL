@@ -24,7 +24,7 @@ void() unit_matok_survest_sniper={
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_flak;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_flak;
       self.next_wepn4 = UID_ITEM_EMPTY;
       self.next_wepn5 = UID_ITEM_missile_activeradar;
@@ -32,7 +32,7 @@ void() unit_matok_survest_sniper={
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_missile_laserguide;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_EMPTY;
       self.next_wepn4 = UID_ITEM_light_autocannon;
       self.next_wepn5 = UID_ITEM_missile_activeradar;
@@ -40,7 +40,7 @@ void() unit_matok_survest_sniper={
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_light_autocannon;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_rotary_plasma;
       self.next_wepn4 = UID_ITEM_light_autocannon;
       self.next_wepn5 = UID_ITEM_missile_activeradar;
@@ -48,7 +48,7 @@ void() unit_matok_survest_sniper={
       break;
     default:
       self.next_wepn1 = UID_ITEM_flak;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_flak;
       self.next_wepn4 = UID_ITEM_EMPTY;
       self.next_wepn5 = UID_ITEM_missile_activeradar;
@@ -119,7 +119,7 @@ void() unit_matok_psc_sniper={
   ai_promote();
   switch( self.ai_rank ){
     case 1:
-      self.next_wepn1 = UID_ITEM_target_module;
+      self.next_wepn1 = UID_ITEM_adv_reload;
       self.next_wepn2 = UID_ITEM_large_sensors;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_emp;
@@ -127,7 +127,7 @@ void() unit_matok_psc_sniper={
       self.spreadDefault = ACCURACY_SNIPER;
       break;
     case 2:
-      self.next_wepn1 = UID_ITEM_target_module;
+      self.next_wepn1 = UID_ITEM_adv_reload;
       self.next_wepn2 = UID_ITEM_large_sensors;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_particle_cannon;
@@ -135,7 +135,7 @@ void() unit_matok_psc_sniper={
       self.spreadDefault = ACCURACY_SNIPER;
       break;
     case 3:
-      self.next_wepn1 = UID_ITEM_target_module;
+      self.next_wepn1 = UID_ITEM_adv_reload;
       self.next_wepn2 = UID_ITEM_large_sensors;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_particle_cannon;
@@ -143,7 +143,7 @@ void() unit_matok_psc_sniper={
       self.spreadDefault = ACCURACY_SNIPER;
       break;
     default:
-      self.next_wepn1 = UID_ITEM_target_module;
+      self.next_wepn1 = UID_ITEM_adv_reload;
       self.next_wepn2 = UID_ITEM_large_sensors;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_ion_coil;
@@ -169,7 +169,7 @@ void() unit_matok_militar_zapper={
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_laser;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_ion_coil;
       self.next_wepn4 = UID_ITEM_ion_coil;
       self.next_wepn5 = UID_ITEM_EMPTY;
@@ -177,7 +177,7 @@ void() unit_matok_militar_zapper={
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_EMPTY;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_ion_coil;
       self.next_wepn4 = UID_ITEM_emp;
       self.next_wepn5 = UID_ITEM_EMPTY;
@@ -185,7 +185,7 @@ void() unit_matok_militar_zapper={
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_EMPTY;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_emp;
       self.next_wepn4 = UID_ITEM_emp;
       self.next_wepn5 = UID_ITEM_recharge_capacitor;
@@ -193,7 +193,7 @@ void() unit_matok_militar_zapper={
       break;
     default:
       self.next_wepn1 = UID_ITEM_EMPTY;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.next_wepn3 = UID_ITEM_ion_coil;
       self.next_wepn4 = UID_ITEM_ion_coil;
       self.spreadDefault = ACCURACY_SKIRMISH;

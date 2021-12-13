@@ -71,17 +71,17 @@ void() unit_foslager_militar_zapper={
     case 1:
       self.next_wepn1 = UID_ITEM_ion_coil;
       self.next_wepn2 = UID_ITEM_light_laser;
-      self.next_wepn3 = UID_ITEM_target_module;
+      self.next_wepn3 = UID_ITEM_adv_reload;
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_ion_coil;
       self.next_wepn2 = UID_ITEM_light_laser;
-      self.next_wepn3 = UID_ITEM_target_module;
+      self.next_wepn3 = UID_ITEM_adv_reload;
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_light_laser;
-      self.next_wepn3 = UID_ITEM_target_module;
+      self.next_wepn3 = UID_ITEM_adv_reload;
       break;
     default:
       self.next_wepn1 = UID_ITEM_light_laser;

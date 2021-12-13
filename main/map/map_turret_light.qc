@@ -117,12 +117,12 @@ void() building_turret_light_survest_gunner={
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_flak;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_flak;
-      self.next_wepn2 = UID_ITEM_target_module;
+      self.next_wepn2 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
