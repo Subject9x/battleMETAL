@@ -359,15 +359,17 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
     }*/
     
     wepState = '1 1 1';
-    if(theWeapon.reloadValue < 100){
-      //weapon reloading
-      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
-    }
-    if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
-      wepState = CLR_DEF_WEP_LOWENG;
-    }
-    if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
-      wepState = CLR_DEF_ARM_DED;
+    if( theWeapon.equipSize < MSC1 ){
+      if(theWeapon.reloadValue < 100){
+        //weapon reloading
+        wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+      }
+      if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
+        wepState = CLR_DEF_WEP_LOWENG;
+      }
+      if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
+        wepState = CLR_DEF_ARM_DED;
+      }
     }
   }
   else{
@@ -420,15 +422,17 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
       wepState = CLR_DEF_WHITE;  
     }*/
     wepState = '1 1 1';
-    if(theWeapon.reloadValue < 100){
-      //weapon reloading
-      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
-    }
-    if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
-      wepState = CLR_DEF_WEP_LOWENG;
-    }
-    if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
-      wepState = CLR_DEF_ARM_DED;
+    if( theWeapon.equipSize < MSC1 ){
+      if(theWeapon.reloadValue < 100){
+        //weapon reloading
+        wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+      }
+      if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
+        wepState = CLR_DEF_WEP_LOWENG;
+      }
+      if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
+        wepState = CLR_DEF_ARM_DED;
+      }
     }
   }
   else{

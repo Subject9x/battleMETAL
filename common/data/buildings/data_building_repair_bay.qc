@@ -204,7 +204,7 @@ void() building_repair_fixing={
         fix.deadflag = DEAD_DYING;
         if(fix.deadflag != DEAD_NO ){
           fix.deadflag = DEAD_NO;
-          player.critBits = (fix.partTypeId | M_REPAIR);
+          player.critBits = player.critBits | (fix.partTypeId | M_REPAIR);
           player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_CRIT;
           
           part = player.w_slot;
