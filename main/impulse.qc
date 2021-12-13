@@ -244,12 +244,14 @@ void() ImpulseCommands ={
 */
 void() ButtonCommands={
   //action mapping: +sprint 
-  if( self.button8 ){
-    if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
-      if( self.playerState == PLAYER_ACTIVE ){
-        self.ramAngle_y = self.v_angle_y;
-        self.moveState = MOVE_SPRINT;
-        //client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
+  if( (self.unitModFlags & MOD_HAS_RAMSHOCKS) ){
+    if( self.button8 ){
+      if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
+        if( self.playerState == PLAYER_ACTIVE ){
+          self.ramAngle_y = self.v_angle_y;
+          self.moveState = MOVE_SPRINT;
+          //client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
+        }
       }
     }
   }
@@ -262,13 +264,13 @@ void() ButtonCommands={
   }
   
   //action mapping: +regen
-  if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
-    if( self.energy >= (self.energyMax * 0.15) ){
-      if( self.shield < self.shieldMax ){
-        self.shield = self.shield + (self.shieldRate * 0.5);
-        self.energy = self.energy - ((self.shieldRate * 0.67)* self.shieldRateMod);
-        if( self.energy < 0 ){
-          self.energy = 0;
+  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+    if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
+      if( self.energy >= (self.energyMax * 0.15) ){
+        if( self.shield < self.shieldMax ){
+          self.shield = self.shield + ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.5);
+          self.energy = self.energy - ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.75);
+          self.energy = bound(0, self.energy, self.energyMax);
         }
       }
     }
