@@ -463,22 +463,23 @@ void() interpolate_mech_ai={
     self = parent;
   }
   
-  
-  wepn = self.w_slot;
-  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
-    if( !(parent.criticalHits & wepn.partParentId) ){
-      if( wepn.partParentId == M_LEGS ){
-        makevectors(parent.angles);
-        saved = (v_right * wepn.compOffset_x) + (v_forward * wepn.compOffset_z) + (v_up * wepn.compOffset_y);
-        wepn.origin = parent.origin + saved ;
+  if( self.deadflag == DEAD_NO ){
+    wepn = self.w_slot;
+    for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
+      if( !(parent.criticalHits & wepn.partParentId) ){
+        if( wepn.partParentId == M_LEGS ){
+          makevectors(parent.angles);
+          saved = (v_right * wepn.compOffset_x) + (v_forward * wepn.compOffset_z) + (v_up * wepn.compOffset_y);
+          wepn.origin = parent.origin + saved ;
+        }
+        else{
+          makevectors(parent.torsoCenter.angles);
+          saved = (v_right * wepn.compOffset_x) + (v_forward * wepn.compOffset_z) + (v_up * wepn.compOffset_y);
+          wepn.origin = parent.torsoCenter.origin + saved;
+        }
       }
-      else{
-        makevectors(parent.torsoCenter.angles);
-        saved = (v_right * wepn.compOffset_x) + (v_forward * wepn.compOffset_z) + (v_up * wepn.compOffset_y);
-        wepn.origin = parent.torsoCenter.origin + saved;
-      }
+      wepn = wepn.w_slot;
     }
-    wepn = wepn.w_slot;
   }
 };
 

@@ -275,10 +275,7 @@ void() trigger_secret =
 void() counter_use =
 {
 	self.count = self.count - 1;
-  if (self.count < 0){
-    return;
-  }
-	if (self.count != 0)
+	if (self.count > 0)
 	{
 		if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
 		{
@@ -344,6 +341,10 @@ void() counter_use =
   }
   self.enemy = activator;
   multi_trigger ();
+  if( !(self.flags & 32) ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+  }
 };
 
 /*QUAKED trigger_counter (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT
@@ -365,6 +366,7 @@ NO_EASY 2 : remove when skill = 0
 NO_NORM 4 : remove when skill = 1
 NO_HARD 8 : remove when skill = 2
 NO_NIGHT 16 : remove when skill = 3
+NO_REMOVE 32 : don't remove when sequence complete.
 */
 void() trigger_counter =
 {
