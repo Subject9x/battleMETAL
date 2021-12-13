@@ -42,7 +42,7 @@ void() data_ini_equip_turbo_charger_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "TCHR";
-    self.description = "+ This module will absorb 1 critical leg hit. + Proportional Increase <Evasion> speed by 20%. + Proportional Increase <Evasion> energy cost  by 20%.";
+    self.description = "+ This module will absorb 1 critical leg hit. + increase FORWARD speed by 15% + Proportional Increase <Evasion> speed by 20%. + Proportional Increase <Evasion> energy cost  by 20%.";
     self.icon = "gfx/ui/wep_icons/eqp_tchr.png";
   #endif
   
@@ -60,13 +60,15 @@ void() turbo_charger_upgrade_={
   local float perc;
   
   //save old values here
-  self.energyMax = self.owner.evasionDrain;
+  self.evasionDrain = self.owner.evasionDrain;
   self.data_speed_accel = self.owner.data_speed_accel;
   
   self.evasionDrain = self.owner.vec_size / 10;
   perc = 0.4 - self.evasionDrain;
   self.owner.evasionDrain =  self.owner.evasionDrain + (self.owner.evasionDrain * self.evasionDrain);
   self.owner.data_speed_accel = self.owner.data_speed_accel + perc;
+  
+  self.data_speed_forward = self.owner.data_speed_forward;
   
   if( (self.owner.flags & FL_CLIENT) ){
     module = self;
@@ -82,8 +84,12 @@ void() turbo_charger_upgrade_={
 
 void() turbo_charger_remove_={
   local entity module;
-  self.owner.evasionDrain = self.energyMax;
+  self.owner.evasionDrain = self.evasionDrain;
   self.owner.data_speed_accel = self.data_speed_accel;
+  self.owner.data_speed_forward = self.data_speed_forward;
+  if(self.clientData != world ){
+    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
+  }
   if( (self.owner.flags & FL_CLIENT) ){
     module = self;
     self = module.owner;
