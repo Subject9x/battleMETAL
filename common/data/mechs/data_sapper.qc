@@ -93,14 +93,14 @@ void() data_ini_sapper_={
 //=====================================
  
 //HARDPOINT DATA======================
-  data_ini_unitHardpoint_1( M_ARM_RIGHT, '12.5 0 5', '0 0 0', (BAL1|ENE1) );
-  data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 90', (BAL1|ENE1) );
-  data_ini_unitHardpoint_3( M_TOR_RIGHT, '8.35 14.75 -1', '0 0 0', (BAL2|BAL3|MIS1|MIS2|MIS3|ENE3) );
-  data_ini_unitHardpoint_4( M_TOR_LEFT, '-8.35 14.75 -1', '0 0 -90', (BAL2|BAL3|MIS1|MIS2|MIS3));
-  data_ini_unitHardpoint_5( M_TOR_CENTER, '3.35 5.5 3', '0 0 0', (MSC1|MSC2) );
-  data_ini_unitHardpoint_6( M_TOR_CENTER, '3.35 8.5 3', '0 0 0', (MSC1|MSC3|MIS2));
-  data_ini_unitHardpoint_7( M_TOR_CENTER, '-3.35 5.5 3', '0 0 0', (MSC1|MSC2) );
-  data_ini_unitHardpoint_8( M_TOR_CENTER, '-3.35 8.5 3', '0 0 0', (MSC1|MSC3|MIS4));
+  data_ini_unitHardpoint_1( M_ARM_RIGHT, '12.5 0 5', '0 0 0',       (BAL1|ENE1|MIS1) );
+  data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 0',      (BAL1|ENE1|MIS1) );
+  data_ini_unitHardpoint_3( M_TOR_RIGHT, '8.35 14.75 -1', '0 0 0',  (BAL2|BAL3|MIS1|MIS2|MIS3|ENE3) );
+  data_ini_unitHardpoint_4( M_TOR_LEFT, '-8.35 14.75 -1', '0 0 0',(BAL2|BAL3|MIS1|MIS2|MIS3|ENE3));
+  data_ini_unitHardpoint_5( M_TOR_CENTER, '3.35 5.5 3', '0 0 0',    (MSC1|MSC2) );
+  data_ini_unitHardpoint_6( M_TOR_CENTER, '3.35 8.5 3', '0 0 0',    (MSC1|MSC3|MIS2));
+  data_ini_unitHardpoint_7( M_TOR_CENTER, '-3.35 5.5 3', '0 0 0',   (MSC1|MSC2) );
+  data_ini_unitHardpoint_8( M_TOR_CENTER, '-3.35 8.5 3', '0 0 0',   (MSC1|MSC3|MIS4));
 //=====================================
 
 //HUD Data=============================

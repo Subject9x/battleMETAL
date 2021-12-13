@@ -92,15 +92,15 @@ void() data_ini_monitor_={
 //=====================================
  
 //HARDPOINT DATA======================
-  data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0', (BAL1|ENE1));
-  data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0',(BAL1|BAL2|ENE1|ENE2));
-  data_ini_unitHardpoint_3( M_ARM_LEFT, '-22 2 10', '0 0 0', (BAL1|ENE1));
-  data_ini_unitHardpoint_4( M_ARM_LEFT, '-15 3 10', '0 0 0', (BAL1|BAL2|ENE1|ENE2));
-  data_ini_unitHardpoint_5( M_TOR_RIGHT, '9.45 15.9 6', '0 0 0', (BAL2|BAL3|ENE2|ENE3|MIS3|MSC1|MSC2|MSC3));
-  data_ini_unitHardpoint_6( M_TOR_LEFT, '-9.45 15.9 6', '0 0 0', (BAL2|BAL3|ENE2|ENE3|MIS3|MSC1|MSC2|MSC3));
-  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 5.5', '0 0 0', (BAL2|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
-  data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 4.5', '0 0 0', (BAL2|BAL4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
-  data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 4.5', '0 0 0', (BAL2|BAL4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
+  data_ini_unitHardpoint_1( M_ARM_RIGHT, '22 2 10', '0 0 0',    (BAL1|ENE1));
+  data_ini_unitHardpoint_2( M_ARM_RIGHT, '15 3 10', '0 0 0',    (BAL1|BAL2|ENE1|ENE2));
+  data_ini_unitHardpoint_3( M_ARM_LEFT, '-22 2 10', '0 0 0',    (BAL1|ENE1));
+  data_ini_unitHardpoint_4( M_ARM_LEFT, '-15 3 10', '0 0 0',    (BAL1|BAL2|ENE1|ENE2));
+  data_ini_unitHardpoint_5( M_TOR_RIGHT, '9.45 15.9 6', '0 0 0',(BAL2|BAL3|ENE2|ENE3|MIS3|MSC1|MSC2|MSC3));
+  data_ini_unitHardpoint_6( M_TOR_LEFT, '-9.45 15.9 6', '0 0 0',(BAL2|BAL3|ENE2|ENE3|MIS3|MSC1|MSC2|MSC3));
+  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 5.5', '0 0 0',   (BAL2|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
+  data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 4.5', '0 0 0',    (BAL2|BAL4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
+  data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 4.5', '0 0 0',    (BAL2|BAL4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3|MSC4));
 //=====================================
 
 //HUD Data=============================

@@ -31,7 +31,7 @@ void() ui_data_load_mechsizes={
   local float total;
   total = 1;
     //TODO - mech limit magic numbers
-  while( total <= 3) {
+  while( total <= 5) {
     ui_data_load_mech_info( total, UI_HANGAR_DATA_mech_list );
     MECH_DATA_SIZES[total] = MECH_DATA_SIZE;
     total = total + 1;
@@ -244,10 +244,10 @@ float(float mechId, entity listEntity) ui_data_load_mech_info={
   
   local entity hardpoint;
   local float itr;
+  local vector partOffset;
   hardpoint = listEntity.w_slot;
   itr = 1;
   while( hardpoint ){
-    local vector partOffset;
     
     partOffset = hardpoint.compOffset;
     //TODO - migjht be source of hardpoint type bug
