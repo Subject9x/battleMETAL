@@ -41,10 +41,10 @@ void() data_ini_monitor_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 90;
-  self.data_speed_strafe = 90;
-  self.data_speed_backward = 90;
-  self.data_speed_accel = 2;
+  self.data_speed_forward = 90.0;
+  self.data_speed_strafe = 90.0;
+  self.data_speed_backward = 90.0;
+  self.data_speed_accel = 2.0;
   self.ramUpMax = 1;
   self.ramCooldown = 2;
 #ifdef CSQC

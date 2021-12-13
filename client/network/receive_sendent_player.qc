@@ -759,6 +759,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
         sendevent_player_mech(self.data_idx);
       }
     }
+    cvar_set("cl_forwardspeed", ftos(ReadCoord()));
+    cvar_set("cl_sidespeed", ftos(ReadCoord()));
+    cvar_set("cl_backspeed", ftos(ReadCoord()));
+    cvar_set("cl_movespeedkey", ftos(ReadCoord()));
   }
   
   if( (changeFlags & SENDFLAG_COLORS) ){

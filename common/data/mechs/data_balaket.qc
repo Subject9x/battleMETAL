@@ -41,10 +41,10 @@ void() data_ini_balaket_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 185;
-  self.data_speed_strafe = 120;
-  self.data_speed_backward = 90;
-  self.data_speed_accel = 2;
+  self.data_speed_forward = 185.0;
+  self.data_speed_strafe = 120.0;
+  self.data_speed_backward = 90.0;
+  self.data_speed_accel = 2.0;
   self.ramUpMax = 2;
   self.ramCooldown = 6;
 #ifdef CSQC

@@ -43,9 +43,9 @@ void() data_ini_warden_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 165;
-  self.data_speed_strafe = 165;
-  self.data_speed_backward = 165;
+  self.data_speed_forward = 165.0;
+  self.data_speed_strafe = 165.0;
+  self.data_speed_backward = 165.0;
   self.data_speed_accel = 1.33;
   self.ramUpMax = 3;
   self.ramCooldown = 8;

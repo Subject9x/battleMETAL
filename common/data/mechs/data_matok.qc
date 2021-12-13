@@ -42,10 +42,10 @@ void() data_ini_matok_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 155;  //150
-  self.data_speed_strafe = 155; //100
-  self.data_speed_backward = 80;  //90
-  self.data_speed_accel = 1.45; //1.5
+  self.data_speed_forward = 155.0;
+  self.data_speed_strafe = 155.0;
+  self.data_speed_backward = 80.0;
+  self.data_speed_accel = 1.45;
   self.ramUpMax = 1.5;
   self.ramCooldown = 3;
 #ifdef CSQC

@@ -41,9 +41,9 @@ void() data_ini_sapper_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 125;
-  self.data_speed_strafe = 105;
-  self.data_speed_backward = 100;
+  self.data_speed_forward = 125.0;
+  self.data_speed_strafe = 105.0;
+  self.data_speed_backward = 100.0;
   self.data_speed_accel = 2.25;
   self.ramUpMax = 1.75;
   self.ramCooldown = 3;
