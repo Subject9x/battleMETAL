@@ -96,10 +96,22 @@ void() player_makeMech={
     }
   }
   self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
-  self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
-  self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
-  self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
-  self.armRight.effects = self.armRight.effects | EF_NODRAW;
+  
+  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
+    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
+    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+    self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+    self.armRight.effects = self.armRight.effects | EF_NODRAW;
+  }
+  
   self.legs.effects = self.legs.effects | EF_NODRAW;
   
   self.view_ofs = '0 0 0';
