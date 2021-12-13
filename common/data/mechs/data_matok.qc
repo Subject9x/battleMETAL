@@ -94,8 +94,8 @@ void() data_ini_matok_={
 //=====================================
  
 //HARDPOINT DATA======================
-  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1) );
-  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1) );
+  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 9', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1) );
+  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 9', '0 0 0', (BAL1|BAL2|ENE1|MSC1|MIS1) );
   data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', (BAL1|ENE1|ENE2|ENE3) );
   data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', (BAL1|ENE1|ENE2|ENE3) );
   data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2) );

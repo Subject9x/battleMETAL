@@ -33,7 +33,7 @@ void() data_ini_equip_turbo_charger_={
   
   #ifdef CSQC     
     self.w_name = "Turbo Charger";
-    self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
+    self.model = "q3mdl/testball.md3";  //TODO - new model
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;
@@ -44,6 +44,8 @@ void() data_ini_equip_turbo_charger_={
     self.abbrev = "TCHR";
     self.description = "+ This module will absorb 1 critical leg hit. + increase FORWARD speed by 15% + Proportional Increase <Evasion> speed by 20%. + Proportional Increase <Evasion> energy cost  by 20%.";
     self.icon = "gfx/ui/wep_icons/eqp_tchr.png";
+    self.alpha = 0.01;
+    self.scale = 0.01;
   #endif
   
   #ifdef SSQC
