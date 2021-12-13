@@ -75,6 +75,8 @@ Overview:
 //SSQC only
 #ifdef SSQC
 //network frame stuff
+.float energyRateCache;   //only for mods
+.float reloadMaxCache;    //only for mods
 .float energyRegenTimer;  //replaces .count4 in AI units
 
 .vector last_angle;

@@ -136,7 +136,7 @@ main/controllers/headers/controllers.qh
   common/data/item/equip/data_equip_shield_capacitor.qc
   common/data/item/equip/data_equip_energy_battery.qc
   common/data/item/equip/data_equip_recharge_capacitor.qc
-  common/data/item/equip/data_equip_sensor_array.qc
+  common/data/item/equip/data_equip_heatsink.qc
   common/data/item/equip/data_equip_shield_emitter.qc
   common/data/item/equip/data_equip_adv_reload.qc
   common/data/item/equip/data_equip_turbo_charger.qc

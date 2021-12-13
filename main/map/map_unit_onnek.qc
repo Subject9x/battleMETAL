@@ -27,28 +27,28 @@ void() unit_onnek_h={
       self.next_wepn1 = UID_ITEM_ion_coil;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
     case 3:
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_ion_coil;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
     case 1:
       self.spreadDefault = ACCURACY_LOWTECH;
       self.next_wepn1 = UID_ITEM_quantum_rifle;
       self.next_wepn2 = UID_ITEM_quantum_rifle;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
     default:
       self.spreadDefault = ACCURACY_LOWTECH;
       self.next_wepn1 = UID_ITEM_light_laser;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -71,21 +71,21 @@ void() unit_onnek_m={
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_emp;
       self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
       self.next_wepn1 = UID_ITEM_snub_artillery;
       self.next_wepn2 = UID_ITEM_emp;
       self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
     default:
       self.spreadDefault = ACCURACY_SKIRMISH;
       self.next_wepn1 = UID_ITEM_particle_cannon;
       self.next_wepn2 = UID_ITEM_particle_cannon;
       self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -166,7 +166,7 @@ void() unit_onnek_survest_zapper={
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_ion_coil;
-      self.next_wepn3 = UID_ITEM_large_sensors;
+      self.next_wepn3 = UID_ITEM_heatsink;
       self.next_wepn4 = UID_ITEM_adv_reload;
       break;
     default:
@@ -212,7 +212,7 @@ void() unit_onnek_militar_gunner={
       self.next_wepn1 = UID_ITEM_particle_cannon;
       self.next_wepn2 = UID_ITEM_particle_cannon;
       self.next_wepn3 = UID_ITEM_adv_reload;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
     default:
       self.spreadDefault = ACCURACY_SKIRMISH;

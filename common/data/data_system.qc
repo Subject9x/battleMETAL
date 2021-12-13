@@ -191,8 +191,8 @@ void(float wep_id) initialize_data_item_={
     case UID_ITEM_shield_emitter:
       data_ini_equip_shield_emitter_();
       return;
-    case UID_ITEM_large_sensors:
-      data_ini_equip_sensor_array_();
+    case UID_ITEM_heatsink:
+      data_ini_equip_heatsink_();
       return;
     case UID_ITEM_shield_capacitor:
       data_ini_equip_shield_capacitor_();

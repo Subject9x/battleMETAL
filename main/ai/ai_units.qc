@@ -448,7 +448,7 @@ void() building_turret_missile_p={
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_missile_activeradar;
-      self.next_wepn2 = UID_ITEM_large_sensors;
+      self.next_wepn2 = UID_ITEM_heatsink;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:

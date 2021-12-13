@@ -120,7 +120,7 @@ void() unit_matok_psc_sniper={
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_adv_reload;
-      self.next_wepn2 = UID_ITEM_large_sensors;
+      self.next_wepn2 = UID_ITEM_heatsink;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_emp;
       self.next_wepn5 = UID_ITEM_energy_battery;
@@ -128,7 +128,7 @@ void() unit_matok_psc_sniper={
       break;
     case 2:
       self.next_wepn1 = UID_ITEM_adv_reload;
-      self.next_wepn2 = UID_ITEM_large_sensors;
+      self.next_wepn2 = UID_ITEM_heatsink;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_particle_cannon;
       self.next_wepn5 = UID_ITEM_energy_battery;
@@ -136,7 +136,7 @@ void() unit_matok_psc_sniper={
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_adv_reload;
-      self.next_wepn2 = UID_ITEM_large_sensors;
+      self.next_wepn2 = UID_ITEM_heatsink;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_particle_cannon;
       self.next_wepn5 = UID_ITEM_recharge_capacitor;
@@ -144,7 +144,7 @@ void() unit_matok_psc_sniper={
       break;
     default:
       self.next_wepn1 = UID_ITEM_adv_reload;
-      self.next_wepn2 = UID_ITEM_large_sensors;
+      self.next_wepn2 = UID_ITEM_heatsink;
       self.next_wepn3 = UID_ITEM_particle_cannon;
       self.next_wepn4 = UID_ITEM_ion_coil;
       self.next_wepn5 = UID_ITEM_EMPTY;

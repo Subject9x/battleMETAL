@@ -60,8 +60,8 @@ void() adv_reload_upgrade_={
   wep = self.owner.w_slot;
   for(hid = 0; hid < self.owner.hardpoint_cnt; hid = hid + 1){
     if( wep.data_idx == UID_ITEM_rocket_launcher || wep.data_idx == UID_ITEM_quantum_rifle || wep.data_idx == UID_ITEM_missile_swarm ||  wep.data_idx == UID_ITEM_snub_artillery ){
+      wep.reloadMaxCache = wep.reloadMax ;
       wep.reloadMax = wep.reloadMax - (wep.reloadMax * 0.15);
-      cons_logAFloat(ftos(wep.data_idx), wep.reloadMax);  //debug
     }
     wep = wep.w_slot;
   }
@@ -73,7 +73,7 @@ void() adv_reload_remove_={
   wep = self.owner.w_slot;
   for(hid = 0; hid < self.owner.hardpoint_cnt; hid = hid + 1){
     if( wep.data_idx == UID_ITEM_rocket_launcher || wep.data_idx == UID_ITEM_quantum_rifle || wep.data_idx == UID_ITEM_missile_swarm ||  wep.data_idx == UID_ITEM_snub_artillery ){
-      wep.reloadMax = wep.reloadMax + (wep.reloadMax * 0.15);
+      wep.reloadMax = wep.reloadMaxCache;
     }
     wep = wep.w_slot;
   }

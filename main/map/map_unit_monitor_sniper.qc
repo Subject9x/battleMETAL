@@ -106,7 +106,7 @@ void() unit_monitor_survest_gunner={
       self.next_wepn6 = UID_ITEM_rotary_plasma;
       self.next_wepn7 = UID_ITEM_EMPTY;
       self.next_wepn8 = UID_ITEM_adv_reload;
-      self.next_wepn9 = UID_ITEM_large_sensors;
+      self.next_wepn9 = UID_ITEM_heatsink;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
@@ -170,7 +170,7 @@ void() unit_monitor_militar_lobber={
       self.next_wepn5 = UID_ITEM_missile_activeradar;
       self.next_wepn6 = UID_ITEM_missile_activeradar;
       self.next_wepn7 = UID_ITEM_missile_activeradar;
-      self.next_wepn8 = UID_ITEM_large_sensors;
+      self.next_wepn8 = UID_ITEM_heatsink;
       self.next_wepn9 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;

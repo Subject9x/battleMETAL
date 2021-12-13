@@ -82,7 +82,7 @@ void() building_turret_heavy_psc_zapper={
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_emp;
       self.next_wepn3 = UID_ITEM_adv_reload;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 2:
@@ -95,14 +95,14 @@ void() building_turret_heavy_psc_zapper={
     case 3:
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_emp;
-      self.next_wepn3 = UID_ITEM_large_sensors;
+      self.next_wepn3 = UID_ITEM_heatsink;
       self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_ion_coil;
-      self.next_wepn3 = UID_ITEM_large_sensors;
+      self.next_wepn3 = UID_ITEM_heatsink;
       self.next_wepn4 = UID_ITEM_adv_reload;
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
@@ -166,14 +166,14 @@ void() building_turret_heavy_militar_gunner={
       self.next_wepn1 = UID_ITEM_particle_cannon;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_adv_reload;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 3:
       self.next_wepn1 = UID_ITEM_particle_cannon;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_adv_reload;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }
@@ -189,14 +189,14 @@ void() building_turret_heavy_psc_gunner={
       self.next_wepn1 = UID_ITEM_flak;
       self.next_wepn2 = UID_ITEM_flak;
       self.next_wepn3 = UID_ITEM_adv_reload;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
     case 1:
       self.next_wepn1 = UID_ITEM_snub_artillery;
       self.next_wepn2 = UID_ITEM_flak;
       self.next_wepn3 = UID_ITEM_adv_reload;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 2:
@@ -209,7 +209,7 @@ void() building_turret_heavy_psc_gunner={
       self.next_wepn1 = UID_ITEM_snub_artillery;
       self.next_wepn2 = UID_ITEM_snub_artillery;
       self.next_wepn3 = UID_ITEM_adv_reload;
-      self.next_wepn4 = UID_ITEM_large_sensors;
+      self.next_wepn4 = UID_ITEM_heatsink;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }
