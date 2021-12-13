@@ -40,7 +40,7 @@ void() data_ini_equip_adv_reload_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "ABR";
-    self.description = " | Decreases reload time by 15% for + Rotary Plasma + Snub Field Artilery + Quantum Rifle + Missile-Swarm";
+    self.description = "| Decrease reload time by 15% for + Snub Field Artilery. + Quantum Rifle. + Missile-Active Radar. + Missile-Swarm";
     self.icon = "gfx/ui/wep_icons/eqp_abr.png";
   #endif
   
@@ -59,9 +59,9 @@ void() adv_reload_upgrade_={
   local entity wep;
   wep = self.owner.w_slot;
   for(hid = 0; hid < self.owner.hardpoint_cnt; hid = hid + 1){
-    if( wep.data_idx == UID_ITEM_rocket_launcher || wep.data_idx == UID_ITEM_quantum_rifle || wep.data_idx == UID_ITEM_missile_swarm ||  wep.data_idx == UID_ITEM_snub_artillery ){
+    if( wep.data_idx == UID_ITEM_missile_activeradar || wep.data_idx == UID_ITEM_quantum_rifle || wep.data_idx == UID_ITEM_missile_swarm ||  wep.data_idx == UID_ITEM_snub_artillery ){
       wep.reloadMaxCache = wep.reloadMax ;
-      wep.reloadMax = wep.reloadMax - (wep.reloadMax * 0.15);
+      wep.reloadMax = wep.reloadMax - (wep.reloadMaxCache * 0.15);  //use reloadMaxCache to make sure they can be stacked properly.
     }
     wep = wep.w_slot;
   }
@@ -72,7 +72,7 @@ void() adv_reload_remove_={
   local entity wep;
   wep = self.owner.w_slot;
   for(hid = 0; hid < self.owner.hardpoint_cnt; hid = hid + 1){
-    if( wep.data_idx == UID_ITEM_rocket_launcher || wep.data_idx == UID_ITEM_quantum_rifle || wep.data_idx == UID_ITEM_missile_swarm ||  wep.data_idx == UID_ITEM_snub_artillery ){
+    if( wep.data_idx == UID_ITEM_missile_activeradar || wep.data_idx == UID_ITEM_quantum_rifle || wep.data_idx == UID_ITEM_missile_swarm ||  wep.data_idx == UID_ITEM_snub_artillery ){
       wep.reloadMax = wep.reloadMaxCache;
     }
     wep = wep.w_slot;
