@@ -181,7 +181,6 @@ float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
 
 //AI MAP FUNCS
-void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
 
 ////////////////////////////////
 //AI VOICE STUFF - ai_voice.qc

@@ -23,19 +23,27 @@ void() unit_balaket_survest_brawler={
   ai_promote();
   switch( self.ai_rank ){
     case 1:
-      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_flak,UID_ITEM_rocket_launcher, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_light_laser;
+      self.next_wepn2 = UID_ITEM_flak;
+      self.next_wepn3 = UID_ITEM_rocket_launcher;
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
     case 2:
-      ai_ini_weapons(UID_ITEM_rotary_plasma,UID_ITEM_light_laser,UID_ITEM_rocket_launcher, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_rotary_plasma;
+      self.next_wepn2 = UID_ITEM_light_laser;
+      self.next_wepn3 = UID_ITEM_rocket_launcher;
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
     case 3:
-      ai_ini_weapons(UID_ITEM_rotary_plasma,UID_ITEM_rotary_plasma,UID_ITEM_rotary_plasma, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_rotary_plasma;
+      self.next_wepn2 = UID_ITEM_rotary_plasma;
+      self.next_wepn3 = UID_ITEM_rotary_plasma;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     default:
-      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_light_laser,UID_ITEM_rocket_launcher, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_light_laser;
+      self.next_wepn2 = UID_ITEM_light_laser;
+      self.next_wepn3 = UID_ITEM_rocket_launcher;
       self.spreadDefault = ACCURACY_PRIMITVE;
       break;
   }
@@ -56,19 +64,27 @@ void() unit_balaket_militar_brawler={
   ai_promote();
   switch( self.ai_rank ){
     case 1:
-      ai_ini_weapons(UID_ITEM_light_autocannon,UID_ITEM_electro_repeater,UID_ITEM_missile_activeradar, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_light_autocannon;
+      self.next_wepn2 = UID_ITEM_electro_repeater;
+      self.next_wepn3 = UID_ITEM_missile_activeradar;
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
     case 2:
-      ai_ini_weapons(UID_ITEM_electro_repeater,UID_ITEM_electro_repeater,UID_ITEM_missile_activeradar, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_electro_repeater;
+      self.next_wepn2 = UID_ITEM_electro_repeater;
+      self.next_wepn3 = UID_ITEM_missile_activeradar;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
-      ai_ini_weapons(UID_ITEM_electro_repeater,UID_ITEM_electro_repeater,UID_ITEM_electro_repeater, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_electro_repeater;
+      self.next_wepn2 = UID_ITEM_electro_repeater;
+      self.next_wepn3 = UID_ITEM_electro_repeater;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     default:
-      ai_ini_weapons(UID_ITEM_light_laser,UID_ITEM_EMPTY,UID_ITEM_missile_activeradar, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_light_laser;
+      self.next_wepn2 = UID_ITEM_EMPTY;
+      self.next_wepn3 = UID_ITEM_missile_activeradar;
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
@@ -89,19 +105,27 @@ void() unit_balaket_psc_brawler={
   
   switch( self.ai_rank ){
     case 1:
-      ai_ini_weapons(UID_ITEM_light_autocannon,UID_ITEM_flak,UID_ITEM_emp, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_light_autocannon;
+      self.next_wepn2 = UID_ITEM_flak;
+      self.next_wepn3 = UID_ITEM_emp;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 2:
-      ai_ini_weapons(UID_ITEM_rotary_plasma,UID_ITEM_flak,UID_ITEM_particle_cannon, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_rotary_plasma;
+      self.next_wepn2 = UID_ITEM_flak;
+      self.next_wepn3 = UID_ITEM_particle_cannon;
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 3:
-      ai_ini_weapons(UID_ITEM_rotary_plasma,UID_ITEM_electro_repeater,UID_ITEM_particle_cannon, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_rotary_plasma;
+      self.next_wepn2 = UID_ITEM_electro_repeater;
+      self.next_wepn3 = UID_ITEM_particle_cannon;
       self.spreadDefault = ACCURACY_SNIPER;
       break;
     default:
-      ai_ini_weapons(UID_ITEM_light_autocannon,UID_ITEM_flak,UID_ITEM_snub_artillery, UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY,UID_ITEM_EMPTY);
+      self.next_wepn1 = UID_ITEM_light_autocannon;
+      self.next_wepn2 = UID_ITEM_flak;
+      self.next_wepn3 = UID_ITEM_snub_artillery;
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
   }  
