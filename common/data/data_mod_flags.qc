@@ -60,3 +60,5 @@ Overview:
 //some mechs the torsos are 1 solid mesh.
 #define MOD_MODEL_NO_TOR_L 2097152
 #define MOD_MODEL_NO_TOR_R 4194304
+//simulate a hinge-joint center torso, the torsoCenter model will pivot, the 'root tor C' will be the root entity's model, replacing 'testball'
+#define MOD_MODEL_ROOT_TOR_C 8388608
