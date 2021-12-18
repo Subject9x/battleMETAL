@@ -19,7 +19,7 @@ void() te_muzzle_lgm={
   local vector startOrg;
   local vector endOrg;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  startOrg = self.wepFireOffset;
   traceline(startOrg, startOrg + (v_forward * 2.1), FALSE, self.owner);
   endOrg = trace_endpos;
   

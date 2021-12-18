@@ -108,7 +108,8 @@ void() te_muzzle_esr={
   local vector norm;
   local float impactStyle;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  startOrg = self.wepFireOffset;
+  
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
@@ -147,7 +148,7 @@ void() data_ini_electro_repeater_={
   self.equipSize = ENE2;
 
   self.spreadDefault = '0.015 0.015 0';
-  self.wepFireOffset = '0 0 6'; 
+  self.wepFireOffset = '0 0 8'; 
   self.burstRate = 0;
   
 #ifdef CSQC  

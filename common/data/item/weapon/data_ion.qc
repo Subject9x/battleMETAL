@@ -19,8 +19,8 @@ void() te_muzzle_ion={
   local vector startOrg;
   local vector endOrg;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z + v_up * 0.1;
-  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  startOrg = self.wepFireOffset;
+  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
   sound7(self, CHAN_AUTO, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM, (1.0 + (random() * 0.4)) * 100, 0 );

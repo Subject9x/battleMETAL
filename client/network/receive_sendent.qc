@@ -363,14 +363,9 @@ void( float prevShield ) sendevent_shield_explode={
     scope = self is owning unit
 */
 void() sendevent_handle_weaponfire={
-  local entity this;
   local entity equip;
   
-  this = self;
-  equip = this.w_slot;
-  
-  makevectors(self.angles);
-  
+  equip = self.w_slot;
   while( equip != world ){
     if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
       te_weapon_fire_handler(equip);

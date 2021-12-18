@@ -42,79 +42,23 @@ void() sendevent_player_burn={
       where parent.origin has already been calculated.
 */
 void(entity item) predraw_player_weapon={
-  local entity this;
   local entity parent;
-  local vector entAng;
   local vector drawAng;
   local vector offset;
   local vector adjPartOffset;
-  local float parentPitchFlag;
   
-  parentPitchFlag = FALSE;
-  if( (self.unitModFlags & MOD_MODEL_PITCH_WEP_ALL) ){
-    parentPitchFlag = TRUE;
-  }
-  else{
-    switch(item.partParentId){
-      case M_TOR_CENTER:
-        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_C) ){
-          parentPitchFlag = TRUE;
-        }
-        break;
-      case M_TOR_LEFT:
-        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
-          parentPitchFlag = TRUE;
-        }
-        break;
-      case M_TOR_RIGHT:
-        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
-          parentPitchFlag = TRUE;
-        }
-        break;
-      case M_ARM_LEFT:
-        if( (self.unitModFlags & MOD_MODEL_PITCH_ARM_L) ){
-          parentPitchFlag = TRUE;
-        }
-        break;
-      case M_ARM_RIGHT:
-        if( (self.unitModFlags & MOD_MODEL_PITCH_ARM_R) ){
-          parentPitchFlag = TRUE;
-        }
-        break;
-      case M_LEGS:
-        parentPitchFlag = FALSE;
-        break;
-    
-    }
-  }
+  parent = util_getPartFromName( item.partParentId, self);
   
-  this = self;
-  entAng = self.angles;
-  if( parentPitchFlag ){
-    parent = util_getPartFromName( item.partParentId, self);
-    adjPartOffset = item.compOffset - parent.compOffset;
-    offset = parent.origin;
-    drawAng = self.angles;
-    drawAng_x = drawAng_x *-1;
-    item.angles = drawAng;
-  }
-  else{
-    adjPartOffset = item.compOffset;
-    entAng_x = 0;
-    offset = self.origin;
-    item.angles = entAng;
-  }
+  adjPartOffset = item.compOffset - parent.compOffset;
   
-  makevectors(entAng);
-  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x);
-  
-  if( self.clientLocalId == player_localentnum && !cvar("chase_active") ){
-    offset = offset + (v_forward * (adjPartOffset_z - fabs(self.cockpit.compOffset_z) ));
-  }
-  else{
-    offset = offset + (v_forward * adjPartOffset_z);
-  }
+  offset = parent.origin;
+  drawAng = parent.angles;
+  drawAng_x = drawAng_x *-1;
+  makevectors( drawAng);
+  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
   item.origin = offset;
+  item.angles = parent.angles;
 };
 
 /*
@@ -125,17 +69,14 @@ void(entity piece) player_part_predaw={
   if( (self.criticalHits & piece.partTypeId) ){
     return;
   }
-  offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
+  offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y) + (v_forward * piece.compOffset_z);
   
   if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
-    offset = offset + (v_forward * (piece.compOffset_z - fabs(self.cockpit.compOffset_z) ));
-  }
-  else{
-    offset = offset + (v_forward * piece.compOffset_z);
+    offset = offset - (v_forward * self.cockpit.compOffset_z);
   }
   
   piece.origin = offset;
-  piece.angles = self.angles;
+  piece.angles_y = self.angles_y;
   piece.angles_x = 0;
 };
 
@@ -275,7 +216,7 @@ void() player_predraw={
         }
       }
       
-      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+      if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
         player_part_predaw(self.torsoRight);
         if((self.unitModFlags & MOD_MODEL_PITCH_TOR_R)){
           self.torsoRight.angles_x = self.angles_x * -1;
@@ -372,7 +313,7 @@ void( float mech_id ) sendevent_player_mech={
   local entity weps;
   local entity this;
   
-  self.flags = self.flags | FL_CLIENT;  //read-order fix
+  self.flags = self.flags | FL_CLIENT | FL_TURRET;  //read-order fix
   self.deadflag = DEAD_NO;
   self.criticalHits = rint(0);
   
@@ -380,7 +321,7 @@ void( float mech_id ) sendevent_player_mech={
   
   minSave = self.mins;
   maxSave = self.maxs;
-    
+  
   self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
   self.torsoCenter.skin = self.faction - 1;
   setmodel(self.torsoCenter, self.torsoCenter.model);
@@ -434,9 +375,17 @@ void( float mech_id ) sendevent_player_mech={
       }
       self.reloadValue = 100;
       setmodel(self, self.model);
-			self.drawmask = MASK_NORMAL;
+      self.drawmask = MASK_NORMAL;
+      self.wepFireOffsetCache = self.wepFireOffset;
     self = this;
     weps = weps.w_slot;
+  }
+  if( (self.unitModFlags & MOD_MODEL_ROOT_TOR_C) ){
+    self.colormod = CLR_PLAYER_LIST[self.unitColorCT];
+    self.skin = self.faction - 1;
+    setmodel(self, self.model);
+    self.alpha = 1.0;
+    self.scale = 1.0;
   }
   self.solid = SOLID_BBOX;
   setsize(self, minSave, maxSave);
@@ -827,7 +776,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
-    self.flags = ReadCoord();
+    self.flags = self.flags | ReadCoord();
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
