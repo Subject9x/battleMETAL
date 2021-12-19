@@ -24,20 +24,20 @@ void() ctrl_update_mechplayer={
   
   //damage-based cosmetics for unit component pieces
   piece = self.partNext;
-  
+  makevectors(self.angles);
   if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-    self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y);
+    self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y) + (v_forward * self.torsoLeft.compAltOffset_z);
   }
   if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-    self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y);
+    self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y) + (v_forward * self.torsoRight.compAltOffset_z);
   }
   if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-    self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y);
+    self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y) + (v_forward * self.armRight.compAltOffset_z);
   }
   if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-    self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
+    self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y) + (v_forward * self.armLeft.compAltOffset_z);
   }
-  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
+  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y) + (v_forward * self.torsoCenter.compAltOffset_z);
 
   newBurn = 0;
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
@@ -79,20 +79,22 @@ void() ai_ctrl_update_mechplayer={
     ctrl_weapon_think_ai(wep);
     wep = wep.w_slot;
   }
+  makevectors(self.angles);
   //damage-based cosmetics for unit component pieces
   if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-    self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y);
+    self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y) + (v_forward * self.torsoLeft.compAltOffset_z);
   }
   if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-    self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y);
+    self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y) + (v_forward * self.torsoRight.compAltOffset_z);
   }
   if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-    self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y);
+    self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y) + (v_forward * self.armRight.compAltOffset_z);
   }
   if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-    self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
+    self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y) + (v_forward * self.armLeft.compAltOffset_z);
   }
-  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
+  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y) + (v_forward * self.torsoCenter.compAltOffset_z);
+
 
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
