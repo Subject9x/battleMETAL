@@ -136,6 +136,9 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
     else{
       if( self.ai_reverse ){
         walkAngle = anglemod(self.angles_y - 180);
+        self.ai_reverse = FALSE;
+        //seriously only let AI try this per-frame, otherwise unbounded reverse sends bots moonwalking backwards into anything and everything.
+        //it was a poorly implemented idea to get a simple "back up" move action for bots.
       }
       else{
         walkAngle = self.angles_y;

@@ -617,7 +617,7 @@ float(float wishAngl, float wishspeed) ai_check_slope={
   else{
     outSpeed = wishspeed;
   }
-  outSpeed = max(outSpeed, wishspeed * 0.1);
+  outSpeed = max(0.1, outSpeed, wishspeed * 0.1);
   return outSpeed;
 };
 

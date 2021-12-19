@@ -114,6 +114,10 @@ void() ai_state_lurker_frame={
               self.moveState = MOVE_STAND;
             }
           }
+          else{
+            self.tether = TETHER_NONE;
+            self.moveState = MOVE_STAND;
+          }
         }
       }
     }
@@ -200,6 +204,10 @@ void() ai_state_brawler_frame={
               self.moveState = MOVE_STAND;
             }
           }
+          else{
+            self.tether = TETHER_NONE;
+            self.moveState = MOVE_STAND;
+          }
         }
       }
     }
@@ -258,6 +266,10 @@ void() ai_state_hunter_frame={
             self.tether = TETHER_NONE;
             self.moveState = MOVE_STAND;
           }
+        }
+        else{
+          self.tether = TETHER_NONE;
+          self.moveState = MOVE_STAND;
         }
       }
     }
