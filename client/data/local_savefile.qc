@@ -270,13 +270,14 @@ void() cl_savefile_save={
   fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
   fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
   fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
+  fputs(flannel, strcat("  'newgame+' : ", ftos(cvar("cl_newgameplus")), ",\n"));
   fputs(flannel, "}");
   fclose(flannel);
 }; 
 
 /*
   dumb work around to make sure the player save file is always updated to the map they're on.
-  This is fired as soon as the player connects toa  single-player server,
+  This is fired as soon as the player connects to a single-player server,
   AND has loaded their local save.
     why? because we can't just inject
   
@@ -295,6 +296,7 @@ void() cl_savefile_save_mission={
   fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
   fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
   fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
+  fputs(flannel, strcat("  'newgame+' : ", ftos(cvar("cl_newgameplus")), ",\n"));
   fputs(flannel, "}");
   fclose(flannel);
 }; 
@@ -302,6 +304,7 @@ void() cl_savefile_save_mission={
 
 /*
   Default Save File, set when player finishes campaign training.
+  *DEPRECATED*
 */
 void() cl_savefile_default={
   local float flannel;

@@ -33,6 +33,7 @@ void() click_load_loadgame={
     cvar_set("deathmatch", ftos(0));
     cvar_set("skill", ftos(GAME_SAVES_SKILL[self.data_bind]));
     localcmd("maxplayers 1;\n");
+    cvar_set("cl_newgameplus", ftos(GAME_SAVES_NEWG[self.data_bind]));
     menu_exit_togame();
     localcmd(strcat("map ", GAME_SAVES_MAP[self.data_bind]),"\n");
   }

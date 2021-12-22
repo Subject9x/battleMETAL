@@ -73,7 +73,11 @@ void() click_newg_back={
 
 
 void() click_newg_launch_map={  
-  menu_write_new_save();
+  
+  if( GAME_SAVES_NEWG[cvar("saveslot")] == FALSE ){
+    menu_write_new_save();
+  }
+  
   menu_clear_items(M_STATE);
   menu_exit_togame();
   localcmd("deathmatch 0\n");
@@ -81,7 +85,13 @@ void() click_newg_launch_map={
   localcmd("coop 0\n");
   localcmd("cd stop\n");
   localcmd("maxplayers 1\n");
-  localcmd(strcat("map ", self.data_text,"\n")); 
+  
+  if( GAME_SAVES_NEWG[cvar("saveslot")] ){
+    localcmd("map o1m1\n"); 
+  }
+  else{
+    localcmd(strcat("map ", self.data_text,"\n")); 
+  }
   
   freeGlobalString(CAMP_SELECT_START)
   freeGlobalString(CAMP_SELECT_INFO)

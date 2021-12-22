@@ -16,6 +16,7 @@ overview:
 #define CAMP_TAG_START "start"
 #define CAMP_TAG_INFO "info"
 #define CAMP_SAVE_TAG "campaign"
+#define CAMP_TAG_NEWG "newgame+"
 
 #define CAMP_TOTAL    17 //max number of campaigns (16).
 #define CAMP_PAGE_MAX 8  //max results per page
