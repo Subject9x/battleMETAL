@@ -21,7 +21,7 @@ void() data_ini_foslager_={
   self.vec_name = "Foslager";
  
   self.max_health = 200;
-  setsize(self, '-22 -22 -8', '22 22 26');
+  setsize(self, '-22 -22 -6', '22 22 26');
   self.flags = self.flags | (FL_TURRET | FL_MONSTER | FL_UNIT);
   
 //ENERGY AND SHIELDS===================
@@ -62,8 +62,8 @@ void() data_ini_foslager_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 0.75 2', '0 0 0', EQP_ALL);
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 1.25 2.75', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 0.75 3', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 1.25 3.75', '0 0 0', EQP_ALL);
   data_ini_unitHardpoint_3( M_LEGS, '-1.5 6 9', '0 0 0', EQP_ALL);
 //=====================================
 

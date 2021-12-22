@@ -21,7 +21,7 @@ void() data_ini_dunerunner_={
   self.vec_name = "Dunerunner";
  
   self.max_health = 115;
-  setsize(self, '-16 -16 -10', '16 16 26');
+  setsize(self, '-16 -16 -8', '16 16 26');
   self.flags = self.flags | FL_TURRET | FL_MONSTER | FL_UNIT;
   
 //ENERGY AND SHIELDS===================

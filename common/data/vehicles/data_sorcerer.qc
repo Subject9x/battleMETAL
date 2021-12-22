@@ -21,7 +21,7 @@ void() data_ini_sorcerer_={
   self.vec_name = "Sorcerer";
  
   self.max_health = 285;
-  setsize(self, '-22 -22 -11', '22 22 26');
+  setsize(self, '-22 -22 -9', '22 22 26');
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   
 //ENERGY AND SHIELDS===================
@@ -43,7 +43,6 @@ void() data_ini_sorcerer_={
   self.data_speed_accel = 1;
 #ifdef SSQC
   self.yaw_speed = 2.5;    //AI-only 
-  //self.turret_yaw_speed = 3;//AI-only - but has no turret
 #endif
 //=====================================
  

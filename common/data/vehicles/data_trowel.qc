@@ -21,7 +21,7 @@ void() data_ini_trowel_={
   self.vec_name = "Trowel";
  
   self.max_health = 550;//465;
-  setsize(self, '-32 -32 -7.75', '32 32 36');
+  setsize(self, '-32 -32 -6', '32 32 32');
   self.flags = self.flags | (FL_TURRET | FL_MONSTER | FL_UNIT);
 //ENERGY AND SHIELDS===================
   self.energyMax = 700;

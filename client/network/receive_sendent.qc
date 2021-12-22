@@ -14,7 +14,7 @@ void(entity enEntity) GetAlignedSurfaceAngles=
 	// NOTE: div0 from Team Alientrap completely designed this algorithm.
 	// Thanks div0!
 	// Acquire Surface Normal
-	traceline (enEntity.origin, enEntity.origin - '0 0 128', TRUE, enEntity);
+	traceline (enEntity.origin, enEntity.origin - '0 0 256', TRUE, enEntity);
 	
 	if(trace_fraction != 1)
 	{ // Trace Found Surface; Continue
