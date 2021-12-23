@@ -20,6 +20,10 @@ void() menu_debriefListener_onClick={
         if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
           if( strlen(SV_NEXTMAP) > 0 ){
             if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) ){
+              if( MAP_NAME == "o3m2" ){
+                //yay 11th hour hard codes.
+                cvar_set("cl_newgameplus", "1");
+              }
               cl_savefile_save();
             }
           }

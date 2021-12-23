@@ -237,13 +237,32 @@ void(entity piece) te_explode_mech_piece={
 
 void(entity item) te_weapon_fire_handler={
   local entity this;
+  local entity parent;
   local vector view;
+  local vector adjPartOffset;
+  local vector offset;
   
+  view = self.angles;
+  view_x = 0;
+  makevectors(view);
+
   this = self;
   self = item;
-    view = self.angles;
-    view_x = view_x * -1;
-    makevectors(view);
+    parent = util_getPartFromName( self.partParentId, this);
+    offset = this.origin + (v_right * parent.compOffset_x) + (v_up * parent.compOffset_y) + (v_forward * parent.compOffset_z);
+    
+    //FPV z-offset is corrected at the parent-part origin step!
+    if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
+      offset = offset + (v_forward * this.cockpit.compOffset_z);
+    }
+    adjPartOffset = self.compOffset - parent.compOffset;
+    
+    view = parent.angles;
+    view_x = view_x *-1;
+    makevectors( view);
+    offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+    
+    self.wepFireOffset = offset + (v_forward * self.wepFireOffsetCache_z) + (v_right * self.wepFireOffsetCache_x) + (v_up * self.wepFireOffsetCache_y);
     self.itemMuzzleFlash();
   self = this;
 };
@@ -264,7 +283,6 @@ void( vector org, float total ) te_unit_dust={
   
   makevectors(self.angles);
   torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
-  //dir = te_apply_wind( torg );
   dir = normalize( dir - org ) * 4;
     
   pointparticles( self.trail_effectnum, torg , dir * 2, total);
@@ -548,7 +566,6 @@ void() te_shield_explode_th={
 void( vector org, float vecSize ) te_shield_explode={
   local entity explode;
   local vector flashCol;
-  local vector shellCol;
   
   explode = spawn();
   explode.movetype = MOVETYPE_NONE;

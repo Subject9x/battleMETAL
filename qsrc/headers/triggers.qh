@@ -7,7 +7,7 @@ Overview: time to parse trigger functions to their own header file.
       other code bases.
 */
 //TRIGGER CONST
-entity stemp, otemp, s;
+entity stemp, s;
 
 float	SPAWNFLAG_NOMESSAGE = 1;
 float	SPAWNFLAG_NOTOUCH = 1;

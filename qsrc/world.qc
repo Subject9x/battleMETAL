@@ -158,7 +158,6 @@ void() StartFrame =
 {
   local entity unit;
   local entity notThis;
-  local float diff;
   
   teamplay = cvar("teamplay");
   skill = cvar("skill");

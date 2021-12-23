@@ -15,12 +15,13 @@ Overview:
 */
 void() data_ini_sorcerer_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_VEHICLE_sorcerer;
   self.vec_size = 2;
   self.vec_name = "Sorcerer";
  
   self.max_health = 285;
-  setsize(self, '-22 -22 -11', '22 22 26');
+  setsize(self, '-22 -22 -9', '22 22 26');
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   
 //ENERGY AND SHIELDS===================
@@ -42,7 +43,6 @@ void() data_ini_sorcerer_={
   self.data_speed_accel = 1;
 #ifdef SSQC
   self.yaw_speed = 2.5;    //AI-only 
-  //self.turret_yaw_speed = 3;//AI-only - but has no turret
 #endif
 //=====================================
  
@@ -56,8 +56,8 @@ void() data_ini_sorcerer_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_LEGS, '-10.5 5 -7', '35 0 0', 1, (DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_2( M_LEGS, '10.5 5 -7', '35 0 0', 1, (DMG_EXP | DMG_MSC));
+  data_ini_unitHardpoint_1( M_LEGS, '-10.5 5 -7', '35 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_LEGS, '10.5 5 -7', '35 0 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

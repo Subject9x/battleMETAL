@@ -676,7 +676,6 @@ void() client_data={
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   local float prevType;
-  local vector targetOrg;
   local float sendCrit;
   
   player = self.owner;
@@ -775,6 +774,10 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.next_wepn7);
     WriteByte( MSG_ENTITY, player.next_wepn8);
     WriteByte( MSG_ENTITY, player.next_wepn9);
+    WriteCoord( MSG_ENTITY, player.data_speed_forward);
+    WriteCoord( MSG_ENTITY, player.data_speed_strafe);
+    WriteCoord( MSG_ENTITY, player.data_speed_backward);
+    WriteCoord( MSG_ENTITY, player.data_speed_accel);
   }
   
   if( (changeFlags & SENDFLAG_COLORS) ){

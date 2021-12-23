@@ -47,9 +47,7 @@ void() sendevent_turret_die={
 */
 void( float isNew, float changeFlags) sendent_handle_turret={
   local vector turretAng;
-  local entity this;
   local float prevShield;
-  local float prevAttackFlag;
   local float prevDeadFlag;
   local float voiceId;
   

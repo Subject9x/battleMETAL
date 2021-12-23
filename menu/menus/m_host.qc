@@ -496,11 +496,7 @@ void() click_host_launch={
 
 void() m_host_i={
   local float rate;
-  local string tmpMaxPlayers;
   local string tmpGetMap;
-  local string tmpFragLimit;
-  local string tmpTimeLimit;
-  
   
   menu_parent_setup(VIEW_ORG + '0 40', '512 416');
   

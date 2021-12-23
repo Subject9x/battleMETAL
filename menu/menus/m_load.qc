@@ -9,7 +9,6 @@ Overview: load campaign menu
 //load Globals
 entity load_title;
 entity load_back;
-entity load_list;
 
 //load Constants
 string IMG_LOAD_TITLE = "gfx/menu/load/load_title.png";
@@ -25,7 +24,6 @@ void() click_load_back={
 };
 
 void() click_load_loadgame={
-  local string mapName;
   
   if( GAME_SAVES_DRAWNAME[self.data_bind] != ""){
     menu_clear_items(M_STATE);
@@ -35,6 +33,7 @@ void() click_load_loadgame={
     cvar_set("deathmatch", ftos(0));
     cvar_set("skill", ftos(GAME_SAVES_SKILL[self.data_bind]));
     localcmd("maxplayers 1;\n");
+    cvar_set("cl_newgameplus", ftos(GAME_SAVES_NEWG[self.data_bind]));
     menu_exit_togame();
     localcmd(strcat("map ", GAME_SAVES_MAP[self.data_bind]),"\n");
   }

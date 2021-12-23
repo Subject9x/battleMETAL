@@ -32,11 +32,11 @@ float DATA_ESR_COOLDOWN_MAX = 2;
 float ESR_HEAT_UP = 0.05;    //count5
 
 float ESR_MAX_RATE = 0.09;  //count3
-float ESR_RATE_UP = 0.0065;   //count3
+float ESR_RATE_UP = 0.003;   //count3 - was 65
 float ESR_RATE_DN = 0.01;   //count3
 
-float ESR_SPREAD_UP = 1.15;
-float ESR_SPREAD_DN = 0.95;
+float ESR_SPREAD_UP = 1.25; //1.15
+float ESR_SPREAD_DN = 0.9;  //0.95
 
 void() weapon_esr_think={
   local float lim;
@@ -108,7 +108,8 @@ void() te_muzzle_esr={
   local vector norm;
   local float impactStyle;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  startOrg = self.wepFireOffset;
+  
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
@@ -147,7 +148,7 @@ void() data_ini_electro_repeater_={
   self.equipSize = ENE2;
 
   self.spreadDefault = '0.015 0.015 0';
-  self.wepFireOffset = '0 0 6'; 
+  self.wepFireOffset = '0 0 8'; 
   self.burstRate = 0;
   
 #ifdef CSQC  

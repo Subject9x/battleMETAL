@@ -75,6 +75,10 @@ Overview:
 //SSQC only
 #ifdef SSQC
 //network frame stuff
+.float energyRateCache;   //only for mods
+.float reloadMaxCache;    //only for mods
+.float energyRegenTimer;  //replaces .count4 in AI units
+
 .vector last_angle;
 .vector last_origin; //mostly AI move tracker
 .float last_energy;
@@ -86,7 +90,7 @@ Overview:
 .float turret_yaw_speed;
 .float ai_attack_chance;
 
-.float shieldRateMod; //field for modules.
+.float shieldRateMod; //field for modules, a bonus percentage
 .float radar_time;
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame

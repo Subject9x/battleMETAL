@@ -17,8 +17,8 @@ void() te_muzzle_sfg={
   local vector startOrg;
   local vector endOrg;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
-  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  startOrg = self.wepFireOffset;
+  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
   sound7(self, CHAN_AUTO,  "sound/weapons/sfga_fire.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, 0 );
@@ -34,7 +34,7 @@ void() data_ini_snub_artillery_={
   self.reloadMax = 10;
   self.energyRate = 0;
   
-  self.w_range = 3500;  //1000
+  self.w_range = 3500;
   self.damageValue = 300;
   self.damageType = (DMG_BAL | EFF_ARC);
 

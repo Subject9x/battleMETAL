@@ -14,19 +14,19 @@ Overview:
   HANDLE EVENT - player mech pieces are dying
 */
 void() sendevent_player_burn={
-  if( (self.burnBits & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.burnBits & M_TOR_LEFT) ){
     te_mech_crit( self.torsoLeft.origin , '0 0 10');
   }
-  if( (self.burnBits & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) &&(self.burnBits & M_TOR_RIGHT) ){
     te_mech_crit( self.torsoRight.origin , '0 0 10');
   }
-  if( (self.burnBits & M_ARM_LEFT) ){
-    if( !(self.criticalHits & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) &&(self.burnBits & M_ARM_LEFT) ){
+    if( (self.unitModFlags & MOD_HAS_TOR_L) &&!(self.criticalHits & M_TOR_LEFT) ){
       te_mech_crit( self.armLeft.origin , '0 0 10');
     }
   }
-  if( (self.burnBits & M_ARM_RIGHT) ){
-    if( !(self.criticalHits & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) &&(self.burnBits & M_ARM_RIGHT) ){
+    if( (self.unitModFlags & MOD_HAS_TOR_R) &&!(self.criticalHits & M_TOR_RIGHT) ){
       te_mech_crit( self.armRight.origin , '0 0 10');
     }
   }
@@ -35,41 +35,30 @@ void() sendevent_player_burn={
   }
 };
 
+/*
+  Player weapons (usually in the arms) inherit their pitch from their parent piece.
+  therefore, the weapon offsets for CLIENT is based on the PARENT offset:
+    wep.origin = parent.origin + wep.offset 
+      where parent.origin has already been calculated.
+*/
 void(entity item) predraw_player_weapon={
-  local entity this;
-  local vector entAng;
+  local entity parent;
   local vector drawAng;
   local vector offset;
+  local vector adjPartOffset;
   
-  this = self;
-  entAng = self.angles;
-  drawAng = self.angles;
+  parent = util_getPartFromName( item.partParentId, self);
+  
+  adjPartOffset = item.compOffset - parent.compOffset;
+  
+  offset = parent.origin;
+  drawAng = parent.angles;
   drawAng_x = drawAng_x *-1;
-  if(item.partParentId == M_ARM_LEFT || item.partParentId == M_ARM_RIGHT){
-    if(item.partParentId == M_ARM_LEFT){
-      offset = self.armLeft.origin;
-    }
-    else{
-      offset = self.armRight.origin;
-    }
-    item.angles = drawAng;
-  }
-  else{
-    entAng_x = 0;
-    offset = self.origin;
-    item.angles = entAng;
-  }
-  
-  makevectors(entAng);
-  offset = offset + (v_up * item.compOffset_y) + (v_right * item.compOffset_x);
-  
-  if( self.clientLocalId == player_localentnum && !cvar("chase_active") ){
-    offset = offset + (v_forward * (item.compOffset_z - fabs(self.cockpit.compOffset_z) ));
-  }
-  else{
-    offset = offset + (v_forward * item.compOffset_z);
-  }
+  makevectors( drawAng);
+  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
   item.origin = offset;
+  item.angles = parent.angles;
 };
 
 /*
@@ -80,17 +69,14 @@ void(entity piece) player_part_predaw={
   if( (self.criticalHits & piece.partTypeId) ){
     return;
   }
-  offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
+  offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y) + (v_forward * piece.compOffset_z);
   
   if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
-    offset = offset + (v_forward * (piece.compOffset_z - fabs(self.cockpit.compOffset_z) ));
-  }
-  else{
-    offset = offset + (v_forward * piece.compOffset_z);
+    offset = offset - (v_forward * self.cockpit.compOffset_z);
   }
   
   piece.origin = offset;
-  piece.angles = self.angles;
+  piece.angles_y = self.angles_y;
   piece.angles_x = 0;
 };
 
@@ -105,7 +91,6 @@ void() player_think={
   local vector laserOrg;
   
   local entity theWeapon;
-  local entity oldSelf;
   
   makevectors(self.angles);
   if(self.chaseActive){
@@ -199,10 +184,20 @@ void() player_predraw={
     
     if( self.deadflag == DEAD_NO ){
       self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
-      self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
-      self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
-      self.armLeft.colormod = CLR_PLAYER_LIST[self.unitColorLA];
-      self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+        self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
+      }
+      if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+        self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
+      }
+      if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+        self.armLeft.colormod = CLR_PLAYER_LIST[self.unitColorLA];
+      }
+      if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+        self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
+      }
+      
       self.legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
   
       entAng = self.angles;
@@ -210,17 +205,40 @@ void() player_predraw={
       makevectors( entAng );
       
       player_part_predaw(self.torsoCenter);
-      player_part_predaw(self.torsoLeft);
-      player_part_predaw(self.torsoRight);
-
+      if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+        self.torsoCenter.angles_x = self.angles_x * -1;
+      }
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+        player_part_predaw(self.torsoLeft);
+        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_L)){
+          self.torsoLeft.angles_x = self.angles_x * -1;
+        }
+      }
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+        player_part_predaw(self.torsoRight);
+        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_R)){
+          self.torsoRight.angles_x = self.angles_x * -1;
+        }
+      }
+      
       player_part_predaw(self.legs);
       
-      player_part_predaw(self.armLeft);
-      self.armLeft.angles_x = self.angles_x * -1;
+      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+        player_part_predaw(self.armLeft);
+        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
+          self.armLeft.angles_x = self.angles_x * -1;
+        }
+      }
       
-      player_part_predaw(self.armRight);
-      self.armRight.angles_x = self.angles_x * -1;
+      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+        player_part_predaw(self.armRight);
       
+        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
+          self.armRight.angles_x = self.angles_x * -1;
+        }
+      }
       if( time > self.legs.nextthink){
         wep = self;
         self = self.legs;
@@ -295,58 +313,51 @@ void( float mech_id ) sendevent_player_mech={
   local entity weps;
   local entity this;
   
-  weaponList = self;  //prepare to build unit's weapon list
-  self.hardpoint_cnt = 0;
+  self.flags = self.flags | FL_CLIENT | FL_TURRET;  //read-order fix
+  self.deadflag = DEAD_NO;
+  self.criticalHits = rint(0);
   
-  switch(mech_id){
-    case UID_MECH_balaket:
-      data_ini_balaket_();
-      break;
-    case UID_MECH_matok:
-      data_ini_matok_();
-      break;
-    case UID_MECH_sapper:
-      data_ini_sapper_();
-      break;
-    case UID_MECH_monitor:
-      data_ini_monitor_();
-      break;
-    case UID_MECH_warden:
-      data_ini_warden_();
-      break;
-    default :
-      cons_logAFloat("client.receive_sendent_player.sendevent_player_mech()-Error: failed to build mech with id", mech_id);
-      break;
-  }
+  initialize_data_mech_(mech_id);
+  
   minSave = self.mins;
   maxSave = self.maxs;
-    
+  
   self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
-  self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
-  self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
-  self.armLeft.colormod = CLR_PLAYER_LIST[self.unitColorLA];
-  self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
-  self.legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
-  
   self.torsoCenter.skin = self.faction - 1;
-  self.torsoLeft.skin = self.faction - 1;
-  self.torsoRight.skin = self.faction - 1;
-  self.armLeft.skin = self.faction - 1;
-  self.armRight.skin = self.faction - 1;
-  self.legs.skin = self.faction - 1;
-  
   setmodel(self.torsoCenter, self.torsoCenter.model);
-  setmodel(self.torsoLeft, self.torsoLeft.model);
-  setmodel(self.torsoRight, self.torsoRight.model);
-  setmodel(self.armLeft, self.armLeft.model);
-  setmodel(self.armRight, self.armRight.model);
-  setmodel(self.legs, self.legs.model);
-  
   self.torsoCenter.drawmask = MASK_NORMAL;
-  self.torsoLeft.drawmask = MASK_NORMAL;
-  self.torsoRight.drawmask = MASK_NORMAL;
-  self.armLeft.drawmask = MASK_NORMAL;
-  self.armRight.drawmask = MASK_NORMAL;
+  
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+    self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
+    self.torsoLeft.skin = self.faction - 1;
+    setmodel(self.torsoLeft, self.torsoLeft.model);
+    self.torsoLeft.drawmask = MASK_NORMAL;
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)  ){
+    self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
+    self.torsoRight.skin = self.faction - 1;
+    setmodel(self.torsoRight, self.torsoRight.model);
+    self.torsoRight.drawmask = MASK_NORMAL;
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+    self.armLeft.colormod = CLR_PLAYER_LIST[self.unitColorLA];
+    self.armLeft.skin = self.faction - 1;
+    setmodel(self.armLeft, self.armLeft.model);
+    self.armLeft.drawmask = MASK_NORMAL;
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+    self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
+    self.armRight.skin = self.faction - 1;
+    setmodel(self.armRight, self.armRight.model);
+    self.armRight.drawmask = MASK_NORMAL;
+  }
+  
+  self.legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
+  self.legs.skin = self.faction - 1;
+  setmodel(self.legs, self.legs.model);
   self.legs.drawmask = MASK_NORMAL;
   
   this = self;
@@ -354,7 +365,7 @@ void( float mech_id ) sendevent_player_mech={
   while( weps != world ){
     self = weps;
       sendent_set_weapon();
-      if(self.data_idx != 0){
+      if(self.data_idx != 0 && !(self.unitModFlags & MOD_MODEL_NONE)){
         initialize_data_item_(self.data_idx);
       }
       else{
@@ -364,9 +375,17 @@ void( float mech_id ) sendevent_player_mech={
       }
       self.reloadValue = 100;
       setmodel(self, self.model);
-			self.drawmask = MASK_NORMAL;
+      self.drawmask = MASK_NORMAL;
+      self.wepFireOffsetCache = self.wepFireOffset;
     self = this;
     weps = weps.w_slot;
+  }
+  if( (self.unitModFlags & MOD_MODEL_ROOT_TOR_C) ){
+    self.colormod = CLR_PLAYER_LIST[self.unitColorCT];
+    self.skin = self.faction - 1;
+    setmodel(self, self.model);
+    self.alpha = 1.0;
+    self.scale = 1.0;
   }
   self.solid = SOLID_BBOX;
   setsize(self, minSave, maxSave);
@@ -400,7 +419,12 @@ void( float mech_id ) sendevent_player_mech={
         HUD_EXTERNAL_CAM_ACTIVE = TRUE;
       }
     }
+    HUD_FIXED_ANGLE = self.angles;
   }
+  
+  self.shieldEffectTime = 0;
+  self.predraw = player_predraw;
+  self.canTarget = TRUE;
 };
 
 /*
@@ -460,10 +484,20 @@ void( float prevFac, float newFaction ) sendevent_handle_faction={
   }
   if( self.data_type == DATA_MECH ){
     self.torsoCenter.skin = self.faction - 1;
-    self.torsoLeft.skin = self.faction - 1;
-    self.torsoRight.skin = self.faction - 1;
-    self.armLeft.skin = self.faction - 1;
-    self.armRight.skin = self.faction - 1;
+    
+    if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+      self.torsoLeft.skin = self.faction - 1;
+    }
+    if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+      self.torsoRight.skin = self.faction - 1;
+    }
+    if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+      self.armLeft.skin = self.faction - 1;
+    }
+    if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+      self.armRight.skin = self.faction - 1;
+    }
+    
     self.legs.skin = self.faction - 1;
   }
 };
@@ -483,19 +517,19 @@ void() sendevent_handle_moveChange={
 void( float criticalBits ) sendevent_player_critical={
   local entity wep;
   
-  if( (criticalBits & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && (criticalBits & M_TOR_LEFT) ){
     te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.torsoLeft.drawmask = 0;
   }
-  if( (criticalBits & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && (criticalBits & M_TOR_RIGHT) ){
     te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.torsoRight.drawmask = 0;
   }
-  if( (criticalBits & M_ARM_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && (criticalBits & M_ARM_LEFT) ){
     te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.armLeft.drawmask = 0;
   }
-  if( (criticalBits & M_ARM_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && (criticalBits & M_ARM_RIGHT) ){
     te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
     self.armRight.drawmask = 0;
   }
@@ -541,19 +575,19 @@ void(float repairValue) sendevent_player_repair={
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
     self.torsoCenter.drawmask = MASK_NORMAL;
   }
-  if( (repairValue & M_TOR_LEFT) ){
+  if(  (self.unitModFlags & MOD_HAS_TOR_L) && (repairValue & M_TOR_LEFT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
     self.torsoLeft.drawmask = MASK_NORMAL;
   }
-  if( (repairValue & M_TOR_RIGHT) ){
+  if(  (self.unitModFlags & MOD_HAS_TOR_R) && (repairValue & M_TOR_RIGHT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
     self.torsoRight.drawmask = MASK_NORMAL;
   }
-  if( (repairValue & M_ARM_LEFT) ){
+  if(  (self.unitModFlags & MOD_HAS_ARM_L) && (repairValue & M_ARM_LEFT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
     self.armLeft.drawmask = MASK_NORMAL;
   }
-  if( (repairValue & M_ARM_RIGHT) ){
+  if(  (self.unitModFlags & MOD_HAS_ARM_R) && (repairValue & M_ARM_RIGHT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
     self.armRight.drawmask = MASK_NORMAL;
   }
@@ -575,10 +609,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
   local entity controlPlayer;
   local entity thisSelf;
   local vector prevOrg;
-  local vector targetOrg;
   local float prevShield;
   local float prevType;
-  local float prevTarget; 
   local float prevKills;
   local float prevFaction;
   local float prevDeadFlag;
@@ -673,18 +705,13 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.next_wepn9 = ReadByte();
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
-        self.flags = self.flags | FL_CLIENT;  //read-order fix
-        self.deadflag = DEAD_NO;
-        self.criticalHits = rint(0);
         sendevent_player_mech(self.data_idx);
-        self.shieldEffectTime = 0;
-        self.predraw = player_predraw;
-        if(self.clientLocalId == player_localentnum){
-          HUD_FIXED_ANGLE = self.angles;
-        }
-        self.canTarget = TRUE;
       }
     }
+    cvar_set("cl_forwardspeed", ftos(ReadCoord()));
+    cvar_set("cl_sidespeed", ftos(ReadCoord()));
+    cvar_set("cl_backspeed", ftos(ReadCoord()));
+    cvar_set("cl_movespeedkey", ftos(ReadCoord()));
   }
   
   if( (changeFlags & SENDFLAG_COLORS) ){
@@ -749,7 +776,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
-    self.flags = ReadCoord();
+    self.flags = self.flags | ReadCoord();
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){

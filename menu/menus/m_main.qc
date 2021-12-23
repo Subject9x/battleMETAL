@@ -33,7 +33,7 @@ string IMG_MAIN_LBL    = "gfx/menu/main/main_label.png";
 string IMG_MAIN_LEAVE = "gfx/menu/quit_mission.png";
 
 string IMG_TITLE;
-string IMG_QUIT;
+//string IMG_QUIT;
 
 //Main callbacks
 //because we define these right before the menu functions are defined, we 

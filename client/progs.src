@@ -17,6 +17,7 @@ data/defs_linker.qc
   ../common/data/defs/defs_projectile.qc		    //all fields related to items.
   ../common/data/defs/defs_world.qh     //world server / rules entity
   ../common/data/camp_loader.qh
+  ../common/data/data_mod_flags.qc
 //================================
 
 data/headers/data_api.qh
@@ -112,9 +113,9 @@ network/headers/receive_sendent.qh
   ../common/data/item/equip/data_equip_shield_capacitor.qc
   ../common/data/item/equip/data_equip_energy_battery.qc
   ../common/data/item/equip/data_equip_recharge_capacitor.qc
-  ../common/data/item/equip/data_equip_sensor_array.qc
+  ../common/data/item/equip/data_equip_heatsink.qc
   ../common/data/item/equip/data_equip_shield_emitter.qc
-  ../common/data/item/equip/data_equip_target_module.qc
+  ../common/data/item/equip/data_equip_adv_reload.qc
   ../common/data/item/equip/data_equip_turbo_charger.qc
   //-------------------------------
 //================================
@@ -145,8 +146,9 @@ util/headers/input_events.qh
   ui/menu/headers/ui_rebind.qh
 //================
 
+../common/data/data_system.qc
+data/data_system_ext.qc
 data/client_precache.qc
-data/data_system.qc
 data/data_api.qc
 data/ui_data.qc
 data/msn_file.qc
@@ -227,4 +229,13 @@ ui/hud/crosshair/hud_crosshair4.qc
 input_events.qc
 util/input_api.qc
 ../common/data/defs/defs_world.qc     //world server / rules entity
-client_main.qc
+
+//CSQC CLIENT API============
+  main/client_init.qc
+  main/client_events.qc
+  main/client_console_command.qc
+  main/client_parse_funcs.qc
+  main/client_update_view.qc
+  main/client_shutdown.qc
+  main/client_entity.qc
+//===========================

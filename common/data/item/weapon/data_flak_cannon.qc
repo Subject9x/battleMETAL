@@ -26,8 +26,8 @@ void() te_muzzle_flk={
   local vector ang;
   local vector v;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
-  traceline(startOrg, self.owner.origin + (v_forward*10000), FALSE, self.owner);
+  startOrg = self.wepFireOffset;
+  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
   norm = normalize(endOrg - startOrg);

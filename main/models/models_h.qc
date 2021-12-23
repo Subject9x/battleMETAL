@@ -48,23 +48,3 @@ void() leg_die_touch;
 void() bot_leg_die1;
 void() bot_leg_die2;
 void() bot_leg_die3;
-
-/*
-  CENTER TORSO
-*/
-$frame ctorstand1
-
-$frame ctorDie1 ctorDie2 ctorDie3
-
-void() ctor_die1;
-void() ctor_die2;
-void() ctor_die3;
-
-
-/*
-  SIDE TORSO
-*/
-
-/*
-  ARM
-*/

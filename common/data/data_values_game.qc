@@ -50,8 +50,10 @@ string SAVE_ITEMS_ALL;
 #define GAMEMODE_DM 3
 #define GAMEMODE_TEAMDM 4
 
+#ifndef MENUQC
 float TEAM_SURVEST_TOTAL;  //team deathmatch
 float TEAM_MILITAR_TOTAL;
+#endif 
 
 //Server Mission Status
 #define MISSION_STATUS_READY  1  //server ready to start when the first player connects
@@ -195,11 +197,13 @@ float TEAM_MILITAR_TOTAL;
 #define MECH_PIECE "mech_piece"
 #define M_UNIT       1
 #define M_TOR_CENTER 2
+
 #define M_TOR_RIGHT  4
 #define M_TOR_LEFT   8
 #define M_ARM_LEFT   16
 #define M_ARM_RIGHT  32
 #define M_LEGS       64
+
 #define M_REPAIR     128  //sends repair flag over network to repair pieces
 #define M_ITEM       256
 //============================
@@ -271,6 +275,9 @@ float TEAM_MILITAR_TOTAL;
   #define MSC2 8192
   #define MSC3 16384
   #define MSC4 32768
+  
+  //primarily for non-player units
+  #define EQP_ALL 65535
 //============================
 //     GETSTAT() TYPES
 //============================

@@ -38,7 +38,6 @@ void() client_get_info={
 */
 void() receive_ent_bindData={
   local string name;
-  local float oldTargetType;
   local float prevFaction;
   local entity deploy;
   local entity previous;
@@ -516,7 +515,6 @@ void( string name ) client_event_mission_name={
 
 void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) client_event_info_box={
   local float infoBoxY;
-  local string replace;
   
   HUD_INFO_MARK = time + infoLifetime;
   if( HUD_INFO_ON != TRUE ){

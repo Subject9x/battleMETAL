@@ -136,15 +136,15 @@ float() data_mech_config_valid={
     weaponId = DATA_CONFIG_BUFFER_WEPS[itr];
     if( weaponId > 0 ){
       data_get_client_item_(weaponEnt, weaponId);
-      if( (weaponEnt.damageType != 0) && !(hardpoint.hardpointType & weaponEnt.damageType) ){
+      //deprecating damage type as a hardpoint property, superseded by equipSize/hardpointSize
+      /*if( (weaponEnt.damageType != 0) && !(hardpoint.hardpointType & weaponEnt.damageType) ){
         cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Type mismatch");  //DEBUG
         remove(weaponEnt);
         return FALSE;
-      }
-      if( (weaponEnt.equipSize != 0) && (weaponEnt.equipSize > hardpoint.hardpointSize) ){
+      }*/
+      if( (weaponEnt.equipSize != 0) && !(weaponEnt.equipSize & hardpoint.hardpointSize) ){
         cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Size mismatch");  //DEBUG
-        remove(weaponEnt);
-        return FALSE;
+        DATA_CONFIG_BUFFER_WEPS[itr] = UID_ITEM_EMPTY;
       }
       itemItr = 1;
       unlocked = FALSE;

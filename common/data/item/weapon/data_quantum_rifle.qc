@@ -18,8 +18,8 @@ void() te_muzzle_qrf={
   local vector startOrg;
   local vector endOrg;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
-  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  startOrg = self.wepFireOffset;
+  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
   local vector ang;

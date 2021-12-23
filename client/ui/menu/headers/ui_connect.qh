@@ -57,7 +57,6 @@ float CHAT_LINE_TRUNC;  //character truncation limit
 //player chat input
 float CHAT_INP_ON;    //toggle for when chatting is active.
 float CHAT_INP_ON_TEAM; //team say
-vector CHAT_INP_ORG;  //on-screen location of chat input.
 float CHAT_INP_MAX;   //max char length of input.
 string CHAT_INP_VAL;
 float CHAT_CUR_TIC;

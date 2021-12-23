@@ -32,7 +32,7 @@ void( vector menuOrg ) menu_serverinfo_basic; // connect_dm and score_dm ui.
 void( vector menuOrg ) menu_draw_players_basic;
 void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_row_basic;
 
-float AVAILABLE_RESERVE;
+//float AVAILABLE_RESERVE;
 float SELECT_MECH;  //replaces entity functionality, used in conjunction with ui_data file loading - Roohr 6/26/2018
 float MENU_ACTIVE;
 #define MENU_BRIEF_ACTIVE 1

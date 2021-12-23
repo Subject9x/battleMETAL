@@ -298,7 +298,6 @@ void() ai_node_path={
 void() ai_exec_order_use={
   local entity ent;
   local entity thisNode;
-  local float entDist;
   local float hasPatrol;
   local float hasEnemy;
   

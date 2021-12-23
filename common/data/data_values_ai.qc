@@ -39,7 +39,7 @@ Overview: AI values that have been spun off from common/game
 #define PROMOTE 65536  //AI rank is set by skill, this spawnflag bumps it up by 1
 #define DEMOTE 131072  //AI rank is set by skill, this spawnflag debuffs it up by 1
 #define TRIGGER_ME 524288  //ai only spawns when triggered
-#define MUTE_ME 1048576  //ai ignores sending voice effects / radio sounds.
+//#define MUTE_ME 1048576  //ai ignores sending voice effects / radio sounds.
 #define UNARMED 2097152 //ai spawns with no weapons, skip build_weapons() factory step;
 
 //============================

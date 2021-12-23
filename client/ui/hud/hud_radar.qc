@@ -14,8 +14,6 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   local entity blip;
   local vector imgRadarSize;
   local vector imgRadarOrg;
-  local entity test;
-  local vector testOrg;
   local float testCheck;
   local entity nav;
   

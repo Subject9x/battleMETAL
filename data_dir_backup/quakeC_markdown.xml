@@ -1,0 +1,64 @@
+<NotepadPlus>
+    <UserLang name="Quake-CvII" ext="qc qh" udlVersion="2.1">
+        <Settings>
+            <Global caseIgnored="no" allowFoldOfComments="yes" foldCompact="no" forcePureLC="0" decimalSeparator="0" />
+            <Prefix Keywords1="no" Keywords2="no" Keywords3="no" Keywords4="no" Keywords5="no" Keywords6="no" Keywords7="no" Keywords8="yes" />
+        </Settings>
+        <KeywordLists>
+            <Keywords name="Comments">00// 01 02 03/* 03/** 04*/ 04**/</Keywords>
+            <Keywords name="Numbers, prefix1">#</Keywords>
+            <Keywords name="Numbers, prefix2"></Keywords>
+            <Keywords name="Numbers, extras1"></Keywords>
+            <Keywords name="Numbers, extras2"></Keywords>
+            <Keywords name="Numbers, suffix1"></Keywords>
+            <Keywords name="Numbers, suffix2"></Keywords>
+            <Keywords name="Numbers, range"></Keywords>
+            <Keywords name="Operators1">( ) . , ; + - = / * &amp; &amp;&amp; | || &lt; &gt; ! ? :</Keywords>
+            <Keywords name="Operators2"></Keywords>
+            <Keywords name="Folders in code1, open">{</Keywords>
+            <Keywords name="Folders in code1, middle"></Keywords>
+            <Keywords name="Folders in code1, close">}</Keywords>
+            <Keywords name="Folders in code2, open">#ifdef #ifndef</Keywords>
+            <Keywords name="Folders in code2, middle">#else</Keywords>
+            <Keywords name="Folders in code2, close">#endif</Keywords>
+            <Keywords name="Folders in comment, open"></Keywords>
+            <Keywords name="Folders in comment, middle"></Keywords>
+            <Keywords name="Folders in comment, close"></Keywords>
+            <Keywords name="Keywords1">switch case default if else break return do while for continue</Keywords>
+            <Keywords name="Keywords2">nosave local void entity float vector string</Keywords>
+            <Keywords name="Keywords3">main StartFrame PlayerPreThink PlayerPostThink ClientKill ClientConnect PutClientInServer ClientDisconnect SetNewParms SetChangeParms&#x000D;&#x000A;end_sys_globals end_sys_fields&#x000D;&#x000A;EndFrame&#x000D;&#x000A;&#x000D;&#x000A;touch use think blocked</Keywords>
+            <Keywords name="Keywords4">makevectors setorigin setmodel setsize random sound normalize error objerror vlen vectoyaw spawn remove traceline checkclient find precache_sound precache_model stuffcmd findradius bprint sprint dprint eprint ftos vtos coredump traceon traceoff walkmove droptofloor lightstyle rint floor ceil checkbottom pointcontents fabs aim cvar localcmd nextent particle ChangeYaw vectoangles WriteByte WriteChar WriteShort WriteLong WriteCoord WriteAngle WriteString WriteEntity movetogoal precache_file makestatic changelevel cvar_set centerprint ambientsound precache_model2 precache_sound2 precache_file2 setspawnparms&#x000D;&#x000A;&#x000D;&#x000A;builtin_find sin cos sqrt etos stof etof ftoe stov strlen strcat substring strzone strunzone fopen fclose fgets fputs tracebox randomvec fmin fmax fbound fpow findfloat WriteFloat changepitch TraceToss copyentity setcolor findchain findchainfloat anglemod</Keywords>
+            <Keywords name="Keywords5">self other world trace_ent msg_entity&#x000D;&#x000A;&#x000D;&#x000A;time frametime force_retouch deathmatch coop teamplay serverflags total_secrets total_monsters found_secrets killed_monsters parm1 parm2 parm3 parm4 parm5 parm6 parm7 parm8 parm9 parm10 parm11 parm12 parm13 parm14 parm15 parm16 trace_allsolid trace_startsolid trace_fraction trace_plane_dist trace_inopen trace_inwater skill&#x000D;&#x000A;&#x000D;&#x000A;v_forward v_up v_right trace_endpos trace_plane_normal &#x000D;&#x000A;&#x000D;&#x000A;mapname</Keywords>
+            <Keywords name="Keywords6">groundentity chain enemy aiment goalentity dmg_inflictor owner&#x000D;&#x000A;&#x000D;&#x000A;classname model weaponmodel netname target targetname message noise noise1 noise2 noise3&#x000D;&#x000A;&#x000D;&#x000A;modelindex ltime movetype solid frame skin effects nextthink health frags weapon weaponframe currentammo ammo_shells ammo_nails ammo_rockets ammo_cells items takedamage deadflag button0 button1 button2 impulse fixangle idealpitch flags colormap team max_health teleport_time armortype armorvalue waterlevel watertype ideal_yaw yaw_speed spawnflags dmg_take dmg_save sounds&#x000D;&#x000A;&#x000D;&#x000A;absmin absmax origin oldorigin velocity angles avelocity punchangle mins maxs size view_ofs v_angle movedir</Keywords>
+            <Keywords name="Keywords7">false true FALSE TRUE</Keywords>
+            <Keywords name="Keywords8">SOLID_ MOVETYPE_ CONTENT_ STATE_ IT_ FL_ EF_ TE_ SVC_ MSG_ CHAN_ ATTN_ UPDATE_ RANGE_ DEAD_ DAMAGE_ VEC_ AS_</Keywords>
+            <Keywords name="Delimiters">00&quot; 01\ 02&quot; 03&apos; 04 05&apos; 06# 07\ 08&#x000D;&#x000A; 09[ 10 11] 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>
+        </KeywordLists>
+        <Styles>
+            <WordsStyle name="DEFAULT" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="COMMENTS" fgColor="808080" bgColor="FFFFFF" fontStyle="3" nesting="0" />
+            <WordsStyle name="LINE COMMENTS" fgColor="808080" bgColor="FFFFD5" fontStyle="2" nesting="0" />
+            <WordsStyle name="NUMBERS" fgColor="008000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS1" fgColor="FF00FF" bgColor="FFFFFF" fontStyle="3" nesting="0" />
+            <WordsStyle name="KEYWORDS2" fgColor="8080FF" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS3" fgColor="0000FF" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS4" fgColor="000000" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="KEYWORDS5" fgColor="400080" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="KEYWORDS6" fgColor="400080" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS7" fgColor="008000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS8" fgColor="008000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="OPERATORS" fgColor="FF0000" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE1" fgColor="000000" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE2" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN COMMENT" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS1" fgColor="008000" bgColor="EEEEEE" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS2" fgColor="008000" bgColor="FFFFFF" fontStyle="4" nesting="0" />
+            <WordsStyle name="DELIMITERS3" fgColor="FF00FF" bgColor="FFFFAA" fontStyle="1" nesting="256" />
+            <WordsStyle name="DELIMITERS4" fgColor="0000A0" bgColor="FFFFFF" fontStyle="1" nesting="50593035" />
+            <WordsStyle name="DELIMITERS5" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS6" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS7" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS8" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+        </Styles>
+    </UserLang>
+</NotepadPlus>

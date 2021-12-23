@@ -71,7 +71,6 @@ entity particleCubeMetaDataList;
 #define PTC_CUBE_TYPE_RAIN 2
 #define PTC_CUBE_TYPE_SNOW 3 
 
-float PTC_CUBE_LAST_TRACE;
 float PTC_CUBE_UPDATE;
 float PTC_CUBE_ON;
 vector PTC_CUBE_ORG;
@@ -119,11 +118,6 @@ float PTC_DUST_DESERT;
 float PTC_HIT_EXPL_SML;
 float PTC_HIT_EXPL_MED;
 float PTC_HIT_EXPL_LRG;
-
-  //MUZZLE FLASH
-float PTC_MUZZLE_ATC;
-float PTC_MUZZLE_FLAK;
-float PTC_MUZZLE_RPC;
 
 //Particle data
 .entity effect1, effect2, effect3;

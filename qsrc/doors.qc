@@ -616,6 +616,11 @@ void () fd_secret_use =
 	sound(self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
 };
 
+//something something wrapped compat.
+void (entity attacker) fd_secret_pain_use={
+  fd_secret_use();
+};
+
 // Wait after first movement...
 void () fd_secret_move1 = 
 {
@@ -669,7 +674,7 @@ void () fd_secret_done =
 	{
 		self.health = 10000;
 		self.takedamage = DAMAGE_YES;
-		self.th_pain = fd_secret_use;	
+		self.th_pain = fd_secret_pain_use;	
 	}
 	sound(self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
 };
@@ -773,7 +778,7 @@ void () func_door_secret =
 	{
 		self.health = 10000;
 		self.takedamage = DAMAGE_YES;
-		self.th_pain = fd_secret_use;
+		self.th_pain = fd_secret_pain_use;
 		self.th_die = fd_secret_use;
 	}
 	self.oldorigin = self.origin;

@@ -8,6 +8,28 @@ Overview:
 */
 
 
+
+void(entity enEntity) GetAlignedSurfaceAngles=
+{ // Return Aligned Surface Angles
+	// NOTE: div0 from Team Alientrap completely designed this algorithm.
+	// Thanks div0!
+	// Acquire Surface Normal
+	traceline (enEntity.origin, enEntity.origin - '0 0 256', TRUE, enEntity);
+	
+	if(trace_fraction != 1)
+	{ // Trace Found Surface; Continue
+		local vector vNormal;
+			vNormal = trace_plane_normal;
+		
+		// Derive Vectors
+		makevectors(enEntity.angles);
+			
+		// Assign Aligned Angles
+		enEntity.angles = vectoangles( normalize(v_forward - ( (v_forward * vNormal) / (v_up * vNormal)) * v_up) );
+	}
+}
+
+
 void() sendent_empty_think={
   
   self.think = sendent_empty_think;
@@ -192,7 +214,6 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
 */
 void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   local float prevDeadflag;
-  local float newModelIndex;
   
   prevDeadflag = self.deadflag;
   
@@ -342,14 +363,9 @@ void( float prevShield ) sendevent_shield_explode={
     scope = self is owning unit
 */
 void() sendevent_handle_weaponfire={
-  local entity this;
   local entity equip;
   
-  this = self;
-  equip = this.w_slot;
-  
-  makevectors(self.angles);
-  
+  equip = self.w_slot;
   while( equip != world ){
     if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
       te_weapon_fire_handler(equip);
@@ -387,17 +403,18 @@ void() sendent_ini_interpolate={
 void() sendent_setup_weapons={
   local entity this;
   local entity weps;
+  
   this = self;
   weps = self.w_slot;
   while( weps != world ){
     self = weps;
       self.owner = this;
       sendent_set_weapon();
-      if(!(this.flags & FL_DISARMED)){
-        initialize_data_item_(self.data_idx);
+      if( (this.flags & FL_DISARMED) ){
+        initialize_data_item_(UID_ITEM_EMPTY);
       }
       else{
-        initialize_data_item_(UID_ITEM_EMPTY);
+        initialize_data_item_(self.data_idx);
       }
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
@@ -405,15 +422,15 @@ void() sendent_setup_weapons={
       setmodel(self, self.model);
       if( self.partParentId == M_LEGS ){
         makevectors(this.angles);
-        setorigin(self, this.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
+        self.origin = this.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
         self.angles = this.angles;
       }
       else{
         makevectors(this.torsoCenter.angles);
-        setorigin(self, this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y));
+        self.origin = this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
         self.angles = this.torsoCenter.angles;
       }
-			self.drawmask = MASK_NORMAL;
+      self.drawmask = MASK_NORMAL;
     self = this;
     weps = weps.w_slot;
   }

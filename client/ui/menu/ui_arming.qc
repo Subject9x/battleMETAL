@@ -142,7 +142,6 @@ void() menu_armingListener_onHover={
 */
 void() menu_armingListener_onKeyUp={
   local entity hardpoint;
-  local float weaponType;
   local float hardpointId;
   
   UI_ARMING_weaponclick = FALSE;
@@ -155,16 +154,14 @@ void() menu_armingListener_onKeyUp={
       while( hardpoint ){
         //run collision check with all hardpoints on the mech entity.
         if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, '28 28', FALSE)){
-          weaponType = UI_ARMING_item_drag.damageType;
           if( (UI_ARMING_item_drag.equipSize & hardpoint.hardpointSize) ){
-            if( (weaponType & hardpoint.hardpointType) ){
               data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
               ui_date_load_item1(UI_ARMING_item_drag.data_idx);
               
               //update weapon groups for launch-validation
               //DMG_MSC don't count as weapons for OR against groups, we don't want them to allow a player to bypass group-validation
               //where the hardpoint was previously grouped because of a valid weapon which is then swapped for a module.
-              if( (weaponType & DMG_MSC) ){
+              if( (UI_ARMING_item_drag.equipSize >= MSC1) ){
                 if( (CLIENT_MENU_nex_grp1 & hardpointId) ){
                   CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 - (CLIENT_MENU_nex_grp1 & hardpointId);
                 }
@@ -183,7 +180,6 @@ void() menu_armingListener_onKeyUp={
               GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
               GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
               GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
-            }
           }
           else{
             //TODO - play 'no' sound
@@ -205,14 +201,12 @@ void() menu_armingListener_onKeyUp={
 void() weaponDragListener={
   if( INPUT_mouse_state == MOUSE_DRAG ){
     if( UI_ARMING_weaponclick == TRUE ){
-      UI_ARMING_item_drag.damageType = 0;
       data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
     }
     if( UI_ARMING_hardpoint_click == TRUE ){
       if( UI_ARMING_hardpoint.data_idx != 0 ){
         data_get_client_item_( UI_ARMING_hardpoint, 0);
       }
-      UI_ARMING_item_drag.damageType = 0;
       data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_wep);
     }
   }
@@ -455,7 +449,7 @@ void(vector ofs) menu_arming_HardpointGraph={
      
       if( INPUT_mouse_state == MOUSE_DRAG ){
         if( UI_ARMING_item_drag.data_idx > 0 ){      
-          if( !(hardpoint.hardpointSize & UI_ARMING_item_drag.equipSize) || !(UI_ARMING_item_drag.damageType & hardpoint.hardpointType) ){
+          if( !(hardpoint.hardpointSize & UI_ARMING_item_drag.equipSize)){
             allowed = FALSE;
           }
         }
@@ -539,7 +533,6 @@ void(vector ofs) menu_arming_WeaponList={
 
 void(vector parentOffset, vector offsetAdjust, float weaponType, string listName, vector listNameColor) menu_arming_WeaponList_draw={
   local vector nofs, labelOrg;
-  local float labelLen;
   local float lst_idx, act_idx;
   local float itemId;
   local float drawFontLocal;
@@ -657,6 +650,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   local vector helpOrg;
   
   local vector colorSel, colorCold;
+  
   colorSel = CLR_DEF_ARM_OK * 2;
   colorCold = CLR_DEF_TXT_CANTSELECT * 2;
   
@@ -701,7 +695,8 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     if( hardpoint.icon != "" ){
       drawpic(lofs + '16 -8', hardpoint.icon, '20 20', '1 1 1', 1,0);
     }
-    if( !(hardpoint.damageType & DMG_MSC) && hardpoint.data_idx > 0){
+    
+    if( hardpoint.damageType != DMG_MSC && hardpoint.data_idx > 0){
       if( (CLIENT_MENU_nex_grp1 & bit) ){
         drawpic( lofs + '40 -3', HUD_RAD_PIP_BLD, groupButtonSize, colorSel, 1.5, 0);
       }

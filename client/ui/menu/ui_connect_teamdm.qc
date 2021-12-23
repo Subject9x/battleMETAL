@@ -33,7 +33,6 @@ void( vector rootTop ) menu_connect_render_teamdm={
   TEAM DEATH MATCH PANELS
 */
 void( vector menuOrg ) menu_connect_draw_mission_info_team={
-  local string serverName;
   local string serverMsnName;
   
   local vector fontsStyle;

@@ -41,7 +41,7 @@ void() menu_scoreListener_onHover={
 void() menu_score_drawFrame={
   local vector topleftroot;
   local vector botrightroot;
-  local vector rulesOrg;
+  //local vector rulesOrg;
   
   topleftroot = UI_ORG;
   botrightroot = UI_MAX;
@@ -338,8 +338,8 @@ void( vector menuOrg ) menu_score_tdm_client_info={
 
 //COOP SCORE SCREEN
 void( vector menuOrg ) menu_score_coop_nav={
-  local vector playerReadyOrg;
-  local vector playerReadyLblOrg;
+  //local vector playerReadyOrg;
+  //local vector playerReadyLblOrg;
   local vector nextMapMeterOrg;
   local float t, sec;
   local string text;

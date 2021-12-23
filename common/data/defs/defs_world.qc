@@ -126,6 +126,7 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
       WriteByte( MSG_ENTITY, TEAM_MILITAR_TOTAL);
     }
   }
+  
   return TRUE;
 };
 
@@ -136,20 +137,18 @@ void() world_server_setRules={
 #endif
 
 #ifdef CSQC
-entity() world_ini_serverInfo={
-
-};
 void( float isNew, float changeFlags) world_rules_readEntity={
   local string tempHostName;
   local string tempAbout;
   local string tempNextMap;
-  local float nextGameType;
+  
+  /*local float nextGameType;
   local float nextStartTime;
   local float nextServerFlags;
   local float nextMissionStatus;
   local float nextMissionResult;
   local float nextRuleFrag;
-  local float nextRuleTime;
+  local float nextRuleTime;*/
   
   ENT_SERVER_INFO = self;
   if( isNew ){

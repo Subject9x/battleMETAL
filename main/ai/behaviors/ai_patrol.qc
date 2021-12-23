@@ -13,8 +13,6 @@ Overview:
   //lead-in ---> IF self.tether = TETHER_PATROL
 */
 void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
-  local float nextDist;
-  
   /*
     note: ai_node entities are now mostly just 'meta' entities, the AI does not directly path to the
       entity itself, rather; the AI locates the nearest NODEGRAPH node to the patrolNode.
@@ -29,7 +27,6 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
   local vector nqOrg;
   local float moveYaw;
   local float moveSpeed;
-  local float blockCheck;
   local float oldNode;
   local float walkAngle;
   
@@ -139,6 +136,9 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
     else{
       if( self.ai_reverse ){
         walkAngle = anglemod(self.angles_y - 180);
+        self.ai_reverse = FALSE;
+        //seriously only let AI try this per-frame, otherwise unbounded reverse sends bots moonwalking backwards into anything and everything.
+        //it was a poorly implemented idea to get a simple "back up" move action for bots.
       }
       else{
         walkAngle = self.angles_y;

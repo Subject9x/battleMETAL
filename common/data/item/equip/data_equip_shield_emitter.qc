@@ -44,7 +44,7 @@ void() data_ini_equip_shield_emitter_={
   #endif
   
   #ifdef SSQC
-    self.item_remove_upgrade = shield_capacitor_remove_;
+    self.item_remove_upgrade = shield_emitter_upgrade_;
     self.item_run_upgrade = shield_emitter_upgrade_;
     self.think = SUB_Null;
     self.w_isburst = FALSE;
@@ -54,14 +54,12 @@ void() data_ini_equip_shield_emitter_={
 
 #ifdef SSQC
 void() shield_emitter_upgrade_={
-  self.shieldRateMod = self.owner.shieldRateMod;
-  self.owner.shieldRateMod = 1.2;
+  self.owner.shieldRateMod = self.owner.shieldRateMod + 0.75;
   self.energyMax = self.owner.shieldRate;
-  self.owner.shieldRate  = self.owner.shieldRate + (self.owner.shieldRate  * self.energyRate);
 };
 
 void() shield_emitter_remove_={
-  self.owner.shieldRateMod = self.shieldRateMod;
+  self.owner.shieldRateMod = self.owner.shieldRateMod  - 0.75;
   self.owner.shieldRate = self.energyMax;
 };
 #endif

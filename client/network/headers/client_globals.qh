@@ -11,7 +11,7 @@ entity CLIENT_MENU_deploy;
 
 entity CLIENT_server_ent; //this is the player's .clientData ent from the server.
 
-float CLIENT_currentWeaponGroup;
+//float CLIENT_currentWeaponGroup;
 
 //float CLIENT_mission_status;
 

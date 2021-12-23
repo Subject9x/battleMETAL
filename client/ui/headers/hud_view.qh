@@ -138,10 +138,10 @@ string HUD_TAGS[22];
   float HUD_SCORE_SURVEST_HEIGHT;
   float HUD_SCORE_MILITAR_HEIGHT;
   
-  vector HUD_OFFSET;
+  /*vector HUD_OFFSET;
   vector HUD_OFFSET_PREV;
   vector HUD_OFFSET_LAST;
-  vector HUD_OFFSET_ORG;
+  vector HUD_OFFSET_ORG;*/
   
 //==========================================
 

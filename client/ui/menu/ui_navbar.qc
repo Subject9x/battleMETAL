@@ -75,7 +75,6 @@ void() ui_navbutton_hangar_click={
   BUTTON - Arming Menu
 */
 void( vector ofs ) ui_navbutton_arming_draw={
-  local vector fontSize;
   local vector textPos;
   local float strWidth;
   

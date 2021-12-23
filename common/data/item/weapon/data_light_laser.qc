@@ -21,7 +21,7 @@ void() te_muzzle_las={
   local float impactStyle;
   local vector norm;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  startOrg = self.wepFireOffset;
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   norm = normalize(endOrg - startOrg);
@@ -72,7 +72,7 @@ void() data_ini_light_laser_={
   self.fire_sound = "sound/weapons/laser_fire.ogg";
   self.model = "q3mdl/weapons/w_laser.md3";
   self.abbrev = "LAS";
-  self.description = "+ Instant-impact weapon. + bonus damage  against <shields>.";
+  self.description = "+ Instant-impact weapon. + bonus damage against <shields>.";
   self.icon = "gfx/ui/wep_icons/wi_las.png";
   self.itemMuzzleFlash = te_muzzle_las;
 #endif
@@ -86,8 +86,6 @@ void() data_ini_light_laser_={
 
 #ifdef SSQC
 void() data_ini_attack_laser_={
-  local float damage;
-  
   if( !ctrl_weapon_checkEnergy() ){
     return;
   }

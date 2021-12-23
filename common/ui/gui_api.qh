@@ -6,8 +6,12 @@ Overview:
   GUI API header
 */
 
+#ifdef MENUQC
 vector VIEW_MPOS;
 vector VIEW_ACT;  //todo - deprecate
+#endif
+
+#ifndef MENUQC
 vector cursorpos;
 vector cursorImageSize;
 
@@ -17,12 +21,19 @@ string PLAYER_COLOR_PSC;
 string PLAYER_COLOR_SRV;
 string PLAYER_COLOR_MIL;
 
+float HUD_ALPHA;
+#endif
+
 float FONT_NUM_ROBOT_LIGHT;
 float FONT_NUM_ROBOT_THIN;
 float FONT_NUM_ROBOT_REGULAR;
 float FONT_NUM_ROBOT_MEDIUM;
 float FONT_NUM_DYSTOPIAN;
+
+#ifdef MENUQC
 float FONT_NUM_XOLONIUM_BOLD;
+#endif
+
 float drawfont_prev;
 
 
@@ -43,9 +54,6 @@ float UI_ASPECT;
 float VIEW_WIDTH;
 float VIEW_HEIGHT;
 float VIEW_PIXELH;
-
-float UI_WIDTH;
-float UI_HEIGHT;
 
 #define VIEW_TOP 1
 #define VIEW_BOT 2
@@ -71,11 +79,9 @@ float UI_HEIGHT;
 #define OBJ_SLIDER 2
 #define OBJ_LIST 3
 
-float PAT_BAR = 1;
-float PAT_SPH = 2;
-float PAT_BOX = 3;
-float HUD_ALPHA;
-
+#define PAT_BAR 1
+#define PAT_SPH 2
+#define PAT_BOX 3
 
 //UI ELEMENT FLAGS - orig menu_api
 #define UI_FLAG_NOLABEL        1     //don't render label
@@ -153,8 +159,6 @@ void(string msg, float val, string split, float val2) cons_log2Float;
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
 
-
-float TXT_INPUT_SHIFT; //detect shift input
 float TXT_INPUT_FILTER_MAX = 111;
 float TXT_INPUT_FILTER[TXT_INPUT_FILTER_MAX];  //filter out these chars;
 

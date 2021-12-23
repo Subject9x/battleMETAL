@@ -7,8 +7,6 @@ Overview:
   This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
 */
 
-entity ENTITY_FOG_TOUCH;
-
 void() map_changefog_touch={
   
   if( (other.flags & FL_CLIENT) ){

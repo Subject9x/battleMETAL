@@ -18,8 +18,8 @@ void() te_muzzle_rck={
   local vector startOrg;
   local vector endOrg;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
-  traceline(startOrg, startOrg + (v_forward * self.w_range), FALSE, self.owner);
+  startOrg = self.wepFireOffset;
+  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
   pointsound( startOrg, "sound/weapons/rckt_fire.ogg", 1, ATTN_NORM);

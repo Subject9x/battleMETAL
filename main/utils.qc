@@ -167,10 +167,10 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
 vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc ) util_applySpreadToTrace={
+  //local vector direction; //shot dispersion disabled
+  //local vector acc;
   local vector wepAim;
-  local vector direction;
   local vector src;
-  local vector acc;
   local vector adj;
   local vector targVel;
   
@@ -576,7 +576,7 @@ void() BecomeExplosion={
   makevectors( self.angles );
   //TODO - replace
   //te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
-  
+  precache_sound("sound/fx_boom.ogg");
   sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
   self.deadflag = DEAD_DEAD;
 	self.movetype = MOVETYPE_NONE;

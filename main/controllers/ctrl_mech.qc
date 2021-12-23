@@ -24,12 +24,21 @@ void() ctrl_update_mechplayer={
   
   //damage-based cosmetics for unit component pieces
   piece = self.partNext;
-  self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y);
-  self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y);
-  self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y);
-  self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
-  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
-  
+  makevectors(self.angles);
+  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
+    self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y) + (v_forward * self.torsoLeft.compAltOffset_z);
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
+    self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y) + (v_forward * self.torsoRight.compAltOffset_z);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+    self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y) + (v_forward * self.armRight.compAltOffset_z);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+    self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y) + (v_forward * self.armLeft.compAltOffset_z);
+  }
+  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y) + (v_forward * self.torsoCenter.compAltOffset_z);
+
   newBurn = 0;
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
@@ -70,13 +79,23 @@ void() ai_ctrl_update_mechplayer={
     ctrl_weapon_think_ai(wep);
     wep = wep.w_slot;
   }
+  makevectors(self.angles);
   //damage-based cosmetics for unit component pieces
-  self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y);
-  self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y);
-  self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y);
-  self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
-  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
-  
+  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
+    self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y) + (v_forward * self.torsoLeft.compAltOffset_z);
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
+    self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y) + (v_forward * self.torsoRight.compAltOffset_z);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+    self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y) + (v_forward * self.armRight.compAltOffset_z);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+    self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y) + (v_forward * self.armLeft.compAltOffset_z);
+  }
+  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y) + (v_forward * self.torsoCenter.compAltOffset_z);
+
+
   for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
     if( piece.classname != MECH_PIECE ){
       continue;
@@ -99,7 +118,6 @@ void() ai_ctrl_update_mechplayer={
 };
 
 void() ctrl_updateCenterTorso={
-  local float diff;
   local float mx, my;
   local float rate;
   local vector laserHit;
@@ -157,10 +175,8 @@ void() ctrl_updateCenterTorso={
 };
 
 void() ai_ctrl_updateCenterTorso={
-  local float diff;
   local entity cam;
   local vector v1;
-  local float myShield;
   
   makevectors(self.torsoCenter.angles);
   v1 = self.origin + (v_right * cam.compOffset_x) + (v_up*cam.compOffset_y) + (v_forward*cam.compOffset_z);
@@ -179,42 +195,60 @@ void() ai_ctrl_updateCenterTorso={
 void() ctrl_unit_update_frame={
   local float diff;
   local float myShield;
+  local float lastShield;
+  local float lastEne;
   
-  if( (self.flags & FL_CLIENT) ){
-    if( time > self.count4 ){
-      self.count4 = time + 0.1;
-      if( self.energy > -1 ){
+  if( time > self.energyRegenTimer ){
+    self.energyRegenTimer = time + 0.1;
+    lastEne = self.energy;
+    if( (self.flags & FL_CLIENT) ){
+      if( (self.unitModFlags & MOD_HEAT_NOT_ENERGY)){
+        diff = self.energyRate;
+        if( self.moveState == MOVE_SPRINT ){
+          diff = diff + self.evasionDrain;
+        }
+        self.energy = self.energy - diff;
+      }
+      else{
+        //vanilla battleMETAL
         diff = self.energyRate;
         if( self.moveState == MOVE_SPRINT ){
           diff = diff - self.evasionDrain;
         }
         self.energy = self.energy + diff;
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ENERGY;
-      }  
-      if(self.shield < self.shieldMax){
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
-        if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-          if(self.energy > 0){
-            self.shield = self.shield + self.shieldRate;
-            self.energy = self.energy - self.shieldRate;
-            if(self.shield > self.shieldMax){
-              self.shield = self.shieldMax;
+      }
+      if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+        lastShield = self.shield;
+        if(self.shield < self.shieldMax){
+          if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+            if(self.energy > 0){
+              self.shield = self.shield + self.shieldRate;
+              self.energy = self.energy - self.shieldRate;
             }
           }
         }
+        self.shield = bound(0, self.shield, self.shieldMax);
+        if( lastShield != self.shield ){
+          //only send delta.
+          self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
+        }
       }
-      if(self.energy < 0){
-        self.energy = 0;
-      }
-      else if(self.energy > self.energyMax){
-        self.energy = self.energyMax;
+      self.energy = bound(0, self.energy, self.energyMax);
+      if( lastEne != self.energy){
+        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ENERGY;
       }
     }
-  }
-  else{
-    if( time > self.count4 ){
-      self.count4 = time + 0.1;
-      if( self.energy > -1 ){
+    else{
+      //AI
+      if( (self.unitModFlags & MOD_HEAT_NOT_ENERGY)){
+        diff = self.energyRate;
+        if( self.moveState == MOVE_SPRINT ){
+          diff = diff + self.evasionDrain;
+        }
+        self.energy = self.energy - diff;
+      }
+      else{
+        //vanilla battleMETAL
         diff = self.energyRate;
         if( self.moveState == MOVE_SPRINT ){
           diff = diff - self.evasionDrain;
@@ -222,40 +256,34 @@ void() ctrl_unit_update_frame={
         self.energy = self.energy + diff;
       }
       
-      if( time <= self.shieldHitRegen ) {
-        myShield = self.shieldHitRegen - self.shieldHitRegenStart;
-        myShield = (time - self.shieldHitRegenStart) / myShield;
-        self.stat_client_shield =  100 - (myShield * 100) + 100;
-      }
-      else{
-        if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
-          if(self.shield < self.shieldMax){
-            if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-              if(self.energy > 0){
-                self.shield = self.shield + (self.shieldRate * 0.5);
-                self.energy = self.energy - (self.shieldRate * 2);
-                if(self.shield > self.shieldMax){
-                  self.shield = self.shieldMax;
+      if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+        lastShield = self.shield;
+        if( time <= self.shieldHitRegen ) {
+          myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+          myShield = (time - self.shieldHitRegenStart) / myShield;
+          self.stat_client_shield =  100 - (myShield * 100) + 100;
+        }
+        else{
+          if( !(self.damageValue & (M_TOR_LEFT|M_TOR_RIGHT))){
+            if(self.shield < self.shieldMax){
+              if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+                if(self.energy > 0){
+                  self.shield = self.shield + (self.shieldRate * 0.5);
+                  self.energy = self.energy - (self.shieldRate * 2);
                 }
               }
             }
           }
+          self.stat_client_shield = (self.shield / self.shieldMax) * 100;
         }
-        self.stat_client_shield = (self.shield / self.shieldMax) * 100;
+        self.shield = max(0, self.shield);
       }
-
-      if(self.energy < 0){
-        self.energy = 0;
-      }
-      else if(self.energy > self.energyMax){
-        self.energy = self.energyMax;
+      self.energy = bound(0, self.energy, self.energyMax);
+      if( lastEne != self.energy){
+        self.SendFlags = self.SendFlags | SENDFLAG_ENERGY;
       }
     }
   }
-
-
-
-
 };
 
 /*
@@ -271,12 +299,21 @@ void() ctrl_mech_die_player={
     ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
-  ctrl_unit_part_death(self.torsoCenter);
-  ctrl_unit_part_death(self.torsoLeft);
-  ctrl_unit_part_death(self.torsoRight);
-  ctrl_unit_part_death(self.armLeft);
-  ctrl_unit_part_death(self.armRight);
   
+  ctrl_unit_part_death(self.torsoCenter);
+  
+  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
+    ctrl_unit_part_death(self.torsoLeft);
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
+    ctrl_unit_part_death(self.torsoRight);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+    ctrl_unit_part_death(self.armLeft);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+    ctrl_unit_part_death(self.armRight);
+  }
   //ensures only new weapon data coming upstream is written.
   self.nextVecChoice = 0;
   self.next_wepn1 = 0;
@@ -305,7 +342,7 @@ void() ctrl_component_die={
     return;
   }
   piece = self;
-  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN && (self.unitModFlags & self.partTypeId) ){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 33, (self.owner.vec_size / 10) + 0.33);
   }
   self.owner.critBits = self.owner.critBits | self.partTypeId;
@@ -316,18 +353,22 @@ void() ctrl_component_die={
   self.health = 0;
 
   if( self.partTypeId == M_TOR_LEFT ){
-    self.owner.armLeft.think = self.owner.armLeft.th_die;
-    self.owner.armLeft.nextthink = time + 0.1;
-    self.owner.armLeft.realowner = self.owner;
-    if( (self.owner.critBits & (M_TOR_RIGHT | M_ARM_RIGHT) ) ){
+    if( (self.owner.unitModFlags & MOD_HAS_ARM_L) ){
+      self.owner.armLeft.think = self.owner.armLeft.th_die;
+      self.owner.armLeft.nextthink = time + 0.1;
+      self.owner.armLeft.realowner = self.owner;
+    }
+    if( (self.owner.critBits & (M_TOR_RIGHT | M_ARM_RIGHT)) && (self.owner.unitModFlags & MOD_HAS_SHIELD) ){
       self.owner.shieldMax = self.owner.shieldMax * 0.5;
     }
   }
   else if( self.partTypeId == M_TOR_RIGHT ){
-    self.owner.armRight.think = self.owner.armRight.th_die;
-    self.owner.armRight.nextthink = time + 0.1;
-    self.owner.armRight.realowner = self.owner;
-    if( (self.owner.critBits & (M_TOR_LEFT | M_ARM_LEFT) ) ){
+    if( (self.owner.unitModFlags & MOD_HAS_ARM_R) ){
+      self.owner.armRight.think = self.owner.armRight.th_die;
+      self.owner.armRight.nextthink = time + 0.1;
+      self.owner.armRight.realowner = self.owner;
+    }
+    if( (self.owner.critBits & (M_TOR_LEFT | M_ARM_LEFT)) && (self.owner.unitModFlags & MOD_HAS_SHIELD) ){
       self.owner.shieldMax = self.owner.shieldMax * 0.5;
     }
   }
@@ -363,7 +404,7 @@ void() ctrl_arm_die={
   if( self.deadflag != DEAD_NO ){
     return;
   }
-  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN && (self.owner.unitModFlags & self.partTypeId) ){
     te_vehicle_chunk(self, '0 0 0', '0 0 0', particleeffectnum("TE_DEBRIS_TRAIL_MED"), self.owner.vec_size * 25, (self.owner.vec_size / 10) + 0.25);
   }
   

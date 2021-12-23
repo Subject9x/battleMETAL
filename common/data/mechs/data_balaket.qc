@@ -13,12 +13,16 @@ Overview:
   Register this in <world_ext_c>
 */
 void() data_ini_balaket_={
-
+  
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_MECH_balaket;
   self.vec_size = 1;
   self.vec_name = "Balaket";
- 
+  
+  //Center Torso Health / player central health.
   self.max_health = 500;
+  
+  //Hitbox size, X width, Y Length, Z height.
   self.mins = '-18 -18 -35';
   self.maxs = '18 18 16';
   
@@ -34,24 +38,25 @@ void() data_ini_balaket_={
 //RADAR================================
   self.radar_range = 1600;
   self.w_firetime = 4;  // lock-on time in seconds
-  self.spreadDefault = ACCURACY_SKIRMISH;
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 185;
-  self.data_speed_strafe = 120;
-  self.data_speed_backward = 90;
-  self.data_speed_accel = 2;
+  self.data_speed_forward = 185.0;
+  self.data_speed_strafe = 120.0;
+  self.data_speed_backward = 90.0;
+  self.data_speed_accel = 2.0;
   self.ramUpMax = 2;
   self.ramCooldown = 6;
 #ifdef CSQC
+  //animation playback sync to player move speed.
   self.legMoveRate = 9.5;
   self.legRunRate = 12;
 #endif
 #ifdef SSQC
-  //self.yaw_speed = 3.75;    // AI-only 
-  self.yaw_speed = 5;    // AI-only 
-  self.turret_yaw_speed = 4.25;// AI-only
+  //AI-only Server values.
+  self.spreadDefault = ACCURACY_SKIRMISH;
+  self.yaw_speed = 5;
+  self.turret_yaw_speed = 4.25;
   self.ai_angleLimits = '-175 175 0';
   if( (self.flags & FL_MONSTER) ){
     self.data_speed_accel = 0.025;
@@ -88,31 +93,12 @@ void() data_ini_balaket_={
 //=====================================
  
 //HARDPOINTS==========================
-#ifdef SSQC
-  data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  data_ini_unitHardpoint_4( M_TOR_LEFT, '-7.85 7.0 6.0', '0 0 0', 1, DMG_MSC );
-  data_ini_unitHardpoint_5( M_TOR_RIGHT, '7.85 7.0 6.0', '0 0 0', 2, DMG_MSC );
-#endif
-#ifdef CSQC
-  //client arms can aim up and down, so we bolt the weapons directly to the parent
-  //bad, late-in-the-game hack frauds
-  //see predraw_player_weapon()
-  if((self.flags&FL_CLIENT)){
-    data_ini_unitHardpoint_1( M_ARM_LEFT, '-2 -6.25 4', '0 0 -90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_2( M_ARM_RIGHT, '2 -6.25 4', '0 0 90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
-  }
-  else{
-    data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
-    data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', (BAL1 | BAL2 | ENE1 | ENE2), (DMG_BAL | DMG_ENE) );
-  }
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3), (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
-  data_ini_unitHardpoint_4( M_TOR_LEFT, '-7.85 7.0 6.0', '0 0 0', MSC1, DMG_MSC );
-  data_ini_unitHardpoint_5( M_TOR_RIGHT, '7.85 7.0 6.0', '0 0 0', (MSC2|MSC3), DMG_MSC );
-#endif
+  data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90',(BAL1 | BAL2 | ENE1 | ENE2) );
+  data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', (BAL1 | BAL2 | ENE1 | ENE2) );
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3) );
+  data_ini_unitHardpoint_4( M_TOR_LEFT, '-7.85 7.0 6.0', '0 0 0', MSC1 );
+  data_ini_unitHardpoint_5( M_TOR_RIGHT, '7.85 7.0 6.0', '0 0 0', (MSC1|MSC2|MSC3) );
 //=====================================
-
 
 //HUD DATA=============================
 #ifdef CSQC
@@ -136,6 +122,7 @@ void() data_ini_balaket_={
   self.description = "A primitive combat platform, BALAKETs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. | | BALAKET units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. | | They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
   self.icon = "gfx/ui/mech_icons/icon_balaket.png";
   
+  //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
   hardpnt.uiOffset = '-85 25'; //#1

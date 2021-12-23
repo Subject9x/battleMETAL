@@ -16,8 +16,6 @@ float TINT_LA;
 float TINT_RA;
 float TINT_LG;
 
-float SETUP_SHOW_COLOR_GRID;
-float SETUP_COLOR_GRID_PICK;
 float SETUP_COLOR_PART_SELECTED;
 
 //Main Menu Globals

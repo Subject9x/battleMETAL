@@ -281,7 +281,6 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
   
   local float celSize;
   local float i;
-  local float j;
   
   cols = floor(siz_x / 16);
   rows = floor(siz_y / 16);

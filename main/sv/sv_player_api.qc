@@ -87,14 +87,17 @@ void() PlayerPreThink = {
 	if (time < self.pausetime)
 		self.velocity = '0 0 0';
   
-  if( !self.button8 ){
-    if( self.moveState > 0 ){
-      self.moveState = 0;
-      if( time > self.ramCharge ){
-        self.ramAngle_y = self.v_angle_y;
+  if( (self.unitModFlags & MOD_HAS_RAMSHOCKS)){
+    if( !self.button8 ){
+      if( self.moveState > 0 ){
+        self.moveState = 0;
+        if( time > self.ramCharge ){
+          self.ramAngle_y = self.v_angle_y;
+        }
       }
     }
   }
+  
   if( !self.button9 ){
     if( self.viewzoom < 1 ){
       self.viewzoom = self.viewzoom + 0.25;
@@ -251,37 +254,39 @@ void() PlayerPostThink = {
     self.jump_flag = 0;
   }
 
-  if( time > self.ramCool ){
-    if( self.moveState > MOVE_NORM ){
-      if(self.movement_x > 0 && self.movement_y == 0 ){
-        if( self.energy > (self.energyMax * 0.15)){
-          if( self.ramUp < self.ramUpMax ){
-            self.ramUp = self.ramUp + self.data_speed_accel * MOVE_RAM_SCALAR_UP;
+  if(  (self.unitModFlags & MOD_HAS_RAMSHOCKS) ){
+    if( time > self.ramCool ){
+      if( self.moveState > MOVE_NORM ){
+        if(self.movement_x > 0 && self.movement_y == 0 ){
+          if( self.energy > (self.energyMax * 0.15)){
+            if( self.ramUp < self.ramUpMax ){
+              self.ramUp = self.ramUp + self.data_speed_accel * MOVE_RAM_SCALAR_UP;
+            }   
           }   
-        }   
+        }
+        else{
+          self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
+        }
       }
       else{
-        self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
+          self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
+      }
+      if( self.ramUp < 0 ){
+        self.ramUp = 0;
       }
     }
-    else{
-        self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
+    if( time <= self.ramCharge ){
+      self.moveState = MOVE_RAM_CHARGE;
     }
-    if( self.ramUp < 0 ){
+    else if( time <= self.ramCool ){
       self.ramUp = 0;
+      self.moveState = MOVE_RAM_COOL;
     }
-  }
-  if( time <= self.ramCharge ){
-    self.moveState = MOVE_RAM_CHARGE;
-  }
-  else if( time <= self.ramCool ){
-    self.ramUp = 0;
-    self.moveState = MOVE_RAM_COOL;
-  }
-  else{
-    self.ramTracker = (self.ramUp / self.ramUpMax);
-    if(self.ramTracker > 1 ){
-      self.ramTracker = 1;
+    else{
+      self.ramTracker = (self.ramUp / self.ramUpMax);
+      if(self.ramTracker > 1 ){
+        self.ramTracker = 1;
+      }
     }
   }
   
@@ -582,7 +587,8 @@ void() PlayerJump={
 	if (self.flags & FL_WATERJUMP)
 		return;
 	
-	if (self.waterlevel >= 2){
+  //Quake 1 water detection / SFX disabled for now.
+	/*if (self.waterlevel >= 2){
 		if (self.watertype == CONTENT_WATER)
 			self.velocity_z = 100;
 		else if (self.watertype == CONTENT_SLIME)
@@ -600,7 +606,7 @@ void() PlayerJump={
 				sound (self, CHAN_BODY, "misc/water2.wav", 1, ATTN_NORM);
 		}
 		return;
-	}
+	}*/
 
 	if (!(self.flags & FL_ONGROUND))
 		return;

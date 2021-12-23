@@ -15,12 +15,13 @@ Overview:
 */
 void() data_ini_onnek_={
 
+  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   self.data_idx = UID_VEHICLE_onnek;  //
   self.vec_size = 2;  //
   self.vec_name = "Onnek";
  
   self.max_health = 300;
-  setsize(self, '-30 -30 -10.25', '30 30 28');
+  setsize(self, '-28 -28 -9', '28 28 28');
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   
 //ENERGY AND SHIELDS===================
@@ -55,10 +56,10 @@ void() data_ini_onnek_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_LEGS, '7.25 1 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_2( M_LEGS, '7.25 3.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_3( M_LEGS, '7.25 6 11', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_4( M_LEGS, '7.25 8.5 10', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_1( M_LEGS, '7.25 1 12', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_LEGS, '7.25 3.5 12', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_3( M_LEGS, '7.25 6 11', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_4( M_LEGS, '7.25 8.5 10', '0 0 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

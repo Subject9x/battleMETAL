@@ -1,10 +1,14 @@
 /*
 battleMETAL
 Author: Peter Roohr
-Date: 05/28/2019
+Date: 12/07/2021
 Overview: 
-    Implements any 'data' related functions here,
-    many depending on common/data/
+  concatenating CSQC and SVQC data_systems into a single file (CSQC extensions will chain off of this later.)
+  
+  it never made sense to have these two be copies of each other.
+  
+  implements functions in /common/data/data_header.qc
+  
 */
 
 /*
@@ -37,10 +41,15 @@ void(float mech_id) initialize_data_mech_={
       break;
     default :
       dprint(strcat("main.data_system.initialize_data_mech_()-Error: failed to build mech with id", ftos(mech_id),"\n"));
-      remove(self);
+      #ifdef SSQC
+        remove(self);
+      #endif
       return;
   }
+  data_validate_mod_flags(self);
+  #ifdef SSQC
   build_mech_unit();
+  #endif
 };
 
 /*
@@ -75,12 +84,15 @@ void(float vec_id) initialize_data_vehicle_={
       //break;
     default :
       dprint(strcat("Error: failed to build vehicle with id", ftos(vec_id)),"\n");
-      remove(self);
+      #ifdef SSQC
+        remove(self);
+      #endif
       return;
   }
-  build_vehicle_unit();
+  #ifdef SSQC
+    build_vehicle_unit();
+  #endif
 };
-
 
 /*
   SCOPE: self = turret in question
@@ -106,12 +118,15 @@ void(float vec_id) initialize_data_turret_={
       break;
     default:
       cons_logAFloat("Error: failed to build turret with id", vec_id);
-      remove(self);
+      #ifdef SSQC
+        remove(self);
+      #endif
       return;
   }
-  build_turret_unit();
+  #ifdef SSQC
+    build_turret_unit();
+  #endif
 };
-
 
 /*
   SCOPE: self = weapon in question
@@ -167,8 +182,8 @@ void(float wep_id) initialize_data_item_={
     case UID_ITEM_missile_swarm:
       data_ini_missile_swarm_();
       return;
-    case UID_ITEM_target_module:
-      data_ini_equip_target_module_();
+    case UID_ITEM_adv_reload:
+      data_ini_equip_adv_reload_();
       return;
     case UID_ITEM_energy_battery:
       data_ini_equip_energy_battery_();
@@ -176,8 +191,8 @@ void(float wep_id) initialize_data_item_={
     case UID_ITEM_shield_emitter:
       data_ini_equip_shield_emitter_();
       return;
-    case UID_ITEM_large_sensors:
-      data_ini_equip_sensor_array_();
+    case UID_ITEM_heatsink:
+      data_ini_equip_heatsink_();
       return;
     case UID_ITEM_shield_capacitor:
       data_ini_equip_shield_capacitor_();
@@ -190,3 +205,4 @@ void(float wep_id) initialize_data_item_={
       return;
   }
 };
+

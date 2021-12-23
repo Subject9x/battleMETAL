@@ -36,7 +36,6 @@ void( vector rootTop ) menu_connect_render_coop={
   COOP INFO PANELS
 */
 void( vector menuOrg ) menu_connect_draw_mission_info_coop={
-  local string serverName;
   local string serverMsnName;
   
   local vector fontsStyle;

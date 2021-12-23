@@ -64,9 +64,7 @@ void() data_vehicle_wreck_predraw={
   Vehicle wrecks now client-side to optimize server traffic.
 */
 void() data_vehicle_wreck={
-  local vector minc,maxc;
   local entity shell;
-  local vector impact;
   
   makevectors(self.angles);
   shell = spawn();

@@ -37,7 +37,6 @@ float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
 //GLOBALS
 vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
 vector selfSensorOrg;
-vector orgCheckNode;    //discard _z
 
 entity lastNode;        //minor optimization for assigning ai_nodes for patrols by reducing lookup times.
 
@@ -182,7 +181,6 @@ float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
 
 //AI MAP FUNCS
-void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
 
 ////////////////////////////////
 //AI VOICE STUFF - ai_voice.qc

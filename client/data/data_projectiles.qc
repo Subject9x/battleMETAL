@@ -83,7 +83,7 @@ void() predraw_missile={
 };
 
 void() predraw_plasma={
-  local float tScale;
+  //local float tScale;
   if( self.impactType == IMPACT_ARMOR ){
     self.alpha = 0.33;
     self.scale = 0.33;

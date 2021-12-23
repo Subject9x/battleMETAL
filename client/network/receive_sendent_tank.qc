@@ -57,8 +57,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   local float pclEffect;
   local vector turretAng;
   local string newName;
-  local entity parent;
-  local float prevAttackFlag;
   local float prevDeadFlag;
   local float voiceId;
   
@@ -194,11 +192,16 @@ void() interpolate_tank={
 	setorigin(self, self.origin);
   
   parent = self;
-  makevectors(self.angles);
+  
+  GetAlignedSurfaceAngles(self);
   
   if( self.torsoCenter != world ){
+    saved = self.angles;
+    saved_x = 0;
+    makevectors(saved);
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+      self.angles_x = parent.angles_x;
     self = parent;
   }
   
@@ -206,13 +209,17 @@ void() interpolate_tank={
   while( (wepn != world) ){
     self = wepn;
       if( self.partParentId == M_LEGS ){
-        makevectors(parent.angles);
+        saved = parent.angles;
+        saved_x = 0;
+        makevectors(saved);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
         saved = parent.origin + saved;
         self.angles = parent.angles + self.w_adj_ang;
       }
       else{
-        makevectors(parent.torsoCenter.angles);
+        saved = parent.torsoCenter.angles;
+        //saved_x = 0;
+        makevectors(saved);
         saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
         saved = parent.torsoCenter.origin + saved;
         self.angles = parent.torsoCenter.angles + self.w_adj_ang;

@@ -12,7 +12,7 @@ Overview:
 */
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshairs={
   //convergence
-  local vector spr_h, hitclr, lckclr;
+  local vector spr_h, hitclr;
   local vector acc_left, acc_right, acc_up, acc_dn;
   local vector drift;
   
@@ -124,7 +124,7 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
   RENDER SHIELD METER
 */
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient, vector mColor) hud_renderShield={
-  local vector meterSize, label_org;
+  local vector meterSize;
   local vector meterColor;
   local float scopeVal;
   local vector iconOrg;
@@ -190,7 +190,7 @@ void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl
   RENDER ENERGY METER
 */
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, vector mColor) hud_renderEnergy={
-  local vector meterSize, label_org;
+  local vector meterSize;
   local vector iconOrg;
   local vector iconSize;
   
@@ -359,15 +359,17 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
     }*/
     
     wepState = '1 1 1';
-    if(theWeapon.reloadValue < 100){
-      //weapon reloading
-      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
-    }
-    if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
-      wepState = CLR_DEF_WEP_LOWENG;
-    }
-    if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
-      wepState = CLR_DEF_ARM_DED;
+    if( theWeapon.equipSize < MSC1 ){
+      if(theWeapon.reloadValue < 100){
+        //weapon reloading
+        wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+      }
+      if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
+        wepState = CLR_DEF_WEP_LOWENG;
+      }
+      if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
+        wepState = CLR_DEF_ARM_DED;
+      }
     }
   }
   else{
@@ -420,15 +422,17 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
       wepState = CLR_DEF_WHITE;  
     }*/
     wepState = '1 1 1';
-    if(theWeapon.reloadValue < 100){
-      //weapon reloading
-      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
-    }
-    if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
-      wepState = CLR_DEF_WEP_LOWENG;
-    }
-    if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
-      wepState = CLR_DEF_ARM_DED;
+    if( theWeapon.equipSize < MSC1 ){
+      if(theWeapon.reloadValue < 100){
+        //weapon reloading
+        wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+      }
+      if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
+        wepState = CLR_DEF_WEP_LOWENG;
+      }
+      if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
+        wepState = CLR_DEF_ARM_DED;
+      }
     }
   }
   else{
@@ -711,7 +715,7 @@ void( entity box ) hud_renderHighlight={
   Renders the RAM-SHOCKS charge up meter and ram state for the player.
 */
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram={
-  local vector meterSize, label_org, ramPos;
+  local vector meterSize, ramPos;
   local vector ramColor;
   local vector iconOrg;
   local string ramIcon;
@@ -1006,7 +1010,6 @@ void() data_hud_fps_cam={
   local float objid, algn, lflag, lalign, axis, wbit;
   local vector porg, vsize, lblofs;
   local vector color2;
-  local vector wep;
   
   hasTarget = FALSE;
   if( CLIENT_stat_trg_dataidx > 0 ){

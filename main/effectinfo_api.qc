@@ -166,7 +166,6 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
 void( vector org, vector angl, vector vel, float total, float debrType ) te_debris_armor={
   local float totals;
   local string debrisMdl;
-  local float trailNum;
   local vector back;
   
   //<sigh> these little buggers dump on the net traffic.

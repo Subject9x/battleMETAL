@@ -15,6 +15,7 @@ dp/dpextensions.qc  //DPExtensions that most of the magic work.
   common/data/defs/defs_item.qc       //all fields related to items.
   common/data/defs/defs_projectile.qc //all fields related to projectiles.
   common/data/defs/defs_world.qh     //world server / rules entity
+  common/data/data_mod_flags.qc
 //================================
 
 qsrc/headers/subs.qh
@@ -135,14 +136,14 @@ main/controllers/headers/controllers.qh
   common/data/item/equip/data_equip_shield_capacitor.qc
   common/data/item/equip/data_equip_energy_battery.qc
   common/data/item/equip/data_equip_recharge_capacitor.qc
-  common/data/item/equip/data_equip_sensor_array.qc
+  common/data/item/equip/data_equip_heatsink.qc
   common/data/item/equip/data_equip_shield_emitter.qc
-  common/data/item/equip/data_equip_target_module.qc
+  common/data/item/equip/data_equip_adv_reload.qc
   common/data/item/equip/data_equip_turbo_charger.qc
   //-------------------------------
 //================================
   dp/subs.qc  
-  main/data_system.qc
+  common/data/data_system.qc
 
 //Custom battleMETAL Functionality
 //AI Module---------------------
@@ -248,7 +249,6 @@ qsrc/triggers.qc
   
   //models quake c
   main/models/models_leg.qc
-  main/models/models_ctor.qc
   
   //effects
   main/effectinfo_api.qc

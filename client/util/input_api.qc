@@ -116,7 +116,7 @@ void() input_key_impulse_hud_chase_toggle={
   }
   else{
     if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
-      return TRUE;
+      return;
     }
     ui_data_load_hud( 0 );
     

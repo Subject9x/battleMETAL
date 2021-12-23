@@ -11,8 +11,6 @@ Overview: client utility methods, pulled from client.qc
   This pushes client data to the owner, every PostPlayerThink() call.
 */
 void() client_push_player_info={
-  local entity wep;
-  local float wepItr;
   local float targShield;
   local float myShield;
   
@@ -20,52 +18,76 @@ void() client_push_player_info={
   if(self.data_type == DATA_MECH){
     self.stat_client_energy = (self.energy / self.energyMax) * 100;
     
-    if( time <= self.shieldHitRegen ) {
-      myShield = self.shieldHitRegen - self.shieldHitRegenStart;
-      myShield = (time - self.shieldHitRegenStart) / myShield;
-      myShield =  100 - (myShield * 100) + 100;
-    }
-    else{
-      myShield = self.shield;
-      if( myShield <= 0 ){
-        myShield = 0;
+    if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+      if( time <= self.shieldHitRegen ) {
+        myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+        myShield = (time - self.shieldHitRegenStart) / myShield;
+        myShield =  100 - (myShield * 100) + 100;
       }
       else{
-        myShield = (self.shield / self.shieldMax) * 100;
+        myShield = self.shield;
+        if( myShield <= 0 ){
+          myShield = 0;
+        }
+        else{
+          myShield = (self.shield / self.shieldMax) * 100;
+        }
       }
+      self.stat_client_shield = myShield;
     }
-    self.stat_client_shield = myShield;
     
     self.stat_client_hp_torsoCenter = csqc_updateCompStat(self);
-    self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
-    self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
-    self.stat_client_hp_armLeft = csqc_updateCompStat(self.armLeft);
-    self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
+    
+    if( (self.unitModFlags & MOD_HAS_TOR_L) ){
+      self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
+    }
+    if( (self.unitModFlags & MOD_HAS_TOR_R) ){
+      self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
+    }
+    
+    if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+      self.stat_client_hp_armLeft = csqc_updateCompStat(self.armLeft);
+    }
+    
+    if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+      self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
+    }
+    
     self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
     
     if( self.targetEntId != 0 ){
       //this is silly but precludes forcing the csqc to know the target's max shields
-      if( time <= self.enemy.shieldHitRegen ) {
-        targShield = self.enemy.shieldHitRegen - self.enemy.shieldHitRegenStart;
-        targShield = (time - self.enemy.shieldHitRegenStart) / targShield;
-        targShield =  100 - (targShield * 100) + 100;
-      }
-      else{
-        targShield = self.enemy.shield;
-        if( targShield <= 0 ){
-          targShield = 0;
+      if( (self.enemy.unitModFlags & MOD_HAS_SHIELD) ){
+        if( time <= self.enemy.shieldHitRegen ) {
+          targShield = self.enemy.shieldHitRegen - self.enemy.shieldHitRegenStart;
+          targShield = (time - self.enemy.shieldHitRegenStart) / targShield;
+          targShield =  100 - (targShield * 100) + 100;
         }
         else{
-          targShield = (self.enemy.shield / self.enemy.shieldMax) * 100;
+          targShield = self.enemy.shield;
+          if( targShield <= 0 ){
+            targShield = 0;
+          }
+          else{
+            targShield = (self.enemy.shield / self.enemy.shieldMax) * 100;
+          }
         }
+        
+        self.stat_target_shield = targShield;
       }
-      
-      self.stat_target_shield = targShield;
       self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy);
-      self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torsoLeft);
-      self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torsoRight);
-      self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armLeft);
-      self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armRight);
+      if( (self.enemy.unitModFlags & MOD_HAS_TOR_L) ){
+        self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torsoLeft);
+      }
+      if( (self.enemy.unitModFlags & MOD_HAS_TOR_R) ){
+        self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torsoRight);
+      }
+      if( (self.enemy.unitModFlags & MOD_HAS_ARM_L) ){
+        self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armLeft);
+      }
+      if( (self.enemy.unitModFlags & MOD_HAS_ARM_R) ){
+        self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armRight);
+      }
       self.stat_target_hp_legs = csqc_updateCompStat(self.enemy.legs);
     }
     else{

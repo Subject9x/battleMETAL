@@ -15,8 +15,6 @@ entity new_veteran;
 entity new_elite;
 entity new_back;
 
-float newgame_rollover;
-
 float newgame_substate;
 
 vector newgame_back_cacheOrg;
@@ -37,9 +35,7 @@ string TRAINING_LABEL;
 
 
 //Campaign Maps
-float TRAIN_MAP_LIST_TOTAL;
 entity new_camp_lbl;
-entity new_camp_train_lbl;
 entity new_camp_start_lbl;
 entity new_camp_start_btn;
 
@@ -77,7 +73,11 @@ void() click_newg_back={
 
 
 void() click_newg_launch_map={  
-  menu_write_new_save();
+  
+  if( GAME_SAVES_NEWG[cvar("saveslot")] == FALSE ){
+    menu_write_new_save();
+  }
+  
   menu_clear_items(M_STATE);
   menu_exit_togame();
   localcmd("deathmatch 0\n");
@@ -85,7 +85,13 @@ void() click_newg_launch_map={
   localcmd("coop 0\n");
   localcmd("cd stop\n");
   localcmd("maxplayers 1\n");
-  localcmd(strcat("map ", self.data_text,"\n")); 
+  
+  if( GAME_SAVES_NEWG[cvar("saveslot")] ){
+    localcmd("map o1m1\n"); 
+  }
+  else{
+    localcmd(strcat("map ", self.data_text,"\n")); 
+  }
   
   freeGlobalString(CAMP_SELECT_START)
   freeGlobalString(CAMP_SELECT_INFO)
@@ -99,9 +105,6 @@ void() click_newg_launch_map={
   allow player to skip training here.
 */
 void() click_newg_info={
-  local vector mapOrg;
-  local string subMapName;
-  
   newgame_substate = NEWGAME_BRIEF;
   new_camp_lbl.label = CAMP_SELECT_NAME;
   

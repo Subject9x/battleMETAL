@@ -26,43 +26,39 @@ void() ctrl_updateTank={
   traceline(v1, v1 + v_forward * 10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
   self.laser_sight_timer = time + 0.05;
-
-  if( time > self.count4 ){
-    self.count4 = time + 0.1;
-    if(self.energy >= 0){
+  
+  if( time > self.energyRegenTimer ){
+    self.energyRegenTimer = time + 0.1;
+    if( (self.unitModFlags & MOD_HEAT_NOT_ENERGY) ){
+      self.energy = self.energy - self.energyRate;
+    }
+    else{
       self.energy = self.energy + self.energyRate;
-      if(self.energy > self.energyMax){
-        self.energy = self.energyMax;
-      }
-    }  
-    if(self.energy < 0){
-      self.energy = 0;
     }
-    else if(self.energy > self.energyMax){
-      self.energy = self.energyMax;
-    }
+    self.energy = bound(0, self.energy, self.energyMax);
   }
   
-  if( time <= self.shieldHitRegen ) {
-    myShield = self.shieldHitRegen - self.shieldHitRegenStart;
-    myShield = (time - self.shieldHitRegenStart) / myShield;
-    self.stat_client_shield =  (100 - (myShield * 100) ) + 100;
-  }
-  else{
-    if(self.shield < self.shieldMax){
-      if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
-        if(self.energy > 0){
-          self.shield = self.shield + (self.shieldRate * 0.5);
-          self.energy = self.energy - (self.shieldRate * 2);
-          if(self.shield > self.shieldMax){
-            self.shield = self.shieldMax;
+  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+    if( time <= self.shieldHitRegen ) {
+      myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+      myShield = (time - self.shieldHitRegenStart) / myShield;
+      self.stat_client_shield =  (100 - (myShield * 100) ) + 100;
+    }
+    else{
+      if(self.shield < self.shieldMax){
+        if( (time > self.shieldHitDelay) && (time > self.shieldHitRegen) ){
+          if(self.energy > 0){
+            self.shield = self.shield + (self.shieldRate * 0.5);
+            self.energy = self.energy - (self.shieldRate * 2);
+            if(self.shield > self.shieldMax){
+              self.shield = self.shieldMax;
+            }
           }
         }
       }
+      self.stat_client_shield = (self.shield / self.shieldMax) * 100;
     }
-    self.stat_client_shield = (self.shield / self.shieldMax) * 100;
   }
-  
   self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
   self.ai_weaponEnergy = 0;
   self.currentWeaponGroup = 0;

@@ -88,7 +88,7 @@ void() data_projectile_quantum_shatter={
   self.damageValue = self.damageValue * 0.4;
   itr = 4;
   if( self.aState ){
-    itr = rint( itr * 1.5);
+    itr = rint( itr * 1.85);
   } 
   itr = 2 + rint(random() * itr);
   for(thing = findradius(self.enemy.origin, 250); thing != world; thing = thing.chain){

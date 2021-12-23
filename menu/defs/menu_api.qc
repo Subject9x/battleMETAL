@@ -575,7 +575,7 @@ void(entity pnl) render_txt_pnl={
 void(entity txt) render_textfield={
   local entity this;
   local vector org, sizzle, bclr;
-  local float fon;
+  
   if(txt.drawme){
     this = self;
     self = txt;
@@ -748,7 +748,7 @@ void() menu_scan_saves={
   local float itr;
   local string fname;
   local float flannel;
-  local float line_tag, save_skill;
+  local float line_tag, save_skill, new_gameplus;
   local string line, save_name, save_num, map_name, contents, campid;
   
   itr = 0;
@@ -760,6 +760,7 @@ void() menu_scan_saves={
     fname = strcat("saves/save_", ftos(itr), ".sav");
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
+      new_gameplus = FALSE;
       contents = fgets(flannel);
       tokenizebyseparator(contents, "{", ",", "}");
       line = fgets(flannel);
@@ -779,22 +780,33 @@ void() menu_scan_saves={
           if( argv(1) == CAMP_SAVE_TAG ){
             campid = argv(3);
           }
+          if( argv(1) == CAMP_TAG_NEWG ){
+            new_gameplus = stof(argv(3));
+          }
         }
         line = fgets(flannel);
       }
       fclose(flannel);
-      save_name = sprintf("%s) %s-%s mission: %s",save_num, gui_skillAsString(save_skill), campid, map_name);
+      
+      if(new_gameplus){
+        save_name = sprintf("%s) %s-%s : %s ng+",save_num, gui_skillAsString(save_skill), campid, "o1m1");
+      }
+      else{
+        save_name = sprintf("%s) %s-%s : %s",save_num, gui_skillAsString(save_skill), campid, map_name);
+      }
       
       cacheGlobalString( GAME_SAVES[itr], fname )
       cacheGlobalString( GAME_SAVES_DRAWNAME[itr], save_name )
       GAME_SAVES_SKILL[itr] = save_skill;
       cacheGlobalString( GAME_SAVES_MAP[itr], map_name)
+      GAME_SAVES_NEWG[itr] = new_gameplus;
     }
     else{
       GAME_SAVES_SKILL[itr] = 0;
       GAME_SAVES[itr] = "";
       GAME_SAVES_DRAWNAME[itr] = "";
       GAME_SAVES_MAP[itr] = "";
+      GAME_SAVES_NEWG[itr] = 0;
     }
     itr = itr + 1;
   }

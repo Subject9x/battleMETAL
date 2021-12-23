@@ -107,6 +107,8 @@ float ERR_BADSCALE				= -3;
 float ERR_BADSIZE				= -3; // same as ERR_BADSCALE
 float ERR_NOTCACHED				= -4;
 
+#define MENUQC
+
 //Server List 'TYPE' field -> mvm_cmds.c-Line 248
 float SLIST_HOSTCACHEVIEWCOUNT  = 0;
 float SLIST_HOSTCACHETOTALCOUNT = 1;

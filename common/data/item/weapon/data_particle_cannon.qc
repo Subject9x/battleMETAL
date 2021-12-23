@@ -22,7 +22,7 @@ void() te_muzzle_pac={
   local vector norm;
   local float impactStyle;
   
-  startOrg = self.origin + v_forward * self.wepFireOffset_z;
+  startOrg = self.wepFireOffset;
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   norm = normalize(endOrg - startOrg);
