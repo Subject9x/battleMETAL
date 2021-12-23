@@ -93,6 +93,7 @@ void() click_main_leave={
   localcmd("disconnect;\n");
   localcmd("togglemenu;\n");
   localcmd("cd play 2;\n");
+  cvar_set("cl_newgameplus", "0");
 };
 
 void() click_main_player_setup={

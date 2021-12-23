@@ -97,24 +97,24 @@
 }
 {
   'uid'     : HUD_TAG_ARM_TARGET,
-  'pos'     : 250 50 0,
+  'pos'     : 215 65 0,
   'valign'  : VIEW_RGT|VIEW_BOT,
   'lflag'   : 1,
   'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -35 -68 0,
+  'lblofs'  : -40 -68 0,
 // color2 = panel size
-  'color2'  : 96 132 0,
+  'color2'  : 96 148 0,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_VEC,
-  'pos'     : 250 50 0,
+  'pos'     : 275 50 0,
   'valign'  : VIEW_RGT|VIEW_BOT,
   'size'    : 64 28 0,
   'lflag'   : 1,
   'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -3 -55 0,
+  'lblofs'  : -10 -68 0,
 // color2 = panel size
-  'color2'  : 96 132 0,
+  'color2'  : 96 148 0,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_BLD,
@@ -125,11 +125,11 @@
   'lalign'  : VIEW_CTX|VIEW_CTY,
   'lblofs'  : -10 -48 0,
 // color2 = panel size
-  'color2'  : 96 132 0,
+  'color2'  : 96 148 0,
 }
 {
   'uid'     : HUD_TAG_SHIELD_TARGET,
-  'pos'     : 155 90 0,
+  'pos'     : 165 90 0,
   'valign'  : VIEW_RGT|VIEW_BOT,
   'size'    : 18 75 0,
   'lalign'  : VIEW_LFT|VIEW_TOP,

@@ -14,6 +14,7 @@ entity newsave_back;
 
 void() click_newsave_back={
   localsound("sound/misc/menu2.wav");
+  cvar_set("cl_newgameplus", "0");
   menu_clear_items(M_STATE);
   m_camp_f();
 };

@@ -68,6 +68,7 @@ void() click_newg_back={
     menu_clear_items(M_STATE);
     m_newsave_f();
     localsound("sound/misc/menu2.wav");
+    cvar_set("cl_newgameplus", "0");
   }
 };
 
