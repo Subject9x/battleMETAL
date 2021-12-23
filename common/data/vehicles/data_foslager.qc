@@ -21,7 +21,7 @@ void() data_ini_foslager_={
   self.vec_name = "Foslager";
  
   self.max_health = 200;
-  setsize(self, '-22 -22 -6', '22 22 26');
+  setsize(self, '-22 -22 -9', '22 22 26');
   self.flags = self.flags | (FL_TURRET | FL_MONSTER | FL_UNIT);
   
 //ENERGY AND SHIELDS===================
