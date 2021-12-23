@@ -201,15 +201,7 @@ void() interpolate_tank={
     makevectors(saved);
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      if( (self.angles_y < 315 && self.angles_y >= 225) || (self.angles_y < 135 && self.angles_y >= 45)  ){
-        self.angles_z = parent.angles_x *-1;
-      }
-      else if(self.angles_y < 225 && self.angles_y >= 135){
-        self.angles_x = parent.angles_x * -1;
-      }
-      else{
-        self.angles_x = parent.angles_x;
-      }
+      self.angles_x = parent.angles_x;
     self = parent;
   }
   
