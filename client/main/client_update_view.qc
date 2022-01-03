@@ -25,7 +25,14 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   local entity oldSelf;
   local entity eClient;
   
+  local string newText;
+  
   scoreboard_think();
+  
+  if(CHAT_INP_SEND){
+    freeGlobalString(CHAT_INP_VAL)
+    CHAT_INP_SEND = FALSE;
+  }
   
   if(ISMENU_PREV != menuView){
     //check for player bringing up menu delta

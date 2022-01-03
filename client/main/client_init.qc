@@ -201,6 +201,8 @@ void() CSQC_Init =
   ui_data_hud_ini_tags();
   
   cl_ini_infostring();
+  
+  CHAT_INP_SEND = FALSE;
 };
 
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)

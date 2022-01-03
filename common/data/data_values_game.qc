@@ -481,17 +481,17 @@ float STAT_PLR_REP = 103; //remaining repair delta
 //    use agreed upon common 
 //============================
 //Response Schema
-#define RSP_SRC     "src"
-#define RSP_TYPE    "type"
-#define RSP_CID     "client"
-#define RSP_BODY    "body"
+#define RSP_SRC "src"
+#define RSP_TYPE "type"
+#define RSP_CID "client"
+#define RSP_BODY "body"
 //Response SOURCE   
-#define SV_PRINT    "svpr"
-#define CS_PRINT    "cspr"
+#define SV_PRINT "svpr"
+#define CS_PRINT "cspr"
 //Response TYPES    
-#define SAY_MSG1    "msg1"
-#define SAY_MSG2    "msg2"
-#define SV_CL_CONN  "signon"
+#define SAY_MSG1 "msg1"
+#define SAY_MSG2 "msg2"
+#define SV_CL_CONN "signon"
 #define SV_CL_KSELF "lame"
 #define SV_CL_DSCON "signoff"
 

@@ -7,7 +7,82 @@ Overview:
     client_main.CSQC_InputEvent();
   
   This catch-all function handles all custom mod input events.
+*/
+
+float(float inputEventType, float scanx, float chary, float devid) handle_input_keydown={
+
+
+};
+
+/*
+  CHAT_INP_ON == TRUE
+    intercept keystrokes to process player chat.
+*/
+float(float inputEventType, float scanx, float chary, float devid) handle_input_chat={
+  local string newText;
   
+  //Player submits chat line to server
+  if( scanx == K_ENTER ){
+    if( strlen(CHAT_INP_VAL) != 0 ){
+      if( CHAT_INP_ON_TEAM ){
+        newText = sprintf("%s %s %s\n", CS_PRINT, SAY_MSG2, CHAT_INP_VAL );
+      }
+      else{
+        newText = sprintf("%s %s %s\n", CS_PRINT, SAY_MSG1, CHAT_INP_VAL );
+      }
+      localcmd(strcat("cmd ", newText));
+    }
+    CHAT_INP_ON = FALSE;
+    CHAT_INP_ON_TEAM = FALSE;
+    //freeGlobalString(CHAT_INP_VAL)
+    CHAT_INP_SEND = TRUE;
+    return TRUE;
+  }
+  //handle backspace event
+  if( scanx == K_BACKSPACE && strlen(CHAT_INP_VAL) != 0){
+    newText = substring(CHAT_INP_VAL, 0, strlen(CHAT_INP_VAL) - 1);
+    freeGlobalString(CHAT_INP_VAL)
+    cacheGlobalString( CHAT_INP_VAL, newText)
+    return TRUE;
+  }
+  //prevent line max overflow
+  if( strlen(CHAT_INP_VAL) > CHAT_INP_MAX){
+    return TRUE;
+  }
+  newText = substring(CHAT_INP_VAL, 0, strlen(CHAT_INP_VAL));
+  freeGlobalString(CHAT_INP_VAL)
+  
+  //space in chat line
+  if( scanx == K_SPACE ){
+    newText = strcat(newText, " ");
+  }
+  else{
+    if( textfilter_validate( scanx, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_UPP) ) ){
+      newText = strcat(newText, keynumtostring(chary));
+    }
+  }
+  cacheGlobalString( CHAT_INP_VAL, newText)
+  return TRUE;
+};
+
+
+
+/*
+  Client_state == PLAYER_MECH
+*/
+float(float inputEventType, float scanx, float chary, float devid) handle_mech_input={
+
+};
+
+/*
+  MENU_ACTIVE
+*/
+float(float inputEventType, float scanx, float chary, float devid) handle_menu_input={
+
+};
+
+/*
+  Main input function
   
   PRVM_G_FLOAT(OFS_PARM0) = eventtype;
   PRVM_G_FLOAT(OFS_PARM1) = x; // key or x
@@ -20,23 +95,21 @@ Overview:
   typ 3 = mousepos (scanx, charY) if inputmode is on
   return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 */
-
 float(float inputEventType, float scanx, float chary, float devid) handle_input={
-  local string newText;
-
 //INPUT IMMEDIATES / OVERRIDES
   if(inputEventType == INPUT_EVENT_KEYDOWN){
     //console override-----
     if( (scanx == K_TIL) || (scanx == K_APOS) || (scanx == K_ESCAPE) ){
       if( CHAT_INP_ON ){
         CHAT_INP_ON = FALSE;
-        return TRUE;
+        return FALSE;
       }
       return FALSE; 
     }
-    //=====================    
+    //=====================
+    //CHAT TOGGLE
     if( strstrofs(findkeysforcommand("messagemode", 0), ftos(scanx),0) != -1 || strstrofs(findkeysforcommand("messagemode2", 0), ftos(scanx),0) != -1 ){
-      if( !CHAT_INP_ON ){
+      if( CHAT_INP_ON == FALSE){
         CHAT_INP_ON = TRUE;
         if(strstrofs(findkeysforcommand("messagemode2", 0), ftos(scanx),0) != -1){
           CHAT_INP_ON_TEAM = TRUE;
@@ -45,43 +118,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       }
     }
     if( CHAT_INP_ON ){
-      if( scanx == K_ENTER ){
-        if( strlen(CHAT_INP_VAL) != 0 ){
-          if( CHAT_INP_ON_TEAM ){
-            newText = sprintf("%s %s %s\n", CS_PRINT, SAY_MSG2, CHAT_INP_VAL );
-          }
-          else{
-            newText = sprintf("%s %s %s\n", CS_PRINT, SAY_MSG1, CHAT_INP_VAL );
-          }
-          localcmd(strcat("cmd ", newText));
-        }
-        CHAT_INP_ON = FALSE;
-        CHAT_INP_ON_TEAM = FALSE;
-        freeGlobalString(CHAT_INP_VAL)
-        return TRUE;
-      }
-      if( scanx == K_BACKSPACE && strlen(CHAT_INP_VAL) != 0){
-        newText = substring(CHAT_INP_VAL, 0, strlen(CHAT_INP_VAL) - 1);
-        freeGlobalString(CHAT_INP_VAL)
-        cacheGlobalString( CHAT_INP_VAL, newText)
-        return TRUE;
-      }
-      if( strlen(CHAT_INP_VAL) > CHAT_INP_MAX){
-        return TRUE;
-      }
-      newText = substring(CHAT_INP_VAL, 0, strlen(CHAT_INP_VAL));
-      freeGlobalString(CHAT_INP_VAL)
-      
-      if( scanx == K_SPACE ){
-        newText = strcat(newText, " ");
-      }
-      else{
-        if( textfilter_validate( scanx, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_UPP) ) ){
-          newText = strcat(newText, keynumtostring(chary));
-        }
-      }
-      cacheGlobalString( CHAT_INP_VAL, newText)
-      return TRUE;
+      return handle_input_chat(inputEventType, scanx, chary, devid);
     }
   }
   
@@ -166,6 +203,34 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
         input_key_impulse_hud_chase_toggle();
         return FALSE; //we pass the event to the server for correct player aiming.
+      }
+      if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
+        //INPUT - HUD - Toggle Group Fire
+        hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
+        return FALSE;
+      }
+      if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
+        //INPUT - HUD - Toggle Chain Fire
+        hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
+        return FALSE;
+      }
+      if( strstrofs(findkeysforcommand("impulse 31", 0), ftos(scanx),0) != -1 ){
+        //INPUT - MENU - firegroup rebind
+        if( CLIENT_player_state == PLAYER_ACTIVE ){
+          if( CLIENT_MENU_menu_choice == 0 && !MENU_ACTIVE){
+            menu_enter( MENU_REBIND_ACTIVE );
+            REBIND_SEND_TIME = time + REBIND_SEND_TIME_MIN;
+          }
+          else{
+            menu_exit();
+            //spam guard
+            if( time > REBIND_SEND_TIME ){
+              cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
+              cl_send_infostring( INFO_FLAG_GROUPS );
+            }
+          }
+        }
+        return TRUE;
       }
     }
     //---------------------------------------------------------------
@@ -266,43 +331,16 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         return TRUE;
       }
     }
-    else if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
+    if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
       //good lord....
       HUD_ZOOM_ACTIVE = FALSE;
       return FALSE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - Toggle Group Fire
-      hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
-      return FALSE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
-      //INPUT - HUD - Toggle Chain Fire
-      hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
-      return FALSE;
-    }
-    else if( strstrofs(findkeysforcommand("impulse 31", 0), ftos(scanx),0) != -1 ){
-      //INPUT - MENU - firegroup rebind
-      if( CLIENT_player_state == PLAYER_ACTIVE ){
-        if( CLIENT_MENU_menu_choice == 0 && !MENU_ACTIVE){
-          menu_enter( MENU_REBIND_ACTIVE );
-          REBIND_SEND_TIME = time + REBIND_SEND_TIME_MIN;
-        }
-        else{
-          menu_exit();
-          //spam guard
-          if( time > REBIND_SEND_TIME ){
-            cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
-            cl_send_infostring( INFO_FLAG_GROUPS );
-          }
-        }
-      }
-      return TRUE;
     }
     return FALSE;
   }
    
   if(MENU_ACTIVE){
+    //always consume CSQC menu input when they're active, otherwise random input will be propagated to server!
     return TRUE;
   }
   return FALSE;

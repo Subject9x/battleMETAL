@@ -60,6 +60,8 @@ float CHAT_INP_ON_TEAM; //team say
 float CHAT_INP_MAX;   //max char length of input.
 string CHAT_INP_VAL;
 float CHAT_CUR_TIC;
+float CHAT_INP_SEND;  //flag to make sure chat is sent before being freed.
+
 
 void(string msgType, string userName, string newChat) menu_chat_receive_new;
 void(float modeGame) menu_chat_config;  //sets chat settings per-menu, run once when entering a _connect menu!

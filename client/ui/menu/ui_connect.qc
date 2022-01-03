@@ -221,7 +221,7 @@ void(vector chatOrg ) menu_chat_render_input={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_MEDIUM;
   
-  drawstring(chatOrg, "say:", CHAT_LINE_FONT_SIZE, CLR_DEF_TXT_NONSELECT, 1, 0);
+  gui_renderHighlightString( "say:", chatOrg, CLR_DEF_ARM_OK, CLR_DEF_TXT_NONSELECT, CHAT_INP_ON_TEAM, CHAT_LINE_FONT_SIZE, 1, 0); 
   
   if( CHAT_INP_ON ){
     textOrg = Vector2( chatOrg_x + stringwidth("say: ", 0, CHAT_LINE_FONT_SIZE), chatOrg_y);

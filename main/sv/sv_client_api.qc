@@ -41,9 +41,8 @@ void(string str) SV_ParseClientCommand={
       response = infoadd(response, RSP_CID, ftos(num_for_edict(self) ));
       response = infoadd(response, RSP_BODY, substring(str, cmdIdx, strlen(str)-cmdIdx));
       WriteString(MSG_ALL, strcat(response, "\n"));
-      return;
     }
-    if( strstrofs(str, SAY_MSG2,0)  != -1 ){
+    else if( strstrofs(str, SAY_MSG2,0)  != -1 ){
       cmdIdx = strstrofs(str, SAY_MSG2, cmdIdx) + strlen(SAY_MSG2);
       WriteChar(MSG_ALL, SVC_PRINT);
       response = infoadd(response, RSP_SRC, SV_PRINT);
@@ -51,7 +50,6 @@ void(string str) SV_ParseClientCommand={
       response = infoadd(response, RSP_CID, ftos(num_for_edict(self) ));
       response = infoadd(response, RSP_BODY, substring(str, cmdIdx, strlen(str)-cmdIdx));
       WriteString(MSG_ALL, strcat(response, "\n"));
-      return;
     }
     return;
   }
