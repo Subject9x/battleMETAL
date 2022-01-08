@@ -20,8 +20,9 @@ void() sendevent_building_die={
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
   }
   
+  self.solid = SOLID_NOT; //make sure to override so that particles won't trip.
   self.scale = 1; //just in case you altered scale during other deaths anim, <cough>
-  self.alpha = 1; //just in case you altered scale during other deaths anim, <cough>
+  self.alpha = 1; //just in case you altered alpha during other deaths anim, <cough>
   self.colormod = '0.75 0.75 0.75';
   makevectors(self.angles);
   switch( self.vec_size ){
@@ -209,6 +210,16 @@ void( float isNew, float changeFlags) sendent_handle_building={
       snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
     }
   }
+  //HANDLE EVENT - dead
+  if(prevDeadflag == DEAD_NO && self.deadflag == DEAD_DEAD){
+    if( self.th_die ){
+      self.th_die();
+    }
+    else{
+      data_building_death1(); 
+    }
+    return;
+  }
   
   //HANDLE EVENT - Shield explode
   sendevent_shield_explode( prevShield );
@@ -218,16 +229,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
     if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
       self.shieldEffectTime = time + 0.5;
       te_shield_hit();
-    }
-  }
-  
-  //HANDLE EVENT - dead
-  if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO){
-    if( self.th_die ){
-      self.th_die();
-    }
-    else{
-      data_building_death1(); 
     }
   }
 };

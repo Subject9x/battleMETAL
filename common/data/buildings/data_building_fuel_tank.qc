@@ -14,7 +14,7 @@ void() hfuel_death1 = [1, hfuel_death2]{
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  self.takedamage = DEAD_DEAD;
+  self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_NOT;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;

@@ -12,7 +12,7 @@ mod: 07/15/2019
 
 void() building_die={
   
-  if( self.deadflag > DEAD_NO){
+  if( self.deadflag != DEAD_NO){
     return;
   }
   //fire triggers when dead
