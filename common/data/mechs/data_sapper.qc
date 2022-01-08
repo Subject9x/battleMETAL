@@ -23,7 +23,7 @@ void() data_ini_sapper_={
   self.max_health = 650;
   
   //Hitbox size, X width, Y Length, Z height.
-  self.mins = '-18 -18 -33';
+  self.mins = '-18 -18 -34.75';
   self.maxs = '18 18 22';
   
 //ENERGY AND SHIELDS===================
