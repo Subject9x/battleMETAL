@@ -582,7 +582,7 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
         drawfont = FONT_NUM_ROBOT_REGULAR;
         
         if( UI_ARMING_hardpoint_type_roll != 0 && (UI_ARMING_hardpoint_type_roll & UI_ARMING_DATA_item_list.equipSize)){
-          drawstring(listItemLabelOrg + '-12 0', "O", '14 14 0', CLR_DEF_ARM_OK, 1, 0);
+          drawstring(listItemLabelOrg + '-12 0', "<-", '14 14 0', CLR_DEF_ARM_OK, 1, 0);
           drawstring(listItemLabelOrg, UI_ARMING_DATA_item_list.w_name, '12 12 0', listItemColor, 1, 0);
         }
         else{
