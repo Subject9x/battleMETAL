@@ -115,7 +115,8 @@ void() data_ini_attack_latc_={
   
   ctrl_weapon_updateAmmo( TRUE );
   
-  if( (trace_dphitcontents & DPCONTENTS_SKY) ){
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
+  if( (trace_dphitcontents & DPCONTENTS_SKY) || (trace_dphitq3surfaceflags & Q3SURFACEFLAG_SKY) ){
     return;
   }
   else{
@@ -131,6 +132,5 @@ void() data_ini_attack_latc_={
       } 
     }
   }
-  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

@@ -762,6 +762,9 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   Particle Determinant for impact types of weapon fire
 */
 float(vector endPos, entity endEnt, float contentFlags) te_impact_type={
+  if( (contentFlags & DPCONTENTS_SKY) || (trace_dphitq3surfaceflags & Q3SURFACEFLAG_SKY) ){
+    return IMPACT_SKY;
+  }
   if(endEnt){
     if(endEnt.takedamage == DAMAGE_AIM){
       if(endEnt.shield > 0 && endEnt.shield <= 100.0){

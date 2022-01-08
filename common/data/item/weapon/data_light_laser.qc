@@ -94,7 +94,8 @@ void() data_ini_attack_laser_={
 
   ctrl_weapon_updateAmmo( FALSE );
   
-  if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
+  if( (trace_dphitcontents & DPCONTENTS_SKY) || (trace_dphitq3surfaceflags & Q3SURFACEFLAG_SKY) ){
     return;
   }
   
@@ -109,6 +110,5 @@ void() data_ini_attack_laser_={
       }
     }
   }
-  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

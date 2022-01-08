@@ -501,9 +501,9 @@ void( float isNew, float entFlags ) data_map_damage={
   
   if( (entFlags & SENDFLAG_BURN) ){
     //use to adjust isActive, toggling the field
-    if( self.isActive ){
+    //if( self.isActive ){
       //hazard_rad_think();
-    }
+    //}
   }
       
   if( (entFlags & SENDFLAG_DEAD) ){
@@ -576,6 +576,10 @@ void( float isNew, float entFlags ) data_map_damage={
 
 void() predraw_dmg_zone={
   setorigin(self, self.origin);
+  interpolate_angle();
+  if(self.damageType == 3 ){
+    self.angles_y = anglemod(self.angles_y + (frametime * (random() * 25)));
+  }
   //self.render_dlights();
 };
 

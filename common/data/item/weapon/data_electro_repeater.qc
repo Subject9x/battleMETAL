@@ -216,7 +216,8 @@ void() data_ini_attack_electro_repeater_={
   }
   ctrl_weapon_fireOffset();
   
-  if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
+  if( (trace_dphitcontents & DPCONTENTS_SKY) || (trace_dphitq3surfaceflags & Q3SURFACEFLAG_SKY) ){
     return;
   }
   if( trace_ent.takedamage ){
@@ -232,6 +233,5 @@ void() data_ini_attack_electro_repeater_={
       }
     }
   }
-  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif

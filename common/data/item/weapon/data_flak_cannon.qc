@@ -117,6 +117,7 @@ void() data_ini_attack_flak_={
 
   ctrl_weapon_updateAmmo( TRUE );
   
+  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){
     return;
   }  
@@ -153,6 +154,5 @@ void() data_ini_attack_flak_={
     }
     totes = totes - 1;
   }
-  self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif
