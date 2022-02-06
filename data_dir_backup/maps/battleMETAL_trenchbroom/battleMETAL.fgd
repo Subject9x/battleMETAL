@@ -123,7 +123,7 @@ For best results, place manually as close to ground as possible!" [
   ]
 ]
 
-@BaseClass base(Angle, Target, Targetname, ExtTriggers, Faction, CampaignFlagsOld, SkillFlagsOld) color(1 0 1) = AIUnit [
+@BaseClass base(Angle, Target, Targetname, ExtTriggers, CampaignFlagsOld, SkillFlagsOld) color(1 0 1) = AIUnit [
   delay(float) : "wait T game seconds before spawning this unit." : "0.0"
   count(integer) : "spawn this many copies of this unit." : 0
   count1(float) : " time interval between spawns when Count > 0." : "0.0"
@@ -606,7 +606,7 @@ firing off .trigOnAttack when the .count is reached.
 	]
 ]
 
-@PointClass base(AINode) = ai_node_path : "Used with generating .nodes files for maps.
+@PointClass size(-10 -10 -18, 10 10 18) color(0.988 0.75 0.5) = ai_node_path : "Used with generating .nodes files for maps.
   AI will use this node data to pathfind their way to targets, and other ai_node types." []
 
 @PointClass base(AINode) color(0.85 0.976 0.267) = ai_order_patrol : "single-use, removed after use!

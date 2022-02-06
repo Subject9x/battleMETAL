@@ -1,0 +1,132 @@
+// Game: battleMETAL
+// Format: Quake3
+// entity 0
+{
+"classname" "worldspawn"
+"sounds" "7"
+"_tb_textures" "textures/building;textures/common;textures/curry;textures/radiant;textures/radicals;textures/skies;textures/concrete;textures/desert;textures/metal"
+"_tb_def" "builtin:battlemetal.def"
+"worldtype" "0"
+// brush 0
+{
+( -5696 -4000 1456 ) ( -5696 4000 1456 ) ( -5696 -4000 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( 4000 -5696 1456 ) ( -4000 -5696 1456 ) ( 4000 -5696 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( 4000 4000 1536 ) ( -4000 4000 1536 ) ( 4000 -4000 1536 ) skies/scorch_ -0 -0 -0 1 1 0 0 0
+( 4000 -4000 1600 ) ( -4000 -4000 1600 ) ( 4000 4000 1600 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( -4000 5696 1456 ) ( 4000 5696 1456 ) ( -4000 5696 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( 5696 4000 1456 ) ( 5696 -4000 1456 ) ( 5696 4000 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+}
+// brush 1
+{
+( -5888 4016 -32 ) ( -5888 4016 1472 ) ( -5888 -4016 -32 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( -4000 -5696 1472 ) ( -4000 -5696 -32 ) ( -4016 -5696 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( -4000 -4016 -32 ) ( -4000 4016 -32 ) ( -4016 -4016 -32 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( -4000 4016 1536 ) ( -4000 -4016 1536 ) ( -4016 4016 1536 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( -4000 5696 -32 ) ( -4000 5696 1472 ) ( -4016 5696 -32 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( -5696 -4016 -32 ) ( -5696 -4016 1472 ) ( -5696 4016 -32 ) skies/scorch_ 0 0 0 1 1 0 0 0
+}
+// brush 2
+{
+( -5888 4000 1472 ) ( -5888 4000 -32 ) ( -5888 4016 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( 4000 5696 1472 ) ( 4000 5696 -32 ) ( -4000 5696 1472 ) skies/scorch_ 0 0 0 1 1 0 0 0
+( -4000 4000 -32 ) ( 4000 4000 -32 ) ( -4000 4016 -32 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( 4000 4000 1536 ) ( -4000 4000 1536 ) ( 4000 4016 1536 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( -4000 5824 1472 ) ( -4000 5824 -32 ) ( 4000 5824 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( 5696 4000 -32 ) ( 5696 4000 1472 ) ( 5696 4016 -32 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+}
+// brush 3
+{
+( -5696 4000 -16 ) ( -5696 -4000 -16 ) ( -5696 4000 -32 ) skies/scorch_ 0 0 0 1 1 0 0 0
+( -4000 -5696 -16 ) ( 4000 -5696 -16 ) ( -4000 -5696 -32 ) skies/scorch_ 0 0 0 1 1 0 0 0
+( -4000 -4000 -32 ) ( 4000 -4000 -32 ) ( -4000 4000 -32 ) skies/scorch_ -0 -0 -0 1 1 0 0 0
+( -4000 -4000 -16 ) ( -4000 4000 -16 ) ( 4000 -4000 -16 ) skies/scorch_ -0 -0 -0 1 1 0 0 0
+( 4000 5696 -16 ) ( -4000 5696 -16 ) ( 4000 5696 -32 ) skies/scorch_ 0 0 0 1 1 0 0 0
+( 5696 -4000 -16 ) ( 5696 4000 -16 ) ( 5696 -4000 -32 ) skies/scorch_ 0 0 0 1 1 0 0 0
+}
+// brush 4
+{
+( 5696 4016 1472 ) ( 5696 -4016 1472 ) ( 5696 4016 -32 ) skies/scorch_ 0 0 0 1 1 0 0 0
+( 4000 -5696 -32 ) ( 4000 -5696 1472 ) ( 4016 -5696 -32 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( 4000 4016 -32 ) ( 4000 -4016 -32 ) ( 4016 4016 -32 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( 4000 -4016 1536 ) ( 4000 4016 1536 ) ( 4016 -4016 1536 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( 4000 5824 1472 ) ( 4000 5824 -32 ) ( 4016 5824 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( 5888 -4016 1472 ) ( 5888 4016 1472 ) ( 5888 -4016 -32 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+}
+// brush 5
+{
+( -5760 -4000 -32 ) ( -5760 -4000 1472 ) ( -5760 -4016 -32 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( -4000 -5888 -32 ) ( -4000 -5888 1472 ) ( 4000 -5888 -32 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+( 4000 -4000 -32 ) ( -4000 -4000 -32 ) ( 4000 -4016 -32 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( -4000 -4000 1536 ) ( 4000 -4000 1536 ) ( -4000 -4016 1536 ) desert/sand_desert_a -0 -0 -0 1 1 0 0 0
+( -4000 -5696 -32 ) ( 4000 -5696 -32 ) ( -4000 -5696 1472 ) skies/scorch_ 0 0 0 1 1 0 0 0
+( 5888 -4000 1472 ) ( 5888 -4000 -32 ) ( 5888 -4016 1472 ) desert/sand_desert_a 0 0 0 1 1 0 0 0
+}
+}
+// entity 1
+{
+"classname" "map_terrain_model"
+"origin" "0 0 -8"
+"model" "models/terrain/terrain5/terrain5_ice.obj"
+"angle" "225"
+}
+// entity 2
+{
+"classname" "info_player_start"
+"origin" "-64 32 377"
+}
+// entity 3
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "brushes"
+"_tb_id" "65"
+}
+// entity 4
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "hazmat"
+"_tb_id" "66"
+}
+// entity 5
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "misc_ents"
+"_tb_id" "67"
+}
+// entity 6
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "terrainbrushes"
+"_tb_id" "68"
+}
+// entity 7
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "players"
+"_tb_id" "69"
+}
+// entity 8
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "doodads"
+"_tb_id" "70"
+}
+// entity 9
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "floors"
+"_tb_id" "71"
+}
+// entity 10
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "walls"
+"_tb_id" "72"
+}
