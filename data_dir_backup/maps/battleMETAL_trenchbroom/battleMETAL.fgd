@@ -1,0 +1,1274 @@
+//
+// 	battleMETAL for DarkPlaces game definition file (.fgd)
+//
+//
+// 	This FGD reflects those differences (lights, misc_model) as well as adds support for some extra features.
+//
+// worldspawn
+//
+
+//BASE CLASSES---------------------------------------------------------------------------------------------------------------------
+@BaseClass = Appearflags [
+	spawnflags(Flags) =
+	[
+		256 : "Not in Easy" : 0
+		512 : "Not in Normal" : 0
+		1024 : "Not in Hard" : 0
+		2048 : "Not in Deathmatch" : 0
+	]
+]
+//remove this when done with patch / fix.
+@BaseClass = CampaignFlagsOld [
+  spawnflags(Flags) = [
+    1 : "No Campaign" : 0
+    2 : "No Coop" : 0
+    4 : "No DM" : 0
+    8 : "No TDM" : 0
+  ]
+]
+@BaseClass = SkillFlagsOld [
+  spawnflags(Flags) = [
+    4096 : "No Novice" : 0
+    8192 : "No Regular" : 0
+    16384 : "No Veteran" : 0
+    32768 : "No Elite" : 0
+  ]
+]
+//this fixes some issues
+@BaseClass = SkillFlagsEngine [
+  spawnflags(Flags) = [
+    256 : "No Novice" : 0
+    512 : "No Regular" : 0
+    1024 : "No Veteran" : 0
+    2048 : "No Elite" : 0
+  ]
+]
+@BaseClass = CampaignFlags [
+  spawnflags(Flags) = [
+    4096 : "No Campaign" : 0
+    8192 : "No Coop" : 0
+    16384 : "No DM" : 0
+    32768 : "No TDM" : 0
+  ]
+]
+//--------------------------------------
+@BaseClass = NoDropFlag [
+  spawnflags(Flags) = [
+    65536 : "No Drop" : 0
+  ]
+]
+@BaseClass = MapKeyFlag [
+  spawnflags(Flags) = [
+    4194304 : "Mark on Map" : 0
+  ]
+]
+
+@BaseClass = Angle [ angle(integer) : "Direction" : 0 ]
+@BaseClass = Targetname [ targetname(target_source) : "Name" ]
+@BaseClass = Target [
+	target(target_destination) : "Target"
+	killtarget(target_destination) : "Killtarget"
+]
+
+@BaseClass base(Appearflags, Targetname) size(-16 -16 -24, 16 16 32) color(0 255 0) = PlayerClass []
+
+@BaseClass = ExtTriggers [
+  trigOnSpawn(string) : "Target called on Entity spawn."
+  trigOnDeath(string) : "Target called when Entity dies. "
+  trigOnTarget(string) : "Target called when AI targets something."
+]
+
+@BaseClass = Faction [
+	faction(choices) : "Entity faction setting, affects skin color." : 1 =
+	[
+		1 : "PSC"
+		2 : "Survest"
+		3 : "Militar"
+		255 : "All Faction/DM"
+	]
+]
+
+@BaseClass base(Target, Targetname, Faction, ExtTriggers) color(0.988 0.976 0.267) size(-10 -10 -18, 10 10 18) = AINode [
+  spawnflags(Flags) = [
+    2 : "Remove On-Touch." : 0
+    4 : "Start Inactive." : 0
+    8 : "Inactive On Touch." : 0
+  ]
+]
+
+@BaseClass base(Target, Targetname, MapKeyFlag) = BaseHazard [
+  data_lifetime(integer) : "time to live" : 0
+  wait(integer) : "reactivate delay" : 0
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Lifetime" : 0
+    4 : "Reactivate" : 0
+    8 : "Remove after use" : 0
+    16 : "Remove on-touch" : 0
+    32 : "Active on-touch" : 0
+  ]
+]
+
+@BaseClass base(Target, Targetname, ExtTriggers, Faction) color(0.431 0.788 0.753) size(-32 -32 -75, 32 32 1) = NavPoint : "Nav Points are points of interest marked on Player maps. 
+Players interact with them by visiting them, which can then fire triggers to additional game logic.
+For best results, place manually as close to ground as possible!" [
+  isActive(choices) : "Initial Active state." : 1 =
+  [
+    0 : "hide from other Factions."
+    1 : "Active and unvisited."
+    -1 : "Hidden from everyone."
+  ]
+  spawnflags(Flags) = [
+    1 : "Start Off." : 0
+    2 : "Each player can visit." : 0
+    4 : "Turn off after use." : 0
+  ]
+]
+
+@BaseClass base(Angle, Target, Targetname, ExtTriggers, Faction, CampaignFlagsOld, SkillFlagsOld) color(1 0 1) = AIUnit [
+  delay(float) : "wait T game seconds before spawning this unit." : "0.0"
+  count(integer) : "spawn this many copies of this unit." : 0
+  count1(float) : " time interval between spawns when Count > 0." : "0.0"
+  spawnflags(Flags) = [
+    16 : "Power up delay" : 0
+    64 : "Has Radar" : 0
+    128 : "Debug Mode" : 0
+    65536 : "Promote" : 0
+    131072 : "Demote" : 0
+    262144 : "No Drop" : 0
+    524288 : "Call by Trigger" : 0
+    1048576 : "No VoiceFX" : 0
+    2097152 : "No Guns" : 0
+    8388608 : "VIP Target" : 0
+  ]
+]
+
+@Baseclass base(Angle, Target, Targetname, ExtTriggers, Faction, CampaignFlagsOld, SkillFlagsOld, MapKeyFlag) color(0 0 1) = RootBuilding [
+  spawnflags(Flags) = [
+    16 : "No Target" : 0
+    8192 : "No drop" : 0
+    8388608 : "VIP Target" : 0
+  ]
+]
+
+@BaseClass base(Angle, Target, Targetname, ExtTriggers, Faction, CampaignFlagsOld, SkillFlagsOld, MapKeyFlag) color(0 0 1) model({ "path": ":models/buildings/turret/turret.md3" }) = AITurret []
+
+@BaseClass base(Angle, Target, Targetname, CampaignFlagsOld, SkillFlagsOld, MapKeyFlag, ExtTriggers, NoDropFlag, Faction) color(0 0 1) = MiscBuilding [
+  spawnflags(Flags) = [
+    16 : "Can Target" : 0
+    8388608 : "VIP Target" : 0
+  ]
+]
+
+@BaseClass base(Faction,Angle,Target,Targetname) color(0 0.25 1) = DoodadRemovable [
+  spawnflags(Flags) = [
+    1 : "Trigger remove" : 0
+  ]
+]
+
+//---------------------------------------------------------------------------------------------------------------------
+
+//WORLDSPAWN---------------------------------------------------------------------------------------------------------------------
+@SolidClass = worldspawn : "World entity"
+[
+  missionFile(string) : "Override Default mission file."
+  itemOverride(integer) : "Override player's inventory with <mapname>.sav" : 0
+  animaticOnly(integer) : "Map is animatic, don't save or load anything from player." : 0
+  ignoreSave(integer) : "1 - will not save anything to player save file." : 0
+  light(integer) : "Default light level" : 0
+  message(string) : "unused"
+	sounds(choices) : "Music Track to play" : 3 =
+	[
+		2 : "CDTRACK002"
+		3 : "CDTRACK003"
+		5 : "CDTRACK005"
+		6 : "CDTRACK006"
+		7 : "CDTRACK007"
+		8 : "CDTRACK008"
+		11 : "CDTRACK011"
+		12 : "CDTRACK012"
+	]
+  wind(string) : "Wind strength as a vector X Y Z" : "1 1 1"
+  fog_density(float) : "Density of Fog" : "0.0"
+  fog_color(string) : "colors of the fog [R G B]" : "0 0 0"
+  fog_alpha(float) : "alpha transparency of the fog" : "0.0"
+  fog_dist(string) : "Fog distance [min max height]" : "0 0 0"
+  fog_fade(float) : "Density of Fog" : "0.0"
+  
+  worldtype(choices) : "Select type of world. Affects some particle options." : 0 =
+	[
+		0 : "Desert"
+		1 : "Ice"
+		2 : "City"
+		3 : "Badlands"
+		4 : "Tundra"
+	]
+]
+
+@PointClass base(Angle) color(0.77 0.88 1.0) size(-4 -4 -4, 4 4 4) = _skybox : "Compiler-only entity that specifies the origin of a skybox (a wholly contained, separate area of the map), similar to some games portal skies. When compiled with Q3Map2, the skybox surfaces will be visible from any place where sky is normally visible. It will cast shadows on the normal parts of the map, and can be used with cloud layers and other effects." [
+  angles(string) : "Individual control of PITCH, YAW, and ROLL" : "0 0 0"
+  _scale(integer) : "Scaling factor, good values are between 50 and 300, depending on the map." : 64
+]
+//---------------------------------------------------------------------------------------------------------------------
+
+//INFO_ ENTS ---------------------------------------------------------------------------------------------------------------------
+@SolidClass base(Angle, Target, Targetname) color(0 0.5 0.8) = func_button : 
+"When a button is touched, it moves some distance in the direction of it's angle, triggers all of it's targets, waits some time, then returns to it's original position where it can be triggered again." 
+[
+  speed(integer) : "override the default 40 speed" : 40
+  wait(integer) : "override the default 1 second wait (-1 = never return)" : 1
+  lip(integer) : "override the default 4 pixel lip remaining at end of move" : 4
+  health(integer) : "if set, the button must be killed instead of touched"
+  sounds(choices) : "SFX" : 0 = [
+    0 : "steam metal"
+    1 : "wooden clunk"
+    2 : "metallic click"
+    3 : "in-out"
+  ]
+]
+
+@SolidClass base(Angle, Target, Targetname) color(0 0.5 0.8) = func_door : "if two doors touch, they are assumed to be connected and operate as a unit.
+  TOGGLE causes the door to wait in both the start and end states for a trigger event.
+  START_OPEN causes the door to move to its destination when spawned, and operate in reverse.  It is used to temporarily or permanently close off an area when triggered (not usefull for touch or takedamage doors).
+  Key doors are allways wait -1."
+[
+  speed(integer) : "movement speed (100 default)" : 100
+  wait(integer) : "override the default 1 second wait (-1 = never return)" : 1
+  lip(integer) : "lip remaining at end of move (8 default)" : 8
+  health(integer) : "if set, door must be shot open"
+  dmg(integer) : "damage to inflict when blocked " : 2
+  sounds(choices) : "SFX" : 0 = [
+    0 : "none"
+    1 : "stone"
+    2 : "base"
+    3 : "stone chain"
+    4 : "screechy metal"
+  ]
+  spawnflags(Flags) = [
+    1 : "START_OPEN" : 0
+    4 : "DOOR_DONT_LINK" : 0
+    8 : "GOLD_KEY" : 0
+    16 : "SILVER_KEY" : 0
+    32 : "TOGGLE"
+  ]
+]
+@SolidClass color(0 0.5 0.8) = func_wall : "This is just a solid wall if not inhibitted" []
+@SolidClass base(Targetname) color(0 0.5 0.8) = func_vanishwall : "Mainly used for changing the 'scale' of a dm level based on active player count.
+  For use in combination with trigger_playercount." []
+
+@SolidClass color(0 0.5 0.8) = func_illusionary : "A simple entity that looks solid but lets you walk through it." []
+
+@SolidClass color(0 0.5 0.8) = func_plat : "Plats are always drawn in the extended position, so they will light correctly.
+If the plat is the target of another trigger or button, it will start out disabled in the extended position until it is trigger, when it will lower and become a normal plat.
+If the 'height' key is set, that will determine the amount the plat moves, instead of being implicitly determined by the model's height." 
+[
+  height(integer) : "optional" : 0
+  speed(integer) : "default 150" : 150
+  sounds(choices) : "SFX" : 1 = [
+    1 : "base fast"
+    2 : "chain slow"
+  ]
+  spawnflags(Flags) = [
+    1 : "PLAT_LOW_TRIGGER" : 0
+  ]
+]
+
+@SolidClass base(Target, Targetname) color(0 0.5 0.8) = func_plat : "Trains are moving platforms that players can ride.
+The targets origin specifies the min point of the train at each corner.
+The train spawns at the first target it is pointing at.
+If the train is the target of a button or trigger, it will not begin moving until activated." 
+[
+  speed(integer) : "default 100" : 100
+  dmg(integer) : "block damage" : 2
+  sounds(choices) : "SFX" : 0 = [
+    1 : "Ratchet Metal"
+  ]
+]
+
+@SolidClass color(0.6 0.6 1.0) = func_group : "This is not an entity as such. It is strictly an editor utility to group world brushes and patches together for convenience (selecting, moving, copying, etc). You cannot group entities with this." []
+
+
+@SolidClass base(Angle, Target, Targetname) color(0.6 0 0.9) = func_rotatingobject : "a rotating 'thing', like a spinning fan." [
+  speed(integer) : "degree/s speed." : 90
+  angles(string) : "starting angles"
+  wait(integer) : "(no toggle) how long to stay open." : 3
+  group(string) : "group rotating doors together."
+  dmg(integer) : "blocked damage, -1 no damage." : 2
+  delay(integer) : "time to spin up/down. 0 instant." : 0
+  rotate(string) : "rotation per second, pitch yaw roll degress/s" : "0 0 0"
+  deathtype(string) : "killed by message." : " got in the way"
+  sounds(choices) : "SFX" : 1 = [
+    1 : "medieval"
+    2 : "metal"
+    3 : "base"
+  ]
+  spawnflags(Flags) = [
+    1 : "TOUCHNO_DMG"
+    2 : "Start On"
+    4 : "Not Solid"
+  ]
+]
+
+@SolidClass base(Angle, Target, Targetname) color(0.6 0 0.9) = func_rotatingobject : "a rotating 'thing', like a spinning fan." [
+  dmg(integer) : "blocked damage" : 0
+  delay(integer) : "time to spin up/down. 0 instant." : 0
+  rotate(string) : "rotation per second, pitch yaw roll degress/s" : "0 0 0"
+  deathtype(string) : "killed by message." : " got in the way"
+  spawnflags(Flags) = [
+    1 : "TOUCHNO_DMG"
+    2 : "Start On"
+    4 : "Not Solid"
+  ]
+]
+
+@SolidClass color(0.95 0.99 0) = func_mission_boundary : "Defines the boundaries for a player, this will send warnings about leaving 
+the mission area if player stays inside this bounds. usually pair this will a killbox if player wanders outside map." []
+
+@SolidClass color(0.0 0.5 0.8) = func_particlecube : "This is an invisible area like a trigger, which particles spawn in.
+  the colors are actually a range of 4 colors, starting with this color.
+  experiment to see the effects (default is based on area size).
+  higher makes the particles more random, 0 makes them follow velocity exactly" 
+[
+  velocity(string) : "particle velocity" : "0 0 0"
+  cnt(integer) : "sets color of particles (default white)" : 12
+  count(integer) : " adjusts particle density, particles/second"
+  cnt2(integer) : "random velocity adjustmen" : 0
+  spawnflags(Flags) = [
+    1 : "Gravity yes"
+  ]
+]
+
+@SolidClass color(0.0 0.8 0.1) = func_rain : "This is an invisible area like a trigger, which rain falls inside of.
+  use the X and Y velocity for wind" [
+  velocity(string) : "particle velocity" : "0 0 -300"
+  cnt(integer) : "sets color of particles (default white)" : 12
+  count(integer) : " adjusts particle density, particles/second"
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Lifetime" : 0
+    4 : "Delay" : 0
+    8 : "Interval" : 0
+    16 : "Use Wind" : 0
+    32 : "Variable Count" : 0
+    64 : "Remove" : 0
+  ]
+]
+
+@SolidClass color(0.0 0.5 0.8) = func_snow : "This is an invisible area like a trigger, which snow falls inside of.
+  use the X and Y velocity for wind" [
+  velocity(string) : "particle velocity" : "0 0 -300"
+  cnt(integer) : "sets color of particles (default white)" : 12
+  count(integer) : "adjusts particle density, particles/second"
+]
+
+@SolidClass color(0.9 0.9 0.9) = func_meta_particlecube : "  cover interior volumes with this to make sure player particleCube effects do not play INSIDE the room.
+  this only works if a player has a map_particlecube_effect active on them.
+  make sure the brush volume FULLY ENCLOSES the brush work with ample height above." []
+
+//---------------------------------------------------------------------------------------------------------------------
+
+//TRIGGER_* ENTS ---------------------------------------------------------------------------------------------------------------------
+@BaseClass base(Target, Targetname) color(0.5 0.5 0.5) = BaseTrigger []
+
+@SolidClass base(BaseTrigger, Angle) = trigger_multiple : "Variable sized repeatable trigger.  Must be targeted at one or more entities.  If 'health' is set, the trigger must be killed to activate each time.
+  If 'delay' is set, the trigger waits some time after activating before firing.
+  If notouch is set, the trigger is only fired by other entities, not by touching.
+  NOTOUCH has been obsoleted by trigger_relay!" [
+  delay(float) : "wait before fire." : "0.0"
+  wait(float) : "Seconds between triggerings." : "0.2"
+  health(integer) : "if set, trigger must be killed to fire." : 0
+  killtarget(string) : "kill these targetnames."
+  message(string) : "send a message."
+  sounds(choices) : "SFX" : 1 = [
+    1 : "secret"
+    2 : "beep beep"
+    3 : "large switch"
+    4 : "?"
+  ]
+  spawnflags(Flags) = [
+    2 : "No touch" : 0
+  ]  
+]
+
+
+@SolidClass base(BaseTrigger, Angle) = trigger_once : "Variable sized trigger. Triggers once, then removes itself.  You must set the key 'target' to the name of another object in the level that has a matching
+'targetname'.  If 'health' is set, the trigger must be killed to activate.
+If notouch is set, the trigger is only fired by other entities, not by touching.
+if 'killtarget' is set, any objects that have a matching 'target' will be removed when the trigger is fired.
+if 'angle' is set, the trigger will only fire when someone is facing the direction of the angle.  Use '360' for an angle of 0." [
+  health(integer) : "if set, trigger must be killed to fire." : 0
+  killtarget(string) : "kill these targetnames."
+  message(string) : "send a message."
+  sounds(choices) : "SFX" : 1 = [
+    1 : "secret"
+    2 : "beep beep"
+    3 : "large switch"
+    4 : "?"
+  ]
+  spawnflags(Flags) = [
+    2 : "No touch" : 0
+  ]  
+]
+
+@PointClass base(BaseTrigger) size(-8 -8 -8, 8 8 8) = trigger_relay : "This fixed size trigger cannot be touched, it can only be fired by other events.  It can contain killtargets, targets, delays, and messages." [
+  killtarget(string) : "kill these targetnames."
+  message(string) : "play a message string."
+  delay(integer) : "trigger fire delay." : 0 
+]
+
+@SolidClass base(BaseTrigger) = trigger_secret : "secret counter trigger" [
+  message(string) : "send message."
+  sounds(choices) : "SFX" : 1 = [
+    1 : "secret"
+    2 : "beep beep"
+    3 : "?"
+    4 : "?"
+  ]
+]
+
+@SolidClass base(BaseTrigger) = trigger_counter : "when triggered, count is subtracted by 1.
+  Acts as an intermediary for an action that takes multiple inputs.
+    If nomessage is not set, t will print '1 more.. ' etc when triggered and 'sequence complete' when finished.
+    After the counter has been triggered 'count' times (default 2), it will fire all of it's targets and remove itself.
+    note: triggers ON use() where .count = '0', so your ideal total should actually be N - 1." [
+  message(string) : "played when 'sequence complete'"
+  description(string) : "text to write before the <.count> value."
+  abbrev(string) : "text to write AFTER <.count> value."
+  deathmsg(string) : "text to write instead of 'more to go'."
+  vec_size(integer) : "threshold to determine between 'more to go' and 'x to go'." : 0
+  spawnflags(Flags) = [
+    1 : "no message" : 0
+    2 : "No Easy" : 0
+    4 : "No Normal" : 0
+    8 : "No Hard" : 0
+    16 : "No Nightmare" : 0
+  ]  
+]
+
+@SolidClass base(BaseTrigger) = trigger_teleport : "Any object touching this will be transported to the corresponding info_teleport_destination entity. You must set the 'target' field, and create an object with a 'targetname' field that matches.
+  If the trigger_teleport has a targetname, it will only teleport entities when it has been fired." [
+  spawnflags(Flags) = [
+    1 : "Player Only" : 0
+    2 : "Silent" : 0
+  ]
+]
+
+@SolidClass base(BaseTrigger) = trigger_setskill : "sets skill level to the value of 'message'." [
+  aState(choices) : "set skill" : 1 = [
+    0 : "Easy"
+    1 : "Normal"
+    2 : "Hard"
+    3 : "Nightmare"
+  ]
+]
+
+@SolidClass base(BaseTrigger) = trigger_hurt : "Anything touching will be hurt" [
+  dmg(float) : "damage amount" : 5
+  cnt(integer) : "how many times to trigger"
+]
+
+@SolidClass base(BaseTrigger) = trigger_push : "Improved version of normal trigger_push.
+  Pushes anything that touches it, or acts as a jump pad, hitting 'target'
+  at the apogee (peak) of the jump.
+
+  Target should be an info_notnull." [
+  angles(string) : "direction to push." : "0 0 0"
+  speed(float) : "horizontal speed" : "200.0"
+  movedir(string) : " direction of push, this is turned into a direction" : "0 0 0"
+  spawnflags(Flags) = [
+    1 : "Push Once" : 0
+    2 : "Silent" : 0
+  ]
+]
+
+@SolidClass base(BaseTrigger) = trigger_monsterjump : "Walking monsters touching this will jump in the direction of the angle." [
+  speed(float) : "horizontal speed" : "200.0"
+  height(float) : "upward speed" : "200.0"
+]
+
+@PointClass base(BaseTrigger) size(-8 -8 -8, 8 8 8) = trigger_stuffcmd : "Stuffs the supplied commands into the client's console.
+  Note: not touchable, must be targetted." [
+  wait(float) : "time between triggers" : "0.5"
+  message(string) : "commands -such as 'bf', use ; to separate commands-"
+]
+
+@SolidClass base(BaseTrigger) = trigger_toggleweapons : "Toggles Player's ability to shoot stuff (or turns it on if it was off.)
+  FL_NOSHOOT" [
+  wait(float) : "time between reactivations" : "2.0"
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Lifetime" : 0
+    4 : "Reactivate" : 0
+    8 : "Remove" : 0
+    16 : "Disable Only" : 0
+    32 : "Enable only" : 0
+  ]
+]
+
+@SolidClass base(BaseTrigger) = trigger_timer : "Waits for .count game seconds before firing .target
+After the timer expires, it will fire all of it's targets and remove itself." [
+  count(integer) : "Game seconds countdown" : 2
+  message(string) : "message to display on end of countdown"
+  spawnflags(Flags) = [
+    1 : "No message" : 0
+    2 : "No Easy" : 0
+    4 : "No Normal" : 0
+    8 : "No Hard" : 0
+    16 : "No Nightmare" : 0
+    32 : "Start on" : 0
+  ]
+]
+
+@SolidClass base(BaseTrigger) = trigger_changelevel : "When the player touches this, he gets sent to the map listed in the 'map' variable.  Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display stats." [
+  map(string) : "next map name."
+  count(integer) : "count in game seconds till intermission is over" : 0
+  isActive(choices) : "Set Active" : 1 = [
+    0 : "OFF"
+    1 : "ON"
+  ]
+  spawnflags(Flags) = [
+    2 : "No intermission" : 0
+  ]
+]
+
+//---------------------------------------------------------------------------------------------------------------------
+
+
+//INFO_ ENTS ---------------------------------------------------------------------------------------------------------------------
+@PointClass color(0 0 0) size(-8 -8 -8, 8 8 8) = noclass : "prints a warning message when spawned" []
+@PointClass color(0 0.5 0) size(-4 -4 -4, 4 4 4) = info_null : "Used as a positional target for spotlights, etc." []
+@PointClass color(0 0.5 0) size(-4 -4 -4, 4 4 4) = info_notnull : "Used as a positional target for lightning." []
+@PointClass base(Target, Targetname) color(0 0.5 0) size(-4 -4 -4, 4 4 4) = info_target : "Invisible entity. Used as an optional
+  target for trap_spikeshooter etc,
+  can follow path_corners as a moving
+  target for neat effects."
+[
+  speed(integer) : "movement speed (default 100)" : 100
+]
+@PointClass base(PlayerClass) = info_player_start : "Initial Player Spawn point for CAMPAIGN missions.Players are then taken to the Briefing screen, so the exact position of this is irrelevant." []
+@PointClass base(PlayerClass) = info_player_start2 : "Player episode return point" []
+@PointClass base(PlayerClass) = info_player_deathmatch : "Player deathmatch start" []
+@PointClass base(PlayerClass) = info_player_coop : "Player cooperative start" []
+@PointClass base(PlayerClass) = info_player_intermission : "Deathmatch intermission point"
+[
+	angles(string) : "pitch yaw roll"
+]
+@PointClass base(PlayerClass, Targetname) size(-8 -8 -8, 8 8 32) = info_teleport_destination : "This is the destination marker for a teleporter. It should have a
+  'targetname' field with the same value as a teleporter's 'target' field." [
+  dest(string) : "exit velocity and direction." : "0 0 0"
+]
+
+@PointClass base(Target,Targetname) color(1 0.5 0.5) size(-16 -16 -16, 16 16 16) = info_intermission : "This is the camera point for the intermission.
+Use mangle instead of angle, so you can set pitch or roll as well as yaw.  'pitch roll yaw'" 
+[
+  mangle(string) : "pitch yaw roll" : "0 0 0"
+]
+//---------------------------------------------------------------------------------------------------------------------
+
+
+//AI NODES ---------------------------------------------------------------------------------------------------------------------
+@PointClass base(AINode) = ai_node : "This is used to setup patrol and move paths for AI.
+  For best results, place manually as close to ground as possible!
+  Make sure EACH node can see the PREV and NEXT nodes in a chain." [
+  data_idx(integer) : "Required at START OF CHAIN." : 0
+]
+
+@PointClass base(AINode) = ai_node_counter : "Special node; this actively counts how many bots are near this node,
+firing off .trigOnAttack when the .count is reached.
+
+  This is used to setup patrol and move paths for AI.
+  For best results, place manually as close to ground as possible!" [
+  count(integer) : "Number of bots needed in-radius." : 1
+  ai_view(integer) : "Radius to check." : 0
+  isActive(choices) : "Set Active" : 1 = [
+    0 : "OFF"
+    1 : "ON"
+  ]
+  spawnflags(Flags) = [
+    1 : "Start Inactive" : 0
+  ]
+]
+
+@PointClass base(AINode) = ai_node_tether : " Tether nodes help anchor AI to a specific location on the map.
+  When an AI moves out of range of its tether, it will be compelled to make its way BACK
+    to a random <vector> inside (ai_view / 4).
+  
+  AI WILL lookup these nodes when they spawn in!
+  AI cannot accept a node with a pitch difference of > 45d
+    ie: keep nodes on relativaly flat plane with AI's
+  
+  For best results, place manually as close to ground as possible!" [
+  ai_view(integer) : "Radius to check." : 1000
+  faction(choices) : "Entity faction setting, affects skin color." : 255 =
+	[
+		1 : "PSC"
+		2 : "Survest"
+		3 : "Militar"
+		255 : "All Faction/DM"
+	]
+]
+
+@PointClass base(AINode) = ai_node_path : "Used with generating .nodes files for maps.
+  AI will use this node data to pathfind their way to targets, and other ai_node types." []
+
+@PointClass base(AINode) color(0.85 0.976 0.267) = ai_order_patrol : "single-use, removed after use!
+  finds ALL entities of <TARGET>.
+  FOR EACH
+    + set self.tether = TETHER_PATROL
+    + set self.target = <MESSAGE>" [
+  message(string) : "the ai_node_path.targetname"
+  delay(float) : "game seconds before firing." : "0.5"
+  spawnflags(Flags) = [
+    2 : "No Novice" : 0
+    4 : "No Regular" : 0
+    8 : "No Veteran" : 0
+    16 : "No Elite" : 0
+  ]
+]
+
+@PointClass base(AINode) color(0.85 0.976 0.267) = ai_order_tether : "single-use, removed after use!
+  finds ALL entities of <TARGET>.
+  FOR EACH
+    + set self.tether = TETHER_PATROL
+    + set self.target = <MESSAGE>" [
+  message(string) : "the ai_node_path.targetname"
+  delay(float) : "game seconds before firing." : "0.5"
+  spawnflags(Flags) = [
+    2 : "No Novice" : 0
+    4 : "No Regular" : 0
+    8 : "No Veteran" : 0
+    16 : "No Elite" : 0
+  ]
+]
+
+@PointClass base(AINode) size(-16 -16 -16, 16 16 16) = ai_change_faction : "changes the faction field of the targeted objects to THIS faction." [
+  group(string) : "matches target.group value."
+  wait(float) : "wait time after Delay-Flag" : "1.0"
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Remove on-use" : 0
+    4 : "Delay" : 0
+  ]
+]
+
+@PointClass base(AINode) size(-16 -16 -16, 16 16 16) = ai_change_rank : "changes the rank field of the targeted objects, this will then also execute a recalculation of
+that unit's stats using the ai_stats.qc functions. This is useful for adjusting level difficulty at runtime." [
+  group(string) : "matches target.group value."
+  wait(float) : "wait time after Delay-Flag" : "1.0"
+  ai_rank(choices) : "Select New Rank" : 1 =
+  [
+    0 : "Novice"
+    1 : "Regular"
+    2 : "Veteran"
+    3 : "Elite"
+  ]
+  
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Remove on-use" : 0
+    4 : "Delay" : 0
+  ]
+]
+
+@PointClass base(Target, Targetname, Faction) color(0.33 0.33 0.33) size(-24 -24 -12, 24 24 12) = ai_teleportarium_source : "+ teleports bots on-touch to the destination
+  + this method preserves the bot offset from origin of THIS.
+  + bot must have matching faction id." []
+
+@PointClass base(Target, Targetname, Angle, Faction) color(0.33 0.33 0.33) size(-24 -24 -12, 24 24 12) = ai_teleportarium_source : "destination of teleportarium" []
+//---------------------------------------------------------------------------------------------------------------------
+
+//MAP_* ENTS ---------------------------------------------------------------------------------------------------------------------
+//  HAZARD ENTS ---------------------------------------------------------------------------------------------------------------------
+
+@BaseClass base(BaseHazard) color(0.25 0.45 0.8) = BaseHazardCrystal [alpha(float) : "transparency" : "1.0"]
+@BaseClass base(BaseHazard) color(0.8 0.25 0.8) = BaseHazardQuantum []
+@BaseClass base(BaseHazard) color(0.8 0.45 0.25) = BaseHazardRad []
+
+@PointClass base(BaseHazardRad) size(-18 -18 0, 18 18 20) = map_hazard_rad_small : "Inflicts ARMOR damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Energy drain amount per tic" : 1
+  count(float) : "tic interval" : "0.5"
+]
+@PointClass base(BaseHazardRad) size(-40 -40 0, 40 40 25) = map_hazard_rad_medium : "Inflicts ARMOR damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Energy drainamount per tic" : 2
+  count(float) : "tic interval" : "0.4"
+]
+@PointClass base(BaseHazardRad) size(-48 -48 0, 48 48 30) = map_hazard_rad_large : "Inflicts ARMOR damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Energy drain amount per tic" : 3
+  count(float) : "tic interval" : "0.3"
+]
+
+@PointClass base(BaseHazardQuantum) size(-25 -25 0, 25 25 30) = map_hazard_quant_small : "Inflicts ENERGY damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Energy drain amount per tic" : 3
+  count(float) : "tic interval" : "0.6"
+]
+@PointClass base(BaseHazardQuantum) size(-35 -35 0, 35 35 45) = map_hazard_quant_medium : "Inflicts ENERGY damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Energy drainamount per tic" : 4
+  count(float) : "tic interval" : "0.5"
+]
+@PointClass base(BaseHazardQuantum) size(-45 -45 0, 45 45 56) = map_hazard_quant_large : "Inflicts ENERGY damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Energy drain amount per tic" : 5
+  count(float) : "tic interval" : "0.3"
+]
+
+@PointClass base(BaseHazardCrystal) size(-20 -20 0, 20 20 25) = map_hazard_crys_small : "Inflicts SHIELD damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Shield damage amount per tic" : 2
+  count(float) : "tic interval" : "0.5"
+]
+@PointClass base(BaseHazardCrystal) size(-30 -30 0, 30 30 40) = map_hazard_crys_medium : "Inflicts SHIELD damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Shield damage amount per tic" : 4
+  count(float) : "tic interval" : "0.4"
+]
+@PointClass base(BaseHazardCrystal) size(-40 -40 0, 40 40 52) = map_hazard_crys_large : "Inflicts SHIELD damage on any unit that touches it every rand*self.count seconds." [
+  damageValue(integer) : "Shield damage amount per tic" : 6
+  count(float) : "tic interval" : "0.2"
+]
+//=============================================
+
+@PointClass base(Targetname) color(0.431 0.788 0.753) size(-16 -16 -32, 16 16 32) = map_change_fog : "A Map Wrapper for the fog cvar. Allows a map to take control of the fog setting in a controllabe way. 
+This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
+fog cvar: density red green blue alpha mindist maxdist top fadedepth" [
+  fog_density(float) : "Density of Fog" : "0.0"
+  fog_color(string) : "colors of the fog [R G B]" : "0 0 0"
+  fog_alpha(float) : "alpha transparency of the fog" : "0.0"
+  fog_dist(string) : "Fog distance [min max height]" : "0 0 0"
+  fog_fade(float) : "Density of Fog" : "0.0"
+  
+  spawnflags(Flags) = [
+    1 : "Remove on touch" : 0
+  ]
+]
+
+@PointClass base(Targetname) color(0.431 0.788 0.753) size(-12 -12 -12, 12 12 12) = map_change_music : "Primarily a map wrapper for the SVC_CDTRACK message, but also a manager of  it as well. 
+This map ent provides map-level control of the music playback code and sound channel. 
+It runs exlcusively on the CD tracks using a track number, so it is unable to process arbitrary sounds." [
+  comp_id(integer) : "CD track" : 0
+  spawnflags(Flags) = [
+    1 : "Remove on first use" : 0
+    2 : "Loop" : 0
+  ]
+]
+
+@PointClass base(Target, Targetname) color(0.431 0.788 0.753) size(-12 -12 -12, 12 12 12) = map_change_wind : "Every map can have a wind direction and velocity that affects VFX like sparks and smoke.
+This map object is to allow the map to alter this value.
+This is NEVER a touchable map object!." [
+  wind(string) : "Wind strength as a vector X Y Z" : "1 1 1"
+  data_lifetime(integer) : "time to display" : 5
+  wait(integer) : "use with cooldown" : 0
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Lifetime" : 0
+    4 : "Reactivate" : 0
+    8 : "Remove on first use" : 0
+    16 : "Restore world val" : 0
+  ]
+]
+
+@PointClass base(Target, Targetname, Faction, ExtTriggers, CampaignFlagsOld, SkillFlagsOld) color(0.753 0.788 0.431) size(-26 -26 -44, 26 26 28) = map_deploy_point : "Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
+Deploy points can be tailored to specific factions, and can be activated/deactivated." [
+  isActive(choices) : "starting Active" : 1 = [
+    0 : "Off"
+    1 : "On"
+  ]
+  spawnflags(Flags) = [
+    2 : "On touch" : 0
+  ]
+]
+
+@PointClass base(Target, Targetname, Faction) color(0.431 0.788 0.753) size(-16 -8 -16, 16 8 16) = map_fail_objective : "Merely a necessary interstitial map object to set a Mission Objective to 'fail'.
+This should be used sparingly, they clean themsleves up after firing." [
+  mins(string) : "only on-touch, min" : "0 0 0"
+  maxs(string) : "only on-touch, max" : "0 0 0"
+  spawnflags(Flags) = [
+    2 : "On touch" : 0
+  ]
+]
+
+@PointClass base(Target, Targetname, Faction) color(0.431 0.788 0.753) size(-16 -16 -16, 16 16 16) = map_hud_highlight : "HUD Highlighting is a map event sent to chosen clients. This creates a colored box around a portion of the player's screen
+  for a set amount of time. The use case is primarily for information and training purposes, but can be useful in other ways.
+  
+  MESSAGE_ONLY will just send a special event to show an info box;" [
+  movedir(string) : "2D screen position as %'s" : "0 0 0"
+  compOffset(string) : "2D sizes of box as %'s" : "0.1 0.1 0.0"
+  color(string) : "box colors RGB" : "1 1 1"
+  data_lifetime(integer) : "time to display" : 5
+  wait(integer) : "use with cooldown" : 0
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "On touch" : 0
+    4 : "Remove after use" : 0
+    8 : "Faction Only" : 0
+    16 : "Drop to floor" : 0
+    32 : "Freeze Player" : 0
+    64 : "Cooldown" : 0
+    128 : "Call by trigger" : 0
+    256 : "Message Only" : 0
+  ]
+]
+
+@PointClass base(Target, Targetname, Faction) color(0.431 0.788 0.753) size(-10 -10 -10, 10 10 10) = map_no_shoot : "A map object that modifies unit .Flags, controlling whether and for how long a unit has the given .Flags.
+this is very powerful and mostly only used for FL_NOSHOOT 32768" [
+  comp_id(integer) : "flags to modify" : 0
+  damageType(integer) : "Affect FL_CLIENT only" : 1
+  delay(integer) : "delay before use" : 0
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Lifetime" : 0
+    4 : "Reactivate" : 0
+    8 : "Remove on first use" : 0
+  ]
+]
+
+@PointClass base(Target, Targetname, Faction, ExtTriggers) color(0.431 0.788 0.753) size(-16 -16 -16, 16 16 16) = map_objective : "An Objective a specific map object.
+  Map Objectives are named triggers that are sent to the client for interaction.
+  Map Objectives MUST map to an Objective ID in the Map's MSN File.
+  In order to sync these with clients; they should be placed in the same 'holding box' as 
+  <INFO_PLAYER_STARTS> to make sure the player PVS picks them up asap." [
+  data_idx(integer) : "must match objective ID in MSN FILE!" : 0
+  count(integer) : "only complete objective when counter hit" : 0
+  isActive(choices) : "starting Active" : 1 = [
+    0 : "Off"
+    1 : "On"
+  ]
+  aState(choices) : "determines which SFX to play when 'completed'" : 1 = [
+    1 : "primary"
+    2 : "secondary"
+    3 : "tertiary"
+  ]
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "On Touch" : 0
+  ]
+]
+
+@PointClass base(Targetname, Faction) color(0.431 0.788 0.753) size(-16 -16 -16, 16 16 16) = map_mission_end : "End Mission ends the entire mission for EVERY player / faction.
+Default is play 'mission successful' message for faction-matching players.
+Odds are there'll be 2 of these per single player map, 1 success, 1 fail.
+
+CAMPAIGN ONLY and COOP ONLY!" [
+  isActive(choices) : "starting Active" : 1 = [
+    0 : "Off"
+    1 : "On"
+  ]
+  count(integer) : "Fire after this many triggers" : 0
+  map(string) : "next map filename"
+  mins(string) : "on touch min size" : "0 0 0"
+  maxs(string) : "on touch max size" : "0 0 0"
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    4 : "Mission Lose" : 0
+    16 : "On Touch - needs min/max" : 0
+    32 : "Touch Faction only" : 0
+  ]
+]
+
+@PointClass color(0.9 0.9 0.9) size(-32 -32 -16, 32 32 16) = map_particlecube_effect : "This is to turn the effect on/off/update." [
+  data_idx(choices) : "Effect type" : 1 = [
+     1 : "Custom"
+     2 : "Rain"
+     3 : "Snow"
+  ]
+  compOffset(string) : "Cube min bounds" : "-64 -64 -64"
+  compAltOffset(string) : "Cube max bound" : "64 64 64"
+  velocity(string) : "-Z is downward, +Z can be used for upward flowing particles" : "0 0 -2"
+  count(integer) : "how many particles" : 2
+  count1(integer) : "8Bit color code" : 14 
+  jump_flag(choices) : "Gravity flag for Custom." : 0 = [
+    0 : "off"
+    1 : "on"
+  ]
+  count2(integer) : "Velocity Jitter strength for Custom" : 1
+  count3(integer) : "Lifetime, use with spawn flag" : 0 
+  sound(string) : "play sfx-todo"
+  group(string) : "Cube batches so that touch only overrides DIFFERENT cubes"
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Lifetime" : 0
+    4 : "Delay" : 0
+    8 : "Interval" : 0
+    16 : "Use Wind" : 0
+    32 : "Variable count" : 0
+    64 : "Remove" : 0
+  ]
+]
+
+@PointClass base(Target, Faction) color(0.7 0.5 0.3) size(-10 -10 -16, 10 10 16) = map_animatic : "An 'Animatic' is a sequence of images and queued up sounds that are played back for players when the animatic is triggered.
+the script file for the Animatic is defined in /data/anim/<anim_name>.anim
+The script schema can be found there too.  
+Player can SKIP this animatic IF there's an appropriate trigger_changelevel." [
+  missionFile(string) : "file loaded from /data/anim/ .dat"
+  count1(integer) : "freeze time - default 15" : 0
+  count2(integer) : "fire delay" : 0
+  wait(integer) : "cooldown time" : 0
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "On touch" : 0
+    4 : "Remove done" : 0
+    8 : "Faction Only" : 0
+    16 : "Drop to floor" : 0
+    32 : "Freeze players" : 0
+    64 : "cooldown" : 0
+  ]
+]
+//---------------------------------------------------------------------------------------------------------------------
+
+//LIGHT_* ENTs ---------------------------------------------------------------------------------------------------------------------
+@BaseClass color(0 1 0) size(-8 -8 -8, 8 8 8) = BaseLight [
+  light(integer) : "light value" : 300
+  style(integer) : "0 - 12 light style" : 0
+]
+@BaseClass = BaseLightFlags [
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+  ]
+]
+@BaseClass = BaseLightRealtime [
+  rtlShadows(choices) : "use real-time shadows on light." : 0 = [
+    0 : "Off"
+    1 : "On"
+  ]
+  rtlRadius(float) : "radius of light." : "300.0"
+  color(string) : "0.1 - 1.0 R G B" : "1.0 1.0 1.0"
+  rtlStyle(integer) : "just like normal light style." : 0
+  vec_name(string) : "light cubemap path."
+  rtlCorona(float) : "Corona intensity" : "0.0"
+  angles(string) : "direction angle, 0 0 0 is non-directional." : "0 0 0"
+  rtlCoronaSize(float) : "size of corona" : "0.0"
+  rtlAmbient(float) : "ambient level 0 - 1.0" : "0.1"
+  rtlDiffuse(float) : "diffuse intensity 0 - 1.0" : "0.5"
+  rtlSpecular(float) : "Specular intensity 0 - 1.0" : "0.1"
+  rtlMode(choices) : "Light mode" : 3 = [
+    0 : "normalmode NO, realtimemode NO"
+    1 : "normalmode YES && realtimemode NO"
+    2 : "normalmode NO && realtimemode YES"
+    3 : " normalmode YES && realtimemode YES"
+  ]
+]
+@PointClass base(Angle, BaseLightRealtime) color(0 0.75 0.75) size(-16 -16 -16, 16 16 16) = realtimelights_light : "will be converted to rtlight file line on console command" []
+@PointClass base(Angle, BaseLightRealtime) color(0 1 0) size(-24 -24 -24, 24 24 24) = realtimelights_sunlight : "wwill be converted to rtlight file line on console command
+  this is a series of realtime lights generated to mimic sunlight. given an .angles var,
+  this will generate the necessary realtimelights_light entities." [
+  angles(string) : "direction of sunlight." : "0 0 0"
+]
+
+@PointClass base(BaseLight, BaseLightFlags, Targetname) = light : "Non-displayed light. If targeted, it will toggle between on or off." []
+@PointClass base(BaseLight, BaseLightFlags, Targetname) = light_fluoro : "Non-displayed light. If targeted, it will toggle between on or off. Makes steady fluorescent humming sound." []
+@PointClass base(BaseLight, BaseLightFlags, Targetname) = light_fluorospark : "Non-displayed light. If targeted, it will toggle between on or off. Makes sparking, broken fluorescent sound." []
+@PointClass base(BaseLight, BaseLightFlags) = light_globe : "Sphere globe light." []
+@PointClass base(BaseLight) size(-10 -10 -12, 12 12 18) = light_flame_large_yellow : "Large yellow flame ball." []
+@PointClass base(BaseLight, BaseLightFlags) = light_flame_small_yellow : "Small yellow flame ball." []
+@PointClass base(BaseLight, BaseLightFlags) size(-10 -10 -40, 10 10 40) = light_flame_small_white : "Small yellow flame ball." []
+@PointClass color(0 0.5 0) size(-10 -10 -20, 10 10 20) = light_torch_small_walltorch : "Short wall torch" [
+  light(integer) : "light value" : 200
+  style(integer) : "0 - 12 light style" : 0
+]
+
+//---------------------------------------------------------------------------------------------------------------------
+
+//NAV POINTS ENTS ---------------------------------------------------------------------------------------------------------------------
+@PointClass base(NavPoint) = map_nav_point : "Custom nav point if needed." [
+  data_idx(integer) : "Unique Id, matches to Nav Name." : 0
+]
+@PointClass base(NavPoint) = nav_lambda : "" []
+@PointClass base(NavPoint) = nav_alpha : "" []
+@PointClass base(NavPoint) = nav_beta : "" []
+@PointClass base(NavPoint) = nav_delta : "" []
+@PointClass base(NavPoint) = nav_epsilon : "" []
+@PointClass base(NavPoint) = nav_gamma : "" []
+@PointClass base(NavPoint) = nav_iota : "" []
+@PointClass base(NavPoint) = nav_kappa : "" []
+@PointClass base(NavPoint) = nav_lambda : "" []
+@PointClass base(NavPoint) = nav_mu : "" []
+@PointClass base(NavPoint) = nav_nu : "" []
+@PointClass base(NavPoint) = nav_omicron : "" []
+@PointClass base(NavPoint) = nav_rho : "" []
+@PointClass base(NavPoint) = nav_tau : "" []
+@PointClass base(NavPoint) = nav_upsilon : "" []
+@PointClass base(NavPoint) = nav_zeta : "" []
+@PointClass base(NavPoint) = nav_eta : "" []
+@PointClass base(NavPoint) = nav_theta : "" []
+@PointClass base(NavPoint) = nav_xi : "" []
+@PointClass base(NavPoint) = nav_phi : "" []
+@PointClass base(NavPoint) = nav_omega : "" []
+//---------------------------------------------------------------------------------------------------------------------
+
+//CORE BASE BUILDINGS---------------------------------------------------------------------------------------------------
+@PointClass base(RootBuilding) size(-20 -20 0, 20 20 26) model({ "path": ":models/buildings/radar/radar.md3" }) = building_human_radar : "Radar Post has the ability to detect the player and alert friendly bot to these players." [
+  health(integer) : "starting health." : 100
+  shieldMax(integer) : "max shield value" : 250
+  radar_range(integer) : "Radar range." : 2000
+]
+
+@PointClass base(RootBuilding) size(-24 -24 0, 24 24 48) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) = building_guard_tower : "Base Decoration building. + can glow yellow. Does not require power." [
+  health(integer) : "starting health." : 200
+  shieldMax(integer) : "max shield value" : 150
+  style(integer) : "light style" : 0
+  spawnflags(Flags) = [
+    2097152 : "Lights off." : 0
+  ]
+]
+
+@PointClass base(RootBuilding) size(-56 -56 0, 56 56 28) model({ "path": ":models/buildings/shield/shield.md3" }) = building_human_shield : "Shield Generator Building. Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields MUST HAVE Power Plant that can power it -check power plant radius-. Generator does have to pay for its shield generating, these can be taxed by too many nearby units." [
+  health(integer) : "starting health." : 500
+  energyMax(integer) : "max energy" : 2000
+  energyRate(float) : "defined recharge rate." : "0.0"
+  shieldMax(integer) : "max shield value" : 300
+  shieldRate(float) : "start shield rate" : "0.0"
+  radius(float) : "give allied buildings power." : "1000.0"
+]
+
+@PointClass base(RootBuilding) size(-80 -80 0, 80 80 58) model({ "path": ":models/buildings/reactor/reactor.md3" }) = building_human_power : "Generates energy to power all friendly buildings in Radius." [
+  health(integer) : "starting health." : 1200
+  energyMax(integer) : "max energy" : 4000
+  energyRate(float) : "defined recharge rate." : "4.0"
+  shieldMax(integer) : "max shield value" : 300
+  shieldRate(float) : "start shield rate" : "0.0"
+  radius(float) : "give allied buildings power." : "800.0"
+]
+
+@PointClass base(RootBuilding) size(-80 -80 0, 80 80 88) model({ "path": ":models/buildings/hangar/hangar.md3" }) = building_human_hangar : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
+  health(integer) : "starting health." : 800
+  shieldMax(integer) : "max shield value" : 600
+  shieldRate(float) : "start shield rate" : "0.0"
+]
+
+@PointClass base(RootBuilding) size(-78 -78 0, 78 78 48) model({ "path": ":models/buildings/hangar_vec/hangar_vehicle.md3" }) = building_human_hangar_vehicle : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
+  health(integer) : "starting health." : 500
+  shieldMax(integer) : "max shield value" : 400
+  shieldRate(float) : "start shield rate" : "0.0"
+]
+
+@PointClass base(RootBuilding) size(-53 -53 0, 53 53 80) model({ "path": ":models/buildings/repair/repair.md3" }) = building_human_repair : "[ADVISED] - put it near a power plant for more energy. Repairs vehicles, mostly for player. AI DOES NOT know how to use Repair Bays, sorry." [
+  health(integer) : "starting health." : 600
+  energyMax(integer) : "max energy" : 1000
+  energyRate(float) : "defined recharge rate." : "0.67"
+  shieldMax(integer) : "max shield value" : 250
+  shieldRate(float) : "start shield rate" : "0.0"
+  repairRate(float) : "Repair recharge rate." : "4.0"
+  repairMax(integer) : "Repair charge max." : 1250
+]
+
+@PointClass base(RootBuilding) size(-40 -40 0, 40 40 64) model({ "path": ":models/buildings/fueltank/fueltank.md3" }) = building_human_fuel : "Decoration building. Does Not require power. Does not explode with damage." [
+  health(integer) : "starting health." : 100
+  shieldMax(integer) : "max shield value" : 250
+  shieldRate(float) : "start shield rate" : "0.0"
+]
+
+@PointClass base(RootBuilding) size(-60 -60 0, 60 60 37) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) = building_barracks : "Decoration building. Does Not require power." [
+  health(integer) : "starting health." : 275
+  shieldMax(integer) : "max shields" : 300
+  shieldRate(float) : "start shield rate" : "0.0"
+]
+
+@PointClass base(RootBuilding) size(-60 -60 0, 60 60 37) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) = building_supply_depot : "Decoration building. Does Not require power." [
+  health(integer) : "starting health." : 350
+  shieldMax(integer) : "max shield value" : 250
+  shieldRate(float) : "start shield rate" : "0.0"
+]
+//---------------------------------------------------------------------------------------------------------------------
+//AI TURRETS---------------------------------------------------------------------------------------------------------------------
+//-----BaseClass
+@BaseClass base(AITurret) size(-32 -32 -6, 32 32 13) = TurretLight []
+@BaseClass base(AITurret) size(-20 -20 -13, 20 20 20) = TurretMissile []
+@BaseClass base(AITurret) size(-28 -28 -16, 28 28 28) = TurretHeavy []
+//------IMPL
+//-----------LIGHT
+@PointClass base(TurretLight) = building_turret_light_s : "Standard loadout." []
+@PointClass base(TurretLight) = building_turret_light_m : "Standard loadout." []
+@PointClass base(TurretLight) = building_turret_light_p : "Standard loadout." []
+@PointClass base(TurretLight) = building_turret_light_survest_zapper : "ZAPPER - focuses on shield breaking" []
+@PointClass base(TurretLight) = building_turret_light_militar_zapper : "ZAPPER - focuses on shield breaking" []
+@PointClass base(TurretLight) = building_turret_light_psc_zapper : "ZAPPER - focuses on shield breaking" []
+@PointClass base(TurretLight) = building_turret_light_survest_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(TurretLight) = building_turret_light_militar_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(TurretLight) = building_turret_light_psc_gunner : "GUNNER - bad at shields, good on firepower" []
+
+//-----------MISSILE
+@PointClass base(TurretMissile) = building_turret_missile_m : "LOBBER - mostly missile firepower." []
+@PointClass base(TurretMissile) = building_turret_missile_s : "LOBBER - mostly missile firepower." []
+@PointClass base(TurretMissile) = building_turret_missile_p : "LOBBER - mostly missile firepower." []
+@PointClass base(TurretMissile) = building_turret_missile_survest_lobber : "LOBBER - mostly missile firepower." []
+@PointClass base(TurretMissile) = building_turret_missile_militar_lobber : "LOBBER - mostly missile firepower." []
+@PointClass base(TurretMissile) = building_turret_missile_psc_lobber : "LOBBER - mostly missile firepower." []
+
+//-----------HEAVIES
+@PointClass base(TurretHeavy) = building_turret_heavy_m : "Standard loadout." []
+@PointClass base(TurretHeavy) = building_turret_heavy_s : "Standard loadout." []
+@PointClass base(TurretHeavy) = building_turret_heavy_p : "Standard loadout." []
+@PointClass base(TurretHeavy) = building_turret_heavy_survest_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(TurretHeavy) = building_turret_heavy_militar_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(TurretHeavy) = building_turret_heavy_psc_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(TurretHeavy) = building_turret_heavy_survest_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(TurretHeavy) = building_turret_heavy_militar_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(TurretHeavy) = building_turret_heavy_psc_gunner : "GUNNER - bad at shields, good on firepower" []
+
+//---------------------------------------------------------------------------------------------------------------------
+
+
+//AI UNITS---------------------------------------------------------------------------------------------------------------------
+//-----BaseClass
+@BaseClass base(AIUnit) color(1 0 0.75) size(-20 -20 -10, 20 20 14) = UnitDunerunner []
+@BaseClass base(AIUnit) color(1 0 0.75) size(-22 -22 -8, 22 22 12) = UnitFoslager []
+@BaseClass base(AIUnit) color(1 0 0.75) size(-32 -32 -7.75, 32 32 20) = UnitTrowel []
+@BaseClass base(AIUnit) color(1 0 0.75) size(-30 -30 -10.25, 30 30 28) = UnitOnnek []
+@BaseClass base(AIUnit) color(1 0 0.75) size(-22 -22 -11, 22 22 26) = UnitSorcerer []
+
+@BaseClass base(AIUnit) size(-14 -14 -35, 14 14 16) = AIBalaket []
+@BaseClass base(AIUnit) size(-17 -17 -40, 17 17 22) = AIMatok []
+@BaseClass base(AIUnit) size(-22 -22 -44, 22 22 28) = AIMonitor []
+
+//------IMPL
+//-----------DUNERUNNER
+@PointClass base(UnitDunerunner) model({ "path": ":models/vecs/dunerunner/dunerunner_h.md3" }) = unit_dunerunner_h : "Standard loadout." []
+@PointClass base(UnitDunerunner) model({ "path": ":models/vecs/dunerunner/dunerunner_m.md3" }) = unit_dunerunner_m : "Standard loadout." []
+
+//-----------FOSLAGER
+@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/foslager_h.md3" }) = unit_foslager_survest_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/foslager_m.md3" }) = unit_foslager_militar_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/foslager_h.md3" }) = unit_foslager_survest_gunner : "GUNNER - bad at shields, good on firepower." []
+@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/foslager_m.md3" }) = unit_foslager_militar_gunner : "GUNNER - bad at shields, good on firepower." []
+
+//-----------TROWEL
+@PointClass base(UnitTrowel) model({ "path": ":models/vecs/trowel/trowel_m.md3" }) = unit_trowel_militar_lobber : "LOBBER - mostly missile firepower." []
+@PointClass base(UnitTrowel) model({ "path": ":models/vecs/trowel/trowel_h.md3" }) = unit_trowel_survest_lobber : "LOBBER - mostly missile firepower." []
+@PointClass base(UnitTrowel) model({ "path": ":models/vecs/trowel/trowel_m.md3" }) = unit_trowel_militar_gunner : "GUNNER - bad at shields, good on firepower." []
+@PointClass base(UnitTrowel) model({ "path": ":models/vecs/trowel/trowel_h.md3" }) = unit_trowel_survest_gunner : "GUNNER - bad at shields, good on firepower." []
+
+//-----------ONNEK
+@PointClass base(UnitOnnek) model({ "path": ":models/vecs/onnek/onnek_h.md3" }) = unit_onnek_h : "Standard loadout." []
+@PointClass base(UnitOnnek) model({ "path": ":models/vecs/onnek/onnek_m.md3" }) = unit_onnek_m : "Standard loadout." []
+@PointClass base(UnitOnnek) model({ "path": ":models/vecs/onnek/onnek_h.md3" }) = unit_onnek_survest_zapper : "ZAPPER - focuses on shield breaking" []
+@PointClass base(UnitOnnek) model({ "path": ":models/vecs/onnek/onnek_m.md3" }) = unit_onnek_militar_zapper : "ZAPPER - focuses on shield breaking" []
+@PointClass base(UnitOnnek) model({ "path": ":models/vecs/onnek/onnek_h.md3" }) = unit_onnek_survest_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(UnitOnnek) model({ "path": ":models/vecs/onnek/onnek_m.md3" }) = unit_onnek_militar_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(UnitOnnek) model({ "path": ":models/vecs/onnek/onnek_h.md3" }) = unit_onnek_survest_lobber : "LOBBER - mostly missile firepower" []
+@PointClass base(UnitOnnek) model({ "path": ":models/vecs/onnek/onnek_m.md3" }) = unit_onnek_militar_lobber : "LOBBER - mostly missile firepower" []
+
+//-----------SORCERER
+@PointClass base(UnitSorcerer) model({ "path": ":models/vecs/sorcerer/sorcerer_h.md3" }) = unit_sorcerer_survest_gunner : "LOBBER - mostly missile firepower" []
+@PointClass base(UnitSorcerer) model({ "path": ":models/vecs/sorcerer/sorcerer_m.md3" }) = unit_sorcerer_militar_gunner : "LOBBER - mostly missile firepower" []
+@PointClass base(UnitSorcerer) model({ "path": ":models/vecs/sorcerer/sorcerer_h.md3" }) = unit_sorcerer_survest_lobber : "LOBBER - mostly missile firepower" []
+@PointClass base(UnitSorcerer) model({ "path": ":models/vecs/sorcerer/sorcerer_m.md3" }) = unit_sorcerer_militar_lobber : "LOBBER - mostly missile firepower" []
+
+
+//-----------BALAKET CLASS
+@PointClass base(AIBalaket) model({ "path": ":models/mechs/balaket/balaket_h.md3" }) = unit_balaket_survest_sniper : "Long range fighter." []
+@PointClass base(AIBalaket) model({ "path": ":models/mechs/balaket/balaket_m.md3" }) = unit_balaket_militar_sniper : "Long range fighter." []
+@PointClass base(AIBalaket) model({ "path": ":models/mechs/balaket/balaket_h.md3" }) = unit_balaket_survest_brawler : "Balanced mix of weaponry in service to Faction's fighting style." []
+@PointClass base(AIBalaket) model({ "path": ":models/mechs/balaket/balaket_m.md3" }) = unit_balaket_militar_brawler : "Balanced mix of weaponry in service to Faction's fighting style." []
+@PointClass base(AIBalaket) model({ "path": ":models/mechs/balaket/balaket_p.md3" }) = unit_balaket_psc_brawler : "Balanced mix of weaponry in service to Faction's fighting style." []
+//-----------MATOK CLASS
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_h.md3" }) = unit_matok_survest_sniper : "Long range fighter." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_m.md3" }) = unit_matok_militar_sniper : "Long range fighter." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_p.md3" }) = unit_matok_psc_sniper : "Long range fighter." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_m.md3" }) = unit_matok_militar_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_h.md3" }) = unit_matok_survest_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_h.md3" }) = unit_matok_survest_brawler : "Balanced mix of weaponry in service to Faction's fighting style." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_m.md3" }) = unit_matok_militar_brawler : "Balanced mix of weaponry in service to Faction's fighting style." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_m.md3" }) = unit_matok_militar_gunner : "GUNNER - bad at shields, good on firepower." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_h.md3" }) = unit_matok_survest_gunner : "GUNNER - bad at shields, good on firepower." []
+@PointClass base(AIMatok) model({ "path": ":models/mechs/matok/matok_h.md3" }) = unit_matok_survest_lobber : "LOBBER - mostly missile firepower." []
+//-----------MONITOR CLASS
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_h.md3" }) = unit_monitor_survest_brawler : "Balanced mix of weaponry in service to Faction's fighting style." []
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_m.md3" }) = unit_monitor_militar_brawler : "Balanced mix of weaponry in service to Faction's fighting style." []
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_p.md3" }) = unit_monitor_psc_brawler : "Balanced mix of weaponry in service to Faction's fighting style." []
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_m.md3" }) = unit_monitor_militar_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_m.md3" }) = unit_monitor_militar_gunner : "GUNNER - bad at shields, good on firepower." []
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_h.md3" }) = unit_monitor_survest_lobber : "LOBBER - mostly missile firepower." []
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_h.md3" }) = unit_monitor_survest_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_h.md3" }) = unit_monitor_survest_gunner : "GUNNER - bad at shields, good on firepower." []
+@PointClass base(AIMonitor) model({ "path": ":models/mechs/monitor/monitor_m.md3" }) = unit_monitor_militar_lobber : "LOBBER - mostly missile firepower." []
+//---------------------------------------------------------------------------------------------------------------------
+
+//MISC_   ---------------------------------------------------------------------------------------------------------------------
+@PointClass base(Angle, Target) color(1 0.5 0.25) size(-16 -16 -16, 16 16 16) = misc_model : "Place a model in the map.
+If target is set it follows the path defined by the target path_corner ents.
+noise and noise1 then define the noises to play during movement.
+button0 & 1 dont work when target is set." [
+  model(string) : "Path/name of MDL/MD2/MD3/ASE/BSP/OBJ to use."
+  button0(integer) : "Startframe to play" : 0
+  button1(integer) : "Endframe to play" : 0
+  noise(string) : "Start and movement sound"
+  noise1(string) : "Stop sound"
+  noise4(string) : "Target name for use with the misc_rotateengine"
+]
+
+//---------------------------------------------------------------------------------------------------------------------
+
+
+
+//MISC_BUILDING---------------------------------------------------------------------------------------------------------------------
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-88 -36 0, 88 36 76) = building_misc_factory_med : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "350.0"
+]
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -88 0, 36 88 76) = building_misc_factory_med_wide : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "350.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-38 -38 0, 38 38 64) = building_misc_lodge : "Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -20 0, 36 20 52) = building_misc_apartment : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-20 -36 0, 20 36 52) = building_misc_apartment_wide : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-68 -68 0, 68 68 72) = building_misc_off_pyra : "Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-88 -88 0, 88 88 64) = building_misc_off_large : "Decoration building. Does not require power." [
+  health(float) : "" : "250.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -56 0, 36 56 80) = building_misc_off_small : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "100.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-56 -36 0, 56 36 80) = building_misc_off_small_wide : "Decoration building. Does not require power." [
+  health(float) : "" : "300.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -36 0, 36 36 48) = building_misc_fact_steam : "Decoration building. Does not require power." [
+  health(float) : "" : "300.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-120 -96 0, 0 96 56) = building_misc_apt_large_east : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-120 -96 0, 0 96 56) = building_misc_apt_large_west : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-96 0 0, 96 120 56) = building_misc_apt_large_north : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-96 -120 0, 96 0 56) = building_misc_apt_large_south : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+//---------------------------------------------------------------------------------------------------------------------
+
+//Doodads---------------------------------------------------------------------------------------------------------------------
+@BaseClass base(Angle) color(0.431 0.788 0.753) = BaseDoodadRocks [
+  spawnflags(Flags) = [
+    1 : "Random Angle" : 0
+    16 : "Drop to floor" : 0
+  ]
+]
+
+@PointClass base(BaseDoodadRocks) size(-74 -74 -14, 74 74 104) = doodad_rocks_desert_1 : "A desert rock, model #1. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks) size(-79 -79 -27, 79 79 120) = doodad_rocks_desert_2 : "A desert rock, model #2. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks) size(-68 -68 -7, 68 68 72) = doodad_rocks_desert_3 : "A desert rock, model #3. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks) size(-79 -79 -27, 79 79 120) = doodad_rocks_desert_random : "A desert rock, model random 1 - 3. Doodad is static, BSP collision, non-interactive." []
+
+@PointClass base(BaseDoodadRocks) size(-32 -32 0, 32 32 48) = doodad_ruins_urban_small : "urban ruins - small size. Doodad is static, no collision, non-interactive." []
+@PointClass base(BaseDoodadRocks) size(-48 -48 0, 48 48 64) = doodad_ruins_urban_medium : "urban ruins - medium size. Doodad is static, no collision, non-interactive." []
+@PointClass base(BaseDoodadRocks) size(-68 -84 0, 68 84 88) = doodad_ruins_urban_large : "urban ruins - large size. Doodad is static, no collision, non-interactive." []
+
+@PointClass base(BaseDoodadRocks) size(-11.5 -3.5 0, 11.5 3.5 24) = doodad_urban_barrier_small : "A 'small' concrete barrier. Where 'small' = about the size of the Foslager tank" []
+
+@PointClass base(DoodadRemovable) size(-18 -18 -35, 18 18 16) model({ "path": ":models/mechs/balaket/balaket.md3" }) = doodad_mech_static_balaket : "misc. mech models used for decoration.these are static models, with no collision, no AI. they dont get any weapons, and aren't animated." []
+@PointClass base(DoodadRemovable) size(-18 -18 -40, 18 18 22) model({ "path": ":models/mechs/matok/matok.md3" }) = doodad_mech_static_matok : "misc. mech models used for decoration.these are static models, with no collision, no AI. they dont get any weapons, and aren't animated." []
+@PointClass base(DoodadRemovable) size(-22 -22 -44, 22 22 24) model({ "path": ":models/mechs/monitor/monitor.md3" }) = doodad_mech_static_monitor : "misc. mech models used for decoration.these are static models, with no collision, no AI. they dont get any weapons, and aren't animated." []
+//---------------------------------------------------------------------------------------------------------------------

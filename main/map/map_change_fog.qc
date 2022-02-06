@@ -17,14 +17,14 @@ void() map_changefog_touch={
    other.fog_density = self.fog_density;
    other.fog_alpha = self.fog_alpha;
    other.fog_dist = self.fog_dist;
-   other.fade = self.fade;
+   other.fog_fade = self.fog_fade;
   }
 };
 
 void() map_changefog_use={
   if( (activator.flags & FL_CLIENT) ){
     
-    client_sendFog(other, FALSE, self.fog_density, self.fog_color, self.fog_alpha, self.fog_dist, self.fade);
+    client_sendFog(other, FALSE, self.fog_density, self.fog_color, self.fog_alpha, self.fog_dist, self.fog_fade);
     other.fog_alpha = self.fog_alpha;
     
     if( (self.spawnflags & 1) ){
@@ -46,7 +46,7 @@ fog cvar
 .fog_color = <vector> [red, green, blue] - new color to transition to
 .fog_alpha = <float> [alpha] - new alpha value
 .fog_dist = <vector> [dist min, dist max, height] - new fog distance
-.fade = <float> [fade depth] - transition time
+.fog_fade = <float> [fade depth] - transition time
     
 -------- SPAWNFLAGS -------- 
 REMOVE_ONTOUCH 1: remove on first touch

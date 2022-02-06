@@ -214,7 +214,7 @@ void() world_get_fog={
   self.fog_density = found.fog_density;
   self.fog_alpha = found.fog_alpha;
   self.fog_dist = found.fog_dist;
-  self.fade = found.fade;
+  self.fog_fade = found.fog_fade;
 };
 
 /*

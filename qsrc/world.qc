@@ -63,7 +63,7 @@ Only used for the world entity.
 .fog_color <vector> [color] - RGB {0.001 - 1.0} colors of the fog
 .fog_alpha <float> [alpha] - {0.001 - 1.0} alpha transparency of the fog
 .fog_dist <vector> [min distance, max distance, height] - distances of the fog
-.fade <float> [fade depth] - units of fade transition from low alpha to opacity
+.fog_fade <float> [fade depth] - units of fade transition from low alpha to opacity
 
 .worldtype <float> [enum]
     0: DESERT

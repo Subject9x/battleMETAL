@@ -614,7 +614,7 @@ void() trigger_skill_touch =
 	if (other.classname != "player")
 		return;
 		
-	cvar_set ("skill", self.message);
+	cvar_set ("skill", ftos(self.aState));
 };
 
 /*QUAKED trigger_setskill (.5 .5 .5) ?

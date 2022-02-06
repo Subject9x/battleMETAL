@@ -26,12 +26,7 @@ void() deploy_point_th={
 };
 
 void() deploy_point_ini={
-
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  
+    
   trigger_event( self, self.trigOnSpawn );
   self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = deploy_point_th;
@@ -82,6 +77,11 @@ void() map_deploy_point={
   }
   
   self.nextVecChoice = 1; //(satisfies ai_can_spawn() call)
+  
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
   
   self.SendEntity = send_deploy_point;
   self.think = deploy_point_ini;

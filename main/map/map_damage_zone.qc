@@ -194,7 +194,7 @@ void() map_hazard_rad_small={
   self.data_idx = 1;
   self.damageType = 1;
   
-  map_damage_zone_ini(1, map_damage_zone_rad_think, 1, 0.5);
+  map_damage_zone_ini(1, map_damage_zone_rad_think, self.damageValue, self.count);
 
   setsize( self, '-18 -18 0', '18 18 20' );
   setorigin( self, self.origin );
@@ -225,7 +225,7 @@ void() map_hazard_rad_medium={
   self.data_idx = 2;
   self.damageType = 1;
   
-  map_damage_zone_ini(2, map_damage_zone_rad_think, 2, 0.4);
+  map_damage_zone_ini(2, map_damage_zone_rad_think, self.damageValue, self.count);
 
   setsize( self, '-40 -40 0', '40 40 25' );
   setorigin( self, self.origin );
@@ -256,7 +256,7 @@ void() map_hazard_rad_large={
   self.data_idx = 3;
   self.damageType = 1;
   
-  map_damage_zone_ini(3, map_damage_zone_rad_think, 3, 0.3);
+  map_damage_zone_ini(3, map_damage_zone_rad_think, self.damageValue, self.count);
   
   setsize( self, '-48 -48 0', '48 48 30' );
   setorigin( self, self.origin );
@@ -288,7 +288,7 @@ void() map_hazard_crys_small={
   self.data_idx = 1;
   self.damageType = 2;
   
-  map_damage_zone_ini(1, map_damage_zone_crs_think, 2, 0.5);
+  map_damage_zone_ini(1, map_damage_zone_crs_think, self.damageValue, self.count);
 
   setsize( self, '-20 -20 0', '20 20 25' );
   setorigin( self, self.origin );
@@ -320,7 +320,7 @@ void() map_hazard_crys_medium={
   self.data_idx = 2;
   self.damageType = 2;
   
-  map_damage_zone_ini(2, map_damage_zone_crs_think, 4, 0.4);
+  map_damage_zone_ini(2, map_damage_zone_crs_think, self.damageValue, self.count);
 
   setsize( self, '-30 -30 0', '30 30 40' );
   setorigin( self, self.origin );
@@ -352,7 +352,7 @@ void() map_hazard_crys_large={
   self.data_idx = 3;
   self.damageType = 2;
   
-  map_damage_zone_ini(3, map_damage_zone_crs_think, 6, 0.2);
+  map_damage_zone_ini(3, map_damage_zone_crs_think, self.damageValue, self.count);
   
   setsize( self, '-40 -40 0', '40 40 52' );
   setorigin( self, self.origin );
@@ -385,7 +385,7 @@ void() map_hazard_quant_small={
   self.data_idx = 1;
   self.damageType = 3;
   
-  map_damage_zone_ini(1, map_damage_zone_qtm_think, 3, 0.6);
+  map_damage_zone_ini(1, map_damage_zone_qtm_think, self.damageValue, self.count);
 
   setsize( self, '-25 -25 0', '25 25 30' );
   setorigin( self, self.origin );
@@ -416,7 +416,7 @@ void() map_hazard_quant_medium={
   self.data_idx = 2;
   self.damageType = 3;
   
-  map_damage_zone_ini(2, map_damage_zone_qtm_think, 4, 0.5);
+  map_damage_zone_ini(2, map_damage_zone_qtm_think, self.damageValue, self.count);
 
   setsize( self, '-35 -35 0', '35 35 45' );
   setorigin( self, self.origin );
@@ -447,7 +447,7 @@ void() map_hazard_quant_large={
   self.data_idx = 3;
   self.damageType = 3;
   
-  map_damage_zone_ini(3, map_damage_zone_qtm_think, 5, 0.3);
+  map_damage_zone_ini(3, map_damage_zone_qtm_think, self.damageValue, self.count);
   
   setsize( self, '-45 -45 0', '45 45 56' );
   setorigin( self, self.origin );

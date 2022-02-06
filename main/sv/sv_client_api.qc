@@ -290,7 +290,7 @@ void() PutClientInServer = {
   self.view_ofs = '0 0 1';
   
   sv_select_info_start();
-  client_sendFog(self, TRUE, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
+  client_sendFog(self, TRUE, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fog_fade);
   
   //GAME MODE BLOCK
   switch(ENT_SERVER_INFO.gameType){

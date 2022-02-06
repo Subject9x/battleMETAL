@@ -601,6 +601,7 @@ float	AS_MISSILE		= 4;
 .float fog_alpha;
 .vector fog_dist;
 .float fade;
+.float fog_fade;
 .entity fogEntity;
 
 //===========================================================================
