@@ -223,8 +223,8 @@ Default style is 0
 */
 void() light_globe =
 {
-	precache_model ("progs/s_light.spr");
-	setmodel (self, "progs/s_light.spr");
+  precache_model ("q3mdl/testball.md3");
+	setmodel (self, "q3mdl/testball.md3");
 	makestatic (self);
 };
 
@@ -242,8 +242,8 @@ Default style is 0
 */
 void() light_torch_small_walltorch =
 {
-	precache_model ("progs/flame.mdl");
-	setmodel (self, "progs/flame.mdl");
+  precache_model ("q3mdl/testball.md3");
+	setmodel (self, "q3mdl/testball.md3");
 	FireAmbient ();
 	makestatic (self);
 };
@@ -253,8 +253,8 @@ Large yellow flame ball
 */
 void() light_flame_large_yellow =
 {
-	precache_model ("progs/flame2.mdl");
-	setmodel (self, "progs/flame2.mdl");
+precache_model ("q3mdl/testball.md3");
+	setmodel (self, "q3mdl/testball.md3");
 	self.frame = 1;
 	FireAmbient ();
 	makestatic (self);
@@ -265,8 +265,8 @@ Small yellow flame ball
 */
 void() light_flame_small_yellow =
 {
-	precache_model ("progs/flame2.mdl");
-	setmodel (self, "progs/flame2.mdl");
+  precache_model ("q3mdl/testball.md3");
+	setmodel (self, "q3mdl/testball.md3");
 	FireAmbient ();
 	makestatic (self);
 };
@@ -276,220 +276,11 @@ Small white flame ball
 */
 void() light_flame_small_white =
 {
-	precache_model ("progs/flame2.mdl");
-	setmodel (self, "progs/flame2.mdl");
+	precache_model ("q3mdl/testball.md3");
+	setmodel (self, "q3mdl/testball.md3");
 	FireAmbient ();
 	makestatic (self);
 };
-
-//============================================================================
-
-float SPAWNFLAG_SUPERSPIKE	= 1;
-float SPAWNFLAG_LASER = 2;
-
-//void(vector org, vector vec) LaunchLaser;
-
-void() spikeshooter_use =
-{
-	if (self.spawnflags & SPAWNFLAG_LASER)
-	{
-		sound (self, CHAN_VOICE, "enforcer/enfire.wav", 1, ATTN_NORM);
-		//LaunchLaser (self.origin, self.movedir);
-	}
-	else
-	{
-		sound (self, CHAN_VOICE, "weapons/spike2.wav", 1, ATTN_NORM);
-		//launch_spike (self.origin, self.movedir);
-		newmis.velocity = self.movedir * 500;
-		if (self.spawnflags & SPAWNFLAG_SUPERSPIKE){
-			//newmis.touch = superspike_touch;
-    }
-	}
-};
-
-void() shooter_think =
-{
-	spikeshooter_use ();
-	self.nextthink = time + self.wait;
-	newmis.velocity = self.movedir * 500;
-};
-
-
-/*QUAKED trap_spikeshooter (0 .5 .8) (-8 -8 -8) (8 8 8) superspike laser
-When triggered, fires a spike in the direction set in QuakeEd.
-Laser is only for REGISTERED.
-*/
-
-void() trap_spikeshooter =
-{
-	SetMovedir ();
-	self.use = spikeshooter_use;
-	if (self.spawnflags & SPAWNFLAG_LASER)
-	{
-		precache_model2 ("progs/laser.mdl");
-		
-		precache_sound2 ("enforcer/enfire.wav");
-		precache_sound2 ("enforcer/enfstop.wav");
-	}
-	else
-		precache_sound ("weapons/spike2.wav");
-};
-
-
-/*QUAKED trap_shooter (0 .5 .8) (-8 -8 -8) (8 8 8) superspike laser
-Continuously fires spikes.
-"wait" time between spike (1.0 default)
-"nextthink" delay before firing first spike, so multiple shooters can be stagered.
-*/
-void() trap_shooter =
-{
-	trap_spikeshooter ();
-	
-	if (self.wait == 0)
-		self.wait = 1;
-	self.nextthink = self.nextthink + self.wait + self.ltime;
-	self.think = shooter_think;
-};
-
-
-
-/*
-===============================================================================
-
-
-===============================================================================
-*/
-
-
-void() make_bubbles;
-void() bubble_remove;
-void() bubble_bob;
-
-/*QUAKED air_bubbles (0 .5 .8) (-8 -8 -8) (8 8 8)
-
-testing air bubbles
-*/
-
-void() air_bubbles =
-
-{
-	if (deathmatch)
-	{
-		remove (self);
-		return;
-	}
-	precache_model ("progs/s_bubble.spr");
-	self.nextthink = time + 1;
-	self.think = make_bubbles;
-};
-
-void() make_bubbles =
-{
-local entity	bubble;
-
-	bubble = spawn();
-	setmodel (bubble, "progs/s_bubble.spr");
-	setorigin (bubble, self.origin);
-	bubble.movetype = MOVETYPE_NOCLIP;
-	bubble.solid = SOLID_NOT;
-	bubble.velocity = '0 0 15';
-	bubble.nextthink = time + 0.5;
-	bubble.think = bubble_bob;
-	bubble.touch = bubble_remove;
-	bubble.classname = "bubble";
-	bubble.frame = 0;
-	bubble.cnt = 0;
-	setsize (bubble, '-8 -8 -8', '8 8 8');
-	self.nextthink = time + random() + 0.5;
-	self.think = make_bubbles;
-};
-
-void() bubble_split =
-{
-local entity	bubble;
-	bubble = spawn();
-	setmodel (bubble, "progs/s_bubble.spr");
-	setorigin (bubble, self.origin);
-	bubble.movetype = MOVETYPE_NOCLIP;
-	bubble.solid = SOLID_NOT;
-	bubble.velocity = self.velocity;
-	bubble.nextthink = time + 0.5;
-	bubble.think = bubble_bob;
-	bubble.touch = bubble_remove;
-	bubble.classname = "bubble";
-	bubble.frame = 1;
-	bubble.cnt = 10;
-	setsize (bubble, '-8 -8 -8', '8 8 8');
-	self.frame = 1;
-	self.cnt = 10;
-	if (self.waterlevel != 3)
-		remove (self);
-};
-
-void() bubble_remove =
-{
-	if (other.classname == self.classname)
-	{
-//		dprint ("bump");
-		return;
-	}
-	remove(self);
-};
-
-void() bubble_bob =
-{
-  local float		rnd1, rnd2, rnd3;
-
-	self.cnt = self.cnt + 1;
-	if (self.cnt == 4)
-		bubble_split();
-	if (self.cnt == 20)
-		remove(self);
-
-	rnd1 = self.velocity_x + (-10 + (random() * 20));
-	rnd2 = self.velocity_y + (-10 + (random() * 20));
-	rnd3 = self.velocity_z + 10 + random() * 10;
-
-	if (rnd1 > 10)
-		rnd1 = 5;
-	if (rnd1 < -10)
-		rnd1 = -5;
-		
-	if (rnd2 > 10)
-		rnd2 = 5;
-	if (rnd2 < -10)
-		rnd2 = -5;
-		
-	if (rnd3 < 10)
-		rnd3 = 15;
-	if (rnd3 > 30)
-		rnd3 = 25;
-	
-	self.velocity_x = rnd1;
-	self.velocity_y = rnd2;
-	self.velocity_z = rnd3;
-		
-	self.nextthink = time + 0.5;
-	self.think = bubble_bob;
-};
-
-/*~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>
-~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~<~>~*/
-
-/*QUAKED viewthing (0 .5 .8) (-8 -8 -8) (8 8 8)
-
-Just for the debugging level.  Don't use
-*/
-
-void() viewthing =
-
-{
-	self.movetype = MOVETYPE_NONE;
-	self.solid = SOLID_NOT;
-	precache_model ("progs/player.mdl");
-	setmodel (self, "progs/player.mdl");
-};
-
 
 /*
 ==============================================================================
@@ -562,108 +353,16 @@ void() func_bossgate =
 };
 
 //============================================================================
-/*QUAKED ambient_suck_wind (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
+/*QUAKED ambient_sound (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
 */
-void() ambient_suck_wind =
+void() ambient_sound =
 {
-	precache_sound ("ambience/suck1.wav");
-	ambientsound (self.origin, "ambience/suck1.wav", 1, ATTN_STATIC);
-};
-
-/*QUAKED ambient_drone (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-void() ambient_drone =
-{
-	precache_sound ("ambience/drone6.wav");
-	ambientsound (self.origin, "ambience/drone6.wav", 0.5, ATTN_STATIC);
-};
-
-/*QUAKED ambient_flouro_buzz (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-void() ambient_flouro_buzz =
-{
-	precache_sound ("ambience/buzz1.wav");
-	ambientsound (self.origin, "ambience/buzz1.wav", 1, ATTN_STATIC);
-};
-/*QUAKED ambient_drip (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-void() ambient_drip =
-{
-	precache_sound ("ambience/drip1.wav");
-	ambientsound (self.origin, "ambience/drip1.wav", 0.5, ATTN_STATIC);
-};
-/*QUAKED ambient_comp_hum (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-void() ambient_comp_hum =
-{
-	precache_sound ("ambience/comp1.wav");
-	ambientsound (self.origin, "ambience/comp1.wav", 1, ATTN_STATIC);
-};
-/*QUAKED ambient_thunder (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-void() ambient_thunder =
-{
-	precache_sound ("ambience/thunder1.wav");
-	ambientsound (self.origin, "ambience/thunder1.wav", 0.5, ATTN_STATIC);
-};
-/*QUAKED ambient_light_buzz (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-void() ambient_light_buzz =
-{
-	precache_sound ("ambience/fl_hum1.wav");
-	ambientsound (self.origin, "ambience/fl_hum1.wav", 0.5, ATTN_STATIC);
-};
-/*QUAKED ambient_swamp1 (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-void() ambient_swamp1 =
-{
-	precache_sound ("ambience/swamp1.wav");
-	ambientsound (self.origin, "ambience/swamp1.wav", 0.5, ATTN_STATIC);
-};
-/*QUAKED ambient_swamp2 (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-void() ambient_swamp2 =
-{
-	precache_sound ("ambience/swamp2.wav");
-	ambientsound (self.origin, "ambience/swamp2.wav", 0.5, ATTN_STATIC);
+  //stub example for reference.
+	precache_sound ("");
+	ambientsound (self.origin, "", 1, ATTN_STATIC);
 };
 
 //============================================================================
-
-void() noise_think =
-{
-	self.nextthink = time + 0.5;
-	sound (self, 1, "enforcer/enfire.wav", 1, ATTN_NORM);
-	sound (self, 2, "enforcer/enfstop.wav", 1, ATTN_NORM);
-	sound (self, 3, "enforcer/sight1.wav", 1, ATTN_NORM);
-	sound (self, 4, "enforcer/sight2.wav", 1, ATTN_NORM);
-	sound (self, 5, "enforcer/sight3.wav", 1, ATTN_NORM);
-	sound (self, 6, "enforcer/sight4.wav", 1, ATTN_NORM);
-	sound (self, 7, "enforcer/pain1.wav", 1, ATTN_NORM);
-};
-
-/*QUAKED misc_noisemaker (1 0.5 0) (-10 -10 -10) (10 10 10)
-
-For optimzation testing, starts a lot of sounds.
-*/
-
-void() misc_noisemaker =
-
-{
-	precache_sound2 ("enforcer/enfire.wav");
-	precache_sound2 ("enforcer/enfstop.wav");
-	precache_sound2 ("enforcer/sight1.wav");
-	precache_sound2 ("enforcer/sight2.wav");
-	precache_sound2 ("enforcer/sight3.wav");
-	precache_sound2 ("enforcer/sight4.wav");
-	precache_sound2 ("enforcer/pain1.wav");
-	precache_sound2 ("enforcer/pain2.wav");
-	precache_sound2 ("enforcer/death1.wav");
-	precache_sound2 ("enforcer/idle1.wav");
-
-	self.nextthink = time + 0.1 + random();
-	self.think = noise_think;
-};
 
 void() func_particle_cube_use={
   self.think = self.w_think;

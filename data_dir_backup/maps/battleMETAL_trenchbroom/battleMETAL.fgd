@@ -1,11 +1,9 @@
-//
-// 	battleMETAL for DarkPlaces game definition file (.fgd)
-//
-//
-// 	This FGD reflects those differences (lights, misc_model) as well as adds support for some extra features.
-//
-// worldspawn
-//
+//  battleMETAL
+// 	v3.8.5
+//  Forge Game Data schema 
+//  Trenchbroom / NetRadiant compatible.
+//  Peter Roohr
+
 
 //BASE CLASSES---------------------------------------------------------------------------------------------------------------------
 @BaseClass = Appearflags [
@@ -73,9 +71,9 @@
 @BaseClass base(Appearflags, Targetname) size(-16 -16 -24, 16 16 32) color(0 255 0) = PlayerClass []
 
 @BaseClass = ExtTriggers [
-  trigOnSpawn(string) : "Target called on Entity spawn."
-  trigOnDeath(string) : "Target called when Entity dies. "
-  trigOnTarget(string) : "Target called when AI targets something."
+  trigOnSpawn(target_destination) : "Target called on Entity spawn."
+  trigOnDeath(target_destination) : "Target called when Entity dies. "
+  trigOnTarget(target_destination) : "Target called when AI targets something."
 ]
 
 @BaseClass = Faction [
@@ -909,6 +907,84 @@ Player can SKIP this animatic IF there's an appropriate trigger_changelevel." [
     64 : "cooldown" : 0
   ]
 ]
+
+@PointClass base(Angle, Targetname) color(0.8 0.45 0.25) size(-10 -10 -10, 10 10 10) = map_projectile_shooter : "Mostly for debug, but could be handy in-general.
+Projectile Shooter that uses weapons-fire." [
+  count(integer) : "optional shot max." : 0
+  count3(float) : "fire interval." : "0.2"
+  data_lifetime(float) : "time to live." : 0
+  wait(float) : "recharge delay." : "0.0"
+  data_idx(choices) : "weapon to fire" : 1 = [
+    1 : "LATC"
+    2 : "EMP"
+    3 : "LAS"
+    4 : "Rocket"
+    5 : "Quantum"
+    6 : "Plasma"
+    7 : "PAC"
+    8 : "ESR"
+    9 : "M-LaseGuide"
+    10 : "M-ActiveRadar"
+    11 : "SFG"
+    12 : "Flak"
+    13 : "Ion"
+    14 : "M-Swarm"
+  ]  
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Lifetime" : 0
+    4 : "Reactivate" : 0
+    8 : "Remove done" : 0
+    16 : "Draw model" : 0
+    32 : "use max shots" : 0
+  ]
+]
+
+@PointClass base(Target, Targetname) color(0.753 0.788 0.431) size(-32 -32 -64, 32 32 64) = map_projectile_shooter : "DEPRECATED - UNSTABLE! will provide unlocked mechs and items to player.
+  + format is space-separated values
+  + each value is the UID of the mech or item." [
+  unlockMechs(string) : "mech ids"
+  unlockEquip(string) : "item ids"
+  spawnflags(Flags) = [
+    2 : "On touch" : 0
+  ]
+]
+
+@PointClass color(0.75 0.2 0.75) size(-24 -24 -24, 24 24 24) = map_terrain_model : "This is for injecting large 3D terrain meshes into a bsp file.
+  If a level needs large outdoor terrain pieces, but this right after worldspawn.
+  It's origin is set to the world's, SOLID_BSP, MOVETYPE_NONE.
+  It's non-damageable, and should never be removed unless there's an express purpose for doing so.
+  place at minimum Z that the terrain starts at (ie, the floor)." [
+  model(string) : "path to terrain model."
+  count1(float) : "opacity" : "1.0"
+  compOffset(string) : "Color R G B" : "1.0 1.0 1.0"
+  spawnflags(Flags) = [
+    2 : "Override Alpha" : 0
+    4 : "EF_NOSHADOW" : 0
+  ]
+]
+
+@PointClass base(Angle, Targetname) color(0.988 0.267 0.553) size(-3 -3 -3, 3 3 3) = map_debug_particles : " Debugger for particle effects" [
+  vec_name(string) : "effectinfo.txt name"
+  compOffset(string) : "trail particle endpoint"
+  dest1(string) : "if effect needs velocity" : "0 0 0"
+  count(float) : "# of particles" : "1.0"
+  data_lifetime(float) : "time to live." : "0.0"
+  aState(float) : "recharge delay" : "0.0"
+  count2(float) : "rate of particle cycle" : "1.0"
+  count3(choices) : "particle type" : 0 = [
+    0 : "PointParticles"
+    1 : "TrailParticles"
+  ]
+  count4(float) : "velocity multiplier" : "1.0"
+  spawnflags(Flags) = [
+    1 : "Start Off" : 0
+    2 : "Lifetime" : 0
+    4 : "Reactivate" : 0
+    8 : "Remove done" : 0
+  ]
+]
+
 //---------------------------------------------------------------------------------------------------------------------
 
 //LIGHT_* ENTs ---------------------------------------------------------------------------------------------------------------------
@@ -1191,6 +1267,7 @@ button0 & 1 dont work when target is set." [
   noise1(string) : "Stop sound"
   noise4(string) : "Target name for use with the misc_rotateengine"
 ]
+@PointClass color(0 0.5 0.8) size(-8 -8 -8, 8 8 8) = misc_teleporttrain : "Original Q1 final boss teleporter. Modified to use generic model and be most invisible, but use-case remains the same." []
 
 //---------------------------------------------------------------------------------------------------------------------
 
