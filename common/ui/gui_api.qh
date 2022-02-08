@@ -6,9 +6,14 @@ Overview:
   GUI API header
 */
 
+//DEBUG latch
+float DEBUG_FIRST_LOAD;
+
+
+vector VIEW_ACT;  //todo - deprecate
+
 #ifdef MENUQC
 vector VIEW_MPOS;
-vector VIEW_ACT;  //todo - deprecate
 #endif
 
 #ifndef MENUQC

@@ -48,6 +48,9 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
     if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT ){
       gui_renderTintImage(TRUE, VIEW_CTR - '16 16', HUT_RET_LOK, '32 32', CLR_DEF_RET_HASLOCK, HUD_ALPHA, 0);
     }
+  }  
+  if(DEBUG_FIRST_LOAD){
+    dprint(sprintf("HUD hud_renderCrosshairs() - VIEW_CTR = %s\n", vtos(VIEW_CTR))); //debug
   }
 };
 
@@ -210,6 +213,12 @@ void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl
   }
   
   iconOrg = gui_calcAlignCustom(lbl_ofs,lbl_algn, pos);
+  
+  if(DEBUG_FIRST_LOAD){
+    dprint(sprintf("HUD hud_renderEnergy() - pos = %s\n", vtos(pos))); //debug
+    dprint(sprintf("HUD hud_renderEnergy() - iconOrg = %s\n", vtos(iconOrg))); //debug
+  }
+  
   drawpic(iconOrg, HUD_ICON_POWER, iconSize, mColor, HUD_ALPHA, 0);
 };
 
@@ -397,6 +406,12 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
       gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
     }
   }
+  
+  if(DEBUG_FIRST_LOAD){
+    dprint(sprintf("HUD hud_renderWeapon() - rOrg = %s\n", vtos(rOrg))); //debug
+    dprint(sprintf("HUD hud_renderWeapon() - iofs = %s\n", vtos(iofs))); //debug
+  }
+  
 };
 
 /*
@@ -458,6 +473,12 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
       ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), rOrg); 
       gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
     }
+  }
+  
+    
+  if(DEBUG_FIRST_LOAD){
+    dprint(sprintf("HUD hud_renderWeapon2() - rOrg = %s\n", vtos(rOrg))); //debug
+    dprint(sprintf("HUD hud_renderWeapon2() - iofs = %s\n", vtos(iofs))); //debug
   }
 };
 
@@ -1206,5 +1227,13 @@ void() data_hud_fps_cam={
         break;
     }
     uid = uid + 1;
-  }
+  }  
+  if(DEBUG_FIRST_LOAD){
+    dprint(sprintf("HUD () - VIEW_CTR = %s\n", vtos(VIEW_CTR))); //debug
+    dprint(sprintf("HUD () - VIEW_ACT = %s\n", vtos(VIEW_ACT))); //debug
+    dprint(sprintf("HUD () - UI_ORG = %s\n", vtos(UI_ORG))); //debug
+    dprint(sprintf("HUD () - UI_MAX = %s\n", vtos(UI_MAX))); //debug
+    dprint(sprintf("HUD () - VIEW_ACT = %s %s\n", ftos(VIEW_WIDTH), ftos(VIEW_HEIGHT))); //debug
+  }                                                                  
+  DEBUG_FIRST_LOAD = FALSE; //debug
 };

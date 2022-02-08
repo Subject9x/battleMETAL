@@ -706,6 +706,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         sendevent_player_mech(self.data_idx);
+        DEBUG_FIRST_LOAD = TRUE; //debug
       }
     }
     cvar_set("cl_forwardspeed", ftos(ReadCoord()));

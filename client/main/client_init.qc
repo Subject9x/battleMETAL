@@ -14,6 +14,8 @@ void() CSQC_Init =
 {
   local float i, cnt;
   
+  DEBUG_FIRST_LOAD = FALSE; //DEBUG
+  
   registercvar("gamemode", "1", CF_CLIENT | CF_SERVER | CF_CLIENT_FROM_SERVER | CF_SERVER_FROM_CLIENT);
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");

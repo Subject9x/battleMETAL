@@ -427,6 +427,9 @@ float( float id ) ui_data_load_hud={
   
   ui_data_clear_huddata();
   
+  local vector t; //debug
+  local string s; //debug
+          
   file = strcat(PATH_DATA_UI, "/hud/", HUD_DATA_NAMES[id], ".hud");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
@@ -448,12 +451,18 @@ float( float id ) ui_data_load_hud={
         }
         if( token == "pos"){
           UI_DATA_POS[hudElementItr] = stov(value);
+          t = UI_DATA_POS[hudElementItr];
+          dprint(sprintf("HUD ELEMENT[%s] - pos vector = %s %s\n", ftos(hudElementItr), ftos(t_x), ftos(t_y))); //debug
         }
         if( token == "size"){
           UI_DATA_SIZE[hudElementItr] = stov(value);
+          t = UI_DATA_SIZE[hudElementItr];
+          dprint(sprintf("HUD ELEMENT[%s] - size vector = %s %s\n", ftos(hudElementItr), ftos(t_x), ftos(t_y))); //debug
         }
         if( token == "icon"){
           UI_DATA_IMG[hudElementItr] = strzone(value);
+          s = UI_DATA_IMG[hudElementItr];
+          dprint(sprintf("HUD ELEMENT[%s] - img = %s\n", ftos(hudElementItr), s)); //debug
         }
         if( token == "valign"){
           UI_DATA_ALIGN[hudElementItr] = gui_StringToFlag_Align(value);
