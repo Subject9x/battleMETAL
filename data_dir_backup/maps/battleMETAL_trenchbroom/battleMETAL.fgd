@@ -15,23 +15,6 @@
 		2048 : "Not in Deathmatch" : 0
 	]
 ]
-//remove this when done with patch / fix.
-@BaseClass = CampaignFlagsOld [
-  spawnflags(Flags) = [
-    1 : "No Campaign" : 0
-    2 : "No Coop" : 0
-    4 : "No DM" : 0
-    8 : "No TDM" : 0
-  ]
-]
-@BaseClass = SkillFlagsOld [
-  spawnflags(Flags) = [
-    4096 : "No Novice" : 0
-    8192 : "No Regular" : 0
-    16384 : "No Veteran" : 0
-    32768 : "No Elite" : 0
-  ]
-]
 //this fixes some issues
 @BaseClass = SkillFlagsEngine [
   spawnflags(Flags) = [
@@ -68,7 +51,7 @@
 	killtarget(target_destination) : "Killtarget"
 ]
 
-@BaseClass base(Appearflags, Targetname) size(-16 -16 -24, 16 16 32) color(0 255 0) = PlayerClass []
+@BaseClass base(SkillFlagsEngine, Targetname) size(-16 -16 -24, 16 16 32) color(0 255 0) = PlayerClass []
 
 @BaseClass = ExtTriggers [
   trigOnSpawn(target_destination) : "Target called on Entity spawn."
@@ -94,7 +77,7 @@
   ]
 ]
 
-@BaseClass base(Target, Targetname, MapKeyFlag) = BaseHazard [
+@BaseClass base(Target, Targetname, SkillFlagsEngine, MapKeyFlag) = BaseHazard [
   data_lifetime(integer) : "time to live" : 0
   wait(integer) : "reactivate delay" : 0
   spawnflags(Flags) = [
@@ -107,7 +90,7 @@
   ]
 ]
 
-@BaseClass base(Target, Targetname, ExtTriggers, Faction) color(0.431 0.788 0.753) size(-32 -32 -75, 32 32 1) = NavPoint : "Nav Points are points of interest marked on Player maps. 
+@BaseClass base(Target, Targetname, ExtTriggers, Faction, SkillFlagsEngine, CampaignFlags) color(0.431 0.788 0.753) size(-32 -32 -75, 32 32 1) = NavPoint : "Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!" [
   isActive(choices) : "Initial Active state." : 1 =
@@ -123,7 +106,7 @@ For best results, place manually as close to ground as possible!" [
   ]
 ]
 
-@BaseClass base(Angle, Target, Targetname, ExtTriggers, CampaignFlagsOld, SkillFlagsOld) color(1 0 1) = AIUnit [
+@BaseClass base(Angle, Target, Targetname, ExtTriggers, SkillFlagsEngine, CampaignFlags) color(1 0 1) = AIUnit [
   delay(float) : "wait T game seconds before spawning this unit." : "0.0"
   count(integer) : "spawn this many copies of this unit." : 0
   count1(float) : " time interval between spawns when Count > 0." : "0.0"
@@ -141,24 +124,31 @@ For best results, place manually as close to ground as possible!" [
   ]
 ]
 
-@Baseclass base(Angle, Target, Targetname, ExtTriggers, Faction, CampaignFlagsOld, SkillFlagsOld, MapKeyFlag) color(0 0 1) = RootBuilding [
+@Baseclass base(Angle, Target, Targetname, ExtTriggers, Faction, MapKeyFlag, SkillFlagsEngine, CampaignFlags) color(0 0 1) = RootBuilding [
   spawnflags(Flags) = [
     16 : "No Target" : 0
-    8192 : "No drop" : 0
+    262144 : "No Drop" : 0
     8388608 : "VIP Target" : 0
   ]
 ]
 
-@BaseClass base(Angle, Target, Targetname, ExtTriggers, Faction, CampaignFlagsOld, SkillFlagsOld, MapKeyFlag) color(0 0 1) model({ "path": ":models/buildings/turret/turret.md3" }) = AITurret []
+@BaseClass base(Angle, Target, Targetname, ExtTriggers, Faction, MapKeyFlag, SkillFlagsEngine, CampaignFlags) color(0 0 1) model({ "path": ":models/buildings/turret/turret.md3" }) = AITurret [
+  spawnflags(Flags) = [
+    65536 : "Promote" : 0
+    131072 : "Demote" : 0
+    262144 : "No Drop" : 0
+    8388608 : "VIP Target" : 0
+  ]
+]
 
-@BaseClass base(Angle, Target, Targetname, CampaignFlagsOld, SkillFlagsOld, MapKeyFlag, ExtTriggers, NoDropFlag, Faction) color(0 0 1) = MiscBuilding [
+@BaseClass base(Angle, Target, Targetname, MapKeyFlag, ExtTriggers, NoDropFlag, Faction, SkillFlagsEngine, CampaignFlags) color(0 0 1) = MiscBuilding [
   spawnflags(Flags) = [
     16 : "Can Target" : 0
     8388608 : "VIP Target" : 0
   ]
 ]
 
-@BaseClass base(Faction,Angle,Target,Targetname) color(0 0.25 1) = DoodadRemovable [
+@BaseClass base(Faction,Angle,Target,Targetname,SkillFlagsEngine) color(0 0.25 1) = DoodadRemovable [
   spawnflags(Flags) = [
     1 : "Trigger remove" : 0
   ]
@@ -286,14 +276,13 @@ If the train is the target of a button or trigger, it will not begin moving unti
 @SolidClass color(0.6 0.6 1.0) = func_group : "This is not an entity as such. It is strictly an editor utility to group world brushes and patches together for convenience (selecting, moving, copying, etc). You cannot group entities with this." []
 
 
-@SolidClass base(Angle, Target, Targetname) color(0.6 0 0.9) = func_rotatingobject : "a rotating 'thing', like a spinning fan." [
+@SolidClass base(Angle, Target, Targetname) color(0.6 0 0.9) = func_rotatingdoor : "rotating door." [
+  dmg(integer) : "blocked damage, -1 no damage." : 2
   speed(integer) : "degree/s speed." : 90
-  angles(string) : "starting angles"
+  angles(string) : "starting angles pitch yaw roll"
+  dest(string) : "end angles pitch yaw roll"
   wait(integer) : "(no toggle) how long to stay open." : 3
   group(string) : "group rotating doors together."
-  dmg(integer) : "blocked damage, -1 no damage." : 2
-  delay(integer) : "time to spin up/down. 0 instant." : 0
-  rotate(string) : "rotation per second, pitch yaw roll degress/s" : "0 0 0"
   deathtype(string) : "killed by message." : " got in the way"
   sounds(choices) : "SFX" : 1 = [
     1 : "medieval"
@@ -302,8 +291,8 @@ If the train is the target of a button or trigger, it will not begin moving unti
   ]
   spawnflags(Flags) = [
     1 : "TOUCHNO_DMG"
-    2 : "Start On"
-    4 : "Not Solid"
+    2 : "Crush"
+    4 : "Toggle"
   ]
 ]
 
@@ -761,14 +750,11 @@ This is NEVER a touchable map object!." [
   ]
 ]
 
-@PointClass base(Target, Targetname, Faction, ExtTriggers, CampaignFlagsOld, SkillFlagsOld) color(0.753 0.788 0.431) size(-26 -26 -44, 26 26 28) = map_deploy_point : "Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
+@PointClass base(Target, Targetname, Faction, ExtTriggers, SkillFlagsEngine, CampaignFlags) color(0.753 0.788 0.431) size(-26 -26 -44, 26 26 28) = map_deploy_point : "Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
 Deploy points can be tailored to specific factions, and can be activated/deactivated." [
   isActive(choices) : "starting Active" : 1 = [
     0 : "Off"
     1 : "On"
-  ]
-  spawnflags(Flags) = [
-    2 : "On touch" : 0
   ]
 ]
 
@@ -1143,39 +1129,39 @@ Projectile Shooter that uses weapons-fire." [
 //---------------------------------------------------------------------------------------------------------------------
 //AI TURRETS---------------------------------------------------------------------------------------------------------------------
 //-----BaseClass
-@BaseClass base(AITurret) size(-32 -32 -6, 32 32 13) = TurretLight []
-@BaseClass base(AITurret) size(-20 -20 -13, 20 20 20) = TurretMissile []
-@BaseClass base(AITurret) size(-28 -28 -16, 28 28 28) = TurretHeavy []
+@BaseClass base(AITurret) size(-32 -32 -6, 32 32 13) = BaseTurretLight []
+@BaseClass base(AITurret) size(-20 -20 -13, 20 20 20) = BaseTurretMissile []
+@BaseClass base(AITurret) size(-28 -28 -16, 28 28 28) = BaseTurretHeavy []
 //------IMPL
 //-----------LIGHT
-@PointClass base(TurretLight) = building_turret_light_s : "Standard loadout." []
-@PointClass base(TurretLight) = building_turret_light_m : "Standard loadout." []
-@PointClass base(TurretLight) = building_turret_light_p : "Standard loadout." []
-@PointClass base(TurretLight) = building_turret_light_survest_zapper : "ZAPPER - focuses on shield breaking" []
-@PointClass base(TurretLight) = building_turret_light_militar_zapper : "ZAPPER - focuses on shield breaking" []
-@PointClass base(TurretLight) = building_turret_light_psc_zapper : "ZAPPER - focuses on shield breaking" []
-@PointClass base(TurretLight) = building_turret_light_survest_gunner : "GUNNER - bad at shields, good on firepower" []
-@PointClass base(TurretLight) = building_turret_light_militar_gunner : "GUNNER - bad at shields, good on firepower" []
-@PointClass base(TurretLight) = building_turret_light_psc_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(BaseTurretLight) = building_turret_light_s : "Standard loadout." []
+@PointClass base(BaseTurretLight) = building_turret_light_m : "Standard loadout." []
+@PointClass base(BaseTurretLight) = building_turret_light_p : "Standard loadout." []
+@PointClass base(BaseTurretLight) = building_turret_light_survest_zapper : "ZAPPER - focuses on shield breaking" []
+@PointClass base(BaseTurretLight) = building_turret_light_militar_zapper : "ZAPPER - focuses on shield breaking" []
+@PointClass base(BaseTurretLight) = building_turret_light_psc_zapper : "ZAPPER - focuses on shield breaking" []
+@PointClass base(BaseTurretLight) = building_turret_light_survest_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(BaseTurretLight) = building_turret_light_militar_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(BaseTurretLight) = building_turret_light_psc_gunner : "GUNNER - bad at shields, good on firepower" []
 
 //-----------MISSILE
-@PointClass base(TurretMissile) = building_turret_missile_m : "LOBBER - mostly missile firepower." []
-@PointClass base(TurretMissile) = building_turret_missile_s : "LOBBER - mostly missile firepower." []
-@PointClass base(TurretMissile) = building_turret_missile_p : "LOBBER - mostly missile firepower." []
-@PointClass base(TurretMissile) = building_turret_missile_survest_lobber : "LOBBER - mostly missile firepower." []
-@PointClass base(TurretMissile) = building_turret_missile_militar_lobber : "LOBBER - mostly missile firepower." []
-@PointClass base(TurretMissile) = building_turret_missile_psc_lobber : "LOBBER - mostly missile firepower." []
+@PointClass base(BaseTurretMissile) = building_turret_missile_m : "LOBBER - mostly missile firepower." []
+@PointClass base(BaseTurretMissile) = building_turret_missile_s : "LOBBER - mostly missile firepower." []
+@PointClass base(BaseTurretMissile) = building_turret_missile_p : "LOBBER - mostly missile firepower." []
+@PointClass base(BaseTurretMissile) = building_turret_missile_survest_lobber : "LOBBER - mostly missile firepower." []
+@PointClass base(BaseTurretMissile) = building_turret_missile_militar_lobber : "LOBBER - mostly missile firepower." []
+@PointClass base(BaseTurretMissile) = building_turret_missile_psc_lobber : "LOBBER - mostly missile firepower." []
 
 //-----------HEAVIES
-@PointClass base(TurretHeavy) = building_turret_heavy_m : "Standard loadout." []
-@PointClass base(TurretHeavy) = building_turret_heavy_s : "Standard loadout." []
-@PointClass base(TurretHeavy) = building_turret_heavy_p : "Standard loadout." []
-@PointClass base(TurretHeavy) = building_turret_heavy_survest_zapper : "ZAPPER - focuses on shield breaking." []
-@PointClass base(TurretHeavy) = building_turret_heavy_militar_zapper : "ZAPPER - focuses on shield breaking." []
-@PointClass base(TurretHeavy) = building_turret_heavy_psc_zapper : "ZAPPER - focuses on shield breaking." []
-@PointClass base(TurretHeavy) = building_turret_heavy_survest_gunner : "GUNNER - bad at shields, good on firepower" []
-@PointClass base(TurretHeavy) = building_turret_heavy_militar_gunner : "GUNNER - bad at shields, good on firepower" []
-@PointClass base(TurretHeavy) = building_turret_heavy_psc_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_m : "Standard loadout." []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_s : "Standard loadout." []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_p : "Standard loadout." []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_survest_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_militar_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_psc_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_survest_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_militar_gunner : "GUNNER - bad at shields, good on firepower" []
+@PointClass base(BaseTurretHeavy) = building_turret_heavy_psc_gunner : "GUNNER - bad at shields, good on firepower" []
 
 //---------------------------------------------------------------------------------------------------------------------
 

@@ -21,7 +21,8 @@ float() ai_can_spawn={
     return FALSE;
   }
   
-  if( (skill == 0) && (self.spawnflags & NO_NOVICE) ){
+  //engine specific FLAG values will auto-remove entity on map-load.
+  /*if( (skill == 0) && (self.spawnflags & NO_NOVICE) ){
     return FALSE;
   }
   if( (skill == 1) && (self.spawnflags & NO_REGULAR) ){
@@ -32,7 +33,7 @@ float() ai_can_spawn={
   }
   if( (skill == 3) && (self.spawnflags & NO_ELITE) ){
     return FALSE;
-  }
+  }*/
   
   if( (self.spawnflags & NO_CAMPAIGN) ){
     if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){

@@ -11,28 +11,22 @@ Overview: AI values that have been spun off from common/game
 //     AI STATS      
 //============================
 //SPAWNFLAGS
-#define NO_CAMPAIGN 1    //remove from campaign mode
-#define NO_COOP 2    //remove from co-op mode
-#define NO_DM 4    //remove from DeathMatch
-#define NO_TDM 8    //remove from Team DeathMatch
+#define NO_CAMPAIGN 4096    //remove from campaign mode
+#define NO_COOP 8192    //remove from co-op mode
+#define NO_DM 16384    //remove from DeathMatch
+#define NO_TDM 32768    //remove from Team DeathMatch
+
 #define COLD_START 16   //on-spawn, bot will ignore friendly help calls
 #define HAS_RADAR 64   //radar is expensive to use, use sparingly
                                    //generally this is for mech units
 #define DEBUG_MODE 128 //dont do anything
 
 //warning! these are tied to engine-specific values, and for now, there's no changing it for now.
-//this is a hold over from classic Quake, and I'm torn on whether I want this to be used EVERYWHERE in battleMETAL....
-//or just using my own defines in NO_NOVICE, etc.
-//if the decision is made to remove these from the engine, then hey, we get 4 spawnflag slots back.
-//float NO_EASY = 256;
-//float NO_NORMAL = 512;
-//float NO_HARD = 1024;
-//float NO_NIGHT = 2048;
-
-#define NO_NOVICE 4096  //remove from Novice Difficulty
-#define NO_REGULAR 8192 //remove from Regular Difficulty
-#define NO_VETERAN 16384 //remove from Veteran Difficulty
-#define NO_ELITE 32768  //remove from Elit Difficulty
+//this is a hold over from classic Quake.
+#define NO_EASY 256;
+#define NO_NORMAL 512;
+#define NO_HARD 1024;
+#define NO_NIGHT 2048;
 //-------------------
 
 #define MISC_NO_DROP 65536 //overloaded flag, this is for misc_* ents
