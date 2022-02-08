@@ -128,10 +128,10 @@ float(float anglee) gui_angleToEnum={
   -> from Darkplaces Engine (vid_conwidthauto)
   conwidth = floor(conheight * vid.width / (vid.height * vid_pixelheight.value));
 */
-void() gui_set_screen_size={
+void(float screenWidth, float screenHeight) gui_set_screen_size={
   
-  VIEW_WIDTH = cvar("vid_width");
-  VIEW_HEIGHT = cvar("vid_height");
+  VIEW_WIDTH = screenWidth;
+  VIEW_HEIGHT = screenHeight;
   VIEW_PIXELH = cvar("vid_pixelheight");
 
   UI_ASPECT = VIEW_WIDTH / VIEW_HEIGHT;

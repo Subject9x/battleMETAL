@@ -167,14 +167,14 @@ void(float width, float height) m_draw={
   local vector bimg;
   
   VIEW_MPOS = getmousepos();
-  VIEW_ACT_x = cvar("vid_width");
-  VIEW_ACT_y = cvar("vid_height");
+  VIEW_ACT_x = width;
+  VIEW_ACT_y = height;
   VIEW_ACT_z = cvar("vid_pixelheight");
   
   if( getkeydest() == KEY_MENU ){
     if(RESO_CHANGE){
       RESO_CHANGE = FALSE;
-      gui_set_screen_size();
+      gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
     }
     if(MAIN_MISSION){
       drawfill(VIEW_ORG, VIEW_MAX, '0.1 0.1 0.1', 0.75, 0);
@@ -310,7 +310,8 @@ void() m_shutdown={
 };
 
 void(float drawmous) m_drawmouse={
-    local vector mpos, i_sz;
+  local vector mpos, i_sz;
+  
   if(drawmous){
     
     i_sz = drawgetimagesize(UI_IMG_MOUSE);

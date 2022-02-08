@@ -8,7 +8,6 @@ Overview:
 
 #ifdef MENUQC
 vector VIEW_MPOS;
-vector VIEW_ACT;  //todo - deprecate
 #endif
 
 #ifndef MENUQC
@@ -43,6 +42,7 @@ vector VIEW_MAX;
 vector VIEW_CTR;
 float VIEW_SCALE;
 
+vector VIEW_ACT;
 vector UI_ORG;  //aspect-ratio corrected offsets
 vector UI_MAX;
 vector UI_CTR;
@@ -106,7 +106,7 @@ vector(float x, float y, float z) Vector3;
 
 vector(vector startSize, vector targsize) gui_newAspectRatio;
 
-void() gui_set_screen_size;
+void(float screenWidth, float screenHeight) gui_set_screen_size;
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
 vector(vector offSet, float algn) gui_calcAlign;

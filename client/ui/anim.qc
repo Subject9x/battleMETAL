@@ -22,6 +22,7 @@ void(string fileToOpen) anm_getFile={
 };
 
 void(string fileToOpen) anm_parseFile={
+  
   local float flannel, argc, line_tag, frame_count;
   local string file, contents, line;
   
@@ -128,7 +129,7 @@ void(string fileToOpen) anm_parseFile={
       }
     }
     
-    gui_set_screen_size();
+    gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
   }
 };
 

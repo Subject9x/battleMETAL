@@ -108,7 +108,7 @@ void() m_main_i={
   local vector orgQuit;
   local float mainTitleFlag;
   
-  gui_set_screen_size();  //ugh
+  gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);  //ugh
   
   if( MAIN_MISSION ){
     menu_parent_setup(VIEW_ORG + '0 80', '208 192');

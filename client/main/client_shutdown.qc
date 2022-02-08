@@ -54,5 +54,5 @@ void() CSQC_Shutdown =
   
   menu_chat_cleanup();
   
-  gui_set_screen_size();
+  gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
 };

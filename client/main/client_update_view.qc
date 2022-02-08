@@ -113,11 +113,10 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
   vf_sz = getpropertyvec(VF_SIZE);
   vf_mn = getpropertyvec(VF_MIN);
-
-	vf_sz_x = w;
-  vf_sz_y = h;
+  
   vf_sz_z = 0;
   vf_mn = '0 0 0';
+  VIEW_ACT = getpropertyvec(VF_SIZE);
 	// set up the scene parameters
   //setproperty(VF_MIN, vf_mn);   //set the left of the view
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
@@ -153,7 +152,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   VIEW_SCALE = 0.35;
   
-  gui_set_screen_size();
+  gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
   
   if(FOG_STATE){
     //alter fog settings if needed
@@ -258,6 +257,8 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     //drawstring(porg + '1 -30', strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
     //version wille eventually be only displayed as needed.
     gui_drawversion();
+    drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 40', sprintf("W/H  = %s", vtos(Vector2(w,h))), '8 8', '0.85 0.85 0.85', 1, 0);
   }
   
 };
