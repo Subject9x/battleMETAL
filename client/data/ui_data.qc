@@ -134,15 +134,15 @@ void() ui_data_clear_huddata={
   itr = 1;
   while( itr <= 32 ){
     UI_DATA_UIDS[itr] = 0;
-    UI_DATA_POS[itr] = '0 0 0';
-    UI_DATA_SIZE[itr] = '0 0 0';
+    UI_DATA_POS[itr] = '0 0';
+    UI_DATA_SIZE[itr] = '0 0';
     UI_DATA_ALIGN[itr] = 0;
     UI_DATA_LABEL_FLAG[itr] = 0;
     UI_DATA_LABEL_ALIGN[itr] = 0;
     UI_DATA_AXIS_FLAG[itr] = 0;
-    UI_DATA_LABEL_OFS[itr] = '0 0 0';
-    UI_DATA_COLOR1[itr] = '0 0 0';
-    UI_DATA_COLOR2[itr] = '0 0 0';
+    UI_DATA_LABEL_OFS[itr] = '0 0';
+    UI_DATA_COLOR1[itr] = '0 0';
+    UI_DATA_COLOR2[itr] = '0 0';
     
     freeGlobalString(  UI_DATA_IMG[itr] )
     

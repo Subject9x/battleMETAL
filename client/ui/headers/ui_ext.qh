@@ -9,6 +9,8 @@ Overview:
 */
 
 
+#define lockVector2(vX,vY) local vector vlock; vlock_x = vX; vlock_y = vY;
+
 entity DEPLOY_POINTS;  //SendEnt now provides the state data;
 entity DEPLOYPOINT;
 
@@ -31,4 +33,3 @@ vector(float val) gui_getColorForArmorTarget;
 vector(float val) gui_getColorForShield;
 vector(float dmg_type) gui_colorForWeaponType;
 entity(float wepBit) gui_get_weapon;
-

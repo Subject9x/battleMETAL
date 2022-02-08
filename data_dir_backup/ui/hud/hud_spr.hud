@@ -1,173 +1,173 @@
 //SAPPER
 {
   'uid'     : HUD_TAG_ENERGY,
-  'pos'     : 80 64 0,
+  'pos'     : 80 64,
   'valign'  : VIEW_BOT|VIEW_LFT,
-  'size'    : 88 22 0,
+  'size'    : 88 22,
   'lalign'  : VIEW_CTX|VIEW_TOP,
-  'lblofs'  : 0 18 0,
+  'lblofs'  : 0 18,
   'axis'    : AXIS_H,
 }
 {
   'uid'     : HUD_TAG_SHIELD_PLAYER,
-  'pos'     : 80 100 0,
+  'pos'     : 80 100,
   'valign'  : VIEW_BOT|VIEW_LFT,
-  'size'    : 88 22 0,
+  'size'    : 88 22,
   'lalign'  : VIEW_LFT|VIEW_TOP,
-  'lblofs'  : 0 22 0,
+  'lblofs'  : 0 22,
   'axis'    : AXIS_H,
 }
 {
   'uid'     : HUD_TAG_ARM_PLAYER,
-  'pos'     : 40 70 0,
+  'pos'     : 40 70,
   'valign'  : VIEW_BOT|VIEW_LFT,
 }
 //Right Arm
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
-  'pos'     : 64 190 0,
-  'size'    : 24 24 0,
+  'pos'     : 64 190,
+  'size'    : 24 24,
   'valign'  : VIEW_BOT|VIEW_RGT,
   'wbit'    : WEP1,
 }
 //Left Arm
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
-  'pos'     : 32 190 0,
-  'size'    : 24 24 0,
+  'pos'     : 32 190,
+  'size'    : 24 24,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'wbit'    : WEP2,
 }
 //Right Torso
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
-  'pos'     : 100 220 0,
-  'size'    : 24 24 0,
+  'pos'     : 100 220,
+  'size'    : 24 24,
   'valign'  : VIEW_BOT|VIEW_RGT,
   'wbit'    : WEP3,
 }
 //Left Torso
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
-  'pos'     : 68 220 0,
-  'size'    : 24 24 0,
+  'pos'     : 68 220,
+  'size'    : 24 24,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'wbit'    : WEP4,
 }
 //Center Right
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
-  'pos'     : 150 190 0,
-  'size'    : 24 24 0,
+  'pos'     : 150 190,
+  'size'    : 24 24,
   'valign'  : VIEW_BOT|VIEW_RGT,
   'wbit'    : WEP5,
 }
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
-  'pos'     : 150 220 0,
-  'size'    : 24 24 0,
+  'pos'     : 150 220,
+  'size'    : 24 24,
   'valign'  : VIEW_BOT|VIEW_RGT,
   'wbit'    : WEP6,
 }
 //Center Left
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
-  'pos'     : 120 190 0,
-  'size'    : 24 24 0,
+  'pos'     : 120 190,
+  'size'    : 24 24,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'wbit'    : WEP7,
 }
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
-  'pos'     : 120 220 0,
-  'size'    : 24 24 0,
+  'pos'     : 120 220,
+  'size'    : 24 24,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'wbit'    : WEP8,
 }
 {
   'uid'     : HUD_TAG_RADAR_GRAPH,
-  'pos'     : 100 98 0,
+  'pos'     : 100 98,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 80 80 0,
+  'size'    : 80 80,
 }
 {
   'uid'     : HUD_TAG_RADAR_TYPE1,
-  'pos'     : 100 140 0,
+  'pos'     : 100 140,
   'valign'  : VIEW_RGT|VIEW_BOT,
 }
 {
   'uid'     : HUD_TAG_ARM_TARGET,
-  'pos'     : 215 65 0,
+  'pos'     : 215 65,
   'valign'  : VIEW_RGT|VIEW_BOT,
   'lflag'   : 1,
   'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -40 -68 0,
+  'lblofs'  : -40 -68,
 // color2 = panel size
-  'color2'  : 96 148 0,
+  'color2'  : 96 148,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_VEC,
-  'pos'     : 275 50 0,
+  'pos'     : 275 50,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 64 28 0,
+  'size'    : 64 28,
   'lflag'   : 1,
   'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -10 -68 0,
+  'lblofs'  : -10 -68,
 // color2 = panel size
-  'color2'  : 96 148 0,
+  'color2'  : 96 148,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_BLD,
-  'pos'     : 250 50 0,
+  'pos'     : 250 50,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 48 64 0,
+  'size'    : 48 64,
   'lflag'   : 1,
   'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -10 -48 0,
+  'lblofs'  : -10 -48,
 // color2 = panel size
-  'color2'  : 96 148 0,
+  'color2'  : 96 148,
 }
 {
   'uid'     : HUD_TAG_SHIELD_TARGET,
-  'pos'     : 165 90 0,
+  'pos'     : 165 90,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 18 75 0,
+  'size'    : 18 75,
   'lalign'  : VIEW_LFT|VIEW_TOP,
-  'lblofs'  : 0 18 0,
+  'lblofs'  : 0 18,
   'axis'    : AXIS_V,
 }
 {
   'uid'     : HUD_TAG_TARGET_NAME,
-  'pos'     : 235 124 0,
+  'pos'     : 235 124,
   'valign'  : VIEW_RGT|VIEW_BOT,
 }
 {
   'uid'     : HUD_TAG_TARGET_RANGE,
-  'pos'     : 235 114 0,
+  'pos'     : 235 114,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 64 28 0,
+  'size'    : 64 28,
 }
 {
   'uid'     : HUD_TAG_MESSAGE_BOX,
-  'pos'     : 0 48 0,
+  'pos'     : 0 48,
   'valign'  : VIEW_CTX|VIEW_TOP,
-  'size'    : 16 16 0,
+  'size'    : 16 16,
 }
 {
   'uid'     : HUD_TAG_ENVIRO_BOX,
-  'pos'     : 0 -235 0,
+  'pos'     : 0 -235,
 }
 {
   'uid'     : HUD_TAG_RAM_METER,
-  'pos'     : 80 24 0,
+  'pos'     : 80 24,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 88 16,
   'axis'    : AXIS_H,
   'lalign'  : VIEW_CTX|VIEW_TOP,
-  'lblofs'  : 0 16 0,
+  'lblofs'  : 0 16,
 }
 {
   'uid'     : HUD_TAG_MSN_CLOCK,
-  'pos'     : 32 75 0,
+  'pos'     : 32 75,
   'valign'  : VIEW_CTX|VIEW_BOT,
 }

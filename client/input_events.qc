@@ -11,7 +11,7 @@ Overview:
 
 float(float inputEventType, float scanx, float chary, float devid) handle_input_keydown={
 
-
+  return FALSE;
 };
 
 /*
@@ -71,14 +71,14 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input_
   Client_state == PLAYER_MECH
 */
 float(float inputEventType, float scanx, float chary, float devid) handle_mech_input={
-
+  return FALSE;
 };
 
 /*
   MENU_ACTIVE
 */
 float(float inputEventType, float scanx, float chary, float devid) handle_menu_input={
-
+  return FALSE;
 };
 
 /*
