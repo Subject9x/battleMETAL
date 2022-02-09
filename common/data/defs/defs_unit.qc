@@ -37,6 +37,7 @@ Overview:
 .float shield;        //current amount of shields
 .float shieldMax;     //max shields
 .float shieldRate;    //shield recharge rate
+.float shieldRateMod; //field for modules, a bonus percentage
 .float startupDelay; //time in game seconds for unit to activate after spawn.
 
 //Weapon Spread Mechanics
@@ -90,7 +91,6 @@ Overview:
 .float turret_yaw_speed;
 .float ai_attack_chance;
 
-.float shieldRateMod; //field for modules, a bonus percentage
 .float radar_time;
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame

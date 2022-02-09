@@ -93,6 +93,8 @@ void() build_unit_weapon_list={
   local entity weaponMount;
   local entity prevWeapon;
   local float weaponCount;
+  local entity unit;
+  
   prevWeapon = self;
   weaponMount = self.w_slot;
   if( weaponMount ){
@@ -138,12 +140,15 @@ void() build_unit_weapon_list={
     }
     //run upgrades now because per-weapon updates need the full list.
     weaponMount = self.w_slot;
+    unit = self;
     while( weaponMount ){
+      self = weaponMount;
       if( weaponMount.item_run_upgrade ){
         weaponMount.item_run_upgrade();
       }
       weaponMount = weaponMount.w_slot;
     }
+    self = unit;
   }
 };
 
@@ -284,7 +289,7 @@ void() build_mech_unit={
   }
   
   if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-    self.shieldRateMod = 1.33; //unmodified here.
+    self.shieldRateMod = 0; //unmodified here.
     self.shield = self.shieldMax;
     self.shieldHitDelay = 0;
     self.shieldHitRegen = 0;
