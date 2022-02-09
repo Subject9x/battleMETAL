@@ -7,7 +7,6 @@ Overview:
   
 */
 
-float CROSSHAIR4_ANGLE;
 
 /*
   Crosshair Type 4
@@ -60,7 +59,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
     lockSize = '34 34';
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    CROSSHAIR4_ANGLE = anglemod(CROSSHAIR4_ANGLE + (frametime * 67));
-    drawrotpic(lockCenter + lockSize * 0.5, "gfx/hud/ret/crosshair4_lock.png", lockSize, lockSize / 2, CROSSHAIR4_ANGLE, CLR_DEF_RET_HASLOCK, max(0.33, HUD_ALPHA * 0.5), DRAWFLAG_NORMAL);
+    CROSSHAIR_ANGLE_LOCK = anglemod(CROSSHAIR_ANGLE_LOCK + (frametime * 67));
+    drawrotpic(lockCenter + lockSize * 0.5, "gfx/hud/ret/crosshair4_lock.png", lockSize, lockSize / 2, CROSSHAIR_ANGLE_LOCK, CLR_DEF_RET_HASLOCK, max(0.45, HUD_ALPHA * 0.67), DRAWFLAG_NORMAL);
   }
 };

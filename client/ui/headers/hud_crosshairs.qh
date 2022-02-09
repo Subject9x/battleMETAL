@@ -5,6 +5,13 @@ Date: 09/09/2020
 Overview:
   header for all crosshair types
 */
+
+float CROSSHAIR_ANGLE; //if rotating graphics are desired.
+float CROSSHAIR_ANGLE_HIT; //if rotating graphics are desired.
+float CROSSHAIR_ANGLE_LOCK; //if rotating graphics are desired.
+
+
+
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair1;
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair2;
 void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair3;
