@@ -136,6 +136,14 @@ void() build_unit_weapon_list={
       }
       weaponMount = weaponMount.w_slot;
     }
+    //run upgrades now because per-weapon updates need the full list.
+    weaponMount = self.w_slot;
+    while( weaponMount ){
+      if( weaponMount.item_run_upgrade ){
+        weaponMount.item_run_upgrade();
+      }
+      weaponMount = weaponMount.w_slot;
+    }
   }
 };
 
@@ -149,6 +157,7 @@ void( float nex_wep, entity own ) build_unit_weapon={
     self.damageType = 0; //zero-out this stat
     initialize_data_item_(nex_wep);
     
+    self.reloadMaxCache = self.reloadMax; //bug fix - might as well stash it here, regardless of player choosing upgrades.
     self.reloadValue = 100; // bug fix - weapon reload indicator not starting at correct value
     self.w_firetime = 0;
     self.w_currentammo = self.w_clipsize;
@@ -184,10 +193,6 @@ void( float nex_wep, entity own ) build_unit_weapon={
     self.view_ofs = self.origin - partParent.origin;
     self.v_angle = self.angles - partParent.angles;
     
-    //Fire Equipment 'upgrade' functions now, really should only ever be on MSC equipment
-    if( self.item_run_upgrade ){
-      self.item_run_upgrade();
-    }
     self.wepFireOffsetCache = self.wepFireOffset;
     self.th_die = ctrl_die_weapon;
     self.w_think = self.think;

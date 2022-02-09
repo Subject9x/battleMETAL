@@ -149,7 +149,7 @@ void(float vec_id) initialize_data_turret_;
 */
 #ifdef SSQC
 void() default_weapon_think={
-  local float delta, lim;
+  local float delta;
   
   if(self.wepReloadState == RECOIL){
     if(time > self.w_firetime){
@@ -169,9 +169,11 @@ void() default_weapon_think={
       }
     }
     else{
-      delta = time - self.count1;
-      lim = self.reloadMax;
-      self.reloadValue = (delta / lim) * 100;
+      self.reloadValue = 0;
+      if(self.reloadMax > 0){
+        delta = time - self.count1;
+        self.reloadValue = (delta / self.reloadMax) * 100;
+      }
     }
   }
   self.think = default_weapon_think;
