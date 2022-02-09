@@ -553,23 +553,24 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
 };
 
 void(string msg, float val) cons_logAFloat={
-  bprint(strcat(msg,":", ftos(val)," \n"));
+  dprint(sprintf("\n %s : %0.2f\n", msg, val));
 };
 void(string msg, vector v1) cons_logAVector={
-  bprint(strcat(msg,":", vtos(v1),"\n"));
+  dprint(sprintf("\n %s : %0.2f %0.2f %0.2f\n", msg, v1_x, v1_y, v1_z));
 };
 void(string msg, string s1) cons_logAString={
-  bprint(strcat(msg,":", s1,"\n"));
+  dprint(sprintf("\n %s : %s\n", msg, s1));
 };
 
 void(string msg, float val, string split, float val2) cons_log2Float={
-  bprint(strcat(msg,":", ftos(val),"| ", split,":", ftos(val2),"\n"));
+  dprint(strcat(msg,":", ftos(val),"| ", split,":", ftos(val2),"\n"));
 };
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
-  bprint(strcat(msg,":", vtos(v1),"| ", split,":", vtos(v2),"\n"));
+  dprint(strcat(msg,":", vtos(v1),"| ", split,":", vtos(v2),"\n"));
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
-  bprint(strcat(msg," : ",s1," | ", split," : ",s2,"\n"));
+  dprint(strcat(msg," : ",s1," | ", split," : ",s2,"\n"));
+  
 };
 
 void() BecomeExplosion={

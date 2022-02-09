@@ -60,7 +60,6 @@ void() interpolate_tank;
 void() interpolate_mech_ai;
 void() interpolate_turret;
 
-void( float isNew ) sendent_handle_update;
 void( float isNew, float changeFlags ) sendent_handle_mech_ai;
 void( float isNew, float changeFlags ) sendent_handle_tank;
 void( float isNew, float changeFlags ) sendent_handle_spg;

@@ -105,56 +105,6 @@ void() interpolate_ground={
 //-----------------------------------
 
 /*
-  Entry point for handler api
-*/
-void( float isNew ) sendent_handle_update={
-  local float entType;
-  local float entFlags;
-  
-  entType = ReadByte();
-  entFlags = ReadCoord(); //expanding entFlags values -> data/common
-  
-  switch(entType){
-    case SENDTYPE_PLAYER:
-      sendent_handle_player( isNew, entFlags );
-      break;
-    case SENDTYPE_TANK:
-      sendent_handle_tank( isNew, entFlags );
-      break;
-    case SENDTYPE_SPG:
-      sendent_handle_spg( isNew, entFlags );
-      break;
-    case SENDTYPE_GEV:
-      sendent_handle_gev( isNew, entFlags );
-      break;
-    case SENDTYPE_TURRET:
-      sendent_handle_turret( isNew, entFlags );
-      break;
-    case SENDTYPE_BUILD:
-      sendent_handle_building( isNew, entFlags );
-      break;
-    case SENDTYPE_MECH_AI:
-      sendent_handle_mech_ai( isNew, entFlags );
-      break;
-    case SENDTYPE_PROJ:
-      sendent_handle_missile( isNew, entFlags );
-      break;
-    case SENDTYPE_MAP:
-      sendent_handle_map( isNew, entFlags );
-      break;
-    case SENDTYPE_TERRAIN:
-      sendent_handle_terrain( isNew, entFlags );
-      break;
-    case SENDTYPE_MISC:
-      sendent_handle_misc( isNew, entFlags );
-      break;
-    case SENDTYPE_MISC_BLD:
-      sendent_handle_misc_bld( isNew, entFlags );
-      break;
-  }
-};
-
-/*
   SendEntity - Map Objects ====================================
 */
 void( float isNew, float changeFlags ) sendent_handle_terrain={
