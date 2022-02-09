@@ -100,6 +100,8 @@ OFF_AFTER_USE 4: deactivate after use
 */
 void() map_nav_point={
 
+  trigger_ext_check();
+  
   self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;
   self.movetype = MOVETYPE_NONE;
@@ -113,8 +115,6 @@ void() map_nav_point={
   self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
   self.alpha = 0.01;
   self.scale = 0.01;
-  
-
   
   if( (self.spawnflags & 1) ){
     self.isActive = FALSE;

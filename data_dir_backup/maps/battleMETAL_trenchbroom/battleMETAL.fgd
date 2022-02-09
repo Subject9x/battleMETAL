@@ -21,15 +21,14 @@
     256 : "No Novice" : 0
     512 : "No Regular" : 0
     1024 : "No Veteran" : 0
-    2048 : "No Elite" : 0
   ]
 ]
 @BaseClass = CampaignFlags [
   spawnflags(Flags) = [
+    2048 : "No DM" : 0
     4096 : "No Campaign" : 0
     8192 : "No Coop" : 0
-    16384 : "No DM" : 0
-    32768 : "No TDM" : 0
+    16384 : "No TDM" : 0
   ]
 ]
 //--------------------------------------
@@ -413,11 +412,12 @@ if 'angle' is set, the trigger will only fire when someone is facing the directi
   ]
 ]
 
-@SolidClass base(BaseTrigger) = trigger_counter : "when triggered, count is subtracted by 1.
+@SolidClass base(BaseTrigger, SkillFlagsEngine) = trigger_counter : "when triggered, count is subtracted by 1.
   Acts as an intermediary for an action that takes multiple inputs.
     If nomessage is not set, t will print '1 more.. ' etc when triggered and 'sequence complete' when finished.
     After the counter has been triggered 'count' times (default 2), it will fire all of it's targets and remove itself.
     note: triggers ON use() where .count = '0', so your ideal total should actually be N - 1." [
+  count(integer) : "Count down from this total." : 2
   message(string) : "played when 'sequence complete'"
   description(string) : "text to write before the <.count> value."
   abbrev(string) : "text to write AFTER <.count> value."
@@ -425,10 +425,8 @@ if 'angle' is set, the trigger will only fire when someone is facing the directi
   vec_size(integer) : "threshold to determine between 'more to go' and 'x to go'." : 0
   spawnflags(Flags) = [
     1 : "no message" : 0
-    2 : "No Easy" : 0
-    4 : "No Normal" : 0
-    8 : "No Hard" : 0
-    16 : "No Nightmare" : 0
+    2 : "Dynamic Count" : 0
+    32 : "No remove" : 0
   ]  
 ]
 

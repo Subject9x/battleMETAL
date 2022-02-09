@@ -11,10 +11,7 @@ Overview: AI values that have been spun off from common/game
 //     AI STATS      
 //============================
 //SPAWNFLAGS
-#define NO_CAMPAIGN 4096    //remove from campaign mode
-#define NO_COOP 8192    //remove from co-op mode
-#define NO_DM 16384    //remove from DeathMatch
-#define NO_TDM 32768    //remove from Team DeathMatch
+
 
 #define COLD_START 16   //on-spawn, bot will ignore friendly help calls
 #define HAS_RADAR 64   //radar is expensive to use, use sparingly
@@ -23,10 +20,14 @@ Overview: AI values that have been spun off from common/game
 
 //warning! these are tied to engine-specific values, and for now, there's no changing it for now.
 //this is a hold over from classic Quake.
-#define NO_EASY 256;
-#define NO_NORMAL 512;
-#define NO_HARD 1024;
-#define NO_NIGHT 2048;
+#define NO_EASY 256
+#define NO_NORMAL 512
+#define NO_HARD 1024
+
+#define NO_DM 2048    
+#define NO_CAMPAIGN 4096
+#define NO_COOP 8192
+#define NO_TDM 16384
 //-------------------
 
 #define MISC_NO_DROP 65536 //overloaded flag, this is for misc_* ents

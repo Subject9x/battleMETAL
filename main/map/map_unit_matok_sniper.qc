@@ -21,6 +21,7 @@ void() unit_matok_survest_sniper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_flak;
@@ -69,6 +70,7 @@ void() unit_matok_militar_sniper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_flak;
@@ -117,6 +119,7 @@ void() unit_matok_psc_sniper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_adv_reload;
@@ -166,6 +169,7 @@ void() unit_matok_militar_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_laser;
@@ -213,6 +217,7 @@ void() unit_matok_survest_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_laser;

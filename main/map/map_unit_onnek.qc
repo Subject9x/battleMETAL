@@ -21,6 +21,7 @@ void() unit_onnek_h={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -65,6 +66,7 @@ void() unit_onnek_m={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
@@ -103,6 +105,7 @@ void() unit_onnek_militar_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -147,6 +150,7 @@ void() unit_onnek_survest_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -192,6 +196,7 @@ void() unit_onnek_militar_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -236,6 +241,7 @@ void() unit_onnek_survest_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -281,6 +287,7 @@ void() unit_onnek_militar_lobber={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 2:
       //skill- 2
@@ -321,6 +328,7 @@ void() unit_onnek_survest_lobber={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 2:
       //skill- 2

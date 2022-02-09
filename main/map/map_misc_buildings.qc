@@ -108,6 +108,8 @@ void( string modelName, float setSizeFlag ) misc_building={
     droptofloor();
   }
   
+  trigger_ext_check();
+  
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
   self.velocity = '0 0 0';

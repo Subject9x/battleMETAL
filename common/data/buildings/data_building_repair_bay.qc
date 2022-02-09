@@ -436,6 +436,7 @@ void() building_human_repair={
     remove(self);
     return;
   }
+  trigger_ext_check();
 
   self.flags = self.flags | FL_MONSTER;
   self.deadflag = DEAD_NO;

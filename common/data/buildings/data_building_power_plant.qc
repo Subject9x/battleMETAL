@@ -180,6 +180,7 @@ void() building_human_power={
     remove(self);
     return;
   }
+  trigger_ext_check();
   self.vec_name = "Power Plant";
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 3;

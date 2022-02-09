@@ -9,14 +9,15 @@ Overview: time to parse trigger functions to their own header file.
 //TRIGGER CONST
 entity stemp, s;
 
-float	SPAWNFLAG_NOMESSAGE = 1;
-float	SPAWNFLAG_NOTOUCH = 1;
+#define 	SPAWNFLAG_NOMESSAGE 1
+#define 	SPAWNFLAG_NOTOUCH 1
 
-float	PLAYER_ONLY	= 1;
-float	SILENT = 2;
+#define 	PLAYER_ONLY	1
+#define 	SILENT 2
 
-float PUSH_ONCE = 1;
+#define  PUSH_ONCE 1
 
+#define SPAWNFLAG_DYNAMIC_COUNT 2
 /*
   Trigger Event Harness
     each of these is like a tailored 'target' var that is fired
@@ -28,6 +29,9 @@ float PUSH_ONCE = 1;
 .string trigOnDamage;
 .string trigOnPanic;
 .string trigOnTarget;
+.float hasExtTrigs;   //used for querying fast, implicitly set when an ent has any of the above.
+
+void() trigger_ext_check;
 
 void( entity active, string event ) trigger_event;
 

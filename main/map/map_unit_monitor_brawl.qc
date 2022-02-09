@@ -21,6 +21,7 @@ void() unit_monitor_survest_brawler={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;
@@ -85,6 +86,7 @@ void() unit_monitor_militar_brawler={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_flak;
@@ -149,6 +151,7 @@ void() unit_monitor_psc_brawler={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_flak;
@@ -214,6 +217,7 @@ void() unit_monitor_militar_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_laser;
@@ -279,6 +283,7 @@ void() unit_monitor_militar_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;
@@ -345,6 +350,7 @@ void() unit_monitor_survest_lobber={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;

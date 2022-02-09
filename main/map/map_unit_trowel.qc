@@ -24,6 +24,7 @@ void() unit_trowel_militar_lobber={
   }
 
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -82,6 +83,7 @@ void() unit_trowel_survest_lobber={
   }
 
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -141,6 +143,7 @@ void() unit_trowel_militar_gunner={
   }
 
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_MARKSMAN;
@@ -199,6 +202,7 @@ void() unit_trowel_survest_gunner={
   }
   //
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;

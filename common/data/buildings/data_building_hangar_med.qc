@@ -156,6 +156,7 @@ void() building_human_hangar_vehicle={
     remove(self);
     return;
   }
+  trigger_ext_check();
 
   self.vec_name = "Vehicle Hangar";
   self.flags = self.flags | FL_MONSTER;

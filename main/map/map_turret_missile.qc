@@ -16,6 +16,7 @@ void() building_turret_missile_survest_lobber={
   self.nextVecChoice = UID_TURRET_missile_turret;
   self.faction = FACTION_SURVEST;
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_rocket_launcher;
@@ -49,6 +50,7 @@ void() building_turret_missile_militar_lobber={
   self.nextVecChoice = UID_TURRET_missile_turret;
   self.faction = FACTION_MILITAR;
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_missile_laserguide;
@@ -86,6 +88,7 @@ void() building_turret_missile_psc_lobber={
   self.faction = FACTION_PSC;
   ai_promote();
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     default:
       self.next_wepn1 = UID_ITEM_missile_laserguide;

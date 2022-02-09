@@ -211,6 +211,7 @@ void() building_human_shield={
     remove(self);
     return;
   }
+  trigger_ext_check();
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
   self.flags = self.flags | FL_MONSTER ;  

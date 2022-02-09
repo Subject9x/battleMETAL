@@ -266,6 +266,7 @@ void() building_human_radar={
     remove(self);
     return;
   }
+  trigger_ext_check();
 
   self.ai_rank = skill;
   self.w_firetime = AI_POST_SPOT_TIME;

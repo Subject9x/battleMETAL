@@ -16,6 +16,7 @@ void() building_turret_light_survest_zapper={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_SURVEST;
   ai_promote();
+  trigger_ext_check();
 
   switch( self.ai_rank ){
     case 1:
@@ -44,6 +45,7 @@ void() building_turret_light_militar_zapper={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_MILITAR;
   ai_promote();
+  trigger_ext_check();
 
   switch( self.ai_rank ){
     case 1:
@@ -77,6 +79,7 @@ void() building_turret_light_psc_zapper={
   self.faction = FACTION_PSC;
   ai_promote();
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_ion_coil;
@@ -108,6 +111,7 @@ void() building_turret_light_survest_gunner={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_SURVEST;
   ai_promote();
+  trigger_ext_check();
 
   switch( self.ai_rank ){
     case 1:
@@ -137,6 +141,7 @@ void() building_turret_light_militar_gunner={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_MILITAR;
   ai_promote();
+  trigger_ext_check();
 
   switch( self.ai_rank ){
     case 1:
@@ -166,6 +171,7 @@ void() building_turret_light_psc_gunner={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_PSC;
   ai_promote();
+  trigger_ext_check();
 
   switch( self.ai_rank ){
     case 1:

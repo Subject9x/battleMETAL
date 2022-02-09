@@ -21,6 +21,7 @@ void() unit_balaket_survest_sniper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;
@@ -61,6 +62,7 @@ void() unit_balaket_militar_sniper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_laser;

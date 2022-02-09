@@ -155,6 +155,7 @@ void() building_supply_depot={
     remove(self);
     return;
   }
+  trigger_ext_check();
 
   self.vec_name = "Supply Depot";
   self.flags = self.flags | FL_MONSTER ;

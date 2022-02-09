@@ -78,10 +78,10 @@ void() building_guard_tower={
   self.data_type = DATA_BLD;
 
   if( ai_can_spawn() == FALSE ){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
+    remove(self);
     return;
   }
+  trigger_ext_check();
 
   self.vec_name = "Guard Tower";
   self.flags = self.flags | FL_MONSTER;

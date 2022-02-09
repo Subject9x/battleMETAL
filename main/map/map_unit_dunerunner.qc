@@ -23,6 +23,7 @@ void() unit_dunerunner_h={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -61,6 +62,7 @@ void() unit_dunerunner_m={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_LOWTECH;

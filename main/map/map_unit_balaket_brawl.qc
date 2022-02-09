@@ -19,7 +19,8 @@ void() unit_balaket_survest_brawler={
     remove(self);
     return;
   }
-
+  
+  trigger_ext_check();
   ai_promote();
   switch( self.ai_rank ){
     case 1:
@@ -61,6 +62,7 @@ void() unit_balaket_militar_brawler={
     return;
   }
   
+  trigger_ext_check();
   ai_promote();
   switch( self.ai_rank ){
     case 1:
@@ -103,6 +105,7 @@ void() unit_balaket_psc_brawler={
     return;
   }
   
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;

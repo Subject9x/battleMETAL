@@ -51,9 +51,12 @@ NO_TDM 8 : removed from deathmatch 1 / teamplay 1 games.
 
 */
 void() map_deploy_point={
+  
   if(self.data_idx){
     self.data_idx = 0;  //null it out
   }
+  trigger_ext_check();
+  
   DEPLOY_ID_COUNT = DEPLOY_ID_COUNT + 1;
   self.data_idx = DEPLOY_ID_COUNT;
   

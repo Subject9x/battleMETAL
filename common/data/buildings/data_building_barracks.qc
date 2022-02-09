@@ -158,7 +158,8 @@ void() building_barracks={
     remove(self);
     return;
   }
-
+  trigger_ext_check();
+  
   self.vec_name = "Barracks";
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;

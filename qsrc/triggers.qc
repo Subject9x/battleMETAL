@@ -55,6 +55,28 @@ void( entity active, string event) trigger_event={
   }
 };
 
+/*
+  mark entity as having extending triggers, this will 
+*/
+void() trigger_ext_check={
+  self.hasExtTrigs = 0;
+  if(self.trigOnDeath != ""){
+    self.hasExtTrigs = 1;
+  }
+  if(self.trigOnSpawn != ""){
+    self.hasExtTrigs = 1;
+  }
+  if(self.trigOnAttack != ""){
+    self.hasExtTrigs = 1;
+  }
+  if(self.trigOnDamage != ""){
+    self.hasExtTrigs = 1;
+  }
+  if(self.trigOnPanic != ""){
+    self.hasExtTrigs = 1;
+  }
+};
+
 void() trigger_reactivate =
 {
 	self.solid = SOLID_TRIGGER;
@@ -331,6 +353,48 @@ void() counter_use =
   }
 };
 
+
+/*
+  So tired of having to keep mental overhead of dynamic trigger counts,
+  this spawnflag essentially queries every entity where entity.target = self.targetname
+  and builds the .count variable based on that.
+*/
+void() counter_dynamic_query={
+  local entity targs;
+  local float addLatch;
+  self.count = 0;
+      
+  targs = findchain(target, self.targetname);
+  while(targs){
+    self.count = self.count + 1;
+    targs = targs.chain;
+  }
+  
+  targs = findchainfloat(hasExtTrigs, TRUE);
+  while(targs){
+    addLatch = FALSE;
+    if(self.targetname == targs.trigOnDeath){
+      addLatch = TRUE;
+    }
+    if(self.targetname == targs.trigOnSpawn){
+      addLatch = TRUE;
+    }
+    if(self.targetname == targs.trigOnAttack){
+      addLatch = TRUE;
+    }
+    if(self.targetname == targs.trigOnDamage){
+      addLatch = TRUE;
+    }
+    if(self.targetname == targs.trigOnPanic){
+      addLatch = TRUE;
+    }
+    if(addLatch){
+      self.count = self.count + 1;
+    }
+    targs = targs.chain;
+  }
+};
+
 /*QUAKED trigger_counter (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT
 Acts as an intermediary for an action that takes multiple inputs.
 
@@ -358,25 +422,25 @@ void() trigger_counter =
   //I use this for wave-based maps to 'dynamically' change wave kill counts.
   switch(skill){
     default:
-      if( (self.spawnflags & 2) ){
+      if( (self.spawnflags & NO_EASY) ){
         remove(self);
         return;
       }
       break;
     case 1:
-      if( (self.spawnflags & 4) ){
+      if( (self.spawnflags & NO_NORMAL) ){
         remove(self);
         return;
       }
       break;
     case 2:
-      if( (self.spawnflags & 8) ){
+      if( (self.spawnflags & NO_HARD) ){
         remove(self);
         return;
       }
       break;
     case 3:
-      if( (self.spawnflags & 16) ){
+      if( (self.spawnflags & NO_HARD) ){
         remove(self);
         return;
       }
@@ -388,6 +452,11 @@ void() trigger_counter =
 		self.count = 2;
   }
 	self.use = counter_use;
+  
+  if((self.spawnflags & SPAWNFLAG_DYNAMIC_COUNT)){
+    self.think = counter_dynamic_query;
+    self.nextthink = time + 0.1;
+  }
 };
 
 

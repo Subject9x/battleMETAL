@@ -135,6 +135,7 @@ void() building_human_fuel={
     remove(self);
     return;
   }
+  trigger_ext_check();
 
   self.vec_name = "Fuel Tank";
   self.flags = self.flags | FL_MONSTER;

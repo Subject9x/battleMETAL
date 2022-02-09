@@ -229,12 +229,13 @@ void() map_func_rain={
   self.w_think = func_snow_think;
   self.use = func_particle_cube_use;
   
-  if( self.trigOnSpawn )
+  trigger_ext_check();
+  if( self.trigOnSpawn ){
     trigger_event( self, self.trigOnSpawn );
-  
-  if( (self.spawnflags & 1) )
+  }
+  if( (self.spawnflags & 1) ){
     return;
-    
+  }
   self.think = self.use;
   self.nextthink = time + 0.1;
 };
