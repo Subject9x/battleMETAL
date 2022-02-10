@@ -208,7 +208,8 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   
   nofs = ofs;
   
-  gui_renderPatch9_1_32(nofs, '106 144',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  
+  gui_renderPatch9_1_32(nofs, '106 144', listNameColor * 0.67, 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_LIGHT;
@@ -297,75 +298,76 @@ void(vector ofs) menu_hangar_MechInfo={
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
   nofs = ofs;
-  gui_renderPatch9_1_32(nofs, '224 180',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(nofs, '224 180', CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
 
   slen = stringwidth("-Metal Info-", 0 ,'10 10');
   labelOrg = nofs;
   labelOrg_x = labelOrg_x +  125 - ( slen / 2);
-  labelOrg_y = labelOrg_y + 8;
+  labelOrg_y = labelOrg_y + 4;
   drawstring(labelOrg, "-Metal Info-", '10 10', CLR_DEF_WHITE, 1, 0);
   
-  fontSize = fontSizeSmall;
-    drawstring(nofs + '8 23', "Type:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 33', "Speed-Forward:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 43', "Speed-Strafe:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 53', "Speed-Reverse:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 65', "Max Energy:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 75', "Energy Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 87', "Max Shield:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 97', "Shield Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 109', "Armor-Center:", fontSize,CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 119', "Armor-Sides:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 129', "Armor-Arms:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 139', "Armor-Legs:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(nofs + '8 151', "Radar Range:", fontSize,CLR_DEF_GRAY_H, 1, 0);
-  drawfont = drawfont_prev;
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
   
   if(SELECT_MECH > FALSE){
-      drawfont_prev = drawfont;
-      drawfont = FONT_NUM_ROBOT_REGULAR;
-
-    //MECH SPEED
-    //Forward Speed
-    gui_renderMeter((MECH_DATA_SPEEDF/DISP_MAX_FSPEED)*100, nofs + '85 32', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 31', ftos(MECH_DATA_SPEEDF), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
     
-    //Side Speed
-    gui_renderMeter((MECH_DATA_SPEEDS/DISP_MAX_SSPEED)*100, nofs + '85 42', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 41', ftos(MECH_DATA_SPEEDS), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    
-    //Reverse
-    gui_renderMeter((MECH_DATA_SPEEDB/DISP_MAX_BSPEED)*100, nofs + '85 52', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 51', ftos(MECH_DATA_SPEEDB), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    //Speed
+    local vector speedOfs;
+    speedOfs = ofs + '128 64';
+    drawpic(speedOfs, "gfx/hud/hud_icon_ram.tga", '32 24', CLR_HUD_ORANGE, 0.85, DRAWFLAG_NORMAL);
+    gui_labelKeyPair( speedOfs + '0 22', "Forward: ", sprintf("%00.1f", MECH_DATA_SPEEDF), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
+    gui_labelKeyPair( speedOfs + '0 34', "Reverse: ", sprintf("%00.1f", MECH_DATA_SPEEDB), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
+    gui_labelKeyPair( speedOfs + '0 46', "Strafe: ", sprintf("%00.1f", MECH_DATA_SPEEDS), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
     
     //Energy
-    gui_renderMeter((MECH_DATA_ENMAX/DISP_MAX_ENE)*100, nofs + '85 65', '67 8', CLR_DEF_ENE_BCK, CLR_DEF_ENE_FRT, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 64', ftos(MECH_DATA_ENMAX), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    gui_renderMeter((MECH_DATA_ENRATE/DISP_MAX_ENE_RATE)*100, nofs + '85 75', '67 8', CLR_DEF_ENE_BCK, CLR_DEF_ENE_FRT, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 74', sprintf("%00.2f", MECH_DATA_ENRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    local vector energyOfs;
+    energyOfs = ofs + '5 14';
+    drawpic(energyOfs, "gfx/hud/hud_icon_power.tga", '32 24', CLR_HUD_BLUE, 0.85, DRAWFLAG_NORMAL);
+    gui_labelKeyPair( energyOfs + '0 22', "Max: ", ftos(MECH_DATA_ENMAX), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
+    gui_labelKeyPair( energyOfs + '0 34', "Recharge: ", sprintf("%00.2f / 1s", MECH_DATA_ENRATE), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
     
-    //Shield
-    gui_renderMeter((MECH_DATA_SHMAX/DISP_MAX_SHIELD)*100, nofs + '85 87', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 86', ftos(MECH_DATA_SHMAX), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    gui_renderMeter((MECH_DATA_SHRATE/DISP_MAX_SHIELD_RATE)*100, nofs + '85 97', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 96', sprintf("%00.2f", MECH_DATA_SHRATE), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
-    //Armor rates
-    gui_renderMeter((MECH_DATA_HPCT/DISP_MAX_ARM_CT)*100, nofs + '85 109','67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 108', ftos(MECH_DATA_HPCT), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    gui_renderMeter((MECH_DATA_HPST/DISP_MAX_ARM_ST)*100, nofs + '85 119', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 118', ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    gui_renderMeter((MECH_DATA_HPAR/DISP_MAX_ARM_AR)*100, nofs + '85 129', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);  
-    drawstring(nofs + '162 128', ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0); 
-    gui_renderMeter((MECH_DATA_HPLG/DISP_MAX_ARM_LG)*100, nofs + '85 139', '67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 138', ftos(MECH_DATA_HPLG), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    //Shield   
+    local vector shieldOfs;
+    shieldOfs = ofs + '128 14';
+    drawpic(shieldOfs, "gfx/hud/hud_icon_shield.tga", '24 24', CLR_DEF_SHD_OK, 0.85, DRAWFLAG_NORMAL);
+    gui_labelKeyPair( shieldOfs + '0 22', "Max: ", ftos(MECH_DATA_SHMAX), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
+    gui_labelKeyPair( shieldOfs + '0 34', "Recharge: ", sprintf("%00.2f / 1s", MECH_DATA_SHRATE), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
+    
+    
+    //Armor rate
+    local vector armorOrg;
+    armorOrg = ofs + '48 90';
+    
+    drawpic(armorOrg + '-10 -16', HUD_MECH_CT, '20 32', gui_getColorForArmor((MECH_DATA_HPCT/DISP_MAX_ARM_CT)*100), 1.0, DRAWFLAG_NORMAL);
+    drawstring(armorOrg + Vector2(stringwidth(ftos(MECH_DATA_HPCT), 0, '10 10')/-2, -25), ftos(MECH_DATA_HPCT), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    
+    drawpic(armorOrg + '-6.5 -15.5' + '20 -4', HUD_MECH_ST, '13 31', gui_getColorForArmor((MECH_DATA_HPST/DISP_MAX_ARM_ST)*100), 1.0, DRAWFLAG_NORMAL);
+    drawstring(armorOrg + '20 -4' + Vector2(stringwidth(ftos(MECH_DATA_HPST), 0, '10 10')/-2, 17), ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    
+    drawpic(armorOrg + '-6.5 -15.5' - '20 4', HUD_MECH_ST, '13 31', gui_getColorForArmor((MECH_DATA_HPST/DISP_MAX_ARM_ST)*100), 1.0, DRAWFLAG_NORMAL);
+    drawstring(armorOrg - '20 4' + Vector2(stringwidth(ftos(MECH_DATA_HPST), 0, '10 10')/-2, 17), ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    
+    drawpic(armorOrg + '-6 -16' + '35 8', HUD_MECH_RA, '12 32', gui_getColorForArmor((MECH_DATA_HPAR/DISP_MAX_ARM_AR)*100), 1.0, DRAWFLAG_NORMAL);
+    drawstring(armorOrg + '35 8' + Vector2(stringwidth(ftos(MECH_DATA_HPAR), 0, '10 10')/-2, 17), ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    
+    drawpic(armorOrg + '-6 -16' - '35 -8', HUD_MECH_LA, '12 32', gui_getColorForArmor((MECH_DATA_HPAR/DISP_MAX_ARM_AR)*100), 1.0, DRAWFLAG_NORMAL);
+    drawstring(armorOrg - '35 -8' + Vector2(stringwidth(ftos(MECH_DATA_HPAR), 0, '10 10')/-2, 17), ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    
+    drawpic(armorOrg + '-20 -32' + '0 53', HUD_MECH_LEG, '40 64', gui_getColorForArmor((MECH_DATA_HPLG/DISP_MAX_ARM_LG)*100), 1.0, DRAWFLAG_NORMAL);
+    drawstring(armorOrg + Vector2(stringwidth(ftos(MECH_DATA_HPLG), 0, '10 10')/-2, 53), ftos(MECH_DATA_HPLG), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Radar Range
-    gui_renderMeter((MECH_DATA_RAD/DISP_MAX_RAD_RANGE)*100, nofs + '85 151','67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_HALF, 1, 0, AXIS_H, 0);
-    drawstring(nofs + '162 150', ftos(MECH_DATA_RAD), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    local vector radarOfs;
+    radarOfs = ofs + '128 126';
+    drawpic(radarOfs, "gfx/hud/hud_icon_quant.tga", '24 24', gui_getColorForArmor((MECH_DATA_RAD/DISP_MAX_RAD_RANGE)*100), 1.0, DRAWFLAG_NORMAL);
+    gui_labelKeyPair( radarOfs + '0 26', "Radar Range:", sprintf("%00.1f m", MECH_DATA_RAD), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
     
-    //Lock on Time - 2.0.0 - no longer matters
-    /*local float lock;
+    
+    /*Lock on Time - 2.0.0 - no longer matters
+    local float lock;
     lock = 6 - MECH_DATA_LOCKON;
     lock = lock / 6;
     gui_renderMeter(lock*100, nofs + '85 163','67 8', CLR_DEF_ARM_DED, CLR_DEF_ARM_HALF, 1, 0, AXIS_H, 0);
