@@ -531,7 +531,7 @@ void( float isNew, float entFlags ) data_map_damage={
   
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.spawnflags = ReadCoord();
+    self.spawnflags = rint(ceil(ReadCoord()));
     self.damageType = ReadByte();
     self.alpha = ReadShort();
     self.wait = ReadCoord();

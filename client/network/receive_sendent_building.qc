@@ -42,8 +42,8 @@ void() sendevent_building_die={
   sendent_handle_remove(self.effect2);
   sendent_handle_remove(self.effect3);
   
-  if( (self.spawnflags & 4194304) ){
-    self.spawnflags = self.spawnflags - (self.spawnflags & 4194304);
+  if( (self.spawnflags & IS_MAPKEY) ){
+    self.spawnflags = self.spawnflags - (self.spawnflags & IS_MAPKEY);
     key = mapKeyObject;
     parentKey = world;
     while( key ){
@@ -96,7 +96,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.spawnflags = ReadCoord();
+    self.spawnflags = rint(ceil(ReadCoord()));
     self.data_idx = ReadByte();
     setorigin(self, self.origin);
   }
@@ -186,7 +186,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
 
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadCoord();
+    self.burnBits = rint(ceil(ReadCoord()));
     if( self.burnBits > 0 ){
       if( (self.burnBits & WEAPON1) && self.effect1.owner != self ){
         self.effect1 = te_building_fire_start( self );

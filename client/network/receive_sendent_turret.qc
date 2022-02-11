@@ -90,7 +90,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.spawnflags = ReadCoord();
+    self.spawnflags = rint(ceil(ReadCoord()));
     self.data_idx = ReadByte();
     if( !(self.spawnflags & MUTE_ME)  ){
       self.ai_muted = FALSE;

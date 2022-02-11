@@ -16,6 +16,9 @@ void() fuel_tank_die1={
   pos = randompos(self.absmin, self.absmax);
   te_missile_explode( pos, 1, '1 0.67 0.67', 0.01 );
   building_sound_explode();
+    
+  //funny - make wreckage first
+  sendevent_building_die();
   
   self.think = fuel_tank_die2;
   self.nextthink = time + 0.1;
@@ -40,9 +43,6 @@ void() fuel_tank_die3={
   pos = randompos(self.origin, vfx1);
   te_missile_explode( pos, 5, '1 0.67 0.67', 0.0015 );
   building_sound_explode();
-  
-  //funny - make wreckage first
-  sendevent_building_die();
   
   self.think = fuel_tank_die4;
   self.nextthink = time + 0.1;

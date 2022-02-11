@@ -342,7 +342,7 @@ float AS_INT = 8;
 #define REMOVE_FIRSTUSE 8  //remove after first countdown
 #define REMOVE_ONTOUCH 16  //remove on first touch
 
-float BUILDING_TARGET_FLAG = 16;  //used by building and misc_building for allowing self to be targeted
+#define BUILDING_TARGET_FLAG 16 //used by building and misc_building for allowing self to be targeted
 
 #define ACTIVE_ONTOUCH 32  //activate on-touch
 #define MUTE_ME 1048576    //ai ignores sending voice effects / radio sounds.

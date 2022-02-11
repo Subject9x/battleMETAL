@@ -15,7 +15,7 @@ void() hfuel_death1 = [1, hfuel_death2]{
     return;
   }
   self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DYING;
+  self.deadflag = DEAD_DEAD;
   self.solid = SOLID_NOT;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 
