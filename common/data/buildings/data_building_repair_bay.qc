@@ -15,12 +15,26 @@ Overview:
   PLAYER_RESPAWN  = repair bay cooldown
   
   PLAYER_DEBRIEF = idle, recharge .reloadValue
-  
 */
 
-void() building_repair_touch;
+/*
+  util to correctly set player FL_NOSHOOT state
+*/
+void(float toggleGuns) building_repair_allowGuns={
+  local entity player, data;
+  player = self.ladder_entity;
+  data = player.clientData;
+  if(toggleGuns){
+    player.flags = player.flags - (player.flags & FL_NOSHOOT);
+  }
+  else{
+    player.flags = player.flags | FL_NOSHOOT;
+  }
 
-void(entity item) building_repair_item_legs;
+  data.SendFlags = data.SendFlags | SENDFLAG_EFLAGS;
+};
+
+void() building_repair_touch;
 
 //generic, can be called by any state.
 void() building_repair_recharge_frame={
@@ -71,12 +85,13 @@ void() building_repair_select={
       return;
     }
     
-    if(self.trigger_field != world){
-      player = self.trigger_field;
-    }
-    else{
+    //player dead or exited repair bay
+    if(self.trigger_field == world){
       self.ai_state_next = PLAYER_RESPAWN;
       return;
+    }
+    else{
+      player = self.trigger_field;
     }
     
     if(csqc_updateCompStat(player) < 100){
@@ -109,19 +124,17 @@ void() building_repair_select={
       }
     }
     if( repairCheck == world ){
+      //nothing to actually repair;
       self.ai_state_next = PLAYER_DEBRIEF;
       return;
     }
     
     //smooth transitions between repairing pieces.
     if(self.ai_state_last != PLAYER_ACTIVE){
-      if( !(player.flags & FL_NOSHOOT) ){
-        player.flags = player.flags | FL_NOSHOOT;
-        self.moveState = TRUE; //preserve client FL_NOSHOOT setting
-        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_EFLAGS;
-      }
-      client_send_event_repairs( player, TRUE );
+      building_repair_allowGuns(FALSE);
+      client_send_event_repairs(self.trigger_field, TRUE);
     }
+    self.moveState = TRUE;
     self.attack_state = typeId;
     self.goalentity = repairCheck;
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
@@ -159,7 +172,7 @@ void() building_repair_fixing={
     return;
   }
   
-   //ENTER STATE------------------------------------------
+  //ENTER STATE------------------------------------------
   if( self.ai_state == PLAYER_ACTIVE && self.ai_state_last != PLAYER_ACTIVE ){
     if(self.goalentity == world){
       //error out
@@ -266,21 +279,23 @@ void() building_repair_fixing={
 */
 void() building_repair_idle={
   if( self.ai_state == PLAYER_DEBRIEF && self.ai_state_last != PLAYER_DEBRIEF ){
-    self.cockpit.touch = building_repair_touch;
+    self.cockpit.solid = SOLID_TRIGGER;
+    setorigin(self.cockpit, self.cockpit.origin);
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 1;
+    
     if( self.ai_state_last != PLAYER_RESPAWN ){
-      if( self.moveState == TRUE){
-        //player's FL_NOSHOOT was only for the repair action, so we remove it now.
-        self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
-         self.trigger_field.clientData.SendFlags = self.trigger_field.clientData.SendFlags | SENDFLAG_EFLAGS;
-        self.moveState = FALSE;
+      if(self.ladder_entity != world){
+        cons_logAFloat("repair bay - left area", 1);  //debug
+        building_repair_allowGuns(TRUE);
+        client_send_event_repairs( self.trigger_field, FALSE );
       }
       self.goalentity = world;
       self.attack_state = 0;
       if(self.trigger_field != world){
         self.trigger_field.stat_plr_rep = -1;
         self.trigger_field = world;
+        self.ladder_entity = world;
       }
     }
     return;
@@ -288,14 +303,14 @@ void() building_repair_idle={
   building_repair_recharge_frame();
 };
 
+/*
+  STATE: PLAYER_RESPAWN
+*/
 void() building_repair_cooldown={
   if( self.ai_state == PLAYER_RESPAWN && self.ai_state_last != PLAYER_RESPAWN ){
-    if( self.moveState == TRUE){
-      //player's FL_NOSHOOT was only for the repair action, so we remove it now.
-      self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
-       self.trigger_field.clientData.SendFlags = self.trigger_field.clientData.SendFlags | SENDFLAG_EFLAGS;
-      self.moveState = FALSE;
-    }
+    self.moveState = FALSE;
+    cons_logAFloat("building_repair_cooldown - left area", 1);  //debug
+    building_repair_allowGuns(TRUE);
     client_send_event_repairs( self.trigger_field, FALSE );
     self.trigger_field.stat_plr_rep = -1;
     self.goalentity = world;
@@ -305,6 +320,7 @@ void() building_repair_cooldown={
     if(self.trigger_field != world){
       self.trigger_field.stat_plr_rep = -1;
       self.trigger_field = world;
+      self.ladder_entity = world;
     }
     if( skill < SKILL_VET ){
       self.ai_movedist = time + 15;
@@ -329,10 +345,6 @@ void() building_repair_attack={
 
 };
 //===========================================================================
-
-void(entity item) building_repair_item_legs={
-
-};
 
 void() building_repair_touch;
 
@@ -374,7 +386,7 @@ void() building_repair_state={
       building_repair_select();
       break;
       
-    default:
+    case PLAYER_DEBRIEF:
       building_repair_idle();
       break;
   }
@@ -555,8 +567,10 @@ void() building_repair_touch={
     return;
   }
   self.owner.trigger_field = other;
+  self.owner.ladder_entity = other;   //cache here to check for player disconnects.
   self.owner.ai_state_next = PLAYER_CONNECT;
-  self.touch = SUB_Null;
+  self.owner.moveState = FALSE;
+  self.solid = SOLID_NOT;
 };
 
 void() hrepair_die1 = [1, hrepair_die2]{

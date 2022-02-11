@@ -114,9 +114,9 @@ void() receive_ent_bindData={
       if( CLIENT_health_legs <= 0 && CLIENT_health_legs_prev > 0 ){
         hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
       }
-      if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
-        //repair event
-      }
+      //if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
+      //repair event
+      //}
     }
     if( !(CLIENT_flags_prev & FL_NOSHOOT) && (CLIENT_flags & FL_NOSHOOT) ){
       hud_event_enqueue( HUD_EVENT_WEAPONS_OFF, 1) ;

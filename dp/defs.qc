@@ -247,11 +247,11 @@ float	FL_ONGROUND				= 512;	  // standing on something
 float	FL_PARTIALGROUND	= 1024;	  // not all corners are valid
 float	FL_WATERJUMP			= 2048;	  // player jumping out of water
 float	FL_JUMPRELEASED		= 4096;	  // for jump debouncing
-float FL_DISARMED = 8192;    //used for FL_MONSTER, tells the AI they have no more guns left
-float FL_UNIT = 16384;  //kinda ugly but used for all clients and monsters
-float FL_NOSHOOT = 32768;  //shuts off FL_CLIENT ability to use their weapons
-float FL_TURRET = 65536;  //the FL_MONSTER has a Turret
-float FL_NODE = 131072; //kinda ugly but used for non unit things
+float FL_DISARMED       = 8192;   //used for FL_MONSTER, tells the AI they have no more guns left
+float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
+float FL_NOSHOOT        = 32768;  //shuts off FL_CLIENT ability to use their weapons
+float FL_TURRET         = 65536;  //the FL_MONSTER has a Turret
+float FL_NODE           = 131072; //kinda ugly but used for non unit things
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves

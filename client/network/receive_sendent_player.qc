@@ -785,7 +785,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
-    self.flags = self.flags | ReadCoord();
+    self.flags = rint(ceil(ReadCoord()));
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
@@ -882,8 +882,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
       CLIENT_flags_prev = 0;
     }
     CLIENT_stat_rdr_mode = self.stat_rdr_mode;
-    CLIENT_flags_prev = CLIENT_flags;
-    CLIENT_flags = self.flags;
+    
+    CLIENT_flags_prev = rint(CLIENT_flags);
+    CLIENT_flags = rint(self.flags);
+   
     CLIENT_player_deadflag = self.deadflag;
     CLIENT_faction = self.faction;
     CLIENT_data_type = self.data_type;
