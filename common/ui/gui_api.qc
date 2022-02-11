@@ -415,26 +415,41 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float setAl
     given target origin, meter size, current meter value
   */
   local float clampVal, perc, adj, diff;
-  local vector norg, end;
+  local vector norg;
   norg = gui_calcAxis(org, sz, ax);
   if(clr_bk_x > -1){
     drawfill(norg, sz, clr_bk, setAlpha, flg);
   }
-  end = norg;
-  
-  clampVal = min( val, 100);
-  
+
+  clampVal = min(val, 100);
+
   perc = (clampVal / 100);
   if(ax & AXIS_V){
-     adj = sz_y * perc;
-     diff = sz_y - adj;
-     norg_y = norg_y + diff;
-     sz_y = sz_y - diff;
+  adj = sz_y * perc;
+    if(vdir){
+      //set meter to go in reverse
+      norg_y = norg_y + sz_y;
+      diff = sz_y + adj;
+      sz_y = sz_y - diff;
+    }
+    else{
+      diff = sz_y - adj;
+      norg_y = norg_y + diff;
+      sz_y = sz_y - diff;
+    }
   }
   else if(ax & AXIS_H){
-     adj = sz_x * perc;
-     diff = sz_x - adj;
-     sz_x = sz_x - diff;
+    adj = sz_x * perc;
+    if(vdir){
+      //set meter to go in reverse
+      norg_x = norg_x - sz_x;
+      diff = sz_x - adj;
+      sz_x = sz_x - diff;
+    }
+    else{
+      diff = sz_x - adj;
+      sz_x = sz_x - diff;
+    }
   }
   drawfill(norg, sz, clr_fr, setAlpha, flg);
 };
