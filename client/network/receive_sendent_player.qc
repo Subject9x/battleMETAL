@@ -264,40 +264,40 @@ void() player_predraw={
     
     if(self.clientLocalId == player_localentnum){
       if( self.deadflag == DEAD_NO ){
+        if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
+          hudAng = HUD_FIXED_ANGLE;
+          hudStruts.angles_y = HUD_FIXED_ANGLE_y;
+          hudStruts.angles_x = 0;
+          hudStruts.angles_z = 0;
+          
+          hudConsole.angles_y = HUD_FIXED_ANGLE_y;
+          hudConsole.angles_x = 33;
+          hudConsole.angles_z = 0;
+        }
+        else{
+          hudAng = input_angles;
+          hudAng_x = 0;
+          
+          hudStruts.angles_y = input_angles_y;
+          hudStruts.angles_x = 0;
+          hudStruts.angles_z = 0;
+          
+          hudConsole.angles_y = input_angles_y;
+          hudConsole.angles_x = 33;
+          hudConsole.angles_z = 0;
+        }
+        makevectors(hudAng);
+        strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
+        setorigin(hudStruts, strutOrg);
+        
+        consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
+        setorigin(hudConsole, consOrg);
         if( cvar("chase_active") ){
           hudStruts.alpha = 0.0;
           hudConsole.alpha = 0.0;
         }
         else{
-          if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
-            hudAng = HUD_FIXED_ANGLE;
-            hudStruts.angles_y = HUD_FIXED_ANGLE_y;
-            hudStruts.angles_x = 0;
-            hudStruts.angles_z = 0;
-            
-            hudConsole.angles_y = HUD_FIXED_ANGLE_y;
-            hudConsole.angles_x = 33;
-            hudConsole.angles_z = 0;
-          }
-          else{
-            hudAng = input_angles;
-            hudAng_x = 0;
-            
-            hudStruts.angles_y = input_angles_y;
-            hudStruts.angles_x = 0;
-            hudStruts.angles_z = 0;
-            
-            hudConsole.angles_y = input_angles_y;
-            hudConsole.angles_x = 33;
-            hudConsole.angles_z = 0;
-          }
-          makevectors(hudAng);
-          strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
-          setorigin(hudStruts, strutOrg);
           hudStruts.alpha = 1.0;
-          
-          consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
-          setorigin(hudConsole, consOrg);
           hudConsole.alpha = 1.0;
         }
       }
@@ -315,7 +315,6 @@ void( float mech_id ) sendevent_player_mech={
   local entity weps;
   local entity this;
   
-  self.flags = self.flags | FL_CLIENT | FL_TURRET;  //read-order fix
   self.deadflag = DEAD_NO;
   self.criticalHits = rint(0);
   

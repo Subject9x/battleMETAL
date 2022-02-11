@@ -227,7 +227,7 @@ void() build_mech_unit={
   }
   
   self.data_type = DATA_MECH;
-  self.flags = self.flags | FL_UNIT;
+  self.flags = self.flags | FL_UNIT | FL_TURRET;
   
   //-> sub out to making specific bots.
   if( !(self.flags & FL_CLIENT) ){
@@ -358,7 +358,7 @@ void() build_mech_bot={
     self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   }
   
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | FL_MONSTER | FL_TURRET;
   self.canTarget = TRUE;
   
   hmaxs = self.maxs;
