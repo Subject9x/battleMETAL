@@ -72,7 +72,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   drawpic(pipBottom, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
 
   //lock on indicators
-  if( lockval ){
+  if( lockval && CLIENT_stat_rdr_mode ){
     lockSize = '34 34';
     //lockSize = '34 34' * HUD_LOCK_SIZE; //couldnt get it working for release.
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
