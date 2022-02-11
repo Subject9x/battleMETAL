@@ -258,7 +258,13 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     //version wille eventually be only displayed as needed.
     gui_drawversion();
     drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 40', sprintf("W/H  = %s", vtos(Vector2(w,h))), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos(Vector2(w,h))), '8 8', '0.85 0.85 0.85', 1, 0);
+    
+    if(MENU_ACTIVE){
+    local vector mpos;
+    mpos = getmousepos();
+       drawstring(VIEW_ORG + '0 40', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
+    }
   }
   
 };
