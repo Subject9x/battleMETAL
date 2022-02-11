@@ -839,7 +839,8 @@ void() data_hud_frame={
       }
     }
     switch( cvar("crosshair") ){
-      case 1:
+      //crosshair1 is default
+      default:
         hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
         break;
       case 2:
@@ -850,9 +851,6 @@ void() data_hud_frame={
         break;
       case 4:
         hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
-        break;
-      default:
-        //no crosshair? bold move
         break;
     }
   }
