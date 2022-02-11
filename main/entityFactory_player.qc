@@ -18,6 +18,10 @@ void() player_makeObserver={
   self.scale = 0.005;
   self.view_ofs = '0 0 1';
   self.damageValue = 0;
+  self.data_speed_forward = 1000;
+  self.data_speed_strafe = 1000;
+  self.data_speed_backward = 1000;
+  self.data_speed_accel = 2;
   self.clientData.SendFlags =  self.clientData.SendFlags | SENDFLAG_NEWUNIT;
   self.canTarget = FALSE;
 };
