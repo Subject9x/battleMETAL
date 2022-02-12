@@ -71,9 +71,9 @@ void() unit_onnek_m={
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_emp;
-      self.next_wepn2 = UID_ITEM_emp;
-      self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_heatsink;
+      self.next_wepn2 = UID_ITEM_recharge_capacitor;
+      self.next_wepn3 = UID_ITEM_heatsink;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
@@ -85,9 +85,9 @@ void() unit_onnek_m={
     default:
       self.spreadDefault = ACCURACY_SKIRMISH;
       self.next_wepn1 = UID_ITEM_particle_cannon;
-      self.next_wepn2 = UID_ITEM_particle_cannon;
-      self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_heatsink;
+      self.next_wepn2 = UID_ITEM_recharge_capacitor;
+      self.next_wepn3 = UID_ITEM_heatsink;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -112,27 +112,27 @@ void() unit_onnek_militar_zapper={
       self.next_wepn1 = UID_ITEM_ion_coil;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_adv_reload;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_ion_coil;
       self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_adv_reload;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_emp;
-      self.next_wepn3 = UID_ITEM_adv_reload;
+      self.next_wepn3 = UID_ITEM_heatsink;
       self.next_wepn4 = UID_ITEM_recharge_capacitor;
       break;
     default:
       self.spreadDefault = ACCURACY_SKIRMISH;
       self.next_wepn1 = UID_ITEM_EMPTY;
       self.next_wepn2 = UID_ITEM_ion_coil;
-      self.next_wepn3 = UID_ITEM_ion_coil;
+      self.next_wepn3 = UID_ITEM_heatsink;
       self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
@@ -178,7 +178,7 @@ void() unit_onnek_survest_zapper={
       self.next_wepn1 = UID_ITEM_light_laser;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_light_laser;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -224,7 +224,7 @@ void() unit_onnek_militar_gunner={
       self.next_wepn1 = UID_ITEM_flak;
       self.next_wepn2 = UID_ITEM_flak;
       self.next_wepn3 = UID_ITEM_flak;
-      self.next_wepn4 = UID_ITEM_flak;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -269,7 +269,7 @@ void() unit_onnek_survest_gunner={
       self.next_wepn1 = UID_ITEM_light_autocannon;
       self.next_wepn2 = UID_ITEM_light_autocannon;
       self.next_wepn3 = UID_ITEM_light_autocannon;
-      self.next_wepn4 = UID_ITEM_light_autocannon;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -302,8 +302,8 @@ void() unit_onnek_militar_lobber={
       self.spreadDefault = ACCURACY_SNIPER;
       self.next_wepn1 = UID_ITEM_snub_artillery;
       self.next_wepn2 = UID_ITEM_snub_artillery;
-      self.next_wepn3 = UID_ITEM_snub_artillery;
-      self.next_wepn4 = UID_ITEM_flak;
+      self.next_wepn3 = UID_ITEM_adv_reload;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     default:
       //skill- 0/1
@@ -335,7 +335,7 @@ void() unit_onnek_survest_lobber={
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_rotary_plasma;
       self.next_wepn2 = UID_ITEM_rotary_plasma;
-      self.next_wepn3 = UID_ITEM_rotary_plasma;
+      self.next_wepn3 = UID_ITEM_EMPTY;
       self.next_wepn4 = UID_ITEM_light_laser;
       break;
     case 3:
@@ -344,14 +344,14 @@ void() unit_onnek_survest_lobber={
       self.next_wepn1 = UID_ITEM_rotary_plasma;
       self.next_wepn2 = UID_ITEM_rotary_plasma;
       self.next_wepn3 = UID_ITEM_rotary_plasma;
-      self.next_wepn4 = UID_ITEM_rotary_plasma;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     default:
       //skill- 0/1
       self.spreadDefault = ACCURACY_SKIRMISH;
       self.next_wepn1 = UID_ITEM_rotary_plasma;
       self.next_wepn2 = UID_ITEM_rotary_plasma;
-      self.next_wepn3 = UID_ITEM_light_autocannon;
+      self.next_wepn3 = UID_ITEM_EMPTY;
       self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
