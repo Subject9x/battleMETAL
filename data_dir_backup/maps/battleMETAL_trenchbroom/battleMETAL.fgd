@@ -354,7 +354,7 @@ the mission area if player stays inside this bounds. usually pair this will a ki
 //---------------------------------------------------------------------------------------------------------------------
 
 //TRIGGER_* ENTS ---------------------------------------------------------------------------------------------------------------------
-@BaseClass base(Target, Targetname) color(0.5 0.5 0.5) = BaseTrigger []
+@BaseClass base(Target, Targetname, SkillFlagsEngine) color(0.5 0.5 0.5) = BaseTrigger []
 
 @SolidClass base(BaseTrigger, Angle) = trigger_multiple : "Variable sized repeatable trigger.  Must be targeted at one or more entities.  If 'health' is set, the trigger must be killed to activate each time.
   If 'delay' is set, the trigger waits some time after activating before firing.
@@ -417,15 +417,18 @@ if 'angle' is set, the trigger will only fire when someone is facing the directi
     If nomessage is not set, t will print '1 more.. ' etc when triggered and 'sequence complete' when finished.
     After the counter has been triggered 'count' times (default 2), it will fire all of it's targets and remove itself.
     note: triggers ON use() where .count = '0', so your ideal total should actually be N - 1." [
+  
   count(integer) : "Count down from this total." : 2
   message(string) : "played when 'sequence complete'"
-  description(string) : "text to write before the <.count> value."
-  abbrev(string) : "text to write AFTER <.count> value."
-  deathmsg(string) : "text to write instead of 'more to go'."
-  vec_size(integer) : "threshold to determine between 'more to go' and 'x to go'." : 0
+  description(string) : "Only X to go message, use %s once for item type. "
+  abbrev(string) : "item name to go in [description]."
+  missionFile(string) : "More %s remaining."
+  lefty(integer) : "threshold to determine between 'more to go' and 'x to go'." : 0
+  
   spawnflags(Flags) = [
     1 : "no message" : 0
     2 : "Dynamic Count" : 0
+    4 : "Custom Messages" : 0
     32 : "No remove" : 0
   ]  
 ]
