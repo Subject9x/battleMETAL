@@ -11,7 +11,10 @@ Overview:
 */
 void() radar_post_dlights={
   if( self.deadflag == DEAD_NO ){
-    adddynamiclight( self.compOffset, 128, self.compAltOffsetCache); 
+    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+    if(MENU_PROG_OFF == FALSE){
+      adddynamiclight( self.compOffset, 128, self.compAltOffsetCache); 
+    }
   }
 };
 

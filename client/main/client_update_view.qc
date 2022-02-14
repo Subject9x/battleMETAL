@@ -33,10 +33,10 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     freeGlobalString(CHAT_INP_VAL)
     CHAT_INP_SEND = FALSE;
   }
-  
-  if(ISMENU_PREV != menuView){
+  MENU_PROG_OFF = menuView;
+  if(MENU_PROG_OFF_PREV != menuView){
     //check for player bringing up menu delta
-    if( ISMENU_PREV == TRUE && menuView == FALSE ){
+    if( MENU_PROG_OFF_PREV == TRUE && menuView == FALSE ){
       if( CLIENT_faction == FACTION_SURVEST){
         if( PLAYER_COLOR_SRV != cvar_string("cl_color_srv") ){
           //player changed Survest color
@@ -59,7 +59,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
         }
       }
     }
-    ISMENU_PREV = menuView;
+    MENU_PROG_OFF_PREV = menuView;
   }
 
   //oh this is an ugly hack

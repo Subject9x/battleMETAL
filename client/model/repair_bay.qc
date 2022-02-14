@@ -37,8 +37,10 @@ void() repair_bay_dlights={
         lightColor = '0.95 0.25 0.15';
         lightStyle = 4;
       }
+    }    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+    if(MENU_PROG_OFF){
+      adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
     }
-    adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
   }
 };
 

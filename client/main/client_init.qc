@@ -186,7 +186,7 @@ void() CSQC_Init =
   initparticlespawner(16);
   VIEW_OBS_ID = 1;
   ui_colors_set_player_list();
-  ISMENU_PREV = FALSE;
+  MENU_PROG_OFF_PREV = FALSE;
 
   
   freeGlobalString(PLAYER_COLOR_PSC)
