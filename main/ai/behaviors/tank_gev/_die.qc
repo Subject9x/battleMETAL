@@ -49,7 +49,7 @@ void() ai_gev_die={
   self.movetype = MOVETYPE_BOUNCE;
   self.solid = SOLID_NOT;
   setsize(self, self.mins * 0.35, self.maxs * 0.35);
-  setorigin(self, self.origin);
+  setorigin(self, self.origin - '0 0 12');
   self.enemy = world;
   
   //fire triggers when dead

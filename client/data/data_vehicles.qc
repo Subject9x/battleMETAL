@@ -73,7 +73,8 @@ void() data_vehicle_wreck={
   setsize(shell, self.mins, self.maxs);
   setorigin(shell,  self.origin + (v_up * -2));
   shell.skin = self.skin;
-  shell.solid = SOLID_CORPSE;
+  //shell.solid = SOLID_CORPSE; //v3.12.16 - we aren't doing destructible wrecks at this time, so   stop blocking shots client-side.
+  shell.solid = SOLID_NOT;
   shell.colormod = '0.45 0.45 0.45';
   shell.vec_size = self.vec_size;
   shell.drawmask = MASK_NORMAL;
