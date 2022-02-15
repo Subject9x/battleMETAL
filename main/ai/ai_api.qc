@@ -326,7 +326,7 @@ void( entity ally, entity targ, float override ) ai_give_target={
       }
     }
     if( self.enemy == targ ){
-      if( (targ.flags & FL_CLIENT) ){
+      if( (targ.flags & FL_CLIENT) && !(targ.flags & FL_NOTARGET) ){
         ai_sfx_roger();
       }
     }
