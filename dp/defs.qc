@@ -1164,13 +1164,13 @@ float maxdecors;
 // and many other ways to add meaning to a map
 .string deathmsg;
 
-.float regenthink; // next time player will regen some health
-.float isdecor;
-.float radiusdamage_amount; // damage counter
-.vector radiusdamage_force; // direction and power of blast kick
-.float radiusdamage_hit; // 1 if it was hit, reset to 0 afterward
-.vector radiusdamage_lasthit; // location
-.float radiusdamage_ownerdamagescale; // if set on inflictor this will scale damage to owner (overriding default of 0.5)
+//.float regenthink; // next time player will regen some health
+//.float isdecor;
+//.float radiusdamage_amount; // damage counter
+//.vector radiusdamage_force; // direction and power of blast kick
+//.float radiusdamage_hit; // 1 if it was hit, reset to 0 afterward
+//.vector radiusdamage_lasthit; // location
+//.float radiusdamage_ownerdamagescale; // if set on inflictor this will scale damage to owner (overriding default of 0.5)
 vector raddamage_lasthit;
 
 // how much bleeding 'matters' to this entity, a percentage between
