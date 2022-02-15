@@ -79,7 +79,6 @@ vector( float rank, vector spread ) ai_pilot_accuracy;
 void() ai_unit_ini_var;
 float() ai_pilot_minrange;
 void(float rank) ai_pilot_ini_stats;
-float( float rank ) ai_pilot_action_mod;
 void() ai_pilot_ini_rok;
 void() ai_pilot_ini_reg;
 void() ai_pilot_ini_vet;

@@ -43,18 +43,29 @@ Overview: AI values that have been spun off from common/game
 #define AI_VOICE_TIME 32
 
 //this works to balance AI mech stats vs player mech stats.
-#define AI_ADJUST_ENERGY 0.85
-#define AI_ADJUST_SHIELD 0.85 //rate, this is applied to .shieldRate
+#define AI_ENERGY_RATE 0.5
+#define AI_ENERGY_RATE_HARD 0.75
+
+#define AI_SHIELD_RATE 0.7
+#define AI_SHIELD_RATE_HARD 0.9
 
 //Armor Values
 //hp = hp * AI_ARMOR
 //AI mechs share initial stats with the player, so we have to detune them now.
-#define AI_ARMOR_MECH 0.7  //pre-release 0.5
+//release v3.12.16
+#define AI_ARMOR_ROK 0.3
+#define AI_ARMOR_REG 0.5
+#define AI_ARMOR_VET 0.7
+#define AI_ARMOR_ACE 0.9
 
 //Shield Values
 //shield = shield * AI_SHIELD
 //AI mechs share initial stats with player, so we have to detune them now.
-#define AI_SHIELD_MECH 0.8  //applied to .shieldMax pre-release 0.67
+//release v3.12.16
+#define AI_SHIELD_ROK 0.25
+#define AI_SHIELD_REG 0.45
+#define AI_SHIELD_VET 0.65
+#define AI_SHIELD_ACE 0.85
 
 //AI TH_REACT cooldown
 #define AI_REACT_ROK 2
