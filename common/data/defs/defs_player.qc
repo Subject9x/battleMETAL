@@ -31,6 +31,9 @@ float input_sequence;
 .vector hud_StrutsOffset; //  origin offset of struts model
 .vector laser_sight_org1;
 .vector laser_sight_org2;
+.vector unit_light_org1;  //headlight / spotlight
+.vector unit_light_org2;
+.vector unit_light_org;
 #endif
 
 .float getTarget;   //switch for sendEnt

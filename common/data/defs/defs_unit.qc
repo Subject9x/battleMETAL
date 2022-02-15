@@ -44,6 +44,7 @@ Overview:
 .vector spreadDefault;
 
 .float radar_range;
+.float headlight; //toggle state
 
 //Client-side data and cosmetics -> REFACTOR speedForward | speedStrafe | speedBackwards | speedAccel
 .float data_speed_forward; //forward speed

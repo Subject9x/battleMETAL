@@ -53,6 +53,7 @@ entity controls_chat_all;
 entity controls_zoom;
 entity controls_regen;
 entity controls_camera;
+entity controls_headlight;
 
 //controls constants
 string IMG_CONTROLS_TITLE = "gfx/menu/options/options_title.png";
@@ -315,7 +316,8 @@ void(vector rootOfs) controls_ini_pilot={
   controls_regen = inp_keybindfield(rootOfs + '56 170', '14 14 0', txt_control_bind_regen, "Shield Regen:  ", "+button10", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
   controls_camera = inp_keybindfield(rootOfs + '56 192', '14 14 0', txt_control_bind_camera, "External Camera: ", "impulse 30", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-
+  
+  controls_headlight = inp_keybindfield(rootOfs + '56 212', '14 14 0', txt_control_bind_camera, "Headlight: ", "impulse 32", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 };
 
 // ini function, called by '_f' function as a setup func

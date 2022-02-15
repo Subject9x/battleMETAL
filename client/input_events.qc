@@ -232,6 +232,10 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         }
         return TRUE;
       }
+      if( strstrofs(findkeysforcommand("impulse 32", 0), ftos(scanx),0) != -1 ){
+        input_key_impulse_headlight_toggle();
+        return FALSE;
+      }
     }
     //---------------------------------------------------------------
   }

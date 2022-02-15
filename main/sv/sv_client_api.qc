@@ -737,6 +737,7 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
     WriteByte( MSG_ENTITY, player.chaseActive);
+    WriteByte( MSG_ENTITY, player.headlight);
   }
   
   /*

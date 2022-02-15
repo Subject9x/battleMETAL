@@ -129,9 +129,18 @@ void() input_key_impulse_hud_chase_toggle={
       hudConsole.drawmask = 0;
     }
   }
-  
 };
 
+void() input_key_impulse_headlight_toggle={
+  if(HUD_HEADLIGHT_ACTIVE){
+    HUD_HEADLIGHT_ACTIVE = FALSE;
+    hud_event_enqueue( HUD_EVENT_HEADLIGHT_OFF, 1) ;
+  }
+  else{
+    HUD_HEADLIGHT_ACTIVE = TRUE;
+    hud_event_enqueue( HUD_EVENT_HEADLIGHT_ON, 1) ;
+  }
+};
     /*else if( strstrofs(findkeysforcommand("impulse 7", 0), ftos(scanx),0) != -1 ){
       //INPUT - player wants target
       return FALSE; //we pass the event to the server for correct player aiming.

@@ -128,6 +128,8 @@ string HUD_TAGS[22];
   float HUD_EXTERNAL_CAM_ACTIVE;
   float HUD_EXTERNAL_CAM_DATA = 0;  //hardcoded to match 3ps_hud.hud
   
+  float HUD_HEADLIGHT_ACTIVE;
+  
   #define HUD_SPRINT_ON "[EVASION ON]"
   #define HUD_SPRINT_OFF "!- EVASION OFFLINE -!"
   #define HUD_SPRINT_RAM "[RAM-SHOCKS READY]"

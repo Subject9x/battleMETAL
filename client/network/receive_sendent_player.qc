@@ -104,6 +104,8 @@ void() player_think={
   laserHit = laserOrg + (v_forward * 10000);
   traceline(laserOrg, laserHit, FALSE, self);
   self.laser_sight_org = trace_endpos;
+ 
+
   
   sendevent_player_burn();
   
@@ -136,6 +138,17 @@ void() player_think={
     while( theWeapon ){
       player_weapon_reload( theWeapon );
       theWeapon = theWeapon.w_slot;
+    }
+    if(HUD_HEADLIGHT_ACTIVE){
+      traceline(self.origin + (v_forward * 16), self.origin + (v_forward * 512), MOVE_MISSILE, self);
+      self.unit_light_org = trace_endpos + (v_up * 32) + (v_forward * -16);
+    }
+  }
+  else{
+    if(self.headlight){
+      //player networked headlighting.
+      traceline(self.origin + (v_forward * 16), self.origin + (v_forward * 512), MOVE_MISSILE, self);
+      self.unit_light_org = trace_endpos + (v_up * 32) + (v_forward * -16);
     }
   }
   self.think = player_think;
@@ -170,7 +183,7 @@ void() player_predraw={
     self.lerpfrac = lerp;
     
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2-self.laser_sight_org1)*self.lerpfrac;
-  
+    
     if(self.clientLocalId == player_localentnum ){
       CLIENT_lerp = self.lerpfrac;
     }
@@ -300,6 +313,21 @@ void() player_predraw={
           hudStruts.alpha = 1.0;
           hudConsole.alpha = 1.0;
         }
+      }
+      //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+      if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){      
+        self.unit_light_org1 = self.unit_light_org2;
+        self.unit_light_org2 = self.unit_light_org;
+        self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+        adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_FULLDYNAMIC);
+      }
+    }
+    else{
+      if(self.headlight && MENU_PROG_OFF){
+        self.unit_light_org1 = self.unit_light_org2;
+        self.unit_light_org2 = self.unit_light_org;
+        self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+        adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_FULLDYNAMIC);
       }
     }
   }
@@ -668,6 +696,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
     self.chaseActive = ReadByte();
+    self.headlight = ReadByte();
   }
   
   /*

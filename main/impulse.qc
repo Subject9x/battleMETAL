@@ -234,6 +234,19 @@ void() ImpulseCommands ={
     }
   }
 
+  if(self.impulse == IMP_HEADLIGHT){
+    if(self.headlight){
+      self.headlight = FALSE;
+    }
+    else{
+      self.headlight = TRUE;
+    }
+    if(self.clientData != world){
+      //running out of SENDFLAGS_...
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CAMERA;
+    }
+  }
+
 	self.impulse = 0;
 };
 
