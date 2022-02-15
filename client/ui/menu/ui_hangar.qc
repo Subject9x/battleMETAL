@@ -292,6 +292,12 @@ void(vector ofs) menu_hangar_MechInfo={
   
   local vector fontSize, fontSizeSmall;
   
+  local vector speedOfs;
+  local vector energyOfs;
+  local vector shieldOfs;
+  local vector armorOrg;
+  local vector radarOfs;
+    
   fontSizeSmall = '10 10 0';
   
   drawfont_prev = drawfont;
@@ -314,7 +320,6 @@ void(vector ofs) menu_hangar_MechInfo={
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
     //Speed
-    local vector speedOfs;
     speedOfs = ofs + '128 64';
     drawpic(speedOfs, "gfx/hud/hud_icon_ram.tga", '32 24', CLR_HUD_ORANGE, 0.85, DRAWFLAG_NORMAL);
     gui_labelKeyPair( speedOfs + '0 22', "Forward: ", sprintf("%00.1f", MECH_DATA_SPEEDF), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
@@ -322,7 +327,6 @@ void(vector ofs) menu_hangar_MechInfo={
     gui_labelKeyPair( speedOfs + '0 46', "Strafe: ", sprintf("%00.1f", MECH_DATA_SPEEDS), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
     
     //Energy
-    local vector energyOfs;
     energyOfs = ofs + '5 14';
     drawpic(energyOfs, "gfx/hud/hud_icon_power.tga", '32 24', CLR_HUD_BLUE, 0.85, DRAWFLAG_NORMAL);
     gui_labelKeyPair( energyOfs + '0 22', "Max: ", ftos(MECH_DATA_ENMAX), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
@@ -330,7 +334,6 @@ void(vector ofs) menu_hangar_MechInfo={
     
     
     //Shield   
-    local vector shieldOfs;
     shieldOfs = ofs + '128 14';
     drawpic(shieldOfs, "gfx/hud/hud_icon_shield.tga", '24 24', CLR_DEF_SHD_OK, 0.85, DRAWFLAG_NORMAL);
     gui_labelKeyPair( shieldOfs + '0 22', "Max: ", ftos(MECH_DATA_SHMAX), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
@@ -338,7 +341,6 @@ void(vector ofs) menu_hangar_MechInfo={
     
     
     //Armor rate
-    local vector armorOrg;
     armorOrg = ofs + '48 90';
     
     drawpic(armorOrg + '-10 -16', HUD_MECH_CT, '20 32', gui_getColorForArmor((MECH_DATA_HPCT/DISP_MAX_ARM_CT)*100), 1.0, DRAWFLAG_NORMAL);
@@ -360,9 +362,8 @@ void(vector ofs) menu_hangar_MechInfo={
     drawstring(armorOrg + Vector2(stringwidth(ftos(MECH_DATA_HPLG), 0, '10 10')/-2, 53), ftos(MECH_DATA_HPLG), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Radar Range
-    local vector radarOfs;
     radarOfs = ofs + '128 126';
-    drawpic(radarOfs, "gfx/hud/hud_icon_quant.tga", '24 24', gui_getColorForArmor((MECH_DATA_RAD/DISP_MAX_RAD_RANGE)*100), 1.0, DRAWFLAG_NORMAL);
+    drawpic(radarOfs, "gfx/hud/hud_icon_radar.tga", '24 24', gui_getColorForArmor((MECH_DATA_RAD/DISP_MAX_RAD_RANGE)*100), 1.0, DRAWFLAG_NORMAL);
     gui_labelKeyPair( radarOfs + '0 26', "Radar Range:", sprintf("%00.1f m", MECH_DATA_RAD), CLR_DEF_TXT_NONSELECT, CLR_DEF_WHITE, fontSizeSmall, '10 10' );
     
     

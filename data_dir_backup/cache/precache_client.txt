@@ -204,6 +204,7 @@ gfx/hud/hud_icon_sprint.tga
 gfx/hud/hud_icon_shock.tga
 gfx/hud/hud_icon_rad.tga
 gfx/hud/hud_icon_quant.tga
+gfx/hud/hud_icon_radar.tga
 
 gfx/hud/hud_mech_ct.tga
 gfx/hud/hud_mech_st.tga
