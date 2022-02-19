@@ -8,6 +8,11 @@ Overview:
         Light Skirmisher Mech.
 */
 
+#ifdef CSQC
+void() balaket_config_default_reg;
+void() balaket_config_default_spec;
+#endif
+
 /*
   Main ini function for unit.
   Register this in <world_ext_c>
@@ -118,6 +123,8 @@ void() data_ini_balaket_={
 //====================================
 
 //UI Data=============================
+  self.config_default_regular = balaket_config_default_reg;
+  self.config_default_special = balaket_config_default_spec;
   self.abbrev = "BLK";
   self.description = "A primitive combat platform, BALAKETs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. | | BALAKET units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. | | They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
   self.icon = "gfx/ui/mech_icons/icon_balaket.png";
@@ -141,3 +148,125 @@ void() data_ini_balaket_={
 //====================================
 #endif
 };
+
+#ifdef CSQC
+/*
+  METALS get 2 default configs for players, allowing first-time players to not need to know what to do.
+  UNLOCKED_ITEMS[]
+*/
+void() balaket_config_default_reg={
+  
+  //Balaket configs really are dictated by Hardpoint3's chosen weapon.
+  //Hardpoint 3
+  if( INV_HAS_emp ){
+    self.next_wepn3 = INV_HAS_emp;
+  }
+  else if( INV_HAS_snub_artillery ){
+    self.next_wepn3 = INV_HAS_snub_artillery;
+  }
+  else if( INV_HAS_missile_swarm ){
+    self.next_wepn3 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn3 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_ion_coil ){
+    self.next_wepn3 = INV_HAS_ion_coil;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn3 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn3 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn3 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn3 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint 1
+  if( INV_HAS_electro_repeater ){
+    self.next_wepn1 = INV_HAS_electro_repeater;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn1 = INV_HAS_rotary_plasma;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn1 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn1 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn1 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint 2
+  if( INV_HAS_electro_repeater ){
+    self.next_wepn2 = INV_HAS_electro_repeater;
+  }
+  else if( INV_HAS_ion_coil && (self.next_wepn3 != INV_HAS_ion_coil && self.next_wepn3 != INV_HAS_emp)){
+    self.next_wepn2 = INV_HAS_ion_coil;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn2 = INV_HAS_rotary_plasma;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn2 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn2 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn2 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn2 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint 4
+  if( self.next_wepn3 == INV_HAS_emp || self.next_wepn3 == INV_HAS_ion_coil ){
+    self.next_wepn4 = INV_HAS_heatsink;
+  }
+  else if( self.next_wepn3 == INV_HAS_snub_artillery || self.next_wepn3 == INV_HAS_missile_swarm ){
+    self.next_wepn4 = INV_HAS_adv_reload;
+  }
+  else{
+    self.next_wepn4 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint 5
+  if( INV_HAS_recharge_capacitor ){
+    self.next_wepn5 = INV_HAS_recharge_capacitor;
+  }
+  else if( self.next_wepn3 == INV_HAS_emp ){
+    self.next_wepn5 = INV_HAS_energy_battery;
+  }
+  else if( INV_HAS_shield_capacitor ){
+    self.next_wepn5 = INV_HAS_shield_capacitor;
+  }
+  else if( INV_HAS_shield_emitter ){
+    self.next_wepn5 = INV_HAS_shield_emitter;
+  }
+  else{
+    self.next_wepn5 = INV_HAS_NONE;
+  }
+  
+  self.w_group1 = WEAPON1 | WEAPON2;
+  self.w_group2 = WEAPON3;
+  self.w_group3 = 0;
+  self.w_group4 = 0;
+  
+};
+
+
+void() balaket_config_default_spec={
+  //TODO - figure it out?
+  balaket_config_default_reg();
+};
+#endif

@@ -542,6 +542,7 @@ float(float id) ui_date_load_item2={
 float( float mechId, float fileNum ) ui_mech_config_switch={
   local float cfg, itr;
   local entity hardpoint;
+  local entity oself;
   
   if( CLIENT_MENU_sel_mech > 0 ){
     data_mech_config_save( CLIENT_MENU_sel_mech, CFG_INDEX_PREV );
@@ -550,16 +551,61 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
   
   ui_data_load_mech( mechId );
   
-  //Attempt to load and validate the desired config
-  cfg = data_mech_config_load( mechId, fileNum );
-  if( cfg ){
-    cfg = data_mech_config_valid();
+  //Config 0, Config 1 are now DEFAULTs
+  if(fileNum > 1){
+    //Attempt to load and validate the desired config
+    cfg = data_mech_config_load( mechId, fileNum );
+    if( cfg ){
+      cfg = data_mech_config_valid();
+    }
+    
+    //hm, desired config has errors, try the DEFAULT? you did keep the default around....right?
+    if( !cfg ){
+      cfg = data_mech_config_load( mechId, 0 );
+      cfg = data_mech_config_valid();
+    }
   }
-  
-  //hm, desired config has errors, try the DEFAULT? you did keep the default around....right?
-  if( !cfg ){
-    cfg = data_mech_config_load( mechId, 0 );
-    cfg = data_mech_config_valid();
+  else{
+    cfg = TRUE;
+    oself = self;
+    self = UI_HANGAR_DATA_mech;
+      if(UI_HANGAR_DATA_mech.config_default_regular){  
+        //GROUPS
+        self.w_group1 = 0;
+        self.w_group2 = 0;
+        self.w_group3 = 0;
+        self.w_group4 = 0;
+        
+        UI_HANGAR_DATA_mech.config_default_regular();
+        
+        //INV_HAS_NONE conditions - maybe EMPTY should not be 0...
+        self.next_wepn1 = max(0, self.next_wepn1);
+        self.next_wepn2 = max(0, self.next_wepn2);
+        self.next_wepn3 = max(0, self.next_wepn3);
+        self.next_wepn4 = max(0, self.next_wepn4);
+        self.next_wepn5 = max(0, self.next_wepn5);
+        self.next_wepn6 = max(0, self.next_wepn6);
+        self.next_wepn7 = max(0, self.next_wepn7);
+        self.next_wepn8 = max(0, self.next_wepn8);
+        self.next_wepn9 = max(0, self.next_wepn9);
+        //
+        DATA_CONFIG_BUFFER_WEPS[1] = UI_HANGAR_DATA_mech.next_wepn1;
+        DATA_CONFIG_BUFFER_WEPS[2] = UI_HANGAR_DATA_mech.next_wepn2;
+        DATA_CONFIG_BUFFER_WEPS[3] = UI_HANGAR_DATA_mech.next_wepn3;
+        DATA_CONFIG_BUFFER_WEPS[4] = UI_HANGAR_DATA_mech.next_wepn4;
+        DATA_CONFIG_BUFFER_WEPS[5] = UI_HANGAR_DATA_mech.next_wepn5;
+        DATA_CONFIG_BUFFER_WEPS[6] = UI_HANGAR_DATA_mech.next_wepn6;
+        DATA_CONFIG_BUFFER_WEPS[7] = UI_HANGAR_DATA_mech.next_wepn7;
+        DATA_CONFIG_BUFFER_WEPS[8] = UI_HANGAR_DATA_mech.next_wepn8;
+        DATA_CONFIG_BUFFER_WEPS[9] = UI_HANGAR_DATA_mech.next_wepn9;
+        
+        DATA_CONFIG_BUFFER_GRPS[0] = UI_HANGAR_DATA_mech.w_group1;
+        DATA_CONFIG_BUFFER_GRPS[1] = UI_HANGAR_DATA_mech.w_group2;
+        DATA_CONFIG_BUFFER_GRPS[2] = UI_HANGAR_DATA_mech.w_group3;
+        DATA_CONFIG_BUFFER_GRPS[3] = UI_HANGAR_DATA_mech.w_group4;
+
+      }
+    self = oself;
   }
   
   //welp, here goes, lets make the switch
@@ -586,4 +632,44 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
   }
   return TRUE;
+};
+
+/*
+  Not-so-great .contains(id) function idea
+*/
+float(float itemId) ui_data_inventory_find_item={
+  local float i;
+  while( i <=  UNLOCKED_ITEMS_TOTAL ){
+    if( itemId == UNLOCKED_ITEMS[i]){
+      return UNLOCKED_ITEMS[i];
+    }
+    i = i + 1;
+  }
+  return FALSE;
+};
+
+//brute force
+void() ui_data_has_items={
+  INV_HAS_light_autocannon = ui_data_inventory_find_item(UID_ITEM_light_autocannon);
+  INV_HAS_emp = ui_data_inventory_find_item(UID_ITEM_emp);          
+  INV_HAS_light_laser = ui_data_inventory_find_item(UID_ITEM_light_laser);    
+  INV_HAS_rocket_launcher = ui_data_inventory_find_item(UID_ITEM_rocket_launcher);
+  INV_HAS_quantum_rifle = ui_data_inventory_find_item(UID_ITEM_quantum_rifle);     
+  INV_HAS_rotary_plasma = ui_data_inventory_find_item(UID_ITEM_rotary_plasma);
+  INV_HAS_particle_cannon = ui_data_inventory_find_item(UID_ITEM_particle_cannon);
+  INV_HAS_electro_repeater = ui_data_inventory_find_item(UID_ITEM_electro_repeater);  
+  INV_HAS_missile_laserguide = ui_data_inventory_find_item(UID_ITEM_missile_laserguide);
+  INV_HAS_missile_activeradar = ui_data_inventory_find_item(UID_ITEM_missile_activeradar);
+  INV_HAS_snub_artillery = ui_data_inventory_find_item(UID_ITEM_snub_artillery);
+  INV_HAS_flak = ui_data_inventory_find_item(UID_ITEM_flak);         
+  INV_HAS_ion_coil = ui_data_inventory_find_item(UID_ITEM_ion_coil);
+  INV_HAS_missile_swarm = ui_data_inventory_find_item(UID_ITEM_missile_swarm);     
+
+  INV_HAS_adv_reload = ui_data_inventory_find_item(UID_ITEM_adv_reload);
+  INV_HAS_energy_battery = ui_data_inventory_find_item(UID_ITEM_energy_battery);
+  INV_HAS_shield_emitter = ui_data_inventory_find_item(UID_ITEM_shield_emitter);
+  INV_HAS_heatsink = ui_data_inventory_find_item(UID_ITEM_heatsink);
+  INV_HAS_shield_capacitor = ui_data_inventory_find_item(UID_ITEM_shield_capacitor);
+  INV_HAS_recharge_capacitor = ui_data_inventory_find_item(UID_ITEM_recharge_capacitor);
+  INV_HAS_turbo_charger = ui_data_inventory_find_item(UID_ITEM_turbo_charger);
 };

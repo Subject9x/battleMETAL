@@ -8,6 +8,12 @@ Overview:
         Medium harasser.
 */
 
+
+#ifdef CSQC
+void() sapper_config_default_reg;
+void() sapper_config_default_spec;
+#endif
+
 /*
   Main ini function for unit.
   Register this in <world_ext_c>
@@ -96,11 +102,11 @@ void() data_ini_sapper_={
   data_ini_unitHardpoint_1( M_ARM_RIGHT, '12.5 0 5', '0 0 0',       (BAL1|ENE1|MIS1) );
   data_ini_unitHardpoint_2( M_ARM_LEFT, '-12.5 0 5', '0 0 0',      (BAL1|ENE1|MIS1) );
   data_ini_unitHardpoint_3( M_TOR_RIGHT, '8.35 14.75 -1', '0 0 0',  (BAL2|BAL3|MIS1|MIS2|MIS3|ENE3) );
-  data_ini_unitHardpoint_4( M_TOR_LEFT, '-8.35 14.75 -1', '0 0 0',(BAL2|BAL3|MIS1|MIS2|MIS3|ENE3));
+  data_ini_unitHardpoint_4( M_TOR_LEFT, '-8.35 14.75 -1', '0 0 0', (BAL2|BAL3|MIS1|MIS2|MIS3|ENE3));
   data_ini_unitHardpoint_5( M_TOR_CENTER, '3.35 5.5 3', '0 0 0',    (MSC1|MSC2) );
   data_ini_unitHardpoint_6( M_TOR_CENTER, '3.35 8.5 3', '0 0 0',    (MSC1|MSC3|MIS2));
   data_ini_unitHardpoint_7( M_TOR_CENTER, '-3.35 5.5 3', '0 0 0',   (MSC1|MSC2) );
-  data_ini_unitHardpoint_8( M_TOR_CENTER, '-3.35 8.5 3', '0 0 0',   (MSC1|MSC3|MIS4));
+  data_ini_unitHardpoint_8( M_TOR_CENTER, '-3.35 8.5 3', '0 0 0',   (MSC1|MSC3|MIS3));
 //=====================================
 
 //HUD Data=============================
@@ -121,6 +127,8 @@ void() data_ini_sapper_={
 //====================================
 
 //UI Data=============================
+  self.config_default_regular = sapper_config_default_reg;
+  self.config_default_special = sapper_config_default_spec;
   self.abbrev = "SPR";
   self.description = "SAPPER mechs were drafted and produced right before the Federation treaty was ratified. Off-world concerns asked for a strong second-line METAL to support other medium formations. What they got from the factories was dubbed the SAPPER based on its hardpoint configuration and shield output. | | The mech trades a lot of offensive firepower for equipment and shields. Its ability to withstand heavy anti-shield damage allows the mech to move-and-fire against tougher opponents. | | SAPPERs won`t halt an attack by themselves but they remain a powerful force multiplier in both Militar and Survest armies...even if they can no longer be built in large numbers.";
   self.icon = "gfx/ui/mech_icons/icon_sapper.png";
@@ -153,3 +161,196 @@ void() data_ini_sapper_={
 //====================================
 #endif
 };
+
+#ifdef CSQC
+void() sapper_config_default_reg={
+
+  //3 and 4 are the pivot hardpoints,
+  //Hardpoint3 - (BAL2|BAL3|MIS1|MIS2|MIS3|ENE3)
+  if( INV_HAS_snub_artillery ){
+    self.next_wepn3 = INV_HAS_snub_artillery;
+  }
+  else if( INV_HAS_particle_cannon ){
+    self.next_wepn3 = INV_HAS_particle_cannon;
+  }
+  else if( INV_HAS_missile_swarm ){
+    self.next_wepn3 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_missile_activeradar ){
+    self.next_wepn3 = INV_HAS_missile_activeradar;
+  }
+  else if( INV_HAS_quantum_rifle ){
+    self.next_wepn3 = INV_HAS_quantum_rifle;
+  }
+  else if( INV_HAS_missile_laserguide ){
+    self.next_wepn3 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn3 = INV_HAS_rotary_plasma;
+  }
+  else{
+    self.next_wepn3 = UID_ITEM_EMPTY;
+  }
+  
+  //Hardpoint4 - (BAL2|BAL3|MIS1|MIS2|MIS3|ENE3)
+  if( INV_HAS_emp ){
+    self.next_wepn4 = INV_HAS_emp;
+  }
+  else if( INV_HAS_particle_cannon ){
+    self.next_wepn4 = INV_HAS_particle_cannon;
+  }
+  else if( INV_HAS_snub_artillery ){
+    self.next_wepn4 = INV_HAS_snub_artillery;
+  }
+  else if( INV_HAS_ion_coil ){
+    self.next_wepn4 = INV_HAS_ion_coil;
+  }
+  else if( INV_HAS_missile_swarm ){
+    self.next_wepn4 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_missile_activeradar ){
+    self.next_wepn4 = INV_HAS_missile_activeradar;
+  }
+  else if( INV_HAS_missile_laserguide ){
+    self.next_wepn4 = INV_HAS_missile_laserguide;
+  }
+  else{
+    self.next_wepn4 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint6 (MSC1|MSC3|MIS2));
+  if( (self.next_wepn4 == INV_HAS_emp || self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && INV_HAS_recharge_capacitor ){
+    self.next_wepn6 = INV_HAS_recharge_capacitor;
+  }
+  else if( (self.next_wepn4 != INV_HAS_missile_swarm || self.next_wepn4 == INV_HAS_missile_activeradar) && INV_HAS_missile_swarm ){
+    self.next_wepn6 = INV_HAS_missile_swarm;
+  }
+  else if( (self.next_wepn4 == INV_HAS_emp || self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && INV_HAS_heatsink ){
+    self.next_wepn6 = INV_HAS_heatsink;
+  }
+  else if( (self.next_wepn3 == INV_HAS_snub_artillery || self.next_wepn3 != INV_HAS_missile_activeradar || self.next_wepn3 == INV_HAS_missile_swarm) && INV_HAS_adv_reload ){
+    self.next_wepn6 = INV_HAS_adv_reload;
+  }
+  else if( INV_HAS_shield_emitter ){
+    self.next_wepn6 = INV_HAS_shield_emitter;
+  }
+  else{
+    self.next_wepn5 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint8 (MSC1|MSC3|MIS3));
+  if( (self.next_wepn3 != INV_HAS_missile_swarm || self.next_wepn3 != INV_HAS_missile_activeradar) && INV_HAS_missile_activeradar ){
+    self.next_wepn8 = INV_HAS_missile_activeradar;
+  }
+  else if( (self.next_wepn3 == INV_HAS_snub_artillery || self.next_wepn3 == INV_HAS_missile_activeradar || self.next_wepn3 == INV_HAS_missile_swarm) && INV_HAS_adv_reload ){
+    self.next_wepn8 = INV_HAS_adv_reload;
+  }
+  else if( INV_HAS_shield_emitter ){
+    self.next_wepn8 = INV_HAS_shield_emitter;
+  }
+  else{
+    self.next_wepn8 = INV_HAS_NONE;
+  } 
+  
+  
+  //Hardpoint5 (MSC1|MSC2) );
+  if( (self.next_wepn4 == INV_HAS_emp || self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && self.next_wepn6 != INV_HAS_recharge_capacitor && INV_HAS_energy_battery ){
+    self.next_wepn5 = INV_HAS_energy_battery;
+  }
+  else if( (self.next_wepn4 == INV_HAS_emp || self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && INV_HAS_heatsink ){
+    self.next_wepn5 = INV_HAS_heatsink;
+  }
+  else if( (self.next_wepn3 == INV_HAS_snub_artillery || self.next_wepn3 == INV_HAS_missile_activeradar || self.next_wepn3 == INV_HAS_missile_swarm) && INV_HAS_adv_reload ){
+    self.next_wepn5 = INV_HAS_adv_reload;
+  }
+  else if( (self.next_wepn4 == INV_HAS_snub_artillery || self.next_wepn4 == INV_HAS_missile_activeradar || self.next_wepn4 == INV_HAS_missile_swarm) && INV_HAS_adv_reload ){
+    self.next_wepn5 = INV_HAS_adv_reload;
+  }
+  else{
+    self.next_wepn5 = INV_HAS_NONE;
+  }
+  //Hardpoint7 (MSC1|MSC2) );
+  if( (self.next_wepn3 == INV_HAS_snub_artillery || self.next_wepn3 == INV_HAS_missile_activeradar || self.next_wepn3 == INV_HAS_missile_swarm) && INV_HAS_adv_reload ){
+    self.next_wepn7 = INV_HAS_adv_reload;
+  }
+  else if( (self.next_wepn4 == INV_HAS_emp || self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && INV_HAS_heatsink ){
+    self.next_wepn7 = INV_HAS_heatsink;
+  }
+  else if( (self.next_wepn4 == INV_HAS_snub_artillery || self.next_wepn4 == INV_HAS_missile_activeradar || self.next_wepn4 == INV_HAS_missile_swarm) && INV_HAS_adv_reload ){
+    self.next_wepn7 = INV_HAS_adv_reload;
+  }
+  else if( INV_HAS_shield_capacitor ){
+    self.next_wepn7 = INV_HAS_shield_capacitor;
+  }
+  else{
+    self.next_wepn7 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint1
+  if( ( (self.next_wepn4 == INV_HAS_emp || self.next_wepn4 == INV_HAS_ion_coil) && self.next_wepn6 != INV_HAS_recharge_capacitor) && INV_HAS_light_autocannon ){
+    self.next_wepn1 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn1 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn1 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn1 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  //Hardpoint2
+  if( ((self.next_wepn4 == INV_HAS_emp || self.next_wepn4 == INV_HAS_ion_coil) && self.next_wepn6 != INV_HAS_recharge_capacitor) && INV_HAS_light_autocannon ){
+    self.next_wepn2 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn2 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn2 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn2 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn2 = INV_HAS_NONE;
+  }
+  
+  //GROUPS
+  self.w_group1 = WEAPON1 | WEAPON2;
+  if( self.next_wepn3 == self.next_wepn4 ){
+    self.w_group2 = WEAPON3 | WEAPON4;
+  }
+  else{
+    //emp / ion on Group2
+    self.w_group2 = WEAPON4;
+    
+    self.w_group3 = WEAPON3;
+  }
+  //link matching missiles
+  if( self.next_wepn3 == self.next_wepn6 ){
+    self.w_group3 =  self.w_group3 | WEAPON6;
+  }
+  else{
+    self.w_group4 = self.w_group4 | WEAPON6;
+  }
+  if( self.next_wepn3 == self.next_wepn8 ){
+    self.w_group3 =  self.w_group3 | WEAPON8;
+  }
+  else{
+    self.w_group4 = self.w_group4 | WEAPON8;
+  }
+};
+
+void() sapper_config_default_spec={
+
+  /*self.w_group1 = 0;
+  self.w_group2 = 0;
+  self.w_group3 = 0;
+  self.w_group4 = 0;*/
+
+};
+#endif

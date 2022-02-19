@@ -52,6 +52,11 @@ float input_sequence;
 .float next_wepn8;
 .float next_wepn9;
 
+.float w_group1;
+.float w_group2;
+.float w_group3;
+.float w_group4;
+
 .float chaseActive; //tracks player chase cam status on the server.
 
 .float ramUpMax;
@@ -93,10 +98,6 @@ float input_sequence;
 .entity animId; //entity id of animation sent to the player, used for skip event->fire trigger case.
 
 .float currentWeaponGroup;
-.float w_group1;
-.float w_group2;
-.float w_group3;
-.float w_group4;
 //.float w_firemode;
 
 .float fall_dist; //distance fallen to trigger 'stumble'

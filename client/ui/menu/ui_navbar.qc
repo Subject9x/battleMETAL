@@ -61,6 +61,7 @@ void( vector ofs ) ui_navbutton_hangar_draw={
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_hangar_click={
+  ui_data_has_items();  //hook to evaluate player item list.
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
     data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
   }

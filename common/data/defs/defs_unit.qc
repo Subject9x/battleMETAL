@@ -110,6 +110,10 @@ Overview:
 #endif
 
 #ifdef CSQC
+.float config_default_id;
+.void() config_default_regular;
+.void() config_default_special;
+
 .float ai_voice_group;
 .float ai_voice_limit;
 .float ai_muted;

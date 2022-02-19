@@ -8,6 +8,11 @@ Overview:
         anti-light hunter.
 */
 
+#ifdef CSQC
+void() warden_config_default_reg;
+void() warden_config_default_spec;
+#endif
+
 /*
   Main ini function for unit.
   Register this in <world_ext_c>
@@ -121,6 +126,8 @@ void() data_ini_warden_={
 //====================================
 
 //UI Data=============================
+  self.config_default_regular = warden_config_default_reg;
+  self.config_default_special = warden_config_default_spec;
   self.abbrev = "WRD";
   self.description = "MILITAR burned out their best hackers on black ICE breaking into a salvaged Federation data core. Amongst the encrypted modules was blueprints for a highly advanced light metal - the WARDEN. | | Tech degradation after the toppling of the Federation meant that MILITAR could not create a perfect copy...but they tried anyway. | | The result is a tough-as-nails light metal. It is not the fastest metal on the planet, but well-protected hardpoints and fast enough movement allow the WARDEN to stay out of most trouble. | | BALAKET pilots have a particular disdain for WARDEN units, frustrated that their vaunted hit-and-run style won`t take a WARDEN down quickly.";
   self.icon = "gfx/ui/mech_icons/icon_warden.png";
@@ -144,3 +151,179 @@ void() data_ini_warden_={
 //====================================
 #endif
 };
+
+#ifdef CSQC
+void() warden_config_default_reg={
+
+  //Hardpoint1
+  if( INV_HAS_particle_cannon ){
+    self.next_wepn1 = INV_HAS_particle_cannon;
+  }
+  else if( INV_HAS_emp ){
+    self.next_wepn1 = INV_HAS_emp;
+  }
+  else if( INV_HAS_snub_artillery ){
+    self.next_wepn1 = INV_HAS_snub_artillery;
+  }
+  else if( INV_HAS_ion_coil ){
+    self.next_wepn1 = INV_HAS_ion_coil;
+  }
+  else if( INV_HAS_missile_swarm ){
+    self.next_wepn1 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_missile_activeradar ){
+    self.next_wepn1 = INV_HAS_missile_activeradar;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn1 = INV_HAS_rotary_plasma;
+  }
+  else if( INV_HAS_missile_laserguide ){
+    self.next_wepn1 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn1 = INV_HAS_rocket_launcher;
+  }
+  else{
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint2
+  if( INV_HAS_light_laser ){
+    self.next_wepn2 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn2 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn2 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint3
+  if( self.next_wepn1 == INV_HAS_emp || self.next_wepn1 == INV_HAS_particle_cannon ){
+    self.next_wepn3 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn3 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn3 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn3 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint5
+  if( (self.next_wepn1 == INV_HAS_emp || self.next_wepn1 == INV_HAS_particle_cannon) && INV_HAS_recharge_capacitor ){
+    self.next_wepn5 = INV_HAS_recharge_capacitor;
+  }
+  else if( (self.next_wepn1 == INV_HAS_emp || self.next_wepn1 == INV_HAS_particle_cannon) && INV_HAS_energy_battery ){
+    self.next_wepn5 = INV_HAS_energy_battery;
+  }
+  else if( (self.next_wepn1 != INV_HAS_missile_swarm && 
+            self.next_wepn1 != INV_HAS_rocket_launcher && 
+            self.next_wepn1 != INV_HAS_missile_activeradar) && INV_HAS_missile_swarm){
+    self.next_wepn5 = INV_HAS_missile_swarm;
+  }
+  else if( (self.next_wepn1 != INV_HAS_missile_swarm && 
+            self.next_wepn1 != INV_HAS_rocket_launcher && 
+            self.next_wepn1 != INV_HAS_missile_activeradar) && INV_HAS_missile_activeradar){
+    self.next_wepn5 = INV_HAS_missile_activeradar;
+  }
+  else if( (self.next_wepn1 != INV_HAS_missile_swarm && 
+            self.next_wepn1 != INV_HAS_rocket_launcher && 
+            self.next_wepn1 != INV_HAS_missile_activeradar) && INV_HAS_rocket_launcher){
+    self.next_wepn5 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_shield_capacitor ){
+    self.next_wepn5 = INV_HAS_shield_capacitor;
+  }
+  else if( INV_HAS_shield_emitter ){
+    self.next_wepn5 = INV_HAS_shield_emitter;
+  }
+  else{
+    self.next_wepn5 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint4
+  if( (self.next_wepn1 == INV_HAS_snub_artillery || self.next_wepn1 == INV_HAS_missile_swarm ) && INV_HAS_adv_reload ){
+    self.next_wepn4 = INV_HAS_adv_reload;
+  }
+  else if( (self.next_wepn1 == INV_HAS_particle_cannon || self.next_wepn1 == INV_HAS_emp || self.next_wepn1 == INV_HAS_ion_coil ) && self.next_wepn5 != INV_HAS_recharge_capacitor && INV_HAS_heatsink ){
+    self.next_wepn4 = INV_HAS_heatsink;
+  }
+  else if( (self.next_wepn1 != INV_HAS_missile_laserguide && 
+              self.next_wepn1 != INV_HAS_missile_swarm && 
+              self.next_wepn1 != INV_HAS_rocket_launcher &&
+              self.next_wepn1 != INV_HAS_missile_activeradar) && INV_HAS_rocket_launcher) {
+    self.next_wepn4 = INV_HAS_rocket_launcher;
+  }
+  else if( (self.next_wepn1 == INV_HAS_emp || self.next_wepn1 == INV_HAS_ion_coil) && INV_HAS_light_autocannon ){
+    self.next_wepn4 = INV_HAS_light_autocannon;
+  }
+  else if( (self.next_wepn2 == INV_HAS_light_laser && self.next_wepn3 == INV_HAS_light_laser) && INV_HAS_light_autocannon ){
+    self.next_wepn4 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn4 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn4 = INV_HAS_NONE;
+  }
+  
+  //GROUP DEFAULTS
+  if( self.next_wepn1 == INV_HAS_ion_coil || self.next_wepn1 == INV_HAS_emp){
+      self.w_group2 = WEAPON1;
+      if( self.next_wepn2 == INV_HAS_light_autocannon || self.next_wepn2 == INV_HAS_light_laser ){
+        self.w_group1 = self.w_group1 | WEAPON2;
+      }
+      if( self.next_wepn3 == INV_HAS_light_autocannon || self.next_wepn3 == INV_HAS_light_laser ){
+        self.w_group1 = self.w_group1 | WEAPON3;
+      }
+      if( self.next_wepn4 == INV_HAS_light_autocannon || self.next_wepn4 == INV_HAS_light_laser ){
+        self.w_group1 = self.w_group1 | WEAPON4;
+      }
+      else{
+        self.w_group3 = self.w_group3 | WEAPON4;
+      }
+      if(self.w_group3 == FALSE){
+        self.w_group3 = self.w_group3 | WEAPON5;
+      }
+      else{
+        self.w_group4 = self.w_group4 | WEAPON5;
+      }
+  }
+  else{
+    self.w_group1 = WEAPON1;
+    if(self.next_wepn5 == self.next_wepn1){
+      self.w_group2 = self.w_group2 | WEAPON5;
+    }
+    if( self.next_wepn2 == INV_HAS_light_autocannon || self.next_wepn2 == INV_HAS_light_laser ){
+      self.w_group2 = self.w_group2 | WEAPON2;
+    }
+    if( self.next_wepn3 == INV_HAS_light_autocannon || self.next_wepn3 == INV_HAS_light_laser ){
+      self.w_group2 = self.w_group2 | WEAPON3;
+    }
+    if( self.next_wepn4 == INV_HAS_light_autocannon || self.next_wepn4 == INV_HAS_light_laser ){
+      self.w_group2 = self.w_group2 | WEAPON4;
+    }
+    else{
+      self.w_group3 = self.w_group3 | WEAPON4;
+    } 
+  }
+};
+
+void() warden_config_default_spec={
+  //TODO
+  warden_config_default_reg();
+  /*self.w_group1 = 0;
+  self.w_group2 = 0;
+  self.w_group3 = 0;
+  self.w_group4 = 0;*/
+};
+#endif
