@@ -112,7 +112,8 @@ Overview:
 #ifdef CSQC
 .float config_default_id;
 .void() config_default_regular;
-.void() config_default_special;
+.void() config_default_missile;
+.void() config_default_brawl;
 
 .float ai_voice_group;
 .float ai_voice_limit;

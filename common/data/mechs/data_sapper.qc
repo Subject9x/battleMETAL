@@ -128,7 +128,7 @@ void() data_ini_sapper_={
 
 //UI Data=============================
   self.config_default_regular = sapper_config_default_reg;
-  self.config_default_special = sapper_config_default_spec;
+  self.config_default_missile = sapper_config_default_spec;
   self.abbrev = "SPR";
   self.description = "SAPPER mechs were drafted and produced right before the Federation treaty was ratified. Off-world concerns asked for a strong second-line METAL to support other medium formations. What they got from the factories was dubbed the SAPPER based on its hardpoint configuration and shield output. | | The mech trades a lot of offensive firepower for equipment and shields. Its ability to withstand heavy anti-shield damage allows the mech to move-and-fire against tougher opponents. | | SAPPERs won`t halt an attack by themselves but they remain a powerful force multiplier in both Militar and Survest armies...even if they can no longer be built in large numbers.";
   self.icon = "gfx/ui/mech_icons/icon_sapper.png";

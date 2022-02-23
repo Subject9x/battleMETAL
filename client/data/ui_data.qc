@@ -551,8 +551,8 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
   
   ui_data_load_mech( mechId );
   
-  //Config 0, Config 1 are now DEFAULTs
-  if(fileNum > 1){
+  //Config 1, Config 2, Config 3 are now DEFAULTs
+  if(fileNum > 3){
     //Attempt to load and validate the desired config
     cfg = data_mech_config_load( mechId, fileNum );
     if( cfg ){
@@ -569,43 +569,53 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     cfg = TRUE;
     oself = self;
     self = UI_HANGAR_DATA_mech;
-      if(UI_HANGAR_DATA_mech.config_default_regular){  
-        //GROUPS
-        self.w_group1 = 0;
-        self.w_group2 = 0;
-        self.w_group3 = 0;
-        self.w_group4 = 0;
-        
-        UI_HANGAR_DATA_mech.config_default_regular();
-        
-        //INV_HAS_NONE conditions - maybe EMPTY should not be 0...
-        self.next_wepn1 = max(0, self.next_wepn1);
-        self.next_wepn2 = max(0, self.next_wepn2);
-        self.next_wepn3 = max(0, self.next_wepn3);
-        self.next_wepn4 = max(0, self.next_wepn4);
-        self.next_wepn5 = max(0, self.next_wepn5);
-        self.next_wepn6 = max(0, self.next_wepn6);
-        self.next_wepn7 = max(0, self.next_wepn7);
-        self.next_wepn8 = max(0, self.next_wepn8);
-        self.next_wepn9 = max(0, self.next_wepn9);
-        //
-        DATA_CONFIG_BUFFER_WEPS[1] = UI_HANGAR_DATA_mech.next_wepn1;
-        DATA_CONFIG_BUFFER_WEPS[2] = UI_HANGAR_DATA_mech.next_wepn2;
-        DATA_CONFIG_BUFFER_WEPS[3] = UI_HANGAR_DATA_mech.next_wepn3;
-        DATA_CONFIG_BUFFER_WEPS[4] = UI_HANGAR_DATA_mech.next_wepn4;
-        DATA_CONFIG_BUFFER_WEPS[5] = UI_HANGAR_DATA_mech.next_wepn5;
-        DATA_CONFIG_BUFFER_WEPS[6] = UI_HANGAR_DATA_mech.next_wepn6;
-        DATA_CONFIG_BUFFER_WEPS[7] = UI_HANGAR_DATA_mech.next_wepn7;
-        DATA_CONFIG_BUFFER_WEPS[8] = UI_HANGAR_DATA_mech.next_wepn8;
-        DATA_CONFIG_BUFFER_WEPS[9] = UI_HANGAR_DATA_mech.next_wepn9;
-        
-        DATA_CONFIG_BUFFER_GRPS[0] = UI_HANGAR_DATA_mech.w_group1;
-        DATA_CONFIG_BUFFER_GRPS[1] = UI_HANGAR_DATA_mech.w_group2;
-        DATA_CONFIG_BUFFER_GRPS[2] = UI_HANGAR_DATA_mech.w_group3;
-        DATA_CONFIG_BUFFER_GRPS[3] = UI_HANGAR_DATA_mech.w_group4;
-
+      //GROUPS
+      self.w_group1 = 0;
+      self.w_group2 = 0;
+      self.w_group3 = 0;
+      self.w_group4 = 0;
+      if( fileNum == 1 ){
+        if(self.config_default_regular){
+          self.config_default_regular();
+        }
       }
+      else if( fileNum == 2){
+        if(self.config_default_missile){
+          self.config_default_missile();
+        }
+      }
+      else{
+        if(self.config_default_brawl){
+          self.config_default_brawl();
+        }
+      }
+           
+      //INV_HAS_NONE conditions - maybe EMPTY should not be 0...
+      self.next_wepn1 = max(0, self.next_wepn1);
+      self.next_wepn2 = max(0, self.next_wepn2);
+      self.next_wepn3 = max(0, self.next_wepn3);
+      self.next_wepn4 = max(0, self.next_wepn4);
+      self.next_wepn5 = max(0, self.next_wepn5);
+      self.next_wepn6 = max(0, self.next_wepn6);
+      self.next_wepn7 = max(0, self.next_wepn7);
+      self.next_wepn8 = max(0, self.next_wepn8);
+      self.next_wepn9 = max(0, self.next_wepn9);
+      //
     self = oself;
+    DATA_CONFIG_BUFFER_WEPS[1] = UI_HANGAR_DATA_mech.next_wepn1;
+    DATA_CONFIG_BUFFER_WEPS[2] = UI_HANGAR_DATA_mech.next_wepn2;
+    DATA_CONFIG_BUFFER_WEPS[3] = UI_HANGAR_DATA_mech.next_wepn3;
+    DATA_CONFIG_BUFFER_WEPS[4] = UI_HANGAR_DATA_mech.next_wepn4;
+    DATA_CONFIG_BUFFER_WEPS[5] = UI_HANGAR_DATA_mech.next_wepn5;
+    DATA_CONFIG_BUFFER_WEPS[6] = UI_HANGAR_DATA_mech.next_wepn6;
+    DATA_CONFIG_BUFFER_WEPS[7] = UI_HANGAR_DATA_mech.next_wepn7;
+    DATA_CONFIG_BUFFER_WEPS[8] = UI_HANGAR_DATA_mech.next_wepn8;
+    DATA_CONFIG_BUFFER_WEPS[9] = UI_HANGAR_DATA_mech.next_wepn9;
+    
+    DATA_CONFIG_BUFFER_GRPS[0] = UI_HANGAR_DATA_mech.w_group1;
+    DATA_CONFIG_BUFFER_GRPS[1] = UI_HANGAR_DATA_mech.w_group2;
+    DATA_CONFIG_BUFFER_GRPS[2] = UI_HANGAR_DATA_mech.w_group3;
+    DATA_CONFIG_BUFFER_GRPS[3] = UI_HANGAR_DATA_mech.w_group4;
   }
   
   //welp, here goes, lets make the switch

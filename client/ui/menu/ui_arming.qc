@@ -411,10 +411,11 @@ void(vector ofs) menu_arming_HardpointGraph={
   local float allowed;
   
   local vector nbtn, pbtn, pctr, lctr;
-  local string cfg, warn;
+  local string cfg, warn, desc;
   local float len;
   local vector colr;
   local vector warnOrg;
+  local vector descOrg;
   local vector helpOrg;
   
   nofs = ofs;
@@ -495,20 +496,48 @@ void(vector ofs) menu_arming_HardpointGraph={
   lctr = nofs + pctr;
   lctr_y = lctr_y + pctr_y - 42;
   
-  //this is quite hilarious
-  cfg = NAVNAMES[CFG_INDEX];
-  warnOrg = lctr;
   colr = CLR_DEF_ARM_OK;
-  warn = "[Drag-and-Drop Weapons to Modify]";
-  len = stringwidth(warn, 0, '12 12 0');
-  warnOrg_x = warnOrg_x - ( len / 2 );
-  warnOrg_y = warnOrg_y -  -16 ;
-  drawstring(warnOrg, warn, '12 12 0', colr , 1, 0);
+  if( CFG_INDEX == 1 ){
+    //adaptive default
+    cfg = "Auto-Default";
+    desc = "based on current inventory.";
+  }
+  else if( CFG_INDEX == 2 ){
+    //specialist 1
+    cfg = "Missile Boat";
+    desc = "based on current inventory.";
+  }
+  else if( CFG_INDEX == 3 ){
+    //specialist 2
+    cfg = "Brawler";
+    desc = "based on current inventory.";
+  }
+  else{
+    cfg = strcat("Custom - ", NAVNAMES[CFG_INDEX - 3]);
+    desc = "";
+  }
   
-  cfg = strcat("Loadout: ", cfg);
-  len = stringwidth(cfg, 0, '18 16 0');
+  len = stringwidth(cfg, 0, '16 16 0');
   lctr_x = lctr_x - ( len / 2 );
-  drawstring(lctr, cfg, '18 16 0', colr, 1, 0);
+  drawstring(lctr, cfg, '16 16 0', colr, 1, 0);
+
+  descOrg = nofs + pctr;
+  descOrg_y = lctr_y;
+  len = stringwidth(desc, 0, '12 12 0');
+  descOrg_x = descOrg_x - ( len / 2 );
+  descOrg_y = descOrg_y + 16;
+  drawstring(descOrg, desc, '12 12 0', colr, 1, 0);
+  
+  warnOrg = nofs + pctr ;
+  warnOrg_y = lctr_y;
+  
+  warn = "[Drag-and-Drop Weapons to Modify]";
+  len = stringwidth(warn, 0, '10 10 0');
+  warnOrg_x = warnOrg_x - ( len / 2 );
+  warnOrg_y = warnOrg_y + 28 ;
+  drawstring(warnOrg, warn, '10 10 0', colr , 1, 0);
+  
+
   
   drawfont = drawfont_prev;
   

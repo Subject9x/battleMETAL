@@ -10,7 +10,8 @@ Overview:
 
 #ifdef CSQC
 void() warden_config_default_reg;
-void() warden_config_default_spec;
+void() warden_config_default_missile;
+void() warden_config_default_brawl;
 #endif
 
 /*
@@ -127,7 +128,8 @@ void() data_ini_warden_={
 
 //UI Data=============================
   self.config_default_regular = warden_config_default_reg;
-  self.config_default_special = warden_config_default_spec;
+  self.config_default_missile = warden_config_default_missile;
+  self.config_default_brawl = warden_config_default_brawl;
   self.abbrev = "WRD";
   self.description = "MILITAR burned out their best hackers on black ICE breaking into a salvaged Federation data core. Amongst the encrypted modules was blueprints for a highly advanced light metal - the WARDEN. | | Tech degradation after the toppling of the Federation meant that MILITAR could not create a perfect copy...but they tried anyway. | | The result is a tough-as-nails light metal. It is not the fastest metal on the planet, but well-protected hardpoints and fast enough movement allow the WARDEN to stay out of most trouble. | | BALAKET pilots have a particular disdain for WARDEN units, frustrated that their vaunted hit-and-run style won`t take a WARDEN down quickly.";
   self.icon = "gfx/ui/mech_icons/icon_warden.png";
@@ -318,12 +320,255 @@ void() warden_config_default_reg={
   }
 };
 
-void() warden_config_default_spec={
-  //TODO
-  warden_config_default_reg();
-  /*self.w_group1 = 0;
-  self.w_group2 = 0;
-  self.w_group3 = 0;
-  self.w_group4 = 0;*/
+/*
+  Config: Missile Boats
+    prioritize missiles in every available hardpoint possible.
+*/
+void() warden_config_default_missile={
+  //Hardpoint1 BAL2|BAL3|BAL4| ENE2|ENE3|ENE4| MIS1|MIS2|MIS3|MIS4| MSC2|MSC3|MSC4
+  if( INV_HAS_missile_swarm ){
+    self.next_wepn1 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_missile_laserguide ){
+    self.next_wepn1 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_missile_activeradar ){
+    self.next_wepn1 = INV_HAS_missile_activeradar;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn1 = INV_HAS_rocket_launcher;
+  }
+  else{
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint5 MIS1|MIS2|MIS3|MIS4| MSC2|MSC3|MSC4
+  if( INV_HAS_missile_swarm ){
+    self.next_wepn5 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_missile_laserguide ){
+    self.next_wepn5 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_missile_activeradar ){
+    self.next_wepn5 = INV_HAS_missile_activeradar;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn5 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_shield_emitter ){
+    self.next_wepn5 = INV_HAS_shield_emitter;
+  }
+  else if( INV_HAS_shield_capacitor ){
+    self.next_wepn5 = INV_HAS_shield_capacitor;
+  }
+  else{
+    self.next_wepn5 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint2 BAL1|ENE1
+  if( INV_HAS_light_laser ){
+    self.next_wepn2 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn2 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn2 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn2 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint3 BAL1|ENE1
+  if( INV_HAS_light_laser ){
+    self.next_wepn3 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn3 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn3 = INV_HAS_flak;
+  }
+  else{
+    self.next_wepn3 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint4 BAL1|ENE1| MIS1| MSC1
+  if( INV_HAS_missile_laserguide ){
+    self.next_wepn4 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn4 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn4 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn4 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_adv_reload ){
+    self.next_wepn4 = INV_HAS_adv_reload;
+  }
+  else{
+    self.next_wepn4 = INV_HAS_NONE;
+  }
+  //ABR support override when main missile ports need a boost.
+  if( self.next_wepn1 == self.next_wepn5 && (self.next_wepn1 == INV_HAS_missile_activeradar || self.next_wepn1 == INV_HAS_missile_swarm) ){
+    if( INV_HAS_adv_reload ){
+      self.next_wepn4 = INV_HAS_adv_reload;
+    }
+  }
+
+  //GROUPS
+  self.w_group1 = WEAPON2 | WEAPON3;
+  if( self.next_wepn1 == self.next_wepn5 ){
+    self.w_group2 = self.w_group2 | WEAPON1 | WEAPON5;
+  }
+  else{
+    self.w_group2 = WEAPON1;
+    self.w_group3 = WEAPON5;
+  }
+  if( self.next_wepn4 == self.next_wepn1 ){
+    if( (self.w_group2 & WEAPON1) ){
+      self.w_group2 = self.w_group2 | WEAPON4;
+    }
+    else if( !self.w_group3 ){
+       self.w_group3 = self.w_group3 | WEAPON4;
+    }
+    else{
+      self.w_group4 = self.w_group4 | WEAPON4;
+    }
+  }
+  else{
+    if( self.next_wepn4 == self.next_wepn2 ){
+      self.w_group1 = self.w_group1 | WEAPON4;
+    }
+    else{
+      self.w_group3 = self.w_group3 | WEAPON4;
+    }
+  }
+  
+};
+
+/*
+  Config: Brawler
+    specializes in fire-fights of attrition.
+*/
+void() warden_config_default_brawl={
+  //Hardpoint1 BAL2|BAL3|BAL4| ENE2|ENE3|ENE4| MIS1|MIS2|MIS3|MIS4| MSC2|MSC3|MSC4
+  if( INV_HAS_electro_repeater ){
+    self.next_wepn1 = INV_HAS_electro_repeater;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn1 = INV_HAS_rotary_plasma;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn1 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_ion_coil ){
+    self.next_wepn1 = INV_HAS_ion_coil;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn1 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn1 = INV_HAS_flak;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn1 = INV_HAS_light_laser;
+  }
+  else{
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint5 MIS1|MIS2|MIS3|MIS4| MSC2|MSC3|MSC4
+  if( INV_HAS_shield_emitter ){
+    self.next_wepn5 = INV_HAS_shield_emitter;
+  }
+  else if( INV_HAS_rocket_launcher ) {
+    self.next_wepn5 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_shield_capacitor ){
+    self.next_wepn5 = INV_HAS_shield_capacitor;
+  }
+  else if( INV_HAS_energy_battery ){
+    self.next_wepn5 = INV_HAS_energy_battery;
+  }
+  else{
+    self.next_wepn5 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint2 BAL1|ENE1
+  if( INV_HAS_light_autocannon ){
+    self.next_wepn2 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn2 = INV_HAS_flak;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn2 = INV_HAS_light_laser;
+  }
+  else{
+    self.next_wepn3 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint3 BAL1|ENE1
+  if( INV_HAS_light_autocannon ){
+    self.next_wepn3 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn3 = INV_HAS_flak;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn3 = INV_HAS_light_laser;
+  }
+  else{
+    self.next_wepn3 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint4 BAL1|ENE1| MIS1| MSC1
+  if( INV_HAS_rocket_launcher ){
+    self.next_wepn4 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn4 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn4 = INV_HAS_flak;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn4 = INV_HAS_light_laser;
+  }
+  else{
+    self.next_wepn4 = INV_HAS_NONE;
+  }
+  
+  //GROUPS
+  if( self.next_wepn2 == self.next_wepn3 ){
+    self.w_group1 = WEAPON2 | WEAPON3;
+  }
+  if( self.next_wepn1 == self.next_wepn2 ){
+    self.w_group1 = self.w_group | WEAPON1;
+  }
+  else{
+    self.w_group2 = WEAPON1;
+  }
+  
+  if(self.next_wepn4 == self.next_wepn1 ){
+    self.w_group2 = self.w_group2 | WEAPON4;
+  }
+  else{
+    self.w_group3 = WEAPON4;
+  }
+  if(self.next_wepn5 == self.next_wepn1 ){
+    self.w_group2 = self.w_group2 | WEAPON5;
+  }
+  else if( self.next_wepn5 == self.next_wepn4 ){
+    self.w_group3 = self.w_group3 | WEAPON5;
+  }
+  else{
+    self.w_group4 = self.w_group4 | WEAPON5;
+  }
+  
 };
 #endif
