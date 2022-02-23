@@ -569,7 +569,7 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     cfg = TRUE;
     oself = self;
     self = UI_HANGAR_DATA_mech;
-      //GROUPS
+      //GROUPS - zero it out first
       self.w_group1 = 0;
       self.w_group2 = 0;
       self.w_group3 = 0;

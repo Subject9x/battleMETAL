@@ -11,7 +11,8 @@ Overview:
 
 #ifdef CSQC
 void() sapper_config_default_reg;
-void() sapper_config_default_spec;
+void() sapper_config_default_missile;
+void() sapper_config_default_brawl;
 #endif
 
 /*
@@ -128,7 +129,8 @@ void() data_ini_sapper_={
 
 //UI Data=============================
   self.config_default_regular = sapper_config_default_reg;
-  self.config_default_missile = sapper_config_default_spec;
+  self.config_default_missile = sapper_config_default_missile;
+  self.config_default_brawl = sapper_config_default_brawl;
   self.abbrev = "SPR";
   self.description = "SAPPER mechs were drafted and produced right before the Federation treaty was ratified. Off-world concerns asked for a strong second-line METAL to support other medium formations. What they got from the factories was dubbed the SAPPER based on its hardpoint configuration and shield output. | | The mech trades a lot of offensive firepower for equipment and shields. Its ability to withstand heavy anti-shield damage allows the mech to move-and-fire against tougher opponents. | | SAPPERs won`t halt an attack by themselves but they remain a powerful force multiplier in both Militar and Survest armies...even if they can no longer be built in large numbers.";
   self.icon = "gfx/ui/mech_icons/icon_sapper.png";
@@ -345,12 +347,332 @@ void() sapper_config_default_reg={
   }
 };
 
-void() sapper_config_default_spec={
+/*
+  Config: Missile Boats
+    prioritize missiles in every available hardpoint possible.
+*/
+void() sapper_config_default_missile={
+  //Hardpoint3 - BAL2|BAL3| MIS1|MIS2|MIS3| ENE3
+  if( INV_HAS_missile_activeradar ){
+    self.next_wepn3 = INV_HAS_missile_activeradar;
+  }
+  else if( INV_HAS_missile_swarm ){
+    self.next_wepn3 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_missile_laserguide ){
+    self.next_wepn3 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn3 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_emp ){
+    self.next_wepn3 = INV_HAS_emp;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn3 = INV_HAS_rotary_plasma;
+  }
+  else if( INV_HAS_particle_cannon ){
+    self.next_wepn3 = INV_HAS_particle_cannon;
+  }
+  else{
+    self.next_wepn3 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint4 - BAL2|BAL3| MIS1|MIS2|MIS3| ENE3
+  if( INV_HAS_missile_activeradar ){
+    self.next_wepn4 = INV_HAS_missile_activeradar;
+  }
+  else if( INV_HAS_missile_swarm ){
+    self.next_wepn4 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_missile_laserguide ){
+    self.next_wepn4 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn4 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_emp ){
+    self.next_wepn4 = INV_HAS_emp;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn4 = INV_HAS_rotary_plasma;
+  }
+  else if( INV_HAS_particle_cannon ){
+    self.next_wepn4 = INV_HAS_particle_cannon;
+  }
+  else{
+    self.next_wepn4 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint6 - MSC1|MSC3| MIS2
+  if( INV_HAS_missile_swarm ){
+    self.next_wepn6 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_recharge_capacitor && (self.next_wepn3 == INV_HAS_particle_cannon || self.next_wepn4 == INV_HAS_particle_cannon) ){
+    self.next_wepn6 = INV_HAS_recharge_capacitor;
+  }
+  else if( INV_HAS_recharge_capacitor && (self.next_wepn3 == INV_HAS_emp || self.next_wepn4 == INV_HAS_emp) ){
+    self.next_wepn6 = INV_HAS_recharge_capacitor;
+  }
+  else if( INV_HAS_shield_emitter ){
+    self.next_wepn6 = INV_HAS_shield_emitter;
+  }
+  else if( INV_HAS_adv_reload ){
+    self.next_wepn6 = INV_HAS_adv_reload;
+  }
+  else if( INV_HAS_heatsink ){
+    self.next_wepn6 = INV_HAS_heatsink;
+  }
+  else{
+    self.next_wepn6 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint8 - MSC1|MSC3| MIS3
+  if( INV_HAS_missile_activeradar ){
+    self.next_wepn8 = INV_HAS_missile_activeradar;
+  }
+  else if( INV_HAS_recharge_capacitor && (self.next_wepn3 == INV_HAS_particle_cannon || self.next_wepn4 == INV_HAS_particle_cannon) ){
+    self.next_wepn8 = INV_HAS_recharge_capacitor;
+  }
+  else if( INV_HAS_shield_emitter ){
+    self.next_wepn8 = INV_HAS_shield_emitter;
+  }
+  else if( INV_HAS_shield_capacitor ){
+    self.next_wepn8 = INV_HAS_shield_capacitor;
+  }
+  else if( INV_HAS_adv_reload ){
+    self.next_wepn8 = INV_HAS_adv_reload;
+  }
+  else if( INV_HAS_heatsink ){
+    self.next_wepn8 = INV_HAS_heatsink;
+  }
+  else{
+    self.next_wepn8 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint5 - MSC1|MSC2
+  if( (self.next_wepn3 == INV_HAS_ion_coil || self.next_wepn3 == INV_HAS_particle_cannon) && 
+        (self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && INV_HAS_energy_battery ){
+    self.next_wepn5 = INV_HAS_energy_battery;
+  }
+  else if( (self.next_wepn3 == INV_HAS_ion_coil || self.next_wepn3 == INV_HAS_particle_cannon) && 
+        (self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && INV_HAS_heatsink ){
+    self.next_wepn5 = INV_HAS_heatsink;
+  }
+  else if( INV_HAS_adv_reload ){
+    self.next_wepn5 = INV_HAS_adv_reload;
+  }
+  else if( INV_HAS_shield_capacitor && self.next_wepn8 != INV_HAS_shield_capacitor ){
+    self.next_wepn5 = INV_HAS_shield_capacitor;
+  }
+  else{
+    self.next_wepn5 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint7 - MSC1|MSC2
+  if( (self.next_wepn3 == INV_HAS_ion_coil || self.next_wepn3 == INV_HAS_particle_cannon) && 
+        (self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && 
+         self.next_wepn5 != INV_HAS_energy_battery && INV_HAS_energy_battery ){
+    self.next_wepn7 = INV_HAS_energy_battery;
+  }
+  else if((self.next_wepn3 == INV_HAS_ion_coil || self.next_wepn3 == INV_HAS_particle_cannon) && 
+        (self.next_wepn4 == INV_HAS_ion_coil || self.next_wepn4 == INV_HAS_particle_cannon) && INV_HAS_heatsink ){
+    self.next_wepn5 = INV_HAS_heatsink;
+  }
+  else if( INV_HAS_adv_reload ){
+    self.next_wepn7 = INV_HAS_adv_reload;
+  }
+  else{
+    self.next_wepn7 = INV_HAS_NONE;
+  }
+  
+  
+  //Hardpoint1 BAL1|ENE1|MIS1
+  if( INV_HAS_missile_laserguide ){
+    self.next_wepn1 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn1 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn1 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn1 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn1 = INV_HAS_flak;
+  }
+  else {
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  //Hardpoint2 BAL1|ENE1|MIS1
+  if( INV_HAS_missile_laserguide ){
+    self.next_wepn2 = INV_HAS_missile_laserguide;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn2 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn2 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn2 = INV_HAS_light_autocannon;
+  }
+  else if( INV_HAS_flak ){
+    self.next_wepn2 = INV_HAS_flak;
+  }
+  else {
+    self.next_wepn2 = INV_HAS_NONE;
+  }
+  
+  //GROUPS
+  self.w_group1 = WEAPON1 | WEAPON2;
+  if( self.next_wepn3 == self.next_wepn1 ){
+    self.w_group1 = self.w_group1 | WEAPON3;
+  }
+  else{
+    self.w_group3 = self.w_group3 | WEAPON3;
+  }
+  if( self.next_wepn4 == self.next_wepn1 ){
+    self.w_group1 = self.w_group1 | WEAPON4;
+  }
+  else{
+    self.w_group3 = self.w_group3 | WEAPON4;
+  }
+  if( self.next_wepn8 == INV_HAS_missile_activeradar && (self.next_wepn8 == self.next_wepn3 || self.next_wepn8 == self.next_wepn4) ){
+    self.w_group3 = self.w_group3 | WEAPON8;
+  }
+  if( self.next_wepn6 == INV_HAS_missile_swarm && (self.next_wepn6 == self.next_wepn3 || self.next_wepn6 == self.next_wepn4) ){
+    self.w_group3 = self.w_group3 | WEAPON8;
+  }
+  else if( self.next_wepn6 == INV_HAS_missile_swarm ){
+    self.w_group2 = self.w_group2 | WEAPON6;
+  }
+};
 
-  /*self.w_group1 = 0;
-  self.w_group2 = 0;
-  self.w_group3 = 0;
-  self.w_group4 = 0;*/
-
+/*
+  Config: Brawler
+    specializes in fire-fights of attrition.
+*/
+void() sapper_config_default_brawl={
+  //Hardpoint3 - BAL2|BAL3| MIS1|MIS2|MIS3 |ENE3
+  if( INV_HAS_quantum_rifle ){
+    self.next_wepn3 = INV_HAS_quantum_rifle;
+  }
+  else if( INV_HAS_missile_swarm ){
+    self.next_wepn3 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn3 = INV_HAS_rotary_plasma;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn3 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_snub_artillery ){
+    self.next_wepn3 = INV_HAS_snub_artillery;
+  }
+  else if( INV_HAS_missile_activeradar ){
+    self.next_wepn3 = INV_HAS_missile_activeradar;
+  }
+  else{
+    self.next_wepn3 = INV_HAS_NONE;
+  }
+  //Hardpoint4 - BAL2|BAL3| MIS1|MIS2|MIS3 |ENE3
+  if( INV_HAS_quantum_rifle ){
+    self.next_wepn4 = INV_HAS_quantum_rifle;
+  }
+  else if( INV_HAS_missile_swarm ){
+    self.next_wepn4 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_rotary_plasma ){
+    self.next_wepn4 = INV_HAS_rotary_plasma;
+  }
+  else if( INV_HAS_rocket_launcher ){
+    self.next_wepn4 = INV_HAS_rocket_launcher;
+  }
+  else if( INV_HAS_snub_artillery ){
+    self.next_wepn4 = INV_HAS_snub_artillery;
+  }
+  else if( INV_HAS_missile_activeradar ){
+    self.next_wepn4 = INV_HAS_missile_activeradar;
+  }
+  else{
+    self.next_wepn4 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint6 - MSC1|MSC3 |MIS2
+  if( INV_HAS_missile_swarm ){
+    self.next_wepn6 = INV_HAS_missile_swarm;
+  }
+  else if( INV_HAS_shield_emitter ){
+    self.next_wepn6 = INV_HAS_shield_emitter;
+  }
+  else if( INV_HAS_adv_reload ){
+    self.next_wepn6 = INV_HAS_adv_reload;
+  }
+  else {
+    self.next_wepn6 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint8 - MSC1|MSC3 |MIS3
+  if( INV_HAS_shield_emitter ){
+    self.next_wepn8 = INV_HAS_shield_emitter;
+  }
+  else if( INV_HAS_adv_reload ){
+    self.next_wepn8 = INV_HAS_adv_reload;
+  }
+  else {
+    self.next_wepn8 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint5 - MSC1|MSC2
+  if( INV_HAS_adv_reload ){
+    self.next_wepn5 = INV_HAS_adv_reload;
+  }
+  else {
+    self.next_wepn5 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint7 - MSC1|MSC2
+  if( INV_HAS_adv_reload ){
+    self.next_wepn7 = INV_HAS_adv_reload;
+  }
+  else {
+    self.next_wepn7 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint1 - BAL1 |ENE1 |MIS1
+  if( INV_HAS_flak ){
+    self.next_wepn1 = INV_HAS_flak;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn1 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn1 = INV_HAS_light_autocannon;
+  }
+  else {
+    self.next_wepn1 = INV_HAS_NONE;
+  }
+  
+  //Hardpoint2 - BAL1 |ENE1 |MIS1
+  if( INV_HAS_flak ){
+    self.next_wepn2 = INV_HAS_flak;
+  }
+  else if( INV_HAS_light_laser ){
+    self.next_wepn2 = INV_HAS_light_laser;
+  }
+  else if( INV_HAS_light_autocannon ){
+    self.next_wepn2 = INV_HAS_light_autocannon;
+  }
+  else {
+    self.next_wepn2 = INV_HAS_NONE;
+  }
+  
+  //GROUPS
+  self.w_group1 = WEAPON3 | WEAPON4;
+  self.w_group2 = WEAPON1 | WEAPON2;
+  self.w_group3 = WEAPON6;
 };
 #endif
