@@ -16,6 +16,7 @@ void() m_init={
   
   localcmd("disconnect;togglemenu;cd play 2;\n");
   
+  registercvar("saveslot", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_alpha", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_color", "0", CF_CLIENT | CF_ARCHIVE);
   //registercvar("cl_hud_sway", "0", 1);
