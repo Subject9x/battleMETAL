@@ -12,7 +12,7 @@ Overview:
   self is building
 */
 void( float dataID ) data_sync_new_turret={
-  self.flags = FL_MONSTER | FL_UNIT;
+  self.flags = FL_MONSTER | FL_UNIT | FL_TURRET;
   self.solid = SOLID_BBOX;
  
   weaponList = self;  //prepare to build unit's weapon list
