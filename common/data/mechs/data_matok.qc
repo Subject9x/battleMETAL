@@ -134,23 +134,22 @@ void() data_ini_matok_={
   //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
-  hardpnt.uiOffset = '55 5';//#3
+  hardpnt.uiOffset = '-63 10';  //#1
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-55 5';//#4
+  hardpnt.uiOffset = '68 10';  //#2
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '110 50'; //#1
+  hardpnt.uiOffset = '-125 50';  //#3
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-55 5';//#4
-  hardpnt.uiOffset = '-110 50'; //#2
+  hardpnt.uiOffset = '130 50';  //#4
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '0 -65 0'; //#5
+  hardpnt.uiOffset = '2 -55'; //#5
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '0 25 0'; //#6
+  hardpnt.uiOffset = '2 32'; //#6
 //====================================
 #endif
 };
@@ -644,7 +643,7 @@ void() matok_config_default_brawl={
   if( self.next_wepn3 == self.next_wepn5 && self.next_wepn4 == self.next_wepn5 && self.next_wepn5 == INV_HAS_quantum_rifle){
     self.w_group1 = WEAPON3 | WEAPON4 | WEAPON5;
   }
-  if( self.next_wepn5 = INV_HAS_ion_coil ){
+  if( self.next_wepn5 == INV_HAS_ion_coil ){
     self.w_group2 = WEAPON5;
     self.w_group1 = WEAPON1 | WEAPON2 | WEAPON3 | WEAPON4;
   }

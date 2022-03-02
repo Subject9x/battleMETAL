@@ -29,7 +29,7 @@ void() data_ini_balaket_={
   self.max_health = 500;
   
   //Hitbox size, X width, Y Length, Z height.
-  self.mins = '-18 -18 -35';
+  self.mins = '-18 -18 -34';
   self.maxs = '18 18 16';
   
 //ENERGY AND SHIELDS===================
@@ -134,19 +134,19 @@ void() data_ini_balaket_={
   //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
-  hardpnt.uiOffset = '-85 25'; //#1
+  hardpnt.uiOffset = '97 65'; //#1
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '85 25'; //#2
+  hardpnt.uiOffset = '-97 65'; //#2
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '12 -50';//#3
+  hardpnt.uiOffset = '18 -12';//#3
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-50 -18.0';//#4
+  hardpnt.uiOffset = '65 12';//#4
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '50 -18.0'; //#5
+  hardpnt.uiOffset = '-60 12'; //#5
 //====================================
 #endif
 };

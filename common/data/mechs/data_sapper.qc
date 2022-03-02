@@ -138,28 +138,28 @@ void() data_ini_sapper_={
   //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
-  hardpnt.uiOffset = '-90 60';//#1 M_ARM_RIGHT
+  hardpnt.uiOffset = '-90 75';//#1 M_ARM_RIGHT
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '90 60'; //#3 M_ARM_LEFT
+  hardpnt.uiOffset = '92 75'; //#3 M_ARM_LEFT
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-55 -52';//#2 M_TOR_RIGHT
+  hardpnt.uiOffset = '-54 -30';//#2 M_TOR_RIGHT
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '55 -52';//#4 M_TOR_LEFT
+  hardpnt.uiOffset = '59 -30';//#4 M_TOR_LEFT
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-25 25'; //#5 M_TOR_CENTER low/right
+  hardpnt.uiOffset = '-22 40'; //#5 M_TOR_CENTER low/right
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-25 -10'; //#6 M_TOR_CENTER up/right
+  hardpnt.uiOffset = '-22 10'; //#6 M_TOR_CENTER up/right
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '25 25'; //#7 M_TOR_CENTER low/left
+  hardpnt.uiOffset = '25 40'; //#7 M_TOR_CENTER low/left
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '25 -10'; //#8 M_TOR_CENTER up/left
+  hardpnt.uiOffset = '25 10'; //#8 M_TOR_CENTER up/left
 //====================================
 #endif
 };

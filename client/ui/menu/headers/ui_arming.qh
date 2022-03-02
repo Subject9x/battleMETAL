@@ -113,6 +113,7 @@ float(float grp) calc_energy_draw;
 
 void() menu_arming_drawFrame;
 
+void(vector ofs) menu_arming_hardpointView;
 void(vector ofs) menu_arming_HardpointGraph;
 
 void(vector ofs) menu_arming_WeaponList;
@@ -122,6 +123,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel;
 void(vector ofs) menu_arming_energydraw;
 void(vector ofs) menu_arming_WeaponInfo;
 void(vector ofs) menu_arming_WeaponInHardpoint;
+void(vector ofs, vector viewSize) menu_armor_MechModelDisplay;
 void() menu_arming_DrawItemDragIcon;
 
 vector(float bit) colorForWepType;

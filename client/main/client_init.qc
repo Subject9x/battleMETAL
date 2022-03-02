@@ -15,6 +15,7 @@ void() CSQC_Init =
   local float i, cnt;
   
   registercvar("gamemode", "1", CF_CLIENT | CF_SERVER | CF_CLIENT_FROM_SERVER | CF_SERVER_FROM_CLIENT);
+  registercvar("saveslot", "0", CF_CLIENT | CF_ARCHIVE);
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
   registercvar("cl_team", "0", CF_CLIENT | CF_ARCHIVE);

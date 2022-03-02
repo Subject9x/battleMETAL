@@ -65,6 +65,7 @@ float ITEM2_DATA_CLIP;
 float ITEM2_DATA_SIZE;
 float ITEM2_DATA_TECH;
 string ITEM2_DATA_DESC;
+vector ITEM2_DATA_UID_ORG;
 
 //functions
 void() ui_data_load_mechsizes;

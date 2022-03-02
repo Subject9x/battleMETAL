@@ -207,6 +207,7 @@ void() ui_data_clear_item2={
   if( ITEM2_DATA_DESC != "" ){
     ITEM2_DATA_DESC = "";
   }
+  ITEM2_DATA_UID_ORG = '0 0 0';
 };
 
 //difference here is we dont load config data

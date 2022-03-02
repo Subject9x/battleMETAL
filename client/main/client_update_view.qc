@@ -110,7 +110,9 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	// clear the scene information (entities, polygons, etc)
 	clearscene();
   //=====================================================
-	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
+	VIEW_VF_ORG = getpropertyvec(VF_ORIGIN);
+  
+  VIEW_FOV = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
   vf_sz = getpropertyvec(VF_SIZE);
   vf_mn = getpropertyvec(VF_MIN);
   
@@ -144,36 +146,36 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     }
   }
   
-  setproperty(VF_FOV, fovvec);
-  setproperty(VF_DRAWWORLD, 1);
+  setproperty(VF_FOV, VIEW_FOV);
+  if(!MENU_ACTIVE){
+    setproperty(VF_DRAWWORLD, TRUE);
+  }
+  else{
+    setproperty(VF_DRAWWORLD, FALSE);
+  }
   setproperty(VF_DRAWCROSSHAIR, 0);
-  setproperty(VF_DRAWENGINESBAR, 0);
-  VIEW_ORG = '0 0';
+  setproperty(VF_DRAWENGINESBAR, 0);  
   
+  VIEW_ORG = '0 0';
   VIEW_SCALE = 0.35;
   
   gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
   
-  if(FOG_STATE){
-    //alter fog settings if needed
-    cl_particles_fogFrame();	//fog is disable for the time being (something up with depth-rendering and unit shaders)
-    /*setproperty(VF_FOG_DENSITY, FOG_DENSITY);
-    setproperty(VF_FOG_COLOR_R, FOG_RED);
-    setproperty(VF_FOG_COLOR_G, FOG_GREEN);
-    setproperty(VF_FOG_COLOR_B, FOG_BLUE);
-    setproperty(VF_FOG_ALPHA,FOG_ALPHA );
-    setproperty(VF_FOG_START, FOG_DIST_MIN);
-    setproperty(VF_FOG_END, FOG_DIST_MAX);
-    setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
-    setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);*/
-  }
-
   // add any polygons we want here
   makevectors(input_angles);
   //=================================================
   
   // draw the main view
   if( !MENU_ACTIVE || CLIENT_MENU_menu_choice >= MENU_REBIND_ACTIVE){
+  //alter fog settings if needed
+    cl_particles_fogFrame();
+    setproperty(VF_FOG_DENSITY, FOG_DENSITY);
+    setproperty(VF_FOG_COLOR, [FOG_RED, FOG_GREEN, FOG_BLUE]);
+    setproperty(VF_FOG_ALPHA,FOG_ALPHA );
+    setproperty(VF_FOG_START, FOG_DIST_MIN);
+    setproperty(VF_FOG_END, FOG_DIST_MAX);
+    setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
+    setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);
     // add clientside entities (MASK_NORMAL)
     // add engine networked entities (MASK_ENGINE)
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)

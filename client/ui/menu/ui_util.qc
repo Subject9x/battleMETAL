@@ -13,23 +13,23 @@ Overview:
   Renders the weapon icon, and a highlight box for a selected hardpoint in
   the Arming Menu.
 */
-void(string imageIcon, vector org, float selected, float allow) ui_renderHardPointGraphic={
+void(vector org, float selected, float allow) ui_renderHardPointGraphic={
   local vector iorg;
-  local vector noEditColorAdj;
   local float allowAlpha;
   
-  if( imageIcon != ""){
-    if(selected){
-      iorg = org - '2 2';
-      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256_THICK, '32 32', CLR_DEF_YELLOW * 2, 1, 0);
-      drawfill( iorg, '32 32', CLR_DEF_YELLOW * 2, 0.75, 0);
-    }
+  if(selected){
+    iorg = org - '2 2';
+    gui_renderTintImage(selected, iorg, UI_DEF_REC_64, '32 32', CLR_DEF_YELLOW * 2, 0.5, 0);
+    //drawfill( iorg, '32 32', CLR_DEF_YELLOW * 2, 0.33, 0);
+  }
+  else{
     allowAlpha = 0.45;
     if( allow ){
-      allowAlpha = 1;
+      allowAlpha = 0.85;
     }
-    drawpic( org, imageIcon,  '28 28', '1 1 1' - noEditColorAdj, allowAlpha, 0);
+    drawpic( org, UI_DEF_REC_64,  '28 28', '1 1 1', allowAlpha, 0);
   }
+
 };
 
 void( vector org, vector imgSize, float wepType, vector highColor ) ui_renderHardpoint_class_pair={
@@ -339,3 +339,42 @@ void( float missionStat ) ui_set_mission_status={
 };
   
 
+//called whenever we switch mechs.
+void(vector showAng, vector colors) menu_player_MechModel_setup={
+  
+  UI_HANGAR_DATA_mech.angles            = showAng;
+  setmodel(UI_HANGAR_DATA_mech.torsoCenter, UI_HANGAR_DATA_mech.torsoCenter.model);
+  UI_HANGAR_DATA_mech.torsoCenter.colormod= colors;
+  UI_HANGAR_DATA_mech.torsoCenter.angles= showAng;
+  UI_HANGAR_DATA_mech.torsoCenter.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  
+  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
+    setmodel(UI_HANGAR_DATA_mech.torsoLeft, UI_HANGAR_DATA_mech.torsoLeft.model);
+    UI_HANGAR_DATA_mech.torsoLeft.colormod  = colors;
+    UI_HANGAR_DATA_mech.torsoLeft.angles  = showAng;
+    UI_HANGAR_DATA_mech.torsoLeft.effects   = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  }
+  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
+    setmodel(UI_HANGAR_DATA_mech.torsoRight, UI_HANGAR_DATA_mech.torsoRight.model);
+    UI_HANGAR_DATA_mech.torsoRight.colormod = colors;
+    UI_HANGAR_DATA_mech.torsoRight.angles = showAng;
+    UI_HANGAR_DATA_mech.torsoRight.effects  = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  }
+  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
+    setmodel(UI_HANGAR_DATA_mech.armLeft, UI_HANGAR_DATA_mech.armLeft.model);
+    UI_HANGAR_DATA_mech.armLeft.colormod    = colors;
+    UI_HANGAR_DATA_mech.armLeft.angles    = showAng;
+    UI_HANGAR_DATA_mech.armLeft.effects     = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  }
+  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
+    setmodel(UI_HANGAR_DATA_mech.armRight, UI_HANGAR_DATA_mech.armRight.model);
+    UI_HANGAR_DATA_mech.armRight.colormod   = colors;
+    UI_HANGAR_DATA_mech.armRight.angles   = showAng;
+    UI_HANGAR_DATA_mech.armRight.effects    = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  }
+  setmodel(UI_HANGAR_DATA_mech.legs, UI_HANGAR_DATA_mech.legs.model);
+  UI_HANGAR_DATA_mech.legs.colormod       = colors;
+  UI_HANGAR_DATA_mech.legs.angles       = showAng;
+  UI_HANGAR_DATA_mech.legs.effects        = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  UI_HANGAR_DATA_mech.legs.frame = 0;
+};

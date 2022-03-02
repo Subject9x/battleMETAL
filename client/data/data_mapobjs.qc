@@ -323,12 +323,13 @@ void() hazard_rad_think={
   partclPoint_x = partclPoint_x + (self.maxs_x * rando_x);
   partclPoint_y = partclPoint_y + (self.maxs_x * rando_y);
   
-  if( random() > 0.9 ){
+  if( random() > 0.9 && MENU_PROG_OFF){
     te_field_rad(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
   }
   
-  te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 176, FALSE, 5); 
-   
+  if(MENU_PROG_OFF){
+    te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 176, FALSE, 5); 
+  }
   if( self.isActive ){
     if( vlen(pmove_org - self.origin) <= (self.maxs_x * 3) ){
       client_event_environment();
@@ -355,7 +356,7 @@ void() hazard_crs_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  if( random() > 0.9 ){
+  if( random() > 0.9 && MENU_PROG_OFF){
     te_field_mineral(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
   }
   
@@ -388,7 +389,7 @@ void() hazard_quant_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  if( random() > 0.9 ){
+  if( random() > 0.9 && MENU_PROG_OFF){
     te_field_quantum( partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)) );
   }
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 

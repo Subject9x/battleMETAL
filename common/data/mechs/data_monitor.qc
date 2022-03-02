@@ -135,31 +135,31 @@ void() data_ini_monitor_={
   //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
-  hardpnt.uiOffset = '110 40'; //#1
+  hardpnt.uiOffset = '-125 58'; //#1
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '80 40'; //#2
+  hardpnt.uiOffset = '-85 52'; //#2
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-110 40';//#3
+  hardpnt.uiOffset = '125 58';//#3
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-80 40';//#4
+  hardpnt.uiOffset = '85 52';//#4
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '50 -35'; //#5
+  hardpnt.uiOffset = '-51 -20'; //#5
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-50 -35'; //#6
+  hardpnt.uiOffset = '52 -20'; //#6
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset =  '0 30'; //#7
+  hardpnt.uiOffset =  '2 42'; //#7
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '50 25'; //#8
+  hardpnt.uiOffset = '-48 40'; //#8
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-50 25'; //#9
+  hardpnt.uiOffset = '50 40'; //#9
 #endif
 //====================================
 };

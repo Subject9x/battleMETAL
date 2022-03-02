@@ -123,7 +123,7 @@ void() menu_armingListener_onHover={
       UI_ARMING_hardpoint_click = FALSE;
       UI_ARMING_hardpoint = hardpoint;
       ui_date_load_item2(CLIENT_MENU_sel_wep); 
-      
+      ITEM2_DATA_UID_ORG = hardpoint.uiOffset;
       return;
     }
     hardpoint = hardpoint.w_slot;
@@ -284,7 +284,8 @@ void() hardpointListener={
           CLIENT_MENU_sel_wep = hardpoint.data_idx;
           UI_ARMING_hardpoint_click = TRUE;
           UI_ARMING_hardpoint = hardpoint;
-          ui_date_load_item2(CLIENT_MENU_sel_wep); 
+          ui_date_load_item2(CLIENT_MENU_sel_wep);
+          ITEM2_DATA_UID_ORG = hardpoint.uiOffset;
         }
         
         hardpointItr = hardpointItr + 1;
@@ -358,6 +359,9 @@ void() selectNextConfig={
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
       cacheGlobalString(DATA_CONFIG_BUFFER_NAME, ftos(CFG_INDEX) )
     }
+    else{
+      menu_player_MechModel_setup('0 180 0', '0 1.1 0');
+    }
   }
 };
 
@@ -370,6 +374,9 @@ void() selectPrevConfig={
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
       cacheGlobalString(DATA_CONFIG_BUFFER_NAME, ftos(CFG_INDEX) )
+    }
+    else{
+      menu_player_MechModel_setup('0 180 0', '0 1.1 0');
     }
   }
 };
@@ -385,26 +392,32 @@ void() menu_arming_drawFrame={
   
   menu_navBar_drawFrame(UI_ORG);
   
-  menu_arming_HardpointGraph(topleftroot + '0 32');
+  menu_arming_hardpointView(topleftroot + '209 32');
+  
   menu_arming_WeaponList(topleftroot + '495 32');
   
-  menu_arming_WeaponGroupPanel(topleftroot + '0 272');
-  menu_arming_energydraw(topleftroot + '145 272');
+  menu_arming_WeaponGroupPanel(topleftroot + '145 272');
+  menu_arming_energydraw(topleftroot + '0 272');
   
-  menu_arming_WeaponInHardpoint(topleftroot + '288 32');
-  menu_arming_WeaponInfo(topleftroot + '288 242');
+  menu_arming_WeaponInHardpoint(topleftroot + '0 32');
+  menu_arming_HardpointGraph(topleftroot + '209 32');
+  
+  menu_arming_WeaponInfo(topleftroot + '288 272');
   menu_arming_DrawItemDragIcon();
   
   //menu_arming_AssignToHardpoint_btn(VIEW_CTR);
 };
 
-void(vector ofs) menu_arming_HardpointGraph={
+/*
+  Specifically renders:
+    + hardpoint background panel.
+    + 3D mech model view.
+    + config buttons.
+*/
+void(vector ofs) menu_arming_hardpointView={
   local vector nofs, panelOffset, panelImageSize;
   local entity hardpoint;
   local float hardpointItr;
-  
-  local vector mechIconOrg;
-  local vector mechIconSize;
   
   local vector hardpointCoord;
   
@@ -419,57 +432,14 @@ void(vector ofs) menu_arming_HardpointGraph={
   local vector helpOrg;
   
   nofs = ofs;
-  panelOffset = nofs + '4 4';
+  panelOffset = nofs + '8 6';
   panelImageSize = '278 236';
   
   gui_renderPatch9_1_32(nofs, panelImageSize, '0.25 0.25 0.25', 1, DRAWFLAG_NORMAL);
   
   if( SELECT_MECH > FALSE ){
+    menu_armor_MechModelDisplay( panelOffset, '262 262');
     
-    local vector imgSize;
-    imgSize = draw_getimagesize(MECH_DATA_ICON);
-    
-    local float w;  
-    w = 236 * imgSize_x / imgSize_y;
-    
-    mechIconSize = Vector2( w * 1.5, 200);
-    
-    mechIconOrg = Vector2(nofs_x + (panelImageSize_x/2) - (mechIconSize_x*0.5), nofs_y);
-    
-    drawsubpic( mechIconOrg, mechIconSize, MECH_DATA_ICON, '0 0', Vector2(1, 0.45), CLR_DEF_ARM_OK * 2, 0.5, DRAWFLAG_NORMAL);
-    
-    gui_renderBorder9_1_32(nofs, '278 244', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
-    
-    MECHPANEL_CTR = Vector2(nofs_x + (panelImageSize_x * 0.5), nofs_y + (panelImageSize_y * 0.35));
-    
-    hardpoint = UI_HANGAR_DATA_mech.w_slot;
-    hardpointItr = 1;
-    while( hardpoint ){
-      allowed = TRUE;
-      hardpoint.ui_org = MECHPANEL_CTR + hardpoint.uiOffset - '17 17';
-     
-      if( INPUT_mouse_state == MOUSE_DRAG ){
-        if( UI_ARMING_item_drag.data_idx > 0 ){      
-          if( !(hardpoint.hardpointSize & UI_ARMING_item_drag.equipSize)){
-            allowed = FALSE;
-          }
-        }
-      }
-     
-      ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr), allowed );
-      
-      if( !allowed ){
-        drawpic( hardpoint.ui_org, HUD_RAD_PIP_BLD, '28 28', CLR_DEF_RED, 0.85, 0);
-      }
-      
-      if( INPUT_mouse_state == MOUSE_DRAG ){
-        if( UI_ARMING_item_drag.data_idx > 0 ){  
-          ui_renderHardPointNumber( hardpointItr, hardpointCoord );
-        }
-      }
-      hardpointItr = hardpointItr + 1;
-      hardpoint = hardpoint.w_slot;
-    }
   }
   
   pctr = panelImageSize * 0.5;
@@ -547,6 +517,57 @@ void(vector ofs) menu_arming_HardpointGraph={
   gui_renderTooltipIcon( helpOrg) ;
 };
 
+void(vector ofs) menu_arming_HardpointGraph={
+  local vector nofs, panelOffset, panelImageSize;
+  local entity hardpoint;
+  local float hardpointItr;
+  
+  local vector hardpointCoord;
+  
+  local float allowed;
+  
+  nofs = ofs;
+  panelOffset = nofs + '8 6';
+  panelImageSize = '278 236';
+  
+  
+  if( SELECT_MECH > FALSE ){
+    
+    MECHPANEL_CTR = Vector2(nofs_x + (panelImageSize_x * 0.5), nofs_y + (panelImageSize_y * 0.35));
+    
+    hardpoint = UI_HANGAR_DATA_mech.w_slot;
+    hardpointItr = 1;
+    while( hardpoint ){
+      allowed = TRUE;
+      hardpoint.ui_org = MECHPANEL_CTR + hardpoint.uiOffset - '17 17';
+     
+      if( INPUT_mouse_state == MOUSE_DRAG ){
+        if( UI_ARMING_item_drag.data_idx > 0 ){      
+          if( !(hardpoint.hardpointSize & UI_ARMING_item_drag.equipSize)){
+            allowed = FALSE;
+          }
+        }
+      }
+     
+      ui_renderHardPointGraphic( hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr), allowed );
+      
+      if( !allowed ){
+        drawpic( hardpoint.ui_org, HUD_RAD_PIP_BLD, '28 28', CLR_DEF_RED, 0.85, 0);
+      }
+      
+      if( INPUT_mouse_state == MOUSE_DRAG ){
+        if( UI_ARMING_item_drag.data_idx > 0 ){  
+          ui_renderHardPointNumber( hardpointItr, hardpointCoord );
+        }
+      }
+      hardpointItr = hardpointItr + 1;
+      hardpoint = hardpoint.w_slot;
+    }
+  }
+  
+  drawfont = drawfont_prev;
+};
+
 void(vector ofs) menu_arming_WeaponList={
   local vector menuOffset;
   
@@ -572,7 +593,7 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
   nofs = parentOffset;
   nofs = nofs + offsetAdjust;
   
-  gui_renderPatch9_1_32(nofs, '130 112', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(nofs, '130 112', listNameColor * 0.67, 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -793,17 +814,17 @@ void(vector ofs) menu_arming_energydraw={
   
   local vector helpOrg;
   
-  gui_renderPatch9_1_32(ofs, '130 210', CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(ofs, '100 210', CLR_DEF_ENE_FRT * 0.75, 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  energyLabelLen = stringwidth( "-Group Energy Cost-", 0, '10 10');
+  energyLabelLen = stringwidth( "Group Energy Cost", 0, '10 10');
   energyLabelLen = energyLabelLen / 2;
   energyLabelOrg = ofs;
   energyLabelOrg_x = energyLabelOrg_x + 63 - energyLabelLen;
   energyLabelOrg_y = energyLabelOrg_y + 6;
-  drawstring(energyLabelOrg, "-Group Energy Cost-", '10 10 0', CLR_DEF_ENE_FRT, 1, 0);
+  drawstring(energyLabelOrg, "Group Energy Cost", '10 10 0', CLR_DEF_ENE_FRT, 1, 0);
   
   enmax = UI_HANGAR_DATA_mech.energyMax;
 
@@ -967,6 +988,8 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector helpOrg;
   
   nofs = ofs;
+  
+  drawline(6,nofs + [195, 0 ], MECHPANEL_CTR + ITEM2_DATA_UID_ORG + '-17 -17', CLR_DEF_YELLOW, 1.0, 0);
   
   gui_renderPatch9_1_32(nofs, '195 220', CLR_DEF_ARM_THREEQ, 1, DRAWFLAG_NORMAL);
 
@@ -1133,4 +1156,114 @@ float(float grp) calc_energy_draw={
   }
 
   return energySubTotal;
+};
+
+
+/*
+  Render mech as 3D model in a custom viewport along with hardpoints.
+    unless someone can figure out the way to draw stuff in 3D-in-2D...this is abandoned for now...
+    was really cool but super jank to setup.
+*/
+void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
+  local vector tSize, modelMins, modelMax, cOrg, mOffset;
+  local vector viewOrg;
+  local float zBias, zTotal;
+  local entity weaponEnt;
+  
+  modelMins = UI_HANGAR_DATA_mech.mins;
+  modelMax = UI_HANGAR_DATA_mech.maxs;
+  tSize = modelMax - modelMins;
+  
+  zBias = zBias + (modelMins_z - modelMax_z)/2 - modelMins_z;
+  zTotal = ((modelMins_z * -1) + modelMax_z) / 2.3;
+  
+  viewOrg = pmove_org;
+  clearscene();
+    setproperty(VF_ORIGIN, viewOrg + [modelMax_x * -5, 0, modelMax_z * 0.1]);	//look towards it.
+    setproperty(VF_ANGLES, '0 0 0');
+    
+    setproperty(VF_MIN, vtodpp([ofs_x, ofs_y, 0]) );
+    setproperty(VF_SIZE, vtodpp([viewSize_x, viewSize_y, 0]) );
+    //set an explicit fov. this thing had better be square. DP doesn't support VF_AFOV
+    //setproperty(VF_FOV, [25, atan(viewSize_y/(viewSize_x/tan(25/360*6.28))) * 360/6.28, 0]); 
+    setproperty(VF_FOV, [zTotal, atan(viewSize_y/(viewSize_x/tan(zTotal/360*6.28))) * 360/6.28, 0]); 
+
+    setproperty(VF_DRAWENGINESBAR, 0);
+    setproperty(VF_DRAWWORLD, 0);
+    setproperty(VF_DRAWCROSSHAIR, 0);
+    
+    setproperty(VF_FOG_DENSITY, 0.0);
+    setproperty(VF_FOG_ALPHA,0.0 );
+    setproperty(VF_FOG_START, 0);
+    setproperty(VF_FOG_END, 0);
+    setproperty(VF_FOG_HEIGHT, 0);
+    setproperty(VF_FOG_FADEDEPTH, 0.0);
+    
+    makevectors(getpropertyvec(VF_ANGLES));
+    setorigin( UI_HANGAR_DATA_mech, viewOrg);
+    cOrg = UI_HANGAR_DATA_mech.origin;
+    
+    addentity(UI_HANGAR_DATA_mech);
+    
+    makevectors(UI_HANGAR_DATA_mech.angles);
+    
+    UI_HANGAR_DATA_mech.torsoCenter.origin = UI_HANGAR_DATA_mech.origin;
+    addentity(UI_HANGAR_DATA_mech.torsoCenter);
+     
+    if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
+      mOffset = UI_HANGAR_DATA_mech.torsoLeft.compOffset;
+      UI_HANGAR_DATA_mech.torsoLeft.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+      addentity(UI_HANGAR_DATA_mech.torsoLeft);
+    }
+    if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
+      mOffset = UI_HANGAR_DATA_mech.torsoRight.compOffset;
+      UI_HANGAR_DATA_mech.torsoRight.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+      addentity(UI_HANGAR_DATA_mech.torsoRight);
+    }
+    if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
+      mOffset = UI_HANGAR_DATA_mech.armLeft.compOffset;
+      UI_HANGAR_DATA_mech.armLeft.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+      addentity(UI_HANGAR_DATA_mech.armLeft);
+    }
+    if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
+      mOffset = UI_HANGAR_DATA_mech.armRight.compOffset;
+      UI_HANGAR_DATA_mech.armRight.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+      addentity(UI_HANGAR_DATA_mech.armRight);
+    }
+    mOffset = UI_HANGAR_DATA_mech.legs.compOffset;
+    UI_HANGAR_DATA_mech.legs.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+    addentity(UI_HANGAR_DATA_mech.legs);
+  
+    weaponEnt = UI_HANGAR_DATA_mech.w_slot;
+    while(weaponEnt){
+      if(weaponEnt.data_idx == UID_ITEM_EMPTY){
+        weaponEnt.alpha = 0.0;
+        setmodel(weaponEnt, "q3mdl/testball.md3");
+      }
+      else{
+        if( weaponEnt == UI_ARMING_hardpoint ){
+          weaponEnt.colormod = '2 2 2';
+        }
+        else{
+          weaponEnt.colormod = '0.85 0.85 0.85';
+        }
+        weaponEnt.alpha = 1.0;
+        weaponEnt.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+        setmodel(weaponEnt, weaponEnt.model);
+        weaponEnt.origin = UI_HANGAR_DATA_mech.origin + (v_forward * weaponEnt.compOffset_z)
+            + (v_up * weaponEnt.compOffset_y) + (v_right * weaponEnt.compOffset_x);
+      }
+      weaponEnt.angles = UI_HANGAR_DATA_mech.angles;
+      addentity(weaponEnt);
+      weaponEnt = weaponEnt.w_slot;
+    }
+  renderscene();
+  setproperty(VF_ORIGIN, VIEW_VF_ORG);
+  setproperty(VF_FOV, VIEW_FOV); 
+  setproperty(VF_ORIGIN, pmove_org);	//look towards it.
+  setproperty(VF_ANGLES, input_angles);
+  setproperty(VF_MIN, '0 0 0');
+  setproperty(VF_SIZE, VIEW_ACT);
+  setproperty(VF_DRAWWORLD, 0);
+///==========
 };

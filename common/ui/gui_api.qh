@@ -44,6 +44,9 @@ vector VIEW_CTR;
 float VIEW_SCALE;
 
 vector VIEW_ACT;
+vector VIEW_VF_ORG; //cached for VF_ORIGIN restore.
+vector VIEW_FOV;  //used for VF_FOV restore.
+
 vector UI_ORG;  //aspect-ratio corrected offsets
 vector UI_MAX;
 vector UI_CTR;

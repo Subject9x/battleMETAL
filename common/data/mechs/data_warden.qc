@@ -31,7 +31,7 @@ void() data_ini_warden_={
   self.max_health = 575;
   
   //Hitbox size, X width, Y Length, Z height.
-  self.mins = '-16 -16 -32';
+  self.mins = '-16 -16 -30.2';
   self.maxs = '16 16 14';
   
 //ENERGY AND SHIELDS===================
@@ -137,19 +137,19 @@ void() data_ini_warden_={
   //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;
   hardpnt = self.w_slot;
-  hardpnt.uiOffset = '-50 20'; //#1
+  hardpnt.uiOffset = '-70 40'; //#1
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '40 20'; //#2
+  hardpnt.uiOffset = '60 40'; //#2
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '75 20';//#3
+  hardpnt.uiOffset = '90 40';//#3
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-45 -24.0';//#4
+  hardpnt.uiOffset = '-60 -35.0';//#4
   
   hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '65 -24.0'; //#5
+  hardpnt.uiOffset = '100 -35.0'; //#5
 //====================================
 #endif
 };

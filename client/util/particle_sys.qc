@@ -175,7 +175,7 @@ void() cl_particles_fogFrame={
     FOG_STATE = FALSE;
   }
   
-  newFog = strcat("fog ", ftos(FOG_DENSITY)," ");
+  /*newFog = strcat("fog ", ftos(FOG_DENSITY)," ");
   newFog = strcat(newFog, ftos(FOG_RED)," ");
   newFog = strcat(newFog, ftos(FOG_GREEN)," ");
   newFog = strcat(newFog, ftos(FOG_BLUE)," ");
@@ -184,7 +184,7 @@ void() cl_particles_fogFrame={
   newFog = strcat(newFog, ftos(FOG_DIST_MAX)," ");
   newFog = strcat(newFog, ftos(FOG_DIST_TOP)," ");
   newFog = strcat(newFog, ftos(FOG_FADE_DEPTH),"\n");
-  localcmd(newFog);
+  localcmd(newFog);*/
 };
 
 void() te_explode_mech_piece_predraw={
@@ -954,6 +954,4 @@ void() particle_box_think={
   }
 
   PTC_CUBE_UPDATE = time + 0.1;
-
 };
-

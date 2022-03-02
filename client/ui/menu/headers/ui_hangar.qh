@@ -12,7 +12,6 @@ float UNLOCKED_MECHS_TOTAL;
 //TOOLTIPs
   vector HANGAR_HELP_GRAPH;
   vector HANGAR_HELP_HARDPOINT_LIST;
-  
 
 //DISPLAY CONSTANT
   float DISP_MAX_FSPEED = 225;
@@ -64,6 +63,7 @@ void() menu_hangarListener_onHover;
 void() mechSelectListener;
 
 void(vector ofs) menu_hangar_MechDisplay;
+void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay;
 void(vector ofs) menu_hangar_MechList;
 void(vector ofs, float mechSize, string listName, vector listNameColor, float mechListTotalValue, vector mechListOriginValue, vector mechListSizeValue ) menu_hangar_MechList_draw;
 void(vector ofs) menu_hangar_MechInfo;

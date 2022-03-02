@@ -22,7 +22,7 @@ string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
 
 float OBJECTIVES[16];         //  1 = active, 2 = complete, 0 = hidden, -1 = failed.
 
-
+vector(vector v) vtodpp;
 void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel;
 void(vector ofs, vector r_sz, vector ln_sz, vector clr) gui_DrawRect;
 void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector ln_sz2, vector clr2) gui_DrawHighlightRect;

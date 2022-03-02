@@ -8,6 +8,15 @@ Overview:
   some functionality that is CSQC specific has been ported over to here.
 */
 
+
+
+//MenuSys - Spoike
+vector(vector v) vtodpp={
+  v_x = v_x * cvar("vid_width") / cvar("vid_conwidth");
+  v_y = v_y * cvar("vid_height") / cvar("vid_conheight");
+	return v;
+};
+
 void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel={
   local float len;
   len = stringwidth(str, 0, txt_sz);
