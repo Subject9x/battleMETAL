@@ -1,7 +1,7 @@
 //BALAKET
 {
   'uid'     : HUD_TAG_ENERGY,
-  'pos'     : 102 87,
+  'pos'     : 110 87,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 22 84,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -10,7 +10,7 @@
 }
 {
   'uid'     : HUD_TAG_SHIELD_PLAYER,
-  'pos'     : 215 115,
+  'pos'     : 212 122,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 90 12,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -19,8 +19,10 @@
 }
 {
   'uid'     : HUD_TAG_ARM_PLAYER,
-  'pos'     : 170 60,
+  'pos'     : 215 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
 }
 {
   'uid'     : HUD_TAG_WEP_TYPE1,
@@ -65,39 +67,34 @@
 }
 {
   'uid'     : HUD_TAG_ARM_TARGET,
-  'pos'     : -170 62,
+  'pos'     : -120 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -48 -68,
-// color2 = panel size
-  'color2'  : 96 132,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
+// color2 = lblSize
+  'color2'  : 96 144,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_VEC,
-  'pos'     : -95 56,
+  'pos'     : -120 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'size'    : 75 40,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -12 -56,
-// color2 = panel size
-  'color2'  : 96 132,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
+// color2 = lblSize
+  'color2'  : 96 144,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_BLD,
-  'pos'     : -110 46,
+  'pos'     : -120 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'size'    : 60 60,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -19 -56,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 96 132,
+  'color2'  : 96 144,
 }
 {
   'uid'     : HUD_TAG_SHIELD_TARGET,
-  'pos'     : -137 105,
+  'pos'     : -135 116,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 75 12,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -106,12 +103,12 @@
 }
 {
   'uid'     : HUD_TAG_TARGET_NAME,
-  'pos'     : -137 128,
+  'pos'     : -132 139,
   'valign'  : VIEW_CTX|VIEW_BOT,
 }
 {
   'uid'     : HUD_TAG_TARGET_RANGE,
-  'pos'     : -137 118,
+  'pos'     : -137 127,
   'valign'  : VIEW_CTX|VIEW_BOT,
 }
 {

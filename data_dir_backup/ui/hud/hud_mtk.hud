@@ -1,7 +1,7 @@
 //MATOK
 {
   'uid'     : HUD_TAG_ENERGY,
-  'pos'     : 50 100,
+  'pos'     : 18 100,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 22 88,
   'lalign'  : VIEW_CTX|VIEW_TOP,
@@ -10,7 +10,7 @@
 }
 {
   'uid'     : HUD_TAG_SHIELD_PLAYER,
-  'pos'     : 145 98,
+  'pos'     : 155 98,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 22 88,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -19,8 +19,19 @@
 }
 {
   'uid'     : HUD_TAG_ARM_PLAYER,
-  'pos'     : 110 70,
+  'pos'     : 50 100,
+  'size'    : 96 96,
   'valign'  : VIEW_BOT|VIEW_LFT,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
+}
+{
+  'uid'     : HUD_TAG_RAM_METER,
+  'pos'     : 180 98,
+  'valign'  : VIEW_BOT|VIEW_LFT,
+  'size'    : 16 88,
+  'axis'    : AXIS_V,
+  'lalign'  : VIEW_CTX|VIEW_TOP,
+  'lblofs'  : 0 16,
 }
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
@@ -77,39 +88,34 @@
 }
 {
   'uid'     : HUD_TAG_ARM_TARGET,
-  'pos'     : 0 64,
+  'pos'     : 50 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -35 -68,
+  'size'    : 96 96,
+  'lalign'  : VIEW_RGT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 96 132,
+  'color2'  : 116 128,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_VEC,
-  'pos'     : 64 64,
+  'pos'     : 50 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'size'    : 64 28,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -3 -55,
+  'size'    : 96 96,
+  'lalign'  : VIEW_RGT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 96 132,
+  'color2'  : 116 128,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_BLD,
-  'pos'     : 48 54,
+  'pos'     : 50 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'size'    : 48 64,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -10 -48,
+  'size'    : 96 96,
+  'lalign'  : VIEW_RGT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 96 132,
+  'color2'  : 116 128,
 }
 {
   'uid'     : HUD_TAG_SHIELD_TARGET,
-  'pos'     : -40 90,
+  'pos'     : -60 90,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 18 75,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -136,15 +142,6 @@
 {
   'uid'     : HUD_TAG_ENVIRO_BOX,
   'pos'     : 0 -235,
-}
-{
-  'uid'     : HUD_TAG_RAM_METER,
-  'pos'     : 170 98,
-  'valign'  : VIEW_BOT|VIEW_LFT,
-  'size'    : 16 88,
-  'axis'    : AXIS_V,
-  'lalign'  : VIEW_CTX|VIEW_TOP,
-  'lblofs'  : 0 16,
 }
 {
   'uid'     : HUD_TAG_MSN_CLOCK,

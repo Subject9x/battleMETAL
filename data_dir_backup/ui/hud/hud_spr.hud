@@ -1,7 +1,7 @@
 //SAPPER
 {
   'uid'     : HUD_TAG_ENERGY,
-  'pos'     : 80 64,
+  'pos'     : 110 64,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 88 22,
   'lalign'  : VIEW_CTX|VIEW_TOP,
@@ -10,7 +10,7 @@
 }
 {
   'uid'     : HUD_TAG_SHIELD_PLAYER,
-  'pos'     : 80 100,
+  'pos'     : 110 100,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 88 22,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -19,8 +19,19 @@
 }
 {
   'uid'     : HUD_TAG_ARM_PLAYER,
-  'pos'     : 40 70,
+  'pos'     : 5 100,
+  'size'    : 96 96,
   'valign'  : VIEW_BOT|VIEW_LFT,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
+}
+{
+  'uid'     : HUD_TAG_RAM_METER,
+  'pos'     : 110 24,
+  'valign'  : VIEW_BOT|VIEW_LFT,
+  'size'    : 88 16,
+  'axis'    : AXIS_H,
+  'lalign'  : VIEW_CTX|VIEW_TOP,
+  'lblofs'  : 0 16,
 }
 //Right Arm
 {
@@ -97,35 +108,30 @@
 }
 {
   'uid'     : HUD_TAG_ARM_TARGET,
-  'pos'     : 215 65,
+  'pos'     : 275 100,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -40 -68,
+  'size'    : 96 96,
+  'lalign'  : VIEW_RGT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 96 148,
+  'color2'  : 116 128,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_VEC,
-  'pos'     : 275 50,
+  'pos'     : 275 100,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 64 28,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -10 -68,
+  'size'    : 96 96,
+  'lalign'  : VIEW_RGT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 96 148,
+  'color2'  : 116 128,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_BLD,
-  'pos'     : 250 50,
+  'pos'     : 275 100,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 48 64,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -10 -48,
+  'size'    : 96 96,
+  'lalign'  : VIEW_RGT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 96 148,
+  'color2'  : 116 128,
 }
 {
   'uid'     : HUD_TAG_SHIELD_TARGET,
@@ -156,15 +162,6 @@
 {
   'uid'     : HUD_TAG_ENVIRO_BOX,
   'pos'     : 0 -235,
-}
-{
-  'uid'     : HUD_TAG_RAM_METER,
-  'pos'     : 80 24,
-  'valign'  : VIEW_BOT|VIEW_LFT,
-  'size'    : 88 16,
-  'axis'    : AXIS_H,
-  'lalign'  : VIEW_CTX|VIEW_TOP,
-  'lblofs'  : 0 16,
 }
 {
   'uid'     : HUD_TAG_MSN_CLOCK,

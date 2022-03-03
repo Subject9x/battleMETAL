@@ -1,7 +1,7 @@
 //3rd Person Camera HUD
 {
   'uid'     : HUD_TAG_ENERGY,
-  'pos'     : 90 88,
+  'pos'     : 110 88,
   'valign'  : VIEW_LFT|VIEW_BOT,
   'size'    : 22 88,
   'lalign'  : VIEW_CTX|VIEW_TOP,
@@ -10,7 +10,7 @@
 }
 {
   'uid'     : HUD_TAG_SHIELD_PLAYER,
-  'pos'     : 118 88,
+  'pos'     : 138 88,
   'valign'  : VIEW_LFT|VIEW_BOT,
   'size'    : 22 88,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -19,55 +19,49 @@
 }
 {
   'uid'     : HUD_TAG_ARM_PLAYER,
-  'pos'     : 50 65,
+  'pos'     : 5 100,
   'valign'  : VIEW_LFT|VIEW_BOT,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
 }
 {
   'uid'     : HUD_TAG_RADAR_GRAPH,
-  'pos'     : 10 185,
+  'pos'     : 10 192,
   'valign'  : VIEW_LFT|VIEW_BOT,
   'size'    : 75 75,
 }
 {
   'uid'     : HUD_TAG_RADAR_TYPE2,
-  'pos'     : 133 165,
+  'pos'     : 115 185,
   'valign'  : VIEW_LFT|VIEW_BOT,
 }
 {
   'uid'     : HUD_TAG_ARM_TARGET,
-  'pos'     : 45 64,
+  'pos'     : 100 100,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTY|VIEW_CTX,
-  'lblofs'  : -61 -64,
-// color2 = panel size
-  'color2'  : 96 128,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
+  'color2'  : 120 128,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_VEC,
-  'pos'     : 110 64,
+  'pos'     : 100 100,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 64 28,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTY|VIEW_CTX,
-  'lblofs'  : -26 -50,
-// color2 = panel size
-  'color2'  : 104 128,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
+  'color2'  : 120 128,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_BLD,
-  'pos'     : 95 54,
+  'pos'     : 100 100,
   'valign'  : VIEW_RGT|VIEW_BOT,
-  'size'    : 48 64,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTY|VIEW_CTX,
-  'lblofs'  : -32 -42,
-// color2 = panel size
-  'color2'  : 104 128,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
+  'color2'  : 120 128,
 }
 {
   'uid'     : HUD_TAG_SHIELD_TARGET,
-  'pos'     : 100 80,
+  'pos'     : 115 80,
   'valign'  : VIEW_RGT|VIEW_BOT,
   'size'    : 16 75,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -76,12 +70,12 @@
 }
 {
   'uid'     : HUD_TAG_TARGET_NAME,
-  'pos'     : 100 124,
+  'pos'     : 100 125,
   'valign'  : VIEW_RGT|VIEW_BOT,
 }
 {
   'uid'     : HUD_TAG_TARGET_RANGE,
-  'pos'     : 100 114,
+  'pos'     : 100 115,
   'valign'  : VIEW_RGT|VIEW_BOT,
 }
 {
@@ -96,7 +90,7 @@
 }
 {
   'uid'     : HUD_TAG_RAM_METER,
-  'pos'     : 145 88,
+  'pos'     : 165 88,
   'valign'  : VIEW_BOT|VIEW_LFT,
   'size'    : 22 88,
   'axis'    : AXIS_V,
@@ -105,6 +99,6 @@
 }
 {
   'uid'     : HUD_TAG_MSN_CLOCK,
-  'pos'     : 180 56,
+  'pos'     : 100 130,
   'valign'  : VIEW_BOT|VIEW_LFT,
 }

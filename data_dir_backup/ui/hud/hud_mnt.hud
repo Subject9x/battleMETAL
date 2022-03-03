@@ -19,8 +19,10 @@
 }
 {
   'uid'     : HUD_TAG_ARM_PLAYER,
-  'pos'     : 182 -170,
-  'valign'  : VIEW_CTX|VIEW_CTY,
+  'pos'     : 240 100,
+  'size'    : 96 96,
+  'valign'  : VIEW_CTX|VIEW_BOT,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
 }
 {
   'uid'     : HUD_TAG_WEP_TYPE2,
@@ -99,39 +101,34 @@
 }
 {
   'uid'     : HUD_TAG_ARM_TARGET,
-  'pos'     : -130 60,
+  'pos'     : -130 100,
+  'size'    : 96 96,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -54 -82,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 108 150,
+  'color2'  : 96 136,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_VEC,
-  'pos'     : -65 55,
+  'pos'     : -130 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'size'    : 64 28,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -24 -72,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 110 124,
+  'color2'  : 96 136,
 }
 {
   'uid'     : HUD_TAG_ARM_TARG_BLD,
-  'pos'     : -76 45,
+  'pos'     : -130 100,
   'valign'  : VIEW_CTX|VIEW_BOT,
-  'size'    : 60 60,
-  'lflag'   : 1,
-  'lalign'  : VIEW_CTX|VIEW_CTY,
-  'lblofs'  : -19 -64,
+  'size'    : 96 96,
+  'lalign'  : VIEW_LFT|VIEW_TOP,
 // color2 = panel size
-  'color2'  : 96 132,
+  'color2'  : 96 136,
 }
 {
   'uid'     : HUD_TAG_SHIELD_TARGET,
-  'pos'     : -90 105,
+  'pos'     : -135 115,
   'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 90 12,
   'lalign'  : VIEW_LFT|VIEW_TOP,
@@ -140,12 +137,12 @@
 }
 {
   'uid'     : HUD_TAG_TARGET_NAME,
-  'pos'     : -90 135,
+  'pos'     : -135 135,
   'valign'  : VIEW_CTX|VIEW_BOT,
 }
 {
   'uid'     : HUD_TAG_TARGET_RANGE,
-  'pos'     : -90 125,
+  'pos'     : -130 125,
   'valign'  : VIEW_CTX|VIEW_BOT,
 }
 {
@@ -160,8 +157,8 @@
 }
 {
   'uid'     : HUD_TAG_RAM_METER,
-  'pos'     : 240 -150,
-  'valign'  : VIEW_CTY|VIEW_CTX,
+  'pos'     : 265 95,
+  'valign'  : VIEW_CTX|VIEW_BOT,
   'size'    : 16 64,
   'axis'    : AXIS_V,
   'lalign'  : VIEW_CTX|VIEW_CTY,
