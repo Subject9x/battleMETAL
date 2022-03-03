@@ -10,13 +10,13 @@ Overview:
 /*
   RENDER CROSSHAIRS - UNIVERSAL
 */
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshairs={
+void() hud_renderCrosshairs={
   //convergence
   local vector spr_h, hitclr;
   local vector acc_left, acc_right, acc_up, acc_dn;
   local vector drift;
   
-  drift = Vector2( 8 * unitAccuracy, 8 * unitAccuracy );
+  drift = [8 * CLIENT_accuracy, 8 * CLIENT_accuracy];
   
   acc_left = VIEW_CTR - '11 1.5';
   acc_left_x = acc_left_x - drift_x;
@@ -36,9 +36,9 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   gui_renderTintImage(TRUE, acc_up, HUT_RET_PIP_VRT, '3 10', HUD_COLOR_DEF, HUD_ALPHA, 0);
   gui_renderTintImage(TRUE, acc_dn, HUT_RET_PIP_VRT, '3 10', HUD_COLOR_DEF, HUD_ALPHA, 0);
   
-  if( (hitdirection & STAT_HIT_TRG) ){
+  if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
     hitclr = CLR_DEF_GRAY_H;
-    if(trg_shield > 0){
+    if(CLIENT_target_shield > 0){
       hitclr = CLR_DEF_SHD_HALF;
     }
     gui_renderTintImage(TRUE, (VIEW_CTR - '24 24'), HUD_RET_HIT, '48 48', hitclr, HUD_ALPHA, 0);
@@ -388,13 +388,14 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
     drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
   }
   else{
-    if( theWeapon.data_idx > 0 ){
+    if( theWeapon.data_idx > 0 && theWeapon.equipSize < MSC1 && theWeapon.reloadValue < 100){
       ofs_x = imgSz_x / 2;
       ofs_y = (imgSz_y * 2);
       metSize_x = imgSz_x;
-      metSize_y = 20;
-      ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), rOrg); 
-      gui_renderMeter(theWeapon.reloadValue, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), HUD_ALPHA, 0, AXIS_V, 0);
+      metSize_y = imgSz_y;
+      ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), rOrg);
+      //TODO - look better?
+      gui_renderMeter(theWeapon.reloadValue, iofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(theWeapon.reloadValue), 0.45, 0, AXIS_V, 0);
     }
   }
 };
@@ -450,7 +451,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
     drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
   }
   else{
-    if( theWeapon.data_idx > 0 ){
+    if( theWeapon.data_idx > 0 && theWeapon.equipSize < MSC1 ){
       ofs_x = imgSz_x * -0.2;
       ofs_y = imgSz_y;
       metSize_x = 16;
@@ -841,16 +842,16 @@ void() data_hud_frame={
     switch( cvar("crosshair") ){
       //crosshair1 is default
       default:
-        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
+        hud_renderCrosshair1();
         break;
       case 2:
-        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
+        hud_renderCrosshair2();
         break;
       case 3:
-        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
+        hud_renderCrosshair3();
         break;
       case 4:
-        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, CLIENT_accuracy, CLIENT_target_shield );
+        hud_renderCrosshair4();
         break;
     }
   }
@@ -1033,12 +1034,12 @@ void() data_hud_fps_cam={
       case HUD_UID_ARM_PLAYER: 
         if( HUD_ZOOM_ACTIVE == FALSE){
           porg = UI_DATA_POS[uid];
+          vsize = UI_DATA_SIZE[uid];
           algn = UI_DATA_ALIGN[uid];
-          lflag = UI_DATA_LABEL_FLAG[uid];
           lalign = UI_DATA_LABEL_ALIGN[uid];
           lblofs = UI_DATA_LABEL_OFS[uid];
           color2 = UI_DATA_COLOR2[uid];
-          hud_renderArmorGraph(porg, algn, lflag, lalign, lblofs, color2, FALSE);
+          hud_renderArmorGraph(porg, vsize, algn, lalign, lblofs, color2, FALSE);
         }
         break;
       case HUD_UID_SHIELD_PLAYER: 
@@ -1057,12 +1058,12 @@ void() data_hud_fps_cam={
           if( hasTarget ){
             if( CLIENT_target_datatype == DATA_MECH ){
               porg = UI_DATA_POS[uid];
+              vsize = UI_DATA_SIZE[uid];
               algn = UI_DATA_ALIGN[uid];
-              lflag = UI_DATA_LABEL_FLAG[uid];
               lalign = UI_DATA_LABEL_ALIGN[uid];
               lblofs = UI_DATA_LABEL_OFS[uid];
               color2 = UI_DATA_COLOR2[uid];
-              hud_renderArmorGraph(porg, algn, lflag, lalign, lblofs, color2, TRUE);
+              hud_renderArmorGraph(porg, vsize, algn, lalign, lblofs, color2, TRUE);
             }
           }
         }

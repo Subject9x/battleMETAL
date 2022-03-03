@@ -346,6 +346,11 @@ void() sendent_ini_interpolate={
     self.angle2 = self.angle1;
     self.angle1 = self.angles_y;
   }
+  else{
+    //dummy interpolate
+    self.frame2time = 1;
+    self.frame1time = 2;
+  }
   self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
   self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
 };

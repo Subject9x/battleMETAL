@@ -375,17 +375,90 @@ void( vector pos, vector grpCtr, float val, vector mSize, string imgPiece, float
   RENDER ARMOR GRAPH STYLE 1
   used for mech targets
 */
-void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraph={
-  local vector pnl_ctr;
+void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraph={
+  local vector panelOrg;
 
-  local float ct, lt, rt, la, ra, lg;
-  
   local vector backOrg;
   local vector backSize;
   local vector backColor;
   
-  pnl_ctr = vorg;
-  pnl_ctr = gui_calcAlign(pnl_ctr, algn);
+  panelOrg = gui_calcAlign(vorg, algn);
+  
+  if(isTarget){
+    if(CLIENT_target_ent.faction == CLIENT_faction && CLIENT_faction != FACTION_ALL ){
+      backColor = CLR_DEF_IIF_FRIEND_BLD;
+    }
+    else{
+      backColor = CLR_DEF_IFF_ENEMY;
+    }
+  }
+  else{
+    backColor = CLR_DEF_IIF_FRIEND;
+  }
+   
+  if( lblSize != '0 0 0'){
+    backSize_x = ceil(lblSize_x / 16) * 16;
+    backSize_y = ceil(lblSize_y / 16) * 16;
+    backOrg = gui_calcAlignBiased(vSize, lblSize, lalgn, panelOrg, '0.9 0.9'); 
+  }
+  else{
+    backSize_x = (ceil(vSize_x / 16)) * 16;
+    backSize_y = (ceil(vSize_y / 16) + 1) * 16;
+    backOrg_x = backOrg_x - 8;
+    backOrg_y = backOrg_y - 8;
+    backOrg = backOrg + gui_calcAlignCustom(lblOfs, lalgn, panelOrg);
+  }
+  
+  gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+  
+  hud_renderArmorGraphModel(vorg, vSize, algn, lalgn, lblOfs, lblSize, isTarget);
+  
+  //TODO - 3D toggle
+  
+  /*
+    local float ct, lt, rt, la, ra, lg;
+    ct = CLIENT_stat_trg_ct_hp;
+    lt = CLIENT_stat_trg_lt_hp;
+    rt = CLIENT_stat_trg_rt_hp;
+    la = CLIENT_stat_trg_la_hp;
+    ra = CLIENT_stat_trg_ra_hp;
+    lg = CLIENT_stat_trg_lg_hp;  
+    
+    
+    ct = CLIENT_health_center;
+    lt = CLIENT_health_torso_left;
+    rt = CLIENT_health_torso_right;
+    la = CLIENT_health_arm_left;
+    ra = CLIENT_health_arm_right;
+    lg = CLIENT_health_legs;
+  */
+  
+  /*hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget, M_TOR_CENTER );
+  
+  hud_renderArmorMeter('-23 -38', pnl_ctr, lt, '13 31', HUD_MECH_ST, isTarget, M_TOR_LEFT);
+  hud_renderArmorMeter('10 -38', pnl_ctr, rt, '13 31', HUD_MECH_ST, isTarget, M_TOR_RIGHT);
+  
+  hud_renderArmorMeter('-34 -26', pnl_ctr, la, '12 32', HUD_MECH_LA, isTarget, M_ARM_LEFT);
+  hud_renderArmorMeter('22 -26', pnl_ctr, ra, '12 32', HUD_MECH_RA, isTarget, M_ARM_RIGHT);
+  
+  hud_renderArmorMeter('-20 -2', pnl_ctr, lg, '40 64', HUD_MECH_LEG, isTarget, M_LEGS);*/
+  
+};
+
+
+void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraphModel={
+  local vector panelOrg;
+  local vector viewOrg;
+  
+  local float ct, lt, rt, la, ra, lg;
+  
+  local entity modelEntity;
+  local float zTotal;
+  local float zBias;
+  local float zHalf;
+  local float xHalf;
+  
+  panelOrg = gui_calcAlign(vorg, algn);
   
   if(isTarget){
     ct = CLIENT_stat_trg_ct_hp;
@@ -394,7 +467,9 @@ void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lb
     la = CLIENT_stat_trg_la_hp;
     ra = CLIENT_stat_trg_ra_hp;
     lg = CLIENT_stat_trg_lg_hp;
-    backColor = CLR_DEF_IFF_ENEMY;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.mins = CLIENT_target_ent.mins;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.maxs = CLIENT_target_ent.maxs;
+    modelEntity = HUD_MODEL_ARMOR_GRAPH_TARGET;
   }
   else{
     ct = CLIENT_health_center;
@@ -403,33 +478,65 @@ void(vector vorg, float algn, float lFlag, float lalgn, vector lblOfs, vector lb
     la = CLIENT_health_arm_left;
     ra = CLIENT_health_arm_right;
     lg = CLIENT_health_legs;
-    backColor = CLR_DEF_IIF_FRIEND;
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.mins = CLIENT_mech_self.mins;
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.maxs = CLIENT_mech_self.maxs;
+    modelEntity = HUD_MODEL_ARMOR_GRAPH_PLAYER;
   }
   
-  if(lFlag){
-    backOrg = lblOfs;
-    backOrg = gui_calcAlignCustom(backOrg, lalgn, pnl_ctr);
-    backSize = lblSize;
-    gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+  if( isTarget && HUD_MODEL_ARMOR_GRAPH_TARGET == world){
+    return;
   }
-  
-  hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget, M_TOR_CENTER );
-  
-  hud_renderArmorMeter('-23 -38', pnl_ctr, lt, '13 31', HUD_MECH_ST, isTarget, M_TOR_LEFT);
-  hud_renderArmorMeter('10 -38', pnl_ctr, rt, '13 31', HUD_MECH_ST, isTarget, M_TOR_RIGHT);
-  
-  hud_renderArmorMeter('-34 -26', pnl_ctr, la, '12 32', HUD_MECH_LA, isTarget, M_ARM_LEFT);
-  hud_renderArmorMeter('22 -26', pnl_ctr, ra, '12 32', HUD_MECH_RA, isTarget, M_ARM_RIGHT);
-  
-  hud_renderArmorMeter('-20 -2', pnl_ctr, lg, '40 64', HUD_MECH_LEG, isTarget, M_LEGS);
-  
-};
+  viewOrg = pmove_org;
+  clearscene();
+    
+    zBias = (modelEntity.mins_z - modelEntity.maxs_z)/2 - modelEntity.mins_z;
+    zTotal = ((modelEntity.mins_z * -1) + modelEntity.maxs_z) / 2;
+    zHalf = ((modelEntity.mins_z * -1) + modelEntity.maxs_z) / 2;
+    xHalf = modelEntity.maxs_x * 1.5;
+    viewOrg = pmove_org;
+    clearscene();
+      setproperty(VF_ORIGIN, viewOrg + [-100 - xHalf, 0, 5 + modelEntity.mins_z * -1]);	//look towards it.
+      setproperty(VF_ANGLES, '30 0 0');
+      
+      setproperty(VF_MIN, vtodpp([panelOrg_x, panelOrg_y, 0]) );
+      setproperty(VF_SIZE, vtodpp([vSize_x, vSize_y, 0]) );
+      //set an explicit fov. this thing had better be square. DP doesn't support VF_AFOV
+      //setproperty(VF_FOV, [25, atan(viewSize_y/(viewSize_x/tan(25/360*6.28))) * 360/6.28, 0]); 
+      setproperty(VF_FOV, [zTotal, atan(vSize_y/(vSize_x/tan(zTotal/360*6.28))) * 360/6.28, 0]); 
+
+      setproperty(VF_DRAWENGINESBAR, FALSE);
+      setproperty(VF_DRAWWORLD, FALSE);
+      setproperty(VF_DRAWCROSSHAIR, FALSE);
+      
+      setproperty(VF_FOG_DENSITY, 0.0);
+      setproperty(VF_FOG_ALPHA, 0.0);
+      setproperty(VF_FOG_COLOR, '0 0 0');
+      setproperty(VF_FOG_START, 0.0);
+      setproperty(VF_FOG_HEIGHT, 0.0);
+      setproperty(VF_FOG_FADEDEPTH, 0.0);
+      
+      if( isTarget ){
+        hud_armor_model_target_frame(viewOrg + [0, 0, zHalf * -0.75], ct, lt, rt, la, ra, lg);
+      }
+      else{
+        hud_armor_model_player_frame(viewOrg + [0, 0, zHalf * -0.75], ct, lt, rt, la, ra, lg);
+      }
+  renderscene();
+  setproperty(VF_ORIGIN, VIEW_VF_ORG);
+  setproperty(VF_FOV, VIEW_FOV); 
+  setproperty(VF_ORIGIN, pmove_org);	//look towards it.
+  setproperty(VF_ANGLES, input_angles);
+  setproperty(VF_MIN, '0 0 0');
+  setproperty(VF_SIZE, VIEW_ACT);
+  setproperty(VF_DRAWWORLD, TRUE);
+}; 
 
 /*
   2D HUD - RENDER ARMOR DIAGRAM: BUILDING
   you might want to cover this with a nice overlay picture
 */
 void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorBuilding={
+  local vector panelOrg;
   local vector meter;
   local vector tColor;
   
@@ -437,13 +544,21 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   local vector backSize;
   local vector backColor;
   
+  local vector viewOrg;
+  local float zTotal;
+  local float zBias;
+  local float zHalf;
+  local float xHalf;
+  local vector tAngles;
+  local vector cOrg;
+  
   tColor =  gui_getColorForArmor(val);
   
-  vorg = gui_calcAlign(vorg, algn);
+  panelOrg = gui_calcAlign(vorg, algn);
   meter = siz;
   meter_x = meter_x / 2;
   meter_y = meter_y / 2;
-  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
+  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), panelOrg);
   
   if(CLIENT_faction != CLIENT_target_faction && CLIENT_faction != FACTION_ALL){
     backColor = CLR_DEF_IFF_ENEMY;
@@ -452,14 +567,82 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     backColor = CLR_DEF_IIF_FRIEND;
   }
   
-  if(lFlag){
-    backOrg = lblOfs;
-    backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
-    backSize = lblSize;
-    gui_renderPatch9_1_32(backOrg -'8 0', backSize, backColor, max(0.8, HUD_ALPHA), 0);
+   
+  if( lblSize != '0 0 0'){
+    backSize_x = ceil(lblSize_x / 16) * 16;
+    backSize_y = ceil(lblSize_y / 16) * 16;
+    backOrg = gui_calcAlignBiased(siz, lblSize, lalgn, panelOrg, '0.9 0.9'); 
+  }
+  else{
+    backSize_x = (ceil(siz_x / 16)) * 16;
+    backSize_y = (ceil(siz_y / 16) + 1) * 16;
+    backOrg_x = backOrg_x - 8;
+    backOrg_y = backOrg_y - 8;
+    backOrg = backOrg + gui_calcAlignCustom(lblOfs, lalgn, panelOrg);
   }
   
-  drawpic(meter, HUD_BUILD_TRG, siz, tColor, HUD_ALPHA, 0);
+  if( HUD_MODEL_ARMOR_GRAPH_TARGET == world ){
+    return;
+  }
+    
+  zBias = (HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z - HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z)/2 - HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z;
+  zTotal = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2;
+  zHalf = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2;
+  xHalf = HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_x * 1.5;
+  viewOrg = pmove_org;
+  clearscene();
+    setproperty(VF_ORIGIN, viewOrg + [-115 - xHalf, 0, 25 + HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1]);	//look towards it.
+    setproperty(VF_ANGLES, '30 0 0');
+    
+    setproperty(VF_MIN, vtodpp([panelOrg_x, panelOrg_y, 0]) );
+    setproperty(VF_SIZE, vtodpp([siz_x, siz_y, 0]) );
+    //set an explicit fov. this thing had better be square. DP doesn't support VF_AFOV
+    //setproperty(VF_FOV, [25, atan(viewSize_y/(viewSize_x/tan(25/360*6.28))) * 360/6.28, 0]); 
+    setproperty(VF_FOV, [zTotal, atan(siz_y/(siz_x/tan(zTotal/360*6.28))) * 360/6.28, 0]); 
+
+    setproperty(VF_DRAWENGINESBAR, FALSE);
+    setproperty(VF_DRAWWORLD, FALSE);
+    setproperty(VF_DRAWCROSSHAIR, FALSE);
+    
+    setproperty(VF_FOG_DENSITY, 0.0);
+    setproperty(VF_FOG_ALPHA, 0.0);
+    setproperty(VF_FOG_COLOR, '0 0 0');
+    setproperty(VF_FOG_START, 0.0);
+    setproperty(VF_FOG_HEIGHT, 0.0);
+    setproperty(VF_FOG_FADEDEPTH, 0.0);
+    
+     setorigin( HUD_MODEL_ARMOR_GRAPH_TARGET, viewOrg + [0, 0, HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z * -1]);
+    
+    HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = tColor * 2;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.angles = CLIENT_target_ent.angles;
+    
+    tAngles = vectoangles(CLIENT_target_ent.origin - pmove_org);
+  
+    HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y = anglemod(HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y - tAngles_y);      
+    addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
+    
+    //Vehicle has a Turret
+    if( HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter ){
+      local vector turAngl;
+      turAngl = [0, CLIENT_target_ent.angles_y, CLIENT_target_ent.angles_z];
+      makevectors(turAngl);
+      cOrg = HUD_MODEL_ARMOR_GRAPH_TARGET.origin + (v_forward * HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.compOffset_z) +
+          (v_right * HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.compOffset_x) + (v_up * HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.compOffset_y);
+      HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.origin = cOrg;
+      HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.colormod = tColor * 2;
+      HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_x = HUD_MODEL_ARMOR_GRAPH_TARGET.angles_x;
+      HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y = anglemod(CLIENT_target_ent.torsoCenter.angles_y - tAngles_y);
+      addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter);
+    }
+  renderscene();
+  setproperty(VF_ORIGIN, VIEW_VF_ORG);
+  setproperty(VF_FOV, VIEW_FOV); 
+  setproperty(VF_ORIGIN, pmove_org);	//look towards it.
+  setproperty(VF_ANGLES, input_angles);
+  setproperty(VF_MIN, '0 0 0');
+  setproperty(VF_SIZE, VIEW_ACT);
+  setproperty(VF_DRAWWORLD, TRUE);
+  //drawpic(meter, HUD_BUILD_TRG, siz, tColor, HUD_ALPHA, 0);
 };
 
 /*
@@ -467,6 +650,7 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   you might want to cover this with a nice overlay picture
 */
 void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, vector lblOfs, vector lblSize)hud_renderArmorVehicle={
+  local vector panelOrg;
   local vector meter;
   local vector tColor;
   
@@ -474,30 +658,110 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
   local vector backSize;
   local vector backColor;
   
-  tColor =  gui_getColorForArmor(val);
+  local vector viewOrg;
+  local float zTotal;
+  local float zBias;
+  local float zHalf;
+  local float xHalf;
+  local vector tAngles;
+  local vector cOrg;
   
-  vorg = gui_calcAlign(vorg, algn);
+  panelOrg = gui_calcAlign(vorg, algn);
   meter = siz;
   
   meter_x = meter_x / 2;
   meter_y = meter_y / 2;
-  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
+  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), panelOrg);
   
   if(CLIENT_faction != CLIENT_target_faction && CLIENT_faction != FACTION_ALL){
     backColor = CLR_DEF_IFF_ENEMY;
+    tColor = gui_getColorForArmorTarget(val);
   }
   else{
     backColor = CLR_DEF_IIF_FRIEND;
+    tColor = gui_getColorForArmor(val);
   }
   
-  if(lFlag){
-    backOrg = lblOfs;
-    backOrg = gui_calcAlignCustom(backOrg, lalgn, meter);
-    backSize = lblSize;
-    gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+  if( lblSize != '0 0 0'){
+    backSize_x = ceil(lblSize_x / 16) * 16;
+    backSize_y = ceil(lblSize_y / 16) * 16;
+    backOrg = gui_calcAlignBiased(siz, lblSize, lalgn, panelOrg, '0.9 0.9'); 
+  }
+  else{
+    backSize_x = (ceil(siz_x / 16)) * 16;
+    backSize_y = (ceil(siz_y / 16) + 1) * 16;
+    backOrg_x = backOrg_x - 8;
+    backOrg_y = backOrg_y - 8;
+    backOrg = backOrg + gui_calcAlignCustom(lblOfs, lalgn, panelOrg);
   }
   
-  drawpic(meter, HUD_VEC_TRG, siz, tColor, HUD_ALPHA, 0);
+  
+  gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+  
+  if( HUD_MODEL_ARMOR_GRAPH_TARGET != world ){
+    HUD_MODEL_ARMOR_GRAPH_TARGET.mins = CLIENT_target_ent.mins;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.maxs = CLIENT_target_ent.maxs;
+    
+    zBias = (HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z - HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z)/2 - HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z;
+    zTotal = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2.1;
+    zHalf = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2;
+    xHalf = HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_x;
+    viewOrg = pmove_org;
+    clearscene();
+      setproperty(VF_ORIGIN, viewOrg + [-150 - xHalf, 0, 70 + zHalf]);	//look towards it.
+      setproperty(VF_ANGLES, '30 0 0');
+      
+      setproperty(VF_MIN, vtodpp([panelOrg_x, panelOrg_y, 0]) );
+      setproperty(VF_SIZE, vtodpp([siz_x, siz_y, 0]) );
+      //set an explicit fov. this thing had better be square. DP doesn't support VF_AFOV
+      //setproperty(VF_FOV, [25, atan(viewSize_y/(viewSize_x/tan(25/360*6.28))) * 360/6.28, 0]); 
+      setproperty(VF_FOV, [zTotal, atan(siz_y/(siz_x/tan(zTotal/360*6.28))) * 360/6.28, 0]); 
+
+      setproperty(VF_DRAWENGINESBAR, FALSE);
+      setproperty(VF_DRAWWORLD, FALSE);
+      setproperty(VF_DRAWCROSSHAIR, FALSE);
+      
+      setproperty(VF_FOG_DENSITY, 0.0);
+      setproperty(VF_FOG_ALPHA, 0.0);
+      setproperty(VF_FOG_COLOR, '0 0 0');
+      setproperty(VF_FOG_START, 0.0);
+      setproperty(VF_FOG_HEIGHT, 0.0);
+      setproperty(VF_FOG_FADEDEPTH, 0.0);
+      
+      setorigin( HUD_MODEL_ARMOR_GRAPH_TARGET, viewOrg + [0, 0, zHalf * -0.5]);
+      
+      HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = tColor * 2;
+      HUD_MODEL_ARMOR_GRAPH_TARGET.angles = CLIENT_target_ent.angles;
+      
+      tAngles = vectoangles(CLIENT_target_ent.origin - pmove_org);
+    
+      HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y = anglemod(HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y - tAngles_y);      
+      addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
+      
+      //Vehicle has a Turret
+      if( HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter ){
+        local vector turAngl;
+        turAngl = [0, CLIENT_target_ent.angles_y, CLIENT_target_ent.angles_z];
+        makevectors(turAngl);
+        cOrg = HUD_MODEL_ARMOR_GRAPH_TARGET.origin + (v_forward * HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.compOffset_z) +
+            (v_right * HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.compOffset_x) + (v_up * HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.compOffset_y);
+        HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.origin = cOrg;
+        HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.colormod = tColor * 2;
+        HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_x = HUD_MODEL_ARMOR_GRAPH_TARGET.angles_x;
+        HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y = anglemod(CLIENT_target_ent.torsoCenter.angles_y - tAngles_y);
+        addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter);
+      }
+    renderscene();
+    setproperty(VF_ORIGIN, VIEW_VF_ORG);
+    setproperty(VF_FOV, VIEW_FOV); 
+    setproperty(VF_ORIGIN, pmove_org);	//look towards it.
+    setproperty(VF_ANGLES, input_angles);
+    setproperty(VF_MIN, '0 0 0');
+    setproperty(VF_SIZE, VIEW_ACT);
+    setproperty(VF_DRAWWORLD, TRUE);
+  }
+  
+  //drawpic(meter, HUD_VEC_TRG, siz, tColor, HUD_ALPHA, 0);
 };
 
 /*
@@ -678,4 +942,188 @@ float(vector orig, vector srcOrg, vector srcAngl) util_checkPointAngleImpl={
   }
   
   return AIM_FACE_FRONT;
+};
+
+
+void(entity piece, entity root) hud_model_armor_part_frame={
+  local vector offset;
+  offset = root.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y) + (v_forward * piece.compOffset_z);
+  
+  piece.origin = offset;
+  piece.angles_y = root.angles_y;
+  piece.angles_x = 0;
+};
+
+void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_target_frame={
+  local vector tAngles;
+  
+  HUD_MODEL_ARMOR_GRAPH_TARGET.origin = vueOrg;
+  
+  tAngles = vectoangles(CLIENT_target_ent.origin - pmove_org);
+  
+  HUD_MODEL_ARMOR_GRAPH_TARGET.angles = [CLIENT_target_ent.angles_x, anglemod(CLIENT_target_ent.angles_y - tAngles_y), 0];
+  
+  hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter, HUD_MODEL_ARMOR_GRAPH_TARGET);
+  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.origin = vueOrg;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles = [CLIENT_target_ent.torsoCenter.angles_x, anglemod(CLIENT_target_ent.torsoCenter.angles_y - tAngles_y), 0];
+  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.colormod = gui_getColorForArmorTarget(hpCt) * 2;
+  addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter);
+  
+  makevectors(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles);
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_TOR_L) ){
+    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft, HUD_MODEL_ARMOR_GRAPH_TARGET);
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.angles   = [CLIENT_target_ent.torsoLeft.angles_x, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y, 0];  
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.colormod   = gui_getColorForArmorTarget(hpLt) * 2;
+    addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_TOR_R) ){
+    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight, HUD_MODEL_ARMOR_GRAPH_TARGET);
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.angles  = [CLIENT_target_ent.torsoRight.angles_x, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.colormod  = gui_getColorForArmorTarget(hpRt) * 2;  
+    addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_ARM_L) ){
+    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft, HUD_MODEL_ARMOR_GRAPH_TARGET);
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.angles     = [CLIENT_target_ent.armLeft.angles_x, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.colormod     = gui_getColorForArmorTarget(hpLa) * 2;
+    addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_ARM_R) ){
+    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.armRight, HUD_MODEL_ARMOR_GRAPH_TARGET);
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.angles    = [CLIENT_target_ent.armRight.angles_x, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.colormod    = gui_getColorForArmorTarget(hpRa) * 2;
+    addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.armRight);
+  }
+    
+  hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.legs, HUD_MODEL_ARMOR_GRAPH_TARGET);
+  HUD_MODEL_ARMOR_GRAPH_TARGET.legs.angles        = HUD_MODEL_ARMOR_GRAPH_TARGET.angles;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.legs.frame = CLIENT_target_ent.legs.frame;
+    
+  HUD_MODEL_ARMOR_GRAPH_TARGET.legs.colormod = gui_getColorForArmorTarget(hpLg) * 2;
+  addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.legs);
+};
+
+/*
+  receive_sendevent_player.qc - called when SENDFLAG_TARGET changes.
+*/
+void() hud_armor_model_target_ini_mech={
+  setorigin(HUD_MODEL_ARMOR_GRAPH_TARGET, '0 0 0');
+  HUD_MODEL_ARMOR_GRAPH_TARGET.drawmask = 0;
+  
+  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.colormod = '0 1.5 0';
+  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.skin = 0;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.drawmask = 0;
+  setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.model);
+  
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_TOR_L) ){
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.colormod = '0 1.5 0';
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.drawmask = 0;
+    setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.model);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_TOR_R) ){
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.colormod = '0 1.5 0';
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.drawmask = 0;
+    setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.model);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_ARM_L) ){
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.colormod = '0 1.5 0';
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.drawmask = 0;
+    setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft, HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.model);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_ARM_R) ){
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.colormod = '0 1.5 0';
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.drawmask = 0;
+    setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.armRight, HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.model);
+  }
+  HUD_MODEL_ARMOR_GRAPH_TARGET.legs.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.legs.colormod = '0 1.5 0';
+  HUD_MODEL_ARMOR_GRAPH_TARGET.legs.drawmask = 0;
+  setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.legs, HUD_MODEL_ARMOR_GRAPH_TARGET.legs.model);
+};
+
+
+/*
+  receive_sendevent_player.qc - called when SENDFLAG_TARGET changes.
+*/
+void() hud_armor_model_target_ini_vehicle={
+  setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET, HUD_MODEL_ARMOR_GRAPH_TARGET.model);
+  
+  HUD_MODEL_ARMOR_GRAPH_TARGET.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = '0 1.5 0';
+  
+  if(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter){
+    setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.model);
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.colormod = '0 1.5 0';
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.drawmask = 0;
+  }
+};
+
+/*
+  receive_sendevent_player.qc - called when SENDFLAG_TARGET changes.
+*/
+void() hud_armor_model_target_ini_building={
+  setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET, HUD_MODEL_ARMOR_GRAPH_TARGET.model);
+  
+  HUD_MODEL_ARMOR_GRAPH_TARGET.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = '0 1.5 0';  
+  
+  if(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter){
+    setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.model);
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.effects = 0 |EF_FULLBRIGHT | EF_NOSHADOW;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.colormod = '0 1.5 0';
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.drawmask = 0;
+  }
+};
+/*
+  receive_sendevent_player.qc - called when SENDFLAG_TARGET changes.
+*/
+void() hud_armor_model_target_cleanup={
+  local entity removeOldTarget;
+  
+  removeOldTarget = HUD_MODEL_ARMOR_GRAPH_TARGET;
+  HUD_MODEL_ARMOR_GRAPH_TARGET = spawn();
+  HUD_MODEL_ARMOR_GRAPH_TARGET.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  setorigin(HUD_MODEL_ARMOR_GRAPH_TARGET, '0 0 0');
+  
+  if( removeOldTarget.data_type == DATA_MECH){
+    remove(removeOldTarget.legs);
+    if(removeOldTarget.torsoCenter){
+      remove(removeOldTarget.torsoCenter);
+    }
+    if( (removeOldTarget.unitModFlags & MOD_HAS_TOR_L) ){
+      remove(removeOldTarget.torsoLeft);
+    }
+    if( (removeOldTarget.unitModFlags & MOD_HAS_TOR_R) ){
+      remove(removeOldTarget.torsoRight);
+    }
+    if( (removeOldTarget.unitModFlags & MOD_HAS_ARM_L) ){
+      remove(removeOldTarget.armLeft);
+    }
+    if( (removeOldTarget.unitModFlags & MOD_HAS_ARM_R) ){
+      remove(removeOldTarget.armRight);
+    }
+  }
+  else if( removeOldTarget.data_type == DATA_VEHC ){
+    if( removeOldTarget.torsoCenter ){
+      remove(removeOldTarget.torsoCenter);
+    }
+    if( removeOldTarget.legs ){
+      remove(removeOldTarget.legs);
+    }
+  }
+  else if( (removeOldTarget.flags & FL_TURRET) ){
+    if( removeOldTarget.torsoCenter ){
+      remove(removeOldTarget.torsoCenter);
+    }
+    if( removeOldTarget.legs ){
+      remove(removeOldTarget.legs);
+    }
+  }
+  remove(removeOldTarget);
 };

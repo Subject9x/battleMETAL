@@ -4,13 +4,16 @@ Author: Peter Roohr
 Date: 09/09/2020
 Overview:
   Crosshair code file - taken from hud_view for readability / maintenance.
-  
-*/
-
-/*
   Crosshair Type 2
+  
+  //GLOBAL REFERENCES
+    CLIENT_stat_hit_dirs    - hit direction indicators
+    CLIENT_stat_trg_face    - player facing selected target
+    CLIENT_accuracy         - player moving or not
+    CLIENT_target_shield    - target has shield
+    CLIENT_stat_rdr_mode    - player active radar
 */
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair2={
+void() hud_renderCrosshair2={
   local float hitAlpha;
   local vector hitColor;
   
@@ -30,13 +33,13 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   hitColor = HUD_COLOR_DEF;
   hitAlpha = HUD_ALPHA;
   
-  drift = Vector2( 8 * unitAccuracy, 8 * unitAccuracy );
+  drift = Vector2( 8 * CLIENT_accuracy, 8 * CLIENT_accuracy );
   imgSize = '28 28';
   pipSizeH = '15 3';
   pipSizeV = '3 15';
   
-  if( (hitdirection & STAT_HIT_TRG) ){
-    if(trg_shield > 0){
+  if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
+    if(CLIENT_target_shield > 0){
       hitColor = CLR_DEF_ARM_OK;
       hitAlpha = 1;
     }
@@ -49,7 +52,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  if( !lockval ){
+  if( !CLIENT_stat_trg_face || CLIENT_stat_trg_face != AIM_FACE_FRONT ){
     drawpic(imgCenter, "gfx/hud/ret/crosshair2.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   }
 
@@ -73,7 +76,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   drawpic(pipBottom, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
 
   //lock on indicators
-  if( lockval && CLIENT_stat_rdr_mode ){
+  if( CLIENT_stat_trg_face == AIM_FACE_FRONT && CLIENT_stat_rdr_mode ){
     lockSize = '34 34';
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;

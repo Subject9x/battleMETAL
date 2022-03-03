@@ -116,19 +116,12 @@ void(vector ofs) menu_hangar_MechDisplay={
     i_sz_x = floor(i_sz_y * (imgSize_x / imgSize_y));
     
     hofs = Vector2(ofs_x + 10 + 130 - (i_sz_x/2), ofs_y + 2);
-    
-    //disabled for debug
-    //if( MECH_DATA_ICON != "" ){
-      //drawpic(hofs, MECH_DATA_ICON, i_sz, CLR_DEF_ARM_OK * 2, 0.5, 0);
-    //}
-    
+        
     hardpointGraphCenter = Vector2(ofs_x + 130 + 10, ofs_y + (i_sz_y/5.5));
 
     MECHPANEL_CTR = hardpointGraphCenter;
     
     menu_hangar_MechModelDisplay(nofs, '252 225');
-
-
 
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
@@ -137,8 +130,6 @@ void(vector ofs) menu_hangar_MechDisplay={
       
       drawpic( hardpoint.ui_org +'-8 -2', UI_DEF_BOX_64, '16 16', '1 1 1', 1, 0);
       ui_renderHardPointNumber( hardpointItr, hardpoint.ui_org );
-      
-      
       
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;

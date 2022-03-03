@@ -161,9 +161,6 @@ void() player_predraw={
   local vector cacheOrg;
   local float lerpDiff;
   local float lerp;
-  local vector hudAng;
-  local vector strutOrg;
-  local vector consOrg;
   
   if( self.data_type == DATA_MECH ){
     if (self.nextthink != self.frame1time){
@@ -277,53 +274,19 @@ void() player_predraw={
     
     if(self.clientLocalId == player_localentnum){
       if( self.deadflag == DEAD_NO ){
-        if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
-          hudAng = HUD_FIXED_ANGLE;
-          hudStruts.angles_y = HUD_FIXED_ANGLE_y;
-          hudStruts.angles_x = 0;
-          hudStruts.angles_z = 0;
-          
-          hudConsole.angles_y = HUD_FIXED_ANGLE_y;
-          hudConsole.angles_x = 33;
-          hudConsole.angles_z = 0;
-        }
-        else{
-          hudAng = input_angles;
-          hudAng_x = 0;
-          
-          hudStruts.angles_y = input_angles_y;
-          hudStruts.angles_x = 0;
-          hudStruts.angles_z = 0;
-          
-          hudConsole.angles_y = input_angles_y;
-          hudConsole.angles_x = 33;
-          hudConsole.angles_z = 0;
-        }
-        makevectors(hudAng);
-        strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
-        setorigin(hudStruts, strutOrg);
+        hud_model_cockpit_draw_frame();
         
-        consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
-        setorigin(hudConsole, consOrg);
-        if( cvar("chase_active") ){
-          hudStruts.alpha = 0.0;
-          hudConsole.alpha = 0.0;
+        //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+        if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){      
+          self.unit_light_org1 = self.unit_light_org2;
+          self.unit_light_org2 = self.unit_light_org;
+          self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+          adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_FULLDYNAMIC);
         }
-        else{
-          hudStruts.alpha = 1.0;
-          hudConsole.alpha = 1.0;
-        }
-      }
-      //apparently when menu running, these just get STACCCCCCKED and murder framerate.
-      if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){      
-        self.unit_light_org1 = self.unit_light_org2;
-        self.unit_light_org2 = self.unit_light_org;
-        self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
-        adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_FULLDYNAMIC);
       }
     }
     else{
-      if(self.headlight && MENU_PROG_OFF){
+      if(self.headlight && MENU_PROG_OFF && self.deadflag == DEAD_NO){
         self.unit_light_org1 = self.unit_light_org2;
         self.unit_light_org2 = self.unit_light_org;
         self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
@@ -421,41 +384,11 @@ void( float mech_id ) sendevent_player_mech={
   
   //hud shenanigans
   if( self.clientLocalId == player_localentnum ){
-    CLIENT_server_ent = self;
-    HUD_VIEW_CL_ANGLES = self.angles;
-    HUD_VIEW_OFS = self.cockpit.compOffset_z;
-    hudStruts = spawn();
-    hudStruts.effects = hudStruts.effects | EF_NOSHADOW;
-    setmodel(hudStruts, self.weaponmodel);
-    setorigin(hudStruts, pmove_org);
-    hudStruts.angles_y = input_angles_y;
-    hudStruts.angles_x = 0;
-    hudStruts.angles_z = 0;
-    hudStruts.drawmask = MASK_NORMAL;
-    hudStruts.alpha = 1.0;
+    //MODELS - COCKPIT
+    hud_model_cockpit_ini();
     
-    hudConsole = spawn();
-    hudConsole.effects = hudConsole.effects | EF_NOSHADOW;
-    setmodel(hudConsole, self.hud_model);
-    setorigin(hudConsole, pmove_org);
-    hudConsole.angles_y = input_angles_y;
-    hudConsole.angles_x = 45;
-    hudConsole.angles_z = 0;
-    hudConsole.drawmask = MASK_NORMAL;
-    hudConsole.alpha = 1.0;
-    
-    if( cvar("chase_active") ){
-      if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
-        HUD_EXTERNAL_CAM_ACTIVE = FALSE;
-        cvar_set("chase_active", "0");
-      }
-      else{
-        HUD_EXTERNAL_CAM_ACTIVE = TRUE;
-        hudConsole.alpha = 0.0;
-        hudStruts.alpha = 0.0;
-      }
-    }
-    HUD_FIXED_ANGLE = self.angles;
+    //MODELS - PLAYER ARMOR
+    hud_model_armor_player_ini();
   }
   
   self.shieldEffectTime = 0;
@@ -497,8 +430,8 @@ void() sendevent_handle_player_death={
     wep = nextWep;
   }
   if(self.clientLocalId == player_localentnum){
-    remove(hudConsole);
-    remove(hudStruts);
+    remove(HUD_MODEL_CONSOLE);
+    remove(HUD_MODEL_STRUTS);
   }
 };
 
@@ -640,6 +573,10 @@ void(float repairValue) sendevent_player_repair={
     wep = wep.w_slot;
   }
 };
+
+
+//quick ref
+void() sendevent_player_target;
 
 void( float isNew, float changeFlags) sendent_handle_player={
   local entity controlPlayer;
@@ -935,8 +872,91 @@ void( float isNew, float changeFlags) sendent_handle_player={
       CLIENT_energy = 0;
     }
     CLIENT_target_ent = self.enemy;
+    
+    if( (changeFlags & SENDFLAG_TARGET) ){
+      if( CLIENT_target_ent == world ){
+        if( HUD_MODEL_ARMOR_GRAPH_TARGET ){
+          hud_armor_model_target_cleanup();
+        }
+      }
+      else{
+        sendevent_player_target();
+      }
+    }
+    
+    CLIENT_mech_self = self;
     sendevent_player_accuracy( (prevOrg != self.origin) );
   }
+};
+
+/*
+  Player target - clean up model;
+*/
+
+
+/*
+  Player acquired a new target, findthe type and config the 3D Model
+*/
+void() sendevent_player_target={
+  local entity oSelf;
+  local entity cleanUp;
+  local entity nextEnt;
+
+  if( HUD_MODEL_ARMOR_GRAPH_TARGET ){
+    //clean up old model
+    hud_armor_model_target_cleanup();
+  }
+  else{
+    HUD_MODEL_ARMOR_GRAPH_TARGET = spawn();
+  }
+
+  
+  oSelf = self;
+  self = HUD_MODEL_ARMOR_GRAPH_TARGET;
+    self.data_idx = CLIENT_target_ent.data_idx;
+    self.data_type = CLIENT_target_ent.data_type;
+    self.flags = 0 | CLIENT_target_ent.flags;
+    self.flags = self.flags - (self.flags & FL_MONSTER) - (self.flags & FL_UNIT);
+    if( self.data_type == DATA_MECH ){;
+      data_sync_new_mech_ai( self.data_idx );
+      hud_armor_model_target_ini_mech();
+    }
+    else if(self.data_type == DATA_VEHC){
+      data_sync_new_vehicle( self.data_idx );
+      self.unitModFlags = rint(0);
+      hud_armor_model_target_ini_vehicle();
+    }
+    else if(self.data_type == DATA_BLD){
+      if( (self.flags & FL_TURRET) ){
+        data_sync_new_turret( self.data_idx );
+      }
+      else{
+        data_sync_new_building( self.data_idx );
+      }
+      self.unitModFlags = rint(0);
+      hud_armor_model_target_ini_building();
+    }
+    if(self.hardpoint_cnt > 0 ){
+      nextEnt = self.w_slot;
+      while(nextEnt){
+        cleanUp = nextEnt;
+        nextEnt = nextEnt.w_slot;
+        remove(cleanUp);
+      }
+      self.hardpoint_cnt = 0;
+    }
+    self.skin = 0;
+    self.solid = SOLID_NOT;
+    self.movetype = MOVETYPE_NONE;
+    self.takedamage = DAMAGE_NO;
+    self.drawmask = 0;
+    self.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    self.angles = CLIENT_target_ent.angles;
+    self.mins = CLIENT_target_ent.mins;
+    self.maxs = CLIENT_target_ent.maxs;
+    self.origin = '0 0 0';
+    self.interpolate_entity = SUB_Null;
+  self = oSelf;
 };
 
 void( float hasMoved ) sendevent_player_accuracy={

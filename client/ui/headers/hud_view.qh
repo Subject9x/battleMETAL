@@ -69,11 +69,14 @@ string HUD_TAGS[22];
 
 //HUD GLOBALS===============================
   //CLIENT_stat_lock_state -set if player has lock missiles, this will alter reticle color when acquiring targets
+  entity HUD_MODEL_ARMOR_GRAPH_PLAYER;
+  entity HUD_MODEL_ARMOR_GRAPH_TARGET;
+  
   float HUD_LOCK_FLAG;
   vector HUD_FIXED_ANGLE;
   float VIEW_OBS_ID;
-  entity hudStruts;
-  entity hudConsole;
+  entity HUD_MODEL_STRUTS;
+  entity HUD_MODEL_CONSOLE;
   
   float HUD_VIEW_OFS;
   vector HUD_VIEW_CL_ANGLES;
@@ -212,12 +215,6 @@ entity HUD_DATA_weapon;
 //void(float lockTime) hud_lock_control_start;  //2.0.0: DEPRECATED lock-on not timer-based anymore
 //void() hud_lock_frame; 
 
-void() hud_renderCrosshairDisabled;
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshairs;
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair1; //I have no regrets for these
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair2;
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair3;
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair4;
 //void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair5;
 
 void(float hitDirBit) hud_renderDirectionHit;
@@ -228,7 +225,8 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading;
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient, vector mColor) hud_renderShield;
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, vector mColor) hud_renderEnergy;
 void(vector grpCtr, vector pos, float val, vector mSize, string imgPiece, float thatTarget, float partFlag) hud_renderArmorMeter;
-void(vector pos, float algn, float lFlag, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraph;
+void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraph;
+void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraphModel; 
 void(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
 void(entity blip, float plrFaction, float radRange ) hud_renderRadarContact;
 void(vector navOrg, float navState, float radRange ) hud_renderRadarNav;
@@ -273,6 +271,20 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield;
 void() data_hud_frame;
 void() data_hud_fps_cam;
 void() data_hud_external;
+
+//3D HUD Model fun
+void() hud_model_cockpit_ini;
+void() hud_model_armor_player_ini;
+void() hud_armor_model_target_ini_mech;
+void() hud_armor_model_target_ini_vehicle;
+void() hud_armor_model_target_ini_building;
+void() hud_model_cockpit_draw_frame;
+void() hud_armor_model_target_cleanup;
+void( entity srcEnt, entity dstEnt) hud_model_armor_config;
+void(entity piece, entity root) hud_model_armor_part_frame;
+void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_player_frame;
+void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_target_frame;
+
 
 //inspired by original inFront function
 float(entity trg) util_checkPointAngle;

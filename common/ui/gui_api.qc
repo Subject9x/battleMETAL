@@ -521,12 +521,56 @@ vector(vector offSet, float algn, vector org) gui_calcAlignCustom={
   }
   
   if((algn & VIEW_CTX)){
-   toSender_x = org_x + offSet_x;
+    toSender_x = org_x + offSet_x;
   }
   if((algn & VIEW_CTY)){
     toSender_y = org_y + offSet_y;
   }
   
+  return toSender;
+};
+
+/*
+  When 1 item is larger than the other, and wants to be on a certain side of the parent item.
+*/
+vector(vector parentSize, vector dstSize, float algn, vector org, vector bias) gui_calcAlignBiased={
+  local vector toSender;
+  local vector diff;
+  
+  diff = '0 0';
+  
+  if( dstSize_x > parentSize_x ){
+    if( (algn & VIEW_CTX) ){
+      diff_x = (dstSize_x - parentSize_x) * 0.5;
+    }
+    else if( (algn & VIEW_RGT) ){
+      diff_x = (parentSize_x - dstSize_x) * (1.3 - bias_x);
+    }
+    else{
+      diff_x = (dstSize_x - parentSize_x) * bias_x;
+    }
+  }
+  else{
+    diff_x = parentSize_x * (1.0 - bias_x);
+  }
+  
+  if( dstSize_y > parentSize_y ){
+  
+    if( (algn & VIEW_CTY) ){
+      diff_y = (dstSize_y - parentSize_y) * 0.5;
+    }
+    else if( (algn & VIEW_BOT) ){
+      diff_y = (parentSize_y - dstSize_y) * (1.3 - bias_y);
+    }
+    else{
+      diff_y = (dstSize_y - parentSize_y) * bias_y;
+    }
+  }
+  else{
+    diff_y = parentSize_y * (1.0 - bias_y);
+  }
+  
+  toSender = gui_calcAlignCustom( diff, algn, org );
   return toSender;
 };
 

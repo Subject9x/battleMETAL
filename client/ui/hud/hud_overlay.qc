@@ -238,3 +238,213 @@ void(float hitDirBit) hud_renderDirectionHit={
     gui_renderTintImage(TRUE, orgRight, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
   }
 };
+
+/*
+  called in receive_sendent_player.qc
+    SCOPE[
+      self = player mech entity.
+    ]
+*/
+void() hud_model_cockpit_ini={
+
+  CLIENT_server_ent = self;
+  HUD_VIEW_CL_ANGLES = self.angles;
+  HUD_VIEW_OFS = self.cockpit.compOffset_z;
+  
+  HUD_MODEL_STRUTS = spawn();
+  
+  HUD_MODEL_STRUTS.effects = HUD_MODEL_STRUTS.effects | EF_NOSHADOW;
+  setmodel(HUD_MODEL_STRUTS, self.weaponmodel);
+  setorigin(HUD_MODEL_STRUTS, pmove_org);
+  HUD_MODEL_STRUTS.angles_y = input_angles_y;
+  HUD_MODEL_STRUTS.angles_x = 0;
+  HUD_MODEL_STRUTS.angles_z = 0;
+  HUD_MODEL_STRUTS.drawmask = MASK_NORMAL;
+  HUD_MODEL_STRUTS.alpha = 1.0;
+  
+  HUD_MODEL_CONSOLE = spawn();
+  
+  HUD_MODEL_CONSOLE.effects = HUD_MODEL_CONSOLE.effects | EF_NOSHADOW;
+  setmodel(HUD_MODEL_CONSOLE, self.hud_model);
+  setorigin(HUD_MODEL_CONSOLE, pmove_org);
+  HUD_MODEL_CONSOLE.angles_y = input_angles_y;
+  HUD_MODEL_CONSOLE.angles_x = 45;
+  HUD_MODEL_CONSOLE.angles_z = 0;
+  HUD_MODEL_CONSOLE.drawmask = MASK_NORMAL;
+  HUD_MODEL_CONSOLE.alpha = 1.0;
+  
+  if( cvar("chase_active") ){
+    if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
+      HUD_EXTERNAL_CAM_ACTIVE = FALSE;
+      cvar_set("chase_active", "0");
+    }
+    else{
+      HUD_EXTERNAL_CAM_ACTIVE = TRUE;
+      HUD_MODEL_CONSOLE.alpha = 0.0;
+      HUD_MODEL_STRUTS.alpha = 0.0;
+    }
+  }
+  HUD_FIXED_ANGLE = self.angles;
+};
+
+/*
+  called in receive_sendent_player.qc - player_predraw()
+    SCOPE[
+      self = player mech entity.
+    ]
+*/
+void() hud_model_cockpit_draw_frame={
+  local vector hudAng;
+  local vector strutOrg;
+  local vector consOrg;
+  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
+    hudAng = HUD_FIXED_ANGLE;
+    HUD_MODEL_STRUTS.angles_y = HUD_FIXED_ANGLE_y;
+    HUD_MODEL_STRUTS.angles_x = 0;
+    HUD_MODEL_STRUTS.angles_z = 0;
+    
+    HUD_MODEL_CONSOLE.angles_y = HUD_FIXED_ANGLE_y;
+    HUD_MODEL_CONSOLE.angles_x = 33;
+    HUD_MODEL_CONSOLE.angles_z = 0;
+  }
+  else{
+    hudAng = input_angles;
+    hudAng_x = 0;
+    
+    HUD_MODEL_STRUTS.angles_y = input_angles_y;
+    HUD_MODEL_STRUTS.angles_x = 0;
+    HUD_MODEL_STRUTS.angles_z = 0;
+    
+    HUD_MODEL_CONSOLE.angles_y = input_angles_y;
+    HUD_MODEL_CONSOLE.angles_x = 33;
+    HUD_MODEL_CONSOLE.angles_z = 0;
+  }
+  makevectors(hudAng);
+  strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
+  setorigin(HUD_MODEL_STRUTS, strutOrg);
+  
+  consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
+  setorigin(HUD_MODEL_CONSOLE, consOrg);
+  if( cvar("chase_active") ){
+    HUD_MODEL_STRUTS.alpha = 0.0;
+    HUD_MODEL_CONSOLE.alpha = 0.0;
+  }
+  else{
+    HUD_MODEL_STRUTS.alpha = 1.0;
+    HUD_MODEL_CONSOLE.alpha = 1.0;
+  }
+};
+
+/*
+  HUD MODEL stuff
+*/
+void( entity srcEnt, entity dstEnt) hud_model_armor_config={
+  if(srcEnt.model){
+    dstEnt.model = srcEnt.model;
+    setmodel(dstEnt, dstEnt.model);
+    dstEnt.model = "";
+  }
+  
+  dstEnt.colormod = '0 1.5 0';
+  dstEnt.alpha = 1.0;
+  dstEnt.effects = 0| EF_FULLBRIGHT | EF_NOSHADOW;
+  dstEnt.compOffset_x = srcEnt.compOffset_x; 
+  dstEnt.compOffset_y = srcEnt.compOffset_y; 
+  dstEnt.compOffset_z = srcEnt.compOffset_z; 
+  dstEnt.partParentId = srcEnt.partParentId;
+  dstEnt.solid = SOLID_NOT;
+  dstEnt.takedamage = DAMAGE_NO;
+  dstEnt.movetype = MOVETYPE_NONE;
+  dstEnt.drawmask = 0;
+};
+
+/*
+  called in receive_sendent_player.qc
+    SCOPE[
+      self = player mech entity.
+    ]
+*/
+void() hud_model_armor_player_ini={
+  if( !HUD_MODEL_ARMOR_GRAPH_PLAYER ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER = spawn();
+  }
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.solid = SOLID_NOT;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.movetype = MOVETYPE_NONE;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags = 0 | self.unitModFlags;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.mins = self.mins;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.maxs = self.maxs;
+  
+  if( self.torsoCenter && !HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter = spawn();
+    hud_model_armor_config( self.torsoCenter, HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter);
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && !HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft = spawn();
+    hud_model_armor_config( self.torsoLeft, HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft);
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && !HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight = spawn();
+    hud_model_armor_config( self.torsoRight, HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && !HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft = spawn();
+    hud_model_armor_config( self.armLeft, HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && !HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight = spawn();
+    hud_model_armor_config( self.armRight, HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight);
+  }
+  if( !HUD_MODEL_ARMOR_GRAPH_PLAYER.legs ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.legs = spawn();
+  }
+  hud_model_armor_config( self.legs, HUD_MODEL_ARMOR_GRAPH_PLAYER.legs);
+};
+
+/*  
+  Draw player mech as 3D Model with armor coloring.
+*/
+void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_player_frame={
+  
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = vueOrg;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir = anglemod(HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir + frametime*33);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = [0, HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir, 0];
+  
+  makevectors(HUD_MODEL_ARMOR_GRAPH_PLAYER.angles);
+  
+  hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter, HUD_MODEL_ARMOR_GRAPH_PLAYER);
+  
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter.angles = [CLIENT_mech_self.torsoCenter.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter.colormod = gui_getColorForArmor(hpCt) * 2;
+  addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter);
+  
+  if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_TOR_L) ){
+    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft, HUD_MODEL_ARMOR_GRAPH_PLAYER);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft.angles   = [CLIENT_mech_self.torsoLeft.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];  
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft.colormod   = gui_getColorForArmor(hpLt) * 2;
+    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_TOR_R) ){
+    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight, HUD_MODEL_ARMOR_GRAPH_PLAYER);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight.angles  = [CLIENT_mech_self.torsoRight.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight.colormod  = gui_getColorForArmor(hpRt) * 2;  
+    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_ARM_L) ){
+    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft, HUD_MODEL_ARMOR_GRAPH_PLAYER);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft.angles     = [CLIENT_mech_self.armLeft.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft.colormod     = gui_getColorForArmor(hpLa) * 2;
+    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft);
+  }
+  if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_ARM_R) ){
+    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight, HUD_MODEL_ARMOR_GRAPH_PLAYER);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight.angles    = [CLIENT_mech_self.armRight.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight.colormod    = gui_getColorForArmor(hpRa) * 2;
+    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight);
+  }
+    
+  hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.legs, HUD_MODEL_ARMOR_GRAPH_PLAYER);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs.angles        = HUD_MODEL_ARMOR_GRAPH_PLAYER.angles;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs.frame = CLIENT_mech_self.legs.frame;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs.colormod = gui_getColorForArmor(hpLg) * 2;
+  addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.legs);
+};

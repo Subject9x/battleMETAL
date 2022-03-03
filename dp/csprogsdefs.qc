@@ -239,6 +239,8 @@ const float VF_FOG_END      = 209; //(float)
 const float VF_FOG_HEIGHT   = 210; //(float)
 const float VF_FOG_FADEDEPTH= 211; //(float)
 
+const float VF_MAINVIEW     = 400; //(float)
+const float VF_MINFPS_QUALITY = 401; //float)
 
 /*
   Having the full list of these would have helped from the start...

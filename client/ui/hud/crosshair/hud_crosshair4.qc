@@ -5,13 +5,16 @@ Date: 09/09/2020
 Overview:
   Crosshair code file - taken from hud_view for readability / maintenance.
   
-*/
-
-
-/*
   Crosshair Type 4
+  
+  //GLOBAL REFERENCES
+    CLIENT_stat_hit_dirs    - hit direction indicators
+    CLIENT_stat_trg_face    - player facing selected target
+    CLIENT_accuracy         - player moving or not
+    CLIENT_target_shield    - target has shield
+    CLIENT_stat_rdr_mode    - player active radar
 */
-void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair4={  
+void() hud_renderCrosshair4={  
   
   local float hitAlpha;
   local vector hitColor;
@@ -19,7 +22,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   local vector imgSize;
   local vector pipSize;
   local vector lockSize;
-  local vector drift;
+  //local vector drift;
   
   local vector imgCenter;
   local vector pipCenter;
@@ -29,7 +32,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   hitColor = HUD_COLOR_DEF;
   hitAlpha = HUD_ALPHA;
   
-  drift = Vector2( 8 * unitAccuracy, 8 * unitAccuracy );
+  //drift = Vector2( 8 * CLIENT_accuracy, 8 * CLIENT_accuracy );
   imgSize = '16 16';
 
   //base image
@@ -38,8 +41,8 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
 
   drawpic(imgCenter, "gfx/hud/ret/crosshair4.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   
-  if( (hitdirection & STAT_HIT_TRG) ){
-    if(trg_shield > 0){
+  if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
+    if(CLIENT_target_shield > 0){
       hitColor = CLR_DEF_ARM_OK;
       hitAlpha = 1;
     }
@@ -55,7 +58,7 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   
 
   //lock on indicators
-  if( lockval && CLIENT_stat_rdr_mode ){
+  if( CLIENT_stat_trg_face == AIM_FACE_FRONT && CLIENT_stat_rdr_mode ){
     lockSize = '34 34';
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
