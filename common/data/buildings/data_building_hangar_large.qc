@@ -165,9 +165,9 @@ void() building_human_hangar={
   
   self.th_die = hangar_die1;
   self.use = multi_trigger;
-  self.solid = SOLID_SLIDEBOX;
+  self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_NONE;
-  util_setModel( "q3mdl/testball.md3", self.skin, EF_LOWPRECISION) ;
+  util_setModel( "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3", self.skin, EF_LOWPRECISION) ;
   setsize(self, '-80 -80 0', '80 80 88');
   
   if( !self.health) {

@@ -86,8 +86,8 @@ void() building_guard_tower={
   self.vec_name = "Guard Tower";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 1;
-  macro_set_collider(DAMAGE_YES, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  macro_set_model("q3mdl/testball.md3", self.skin,0)
+  macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
+  macro_set_model("q3mdl/buildings/towersmall/guardtower.obj", self.skin,0)
   setsize(self, '-22 -22 0', '22 22 40');
   
   self.deadflag = DEAD_NO;

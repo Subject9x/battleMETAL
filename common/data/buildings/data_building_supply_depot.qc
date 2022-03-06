@@ -160,9 +160,9 @@ void() building_supply_depot={
   self.vec_name = "Supply Depot";
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;
-  macro_set_model("q3mdl/testball.md3", self.skin, 0)
-  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
+  macro_set_model("q3mdl/buildings/depot/building_depot.obj", self.skin, 0)
   setsize(self, '-64 -64 0', '64 64 48');
+  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
   
   self.th_die = hangar_depot_die1;
   self.use = multi_trigger;

@@ -163,8 +163,8 @@ void() building_barracks={
   self.vec_name = "Barracks";
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;
-  macro_set_model("q3mdl/testball.md3", self.skin, 0)
-  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
+  macro_set_model("q3mdl/buildings/barracks/building_barracks.obj", self.skin, 0)
+  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
   setsize(self, '-60 -60 0', '60 60 37');
   
   self.th_die = hangar_barracks_die1;

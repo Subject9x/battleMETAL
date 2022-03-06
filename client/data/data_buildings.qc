@@ -13,7 +13,6 @@ Overview:
 */
 void( float dataID ) data_sync_new_building={
   
-  self.solid = SOLID_SLIDEBOX;
   switch(dataID){
     case UI_BUILDING_radar:
       data_building_radar();
@@ -46,6 +45,7 @@ void( float dataID ) data_sync_new_building={
       data_building_supply_depot();
       break;
   }
+  self.solid = SOLID_BSP;
 };
 
 void() data_building_radar={

@@ -186,8 +186,8 @@ void() building_human_power={
   self.vec_size = 3;
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  macro_set_model("q3mdl/testball.md3", self.skin, 0) 
-  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
+  macro_set_model("q3mdl/buildings/power_plant/mdl_bld_h_power.md3", self.skin, 0) 
+  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
   setsize(self, '-80 -80 0', '80 80 58');
   
   if( !self.health) {

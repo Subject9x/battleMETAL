@@ -140,8 +140,8 @@ void() building_human_fuel={
   self.vec_name = "Fuel Tank";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
-  macro_set_model("q3mdl/testball.md3", self.skin, 0)
-  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
+  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
+  macro_set_model("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0)
   setsize(self, '-40 -40 0', '40 40 64');
   setorigin(self, self.origin);
   self.scale = 1;
