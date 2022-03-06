@@ -46,7 +46,7 @@ float( float isNew, float changeFlags ) send_scenery={
 void() scenery_obj={
   self.classname = "scenery";
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_BBOX;
+  self.solid = SOLID_BSP;
   self.model = precache_model(self.model);
   setmodel( self, self.model );
   setsize( self, self.mins, self.maxs );
@@ -98,6 +98,61 @@ void() doodad_rocks_desert_3={
 };
 
 void() doodad_rocks_desert_random={
+  switch(  max(1, rint(random() * 3) )){
+    default:
+      doodad_rocks_desert_1();
+      return;
+    case 2:
+      doodad_rocks_desert_2();
+      return;
+    case 3:
+      doodad_rocks_desert_3();
+      return;
+  }
+};
+
+
+void() doodad_rocks_column_1={
+  self.model = "q3mdl/map/rocks/rockcol1.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (5 + (crandom() * 5) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (5 + (crandom() * 5) );
+  }
+  scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin);
+  self.SendEntity = send_scenery;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+};
+void() doodad_rocks_column_2={
+  self.model = "q3mdl/map/rocks/rockcol2.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (5 + (crandom() * 5) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (5 + (crandom() * 5) );
+  }
+  scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin);
+  self.SendEntity = send_scenery;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+};
+void() doodad_rocks_column_3={
+  self.model = "q3mdl/map/rocks/rockcol3.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (1 + (crandom() * 1) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (1 + (crandom() * 1) );
+  }
+  scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin );
+  self.SendEntity = send_scenery;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+};
+
+void() doodad_rocks_col_random={
   switch(  ceil(random() * 3) ){
     default:
       doodad_rocks_desert_1();
@@ -110,6 +165,7 @@ void() doodad_rocks_desert_random={
       return;
   }
 };
+
 
 void() doodad_ruins_urban_small={
   self.model = "q3mdl/map/ruins/ruin_small.obj";
