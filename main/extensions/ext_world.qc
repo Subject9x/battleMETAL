@@ -884,7 +884,7 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
       }*/
       
       if( trEdgeAngl_x > NODEGRAPH_EDGE_ANGLE_MIN && trEdgeAngl_x < NODEGRAPH_EDGE_ANGLE_MAX){
-        //cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(trEdgeAngl_x), "| seg ", ftos(edgeLenItr)));//debug
+        cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(trEdgeAngl_x), "| seg ", ftos(edgeLenItr)));//debug
         edgeCheck = FALSE;
       }
       //holding off on this change for a second.
@@ -894,6 +894,17 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
       edgeSegA = edgeSegB;
     }
     self.dphitcontentsmask = rint(0);
+    if(edgeCheck){
+      //run tracebox for corners
+      tracebox(node.origin, '-32 -32 -0.5', '32 32 0.5' , targNode.origin, FALSE, node);
+      if(trace_fraction == 1.0){
+        edgeCheck = TRUE;        
+      }
+      else{
+        edgeCheck = FALSE;        
+      cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " tracebox "));//debug
+      }
+    }
     return edgeCheck;
   }
   else{
@@ -1030,10 +1041,12 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
     }
   }
   if( edgeMax == 0 ){
-    //fputs(fileData, "NO EDGES FOUND");
+    fputs(fileData, sprintf("Node %u at (%0.2f %0.2f %0.2f) - NO EDGES FOUND\n", node.data_idx, node.origin_x, node.origin_y, node.origin_z));
   }
-  strLineData = strcat(strLineData, "\n");
-  fputs(fileData, strLineData);
+  else{
+    strLineData = strcat(strLineData, "\n");
+    fputs(fileData, strLineData);
+  }
 };
 
 /*
