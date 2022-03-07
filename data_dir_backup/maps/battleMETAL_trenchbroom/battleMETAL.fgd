@@ -153,6 +153,17 @@ For best results, place manually as close to ground as possible!" [
   ]
 ]
 
+@Baseclass = WorldTypeSkinChoice [
+  skin(choices) : "World Type to Skin" : 0 =
+	[
+		0 : "Desert"
+		1 : "Ice"
+		2 : "City"
+		3 : "Badlands"
+		4 : "Tundra"
+	]
+]
+
 //---------------------------------------------------------------------------------------------------------------------
 
 //WORLDSPAWN---------------------------------------------------------------------------------------------------------------------
@@ -1321,10 +1332,16 @@ button0 & 1 dont work when target is set." [
   ]
 ]
 
-@PointClass base(BaseDoodadRocks) size(-74 -74 -14, 74 74 104) = doodad_rocks_desert_1 : "A desert rock, model #1. Doodad is static, BSP collision, non-interactive." []
-@PointClass base(BaseDoodadRocks) size(-79 -79 -27, 79 79 120) = doodad_rocks_desert_2 : "A desert rock, model #2. Doodad is static, BSP collision, non-interactive." []
-@PointClass base(BaseDoodadRocks) size(-68 -68 -7, 68 68 72) = doodad_rocks_desert_3 : "A desert rock, model #3. Doodad is static, BSP collision, non-interactive." []
-@PointClass base(BaseDoodadRocks) size(-79 -79 -27, 79 79 120) = doodad_rocks_desert_random : "A desert rock, model random 1 - 3. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-37.5 -39.0 -29.25, 35.0 38.0 44.25) = doodad_rocks_desert_1 : "A desert rock, model #1. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-38.0 -37.5 -29.0, 39.25 39.0 36.5) = doodad_rocks_desert_2 : "A desert rock, model #2. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-42.0 -41.0 -32.5, 39.0 42.25 38.0) = doodad_rocks_desert_3 : "A desert rock, model #3. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-42.0 -41.0 -32.5, 39.0 42.25 38.0) = doodad_rocks_desert_random : "A desert rock, model random 1 - 3. Doodad is static, BSP collision, non-interactive." []
+
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-60.5 -83.0 -77.0, 64.0 80.0 95.5) = doodad_rocks_column_1 : "A desert rock, model #1. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-67.25 -64.25 -70.0, 70.0 61.0 70.0) = doodad_rocks_column_2 : "A desert rock, model #2. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-75.0 -84.25 -68.0, 83.0 79.0 75.0) = doodad_rocks_column_3 : "A desert rock, model #3. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-75.0 -84.25 -68.0, 83.0 79.0 75.0) = doodad_rocks_col_random : "A desert rock, model random 1 - 3. Doodad is static, BSP collision, non-interactive." []
+
 
 @PointClass base(BaseDoodadRocks) size(-32 -32 0, 32 32 48) = doodad_ruins_urban_small : "urban ruins - small size. Doodad is static, no collision, non-interactive." []
 @PointClass base(BaseDoodadRocks) size(-48 -48 0, 48 48 64) = doodad_ruins_urban_medium : "urban ruins - medium size. Doodad is static, no collision, non-interactive." []

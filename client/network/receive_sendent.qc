@@ -144,17 +144,23 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    setmodel( self, modelnameforindex(ReadCoord()) );
+    self.skin = ReadByte();
+    self.modelindex = ReadShort();
   }
   
   if(isNew){
-    setsize(self, self.mins, self.maxs);
-    setorigin(self, self.origin);
-    self.drawmask = MASK_ENGINE;
     self.solid = SOLID_BSP;
     self.movetype = MOVETYPE_NONE;
     self.deadflag = DEAD_NO;
-    self.data_type = DATA_BLD;
+    setmodel( self, modelnameforindex(self.modelindex) );
+    setsize(self, self.mins, self.maxs);
+    self.skin = self.skin;
+    
+    cons_logAFloat(modelnameforindex(self.modelindex), self.skin);
+    
+    setorigin(self, self.origin);
+    self.drawmask = MASK_ENGINE;
+    //self.data_type = DATA_BLD;
   }
 };
 
