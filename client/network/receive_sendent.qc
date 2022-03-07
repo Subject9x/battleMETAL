@@ -148,6 +148,10 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
     self.modelindex = ReadShort();
   }
   
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    //todo - dead event.
+  }
+  
   if(isNew){
     self.solid = SOLID_BSP;
     self.movetype = MOVETYPE_NONE;
@@ -155,12 +159,8 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
     setmodel( self, modelnameforindex(self.modelindex) );
     setsize(self, self.mins, self.maxs);
     self.skin = self.skin;
-    
-    cons_logAFloat(modelnameforindex(self.modelindex), self.skin);
-    
     setorigin(self, self.origin);
     self.drawmask = MASK_ENGINE;
-    //self.data_type = DATA_BLD;
   }
 };
 

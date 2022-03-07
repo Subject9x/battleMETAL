@@ -33,6 +33,10 @@ float( float isNew, float changeFlags ) send_scenery={
     WriteAngle( MSG_ENTITY, self.angles_z );
   }
   
+  if( (newFlags & SENDFLAG_DEAD ){
+    //dead event.
+  }
+  
   if( (newFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.skin );
     WriteShort( MSG_ENTITY, rint(self.modelindex) );
@@ -56,17 +60,21 @@ void() scenery_obj={
     droptofloor();
   }
   self.effects = self.effects | EF_LOWPRECISION;
+  self.deadflag = DEAD_NO;
 };
 
 void() DoodadRockDie={
   self.solid = SOLID_NOT;
   self.takedamage = DAMAGE_NO;
   //TODO - rock death effect.
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  self.deadflag = DEAD_DEAD;
+  
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
 };
 
-void() doodad_rocks_desert_1={
+void() doodad_rocks_1={
   self.model = "q3mdl/map/rocks/rock1t.md3";
   if( (self.spawnflags & 1)) {
     self.angles_x = self.angles_x + (5 + (crandom() * 5) );
@@ -83,7 +91,7 @@ void() doodad_rocks_desert_1={
   self.max_health = self.health;
   self.th_die = DoodadRockDie;
 };
-void() doodad_rocks_desert_2={
+void() doodad_rocks_2={
   self.model = "q3mdl/map/rocks/rock2.md3";
   if( (self.spawnflags & 1)) {
     self.angles_x = self.angles_x + (5 + (crandom() * 5) );
@@ -100,7 +108,7 @@ void() doodad_rocks_desert_2={
   self.max_health = self.health;
   self.th_die = DoodadRockDie;
 };
-void() doodad_rocks_desert_3={
+void() doodad_rocks_3={
   self.model = "q3mdl/map/rocks/rock3.md3";
   if( (self.spawnflags & 1)) {
     self.angles_x = self.angles_x + (5 + (crandom() * 5) );
@@ -118,16 +126,16 @@ void() doodad_rocks_desert_3={
   self.th_die = DoodadRockDie;
 };
 
-void() doodad_rocks_desert_random={
+void() doodad_rocks_random={
   switch(  max(1, rint(random() * 3) )){
     default:
-      doodad_rocks_desert_1();
+      doodad_rocks_1();
       return;
     case 2:
-      doodad_rocks_desert_2();
+      doodad_rocks_2();
       return;
     case 3:
-      doodad_rocks_desert_3();
+      doodad_rocks_3();
       return;
   }
 };

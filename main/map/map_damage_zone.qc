@@ -268,6 +268,8 @@ void() map_hazard_crys_die={
   self.takedamage = DAMAGE_NO;
   
   //TODO - crystal explode effect.
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  self.deadflag = DEAD_DEAD;
   
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
@@ -309,6 +311,7 @@ void() map_hazard_crys_small={
   }
   self.max_health = self.health;
   self.takedamage = DAMAGE_AIM;
+  self.deadflag = DEAD_NO;
   self.th_die = map_hazard_crys_die;
 };
 /*QUAKED map_hazard_crys_medium (0.25 0.45 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
@@ -347,6 +350,7 @@ void() map_hazard_crys_medium={
   }
   self.max_health = self.health;
   self.takedamage = DAMAGE_AIM;
+  self.deadflag = DEAD_NO;
   self.th_die = map_hazard_crys_die;
 };
 /*QUAKED map_hazard_crys_large (0.25 0.45 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
@@ -385,6 +389,7 @@ void() map_hazard_crys_large={
   }
   self.max_health = self.health;
   self.takedamage = DAMAGE_AIM;
+  self.deadflag = DEAD_NO;
   self.th_die = map_hazard_crys_die;
 };
 //=================================================================================================
