@@ -1332,10 +1332,10 @@ button0 & 1 dont work when target is set." [
   ]
 ]
 
-@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-37.5 -39.0 -29.25, 35.0 38.0 44.25) = doodad_rocks_desert_1 : "A desert rock, model #1. Doodad is static, BSP collision, non-interactive." []
-@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-38.0 -37.5 -29.0, 39.25 39.0 36.5) = doodad_rocks_desert_2 : "A desert rock, model #2. Doodad is static, BSP collision, non-interactive." []
-@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-42.0 -41.0 -32.5, 39.0 42.25 38.0) = doodad_rocks_desert_3 : "A desert rock, model #3. Doodad is static, BSP collision, non-interactive." []
-@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-42.0 -41.0 -32.5, 39.0 42.25 38.0) = doodad_rocks_desert_random : "A desert rock, model random 1 - 3. Doodad is static, BSP collision, non-interactive." []
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-37.5 -39.0 -29.25, 35.0 38.0 44.25) = doodad_rocks_desert_1 : "A desert rock, model #1. Doodad is static, BSP collision, non-interactive." [health(float) : "total starting health" : "250.0"]
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-38.0 -37.5 -29.0, 39.25 39.0 36.5) = doodad_rocks_desert_2 : "A desert rock, model #2. Doodad is static, BSP collision, non-interactive." [health(float) : "total starting health" : "250.0"]
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-42.0 -41.0 -32.5, 39.0 42.25 38.0) = doodad_rocks_desert_3 : "A desert rock, model #3. Doodad is static, BSP collision, non-interactive." [health(float) : "total starting health" : "250.0"]
+@PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-42.0 -41.0 -32.5, 39.0 42.25 38.0) = doodad_rocks_desert_random : "A desert rock, model random 1 - 3. Doodad is static, BSP collision, non-interactive." [health(float) : "total starting health" : "250.0"]
 
 @PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-60.5 -83.0 -77.0, 64.0 80.0 95.5) = doodad_rocks_column_1 : "A desert rock, model #1. Doodad is static, BSP collision, non-interactive." []
 @PointClass base(BaseDoodadRocks, WorldTypeSkinChoice) size(-67.25 -64.25 -70.0, 70.0 61.0 70.0) = doodad_rocks_column_2 : "A desert rock, model #2. Doodad is static, BSP collision, non-interactive." []

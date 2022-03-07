@@ -58,6 +58,14 @@ void() scenery_obj={
   self.effects = self.effects | EF_LOWPRECISION;
 };
 
+void() DoodadRockDie={
+  self.solid = SOLID_NOT;
+  self.takedamage = DAMAGE_NO;
+  //TODO - rock death effect.
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+};
+
 void() doodad_rocks_desert_1={
   self.model = "q3mdl/map/rocks/rock1t.md3";
   if( (self.spawnflags & 1)) {
@@ -68,6 +76,12 @@ void() doodad_rocks_desert_1={
   scenery_obj();
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.takedamage = DAMAGE_AIM;
+  if(!self.health){
+    self.health = self.max_health = 250;
+  }
+  self.max_health = self.health;
+  self.th_die = DoodadRockDie;
 };
 void() doodad_rocks_desert_2={
   self.model = "q3mdl/map/rocks/rock2.md3";
@@ -79,6 +93,12 @@ void() doodad_rocks_desert_2={
   scenery_obj();
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.takedamage = DAMAGE_AIM;
+  if(!self.health){
+    self.health = self.max_health = 250;
+  }
+  self.max_health = self.health;
+  self.th_die = DoodadRockDie;
 };
 void() doodad_rocks_desert_3={
   self.model = "q3mdl/map/rocks/rock3.md3";
@@ -90,6 +110,12 @@ void() doodad_rocks_desert_3={
   scenery_obj();
   self.SendEntity = send_scenery;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.takedamage = DAMAGE_AIM;
+  if(!self.health){
+    self.health = self.max_health = 250;
+  }
+  self.max_health = self.health;
+  self.th_die = DoodadRockDie;
 };
 
 void() doodad_rocks_desert_random={
