@@ -15,7 +15,7 @@ void() m_init={
   dynamic_precache();
   
   localcmd("disconnect;togglemenu;cd play 2;\n");
-  
+  registercvar("gamemode", "0", CF_CLIENT | CF_ARCHIVE | CF_SERVER | CS_DISCONNECTED);
   registercvar("saveslot", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_alpha", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_color", "0", CF_CLIENT | CF_ARCHIVE);
