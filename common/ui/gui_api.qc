@@ -145,9 +145,9 @@ void(float screenWidth, float screenHeight) gui_set_screen_size={
   
   VIEW_CTR = VIEW_MAX * 0.5;
   
-  UI_ORG = VIEW_CTR - Vector2(320, VIEW_MAX_y / 2);
-  UI_MAX = Vector2(UI_ORG_x + 640, VIEW_MAX_y);
-  UI_CTR = UI_ORG + (UI_MAX * 0.5);
+  UI_ORG = VIEW_CTR - [320, VIEW_MAX_y / 2];
+  UI_MAX = [UI_ORG_x + 640, VIEW_MAX_y];
+  UI_CTR = UI_ORG + (UI_MAX - UI_ORG * 0.5);
   
   //some stuff requires knowing percents rather than values....looking at you con_chatpos  u_u
   UI_ORG_PERCENT_x = UI_ORG_x / VIEW_MAX_x;
