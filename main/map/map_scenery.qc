@@ -33,7 +33,7 @@ float( float isNew, float changeFlags ) send_scenery={
     WriteAngle( MSG_ENTITY, self.angles_z );
   }
   
-  if( (newFlags & SENDFLAG_DEAD ){
+  if( (newFlags & SENDFLAG_DEAD) ){
     //dead event.
   }
   
