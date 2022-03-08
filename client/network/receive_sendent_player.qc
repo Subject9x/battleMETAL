@@ -71,7 +71,7 @@ void(entity piece) player_part_predaw={
   }
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y) + (v_forward * piece.compOffset_z);
   
-  if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
+  if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
     offset = offset - (v_forward * self.cockpit.compOffset_z);
   }
   
@@ -133,7 +133,7 @@ void() player_think={
     }
   }
   
-  if( self.clientLocalId == player_localentnum ){
+  if( self.clientServerNum == player_localentnum ){
     theWeapon = self.w_slot;
     while( theWeapon ){
       player_weapon_reload( theWeapon );
@@ -181,13 +181,13 @@ void() player_predraw={
     
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2-self.laser_sight_org1)*self.lerpfrac;
     
-    if(self.clientLocalId == player_localentnum ){
+    if(self.clientServerNum == player_localentnum ){
       CLIENT_lerp = self.lerpfrac;
     }
   
     self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
     
-    if(self.clientLocalId == player_localentnum){
+    if(self.clientServerNum == player_localentnum){
       cacheOrg = self.origin;
       self.origin = pmove_org;
     }
@@ -272,7 +272,7 @@ void() player_predraw={
     }
     setorigin(self, self.origin);
     
-    if(self.clientLocalId == player_localentnum){
+    if(self.clientServerNum == player_localentnum){
       if( self.deadflag == DEAD_NO ){
         hud_model_cockpit_draw_frame();
         
@@ -383,7 +383,7 @@ void( float mech_id ) sendevent_player_mech={
   setsize(self, minSave, maxSave);
   
   //hud shenanigans
-  if( self.clientLocalId == player_localentnum ){
+  if( self.clientServerNum == player_localentnum ){
     //MODELS - COCKPIT
     hud_model_cockpit_ini();
     
@@ -429,7 +429,7 @@ void() sendevent_handle_player_death={
     remove(wep);
     wep = nextWep;
   }
-  if(self.clientLocalId == player_localentnum){
+  if(self.clientServerNum == player_localentnum){
     remove(HUD_MODEL_CONSOLE);
     remove(HUD_MODEL_STRUTS);
   }
@@ -505,7 +505,7 @@ void( float criticalBits ) sendevent_player_critical={
   if( (criticalBits & M_LEGS) ){
     te_missile_explode( self.legs.origin, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
   }
-  if(self.clientLocalId != player_localentnum){
+  if(self.clientServerNum != player_localentnum){
     return;
   }
   wep = self.w_slot;
@@ -525,7 +525,7 @@ void( float playerEntId, float playerCritFlags ) client_handle_crit={
   local entity playerMech;
   local entity nonSelf;
   
-  playerMech = findfloat(world, clientLocalId, playerEntId);
+  playerMech = findfloat(world, clientServerNum, playerEntId);
   if( playerMech ){
     nonSelf = self;
     self = playerMech;
@@ -561,7 +561,7 @@ void(float repairValue) sendevent_player_repair={
     self.armRight.drawmask = MASK_NORMAL;
   }
   
-  if(self.clientLocalId != player_localentnum){
+  if(self.clientServerNum != player_localentnum){
     return;
   }
   wep = self.w_slot;
@@ -641,8 +641,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = self.entnum;
-    self.clientLocalId = ReadByte();
-    self.clientLocalNum = self.clientLocalId - 1;
+    //clientServerNum = player entity ID on server.
+    //clientLocalNum = this is player-entity only, local id for some reason is ServerNum-1?
+    self.clientServerNum = ReadByte();
+    self.clientLocalNum = self.clientServerNum - 1;
   }
   
   /*
@@ -734,7 +736,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     
     ENT_SERVER_INFO.missionStatus = ReadByte();
     
-    if( self.clientLocalId == player_localentnum ){
+    if( self.clientServerNum == player_localentnum ){
       CLIENT_player_deadflag = self.deadflag;
     }
     if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
@@ -768,7 +770,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   
   self.netname = getplayerkeyvalue(self.clientLocalNum, "name");
   
-  controlPlayer = findfloat(world, entnum, self.clientLocalId);
+  controlPlayer = findfloat(world, entnum, self.clientServerNum);
   if( controlPlayer != world ){
     controlPlayer.sequence = servercommandframe;
     if( self.origin != controlPlayer.origin ){
@@ -788,7 +790,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.think = player_think;
     self.nextthink = time + 0.01;
     self.t_remove = remove_client;
-    if( controlPlayer != world && controlPlayer.entnum == self.clientLocalId ){
+    if( controlPlayer != world && controlPlayer.entnum == self.clientServerNum ){
       controlPlayer.clientData = self;
     }
   }
@@ -841,7 +843,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   self.kills = stof(getplayerkeyvalue(self.clientLocalNum, "frags"));
   
   //perform data binds
-  if( self.clientLocalId == player_localentnum ){
+  if( self.clientServerNum == player_localentnum ){
     if(isNew){
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;

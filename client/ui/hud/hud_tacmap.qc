@@ -97,7 +97,7 @@ void() hud_render_tactical_map={
       continue;
     }
     //PLAYER TAC MAP INFO
-    if( player.clientLocalId == player_localentnum ){
+    if( player.clientServerNum == player_localentnum ){
       drawpic(gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
       if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
       if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
@@ -180,7 +180,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) ){
     rowColor = CLR_DEF_WHITE;
-    if( playerRow.clientLocalId == player_localentnum ){
+    if( playerRow.clientServerNum == player_localentnum ){
       fontSize = '10 10 0';
     }
     else{
@@ -188,7 +188,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
     }
   }
   else{
-    if( playerRow.clientLocalId == player_localentnum ){
+    if( playerRow.clientServerNum == player_localentnum ){
       fontSize = '10 10 0';
       rowColor = CLR_DEF_GREEN;
     }
@@ -257,7 +257,7 @@ void( vector panelOfs ) hud_render_scoreboard_dm={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" || nameCheck ){
-        player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
+        player = findfloat(world, clientServerNum, SCOREBOARD[itr] + 1);
         listRowOfs_y = listOfs_y + ( playerRowItr * 12 );
         hud_render_score_row( listRowOfs, playerRowItr + 1, player );
         playerRowItr = playerRowItr + 1;
@@ -310,7 +310,7 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" || nameCheck ){
-        player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
+        player = findfloat(world, clientServerNum, SCOREBOARD[itr] + 1);
         if( player.faction == FACTION_SURVEST ){
           listRowOfs_y = listOfs_y + ( teamCount1 * 12 );
           playerRowItr = teamCount1;

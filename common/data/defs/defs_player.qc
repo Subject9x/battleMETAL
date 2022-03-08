@@ -16,7 +16,7 @@ Overview:
 
 #ifdef CSQC
 float input_sequence;
-.float clientLocalId;   //Client Only - player_localentnum but calculated for all players on every client.
+.float clientServerNum;   //Client Only - player_localentnum but calculated for all players on every client.
 .float clientLocalNum;  //Client Only - player_localnum but calculated for all players on every client.
 .float sequence;
 .float hud_bob;    //bob settings are important for dat immersion
@@ -63,6 +63,7 @@ float input_sequence;
 .float ramCooldown;
 .float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
 .vector laser_sight_org;
+.float nextVecChoice;
 
 #ifdef SSQC
 .float posFadeTimer;  //breadcrumbs for the AI....
@@ -85,7 +86,6 @@ float input_sequence;
 .float playerDeaths;      //tracked in TDM / DM for personal score.
 .float playerDMdamage;    //fun tracker for total damage output over a match.
 
-.float nextVecChoice;
 .float i_reserve; //how many reserve points does the unit cost?
 
 .float max_armor; //why wasn't this ever included!?

@@ -252,7 +252,7 @@ void(entity item) te_weapon_fire_handler={
     offset = this.origin + (v_right * parent.compOffset_x) + (v_up * parent.compOffset_y) + (v_forward * parent.compOffset_z);
     
     //FPV z-offset is corrected at the parent-part origin step!
-    if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
+    if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
       offset = offset + (v_forward * this.cockpit.compOffset_z);
     }
     adjPartOffset = self.compOffset - parent.compOffset;
@@ -445,7 +445,7 @@ void() te_shield_hit_predraw={
   self.colormod = self.compOffset;
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.alpha = 0.085;
-  if(self.owner.clientLocalId == player_localentnum){
+  if(self.owner.clientServerNum == player_localentnum){
     if( self.owner.chaseActive == FALSE ){
       self.alpha = 0.03;
     }
@@ -458,7 +458,7 @@ void() te_shield_hit_th={
     remove(self);
     return;
   }
-  if(self.owner.clientLocalId == player_localentnum){
+  if(self.owner.clientServerNum == player_localentnum){
     self.origin = pmove_org;
   }
   else{
@@ -552,7 +552,7 @@ void() te_shield_explode_th={
   self.alpha = self.alpha - 0.024;
   self.scale = self.scale + 0.025;
   
-  if(self.owner.clientLocalId == player_localentnum){
+  if(self.owner.clientServerNum == player_localentnum){
     self.origin = pmove_org;
   }
   else{

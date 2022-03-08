@@ -305,7 +305,7 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(itr, "name");
       if( nameCheck != "" || nameCheck ){
-        player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
+        player = findfloat(world, clientServerNum, SCOREBOARD[itr] + 1);
         listRowOfs_x = menuOrg_x + 8;
         listRowOfs_y = listOfs_y + ( playerRowItr * 16 );
         menu_player_row_basic( listRowOfs, playerRowItr, player, FALSE );

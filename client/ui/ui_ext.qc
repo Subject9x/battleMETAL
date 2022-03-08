@@ -190,7 +190,7 @@ entity(float wepBit) gui_get_weapon={
   local entity item;
   local entity found;
   
-  item = findfloat(world, clientLocalId, player_localentnum);
+  item = findfloat(world, clientServerNum, player_localentnum);
   item = item.w_slot;
   while( item != world ){
     if(item.w_group == wepBit){

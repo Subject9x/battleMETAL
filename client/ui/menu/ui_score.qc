@@ -557,7 +557,7 @@ void( vector menuOrg ) menu_score_coop_players={
   playerRowItr = 1;
   for( itr = 0; itr < SCOREBOARDMAX; itr = itr + 1){
     if( SCOREBOARD[itr] != 0 ){
-      player = findfloat(world, clientLocalId, SCOREBOARD[itr]);
+      player = findfloat(world, clientServerNum, SCOREBOARD[itr]);
       listRowOfs_x = menuOrg_x + 8;
       listRowOfs_y = listOfs_y + ( playerRowItr * 16 );
       menu_player_row_basic( listRowOfs, playerRowItr, player, FALSE );
