@@ -64,13 +64,12 @@ void() ui_navbutton_hangar_click={
   ui_data_has_items();  //hook to evaluate player item list.
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
     data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
-    menu_player_MechModel_setup('0 167 0', '0 1.5 0');
+    menu_player_MechModel_setup('0 167 0', '1.0 1.0 1.0', 1);
   }
   if( SELECT_MECH == 0 || CLIENT_MENU_sel_mech == 0 ){
     SELECT_MECH = CLIENT_MENU_sel_mech = UNLOCKED_MECHS[0];
   }
   CLIENT_MENU_menu_choice = MENU_HANGAR_ACTIVE;
-  cl_get_mechs_sort();
 };
 
 /*
@@ -114,7 +113,7 @@ void() ui_navbutton_arming_click={
     if( CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE ){
       cl_setmech( SELECT_MECH );
       cl_send_infostring( INFO_FLAG_MECH );
-      menu_player_MechModel_setup('0 180 0', '0 1.1 0');
+      menu_player_MechModel_setup('0 180 0', '0 1.1 0', 0);
     }
     CLIENT_MENU_menu_choice = MENU_ARMING_ACTIVE;
     itemUnlockCounter = 0;

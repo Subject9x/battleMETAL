@@ -360,7 +360,7 @@ void() selectNextConfig={
       cacheGlobalString(DATA_CONFIG_BUFFER_NAME, ftos(CFG_INDEX) )
     }
     else{
-      menu_player_MechModel_setup('0 180 0', '0 1.1 0');
+      menu_player_MechModel_setup('0 180 0', '0 1.1 0', 0);
     }
   }
 };
@@ -376,7 +376,7 @@ void() selectPrevConfig={
       cacheGlobalString(DATA_CONFIG_BUFFER_NAME, ftos(CFG_INDEX) )
     }
     else{
-      menu_player_MechModel_setup('0 180 0', '0 1.1 0');
+      menu_player_MechModel_setup('0 180 0', '0 1.1 0', 0);
     }
   }
 };

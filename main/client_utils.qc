@@ -216,7 +216,12 @@ void(string cmdString) client_parse_clientInfoString={
   }
   //MECH ID UPDATE
   if( (changeFlags & INFO_FLAG_MECH) ){
-    self.nextVecChoice = stof(infoget(dataString, KEY_MECH));
+    self.nextVecChoice = rint(stof(infoget(dataString, KEY_MECH)));
+    if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+      if( self.clientData ){
+        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EXDATA;
+      }
+    }
   }
   //DEPLOY ID UPDATE
   if( (changeFlags & INFO_FLAG_DEPLOY) ){

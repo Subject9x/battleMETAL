@@ -18,8 +18,13 @@ void() menu_briefDrawFrame={
   
   menu_briefMissionInfo( topleftroot + '2 32' );
   
+  //when Co-op, show other players and their status.
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+    ui_render_coop_player_status( topleftroot + [256 + 18, 32],  '320 80', CLR_DEF_UI_BRIEF + '0.2 0.2 0.2' );
+  }
+  
   menu_briefPlaySound( topleftroot );
-  menu_briefMapPanel( topleftroot );
+  menu_briefMapPanel( topleftroot + '0 115');
   menu_brief_text_window( topleftroot + '2 113' );
   
   switch(INFO_SWITCH){
@@ -261,7 +266,7 @@ void(vector ofs) menu_briefMapPanel={
   
   ui_msize = '350 350';
   ui_msize_in = ui_msize - '8 6';
-  mpos = Vector2(VIEW_CTR_x - 40, ofs_y + 107); 
+  mpos = Vector2(VIEW_CTR_x - 40, ofs_y); 
  
   iofs = mpos + '4 3';
   

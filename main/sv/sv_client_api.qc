@@ -256,7 +256,6 @@ void() ClientConnect = {
     ExitIntermission();
   }
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
-  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_NEWENT;
 };
 
 /*
@@ -460,6 +459,8 @@ void() PutClientInServer_Campaign={
     GAMEMODE_COOP
 */
 void() PutClientInServer_Coop={
+  local entity client;
+  local float itr;
   /*PutClientInServer Logic
     2) configure faction
     3) send eqipment selections
@@ -478,7 +479,19 @@ void() PutClientInServer_Coop={
     }
     self.faction = FACTION_PSC; //campaign default
     self.clientcolors = FACTION_PSC;
+
   }
+  
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+    client = findchainflags(flags, FL_CLIENT);
+    for( itr = 0; itr < 4; itr = itr + 1){
+      if( client.clientData ){
+        client.clientData.SendFlags = client.clientData.SendFlags | SENDFLAG_EXDATA;
+      }
+      client = client.chain;
+    }
+  }
+  
   client_push_mapobjects(); //refreshes map object data for everyone
 
   self.th_die = PlayerDieNetwork;
@@ -831,7 +844,11 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
-    WriteLong( MSG_ENTITY, player.targetEntId ); //->SENDFLAG_TARGET
+    WriteLong( MSG_ENTITY, player.targetEntId );
+  }
+  
+  if( (changeFlags & SENDFLAG_EXDATA) ){
+    WriteByte( MSG_ENTITY, player.nextVecChoice );
   }
   
   self.shieldHitFlag = 0;

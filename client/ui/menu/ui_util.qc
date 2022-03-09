@@ -10,6 +10,99 @@ Overview:
 */
 
 /*
+  UI_BRIEF and UI_ARMING, show all players and their status.
+*/
+void(vector ofs, vector pnlSize, vector colorBack) ui_render_coop_player_status={
+  local vector org;
+  local float itr;
+  local entity player;
+  local string nameCheck;
+  
+  local vector nameOrg;
+  local vector statusOrg;
+  local vector mechOrg;
+  
+  local vector playerColor;
+  
+  local string playerStatus;
+  local vector statusColor;
+  
+  local float marginX;
+  
+  //320 80
+  gui_renderPatch9_1_32(ofs, pnlSize, colorBack, 1, DRAWFLAG_NORMAL);
+  
+  org = ofs + [pnlSize_x / 6.67, 42];
+  
+  marginX = pnlSize_x / 4;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  for( itr = 0; itr < 4; itr = itr + 1){
+    nameCheck = getplayerkeyvalue(itr, "name");
+    if( strlen(nameCheck) > 0 ){
+      player = findfloat(world, clientServerNum, itr + 1);
+      if( player ){
+        if( strlen(nameCheck) > 14 ){
+          nameCheck = substring(nameCheck, 0, 14);
+        }
+        
+        nameOrg = [org_x + ( itr * marginX), org_y];
+        nameOrg_x = nameOrg_x - stringwidth(nameCheck, 0, '12 12') / 2;
+        
+        if( itr == player_localnum ){
+          playerColor = CLR_DEF_IIF_FRIEND_BLD;
+        }
+        else{
+          playerColor = CLR_DEF_TXT_NONSELECT;
+        }
+        
+        drawstring(nameOrg, nameCheck, '12 12', playerColor, 1.0, 0);
+        
+        if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) && (ENT_SERVER_INFO.gameType != GAMEMODE_COOP) ){
+          playerStatus = "<hidden>";
+          statusColor = CLR_DEF_ARM_THREEQ;
+        }
+        else{
+          if( player.deadflag == DEAD_DEAD ){
+            playerStatus = "Dead";
+            statusColor = CLR_DEF_RED * 0.9;
+          }
+          else{
+            if( player.data_type == DATA_POBS || player.data_type == 0 ){
+              playerStatus = "In Menu";
+              statusColor = CLR_DEF_ARM_THREEQ * 0.9;
+            }
+            else{
+              playerStatus = "Deployed";
+              statusColor = CLR_DEF_IIF_FRIEND_BLD * 0.9;
+            }
+          }
+        }
+        
+        statusOrg_y = org_y + 12;
+        statusOrg_x = org_x - stringwidth(playerStatus, 0, '10 10') / 2;
+        drawstring(statusOrg, playerStatus, '10 10', statusColor, 1.0, 0);
+        
+        if(player.nextVecChoice > 0 ){
+          mechOrg_y = org_y + 24;
+          mechOrg_x = org_x - stringwidth(MECH_DATA_NAMES[player.nextVecChoice], 0, '12 12') / 2;
+          drawstring(mechOrg, MECH_DATA_NAMES[player.nextVecChoice], '12 12', CLR_DEF_GREEN, 1.0, 0);
+        }
+      }
+    }
+    else{
+      nameOrg = [org_x + ( itr * marginX), org_y];
+      nameOrg_x = nameOrg_x - stringwidth("Disconnected", 0, '12 12') / 2;
+        
+      drawstring(nameOrg, "Disconnected", '12 12', '0.67 0.25 0.25', 1.0, 0);
+    }
+  }
+  drawfont = drawfont_prev;
+};
+
+/*
   Renders the weapon icon, and a highlight box for a selected hardpoint in
   the Arming Menu.
 */
@@ -248,7 +341,7 @@ string() ui_label_mission_status={
   Player scoreboard stuff
 */
 /*
-  SCOREBOARD[]; <k, v> = itr, .clientLocalId
+  SCOREBOARD[]; <k, v> = itr, .clientServerNum
 */
 void() scoreboard_sort={
   local float i, j, key, key2;
@@ -257,7 +350,7 @@ void() scoreboard_sort={
   SCOREBOARDMAX = maxclients;
   
   for( i=1; i < SCOREBOARDMAX; i=i+1){
-    // clientLocalId from scoreboard
+    // clientServerNum from scoreboard
     key = SCOREBOARD[i];
     j = i - 1;
     
@@ -340,40 +433,58 @@ void( float missionStat ) ui_set_mission_status={
   
 
 //called whenever we switch mechs.
-void(vector showAng, vector colors) menu_player_MechModel_setup={
+void(vector showAng, vector colors, float useClientColor) menu_player_MechModel_setup={
+  local vector colorCt, colorLt, colorRt, colorLa, colorRa, colorLg;
+  
+  if(useClientColor){
+    colorCt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR1))] * 1.5;
+    colorLt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR2))] * 1.5;
+    colorRt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR3))] * 1.5;
+    colorLa = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR4))] * 1.5;
+    colorRa = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR5))] * 1.5;
+    colorLg = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR6))] * 1.5;
+  }
+  else{
+    colorCt = colors;
+    colorLt = colors;
+    colorRt = colors;
+    colorLa = colors;
+    colorRa = colors;
+    colorLg = colors;
+  }
   
   UI_HANGAR_DATA_mech.angles            = showAng;
   setmodel(UI_HANGAR_DATA_mech.torsoCenter, UI_HANGAR_DATA_mech.torsoCenter.model);
-  UI_HANGAR_DATA_mech.torsoCenter.colormod= colors;
+  UI_HANGAR_DATA_mech.torsoCenter.colormod= colorCt;
   UI_HANGAR_DATA_mech.torsoCenter.angles= showAng;
   UI_HANGAR_DATA_mech.torsoCenter.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   
   if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
     setmodel(UI_HANGAR_DATA_mech.torsoLeft, UI_HANGAR_DATA_mech.torsoLeft.model);
-    UI_HANGAR_DATA_mech.torsoLeft.colormod  = colors;
+    UI_HANGAR_DATA_mech.torsoLeft.colormod  = colorLt;
     UI_HANGAR_DATA_mech.torsoLeft.angles  = showAng;
     UI_HANGAR_DATA_mech.torsoLeft.effects   = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   }
   if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
     setmodel(UI_HANGAR_DATA_mech.torsoRight, UI_HANGAR_DATA_mech.torsoRight.model);
-    UI_HANGAR_DATA_mech.torsoRight.colormod = colors;
+    UI_HANGAR_DATA_mech.torsoRight.colormod = colorRt;
     UI_HANGAR_DATA_mech.torsoRight.angles = showAng;
     UI_HANGAR_DATA_mech.torsoRight.effects  = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   }
   if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
     setmodel(UI_HANGAR_DATA_mech.armLeft, UI_HANGAR_DATA_mech.armLeft.model);
-    UI_HANGAR_DATA_mech.armLeft.colormod    = colors;
+    UI_HANGAR_DATA_mech.armLeft.colormod    = colorLa;
     UI_HANGAR_DATA_mech.armLeft.angles    = showAng;
     UI_HANGAR_DATA_mech.armLeft.effects     = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   }
   if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
     setmodel(UI_HANGAR_DATA_mech.armRight, UI_HANGAR_DATA_mech.armRight.model);
-    UI_HANGAR_DATA_mech.armRight.colormod   = colors;
+    UI_HANGAR_DATA_mech.armRight.colormod   = colorRa;
     UI_HANGAR_DATA_mech.armRight.angles   = showAng;
     UI_HANGAR_DATA_mech.armRight.effects    = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   }
   setmodel(UI_HANGAR_DATA_mech.legs, UI_HANGAR_DATA_mech.legs.model);
-  UI_HANGAR_DATA_mech.legs.colormod       = colors;
+  UI_HANGAR_DATA_mech.legs.colormod       = colorLg;
   UI_HANGAR_DATA_mech.legs.angles       = showAng;
   UI_HANGAR_DATA_mech.legs.effects        = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   UI_HANGAR_DATA_mech.legs.frame = 0;

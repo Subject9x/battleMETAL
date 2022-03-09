@@ -620,7 +620,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_RADAR) ){
-    self.stat_rdr_mode = ReadByte();
+    self.stat_rdr_mode = rint(ReadByte());
   }
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
@@ -632,8 +632,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.attackFlag = ReadCoord();
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
-    self.chaseActive = ReadByte();
-    self.headlight = ReadByte();
+    self.chaseActive = rint(ReadByte());
+    self.headlight = rint(ReadByte());
   }
   
   /*
@@ -643,8 +643,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.entId = self.entnum;
     //clientServerNum = player entity ID on server.
     //clientLocalNum = this is player-entity only, local id for some reason is ServerNum-1?
-    self.clientServerNum = ReadByte();
-    self.clientLocalNum = self.clientServerNum - 1;
+    self.clientServerNum = rint(ReadByte());
+    self.clientLocalNum = rint(self.clientServerNum - 1);
+    //cons_logAFloat("CS - RECEIVE - player.entnum", self.clientServerNum); //debug
+    //cons_logAFloat("CS - RECEIVE - player.clientData.entnum", self.entnum); //debug
   }
   
   /*
@@ -655,7 +657,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_FACTION) ){
-    self.faction = ReadByte();
+    self.faction = rint(ReadByte());
   }
   /*
     HANDLE - Update Faction totals
@@ -668,17 +670,17 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - player info change 
   */
   if( (changeFlags & SENDFLAG_NEWUNIT) ){
-    self.data_type = ReadByte();
-    self.data_idx = ReadByte();
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
+    self.data_type = rint(ReadByte());
+    self.data_idx = rint(ReadByte());
+    self.next_wepn1 = rint(ReadByte());
+    self.next_wepn2 = rint(ReadByte());
+    self.next_wepn3 = rint(ReadByte());
+    self.next_wepn4 = rint(ReadByte());
+    self.next_wepn5 = rint(ReadByte());
+    self.next_wepn6 = rint(ReadByte());
+    self.next_wepn7 = rint(ReadByte());
+    self.next_wepn8 = rint(ReadByte());
+    self.next_wepn9 = rint(ReadByte());
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         sendevent_player_mech(self.data_idx);
@@ -764,6 +766,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
     else{
       self.enemy = world;
     }
+  }
+  
+  if( (changeFlags & SENDFLAG_EXDATA) ){
+    self.nextVecChoice = rint(ReadByte());
   }
   
   self.ping = stof( getplayerkeyvalue(self.clientLocalNum, "ping") );

@@ -82,6 +82,9 @@ void( float serverMode, float svFlags ) cl_set_savepath={
                                 //this is to save player progress on entering a new map, lame hack.
     }
   }
+  //Sort and initialize the mech_names and mech_sizes arrays here
+  //so that any UI can access this info.
+  cl_get_mechs_sort();
 };
 
 // all mech unlocks to same array

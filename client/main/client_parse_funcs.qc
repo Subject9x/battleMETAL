@@ -15,7 +15,7 @@ Overview:
 float() CSQC_Parse_TempEntity =
 {
   local float id;
-  id = ReadByte();
+  id = rint(ReadByte());
 
   switch( id ){
     case TE_PLAYER_CRIT:
@@ -57,7 +57,7 @@ float() CSQC_Parse_TempEntity =
     case TE_MSG_INFO:
       client_event_info_box( ReadString(), CLR_DEF_TXT_GRAY_SMOOTH, ReadLong(), '14 14 0');
       return TRUE;
-      
+    
     case TE_REPAIRS_ON:
       if( ReadByte() ){
         hud_event_enqueue( HUD_EVENT_REPAIRS_ON, 1) ;

@@ -286,7 +286,6 @@ void() building_repair_idle={
     
     if( self.ai_state_last != PLAYER_RESPAWN ){
       if(self.ladder_entity != world){
-        cons_logAFloat("repair bay - left area", 1);  //debug
         building_repair_allowGuns(TRUE);
         client_send_event_repairs( self.trigger_field, FALSE );
       }

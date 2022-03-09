@@ -19,14 +19,14 @@ entity() world_ini_serverInfo_ent={
   eServerInfo.scale = 0.01;
   
   setmodel(eServerInfo, "q3mdl/testball.md3");
-  setsize(eServerInfo, VEC_HULL_MIN, VEC_HULL_MAX);
+  setsize(eServerInfo, '-1 -1 -1', '1 1 1');
   setorigin(eServerInfo, world.origin);
   
   eServerInfo.serverFlags = serverflags;
   eServerInfo.SendEntity = world_rules_sendEntity;
   eServerInfo.SendFlags = eServerInfo.SendFlags | SENDFLAG_NEWENT;
   eServerInfo.think = world_server_rules_frame;
-  eServerInfo.nextthink = time + 0.1;
+  eServerInfo.nextthink = time + 0.01;
   return eServerInfo;
 };
 

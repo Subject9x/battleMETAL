@@ -61,7 +61,12 @@ void() mechSelectListener={
     }
     if( found != CLIENT_MENU_sel_mech ){
       ui_mech_config_switch( found, 1 );
-      menu_player_MechModel_setup('0 167 0', '0 1.5 0');
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+        //todo - send player mech id upstream
+        cl_setmech( SELECT_MECH );
+        cl_send_infostring( INFO_FLAG_MECH );
+      }
+      menu_player_MechModel_setup('0 167 0', '1.0 1.0 1.0', 1);
     }
 
     if( !(LAUNCH_VALIDATION & VALID_MECH) ){
