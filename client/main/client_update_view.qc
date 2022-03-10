@@ -179,6 +179,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     // add clientside entities (MASK_NORMAL)
     // add engine networked entities (MASK_ENGINE)
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
+    
     oldSelf = self;
     self = world;
     while( (self = nextent(self)) ){
@@ -261,11 +262,19 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     gui_drawversion();
     drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos(Vector2(w,h))), '8 8', '0.85 0.85 0.85', 1, 0);
+  
+    drawstring(VIEW_ORG + '0 40', sprintf("VIEW_VF_ORG  = %s", vtos(VIEW_VF_ORG)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 48', sprintf("VF_ORIGIN  = %s", vtos(getpropertyvec(VF_ORIGIN))), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 56', sprintf("PMOVE_ORG  = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     
+    if(HUD_MODEL_STRUTS){
+      drawstring(VIEW_ORG + '0 64', sprintf("HUD_MODEL_STRUTS  = %s", vtos(HUD_MODEL_STRUTS.origin)), '8 8', '0.85 0.85 0.85', 1, 0);
+    }
+  
     if(MENU_ACTIVE){
-    local vector mpos;
-    mpos = getmousepos();
-       drawstring(VIEW_ORG + '0 40', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
+      local vector mpos;
+      mpos = getmousepos();
+      drawstring(VIEW_ORG + '0 40', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
     }
   }
   
