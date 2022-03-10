@@ -259,7 +259,7 @@ void() hud_model_cockpit_ini={
   HUD_MODEL_STRUTS.angles_y = input_angles_y;
   HUD_MODEL_STRUTS.angles_x = 0;
   HUD_MODEL_STRUTS.angles_z = 0;
-  HUD_MODEL_STRUTS.drawmask = MASK_NORMAL;
+  HUD_MODEL_STRUTS.drawmask = 0;
   HUD_MODEL_STRUTS.alpha = 1.0;
   
   HUD_MODEL_CONSOLE = spawn();
@@ -270,7 +270,7 @@ void() hud_model_cockpit_ini={
   HUD_MODEL_CONSOLE.angles_y = input_angles_y;
   HUD_MODEL_CONSOLE.angles_x = 45;
   HUD_MODEL_CONSOLE.angles_z = 0;
-  HUD_MODEL_CONSOLE.drawmask = MASK_NORMAL;
+  HUD_MODEL_CONSOLE.drawmask = 0;
   HUD_MODEL_CONSOLE.alpha = 1.0;
   
   if( cvar("chase_active") ){
@@ -325,13 +325,11 @@ void() hud_model_cockpit_draw_frame={
   
   consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
   setorigin(HUD_MODEL_CONSOLE, consOrg);
-  if( cvar("chase_active") ){
-    HUD_MODEL_STRUTS.alpha = 0.0;
-    HUD_MODEL_CONSOLE.alpha = 0.0;
-  }
-  else{
-    HUD_MODEL_STRUTS.alpha = 1.0;
-    HUD_MODEL_CONSOLE.alpha = 1.0;
+    HUD_MODEL_STRUTS.drawmask = 0;
+    HUD_MODEL_CONSOLE.drawmask = 0;
+  if( !cvar("chase_active") ){
+    addentity(HUD_MODEL_CONSOLE);
+    addentity(HUD_MODEL_STRUTS);
   }
 };
 
