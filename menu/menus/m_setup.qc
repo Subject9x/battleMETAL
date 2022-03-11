@@ -76,15 +76,15 @@ string(float factionType) setup_set_icon={
 void(float factionType) setup_set_tint={
   local string clientColors;
   switch(factionType){
-    case 2:
+    case FACTION_SURVEST:
       clientColors = cvar_string("cl_color_srv");
       break;
       
-    case 3:
+    case FACTION_MILITAR:
       clientColors = cvar_string("cl_color_mil");
       break;
     
-    default:
+    case FACTION_PSC:
       clientColors = cvar_string("cl_color_psc");
       break;
   }
@@ -130,6 +130,11 @@ void() setup_save_color_scheme={
 void() click_setup_accept={
   setup_save_color_scheme();
   localcmd("saveconfig\n");
+  if( clientstate() == CS_CONNECTED ){
+    //send update to client, and then eventually the server.
+    
+    localcmd("cl_cmd tint");
+  }
   menu_clear_items(M_STATE);
   if( MAIN_MISSION ) {
     m_main_f();
@@ -144,6 +149,7 @@ void() textfield_setup_name={
     cvar_set("_cl_name", self.data_text);
   }
   else{
+    freeGlobalString(self.data_text)
     cvar_set("_cl_name", "DEAD_HAND");
     cacheGlobalString(  self.data_text, str_cvar("_cl_name"))
   }

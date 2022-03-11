@@ -64,8 +64,9 @@ void() mechSelectListener={
       if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
         //todo - send player mech id upstream
         cl_setmech( SELECT_MECH );
-        cl_send_infostring( INFO_FLAG_MECH );
       }
+      cl_set_faction_colors();
+      cl_send_infostring( INFO_FLAG_MECH | INFO_FLAG_COLOR);
       menu_player_MechModel_setup('0 167 0', '1.0 1.0 1.0', 1);
     }
 

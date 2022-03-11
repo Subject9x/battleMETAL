@@ -19,9 +19,9 @@ void() CSQC_Init =
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
   registercvar("cl_team", "0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_psc", cvar_string("cl_color_psc"), CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_mil", cvar_string("cl_color_mil"), CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_srv", cvar_string("cl_color_srv"), CF_CLIENT | CF_ARCHIVE);
   registercvar("chase_active", "0", CF_CLIENT | CF_SERVER | CF_ARCHIVE);
   
   registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
@@ -189,7 +189,7 @@ void() CSQC_Init =
   ui_colors_set_player_list();
   MENU_PROG_OFF_PREV = FALSE;
 
-  
+  //Grab player color settings from menu.
   freeGlobalString(PLAYER_COLOR_PSC)
   cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
   
@@ -199,6 +199,10 @@ void() CSQC_Init =
   freeGlobalString(PLAYER_COLOR_MIL)
   cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
   
+  cl_set_faction_colors();
+  cl_send_infostring( INFO_FLAG_COLOR );
+    
+  
   ui_data_hud_ini_tags();
   
   cl_ini_infostring();
@@ -206,9 +210,34 @@ void() CSQC_Init =
   CHAT_INP_SEND = FALSE;
 };
 
-// called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)
+// called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat),
+//can perform special logic or useful functionality (like bestweapon)
 void(string msg) GameCommand =
 {
+  local float argc;
+  local float factionColor;
+  
+  //cons_logAString("CS-GameCommand()", msg);//debug
+  argc = tokenizebyseparator(msg, " ");
+  
+  if(argv(0) == "tint"){
+    freeGlobalString(PLAYER_COLOR_PSC)
+    cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
+    
+    freeGlobalString(PLAYER_COLOR_SRV)
+    cacheGlobalString( PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
+    
+    freeGlobalString(PLAYER_COLOR_MIL)
+    cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
+    
+    cl_set_faction_colors();
+    cl_send_infostring( INFO_FLAG_COLOR );
+    
+    if( MENU_ACTIVE && (CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE) ){
+      menu_player_MechModel_color_update();
+    }    
+    return;
+  }
 };
 
 

@@ -28,9 +28,9 @@ void() m_init={
   registercvar("cl_net_fav3", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_net_fav4", "0", CF_CLIENT | CF_ARCHIVE);
   
-  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_mil", cvar_string("cl_color_psc"), CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_srv", cvar_string("cl_color_mil"), CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_psc", cvar_string("cl_color_srv"), CF_CLIENT | CF_ARCHIVE);
   
   registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
   cvar_set("cl_newgameplus", "0");

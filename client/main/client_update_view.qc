@@ -36,7 +36,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   MENU_PROG_OFF = menuView;
   if(MENU_PROG_OFF_PREV != menuView){
     //check for player bringing up menu delta
-    if( MENU_PROG_OFF_PREV == TRUE && menuView == FALSE ){
+    /*if( MENU_PROG_OFF_PREV == TRUE && menuView == FALSE ){
       if( CLIENT_faction == FACTION_SURVEST){
         if( PLAYER_COLOR_SRV != cvar_string("cl_color_srv") ){
           //player changed Survest color
@@ -58,7 +58,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
           cl_setmech( CLIENT_MENU_sel_mech );
         }
       }
-    }
+    }*/
     MENU_PROG_OFF_PREV = menuView;
   }
 

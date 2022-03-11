@@ -155,15 +155,23 @@ void( float weaponBits ) cl_setweapon={
 };
 
 void(float id) cl_setmech={
+  local string infoString;
+  
+  infoString = infoadd(CLIENT_INFO_STRING, KEY_MECH, ftos(id));
+  
+  cacheGlobalString(CLIENT_INFO_STRING, infoString)
+};
+
+void() cl_set_faction_colors={
   local string factionColors;
   local string infoString;
   local float color1, color2, color3, color4, color5, color6;
   switch( CLIENT_faction ){
-    case 2:
+    case FACTION_SURVEST:
       factionColors = PLAYER_COLOR_SRV;
       break;
       
-    case 3:
+    case FACTION_MILITAR:
       factionColors = PLAYER_COLOR_MIL;
       break;
       
@@ -172,24 +180,16 @@ void(float id) cl_setmech={
       break;
   }
   
-  infoString = CLIENT_INFO_STRING;
-  tokenize(factionColors);
+  infoString = substring(CLIENT_INFO_STRING, 0, strlen(CLIENT_INFO_STRING));
+  tokenizebyseparator(factionColors, " ");
   
-  color1 = stof(argv(0));
-  color2 = stof(argv(1));
-  color3 = stof(argv(2));
-  color4 = stof(argv(3));
-  color5 = stof(argv(4));
-  color6 = stof(argv(5));
+  infoString = infoadd(infoString, KEY_COLOR1, argv(0));
+  infoString = infoadd(infoString, KEY_COLOR2, argv(1));
+  infoString = infoadd(infoString, KEY_COLOR3, argv(2));
+  infoString = infoadd(infoString, KEY_COLOR4, argv(3));
+  infoString = infoadd(infoString, KEY_COLOR5, argv(4));
+  infoString = infoadd(infoString, KEY_COLOR6, argv(5));
   
-  infoString = infoadd(infoString, KEY_MECH, ftos(id));
-  
-  infoString = infoadd(infoString, KEY_COLOR1, ftos(color1));
-  infoString = infoadd(infoString, KEY_COLOR2, ftos(color2));
-  infoString = infoadd(infoString, KEY_COLOR3, ftos(color3));
-  infoString = infoadd(infoString, KEY_COLOR4, ftos(color4));
-  infoString = infoadd(infoString, KEY_COLOR5, ftos(color5));
-  infoString = infoadd(infoString, KEY_COLOR6, ftos(color6));
   
   cacheGlobalString(CLIENT_INFO_STRING, infoString)
 };

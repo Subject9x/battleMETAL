@@ -489,3 +489,30 @@ void(vector showAng, vector colors, float useClientColor) menu_player_MechModel_
   UI_HANGAR_DATA_mech.legs.effects        = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   UI_HANGAR_DATA_mech.legs.frame = 0;
 };
+
+void() menu_player_MechModel_color_update={
+  local vector colorCt, colorLt, colorRt, colorLa, colorRa, colorLg;
+  
+  colorCt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR1))] * 1.5;
+  colorLt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR2))] * 1.5;
+  colorRt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR3))] * 1.5;
+  colorLa = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR4))] * 1.5;
+  colorRa = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR5))] * 1.5;
+  colorLg = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR6))] * 1.5;
+  
+  UI_HANGAR_DATA_mech.torsoCenter.colormod = colorCt;
+  
+  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
+    UI_HANGAR_DATA_mech.torsoLeft.colormod  = colorLt;
+  }
+  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
+    UI_HANGAR_DATA_mech.torsoRight.colormod = colorRt;
+  }
+  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
+    UI_HANGAR_DATA_mech.armLeft.colormod    = colorLa;
+  }
+  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
+    UI_HANGAR_DATA_mech.armRight.colormod   = colorRa;
+  }
+  UI_HANGAR_DATA_mech.legs.colormod       = colorLg;
+};
