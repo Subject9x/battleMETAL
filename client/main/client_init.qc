@@ -18,13 +18,13 @@ void() CSQC_Init =
   registercvar("saveslot", "0", CF_CLIENT | CF_ARCHIVE);
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
-  registercvar("cl_team", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_team", cvar_string("cl_team"), CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_psc", cvar_string("cl_color_psc"), CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_mil", cvar_string("cl_color_mil"), CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_srv", cvar_string("cl_color_srv"), CF_CLIENT | CF_ARCHIVE);
-  registercvar("chase_active", "0", CF_CLIENT | CF_SERVER | CF_ARCHIVE);
+  registercvar("chase_active",  cvar_string("chase_active"), CF_CLIENT | CF_SERVER | CF_ARCHIVE);
   
-  registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_newgameplus",cvar_string("cl_newgameplus"), CF_CLIENT | CF_ARCHIVE);
   
   cvar_set("con_chat", "0", CF_CLIENT | CF_ARCHIVE);  //force old chat system off
   

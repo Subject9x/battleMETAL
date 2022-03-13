@@ -32,8 +32,7 @@ void() m_init={
   registercvar("cl_color_srv", cvar_string("cl_color_mil"), CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_psc", cvar_string("cl_color_srv"), CF_CLIENT | CF_ARCHIVE);
   
-  registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
-  cvar_set("cl_newgameplus", "0");
+  registercvar("cl_newgameplus",cvar_string("cl_newgameplus"), CF_CLIENT | CF_ARCHIVE);
   
   cvar_set("r_framedatasize", "16");  //FIXME - issue in engine
   

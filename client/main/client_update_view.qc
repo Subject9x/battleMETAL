@@ -36,29 +36,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   MENU_PROG_OFF = menuView;
   if(MENU_PROG_OFF_PREV != menuView){
     //check for player bringing up menu delta
-    /*if( MENU_PROG_OFF_PREV == TRUE && menuView == FALSE ){
-      if( CLIENT_faction == FACTION_SURVEST){
-        if( PLAYER_COLOR_SRV != cvar_string("cl_color_srv") ){
-          //player changed Survest color
-          cacheGlobalString(PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
-          cl_setmech( CLIENT_MENU_sel_mech );
-        }
-      }
-      else if( CLIENT_faction == FACTION_MILITAR){
-        if( PLAYER_COLOR_MIL != cvar_string("cl_color_mil") ){
-          //player changed militar color
-          cacheGlobalString(PLAYER_COLOR_MIL, cvar_string("cl_color_mil") )
-          cl_setmech( CLIENT_MENU_sel_mech );
-        }
-      }
-      else{
-        if( PLAYER_COLOR_PSC != cvar_string("cl_color_psc") ){
-          //player changed PSC color
-          cacheGlobalString(PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
-          cl_setmech( CLIENT_MENU_sel_mech );
-        }
-      }
-    }*/
     MENU_PROG_OFF_PREV = menuView;
   }
 
