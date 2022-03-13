@@ -392,6 +392,7 @@ void() sendent_setup_weapons={
         self.angles = this.torsoCenter.angles;
       }
       self.drawmask = MASK_NORMAL;
+      self.wepFireOffsetCache = self.wepFireOffset;
     self = this;
     weps = weps.w_slot;
   }
