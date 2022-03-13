@@ -837,9 +837,9 @@ entity(entity root, entity part, vector setAngle) te_mech_chunk_stand={
     aPiece.compOffset = part.compOffset;
     aPiece.angles = setAngle;
     aPiece.model = modelnameforindex(part.modelindex);
-    setmodelindex(aPiece, part.modelindex);
     aPiece.skin = root.skin;
     aPiece.colormod = '0.45 0.45 0.45';
+    setmodel(aPiece, aPiece.model);
     aPiece.drawmask = MASK_NORMAL;
     aPiece.owner = root;
   }

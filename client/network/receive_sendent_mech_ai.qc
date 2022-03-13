@@ -41,26 +41,31 @@ void() sendevent_mech_ai_move={
 void() mech_corpse_remove={
 
   if( self.legs != world && self.legs.owner == self ){
+    self.legs.drawmask = 0;
     remove(self.legs);
   }
   if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
     if( self.torsoLeft.owner == self){
+      self.torsoLeft.drawmask = 0;
       remove(self.torsoLeft);
     }
   }
   if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-    if( self.torsoLeft.owner == self){
-      remove(self.torsoLeft);
+    if( self.torsoRight.owner == self){
+      self.torsoRight.drawmask = 0;
+      remove(self.torsoRight);
     }
   }
   if((self.unitModFlags & MOD_HAS_ARM_L)){
     if( self.armLeft.owner == self){
+      self.armLeft.drawmask = 0;
       remove(self.armLeft);
     }
   }
   if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-    if( self.torsoLeft.owner == self){
-      remove(self.torsoLeft);
+    if( self.armRight.owner == self){
+      self.armRight.drawmask = 0;
+      remove(self.armRight);
     }
   }
   if(self.effect1 != world ){
@@ -115,6 +120,9 @@ void() sendevent_mech_ai_die_standing={
   pass = self;
   
   mechRoot = spawn();
+  if( !mechRoot ){
+    return;
+  }
   mechRoot.unitModFlags = pass.unitModFlags;
   mechRoot.solid = SOLID_NOT;
   mechRoot.movetype = MOVETYPE_NONE;
@@ -136,6 +144,9 @@ void() sendevent_mech_ai_die_standing={
   mechRoot.drawmask = MASK_NORMAL;
   
   mechLegs = te_mech_chunk_stand(pass, pass.legs, pass.angles);
+  if( mechLegs == world ){
+    return;
+  }
   mechLegs.frame = self.legs.frame;
   mechRoot.legs = mechLegs;
   mechRoot.legs.angles = self.legs.angles;
@@ -144,20 +155,28 @@ void() sendevent_mech_ai_die_standing={
   if( (pass.unitModFlags & MOD_HAS_TOR_L) && !(pass.unitModFlags & MOD_MODEL_NO_TOR_L) ){
     if( !(mechRoot.criticalHits & M_TOR_LEFT) ){
       mechTorLeft = te_mech_chunk_stand(pass, pass.torsoLeft, mechRoot.angles);
-      mechRoot.torsoLeft = mechTorLeft;
-      if( (pass.unitModFlags & MOD_HAS_ARM_L) && !(mechRoot.criticalHits & M_ARM_LEFT) ){
-        mechArmLeft = te_mech_chunk_stand(pass, pass.armLeft, mechRoot.angles);
-        mechRoot.armLeft = mechArmLeft;
+      if( mechTorLeft ){
+        mechRoot.torsoLeft = mechTorLeft;
+        if( (pass.unitModFlags & MOD_HAS_ARM_L) && !(mechRoot.criticalHits & M_ARM_LEFT) ){
+          mechArmLeft = te_mech_chunk_stand(pass, pass.armLeft, mechRoot.angles);
+          if( mechArmLeft ){
+            mechRoot.armLeft = mechArmLeft;
+          }
+        }
       }
     }
   }
   if( (pass.unitModFlags & MOD_HAS_TOR_R) && !(pass.unitModFlags & MOD_MODEL_NO_TOR_R) ){
     if( !(mechRoot.criticalHits & M_TOR_RIGHT) ){
       mechTorRight = te_mech_chunk_stand(pass, pass.torsoRight, mechRoot.angles);
-      mechRoot.torsoRight = mechTorRight;
-      if( (pass.unitModFlags & MOD_HAS_ARM_R) && !(mechRoot.criticalHits & M_ARM_RIGHT) ){
-        mechArmRight = te_mech_chunk_stand(pass, pass.armRight, mechRoot.angles);
-        mechRoot.armRight = mechArmRight;
+      if( mechTorRight ){
+        mechRoot.torsoRight = mechTorRight;
+        if( (pass.unitModFlags & MOD_HAS_ARM_R) && !(mechRoot.criticalHits & M_ARM_RIGHT) ){
+          mechArmRight = te_mech_chunk_stand(pass, pass.armRight, mechRoot.angles);
+          if( mechArmRight ){
+            mechRoot.armRight = mechArmRight;
+          }
+        }
       }
     }
   }
@@ -185,14 +204,15 @@ void() sendevent_mech_ai_die={
     rem = weps;
     weps = rem.w_slot;
     sendent_handle_remove(rem);
-    remove(rem);
   }
   makevectors(self.angles);
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 );
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
   
   if( self.moveState == FALSE ){
-    sendevent_mech_ai_die_standing();
+    //sendevent_mech_ai_die_standing();
+    self.think = sendevent_mech_ai_die_standing;
+    self.nextthink = servertime + frametime*0.1;
   }
   else{
     self.alpha = 0.01;
