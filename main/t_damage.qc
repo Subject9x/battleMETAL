@@ -85,25 +85,25 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
                         
-                         //------------>TODO: Damage Buffer system
-                        //AI react to Damage
-                        if( (trg.flags & FL_MONSTER) ){
-                          notTarg = self;
-                          self = dmgTrg;
-                          if( self.th_pain ){  
-                            self.th_pain( attacker );
-                          }
-                          if( attacker.faction != self.faction ){
-                            if( self.ai_rank > AI_RANK_REG ){
-                              if( self.shield <= (self.shieldMax / 2) ){
-                                ai_call_for_help(attacker);
-                              }
-                            }
-                          }
-                          self = notTarg;
-                        }
-                        //-----------------------------
-  
+     //------------>TODO: Damage Buffer system
+    //AI react to Damage
+    if( (trg.flags & FL_MONSTER) ){
+      notTarg = self;
+      self = dmgTrg;
+      if( self.th_pain && self.faction != notTarg.faction){  
+        self.th_pain( attacker );
+      }
+      if( attacker.faction != self.faction ){
+        if( self.ai_rank > AI_RANK_REG ){
+          if( self.shield <= (self.shieldMax / 2) ){
+            ai_call_for_help(attacker);
+          }
+        }
+      }
+      self = notTarg;
+    }
+    //-----------------------------
+
   if( dmgAmt <= 0 ){
     return trg;
   }
@@ -123,42 +123,42 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   }
   
   
-                              //TODO: this goes to damage buffer
-                              if( dmgTrg.health > 0 ){
-                                if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
-                                  if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
-                                    if( (trg.criticalHits & M_TOR_LEFT) ){
-                                      dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
-                                    }
-                                    if( (trg.criticalHits & M_TOR_RIGHT) ){
-                                      dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
-                                    }
-                                  }
-                                }
-                                
-                                dmgTrg.health = dmgTrg.health - dmgAmt;
-                                if( dmgTrg.health < 0){
-                                  dmgTrg.health = 0;
-                                }
-                              }
-                              
-                              
-                              if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){
-                                if( util_getMechHpAverage(dmgTrg) < 0.5){
-                                  if( attacker.faction != self.faction ){
-                                    notTarg = self;
-                                    self = dmgTrg;
-                                      ai_call_for_help( attacker );
-                                    self = notTarg;
-                                  }
-                                }
-                              }
-                              if( dmgTrg.health <= 0 ){
-                                if( dmgTrg.th_die ){
-                                  killed(dmgTrg, attacker);
-                                }
-                              }
-                              //---------------------------------
+  //TODO: this goes to damage buffer
+  if( dmgTrg.health > 0 ){
+    if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
+      if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
+        if( (trg.criticalHits & M_TOR_LEFT) ){
+          dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
+        }
+        if( (trg.criticalHits & M_TOR_RIGHT) ){
+          dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
+        }
+      }
+    }
+    
+    dmgTrg.health = dmgTrg.health - dmgAmt;
+    if( dmgTrg.health < 0){
+      dmgTrg.health = 0;
+    }
+  }
+  
+  
+  if( (dmgTrg.flags & FL_MONSTER) && dmgTrg.data_type != DATA_BLD ){
+    if( util_getMechHpAverage(dmgTrg) < 0.5){
+      if( attacker.faction != self.faction ){
+        notTarg = self;
+        self = dmgTrg;
+          ai_call_for_help( attacker );
+        self = notTarg;
+      }
+    }
+  }
+  if( dmgTrg.health <= 0 ){
+    if( dmgTrg.th_die ){
+      killed(dmgTrg, attacker);
+    }
+  }
+  //---------------------------------
   return dmgTrg;
 };
 
