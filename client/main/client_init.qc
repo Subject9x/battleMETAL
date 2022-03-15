@@ -18,9 +18,9 @@ void() CSQC_Init =
   registercvar("saveslot", "0", CF_CLIENT | CF_ARCHIVE);
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
-  registercvar("cl_team", "0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_team", "1", CF_CLIENT | CF_ARCHIVE);
+  //registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  //registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   registercvar("chase_active",  "0", CF_CLIENT | CF_ARCHIVE);
   

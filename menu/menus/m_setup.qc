@@ -98,13 +98,14 @@ void(float factionType) setup_set_tint={
       break;
   }
   if( strlen(clientColors) > 0 ){
+    cons_logAString("clientColors", clientColors);  //debug
     tokenizebyseparator(clientColors, " ");
-    TINT_CT = rint(stof(argv(0)));
-    TINT_LT = rint(stof(argv(1)));
-    TINT_RT = rint(stof(argv(2)));
-    TINT_LA = rint(stof(argv(3)));
-    TINT_RA = rint(stof(argv(4)));
-    TINT_LG = rint(stof(argv(5)));
+    TINT_CT = fabs(stof(argv(0)));
+    TINT_LT = fabs(stof(argv(1)));
+    TINT_RT = fabs(stof(argv(2)));
+    TINT_LA = fabs(stof(argv(3)));
+    TINT_RA = fabs(stof(argv(4)));
+    TINT_LG = fabs(stof(argv(5)));
   }
 };
 
@@ -189,10 +190,10 @@ void() setup_color_hide_grid={
   }
 };
 
-void(float nextTeam) setup_team_set={
+void(float selectTeam) setup_team_set={
   setup_save_color_scheme();
   
-  setup_team_value.len = nextTeam;
+  setup_team_value.len = selectTeam;
   
   setup_set_tint( setup_team_value.len );
   
@@ -222,12 +223,12 @@ void(float nextTeam) setup_team_set={
 };
 
 void() setup_team_prev_f={
-  local float nextTeam;
-  nextTeam = setup_team_value.len - 1;
-  if( nextTeam < 1 ){
-    nextTeam = 3;
+  local float prevTeam;
+  prevTeam = setup_team_value.len - 1;
+  if( prevTeam < 1 ){
+    prevTeam = 3;
   }
-  setup_team_set(nextTeam);
+  setup_team_set(prevTeam);
 };
 
 void() setup_team_next_f={

@@ -1405,6 +1405,7 @@ float CF_PERSISTENT           = 1024; // cvar must not be reset on gametype swit
 float CF_PRIVATE              = 2048; // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
 float CF_MAXFLAGSVAL          = 4095;    // used to determine if flags is valid
 
+
 //DP_QC_CRC16
 //idea: divVerent
 //darkplaces implementation: divVerent
