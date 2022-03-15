@@ -15,7 +15,6 @@ vector cursorpos;
 vector cursorImageSize;
 
 float MENU_PROG_OFF; //detect if menu progs are running.
-float MENU_PROG_OFF_PREV;
 
 string PLAYER_COLOR_PSC;
 string PLAYER_COLOR_SRV;

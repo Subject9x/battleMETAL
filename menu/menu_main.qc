@@ -28,11 +28,11 @@ void() m_init={
   registercvar("cl_net_fav3", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_net_fav4", "0", CF_CLIENT | CF_ARCHIVE);
   
-  registercvar("cl_color_mil", cvar_string("cl_color_psc"), CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_srv", cvar_string("cl_color_mil"), CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_psc", cvar_string("cl_color_srv"), CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   
-  registercvar("cl_newgameplus",cvar_string("cl_newgameplus"), CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_newgameplus","0", CF_CLIENT | CF_ARCHIVE);
   
   cvar_set("r_framedatasize", "16");  //FIXME - issue in engine
   
@@ -167,13 +167,13 @@ void(float width, float height) m_draw={
   local vector bimg;
   
   VIEW_MPOS = getmousepos();
-  VIEW_ACT_x = width;
-  VIEW_ACT_y = height;
-  VIEW_ACT_z = cvar("vid_pixelheight");
   
   if( getkeydest() == KEY_MENU ){
     if(RESO_CHANGE){
       RESO_CHANGE = FALSE;
+      VIEW_ACT_x = width;
+      VIEW_ACT_y = height;
+      VIEW_ACT_z = cvar("vid_pixelheight");
       gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
     }
     if(MAIN_MISSION){

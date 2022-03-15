@@ -752,15 +752,22 @@ void() click_graphics_accept={
 // ini function, called by '_f' function as a setup func
 void() m_graphics_i={
   local float vid;
+  local vector panelSize;
+  local float panelCol;
   
-  local string reso;
+  local string vidResName;
+  local vector vidResSize;
+  local vector vidConsize;
   local float row, col;
   local vector startOrg;
   local float idx;
   local entity reso_list;
   
+  panelSize = '448 384';
+  panelCol = (panelSize_x - 25) / 5;
+  
   options_graphics_submenu = SUB_GRAPHICS_MAIN;
-  menu_parent_setup(VIEW_ORG + '0 40', '448 384');
+  menu_parent_setup(VIEW_ORG + '0 40', panelSize);
   
   VID_NEXT = '0 0 0'; //initialize this here so its not null;
 
@@ -768,10 +775,10 @@ void() m_graphics_i={
   
   //resolution
   vid = menu_getvideo_modeid();
-  reso = strcat(ftos(VIEW_ACT_x), " x ", ftos(VIEW_ACT_y) );
+  vidResName = strcat(ftos(VIEW_ACT_x), " x ", ftos(VIEW_ACT_y) );
   graphics_resolution_lbl = lbl_text(MENU_ORG + '150 82', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
   graphics_resolution_lbl.len = vid;
-  cacheGlobalString(graphics_resolution_lbl.label, reso)
+  cacheGlobalString(graphics_resolution_lbl.label, vidResName)
   
   //new resolution  
   graphics_resolution_aspect_lbl = lbl_text(MENU_ORG + '150 102', '10 10', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, 0);
@@ -782,16 +789,25 @@ void() m_graphics_i={
   graphics_resolution_change.subid = SUB_GRAPHICS_MAIN;
   
   startOrg = MENU_ORG + '25 125';
-  for(row=0; row < 14; row = row + 1){
-    for(col=0; col < 4; col = col + 1){
-      idx = (row * 4) + col;
-      if( idx < VID_RESO_TOTAL ){
-        reso = VID_RESO_NAME[idx];
-        reso_list = btn_text_callback(startOrg + Vector2(col * max(stringwidth(reso, 0, '12 12'), 128), row * 25), '12 12', "", 0, M_OPTIONS_GRAPHICS, click_graphics_reso_select, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
-        reso_list.len = idx;
-        reso_list.subid = SUB_GRAPHICS_RESO;
-        cacheGlobalString( reso_list.label, reso)
-        reso_list.fontId = FONT_NUM_ROBOT_REGULAR;
+  col = 0;
+  row = 0;
+  for( idx = 1; idx < VID_RESO_TOTAL; idx = idx + 1){
+    vidResName = VID_RESO_NAME[idx];
+    vidResSize = VID_RESO_SIZE[idx];
+    vidConsize = VID_RESO_HALF[idx];
+    
+    if( vidResSize_x >= 640 && vidResSize_y >= 480 && vidConsize_x >= 640 && vidConsize_y >= 480){
+      reso_list = btn_text_callback(startOrg + [col * max(stringwidth(vidResName, 0, '12 12'), panelCol), row * 25], '12 12', "", 0, M_OPTIONS_GRAPHICS, click_graphics_reso_select, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+      reso_list.len = idx;
+      reso_list.subid = SUB_GRAPHICS_RESO;
+      cacheGlobalString( reso_list.label, vidResName)
+      reso_list.fontId = FONT_NUM_ROBOT_REGULAR;
+      if( col < (panelSize_x / panelCol) - 1 ){
+        col = col + 1;
+      }
+      else{
+        col = 0;
+        row = row + 1;
       }
     }
   }

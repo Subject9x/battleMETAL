@@ -18,15 +18,15 @@ void() CSQC_Init =
   registercvar("saveslot", "0", CF_CLIENT | CF_ARCHIVE);
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
-  registercvar("cl_team", cvar_string("cl_team"), CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_psc", cvar_string("cl_color_psc"), CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_mil", cvar_string("cl_color_mil"), CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_srv", cvar_string("cl_color_srv"), CF_CLIENT | CF_ARCHIVE);
-  registercvar("chase_active",  cvar_string("chase_active"), CF_CLIENT | CF_SERVER | CF_ARCHIVE);
+  registercvar("cl_team", "0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("chase_active",  "0", CF_CLIENT | CF_ARCHIVE);
   
-  registercvar("cl_newgameplus",cvar_string("cl_newgameplus"), CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
   
-  cvar_set("con_chat", "0", CF_CLIENT | CF_ARCHIVE);  //force old chat system off
+  cvar_set("con_chat", "0");  //force old chat system off
   
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
@@ -36,6 +36,8 @@ void() CSQC_Init =
 	// this is the place to do any registercmd() calls we want for custom csqc commands (like replacing +showscores) so that they tab-complete properly
 	// we can precache_sound and precache_model and precache_pic here
   VIEW_ORG = '0 0';
+  VIEW_ACT = [cvar("vid_width"), cvar("vid_height"), 0];
+  gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
   
   //ini the HUD sound system
   SQSIZE = 6; //set to 6
@@ -187,7 +189,6 @@ void() CSQC_Init =
   initparticlespawner(16);
   VIEW_OBS_ID = 1;
   ui_colors_set_player_list();
-  MENU_PROG_OFF_PREV = FALSE;
 
   //Grab player color settings from menu.
   freeGlobalString(PLAYER_COLOR_PSC)

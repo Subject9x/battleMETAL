@@ -129,7 +129,7 @@ float(float anglee) gui_angleToEnum={
   conwidth = floor(conheight * vid.width / (vid.height * vid_pixelheight.value));
 */
 void(float screenWidth, float screenHeight) gui_set_screen_size={
-  
+    
   VIEW_WIDTH = screenWidth;
   VIEW_HEIGHT = screenHeight;
   VIEW_PIXELH = cvar("vid_pixelheight");
@@ -145,9 +145,9 @@ void(float screenWidth, float screenHeight) gui_set_screen_size={
   
   VIEW_CTR = VIEW_MAX * 0.5;
   
-  UI_ORG = VIEW_CTR - [320, VIEW_MAX_y / 2];
-  UI_MAX = [UI_ORG_x + 640, VIEW_MAX_y];
-  UI_CTR = UI_ORG + (UI_MAX - UI_ORG * 0.5);
+  UI_ORG = VIEW_CTR - '320 240';
+  UI_MAX = [UI_ORG_x + 640, 480];
+  UI_CTR = UI_ORG + '320 240';
   
   //some stuff requires knowing percents rather than values....looking at you con_chatpos  u_u
   UI_ORG_PERCENT_x = UI_ORG_x / VIEW_MAX_x;

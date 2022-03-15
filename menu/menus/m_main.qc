@@ -108,6 +108,9 @@ void() m_main_i={
   local vector orgQuit;
   local float mainTitleFlag;
   
+  if( VIEW_ACT == '0 0 0'){
+    VIEW_ACT = [cvar("vid_width"), cvar("vid_height"), 0];
+  }
   gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);  //ugh
   
   if( MAIN_MISSION ){

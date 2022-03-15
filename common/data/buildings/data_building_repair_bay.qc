@@ -308,7 +308,7 @@ void() building_repair_idle={
 void() building_repair_cooldown={
   if( self.ai_state == PLAYER_RESPAWN && self.ai_state_last != PLAYER_RESPAWN ){
     self.moveState = FALSE;
-    cons_logAFloat("building_repair_cooldown - left area", 1);  //debug
+    //cons_logAFloat("building_repair_cooldown - left area", 1);  //debug
     building_repair_allowGuns(TRUE);
     client_send_event_repairs( self.trigger_field, FALSE );
     self.trigger_field.stat_plr_rep = -1;

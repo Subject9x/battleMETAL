@@ -252,6 +252,7 @@ void() menu_ini_display_constants={
       VID_RESO_NAME[itr] = strzone( sprintf( "%s x %s",ftos( res_x), ftos(res_y)) );
       VID_RESO_SIZE[itr] = res;
       con_y = 480;
+      
       //match "vid_conwidthauto" but as a one-time calculation.
       con_x = floor(con_y * res_x / (res_y * 1));
       VID_RESO_HALF[itr] = con;

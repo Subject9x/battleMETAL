@@ -34,10 +34,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     CHAT_INP_SEND = FALSE;
   }
   MENU_PROG_OFF = menuView;
-  if(MENU_PROG_OFF_PREV != menuView){
-    //check for player bringing up menu delta
-    MENU_PROG_OFF_PREV = menuView;
-  }
 
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
@@ -136,8 +132,10 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   VIEW_ORG = '0 0';
   VIEW_SCALE = 0.35;
   
-  gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
-  
+  if( [cvar("vid_conwidth"),cvar("vid_conheight")] != VIEW_MAX){
+    //detect resolution change.
+    gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
+  }
   // add any polygons we want here
   makevectors(input_angles);
   //=================================================
@@ -240,7 +238,9 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos(Vector2(w,h))), '8 8', '0.85 0.85 0.85', 1, 0);
   
+    
     drawstring(VIEW_ORG + '0 40', sprintf("VIEW_VF_ORG  = %s", vtos(VIEW_VF_ORG)), '8 8', '0.85 0.85 0.85', 1, 0);
+    
     drawstring(VIEW_ORG + '0 48', sprintf("VF_ORIGIN  = %s", vtos(getpropertyvec(VF_ORIGIN))), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 56', sprintf("PMOVE_ORG  = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     
@@ -248,10 +248,13 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       drawstring(VIEW_ORG + '0 64', sprintf("HUD_MODEL_STRUTS  = %s", vtos(HUD_MODEL_STRUTS.origin)), '8 8', '0.85 0.85 0.85', 1, 0);
     }
   
+    local vector mpos;
+    mpos = getmousepos();
     if(MENU_ACTIVE){
-      local vector mpos;
-      mpos = getmousepos();
       drawstring(VIEW_ORG + '0 40', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
+    }
+    else{
+      drawstring(VIEW_ORG + '0 72', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
     }
   }
   
