@@ -260,7 +260,19 @@ void(entity item) te_weapon_fire_handler={
     adjPartOffset = self.compOffset - parent.compOffset;
     
     view = parent.angles;
-    view_x = view_x *-1;
+    if( (parent.partTypeId == M_ARM_LEFT && (this.unitModFlags & MOD_MODEL_PITCH_ARM_L)) ||
+      (parent.partTypeId == M_ARM_RIGHT && (this.unitModFlags & MOD_MODEL_PITCH_ARM_R)) ||
+      (parent.partTypeId == M_TOR_RIGHT && (this.unitModFlags & MOD_MODEL_PITCH_TOR_R)) ||
+      (parent.partTypeId == M_TOR_LEFT && (this.unitModFlags & MOD_MODEL_PITCH_TOR_L)) ||
+      (parent.partTypeId == M_TOR_CENTER && (this.unitModFlags & MOD_MODEL_PITCH_TOR_C)) )
+    {
+      view_x = view_x *-1;
+    }
+    else{
+      view_x = 0;
+    }
+    
+    
     makevectors( view);
     offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
     
@@ -836,10 +848,9 @@ entity(entity root, entity part, vector setAngle) te_mech_chunk_stand={
     aPiece.origin = part.origin;
     aPiece.compOffset = part.compOffset;
     aPiece.angles = setAngle;
-    aPiece.model = modelnameforindex(part.modelindex);
     aPiece.skin = root.skin;
     aPiece.colormod = '0.45 0.45 0.45';
-    setmodel(aPiece, aPiece.model);
+    setmodel(aPiece, part.model);
     aPiece.drawmask = MASK_NORMAL;
     aPiece.owner = root;
   }
@@ -854,21 +865,22 @@ void( entity mechLegs ) te_mech_dead_legs={
   local entity deadLegs;
   
   deadLegs = spawn();
-  if( deadLegs ){
-    deadLegs.drawmask = MASK_NORMAL;
-    setmodel(deadLegs, mechLegs.model);
-    setsize(deadLegs, deadLegs.mins, deadLegs.maxs);
-    setorigin(deadLegs, mechLegs.origin);
-    deadLegs.frame = mechLegs.frame;
-    deadLegs.solid = SOLID_NOT;
-    deadLegs.colormod = '0.45 0.45 0.45';
-    deadLegs.frame = 1;
-    deadLegs.think = te_mech_dead_legs_burn;
-    deadLegs.nextthink = time + 0.5;
-    deadLegs.data_lifetime = time + 300 + (random() * 200);
-    deadLegs.angles = mechLegs.angles;
-    deadLegs.vec_size = mechLegs.owner.vec_size;
+  if( deadLegs == world ){
+    return;
   }
+  deadLegs.drawmask = MASK_NORMAL;
+  setmodel(deadLegs, mechLegs.model);
+  setsize(deadLegs, deadLegs.mins, deadLegs.maxs);
+  setorigin(deadLegs, mechLegs.origin);
+  deadLegs.frame = mechLegs.frame;
+  deadLegs.solid = SOLID_NOT;
+  deadLegs.colormod = '0.45 0.45 0.45';
+  deadLegs.frame = 1;
+  deadLegs.think = te_mech_dead_legs_burn;
+  self.nextthink = servertime + frametime*0.5;
+  deadLegs.data_lifetime = servertime + 300 + (random() * 200);
+  deadLegs.angles = mechLegs.angles;
+  deadLegs.vec_size = mechLegs.owner.vec_size;
 };
 
 void() te_mech_dead_legs_burn={
@@ -876,8 +888,8 @@ void() te_mech_dead_legs_burn={
   
   if( time > self.data_lifetime ){
     self.think = te_mech_dead_legs_smoke;
-    self.nextthink = time + 0.1;
-    self.data_lifetime = time + 500 + (random() * 300);
+    self.nextthink = servertime + frametime*0.1;
+    self.data_lifetime = servertime + 500 + (random() * 300);
     return;
   }
   makevectors(self.angles);
@@ -887,7 +899,7 @@ void() te_mech_dead_legs_burn={
   
   
   self.think = te_mech_dead_legs_burn;
-  self.nextthink = time + 0.25;
+  self.nextthink = servertime + frametime*0.5;
 };
 
 void() te_mech_dead_legs_smoke={
@@ -895,9 +907,9 @@ void() te_mech_dead_legs_smoke={
   makevectors(self.angles);
   fireOrg = self.origin + (v_up * self.maxs_z);
   pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
-  if( time > self.data_lifetime ){
+  if( servertime > self.data_lifetime ){
     self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
+    self.nextthink = servertime + frametime*0.1;
     return;
   }
 
