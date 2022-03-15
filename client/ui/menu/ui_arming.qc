@@ -814,7 +814,7 @@ void(vector ofs) menu_arming_energydraw={
   
   local vector helpOrg;
   
-  gui_renderPatch9_1_32(ofs, '100 210', CLR_DEF_ENE_FRT * 0.75, 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(ofs, '128 210', CLR_DEF_ENE_FRT * 0.75, 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;

@@ -341,7 +341,7 @@ float(float id) ui_data_load_mech={
   while( hardpoint ){
     
     partOffset = hardpoint.compOffset;
-    //TODO - migjht be source of hardpoint type bug
+    //TODO - might be source of hardpoint type bug
     if( MECH_DATA_STOCK[itr] > 0){
       hardpoint.data_idx = MECH_DATA_STOCK[itr];
       data_get_client_item_( hardpoint, MECH_DATA_STOCK[itr] );
