@@ -155,8 +155,16 @@ void() menu_armingListener_onKeyUp={
         //run collision check with all hardpoints on the mech entity.
         if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, '28 28', FALSE)){
           if( (UI_ARMING_item_drag.equipSize & hardpoint.hardpointSize) ){
+              hardpoint.modelindex = 0;
+              hardpoint.model = "";
               data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
-              ui_date_load_item1(UI_ARMING_item_drag.data_idx);
+              ui_date_load_item2(UI_ARMING_item_drag.data_idx);
+              hardpoint.colormod = '1.0 1.0 1.0';
+              hardpoint.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+              setmodel(hardpoint, hardpoint.model);
+              if(hardpoint.data_idx != UID_ITEM_EMPTY){
+                hardpoint.scale = 1.0;
+              }
               
               //update weapon groups for launch-validation
               //DMG_MSC don't count as weapons for OR against groups, we don't want them to allow a player to bypass group-validation
@@ -1238,7 +1246,6 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
     while(weaponEnt){
       if(weaponEnt.data_idx == UID_ITEM_EMPTY){
         weaponEnt.alpha = 0.0;
-        setmodel(weaponEnt, "q3mdl/testball.md3");
       }
       else{
         if( weaponEnt == UI_ARMING_hardpoint ){
@@ -1249,7 +1256,6 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
         }
         weaponEnt.alpha = 1.0;
         weaponEnt.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
-        setmodel(weaponEnt, weaponEnt.model);
         weaponEnt.origin = UI_HANGAR_DATA_mech.origin + (v_forward * weaponEnt.compOffset_z)
             + (v_up * weaponEnt.compOffset_y) + (v_right * weaponEnt.compOffset_x);
       }

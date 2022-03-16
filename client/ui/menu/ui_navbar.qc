@@ -127,7 +127,6 @@ void() ui_navbutton_arming_click={
         itemId = UNLOCKED_ITEMS[itemUnlockCounter];
         //UI_ARMING_DATA_item_list is used as a sort-of pointer for list-style operations
         data_get_client_item_( UI_ARMING_DATA_item_list, itemId );
-    
         //lists are stateful, so we offload the data we care about to clunky arrays.
         data_WeaponNames[itemId] = UI_ARMING_DATA_item_list.w_name;
         data_WeaponSize[itemId] = UI_ARMING_DATA_item_list.equipSize;

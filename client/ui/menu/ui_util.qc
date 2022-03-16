@@ -435,7 +435,7 @@ void( float missionStat ) ui_set_mission_status={
 //called whenever we switch mechs.
 void(vector showAng, vector colors, float useClientColor) menu_player_MechModel_setup={
   local vector colorCt, colorLt, colorRt, colorLa, colorRa, colorLg;
-  
+  local entity hardpoint;
   if(useClientColor){
     colorCt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR1))] * 1.5;
     colorLt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR2))] * 1.5;
@@ -488,6 +488,16 @@ void(vector showAng, vector colors, float useClientColor) menu_player_MechModel_
   UI_HANGAR_DATA_mech.legs.angles       = showAng;
   UI_HANGAR_DATA_mech.legs.effects        = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   UI_HANGAR_DATA_mech.legs.frame = 0;
+  
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  while(hardpoint){
+    data_get_client_item_( hardpoint, hardpoint.data_idx );
+    setmodel(hardpoint, hardpoint.model);
+    hardpoint.colormod = '1.0 1.0 1.0';
+    hardpoint.angles = showAng;
+    hardpoint.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    hardpoint  = hardpoint.w_slot;
+  }
 };
 
 void() menu_player_MechModel_color_update={
