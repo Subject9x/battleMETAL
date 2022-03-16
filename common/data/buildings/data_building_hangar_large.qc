@@ -171,8 +171,9 @@ void() building_human_hangar={
   setsize(self, '-80 -80 0', '80 80 88');
   
   if( !self.health) {
-    self.health = self.max_health = 800;
+    self.health = 800;
   }
+  self.max_health = self.health;
   
   if( !self.shieldMax ){
     self.shieldMax = 600;

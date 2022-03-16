@@ -148,8 +148,9 @@ void() building_human_fuel={
   self.deadflag = DEAD_NO;
 
   if( !self.health) {
-    self.health = self.max_health = 100;
+    self.health = 100;
   }
+  self.max_health = self.health;
   
   if( !self.shieldMax ){
     self.shieldMax = 250;

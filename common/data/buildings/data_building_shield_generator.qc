@@ -227,8 +227,9 @@ void() building_human_shield={
   }
     
   if( !self.health) {
-    self.health = self.max_health = 500;
+    self.health = 500;
   }
+  self.max_health = self.health;
   
   if( !self.shieldMax ){
     self.shieldMax = 4000;

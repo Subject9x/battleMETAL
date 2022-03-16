@@ -171,8 +171,9 @@ void() building_barracks={
   self.use = multi_trigger;
   
   if( !self.health) {
-    self.health = self.max_health = 275;
+    self.health = 275;
   }
+  self.max_health = self.health;
   
   if( !self.shieldMax ){
     self.shieldMax = 300;

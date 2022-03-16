@@ -191,8 +191,9 @@ void() building_human_power={
   setsize(self, '-80 -80 0', '80 80 58');
   
   if( !self.health) {
-    self.health = self.max_health = 1200;
+    self.health = 1200;
   }
+  self.max_health = self.health;
   self.shield = 0;
   self.shieldMax = 300;
   self.shieldRate = 0;  //needs Shield Generator

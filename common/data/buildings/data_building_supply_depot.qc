@@ -168,8 +168,9 @@ void() building_supply_depot={
   self.use = multi_trigger;
   
   if( !self.health) {
-    self.health = self.max_health = 350;
+    self.health = 350;
   }
+  self.max_health = self.health;
   
   if( !self.shieldMax ){
     self.shieldMax = 250;

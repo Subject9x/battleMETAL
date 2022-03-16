@@ -462,6 +462,7 @@ void() building_human_repair={
   if( !self.health ){
     self.health = self.max_health = 600;
   }
+  self.max_health = self.health;
 
   if( !self.energy ){
     self.energy = 0;

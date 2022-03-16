@@ -295,8 +295,9 @@ void() building_human_radar={
   }
   
   if( !self.health) {
-    self.health = self.max_health = 250;
+    self.health = 250;
   }
+  self.max_health = self.health;
   if( !self.shieldMax ){
     self.shieldMax = 200;
   }

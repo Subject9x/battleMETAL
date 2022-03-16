@@ -96,8 +96,9 @@ void() building_guard_tower={
   self.th_die = guard_tower_die1;
   
   if( !self.health) {
-    self.health = self.max_health = 200;
+    self.health = 200;
   }
+  self.max_health = self.health;
   
   if( !self.shieldMax ){
     self.shieldMax = 150;

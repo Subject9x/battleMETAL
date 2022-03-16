@@ -169,8 +169,9 @@ void() building_human_hangar_vehicle={
   self.use = multi_trigger;
   
   if( !self.health) {
-    self.health = self.max_health = 500;
+    self.health = 500;
   }
+  self.max_health = self.health;
   
   if( !self.shieldMax ){
     self.shieldMax = 400;
