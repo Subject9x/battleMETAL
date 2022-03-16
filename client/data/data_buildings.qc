@@ -116,7 +116,7 @@ void() data_building_hangar_large={
   self.vec_name = "Large Hangar";
   self.vec_size = 3;
   setmodel(self, "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3");
-  setsize(self, '-68 -84 0', '68 84 88');
+  setsize(self, '-80 -80 0', '80 80 88');
   self.max_health = 800;
   self.shield = 0;
   self.shieldMax = 300;
