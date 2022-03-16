@@ -98,7 +98,6 @@ void(float factionType) setup_set_tint={
       break;
   }
   if( strlen(clientColors) > 0 ){
-    cons_logAString("clientColors", clientColors);  //debug
     tokenizebyseparator(clientColors, " ");
     TINT_CT = fabs(stof(argv(0)));
     TINT_LT = fabs(stof(argv(1)));

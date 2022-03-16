@@ -221,7 +221,7 @@ void(float hitDirBit) hud_renderDirectionHit;
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection;
 void(vector pos, float algn) hud_renderPitchIndicator;
 void(vector pos, float algn, float val) hud_renderReticleRange;
-void(vector pos, float algn, vector angle) hud_renderNavHeading;
+// void(vector pos, float algn, vector angle) hud_renderNavHeading;
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient, vector mColor) hud_renderShield;
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, vector mColor) hud_renderEnergy;
 void(vector grpCtr, vector pos, float val, vector mSize, string imgPiece, float thatTarget, float partFlag) hud_renderArmorMeter;

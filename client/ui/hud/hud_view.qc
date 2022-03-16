@@ -107,7 +107,8 @@ void(vector pos, float algn, float val) hud_renderReticleRange={
 
 /*
   RENDER NAV HEADING LETTER
-*/
+    -DEPRECATED-
+
 void(vector pos, float algn, vector angle) hud_renderNavHeading={
 
   pos = gui_calcAlign(pos, algn);
@@ -118,7 +119,7 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
   drawstring(pos, gui_angleToNav(angle_y), '32 32', HUD_COLOR_DEF, HUD_ALPHA + 0.15, 0);
   
   drawfont = drawfont_prev;
-};
+;*/
 
 /*
   RENDER SHIELD METER

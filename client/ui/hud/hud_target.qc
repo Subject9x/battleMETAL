@@ -488,6 +488,7 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
   }
   viewOrg = pmove_org;
   clearscene();
+    modelEntity.maxs_z = max(modelEntity.maxs_z, 24); //test
     
     zBias = (modelEntity.mins_z - modelEntity.maxs_z)/2 - modelEntity.mins_z;
     zTotal = ((modelEntity.mins_z * -1) + modelEntity.maxs_z) / 2;
@@ -537,13 +538,15 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
 */
 void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorBuilding={
   local vector panelOrg;
-  local vector meter;
+  //local vector meter;
   local vector tColor;
   
   local vector backOrg;
   local vector backSize;
   local vector backColor;
   
+  local vector modelMaxs;
+  local vector modelMins;
   local vector viewOrg;
   local float zTotal;
   local float zBias;
@@ -555,10 +558,6 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   tColor =  gui_getColorForArmor(val);
   
   panelOrg = gui_calcAlign(vorg, algn);
-  meter = siz;
-  meter_x = meter_x / 2;
-  meter_y = meter_y / 2;
-  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), panelOrg);
   
   if(CLIENT_faction != CLIENT_target_faction && CLIENT_faction != FACTION_ALL){
     backColor = CLR_DEF_IFF_ENEMY;
@@ -584,14 +583,17 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   if( HUD_MODEL_ARMOR_GRAPH_TARGET == world ){
     return;
   }
-    
-  zBias = (HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z - HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z)/2 - HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z;
-  zTotal = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2;
-  zHalf = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2;
-  xHalf = HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_x * 1.5;
+  modelMaxs = HUD_MODEL_ARMOR_GRAPH_TARGET.maxs;
+  modelMins = HUD_MODEL_ARMOR_GRAPH_TARGET.mins;
+  modelMaxs_z = max(40, modelMaxs_z);
+  modelMins_z = min(-40, modelMins_z);
+  zBias = (HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z - modelMaxs_z)/2 - HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z;
+  zTotal = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + modelMaxs_z) / 2;
+  zHalf = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + modelMaxs_z) / 2;
+  xHalf = modelMaxs_x * 2;
   viewOrg = pmove_org;
   clearscene();
-    setproperty(VF_ORIGIN, viewOrg + [-115 - xHalf, 0, 25 + HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1]);	//look towards it.
+    setproperty(VF_ORIGIN, viewOrg + [-115 - xHalf, 0, 50 + modelMins_z * -1]);	//look towards it.
     setproperty(VF_ANGLES, '30 0 0');
     
     setproperty(VF_MIN, vtodpp([panelOrg_x, panelOrg_y, 0]) );
@@ -611,7 +613,7 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     setproperty(VF_FOG_HEIGHT, 0.0);
     setproperty(VF_FOG_FADEDEPTH, 0.0);
     
-     setorigin( HUD_MODEL_ARMOR_GRAPH_TARGET, viewOrg + [0, 0, HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z * -1]);
+     setorigin( HUD_MODEL_ARMOR_GRAPH_TARGET, viewOrg + [0, 0, modelMaxs_z * -1]);
     
     HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = tColor * 2;
     HUD_MODEL_ARMOR_GRAPH_TARGET.angles = CLIENT_target_ent.angles;
@@ -642,6 +644,12 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
   setproperty(VF_DRAWWORLD, TRUE);
+  
+  
+  //meter = siz;
+  //meter_x = meter_x / 2;
+  //meter_y = meter_y / 2;
+  //meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), panelOrg);
   //drawpic(meter, HUD_BUILD_TRG, siz, tColor, HUD_ALPHA, 0);
 };
 
@@ -694,7 +702,6 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
     backOrg_y = backOrg_y - 8;
     backOrg = backOrg + gui_calcAlignCustom(lblOfs, lalgn, panelOrg);
   }
-  
   
   gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   
@@ -957,6 +964,26 @@ void(entity piece, entity root) hud_model_armor_part_frame={
 void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_target_frame={
   local vector tAngles;
   
+  local vector colorCT, colorRT, colorLT, colorLA, colorRA, colorLG;
+  
+  if( CLIENT_faction == CLIENT_target_faction && CLIENT_faction != FACTION_ALL){
+    colorCT = gui_getColorForArmor(hpCt) * 2;
+    colorLT = gui_getColorForArmor(hpLt) * 2;
+    colorRT = gui_getColorForArmor(hpRt) * 2;
+    colorLA = gui_getColorForArmor(hpLa) * 2;
+    colorRA = gui_getColorForArmor(hpRa) * 2;
+    colorLG = gui_getColorForArmor(hpLg) * 2;
+    
+  }
+  else{
+    colorCT = gui_getColorForArmorTarget(hpCt) * 2;
+    colorLT = gui_getColorForArmorTarget(hpLt) * 2;
+    colorRT = gui_getColorForArmorTarget(hpRt) * 2;
+    colorLA = gui_getColorForArmorTarget(hpLa) * 2;
+    colorRA = gui_getColorForArmorTarget(hpRa) * 2;
+    colorLG = gui_getColorForArmorTarget(hpLg) * 2;
+  }
+  
   HUD_MODEL_ARMOR_GRAPH_TARGET.origin = vueOrg;
   
   tAngles = vectoangles(CLIENT_target_ent.origin - pmove_org);
@@ -966,40 +993,39 @@ void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, 
   hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter, HUD_MODEL_ARMOR_GRAPH_TARGET);
   HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.origin = vueOrg;
   HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles = [CLIENT_target_ent.torsoCenter.angles_x, anglemod(CLIENT_target_ent.torsoCenter.angles_y - tAngles_y), 0];
-  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.colormod = gui_getColorForArmorTarget(hpCt) * 2;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.colormod = colorCT;
   addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter);
   
   makevectors(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles);
   if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_TOR_L) ){
     hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft, HUD_MODEL_ARMOR_GRAPH_TARGET);
     HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.angles   = [CLIENT_target_ent.torsoLeft.angles_x, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y, 0];  
-    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.colormod   = gui_getColorForArmorTarget(hpLt) * 2;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft.colormod   = colorLT;
     addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft);
   }
   if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_TOR_R) ){
     hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight, HUD_MODEL_ARMOR_GRAPH_TARGET);
     HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.angles  = [CLIENT_target_ent.torsoRight.angles_x, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.colormod  = gui_getColorForArmorTarget(hpRt) * 2;  
+    HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight.colormod  = colorRT;  
     addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight);
   }
   if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_ARM_L) ){
     hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft, HUD_MODEL_ARMOR_GRAPH_TARGET);
     HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.angles     = [CLIENT_target_ent.armLeft.angles_x, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.colormod     = gui_getColorForArmorTarget(hpLa) * 2;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft.colormod     = colorLA;
     addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft);
   }
   if( (HUD_MODEL_ARMOR_GRAPH_TARGET.unitModFlags & MOD_HAS_ARM_R) ){
     hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.armRight, HUD_MODEL_ARMOR_GRAPH_TARGET);
     HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.angles    = [CLIENT_target_ent.armRight.angles_x, HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.colormod    = gui_getColorForArmorTarget(hpRa) * 2;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.armRight.colormod    = colorRA;
     addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.armRight);
   }
     
   hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_TARGET.legs, HUD_MODEL_ARMOR_GRAPH_TARGET);
   HUD_MODEL_ARMOR_GRAPH_TARGET.legs.angles        = HUD_MODEL_ARMOR_GRAPH_TARGET.angles;
   HUD_MODEL_ARMOR_GRAPH_TARGET.legs.frame = CLIENT_target_ent.legs.frame;
-    
-  HUD_MODEL_ARMOR_GRAPH_TARGET.legs.colormod = gui_getColorForArmorTarget(hpLg) * 2;
+  HUD_MODEL_ARMOR_GRAPH_TARGET.legs.colormod = colorLG;
   addentity(HUD_MODEL_ARMOR_GRAPH_TARGET.legs);
 };
 
