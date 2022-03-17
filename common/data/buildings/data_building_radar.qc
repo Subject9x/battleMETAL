@@ -273,9 +273,9 @@ void() building_human_radar={
   self.vec_name = "Listening Post";
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 1;
-  macro_set_model("q3mdl/buildings/radar/mdl_bld_h_radar.md3", self.skin, EF_LOWPRECISION)
+  macro_set_model("q3mdl/buildings/radar/listpost.obj", self.skin, EF_LOWPRECISION)
   macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  setsize(self, '-20 -20 0', '20 20 26');
+  setsize(self, self.mins, self.maxs);
   self.stat_rdr_mode = TRUE;
   
   self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;

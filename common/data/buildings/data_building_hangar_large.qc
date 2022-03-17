@@ -119,33 +119,6 @@ void() hangar_die15=[0, SUB_Null]{
 };
 
 
-/*QUAKED building_human_hangar (0 0 1) (-80 -80 0) (80 80 88) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
-{ model("models/buildings/hangar/hangar.md3"); }
-
-Base Decoration building.
- + you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
- 
-Does Not require power.
-
-Max Health = 800.(default)
-
-ShieldMax = 600. (default)
-ShieldRate = 0. (default)
-
--------- KEYS -------- 
-targetname : string, used for trigger calls from other ents
-target : string name of ent to go to, usually a patrol node
-trigOnSpawn:string ent, fire this ENTITY when activated
-trigOnDeath: string target, fire this ENTITY when killed
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-IS_VIP 8388608: faction-allied player will be notified of this entity's state
-*/
 void() building_human_hangar={
 
   self.data_idx = self.nextVecChoice = UI_BUILDING_hangar_large;
@@ -167,8 +140,8 @@ void() building_human_hangar={
   self.use = multi_trigger;
   self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_NONE;
-  util_setModel( "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3", self.skin, EF_LOWPRECISION) ;
-  setsize(self, '-80 -80 0', '80 80 88');
+  util_setModel( "q3mdl/buildings/hangar/hangar_large.obj", self.skin, EF_LOWPRECISION) ;
+  setsize(self, self.mins, self.maxs);
   
   if( !self.health) {
     self.health = 800;

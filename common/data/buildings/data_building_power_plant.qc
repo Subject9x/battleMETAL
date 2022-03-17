@@ -128,50 +128,6 @@ void() hpower_th ={
   self.nextthink = time + 0.1;
 }; 
 
-
-/*QUAKED building_human_power (0.074 0.66 0.93) (-80 -80 0) (80 80 58) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
-{ model("models/buildings/reactor/reactor.md3"); }
-Generates energy to power ALL FRIENDLY buildings
-
-Health = 1200. (default)
-
-Energy Max = 4000 units. (default)
-Energy Rate = 4 / 0.1 tic. (default)
-
-Shield Max = 300. (default)
-Shield Rate = 0. (default)
-
-Radius: 800 units.(default)
-
-behavior: death() will give remaining energy to every unit within radius/2.
-
--------- KEYS --------
-faction : <float> [Required], faction id - 1 | 2 | 3
-targetname : string>, used for trigger calls from other ents.
-target : <string> name of ent to go to, usually a patrol node.
-trigOnSpawn:<string> ent, fire this ENTITY when activated.
-trigOnDeath: <string> target, fire this ENTITY when killed.
-energyRate: <float> [Optional], default is 4 / tic. set this to override default.
-energyMax: <float> [Optional], default is 4000. set this to override default.
-minrange: <float> [Optional], default is 800. set ths to override default;
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
-DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
-DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
-DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
-NO_NOVICE 4096: remove from Novice Difficulty
-NO_REGULAR 8192: remove from Regular Difficulty
-NO_VETERAN 16384: remove from Veteran Difficulty
-NO_ELITE 32768: remove from Elit Difficulty
-NO_DROP 262144: don't drop bot to the floor onspawn
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-IS_VIP 8388608: faction-allied player will be notified of this entity's state
-*/
-
 void() building_human_power={
   self.data_idx = self.nextVecChoice = UI_BUILDING_power_plant;
   self.data_type = DATA_BLD;
@@ -186,9 +142,9 @@ void() building_human_power={
   self.vec_size = 3;
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  macro_set_model("q3mdl/buildings/power_plant/mdl_bld_h_power.md3", self.skin, 0) 
   macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  setsize(self, '-80 -80 0', '80 80 58');
+  macro_set_model("q3mdl/buildings/power_plant/powerplant.obj", self.skin, 0) 
+  setsize(self, self.mins, self.maxs);
   
   if( !self.health) {
     self.health = 1200;

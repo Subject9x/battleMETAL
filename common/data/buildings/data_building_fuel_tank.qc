@@ -99,34 +99,6 @@ void() hfuel_death10 = [10, hfuel_death11]{
 void() hfuel_death11 = [11, hfuel_death12]{};
 void() hfuel_death12 = [12, hfuel_death12]{};
 
-
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 64) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
-{ model("models/buildings/fueltank/fueltank.md3"); }
-
-Base Decoration building.
-  
-Does not require power.
-Does not explode with damage.
-
-Max Health = 100. (default)
-
-Shield Max = 250. (default)
-
--------- KEYS -------- 
-.faction : <float> 1, 2, 3 - [REQURIED]
-targetname : <string>, used for trigger calls from other ents
-target : <string name> of ent to go to, usually a patrol node
-trigOnSpawn: <string> ent, fire this ENTITY when activated
-trigOnDeath: <string> target, fire this ENTITY when killed
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-IS_VIP 8388608: faction-allied player will be notified of this entity's state
-*/
 void() building_human_fuel={
   self.data_idx = self.nextVecChoice = UI_BUILDING_fuel_tank;
   self.data_type = DATA_BLD;
@@ -141,8 +113,8 @@ void() building_human_fuel={
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
   macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0)
-  setsize(self, '-40 -40 0', '40 40 64');
+  macro_set_model("q3mdl/buildings/fueltank/fueltank.obj", self.skin, 0)
+  setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
   self.scale = 1;
   self.deadflag = DEAD_NO;

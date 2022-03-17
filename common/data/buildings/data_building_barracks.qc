@@ -122,33 +122,6 @@ void() hangar_barracks_die15=[0, SUB_Null]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 5,1 );
 };
 
-/*QUAKED building_barracks (0 0 1) (-60 -60 0) (60 60 37) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY IS_VIP
-{ model("models/buildings/barracks/building_barracks.md3"); }
-
-Base Decoration building.
- 
-Does Not require power.
-
-Max Health = 275.(default)
-
-ShieldMax = 300. (default)
-ShieldRate = 0. (default)
-
--------- KEYS -------- 
-.faction : <float> 1, 2, 3 - [REQURIED]
-targetname : <string>, used for trigger calls from other ents
-target : <string> name of ent to go to, usually a patrol node
-trigOnSpawn: <string> ent, fire this ENTITY when activated
-trigOnDeath: <string> target, fire this ENTITY when killed
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-IS_VIP 8388608: faction-allied player will be notified of this entity's state
-*/
 void() building_barracks={
 
   self.data_idx = self.nextVecChoice = UI_BUILDING_barracks;
@@ -165,7 +138,7 @@ void() building_barracks={
   self.vec_size = 2;
   macro_set_model("q3mdl/buildings/barracks/building_barracks.obj", self.skin, 0)
   macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  setsize(self, '-60 -60 0', '60 60 37');
+  setsize(self, self.mins, self.maxs);
   
   self.th_die = hangar_barracks_die1;
   self.use = multi_trigger;

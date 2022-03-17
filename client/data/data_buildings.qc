@@ -13,6 +13,7 @@ Overview:
 */
 void( float dataID ) data_sync_new_building={
   
+  self.solid = SOLID_BSP;
   switch(dataID){
     case UI_BUILDING_radar:
       data_building_radar();
@@ -45,14 +46,13 @@ void( float dataID ) data_sync_new_building={
       data_building_supply_depot();
       break;
   }
-  self.solid = SOLID_BSP;
 };
 
 void() data_building_radar={
   self.vec_name = "Listening Post";
   self.vec_size = 1;
-  setmodel(self, "q3mdl/buildings/radar/mdl_bld_h_radar.md3");
-  setsize(self, '-20 -20 0', '20 20 26');
+  setmodel(self, "q3mdl/buildings/radar/listpost.obj");
+  setsize(self, self.mins, self.maxs);
   self.max_health = 100;
   self.shield = 0;
   self.shieldMax = 150;
@@ -71,8 +71,8 @@ void() data_building_radar={
 void() data_building_shield={
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3");
-  setsize(self,  '-48 -48 0', '48 48 32');
+  setmodel(self, "q3mdl/buildings/shield_gen/shieldgen.obj");
+  setsize(self,  self.mins, self.maxs);
   self.max_health = 500;
   self.shield = 0;
   self.shieldMax = 500;
@@ -91,8 +91,8 @@ void() data_building_shield={
 void() data_building_power={
   self.vec_name = "Power Generator";
   self.vec_size = 3;
-  setmodel(self, "q3mdl/buildings/power_plant/mdl_bld_h_power.md3");
-  setsize(self, '-80 -80 0', '80 80 58');
+  setmodel(self, "q3mdl/buildings/power_plant/powerplant.obj");
+  setsize(self, self.mins, self.maxs);
   self.max_health = 1200;
   self.shield = 0;
   self.shieldMax = 300;
@@ -115,8 +115,8 @@ void() data_building_power={
 void() data_building_hangar_large={
   self.vec_name = "Large Hangar";
   self.vec_size = 3;
-  setmodel(self, "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3");
-  setsize(self, '-80 -80 0', '80 80 88');
+  setmodel(self, "q3mdl/buildings/hangar/hangar_large.obj");
+  setsize(self, self.mins, self.maxs);
   self.max_health = 800;
   self.shield = 0;
   self.shieldMax = 300;
@@ -128,8 +128,8 @@ void() data_building_hangar_large={
 void() data_building_fuel={
   self.vec_name = "Fuel Tank";
   self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3");
-  setsize(self, '-40 -40 0', '40 40 64');
+  setmodel(self, "q3mdl/buildings/fueltank/fueltank.obj");
+  setsize(self, self.mins, self.maxs);  
   self.max_health = 75;
   self.shield = 0;
   self.shieldMax = 150;
@@ -141,8 +141,9 @@ void() data_building_fuel={
 void() data_building_repair={   
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
-  setmodel(self, "q3mdl/buildings/repair_bay/mdl_repair_bay.md3");
-  setsize(self, '-53 -53 0', '53 53 80');
+  setmodel(self, "q3mdl/buildings/repair_bay/repairbay.obj");
+  setsize(self, self.mins, self.maxs);
+  
   self.max_health = 600;
   self.shieldMax = 250;
   self.shieldRate = 0.33;
@@ -158,8 +159,8 @@ void() data_building_repair={
 void() data_building_hangar_med={
   self.vec_name = "Vehicle Hangar";
   self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3");
-  setsize(self, '-78 -78 0', '78 78 48');
+  setmodel(self, "q3mdl/buildings/hangar_vehicle/hangar_vehicle.obj");
+  setsize(self, self.mins, self.maxs);
   self.max_health = 500;
   self.deadflag = DEAD_NO;
   self.th_die = hangar_medium_die1;
@@ -169,7 +170,7 @@ void() data_building_guard={
   self.vec_name = "Guard Tower";
   self.vec_size = 1;
   setmodel(self, "q3mdl/buildings/towersmall/guardtower.obj");
-  setsize(self, '-22 -22 0', '22 22 40');
+  setsize(self, self.mins, self.maxs);
   self.max_health = 200;
   self.shield = 0;
   self.shieldMax = 50;
@@ -186,7 +187,8 @@ void() data_building_barracks={
   self.vec_name = "Barracks";
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/barracks/building_barracks.obj");
-  setsize(self, '-60 -60 0', '60 60 37');
+  setsize(self, self.mins, self.maxs);
+  
   self.max_health = 275;
   self.deadflag = DEAD_NO;
   self.th_die = fuel_tank_die1;
@@ -196,7 +198,7 @@ void() data_building_supply_depot={
   self.vec_name = "Supply Depot";
   self.vec_size = 2;
   setmodel(self, "q3mdl/buildings/depot/building_depot.obj");
-  setsize(self, '-64 -64 0', '64 64 48');
+  setsize(self, self.mins, self.maxs);
   self.max_health = 350;
   self.deadflag = DEAD_NO;
   self.th_die = fuel_tank_die1;

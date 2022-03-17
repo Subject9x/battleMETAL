@@ -119,34 +119,6 @@ void() hangar_vehicle_die15=[0, SUB_Null]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 5,1 );
 };
 
-/*QUAKED building_human_hangar_vehicle (0 0 1) (-78 -78 0) (78 78 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
-{ model("models/buildings/hangar_vec/hangar_vehicle.md3"); }
-
-Base Decoration building.
- + you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
- 
-Does Not require power.
-
-Max Health = 500.(default)
-
-ShieldMax = 400. (default)
-ShieldRate = 0. (default)
-
--------- KEYS -------- 
-.faction : <float> 1, 2, 3 - [REQURIED]
-targetname : <string>, used for trigger calls from other ents
-target : <string> name of ent to go to, usually a patrol node
-trigOnSpawn: <string> ent, fire this ENTITY when activated
-trigOnDeath: <string> target, fire this ENTITY when killed
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-IS_VIP 8388608: faction-allied player will be notified of this entity's state
-*/
 void() building_human_hangar_vehicle={
 
   self.data_idx = self.nextVecChoice = UI_BUILDING_hangar_med;
@@ -161,9 +133,9 @@ void() building_human_hangar_vehicle={
   self.vec_name = "Vehicle Hangar";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
-  macro_set_model("q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3", self.skin, 0)
   macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  setsize(self, '-78 -78 0', '78 78 48');
+  macro_set_model("q3mdl/buildings/hangar_vehicle/hangar_vehicle.obj", self.skin, 0)
+  setsize(self, self.mins, self.maxs);
   
   self.th_die = hangar_vehicle_die1;
   self.use = multi_trigger;

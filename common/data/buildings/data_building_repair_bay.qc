@@ -400,44 +400,6 @@ void() building_repair_state={
   self.nextthink = time + 0.1;
 };
 
-
-/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
-{ model("models/buildings/repair/repair.md3"); }
-[ADVISED] - put it near a power plant for more energy.
-
-Repairs vehicles, mostly for player.
-AI DOES NOT know how to use Repair Bays, sorry.
-
-Health = 600. (default)
-
-Energy Max = 1000 units. (default)
-Energy Rate = 0.67 / 0.1 tic. (default)
-
-Shield Max = 250. (default)
-Shield Rate = 0. (default)
-
-Repair Rate = 4 HP / 0.1 tic.
-Repair Max = 1250 | 750 (default based on difficulty)
-
-behavior: death() will severely damage any player standing in it when it finally kabooms
-
--------- KEYS -------- 
-faction: <float> = 1, 2, 3 [REQUIRED]
-targetname : <string>, used for trigger calls from other ents.
-target : <string> name of ent to go to, usually a patrol node.
-trigOnSpawn: <string> ent, fire this ENTITY when activated.
-trigOnDeath: <string> target, fire this ENTITY when killed.
-reloadMax: <float> max amount of repair charge.
-reloadRate: <float> repair speed.
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-IS_VIP 8388608: faction-allied player will be notified of this entity's state
-*/
 void() building_human_repair={
   
   self.data_idx = self.nextVecChoice = UI_BUILDING_repair_bay;
@@ -456,8 +418,8 @@ void() building_human_repair={
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
   macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, EF_LOWPRECISION)
-  setsize(self, '-53 -53 0', '53 53 80');
+  macro_set_model("q3mdl/buildings/repair_bay/repairbay.obj", self.skin, EF_LOWPRECISION)
+  setsize(self, self.mins, self.maxs);
   
   if( !self.health ){
     self.health = self.max_health = 600;

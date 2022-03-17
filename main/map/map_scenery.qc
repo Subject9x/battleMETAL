@@ -50,8 +50,7 @@ float( float isNew, float changeFlags ) send_scenery={
 */
 void() scenery_obj={
   self.classname = "scenery";
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_NOT;
   self.model = precache_model(self.model);
   setmodel( self, self.model );
   setsize( self, self.mins, self.maxs );
@@ -61,6 +60,8 @@ void() scenery_obj={
   }
   self.effects = self.effects | EF_LOWPRECISION;
   self.deadflag = DEAD_NO;
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_BSP;
 };
 
 void() DoodadRockDie={

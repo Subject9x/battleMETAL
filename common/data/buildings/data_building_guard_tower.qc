@@ -41,38 +41,6 @@ void() guard_tower_die1={
   self.nextthink = time + 0.1;
 };
 
-/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - LIGHTS_OFF IS_MAPKEY IS_VIP
-{ model("models/buildings/towersmall/guardtower.md3"); }
-
-Base Decoration building.
-  + can glow yellow.
-Does not require power.
-
-Max Health = 200. (default)
-
-Shield Max = 150. (default)
-
--------- KEYS --------
-.faction : <float> 1, 2, 3 - [REQUIRED]
-.style : <float>, light style. [OPTIONAL]
-.compOffset : <vector>, color for lighting.
-.targetname : <string>, used for trigger calls from other ents
-.target : <string> name of ent to go to, usually a patrol node
-.trigOnSpawn: <string> target, fire this ENTITY when activated
-.trigOnDeath: <string> target, fire this ENTITY when killed
-.trigOnTarget: <string> target, fire this ENTITY when spotting a target
-.delay : <float>, use with trigOnTarget, wait time between calls to trigOnTarget
-  -1 = fire trigOnTarget once
--------- SPAWNFLAGS -------- 
-NO_CAMPAIGN 1: remove from campaign mode
-NO_COOP 2: remove from co-op mode
-NO_DM 4: remove from DeathMatch
-NO_TDM 8: remove from Team DeathMatch
-NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-LIGHTS_OFF 2097152: turns off lights from this building.
-IS_VIP 8388608: faction-allied player will be notified of this entity's state
-*/
 void() building_guard_tower={
   self.data_idx = self.nextVecChoice = UI_BUILDING_guard_tower;
   self.data_type = DATA_BLD;
@@ -88,7 +56,7 @@ void() building_guard_tower={
   self.vec_size = 1;
   macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
   macro_set_model("q3mdl/buildings/towersmall/guardtower.obj", self.skin,0)
-  setsize(self, '-22 -22 0', '22 22 40');
+  setsize(self, self.mins, self.maxs);
   
   self.deadflag = DEAD_NO;
   self.movetype = MOVETYPE_NONE;

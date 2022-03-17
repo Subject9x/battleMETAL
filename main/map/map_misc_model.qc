@@ -143,6 +143,7 @@ void() doodad_static_mech={
   if( self.targetname && (self.spawnflags & 1) ){
     self.use = doodad_static_mech_use;
   }
+  self.angles = self.angles;
 };
 
 /*QUAKED doodad_mech_static_balaket (0 0.25 1) (-18 -18 -35) (18 18 16) TRIGGER_REMOVE
@@ -163,11 +164,11 @@ void() doodad_mech_static_balaket={
   if(!self.faction){
     self.faction = 1;
   }
+  doodad_static_mech();
   precache_model("models/mechs/balaket/balaket.md3");
   setmodel(self, "models/mechs/balaket/balaket.md3");
   setsize(self, '-18 -18 -35', '18 18 16');
   setorigin(self, self.origin);
-  doodad_static_mech();
 };
 
 /*QUAKED doodad_mech_static_matok (0 0.25 1) (-18 -18 -40) (18 18 22) TRIGGER_REMOVE
@@ -188,12 +189,12 @@ void() doodad_mech_static_matok={
   if(!self.faction){
     self.faction = 1;
   }
+  
+  doodad_static_mech();
   precache_model("models/mechs/matok/matok.md3");
   setmodel(self, "models/mechs/matok/matok.md3");
   setsize(self, '-18 -18 -40', '18 18 22');
   setorigin(self, self.origin);
-  
-  doodad_static_mech();
 };
 
 /*QUAKED doodad_mech_static_monitor (0 0.25 1) (-22 -22 -44) (22 22 24) TRIGGER_REMOVE
@@ -214,11 +215,11 @@ void() doodad_mech_static_monitor={
   if(!self.faction){
     self.faction = 1;
   }
+  doodad_static_mech();
   precache_model("models/mechs/monitor/monitor.md3");
   setmodel(self, "models/mechs/monitor/monitor.md3");
   setsize(self, '-22 -22 -44', '22 22 24');
   setorigin(self, self.origin);
-  doodad_static_mech();
 };
 
 /*
