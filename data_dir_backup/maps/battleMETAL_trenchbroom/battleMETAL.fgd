@@ -1286,7 +1286,7 @@ button0 & 1 dont work when target is set." [
 @PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -20 -26, 36 20 26) = building_misc_apartment : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-20 -36 26, 20 36 26) = building_misc_apartment_wide : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-20 -36 -26, 20 36 26) = building_misc_apartment_wide : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
 
