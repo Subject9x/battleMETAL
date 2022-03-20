@@ -283,7 +283,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     }
     setmodel(self, self.model);
     setsize(self, '0 0 0', '0 0 0');
-    setorigin(self, self.origin);
+    
     sendent_missile_think();
     self.drawmask = MASK_ENGINE;
     interpolate_origin();

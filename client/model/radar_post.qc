@@ -13,7 +13,10 @@ void() radar_post_dlights={
   if( self.deadflag == DEAD_NO ){
     //apparently when menu running, these just get STACCCCCCKED and murder framerate.
     if(MENU_PROG_OFF == FALSE){
-      adddynamiclight( self.compOffset, 128, self.compAltOffsetCache); 
+      particleDraw = vlen(pmove_org - self.origin);      
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
+        adddynamiclight( self.compOffset, 128, self.compAltOffsetCache); 
+      }
     }
   }
 };

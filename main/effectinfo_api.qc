@@ -64,21 +64,23 @@ void(string gibname, float dm) ThrowGib =
 {
 	local	entity new;
 	new = spawn();
-	new.origin = self.origin;
-	setmodel (new, gibname);
-	setsize (new, '0 0 0', '0 0 0');
-	new.velocity = VelocityForDamage (dm);
-	new.movetype = MOVETYPE_BOUNCE;
-	new.solid = SOLID_NOT;
-	new.avelocity_x = random()*600;
-	new.avelocity_y = random()*600;
-	new.avelocity_z = random()*600;
-	new.think = SUB_Remove;
-	new.ltime = time;
-	new.nextthink = time + 10 + random()*10;
-	new.frame = 0;
-	new.flags = 0;
-  new.effects = new.effects | EF_LOWPRECISION;
+  if( new ){
+    new.origin = self.origin;
+    setmodel (new, gibname);
+    setsize (new, '0 0 0', '0 0 0');
+    new.velocity = VelocityForDamage (dm);
+    new.movetype = MOVETYPE_BOUNCE;
+    new.solid = SOLID_NOT;
+    new.avelocity_x = random()*600;
+    new.avelocity_y = random()*600;
+    new.avelocity_z = random()*600;
+    new.think = SUB_Remove;
+    new.ltime = time;
+    new.nextthink = time + 10 + random()*10;
+    new.frame = 0;
+    new.flags = 0;
+    new.effects = new.effects | EF_LOWPRECISION;
+  }
 };
 
 //TE_SMOKE_TEST
@@ -133,27 +135,29 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
     if( DEBRIS_COUNT < MAX_DEBRIS_COUNT ){
       DEBRIS_COUNT = DEBRIS_COUNT + 1;
       newmis = spawn();
-      setmodel (newmis, debrisMdl);
-      setsize (newmis, '0 0 0', '0 0 0');
-      setorigin(newmis, org);
-      newmis.velocity_x = 100 * crandom();
-      newmis.velocity_y = 100 * crandom();
-      newmis.velocity_z = 75 + 100 * random();
-      newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-      newmis.movetype = MOVETYPE_BOUNCE;
-      newmis.solid = SOLID_NOT;
-      newmis.think = te_debris_th;
-      newmis.ltime = time;
-      newmis.nextthink = time + 0.01;
-      newmis.data_lifetime = time + 0.5;
-      newmis.frame = 0;
-      newmis.flags = 0;
-      newmis.gravity = 0.15;
-      newmis.vec_size = debrType;
-      newmis.data_idx = UID_ITEM_debris;
-      newmis.SendEntity = te_send_missile;
-      newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
-      newmis.partTypeId = trailNum;
+      if( newmis ){
+        setmodel (newmis, debrisMdl);
+        setsize (newmis, '0 0 0', '0 0 0');
+        setorigin(newmis, org);
+        newmis.velocity_x = 100 * crandom();
+        newmis.velocity_y = 100 * crandom();
+        newmis.velocity_z = 75 + 100 * random();
+        newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+        newmis.movetype = MOVETYPE_BOUNCE;
+        newmis.solid = SOLID_NOT;
+        newmis.think = te_debris_th;
+        newmis.ltime = time;
+        newmis.nextthink = time + 0.01;
+        newmis.data_lifetime = time + 0.5;
+        newmis.frame = 0;
+        newmis.flags = 0;
+        newmis.gravity = 0.15;
+        newmis.vec_size = debrType;
+        newmis.data_idx = UID_ITEM_debris;
+        newmis.SendEntity = te_send_missile;
+        newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
+        newmis.partTypeId = trailNum;
+      }
     }
     totals = totals - 1;
   }
@@ -193,26 +197,28 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
     if( DEBRIS_COUNT < MAX_DEBRIS_COUNT ){
       DEBRIS_COUNT = DEBRIS_COUNT + 1;
       newmis = spawn();
-      setmodel (newmis, debrisMdl);
-      setsize (newmis, '0 0 0', '0 0 0');
-      setorigin(newmis, org);
-      newmis.velocity_x = (back_x * 400) + (random() * 200);
-      newmis.velocity_y = (back_y * 400) + (random() * 200);
-      newmis.velocity_z = (back_z + 50) + (random() * 50);
-      newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-      newmis.movetype = MOVETYPE_BOUNCE;
-      newmis.solid = SOLID_NOT;
-      newmis.think = te_debris_th;
-      newmis.ltime = time;
-      newmis.nextthink = time + 0.025;
-      newmis.data_lifetime = time + 1 + random() * 3;
-      newmis.frame = 0;
-      newmis.flags = 0;
-      newmis.gravity = 0.15;
-      newmis.vec_size = debrType;
-      newmis.data_idx = UID_ITEM_debris;
-      newmis.SendEntity = te_send_missile;
-      newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
+      if( newmis ){
+        setmodel (newmis, debrisMdl);
+        setsize (newmis, '0 0 0', '0 0 0');
+        setorigin(newmis, org);
+        newmis.velocity_x = (back_x * 400) + (random() * 200);
+        newmis.velocity_y = (back_y * 400) + (random() * 200);
+        newmis.velocity_z = (back_z + 50) + (random() * 50);
+        newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+        newmis.movetype = MOVETYPE_BOUNCE;
+        newmis.solid = SOLID_NOT;
+        newmis.think = te_debris_th;
+        newmis.ltime = time;
+        newmis.nextthink = time + 0.025;
+        newmis.data_lifetime = time + 1 + random() * 3;
+        newmis.frame = 0;
+        newmis.flags = 0;
+        newmis.gravity = 0.15;
+        newmis.vec_size = debrType;
+        newmis.data_idx = UID_ITEM_debris;
+        newmis.SendEntity = te_send_missile;
+        newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
+      }
     }
     totals = totals - 1;
   }
@@ -293,7 +299,7 @@ void() te_vehicle_chunk_th={
   //trail effect for desired time, then a half-life as post-burn
   if( time > self.ai_action_time && self.traileffectnum ){
     self.traileffectnum = 0;
-    self.ai_action_time = self.data_lifetime * 2;
+    self.ai_action_time = self.data_lifetime * 0.33;
     self.think = SUB_Remove;
     self.nextthink = time + self.ai_action_time;
     return;
@@ -315,59 +321,61 @@ void( entity parent, vector wishVel, vector wishAngl, float trailnum, float life
   }
   
   piece = spawn();
-  setmodel(piece, parent.model);
-  setsize (piece, '0 0 0', '0 0 0');
-  setorigin(piece, parent.origin);
-  if( wishAngl != '0 0 0' ){
-    piece.angles = wishAngl;
+  if( piece ){
+    setmodel(piece, parent.model);
+    setsize (piece, '0 0 0', '0 0 0');
+    setorigin(piece, parent.origin);
+    if( wishAngl != '0 0 0' ){
+      piece.angles = wishAngl;
+    }
+    else{
+      piece.angles = parent.angles;
+    }
+    piece.skin = parent.skin;
+    piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+    
+    if( (parent.owner.flags & FL_CLIENT) ){
+      piece.colormod = parent.owner.colormod;
+    }
+    else{
+      piece.colormod = '1 1 1';
+    }
+    
+    piece.movetype = MOVETYPE_TOSS;
+    piece.solid = SOLID_NOT;
+    piece.frame = 0;
+    piece.flags = 0;
+    piece.colormod = piece.colormod * 0.75;
+    
+    piece.traileffectnum = trailnum;
+    if( wishVel != '0 0 0' ){
+      piece.velocity = wishVel;
+    }
+    else{
+      piece.velocity_x = 100 * crandom();
+      piece.velocity_y = 100 * crandom();
+      piece.velocity_z = 50 + 100 * random();
+    }
+    piece.avelocity_x = random()*100;
+    piece.avelocity_y = random()*100;
+    piece.avelocity_z = random()*150;
+    if( lifetime ){
+      piece.data_lifetime = lifetime;
+      piece.ai_action_time = time + lifetime;
+    }
+    else{
+      piece.data_lifetime = 30;
+      piece.ai_action_time = time + lifetime;
+    }
+    if( grav ){
+      piece.gravity = grav;
+    }
+    else{
+      piece.gravity = 0.67;
+    }
+    piece.think = te_vehicle_chunk_th;
+    piece.nextthink = time + 0.1;
   }
-  else{
-    piece.angles = parent.angles;
-  }
-  piece.skin = parent.skin;
-  piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-  
-  if( (parent.owner.flags & FL_CLIENT) ){
-    piece.colormod = parent.owner.colormod;
-  }
-  else{
-    piece.colormod = '1 1 1';
-  }
-  
-  piece.movetype = MOVETYPE_TOSS;
-  piece.solid = SOLID_NOT;
-  piece.frame = 0;
-  piece.flags = 0;
-  piece.colormod = piece.colormod * 0.75;
-  
-  piece.traileffectnum = trailnum;
-  if( wishVel != '0 0 0' ){
-    piece.velocity = wishVel;
-  }
-  else{
-    piece.velocity_x = 100 * crandom();
-    piece.velocity_y = 100 * crandom();
-    piece.velocity_z = 50 + 100 * random();
-  }
-  piece.avelocity_x = random()*100;
-  piece.avelocity_y = random()*100;
-  piece.avelocity_z = random()*150;
-  if( lifetime ){
-    piece.data_lifetime = lifetime;
-    piece.ai_action_time = time + lifetime;
-  }
-  else{
-    piece.data_lifetime = 30;
-    piece.ai_action_time = time + lifetime;
-  }
-  if( grav ){
-    piece.gravity = grav;
-  }
-  else{
-    piece.gravity = 0.67;
-  }
-  piece.think = te_vehicle_chunk_th;
-  piece.nextthink = time + 0.1;
   
 };
 

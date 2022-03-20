@@ -38,8 +38,11 @@ void() repair_bay_dlights={
         lightStyle = 4;
       }
     }    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
-    if(MENU_PROG_OFF){
-      adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
+    if(MENU_PROG_OFF){  
+      particleDraw = vlen(pmove_org - self.origin);      
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
+        adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
+      }
     }
   }
 };
@@ -127,9 +130,13 @@ void() sendevent_repair_beam={
     self.compAltOffset = beamEnd;
   }
   
-  pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( self.compAltOffset - self.compOffset ) * 2, 1);
-  pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), self.compAltOffset, normalize( self.compOffset - self.compAltOffset ) * -2, 1);
-  trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, self.compAltOffset);
+  
+  particleDraw = vlen(pmove_org - self.origin);      
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
+    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( self.compAltOffset - self.compOffset ) * 2, 1);
+    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), self.compAltOffset, normalize( self.compOffset - self.compAltOffset ) * -2, 1);
+    trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, self.compAltOffset);
+  }
 };
 
 /*

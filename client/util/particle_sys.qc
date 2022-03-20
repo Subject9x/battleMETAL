@@ -288,18 +288,25 @@ void( vector org, vector windVel ) te_mech_crit={
   local vector spark;
   //ideally you've makevectors before this....
   spark = org + (v_up * 10);
-  pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), org, normalize( spark - org) * (windVel_z/2), 0.5);
+  
+  particleDraw = vlen(pmove_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), org, normalize( spark - org) * (windVel_z/2), 0.5);
+  }
 };
 
 void( vector org, float total ) te_unit_dust={
   local vector dir;
   local vector torg;
   
-  makevectors(self.angles);
-  torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
-  dir = normalize( dir - org ) * 4;
-    
-  pointparticles( self.trail_effectnum, torg , dir * 2, total);
+  particleDraw = vlen(pmove_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    makevectors(self.angles);
+    torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
+    dir = normalize( dir - org ) * 4;
+      
+    pointparticles( self.trail_effectnum, torg , dir * 2, total);
+  }
 };
 
 void() te_unit_dust_set={
@@ -330,9 +337,13 @@ void() te_building_fire_th={
     remove(self);
     return;
   }
+    
   self.compAltOffset = te_apply_wind( self.origin );
-  pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
   
+  particleDraw = vlen(pmove_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
+  }
   
   self.think = te_building_fire_th;
   self.nextthink = time + 0.1 + random() * 0.75;
@@ -424,34 +435,37 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
     setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
     setorigin( explode, org);
   }
-  te_customflash( org, explodeSize * 50, 1, explodeColor);
   
-  
-  makevectors(vectoangles(self.velocity));
-  back = org + (v_forward * -10);
-  back = normalize(back - org);
-  
-  debris = explodeSize / 2;
-  debris = debris + (random() * debris);
-  debris = rint(ceil(debris));
-  while( debris > 0 ){
-    launch_x = (back_x * 100) + (random() * 50);
-    launch_y = (back_y * 100) + (random() * 50);
-    launch_z = (back_z + 50) + (random() * 50);
-    trailparticles(world, particleeffectnum("TE_DEBRIS_TRAIL_SMALL"), back, launch);
-    debris = debris - 1;
+  particleDraw = vlen(pmove_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    te_customflash( org, explodeSize * 50, 1, explodeColor);
+    
+    
+    makevectors(vectoangles(self.velocity));
+    back = org + (v_forward * -10);
+    back = normalize(back - org);
+    
+    debris = explodeSize / 2;
+    debris = debris + (random() * debris);
+    debris = rint(ceil(debris));
+    while( debris > 0 ){
+      launch_x = (back_x * 100) + (random() * 50);
+      launch_y = (back_y * 100) + (random() * 50);
+      launch_z = (back_z + 50) + (random() * 50);
+      trailparticles(world, particleeffectnum("TE_DEBRIS_TRAIL_SMALL"), back, launch);
+      debris = debris - 1;
+    }
+    
+    if(explodeSize < 2 ){
+      pointparticles( PTC_HIT_EXPL_SML, org, back, 1);
+    }
+    if(explodeSize == 2){
+      pointparticles( PTC_HIT_EXPL_MED, org, back, 1);
+    }
+    else{
+      pointparticles( PTC_HIT_EXPL_LRG, org, back, 1);
+    }
   }
-  
-  if(explodeSize < 2 ){
-    pointparticles( PTC_HIT_EXPL_SML, org, back, 1);
-  }
-  if(explodeSize == 2){
-    pointparticles( PTC_HIT_EXPL_MED, org, back, 1);
-  }
-  else{
-    pointparticles( PTC_HIT_EXPL_LRG, org, back, 1);
-  }
-  
 };
 
 /*
@@ -470,7 +484,7 @@ void() te_shield_hit_predraw={
 };
 
 void() te_shield_hit_th={
-  if( servertime > self.data_lifetime ){
+  if( time > self.data_lifetime ){
     self.owner.shieldHitFlag = FALSE;
     remove(self);
     return;
@@ -483,7 +497,7 @@ void() te_shield_hit_th={
   }
 
   self.think = te_shield_hit_th;
-  self.nextthink = servertime + 0.025;
+  self.nextthink = time + 0.025;
 };
 
 void() te_shield_hit={
@@ -497,13 +511,12 @@ void() te_shield_hit={
   
   self.shieldEffectTime = servertime + hitTime;
   
-  sizeMod = self.shield / self.shieldMax;
-  shieldSize = max(0.8, (self.maxs_x / 64) * sizeMod);
-  
   explode = spawn();
   if( explode ){
+    sizeMod = self.shield / self.shieldMax;
+    shieldSize = max(0.8, (self.maxs_x / 64) * sizeMod);
     explode.think = te_shield_hit_th;
-    explode.nextthink = servertime + 0.01;
+    explode.nextthink = time + 0.01;
     explode.data_lifetime = servertime + hitTime;
     explode.scale = shieldSize;
     explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
@@ -684,12 +697,25 @@ void( vector explodeColor ) te_object_explode={
 /*
   Wreck event, ie a vehicle death
 */
+
+void() particle_vehicle_wreck_cleanup={
+  PARTICLE_WRECK_TANK = PARTICLE_WRECK_TANK - 1;
+  
+  remove(self);
+};
+
 void() particle_vehicle_wreck_th={
   if( time < self.pcl_fadeout ){
-    pointparticles( self.pcl_effectnum, self.origin, self.pcl_velocity, self.pcl_count);
+    particleDraw = vlen(pmove_org - self.origin);
+    if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+      pointparticles( self.pcl_effectnum, self.origin, self.pcl_velocity, self.pcl_count);
+    }
     self.think = particle_vehicle_wreck_th;
     self.nextthink = time + (0.1 + (random() * 0.2));
   }
+  self.pcl_fadeout = time + 30;
+  self.think = particle_vehicle_wreck_cleanup;
+  self.nextthink = time + 150 + (random() * 150);
 };
 
 void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) particle_vehicle_wreck={
@@ -699,10 +725,19 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
   
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1.0, ATTN_NORM, 90 - (self.vec_size * 10), 0 );
   
+  if( PARTICLE_WRECK_TANK > PARTICLE_MAX_WRECK_TANK ){
+    PARTICLE_WRECK_TANK = PARTICLE_WRECK_TANK - 1;
+    wreck = find(world, classname, "wreck_tank");
+    remove(wreck);
+    return;
+  }
+  
   this = self;
   wreck = spawn();
   if( wreck ) {
+    PARTICLE_WRECK_TANK = PARTICLE_WRECK_TANK + 1;
     self = wreck;
+      self.classname = "wreck_tank";
       self.angles = entAngl;
       makevectors(self.angles);
       self.origin = entOrg + (v_up * (0 - vecSize * 2));
@@ -743,43 +778,47 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   local float effType;
   local float sizeMod;
   
-  makevectors( entAngl );
-  fx = entOrg ;
-  leftMin = entMins_x * 0.8;
-  if( leftBool ){
-     fx = fx + (v_right * leftMin);
+  particleDraw = vlen(pmove_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    
+    makevectors( entAngl );
+    fx = entOrg ;
+    leftMin = entMins_x * 0.8;
+    if( leftBool ){
+       fx = fx + (v_right * leftMin);
+    }
+    else{
+       fx = fx - (v_right * leftMin);
+    }
+    
+    fx = fx + (v_up * (entMins_z + 8));
+    vel = fx + (v_up * 16);
+    
+    sizeMod = self.vec_size / 10;
+    sizeMod = 1.0 - (1.0 - sizeMod) / 2;
+    sound7(self.legs, CHAN_AUTO, "sound/mech_stomp.ogg", 1.0, ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
+    
+    switch( ENT_SERVER_INFO.worldtype ){
+      case 1:
+        effType = PTC_STOMP_ICE;
+        break;
+      case 2:
+        effType = PTC_STOMP_CITY;
+        break;
+      case 3:
+        effType = PTC_STOMP_BADLND;
+        break;
+      case 4:
+        effType = PTC_STOMP_TUNDRA;
+        break;
+      default:
+        effType = PTC_STOMP_SAND;
+        break;
+    }
+    pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
+    traceline(fx, fx + (v_up * -10), MOVE_WORLDONLY, self);
+    pointparticles( particleeffectnum("TE_FOOT_STOMP"), trace_endpos, trace_plane_normal * -1,  1);
   }
-  else{
-     fx = fx - (v_right * leftMin);
-  }
-  
-  fx = fx + (v_up * (entMins_z + 8));
-  vel = fx + (v_up * 16);
-  
-  sizeMod = self.vec_size / 10;
-  sizeMod = 1.0 - (1.0 - sizeMod) / 2;
-  sound7(self.legs, CHAN_AUTO, "sound/mech_stomp.ogg", 1.0, ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
-  
-  switch( ENT_SERVER_INFO.worldtype ){
-    case 1:
-      effType = PTC_STOMP_ICE;
-      break;
-    case 2:
-      effType = PTC_STOMP_CITY;
-      break;
-    case 3:
-      effType = PTC_STOMP_BADLND;
-      break;
-    case 4:
-      effType = PTC_STOMP_TUNDRA;
-      break;
-    default:
-      effType = PTC_STOMP_SAND;
-      break;
-  }
-  pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
-  traceline(fx, fx + (v_up * -10), MOVE_WORLDONLY, self);
-  pointparticles( particleeffectnum("TE_FOOT_STOMP"), trace_endpos, trace_plane_normal * -1,  1);
 };
 
 /*
@@ -861,26 +900,36 @@ entity(entity root, entity part, vector setAngle) te_mech_chunk_stand={
 /*
   burning mech legs
 */
-void( entity mechLegs ) te_mech_dead_legs={
+entity( entity mechLegs ) te_mech_dead_legs={
   local entity deadLegs;
   
-  deadLegs = spawn();
-  if( deadLegs == world ){
-    return;
+  
+  if( PARTICLE_WRECK_MECH > PARTICLE_MAX_WRECK_MECH ){
+    PARTICLE_WRECK_MECH = PARTICLE_WRECK_MECH - 1;
+    deadLegs = find(world, classname, "wreck_mech");
+    remove(deadLegs);
+    return world;
   }
-  deadLegs.drawmask = MASK_NORMAL;
-  setmodel(deadLegs, mechLegs.model);
-  setsize(deadLegs, deadLegs.mins, deadLegs.maxs);
-  setorigin(deadLegs, mechLegs.origin);
-  deadLegs.frame = mechLegs.frame;
-  deadLegs.solid = SOLID_NOT;
-  deadLegs.colormod = '0.45 0.45 0.45';
-  deadLegs.frame = 1;
-  deadLegs.think = te_mech_dead_legs_burn;
-  self.nextthink = servertime + frametime*0.5;
-  deadLegs.data_lifetime = servertime + 300 + (random() * 200);
-  deadLegs.angles = mechLegs.angles;
-  deadLegs.vec_size = mechLegs.owner.vec_size;
+  
+  deadLegs = spawn();
+    if( deadLegs != world ){
+    deadLegs.drawmask = MASK_NORMAL;
+    deadLegs.classname = "wreck_mech";
+    setmodel(deadLegs, mechLegs.model);
+    setsize(deadLegs, deadLegs.mins, deadLegs.maxs);
+    setorigin(deadLegs, mechLegs.origin);
+    deadLegs.frame = mechLegs.frame;
+    deadLegs.solid = SOLID_NOT;
+    deadLegs.colormod = '0.45 0.45 0.45';
+    deadLegs.frame = 1;
+    deadLegs.think = te_mech_dead_legs_burn;
+    self.nextthink = servertime + frametime*0.5;
+    deadLegs.data_lifetime = servertime + 300 + (random() * 200);
+    deadLegs.angles = mechLegs.angles;
+    deadLegs.vec_size = mechLegs.owner.vec_size;
+  }
+  
+  return deadLegs;
 };
 
 void() te_mech_dead_legs_burn={
@@ -892,11 +941,14 @@ void() te_mech_dead_legs_burn={
     self.data_lifetime = servertime + 500 + (random() * 300);
     return;
   }
-  makevectors(self.angles);
-  fireOrg = self.origin + (v_up * self.maxs_z);
   
-  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
+  particleDraw = vlen(pmove_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    makevectors(self.angles);
+    fireOrg = self.origin + (v_up * self.maxs_z);
   
+    pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
+  }
   
   self.think = te_mech_dead_legs_burn;
   self.nextthink = servertime + frametime*0.5;
@@ -904,9 +956,13 @@ void() te_mech_dead_legs_burn={
 
 void() te_mech_dead_legs_smoke={
   local vector fireOrg;
-  makevectors(self.angles);
-  fireOrg = self.origin + (v_up * self.maxs_z);
-  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
+  
+  particleDraw = vlen(pmove_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    makevectors(self.angles);
+    fireOrg = self.origin + (v_up * self.maxs_z);
+    pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
+  }
   if( servertime > self.data_lifetime ){
     self.think = SUB_Remove;
     self.nextthink = servertime + frametime*0.1;

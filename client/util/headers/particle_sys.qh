@@ -60,6 +60,22 @@ float( float fogColor, float fogColorTarg  ) cl_particles_fogColorAdjust;
 float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust;
 void() cl_particles_fogFrame;
 
+//max distance that hazards will play their particle effects for the client.
+#define PARTICLE_HAZ_DISTANCE 2400
+float particleDraw;
+
+//wrecks take up entity slots, try not to have so many.
+#define PARTICLE_MAX_WRECK_TANK 24
+#define PARTICLE_MAX_WRECK_MECH 24
+float PARTICLE_WRECK_TANK;
+float PARTICLE_WRECK_MECH;
+
+
+/*
+vector foo = self.origin - other.origin;
+if (foo*foo > fogdistsquared)
+    return FALSE;
+*/
 
 //Particle Box - clients can only ever have one active at a time.
 // I went with globals because being an entity doesn't really get us much AND, too many parms for the max func size (8)
@@ -222,6 +238,6 @@ entity(entity root, entity part, vector setAngle) te_mech_chunk_stand;
 /*
   burning mech legs
 */
-void( entity mechLegs ) te_mech_dead_legs;
+entity( entity mechLegs ) te_mech_dead_legs;
 void() te_mech_dead_legs_burn;
 void() te_mech_dead_legs_smoke;

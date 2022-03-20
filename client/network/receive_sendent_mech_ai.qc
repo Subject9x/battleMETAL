@@ -120,7 +120,7 @@ void() sendevent_mech_ai_die_standing={
   pass = self;
   
   mechRoot = spawn();
-  if( !mechRoot ){
+  if( mechRoot == world ){
     return;
   }
   mechRoot.unitModFlags = pass.unitModFlags;
@@ -145,6 +145,8 @@ void() sendevent_mech_ai_die_standing={
   
   mechLegs = te_mech_chunk_stand(pass, pass.legs, pass.angles);
   if( mechLegs == world ){
+    mechRoot.drawmask = 0;
+    remove(mechRoot);
     return;
   }
   mechLegs.frame = self.legs.frame;
@@ -210,9 +212,7 @@ void() sendevent_mech_ai_die={
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
   
   if( self.moveState == FALSE ){
-    //sendevent_mech_ai_die_standing();
-    self.think = sendevent_mech_ai_die_standing;
-    self.nextthink = servertime + frametime*0.1;
+    sendevent_mech_ai_die_standing();
   }
   else{
     self.alpha = 0.01;
