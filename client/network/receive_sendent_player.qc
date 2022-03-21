@@ -104,10 +104,11 @@ void() player_think={
   laserHit = laserOrg + (v_forward * 10000);
   traceline(laserOrg, laserHit, FALSE, self);
   self.laser_sight_org = trace_endpos;
- 
-
   
-  sendevent_player_burn();
+  particleDraw = vlen(pmove_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    sendevent_player_burn();
+  }
   
   if( self.legs != world ){
     if( self.moveState > MOVE_SPRINT ){
@@ -128,8 +129,12 @@ void() player_think={
           te = "TE_FIRE_2";
           break;
       }
-      trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
-      trailparticles(world, particleeffectnum(te), boostRight, backRight);
+      
+      particleDraw = vlen(pmove_org - self.origin);
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+        trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
+        trailparticles(world, particleeffectnum(te), boostRight, backRight);
+      }
     }
   }
   

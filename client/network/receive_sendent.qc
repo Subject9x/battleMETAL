@@ -321,6 +321,8 @@ void( float prevShield ) sendevent_shield_explode={
 void() sendevent_handle_weaponfire={
   local entity equip;
   
+  particleDraw = vlen(pmove_org - self.origin);      
+  
   equip = self.w_slot;
   while( equip != world ){
     if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){

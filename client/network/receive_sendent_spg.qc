@@ -123,8 +123,11 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       if( self.pcl_effectnum == 0 ){
         self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       }
-      makevectors(self.angles);
-      pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      particleDraw = vlen(pmove_org - self.origin); 
+      if( particleDraw < PARTICLE_HAZ_DISTANCE ){
+        makevectors(self.angles);
+        pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      }
     }
   }
   

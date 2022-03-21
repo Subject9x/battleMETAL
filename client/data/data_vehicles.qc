@@ -68,6 +68,9 @@ void() data_vehicle_wreck={
   
   makevectors(self.angles);
   shell = spawn();
+  if( shell == world ){
+    return;
+  }
   shell.angles = self.angles;
   setmodel(shell, self.model);
   setsize(shell, self.mins, self.maxs);
@@ -95,6 +98,7 @@ void() data_vehicle_wreck={
     shell.pcl_effectnum = particleeffectnum("TE_FIRE_3");
     shell.health = servertime + 120;
   }
+  shell.data_lifetime = servertime + 350 + (random() * 250);
   shell.think = data_vehicle_wreck_th;
   shell.nextthink = time + (random() * 1);
 };
@@ -104,6 +108,10 @@ void() data_vehicle_wreck_th={
   if( self.pcl_effectnum > 0 && servertime < self.health ){
     makevectors(self.angles);
     pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+  }
+  if( time > self.data_lifetime){
+    remove(self);
+    return;
   }
   self.think = data_vehicle_wreck_th;
   self.nextthink = time + (random() * 0.25);

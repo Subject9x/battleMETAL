@@ -289,10 +289,7 @@ void( vector org, vector windVel ) te_mech_crit={
   //ideally you've makevectors before this....
   spark = org + (v_up * 10);
   
-  particleDraw = vlen(pmove_org - self.origin);
-  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
-    pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), org, normalize( spark - org) * (windVel_z/2), 0.5);
-  }
+  pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), org, normalize( spark - org) * (windVel_z/2), 0.5);
 };
 
 void( vector org, float total ) te_unit_dust={

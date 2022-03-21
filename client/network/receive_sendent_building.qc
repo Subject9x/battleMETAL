@@ -188,15 +188,15 @@ void( float isNew, float changeFlags) sendent_handle_building={
   if( (changeFlags & SENDFLAG_BURN) ){
     self.burnBits = rint(ceil(ReadCoord()));
     if( self.burnBits > 0 ){
-      if( (self.burnBits & WEAPON1) && self.effect1.owner != self ){
+      if( (self.burnBits & WEAPON1) && self.effect1 != world ){
         self.effect1 = te_building_fire_start( self );
         self.colormod = self.colormod * 0.85;
       }
-      if( (self.burnBits & WEAPON2) && self.effect2.owner != self ){
+      if( (self.burnBits & WEAPON2) && self.effect2 != world ){
         self.effect2 = te_building_fire_start( self );
         self.colormod = self.colormod * 0.75;
       }
-      if( (self.burnBits & WEAPON3) && self.effect3.owner != self ){
+      if( (self.burnBits & WEAPON3) && self.effect3 != world ){
         self.effect3 = te_building_fire_start( self );
         self.colormod = self.colormod * 0.67;
       }

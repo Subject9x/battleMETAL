@@ -408,7 +408,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   if( (changeFlags & SENDFLAG_BURN) ){
     self.burnBits = ReadCoord();
     if( self.burnBits > 0 ){
-      sendevent_mech_burn( self.burnBits );
+      particleDraw = vlen(pmove_org - self.origin);
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+        sendevent_mech_burn( self.burnBits );
+      }
     }
   }
   

@@ -7,8 +7,7 @@ Overview:
   I don't even know if it's worth it to try this.
 */
 
-//globals
-float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
+float dbg_time; //used for filtering debug to once every few seconds.
 
 //SendEntity
 .vector origin2;
@@ -44,10 +43,8 @@ void( entity removeMe ) sendent_handle_remove={
   if( removeMe != world ){
     removeMe.drawmask = 0;
     removeMe.alpha = 0.0;
-    removeMe.scale = 0.01;
-    removeMe.effects = removeMe.effects | EF_NODRAW;
     removeMe.think = SUB_Remove;
-    removeMe.nextthink = time + 1 + (random() * 5);
+    removeMe.nextthink = time + 0.1;
   }
 };
 
