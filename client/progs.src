@@ -4,7 +4,6 @@
 
 data/defs_clientside.qc
 data/defs_entity.qc
-data/defs_linker.qc
 
 //Common Defs=====================
   ../common/input_keynums.qh

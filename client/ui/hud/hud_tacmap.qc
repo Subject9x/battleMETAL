@@ -14,6 +14,7 @@ void() hud_render_tactical_map={
   local float unavailableLen;
   local vector unavailableOrg;
   local vector map_size;
+  local vector mapMins;
   
   local entity mapKey;
   local vector keyOrg;
@@ -48,12 +49,19 @@ void() hud_render_tactical_map={
     unavailableOrg_y = unavailableOrg_y + (380 / 2) - 8;
     gui_wrapText(unavailableOrg, '210 32', "!- Satellite Data unavailable -!", '16 16 0', '1 0 0', 1);
   }
-  map_size_x = ((world.mins_x*-1) + world.maxs_x);
-  map_size_y = ((world.mins_y*-1) + world.maxs_y);
+  
+  if(ENT_SERVER_INFO.minimapMins != '0 0 0' && ENT_SERVER_INFO.minimapMaxs != '0 0 0'){
+    map_size = [(ENT_SERVER_INFO.minimapMins_x*-1) + ENT_SERVER_INFO.minimapMaxs_x, (ENT_SERVER_INFO.minimapMins_y*-1) + ENT_SERVER_INFO.minimapMaxs_y];
+    mapMins = ENT_SERVER_INFO.minimapMins;
+  }
+  else{
+    map_size = [(world.mins_x*-1) + world.maxs_x, (world.mins_y*-1) + world.maxs_y];
+    mapMins = world.mins;
+  }
   
   mapKey = mapKeyObject;
   for( mapKey = mapKeyObject; mapKey != world; mapKey = mapKey.w_slot ){
-    keyOrg = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, mapOrg, mapImgSize);
+    keyOrg = gui_mapCoordToImgCoord(mapMins, map_size, mapKey.origin, mapOrg, mapImgSize);
     switch( mapKey.data_type ){
       case DATA_MAP_DMG:
         drawpic( keyOrg - '2 2', UI_DEF_BOX_64, '4 4', CLR_DEF_RED * 1.15, 0.85, 0);

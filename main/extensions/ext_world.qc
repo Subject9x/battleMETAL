@@ -141,6 +141,33 @@ void() world_metal_ini={
   world_get_maplist();
   
   world_nodegraph_import();
+  
+  if( world.minimapMins != '0 0 0' ){
+    ENT_SERVER_INFO.minimapMins = world.minimapMins;
+  }
+  else{
+    ENT_SERVER_INFO.minimapMins = world.mins;
+  }
+  
+  if( world.minimapMaxs != '0 0 0'){
+    ENT_SERVER_INFO.minimapMaxs = world.minimapMaxs;
+  }
+  else{
+    ENT_SERVER_INFO.minimapMaxs = world.maxs;
+  }
+  
+  if( world.uiViewBoxOrg ){
+    ENT_SERVER_INFO.uiViewBoxOrg = world.uiViewBoxOrg;
+  }
+  else{
+    //just auto-check
+    local entity clientViewbox;
+    clientViewbox = find(world, netname, "ui_view_box");
+    if(clientViewbox){
+      ENT_SERVER_INFO.uiViewBoxOrg = clientViewbox.origin;
+      remove(clientViewbox);
+    }
+  }
 };
 
 /*

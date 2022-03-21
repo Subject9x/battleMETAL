@@ -261,12 +261,13 @@ void(vector ofs) menu_briefMapPanel={
   local vector renderColor;
   local float itr;
   local string s;
+  local vector mapMins;
   
   itr = 0;
   
   ui_msize = '350 350';
   ui_msize_in = ui_msize - '8 6';
-  mpos = Vector2(VIEW_CTR_x - 40, ofs_y); 
+  mpos = [VIEW_CTR_x - 40, ofs_y]; 
  
   iofs = mpos + '4 3';
   
@@ -280,10 +281,17 @@ void(vector ofs) menu_briefMapPanel={
     drawpic(iofs, MSN_MAPPIC, ui_msize_in, '1 1 1', 1, 0);
   }
   else{
-    gui_wrapText(iofs + Vector2(ui_msize_in_x / 4.75, ui_msize_in_y / 3) , '210 32', "Satellite Data: unavailable", '16 16', '1 0 0', 1);
+    gui_wrapText(iofs + [ui_msize_in_x / 4.75, ui_msize_in_y / 3] , '210 32', "Satellite Data: unavailable", '16 16', '1 0 0', 1);
   }
   
-  map_size = Vector2( (world.mins_x*-1) + world.maxs_x, (world.mins_y*-1) + world.maxs_y );
+  if( ENT_SERVER_INFO.minimapMins != '0 0 0' && ENT_SERVER_INFO.minimapMaxs != '0 0 0' ){
+    map_size = [(ENT_SERVER_INFO.minimapMins_x*-1) + ENT_SERVER_INFO.minimapMaxs_x, (ENT_SERVER_INFO.minimapMins_y*-1) + ENT_SERVER_INFO.minimapMaxs_y];
+    mapMins = ENT_SERVER_INFO.minimapMins;
+  }
+  else{
+    map_size = [(world.mins_x*-1) + world.maxs_x, (world.mins_y*-1) + world.maxs_y];
+    mapMins = world.mins;
+  }
 
   renderColor  = CLR_DEF_GREEN - '0.1 0.1 0.1';
 
@@ -301,14 +309,13 @@ void(vector ofs) menu_briefMapPanel={
     if( nav.isActive == FALSE ){
       continue;
     }
-    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, ui_msize_in);
+    tofs = nofs = gui_mapCoordToImgCoord(mapMins, map_size, nav.origin, iofs, ui_msize_in);
     
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
       
     nlen = stringwidth(nav.vec_name, 0, '12 12 0');
-    nofs_x = nofs_x - (nlen/2);
-    nofs_y = nofs_y - 18;
+    nofs = [nofs_x - (nlen/2), nofs_y - 18];
     gui_renderTintImage(TRUE, tofs - '8 8', UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
       
     drawstring(nofs, nav.vec_name, '12 12', renderColor + '0.4 0.4 0.4', 1, 0);

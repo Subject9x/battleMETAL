@@ -201,6 +201,11 @@ For best results, place manually as close to ground as possible!" [
 		3 : "Badlands"
 		4 : "Tundra"
 	]
+  
+  minimapMins(vector) : "usually total map size in editor." : "0 0 0" 
+  minimapMaxs(vector) : "usually total map size in editor." : "0 0 0"
+  uiViewBoxOrg(vector) : "use an info_notnull, separate box area." : "0 0 0"
+  
 ]
 
 @PointClass base(Angle) color(0.77 0.88 1.0) size(-4 -4 -4, 4 4 4) = _skybox : "Compiler-only entity that specifies the origin of a skybox (a wholly contained, separate area of the map), similar to some games portal skies. When compiled with Q3Map2, the skybox surfaces will be visible from any place where sky is normally visible. It will cast shadows on the normal parts of the map, and can be used with cloud layers and other effects." [

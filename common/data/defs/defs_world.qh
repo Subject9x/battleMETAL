@@ -24,6 +24,10 @@ entity ENT_SERVER_INFO;
 .float endRoundTime;
 .string svAbout;
 
+.vector minimapMins;  //set by level editor!
+.vector minimapMaxs;
+.vector uiViewBoxOrg; //detect a info_notnull with netname "ui_view_box"
+
 //re-targeted SENDFLAG values
 #define SENDFLAG_GAMETYPE 1
 #define SENDFLAG_STARTTIME 2

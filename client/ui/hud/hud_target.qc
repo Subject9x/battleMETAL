@@ -486,7 +486,12 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
   if( isTarget && HUD_MODEL_ARMOR_GRAPH_TARGET == world){
     return;
   }
-  viewOrg = pmove_org;
+  if(ENT_SERVER_INFO.uiViewBoxOrg != '0 0 0'){
+    viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
+  }
+  else{
+    viewOrg = pmove_org;
+  }
   clearscene();
     modelEntity.maxs_z = max(modelEntity.maxs_z, 24); //test
     
@@ -494,7 +499,8 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
     zTotal = ((modelEntity.mins_z * -1) + modelEntity.maxs_z) / 2;
     zHalf = ((modelEntity.mins_z * -1) + modelEntity.maxs_z) / 2;
     xHalf = modelEntity.maxs_x * 1.5;
-    viewOrg = pmove_org;
+    
+    
     clearscene();
       setproperty(VF_ORIGIN, viewOrg + [-100 - xHalf, 0, 5 + modelEntity.mins_z * -1]);	//look towards it.
       setproperty(VF_ANGLES, '30 0 0');
@@ -591,7 +597,15 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   zTotal = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + modelMaxs_z) / 2;
   zHalf = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + modelMaxs_z) / 2;
   xHalf = modelMaxs_x * 2;
-  viewOrg = pmove_org;
+  
+
+  if(ENT_SERVER_INFO.uiViewBoxOrg != '0 0 0'){
+    viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
+  }
+  else{
+    viewOrg = pmove_org;
+  }
+  
   clearscene();
     setproperty(VF_ORIGIN, viewOrg + [-115 - xHalf, 0, 50 + modelMins_z * -1]);	//look towards it.
     setproperty(VF_ANGLES, '30 0 0');
@@ -713,7 +727,12 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
     zTotal = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2.1;
     zHalf = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2;
     xHalf = HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_x;
-    viewOrg = pmove_org;
+    if(ENT_SERVER_INFO.uiViewBoxOrg != '0 0 0'){
+      viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
+    }
+    else{
+      viewOrg = pmove_org;
+    }
     clearscene();
       setproperty(VF_ORIGIN, viewOrg + [-150 - xHalf, 0, 70 + zHalf]);	//look towards it.
       setproperty(VF_ANGLES, '30 0 0');

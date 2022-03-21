@@ -339,6 +339,7 @@ void(vector ofs) menu_deploy_mechInfoPanel={
 void(vector ofs) menu_deploy_mapOverviewPanel={
   local vector panelSize;
   local vector mpos, iofs, map_size, unavailableOrg;
+  local vector mapMins;
   local vector renderColor;
   local float itr, unavailableLen;
   local entity mapKey;
@@ -372,12 +373,19 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     unavailableOrg_y = unavailableOrg_y + (panelSize_y / 2) -  8 ;
     gui_wrapText(unavailableOrg, '210 32', "!- Satellite Data unavailable -!", '16 16', '1 0 0', 1);
   }
-  map_size_x = ((world.mins_x*-1) + world.maxs_x);
-  map_size_y = ((world.mins_y*-1) + world.maxs_y);
+  
+  if(ENT_SERVER_INFO.minimapMins != '0 0 0' && ENT_SERVER_INFO.minimapMaxs != '0 0 0'){
+    map_size = [(ENT_SERVER_INFO.minimapMins_x*-1) + ENT_SERVER_INFO.minimapMaxs_x, (ENT_SERVER_INFO.minimapMins_y*-1) + ENT_SERVER_INFO.minimapMaxs_y];
+    mapMins = ENT_SERVER_INFO.minimapMins;
+  }
+  else{
+    map_size = [(world.mins_x*-1) + world.maxs_x, (world.mins_y*-1) + world.maxs_y];
+    mapMins = world.mins;
+  }
   
   mapKey = mapKeyObject;
   for( mapKey = mapKeyObject; mapKey != world; mapKey = mapKey.w_slot ){
-    nofs = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, iofs, panelSize);
+    nofs = gui_mapCoordToImgCoord(mapMins, map_size, mapKey.origin, iofs, panelSize);
     switch( mapKey.data_type ){
       case DATA_MAP_DMG:
         drawpic( nofs - '5 5', UI_DEF_BOX_64, '10 10', CLR_DEF_RED * 1.15, 0.67, 0);
@@ -396,7 +404,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       continue;
     }
     
-    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, panelSize);
+    tofs = nofs = gui_mapCoordToImgCoord(mapMins, map_size, nav.origin, iofs, panelSize);
     
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -425,7 +433,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     if( deploy.isActive == FALSE ){
       continue;
     }
-    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, deploy.origin, iofs, panelSize);
+    tofs = nofs = gui_mapCoordToImgCoord(mapMins, map_size, deploy.origin, iofs, panelSize);
     
     if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
       drawpic(nofs, UI_DEF_DEPLOYPOINT, '16 16', CLR_DEF_ARM_HALF, 1, 0) ;
@@ -464,7 +472,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     if(player.faction == FACTION_ALL){
       continue;
     }
-    friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, panelSize);
+    friend_org = gui_mapCoordToImgCoord(mapMins, map_size, player.origin, iofs, panelSize);
     drawpic(friend_org, HUD_RAD_PIP_MCH, '12 12', CLR_DEF_IIF_FRIEND, 1, 0);
     
     nameOrg = friend_org + '0 -18';

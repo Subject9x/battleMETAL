@@ -94,6 +94,18 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
     WriteString( MSG_ENTITY, cvar_string("sv_about"));
     WriteLong( MSG_ENTITY, self.serverFlags );
     WriteByte( MSG_ENTITY, self.gameType );
+    
+    WriteCoord( MSG_ENTITY, self.minimapMins_x);
+    WriteCoord( MSG_ENTITY, self.minimapMins_y);
+    WriteCoord( MSG_ENTITY, self.minimapMins_z);
+    
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_x);
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_y);
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_z);
+    
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_x);
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_y);
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_z);
   }
   
   if( (changedFlags & SENDFLAG_RULE_LIMIT_TIME) ){
@@ -194,6 +206,9 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     //have to doubly make sure serverflags and gameType are sent because .ignoreSave is riding on this.
     self.serverFlags = ReadLong();
     self.gameType = ReadByte();
+    self.minimapMins = te_read_vector();
+    self.minimapMaxs = te_read_vector();
+    self.uiViewBoxOrg = te_read_vector();
   }
   
   if( (changeFlags & SENDFLAG_RULE_LIMIT_TIME) ){

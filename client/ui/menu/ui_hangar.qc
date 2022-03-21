@@ -422,7 +422,12 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
   zBias = zBias + (modelMins_z - modelMax_z)/2 - modelMins_z;
   zTotal = ((modelMins_z * -1) + modelMax_z) / 2.3;
   
-  viewOrg = pmove_org;
+  if(ENT_SERVER_INFO.uiViewBoxOrg != '0 0 0'){
+    viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
+  }
+  else{
+    viewOrg = pmove_org;
+  }
   clearscene();
     setproperty(VF_ORIGIN, viewOrg + '-115 0 0');	//look towards it.
     setproperty(VF_ANGLES, '0 0 0');
