@@ -16,8 +16,8 @@ Overview:
 
 #ifdef CSQC
 float input_sequence;
-.float clientServerNum;   //Client Only - player_localentnum but calculated for all players on every client.
-.float clientLocalNum;  //Client Only - player_localnum but calculated for all players on every client.
+.float clientServerNum;   //Client Only - player_localnum but calculated for all players on every client.
+.float clientLocalNum;  //Client Only -  player_localentnum but calculated for all players on every client.
 .float sequence;
 .float hud_bob;    //bob settings are important for dat immersion
 .float hud_bob_cycle;

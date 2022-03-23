@@ -1077,7 +1077,7 @@ Projectile Shooter that uses weapons-fire." [
   radar_range(integer) : "Radar range." : 2000
 ]
 
-@PointClass base(RootBuilding) size(-18.75 -22.2 0.16, 18.85 22.2 40.5) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) = building_guard_tower : "Base Decoration building. + can glow yellow. Does not require power." [
+@PointClass base(RootBuilding) size(-18.75 -22.2 -20, 18.85 22.2 20.5) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) = building_guard_tower : "Base Decoration building. + can glow yellow. Does not require power." [
   health(integer) : "starting health." : 200
   shieldMax(integer) : "max shield value" : 150
   style(integer) : "light style" : 0

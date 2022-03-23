@@ -255,7 +255,7 @@ void(entity item) te_weapon_fire_handler={
     
     //FPV z-offset is corrected at the parent-part origin step!
     if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
-      offset = offset + (v_forward * this.cockpit.compOffset_z);
+      offset = offset - (v_forward * this.cockpit.compOffset_z);
     }
     adjPartOffset = self.compOffset - parent.compOffset;
     
@@ -267,16 +267,17 @@ void(entity item) te_weapon_fire_handler={
       (parent.partTypeId == M_TOR_CENTER && (this.unitModFlags & MOD_MODEL_PITCH_TOR_C)) )
     {
       view_x = view_x *-1;
+      makevectors( view);
+      offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+    
+      self.wepFireOffset = offset + (v_forward * self.wepFireOffsetCache_z) + (v_right * self.wepFireOffsetCache_x) + (v_up * self.wepFireOffsetCache_y);
     }
     else{
       view_x = 0;
+      makevectors(view);
+      self.wepFireOffset = offset + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
     }
     
-    
-    makevectors( view);
-    offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
-    
-    self.wepFireOffset = offset + (v_forward * self.wepFireOffsetCache_z) + (v_right * self.wepFireOffsetCache_x) + (v_up * self.wepFireOffsetCache_y);
     self.itemMuzzleFlash();
   self = this;
 };

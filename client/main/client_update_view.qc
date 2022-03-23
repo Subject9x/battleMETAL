@@ -120,11 +120,11 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   }
   
   setproperty(VF_FOV, VIEW_FOV);
-  if(!MENU_ACTIVE){
-    setproperty(VF_DRAWWORLD, TRUE);
+  if( MENU_ACTIVE && CLIENT_MENU_menu_choice != MENU_REBIND_ACTIVE ){
+    setproperty(VF_DRAWWORLD, FALSE);
   }
   else{
-    setproperty(VF_DRAWWORLD, FALSE);
+    setproperty(VF_DRAWWORLD, TRUE);
   }
   setproperty(VF_DRAWCROSSHAIR, 0);
   setproperty(VF_DRAWENGINESBAR, 0);  
@@ -141,7 +141,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   //=================================================
   
   // draw the main view
-  if( !MENU_ACTIVE || CLIENT_MENU_menu_choice >= MENU_REBIND_ACTIVE){
+  if( !MENU_ACTIVE || (MENU_ACTIVE && CLIENT_MENU_menu_choice == MENU_REBIND_ACTIVE)){
   //alter fog settings if needed
     cl_particles_fogFrame();
     setproperty(VF_FOG_DENSITY, FOG_DENSITY);
@@ -216,7 +216,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   }
   
   //menu system
-  if(MENU_ACTIVE){
+  if(MENU_ACTIVE || CLIENT_MENU_menu_choice == MENU_REBIND_ACTIVE){
     menu_handleFrame();
   }
   

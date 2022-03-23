@@ -15,8 +15,8 @@ entity		world;
 float		time;
 float		frametime;
 
-float 		player_localentnum;	//the entnum = player_localnum + 1 (apparently)
-float 		player_localnum;	//the playernum
+float 		player_localentnum;	//Player Entity Number ON SERVER!
+float 		player_localnum;	//LOCAL player number.
 float		  maxclients;	//a constant filled in by the engine. gah, portability eh?
 
 float		clientcommandframe;	//player movement

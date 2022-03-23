@@ -909,24 +909,6 @@ void() data_hud_frame={
     if( player.enemy.deadflag != DEAD_NO ){continue;}
     hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
   }
-  
-  /*
-    test doesnt really work
-    void(string texturename, float flag[, float is2d, float lines]) R_BeginPolygon = #306;
-    void(string texturename, float flag, ...) R_BeginPolygon = #306;
-    void(vector org, vector texcoords, vector rgb, float alpha) R_PolygonVertex = #307;
-    void() R_EndPolygon = #308;
-    R_BeginPolygon("q3mdl/mechs/matok/hud/matok_hud.tga", DRAWFLAG_2XMODULATE, 0);
-      R_PolygonVertex('10 10', '0 0', '1 1 1', 1) ;
-      R_PolygonVertex('10 100', '0 1', '1 1 1', 1) ;
-      R_PolygonVertex('100 100', '1 1', '1 1 1', 1) ;
-      
-      
-      R_PolygonVertex('100 100', '1 1', '1 1 1', 1) ;
-      R_PolygonVertex('100 10', '1 0', '1 1 1', 1) ;
-      R_PolygonVertex('10 10', '0 0', '1 1 1', 1) ;
-    R_EndPolygon();
-  */
 };
 
 /*
