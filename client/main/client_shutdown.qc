@@ -12,6 +12,17 @@ Overview:
 */
 void() CSQC_Shutdown =
 {
+  //Clean up ents
+  hud_armor_model_target_cleanup();
+  remove(toolTip);
+  remove(UI_HANGAR_DATA_mech);
+  remove(UI_ARMING_DATA_item_a);
+  remove(UI_ARMING_DATA_item_b);
+  remove(UI_ARMING_DATA_item_list);
+  remove(UI_ARMING_item_drag);
+  remove(HUD_DATA_weapon);
+  remove(UI_HANGAR_DATA_mech_list);
+  
   //server string cleanup
   freeGlobalString(CLIENT_INFO_STRING)
   

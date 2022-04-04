@@ -994,7 +994,7 @@ void() data_hud_fps_cam={
   local vector color2;
   
   hasTarget = FALSE;
-  if( CLIENT_stat_trg_dataidx > 0 ){
+  if( CLIENT_stat_trg_dataidx > 0 || CLIENT_target_ent != world ){
     hasTarget = TRUE;
   }
   

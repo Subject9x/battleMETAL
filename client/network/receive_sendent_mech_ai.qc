@@ -123,7 +123,7 @@ void() sendevent_mech_ai_die_standing={
   if( mechRoot == world ){
     return;
   }
-  mechRoot.unitModFlags = pass.unitModFlags;
+  mechRoot.unitModFlags = 0 | pass.unitModFlags;
   mechRoot.solid = SOLID_NOT;
   mechRoot.movetype = MOVETYPE_NONE;
   mechRoot.origin = self.torsoCenter.origin;

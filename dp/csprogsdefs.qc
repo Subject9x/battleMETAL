@@ -185,8 +185,9 @@ vector dmg_origin;
 
 const float MASK_ENGINE			= 1;
 const float MASK_ENGINEVIEWMODELS	= 2;
-const float MASK_NORMAL			= 4;
-//casts no shadows.
+const float MASK_NORMAL			= 4;//casts no shadows.
+const float MASK_HUD        = 8; //custom, used to turn model on/off for hud draws.
+
 
 //no proof these render flags are accessible by DP's flavor of QuakeC - Roohr :|
 const float RF_VIEWMODEL	= 1; // The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.

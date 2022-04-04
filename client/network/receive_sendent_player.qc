@@ -625,7 +625,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_RADAR) ){
-    self.stat_rdr_mode = rint(ReadByte());
+    self.stat_rdr_mode = fabs(ReadByte());
   }
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
@@ -637,8 +637,8 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.attackFlag = ReadCoord();
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
-    self.chaseActive = rint(ReadByte());
-    self.headlight = rint(ReadByte());
+    self.chaseActive = fabs(ReadByte());
+    self.headlight = fabs(ReadByte());
   }
   
   /*
@@ -648,10 +648,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.entId = self.entnum;
     //clientServerNum = player entity ID on server.
     //clientLocalNum = this is player-entity only, local id for some reason is ServerNum-1?
-    self.clientServerNum = rint(ReadByte());
-    self.clientLocalNum = rint(self.clientServerNum - 1);
-    //cons_logAFloat("CS - RECEIVE - player.entnum", self.clientServerNum); //debug
+    self.clientServerNum = fabs(ReadByte());
+    self.clientLocalNum = fabs(self.clientServerNum - 1);
+    //cons_logAFloat("CS - RECEIVE - player.entnum/clientServerNum", self.clientServerNum); //debug
     //cons_logAFloat("CS - RECEIVE - player.clientData.entnum", self.entnum); //debug
+    //cons_logAFloat("CS - LOCAL - player_localentnum", player_localentnum); //debug
   }
   
   /*
@@ -662,7 +663,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_FACTION) ){
-    self.faction = rint(ReadByte());
+    self.faction = fabs(ReadByte());
   }
   /*
     HANDLE - Update Faction totals
@@ -675,17 +676,17 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - player info change 
   */
   if( (changeFlags & SENDFLAG_NEWUNIT) ){
-    self.data_type = rint(ReadByte());
-    self.data_idx = rint(ReadByte());
-    self.next_wepn1 = rint(ReadByte());
-    self.next_wepn2 = rint(ReadByte());
-    self.next_wepn3 = rint(ReadByte());
-    self.next_wepn4 = rint(ReadByte());
-    self.next_wepn5 = rint(ReadByte());
-    self.next_wepn6 = rint(ReadByte());
-    self.next_wepn7 = rint(ReadByte());
-    self.next_wepn8 = rint(ReadByte());
-    self.next_wepn9 = rint(ReadByte());
+    self.data_type = fabs(ReadByte());
+    self.data_idx = fabs(ReadByte());
+    self.next_wepn1 = fabs(ReadByte());
+    self.next_wepn2 = fabs(ReadByte());
+    self.next_wepn3 = fabs(ReadByte());
+    self.next_wepn4 = fabs(ReadByte());
+    self.next_wepn5 = fabs(ReadByte());
+    self.next_wepn6 = fabs(ReadByte());
+    self.next_wepn7 = fabs(ReadByte());
+    self.next_wepn8 = fabs(ReadByte());
+    self.next_wepn9 = fabs(ReadByte());
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
         sendevent_player_mech(self.data_idx);
@@ -739,7 +740,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - DEAD
   */ 
   if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
+    self.deadflag = fabs(ReadByte());
     
     ENT_SERVER_INFO.missionStatus = ReadByte();
     
@@ -887,12 +888,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     CLIENT_target_ent = self.enemy;
     
     if( (changeFlags & SENDFLAG_TARGET) ){
-      if( CLIENT_target_ent == world ){
-        if( HUD_MODEL_ARMOR_GRAPH_TARGET ){
-          hud_armor_model_target_cleanup();
-        }
-      }
-      else{
+      if( CLIENT_target_ent != world ){
         sendevent_player_target();
       }
     }
@@ -914,15 +910,6 @@ void() sendevent_player_target={
   local entity oSelf;
   local entity cleanUp;
   local entity nextEnt;
-
-  if( HUD_MODEL_ARMOR_GRAPH_TARGET ){
-    //clean up old model
-    hud_armor_model_target_cleanup();
-  }
-  else{
-    HUD_MODEL_ARMOR_GRAPH_TARGET = spawn();
-  }
-
   
   oSelf = self;
   self = HUD_MODEL_ARMOR_GRAPH_TARGET;
@@ -930,24 +917,18 @@ void() sendevent_player_target={
     self.data_type = CLIENT_target_ent.data_type;
     self.flags = 0 | CLIENT_target_ent.flags;
     self.flags = self.flags - (self.flags & FL_MONSTER) - (self.flags & FL_UNIT);
-    if( self.data_type == DATA_MECH ){;
-      data_sync_new_mech_ai( self.data_idx );
+    self.unitModFlags = 0 | CLIENT_target_ent.unitModFlags;
+    if( self.data_type == DATA_MECH ){
       hud_armor_model_target_ini_mech();
     }
     else if(self.data_type == DATA_VEHC){
-      data_sync_new_vehicle( self.data_idx );
-      self.unitModFlags = rint(0);
       hud_armor_model_target_ini_vehicle();
     }
     else if(self.data_type == DATA_BLD){
-      if( (self.flags & FL_TURRET) ){
-        data_sync_new_turret( self.data_idx );
-      }
-      else{
-        data_sync_new_building( self.data_idx );
-      }
-      self.unitModFlags = rint(0);
       hud_armor_model_target_ini_building();
+    }
+    else{
+      self.unitModFlags = rint(0);
     }
     if(self.hardpoint_cnt > 0 ){
       nextEnt = self.w_slot;
