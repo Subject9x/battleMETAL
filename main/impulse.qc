@@ -277,13 +277,15 @@ void() ButtonCommands={
   }
   
   //action mapping: +regen
-  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-    if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
-      if( self.energy >= (self.energyMax * 0.15) ){
-        if( self.shield < self.shieldMax ){
-          self.shield = self.shield + ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.5);
-          self.energy = self.energy - ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.75);
-          self.energy = bound(0, self.energy, self.energyMax);
+  if( time > self.shieldHitRegen ){
+    if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+      if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
+        if( self.energy >= (self.energyMax * 0.15) ){
+          if( self.shield < self.shieldMax ){
+            self.shield = self.shield + ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.25);
+            self.energy = self.energy - (self.shieldRate * 1.15);  //iirc, shield recharge module doesn't charge for the buff cost.
+            self.energy = bound(0, self.energy, self.energyMax);
+          }
         }
       }
     }
