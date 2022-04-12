@@ -36,7 +36,9 @@ void() sendevent_building_die={
       setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
       break;
   }
-  setorigin(self, self.origin + (v_up * -3));
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+  
   
   sendent_handle_remove(self.effect1);
   sendent_handle_remove(self.effect2);
@@ -110,12 +112,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
     if( self.deadflag == DEAD_NO ){
       data_sync_new_building(self.data_idx);
       self.data_type = DATA_BLD;
-      self.flags = self.flags | FL_MONSTER; 
+      self.flags = 0 | FL_MONSTER; 
       self.colormod = '1 1 1';
       if( self.th_walk ){
         self.th_walk();
       }
-      if( (self.spawnflags & 4194304) ){
+      if( (self.spawnflags & IS_MAPKEY) ){
         if( lastMapKeyObject ){
           //build linked list backwards for later forward iteration.
           lastMapKeyObject.w_slot = self;
