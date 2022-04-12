@@ -552,7 +552,6 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
   local vector modelMins;
   local vector viewOrg;
   local float zTotal;
-  local float zBias;
   local float zHalf;
   local float xHalf;
   local vector tAngles;
@@ -583,11 +582,17 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     backOrg = backOrg + gui_calcAlignCustom(lblOfs, lalgn, panelOrg);
   }
   
-  modelMaxs = HUD_MODEL_ARMOR_GRAPH_TARGET.maxs;
-  modelMins = HUD_MODEL_ARMOR_GRAPH_TARGET.mins;
-  modelMaxs_z = max(40, modelMaxs_z);
-  modelMins_z = min(-40, modelMins_z);
-  zBias = (HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z - modelMaxs_z)/2 - HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z;
+  modelMaxs = HUD_MODEL_ARMOR_GRAPH_TARGET.maxs = CLIENT_target_ent.maxs;
+  modelMins = HUD_MODEL_ARMOR_GRAPH_TARGET.mins = CLIENT_target_ent.mins;
+  
+  modelMaxs_x = min(modelMaxs_x, 55);
+  modelMaxs_y = min(modelMaxs_y, 55);
+  modelMaxs_z = bound(20, min(modelMaxs_z, 50), 50);
+
+  modelMins_x = max(modelMins_x, -40);
+  modelMins_y = max(modelMins_y, -40);
+  modelMins_z = min(modelMins_z, -35);
+  
   zTotal = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + modelMaxs_z) / 2;
   zHalf = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + modelMaxs_z) / 2;
   xHalf = modelMaxs_x * 2;
@@ -632,7 +637,7 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
     
     //Vehicle has a Turret
-    if( HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter ){
+    if( (HUD_MODEL_ARMOR_GRAPH_TARGET.flags & FL_TURRET) && HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter ){
       local vector turAngl;
       turAngl = [0, CLIENT_target_ent.angles_y, CLIENT_target_ent.angles_z];
       makevectors(turAngl);
@@ -758,7 +763,7 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
     addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
     
     //Vehicle has a Turret
-    if( HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter ){
+    if( (HUD_MODEL_ARMOR_GRAPH_TARGET.flags & FL_TURRET) && HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter ){
       local vector turAngl;
       turAngl = [0, CLIENT_target_ent.angles_y, CLIENT_target_ent.angles_z];
       makevectors(turAngl);
@@ -1098,7 +1103,7 @@ void() hud_armor_model_target_ini_vehicle={
   HUD_MODEL_ARMOR_GRAPH_TARGET.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = '0 1.5 0';
   
-  if(CLIENT_target_ent.torsoCenter){
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.flags & FL_TURRET) ){
     setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter, CLIENT_target_ent.torsoCenter.model);
     HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.compOffset = CLIENT_target_ent.torsoCenter.compOffset;
     HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
@@ -1116,7 +1121,7 @@ void() hud_armor_model_target_ini_building={
   HUD_MODEL_ARMOR_GRAPH_TARGET.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = '0 1.5 0';  
   
-  if(CLIENT_target_ent.torsoCenter){
+  if( (HUD_MODEL_ARMOR_GRAPH_TARGET.flags & FL_TURRET) ){
     setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter, CLIENT_target_ent.torsoCenter.model);
     HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.compOffset = CLIENT_target_ent.torsoCenter.compOffset;
     HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter.effects = 0 |EF_FULLBRIGHT | EF_NOSHADOW;

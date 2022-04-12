@@ -916,8 +916,10 @@ void() sendevent_player_target={
     self.data_idx = CLIENT_target_ent.data_idx;
     self.data_type = CLIENT_target_ent.data_type;
     self.flags = 0 | CLIENT_target_ent.flags;
-    self.flags = self.flags - (self.flags & FL_MONSTER) - (self.flags & FL_UNIT);
+    self.flags = self.flags - (self.flags & FL_MONSTER) - (self.flags & FL_UNIT); //ensures that player radar and regular addentity() calls don't pick this up.
     self.unitModFlags = 0 | CLIENT_target_ent.unitModFlags;
+    self.mins = CLIENT_target_ent.mins;
+    self.maxs = CLIENT_target_ent.maxs;
     if( self.data_type == DATA_MECH ){
       hud_armor_model_target_ini_mech();
     }
@@ -999,18 +1001,23 @@ float() remove_client={
       }
     }
     if( self.torsoCenter ){
+      self.torsoCenter.drawmask = 0;
       remove(self.torsoCenter);
     }
-    if( self.torsoLeft ){
+    if( (self.unitModFlags & MOD_HAS_TOR_L) && self.torsoLeft ){
+      self.torsoLeft.drawmask = 0;
       remove(self.torsoLeft);
     }
-    if( self.torsoRight ){
+    if( (self.unitModFlags & MOD_HAS_TOR_R) && self.torsoRight ){
+      self.torsoRight.drawmask = 0;
       remove(self.torsoRight);
     }
-    if( self.armLeft ){
+    if( (self.unitModFlags & MOD_HAS_ARM_L) && self.armLeft ){
+      self.armLeft.drawmask = 0;
       remove(self.armLeft);
     }
-    if( self.armRight ){
+    if( (self.unitModFlags & MOD_HAS_ARM_R) && self.armRight ){
+      self.armRight.drawmask = 0;
       remove( self.armRight);
     }
     if( self.legs ){

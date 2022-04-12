@@ -56,33 +56,13 @@ void() misc_build_die2={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
-  switch( self.vec_size ){
-    case 2:
-      self.model = "q3mdl/map/ruins/ruin_medium.obj";
-      break;
-    case 3:
-      self.model = "q3mdl/map/ruins/ruin_large.obj";
-      break;
-    default:
-      self.model = "q3mdl/map/ruins/ruin_small.obj";
-      break;
-  }
-	setmodel(self, self.model);
-  setsize( self, self.mins, self.maxs );
-  setorigin( self, self.origin);
 };
 
 void() misc_build_die1={
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD; 
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
+  building_die();
 
   local vector shoot;
   shoot = randompos(self.absmin * 0.67, self.absmax * 0.67);
@@ -90,7 +70,6 @@ void() misc_build_die1={
   
   self.think = misc_build_die2;
   self.nextthink = time + 0.1;
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 
 /*

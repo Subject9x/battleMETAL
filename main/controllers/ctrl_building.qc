@@ -20,10 +20,28 @@ void() building_die={
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_NOT;
   self.touch = SUB_Null;
   
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  makevectors(self.angles);
+  self.solid = SOLID_SLIDEBOX;
+  switch( self.vec_size ){
+    case 2:
+      setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
+      break;
+    case 3:
+      setmodel(self, "q3mdl/map/ruins/ruin_large.obj");
+      break;
+    default:
+      setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+      break;
+  }
+  setsize(self, self.mins, self.maxs);
+  
+  traceline(self.origin, self.origin + (v_up * -512), FALSE, self);
+  setorigin(self, trace_endpos);
+  self.solid = SOLID_NOT;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD | SENDFLAG_MOVE;
 };
 
 
