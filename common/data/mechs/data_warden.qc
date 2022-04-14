@@ -31,8 +31,8 @@ void() data_ini_warden_={
   self.max_health = 575;
   
   //Hitbox size, X width, Y Length, Z height.
-  self.mins = '-16 -16 -30.2';
-  self.maxs = '16 16 14';
+  self.mins = '-16 -16 -30.3';
+  self.maxs = '16 16 15';
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 400;
@@ -132,7 +132,6 @@ void() data_ini_warden_={
   self.config_default_brawl = warden_config_default_brawl;
   self.abbrev = "WRD";
   self.description = "MILITAR burned out their best hackers on black ICE breaking into a salvaged Federation data core. Amongst the encrypted modules was blueprints for a highly advanced light metal - the WARDEN. | | Tech degradation after the toppling of the Federation meant that MILITAR could not create a perfect copy...but they tried anyway. | | The result is a tough-as-nails light metal. It is not the fastest metal on the planet, but well-protected hardpoints and fast enough movement allow the WARDEN to stay out of most trouble. | | BALAKET pilots have a particular disdain for WARDEN units, frustrated that their vaunted hit-and-run style won`t take a WARDEN down quickly.";
-  self.icon = "gfx/ui/mech_icons/icon_warden.png";
 
   //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;

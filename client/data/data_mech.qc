@@ -42,12 +42,20 @@ void( float dataID ) data_sync_new_mech_ai={
   self.critBits = 0;
   maxSave = self.maxs;
   minSave = self.mins;
-  setmodel(self, "q3mdl/testball.md3");
+  
+  if( (self.unitModFlags & MOD_MODEL_ROOT_TOR_C) ){
+    setmodel(self, self.model);
+  }
+  else{
+    setmodel(self, "q3mdl/testball.md3");
+    self.alpha = 0.1;
+    self.scale = 0.1;
+  }
+  
   self.takedamage = DAMAGE_AIM;
-  self.alpha = 0.001;
-  self.scale = 0.001;
   setsize(self, minSave, maxSave);
   sendent_ini_interpolate();
+  
   sendent_setup_weapons();
   if( (self.flags & FL_CLIENT) ){
     self.solid = SOLID_BBOX;

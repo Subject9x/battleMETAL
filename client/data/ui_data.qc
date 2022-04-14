@@ -88,12 +88,6 @@ void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
   mech_piece = mechEntity.w_slot;
   
   while( mech_piece != world ){
-    mech_piece.think = SUB_Remove;
-    mech_piece.nextthink = time + 0.1;
-    MECH_DATA_STOCK[itr] = 0;
-    if( itr <= 5 ){
-        MECH_DATA_GRPS[itr] = 0;
-    }
     itr = itr + 1;
     rem = mech_piece;
     mech_piece = mech_piece.w_slot;
@@ -243,34 +237,10 @@ float(float mechId, entity listEntity) ui_data_load_mech_info={
   MECH_DATA_LOCKON = listEntity.w_firetime;
   MECH_DATA_DESC = listEntity.description;
   
-  local entity hardpoint;
-  local float itr;
-  local vector partOffset;
-  hardpoint = listEntity.w_slot;
-  itr = 1;
-  while( hardpoint ){
-    
-    partOffset = hardpoint.compOffset;
-    //TODO - migjht be source of hardpoint type bug
-    if( MECH_DATA_STOCK[itr] > 0){
-      hardpoint.data_idx = MECH_DATA_STOCK[itr];
-      data_get_client_item_( hardpoint, MECH_DATA_STOCK[itr] );
-    }
-    itr = itr + 1;
-    hardpoint = hardpoint.w_slot;
-  }
-  
   return TRUE;
 };
 
 float(float id) ui_data_load_mech={
-  local float flannel, line_tag;
-  local string file, contents, line;
-  local float idx;
-  local string token, value;
-  local entity hardpoint;
-  local float itr;
-  local vector partOffset;
   
   if( UI_HANGAR_DATA_mech.data_idx > 0){
     ui_data_clear_mechdata();
@@ -301,54 +271,6 @@ float(float id) ui_data_load_mech={
   MECH_DATA_RAD = UI_HANGAR_DATA_mech.radar_range;
   MECH_DATA_LOCKON = UI_HANGAR_DATA_mech.w_firetime;
   MECH_DATA_DESC = UI_HANGAR_DATA_mech.description;
-
-  file = strcat(PATH_DATA_UI, "/vec/mech/", UI_HANGAR_DATA_mech.vec_name,".unit");
-  flannel = fopen(file, FILE_READ);
-  if(flannel == -1){
-    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND")); 
-    fclose(flannel);
-    return FALSE;
-  }
-  
-  contents = fgets(flannel);
-  line = fgets(flannel);
-  while( (line != "") ){
-    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-      line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
-      token = argv(1);
-      value = argv(3);
-      if( token != ""){
-        if( strstrofs(token, "stock", 0) != -1 ){
-          if( strstrofs(token, "hpt", 0) != -1 ){
-            tokenizebyseparator(token, "_");
-            idx = stof(argv(2));
-            MECH_DATA_STOCK[idx] = stof(value);
-          }
-          if( strstrofs(token, "grps",0) != -1 ){
-            tokenizebyseparator(token, "_");
-            idx = stof(argv(2));
-            MECH_DATA_GRPS[idx] = stof(value); 
-          }
-        }
-      }
-    }
-    line = fgets(flannel);
-  }
-  fclose(flannel);
-  
-  hardpoint = UI_HANGAR_DATA_mech.w_slot;
-  itr = 1;
-  while( hardpoint ){
-    
-    partOffset = hardpoint.compOffset;
-    //TODO - might be source of hardpoint type bug
-    if( MECH_DATA_STOCK[itr] > 0){
-      hardpoint.data_idx = MECH_DATA_STOCK[itr];
-      data_get_client_item_( hardpoint, MECH_DATA_STOCK[itr] );
-    }
-    itr = itr + 1;
-    hardpoint = hardpoint.w_slot;
-  }
   
   return TRUE;
 };
@@ -564,6 +486,7 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     if( !cfg ){
       cfg = data_mech_config_load( mechId, 0 );
       cfg = data_mech_config_valid();
+      
     }
   }
   else{

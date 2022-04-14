@@ -92,7 +92,7 @@ void() data_ini_sapper_={
   
   //camera location
   #ifdef CSQC
-    data_ini_camera_( '0 13 8', self.torsoCenter);
+    data_ini_camera_( '0 13 10', self.torsoCenter);
   #else
     data_ini_camera_( '0 13 2', self.torsoCenter);
   #endif
@@ -133,7 +133,6 @@ void() data_ini_sapper_={
   self.config_default_brawl = sapper_config_default_brawl;
   self.abbrev = "SPR";
   self.description = "SAPPER mechs were drafted and produced right before the Federation treaty was ratified. Off-world concerns asked for a strong second-line METAL to support other medium formations. What they got from the factories was dubbed the SAPPER based on its hardpoint configuration and shield output. | | The mech trades a lot of offensive firepower for equipment and shields. Its ability to withstand heavy anti-shield damage allows the mech to move-and-fire against tougher opponents. | | SAPPERs won`t halt an attack by themselves but they remain a powerful force multiplier in both Militar and Survest armies...even if they can no longer be built in large numbers.";
-  self.icon = "gfx/ui/mech_icons/icon_sapper.png";
 
   //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
   local entity hardpnt;

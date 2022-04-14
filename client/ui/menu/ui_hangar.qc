@@ -95,14 +95,10 @@ void() menu_hangarDrawFrame={
   menu_hangar_MechInfo(topleftroot + '118 32');
   menu_hangar_MechFluff(topleftroot + '118 208');
   menu_hangar_MechHPoints(topleftroot + '367 273');
-  //if(SELECT_MECH > FALSE){  
-  //  menu_hangar_MechModelDisplay(topleftroot + '377 38', '225 225'); 
-  //}
 };
 
 void(vector ofs) menu_hangar_MechDisplay={
-  local vector imgSize;
-  local vector nofs, hofs, i_sz, hardpointGraphCenter;
+  local vector nofs, hardpointGraphCenter;
   local float hardpointItr;
   local entity hardpoint;
   local vector helpOrg;
@@ -115,24 +111,21 @@ void(vector ofs) menu_hangar_MechDisplay={
   
   drawpic(nofs, UI_HANGAR_BOX, '252 225', CLR_DEF_UI_HANGAR, 1, 0);
   
+  menu_hangar_MechModelDisplay(nofs, '252 225');
+    
   if(SELECT_MECH > FALSE){  
-    imgSize = draw_getimagesize(MECH_DATA_ICON);
     
-    i_sz_y = 234;
-    i_sz_x = floor(i_sz_y * (imgSize_x / imgSize_y));
-    
-    hofs = Vector2(ofs_x + 10 + 130 - (i_sz_x/2), ofs_y + 2);
+    //i_sz_y = 234;
+    //i_sz_x = floor(i_sz_y * (imgSize_x / imgSize_y));
         
-    hardpointGraphCenter = Vector2(ofs_x + 130 + 10, ofs_y + (i_sz_y/5.5));
+    hardpointGraphCenter = [ofs_x + 130 + 10, ofs_y + 42.4545]; //234/5.5
 
     MECHPANEL_CTR = hardpointGraphCenter;
     
-    menu_hangar_MechModelDisplay(nofs, '252 225');
-
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-      hardpoint.ui_org = MECHPANEL_CTR + (hardpoint.uiOffset * (i_sz_y / i_sz_x) * 0.67);
+      hardpoint.ui_org = MECHPANEL_CTR + (hardpoint.uiOffset * (234 / 234) * 0.67);
       
       drawpic( hardpoint.ui_org +'-8 -2', UI_DEF_BOX_64, '16 16', '1 1 1', 1, 0);
       ui_renderHardPointNumber( hardpointItr, hardpoint.ui_org );
@@ -415,10 +408,15 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
   local vector viewOrg;
   local float zBias, zTotal;
   
-  modelMins = UI_HANGAR_DATA_mech.mins;
-  modelMax = UI_HANGAR_DATA_mech.maxs;
-  tSize = modelMax - modelMins;
-  
+  if(SELECT_MECH > FALSE){  
+    modelMins = UI_HANGAR_DATA_mech.mins;
+    modelMax = UI_HANGAR_DATA_mech.maxs;
+  }
+  else{
+    modelMins = '-16 -16 -24';
+    modelMax = '16 16 16';
+  }
+    tSize = modelMax - modelMins;
   zBias = zBias + (modelMins_z - modelMax_z)/2 - modelMins_z;
   zTotal = ((modelMins_z * -1) + modelMax_z) / 2.3;
   
@@ -434,8 +432,6 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
     
     setproperty(VF_MIN, vtodpp([ofs_x, ofs_y, 0]) );
     setproperty(VF_SIZE, vtodpp([viewSize_x, viewSize_y, 0]) );
-    //set an explicit fov. this thing had better be square. DP doesn't support VF_AFOV
-    //setproperty(VF_FOV, [25, atan(viewSize_y/(viewSize_x/tan(25/360*6.28))) * 360/6.28, 0]); 
     setproperty(VF_FOV, [zTotal, atan(viewSize_y/(viewSize_x/tan(zTotal/360*6.28))) * 360/6.28, 0]); 
 
     setproperty(VF_DRAWENGINESBAR, 0);
@@ -449,42 +445,45 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
     setproperty(VF_FOG_HEIGHT, 0);
     setproperty(VF_FOG_FADEDEPTH, 0.0);
     
-    makevectors(getpropertyvec(VF_ANGLES));
-    setorigin( UI_HANGAR_DATA_mech, viewOrg + [0, 0, zBias] + (v_forward * ( ((modelMins_z*-1) + modelMax_z) / 1.8 )));
-    cOrg = UI_HANGAR_DATA_mech.origin;
-    
-    addentity(UI_HANGAR_DATA_mech);
-    
-    makevectors(UI_HANGAR_DATA_mech.angles);
-    
-    UI_HANGAR_DATA_mech.torsoCenter.origin = UI_HANGAR_DATA_mech.origin;
-    addentity(UI_HANGAR_DATA_mech.torsoCenter);
-     
-    if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
-      mOffset = UI_HANGAR_DATA_mech.torsoLeft.compOffset;
-      UI_HANGAR_DATA_mech.torsoLeft.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-      addentity(UI_HANGAR_DATA_mech.torsoLeft);
+    if(SELECT_MECH > FALSE){  
+      makevectors(getpropertyvec(VF_ANGLES));
+      setorigin( UI_HANGAR_DATA_mech, viewOrg + [0, 0, zBias] + (v_forward * ( ((modelMins_z*-1) + modelMax_z) / 1.8 )));
+      cOrg = UI_HANGAR_DATA_mech.origin;
+      
+      if( (UI_HANGAR_DATA_mech.unitModFlags && MOD_MODEL_ROOT_TOR_C)){
+        addentity(UI_HANGAR_DATA_mech);
+      }
+      
+      makevectors(UI_HANGAR_DATA_mech.angles);
+      
+      UI_HANGAR_DATA_mech.torsoCenter.origin = UI_HANGAR_DATA_mech.origin;
+      addentity(UI_HANGAR_DATA_mech.torsoCenter);
+       
+      if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
+        mOffset = UI_HANGAR_DATA_mech.torsoLeft.compOffset;
+        UI_HANGAR_DATA_mech.torsoLeft.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+        addentity(UI_HANGAR_DATA_mech.torsoLeft);
+      }
+      if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
+        mOffset = UI_HANGAR_DATA_mech.torsoRight.compOffset;
+        UI_HANGAR_DATA_mech.torsoRight.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+        addentity(UI_HANGAR_DATA_mech.torsoRight);
+      }
+      if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
+        mOffset = UI_HANGAR_DATA_mech.armLeft.compOffset;
+        UI_HANGAR_DATA_mech.armLeft.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+        addentity(UI_HANGAR_DATA_mech.armLeft);
+      }
+      if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
+        mOffset = UI_HANGAR_DATA_mech.armRight.compOffset;
+        UI_HANGAR_DATA_mech.armRight.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+        addentity(UI_HANGAR_DATA_mech.armRight);
+      }
+      
+      mOffset = UI_HANGAR_DATA_mech.legs.compOffset;
+      UI_HANGAR_DATA_mech.legs.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+      addentity(UI_HANGAR_DATA_mech.legs);
     }
-    if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
-      mOffset = UI_HANGAR_DATA_mech.torsoRight.compOffset;
-      UI_HANGAR_DATA_mech.torsoRight.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-      addentity(UI_HANGAR_DATA_mech.torsoRight);
-    }
-    if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
-      mOffset = UI_HANGAR_DATA_mech.armLeft.compOffset;
-      UI_HANGAR_DATA_mech.armLeft.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-      addentity(UI_HANGAR_DATA_mech.armLeft);
-    }
-    if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
-      mOffset = UI_HANGAR_DATA_mech.armRight.compOffset;
-      UI_HANGAR_DATA_mech.armRight.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-      addentity(UI_HANGAR_DATA_mech.armRight);
-    }
-    
-    mOffset = UI_HANGAR_DATA_mech.legs.compOffset;
-    UI_HANGAR_DATA_mech.legs.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-    addentity(UI_HANGAR_DATA_mech.legs);
-  
   renderscene();
   setproperty(VF_ORIGIN, VIEW_VF_ORG);
   setproperty(VF_FOV, VIEW_FOV); 
