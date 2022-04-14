@@ -351,16 +351,8 @@ void() hrepair_die = [0, hrepair_die1]{
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD; 
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
   ai_alert_close(self.enemy);
   
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 
 
@@ -621,4 +613,5 @@ void() hrepair_die16 = [16, SUB_Null]{
     ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
     t_damage( self.trigger_field, self, world, random() * self.max_health, ouch, normalize(ouch - self.trigger_field.origin) * 1);
   }
+  building_die();
 };

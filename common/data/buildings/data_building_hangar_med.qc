@@ -25,15 +25,7 @@ void() hangar_vehicle_die1=[0, hangar_vehicle_die2]{
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD; 
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+
   
   local vector vfx;
   
@@ -117,6 +109,7 @@ void() hangar_vehicle_die15=[0, SUB_Null]{
 
   vfx = randompos(self.absmin, self.absmax);
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 5,1 );
+  building_die();
 };
 
 void() building_human_hangar_vehicle={

@@ -14,13 +14,6 @@ void() hfuel_death1 = [1, hfuel_death2]{
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_NOT;
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
   ai_alert_close(self.enemy);
 };
 void() hfuel_death2 = [2, hfuel_death3]{
@@ -97,7 +90,9 @@ void() hfuel_death10 = [10, hfuel_death11]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
 };
 void() hfuel_death11 = [11, hfuel_death12]{};
-void() hfuel_death12 = [12, hfuel_death12]{};
+void() hfuel_death12 = [12, hfuel_death12]{
+  building_die();
+};
 
 void() building_human_fuel={
   self.data_idx = self.nextVecChoice = UI_BUILDING_fuel_tank;

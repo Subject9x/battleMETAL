@@ -32,13 +32,8 @@ void() building_radar_die1={
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_NOT;
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
+  building_die();
+  
   ai_alert_close(self.enemy);
   
   self.think = building_radar_die2;

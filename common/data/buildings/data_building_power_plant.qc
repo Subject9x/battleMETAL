@@ -13,14 +13,6 @@ void() hpower_die = [0, hpower_die1]{
     return;
   }
   
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
   ai_alert_close(self.enemy);
 
 };
@@ -80,7 +72,9 @@ void() hpower_die14 = [14, hpower_die15]{
   }
   
 };
-void() hpower_die15 = [15, SUB_Null]{};
+void() hpower_die15 = [15, SUB_Null]{
+  building_die();
+};
 
 void() hpower_th ={
   local entity t;

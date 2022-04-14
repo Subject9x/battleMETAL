@@ -11,16 +11,6 @@ void() hshield_die = [0, hshield_die1]{
   if( self.deadflag > DEAD_NO){
     return;
   }
-  
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
-  
   ai_alert_close(self.enemy);
 
 };
@@ -106,7 +96,7 @@ void() hshield_die11 = [11, hshield_die12]{};
 void() hshield_die12 = [12, hshield_die13]{};
 void() hshield_die13 = [13, hshield_die14]{};
 void() hshield_die14 = [14, hshield_die15]{};
-void() hshield_die15 = [15, SUB_Null]{};
+void() hshield_die15 = [15, SUB_Null]{building_die();};
 
 
 void() hshield_th ={
