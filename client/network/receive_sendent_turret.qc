@@ -77,20 +77,20 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( (changeFlags & SENDFLAG_EXDATA) ){
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
+    self.next_wepn1 = fabs(ReadByte());
+    self.next_wepn2 = fabs(ReadByte());
+    self.next_wepn3 = fabs(ReadByte());
+    self.next_wepn4 = fabs(ReadByte());
+    self.next_wepn5 = fabs(ReadByte());
+    self.next_wepn6 = fabs(ReadByte());
+    self.next_wepn7 = fabs(ReadByte());
+    self.next_wepn8 = fabs(ReadByte());
+    self.next_wepn9 = fabs(ReadByte());
   }
   
   //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.spawnflags = rint(ceil(ReadCoord()));
+    self.spawnflags = fabs(ceil(ReadCoord()));
     self.data_idx = ReadByte();
     if( !(self.spawnflags & MUTE_ME)  ){
       self.ai_muted = FALSE;
@@ -134,17 +134,17 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.shield = ReadByte();
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
-    self.shieldHitFlag = ReadByte();
+    self.shieldHitFlag = fabs(ReadByte());
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadCoord();
+    self.attackFlag = fabs(ReadCoord());
     sendevent_handle_weaponfire();
   }
   
   //EVENT - faction changed
   if( (changeFlags & SENDFLAG_FACTION) ){
-    self.faction = ReadByte();
+    self.faction = fabs(ReadByte());
   }
   
   //EVENT - turret rotated

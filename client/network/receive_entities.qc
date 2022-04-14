@@ -364,31 +364,33 @@ void() client_get_hud_highlight={
   local float fnd;
   
   hfx = spawn();
-  hfx.drawmask = MASK_ENGINE;
-  hfx.data_idx = -3;  //more hacks
-  hfx.classname = "UI_HIGHLIGHT"; //constant-in-code so no worry about zoning the value.
-  
-  hfx.drawcolor1 = te_read_vector();
-  t = ReadShort();
-  hfx.partTypeId = ReadByte();
-  hfx.partParentId = 0;
-  
-  fnd = 0;
-  while( fnd < 32 ){
-    if( UI_DATA_UIDS[fnd] == hfx.partTypeId ){
-      if( hfx.partParentId == 0 ){
-        hfx.partParentId = fnd;
+  if(hfx){
+    hfx.drawmask = MASK_ENGINE;
+    hfx.data_idx = -3;  //more hacks
+    hfx.classname = "UI_HIGHLIGHT"; //constant-in-code so no worry about zoning the value.
+    
+    hfx.drawcolor1 = te_read_vector();
+    t = ReadShort();
+    hfx.partTypeId = ReadByte();
+    hfx.partParentId = 0;
+    
+    fnd = 0;
+    while( fnd < 32 ){
+      if( UI_DATA_UIDS[fnd] == hfx.partTypeId ){
+        if( hfx.partParentId == 0 ){
+          hfx.partParentId = fnd;
+        }
       }
+      fnd = fnd + 1;
     }
-    fnd = fnd + 1;
+    hfx.drawsize = te_read_vector();  //we still send a prospective size because some HUD elements don't have a defined size?
+    
+    if( hfx.partTypeId == 0 || !hfx.partTypeId ){
+      hfx.origin = te_read_vector();
+    }
+    
+    hfx.drawme = time + (t / 3);
   }
-  hfx.drawsize = te_read_vector();  //we still send a prospective size because some HUD elements don't have a defined size?
-  
-  if( hfx.partTypeId == 0 || !hfx.partTypeId ){
-    hfx.origin = te_read_vector();
-  }
-  
-  hfx.drawme = time + (t / 3);
 };
 
 /*

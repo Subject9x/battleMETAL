@@ -44,7 +44,7 @@ void( entity removeMe ) sendent_handle_remove={
     removeMe.drawmask = 0;
     removeMe.alpha = 0.0;
     removeMe.think = SUB_Remove;
-    removeMe.nextthink = time + 0.1;
+    removeMe.nextthink = servertime + 0.01;
   }
 };
 

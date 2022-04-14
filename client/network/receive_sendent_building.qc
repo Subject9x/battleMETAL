@@ -188,7 +188,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
 
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = rint(ceil(ReadCoord()));
+    self.burnBits = fabs(ceil(ReadCoord()));
     if( self.burnBits > 0 ){
       if( (self.burnBits & WEAPON1) && self.effect1 != world ){
         self.effect1 = te_building_fire_start( self );

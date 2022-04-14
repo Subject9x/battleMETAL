@@ -233,6 +233,7 @@ void(entity piece) te_explode_mech_piece={
     t.angles = piece.angles;
     t.think = te_explode_mech_piece_th;
     t.nextthink = time + 0.05;
+    t.data_lifetime = servertime + 400 + (random() * 250);
     t.predraw = te_explode_mech_piece_predraw;
   }
 };
@@ -331,7 +332,7 @@ void() te_unit_dust_set={
 
 
 void() te_building_fire_th={
-  if( self.owner.deadflag > DEAD_NO ){
+  if( self.owner.deadflag != DEAD_NO ){
     remove(self);
     return;
   }
@@ -401,7 +402,8 @@ void() te_missile_explode_th={
   self.scale = self.scale + self.pcl_count;
   self.think = te_missile_explode_th;
   if( self.alpha < 0.01 ){
-    self.think = SUB_Remove;
+    remove(self);
+    return;
   }
   self.nextthink = time + 0.01;
 };
@@ -709,11 +711,11 @@ void() particle_vehicle_wreck_th={
       pointparticles( self.pcl_effectnum, self.origin, self.pcl_velocity, self.pcl_count);
     }
     self.think = particle_vehicle_wreck_th;
-    self.nextthink = time + (0.1 + (random() * 0.2));
+    self.nextthink = servertime + (0.1 + (random() * 0.2));
   }
-  self.pcl_fadeout = time + 30;
+  self.pcl_fadeout = servertime + 30;
   self.think = particle_vehicle_wreck_cleanup;
-  self.nextthink = time + 150 + (random() * 150);
+  self.nextthink = servertime + 150 + (random() * 150);
 };
 
 void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) particle_vehicle_wreck={
@@ -760,10 +762,10 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
       sizeAdjust = vecSize / 2;
       sizeAdjust = sizeAdjust * lifetime;
       sizeAdjust = sizeAdjust * random();
-      self.pcl_lifetime = time + (lifetime + sizeAdjust);
-      self.pcl_fadeout = time + ( lifetime * 0.75);
+      self.pcl_lifetime = servertime + (lifetime + sizeAdjust);
+      self.pcl_fadeout = servertime + ( lifetime * 0.75);
       self.pcl_count = 1;
-      self.nextthink = time + (random() * 1);
+      self.nextthink = servertime + (random() * 1);
       self.think = particle_vehicle_wreck_th;
       self.drawmask = MASK_NORMAL;
     self = this;
