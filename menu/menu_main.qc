@@ -64,7 +64,8 @@ void() m_init={
   
   //setup textfield key filter;
   menu_ini_txtfilter();
-  RESO_CHANGE = TRUE;
+  RESO_CHANGE = FALSE;
+  gui_set_screen_size(cvar("vid_width"), cvar("vid_height"));
   
 };
 

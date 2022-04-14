@@ -717,8 +717,8 @@ void() click_graphics_accept={
   //cvar_set("vid_samples", ftos(graphics_aa_lbl.len));
   
   if(graphics_refresh_rate_lbl.len != FALSE){
-    cvar_set("vid_userefreshrate", ftos(rint(graphics_refresh_lbl.len)));
-    cvar_set("vid_refreshrate", ftos(rint(graphics_refresh_rate_lbl.len)));
+    cvar_set("vid_userefreshrate", ftos(fabs(graphics_refresh_lbl.len)));
+    cvar_set("vid_refreshrate", ftos(fabs(graphics_refresh_rate_lbl.len)));
   }
   else{
     cvar_set("vid_userefreshrate", ftos(0));
@@ -734,12 +734,12 @@ void() click_graphics_accept={
   
   
   if(VID_NEXT != '0 0 0'){
-    cvar_set("vid_width", ftos(rint(VID_NEXT_x)));
-    cvar_set("vid_height", ftos(rint(VID_NEXT_y)));
-    cvar_set("vid_pixelheight", ftos(rint(VID_NEXT_z)));
+    cvar_set("vid_width", ftos(fabs(VID_NEXT_x)));
+    cvar_set("vid_height", ftos(fabs(VID_NEXT_y)));
+    cvar_set("vid_pixelheight", ftos(fabs(VID_NEXT_z)));
     cvar_set("vid_conwidthauto", "1"); //enforced
     //cvar_set("vid_conwidth", ftos(rint(VID_CNEXT_x)));
-    cvar_set("vid_conheight",ftos(rint(VID_CNEXT_y)));
+    cvar_set("vid_conheight",ftos(fabs(VID_CNEXT_y)));
     VID_NEXT = '0 0 0';
   }
   
