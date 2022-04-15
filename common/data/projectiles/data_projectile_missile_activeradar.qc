@@ -46,43 +46,8 @@ void() projectile_marh_expl={
     pointparticles(PTC_HIT_DIRT_EXP_SML, trace_endpos, trace_plane_normal * -1, 1);
   }
   te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
-  
-  cluster = self.w_slot;
-  while( cluster.owner == self ){
-    cluster.traileffectnum = 0;
-    te_missile_explode( cluster.origin, hitScale, hitColor, hitBloom );
-    rem = cluster;
-    remove(rem);
-    cluster = rem.w_slot;
-  }
 };
 
-/*
-  clusters of missiles are actually CSQC ents, and the SSQC handles shotgun-style damage pattern.
-*/
-void() projectile_marh_multi={
-  local entity newMis;
-  local entity chainPtr;
-  local float misTotal;
-  
-  misTotal = 5;
-  chainPtr = self;
-  while( misTotal > 0 ){
-    newMis = spawn();
-    newMis.model = self.model;
-    setmodel(newMis, newMis.model);
-    newMis.compOffset = '0 0 0';
-    newMis.compOffset_x = crandom() * 10;
-    newMis.compOffset_y = crandom() * 10;
-    newMis.compOffset_z = crandom() * 5;
-    newMis.angles = self.angles;
-    newMis.traileffectnum = self.traileffectnum;
-    chainPtr.w_slot = newMis;
-    newMis.owner = self;
-    chainPtr = newMis;
-    misTotal = misTotal - 1;
-  }
-};
 #endif
 
 void() data_projectile_ini_missile_active_radar_={
@@ -98,10 +63,9 @@ void() data_projectile_ini_missile_active_radar_={
     self.modelflags = 0;
     self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
     self.pcl_explode = projectile_marh_expl;
-    self.scale = 1.25;
+    self.scale = 1.1;
     self.predraw_projectile = predraw_marh;
     self.effects = self.effects | EF_FULLBRIGHT;
-    projectile_marh_multi();
   #endif
   
   #ifdef SSQC
