@@ -276,6 +276,18 @@ If the 'height' key is set, that will determine the amount the plat moves, inste
   ]
 ]
 
+@SolidClass base(Appearflags, Targetname) = func_train : "Moving platform"
+[
+	sounds(choices) : "Sound" : 1 =
+	[
+		0: "Silent"
+		1: "Ratchet Metal"
+	]
+	speed(integer) : "Speed (units per second)" : 64
+	target(target_source) : "Target to start at"
+	dmg(integer) : "Damage on block" : 2
+]
+
 @SolidClass base(Target, Targetname) color(0 0.5 0.8) = func_plat : "Trains are moving platforms that players can ride.
 The targets origin specifies the min point of the train at each corner.
 The train spawns at the first target it is pointing at.
@@ -1277,54 +1289,54 @@ button0 & 1 dont work when target is set." [
 
 
 //MISC_BUILDING---------------------------------------------------------------------------------------------------------------------
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-88 -36 -38, 88 36 38) = building_misc_factory_med : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-88 -36 -36, 88 36 38) = building_misc_factory_med : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "350.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -88 -38, 36 88 38) = building_misc_factory_med_wide : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -88 -36, 36 88 38) = building_misc_factory_med_wide : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "350.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-38 -38 -32, 38 38 32) = building_misc_lodge : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-38 -38 -30, 38 38 32) = building_misc_lodge : "Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -20 -26, 36 20 26) = building_misc_apartment : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -20 -24, 36 20 26) = building_misc_apartment : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-20 -36 -26, 20 36 26) = building_misc_apartment_wide : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
-  health(float) : "" : "200.0"
-]
-
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-68 -68 -36, 68 68 36) = building_misc_off_pyra : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-20 -36 -24, 20 36 26) = building_misc_apartment_wide : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-88 -88 -32, 88 88 32) = building_misc_off_large : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-68 -68 -34, 68 68 36) = building_misc_off_pyra : "Decoration building. Does not require power." [
+  health(float) : "" : "200.0"
+]
+
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-88 -88 -30, 88 88 32) = building_misc_off_large : "Decoration building. Does not require power." [
   health(float) : "" : "250.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -56 -40, 36 56 40) = building_misc_off_small : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -56 -38, 36 56 40) = building_misc_off_small : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "100.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-56 -36 -40, 56 36 40) = building_misc_off_small_wide : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-56 -36 -38, 56 36 40) = building_misc_off_small_wide : "Decoration building. Does not require power." [
   health(float) : "" : "300.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -36 -24, 36 36 24) = building_misc_fact_steam : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -36 -22, 36 36 24) = building_misc_fact_steam : "Decoration building. Does not require power." [
   health(float) : "" : "300.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-60 -96 -28, 60 96 28) = building_misc_apt_large_east : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-60 -96 -26, 60 96 28) = building_misc_apt_large_east : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-60 -96 -28, 60 96 28) = building_misc_apt_large_west : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-60 -96 -26, 60 96 28) = building_misc_apt_large_west : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-96 -60 -28, 96 60 28) = building_misc_apt_large_north : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-96 -60 -26, 96 60 28) = building_misc_apt_large_north : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-96 -60 -28, 96 60 28) = building_misc_apt_large_south : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-96 -60 -26, 96 60 28) = building_misc_apt_large_south : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
 //---------------------------------------------------------------------------------------------------------------------
