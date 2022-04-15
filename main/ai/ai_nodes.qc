@@ -137,6 +137,13 @@ float() ai_nodegraph_next={
   //simple safety check
   if( self.nqLast != -1 ){
     NODEGRAPH_DATA_BLOCK[self.nqLast] = self.entnum;
+    //4.0.0 - increase node-lock depth to further spread AI out.
+    if( self.nq1 != -1 && NODEGRAPH_DATA_BLOCK[self.nq1] == 0){
+      NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
+    }
+    if( self.nq2 != -1 && NODEGRAPH_DATA_BLOCK[self.nq2] == 0){
+      NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
+    }
   }
   
   NODEGRAPH_DATA_BLOCK[self.nq1] = self.entnum;
