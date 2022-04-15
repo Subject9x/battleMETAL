@@ -123,6 +123,14 @@ void() sendevent_mech_ai_die_standing={
   if( mechRoot == world ){
     return;
   }
+  
+  mechLegs = te_mech_chunk_stand(pass, pass.legs, pass.angles);
+  if( mechLegs == world ){
+    mechRoot.drawmask = 0;
+    remove(mechRoot);
+    return;
+  }
+  
   mechRoot.unitModFlags = 0 | pass.unitModFlags;
   mechRoot.solid = SOLID_NOT;
   mechRoot.movetype = MOVETYPE_NONE;
@@ -135,7 +143,7 @@ void() sendevent_mech_ai_die_standing={
   mechRoot.compAltOffset = self.angles;
   mechRoot.model = modelnameforindex(self.torsoCenter.modelindex);
   setmodel(mechRoot, self.torsoCenter.model);
-  setsize(mechRoot, '-1 -1 -1', '1 1 1');
+  setsize(mechRoot, pass.mins, pass.maxs);
   setorigin(mechRoot, mechRoot.origin);
   mechRoot.skin = self.skin;
   mechRoot.colormod = '0.45 0.45 0.45';
@@ -143,12 +151,7 @@ void() sendevent_mech_ai_die_standing={
   mechRoot.criticalHits = self.criticalHits;
   mechRoot.drawmask = MASK_NORMAL;
   
-  mechLegs = te_mech_chunk_stand(pass, pass.legs, pass.angles);
-  if( mechLegs == world ){
-    mechRoot.drawmask = 0;
-    remove(mechRoot);
-    return;
-  }
+ 
   mechLegs.frame = self.legs.frame;
   mechRoot.legs = mechLegs;
   mechRoot.legs.angles = self.legs.angles;
@@ -222,8 +225,8 @@ void() sendevent_mech_ai_die={
     sendent_handle_remove(self.torsoRight);
     sendent_handle_remove(self.armLeft);
     sendent_handle_remove(self.armRight);
-    sendent_handle_remove(self.legs);
     te_mech_dead_legs( self.legs );
+    sendent_handle_remove(self.legs);
   }
 };
 

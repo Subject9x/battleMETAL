@@ -43,8 +43,7 @@ void( entity removeMe ) sendent_handle_remove={
   if( removeMe != world ){
     removeMe.drawmask = 0;
     removeMe.alpha = 0.0;
-    removeMe.think = SUB_Remove;
-    removeMe.nextthink = servertime + 0.01;
+    remove(removeMe);
   }
 };
 
