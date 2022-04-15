@@ -10,12 +10,14 @@ Overview:
   Guard Post - Dynamic Lights
 */
 void() guard_post_dlights={
-  if( self.deadflag == DEAD_NO ){
-    makevectors(self.w_adj_ang);
-    
-    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
-    if(MENU_PROG_OFF){
-      adddynamiclight2( self.origin + (v_forward * 32), 128, '1 1 0.4', self.partTypeId, "", PFLAGS_FULLDYNAMIC);
+  //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+  if(MENU_PROG_OFF){
+    particleDraw = vlen(pmove_org - self.origin);      
+    if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+      if( self.deadflag == DEAD_NO ){
+        makevectors(self.w_adj_ang);
+        adddynamiclight2( self.origin + (v_forward * 32), 128, '1 1 0.4', self.partTypeId, "", PFLAGS_FULLDYNAMIC);
+      }
     }
   }
 };
