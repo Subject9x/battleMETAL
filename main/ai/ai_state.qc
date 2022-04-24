@@ -27,7 +27,7 @@ void() ai_frame_update={
     self.attackFlag = 0;
     ai_ranged_attack();
     self.button0 = FALSE;
-    if( (self.flags&FL_TURRET) ){
+    if( (self.flags&FL_TURRET) && self.torsoCenter != world && self.torsoCenter.owner == self ){
       ai_turret_control();
     }
     if( self.legs ){
@@ -355,7 +355,7 @@ void() ai_state_turret_frame={
     self.attackFlag = 0;
     ai_ranged_attack();
     self.button0 = FALSE;
-    if( (self.flags&FL_TURRET) ){
+    if( (self.flags&FL_TURRET) && self.torsoCenter != world && self.torsoCenter.owner == self ){
       ai_turret_control();
     }
   }
@@ -420,39 +420,37 @@ void() ai_turret_control={
   local entity turretOwner;
   local float oldAng;
   
-  if( self.torsoCenter && self.torsoCenter.owner == self ){
-    turretOwner = self;
-    self = self.torsoCenter;
-      oldAng = self.angles_y;
-      macro_set_offset(turretOwner, self.compOffset)
-      switch( self.attack_state ){
-        case TR_NORM:
-          self.ideal_yaw = turretOwner.angles_y;
-          break;
-        case TR_TARG:
-          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin );
-          break;
-        case TR_GOAL:
-          self.ideal_yaw = vectoyaw( turretOwner.goalentity.origin - self.owner.origin );
-          break;
-        case TR_YAW:
-          self.ideal_yaw = self.ai_dir;
-          break;
-        case TR_LEFT:
-          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin ) - 75;
-          break;
-        case TR_RIGHT:
-          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin ) + 75;
-          break;
-      }
-      //run check to see if ideal_yaw is within unit's max rotation limits.
-      self.ideal_yaw = anglemod(self.ideal_yaw);
-      self.ideal_yaw = ai_check_turret_yaw( self.ideal_yaw, turretOwner.angles_y, turretOwner.ai_angleLimits_x, turretOwner.ai_angleLimits_y);
-      ChangeYaw(); 
-      self.v_angle = self.angles;
-    self = turretOwner;
-    self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
-  }
+  turretOwner = self;
+  self = self.torsoCenter;
+    oldAng = self.angles_y;
+    macro_set_offset(turretOwner, self.compOffset)
+    switch( self.attack_state ){
+      case TR_NORM:
+        self.ideal_yaw = turretOwner.angles_y;
+        break;
+      case TR_TARG:
+        self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin );
+        break;
+      case TR_GOAL:
+        self.ideal_yaw = vectoyaw( turretOwner.goalentity.origin - self.owner.origin );
+        break;
+      case TR_YAW:
+        self.ideal_yaw = self.ai_dir;
+        break;
+      case TR_LEFT:
+        self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin ) - 75;
+        break;
+      case TR_RIGHT:
+        self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin ) + 75;
+        break;
+    }
+    //run check to see if ideal_yaw is within unit's max rotation limits.
+    self.ideal_yaw = anglemod(self.ideal_yaw);
+    self.ideal_yaw = ai_check_turret_yaw( self.ideal_yaw, turretOwner.angles_y, turretOwner.ai_angleLimits_x, turretOwner.ai_angleLimits_y);
+    ChangeYaw(); 
+    self.v_angle = self.angles;
+  self = turretOwner;
+  self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
 };
 
 
