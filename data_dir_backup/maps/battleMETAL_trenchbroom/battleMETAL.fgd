@@ -170,9 +170,25 @@ For best results, place manually as close to ground as possible!" [
 @SolidClass = worldspawn : "World entity"
 [
   missionFile(string) : "Override Default mission file."
-  itemOverride(integer) : "Override player's inventory with <mapname>.sav" : 0
-  animaticOnly(integer) : "Map is animatic, don't save or load anything from player." : 0
-  ignoreSave(integer) : "1 - will not save anything to player save file." : 0
+  
+  itemOverride(choices) : "Override player's inventory with <mapname>.sav" : 0 =
+  [
+    0 : "no"
+    1 : "yes"
+  ]
+  
+  animaticOnly(choices) : "Map is animatic, don't save or load anything from player." : 0 =
+  [
+    0 : "no"
+    1 : "yes"
+  ]
+  
+  ignoreSave(choices) : "will not save anything to player save file." : 0 =
+  [
+    0 : "no"
+    1 : "yes"
+  ]
+  
   light(integer) : "Default light level" : 0
   message(string) : "unused"
 	sounds(choices) : "Music Track to play" : 3 =
@@ -194,13 +210,13 @@ For best results, place manually as close to ground as possible!" [
   fog_fade(float) : "Density of Fog" : "0.0"
   
   worldtype(choices) : "Select type of world. Affects some particle options." : 0 =
-	[
-		0 : "Desert"
-		1 : "Ice"
-		2 : "City"
-		3 : "Badlands"
-		4 : "Tundra"
-	]
+  [
+    0 : "Desert"
+    1 : "Ice"
+    2 : "City"
+    3 : "Badlands"
+    4 : "Tundra"
+  ]
   
   minimapMins(vector) : "usually total map size in editor." : "0 0 0" 
   minimapMaxs(vector) : "usually total map size in editor." : "0 0 0"
@@ -1034,8 +1050,8 @@ Projectile Shooter that uses weapons-fire." [
     3 : " normalmode YES && realtimemode YES"
   ]
 ]
-@PointClass base(Angle, BaseLightRealtime) color(0 0.75 0.75) size(-16 -16 -16, 16 16 16) = realtimelights_light : "will be converted to rtlight file line on console command" []
-@PointClass base(Angle, BaseLightRealtime) color(0 1 0) size(-24 -24 -24, 24 24 24) = realtimelights_sunlight : "wwill be converted to rtlight file line on console command
+@PointClass base(BaseLightRealtime) color(0 0.75 0.75) size(-16 -16 -16, 16 16 16) = realtimelights_light : "will be converted to rtlight file line on console command" []
+@PointClass base(BaseLightRealtime) color(0 1 0) size(-24 -24 -24, 24 24 24) = realtimelights_sunlight : "wwill be converted to rtlight file line on console command
   this is a series of realtime lights generated to mimic sunlight. given an .angles var,
   this will generate the necessary realtimelights_light entities." [
   angles(string) : "direction of sunlight." : "0 0 0"
