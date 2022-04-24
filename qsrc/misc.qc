@@ -55,7 +55,7 @@ void() light =
 };
 
 /*QUAKED realtimelights_light (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
-+ will be converted to rtlight file line on console command "cmd mech rtexport"
++ will be converted to rtlight file line on console command "cmd rtexport"
 
 -------- KEYS --------
 .rtlShadows = <bool> use real-time shadows or not.
@@ -82,11 +82,17 @@ void() realtimelights_light={
     remove(self);
     return;
   }
-  self.classname = "realtimelights_light";
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.alpha = 1;
   setmodel(self, "q3mdl/testball.md3");
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+  
+  if( self.vec_name == "" || strlen(self.vec_name) == 0){
+    self.vec_name = "";
+  }
+  
 };
 
 /*QUAKED realtimelights_sunlight (0 1 0) (-24 -24 -24) (24 24 24) START_OFF

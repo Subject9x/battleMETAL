@@ -133,6 +133,7 @@ float( float isNew, float changedFlags ) send_pcl_cube_meta={
 void() func_meta_particlecube={
   self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
   self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   
   setmodel(self, self.model);
   setsize(self, self.mins, self.maxs);

@@ -13,12 +13,12 @@ Overview:
 void() shield_gen_idle={
   if( self.energy > 0 ){
     self.think = shield_gen_active;
-    self.nextthink = time + 1;
+    self.nextthink = servertime + 1;
     return;
   }
   
   self.think = shield_gen_idle;
-  self.nextthink = time + 1;
+  self.nextthink = servertime + 1;
 };
 
 /*
@@ -30,7 +30,7 @@ void() shield_gen_active={
   
   if( self.energy <= 0 ){
     self.think = shield_gen_idle;
-    self.nextthink = time + 0.1;
+    self.nextthink = servertime + 0.1;
     return;
   }
   
@@ -39,13 +39,13 @@ void() shield_gen_active={
     vfx = randompos(self.compOffset, self.compAltOffset);
     vfx2= randompos(self.compOffset, self.compAltOffset);
     te_field_quantum( vfx2, vfx );
-    if( random() > 0.67 ){
+    if( random() > 0.85 ){
       te_field_quantum_light( vfx2, 0.5) ;
     } 
   }
 
   self.think = shield_gen_active;
-  self.nextthink = time + (random() * 1.5);
+  self.nextthink = servertime + (random() * 1.5);
 };
 
 /*

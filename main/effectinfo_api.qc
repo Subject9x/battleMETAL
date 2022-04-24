@@ -323,7 +323,7 @@ void( entity parent, vector wishVel, vector wishAngl, float trailnum, float life
   piece = spawn();
   if( piece ){
     setmodel(piece, parent.model);
-    setsize (piece, '0 0 0', '0 0 0');
+    setsize (piece, '-4 -4 -4', '4 4 4');
     setorigin(piece, parent.origin);
     if( wishAngl != '0 0 0' ){
       piece.angles = wishAngl;

@@ -338,6 +338,8 @@ void() ctrl_component_die={
   local entity piece;
   local entity this;
   local entity c;
+  local float ownerClient;
+  
   if( self.deadflag != DEAD_NO ){
     return;
   }
@@ -352,28 +354,35 @@ void() ctrl_component_die={
   self.effects = EF_NODRAW;
   self.health = 0;
 
+  ownerClient = FALSE;
+  if( (self.owner.flags & FL_CLIENT) ){
+    ownerClient = TRUE;
+  }
+  
+  this = self;
   if( self.partTypeId == M_TOR_LEFT ){
-    if( (self.owner.unitModFlags & MOD_HAS_ARM_L) ){
-      self.owner.armLeft.think = self.owner.armLeft.th_die;
-      self.owner.armLeft.nextthink = time + 0.1;
-      self.owner.armLeft.realowner = self.owner;
+    if( (self.owner.unitModFlags & MOD_HAS_ARM_L) && self.owner.armLeft.deadflag == DEAD_NO){
+      self = self.owner.armLeft;
+        self.th_die();
+        self.realowner = self.owner;
+      self = this;
     }
     if( (self.owner.critBits & (M_TOR_RIGHT | M_ARM_RIGHT)) && (self.owner.unitModFlags & MOD_HAS_SHIELD) ){
       self.owner.shieldMax = self.owner.shieldMax * 0.5;
     }
   }
   else if( self.partTypeId == M_TOR_RIGHT ){
-    if( (self.owner.unitModFlags & MOD_HAS_ARM_R) ){
-      self.owner.armRight.think = self.owner.armRight.th_die;
-      self.owner.armRight.nextthink = time + 0.1;
-      self.owner.armRight.realowner = self.owner;
+    if( (self.owner.unitModFlags & MOD_HAS_ARM_R)  && self.owner.armRight.deadflag == DEAD_NO){
+      self = self.owner.armRight;
+        self.th_die();
+        self.realowner = self.owner;
+      self = this;
     }
     if( (self.owner.critBits & (M_TOR_LEFT | M_ARM_LEFT)) && (self.owner.unitModFlags & MOD_HAS_SHIELD) ){
       self.owner.shieldMax = self.owner.shieldMax * 0.5;
     }
   }
   
-  this = self;
   for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
     if( c == world ){
       continue;
@@ -383,7 +392,7 @@ void() ctrl_component_die={
     }
     if( c.th_die ){
       c.think = c.th_die;
-      c.nextthink = time + (random() * 0.5);
+      c.nextthink = time + 0.1;
     }
   }
   
@@ -425,7 +434,7 @@ void() ctrl_arm_die={
     }
     if( c.th_die ){
       c.think = c.th_die;
-      c.nextthink = time + (random() * 0.5);
+      c.nextthink = time + 0.1;
     }
   }
 };

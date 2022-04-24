@@ -239,6 +239,8 @@ void() predraw_building={
   setorigin(self, self.origin);
   
   if(self.render_dlights){
-    self.render_dlights();
+    if( vlen(self.origin - pmove_org) < PARTICLE_HAZ_DISTANCE){
+      self.render_dlights();
+    }
   }
 };

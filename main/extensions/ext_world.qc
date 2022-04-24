@@ -156,14 +156,14 @@ void() world_metal_ini={
     ENT_SERVER_INFO.minimapMaxs = world.maxs;
   }
   
-  if( world.uiViewBoxOrg ){
+  if( world.uiViewBoxOrg){
     ENT_SERVER_INFO.uiViewBoxOrg = world.uiViewBoxOrg;
   }
   else{
     //just auto-check
     local entity clientViewbox;
     clientViewbox = find(world, netname, "ui_view_box");
-    if(clientViewbox){
+    if(clientViewbox != world){
       ENT_SERVER_INFO.uiViewBoxOrg = clientViewbox.origin;
       remove(clientViewbox);
     }
@@ -177,12 +177,25 @@ void() world_ini_serverinfo={
   ENT_SERVER_INFO.gameType = GAMETYPE;
   ENT_SERVER_INFO.timeStart = time;
   ENT_SERVER_INFO.timeEnd = time + (cvar("timelimit") * 60);
-  ENT_SERVER_INFO.serverFlags = serverflags;
+  ENT_SERVER_INFO.serverFlags = 0 | serverflags;
   ENT_SERVER_INFO.worldtype = world.worldtype;
   ENT_SERVER_INFO.missionStatus = MISSION_STATUS_READY;
   ENT_SERVER_INFO.missionResult = 0;
-  ENT_SERVER_INFO.nextMap = strzone(sv_nextmap);
-  ENT_SERVER_INFO.svAbout = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
+  
+  if( sv_nextmap != "" && strlen(sv_nextmap) > 0 ){
+    ENT_SERVER_INFO.nextMap = strzone(sv_nextmap);
+  }
+  else{
+    ENT_SERVER_INFO.nextMap = "";
+  }
+  
+  if( cvar_string("sv_about") != "" && strlen(cvar_string("sv_about")) > 0 ){
+    ENT_SERVER_INFO.svAbout = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
+  }
+  else{
+    ENT_SERVER_INFO.svAbout = "";
+  }
+  
   
   ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
   
@@ -669,7 +682,7 @@ void( entity lightEnt, float fileData ) world_export_realtimelights_write={
   lightData = strcat( lightData, " ", ftos(lightEnt.rtlRadius) );
   lightData = strcat( lightData, " ", ftos(lightEnt.color_x)," ", ftos(lightEnt.color_y)," ", ftos(lightEnt.color_z) );
   lightData = strcat( lightData, " ", ftos(lightEnt.rtlStyle) );
-  lightData = strcat( lightData, " \"", lightEnt.vec_name,"\" " );
+  lightData = strcat( lightData, " \"", lightEnt.vec_name,"\"" );
   lightData = strcat( lightData, " ", ftos(lightEnt.rtlCorona) );
   lightData = strcat( lightData, " ", ftos(lightEnt.angles_x), " ", ftos(lightEnt.angles_y), " ", ftos(lightEnt.angles_z) );
   lightData = strcat( lightData, " ", ftos(lightEnt.rtlCoronaSize) );
@@ -684,6 +697,7 @@ void( entity lightEnt, float fileData ) world_export_realtimelights_write={
   
   if( cvar("developer") ){
     cons_log2Strings("[INFO]-{Writing RTLight Data} ", "-line-", "origin", vtos(lightEnt.origin)); //DEBUG
+    cons_logAString("                                 data", lightData); //DEBUG
   }
 };
 
@@ -765,7 +779,7 @@ void() world_nodegraph_export_edgelinker_th={
   if( self.count == self.wait ){
     cons_logAString("[INFO]-world_export_nodegraph()", "Write complete.");  //DEBUG
     fclose(self.data_idx);
-    strunzone(self.classname);
+    self.classname = "";
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
     

@@ -188,6 +188,7 @@ void() interpolate_tank={
   local entity parent;
   local entity wepn;
   local vector saved;
+  local float yesDraw;
   
   interpolate_origin();
   interpolate_angle();
@@ -196,38 +197,51 @@ void() interpolate_tank={
   
   parent = self;
   
+  traceline(self.origin, pmove_org, FALSE, self);
+  
+  yesDraw = MASK_NORMAL;
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(pmove_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    yesDraw = FALSE;
+  }
+  
   GetAlignedSurfaceAngles(self);
   
   if( self.torsoCenter != world ){
-    saved = self.angles;
-    saved_x = 0;
-    makevectors(saved);
-    self = self.torsoCenter;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles_x = parent.angles_x;
-    self = parent;
+    if( yesDraw){
+      saved = self.angles;
+      saved_x = 0;
+      makevectors(saved);
+      self = self.torsoCenter;
+        self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+        self.angles_x = parent.angles_x;
+      self = parent;
+    }
+    self.torsoCenter.drawmask = yesDraw;
   }
   
   wepn = self.w_slot;
   while( (wepn != world) ){
     self = wepn;
-      if( self.partParentId == M_LEGS ){
-        saved = parent.angles;
-        saved_x = 0;
-        makevectors(saved);
-        saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        saved = parent.origin + saved;
-        self.angles = parent.angles + self.w_adj_ang;
+      if(yesDraw){
+        if( self.partParentId == M_LEGS ){
+          saved = parent.angles;
+          saved_x = 0;
+          makevectors(saved);
+          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+          saved = parent.origin + saved;
+          self.angles = parent.angles + self.w_adj_ang;
+        }
+        else{
+          saved = parent.torsoCenter.angles;
+          //saved_x = 0;
+          makevectors(saved);
+          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+          saved = parent.torsoCenter.origin + saved;
+          self.angles = parent.torsoCenter.angles + self.w_adj_ang;
+        }
+        self.origin = saved;
       }
-      else{
-        saved = parent.torsoCenter.angles;
-        //saved_x = 0;
-        makevectors(saved);
-        saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        saved = parent.torsoCenter.origin + saved;
-        self.angles = parent.torsoCenter.angles + self.w_adj_ang;
-      }
-      self.origin = saved;
+      self.drawmask = yesDraw;
     self = parent;
     wepn = wepn.w_slot;
   }

@@ -14,6 +14,11 @@ Overview:
   HANDLE EVENT - player mech pieces are dying
 */
 void() sendevent_player_burn={
+  
+  if( vlen(self.origin - pmove_org) >= PARTICLE_HAZ_DISTANCE){
+    return;
+  }
+
   if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.burnBits & M_TOR_LEFT) ){
     te_mech_crit( self.torsoLeft.origin , '0 0 10');
   }

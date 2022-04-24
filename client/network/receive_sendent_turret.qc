@@ -206,10 +206,18 @@ void() interpolate_turret={
   local entity parent;
   local entity wepn;
   local vector saved;
+  local float yesDraw;
   
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
+  
+  traceline(self.origin, pmove_org, FALSE, self);
+  
+  yesDraw = MASK_NORMAL;
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(pmove_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    yesDraw = FALSE;
+  }
   
   parent = self;
   makevectors(parent.angles);
@@ -217,23 +225,27 @@ void() interpolate_turret={
     self = self.torsoCenter;
       self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
     self = parent;
+    self.torsoCenter.drawmask = yesDraw;
   }
   
   wepn = self.w_slot;
   while( (wepn != world) ){
     self = wepn;
-      if( self.partParentId == M_LEGS ){
-        makevectors(parent.angles);
-        saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        self.origin = parent.origin + saved ;
-        self.angles = parent.angles;
+      if(yesDraw){
+        if( self.partParentId == M_LEGS ){
+          makevectors(parent.angles);
+          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+          self.origin = parent.origin + saved ;
+          self.angles = parent.angles;
+        }
+        else{
+          makevectors(parent.torsoCenter.angles);
+          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
+          self.origin = parent.origin + saved ;
+          self.angles = parent.torsoCenter.angles;
+        }
       }
-      else{
-        makevectors(parent.torsoCenter.angles);
-        saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        self.origin = parent.origin + saved ;
-        self.angles = parent.torsoCenter.angles;
-      }
+      self.drawmask = yesDraw;
     self = parent;
     wepn = wepn.w_slot;
   }

@@ -309,9 +309,7 @@ void( vector org, float total ) te_unit_dust={
 };
 
 void() te_unit_dust_set={
-  local float dbg;
-  dbg = 1;
-  switch( dbg ){
+  switch( SV_WORLDTYPE ){
     case 1:
       self.trail_effectnum = PTC_DUST_ICE;
       break;
@@ -472,6 +470,14 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
   Unit's shields have been struck but still holding
 */
 void() te_shield_hit_predraw={
+  
+  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+    self.drawmask = 0;
+  }
+  else{
+    self.drawmask = MASK_NORMAL;
+  }
+
   interpolate_origin();
   self.colormod = self.compOffset;
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
@@ -510,6 +516,16 @@ void() te_shield_hit={
   hitTime = 0.33;
   
   self.shieldEffectTime = servertime + hitTime;
+  
+  traceline(self.origin, pmove_org, TRUE, self);
+  
+  if( trace_ent == world && trace_fraction < 1.0){
+    return;
+  } 
+  
+  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+    return;
+  }
   
   explode = spawn();
   if( explode ){
@@ -599,6 +615,16 @@ void( vector org, float vecSize ) te_shield_explode={
   local entity explode;
   local vector flashCol;
   
+  traceline(self.origin, pmove_org, TRUE, self);
+  
+  if( trace_ent == world && trace_fraction < 1.0){
+    return;
+  } 
+  
+  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+    return;
+  }
+  
   explode = spawn();
   if( explode ){
     explode.movetype = MOVETYPE_NONE;
@@ -645,6 +671,16 @@ void() particle_missile_explode_th={
 
 void( vector org, float explodeSize, vector explodeColor, float onShield  ) particle_missile_explode={
   local entity explode;
+ 
+  traceline(self.origin, pmove_org, TRUE, self);
+  
+  if( trace_ent == world && trace_fraction < 1.0){
+    return;
+  } 
+  
+  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+    return;
+  }
   
   explode = spawn();
   if( explode ){
