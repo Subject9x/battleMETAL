@@ -55,7 +55,6 @@ void() ai_mech_sk_die={
     ctrl_unit_part_death(self.armLeft);
     ctrl_unit_part_death(self.armRight);
   }
-  ctrl_unit_part_death(self.cockpit);
   
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);

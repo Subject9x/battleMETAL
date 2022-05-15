@@ -91,9 +91,9 @@ void() data_ini_matok_={
   
   //camera location
   #ifdef CSQC
-    data_ini_camera_( '0 15 15', self.torsoCenter);
+    self.cameraOffset = '0 15 15';
   #else
-    data_ini_camera_( '0 15 7', self.torsoCenter);
+    self.cameraOffset = '0 15 7';
   #endif
   
 //=====================================

@@ -21,7 +21,6 @@ void() temp_chunk_burn={
 };
 
 void() ai_turret_clean={
-  ctrl_unit_remove_piece(self.cockpit);
   ctrl_weapon_remove_all();
   ctrl_unit_remove_piece(self.torsoLeft);
   ctrl_unit_remove_piece(self.torsoRight);
@@ -65,7 +64,6 @@ void() ai_turret_die={
     w_chain = w_chain.w_slot;
   }
   
-  ctrl_unit_part_death(self.cockpit);  
   ctrl_unit_part_death(self.torsoCenter);
   
   //fire triggers when dead

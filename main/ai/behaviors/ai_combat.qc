@@ -26,7 +26,7 @@ void() ai_ranged_attack={
   if( (self.flags & FL_TURRET) ){
     //if the AI has a turret, use the turret's angles for Line of Sight offset origins.
     self.v_angle = self.torsoCenter.angles;
-    diff = vectoangles( self.enemy.origin - self.cockpit.origin);
+    diff = vectoangles( self.enemy.origin - self.cameraOrigin);
     self.v_angle_x = diff_x;
   }
   

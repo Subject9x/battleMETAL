@@ -64,31 +64,6 @@ void(entity own) build_unit_component={
   self.colormod = self.owner.colormod;
 };
 
-void() build_unit_camera={
-  local entity this, cam, partParent;
-  this = self;
-  cam = this.cockpit;
-  partParent = util_getPartFromName( cam.partParentId, this);
-  
-  self = cam;
-    self.partTypeId = M_ITEM;
-    self.classname = "camera";
-    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
-    setmodel( self, "q3mdl/testball.md3");
-    setsize(self, '-1 -1 -1', '1 1 1');
-    macro_set_offset(this, self.compOffset)
-    self.scale = 0.001;
-    
-    self.aiment = partParent;
-    self.owner = this;
-    self.punchangle = partParent.angles;
-    self.view_ofs = self.origin - partParent.origin;
-    self.angles = partParent.angles;
-    self.v_angle = self.angles - partParent.angles;
-    self.effects = self.effects | EF_NODRAW;
-  self = this;
-};
-
 void() build_unit_weapon_list={
   local entity weaponMount;
   local entity prevWeapon;
@@ -229,6 +204,8 @@ void() build_mech_unit={
   self.data_type = DATA_MECH;
   self.flags = self.flags | FL_UNIT | FL_TURRET;
   
+  makevectors(self.angles);
+  
   //-> sub out to making specific bots.
   if( !(self.flags & FL_CLIENT) ){
     build_mech_bot();
@@ -280,9 +257,7 @@ void() build_mech_unit={
     unitPartList = unitPartList.partNext;
   }
   
-  if( self.cockpit ){
-    build_unit_camera();
-  }
+  self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
   
   if( !(self.unitModFlags & MOD_HEAT_NOT_ENERGY) ){
     self.energy = self.energyMax;
@@ -431,9 +406,8 @@ void() build_mech_bot={
     self.legs.effects = self.legs.effects | EF_NODRAW;
   }
   
-  if( (self.cockpit) ){
-    build_unit_camera();
-  }
+  self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
+  
   //speed limits for AI because they change directions instantly :/
   if( self.data_speed_forward > 200 ){
     self.data_speed_forward = 200;
@@ -566,6 +540,8 @@ void() build_mech_legs={
 void() build_vehicle_unit={
   local vector hmins, hmaxs;
   
+  makevectors(self.angles);
+  
   self.data_type = DATA_VEHC;
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.canTarget = TRUE;
@@ -615,10 +591,9 @@ void() build_vehicle_unit={
     unitPartList = unitPartList.partNext;
     self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
   }
-  if( (self.cockpit) ){
-    build_unit_camera();
-  }
   
+  self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
+   
   if( self.hardpoint_cnt > 0 ){
     if( (self.spawnflags & UNARMED) ){
       self.flags = self.flags | FL_DISARMED;
@@ -651,11 +626,11 @@ void() build_vehicle_unit={
   self.stat_client_shield = 0;
 };
 
-//TODO - deprecated, needs rebuild
-void( void() data_ini ) build_vtol_unit={
+//deprecated, needs rebuild
+/*void( void() data_ini ) build_vtol_unit={
   self.flags = self.flags | FL_FLY;
   build_vehicle_unit();
-};
+};*/
 //----------------------------------
 
 void() build_turret_unit={

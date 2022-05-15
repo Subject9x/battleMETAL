@@ -25,9 +25,6 @@ void() ctrl_unit_clean_wgroups={
   one-way execution, use carefully.
 */
 void() ctrl_unit_cleanup_player={
-  if( (self.flags & FL_CLIENT) ){
-    ctrl_unit_remove_cam(self.cockpit);
-  }
   ctrl_unit_remove_piece(self.torsoCenter);
   ctrl_unit_remove_piece(self.torsoLeft);
   ctrl_unit_remove_piece(self.torsoRight);
@@ -39,7 +36,6 @@ void() ctrl_unit_cleanup_player={
 };
 
 void() ctrl_unit_cleanup_mech={
-  ctrl_unit_remove_piece(self.cockpit);
   ctrl_weapon_remove_all();
   ctrl_unit_remove_piece(self.armLeft);
   ctrl_unit_remove_piece(self.armRight);
@@ -50,7 +46,6 @@ void() ctrl_unit_cleanup_mech={
 };
 
 void() ctrl_unit_cleanup_tank={
-  ctrl_unit_remove_piece(self.cockpit);
   ctrl_weapon_remove_all();
   ctrl_unit_remove_piece(self.torsoLeft);
   ctrl_unit_remove_piece(self.torsoRight);
@@ -89,7 +84,6 @@ void(entity unitPiece) ctrl_unit_remove_piece={
 void(entity unitCam) ctrl_unit_remove_cam={
   self.weaponmodel = self.weaponmodel;
   self.weaponframe = 0;
-  remove(self.cockpit);
 };
 
 /*

@@ -92,9 +92,9 @@ void() data_ini_balaket_={
   
   //camera location
 #ifdef CSQC
-  data_ini_camera_( '0 7 24', self.torsoCenter);
+  self.cameraOffset = '0 7 24';
 #else
-  data_ini_camera_( '0 7 7', self.torsoCenter);
+  self.cameraOffset = '0 7 7';
 #endif
 //=====================================
  

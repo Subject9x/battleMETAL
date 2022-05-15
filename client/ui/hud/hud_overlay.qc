@@ -249,7 +249,7 @@ void() hud_model_cockpit_ini={
 
   CLIENT_server_ent = self;
   HUD_VIEW_CL_ANGLES = self.angles;
-  HUD_VIEW_OFS = self.cockpit.compOffset_z;
+  HUD_VIEW_OFS = self.cameraOffset_z;
   
   HUD_MODEL_STRUTS = spawn();
   

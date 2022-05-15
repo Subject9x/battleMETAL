@@ -45,8 +45,6 @@ void() ai_tank_sk_die={
     ctrl_unit_part_death(w_chain);
     w_chain = w_chain.w_slot;
   }
-  
-  ctrl_unit_part_death(self.cockpit);
   ctrl_unit_part_death(self.torsoLeft);
   ctrl_unit_part_death(self.torsoRight);
   ctrl_unit_part_death(self.torsoCenter);

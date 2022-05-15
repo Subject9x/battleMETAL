@@ -98,10 +98,6 @@ void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
     remove(mechEntity.legs);
   }
   
-  if( mechEntity.cockpit ){
-    remove(mechEntity.cockpit);
-  }
-  
   if( mechEntity.armLeft ){
     remove(mechEntity.armLeft);
   }

@@ -50,7 +50,7 @@ void() data_ini_light_turret_={
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_light/mdl_bld_h_ltur.md3", 1, '0 8 0', self, torsoCenter, '0 0 0'); 
   
   //camera location
-  data_ini_camera_( '0 12 8', self.torsoCenter );
+  self.cameraOffset = '0 12 8';
 //=====================================
  
 //HARDPOINTS==========================

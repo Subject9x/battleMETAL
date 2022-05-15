@@ -77,7 +77,7 @@ void(entity piece) player_part_predaw={
   offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y) + (v_forward * piece.compOffset_z);
   
   if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
-    offset = offset - (v_forward * self.cockpit.compOffset_z);
+    offset = offset - (v_forward * self.cameraOffset_z);
   }
   
   piece.origin = offset;
@@ -104,7 +104,7 @@ void() player_think={
     laserOrg = trace_endpos;
   }
   else{
-    laserOrg = self.origin + (v_up * self.cockpit.compOffset_y);
+    laserOrg = self.origin + (v_up * self.cameraOffset_y);
   }
   laserHit = laserOrg + (v_forward * 10000);
   traceline(laserOrg, laserHit, FALSE, self);
@@ -435,7 +435,6 @@ void() sendevent_handle_player_death={
   remove(self.torsoRight);
   remove(self.armLeft);
   remove(self.armRight);
-  remove(self.cockpit);
   remove(self.legs);
   
   wep = self.w_slot;

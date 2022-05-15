@@ -89,9 +89,9 @@ void() data_ini_monitor_={
   
   //camera location
 #ifdef CSQC
-  data_ini_camera_( '0 18 18', self.torsoCenter );
+  self.cameraOffset = '0 18 18';
 #else
-  data_ini_camera_( '0 18 8', self.torsoCenter );
+  self.cameraOffset = '0 18 8';
 #endif
 //=====================================
  

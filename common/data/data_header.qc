@@ -99,10 +99,6 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
   }
 };
 
-void( vector thisPartOffset, entity partParent ) data_ini_camera_={
-  data_ini_unitPiece_( M_TOR_CENTER,  "q3mdl/testball.md3",  1, thisPartOffset, partParent, cockpit, '0 0 0');
-};
-
 /*
   Simple wrapper functions for data_ini_unitHardpoint_.
   these are probably easier to read / write than 

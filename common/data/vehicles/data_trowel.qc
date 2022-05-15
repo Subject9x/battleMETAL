@@ -56,7 +56,7 @@ void() data_ini_trowel_={
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', self, torsoCenter, '0 0 0'); 
   
   //camera location
-  data_ini_camera_( '0 20 0', self.torsoCenter );
+  self.cameraOffset = '0 20 0';
 //=====================================
  
 //HARDPOINTS==========================

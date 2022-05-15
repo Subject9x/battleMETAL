@@ -52,7 +52,7 @@ void() data_ini_sorcerer_={
   self.model = "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3";
   
   //camera location
-  data_ini_camera_( '0 24 0', self );
+  self.cameraOffset = '0 24 0';
 //=====================================
  
 //HARDPOINTS==========================

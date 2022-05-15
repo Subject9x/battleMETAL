@@ -15,6 +15,7 @@ I pulled the ImpulseCommands() function out to its own file....
 //void() QuadCheat;
 
 
+.float chainWeaponTimer;
 
 void() cycleWeaponGroup;
 void() cycleWeaponGroupReverse;

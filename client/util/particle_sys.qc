@@ -256,7 +256,7 @@ void(entity item) te_weapon_fire_handler={
     
     //FPV z-offset is corrected at the parent-part origin step!
     if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
-      offset = offset - (v_forward * this.cockpit.compOffset_z);
+      offset = offset - (v_forward * this.cameraOffset_z);
     }
     adjPartOffset = self.compOffset - parent.compOffset;
     

@@ -92,9 +92,9 @@ void() data_ini_sapper_={
   
   //camera location
   #ifdef CSQC
-    data_ini_camera_( '0 13 10', self.torsoCenter);
+    self.cameraOffset = '0 13 10';
   #else
-    data_ini_camera_( '0 13 2', self.torsoCenter);
+    self.cameraOffset = '0 13 2';
   #endif
   
 //=====================================

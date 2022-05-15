@@ -43,7 +43,7 @@ float() customize_part_for_client={
     return FALSE;
   }
   makevectors(other.angles);
-  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - fabs(other.cockpit.compOffset_z * 2.5)));
+  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - fabs(other.cameraOffset_z * 2.5)));
   setorigin(self, chunkOfs);
   
   return TRUE;
@@ -83,16 +83,16 @@ void() player_makeMech={
   if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
     switch(cvar("skill")){
       case 1:
-        self.energyMax = self.energyMax * 1.5;
+        self.energyMax = self.energyMax * 1.25;
         self.energyRate = self.energyRate * 1.1;
         break;
       case 2:
-        self.energyMax = self.energyMax * 1.25;
-        self.energyRate = self.energyRate * 1.05;
+        self.energyMax = self.energyMax * 1.15;
+        self.energyRate = self.energyRate * 1.0;
         break;
       case 3:
-        self.energyMax = self.energyMax * 0.9;
-        self.energyRate = self.energyRate * 0.95;
+        self.energyMax = self.energyMax * 0.85;
+        self.energyRate = self.energyRate * 0.9;
         break;
       default:
         self.energyMax = self.energyMax * 1;
@@ -119,7 +119,7 @@ void() player_makeMech={
   self.legs.effects = self.legs.effects | EF_NODRAW;
   
   self.view_ofs = '0 0 0';
-  self.view_ofs_z = self.cockpit.compOffset_y;  //set player view offset to where the cockpit ent is.
+  self.view_ofs_z = self.cameraOffset_y;  //set player view offset to where the cockpit ent is.
   self.stat_rdr_mode = TRUE; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
   self.damageValue = 0;

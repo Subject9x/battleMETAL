@@ -332,7 +332,7 @@ float( entity targ ) ai_check_vis={
   local float contentBuffer;
   
   makevectors(self.angles);
-  spot1 = self.cockpit.origin + (v_forward * 10) + (v_up * 3);
+  spot1 = self.cameraOrigin + (v_forward * 10) + (v_up * 3);
   if( targ.data_type == DATA_BLD ){
     spot2 = targ.hitOffset;
   }

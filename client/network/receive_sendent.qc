@@ -381,6 +381,7 @@ void() sendent_setup_weapons={
       }
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
+      self.effects = 0 | EF_NOSHADOW;
       setsize(self, '-1 -1 -1', '1 1 1');
       setmodel(self, self.model);
       if( self.partParentId == M_LEGS ){

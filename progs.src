@@ -44,7 +44,6 @@ main/controllers/headers/controllers.qh
   main/headers/entityFactory_player.qh
   main/headers/entityFactory_vehicles.qh
   main/models/models_h.qc
-  main/extensions/headers/ext_player.qh
   main/ai/headers/ai_api.qh
     main/ai/headers/ai_behavior_mech_skirmish.qh
     main/ai/headers/ai_behavior_mech_sniper.qh
@@ -245,7 +244,6 @@ qsrc/triggers.qc
  
   main/entityFactory_vehicles.qc
   //player types
-  main/extensions/ext_player.qc
   
   //models quake c
   main/models/models_leg.qc

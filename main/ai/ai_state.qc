@@ -16,6 +16,9 @@ Overview:
 void() ai_frame_update={
   self.ai_unit_update();
   if( !self.deadflag ){
+    makevectors(self.angles);
+    self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
+    
     if( ai_valid_target(self.enemy) ){
       ai_turret_set_state(TR_TARG);
       self.stat_trg_dist = vlen(self.enemy.origin - self.origin);

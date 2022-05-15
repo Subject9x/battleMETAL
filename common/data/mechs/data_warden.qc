@@ -94,9 +94,9 @@ void() data_ini_warden_={
   
   //camera location
 #ifdef CSQC
-  data_ini_camera_( '0 8 14', self.torsoCenter);
+  self.cameraOffset = '0 8 14';
 #else
-  data_ini_camera_( '0 8 7', self.torsoCenter);
+  self.cameraOffset = '0 8 7';
 #endif
 //=====================================
  

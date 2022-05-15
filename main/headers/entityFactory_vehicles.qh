@@ -7,7 +7,6 @@ mod: 07/01/2019
 Overview: used to build vehicles for players, this is the header
 */
 //Basic unit assembly functions
-void() build_unit_camera;
 void(entity own) build_unit_component;
 void(float nex_wep, entity own) build_unit_weapon;
 void() build_unit_weapon_list;
@@ -25,7 +24,7 @@ void() build_mech_armLeft;
 //vehicle-specific assembly functions
 void() build_unit_turret;
 void() build_vehicle_unit;
-void( void() data_ini ) build_vtol_unit;
+//void( void() data_ini ) build_vtol_unit;
 
 //turret assembly
 void() build_turret_unit;

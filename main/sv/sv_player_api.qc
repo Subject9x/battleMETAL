@@ -159,7 +159,9 @@ void() PlayerPostThink = {
   
   ButtonCommands();
   
-  if(self.data_type != DATA_POBS){ 
+  if(self.data_type != DATA_POBS){
+    makevectors(self.angles);
+    self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
     //power up sequence
     if(time > self.power_timer){
       self.power_timer = 0;
@@ -186,7 +188,7 @@ void() PlayerPostThink = {
     traceline(self.origin, self.origin + (v_forward * self.stat_rdr_rng), FALSE,self);
     self.stat_ret_dist = (self.stat_rdr_rng * trace_fraction);
     
-    //TODO notify target of lock
+    //notify target of lock
     /*if((self.targLockState & LOCK_TARG)){
       if(self.enemy != world){
         if(!(self.enemy.targLockState & LOCK_PLAYER)){

@@ -131,7 +131,7 @@ void() ctrl_updateCenterTorso={
       laserOrg = trace_endpos;
     }
     else{
-      laserOrg = self.cockpit.origin;
+      laserOrg = self.cameraOrigin;
     }
     laserHit = laserOrg + (v_forward * 10000);
     traceline(laserOrg, laserHit, FALSE, self);

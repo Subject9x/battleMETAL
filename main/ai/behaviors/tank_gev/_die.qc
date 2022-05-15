@@ -62,8 +62,6 @@ void() ai_gev_die={
     w_chain = w_chain.w_slot;
   }
   
-  ctrl_unit_part_death(self.cockpit);
-  
   if( (self.flags & FL_TURRET) ){
     ctrl_unit_part_death(self.torsoCenter);
   }

@@ -44,8 +44,6 @@ void() ai_vec_dest_die={
     w_chain = w_chain.w_slot;
   }
   
-  ctrl_unit_part_death(self.cockpit);
-  
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
 
