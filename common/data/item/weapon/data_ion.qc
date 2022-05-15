@@ -24,7 +24,10 @@ void() te_muzzle_ion={
   endOrg = trace_endpos;
   
   sound7(self, CHAN_AUTO, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM, (1.0 + (random() * 0.4)) * 100, 0 );
-  pointparticles( particleeffectnum("TE_ION_MUZZLE"), startOrg, normalize( endOrg - startOrg) * 4, 1);
+  
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_ION_MUZZLE"), startOrg, normalize( endOrg - startOrg) * 4, 1);
+  }
 };
 #endif
 void() data_ini_ion_={

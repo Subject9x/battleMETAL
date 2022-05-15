@@ -116,18 +116,21 @@ void() te_muzzle_esr={
   norm = normalize(endOrg - startOrg);
   
   sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
-  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
   
-  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
-    
   trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
   
-  if(impactStyle == IMPACT_ARMOR){
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
-  }
-  else if(impactStyle == IMPACT_DIRT){
-    pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
-    pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
+    
+    impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
+    
+    if(impactStyle == IMPACT_ARMOR){
+        pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
+    }
+    else if(impactStyle == IMPACT_DIRT){
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
+      pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
+    }
   }
 };
 #endif

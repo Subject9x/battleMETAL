@@ -34,29 +34,32 @@ void() te_muzzle_flk={
   ang = vectoangles(endOrg - startOrg);
   
   sound7(self, CHAN_AUTO, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 175, 0 );
-  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
   
-  makevectors(ang);
-  shrap = DAT_FLAK_SHRAP_TOTAL;
-  while( shrap > 0 ){
-    v = norm + ((crandom()*self.spreadDefault_x)*v_right) + ((crandom()*self.spreadDefault_y)*v_up);
-    
-    traceline (startOrg, startOrg + (v * self.w_range), FALSE, self.owner);
-    impactStyle = te_impact_type(trace_endpos, trace_ent, trace_dphitcontents);
-    
-    trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, trace_endpos);
-    
-    switch(impactStyle){
-      case IMPACT_ARMOR:
-        pointparticles( particleeffectnum("TE_FLK_IMPACT"), endOrg + (v_forward * -32), norm * 4, 1);
-        break;
-      case IMPACT_DIRT:
-        pointparticles( particleeffectnum("TE_FLK_DIRT"), endOrg + (v_up * 3) + (v_forward * -7), norm * 20, 1);
-        break;
-      default:
-        return;
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
+  
+    makevectors(ang);
+    shrap = DAT_FLAK_SHRAP_TOTAL;
+    while( shrap > 0 ){
+      v = norm + ((crandom()*self.spreadDefault_x)*v_right) + ((crandom()*self.spreadDefault_y)*v_up);
+      
+      traceline (startOrg, startOrg + (v * self.w_range), FALSE, self.owner);
+      impactStyle = te_impact_type(trace_endpos, trace_ent, trace_dphitcontents);
+      
+      trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, trace_endpos);
+      
+      switch(impactStyle){
+        case IMPACT_ARMOR:
+          pointparticles( particleeffectnum("TE_FLK_IMPACT"), endOrg + (v_forward * -32), norm * 4, 1);
+          break;
+        case IMPACT_DIRT:
+          pointparticles( particleeffectnum("TE_FLK_DIRT"), endOrg + (v_up * 3) + (v_forward * -7), norm * 20, 1);
+          break;
+        default:
+          return;
+      }
+      shrap = shrap - 1;
     }
-    shrap = shrap - 1;
   }
 };
 #endif
@@ -70,7 +73,7 @@ void() data_ini_flak_cannon_={
   self.energyRate = 0;
   
   self.w_range = 500;
-  self.damageValue = 2.5;
+  self.damageValue = 2; //2.5
   self.damageType = DMG_BAL;
   
   self.techLevel = 1;
@@ -106,7 +109,6 @@ void() data_ini_attack_flak_={
   local vector dir;
   local float totes;
   local float damage;
-  local float damageBuff;
       
   cacheSpread = self.spreadDefault;
   self.spreadDefault = '0 0 0';
@@ -118,32 +120,24 @@ void() data_ini_attack_flak_={
   ctrl_weapon_updateAmmo( TRUE );
   
   self.owner.attackFlag = self.owner.attackFlag | self.w_group;
-  if( (trace_dphitcontents & DPCONTENTS_SKY) ){
-    return;
-  }  
+  
   totes = DAT_FLAK_SHRAP_TOTAL;
   
   src = self.origin + v_forward*2;
   dir = normalize(FIRE_ENDPOINT - src);
-  damageBuff = 1;
-  if( vlen(FIRE_ENDPOINT - src) <= (self.w_range * 0.5)){
-    damageBuff = 2;
-  }
+  
   while (totes > 0){
     direction = dir + crandom()*self.spreadDefault_x*v_right + crandom()*self.spreadDefault_y*v_up;
     traceline (src, src + direction*self.w_range, FALSE, self.owner);
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0){
-        t_damage_shield(trace_ent, self,self.owner, ((self.damageValue * damageBuff)* 0.9), trace_endpos, FALSE);
+        t_damage_shield(trace_ent, self,self.owner, self.damageValue * 1.33, trace_endpos, FALSE);
       }
       else{
-        damage = (self.damageValue * damageBuff) * 0.8;
+        damage = self.damageValue;
         if( (trace_ent.data_type == DATA_MECH) || (trace_ent.data_type == DATA_VEHC) ){
-          if( trace_ent.vec_size == 1){
-            damage = self.damageValue;
-          }
-          else if( trace_ent.vec_size == 3 ){
-            damage = self.damageValue * 0.67;
+          if( trace_ent.vec_size == 1 || trace_ent.data_type == DATA_VEHC){
+            damage = self.damageValue * 1.25;
           }
         }
         HIT_LOCATION = t_damage(trace_ent, self, self.owner, damage, trace_endpos, '0 0 0');

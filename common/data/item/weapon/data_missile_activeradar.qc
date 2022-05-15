@@ -25,7 +25,9 @@ void() te_muzzle_marh={
   
   sound7(self, CHAN_AUTO, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM, (0.65 + (random() * 0.35)) * 90, 0 );
   
-  pointparticles( particleeffectnum("TE_ARH_MUZZLE"), startOrg, normalize( startOrg - endOrg ) * 1, 1);
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_ARH_MUZZLE"), startOrg, normalize( startOrg - endOrg ) * 1, 1);
+  }
 };
 #endif
 void() data_ini_missile_activeradar_={

@@ -25,7 +25,9 @@ void() te_muzzle_rck={
   pointsound( startOrg, "sound/weapons/rckt_fire.ogg", 1, ATTN_NORM);
   sound7(self, CHAN_AUTO, "sound/weapons/rckt_fire.ogg", 1, ATTN_NORM, (0.25 + (random() * 0.75)) * 133, 0 );
   
-  pointparticles( particleeffectnum("TE_MIS_MUZZLE"), startOrg, normalize(endOrg - startOrg), 1);
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
+    pointparticles( particleeffectnum("TE_MIS_MUZZLE"), startOrg, normalize(endOrg - startOrg), 1);
+  }
 }
 #endif
 void() data_ini_rockets_={

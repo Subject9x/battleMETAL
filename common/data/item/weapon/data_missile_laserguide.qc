@@ -28,12 +28,14 @@ void() te_muzzle_lgm={
   
   sound7(self, CHAN_AUTO, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 80, 0 );
   
-  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * -0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
-  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * 0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
-  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_up * 1), normalize((startOrg + v_up * 2) - startOrg), 1);
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * -0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * 0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_up * 1), normalize((startOrg + v_up * 2) - startOrg), 1);
   
-  trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * 0.5), endOrg + (v_forward * 16) + (v_right * 0.5) );
-  trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * -0.5), endOrg + (v_forward * 16) + (v_right * -0.5) );
+    trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * 0.5), endOrg + (v_forward * 16) + (v_right * 0.5) );
+    trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * -0.5), endOrg + (v_forward * 16) + (v_right * -0.5) );
+  }
 };
 #endif
 void() data_ini_missile_laserguide_={

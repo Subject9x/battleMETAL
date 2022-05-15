@@ -33,7 +33,9 @@ void() te_muzzle_swrm={
   
   sound7(self, CHAN_AUTO, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 165, 0 );
   
-  pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), startOrg, normalize( endOrg - startOrg ) * 3, 1);
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), startOrg, normalize( endOrg - startOrg ) * 3, 1);
+  }
 }
 #endif
 void() data_ini_missile_swarm_={

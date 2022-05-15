@@ -35,12 +35,14 @@ void() te_muzzle_qrf={
   
   sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
   
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( endOrg - startOrg ), 1 ) ;
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( endOrg - startOrg ), 1 ) ;
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
   
-  trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5) );
-  trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5) );
+    trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5) );
+    trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5) );
+  }
 }
 #endif
 void() data_ini_quantum_={
