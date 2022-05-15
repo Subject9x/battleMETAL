@@ -14,7 +14,6 @@ textures/desert/sand_desert_high_a
 		blendFunc GL_DST_COLOR GL_ZERO
 		rgbGen identity
 	}
-  
 }
 textures/desert/sand_desert_a
 {
