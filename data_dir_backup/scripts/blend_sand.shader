@@ -61,7 +61,7 @@ textures/blend/sand/basin_blend_sand_a
   }
   {
     map textures/desert/sand_desert_a.tga
-    tcMod scale 4 4
+    tcMod scale 2 2
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
@@ -92,7 +92,7 @@ textures/blend/sand/sand_blend_rock_a
   }
   {
     map textures/desert/sand_desert_a.tga
-    tcMod scale 4 4
+    tcMod scale 2 2
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
@@ -115,7 +115,7 @@ textures/blend/sand/sand_blend_basin_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/desert/sand_desert_a.tga
-    tcMod scale 4 4
+    tcMod scale 2 2
     rgbGen vertex
   }
 
@@ -149,7 +149,7 @@ textures/blend/sand/sand_blend_high_a
   }
   {
     map textures/desert/sand_desert_a.tga
-    tcMod scale 4 4
+    tcMod scale 2 2
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
@@ -175,7 +175,7 @@ textures/blend/sand/high_blend_sand_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/desert/sand_desert_a.tga
-    tcMod scale 4 4
+    tcMod scale 2 2
     rgbGen vertex
   }
   {

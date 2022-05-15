@@ -17,4 +17,8 @@ blend_sand
 blend_sand_b
 snow
 blend_snow_a
+dirt
+blend_dirt
+hud
 unit
+building
