@@ -268,7 +268,7 @@ void() ai_node_path={
   local vector sMin, sMax;
   
   if( cvar("developer") ){
-    self.effects = self.effects | EF_NOSHADOW;
+    self.effects = self.effects | EF_NOSHADOW | EF_LOWPRECISION;
   }
   else{
     remove(self);

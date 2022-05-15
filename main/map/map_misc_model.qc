@@ -7,6 +7,7 @@ Overview:
   Various 'misc model' entities, each unique for readability.
   
 Line 20 - MAP_TERRAIN_MODEL
+// DEPRECATED SINCE at least v2.0.0
 */
 
 float( float isNew, float changeFlags) terrain_model_send={

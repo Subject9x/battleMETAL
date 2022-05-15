@@ -126,7 +126,7 @@ void() building_supply_depot={
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;
   macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/depot/building_depot.obj", self.skin, 0)
+  macro_set_model("q3mdl/buildings/depot/building_depot.obj", self.skin, EF_LOWPRECISION)
   setsize(self, self.mins, self.maxs);
   
   self.th_die = hangar_depot_die1;

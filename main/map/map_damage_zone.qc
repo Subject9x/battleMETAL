@@ -49,8 +49,8 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
       self.spawnflags = self.spawnflags - (self.spawnflags & LIFETIME);
     }
   }
-  if( !self.wait ){
-    self.wait = defWait;
+  if( !defWait ){
+    self.wait = 0.5;
   }
   if( !self.alpha ){
     self.alpha = 1.0;
@@ -59,7 +59,11 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
   if( !self.damageValue ){
     self.damageValue = defDmg;
   }
-  self.effects = self.effects | EF_NODEPTHTEST;  
+  
+  if( (self.spawnflags & IS_MAPKEY) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
+  
   self.data_type = DATA_MAP_DMG;
   self.model = "q3mdl/testball.md3";
   setmodel( self, self.model );

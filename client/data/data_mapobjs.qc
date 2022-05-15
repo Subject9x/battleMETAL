@@ -412,7 +412,7 @@ void() hazard_quant_think={
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 4;
     }
     self.think = hazard_quant_think;
-    self.nextthink = servertime + (random() * (self.wait * 2));
+    self.nextthink = servertime + (random() * (1 + self.wait * 2));
   }
 };
 
@@ -471,7 +471,7 @@ void(float dataIdx) hazard_ini_static={
       setsize( self, '-20 -20 0', '20 20 25' );
       break;
   }
-  self.effects = self.effects | (EF_NOSHADOW | EF_BLUE);
+  self.effects = self.effects | EF_NOSHADOW;
   if( self.isActive ){
     self.think = hazard_crs_think;
     self.nextthink = servertime + (random() * self.wait);

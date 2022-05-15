@@ -55,7 +55,7 @@ void() building_guard_tower={
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 1;
   macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/towersmall/guardtower.obj", self.skin,0)
+  macro_set_model("q3mdl/buildings/towersmall/guardtower.obj", self.skin, EF_LOWPRECISION)
   setsize(self, self.mins, self.maxs);
   
   self.deadflag = DEAD_NO;

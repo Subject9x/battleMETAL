@@ -127,7 +127,7 @@ void() building_barracks={
   self.vec_name = "Barracks";
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;
-  macro_set_model("q3mdl/buildings/barracks/building_barracks.obj", self.skin, 0)
+  macro_set_model("q3mdl/buildings/barracks/building_barracks.obj", self.skin, EF_LOWPRECISION)
   macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
   setsize(self, self.mins, self.maxs);
   

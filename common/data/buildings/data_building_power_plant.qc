@@ -137,7 +137,7 @@ void() building_human_power={
   self.scale = 1;
   self.deadflag = DEAD_NO;
   macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/power_plant/powerplant.obj", self.skin, 0) 
+  macro_set_model("q3mdl/buildings/power_plant/powerplant.obj", self.skin, EF_LOWPRECISION) 
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {

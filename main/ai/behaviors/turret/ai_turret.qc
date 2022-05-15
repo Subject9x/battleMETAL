@@ -8,6 +8,8 @@ Overview: ai unit
 */
 
 void() ai_turret={
+  self.effects = self.effects | EF_LOWPRECISION;
+  
   ai_unit_ini_var();
   
   initialize_data_turret_( self.nextVecChoice );

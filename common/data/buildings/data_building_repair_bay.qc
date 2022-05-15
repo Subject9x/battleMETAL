@@ -166,7 +166,7 @@ void() building_repair_fixing={
     player = self.trigger_field;
   }
   
-  if(vlen(player.origin - self.cockpit.origin) > 48){
+  if(vlen(player.origin - self.cameraOrigin) > 48){
     //player walked away from node
     self.ai_state_next = PLAYER_RESPAWN;
     return;
@@ -279,8 +279,8 @@ void() building_repair_fixing={
 */
 void() building_repair_idle={
   if( self.ai_state == PLAYER_DEBRIEF && self.ai_state_last != PLAYER_DEBRIEF ){
-    self.cockpit.solid = SOLID_TRIGGER;
-    setorigin(self.cockpit, self.cockpit.origin);
+    self.particleCube.solid = SOLID_TRIGGER;
+    setorigin(self.particleCube, self.particleCube.origin);
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 1;
     
@@ -473,11 +473,11 @@ void() building_human_repair={
   repairNode.effects = repairNode.effects | EF_NODRAW;
   repairNode.touch = building_repair_touch;
   repairNode.owner = this;
-  this.cockpit = repairNode;
+  this.particleCube = repairNode;
   self = repairNode;
-    util_setModel("q3mdl/testball.md3", repairNode.skin, EF_LOWPRECISION) ;
-    util_setCollider(FALSE, SOLID_TRIGGER, MOVETYPE_NONE) ;
-    util_setHealthArmor(0, 0, 0, 0) ;
+    util_setModel("q3mdl/testball.md3", repairNode.skin, EF_LOWPRECISION);
+    util_setCollider(FALSE, SOLID_TRIGGER, MOVETYPE_NONE);
+    util_setHealthArmor(0, 0, 0, 0);
   self = this;
   setsize(repairNode, '-8 -8 -16', '8 8 16');
   setorigin(repairNode, this.compOffset);
