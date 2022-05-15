@@ -50,7 +50,7 @@ void() data_projectile_ini_plasma_={
     //cosmetics
     self.alpha = 0.85;
     self.model = "q3mdl/proj/mdl_proj_rpc.md3";
-    self.effects = EF_NOSHADOW | EF_ADDITIVE;
+    self.effects = EF_NOSHADOW | EF_LOWPRECISION;
     self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
     self.predraw_projectile = predraw_plasma;
     self.pcl_explode = projectile_plasma_expl;
@@ -65,11 +65,11 @@ void() data_projectile_ini_plasma_={
 #ifdef SSQC
 void() data_projectile_plasma_burn_ini_={
   self.movetype = MOVETYPE_FOLLOW;
-  self.aiment = self.cockpit;
-  self.punchangle = self.cockpit.angles;
-  self.view_ofs = self.origin - self.cockpit.origin;
-  self.angles = self.cockpit.angles;
-  self.v_angle = self.angles - self.cockpit.angles;
+  self.aiment = self.particleCube;
+  self.punchangle = self.particleCube.angles;
+  self.view_ofs = self.origin - self.particleCube.origin;
+  self.angles = self.particleCube.angles;
+  self.v_angle = self.angles - self.particleCube.angles;
   self.alpha = 0.75;
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
   self.impactType = IMPACT_ARMOR;
@@ -84,13 +84,13 @@ void() data_projectile_plasma_burn_th={
     self.last_origin = self.origin;
   }
   
-  if( self.enemy.deadflag > DEAD_NO || self.cockpit.deadflag > DEAD_NO ){
+  if( self.enemy.deadflag > DEAD_NO || self.particleCube.deadflag > DEAD_NO ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
     return;
   }
-
-  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.cockpit.origin, TRUE);
+  
+  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.particleCube.origin, TRUE);
   
   if(time > self.data_lifetime){
     self.think = SUB_Remove;
@@ -133,7 +133,7 @@ void() data_projectile_plasma_touch={
     else{
       hit = t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
       self.enemy = other;
-      self.cockpit = hit;
+      self.particleCube = hit;
       self.damageValue = data_projectile_plasma_burn_dmg;
       self.data_lifetime = time + data_projectile_plasma_burn_time;
       setsize(self, '-1 -1 -1', '1 1 1');

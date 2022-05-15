@@ -53,7 +53,7 @@ void() data_projectile_ini_missile_laserguide_={
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_lgm.md3";
-    self.effects = EF_NOSHADOW;
+    self.effects = EF_NOSHADOW | EF_LOWPRECISION;
     self.modelflags = 0;
     self.traileffectnum = particleeffectnum("TE_LGM_TRAIL");
     self.pcl_explode = projectile_mlg_expl;

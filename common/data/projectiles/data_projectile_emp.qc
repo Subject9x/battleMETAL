@@ -45,7 +45,7 @@ void() data_projectile_ini_emp_={
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_emp.md3";
-    self.effects = (EF_ADDITIVE | EF_NOSHADOW);
+    self.effects = 0 | EF_NOSHADOW | EF_LOWPRECISION;
     self.modelflags = 0;
     self.alpha = 0.75;
     self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");

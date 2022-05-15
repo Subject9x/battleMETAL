@@ -54,7 +54,7 @@ void() data_projectile_ini_missile_swarm_={
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_lgm.md3";
-    self.effects = EF_NOSHADOW;
+    self.effects = EF_NOSHADOW | EF_LOWPRECISION;
     self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL"); 
     self.pcl_explode = projectile_swarm_expl;
     self.scale = 1.5;

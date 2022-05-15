@@ -37,13 +37,13 @@ void() projectile_qbit_expl={
 
 void() data_projectile_ini_quantum_bit_={
   self.classname = "missile";
-  self.data_velocity = 1800;
-  self.data_lifetime = 1.5;
+  self.data_velocity = 1700; //time = distance/speed
+  self.data_lifetime = 0.87;
   
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
-    self.effects = self.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
+    self.effects = self.effects | EF_NOSHADOW | EF_LOWPRECISION;
     self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
     self.damageType = self.damageType | EFF_SHD;
     self.pcl_explode = projectile_qbit_expl;
