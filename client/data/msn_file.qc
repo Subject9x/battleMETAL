@@ -139,7 +139,7 @@ float(float currentObjId, string line, string val) msn_mapobjid={
 void(float obj_id, string line, string val) msn_setobjdesc={
   if(line == MSN_FILE_OBJ_DESC){
     if(obj_id != 0){
-      MSN_OBJ_DESC[obj_id] = strzone(val);
+      cacheGlobalString(MSN_OBJ_DESC[obj_id], val)
     }
   }
 };
@@ -147,7 +147,7 @@ void(float obj_id, string line, string val) msn_setobjdesc={
 void( float obj_id, string line, string val) msn_setobj_type={
   if(line == MSN_FILE_OBJ_TYPE){
     if(obj_id != 0){
-      MSN_OBJ_TYPES[obj_id] = strzone(val);
+      cacheGlobalString(MSN_OBJ_TYPES[obj_id], val)
     }
   }
 };
@@ -155,7 +155,7 @@ void( float obj_id, string line, string val) msn_setobj_type={
 void( float obj_id, string line, string val) msn_setobj_mechs={
   if(line == MSN_FILE_OBJ_MECH){
     if(obj_id != 0){
-      MSN_OBJ_MECHS[obj_id] = strzone(val);
+      cacheGlobalString(MSN_OBJ_MECHS[obj_id], val)
     }
   }
 };
@@ -163,7 +163,7 @@ void( float obj_id, string line, string val) msn_setobj_mechs={
 void( float obj_id, string line, string val) msn_setobj_items={
   if(line == MSN_FILE_OBJ_ITEM){
     if(obj_id != 0){
-      MSN_OBJ_ITEMS[obj_id] = strzone(val);
+      cacheGlobalString(MSN_OBJ_ITEMS[obj_id], val)
     }
   }
 };

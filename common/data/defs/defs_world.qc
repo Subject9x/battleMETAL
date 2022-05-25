@@ -48,7 +48,7 @@ void() world_server_rules_frame={
   }
   
   if( self.serverFlags != serverflags ){
-    self.serverFlags = serverflags;
+    self.serverFlags = 0 | serverflags;
     self.SendFlags = self.SendFlags | SENDFLAG_SERVERFLAGS;
   }
   

@@ -146,6 +146,7 @@ util/headers/input_events.qh
 //================
 
 ../common/data/data_system.qc
+../common/data/data_campaign.qc
 data/data_system_ext.qc
 data/client_precache.qc
 data/data_api.qc

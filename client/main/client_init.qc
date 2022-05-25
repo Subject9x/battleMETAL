@@ -25,7 +25,7 @@ void() CSQC_Init =
   registercvar("chase_active",  "0", CF_CLIENT | CF_ARCHIVE);
   
   registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
-  
+  registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
   cvar_set("con_chat", "0");  //force old chat system off
   
 	maxclients = 0;

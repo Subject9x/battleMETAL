@@ -29,7 +29,16 @@ void( string fileName ) cl_load_savefile={
           cacheGlobalString( UNLOCKED_ITEMS_DATA, argv(3))
         }
         if( argv(1) == CAMP_SAVE_TAG ){
-          cacheGlobalString( SAVEFILE_CAMPAIGN, argv(3))
+          //4.0.0 - WARN : campaign file system upgraded, this patches older save files.
+          if( strcmp( argv(3), "Main Campaign") ){
+            SAVEFILE_CAMPAIGN = "aa1.dat";
+          }
+          else if( strcmp( argv(3), "Extended Main Campaign") ){
+            SAVEFILE_CAMPAIGN = "aa2.dat";
+          }
+          else{
+            cacheGlobalString( SAVEFILE_CAMPAIGN, argv(3))
+          }
         }
         if( argv(1) == SAVE_TAG_MISSION ){
           cacheGlobalString( SAVEFILE_CACHE_MAP, argv(3))
