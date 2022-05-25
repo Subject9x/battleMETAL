@@ -73,7 +73,10 @@ void() click_newg_back={
 };
 
 
-void() click_newg_launch_map={  
+void() click_newg_launch_map={
+  
+  campaign_loadMapList(CAMP_FILENAME);
+  cvar_set("sv_campaign", CAMP_FILENAME);
   
   if( GAME_SAVES_NEWG[cvar("saveslot")] == FALSE ){
     menu_write_new_save();
@@ -109,11 +112,6 @@ void() click_newg_info={
   newgame_substate = NEWGAME_BRIEF;
   new_camp_lbl.label = CAMP_SELECT_NAME;
   
-  /*if( CAMP_SELECT_INFO != "" ){
-    new_camp_train_lbl.label = CAMP_SELECT_INFO;
-    new_camp_train_lbl.drawme = TRUE;
-    new_camp_start_lbl.drawme = TRUE;
-  }*/
   new_camp_start_btn.data_text = CAMP_SELECT_START;
   new_back.origin_y = new_camp_start_btn.origin_y + 48;
   new_camp_start_btn.drawme = TRUE;
@@ -145,6 +143,7 @@ void() click_newg_campaign={
   newgame_back_cacheOrg = new_back.origin;
   new_back.origin =  MENU_ORG + '36 160';
   
+  cacheGlobalString(CAMP_FILENAME, CAMP_FILES[self.data_bind])
   cacheGlobalString(CAMP_SELECT_START, CAMP_START[self.data_bind])
   cacheGlobalString(CAMP_SELECT_NAME, CAMP_NAME[self.data_bind])
   cacheGlobalString(CAMP_SELECT_MECHS, CAMP_MECHS[self.data_bind])

@@ -10,4 +10,26 @@
   'items' : '3 12 13'
   'start' : 'intro'
   'info' : 'Main campaign but player starts with new mechs; Warden light mech and Sapper medium mech.'
+  'coop' : '1'
 }
+//map list <map>:<win>|<lose>
+intro:anim|none
+anim1:o1m1|none
+o1m1:o1m2|none
+o1m2:o1m3|none
+o1m3:o1m4|none
+o1m4:o1m5|none
+o1m5:anim2|none
+anim2:o2m1|none
+o2m1:o2m2|none
+o2m2:o2m3|none
+o2m3:o2m4|none
+o2m4:o2m5|none
+o2m5:anim3|none
+anim3:o3m1|none
+o3m1:o3m2|none
+o3m2:o3m3|none
+o3m3:o3m4|none
+o3m4:o3m5|none
+o3m5:outro|none
+outro:menu|none

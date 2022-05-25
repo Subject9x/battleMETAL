@@ -465,7 +465,7 @@ void() ai_setup_patrol={
         self.patrolNode = entFindTarget;
         self.tetherOrg = entFindTarget.origin;
         lastNode = entFindTarget;
-        if( cvar("developer") ){
+        if( cvar("developer") > 1){
           cons_logAVector(entFindTarget.classname, entFindTarget.origin); //debug
           cons_logAString(entFindTarget.classname, entFindTarget.targetname);
           cons_logAString("///////////////////", "////////////");
@@ -475,7 +475,7 @@ void() ai_setup_patrol={
         self.tether = TETHER_NODE;
         self.patrolNode = entFindTarget;
         self.tetherOrg = entFindTarget.origin;
-        if( cvar("developer") ){
+        if( cvar("developer") > 1 ){
           cons_logAVector(self.classname, self.origin);
           cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
           cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);

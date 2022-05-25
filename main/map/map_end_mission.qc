@@ -61,13 +61,7 @@ void() map_end_mission_conclude={
       ENT_SERVER_INFO.missionResult = MISSION_RESULT_FAIL;
     }
     ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_RESULT | SENDFLAG_MISSION_STATUS;
-    sv_nextmap = self.map;
     
-    if( strlen(ENT_SERVER_INFO.nextMap) > 0 ){
-      strunzone(ENT_SERVER_INFO.nextMap);
-    }
-    ENT_SERVER_INFO.nextMap = strzone(sv_nextmap);
-    ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MAP_NEXT;
     self.think = map_end_mission_event;
     self.nextthink = time + 4;
   }

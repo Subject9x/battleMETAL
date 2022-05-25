@@ -22,6 +22,7 @@ qsrc/headers/subs.qh
 qsrc/headers/triggers.qh
 main/headers/effectinfo_api.qh
 main/controllers/headers/controllers.qh
+common/data/camp_loader.qh
 
 //Server Defs=====================
   main/extensions/ext_game.qc
@@ -143,6 +144,7 @@ main/controllers/headers/controllers.qh
 //================================
   dp/subs.qc  
   common/data/data_system.qc
+  common/data/data_campaign.qc
 
 //Custom battleMETAL Functionality
 //AI Module---------------------

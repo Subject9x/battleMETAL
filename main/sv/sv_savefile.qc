@@ -47,7 +47,7 @@ void(float override) savefile_load={
         SAVE_MAP = strzone(argv(3));
       }
       if( argv(1) == SAVE_FILE_MECH_LIST ){
-          SAVE_MECHS_LIST = strzone(argv(3));
+        SAVE_MECHS_LIST = strzone(argv(3));
       }
       if( argv(1) == SAVE_FILE_ITEMS ){
         SAVE_ITEMS_ALL = strzone(argv(3));

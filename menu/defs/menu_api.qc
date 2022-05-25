@@ -775,7 +775,8 @@ void() menu_scan_saves={
       
     freeGlobalString(GAME_SAVES[itr])
     freeGlobalString(GAME_SAVES_DRAWNAME[itr])
-      
+    freeGlobalString(GAME_SAVES_CAMP_FILE[itr])
+    
     fname = strcat("saves/save_", ftos(itr), ".sav");
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
@@ -798,6 +799,7 @@ void() menu_scan_saves={
           }
           if( argv(1) == CAMP_SAVE_TAG ){
             campid = argv(3);
+            
           }
           if( argv(1) == CAMP_TAG_NEWG ){
             new_gameplus = stof(argv(3));
@@ -819,6 +821,7 @@ void() menu_scan_saves={
       GAME_SAVES_SKILL[itr] = save_skill;
       cacheGlobalString( GAME_SAVES_MAP[itr], map_name)
       GAME_SAVES_NEWG[itr] = new_gameplus;
+      cacheGlobalString( GAME_SAVES_CAMP_FILE[itr], campid )
     }
     else{
       GAME_SAVES_SKILL[itr] = 0;

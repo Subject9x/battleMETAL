@@ -2713,3 +2713,5 @@ float CF_PERSISTENT           = 1024; // cvar must not be reset on gametype swit
 float CF_PRIVATE              = 2048; // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
 float CF_MAXFLAGSVAL          = 4095;    // used to determine if flags is valid
 //and relink a new instance using RestoreGame() function.
+
+#define cacheGlobalString(var, val) if(val!=""){if (var!=""){strunzone(var); var="";} var = strzone(val);}
