@@ -351,7 +351,7 @@ void() client_sendIniConfig={
 
 void(string cmd, float tokens) client_setMission={
   //Single player
-  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN && !cvar("sv_singlemap") ){
     self.playerState = PLAYER_ACTIVE;
     self.view_ofs = '0 0 1';
     if( stof(argv(1)) == MISSION_RESULT_WIN ){ 

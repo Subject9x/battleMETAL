@@ -89,6 +89,7 @@ void() click_newg_launch_map={
   localcmd("coop 0\n");
   localcmd("cd stop\n");
   localcmd("maxplayers 1\n");
+  localcmd("sv_singlemap 0\n");
   
   if( GAME_SAVES_NEWG[cvar("saveslot")] ){
     localcmd("map o1m1\n"); 
@@ -149,8 +150,6 @@ void() click_newg_campaign={
   cacheGlobalString(CAMP_SELECT_MECHS, CAMP_MECHS[self.data_bind])
   cacheGlobalString(CAMP_SELECT_ITEMS, CAMP_ITEMS[self.data_bind])
   cacheGlobalString(CAMP_SELECT_INFO, CAMP_INFO[self.data_bind])
-  
-  cons_logAString("MQC.CAMP_FILENAME", CAMP_FILENAME);  //debug
 };
 
 

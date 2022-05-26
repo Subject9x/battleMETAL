@@ -34,6 +34,7 @@ void() m_init={
   
   registercvar("cl_newgameplus","0", CF_CLIENT | CF_ARCHIVE);
   registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
+  registercvar("sv_singlemap", "0", CF_SERVER_FROM_CLIENT);
   //cvar_set("r_framedatasize", "16");  //FIXME - issue in engine
   
   

@@ -41,8 +41,6 @@ void() campaign_loadfiles={
         filenameClean = strcat(argv(2), ".", argv(3));
         cacheGlobalString( CAMP_FILES[itr+1], filenameClean )
         
-        cons_logAString("MQC.filenameClean", filenameClean);  //debug
-        
         tokenizebyseparator(contents, "{",",","}");
         line = fgets(flannel);
       
@@ -143,6 +141,7 @@ void( string campaignName ) campaign_loadMapList={
         }
         else{
           if( !inObject ){
+            freeGlobalString( CAMP_MAPS[mapId] )
             cacheGlobalString( CAMP_MAPS[mapId], line )
             mapId = mapId + 1;
           }

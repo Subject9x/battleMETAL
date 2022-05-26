@@ -58,33 +58,85 @@ void( string fileName ) cl_load_savefile={
   cl_load_items_all();
 };
 
+/*
+  Now we go nuts, open the save file's target campaign
+*/
+void(float override) cl_load_savefile_singleMap={
+  
+  local string cleanMapName;
+  local float flannel;
+  local string contents, line;
+  local float mapItr;
+  local string mapFile;
+  local string mapUnlocks;
+  local string newMechs, newItems;
+  local float markedMap;
+  
+  campaign_loadMapList( cvar_string("sv_campaign") );
+  tokenizebyseparator(mapname, "/", ".");
+  cleanMapName = argv(1);
+  
+  markedMap = FALSE;
+  mapItr = 0;
+  while( CAMP_MAPS[mapItr] != "" ){
+    tokenizebyseparator(CAMP_MAPS[mapItr], ":", "|");
+    if( argv(0) == cleanMapName ){
+      markedMap = TRUE;
+    }
+    if( !markedMap ){
+      mapUnlocks = msn_parsefile_get_unlocks( argv(0) ) ;
+      tokenizebyseparator(mapUnlocks, "|");
+      newMechs = strcat(newMechs, argv(0));
+      newItems = strcat(newItems, argv(1));
+    }
+    mapItr = mapItr + 1;
+  }
+
+  cacheGlobalString( UNLOCKED_MECHS_DATA, newMechs )
+  cacheGlobalString( UNLOCKED_ITEMS_DATA, newItems )
+  cl_load_mechs_all();
+  cl_load_items_all();
+};
+
 void( float serverMode, float svFlags ) cl_set_savepath={
   local string filePath;
   
-  if( (svFlags & SVFLAG_ITEMOVER) ){
-    filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/", MAP_NAME, SAVE_FILE_EXT);
+  if( cvar("sv_singlemap") && cvar_string("sv_campaign") != "" ){
+    
+    cl_load_savefile_singleMap();
   }
   else{
-    switch( serverMode ){
-      case GAMEMODE_CAMPAIGN:
-        filePath = strcat(PATH_DATA_SAVE,"/",SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
-        break;
-
-      case GAMEMODE_COOP:
-        filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/coop", SAVE_FILE_EXT);
-        break;
-
-      case GAMEMODE_DM:
-        filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
-        break;
-
-      case GAMEMODE_TEAMDM:
-        //TODO - figure out team dm lists
-        filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
-        break;
+    if( (svFlags & SVFLAG_ITEMOVER) ){
+      if( cvar_string("sv_campaign") == "arcade" ){
+        filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/instant", SAVE_FILE_EXT);
+      }
+      else{
+        filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/", MAP_NAME, SAVE_FILE_EXT);          
+      }
     }
+    else{
+      switch( serverMode ){
+        case GAMEMODE_CAMPAIGN:
+          filePath = strcat(PATH_DATA_SAVE,"/",SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
+          break;
+
+        case GAMEMODE_COOP:
+          filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/coop", SAVE_FILE_EXT);
+          break;
+
+        case GAMEMODE_DM:
+          filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
+          break;
+
+        case GAMEMODE_TEAMDM:
+          //TODO - figure out team dm lists
+          filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
+          break;
+      }
+    }
+    
+    cl_load_savefile( filePath );
   }
-  cl_load_savefile( filePath );
   if( serverMode == GAMEMODE_CAMPAIGN ){
     if( !(svFlags & SVFLAG_NOSAVE) ){
       cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.

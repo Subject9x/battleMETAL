@@ -35,6 +35,7 @@ void() click_load_loadgame={
     localcmd("maxplayers 1;\n");
     cvar_set("cl_newgameplus", ftos(GAME_SAVES_NEWG[self.data_bind]));
     cvar_set("sv_campaign", GAME_SAVES_CAMP_FILE[self.data_bind]);
+    localcmd("sv_singlemap 0\n");
     menu_exit_togame();
     localcmd(strcat("map ", GAME_SAVES_MAP[self.data_bind]),"\n");
   }

@@ -34,75 +34,129 @@ void() msn_getfile={
 void() msn_parsefile={
   local float tobj, flannel, argc, line_tag, token;
   local string file, contents, line;
+  
   file = strcat(PATH_DATA_MAP, MAP_NAME, "/", MSN_FILENAME, ".msn");
   flannel = fopen(file, FILE_READ);
-  contents = fgets(flannel);
-  argc = tokenizebyseparator(contents, "{",",","}");
-  line = fgets(flannel);
-  token = 4; //general pointer inside tokenized msn file value
-  while( (line != "") ){
-    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-      line_tag = tokenizebyseparator(line, "'", "'", ": ","'","'");
-      if (argv(1) == MSN_FILE_IMG){
-        if( argv(token) != "" ){
-          msn_setmappic( strcat("data/maps/",argv(token)));
+  
+  if( flannel != -1 ){
+    contents = fgets(flannel);
+    argc = tokenizebyseparator(contents, "{",",","}");
+    line = fgets(flannel);
+    token = 4; //general pointer inside tokenized msn file value
+    
+    while( (line != "") ){
+      if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+        line_tag = tokenizebyseparator(line, "'", "'", ": ","'","'");
+        if (argv(1) == MSN_FILE_IMG){
+          if( argv(token) != "" ){
+            msn_setmappic( strcat("data/maps/",argv(token)));
+          }
+        }
+        if (argv(1) == MSN_FILE_NAME){
+          cacheGlobalString( MSN_NAME, argv(token))
+        }
+        if (argv(1) == MSN_FILE_TYPE){
+          cacheGlobalString( MSN_TYPE, argv(token))
+        }
+        if (argv(1) == MSN_FILE_POINTS){
+          cacheGlobalString( MSN_RESERVETOTAL, argv(token))
+        }
+        if (argv(1) == MSN_FILE_SECTOR){
+          cacheGlobalString( MSN_SECTOR, argv(token))
+        }
+        if (argv(1) == MSN_FILE_LOCUS){
+          cacheGlobalString( MSN_LOCATION, argv(token))
+        }
+        if (argv(1) == MSN_FILE_TIME){
+          cacheGlobalString( MSN_LOCALTIME, argv(token))
+        }
+        if (argv(1) == MSN_FILE_BRIEF){
+          cacheGlobalString( MSN_BRIEF, argv(token))
+        }
+        if (argv(1) == MSN_FILE_INTEL){
+          cacheGlobalString( MSN_INTEL, argv(token))
+        }
+        if (argv(1) == MSN_FILE_OBJS){
+          MSN_OBJ = stof(argv(token));
+        }
+        if (argv(1) == MSN_FILE_ANIM){
+          cacheGlobalString( MSN_ANIM, argv(token))
+        }
+        if (argv(1) == MSN_FILE_DISP){
+          cacheGlobalString( MSN_DISP, argv(token))
+        }
+        if( argv(1) == MSN_FILE_NOSAVE ){
+          MSN_SAVE = stof(argv(token));
+        }
+        else{
+          MSN_SAVE = TRUE;
+        }
+
+        //objectives section
+        tobj = msn_mapobjid(tobj, argv(1), argv(token));  //somehow reading this second works
+        msn_setobjdesc(tobj, argv(1), argv(token));
+        msn_setobj_type(tobj, argv(1), argv(token));
+        msn_setobj_mechs(tobj, argv(1), argv(token));
+        msn_setobj_items(tobj, argv(1), argv(token));
+      }
+      //checks for end-of-objective struct
+      if( (tobj > 0) && (line =="}")){
+        tobj = 0;
+      }
+      line = fgets(flannel);
+    }
+    //always close a file :3
+    fclose(flannel);
+  }
+  
+};
+
+//queries a msn file solely for its unlocks
+string( string fileName ) msn_parsefile_get_unlocks={
+  local float tobj, flannel, argc, line_tag, token;
+  local string file, contents, line;
+  
+  local string returnMechs;
+  local string returnItems;
+  local string returnAll;
+  
+  file = strcat(PATH_DATA_MAP, fileName, "/", fileName, ".msn");
+  flannel = fopen(file, FILE_READ);
+  
+  tobj = 0;
+  if( flannel != -1){
+    contents = fgets(flannel);
+    argc = tokenizebyseparator(contents, "{",",","}");
+    line = fgets(flannel);
+    token = 4; //general pointer inside tokenized msn file value
+    while( (line != "") ){
+      if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+        line_tag = tokenizebyseparator(line, "'", "'", ": ","'","'");
+        //objectives section
+        tobj = msn_mapobjid(tobj, argv(1), argv(token));  //somehow reading this second works
+        
+        if(tobj > 0){
+          if(argv(1) == MSN_FILE_OBJ_MECH){
+            returnMechs = strcat(returnMechs, argv(token), " ");
+          }
+          if(argv(1) == MSN_FILE_OBJ_ITEM){
+            returnItems= strcat(returnItems,  argv(token), " ");
+          }
         }
       }
-      if (argv(1) == MSN_FILE_NAME){
-        cacheGlobalString( MSN_NAME, argv(token))
+      //checks for end-of-objective struct
+      if( (tobj > 0) && (line =="}")){
+        tobj = 0;
       }
-      if (argv(1) == MSN_FILE_TYPE){
-        cacheGlobalString( MSN_TYPE, argv(token))
-      }
-      if (argv(1) == MSN_FILE_POINTS){
-        cacheGlobalString( MSN_RESERVETOTAL, argv(token))
-      }
-      if (argv(1) == MSN_FILE_SECTOR){
-        cacheGlobalString( MSN_SECTOR, argv(token))
-      }
-      if (argv(1) == MSN_FILE_LOCUS){
-        cacheGlobalString( MSN_LOCATION, argv(token))
-      }
-      if (argv(1) == MSN_FILE_TIME){
-        cacheGlobalString( MSN_LOCALTIME, argv(token))
-      }
-      if (argv(1) == MSN_FILE_BRIEF){
-        cacheGlobalString( MSN_BRIEF, argv(token))
-      }
-      if (argv(1) == MSN_FILE_INTEL){
-        cacheGlobalString( MSN_INTEL, argv(token))
-      }
-      if (argv(1) == MSN_FILE_OBJS){
-        MSN_OBJ = stof(argv(token));
-      }
-      if (argv(1) == MSN_FILE_ANIM){
-        cacheGlobalString( MSN_ANIM, argv(token))
-      }
-      if (argv(1) == MSN_FILE_DISP){
-        cacheGlobalString( MSN_DISP, argv(token))
-      }
-      if( argv(1) == MSN_FILE_NOSAVE ){
-        MSN_SAVE = stof(argv(token));
-      }
-      else{
-        MSN_SAVE = TRUE;
-      }
-
-      //objectives section
-      tobj = msn_mapobjid(tobj, argv(1), argv(token));  //somehow reading this second works
-      msn_setobjdesc(tobj, argv(1), argv(token));
-      msn_setobj_type(tobj, argv(1), argv(token));
-      msn_setobj_mechs(tobj, argv(1), argv(token));
-      msn_setobj_items(tobj, argv(1), argv(token));
+      line = fgets(flannel);
     }
-    //checks for end-of-objective struct
-    if( (tobj > 0) && (line =="}")){
-      tobj = 0;
-    }
-    line = fgets(flannel);
+    //always close a file :3
+    fclose(flannel);
   }
-  //always close a file :3
-  fclose(flannel);
+  
+  returnAll = strcat(returnMechs, "|", returnItems);
+  return returnAll;
+  
 };
 
 void(string val) msn_setmappic={

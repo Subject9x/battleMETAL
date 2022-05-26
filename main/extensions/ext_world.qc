@@ -19,6 +19,7 @@ void() world_metal_ini={
   registercvar("sv_serverflags", "0", CF_ARCHIVE | CF_SERVER | CF_SERVER_FROM_CLIENT);
   registercvar("sv_about", "Default About Message", CF_ARCHIVE | CF_SERVER | CF_SERVER_FROM_CLIENT);
   registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
+  registercvar("sv_singlemap", "0", CF_SERVER_FROM_CLIENT);
   
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;
@@ -61,7 +62,7 @@ void() world_metal_ini={
   if(world.itemOverride){
     serverflags = serverflags | SVFLAG_ITEMOVER;
   }
-  if( world.ignoreSave || world.animaticOnly ){
+  if( world.ignoreSave || world.animaticOnly || cvar("sv_singlemap") ){
     serverflags = serverflags | SVFLAG_NOSAVE;
   }
   ENT_SERVER_INFO = world_ini_serverInfo_ent();
@@ -184,14 +185,14 @@ void() world_ini_serverinfo={
   ENT_SERVER_INFO.missionResult = 0;
   
   if( sv_nextmap != "" && strlen(sv_nextmap) > 0 ){
-    ENT_SERVER_INFO.nextMap = strzone(sv_nextmap);
+    cacheGlobalString( ENT_SERVER_INFO.nextMap, sv_nextmap )
   }
   else{
     ENT_SERVER_INFO.nextMap = "";
   }
   
   if( cvar_string("sv_about") != "" && strlen(cvar_string("sv_about")) > 0 ){
-    ENT_SERVER_INFO.svAbout = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
+    cacheGlobalString( ENT_SERVER_INFO.svAbout, strcat("svabout ", cvar_string("sv_about"), "\n") )
   }
   else{
     ENT_SERVER_INFO.svAbout = "";
