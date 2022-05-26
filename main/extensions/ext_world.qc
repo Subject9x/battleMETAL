@@ -18,7 +18,7 @@ void() world_metal_ini={
   registercvar("gamemode", "1", CF_SERVER | CF_SERVER_FROM_CLIENT);
   registercvar("sv_serverflags", "0", CF_ARCHIVE | CF_SERVER | CF_SERVER_FROM_CLIENT);
   registercvar("sv_about", "Default About Message", CF_ARCHIVE | CF_SERVER | CF_SERVER_FROM_CLIENT);
-  registercvar("sv_campaign", "", 0 );
+  registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
   
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;

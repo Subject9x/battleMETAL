@@ -149,6 +149,8 @@ void() click_newg_campaign={
   cacheGlobalString(CAMP_SELECT_MECHS, CAMP_MECHS[self.data_bind])
   cacheGlobalString(CAMP_SELECT_ITEMS, CAMP_ITEMS[self.data_bind])
   cacheGlobalString(CAMP_SELECT_INFO, CAMP_INFO[self.data_bind])
+  
+  cons_logAString("MQC.CAMP_FILENAME", CAMP_FILENAME);  //debug
 };
 
 

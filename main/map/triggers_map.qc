@@ -31,9 +31,12 @@ void() map_initTrigger={
 
 void() map_trigger_changelevel={
   map_initTrigger ();
-	if (!self.map)
-		objerror ("changelevel trigger doesn't have map");
-    
+  
+  if( !(self.spawnflags & 4) ){
+		if (!self.map)
+			objerror ("changelevel trigger doesn't have map");
+  }
+  
   if(self.isActive){
     self.touch = changelevel_touch;
   }
@@ -49,16 +52,16 @@ void() map_trigger_changelevel={
   self.dmgtime = time to show up
 */
 void() map_trigger_highlighthud={
-  map_initTrigger ();
-  self.noise = "misc/talk.wav";
-  self.solid = SOLID_TRIGGER;
-  if (!self.wait)
+	map_initTrigger ();
+	self.noise = "misc/talk.wav";
+	self.solid = SOLID_TRIGGER;
+	if (!self.wait)
 		self.wait = 0.2;
-  
-  self.use = multi_use;
-  self.touch = highlight_hud_touch;
-  if (self.nextthink > time)
-    return;		// allready been triggered
+	
+	self.use = multi_use;
+	self.touch = highlight_hud_touch;
+	if (self.nextthink > time)
+		return;		// allready been triggered
 	
 };
 

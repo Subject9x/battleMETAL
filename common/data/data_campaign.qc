@@ -39,7 +39,9 @@ void() campaign_loadfiles={
         
         tokenizebyseparator(filename, "/", ".");
         filenameClean = strcat(argv(2), ".", argv(3));
-        cacheGlobalString( CAMP_FILES[itr], filenameClean )
+        cacheGlobalString( CAMP_FILES[itr+1], filenameClean )
+        
+        cons_logAString("MQC.filenameClean", filenameClean);  //debug
         
         tokenizebyseparator(contents, "{",",","}");
         line = fgets(flannel);
