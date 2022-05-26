@@ -1,5 +1,5 @@
 //  battleMETAL
-// 	v3.8.5
+// 	v4.0.0
 //  Forge Game Data schema 
 //  Trenchbroom / NetRadiant compatible.
 //  Peter Roohr
@@ -560,6 +560,7 @@ After the timer expires, it will fire all of it's targets and remove itself." [
   ]
   spawnflags(Flags) = [
     2 : "No intermission" : 0
+    4 : "Use sv_campaign for next map" : 0
   ]
 ]
 
@@ -1120,7 +1121,7 @@ Projectile Shooter that uses weapons-fire." [
   energyRate(float) : "defined recharge rate." : "0.0"
   shieldMax(integer) : "max shield value" : 300
   shieldRate(float) : "start shield rate" : "0.0"
-  radius(float) : "give allied buildings power." : "1000.0"
+  ai_minrange(float) : "give allied buildings power." : "1000.0"
 ]
 
 @PointClass base(RootBuilding) size(-65.81 -84.2 -27.0, 69.2 85.4 28.4) model({ "path": ":models/buildings/reactor/reactor.md3" }) = building_human_power : "Generates energy to power all friendly buildings in Radius." [
@@ -1129,7 +1130,7 @@ Projectile Shooter that uses weapons-fire." [
   energyRate(float) : "defined recharge rate." : "4.0"
   shieldMax(integer) : "max shield value" : 300
   shieldRate(float) : "start shield rate" : "0.0"
-  radius(float) : "give allied buildings power." : "800.0"
+  ai_minrange(float) : "give allied buildings power." : "800.0"
 ]
 
 @PointClass base(RootBuilding) size(-78.65 -83.85 -44.85, 58.0 97.0 68.3) model({ "path": ":models/buildings/hangar/hangar.md3" }) = building_human_hangar : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
