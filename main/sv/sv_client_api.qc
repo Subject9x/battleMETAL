@@ -67,13 +67,11 @@ void(string str) SV_ParseClientCommand={
     if( self.animId != world ){
       if( self.animId.target != "" ){
         trigTarg = find(world, targetname, self.animId.target );
-        if( trigTarg ){
-          if( trigTarg.use ){
-            notTrig = self;
-            self = trigTarg;
-              trigTarg.use();
-            self = notTrig;
-          }
+        if( trigTarg && trigTarg.use){
+          notTrig = self;
+          self = trigTarg;
+            trigTarg.use();
+          self = notTrig;
         }
       }
     }
@@ -280,7 +278,7 @@ void() PutClientInServer = {
 	
   self.classname = "player";
   
-  //DecodeLevelParms ();  //TODO - going to reactivate these soon.
+  //DecodeLevelParms ();  //- going to reactivate these soon. - 2022...I don't we think ever are...
 	self.attack_finished = time;  
   self.deadflag = DEAD_NO;  //re-rack
   
