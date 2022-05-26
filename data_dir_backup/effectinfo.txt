@@ -1346,7 +1346,7 @@
     lightradius 100
     lightradiusfade 50
     lightcolor 0.18 0.18 0.996
-    lightshadow 0.25
+    lightshadow 0.1
   
   //TE_ION_TRAIL - SMOKE RINGS
     effect TE_ION_TRAIL
@@ -1462,10 +1462,10 @@
   //TE_ION_EXPL - LIGHT
     effect TE_ION_EXPL
     countabsolute 1
-    lightradius 150
-    lightradiusfade 100
+    lightradius 50
+    lightradiusfade 25
     lightcolor 0.5 0.5 0.75
-    lightshadow 0.25
+    lightshadow 0.15
 
   //TE_ION_IMPACT_ARMOR - SPARKS
     effect TE_ION_IMPACT_ARMOR

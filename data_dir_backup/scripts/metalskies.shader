@@ -167,6 +167,20 @@ textures/skies/ark1
 	q3map_skylight 200 2
 	skyparms textures/skies/env/ark1/ark1 - -
 }
+textures/skies/cloud_ark1
+{
+  surfaceparm nolightmap
+	surfaceparm noimpact
+  surfaceparm nonsolid
+  surfaceparm trans
+  dpnoshadow
+  {
+    map textures/skies/cloud_ark1.tga
+    tcMod scale 2 1
+    tcMod scroll -0.01 -0.0075
+    blendFunc blend
+  }
+}
 //-------------------------------------
 //  ARK 2
 //--------------------------------------
@@ -180,4 +194,18 @@ textures/skies/ark2
 	q3map_sunExt 0.55 0.65 0.45 512 150 80 3 8
 	q3map_skylight 100 2
 	skyparms textures/skies/env/ark2/ark2 - -
+}
+textures/skies/cloud_ark2
+{
+  surfaceparm nolightmap
+	surfaceparm noimpact
+  surfaceparm nonsolid
+  surfaceparm trans
+  dpnoshadow
+  {
+    map textures/skies/cloud_ark2.tga
+    tcMod scale 2 1
+    tcMod scroll -0.01 -0.0075
+    blendFunc blend
+  }
 }
