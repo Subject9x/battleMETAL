@@ -6,8 +6,7 @@ A Total-conversion for the _[DarkPlaces](https://icculus.org/twilight/darkplaces
 
 _battleMETAL_ brings giant robot combat inspired by the _Mechwarrior_ and _Earthsiege_ franchises to _Quake's_ frenetic pacing and tech stack. This project adds the following large features to _Darkplaces_ via the _Quake C_ scripting language and use of external file reading.
 
-This is just a repo for the code, the media assets (models, texture, fx) aren't available yet because
-I have not fully decoupled all the original _iD_ assets from the mod. 
+This is just a repo for the code, the media assets (models, texture, fx) will not be available as they are part of the commercial release of this game. 
 ![image](https://user-images.githubusercontent.com/12732481/114804853-fe669b00-9d6f-11eb-884d-4f045ab88247.png)
 ![image](https://user-images.githubusercontent.com/12732481/114804865-045c7c00-9d70-11eb-8f14-35af72008949.png)
 
