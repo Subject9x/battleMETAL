@@ -59,18 +59,16 @@ void() data_projectile_ini_missile_active_radar_={
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_marh.md3";
-    self.effects = EF_NOSHADOW;
     self.modelflags = 0;
     self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
     self.pcl_explode = projectile_marh_expl;
     self.scale = 1.1;
     self.predraw_projectile = predraw_marh;
-    self.effects = self.effects | EF_FULLBRIGHT;
   #endif
   
   #ifdef SSQC
     self.think = data_projectile_missile_activeradar_delay;
-    self.effects = self.effects | EF_FULLBRIGHT;
+    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
     self.ai_dir = 1.0;
   #endif
 };

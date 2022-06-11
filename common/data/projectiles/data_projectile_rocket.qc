@@ -52,7 +52,6 @@ void() data_projectile_ini_rocket_={
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_mis.md3";
-    self.effects = EF_NOSHADOW | EF_LOWPRECISION;
     self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");
     self.pcl_explode = projectile_rocket_expl;
   #endif
@@ -60,7 +59,7 @@ void() data_projectile_ini_rocket_={
   #ifdef SSQC
     self.touch = data_prj_mis_touch;
     self.think = data_projectile_rocket_think_;  
-    self.effects = self.effects | EF_LOWPRECISION;
+    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
   #endif
 };
 

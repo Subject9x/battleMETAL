@@ -54,7 +54,7 @@
     lightradius 75
     lightradiusfade 75
     lightcolor 0.663 0.961 0.949
-    lightshadow 0.75
+    lightshadow 0
   
   //TE_ESR_RAIL - MAIN RAIL
     effect TE_ESR_RAIL
@@ -166,7 +166,7 @@
     lightradius 50
     lightradiusfade 50
     lightcolor 0.039 0.133 0.161
-    lightshadow 0.25
+    lightshadow 0
   
    //TE_ESR_IMPACT_DIRT - decal
     effect TE_ESR_IMPACT_DIRT
@@ -217,7 +217,7 @@
     lightradius 15
     lightradiusfade 100
     lightcolor 0.875 0.004 0.004
-    lightshadow 0.25
+    lightshadow 0
   
   //TE_ESR_IMPACT_SHIELD - LIGHTNING FRAG
     effect TE_ESR_IMPACT_SHIELD
@@ -258,7 +258,7 @@
     lightradius 15
     lightradiusfade 100
     lightcolor 0.031 0.031 0.541
-    lightshadow 0.25
+    lightshadow 0
   
 //==========================================
 
@@ -339,11 +339,10 @@
   //TE_LAS_HIT - LIGHT
     effect TE_LAS_RAIL
     countabsolute 1
-    lightradius 200
-    lightradiusfade 45
-    lighttime 0.1
+    lightradius 75
+    lightradiusfade 100
     lightcolor 0.49 0.24 0.74
-    lightshadow 0.55
+    lightshadow 0
 
   //TE_LAS_DIRT
     effect TE_LAS_DIRT
@@ -359,11 +358,10 @@
     
     effect TE_LAS_DIRT
     countabsolute 1
-    lightradius 200
-    lightradiusfade 45
-    lighttime 0.1
+    lightradius 75
+    lightradiusfade 100
     lightcolor 0.49 0.24 0.74
-    lightshadow 0.55
+    lightshadow 0
 //=====================================================
 
 
@@ -408,10 +406,10 @@
   //TE_PAC_MUZZLE - LIGHT
     effect TE_PAC_MUZZLE
     countabsolute 1
-    lightradius 200
-    lightradiusfade 110
+    lightradius 100
+    lightradiusfade 75
     lightcolor 1 0.502 0
-    lightshadow 0.8
+    lightshadow 0
     
   //TE_PAC_RAIL - MAIN RAIL
     effect TE_PAC_RAIL
@@ -539,7 +537,7 @@
     lightradius 100
     lightradiusfade 25
     lightcolor 1 0.502 0
-    lightshadow 0.8
+    lightshadow 0
   
   //TE_PAC_IMPACT_GROUND - SPARKS ACCEL
     effect TE_PAC_IMPACT_GROUND
@@ -564,7 +562,7 @@
     lightradius 100
     lighttime 2
     lightcolor 1 0.502 0
-    lightshadow 0.4
+    lightshadow 0
   
 //==========================================
 
@@ -636,7 +634,7 @@
     lightradiusfade 1
     lighttime 0.05
     lightcolor 1 0.251 0
-    lightshadow 0.6
+    lightshadow 0
     notunderwater
 
   //TE_ATC_DIRT - GRAVEL BITS
@@ -701,7 +699,7 @@
     lightradiusfade 100
     lighttime 0.05
     lightcolor 0.45 0.25 0.25
-    lightshadow 0.5
+    lightshadow 0
     notunderwater
     
   //TE_ATC_ARMOR - BULLET FRAGS
@@ -817,7 +815,7 @@
     lightradiusfade 1
     lighttime 0.05
     lightcolor 1 0.251 0
-    lightshadow 0.6
+    lightshadow 0
     notunderwater
 
   //TE_FLK_IMPACT - SMOKE
@@ -872,7 +870,7 @@
     lightradiusfade 24
     lighttime 0.075
     lightcolor 0.961 0.855 0.506
-    lightshadow 0.1
+    lightshadow 0
     notunderwater
     
   //TE_FLK_DIRT - SMOKE
@@ -1067,7 +1065,7 @@
     lightradius 40
     lightradiusfade 10
     lightcolor 0.373 0.016 0.706
-    lightshadow 0.9
+    lightshadow 0
     notunderwater
  
   //TE_QRFL_QBIT_TRAIL - BLACK FLAME
@@ -1107,7 +1105,7 @@
     lightradius 10
     lightradiusfade 25
     lightcolor 0.675 0.345 0.98
-    lightshadow 0.25
+    lightshadow 0
   
   //TE_QRFL_IMPACT_SHIELD - BLACK LINES
     effect TE_QRFL_IMPACT_SHIELD
@@ -1184,7 +1182,7 @@
     lightradius 100
     lighttime 0.05
     lightcolor 0.18 0.18 0.996
-    lightshadow 0.25
+    lightshadow 0
     
   //TE_EMP_TRAIL - SMOKE RINGS
     effect TE_EMP_TRAIL
@@ -1252,7 +1250,7 @@
     lightradius 25
     lightradiusfade 50
     lightcolor 0.827 0.345 0.969
-    lightshadow 0.25
+    lightshadow 0
 
   //TE_EMP_EXPL - SMOKE PUFF RED
     effect TE_EMP_EXPL
@@ -1304,7 +1302,7 @@
     lightradius 200
     lightradiusfade 75
     lightcolor 0.345 0.675 0.98
-    lightshadow 0.25
+    lightshadow 0
     
 //=====================================================
 
@@ -1344,9 +1342,9 @@
     effect TE_ION_MUZZLE
     countabsolute 1
     lightradius 100
-    lightradiusfade 50
+    lightradiusfade 100
     lightcolor 0.18 0.18 0.996
-    lightshadow 0.1
+    lightshadow 0
   
   //TE_ION_TRAIL - SMOKE RINGS
     effect TE_ION_TRAIL
@@ -1411,10 +1409,10 @@
   //TE_ION_TRAIL - LIGHT
     effect TE_ION_TRAIL
     countabsolute 1
-    lightradius 50
-    lightradiusfade 25
+    lightradius 33
+    lightradiusfade 50
     lightcolor 0.2 0.2 0.45
-    lightshadow 0.1
+    lightshadow 0
   
   //TE_ION_EXPL - SMOKE PUFF RED
     effect TE_ION_EXPL
@@ -1462,10 +1460,10 @@
   //TE_ION_EXPL - LIGHT
     effect TE_ION_EXPL
     countabsolute 1
-    lightradius 50
-    lightradiusfade 25
+    lightradius 33
+    lightradiusfade 50
     lightcolor 0.5 0.5 0.75
-    lightshadow 0.15
+    lightshadow 0
 
   //TE_ION_IMPACT_ARMOR - SPARKS
     effect TE_ION_IMPACT_ARMOR
@@ -1530,7 +1528,7 @@
     lightradiusfade 256
     lighttime 0.02
     lightcolor 1 0.251 0
-    lightshadow 0.25
+    lightshadow 0
     notunderwater
 
   //TE_MIS_MUZZLE - SMOKE
@@ -1607,7 +1605,7 @@
     lightradiusfade 400
     lighttime 0.05
     lightcolor 0 1 0
-    lightshadow 0.25
+    lightshadow 0
     notunderwater
 
   //TE_RPC_HIT - GREEN SLOSH ON HIT
@@ -1647,7 +1645,7 @@
     lightradiusfade 10
     lighttime 0.05
     lightcolor 0 1 0
-    lightshadow 0.25
+    lightshadow 0
     notunderwater
 
   //TE_RPC_BURN - GREEN RISING SMOKE
@@ -1687,7 +1685,7 @@
     lightradiusfade 10
     lighttime 0.05
     lightcolor 0 1 0
-    lightshadow 0.25
+    lightshadow 0
     notunderwater
     
   //TE_RPC_HIT_DIRT - GREEN SPLAT
@@ -1784,7 +1782,7 @@
     lightradius 125
     lightradiusfade 100
     lightcolor 0.996 0.392 0.18
-    lightshadow 0.5
+    lightshadow 0
     notunderwater
     
   //TE_SFGA_TRAIL - SMOKE
@@ -1826,7 +1824,7 @@
     lightradius 5
     lightradiusfade 100
     lightcolor 0.996 0.392 0.18
-    lightshadow 0.5
+    lightshadow 0
     notunderwater
     
   //TE_SFGA_IMPACT_SHIELD
@@ -1881,7 +1879,7 @@
     lightradius 25
     lightradiusfade 25
     lightcolor 0.663 0.886 0.953
-    lightshadow 0.5
+    lightshadow 0
     notunderwater
   
   //TE_LGM_TRAIL - FLAME
@@ -1909,7 +1907,7 @@
     lightradius 10
     lightradiusfade 150
     lightcolor 0.663 0.886 0.953
-    lightshadow 0.5
+    lightshadow 0
     notunderwater
     
   //TE_LGM_TRAIL - SMOKE
@@ -1966,7 +1964,7 @@
     lightradius 25
     lightradiusfade 125
     lightcolor 0.969 0.996 0.18
-    lightshadow 0.75
+    lightshadow 0
     notunderwater
     
   //TE_ARH_MUZZLE - SMOKE
@@ -2007,7 +2005,7 @@
     lightradius 10
     lighttime 0.5
     lightcolor 0.969 0.996 0.18
-    lightshadow 0.25
+    lightshadow 0
     notunderwater
     
   //TE_ARH_TRAIL - SMOKE
@@ -2052,7 +2050,7 @@
     lightradius 25
     lightradiusfade 125
     lightcolor 0.969 0.996 0.18
-    lightshadow 0.75
+    lightshadow 0
     notunderwater
   
   //TE_SWRM_TRAIL - FLAME
@@ -2079,7 +2077,7 @@
     lightradius 25
     lighttime 0.25
     lightcolor 1 0 0.251
-    lightshadow 0.25
+    lightshadow 0
     notunderwater
     
   //TE_SWRM_TRAIL - SMOKE
@@ -2164,7 +2162,7 @@
   lightradius 15
   lightradiusfade 50
   lightcolor 0.875 0.227 0.004
-  lightshadow 0.1
+  lightshadow 0
   notunderwater
   
   //TE_MECHPIECE_DEAD_BURN - Smoke
@@ -2233,7 +2231,7 @@
   lightradius 50
   lightradiusfade 100
   lightcolor 0 1 1
-  lightshadow 0.05
+  lightshadow 0
   notunderwater
 
 //==========================================
@@ -2313,7 +2311,7 @@ velocitymultiplier 1
   lightradius 33
   lightradiusfade 200
   lightcolor 0.996 0.392 0.18
-  lightshadow 0.33
+  lightshadow 0
   notunderwater
   
 //=================================================
@@ -2360,7 +2358,7 @@ velocitymultiplier 1
   lightradius 67
   lightradiusfade 200
   lightcolor 0.996 0.392 0.18
-  lightshadow 0.33
+  lightshadow 0
   notunderwater
   
   //TE_FIRE_MED - FLAME
@@ -2421,7 +2419,7 @@ velocitymultiplier 1
   lightradius 100
   lightradiusfade 200
   lightcolor 0.996 0.392 0.18
-  lightshadow 0.33
+  lightshadow 0
   notunderwater
   
   //TE_FIRE_BIG - FLAME
@@ -2516,7 +2514,7 @@ velocitymultiplier 1
     lightradius 10
     lighttime 0.1
     lightcolor 1 0.251 0
-    lightshadow 0.4
+    lightshadow 0
     notunderwater  
 //================================================
 
@@ -2563,7 +2561,7 @@ velocitymultiplier 1
     lightradius 10
     lighttime 0.1
     lightcolor 1 0.251 0
-    lightshadow 0.6
+    lightshadow 0
     notunderwater  
 //================================================
 
@@ -2610,7 +2608,7 @@ velocitymultiplier 1
     lightradius 10
     lighttime 0.1
     lightcolor 1 0.251 0
-    lightshadow 0.6
+    lightshadow 0
     notunderwater  
 //================================================
 
@@ -2961,7 +2959,7 @@ velocitymultiplier 2
     lightradius 75
     lightradiusfade 75
     lightcolor 1.0 0.4 0.0
-    lightshadow 0.75
+    lightshadow 0
   
   //TE_REPAIR_RAIL - MAIN RAIL
     effect TE_REPAIR_RAIL
@@ -3018,7 +3016,7 @@ velocitymultiplier 2
     lightradius 75
     lightradiusfade 75
     lightcolor 0.65 1.0 0.4
-    lightshadow 0.25
+    lightshadow 0
   
 //==========================================
 
@@ -3061,7 +3059,7 @@ velocitymultiplier 2
     lightradius 150
     lightradiusfade 75
     lightcolor 0.45 1.0 0.2
-    lightshadow 0.1
+    lightshadow 0
 //==========================================
 
 
@@ -3091,7 +3089,7 @@ velocitymultiplier 2
     lightradius 75
     lightradiusfade 25
     lightcolor 0.2 0.45 1.0
-    lightshadow 0.1
+    lightshadow 0
 //==========================================
 
 
@@ -3136,7 +3134,7 @@ velocitymultiplier 2
     lightradius 300
     lightradiusfade 500
     lightcolor 0.675 0.345 0.98
-    lightshadow 0.25
+    lightshadow 0
   
   //TE_FIELD_QUANTUM - BLACK LINES
     effect TE_FIELD_QUANTUM
@@ -3161,7 +3159,7 @@ velocitymultiplier 2
     lightradius 150
     lightradiusfade 750
     lightcolor 1 0.1 0.45
-    lightshadow 0.1
+    lightshadow 0
 //==========================================
 
 

@@ -48,7 +48,6 @@ void() data_projectile_ini_snub_artillery_={
   #ifdef CSQC
     //cosmetics
     self.model = "q3mdl/proj/mdl_proj_sfga.md3";
-    self.effects = EF_NOSHADOW | EF_LOWPRECISION;
     self.colormod =  '0.85 0.45 0.45';
     self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
     self.pcl_explode = projectile_sfga_expl;
@@ -62,7 +61,7 @@ void() data_projectile_ini_snub_artillery_={
     self.gravity = 0.03;
     self.movetype = MOVETYPE_TOSS;
     self.w_range = DAT_PRJ_SFGA_RAD;
-    self.effects = self.effects | EF_FULLBRIGHT;
+    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
   #endif
 };
 

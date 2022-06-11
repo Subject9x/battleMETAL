@@ -50,7 +50,6 @@ void() data_projectile_ini_plasma_={
     //cosmetics
     self.alpha = 0.85;
     self.model = "q3mdl/proj/mdl_proj_rpc.md3";
-    self.effects = EF_NOSHADOW | EF_LOWPRECISION;
     self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
     self.predraw_projectile = predraw_plasma;
     self.pcl_explode = projectile_plasma_expl;
@@ -59,7 +58,7 @@ void() data_projectile_ini_plasma_={
   #ifdef SSQC
     self.touch = data_projectile_plasma_touch;
     self.think = data_projectile_plasma_think_;
-    self.effects = self.effects | EF_LOWPRECISION;
+    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
   #endif
 };
 #ifdef SSQC
