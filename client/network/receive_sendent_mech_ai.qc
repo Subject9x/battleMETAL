@@ -239,9 +239,9 @@ void( float critical ) sendevent_mech_ai_crit={
   local float wId;
   local entity prev;
   
-  if( vlen(self.origin - pmove_org) < PARTICLE_HAZ_DISTANCE){
+  if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
     
-    traceline(self.origin, pmove_org, TRUE, self);
+    traceline(self.origin, client_vis_org, TRUE, self);
     
     if( trace_ent != world || trace_fraction == 1.0){
       if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (critical & M_TOR_LEFT) ){
@@ -292,7 +292,7 @@ void( float critical ) sendevent_mech_ai_crit={
 void(float criticalHits) sendevent_mech_burn={  
   local vector offset;
   
-  if( vlen(self.origin - pmove_org) >= PARTICLE_HAZ_DISTANCE){
+  if( vlen(self.origin - client_vis_org) >= PARTICLE_HAZ_DISTANCE){
     return;
   }
   
@@ -358,7 +358,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    self.critBits = ReadCoord();
+    self.critBits = ReadLong();
     if( self.critBits != 0 ){
       sendevent_mech_ai_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
@@ -366,7 +366,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.flags = ReadCoord();
+    self.flags = ReadLong();
     self.faction = ReadByte();
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
@@ -396,7 +396,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadCoord();
+    self.attackFlag = ReadLong();
     sendevent_handle_weaponfire();
   }
   
@@ -412,7 +412,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.critBits = ReadCoord();
+    self.critBits = ReadLong();
     if( self.critBits != 0 ){
       sendevent_mech_ai_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
@@ -420,9 +420,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadCoord();
+    self.burnBits = ReadLong();
     if( self.burnBits > 0 ){
-      particleDraw = vlen(pmove_org - self.origin);
+      particleDraw = vlen(client_vis_org - self.origin);
       if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
         sendevent_mech_burn( self.burnBits );
       }
@@ -468,7 +468,7 @@ void() interpolate_mech_ai={
   interpolate_ground();
 	setorigin(self, self.origin);
   
-  traceline(self.origin, pmove_org, FALSE, self);
+  traceline(self.origin, client_vis_org, FALSE, self);
   
   yesDraw = MASK_NORMAL;
   wepDraw = MASK_NORMAL;
@@ -476,11 +476,11 @@ void() interpolate_mech_ai={
     yesDraw = FALSE;
     wepDraw = FALSE;
   }
-  else if(vlen(pmove_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
+  else if(vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
     yesDraw = FALSE;
     wepDraw = FALSE;
   }
-  else if(vlen(pmove_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  else if(vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     wepDraw = FALSE;
   }
   

@@ -10,6 +10,7 @@ Overview:
   as well as map object events for Nav Points etc.
 */
 
+
 //Globals
 float MISSION_NAME_TIME = 5;
 float MISSION_NAME_TIME_RATE; //time calls in the render_view method must be gated against the refresh-rate

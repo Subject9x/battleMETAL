@@ -369,7 +369,9 @@ void() client_get_hud_highlight={
     hfx.data_idx = -3;  //more hacks
     hfx.classname = "UI_HIGHLIGHT"; //constant-in-code so no worry about zoning the value.
     
-    hfx.drawcolor1 = te_read_vector();
+    hfx.drawcolor1_x = ReadLong();
+    hfx.drawcolor1_y = ReadLong();
+    hfx.drawcolor1_z = ReadLong();
     t = ReadShort();
     hfx.partTypeId = ReadByte();
     hfx.partParentId = 0;
@@ -383,13 +385,17 @@ void() client_get_hud_highlight={
       }
       fnd = fnd + 1;
     }
-    hfx.drawsize = te_read_vector();  //we still send a prospective size because some HUD elements don't have a defined size?
+    hfx.drawsize_x = ReadLong();  //we still send a prospective size because some HUD elements don't have a defined size?
+    hfx.drawsize_y = ReadLong();  
+    hfx.drawsize_z = ReadLong();  
     
     if( hfx.partTypeId == 0 || !hfx.partTypeId ){
-      hfx.origin = te_read_vector();
+      hfx.origin_x = ReadLong();
+      hfx.origin_y = ReadLong();
+      hfx.origin_z = ReadLong();
     }
     
-    hfx.drawme = time + (t / 3);
+    hfx.drawme = servertime + (t / 3);
   }
 };
 
@@ -402,8 +408,8 @@ void() client_event_boundary={
   HUD_WARN_ON = ReadByte();
   HUD_WARN_DIR = ReadAngle();
   if( HUD_WARN_ON ){
-    if( time > HUD_WARN_MARK ){
-      HUD_WARN_MARK = time + HUD_WARN_TIME;
+    if( servertime > HUD_WARN_MARK ){
+      HUD_WARN_MARK = servertime + HUD_WARN_TIME;
     }
   }
 };
@@ -411,8 +417,8 @@ void() client_event_boundary={
 void() client_event_environment={
   HUD_WARN_ENV_ON = TRUE;
   if( HUD_WARN_ENV_ON ){
-    if( time > HUD_WARN_ENV_MARK ){
-      HUD_WARN_ENV_MARK = time + HUD_WARN_ENV_TIME;
+    if( servertime > HUD_WARN_ENV_MARK ){
+      HUD_WARN_ENV_MARK = servertime + HUD_WARN_ENV_TIME;
     }
   }
 };

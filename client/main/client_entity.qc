@@ -33,7 +33,7 @@ void(float isnew) CSQC_Ent_Update =
   local float entFlags;
   
   entType = ReadByte();
-  entFlags = ReadCoord(); //expanding entFlags values -> data/common
+  entFlags = ReadLong(); //expanding entFlags values -> data/common
   
   switch(entType){
     case SENDTYPE_PLAYER:

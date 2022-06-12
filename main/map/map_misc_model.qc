@@ -13,7 +13,7 @@ Line 20 - MAP_TERRAIN_MODEL
 float( float isNew, float changeFlags) terrain_model_send={
 
   WriteByte( MSG_ENTITY, SENDTYPE_TERRAIN );
-  WriteByte( MSG_ENTITY, changeFlags );
+  WriteLong( MSG_ENTITY, changeFlags );
 
   if( (changeFlags & SENDFLAG_NEWENT) ){
     WriteShort( MSG_ENTITY, self.modelindex );

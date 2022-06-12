@@ -131,7 +131,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   VIEW_ORG = '0 0';
   VIEW_SCALE = 0.35;
-  
+  client_vis_org = pmove_org;
   if( [cvar("vid_conwidth"),cvar("vid_conheight")] != VIEW_MAX){
     //detect resolution change.
     gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
@@ -190,7 +190,12 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 
 	// draw custom hud
   if(CLIENT_data_type == DATA_MECH){
-    
+    if(CLIENT_mech_self.chaseActive){
+      client_vis_org = pmove_org + (v_forward * cvar("chase_back") * -1) + (v_up * cvar("chase_up"));
+    }
+    else{
+      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z) + (v_up * CLIENT_mech_self.cameraOffset_y + (CLIENT_mech_self.cameraOffset_y/2));
+    }
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
       //HUD Highlight Boxes

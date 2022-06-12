@@ -5,6 +5,9 @@
   Overview: client particle system header
 */
 
+
+vector client_vis_org;  //used for vis culling.
+
 /*a = ent.absmin
 b = ent.absMax
 c = mins

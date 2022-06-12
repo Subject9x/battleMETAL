@@ -239,7 +239,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
-    ownerId = ReadCoord();
+    ownerId = ReadLong();
     self.owner = findfloat(world, entnum, ownerId);
   }
   
@@ -251,9 +251,9 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     self.oldvelocity = self.velocity;
-    self.velocity_x = ReadShort();
-    self.velocity_y = ReadShort();
-    self.velocity_z = ReadShort();
+    self.velocity_x = ReadLong();
+    self.velocity_y = ReadLong();
+    self.velocity_z = ReadLong();
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){

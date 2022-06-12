@@ -107,7 +107,7 @@ void() func_meta_particlecube_th={
 float( float isNew, float changedFlags ) send_pcl_cube_meta={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_PCL_CUBE );
   //--------
   if( (changedFlags & SENDFLAG_NEWENT) ){

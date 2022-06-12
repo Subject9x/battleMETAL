@@ -90,7 +90,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //EVENT - New to player
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.spawnflags = fabs(ceil(ReadCoord()));
+    self.spawnflags = fabs(ceil(ReadLong()));
     self.data_idx = ReadByte();
     if( !(self.spawnflags & MUTE_ME)  ){
       self.ai_muted = FALSE;
@@ -138,7 +138,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = fabs(ReadCoord());
+    self.attackFlag = fabs(ReadLong());
     sendevent_handle_weaponfire();
   }
   
@@ -160,7 +160,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //EVENT - health dropped below threshold
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadCoord();
+    self.burnBits = ReadLong();
     if( self.burnBits > 0 ){
       if( (self.burnBits & WEAPON1) && !self.effect1.count ){
         self.effect1 = te_building_fire_start( self );

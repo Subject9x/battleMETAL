@@ -117,21 +117,21 @@ void( entity targetClient ) client_push_hud_highlight={
     WriteByte( MSG_ONE, SVC_TEMPENTITY );
     WriteByte( MSG_ONE, TE_UI_BOX );
     
-    WriteCoord( MSG_ONE, this.color_x );
-    WriteCoord( MSG_ONE, this.color_y );
-    WriteCoord( MSG_ONE, this.color_z );
+    WriteLong( MSG_ONE, this.color_x );
+    WriteLong( MSG_ONE, this.color_y );
+    WriteLong( MSG_ONE, this.color_z );
     
     WriteShort( MSG_ONE, this.data_lifetime );
     WriteByte( MSG_ONE, this.partTypeId );
     
-    WriteCoord( MSG_ONE, this.compOffset_x );
-    WriteCoord( MSG_ONE, this.compOffset_y );
-    WriteCoord( MSG_ONE, this.compOffset_z );
+    WriteLong( MSG_ONE, this.compOffset_x );
+    WriteLong( MSG_ONE, this.compOffset_y );
+    WriteLong( MSG_ONE, this.compOffset_z );
       
     if( this.partTypeId == 0 || !this.partTypeId ){
-      WriteCoord( MSG_ONE, this.movedir_x );
-      WriteCoord( MSG_ONE, this.movedir_y );
-      WriteCoord( MSG_ONE, this.movedir_z );
+      WriteLong( MSG_ONE, this.movedir_x );
+      WriteLong( MSG_ONE, this.movedir_y );
+      WriteLong( MSG_ONE, this.movedir_z );
     }
   self = this;
 };
@@ -525,18 +525,17 @@ void(entity client, float worldFog, float fogDense, vector fogColor, float fogAl
   
   WriteByte( MSG_ONE, worldFog);
   
-  WriteCoord( MSG_ONE, fogColor_x );
-  WriteCoord( MSG_ONE, fogColor_y );
-  WriteCoord( MSG_ONE, fogColor_z );
+  WriteLong( MSG_ONE, fogColor_x );
+  WriteLong( MSG_ONE, fogColor_y );
+  WriteLong( MSG_ONE, fogColor_z );
   
+  WriteLong( MSG_ONE, fogDist_x );
+  WriteLong( MSG_ONE, fogDist_y );
+  WriteLong( MSG_ONE, fogDist_z );
   
-  WriteCoord( MSG_ONE, fogDist_x );
-  WriteCoord( MSG_ONE, fogDist_y );
-  WriteCoord( MSG_ONE, fogDist_z );
-  
-  WriteCoord( MSG_ONE, fogAlpha );
-  WriteCoord( MSG_ONE, fogDense );
-  WriteCoord( MSG_ONE, fogFade );
+  WriteLong( MSG_ONE, fogAlpha );
+  WriteLong( MSG_ONE, fogDense );
+  WriteLong( MSG_ONE, fogFade );
   
 };
 
@@ -548,17 +547,17 @@ void(entity client, entity cube) client_sendParticleCube={
   
   WriteByte( MSG_ONE, cube.data_idx );
   
-  WriteCoord( MSG_ONE, cube.compOffset_x );
-  WriteCoord( MSG_ONE, cube.compOffset_y );
-  WriteCoord( MSG_ONE, min(client.mins_z, cube.compOffset_z) );
+  WriteLong( MSG_ONE, cube.compOffset_x );
+  WriteLong( MSG_ONE, cube.compOffset_y );
+  WriteLong( MSG_ONE, min(client.mins_z, cube.compOffset_z) );
   
-  WriteCoord( MSG_ONE, cube.compAltOffset_x );
-  WriteCoord( MSG_ONE, cube.compAltOffset_y );
-  WriteCoord( MSG_ONE, cube.compAltOffset_z );
+  WriteLong( MSG_ONE, cube.compAltOffset_x );
+  WriteLong( MSG_ONE, cube.compAltOffset_y );
+  WriteLong( MSG_ONE, cube.compAltOffset_z );
   
-  WriteCoord( MSG_ONE, cube.velocity_x );
-  WriteCoord( MSG_ONE, cube.velocity_y );
-  WriteCoord( MSG_ONE, cube.velocity_z );
+  WriteLong( MSG_ONE, cube.velocity_x );
+  WriteLong( MSG_ONE, cube.velocity_y );
+  WriteLong( MSG_ONE, cube.velocity_z );
   
   WriteShort( MSG_ONE, cube.count );
   WriteShort( MSG_ONE, cube.count1 );

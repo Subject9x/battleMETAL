@@ -89,7 +89,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.flags = ReadCoord();
+    self.flags = ReadLong();
     self.faction = ReadByte();
     self.next_wepn1 = ReadByte();
     self.next_wepn2 = ReadByte();
@@ -146,7 +146,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       if( self.pcl_effectnum == 0 ){
         self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       }
-      particleDraw = vlen(pmove_org - self.origin); 
+      particleDraw = vlen(client_vis_org - self.origin); 
       if( particleDraw < PARTICLE_HAZ_DISTANCE ){
         makevectors(self.angles);
         pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
@@ -156,12 +156,12 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   
   //EVENT - UNIT MOVE
   if( (changeFlags & SENDFLAG_TARGET) ){
-    self.getTarget = rint(ReadCoord());
+    self.getTarget = ReadLong();
     self.enemy = findfloat(world, entnum, self.getTarget);
   }
 
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadCoord();
+    self.attackFlag = ReadLong();
     sendevent_handle_weaponfire();
   }
   

@@ -505,7 +505,7 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
   local float sendCrit;
   
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
-  WriteCoord( MSG_ENTITY, changedflags );
+  WriteLong( MSG_ENTITY, changedflags );
   //======================
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -528,12 +528,12 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     sendCrit = self.critBits;
     self.criticalHits = self.criticalHits | self.critBits;
     self.critBits = 0;
-    WriteCoord( MSG_ENTITY, sendCrit );
+    WriteLong( MSG_ENTITY, sendCrit );
   }
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteCoord( MSG_ENTITY, self.flags );
+    WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.next_wepn1);
     WriteByte( MSG_ENTITY, self.next_wepn2);
@@ -557,7 +557,7 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
   }
   
   if( (changedflags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, self.attackFlag );
+    WriteLong( MSG_ENTITY, self.attackFlag );
   }
   
   if( (changedflags & SENDFLAG_TURRET) ){
@@ -572,11 +572,11 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     sendCrit = self.critBits;
     self.criticalHits = self.criticalHits | self.critBits;
     self.critBits = 0;
-    WriteCoord( MSG_ENTITY, sendCrit );
+    WriteLong( MSG_ENTITY, sendCrit );
   }
   
   if( (changedflags & SENDFLAG_BURN) ){
-    WriteCoord( MSG_ENTITY, self.burnBits );
+    WriteLong( MSG_ENTITY, self.burnBits );
   }
   if( (changedflags & SENDFLAG_VOICE) ){
     if( !(changedflags & SENDFLAG_NEWENT) ){

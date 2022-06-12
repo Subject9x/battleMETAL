@@ -18,16 +18,16 @@ vector( vector startOrg ) te_apply_wind={
 
 float( float isNew, float changedFlags ) te_send_missile={
   WriteByte( MSG_ENTITY, SENDTYPE_PROJ );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.damageValue );
     if( (self.owner.flags & FL_CLIENT) ){
-      WriteCoord( MSG_ENTITY, num_for_edict(self.owner.clientData));
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner.clientData));
     }
     else{
-      WriteCoord( MSG_ENTITY, num_for_edict(self.owner));
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner));
     }
   }
   
@@ -38,9 +38,9 @@ float( float isNew, float changedFlags ) te_send_missile={
   }
   
   if( (changedFlags & SENDFLAG_VELOCITY) ){
-    WriteShort( MSG_ENTITY, self.velocity_x );
-    WriteShort( MSG_ENTITY, self.velocity_y );
-    WriteShort( MSG_ENTITY, self.velocity_z );
+    WriteLong( MSG_ENTITY, self.velocity_x );
+    WriteLong( MSG_ENTITY, self.velocity_y );
+    WriteLong( MSG_ENTITY, self.velocity_z );
   }
   
   if( (changedFlags & SENDFLAG_TURRET) ){

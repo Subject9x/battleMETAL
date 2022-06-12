@@ -101,7 +101,7 @@ void() ctrl_updateTank={
 
 float( float isNew, float changedflags ) ctrl_send_tank={
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
-  WriteCoord( MSG_ENTITY, changedflags );
+  WriteLong( MSG_ENTITY, changedflags );
   
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -120,7 +120,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteCoord( MSG_ENTITY, self.flags );
+    WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.next_wepn1);
     WriteByte( MSG_ENTITY, self.next_wepn2);
@@ -157,10 +157,10 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   //}
   
   if( (changedflags & SENDFLAG_TARGET) ){
-    WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    WriteLong( MSG_ENTITY, num_for_edict(self.enemy));
   }
   if( (changedflags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, self.attackFlag );
+    WriteLong( MSG_ENTITY, self.attackFlag );
   }
   if( (changedflags & SENDFLAG_VOICE) ){
     if( !(changedflags & SENDFLAG_NEWENT) ){
@@ -173,7 +173,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
 
 float( float isNew, float changedflags ) ctrl_send_spg={
   WriteByte( MSG_ENTITY, SENDTYPE_SPG );
-  WriteCoord( MSG_ENTITY, changedflags );
+  WriteLong( MSG_ENTITY, changedflags );
   
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -192,7 +192,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteCoord( MSG_ENTITY, self.flags );
+    WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.next_wepn1);
     WriteByte( MSG_ENTITY, self.next_wepn2);
@@ -224,10 +224,10 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   //}
   
   if( (changedflags & SENDFLAG_TARGET) ){
-    WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    WriteLong( MSG_ENTITY, num_for_edict(self.enemy));
   }
   if( (changedflags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, self.attackFlag );
+    WriteLong( MSG_ENTITY, self.attackFlag );
   }
   if( (changedflags & SENDFLAG_VOICE) ){
     if( !(changedflags & SENDFLAG_NEWENT) ){
@@ -240,7 +240,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
 
 float( float isNew, float changedflags ) ctrl_send_gev={
   WriteByte( MSG_ENTITY, SENDTYPE_GEV );
-  WriteCoord( MSG_ENTITY, changedflags );
+  WriteLong( MSG_ENTITY, changedflags );
   
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -259,7 +259,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteCoord( MSG_ENTITY, self.flags );
+    WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, self.next_wepn1);
     WriteByte( MSG_ENTITY, self.next_wepn2);
@@ -295,10 +295,10 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   //}
   
   if( (changedflags & SENDFLAG_TARGET) ){
-    WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    WriteLong( MSG_ENTITY, num_for_edict(self.enemy));
   }
   if( (changedflags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, self.attackFlag );
+    WriteLong( MSG_ENTITY, self.attackFlag );
   }
   
   if( (changedflags & SENDFLAG_VOICE) ){

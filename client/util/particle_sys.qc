@@ -298,7 +298,7 @@ void( vector org, float total ) te_unit_dust={
   local vector dir;
   local vector torg;
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     makevectors(self.angles);
     torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
@@ -337,7 +337,7 @@ void() te_building_fire_th={
     
   self.compAltOffset = te_apply_wind( self.origin );
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
   }
@@ -434,7 +434,7 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
     setorigin( explode, org);
   }
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_customflash( org, explodeSize * 50, 1, explodeColor);
     
@@ -742,7 +742,7 @@ void() particle_vehicle_wreck_cleanup={
 
 void() particle_vehicle_wreck_th={
   if( time < self.pcl_fadeout ){
-    particleDraw = vlen(pmove_org - self.origin);
+    particleDraw = vlen(client_vis_org - self.origin);
     if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
       pointparticles( self.pcl_effectnum, self.origin, self.pcl_velocity, self.pcl_count);
     }
@@ -814,7 +814,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   local float effType;
   local float sizeMod;
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     
     makevectors( entAngl );
@@ -978,7 +978,7 @@ void() te_mech_dead_legs_burn={
     return;
   }
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     makevectors(self.angles);
     fireOrg = self.origin + (v_up * self.maxs_z);
@@ -993,7 +993,7 @@ void() te_mech_dead_legs_burn={
 void() te_mech_dead_legs_smoke={
   local vector fireOrg;
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     makevectors(self.angles);
     fireOrg = self.origin + (v_up * self.maxs_z);
@@ -1013,9 +1013,17 @@ void() particle_box_ini={
   
   PTC_CUBE_TYPE = ReadByte();
   
-  PTC_CUBE_MIN = te_read_vector();
-  PTC_CUBE_MAX = te_read_vector();
-  PTC_CUBE_VEL = te_read_vector();
+  PTC_CUBE_MIN_x = ReadLong();
+  PTC_CUBE_MIN_y = ReadLong();
+  PTC_CUBE_MIN_z = ReadLong();
+  
+  PTC_CUBE_MAX_x = ReadLong();
+  PTC_CUBE_MAX_y = ReadLong();
+  PTC_CUBE_MAX_z = ReadLong();
+  
+  PTC_CUBE_VEL_x = ReadLong();
+  PTC_CUBE_VEL_y = ReadLong();
+  PTC_CUBE_VEL_z = ReadLong();
   
   PTC_CUBE_COUNT = ReadShort();
   PTC_CUBE_COLOR = ReadShort();

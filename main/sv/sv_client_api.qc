@@ -715,7 +715,7 @@ float( float isNew, float changeFlags ) send_client_data={
     self.shieldHitFlag = 0;
   }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
-  WriteCoord( MSG_ENTITY, changeFlags );
+  WriteLong( MSG_ENTITY, changeFlags );
   //=============================================
   /*
     EVENT - per-frame update
@@ -744,7 +744,7 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, self.stat_client_energy );
   }
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, player.attackFlag);
+    WriteLong( MSG_ENTITY, player.attackFlag);
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
     WriteByte( MSG_ENTITY, player.chaseActive);
@@ -784,10 +784,10 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.next_wepn7);
     WriteByte( MSG_ENTITY, player.next_wepn8);
     WriteByte( MSG_ENTITY, player.next_wepn9);
-    WriteCoord( MSG_ENTITY, player.data_speed_forward);
-    WriteCoord( MSG_ENTITY, player.data_speed_strafe);
-    WriteCoord( MSG_ENTITY, player.data_speed_backward);
-    WriteCoord( MSG_ENTITY, player.data_speed_accel);
+    WriteLong( MSG_ENTITY, player.data_speed_forward);
+    WriteLong( MSG_ENTITY, player.data_speed_strafe);
+    WriteLong( MSG_ENTITY, player.data_speed_backward);
+    WriteLong( MSG_ENTITY, player.data_speed_accel);
   }
   
   if( (changeFlags & SENDFLAG_COLORS) ){
@@ -838,7 +838,7 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
-    WriteCoord( MSG_ENTITY, player.flags );
+    WriteLong( MSG_ENTITY, player.flags );
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){

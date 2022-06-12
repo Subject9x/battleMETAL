@@ -19,7 +19,7 @@ float( float isNew, float changeFlags ) send_scenery={
   }
   
   WriteByte( MSG_ENTITY, SENDTYPE_MISC );
-  WriteCoord( MSG_ENTITY, newFlags );
+  WriteLong( MSG_ENTITY, newFlags );
   //======================================
   
   if( (newFlags & SENDFLAG_MOVE) ){

@@ -60,7 +60,7 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
   
   //SendEnt header
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_MAP_RULES );
   //==================================================
   if( (changedFlags & SENDFLAG_GAMETYPE) ){

@@ -110,7 +110,7 @@ void() player_think={
   traceline(laserOrg, laserHit, FALSE, self);
   self.laser_sight_org = trace_endpos;
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     sendevent_player_burn();
   }
@@ -135,7 +135,7 @@ void() player_think={
           break;
       }
       
-      particleDraw = vlen(pmove_org - self.origin);
+      particleDraw = vlen(client_vis_org - self.origin);
       if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
         trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
         trailparticles(world, particleeffectnum(te), boostRight, backRight);
@@ -644,7 +644,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.energy = ReadByte();
   }
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadCoord();
+    self.attackFlag = ReadLong();
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
     self.chaseActive = fabs(ReadByte());
@@ -702,10 +702,10 @@ void( float isNew, float changeFlags) sendent_handle_player={
         sendevent_player_mech(self.data_idx);
       }
     }
-    cvar_set("cl_forwardspeed", ftos(ReadCoord()));
-    cvar_set("cl_sidespeed", ftos(ReadCoord()));
-    cvar_set("cl_backspeed", ftos(ReadCoord()));
-    cvar_set("cl_movespeedkey", ftos(ReadCoord()));
+    cvar_set("cl_forwardspeed", ftos(ReadLong()));
+    cvar_set("cl_sidespeed", ftos(ReadLong()));
+    cvar_set("cl_backspeed", ftos(ReadLong()));
+    cvar_set("cl_movespeedkey", ftos(ReadLong()));
   }
   
   if( (changeFlags & SENDFLAG_COLORS) ){
@@ -770,7 +770,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
-    self.flags = rint(ceil(ReadCoord()));
+    self.flags = rint(ceil(ReadLong()));
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
@@ -810,7 +810,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
       self.scale = 0.01;
     }
     self.think = player_think;
-    self.nextthink = time + 0.01;
+    self.nextthink = servertime + 0.01;
     self.t_remove = remove_client;
     if( controlPlayer != world && controlPlayer.entnum == self.clientServerNum ){
       controlPlayer.clientData = self;

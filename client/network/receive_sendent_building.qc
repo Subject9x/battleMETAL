@@ -98,7 +98,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.spawnflags = rint(ceil(ReadCoord()));
+    self.spawnflags = rint(ceil(ReadLong()));
     self.data_idx = ReadByte();
     setorigin(self, self.origin);
   }
@@ -172,7 +172,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.burstRate = ReadByte();
       self.w_firetime = ReadByte();
       if(self.w_firetime > FALSE ){
-        self.targetEntId = ReadCoord();
+        self.targetEntId = ReadLong();
       }
     }
     if( self.data_idx == UI_BUILDING_radar ){
@@ -188,7 +188,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
 
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = fabs(ceil(ReadCoord()));
+    self.burnBits = fabs(ceil(ReadLong()));
     if( self.burnBits > 0 ){
       if( (self.burnBits & WEAPON1) && self.effect1 != world ){
         self.effect1 = te_building_fire_start( self );
