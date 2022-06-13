@@ -13,22 +13,25 @@ void() model_misc_building_set={
     default:
       //building_misc_apartment
       setmodel(self, "q3mdl/buildings/misc/misc_apt_sm.obj");
-      if( self.angles_y == 90 ){
+      setsize(self, self.mins, self.maxs);
+      cons_log2Vectors("misc_apt_sm - MINS", self.mins, "misc_apt_sm-MAXS", self.maxs); //debug
+      /*if( self.angles_y == 90 ){
         setsize(self, '-20 -36 -26', '20 36 26');
       }
       else{
         setsize(self, '-36 -20 -26', '36 20 26');
-      }
+      }*/
       break;
     case 2:
       //building_misc_factory_med
       setmodel(self, "q3mdl/buildings/misc/misc_fact_med.obj");
-      if( self.angles_y == 90 ){
+      setsize(self, self.mins, self.maxs);
+      /*if( self.angles_y == 90 ){
         setsize(self, '-88 -36 -38', '88 36 38');
       }
       else{
         setsize(self, '-36 -88 -38', '36 88 38');
-      }
+      }*/
       break;
     case 3:
       //building_misc_lodge
@@ -48,12 +51,13 @@ void() model_misc_building_set={
     case 6:
       //building_misc_off_small
        setmodel(self, "q3mdl/buildings/misc/misc_off_sm.obj");
-      if( self.angles_y == 90 ){
+      setsize(self, self.mins, self.maxs);
+      /*if( self.angles_y == 90 ){
         setsize(self, '-56 -36 -40', '56 36 40');
       }
       else{
         setsize(self, '-36 -56 -40', '36 56 40');
-      }
+      }*/
       break;
     case 7:
       //building_misc_fact_steam
@@ -63,7 +67,8 @@ void() model_misc_building_set={
     case 8:
       //building_misc_apt_larg
       setmodel(self, "q3mdl/buildings/misc/misc_apt_larg.obj");
-      if( self.angles_y == 90 ){
+      setsize(self, self.mins, self.maxs);
+      /*if( self.angles_y == 90 ){
         setsize( self, '-96 -60 -28', '96 60 28');
       }
       else if( self.angles_y == 180 ){
@@ -74,7 +79,7 @@ void() model_misc_building_set={
       }
       else{
         setsize( self, '-60 -96 -28', '60 96 28');
-      }
+      }*/
       break;
   }
   setorigin(self, self.origin);

@@ -113,10 +113,10 @@ void() hshield_th ={
       if( !(t.flags & (FL_UNIT|FL_MONSTER)) ){
         continue;
       }
-      if( vlen(t.origin - self.origin) > self.ai_minrange ){
+      if( t.faction != self.faction ){
         continue;
       }
-      if( t.faction != self.faction ){
+      if( vlen(t.origin - self.origin) > self.ai_minrange ){
         continue;
       }
       if( time > t.shieldHitDelay ){

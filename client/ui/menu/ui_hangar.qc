@@ -178,7 +178,7 @@ void(vector ofs) menu_hangar_MechHPoints={
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-      ui_renderHardpointRow(nofs + '10 10', hardpointItr - 1, hardpoint.hardpointType, hardpoint.hardpointSize);
+      ui_renderHardpointRow(nofs + '10 10', hardpointItr - 1, hardpoint.hardpointSize);
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }

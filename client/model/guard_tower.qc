@@ -12,7 +12,7 @@ Overview:
 void() guard_post_dlights={
   //apparently when menu running, these just get STACCCCCCKED and murder framerate.
   if(MENU_PROG_OFF){
-    particleDraw = vlen(pmove_org - self.origin);      
+    particleDraw = vlen(client_vis_org - self.origin);      
     if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
       if( self.deadflag == DEAD_NO ){
         makevectors(self.w_adj_ang);

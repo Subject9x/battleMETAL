@@ -194,7 +194,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       client_vis_org = pmove_org + (v_forward * cvar("chase_back") * -1) + (v_up * cvar("chase_up"));
     }
     else{
-      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z) + (v_up * CLIENT_mech_self.cameraOffset_y + (CLIENT_mech_self.cameraOffset_y/2));
+      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z) + (v_up * (CLIENT_mech_self.cameraOffset_y + (CLIENT_mech_self.cameraOffset_y/2)));
     }
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){

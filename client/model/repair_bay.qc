@@ -39,7 +39,7 @@ void() repair_bay_dlights={
       }
     }    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
     if(MENU_PROG_OFF){  
-      particleDraw = vlen(pmove_org - self.origin);      
+      particleDraw = vlen(client_vis_org - self.origin);      
       if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
         adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
       }
@@ -131,7 +131,7 @@ void() sendevent_repair_beam={
   }
   
   
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
     pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( self.compAltOffset - self.compOffset ) * 2, 1);
     pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), self.compAltOffset, normalize( self.compOffset - self.compAltOffset ) * -2, 1);

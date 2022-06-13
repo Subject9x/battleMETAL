@@ -194,7 +194,7 @@ void( vector org, vector imgSize, float wepType, vector highColor ) ui_renderHar
   Renders 1 row in the Hangar Menu.
   Displays Hardpoint data for the selected Mech.
 */
-void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
+void(vector org, float hpt_num, float sz) ui_renderHardpointRow={
   local vector pofs, hptNumOrg, hptSizeOrg;
   local string hardpointLabel;
   local float drawfontLocal;
@@ -454,48 +454,48 @@ void(vector showAng, vector colors, float useClientColor) menu_player_MechModel_
   }
   
   UI_HANGAR_DATA_mech.angles            = showAng;
-  setmodel(UI_HANGAR_DATA_mech.torsoCenter, UI_HANGAR_DATA_mech.torsoCenter.model);
   UI_HANGAR_DATA_mech.torsoCenter.colormod= colorCt;
   UI_HANGAR_DATA_mech.torsoCenter.angles= showAng;
   UI_HANGAR_DATA_mech.torsoCenter.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+  setmodel(UI_HANGAR_DATA_mech.torsoCenter, UI_HANGAR_DATA_mech.torsoCenter.model);
   
   if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
-    setmodel(UI_HANGAR_DATA_mech.torsoLeft, UI_HANGAR_DATA_mech.torsoLeft.model);
     UI_HANGAR_DATA_mech.torsoLeft.colormod  = colorLt;
     UI_HANGAR_DATA_mech.torsoLeft.angles  = showAng;
     UI_HANGAR_DATA_mech.torsoLeft.effects   = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    setmodel(UI_HANGAR_DATA_mech.torsoLeft, UI_HANGAR_DATA_mech.torsoLeft.model);
   }
   if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
-    setmodel(UI_HANGAR_DATA_mech.torsoRight, UI_HANGAR_DATA_mech.torsoRight.model);
     UI_HANGAR_DATA_mech.torsoRight.colormod = colorRt;
     UI_HANGAR_DATA_mech.torsoRight.angles = showAng;
     UI_HANGAR_DATA_mech.torsoRight.effects  = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    setmodel(UI_HANGAR_DATA_mech.torsoRight, UI_HANGAR_DATA_mech.torsoRight.model);
   }
   if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
-    setmodel(UI_HANGAR_DATA_mech.armLeft, UI_HANGAR_DATA_mech.armLeft.model);
     UI_HANGAR_DATA_mech.armLeft.colormod    = colorLa;
     UI_HANGAR_DATA_mech.armLeft.angles    = showAng;
     UI_HANGAR_DATA_mech.armLeft.effects     = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    setmodel(UI_HANGAR_DATA_mech.armLeft, UI_HANGAR_DATA_mech.armLeft.model);
   }
   if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
-    setmodel(UI_HANGAR_DATA_mech.armRight, UI_HANGAR_DATA_mech.armRight.model);
     UI_HANGAR_DATA_mech.armRight.colormod   = colorRa;
     UI_HANGAR_DATA_mech.armRight.angles   = showAng;
     UI_HANGAR_DATA_mech.armRight.effects    = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    setmodel(UI_HANGAR_DATA_mech.armRight, UI_HANGAR_DATA_mech.armRight.model);
   }
-  setmodel(UI_HANGAR_DATA_mech.legs, UI_HANGAR_DATA_mech.legs.model);
   UI_HANGAR_DATA_mech.legs.colormod       = colorLg;
   UI_HANGAR_DATA_mech.legs.angles       = showAng;
   UI_HANGAR_DATA_mech.legs.effects        = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   UI_HANGAR_DATA_mech.legs.frame = 0;
+  setmodel(UI_HANGAR_DATA_mech.legs, UI_HANGAR_DATA_mech.legs.model);
   
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   while(hardpoint){
     data_get_client_item_( hardpoint, hardpoint.data_idx );
-    setmodel(hardpoint, hardpoint.model);
     hardpoint.colormod = '1.0 1.0 1.0';
     hardpoint.angles = showAng;
     hardpoint.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    setmodel(hardpoint, hardpoint.model);
     hardpoint  = hardpoint.w_slot;
   }
 };

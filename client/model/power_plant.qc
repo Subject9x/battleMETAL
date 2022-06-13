@@ -37,7 +37,7 @@ void() power_plant_active={
     return;
   }
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
     //local vfx - green ball
     vfx = randompos( self.compAltOffset, self.compOffset);
@@ -66,7 +66,7 @@ void() power_plant_die1={
   
   margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) );
@@ -83,7 +83,7 @@ void() power_plant_die2={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -97,7 +97,7 @@ void() power_plant_die3={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -112,7 +112,7 @@ void() power_plant_die4={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -128,7 +128,7 @@ void() power_plant_die5={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -146,7 +146,7 @@ void() power_plant_die6={
 
   margin = randompos(self.absmin, self.absmax);
  
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -162,7 +162,7 @@ void() power_plant_die7={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -180,7 +180,7 @@ void() power_plant_die8={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -198,7 +198,7 @@ void() power_plant_die9={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -214,7 +214,7 @@ void() power_plant_die10={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -232,7 +232,7 @@ void() power_plant_die11={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -251,7 +251,7 @@ void() power_plant_die12={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -268,7 +268,7 @@ void() power_plant_die13={
 
   margin = randompos(self.absmin, self.absmax);
  
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -286,7 +286,7 @@ void() power_plant_die14={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -304,7 +304,7 @@ void() power_plant_die15={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;
@@ -321,7 +321,7 @@ void() power_plant_die16={
 
   margin = randompos(self.absmin, self.absmax);
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) ) ;

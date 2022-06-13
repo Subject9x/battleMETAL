@@ -117,7 +117,6 @@ void() menu_armingListener_onHover={
       UI_ARMING_hardpoint_type_roll = hardpoint.hardpointSize;
       
       CLIENT_MENU_sel_hrpnt_size = hardpoint.hardpointSize;
-      CLIENT_MENU_sel_hrpnt_types = hardpoint.hardpointType;
       CLIENT_MENU_sel_hrpnt = hardpointItr;
       CLIENT_MENU_sel_wep = hardpoint.data_idx;
       UI_ARMING_hardpoint_click = FALSE;
@@ -287,7 +286,6 @@ void() hardpointListener={
         if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, '28 28', TRUE)){
           CLIENT_MENU_sel_wid = wepbit;
           CLIENT_MENU_sel_hrpnt_size = hardpoint.hardpointSize;
-          CLIENT_MENU_sel_hrpnt_types = hardpoint.hardpointType;
           CLIENT_MENU_sel_hrpnt = hardpointItr;
           CLIENT_MENU_sel_wep = hardpoint.data_idx;
           UI_ARMING_hardpoint_click = TRUE;

@@ -34,7 +34,7 @@ void() shield_gen_active={
     return;
   }
   
-  particleDraw = vlen(pmove_org - self.origin);
+  particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
     vfx = randompos(self.compOffset, self.compAltOffset);
     vfx2= randompos(self.compOffset, self.compAltOffset);
@@ -54,7 +54,7 @@ void() shield_gen_active={
 void() shield_gen_die1={
   local vector margin;
   
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));  
     te_field_quantum( randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)), randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)) );
@@ -76,7 +76,7 @@ void() shield_gen_die2={
   local vector margin;
 
     
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
     te_field_quantum( randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)), randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)) );
@@ -97,7 +97,7 @@ void() shield_gen_die3={
   local vector margin;
 
     
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
     te_field_quantum( randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)), randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)) );
@@ -117,7 +117,7 @@ void() shield_gen_die3={
 void() shield_gen_die4={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -137,7 +137,7 @@ void() shield_gen_die4={
 void() shield_gen_die5={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -157,7 +157,7 @@ void() shield_gen_die5={
 void() shield_gen_die6={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -176,7 +176,7 @@ void() shield_gen_die6={
 void() shield_gen_die7={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -195,7 +195,7 @@ void() shield_gen_die7={
 void() shield_gen_die8={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -215,7 +215,7 @@ void() shield_gen_die8={
 void() shield_gen_die9={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -234,7 +234,7 @@ void() shield_gen_die9={
 void() shield_gen_die10={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -251,7 +251,7 @@ void() shield_gen_die10={
 void() shield_gen_die11={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -270,7 +270,7 @@ void() shield_gen_die11={
 void() shield_gen_die12={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -283,7 +283,7 @@ void() shield_gen_die12={
 void() shield_gen_die13={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -296,7 +296,7 @@ void() shield_gen_die13={
 void() shield_gen_die14={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -309,7 +309,7 @@ void() shield_gen_die14={
 void() shield_gen_die15={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   
@@ -322,7 +322,7 @@ void() shield_gen_die15={
 void() shield_gen_die16={
   local vector margin;
  
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));
   

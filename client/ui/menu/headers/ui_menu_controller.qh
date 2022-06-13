@@ -56,7 +56,6 @@ float MENU_respawn_cool_start;  //set when screen is first transitioned to, prev
 float CLIENT_MENU_menu_choice;
 float CLIENT_MENU_sel_hrpnt;
 float CLIENT_MENU_sel_list_wep;
-float CLIENT_MENU_sel_hrpnt_types;
 float CLIENT_MENU_sel_hrpnt_size;
 float CLIENT_MENU_sel_wep;
 float CLIENT_MENU_sel_wid;

@@ -35,4 +35,3 @@ Overview:
 .vector compOffset;
 .vector hitOffset;    //used for t_damage calcs, its compOffset without the 'depth' (Z) field.
 .float hardpointSize;
-.float hardpointType;
