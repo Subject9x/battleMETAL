@@ -437,57 +437,24 @@ void(vector showAng, vector colors, float useClientColor) menu_player_MechModel_
   local vector colorCt, colorLt, colorRt, colorLa, colorRa, colorLg;
   local entity hardpoint;
   if(useClientColor){
-    colorCt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR1))] * 1.5;
-    colorLt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR2))] * 1.5;
-    colorRt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR3))] * 1.5;
-    colorLa = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR4))] * 1.5;
-    colorRa = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR5))] * 1.5;
-    colorLg = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR6))] * 1.5;
+    UI_HANGAR_DATA_mech.unitColorCT = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR1));
+    UI_HANGAR_DATA_mech.unitColorLT = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR2));
+    UI_HANGAR_DATA_mech.unitColorRT = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR3));
+    UI_HANGAR_DATA_mech.unitColorLA = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR4));
+    UI_HANGAR_DATA_mech.unitColorRA = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR5));
+    UI_HANGAR_DATA_mech.unitColorLG = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR6));
   }
   else{
-    colorCt = colors;
-    colorLt = colors;
-    colorRt = colors;
-    colorLa = colors;
-    colorRa = colors;
-    colorLg = colors;
+    UI_HANGAR_DATA_mech.unitColorCT = 65;
+    UI_HANGAR_DATA_mech.unitColorLT = 65;
+    UI_HANGAR_DATA_mech.unitColorRT = 65;
+    UI_HANGAR_DATA_mech.unitColorLA = 65;
+    UI_HANGAR_DATA_mech.unitColorRA = 65;
+    UI_HANGAR_DATA_mech.unitColorLG = 65;
   }
   
   UI_HANGAR_DATA_mech.angles            = showAng;
-  UI_HANGAR_DATA_mech.torsoCenter.colormod= colorCt;
-  UI_HANGAR_DATA_mech.torsoCenter.angles= showAng;
-  UI_HANGAR_DATA_mech.torsoCenter.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
-  setmodel(UI_HANGAR_DATA_mech.torsoCenter, UI_HANGAR_DATA_mech.torsoCenter.model);
-  
-  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
-    UI_HANGAR_DATA_mech.torsoLeft.colormod  = colorLt;
-    UI_HANGAR_DATA_mech.torsoLeft.angles  = showAng;
-    UI_HANGAR_DATA_mech.torsoLeft.effects   = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
-    setmodel(UI_HANGAR_DATA_mech.torsoLeft, UI_HANGAR_DATA_mech.torsoLeft.model);
-  }
-  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
-    UI_HANGAR_DATA_mech.torsoRight.colormod = colorRt;
-    UI_HANGAR_DATA_mech.torsoRight.angles = showAng;
-    UI_HANGAR_DATA_mech.torsoRight.effects  = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
-    setmodel(UI_HANGAR_DATA_mech.torsoRight, UI_HANGAR_DATA_mech.torsoRight.model);
-  }
-  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
-    UI_HANGAR_DATA_mech.armLeft.colormod    = colorLa;
-    UI_HANGAR_DATA_mech.armLeft.angles    = showAng;
-    UI_HANGAR_DATA_mech.armLeft.effects     = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
-    setmodel(UI_HANGAR_DATA_mech.armLeft, UI_HANGAR_DATA_mech.armLeft.model);
-  }
-  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
-    UI_HANGAR_DATA_mech.armRight.colormod   = colorRa;
-    UI_HANGAR_DATA_mech.armRight.angles   = showAng;
-    UI_HANGAR_DATA_mech.armRight.effects    = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
-    setmodel(UI_HANGAR_DATA_mech.armRight, UI_HANGAR_DATA_mech.armRight.model);
-  }
-  UI_HANGAR_DATA_mech.legs.colormod       = colorLg;
-  UI_HANGAR_DATA_mech.legs.angles       = showAng;
-  UI_HANGAR_DATA_mech.legs.effects        = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
-  UI_HANGAR_DATA_mech.legs.frame = 0;
-  setmodel(UI_HANGAR_DATA_mech.legs, UI_HANGAR_DATA_mech.legs.model);
+  UI_HANGAR_DATA_mech.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
   
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   while(hardpoint){
@@ -503,26 +470,10 @@ void(vector showAng, vector colors, float useClientColor) menu_player_MechModel_
 void() menu_player_MechModel_color_update={
   local vector colorCt, colorLt, colorRt, colorLa, colorRa, colorLg;
   
-  colorCt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR1))] * 1.5;
-  colorLt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR2))] * 1.5;
-  colorRt = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR3))] * 1.5;
-  colorLa = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR4))] * 1.5;
-  colorRa = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR5))] * 1.5;
-  colorLg = CLR_PLAYER_LIST[stof(infoget(CLIENT_INFO_STRING, KEY_COLOR6))] * 1.5;
-  
-  UI_HANGAR_DATA_mech.torsoCenter.colormod = colorCt;
-  
-  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
-    UI_HANGAR_DATA_mech.torsoLeft.colormod  = colorLt;
-  }
-  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
-    UI_HANGAR_DATA_mech.torsoRight.colormod = colorRt;
-  }
-  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
-    UI_HANGAR_DATA_mech.armLeft.colormod    = colorLa;
-  }
-  if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
-    UI_HANGAR_DATA_mech.armRight.colormod   = colorRa;
-  }
-  UI_HANGAR_DATA_mech.legs.colormod       = colorLg;
+  UI_HANGAR_DATA_mech.unitColorCT = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR1)) * 1.5;
+  UI_HANGAR_DATA_mech.unitColorLT = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR2)) * 1.5;
+  UI_HANGAR_DATA_mech.unitColorRT = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR3)) * 1.5;
+  UI_HANGAR_DATA_mech.unitColorLA = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR4)) * 1.5;
+  UI_HANGAR_DATA_mech.unitColorRA = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR5)) * 1.5;
+  UI_HANGAR_DATA_mech.unitColorLG = stof(infoget(CLIENT_INFO_STRING, KEY_COLOR6)) * 1.5;
 };

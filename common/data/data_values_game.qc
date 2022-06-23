@@ -302,6 +302,7 @@ float AS_INT = 8;
 #define SENDTYPE_TERRAIN 12
 #define SENDTYPE_MISC 13
 #define SENDTYPE_MISC_BLD 14
+#define SENDTYPE_ITEM 15
 //SendFlags-------------------
 //note: sendEnt is capped to 7 bitflags + NEWENT 
 //      and uses WriteByte, to add more flags, try switching

@@ -26,10 +26,6 @@ void() ai_tank_skirmish={
   
   self.SendEntity = ctrl_send_tank;
   
-  local entity wep;
-  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
-    wep.effects = EF_NODRAW;
-  }  
   self.torsoCenter.effects = EF_NODRAW;
   
   self.dphitcontentsmask = 0;

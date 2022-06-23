@@ -48,25 +48,25 @@ void() data_ini_trowel_={
 //=====================================
  
 //MECH COMPONENTS====================
-  self.hardpoint_cnt = 3;
+  self.hardpoint_cnt = 7;
   weaponList = self;
-  self.model = "q3mdl/vecs/trowel/mdl_trowel_chas.md3";
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', self, torsoCenter, '0 0 0'); 
+  data_ini_torso_center_("q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', '0 0 0');   //chassis
+  data_ini_legs_( "q3mdl/vecs/trowel/mdl_trowel_chas.md3", 1, '0 0 0');
   
   //camera location
   self.cameraOffset = '0 20 0';
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 -1.5 10.5', '0 0 0', EQP_ALL);
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 3.25 10.5', '0 0 0', EQP_ALL);
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '2 1.5 -7', '90 0 0', EQP_ALL);
-  data_ini_unitHardpoint_4( M_TOR_CENTER, '2 1.5 -11', '90 0 0', EQP_ALL);
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.65 12 10.5', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.65 16.75 10.5', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '2 15.0 -7', '90 0 0', EQP_ALL);
+  data_ini_unitHardpoint_4( M_TOR_CENTER, '2 15.0 -11', '90 0 0', EQP_ALL);
   data_ini_unitHardpoint_5( M_LEGS, '7 7.5 20', '0 0 0', EQP_ALL);
   data_ini_unitHardpoint_6( M_LEGS, '-7 7.5 20', '0 0 0', EQP_ALL);
-  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 -1 -15.5', '0 180 0', EQP_ALL);
+  data_ini_unitHardpoint_7( M_TOR_CENTER, '0 12.5 -15.5', '0 180 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

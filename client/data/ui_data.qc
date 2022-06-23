@@ -94,29 +94,6 @@ void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
     remove(rem);
   }
   
-  if( mechEntity.legs ){
-    remove(mechEntity.legs);
-  }
-  
-  if( mechEntity.armLeft ){
-    remove(mechEntity.armLeft);
-  }
-  
-  if( mechEntity.armRight ){
-    remove(mechEntity.armRight);
-  }
-  
-  if( mechEntity.torsoLeft ){
-    remove(mechEntity.torsoLeft);
-  }
-  
-  if( mechEntity.torsoRight ){
-    remove(mechEntity.torsoRight);
-  }
-  
-  if( mechEntity.torsoCenter ){
-    remove(mechEntity.torsoCenter);
-  }
 };
 
 void() ui_data_clear_huddata={
@@ -226,9 +203,9 @@ float(float mechId, entity listEntity) ui_data_load_mech_info={
   MECH_DATA_SPEEDB = listEntity.data_speed_backward;
   MECH_DATA_ACCEL = listEntity.data_speed_accel;
   MECH_DATA_HPCT = listEntity.max_health;
-  MECH_DATA_HPST = listEntity.torsoLeft.max_health;
-  MECH_DATA_HPAR = listEntity.armLeft.max_health;
-  MECH_DATA_HPLG = listEntity.legs.max_health;
+  MECH_DATA_HPST = listEntity.torL_hpMax;
+  MECH_DATA_HPAR = listEntity.armL_hpMax;
+  MECH_DATA_HPLG = listEntity.legs_hpMax;
   MECH_DATA_RAD = listEntity.radar_range;
   MECH_DATA_LOCKON = listEntity.w_firetime;
   MECH_DATA_DESC = listEntity.description;
@@ -261,9 +238,9 @@ float(float id) ui_data_load_mech={
   MECH_DATA_SPEEDB = UI_HANGAR_DATA_mech.data_speed_backward;
   MECH_DATA_ACCEL = UI_HANGAR_DATA_mech.data_speed_accel;
   MECH_DATA_HPCT = UI_HANGAR_DATA_mech.max_health;
-  MECH_DATA_HPST = UI_HANGAR_DATA_mech.torsoLeft.max_health;
-  MECH_DATA_HPAR = UI_HANGAR_DATA_mech.armLeft.max_health;
-  MECH_DATA_HPLG = UI_HANGAR_DATA_mech.legs.max_health;
+  MECH_DATA_HPST = UI_HANGAR_DATA_mech.torL_hpMax;
+  MECH_DATA_HPAR = UI_HANGAR_DATA_mech.armL_hpMax;
+  MECH_DATA_HPLG = UI_HANGAR_DATA_mech.legs_hpMax;
   MECH_DATA_RAD = UI_HANGAR_DATA_mech.radar_range;
   MECH_DATA_LOCKON = UI_HANGAR_DATA_mech.w_firetime;
   MECH_DATA_DESC = UI_HANGAR_DATA_mech.description;

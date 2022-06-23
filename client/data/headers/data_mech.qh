@@ -8,5 +8,3 @@ Overview:
 
 
 void( float dataID ) data_sync_new_mech_ai;
-
-void( entity setPart ) data_mech_setup_part;

@@ -45,7 +45,7 @@ void() sendent_ai_think={
   self.laser_sight_org = trace_endpos;
   
   self.think = sendent_ai_think;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.0001;
 };
 //implementing parts of Spike's CSQC-only mod code here
 void() interpolate_origin={
@@ -74,7 +74,7 @@ void() interpolate_angle={
   local float dir;
  
   savedang = self.angles_y;
-  dir = (self.angle2-self.angle1);
+  dir = (self.angle2 - self.angle1);
   if (dir > 180){
     dir -= 360;
   }
@@ -160,7 +160,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
     setsize(self, self.mins, self.maxs);
     self.skin = self.skin;
     setorigin(self, self.origin);
-    self.drawmask = MASK_ENGINE;
+    self.drawmask = 0;
   }
 };
 
@@ -301,6 +301,79 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
 };
 
 /*
+  Promoted weapons to fully qualified and synced entities, the server
+  needs to track these so why not just send the bare minimum over to the client?
+*/
+void( float isNew, float changeFlags ) sendent_handle_item={
+  local float prevIdx;
+  
+  
+  prevIdx = self.data_idx;
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.owner = findfloat(world, entnum, ReadLong());
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.owner = findfloat(world, entnum, ReadLong());
+    self.w_group = rint(ReadLong());
+    self.partParentId = rint(ReadLong());
+    self.compOffset_x = ReadAngle();
+    self.compOffset_y = ReadAngle();
+    self.compOffset_z = ReadAngle();
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWUNIT) ){
+    self.owner = findfloat(world, entnum, ReadLong());
+    self.data_idx = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_DEAD) ){
+  }
+  
+  if(self.data_idx != prevIdx && self.data_idx != 0){
+    initialize_data_item_(self.data_idx);
+    if(self.owner != world){
+      switch(self.w_group){
+        default:
+          self.owner.weaponEnt1 = self;
+          break;
+        case WEAPON2:
+          self.owner.weaponEnt2 = self;
+          break;
+        case WEAPON3:
+          self.owner.weaponEnt3 = self;
+          break;
+        case WEAPON4:
+          self.owner.weaponEnt4 = self;
+          break;
+        case WEAPON5:
+          self.owner.weaponEnt5 = self;
+          break;
+        case WEAPON6:
+          self.owner.weaponEnt6 = self;
+          break;
+        case WEAPON7:
+          self.owner.weaponEnt7 = self;
+          break;
+        case WEAPON8:
+          self.owner.weaponEnt8 = self;
+          break;
+        case WEAPON9:
+          self.owner.weaponEnt9 = self;
+          break;
+      }
+    }
+  }
+  
+  if(isNew){
+    //self.predraw = predraw_weapon_ent;
+    self.deadflag = DEAD_NO;
+    self.classname = "UNIT_ITEM";
+  }
+};
+
+
+/*
   EVENT - Shields are eliminated
 */
 void( float prevShield ) sendevent_shield_explode={
@@ -320,26 +393,22 @@ void( float prevShield ) sendevent_shield_explode={
 */
 void() sendevent_handle_weaponfire={
   local entity equip;
+  local float wepId;
   
-  particleDraw = vlen(pmove_org - self.origin);      
+  particleDraw = vlen(client_vis_org - self.origin);
   
-  equip = self.w_slot;
-  while( equip != world ){
-    if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
-      te_weapon_fire_handler(equip);
+  wepId = 0;
+  
+  while( wepId < self.hardpoint_cnt){
+    equip =  sendent_get_weapon( bitshift(1, wepId) );
+    
+    if( equip ){
+      if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
+        te_weapon_fire_handler(equip);
+      }
     }
-    equip = equip.w_slot;
-  }
-};
-
-/*
-  EVENT - Turret rotated
-*/
-void( vector turretAngles ) sendevent_turret_update={
-  if( self.torsoCenter != world ){
-    self.torsoCenter.angles_x = anglemod(turretAngles_x);
-    self.torsoCenter.angles_y = anglemod(turretAngles_y);
-    self.torsoCenter.angles_z = anglemod(turretAngles_z);
+    
+    wepId = wepId + 1;
   }
 };
 
@@ -363,68 +432,75 @@ void() sendent_ini_interpolate={
   self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
 };
 
-void() sendent_setup_weapons={
-  local entity this;
-  local entity weps;
+vector( vector partOffset) predraw_unit_part={
+  local vector offset;
   
-  this = self;
-  weps = self.w_slot;
-  while( weps != world ){
-    self = weps;
-      self.owner = this;
-      sendent_set_weapon();
-      if( (this.flags & FL_DISARMED) ){
-        initialize_data_item_(UID_ITEM_EMPTY);
-      }
-      else{
-        initialize_data_item_(self.data_idx);
-      }
-      self.movetype = MOVETYPE_NONE;
-      self.solid = SOLID_NOT;
-      self.effects = 0 | EF_NOSHADOW;
-      setsize(self, '-1 -1 -1', '1 1 1');
-      setmodel(self, self.model);
-      if( self.partParentId == M_LEGS ){
-        makevectors(this.angles);
-        self.origin = this.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
-        self.angles = this.angles;
-      }
-      else{
-        makevectors(this.torsoCenter.angles);
-        self.origin = this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
-        self.angles = this.torsoCenter.angles;
-      }
-      self.drawmask = MASK_NORMAL;
-      self.wepFireOffsetCache = self.wepFireOffset;
-    self = this;
-    weps = weps.w_slot;
+ offset = self.origin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
+  
+  if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
+    offset = offset - (v_forward * self.cameraOffset_z);
   }
+  
+  return offset;
 };
 
-entity( float partId ) sendent_get_entity_offset={
-  switch( partId ){
-    case M_TOR_CENTER:
-      if( (self.flags & FL_TURRET) ){
-        return self.torsoCenter;
-      }
-      return self;
-    case M_TOR_RIGHT:
-      return self.torsoRight;
-    case M_TOR_LEFT:
-      return self.torsoLeft;
-    case M_LEGS:
-      if( (self.data_type == DATA_VEHC) ){
-        return self;  //edge case for hull-mounted weapons on a turreted object
-      }
-      return self.legs;
-    case M_ARM_LEFT:
-      return self.armLeft;
-    case M_ARM_RIGHT:
-      return self.armRight;
-    default:
-      return self;
+vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle={
+  local vector offset;
+  
+ offset = self.origin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
+  
+  if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
+    offset = offset - (v_forward * self.cameraOffset_z);
   }
+  
+  self.partAngles_y = self.angles_y;
+  self.partAngles_x = 0;
+  return offset;
 };
+
+
+
+/*
+  Player weapons (usually in the arms) inherit their pitch from their parent piece.
+  therefore, the weapon offsets for CLIENT is based on the PARENT offset:
+    wep.origin = parent.origin + wep.offset 
+      where parent.origin has already been calculated.
+*/
+void(entity item) predraw_unit_weapon={
+  local vector pOfs;
+  local vector drawAng;
+  local vector offset;
+  local vector adjPartOffset;
+  
+  if(self.deadflag == DEAD_DEAD ){
+    return;
+  }
+  if( item.model == "" ){
+    return;
+  }
+  if( (self.criticalHits & item.partParentId) ){
+    return;
+  }
+  
+  util_getPartFromName( item.partParentId, self);
+  
+  adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
+  
+  offset = T_PART_PARENT_ORG;
+  drawAng = T_PART_PARENT_ANGL;
+  drawAng_x = drawAng_x *-1;
+  makevectors( drawAng);
+  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+  
+  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
+  
+  setmodel(item, item.model);
+  item.origin = offset;
+  item.angles = T_PART_PARENT_ANGL;
+  addentity(item);
+};
+
+
 
 void() sendent_set_weapon={
   switch(self.w_group){
@@ -460,3 +536,73 @@ void() sendent_set_weapon={
       break;
   }
 };
+
+entity(float weaponId) sendent_get_weapon={
+  switch(weaponId){
+     case WEAPON1:
+      return self.weaponEnt1;
+     case WEAPON2:
+      return self.weaponEnt2;
+     case WEAPON3:
+      return self.weaponEnt3;
+     case WEAPON4:
+      return self.weaponEnt4;
+     case WEAPON5:
+      return self.weaponEnt5;
+     case WEAPON6:
+      return self.weaponEnt6;
+     case WEAPON7:
+      return self.weaponEnt7;
+     case WEAPON8:
+      return self.weaponEnt8;
+     case WEAPON9:
+      return self.weaponEnt9;
+    default:
+      return world;
+  }
+  return world;
+};
+
+
+//deprecated, weapons are predrawn inside parent unit's predraw func.
+/*void() predraw_weapon_ent={
+  local entity ent;
+  local vector adjPartOffset;
+  local vector drawAng;
+  local vector prevOrg;
+  local vector prevAngle;
+  local vector offset;
+  
+  if( self.owner == world ){
+    return;
+  }
+  if(self.owner.deadflag == DEAD_DEAD ){
+    return;
+  }
+  if( self.model == "" ){
+    return;
+  }
+  if( (self.owner.criticalHits & self.partParentId) ){
+    return;
+  }
+  if(!self.owner.cl_lod_weapon){
+    return;
+  }
+  
+  util_getPartFromName( self.partParentId, self.owner);
+  
+  offset = T_PART_PARENT_ORG;
+  adjPartOffset = self.compOffset - T_PART_PARENT_OFFSET;
+  drawAng = T_PART_PARENT_ANGL;
+  drawAng_x = drawAng_x * -1;
+  
+  makevectors(drawAng);
+  
+  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
+  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+  
+  setmodel(self, self.model);
+  self.origin = offset;
+  self.angles = T_PART_PARENT_ANGL;
+  addentity(self);
+};*/

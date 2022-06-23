@@ -49,15 +49,17 @@ void() data_ini_sorcerer_={
 //MECH COMPONENTS====================
   self.hardpoint_cnt = 2;
   weaponList = self;
-  self.model = "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3";
+
+  //chassis
+  data_ini_legs_( "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3", 1, '0 0 0');
   
   //camera location
   self.cameraOffset = '0 24 0';
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_LEGS, '-10.5 5 -7', '35 0 0', EQP_ALL);
-  data_ini_unitHardpoint_2( M_LEGS, '10.5 5 -7', '35 0 0', EQP_ALL);
+  data_ini_unitHardpoint_1( M_LEGS, '-10.5 9 -7', '35 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_LEGS, '10.5 9 -7', '35 0 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

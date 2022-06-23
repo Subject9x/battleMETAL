@@ -73,5 +73,5 @@ float() ctrl_weapon_checkEnergy;
 void() ctrl_missile_dud;
 void() ctrl_missile_dud_touch;
 void(entity wep) ctrl_weapon_update_player;
-
 void() ctrl_missile_lastframe;
+float( float isNew, float changedflags ) ctrl_send_weapon;

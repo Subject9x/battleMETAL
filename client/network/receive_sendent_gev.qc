@@ -20,7 +20,7 @@ void() sendevent_gev_move={
       weps.angles = self.angles;
     }
     else{
-      weps.angles = self.torsoCenter.angles;
+      weps.angles = self.torC_angl;
     }
   }
   if( self.trail_effectnum > 0 ){
@@ -46,8 +46,6 @@ void() sendevent_gev_die={
     weps = rem.w_slot;
     sendent_handle_remove(rem);
   }
-  
-  sendent_handle_remove(self.torsoCenter);
   
   data_vehicle_wreck();
   
@@ -125,13 +123,12 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng_x = anglemod(ReadAngle());
-    turretAng_y = anglemod(ReadAngle());
-    turretAng_z = 0;
-    self.v_angle = turretAng;
+    self.torC_angl_x = anglemod(ReadAngle());
+    self.torC_angl_y = anglemod(ReadAngle());
+    self.torC_angl_z = 0;
+    self.v_angle = self.torC_angl;
     self.v_angle_x = self.v_angle_x * -1;
-    turretAng_x = 0;
-    sendevent_turret_update( turretAng );
+    self.torC_angl_x = 0;
   }
   
   if( (changeFlags & SENDFLAG_CRIT) ){

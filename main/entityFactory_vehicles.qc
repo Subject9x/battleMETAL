@@ -108,9 +108,6 @@ void() build_unit_weapon_list={
       weaponCount = weaponCount + 1;
       weaponMount.partPrev = prevWeapon;
       prevWeapon = weaponMount;
-      if( (weaponMount.owner.flags & FL_MONSTER) ){
-        weaponMount.effects = weaponMount.effects | EF_NODRAW;
-      }
       weaponMount = weaponMount.w_slot;
     }
     //run upgrades now because per-weapon updates need the full list.
@@ -176,6 +173,8 @@ void( float nex_wep, entity own ) build_unit_weapon={
     self.wepFireOffsetCache = self.wepFireOffset;
     self.th_die = ctrl_die_weapon;
     self.w_think = self.think;
+    self.SendEntity = ctrl_send_weapon;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWUNIT;
   self = parentEntity;
 };
 
@@ -231,6 +230,8 @@ void() build_mech_unit={
     self.torsoRight.partPrev = unitPartList;
     unitPartList.partNext = self.torsoRight;
     unitPartList = unitPartList.partNext;
+    
+    
   }
   if( (self.unitModFlags & MOD_HAS_TOR_L) ){
     build_mech_torsoLeft();

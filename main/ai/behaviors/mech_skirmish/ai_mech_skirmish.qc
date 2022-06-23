@@ -21,10 +21,6 @@ void() ai_mech_skirmish={
   
   self.SendEntity = ctrl_send_mech_ai;
   
-  local entity wep;
-  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
-    wep.effects = EF_NODRAW;
-  }  
   self.torsoCenter.effects = EF_NODRAW;
   
   self.dphitcontentsmask = 0;

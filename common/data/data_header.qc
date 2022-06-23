@@ -52,28 +52,102 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
 
 //just some syntactic sugar wrappings
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_center_={
-  data_ini_unitPiece_( M_TOR_CENTER, pathToModel, healthMax, offsetOrigin, self, torsoCenter, altOffset);
+  #ifdef SSQC
+    data_ini_unitPiece_( M_TOR_CENTER, pathToModel, healthMax, offsetOrigin, self, torsoCenter, altOffset);
+    self.torC_hp = self.torC_hpMax = healthMax;
+  #endif
+  
+  #ifdef CSQC
+    self.torC_hpMax = healthMax;
+    self.torC_mdl = pathToModel;
+  #endif
+  
+  self.torC_parentId = M_UNIT;
+  self.torC_compOffset = offsetOrigin;
+  self.torC_compAltOffset = altOffset;
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_right_={
-  data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoRight, altOffset);
+  #ifdef SSQC
+    data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoRight, altOffset);
+    self.torR_hp = self.torR_hpMax = healthMax;
+  #endif
+  
+  #ifdef CSQC
+    self.torR_hpMax = healthMax;
+    self.torR_mdl = pathToModel;
+  #endif
+  
+  self.torR_parentId = M_TOR_CENTER;
+  self.torR_compOffset = offsetOrigin;
+  self.torR_compAltOffset = altOffset;
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_left_={
-  data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoLeft, altOffset);
-};
-
-void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
-  data_ini_unitPiece_( M_LEGS, pathToModel, healthMax, offsetOrigin, self, legs, '0 0 0');
+  #ifdef SSQC
+    data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoLeft, altOffset);
+    self.torL_hp = self.torL_hpMax = healthMax;
+  #endif
+  
+  #ifdef CSQC
+    self.torL_hpMax = healthMax;
+    self.torL_mdl = pathToModel;
+  #endif
+  
+  self.torL_parentId = M_TOR_CENTER;
+  self.torL_compOffset = offsetOrigin;
+  self.torL_compAltOffset = altOffset;
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_left_={
-  data_ini_unitPiece_( M_ARM_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoLeft, armLeft, altOffset);
+  #ifdef SSQC
+    data_ini_unitPiece_( M_ARM_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoLeft, armLeft, altOffset);
+    self.armL_hp = self.armL_hpMax = healthMax;
+  #endif
+
+  
+  #ifdef CSQC
+    self.armL_hpMax = healthMax;
+    self.armL_mdl = pathToModel;
+  #endif
+  
+  self.armL_parentId = M_TOR_LEFT;
+  self.armL_compOffset = offsetOrigin;
+  self.armL_compAltOffset = altOffset;
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_right_={
-  data_ini_unitPiece_( M_ARM_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoRight, armRight, altOffset);
+  #ifdef SSQC
+    data_ini_unitPiece_( M_ARM_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoRight, armRight, altOffset);
+    self.armR_hp = self.armR_hpMax = healthMax;
+  #endif
+  
+  #ifdef CSQC
+    self.armR_hpMax = healthMax;
+    self.armR_mdl = pathToModel;
+  #endif
+  
+  self.armR_parentId = M_TOR_RIGHT;
+  self.armR_compOffset = offsetOrigin;
+  self.armR_compAltOffset = altOffset;
 };
+
+void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
+  #ifdef SSQC
+    data_ini_unitPiece_( M_LEGS, pathToModel, healthMax, offsetOrigin, self, legs, '0 0 0');
+    self.legs_hp = self.legs_hpMax = healthMax;
+  #endif
+  
+  #ifdef CSQC
+    self.legs_hpMax = healthMax;
+    self.legs_mdl = pathToModel;
+  #endif
+  
+  self.legs_parentId = M_TOR_CENTER;
+  self.legs_compOffset = offsetOrigin;
+};
+
+
 
 void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjustAngleVec, float newHardPointSizeVal ) data_ini_unitHardpoint_={
   local entity item;
@@ -83,9 +157,6 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
     weaponList.w_slot = item;
     notItem = self;
     self = item;
-    #ifdef SSQC
-      self.effects = self.effects | EF_NODRAW;
-    #endif
       self.data_idx = 0;
       self.w_group = self.w_group | weaponBit;
       self.partParentId = parentPartID;
@@ -187,27 +258,27 @@ void() default_weapon_think={
 */
 void(entity unit) data_validate_mod_flags={
 
-  if( unit.torsoLeft == world || !unit.torsoLeft){
+  if( !unit.torL_compOffset ){
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_EXPLODE_TOR_L);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_PITCH_TOR_L);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_HAS_TOR_L);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_NO_TOR_L);
   }
   
-  if( unit.torsoRight == world || !unit.torsoRight){
+  if( !unit.torR_compOffset ){
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_EXPLODE_TOR_R);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_PITCH_TOR_R);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_HAS_TOR_R);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_NO_TOR_R);
   }
   
-  if( unit.armRight == world || !unit.armRight ){
+  if( !unit.armR_compOffset ){
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_EXPLODE_TOR_R);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_PITCH_TOR_R);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_HAS_ARM_R);
   }
   
-  if( unit.armLeft == world || !unit.armLeft ){
+  if( !unit.armL_compOffset ){
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_EXPLODE_TOR_L);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_MODEL_PITCH_TOR_L);
     unit.unitModFlags = unit.unitModFlags - (unit.unitModFlags & MOD_HAS_ARM_L);
@@ -215,7 +286,7 @@ void(entity unit) data_validate_mod_flags={
 };
 
 
-
+#ifdef SSQC
 /*
 	This was promoted up to common/data because its portable and
 	reuseable in both client and server.
@@ -254,3 +325,67 @@ entity(float part, entity unit) util_getPartFromName={
   
   return thepart;
 };
+#endif
+
+#ifdef CSQC
+vector T_PART_PARENT_ORG;
+vector T_PART_PARENT_ANGL;
+vector T_PART_PARENT_OFFSET;
+
+void(float part, entity unit) util_getPartFromName={
+  local vector vOrg;
+  switch( part ){
+    case M_TOR_CENTER:
+      if( (unit.flags & FL_TURRET) ){
+        T_PART_PARENT_ORG = unit.torC_org;
+        T_PART_PARENT_ANGL = unit.torC_angl;
+        T_PART_PARENT_OFFSET = unit.torC_compOffset;
+      }
+      else{
+        T_PART_PARENT_ORG = unit.origin;
+        T_PART_PARENT_ANGL = unit.angles;
+        T_PART_PARENT_OFFSET = '0 0 0';
+      }
+      break;
+    case M_TOR_RIGHT:
+      T_PART_PARENT_ORG = unit.torR_org;
+      T_PART_PARENT_ANGL = unit.torR_angl;
+      T_PART_PARENT_OFFSET = unit.torR_compOffset;
+      break;
+    case M_TOR_LEFT:
+      T_PART_PARENT_ORG = unit.torL_org;
+      T_PART_PARENT_ANGL = unit.torL_angl;
+      T_PART_PARENT_OFFSET = unit.torL_compOffset;
+      break;
+    case M_LEGS:
+      vOrg = unit.legs_compOffset;
+      if( (unit.data_type == DATA_VEHC) ){
+        //edge case for hull-mounted weapons on a turreted object
+        T_PART_PARENT_ORG = unit.origin;
+        T_PART_PARENT_ANGL = unit.angles;
+        T_PART_PARENT_OFFSET = '0 0 0';
+      }
+      else{
+        T_PART_PARENT_ORG = unit.legs_org;
+        T_PART_PARENT_ANGL = unit.legs_angl;
+        T_PART_PARENT_OFFSET =  unit.legs_compOffset;
+      }
+      break;
+    case M_ARM_LEFT:
+      T_PART_PARENT_ORG = unit.armL_org;
+      T_PART_PARENT_ANGL = unit.armL_angl;
+      T_PART_PARENT_OFFSET = unit.armL_compOffset;
+      break;
+    case M_ARM_RIGHT:
+      T_PART_PARENT_ORG = unit.armR_org;
+      T_PART_PARENT_ANGL = unit.armR_angl;
+      T_PART_PARENT_OFFSET = unit.armR_compOffset;
+      break;
+    default:
+      T_PART_PARENT_ORG = unit.origin;
+      T_PART_PARENT_ANGL = unit.angles;
+      T_PART_PARENT_OFFSET = '0 0 0';
+      break;
+  }
+};
+#endif

@@ -10,7 +10,7 @@ void( float dataID ) data_sync_new_vehicle={
   local vector minc,maxc;
   
   self.think = sendent_ai_think;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.01;
       
   weaponList = self;  //prepare to build unit's weapon list
   self.hardpoint_cnt = 0;
@@ -33,27 +33,21 @@ void( float dataID ) data_sync_new_vehicle={
       break;
   }
   
-  if( self.torsoCenter ){
-    makevectors(self.angles);
-    data_mech_setup_part(self.torsoCenter);
-  }
-  
   self.skin =  self.faction - 1;
   self.data_type = DATA_VEHC;
   self.deadflag = DEAD_NO;
   self.critBits = 0;
-  minc = self.mins;
-  maxc = self.maxs;
-  setmodel(self, self.model);
-  self.takedamage = DAMAGE_AIM;
-  setsize(self, minc, maxc);
+  self.cache_mins = self.mins;
+  self.cache_maxs = self.maxs;
+  setmodel(self, self.legs_mdl);
+  setsize(self, self.cache_mins, self.cache_maxs);
   setorigin(self, self.origin);
+  
+  self.takedamage = DAMAGE_AIM;
   sendent_ini_interpolate();
-  sendent_setup_weapons();
   self.solid = SOLID_SLIDEBOX;
   self.movetype = MOVETYPE_STEP;
   self.interpolate_entity = interpolate_tank;
-  self.drawmask = MASK_ENGINE;
 };
 
 void() data_vehicle_wreck_predraw={

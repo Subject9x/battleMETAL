@@ -72,6 +72,9 @@ void(float isnew) CSQC_Ent_Update =
     case SENDTYPE_MISC_BLD:
       sendent_handle_misc_bld( isnew, entFlags );
       break;
+    case SENDTYPE_ITEM:
+      sendent_handle_item( isnew, entFlags );
+      break;
   }
 };
 
@@ -113,24 +116,6 @@ void() CSQC_Ent_Remove ={
         if( rem.owner == self ){
           remove(rem);
         }
-      }
-      if( self.torsoCenter.owner == self ){
-        remove(self.torsoCenter);
-      }
-      if( self.torsoLeft.owner == self ){
-        remove(self.torsoLeft);
-      }
-      if( self.torsoRight.owner == self ){
-        remove(self.torsoRight);
-      }
-      if( self.armLeft.owner == self ){
-        remove(self.armLeft);
-      }
-      if( self.armRight.owner == self ){
-        remove( self.armRight);
-      }
-      if( self.legs.owner == self ){
-        remove(self.legs );
       }
       if( self.effect1.owner == self ){
         remove(self.effect1 );

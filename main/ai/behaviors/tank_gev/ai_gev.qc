@@ -24,10 +24,7 @@ void() ai_gev={
   self.touch = ai_touch;
   
   self.SendEntity = ctrl_send_gev;
-  local entity wep;
-  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
-    wep.effects = EF_NODRAW;
-  }  
+  
   self.torsoCenter.effects = EF_NODRAW;
   
   self.dphitcontentsmask = 0;

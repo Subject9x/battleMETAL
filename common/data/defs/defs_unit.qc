@@ -61,6 +61,51 @@ Overview:
 .entity torsoRight;
 .entity armRight;  //arms can be optional
 
+//subcomponents decomposed to field vars, reduce entity management
+
+.string torC_mdl;
+.string torL_mdl;
+.string torR_mdl;
+.string armL_mdl;
+.string armR_mdl;
+.string legs_mdl;
+
+.float torC_hpMax;
+.float torL_hpMax;
+.float torR_hpMax;
+.float armL_hpMax;
+.float armR_hpMax;
+.float legs_hpMax;
+
+.float torC_parentId;
+.float torL_parentId;
+.float torR_parentId;
+.float armL_parentId;
+.float armR_parentId;
+.float legs_parentId;
+
+.vector torC_compOffset;
+.vector torL_compOffset;
+.vector torR_compOffset;
+.vector armL_compOffset;
+.vector armR_compOffset;
+.vector legs_compOffset;
+
+.vector torC_compAltOffset;
+.vector torL_compAltOffset;
+.vector torR_compAltOffset;
+.vector armL_compAltOffset;
+.vector armR_compAltOffset;
+.vector legs_compAltOffset;
+
+.vector torC_org;
+.vector torL_org;
+.vector torR_org;
+.vector armL_org;
+.vector armR_org;
+.vector legs_org;
+
+
 .float critBits;      //  SV-> used to track critical hits over frames
 .float criticalHits;  //  the actual value sent over the network
 
@@ -107,6 +152,20 @@ Overview:
                       //this should reduce the execution cost of t_damage() by every weapon all the time.
 .float shieldBuffer;  
 
+.float torC_hp;
+.float torL_hp;
+.float torR_hp;
+.float armL_hp;
+.float armR_hp;
+.float legs_hp;
+
+.vector torC_hitOffset;
+.vector torL_hitOffset;
+.vector torR_hitOffset;
+.vector armL_hitOffset;
+.vector armR_hitOffset;
+.vector legs_hitOffset;
+
 #endif
 
 #ifdef CSQC
@@ -124,25 +183,6 @@ Overview:
 .float legMoveRate;
 .float legRunRate;
 
-/*.vector torsoCenterOffset;
-.vector torsoCenterAngles;
-.float torsoCenterHealth;
-
-.vector torsoLeftOffset;
-.float torsoLeftHealth;
-
-.vector torsoRightOffset;
-.float torsoRightHealth;
-
-.vector armLeftOffset;
-.float armLeftHealth;
-
-.vector armRightOffset;
-.float armRightHealth;
-
-.vector legsOffset;
-.float torsoCenterHealth;*/
-
 .vector cockpitOffset;
 
 .float targetEntId;
@@ -150,4 +190,42 @@ Overview:
 .vector uiOffset; //menu-specific hardpoint draw locations.
   //prevents hardpoint overlap in MENU_HANGAR but still allowing hardpoints to be close to the actual
   //weapon locations.
+  
+.vector torC_angl;
+.vector torL_angl;
+.vector torR_angl;
+.vector armL_angl;
+.vector armR_angl;
+.vector legs_angl;
+
+.float legs_frame2time;
+.float legs_frame1time;
+.float legs_frame2;
+.float legs_frame1;
+.float legs_frame;
+.vector legs_origin1;
+.vector legs_origin2;
+.float legs_angle1;
+.float legs_angle2;
+.float legs_lerpfrac;
+.float legs_movestate;
+.float legs_nextthink;
+
+.vector cache_mins;
+.vector cache_maxs;
+
+.entity weaponEnt1;
+.entity weaponEnt2;
+.entity weaponEnt3;
+.entity weaponEnt4;
+.entity weaponEnt5;
+.entity weaponEnt6;
+.entity weaponEnt7;
+.entity weaponEnt8;
+.entity weaponEnt9;
+
+
+.float cl_lod_weapon; //yes draw / no draw for player view range;
+.float cl_lod_unit; //yes draw / no draw for player view range;
+
 #endif

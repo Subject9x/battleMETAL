@@ -12,6 +12,7 @@ Overview:
   self is building
 */
 void( float dataID ) data_sync_new_turret={
+  local vector cacheMin, cacheMax;
   self.flags = FL_MONSTER | FL_UNIT | FL_TURRET;
   self.solid = SOLID_BBOX;
  
@@ -20,7 +21,6 @@ void( float dataID ) data_sync_new_turret={
   
   self.data_type = DATA_BLD;
   self.colormod = '1 1 1';
-  setorigin( self, self.origin );
   
   switch( dataID ){
     case UID_TURRET_light_turret:
@@ -38,12 +38,15 @@ void( float dataID ) data_sync_new_turret={
       self.vec_size = 3;
       break;
   }
-  setmodel(self, self.model);
+  self.cache_mins = self.mins;
+  self.cache_maxs = self.maxs;
+  setmodel(self, self.legs_mdl);
+  self.mins = self.cache_mins;
+  self.maxs = self.cache_maxs;
+  setorigin( self, self.origin );
   
   makevectors(self.angles);
-  data_mech_setup_part(self.torsoCenter);
   
-  sendent_setup_weapons();
   sendent_ini_interpolate();
   self.takedamage = DAMAGE_AIM;
   self.interpolate_entity = interpolate_turret;

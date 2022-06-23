@@ -251,21 +251,21 @@ void(entity item) te_weapon_fire_handler={
 
   this = self;
   self = item;
-    parent = util_getPartFromName( self.partParentId, this);
-    offset = this.origin + (v_right * parent.compOffset_x) + (v_up * parent.compOffset_y) + (v_forward * parent.compOffset_z);
+    util_getPartFromName( self.partParentId, this);
+    offset = this.origin + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
     
     //FPV z-offset is corrected at the parent-part origin step!
-    if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
+    if(parent.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
       offset = offset - (v_forward * this.cameraOffset_z);
     }
-    adjPartOffset = self.compOffset - parent.compOffset;
+    adjPartOffset = self.compOffset - T_PART_PARENT_OFFSET;
     
-    view = parent.angles;
-    if( (parent.partTypeId == M_ARM_LEFT && (this.unitModFlags & MOD_MODEL_PITCH_ARM_L)) ||
-      (parent.partTypeId == M_ARM_RIGHT && (this.unitModFlags & MOD_MODEL_PITCH_ARM_R)) ||
-      (parent.partTypeId == M_TOR_RIGHT && (this.unitModFlags & MOD_MODEL_PITCH_TOR_R)) ||
-      (parent.partTypeId == M_TOR_LEFT && (this.unitModFlags & MOD_MODEL_PITCH_TOR_L)) ||
-      (parent.partTypeId == M_TOR_CENTER && (this.unitModFlags & MOD_MODEL_PITCH_TOR_C)) )
+    view = T_PART_PARENT_ANGL;
+    if( (self.partParentId == M_ARM_LEFT && (this.unitModFlags & MOD_MODEL_PITCH_ARM_L)) ||
+      (self.partParentId == M_ARM_RIGHT && (this.unitModFlags & MOD_MODEL_PITCH_ARM_R)) ||
+      (self.partParentId == M_TOR_RIGHT && (this.unitModFlags & MOD_MODEL_PITCH_TOR_R)) ||
+      (self.partParentId == M_TOR_LEFT && (this.unitModFlags & MOD_MODEL_PITCH_TOR_L)) ||
+      (self.partParentId == M_TOR_CENTER && (this.unitModFlags & MOD_MODEL_PITCH_TOR_C)) )
     {
       view_x = view_x *-1;
       makevectors( view);
@@ -815,7 +815,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   local float sizeMod;
   
   particleDraw = vlen(client_vis_org - self.origin);
-  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
     
     makevectors( entAngl );
     fx = entOrg ;
@@ -832,7 +832,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
     
     sizeMod = self.vec_size / 10;
     sizeMod = 1.0 - (1.0 - sizeMod) / 2;
-    sound7(self.legs, CHAN_AUTO, "sound/mech_stomp.ogg", 1.0, ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
+    sound7(self, CHAN_AUTO, "sound/mech_stomp.ogg", 1.0, ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
     
     switch( ENT_SERVER_INFO.worldtype ){
       case 1:

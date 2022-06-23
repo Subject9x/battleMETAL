@@ -93,27 +93,27 @@ void() sendevent_repair_beam={
   if( unit != world ){
     switch(self.w_firetime){
       case M_ARM_LEFT:
-        partOfs = unit.armLeft.compOffset;
+        partOfs = unit.armL_compOffset;
         break;
         
       case M_ARM_RIGHT:
-        partOfs = unit.armRight.compOffset;
+        partOfs = unit.armR_compOffset;
         break;
         
       case M_TOR_LEFT:
-        partOfs = unit.torsoLeft.compOffset;
+        partOfs = unit.torL_compOffset;
         break;
         
       case M_TOR_RIGHT:
-        partOfs = unit.torsoRight.compOffset;
+        partOfs = unit.torR_compOffset;
         break;
         
       case M_LEGS:
-        partOfs = unit.legs.compOffset;
+        partOfs = unit.legs_compOffset;
         break;
         
       default:
-        partOfs = unit.torsoCenter.compOffset;
+        partOfs = unit.torC_compOffset;
         break;
     }
     unitAngl = unit.angles;

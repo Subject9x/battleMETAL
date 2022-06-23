@@ -131,7 +131,21 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   VIEW_ORG = '0 0';
   VIEW_SCALE = 0.35;
+  
+  
+  // CSQC VIEW CULLING - has to be calculated here first, before pre-draws are called.
   client_vis_org = pmove_org;
+  if(CLIENT_data_type == DATA_MECH){
+    makevectors(getpropertyvec(VF_CL_VIEWANGLES));
+    if(cvar("chase_active")){
+      client_vis_org = pmove_org + (v_forward * cvar("chase_back") * -1) + (v_up * cvar("chase_up"));
+    }
+    else{
+      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z) + (v_up * (CLIENT_mech_self.cameraOffset_y + (CLIENT_mech_self.cameraOffset_y/2)));
+    }
+  }
+  //=================================================
+  
   if( [cvar("vid_conwidth"),cvar("vid_conheight")] != VIEW_MAX){
     //detect resolution change.
     gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
@@ -190,12 +204,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 
 	// draw custom hud
   if(CLIENT_data_type == DATA_MECH){
-    if(CLIENT_mech_self.chaseActive){
-      client_vis_org = pmove_org + (v_forward * cvar("chase_back") * -1) + (v_up * cvar("chase_up"));
-    }
-    else{
-      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z) + (v_up * (CLIENT_mech_self.cameraOffset_y + (CLIENT_mech_self.cameraOffset_y/2)));
-    }
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
       //HUD Highlight Boxes
@@ -261,6 +269,8 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     else{
       drawstring(VIEW_ORG + '0 72', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
     }
+    
+    drawstring(VIEW_ORG + '0 80', sprintf("CLIENT_VIS_ORG  = %s", vtos(client_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
   }
   
 };

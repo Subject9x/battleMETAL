@@ -19,8 +19,7 @@ void() balaket_config_default_brawl;
   Register this in <world_ext_c>
 */
 void() data_ini_balaket_={
-  
-  self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
+  self.unitModFlags = rint(MODFLAG_BATTLEMETAL);
   self.data_idx = UID_MECH_balaket;
   self.vec_size = 1;
   self.vec_name = "Balaket";

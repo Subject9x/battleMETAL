@@ -403,10 +403,12 @@ void(vector ofs) menu_hangar_MechFluff={
 /*
   Render mech as 3D model in a custom viewport along with hardpoints.
 */
+float timerfoo;
 void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
   local vector tSize, modelMins, modelMax, cOrg, mOffset;
   local vector viewOrg;
   local float zBias, zTotal;
+  local vector rootOrg;
   
   if(SELECT_MECH > FALSE){  
     modelMins = UI_HANGAR_DATA_mech.mins;
@@ -445,44 +447,62 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
     setproperty(VF_FOG_HEIGHT, 0);
     setproperty(VF_FOG_FADEDEPTH, 0.0);
     
-    if(SELECT_MECH > FALSE){  
+    if(SELECT_MECH > FALSE){ 
       makevectors(getpropertyvec(VF_ANGLES));
-      setorigin( UI_HANGAR_DATA_mech, viewOrg + [0, 0, zBias] + (v_forward * ( ((modelMins_z*-1) + modelMax_z) / 1.8 )));
-      cOrg = UI_HANGAR_DATA_mech.origin;
+      rootOrg =  viewOrg + [0, 0, zBias] + (v_forward * ( ((modelMins_z*-1) + modelMax_z) / 1.8 ));      
       
-      if( (UI_HANGAR_DATA_mech.unitModFlags && MOD_MODEL_ROOT_TOR_C)){
-        addentity(UI_HANGAR_DATA_mech);
-      }
+      setorigin( UI_HANGAR_DATA_mech, viewOrg + '0 0 5');
+      cOrg = UI_HANGAR_DATA_mech.origin;
+      UI_HANGAR_DATA_mech.scale = 0.5;
       
       makevectors(UI_HANGAR_DATA_mech.angles);
       
-      UI_HANGAR_DATA_mech.torsoCenter.origin = UI_HANGAR_DATA_mech.origin;
-      addentity(UI_HANGAR_DATA_mech.torsoCenter);
+      mOffset = UI_HANGAR_DATA_mech.torC_compOffset * UI_HANGAR_DATA_mech.scale;
+      UI_HANGAR_DATA_mech.torC_org = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+      setmodel(UI_HANGAR_DATA_mech, UI_HANGAR_DATA_mech.torC_mdl);
+      UI_HANGAR_DATA_mech.origin = UI_HANGAR_DATA_mech.torC_org;
+      UI_HANGAR_DATA_mech.colormod = CLR_PLAYER_LIST[UI_HANGAR_DATA_mech.unitColorCT];
+      addentity(UI_HANGAR_DATA_mech);
        
       if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_L) ){
-        mOffset = UI_HANGAR_DATA_mech.torsoLeft.compOffset;
-        UI_HANGAR_DATA_mech.torsoLeft.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-        addentity(UI_HANGAR_DATA_mech.torsoLeft);
+        mOffset = UI_HANGAR_DATA_mech.torL_compOffset * UI_HANGAR_DATA_mech.scale;
+        UI_HANGAR_DATA_mech.torL_org = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+        setmodel(UI_HANGAR_DATA_mech, UI_HANGAR_DATA_mech.torL_mdl);
+        UI_HANGAR_DATA_mech.origin = UI_HANGAR_DATA_mech.torL_org;
+        UI_HANGAR_DATA_mech.colormod = CLR_PLAYER_LIST[UI_HANGAR_DATA_mech.unitColorLT];
+        addentity(UI_HANGAR_DATA_mech);
       }
       if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_TOR_R) ){
-        mOffset = UI_HANGAR_DATA_mech.torsoRight.compOffset;
-        UI_HANGAR_DATA_mech.torsoRight.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-        addentity(UI_HANGAR_DATA_mech.torsoRight);
+        mOffset = UI_HANGAR_DATA_mech.torR_compOffset * UI_HANGAR_DATA_mech.scale;
+        UI_HANGAR_DATA_mech.torR_org = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+        setmodel(UI_HANGAR_DATA_mech, UI_HANGAR_DATA_mech.torR_mdl);
+        UI_HANGAR_DATA_mech.origin = UI_HANGAR_DATA_mech.torR_org;
+        UI_HANGAR_DATA_mech.colormod = CLR_PLAYER_LIST[UI_HANGAR_DATA_mech.unitColorRT];
+        addentity(UI_HANGAR_DATA_mech);
       }
       if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_L) ){
-        mOffset = UI_HANGAR_DATA_mech.armLeft.compOffset;
-        UI_HANGAR_DATA_mech.armLeft.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-        addentity(UI_HANGAR_DATA_mech.armLeft);
+        mOffset = UI_HANGAR_DATA_mech.armL_compOffset * UI_HANGAR_DATA_mech.scale;
+        UI_HANGAR_DATA_mech.armL_org = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+        setmodel(UI_HANGAR_DATA_mech, UI_HANGAR_DATA_mech.armL_mdl);
+        UI_HANGAR_DATA_mech.origin = UI_HANGAR_DATA_mech.armL_org;
+        UI_HANGAR_DATA_mech.colormod = CLR_PLAYER_LIST[UI_HANGAR_DATA_mech.unitColorLA];
+        addentity(UI_HANGAR_DATA_mech);
       }
       if( (UI_HANGAR_DATA_mech.unitModFlags & MOD_HAS_ARM_R) ){
-        mOffset = UI_HANGAR_DATA_mech.armRight.compOffset;
-        UI_HANGAR_DATA_mech.armRight.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-        addentity(UI_HANGAR_DATA_mech.armRight);
+        mOffset = UI_HANGAR_DATA_mech.armR_compOffset * UI_HANGAR_DATA_mech.scale;
+        UI_HANGAR_DATA_mech.armR_org = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+        setmodel(UI_HANGAR_DATA_mech, UI_HANGAR_DATA_mech.armR_mdl);
+        UI_HANGAR_DATA_mech.origin = UI_HANGAR_DATA_mech.armR_org;
+        UI_HANGAR_DATA_mech.colormod = CLR_PLAYER_LIST[UI_HANGAR_DATA_mech.unitColorRA];
+        addentity(UI_HANGAR_DATA_mech);
       }
-      
-      mOffset = UI_HANGAR_DATA_mech.legs.compOffset;
-      UI_HANGAR_DATA_mech.legs.origin = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
-      addentity(UI_HANGAR_DATA_mech.legs);
+      mOffset = UI_HANGAR_DATA_mech.legs_compOffset * UI_HANGAR_DATA_mech.scale;
+      UI_HANGAR_DATA_mech.legs_org = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
+      setmodel(UI_HANGAR_DATA_mech, UI_HANGAR_DATA_mech.legs_mdl);
+      UI_HANGAR_DATA_mech.origin = UI_HANGAR_DATA_mech.legs_org;
+      UI_HANGAR_DATA_mech.colormod = CLR_PLAYER_LIST[UI_HANGAR_DATA_mech.unitColorLG];
+      UI_HANGAR_DATA_mech.frame = 0;
+      addentity(UI_HANGAR_DATA_mech);
     }
   renderscene();
   setproperty(VF_ORIGIN, VIEW_VF_ORG);

@@ -155,12 +155,6 @@ void() CSQC_Init =
   //cache these references here, asap.
   //  yes, sadly, they will always take up space...
   HUD_MODEL_ARMOR_GRAPH_TARGET = spawn();
-  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoCenter = spawn();
-  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoLeft = spawn();
-  HUD_MODEL_ARMOR_GRAPH_TARGET.torsoRight = spawn();
-  HUD_MODEL_ARMOR_GRAPH_TARGET.armLeft = spawn();
-  HUD_MODEL_ARMOR_GRAPH_TARGET.armRight = spawn();
-  HUD_MODEL_ARMOR_GRAPH_TARGET.legs = spawn();
   
   MOUSE_drag_timer = 0;
   HUD_SHIELD_FLASH_TIME = 0;

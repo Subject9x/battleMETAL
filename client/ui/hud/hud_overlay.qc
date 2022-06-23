@@ -368,81 +368,107 @@ void() hud_model_armor_player_ini={
   }
   HUD_MODEL_ARMOR_GRAPH_PLAYER.solid = SOLID_NOT;
   HUD_MODEL_ARMOR_GRAPH_PLAYER.movetype = MOVETYPE_NONE;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags = 0 | self.unitModFlags;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags = 0 | rint(self.unitModFlags);
+  setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, "q3mdl/testball.md3");
   HUD_MODEL_ARMOR_GRAPH_PLAYER.mins = self.mins;
   HUD_MODEL_ARMOR_GRAPH_PLAYER.maxs = self.maxs;
+
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_compOffset = self.torC_compOffset;
+  cacheGlobalString(HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_mdl, self.torC_mdl);
+
+  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_compOffset = self.torL_compOffset;
+    cacheGlobalString(HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_mdl, self.torL_mdl);
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_compOffset = self.torR_compOffset;
+    cacheGlobalString(HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_mdl, self.torR_mdl);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_compOffset = self.armL_compOffset;
+    cacheGlobalString(HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_mdl, self.armL_mdl);
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_compOffset = self.armR_compOffset;
+    cacheGlobalString(HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_mdl, self.armR_mdl);
+  }
   
-  if( self.torsoCenter && !HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter = spawn();
-    hud_model_armor_config( self.torsoCenter, HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter);
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_L) && !HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft = spawn();
-    hud_model_armor_config( self.torsoLeft, HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft);
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_R) && !HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight = spawn();
-    hud_model_armor_config( self.torsoRight, HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight);
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) && !HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft = spawn();
-    hud_model_armor_config( self.armLeft, HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft);
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) && !HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight = spawn();
-    hud_model_armor_config( self.armRight, HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight);
-  }
-  if( !HUD_MODEL_ARMOR_GRAPH_PLAYER.legs ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.legs = spawn();
-  }
-  hud_model_armor_config( self.legs, HUD_MODEL_ARMOR_GRAPH_PLAYER.legs);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_compOffset = self.legs_compOffset;
+  cacheGlobalString(HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_mdl, self.legs_mdl);
+  
 };
 
 /*  
   Draw player mech as 3D Model with armor coloring.
 */
 void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_player_frame={
+  local vector mOffset;
+  local vector prevAngl;
   
   HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = vueOrg;
   HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir = anglemod(HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir + frametime*33);
   HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = [0, HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir, 0];
-  
+  prevAngl = HUD_MODEL_ARMOR_GRAPH_PLAYER.angles;
   makevectors(HUD_MODEL_ARMOR_GRAPH_PLAYER.angles);
   
-  hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter, HUD_MODEL_ARMOR_GRAPH_PLAYER);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.effects = HUD_MODEL_ARMOR_GRAPH_PLAYER.effects | EF_FULLBRIGHT | EF_NOSHADOW;
   
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter.angles = [CLIENT_mech_self.torsoCenter.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter.colormod = gui_getColorForArmor(hpCt) * 2;
-  addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoCenter);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_compOffset, vueOrg);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_angl = [CLIENT_mech_self.torC_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod = gui_getColorForArmor(hpCt) * 2;
+  setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_mdl);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_org;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_angl;
+  addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
   
   if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_TOR_L) ){
-    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft, HUD_MODEL_ARMOR_GRAPH_PLAYER);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft.angles   = [CLIENT_mech_self.torsoLeft.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];  
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft.colormod   = gui_getColorForArmor(hpLt) * 2;
-    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoLeft);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_compOffset, vueOrg);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_angl   = [CLIENT_mech_self.torL_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];  
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod   = gui_getColorForArmor(hpLt) * 2;
+    setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_mdl);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_org;
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_angl;
+    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
   }
   if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_TOR_R) ){
-    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight, HUD_MODEL_ARMOR_GRAPH_PLAYER);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight.angles  = [CLIENT_mech_self.torsoRight.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight.colormod  = gui_getColorForArmor(hpRt) * 2;  
-    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.torsoRight);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_compOffset, vueOrg);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_angl = [CLIENT_mech_self.torR_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod  = gui_getColorForArmor(hpRt) * 2;  
+    setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_mdl);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_org;
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_angl;
+    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
   }
   if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_ARM_L) ){
-    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft, HUD_MODEL_ARMOR_GRAPH_PLAYER);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft.angles     = [CLIENT_mech_self.armLeft.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft.colormod     = gui_getColorForArmor(hpLa) * 2;
-    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.armLeft);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_compOffset, vueOrg);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_angl     = [CLIENT_mech_self.armL_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod    = gui_getColorForArmor(hpLa) * 2;
+    setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_mdl);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_org;
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_angl;
+    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
   }
   if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_ARM_R) ){
-    hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight, HUD_MODEL_ARMOR_GRAPH_PLAYER);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight.angles    = [CLIENT_mech_self.armRight.angles_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight.colormod    = gui_getColorForArmor(hpRa) * 2;
-    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.armRight);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_compOffset, vueOrg);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_angl    = [CLIENT_mech_self.armR_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod    = gui_getColorForArmor(hpRa) * 2;
+    setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_mdl);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_org;
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_angl;
+    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
   }
     
-  hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.legs, HUD_MODEL_ARMOR_GRAPH_PLAYER);
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs.angles        = HUD_MODEL_ARMOR_GRAPH_PLAYER.angles;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs.frame = CLIENT_mech_self.legs.frame;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs.colormod = gui_getColorForArmor(hpLg) * 2;
-  addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER.legs);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_compOffset, vueOrg);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_angl        = HUD_MODEL_ARMOR_GRAPH_PLAYER.angles;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.frame = CLIENT_mech_self.legs_frame;
+  setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_mdl);
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod = gui_getColorForArmor(hpLg) * 2;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_org;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.effects = HUD_MODEL_ARMOR_GRAPH_PLAYER.effects | EF_FULLBRIGHT | EF_NOSHADOW;
+  addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
 };

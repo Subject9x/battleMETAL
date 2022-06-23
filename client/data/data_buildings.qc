@@ -46,6 +46,8 @@ void( float dataID ) data_sync_new_building={
       data_building_supply_depot();
       break;
   }
+  self.cache_mins = self.mins;
+  self.cache_maxs = self.maxs;
 };
 
 void() data_building_radar={

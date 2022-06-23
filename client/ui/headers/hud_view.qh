@@ -281,7 +281,7 @@ void() hud_armor_model_target_ini_building;
 void() hud_model_cockpit_draw_frame;
 void() hud_armor_model_target_cleanup;
 void( entity srcEnt, entity dstEnt) hud_model_armor_config;
-void(entity piece, entity root) hud_model_armor_part_frame;
+vector(vector partOffset, vector rootOrg) hud_model_armor_part_frame;
 void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_player_frame;
 void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_target_frame;
 

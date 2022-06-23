@@ -25,8 +25,6 @@ void() sendevent_turret_die={
   self.origin = self.origin + (v_up * (self.maxs_z * -0.05));
   setorigin(self, self.origin);
   
-  sendent_handle_remove(self.torsoCenter);
-  
   weps = self.w_slot;
   for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
     rem = weps;
@@ -149,13 +147,12 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //EVENT - turret rotated
   if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng_x = anglemod(ReadAngle());
-    turretAng_y = anglemod(ReadAngle());
-    turretAng_z = 0;
-    self.v_angle = turretAng;
+    self.torC_angl_x = anglemod(ReadAngle());
+    self.torC_angl_y = anglemod(ReadAngle());
+    self.torC_angl_z = 0;
+    self.v_angle = self.torC_angl;
     self.v_angle_x = self.v_angle_x * -1;
-    turretAng_x = 0;
-    sendevent_turret_update( turretAng );
+    self.torC_angl_x = 0;
   }
   
   //EVENT - health dropped below threshold
@@ -206,48 +203,75 @@ void() interpolate_turret={
   local entity parent;
   local entity wepn;
   local vector saved;
-  local float yesDraw;
+  local vector cacheOrg;
+  local vector cacheAngl;
   
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
   
-  traceline(self.origin, pmove_org, FALSE, self);
+  traceline(self.origin + self.torC_compOffset, client_vis_org, FALSE, self);
   
-  yesDraw = MASK_NORMAL;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(pmove_org - self.origin) > PARTICLE_HAZ_DISTANCE){
-    yesDraw = FALSE;
+  self.cl_lod_unit = TRUE;
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    self.cl_lod_unit = FALSE;
   }
   
-  parent = self;
-  makevectors(parent.angles);
-  if( self.torsoCenter ){
-    self = self.torsoCenter;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-    self = parent;
-    self.torsoCenter.drawmask = yesDraw;
-  }
+  if(self.cl_lod_unit){
   
-  wepn = self.w_slot;
-  while( (wepn != world) ){
-    self = wepn;
-      if(yesDraw){
-        if( self.partParentId == M_LEGS ){
-          makevectors(parent.angles);
-          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-          self.origin = parent.origin + saved ;
-          self.angles = parent.angles;
-        }
-        else{
-          makevectors(parent.torsoCenter.angles);
-          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-          self.origin = parent.origin + saved ;
-          self.angles = parent.torsoCenter.angles;
-        }
+    self.cl_lod_weapon = TRUE;
+    if( vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
+      self.cl_lod_weapon = FALSE;
+    }
+    cacheOrg = self.origin;
+    cacheAngl = self.angles;
+    
+    setmodel(self, self.legs_mdl);
+    setsize(self, self.cache_mins, self.cache_maxs);
+    addentity(self);
+    
+    makevectors(self.angles);
+    self.torC_org =  self.origin + (v_right * self.torC_compOffset_x) + (v_forward * self.torC_compOffset_z) + (v_up * self.torC_compOffset_y);
+    self.origin = self.torC_org;
+    self.angles = self.torC_angl;
+    
+    setmodel(self, self.torC_mdl);
+    addentity(self);
+    self.angles = cacheAngl;
+    self.origin = cacheOrg;
+    setmodel(self, self.legs_mdl);
+    setsize(self, self.cache_mins, self.cache_maxs);
+    
+    
+    if(self.cl_lod_weapon){
+      if(self.weaponEnt1.data_idx){
+        predraw_unit_weapon(self.weaponEnt1);
       }
-      self.drawmask = yesDraw;
-    self = parent;
-    wepn = wepn.w_slot;
+      if(self.weaponEnt2.data_idx){
+        predraw_unit_weapon(self.weaponEnt2);
+      }
+      if(self.weaponEnt3.data_idx){
+        predraw_unit_weapon(self.weaponEnt3);
+      }
+      if(self.weaponEnt4.data_idx){
+        predraw_unit_weapon(self.weaponEnt4);
+      }
+      if(self.weaponEnt5.data_idx){
+        predraw_unit_weapon(self.weaponEnt5);
+      }
+      if(self.weaponEnt6.data_idx){
+        predraw_unit_weapon(self.weaponEnt6);
+      }
+      if(self.weaponEnt7.data_idx){
+        predraw_unit_weapon(self.weaponEnt7);
+      }
+      if(self.weaponEnt8.data_idx){
+        predraw_unit_weapon(self.weaponEnt8);
+      }
+      if(self.weaponEnt9.data_idx){
+        predraw_unit_weapon(self.weaponEnt9);
+      }
+    }
   }
 };
 

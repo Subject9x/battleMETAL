@@ -36,7 +36,8 @@ void() ai_mech_sniper_die={
   local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
-    ctrl_unit_part_death(w_chain);
+    w_chain.think = SUB_Remove;
+    w_chain.nextthink = time + 0.01;
     w_chain = w_chain.w_slot;
   }
 

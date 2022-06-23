@@ -44,10 +44,12 @@ void() data_ini_light_turret_={
 //=====================================
  
 //MECH COMPONENTS====================
-  self.model = "q3mdl/buildings/turret_light/mdl_bld_h_ltur_base.md3";
+  self.hardpoint_cnt = 2;
+  weaponList = self;
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_light/mdl_bld_h_ltur.md3", 1, '0 8 0', self, torsoCenter, '0 0 0'); 
+  data_ini_torso_center_( "q3mdl/buildings/turret_light/mdl_bld_h_ltur.md3", 1, '0 8 0', '0 0 0'); 
+  data_ini_legs_( "q3mdl/buildings/turret_light/mdl_bld_h_ltur_base.md3", 1, '0 0 0'); 
   
   //camera location
   self.cameraOffset = '0 12 8';

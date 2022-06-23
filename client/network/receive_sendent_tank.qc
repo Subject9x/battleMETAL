@@ -21,7 +21,7 @@ void() sendevent_tank_move={
       weps.angles = self.angles;
     }
     else{
-      weps.angles = self.torsoCenter.angles;
+      weps.angles = self.torC_angl;
     }
   }
 };
@@ -40,7 +40,6 @@ void() sendevent_tank_die={
     weps = rem.w_slot;
     sendent_handle_remove(rem);
   }
-  sendent_handle_remove(self.torsoCenter);
   
   data_vehicle_wreck();
   
@@ -101,13 +100,15 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   if( isNew ){
     setorigin(self, self.origin);
-    cacheGlobalString(self.netname, newName )
-    data_sync_new_vehicle( self.data_idx );
-    self.predraw = predraw_tank;
-    self.canTarget = TRUE;
-    if( !self.ai_muted ){
-      ai_voice_ini( TRUE );
-      self.ai_voice_limit = 1;
+    if(self.deadflag == DEAD_NO){
+      data_sync_new_vehicle( self.data_idx );
+      cacheGlobalString(self.netname, newName )
+      self.predraw = predraw_tank;
+      self.canTarget = TRUE;
+      if( !self.ai_muted ){
+        ai_voice_ini( TRUE );
+        self.ai_voice_limit = 1;
+      }
     }
   }
   
@@ -120,13 +121,12 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   //EVENT - TURRET ROTATES
   if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng_x = anglemod(ReadAngle());
-    turretAng_y = anglemod(ReadAngle());
-    turretAng_z = 0;
-    self.v_angle = turretAng;
+    self.torC_angl_x = anglemod(ReadAngle());
+    self.torC_angl_y = anglemod(ReadAngle());
+    self.torC_angl_z = 0;
+    self.v_angle = self.torC_angl;
     self.v_angle_x = self.v_angle_x * -1;
-    turretAng_x = 0;
-    sendevent_turret_update( turretAng );
+    self.torC_angl_x = 0;
   }
   
   //EVENT - CRITICAL HIT
@@ -185,65 +185,87 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
 };
 
 void() interpolate_tank={
-  local entity parent;
+  local vector chasOrg;
   local entity wepn;
   local vector saved;
-  local float yesDraw;
+  local vector cacheOrg;
+  local vector cacheAngl;
   
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
 	setorigin(self, self.origin);
   
-  parent = self;
+  makevectors(self.angles);
+  traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
   
-  traceline(self.origin, pmove_org, FALSE, self);
+  cacheOrg = self.origin;
+  cacheAngl = self.angles;
   
-  yesDraw = MASK_NORMAL;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(pmove_org - self.origin) > PARTICLE_HAZ_DISTANCE){
-    yesDraw = FALSE;
+  chasOrg = trace_endpos + (v_up * self.mins_z * -1 );
+  
+  traceline(self.origin, client_vis_org, FALSE, self);
+  
+  self.cl_lod_unit = TRUE;
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    self.cl_lod_unit = FALSE;
   }
   
-  GetAlignedSurfaceAngles(self);
-  
-  if( self.torsoCenter != world ){
-    if( yesDraw){
+  if( self.cl_lod_unit ){
+    self.cl_lod_weapon = TRUE;
+    if( vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
+      self.cl_lod_weapon = FALSE;
+    }
+    
+    setmodel(self, self.legs_mdl);
+    GetAlignedSurfaceAngles(self);
+    self.origin = chasOrg;
+    addentity(self);
+    
+    if( (self.flags & FL_TURRET) ){
       saved = self.angles;
       saved_x = 0;
       makevectors(saved);
-      self = self.torsoCenter;
-        self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        self.angles_x = parent.angles_x;
-      self = parent;
+      self.torC_org = chasOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
+      
+      setmodel(self, self.torC_mdl);
+      self.origin =  self.torC_org;
+      self.angles = self.torC_angl;
+      addentity(self);
+      self.origin = cacheOrg;
+      self.angles = cacheAngl;
+      setsize(self, self.cache_mins, self.cache_maxs);
     }
-    self.torsoCenter.drawmask = yesDraw;
-  }
-  
-  wepn = self.w_slot;
-  while( (wepn != world) ){
-    self = wepn;
-      if(yesDraw){
-        if( self.partParentId == M_LEGS ){
-          saved = parent.angles;
-          saved_x = 0;
-          makevectors(saved);
-          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-          saved = parent.origin + saved;
-          self.angles = parent.angles + self.w_adj_ang;
-        }
-        else{
-          saved = parent.torsoCenter.angles;
-          //saved_x = 0;
-          makevectors(saved);
-          saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-          saved = parent.torsoCenter.origin + saved;
-          self.angles = parent.torsoCenter.angles + self.w_adj_ang;
-        }
-        self.origin = saved;
+
+    if(self.cl_lod_weapon){
+      if(self.weaponEnt1.data_idx){
+        predraw_unit_weapon(self.weaponEnt1);
       }
-      self.drawmask = yesDraw;
-    self = parent;
-    wepn = wepn.w_slot;
+      if(self.weaponEnt2.data_idx){
+        predraw_unit_weapon(self.weaponEnt2);
+      }
+      if(self.weaponEnt3.data_idx){
+        predraw_unit_weapon(self.weaponEnt3);
+      }
+      if(self.weaponEnt4.data_idx){
+        predraw_unit_weapon(self.weaponEnt4);
+      }
+      if(self.weaponEnt5.data_idx){
+        predraw_unit_weapon(self.weaponEnt5);
+      }
+      if(self.weaponEnt6.data_idx){
+        predraw_unit_weapon(self.weaponEnt6);
+      }
+      if(self.weaponEnt7.data_idx){
+        predraw_unit_weapon(self.weaponEnt7);
+      }
+      if(self.weaponEnt8.data_idx){
+        predraw_unit_weapon(self.weaponEnt8);
+      }
+      if(self.weaponEnt9.data_idx){
+        predraw_unit_weapon(self.weaponEnt9);
+      }
+    }
   }
 };
 

@@ -350,3 +350,64 @@ void() ctrl_missile_lastframe={
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
 };
+
+
+void() ctrl_weapon_update={
+  local entity wep;
+  
+  wep = self.w_slot;
+  while(wep){
+    
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    wep = wep.w_slot;
+  }
+};
+
+/*
+  Promoted weapons to fully qualified and synced entities, the server
+  needs to track these so why not just send the bare minimum over to the client?
+  
+  client only needs the bare minimum info from the server.
+  
+  
+*/
+float( float isNew, float changedflags ) ctrl_send_weapon={
+  
+  WriteByte( MSG_ENTITY, SENDTYPE_ITEM );
+  WriteLong( MSG_ENTITY, changedflags );
+  
+  if( (changedflags & SENDFLAG_MOVE) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self.owner));
+  }
+
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    if( (self.owner.flags & FL_CLIENT) ){
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner.clientData));
+    }
+    else{
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner));
+    }
+    
+    WriteLong( MSG_ENTITY, self.w_group);
+    WriteLong( MSG_ENTITY, self.partParentId);
+    WriteAngle( MSG_ENTITY, self.compOffset_x);
+    WriteAngle( MSG_ENTITY, self.compOffset_y);
+    WriteAngle( MSG_ENTITY, self.compOffset_z);
+  }
+  
+  if( (changedflags & SENDFLAG_NEWUNIT) ){    
+    if( (self.owner.flags & FL_CLIENT) ){
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner.clientData));
+    }
+    else{
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner));
+    }
+      WriteByte( MSG_ENTITY, self.data_idx);
+  }
+  
+  if( (changedflags & SENDFLAG_DEAD) ){
+    //technically a no-op on the server, CSQC reads the flag itself
+  }
+  
+  return TRUE;
+}
