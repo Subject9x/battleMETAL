@@ -46,12 +46,7 @@ common/data/camp_loader.qh
   main/headers/entityFactory_vehicles.qh
   main/models/models_h.qc
   main/ai/headers/ai_api.qh
-    main/ai/headers/ai_behavior_mech_skirmish.qh
-    main/ai/headers/ai_behavior_mech_sniper.qh
-    main/ai/headers/ai_behavior_tank_skirmish.qh
-    main/ai/headers/ai_behavior_tank_sniper.qh
-    main/ai/headers/ai_behavior_tank_gev.qh
-    main/ai/headers/ai_behavior_turret.qh
+  main/ai/headers/ai_behaviors.qh
   main/map/triggers_map_h.qc
 //==========================
 

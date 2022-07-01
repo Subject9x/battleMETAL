@@ -1,0 +1,37 @@
+/*
+battleMETAL 
+Author: Peter Roohr
+Date: 06/27/2022
+Overview: 
+  Rolling all AI behavior header files into 1 single def file because it turns out there wasn't that many...
+  
+*/
+//============TANK SKIRMISH=================
+void() ai_tank_skirmish;
+void() ai_tank_sk_die;
+
+//============TANK DESTROYER================
+void() ai_vec_dest;
+void() ai_vec_dest_die;
+
+//============TANK GEV=======================
+void() ai_gev;
+void() ai_gev_die;
+
+//============MECH SKIRMISHER===============
+void() ai_mech_skirmish;
+void() ai_mech_sk_die;
+void() ai_mech_sk_die2;
+
+//============MECH SNIPER===================
+void() ai_mech_sniper;
+void() ai_mech_sniper_die;
+void() ai_mech_sniper_die2;
+
+//============TURRET========================
+void() ai_turret;
+void() ai_turret_die_burn;
+void() ai_turret_die;
+void( entity attacker ) ai_turret_react;
+void() temp_chunk_burn;
+void() ai_turret_touch;

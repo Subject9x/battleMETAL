@@ -447,7 +447,8 @@ void() func_door =
 	}
 	else
 	{
-		dprint ("no worldtype set!\n");
+    //TODO - working sounds...not longer worldtype based.
+		//dprint ("no worldtype set!\n");
 	}
 	if (self.sounds == 0)
 	{
