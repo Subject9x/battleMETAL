@@ -14,25 +14,6 @@ float(float v) anglemod =
 	return v;
 };
 
-
-vector(float x, float y, float z) Vector3={
-  local vector v;
-  v_x = x;
-  v_y = y;
-  v_z = z;
-  return v;
-};
-
-
-vector(float x, float y) Vector2={
-  local vector v;
-  v_x = x;
-  v_y = y;
-  v_z = 0;
-  return v;
-};
-
-
 string(float anglee) gui_angleToNav={
   anglee = anglemod(anglee);
   if(anglee >= 337.5 || anglee < 22.5){
@@ -229,37 +210,37 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
   
   //top bar
   for(i=1; i < cols; i=i+1){
-    drawpic(org + Vector2(i*celSize, 0), RECT32_TC, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [i*celSize, 0], RECT32_TC, '16 16', colr, alpha, drawFlag);
   }
   
   //top-right corner
-  drawpic(org + Vector2(cols * celSize, 0), RECT32_TR, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [cols * celSize, 0], RECT32_TR, '16 16', colr, alpha, drawFlag);
   
   //bottom left corner
-  drawpic(org + Vector2(0, (rows-1) * celSize), RECT32_BL, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [0, (rows-1) * celSize], RECT32_BL, '16 16', colr, alpha, drawFlag);
   
   //bottoms bar
   for(i=1; i < cols; i=i+1){
-    drawpic(org + Vector2(i*celSize, (rows-1)* celSize), RECT32_BC, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [i*celSize, (rows-1)* celSize], RECT32_BC, '16 16', colr, alpha, drawFlag);
   }
   
   //bottom right corner
-  drawpic(org + Vector2(cols * celSize, (rows-1)* celSize), RECT32_BR, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [cols * celSize, (rows-1)* celSize], RECT32_BR, '16 16', colr, alpha, drawFlag);
   
   //left side
   for(i=1; i < rows-1; i=i+1){
-    drawpic(org + Vector2(0, i * celSize), RECT32_ML, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [0, i * celSize], RECT32_ML, '16 16', colr, alpha, drawFlag);
   }
   
   //right side
   for(i=1; i < rows-1; i=i+1){
-    drawpic(org + Vector2(cols * celSize, i * celSize), RECT32_MR, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [cols * celSize, i * celSize], RECT32_MR, '16 16', colr, alpha, drawFlag);
   }
   
   if(cols > 2 && rows > 2 ){
     for(i=1; i < cols; i=i+1){
       for(j=1; j < rows-1; j=j+1){
-        drawpic(org + Vector2(i * celSize, j * celSize), RECT32_MC, '16 16', colr, alpha, drawFlag);
+        drawpic(org + [i * celSize, j * celSize], RECT32_MC, '16 16', colr, alpha, drawFlag);
       }
     }
   }
@@ -293,31 +274,31 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
   
   //top bar
   for(i=1; i < cols; i=i+1){
-    drawpic(org + Vector2(i*celSize, 0), BORD32_TC, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [i*celSize, 0], BORD32_TC, '16 16', colr, alpha, drawFlag);
   }
   
   //top-right corner
-  drawpic(org + Vector2(cols * celSize, 0), BORD32_TR, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [cols * celSize, 0], BORD32_TR, '16 16', colr, alpha, drawFlag);
   
   //bottom left corner
-  drawpic(org + Vector2(0, (rows-1) * celSize), BORD32_BL, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [0, (rows-1) * celSize], BORD32_BL, '16 16', colr, alpha, drawFlag);
   
   //bottoms bar
   for(i=1; i < cols; i=i+1){
-    drawpic(org + Vector2(i*celSize, (rows-1)* celSize), BORD32_BC, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [i*celSize, (rows-1)* celSize], BORD32_BC, '16 16', colr, alpha, drawFlag);
   }
   
   //bottom right corner
-  drawpic(org + Vector2(cols * celSize, (rows-1)* celSize), BORD32_BR, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [cols * celSize, (rows-1)* celSize], BORD32_BR, '16 16', colr, alpha, drawFlag);
   
   //left side
   for(i=1; i < rows-1; i=i+1){
-    drawpic(org + Vector2(0, i * celSize), BORD32_ML, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [0, i * celSize], BORD32_ML, '16 16', colr, alpha, drawFlag);
   }
   
   //right side
   for(i=1; i < rows-1; i=i+1){
-    drawpic(org + Vector2(cols * celSize, i * celSize), BORD32_MR, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [cols * celSize, i * celSize], BORD32_MR, '16 16', colr, alpha, drawFlag);
   }
 };
 
@@ -334,10 +315,10 @@ void( vector org, vector siz, vector fontSize, vector colr, float alpha, float d
   celSize = 20;
   cols = ceil(siz_x / celSize);
   
-  vOrg = Vector2(org_x - fontSize_x / 3, org_y - 4);
+  vOrg = [org_x - fontSize_x / 3, org_y - 4];
   
   if(cols == 1 ){
-    drawpic(vOrg, "gfx/ui/box_64.png", Vector2(celSize,celSize), colr, alpha, drawFlag);
+    drawpic(vOrg, "gfx/ui/box_64.png", [celSize,celSize], colr, alpha, drawFlag);
     return;
   }
   
@@ -346,19 +327,19 @@ void( vector org, vector siz, vector fontSize, vector colr, float alpha, float d
   }
   
   //left side
-  drawpic(vOrg, TEXT64_LF, Vector2(celSize,celSize), colr, alpha, drawFlag);
+  drawpic(vOrg, TEXT64_LF, [celSize,celSize], colr, alpha, drawFlag);
   
   if(cols == 2 ){
     //right side
-    drawpic(vOrg + Vector2(celSize, 0), TEXT64_RT, Vector2(celSize,celSize), colr, alpha, drawFlag);
+    drawpic(vOrg + [celSize, 0], TEXT64_RT, [celSize,celSize], colr, alpha, drawFlag);
     return;
   }
   
   //middles
   for(i = 1; i < cols-1; i = i + 1){
-    drawpic(vOrg + Vector2(i * celSize, 0), TEXT64_CT, Vector2(celSize,celSize), colr, alpha, drawFlag);
+    drawpic(vOrg + [i * celSize, 0], TEXT64_CT, [celSize,celSize], colr, alpha, drawFlag);
   }
-  drawpic(vOrg + Vector2(i * celSize, 0), TEXT64_RT, Vector2(celSize,celSize), colr, alpha, drawFlag);
+  drawpic(vOrg + [i * celSize, 0], TEXT64_RT, [celSize,celSize], colr, alpha, drawFlag);
 };
 
 
@@ -813,7 +794,7 @@ void( vector lOrg, string label, string value, vector labelColor, vector valueCo
   
   drawfont = drawfont_prev;
   
-  valueOrg = Vector2(lOrg_x + labelLen + fontSize_x, lOrg_y);
+  valueOrg = [lOrg_x + labelLen + fontSize_x, lOrg_y];
   
   drawfont_prev = drawfont;
   drawfont = fonts_y;

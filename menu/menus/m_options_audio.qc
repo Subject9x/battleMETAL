@@ -525,12 +525,12 @@ void() m_audio_d={
   
   gui_renderPatch9_1_32(MENU_ORG, MENU_SIZE, '0.35 0.35 0.55', 0.85, 0);
   
-  gui_renderString("- Audio Settings -", MENU_ORG + menu_parent_center_width(35) - Vector2(stringwidth("- Audio Settings -", 0, '16 16')/2,0), CLR_DEF_WHITE, '16 16', 1, 0);
+  gui_renderString("- Audio Settings -", MENU_ORG + menu_parent_center_width(35) - [stringwidth("- Audio Settings -", 0, '16 16')/2,0], CLR_DEF_WHITE, '16 16', 1, 0);
 
-  gui_renderString("Sound On/Off :", audio_sfx_toggle_off.origin - Vector2(stringwidth("Sound On/Off :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-  gui_renderString("Sound Volume :", audio_sfx_dn.origin - Vector2(stringwidth("Sound Volume :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-  gui_renderString("Music On/Off :", audio_music_toggle_off.origin - Vector2(stringwidth("Music On/Off :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-  gui_renderString("Music Volume :", audio_music_dn.origin - Vector2(stringwidth("Music Volume :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Sound On/Off :", audio_sfx_toggle_off.origin - [stringwidth("Sound On/Off :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Sound Volume :", audio_sfx_dn.origin - [stringwidth("Sound Volume :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Music On/Off :", audio_music_toggle_off.origin - [stringwidth("Music On/Off :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Music Volume :", audio_music_dn.origin - [stringwidth("Music Volume :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   
   local string lbl;
   if( !isdemo() && clientstate() == CS_CONNECTED){
@@ -540,9 +540,9 @@ void() m_audio_d={
     lbl = "Advanced Settings";
   }
   gui_renderString(lbl, MENU_ORG + '25 160', CLR_DEF_ARM_THREEQ, '12 12', 1, 0);
-  gui_renderString("Speaker Mode :", audio_speakers_less.origin - Vector2(stringwidth("Speaker Mode :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-  gui_renderString("Mute Minimized :", audio_mute_idle_off.origin - Vector2(stringwidth("Mute Minimized :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-  gui_renderString("Sound Quality :", audio_quality_dn.origin  - Vector2(stringwidth("Sound Quality :  ", 0, '12 12'),-1), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);  
+  gui_renderString("Speaker Mode :", audio_speakers_less.origin - [stringwidth("Speaker Mode :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Mute Minimized :", audio_mute_idle_off.origin - [stringwidth("Mute Minimized :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+  gui_renderString("Sound Quality :", audio_quality_dn.origin  - [stringwidth("Sound Quality :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);  
 
   drawfont = drawfont_prev;
 

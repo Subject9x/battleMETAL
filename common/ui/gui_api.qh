@@ -104,9 +104,6 @@ float VIEW_PIXELH;
 #define UI_FLAG_LBL_BOOL_TRUE  16384  //for lbl_text, use its .len field as 1/0 and renders "TRUE" / "FALSE"
 #define UI_FLAG_IMG_SIZE_ASPECT 32768 //lbl_image, will scale image to size_y height, and calculated width.
 
-vector(float x, float y) Vector2;
-vector(float x, float y, float z) Vector3;
-
 vector(vector startSize, vector targsize) gui_newAspectRatio;
 
 void(float screenWidth, float screenHeight) gui_set_screen_size;

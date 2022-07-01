@@ -456,7 +456,7 @@ void(vector ofs) menu_arming_hardpointView={
   nbtn_x = nbtn_x + panelImageSize_x - 24;
   nbtn_y = nbtn_y + panelImageSize_y;
   
-  gui_renderPatch9_1_32(nofs + Vector2(0, pbtn_y - 78), '280 57', CLR_DEF_UI_ARMING + '0.15 0.15 0.15', 1, DRAWFLAG_NORMAL);
+  gui_renderPatch9_1_32(nofs + [0, pbtn_y - 78], '280 57', CLR_DEF_UI_ARMING + '0.15 0.15 0.15', 1, DRAWFLAG_NORMAL);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -539,7 +539,7 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   if( SELECT_MECH > FALSE ){
     
-    MECHPANEL_CTR = Vector2(nofs_x + (panelImageSize_x * 0.5), nofs_y + (panelImageSize_y * 0.35));
+    MECHPANEL_CTR = [nofs_x + (panelImageSize_x * 0.5), nofs_y + (panelImageSize_y * 0.35)];
     
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
@@ -616,7 +616,7 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
     if( itemId != 0){
       data_get_client_item_( UI_ARMING_DATA_item_list, itemId );
       if( (UI_ARMING_DATA_item_list.damageType & weaponType) ){
-        listItemOffset = Vector2(nofs_x, nofs_y + (act_idx + 1) * 14);
+        listItemOffset = [nofs_x, nofs_y + (act_idx + 1) * 14];
         
         listItemColor = CLR_DEF_TXT_NONSELECT;
         if( itemId == CLIENT_MENU_sel_list_wep){
@@ -718,7 +718,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   //Panel label
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
-    groupLabelOrg = Vector2(nofs_x + 32, nofs_y + 2);
+    groupLabelOrg = [nofs_x + 32, nofs_y + 2];
     drawstring(groupLabelOrg, "Weapon Groups", '12 12 0', CLR_DEF_RET_GETLOCK * 1.15, 1, 0);
   drawfont = drawfont_prev;
   
@@ -807,7 +807,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     drawfill( nofs, '150 198', '1 0 0', 0.75, 0);
   }
   
-  helpOrg = Vector2(nofs_x + 130 - 6, nofs_y);
+  helpOrg = [nofs_x + 130 - 6, nofs_y];
   ARMING_HELP_WEAPON_GROUPS = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
 };
@@ -883,7 +883,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   
   panelLabel = "LIST";
   panelLabelLen = stringwidth(panelLabel, 0, '12 12 0');
-  labelOrg = Vector2(nofs_x + 97.5 - ( panelLabelLen / 2 ), nofs_y + 6);
+  labelOrg = [nofs_x + 97.5 - ( panelLabelLen / 2 ), nofs_y + 6];
   drawstring(labelOrg, panelLabel, '12 12 0', '1 1 1', 1, 0);
   
   if( ITEM1_DATA_ICON != ""){
@@ -1004,7 +1004,7 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   
   panelLabel = "HARDPOINT";
   panelLabelLen = stringwidth(panelLabel, 0, '12 12 0');
-  labelOrg = Vector2(nofs_x + 97.5 - ( panelLabelLen / 2 ), nofs_y + 6);
+  labelOrg = [nofs_x + 97.5 - ( panelLabelLen / 2 ), nofs_y + 6];
   drawstring(labelOrg, panelLabel, '12 12 0', '1 1 1', 1, 0);
   
   if( ITEM2_DATA_ICON != ""){

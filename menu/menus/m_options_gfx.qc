@@ -481,7 +481,7 @@ void() m_gfx_i={
   gfx_corona_intensity_lbl.len = cvar("r_coronas");
   gfx_corona_intensity_lbl.label = sprintf("%0.3f", gfx_corona_intensity_lbl.len);
   gfx_corona_intensity_lbl.label = strzone(gfx_corona_intensity_lbl.label);
-  gfx_corona_intensity_more = btn_img_callback(gfx_corona_intensity_lbl.origin + Vector2(stringwidth(gfx_corona_intensity_lbl.label, 0, gfx_corona_intensity_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_coronas_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_corona_intensity_more = btn_img_callback(gfx_corona_intensity_lbl.origin + [stringwidth(gfx_corona_intensity_lbl.label, 0, gfx_corona_intensity_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_coronas_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_corona_intensity_less = btn_img_callback(gfx_corona_intensity_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_coronas_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gfx_corona_intensity_lbl.len == 0){
@@ -493,7 +493,7 @@ void() m_gfx_i={
   
   gfx_corona_only_lbl = lbl_text(MENU_ORG + '150 83', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GFX, 1, UI_FLAG_LBL_BOOL_ON);
   gfx_corona_only_lbl.len = cvar("gl_flashblend");
-  gfx_corona_only_on = btn_img_callback(gfx_corona_only_lbl.origin + Vector2(stringwidth("OFF", 0, gfx_corona_only_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_coronas_only_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_corona_only_on = btn_img_callback(gfx_corona_only_lbl.origin + [stringwidth("OFF", 0, gfx_corona_only_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_coronas_only_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_corona_only_off = btn_img_callback(gfx_corona_only_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_coronas_only_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gfx_corona_only_lbl.len){
@@ -506,7 +506,7 @@ void() m_gfx_i={
   //gloss mode
   gfx_gloss_mode_lbl = lbl_text(MENU_ORG + '150 103', '14 14', strzone(gfx_gloss_mode_get(cvar("r_shadow_gloss"))), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GFX, 1, 0);
   gfx_gloss_mode_lbl.len = cvar("r_shadow_gloss");
-  gfx_gloss_mode_next = btn_img_callback(gfx_gloss_mode_lbl.origin + Vector2(stringwidth(gfx_gloss_mode_lbl.label, 0, gfx_gloss_mode_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_gloss_mode_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_gloss_mode_next = btn_img_callback(gfx_gloss_mode_lbl.origin + [stringwidth(gfx_gloss_mode_lbl.label, 0, gfx_gloss_mode_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_gloss_mode_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_gloss_mode_prev = btn_img_callback(gfx_gloss_mode_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_gloss_mode_prev, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gfx_gloss_mode_lbl.len == 0){
@@ -521,7 +521,7 @@ void() m_gfx_i={
   gfx_scene_brightness_lbl.len = cvar("r_hdr_scenebrightness");
   gfx_scene_brightness_lbl.label = sprintf("%0.3f", gfx_scene_brightness_lbl.len);
   gfx_scene_brightness_lbl.label = strzone(gfx_scene_brightness_lbl.label);
-  gfx_scene_brightness_more = btn_img_callback(gfx_scene_brightness_lbl.origin + Vector2(stringwidth(gfx_gloss_mode_lbl.label, 0, gfx_gloss_mode_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_scene_brightness_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_scene_brightness_more = btn_img_callback(gfx_scene_brightness_lbl.origin + [stringwidth(gfx_gloss_mode_lbl.label, 0, gfx_gloss_mode_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_scene_brightness_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_scene_brightness_less = btn_img_callback(gfx_scene_brightness_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_scene_brightness_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gfx_scene_brightness_lbl.len == 0){
@@ -536,7 +536,7 @@ void() m_gfx_i={
   gfx_glow_brightness_lbl.len = cvar("r_hdr_glowintensity");
   gfx_glow_brightness_lbl.label = sprintf("%0.3f", gfx_glow_brightness_lbl.len);
   gfx_glow_brightness_lbl.label = strzone(gfx_glow_brightness_lbl.label);
-  gfx_glow_brightness_more = btn_img_callback(gfx_glow_brightness_lbl.origin + Vector2(stringwidth(gfx_glow_brightness_lbl.label, 0, gfx_glow_brightness_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_glow_brightness_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_glow_brightness_more = btn_img_callback(gfx_glow_brightness_lbl.origin + [stringwidth(gfx_glow_brightness_lbl.label, 0, gfx_glow_brightness_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_glow_brightness_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_glow_brightness_less = btn_img_callback(gfx_glow_brightness_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_glow_brightness_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gfx_glow_brightness_lbl.len == 0){
@@ -549,7 +549,7 @@ void() m_gfx_i={
   //bloom toggle
   gfx_bloom_lbl = lbl_text(MENU_ORG + '150 163', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GFX, 1, UI_FLAG_LBL_BOOL_ON);
   gfx_bloom_lbl.len = cvar("r_bloom");
-  gfx_bloom_on = btn_img_callback(gfx_bloom_lbl.origin + Vector2(stringwidth("OFF", 0, gfx_bloom_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_bloom_on = btn_img_callback(gfx_bloom_lbl.origin + [stringwidth("OFF", 0, gfx_bloom_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_off = btn_img_callback(gfx_bloom_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_bloom_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gfx_bloom_lbl.len == 0){
@@ -564,7 +564,7 @@ void() m_gfx_i={
   gfx_bloom_clr_scale_lbl.len = cvar("r_bloom_colorscale");
   gfx_bloom_clr_scale_lbl.label = sprintf("%0.3f", gfx_bloom_clr_scale_lbl.len);
   gfx_bloom_clr_scale_lbl.label = strzone(gfx_bloom_clr_scale_lbl.label);
-  gfx_bloom_clr_scale_more = btn_img_callback(gfx_bloom_clr_scale_lbl.origin + Vector2(stringwidth(gfx_bloom_clr_scale_lbl.label, 0, gfx_bloom_clr_scale_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_scale_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_bloom_clr_scale_more = btn_img_callback(gfx_bloom_clr_scale_lbl.origin + [stringwidth(gfx_bloom_clr_scale_lbl.label, 0, gfx_bloom_clr_scale_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_scale_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_clr_scale_less = btn_img_callback(gfx_bloom_clr_scale_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_scale_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gfx_bloom_clr_scale_lbl.len == 0){
@@ -578,7 +578,7 @@ void() m_gfx_i={
   gfx_bloom_clr_subtract_lbl.len = cvar("r_bloom_colorsubtract");
   gfx_bloom_clr_subtract_lbl.label = sprintf("%0.3f", gfx_bloom_clr_subtract_lbl.len);
   gfx_bloom_clr_subtract_lbl.label = strzone(gfx_bloom_clr_subtract_lbl.label);
-  gfx_bloom_clr_subtract_more = btn_img_callback(gfx_bloom_clr_subtract_lbl.origin + Vector2(stringwidth(gfx_bloom_clr_subtract_lbl.label, 0, gfx_bloom_clr_subtract_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_subtract_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_bloom_clr_subtract_more = btn_img_callback(gfx_bloom_clr_subtract_lbl.origin + [stringwidth(gfx_bloom_clr_subtract_lbl.label, 0, gfx_bloom_clr_subtract_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_subtract_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_clr_subtract_less = btn_img_callback(gfx_bloom_clr_subtract_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_subtract_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gfx_bloom_clr_subtract_lbl.len == 0){
@@ -590,7 +590,7 @@ void() m_gfx_i={
 
   gfx_bloom_clr_exponent_lbl = lbl_text(MENU_ORG + '150 223', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GFX, 1, UI_FLAG_LBL_USELEN);
   gfx_bloom_clr_exponent_lbl.len = cvar("r_bloom_colorexponent");
-  gfx_bloom_clr_exponent_more = btn_img_callback(gfx_bloom_clr_exponent_lbl.origin + Vector2(stringwidth(gfx_bloom_clr_exponent_lbl.label, 0, gfx_bloom_clr_exponent_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_exponent_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_bloom_clr_exponent_more = btn_img_callback(gfx_bloom_clr_exponent_lbl.origin + [stringwidth(gfx_bloom_clr_exponent_lbl.label, 0, gfx_bloom_clr_exponent_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_exponent_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_clr_exponent_less = btn_img_callback(gfx_bloom_clr_exponent_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_bloom_color_exponent_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(gfx_bloom_clr_exponent_lbl.len == 0){
@@ -603,7 +603,7 @@ void() m_gfx_i={
   gfx_bloom_intense_lbl = lbl_text(MENU_ORG + '150 243', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GFX, 1, 0);
   gfx_bloom_intense_lbl.len = cvar("r_bloom_brighten");
   gfx_bloom_intense_lbl.label = strzone(sprintf("%0.3f", gfx_bloom_intense_lbl.len));
-  gfx_bloom_intense_more = btn_img_callback(gfx_bloom_intense_lbl.origin + Vector2(stringwidth(gfx_bloom_intense_lbl.label, 0, gfx_bloom_intense_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_intensity_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_bloom_intense_more = btn_img_callback(gfx_bloom_intense_lbl.origin + [stringwidth(gfx_bloom_intense_lbl.label, 0, gfx_bloom_intense_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_intensity_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_intense_less = btn_img_callback(gfx_bloom_intense_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_bloom_intensity_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(gfx_bloom_intense_lbl.len == 0){
@@ -616,7 +616,7 @@ void() m_gfx_i={
   gfx_bloom_blur_lbl = lbl_text(MENU_ORG + '150 263', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GFX, 1, 0);
   gfx_bloom_blur_lbl.len = cvar("r_bloom_blur");
   gfx_bloom_blur_lbl.label = strzone(ftos(gfx_bloom_blur_lbl.len));
-  gfx_bloom_blur_more = btn_img_callback(gfx_bloom_blur_lbl.origin + Vector2(stringwidth(gfx_bloom_blur_lbl.label, 0, gfx_bloom_blur_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_blur_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_bloom_blur_more = btn_img_callback(gfx_bloom_blur_lbl.origin + [stringwidth(gfx_bloom_blur_lbl.label, 0, gfx_bloom_blur_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GFX, click_gfx_bloom_blur_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_blur_less = btn_img_callback(gfx_bloom_blur_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GFX, click_gfx_bloom_blur_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(gfx_bloom_blur_lbl.len <= 1){
@@ -629,7 +629,7 @@ void() m_gfx_i={
   gfx_bloom_resolution_lbl = lbl_text(MENU_ORG + '150 283', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GFX, 1, 0);
   gfx_bloom_resolution_lbl.len = cvar("r_bloom_resolution");
   gfx_bloom_resolution_lbl.label = strzone(ftos(gfx_bloom_resolution_lbl.len));
-  gfx_bloom_resolution_more = btn_img_callback(gfx_bloom_resolution_lbl.origin + Vector2(stringwidth("9999", 0, gfx_bloom_resolution_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, VIEW_CTX, M_OPTIONS_GFX, click_gfx_bloom_resolution_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gfx_bloom_resolution_more = btn_img_callback(gfx_bloom_resolution_lbl.origin + [stringwidth("9999", 0, gfx_bloom_resolution_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, VIEW_CTX, M_OPTIONS_GFX, click_gfx_bloom_resolution_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gfx_bloom_resolution_less = btn_img_callback(gfx_bloom_resolution_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, VIEW_CTX, M_OPTIONS_GFX, click_gfx_bloom_resolution_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(gfx_bloom_resolution_lbl.len <= 64){
@@ -671,22 +671,22 @@ void() m_gfx_d={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderString("- Lighting Settings -", MENU_ORG + menu_parent_center_width(40) - Vector2((stringwidth("- Lighting Settings -", 0, '16 16')/2),0), CLR_DEF_TXT_NONSELECT, '16 16', 1, 0);
+  gui_renderString("- Lighting Settings -", MENU_ORG + menu_parent_center_width(40) - [(stringwidth("- Lighting Settings -", 0, '16 16')/2),0], CLR_DEF_TXT_NONSELECT, '16 16', 1, 0);
   
-    gui_renderString("Corona Intensity:", gfx_corona_intensity_less.origin - Vector2(stringwidth("Corona Intensity:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Use Only Coronas:", gfx_corona_only_off.origin - Vector2(stringwidth("Use Only Coronas:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Gloss Mode:", gfx_gloss_mode_prev.origin - Vector2(stringwidth("Gloss Mode:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("HDR Scene Brightness:", gfx_scene_brightness_less.origin - Vector2(stringwidth("HDR Scene Brightness:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("HDR Glow Brightness:", gfx_glow_brightness_less.origin - Vector2(stringwidth("HDR Glow Brightness:   ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Corona Intensity:", gfx_corona_intensity_less.origin - [stringwidth("Corona Intensity:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Use Only Coronas:", gfx_corona_only_off.origin - [stringwidth("Use Only Coronas:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Gloss Mode:", gfx_gloss_mode_prev.origin - [stringwidth("Gloss Mode:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("HDR Scene Brightness:", gfx_scene_brightness_less.origin - [stringwidth("HDR Scene Brightness:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("HDR Glow Brightness:", gfx_glow_brightness_less.origin - [stringwidth("HDR Glow Brightness:   ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     
-    gui_renderString("Bloom Effect:", gfx_bloom_off.origin - Vector2(stringwidth("Bloom Effect:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Bloom Effect:", gfx_bloom_off.origin - [stringwidth("Bloom Effect:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   if(gfx_bloom_lbl.len){
-    gui_renderString("Bloom Color Scale:", gfx_bloom_clr_scale_less.origin - Vector2(stringwidth("Bloom Color Scale:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Bloom color Subtract:", gfx_bloom_clr_subtract_less.origin - Vector2(stringwidth("Bloom color Subtract:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Bloom color Exponent:", gfx_bloom_clr_exponent_less.origin - Vector2(stringwidth("Bloom color Exponent:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Bloom Intensity:", gfx_bloom_intense_less.origin - Vector2(stringwidth("Bloom Intensity:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Bloom Blur:", gfx_bloom_blur_less.origin - Vector2(stringwidth("Bloom Blur:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Bloom Fidelity:", gfx_bloom_resolution_less.origin - Vector2(stringwidth("Bloom Fidelity:   ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Bloom Color Scale:", gfx_bloom_clr_scale_less.origin - [stringwidth("Bloom Color Scale:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Bloom color Subtract:", gfx_bloom_clr_subtract_less.origin - [stringwidth("Bloom color Subtract:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Bloom color Exponent:", gfx_bloom_clr_exponent_less.origin - [stringwidth("Bloom color Exponent:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Bloom Intensity:", gfx_bloom_intense_less.origin - [stringwidth("Bloom Intensity:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Bloom Blur:", gfx_bloom_blur_less.origin - [stringwidth("Bloom Blur:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Bloom Fidelity:", gfx_bloom_resolution_less.origin - [stringwidth("Bloom Fidelity:   ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   }
   drawfont = drawfont_prev;
 

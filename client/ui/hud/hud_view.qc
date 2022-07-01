@@ -642,7 +642,7 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
   messageOrigin_x = boxOrgin_x + ( width / 2 ) - (strWidth / 2) + 8;
   messageOrigin_y = messageOrigin_y + 8;
   
-  gui_renderPatch9_1_32(boxOrgin, Vector2(width, 32), '0.45 0.45 0.45', 1, 0);
+  gui_renderPatch9_1_32(boxOrgin, [width, 32], '0.45 0.45 0.45', 1, 0);
   
   drawstring(messageOrigin, messageVal, messageFont, CLR_DEF_RED * 0.85, 1, 0);
     
@@ -760,11 +760,11 @@ void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterA
   
   if(  (meterAxis & AXIS_H) ){
     drawpic(ramPos, "gfx/hud/hud_meter_cover3.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-    iconSize = Vector2(meterSize_y, meterSize_y);
+    iconSize = [meterSize_y, meterSize_y];
   }
   else{
     drawpic(ramPos, "gfx/hud/hud_meter_cover.png", meterSize, '1 1 1', max(HUD_ALPHA - 0.25, 0.1), 0);
-    iconSize = Vector2(meterSize_x, meterSize_x);
+    iconSize = [meterSize_x, meterSize_x];
   }
   if( ramIcon != "" ){
     iconOrg = gui_calcAlignCustom(lbl_ofs, lbl_algn, ramPos);
@@ -822,7 +822,7 @@ void() data_hud_frame={
   if( HUD_EXTERNAL_CAM_ACTIVE ){
     data_hud_external();
   }
-  menu_chat_render_frame( Vector2(UI_MAX_x - 250, UI_ORG_y),'262 144',10);
+  menu_chat_render_frame( [UI_MAX_x - 250, UI_ORG_y],'262 144',10);
   
   if( CLIENT_stat_trg_dataidx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270)){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);

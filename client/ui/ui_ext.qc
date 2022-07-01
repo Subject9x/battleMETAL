@@ -172,7 +172,7 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
 	}
 	
 	if( panelImage && (panelImage != "") ){
-    panelAdjust = Vector2(targetSize_x * 0.025,  targetSize_y * -0.075);
+    panelAdjust = [targetSize_x * 0.025,  targetSize_y * -0.075];
     gui_renderPatch9_1_32(toolTipOrigin + panelAdjust, targetSize, panelColor, alph + 0.25, 0);
 	}
 	gui_wrapText( toolTipOrigin + panelAdjust, targetSize, tipMessage, fontSize, textColor, alph); 

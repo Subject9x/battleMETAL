@@ -118,7 +118,7 @@ void(vector ofs) menu_hangar_MechDisplay={
     //i_sz_y = 234;
     //i_sz_x = floor(i_sz_y * (imgSize_x / imgSize_y));
         
-    hardpointGraphCenter = [ofs_x + 130 + 10, ofs_y + 42.4545]; //234/5.5
+    hardpointGraphCenter = [ofs_x + 130 + 10, ofs_y + 42.4545];
 
     MECHPANEL_CTR = hardpointGraphCenter;
     
@@ -136,7 +136,7 @@ void(vector ofs) menu_hangar_MechDisplay={
   }
   //draw hardpoint keys
   local vector iconOfs;
-  iconOfs = Vector2(ofs_x + 4, ofs_y + 165);
+  iconOfs = [ofs_x + 4, ofs_y + 165];
   
   drawpic(iconOfs, "gfx/ui/wep_icons/bal1.tga", '16 16', '1 1 1', 1, DRAWFLAG_NORMAL);
   drawstring(iconOfs + '18 4', "Ballistic", '10 10', CLR_DEF_ARM_HALF, 1, 0);
@@ -170,7 +170,7 @@ void(vector ofs) menu_hangar_MechHPoints={
   gui_renderPatch9_1_32(nofs, '265 220',  CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, DRAWFLAG_NORMAL);
   
   tlen = stringwidth("Hardpoint Restrictions", 0, '10 10');
-  tofs = Vector2(nofs_x + (255/2) - (tlen/2),  nofs_y + 2);
+  tofs = [nofs_x + (255/2) - (tlen/2),  nofs_y + 2];
   
   drawstring(tofs + '9.9 0', "-Hardpoint Restrictions-", '10 10', CLR_DEF_WHITE, 1, 0);
     
@@ -217,7 +217,7 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   drawfont = FONT_NUM_ROBOT_LIGHT;
   
   labelLen = stringwidth( listName, 0, '12 12');
-  labelOrg = Vector2(nofs_x + 10,nofs_y + 2);
+  labelOrg = [nofs_x + 10,nofs_y + 2];
   drawstring(labelOrg, listName, '12 12', listNameColor, 1, 0);
   
   drawfont = drawfont_prev;
@@ -225,14 +225,14 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   ui_lst_cnt = 0;
   ui_lst_act = 0;
   
-  sofs = Vector2(nofs_x + 4, nofs_y + 6);
+  sofs = [nofs_x + 4, nofs_y + 6];
   
   while(ui_lst_cnt <= 24){
     mechId = UNLOCKED_MECHS[ui_lst_cnt];
     if( mechId != 0){
       mechSizeCheck = MECH_DATA_SIZES[mechId];
       if( mechSizeCheck == mechSize ){
-        lofs = Vector2(sofs_x, sofs_y + (8 + ui_lst_act * 16));
+        lofs = [sofs_x, sofs_y + (8 + ui_lst_act * 16)];
         if( mechId == CLIENT_MENU_sel_mech ){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs, UI_BOX_SELECT, '104 13', CLR_DEF_ARM_OK, 1, 0);
@@ -241,7 +241,7 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
           clr = CLR_DEF_TXT_NONSELECT;
         }
         nameLen = stringwidth( MECH_DATA_NAMES[mechId], 0, '14 14');
-        iofs = Vector2( lofs_x + ( 50 - nameLen / 2), lofs_y);
+        iofs = [ lofs_x + ( 50 - nameLen / 2), lofs_y];
         
         drawFontLocal = drawfont;
         drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -272,18 +272,18 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   switch( mechSize ){
     case 1:
       MECHLIST_CNT_LIGHT = ui_lst_act;
-      MECHLIST_ORG_LIGHT = Vector2(sofs_x, nofs_y + 10);
-      MECHLIST_SIZE_LIGHT = Vector2(107,  ui_lst_act * 16);
+      MECHLIST_ORG_LIGHT = [sofs_x, nofs_y + 10];
+      MECHLIST_SIZE_LIGHT = [107,  ui_lst_act * 16];
       break;
     case 2:
       MECHLIST_CNT_MEDIUM = ui_lst_act;
-      MECHLIST_ORG_MEDIUM = Vector2(sofs_x, nofs_y + 10);
-      MECHLIST_SIZE_MEDIUM = Vector2(107,  ui_lst_act * 16);
+      MECHLIST_ORG_MEDIUM = [sofs_x, nofs_y + 10];
+      MECHLIST_SIZE_MEDIUM = [107,  ui_lst_act * 16];
       break;
     default:
       MECHLIST_CNT_HEAVY = ui_lst_act;
-      MECHLIST_ORG_HEAVY = Vector2(sofs_x, nofs_y + 10);
-      MECHLIST_SIZE_HEAVY = Vector2(107,  ui_lst_act * 16);
+      MECHLIST_ORG_HEAVY = [sofs_x, nofs_y + 10];
+      MECHLIST_SIZE_HEAVY = [107,  ui_lst_act * 16];
       break;
   }
 };
@@ -347,22 +347,22 @@ void(vector ofs) menu_hangar_MechInfo={
     armorOrg = ofs + '48 90';
     
     drawpic(armorOrg + '-10 -16', HUD_MECH_CT, '20 32', gui_getColorForArmor((MECH_DATA_HPCT/DISP_MAX_ARM_CT)*100), 1.0, DRAWFLAG_NORMAL);
-    drawstring(armorOrg + Vector2(stringwidth(ftos(MECH_DATA_HPCT), 0, '10 10')/-2, -25), ftos(MECH_DATA_HPCT), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(armorOrg + [stringwidth(ftos(MECH_DATA_HPCT), 0, '10 10')/-2, -25], ftos(MECH_DATA_HPCT), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     drawpic(armorOrg + '-6.5 -15.5' + '20 -4', HUD_MECH_ST, '13 31', gui_getColorForArmor((MECH_DATA_HPST/DISP_MAX_ARM_ST)*100), 1.0, DRAWFLAG_NORMAL);
-    drawstring(armorOrg + '20 -4' + Vector2(stringwidth(ftos(MECH_DATA_HPST), 0, '10 10')/-2, 17), ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(armorOrg + '20 -4' + [stringwidth(ftos(MECH_DATA_HPST), 0, '10 10')/-2, 17], ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     drawpic(armorOrg + '-6.5 -15.5' - '20 4', HUD_MECH_ST, '13 31', gui_getColorForArmor((MECH_DATA_HPST/DISP_MAX_ARM_ST)*100), 1.0, DRAWFLAG_NORMAL);
-    drawstring(armorOrg - '20 4' + Vector2(stringwidth(ftos(MECH_DATA_HPST), 0, '10 10')/-2, 17), ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(armorOrg - '20 4' + [stringwidth(ftos(MECH_DATA_HPST), 0, '10 10')/-2, 17], ftos(MECH_DATA_HPST), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     drawpic(armorOrg + '-6 -16' + '35 8', HUD_MECH_RA, '12 32', gui_getColorForArmor((MECH_DATA_HPAR/DISP_MAX_ARM_AR)*100), 1.0, DRAWFLAG_NORMAL);
-    drawstring(armorOrg + '35 8' + Vector2(stringwidth(ftos(MECH_DATA_HPAR), 0, '10 10')/-2, 17), ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(armorOrg + '35 8' + [stringwidth(ftos(MECH_DATA_HPAR), 0, '10 10')/-2, 17], ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     drawpic(armorOrg + '-6 -16' - '35 -8', HUD_MECH_LA, '12 32', gui_getColorForArmor((MECH_DATA_HPAR/DISP_MAX_ARM_AR)*100), 1.0, DRAWFLAG_NORMAL);
-    drawstring(armorOrg - '35 -8' + Vector2(stringwidth(ftos(MECH_DATA_HPAR), 0, '10 10')/-2, 17), ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(armorOrg - '35 -8' + [stringwidth(ftos(MECH_DATA_HPAR), 0, '10 10')/-2, 17], ftos(MECH_DATA_HPAR), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     drawpic(armorOrg + '-20 -32' + '0 53', HUD_MECH_LEG, '40 64', gui_getColorForArmor((MECH_DATA_HPLG/DISP_MAX_ARM_LG)*100), 1.0, DRAWFLAG_NORMAL);
-    drawstring(armorOrg + Vector2(stringwidth(ftos(MECH_DATA_HPLG), 0, '10 10')/-2, 53), ftos(MECH_DATA_HPLG), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(armorOrg + [stringwidth(ftos(MECH_DATA_HPLG), 0, '10 10')/-2, 53], ftos(MECH_DATA_HPLG), '10 10', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
     
     //Radar Range
     radarOfs = ofs + '128 126';

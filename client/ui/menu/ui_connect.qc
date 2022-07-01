@@ -196,21 +196,21 @@ void(vector chatOrg, vector chatSize, float chatLines ) menu_chat_render_frame={
         msgColor = CLR_DEF_YELLOW;
       }
       
-      drawstring(lineOfs + Vector2(0, i * (CHAT_LINE_FONT_SIZE_y + 2)), userName, CHAT_LINE_FONT_SIZE, msgColor * 1.25, 1, 0);
+      drawstring(lineOfs + [0, i * (CHAT_LINE_FONT_SIZE_y + 2)], userName, CHAT_LINE_FONT_SIZE, msgColor * 1.25, 1, 0);
       
       drawfont = FONT_NUM_ROBOT_REGULAR;
-      drawstring(lineOfs + Vector2(stringwidth(userName, 0, CHAT_LINE_FONT_SIZE) + CHAT_LINE_FONT_SIZE_x * 0.4, i * (CHAT_LINE_FONT_SIZE_y + 2)), msg, CHAT_LINE_FONT_SIZE, msgColor, 1, 0);
+      drawstring(lineOfs + [stringwidth(userName, 0, CHAT_LINE_FONT_SIZE) + CHAT_LINE_FONT_SIZE_x * 0.4, i * (CHAT_LINE_FONT_SIZE_y + 2)], msg, CHAT_LINE_FONT_SIZE, msgColor, 1, 0);
       
       drawfont = drawfont_prev;
     }
   }
   if( CLIENT_player_state == PLAYER_ACTIVE ){
     if( CHAT_INP_ON ){
-      menu_chat_render_input( lineOfs + Vector2(0, CHAT_LINE_COUNT * (CHAT_LINE_FONT_SIZE_y + 2)) );
+      menu_chat_render_input( lineOfs + [0, CHAT_LINE_COUNT * (CHAT_LINE_FONT_SIZE_y + 2)]);
     }
   }
   else{
-    menu_chat_render_input( lineOfs + Vector2(0, CHAT_LINE_TOTAL * (CHAT_LINE_FONT_SIZE_y + 2)) );
+    menu_chat_render_input( lineOfs + [0, CHAT_LINE_TOTAL * (CHAT_LINE_FONT_SIZE_y + 2)]);
   }
 };
 
@@ -224,7 +224,7 @@ void(vector chatOrg ) menu_chat_render_input={
   gui_renderHighlightString( "say:", chatOrg, CLR_DEF_ARM_OK, CLR_DEF_TXT_NONSELECT, CHAT_INP_ON_TEAM, CHAT_LINE_FONT_SIZE, 1, 0); 
   
   if( CHAT_INP_ON ){
-    textOrg = Vector2( chatOrg_x + stringwidth("say: ", 0, CHAT_LINE_FONT_SIZE), chatOrg_y);
+    textOrg = [chatOrg_x + stringwidth("say: ", 0, CHAT_LINE_FONT_SIZE), chatOrg_y];
     
     if( strlen(CHAT_INP_VAL) > 0 ){
       drawstring(textOrg, CHAT_INP_VAL, CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
@@ -232,7 +232,7 @@ void(vector chatOrg ) menu_chat_render_input={
     
     if( time > CHAT_CUR_TIC ){
       CHAT_CUR_TIC = time + 0.5;
-      drawstring(textOrg + Vector2(stringwidth(CHAT_INP_VAL, 0, CHAT_LINE_FONT_SIZE), 0), "_", CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
+      drawstring(textOrg + [stringwidth(CHAT_INP_VAL, 0, CHAT_LINE_FONT_SIZE), 0], "_", CHAT_LINE_FONT_SIZE, CLR_DEF_WHITE, 1, 0);
     }
   }
   

@@ -230,7 +230,7 @@ void(vector rootOfs) controls_ini_movement={
   controls_mouse_sense.len = cvar("sensitivity");
   
   controls_mouse_sense_more = btn_img_callback(controls_mouse_sense.origin + '16 0', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_CONTROLS, click_control_mouse_sense_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  controls_mouse_sense_less = btn_img_callback(controls_mouse_sense.origin - Vector2(24,0), '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_CONTROLS, click_control_mouse_sense_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_mouse_sense_less = btn_img_callback(controls_mouse_sense.origin - [24,0], '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_CONTROLS, click_control_mouse_sense_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(controls_mouse_sense.len == 1){
     controls_mouse_sense_less.drawme = FALSE;
@@ -243,7 +243,7 @@ void(vector rootOfs) controls_ini_movement={
   controls_mouse_invert.len = cvar("m_pitch");
   
   controls_mouse_invert_on = btn_img_callback(controls_mouse_invert.origin + '20 0', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_CONTROLS, click_control_mouse_invert_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  controls_mouse_invert_off = btn_img_callback(controls_mouse_invert.origin - Vector2(24,0), '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_CONTROLS, click_control_mouse_invert_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_mouse_invert_off = btn_img_callback(controls_mouse_invert.origin - [24,0], '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_CONTROLS, click_control_mouse_invert_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(controls_mouse_invert.len < 0){
     controls_mouse_invert_on.drawme = FALSE;
@@ -378,8 +378,8 @@ void() m_controls_d={
   
   //combat
   gui_renderString("-Movement-", MENU_ORG + '46 40', CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
-    gui_renderString("Mouse Sensitivity:", controls_mouse_sense_less.origin - Vector2(stringwidth("Mouse Sensitivity:  ", 0, '12 12'), -1), CLR_DEF_WHITE, '12 12', 1, 0);
-    gui_renderString("Invert Mouse:", controls_mouse_invert_off.origin - Vector2(stringwidth("Invert Mouse:  ", 0, '12 12'),-1), CLR_DEF_WHITE, '12 12', 1, 0);
+    gui_renderString("Mouse Sensitivity:", controls_mouse_sense_less.origin - [stringwidth("Mouse Sensitivity:  ", 0, '12 12'), -1], CLR_DEF_WHITE, '12 12', 1, 0);
+    gui_renderString("Invert Mouse:", controls_mouse_invert_off.origin - [stringwidth("Invert Mouse:  ", 0, '12 12'),-1], CLR_DEF_WHITE, '12 12', 1, 0);
   
   //controls
   gui_renderString("-Combat-", MENU_ORG + '235 40', CLR_DEF_IIF_FRIEND_BLD, '16 16 0', 1, 0);

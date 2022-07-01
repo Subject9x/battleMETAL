@@ -360,11 +360,11 @@ void() m_setup_i={
   
   setup_label_playername = lbl_text(MENU_ORG + '10 45', '12 12', "Player Name : ", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
   
-  setup_txtfld_playername = inp_textfield(setup_label_playername.origin + Vector2(stringwidth("Player Name :   ", 0, '12 12'), 0), '14 14', 24, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_UPP));
+  setup_txtfld_playername = inp_textfield(setup_label_playername.origin + [stringwidth("Player Name :   ", 0, '12 12'), 0], '14 14', 24, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_UPP));
   cacheGlobalString( setup_txtfld_playername.data_text, str_cvar("_cl_name") )
   
   setup_team_label = lbl_text(MENU_ORG + '10 115', '12 12', "TDM Team Colors : ", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
-  setup_team_value = lbl_text(setup_team_label.origin + Vector2(stringwidth("TDM Team Colors : ", 0, '12 12') + 128, 0), '12 12', "", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
+  setup_team_value = lbl_text(setup_team_label.origin + [stringwidth("TDM Team Colors : ", 0, '12 12') + 128, 0], '12 12', "", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
   setup_team_value.len = cvar("cl_team");
   
   setup_team_icon = lbl_img(setup_team_value.origin, '96 96', setup_set_icon(setup_team_value.len), '1 1 1', 0, M_SETUP, 1, UI_FLAG_IMG_SIZE_ASPECT | UI_FLAG_CENTER_IMG );
@@ -432,7 +432,7 @@ void() m_setup_i={
     for(col=0; col < 10; col = col + 1){
       idx = (row * 10) + col;
       if( idx < CLR_PLAYER_MAX ){
-        colorGrid = btn_img_callback(startOrg + Vector2(col * 20, row * 20), '14 14', "", 0, M_SETUP, setup_color_pick_color, CLR_PLAYER_LIST[idx], CLR_PLAYER_LIST[idx] * 1.5, 1, UI_FLAG_NOLABEL);
+        colorGrid = btn_img_callback(startOrg + [col * 20, row * 20], '14 14', "", 0, M_SETUP, setup_color_pick_color, CLR_PLAYER_LIST[idx], CLR_PLAYER_LIST[idx] * 1.5, 1, UI_FLAG_NOLABEL);
         colorGrid.len = idx;
         colorGrid.subid = 1;
         colorGrid.drawme = FALSE;

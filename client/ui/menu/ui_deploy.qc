@@ -455,7 +455,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawline(1, lineOrg + '0 4', CLIENT_MENU_nav_ui_org + '0 4', '0.85 0.85 0', 0.75, 0);
   }
   
-  helpOrg = Vector2(mpos_x + panelSize_x - 12,  mpos_y);
+  helpOrg = [mpos_x + panelSize_x - 12,  mpos_y];
   DEPLOY_HELP_NAV_MAP = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
   

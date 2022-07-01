@@ -420,14 +420,14 @@ void() m_effects_i={
   //particles
   effects_particles_lbl = lbl_text( MENU_ORG + '150 63', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
     effects_particles_lbl.len = cvar("cl_particles");
-  effects_particles_on = btn_img_callback(effects_particles_lbl.origin + Vector2(stringwidth("OFF", 0, effects_particles_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_particles_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_particles_on = btn_img_callback(effects_particles_lbl.origin + [stringwidth("OFF", 0, effects_particles_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_particles_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_particles_off = btn_img_callback(effects_particles_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_particles_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   effects_particles_quality_lbl = lbl_text(MENU_ORG + '150 83', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, 0);
     effects_particles_quality_lbl.len = effects_particle_quality_get_val();
     effects_particles_quality_lbl.label = effects_particle_quality_get(effects_particles_quality_lbl.len);
   
-  effects_particles_quality_more = btn_img_callback(effects_particles_quality_lbl.origin + Vector2(stringwidth("MEDIUM", 0, effects_particles_quality_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effets_particles_quality_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_particles_quality_more = btn_img_callback(effects_particles_quality_lbl.origin + [stringwidth("MEDIUM", 0, effects_particles_quality_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effets_particles_quality_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_particles_quality_less = btn_img_callback(effects_particles_quality_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effets_particles_quality_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(cvar("cl_particles")){
@@ -453,7 +453,7 @@ void() m_effects_i={
   effects_decals_select_lbl.len = effects_decals_get_val();
   effects_decals_select_lbl.label = effects_decals_mode_select(effects_decals_select_lbl.len);
   
-  effects_decals_select_next = btn_img_callback(effects_decals_select_lbl.origin + Vector2(stringwidth("MEDIUM", 0, effects_decals_select_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_decals_select_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_decals_select_next = btn_img_callback(effects_decals_select_lbl.origin + [stringwidth("MEDIUM", 0, effects_decals_select_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_decals_select_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_decals_select_prev = btn_img_callback(effects_decals_select_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_decals_select_prev, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_decals_select_lbl.len == 0){
@@ -466,7 +466,7 @@ void() m_effects_i={
   //Bullet impact options
   effects_bullet_impact_lbl = lbl_text(MENU_ORG + '150 123', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_bullet_impact_lbl.len = cvar("cl_particles_bulletimpacts");
-  effects_bullet_impact_on = btn_img_callback(effects_bullet_impact_lbl.origin + Vector2(stringwidth("OFF", 0, effects_bullet_impact_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_bulletimpact_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_bullet_impact_on = btn_img_callback(effects_bullet_impact_lbl.origin + [stringwidth("OFF", 0, effects_bullet_impact_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_bulletimpact_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_bullet_impact_off = btn_img_callback(effects_bullet_impact_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_bulletimpact_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_bullet_impact_lbl.len){
@@ -481,7 +481,7 @@ void() m_effects_i={
   //Smoke options
   effects_smoke_lbl = lbl_text(MENU_ORG + '150 143', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_smoke_lbl.len = cvar("cl_particles_smoke");
-  effects_smoke_on = btn_img_callback(effects_smoke_lbl.origin + Vector2(stringwidth("OFF", 0, effects_smoke_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_smoke_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_smoke_on = btn_img_callback(effects_smoke_lbl.origin + [stringwidth("OFF", 0, effects_smoke_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_smoke_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_smoke_off = btn_img_callback(effects_smoke_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_smoke_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_smoke_lbl.len){
@@ -496,7 +496,7 @@ void() m_effects_i={
   //Sparks options
   effects_sparks_lbl = lbl_text(MENU_ORG + '150 163', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_sparks_lbl.len = cvar("cl_particles_sparks");
-  effects_sparks_on = btn_img_callback(effects_sparks_lbl.origin + Vector2(stringwidth("OFF", 0, effects_sparks_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_sparks_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_sparks_on = btn_img_callback(effects_sparks_lbl.origin + [stringwidth("OFF", 0, effects_sparks_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_sparks_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_sparks_off = btn_img_callback(effects_sparks_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_sparks_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_sparks_lbl.len){
@@ -511,7 +511,7 @@ void() m_effects_i={
   //bubble options
   effects_bubbles_lbl = lbl_text(MENU_ORG + '150 183', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_bubbles_lbl.len = cvar("cl_particles_bubbles");
-  effects_bubbles_on = btn_img_callback(effects_bubbles_lbl.origin + Vector2(stringwidth("OFF", 0, effects_bubbles_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_bubbles_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_bubbles_on = btn_img_callback(effects_bubbles_lbl.origin + [stringwidth("OFF", 0, effects_bubbles_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_bubbles_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_bubbles_off = btn_img_callback(effects_bubbles_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_bubbles_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_bubbles_lbl.len){
@@ -526,7 +526,7 @@ void() m_effects_i={
   //rain options
   effects_rain_lbl = lbl_text(MENU_ORG + '150 203', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_rain_lbl.len = cvar("cl_particles_rain");
-  effects_rain_on = btn_img_callback(effects_rain_lbl.origin + Vector2(stringwidth("OFF", 0, effects_rain_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_rain_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_rain_on = btn_img_callback(effects_rain_lbl.origin + [stringwidth("OFF", 0, effects_rain_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_rain_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_rain_off = btn_img_callback(effects_rain_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_rain_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_rain_lbl.len){
@@ -541,7 +541,7 @@ void() m_effects_i={
   //rain options
   effects_snow_lbl = lbl_text(MENU_ORG + '150 223', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_snow_lbl.len = cvar("cl_particles_snow");
-  effects_snow_on = btn_img_callback(effects_snow_lbl.origin + Vector2(stringwidth("OFF", 0, effects_snow_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_snow_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_snow_on = btn_img_callback(effects_snow_lbl.origin + [stringwidth("OFF", 0, effects_snow_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_snow_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_snow_off = btn_img_callback(effects_snow_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_snow_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_snow_lbl.len){
@@ -556,7 +556,7 @@ void() m_effects_i={
   //animation
   effects_model_interpol_lbl = lbl_text(MENU_ORG + '150 243', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_model_interpol_lbl.len = cvar("r_lerpmodels");
-  effects_model_interpol_on = btn_img_callback(effects_model_interpol_lbl.origin + Vector2(stringwidth("OFF", 0, effects_model_interpol_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_interpol_model_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_model_interpol_on = btn_img_callback(effects_model_interpol_lbl.origin + [stringwidth("OFF", 0, effects_model_interpol_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_interpol_model_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_model_interpol_off = btn_img_callback(effects_model_interpol_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_interpol_model_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_model_interpol_lbl.len){
@@ -570,7 +570,7 @@ void() m_effects_i={
 
   effects_sprite_interpol_lbl = lbl_text(MENU_ORG + '150 263', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_sprite_interpol_lbl.len = cvar("r_lerpsprites");
-  effects_sprite_interpol_on = btn_img_callback(effects_sprite_interpol_lbl.origin + Vector2(stringwidth("OFF", 0, effects_sprite_interpol_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_interpol_sprite_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_sprite_interpol_on = btn_img_callback(effects_sprite_interpol_lbl.origin + [stringwidth("OFF", 0, effects_sprite_interpol_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_interpol_sprite_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_sprite_interpol_off = btn_img_callback(effects_sprite_interpol_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_interpol_sprite_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_sprite_interpol_lbl.len){
@@ -584,7 +584,7 @@ void() m_effects_i={
 
   effects_flicker_interpol_lbl = lbl_text(MENU_ORG + '150 283', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_EFFECT, 1, UI_FLAG_LBL_BOOL_ON);
   effects_flicker_interpol_lbl.len = cvar("r_lerplightstyles");
-  effects_flicker_interpol_on = btn_img_callback(effects_flicker_interpol_lbl.origin + Vector2(stringwidth("OFF", 0, effects_flicker_interpol_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_interpol_flicker_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_flicker_interpol_on = btn_img_callback(effects_flicker_interpol_lbl.origin + [stringwidth("OFF", 0, effects_flicker_interpol_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_EFFECT, click_effects_interpol_flicker_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   effects_flicker_interpol_off = btn_img_callback(effects_flicker_interpol_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_EFFECT, click_effects_interpol_flicker_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_flicker_interpol_lbl.len){
@@ -625,33 +625,33 @@ void() m_effects_d={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderString("- Particle Settings -", MENU_ORG + menu_parent_center_width(40) - Vector2((stringwidth("- Particle Settings -", 0, '16 16')/2),0), CLR_DEF_WHITE, '16 16', 1, 0);
+  gui_renderString("- Particle Settings -", MENU_ORG + menu_parent_center_width(40) - [(stringwidth("- Particle Settings -", 0, '16 16')/2),0], CLR_DEF_WHITE, '16 16', 1, 0);
   
   drawfont = FONT_NUM_ROBOT_LIGHT;
     
-    gui_renderString("Particle Effects:", effects_particles_off.origin  - Vector2(stringwidth("Particle Effects:  ", 0, '12 12'),0) , CLR_DEF_TXT_GRAY_SMOOTH,'12 12', 1, 0);
+    gui_renderString("Particle Effects:", effects_particles_off.origin  - [stringwidth("Particle Effects:  ", 0, '12 12'),0] , CLR_DEF_TXT_GRAY_SMOOTH,'12 12', 1, 0);
     
-    gui_renderHighlightString("Particle Quality:", effects_particles_quality_less.origin - Vector2(stringwidth("Particle Quality:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_particles_quality_lbl.len, '12 12', 1, 0);
+    gui_renderHighlightString("Particle Quality:", effects_particles_quality_less.origin - [stringwidth("Particle Quality:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_particles_quality_lbl.len, '12 12', 1, 0);
     
-    gui_renderHighlightString("Decal Mode:", effects_decals_select_prev.origin - Vector2(stringwidth("Decal Mode:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_decals_select_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Decal Mode:", effects_decals_select_prev.origin - [stringwidth("Decal Mode:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_decals_select_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Bullet Impact:", effects_bullet_impact_off.origin - Vector2(stringwidth("Bullet Impact:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_bullet_impact_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Bullet Impact:", effects_bullet_impact_off.origin - [stringwidth("Bullet Impact:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_bullet_impact_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Smoke:", effects_smoke_off.origin - Vector2(stringwidth("Smoke:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_smoke_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Smoke:", effects_smoke_off.origin - [stringwidth("Smoke:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_smoke_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Sparks:", effects_sparks_off.origin - Vector2(stringwidth("Sparks:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_sparks_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Sparks:", effects_sparks_off.origin - [stringwidth("Sparks:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_sparks_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Bubbles:", effects_bubbles_off.origin - Vector2(stringwidth("Bubbles:   ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_bubbles_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Bubbles:", effects_bubbles_off.origin - [stringwidth("Bubbles:   ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_bubbles_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Rain:", effects_rain_off.origin - Vector2(stringwidth("Rain:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_rain_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Rain:", effects_rain_off.origin - [stringwidth("Rain:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_rain_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Snow:", effects_snow_off.origin - Vector2(stringwidth("Snow:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_snow_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Snow:", effects_snow_off.origin - [stringwidth("Snow:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_snow_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Model Interpolation:", effects_model_interpol_off.origin - Vector2(stringwidth("Model Interpolation:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_model_interpol_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Model Interpolation:", effects_model_interpol_off.origin - [stringwidth("Model Interpolation:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_model_interpol_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Sprite Interpolation:", effects_sprite_interpol_off.origin - Vector2(stringwidth("Sprite Interpolation:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_sprite_interpol_lbl.len,'12 12', 1, 0);
+    gui_renderHighlightString("Sprite Interpolation:", effects_sprite_interpol_off.origin - [stringwidth("Sprite Interpolation:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_sprite_interpol_lbl.len,'12 12', 1, 0);
     
-    gui_renderHighlightString("Light Interpolation:", effects_flicker_interpol_off.origin - Vector2(stringwidth("Light Interpolation:  ", 0, '12 12'),0), CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_flicker_interpol_lbl.len, '12 12', 1, 0);
+    gui_renderHighlightString("Light Interpolation:", effects_flicker_interpol_off.origin - [stringwidth("Light Interpolation:  ", 0, '12 12'),0], CLR_DEF_TXT_GRAY_SMOOTH, CLR_DEF_TXT_NONSELECT, effects_flicker_interpol_lbl.len, '12 12', 1, 0);
 
   drawfont = drawfont_prev;
 

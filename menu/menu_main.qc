@@ -184,7 +184,7 @@ void(float width, float height) m_draw={
     
     
     if( clientstate() == CS_DISCONNECTED){
-      bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), Vector2(VIEW_WIDTH, VIEW_MAX_y));
+      bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), [VIEW_WIDTH, VIEW_MAX_y]);
       drawpic(VIEW_ORG, "gfx/menu/splash.tga", bimg, '1 1 1', 1, 0);
     }
     if(cvar("developer")){

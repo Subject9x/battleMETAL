@@ -207,7 +207,7 @@ void(float timeVal) anm_new_frame={
     frameOrg = ANM_FRAME_POS[ANM_FRAME_CUR];
     
     local vector aspectsize;
-    aspectsize = gui_newAspectRatio(imageSize, Vector2(cvar("vid_conwidth"), cvar("vid_conheight")));
+    aspectsize = gui_newAspectRatio(imageSize, [cvar("vid_conwidth"), cvar("vid_conheight")]);
     
     aspectsize_x = aspectsize_x * frameSize_x;
     aspectsize_y = aspectsize_y * frameSize_y;

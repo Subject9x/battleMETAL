@@ -241,11 +241,11 @@ void(vector ofs) menu_brief_text_window={
   
   OBJ_BTN_SZ = INT_BTN_SZ = BRF_BTN_SZ = '64 16';
   
-  OBJ_BTN_ORG = menu_brief_text_window_btn(bpos + Vector2(32, 5), 1, "OBJECTIVES", OBJ_BTN_SZ);
+  OBJ_BTN_ORG = menu_brief_text_window_btn(bpos + '32 5', 1, "OBJECTIVES", OBJ_BTN_SZ);
   
-  INT_BTN_ORG = menu_brief_text_window_btn(OBJ_BTN_ORG + Vector2(7 + OBJ_BTN_SZ_x, 0), 2, "INTEL", OBJ_BTN_SZ);
+  INT_BTN_ORG = menu_brief_text_window_btn(OBJ_BTN_ORG + [7 + OBJ_BTN_SZ_x, 0], 2, "INTEL", OBJ_BTN_SZ);
   
-  BRF_BTN_ORG = menu_brief_text_window_btn(INT_BTN_ORG + Vector2(7 + OBJ_BTN_SZ_x, 0), 3, "SITUATION", OBJ_BTN_SZ);
+  BRF_BTN_ORG = menu_brief_text_window_btn(INT_BTN_ORG + [7 + OBJ_BTN_SZ_x, 0], 3, "SITUATION", OBJ_BTN_SZ);
 };
 
 
@@ -352,7 +352,7 @@ void(vector ofs) menu_briefObjectivePanel={
   lst_idx = 1;
   line_rtn = 0;
   
-  objectiveOffset = Vector2(lofs_x + 2, lofs_y + line_rtn + 3);
+  objectiveOffset = [lofs_x + 2, lofs_y + line_rtn + 3];
   
   eol = TRUE;
   while(eol){

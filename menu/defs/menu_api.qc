@@ -684,7 +684,7 @@ void(entity txt) render_bindfield={
       if( self.image1 != "" ){
         drawfont_prev = drawfont;
         drawfont = FONT_NUM_ROBOT_REGULAR;
-          labelOrg = self.origin - Vector2(stringwidth(self.image1, 0, self.size - (self.size * 0.15)), 0);
+          labelOrg = self.origin - [stringwidth(self.image1, 0, self.size - (self.size * 0.15)), 0];
           drawstring(labelOrg, self.image1, self.size - (self.size * 0.15), CLR_DEF_TXT_NONSELECT, self.alpha, 0); 
         drawfont = drawfont_prev;
       }

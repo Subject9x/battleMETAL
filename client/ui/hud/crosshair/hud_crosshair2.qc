@@ -33,7 +33,7 @@ void() hud_renderCrosshair2={
   hitColor = HUD_COLOR_DEF;
   hitAlpha = HUD_ALPHA;
   
-  drift = Vector2( 8 * CLIENT_accuracy, 8 * CLIENT_accuracy );
+  drift = [ 8 * CLIENT_accuracy, 8 * CLIENT_accuracy ];
   imgSize = '28 28';
   pipSizeH = '15 3';
   pipSizeV = '3 15';

@@ -139,7 +139,7 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   ruleRow = leftAnchor;
   
   if( ENT_SERVER_INFO.serverFlags == 0 ){
-    drawstring( ruleRow + Vector2( 85 - stringwidth("None", 0, '12 12') / 2, -4), "None", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring( ruleRow + [ 85 - stringwidth("None", 0, '12 12') / 2, -4], "None", '12 12', CLR_DEF_WHITE, 1, 0);
     drawfont = drawfont_prev;
     return;
   }

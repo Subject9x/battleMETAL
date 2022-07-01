@@ -249,7 +249,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     //version wille eventually be only displayed as needed.
     gui_drawversion();
     drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos(Vector2(w,h))), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos([w,h])), '8 8', '0.85 0.85 0.85', 1, 0);
   
     
     drawstring(VIEW_ORG + '0 40', sprintf("VIEW_VF_ORG  = %s", vtos(VIEW_VF_ORG)), '8 8', '0.85 0.85 0.85', 1, 0);
