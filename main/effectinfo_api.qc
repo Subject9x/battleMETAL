@@ -312,40 +312,27 @@ void() te_vehicle_chunk_th={
   }
 };
 
-void( entity parent, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk={
+/*
+  Scope
+    self = calling unit
+*/
+void( string mdl, vector startOrg, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk={
   local entity piece;
-  
-  //<sigh> these little buggers dump on the net traffic.
-  if( cvar("gamemode") != GAMEMODE_CAMPAIGN ){
-    return;
-  }
   
   piece = spawn();
   if( piece ){
-    setmodel(piece, parent.model);
+    setmodel(piece, mdl);
     setsize (piece, '-4 -4 -4', '4 4 4');
-    setorigin(piece, parent.origin);
-    if( wishAngl != '0 0 0' ){
-      piece.angles = wishAngl;
-    }
-    else{
-      piece.angles = parent.angles;
-    }
-    piece.skin = parent.skin;
+    setorigin(piece, startOrg);
+      
+    piece.angles = wishAngl;
+    piece.skin = self.skin;
     piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-    
-    if( (parent.owner.flags & FL_CLIENT) ){
-      piece.colormod = parent.owner.colormod;
-    }
-    else{
-      piece.colormod = '1 1 1';
-    }
     
     piece.movetype = MOVETYPE_TOSS;
     piece.solid = SOLID_NOT;
     piece.frame = 0;
-    piece.flags = 0;
-    piece.colormod = piece.colormod * 0.75;
+    piece.colormod = '0.45 0.45 0.45';
     
     piece.traileffectnum = trailnum;
     if( wishVel != '0 0 0' ){
@@ -376,8 +363,10 @@ void( entity parent, vector wishVel, vector wishAngl, float trailnum, float life
     piece.think = te_vehicle_chunk_th;
     piece.nextthink = time + 0.1;
   }
-  
 };
+
+
+
 
 void() te_msn_boundary={
   msg_entity = self;

@@ -72,7 +72,6 @@ void() data_projectile_ini_missile_swarm_={
 void() data_projectile_missile_swarm_touch={
   local float debris;
   local float damage;
-  local entity hitLocation;
   
   self.touch = SUB_Null;
   self.impactType = IMPACT_SKY;
@@ -90,9 +89,9 @@ void() data_projectile_missile_swarm_touch={
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      hitLocation = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       } 
       te_debris_armor( self.origin, vectoangles(self.velocity) * 0.33, self.velocity, 3, 1 );
       self.impactType = IMPACT_ARMOR;

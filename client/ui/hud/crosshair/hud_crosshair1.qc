@@ -52,7 +52,9 @@ void() hud_renderCrosshair1={
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  if( !CLIENT_stat_trg_face || CLIENT_stat_trg_face != AIM_FACE_FRONT){
+  
+  
+  if( CLIENT_stat_trg_face <= 270 && CLIENT_stat_trg_face >= 45){
     drawpic(imgCenter, "gfx/hud/ret/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   }
 
@@ -76,7 +78,7 @@ void() hud_renderCrosshair1={
   drawpic(pipBottom, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
 
   //lock on indicators
-  if( CLIENT_stat_trg_face == AIM_FACE_FRONT && CLIENT_stat_rdr_mode ){
+  if( (CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45) && CLIENT_stat_rdr_mode ){
     lockSize = '34 34';
     //lockSize = '34 34' * HUD_LOCK_SIZE; //couldnt get it working for release.
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;

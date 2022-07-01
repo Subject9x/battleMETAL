@@ -82,7 +82,6 @@ void() data_projectile_quantum_bit_th={
 void() data_projectile_quantum_shatter={
   local entity thing;
   local float itr;
-  local entity hitLocation;
   
   self.damageValue = self.damageValue * 0.4;
   itr = 4;
@@ -112,9 +111,9 @@ void() data_projectile_quantum_shatter={
       t_damage_shield(thing, self, self.owner, self.damageValue * 0.67, self.origin, FALSE);
     }
     else{
-      hitLocation = t_damage(thing, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(thing, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }  
     }
   }
@@ -124,7 +123,6 @@ void() data_projectile_quantum_shatter={
 };
 
 void() data_projectile_ini_quantum_bit_touch_={
-  local entity hitLocation;
   
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
@@ -142,9 +140,9 @@ void() data_projectile_ini_quantum_bit_touch_={
     }
     else{
       self.aState = TRUE;
-      hitLocation = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }
       self.impactType = IMPACT_ARMOR;
     }

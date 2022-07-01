@@ -9,32 +9,10 @@ Overview:
   handles
     sv/main/controllers/ctrl_tank.ctrl_send_spg()
 */
-
-/*
-  EVENT - MOVE
-*/
-void() sendevent_spg_move={
-  local entity weps;
-  makevectors(self.angles);
-  for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-    weps.angles = self.angles;
-    weps.origin = self.origin + (v_right * weps.compOffset_x) + (v_forward * weps.compOffset_z) + (v_up * weps.compOffset_y);
-  }
-};
-
 /*
   EVENT - DEATH
 */
 void() sendevent_spg_die={  local entity weps;
-  local entity rem;
-  local float wId;
-  
-  weps = self.w_slot;
-  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
-    rem = weps;
-    weps = rem.w_slot;
-    sendent_handle_remove(rem);
-  }
   
   data_vehicle_wreck();
   
@@ -60,7 +38,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-    sendevent_spg_move();
   }
   
   if( (changeFlags & SENDFLAG_ANGLE) ){
@@ -79,28 +56,25 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.data_idx = ReadByte();
     self.flags = ReadLong();
     self.faction = ReadByte();
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
     self.ai_muted = ReadByte();
     newName = ReadString();
   }
   
   if( isNew ){
-    cacheGlobalString(self.netname, newName )
     data_sync_new_vehicle(self.data_idx);
-    self.predraw = predraw_spg;
-    self.canTarget = TRUE;
-    if( !self.ai_muted ){
-      self.ai_muted = FALSE;
-      ai_voice_ini( TRUE );
-      self.ai_voice_limit = 1;
+    if( self.deadflag == DEAD_NO ){
+      cacheGlobalString(self.netname, newName )
+      
+      self.predraw = predraw_spg;
+      self.canTarget = TRUE;
+      if( !self.ai_muted ){
+        self.ai_muted = FALSE;
+        ai_voice_ini( TRUE );
+        self.ai_voice_limit = 1;
+      }
+    }
+    else{
+      data_vehicle_wreck();
     }
   }
   

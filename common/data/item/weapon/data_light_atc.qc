@@ -128,8 +128,8 @@ void() data_ini_attack_latc_={
       }
       else{
         HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
-        if( HIT_LOCATION.partTypeId && !(self.owner.statTargetHitParts & HIT_LOCATION.partTypeId) ){
-          self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION.partTypeId;
+        if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+          self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
         }
       } 
     }

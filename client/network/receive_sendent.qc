@@ -26,6 +26,7 @@ void(entity enEntity) GetAlignedSurfaceAngles=
 			
 		// Assign Aligned Angles
 		enEntity.angles = vectoangles( normalize(v_forward - ( (v_forward * vNormal) / (v_up * vNormal)) * v_up) );
+    enEntity.cacheGroundAngle = enEntity.angles;
 	}
 }
 
@@ -221,13 +222,17 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   SendEntity - Projectile ====================================
 */
 void() sendent_missile_think={
-  if( (self.origin1 != world.origin) && (self.origin2 != world.origin) ){
-    if( self.traileffectnum ){
-      trailparticles(world, self.traileffectnum, self.origin2, self.origin1);
+
+  if( self.deadflag == DEAD_NO ){
+    if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
+      if( self.traileffectnum ){
+        trailparticles(world, self.traileffectnum, self.origin, self.origin1 );
+      }
     }
   }
+  
   self.think = sendent_missile_think;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.01;
 };
 
 void( float isNew, float changeFlags ) sendent_handle_missile={
@@ -236,6 +241,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   
   prevImpactType = self.impactType;
   
+  self.oldvelocity = self.velocity;
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
@@ -250,7 +256,6 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    self.oldvelocity = self.velocity;
     self.velocity_x = ReadLong();
     self.velocity_y = ReadLong();
     self.velocity_z = ReadLong();
@@ -272,7 +277,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( isNew ){
-    self.solid = SOLID_BBOX;
+    self.deadflag = DEAD_NO;
     self.alpha = 1;
     self.scale = 1;
     if( self.data_idx == UID_ITEM_debris ){
@@ -284,15 +289,16 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     setmodel(self, self.model);
     setsize(self, '0 0 0', '0 0 0');
     
-    sendent_missile_think();
-    self.drawmask = MASK_ENGINE;
-    interpolate_origin();
+    self.think = sendent_missile_think;
+    self.nextthink = time + 0.001;
+    sendent_ini_interpolate();
     self.predraw = predraw_missile;
   }
   
   self.angles = vectoangles(self.velocity);
   //HANDLE EVENT - projectile hit.
   if( self.impactType > 0 && prevImpactType == FALSE ){
+    self.deadflag = DEAD_DEAD;
     if( self.pcl_explode ){
       self.pcl_explode();
     }
@@ -369,6 +375,9 @@ void( float isNew, float changeFlags ) sendent_handle_item={
     //self.predraw = predraw_weapon_ent;
     self.deadflag = DEAD_NO;
     self.classname = "UNIT_ITEM";
+    if( (self.owner.flags & FL_CLIENT) && self.owner.clientServerNum == player_localentnum ){
+      CLIENT_weapon_state = CLIENT_weapon_state |  self.w_group;
+    }
   }
 };
 
@@ -500,43 +509,6 @@ void(entity item) predraw_unit_weapon={
   addentity(item);
 };
 
-
-
-void() sendent_set_weapon={
-  switch(self.w_group){
-     case WEAPON1:
-      self.data_idx = self.owner.next_wepn1;
-      break;
-     case WEAPON2:
-      self.data_idx = self.owner.next_wepn2;
-      break;
-     case WEAPON3:
-      self.data_idx = self.owner.next_wepn3;
-      break;
-     case WEAPON4:
-      self.data_idx = self.owner.next_wepn4;
-      break;
-     case WEAPON5:
-      self.data_idx = self.owner.next_wepn5;
-      break;
-     case WEAPON6:
-      self.data_idx = self.owner.next_wepn6;
-      break;
-     case WEAPON7:
-      self.data_idx = self.owner.next_wepn7;
-      break;
-     case WEAPON8:
-      self.data_idx = self.owner.next_wepn8;
-      break;
-     case WEAPON9:
-      self.data_idx = self.owner.next_wepn9;
-      break;
-    default:
-      self.data_idx = 0;
-      break;
-  }
-};
-
 entity(float weaponId) sendent_get_weapon={
   switch(weaponId){
      case WEAPON1:
@@ -562,47 +534,3 @@ entity(float weaponId) sendent_get_weapon={
   }
   return world;
 };
-
-
-//deprecated, weapons are predrawn inside parent unit's predraw func.
-/*void() predraw_weapon_ent={
-  local entity ent;
-  local vector adjPartOffset;
-  local vector drawAng;
-  local vector prevOrg;
-  local vector prevAngle;
-  local vector offset;
-  
-  if( self.owner == world ){
-    return;
-  }
-  if(self.owner.deadflag == DEAD_DEAD ){
-    return;
-  }
-  if( self.model == "" ){
-    return;
-  }
-  if( (self.owner.criticalHits & self.partParentId) ){
-    return;
-  }
-  if(!self.owner.cl_lod_weapon){
-    return;
-  }
-  
-  util_getPartFromName( self.partParentId, self.owner);
-  
-  offset = T_PART_PARENT_ORG;
-  adjPartOffset = self.compOffset - T_PART_PARENT_OFFSET;
-  drawAng = T_PART_PARENT_ANGL;
-  drawAng_x = drawAng_x * -1;
-  
-  makevectors(drawAng);
-  
-  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
-  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
-  
-  setmodel(self, self.model);
-  self.origin = offset;
-  self.angles = T_PART_PARENT_ANGL;
-  addentity(self);
-};*/

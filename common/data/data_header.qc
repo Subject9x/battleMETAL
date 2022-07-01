@@ -5,6 +5,7 @@ Date: 01/22/2017
   mod: 11/26/2017
   mod: 01/28/2018
   mod: 05/20/2019
+  mod: 06/27/2022
 Overview: 
   header for all game-data related functions,
   its up to either the client or the server to define these functions
@@ -12,7 +13,6 @@ Overview:
 */
 
 #ifdef SSQC
-entity unitPartList;  //used by vehicle factory to build full list of unit's parts as a chain.
 entity weaponBuild; //used by vehicle factory to build current weapon
 .void() unit_ini;
 .void() item_remove_upgrade;
@@ -21,46 +21,14 @@ entity weaponBuild; //used by vehicle factory to build current weapon
 
 entity weaponList;  //used by data functions to populate weapon lists for units
 
-/*
-  called when building something with common/data info.
-  instantiates the target object and populates it with
-  parameter values.
-*/
-void( float partId, string pathToModel, float maxHp, vector partOffset, entity parentPart, .entity partSlot, vector altOffsett ) data_ini_unitPiece_={
-  local entity piece;
-
-  piece = spawn();
-  piece.partTypeId = partId;
-  piece.partParentId = parentPart.partTypeId;
-  piece.max_health = piece.health = maxHp;
-  piece.model = pathToModel;
-  piece.compOffset = partOffset;
-  piece.hitOffset = '0 0 0';
-  piece.compAltOffset = piece.compAltOffsetCache = altOffsett;
-  #ifdef CSQC
-    piece.nextthink = time + 0.1;
-  #else
-    if( (self.flags & FL_MONSTER) ){
-      if( piece.partTypeId != M_LEGS ){
-        piece.effects = piece.effects | EF_NODRAW;
-      }
-    }
-  #endif
-  self.partSlot = piece;
-  piece.owner = self;
-};
-
 //just some syntactic sugar wrappings
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_center_={
   #ifdef SSQC
-    data_ini_unitPiece_( M_TOR_CENTER, pathToModel, healthMax, offsetOrigin, self, torsoCenter, altOffset);
     self.torC_hp = self.torC_hpMax = healthMax;
   #endif
   
-  #ifdef CSQC
-    self.torC_hpMax = healthMax;
-    self.torC_mdl = pathToModel;
-  #endif
+  self.torC_hpMax = healthMax;
+  self.torC_mdl = pathToModel;
   
   self.torC_parentId = M_UNIT;
   self.torC_compOffset = offsetOrigin;
@@ -69,15 +37,12 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_right_={
   #ifdef SSQC
-    data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoRight, altOffset);
     self.torR_hp = self.torR_hpMax = healthMax;
   #endif
-  
-  #ifdef CSQC
-    self.torR_hpMax = healthMax;
-    self.torR_mdl = pathToModel;
-  #endif
-  
+
+  self.torR_hpMax = healthMax;
+  self.torR_mdl = pathToModel;
+
   self.torR_parentId = M_TOR_CENTER;
   self.torR_compOffset = offsetOrigin;
   self.torR_compAltOffset = altOffset;
@@ -85,15 +50,10 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_left_={
   #ifdef SSQC
-    data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoLeft, altOffset);
     self.torL_hp = self.torL_hpMax = healthMax;
   #endif
-  
-  #ifdef CSQC
-    self.torL_hpMax = healthMax;
-    self.torL_mdl = pathToModel;
-  #endif
-  
+  self.torL_hpMax = healthMax;
+  self.torL_mdl = pathToModel;
   self.torL_parentId = M_TOR_CENTER;
   self.torL_compOffset = offsetOrigin;
   self.torL_compAltOffset = altOffset;
@@ -101,16 +61,10 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_left_={
   #ifdef SSQC
-    data_ini_unitPiece_( M_ARM_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoLeft, armLeft, altOffset);
     self.armL_hp = self.armL_hpMax = healthMax;
   #endif
-
-  
-  #ifdef CSQC
-    self.armL_hpMax = healthMax;
-    self.armL_mdl = pathToModel;
-  #endif
-  
+  self.armL_hpMax = healthMax;
+  self.armL_mdl = pathToModel;
   self.armL_parentId = M_TOR_LEFT;
   self.armL_compOffset = offsetOrigin;
   self.armL_compAltOffset = altOffset;
@@ -118,15 +72,11 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_right_={
   #ifdef SSQC
-    data_ini_unitPiece_( M_ARM_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoRight, armRight, altOffset);
     self.armR_hp = self.armR_hpMax = healthMax;
   #endif
   
-  #ifdef CSQC
-    self.armR_hpMax = healthMax;
-    self.armR_mdl = pathToModel;
-  #endif
-  
+  self.armR_hpMax = healthMax;
+  self.armR_mdl = pathToModel;
   self.armR_parentId = M_TOR_RIGHT;
   self.armR_compOffset = offsetOrigin;
   self.armR_compAltOffset = altOffset;
@@ -134,7 +84,6 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
   #ifdef SSQC
-    data_ini_unitPiece_( M_LEGS, pathToModel, healthMax, offsetOrigin, self, legs, '0 0 0');
     self.legs_hp = self.legs_hpMax = healthMax;
   #endif
   
@@ -153,6 +102,7 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
   local entity item;
   local entity notItem;
   if( self.hardpoint_cnt < 10){
+    #ifdef SSQC
     item = spawn();
     weaponList.w_slot = item;
     notItem = self;
@@ -166,6 +116,26 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
       self.hardpointSize = newHardPointSizeVal;
     self = notItem;
     weaponList = item;
+    #endif
+    
+    #ifdef CSQC
+      if( (self.classname == "UI_ITEM") ){
+        item = spawn();
+        weaponList.w_slot = item;
+        notItem = self;
+        self = item;
+          self.data_idx = 0;
+          self.w_group = self.w_group | weaponBit;
+          self.partParentId = parentPartID;
+          self.compOffset = pointOffsetVec;
+          self.w_adj_ang = adjustAngleVec;
+          self.owner = notItem;
+          self.hardpointSize = newHardPointSizeVal;
+        self = notItem;
+        weaponList = item;
+      }
+    #endif
+    
     self.hardpoint_cnt = self.hardpoint_cnt + 1;
   }
 };
@@ -285,52 +255,10 @@ void(entity unit) data_validate_mod_flags={
   }
 };
 
-
-#ifdef SSQC
-/*
-	This was promoted up to common/data because its portable and
-	reuseable in both client and server.
-*/
-entity(float part, entity unit) util_getPartFromName={
-  local entity thepart;
-  switch( part ){
-    case M_TOR_CENTER:
-      thepart = unit;
-      if( (unit.flags & FL_TURRET) ){
-        thepart = unit.torsoCenter;
-      }
-      break;
-    case M_TOR_RIGHT:
-      thepart = unit.torsoRight;
-      break;
-    case M_TOR_LEFT:
-      thepart = unit.torsoLeft;
-      break;
-    case M_LEGS:
-      thepart = unit.legs;
-      if( (unit.data_type == DATA_VEHC) ){
-        thepart = unit;  //edge case for hull-mounted weapons on a turreted object
-      }
-      break;
-    case M_ARM_LEFT:
-      thepart = unit.armLeft;
-      break;
-    case M_ARM_RIGHT:
-      thepart = unit.armRight;
-      break;
-    default:
-      thepart = unit;
-      break;
-  }
-  
-  return thepart;
-};
-#endif
-
-#ifdef CSQC
 vector T_PART_PARENT_ORG;
 vector T_PART_PARENT_ANGL;
 vector T_PART_PARENT_OFFSET;
+float T_PART_HP;
 
 void(float part, entity unit) util_getPartFromName={
   local vector vOrg;
@@ -340,22 +268,26 @@ void(float part, entity unit) util_getPartFromName={
         T_PART_PARENT_ORG = unit.torC_org;
         T_PART_PARENT_ANGL = unit.torC_angl;
         T_PART_PARENT_OFFSET = unit.torC_compOffset;
+        T_PART_HP = unit.torC_hp;
       }
       else{
         T_PART_PARENT_ORG = unit.origin;
         T_PART_PARENT_ANGL = unit.angles;
         T_PART_PARENT_OFFSET = '0 0 0';
+        T_PART_HP = unit.health;
       }
       break;
     case M_TOR_RIGHT:
       T_PART_PARENT_ORG = unit.torR_org;
       T_PART_PARENT_ANGL = unit.torR_angl;
       T_PART_PARENT_OFFSET = unit.torR_compOffset;
+      T_PART_HP = unit.torR_hp;
       break;
     case M_TOR_LEFT:
       T_PART_PARENT_ORG = unit.torL_org;
       T_PART_PARENT_ANGL = unit.torL_angl;
       T_PART_PARENT_OFFSET = unit.torL_compOffset;
+      T_PART_HP = unit.torL_hp;
       break;
     case M_LEGS:
       vOrg = unit.legs_compOffset;
@@ -364,28 +296,32 @@ void(float part, entity unit) util_getPartFromName={
         T_PART_PARENT_ORG = unit.origin;
         T_PART_PARENT_ANGL = unit.angles;
         T_PART_PARENT_OFFSET = '0 0 0';
+        T_PART_HP = unit.health;
       }
       else{
         T_PART_PARENT_ORG = unit.legs_org;
         T_PART_PARENT_ANGL = unit.legs_angl;
         T_PART_PARENT_OFFSET =  unit.legs_compOffset;
+        T_PART_HP = unit.legs_hp;
       }
       break;
     case M_ARM_LEFT:
       T_PART_PARENT_ORG = unit.armL_org;
       T_PART_PARENT_ANGL = unit.armL_angl;
       T_PART_PARENT_OFFSET = unit.armL_compOffset;
+      T_PART_HP = unit.armL_hp;
       break;
     case M_ARM_RIGHT:
       T_PART_PARENT_ORG = unit.armR_org;
       T_PART_PARENT_ANGL = unit.armR_angl;
       T_PART_PARENT_OFFSET = unit.armR_compOffset;
+      T_PART_HP = unit.armR_hp;
       break;
     default:
       T_PART_PARENT_ORG = unit.origin;
       T_PART_PARENT_ANGL = unit.angles;
       T_PART_PARENT_OFFSET = '0 0 0';
+      T_PART_HP = unit.health;
       break;
   }
 };
-#endif

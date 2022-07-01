@@ -913,61 +913,9 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
   return newpos;
 };
 
-entity(entity root, entity part, vector setAngle) te_mech_chunk_stand={
-  local entity aPiece;
-  
-  aPiece = spawn();
-  if( aPiece ){
-    aPiece.solid = SOLID_NOT;
-    aPiece.movetype = MOVETYPE_NONE;
-    aPiece.origin = part.origin;
-    aPiece.compOffset = part.compOffset;
-    aPiece.angles = setAngle;
-    aPiece.skin = root.skin;
-    aPiece.colormod = '0.45 0.45 0.45';
-    setmodel(aPiece, part.model);
-    aPiece.drawmask = MASK_NORMAL;
-    aPiece.owner = root;
-  }
-  
-  return aPiece;
-};
-
 /*
   burning mech legs
 */
-entity( entity mechLegs ) te_mech_dead_legs={
-  local entity deadLegs;
-  
-  
-  if( PARTICLE_WRECK_MECH > PARTICLE_MAX_WRECK_MECH ){
-    PARTICLE_WRECK_MECH = PARTICLE_WRECK_MECH - 1;
-    deadLegs = find(world, classname, "wreck_mech");
-    remove(deadLegs);
-    return world;
-  }
-  
-  deadLegs = spawn();
-    if( deadLegs != world ){
-    deadLegs.drawmask = MASK_NORMAL;
-    deadLegs.classname = "wreck_mech";
-    setmodel(deadLegs, mechLegs.model);
-    setsize(deadLegs, deadLegs.mins, deadLegs.maxs);
-    setorigin(deadLegs, mechLegs.origin);
-    deadLegs.frame = mechLegs.frame;
-    deadLegs.solid = SOLID_NOT;
-    deadLegs.colormod = '0.45 0.45 0.45';
-    deadLegs.frame = 1;
-    deadLegs.think = te_mech_dead_legs_burn;
-    self.nextthink = servertime + frametime*0.5;
-    deadLegs.data_lifetime = servertime + 300 + (random() * 200);
-    deadLegs.angles = mechLegs.angles;
-    deadLegs.vec_size = mechLegs.owner.vec_size;
-  }
-  
-  return deadLegs;
-};
-
 void() te_mech_dead_legs_burn={
   local vector fireOrg;
   

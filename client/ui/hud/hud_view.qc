@@ -45,7 +45,7 @@ void() hud_renderCrosshairs={
   }
   
   if( CLIENT_stat_lock_state ){
-    if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT ){
+    if( CLIENT_stat_trg_dataidx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270) ){
       gui_renderTintImage(TRUE, VIEW_CTR - '16 16', HUT_RET_LOK, '32 32', CLR_DEF_RET_HASLOCK, HUD_ALPHA, 0);
     }
   }
@@ -340,12 +340,14 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
 */
 void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
   local entity theWeapon;
+  local entity oself;
   local vector iofs, ofs, metSize, wepState;
   local vector rOrg;
   
-  theWeapon = gui_get_weapon(w_bit);
-  
-  //data_get_client_item_( HUD_DATA_weapon, w_id );
+  oself = self;
+  self = CLIENT_mech_self;
+    theWeapon = sendent_get_weapon(w_bit);
+  self = oself;
   
   rOrg = torg;
   rOrg = gui_calcAlign(rOrg, algn);
@@ -409,8 +411,12 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
   local entity theWeapon;
   local vector rOrg;
   local vector iofs, ofs, metSize, wepState;
+  local entity oself;
   
-  theWeapon = gui_get_weapon(w_bit);
+  oself = self;
+  self = CLIENT_mech_self;
+    theWeapon = sendent_get_weapon(w_bit);
+  self = oself;
   
   rOrg = torg;
   rOrg = gui_calcAlign(torg, algn);
@@ -818,7 +824,7 @@ void() data_hud_frame={
   }
   menu_chat_render_frame( Vector2(UI_MAX_x - 250, UI_ORG_y),'262 144',10);
   
-  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT){
+  if( CLIENT_stat_trg_dataidx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270)){
     hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
     
     //func call optimization, adding shield-down filter, players are confused about a target's shield flashing red to indicate 'time-before-regen' delay.
@@ -836,7 +842,7 @@ void() data_hud_frame={
     //hud_lock_frame();
     CLIENT_stat_lock_state = FALSE;
     if( HUD_LOCK_FLAG ){
-      if( CLIENT_stat_trg_dataidx > 0 && CLIENT_stat_trg_face == AIM_FACE_FRONT ){
+      if( CLIENT_stat_trg_dataidx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270) ){
         CLIENT_stat_lock_state = TRUE;
       }
     }

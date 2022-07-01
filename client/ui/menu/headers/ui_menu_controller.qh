@@ -11,6 +11,16 @@ entity toolTip;
 
 entity MENU_NAV_LIST;
 
+entity UI_HARDPIONT_1;
+entity UI_HARDPIONT_2;
+entity UI_HARDPIONT_3;
+entity UI_HARDPIONT_4;
+entity UI_HARDPIONT_5;
+entity UI_HARDPIONT_6;
+entity UI_HARDPIONT_7;
+entity UI_HARDPIONT_8;
+entity UI_HARDPIONT_9;
+
 float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 

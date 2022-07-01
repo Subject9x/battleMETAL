@@ -9,6 +9,10 @@ Overview: ai unit
   Setup
     
 */
+void() ai_mech_sk_die3;
+void() ai_mech_sk_die4;
+void() ai_mech_sk_die5;
+void() ai_mech_sk_die6;
 /*
   TH_DIE
 */ 
@@ -18,62 +22,77 @@ void() ai_mech_sk_die={
     return; //double play prevention
   }
   
+  //fire triggers when dead
   ai_sfx_dead();
+  trigger_event( self.enemy, self.trigOnDeath );
+  ai_alert_close( self.enemy );
+  ai_nodegraph_clear_locks();
+  
+  if( self.moveState != MOVE_STAND ){
+    te_vehicle_chunk( self.armR_mdl, self.armR_org, '0 0 0', self.armR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
+  }
+  
   self.th_pain = ai_NULL_pain;
   self.deadflag = DEAD_DEAD;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  self.colormod = '0.05 0.05 0.05';
-  self.scale = 0.01;
-  self.alpha = 0.01;
   self.attack_state = -1;
   self.enemy = world;
-  setsize(self, '-1 -1 -1', '1 1 1');
+  self.effects = self.effects | EF_LOWPRECISION;
   setorigin(self, self.origin);
   droptofloor();
   
-  // run weapon death animation
-  local entity w_chain;
-  w_chain = self.w_slot;
-  while(w_chain){
-    w_chain.think = SUB_Remove;
-    w_chain.nextthink = time + 0.01;
-    w_chain = w_chain.w_slot;
-  }
-
-  self.legs.compOffset = self.mins;
-  self.legs.compAltOffset = self.maxs;
-  self.legs.think = self.legs.th_die;
-  self.legs.nextthink = time + 0.05;
-  
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
-  
-  if( self.moveState != MOVE_STAND ){
-    ctrl_unit_part_death(self.torsoCenter);
-    ctrl_unit_part_death(self.torsoLeft);
-    ctrl_unit_part_death(self.torsoRight);
-    ctrl_unit_part_death(self.armLeft);
-    ctrl_unit_part_death(self.armRight);
-  }
-  
-  setsize(self, '-1 -1 -1', '1 1 1');
-  setorigin(self, self.origin);
-  
-  ai_alert_close( self.enemy );
-  
-  ai_nodegraph_clear_locks();
-  
-  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE);
-  
+  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_TURRET | SENDFLAG_CRIT);
   self.think = ai_mech_sk_die2;
   self.nextthink = time + 0.1;
 };
 
 //explode
 void() ai_mech_sk_die2={
-  ctrl_unit_cleanup_mech();
-  self.effects = self.effects | EF_LOWPRECISION;
-  self.think = SUB_Remove;
+  ctrl_weapon_remove_all();
+  
+  self.think = ai_mech_sk_die3;
   self.nextthink = time + 0.1;
+};
+
+void() ai_mech_sk_die3={
+  if( self.moveState != MOVE_STAND ){
+    if( !(self.unitModFlags & MOD_MODEL_NO_TOR_L) && !(self.criticalHits & M_TOR_LEFT) ){
+      self.critBits = self.critBits | M_TOR_LEFT;
+      te_vehicle_chunk( self.torL_mdl, self.torL_org, '0 0 0', self.torL_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
+    }
+  }
+  self.think = ai_mech_sk_die4;
+  self.nextthink = time + 0.1;
+};
+void() ai_mech_sk_die4={
+  if( self.moveState != MOVE_STAND ){
+    if( !(self.unitModFlags & MOD_MODEL_NO_TOR_R) && !(self.criticalHits & M_TOR_RIGHT) ){
+      self.critBits = self.critBits | M_TOR_RIGHT;
+      te_vehicle_chunk( self.torR_mdl, self.torR_org, '0 0 0', self.torR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
+    }
+  }
+  self.think = ai_mech_sk_die5;
+  self.nextthink = time + 0.1;
+};
+void() ai_mech_sk_die5={
+  if( self.moveState != MOVE_STAND ){
+    if( (self.unitModFlags & MOD_HAS_ARM_L) && !(self.criticalHits & M_ARM_LEFT) ){
+      self.critBits = self.critBits | M_ARM_LEFT;
+      te_vehicle_chunk( self.armL_mdl, self.armL_org, '0 0 0', self.armL_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
+    }
+  }
+  self.think = ai_mech_sk_die6;
+  self.nextthink = time + 0.1;
+};
+
+void() ai_mech_sk_die6={
+  if( self.moveState != MOVE_STAND ){
+    if( (self.unitModFlags & MOD_HAS_ARM_R) && !(self.criticalHits & M_ARM_RIGHT) ){
+      self.critBits = self.critBits | M_ARM_RIGHT;
+      te_vehicle_chunk( self.armR_mdl, self.armR_org, '0 0 0', self.armR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
+    }
+  }
+  self.think = SUB_Remove;
+  self.nextthink = time + 600;
 };

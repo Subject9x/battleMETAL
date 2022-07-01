@@ -55,7 +55,7 @@ void() data_ini_dunerunner_={
   //tank turret
   data_ini_torso_center_( "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', '0 0 0');  
   //chassis
-  data_ini_legs_( "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3", 1, '0 0 0');
+  data_ini_legs_( "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3", 0, '0 0 0');
   
   //camera location
   self.cameraOffset = '0 24 0';

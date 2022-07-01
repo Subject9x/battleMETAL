@@ -17,7 +17,6 @@ void() predraw_missile;  //root predraw call, all other predraws below this are 
 
 void() predraw_plasma;
 void() predraw_quantum;
-void() predraw_marh;
 
 void() predraw_debris;
 

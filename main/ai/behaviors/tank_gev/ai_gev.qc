@@ -25,8 +25,6 @@ void() ai_gev={
   
   self.SendEntity = ctrl_send_gev;
   
-  self.torsoCenter.effects = EF_NODRAW;
-  
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   

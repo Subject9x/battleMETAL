@@ -259,7 +259,7 @@ void() ButtonCommands={
   //action mapping: +sprint 
   if( (self.unitModFlags & MOD_HAS_RAMSHOCKS) ){
     if( self.button8 ){
-      if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
+      if( self.energy > 0 && !(self.legs_flags & FL_DISARMED)){
         if( self.playerState == PLAYER_ACTIVE ){
           self.ramAngle_y = self.v_angle_y;
           self.moveState = MOVE_SPRINT;

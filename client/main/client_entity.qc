@@ -90,9 +90,6 @@ void(float isnew) CSQC_Ent_Update =
     knowing these 2 cases makes all the difference about executing this function.
 */
 void() CSQC_Ent_Remove ={
-  local entity weps;
-  local entity next;
-  local entity rem;
   
   self.entnum = 0; //clears out old reference, must have!
   
@@ -108,15 +105,6 @@ void() CSQC_Ent_Remove ={
   }
   else{  
     if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH || self.data_type == DATA_BLD ){
-      weps = self.w_slot;
-      while( weps ){
-        next = weps.w_slot;
-        rem = weps;
-        weps = next;
-        if( rem.owner == self ){
-          remove(rem);
-        }
-      }
       if( self.effect1.owner == self ){
         remove(self.effect1 );
       }

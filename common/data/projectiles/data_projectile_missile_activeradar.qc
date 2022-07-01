@@ -63,7 +63,6 @@ void() data_projectile_ini_missile_active_radar_={
     self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
     self.pcl_explode = projectile_marh_expl;
     self.scale = 1.1;
-    self.predraw_projectile = predraw_marh;
   #endif
   
   #ifdef SSQC
@@ -171,7 +170,6 @@ void() data_projectile_missile_activeradar_touch={
   local float startOfs;
   local float rollDice;
   local float part;
-  local entity hit;
   
   if( other == self.owner ){
     return;
@@ -207,10 +205,12 @@ void() data_projectile_missile_activeradar_touch={
             rollDice = 5;
           }
           part = bitshift(2, rollDice);
-          hit = util_getPartFromName(part, other);
-          hit = t_damage(trace_ent, self, self.owner, self.damageValue / DAT_MARH_SHRAP_TOTAL, hit.origin, '0 0 0');
-          if( hit.partTypeId && !(self.owner.statTargetHitParts & hit.partTypeId) ){
-            self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit.partTypeId;
+          
+          util_getPartFromName(part, other);
+          
+          HIT_LOCATION = t_damage(trace_ent, self, self.owner, self.damageValue / DAT_MARH_SHRAP_TOTAL, T_PART_PARENT_ORG, '0 0 0');
+          if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+            self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
           }
           totes = totes - 1;
         }

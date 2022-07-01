@@ -13,7 +13,7 @@ void() SetNewParms;
 void() DecodeLevelParms;
 entity() SelectSpawnPoint;
 //==========================
-float(entity piece) csqc_updateCompStat;
+float(float hpCurrent, float hpTotal) csqc_updateCompStat;
 //legacy wrappers
 void() legacy_PlayerDie;
 

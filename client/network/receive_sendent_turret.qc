@@ -10,10 +10,6 @@ Overview:
 */
 
 void() sendevent_turret_die={
-  local entity weps;
-  local entity rem;
-  local float wId;
-  
   if(self == CLIENT_target_ent){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
   }
@@ -24,13 +20,6 @@ void() sendevent_turret_die={
   
   self.origin = self.origin + (v_up * (self.maxs_z * -0.05));
   setorigin(self, self.origin);
-  
-  weps = self.w_slot;
-  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
-    rem = weps;
-    weps = rem.w_slot;
-    sendent_handle_remove(rem);
-  }
   
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
@@ -104,16 +93,15 @@ void( float isNew, float changeFlags) sendent_handle_turret={
       self.nextthink = time + 0.01;
       data_sync_new_turret(self.data_idx);
       self.canTarget = TRUE;
+      self.predraw = predraw_turret;
+      if( !(self.spawnflags & MUTE_ME) ){
+        self.ai_muted = FALSE;
+        ai_voice_ini( TRUE );
+        self.ai_voice_limit = 1;
+      }
     }
     else{
       model_misc_building_ruins_set();
-    }
-    self.drawmask = MASK_ENGINE;
-    self.predraw = predraw_turret;
-    if( !(self.spawnflags & MUTE_ME) ){
-      self.ai_muted = FALSE;
-      ai_voice_ini( TRUE );
-      self.ai_voice_limit = 1;
     }
   }
   
@@ -273,6 +261,7 @@ void() interpolate_turret={
       }
     }
   }
+  setsize(self, self.cache_mins, self.cache_maxs);
 };
 
 void() predraw_turret={

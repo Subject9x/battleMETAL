@@ -105,12 +105,26 @@ Overview:
 .vector armR_org;
 .vector legs_org;
 
+.vector torC_angl;
+.vector torL_angl;
+.vector torR_angl;
+.vector armL_angl;
+.vector armR_angl;
+.vector legs_angl;
+
+.float torC_hp;
+.float torL_hp;
+.float torR_hp;
+.float armL_hp;
+.float armR_hp;
+.float legs_hp;
 
 .float critBits;      //  SV-> used to track critical hits over frames
 .float criticalHits;  //  the actual value sent over the network
 
 .float isActive;
 .float ai_dir;          //chassis facing vs .angles
+.float legDir;
 
 .float shieldEffectTime;  //bumping this up to help reduce net traffic by preventing spamming at the server level.
                           //sure dropped packet do real, but its better than flooding 
@@ -133,6 +147,10 @@ Overview:
 .float last_crit;
 .float last_burn;
 
+.float cache_speed_fwd;
+.float cache_speed_sid;
+.float cache_speed_back;
+
 
 .float turret_yaw_speed;
 .float ai_attack_chance;
@@ -152,12 +170,8 @@ Overview:
                       //this should reduce the execution cost of t_damage() by every weapon all the time.
 .float shieldBuffer;  
 
-.float torC_hp;
-.float torL_hp;
-.float torR_hp;
-.float armL_hp;
-.float armR_hp;
-.float legs_hp;
+.float critBuffer;
+
 
 .vector torC_hitOffset;
 .vector torL_hitOffset;
@@ -166,6 +180,21 @@ Overview:
 .vector armR_hitOffset;
 .vector legs_hitOffset;
 
+.float legs_idealYaw;
+.float legs_yawSpeed;
+.float legs_attackState;
+.float legs_speed_f;
+.float legs_speed_s;
+.float legs_speed_b;
+.float legs_speed_acc;
+.float legs_flags;
+
+.float torC_yawSpeed;
+.float torC_idealYaw;
+.vector torC_anglLast;
+.vector torC_vAngles;
+.float torC_attackState;
+.float torC_aiDir;
 #endif
 
 #ifdef CSQC
@@ -179,7 +208,6 @@ Overview:
 .float ai_muted;
 .float pitchMin;
 .float pitchMax;
-.float legDir;
 .float legMoveRate;
 .float legRunRate;
 
@@ -190,13 +218,6 @@ Overview:
 .vector uiOffset; //menu-specific hardpoint draw locations.
   //prevents hardpoint overlap in MENU_HANGAR but still allowing hardpoints to be close to the actual
   //weapon locations.
-  
-.vector torC_angl;
-.vector torL_angl;
-.vector torR_angl;
-.vector armL_angl;
-.vector armR_angl;
-.vector legs_angl;
 
 .float legs_frame2time;
 .float legs_frame1time;
@@ -227,5 +248,6 @@ Overview:
 
 .float cl_lod_weapon; //yes draw / no draw for player view range;
 .float cl_lod_unit; //yes draw / no draw for player view range;
-
+.vector cacheGroundAngle; //used by vehicles.
+.vector cacheGroundPos; //used by vehicles.
 #endif

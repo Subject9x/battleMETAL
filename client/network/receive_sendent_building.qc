@@ -105,7 +105,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
   
   if( isNew ){
     self.predraw = predraw_building;
-    self.drawmask = MASK_ENGINE;
     self.scale = 1;
     self.alpha = 1;
     makevectors(self.angles);
@@ -236,11 +235,20 @@ void( float isNew, float changeFlags) sendent_handle_building={
 };
 
 void() predraw_building={
+  setmodel(self, self.model);
+  setsize(self, self.cache_mins, self.cache_maxs);
   setorigin(self, self.origin);
   
+  traceline(self.origin, client_vis_org, FALSE, self);
+  
+  if(trace_fraction != 1.0 ){
+    return;
+  }
+  
   if(self.render_dlights){
-    if( vlen(self.origin - pmove_org) < PARTICLE_HAZ_DISTANCE){
+    if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
       self.render_dlights();
     }
   }
+  addentity(self);
 };

@@ -103,10 +103,6 @@ q3mdl/map/plats/plat_small.obj
 q3mdl/map/plats/plat_medium.obj
 q3mdl/map/plats/plat_large.obj
 
-q3mdl/mechs/balaket/balaket_legs.md3
-q3mdl/mechs/matok/matok_legs.md3
-q3mdl/mechs/monitor/monitor_legs.md3
-
 //Balaket
 q3mdl/mechs/balaket/balaket_view.md3
 q3mdl/mechs/balaket/balaket_hud.obj

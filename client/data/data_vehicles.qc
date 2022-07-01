@@ -51,62 +51,47 @@ void( float dataID ) data_sync_new_vehicle={
 };
 
 void() data_vehicle_wreck_predraw={
-  setorigin(self, self.origin);
+
+  self.colormod = '0.45 0.45 0.45';
+  setmodel(self, self.legs_mdl);
+  setsize(self, self.cache_mins, self.cache_maxs);
+  self.origin = self.cacheGroundPos;
+  self.angles = self.cacheGroundAngle;
+  addentity(self);
+  
 };
 
 /*
   Vehicle wrecks now client-side to optimize server traffic.
 */
-void() data_vehicle_wreck={
-  local entity shell;
+void() data_vehicle_wreck={  
+  self.colormod = '0.45 0.45 0.45';
+  self.predraw = data_vehicle_wreck_predraw;
   
-  makevectors(self.angles);
-  shell = spawn();
-  if( shell == world ){
-    return;
+  switch(self.vec_size){
+    default:
+      self.pcl_effectnum = particleeffectnum("TE_FIRE_1");
+      self.data_lifetime = servertime + 60;
+      break;
+    case 2:
+      self.pcl_effectnum = particleeffectnum("TE_FIRE_2");
+      self.data_lifetime = servertime + 90;
+      break;
+    case 3:
+      self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
+      self.data_lifetime = servertime + 120;
+      break;
   }
-  shell.angles = self.angles;
-  setmodel(shell, self.model);
-  setsize(shell, self.mins, self.maxs);
-  setorigin(shell,  self.origin + (v_up * -2));
-  shell.skin = self.skin;
-  //shell.solid = SOLID_CORPSE; //v3.12.16 - we aren't doing destructible wrecks at this time, so   stop blocking shots client-side.
-  shell.solid = SOLID_NOT;
-  shell.colormod = '0.45 0.45 0.45';
-  shell.vec_size = self.vec_size;
-  shell.drawmask = MASK_NORMAL;
-  shell.predraw = data_vehicle_wreck_predraw;
-  
-  self.alpha = 0;
-  self.effects = self.effects | EF_NODRAW;
-  self.deadflag = DEAD_DEAD;
-  if(shell.vec_size == 1){
-    shell.pcl_effectnum = particleeffectnum("TE_FIRE_1");
-    shell.health = servertime + 60;
-  }
-  else if( shell.vec_size == 2){
-    shell.pcl_effectnum = particleeffectnum("TE_FIRE_2");
-    shell.health = servertime + 90;
-  }
-  else{
-    shell.pcl_effectnum = particleeffectnum("TE_FIRE_3");
-    shell.health = servertime + 120;
-  }
-  shell.data_lifetime = servertime + 350 + (random() * 250);
-  shell.think = data_vehicle_wreck_th;
-  shell.nextthink = time + (random() * 1);
+  self.think = data_vehicle_wreck_th;
+  self.nextthink = time + 0.01;
 };
 
 
 void() data_vehicle_wreck_th={
-  if( self.pcl_effectnum > 0 && servertime < self.health ){
+  if( self.pcl_effectnum > 0 && servertime < self.health && vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE / 2 ){
     makevectors(self.angles);
     pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
   }
-  if( time > self.data_lifetime){
-    remove(self);
-    return;
-  }
   self.think = data_vehicle_wreck_th;
-  self.nextthink = time + (random() * 0.25);
+  self.nextthink = time + 0.01*frametime;
 };

@@ -45,37 +45,23 @@ float(float numOfSides) util_roll_dice={
   return roll;
 };
 
-float( entity t, float hpMax ) util_getPieceHpForAverage={
-  local float sendBack;
-  sendBack = 0;
-  if( t != world ){
-    if( hpMax ){
-      sendBack = t.max_health;
-    }
-    else{
-      sendBack = t.health;
-    }
-  }
-  return sendBack;
-};
-
 float(entity t) util_getMechHpAverage={
   local float total, cur;
   
   if(t != world){
     if( t.data_type == DATA_MECH ){
       total = t.max_health;
-      total = total + util_getPieceHpForAverage( t.armLeft, TRUE );
-      total = total + util_getPieceHpForAverage( t.armRight, TRUE  );
-      total = total + util_getPieceHpForAverage( t.torsoLeft, TRUE  );
-      total = total + util_getPieceHpForAverage( t.torsoRight, TRUE  );
-      total = total + util_getPieceHpForAverage( t.legs, TRUE );
+      total = total + t.armL_hpMax;
+      total = total + t.armR_hpMax;
+      total = total + t.torL_hpMax;
+      total = total + t.torR_hpMax;
+      total = total + t.legs_hpMax;
       cur = t.health;
-      cur = cur + util_getPieceHpForAverage( t.armLeft, FALSE );
-      cur = cur + util_getPieceHpForAverage( t.armRight, FALSE  );
-      cur = cur + util_getPieceHpForAverage( t.torsoLeft, FALSE  );
-      cur = cur + util_getPieceHpForAverage( t.torsoRight, FALSE  );
-      cur = cur + util_getPieceHpForAverage( t.legs, FALSE  );
+      cur = cur + t.armL_hp;
+      cur = cur + t.armR_hp;
+      cur = cur + t.torL_hp;
+      cur = cur + t.torR_hp;
+      cur = cur + t.legs_hp;
     }
     else{
       total = t.max_health;
@@ -87,57 +73,10 @@ float(entity t) util_getMechHpAverage={
   return FALSE;
 };
 
-entity(entity t) util_findMechCrit={
-  local entity part;
-  local float final, perc;
-  
-  final = t.health / t.max_health;
-  
-  if( t.armLeft.deadflag == DEAD_NO ){
-    perc = t.armLeft.health / t.armLeft.max_health;
-    if( perc < final ){
-      final = perc;
-      part = t.armLeft;
-    }
-  }
-  if( t.armRight.deadflag == DEAD_NO ){
-    perc = t.armRight.health / t.armRight.max_health;
-    if( perc < final ){
-      final = perc;
-      part = t.armRight;
-    }
-  }
-  if( t.torsoLeft.deadflag == DEAD_NO ){
-    perc = t.torsoLeft.health / t.torsoLeft.max_health;
-    if( perc < final ){
-      final = perc;
-      part = t.torsoLeft;
-    }
-  }
-  if( t.torsoRight.deadflag == DEAD_NO ){
-    perc = t.torsoRight.health / t.torsoRight.max_health;
-    if( perc < final ){
-      final = perc;
-      part = t.torsoRight;
-    }
-  }
-  if( t.legs.deadflag == DEAD_NO ){
-    perc = t.legs.health / t.legs.max_health;
-    if( perc < final ){
-      final = perc;
-      part = t.legs;
-    }
-  }
-  if( !part ){
-    part = t;
-  }
-  return part;
-};
-
 float(entity t) util_getMechHpTotal={
   local float total;
   if(t != world){
-    total = t.max_health + (t.armLeft.max_health * 2) + (t.torsoLeft.max_health * 2) + t.legs.max_health;
+    total = t.max_health + (t.armL_hpMax * 2) + (t.torL_hpMax * 2) + t.legs_hpMax;
     return total;
   }
   return FALSE;
@@ -553,23 +492,71 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
 };
 
 void(string msg, float val) cons_logAFloat={
-  dprint(sprintf("\n %s : %0.2f\n", msg, val));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %0.2f\n", msg, val));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %0.2f\n", msg, val));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MN] %s : %0.2f\n", msg, val));
+  #endif
 };
 void(string msg, vector v1) cons_logAVector={
-  dprint(sprintf("\n %s : %0.2f %0.2f %0.2f\n", msg, v1_x, v1_y, v1_z));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MN] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+  #endif
 };
 void(string msg, string s1) cons_logAString={
-  dprint(sprintf("\n %s : %s\n", msg, s1));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %s \n", msg, s1));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %s \n", msg, s1));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MC] %s : %s1 \n", msg, s1));
+  #endif
 };
 
 void(string msg, float val, string split, float val2) cons_log2Float={
-  dprint(strcat(msg,":", ftos(val),"| ", split,":", ftos(val2),"\n"));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MC] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+  #endif
 };
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
-  dprint(strcat(msg,":", vtos(v1),"| ", split,":", vtos(v2),"\n"));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MC] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+  #endif
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
-  dprint(strcat(msg," : ",s1," | ", split," : ",s2,"\n"));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %s | %s : %s\n", msg, s1, split, s2));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %s | %s : %s", msg, s1, split, s2));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MQ] %s : %s | %s : %s\n", msg, s1, split, s2));
+  #endif
   
 };
 

@@ -67,7 +67,6 @@ void() data_projectile_ini_rocket_={
 void(entity theOther ) data_prj_mis_hit={  
   local float debris, debrisType;
   local float damage; 
-  local entity hitLocation;
   
   self.touch = SUB_Null;
   self.impactType = IMPACT_SKY;
@@ -87,9 +86,9 @@ void(entity theOther ) data_prj_mis_hit={
     }
     else{
       damage = damage + (damage * 0.25);
-      hitLocation = t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }
       self.impactType = IMPACT_ARMOR;
       debris = rint(1 + random() * 3);

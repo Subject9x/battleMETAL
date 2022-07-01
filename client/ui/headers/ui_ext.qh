@@ -32,4 +32,3 @@ vector(float val) gui_getColorForArmor;
 vector(float val) gui_getColorForArmorTarget;
 vector(float val) gui_getColorForShield;
 vector(float dmg_type) gui_colorForWeaponType;
-entity(float wepBit) gui_get_weapon;

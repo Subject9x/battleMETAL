@@ -13,15 +13,14 @@ Overview:
 void() ctrl_unit_update_frame;
 
 void() ctrl_unit_clean_wgroups;
-void() ctrl_unit_cleanup_mech;
 void() ctrl_unit_cleanup_player;
-void() ctrl_unit_cleanup_tank;
 void(entity unitPiece) ctrl_unit_remove_piece;
 void(entity comp) ctrl_unit_part_death;
 void(entity unitCam) ctrl_unit_remove_cam;
 
 //Mech entity controllers
 void() ctrl_mech_die_player;
+void() ctrl_mech_critical_hits;
 
 void() ctrl_update_mechplayer;
 void() ai_ctrl_update_mechplayer;
@@ -30,7 +29,6 @@ void() ctrl_updateCenterTorso;
 void() ai_ctrl_updateCenterTorso;
 
 void() ctrl_updateLegs;
-void() ctrl_dieLegs;
 
 void() ctrl_player_mech_touch;
 
@@ -53,9 +51,6 @@ float( float isNew, float changedflags ) ctrl_send_gev;
 
 //Generic entity controllers
 void() ctrl_die_weapon;
-void() ctrl_component_die;
-void() ctrl_arm_die;
-void() ctrl_component_drop;
 
 float( float isNew, float changedFlags ) send_deploy_point;
 float( float isNew, float changedFlags ) send_nav_point;

@@ -79,7 +79,6 @@ void() data_projectile_snub_artillery_th={
 void() data_projectile_snub_artillery_touch_={
   local float debris;
   local float damage;
-  local entity hitLocation;
   
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
@@ -100,9 +99,9 @@ void() data_projectile_snub_artillery_touch_={
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      hitLocation = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       } 
       
       debris = ceil(random() * 3);
@@ -135,7 +134,6 @@ void() data_projectile_snub_artillery_touch_={
 void() data_projectile_snub_artillery_radiusDamage={
   local entity radiusTarg;
   local float d, dmg_act;
-  local entity hitLocation;
   
   for(radiusTarg = findradius(self.origin, self.w_range); radiusTarg != world; radiusTarg = radiusTarg.chain){
     if( !ai_valid_target(radiusTarg) ){
@@ -150,9 +148,9 @@ void() data_projectile_snub_artillery_radiusDamage={
       t_damage_shield(radiusTarg, self, self.owner, dmg_act, trace_endpos, FALSE);
     }
     else{
-      hitLocation = t_damage(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(radiusTarg, self, self.owner, dmg_act, trace_endpos, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       } 
     }
   }

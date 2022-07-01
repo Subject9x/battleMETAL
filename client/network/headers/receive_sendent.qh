@@ -69,7 +69,6 @@ void( float isNew, float changeFlags ) sendent_handle_misc;
 void( float isNew, float changeFlags ) sendent_handle_misc_bld;
 void( float isNew, float changeFlags ) sendent_handle_item;
 
-void() sendent_set_weapon;
 entity(float weaponId) sendent_get_weapon;
 
 void() sendent_ini_interpolate;
@@ -90,7 +89,3 @@ void( float hasMoved ) sendevent_player_accuracy;
 vector( vector partOffset) predraw_unit_part;
 vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle;
 void(entity item) predraw_unit_weapon
-
-
-
-//void() predraw_weapon_ent;

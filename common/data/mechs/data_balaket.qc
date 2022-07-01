@@ -75,16 +75,16 @@ void() data_ini_balaket_={
   data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );
  
   //left torso
-  data_ini_torso_left_( "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', '-5.5 5.5 0');
+  data_ini_torso_left_( "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', '-8.5 5.5 -1');
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', '5.5 5.5 0');
+  data_ini_torso_right_( "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', '8.5 5.5 -1');
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-10 7 -3', '-10.1 3.5 0');
+  data_ini_arm_left_( "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-10 7 -3', '-11 3.5 -1.5');
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '10 7 -3', '10.1 3.5 0');
+  data_ini_arm_right_( "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '10 7 -3', '11 3.5 -1.5');
    
   //legs      
   data_ini_legs_( "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');
@@ -101,51 +101,53 @@ void() data_ini_balaket_={
   data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', (BAL1 | BAL2 | ENE1 | ENE2) );
   data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90',  (BAL1 | BAL2 | ENE1 | ENE2) );
   data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0',     (BAL1|BAL2|BAL3|BAL4|ENE1|ENE2|ENE3|ENE4|MIS1|MIS2|MIS3|MIS4|MSC1|MSC2|MSC3) );
-  data_ini_unitHardpoint_4( M_TOR_LEFT, '-7.85 7.0 6.0', '0 0 0',    MSC1 );
-  data_ini_unitHardpoint_5( M_TOR_RIGHT, '7.85 7.0 6.0', '0 0 0',   (MSC1|MSC2|MSC3) );
+  data_ini_unitHardpoint_4( M_TOR_LEFT, '-7.85 7.0 6.0', '0 0 0',    (MSC1 | MIS2) );
+  data_ini_unitHardpoint_5( M_TOR_RIGHT, '7.85 7.0 6.0', '0 0 0',   (MIS2|MSC1|MSC2|MSC3) );
 //=====================================
 
 //HUD DATA=============================
 #ifdef CSQC
-  self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.obj";
-  self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
-  self.hud_StrutsOffset = '0 -1.5 -1';
-  self.pitchMax = 30; //pitch down limit
-  self.pitchMin = -35;//pitch up limit
-  self.hud_rollangle = 4;
-  self.hud_bob = 0.03;
-  self.hud_bob_cycle = 0.5;
-  self.hud_bob_up = 0.15;
-  self.hud_bob_model = 1;
-  self.hud_bob_side = 0.09;
-  self.hud_bob_speed = 6;
-  self.hud_bob_model_up = 0.1;
-//====================================
+  if( self.classname == "UI_ITEM" ){
+    self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.obj";
+    self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
+    self.hud_StrutsOffset = '0 -1.5 -1';
+    self.pitchMax = 30; //pitch down limit
+    self.pitchMin = -35;//pitch up limit
+    self.hud_rollangle = 4;
+    self.hud_bob = 0.03;
+    self.hud_bob_cycle = 0.5;
+    self.hud_bob_up = 0.15;
+    self.hud_bob_model = 1;
+    self.hud_bob_side = 0.09;
+    self.hud_bob_speed = 6;
+    self.hud_bob_model_up = 0.1;
+  //====================================
 
-//UI Data=============================
-  self.config_default_regular = balaket_config_default_reg;
-  self.config_default_missile = balaket_config_default_missile;
-  self.config_default_brawl = balaket_config_default_brawl;
-  self.abbrev = "BLK";
-  self.description = "A primitive combat platform, BALAKETs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. | | BALAKET units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. | | They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
-  
-  //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
-  local entity hardpnt;
-  hardpnt = self.w_slot;
-  hardpnt.uiOffset = '97 65'; //#1
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-97 65'; //#2
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '18 -12';//#3
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '65 12';//#4
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-60 12'; //#5
-//====================================
+  //UI Data=============================
+    self.config_default_regular = balaket_config_default_reg;
+    self.config_default_missile = balaket_config_default_missile;
+    self.config_default_brawl = balaket_config_default_brawl;
+    self.abbrev = "BLK";
+    self.description = "A primitive combat platform, BALAKETs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. | | BALAKET units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. | | They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
+    
+    //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
+    local entity hardpnt;
+    hardpnt = self.w_slot;
+    hardpnt.uiOffset = '64 65'; //#1
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-64 65'; //#2
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '12 10';//#3
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '42 30';//#4
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-42 30'; //#5
+  //====================================
+  }
 #endif
 };
 

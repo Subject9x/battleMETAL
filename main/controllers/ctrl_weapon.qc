@@ -9,17 +9,16 @@ Overview: weapon controller header
 
 void(entity wep) ctrl_weapon_think={
   local entity weaponOwner;
+  
+  if(wep.deadflag >= DEAD_DYING){
+    wep.deadflag = DEAD_DEAD;
+    return;
+  }
+  if(wep.deadflag == DEAD_DEAD){
+    return;
+  } 
   weaponOwner = self;
-  self = wep;
-    if(self.deadflag >= DEAD_DYING){
-      self.deadflag = DEAD_DEAD;
-      self = weaponOwner;
-      return;
-    }
-    if(self.deadflag == DEAD_DEAD){
-      self = weaponOwner;
-      return;
-    }  
+  self = wep; 
     if( self.think ){
       self.think();
       self.think = self.think;

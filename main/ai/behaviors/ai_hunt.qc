@@ -41,8 +41,8 @@ void() ai_nodegraph_hunter_frame={
     }
     else{
       self.moveState = MOVE_NORM;
-      if( self.legs ){
-        self.legs.attack_state = TR_NORM;
+      if( self.legs_hp ){
+        self.legs_attackState = TR_NORM;
       }
       self.yawCache = self.yaw_speed;
       moveSpeed = (self.data_speed_forward + self.data_speed_strafe) / 2;
@@ -57,8 +57,8 @@ void() ai_nodegraph_hunter_frame={
         if( moveYaw > 15 && moveYaw < 345 ){
           self.moveState = MOVE_STAND;
           moveSpeed = 0;
-          if( self.legs ){
-            self.legs.attack_state = TR_NORM;
+          if( self.legs_hp ){
+            self.legs_attackState = TR_NORM;
           }
           self.yaw_speed = self.yaw_speed * 3;
         }

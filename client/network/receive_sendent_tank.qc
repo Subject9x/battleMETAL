@@ -9,37 +9,10 @@ Overview:
   handles
     sv/main/controllers/ctrl_tank.ctrl_send_tank()
 */
-
-/*
-  EVENT - MOVE
-*/
-void() sendevent_tank_move={
-  local entity weps;
-  
-  for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-    if( weps.partParentId == M_LEGS ){
-      weps.angles = self.angles;
-    }
-    else{
-      weps.angles = self.torC_angl;
-    }
-  }
-};
-
 /*
   EVENT - DEATH
 */
 void() sendevent_tank_die={
-  local entity weps;
-  local entity rem;
-  local float wId;
-  
-  weps = self.w_slot;
-  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
-    rem = weps;
-    weps = rem.w_slot;
-    sendent_handle_remove(rem);
-  }
   
   data_vehicle_wreck();
   
@@ -66,7 +39,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-    sendevent_tank_move();
   }
   
   if( (changeFlags & SENDFLAG_ANGLE) ){
@@ -85,23 +57,14 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.data_idx = ReadByte();
     self.flags = ReadLong();
     self.faction = ReadByte();
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
     self.ai_muted = ReadByte();
     newName = ReadString();
   }
   
   if( isNew ){
     setorigin(self, self.origin);
+    data_sync_new_vehicle( self.data_idx );
     if(self.deadflag == DEAD_NO){
-      data_sync_new_vehicle( self.data_idx );
       cacheGlobalString(self.netname, newName )
       self.predraw = predraw_tank;
       self.canTarget = TRUE;
@@ -109,6 +72,9 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
         ai_voice_ini( TRUE );
         self.ai_voice_limit = 1;
       }
+    }
+    else{
+      data_vehicle_wreck();
     }
   }
   
@@ -218,8 +184,10 @@ void() interpolate_tank={
     }
     
     setmodel(self, self.legs_mdl);
+    setsize(self, self.cache_mins, self.cache_maxs);
     GetAlignedSurfaceAngles(self);
     self.origin = chasOrg;
+    self.cacheGroundPos = chasOrg;
     addentity(self);
     
     if( (self.flags & FL_TURRET) ){
@@ -267,6 +235,7 @@ void() interpolate_tank={
       }
     }
   }
+  setsize(self, self.cache_mins, self.cache_maxs);
 };
 
 void() predraw_tank={

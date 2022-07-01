@@ -25,7 +25,7 @@ void() ai_ranged_attack={
   self.v_angle = self.angles;
   if( (self.flags & FL_TURRET) ){
     //if the AI has a turret, use the turret's angles for Line of Sight offset origins.
-    self.v_angle = self.torsoCenter.angles;
+    self.v_angle = self.torC_angl;
     diff = vectoangles( self.enemy.origin - self.cameraOrigin);
     self.v_angle_x = diff_x;
   }
@@ -272,8 +272,8 @@ void() ai_nodegraph_combat_frame={
     else{ 
       if( !self.ai_last_pathWait ){
         self.moveState = MOVE_NORM;
-        if( self.legs ){
-          self.legs.attack_state = TR_NORM;
+        if( self.legs_hp ){
+          self.legs_attackState = TR_NORM;
         }
         self.yawCache = self.yaw_speed;
         moveSpeed = self.data_speed_forward;
@@ -289,8 +289,8 @@ void() ai_nodegraph_combat_frame={
           if( moveYaw > 15 && moveYaw < 345 ){
             self.moveState = MOVE_STAND;
             moveSpeed = 0;
-            if( self.legs ){
-              self.legs.attack_state = TR_NORM;
+            if( self.legs_hp ){
+              self.legs_attackState = TR_NORM;
             }
             self.yaw_speed = self.yaw_speed * 2;
           }
@@ -361,8 +361,8 @@ void() ai_nodegraph_combat_brawler_frame={
     ai_nodegraph_trace_vec( self.origin, self.enemy.position1 );
   }
   else{
-    if( self.legs ){
-      self.legs.attack_state = TR_NORM;
+    if( self.legs_hp ){
+      self.legs_attackState = TR_NORM;
       self.moveState = MOVE_NORM;
     }
     nqOrg = nodegraph_get_node_origin( self.nq1 );
@@ -388,8 +388,8 @@ void() ai_nodegraph_combat_brawler_frame={
     else{
       if( !self.ai_last_pathWait ){
         self.moveState = MOVE_NORM;
-        if( self.legs ){
-          self.legs.attack_state = TR_NORM;
+        if( self.legs_hp ){
+          self.legs_attackState = TR_NORM;
         }
         moveSpeed = self.data_speed_forward;
         
@@ -405,8 +405,8 @@ void() ai_nodegraph_combat_brawler_frame={
           if( moveYaw > 15 && moveYaw < 345 ){
             self.moveState = MOVE_STAND;
             moveSpeed = 0;
-            if( self.legs ){
-              self.legs.attack_state = TR_NORM;
+            if( self.legs_hp ){
+              self.legs_attackState = TR_NORM;
             }
             self.yaw_speed = self.yaw_speed * 3;
           }

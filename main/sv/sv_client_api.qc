@@ -685,15 +685,11 @@ void() client_data={
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   local float prevType;
-  local float sendCrit;
   
   player = self.owner;
   self.view_ofs = player.origin;
   
   prevType = self.data_type;
-  
-  sendCrit = 0;
-  
   if( player.deadflag == DEAD_NO ){
     self.data_type = player.data_type;
     self.radar_range = player.radar_range;
@@ -725,8 +721,8 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, player.origin_y );
     WriteCoord( MSG_ENTITY, player.origin_z );
     WriteByte( MSG_ENTITY, player.moveState );
-    WriteShort( MSG_ENTITY, player.legs.angles_y);
-    WriteShort( MSG_ENTITY, player.legs.ai_dir);
+    WriteShort( MSG_ENTITY, player.legs_angl_y);
+    WriteShort( MSG_ENTITY, player.legDir);
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -805,17 +801,14 @@ float( float isNew, float changeFlags ) send_client_data={
   if( (changeFlags & SENDFLAG_CRIT) ){
     //placed here for just-in-time calculation
     // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
-    if( player.critBits != 0 ){
-      sendCrit = player.critBits;
-      if( (player.critBits & M_REPAIR) ){
-        player.criticalHits = player.criticalHits - (player.criticalHits & player.critBits);
-      }
-      else{
-        player.criticalHits = player.criticalHits | player.critBits;
-      }
-      player.critBits = 0;
+    WriteLong( MSG_ENTITY, player.critBits );
+    if( (player.critBits & M_REPAIR) ){
+      player.criticalHits = player.criticalHits - (player.criticalHits & player.critBits);
     }
-    WriteShort( MSG_ENTITY, sendCrit );
+    else{
+      player.criticalHits = player.criticalHits | player.critBits;
+    }
+    player.critBits = 0;
   }
   /*
     EVENT - pieces of player mech are low on health and burning

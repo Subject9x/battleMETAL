@@ -151,7 +151,7 @@ void() map_hud_highlight={
   local vector tempMax;
   local vector tempMin;
 
-  self.noise = "misc/talk.wav"; //TODO
+  self.noise = "misc/talk.wav";
   
   util_MapDeveloperMarker();
   util_DeveloperNodeMark();

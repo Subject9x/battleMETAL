@@ -17,10 +17,11 @@ void() data_hud_external={
   local float wepBit;
   local float realWeapons;
   local entity theWep;
+  local entity oself;
 
   if( HUD_ZOOM_ACTIVE == FALSE){
     
-    HUD_TXT_ORG = '0 45 0';
+    HUD_TXT_ORG = '0 45';
     HUD_TXT_SIZE = '16 16';
     HUD_TXT_ALIGN = 17;
     
@@ -28,8 +29,14 @@ void() data_hud_external={
     realWeapons = 0;
     while( weaponId < 10 ){
       wepBit =  bitshift(1, weaponId);
+      
       if( (CLIENT_weapon_state & wepBit) ){
-        theWep = gui_get_weapon(wepBit);
+        
+        oself = self;
+        self = CLIENT_mech_self;
+          theWep = sendent_get_weapon( wepBit );
+        self = oself;
+        
         if( theWep.data_idx > 0 ){
           drawOrg = '0 0';
           drawOrg_x = drawOrg_x + (realWeapons * 28);

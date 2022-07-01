@@ -36,24 +36,24 @@ void() client_push_player_info={
       self.stat_client_shield = myShield;
     }
     
-    self.stat_client_hp_torsoCenter = csqc_updateCompStat(self);
+    self.stat_client_hp_torsoCenter = csqc_updateCompStat(self.health, self.max_health);
     
     if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-      self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
+      self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torL_hp, self.torL_hpMax);
     }
     if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-      self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
+      self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torR_hp, self.torR_hpMax);
     }
     
     if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-      self.stat_client_hp_armLeft = csqc_updateCompStat(self.armLeft);
+      self.stat_client_hp_armLeft = csqc_updateCompStat(self.armL_hp, self.armL_hpMax);
     }
     
     if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-      self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
+      self.stat_client_hp_armRight = csqc_updateCompStat(self.armR_hp, self.armR_hpMax);
     }
     
-    self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
+    self.stat_client_hp_legs = csqc_updateCompStat(self.legs_hp, self.legs_hpMax);
     
     if( self.targetEntId != 0 ){
       //this is silly but precludes forcing the csqc to know the target's max shields
@@ -75,20 +75,20 @@ void() client_push_player_info={
         
         self.stat_target_shield = targShield;
       }
-      self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy);
+      self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy.health, self.enemy.max_health);
       if( (self.enemy.unitModFlags & MOD_HAS_TOR_L) ){
-        self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torsoLeft);
+        self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torL_hp, self.enemy.torL_hpMax);
       }
       if( (self.enemy.unitModFlags & MOD_HAS_TOR_R) ){
-        self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torsoRight);
+        self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torR_hp, self.enemy.torR_hpMax);
       }
       if( (self.enemy.unitModFlags & MOD_HAS_ARM_L) ){
-        self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armLeft);
+        self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armL_hp, self.enemy.armL_hpMax);
       }
       if( (self.enemy.unitModFlags & MOD_HAS_ARM_R) ){
-        self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armRight);
+        self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armR_hp, self.enemy.armR_hpMax);
       }
-      self.stat_target_hp_legs = csqc_updateCompStat(self.enemy.legs);
+      self.stat_target_hp_legs = csqc_updateCompStat(self.enemy.legs_hp, self.enemy.legs_hpMax);
     }
     else{
       self.stat_target_hp_torsoCenter = 0;
@@ -309,25 +309,6 @@ void() client_update_faction={
   }
   newSkinNum = self.faction - 1;
   self.skin = newSkinNum;
-  
-  if( self.torsoCenter ){
-    self.torsoCenter.skin = newSkinNum;
-  }  
-  if( self.torsoLeft){
-    self.torsoLeft.skin = newSkinNum;
-  }  
-  if( self.torsoRight ){
-    self.torsoRight.skin = newSkinNum;
-  }  
-  if( self.armLeft ){
-    self.armLeft.skin = newSkinNum;
-  }  
-  if( self.armRight ){
-    self.armRight.skin = newSkinNum;
-  }  
-  if( self.legs ){
-    self.legs.skin = newSkinNum;
-  }
 };
 
 /*
@@ -804,11 +785,11 @@ void() legacy_PlayerDie={
 	//self.radsuit_finished = 0;
 };
 
-float(entity piece) csqc_updateCompStat={
+float(float hpCurrent, float hpTotal) csqc_updateCompStat={
   local float perc;
   perc = 0;
-  if( piece && piece.health > 0 ){
-    perc = (piece.health / piece.max_health)*100;
+  if( hpCurrent > 0 ){
+    perc = (hpCurrent / hpTotal)*100;
   }
   return perc;
 };

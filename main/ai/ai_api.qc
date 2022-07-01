@@ -551,10 +551,10 @@ void() ai_frame_net_send={
   
   //turret angles check
   if( (self.flags & FL_TURRET) ){
-    if( self.torsoCenter.last_angle != self.torsoCenter.angles ){
+    if( self.torC_anglLast != self.torC_angl ){
       self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
     }
-    self.torsoCenter.last_angle = self.torsoCenter.angles;
+    self.torC_anglLast = self.torC_angl;
   }
   
   //target check

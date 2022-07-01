@@ -63,12 +63,7 @@ void() data_projectile_ini_plasma_={
 };
 #ifdef SSQC
 void() data_projectile_plasma_burn_ini_={
-  self.movetype = MOVETYPE_FOLLOW;
-  self.aiment = self.particleCube;
-  self.punchangle = self.particleCube.angles;
-  self.view_ofs = self.origin - self.particleCube.origin;
-  self.angles = self.particleCube.angles;
-  self.v_angle = self.angles - self.particleCube.angles;
+  self.movetype = MOVETYPE_NONE;
   self.alpha = 0.75;
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
   self.impactType = IMPACT_ARMOR;
@@ -77,19 +72,35 @@ void() data_projectile_plasma_burn_ini_={
 };
 
 void() data_projectile_plasma_burn_th={
-  
-  if( self.last_origin != self.origin ){
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-    self.last_origin = self.origin;
-  }
-  
-  if( self.enemy.deadflag > DEAD_NO || self.particleCube.deadflag > DEAD_NO ){
+  if( self.enemy.deadflag > DEAD_NO ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
     return;
   }
   
-  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.particleCube.origin, TRUE);
+  util_getPartFromName( self.partParentId, self.enemy );
+  
+  if( T_PART_HP <= 0){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+    return;
+  }
+  
+  if( self.partParentId != M_UNIT && self.partParentId != M_LEGS){
+    makevectors(self.torC_angl);
+  }
+  else{
+    makevectors(self.angles);
+  }
+  
+  self.origin = self.enemy.origin + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z) + (v_right * T_PART_PARENT_OFFSET_x);
+  setorigin(self, self.origin);
+  if( self.last_origin != self.origin ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    self.last_origin = self.origin;
+  }
+  
+  t_damage_shield(self.enemy, self, self.owner, self.damageValue, T_PART_PARENT_ORG, TRUE);
   
   if(time > self.data_lifetime){
     self.think = SUB_Remove;
@@ -106,7 +117,7 @@ void() data_projectile_plasma_burn_th={
 };
 
 void() data_projectile_plasma_touch={
-  local entity hit;
+  local float hit;
   local float damage;
   local float proc;
   
@@ -132,21 +143,28 @@ void() data_projectile_plasma_touch={
     else{
       hit = t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
       self.enemy = other;
-      self.particleCube = hit;
+      
+      util_getPartFromName(hit, other);
+      
+      self.partParentId = hit;
+      
       self.damageValue = data_projectile_plasma_burn_dmg;
       self.data_lifetime = time + data_projectile_plasma_burn_time;
       setsize(self, '-1 -1 -1', '1 1 1');
-      if( other != hit ){
+      
+      if( hit ){
         setorigin(self, self.origin);
       }
+      
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
       self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
       self.think = data_projectile_plasma_burn_ini_;
       self.nextthink = time + 0.05;
       self.impactType = IMPACT_ARMOR;
-      if( hit.partTypeId && !(self.owner.statTargetHitParts & hit.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit.partTypeId;
+      
+      if( hit && !(self.owner.statTargetHitParts & hit) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit;
       } 
       return;
     }

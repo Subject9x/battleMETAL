@@ -24,8 +24,6 @@ void() ai_mech_sniper={
   
   self.SendEntity = ctrl_send_mech_ai;
   
-  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
-  
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
   

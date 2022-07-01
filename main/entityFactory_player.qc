@@ -57,7 +57,6 @@ void() player_makeMech={
   initialize_data_mech_( self.nextVecChoice );
   self.touch = ctrl_player_mech_touch;
   
-  droptofloor();
   
   self.currentWeaponGroup = self.w_group1;
   
@@ -99,24 +98,6 @@ void() player_makeMech={
         break;
     }
   }
-  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
-  
-  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
-  }
-  
-  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-    self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
-  }
-  
-  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-    self.armRight.effects = self.armRight.effects | EF_NODRAW;
-  }
-  
-  self.legs.effects = self.legs.effects | EF_NODRAW;
   
   self.view_ofs = '0 0 0';
   self.view_ofs_z = self.cameraOffset_y;  //set player view offset to where the cockpit ent is.
@@ -125,6 +106,8 @@ void() player_makeMech={
   self.damageValue = 0;
   self.critBits = 0;
   self.canTarget = TRUE;
+  
+  droptofloor();
   
   self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
   self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION | SENDFLAG_RADAR);

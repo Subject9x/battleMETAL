@@ -276,7 +276,7 @@ float(vector v, float ang_limit, float useTurret) ai_check_face_origin={
   local float dot;
   
   if( useTurret ){
-    vang = self.torsoCenter.angles;
+    vang = self.torC_angl;
   }
   else{
     vang = self.angles;
@@ -301,7 +301,7 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
   
   vang = self.angles;
   if( useTurret ){
-    vang = self.torsoCenter.angles;
+    vang = self.torC_angl;
   }
   
   makevectors ( vang );
@@ -440,13 +440,13 @@ void() ai_setup_patrol={
   else{
     droptofloor();
   }
+  makevectors(self.angles);
   if( (self.flags & FL_TURRET) ){
-    util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
+    self.torC_org = self.origin + (v_up*self.torC_compOffset_y)+(v_right*self.torC_compOffset_x)+(v_forward*self.torC_compOffset_z);
   }
-  if( self.legs != world ){
-    util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
+  if( self.legs_hp ){
+    self.legs_org = self.origin + (v_up*self.legs_compOffset_y)+(v_right*self.legs_compOffset_x)+(v_forward*self.legs_compOffset_z);
   }
-  
   //Check for spawnflag: DEBUG_MODE
   if( (self.spawnflags & DEBUG_MODE) ){
     nodeFail = TRUE;

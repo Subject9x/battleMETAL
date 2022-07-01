@@ -110,56 +110,58 @@ void() data_ini_monitor_={
 
 //HUD Data=============================
 #ifdef CSQC
-  self.weaponmodel = "q3mdl/mechs/monitor/monitor_view.obj";
-  self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
-  self.hud_StrutsOffset = '0 -1.05 0.33';
-  self.pitchMax = 43;
-  self.pitchMin = -25;
-  self.hud_rollangle = 2.75;
-  self.hud_bob = 0.05;
-  self.hud_bob_cycle = 0.65;
-  self.hud_bob_up = 0.35;
-  self.hud_bob_model = 1;
-  self.hud_bob_side = 0.4;
-  self.hud_bob_speed = 3.85;
-  self.hud_bob_model_up = 0.15;
-//====================================
+  if( self.classname == "UI_ITEM" ){
+    self.weaponmodel = "q3mdl/mechs/monitor/monitor_view.obj";
+    self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
+    self.hud_StrutsOffset = '0 -1.05 0.33';
+    self.pitchMax = 43;
+    self.pitchMin = -25;
+    self.hud_rollangle = 2.75;
+    self.hud_bob = 0.05;
+    self.hud_bob_cycle = 0.65;
+    self.hud_bob_up = 0.35;
+    self.hud_bob_model = 1;
+    self.hud_bob_side = 0.4;
+    self.hud_bob_speed = 3.85;
+    self.hud_bob_model_up = 0.15;
+  //====================================
 
-//UI Data=============================
-  self.config_default_regular = monitor_config_default_reg;
-  self.config_default_missile = monitor_config_default_missile;
-  self.config_default_brawl = monitor_config_default_brawl;
-  self.abbrev = "MNT";
-  self.description = "The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. | | The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. | | All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.";
-  
-  //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
-  local entity hardpnt;
-  hardpnt = self.w_slot;
-  hardpnt.uiOffset = '-125 58'; //#1
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-85 52'; //#2
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '125 58';//#3
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '85 52';//#4
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-51 -20'; //#5
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '52 -20'; //#6
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset =  '2 42'; //#7
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-48 40'; //#8
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '50 40'; //#9
+  //UI Data=============================
+    self.config_default_regular = monitor_config_default_reg;
+    self.config_default_missile = monitor_config_default_missile;
+    self.config_default_brawl = monitor_config_default_brawl;
+    self.abbrev = "MNT";
+    self.description = "The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. | | The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. | | All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.";
+    
+    //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
+    local entity hardpnt;
+    hardpnt = self.w_slot;
+    hardpnt.uiOffset = '-95 55'; //#1
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-68 55'; //#2
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '73 55';//#3
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '100 55';//#4
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-39 -5'; //#5
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '43 -5'; //#6
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset =  '2 46'; //#7
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-39 42'; //#8
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '43 42'; //#9
+  }
 #endif
 //====================================
 };

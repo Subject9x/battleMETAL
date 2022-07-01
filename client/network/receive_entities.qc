@@ -137,13 +137,13 @@ void() receive_ent_bindData={
         CLIENT_target_ent = world;
         CLIENT_stat_trg_ent_id = 0;
         CLIENT_stat_trg_dataidx = 0;
-        CLIENT_stat_trg_face = -1;
+        CLIENT_stat_trg_face = 0;
         return;
       }
       CLIENT_stat_trg_ent_id = CLIENT_target_ent.entId;
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
       
-      CLIENT_stat_trg_face = util_checkPointAngleImpl(CLIENT_target_ent.origin, pmove_org, input_angles) ;
+      CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.origin, pmove_org, input_angles) );
       
       CLIENT_target_datatype_prev = CLIENT_target_datatype;
       CLIENT_target_datatype = CLIENT_target_ent.data_type;

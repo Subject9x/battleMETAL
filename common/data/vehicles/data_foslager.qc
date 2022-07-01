@@ -56,7 +56,7 @@ void() data_ini_foslager_={
   data_ini_torso_center_( "q3mdl/vecs/foslager/mdl_foslager_tur.md3", 1, '0 10.25 -3.75', '0 0 0');
   
   //chassis
-  data_ini_legs_( "q3mdl/vecs/foslager/mdl_foslager_chas.md3", 1, '0 0 0');
+  data_ini_legs_( "q3mdl/vecs/foslager/mdl_foslager_chas.md3", 0, '0 0 0');
   
   //camera location
   self.cameraOffset = '0 20 0';

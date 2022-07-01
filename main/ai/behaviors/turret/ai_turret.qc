@@ -25,8 +25,6 @@ void() ai_turret={
   self.SendEntity = ctrl_send_turret;
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_NEWENT);
   
-  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
-  
   self.ai_movewait = 0;
   
   self.ai_unit_update = ctrl_updateTank;

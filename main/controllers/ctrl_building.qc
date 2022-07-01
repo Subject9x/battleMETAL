@@ -41,9 +41,7 @@ void() building_die={
   setorigin(self, trace_endpos);
   self.solid = SOLID_NOT;
   
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD | SENDFLAG_MOVE;
-  self.SendEntity = SUB_Null;
-  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD | SENDFLAG_MOVE;  
 };
 
 
@@ -164,7 +162,7 @@ float( float isNew, float changedflags ) ctrl_send_turret={
   }
   if( (scopeFlags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torC_angl_y );
   }
   if( (scopeFlags & SENDFLAG_BURN) ){
     WriteLong( MSG_ENTITY, self.burnBits );

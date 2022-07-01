@@ -112,54 +112,56 @@ void() data_ini_sapper_={
 
 //HUD Data=============================
 #ifdef CSQC
-  self.weaponmodel = "q3mdl/mechs/sapper/sapper_view.obj";
-  self.hud_model = "q3mdl/mechs/sapper/sapper_hud.obj";
-  self.hud_StrutsOffset = '0 -2 -0.75';
-  self.pitchMax = 40;
-  self.pitchMin = -40;
-  self.hud_rollangle = 3.25;
-  self.hud_bob = 0.035;
-  self.hud_bob_cycle = 0.5;
-  self.hud_bob_up = 0.4;
-  self.hud_bob_model = 1;
-  self.hud_bob_side = 0.35;
-  self.hud_bob_speed = 6.55;
-  self.hud_bob_model_up = 0.1;
-//====================================
+  if( self.classname == "UI_ITEM" ){
+    self.weaponmodel = "q3mdl/mechs/sapper/sapper_view.obj";
+    self.hud_model = "q3mdl/mechs/sapper/sapper_hud.obj";
+    self.hud_StrutsOffset = '0 -2 -0.75';
+    self.pitchMax = 40;
+    self.pitchMin = -40;
+    self.hud_rollangle = 3.25;
+    self.hud_bob = 0.035;
+    self.hud_bob_cycle = 0.5;
+    self.hud_bob_up = 0.4;
+    self.hud_bob_model = 1;
+    self.hud_bob_side = 0.35;
+    self.hud_bob_speed = 6.55;
+    self.hud_bob_model_up = 0.1;
+  //====================================
 
-//UI Data=============================
-  self.config_default_regular = sapper_config_default_reg;
-  self.config_default_missile = sapper_config_default_missile;
-  self.config_default_brawl = sapper_config_default_brawl;
-  self.abbrev = "SPR";
-  self.description = "SAPPER mechs were drafted and produced right before the Federation treaty was ratified. Off-world concerns asked for a strong second-line METAL to support other medium formations. What they got from the factories was dubbed the SAPPER based on its hardpoint configuration and shield output. | | The mech trades a lot of offensive firepower for equipment and shields. Its ability to withstand heavy anti-shield damage allows the mech to move-and-fire against tougher opponents. | | SAPPERs won`t halt an attack by themselves but they remain a powerful force multiplier in both Militar and Survest armies...even if they can no longer be built in large numbers.";
+  //UI Data=============================
+    self.config_default_regular = sapper_config_default_reg;
+    self.config_default_missile = sapper_config_default_missile;
+    self.config_default_brawl = sapper_config_default_brawl;
+    self.abbrev = "SPR";
+    self.description = "SAPPER mechs were drafted and produced right before the Federation treaty was ratified. Off-world concerns asked for a strong second-line METAL to support other medium formations. What they got from the factories was dubbed the SAPPER based on its hardpoint configuration and shield output. | | The mech trades a lot of offensive firepower for equipment and shields. Its ability to withstand heavy anti-shield damage allows the mech to move-and-fire against tougher opponents. | | SAPPERs won`t halt an attack by themselves but they remain a powerful force multiplier in both Militar and Survest armies...even if they can no longer be built in large numbers.";
 
-  //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
-  local entity hardpnt;
-  hardpnt = self.w_slot;
-  hardpnt.uiOffset = '-90 75';//#1 M_ARM_RIGHT
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '92 75'; //#3 M_ARM_LEFT
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-54 -30';//#2 M_TOR_RIGHT
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '59 -30';//#4 M_TOR_LEFT
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-22 40'; //#5 M_TOR_CENTER low/right
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-22 10'; //#6 M_TOR_CENTER up/right
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '25 40'; //#7 M_TOR_CENTER low/left
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '25 10'; //#8 M_TOR_CENTER up/left
-//====================================
+    //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
+    local entity hardpnt;
+    hardpnt = self.w_slot;
+    hardpnt.uiOffset = '-92 60';//#1 M_ARM_RIGHT
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '96 60'; //#3 M_ARM_LEFT
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-56 -45';//#2 M_TOR_RIGHT
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '64 -45';//#4 M_TOR_LEFT
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-22 24'; //#5 M_TOR_CENTER low/right
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-22 -5'; //#6 M_TOR_CENTER up/right
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '25 24'; //#7 M_TOR_CENTER low/left
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '25 -5'; //#8 M_TOR_CENTER up/left
+  //====================================
+  }
 #endif
 };
 

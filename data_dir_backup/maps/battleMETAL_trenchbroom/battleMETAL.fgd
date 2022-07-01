@@ -1021,12 +1021,29 @@ Projectile Shooter that uses weapons-fire." [
 
 //LIGHT_* ENTs ---------------------------------------------------------------------------------------------------------------------
 @BaseClass color(0 1 0) size(-8 -8 -8, 8 8 8) = BaseLight [
-  light(integer) : "light value" : 300
-  style(integer) : "0 - 12 light style" : 0
+  light(float) : "light value" : "300.0"
+  _color(string) : "Weighted RGB value of light color (default 1.0 1.0 1.0 = white)." : "1.0 1.0 1.0"
+  radius(float) : "Spotlight Radius" : "0.0"
+  _sun(choices) : "Set this key to 1 on a spotlight to make an infinite sun light." : 0 = [
+    0 : "FALSE"
+    1 : "TRUE"
+  ]
+  scale(float) : "Scales the 'light' value." : "1.0"
+  fade(float) : "Linear Fade" : "1.0"
+  _deviance(float) : "Penumbra effect - distance measured in world units for point/spot lights, and degrees for suns (~0.5-3)." : "0.0"
+  _samples(integer) : "Penumbra effect - the number of random jitters distributed over the solid arc (~16)." : 1
+  _filter(choices) : "Set this key to 1 to toggle on lightmap filtering." : 0 = [
+    0 : "FALSE"
+    1 : "TRUE"
+  ]
+  _filterradius(integer) : "Filters lightmaps within set radius." : 0
+  _anglescale(float) : "Scales light attenuation. Smaller values lessens angle attenuation, larger values for sharper, more faceted lighting (default 1.0)." : "1.0"
+  style(integer) : "0 to 12 light style" : 0
 ]
 @BaseClass = BaseLightFlags [
   spawnflags(Flags) = [
-    1 : "Start Off" : 0
+    1 : "NOANGLE - Ignore angle attenuation." : 0
+    4 : "NOGRIDLIGHT - Do not affect the lightgrid (dynamic entity lighting)." : 0
   ]
 ]
 @BaseClass = BaseLightRealtime [
@@ -1332,11 +1349,11 @@ button0 & 1 dont work when target is set." [
   health(float) : "" : "250.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -56 -38, 36 56 40) = building_misc_off_small : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -56 -35, 36 56 40) = building_misc_off_small : "warning: don't arbitrarily rotate, non-uniform bbox size! Decoration building. Does not require power." [
   health(float) : "" : "100.0"
 ]
 
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-56 -36 -38, 56 36 40) = building_misc_off_small_wide : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-56 -36 -35, 56 36 40) = building_misc_off_small_wide : "Decoration building. Does not require power." [
   health(float) : "" : "300.0"
 ]
 

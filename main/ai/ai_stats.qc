@@ -75,20 +75,20 @@ void(float rank) ai_pilot_ini_stats={
   }
 
   if( self.data_type == DATA_MECH ){
-    if( (self.legs) ){
-      self.legs.max_health = self.legs.health = self.legs.health * armorMod;
+    if( (self.legs_hp) ){
+      self.legs_hpMax = self.legs_hp = self.legs_hp * armorMod;
     }
-    if( (self.torsoLeft) ){
-      self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * armorMod;
+    if( (self.torL_hp) ){
+      self.torL_hpMax = self.torL_hp = self.torL_hp * armorMod;
     }
-    if( (self.torsoRight) ){
-      self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * armorMod;
+    if( (self.torR_hp) ){
+      self.torR_hpMax = self.torR_hp = self.torR_hp * armorMod;
     } 
-    if( (self.armRight) ){
-      self.armRight.max_health = self.armRight.health = self.armRight.health * armorMod;
+    if( (self.armR_hp) ){
+      self.armR_hpMax = self.armR_hp = self.armR_hp * armorMod;
     } 
-    if( (self.armLeft) ){
-      self.armLeft.max_health = self.armLeft.health = self.armLeft.health * armorMod;
+    if( (self.armL_hp) ){
+      self.armL_hpMax = self.armL_hp = self.armL_hp * armorMod;
     }  
   }
   else{

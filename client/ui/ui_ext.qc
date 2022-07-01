@@ -186,20 +186,3 @@ void( vector tipOrg ) gui_renderTooltipIcon={
   drawpic( tipOrg, UI_HELP_IMG, '14 14', CLR_DEF_RET_HASLOCK, 1, 0);
 };
 
-entity(float wepBit) gui_get_weapon={
-  local entity item;
-  local entity found;
-  
-  item = findfloat(world, clientServerNum, player_localentnum);
-  item = item.w_slot;
-  while( item != world ){
-    if(item.w_group == wepBit){
-      found = item;
-    }
-    item = item.w_slot;
-  }
-  if(found){
-    return found;
-  }
-  return world;
-};

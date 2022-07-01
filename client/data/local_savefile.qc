@@ -201,6 +201,7 @@ void() cl_get_mechs_sort={
   local entity mechListItem;
   
   mechListItem = spawn();
+  mechListItem.classname = "UI_ITEM";
   itr = 0;
   
   while( itr < 24){

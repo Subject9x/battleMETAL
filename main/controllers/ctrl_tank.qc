@@ -122,15 +122,6 @@ float( float isNew, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteString( MSG_ENTITY, self.netname );
   }
@@ -145,7 +136,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torC_angl_y );
   }
   
   if( (changedflags & SENDFLAG_CRIT) ){
@@ -194,15 +185,6 @@ float( float isNew, float changedflags ) ctrl_send_spg={
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteString( MSG_ENTITY, self.netname );
   }
@@ -261,15 +243,6 @@ float( float isNew, float changedflags ) ctrl_send_gev={
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteString( MSG_ENTITY, self.netname );
   }
@@ -284,7 +257,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torC_angl_y );
   }
   if( (changedflags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );

@@ -25,33 +25,10 @@ void() ctrl_unit_clean_wgroups={
   one-way execution, use carefully.
 */
 void() ctrl_unit_cleanup_player={
-  ctrl_unit_remove_piece(self.torsoCenter);
-  ctrl_unit_remove_piece(self.torsoLeft);
-  ctrl_unit_remove_piece(self.torsoRight);
-  ctrl_unit_remove_piece(self.armLeft);
-  ctrl_unit_remove_piece(self.armRight);
-  ctrl_unit_remove_piece(self.legs);
-  
+  //FIX ME - cleanups flatten to just weapon removal.
   ctrl_weapon_remove_all();
 };
 
-void() ctrl_unit_cleanup_mech={
-  ctrl_weapon_remove_all();
-  ctrl_unit_remove_piece(self.armLeft);
-  ctrl_unit_remove_piece(self.armRight);
-  ctrl_unit_remove_piece(self.torsoLeft);
-  ctrl_unit_remove_piece(self.torsoRight);
-  ctrl_unit_remove_piece(self.torsoCenter);
-  ctrl_unit_remove_piece(self.legs);
-};
-
-void() ctrl_unit_cleanup_tank={
-  ctrl_weapon_remove_all();
-  ctrl_unit_remove_piece(self.torsoLeft);
-  ctrl_unit_remove_piece(self.torsoRight);
-  ctrl_unit_remove_piece(self.torsoCenter);
-  ctrl_unit_remove_piece(self.legs);
-};
 /*
   Call's unit sub-piece's th_die() function but does not remove!
 */

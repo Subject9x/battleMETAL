@@ -234,13 +234,7 @@ vector( vector startOrg ) te_apply_wind;
 vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge;
 
 /*
-  mech corpse-piece
-*/
-entity(entity root, entity part, vector setAngle) te_mech_chunk_stand;
-
-/*
   burning mech legs
 */
-entity( entity mechLegs ) te_mech_dead_legs;
 void() te_mech_dead_legs_burn;
 void() te_mech_dead_legs_smoke;

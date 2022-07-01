@@ -111,45 +111,47 @@ void() data_ini_warden_={
 
 //HUD DATA=============================
 #ifdef CSQC
-  self.weaponmodel = "q3mdl/mechs/warden/warden_view.obj";
-  self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
-  self.hud_StrutsOffset = '0 -1.5 -1';
-  self.pitchMax = 25; //pitch down limit
-  self.pitchMin = -28;//pitch up limit
-  self.hud_rollangle = 4;
-  self.hud_bob = 0.03;
-  self.hud_bob_cycle = 0.5;
-  self.hud_bob_up = 0.20; //0.15
-  self.hud_bob_model = 1;
-  self.hud_bob_side = 0.09;
-  self.hud_bob_speed = 6;
-  self.hud_bob_model_up = 0.1;
-//====================================
+  if( self.classname == "UI_ITEM" ){
+    self.weaponmodel = "q3mdl/mechs/warden/warden_view.obj";
+    self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
+    self.hud_StrutsOffset = '0 -1.5 -1';
+    self.pitchMax = 25; //pitch down limit
+    self.pitchMin = -28;//pitch up limit
+    self.hud_rollangle = 4;
+    self.hud_bob = 0.03;
+    self.hud_bob_cycle = 0.5;
+    self.hud_bob_up = 0.20; //0.15
+    self.hud_bob_model = 1;
+    self.hud_bob_side = 0.09;
+    self.hud_bob_speed = 6;
+    self.hud_bob_model_up = 0.1;
+  //====================================
 
-//UI Data=============================
-  self.config_default_regular = warden_config_default_reg;
-  self.config_default_missile = warden_config_default_missile;
-  self.config_default_brawl = warden_config_default_brawl;
-  self.abbrev = "WRD";
-  self.description = "MILITAR burned out their best hackers on black ICE breaking into a salvaged Federation data core. Amongst the encrypted modules was blueprints for a highly advanced light metal - the WARDEN. | | Tech degradation after the toppling of the Federation meant that MILITAR could not create a perfect copy...but they tried anyway. | | The result is a tough-as-nails light metal. It is not the fastest metal on the planet, but well-protected hardpoints and fast enough movement allow the WARDEN to stay out of most trouble. | | BALAKET pilots have a particular disdain for WARDEN units, frustrated that their vaunted hit-and-run style won`t take a WARDEN down quickly.";
+  //UI Data=============================
+    self.config_default_regular = warden_config_default_reg;
+    self.config_default_missile = warden_config_default_missile;
+    self.config_default_brawl = warden_config_default_brawl;
+    self.abbrev = "WRD";
+    self.description = "MILITAR burned out their best hackers on black ICE breaking into a salvaged Federation data core. Amongst the encrypted modules was blueprints for a highly advanced light metal - the WARDEN. | | Tech degradation after the toppling of the Federation meant that MILITAR could not create a perfect copy...but they tried anyway. | | The result is a tough-as-nails light metal. It is not the fastest metal on the planet, but well-protected hardpoints and fast enough movement allow the WARDEN to stay out of most trouble. | | BALAKET pilots have a particular disdain for WARDEN units, frustrated that their vaunted hit-and-run style won`t take a WARDEN down quickly.";
 
-  //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
-  local entity hardpnt;
-  hardpnt = self.w_slot;
-  hardpnt.uiOffset = '-70 40'; //#1
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '60 40'; //#2
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '90 40';//#3
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '-60 -35.0';//#4
-  
-  hardpnt = hardpnt.w_slot;
-  hardpnt.uiOffset = '100 -35.0'; //#5
-//====================================
+    //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
+    local entity hardpnt;
+    hardpnt = self.w_slot;
+    hardpnt.uiOffset = '-72 30'; //#1
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '60 30'; //#2
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '90 30';//#3
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '-60 -45.0';//#4
+    
+    hardpnt = hardpnt.w_slot;
+    hardpnt.uiOffset = '110 -55.0'; //#5
+  //====================================
+  }
 #endif
 };
 

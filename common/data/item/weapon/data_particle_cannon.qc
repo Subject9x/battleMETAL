@@ -136,7 +136,7 @@ void() data_ini_attack_particle_cannon_={
     HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, dmgArmor, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
 
     if( HIT_LOCATION && (trace_ent.shield < 101 && trace_ent.shield > 0) ){
-      self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION.partTypeId;
+      self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
     }
   }
   

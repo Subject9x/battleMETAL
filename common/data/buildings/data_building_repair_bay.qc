@@ -8,14 +8,21 @@ Overview:
   
   Refactored to use proper state system where repairBay.playerState will be used.
   
-  PLAYER_ACTIVE = repair is actively repairing a specific part
+  REPAIR_STATE_FIXING = repair is actively repairing a specific part
   
-  PLAYER_CONNECT = repair part filtering
+  REPAIR_STATE_START = repair part filtering
   
-  PLAYER_RESPAWN  = repair bay cooldown
+  REPAIR_STATE_COOLDOWN  = repair bay cooldown
   
-  PLAYER_DEBRIEF = idle, recharge .reloadValue
+  REPAIR_STATE_IDLE = idle, recharge .reloadValue
 */
+
+#define REPAIR_STATE_START 1
+#define REPAIR_STATE_FIXING 2
+#define REPAIR_STATE_IDLE 3
+#define REPAIR_STATE_COOLDOWN 4
+
+void() building_repair_touch;
 
 /*
   util to correctly set player FL_NOSHOOT state
@@ -23,12 +30,18 @@ Overview:
 void(float toggleGuns) building_repair_allowGuns={
   local entity player, data;
   player = self.ladder_entity;
-  data = player.clientData;
-  if(toggleGuns){
-    player.flags = player.flags - (player.flags & FL_NOSHOOT);
+  
+  if( (player.flags & FL_CLIENT) ){
+    data = player.clientData;
+    if(toggleGuns){
+      player.flags = player.flags - (player.flags & FL_NOSHOOT);
+    }
+    else{
+      player.flags = player.flags | FL_NOSHOOT;
+    }
   }
   else{
-    player.flags = player.flags | FL_NOSHOOT;
+    player.flags = player.flags | FL_DISARMED;
   }
 
   data.SendFlags = data.SendFlags | SENDFLAG_EFLAGS;
@@ -66,124 +79,150 @@ void() building_repair_state;     //our old ai_api friend.
 
 
 /*
-  STATE: PLAYER_CONNECT
+  STATE: REPAIR_STATE_START
 */
 void() building_repair_select={
   local entity player;
-  local entity repairCheck;
-  local entity part;
   local float lowHP;
   local float hp;
   local float typeId;
   
-  if( self.ai_state == PLAYER_CONNECT && self.ai_state_last != PLAYER_CONNECT ){
+  if( self.ai_state == REPAIR_STATE_START && self.ai_state_last != REPAIR_STATE_START ){
     self.burstRate = 0;
     //fresh repair event
     if( self.reloadValue <= 0 ){
       //cut over to cooldown state;
-      self.ai_state_next = PLAYER_RESPAWN;
+      self.ai_state_next = REPAIR_STATE_COOLDOWN;
       return;
     }
     
     //player dead or exited repair bay
-    if(self.trigger_field == world){
-      self.ai_state_next = PLAYER_RESPAWN;
+    if(self.goalentity == world || self.goalentity.deadflag != DEAD_NO){
+      self.ai_state_next = REPAIR_STATE_COOLDOWN;
       return;
     }
     else{
-      player = self.trigger_field;
+      player = self.goalentity;
     }
-    
-    if(csqc_updateCompStat(player) < 100){
-      repairCheck = player;
+    self.critBits = 0;
+    self.attack_state = 0;
+    if(player.health < player.max_health * 0.8){
       typeId = M_TOR_CENTER;
     }
     else{
-      part = player.partNext;
       lowHP = 99.99;
-      while(part){
-        if( part.partTypeId != M_ITEM ){
-          hp = csqc_updateCompStat(part);
-          if( hp < lowHP){
-            lowHP = hp;
-            if( part.partTypeId == M_ARM_RIGHT && (player.damageValue & M_TOR_RIGHT) ){
-              repairCheck = part.owner.torsoRight;
-              typeId = repairCheck.partTypeId;
+      if( player.criticalHits != 0 ){
+        //prioritize blown off sections first
+        if( (player.criticalHits & M_LEGS) ){
+          typeId = M_LEGS;
+        }
+        else if( (player.criticalHits & M_TOR_LEFT) ){
+          typeId = M_TOR_LEFT;
+        }
+        else if( (player.criticalHits & M_TOR_RIGHT) ){
+          typeId = M_TOR_RIGHT;
+        }
+        else if( (player.criticalHits & M_ARM_LEFT) ){
+          typeId = M_ARM_LEFT;
+        }
+        else if( (player.criticalHits & M_ARM_RIGHT) ){
+          typeId = M_ARM_RIGHT;
+        }
+        self.attack_state = TRUE; //marks that we're repairing up FROM a critical
+      }
+      else{
+        //then find most-damaged part
+        if( player.legs_hp < player.legs_hpMax * 0.75 ){
+          typeId = M_LEGS;
+        }
+        else if( player.torL_hp < player.torL_hpMax * 0.85) {
+          typeId = M_TOR_LEFT;
+        }
+        else if( player.torR_hp < player.torR_hpMax * 0.85) {
+          typeId = M_TOR_RIGHT;
+        }
+        else if( player.armL_hp < player.armL_hpMax * 0.5) {
+          typeId = M_TOR_LEFT;
+        }
+        else if( player.armR_hp < player.armR_hpMax * 0.5) {
+          typeId = M_TOR_RIGHT;
+        }
+        else{
+          if( (player.armR_hp < player.armR_hpMax) && player.armR_hp < player.armL_hp ){
+            typeId = M_ARM_RIGHT;
+          }
+          else if( (player.armL_hp < player.armL_hpMax) && player.armL_hp < player.armR_hp ){
+            typeId = M_ARM_LEFT;
+          }
+          else{
+            if( player.armR_hp < player.armL_hpMax ){
+              typeId = M_ARM_RIGHT;
             }
-            else if( part.partTypeId == M_ARM_LEFT && (player.damageValue & M_TOR_LEFT) ){
-              repairCheck = part.owner.torsoLeft;
-              typeId = repairCheck.partTypeId;
-            }
-            else{
-              repairCheck = part;
-              typeId = repairCheck.partTypeId;
+            else if( player.armL_hp < player.armL_hpMax ){
+              typeId = M_ARM_LEFT;
             }
           }
         }
-        part = part.partNext;
       }
     }
-    if( repairCheck == world ){
+    self.critBits = typeId;
+    if( self.critBits == 0 ){
       //nothing to actually repair;
-      self.ai_state_next = PLAYER_DEBRIEF;
+      self.ai_state_next = REPAIR_STATE_IDLE;
       return;
     }
     
     //smooth transitions between repairing pieces.
-    if(self.ai_state_last != PLAYER_ACTIVE){
+    if(self.ai_state_last != REPAIR_STATE_FIXING){
       building_repair_allowGuns(FALSE);
-      client_send_event_repairs(self.trigger_field, TRUE);
+      client_send_event_repairs(player, TRUE);
     }
     self.moveState = TRUE;
-    self.attack_state = typeId;
-    self.goalentity = repairCheck;
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
-    self.ai_state_next = PLAYER_ACTIVE;
+    self.ai_state_next = REPAIR_STATE_FIXING;
   }
 };
 
 /*
-  STATE: PLAYER_ACTIVE  
+  STATE: REPAIR_STATE_FIXING  
 */
 void() building_repair_fixing={
   local entity player;
   local float end_repair;
-  local entity fix;
   local entity part;
   local entity altSelf;
   
   if( self.reloadValue <= 0 ){
     //cut over to cooldown state;
-    self.ai_state_next = PLAYER_RESPAWN;
+    self.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
   }
 
-  if(self.trigger_field == world){
-    self.ai_state_next = PLAYER_RESPAWN;
+  if(self.goalentity == world || self.goalentity.deadflag != DEAD_NO){
+    self.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
   }
   else{
-    player = self.trigger_field;
+    player = self.goalentity;
   }
   
-  if(vlen(player.origin - self.cameraOrigin) > 48){
+  if(vlen(player.origin - self.origin) > player.maxs_x/2){
     //player walked away from node
-    self.ai_state_next = PLAYER_RESPAWN;
+    self.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
   }
   
   //ENTER STATE------------------------------------------
-  if( self.ai_state == PLAYER_ACTIVE && self.ai_state_last != PLAYER_ACTIVE ){
-    if(self.goalentity == world){
+  if( self.ai_state == REPAIR_STATE_FIXING && self.ai_state_last != REPAIR_STATE_FIXING ){
+    if(self.critBits == FALSE){
       //error out
-      self.ai_state_next = PLAYER_RESPAWN;
+      self.ai_state_next = REPAIR_STATE_COOLDOWN;
       return;
     }
     self.burstRate = 0;
   }
   //------------------------------------------------------
   altSelf = self;
-  fix = self.goalentity;  //between frame caching
   //energ recharge freebie
   player.energy = player.energy + (player.energyRate * 0.85);
   if( player.energy > player.energyMax ){
@@ -193,107 +232,125 @@ void() building_repair_fixing={
   end_repair = FALSE;
   
   //fix 'client' / aka CT
-  if( (fix.flags & FL_CLIENT) ){
+  if( self.critBits == M_TOR_CENTER ){
     //part is not critical'd, repair as normal.
-    fix.health = fix.health + self.reloadRate;
-    self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.25));
+    player.health = min(player.health + self.reloadRate, player.max_health);
+    self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
+    if( player.health >= player.max_health ){
+      end_repair = TRUE;
+    }
   }
   else{
-    //regular mech parts
-    if( fix.deadflag == DEAD_NO ){
-      //part is not critical'd, repair as normal.
-      fix.health = fix.health + self.reloadRate;
-      self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.25));
-      if( fix.health >= fix.max_health * 0.5 ){
-        player.burnBits = player.burnBits - (player.burnBits & fix.partTypeId);
-        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
-      }
+    self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
+    switch(self.critBits){
+      case M_LEGS:
+        player.legs_hp = min(player.legs_hp + self.reloadRate / 1.15, player.legs_hpMax);
+        if( player.legs_hp == player.legs_hpMax ){
+          end_repair = TRUE;
+        }
+        break;
+      case M_TOR_LEFT:
+        player.torL_hp = min(player.torL_hp + self.reloadRate / 1.15, player.torL_hpMax);
+        if( player.torL_hp == player.torL_hpMax ){
+          end_repair = TRUE;
+        }
+        break;
+      case M_TOR_RIGHT:
+        player.torR_hp = min(player.torR_hp + self.reloadRate / 1.15, player.torR_hpMax);
+        if( player.torR_hp == player.torR_hpMax ){
+          end_repair = TRUE;
+        }
+        break;
+      case M_ARM_LEFT:
+        player.armL_hp = min(player.armL_hp + self.reloadRate / 1.15, player.armL_hpMax);
+        if( player.armL_hp == player.armL_hpMax ){
+          end_repair = TRUE;
+        }
+        break;
+      case M_ARM_RIGHT:
+        player.armR_hp = min(player.armR_hp + self.reloadRate / 1.15, player.armR_hpMax);
+        if( player.armR_hp == player.armR_hpMax ){
+          end_repair = TRUE;
+        }
+        break;
     }
-    else{
-      //part has been blown off / destroyed.
-      fix.health = fix.health + self.reloadRate / 1.15;
-      self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (self.trigger_field.vec_size * 1.75));
-      if(fix.deadflag == DEAD_DEAD && fix.partTypeId != M_LEGS){
-        fix.deadflag = DEAD_DYING;
-        if(fix.deadflag != DEAD_NO ){
-          fix.deadflag = DEAD_NO;
-          player.critBits = player.critBits | (fix.partTypeId | M_REPAIR);
-          player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_CRIT;
-          
-          part = player.w_slot;
-          while( part != world ){
-            if( part.partParentId == fix.partTypeId && part.deadflag != DEAD_NO ){
-              part.deadflag = DEAD_NO;
-              part.think = part.w_think;
-              if( part.item_run_upgrade ){
-                self = part;
-                  self.item_run_upgrade();
-                self = altSelf;
-              }
-              setsize(part, '-1 -1 -1', '1 1 1');
-            }
-            part = part.w_slot;
+    if( (player.criticalHits & self.critBits) && self.attack_state){
+      self.attack_state = FALSE;
+      player.critBits = player.critBits | (M_REPAIR | self.critBits);
+      if( (player.flags & FL_CLIENT) ){
+        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_CRIT;
+      }
+      else{
+        player.SendFlags = player.SendFlags | SENDFLAG_CRIT;
+      }
+      part = player.w_slot;
+      while( part != world ){
+        if( part.partParentId == self.critBits && part.deadflag != DEAD_NO ){
+          part.deadflag = DEAD_NO;
+          part.think = part.w_think;
+          if( part.item_run_upgrade ){
+            self = part;
+              self.item_run_upgrade();
+            self = altSelf;
           }
+          setsize(part, '-1 -1 -1', '1 1 1');
+        }
+        part = part.w_slot;
+      }
+      //repair shield/side torso debuff
+      if( self.critBits == M_TOR_LEFT ) {
+        if( player.torL_hp > player.torL_hpMax * 0.5){
+          player.shieldMax = player.shieldMax * 0.5;
         }
       }
-      else if(fix.deadflag == DEAD_DYING){
-        if(fix.health > fix.max_health * 0.5){
-          fix.deadflag = DEAD_NO;
-          if( !(fix.owner.criticalHits & M_TOR_LEFT) ){
-            fix.owner.shieldMax = fix.owner.shieldMax * 0.5;
-          }
-          if( !(fix.owner.criticalHits & M_TOR_LEFT) ){
-            fix.owner.shieldMax = fix.owner.shieldMax * 0.5;
-          }
+      else if( self.critBits == M_TOR_RIGHT ){
+        if( player.torR_hp > player.torR_hpMax * 0.5){
+          player.shieldMax = player.shieldMax * 0.5;
         }
       }
-    }
-
-  }
-  if(fix.health >= fix.max_health){
-    end_repair = TRUE;
-    fix.health = fix.max_health;
-    if( fix.partTypeId == M_LEGS ){
-      if( (fix.flags & FL_DISARMED) ) {
-        //restore sprint/ram functionality
-        fix.flags = fix.flags - (fix.flags & FL_DISARMED);
-        fix.owner.data_speed_forward = fix.data_speed_forward;
-        fix.owner.data_speed_backward = fix.data_speed_backward;
-        fix.owner.data_speed_strafe = fix.data_speed_strafe;
-        fix.owner.data_speed_accel = fix.data_speed_accel;
+      if( self.critBits == M_LEGS ){
+        player.data_speed_forward = player.cache_speed_fwd;
+        player.data_speed_backward = player.cache_speed_back;
+        player.data_speed_strafe = player.cache_speed_sid;
       }
     }
+    
   }
   player.stat_plr_rep = (self.reloadValue / self.reloadMax) * 100;
   
-  if(end_repair){  
-    player.burnBits = player.burnBits - (player.burnBits & fix.partTypeId);
-    player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
-    fix.deadflag = DEAD_NO;
-    self.ai_state_next = PLAYER_CONNECT;
+  if(end_repair){
+  
+    player.burnBits = player.burnBits - (player.burnBits & self.critBits);
+    if( (player.flags & FL_CLIENT) ){
+      player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
+    }
+    else{
+      player.SendFlags = player.SendFlags | SENDFLAG_BURN;
+    }
+    self.ai_state_next = REPAIR_STATE_START;
   }
 };
 
 /*
-  STATE: PLAYER_DEBRIEF
+  STATE: REPAIR_STATE_IDLE
 */
 void() building_repair_idle={
-  if( self.ai_state == PLAYER_DEBRIEF && self.ai_state_last != PLAYER_DEBRIEF ){
-    self.particleCube.solid = SOLID_TRIGGER;
-    setorigin(self.particleCube, self.particleCube.origin);
+  if( self.ai_state == REPAIR_STATE_IDLE && self.ai_state_last != REPAIR_STATE_IDLE ){
+    //self.particleCube.solid = SOLID_TRIGGER;
+    //setorigin(self.particleCube, self.particleCube.origin);
+    self.touch = building_repair_touch;
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 1;
     
-    if( self.ai_state_last != PLAYER_RESPAWN ){
+    if( self.ai_state_last != REPAIR_STATE_COOLDOWN ){
       if(self.ladder_entity != world){
         building_repair_allowGuns(TRUE);
-        client_send_event_repairs( self.trigger_field, FALSE );
+        client_send_event_repairs( self.goalentity, FALSE );
       }
-      self.goalentity = world;
-      self.attack_state = 0;
-      if(self.trigger_field != world){
-        self.trigger_field.stat_plr_rep = -1;
-        self.trigger_field = world;
+      self.critBits = 0;
+      if(self.goalentity != world){
+        self.goalentity.stat_plr_rep = -1;
+        self.goalentity = world;
         self.ladder_entity = world;
       }
     }
@@ -303,22 +360,20 @@ void() building_repair_idle={
 };
 
 /*
-  STATE: PLAYER_RESPAWN
+  STATE: REPAIR_STATE_COOLDOWN
 */
 void() building_repair_cooldown={
-  if( self.ai_state == PLAYER_RESPAWN && self.ai_state_last != PLAYER_RESPAWN ){
+  if( self.ai_state == REPAIR_STATE_COOLDOWN && self.ai_state_last != REPAIR_STATE_COOLDOWN ){
     self.moveState = FALSE;
-    //cons_logAFloat("building_repair_cooldown - left area", 1);  //debug
     building_repair_allowGuns(TRUE);
-    client_send_event_repairs( self.trigger_field, FALSE );
-    self.trigger_field.stat_plr_rep = -1;
-    self.goalentity = world;
-    self.attack_state = 0;
+    client_send_event_repairs( self.goalentity, FALSE );
+    self.goalentity.stat_plr_rep = -1;
+    self.critBits = 0;
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 2;
-    if(self.trigger_field != world){
-      self.trigger_field.stat_plr_rep = -1;
-      self.trigger_field = world;
+    if(self.goalentity != world){
+      self.goalentity.stat_plr_rep = -1;
+      self.goalentity = world;
       self.ladder_entity = world;
     }
     if( skill < SKILL_VET ){
@@ -333,7 +388,7 @@ void() building_repair_cooldown={
   }
   building_repair_recharge_frame();
   if( time > self.ai_movedist ){
-    self.ai_state_next = PLAYER_DEBRIEF;
+    self.ai_state_next = REPAIR_STATE_IDLE;
   }
 };
 
@@ -361,11 +416,11 @@ void() building_repair_state={
   self.ai_state = self.ai_state_next;
   
   switch(self.ai_state){
-    case PLAYER_ACTIVE:
+    case REPAIR_STATE_FIXING:
       building_repair_fixing();
       break;
       
-    case PLAYER_RESPAWN:
+    case REPAIR_STATE_COOLDOWN:
       building_repair_cooldown();
       break;
       
@@ -373,11 +428,11 @@ void() building_repair_state={
       building_repair_attack();
       break;
     
-    case PLAYER_CONNECT:
+    case REPAIR_STATE_START:
       building_repair_select();
       break;
       
-    case PLAYER_DEBRIEF:
+    case REPAIR_STATE_IDLE:
       building_repair_idle();
       break;
   }
@@ -418,12 +473,13 @@ void() building_human_repair={
   }
   self.max_health = self.health;
 
-  if( !self.energy ){
-    self.energy = 0;
-  }
   if( !self.energyMax ){
     self.energyMax = 1000;
   }
+  if( !self.energy ){
+    self.energy = self.energyMax;
+  }
+  
   if( !self.energyRate ){
     self.energyRate = 0.67;
   }
@@ -465,22 +521,8 @@ void() building_human_repair={
     }
   }
   
-  makevectors(self.angles);
-  self.compOffset = self.origin + (v_forward * -20) + (v_up * 30) + (v_right * 4);
-  local entity repairNode, this;
-  this  = self;
-  repairNode = spawn();
-  repairNode.effects = repairNode.effects | EF_NODRAW;
-  repairNode.touch = building_repair_touch;
-  repairNode.owner = this;
-  this.particleCube = repairNode;
-  self = repairNode;
-    util_setModel("q3mdl/testball.md3", repairNode.skin, EF_LOWPRECISION);
-    util_setCollider(FALSE, SOLID_TRIGGER, MOVETYPE_NONE);
-    util_setHealthArmor(0, 0, 0, 0);
-  self = this;
-  setsize(repairNode, '-8 -8 -16', '8 8 16');
-  setorigin(repairNode, this.compOffset);
+  self.compOffset = self.origin;// + (v_forward * (self.maxs_x/2)) + (v_up * self.mins_z + 16) + (v_right * self.mins_y/2);
+  self.touch = building_repair_touch;
   
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   self.compAltOffset = self.origin;
@@ -497,7 +539,7 @@ void() building_human_repair={
   self.SendEntity = ctrl_send_building;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   
-  self.ai_state_next = PLAYER_DEBRIEF;
+  self.ai_state_next = REPAIR_STATE_IDLE;
   self.think = building_repair_state;
   self.nextthink = time + 0.1;
 };
@@ -506,25 +548,27 @@ void() building_repair_touch={
   if( !(other.flags & FL_CLIENT) ){
     return;
   }
-  if( self.owner.trigger_field != world ){
+  if( self.goalentity != world ){
     return;
   }
   if(util_getMechHpAverage(other) >= 1){
     return;
   }
-  if( self.owner.ai_state != PLAYER_DEBRIEF ){
+  if( self.ai_state != REPAIR_STATE_IDLE ){
     //repair either already has a client, or is cooling off
     return;
   }
-  if(other.faction != self.owner.faction){
+  if(other.faction != self.faction){
     //TODO -> repair bay will 'attack' by deconstructing your mech >:|
     return;
   }
-  self.owner.trigger_field = other;
-  self.owner.ladder_entity = other;   //cache here to check for player disconnects.
-  self.owner.ai_state_next = PLAYER_CONNECT;
-  self.owner.moveState = FALSE;
-  self.solid = SOLID_NOT;
+  if( vlen(other.origin - self.origin) > other.maxs_x){
+    return;
+  }
+  self.goalentity = other;
+  self.ladder_entity = other;   //cache here to check for player disconnects.
+  self.ai_state_next = REPAIR_STATE_START;
+  self.moveState = FALSE;
 };
 
 void() hrepair_die1 = [1, hrepair_die2]{
@@ -532,9 +576,9 @@ void() hrepair_die1 = [1, hrepair_die2]{
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
   local vector ouch;
-  if( self.trigger_field != world ){
-    ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
-    t_damage( self.trigger_field, self, world, random() * self.max_health, ouch, normalize(ouch - self.trigger_field.origin) * 1);
+  if( self.goalentity != world ){
+    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
 };
 void() hrepair_die2 = [2, hrepair_die3]{};
@@ -543,9 +587,9 @@ void() hrepair_die3 = [3, hrepair_die4]{
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
   local vector ouch;
-  if( self.trigger_field != world ){
-    ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
-    t_damage( self.trigger_field, self, world, random() * self.max_health, ouch, normalize(ouch - self.trigger_field.origin) * 1);
+  if( self.goalentity != world ){
+    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
 };
 void() hrepair_die4 = [4, hrepair_die5]{
@@ -553,9 +597,9 @@ void() hrepair_die4 = [4, hrepair_die5]{
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
   local vector ouch;
-  if( self.trigger_field != world ){
-    ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
-    t_damage( self.trigger_field, self, world, random() * self.max_health, ouch, normalize(ouch - self.trigger_field.origin) * 1);
+  if( self.goalentity != world ){
+    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
 };
 void() hrepair_die5 = [5, hrepair_die6]{};
@@ -586,9 +630,9 @@ void() hrepair_die12 = [12, hrepair_die13]{
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
   local vector ouch;
-  if( self.trigger_field != world ){
-    ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
-    t_damage( self.trigger_field, self, world, random() * self.max_health, ouch, normalize(ouch - self.trigger_field.origin) * 1);
+  if( self.goalentity != world ){
+    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
 };
 void() hrepair_die13 = [13, hrepair_die14]{
@@ -596,9 +640,9 @@ void() hrepair_die13 = [13, hrepair_die14]{
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
   local vector ouch;
-  if( self.trigger_field != world ){
-    ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
-    t_damage( self.trigger_field, self, world, random() * self.max_health, ouch, normalize(ouch - self.trigger_field.origin) * 1);
+  if( self.goalentity != world ){
+    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
 };
 void() hrepair_die14 = [14, hrepair_die15]{
@@ -609,9 +653,9 @@ void() hrepair_die14 = [14, hrepair_die15]{
 void() hrepair_die15 = [15, hrepair_die16]{};
 void() hrepair_die16 = [16, SUB_Null]{
   local vector ouch;
-  if( self.trigger_field != world ){
-    ouch = randompos( self.trigger_field.absmin, self.trigger_field.absmax);
-    t_damage( self.trigger_field, self, world, random() * self.max_health, ouch, normalize(ouch - self.trigger_field.origin) * 1);
+  if( self.goalentity != world ){
+    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
   building_die();
 };

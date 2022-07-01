@@ -145,12 +145,18 @@ void() CSQC_Init =
 
   toolTip = spawn();
   UI_HANGAR_DATA_mech = spawn();
+  UI_HANGAR_DATA_mech.classname = "UI_ITEM";
+  
   UI_ARMING_DATA_item_a = spawn();
   UI_ARMING_DATA_item_b = spawn();
   UI_ARMING_DATA_item_list = spawn();
   UI_ARMING_item_drag = spawn();
+  
   HUD_DATA_weapon = spawn();
+  
   UI_HANGAR_DATA_mech_list = spawn();
+  UI_HANGAR_DATA_mech_list.classname = "UI_ITEM";
+  
   
   //cache these references here, asap.
   //  yes, sadly, they will always take up space...

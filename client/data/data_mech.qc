@@ -43,11 +43,13 @@ void( float dataID ) data_sync_new_mech_ai={
     self.solid = SOLID_SLIDEBOX;
   } 
   self.interpolate_entity = interpolate_mech_ai;
-  self.drawmask = MASK_ENGINE;
   self.predraw = predraw_mech_ai;
   self.canTarget = TRUE;
   if( !self.ai_muted ){
     ai_voice_ini( TRUE );
     self.ai_voice_limit = 1;
   }
+  
+  self.legs_frame = 0;
+  self.legs_nextthink = self.legs_frame1time = self.legs_frame2time = time + 0.1;
 };
