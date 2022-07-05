@@ -369,18 +369,17 @@ void() cl_get_new_fog={
   
   FOG_WORLD_VAL = ReadByte();
   
-  FOG_TARG_RED = ReadLong();
-  FOG_TARG_GREEN = ReadLong();
-  FOG_TARG_BLUE = ReadLong();
+  FOG_TARG_RED = ReadCoord();
+  FOG_TARG_GREEN = ReadCoord();
+  FOG_TARG_BLUE = ReadCoord();
   
   FOG_TARG_DIST_MIN = ReadLong();
   FOG_TARG_DIST_MAX = ReadLong();
   FOG_TARG_DIST_TOP = ReadLong();
   
-  FOG_TARG_ALPHA = ReadLong();
-  FOG_TARG_DENSITY = ReadLong();
-  FOG_TARG_FADE_DEPTH = ReadLong();
-  
+  FOG_TARG_ALPHA = ReadCoord();
+  FOG_TARG_DENSITY = ReadCoord();
+  FOG_TARG_FADE_DEPTH = ReadCoord();
   
   /*cons_logAFloat("FOG_TARG_RED", FOG_TARG_RED); //debug
   cons_logAFloat("FOG_TARG_GREEN", FOG_TARG_GREEN); //debug
@@ -390,8 +389,8 @@ void() cl_get_new_fog={
   cons_logAFloat("FOG_TARG_DIST_TOP", FOG_TARG_DIST_TOP); //debug
   cons_logAFloat("FOG_TARG_ALPHA", FOG_TARG_ALPHA); //debug
   cons_logAFloat("FOG_TARG_DENSITY", FOG_TARG_DENSITY); //debug
-  cons_logAFloat("FOG_TARG_FADE_DEPTH", FOG_TARG_FADE_DEPTH); //debug
-  */
+  cons_logAFloat("FOG_TARG_FADE_DEPTH", FOG_TARG_FADE_DEPTH); //debug*/
+  
   
   //we cache world's fog values as fall-back
   if( FOG_WORLD_VAL ){

@@ -169,6 +169,7 @@ void() building_repair_select={
     if( self.critBits == 0 ){
       //nothing to actually repair;
       self.ai_state_next = REPAIR_STATE_IDLE;
+      self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
       return;
     }
     
@@ -206,7 +207,7 @@ void() building_repair_fixing={
     player = self.goalentity;
   }
   
-  if(vlen(player.origin - self.origin) > player.maxs_x/2){
+  if(vlen(player.origin - self.origin) > player.maxs_x){
     //player walked away from node
     self.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
@@ -336,9 +337,6 @@ void() building_repair_fixing={
 */
 void() building_repair_idle={
   if( self.ai_state == REPAIR_STATE_IDLE && self.ai_state_last != REPAIR_STATE_IDLE ){
-    //self.particleCube.solid = SOLID_TRIGGER;
-    //setorigin(self.particleCube, self.particleCube.origin);
-    self.touch = building_repair_touch;
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 1;
     
@@ -460,7 +458,6 @@ void() building_human_repair={
 
   self.flags = self.flags | FL_MONSTER;
   self.deadflag = DEAD_NO;
-  self.movetype = MOVETYPE_NONE;
   
   self.vec_name = "Repair Bay";
   self.vec_size = 3;

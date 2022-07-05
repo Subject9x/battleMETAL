@@ -506,17 +506,17 @@ void(entity client, float worldFog, float fogDense, vector fogColor, float fogAl
   
   WriteByte( MSG_ONE, worldFog);
   
-  WriteLong( MSG_ONE, fogColor_x );
-  WriteLong( MSG_ONE, fogColor_y );
-  WriteLong( MSG_ONE, fogColor_z );
+  WriteCoord( MSG_ONE, fogColor_x );
+  WriteCoord( MSG_ONE, fogColor_y );
+  WriteCoord( MSG_ONE, fogColor_z );
   
   WriteLong( MSG_ONE, fogDist_x );
   WriteLong( MSG_ONE, fogDist_y );
   WriteLong( MSG_ONE, fogDist_z );
   
-  WriteLong( MSG_ONE, fogAlpha );
-  WriteLong( MSG_ONE, fogDense );
-  WriteLong( MSG_ONE, fogFade );
+  WriteCoord( MSG_ONE, fogAlpha );
+  WriteCoord( MSG_ONE, fogDense );
+  WriteCoord( MSG_ONE, fogFade );
   
 };
 

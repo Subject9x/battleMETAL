@@ -71,25 +71,27 @@ void() player_think={
       sendevent_player_burn();
     }
     if( self.moveState > MOVE_SPRINT ){
-      makevectors(self.legs_angl);
-      boostLeft = boostRight = self.legs_org + (v_up * (self.mins_z * 0.75));
-      boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
-      boostRight = boostRight + (v_right * self.maxs_x * 0.5);
-      
-      backLeft = backRight = self.legs_org + (v_forward * -32) + (v_up * (self.mins_z * 0.67));
-      backLeft = backLeft + (v_right * self.mins_x * 0.5);
-      backRight = backRight + (v_right * self.maxs_x * 0.5);
-      
-      if( self.vec_size == 3 ){
-        te = "TE_FIRE_3";
-      }
-      else{
-        te = "TE_FIRE_2";
-      }
-      
-      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
-        trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
-        trailparticles(world, particleeffectnum(te), boostRight, backRight);
+      if( vlen(self.origin2 - self.origin1) > 16 ){
+        makevectors(self.legs_angl);
+        boostLeft = boostRight = self.legs_org + (v_up * (self.mins_z * 0.75));
+        boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
+        boostRight = boostRight + (v_right * self.maxs_x * 0.5);
+        
+        backLeft = backRight = self.legs_org + (v_forward * -16) + (v_up * (self.mins_z * 0.67));
+        backLeft = backLeft + (v_right * self.mins_x * 0.5);
+        backRight = backRight + (v_right * self.maxs_x * 0.5);
+        
+        if( self.vec_size == 3 ){
+          te = "TE_FIRE_3";
+        }
+        else{
+          te = "TE_FIRE_2";
+        }
+        
+        if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+          trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
+          trailparticles(world, particleeffectnum(te), boostRight, backRight);
+        }
       }
     }
   }
@@ -121,9 +123,9 @@ void() player_think={
   }
   
   self.think = player_think;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.01;
   if( time > self.legs_nextthink ){
-    self.legs_nextthink = time + 1;
+    self.legs_nextthink = time + 0.1;
   }
 };
 
@@ -211,9 +213,8 @@ void() player_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+        self.origin = self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
         if( !(self.criticalHits & M_TOR_LEFT) ){
-          self.origin = self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
-          
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
              self.torL_angl_x = self.angles_x * -1;
           }
@@ -229,8 +230,8 @@ void() player_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+        self.origin = self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl); 
         if( !(self.criticalHits & M_TOR_RIGHT) ){
-          self.origin = self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl); 
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
              self.torR_angl_x = self.angles_x * -1;
           }
@@ -246,8 +247,8 @@ void() player_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.unitModFlags & MOD_HAS_ARM_L) ){
+        self.origin = self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl); 
         if( !(self.criticalHits & M_ARM_LEFT) ){
-          self.origin = self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl); 
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
             self.armL_angl_x = self.angles_x * -1;
           }
@@ -263,8 +264,8 @@ void() player_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.unitModFlags & MOD_HAS_ARM_R) ){
+        self.origin = self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl); 
         if( !(self.criticalHits & M_ARM_RIGHT) ){
-          self.origin = self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl); 
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
             self.armR_angl_x = self.angles_x * -1;
           }
@@ -464,7 +465,6 @@ void( float criticalBits ) sendevent_player_critical={
   if(self.clientServerNum != player_localentnum){
     return;
   }
-  //FIX ME - critical hits on player weapons
 };
 
 /*

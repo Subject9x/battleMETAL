@@ -119,7 +119,4 @@ float input_sequence;
 .vector ramPower;
 .vector ramVelocity;
 .float ramUp;
-
-
-
 #endif

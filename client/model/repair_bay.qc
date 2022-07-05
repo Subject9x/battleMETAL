@@ -40,7 +40,7 @@ void() repair_bay_dlights={
     }    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
     if(MENU_PROG_OFF){  
       particleDraw = vlen(client_vis_org - self.origin);      
-      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){  
         adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
       }
     }
@@ -52,13 +52,7 @@ void() repair_bay_dlights={
 */
 void() repair_bay_active={
   
-  if( self.reloadValue < 0 ){
-    self.think = repair_bay_idle;
-    self.nextthink = time + 0.1;
-    return;
-  }
-
-  if(self.w_firetime > TRUE ){
+  if(self.enemy != world && self.critBits != 0){
     sendevent_repair_beam();
   }
   self.think = repair_bay_active;
@@ -70,11 +64,7 @@ void() repair_bay_active={
 */
 void() repair_bay_idle={
 
-  if( self.reloadValue > 0 ){
-    self.think = repair_bay_active;
-    self.nextthink = time + 0.1;
-    return;
-  }
+
   
   self.think = repair_bay_idle;
   self.nextthink = time + 0.1;
@@ -84,52 +74,46 @@ void() repair_bay_idle={
   Repair Bay - Repair
 */
 void() sendevent_repair_beam={
-  local entity unit;
-  local vector unitAngl;
   local vector partOfs;
   local vector beamEnd;
   
-  unit = findfloat(world, entnum, self.targetEntId );
-  if( unit != world ){
-    switch(self.w_firetime){
+  particleDraw = vlen(client_vis_org - self.origin);      
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2 ){  
+  
+    switch(self.critBits){
       case M_ARM_LEFT:
-        partOfs = unit.armL_org;
+        partOfs = self.enemy.armL_org;
         break;
         
       case M_ARM_RIGHT:
-        partOfs = unit.armR_org;
+        partOfs = self.enemy.armR_org;
         break;
         
       case M_TOR_LEFT:
-        partOfs = unit.torL_org;
+        partOfs = self.enemy.torL_org;
         break;
         
       case M_TOR_RIGHT:
-        partOfs = unit.torR_org;
+        partOfs = self.enemy.torR_org;
         break;
         
       case M_LEGS:
-        partOfs = unit.legs_org;
+        partOfs = self.enemy.legs_org;
         break;
         
       default:
-        partOfs = unit.torC_org;
+        partOfs = self.enemy.torC_org;
         break;
     }
-    beamEnd = unit.origin;
-
+    beamEnd = partOfs;
+    
     beamEnd_x = beamEnd_x + (crandom() * 2);
     beamEnd_y = beamEnd_y + (crandom() * 2);
     beamEnd_z = beamEnd_z + (crandom() * 2);
-    self.compAltOffset = beamEnd;
-  }
-  
-  
-  particleDraw = vlen(client_vis_org - self.origin);      
-  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
-    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( self.compAltOffset - self.compOffset ) * 2, 1);
-    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), self.compAltOffset, normalize( self.compOffset - self.compAltOffset ) * -2, 1);
-    trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, self.compAltOffset);
+    
+    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( beamEnd - self.compOffset ) * 2, 1);
+    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), beamEnd, normalize( self.compOffset - beamEnd ) * -2, 1);
+    trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, beamEnd);
   }
 };
 

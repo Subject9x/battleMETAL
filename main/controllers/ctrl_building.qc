@@ -212,13 +212,12 @@ float( float isNew, float changedflags ) ctrl_send_building={
   if( (newFlags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
-  
   if( (newFlags & SENDFLAG_EXDATA) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       WriteByte( MSG_ENTITY, self.burstRate );
-      WriteLong( MSG_ENTITY, self.attack_state);  //send the partTypeId value to the client
-      if( self.attack_state > FALSE ){
-        WriteLong( MSG_ENTITY, num_for_edict(self.trigger_field.clientData) );
+      WriteLong( MSG_ENTITY, self.critBits);  //send the partTypeId value to the client
+      if( self.critBits != FALSE ){
+        WriteLong( MSG_ENTITY, num_for_edict(self.goalentity) );
       }
     }
     if( self.data_idx == UI_BUILDING_radar ){

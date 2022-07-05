@@ -107,7 +107,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.predraw = predraw_building;
     self.scale = 1;
     self.alpha = 1;
-    makevectors(self.angles);
     if( self.deadflag == DEAD_NO ){
       data_sync_new_building(self.data_idx);
       self.data_type = DATA_BLD;
@@ -169,9 +168,13 @@ void( float isNew, float changeFlags) sendent_handle_building={
   if( (changeFlags & SENDFLAG_EXDATA) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       self.burstRate = ReadByte();
-      self.w_firetime = ReadLong();
-      if(self.w_firetime > FALSE ){
+      self.critBits = fabs(rint(ReadLong()));
+      if(self.critBits != FALSE ){
         self.targetEntId = ReadLong();
+        self.enemy = findfloat( world, clientServerNum, self.targetEntId );
+      }
+      else{
+        self.enemy = world;
       }
     }
     if( self.data_idx == UI_BUILDING_radar ){

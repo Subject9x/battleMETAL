@@ -13,6 +13,7 @@ Overview:
 */
 void( float dataID ) data_sync_new_building={
   
+  makevectors(self.angles);
   self.solid = SOLID_BSP;
   switch(dataID){
     case UI_BUILDING_radar:
@@ -154,7 +155,7 @@ void() data_building_repair={
   self.th_die = repair_bay_die1;
   self.render_dlights = repair_bay_dlights;
   self.w_firetime = 0;
-  self.compOffset = self.origin + (v_up * 75) + (v_forward * -24);
+  self.compOffset = self.origin + (v_up * 40) + (v_forward * -16);
   self.compAltOffset = self.origin;
 };
 
