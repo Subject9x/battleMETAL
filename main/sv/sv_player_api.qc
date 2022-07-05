@@ -425,20 +425,13 @@ void() PlayerDie={
   self.effects = 0;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
-  self.flags = self.flags - (self.flags & FL_ONGROUND);
-  self.movetype = MOVETYPE_TOSS;
-  setsize(self, '-4 -4 -4', '4 4 4');
-  setorigin(self, self.origin);
   
   if( self.moveState != MOVE_STAND ){
     if (self.velocity_z < 10){
       self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
     }
   }
-  
-  self.angles_x = 0;
-  self.angles_z = 0;
-  self.angles_y = 0;
+  self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
   
   self.think = PlayerDieEnd;

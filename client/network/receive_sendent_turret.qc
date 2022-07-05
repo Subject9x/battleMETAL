@@ -60,19 +60,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   if( (changeFlags & SENDFLAG_ANGLE) ){
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
-    self.angles_z = anglemod(ReadAngle());
-  }
-  
-  if( (changeFlags & SENDFLAG_EXDATA) ){
-    self.next_wepn1 = fabs(ReadByte());
-    self.next_wepn2 = fabs(ReadByte());
-    self.next_wepn3 = fabs(ReadByte());
-    self.next_wepn4 = fabs(ReadByte());
-    self.next_wepn5 = fabs(ReadByte());
-    self.next_wepn6 = fabs(ReadByte());
-    self.next_wepn7 = fabs(ReadByte());
-    self.next_wepn8 = fabs(ReadByte());
-    self.next_wepn9 = fabs(ReadByte());
+    self.angles_z = 0;
   }
   
   //EVENT - New to player
@@ -171,7 +159,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   //HANDLE EVENT - dead
-  if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
+  if(prevDeadFlag == DEAD_NO && self.deadflag == DEAD_DEAD){
     sendevent_turret_die();
   }
   

@@ -37,17 +37,7 @@ void() hud_renderCrosshair3={
   else{
     retAlpha = HUD_ALPHA;
   }
-    drawpic(imgCenter, "gfx/hud/ret/crosshair3.png", imgSize, HUD_COLOR_DEF, retAlpha, DRAWFLAG_NORMAL);  
-  
-  //lock on indicators  
-  if( (CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45) && CLIENT_stat_rdr_mode ){
-    lockSize = '34 34';
-    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
-    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    
-    CROSSHAIR_ANGLE_LOCK = anglemod(CROSSHAIR_ANGLE_LOCK + (frametime * 75));
-    drawrotpic(lockCenter + lockSize * 0.5, "gfx/hud/ret/crosshair3_lock.png", lockSize, lockSize / 2, CROSSHAIR_ANGLE_LOCK, CLR_DEF_RET_HASLOCK, max(0.5, HUD_ALPHA * 0.67), DRAWFLAG_NORMAL);
-  }
+  drawpic(imgCenter, "gfx/hud/ret/crosshair3.png", imgSize, HUD_COLOR_DEF, retAlpha, DRAWFLAG_NORMAL);  
   
   if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
     hitSize = '27 27';
@@ -62,5 +52,17 @@ void() hud_renderCrosshair3={
       hitAlpha = 1;
     }
     drawpic(hitCenter, "gfx/hud/ret/crosshair3_hit.png", hitSize, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  }
+  //lock on indicators  
+  if( CLIENT_target_ent == world ){
+    return;
+  }
+  if( (CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45) && CLIENT_stat_rdr_mode ){
+    lockSize = '34 34';
+    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
+    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
+    
+    CROSSHAIR_ANGLE_LOCK = anglemod(CROSSHAIR_ANGLE_LOCK + (frametime * 75));
+    drawrotpic(lockCenter + lockSize * 0.5, "gfx/hud/ret/crosshair3_lock.png", lockSize, lockSize / 2, CROSSHAIR_ANGLE_LOCK, CLR_DEF_RET_HASLOCK, max(0.5, HUD_ALPHA * 0.67), DRAWFLAG_NORMAL);
   }
 };

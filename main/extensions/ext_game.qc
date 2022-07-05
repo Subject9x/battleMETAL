@@ -58,9 +58,9 @@ float DIR_W   = 6;
 float DIR_NW  = 7;
 
 //fire modes
-float FIRE_SINGLE = 1;
-float FIRE_GROUP = 2;
-float FIRE_CHAIN = 3;
+#define FIRE_SINGLE 1
+#define FIRE_GROUP 2
+#define FIRE_CHAIN 3
 
 //MISSION STATS
 float MISSION_TOTAL_PSC;
@@ -71,7 +71,9 @@ float MISSION_LOSSES_PSC;
 float MISSION_LOSSES_SURVEST;
 float MISSION_LOSSES_MILITAR;
 
-float GAME_TIME_TO_DEBRIEF = 3.33;
+//#define GAME_TIME_TO_DEBRIEF 3.33
+#define GAME_TIME_TO_DEBRIEF 10
+//debug high value
 
 string MAP_UNLOCK_MECHS;  //quakeC abhors modifying world
 string MAP_UNLOCK_EQUIP;

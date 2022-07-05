@@ -65,9 +65,9 @@ void( float isNew, float changeFlags) sendent_handle_building;
 void( float isNew, float changeFlags) sendent_handle_missile;
 void( float isNew, float changeFlags) sendent_handle_player;
 void( float isNew, float changeFlags ) sendent_handle_terrain;
-void( float isNew, float changeFlags ) sendent_handle_misc;
 void( float isNew, float changeFlags ) sendent_handle_misc_bld;
 void( float isNew, float changeFlags ) sendent_handle_item;
+//void( float isNew, float changeFlags ) sendent_handle_misc;
 
 entity(float weaponId) sendent_get_weapon;
 

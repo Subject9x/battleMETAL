@@ -41,12 +41,10 @@ void( float dataID ) data_sync_new_vehicle={
   self.cache_maxs = self.maxs;
   setmodel(self, self.legs_mdl);
   setsize(self, self.cache_mins, self.cache_maxs);
-  setorigin(self, self.origin);
+  self.origin = self.origin;
   
   self.takedamage = DAMAGE_AIM;
   sendent_ini_interpolate();
-  self.solid = SOLID_SLIDEBOX;
-  self.movetype = MOVETYPE_STEP;
   self.interpolate_entity = interpolate_tank;
 };
 
@@ -93,5 +91,5 @@ void() data_vehicle_wreck_th={
     pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
   }
   self.think = data_vehicle_wreck_th;
-  self.nextthink = time + 0.01*frametime;
+  self.nextthink = time + random() * 0.5;
 };

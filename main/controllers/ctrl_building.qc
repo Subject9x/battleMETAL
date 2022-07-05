@@ -122,19 +122,6 @@ float( float isNew, float changedflags ) ctrl_send_turret={
   if( (scopeFlags & SENDFLAG_ANGLE) ){
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
-    WriteAngle( MSG_ENTITY, self.angles_z );
-  }
-  
-  if( (scopeFlags & SENDFLAG_EXDATA) ){
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
   }
   
   if( (scopeFlags & SENDFLAG_NEWENT) ){
@@ -229,7 +216,7 @@ float( float isNew, float changedflags ) ctrl_send_building={
   if( (newFlags & SENDFLAG_EXDATA) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       WriteByte( MSG_ENTITY, self.burstRate );
-      WriteByte( MSG_ENTITY, self.attack_state);  //send the partTypeId value to the client
+      WriteLong( MSG_ENTITY, self.attack_state);  //send the partTypeId value to the client
       if( self.attack_state > FALSE ){
         WriteLong( MSG_ENTITY, num_for_edict(self.trigger_field.clientData) );
       }

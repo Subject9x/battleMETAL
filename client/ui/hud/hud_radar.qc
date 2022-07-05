@@ -103,6 +103,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
 void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   local vector hudorg;
   local float ang, entAngle, entAngleRadian, radDist;
+  local float draw;
 
   radDist = vlen(blip.origin - RADAR_ORG) / radRange * 1.5;
   
@@ -117,7 +118,6 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   
   hudorg_z = 0;
   
-  local float draw;
   draw = TRUE;
   if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
     draw = FALSE;

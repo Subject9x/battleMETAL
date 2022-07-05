@@ -131,44 +131,6 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
 /*
   SendEntity - Map Objects ====================================
 */
-void( float isNew, float changeFlags ) sendent_handle_misc={
-  
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-  }
-  if( (changeFlags & SENDFLAG_ANGLE) ){
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
-  }
-  
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.skin = ReadByte();
-    self.modelindex = ReadShort();
-  }
-  
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    //todo - dead event.
-  }
-  
-  if(isNew){
-    self.solid = SOLID_BSP;
-    self.movetype = MOVETYPE_NONE;
-    self.deadflag = DEAD_NO;
-    setmodel( self, modelnameforindex(self.modelindex) );
-    setsize(self, self.mins, self.maxs);
-    self.skin = self.skin;
-    setorigin(self, self.origin);
-    self.drawmask = 0;
-  }
-};
-
-
-/*
-  SendEntity - Map Objects ====================================
-*/
 void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   local float prevDeadflag;
   
@@ -534,3 +496,42 @@ entity(float weaponId) sendent_get_weapon={
   }
   return world;
 };
+
+/*
+  SendEntity - Map Objects ====================================
+  5.0.0
+    I'm not sure this is exactly needed anymore.
+
+void( float isNew, float changeFlags ) sendent_handle_misc={
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.skin = ReadByte();
+    self.modelindex = ReadShort();
+  }
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    //todo - dead event.
+  }
+  
+  if(isNew){
+    self.movetype = MOVETYPE_NONE;
+    self.deadflag = DEAD_NO;
+    setmodel( self, modelnameforindex(self.modelindex) );
+    setsize(self, self.mins, self.maxs);
+    self.skin = self.skin;
+    setorigin(self, self.origin);
+    self.drawmask = 0;
+  }
+};
+*/

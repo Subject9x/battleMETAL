@@ -304,6 +304,10 @@ void() te_vehicle_chunk_th={
     self.nextthink = time + self.ai_action_time;
     return;
   }
+  if( time > self.ai_movewait ){
+    self.solid = SOLID_CORPSE;
+  }
+  
   self.think = te_vehicle_chunk_th;
   self.nextthink = time + random() * 0.5;
   if( time > self.ai_action_time ){
@@ -362,6 +366,7 @@ void( string mdl, vector startOrg, vector wishVel, vector wishAngl, float trailn
     }
     piece.think = te_vehicle_chunk_th;
     piece.nextthink = time + 0.1;
+    piece.ai_movewait = time + 3;
   }
 };
 

@@ -15,9 +15,10 @@ Overview:
 */
 void() sendevent_player_burn={
   
-  if( vlen(self.origin - pmove_org) >= PARTICLE_HAZ_DISTANCE){
+  if( vlen(self.origin - client_vis_org) >= PARTICLE_HAZ_DISTANCE / 2){
     return;
   }
+  
 
   if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.burnBits & M_TOR_LEFT) ){
     te_mech_crit( self.torL_org , '0 0 10');
@@ -65,30 +66,31 @@ void() player_think={
   self.laser_sight_org = trace_endpos;
   
   particleDraw = vlen(client_vis_org - self.origin);
-  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
-    sendevent_player_burn();
-  }
-
-  if( self.moveState > MOVE_SPRINT ){
-    makevectors(self.legs_angl);
-    boostLeft = boostRight = self.legs_org + (v_up * (self.mins_z * 0.75));
-    boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
-    boostRight = boostRight + (v_right * self.maxs_x * 0.5);
-    
-    backLeft = backRight = self.legs_org + (v_forward * -32) + (v_up * (self.mins_z * 0.67));
-    backLeft = backLeft + (v_right * self.mins_x * 0.5);
-    backRight = backRight + (v_right * self.maxs_x * 0.5);
-    
-    if( self.vec_size == 3 ){
-      te = "TE_FIRE_3";
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
+    if( self.burnBits != 0 ){
+      sendevent_player_burn();
     }
-    else{
-      te = "TE_FIRE_2";
-    }
-    
-    if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
-      trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
-      trailparticles(world, particleeffectnum(te), boostRight, backRight);
+    if( self.moveState > MOVE_SPRINT ){
+      makevectors(self.legs_angl);
+      boostLeft = boostRight = self.legs_org + (v_up * (self.mins_z * 0.75));
+      boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
+      boostRight = boostRight + (v_right * self.maxs_x * 0.5);
+      
+      backLeft = backRight = self.legs_org + (v_forward * -32) + (v_up * (self.mins_z * 0.67));
+      backLeft = backLeft + (v_right * self.mins_x * 0.5);
+      backRight = backRight + (v_right * self.maxs_x * 0.5);
+      
+      if( self.vec_size == 3 ){
+        te = "TE_FIRE_3";
+      }
+      else{
+        te = "TE_FIRE_2";
+      }
+      
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+        trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
+        trailparticles(world, particleeffectnum(te), boostRight, backRight);
+      }
     }
   }
   
@@ -180,131 +182,129 @@ void() player_predraw={
       if( vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
         self.cl_lod_weapon = FALSE;
       }
-      if( self.deadflag == DEAD_NO ){
-        entAng = self.angles;
-        entAng_x = 0;
-        makevectors( entAng );
-        
-        prevAngl = self.angles;
-        prevOrg = self.origin;
-        
-        setsize(self, self.cache_mins, self.cache_maxs);
-        
-        predraw_legs();
+      entAng = self.angles;
+      entAng_x = 0;
+      makevectors( entAng );
+      
+      prevAngl = self.angles;
+      prevOrg = self.origin;
+      
+      setsize(self, self.cache_mins, self.cache_maxs);
+      
+      predraw_legs();
+      self.origin = prevOrg;
+      self.angles = prevAngl;
+      
+      if( !(self.criticalHits & M_TOR_CENTER) ){
         self.origin = prevOrg;
+        self.origin = self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl); 
+        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+          self.torC_angl_x = self.angles_x * -1;
+        }
+        setmodel(self, self.torC_mdl);
+        self.alpha = 1.0;
+        self.scale = 1.0;
+        self.angles = self.torC_angl;
+        addentity(self);
         self.angles = prevAngl;
-        
-        if( !(self.criticalHits & M_TOR_CENTER) ){
-          self.origin = prevOrg;
-          self.origin = self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl); 
-          if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
-            self.torC_angl_x = self.angles_x * -1;
+        self.origin = prevOrg;
+      }
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+        if( !(self.criticalHits & M_TOR_LEFT) ){
+          self.origin = self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
+          
+          if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
+             self.torL_angl_x = self.angles_x * -1;
           }
-          setmodel(self, self.torC_mdl);
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLT];
+          setmodel(self, self.torL_mdl);
           self.alpha = 1.0;
           self.scale = 1.0;
-          self.angles = self.torC_angl;
+          self.angles = self.torL_angl;
           addentity(self);
           self.angles = prevAngl;
           self.origin = prevOrg;
         }
-        
-        if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-          if( !(self.criticalHits & M_TOR_LEFT) ){
-            self.origin = self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
-            
-            if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
-               self.torL_angl_x = self.angles_x * -1;
-            }
-            self.colormod = CLR_PLAYER_LIST[self.unitColorLT];
-            setmodel(self, self.torL_mdl);
-            self.alpha = 1.0;
-            self.scale = 1.0;
-            self.angles = self.torL_angl;
-            addentity(self);
-            self.angles = prevAngl;
-            self.origin = prevOrg;
+      }
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+        if( !(self.criticalHits & M_TOR_RIGHT) ){
+          self.origin = self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl); 
+          if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
+             self.torR_angl_x = self.angles_x * -1;
           }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRT];
+          setmodel(self, self.torR_mdl);
+          self.alpha = 1.0;
+          self.scale = 1.0;
+          self.angles = self.torR_angl;
+          addentity(self);
+          self.angles = prevAngl;
+          self.origin = prevOrg;
         }
-        
-        if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-          if( !(self.criticalHits & M_TOR_RIGHT) ){
-            self.origin = self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl); 
-            if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
-               self.torR_angl_x = self.angles_x * -1;
-            }
-            self.colormod = CLR_PLAYER_LIST[self.unitColorRT];
-            setmodel(self, self.torR_mdl);
-            self.alpha = 1.0;
-            self.scale = 1.0;
-            self.angles = self.torR_angl;
-            addentity(self);
-            self.angles = prevAngl;
-            self.origin = prevOrg;
+      }
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.unitModFlags & MOD_HAS_ARM_L) ){
+        if( !(self.criticalHits & M_ARM_LEFT) ){
+          self.origin = self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl); 
+          if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
+            self.armL_angl_x = self.angles_x * -1;
           }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLA];
+          setmodel(self, self.armL_mdl);
+          self.alpha = 1.0;
+          self.scale = 1.0;
+          self.angles = self.armL_angl;
+          addentity(self);
+          self.angles = prevAngl;
+          self.origin = prevOrg;
         }
-        
-        if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.unitModFlags & MOD_HAS_ARM_L) ){
-          if( !(self.criticalHits & M_ARM_LEFT) ){
-            self.origin = self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl); 
-            if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
-              self.armL_angl_x = self.angles_x * -1;
-            }
-            self.colormod = CLR_PLAYER_LIST[self.unitColorLA];
-            setmodel(self, self.armL_mdl);
-            self.alpha = 1.0;
-            self.scale = 1.0;
-            self.angles = self.armL_angl;
-            addentity(self);
-            self.angles = prevAngl;
-            self.origin = prevOrg;
+      }
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.unitModFlags & MOD_HAS_ARM_R) ){
+        if( !(self.criticalHits & M_ARM_RIGHT) ){
+          self.origin = self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl); 
+          if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
+            self.armR_angl_x = self.angles_x * -1;
           }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRA];
+          setmodel(self, self.armR_mdl);
+          self.alpha = 1.0;
+          self.scale = 1.0;
+          self.angles = self.armR_angl;
+          addentity(self);
+          self.angles = prevAngl;
+          self.origin = prevOrg;
         }
-        
-        if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.unitModFlags & MOD_HAS_ARM_R) ){
-          if( !(self.criticalHits & M_ARM_RIGHT) ){
-            self.origin = self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl); 
-            if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
-              self.armR_angl_x = self.angles_x * -1;
-            }
-            self.colormod = CLR_PLAYER_LIST[self.unitColorRA];
-            setmodel(self, self.armR_mdl);
-            self.alpha = 1.0;
-            self.scale = 1.0;
-            self.angles = self.armR_angl;
-            addentity(self);
-            self.angles = prevAngl;
-            self.origin = prevOrg;
-          }
+      }
+      if(self.cl_lod_weapon){
+        if(self.weaponEnt1.data_idx){
+          predraw_unit_weapon(self.weaponEnt1);
         }
-        if(self.cl_lod_weapon){
-          if(self.weaponEnt1.data_idx){
-            predraw_unit_weapon(self.weaponEnt1);
-          }
-          if(self.weaponEnt2.data_idx){
-            predraw_unit_weapon(self.weaponEnt2);
-          }
-          if(self.weaponEnt3.data_idx){
-            predraw_unit_weapon(self.weaponEnt3);
-          }
-          if(self.weaponEnt4.data_idx){
-            predraw_unit_weapon(self.weaponEnt4);
-          }
-          if(self.weaponEnt5.data_idx){
-            predraw_unit_weapon(self.weaponEnt5);
-          }
-          if(self.weaponEnt6.data_idx){
-            predraw_unit_weapon(self.weaponEnt6);
-          }
-          if(self.weaponEnt7.data_idx){
-            predraw_unit_weapon(self.weaponEnt7);
-          }
-          if(self.weaponEnt8.data_idx){
-            predraw_unit_weapon(self.weaponEnt8);
-          }
-          if(self.weaponEnt9.data_idx){
-            predraw_unit_weapon(self.weaponEnt9);
-          }
+        if(self.weaponEnt2.data_idx){
+          predraw_unit_weapon(self.weaponEnt2);
+        }
+        if(self.weaponEnt3.data_idx){
+          predraw_unit_weapon(self.weaponEnt3);
+        }
+        if(self.weaponEnt4.data_idx){
+          predraw_unit_weapon(self.weaponEnt4);
+        }
+        if(self.weaponEnt5.data_idx){
+          predraw_unit_weapon(self.weaponEnt5);
+        }
+        if(self.weaponEnt6.data_idx){
+          predraw_unit_weapon(self.weaponEnt6);
+        }
+        if(self.weaponEnt7.data_idx){
+          predraw_unit_weapon(self.weaponEnt7);
+        }
+        if(self.weaponEnt8.data_idx){
+          predraw_unit_weapon(self.weaponEnt8);
+        }
+        if(self.weaponEnt9.data_idx){
+          predraw_unit_weapon(self.weaponEnt9);
         }
       }
       
@@ -412,13 +412,6 @@ void() sendevent_handle_player_death={
   }
   
   te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
-  self.origin = '0 0 0';
-  self.criticalHits = 0;
-  self.data_type = 0;
-  self.data_idx = 0;
-  
-  self.criticalHits = self.criticalHits | (M_TOR_CENTER | M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT);
-  
 };
 
 /*

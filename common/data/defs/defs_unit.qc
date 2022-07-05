@@ -52,17 +52,7 @@ Overview:
 .float data_speed_backward; //backward speed
 .float data_speed_accel;	//cl_speedkey acceleration factor
 
-//Unit subcomponents
-.entity legs;
-.entity cockpit;
-.entity torsoCenter;
-.entity torsoLeft;
-.entity armLeft;  //arms can be optional
-.entity torsoRight;
-.entity armRight;  //arms can be optional
-
 //subcomponents decomposed to field vars, reduce entity management
-
 .string torC_mdl;
 .string torL_mdl;
 .string torR_mdl;
@@ -195,6 +185,9 @@ Overview:
 .vector torC_vAngles;
 .float torC_attackState;
 .float torC_aiDir;
+
+.vector tankChassisOrg; //  CSQC projects tank chassis to follow ground angles.
+
 #endif
 
 #ifdef CSQC

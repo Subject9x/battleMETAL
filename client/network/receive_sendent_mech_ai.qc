@@ -40,7 +40,8 @@ void() mech_corpse_th={
   }
   self.nextthink = time + 0.1;
 };
-//watch this
+
+
 void() predraw_mech_corpse={
   local vector prevOrg;
   local vector prevAngle;

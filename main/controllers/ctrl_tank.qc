@@ -18,6 +18,13 @@ void() ctrl_updateTank={
     self.v_angle = self.angles;
   }
   
+  makevectors(self.angles);
+  traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
+  self.tankChassisOrg = trace_endpos + (v_up * self.mins_z * -1 );
+  
+  self.legs_org = self.tankChassisOrg + (v_right * self.legs_compOffset_x) + (v_up * self.legs_compOffset_y) + (v_forward * self.legs_compOffset_z);
+  self.torC_org = self.tankChassisOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
+  
   makevectors(self.v_angle);
   v1 = self.origin + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y) + (v_forward * self.cameraOffset_z);
   traceline(v1, v1 + v_forward * 10000, FALSE, self);

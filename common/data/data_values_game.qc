@@ -237,6 +237,13 @@ float TEAM_MILITAR_TOTAL;
 
 #define MOVE_RAM_SCALAR_UP 0.004
 #define MOVE_RAM_SCALAR_DN 0.01
+
+//leg animation directions
+#define LEGS_MOVE_STAND 0
+#define LEGS_MOVE_FORWD 1
+#define LEGS_MOVE_BACK -1
+
+
 //============================
 //     WEAPON FLAGS
 //============================

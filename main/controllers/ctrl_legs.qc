@@ -10,31 +10,25 @@ Overview:
 */
 
 void() ctrl_updateLegs={
-  local float prevDir;
-  local vector adj, nextDirs;
-  local float playerDir, velDir, left, right;
+  //local float velDir, left, right;
   
-  prevDir = self.legDir;
   if( self.movement_x == 0 && self.movement_y == 0 ){
-    if( self.legDir != 0 ){
-      self.legDir = 0;  // animation switch -> 'stand'
-    }
+    self.legDir = LEGS_MOVE_STAND;  // animation switch -> 'stand'
   }
   else{
-    velDir = vectoyaw( self.movement );
-    playerDir = vectoyaw( self.v_angle );
-    velDir = anglemod( playerDir - velDir);
-    right = anglemod( playerDir + 90 );
-    left = anglemod( playerDir - 90 );
-    nextDirs = vectoangles(self.movement);
-    if( (velDir >= left) || (velDir <= right) ){
-      nextDirs_y = anglemod( nextDirs_y + 180) * -1;
-      self.legDir = 1; // animation switch -> 'forward'
+    self.legs_angl_y = vectoyaw( self.velocity );
+    
+    //outta time to really fix this one...<sigh>
+    /*velDir = anglemod(self.v_angle_y - self.legs_angl_y);
+    
+    right = anglemod(self.v_angle_y + 90);
+    left = anglemod(self.v_angle_y - 90);
+    
+    if( (self.legs_angl_y < left) && (self.legs_angl_y > right) ){
+      self.legDir = LEGS_MOVE_BACK; // animation switch -> 'reverse'
     }
     else{
-      nextDirs_y = anglemod(nextDirs_y * -1);
-      self.legDir = -1; // animation switch -> 'reverse'
-    }
-    self.legs_angl_y = nextDirs_y;
+      self.legDir = LEGS_MOVE_FORWD; // animation switch -> 'forward'
+    }*/
   }
 };

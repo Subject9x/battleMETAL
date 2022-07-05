@@ -174,8 +174,8 @@ void( vector org, vector windVel ) te_mech_crit;
 
 void( entity item )te_weapon_fire_handler;
 
-void() te_explode_mech_piece_th;
-void(entity piece) te_explode_mech_piece;
+//void() te_explode_mech_piece_th;
+//void(entity piece) te_explode_mech_piece;
 
 void() te_building_fire_th;
 entity( entity targetBuilding ) te_building_fire_start;

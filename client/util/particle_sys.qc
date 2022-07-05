@@ -187,57 +187,6 @@ void() cl_particles_fogFrame={
   localcmd(newFog);*/
 };
 
-void() te_explode_mech_piece_predraw={
-  local float lerpDiff;
-  local float lerp;
-  
-  if (self.nextthink != self.frame1time){
-    self.frame2time = self.frame1time;
-    self.frame1time = self.nextthink;
-    self.frame2 = self.frame1;
-    self.frame1 = self.frame;
-    self.origin2 = self.origin1;
-    self.origin1 = self.origin;
-    self.angle2 = self.angle1;
-    self.angle1 = self.angles_y;
-  }
-  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
-  lerp = bound(0, self.lerpfrac, 1);
-  self.lerpfrac = lerp;
-
-  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-};
-
-void() te_explode_mech_piece_th={
-  self.think = te_explode_mech_piece_th;
-  self.nextthink = time + 0.05;
-};
-
-//maybe at some point someone can figure out MOVETYPE_BOUNCE for csqc.
-void(entity piece) te_explode_mech_piece={
-  local entity t;
-  makevectors(piece.angles);
-  t = spawn();
-  if( t ){
-    t.drawmask = MASK_NORMAL;
-    setmodel(t, piece.model);
-    setsize(t, '0 0 0', '0 0 0');
-    setorigin(t, piece.origin);
-    t.colormod = piece.colormod;
-    t.movetype = MOVETYPE_BOUNCE;
-    t.solid = SOLID_BBOX;
-    t.velocity = normalize((piece.origin + v_up * 10) - piece.origin);
-    t.velocity = t.velocity * 300;
-    t.velocity_z = 400;
-    t.avelocity = '100 100 100';
-    t.angles = piece.angles;
-    t.think = te_explode_mech_piece_th;
-    t.nextthink = time + 0.05;
-    t.data_lifetime = servertime + 400 + (random() * 250);
-    t.predraw = te_explode_mech_piece_predraw;
-  }
-};
-
 void(entity item) te_weapon_fire_handler={
   local entity this;
   local entity parent;
@@ -252,33 +201,21 @@ void(entity item) te_weapon_fire_handler={
   this = self;
   self = item;
     util_getPartFromName( self.partParentId, this);
+    
     offset = this.origin + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
     
     //FPV z-offset is corrected at the parent-part origin step!
-    if(parent.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
-      offset = offset - (v_forward * this.cameraOffset_z);
+    if(this.clientLocalNum == player_localentnum && cvar("chase_active") == FALSE){
+      offset = offset + (v_forward * this.cameraOffset_z);
     }
     adjPartOffset = self.compOffset - T_PART_PARENT_OFFSET;
     
     view = T_PART_PARENT_ANGL;
-    if( (self.partParentId == M_ARM_LEFT && (this.unitModFlags & MOD_MODEL_PITCH_ARM_L)) ||
-      (self.partParentId == M_ARM_RIGHT && (this.unitModFlags & MOD_MODEL_PITCH_ARM_R)) ||
-      (self.partParentId == M_TOR_RIGHT && (this.unitModFlags & MOD_MODEL_PITCH_TOR_R)) ||
-      (self.partParentId == M_TOR_LEFT && (this.unitModFlags & MOD_MODEL_PITCH_TOR_L)) ||
-      (self.partParentId == M_TOR_CENTER && (this.unitModFlags & MOD_MODEL_PITCH_TOR_C)) )
-    {
-      view_x = view_x *-1;
-      makevectors( view);
-      offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+    view_x = view_x *-1;
+    makevectors( view);
+    offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
     
-      self.wepFireOffset = offset + (v_forward * self.wepFireOffsetCache_z) + (v_right * self.wepFireOffsetCache_x) + (v_up * self.wepFireOffsetCache_y);
-    }
-    else{
-      view_x = 0;
-      makevectors(view);
-      self.wepFireOffset = offset + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
-    }
-    
+    self.wepFireOffset = offset + (v_forward * self.wepFireOffsetCache_z) + (v_right * self.wepFireOffsetCache_x) + (v_up * self.wepFireOffsetCache_y);
     self.itemMuzzleFlash();
   self = this;
 };
@@ -1030,3 +967,57 @@ void() particle_box_think={
 
   PTC_CUBE_UPDATE = time + 0.1;
 };
+
+
+//maybe at some point someone can figure out MOVETYPE_BOUNCE for csqc.
+/*
+void() te_explode_mech_piece_predraw={
+  local float lerpDiff;
+  local float lerp;
+  
+  if (self.nextthink != self.frame1time){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    self.frame2 = self.frame1;
+    self.frame1 = self.frame;
+    self.origin2 = self.origin1;
+    self.origin1 = self.origin;
+    self.angle2 = self.angle1;
+    self.angle1 = self.angles_y;
+  }
+  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  lerp = bound(0, self.lerpfrac, 1);
+  self.lerpfrac = lerp;
+
+  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+};
+
+
+void() te_explode_mech_piece_th={
+  self.think = te_explode_mech_piece_th;
+  self.nextthink = time + 0.05;
+};
+
+void(entity piece) te_explode_mech_piece={
+  local entity t;
+  makevectors(piece.angles);
+  t = spawn();
+  if( t ){
+    t.drawmask = MASK_NORMAL;
+    setmodel(t, piece.model);
+    setsize(t, '0 0 0', '0 0 0');
+    setorigin(t, piece.origin);
+    t.colormod = piece.colormod;
+    t.movetype = MOVETYPE_BOUNCE;
+    t.solid = SOLID_BBOX;
+    t.velocity = normalize((piece.origin + v_up * 10) - piece.origin);
+    t.velocity = t.velocity * 300;
+    t.velocity_z = 400;
+    t.avelocity = '100 100 100';
+    t.angles = piece.angles;
+    t.think = te_explode_mech_piece_th;
+    t.nextthink = time + 0.05;
+    t.data_lifetime = servertime + 400 + (random() * 250);
+    t.predraw = te_explode_mech_piece_predraw;
+  }
+};*/

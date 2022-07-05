@@ -169,7 +169,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   if( (changeFlags & SENDFLAG_EXDATA) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       self.burstRate = ReadByte();
-      self.w_firetime = ReadByte();
+      self.w_firetime = ReadLong();
       if(self.w_firetime > FALSE ){
         self.targetEntId = ReadLong();
       }

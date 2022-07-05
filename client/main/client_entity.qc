@@ -66,9 +66,9 @@ void(float isnew) CSQC_Ent_Update =
     case SENDTYPE_TERRAIN:
       sendent_handle_terrain( isnew, entFlags );
       break;
-    case SENDTYPE_MISC:
-      sendent_handle_misc( isnew, entFlags );
-      break;
+    //case SENDTYPE_MISC: //note: see main/map/map_scenery
+      //sendent_handle_misc( isnew, entFlags );
+      //break;
     case SENDTYPE_MISC_BLD:
       sendent_handle_misc_bld( isnew, entFlags );
       break;

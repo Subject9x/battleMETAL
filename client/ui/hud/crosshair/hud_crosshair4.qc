@@ -58,6 +58,9 @@ void() hud_renderCrosshair4={
   
 
   //lock on indicators
+  if( CLIENT_target_ent == world ){
+    return;
+  }
   if( (CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45) && CLIENT_stat_rdr_mode ){
     lockSize = '34 34';
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;

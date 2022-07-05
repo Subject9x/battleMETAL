@@ -10,6 +10,11 @@ Overview:
   spawnflag[2] = random yaw 
 */
 
+/*
+  5.0.0 - deprecated.
+  Miscellaneous scenery actually doesn't need to be auomatically sent to the 
+  client. Its better to leverage the server-side PVS culling than try to use
+  my own poor stand-in on the client.
 float( float isNew, float changeFlags ) send_scenery={
   local float newFlags;
   
@@ -45,6 +50,7 @@ float( float isNew, float changeFlags ) send_scenery={
   return TRUE;
 };
 
+*/
 /*
   root spawn function
 */
@@ -68,7 +74,7 @@ void() DoodadRockDie={
   self.solid = SOLID_NOT;
   self.takedamage = DAMAGE_NO;
   //TODO - rock death effect.
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  //self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.deadflag = DEAD_DEAD;
   
   self.think = SUB_Remove;
@@ -83,8 +89,8 @@ void() doodad_rocks_1={
     self.angles_z = self.angles_z + (5 + (crandom() * 5) );
   }
   scenery_obj();
-  self.SendEntity = send_scenery;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+//self.SendEntity = send_scenery;
+  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   self.takedamage = DAMAGE_AIM;
   if(!self.health){
     self.health = self.max_health = 250;
@@ -100,8 +106,8 @@ void() doodad_rocks_2={
     self.angles_z = self.angles_z + (5 + (crandom() * 5) );
   }
   scenery_obj();
-  self.SendEntity = send_scenery;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendEntity = send_scenery;
+  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   self.takedamage = DAMAGE_AIM;
   if(!self.health){
     self.health = self.max_health = 250;
@@ -117,8 +123,8 @@ void() doodad_rocks_3={
     self.angles_z = self.angles_z + (5 + (crandom() * 5) );
   }
   scenery_obj();
-  self.SendEntity = send_scenery;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendEntity = send_scenery;
+  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   self.takedamage = DAMAGE_AIM;
   if(!self.health){
     self.health = self.max_health = 250;
@@ -152,8 +158,8 @@ void() doodad_rocks_column_1={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin);
-  self.SendEntity = send_scenery;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendEntity = send_scenery;
+  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 void() doodad_rocks_column_2={
   self.model = "q3mdl/map/rocks/rockcol2.md3";
@@ -165,8 +171,8 @@ void() doodad_rocks_column_2={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin);
-  self.SendEntity = send_scenery;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendEntity = send_scenery;
+  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 void() doodad_rocks_column_3={
   self.model = "q3mdl/map/rocks/rockcol3.md3";
@@ -178,8 +184,8 @@ void() doodad_rocks_column_3={
   scenery_obj();
   makevectors(self.angles);
   setorigin( self, self.origin );
-  self.SendEntity = send_scenery;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendEntity = send_scenery;
+  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
 void() doodad_rocks_col_random={
