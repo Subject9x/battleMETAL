@@ -172,8 +172,6 @@ void() predraw_mech_corpse_legs={
   
 };
 
-
-
 void() sendevent_mech_ai_die={
   local entity weps;
   local entity rem;

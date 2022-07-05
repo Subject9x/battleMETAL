@@ -403,6 +403,7 @@ PlayerDie - Campaign
 self.th_die() 
 ============
 */
+
 void() PlayerDie={
 	if( self.deadflag ){
 		bprint("warning: PlayerDie called twice\n");

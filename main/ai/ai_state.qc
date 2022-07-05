@@ -505,6 +505,7 @@ void() ai_leg_control={
   self.ideal_yaw = self.legs_idealYaw;
   self.yaw_speed = self.legs_yawSpeed;
     ChangeYaw();
+  self.legs_angl = self.angles;
   self.angles = oldAngle;
   self.ideal_yaw = oldYaw;
   self.yaw_speed = oldYawSpeed;

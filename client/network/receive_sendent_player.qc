@@ -19,7 +19,6 @@ void() sendevent_player_burn={
     return;
   }
   
-
   if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.burnBits & M_TOR_LEFT) ){
     te_mech_crit( self.torL_org , '0 0 10');
   }
@@ -199,7 +198,7 @@ void() player_predraw={
       
       if( !(self.criticalHits & M_TOR_CENTER) ){
         self.origin = prevOrg;
-        self.origin = self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl); 
+        self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl); 
         if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
           self.torC_angl_x = self.angles_x * -1;
         }
@@ -207,13 +206,14 @@ void() player_predraw={
         self.alpha = 1.0;
         self.scale = 1.0;
         self.angles = self.torC_angl;
+        self.origin = self.torC_org;
         addentity(self);
         self.angles = prevAngl;
         self.origin = prevOrg;
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-        self.origin = self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
+        self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
         if( !(self.criticalHits & M_TOR_LEFT) ){
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
              self.torL_angl_x = self.angles_x * -1;
@@ -223,6 +223,7 @@ void() player_predraw={
           self.alpha = 1.0;
           self.scale = 1.0;
           self.angles = self.torL_angl;
+          self.origin = self.torL_org;
           addentity(self);
           self.angles = prevAngl;
           self.origin = prevOrg;
@@ -230,7 +231,7 @@ void() player_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-        self.origin = self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl); 
+        self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl); 
         if( !(self.criticalHits & M_TOR_RIGHT) ){
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
              self.torR_angl_x = self.angles_x * -1;
@@ -240,6 +241,7 @@ void() player_predraw={
           self.alpha = 1.0;
           self.scale = 1.0;
           self.angles = self.torR_angl;
+          self.origin = self.torR_org;
           addentity(self);
           self.angles = prevAngl;
           self.origin = prevOrg;
@@ -247,7 +249,7 @@ void() player_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.unitModFlags & MOD_HAS_ARM_L) ){
-        self.origin = self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl); 
+        self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl); 
         if( !(self.criticalHits & M_ARM_LEFT) ){
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
             self.armL_angl_x = self.angles_x * -1;
@@ -257,6 +259,7 @@ void() player_predraw={
           self.alpha = 1.0;
           self.scale = 1.0;
           self.angles = self.armL_angl;
+          self.origin = self.armL_org;
           addentity(self);
           self.angles = prevAngl;
           self.origin = prevOrg;
@@ -264,7 +267,7 @@ void() player_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.unitModFlags & MOD_HAS_ARM_R) ){
-        self.origin = self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl); 
+        self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl); 
         if( !(self.criticalHits & M_ARM_RIGHT) ){
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
             self.armR_angl_x = self.angles_x * -1;
@@ -274,6 +277,7 @@ void() player_predraw={
           self.alpha = 1.0;
           self.scale = 1.0;
           self.angles = self.armR_angl;
+          self.origin = self.armR_org;
           addentity(self);
           self.angles = prevAngl;
           self.origin = prevOrg;
@@ -406,6 +410,16 @@ void( float mech_id ) sendevent_player_mech={
 /*
   HANDLE EVENT - player killed on this frame.
 */
+void() mech_ai_die_stand1;
+void() mech_ai_die_stand2;
+void() mech_ai_die_stand3;
+void() mech_ai_die_stand4;
+void() mech_ai_die_stand5;
+void() mech_ai_die_stand6;
+void() mech_ai_die_stand7;
+void() mech_ai_die_stand8;
+void() mech_ai_die_stand9;
+void() mech_ai_die_stand10;
 void() sendevent_handle_player_death={
   
   if(self == CLIENT_target_ent){
@@ -413,6 +427,9 @@ void() sendevent_handle_player_death={
   }
   
   te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
+  
+  self.think = mech_ai_die_stand1;
+  self.nextthink = time + 0.01;
 };
 
 /*
