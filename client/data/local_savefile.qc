@@ -61,7 +61,7 @@ void( string fileName ) cl_load_savefile={
 /*
   Now we go nuts, open the save file's target campaign
 */
-void(float override) cl_load_savefile_singleMap={
+void() cl_load_savefile_singleMap={
   
   local string cleanMapName;
   local float flannel;

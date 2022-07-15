@@ -22,7 +22,7 @@ string SAVE_TAG_MISSION = "mission";
 string SAVEFILE_CACHE_MAP;
 
 void( string fileName ) cl_load_savefile;
-void(float override) cl_load_savefile_singleMap;
+void() cl_load_savefile_singleMap;
 void( float serverMode, float svFlags ) cl_set_savepath;
 void() cl_get_mechs_sort;
 void() cl_load_mechs_all;

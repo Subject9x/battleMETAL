@@ -138,10 +138,11 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   if(CLIENT_data_type == DATA_MECH){
     makevectors(getpropertyvec(VF_CL_VIEWANGLES));
     if(cvar("chase_active")){
-      client_vis_org = pmove_org + (v_forward * cvar("chase_back") * -1) + (v_up * cvar("chase_up"));
+      traceline(pmove_org, pmove_org + (v_forward * cvar("chase_back") * -0.9) + (v_up * cvar("chase_up")), TRUE, CLIENT_mech_self);
+      client_vis_org = trace_endpos;
     }
     else{
-      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z) + (v_up * (CLIENT_mech_self.cameraOffset_y + (CLIENT_mech_self.cameraOffset_y/2)));
+      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z * 1.25) + (v_up * CLIENT_mech_self.maxs_y);
     }
   }
   //=================================================

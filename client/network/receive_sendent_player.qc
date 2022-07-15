@@ -329,7 +329,7 @@ void() player_predraw={
             self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
             particleDraw = vlen(self.origin - pmove_org);
             if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
-              adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_FULLDYNAMIC);
+              adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
             }
           }
         }
@@ -341,7 +341,7 @@ void() player_predraw={
           self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
           particleDraw = vlen(self.origin - pmove_org);
           if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
-            adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_FULLDYNAMIC);
+            adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
           }
         }
       }

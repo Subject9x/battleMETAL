@@ -348,31 +348,31 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
   local vector back;
   local vector launch;
 
-  explode = spawn();
-  if( explode ){
-    explode.movetype = MOVETYPE_NONE;
-    explode.solid = SOLID_NOT;
-    explode.think = te_missile_explode_th;
-    explode.nextthink = time + 0.05;
-    explode.data_lifetime = 10;
-    explode.scale = explodeSize;
-    explode.alpha = 1;
-    explode.effects = explode.effects | EF_NOSHADOW;
-    explode.avelocity = randomvec() * 300;
-    explode.angles = randomvec() * 30;
-    explode.pcl_count = bloom;
-    explode.drawmask = MASK_NORMAL;
-    
-    if( explodeColor != '0 0 0' ){
-      explode.colormod = explodeColor;
-    }
-    
-    setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
-    setorigin( explode, org);
-  }
-  
   particleDraw = vlen(client_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    explode = spawn();
+    if( explode ){
+      explode.movetype = MOVETYPE_NONE;
+      explode.solid = SOLID_NOT;
+      explode.think = te_missile_explode_th;
+      explode.nextthink = time + 0.05;
+      explode.data_lifetime = 10;
+      explode.scale = explodeSize;
+      explode.alpha = 1;
+      explode.effects = explode.effects | EF_NOSHADOW;
+      explode.avelocity = randomvec() * 300;
+      explode.angles = randomvec() * 30;
+      explode.pcl_count = bloom;
+      explode.drawmask = MASK_NORMAL;
+      
+      if( explodeColor != '0 0 0' ){
+        explode.colormod = explodeColor;
+      }
+      
+      setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
+      setorigin( explode, org);
+    }
+  
     te_customflash( org, explodeSize * 50, 1, explodeColor);
     
     
@@ -534,8 +534,8 @@ void() te_shield_explode_th={
     remove(self);
     return;
   }
-  self.alpha = self.alpha - 0.024;
-  self.scale = self.scale + 0.025;
+  self.alpha = self.alpha - (0.024 * frametime);
+  self.scale = self.scale + (0.025 * frametime);
   
   if(self.owner.clientServerNum == player_localentnum){
     self.origin = pmove_org;
