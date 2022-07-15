@@ -6,6 +6,100 @@ Overview:
   CSQC-side ini function for synced buildings.
 */
 
+
+void() building_anim_death_norm9={
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
+  
+  
+};
+void() building_anim_death_norm8={
+  
+  self.think = building_anim_death_norm9;
+  self.nextthink = time + 0.1*frametime;
+};
+void() building_anim_death_norm7={
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
+  
+  building_sound_explode();
+  if( self.vec_size > 2 ){
+    self.think = building_anim_death_norm8;
+    self.nextthink = time + 0.1*frametime;
+  }
+};
+void() building_anim_death_norm6={
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
+  
+  building_sound_explode();
+  
+  self.think = building_anim_death_norm7;
+  self.nextthink = time + 0.1*frametime;
+};
+
+void() building_anim_death_norm5={
+
+  self.think = building_anim_death_norm6;
+  self.nextthink = time + 0.1*frametime;
+};
+
+void() building_anim_death_norm4={
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
+  
+  building_sound_explode();
+  if( self.vec_size > 1 ){
+    self.think = building_anim_death_norm5;
+    self.nextthink = time + 0.1*frametime;
+  }
+};
+void() building_anim_death_norm3={
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
+  
+  building_sound_explode();
+  self.think = building_anim_death_norm4;
+  self.nextthink = time + 0.1*frametime;
+};
+
+
+void() building_anim_death_norm2={
+
+  self.think = building_anim_death_norm3;
+  self.nextthink = time + 0.1*frametime;
+};
+
+void() building_anim_death_norm1={
+  local vector vfx;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
+  
+  building_sound_explode();
+  
+  self.think = building_anim_death_norm2;
+  self.nextthink = time + 0.1*frametime;
+};
+
+
+
 /*
   client_main.CSQC_ent_update()->Ent Type == building, SENDFLAG_NEWENT
   scope = self
@@ -14,7 +108,13 @@ Overview:
 void( float dataID ) data_sync_new_building={
   
   makevectors(self.angles);
+  
   self.solid = SOLID_BSP;
+  self.flags = self.flags | FL_MONSTER; 
+  self.colormod = '1 1 1';
+  self.takedamage = DAMAGE_AIM;
+  self.movetype = MOVETYPE_NONE;
+  
   switch(dataID){
     case UI_BUILDING_radar:
       data_building_radar();
@@ -47,21 +147,18 @@ void( float dataID ) data_sync_new_building={
       data_building_supply_depot();
       break;
   }
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
   self.cache_mins = self.mins;
   self.cache_maxs = self.maxs;
+  
+  if( self.th_walk ){
+    self.th_walk();
+  }
 };
 
 void() data_building_radar={
-  self.vec_name = "Listening Post";
-  self.vec_size = 1;
-  setmodel(self, "q3mdl/buildings/radar/listpost.obj");
-  setsize(self, self.mins, self.maxs);
-  self.max_health = 100;
-  self.shield = 0;
-  self.shieldMax = 150;
-  self.shieldRate = 0.15;
-  self.radar_range = 2000;
-  self.deadflag = DEAD_NO;
+  building_human_radar();
   self.th_walk = radar_post_th;
   self.th_die = radar_post_die1;
   self.render_dlights = radar_post_dlights;
@@ -72,18 +169,7 @@ void() data_building_radar={
 };
 
 void() data_building_shield={
-  self.vec_name = "Shield Generator";
-  self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/shield_gen/shieldgen.obj");
-  setsize(self,  self.mins, self.maxs);
-  self.max_health = 500;
-  self.shield = 0;
-  self.shieldMax = 500;
-  self.shieldRate = 0.45;
-  self.energy = 0;
-  self.energyRate = 0;
-  self.energyMax = 2000;
-  self.deadflag = DEAD_NO;
+  building_human_shield();
   self.th_die = shield_gen_die1;
   self.th_walk = shield_gen_active;
   //local vfx
@@ -92,16 +178,7 @@ void() data_building_shield={
 };
 
 void() data_building_power={
-  self.vec_name = "Power Generator";
-  self.vec_size = 3;
-  setmodel(self, "q3mdl/buildings/power_plant/powerplant.obj");
-  setsize(self, self.mins, self.maxs);
-  self.max_health = 1200;
-  self.shield = 0;
-  self.shieldMax = 300;
-  self.energy = 0;
-  self.energyMax = 4000;
-  self.deadflag = DEAD_NO; 
+  building_human_power();
   self.th_die = power_plant_die1;
   self.th_walk = power_plant_active;
   //local vfx - green ball
@@ -116,41 +193,18 @@ void() data_building_power={
 };
 
 void() data_building_hangar_large={
-  self.vec_name = "Large Hangar";
-  self.vec_size = 3;
-  setmodel(self, "q3mdl/buildings/hangar/hangar_large.obj");
-  setsize(self, self.mins, self.maxs);
-  self.max_health = 800;
-  self.shield = 0;
-  self.shieldMax = 300;
-  self.shieldRate = 0.2;
-  self.deadflag = DEAD_NO;
+  building_human_hangar();
   self.th_die = hangar_large_die1;
 };
 
 void() data_building_fuel={
-  self.vec_name = "Fuel Tank";
-  self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/fueltank/fueltank.obj");
-  setsize(self, self.mins, self.maxs);  
-  self.max_health = 75;
-  self.shield = 0;
-  self.shieldMax = 150;
-  self.shieldRate = 0.15;
+  building_human_fuel();
   self.deadflag = DEAD_NO; 
   self.th_die = fuel_tank_die1;
 };
 
 void() data_building_repair={   
-  self.vec_name = "Repair Bay";
-  self.vec_size = 3;
-  setmodel(self, "q3mdl/buildings/repair_bay/repairbay.obj");
-  setsize(self, self.mins, self.maxs);
-  
-  self.max_health = 600;
-  self.shieldMax = 250;
-  self.shieldRate = 0.33;
-  self.deadflag = DEAD_NO;
+  building_human_repair();
   self.th_walk = repair_bay_active;
   self.th_die = repair_bay_die1;
   self.render_dlights = repair_bay_dlights;
@@ -160,25 +214,12 @@ void() data_building_repair={
 };
 
 void() data_building_hangar_med={
-  self.vec_name = "Vehicle Hangar";
-  self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/hangar_vehicle/hangar_vehicle.obj");
-  setsize(self, self.mins, self.maxs);
-  self.max_health = 500;
-  self.deadflag = DEAD_NO;
+  building_human_hangar_vehicle();
   self.th_die = hangar_medium_die1;
 };
 
 void() data_building_guard={
-  self.vec_name = "Guard Tower";
-  self.vec_size = 1;
-  setmodel(self, "q3mdl/buildings/towersmall/guardtower.obj");
-  setsize(self, self.mins, self.maxs);
-  self.max_health = 200;
-  self.shield = 0;
-  self.shieldMax = 50;
-  self.shieldRate = 0.1;
-  self.deadflag = DEAD_NO;
+  building_guard_tower();
   self.th_walk = guard_post_th;
   self.th_die = guard_post_die1;
   self.render_dlights = guard_post_dlights;
@@ -187,56 +228,32 @@ void() data_building_guard={
 };
 
 void() data_building_barracks={
-  self.vec_name = "Barracks";
-  self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/barracks/building_barracks.obj");
-  setsize(self, self.mins, self.maxs);
-  
-  self.max_health = 275;
-  self.deadflag = DEAD_NO;
-  self.th_die = fuel_tank_die1;
+  building_barracks();
+  self.th_die = building_anim_death_norm1;
 };
 
 void() data_building_supply_depot={
-  self.vec_name = "Supply Depot";
-  self.vec_size = 2;
-  setmodel(self, "q3mdl/buildings/depot/building_depot.obj");
-  setsize(self, self.mins, self.maxs);
-  self.max_health = 350;
-  self.deadflag = DEAD_NO;
-  self.th_die = fuel_tank_die1;
+  building_supply_depot();
+  self.th_die = building_anim_death_norm1;
 };
 
 /*
   ANIMATION - Death
 */
 void() data_building_death1={
-  
-  if( self.frame > 12 ){
-    self.think = sendevent_building_die;
-    self.nextthink = time + 0.1;
-    return;
-  }
-  
+
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
+  
+  self.think = data_building_death2;
+  self.nextthink = time + (0.1 * frametime);
+};
+
+void() data_building_death2={
   
   building_sound_explode();
   
-  self.frame = self.frame + 1;
-  self.think = data_building_death2;
-  self.nextthink = time + 0.1;
-};
-
-void() data_building_death2={ 
-  if( self.frame > 12 ){
-    self.think = sendevent_building_die;
-    self.nextthink = time + 0.1;
-    return;
-  }
-
-  self.frame = self.frame + 1;
   self.think = data_building_death1;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + (0.1 * frametime);
 };
 
 void() data_building_death_end={
@@ -265,6 +282,9 @@ void() building_sound_explode={
   sizeMod = 1.0 - (1.0 - (sizeMod * 2) / 2);
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
 };
+
+
+
 
 /*
   Taken from server, this should be clientside too.

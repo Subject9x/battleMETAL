@@ -12,6 +12,7 @@ Overview:
 
 void() model_misc_building_set;
 void() model_misc_building_ruins_set;
+void() model_misc_building_die;
 
 /*
   Guard Post - Dynamic Lights

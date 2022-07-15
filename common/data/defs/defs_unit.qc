@@ -243,4 +243,5 @@ Overview:
 .float cl_lod_unit; //yes draw / no draw for player view range;
 .vector cacheGroundAngle; //used by vehicles.
 .vector cacheGroundPos; //used by vehicles.
+
 #endif

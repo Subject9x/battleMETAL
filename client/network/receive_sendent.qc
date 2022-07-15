@@ -131,15 +131,51 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
 /*
   SendEntity - Map Objects ====================================
 */
+
+void() predraw_building_msc={
+  
+  traceline(self.origin + [0,0, self.maxs_z], client_vis_org, FALSE, self);
+  
+  self.cl_lod_unit = TRUE;
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
+    self.cl_lod_unit = FALSE;
+  }
+  
+  if( self.cl_lod_unit ){
+    setmodel(self, self.model);
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+    addentity(self);
+  }
+};
+
 void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   local float prevDeadflag;
+  local float mapKey;
+  local float vipKey;
   
   prevDeadflag = self.deadflag;
   
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if(self.deadflag != DEAD_NO){
-      self.vec_size = ReadByte();
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
+    
+    self.faction = ReadByte();
+    self.vec_size = ReadByte();
+    self.data_idx = ReadByte();
+    self.canTarget = ReadByte();
+    mapKey = ReadChar();
+    vipKey = ReadChar();
+    if( mapKey ){
+      self.spawnflags = self.spawnflags | IS_MAPKEY;
+    }
+    if( vipKey ){
+      self.spawnflags = self.spawnflags | IS_VIP;
     }
   }
   
@@ -148,35 +184,48 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
   }
-  if( (changeFlags & SENDFLAG_ANGLE) ){
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
-  }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.vec_size = ReadByte();
-    self.data_idx = ReadByte();
-    self.faction = ReadByte();
-    self.canTarget = ReadByte();
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
   }
   
   if(isNew){
-    self.drawmask = MASK_ENGINE;
+    model_misc_building_set();
+    self.predraw = predraw_building_msc;
     if( self.deadflag == DEAD_NO ){
       self.solid = SOLID_BSP;
-      self.movetype = MOVETYPE_NONE;
-      model_misc_building_set();
+      if( (self.spawnflags & IS_MAPKEY) ){
+        if( lastMapKeyObject ){
+          //build linked list backwards for later forward iteration.
+          lastMapKeyObject.w_slot = self;
+          lastMapKeyObject = self;
+        }
+        else{
+          //start chain
+          mapKeyObject = self;
+          lastMapKeyObject = self;
+        }
+      }
     }
     else{
+      self.spawnflags = self.spawnflags - (self.spawnflags & IS_MAPKEY);
+      self.spawnflags = self.spawnflags - (self.spawnflags & IS_VIP);
+      self.solid = SOLID_NOT;
       model_misc_building_ruins_set();
     }
   }
   
-  if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO ){
-    te_missile_explode( self.origin + (v_up * self.maxs_z * 0.5), self.vec_size, '0.9 0.75 0.45', 0.005 );
-    sound7(self, CHAN_AUTO, "sound/fire/debris1.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
-    model_misc_building_ruins_set();
+  //HANDLE EVENT - dead
+  if( prevDeadflag == DEAD_NO && self.deadflag == DEAD_DYING ){
+    if( self.th_die ){
+      self.th_die();
+    }
+    else{
+      data_building_death1(); 
+    }
+  }
+  else if( prevDeadflag == DEAD_DYING && self.deadflag == DEAD_DEAD ){
+    model_misc_building_die();
   }
 };
 
@@ -242,19 +291,18 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.deadflag = DEAD_NO;
     self.alpha = 1;
     self.scale = 1;
+    self.think = sendent_missile_think;
+    self.nextthink = time + 0.001;
+    sendent_ini_interpolate();
     if( self.data_idx == UID_ITEM_debris ){
       data_sync_new_debris( self );
     }
     else{
       data_sync_new_projectile(self.data_idx);
+      self.predraw = predraw_missile;
     }
     setmodel(self, self.model);
     setsize(self, '0 0 0', '0 0 0');
-    
-    self.think = sendent_missile_think;
-    self.nextthink = time + 0.001;
-    sendent_ini_interpolate();
-    self.predraw = predraw_missile;
   }
   
   self.angles = vectoangles(self.velocity);

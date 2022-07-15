@@ -49,6 +49,7 @@ network/headers/receive_sendent.qh
   ../common/data/mechs/uid_mechs.qc
   ../common/data/vehicles/uid_vehicles.qc
   ../common/data/item/uid_items.qc
+  ../common/data/buildings/uid_buildings.qc
   //---------------------------------
   
   //Projectiles--------------------
@@ -80,8 +81,16 @@ network/headers/receive_sendent.qh
   //-------------------------------
   
   //Buildings----------------------
-  ../common/data/buildings/uid_buildings.qc
-  
+  ../common/data/buildings/data_building_hangar_large.qc
+  ../common/data/buildings/data_building_hangar_med.qc
+  ../common/data/buildings/data_building_radar.qc
+  ../common/data/buildings/data_building_power_plant.qc
+  ../common/data/buildings/data_building_shield_generator.qc
+  ../common/data/buildings/data_building_fuel_tank.qc
+  ../common/data/buildings/data_building_repair_bay.qc
+  ../common/data/buildings/data_building_guard_tower.qc
+  ../common/data/buildings/data_building_barracks.qc
+  ../common/data/buildings/data_building_supply_depot.qc
   //-------------------------------
   
   //Turrets------------------------

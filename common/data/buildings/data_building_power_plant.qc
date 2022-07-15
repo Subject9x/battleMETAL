@@ -8,11 +8,13 @@ Overview: data file for building
   func: provides radar scanning to all friendly units and buildings in radius.
 */
 
+#ifdef SSQC
 void() hpower_die = [0, hpower_die1]{
   if( self.deadflag > DEAD_NO){
     return;
   }
-  
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   ai_alert_close(self.enemy);
 
 };
@@ -121,23 +123,20 @@ void() hpower_th ={
   self.think = hpower_th;
   self.nextthink = time + 0.1;
 }; 
-
+#endif
 void() building_human_power={
   self.data_idx = self.nextVecChoice = UI_BUILDING_power_plant;
   self.data_type = DATA_BLD;
-
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  trigger_ext_check();
+  
+  self.deadflag = DEAD_NO;  
   self.vec_name = "Power Plant";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 3;
   self.scale = 1;
-  self.deadflag = DEAD_NO;
-  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/power_plant/powerplant.obj", self.skin, EF_LOWPRECISION) 
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  self.takedamage = DAMAGE_AIM;
+  setmodel(self, "q3mdl/buildings/power_plant/powerplant.obj");
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {
@@ -155,33 +154,40 @@ void() building_human_power={
     self.energyRate = 4;
   }
   
-  if( !self.ai_minrange ){
-    self.ai_minrange = 800;
-  }
-  
-  if( !(self.spawnflags & NO_DROP) ){
-    if( util_cornerSlopeCheck(self, 0.95) ){
-      util_generateBuildingFoundation(self);
+  #ifdef SSQC
+    if( !self.ai_minrange ){
+      self.ai_minrange = 800;
     }
-    else{
-      droptofloor();
+    if( !(self.spawnflags & NO_DROP) ){
+      if( util_cornerSlopeCheck(self, 0.95) ){
+        util_generateBuildingFoundation(self);
+      }
+      else{
+        droptofloor();
+      }
     }
-  }
-  makevectors(self.angles);
-  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-  
-  self.th_die = hpower_die;
-  self.use = multi_trigger;
-  
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  if( (self.spawnflags & IS_MAPKEY) ){
-    self.effects = self.effects | EF_NODEPTHTEST;
-  }
-  self.canTarget = TRUE;
-  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-    self.canTarget = FALSE;
-  }
-  
-  hpower_th();
+    self.effects = self.effects | EF_LOWPRECISION;
+    if( ai_can_spawn() == FALSE ){
+      remove(self);
+      return;
+    }
+    trigger_ext_check();
+    makevectors(self.angles);
+    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+    
+    self.th_die = hpower_die;
+    self.use = multi_trigger;
+    
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    if( (self.spawnflags & IS_MAPKEY) ){
+      self.effects = self.effects | EF_NODEPTHTEST;
+    }
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
+    }
+    
+    hpower_th();
+  #endif
 };

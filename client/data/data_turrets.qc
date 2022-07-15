@@ -50,4 +50,11 @@ void( float dataID ) data_sync_new_turret={
   sendent_ini_interpolate();
   self.takedamage = DAMAGE_AIM;
   self.interpolate_entity = interpolate_turret;
+  
+  self.canTarget = TRUE;
+  
+  self.colormod = '1 1 1';
+  
+  self.think = sendent_ai_think;
+  self.nextthink = time + 0.01;
 }

@@ -61,6 +61,7 @@ void() hud_render_tactical_map={
   
   mapKey = mapKeyObject;
   for( mapKey = mapKeyObject; mapKey != world; mapKey = mapKey.w_slot ){
+    if( mapKey.deadflag != DEAD_NO ){continue;} //live-update only matters for HUD.
     keyOrg = gui_mapCoordToImgCoord(mapMins, map_size, mapKey.origin, mapOrg, mapImgSize);
     switch( mapKey.data_type ){
       case DATA_MAP_DMG:

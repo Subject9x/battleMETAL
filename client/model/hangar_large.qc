@@ -12,7 +12,6 @@ Overview:
 */
 void() hangar_large_die1={
   local vector vfx;
-  
   makevectors(self.angles);
   vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
 

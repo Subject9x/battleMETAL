@@ -9,6 +9,8 @@ Overview:
     sv/main/controllers/ctrl_building.ctrl_send_turret()
 */
 
+
+
 void() sendevent_turret_die={
   if(self == CLIENT_target_ent){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
@@ -16,7 +18,6 @@ void() sendevent_turret_die={
   
   makevectors(self.angles);
   setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
-  self.colormod = '0.85 0.85 0.85';
   
   self.origin = self.origin + (v_up * (self.maxs_z * -0.05));
   setorigin(self, self.origin);
@@ -36,19 +37,43 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   local vector turretAng;
   local float prevShield;
   local float prevDeadFlag;
+  local float prevBurn;
   local float voiceId;
+  local float mapKey;
+  local float vipKey;
+  local float muted;
   
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
+  prevBurn = 0 | self.burnBits;
   
   turretAng = self.v_angle;
   turretAng_x = 0;
   
-  //EVENT - death
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if(self.deadflag != DEAD_NO){
-      self.vec_size = ReadByte();
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
+    
+    self.faction = ReadByte();
+    self.vec_size = ReadByte();
+    self.data_idx = ReadByte();
+    self.canTarget = ReadByte();
+    mapKey = ReadChar();
+    vipKey = ReadChar();
+    muted = ReadChar();
+    if( mapKey ){
+      self.spawnflags = self.spawnflags | IS_MAPKEY;
+    }
+    if( vipKey ){
+      self.spawnflags = self.spawnflags | IS_VIP;
+    }
+    if( muted ){
+      self.spawnflags = self.spawnflags | MUTE_ME;
     }
   }
   
@@ -57,51 +82,32 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
   }
-  if( (changeFlags & SENDFLAG_ANGLE) ){
-    self.angles_x = anglemod(ReadAngle());
-    self.angles_y = anglemod(ReadAngle());
-    self.angles_z = 0;
+  
+  //EVENT - death
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
   }
   
-  //EVENT - New to player
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.spawnflags = fabs(ceil(ReadLong()));
-    self.data_idx = ReadByte();
-    if( !(self.spawnflags & MUTE_ME)  ){
-      self.ai_muted = FALSE;
-      ai_voice_ini( TRUE );
-      self.ai_voice_limit = 1;
-    }
+  //EVENT - faction changed
+  if( (changeFlags & SENDFLAG_FACTION) ){
+    self.faction = fabs(ReadByte());
   }
   
-  if( isNew ){
-    setorigin(self, self.origin);
-    if( self.deadflag == DEAD_NO){
-      self.think = sendent_ai_think;
-      self.nextthink = time + 0.01;
-      data_sync_new_turret(self.data_idx);
-      self.canTarget = TRUE;
-      self.predraw = predraw_turret;
-      if( !(self.spawnflags & MUTE_ME) ){
-        self.ai_muted = FALSE;
-        ai_voice_ini( TRUE );
-        self.ai_voice_limit = 1;
-      }
-    }
-    else{
-      model_misc_building_ruins_set();
-    }
+  //EVENT - health dropped below threshold
+  if( (changeFlags & SENDFLAG_BURN) ){
+    self.burnBits = fabs(rint(ReadLong()));
   }
   
   if( (changeFlags & SENDFLAG_CAMERA) ){
     self.groundEnt = ReadByte();
-    if( self.groundEnt ){
+    //FIX ME
+    /*if( self.groundEnt ){
       if( !(self.spawnflags & NO_DROP) ){
         if( isNew ){
           data_building_generate_foundation();
         }
       }
-    }
+    }*/
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
@@ -112,13 +118,8 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = fabs(ReadLong());
+    self.attackFlag = fabs(rint(ReadLong()));
     sendevent_handle_weaponfire();
-  }
-  
-  //EVENT - faction changed
-  if( (changeFlags & SENDFLAG_FACTION) ){
-    self.faction = fabs(ReadByte());
   }
   
   //EVENT - turret rotated
@@ -131,10 +132,38 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.torC_angl_x = 0;
   }
   
-  //EVENT - health dropped below threshold
-  if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadLong();
-    if( self.burnBits > 0 ){
+  //EVENT - voice chatter
+  if( (changeFlags & SENDFLAG_VOICE) ){
+    if( !(changeFlags & SENDFLAG_NEWENT) ){
+      voiceId = ReadByte();
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
+    }
+  }
+  
+  if( isNew ){
+    self.predraw = predraw_turret;
+    data_sync_new_turret(self.data_idx);
+    if( self.deadflag == DEAD_NO){
+      if( !(self.spawnflags & MUTE_ME) ){
+        self.ai_muted = FALSE;
+        ai_voice_ini( TRUE );
+        self.ai_voice_limit = 1;
+      }
+    }
+    else{
+      model_misc_building_ruins_set();
+    }
+  }
+  
+  //HANDLE EVENT - dead
+  if(prevDeadFlag == DEAD_NO && self.deadflag == DEAD_DEAD){
+    sendevent_turret_die();
+  }
+  
+  //other events only fire when NOT dead.
+  if( self.deadflag == DEAD_NO ){
+    //HANDLE EVENT - new burning fire
+    if( self.burnBits != prevBurn && self.burnBits != FALSE ){
       if( (self.burnBits & WEAPON1) && !self.effect1.count ){
         self.effect1 = te_building_fire_start( self );
         self.colormod = self.colormod * 0.85;
@@ -148,29 +177,16 @@ void( float isNew, float changeFlags) sendent_handle_turret={
         self.colormod = self.colormod * 0.67;
       }
     }
-  }
   
-  //EVENT - voice chatter
-  if( (changeFlags & SENDFLAG_VOICE) ){
-    if( !(changeFlags & SENDFLAG_NEWENT) ){
-      voiceId = ReadByte();
-      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
-    }
-  }
+    //HANDLE EVENT - Shield explode
+    sendevent_shield_explode( prevShield );
   
-  //HANDLE EVENT - dead
-  if(prevDeadFlag == DEAD_NO && self.deadflag == DEAD_DEAD){
-    sendevent_turret_die();
-  }
-  
-  //HANDLE EVENT - Shield explode
-  sendevent_shield_explode( prevShield );
-  
-  //Shield strike event
-  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
-    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
-      self.shieldEffectTime = time + 0.5;
-      te_shield_hit();
+    //HANDLE EVENT - Shield hit
+    if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+      if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
+        self.shieldEffectTime = time + 0.5;
+        te_shield_hit();
+      }
     }
   }
 };
@@ -186,7 +202,7 @@ void() interpolate_turret={
   interpolate_angle();
   interpolate_ground();
   
-  traceline(self.origin + self.torC_compOffset, client_vis_org, FALSE, self);
+  traceline(self.origin + [0,0, self.maxs_z], client_vis_org, FALSE, self);
   
   self.cl_lod_unit = TRUE;
   if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){

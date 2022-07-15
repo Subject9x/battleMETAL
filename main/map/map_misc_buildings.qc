@@ -8,62 +8,121 @@ Overview:
 
 
 float( float isNew, float changeFlags ) sendent_misc_building={
-  local float newFlags;
-  
-  newFlags = 0;
-  if( isNew ){
-    newFlags = changeFlags;
-    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD);
-  }
   
   WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
-  WriteLong( MSG_ENTITY, newFlags );
+  WriteLong( MSG_ENTITY, changeFlags );
   //======================
   
-  if( (newFlags & SENDFLAG_DEAD) ){
-    WriteByte( MSG_ENTITY, self.deadflag );
-    if(self.deadflag != DEAD_NO){
-      WriteByte( MSG_ENTITY, self.vec_size );
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+    
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.vec_size );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.canTarget );
+    if( (self.spawnflags & IS_MAPKEY) ){
+      WriteChar( MSG_ENTITY, TRUE );
+    }
+    else{
+      WriteChar( MSG_ENTITY, FALSE );
+    }
+    if( (self.spawnflags & IS_VIP) ){
+      WriteChar( MSG_ENTITY, TRUE );
+    }
+    else{
+      WriteChar( MSG_ENTITY, FALSE );
     }
   }
   
-  if( (newFlags & SENDFLAG_MOVE) ){
+  if( (changeFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
   }
-  if( (newFlags & SENDFLAG_ANGLE) ){
-    WriteAngle( MSG_ENTITY, self.angles_x );
-    WriteAngle( MSG_ENTITY, self.angles_y );
-    WriteAngle( MSG_ENTITY, self.angles_z );
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (newFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, self.vec_size );
-    WriteByte( MSG_ENTITY, self.data_idx );
-    if( self.faction ){
-      WriteByte( MSG_ENTITY, self.faction );
-    }
-    else{
-      WriteByte( MSG_ENTITY, 255 );
-    }
-    WriteByte( MSG_ENTITY, self.canTarget );
-  }
   return TRUE;
+};
+void() misc_build_die7={
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  
+  self.think  = building_die;
+  self.nextthink = time + 0.1;
+};
+void() misc_build_die6={
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  
+  if( self.vec_size > 2 ){
+    self.think = misc_build_die7;
+    self.nextthink = time + 0.1;
+  }
+  else{
+    self.think  = building_die;
+    self.nextthink = time + 0.1;
+  }
+};
+
+void() misc_build_die5={
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  
+  self.think = misc_build_die6;
+  self.nextthink = time + 0.1;
+};
+
+void() misc_build_die4={
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  
+  self.think = misc_build_die5;
+  self.nextthink = time + 0.1;
+};
+void() misc_build_die3={
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  
+  if( self.vec_size > 1 ){
+    self.think = misc_build_die4;
+    self.nextthink = time + 0.1;
+  }
+  else{
+    self.think  = building_die;
+    self.nextthink = time + 0.1;
+  }
 };
 
 void() misc_build_die2={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  
+  self.think = misc_build_die3;
+  self.nextthink = time + 0.1;
 };
 
 void() misc_build_die1={
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  building_die();
-
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  self.deadflag = DEAD_DYING;
+  
   local vector shoot;
   shoot = randompos(self.absmin * 0.67, self.absmax * 0.67);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
@@ -71,6 +130,9 @@ void() misc_build_die1={
   self.think = misc_build_die2;
   self.nextthink = time + 0.1;
 };
+
+
+
 
 /*
   Generic ini func for misc_buildings
@@ -104,9 +166,9 @@ void( string modelName, float setSizeFlag ) misc_building={
   self.nextthink = time + random() * 1;
   
   self.data_type = DATA_BLD;
-  self.getTarget = FALSE;
+  self.canTarget = FALSE;
   if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-    self.getTarget = TRUE;
+    self.canTarget = TRUE;
     self.SendEntity = sendent_misc_building;
   }
   

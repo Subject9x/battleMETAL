@@ -5,6 +5,7 @@ Date: 5/10/2017
 Overview: data file for building
 */
 
+#ifdef SSQC
 void() hangar_die2;
 void() hangar_die3;
 void() hangar_die4;
@@ -24,6 +25,8 @@ void() hangar_die1=[0, hangar_die2]{
   if( self.deadflag > DEAD_NO ){
     return;
   }
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
   local vector vfx;
   
@@ -110,30 +113,21 @@ void() hangar_die15=[0, SUB_Null]{
 
   building_die();
 };
-
+#endif
 
 void() building_human_hangar={
 
   self.data_idx = self.nextVecChoice = UI_BUILDING_hangar_large;
   self.data_type = DATA_BLD;
 
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  trigger_ext_check();
-
   self.vec_name = "Large Hangar";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 3;
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
-  
-  self.th_die = hangar_die1;
-  self.use = multi_trigger;
   self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_NONE;
-  util_setModel( "q3mdl/buildings/hangar/hangar_large.obj", self.skin, EF_LOWPRECISION) ;
+  setmodel(self, "q3mdl/buildings/hangar/hangar_large.obj");
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {
@@ -155,26 +149,36 @@ void() building_human_hangar={
     self.energyMax = 0;
   }
   
-  if( !(self.spawnflags & NO_DROP) ){
-    if( util_cornerSlopeCheck(self, 0.95) ){
-      util_generateBuildingFoundation(self);
+  #ifdef SSQC
+    self.th_die = hangar_die1;
+    self.use = multi_trigger;
+    self.effects = self.effects | EF_LOWPRECISION;
+    if( ai_can_spawn() == FALSE ){
+      remove(self);
+      return;
     }
-    else{
-      droptofloor();
+    trigger_ext_check();
+    if( !(self.spawnflags & NO_DROP) ){
+      if( util_cornerSlopeCheck(self, 0.95) ){
+        util_generateBuildingFoundation(self);
+      }
+      else{
+        droptofloor();
+      }
     }
-  }
-  makevectors(self.angles);
-  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-  
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  if( (self.spawnflags & IS_MAPKEY) ){
-    self.effects = self.effects | EF_NODEPTHTEST;
-  }
-  self.canTarget = TRUE;
-  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-    self.canTarget = FALSE;
-  }
-  self.think = building_burn_th;
-  self.nextthink = time + random() * 3;
+    makevectors(self.angles);
+    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+    
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    if( (self.spawnflags & IS_MAPKEY) ){
+      self.effects = self.effects | EF_NODEPTHTEST;
+    }
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
+    }
+    self.think = building_burn_th;
+    self.nextthink = time + random() * 3;
+  #endif
 };

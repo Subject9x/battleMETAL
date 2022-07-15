@@ -82,6 +82,7 @@ void() realtimelights_light={
     remove(self);
     return;
   }
+  self.classname = "realtimelights_light";
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.alpha = 1;

@@ -7,11 +7,14 @@ Overview: data file for building
   faction: humans
   func: provides shields to all friendly units in its radius, but requires a nearby power plant.
 */
+#ifdef SSQC
 void() hshield_die = [0, hshield_die1]{
   if( self.deadflag > DEAD_NO){
     return;
   }
   ai_alert_close(self.enemy);
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 
 };
 void() hshield_die1 = [1, hshield_die2]{
@@ -155,6 +158,7 @@ void() hshield_th ={
   self.think = hshield_th;
   self.nextthink = time + 0.1;
 }
+#endif
 
 /*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/shield/shield.md3"); }
@@ -196,25 +200,19 @@ IS_VIP 8388608: faction-allied player will be notified of this entity's state
 void() building_human_shield={
   self.data_idx = self.nextVecChoice = UI_BUILDING_shield_generator;
   self.data_type = DATA_BLD;
-  
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  trigger_ext_check();
+
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
   self.flags = self.flags | FL_MONSTER ;  
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  
-  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/shield_gen/shieldgen.obj", self.skin, EF_LOWPRECISION)
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  self.takedamage = DAMAGE_AIM;
+  setmodel(self, "q3mdl/buildings/shield_gen/shieldgen.obj");
   setsize(self, self.mins, self.maxs);
     
-  if( !self.ai_minrange ){
-    self.ai_minrange = 1000;
-  }
+
     
   if( !self.health) {
     self.health = 500;
@@ -240,29 +238,41 @@ void() building_human_shield={
   if( !self.energy ){
     self.energy = 0;
   }
-
-  if( !(self.spawnflags & NO_DROP) ){
-    if( util_cornerSlopeCheck(self, 0.95) ){
-      util_generateBuildingFoundation(self);
-    }
-    else{
-      droptofloor();
-    }
-  }
   
-  makevectors(self.angles);
-  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-  self.th_die = hshield_die;
-  self.use = multi_trigger;
-  hshield_th();
-  
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  if( (self.spawnflags & IS_MAPKEY) ){
-    self.effects = self.effects | EF_NODEPTHTEST;
+  #ifdef SSQC
+    if( ai_can_spawn() == FALSE ){
+      remove(self);
+      return;
+    }
+    trigger_ext_check();
+    if( !self.ai_minrange ){
+      self.ai_minrange = 1000;
+    }
+    self.effects = self.effects | EF_LOWPRECISION;
+    
+    if( !(self.spawnflags & NO_DROP) ){
+      if( util_cornerSlopeCheck(self, 0.95) ){
+        util_generateBuildingFoundation(self);
+      }
+      else{
+        droptofloor();
+      }
+    }
+    
+    makevectors(self.angles);
+    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+    self.th_die = hshield_die;
+    self.use = multi_trigger;
+    hshield_th();
+    
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    if( (self.spawnflags & IS_MAPKEY) ){
+      self.effects = self.effects | EF_NODEPTHTEST;
+    }
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
   }
-  self.canTarget = TRUE;
-  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-    self.canTarget = FALSE;
-  }
+  #endif
 };

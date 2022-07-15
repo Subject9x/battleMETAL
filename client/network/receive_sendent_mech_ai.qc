@@ -72,7 +72,7 @@ void() predraw_mech_corpse={
     prevAngle = self.angles;
     
     self.legs_org = self.origin + (v_right * self.legs_compOffset_x) + (v_forward * self.legs_compOffset_z) + (v_up * self.legs_compOffset_y);
-    self.legs_angl = self.angles;
+    self.legs_angl = [0, self.angles_y, 0];
     self.legs_angl_y = self.legDir;
     
     self.frame = self.legs_frame;
@@ -84,65 +84,69 @@ void() predraw_mech_corpse={
     self.angles = prevAngle;
     
     if( !(self.criticalHits & M_TOR_CENTER) ){
-      self.origin = self.torC_org = predraw_unit_part(self.torC_compOffset); 
+      self.torC_org = predraw_unit_part(self.torC_compOffset); 
       if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
         self.torC_angl_x = self.torC_angl_x * -1;
       }
-      self.angles = self.torC_angl;
       setmodel(self, self.torC_mdl);
+      self.origin = self.torC_org;
+      self.angles = self.torC_angl;
       addentity(self);
       self.origin = prevOrg;
       self.angles = prevAngle;
     }
     makevectors(self.torC_angl);
     if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.criticalHits & M_TOR_LEFT) ){
-      self.origin = self.torL_org = predraw_unit_part(self.torL_compOffset); 
+      self.torL_org = predraw_unit_part(self.torL_compOffset); 
       self.torL_angl = self.torC_angl;
       if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
          self.torL_angl_x = self.torL_angl_x * -1;
       }
-      self.angles = self.torL_angl;
       setmodel(self, self.torL_mdl);
+      self.angles = self.torL_angl;
+      self.origin = self.torL_org;
       addentity(self);
       self.origin = prevOrg;
       self.angles = prevAngle;
     }
     
     if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.criticalHits & M_TOR_RIGHT) ){
-      self.origin = self.torR_org = predraw_unit_part(self.torR_compOffset); 
+      self.torR_org = predraw_unit_part(self.torR_compOffset); 
       self.torR_angl = self.torC_angl;
       if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
          self.torR_angl_x = self.torR_angl_x * -1;
       }
-      self.angles = self.torR_angl;
       setmodel(self, self.torR_mdl);
+      self.angles = self.torR_angl;
+      self.origin = self.torR_org;
       addentity(self);
       self.origin = prevOrg;
       self.angles = prevAngle;
     }
     
     if( (self.unitModFlags & MOD_HAS_ARM_R) && !(self.criticalHits & M_ARM_RIGHT) ){
-      self.origin = self.armL_org = predraw_unit_part(self.armL_compOffset); 
+      self.armL_org = predraw_unit_part(self.armL_compOffset); 
       self.armL_angl = self.torC_angl;
       if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
         self.armL_angl_x = self.armL_angl_x * -1;
       }
-      self.angles = self.armL_angl;
       setmodel(self, self.armL_mdl);
+      self.angles = self.armL_angl;
+      self.origin = self.armL_org;
       addentity(self);
       self.origin = prevOrg;
       self.angles = prevAngle;
     }
     
    if( (self.unitModFlags & MOD_HAS_ARM_L) && !(self.criticalHits & M_ARM_LEFT) ){
-      self.origin = prevOrg;
-      self.origin = self.armR_org = predraw_unit_part(self.armR_compOffset); 
+      self.armR_org = predraw_unit_part(self.armR_compOffset); 
       self.armR_angl = self.torC_angl;
       if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
         self.armR_angl_x = self.armR_angl_x * -1;
       }
-      self.angles = self.armR_angl;
       setmodel(self, self.armR_mdl);
+      self.angles = self.armR_angl;
+      self.origin = self.armR_org;
       addentity(self);
       self.origin = prevOrg;
       self.angles = prevAngle;
@@ -309,7 +313,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();
-    self.critBits = ReadLong();
+    self.critBits = fabs(rint(ReadLong()));
     if( self.critBits != 0 ){
       sendevent_mech_ai_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
@@ -341,7 +345,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadLong();
+    self.attackFlag = fabs(rint(ReadLong()));
     sendevent_handle_weaponfire();
   }
   
@@ -356,7 +360,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.critBits = ReadLong();
+    self.critBits = fabs(rint(ReadLong()));
     if( self.critBits != 0 && self.deadflag == DEAD_NO ){
       sendevent_mech_ai_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
@@ -365,7 +369,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadLong();
+    self.burnBits = fabs(rint(ReadLong()));
     if( self.burnBits > 0 ){
       particleDraw = vlen(client_vis_org - self.origin);
       if( particleDraw <= PARTICLE_HAZ_DISTANCE ){

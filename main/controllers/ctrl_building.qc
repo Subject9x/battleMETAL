@@ -11,19 +11,23 @@ mod: 07/15/2019
 */
 
 void() building_die={
+  local vector destOrg;
   
-  if( self.deadflag != DEAD_NO){
+  if( self.deadflag == DEAD_NO || self.deadflag == DEAD_DEAD){
     return;
   }
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
   
   self.takedamage = DAMAGE_NO;
+  self.solid = SOLID_NOT;
   self.deadflag = DEAD_DEAD;
   self.touch = SUB_Null;
   
-  makevectors(self.angles);
-  self.solid = SOLID_SLIDEBOX;
+  //traceline(self.origin, self.origin + (v_up * self.mins_z), TRUE, self);
+  destOrg = self.origin;
+  destOrg_z = destOrg_z + self.mins_z;
+  
   switch( self.vec_size ){
     case 2:
       setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
@@ -36,12 +40,10 @@ void() building_die={
       break;
   }
   setsize(self, self.mins, self.maxs);
+  setorigin(self, destOrg);
   
-  traceline(self.origin, self.origin + (v_up * -512), FALSE, self);
-  setorigin(self, trace_endpos);
-  self.solid = SOLID_NOT;
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD | SENDFLAG_MOVE;  
+  self.enemy = world;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD | SENDFLAG_MOVE;
 };
 
 
@@ -65,7 +67,7 @@ void() building_burn_th={
   }
   
   self.think = building_burn_th;
-  self.nextthink = time + 1 + (random() * 0.5);
+  self.nextthink = time + 0.1 + (random() * 0.5);
 };
 
 
@@ -95,67 +97,85 @@ void() building_burn={
 };
 
 float( float isNew, float changedflags ) ctrl_send_turret={
-  local float scopeFlags;
-  scopeFlags = 0;
-  if( isNew ){
-    scopeFlags = scopeFlags | changedflags;
-    scopeFlags = scopeFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD | SENDFLAG_FACTION | SENDFLAG_EXDATA);
-  }
   
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
-  WriteLong( MSG_ENTITY, scopeFlags );
+  WriteLong( MSG_ENTITY, changedflags );
   //=================
   
-  if( (scopeFlags & SENDFLAG_DEAD) ){
-    WriteByte( MSG_ENTITY, self.deadflag );
-    if(self.deadflag != DEAD_NO){
-      WriteByte( MSG_ENTITY, self.vec_size );
+  
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+    
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.vec_size );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.canTarget );
+    if( (self.spawnflags & IS_MAPKEY) ){
+      WriteChar( MSG_ENTITY, TRUE );
+    }
+    else{
+      WriteChar( MSG_ENTITY, FALSE );
+    }
+    if( (self.spawnflags & IS_VIP) ){
+      WriteChar( MSG_ENTITY, TRUE );
+    }
+    else{
+      WriteChar( MSG_ENTITY, FALSE );
+    }
+    if( (self.spawnflags & MUTE_ME) ){
+      WriteChar( MSG_ENTITY, TRUE );
+    }
+    else{
+      WriteChar( MSG_ENTITY, FALSE );
     }
   }
   
-  if( (scopeFlags & SENDFLAG_MOVE) ){
+  if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
   }
-  if( (scopeFlags & SENDFLAG_ANGLE) ){
-    WriteAngle( MSG_ENTITY, self.angles_x );
-    WriteAngle( MSG_ENTITY, self.angles_y );
+  
+  if( (changedflags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (scopeFlags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, self.spawnflags );
-    WriteByte( MSG_ENTITY, self.data_idx );
+  if( (changedflags & SENDFLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, self.faction );
   }
   
-  if( (scopeFlags & SENDFLAG_CAMERA)) {
+  if( (changedflags & SENDFLAG_BURN) ){
+    WriteLong( MSG_ENTITY, self.burnBits );
+  }
+  
+  if( (changedflags & SENDFLAG_CAMERA)) {
     WriteByte( MSG_ENTITY, self.groundEnt );
   }
   
-  if( (scopeFlags & SENDFLAG_SHIELD) ){
+  if( (changedflags & SENDFLAG_SHIELD) ){
     WriteByte( MSG_ENTITY, self.stat_client_shield );
   }
   
-  if( (scopeFlags & SENDFLAG_IMPACT) ){
+  if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
   
-  if( (scopeFlags & SENDFLAG_ATTACK) ){
+  if( (changedflags & SENDFLAG_ATTACK) ){
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
-  if( (scopeFlags & SENDFLAG_FACTION) ){
-    WriteByte( MSG_ENTITY, self.faction );
-  }
-  if( (scopeFlags & SENDFLAG_TURRET) ){
+  if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
     WriteAngle( MSG_ENTITY, self.torC_angl_y );
   }
-  if( (scopeFlags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.burnBits );
-  }
-  if( (scopeFlags & SENDFLAG_VOICE) ){
-    if( !(scopeFlags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_VOICE) ){
+    if( !(changedflags & SENDFLAG_NEWENT) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }
@@ -164,55 +184,83 @@ float( float isNew, float changedflags ) ctrl_send_turret={
 };
 
 float( float isNew, float changedflags ) ctrl_send_building={
-  local float newFlags;
-  newFlags = 0;
-  if( isNew ){
-    newFlags = newFlags | changedflags;
-    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_DEAD | SENDFLAG_FACTION | SENDFLAG_EXDATA);
-  }
+  local float mapKey;
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
-  WriteLong( MSG_ENTITY, newFlags );
+  WriteLong( MSG_ENTITY, changedflags );
   //=================
   
-  if( (newFlags & SENDFLAG_ENERGY) ){
-    WriteShort( MSG_ENTITY, self.energy );
-  }
-  
-  if( (newFlags & SENDFLAG_DEAD) ){
-    WriteByte( MSG_ENTITY, self.deadflag );
-    if(self.deadflag != DEAD_NO){
-      WriteByte( MSG_ENTITY, self.vec_size );
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
+    
+    WriteByte( MSG_ENTITY, self.faction );
+    WriteByte( MSG_ENTITY, self.vec_size );
+    WriteByte( MSG_ENTITY, self.data_idx );
+    WriteByte( MSG_ENTITY, self.canTarget );
+    
+    if( (self.spawnflags & IS_MAPKEY) ){
+      WriteChar( MSG_ENTITY, TRUE );
+    }
+    else{
+      WriteChar( MSG_ENTITY, FALSE );
+    }
+    
+    if( (self.spawnflags & IS_VIP) ){
+      WriteChar( MSG_ENTITY, TRUE );
+    }
+    else{
+      WriteChar( MSG_ENTITY, FALSE );
+    }
+    
+    if( (self.spawnflags & MUTE_ME) ){
+      WriteChar( MSG_ENTITY, TRUE );
+    }
+    else{
+      WriteChar( MSG_ENTITY, FALSE );
     }
   }
   
-  if( (newFlags & SENDFLAG_MOVE) ){
+  if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
   }
-  if( (newFlags & SENDFLAG_ANGLE) ){
-    WriteAngle( MSG_ENTITY, self.angles_x );
-    WriteAngle( MSG_ENTITY, self.angles_y );
-    WriteAngle( MSG_ENTITY, self.angles_z );
+  
+  if( (changedflags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (newFlags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, self.spawnflags );
-    WriteByte( MSG_ENTITY, self.data_idx );
+  if( (changedflags & SENDFLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, self.faction );
   }
   
-  if( (newFlags & SENDFLAG_CAMERA)) {
+  if( (changedflags & SENDFLAG_BURN) ){
+    WriteLong( MSG_ENTITY, self.burnBits );
+  }
+  
+  if( (changedflags & SENDFLAG_ENERGY) ){
+    WriteShort( MSG_ENTITY, self.energy );
+  }
+  
+  if( (changedflags & SENDFLAG_SHIELD) ){
+    WriteByte( MSG_ENTITY, self.stat_client_shield );
+  }
+  
+  if( (changedflags & SENDFLAG_CAMERA)) {
     WriteByte( MSG_ENTITY, self.groundEnt );
   }
   
-  if( (newFlags & SENDFLAG_SHIELD) ){
-    WriteByte( MSG_ENTITY, self.stat_client_shield );
-  }
-  if( (newFlags & SENDFLAG_IMPACT) ){
+  if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
   }
-  if( (newFlags & SENDFLAG_EXDATA) ){
+  
+  if( (changedflags & SENDFLAG_EXDATA) ){
     if( self.data_idx == UI_BUILDING_repair_bay ){
       WriteByte( MSG_ENTITY, self.burstRate );
       WriteLong( MSG_ENTITY, self.critBits);  //send the partTypeId value to the client
@@ -228,15 +276,8 @@ float( float isNew, float changedflags ) ctrl_send_building={
     }
   }
   
-  if( (newFlags & SENDFLAG_FACTION) ){
-    WriteByte( MSG_ENTITY, self.faction );
-  }
-  
-  if( (newFlags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.burnBits );
-  }
-  if( (newFlags & SENDFLAG_VOICE) ){
-    if( !(newFlags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_VOICE) ){
+    if( !(changedflags & SENDFLAG_NEWENT) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }

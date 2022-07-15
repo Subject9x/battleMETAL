@@ -6,6 +6,7 @@ Overview:
   a smaller, vehicle hangar.
 */
 
+#ifdef SSQC
 void() hangar_vehicle_die2;
 void() hangar_vehicle_die3;
 void() hangar_vehicle_die4;
@@ -25,8 +26,8 @@ void() hangar_vehicle_die1=[0, hangar_vehicle_die2]{
   if( self.deadflag > DEAD_NO ){
     return;
   }
-
-  
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   local vector vfx;
   
   makevectors(self.angles);
@@ -111,27 +112,22 @@ void() hangar_vehicle_die15=[0, SUB_Null]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 5,1 );
   building_die();
 };
+#endif
 
 void() building_human_hangar_vehicle={
 
   self.data_idx = self.nextVecChoice = UI_BUILDING_hangar_med;
   self.data_type = DATA_BLD;
-
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  trigger_ext_check();
-
+  
   self.vec_name = "Vehicle Hangar";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
-  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/hangar_vehicle/hangar_vehicle.obj", self.skin, EF_LOWPRECISION)
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  self.takedamage = DAMAGE_AIM;
+  self.deadflag = DEAD_NO;  
+  setmodel(self, "q3mdl/buildings/hangar_vehicle/hangar_vehicle.obj");
   setsize(self, self.mins, self.maxs);
-  
-  self.th_die = hangar_vehicle_die1;
-  self.use = multi_trigger;
   
   if( !self.health) {
     self.health = 500;
@@ -152,26 +148,38 @@ void() building_human_hangar_vehicle={
     self.energyMax = 1000;
   }
 
-  if( !(self.spawnflags & NO_DROP) ){
-    if( util_cornerSlopeCheck(self, 0.95) ){
-      util_generateBuildingFoundation(self);
-    }
-    else{
-      droptofloor();
-    }
-  }
-  makevectors(self.angles);
-  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+  #ifdef SSQC
+    self.th_die = hangar_vehicle_die1;
+    self.use = multi_trigger;
   
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  if( (self.spawnflags & IS_MAPKEY) ){
-    self.effects = self.effects | EF_NODEPTHTEST;
-  }
-  self.canTarget = TRUE;
-  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-    self.canTarget = FALSE;
-  }
-  self.think = building_burn_th;
-  self.nextthink = time + random() * 3;
+    self.effects = self.effects | EF_LOWPRECISION;
+    if( ai_can_spawn() == FALSE ){
+      remove(self);
+      return;
+    }
+    trigger_ext_check();
+  
+    if( !(self.spawnflags & NO_DROP) ){
+      if( util_cornerSlopeCheck(self, 0.95) ){
+        util_generateBuildingFoundation(self);
+      }
+      else{
+        droptofloor();
+      }
+    }
+    makevectors(self.angles);
+    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+    
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    if( (self.spawnflags & IS_MAPKEY) ){
+      self.effects = self.effects | EF_NODEPTHTEST;
+    }
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
+    }
+    self.think = building_burn_th;
+    self.nextthink = time + random() * 3;
+  #endif
 };

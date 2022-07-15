@@ -22,6 +22,7 @@ Overview:
 #define REPAIR_STATE_IDLE 3
 #define REPAIR_STATE_COOLDOWN 4
 
+#ifdef SSQC
 void() building_repair_touch;
 
 /*
@@ -405,6 +406,8 @@ void() hrepair_die = [0, hrepair_die1]{
     return;
   }
   ai_alert_close(self.enemy);
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
 };
 
@@ -444,27 +447,24 @@ void() building_repair_state={
   self.think = building_repair_state;
   self.nextthink = time + 0.1;
 };
+#endif
 
 void() building_human_repair={
   
   self.data_idx = self.nextVecChoice = UI_BUILDING_repair_bay;
   self.data_type = DATA_BLD;
   
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  trigger_ext_check();
-
   self.flags = self.flags | FL_MONSTER;
   self.deadflag = DEAD_NO;
   
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
-  macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/repair_bay/repairbay.obj", self.skin, EF_LOWPRECISION)
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  self.takedamage = DAMAGE_AIM;
+  setmodel(self, "q3mdl/buildings/repair_bay/repairbay.obj");
   setsize(self, self.mins, self.maxs);
-  
+    
   if( !self.health ){
     self.health = self.max_health = 600;
   }
@@ -490,7 +490,7 @@ void() building_human_repair={
   self.shieldRate = 0.33;
   
   if( !self.reloadMax ){
-    if( skill > SKILL_REG ){
+    if( cvar("skill") > SKILL_REG ){
       self.reloadMax = 750;
     }
     else{
@@ -505,42 +505,53 @@ void() building_human_repair={
   if( !self.reloadRate ){
     self.reloadRate = 4;
   }
+  
+  #ifdef SSQC
+    self.effects = self.effects | EF_LOWPRECISION;
+    if( ai_can_spawn() == FALSE ){
+      remove(self);
+      return;
+    }
+    trigger_ext_check();
 
-  self.nextthink = time + 0.1;
-  self.use = multi_trigger;
-  
-  if( !(self.spawnflags & NO_DROP) ){
-    if( util_cornerSlopeCheck(self, 0.95) ){
-      util_generateBuildingFoundation(self);
-    }
-    else{
-      droptofloor();
-    }
-  }
-  
-  self.compOffset = self.origin;// + (v_forward * (self.maxs_x/2)) + (v_up * self.mins_z + 16) + (v_right * self.mins_y/2);
-  self.touch = building_repair_touch;
-  
-  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-  self.compAltOffset = self.origin;
-  self.th_die = hrepair_die;
+
+    self.nextthink = time + 0.1;
+    self.use = multi_trigger;
     
-  if( (self.spawnflags & IS_MAPKEY) ){
-    self.effects = self.effects | EF_NODEPTHTEST;
-  }
-  self.canTarget = TRUE;
-  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-    self.canTarget = FALSE;
-  }
-  
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  
-  self.ai_state_next = REPAIR_STATE_IDLE;
-  self.think = building_repair_state;
-  self.nextthink = time + 0.1;
+    if( !(self.spawnflags & NO_DROP) ){
+      if( util_cornerSlopeCheck(self, 0.95) ){
+        util_generateBuildingFoundation(self);
+      }
+      else{
+        droptofloor();
+      }
+    }
+    
+    self.compOffset = self.origin;// + (v_forward * (self.maxs_x/2)) + (v_up * self.mins_z + 16) + (v_right * self.mins_y/2);
+    self.touch = building_repair_touch;
+    
+    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+    self.compAltOffset = self.origin;
+    self.th_die = hrepair_die;
+      
+    if( (self.spawnflags & IS_MAPKEY) ){
+      self.effects = self.effects | EF_NODEPTHTEST;
+    }
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
+    }
+    
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    
+    self.ai_state_next = REPAIR_STATE_IDLE;
+    self.think = building_repair_state;
+    self.nextthink = time + 0.1;
+  #endif
 };
 
+#ifdef SSQC
 void() building_repair_touch={
   if( !(other.flags & FL_CLIENT) ){
     return;
@@ -656,3 +667,4 @@ void() hrepair_die16 = [16, SUB_Null]{
   }
   building_die();
 };
+#endif

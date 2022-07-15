@@ -10,6 +10,7 @@ Overview: data file for building
   func: provides radar scanning to all friendly units in radius
 */
 
+#ifdef SSQC
 /*
   macro rebuild
 */
@@ -24,16 +25,20 @@ void() building_radar_die2={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
+  building_die();
   self.think = SUB_Null;
   self.nextthink = time + 0.1;
 };
 
 void() building_radar_die1={
+  local vector shoot;
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  building_die();
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
   ai_alert_close(self.enemy);
   
   self.think = building_radar_die2;
@@ -220,6 +225,7 @@ void() building_radar_touch={
     }
   }
 };
+#endif
 
 /*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/radar/radar.md3"); }
@@ -257,38 +263,16 @@ void() building_human_radar={
   self.data_idx = self.nextVecChoice = UI_BUILDING_radar;
   self.data_type = DATA_BLD;
 
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  trigger_ext_check();
-
-  self.ai_rank = skill;
-  self.w_firetime = AI_POST_SPOT_TIME;
+  self.deadflag = DEAD_NO;  
   self.vec_name = "Listening Post";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 1;
-  macro_set_model("q3mdl/buildings/radar/listpost.obj", self.skin, EF_LOWPRECISION)
-  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  self.takedamage = DAMAGE_AIM;
+  setmodel(self, "q3mdl/buildings/radar/listpost.obj");
   setsize(self, self.mins, self.maxs);
-  self.stat_rdr_mode = TRUE;
-  
-  self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;
-  switch( self.ai_rank ){
-    case AI_RANK_ROK:
-      self.ai_view = self.radar_range * AI_VIEW_RANGE_ROK;
-      self.w_firetime = self.w_firetime * AI_POST_LOCK_ROK;
-      break;
-    case AI_RANK_VET:
-      self.ai_view = self.radar_range * AI_VIEW_RANGE_VET;
-      self.w_firetime = self.w_firetime * AI_POST_LOCK_VET;
-      break;
-    case AI_RANK_ACE:
-      self.ai_view = self.radar_range * AI_VIEW_RANGE_ACE;
-      self.w_firetime = self.w_firetime * AI_POST_LOCK_ACE;
-      break;
-  }
-  
+
   if( !self.health) {
     self.health = 250;
   }
@@ -308,50 +292,78 @@ void() building_human_radar={
   if( !self.radar_range ){
     self.radar_range = 2000; 
   }
-  
-  self.deadflag = DEAD_NO;  
-  if( !(self.spawnflags & NO_DROP) ){
-    if( util_cornerSlopeCheck(self, 4) ){
-      util_generateBuildingFoundation(self);
+  #ifdef SSQC
+    self.effects = self.effects | EF_LOWPRECISION;
+    if( ai_can_spawn() == FALSE ){
+      remove(self);
+      return;
     }
-    else{
-      droptofloor();
+    trigger_ext_check();
+
+    self.ai_rank = skill;
+    self.w_firetime = AI_POST_SPOT_TIME;
+
+    self.stat_rdr_mode = TRUE;
+    
+    self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;
+    switch( self.ai_rank ){
+      case AI_RANK_ROK:
+        self.ai_view = self.radar_range * AI_VIEW_RANGE_ROK;
+        self.w_firetime = self.w_firetime * AI_POST_LOCK_ROK;
+        break;
+      case AI_RANK_VET:
+        self.ai_view = self.radar_range * AI_VIEW_RANGE_VET;
+        self.w_firetime = self.w_firetime * AI_POST_LOCK_VET;
+        break;
+      case AI_RANK_ACE:
+        self.ai_view = self.radar_range * AI_VIEW_RANGE_ACE;
+        self.w_firetime = self.w_firetime * AI_POST_LOCK_ACE;
+        break;
     }
-  }
-  
-  self.th_walk = building_radar_patrol1;
-  self.th_stand = building_radar_detect1;
-  self.th_missile = building_radar_alert1;
-  self.th_melee = building_radar_cool1;
-  self.th_die = building_radar_die1;
-  self.use = multi_trigger;
-  self.touch = building_radar_touch;
-  self.wait = time;
-  
-  makevectors(self.angles);
-  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-  
-  //allows RADAR to call a specific trigger when it spots something
-  if( self.trigOnTarget ){
-    if( self.delay == -1 ){
-      self.delay = 99999999;
-    }
-    else{
-      if( !self.delay ){
-        self.delay = self.w_firetime * 1.67;
+    
+    if( !(self.spawnflags & NO_DROP) ){
+      if( util_cornerSlopeCheck(self, 4) ){
+        util_generateBuildingFoundation(self);
+      }
+      else{
+        droptofloor();
       }
     }
-  }
-  
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  if( (self.spawnflags & IS_MAPKEY) ){
-    self.effects = self.effects | EF_NODEPTHTEST;
-  }
-  self.canTarget = TRUE;
-  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-    self.canTarget = FALSE;
-  }
-  self.think = building_radar_patrol1;
-  self.nextthink = time + 1;
+    
+    self.th_walk = building_radar_patrol1;
+    self.th_stand = building_radar_detect1;
+    self.th_missile = building_radar_alert1;
+    self.th_melee = building_radar_cool1;
+    self.th_die = building_radar_die1;
+    self.use = multi_trigger;
+    self.touch = building_radar_touch;
+    self.wait = time;
+    
+    makevectors(self.angles);
+    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+    
+    //allows RADAR to call a specific trigger when it spots something
+    if( self.trigOnTarget ){
+      if( self.delay == -1 ){
+        self.delay = 99999999;
+      }
+      else{
+        if( !self.delay ){
+          self.delay = self.w_firetime * 1.67;
+        }
+      }
+    }
+    
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    if( (self.spawnflags & IS_MAPKEY) ){
+      self.effects = self.effects | EF_NODEPTHTEST;
+    }
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
+    }
+    self.think = building_radar_patrol1;
+    self.nextthink = time + 1;
+  #endif
 };

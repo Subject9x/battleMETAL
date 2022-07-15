@@ -8,13 +8,15 @@ Overview: data file for building
   func: provides radar scanning to all friendly units in radius
 */
 
+#ifdef SSQC
 //Death Animation - TODO - clientside
 void() hfuel_death1 = [1, hfuel_death2]{
   
   if( self.deadflag > DEAD_NO ){
     return;
-  }
-  ai_alert_close(self.enemy);
+  } 
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 void() hfuel_death2 = [2, hfuel_death3]{
   local vector vfx;
@@ -93,26 +95,24 @@ void() hfuel_death11 = [11, hfuel_death12]{};
 void() hfuel_death12 = [12, hfuel_death12]{
   building_die();
 };
+#endif
 
 void() building_human_fuel={
   self.data_idx = self.nextVecChoice = UI_BUILDING_fuel_tank;
   self.data_type = DATA_BLD;
-
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  trigger_ext_check();
-
+  
   self.vec_name = "Fuel Tank";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
-  macro_set_collider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE)
-  macro_set_model("q3mdl/buildings/fueltank/fueltank.obj", self.skin, EF_LOWPRECISION)
-  setsize(self, self.mins, self.maxs);
-  setorigin(self, self.origin);
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  self.takedamage = DAMAGE_AIM;
   self.scale = 1;
   self.deadflag = DEAD_NO;
+
+  setmodel(self, "q3mdl/buildings/fueltank/fueltank.obj");
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
 
   if( !self.health) {
     self.health = 100;
@@ -132,31 +132,40 @@ void() building_human_fuel={
   if( !self.energyMax ){
     self.energyMax = 0;
   }
-
-  if( !(self.spawnflags & NO_DROP) ){
-    if( util_cornerSlopeCheck(self, 0.95) ){
-      util_generateBuildingFoundation(self);
-    }
-    else{
-      droptofloor();
-    }
-  }
-  makevectors(self.angles);
-  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-
-  self.th_die = hfuel_death1;
-  self.use = multi_trigger;
   
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-  if( (self.spawnflags & IS_MAPKEY) ){
-    self.effects = self.effects | EF_NODEPTHTEST;
-  }
-  self.canTarget = TRUE;
-  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-    self.canTarget = FALSE;
-  }
-  
-  self.think = building_burn_th;
-  self.nextthink = time + random() * 3;
+  #ifdef SSQC
+    self.effects = self.effects | EF_LOWPRECISION;
+    if( ai_can_spawn() == FALSE ){
+      remove(self);
+      return;
+    }
+    trigger_ext_check();
+
+    if( !(self.spawnflags & NO_DROP) ){
+      if( util_cornerSlopeCheck(self, 0.95) ){
+        util_generateBuildingFoundation(self);
+      }
+      else{
+        droptofloor();
+      }
+    }
+    makevectors(self.angles);
+    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+
+    self.th_die = hfuel_death1;
+    self.use = multi_trigger;
+    
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    if( (self.spawnflags & IS_MAPKEY) ){
+      self.effects = self.effects | EF_NODEPTHTEST;
+    }
+    self.canTarget = TRUE;
+    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+      self.canTarget = FALSE;
+    }
+    
+    self.think = building_burn_th;
+    self.nextthink = time + random() * 3;
+  #endif
 };
