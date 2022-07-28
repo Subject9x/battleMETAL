@@ -138,23 +138,24 @@ void() misc_build_die1={
   Generic ini func for misc_buildings
 */
 void( string modelName, float setSizeFlag ) misc_building={
-  
+  self.avelocity = '0 0 0';
+  self.velocity = '0 0 0';
   setmodel(self, modelName);
-  if( setSizeFlag ){
-    setsize(self, self.mins, self.maxs);
-    setorigin(self, self.origin);
-  }
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
   
   if( !(self.spawnflags & MISC_NO_DROP) ){
     droptofloor();
+  }
+  else{
+    traceline(self.origin, self.origin + [0, 0, self.mins_z * 2], TRUE, self);
+    setorigin(self, trace_endpos + [0, 0, self.mins_z * -1]);
   }
   
   trigger_ext_check();
   
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
-  self.velocity = '0 0 0';
-  self.avelocity = '0 0 0';
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
   self.alpha = TRUE;
@@ -171,7 +172,6 @@ void( string modelName, float setSizeFlag ) misc_building={
     self.canTarget = TRUE;
     self.SendEntity = sendent_misc_building;
   }
-  
 };
 
 void() building_misc_apartment={

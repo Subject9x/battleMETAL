@@ -274,6 +274,7 @@ void() predraw_building={
   
   if( self.cl_lod_unit ){
     setmodel(self, self.model);
+    setsize(self, self.mins, self.maxs);
     if(self.render_dlights){
       if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
         self.render_dlights();
