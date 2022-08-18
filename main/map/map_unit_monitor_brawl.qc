@@ -14,6 +14,7 @@ void() unit_monitor_survest_brawler={
   self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_SKR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -79,6 +80,7 @@ void() unit_monitor_militar_brawler={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_SKR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -144,6 +146,7 @@ void() unit_monitor_psc_brawler={
   self.faction = FACTION_PSC;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_SKR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -210,6 +213,7 @@ void() unit_monitor_militar_zapper={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_ENE;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -276,6 +280,7 @@ void() unit_monitor_militar_gunner={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_DIR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -343,6 +348,7 @@ void() unit_monitor_survest_lobber={
   self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_MIS;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);

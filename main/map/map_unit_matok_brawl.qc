@@ -14,6 +14,7 @@ void() unit_matok_survest_brawler={
   self.faction = FACTION_SURVEST; 
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
+  self.subType = AI_UTYPE_SKR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -61,6 +62,7 @@ void() unit_matok_militar_brawler={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
+  self.subType = AI_UTYPE_SKR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -111,6 +113,7 @@ void() unit_matok_militar_gunner={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
+  self.subType = AI_UTYPE_DIR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -158,6 +161,7 @@ void() unit_matok_survest_gunner={
   self.faction = FACTION_SURVEST; 
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
+  self.subType = AI_UTYPE_DIR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -207,6 +211,7 @@ void() unit_matok_survest_lobber={
   self.faction = FACTION_SURVEST; 
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
+  self.subType = AI_UTYPE_MIS;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);

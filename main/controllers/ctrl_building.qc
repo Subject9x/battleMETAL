@@ -135,6 +135,7 @@ float( float isNew, float changedflags ) ctrl_send_turret={
     else{
       WriteChar( MSG_ENTITY, FALSE );
     }
+    WriteChar( MSG_ENTITY, self.subType );
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){

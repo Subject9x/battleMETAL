@@ -9,10 +9,6 @@ Date: 3/30/2020
 /*
   RENDER TARGET DIRECTION INDICATORS
   
-  AIM_FACE_FRONT   = 1;
-  AIM_FACE_LEFT    = 2;
-  AIM_FACE_RIGHT   = 3;
-  AIM_FACE_BACK    = 4;
 */ 
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection={
   vector trg_color;
@@ -47,6 +43,7 @@ void(vector ofs, float algn) hud_renderTargetName={
   local vector msgSize, factionColor;
   local string msg;
   local string targType;
+  local string varType;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -72,10 +69,30 @@ void(vector ofs, float algn) hud_renderTargetName={
       targType = CLIENT_target_ent.vec_name;
     }
   }
+  
+  switch(CLIENT_target_ent.subType){
+    default:
+      varType = "";
+      break;
+    case AI_UTYPE_MIS:
+      varType = "MIS";
+      break;
+    case AI_UTYPE_DIR:
+      varType = "DIR";
+      break;
+    case AI_UTYPE_ENE:
+      varType = "ENE";
+      break;
+    case AI_UTYPE_SKR:
+      varType = "SKR";
+      break;
+  }
+  
   msgSize = '0 0';
   
   ofs = gui_calcAlign(ofs, algn);
-  msg = strcat("[TARGET] ", targType);
+  msg = sprintf("[TARGET] %s-%s", targType, varType);
+  
   msgLen = stringwidth(msg, 0, '10 10 0');
   msgSize_x = msgLen/2;
   msgSize_y = 6;
@@ -588,7 +605,9 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     zBias = (HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z - HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z)/2 - HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z;
     zTotal = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z) / 2;
     zHalf = ((HUD_MODEL_ARMOR_GRAPH_TARGET.mins_z * -1) + HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z * 1.5);
-    xHalf = HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_x * 1.5;
+    
+    xHalf = max(fabs(HUD_MODEL_ARMOR_GRAPH_TARGET.mins_x), fabs(HUD_MODEL_ARMOR_GRAPH_TARGET.mins_y), HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_x , HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_y); 
+    xHalf = xHalf * 1.5;
     
     makevectors('30 0 0');
     setproperty(VF_ORIGIN, viewOrg + (v_forward * -150 - xHalf) - (v_right * xHalf) + (v_up * zHalf));	//look towards it.

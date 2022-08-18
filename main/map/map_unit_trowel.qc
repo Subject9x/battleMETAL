@@ -15,14 +15,14 @@ void() unit_trowel_militar_lobber={
   
   self.nextVecChoice = UID_VEHICLE_trowel;
   self.faction = FACTION_MILITAR;
-   
+  self.subType = AI_UTYPE_MIS; 
   self.flags = self.flags | FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
-
+  
   ai_promote();
   trigger_ext_check();
   switch( self.ai_rank ){
@@ -74,7 +74,7 @@ void() unit_trowel_survest_lobber={
 
   self.nextVecChoice = UID_VEHICLE_trowel;
   self.faction = FACTION_SURVEST;
-   
+  self.subType = AI_UTYPE_MIS; 
   self.flags = self.flags | FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
@@ -134,7 +134,7 @@ void() unit_trowel_militar_gunner={
   
   self.nextVecChoice = UID_VEHICLE_trowel;
   self.faction = FACTION_MILITAR;
-   
+  self.subType = AI_UTYPE_DIR;
   self.flags = self.flags | FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){
@@ -193,7 +193,7 @@ void() unit_trowel_survest_gunner={
 
   self.nextVecChoice = UID_VEHICLE_trowel;
   self.faction = FACTION_SURVEST;
-   
+  self.subType = AI_UTYPE_DIR;
   self.flags = self.flags | FL_TURRET;
   
   if( ai_can_spawn() == FALSE ){

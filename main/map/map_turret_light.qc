@@ -15,6 +15,7 @@ Overview:
 void() building_turret_light_survest_zapper={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_ENE;
   ai_promote();
   trigger_ext_check();
 
@@ -44,6 +45,7 @@ void() building_turret_light_survest_zapper={
 void() building_turret_light_militar_zapper={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_ENE;
   ai_promote();
   trigger_ext_check();
 
@@ -77,6 +79,7 @@ void() building_turret_light_militar_zapper={
 void() building_turret_light_psc_zapper={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_PSC;
+  self.subType = AI_UTYPE_ENE;
   ai_promote();
   ai_promote();
   trigger_ext_check();
@@ -110,6 +113,7 @@ void() building_turret_light_psc_zapper={
 void() building_turret_light_survest_gunner={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_DIR;
   ai_promote();
   trigger_ext_check();
 
@@ -140,6 +144,7 @@ void() building_turret_light_survest_gunner={
 void() building_turret_light_militar_gunner={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_DIR;
   ai_promote();
   trigger_ext_check();
 
@@ -170,6 +175,7 @@ void() building_turret_light_militar_gunner={
 void() building_turret_light_psc_gunner={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_PSC;
+  self.subType = AI_UTYPE_DIR;
   ai_promote();
   trigger_ext_check();
 

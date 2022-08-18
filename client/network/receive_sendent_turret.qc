@@ -75,6 +75,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     if( muted ){
       self.spawnflags = self.spawnflags | MUTE_ME;
     }
+    self.subType = ReadChar();
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){

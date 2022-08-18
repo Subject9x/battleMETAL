@@ -14,6 +14,7 @@ void() unit_balaket_survest_sniper={
   self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech   
   self.nextVecChoice = UID_MECH_balaket;
+  self.subType = AI_UTYPE_DIR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -55,6 +56,7 @@ void() unit_balaket_militar_sniper={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech   
   self.nextVecChoice = UID_MECH_balaket;
+  self.subType = AI_UTYPE_ENE;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);

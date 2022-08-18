@@ -70,6 +70,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     self.flags = ReadLong();
     self.faction = ReadByte();
     self.ai_muted = ReadByte();
+    self.subType = ReadChar();
     newName = ReadString();
   }
   

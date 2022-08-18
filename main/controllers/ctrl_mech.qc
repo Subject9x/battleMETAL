@@ -524,6 +524,7 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
+    WriteChar( MSG_ENTITY, self.subType );
     WriteString( MSG_ENTITY, self.netname );
   }
   

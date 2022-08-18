@@ -14,7 +14,8 @@ void() unit_sorcerer_survest_gunner={
 
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_SURVEST;
-   
+  self.subType = AI_UTYPE_DIR;
+  
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
@@ -42,6 +43,7 @@ void() unit_sorcerer_militar_gunner={
 
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_DIR;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -70,6 +72,7 @@ void() unit_sorcerer_militar_gunner={
 void() unit_sorcerer_survest_lobber={
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_MIS;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -100,6 +103,7 @@ void() unit_sorcerer_militar_lobber={
 
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_MIS;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);

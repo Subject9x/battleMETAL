@@ -15,6 +15,7 @@ void() unit_foslager_survest_zapper={
 
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_ENE;
    
   self.flags = FL_TURRET;
   
@@ -58,6 +59,7 @@ void() unit_foslager_militar_zapper={
 
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_ENE;
    
   self.flags = FL_TURRET;
   
@@ -99,6 +101,7 @@ void() unit_foslager_survest_gunner={
 
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_DIR;
    
   self.flags = FL_TURRET;
   
@@ -140,6 +143,7 @@ void() unit_foslager_militar_gunner={
 
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_DIR;
    
   self.flags = FL_TURRET;
   

@@ -572,6 +572,17 @@ vector ACCURACY_PRIMITVE    = '0.45 0.93 0.001';
 
 
 //============================
+//     AI SUB TYPES
+//============================
+//LOBBER
+#define AI_UTYPE_MIS 1
+//GUNNER
+#define AI_UTYPE_DIR 2
+//ZAPPER
+#define AI_UTYPE_ENE 3
+//BRAWLER
+#define AI_UTYPE_SKR 4
+//============================
 //     CLIENT INFO STRING
 //      sent by player when choosing items.
 //============================

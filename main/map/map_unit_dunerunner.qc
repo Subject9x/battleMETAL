@@ -14,6 +14,7 @@ void() unit_dunerunner_h={
   
   self.nextVecChoice = UID_VEHICLE_dunerunner;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_SKR;
    
   self.flags = self.flags | FL_TURRET;
   
@@ -53,6 +54,7 @@ void() unit_dunerunner_m={
   
   self.nextVecChoice = UID_VEHICLE_dunerunner;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_SKR;
    
   self.flags = self.flags | FL_TURRET;
   
