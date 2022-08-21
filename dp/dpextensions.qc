@@ -2716,3 +2716,5 @@ float CF_MAXFLAGSVAL          = 4095;    // used to determine if flags is valid
 
 #define cacheGlobalString(var, val) if(val!=""){if (var!=""){strunzone(var); var="";} var = strzone(val);}
 #define freeGlobalString(var) if (var!="" && strlen(var) > 0){strunzone(var); var = "";}
+//needed for compiler switches in project.
+#define SSQC

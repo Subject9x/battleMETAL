@@ -276,21 +276,64 @@ void() te_flame_th={
 
 
 /*
-  item is exploding, use its bbox size for area
+  server side missile explosions because good lord, CSCQ doesn't give us any PVS culling whatsoever....
+    so use this on the server if explosion is truly inconsequential for players to see.
 */
-void( vector explodeColor ) te_object_explode={
-  local vector exp;
-  
-  exp_x = crandom() * (self.maxs_x * 2);
-  exp_y = crandom() * (self.maxs_y * 2);
-  exp_z = crandom() * (self.maxs_z * 2);
-  makevectors(self.angles);
-  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
-  
-  //TODO - Replace
-  //te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
-
+void() te_missile_explode_th={
+  self.alpha = self.alpha - 0.025;
+  self.scale = self.scale + self.data_lifetime;
+  self.think = te_missile_explode_th;
+  if( self.alpha < 0.01 ){
+    remove(self);
+    return;
+  }
+  self.nextthink = time + 0.01;
 };
+void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode={
+  local entity explode;
+  local vector back;
+  local vector launch;
+  
+  explode = spawn();
+  if( explode ){
+    explode.movetype = MOVETYPE_NONE;
+    explode.solid = SOLID_NOT;
+    explode.think = te_missile_explode_th;
+    explode.nextthink = time + 0.05;
+    explode.scale = explodeSize;
+    explode.alpha = 1;
+    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_LOWPRECISION;
+    explode.avelocity = randomvec() * 300;
+    explode.angles = randomvec() * 30;
+    explode.data_lifetime = bloom;
+    
+    if( explodeColor != '0 0 0' ){
+      explode.colormod = explodeColor;
+    }
+    
+    setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
+    setorigin( explode, org);
+  }
+
+  te_customflash( org, explodeSize * 50, 1, explodeColor);
+  
+  
+  makevectors(vectoangles(self.velocity));
+  back = org + (v_forward * -10);
+  back = normalize(back - org);
+  
+  if(explodeSize < 2 ){
+    pointparticles( particleeffectnum("TE_HIT_EXPL_SML"), org, back, 1);
+  }
+  if(explodeSize == 2){
+    pointparticles( particleeffectnum("TE_HIT_EXPL_MED"), org, back, 1);
+  }
+  else{
+    pointparticles( particleeffectnum("TE_HIT_EXPL_LRG"), org, back, 1);
+  }
+};
+
+
 
 /*
   When a part is blown off a mech

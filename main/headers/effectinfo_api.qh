@@ -33,9 +33,10 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
 
 void( vector org, vector angl, vector vel, float total) te_unit_dust;
 
-void( vector explodeColor ) te_object_explode;
 void() te_vehicle_chunk_th;
 void( string mdl, vector startOrg, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk;
+
+void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode;
 
 //SFX
 void() te_msn_boundary;
