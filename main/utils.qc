@@ -492,25 +492,26 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
 };
 
 void(string msg, float val) cons_logAFloat={
+  dprint("fuck\n"); //debug
   #ifdef SSQC
-    dprint(sprintf("[SV] %s : %0.2f\n", msg, val));
+    dprint(sprintf("[SV] %s : %0.2f \n", msg, val));
   #endif
   #ifdef CSQC
-    dprint(sprintf("[CS] %s : %0.2f\n", msg, val));
+    dprint(sprintf("[CS] %s : %0.2f \n", msg, val));
   #endif
   #ifdef MENUQC
-    dprint(sprintf("[MN] %s : %0.2f\n", msg, val));
+    dprint(sprintf("[MN] %s : %0.2f \n", msg, val));
   #endif
 };
 void(string msg, vector v1) cons_logAVector={
   #ifdef SSQC
-    dprint(sprintf("[SV] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+    dprint(sprintf("[SV] %s : %0.2f %0.2f %0.2f \n",msg, v1_x, v1_y, v1_z));
   #endif
   #ifdef CSQC
-    dprint(sprintf("[CS] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+    dprint(sprintf("[CS] %s : %0.2f %0.2f %0.2f \n",msg, v1_x, v1_y, v1_z));
   #endif
   #ifdef MENUQC
-    dprint(sprintf("[MN] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+    dprint(sprintf("[MN] %s : %0.2f %0.2f %0.2f \n",msg, v1_x, v1_y, v1_z));
   #endif
 };
 void(string msg, string s1) cons_logAString={
@@ -527,24 +528,24 @@ void(string msg, string s1) cons_logAString={
 
 void(string msg, float val, string split, float val2) cons_log2Float={
   #ifdef SSQC
-    dprint(sprintf("[SV] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+    dprint(sprintf("[SV] %s : %0.2f | %s : %0.2f \n", msg, val, split, val2));
   #endif
   #ifdef CSQC
-    dprint(sprintf("[CS] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+    dprint(sprintf("[CS] %s : %0.2f | %s : %0.2f \n", msg, val, split, val2));
   #endif
   #ifdef MENUQC
-    dprint(sprintf("[MC] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+    dprint(sprintf("[MC] %s : %0.2f | %s : %0.2f \n", msg, val, split, val2));
   #endif
 };
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
   #ifdef SSQC
-    dprint(sprintf("[SV] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+    dprint(sprintf("[SV] %s : %s | %s : %s \n", msg, vtos(v1), split, vtos(v2)));
   #endif
   #ifdef CSQC
-    dprint(sprintf("[CS] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+    dprint(sprintf("[CS] %s : %s | %s : %s \n", msg, vtos(v1), split, vtos(v2)));
   #endif
   #ifdef MENUQC
-    dprint(sprintf("[MC] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+    dprint(sprintf("[MC] %s : %s | %s : %s \n", msg, vtos(v1), split, vtos(v2)));
   #endif
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
@@ -552,10 +553,10 @@ void(string msg, string s1, string split, string s2) cons_log2Strings={
     dprint(sprintf("[SV] %s : %s | %s : %s\n", msg, s1, split, s2));
   #endif
   #ifdef CSQC
-    dprint(sprintf("[CS] %s : %s | %s : %s", msg, s1, split, s2));
+    dprint(sprintf("[CS] %s : %s | %s : %s \n", msg, s1, split, s2));
   #endif
   #ifdef MENUQC
-    dprint(sprintf("[MQ] %s : %s | %s : %s\n", msg, s1, split, s2));
+    dprint(sprintf("[MQ] %s : %s | %s : %s \n", msg, s1, split, s2));
   #endif
   
 };
