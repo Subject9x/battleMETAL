@@ -33,6 +33,7 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
   self.torC_parentId = M_UNIT;
   self.torC_compOffset = offsetOrigin;
   self.torC_compAltOffset = altOffset;
+  precache_model(pathToModel);
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_right_={
@@ -46,6 +47,7 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
   self.torR_parentId = M_TOR_CENTER;
   self.torR_compOffset = offsetOrigin;
   self.torR_compAltOffset = altOffset;
+  precache_model(pathToModel);
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_left_={
@@ -57,6 +59,7 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
   self.torL_parentId = M_TOR_CENTER;
   self.torL_compOffset = offsetOrigin;
   self.torL_compAltOffset = altOffset;
+  precache_model(pathToModel);
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_left_={
@@ -68,6 +71,7 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
   self.armL_parentId = M_TOR_LEFT;
   self.armL_compOffset = offsetOrigin;
   self.armL_compAltOffset = altOffset;
+  precache_model(pathToModel);
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_right_={
@@ -80,6 +84,7 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
   self.armR_parentId = M_TOR_RIGHT;
   self.armR_compOffset = offsetOrigin;
   self.armR_compAltOffset = altOffset;
+  precache_model(pathToModel);
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
@@ -90,6 +95,7 @@ void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
   #ifdef CSQC
     self.legs_hpMax = healthMax;
     self.legs_mdl = pathToModel;
+    precache_model(pathToModel);
   #endif
   
   self.legs_parentId = M_TOR_CENTER;

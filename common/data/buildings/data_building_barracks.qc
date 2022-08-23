@@ -9,7 +9,7 @@ Overview: data file for building
   func: 
     Decoration, mostly an aesthetics building used to fill-out base areas.
 */
-#ifdef SSQC
+
 void() hangar_barracks_die2;
 void() hangar_barracks_die3;
 void() hangar_barracks_die4;
@@ -26,6 +26,8 @@ void() hangar_barracks_die14;
 void() hangar_barracks_die15;
 
 void() hangar_barracks_die1=[0, hangar_barracks_die2]{
+
+#ifdef SSQC
   if( self.deadflag > DEAD_NO ){
     return;
   }
@@ -44,83 +46,129 @@ void() hangar_barracks_die1=[0, hangar_barracks_die2]{
     self.deadflag = DEAD_DYING;
     self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   }
-  
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die2=[0, hangar_barracks_die3]{
 
 };
 void() hangar_barracks_die3=[0, hangar_barracks_die4]{
+#ifdef SSQC
   local vector vfx;
-  
   makevectors(self.angles);
   vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.mins_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
-
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die4=[0, hangar_barracks_die5]{
 
 };
 void() hangar_barracks_die5=[0, hangar_barracks_die6]{
+#ifdef SSQC
   local vector vfx;
-  
   makevectors(self.angles);
   vfx = self.origin + (v_up * self.maxs_z) + (v_forward * (self.mins_y * 0.18)) + (v_right * (self.mins_x * 0.15));
-
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die6=[0, hangar_barracks_die7]{
 
 };
 void() hangar_barracks_die7=[0, hangar_barracks_die8]{
+#ifdef SSQC
   local vector vfx;
-
   vfx = randompos(self.absmin, self.absmax);
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 2 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die8=[0, hangar_barracks_die9]{
+#ifdef SSQC
   local vector vfx;
-
   vfx = randompos(self.absmin, self.absmax);
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 4, 2 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die9=[0, hangar_barracks_die10]{
+#ifdef SSQC
   local vector vfx;
-
   vfx = randompos(self.absmin, self.absmax);
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 2 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die10=[0, hangar_barracks_die11]{
+#ifdef SSQC
   local vector vfx;
-
   vfx = randompos(self.absmin, self.absmax);
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 2, 2 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die11=[0, hangar_barracks_die12]{
+#ifdef SSQC
   local vector vfx;
-
   vfx = randompos(self.absmin, self.absmax);
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die12=[0, hangar_barracks_die13]{
 
 };
 void() hangar_barracks_die13=[0, hangar_barracks_die14]{
+#ifdef SSQC
   local vector vfx;
-
   vfx = randompos(self.absmin, self.absmax);
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 4, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hangar_barracks_die14=[0, hangar_barracks_die15]{
 
 };
 void() hangar_barracks_die15=[0, SUB_Null]{
+#ifdef SSQC
   local vector vfx;
-
   vfx = randompos(self.absmin, self.absmax);
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 5,1 );
   building_die();
-};
 #endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
+};
 
 void() building_barracks={
 
@@ -130,10 +178,13 @@ void() building_barracks={
   self.vec_name = "Barracks";
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_BBOX;
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
-  setmodel(self, "q3mdl/buildings/barracks/building_barracks.obj");
+  self.skin = self.faction - 1;
+  self.model = "q3mdl/buildings/barracks/barracks.md3";
+  precache_model("q3mdl/buildings/barracks/barracks.md3");
+  setmodel(self, "q3mdl/buildings/barracks/barracks.md3");
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {
@@ -154,6 +205,9 @@ void() building_barracks={
   if( !self.energyMax ){
     self.energyMax = 100;
   }
+  self.angles_y = self.angle;
+  
+  self.th_die = hangar_barracks_die1;
 
   #ifdef SSQC
     if( ai_can_spawn() == FALSE ){
@@ -162,7 +216,6 @@ void() building_barracks={
     }
     trigger_ext_check();
   
-    self.th_die = hangar_barracks_die1;
     self.use = multi_trigger;
     self.effects = self.effects | EF_LOWPRECISION;
     if( !(self.spawnflags & NO_DROP) ){
@@ -173,6 +226,7 @@ void() building_barracks={
         droptofloor();
       }
     }
+    setorigin(self, self.origin);
     makevectors(self.angles);
     self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
     
@@ -185,8 +239,7 @@ void() building_barracks={
     if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
       self.canTarget = FALSE;
     }
-    
-    self.think = building_burn_th;
-    self.nextthink = time + random() * 3;
+    self.think = building_bbox_settle;
+    self.nextthink = time + 0.01;
   #endif
 };

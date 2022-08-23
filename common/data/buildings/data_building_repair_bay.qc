@@ -401,15 +401,7 @@ void() building_repair_attack={
 
 void() building_repair_touch;
 
-void() hrepair_die = [0, hrepair_die1]{
-  if( self.deadflag > DEAD_NO ){
-    return;
-  }
-  ai_alert_close(self.enemy);
-  self.deadflag = DEAD_DYING;
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  
-};
+
 
 
 void() building_repair_state={
@@ -448,8 +440,9 @@ void() building_repair_state={
   self.nextthink = time + 0.1;
 };
 #endif
+void() hrepair_die ;
 
-void() building_human_repair={
+void() building_repair_bay={
   
   self.data_idx = self.nextVecChoice = UI_BUILDING_repair_bay;
   self.data_type = DATA_BLD;
@@ -459,11 +452,15 @@ void() building_human_repair={
   
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
-  self.solid = SOLID_BSP;
-  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_BBOX;
+  self.movetype = MOVETYPE_WALK;
   self.takedamage = DAMAGE_AIM;
-  setmodel(self, "q3mdl/buildings/repair_bay/repairbay.obj");
+  self.skin = self.faction - 1;
+  self.model = "q3mdl/buildings/repair_bay/repairbay.md3";
+  precache_model("q3mdl/buildings/repair_bay/repairbay.md3");
+  setmodel(self, "q3mdl/buildings/repair_bay/repairbay.md3");
   setsize(self, self.mins, self.maxs);
+  self.th_die = hrepair_die;
     
   if( !self.health ){
     self.health = self.max_health = 600;
@@ -514,7 +511,6 @@ void() building_human_repair={
     }
     trigger_ext_check();
 
-
     self.nextthink = time + 0.1;
     self.use = multi_trigger;
     
@@ -526,13 +522,13 @@ void() building_human_repair={
         droptofloor();
       }
     }
+    setorigin(self, self.origin);
     
     self.compOffset = self.origin;// + (v_forward * (self.maxs_x/2)) + (v_up * self.mins_z + 16) + (v_right * self.mins_y/2);
     self.touch = building_repair_touch;
     
     self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
     self.compAltOffset = self.origin;
-    self.th_die = hrepair_die;
       
     if( (self.spawnflags & IS_MAPKEY) ){
       self.effects = self.effects | EF_NODEPTHTEST;
@@ -544,10 +540,10 @@ void() building_human_repair={
     
     self.SendEntity = ctrl_send_building;
     self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-    
     self.ai_state_next = REPAIR_STATE_IDLE;
-    self.think = building_repair_state;
-    self.nextthink = time + 0.1;
+    self.building_delay_think = building_repair_state;
+    self.think = building_bbox_settle;
+    self.nextthink = time + 0.01;
   #endif
 };
 
@@ -578,8 +574,24 @@ void() building_repair_touch={
   self.ai_state_next = REPAIR_STATE_START;
   self.moveState = FALSE;
 };
+#endif
 
+void() hrepair_die = [0, hrepair_die1]{
+#ifdef SSQC
+  if( self.deadflag > DEAD_NO ){
+    return;
+  }
+  ai_alert_close(self.enemy);
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
+};
 void() hrepair_die1 = [1, hrepair_die2]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
@@ -588,9 +600,15 @@ void() hrepair_die1 = [1, hrepair_die2]{
     ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
     t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die2 = [2, hrepair_die3]{};
 void() hrepair_die3 = [3, hrepair_die4]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
@@ -599,8 +617,14 @@ void() hrepair_die3 = [3, hrepair_die4]{
     ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
     t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die4 = [4, hrepair_die5]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
@@ -609,31 +633,61 @@ void() hrepair_die4 = [4, hrepair_die5]{
     ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
     t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die5 = [5, hrepair_die6]{};
 void() hrepair_die6 = [6, hrepair_die7]{};
 void() hrepair_die7 = [7, hrepair_die8]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die8 = [8, hrepair_die9]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die9 = [9, hrepair_die10]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die10 = [10, hrepair_die11]{};
 void() hrepair_die11 = [11, hrepair_die12]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die12 = [12, hrepair_die13]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
@@ -642,8 +696,14 @@ void() hrepair_die12 = [12, hrepair_die13]{
     ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
     t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die13 = [13, hrepair_die14]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
@@ -652,19 +712,35 @@ void() hrepair_die13 = [13, hrepair_die14]{
     ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
     t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die14 = [14, hrepair_die15]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hrepair_die15 = [15, hrepair_die16]{};
 void() hrepair_die16 = [16, SUB_Null]{
+#ifdef SSQC
   local vector ouch;
   if( self.goalentity != world ){
     ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
     t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
   }
   building_die();
-};
 #endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
+};

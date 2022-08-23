@@ -99,10 +99,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
     
-    self.faction = ReadByte();
-    self.vec_size = ReadByte();
+    cons_logAFloat("self.angles_y", self.angles_y); //debug
+    
+    self.faction = ReadChar();
+    self.vec_size = ReadChar();
     self.data_idx = ReadByte();
-    self.canTarget = ReadByte();
+    self.canTarget = ReadChar();
     mapKey = ReadChar();
     vipKey = ReadChar();
     muted = ReadChar();
@@ -128,7 +130,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   
   if( (changeFlags & SENDFLAG_FACTION) ){
-    self.faction = ReadByte();
+    self.faction = ReadChar();
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
@@ -273,8 +275,8 @@ void() predraw_building={
   }
   
   if( self.cl_lod_unit ){
+    self.skin = self.faction - 1;
     setmodel(self, self.model);
-    setsize(self, self.mins, self.maxs);
     if(self.render_dlights){
       if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
         self.render_dlights();
@@ -282,5 +284,4 @@ void() predraw_building={
     }
     addentity(self);
   }
-  
 };

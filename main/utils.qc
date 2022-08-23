@@ -492,7 +492,6 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
 };
 
 void(string msg, float val) cons_logAFloat={
-  dprint("fuck\n"); //debug
   #ifdef SSQC
     dprint(sprintf("[SV] %s : %0.2f \n", msg, val));
   #endif

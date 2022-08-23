@@ -99,6 +99,14 @@ void() building_anim_death_norm1={
 };
 
 
+void() sendent_building_settle={
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  setsize(self, self.mins, self.maxs);
+  self.cache_mins = self.mins;
+  self.cache_maxs = self.maxs;
+};
+
 
 /*
   client_main.CSQC_ent_update()->Ent Type == building, SENDFLAG_NEWENT
@@ -109,56 +117,55 @@ void( float dataID ) data_sync_new_building={
   
   makevectors(self.angles);
   
-  self.solid = SOLID_BSP;
-  self.flags = self.flags | FL_MONSTER; 
   self.colormod = '1 1 1';
-  self.takedamage = DAMAGE_AIM;
-  self.movetype = MOVETYPE_NONE;
+  self.scale = 1.0;
+  self.alpha = 1.0;
+  self.angle = self.angles_y; //compatability for SVQC
   
   switch(dataID){
     case UI_BUILDING_radar:
-      data_building_radar();
+      building_radar();
       break;
     case UI_BUILDING_shield_generator:
-      data_building_shield();
+      building_shield();
       break;
     case UI_BUILDING_power_plant:
-      data_building_power();
+      building_power();
       break;
     case UI_BUILDING_hangar_large:
-      data_building_hangar_large();
+      building_hangar_mech();
       break;
     case UI_BUILDING_fuel_tank:
-      data_building_fuel();
+      building_fuel_tank();
       break;
     case UI_BUILDING_repair_bay:
-      data_building_repair();
+      building_repair_bay();
       break;
     case UI_BUILDING_hangar_med:
-      data_building_hangar_med();
+      building_hangar_vehicle();
       break;
     case UI_BUILDING_guard_tower:
       data_building_guard();
       break;
     case UI_BUILDING_barracks:
-      data_building_barracks();
+      building_barracks();
       break;
     case UI_BUILDING_supply_depot:
-      data_building_supply_depot();
+      building_supply_depot();
       break;
   }
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
-  self.cache_mins = self.mins;
-  self.cache_maxs = self.maxs;
   
   if( self.th_walk ){
     self.th_walk();
   }
+  self.think = sendent_building_settle;
+  self.nextthink = time + 0.01;
 };
 
 void() data_building_radar={
-  building_human_radar();
+  building_radar();
   self.th_walk = radar_post_th;
   self.th_die = radar_post_die1;
   self.render_dlights = radar_post_dlights;
@@ -169,7 +176,7 @@ void() data_building_radar={
 };
 
 void() data_building_shield={
-  building_human_shield();
+  building_shield();
   self.th_die = shield_gen_die1;
   self.th_walk = shield_gen_active;
   //local vfx
@@ -178,7 +185,8 @@ void() data_building_shield={
 };
 
 void() data_building_power={
-  building_human_power();
+  //FIXME
+  building_power();
   self.th_die = power_plant_die1;
   self.th_walk = power_plant_active;
   //local vfx - green ball
@@ -192,30 +200,20 @@ void() data_building_power={
   self.w_adj_ang = self.origin + (v_up * (self.maxs_z * 0.45)) + (v_right * (self.maxs_x * 0.25)) + (v_forward * self.mins_y * 0.9);
 };
 
-void() data_building_hangar_large={
-  building_human_hangar();
-  self.th_die = hangar_large_die1;
-};
-
 void() data_building_fuel={
-  building_human_fuel();
+  building_fuel_tank();
   self.deadflag = DEAD_NO; 
   self.th_die = fuel_tank_die1;
 };
 
 void() data_building_repair={   
-  building_human_repair();
+  building_repair_bay();
   self.th_walk = repair_bay_active;
   self.th_die = repair_bay_die1;
   self.render_dlights = repair_bay_dlights;
   self.w_firetime = 0;
   self.compOffset = self.origin + (v_up * 40) + (v_forward * -16);
   self.compAltOffset = self.origin;
-};
-
-void() data_building_hangar_med={
-  building_human_hangar_vehicle();
-  self.th_die = hangar_medium_die1;
 };
 
 void() data_building_guard={
@@ -225,16 +223,6 @@ void() data_building_guard={
   self.render_dlights = guard_post_dlights;
   self.compOffset = self.origin + (v_up * 36);
   self.w_adj_ang =  self.angles;
-};
-
-void() data_building_barracks={
-  building_barracks();
-  self.th_die = building_anim_death_norm1;
-};
-
-void() data_building_supply_depot={
-  building_supply_depot();
-  self.th_die = building_anim_death_norm1;
 };
 
 /*

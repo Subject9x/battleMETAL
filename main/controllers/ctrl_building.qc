@@ -199,11 +199,14 @@ float( float isNew, float changedflags ) ctrl_send_building={
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
+   
     
-    WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.vec_size );
+    cons_logAFloat(self.classname, self.angles_y); //debug
+    
+    WriteChar( MSG_ENTITY, self.faction );
+    WriteChar( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteByte( MSG_ENTITY, self.canTarget );
+    WriteChar( MSG_ENTITY, self.canTarget );
     
     if( (self.spawnflags & IS_MAPKEY) ){
       WriteChar( MSG_ENTITY, TRUE );
@@ -238,7 +241,7 @@ float( float isNew, float changedflags ) ctrl_send_building={
   }
   
   if( (changedflags & SENDFLAG_FACTION) ){
-    WriteByte( MSG_ENTITY, self.faction );
+    WriteChar( MSG_ENTITY, self.faction );
   }
   
   if( (changedflags & SENDFLAG_BURN) ){
@@ -285,4 +288,13 @@ float( float isNew, float changedflags ) ctrl_send_building={
   
   self.shieldHitFlag = 0;
   return TRUE;
+};
+
+
+void() building_bbox_settle={
+
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
 };

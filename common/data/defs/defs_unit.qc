@@ -123,6 +123,10 @@ Overview:
 .float accuracy;
 
 .float groundEnt;   //used by buildings to tell their client-entry to generate a ground mesh.
+
+.float angle;
+.void() building_delay_think; //post-settling, if building has a think func, this caches it.
+
 //SSQC only
 #ifdef SSQC
 //network frame stuff

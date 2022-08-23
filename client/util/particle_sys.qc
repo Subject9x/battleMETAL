@@ -408,11 +408,10 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
 */
 void() te_shield_hit_predraw={
   
-  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
-    self.drawmask = 0;
-  }
-  else{
-    self.drawmask = MASK_NORMAL;
+  traceline(self.owner.origin, client_vis_org, FALSE, self);
+  
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    return;
   }
 
   interpolate_origin();
@@ -424,6 +423,7 @@ void() te_shield_hit_predraw={
       self.alpha = 0.03;
     }
   }
+  addentity(self);
 };
 
 void() te_shield_hit_th={
@@ -452,7 +452,7 @@ void() te_shield_hit={
   
   hitTime = 0.33;
   
-  self.shieldEffectTime = servertime + hitTime;
+  self.shieldEffectTime = time + hitTime;
   
   traceline(self.origin, pmove_org, TRUE, self);
   
@@ -470,10 +470,9 @@ void() te_shield_hit={
     shieldSize = max(0.8, (self.maxs_x / 64) * sizeMod);
     explode.think = te_shield_hit_th;
     explode.nextthink = time + 0.01;
-    explode.data_lifetime = servertime + hitTime;
+    explode.data_lifetime = time + hitTime;
     explode.scale = shieldSize;
     explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
-    explode.drawmask = MASK_NORMAL;
     explode.predraw = te_shield_hit_predraw;
     explode.owner = self;
     explode.solid = SOLID_NOT;
@@ -525,15 +524,20 @@ void() predraw_shield_explode={
   lerp = 1 - bound(0, lerpDiff, 1);
   self.lerpfrac = lerp;
   
+  
+  traceline(self.owner.origin, client_vis_org, FALSE, self);
+  
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    return;
+  }
+  
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
+	setmodel(self, self.model);
+  addentity(self);
 };
 
 void() te_shield_explode_th={
-  if( self.alpha < 0.01 ){
-    remove(self);
-    return;
-  }
   self.alpha = self.alpha - (0.024 * frametime);
   self.scale = self.scale + (0.025 * frametime);
   
@@ -544,6 +548,10 @@ void() te_shield_explode_th={
     self.origin = self.owner.origin;
   }
   
+  if( self.alpha < 0.01 ){
+    remove(self);
+    return;
+  }
   self.think = te_shield_explode_th;
   self.nextthink = time + 0.01;
 };
@@ -567,12 +575,11 @@ void( vector org, float vecSize ) te_shield_explode={
     explode.movetype = MOVETYPE_NONE;
     explode.solid = SOLID_NOT;
     explode.think = te_shield_explode_th;
-    explode.nextthink = time + 0.05;
+    explode.nextthink = time + 0.01;
     explode.data_lifetime = 10;
     explode.scale = 0.1 + (vecSize / 3);
     explode.alpha = 0.6;
     explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
-    explode.drawmask = MASK_NORMAL;
     explode.predraw = predraw_shield_explode;
     setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
     setorigin( explode, org);
@@ -647,25 +654,6 @@ void( vector org, float explodeSize, vector explodeColor, float onShield  ) part
     te_customflash( org, explodeSize * 50, 1.5, explodeColor); 
   }
 };
-
-
-/*
-  item is exploding, use its bbox size for area
-*/
-void( vector explodeColor ) te_object_explode={
-  local vector exp;
-  
-  exp_x = crandom() * (self.maxs_x * 2);
-  exp_y = crandom() * (self.maxs_y * 2);
-  exp_z = crandom() * (self.maxs_z * 2);
-  makevectors(self.angles);
-  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
-  
-  //TODO - Replace
-  //te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
-
-};
-
 
 /*
   Wreck event, ie a vehicle death

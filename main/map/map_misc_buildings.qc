@@ -6,7 +6,7 @@ Overview:
   misc buildings that really serve no direct purpose
 */
 
-
+#ifdef SSQC
 float( float isNew, float changeFlags ) sendent_misc_building={
   
   WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
@@ -23,9 +23,9 @@ float( float isNew, float changeFlags ) sendent_misc_building={
     WriteAngle( MSG_ENTITY, self.angles_z );
     
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.vec_size );
+    WriteChar( MSG_ENTITY, self.vec_size );
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteByte( MSG_ENTITY, self.canTarget );
+    WriteChar( MSG_ENTITY, self.canTarget );
     if( (self.spawnflags & IS_MAPKEY) ){
       WriteChar( MSG_ENTITY, TRUE );
     }
@@ -40,38 +40,38 @@ float( float isNew, float changeFlags ) sendent_misc_building={
     }
   }
   
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    WriteCoord( MSG_ENTITY, self.origin_x );
-    WriteCoord( MSG_ENTITY, self.origin_y );
-    WriteCoord( MSG_ENTITY, self.origin_z );
-  }
-  
   if( (changeFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
   return TRUE;
 };
+#endif
+
+
 void() misc_build_die7={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  te_missile_explode( randompos(self.absmin, self.absmax), self.vec_size, '1 0.85 0.33', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
   
   self.think  = building_die;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.33;
 };
 void() misc_build_die6={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  te_missile_explode( randompos(self.absmin, self.absmax), self.vec_size, '1 0.85 0.33', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
   
+  self.nextthink = time + 0.33;
   if( self.vec_size > 2 ){
     self.think = misc_build_die7;
-    self.nextthink = time + 0.1;
   }
   else{
     self.think  = building_die;
-    self.nextthink = time + 0.1;
   }
 };
 
@@ -79,31 +79,36 @@ void() misc_build_die5={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  te_missile_explode( randompos(self.absmin, self.absmax), self.vec_size, '1 0.85 0.33', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
   
   self.think = misc_build_die6;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.33;
 };
 
 void() misc_build_die4={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  te_missile_explode( randompos(self.absmin, self.absmax), self.vec_size, '1 0.85 0.33', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
   
   self.think = misc_build_die5;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.33;
 };
 void() misc_build_die3={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  te_missile_explode( randompos(self.absmin, self.absmax), self.vec_size, '1 0.85 0.33', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
   
+  self.nextthink = time + 0.33;
   if( self.vec_size > 1 ){
     self.think = misc_build_die4;
-    self.nextthink = time + 0.1;
   }
   else{
     self.think  = building_die;
-    self.nextthink = time + 0.1;
   }
 };
 
@@ -111,28 +116,46 @@ void() misc_build_die2={
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  te_missile_explode( randompos(self.absmin, self.absmax), self.vec_size, '1 0.85 0.33', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
   
   self.think = misc_build_die3;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.33;
 };
 
 void() misc_build_die1={
+  local vector shoot;
   if( self.deadflag > DEAD_NO ){
     return;
   }
+  
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.deadflag = DEAD_DYING;
   
-  local vector shoot;
   shoot = randompos(self.absmin * 0.67, self.absmax * 0.67);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
+  te_missile_explode( randompos(self.absmin, self.absmax), self.vec_size, '1 0.85 0.33', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
   
   self.think = misc_build_die2;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.33;
 };
 
 
+//settles building origin and angle before doing model / collider.
+void() misc_building_settle={
 
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_BSP;
+  
+  if(self.building_delay_think){
+    self.think = self.building_delay_think;
+  }
+  else{
+    self.think = building_burn_th;
+  }
+  self.nextthink = time + random() * 1;
+};
 
 /*
   Generic ini func for misc_buildings
@@ -140,6 +163,8 @@ void() misc_build_die1={
 void( string modelName, float setSizeFlag ) misc_building={
   self.avelocity = '0 0 0';
   self.velocity = '0 0 0';
+  precache_model(self.model);
+  
   setmodel(self, modelName);
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
@@ -154,8 +179,6 @@ void( string modelName, float setSizeFlag ) misc_building={
   
   trigger_ext_check();
   
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_BSP;
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
   self.alpha = TRUE;
@@ -163,15 +186,16 @@ void( string modelName, float setSizeFlag ) misc_building={
   makevectors(self.angles);
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   self.th_die = misc_build_die1;
-  self.think = building_burn_th;
-  self.nextthink = time + random() * 1;
   
   self.data_type = DATA_BLD;
   self.canTarget = FALSE;
+	
   if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
     self.canTarget = TRUE;
     self.SendEntity = sendent_misc_building;
   }
+	self.think = misc_building_settle;
+	self.nextthink = time + 0.01;
 };
 
 void() building_misc_apartment={

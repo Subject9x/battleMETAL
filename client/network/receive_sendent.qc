@@ -166,9 +166,9 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
     self.angles_z = anglemod(ReadAngle());
     
     self.faction = ReadByte();
-    self.vec_size = ReadByte();
+    self.vec_size = ReadChar();
     self.data_idx = ReadByte();
-    self.canTarget = ReadByte();
+    self.canTarget = ReadChar();
     mapKey = ReadChar();
     vipKey = ReadChar();
     if( mapKey ){
@@ -177,12 +177,6 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
     if( vipKey ){
       self.spawnflags = self.spawnflags | IS_VIP;
     }
-  }
-  
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
   }
   
   if( (changeFlags & SENDFLAG_DEAD) ){
@@ -216,16 +210,13 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   }
   
   //HANDLE EVENT - dead
-  if( prevDeadflag == DEAD_NO && self.deadflag == DEAD_DYING ){
+  if( self.deadflag == DEAD_DYING && prevDeadflag == DEAD_NO){
     if( self.th_die ){
       self.th_die();
     }
     else{
-      data_building_death1(); 
+      model_misc_building_die(); 
     }
-  }
-  else if( prevDeadflag == DEAD_DYING && self.deadflag == DEAD_DEAD ){
-    model_misc_building_die();
   }
 };
 

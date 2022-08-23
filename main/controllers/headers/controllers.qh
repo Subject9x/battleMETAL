@@ -43,6 +43,7 @@ float( float isNew, float changedflags ) ctrl_send_building;
 void() building_burn_th;  //generic check-for-burning think
 void() building_burn;
 void() building_die;
+void() building_bbox_settle;
 
 //Vehicle entity controllers
 void() ctrl_updateTank;

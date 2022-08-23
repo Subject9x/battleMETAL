@@ -7,57 +7,110 @@ Overview: data file for building
   faction: humans
   func: provides shields to all friendly units in its radius, but requires a nearby power plant.
 */
-#ifdef SSQC
 void() hshield_die = [0, hshield_die1]{
+#ifdef SSQC
   if( self.deadflag > DEAD_NO){
     return;
   }
   ai_alert_close(self.enemy);
   self.deadflag = DEAD_DYING;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die1 = [1, hshield_die2]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die2 = [2, hshield_die3]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die3 = [3, hshield_die4]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die4 = [4, hshield_die5]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die5 = [5, hshield_die6]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die6 = [6, hshield_die7]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die7 = [7, hshield_die8]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die8 = [8, hshield_die9]{
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die9 = [9, hshield_die10]{
+#ifdef SSQC
   local entity head;
   
   if( self.energy > 0 ){
@@ -93,15 +146,24 @@ void() hshield_die9 = [9, hshield_die10]{
       self.energy  = self.energy - ((self.energy / self.energyMax) / 5);
     }
   }
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 void() hshield_die10 = [10, hshield_die11]{};
 void() hshield_die11 = [11, hshield_die12]{};
 void() hshield_die12 = [12, hshield_die13]{};
 void() hshield_die13 = [13, hshield_die14]{};
 void() hshield_die14 = [14, hshield_die15]{};
-void() hshield_die15 = [15, SUB_Null]{building_die();};
+void() hshield_die15 = [15, SUB_Null]{
+#ifdef SSQC
+  building_die();
+#endif
+};
 
-
+#ifdef SSQC
 void() hshield_th ={
   local entity t;
   local float mod;
@@ -160,7 +222,7 @@ void() hshield_th ={
 }
 #endif
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
 Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields!
@@ -197,7 +259,7 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-void() building_human_shield={
+void() building_shield={
   self.data_idx = self.nextVecChoice = UI_BUILDING_shield_generator;
   self.data_type = DATA_BLD;
 
@@ -206,14 +268,15 @@ void() building_human_shield={
   self.flags = self.flags | FL_MONSTER ;  
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  self.solid = SOLID_BSP;
-  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_BBOX;
+  self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
-  setmodel(self, "q3mdl/buildings/shield_gen/shieldgen.obj");
+  self.skin = self.faction - 1;
+  self.model = "q3mdl/buildings/shield_gen/shieldgen.md3";
+  precache_model("q3mdl/buildings/shield_gen/shieldgen.md3");
+  setmodel(self, "q3mdl/buildings/shield_gen/shieldgen.md3");
   setsize(self, self.mins, self.maxs);
-    
-
-    
+  
   if( !self.health) {
     self.health = 500;
   }
@@ -245,6 +308,7 @@ void() building_human_shield={
       return;
     }
     trigger_ext_check();
+    
     if( !self.ai_minrange ){
       self.ai_minrange = 1000;
     }
@@ -258,12 +322,12 @@ void() building_human_shield={
         droptofloor();
       }
     }
+    setorigin(self, self.origin);
     
     makevectors(self.angles);
     self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
     self.th_die = hshield_die;
     self.use = multi_trigger;
-    hshield_th();
     
     self.SendEntity = ctrl_send_building;
     self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
@@ -273,6 +337,9 @@ void() building_human_shield={
     self.canTarget = TRUE;
     if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
       self.canTarget = FALSE;
-  }
+    }
+    self.building_delay_think = hshield_th;
+    self.think = building_bbox_settle;
+    self.nextthink = time + 0.01;
   #endif
 };

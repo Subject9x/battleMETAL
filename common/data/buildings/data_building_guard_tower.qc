@@ -57,6 +57,7 @@ void() building_guard_tower={
   self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
+  precache_model("q3mdl/buildings/towersmall/guardtower.obj");
   setmodel(self, "q3mdl/buildings/towersmall/guardtower.obj");
   setsize(self, self.mins, self.maxs);
   
@@ -101,6 +102,7 @@ void() building_guard_tower={
         droptofloor();
       }
     }
+    setorigin(self, self.origin);
     makevectors(self.angles);
     self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
     
@@ -113,7 +115,7 @@ void() building_guard_tower={
     if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
       self.canTarget = FALSE;
     }
-    self.think = building_burn_th;
-    self.nextthink = time + random() * 3;
+    self.think = building_bbox_settle;
+    self.nextthink = time + 0.01;
   #endif
 };

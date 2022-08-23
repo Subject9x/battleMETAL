@@ -227,7 +227,7 @@ void() building_radar_touch={
 };
 #endif
 
-/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
+/*QUAKED building_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/radar/radar.md3"); }
 
 Radar Post, has the ability to detect the player and alert friendly bot to these players.
@@ -259,7 +259,7 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-void() building_human_radar={
+void() building_radar={
   self.data_idx = self.nextVecChoice = UI_BUILDING_radar;
   self.data_type = DATA_BLD;
 
@@ -270,7 +270,10 @@ void() building_human_radar={
   self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
-  setmodel(self, "q3mdl/buildings/radar/listpost.obj");
+  self.skin = self.faction - 1;
+  self.model = "q3mdl/buildings/radar/listpost.md3";
+  precache_model("q3mdl/buildings/radar/listpost.md3");
+  setmodel(self, "q3mdl/buildings/radar/listpost.md3");
   setsize(self, self.mins, self.maxs);
 
   if( !self.health) {
@@ -329,6 +332,7 @@ void() building_human_radar={
         droptofloor();
       }
     }
+    setorigin(self, self.origin);
     
     self.th_walk = building_radar_patrol1;
     self.th_stand = building_radar_detect1;
@@ -363,7 +367,8 @@ void() building_human_radar={
     if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
       self.canTarget = FALSE;
     }
-    self.think = building_radar_patrol1;
+    self.building_delay_think = building_radar_patrol1;
+    self.think = building_bbox_settle;
     self.nextthink = time + 1;
   #endif
 };

@@ -1,5 +1,5 @@
 //  battleMETAL
-// 	v4.0.0
+// 	v5.0.0
 //  Forge Game Data schema 
 //  Trenchbroom / NetRadiant compatible.
 //  Peter Roohr
@@ -129,6 +129,7 @@ For best results, place manually as close to ground as possible!" [
     262144 : "No Drop" : 0
     8388608 : "VIP Target" : 0
   ]
+  angles(vector) : "initial facing angles" : "0 0 0"
 ]
 
 @BaseClass base(Angle, Target, Targetname, ExtTriggers, Faction, MapKeyFlag, SkillFlagsEngine, CampaignFlags) color(0 0 1) model({ "path": ":models/buildings/turret/turret.md3" }) = AITurret [
@@ -221,7 +222,8 @@ For best results, place manually as close to ground as possible!" [
   minimapMins(vector) : "usually total map size in editor." : "0 0 0" 
   minimapMaxs(vector) : "usually total map size in editor." : "0 0 0"
   uiViewBoxOrg(vector) : "use an info_notnull, separate box area." : "0 0 0"
-  
+  _blocksize(integer) : "q3map2:max block size for vis compile." : 1024
+  _floodlight(string) : "q3map2:worldwide min lighting level - r g b distance intensity" : ""
 ]
 
 @PointClass base(Angle) color(0.77 0.88 1.0) size(-4 -4 -4, 4 4 4) = _skybox : "Compiler-only entity that specifies the origin of a skybox (a wholly contained, separate area of the map), similar to some games portal skies. When compiled with Q3Map2, the skybox surfaces will be visible from any place where sky is normally visible. It will cast shadows on the normal parts of the map, and can be used with cloud layers and other effects." [
@@ -1117,7 +1119,7 @@ Projectile Shooter that uses weapons-fire." [
 //---------------------------------------------------------------------------------------------------------------------
 
 //CORE BASE BUILDINGS---------------------------------------------------------------------------------------------------
-@PointClass base(RootBuilding) size(-18.7 -25.0 -14.55, 19.7 21.24 22.0) model({ "path": ":models/buildings/radar/radar.md3" }) = building_human_radar : "Radar Post has the ability to detect the player and alert friendly bot to these players." [
+@PointClass base(RootBuilding) size(-18.7 -25.0 -14.55, 19.7 21.24 22.0) model({ "path": ":models/buildings/radar/radar.md3" }) = building_radar : "Radar Post has the ability to detect the player and alert friendly bot to these players." [
   health(integer) : "starting health." : 100
   shieldMax(integer) : "max shield value" : 250
   radar_range(integer) : "Radar range." : 2000
@@ -1132,7 +1134,7 @@ Projectile Shooter that uses weapons-fire." [
   ]
 ]
 
-@PointClass base(RootBuilding) size(-40.4 -45.65 -10.0, 40.0 45.2 20.1) model({ "path": ":models/buildings/shield/shield.md3" }) = building_human_shield : "Shield Generator Building. Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields MUST HAVE Power Plant that can power it -check power plant radius-. Generator does have to pay for its shield generating, these can be taxed by too many nearby units." [
+@PointClass base(RootBuilding) size(-40.4 -45.65 -10.0, 40.0 45.2 20.1) model({ "path": ":models/buildings/shield/shield.md3" }) = building_shield : "Shield Generator Building. Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields MUST HAVE Power Plant that can power it -check power plant radius-. Generator does have to pay for its shield generating, these can be taxed by too many nearby units." [
   health(integer) : "starting health." : 500
   energyMax(integer) : "max energy" : 2000
   energyRate(float) : "defined recharge rate." : "0.0"
@@ -1141,7 +1143,7 @@ Projectile Shooter that uses weapons-fire." [
   ai_minrange(float) : "give allied buildings power." : "1000.0"
 ]
 
-@PointClass base(RootBuilding) size(-65.81 -84.2 -27.0, 69.2 85.4 28.4) model({ "path": ":models/buildings/reactor/reactor.md3" }) = building_human_power : "Generates energy to power all friendly buildings in Radius." [
+@PointClass base(RootBuilding) size(-65.81 -84.2 -27.0, 69.2 85.4 28.4) model({ "path": ":models/buildings/reactor/reactor.md3" }) = building_power : "Generates energy to power all friendly buildings in Radius." [
   health(integer) : "starting health." : 1200
   energyMax(integer) : "max energy" : 4000
   energyRate(float) : "defined recharge rate." : "4.0"
@@ -1150,19 +1152,19 @@ Projectile Shooter that uses weapons-fire." [
   ai_minrange(float) : "give allied buildings power." : "800.0"
 ]
 
-@PointClass base(RootBuilding) size(-78.65 -83.85 -44.85, 58.0 97.0 68.3) model({ "path": ":models/buildings/hangar/hangar.md3" }) = building_human_hangar : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
+@PointClass base(RootBuilding) size(-78.65 -83.85 -44.85, 58.0 97.0 68.3) model({ "path": ":models/buildings/hangar/hangar.md3" }) = building_hangar_mech : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
   health(integer) : "starting health." : 800
   shieldMax(integer) : "max shield value" : 600
   shieldRate(float) : "start shield rate" : "0.0"
 ]
 
-@PointClass base(RootBuilding) size(-68.7 -68.4 -23.9, 80.4 70.8 48.7 ) model({ "path": ":models/buildings/hangar_vec/hangar_vehicle.md3" }) = building_human_hangar_vehicle : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
+@PointClass base(RootBuilding) size(-68.7 -68.4 -23.9, 80.4 70.8 48.7 ) model({ "path": ":models/buildings/hangar_vec/hangar_vehicle.md3" }) = building_hangar_vehicle : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
   health(integer) : "starting health." : 500
   shieldMax(integer) : "max shield value" : 400
   shieldRate(float) : "start shield rate" : "0.0"
 ]
 
-@PointClass base(RootBuilding) size(-35.25 -57.0 -37.55, 77.25 49.73 41.3) model({ "path": ":models/buildings/repair/repair.md3" }) = building_human_repair : "[ADVISED] - put it near a power plant for more energy. Repairs vehicles, mostly for player. AI DOES NOT know how to use Repair Bays, sorry." [
+@PointClass base(RootBuilding) size(-35.25 -57.0 -37.55, 77.25 49.73 41.3) model({ "path": ":models/buildings/repair/repair.md3" }) = building_repair_bay : "[ADVISED] - put it near a power plant for more energy. Repairs vehicles, mostly for player. AI DOES NOT know how to use Repair Bays, sorry." [
   health(integer) : "starting health." : 600
   energyMax(integer) : "max energy" : 1000
   energyRate(float) : "defined recharge rate." : "0.67"
@@ -1172,7 +1174,7 @@ Projectile Shooter that uses weapons-fire." [
   repairMax(integer) : "Repair charge max." : 1250
 ]
 
-@PointClass base(RootBuilding) size(-53.04 -48.48 -23.50, 32 36.55 36.5) model({ "path": ":models/buildings/fueltank/fueltank.md3" }) = building_human_fuel : "Decoration building. Does Not require power. Does not explode with damage." [
+@PointClass base(RootBuilding) size(-53.04 -48.48 -23.50, 32 36.55 36.5) model({ "path": ":models/buildings/fueltank/fueltank.md3" }) = building_fuel_tank : "Decoration building. Does Not require power. Does not explode with damage." [
   health(integer) : "starting health." : 100
   shieldMax(integer) : "max shield value" : 250
   shieldRate(float) : "start shield rate" : "0.0"
