@@ -49,6 +49,7 @@ void() data_projectile_ini_plasma_={
   #ifdef CSQC
     //cosmetics
     self.alpha = 0.85;
+    precache_model("q3mdl/proj/mdl_proj_rpc.md3");
     self.model = "q3mdl/proj/mdl_proj_rpc.md3";
     self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
     self.predraw_projectile = predraw_plasma;

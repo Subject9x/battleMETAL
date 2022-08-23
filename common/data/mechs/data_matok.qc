@@ -110,6 +110,8 @@ void() data_ini_matok_={
 //HUD Data=============================
 #ifdef CSQC
   if( self.classname == "UI_ITEM" ){
+    precache_model("q3mdl/mechs/matok/matok_view.obj");
+    precache_model("q3mdl/mechs/matok/matok_hud.obj");
     self.weaponmodel = "q3mdl/mechs/matok/matok_view.obj";
     self.hud_model = "q3mdl/mechs/matok/matok_hud.obj";
     self.hud_StrutsOffset = '0 -2 -0.75';

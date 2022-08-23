@@ -111,8 +111,8 @@ void() data_ini_monitor_={
 //HUD Data=============================
 #ifdef CSQC
   if( self.classname == "UI_ITEM" ){
-    self.weaponmodel = "q3mdl/mechs/monitor/monitor_view.obj";
-    self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
+    precache_model("q3mdl/mechs/monitor/monitor_view.obj");
+    precache_model("q3mdl/mechs/monitor/monitor_hud.obj");
     self.hud_StrutsOffset = '0 -1.05 0.33';
     self.pitchMax = 43;
     self.pitchMin = -25;

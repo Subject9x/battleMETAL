@@ -42,6 +42,7 @@ void() data_projectile_ini_ion_={
   
   #ifdef CSQC
     //cosmetics
+    precache_model("q3mdl/proj/mdl_proj_ion.md3");
     self.model = "q3mdl/proj/mdl_proj_ion.md3";
     self.alpha = 0.75;
     self.pcl_explode = projectile_ion_expl;

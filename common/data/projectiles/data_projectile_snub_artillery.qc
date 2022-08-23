@@ -47,6 +47,7 @@ void() data_projectile_ini_snub_artillery_={
   
   #ifdef CSQC
     //cosmetics
+    precache_model("q3mdl/proj/mdl_proj_sfga.md3");
     self.model = "q3mdl/proj/mdl_proj_sfga.md3";
     self.colormod =  '0.85 0.45 0.45';
     self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");

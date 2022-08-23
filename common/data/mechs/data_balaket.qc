@@ -108,6 +108,8 @@ void() data_ini_balaket_={
 //HUD DATA=============================
 #ifdef CSQC
   if( self.classname == "UI_ITEM" ){
+    precache_model("q3mdl/mechs/balaket/balaket_view.obj");
+    precache_model("q3mdl/mechs/balaket/balaket_hud.obj");
     self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.obj";
     self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
     self.hud_StrutsOffset = '0 -1.5 -1';

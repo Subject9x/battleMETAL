@@ -113,6 +113,8 @@ void() data_ini_sapper_={
 //HUD Data=============================
 #ifdef CSQC
   if( self.classname == "UI_ITEM" ){
+    precache_model("q3mdl/mechs/sapper/sapper_view.obj");
+    precache_model("q3mdl/mechs/sapper/sapper_hud.obj");
     self.weaponmodel = "q3mdl/mechs/sapper/sapper_view.obj";
     self.hud_model = "q3mdl/mechs/sapper/sapper_hud.obj";
     self.hud_StrutsOffset = '0 -2 -0.75';
