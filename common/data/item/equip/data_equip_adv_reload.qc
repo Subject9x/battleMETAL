@@ -30,6 +30,8 @@ void() data_ini_equip_adv_reload_={
   self.equipSize = MSC1;
   
   #ifdef CSQC   
+    precache_model("q3mdl/weapons/e_abr.md3");
+    precache_file( "gfx/ui/wep_icons/eqp_abr.png");
     self.w_name = "Adv. Ballistic Reload";
     self.model = "q3mdl/weapons/e_abr.md3";
     self.w_clipsize = -1;

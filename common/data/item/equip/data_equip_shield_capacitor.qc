@@ -29,6 +29,8 @@ void() data_ini_equip_shield_capacitor_={
   self.equipSize = MSC2;
   
   #ifdef CSQC   
+    precache_model("q3mdl/weapons/e_scap.md3");
+    precache_file( "gfx/ui/wep_icons/eqp_lscap.png");
     self.w_name = "Shield Capacitor";
     self.model = "q3mdl/weapons/e_scap.md3";  
     self.w_clipsize = -1;

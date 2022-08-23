@@ -32,6 +32,7 @@ void() data_ini_equip_turbo_charger_={
   self.equipSize = MSC4;
   
   #ifdef CSQC     
+    precache_file( "gfx/ui/wep_icons/eqp_tchr.png");
     self.w_name = "Turbo Charger";
     self.model = "q3mdl/testball.md3";  //TODO - new model
     self.w_clipsize = -1;

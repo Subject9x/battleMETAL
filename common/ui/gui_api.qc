@@ -932,13 +932,13 @@ float(string bitFlags) gui_StringToFlag_Axis={
 
 void(string msg, float val) cons_logAFloat={
   #ifdef SSQC
-    dprint(sprintf("[SV] %s : %0.2f\n", msg, val));
+    dprint(sprintf("[SV] %s : %0.2f \n", msg, val));
   #endif
   #ifdef CSQC
-    dprint(sprintf("[CS] %s : %0.2f\n", msg, val));
+    dprint(sprintf("[CS] %s : %0.2f \n", msg, val));
   #endif
   #ifdef MENUQC
-    dprint(sprintf("[MN] %s : %0.2f\n", msg, val));
+    dprint(sprintf("[MN] %s : %0.2f \n", msg, val));
   #endif
 };
 void(string msg, vector v1) cons_logAVector={

@@ -28,10 +28,10 @@ void() te_muzzle_las={
   norm = normalize(endOrg - startOrg);
   
   if( vlen(endOrg - startOrg) >= 1500 ){
-    sound7(self, CHAN_AUTO, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 115, 0 );
+    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 115, 0 );
   }
   else{
-    sound7(self, CHAN_AUTO, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM, (0.45 + (random() * 0.55)) * 175, 0 );
+    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.45 + (random() * 0.55)) * 175, 0 );
   }
   
   
@@ -71,6 +71,9 @@ void() data_ini_light_laser_={
   self.burstRate = 0;
   
 #ifdef CSQC
+  precache_sound("sound/weapons/laser_fire.ogg");
+  precache_model("q3mdl/weapons/w_laser.md3");
+  precache_file( "gfx/ui/wep_icons/wi_las.png");
   self.w_name = "Laser";
   self.fire_sound = "sound/weapons/laser_fire.ogg";
   self.model = "q3mdl/weapons/w_laser.md3";

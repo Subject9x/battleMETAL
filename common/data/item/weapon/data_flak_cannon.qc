@@ -33,7 +33,7 @@ void() te_muzzle_flk={
   norm = normalize(endOrg - startOrg);
   ang = vectoangles(endOrg - startOrg);
   
-  sound7(self, CHAN_AUTO, "sound/weapons/flak_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 175, 0 );
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 175, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
@@ -84,6 +84,9 @@ void() data_ini_flak_cannon_={
   self.burstRate = 1;
   
 #ifdef CSQC
+  precache_sound("sound/weapons/flak_fire.ogg");
+  precache_model("q3mdl/weapons/w_flk.md3");
+  precache_file( "gfx/ui/wep_icons/wi_flak.png");
   self.w_name = "Flak Cannon";
   self.fire_sound = "sound/weapons/flak_fire.ogg";
   self.model = "q3mdl/weapons/w_flk.md3";

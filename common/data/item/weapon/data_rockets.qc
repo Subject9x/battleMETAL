@@ -22,8 +22,8 @@ void() te_muzzle_rck={
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
-  pointsound( startOrg, "sound/weapons/rckt_fire.ogg", 1, ATTN_NORM);
-  sound7(self, CHAN_AUTO, "sound/weapons/rckt_fire.ogg", 1, ATTN_NORM, (0.25 + (random() * 0.75)) * 133, 0 );
+  pointsound( startOrg, self.fire_sound, 1, ATTN_NORM);
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.25 + (random() * 0.75)) * 133, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
     pointparticles( particleeffectnum("TE_MIS_MUZZLE"), startOrg, normalize(endOrg - startOrg), 1);
@@ -51,6 +51,9 @@ void() data_ini_rockets_={
   self.burstRate = 1.75;
   
 #ifdef CSQC
+  precache_sound("sound/weapons/rckt_fire.ogg");
+  precache_model("q3mdl/weapons/w_mis.md3");
+  precache_file( "gfx/ui/wep_icons/wi_rck.png");
   self.w_name = "Rocket Launcher";
   self.fire_sound = "sound/weapons/rckt_fire.ogg";
   self.model = "q3mdl/weapons/w_mis.md3";

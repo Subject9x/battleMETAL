@@ -22,7 +22,7 @@ void() te_muzzle_emp={
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
-  sound7(self, CHAN_AUTO, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, 0 );
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_EMP_MUZZLE"), startOrg, normalize( startOrg - endOrg ) * 4, 1);
@@ -50,6 +50,9 @@ void() data_ini_emp_={
   self.burstRate = 0;
   
 #ifdef CSQC
+  precache_sound("sound/weapons/emp_fire.ogg");
+  precache_model("q3mdl/weapons/w_emp.md3");
+  precache_file( "gfx/ui/wep_icons/wi_emp.png");
   self.w_name = "EMP Cannon";
   self.fire_sound = "sound/weapons/emp_fire.ogg";
   self.model = "q3mdl/weapons/w_emp.md3";

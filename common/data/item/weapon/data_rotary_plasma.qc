@@ -22,7 +22,7 @@ void() te_muzzle_rpc={
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
-  sound7(self, CHAN_AUTO, "sound/weapons/rpls_fire.ogg", 1, ATTN_NORM, (0.65 + (random() * 0.35)) * 125, 0 );
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.65 + (random() * 0.35)) * 125, 0 );
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
     pointparticles( particleeffectnum("TE_RPC_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
   }
@@ -49,6 +49,9 @@ void() data_ini_plasma_={
   self.burstRate = 1.5;
   
 #ifdef CSQC  
+  precache_sound("sound/weapons/rpls_fire.ogg");
+  precache_model("q3mdl/weapons/w_rpc.md3");
+  precache_file( "gfx/ui/wep_icons/wi_rpc.png");
   self.w_name = "Rotary Plasma Chamber";
   self.fire_sound = "sound/weapons/rpls_fire.ogg";
   self.model = "q3mdl/weapons/w_rpc.md3";

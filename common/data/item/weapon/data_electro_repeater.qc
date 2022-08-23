@@ -115,7 +115,7 @@ void() te_muzzle_esr={
   
   norm = normalize(endOrg - startOrg);
   
-  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   
   trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
   
@@ -154,7 +154,10 @@ void() data_ini_electro_repeater_={
   self.wepFireOffset = '0 0 8'; 
   self.burstRate = 0;
   
-#ifdef CSQC  
+#ifdef CSQC
+  precache_model("q3mdl/weapons/w_esr.md3");
+  precache_sound("sound/weapons/esr_fire.ogg");
+  precache_file( "gfx/ui/wep_icons/wi_esr.png");
   self.w_name = "Electro-Static Repeater";
   self.fire_sound = "sound/weapons/esr_fire.ogg";
   self.model = "q3mdl/weapons/w_esr.md3";

@@ -30,10 +30,10 @@ void() te_muzzle_pac={
   //pointsound( startOrg, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM);
   
   if( vlen(endOrg - startOrg) >= 1500 ){
-    sound7(self, CHAN_AUTO, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 185, 0 );
+    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 185, 0 );
   }
   else{
-    sound7(self, CHAN_AUTO, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM, (0.2 + (random() * 0.8)) * 100, 0 );
+    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.2 + (random() * 0.8)) * 100, 0 );
   }
   
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), startOrg, endOrg );
@@ -74,6 +74,9 @@ void() data_ini_particle_cannon_={
   self.burstRate = 0;
   
 #ifdef CSQC
+  precache_sound("sound/weapons/pac_fire.ogg");
+  precache_model("q3mdl/weapons/w_pac.md3");
+  precache_file( "gfx/ui/wep_icons/wi_pac.png");
   self.w_name = "PAC";
   self.fire_sound = "sound/weapons/pac_fire.ogg";
   self.model = "q3mdl/weapons/w_pac.md3";
