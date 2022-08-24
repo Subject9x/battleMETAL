@@ -6,46 +6,69 @@ Overview:
   data file for the simple guard tower building
 */
 
-#ifdef SSQC
+
 void() guard_tower_die2={
+#ifdef SSQC
   local vector shoot;
   shoot = randompos(self.absmin, self.absmax);
   te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  building_die();
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
 };
 
 void() guard_tower_die1={
+#ifdef SSQC
+  local vector vfx;
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD; 
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
-  
-  self.model = "q3mdl/map/ruins/ruin_small.obj";
-  setmodel(self, self.model);
-  setsize(self, self.mins, self.maxs);
-  setorigin(self, self.origin);
-
- 
-  if( self.canTarget ){
-    self.deadflag = DEAD_DYING;
-    self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  }
-  
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 5, 1 );
-  
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  makevectors(self.angles);
+  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
+  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
   ai_alert_close(self.enemy);
-  
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
   self.think = guard_tower_die2;
   self.nextthink = time + 0.1;
 };
+
+#ifdef CSQC
+void() guard_post_dlights={
+  //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+  if(MENU_PROG_OFF){
+    particleDraw = vlen(client_vis_org - self.origin);      
+    if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+      if( self.deadflag == DEAD_NO ){
+        makevectors(self.w_adj_ang);
+        adddynamiclight2( self.origin + (v_forward * 32), 128, '1 1 0.4', self.partTypeId, "", PFLAGS_FULLDYNAMIC);
+      }
+    }
+  }
+};
+
+void() guard_post_th={
+  if( self.spawnflags & 2097152){
+    //shutoff lights
+    self.render_dlights = SUB_Null;
+    return;
+  }
+  if( self.deadflag == DEAD_NO ){
+    self.w_adj_ang_y = anglemod(self.w_adj_ang_y + 4);
+  }
+  self.think = guard_post_th;
+  self.nextthink = time + 0.05;
+};
 #endif
+
 
 void() building_guard_tower={
   self.data_idx = self.nextVecChoice = UI_BUILDING_guard_tower;
@@ -84,38 +107,45 @@ void() building_guard_tower={
     self.energyMax = 1000;
   }
   
-  
-  #ifdef SSQC
-    if( ai_can_spawn() == FALSE ){
-      remove(self);
-      return;
-    }
-    trigger_ext_check();
+  self.th_die = guard_tower_die1;
 
-    self.th_die = guard_tower_die1;
-    self.effects = self.effects | EF_LOWPRECISION;
-    if( !(self.spawnflags & NO_DROP) ){
-      if( util_cornerSlopeCheck(self, 0.95) ){
-        util_generateBuildingFoundation(self);
-      }
-      else{
-        droptofloor();
-      }
+#ifdef CSQC
+  self.th_walk = guard_post_th;
+  self.render_dlights = guard_post_dlights;
+  self.compOffset = self.origin + (v_up * 36);
+  self.w_adj_ang =  self.angles;
+#endif
+
+#ifdef SSQC
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  trigger_ext_check();
+
+  self.effects = self.effects | EF_LOWPRECISION;
+  if( !(self.spawnflags & NO_DROP) ){
+    if( util_cornerSlopeCheck(self, 0.95) ){
+      util_generateBuildingFoundation(self);
     }
-    setorigin(self, self.origin);
-    makevectors(self.angles);
-    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-    
-    self.SendEntity = ctrl_send_building;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-    if( (self.spawnflags & IS_MAPKEY) ){
-      self.effects = self.effects | EF_NODEPTHTEST;
+    else{
+      droptofloor();
     }
-    self.canTarget = TRUE;
-    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-      self.canTarget = FALSE;
-    }
-    self.think = building_bbox_settle;
-    self.nextthink = time + 0.01;
-  #endif
+  }
+  setorigin(self, self.origin);
+  makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  if( (self.spawnflags & IS_MAPKEY) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
+  self.canTarget = TRUE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.canTarget = FALSE;
+  }
+  self.think = building_bbox_settle;
+  self.nextthink = time + 0.01;
+#endif
 };

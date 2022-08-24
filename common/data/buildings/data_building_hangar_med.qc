@@ -38,8 +38,9 @@ void() hangar_vehicle_die1=[0, hangar_vehicle_die2]{
   ai_alert_close(self.enemy);
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
+
 #endif
   
 };
@@ -56,12 +57,17 @@ void() hangar_vehicle_die3=[0, hangar_vehicle_die4]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
+
 #endif
 };
 void() hangar_vehicle_die4=[0, hangar_vehicle_die5]{
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 
+#endif
 };
 void() hangar_vehicle_die5=[0, hangar_vehicle_die6]{
 #ifdef SSQC
@@ -73,12 +79,16 @@ void() hangar_vehicle_die5=[0, hangar_vehicle_die6]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 #endif
 };
 void() hangar_vehicle_die6=[0, hangar_vehicle_die7]{
 
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
+#endif
 };
 void() hangar_vehicle_die7=[0, hangar_vehicle_die8]{
 #ifdef SSQC
@@ -88,8 +98,8 @@ void() hangar_vehicle_die7=[0, hangar_vehicle_die8]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 #endif
 };
 void() hangar_vehicle_die8=[0, hangar_vehicle_die9]{
@@ -100,8 +110,8 @@ void() hangar_vehicle_die8=[0, hangar_vehicle_die9]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 4, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 #endif
 };
 void() hangar_vehicle_die9=[0, hangar_vehicle_die10]{
@@ -112,8 +122,8 @@ void() hangar_vehicle_die9=[0, hangar_vehicle_die10]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 #endif
 };
 void() hangar_vehicle_die10=[0, hangar_vehicle_die11]{
@@ -124,8 +134,8 @@ void() hangar_vehicle_die10=[0, hangar_vehicle_die11]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 2, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 #endif
 };
 void() hangar_vehicle_die11=[0, hangar_vehicle_die12]{
@@ -136,12 +146,16 @@ void() hangar_vehicle_die11=[0, hangar_vehicle_die12]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 1 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 #endif
 };
 void() hangar_vehicle_die12=[0, hangar_vehicle_die13]{
 
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
+#endif
 };
 void() hangar_vehicle_die13=[0, hangar_vehicle_die14]{
 #ifdef SSQC
@@ -151,12 +165,16 @@ void() hangar_vehicle_die13=[0, hangar_vehicle_die14]{
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 4, 1 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 #endif
 };
 void() hangar_vehicle_die14=[0, hangar_vehicle_die15]{
 
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
+#endif
 };
 void() hangar_vehicle_die15=[0, SUB_Null]{
 #ifdef SSQC
@@ -167,8 +185,8 @@ void() hangar_vehicle_die15=[0, SUB_Null]{
   building_die();
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  te_missile_explode( randompos(self.absmin, self.absmax), 4, '0.67 0.3 0.1', 0.0075 );
+  building_sound_explode();
 #endif
 };
 

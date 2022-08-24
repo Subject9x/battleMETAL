@@ -145,7 +145,7 @@ void( float dataID ) data_sync_new_building={
       building_hangar_vehicle();
       break;
     case UI_BUILDING_guard_tower:
-      data_building_guard();
+      building_guard_tower();
       break;
     case UI_BUILDING_barracks:
       building_barracks();
@@ -158,73 +158,11 @@ void( float dataID ) data_sync_new_building={
   setorigin(self, self.origin);
   
   if( self.th_walk ){
-    self.th_walk();
+    self.building_delay_think = self.th_walk;
   }
   self.think = sendent_building_settle;
   self.nextthink = time + 0.01;
 };
-
-void() data_building_radar={
-  building_radar();
-  self.th_walk = radar_post_th;
-  self.th_die = radar_post_die1;
-  self.render_dlights = radar_post_dlights;
-  self.compOffset = self.origin + (v_up * 38) + (v_forward * -15) + (v_right * 18); //dlight origin
-  self.partTypeId = 0;  //dlight style
-  self.compAltOffsetCache = '0 0 0';  //dlight color
-  
-};
-
-void() data_building_shield={
-  building_shield();
-  self.th_die = shield_gen_die1;
-  self.th_walk = shield_gen_active;
-  //local vfx
-  self.compOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * self.mins_x) + (v_forward * self.mins_y);
-  self.compAltOffset = self.origin + (v_up * self.maxs_z) + (v_right * (self.mins_x * 0.15)) + (v_forward * (self.mins_y * 0.15));
-};
-
-void() data_building_power={
-  //FIXME
-  building_power();
-  self.th_die = power_plant_die1;
-  self.th_walk = power_plant_active;
-  //local vfx - green ball
-  self.compOffset = self.origin + (v_up * (self.maxs_z * 0.8)) + (v_right * self.mins_x * 0.85) + (v_forward * (self.mins_y * 0.65));
-  self.compAltOffset = self.origin + (v_up * (self.maxs_z * 0.85)) + (v_right * (self.mins_x * 0.67)) + (v_forward * (self.mins_y * 0.45));
-  //local vfx - blue vent front
-  self.wepFireOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * 0) + (v_forward * self.maxs_y * 0.9);
-  self.wepFireOffsetCache = self.origin + (v_up * (self.maxs_z * 0.45)) + (v_right * (self.maxs_x * 0.25)) + (v_forward * self.maxs_y * 0.9);
-  //local vfx - blue vent front
-  self.cockpitOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * 0) + (v_forward * self.mins_y * 0.9);
-  self.w_adj_ang = self.origin + (v_up * (self.maxs_z * 0.45)) + (v_right * (self.maxs_x * 0.25)) + (v_forward * self.mins_y * 0.9);
-};
-
-void() data_building_fuel={
-  building_fuel_tank();
-  self.deadflag = DEAD_NO; 
-  self.th_die = fuel_tank_die1;
-};
-
-void() data_building_repair={   
-  building_repair_bay();
-  self.th_walk = repair_bay_active;
-  self.th_die = repair_bay_die1;
-  self.render_dlights = repair_bay_dlights;
-  self.w_firetime = 0;
-  self.compOffset = self.origin + (v_up * 40) + (v_forward * -16);
-  self.compAltOffset = self.origin;
-};
-
-void() data_building_guard={
-  building_guard_tower();
-  self.th_walk = guard_post_th;
-  self.th_die = guard_post_die1;
-  self.render_dlights = guard_post_dlights;
-  self.compOffset = self.origin + (v_up * 36);
-  self.w_adj_ang =  self.angles;
-};
-
 /*
   ANIMATION - Death
 */

@@ -163,6 +163,9 @@ void() misc_building_settle={
 void( string modelName, float setSizeFlag ) misc_building={
   self.avelocity = '0 0 0';
   self.velocity = '0 0 0';
+  self.movetype = MOVETYPE_PUSH;
+  self.solid = SOLID_BBOX;
+  
   precache_model(self.model);
   
   setmodel(self, modelName);
@@ -195,7 +198,7 @@ void( string modelName, float setSizeFlag ) misc_building={
     self.SendEntity = sendent_misc_building;
   }
 	self.think = misc_building_settle;
-	self.nextthink = time + 0.01;
+	self.nextthink = time + 0.1;
 };
 
 void() building_misc_apartment={
@@ -213,28 +216,7 @@ void() building_misc_apartment={
   self.max_health = self.health;
   self.vec_size = 1;
   
-  self.angles = '0 90 0';
   misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", TRUE);
-  setorigin(self, self.origin);
-};
-
-void() building_misc_apartment_wide={
-  self.nextVecChoice = TRUE; //ai_can_spawn compatability
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  
-  self.data_idx = 1;
-  
-  if( !self.health) {
-    self.health =  200;
-  }
-  self.max_health = self.health;
-  self.vec_size = 1;
-  
-  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", TRUE);
-  setorigin(self, self.origin);
 };
 
 void() building_misc_factory_med={
@@ -253,30 +235,7 @@ void() building_misc_factory_med={
   self.vec_size = 2;
 
   misc_building("q3mdl/buildings/misc/misc_fact_med.obj", TRUE);
-  setorigin(self, self.origin);
-  self.angles = '0 90 0';
 };
-
-void() building_misc_factory_med_wide={
-  self.nextVecChoice = TRUE; //ai_can_spawn compatability
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  
-  self.data_idx = 2;
-  
-  if( !self.health) {
-    self.health =  350;
-  }
-  self.max_health = self.health;
-  self.vec_size = 2;
-  misc_building("q3mdl/buildings/misc/misc_fact_med.obj", TRUE);
-  setorigin(self, self.origin);
-  self.angles = '0 0 0';
-};
-
-
 
 void() building_misc_lodge={
   self.nextVecChoice = TRUE; //ai_can_spawn compatability
@@ -350,26 +309,6 @@ void() building_misc_off_small={
   self.vec_size = 2;
   
   misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", TRUE);
-  setorigin(self, self.origin);
-};
-
-void() building_misc_off_small_wide={
-  self.nextVecChoice = TRUE; //ai_can_spawn compatability
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  
-  self.data_idx = 6;
-  if( !self.health) {
-    self.health =  100;
-  }
-  self.max_health = self.health;
-  self.vec_size = 2;
-  
-  self.angles = '0 90 0';
-  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", TRUE );
-  setorigin(self, self.origin);
 };
 
 void() building_misc_fact_steam={
@@ -387,76 +326,19 @@ void() building_misc_fact_steam={
   self.vec_size = 2;
   misc_building("q3mdl/buildings/misc/misc_fact_steam.obj", TRUE);
 };
+void() building_misc_apt_large={
+  self.nextVecChoice = TRUE; //ai_can_spawn compatability
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  
+  self.data_idx = 8;
+  if( !self.health) {
+    self.health =  200;
+  }
+  self.max_health = self.health;
+  self.vec_size = 3;
 
-
-void() building_misc_apt_large_north={
-  self.nextVecChoice = TRUE; //ai_can_spawn compatability
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  
-  self.data_idx = 8;
-  if( !self.health) {
-    self.health =  200;
-  }
-  self.max_health = self.health;
-  self.vec_size = 3;
-  self.angles = '0 270 0';
   misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", TRUE);
-  setorigin(self, self.origin);
-};
-void() building_misc_apt_large_east={
-  self.nextVecChoice = TRUE; //ai_can_spawn compatability
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  
-  self.data_idx = 8;
-  if( !self.health) {
-    self.health =  200;
-  }
-  self.max_health = self.health;
-  self.vec_size = 3;
-  
-  self.angles = '0 180 0';
-  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", TRUE);
-  setorigin(self, self.origin);
-};
-void() building_misc_apt_large_west={
-  self.nextVecChoice = TRUE; //ai_can_spawn compatability
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  
-  self.data_idx = 8;
-  if( !self.health) {
-    self.health =  200;
-  }
-  self.max_health = self.health;
-  self.vec_size = 3;
-  
-  self.angles = '0 0 0';
-  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", TRUE);
-  setorigin(self, self.origin);
-};
-void() building_misc_apt_large_south={
-  self.nextVecChoice = TRUE; //ai_can_spawn compatability
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
-    return;
-  }
-  
-  self.data_idx = 8;
-  if( !self.health) {
-    self.health =  200;
-  }
-  self.max_health = self.health;
-  self.vec_size = 3;
-  
-  self.angles = '0 90 0';
-  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", TRUE);
-  setorigin(self, self.origin);
 };

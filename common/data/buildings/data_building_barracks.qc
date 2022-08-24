@@ -10,22 +10,22 @@ Overview: data file for building
     Decoration, mostly an aesthetics building used to fill-out base areas.
 */
 
-void() hangar_barracks_die2;
-void() hangar_barracks_die3;
-void() hangar_barracks_die4;
-void() hangar_barracks_die5;
-void() hangar_barracks_die6;
-void() hangar_barracks_die7;
-void() hangar_barracks_die8;
-void() hangar_barracks_die9;
-void() hangar_barracks_die10;
-void() hangar_barracks_die11;
-void() hangar_barracks_die12;
-void() hangar_barracks_die13;
-void() hangar_barracks_die14;
-void() hangar_barracks_die15;
+void() barracks_die2;
+void() barracks_die3;
+void() barracks_die4;
+void() barracks_die5;
+void() barracks_die6;
+void() barracks_die7;
+void() barracks_die8;
+void() barracks_die9;
+void() barracks_die10;
+void() barracks_die11;
+void() barracks_die12;
+void() barracks_die13;
+void() barracks_die14;
+void() barracks_die15;
 
-void() hangar_barracks_die1=[0, hangar_barracks_die2]{
+void() barracks_die1=[0, barracks_die2]{
 
 #ifdef SSQC
   if( self.deadflag > DEAD_NO ){
@@ -52,10 +52,10 @@ void() hangar_barracks_die1=[0, hangar_barracks_die2]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die2=[0, hangar_barracks_die3]{
+void() barracks_die2=[0, barracks_die3]{
 
 };
-void() hangar_barracks_die3=[0, hangar_barracks_die4]{
+void() barracks_die3=[0, barracks_die4]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -67,10 +67,10 @@ void() hangar_barracks_die3=[0, hangar_barracks_die4]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die4=[0, hangar_barracks_die5]{
+void() barracks_die4=[0, barracks_die5]{
 
 };
-void() hangar_barracks_die5=[0, hangar_barracks_die6]{
+void() barracks_die5=[0, barracks_die6]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -82,10 +82,10 @@ void() hangar_barracks_die5=[0, hangar_barracks_die6]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die6=[0, hangar_barracks_die7]{
+void() barracks_die6=[0, barracks_die7]{
 
 };
-void() hangar_barracks_die7=[0, hangar_barracks_die8]{
+void() barracks_die7=[0, barracks_die8]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -96,7 +96,7 @@ void() hangar_barracks_die7=[0, hangar_barracks_die8]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die8=[0, hangar_barracks_die9]{
+void() barracks_die8=[0, barracks_die9]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -107,7 +107,7 @@ void() hangar_barracks_die8=[0, hangar_barracks_die9]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die9=[0, hangar_barracks_die10]{
+void() barracks_die9=[0, barracks_die10]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -118,7 +118,7 @@ void() hangar_barracks_die9=[0, hangar_barracks_die10]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die10=[0, hangar_barracks_die11]{
+void() barracks_die10=[0, barracks_die11]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -129,7 +129,7 @@ void() hangar_barracks_die10=[0, hangar_barracks_die11]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die11=[0, hangar_barracks_die12]{
+void() barracks_die11=[0, barracks_die12]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -140,10 +140,10 @@ void() hangar_barracks_die11=[0, hangar_barracks_die12]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die12=[0, hangar_barracks_die13]{
+void() barracks_die12=[0, barracks_die13]{
 
 };
-void() hangar_barracks_die13=[0, hangar_barracks_die14]{
+void() barracks_die13=[0, barracks_die14]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -154,10 +154,10 @@ void() hangar_barracks_die13=[0, hangar_barracks_die14]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_barracks_die14=[0, hangar_barracks_die15]{
+void() barracks_die14=[0, barracks_die15]{
 
 };
-void() hangar_barracks_die15=[0, SUB_Null]{
+void() barracks_die15=[0, SUB_Null]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -207,7 +207,7 @@ void() building_barracks={
   }
   self.angles_y = self.angle;
   
-  self.th_die = hangar_barracks_die1;
+  self.th_die = barracks_die1;
 
   #ifdef SSQC
     if( ai_can_spawn() == FALSE ){

@@ -9,7 +9,7 @@ Overview: data file for building
 */
 
 //Death Animation
-void() hfuel_death1 = [1, hfuel_death2]{
+void() fuel_tank_die1 = [1, fuel_tank_die2]{
 
 #ifdef SSQC
   if( self.deadflag > DEAD_NO ){
@@ -19,11 +19,16 @@ void() hfuel_death1 = [1, hfuel_death2]{
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  te_missile_explode( pos, 1, '1 0.67 0.67', 0.01 );
+  
+  building_sound_explode();
 #endif
 };
-void() hfuel_death2 = [2, hfuel_death3]{
+void() fuel_tank_die2 = [2, fuel_tank_die3]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -34,11 +39,13 @@ void() hfuel_death2 = [2, hfuel_death3]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  building_sound_explode();
 #endif
 };
-void() hfuel_death3 = [3, hfuel_death4]{
+void() fuel_tank_die3 = [3, fuel_tank_die4]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -49,11 +56,15 @@ void() hfuel_death3 = [3, hfuel_death4]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 5, 3 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  
+  te_missile_explode( pos, 5, '1 0.67 0.67', 0.0015 );
+  building_sound_explode();
 #endif
 };
-void() hfuel_death4 = [4, hfuel_death5]{
+void() fuel_tank_die4 = [4, fuel_tank_die5]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -64,11 +75,14 @@ void() hfuel_death4 = [4, hfuel_death5]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 4, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
+  building_sound_explode();
 #endif
 };
-void() hfuel_death5 = [5, hfuel_death6]{
+void() fuel_tank_die5 = [5, fuel_tank_die6]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -79,11 +93,14 @@ void() hfuel_death5 = [5, hfuel_death6]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 1 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
+  building_sound_explode();
 #endif
 };
-void() hfuel_death6 = [6, hfuel_death7]{
+void() fuel_tank_die6 = [6, fuel_tank_die7]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -94,12 +111,24 @@ void() hfuel_death6 = [6, hfuel_death7]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
+  building_sound_explode();
+  
 #endif
 };
-void() hfuel_death7 = [7, hfuel_death8]{};
-void() hfuel_death8 = [8, hfuel_death9]{
+void() fuel_tank_die7 = [7, fuel_tank_die8]{
+#ifdef CSQC
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
+  building_sound_explode();
+#endif
+};
+void() fuel_tank_die8 = [8, fuel_tank_die9]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -110,11 +139,14 @@ void() hfuel_death8 = [8, hfuel_death9]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
+  building_sound_explode();
 #endif
 };
-void() hfuel_death9 = [9, hfuel_death10]{
+void() fuel_tank_die9 = [9, fuel_tank_die10]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -125,11 +157,14 @@ void() hfuel_death9 = [9, hfuel_death10]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
+  building_sound_explode();
 #endif
 };
-void() hfuel_death10 = [10, hfuel_death11]{
+void() fuel_tank_die10 = [10, fuel_tank_die11]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -140,12 +175,23 @@ void() hfuel_death10 = [10, hfuel_death11]{
   te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
+  building_sound_explode();
 #endif
 };
-void() hfuel_death11 = [11, hfuel_death12]{};
-void() hfuel_death12 = [12, hfuel_death12]{
+void() fuel_tank_die11 = [11, fuel_tank_die12]{
+#ifdef CSQC
+  local vector pos;
+  makevectors(self.angles);
+  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
+  building_sound_explode();
+#endif
+};
+void() fuel_tank_die12 = [12, fuel_tank_die12]{
 #ifdef SSQC
   building_die();
 #endif
@@ -190,7 +236,7 @@ void() building_fuel_tank={
   if( !self.energyMax ){
     self.energyMax = 0;
   }
-  self.th_die = hfuel_death1;
+  self.th_die = fuel_tank_die1;
   
   #ifdef SSQC
     self.effects = self.effects | EF_LOWPRECISION;

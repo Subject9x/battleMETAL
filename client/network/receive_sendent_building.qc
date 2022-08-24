@@ -99,8 +99,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
     
-    cons_logAFloat("self.angles_y", self.angles_y); //debug
-    
     self.faction = ReadChar();
     self.vec_size = ReadChar();
     self.data_idx = ReadByte();
@@ -224,6 +222,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   
   //HANDLE EVENT - dead
   if( prevDeadflag == DEAD_NO && self.deadflag == DEAD_DYING ){
+    self.colormod = '1 1 1';
     if( self.th_die ){
       self.th_die();
     }

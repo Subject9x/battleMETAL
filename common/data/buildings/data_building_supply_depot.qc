@@ -9,31 +9,30 @@ Overview: data file for building
   func: 
     Decoration, mostly an aesthetics building used to fill-out base areas.
 */
-void() hangar_depot_die2;
-void() hangar_depot_die3;
-void() hangar_depot_die4;
-void() hangar_depot_die5;
-void() hangar_depot_die6;
-void() hangar_depot_die7;
-void() hangar_depot_die8;
-void() hangar_depot_die9;
-void() hangar_depot_die10;
-void() hangar_depot_die11;
-void() hangar_depot_die12;
-void() hangar_depot_die13;
-void() hangar_depot_die14;
-void() hangar_depot_die15;
+void() supply_depot_die2;
+void() supply_depot_die3;
+void() supply_depot_die4;
+void() supply_depot_die5;
+void() supply_depot_die6;
+void() supply_depot_die7;
+void() supply_depot_die8;
+void() supply_depot_die9;
+void() supply_depot_die10;
+void() supply_depot_die11;
+void() supply_depot_die12;
+void() supply_depot_die13;
+void() supply_depot_die14;
+void() supply_depot_die15;
 
-void() hangar_depot_die1=[0, hangar_depot_die2]{
+void() supply_depot_die1=[0, supply_depot_die2]{
   
 #ifdef SSQC
   local vector vfx;
   if( self.deadflag > DEAD_NO ){
     return;
   }
-  self.SendEntity = __NULL__;
-  //self.deadflag = DEAD_DYING;
-  //self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   makevectors(self.angles);
   vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
   te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
@@ -44,10 +43,10 @@ void() hangar_depot_die1=[0, hangar_depot_die2]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die2=[0, hangar_depot_die3]{
+void() supply_depot_die2=[0, supply_depot_die3]{
 
 };
-void() hangar_depot_die3=[0, hangar_depot_die4]{
+void() supply_depot_die3=[0, supply_depot_die4]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -59,10 +58,10 @@ void() hangar_depot_die3=[0, hangar_depot_die4]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die4=[0, hangar_depot_die5]{
+void() supply_depot_die4=[0, supply_depot_die5]{
 
 };
-void() hangar_depot_die5=[0, hangar_depot_die6]{
+void() supply_depot_die5=[0, supply_depot_die6]{
 #ifdef SSQC
   local vector vfx;
   makevectors(self.angles);
@@ -74,10 +73,10 @@ void() hangar_depot_die5=[0, hangar_depot_die6]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die6=[0, hangar_depot_die7]{
+void() supply_depot_die6=[0, supply_depot_die7]{
 
 };
-void() hangar_depot_die7=[0, hangar_depot_die8]{
+void() supply_depot_die7=[0, supply_depot_die8]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -88,7 +87,7 @@ void() hangar_depot_die7=[0, hangar_depot_die8]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die8=[0, hangar_depot_die9]{
+void() supply_depot_die8=[0, supply_depot_die9]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -99,7 +98,7 @@ void() hangar_depot_die8=[0, hangar_depot_die9]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die9=[0, hangar_depot_die10]{
+void() supply_depot_die9=[0, supply_depot_die10]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -110,7 +109,7 @@ void() hangar_depot_die9=[0, hangar_depot_die10]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die10=[0, hangar_depot_die11]{
+void() supply_depot_die10=[0, supply_depot_die11]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -121,7 +120,7 @@ void() hangar_depot_die10=[0, hangar_depot_die11]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die11=[0, hangar_depot_die12]{
+void() supply_depot_die11=[0, supply_depot_die12]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -132,10 +131,10 @@ void() hangar_depot_die11=[0, hangar_depot_die12]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die12=[0, hangar_depot_die13]{
+void() supply_depot_die12=[0, supply_depot_die13]{
 
 };
-void() hangar_depot_die13=[0, hangar_depot_die14]{
+void() supply_depot_die13=[0, supply_depot_die14]{
 #ifdef SSQC
   local vector vfx;
   vfx = randompos(self.absmin, self.absmax);
@@ -146,10 +145,10 @@ void() hangar_depot_die13=[0, hangar_depot_die14]{
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
 #endif
 };
-void() hangar_depot_die14=[0, hangar_depot_die15]{
+void() supply_depot_die14=[0, supply_depot_die15]{
 
 };
-void() hangar_depot_die15=[0, SUB_Null]{
+void() supply_depot_die15=[0, SUB_Null]{
 
 #ifdef SSQC
   local vector vfx;
@@ -202,7 +201,7 @@ void() building_supply_depot={
   setmodel(self, "q3mdl/buildings/depot/supply_depot.md3");
   setsize(self, self.mins, self.maxs);
   
-  self.th_die = hangar_depot_die1;
+  self.th_die = supply_depot_die1;
   
   #ifdef SSQC
     self.effects = self.effects | EF_LOWPRECISION;

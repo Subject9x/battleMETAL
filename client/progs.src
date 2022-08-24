@@ -31,7 +31,6 @@ data/headers/data_mech.qh
 data/headers/local_savefile.qh
 
 util/headers/particle_sys.qh
-model/models_buildings.qh
 model/mech_legs.qh
 
 network/headers/client_globals.qh
@@ -223,14 +222,6 @@ ui/hud/crosshair/hud_crosshair4.qc
 
 //EFFECTS================
   util/particle_sys.qc
-  model/power_plant.qc
-  model/shield_gen.qc
-  model/repair_bay.qc
-  model/fuel_tank.qc
-  model/hangar_large.qc
-  model/hangar_medium.qc
-  model/guard_tower.qc
-  model/radar_post.qc
   model/mech_legs.qc
   model/mech_ai.qc
 //=======================
