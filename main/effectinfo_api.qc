@@ -117,14 +117,17 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
   
   switch( debrType ){
     case 2:
+      precache_model("q3mdl/fx/debris2/mdl_debris_2.md3");
       debrisMdl = "q3mdl/fx/debris2/mdl_debris_2.md3";
       trailNum = particleeffectnum("TE_DEBRIS_TRAIL_MED");
       break;
     case 3:
+      precache_model("q3mdl/fx/debris3/mdl_debris_3.md3");
       debrisMdl = "q3mdl/fx/debris3/mdl_debris_3.md3";
       trailNum = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
       break;
     default:
+      precache_model("q3mdl/fx/debris1/mdl_debris_1.md3");
       debrisMdl = "q3mdl/fx/debris1/mdl_debris_1.md3";
       trailNum = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;

@@ -98,6 +98,7 @@ void( float isNew, float entFlags ) data_nav_point={
     }
     
     self.vec_name = NAVNAMES[self.data_idx];
+    precache_model("q3mdl/map/nav_point.obj");
     setmodel(self, "q3mdl/map/nav_point.obj");
     setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
     setorigin( self, self.origin ); 
@@ -430,16 +431,19 @@ void(float dataIdx) hazard_ini_rad={
   switch( dataIdx ){
     case 2:
       self.model = "q3mdl/map/rads/rad_base_md.obj";
+      precache_model("q3mdl/map/rads/rad_base_md.obj");
       setmodel(self, self.model);
       setsize( self, '-40 -40 0', '40 40 25' );
       break;
     case 3:
       self.model = "q3mdl/map/rads/rad_base_lg.obj";
+      precache_model("q3mdl/map/rads/rad_base_lg.obj");
       setmodel(self, self.model);
       setsize( self, '-48 -48 0', '48 48 30' );
       break;
     default:
       self.model = "q3mdl/map/rads/rad_base_sm.obj";
+      precache_model("q3mdl/map/rads/rad_base_sm.obj");
       setmodel(self, self.model);
       setsize( self, '-25 -25 0', '25 25 20' );
       break;
@@ -457,16 +461,19 @@ void(float dataIdx) hazard_ini_static={
   switch( dataIdx ){
     case 2:
       self.model = "q3mdl/map/rads/min_base_md.obj";
+      precache_model("q3mdl/map/rads/min_base_md.obj");
       setmodel(self, self.model);
       setsize( self, '-30 -30 0', '30 30 40' );
       break;
     case 3:
       self.model = "q3mdl/map/rads/min_base_lg.obj";
+      precache_model("q3mdl/map/rads/min_base_lg.obj");
       setmodel(self, self.model);
       setsize( self, '-40 -40 0', '40 40 52' );
       break;
     default:
       self.model = "q3mdl/map/rads/min_base_sm.obj";
+      precache_model("q3mdl/map/rads/min_base_sm.obj");
       setmodel(self, self.model);
       setsize( self, '-20 -20 0', '20 20 25' );
       break;
@@ -483,16 +490,19 @@ void(float dataIdx) hazard_ini_quant={
   switch( dataIdx ){
     case 2:
       self.model = "q3mdl/map/rads/qtm_base_md.obj";
+      precache_model("q3mdl/map/rads/qtm_base_md.obj");
       setmodel(self, self.model);
       setsize( self, '-30 -30 0', '30 30 40' );
       break;
     case 3:
       self.model = "q3mdl/map/rads/qtm_base_lg.obj";
+      precache_model("q3mdl/map/rads/qtm_base_lg.obj");
       setmodel(self, self.model);
       setsize( self, '-40 -40 0', '40 40 52' );
       break;
     default:
       self.model = "q3mdl/map/rads/qtm_base_sm.obj";
+      precache_model("q3mdl/map/rads/qtm_base_sm.obj");
       setmodel(self, self.model);
       setsize( self, '-20 -20 0', '20 20 25' );
       break;

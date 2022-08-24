@@ -742,7 +742,9 @@ void() click_graphics_accept={
     cvar_set("vid_conheight",ftos(fabs(VID_CNEXT_y)));
     VID_NEXT = '0 0 0';
   }
-  
+  cvar_set("gl_texturemode", "GL_NEAREST");
+  cvar_set("gl_texture_anisotropy", "1");
+	
   localcmd("saveconfig;\n");
   localcmd("vid_restart;\n");
   RESO_CHANGE = TRUE;
