@@ -234,7 +234,7 @@ void() sendent_missile_think={
   }
   
   self.think = sendent_missile_think;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.005 * frametime;
 };
 
 void( float isNew, float changeFlags ) sendent_handle_missile={
@@ -283,17 +283,21 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.alpha = 1;
     self.scale = 1;
     self.think = sendent_missile_think;
-    self.nextthink = time + 0.001;
+    self.nextthink = time + 0.005;
+    self.data_postinit = FALSE;
     sendent_ini_interpolate();
     if( self.data_idx == UID_ITEM_debris ){
       data_sync_new_debris( self );
     }
     else{
       data_sync_new_projectile(self.data_idx);
-      self.predraw = predraw_missile;
     }
+    self.predraw = predraw_missile;
     setmodel(self, self.model);
     setsize(self, '0 0 0', '0 0 0');
+  }
+  else{
+    self.data_postinit = TRUE;
   }
   
   self.angles = vectoangles(self.velocity);

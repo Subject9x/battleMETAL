@@ -48,7 +48,7 @@ void() data_projectile_ini_emp_={
     self.model = "q3mdl/proj/mdl_proj_emp.md3";
     self.modelflags = 0;
     self.alpha = 0.75;
-    self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");
+    self.data_traileff = particleeffectnum("TE_EMP_TRAIL");
     self.pcl_explode = projectile_emp_expl;
   #endif
   

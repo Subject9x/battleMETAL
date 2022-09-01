@@ -50,7 +50,7 @@ void() data_projectile_ini_snub_artillery_={
     precache_model("q3mdl/proj/mdl_proj_sfga.md3");
     self.model = "q3mdl/proj/mdl_proj_sfga.md3";
     self.colormod =  '0.85 0.45 0.45';
-    self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
+    self.data_traileff = particleeffectnum("TE_SFGA_TRAIL");
     self.pcl_explode = projectile_sfga_expl;
     self.scale = 1.25;
     self.effects = self.effects | EF_FULLBRIGHT;

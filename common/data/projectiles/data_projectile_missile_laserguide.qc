@@ -56,7 +56,7 @@ void() data_projectile_ini_missile_laserguide_={
     self.model = "q3mdl/proj/mdl_proj_lgm.md3";
     self.effects = EF_NOSHADOW | EF_FULLBRIGHT;
     self.modelflags = 0;
-    self.traileffectnum = particleeffectnum("TE_LGM_TRAIL");
+    self.data_traileff = particleeffectnum("TE_LGM_TRAIL");
     self.pcl_explode = projectile_mlg_expl;
     self.scale = 2;
   #endif 

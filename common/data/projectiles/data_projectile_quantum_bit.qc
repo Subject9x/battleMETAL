@@ -44,7 +44,7 @@ void() data_projectile_ini_quantum_bit_={
     //cosmetics
     precache_model("q3mdl/proj/mdl_proj_qrfl.md3");
     self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
-    self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
+    self.data_traileff = particleeffectnum("TE_QRFL_QBIT_TRAIL");
     self.damageType = self.damageType | EFF_SHD;
     self.pcl_explode = projectile_qbit_expl;
     self.scale = 1.15;

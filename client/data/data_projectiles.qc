@@ -54,17 +54,17 @@ void( entity e ) data_sync_new_debris={
     case 2:
       precache_model("q3mdl/fx/debris2/mdl_debris_2.md3");
       setmodel(e, "q3mdl/fx/debris2/mdl_debris_2.md3");
-      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
+      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
       break;
     case 3:
-      precache_model("q3mdl/fx/debris2/mdl_debris_3.md3");
+      precache_model("q3mdl/fx/debris3/mdl_debris_3.md3");
       setmodel(e, "q3mdl/fx/debris3/mdl_debris_3.md3");
-      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
+      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
       break;
     default:
-      precache_model("q3mdl/fx/debris2/mdl_debris_1.md3");
+      precache_model("q3mdl/fx/debris1/mdl_debris_1.md3");
       setmodel(e, "q3mdl/fx/debris1/mdl_debris_1.md3");
-      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
+      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;
   }
   self.angles = vectoangles(self.velocity);
@@ -99,6 +99,11 @@ void() predraw_missile={
   
   setmodel(self, self.model);
   addentity(self);
+  
+  if( self.data_postinit ){
+    self.traileffectnum = self.data_traileff;
+  }
+  
 };
 
 void() predraw_plasma={
