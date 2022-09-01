@@ -245,7 +245,7 @@ float( entity targ ) ai_check_vis={
   
   traceline (spot1, spot2, MOVE_NORMAL, self);
   
-  self.dphitcontentsmask = rint(contentBuffer);
+  self.dphitcontentsmask = fabs(contentBuffer);
 
   //case: los crossed content - ported q1
   if ( trace_inopen && trace_inwater ){
