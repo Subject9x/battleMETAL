@@ -213,9 +213,9 @@ void() building_fuel_tank={
   self.takedamage = DAMAGE_AIM;
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  self.model = "q3mdl/buildings/fueltank/fueltank.obj";
-  precache_model("q3mdl/buildings/fueltank/fueltank.obj");
-  setmodel(self, "q3mdl/buildings/fueltank/fueltank.obj");
+  self.model = "models/buildings/fueltank/fueltank.md3";
+  precache_model("models/buildings/fueltank/fueltank.md3");
+  setmodel(self, "models/buildings/fueltank/fueltank.md3");
   setsize(self, self.mins, self.maxs);
 
   if( !self.health) {

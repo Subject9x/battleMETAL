@@ -73,22 +73,22 @@ void() data_ini_sapper_={
  
 //MECH COMPONENTS====================
   //center torso
-  data_ini_torso_center_( "q3mdl/mechs/sapper/sapper_tor_c.md3", 575, '0 0 0', '0 6 0' );
+  data_ini_torso_center_( "models/mechs/sapper/sapper_tor_c.md3", 575, '0 0 0', '0 6 0' );
   
   //left torso
-  data_ini_torso_left_( "q3mdl/mechs/sapper/sapper_tor_l.md3", 500, '-6.3 9.5 -2', '-8 12.25 0' );
+  data_ini_torso_left_( "models/mechs/sapper/sapper_tor_l.md3", 500, '-6.3 9.5 -2', '-8 12.25 0' );
   
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/sapper/sapper_tor_r.md3", 500, '6.3 9.5 -2', '8 12.25 0' );
+  data_ini_torso_right_( "models/mechs/sapper/sapper_tor_r.md3", 500, '6.3 9.5 -2', '8 12.25 0' );
   
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/sapper/sapper_arm_l.md3", 450, '-10.5 10 -2', '-14 7 0' );
+  data_ini_arm_left_( "models/mechs/sapper/sapper_arm_l.md3", 450, '-10.5 10 -2', '-14 7 0' );
   
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/sapper/sapper_arm_r.md3", 450, '10.5 10 -2', '14 7 0' );
+  data_ini_arm_right_( "models/mechs/sapper/sapper_arm_r.md3", 450, '10.5 10 -2', '14 7 0' );
   
   //legs
-  data_ini_legs_( "q3mdl/mechs/sapper/sapper_legs.md3", 650, '0 0 0.5' );
+  data_ini_legs_( "models/mechs/sapper/sapper_legs.md3", 650, '0 0 0.5' );
   
   //camera location
   #ifdef CSQC
@@ -113,10 +113,10 @@ void() data_ini_sapper_={
 //HUD Data=============================
 #ifdef CSQC
   if( self.classname == "UI_ITEM" ){
-    precache_model("q3mdl/mechs/sapper/sapper_view.obj");
-    precache_model("q3mdl/mechs/sapper/sapper_hud.obj");
-    self.weaponmodel = "q3mdl/mechs/sapper/sapper_view.obj";
-    self.hud_model = "q3mdl/mechs/sapper/sapper_hud.obj";
+    precache_model("models/mechs/sapper/sapper_view.obj");
+    precache_model("models/mechs/sapper/sapper_hud.obj");
+    self.weaponmodel = "models/mechs/sapper/sapper_view.obj";
+    self.hud_model = "models/mechs/sapper/sapper_hud.obj";
     self.hud_StrutsOffset = '0 -2 -0.75';
     self.pitchMax = 40;
     self.pitchMin = -40;

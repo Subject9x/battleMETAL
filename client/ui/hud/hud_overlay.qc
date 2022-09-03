@@ -369,7 +369,7 @@ void() hud_model_armor_player_ini={
   HUD_MODEL_ARMOR_GRAPH_PLAYER.solid = SOLID_NOT;
   HUD_MODEL_ARMOR_GRAPH_PLAYER.movetype = MOVETYPE_NONE;
   HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags = 0 | rint(self.unitModFlags);
-  setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, "q3mdl/testball.md3");
+  setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, "models/testball.md3");
   HUD_MODEL_ARMOR_GRAPH_PLAYER.mins = self.mins;
   HUD_MODEL_ARMOR_GRAPH_PLAYER.maxs = self.maxs;
 

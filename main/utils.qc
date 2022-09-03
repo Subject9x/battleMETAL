@@ -441,13 +441,13 @@ void(entity t) util_generateBuildingFoundation={
     self.classname = "map_terrain";
     switch( t.vec_size ){
       case 1:
-        util_setModel("q3mdl/map/plats/plat_small.obj", 0, 0) ;
+        util_setModel("models/map/plats/plat_small.obj", 0, 0) ;
         break;
       case 2:
-        util_setModel("q3mdl/map/plats/plat_medium.obj", 0, 0) ;
+        util_setModel("models/map/plats/plat_medium.obj", 0, 0) ;
         break;
       case 3:
-        util_setModel("q3mdl/map/plats/plat_large.obj", 0, 0);
+        util_setModel("models/map/plats/plat_large.obj", 0, 0);
         break;
     }
     self.takedamage = DAMAGE_NO;
@@ -589,7 +589,7 @@ void() util_MapDeveloperMarker={
     self.scale = 0.01;
     self.effects = self.effects | EF_NOSHADOW;
   }
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
 };
 
 void() util_DeveloperNodeMark={

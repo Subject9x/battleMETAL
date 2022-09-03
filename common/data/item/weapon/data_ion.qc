@@ -52,11 +52,11 @@ void() data_ini_ion_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/emp_fire.ogg");
-  precache_model("q3mdl/weapons/w_ion.md3");
+  precache_model("models/weapons/w_ion.md3");
   precache_file( "gfx/ui/wep_icons/wi_ion.png");
   self.w_name = "Ion Coil";
   self.fire_sound = "sound/weapons/emp_fire.ogg";
-  self.model = "q3mdl/weapons/w_ion.md3";
+  self.model = "models/weapons/w_ion.md3";
   self.abbrev = "ION";
   self.description = "+ Anti-shield. + Armor damage greatly reduced. +3-rnd burst fire.";
   self.icon = "gfx/ui/wep_icons/wi_ion.png";

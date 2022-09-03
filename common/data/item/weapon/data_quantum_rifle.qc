@@ -67,11 +67,11 @@ void() data_ini_quantum_={
 
 #ifdef CSQC
   precache_sound("sound/weapons/qrfl_fire.ogg");
-  precache_model("q3mdl/weapons/w_qrf.md3");
+  precache_model("models/weapons/w_qrf.md3");
   precache_file( "gfx/ui/wep_icons/wi_qrf.png");
   self.w_name = "Quantum Rifle";
   self.fire_sound = "sound/weapons/qrfl_fire.ogg";
-  self.model = "q3mdl/weapons/w_qrf.md3";
+  self.model = "models/weapons/w_qrf.md3";
   self.abbrev = "QRF";
   self.description = "+ Single-fire projectile. + Better against <Armor> + Targets without <Shields> will cause projectile to shatter and deal additional radius damage to nearby targets.";
   self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 

@@ -141,12 +141,12 @@ For best results, place manually as close to ground as possible!" [
   ]
 ]
 
-@BaseClass base(Angle, Target, Targetname, MapKeyFlag, ExtTriggers, NoDropFlag, Faction, SkillFlagsEngine, CampaignFlags) color(0 0 1) = MiscBuilding [
+@BaseClass base(Target, Targetname, MapKeyFlag, ExtTriggers, NoDropFlag, Faction, SkillFlagsEngine, CampaignFlags) color(0 0 1) = MiscBuilding [
   spawnflags(Flags) = [
     16 : "Can Target" : 0
     8388608 : "VIP Target" : 0
   ]
-  angles(vector) : "set initial facing angle for ent." : "0 0 0"
+  mangle(vector) : "set initial facing angle for ent." : "0 0 0"
 ]
 
 @BaseClass base(Faction,Angle,Target,Targetname,SkillFlagsEngine) color(0 0.25 1) = DoodadRemovable [
@@ -280,7 +280,7 @@ For best results, place manually as close to ground as possible!" [
 
 @SolidClass color(0 0.5 0.8) = func_illusionary : "A simple entity that looks solid but lets you walk through it." []
 
-@SolidClass color(0 0.5 0.8) = func_plat : "Plats are always drawn in the extended position, so they will light correctly.
+@SolidClass base(Target, Targetname) color(0 0.5 0.8) = func_plat : "Plats are always drawn in the extended position, so they will light correctly.
 If the plat is the target of another trigger or button, it will start out disabled in the extended position until it is trigger, when it will lower and become a normal plat.
 If the 'height' key is set, that will determine the amount the plat moves, instead of being implicitly determined by the model's height." 
 [
@@ -305,18 +305,6 @@ If the 'height' key is set, that will determine the amount the plat moves, inste
 	speed(integer) : "Speed (units per second)" : 64
 	target(target_source) : "Target to start at"
 	dmg(integer) : "Damage on block" : 2
-]
-
-@SolidClass base(Target, Targetname) color(0 0.5 0.8) = func_plat : "Trains are moving platforms that players can ride.
-The targets origin specifies the min point of the train at each corner.
-The train spawns at the first target it is pointing at.
-If the train is the target of a button or trigger, it will not begin moving until activated." 
-[
-  speed(integer) : "default 100" : 100
-  dmg(integer) : "block damage" : 2
-  sounds(choices) : "SFX" : 0 = [
-    1 : "Ratchet Metal"
-  ]
 ]
 
 @SolidClass color(0.6 0.6 1.0) = func_group : "This is not an entity as such. It is strictly an editor utility to group world brushes and patches together for convenience (selecting, moving, copying, etc). You cannot group entities with this." []
@@ -498,7 +486,7 @@ if 'angle' is set, the trigger will only fire when someone is facing the directi
 ]
 
 @SolidClass base(BaseTrigger) = trigger_hurt : "Anything touching will be hurt" [
-  dmg(float) : "damage amount" : 5
+  dmg(float) : "damage amount" : "5.0"
   cnt(integer) : "how many times to trigger"
 ]
 
@@ -710,7 +698,7 @@ that unit's stats using the ai_stats.qc functions. This is useful for adjusting 
   + this method preserves the bot offset from origin of THIS.
   + bot must have matching faction id." []
 
-@PointClass base(Target, Targetname, Angle, Faction) color(0.33 0.33 0.33) size(-24 -24 -12, 24 24 12) = ai_teleportarium_source : "destination of teleportarium" []
+@PointClass base(Target, Targetname, Angle, Faction) color(0.33 0.33 0.33) size(-24 -24 -12, 24 24 12) = ai_teleportarium_dest : "destination of teleportarium" []
 //---------------------------------------------------------------------------------------------------------------------
 
 //MAP_* ENTS ---------------------------------------------------------------------------------------------------------------------
@@ -943,38 +931,6 @@ Player can SKIP this animatic IF there's an appropriate trigger_changelevel." [
   ]
 ]
 
-@PointClass base(Angle, Targetname) color(0.8 0.45 0.25) size(-10 -10 -10, 10 10 10) = map_projectile_shooter : "Mostly for debug, but could be handy in-general.
-Projectile Shooter that uses weapons-fire." [
-  count(integer) : "optional shot max." : 0
-  count3(float) : "fire interval." : "0.2"
-  data_lifetime(float) : "time to live." : 0
-  wait(float) : "recharge delay." : "0.0"
-  data_idx(choices) : "weapon to fire" : 1 = [
-    1 : "LATC"
-    2 : "EMP"
-    3 : "LAS"
-    4 : "Rocket"
-    5 : "Quantum"
-    6 : "Plasma"
-    7 : "PAC"
-    8 : "ESR"
-    9 : "M-LaseGuide"
-    10 : "M-ActiveRadar"
-    11 : "SFG"
-    12 : "Flak"
-    13 : "Ion"
-    14 : "M-Swarm"
-  ]  
-  spawnflags(Flags) = [
-    1 : "Start Off" : 0
-    2 : "Lifetime" : 0
-    4 : "Reactivate" : 0
-    8 : "Remove done" : 0
-    16 : "Draw model" : 0
-    32 : "use max shots" : 0
-  ]
-]
-
 @PointClass base(Target, Targetname) color(0.753 0.788 0.431) size(-32 -32 -64, 32 32 64) = map_projectile_shooter : "DEPRECATED - UNSTABLE! will provide unlocked mechs and items to player.
   + format is space-separated values
   + each value is the UID of the mech or item." [
@@ -1096,7 +1052,6 @@ Projectile Shooter that uses weapons-fire." [
 @PointClass base(NavPoint) = map_nav_point : "Custom nav point if needed." [
   data_idx(integer) : "Unique Id, matches to Nav Name." : 0
 ]
-@PointClass base(NavPoint) = nav_lambda : "" []
 @PointClass base(NavPoint) = nav_alpha : "" []
 @PointClass base(NavPoint) = nav_beta : "" []
 @PointClass base(NavPoint) = nav_delta : "" []
@@ -1120,13 +1075,21 @@ Projectile Shooter that uses weapons-fire." [
 //---------------------------------------------------------------------------------------------------------------------
 
 //CORE BASE BUILDINGS---------------------------------------------------------------------------------------------------
-@PointClass base(RootBuilding) size(-18.7 -25.0 -14.55, 19.7 21.24 22.0) model({ "path": ":models/buildings/radar/radar.md3" }) = building_radar : "Radar Post has the ability to detect the player and alert friendly bot to these players." [
+@PointClass base(RootBuilding) size(-18.7 -25.0 -14.55, 19.7 21.24 22.0) model({{
+    faction == "2" -> { "path": "models/editor/buildings/radar/listpost1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/radar/listpost2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/radar/listpost.md3", "skin" : 0, "frame" : 0}
+}})  = building_radar : "Radar Post has the ability to detect the player and alert friendly bot to these players." [
   health(integer) : "starting health." : 100
   shieldMax(integer) : "max shield value" : 250
   radar_range(integer) : "Radar range." : 2000
 ]
 
-@PointClass base(RootBuilding) size(-18.75 -22.2 -20, 18.85 22.2 20.5) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) = building_guard_tower : "Base Decoration building. + can glow yellow. Does not require power." [
+@PointClass base(RootBuilding) size(-18.75 -22.2 -20, 18.85 22.2 20.5) model({{
+    faction == "2" -> { "path": "models/editor/buildings/towersmall/guardtower1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/towersmall/guardtower2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/towersmall/guardtower.md3", "skin" : 0, "frame" : 0}
+}}) = building_guard_tower : "Base Decoration building. + can glow yellow. Does not require power." [
   health(integer) : "starting health." : 200
   shieldMax(integer) : "max shield value" : 150
   style(integer) : "light style" : 0
@@ -1135,7 +1098,11 @@ Projectile Shooter that uses weapons-fire." [
   ]
 ]
 
-@PointClass base(RootBuilding) size(-40.4 -45.65 -10.0, 40.0 45.2 20.1) model({ "path": ":models/buildings/shield/shield.md3" }) = building_shield : "Shield Generator Building. Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields MUST HAVE Power Plant that can power it -check power plant radius-. Generator does have to pay for its shield generating, these can be taxed by too many nearby units." [
+@PointClass base(RootBuilding) size(-40.4 -45.65 -10.0, 40.0 45.2 20.1) model({{
+    faction == "2" -> { "path": "models/editor/buildings/shield_gen/shieldgen1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/shield_gen/shieldgen2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/shield_gen/shieldgen.md3", "skin" : 0, "frame" : 0}
+}}) = building_shield : "Shield Generator Building. Gives SHIELD to EVERY FRIENDLY unit in radius, regardless if those units normally have shields MUST HAVE Power Plant that can power it -check power plant radius-. Generator does have to pay for its shield generating, these can be taxed by too many nearby units." [
   health(integer) : "starting health." : 500
   energyMax(integer) : "max energy" : 2000
   energyRate(float) : "defined recharge rate." : "0.0"
@@ -1144,7 +1111,11 @@ Projectile Shooter that uses weapons-fire." [
   ai_minrange(float) : "give allied buildings power." : "1000.0"
 ]
 
-@PointClass base(RootBuilding) size(-65.81 -84.2 -27.0, 69.2 85.4 28.4) model({ "path": ":models/buildings/reactor/reactor.md3" }) = building_power : "Generates energy to power all friendly buildings in Radius." [
+@PointClass base(RootBuilding) size(-65.81 -84.2 -27.0, 69.2 85.4 28.4) model({{
+    faction == "2" -> { "path": "models/editor/buildings/power_plant/powerplant1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/power_plant/powerplant2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/power_plant/powerplant.md3", "skin" : 0, "frame" : 0}
+}})  = building_power : "Generates energy to power all friendly buildings in Radius." [
   health(integer) : "starting health." : 1200
   energyMax(integer) : "max energy" : 4000
   energyRate(float) : "defined recharge rate." : "4.0"
@@ -1153,19 +1124,31 @@ Projectile Shooter that uses weapons-fire." [
   ai_minrange(float) : "give allied buildings power." : "800.0"
 ]
 
-@PointClass base(RootBuilding) size(-78.65 -83.85 -44.85, 58.0 97.0 68.3) model({ "path": ":models/buildings/hangar/hangar.md3" }) = building_hangar_mech : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
+@PointClass base(RootBuilding) size(-78.65 -83.85 -44.85, 58.0 97.0 68.3) model({{
+    faction == "2" -> { "path": "models/editor/buildings/hangar/hangar_large1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/hangar/hangar_large2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/hangar/hangar_large.md3", "skin" : 0, "frame" : 0}
+}})  = building_hangar_mech : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
   health(integer) : "starting health." : 800
   shieldMax(integer) : "max shield value" : 600
   shieldRate(float) : "start shield rate" : "0.0"
 ]
 
-@PointClass base(RootBuilding) size(-68.7 -68.4 -23.9, 80.4 70.8 48.7 ) model({ "path": ":models/buildings/hangar_vec/hangar_vehicle.md3" }) = building_hangar_vehicle : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
+@PointClass base(RootBuilding) size(-68.7 -68.4 -23.9, 80.4 70.8 48.7 ) model({{
+    faction == "2" -> { "path": "models/editor/buildings/hangar_vehicle/hangar_vehicle1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/hangar_vehicle/hangar_vehicle2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/hangar_vehicle/hangar_vehicle.md3", "skin" : 0, "frame" : 0}
+}}) = building_hangar_vehicle : "Base Decoration building.+ you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner. Does Not require power." [
   health(integer) : "starting health." : 500
   shieldMax(integer) : "max shield value" : 400
   shieldRate(float) : "start shield rate" : "0.0"
 ]
 
-@PointClass base(RootBuilding) size(-35.25 -57.0 -37.55, 77.25 49.73 41.3) model({ "path": ":models/buildings/repair/repair.md3" }) = building_repair_bay : "[ADVISED] - put it near a power plant for more energy. Repairs vehicles, mostly for player. AI DOES NOT know how to use Repair Bays, sorry." [
+@PointClass base(RootBuilding) size(-35.25 -57.0 -37.55, 77.25 49.73 41.3) model({{
+    faction == "2" -> { "path": "models/editor/buildings/repair_bay/repairbay1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/repair_bay/repairbay2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/repair_bay/repairbay.md3", "skin" : 0, "frame" : 0}
+}}) = building_repair_bay : "[ADVISED] - put it near a power plant for more energy. Repairs vehicles, mostly for player. AI DOES NOT know how to use Repair Bays, sorry." [
   health(integer) : "starting health." : 600
   energyMax(integer) : "max energy" : 1000
   energyRate(float) : "defined recharge rate." : "0.67"
@@ -1175,19 +1158,27 @@ Projectile Shooter that uses weapons-fire." [
   repairMax(integer) : "Repair charge max." : 1250
 ]
 
-@PointClass base(RootBuilding) size(-53.04 -48.48 -23.50, 32 36.55 36.5) model({ "path": ":models/buildings/fueltank/fueltank.md3" }) = building_fuel_tank : "Decoration building. Does Not require power. Does not explode with damage." [
+@PointClass base(RootBuilding) size(-53.04 -48.48 -23.50, 32 36.55 36.5) model({ "path": ":models/editor/buildings/fueltank/fueltank.md3" }) = building_fuel_tank : "Decoration building. Does Not require power. Does not explode with damage." [
   health(integer) : "starting health." : 100
   shieldMax(integer) : "max shield value" : 250
   shieldRate(float) : "start shield rate" : "0.0"
 ]
 
-@PointClass base(RootBuilding) size(-38 -60 -16.91, 38 60 20.09) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) = building_barracks : "Decoration building. Does Not require power." [
+@PointClass base(RootBuilding) size(-38 -60 -16.91, 38 60 20.09) model({{
+    faction == "2" -> { "path": "models/editor/buildings/barracks/barracks1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/barracks/barracks2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/barracks/barracks.md3", "skin" : 0, "frame" : 0}
+}}) = building_barracks : "Decoration building. Does Not require power." [
   health(integer) : "starting health." : 275
   shieldMax(integer) : "max shields" : 300
   shieldRate(float) : "start shield rate" : "0.0"
 ]
 
-@PointClass base(RootBuilding) size(-52 -64 -25.07, 52.0 64.0 22.93) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) = building_supply_depot : "Decoration building. Does Not require power." [
+@PointClass base(RootBuilding) size(-52 -64 -25.07, 52.0 64.0 22.93) model({{
+    faction == "2" -> { "path": "models/editor/buildings/depot/supply_depot1.md3", "skin": 0, "frame": 0 },
+    faction == "3" -> { "path": "models/editor/buildings/depot/supply_depot2.md3", "skin": 0, "frame": 0 },
+    { "path": "models/editor/buildings/depot/supply_depot.md3", "skin" : 0, "frame" : 0}
+}}) = building_supply_depot : "Decoration building. Does Not require power." [
   health(integer) : "starting health." : 350
   shieldMax(integer) : "max shield value" : 250
   shieldRate(float) : "start shield rate" : "0.0"
@@ -1250,10 +1241,10 @@ Projectile Shooter that uses weapons-fire." [
 @PointClass base(UnitDunerunner) model({ "path": ":models/vecs/dunerunner/dunerunner_m.md3" }) = unit_dunerunner_m : "Standard loadout." []
 
 //-----------FOSLAGER
-@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/foslager_h.md3" }) = unit_foslager_survest_zapper : "ZAPPER - focuses on shield breaking." []
-@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/foslager_m.md3" }) = unit_foslager_militar_zapper : "ZAPPER - focuses on shield breaking." []
-@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/foslager_h.md3" }) = unit_foslager_survest_gunner : "GUNNER - bad at shields, good on firepower." []
-@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/foslager_m.md3" }) = unit_foslager_militar_gunner : "GUNNER - bad at shields, good on firepower." []
+@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/mdl_foslager_chas.md3", "skin" : 0, "frame" : 0}) = unit_foslager_survest_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/mdl_foslager_chas.md3", "skin" : 0, "frame" : 0}) = unit_foslager_militar_zapper : "ZAPPER - focuses on shield breaking." []
+@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/mdl_foslager_chas.md3", "skin" : 0, "frame" : 0}) = unit_foslager_survest_gunner : "GUNNER - bad at shields, good on firepower." []
+@PointClass base(UnitFoslager) model({ "path": ":models/vecs/foslager/mdl_foslager_chas.md3", "skin" : 0, "frame" : 0}) = unit_foslager_militar_gunner : "GUNNER - bad at shields, good on firepower." []
 
 //-----------TROWEL
 @PointClass base(UnitTrowel) model({ "path": ":models/vecs/trowel/trowel_m.md3" }) = unit_trowel_militar_lobber : "LOBBER - mostly missile firepower." []
@@ -1326,28 +1317,28 @@ button0 & 1 dont work when target is set." [
 
 
 //MISC_BUILDING---------------------------------------------------------------------------------------------------------------------
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/misc_fact_med.obj" }) size(-36 -88 -36, 36 88 38) = building_misc_factory_med : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/fact_med/fact_med.md3", "skin" : 0, "frame" : 0 }) size(-36 -88 -36, 36 88 38) = building_misc_factory_med : "Decoration building. Does not require power." [
   health(float) : "" : "350.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-38 -38 -30, 38 38 32) = building_misc_lodge : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/lodge/lodge.md3", "skin" : 0, "frame" : 0 }) size(-38 -38 -30, 38 38 32) = building_misc_lodge : "Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -20 -24, 36 20 26) = building_misc_apartment : " Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/apt_small/apt_sm.md3", "skin" : 0, "frame" : 0 }) size(-20 -36 -24, 20 36 26) = building_misc_apartment : " Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-68 -68 -34, 68 68 36) = building_misc_off_pyra : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/office_pyramid/off_pyramid.md3", "skin" : 0, "frame" : 0 }) size(-68 -68 -34, 68 68 36) = building_misc_off_pyra : "Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-88 -88 -30, 88 88 32) = building_misc_off_large : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/office_large/off_large.md3", "skin" : 0, "frame" : 0 }) size(-88 -88 -30, 88 88 32) = building_misc_off_large : "Decoration building. Does not require power." [
   health(float) : "" : "250.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -56 -35, 36 56 40) = building_misc_off_small : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/office_small/off_sm.md3", "skin" : 0, "frame" : 0 }) size(-36 -56 -35, 36 56 40) = building_misc_off_small : "Decoration building. Does not require power." [
   health(float) : "" : "100.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-36 -36 -22, 36 36 24) = building_misc_fact_steam : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/fact_steam/fact_steam.md3", "skin" : 0, "frame" : 0 }) size(-36 -36 -22, 36 36 24) = building_misc_fact_steam : "Decoration building. Does not require power." [
   health(float) : "" : "300.0"
 ]
-@PointClass base(MiscBuilding) model({ "path": ":models/buildings/towersmall/guardtower.md3" }) size(-60 -96 -26, 60 96 28) = building_misc_apt_large : "Decoration building. Does not require power." [
+@PointClass base(MiscBuilding) model({ "path": ":models/buildings/misc/apt_large/apt_larg.md3", "skin" : 0, "frame" : 0 }) size(-60 -96 -26, 60 96 28) = building_misc_apt_large : "Decoration building. Does not require power." [
   health(float) : "" : "200.0"
 ]
 //---------------------------------------------------------------------------------------------------------------------

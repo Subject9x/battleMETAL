@@ -52,18 +52,18 @@ void( entity e ) data_sync_new_debris={
   e.effects = e.effects | EF_NOSHADOW;
   switch( e.vec_size ){
     case 2:
-      precache_model("q3mdl/fx/debris2/mdl_debris_2.md3");
-      setmodel(e, "q3mdl/fx/debris2/mdl_debris_2.md3");
+      precache_model("models/fx/debris2/mdl_debris_2.md3");
+      setmodel(e, "models/fx/debris2/mdl_debris_2.md3");
       e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
       break;
     case 3:
-      precache_model("q3mdl/fx/debris3/mdl_debris_3.md3");
-      setmodel(e, "q3mdl/fx/debris3/mdl_debris_3.md3");
+      precache_model("models/fx/debris3/mdl_debris_3.md3");
+      setmodel(e, "models/fx/debris3/mdl_debris_3.md3");
       e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
       break;
     default:
-      precache_model("q3mdl/fx/debris1/mdl_debris_1.md3");
-      setmodel(e, "q3mdl/fx/debris1/mdl_debris_1.md3");
+      precache_model("models/fx/debris1/mdl_debris_1.md3");
+      setmodel(e, "models/fx/debris1/mdl_debris_1.md3");
       e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;
   }

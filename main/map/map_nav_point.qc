@@ -107,7 +107,7 @@ void() map_nav_point={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
 
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   
@@ -257,7 +257,7 @@ data_idx: <float>, each must be unique because this determines the 'name' of the
 */
 void() map_nav_point_remote={
   
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   setsize( self, '-10 -10 -10', '10 10 10' ); 
   setorigin( self, self.origin );
   

@@ -52,8 +52,8 @@ void() data_ini_trowel_={
   weaponList = self;
   
   //tank turret
-  data_ini_torso_center_("q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', '0 0 0');   //chassis
-  data_ini_legs_( "q3mdl/vecs/trowel/mdl_trowel_chas.md3", 0, '0 0 0');
+  data_ini_torso_center_("models/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', '0 0 0');   //chassis
+  data_ini_legs_( "models/vecs/trowel/mdl_trowel_chas.md3", 0, '0 0 0');
   
   //camera location
   self.cameraOffset = '0 20 0';

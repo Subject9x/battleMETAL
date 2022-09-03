@@ -98,7 +98,7 @@ void( float nex_wep, entity own ) build_unit_weapon={
       }
     }
     macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
-    setmodel(self, "q3mdl/testball.md3");
+    setmodel(self, "models/testball.md3");
     setsize(self, '-1 -1 -1','1 1 1');
     ofs = self.compOffset + self.compAltOffset;
     
@@ -219,7 +219,7 @@ void() build_mech_torsoCenter={
   
   hmins = self.mins;
   hmaxs = self.maxs;
-  macro_set_model("q3mdl/testball.md3", 0, 0)
+  macro_set_model("models/testball.md3", 0, 0)
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
@@ -240,7 +240,7 @@ void() build_mech_bot={
   hmins = self.mins;
   
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
-  macro_set_model("q3mdl/testball.md3", self.skin, 0)
+  macro_set_model("models/testball.md3", self.skin, 0)
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
@@ -355,7 +355,7 @@ void() build_vehicle_unit={
   //  self.skin = 0;
  // }
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
-  macro_set_model("q3mdl/testball.md3", 0, 0) //->CSQC for specifics
+  macro_set_model("models/testball.md3", 0, 0) //->CSQC for specifics
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;

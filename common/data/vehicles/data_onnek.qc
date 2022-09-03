@@ -51,7 +51,7 @@ void() data_ini_onnek_={
   weaponList = self;
   
   //chassis
-  data_ini_legs_( "q3mdl/vecs/onnek/onnek.md3", 0, '0 0 0');
+  data_ini_legs_( "models/vecs/onnek/onnek.md3", 0, '0 0 0');
   
   //camera location
   self.cameraOffset = '0 24 0';

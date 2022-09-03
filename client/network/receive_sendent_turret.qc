@@ -17,7 +17,7 @@ void() sendevent_turret_die={
   }
   
   makevectors(self.angles);
-  setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+  setmodel(self, "models/map/ruins/ruin_small.obj");
   
   self.origin = self.origin + (v_up * (self.maxs_z * -0.05));
   setorigin(self, self.origin);

@@ -50,11 +50,11 @@ void() data_ini_plasma_={
   
 #ifdef CSQC  
   precache_sound("sound/weapons/rpls_fire.ogg");
-  precache_model("q3mdl/weapons/w_rpc.md3");
+  precache_model("models/weapons/w_rpc.md3");
   precache_file( "gfx/ui/wep_icons/wi_rpc.png");
   self.w_name = "Rotary Plasma Chamber";
   self.fire_sound = "sound/weapons/rpls_fire.ogg";
-  self.model = "q3mdl/weapons/w_rpc.md3";
+  self.model = "models/weapons/w_rpc.md3";
   self.abbrev = "RPC";
   self.description = "+ Will burn over time on unshielded hit. + inhibits target shield regen when burning.";
   self.icon = "gfx/ui/wep_icons/wi_rpc.png";

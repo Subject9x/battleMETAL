@@ -65,7 +65,7 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
   }
   
   self.data_type = DATA_MAP_DMG;
-  self.model = "q3mdl/testball.md3";
+  self.model = "models/testball.md3";
   setmodel( self, self.model );
   self.think = map_hazard_ping;
   self.nextthink = time + 0.1;

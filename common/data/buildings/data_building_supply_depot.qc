@@ -196,9 +196,9 @@ void() building_supply_depot={
   
   self.angles_y = self.angle;
   self.skin = self.faction - 1;
-  self.model = "q3mdl/buildings/depot/supply_depot.md3";
-  precache_model("q3mdl/buildings/depot/supply_depot.md3");
-  setmodel(self, "q3mdl/buildings/depot/supply_depot.md3");
+  self.model = "models/buildings/depot/supply_depot.md3";
+  precache_model("models/buildings/depot/supply_depot.md3");
+  setmodel(self, "models/buildings/depot/supply_depot.md3");
   setsize(self, self.mins, self.maxs);
   
   self.th_die = supply_depot_die1;

@@ -95,13 +95,13 @@ void() data_ini_light_atc_={
   
 #ifdef CSQC  
   precache_sound("sound/weapons/atc_fire.ogg");
-  precache_model("q3mdl/weapons/w_atc.md3");
+  precache_model("models/weapons/w_atc.md3");
   precache_file( "gfx/ui/wep_icons/wi_atc.png");
   self.w_name = "Light Autocannon";
   self.abbrev = "ATC";
   self.description = "+ Instant-impact weapon. + fully automatic, hold down trigger to fire. + Better against <Armor>.";
   self.icon = "gfx/ui/wep_icons/wi_atc.png";
-  self.model = "q3mdl/weapons/w_atc.md3";
+  self.model = "models/weapons/w_atc.md3";
   self.fire_sound = "sound/weapons/atc_fire.ogg";
   self.itemMuzzleFlash = te_muzzle_latc;
 #endif

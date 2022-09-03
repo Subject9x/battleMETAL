@@ -50,11 +50,11 @@ void() data_ini_snub_artillery_={
   
 #ifdef CSQC
   precache_sound("sound/fx_boom.ogg");
-  precache_model("q3mdl/weapons/w_sfga.md3");
+  precache_model("models/weapons/w_sfga.md3");
   precache_file( "gfx/ui/wep_icons/wi_sfg.png");
   self.w_name = "Snub Field Artillery";
   self.fire_sound = "sound/fx_boom.ogg";
-  self.model = "q3mdl/weapons/w_sfga.md3";
+  self.model = "models/weapons/w_sfga.md3";
   self.abbrev = "SFGA";
   self.description = "+ Minor parabolic arc. + Shot has Blast Radius on open ground.";
   self.icon = "gfx/ui/wep_icons/wi_sfg.png";

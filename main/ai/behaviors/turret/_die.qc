@@ -42,7 +42,7 @@ void() ai_turret_die={
   self.movetype = MOVETYPE_NONE;
   self.colormod = '0.33 0.33 0.33';
   
-  setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
+  setmodel(self, "models/map/ruins/ruin_medium.obj");
   setsize(self, self.mins, self.maxs);
   droptofloor();
   self.solid = SOLID_NOT;

@@ -58,8 +58,8 @@ void() data_projectile_ini_missile_active_radar_={
   
   #ifdef CSQC
     //cosmetics
-    precache_model("q3mdl/proj/mdl_proj_marh.md3");
-    self.model = "q3mdl/proj/mdl_proj_marh.md3";
+    precache_model("models/proj/mdl_proj_marh.md3");
+    self.model = "models/proj/mdl_proj_marh.md3";
     self.modelflags = 0;
     self.data_traileff = particleeffectnum("TE_ARH_TRAIL");
     self.pcl_explode = projectile_marh_expl;

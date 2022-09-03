@@ -70,22 +70,22 @@ void() data_ini_monitor_={
  
 //MECH COMPONENTS====================
   //center torso
-  data_ini_torso_center_( "q3mdl/mechs/monitor/monitor_tor_c.md3", 864, '0 0 0', '0 6 0' );
+  data_ini_torso_center_( "models/mechs/monitor/monitor_tor_c.md3", 864, '0 0 0', '0 6 0' );
  
   //left tors
-  data_ini_torso_left_( "q3mdl/mechs/monitor/monitor_tor_l.md3", 800, '-11.5 11 -0.5', '-9.5 11 0' );
+  data_ini_torso_left_( "models/mechs/monitor/monitor_tor_l.md3", 800, '-11.5 11 -0.5', '-9.5 11 0' );
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/monitor/monitor_tor_r.md3", 800, '11.5 11 -0.5', '8.5 11 0' );
+  data_ini_torso_right_( "models/mechs/monitor/monitor_tor_r.md3", 800, '11.5 11 -0.5', '8.5 11 0' );
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/monitor/monitor_arm_l.md3", 897, '-16 17 -1', '-16 9 0' );
+  data_ini_arm_left_( "models/mechs/monitor/monitor_arm_l.md3", 897, '-16 17 -1', '-16 9 0' );
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/monitor/monitor_arm_r.md3", 897, '16 17 -1', '16 9 0' );
+  data_ini_arm_right_( "models/mechs/monitor/monitor_arm_r.md3", 897, '16 17 -1', '16 9 0' );
    
   //legs
-  data_ini_legs_( "q3mdl/mechs/monitor/monitor_legs.md3", 1197, '0 -22 0' );
+  data_ini_legs_( "models/mechs/monitor/monitor_legs.md3", 1197, '0 -22 0' );
   
   //camera location
 #ifdef CSQC
@@ -111,10 +111,10 @@ void() data_ini_monitor_={
 //HUD Data=============================
 #ifdef CSQC
   if( self.classname == "UI_ITEM" ){
-    precache_model("q3mdl/mechs/monitor/monitor_view.obj");
-    precache_model("q3mdl/mechs/monitor/monitor_hud.obj");
-    self.weaponmodel = "q3mdl/mechs/monitor/monitor_view.obj";
-    self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
+    precache_model("models/mechs/monitor/monitor_view.obj");
+    precache_model("models/mechs/monitor/monitor_hud.obj");
+    self.weaponmodel = "models/mechs/monitor/monitor_view.obj";
+    self.hud_model = "models/mechs/monitor/monitor_hud.obj";
     self.hud_StrutsOffset = '0 -1.05 0.33';
     self.pitchMax = 43;
     self.pitchMin = -25;

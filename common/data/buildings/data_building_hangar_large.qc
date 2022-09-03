@@ -170,9 +170,9 @@ void() building_hangar_mech={
   self.solid = SOLID_BBOX;
   self.movetype = MOVETYPE_PUSH;
   self.skin = self.frame - 1;
-  self.model = "q3mdl/buildings/hangar/hangar_large.md3";
-  precache_model("q3mdl/buildings/hangar/hangar_large.md3");
-  setmodel(self, "q3mdl/buildings/hangar/hangar_large.md3");
+  self.model = "models/buildings/hangar/hangar_large.md3";
+  precache_model("models/buildings/hangar/hangar_large.md3");
+  setmodel(self, "models/buildings/hangar/hangar_large.md3");
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {

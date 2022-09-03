@@ -744,7 +744,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( isNew ){
     if(self.data_type != DATA_MECH){
       self.data_type = DATA_POBS;
-      setmodel(self, "q3mdl/testball.md3");
+      setmodel(self, "models/testball.md3");
       setsize(self, '-4 -4 -4', '4 4 4');
       setorigin(self, self.origin);
       self.alpha = 0.01;

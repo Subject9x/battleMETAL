@@ -1,22 +1,22 @@
 //MODELS
 //buildings
 //mech model
-q3mdl/testball.md3
+models/testball.md3
 //vehicles
 //weapons
 //weapon projectiles
 
-q3mdl/fx/explosions/te_shield_explode.md3
-q3mdl/fx/explosions/te_missile_explode.md3
+models/fx/explosions/te_shield_explode.md3
+models/fx/explosions/te_missile_explode.md3
 
 //MAP OBJECTS
-q3mdl/map/ruins/ruin_medium.obj
-q3mdl/map/ruins/ruin_large.obj
-q3mdl/map/ruins/ruin_small.obj
+models/map/ruins/ruin_medium.obj
+models/map/ruins/ruin_large.obj
+models/map/ruins/ruin_small.obj
 
-q3mdl/map/plats/plat_small.obj
-q3mdl/map/plats/plat_medium.obj
-q3mdl/map/plats/plat_large.obj
+models/map/plats/plat_small.obj
+models/map/plats/plat_medium.obj
+models/map/plats/plat_large.obj
 
 //Balaket
 //Matok

@@ -85,11 +85,11 @@ void() data_ini_flak_cannon_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/flak_fire.ogg");
-  precache_model("q3mdl/weapons/w_flk.md3");
+  precache_model("models/weapons/w_flk.md3");
   precache_file( "gfx/ui/wep_icons/wi_flak.png");
   self.w_name = "Flak Cannon";
   self.fire_sound = "sound/weapons/flak_fire.ogg";
-  self.model = "q3mdl/weapons/w_flk.md3";
+  self.model = "models/weapons/w_flk.md3";
   self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
   self.abbrev = "FLAK";
   self.description = "+ Instant-impact weapon. +4-rnd burst and 4 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";

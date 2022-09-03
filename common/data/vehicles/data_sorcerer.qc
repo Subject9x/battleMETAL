@@ -51,7 +51,7 @@ void() data_ini_sorcerer_={
   weaponList = self;
 
   //chassis
-  data_ini_legs_( "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3", 1, '0 0 0');
+  data_ini_legs_( "models/vecs/sorcerer/mdl_sorcerer_chas.md3", 1, '0 0 0');
   
   //camera location
   self.cameraOffset = '0 24 0';

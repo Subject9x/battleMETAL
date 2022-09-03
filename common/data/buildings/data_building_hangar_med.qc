@@ -203,9 +203,9 @@ void() building_hangar_vehicle={
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
   self.skin = self.faction - 1;
-  self.model = "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3";
-  precache_model("q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3");
-  setmodel(self, "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3");
+  self.model = "models/buildings/hangar_vehicle/hangar_vehicle.md3";
+  precache_model("models/buildings/hangar_vehicle/hangar_vehicle.md3");
+  setmodel(self, "models/buildings/hangar_vehicle/hangar_vehicle.md3");
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {

@@ -21,4 +21,3 @@ dirt
 blend_dirt
 hud
 unit
-building

@@ -51,11 +51,11 @@ void() data_ini_emp_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/emp_fire.ogg");
-  precache_model("q3mdl/weapons/w_emp.md3");
+  precache_model("models/weapons/w_emp.md3");
   precache_file( "gfx/ui/wep_icons/wi_emp.png");
   self.w_name = "EMP Cannon";
   self.fire_sound = "sound/weapons/emp_fire.ogg";
-  self.model = "q3mdl/weapons/w_emp.md3";
+  self.model = "models/weapons/w_emp.md3";
   self.abbrev = "EMP";
   self.description = "+ Anti-shield. + Small proximity detonation. + Armor damage greatly reduced.";
   self.icon = "gfx/ui/wep_icons/wi_emp.png";

@@ -13,7 +13,7 @@ void() player_makeObserver={
   macro_set_collider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY)
   self.weaponmodel = "";
   
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
   self.view_ofs = '0 0 1';

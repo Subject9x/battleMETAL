@@ -155,12 +155,12 @@ void() data_ini_electro_repeater_={
   self.burstRate = 0;
   
 #ifdef CSQC
-  precache_model("q3mdl/weapons/w_esr.md3");
+  precache_model("models/weapons/w_esr.md3");
   precache_sound("sound/weapons/esr_fire.ogg");
   precache_file( "gfx/ui/wep_icons/wi_esr.png");
   self.w_name = "Electro-Static Repeater";
   self.fire_sound = "sound/weapons/esr_fire.ogg";
-  self.model = "q3mdl/weapons/w_esr.md3";
+  self.model = "models/weapons/w_esr.md3";
   self.abbrev = "ESR";
   self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage split when target is <shielded>";
   self.icon = "gfx/ui/wep_icons/wi_esr.png";

@@ -182,9 +182,9 @@ void() building_barracks={
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
-  self.model = "q3mdl/buildings/barracks/barracks.md3";
-  precache_model("q3mdl/buildings/barracks/barracks.md3");
-  setmodel(self, "q3mdl/buildings/barracks/barracks.md3");
+  self.model = "models/buildings/barracks/barracks.md3";
+  precache_model("models/buildings/barracks/barracks.md3");
+  setmodel(self, "models/buildings/barracks/barracks.md3");
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {

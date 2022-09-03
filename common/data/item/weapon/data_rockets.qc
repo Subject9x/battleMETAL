@@ -52,11 +52,11 @@ void() data_ini_rockets_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/rckt_fire.ogg");
-  precache_model("q3mdl/weapons/w_mis.md3");
+  precache_model("models/weapons/w_mis.md3");
   precache_file( "gfx/ui/wep_icons/wi_rck.png");
   self.w_name = "Rocket Launcher";
   self.fire_sound = "sound/weapons/rckt_fire.ogg";
-  self.model = "q3mdl/weapons/w_mis.md3";
+  self.model = "models/weapons/w_mis.md3";
   self.abbrev = "RCK";
   self.description = "+ target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.icon = "gfx/ui/wep_icons/wi_rck.png";

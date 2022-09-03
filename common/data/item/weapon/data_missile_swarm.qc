@@ -60,11 +60,11 @@ void() data_ini_missile_swarm_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/arh_fire.ogg");
-  precache_model("q3mdl/weapons/w_swrm.md3");
+  precache_model("models/weapons/w_swrm.md3");
   precache_file( "gfx/ui/wep_icons/wi_swrm.png");
   self.w_name = "Missile - Swarm";
   self.fire_sound = "sound/weapons/arh_fire.ogg";
-  self.model = "q3mdl/weapons/w_swrm.md3";
+  self.model = "models/weapons/w_swrm.md3";
   self.abbrev = "SWRM";
   self.description = "+ target <shields> reduce damage. + Burst-fire. + Missiles will either lock-on to your Target | OR | Fire straight forward.";
   self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 

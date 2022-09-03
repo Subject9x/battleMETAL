@@ -341,9 +341,9 @@ void() building_shield={
   self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
-  self.model = "q3mdl/buildings/shield_gen/shieldgen.md3";
-  precache_model("q3mdl/buildings/shield_gen/shieldgen.md3");
-  setmodel(self, "q3mdl/buildings/shield_gen/shieldgen.md3");
+  self.model = "models/buildings/shield_gen/shieldgen.md3";
+  precache_model("models/buildings/shield_gen/shieldgen.md3");
+  setmodel(self, "models/buildings/shield_gen/shieldgen.md3");
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {

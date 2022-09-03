@@ -136,7 +136,7 @@ void() world_metal_ini={
   
   nodegraph_edgelinker = spawn();
   nodegraph_edgelinker.classname = strzone("nodegraph_edgelinker");
-  setmodel(nodegraph_edgelinker, "q3mdl/testball.md3");
+  setmodel(nodegraph_edgelinker, "models/testball.md3");
   setsize(nodegraph_edgelinker, nodegraph_edgelinker.mins, nodegraph_edgelinker.maxs);
   setorigin(nodegraph_edgelinker, world.origin);
   

@@ -231,13 +231,13 @@ void() data_building_generate_foundation={
     self.classname = "map_terrain";
     switch( notSelf.vec_size ){
       case 1:
-        self.model = "q3mdl/map/plats/plat_small.obj";
+        self.model = "models/map/plats/plat_small.obj";
         break;
       case 2:
-        self.model = "q3mdl/map/plats/plat_medium.obj";
+        self.model = "models/map/plats/plat_medium.obj";
         break;
       case 3:
-        self.model = "q3mdl/map/plats/plat_large.obj";
+        self.model = "models/map/plats/plat_large.obj";
         break;
     }
     self.solid = SOLID_NOT; //just for placement

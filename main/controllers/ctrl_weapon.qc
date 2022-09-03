@@ -218,7 +218,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
         self.solid = SOLID_BBOX;
       }
       self.takedamage = DAMAGE_NO;
-      setmodel(self, "q3mdl/testball.md3");
+      setmodel(self, "models/testball.md3");
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
       self.SendEntity = te_send_missile;

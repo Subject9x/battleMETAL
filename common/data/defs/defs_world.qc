@@ -18,7 +18,7 @@ entity() world_ini_serverInfo_ent={
   eServerInfo.alpha = 0.01;
   eServerInfo.scale = 0.01;
   
-  setmodel(eServerInfo, "q3mdl/testball.md3");
+  setmodel(eServerInfo, "models/testball.md3");
   setsize(eServerInfo, '-1 -1 -1', '1 1 1');
   setorigin(eServerInfo, world.origin);
   
@@ -166,7 +166,7 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   if( isNew ){
     self.solid = SOLID_NOT;
     self.movetype = MOVETYPE_NONE;
-    setmodel(self, "q3mdl/testball.md3");
+    setmodel(self, "models/testball.md3");
     setsize(self, self.mins, self.maxs);
     setorigin(self, self.origin);
     self.scale = 0.01;

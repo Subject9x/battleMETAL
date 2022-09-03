@@ -10,43 +10,43 @@ Overview:
 void() model_misc_building_set={
   
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_BSP;
   switch( self.data_idx ){
     default:
       //building_misc_apartment
-      setmodel(self, "q3mdl/buildings/misc/misc_apt_sm.obj");
+      setmodel(self, "models/buildings/misc/apt_small/apt_sm.md3");
       break;
     case 2:
       //building_misc_factory_med
-      setmodel(self, "q3mdl/buildings/misc/misc_fact_med.obj");
+      setmodel(self, "models/buildings/misc/fact_med/fact_med.md3");
       break;
     case 3:
       //building_misc_lodge
-      setmodel(self, "q3mdl/buildings/misc/misc_lodge.obj");
+      setmodel(self, "models/buildings/misc/lodge/lodge.md3");
       break;
     case 4:
       //building_misc_off_pyra
-      setmodel(self, "q3mdl/buildings/misc/misc_off_pyramid.obj");
+      setmodel(self, "models/buildings/misc/office_pyramid/off_pyramid.md3");
       break;
     case 5:
       //building_misc_off_large
-      setmodel(self, "q3mdl/buildings/misc/misc_off_large.obj");
+      setmodel(self, "models/buildings/misc/office_large/off_large.md3");
       break;
     case 6:
       //building_misc_off_small
-       setmodel(self, "q3mdl/buildings/misc/misc_off_sm.obj");
+       setmodel(self, "models/buildings/misc/office_small/off_sm.md3");
       break;
     case 7:
       //building_misc_fact_steam
-      setmodel(self, "q3mdl/buildings/misc/misc_fact_steam.obj");
+      setmodel(self, "models/buildings/misc/fact_steam/fact_steam.md3");
       break;
     case 8:
       //building_misc_apt_larg
-      setmodel(self, "q3mdl/buildings/misc/misc_apt_larg.obj");
+      setmodel(self, "models/buildings/misc/apt_large/apt_larg.md3");
       break;
   }
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
+  self.solid = SOLID_BSP;
 };
 
 
@@ -59,13 +59,13 @@ void() model_misc_building_ruins_set={
 
   switch(self.vec_size){
     case 2:
-      setmodel( self, "q3mdl/map/ruins/ruin_medium.obj");
+      setmodel( self, "models/map/ruins/ruin_medium.md3");
       break;
     case 3:
-      setmodel( self, "q3mdl/map/ruins/ruin_large.obj");
+      setmodel( self, "models/map/ruins/ruin_large.md3");
       break;
     default:
-      setmodel( self, "q3mdl/map/ruins/ruin_small.obj");
+      setmodel( self, "models/map/ruins/ruin_small.md3");
       break;
   }
   

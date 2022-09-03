@@ -80,8 +80,8 @@ void() building_guard_tower={
   self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
-  precache_model("q3mdl/buildings/towersmall/guardtower.obj");
-  setmodel(self, "q3mdl/buildings/towersmall/guardtower.obj");
+  precache_model("models/buildings/towersmall/guardtower.obj");
+  setmodel(self, "models/buildings/towersmall/guardtower.obj");
   setsize(self, self.mins, self.maxs);
   
   self.deadflag = DEAD_NO;

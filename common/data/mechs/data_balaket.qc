@@ -72,22 +72,22 @@ void() data_ini_balaket_={
 //MECH COMPONENTS====================
 
   //center torso
-  data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );
+  data_ini_torso_center_( "models/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );
  
   //left torso
-  data_ini_torso_left_( "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', '-8.5 5.5 -1');
+  data_ini_torso_left_( "models/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', '-8.5 5.5 -1');
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', '8.5 5.5 -1');
+  data_ini_torso_right_( "models/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', '8.5 5.5 -1');
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-10 7 -3', '-11 3.5 -1.5');
+  data_ini_arm_left_( "models/mechs/balaket/balaket_arm_l.md3", 350, '-10 7 -3', '-11 3.5 -1.5');
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '10 7 -3', '11 3.5 -1.5');
+  data_ini_arm_right_( "models/mechs/balaket/balaket_arm_r.md3", 350, '10 7 -3', '11 3.5 -1.5');
    
   //legs      
-  data_ini_legs_( "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');
+  data_ini_legs_( "models/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');
   
   //camera location
 #ifdef CSQC
@@ -108,10 +108,10 @@ void() data_ini_balaket_={
 //HUD DATA=============================
 #ifdef CSQC
   if( self.classname == "UI_ITEM" ){
-    precache_model("q3mdl/mechs/balaket/balaket_view.obj");
-    precache_model("q3mdl/mechs/balaket/balaket_hud.obj");
-    self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.obj";
-    self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
+    precache_model("models/mechs/balaket/balaket_view.obj");
+    precache_model("models/mechs/balaket/balaket_hud.obj");
+    self.weaponmodel = "models/mechs/balaket/balaket_view.obj";
+    self.hud_model = "models/mechs/balaket/balaket_hud.obj";
     self.hud_StrutsOffset = '0 -1.5 -1';
     self.pitchMax = 30; //pitch down limit
     self.pitchMin = -35;//pitch up limit

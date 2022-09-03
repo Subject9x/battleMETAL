@@ -75,22 +75,22 @@ void() data_ini_warden_={
 //MECH COMPONENTS====================
 
   //center torso
-  data_ini_torso_center_( "q3mdl/mechs/warden/warden_tor_c.md3", 575, '0 0 0', '0 3 0' );
+  data_ini_torso_center_( "models/mechs/warden/warden_tor_c.md3", 575, '0 0 0', '0 3 0' );
  
   //left torso
-  data_ini_torso_left_( "q3mdl/mechs/warden/warden_tor_l.md3", 450, '-3.9 8.5 -3', '-8.4 8.5 -3');
+  data_ini_torso_left_( "models/mechs/warden/warden_tor_l.md3", 450, '-3.9 8.5 -3', '-8.4 8.5 -3');
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/warden/warden_tor_r.md3", 450, '3.9 8.5 -3', '8.4 8.5 -3');
+  data_ini_torso_right_( "models/mechs/warden/warden_tor_r.md3", 450, '3.9 8.5 -3', '8.4 8.5 -3');
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/warden/warden_arm_r.md3", 400, '-14 7.5 -3', '-15 6.5 -3');
+  data_ini_arm_left_( "models/mechs/warden/warden_arm_r.md3", 400, '-14 7.5 -3', '-15 6.5 -3');
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/warden/warden_arm_r.md3", 400, '14 7.5 -3', '-15 6.5 -3');
+  data_ini_arm_right_( "models/mechs/warden/warden_arm_r.md3", 400, '14 7.5 -3', '-15 6.5 -3');
    
   //legs      
-  data_ini_legs_( "q3mdl/mechs/warden/warden_legs.md3", 800, '0 0 0');
+  data_ini_legs_( "models/mechs/warden/warden_legs.md3", 800, '0 0 0');
   
   //camera location
 #ifdef CSQC
@@ -112,10 +112,10 @@ void() data_ini_warden_={
 //HUD DATA=============================
 #ifdef CSQC
   if( self.classname == "UI_ITEM" ){
-    precache_model("q3mdl/mechs/warden/warden_view.obj");
-    precache_model("q3mdl/mechs/balaket/balaket_hud.obj");
-    self.weaponmodel = "q3mdl/mechs/warden/warden_view.obj";
-    self.hud_model = "q3mdl/mechs/balaket/balaket_hud.obj";
+    precache_model("models/mechs/warden/warden_view.obj");
+    precache_model("models/mechs/balaket/balaket_hud.obj");
+    self.weaponmodel = "models/mechs/warden/warden_view.obj";
+    self.hud_model = "models/mechs/balaket/balaket_hud.obj";
     self.hud_StrutsOffset = '0 -1.5 -1';
     self.pitchMax = 25; //pitch down limit
     self.pitchMin = -28;//pitch up limit

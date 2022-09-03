@@ -287,7 +287,7 @@ entity( entity targetBuilding ) te_building_fire_start={
   local entity fire;
   fire = spawn();
   if( fire ){
-    setmodel(fire, "q3mdl/testball.md3");
+    setmodel(fire, "models/testball.md3");
     fire.alpha = 0;
     fire.origin = util_pointNearBoxEdge( targetBuilding.origin, targetBuilding.angles, targetBuilding.mins, targetBuilding.maxs );
     fire.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(targetBuilding.vec_size)));
@@ -369,7 +369,7 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
         explode.colormod = explodeColor;
       }
       
-      setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
+      setmodel( explode, "models/fx/explosions/te_missile_explode.md3");
       setorigin( explode, org);
     }
   
@@ -476,7 +476,7 @@ void() te_shield_hit={
     explode.predraw = te_shield_hit_predraw;
     explode.owner = self;
     explode.solid = SOLID_NOT;
-    setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
+    setmodel( explode, "models/fx/explosions/te_shield_explode.md3");
     setsize(explode, explode.mins, explode.maxs);
     setorigin( explode, self.origin);
     explode.alpha = 0.2;
@@ -581,7 +581,7 @@ void( vector org, float vecSize ) te_shield_explode={
     explode.alpha = 0.6;
     explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
     explode.predraw = predraw_shield_explode;
-    setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
+    setmodel( explode, "models/fx/explosions/te_shield_explode.md3");
     setorigin( explode, org);
     explode.owner = self;
     
@@ -647,7 +647,7 @@ void( vector org, float explodeSize, vector explodeColor, float onShield  ) part
       explode.colormod = explodeColor;
     }
     
-    setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
+    setmodel( explode, "models/fx/explosions/te_missile_explode.md3");
     setorigin( explode, org);
     
     sound7(explode, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 110, 0 );

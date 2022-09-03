@@ -344,9 +344,9 @@ void() building_radar={
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
-  self.model = "q3mdl/buildings/radar/listpost.md3";
-  precache_model("q3mdl/buildings/radar/listpost.md3");
-  setmodel(self, "q3mdl/buildings/radar/listpost.md3");
+  self.model = "models/buildings/radar/listpost.md3";
+  precache_model("models/buildings/radar/listpost.md3");
+  setmodel(self, "models/buildings/radar/listpost.md3");
   setsize(self, self.mins, self.maxs);
 
   if( !self.health) {

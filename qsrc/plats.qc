@@ -372,7 +372,7 @@ void() misc_teleporttrain =
 	precache_sound ("misc/null.wav");
 
 	//precache_model2 ("progs/teleport.mdl");
-	setmodel (self, "q3mdl/testball.md3");
+	setmodel (self, "models/testball.md3");
   self.alpha = 0.1;
   self.scale = 0.1;
 	setsize (self, self.mins , self.maxs);

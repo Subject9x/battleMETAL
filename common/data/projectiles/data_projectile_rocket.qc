@@ -51,8 +51,8 @@ void() data_projectile_ini_rocket_={
   
   #ifdef CSQC
     //cosmetics
-    precache_model("q3mdl/proj/mdl_proj_mis.md3");
-    self.model = "q3mdl/proj/mdl_proj_mis.md3";
+    precache_model("models/proj/mdl_proj_mis.md3");
+    self.model = "models/proj/mdl_proj_mis.md3";
     self.data_traileff = particleeffectnum("TE_MIS_TRAIL");
     self.pcl_explode = projectile_rocket_expl;
   #endif

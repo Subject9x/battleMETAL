@@ -555,9 +555,9 @@ void() building_repair_bay={
   self.movetype = MOVETYPE_WALK;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
-  self.model = "q3mdl/buildings/repair_bay/repairbay.md3";
-  precache_model("q3mdl/buildings/repair_bay/repairbay.md3");
-  setmodel(self, "q3mdl/buildings/repair_bay/repairbay.md3");
+  self.model = "models/buildings/repair_bay/repairbay.md3";
+  precache_model("models/buildings/repair_bay/repairbay.md3");
+  setmodel(self, "models/buildings/repair_bay/repairbay.md3");
   setsize(self, self.mins, self.maxs);
   self.th_die = hrepair_die;
     

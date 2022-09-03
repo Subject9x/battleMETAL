@@ -244,9 +244,9 @@ void() building_power={
   self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
-  self.model = "q3mdl/buildings/power_plant/powerplant.md3";
-  precache_model("q3mdl/buildings/power_plant/powerplant.md3");
-  setmodel(self, "q3mdl/buildings/power_plant/powerplant.md3");
+  self.model = "models/buildings/power_plant/powerplant.md3";
+  precache_model("models/buildings/power_plant/powerplant.md3");
+  setmodel(self, "models/buildings/power_plant/powerplant.md3");
   setsize(self, self.mins, self.maxs);
   
   if( !self.health) {

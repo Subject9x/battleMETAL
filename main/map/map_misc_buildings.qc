@@ -164,13 +164,15 @@ void( string modelName, float setSizeFlag ) misc_building={
   self.avelocity = '0 0 0';
   self.velocity = '0 0 0';
   self.movetype = MOVETYPE_PUSH;
-  self.solid = SOLID_BBOX;
+  self.solid = SOLID_BSP;
   
-  precache_model(self.model);
+  precache_model(modelName);
   
   setmodel(self, modelName);
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
+  
+  self.angles = self.mangle;
   
   if( !(self.spawnflags & MISC_NO_DROP) ){
     droptofloor();
@@ -216,7 +218,7 @@ void() building_misc_apartment={
   self.max_health = self.health;
   self.vec_size = 1;
   
-  misc_building("q3mdl/buildings/misc/misc_apt_sm.obj", TRUE);
+  misc_building("models/buildings/misc/apt_small/apt_sm.md3", TRUE);
 };
 
 void() building_misc_factory_med={
@@ -234,7 +236,7 @@ void() building_misc_factory_med={
   self.max_health = self.health;
   self.vec_size = 2;
 
-  misc_building("q3mdl/buildings/misc/misc_fact_med.obj", TRUE);
+  misc_building("models/buildings/misc/fact_med/fact_med.md3", TRUE);
 };
 
 void() building_misc_lodge={
@@ -252,7 +254,7 @@ void() building_misc_lodge={
   self.max_health = self.health;
   self.vec_size = 1;
   
-  misc_building("q3mdl/buildings/misc/misc_lodge.obj", TRUE);
+  misc_building("models/buildings/misc/lodge/lodge.md3", TRUE);
 };
 
 void() building_misc_off_pyra={
@@ -274,7 +276,7 @@ void() building_misc_off_pyra={
     //quick hack to fix a BBOX issue: if this model is rotated, somehow players can fall INTO them...
   }
   
-  misc_building("q3mdl/buildings/misc/misc_off_pyramid.obj", TRUE);
+  misc_building("models/buildings/misc/office_pyramid/off_pyramid.md3", TRUE);
 };
 
 void() building_misc_off_large={
@@ -291,7 +293,7 @@ void() building_misc_off_large={
   self.max_health = self.health;
   self.vec_size = 3;
   
-  misc_building("q3mdl/buildings/misc/misc_off_large.obj", TRUE);
+  misc_building("models/buildings/misc/office_large/off_large.md3", TRUE);
 };
 
 void() building_misc_off_small={
@@ -308,7 +310,7 @@ void() building_misc_off_small={
   self.max_health = self.health;
   self.vec_size = 2;
   
-  misc_building( "q3mdl/buildings/misc/misc_off_sm.obj", TRUE);
+  misc_building( "models/buildings/misc/office_small/off_sm.md3", TRUE);
 };
 
 void() building_misc_fact_steam={
@@ -324,7 +326,7 @@ void() building_misc_fact_steam={
   }
   self.max_health = self.health;
   self.vec_size = 2;
-  misc_building("q3mdl/buildings/misc/misc_fact_steam.obj", TRUE);
+  misc_building("models/buildings/misc/fact_steam/fact_steam.md3", TRUE);
 };
 void() building_misc_apt_large={
   self.nextVecChoice = TRUE; //ai_can_spawn compatability
@@ -340,5 +342,5 @@ void() building_misc_apt_large={
   self.max_health = self.health;
   self.vec_size = 3;
 
-  misc_building( "q3mdl/buildings/misc/misc_apt_larg.obj", TRUE);
+  misc_building( "models/buildings/misc/apt_large/apt_larg.md3", TRUE);
 };

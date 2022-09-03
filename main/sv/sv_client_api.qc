@@ -235,6 +235,26 @@ void() ClientConnect = {
   self.attackFlag = 0;
   client_data();
   
+  //if coop, assign coop-number.
+  if( GAMETYPE == GAMEMODE_COOP ){
+    if( !COOP_PLAYER_1 ){
+      self.coopClientId = 1;
+      COOP_PLAYER_1 = self;
+    }
+    else if( !COOP_PLAYER_2 ){
+      self.coopClientId = 2;
+      COOP_PLAYER_2 = self;
+    }
+    else if( !COOP_PLAYER_3 ){
+      self.coopClientId = 3;
+      COOP_PLAYER_3 = self;
+    }
+    else if( !COOP_PLAYER_4 ){
+      self.coopClientId = 4;
+      COOP_PLAYER_4 = self;
+    }
+  }
+  
   if( world.animaticOnly ) {
     client_playTrack(self, world.sounds, TRUE);  //play desired music for animatic
     if( world.animaticOnly > 1){
@@ -364,6 +384,26 @@ void() ClientDisconnect = {
   local float clnum;
   local string response;
   
+  //if coop, assign coop-number.
+  if( GAMETYPE == GAMEMODE_COOP ){
+    switch(self.coopClientId){
+      case 1:
+        COOP_PLAYER_1 = world;
+        break;
+      
+      case 2:
+        COOP_PLAYER_2 = world;
+        break;
+      
+      case 3:
+        COOP_PLAYER_3 = world;
+        break;
+      
+      case 4:
+        COOP_PLAYER_4 = world;
+        break;
+    }
+  }
   if(gameover){
     return;
   }
@@ -656,7 +696,7 @@ void() client_data_th={
 void() client_data={
   local entity data;
   data = spawn();
-  setmodel(data, "q3mdl/testball.md3");
+  setmodel(data, "models/testball.md3");
   setsize(data, '-1 -1 -1', '1 1 1');
   setorigin(data, self.origin);
   data.owner = self;

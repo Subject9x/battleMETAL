@@ -23,13 +23,13 @@ void() sendevent_building_new_ruins={
 
   switch(self.vec_size){
     case 2:
-      setmodel( self, "q3mdl/map/ruins/ruin_medium.obj");
+      setmodel( self, "models/map/ruins/ruin_medium.obj");
       break;
     case 3:
-      setmodel( self, "q3mdl/map/ruins/ruin_large.obj");
+      setmodel( self, "models/map/ruins/ruin_large.obj");
       break;
     default:
-      setmodel( self, "q3mdl/map/ruins/ruin_small.obj");
+      setmodel( self, "models/map/ruins/ruin_small.obj");
       break;
   }
   
@@ -56,13 +56,13 @@ void() sendevent_building_die={
   
   switch( self.vec_size ){
     case 2:
-      setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
+      setmodel(self, "models/map/ruins/ruin_medium.obj");
       break;
     case 3:
-      setmodel(self, "q3mdl/map/ruins/ruin_large.obj");
+      setmodel(self, "models/map/ruins/ruin_large.obj");
       break;
     default:
-      setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+      setmodel(self, "models/map/ruins/ruin_small.obj");
       break;
   }
   

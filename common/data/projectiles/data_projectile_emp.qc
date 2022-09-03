@@ -44,8 +44,8 @@ void() data_projectile_ini_emp_={
   
   #ifdef CSQC
     //cosmetics
-    precache_model("q3mdl/proj/mdl_proj_emp.md3");
-    self.model = "q3mdl/proj/mdl_proj_emp.md3";
+    precache_model("models/proj/mdl_proj_emp.md3");
+    self.model = "models/proj/mdl_proj_emp.md3";
     self.modelflags = 0;
     self.alpha = 0.75;
     self.data_traileff = particleeffectnum("TE_EMP_TRAIL");
@@ -53,7 +53,7 @@ void() data_projectile_ini_emp_={
   #endif
   
   #ifdef SSQC
-    self.model = "q3mdl/testball.md3";
+    self.model = "models/testball.md3";
     self.touch = data_prj_emp_touch;
     self.think = data_projectile_emp_think_;
     self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;

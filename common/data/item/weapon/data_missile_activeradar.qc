@@ -52,11 +52,11 @@ void() data_ini_missile_activeradar_={
   
 #ifdef CSQC  
   precache_sound("sound/weapons/arh_fire.ogg");
-  precache_model("q3mdl/weapons/w_arh.md3");
+  precache_model("models/weapons/w_arh.md3");
   precache_file( "gfx/ui/wep_icons/wi_marh.png");
   self.w_name = "Missile - Active Radar";
   self.fire_sound = "sound/weapons/arh_fire.ogg";
-  self.model = "q3mdl/weapons/w_arh.md3";
+  self.model = "models/weapons/w_arh.md3";
   self.abbrev = "MARH";
   self.description = "+ Requires <Active Radar> on. + Requires target acquired. + You must be facing target. + stronger against [small] targets.";
   self.icon = "gfx/ui/wep_icons/wi_marh.png";

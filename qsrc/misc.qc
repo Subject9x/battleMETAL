@@ -86,7 +86,7 @@ void() realtimelights_light={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.alpha = 1;
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
   
@@ -148,7 +148,7 @@ void() realtimelights_sunlight={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.alpha = 1;
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   
   makevectors(self.angles);
   traceline( self.origin, self.origin + (v_forward * 640000), MOVE_WORLDONLY, self);
@@ -230,8 +230,8 @@ Default style is 0
 */
 void() light_globe =
 {
-  precache_model ("q3mdl/testball.md3");
-	setmodel (self, "q3mdl/testball.md3");
+  precache_model ("models/testball.md3");
+	setmodel (self, "models/testball.md3");
 	makestatic (self);
 };
 
@@ -249,8 +249,8 @@ Default style is 0
 */
 void() light_torch_small_walltorch =
 {
-  precache_model ("q3mdl/testball.md3");
-	setmodel (self, "q3mdl/testball.md3");
+  precache_model ("models/testball.md3");
+	setmodel (self, "models/testball.md3");
 	FireAmbient ();
 	makestatic (self);
 };
@@ -260,8 +260,8 @@ Large yellow flame ball
 */
 void() light_flame_large_yellow =
 {
-precache_model ("q3mdl/testball.md3");
-	setmodel (self, "q3mdl/testball.md3");
+precache_model ("models/testball.md3");
+	setmodel (self, "models/testball.md3");
 	self.frame = 1;
 	FireAmbient ();
 	makestatic (self);
@@ -272,8 +272,8 @@ Small yellow flame ball
 */
 void() light_flame_small_yellow =
 {
-  precache_model ("q3mdl/testball.md3");
-	setmodel (self, "q3mdl/testball.md3");
+  precache_model ("models/testball.md3");
+	setmodel (self, "models/testball.md3");
 	FireAmbient ();
 	makestatic (self);
 };
@@ -283,8 +283,8 @@ Small white flame ball
 */
 void() light_flame_small_white =
 {
-	precache_model ("q3mdl/testball.md3");
-	setmodel (self, "q3mdl/testball.md3");
+	precache_model ("models/testball.md3");
+	setmodel (self, "models/testball.md3");
 	FireAmbient ();
 	makestatic (self);
 };

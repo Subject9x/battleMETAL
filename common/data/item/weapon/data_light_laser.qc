@@ -72,11 +72,11 @@ void() data_ini_light_laser_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/laser_fire.ogg");
-  precache_model("q3mdl/weapons/w_laser.md3");
+  precache_model("models/weapons/w_laser.md3");
   precache_file( "gfx/ui/wep_icons/wi_las.png");
   self.w_name = "Laser";
   self.fire_sound = "sound/weapons/laser_fire.ogg";
-  self.model = "q3mdl/weapons/w_laser.md3";
+  self.model = "models/weapons/w_laser.md3";
   self.abbrev = "LAS";
   self.description = "+ Instant-impact weapon. + bonus damage against <shields>.";
   self.icon = "gfx/ui/wep_icons/wi_las.png";
