@@ -178,7 +178,7 @@ void() building_barracks={
   self.vec_name = "Barracks";
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;
-  self.solid = SOLID_BBOX;
+  self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
@@ -205,11 +205,11 @@ void() building_barracks={
   if( !self.energyMax ){
     self.energyMax = 100;
   }
-  self.angles_y = self.angle;
   
   self.th_die = barracks_die1;
 
   #ifdef SSQC
+    self.angles_y = self.angle;
     if( ai_can_spawn() == FALSE ){
       remove(self);
       return;

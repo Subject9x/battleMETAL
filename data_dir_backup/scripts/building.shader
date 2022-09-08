@@ -58,3 +58,37 @@ q3mdl/buildings/turret_heavy/bld_turret_heavy
     rgbgen lightingDiffuse
   }
 }
+
+//----------------------------------------------------
+//                 Base Buildings
+//----------------------------------------------------
+q3mdl/buildings/barracks/skin
+{
+	dpShadow
+	{
+		map q3mdl/buildings/barracks/skin.tga
+		blendFunc GL_DST_COLOR GL_ZERO
+		rgbGen identity
+	}
+}
+
+q3mdl/buildings/depot/skin
+{
+	dpShadow
+	{
+		map q3mdl/buildings/depot/skin.tga
+		blendFunc GL_DST_COLOR GL_ZERO
+		rgbGen identity
+	}
+}
+//----------------------------------------------------
+//                 Base Buildings
+//----------------------------------------------------
+//models/editor/buildings/barracks/skin_srv
+//{
+//	{
+//		map models/editor/buildings/barracks/skin_srv.tga
+//		blendFunc GL_DST_COLOR GL_ZERO
+//		rgbGen identity
+//	}
+//}

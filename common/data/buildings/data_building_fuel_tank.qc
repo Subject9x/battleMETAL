@@ -208,8 +208,8 @@ void() building_fuel_tank={
   self.vec_name = "Fuel Tank";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
-  self.solid = SOLID_BBOX;
-  self.movetype = MOVETYPE_WALK;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   self.scale = 1;
   self.deadflag = DEAD_NO;
@@ -239,6 +239,7 @@ void() building_fuel_tank={
   self.th_die = fuel_tank_die1;
   
   #ifdef SSQC
+    self.angles_y = self.angle;
     self.effects = self.effects | EF_LOWPRECISION;
     if( ai_can_spawn() == FALSE ){
       remove(self);

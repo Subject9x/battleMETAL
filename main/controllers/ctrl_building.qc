@@ -199,9 +199,6 @@ float( float isNew, float changedflags ) ctrl_send_building={
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
-   
-    
-    cons_logAFloat(self.classname, self.angles_y); //debug
     
     WriteChar( MSG_ENTITY, self.faction );
     WriteChar( MSG_ENTITY, self.vec_size );

@@ -337,8 +337,8 @@ void() building_shield={
   self.flags = self.flags | FL_MONSTER ;  
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  self.solid = SOLID_BBOX;
-  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
   self.model = "models/buildings/shield_gen/shieldgen.md3";
@@ -381,6 +381,7 @@ void() building_shield={
 #endif
   
 #ifdef SSQC
+    self.angles_y = self.angle;
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;

@@ -144,7 +144,7 @@ void() doodad_static_mech={
   if( self.targetname && (self.spawnflags & 1) ){
     self.use = doodad_static_mech_use;
   }
-  self.angles = self.angles;
+  self.angles = self.mangle;
 };
 
 /*QUAKED doodad_mech_static_balaket (0 0.25 1) (-18 -18 -35) (18 18 16) TRIGGER_REMOVE

@@ -190,11 +190,10 @@ void() building_supply_depot={
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 2;
   
-  self.solid = SOLID_BBOX;
-  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   
-  self.angles_y = self.angle;
   self.skin = self.faction - 1;
   self.model = "models/buildings/depot/supply_depot.md3";
   precache_model("models/buildings/depot/supply_depot.md3");
@@ -204,6 +203,7 @@ void() building_supply_depot={
   self.th_die = supply_depot_die1;
   
   #ifdef SSQC
+    self.angles_y = self.angle;
     self.effects = self.effects | EF_LOWPRECISION;
     if( ai_can_spawn() == FALSE ){
       remove(self);

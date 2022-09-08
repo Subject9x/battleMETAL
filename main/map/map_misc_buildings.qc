@@ -6,7 +6,6 @@ Overview:
   misc buildings that really serve no direct purpose
 */
 
-#ifdef SSQC
 float( float isNew, float changeFlags ) sendent_misc_building={
   
   WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
@@ -46,7 +45,6 @@ float( float isNew, float changeFlags ) sendent_misc_building={
   
   return TRUE;
 };
-#endif
 
 
 void() misc_build_die7={
@@ -147,6 +145,8 @@ void() misc_building_settle={
 
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
   
   if(self.building_delay_think){
     self.think = self.building_delay_think;
@@ -163,16 +163,18 @@ void() misc_building_settle={
 void( string modelName, float setSizeFlag ) misc_building={
   self.avelocity = '0 0 0';
   self.velocity = '0 0 0';
-  self.movetype = MOVETYPE_PUSH;
-  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_NOT;
   
   precache_model(modelName);
   
   setmodel(self, modelName);
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
-  
-  self.angles = self.mangle;
+
+  cons_logAVector(self.classname, self.origin);
+  //self.angles_y = self.angle;
+  cons_logAFloat(self.classname, self.angles_y);
   
   if( !(self.spawnflags & MISC_NO_DROP) ){
     droptofloor();
@@ -200,7 +202,7 @@ void( string modelName, float setSizeFlag ) misc_building={
     self.SendEntity = sendent_misc_building;
   }
 	self.think = misc_building_settle;
-	self.nextthink = time + 0.1;
+	self.nextthink = time + 0.01;
 };
 
 void() building_misc_apartment={

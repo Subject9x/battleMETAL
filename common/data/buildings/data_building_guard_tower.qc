@@ -77,11 +77,12 @@ void() building_guard_tower={
   self.vec_name = "Guard Tower";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 1;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
-  precache_model("models/buildings/towersmall/guardtower.obj");
-  setmodel(self, "models/buildings/towersmall/guardtower.obj");
+  self.model = "models/buildings/towersmall/guardtower.md3";
+  precache_model("models/buildings/towersmall/guardtower.md3");
+  setmodel(self, "models/buildings/towersmall/guardtower.md3");
   setsize(self, self.mins, self.maxs);
   
   self.deadflag = DEAD_NO;
@@ -117,6 +118,7 @@ void() building_guard_tower={
 #endif
 
 #ifdef SSQC
+  self.angles_y = self.angle;
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;

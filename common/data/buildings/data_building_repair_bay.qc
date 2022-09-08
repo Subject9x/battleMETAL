@@ -551,8 +551,8 @@ void() building_repair_bay={
   
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
-  self.solid = SOLID_BBOX;
-  self.movetype = MOVETYPE_WALK;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
   self.model = "models/buildings/repair_bay/repairbay.md3";
@@ -612,6 +612,7 @@ void() building_repair_bay={
 #endif
 
 #ifdef SSQC
+    self.angles_y = self.angle;
   self.effects = self.effects | EF_LOWPRECISION;
   if( ai_can_spawn() == FALSE ){
     remove(self);

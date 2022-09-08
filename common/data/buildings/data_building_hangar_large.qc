@@ -167,8 +167,8 @@ void() building_hangar_mech={
   self.vec_size = 3;
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
-  self.solid = SOLID_BBOX;
-  self.movetype = MOVETYPE_PUSH;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   self.skin = self.frame - 1;
   self.model = "models/buildings/hangar/hangar_large.md3";
   precache_model("models/buildings/hangar/hangar_large.md3");
@@ -196,6 +196,7 @@ void() building_hangar_mech={
   
   self.th_die = hangar_die1;
   #ifdef SSQC
+    self.angles_y = self.angle;
     self.use = multi_trigger;
     self.effects = self.effects | EF_LOWPRECISION;
     if( ai_can_spawn() == FALSE ){

@@ -340,7 +340,7 @@ void() building_radar={
   self.vec_name = "Listening Post";
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 1;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
@@ -380,6 +380,7 @@ void() building_radar={
 #endif
   
 #ifdef SSQC
+    self.angles_y = self.angle;
   self.effects = self.effects | EF_LOWPRECISION;
   if( ai_can_spawn() == FALSE ){
     remove(self);

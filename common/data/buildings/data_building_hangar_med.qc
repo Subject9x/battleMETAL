@@ -198,8 +198,8 @@ void() building_hangar_vehicle={
   self.vec_name = "Vehicle Hangar";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
-  self.solid = SOLID_BBOX;
-  self.movetype = MOVETYPE_PUSH;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
   self.skin = self.faction - 1;
@@ -229,6 +229,7 @@ void() building_hangar_vehicle={
     self.th_die = hangar_vehicle_die1;
 
   #ifdef SSQC
+    self.angles_y = self.angle;
     self.use = multi_trigger;
   
     self.effects = self.effects | EF_LOWPRECISION;
