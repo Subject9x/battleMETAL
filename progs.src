@@ -228,8 +228,10 @@ qsrc/triggers.qc
   
   main/map/map_unit_balaket_brawl.qc
   main/map/map_unit_balaket_sniper.qc
+  main/map/map_unit_warden_sniper.qc
   main/map/map_unit_matok_brawl.qc
   main/map/map_unit_matok_sniper.qc
+  main/map/map_unit_sapper_sniper.qc
   main/map/map_unit_monitor_brawl.qc
   main/map/map_unit_monitor_sniper.qc
  
