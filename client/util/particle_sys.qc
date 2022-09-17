@@ -407,38 +407,58 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
   Unit's shields have been struck but still holding
 */
 void() te_shield_hit_predraw={
+  local float lerpDiff;
+  local float lerp;
+  
+  if( time > self.data_lifetime || servertime > self.data_lifetime ){
+    self.owner.shieldHitFlag = FALSE;
+    remove(self);
+    return;
+  }
+  
+  self.colormod = self.compOffset;
+  if (self.nextthink != self.frame1time){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    
+    self.frame2 = self.frame1;
+    self.frame1 = self.alpha;
+    
+    self.angle2 = self.angle1;
+    self.angle1 = self.angles_y;
+    
+    self.origin2 = self.origin1;
+    self.origin1 = self.origin;
+  }
+  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  lerp = 1 - bound(0, lerpDiff, 1);
+  self.lerpfrac = lerp;
+  
   
   traceline(self.owner.origin, client_vis_org, FALSE, self);
   
   if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     return;
   }
-
-  interpolate_origin();
-  self.colormod = self.compOffset;
+  
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  self.alpha = 0.085;
-  if(self.owner.clientServerNum == player_localentnum){
-    if( self.owner.chaseActive == FALSE ){
-      self.alpha = 0.03;
-    }
-  }
+  self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
+	setmodel(self, self.model);
   addentity(self);
 };
 
 void() te_shield_hit_th={
-  if( time > self.data_lifetime ){
-    self.owner.shieldHitFlag = FALSE;
-    remove(self);
-    return;
-  }
   if(self.owner.clientServerNum == player_localentnum){
     self.origin = pmove_org;
   }
   else{
     self.origin = self.owner.origin;
   }
-
+  
+  if( self.alpha < 0.01 ){
+    remove(self);
+    return;
+  }
   self.think = te_shield_hit_th;
   self.nextthink = time + 0.025;
 };
@@ -450,13 +470,9 @@ void() te_shield_hit={
   local float shieldSize;
   local float sizeMod;
   
-  hitTime = 0.33;
-  
-  self.shieldEffectTime = time + hitTime;
-  
   traceline(self.origin, pmove_org, TRUE, self);
   
-  if( trace_ent == world && trace_fraction < 1.0){
+  if( (trace_ent == world && trace_fraction < 1.0) || trace_ent.data_type == DATA_BLD){
     return;
   } 
   
@@ -464,22 +480,28 @@ void() te_shield_hit={
     return;
   }
   
+  hitTime = 0.4;
+  
+  self.shieldEffectTime = servertime + hitTime;
+  
   explode = spawn();
   if( explode ){
     sizeMod = self.shield / self.shieldMax;
     shieldSize = max(0.8, (self.maxs_x / 64) * sizeMod);
-    explode.think = te_shield_hit_th;
-    explode.nextthink = time + 0.01;
-    explode.data_lifetime = time + hitTime;
-    explode.scale = shieldSize;
+    explode.data_lifetime = self.shieldEffectTime;
+    explode.scale = 1.0;
     explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
     explode.predraw = te_shield_hit_predraw;
     explode.owner = self;
     explode.solid = SOLID_NOT;
-    setmodel( explode, "models/fx/explosions/te_shield_explode.md3");
+    explode.think = te_shield_hit_th;
+    explode.nextthink = time + 0.01;
+    precache_model("models/fx/explosions/te_shield.md3");
+    setmodel( explode, "models/fx/explosions/te_shield.md3");
     setsize(explode, explode.mins, explode.maxs);
     setorigin( explode, self.origin);
-    explode.alpha = 0.2;
+    explode.alpha = 0.4;
+    explode.skin = 0;
     
     if(self.shieldHitFlag == SHIELD_HIT_EMP){
       flashCol = '1.0 0.4 1.0';
@@ -538,8 +560,8 @@ void() predraw_shield_explode={
 };
 
 void() te_shield_explode_th={
-  self.alpha = self.alpha - (0.024 * frametime);
-  self.scale = self.scale + (0.025 * frametime);
+  self.alpha = self.alpha - (2.2 * frametime);
+  self.scale = self.scale + (2.25 * frametime);
   
   if(self.owner.clientServerNum == player_localentnum){
     self.origin = pmove_org;
@@ -579,11 +601,19 @@ void( vector org, float vecSize ) te_shield_explode={
     explode.data_lifetime = 10;
     explode.scale = 0.1 + (vecSize / 3);
     explode.alpha = 0.6;
+    if(self.owner.clientServerNum == player_localentnum){
+    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_DOUBLESIDED;
+    }
+    else{
     explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
+    }
+    
     explode.predraw = predraw_shield_explode;
-    setmodel( explode, "models/fx/explosions/te_shield_explode.md3");
+    precache_model("models/fx/explosions/te_shield.md3");
+    setmodel( explode, "models/fx/explosions/te_shield.md3");
     setorigin( explode, org);
     explode.owner = self;
+    explode.skin = 1;
     
     if(self.shieldHitFlag == SHIELD_HIT_IXP){
       flashCol = '1.0 0.0 0.4';

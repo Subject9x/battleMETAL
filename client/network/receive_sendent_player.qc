@@ -773,16 +773,23 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
-  //Shield strike event
-  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
-    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
-      self.shieldEffectTime = time + 0.5;
-      te_shield_hit();
+
+  //HANDLE EVENT - Shield explode
+  if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
     }
   }
-  
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
+  else{
+    //HANDLE EVENT - Shield hit
+    if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+      if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
+        self.shieldEffectTime = time + 0.5;
+        te_shield_hit();
+      }
+    }
+  }
   
   //if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
   if( self.attackFlag != 0 ){

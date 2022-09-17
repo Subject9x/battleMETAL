@@ -72,6 +72,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
         self.ai_muted = FALSE;
         ai_voice_ini( TRUE );
         self.ai_voice_limit = 1;
+        
       }
     }
     else{
@@ -123,14 +124,20 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     }
   }
   
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
-  
-  //Shield strike event
-  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
-    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
-      self.shieldEffectTime = time + 0.5;
-      te_shield_hit();
+   //HANDLE EVENT - Shield explode
+  if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
+    }
+  }
+  else{
+    //HANDLE EVENT - Shield hit
+    if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+      if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
+        self.shieldEffectTime = time + 0.5;
+        te_shield_hit();
+      }
     }
   }
   
