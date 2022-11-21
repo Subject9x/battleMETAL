@@ -84,77 +84,87 @@ void() predraw_mech_corpse={
     self.angles = prevAngle;
     
     if( !(self.criticalHits & M_TOR_CENTER) ){
-      self.torC_org = predraw_unit_part(self.torC_compOffset); 
-      if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
-        self.torC_angl_x = self.torC_angl_x * -1;
+      if( strlen(self.torC_mdl ) > 0 ){
+        self.torC_org = predraw_unit_part(self.torC_compOffset); 
+        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+          self.torC_angl_x = self.torC_angl_x * -1;
+        }
+        precache_model(self.torC_mdl);
+        setmodel(self, self.torC_mdl);
+        self.origin = self.torC_org;
+        self.angles = self.torC_angl;
+        addentity(self);
+        self.origin = prevOrg;
+        self.angles = prevAngle;
       }
-      precache_model(self.torC_mdl);
-      setmodel(self, self.torC_mdl);
-      self.origin = self.torC_org;
-      self.angles = self.torC_angl;
-      addentity(self);
-      self.origin = prevOrg;
-      self.angles = prevAngle;
     }
     makevectors(self.torC_angl);
     if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.criticalHits & M_TOR_LEFT) ){
-      self.torL_org = predraw_unit_part(self.torL_compOffset); 
-      self.torL_angl = self.torC_angl;
-      if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
-         self.torL_angl_x = self.torL_angl_x * -1;
+      if( strlen(self.torL_mdl ) > 0 ){
+        self.torL_org = predraw_unit_part(self.torL_compOffset); 
+        self.torL_angl = self.torC_angl;
+        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
+           self.torL_angl_x = self.torL_angl_x * -1;
+        }
+        precache_model(self.torL_mdl);
+        setmodel(self, self.torL_mdl);
+        self.angles = self.torL_angl;
+        self.origin = self.torL_org;
+        addentity(self);
+        self.origin = prevOrg;
+        self.angles = prevAngle;
       }
-      precache_model(self.torL_mdl);
-      setmodel(self, self.torL_mdl);
-      self.angles = self.torL_angl;
-      self.origin = self.torL_org;
-      addentity(self);
-      self.origin = prevOrg;
-      self.angles = prevAngle;
     }
     
     if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.criticalHits & M_TOR_RIGHT) ){
-      self.torR_org = predraw_unit_part(self.torR_compOffset); 
-      self.torR_angl = self.torC_angl;
-      if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
-         self.torR_angl_x = self.torR_angl_x * -1;
+      if( strlen(self.torR_mdl ) > 0 ){
+        self.torR_org = predraw_unit_part(self.torR_compOffset); 
+        self.torR_angl = self.torC_angl;
+        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
+           self.torR_angl_x = self.torR_angl_x * -1;
+        }
+        precache_model(self.torR_mdl);
+        setmodel(self, self.torR_mdl);
+        self.angles = self.torR_angl;
+        self.origin = self.torR_org;
+        addentity(self);
+        self.origin = prevOrg;
+        self.angles = prevAngle;
       }
-      precache_model(self.torR_mdl);
-      setmodel(self, self.torR_mdl);
-      self.angles = self.torR_angl;
-      self.origin = self.torR_org;
-      addentity(self);
-      self.origin = prevOrg;
-      self.angles = prevAngle;
     }
     
     if( (self.unitModFlags & MOD_HAS_ARM_R) && !(self.criticalHits & M_ARM_RIGHT) ){
-      self.armL_org = predraw_unit_part(self.armL_compOffset); 
-      self.armL_angl = self.torC_angl;
-      if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
-        self.armL_angl_x = self.armL_angl_x * -1;
+      if( strlen(self.armL_mdl ) > 0 ){
+        self.armL_org = predraw_unit_part(self.armL_compOffset); 
+        self.armL_angl = self.torC_angl;
+        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
+          self.armL_angl_x = self.armL_angl_x * -1;
+        }
+        precache_model(self.armL_mdl);
+        setmodel(self, self.armL_mdl);
+        self.angles = self.armL_angl;
+        self.origin = self.armL_org;
+        addentity(self);
+        self.origin = prevOrg;
+        self.angles = prevAngle;
       }
-      precache_model(self.armL_mdl);
-      setmodel(self, self.armL_mdl);
-      self.angles = self.armL_angl;
-      self.origin = self.armL_org;
-      addentity(self);
-      self.origin = prevOrg;
-      self.angles = prevAngle;
     }
     
    if( (self.unitModFlags & MOD_HAS_ARM_L) && !(self.criticalHits & M_ARM_LEFT) ){
-      self.armR_org = predraw_unit_part(self.armR_compOffset); 
-      self.armR_angl = self.torC_angl;
-      if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
-        self.armR_angl_x = self.armR_angl_x * -1;
+      if( strlen(self.armR_mdl ) > 0 ){
+        self.armR_org = predraw_unit_part(self.armR_compOffset); 
+        self.armR_angl = self.torC_angl;
+        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
+          self.armR_angl_x = self.armR_angl_x * -1;
+        }
+        precache_model(self.armR_mdl);
+        setmodel(self, self.armR_mdl);
+        self.angles = self.armR_angl;
+        self.origin = self.armR_org;
+        addentity(self);
+        self.origin = prevOrg;
+        self.angles = prevAngle;
       }
-      precache_model(self.armR_mdl);
-      setmodel(self, self.armR_mdl);
-      self.angles = self.armR_angl;
-      self.origin = self.armR_org;
-      addentity(self);
-      self.origin = prevOrg;
-      self.angles = prevAngle;
     }
   }
   setsize(self, self.cache_mins, self.cache_maxs);
