@@ -209,7 +209,7 @@ void() building_fuel_tank={
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
   self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
   self.scale = 1;
   self.deadflag = DEAD_NO;
@@ -238,41 +238,44 @@ void() building_fuel_tank={
   }
   self.th_die = fuel_tank_die1;
   
-  #ifdef SSQC
+#ifdef SSQC
+  if( self.angle ){
     self.angles_y = self.angle;
-    self.effects = self.effects | EF_LOWPRECISION;
-    if( ai_can_spawn() == FALSE ){
-      remove(self);
-      return;
-    }
-    trigger_ext_check();
+  }
+  
+  self.effects = self.effects | EF_LOWPRECISION;
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  trigger_ext_check();
 
-    if( !(self.spawnflags & NO_DROP) ){
-      if( util_cornerSlopeCheck(self, 0.95) ){
-        util_generateBuildingFoundation(self);
-      }
-      else{
-        droptofloor();
-      }
+  if( !(self.spawnflags & NO_DROP) ){
+    if( util_cornerSlopeCheck(self, 0.95) ){
+      util_generateBuildingFoundation(self);
     }
-    setorigin(self, self.origin);
-    
-    makevectors(self.angles);
-    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+    else{
+      droptofloor();
+    }
+  }
+  setorigin(self, self.origin);
+  
+  makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
 
-    self.use = multi_trigger;
-    
-    self.SendEntity = ctrl_send_building;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-    if( (self.spawnflags & IS_MAPKEY) ){
-      self.effects = self.effects | EF_NODEPTHTEST;
-    }
-    self.canTarget = TRUE;
-    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-      self.canTarget = FALSE;
-    }
-    
-    self.think = building_bbox_settle;
-    self.nextthink = time + 0.01;
-  #endif
+  self.use = multi_trigger;
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  if( (self.spawnflags & IS_MAPKEY) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
+  self.canTarget = TRUE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.canTarget = FALSE;
+  }
+  
+  self.think = building_bbox_settle;
+  self.nextthink = time + 0.01;
+#endif
 };

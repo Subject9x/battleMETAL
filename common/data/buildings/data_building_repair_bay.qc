@@ -447,6 +447,11 @@ void() repair_bay_dlights={
   local vector lightColor;
   local float lightStyle;
   
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    //NO_TARGET repair bays are totally 'off'
+    return;
+  }
+  
   makevectors(self.angles);
   
   if( self.deadflag == DEAD_NO ){
@@ -473,7 +478,8 @@ void() repair_bay_dlights={
         lightColor = '0.95 0.25 0.15';
         lightStyle = 4;
       }
-    }    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+    }
+    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
     if(MENU_PROG_OFF){  
       particleDraw = vlen(client_vis_org - self.origin);      
       if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){  
@@ -551,8 +557,10 @@ void() building_repair_bay={
   
   self.vec_name = "Repair Bay";
   self.vec_size = 3;
+  self.avelocity = '0 0 0';
+  self.velocity = '0 0 0';
   self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
   self.model = "models/buildings/repair_bay/repairbay.md3";
@@ -612,7 +620,10 @@ void() building_repair_bay={
 #endif
 
 #ifdef SSQC
+  if( self.angle ){
     self.angles_y = self.angle;
+  }
+  
   self.effects = self.effects | EF_LOWPRECISION;
   if( ai_can_spawn() == FALSE ){
     remove(self);

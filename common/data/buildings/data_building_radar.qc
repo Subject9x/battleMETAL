@@ -341,13 +341,14 @@ void() building_radar={
   self.flags = self.flags | FL_MONSTER ;
   self.vec_size = 1;
   self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
   self.model = "models/buildings/radar/listpost.md3";
   precache_model("models/buildings/radar/listpost.md3");
   setmodel(self, "models/buildings/radar/listpost.md3");
   setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
 
   if( !self.health) {
     self.health = 250;
@@ -380,7 +381,10 @@ void() building_radar={
 #endif
   
 #ifdef SSQC
+  if( self.angle ){
     self.angles_y = self.angle;
+  }
+  
   self.effects = self.effects | EF_LOWPRECISION;
   if( ai_can_spawn() == FALSE ){
     remove(self);

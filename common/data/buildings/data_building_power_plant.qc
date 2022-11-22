@@ -241,7 +241,7 @@ void() building_power={
   self.vec_size = 3;
   self.scale = 1;
   self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
   self.model = "models/buildings/power_plant/powerplant.md3";
@@ -280,7 +280,10 @@ void() building_power={
 
 #endif
 #ifdef SSQC
+  if( self.angle ){
     self.angles_y = self.angle;
+  }
+  
   if( !self.ai_minrange ){
     self.ai_minrange = 800;
   }

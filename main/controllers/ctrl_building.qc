@@ -231,6 +231,10 @@ float( float isNew, float changedflags ) ctrl_send_building={
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteAngle( MSG_ENTITY, self.angles_x );
+    WriteAngle( MSG_ENTITY, self.angles_y );
+    WriteAngle( MSG_ENTITY, self.angles_z );
   }
   
   if( (changedflags & SENDFLAG_DEAD) ){
@@ -289,9 +293,19 @@ float( float isNew, float changedflags ) ctrl_send_building={
 
 
 void() building_bbox_settle={
-
-  self.solid = SOLID_BSP;
+  
   self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_BSP;
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  
+  if( self.building_delay_think ){
+    self.think = self.building_delay_think;
+  }
+  else{
+    self.think = building_burn_th;
+  }
+    self.nextthink = time + random() * 1;
 };

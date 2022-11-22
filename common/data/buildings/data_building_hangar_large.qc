@@ -168,9 +168,10 @@ void() building_hangar_mech={
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
   self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_STEP;
   self.skin = self.frame - 1;
   self.model = "models/buildings/hangar/hangar_large.md3";
+  self.angles = self.angles;
   precache_model("models/buildings/hangar/hangar_large.md3");
   setmodel(self, "models/buildings/hangar/hangar_large.md3");
   setsize(self, self.mins, self.maxs);
@@ -195,37 +196,44 @@ void() building_hangar_mech={
   }
   
   self.th_die = hangar_die1;
-  #ifdef SSQC
+  
+#ifdef SSQC
+  if( self.angle ){
     self.angles_y = self.angle;
-    self.use = multi_trigger;
-    self.effects = self.effects | EF_LOWPRECISION;
-    if( ai_can_spawn() == FALSE ){
-      remove(self);
-      return;
+  }
+  
+  self.use = multi_trigger;
+  
+  self.effects = self.effects | EF_LOWPRECISION;
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+  trigger_ext_check();
+  if( !(self.spawnflags & NO_DROP) ){
+    if( util_cornerSlopeCheck(self, 0.95) ){
+      util_generateBuildingFoundation(self);
     }
-    trigger_ext_check();
-    if( !(self.spawnflags & NO_DROP) ){
-      if( util_cornerSlopeCheck(self, 0.95) ){
-        util_generateBuildingFoundation(self);
-      }
-      else{
-        droptofloor();
-      }
+    else{
+      droptofloor();
     }
-    setorigin(self, self.origin);
-    makevectors(self.angles);
-    self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
-    
-    self.SendEntity = ctrl_send_building;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
-    if( (self.spawnflags & IS_MAPKEY) ){
-      self.effects = self.effects | EF_NODEPTHTEST;
-    }
-    self.canTarget = TRUE;
-    if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-      self.canTarget = FALSE;
-    }
-    self.think = building_bbox_settle;
-    self.nextthink = time + 0.01;
-  #endif
+  }
+  setorigin(self, self.origin);
+  makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+  
+  self.SendEntity = ctrl_send_building;
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT | SENDFLAG_MOVE;
+  
+  if( (self.spawnflags & IS_MAPKEY) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
+  self.canTarget = TRUE;
+  if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
+    self.canTarget = FALSE;
+  }
+  
+  self.think = building_bbox_settle;
+  self.nextthink = time + 0.1;
+#endif
 };

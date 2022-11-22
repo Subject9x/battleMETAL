@@ -103,6 +103,7 @@ void() sendent_building_settle={
   self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_NONE;
   setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
   self.cache_mins = self.mins;
   self.cache_maxs = self.maxs;
 };
@@ -161,7 +162,7 @@ void( float dataID ) data_sync_new_building={
     self.building_delay_think = self.th_walk;
   }
   self.think = sendent_building_settle;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.1;
 };
 /*
   ANIMATION - Death

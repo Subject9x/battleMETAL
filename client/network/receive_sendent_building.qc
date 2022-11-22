@@ -121,6 +121,10 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+    
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
   }
   
   if( (changeFlags & SENDFLAG_DEAD) ){

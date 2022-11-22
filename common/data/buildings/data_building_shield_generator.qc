@@ -338,13 +338,14 @@ void() building_shield={
   self.scale = 1;
   self.deadflag = DEAD_NO;
   self.solid = SOLID_NOT;
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
   self.skin = self.faction - 1;
   self.model = "models/buildings/shield_gen/shieldgen.md3";
   precache_model("models/buildings/shield_gen/shieldgen.md3");
   setmodel(self, "models/buildings/shield_gen/shieldgen.md3");
   setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
   
   if( !self.health) {
     self.health = 500;
@@ -381,7 +382,10 @@ void() building_shield={
 #endif
   
 #ifdef SSQC
+  if( self.angle ){
     self.angles_y = self.angle;
+  }
+  
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
