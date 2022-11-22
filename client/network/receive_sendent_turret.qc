@@ -227,6 +227,7 @@ void() interpolate_turret={
     
     setmodel(self, self.legs_mdl);
     setsize(self, self.cache_mins, self.cache_maxs);
+    self.skin = 0;
     addentity(self);
     
     makevectors(self.angles);
@@ -235,6 +236,7 @@ void() interpolate_turret={
     self.angles = self.torC_angl;
     
     setmodel(self, self.torC_mdl);
+    self.skin = 0;
     addentity(self);
     self.angles = cacheAngl;
     self.origin = cacheOrg;

@@ -22,6 +22,8 @@ void() data_ini_missile_turret_={
   self.max_health = 465;
   setsize(self, '-20 -20 -13', '20 20 20');
   
+  self.skin = 1;
+  
 //ENERGY AND SHIELDS===================
   self.energyMax  = 100;
   self.energyRate = 0.25;

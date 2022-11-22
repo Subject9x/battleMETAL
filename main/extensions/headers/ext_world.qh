@@ -68,6 +68,15 @@ void() sv_endServer;
 void() world_metal_ini;
 void() world_get_fog;
 
+
+//CO-OP System
+.float coopClientId;  // 1 - 4, assigned on player connect.
+entity COOP_PLAYER_1;
+entity COOP_PLAYER_2;
+entity COOP_PLAYER_3;
+entity COOP_PLAYER_4;
+
+
 //RTLight converter system---------------------------------------------
 .float rtlShadows; //FALSE = write nothin | TRUE = write '!'
 //.vector rtlOrigin; -> light ent's .origin

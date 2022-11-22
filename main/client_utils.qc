@@ -493,6 +493,14 @@ void(float wantNavId) client_setNavPoint={
       continue;
     }
     self.goalentity = nav;
+    if( cvar("gameType") == GAMEMODE_COOP){
+      if( self.coopClientId > 1){
+        self.goalentity = find(world, iniConfig, strcat(nav.group, ftos(self.coopClientId)));
+        if( !self.goalentity ){
+          self.goalentity = nav;
+        }
+      }
+    }
   }
 };
 

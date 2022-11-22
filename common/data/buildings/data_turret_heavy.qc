@@ -21,6 +21,7 @@ void() data_ini_heavy_turret_={
  
   self.max_health = 581;
   setsize(self, '-28 -28 -16', '28 28 28');
+  self.skin = 1;
   
 //ENERGY AND SHIELDS===================
   self.energyMax  = 600;

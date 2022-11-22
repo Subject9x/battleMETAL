@@ -127,6 +127,14 @@ Overview:
 .float angle;
 .void() building_delay_think; //post-settling, if building has a think func, this caches it.
 
+
+//building burn flags
+#define BURN_EFFECT1  1
+#define BURN_EFFECT2  2
+#define BURN_EFFECT3  4
+#define BURN_EFFECT4  8
+#define BURN_EFFECT5  16
+
 //SSQC only
 #ifdef SSQC
 //network frame stuff

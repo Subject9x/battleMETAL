@@ -172,9 +172,9 @@ void( string modelName, float setSizeFlag ) misc_building={
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
 
-  cons_logAVector(self.classname, self.origin);
+  //cons_logAVector(self.classname, self.origin);
   //self.angles_y = self.angle;
-  cons_logAFloat(self.classname, self.angles_y);
+  //cons_logAFloat(self.classname, self.angles_y);
   
   if( !(self.spawnflags & MISC_NO_DROP) ){
     droptofloor();

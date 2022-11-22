@@ -48,8 +48,9 @@ void() data_ini_light_turret_={
   weaponList = self;
   
   //tank turret
-  data_ini_torso_center_( "models/buildings/turret_light/mdl_bld_h_ltur.md3", 1, '0 8 0', '0 0 0'); 
-  data_ini_legs_( "models/buildings/turret_light/mdl_bld_h_ltur_base.md3", 0, '0 0 0'); 
+  data_ini_torso_center_( "models/buildings/turret_light/turret.md3", 1, '0 8 0', '0 0 0');
+  data_ini_legs_( "models/buildings/turret_light/base.md3", 0, '0 0 0');
+  self.skin = 1;
   
   //camera location
   self.cameraOffset = '0 12 8';

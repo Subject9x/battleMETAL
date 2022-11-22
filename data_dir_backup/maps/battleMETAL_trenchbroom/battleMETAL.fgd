@@ -792,6 +792,17 @@ Deploy points can be tailored to specific factions, and can be activated/deactiv
     0 : "Off"
     1 : "On"
   ]
+  group(string) :  "bind to map_deploy_point_coop by matching .group between deploy point and coop point." : ""
+]
+
+@PointClass base(Target, Targetname) color(0.753 0.788 0.431) size(-26 -26 -44, 26 26 28) = map_deploy_point_coop : "Co-op deploy points are for trouble-shooting tough map spawn points, when
+you need to be exact about player spawn location." [
+  coopClientId(choices) : "specific player ID" : 2 = [
+    2 : "Player 2"
+    3 : "Player 3"
+    4 : "Player 4"
+  ]
+  group(string) :  "bind to map_deploy_point by matching .group between deploy point and coop point." : ""
 ]
 
 @PointClass base(Target, Targetname, Faction) color(0.431 0.788 0.753) size(-16 -8 -16, 16 8 16) = map_fail_objective : "Merely a necessary interstitial map object to set a Mission Objective to 'fail'.

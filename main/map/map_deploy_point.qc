@@ -42,13 +42,12 @@ Deploy points can be tailored to specific factions, and can be activated/deactiv
 .faction = <float> - Deploy Point only appears for this faction
 .isActive = <float> [bool] - if active, allow players to spawn here.  
 .trigOnSpawn = <string> [target] - map object to fire when this is created
+.group<string> : used to bind coop deploy points.
 -------SPAWNFLAGS-----
 NO_CAMPAIGN 1 : removed from singleplayer
 NO_COOP 2 : removed from co-operative games
 NO_DM 4 : removed from deathmatch games
 NO_TDM 8 : removed from deathmatch 1 / teamplay 1 games.
-
-
 */
 void() map_deploy_point={
   
@@ -171,3 +170,50 @@ void() map_deploy_point_remote={
   self.think = deploy_point_remote_query;
   self.nextthink = time + 0.1;
 }
+
+
+/*
+  make sure to wait a bit before checking for a parent deploy point.
+*/
+void() coop_deploy_postconstruct={
+
+  local entity parent;
+  parent = find(world, group, self.group);
+  
+  if( !parent ){
+    cons_logAVector("map_deploy_point_coop missing valud coopClientId, removing!", self.origin);
+    remove(self);
+    return;
+  }
+  
+  cacheGlobalString( self.iniConfig, strcat(self.group, ftos(self.coopClientId)) )
+  
+};
+
+
+/*QUAKED map_deploy_point_coop (0.753 0.788 0.431) (-26 -26 -44) (26 26 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM CAN_TARGET ? ? ? DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE
+Normally, co-op players spawn with regular deploy points and its ok if they're overlapping another player.
+HOWEVER - for compatability, if a mapper needs to cast a co-op spawn point to a specific spot, use this.
+-------- KEYS -------- 
+.coopClientId(choice) - specific player ID, 2,3,4
+.group(string) - bind to map_deploy_point_coop
+-------SPAWNFLAGS-----
+*/
+void() map_deploy_point_coop={
+  
+  if( !self.group || strlen(self.group) <= 0 ){
+    objerror(strcat("map_deploy_point_coop(", vtos(self.origin),") was missing groupId, unable to link to deploy point!\n"));
+    remove(self);
+    return;
+  }
+  
+  if( self.coopClientId < 2 ){
+    cons_logAVector("map_deploy_point_coop missing valud coopClientId, removing!", self.origin);
+    remove(self);
+    return;
+  }
+
+  self.think = coop_deploy_postconstruct;
+  self.nextthink = time + 1;
+};
+
