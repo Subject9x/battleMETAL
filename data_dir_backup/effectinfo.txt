@@ -2950,16 +2950,7 @@ velocitymultiplier 2
     velocityoffset 5 5 5
     velocityjitter 25 25 25
     velocitymultiplier 20
-    stretchfactor 2
     airfriction 4
-   
-  //TE_REPAIR_MUZZLE - LIGHT
-    effect TE_REPAIR_MUZZLE
-    countabsolute 1
-    lightradius 75
-    lightradiusfade 75
-    lightcolor 1.0 0.4 0.0
-    lightshadow 0
   
   //TE_REPAIR_RAIL - MAIN RAIL
     effect TE_REPAIR_RAIL
@@ -2973,7 +2964,7 @@ velocitymultiplier 2
     alpha 512 1024 64
     time 0.05 0.07
     notunderwater
-    trailspacing 8
+    trailspacing 16
     stretchfactor 2
   
   //TE_REPAIR_RAIL - RAIL PARTICLES
@@ -2995,7 +2986,7 @@ velocitymultiplier 2
     
   //TE_REPAIR_IMPACT - BULLET FRAGS
     effect TE_REPAIR_IMPACT
-    count 0.25
+    count 1
     type spark
     blend alpha
     orientation spark
@@ -3008,13 +2999,13 @@ velocitymultiplier 2
     velocityjitter 10 10 10
     velocitymultiplier 3
     notunderwater
-    stretchfactor 4
+    stretchfactor 2
     
   //TE_REPAIR_IMPACT - LIGHT
     effect TE_REPAIR_IMPACT
     countabsolute 1
     lightradius 75
-    lightradiusfade 75
+    lightradiusfade 100
     lightcolor 0.65 1.0 0.4
     lightshadow 0
   
