@@ -225,7 +225,6 @@ void		end_sys_fields;			// flag for structure dumping
 
 ==============================================================================
 */
-#define SSQC
 //
 // constants
 //
@@ -247,11 +246,11 @@ float	FL_ONGROUND				= 512;	  // standing on something
 float	FL_PARTIALGROUND	= 1024;	  // not all corners are valid
 float	FL_WATERJUMP			= 2048;	  // player jumping out of water
 float	FL_JUMPRELEASED		= 4096;	  // for jump debouncing
-float FL_DISARMED = 8192;    //used for FL_MONSTER, tells the AI they have no more guns left
-float FL_UNIT = 16384;  //kinda ugly but used for all clients and monsters
-float FL_NOSHOOT = 32768;  //shuts off FL_CLIENT ability to use their weapons
-float FL_TURRET = 65536;  //the FL_MONSTER has a Turret
-float FL_NODE = 131072; //kinda ugly but used for non unit things
+float FL_DISARMED       = 8192;   //used for FL_MONSTER, tells the AI they have no more guns left
+float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
+float FL_NOSHOOT        = 32768;  //shuts off FL_CLIENT ability to use their weapons
+float FL_TURRET         = 65536;  //the FL_MONSTER has a Turret
+float FL_NODE           = 131072; //kinda ugly but used for non unit things
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
@@ -601,6 +600,7 @@ float	AS_MISSILE		= 4;
 .float fog_alpha;
 .vector fog_dist;
 .float fade;
+.float fog_fade;
 .entity fogEntity;
 
 //===========================================================================
@@ -1163,13 +1163,13 @@ float maxdecors;
 // and many other ways to add meaning to a map
 .string deathmsg;
 
-.float regenthink; // next time player will regen some health
-.float isdecor;
-.float radiusdamage_amount; // damage counter
-.vector radiusdamage_force; // direction and power of blast kick
-.float radiusdamage_hit; // 1 if it was hit, reset to 0 afterward
-.vector radiusdamage_lasthit; // location
-.float radiusdamage_ownerdamagescale; // if set on inflictor this will scale damage to owner (overriding default of 0.5)
+//.float regenthink; // next time player will regen some health
+//.float isdecor;
+//.float radiusdamage_amount; // damage counter
+//.vector radiusdamage_force; // direction and power of blast kick
+//.float radiusdamage_hit; // 1 if it was hit, reset to 0 afterward
+//.vector radiusdamage_lasthit; // location
+//.float radiusdamage_ownerdamagescale; // if set on inflictor this will scale damage to owner (overriding default of 0.5)
 vector raddamage_lasthit;
 
 // how much bleeding 'matters' to this entity, a percentage between

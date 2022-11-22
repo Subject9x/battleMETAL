@@ -46,8 +46,10 @@ When the player touches this, he gets sent to the map listed in the "map" variab
 */
 void() trigger_changelevel =
 {
-	if (!self.map)
-		objerror ("changelevel trigger doesn't have map");
+  if( !(self.spawnflags & 4) ){
+		if (!self.map)
+			objerror ("changelevel trigger doesn't have map");
+  }
 	
 	InitTrigger ();
 	

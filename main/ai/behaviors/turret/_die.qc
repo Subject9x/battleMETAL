@@ -21,11 +21,7 @@ void() temp_chunk_burn={
 };
 
 void() ai_turret_clean={
-  ctrl_unit_remove_piece(self.cockpit);
   ctrl_weapon_remove_all();
-  ctrl_unit_remove_piece(self.torsoLeft);
-  ctrl_unit_remove_piece(self.torsoRight);
-  ctrl_unit_remove_piece(self.torsoCenter);
   
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;
@@ -44,16 +40,9 @@ void() ai_turret_die={
   //ai_sfx_dead();
   
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_CORPSE;
   self.colormod = '0.33 0.33 0.33';
   
-  //annoying that turret corpses block a lot of fire.
-  self.maxs_x = self.maxs_x * 0.33;
-  self.maxs_y = self.maxs_y * 0.33;
-  self.maxs_z = (self.maxs_z + (self.mins_z * -1)) * 0.67;
-  self.mins_x = self.maxs_x * -1;
-  self.mins_y = self.maxs_y * -1;
-  self.mins_z = 0;
+  setmodel(self, "models/map/ruins/ruin_medium.obj");
   setsize(self, self.mins, self.maxs);
   droptofloor();
   self.solid = SOLID_NOT;
@@ -65,19 +54,18 @@ void() ai_turret_die={
     w_chain = w_chain.w_slot;
   }
   
-  ctrl_unit_part_death(self.cockpit);  
-  ctrl_unit_part_death(self.torsoCenter);
-  
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
 
   makevectors( self.angles );
   
   ai_call_for_help( self.enemy );
+  self.enemy = world;
   self.think = ai_turret_clean;
   self.nextthink = time + 0.75;
   
   te_debris( self.origin + (v_up * self.maxs_z * 0.33), self.angles, '0 0 0', rint(self.vec_size / 2 + (random() * self.vec_size+1)), self.vec_size );
+  te_vehicle_chunk( self.torC_mdl, self.torC_org, [crandom() * 10, crandom()*10, random() * 50], self.torC_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
   
   self.deadflag = DEAD_DEAD;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;

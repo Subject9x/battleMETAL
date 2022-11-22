@@ -30,8 +30,10 @@ void() data_ini_equip_energy_battery_={
   self.equipSize = MSC2;
   
   #ifdef CSQC
+    precache_model("models/weapons/e_enbat.md3");
+    precache_file( "gfx/ui/wep_icons/eqp_enbat.png");
     self.w_name = "Energy Battery";
-    self.model = "q3mdl/weapons/e_enbat.md3";
+    self.model = "models/weapons/e_enbat.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

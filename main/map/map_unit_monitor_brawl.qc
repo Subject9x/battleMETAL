@@ -14,6 +14,7 @@ void() unit_monitor_survest_brawler={
   self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_SKR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -21,6 +22,7 @@ void() unit_monitor_survest_brawler={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;
@@ -78,6 +80,7 @@ void() unit_monitor_militar_brawler={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_SKR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -85,6 +88,7 @@ void() unit_monitor_militar_brawler={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_flak;
@@ -142,6 +146,7 @@ void() unit_monitor_psc_brawler={
   self.faction = FACTION_PSC;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_SKR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -149,6 +154,7 @@ void() unit_monitor_psc_brawler={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_flak;
@@ -207,6 +213,7 @@ void() unit_monitor_militar_zapper={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_ENE;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -214,6 +221,7 @@ void() unit_monitor_militar_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_laser;
@@ -272,6 +280,7 @@ void() unit_monitor_militar_gunner={
   self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_DIR;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -279,6 +288,7 @@ void() unit_monitor_militar_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;
@@ -338,6 +348,7 @@ void() unit_monitor_survest_lobber={
   self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
+  self.subType = AI_UTYPE_MIS;
   
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -345,6 +356,7 @@ void() unit_monitor_survest_lobber={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;

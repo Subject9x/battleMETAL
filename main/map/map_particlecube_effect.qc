@@ -107,7 +107,7 @@ void() func_meta_particlecube_th={
 float( float isNew, float changedFlags ) send_pcl_cube_meta={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_PCL_CUBE );
   //--------
   if( (changedFlags & SENDFLAG_NEWENT) ){
@@ -133,6 +133,7 @@ float( float isNew, float changedFlags ) send_pcl_cube_meta={
 void() func_meta_particlecube={
   self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
   self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   
   setmodel(self, self.model);
   setsize(self, self.mins, self.maxs);

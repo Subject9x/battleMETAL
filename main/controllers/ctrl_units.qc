@@ -25,38 +25,10 @@ void() ctrl_unit_clean_wgroups={
   one-way execution, use carefully.
 */
 void() ctrl_unit_cleanup_player={
-  if( (self.flags & FL_CLIENT) ){
-    ctrl_unit_remove_cam(self.cockpit);
-  }
-  ctrl_unit_remove_piece(self.torsoCenter);
-  ctrl_unit_remove_piece(self.torsoLeft);
-  ctrl_unit_remove_piece(self.torsoRight);
-  ctrl_unit_remove_piece(self.armLeft);
-  ctrl_unit_remove_piece(self.armRight);
-  ctrl_unit_remove_piece(self.legs);
-  
+  //FIX ME - cleanups flatten to just weapon removal.
   ctrl_weapon_remove_all();
 };
 
-void() ctrl_unit_cleanup_mech={
-  ctrl_unit_remove_piece(self.cockpit);
-  ctrl_weapon_remove_all();
-  ctrl_unit_remove_piece(self.armLeft);
-  ctrl_unit_remove_piece(self.armRight);
-  ctrl_unit_remove_piece(self.torsoLeft);
-  ctrl_unit_remove_piece(self.torsoRight);
-  ctrl_unit_remove_piece(self.torsoCenter);
-  ctrl_unit_remove_piece(self.legs);
-};
-
-void() ctrl_unit_cleanup_tank={
-  ctrl_unit_remove_piece(self.cockpit);
-  ctrl_weapon_remove_all();
-  ctrl_unit_remove_piece(self.torsoLeft);
-  ctrl_unit_remove_piece(self.torsoRight);
-  ctrl_unit_remove_piece(self.torsoCenter);
-  ctrl_unit_remove_piece(self.legs);
-};
 /*
   Call's unit sub-piece's th_die() function but does not remove!
 */
@@ -89,7 +61,6 @@ void(entity unitPiece) ctrl_unit_remove_piece={
 void(entity unitCam) ctrl_unit_remove_cam={
   self.weaponmodel = self.weaponmodel;
   self.weaponframe = 0;
-  remove(self.cockpit);
 };
 
 /*
@@ -101,7 +72,7 @@ void(entity unitCam) ctrl_unit_remove_cam={
 float( float isNew, float changedFlags ) send_nav_point={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_NAVP );
   //--------
   
@@ -143,7 +114,7 @@ float( float isNew, float changedFlags ) send_nav_point={
 float( float isNew, float changedFlags ) send_objective={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_OBJT );
   //--------
   
@@ -179,7 +150,7 @@ float( float isNew, float changedFlags ) send_objective={
 float( float isNew, float changedFlags ) send_deploy_point={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_DEPL );
   //============
   
@@ -226,7 +197,7 @@ float( float isNew, float changedFlags ) send_damage_zone={
   
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteCoord( MSG_ENTITY, newFlags );
+  WriteLong( MSG_ENTITY, newFlags );
   WriteByte( MSG_ENTITY, DATA_MAP_DMG );
   //============
   
@@ -255,10 +226,10 @@ float( float isNew, float changedFlags ) send_damage_zone={
   
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteCoord( MSG_ENTITY, self.spawnflags );
+    WriteLong( MSG_ENTITY, self.spawnflags );
     WriteByte( MSG_ENTITY, self.damageType );
     WriteShort( MSG_ENTITY, self.alpha );
-    WriteCoord( MSG_ENTITY, self.wait );
+    WriteLong( MSG_ENTITY, self.wait );
   }
   return TRUE;
 };

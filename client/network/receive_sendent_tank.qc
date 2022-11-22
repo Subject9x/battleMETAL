@@ -9,38 +9,10 @@ Overview:
   handles
     sv/main/controllers/ctrl_tank.ctrl_send_tank()
 */
-
-/*
-  EVENT - MOVE
-*/
-void() sendevent_tank_move={
-  local entity weps;
-  
-  for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-    if( weps.partParentId == M_LEGS ){
-      weps.angles = self.angles;
-    }
-    else{
-      weps.angles = self.torsoCenter.angles;
-    }
-  }
-};
-
 /*
   EVENT - DEATH
 */
 void() sendevent_tank_die={
-  local entity weps;
-  local entity rem;
-  local float wId;
-  
-  weps = self.w_slot;
-  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
-    rem = weps;
-    weps = rem.w_slot;
-    sendent_handle_remove(rem);
-  }
-  sendent_handle_remove(self.torsoCenter);
   
   data_vehicle_wreck();
   
@@ -67,7 +39,6 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-    sendevent_tank_move();
   }
   
   if( (changeFlags & SENDFLAG_ANGLE) ){
@@ -84,30 +55,27 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   //EVENT - NEW ENTITY
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.flags = ReadCoord();
+    self.flags = ReadLong();
     self.faction = ReadByte();
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
     self.ai_muted = ReadByte();
+    self.subType = ReadChar();
     newName = ReadString();
   }
   
   if( isNew ){
     setorigin(self, self.origin);
-    cacheGlobalString(self.netname, newName )
     data_sync_new_vehicle( self.data_idx );
-    self.predraw = predraw_tank;
-    self.canTarget = TRUE;
-    if( !self.ai_muted ){
-      ai_voice_ini( TRUE );
-      self.ai_voice_limit = 1;
+    if(self.deadflag == DEAD_NO){
+      cacheGlobalString(self.netname, newName )
+      self.predraw = predraw_tank;
+      self.canTarget = TRUE;
+      if( !self.ai_muted ){
+        ai_voice_ini( TRUE );
+        self.ai_voice_limit = 1;
+      }
+    }
+    else{
+      data_vehicle_wreck();
     }
   }
   
@@ -120,13 +88,12 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   //EVENT - TURRET ROTATES
   if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng_x = anglemod(ReadAngle());
-    turretAng_y = anglemod(ReadAngle());
-    turretAng_z = 0;
-    self.v_angle = turretAng;
+    self.torC_angl_x = anglemod(ReadAngle());
+    self.torC_angl_y = anglemod(ReadAngle());
+    self.torC_angl_z = 0;
+    self.v_angle = self.torC_angl;
     self.v_angle_x = self.v_angle_x * -1;
-    turretAng_x = 0;
-    sendevent_turret_update( turretAng );
+    self.torC_angl_x = 0;
   }
   
   //EVENT - CRITICAL HIT
@@ -142,17 +109,20 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       if( self.pcl_effectnum == 0 ){
         self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       }
-      makevectors(self.angles);
-      pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      particleDraw = vlen(client_vis_org - self.origin); 
+      if( particleDraw < PARTICLE_HAZ_DISTANCE ){
+        makevectors(self.angles);
+        pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      }
     }
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
-    self.getTarget = rint(ReadCoord());
+    self.getTarget = ReadLong();
     self.enemy = findfloat(world, entnum, self.getTarget);
   }
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadCoord();
+    self.attackFlag = ReadLong();
     sendevent_handle_weaponfire();
   }
   
@@ -164,14 +134,20 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     }
   }
   
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );  
-  
-  //Shield strike event
-  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
-    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
-      self.shieldEffectTime = time + 0.5;
-      te_shield_hit();
+  //HANDLE EVENT - Shield explode
+  if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
+    }
+  }
+  else{
+    //HANDLE EVENT - Shield hit
+    if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+      if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
+        self.shieldEffectTime = time + 0.5;
+        te_shield_hit();
+      }
     }
   }
   
@@ -182,52 +158,91 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
 };
 
 void() interpolate_tank={
-  local entity parent;
+  local vector chasOrg;
   local entity wepn;
   local vector saved;
+  local vector cacheOrg;
+  local vector cacheAngl;
   
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
 	setorigin(self, self.origin);
   
-  parent = self;
+  makevectors(self.angles);
+  traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
   
-  GetAlignedSurfaceAngles(self);
+  cacheOrg = self.origin;
+  cacheAngl = self.angles;
   
-  if( self.torsoCenter != world ){
-    saved = self.angles;
-    saved_x = 0;
-    makevectors(saved);
-    self = self.torsoCenter;
-      self.origin = parent.origin + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-      self.angles_x = parent.angles_x;
-    self = parent;
+  chasOrg = trace_endpos + (v_up * self.mins_z * -1 );
+  
+  traceline(self.origin, client_vis_org, FALSE, self);
+  
+  self.cl_lod_unit = TRUE;
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    self.cl_lod_unit = FALSE;
   }
   
-  wepn = self.w_slot;
-  while( (wepn != world) ){
-    self = wepn;
-      if( self.partParentId == M_LEGS ){
-        saved = parent.angles;
-        saved_x = 0;
-        makevectors(saved);
-        saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        saved = parent.origin + saved;
-        self.angles = parent.angles + self.w_adj_ang;
+  if( self.cl_lod_unit ){
+    self.cl_lod_weapon = TRUE;
+    if( vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
+      self.cl_lod_weapon = FALSE;
+    }
+    
+    setmodel(self, self.legs_mdl);
+    setsize(self, self.cache_mins, self.cache_maxs);
+    GetAlignedSurfaceAngles(self);
+    self.origin = chasOrg;
+    self.cacheGroundPos = chasOrg;
+    addentity(self);
+    
+    if( (self.flags & FL_TURRET) ){
+      saved = self.angles;
+      saved_x = 0;
+      makevectors(saved);
+      self.torC_org = chasOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
+      
+      setmodel(self, self.torC_mdl);
+      self.origin =  self.torC_org;
+      self.angles = self.torC_angl;
+      addentity(self);
+      self.origin = cacheOrg;
+      self.angles = cacheAngl;
+      setsize(self, self.cache_mins, self.cache_maxs);
+    }
+
+    if(self.cl_lod_weapon){
+      if(self.weaponEnt1.data_idx){
+        predraw_unit_weapon(self.weaponEnt1);
       }
-      else{
-        saved = parent.torsoCenter.angles;
-        //saved_x = 0;
-        makevectors(saved);
-        saved = (v_right * self.compOffset_x) + (v_forward * self.compOffset_z) + (v_up * self.compOffset_y);
-        saved = parent.torsoCenter.origin + saved;
-        self.angles = parent.torsoCenter.angles + self.w_adj_ang;
+      if(self.weaponEnt2.data_idx){
+        predraw_unit_weapon(self.weaponEnt2);
       }
-      self.origin = saved;
-    self = parent;
-    wepn = wepn.w_slot;
+      if(self.weaponEnt3.data_idx){
+        predraw_unit_weapon(self.weaponEnt3);
+      }
+      if(self.weaponEnt4.data_idx){
+        predraw_unit_weapon(self.weaponEnt4);
+      }
+      if(self.weaponEnt5.data_idx){
+        predraw_unit_weapon(self.weaponEnt5);
+      }
+      if(self.weaponEnt6.data_idx){
+        predraw_unit_weapon(self.weaponEnt6);
+      }
+      if(self.weaponEnt7.data_idx){
+        predraw_unit_weapon(self.weaponEnt7);
+      }
+      if(self.weaponEnt8.data_idx){
+        predraw_unit_weapon(self.weaponEnt8);
+      }
+      if(self.weaponEnt9.data_idx){
+        predraw_unit_weapon(self.weaponEnt9);
+      }
+    }
   }
+  setsize(self, self.cache_mins, self.cache_maxs);
 };
 
 void() predraw_tank={

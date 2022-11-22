@@ -14,13 +14,15 @@ void() unit_sorcerer_survest_gunner={
 
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_SURVEST;
-   
+  self.subType = AI_UTYPE_DIR;
+  
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
   
   ai_promote();
+  trigger_ext_check();
   self.next_wepn1 = UID_ITEM_rotary_plasma;
   self.next_wepn2 = UID_ITEM_rotary_plasma;
   switch( self.ai_rank ){
@@ -41,6 +43,7 @@ void() unit_sorcerer_militar_gunner={
 
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_DIR;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -48,6 +51,7 @@ void() unit_sorcerer_militar_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   self.next_wepn1 = UID_ITEM_electro_repeater;
   self.next_wepn2 = UID_ITEM_electro_repeater;
   switch( self.ai_rank ){
@@ -68,6 +72,7 @@ void() unit_sorcerer_militar_gunner={
 void() unit_sorcerer_survest_lobber={
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_MIS;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -75,6 +80,7 @@ void() unit_sorcerer_survest_lobber={
   }
   
   ai_promote();
+  trigger_ext_check();
   self.next_wepn1 = UID_ITEM_rocket_launcher;
   self.next_wepn2 = UID_ITEM_rocket_launcher;
   switch( self.ai_rank ){
@@ -97,6 +103,7 @@ void() unit_sorcerer_militar_lobber={
 
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_MIS;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -104,6 +111,7 @@ void() unit_sorcerer_militar_lobber={
   }
   
   ai_promote();
+  trigger_ext_check();
   self.next_wepn1 = UID_ITEM_missile_activeradar;
   self.next_wepn2 = UID_ITEM_missile_activeradar;
   switch( self.ai_rank ){

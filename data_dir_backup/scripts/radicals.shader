@@ -63,6 +63,9 @@ textures/radicals/quantum_a
 //Map Entity - qtm_base_sm / md/ lg
 q3mdl/map/rads/qtm_base
 {
+    dpNoShadow
+    dpReflect 0.5 0.7 0.15 0.5 0.33
+    dpNoRtlight
     tesssize 32
 		deformVertexes wave 10 square 0 .5 0 1
 		{
@@ -90,34 +93,37 @@ q3mdl/map/rads/min_base
 //Map Entity - rad_base_sm / md/ lg
 q3mdl/map/rads/rad_base_lg
 {
-		deformVertexes wave 10 sin 0 .1 0 .25
-		deformVertexes wave -10 sin 0 .1 .25 .5
-		{
-				map q3mdl/map/rads/rad_base_lg.tga
-				tcMod turb 0 0.1 0 .01
-				tcMod rotate 0.25
-				rgbGen lightingDiffuse
-		}
+  dpNoShadow
+  deformVertexes wave 10 sin 0 .1 0 .25
+  deformVertexes wave -10 sin 0 .1 .25 .5
+  {
+    map q3mdl/map/rads/rad_base_lg.tga
+    tcMod turb 0 0.1 0 .01
+    tcMod rotate 0.25
+    rgbGen lightingDiffuse
+  }
 }
 
 //EXPLOSION SHELLS - SHIELD
 q3mdl/fx/explosions/te_shield_explode
 {
-		deformVertexes wave 4 sin 0 .75 0 1.0
-		{
-				map q3mdl/fx/explosions/te_shield_explode.tga
-				tcMod turb 0 0.25 0 0.25
-				tcMod rotate 10
-				rgbGen vertex
-		}   
-    {
-      map $lightmap
-      blendfunc GL_DST_COLOR GL_ZERO
+  dpNoShadow
+  deformVertexes wave 4 sin 0 .75 0 1.0
+  {
+      map q3mdl/fx/explosions/te_shield_explode.tga
+      tcMod turb 0 0.25 0 0.25
+      tcMod rotate 10
       rgbGen vertex
-    }
+  }   
+  {
+    map $lightmap
+    blendfunc GL_DST_COLOR GL_ZERO
+    rgbGen vertex
+  }
 }
 q3mdl/fx/explosions/te_shield_explode_red
 {
+  dpNoShadow
 		deformVertexes wave 7 sin 0 .75 0 1.0
 		{
 				map q3mdl/fx/explosions/te_shield_explode_red.tga
@@ -134,6 +140,7 @@ q3mdl/fx/explosions/te_shield_explode_red
 //EXPLOSION SHELLS - EXPLODE
 q3mdl/fx/explosions/te_missile_explode
 {
+  dpNoShadow
 		deformVertexes wave 7 sin 0 .75 0 1.0
 		{
 				map q3mdl/fx/explosions/te_missile_explode.tga
@@ -151,6 +158,7 @@ q3mdl/fx/explosions/te_missile_explode
 //DEBRIS - DEBRIS1
 q3mdl/fx/debris1/skin_debris1
 {
+  dpNoShadow
 		{
 				map q3mdl/fx/debris1/skin_debris1.tga
 				tcMod turb 0 0.25 0 0.25
@@ -166,6 +174,7 @@ q3mdl/fx/debris1/skin_debris1
 //DEBRIS - DEBRIS2
 q3mdl/fx/debris2/skin_debris2
 {
+  dpNoShadow
 		{
 				map q3mdl/fx/debris1/skin_debris1.tga
 				tcMod turb 0 0.25 0 0.25
@@ -181,6 +190,7 @@ q3mdl/fx/debris2/skin_debris2
 //DEBRIS - DEBRIS3
 q3mdl/fx/debris3/skin_debris3
 {
+  dpNoShadow
 		{
 				map q3mdl/fx/debris1/skin_debris1.tga
 				tcMod turb 0 0.25 0 0.25

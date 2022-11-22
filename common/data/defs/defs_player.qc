@@ -16,8 +16,8 @@ Overview:
 
 #ifdef CSQC
 float input_sequence;
-.float clientLocalId;   //Client Only - player_localentnum but calculated for all players on every client.
-.float clientLocalNum;  //Client Only - player_localnum but calculated for all players on every client.
+.float clientServerNum;   //Client Only - player_localnum but calculated for all players on every client.
+.float clientLocalNum;  //Client Only -  player_localentnum but calculated for all players on every client.
 .float sequence;
 .float hud_bob;    //bob settings are important for dat immersion
 .float hud_bob_cycle;
@@ -31,6 +31,9 @@ float input_sequence;
 .vector hud_StrutsOffset; //  origin offset of struts model
 .vector laser_sight_org1;
 .vector laser_sight_org2;
+.vector unit_light_org1;  //headlight / spotlight
+.vector unit_light_org2;
+.vector unit_light_org;
 #endif
 
 .float getTarget;   //switch for sendEnt
@@ -49,12 +52,19 @@ float input_sequence;
 .float next_wepn8;
 .float next_wepn9;
 
+.float w_group1;
+.float w_group2;
+.float w_group3;
+.float w_group4;
+
 .float chaseActive; //tracks player chase cam status on the server.
 
 .float ramUpMax;
 .float ramCooldown;
 .float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
 .vector laser_sight_org;
+.float nextVecChoice;
+.float subType;   //used by AI to delineate unit variant - Zap , gun, brawl, sniper etc
 
 #ifdef SSQC
 .float posFadeTimer;  //breadcrumbs for the AI....
@@ -77,7 +87,6 @@ float input_sequence;
 .float playerDeaths;      //tracked in TDM / DM for personal score.
 .float playerDMdamage;    //fun tracker for total damage output over a match.
 
-.float nextVecChoice;
 .float i_reserve; //how many reserve points does the unit cost?
 
 .float max_armor; //why wasn't this ever included!?
@@ -90,10 +99,6 @@ float input_sequence;
 .entity animId; //entity id of animation sent to the player, used for skip event->fire trigger case.
 
 .float currentWeaponGroup;
-.float w_group1;
-.float w_group2;
-.float w_group3;
-.float w_group4;
 //.float w_firemode;
 
 .float fall_dist; //distance fallen to trigger 'stumble'
@@ -115,7 +120,4 @@ float input_sequence;
 .vector ramPower;
 .vector ramVelocity;
 .float ramUp;
-
-
-
 #endif

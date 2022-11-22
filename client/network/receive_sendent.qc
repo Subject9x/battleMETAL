@@ -26,6 +26,7 @@ void(entity enEntity) GetAlignedSurfaceAngles=
 			
 		// Assign Aligned Angles
 		enEntity.angles = vectoangles( normalize(v_forward - ( (v_forward * vNormal) / (v_up * vNormal)) * v_up) );
+    enEntity.cacheGroundAngle = enEntity.angles;
 	}
 }
 
@@ -45,7 +46,7 @@ void() sendent_ai_think={
   self.laser_sight_org = trace_endpos;
   
   self.think = sendent_ai_think;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.0001;
 };
 //implementing parts of Spike's CSQC-only mod code here
 void() interpolate_origin={
@@ -74,7 +75,7 @@ void() interpolate_angle={
   local float dir;
  
   savedang = self.angles_y;
-  dir = (self.angle2-self.angle1);
+  dir = (self.angle2 - self.angle1);
   if (dir > 180){
     dir -= 360;
   }
@@ -105,56 +106,6 @@ void() interpolate_ground={
 //-----------------------------------
 
 /*
-  Entry point for handler api
-*/
-void( float isNew ) sendent_handle_update={
-  local float entType;
-  local float entFlags;
-  
-  entType = ReadByte();
-  entFlags = ReadCoord(); //expanding entFlags values -> data/common
-  
-  switch(entType){
-    case SENDTYPE_PLAYER:
-      sendent_handle_player( isNew, entFlags );
-      break;
-    case SENDTYPE_TANK:
-      sendent_handle_tank( isNew, entFlags );
-      break;
-    case SENDTYPE_SPG:
-      sendent_handle_spg( isNew, entFlags );
-      break;
-    case SENDTYPE_GEV:
-      sendent_handle_gev( isNew, entFlags );
-      break;
-    case SENDTYPE_TURRET:
-      sendent_handle_turret( isNew, entFlags );
-      break;
-    case SENDTYPE_BUILD:
-      sendent_handle_building( isNew, entFlags );
-      break;
-    case SENDTYPE_MECH_AI:
-      sendent_handle_mech_ai( isNew, entFlags );
-      break;
-    case SENDTYPE_PROJ:
-      sendent_handle_missile( isNew, entFlags );
-      break;
-    case SENDTYPE_MAP:
-      sendent_handle_map( isNew, entFlags );
-      break;
-    case SENDTYPE_TERRAIN:
-      sendent_handle_terrain( isNew, entFlags );
-      break;
-    case SENDTYPE_MISC:
-      sendent_handle_misc( isNew, entFlags );
-      break;
-    case SENDTYPE_MISC_BLD:
-      sendent_handle_misc_bld( isNew, entFlags );
-      break;
-  }
-};
-
-/*
   SendEntity - Map Objects ====================================
 */
 void( float isNew, float changeFlags ) sendent_handle_terrain={
@@ -180,84 +131,92 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
 /*
   SendEntity - Map Objects ====================================
 */
-void( float isNew, float changeFlags ) sendent_handle_misc={
+
+void() predraw_building_msc={
   
-  if( (changeFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-  }
-  if( (changeFlags & SENDFLAG_ANGLE) ){
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
+  traceline(self.origin + [0,0, self.maxs_z], client_vis_org, FALSE, self);
+  
+  self.cl_lod_unit = TRUE;
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
+    self.cl_lod_unit = FALSE;
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    setmodel( self, modelnameforindex(ReadCoord()) );
-  }
-  
-  if(isNew){
+  if( self.cl_lod_unit ){
+    setmodel(self, self.model);
     setsize(self, self.mins, self.maxs);
     setorigin(self, self.origin);
-    self.drawmask = MASK_ENGINE;
-    self.solid = SOLID_BSP;
-    self.movetype = MOVETYPE_NONE;
-    self.deadflag = DEAD_NO;
-    self.data_type = DATA_BLD;
+    addentity(self);
   }
 };
 
-
-/*
-  SendEntity - Map Objects ====================================
-*/
 void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   local float prevDeadflag;
+  local float mapKey;
+  local float vipKey;
   
   prevDeadflag = self.deadflag;
   
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if(self.deadflag != DEAD_NO){
-      self.vec_size = ReadByte();
-    }
-  }
-  
-  if( (changeFlags & SENDFLAG_MOVE) ){
+  if( (changeFlags & SENDFLAG_NEWENT) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-  }
-  if( (changeFlags & SENDFLAG_ANGLE) ){
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
+    
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
+    
+    self.faction = ReadByte();
+    self.vec_size = ReadChar();
+    self.data_idx = ReadByte();
+    self.canTarget = ReadChar();
+    mapKey = ReadChar();
+    vipKey = ReadChar();
+    if( mapKey ){
+      self.spawnflags = self.spawnflags | IS_MAPKEY;
+    }
+    if( vipKey ){
+      self.spawnflags = self.spawnflags | IS_VIP;
+    }
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.vec_size = ReadByte();
-    self.data_idx = ReadByte();
-    self.faction = ReadByte();
-    self.canTarget = ReadByte();
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
   }
   
   if(isNew){
-    self.drawmask = MASK_ENGINE;
+    model_misc_building_set();
+    self.predraw = predraw_building_msc;
     if( self.deadflag == DEAD_NO ){
       self.solid = SOLID_BSP;
-      self.movetype = MOVETYPE_NONE;
-      model_misc_building_set();
+      if( (self.spawnflags & IS_MAPKEY) ){
+        if( lastMapKeyObject ){
+          //build linked list backwards for later forward iteration.
+          lastMapKeyObject.w_slot = self;
+          lastMapKeyObject = self;
+        }
+        else{
+          //start chain
+          mapKeyObject = self;
+          lastMapKeyObject = self;
+        }
+      }
     }
     else{
+      self.spawnflags = self.spawnflags - (self.spawnflags & IS_MAPKEY);
+      self.spawnflags = self.spawnflags - (self.spawnflags & IS_VIP);
+      self.solid = SOLID_NOT;
       model_misc_building_ruins_set();
     }
   }
   
-  if( self.deadflag > DEAD_NO && prevDeadflag == DEAD_NO ){
-    te_missile_explode( self.origin + (v_up * self.maxs_z * 0.5), self.vec_size, '0.9 0.75 0.45', 0.005 );
-    sound7(self, CHAN_AUTO, "sound/fire/debris1.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
-    model_misc_building_ruins_set();
+  //HANDLE EVENT - dead
+  if( self.deadflag == DEAD_DYING && prevDeadflag == DEAD_NO){
+    if( self.th_die ){
+      self.th_die();
+    }
+    else{
+      model_misc_building_die(); 
+    }
   }
 };
 
@@ -265,13 +224,17 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   SendEntity - Projectile ====================================
 */
 void() sendent_missile_think={
-  if( (self.origin1 != world.origin) && (self.origin2 != world.origin) ){
-    if( self.traileffectnum ){
-      trailparticles(world, self.traileffectnum, self.origin2, self.origin1);
+
+  if( self.deadflag == DEAD_NO ){
+    if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
+      if( self.traileffectnum ){
+        trailparticles(world, self.traileffectnum, self.origin, self.origin1 );
+      }
     }
   }
+  
   self.think = sendent_missile_think;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.005 * frametime;
 };
 
 void( float isNew, float changeFlags ) sendent_handle_missile={
@@ -280,10 +243,11 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   
   prevImpactType = self.impactType;
   
+  self.oldvelocity = self.velocity;
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
-    ownerId = ReadCoord();
+    ownerId = ReadLong();
     self.owner = findfloat(world, entnum, ownerId);
   }
   
@@ -294,10 +258,9 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    self.oldvelocity = self.velocity;
-    self.velocity_x = ReadShort();
-    self.velocity_y = ReadShort();
-    self.velocity_z = ReadShort();
+    self.velocity_x = ReadLong();
+    self.velocity_y = ReadLong();
+    self.velocity_z = ReadLong();
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -316,33 +279,113 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( isNew ){
-    self.solid = SOLID_BBOX;
+    self.deadflag = DEAD_NO;
     self.alpha = 1;
     self.scale = 1;
+    self.think = sendent_missile_think;
+    self.nextthink = time + 0.005;
+    self.data_postinit = FALSE;
+    sendent_ini_interpolate();
     if( self.data_idx == UID_ITEM_debris ){
       data_sync_new_debris( self );
     }
     else{
       data_sync_new_projectile(self.data_idx);
     }
+    self.predraw = predraw_missile;
     setmodel(self, self.model);
     setsize(self, '0 0 0', '0 0 0');
-    setorigin(self, self.origin);
-    sendent_missile_think();
-    self.drawmask = MASK_ENGINE;
-    interpolate_origin();
-    self.predraw = predraw_missile;
+  }
+  else{
+    self.data_postinit = TRUE;
   }
   
   self.angles = vectoangles(self.velocity);
   //HANDLE EVENT - projectile hit.
   if( self.impactType > 0 && prevImpactType == FALSE ){
+    self.deadflag = DEAD_DEAD;
     if( self.pcl_explode ){
       self.pcl_explode();
     }
     self.velocity = '0 0 0';
   }
 };
+
+/*
+  Promoted weapons to fully qualified and synced entities, the server
+  needs to track these so why not just send the bare minimum over to the client?
+*/
+void( float isNew, float changeFlags ) sendent_handle_item={
+  local float prevIdx;
+  
+  
+  prevIdx = self.data_idx;
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.owner = findfloat(world, entnum, ReadLong());
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.owner = findfloat(world, entnum, ReadLong());
+    self.w_group = rint(ReadLong());
+    self.partParentId = rint(ReadLong());
+    self.compOffset_x = ReadAngle();
+    self.compOffset_y = ReadAngle();
+    self.compOffset_z = ReadAngle();
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWUNIT) ){
+    self.owner = findfloat(world, entnum, ReadLong());
+    self.data_idx = ReadByte();
+  }
+  if( (changeFlags & SENDFLAG_DEAD) ){
+  }
+  
+  if(self.data_idx != prevIdx && self.data_idx != 0){
+    initialize_data_item_(self.data_idx);
+    if(self.owner != world){
+      switch(self.w_group){
+        default:
+          self.owner.weaponEnt1 = self;
+          break;
+        case WEAPON2:
+          self.owner.weaponEnt2 = self;
+          break;
+        case WEAPON3:
+          self.owner.weaponEnt3 = self;
+          break;
+        case WEAPON4:
+          self.owner.weaponEnt4 = self;
+          break;
+        case WEAPON5:
+          self.owner.weaponEnt5 = self;
+          break;
+        case WEAPON6:
+          self.owner.weaponEnt6 = self;
+          break;
+        case WEAPON7:
+          self.owner.weaponEnt7 = self;
+          break;
+        case WEAPON8:
+          self.owner.weaponEnt8 = self;
+          break;
+        case WEAPON9:
+          self.owner.weaponEnt9 = self;
+          break;
+      }
+    }
+  }
+  
+  if(isNew){
+    //self.predraw = predraw_weapon_ent;
+    self.deadflag = DEAD_NO;
+    self.classname = "UNIT_ITEM";
+    if( (self.owner.flags & FL_CLIENT) && self.owner.clientServerNum == player_localentnum ){
+      CLIENT_weapon_state = CLIENT_weapon_state |  self.w_group;
+    }
+  }
+};
+
 
 /*
   EVENT - Shields are eliminated
@@ -364,24 +407,22 @@ void( float prevShield ) sendevent_shield_explode={
 */
 void() sendevent_handle_weaponfire={
   local entity equip;
+  local float wepId;
   
-  equip = self.w_slot;
-  while( equip != world ){
-    if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
-      te_weapon_fire_handler(equip);
+  particleDraw = vlen(client_vis_org - self.origin);
+  
+  wepId = 0;
+  
+  while( wepId < self.hardpoint_cnt){
+    equip =  sendent_get_weapon( bitshift(1, wepId) );
+    
+    if( equip ){
+      if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
+        te_weapon_fire_handler(equip);
+      }
     }
-    equip = equip.w_slot;
-  }
-};
-
-/*
-  EVENT - Turret rotated
-*/
-void( vector turretAngles ) sendevent_turret_update={
-  if( self.torsoCenter != world ){
-    self.torsoCenter.angles_x = anglemod(turretAngles_x);
-    self.torsoCenter.angles_y = anglemod(turretAngles_y);
-    self.torsoCenter.angles_z = anglemod(turretAngles_z);
+    
+    wepId = wepId + 1;
   }
 };
 
@@ -396,102 +437,144 @@ void() sendent_ini_interpolate={
     self.angle2 = self.angle1;
     self.angle1 = self.angles_y;
   }
+  else{
+    //dummy interpolate
+    self.frame2time = 1;
+    self.frame1time = 2;
+  }
   self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
   self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
 };
 
-void() sendent_setup_weapons={
-  local entity this;
-  local entity weps;
+vector( vector partOffset) predraw_unit_part={
+  local vector offset;
   
-  this = self;
-  weps = self.w_slot;
-  while( weps != world ){
-    self = weps;
-      self.owner = this;
-      sendent_set_weapon();
-      if( (this.flags & FL_DISARMED) ){
-        initialize_data_item_(UID_ITEM_EMPTY);
-      }
-      else{
-        initialize_data_item_(self.data_idx);
-      }
-      self.movetype = MOVETYPE_NONE;
-      self.solid = SOLID_NOT;
-      setsize(self, '-1 -1 -1', '1 1 1');
-      setmodel(self, self.model);
-      if( self.partParentId == M_LEGS ){
-        makevectors(this.angles);
-        self.origin = this.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
-        self.angles = this.angles;
-      }
-      else{
-        makevectors(this.torsoCenter.angles);
-        self.origin = this.torsoCenter.origin + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x) + (v_up * self.compOffset_y);
-        self.angles = this.torsoCenter.angles;
-      }
-      self.drawmask = MASK_NORMAL;
-    self = this;
-    weps = weps.w_slot;
+ offset = self.origin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
+  
+  if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
+    offset = offset - (v_forward * self.cameraOffset_z);
   }
+  
+  return offset;
 };
 
-entity( float partId ) sendent_get_entity_offset={
-  switch( partId ){
-    case M_TOR_CENTER:
-      if( (self.flags & FL_TURRET) ){
-        return self.torsoCenter;
-      }
-      return self;
-    case M_TOR_RIGHT:
-      return self.torsoRight;
-    case M_TOR_LEFT:
-      return self.torsoLeft;
-    case M_LEGS:
-      if( (self.data_type == DATA_VEHC) ){
-        return self;  //edge case for hull-mounted weapons on a turreted object
-      }
-      return self.legs;
-    case M_ARM_LEFT:
-      return self.armLeft;
-    case M_ARM_RIGHT:
-      return self.armRight;
-    default:
-      return self;
+vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle={
+  local vector offset;
+  
+ offset = self.origin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
+  
+  if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
+    offset = offset - (v_forward * self.cameraOffset_z);
   }
+  
+  self.partAngles_y = self.angles_y;
+  self.partAngles_x = 0;
+  return offset;
 };
 
-void() sendent_set_weapon={
-  switch(self.w_group){
+
+
+/*
+  Player weapons (usually in the arms) inherit their pitch from their parent piece.
+  therefore, the weapon offsets for CLIENT is based on the PARENT offset:
+    wep.origin = parent.origin + wep.offset 
+      where parent.origin has already been calculated.
+*/
+void(entity item) predraw_unit_weapon={
+  local vector pOfs;
+  local vector drawAng;
+  local vector offset;
+  local vector adjPartOffset;
+  
+  if(self.deadflag == DEAD_DEAD ){
+    return;
+  }
+  if( item.model == "" ){
+    return;
+  }
+  if( (self.criticalHits & item.partParentId) ){
+    return;
+  }
+  
+  util_getPartFromName( item.partParentId, self);
+  
+  adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
+  
+  offset = T_PART_PARENT_ORG;
+  drawAng = T_PART_PARENT_ANGL;
+  drawAng_x = drawAng_x *-1;
+  makevectors( drawAng);
+  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+  
+  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
+  
+  setmodel(item, item.model);
+  item.origin = offset;
+  item.angles = T_PART_PARENT_ANGL;
+  addentity(item);
+};
+
+entity(float weaponId) sendent_get_weapon={
+  switch(weaponId){
      case WEAPON1:
-      self.data_idx = self.owner.next_wepn1;
-      break;
+      return self.weaponEnt1;
      case WEAPON2:
-      self.data_idx = self.owner.next_wepn2;
-      break;
+      return self.weaponEnt2;
      case WEAPON3:
-      self.data_idx = self.owner.next_wepn3;
-      break;
+      return self.weaponEnt3;
      case WEAPON4:
-      self.data_idx = self.owner.next_wepn4;
-      break;
+      return self.weaponEnt4;
      case WEAPON5:
-      self.data_idx = self.owner.next_wepn5;
-      break;
+      return self.weaponEnt5;
      case WEAPON6:
-      self.data_idx = self.owner.next_wepn6;
-      break;
+      return self.weaponEnt6;
      case WEAPON7:
-      self.data_idx = self.owner.next_wepn7;
-      break;
+      return self.weaponEnt7;
      case WEAPON8:
-      self.data_idx = self.owner.next_wepn8;
-      break;
+      return self.weaponEnt8;
      case WEAPON9:
-      self.data_idx = self.owner.next_wepn9;
-      break;
+      return self.weaponEnt9;
     default:
-      self.data_idx = 0;
-      break;
+      return world;
+  }
+  return world;
+};
+
+/*
+  SendEntity - Map Objects ====================================
+  5.0.0
+    I'm not sure this is exactly needed anymore.
+
+void( float isNew, float changeFlags ) sendent_handle_misc={
+  
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
+  if( (changeFlags & SENDFLAG_ANGLE) ){
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+  }
+  
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.skin = ReadByte();
+    self.modelindex = ReadShort();
+  }
+  
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    //todo - dead event.
+  }
+  
+  if(isNew){
+    self.movetype = MOVETYPE_NONE;
+    self.deadflag = DEAD_NO;
+    setmodel( self, modelnameforindex(self.modelindex) );
+    setsize(self, self.mins, self.maxs);
+    self.skin = self.skin;
+    setorigin(self, self.origin);
+    self.drawmask = 0;
   }
 };
+*/

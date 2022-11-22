@@ -9,90 +9,12 @@ Overview:
   This takes common/data/ and binds it to entities.
   Sets up entity sub-pieces, and attaches weapons.
 */
-
-/*
-  rewiring to use md3 tags would also involve changes to shot angle calcs for weapons..
-  so, maybe one day...
-*/ 
-/*void(void() func, entity own) build_unit_tag_component={
-  local entity follow;
-  func();
-  follow = util_getPartFromName( self.partParentId, own );
-  self.deadflag = DEAD_NO;
-  self.classname = MECH_PIECE; 
-  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(self.modelPath, own.skin, 0);
-  setsize(self, '-1 -1 -1', '1 1 1');
-  util_setOffsetOrigin(self, own, self.compOffset);
-  self.owner = own;
-  //self.aiment = follow;
-  //self.punchangle = follow.angles;
-  //self.view_ofs = self.origin - follow.origin;
-  //self.angles = follow.angles;
-  //self.v_angle = self.angles - follow.angles;
-  self.th_die = ctrl_component_die;
-  self.colormod = '1 1 1';
-  setattachment(self, follow, "tag_tor_l");
-};*/
-
-void(entity own) build_unit_component={
-  local entity follow;
-
-  follow = util_getPartFromName( self.partParentId, own );
-  self.deadflag = DEAD_NO;
-  self.classname = MECH_PIECE; 
-  
-  macro_set_collider(DAMAGE_NO,SOLID_NOT,MOVETYPE_FOLLOW)
-  macro_set_model(self.model, own.skin, 0)
-  
-  setsize(self, '-1 -1 -1', '1 1 1');
-  macro_set_offset(own,self.compOffset)
-  
-  self.owner = own;
-  self.aiment = follow;
-  self.punchangle = follow.angles;
-  self.view_ofs = self.origin - follow.origin;
-  self.angles = follow.angles;
-  self.v_angle = self.angles - follow.angles;
-  if( self.partTypeId == M_ARM_RIGHT || self.partTypeId == M_ARM_LEFT ){
-    self.th_die = ctrl_arm_die;
-  }
-  else{
-    self.th_die = ctrl_component_die;
-  }
-  self.realowner = follow;
-  self.colormod = self.owner.colormod;
-};
-
-void() build_unit_camera={
-  local entity this, cam, partParent;
-  this = self;
-  cam = this.cockpit;
-  partParent = util_getPartFromName( cam.partParentId, this);
-  
-  self = cam;
-    self.partTypeId = M_ITEM;
-    self.classname = "camera";
-    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
-    setmodel( self, "q3mdl/testball.md3");
-    setsize(self, '-1 -1 -1', '1 1 1');
-    macro_set_offset(this, self.compOffset)
-    self.scale = 0.001;
-    
-    self.aiment = partParent;
-    self.owner = this;
-    self.punchangle = partParent.angles;
-    self.view_ofs = self.origin - partParent.origin;
-    self.angles = partParent.angles;
-    self.v_angle = self.angles - partParent.angles;
-    self.effects = self.effects | EF_NODRAW;
-  self = this;
-};
-
 void() build_unit_weapon_list={
   local entity weaponMount;
   local entity prevWeapon;
   local float weaponCount;
+  local entity unit;
+  
   prevWeapon = self;
   weaponMount = self.w_slot;
   if( weaponMount ){
@@ -131,11 +53,19 @@ void() build_unit_weapon_list={
       weaponCount = weaponCount + 1;
       weaponMount.partPrev = prevWeapon;
       prevWeapon = weaponMount;
-      if( (weaponMount.owner.flags & FL_MONSTER) ){
-        weaponMount.effects = weaponMount.effects | EF_NODRAW;
+      weaponMount = weaponMount.w_slot;
+    }
+    //run upgrades now because per-weapon updates need the full list.
+    weaponMount = self.w_slot;
+    unit = self;
+    while( weaponMount ){
+      self = weaponMount;
+      if( weaponMount.item_run_upgrade ){
+        weaponMount.item_run_upgrade();
       }
       weaponMount = weaponMount.w_slot;
     }
+    self = unit;
   }
 };
 
@@ -149,6 +79,7 @@ void( float nex_wep, entity own ) build_unit_weapon={
     self.damageType = 0; //zero-out this stat
     initialize_data_item_(nex_wep);
     
+    self.reloadMaxCache = self.reloadMax; //bug fix - might as well stash it here, regardless of player choosing upgrades.
     self.reloadValue = 100; // bug fix - weapon reload indicator not starting at correct value
     self.w_firetime = 0;
     self.w_currentammo = self.w_clipsize;
@@ -166,31 +97,30 @@ void( float nex_wep, entity own ) build_unit_weapon={
         self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
       }
     }
-    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
+    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
+    setmodel(self, "models/testball.md3");
     setsize(self, '-1 -1 -1','1 1 1');
-    setmodel(self, "q3mdl/testball.md3");
     ofs = self.compOffset + self.compAltOffset;
+    
     macro_set_offset(own, ofs)
     
-    partParent = util_getPartFromName( self.partParentId, own );
+    util_getPartFromName( self.partParentId, own );
     
-    self.angles_x = anglemod(partParent.angles_x + self.w_adj_ang_x);
-    self.angles_y = anglemod(partParent.angles_y + self.w_adj_ang_y);
-    self.angles_z = anglemod(partParent.angles_z + self.w_adj_ang_z);
+    self.angles_x = anglemod(T_PART_PARENT_ANGL_x + self.w_adj_ang_x);
+    self.angles_y = anglemod(T_PART_PARENT_ANGL_y + self.w_adj_ang_y);
+    self.angles_z = anglemod(T_PART_PARENT_ANGL_z + self.w_adj_ang_z);
     
-    self.aiment = partParent;
+    self.aiment = own;
     self.owner = own;
-    self.punchangle = partParent.angles;
-    self.view_ofs = self.origin - partParent.origin;
-    self.v_angle = self.angles - partParent.angles;
+    self.punchangle = T_PART_PARENT_ANGL;
+    self.view_ofs = self.origin - T_PART_PARENT_ORG;
+    self.v_angle = self.angles - T_PART_PARENT_ANGL;
     
-    //Fire Equipment 'upgrade' functions now, really should only ever be on MSC equipment
-    if( self.item_run_upgrade ){
-      self.item_run_upgrade();
-    }
     self.wepFireOffsetCache = self.wepFireOffset;
     self.th_die = ctrl_die_weapon;
     self.w_think = self.think;
+    self.SendEntity = ctrl_send_weapon;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWUNIT;
   self = parentEntity;
 };
 
@@ -217,7 +147,14 @@ void() build_mech_unit={
   }
   
   self.data_type = DATA_MECH;
-  self.flags = self.flags | FL_UNIT;
+  self.flags = self.flags | FL_UNIT | FL_TURRET;
+  
+  makevectors(self.angles);
+  
+  self.cache_speed_fwd = self.data_speed_forward;
+  self.cache_speed_sid = self.data_speed_strafe;
+  self.cache_speed_back = self.data_speed_backward;
+  
   
   //-> sub out to making specific bots.
   if( !(self.flags & FL_CLIENT) ){
@@ -238,48 +175,15 @@ void() build_mech_unit={
   
   self.chain_timer = time;
   self.lock_timer = 0;
-  unitPartList = self;
-  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-    build_mech_torsoRight();
-    self.torsoRight.partPrev = unitPartList;
-    unitPartList.partNext = self.torsoRight;
-    unitPartList = unitPartList.partNext;
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-    build_mech_torsoLeft();
-    self.torsoLeft.partPrev = unitPartList;
-    unitPartList.partNext = self.torsoLeft;
-    unitPartList = unitPartList.partNext;
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-    build_mech_armRight();
-    self.armRight.partPrev = unitPartList;
-    unitPartList.partNext = self.armRight;
-    unitPartList = unitPartList.partNext;
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-    build_mech_armLeft();
-    self.armLeft.partPrev = unitPartList;
-    unitPartList.partNext = self.armLeft;
-    unitPartList = unitPartList.partNext;
-  }
-  if( self.legs ){
-    build_mech_legs();
-    self.legs.partPrev = unitPartList;
-    unitPartList.partNext = self.legs;
-    unitPartList = unitPartList.partNext;
-  }
   
-  if( self.cockpit ){
-    build_unit_camera();
-  }
+  self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
   
   if( !(self.unitModFlags & MOD_HEAT_NOT_ENERGY) ){
     self.energy = self.energyMax;
   }
   
   if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-    self.shieldRateMod = 1.33; //unmodified here.
+    self.shieldRateMod = 0; //unmodified here.
     self.shield = self.shieldMax;
     self.shieldHitDelay = 0;
     self.shieldHitRegen = 0;
@@ -315,29 +219,10 @@ void() build_mech_torsoCenter={
   
   hmins = self.mins;
   hmaxs = self.maxs;
-  macro_set_model("q3mdl/testball.md3", 0, 0)
+  macro_set_model("models/testball.md3", 0, 0)
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
-  this = self;
-  self = self.torsoCenter;
-    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
-    self.model = this.model;
-    self.skin = this.skin;
-    setmodel(self, self.model);
-    setsize(self, '-1 -1 -1','1 1 1');
-    macro_set_offset(this,'0 0 0')
-    self.punchangle = self.angles = '0 0 0';
-    self.aiment = this;
-    self.owner = this;
-    self.punchangle = this.angles;
-    self.view_ofs = self.origin - this.origin;
-    self.angles = this.angles;
-    self.v_angle = self.angles - this.angles;
-    this.torsoCenter = self;
-    self.colormod = this.colormod;
-    self.th_die = ctrl_component_die;
-  self = this;
 };
 
 void() build_mech_bot={
@@ -348,14 +233,14 @@ void() build_mech_bot={
     self.unitModFlags = self.unitModFlags | MODFLAG_BATTLEMETAL;
   }
   
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | (FL_MONSTER | FL_TURRET);
   self.canTarget = TRUE;
   
   hmaxs = self.maxs;
   hmins = self.mins;
   
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
-  macro_set_model("q3mdl/testball.md3", self.skin, 0)
+  macro_set_model("models/testball.md3", self.skin, 0)
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
@@ -373,57 +258,14 @@ void() build_mech_bot={
   }
   self.health = self.max_health;
   
-  unitPartList = self;
-  
   build_unit_turret();
-  self.torsoCenter.yaw_speed = self.turret_yaw_speed;
-  unitPartList.partNext = self.torsoCenter;
-  unitPartList = unitPartList.partNext;
-  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
+  self.torC_yawSpeed = self.turret_yaw_speed;
+
+  build_mech_legs();
+
   
-  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-    build_mech_torsoRight();
-    self.torsoRight.partPrev = unitPartList;
-    unitPartList.partNext = self.torsoRight;
-    unitPartList = unitPartList.partNext;
-    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-    build_mech_torsoLeft();
-    self.torsoLeft.partPrev = unitPartList;
-    unitPartList.partNext = self.torsoLeft;
-    unitPartList = unitPartList.partNext;
-    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_R)  ){
-    build_mech_armRight();
-    self.armRight.partPrev = unitPartList;
-    unitPartList.partNext = self.armRight;
-    unitPartList = unitPartList.partNext;
-    self.armRight.effects = self.armRight.effects | EF_NODRAW;
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-    build_mech_armLeft();
-    self.armLeft.partPrev = unitPartList;
-    unitPartList.partNext = self.armLeft;
-    unitPartList = unitPartList.partNext;
-    self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
-  }
-  if( (self.legs) ){
-    build_mech_legs();
-    self.legs.partPrev = unitPartList;
-    unitPartList.partNext = self.legs;
-    unitPartList = unitPartList.partNext;
-    self.legs.movetype = MOVETYPE_NONE;
-    self.legs.yaw_speed = self.yaw_speed * 2.5;
-    self.legs.attack_state = TR_NORM;
-    self.legs.ai_dir = self.angles_y;
-    self.legs.effects = self.legs.effects | EF_NODRAW;
-  }
+  self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
   
-  if( (self.cockpit) ){
-    build_unit_camera();
-  }
   //speed limits for AI because they change directions instantly :/
   if( self.data_speed_forward > 200 ){
     self.data_speed_forward = 200;
@@ -470,91 +312,33 @@ void() build_mech_bot={
   }
 };
 
-void() build_unit_turret={
-  local entity this;
-  this = self;
-  self = self.torsoCenter;
-    self.deadflag = DEAD_NO;
-    self.classname = MECH_PIECE; 
-    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
-    macro_set_model(self.model, this.skin, 0)
-    setsize(self, self.mins, self.maxs);
-    macro_set_offset(this, self.compOffset)
-    self.angles = this.angles;
-    self.owner = this;
-    self.th_die = ctrl_component_die;
-    self.attack_state = TR_NORM;
-    self.colormod = '1 1 1';
-  self = this;
+void() build_unit_turret={  
+  self.torC_attackState = TR_NORM;
+  self.torC_angl = self.angles;
+  self.torC_yawSpeed = self.turret_yaw_speed;
 };
 
-void() build_mech_torsoLeft={
-  local entity this;
-  this = self;
-  self = self.torsoLeft;
-    build_unit_component( this );
-    //build_unit_tag_component(func, this);
-  self = this;
-};
-
-void() build_mech_torsoRight={
-  local entity this;
-  this = self;
-  self = self.torsoRight;
-    build_unit_component( this );
-  self = this;
-};
-
-void() build_mech_armLeft={
-  local entity this;
-  this = self;
-  self = self.armLeft;
-    build_unit_component( this );
-  self = this;
-};
-
-void() build_mech_armRight={
-  local entity this;
-  this = self;
-  self = self.armRight;
-    build_unit_component( this );
-  self = this;
-};
 
 void() build_mech_legs={
-  local entity this;
-  this = self;
-  
-  self = self.legs;
-    self.deadflag = DEAD_NO;
-    self.classname = MECH_PIECE;
-    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
-    if( (this.flags & FL_CLIENT) ){
-      self.aiment = this;
-    }
-    setmodel(self, "q3mdl/testball.md3");
-    setsize(self, '-1 -1 -1','1 1 1');
-    macro_set_offset(this, self.compOffset)
-    self.owner = this;
-    self.punchangle = this.angles;
-    self.view_ofs = self.origin - this.origin;
-    self.angles = this.angles;
-    self.v_angle = self.angles - this.angles; 
+  /*self.laser_sight_org = '0 0 0';
+  self.laser_sight_timer = time + 0.5; 
+  self.w_firerate = 0; //used to track data_speed_accel changes*/
 
-    self.laser_sight_org = '0 0 0';
-    self.laser_sight_timer = time + 0.5; 
-    self.w_firerate = 0; //used to track data_speed_accel changes
-    self.th_die = ctrl_dieLegs;
-    //we pack the unit's original speed values here, to allow us to restore them if the unit repairs its legs
-    self.data_speed_forward = this.data_speed_forward;
-    self.data_speed_backward = this.data_speed_backward;
-    self.data_speed_strafe = this.data_speed_strafe;
-    self.data_speed_accel = this.data_speed_accel;  
-  self = this;
+  self.legs_angl = self.angles;
+  //we pack the unit's original speed values here, to allow us to restore them if the unit repairs its legs
+  self.legs_speed_f = self.data_speed_forward;
+  self.legs_speed_s = self.data_speed_strafe;
+  self.legs_speed_b = self.data_speed_backward;
+  self.legs_speed_acc = self.data_speed_accel;
+  self.legs_yawSpeed = self.yaw_speed * 2.5;
+  self.legs_attackState = TR_NORM;
+  self.legDir = self.angles_y;
 };
 
 void() build_vehicle_unit={
   local vector hmins, hmaxs;
+  
+  makevectors(self.angles);
   
   self.data_type = DATA_VEHC;
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
@@ -571,7 +355,7 @@ void() build_vehicle_unit={
   //  self.skin = 0;
  // }
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
-  macro_set_model("q3mdl/testball.md3", 0, 0) //->CSQC for specifics
+  macro_set_model("models/testball.md3", 0, 0) //->CSQC for specifics
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
@@ -580,35 +364,12 @@ void() build_vehicle_unit={
   self.lock_timer = 0;
   self.evasionDrain = self.vec_size;
   
-  unitPartList = self;
-  
-  if( (self.flags & FL_TURRET) && (self.torsoCenter) ){
+  if( (self.flags & FL_TURRET) ){
     build_unit_turret();
-    self.torsoCenter.yaw_speed = self.turret_yaw_speed;
-    self.torsoCenter.partPrev = unitPartList;
-    unitPartList.partNext = self.torsoCenter;
-    unitPartList = unitPartList.partNext;
-    self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   }
   
-  if( (self.torsoRight) ){
-    build_mech_torsoRight();
-    self.torsoRight.partPrev = unitPartList;
-    unitPartList.partNext = self.torsoRight;
-    unitPartList = unitPartList.partNext;
-    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
-  }
-  if( (self.torsoLeft) ){
-    build_mech_torsoLeft();
-    self.torsoLeft.partPrev = unitPartList;
-    unitPartList.partNext = self.torsoLeft;
-    unitPartList = unitPartList.partNext;
-    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
-  }
-  if( (self.cockpit) ){
-    build_unit_camera();
-  }
-  
+  self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
+   
   if( self.hardpoint_cnt > 0 ){
     if( (self.spawnflags & UNARMED) ){
       self.flags = self.flags | FL_DISARMED;
@@ -641,11 +402,11 @@ void() build_vehicle_unit={
   self.stat_client_shield = 0;
 };
 
-//TODO - deprecated, needs rebuild
-void( void() data_ini ) build_vtol_unit={
+//deprecated, needs rebuild
+/*void( void() data_ini ) build_vtol_unit={
   self.flags = self.flags | FL_FLY;
   build_vehicle_unit();
-};
+};*/
 //----------------------------------
 
 void() build_turret_unit={

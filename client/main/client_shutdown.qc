@@ -12,6 +12,17 @@ Overview:
 */
 void() CSQC_Shutdown =
 {
+  //Clean up ents
+  hud_armor_model_target_cleanup();
+  remove(toolTip);
+  remove(UI_HANGAR_DATA_mech);
+  remove(UI_ARMING_DATA_item_a);
+  remove(UI_ARMING_DATA_item_b);
+  remove(UI_ARMING_DATA_item_list);
+  remove(UI_ARMING_item_drag);
+  remove(HUD_DATA_weapon);
+  remove(UI_HANGAR_DATA_mech_list);
+  
   //server string cleanup
   freeGlobalString(CLIENT_INFO_STRING)
   
@@ -34,7 +45,20 @@ void() CSQC_Shutdown =
   
   freeGlobalString(UNLOCKED_MECHS_DATA)
   freeGlobalString(UNLOCKED_ITEMS_DATA)
-  freeGlobalString(SAVEFILE_CAMPAIGN)
+  
+  //4.0.0 - WARN : campaign file system upgraded, this patches older save files.
+  if( strcmp( SAVEFILE_CAMPAIGN, "aa1.dat") ){
+    SAVEFILE_CAMPAIGN = "";
+  }
+  else if( strcmp(SAVEFILE_CAMPAIGN, "aa2.dat") ){
+    SAVEFILE_CAMPAIGN = "";
+  }
+  else{
+    freeGlobalString(SAVEFILE_CAMPAIGN)
+  }
+  
+  
+  
   freeGlobalString(SAVEFILE_CACHE_MAP)
   
   freeGlobalString(MENU_DEBRIEF_unlocks_mechs)
@@ -54,5 +78,5 @@ void() CSQC_Shutdown =
   
   menu_chat_cleanup();
   
-  gui_set_screen_size();
+  gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
 };

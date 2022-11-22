@@ -52,18 +52,19 @@ void() data_ini_foslager_={
   self.hardpoint_cnt = 3;
   weaponList = self;
   
-  self.model = "q3mdl/vecs/foslager/mdl_foslager_chas.md3";
-  
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/foslager/mdl_foslager_tur.md3", 1, '0 10.25 -3.75', self, torsoCenter, '0 0 0');
+  data_ini_torso_center_( "models/vecs/foslager/mdl_foslager_tur.md3", 1, '0 10.25 -3.75', '0 0 0');
+  
+  //chassis
+  data_ini_legs_( "models/vecs/foslager/mdl_foslager_chas.md3", 0, '0 0 0');
   
   //camera location
-  data_ini_camera_( '0 20 0', self.torsoCenter );
+  self.cameraOffset = '0 20 0';
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 0.75 3', '0 0 0', EQP_ALL);
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 1.25 3.75', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 10.5 1', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 11.25 1', '0 0 0', EQP_ALL);
   data_ini_unitHardpoint_3( M_LEGS, '-1.5 6 9', '0 0 0', EQP_ALL);
 //=====================================
 

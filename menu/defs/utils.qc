@@ -15,7 +15,7 @@ void() menu_write_new_save={
     fputs(flannel, strcat("  'mission' : ", CAMP_SELECT_START, ",\n"));
     fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
     fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
-    fputs(flannel, strcat("  'campaign' : ", CAMP_SELECT_NAME, ",\n"));
+    fputs(flannel, strcat("  'campaign' : ", CAMP_FILENAME, ",\n"));
     
     if( GAME_SAVES_NEWG[cvar("saveslot")] ){
       fputs(flannel, "  'mechs' : 1 2 3 4 5,\n");

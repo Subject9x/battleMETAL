@@ -22,18 +22,17 @@ overview:
 #define CAMP_PAGE_MAX 8  //max results per page
 
 //GLOBALS
-#ifdef QCMENU
+#ifdef MENUQC
+float CAMP_PAGE;
+float CAMP_PAGE_END;
+
 string CAMP_SELECT_START;
 string CAMP_SELECT_INFO;
 string CAMP_SELECT_NAME;
 string CAMP_SELECT_MECHS;
 string CAMP_SELECT_ITEMS;
 
-#ifndef MENUQC
-float CAMP_PAGE;
-float CAMP_PAGE_END;
-#endif
-
+string CAMP_FILES[16];
 string CAMP_NAME[16];
 string CAMP_START[16];
 string CAMP_INFO[16];
@@ -45,5 +44,11 @@ string CAMP_MECHS[16];
 void() campaign_loadfiles;
 #endif
 
+string CAMP_FILENAME;        //points to whichever campaign player chose, best way to track campaign file reference across the game.
+string CAMP_MAPS[32]; //not that we'll ever hit this, right?
 
+void( string campaignName ) campaign_loadMapList;
 
+#ifndef MENUQC
+string( string campaignName, string mapName, float missionStat ) campaign_nextMap;
+#endif

@@ -14,15 +14,6 @@ Overview:
 */
 void() sendevent_gev_move={
   local entity weps;
-  
-  for(weps = self.w_slot; weps != world; weps = weps.w_slot){
-    if( weps.partParentId == M_UNIT || weps.partParentId == M_LEGS ){
-      weps.angles = self.angles;
-    }
-    else{
-      weps.angles = self.torsoCenter.angles;
-    }
-  }
   if( self.trail_effectnum > 0 ){
     if( self.deadflag == DEAD_NO ){
       te_unit_dust( self.origin, rint(random() * 3) );
@@ -35,19 +26,6 @@ void() sendevent_gev_move={
 */
 void() sendevent_gev_die={
   te_missile_explode( self.origin, self.vec_size, '0.9 0.67 0.33', 0.02 );
-  
-  local entity weps;
-  local entity rem;
-  local float wId;
-  
-  weps = self.w_slot;
-  for(wId = 0; wId < self.hardpoint_cnt; wId = wId + 1){
-    rem = weps;
-    weps = rem.w_slot;
-    sendent_handle_remove(rem);
-  }
-  
-  sendent_handle_remove(self.torsoCenter);
   
   data_vehicle_wreck();
   
@@ -89,31 +67,28 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.flags = ReadCoord();
+    self.flags = ReadLong();
     self.faction = ReadByte();
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
     self.ai_muted = ReadByte();
+    self.subType = ReadChar();
     newName = ReadString();
   }
   
   if( isNew ){
     setorigin(self, self.origin);
-    cacheGlobalString(self.netname, newName )
     data_sync_new_vehicle(self.data_idx);
-    self.predraw = predraw_gev;
-    te_unit_dust_set();
-    self.canTarget = TRUE;
-    if( !self.ai_muted ){
-      ai_voice_ini( TRUE );
-      self.ai_voice_limit = 1;
+    if(self.deadflag == DEAD_NO){
+      cacheGlobalString(self.netname, newName )
+      self.predraw = predraw_gev;
+      te_unit_dust_set();
+      self.canTarget = TRUE;
+      if( !self.ai_muted ){
+        ai_voice_ini( TRUE );
+        self.ai_voice_limit = 1;
+      }
+    }
+    else{
+      data_vehicle_wreck();
     }
   }
   
@@ -125,13 +100,12 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
-    turretAng_x = anglemod(ReadAngle());
-    turretAng_y = anglemod(ReadAngle());
-    turretAng_z = 0;
-    self.v_angle = turretAng;
+    self.torC_angl_x = anglemod(ReadAngle());
+    self.torC_angl_y = anglemod(ReadAngle());
+    self.torC_angl_z = 0;
+    self.v_angle = self.torC_angl;
     self.v_angle_x = self.v_angle_x * -1;
-    turretAng_x = 0;
-    sendevent_turret_update( turretAng );
+    self.torC_angl_x = 0;
   }
   
   if( (changeFlags & SENDFLAG_CRIT) ){
@@ -146,19 +120,22 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       if( self.pcl_effectnum == 0 ){
         self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       }
-      makevectors(self.angles);
-      pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      particleDraw = vlen(client_vis_org - self.origin); 
+      if( particleDraw < PARTICLE_HAZ_DISTANCE ){
+        makevectors(self.angles);
+        pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      }
     }
   }
   
   //EVENT - UNIT MOVE
   if( (changeFlags & SENDFLAG_TARGET) ){
-    self.getTarget = rint(ReadCoord());
+    self.getTarget = ReadLong();
     self.enemy = findfloat(world, entnum, self.getTarget);
   }
 
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadCoord();
+    self.attackFlag = ReadLong();
     sendevent_handle_weaponfire();
   }
   
@@ -170,19 +147,25 @@ void( float isNew, float changeFlags) sendent_handle_gev={
     }
   }
   
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );  
-  
-  //Shield strike event
-  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
-    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
-      self.shieldEffectTime = time + 0.5;
-      te_shield_hit();
+  //HANDLE EVENT - Shield explode
+  if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
+    }
+  }
+  else{
+    //HANDLE EVENT - Shield hit
+    if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+      if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
+        self.shieldEffectTime = time + 0.5;
+        te_shield_hit();
+      }
     }
   }
   
   //HANDLE EVENT - dead
-  if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
+  if( (self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO) ){
     sendevent_gev_die();
   }
 };

@@ -146,7 +146,12 @@ void(vector ofs) menu_navBar_drawFrame={
   if(  ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN ){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_MEDIUM;
-       drawstring(nvpos + '420 -1', "Time Left:", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
+      if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+        drawstring(nvpos + '420 -1', "Time Elapse:", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
+      }
+      else{
+        drawstring(nvpos + '420 -1', "Time Left:", '12 12', CLR_DEF_TXT_NONSELECT, 1, 0);
+     }
     drawfont = FONT_NUM_ROBOT_REGULAR;
        drawstring(nvpos + '420 11', ui_calculate_game_time_string(), '14 14', CLR_DEF_WHITE, 1, 0);
     drawfont = drawfont_prev;
@@ -356,7 +361,7 @@ void( vector menuOrg ) menu_draw_players_basic={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" ){
-        player = findfloat(world, clientLocalId, SCOREBOARD[itr]+1);
+        player = findfloat(world, clientServerNum, SCOREBOARD[itr]+1);
         listRowOfs_y = listOfs_y + ( playerRowItr * 16 );
         menu_player_row_basic( listRowOfs, playerRowItr, player, TRUE );
         playerRowItr = playerRowItr + 1;
@@ -389,7 +394,7 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   local string playerStatus;
   local float scoreLen;
   
-  if( playerRow.clientLocalId == player_localentnum ){
+  if( playerRow.clientServerNum == player_localentnum ){
     fontSize = '12 12 0';
     rowColor = CLR_DEF_GREEN;
   }

@@ -11,28 +11,23 @@ Overview: AI values that have been spun off from common/game
 //     AI STATS      
 //============================
 //SPAWNFLAGS
-#define NO_CAMPAIGN 1    //remove from campaign mode
-#define NO_COOP 2    //remove from co-op mode
-#define NO_DM 4    //remove from DeathMatch
-#define NO_TDM 8    //remove from Team DeathMatch
+
+
 #define COLD_START 16   //on-spawn, bot will ignore friendly help calls
 #define HAS_RADAR 64   //radar is expensive to use, use sparingly
                                    //generally this is for mech units
 #define DEBUG_MODE 128 //dont do anything
 
 //warning! these are tied to engine-specific values, and for now, there's no changing it for now.
-//this is a hold over from classic Quake, and I'm torn on whether I want this to be used EVERYWHERE in battleMETAL....
-//or just using my own defines in NO_NOVICE, etc.
-//if the decision is made to remove these from the engine, then hey, we get 4 spawnflag slots back.
-//float NO_EASY = 256;
-//float NO_NORMAL = 512;
-//float NO_HARD = 1024;
-//float NO_NIGHT = 2048;
+//this is a hold over from classic Quake.
+#define NO_EASY 256
+#define NO_NORMAL 512
+#define NO_HARD 1024
 
-#define NO_NOVICE 4096  //remove from Novice Difficulty
-#define NO_REGULAR 8192 //remove from Regular Difficulty
-#define NO_VETERAN 16384 //remove from Veteran Difficulty
-#define NO_ELITE 32768  //remove from Elit Difficulty
+#define NO_DM 2048    
+#define NO_CAMPAIGN 4096
+#define NO_COOP 8192
+#define NO_TDM 16384
 //-------------------
 
 #define MISC_NO_DROP 65536 //overloaded flag, this is for misc_* ents
@@ -48,18 +43,29 @@ Overview: AI values that have been spun off from common/game
 #define AI_VOICE_TIME 32
 
 //this works to balance AI mech stats vs player mech stats.
-#define AI_ADJUST_ENERGY 0.85
-#define AI_ADJUST_SHIELD 0.85 //rate, this is applied to .shieldRate
+#define AI_ENERGY_RATE 0.5
+#define AI_ENERGY_RATE_HARD 0.75
+
+#define AI_SHIELD_RATE 0.7
+#define AI_SHIELD_RATE_HARD 0.9
 
 //Armor Values
 //hp = hp * AI_ARMOR
 //AI mechs share initial stats with the player, so we have to detune them now.
-#define AI_ARMOR_MECH 0.7  //pre-release 0.5
+//release v3.12.16
+#define AI_ARMOR_ROK 0.3
+#define AI_ARMOR_REG 0.5
+#define AI_ARMOR_VET 0.7
+#define AI_ARMOR_ACE 0.9
 
 //Shield Values
 //shield = shield * AI_SHIELD
 //AI mechs share initial stats with player, so we have to detune them now.
-#define AI_SHIELD_MECH 0.8  //applied to .shieldMax pre-release 0.67
+//release v3.12.16
+#define AI_SHIELD_ROK 0.25
+#define AI_SHIELD_REG 0.45
+#define AI_SHIELD_VET 0.65
+#define AI_SHIELD_ACE 0.85
 
 //AI TH_REACT cooldown
 #define AI_REACT_ROK 2

@@ -12,16 +12,6 @@ Overview:
   self is building
 */
 void( float dataID ) data_sync_new_building;
-void() data_building_radar;
-void() data_building_shield;
-void() data_building_power;
-void() data_building_hangar_large;
-void() data_building_fuel;
-void() data_building_repair;
-void() data_building_hangar_med;
-void() data_building_guard;
-void() data_building_barracks;
-void() data_building_supply_depot;
 
 void() data_building_death1;
 void() data_building_death2;
@@ -29,3 +19,10 @@ void() data_building_death_end;
 
 void() data_building_generate_foundation;
 void() building_sound_explode;
+
+
+.void() render_dlights;
+
+void() model_misc_building_set;
+void() model_misc_building_ruins_set;
+void() model_misc_building_die;

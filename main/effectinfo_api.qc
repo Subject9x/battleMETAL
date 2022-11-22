@@ -18,16 +18,16 @@ vector( vector startOrg ) te_apply_wind={
 
 float( float isNew, float changedFlags ) te_send_missile={
   WriteByte( MSG_ENTITY, SENDTYPE_PROJ );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.damageValue );
     if( (self.owner.flags & FL_CLIENT) ){
-      WriteCoord( MSG_ENTITY, num_for_edict(self.owner.clientData));
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner.clientData));
     }
     else{
-      WriteCoord( MSG_ENTITY, num_for_edict(self.owner));
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner));
     }
   }
   
@@ -38,9 +38,9 @@ float( float isNew, float changedFlags ) te_send_missile={
   }
   
   if( (changedFlags & SENDFLAG_VELOCITY) ){
-    WriteShort( MSG_ENTITY, self.velocity_x );
-    WriteShort( MSG_ENTITY, self.velocity_y );
-    WriteShort( MSG_ENTITY, self.velocity_z );
+    WriteLong( MSG_ENTITY, self.velocity_x );
+    WriteLong( MSG_ENTITY, self.velocity_y );
+    WriteLong( MSG_ENTITY, self.velocity_z );
   }
   
   if( (changedFlags & SENDFLAG_TURRET) ){
@@ -64,21 +64,23 @@ void(string gibname, float dm) ThrowGib =
 {
 	local	entity new;
 	new = spawn();
-	new.origin = self.origin;
-	setmodel (new, gibname);
-	setsize (new, '0 0 0', '0 0 0');
-	new.velocity = VelocityForDamage (dm);
-	new.movetype = MOVETYPE_BOUNCE;
-	new.solid = SOLID_NOT;
-	new.avelocity_x = random()*600;
-	new.avelocity_y = random()*600;
-	new.avelocity_z = random()*600;
-	new.think = SUB_Remove;
-	new.ltime = time;
-	new.nextthink = time + 10 + random()*10;
-	new.frame = 0;
-	new.flags = 0;
-  new.effects = new.effects | EF_LOWPRECISION;
+  if( new ){
+    new.origin = self.origin;
+    setmodel (new, gibname);
+    setsize (new, '0 0 0', '0 0 0');
+    new.velocity = VelocityForDamage (dm);
+    new.movetype = MOVETYPE_BOUNCE;
+    new.solid = SOLID_NOT;
+    new.avelocity_x = random()*600;
+    new.avelocity_y = random()*600;
+    new.avelocity_z = random()*600;
+    new.think = SUB_Remove;
+    new.ltime = time;
+    new.nextthink = time + 10 + random()*10;
+    new.frame = 0;
+    new.flags = 0;
+    new.effects = new.effects | EF_LOWPRECISION;
+  }
 };
 
 //TE_SMOKE_TEST
@@ -115,15 +117,18 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
   
   switch( debrType ){
     case 2:
-      debrisMdl = "q3mdl/fx/debris2/mdl_debris_2.md3";
+      precache_model("models/fx/debris2/mdl_debris_2.md3");
+      debrisMdl = "models/fx/debris2/mdl_debris_2.md3";
       trailNum = particleeffectnum("TE_DEBRIS_TRAIL_MED");
       break;
     case 3:
-      debrisMdl = "q3mdl/fx/debris3/mdl_debris_3.md3";
+      precache_model("models/fx/debris3/mdl_debris_3.md3");
+      debrisMdl = "models/fx/debris3/mdl_debris_3.md3";
       trailNum = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
       break;
     default:
-      debrisMdl = "q3mdl/fx/debris1/mdl_debris_1.md3";
+      precache_model("models/fx/debris1/mdl_debris_1.md3");
+      debrisMdl = "models/fx/debris1/mdl_debris_1.md3";
       trailNum = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;
   }
@@ -133,27 +138,29 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
     if( DEBRIS_COUNT < MAX_DEBRIS_COUNT ){
       DEBRIS_COUNT = DEBRIS_COUNT + 1;
       newmis = spawn();
-      setmodel (newmis, debrisMdl);
-      setsize (newmis, '0 0 0', '0 0 0');
-      setorigin(newmis, org);
-      newmis.velocity_x = 100 * crandom();
-      newmis.velocity_y = 100 * crandom();
-      newmis.velocity_z = 75 + 100 * random();
-      newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-      newmis.movetype = MOVETYPE_BOUNCE;
-      newmis.solid = SOLID_NOT;
-      newmis.think = te_debris_th;
-      newmis.ltime = time;
-      newmis.nextthink = time + 0.01;
-      newmis.data_lifetime = time + 0.5;
-      newmis.frame = 0;
-      newmis.flags = 0;
-      newmis.gravity = 0.15;
-      newmis.vec_size = debrType;
-      newmis.data_idx = UID_ITEM_debris;
-      newmis.SendEntity = te_send_missile;
-      newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
-      newmis.partTypeId = trailNum;
+      if( newmis ){
+        setmodel (newmis, debrisMdl);
+        setsize (newmis, '0 0 0', '0 0 0');
+        setorigin(newmis, org);
+        newmis.velocity_x = 100 * crandom();
+        newmis.velocity_y = 100 * crandom();
+        newmis.velocity_z = 75 + 100 * random();
+        newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+        newmis.movetype = MOVETYPE_BOUNCE;
+        newmis.solid = SOLID_NOT;
+        newmis.think = te_debris_th;
+        newmis.ltime = time;
+        newmis.nextthink = time + 0.01;
+        newmis.data_lifetime = time + 0.5;
+        newmis.frame = 0;
+        newmis.flags = 0;
+        newmis.gravity = 0.15;
+        newmis.vec_size = debrType;
+        newmis.data_idx = UID_ITEM_debris;
+        newmis.SendEntity = te_send_missile;
+        newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
+        newmis.partTypeId = trailNum;
+      }
     }
     totals = totals - 1;
   }
@@ -175,13 +182,13 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
   
   switch( debrType ){
     case 2:
-      debrisMdl = "q3mdl/fx/debris2/mdl_debris_2.md3";
+      debrisMdl = "models/fx/debris2/mdl_debris_2.md3";
       break;
     case 3:
-      debrisMdl = "q3mdl/fx/debris3/mdl_debris_3.md3";
+      debrisMdl = "models/fx/debris3/mdl_debris_3.md3";
       break;
     default:
-      debrisMdl = "q3mdl/fx/debris1/mdl_debris_1.md3";
+      debrisMdl = "models/fx/debris1/mdl_debris_1.md3";
       break;
   }
   makevectors(angl);
@@ -193,26 +200,28 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
     if( DEBRIS_COUNT < MAX_DEBRIS_COUNT ){
       DEBRIS_COUNT = DEBRIS_COUNT + 1;
       newmis = spawn();
-      setmodel (newmis, debrisMdl);
-      setsize (newmis, '0 0 0', '0 0 0');
-      setorigin(newmis, org);
-      newmis.velocity_x = (back_x * 400) + (random() * 200);
-      newmis.velocity_y = (back_y * 400) + (random() * 200);
-      newmis.velocity_z = (back_z + 50) + (random() * 50);
-      newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-      newmis.movetype = MOVETYPE_BOUNCE;
-      newmis.solid = SOLID_NOT;
-      newmis.think = te_debris_th;
-      newmis.ltime = time;
-      newmis.nextthink = time + 0.025;
-      newmis.data_lifetime = time + 1 + random() * 3;
-      newmis.frame = 0;
-      newmis.flags = 0;
-      newmis.gravity = 0.15;
-      newmis.vec_size = debrType;
-      newmis.data_idx = UID_ITEM_debris;
-      newmis.SendEntity = te_send_missile;
-      newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
+      if( newmis ){
+        setmodel (newmis, debrisMdl);
+        setsize (newmis, '0 0 0', '0 0 0');
+        setorigin(newmis, org);
+        newmis.velocity_x = (back_x * 400) + (random() * 200);
+        newmis.velocity_y = (back_y * 400) + (random() * 200);
+        newmis.velocity_z = (back_z + 50) + (random() * 50);
+        newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+        newmis.movetype = MOVETYPE_BOUNCE;
+        newmis.solid = SOLID_NOT;
+        newmis.think = te_debris_th;
+        newmis.ltime = time;
+        newmis.nextthink = time + 0.025;
+        newmis.data_lifetime = time + 1 + random() * 3;
+        newmis.frame = 0;
+        newmis.flags = 0;
+        newmis.gravity = 0.15;
+        newmis.vec_size = debrType;
+        newmis.data_idx = UID_ITEM_debris;
+        newmis.SendEntity = te_send_missile;
+        newmis.SendFlags = newmis.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_BURN);
+      }
     }
     totals = totals - 1;
   }
@@ -270,21 +279,64 @@ void() te_flame_th={
 
 
 /*
-  item is exploding, use its bbox size for area
+  server side missile explosions because good lord, CSCQ doesn't give us any PVS culling whatsoever....
+    so use this on the server if explosion is truly inconsequential for players to see.
 */
-void( vector explodeColor ) te_object_explode={
-  local vector exp;
-  
-  exp_x = crandom() * (self.maxs_x * 2);
-  exp_y = crandom() * (self.maxs_y * 2);
-  exp_z = crandom() * (self.maxs_z * 2);
-  makevectors(self.angles);
-  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
-  
-  //TODO - Replace
-  //te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
-
+void() te_missile_explode_th={
+  self.alpha = self.alpha - 0.025;
+  self.scale = self.scale + self.data_lifetime;
+  self.think = te_missile_explode_th;
+  if( self.alpha < 0.01 ){
+    remove(self);
+    return;
+  }
+  self.nextthink = time + 0.01;
 };
+void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode={
+  local entity explode;
+  local vector back;
+  local vector launch;
+  
+  explode = spawn();
+  if( explode ){
+    explode.movetype = MOVETYPE_NONE;
+    explode.solid = SOLID_NOT;
+    explode.think = te_missile_explode_th;
+    explode.nextthink = time + 0.05;
+    explode.scale = explodeSize;
+    explode.alpha = 1;
+    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_LOWPRECISION;
+    explode.avelocity = randomvec() * 300;
+    explode.angles = randomvec() * 30;
+    explode.data_lifetime = bloom;
+    
+    if( explodeColor != '0 0 0' ){
+      explode.colormod = explodeColor;
+    }
+    
+    setmodel( explode, "models/fx/explosions/te_missile_explode.md3");
+    setorigin( explode, org);
+  }
+
+  te_customflash( org, explodeSize * 50, 1, explodeColor);
+  
+  
+  makevectors(vectoangles(self.velocity));
+  back = org + (v_forward * -10);
+  back = normalize(back - org);
+  
+  if(explodeSize < 2 ){
+    pointparticles( particleeffectnum("TE_HIT_EXPL_SML"), org, back, 1);
+  }
+  if(explodeSize == 2){
+    pointparticles( particleeffectnum("TE_HIT_EXPL_MED"), org, back, 1);
+  }
+  else{
+    pointparticles( particleeffectnum("TE_HIT_EXPL_LRG"), org, back, 1);
+  }
+};
+
+
 
 /*
   When a part is blown off a mech
@@ -293,11 +345,15 @@ void() te_vehicle_chunk_th={
   //trail effect for desired time, then a half-life as post-burn
   if( time > self.ai_action_time && self.traileffectnum ){
     self.traileffectnum = 0;
-    self.ai_action_time = self.data_lifetime * 2;
+    self.ai_action_time = self.data_lifetime * 0.33;
     self.think = SUB_Remove;
     self.nextthink = time + self.ai_action_time;
     return;
   }
+  if( time > self.ai_movewait ){
+    self.solid = SOLID_CORPSE;
+  }
+  
   self.think = te_vehicle_chunk_th;
   self.nextthink = time + random() * 0.5;
   if( time > self.ai_action_time ){
@@ -306,70 +362,62 @@ void() te_vehicle_chunk_th={
   }
 };
 
-void( entity parent, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk={
+/*
+  Scope
+    self = calling unit
+*/
+void( string mdl, vector startOrg, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk={
   local entity piece;
   
-  //<sigh> these little buggers dump on the net traffic.
-  if( cvar("gamemode") != GAMEMODE_CAMPAIGN ){
-    return;
-  }
-  
   piece = spawn();
-  setmodel(piece, parent.model);
-  setsize (piece, '0 0 0', '0 0 0');
-  setorigin(piece, parent.origin);
-  if( wishAngl != '0 0 0' ){
+  if( piece ){
+    setmodel(piece, mdl);
+    setsize (piece, '-4 -4 -4', '4 4 4');
+    setorigin(piece, startOrg);
+      
     piece.angles = wishAngl;
+    piece.skin = self.skin;
+    piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+    
+    piece.movetype = MOVETYPE_TOSS;
+    piece.solid = SOLID_NOT;
+    piece.frame = 0;
+    piece.colormod = '0.45 0.45 0.45';
+    
+    piece.traileffectnum = trailnum;
+    if( wishVel != '0 0 0' ){
+      piece.velocity = wishVel;
+    }
+    else{
+      piece.velocity_x = 100 * crandom();
+      piece.velocity_y = 100 * crandom();
+      piece.velocity_z = 50 + 100 * random();
+    }
+    piece.avelocity_x = random()*100;
+    piece.avelocity_y = random()*100;
+    piece.avelocity_z = random()*150;
+    if( lifetime ){
+      piece.data_lifetime = lifetime;
+      piece.ai_action_time = time + lifetime;
+    }
+    else{
+      piece.data_lifetime = 30;
+      piece.ai_action_time = time + lifetime;
+    }
+    if( grav ){
+      piece.gravity = grav;
+    }
+    else{
+      piece.gravity = 0.67;
+    }
+    piece.think = te_vehicle_chunk_th;
+    piece.nextthink = time + 0.1;
+    piece.ai_movewait = time + 3;
   }
-  else{
-    piece.angles = parent.angles;
-  }
-  piece.skin = parent.skin;
-  piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-  
-  if( (parent.owner.flags & FL_CLIENT) ){
-    piece.colormod = parent.owner.colormod;
-  }
-  else{
-    piece.colormod = '1 1 1';
-  }
-  
-  piece.movetype = MOVETYPE_TOSS;
-  piece.solid = SOLID_NOT;
-  piece.frame = 0;
-  piece.flags = 0;
-  piece.colormod = piece.colormod * 0.75;
-  
-  piece.traileffectnum = trailnum;
-  if( wishVel != '0 0 0' ){
-    piece.velocity = wishVel;
-  }
-  else{
-    piece.velocity_x = 100 * crandom();
-    piece.velocity_y = 100 * crandom();
-    piece.velocity_z = 50 + 100 * random();
-  }
-  piece.avelocity_x = random()*100;
-  piece.avelocity_y = random()*100;
-  piece.avelocity_z = random()*150;
-  if( lifetime ){
-    piece.data_lifetime = lifetime;
-    piece.ai_action_time = time + lifetime;
-  }
-  else{
-    piece.data_lifetime = 30;
-    piece.ai_action_time = time + lifetime;
-  }
-  if( grav ){
-    piece.gravity = grav;
-  }
-  else{
-    piece.gravity = 0.67;
-  }
-  piece.think = te_vehicle_chunk_th;
-  piece.nextthink = time + 0.1;
-  
 };
+
+
+
 
 void() te_msn_boundary={
   msg_entity = self;

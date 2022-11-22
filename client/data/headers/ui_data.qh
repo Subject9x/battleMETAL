@@ -33,9 +33,6 @@ float   MECH_DATA_RAD;
 float   MECH_DATA_LOCKON;
 string  MECH_DATA_DESC;
 
-float   MECH_DATA_STOCK[10];
-float   MECH_DATA_GRPS[6];
-
 //items are compared to each other so they get 2 listings
 //ITEM 1 is the data for the weapon on top
 //ITEM 1 DATA
@@ -65,6 +62,7 @@ float ITEM2_DATA_CLIP;
 float ITEM2_DATA_SIZE;
 float ITEM2_DATA_TECH;
 string ITEM2_DATA_DESC;
+vector ITEM2_DATA_UID_ORG;
 
 //functions
 void() ui_data_load_mechsizes;
@@ -82,3 +80,38 @@ void() ui_data_clear_item1;
 void() ui_data_clear_item2;
 
 float( float mechId, float fileNum  ) ui_mech_config_switch;
+
+//default config globals...sorry
+//has_none is an ugly hack because EMPTY = 0...and any INV_HAS could evaluate to 0 too.
+#define INV_HAS_NONE -1
+
+float(float itemId) ui_data_inventory_find_item;
+void() ui_data_has_items;
+
+float INV_HAS_flak;                     //BAL1
+float INV_HAS_light_autocannon;         //BAL1
+float INV_HAS_quantum_rifle;            //BAL2
+float INV_HAS_rotary_plasma;            //BAL2
+float INV_HAS_snub_artillery;           //BAL3
+
+float INV_HAS_light_laser;              //ENE1
+float INV_HAS_ion_coil;                 //ENE2
+float INV_HAS_electro_repeater;         //ENE2
+float INV_HAS_particle_cannon;          //ENE3
+float INV_HAS_emp;                      //ENE3
+
+float INV_HAS_rocket_launcher;          //MIS1
+float INV_HAS_missile_laserguide;       //MIS1
+float INV_HAS_missile_swarm;            //MIS2
+float INV_HAS_missile_activeradar;      //MIS3
+                                        
+//-----EQUIP------------                //
+float INV_HAS_adv_reload;               //MSC1
+float INV_HAS_heatsink;                 //MSC1
+
+float INV_HAS_energy_battery;           //MSC2
+float INV_HAS_shield_capacitor;         //MSC2
+
+float INV_HAS_shield_emitter;           //MSC3
+float INV_HAS_recharge_capacitor;       //MSC3
+float INV_HAS_turbo_charger;            //MSC4

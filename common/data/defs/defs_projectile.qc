@@ -13,3 +13,8 @@ Overview:
 .float data_lifetime;	//  game seconds the projectile lives for unless it hits something.
 .float data_velocity;	//  initialized velocity value (convert at function level )
 .float impactType;    // used for server communication
+
+#ifdef CSQC
+.float data_postinit; //flag for recording networked entity is on frame N+1, trying to solve trail-effects stacking issues.
+.float data_traileff; //cache trail effect num so we can toggle it as needed.
+#endif

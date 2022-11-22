@@ -21,7 +21,8 @@ float() ai_can_spawn={
     return FALSE;
   }
   
-  if( (skill == 0) && (self.spawnflags & NO_NOVICE) ){
+  //engine specific FLAG values will auto-remove entity on map-load.
+  /*if( (skill == 0) && (self.spawnflags & NO_NOVICE) ){
     return FALSE;
   }
   if( (skill == 1) && (self.spawnflags & NO_REGULAR) ){
@@ -32,7 +33,7 @@ float() ai_can_spawn={
   }
   if( (skill == 3) && (self.spawnflags & NO_ELITE) ){
     return FALSE;
-  }
+  }*/
   
   if( (self.spawnflags & NO_CAMPAIGN) ){
     if( cvar("gamemode") == GAMEMODE_CAMPAIGN ){
@@ -325,7 +326,7 @@ void( entity ally, entity targ, float override ) ai_give_target={
       }
     }
     if( self.enemy == targ ){
-      if( (targ.flags & FL_CLIENT) ){
+      if( (targ.flags & FL_CLIENT) && !(targ.flags & FL_NOTARGET) ){
         ai_sfx_roger();
       }
     }
@@ -550,10 +551,10 @@ void() ai_frame_net_send={
   
   //turret angles check
   if( (self.flags & FL_TURRET) ){
-    if( self.torsoCenter.last_angle != self.torsoCenter.angles ){
+    if( self.torC_anglLast != self.torC_angl ){
       self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
     }
-    self.torsoCenter.last_angle = self.torsoCenter.angles;
+    self.torC_anglLast = self.torC_angl;
   }
   
   //target check

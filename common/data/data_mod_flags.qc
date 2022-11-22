@@ -11,7 +11,9 @@ Overview:
 .float unitModFlags;
 //preloaded flag values
 #define MODFLAG_BATTLEMETAL 2007294
+
 #define MODFLAG_METALWARRIOR 8257777
+
 #define MODFLAG_METALSIEGE 1578766
 
 //invert the mech Energy meter system to incrememt to a max instead 

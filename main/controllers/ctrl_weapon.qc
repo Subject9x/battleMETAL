@@ -9,17 +9,16 @@ Overview: weapon controller header
 
 void(entity wep) ctrl_weapon_think={
   local entity weaponOwner;
+  
+  if(wep.deadflag >= DEAD_DYING){
+    wep.deadflag = DEAD_DEAD;
+    return;
+  }
+  if(wep.deadflag == DEAD_DEAD){
+    return;
+  } 
   weaponOwner = self;
-  self = wep;
-    if(self.deadflag >= DEAD_DYING){
-      self.deadflag = DEAD_DEAD;
-      self = weaponOwner;
-      return;
-    }
-    if(self.deadflag == DEAD_DEAD){
-      self = weaponOwner;
-      return;
-    }  
+  self = wep; 
     if( self.think ){
       self.think();
       self.think = self.think;
@@ -132,7 +131,12 @@ float() ctrl_weapon_checkEnergy={
   return TRUE;
 };
 
-
+/*
+  
+  makevectors(self.angles);
+  traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
+  chasOrg = trace_endpos + (v_up * self.mins_z * -1 );
+*/
 void() ctrl_weapon_fireOffset={
   FIRE_ENT = self.owner; 
   FIRE_OFFSET = self.compOffset + self.wepFireOffset + self.compAltOffset;    //complete offset from player origin
@@ -142,11 +146,21 @@ void() ctrl_weapon_fireOffset={
   else{
     WEAPON_PARENT = FIRE_ENT;
   }
+
   
   makevectors( WEAPON_PARENT.angles );
-  FIRE_ORIGIN = FIRE_ENT.origin + (v_forward * FIRE_OFFSET_z) + (v_right * FIRE_OFFSET_x) + (v_up * FIRE_OFFSET_y);
+  if( FIRE_ENT.data_type == DATA_VEHC ){
+    FIRE_ORIGIN = FIRE_ENT.tankChassisOrg + (v_forward * FIRE_OFFSET_z) + (v_right * FIRE_OFFSET_x) + (v_up * FIRE_OFFSET_y);
+  }
+  else{
+    FIRE_ORIGIN = FIRE_ENT.origin + (v_forward * FIRE_OFFSET_z) + (v_right * FIRE_OFFSET_x) + (v_up * FIRE_OFFSET_y);
+  }
+  
+  
   FIRE_ENDPOINT = util_applySpreadToTrace( FIRE_ENT.v_angle, self.w_range, self.spreadDefault, FIRE_ENT.accuracy );//becomes 'endpoint' for shot angle
 };
+
+
 
 void( float burstFire ) ctrl_weapon_updateAmmo={
   self.w_currentammo = self.w_currentammo - 1;
@@ -204,7 +218,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
         self.solid = SOLID_BBOX;
       }
       self.takedamage = DAMAGE_NO;
-      setmodel(self, "q3mdl/testball.md3");
+      setmodel(self, "models/testball.md3");
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
       self.SendEntity = te_send_missile;
@@ -350,3 +364,64 @@ void() ctrl_missile_lastframe={
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
 };
+
+
+void() ctrl_weapon_update={
+  local entity wep;
+  
+  wep = self.w_slot;
+  while(wep){
+    
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+    wep = wep.w_slot;
+  }
+};
+
+/*
+  Promoted weapons to fully qualified and synced entities, the server
+  needs to track these so why not just send the bare minimum over to the client?
+  
+  client only needs the bare minimum info from the server.
+  
+  
+*/
+float( float isNew, float changedflags ) ctrl_send_weapon={
+  
+  WriteByte( MSG_ENTITY, SENDTYPE_ITEM );
+  WriteLong( MSG_ENTITY, changedflags );
+  
+  if( (changedflags & SENDFLAG_MOVE) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self.owner));
+  }
+
+  if( (changedflags & SENDFLAG_NEWENT) ){
+    if( (self.owner.flags & FL_CLIENT) ){
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner.clientData));
+    }
+    else{
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner));
+    }
+    
+    WriteLong( MSG_ENTITY, self.w_group);
+    WriteLong( MSG_ENTITY, self.partParentId);
+    WriteAngle( MSG_ENTITY, self.compOffset_x);
+    WriteAngle( MSG_ENTITY, self.compOffset_y);
+    WriteAngle( MSG_ENTITY, self.compOffset_z);
+  }
+  
+  if( (changedflags & SENDFLAG_NEWUNIT) ){    
+    if( (self.owner.flags & FL_CLIENT) ){
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner.clientData));
+    }
+    else{
+      WriteLong( MSG_ENTITY, num_for_edict(self.owner));
+    }
+      WriteByte( MSG_ENTITY, self.data_idx);
+  }
+  
+  if( (changedflags & SENDFLAG_DEAD) ){
+    //technically a no-op on the server, CSQC reads the flag itself
+  }
+  
+  return TRUE;
+}

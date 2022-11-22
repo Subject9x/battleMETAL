@@ -22,7 +22,10 @@ void() te_muzzle_sfg={
   endOrg = trace_endpos;
   
   sound7(self, CHAN_AUTO,  "sound/weapons/sfga_fire.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, 0 );
-  pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+  
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
+    pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+  }
 }
 #endif
 void() data_ini_snub_artillery_={
@@ -46,9 +49,12 @@ void() data_ini_snub_artillery_={
   self.burstRate = 0;
   
 #ifdef CSQC
+  precache_sound("sound/fx_boom.ogg");
+  precache_model("models/weapons/w_sfga.md3");
+  precache_file( "gfx/ui/wep_icons/wi_sfg.png");
   self.w_name = "Snub Field Artillery";
   self.fire_sound = "sound/fx_boom.ogg";
-  self.model = "q3mdl/weapons/w_sfga.md3";
+  self.model = "models/weapons/w_sfga.md3";
   self.abbrev = "SFGA";
   self.description = "+ Minor parabolic arc. + Shot has Blast Radius on open ground.";
   self.icon = "gfx/ui/wep_icons/wi_sfg.png";

@@ -237,6 +237,13 @@ float TEAM_MILITAR_TOTAL;
 
 #define MOVE_RAM_SCALAR_UP 0.004
 #define MOVE_RAM_SCALAR_DN 0.01
+
+//leg animation directions
+#define LEGS_MOVE_STAND 0
+#define LEGS_MOVE_FORWD 1
+#define LEGS_MOVE_BACK -1
+
+
 //============================
 //     WEAPON FLAGS
 //============================
@@ -302,6 +309,7 @@ float AS_INT = 8;
 #define SENDTYPE_TERRAIN 12
 #define SENDTYPE_MISC 13
 #define SENDTYPE_MISC_BLD 14
+#define SENDTYPE_ITEM 15
 //SendFlags-------------------
 //note: sendEnt is capped to 7 bitflags + NEWENT 
 //      and uses WriteByte, to add more flags, try switching
@@ -342,7 +350,7 @@ float AS_INT = 8;
 #define REMOVE_FIRSTUSE 8  //remove after first countdown
 #define REMOVE_ONTOUCH 16  //remove on first touch
 
-float BUILDING_TARGET_FLAG = 16;  //used by building and misc_building for allowing self to be targeted
+#define BUILDING_TARGET_FLAG 16 //used by building and misc_building for allowing self to be targeted
 
 #define ACTIVE_ONTOUCH 32  //activate on-touch
 #define MUTE_ME 1048576    //ai ignores sending voice effects / radio sounds.
@@ -563,6 +571,17 @@ vector ACCURACY_PRIMITVE    = '0.45 0.93 0.001';
 #define AI_VOICE_WARN       9
 
 
+//============================
+//     AI SUB TYPES
+//============================
+//LOBBER
+#define AI_UTYPE_MIS 1
+//GUNNER
+#define AI_UTYPE_DIR 2
+//ZAPPER
+#define AI_UTYPE_ENE 3
+//BRAWLER
+#define AI_UTYPE_SKR 4
 //============================
 //     CLIENT INFO STRING
 //      sent by player when choosing items.

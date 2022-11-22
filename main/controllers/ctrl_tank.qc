@@ -8,21 +8,25 @@ Overview:
 */
 
 void() ctrl_updateTank={
-  local entity cam;
   local entity wep;
   local vector v1;
   local float hp;
   local float myShield;
-  
-  cam = self.cockpit;
   
   if( !(self.flags & FL_TURRET) ){
     //Unit lacks a turret.
     self.v_angle = self.angles;
   }
   
+  makevectors(self.angles);
+  traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
+  self.tankChassisOrg = trace_endpos + (v_up * self.mins_z * -1 );
+  
+  self.legs_org = self.tankChassisOrg + (v_right * self.legs_compOffset_x) + (v_up * self.legs_compOffset_y) + (v_forward * self.legs_compOffset_z);
+  self.torC_org = self.tankChassisOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
+  
   makevectors(self.v_angle);
-  v1 = self.origin + (v_right * cam.compOffset_x) + (v_up*cam.compOffset_y) + (v_forward*cam.compOffset_z);
+  v1 = self.origin + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y) + (v_forward * self.cameraOffset_z);
   traceline(v1, v1 + v_forward * 10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
   self.laser_sight_timer = time + 0.05;
@@ -104,7 +108,7 @@ void() ctrl_updateTank={
 
 float( float isNew, float changedflags ) ctrl_send_tank={
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
-  WriteCoord( MSG_ENTITY, changedflags );
+  WriteLong( MSG_ENTITY, changedflags );
   
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -123,18 +127,10 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteCoord( MSG_ENTITY, self.flags );
+    WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
+    WriteChar( MSG_ENTITY, self.subType );
     WriteString( MSG_ENTITY, self.netname );
   }
   
@@ -148,7 +144,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torC_angl_y );
   }
   
   if( (changedflags & SENDFLAG_CRIT) ){
@@ -160,10 +156,10 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   //}
   
   if( (changedflags & SENDFLAG_TARGET) ){
-    WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    WriteLong( MSG_ENTITY, num_for_edict(self.enemy));
   }
   if( (changedflags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, self.attackFlag );
+    WriteLong( MSG_ENTITY, self.attackFlag );
   }
   if( (changedflags & SENDFLAG_VOICE) ){
     if( !(changedflags & SENDFLAG_NEWENT) ){
@@ -176,7 +172,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
 
 float( float isNew, float changedflags ) ctrl_send_spg={
   WriteByte( MSG_ENTITY, SENDTYPE_SPG );
-  WriteCoord( MSG_ENTITY, changedflags );
+  WriteLong( MSG_ENTITY, changedflags );
   
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -195,18 +191,10 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteCoord( MSG_ENTITY, self.flags );
+    WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
+    WriteChar( MSG_ENTITY, self.subType );
     WriteString( MSG_ENTITY, self.netname );
   }
   
@@ -227,10 +215,10 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   //}
   
   if( (changedflags & SENDFLAG_TARGET) ){
-    WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    WriteLong( MSG_ENTITY, num_for_edict(self.enemy));
   }
   if( (changedflags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, self.attackFlag );
+    WriteLong( MSG_ENTITY, self.attackFlag );
   }
   if( (changedflags & SENDFLAG_VOICE) ){
     if( !(changedflags & SENDFLAG_NEWENT) ){
@@ -243,7 +231,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
 
 float( float isNew, float changedflags ) ctrl_send_gev={
   WriteByte( MSG_ENTITY, SENDTYPE_GEV );
-  WriteCoord( MSG_ENTITY, changedflags );
+  WriteLong( MSG_ENTITY, changedflags );
   
   if( (changedflags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
@@ -262,18 +250,10 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   
   if( (changedflags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
-    WriteCoord( MSG_ENTITY, self.flags );
+    WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
-    WriteByte( MSG_ENTITY, self.next_wepn1);
-    WriteByte( MSG_ENTITY, self.next_wepn2);
-    WriteByte( MSG_ENTITY, self.next_wepn3);
-    WriteByte( MSG_ENTITY, self.next_wepn4);
-    WriteByte( MSG_ENTITY, self.next_wepn5);
-    WriteByte( MSG_ENTITY, self.next_wepn6);
-    WriteByte( MSG_ENTITY, self.next_wepn7);
-    WriteByte( MSG_ENTITY, self.next_wepn8);
-    WriteByte( MSG_ENTITY, self.next_wepn9);
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
+    WriteChar( MSG_ENTITY, self.subType );
     WriteString( MSG_ENTITY, self.netname );
   }
   
@@ -287,7 +267,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   
   if( (changedflags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x );
-    WriteAngle( MSG_ENTITY, self.torsoCenter.angles_y );
+    WriteAngle( MSG_ENTITY, self.torC_angl_y );
   }
   if( (changedflags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, self.pcl_effectnum );
@@ -298,10 +278,10 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   //}
   
   if( (changedflags & SENDFLAG_TARGET) ){
-    WriteCoord( MSG_ENTITY, num_for_edict(self.enemy));
+    WriteLong( MSG_ENTITY, num_for_edict(self.enemy));
   }
   if( (changedflags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, self.attackFlag );
+    WriteLong( MSG_ENTITY, self.attackFlag );
   }
   
   if( (changedflags & SENDFLAG_VOICE) ){

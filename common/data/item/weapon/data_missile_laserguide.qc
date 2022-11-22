@@ -26,14 +26,16 @@ void() te_muzzle_lgm={
   local vector ang;
   ang = vectoangles(endOrg - startOrg);
   
-  sound7(self, CHAN_AUTO, "sound/weapons/mis_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 80, 0 );
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 80, 0 );
   
-  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * -0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
-  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * 0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
-  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_up * 1), normalize((startOrg + v_up * 2) - startOrg), 1);
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * -0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * 0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_up * 1), normalize((startOrg + v_up * 2) - startOrg), 1);
   
-  trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * 0.5), endOrg + (v_forward * 16) + (v_right * 0.5) );
-  trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * -0.5), endOrg + (v_forward * 16) + (v_right * -0.5) );
+    trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * 0.5), endOrg + (v_forward * 16) + (v_right * 0.5) );
+    trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * -0.5), endOrg + (v_forward * 16) + (v_right * -0.5) );
+  }
 };
 #endif
 void() data_ini_missile_laserguide_={
@@ -57,9 +59,12 @@ void() data_ini_missile_laserguide_={
   self.burstRate = 1;
   
 #ifdef CSQC
+  precache_sound("sound/weapons/mis_fire.ogg");
+  precache_model("models/weapons/w_lgm.md3");
+  precache_file( "gfx/ui/wep_icons/wi_mlgd.png");
   self.w_name = "Missile - Guided";
   self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_lgm.md3"; 
+  self.model = "models/weapons/w_lgm.md3"; 
   self.abbrev = "MLGD";
   self.description = "+ target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.icon = "gfx/ui/wep_icons/wi_mlgd.png"; 

@@ -39,7 +39,7 @@ Overview:
 #define TE_FOG_SET 90
 #define TE_ISMENU 91
 #define TE_PARTICLE_CUBE 92
-//93
+//93;
 //94;
 //95;
 //96;
@@ -63,7 +63,7 @@ Overview:
 #define TE_VFX_EXPLODE 110
 
 #define TE_MSG_INFO 111
-//112;
+// 112
 #define TE_REPAIRS_ON 113
 
 //114;

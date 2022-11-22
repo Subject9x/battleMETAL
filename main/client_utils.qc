@@ -36,24 +36,24 @@ void() client_push_player_info={
       self.stat_client_shield = myShield;
     }
     
-    self.stat_client_hp_torsoCenter = csqc_updateCompStat(self);
+    self.stat_client_hp_torsoCenter = csqc_updateCompStat(self.health, self.max_health);
     
     if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-      self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torsoLeft);
+      self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torL_hp, self.torL_hpMax);
     }
     if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-      self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torsoRight);
+      self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torR_hp, self.torR_hpMax);
     }
     
     if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-      self.stat_client_hp_armLeft = csqc_updateCompStat(self.armLeft);
+      self.stat_client_hp_armLeft = csqc_updateCompStat(self.armL_hp, self.armL_hpMax);
     }
     
     if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-      self.stat_client_hp_armRight = csqc_updateCompStat(self.armRight);
+      self.stat_client_hp_armRight = csqc_updateCompStat(self.armR_hp, self.armR_hpMax);
     }
     
-    self.stat_client_hp_legs = csqc_updateCompStat(self.legs);
+    self.stat_client_hp_legs = csqc_updateCompStat(self.legs_hp, self.legs_hpMax);
     
     if( self.targetEntId != 0 ){
       //this is silly but precludes forcing the csqc to know the target's max shields
@@ -75,20 +75,20 @@ void() client_push_player_info={
         
         self.stat_target_shield = targShield;
       }
-      self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy);
+      self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy.health, self.enemy.max_health);
       if( (self.enemy.unitModFlags & MOD_HAS_TOR_L) ){
-        self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torsoLeft);
+        self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torL_hp, self.enemy.torL_hpMax);
       }
       if( (self.enemy.unitModFlags & MOD_HAS_TOR_R) ){
-        self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torsoRight);
+        self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torR_hp, self.enemy.torR_hpMax);
       }
       if( (self.enemy.unitModFlags & MOD_HAS_ARM_L) ){
-        self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armLeft);
+        self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armL_hp, self.enemy.armL_hpMax);
       }
       if( (self.enemy.unitModFlags & MOD_HAS_ARM_R) ){
-        self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armRight);
+        self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armR_hp, self.enemy.armR_hpMax);
       }
-      self.stat_target_hp_legs = csqc_updateCompStat(self.enemy.legs);
+      self.stat_target_hp_legs = csqc_updateCompStat(self.enemy.legs_hp, self.enemy.legs_hpMax);
     }
     else{
       self.stat_target_hp_torsoCenter = 0;
@@ -117,21 +117,21 @@ void( entity targetClient ) client_push_hud_highlight={
     WriteByte( MSG_ONE, SVC_TEMPENTITY );
     WriteByte( MSG_ONE, TE_UI_BOX );
     
-    WriteCoord( MSG_ONE, this.color_x );
-    WriteCoord( MSG_ONE, this.color_y );
-    WriteCoord( MSG_ONE, this.color_z );
+    WriteLong( MSG_ONE, this.color_x );
+    WriteLong( MSG_ONE, this.color_y );
+    WriteLong( MSG_ONE, this.color_z );
     
     WriteShort( MSG_ONE, this.data_lifetime );
     WriteByte( MSG_ONE, this.partTypeId );
     
-    WriteCoord( MSG_ONE, this.compOffset_x );
-    WriteCoord( MSG_ONE, this.compOffset_y );
-    WriteCoord( MSG_ONE, this.compOffset_z );
+    WriteLong( MSG_ONE, this.compOffset_x );
+    WriteLong( MSG_ONE, this.compOffset_y );
+    WriteLong( MSG_ONE, this.compOffset_z );
       
     if( this.partTypeId == 0 || !this.partTypeId ){
-      WriteCoord( MSG_ONE, this.movedir_x );
-      WriteCoord( MSG_ONE, this.movedir_y );
-      WriteCoord( MSG_ONE, this.movedir_z );
+      WriteLong( MSG_ONE, this.movedir_x );
+      WriteLong( MSG_ONE, this.movedir_y );
+      WriteLong( MSG_ONE, this.movedir_z );
     }
   self = this;
 };
@@ -216,7 +216,12 @@ void(string cmdString) client_parse_clientInfoString={
   }
   //MECH ID UPDATE
   if( (changeFlags & INFO_FLAG_MECH) ){
-    self.nextVecChoice = stof(infoget(dataString, KEY_MECH));
+    self.nextVecChoice = rint(stof(infoget(dataString, KEY_MECH)));
+    if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+      if( self.clientData ){
+        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EXDATA;
+      }
+    }
   }
   //DEPLOY ID UPDATE
   if( (changeFlags & INFO_FLAG_DEPLOY) ){
@@ -304,25 +309,6 @@ void() client_update_faction={
   }
   newSkinNum = self.faction - 1;
   self.skin = newSkinNum;
-  
-  if( self.torsoCenter ){
-    self.torsoCenter.skin = newSkinNum;
-  }  
-  if( self.torsoLeft){
-    self.torsoLeft.skin = newSkinNum;
-  }  
-  if( self.torsoRight ){
-    self.torsoRight.skin = newSkinNum;
-  }  
-  if( self.armLeft ){
-    self.armLeft.skin = newSkinNum;
-  }  
-  if( self.armRight ){
-    self.armRight.skin = newSkinNum;
-  }  
-  if( self.legs ){
-    self.legs.skin = newSkinNum;
-  }
 };
 
 /*
@@ -346,11 +332,14 @@ void() client_sendIniConfig={
 
 void(string cmd, float tokens) client_setMission={
   //Single player
-  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN && !cvar("sv_singlemap") ){
     self.playerState = PLAYER_ACTIVE;
     self.view_ofs = '0 0 1';
     if( stof(argv(1)) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
+      
+      sv_nextmap = campaign_nextMap( cvar_string("sv_campaign"), mapname, TRUE );
+      
       savefile_changemap(sv_nextmap); //TODO - fix me
       if( sv_nextmap == "" || strlen(sv_nextmap) == 0 || strstrofs(sv_nextmap, "menu", 0) != -1){
         stuffcmd(self, "disconnect;togglemenu;\n");
@@ -504,6 +493,14 @@ void(float wantNavId) client_setNavPoint={
       continue;
     }
     self.goalentity = nav;
+    if( cvar("gameType") == GAMEMODE_COOP){
+      if( self.coopClientId > 1){
+        self.goalentity = find(world, iniConfig, strcat(nav.group, ftos(self.coopClientId)));
+        if( !self.goalentity ){
+          self.goalentity = nav;
+        }
+      }
+    }
   }
 };
 
@@ -521,10 +518,9 @@ void(entity client, float worldFog, float fogDense, vector fogColor, float fogAl
   WriteCoord( MSG_ONE, fogColor_y );
   WriteCoord( MSG_ONE, fogColor_z );
   
-  
-  WriteCoord( MSG_ONE, fogDist_x );
-  WriteCoord( MSG_ONE, fogDist_y );
-  WriteCoord( MSG_ONE, fogDist_z );
+  WriteLong( MSG_ONE, fogDist_x );
+  WriteLong( MSG_ONE, fogDist_y );
+  WriteLong( MSG_ONE, fogDist_z );
   
   WriteCoord( MSG_ONE, fogAlpha );
   WriteCoord( MSG_ONE, fogDense );
@@ -540,17 +536,17 @@ void(entity client, entity cube) client_sendParticleCube={
   
   WriteByte( MSG_ONE, cube.data_idx );
   
-  WriteCoord( MSG_ONE, cube.compOffset_x );
-  WriteCoord( MSG_ONE, cube.compOffset_y );
-  WriteCoord( MSG_ONE, min(client.mins_z, cube.compOffset_z) );
+  WriteLong( MSG_ONE, cube.compOffset_x );
+  WriteLong( MSG_ONE, cube.compOffset_y );
+  WriteLong( MSG_ONE, min(client.mins_z, cube.compOffset_z) );
   
-  WriteCoord( MSG_ONE, cube.compAltOffset_x );
-  WriteCoord( MSG_ONE, cube.compAltOffset_y );
-  WriteCoord( MSG_ONE, cube.compAltOffset_z );
+  WriteLong( MSG_ONE, cube.compAltOffset_x );
+  WriteLong( MSG_ONE, cube.compAltOffset_y );
+  WriteLong( MSG_ONE, cube.compAltOffset_z );
   
-  WriteCoord( MSG_ONE, cube.velocity_x );
-  WriteCoord( MSG_ONE, cube.velocity_y );
-  WriteCoord( MSG_ONE, cube.velocity_z );
+  WriteLong( MSG_ONE, cube.velocity_x );
+  WriteLong( MSG_ONE, cube.velocity_y );
+  WriteLong( MSG_ONE, cube.velocity_z );
   
   WriteShort( MSG_ONE, cube.count );
   WriteShort( MSG_ONE, cube.count1 );
@@ -797,11 +793,11 @@ void() legacy_PlayerDie={
 	//self.radsuit_finished = 0;
 };
 
-float(entity piece) csqc_updateCompStat={
+float(float hpCurrent, float hpTotal) csqc_updateCompStat={
   local float perc;
   perc = 0;
-  if( piece && piece.health > 0 ){
-    perc = (piece.health / piece.max_health)*100;
+  if( hpCurrent > 0 ){
+    perc = (hpCurrent / hpTotal)*100;
   }
   return perc;
 };

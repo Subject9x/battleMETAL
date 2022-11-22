@@ -55,6 +55,28 @@ void( entity active, string event) trigger_event={
   }
 };
 
+/*
+  mark entity as having extending triggers, this will 
+*/
+void() trigger_ext_check={
+  self.hasExtTrigs = 0;
+  if(self.trigOnDeath != ""){
+    self.hasExtTrigs = 1;
+  }
+  if(self.trigOnSpawn != ""){
+    self.hasExtTrigs = 1;
+  }
+  if(self.trigOnAttack != ""){
+    self.hasExtTrigs = 1;
+  }
+  if(self.trigOnDamage != ""){
+    self.hasExtTrigs = 1;
+  }
+  if(self.trigOnPanic != ""){
+    self.hasExtTrigs = 1;
+  }
+};
+
 void() trigger_reactivate =
 {
 	self.solid = SOLID_TRIGGER;
@@ -271,86 +293,147 @@ void() trigger_secret =
 
 //=============================================================================
 
-
+/*
+message(string) : "played when 'sequence complete'"
+  description(string) : "Only X to go message, use %s once for item type. "
+  abbrev(string) : "item name to go in [description]."
+  missionFile(string) : "More %s remaining."
+  lefty(integer) : "threshold to determine between 'more to go' and 'x to go'." : 0
+*/
 void() counter_use =
 {
-	self.count = self.count - 1;
-	if (self.count > 0)
-	{
-		if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
-		{
-      if( self.vec_size && self.vec_size > 0) {
-        if( self.count >= self.vec_size ){
-          if( self.deathmsg != "" ){
-            centerprint (activator, self.deathmsg );
-          }
-          else{
-            centerprint (activator, "There are more to go...");
-          }
-        }
-        else{
-          if( self.description != "" && self.abbrev != "" ){
-            centerprint (activator, strcat( self.description, " ", ftos(self.count), " ", self.abbrev ));
-          }
-          else{
-            centerprint( activator, sprintf("Only %u more to go...", self.count));
-          }
-        }
-      }
-      else{
-        //legacy / default logic
-        if (self.count >= 4){
-          if( self.deathmsg != "" ){
-            centerprint (activator, self.deathmsg );
-          }
-          else{
-            centerprint (activator, "There are more to go...");
-          }
-        }
-        else{
-          centerprint( activator, sprintf("Only %u more to go...", self.count));
-        }
-      }
-		}
+  self.count = self.count - 1;
+	if (self.count < 0){
 		return;
 	}
-	
-	if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0){
-  	if( self.message != "" && self.message ){
-      centerprint(activator, self.message);
+  if((self.spawnflags & SPAWNFLAG_DYNAMIC_COUNT)){
+    if( self.count != 0 ){
+      if( activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0 ){
+        if( self.count >= self.lefty ){
+          if( self.missionFile && self.abbrev ){
+            centerprint (activator, sprintf(self.missionFile, self.abbrev));
+          }
+        }
+        else{
+          if( self.abbrev ){
+            centerprint (activator, sprintf(self.description, self.count, self.abbrev));
+          }
+          else{
+            centerprint (activator, sprintf("Only %u more to go...", self.count));
+          }
+        }
+      }
+      return;
     }
-    else{
+    
+    if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0){
+      if(self.message){
+        centerprint(activator, self.message);
+      }
+      else{
+        centerprint(activator, "Sequence completed!");
+      }
+    }
+  }
+  else{
+    //default Q1 behavior
+    if (self.count != 0){
+      if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0){
+        if (self.count >= 4)
+          centerprint (activator, "There are more to go...");
+        else if (self.count == 3)
+          centerprint (activator, "Only 3 more to go...");
+        else if (self.count == 2)
+          centerprint (activator, "Only 2 more to go...");
+        else
+          centerprint (activator, "Only 1 more to go...");
+      }
+      return;
+    }
+    
+    if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0){
       centerprint(activator, "Sequence completed!");
     }
   }
-  self.enemy = activator;
-  multi_trigger ();
+
+	self.enemy = activator;
+	multi_trigger ();
   if( !(self.flags & 32) ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
   }
 };
 
-/*QUAKED trigger_counter (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT
-Acts as an intermediary for an action that takes multiple inputs.
 
-If nomessage is not set, t will print "1 more.. " etc when triggered and "sequence complete" when finished.
+/*
+  So tired of having to keep mental overhead of dynamic trigger counts,
+  this spawnflag essentially queries every entity where entity.target = self.targetname
+  and builds the .count variable based on that.
+*/
+void() counter_dynamic_query={
+  local entity targs;
+  local float addLatch;
+  self.count = 0;
+      
+  targs = findchain(target, self.targetname);
+  while(targs){
+    self.count = self.count + 1;
+    targs = targs.chain;
+  }
+  
+  targs = findchainfloat(hasExtTrigs, TRUE);
+  while(targs){
+    addLatch = FALSE;
+    if(self.targetname == targs.trigOnDeath){
+      addLatch = TRUE;
+    }
+    if(self.targetname == targs.trigOnSpawn){
+      addLatch = TRUE;
+    }
+    if(self.targetname == targs.trigOnAttack){
+      addLatch = TRUE;
+    }
+    if(self.targetname == targs.trigOnDamage){
+      addLatch = TRUE;
+    }
+    if(self.targetname == targs.trigOnPanic){
+      addLatch = TRUE;
+    }
+    if(addLatch){
+      self.count = self.count + 1;
+    }
+    targs = targs.chain;
+  }
+  if( self.count == 0 ){
+    dprint(sprintf("\n trigger_counter(%s) at (%0.2f %0.2f %0.2f) was SPAWNFLAG_DYNAMIC_COUNT but count was 0!\n", self.targetname, self.origin_x, self.origin_y, self.origin_z));
+    return;
+  }
+  if(self.lefty){
+    self.lefty = max(1, self.count/2);  //hacky fix to ignore 'custom' messages for now.
+  }
+};
 
-After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
-
--------- KEYS --------
-message = <string> played when 'sequence complete'
-description = <string> text to write before the <.count> value.
-abbrev = <string> text to write AFTER <.count> value.
-deathmsg = <string> text to write instead of "more to go"
-vec_size = <float> threshold to determine between "more to go" and "x to go"
--------- SPAWNFLAGS --------
-nomessage 1
-NO_EASY 2 : remove when skill = 0
-NO_NORM 4 : remove when skill = 1
-NO_HARD 8 : remove when skill = 2
-NO_NIGHT 16 : remove when skill = 3
-NO_REMOVE 32 : don't remove when sequence complete.
+/*
+@SolidClass base(BaseTrigger, SkillFlagsEngine) = trigger_counter : "when triggered, count is subtracted by 1.
+  Acts as an intermediary for an action that takes multiple inputs.
+    If nomessage is not set, t will print '1 more.. ' etc when triggered and 'sequence complete' when finished.
+    After the counter has been triggered 'count' times (default 2), it will fire all of it's targets and remove itself.
+    note: triggers ON use() where .count = '0', so your ideal total should actually be N - 1." [
+  
+  count(integer) : "Count down from this total." : 2
+  message(string) : "played when 'sequence complete'"
+  description(string) : "Only X to go message, use %s once for item type. "
+  abbrev(string) : "item name to go in [description]."
+  missionFile(string) : "More %s remaining."
+  lefty(integer) : "threshold to determine between 'more to go' and 'x to go'." : 0
+  
+  spawnflags(Flags) = [
+    1 : "no message" : 0
+    2 : "Dynamic Count" : 0
+    4 : "Custom Messages" : 0
+    32 : "No remove" : 0
+  ]  
+]
 */
 void() trigger_counter =
 {
@@ -358,25 +441,25 @@ void() trigger_counter =
   //I use this for wave-based maps to 'dynamically' change wave kill counts.
   switch(skill){
     default:
-      if( (self.spawnflags & 2) ){
+      if( (self.spawnflags & NO_EASY) ){
         remove(self);
         return;
       }
       break;
     case 1:
-      if( (self.spawnflags & 4) ){
+      if( (self.spawnflags & NO_NORMAL) ){
         remove(self);
         return;
       }
       break;
     case 2:
-      if( (self.spawnflags & 8) ){
+      if( (self.spawnflags & NO_HARD) ){
         remove(self);
         return;
       }
       break;
     case 3:
-      if( (self.spawnflags & 16) ){
+      if( (self.spawnflags & NO_HARD) ){
         remove(self);
         return;
       }
@@ -388,6 +471,26 @@ void() trigger_counter =
 		self.count = 2;
   }
 	self.use = counter_use;
+  
+  if((self.spawnflags & SPAWNFLAG_CUSTOM_MSG)){
+    if(!self.description){
+      dprint(sprintf("\n trigger_counter(%s) at (%0.2f %0.2f %0.2f) was SPAWNFLAG_CUSTOM_MSG but missing self.description!\n", self.targetname, self.origin_x, self.origin_y, self.origin_z));
+    }
+    if(!self.abbrev){
+      dprint(sprintf("\n trigger_counter(%s) at (%0.2f %0.2f %0.2f) was SPAWNFLAG_CUSTOM_MSG but missing self.abbrev!\n", self.targetname, self.origin_x, self.origin_y, self.origin_z));
+    }
+    if(!self.missionFile){
+      dprint(sprintf("\n trigger_counter(%s) at (%0.2f %0.2f %0.2f) was SPAWNFLAG_CUSTOM_MSG but missing self.missionFile!\n", self.targetname, self.origin_x, self.origin_y, self.origin_z));
+    }
+    if(!self.lefty){
+      self.lefty = max(1, self.count / 2);
+    }
+  }
+  
+  if((self.spawnflags & SPAWNFLAG_DYNAMIC_COUNT)){
+    self.think = counter_dynamic_query;
+    self.nextthink = time + 0.1;
+  }
 };
 
 
@@ -614,7 +717,7 @@ void() trigger_skill_touch =
 	if (other.classname != "player")
 		return;
 		
-	cvar_set ("skill", self.message);
+	cvar_set ("skill", ftos(self.aState));
 };
 
 /*QUAKED trigger_setskill (.5 .5 .5) ?

@@ -23,6 +23,8 @@ Overview:
   .vector rightArm;
   .vector leg;
 #endif
+.vector cameraOffset; //replaces .cockpit entity
+.vector cameraOrigin; //replaces .cockpit entity
 
 .entity partPrev;     //walk the chain
 .entity partNext;     //chain entity of next part in unit's part list
@@ -33,4 +35,3 @@ Overview:
 .vector compOffset;
 .vector hitOffset;    //used for t_damage calcs, its compOffset without the 'depth' (Z) field.
 .float hardpointSize;
-.float hardpointType;

@@ -9,19 +9,22 @@ according to the original source code, there should only be one
 t_damage function and 1 killed function...for some reason, maybe good house keeping?
 */
 
-entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, vector force) t_damage={
+float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
   local entity notTarg;
   local float dmgAmt;
+  local float dmgPartId;
+  
+  dmgPartId = 0;
   
   if( !trg.takedamage ){
-    return world;
+    return dmgPartId;
   }
   if( (trg.flags & FL_GODMODE) ){
-    return world;
+    return dmgPartId;
   }
   if( trg.deadflag != DEAD_NO ){
-    return world;
+    return dmgPartId;
   }
   
   dmgTrg = trg;
@@ -85,81 +88,125 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
                         
-                         //------------>TODO: Damage Buffer system
-                        //AI react to Damage
-                        if( (trg.flags & FL_MONSTER) ){
-                          notTarg = self;
-                          self = dmgTrg;
-                          if( self.th_pain ){  
-                            self.th_pain( attacker );
-                          }
-                          if( attacker.faction != self.faction ){
-                            if( self.ai_rank > AI_RANK_REG ){
-                              if( self.shield <= (self.shieldMax / 2) ){
-                                ai_call_for_help(attacker);
-                              }
-                            }
-                          }
-                          self = notTarg;
-                        }
-                        //-----------------------------
-  
-  if( dmgAmt <= 0 ){
-    return trg;
+     //------------>TODO: Damage Buffer system
+    //AI react to Damage
+    if( (dmgTrg.flags & FL_MONSTER) ){
+      notTarg = self;
+      self = dmgTrg;
+      if( self.th_pain && self.faction != notTarg.faction){  
+        self.th_pain( attacker );
+      }
+      if( attacker.faction != self.faction ){
+        if( self.ai_rank > AI_RANK_REG ){
+          if( self.shield <= (self.shieldMax / 2) ){
+            ai_call_for_help(attacker);
+          }
+        }
+      }
+      self = notTarg;
+    }
+    //-----------------------------
+
+  if( dmgAmt < 1 ){
+    return dmgPartId;
   }
   
   //the special hit-location calculator is only run for DATA_MECH units
-  if( trg.data_type == DATA_MECH ){
+  if( dmgTrg.data_type == DATA_MECH ){
     //filter out leg hits
-    if( !(dmgTrg.legs.flags & FL_DISARMED) && (dmg_point_z < (trg.origin_z - 5)) ){
-      dmgTrg = dmgTrg.legs;
+    if( !(dmgTrg.legs_flags & FL_DISARMED) && (dmg_point_z < (trg.origin_z - 5)) ){
+      dmgPartId = M_LEGS;
     }
     else{
       if(dmg_point_z < (trg.origin_z - 5) ){
         dmgAmt = dmgAmt * 0.33;  //NOTE: indirect hit to not completely punished wasted leg shots
       }
-      dmgTrg = t_find_part(dmg_point, dmgTrg);
+      dmgPartId = t_find_part(dmg_point, dmgTrg);
     }
   }
   
+  //TODO: this goes to damage buffer
+  if( dmgTrg.health > 0 ){
+    if( dmgTrg.data_type == DATA_MECH ){
+      if( (dmgTrg.criticalHits & M_TOR_LEFT) ){
+        dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
+      }
+      if( (dmgTrg.criticalHits & M_TOR_RIGHT) ){
+        dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
+      }
+      if( dmgPartId > 0 ){
+        switch( dmgPartId ){
+          case M_TOR_LEFT:
+            dmgTrg.torL_hp = max(0, dmgTrg.torL_hp - dmgAmt);
+            if(dmgTrg.torL_hp <= 0){
+              dmgTrg.critBuffer = dmgTrg.critBuffer | M_TOR_LEFT;
+              if( (dmgTrg.unitModFlags & MOD_HAS_ARM_L) && !(dmgTrg.criticalHits & M_ARM_LEFT) ){
+                dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_LEFT;
+                dmgTrg.armL_hp = 0;
+              }
+            }
+            break;
+          case M_TOR_RIGHT:
+            dmgTrg.torR_hp = max(0, dmgTrg.torR_hp - dmgAmt);
+            if(dmgTrg.torR_hp <= 0){
+              dmgTrg.critBuffer = dmgTrg.critBuffer | M_TOR_RIGHT;
+              if( (dmgTrg.unitModFlags & MOD_HAS_ARM_R) && !(dmgTrg.criticalHits & M_ARM_RIGHT) ){
+                dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_RIGHT;
+                dmgTrg.armR_hp = 0;
+              }
+            }
+            break;
+          case M_ARM_RIGHT:
+            dmgTrg.armR_hp = max(0, dmgTrg.armR_hp - dmgAmt);
+            if(dmgTrg.armR_hp <= 0){
+              dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_RIGHT;
+            }
+            break;
+          case M_ARM_LEFT:
+            dmgTrg.armL_hp = max(0, dmgTrg.armL_hp - dmgAmt);
+            if(dmgTrg.armL_hp <= 0){
+              dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_LEFT;
+            }
+            break;
+          case M_LEGS:
+            dmgTrg.legs_hp = max(0, dmgTrg.legs_hp - dmgAmt);
+            if(dmgTrg.legs_hp <= 0){
+              dmgTrg.critBuffer = dmgTrg.critBuffer | M_LEGS;
+            }
+            break;
+          default:
+            dmgTrg.health = max(0, dmgTrg.health - dmgAmt);
+            break;
+        }
+      }
+    }
+    else{
+      dmgTrg.health = dmgTrg.health - dmgAmt;
+    }
+  }
+  //=====================================
   
-                              //TODO: this goes to damage buffer
-                              if( dmgTrg.health > 0 ){
-                                if( (trg.flags & FL_UNIT) && trg.data_type == DATA_MECH){
-                                  if( !(dmgTrg.partTypeId & (M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT)) ){
-                                    if( (trg.criticalHits & M_TOR_LEFT) ){
-                                      dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
-                                    }
-                                    if( (trg.criticalHits & M_TOR_RIGHT) ){
-                                      dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
-                                    }
-                                  }
-                                }
-                                
-                                dmgTrg.health = dmgTrg.health - dmgAmt;
-                                if( dmgTrg.health < 0){
-                                  dmgTrg.health = 0;
-                                }
-                              }
-                              
-                              
-                              if( (dmgTrg.flags & FL_MONSTER) && (dmgTrg.data_type != DATA_BLD) ){
-                                if( util_getMechHpAverage(dmgTrg) < 0.5){
-                                  if( attacker.faction != self.faction ){
-                                    notTarg = self;
-                                    self = dmgTrg;
-                                      ai_call_for_help( attacker );
-                                    self = notTarg;
-                                  }
-                                }
-                              }
-                              if( dmgTrg.health <= 0 ){
-                                if( dmgTrg.th_die ){
-                                  killed(dmgTrg, attacker);
-                                }
-                              }
-                              //---------------------------------
-  return dmgTrg;
+  
+  //TODO - count-gate this so its not spammed on every single weapon hit
+  if( (dmgTrg.flags & FL_MONSTER) && dmgTrg.data_type != DATA_BLD ){
+    if( util_getMechHpAverage(dmgTrg) < 0.5){
+      if( attacker.faction != self.faction ){
+        notTarg = self;
+        self = dmgTrg;
+          ai_call_for_help( attacker );
+        self = notTarg;
+      }
+    }
+  }
+  //=====================================
+  
+  if( dmgTrg.health <= 0 ){
+    if( dmgTrg.th_die ){
+      killed(dmgTrg, attacker);
+    }
+  }
+  //---------------------------------
+  return dmgPartId;
 };
 
 
@@ -313,37 +360,59 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
 /*
   finds closest sub-entity
 */
-entity(vector point, entity trgUnit) t_find_part={
-  local entity part;
+float(vector point, entity trgUnit) t_find_part={
+  local float partId;
   local float radi;
   
-  part = trgUnit;
-  radi = vlen(trgUnit.torsoCenter.hitOffset - point);
+  partId = M_UNIT;
+  radi = vlen(trgUnit.torC_hitOffset - point);
     
-  if( vlen(trgUnit.armLeft.hitOffset - point ) < radi ){
-    part = trgUnit.armLeft;
-    radi = vlen(point - trgUnit.armLeft.hitOffset);
+  if( vlen(trgUnit.armL_hitOffset - point ) < radi ){
+    partId = M_ARM_LEFT;
+    radi = vlen(point - trgUnit.armL_hitOffset);
   }
-  if( vlen(trgUnit.armRight.hitOffset - point ) < radi ){
-    part = trgUnit.armRight;
-    radi = vlen(point - trgUnit.armRight.hitOffset);
+  if( vlen(trgUnit.armR_hitOffset - point ) < radi ){
+    partId = M_ARM_RIGHT;
+    radi = vlen(point - trgUnit.armR_hitOffset);
   }
-  if( vlen(trgUnit.torsoLeft.hitOffset - point ) < radi ){
-    part = trgUnit.torsoLeft;
-    radi = vlen(point - trgUnit.torsoLeft.hitOffset);
+  if( vlen(trgUnit.torL_hitOffset - point ) < radi ){
+    partId = M_TOR_LEFT;
+    radi = vlen(point - trgUnit.torL_hitOffset);
   }
-  if( vlen(trgUnit.torsoRight.hitOffset - point ) < radi ){
-    part = trgUnit.torsoRight;
-    radi = vlen(point - trgUnit.torsoRight.hitOffset);
+  if( vlen(trgUnit.torR_hitOffset - point ) < radi ){
+    partId = M_TOR_RIGHT;
+    radi = vlen(point - trgUnit.torR_hitOffset);
   }
-
-  if( part.deadflag > DEAD_NO ){
-    part = part.realowner;
+  
+  if( (trgUnit.criticalHits & partId) ){
+    if( partId == M_ARM_LEFT ){
+      if( (trgUnit.criticalHits & M_TOR_LEFT) ){
+        return M_UNIT;
+      }
+      else{
+        return M_TOR_LEFT;
+      }
+    }
+    if( partId == M_ARM_RIGHT ){
+      if( (trgUnit.criticalHits & M_TOR_RIGHT) ){
+        return M_UNIT;
+      }
+      else{
+        return M_TOR_RIGHT;
+      }
+    }
+    if(partId == M_TOR_LEFT ){
+      return M_UNIT;
+    }
+    if(partId == M_TOR_RIGHT ){
+      return M_UNIT;
+    }
+    if(partId == M_LEGS) {
+      return M_UNIT;
+    }
   }
-  if( part == trgUnit.torsoCenter ){
-    part = trgUnit;
-  }
-  return part;
+  
+  return partId;
 };
 
 /*

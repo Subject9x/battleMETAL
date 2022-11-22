@@ -15,8 +15,8 @@ entity		world;
 float		time;
 float		frametime;
 
-float 		player_localentnum;	//the entnum = player_localnum + 1 (apparently)
-float 		player_localnum;	//the playernum
+float 		player_localentnum;	//Player Entity Number ON SERVER!
+float 		player_localnum;	//LOCAL player number.
 float		  maxclients;	//a constant filled in by the engine. gah, portability eh?
 
 float		clientcommandframe;	//player movement
@@ -185,8 +185,9 @@ vector dmg_origin;
 
 const float MASK_ENGINE			= 1;
 const float MASK_ENGINEVIEWMODELS	= 2;
-const float MASK_NORMAL			= 4;
-//casts no shadows.
+const float MASK_NORMAL			= 4;//casts no shadows.
+const float MASK_HUD        = 8; //custom, used to turn model on/off for hud draws.
+
 
 //no proof these render flags are accessible by DP's flavor of QuakeC - Roohr :|
 const float RF_VIEWMODEL	= 1; // The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
@@ -239,6 +240,8 @@ const float VF_FOG_END      = 209; //(float)
 const float VF_FOG_HEIGHT   = 210; //(float)
 const float VF_FOG_FADEDEPTH= 211; //(float)
 
+const float VF_MAINVIEW     = 400; //(float)
+const float VF_MINFPS_QUALITY = 401; //float)
 
 /*
   Having the full list of these would have helped from the start...
@@ -616,6 +619,7 @@ string(string info, string key, string value, ...) infoadd = #226;
 string(string info, string key) infoget = #227;
 //-----------------------------------------------------------------------------------
 
+float(string s1, string s2) strcmp = #228;
 float(string s1, string s2, float len) strncmp = #228;
 float(string s1, string s2) strcasecmp = #229;
 float(string s1, string s2, float len) strncasecmp = #230;
@@ -1402,6 +1406,7 @@ float CF_USERINFO             = 512;  // command or cvar used to communicate use
 float CF_PERSISTENT           = 1024; // cvar must not be reset on gametype switch (such as scr_screenshot_name, which otherwise isn't set to the mod name properly)
 float CF_PRIVATE              = 2048; // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
 float CF_MAXFLAGSVAL          = 4095;    // used to determine if flags is valid
+
 
 //DP_QC_CRC16
 //idea: divVerent

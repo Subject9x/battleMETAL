@@ -14,6 +14,7 @@ void() unit_onnek_h={
 
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_ENE;
 
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -21,6 +22,7 @@ void() unit_onnek_h={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -58,6 +60,7 @@ void() unit_onnek_m={
 
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_ENE;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -65,13 +68,14 @@ void() unit_onnek_m={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_emp;
-      self.next_wepn2 = UID_ITEM_emp;
-      self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_heatsink;
+      self.next_wepn2 = UID_ITEM_recharge_capacitor;
+      self.next_wepn3 = UID_ITEM_heatsink;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
@@ -83,9 +87,9 @@ void() unit_onnek_m={
     default:
       self.spreadDefault = ACCURACY_SKIRMISH;
       self.next_wepn1 = UID_ITEM_particle_cannon;
-      self.next_wepn2 = UID_ITEM_particle_cannon;
-      self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_heatsink;
+      self.next_wepn2 = UID_ITEM_recharge_capacitor;
+      self.next_wepn3 = UID_ITEM_heatsink;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -96,6 +100,7 @@ void() unit_onnek_militar_zapper={
 
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_ENE;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -103,33 +108,34 @@ void() unit_onnek_militar_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;
       self.next_wepn1 = UID_ITEM_ion_coil;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_adv_reload;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_ion_coil;
       self.next_wepn3 = UID_ITEM_recharge_capacitor;
-      self.next_wepn4 = UID_ITEM_adv_reload;
+      self.next_wepn4 = UID_ITEM_heatsink;
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
       self.next_wepn1 = UID_ITEM_emp;
       self.next_wepn2 = UID_ITEM_emp;
-      self.next_wepn3 = UID_ITEM_adv_reload;
+      self.next_wepn3 = UID_ITEM_heatsink;
       self.next_wepn4 = UID_ITEM_recharge_capacitor;
       break;
     default:
       self.spreadDefault = ACCURACY_SKIRMISH;
       self.next_wepn1 = UID_ITEM_EMPTY;
       self.next_wepn2 = UID_ITEM_ion_coil;
-      self.next_wepn3 = UID_ITEM_ion_coil;
+      self.next_wepn3 = UID_ITEM_heatsink;
       self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
@@ -140,6 +146,7 @@ void() unit_onnek_survest_zapper={
 
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_ENE;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -147,6 +154,7 @@ void() unit_onnek_survest_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -174,7 +182,7 @@ void() unit_onnek_survest_zapper={
       self.next_wepn1 = UID_ITEM_light_laser;
       self.next_wepn2 = UID_ITEM_light_laser;
       self.next_wepn3 = UID_ITEM_light_laser;
-      self.next_wepn4 = UID_ITEM_light_laser;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -185,6 +193,7 @@ void() unit_onnek_militar_gunner={
 
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_DIR;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -192,6 +201,7 @@ void() unit_onnek_militar_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;
@@ -219,7 +229,7 @@ void() unit_onnek_militar_gunner={
       self.next_wepn1 = UID_ITEM_flak;
       self.next_wepn2 = UID_ITEM_flak;
       self.next_wepn3 = UID_ITEM_flak;
-      self.next_wepn4 = UID_ITEM_flak;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -229,6 +239,7 @@ void() unit_onnek_survest_gunner={
 
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_DIR;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -236,6 +247,7 @@ void() unit_onnek_survest_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -263,7 +275,7 @@ void() unit_onnek_survest_gunner={
       self.next_wepn1 = UID_ITEM_light_autocannon;
       self.next_wepn2 = UID_ITEM_light_autocannon;
       self.next_wepn3 = UID_ITEM_light_autocannon;
-      self.next_wepn4 = UID_ITEM_light_autocannon;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }
   macro_ai_setup(ai_vec_dest)
@@ -274,6 +286,7 @@ void() unit_onnek_militar_lobber={
 
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_MIS;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -281,6 +294,7 @@ void() unit_onnek_militar_lobber={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 2:
       //skill- 2
@@ -295,8 +309,8 @@ void() unit_onnek_militar_lobber={
       self.spreadDefault = ACCURACY_SNIPER;
       self.next_wepn1 = UID_ITEM_snub_artillery;
       self.next_wepn2 = UID_ITEM_snub_artillery;
-      self.next_wepn3 = UID_ITEM_snub_artillery;
-      self.next_wepn4 = UID_ITEM_flak;
+      self.next_wepn3 = UID_ITEM_adv_reload;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     default:
       //skill- 0/1
@@ -314,6 +328,7 @@ void() unit_onnek_survest_lobber={
 
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_MIS;
    
   if( ai_can_spawn() == FALSE ){
     remove(self);
@@ -321,13 +336,14 @@ void() unit_onnek_survest_lobber={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 2:
       //skill- 2
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_rotary_plasma;
       self.next_wepn2 = UID_ITEM_rotary_plasma;
-      self.next_wepn3 = UID_ITEM_rotary_plasma;
+      self.next_wepn3 = UID_ITEM_EMPTY;
       self.next_wepn4 = UID_ITEM_light_laser;
       break;
     case 3:
@@ -336,14 +352,14 @@ void() unit_onnek_survest_lobber={
       self.next_wepn1 = UID_ITEM_rotary_plasma;
       self.next_wepn2 = UID_ITEM_rotary_plasma;
       self.next_wepn3 = UID_ITEM_rotary_plasma;
-      self.next_wepn4 = UID_ITEM_rotary_plasma;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     default:
       //skill- 0/1
       self.spreadDefault = ACCURACY_SKIRMISH;
       self.next_wepn1 = UID_ITEM_rotary_plasma;
       self.next_wepn2 = UID_ITEM_rotary_plasma;
-      self.next_wepn3 = UID_ITEM_light_autocannon;
+      self.next_wepn3 = UID_ITEM_EMPTY;
       self.next_wepn4 = UID_ITEM_EMPTY;
       break;
   }

@@ -19,7 +19,13 @@ void() menu_deployDrawFrame={
   menu_navBar_drawFrame(topleftroot);
   
   menu_deploy_missionInfoPanel(topleftroot + '0 32');
-  menu_deploy_mapOverviewPanel(topleftroot + '235 32');
+  
+  //when Co-op, show other players and their status.
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+    ui_render_coop_player_status( topleftroot + [256 + 18, 32],  '320 80', CLR_DEF_UI_DEPLOY + '0.2 0.2 0.2' );
+  }
+  menu_deploy_mapOverviewPanel(topleftroot + '235 115');
+  
   menu_deploy_navInfoPanel(topleftroot + '0 113');
   menu_deploy_mechInfoPanel(topleftroot + '0 193');
   menu_deploy_mapKeyPanel(topleftroot+ '0 306');
@@ -331,7 +337,9 @@ void(vector ofs) menu_deploy_mechInfoPanel={
 };
 
 void(vector ofs) menu_deploy_mapOverviewPanel={
+  local vector panelSize;
   local vector mpos, iofs, map_size, unavailableOrg;
+  local vector mapMins;
   local vector renderColor;
   local float itr, unavailableLen;
   local entity mapKey;
@@ -347,28 +355,37 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   local float nameLen;
   local string playerName;
   
+  panelSize = '350 350';
+  
   itr = 0;
   mpos = ofs;
-  
+
   iofs = mpos;
   DEPLOY_MAP_ORG = iofs;
   
   if( MSN_MAPPIC != "" ){
-    drawpic(iofs, MSN_MAPPIC, '380 380', '1 1 1', 1, 0);
+    drawpic(iofs, MSN_MAPPIC, panelSize, '1 1 1', 1, 0);
   }
   else{
     unavailableLen = stringwidth( "!- Satellite Data unavailable -!", 0 ,'16 16');
     unavailableOrg = iofs;
-    unavailableOrg_x = unavailableOrg_x + (380 / 2) - ( unavailableLen / 2 );
-    unavailableOrg_y = unavailableOrg_y + (380 / 2) -  8 ;
+    unavailableOrg_x = unavailableOrg_x + (panelSize_x / 2) - ( unavailableLen / 2 );
+    unavailableOrg_y = unavailableOrg_y + (panelSize_y / 2) -  8 ;
     gui_wrapText(unavailableOrg, '210 32', "!- Satellite Data unavailable -!", '16 16', '1 0 0', 1);
   }
-  map_size_x = ((world.mins_x*-1) + world.maxs_x);
-  map_size_y = ((world.mins_y*-1) + world.maxs_y);
+  
+  if(ENT_SERVER_INFO.minimapMins != '0 0 0' && ENT_SERVER_INFO.minimapMaxs != '0 0 0'){
+    map_size = [(ENT_SERVER_INFO.minimapMins_x*-1) + ENT_SERVER_INFO.minimapMaxs_x, (ENT_SERVER_INFO.minimapMins_y*-1) + ENT_SERVER_INFO.minimapMaxs_y];
+    mapMins = ENT_SERVER_INFO.minimapMins;
+  }
+  else{
+    map_size = [(world.mins_x*-1) + world.maxs_x, (world.mins_y*-1) + world.maxs_y];
+    mapMins = world.mins;
+  }
   
   mapKey = mapKeyObject;
   for( mapKey = mapKeyObject; mapKey != world; mapKey = mapKey.w_slot ){
-    nofs = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, iofs, '380 380');
+    nofs = gui_mapCoordToImgCoord(mapMins, map_size, mapKey.origin, iofs, panelSize);
     switch( mapKey.data_type ){
       case DATA_MAP_DMG:
         drawpic( nofs - '5 5', UI_DEF_BOX_64, '10 10', CLR_DEF_RED * 1.15, 0.67, 0);
@@ -387,7 +404,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       continue;
     }
     
-    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, iofs, '380 380');
+    tofs = nofs = gui_mapCoordToImgCoord(mapMins, map_size, nav.origin, iofs, panelSize);
     
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -416,7 +433,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     if( deploy.isActive == FALSE ){
       continue;
     }
-    tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, deploy.origin, iofs, '380 380');
+    tofs = nofs = gui_mapCoordToImgCoord(mapMins, map_size, deploy.origin, iofs, panelSize);
     
     if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
       drawpic(nofs, UI_DEF_DEPLOYPOINT, '16 16', CLR_DEF_ARM_HALF, 1, 0) ;
@@ -438,7 +455,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawline(1, lineOrg + '0 4', CLIENT_MENU_nav_ui_org + '0 4', '0.85 0.85 0', 0.75, 0);
   }
   
-  helpOrg = Vector2(mpos_x + 380 - 12,  mpos_y);
+  helpOrg = [mpos_x + panelSize_x - 12,  mpos_y];
   DEPLOY_HELP_NAV_MAP = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
   
@@ -455,7 +472,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     if(player.faction == FACTION_ALL){
       continue;
     }
-    friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, '380 380');
+    friend_org = gui_mapCoordToImgCoord(mapMins, map_size, player.origin, iofs, panelSize);
     drawpic(friend_org, HUD_RAD_PIP_MCH, '12 12', CLR_DEF_IIF_FRIEND, 1, 0);
     
     nameOrg = friend_org + '0 -18';

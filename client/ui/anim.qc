@@ -22,6 +22,7 @@ void(string fileToOpen) anm_getFile={
 };
 
 void(string fileToOpen) anm_parseFile={
+  
   local float flannel, argc, line_tag, frame_count;
   local string file, contents, line;
   
@@ -128,7 +129,7 @@ void(string fileToOpen) anm_parseFile={
       }
     }
     
-    gui_set_screen_size();
+    gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
   }
 };
 
@@ -206,7 +207,7 @@ void(float timeVal) anm_new_frame={
     frameOrg = ANM_FRAME_POS[ANM_FRAME_CUR];
     
     local vector aspectsize;
-    aspectsize = gui_newAspectRatio(imageSize, Vector2(cvar("vid_conwidth"), cvar("vid_conheight")));
+    aspectsize = gui_newAspectRatio(imageSize, [cvar("vid_conwidth"), cvar("vid_conheight")]);
     
     aspectsize_x = aspectsize_x * frameSize_x;
     aspectsize_y = aspectsize_y * frameSize_y;

@@ -31,9 +31,11 @@ void() te_muzzle_swrm={
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
-  sound7(self, CHAN_AUTO, "sound/weapons/arh_fire.ogg", 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 165, 0 );
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 165, 0 );
   
-  pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), startOrg, normalize( endOrg - startOrg ) * 3, 1);
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), startOrg, normalize( endOrg - startOrg ) * 3, 1);
+  }
 }
 #endif
 void() data_ini_missile_swarm_={
@@ -57,9 +59,12 @@ void() data_ini_missile_swarm_={
   self.burstRate = 1;
   
 #ifdef CSQC
+  precache_sound("sound/weapons/arh_fire.ogg");
+  precache_model("models/weapons/w_swrm.md3");
+  precache_file( "gfx/ui/wep_icons/wi_swrm.png");
   self.w_name = "Missile - Swarm";
   self.fire_sound = "sound/weapons/arh_fire.ogg";
-  self.model = "q3mdl/weapons/w_swrm.md3";
+  self.model = "models/weapons/w_swrm.md3";
   self.abbrev = "SWRM";
   self.description = "+ target <shields> reduce damage. + Burst-fire. + Missiles will either lock-on to your Target | OR | Fire straight forward.";
   self.icon = "gfx/ui/wep_icons/wi_swrm.png"; 

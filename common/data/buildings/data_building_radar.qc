@@ -10,6 +10,43 @@ Overview: data file for building
   func: provides radar scanning to all friendly units in radius
 */
 
+
+void() building_radar_die2={
+#ifdef SSQC
+  local vector shoot;
+  shoot = randompos(self.absmin, self.absmax);
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
+  building_die();
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
+};
+
+void() building_radar_die1={
+#ifdef SSQC
+  local vector shoot;
+  if( self.deadflag > DEAD_NO ){
+    return;
+  }
+  self.deadflag = DEAD_DYING;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
+  ai_alert_close(self.enemy);
+#endif
+#ifdef CSQC
+  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+#endif
+  
+  self.think = building_radar_die2;
+  self.nextthink = time + 0.1;
+};
+
+
+#ifdef SSQC
 /*
   macro rebuild
 */
@@ -19,31 +56,6 @@ float() building_radar_alert1;   //th_missile
 void() building_radar_alert2;   //th_missile
 void() building_radar_cool1;    //th_melee
 void() building_radar_touch;    //touch
-
-void() building_radar_die2={
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
-  self.think = SUB_Null;
-  self.nextthink = time + 0.1;
-};
-
-void() building_radar_die1={
-  if( self.deadflag > DEAD_NO ){
-    return;
-  }
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_NOT;
-  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-
-  //fire triggers when dead
-  trigger_event( self.enemy, self.trigOnDeath );
-  ai_alert_close(self.enemy);
-  
-  self.think = building_radar_die2;
-  self.nextthink = time + 0.1;
-};
 
 /*
   th_stand
@@ -225,8 +237,70 @@ void() building_radar_touch={
     }
   }
 };
+#endif
 
-/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
+
+#ifdef CSQC
+void() radar_post_dlights={
+  if( self.deadflag == DEAD_NO ){
+    //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+    if(MENU_PROG_OFF == FALSE){
+      particleDraw = vlen(client_vis_org - self.origin);      
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
+        adddynamiclight( self.compOffset, 128, self.compAltOffsetCache); 
+      }
+    }
+  }
+};
+void() radar_post_th={
+  if( self.deadflag == DEAD_NO ){
+    if( self.faction == CLIENT_faction ){
+      if(  self.w_firetime == 1 ){
+        //ST_STAND -> sv/main/ai/ai_api.qh 
+        //post detecting, countdown to alarm
+        self.compAltOffsetCache = '1 1 0.4';
+        self.partTypeId = 2;
+      }
+      else if(  self.w_firetime == 2 ){
+        //ST_WALK -> sv/main/ai/ai_api.qh 
+        //idling normally
+        self.compAltOffsetCache = '0 0.8 0.6';
+        self.partTypeId = 11;
+      }
+      else if( self.w_firetime == 4 ){
+        //ST_RUN -> sv/main/ai/ai_api.qh 
+        //post is raising alarm
+        self.compAltOffsetCache = '1 0.6 0';
+        self.partTypeId = 4;
+      }
+    }
+    else{     
+      if( self.w_firetime == 1 ){
+        //ST_STAND-> sv/main/ai/ai_api.qh 
+        //post detecting, countdown to alarm
+        self.compAltOffsetCache = '1 0.8 0.4';
+        self.partTypeId = 3;
+      }
+      else if(  self.w_firetime == 2 ){
+        //ST_WALK -> sv/main/ai/ai_api.qh 
+        //idling normally
+        self.compAltOffsetCache = '0 0.4 1';
+        self.partTypeId = 9;
+      }
+      else if( self.w_firetime == 4 ){
+        //ST_RUN -> sv/main/ai/ai_api.qh 
+        //post is raising alarm
+        self.compAltOffsetCache = '1 0 0';
+        self.partTypeId = 1;
+      }
+    }
+    self.think = radar_post_th;
+    self.nextthink = time + 0.1;
+  }
+};
+#endif
+
+/*QUAKED building_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY IS_VIP
 { model("models/buildings/radar/radar.md3"); }
 
 Radar Post, has the ability to detect the player and alert friendly bot to these players.
@@ -258,23 +332,69 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 IS_VIP 8388608: faction-allied player will be notified of this entity's state
 */
-void() building_human_radar={
+void() building_radar={
   self.data_idx = self.nextVecChoice = UI_BUILDING_radar;
   self.data_type = DATA_BLD;
 
+  self.deadflag = DEAD_NO;  
+  self.vec_name = "Listening Post";
+  self.flags = self.flags | FL_MONSTER ;
+  self.vec_size = 1;
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_STEP;
+  self.takedamage = DAMAGE_AIM;
+  self.skin = self.faction - 1;
+  self.model = "models/buildings/radar/listpost.md3";
+  precache_model("models/buildings/radar/listpost.md3");
+  setmodel(self, "models/buildings/radar/listpost.md3");
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+
+  if( !self.health) {
+    self.health = 250;
+  }
+  self.max_health = self.health;
+  if( !self.shieldMax ){
+    self.shieldMax = 200;
+  }
+  if( !self.shieldRate ){
+    self.shieldRate = 0;
+  }
+  if( !self.energyRate ){
+    self.energyRate = 0;
+  }
+  if( !self.energyMax ){
+    self.energyMax = 100;
+  }
+  if( !self.radar_range ){
+    self.radar_range = 2000; 
+  }
+  
+  makevectors(self.angles);
+  self.th_die = building_radar_die1;
+#ifdef CSQC
+  self.th_walk = radar_post_th;
+  self.render_dlights = radar_post_dlights;
+  self.compOffset = self.origin + (v_up * 38) + (v_forward * -15) + (v_right * 18); //dlight origin
+  self.partTypeId = 0;  //dlight style
+  self.compAltOffsetCache = '0 0 0';  //dlight color
+#endif
+  
+#ifdef SSQC
+  if( self.angle ){
+    self.angles_y = self.angle;
+  }
+  
+  self.effects = self.effects | EF_LOWPRECISION;
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
+  trigger_ext_check();
 
   self.ai_rank = skill;
   self.w_firetime = AI_POST_SPOT_TIME;
-  self.vec_name = "Listening Post";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-  self.vec_size = 1;
-  macro_set_model("q3mdl/testball.md3", self.skin, EF_LOWPRECISION)
-  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
-  setsize(self, '-20 -20 0', '20 20 26');
+
   self.stat_rdr_mode = TRUE;
   
   self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;
@@ -293,26 +413,6 @@ void() building_human_radar={
       break;
   }
   
-  if( !self.health) {
-    self.health = self.max_health = 250;
-  }
-  if( !self.shieldMax ){
-    self.shieldMax = 200;
-  }
-  if( !self.shieldRate ){
-    self.shieldRate = 0;
-  }
-  if( !self.energyRate ){
-    self.energyRate = 0;
-  }
-  if( !self.energyMax ){
-    self.energyMax = 100;
-  }
-  if( !self.radar_range ){
-    self.radar_range = 2000; 
-  }
-  
-  self.deadflag = DEAD_NO;  
   if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 4) ){
       util_generateBuildingFoundation(self);
@@ -321,6 +421,7 @@ void() building_human_radar={
       droptofloor();
     }
   }
+  setorigin(self, self.origin);
   
   self.th_walk = building_radar_patrol1;
   self.th_stand = building_radar_detect1;
@@ -331,7 +432,6 @@ void() building_human_radar={
   self.touch = building_radar_touch;
   self.wait = time;
   
-  makevectors(self.angles);
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
   //allows RADAR to call a specific trigger when it spots something
@@ -355,6 +455,8 @@ void() building_human_radar={
   if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
     self.canTarget = FALSE;
   }
-  self.think = building_radar_patrol1;
-  self.nextthink = time + 1;
+  self.building_delay_think = building_radar_patrol1;
+  self.think = building_bbox_settle;
+  self.nextthink = time + 0.1;
+#endif
 };

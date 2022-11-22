@@ -15,17 +15,19 @@ void() CSQC_Init =
   local float i, cnt;
   
   registercvar("gamemode", "1", CF_CLIENT | CF_SERVER | CF_CLIENT_FROM_SERVER | CF_SERVER_FROM_CLIENT);
+  registercvar("saveslot", "0", CF_CLIENT | CF_ARCHIVE);
   registercommand("fog");
   //registercvar("cl_hud_sway", "1");
-  registercvar("cl_team", "0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("cl_team", "1", CF_CLIENT | CF_ARCHIVE);
+  //registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
+  //registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("chase_active", "0", CF_CLIENT | CF_SERVER | CF_ARCHIVE);
+  registercvar("chase_active",  "0", CF_CLIENT | CF_ARCHIVE);
   
   registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
-  
-  cvar_set("con_chat", "0", CF_CLIENT | CF_ARCHIVE);  //force old chat system off
+  registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
+  registercvar("sv_singlemap", "0", CF_SERVER_FROM_CLIENT);
+  cvar_set("con_chat", "0");  //force old chat system off
   
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
@@ -35,6 +37,8 @@ void() CSQC_Init =
 	// this is the place to do any registercmd() calls we want for custom csqc commands (like replacing +showscores) so that they tab-complete properly
 	// we can precache_sound and precache_model and precache_pic here
   VIEW_ORG = '0 0';
+  VIEW_ACT = [cvar("vid_width"), cvar("vid_height"), 0];
+  gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
   
   //ini the HUD sound system
   SQSIZE = 6; //set to 6
@@ -141,12 +145,22 @@ void() CSQC_Init =
 
   toolTip = spawn();
   UI_HANGAR_DATA_mech = spawn();
+  UI_HANGAR_DATA_mech.classname = "UI_ITEM";
+  
   UI_ARMING_DATA_item_a = spawn();
   UI_ARMING_DATA_item_b = spawn();
   UI_ARMING_DATA_item_list = spawn();
   UI_ARMING_item_drag = spawn();
+  
   HUD_DATA_weapon = spawn();
+  
   UI_HANGAR_DATA_mech_list = spawn();
+  UI_HANGAR_DATA_mech_list.classname = "UI_ITEM";
+  
+  
+  //cache these references here, asap.
+  //  yes, sadly, they will always take up space...
+  HUD_MODEL_ARMOR_GRAPH_TARGET = spawn();
   
   MOUSE_drag_timer = 0;
   HUD_SHIELD_FLASH_TIME = 0;
@@ -186,9 +200,8 @@ void() CSQC_Init =
   initparticlespawner(16);
   VIEW_OBS_ID = 1;
   ui_colors_set_player_list();
-  ISMENU_PREV = FALSE;
 
-  
+  //Grab player color settings from menu.
   freeGlobalString(PLAYER_COLOR_PSC)
   cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
   
@@ -198,6 +211,10 @@ void() CSQC_Init =
   freeGlobalString(PLAYER_COLOR_MIL)
   cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
   
+  cl_set_faction_colors();
+  cl_send_infostring( INFO_FLAG_COLOR );
+    
+  
   ui_data_hud_ini_tags();
   
   cl_ini_infostring();
@@ -205,9 +222,34 @@ void() CSQC_Init =
   CHAT_INP_SEND = FALSE;
 };
 
-// called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)
+// called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat),
+//can perform special logic or useful functionality (like bestweapon)
 void(string msg) GameCommand =
 {
+  local float argc;
+  local float factionColor;
+  
+  //cons_logAString("CS-GameCommand()", msg);//debug
+  argc = tokenizebyseparator(msg, " ");
+  
+  if(argv(0) == "tint"){
+    freeGlobalString(PLAYER_COLOR_PSC)
+    cacheGlobalString( PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
+    
+    freeGlobalString(PLAYER_COLOR_SRV)
+    cacheGlobalString( PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
+    
+    freeGlobalString(PLAYER_COLOR_MIL)
+    cacheGlobalString( PLAYER_COLOR_MIL, cvar_string("cl_color_mil") ) 
+    
+    cl_set_faction_colors();
+    cl_send_infostring( INFO_FLAG_COLOR );
+    
+    if( MENU_ACTIVE && (CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE) ){
+      menu_player_MechModel_color_update();
+    }    
+    return;
+  }
 };
 
 

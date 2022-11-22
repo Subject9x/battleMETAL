@@ -27,7 +27,7 @@ Overview:
 
 float SELECT_TYPE;
 float SELECT_PLAYERS;
-float SELECT_SKILL;
+//float SELECT_SKILL;
 float SELECT_RATE;
 
 float SELECT_MAP;
@@ -60,9 +60,9 @@ entity host_playermor;
 entity host_playerles;
 
 //coop settings
-entity host_skill_lbl;
+/*entity host_skill_lbl;
 entity host_skill_next;
-entity host_skill_prev;
+entity host_skill_prev;*/
 
 entity host_map_lbl;
 entity host_map_nxt;
@@ -111,7 +111,7 @@ void() host_update_playeramount={
     cvar_set("coop", "1");
     cvar_set("deathmatch", "0");
     cvar_set("teamplay", "0");
-    cvar_set("gamemode", "2");
+    cvar_set("gamemode", ftos(GAMEMODE_COOP));
     if( SELECT_PLAYERS > PLRS_MAX_COOP ){
       SELECT_PLAYERS = PLRS_MAX_COOP;
     }
@@ -126,7 +126,7 @@ void() host_update_playeramount={
     cvar_set("coop", "0");
     cvar_set("deathmatch", "1");
     cvar_set("teamplay", "1");
-    cvar_set("gamemode", "4");
+    cvar_set("gamemode", ftos(GAMEMODE_TEAMDM));
     if( SELECT_PLAYERS > PLRS_MAX_TDM ){
       SELECT_PLAYERS = PLRS_MAX_TDM;
     }
@@ -141,7 +141,7 @@ void() host_update_playeramount={
     cvar_set("coop", "0");
     cvar_set("deathmatch", "1");
     cvar_set("teamplay", "0");
-    cvar_set("gamemode", "3");
+    cvar_set("gamemode", ftos(GAMEMODE_DM));
     if( SELECT_PLAYERS > PLRS_MAX_TDM ){
       SELECT_PLAYERS = PLRS_MAX_TDM;
     }
@@ -160,7 +160,7 @@ void() host_update_playeramount={
   host_map_prev.subid = SUB_MENU;
 };
 
-void(float skl) host_update_skilllbl={
+/*void(float skl) host_update_skilllbl={
   switch(skl){
     case 0:
       host_skill_lbl.label = "NOVICE";
@@ -179,7 +179,7 @@ void(float skl) host_update_skilllbl={
       host_skill_lbl.color = CLR_DEF_RED;
       break;
   }
-};
+};*/
 
 void(float rte) host_update_rate={
   local string cmdString;
@@ -312,7 +312,8 @@ void() click_host_prevtype={
 };
 
 //coop callbacks
-void() click_host_nextskill={
+//co-op skill always ACE/ELITE
+/*void() click_host_nextskill={
   SELECT_SKILL = SELECT_SKILL + 1;
   if( SELECT_SKILL > 3 ){
     SELECT_SKILL = 0;
@@ -326,7 +327,7 @@ void() click_host_prevskill={
     SELECT_SKILL = 3;
   }
   host_update_skilllbl(SELECT_SKILL);
-};
+};*/
 
 void() click_host_map_nxt={
   local string check;
@@ -482,13 +483,10 @@ void() click_host_launch={
   }
   
   localcmd(strcat("maxplayers ",  ftos(rint(SELECT_PLAYERS)),"\n"));
-  if( cvar("deathmatch") ){
-    cvar_set("skill", "3");
-  }
-  else{
-    cvar_set("skill", ftos(SELECT_SKILL));
-  }
+  cvar_set("skill", "3");
+  
   cvar_set("sv_serverflags", ftos(rint(SERVER_FLAGS)));
+  
   menu_clear_items(M_STATE);
   menu_exit_togame();
   localcmd(strcat("map ", host_map_lbl.label, "\n"));
@@ -559,12 +557,12 @@ void() m_host_i={
   host_map_prev.subid = SUB_COOP;
   
   //COOP SUB MENU
-  host_skill_lbl = lbl_text(MENU_ORG + '120 203', '14 14 0', "NOVICE", CLR_DEF_BLUE, VIEW_CTX, M_HOST, 1, 0);
+  /*host_skill_lbl = lbl_text(MENU_ORG + '120 203', '14 14 0', "NOVICE", CLR_DEF_BLUE, VIEW_CTX, M_HOST, 1, 0);
   host_skill_next = btn_img_callback(MENU_ORG + '200 203 0', '8 12', UI_IMG_ARW_RGT, VIEW_CTX, M_HOST, click_host_nextskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_skill_prev = btn_img_callback(MENU_ORG + '100 203 0', '8 12', UI_IMG_ARW_LFT, VIEW_CTX, M_HOST, click_host_prevskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_skill_lbl.subid = SUB_COOP;
   host_skill_next.subid = SUB_COOP;
-  host_skill_prev.subid = SUB_COOP;
+  host_skill_prev.subid = SUB_COOP;*/
   
   //DM / TDM SUB MENU  
   //default protection
@@ -595,7 +593,6 @@ void() m_host_i={
   else{
     host_flag_spawnfar.drawme = TRUE;
   }
-  
   
   host_flag_powerup = btn_check_callback(MENU_ORG + '210 263', '14 14', 0, M_HOST, host_check_flag_powerup, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_powerup.label = "Powerup Delay";
@@ -628,10 +625,12 @@ void() m_host_i={
   //or not
   host_back = btn_text_callback(MENU_ORG + '40 360 0', '16 16', "BACK", VIEW_CTX, M_HOST, click_host_back, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   host_back.fontId = FONT_NUM_XOLONIUM_BOLD;
+  
+  host_update_playeramount();
 };
 
 void() m_host_f={
-  SELECT_SKILL = 0;
+  //SELECT_SKILL = 0;
   SELECT_TYPE = 0;
   SELECT_MAP = 1;
   map_list_getmap(FALSE);
@@ -689,7 +688,7 @@ void() m_host_d={
       gui_renderString("Max Players  :", host_playernum.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
       host_gametype.label = "Cooperative";
       host_gametype.color = CLR_DEF_IIF_FRIEND;
-      gui_renderString("Difficulty  :", host_skill_lbl.origin + '-90 1', '1 1 1', '12 12 0', 1, 0);
+      //gui_renderString("Difficulty  :", host_skill_lbl.origin + '-90 1', '1 1 1', '12 12 0', 1, 0);
       gui_renderString("Start Map  :", host_map_lbl.origin + '-100 1', '1 1 1', '12 12 0', 1, 0);
       break;
     

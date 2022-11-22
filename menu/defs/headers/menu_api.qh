@@ -19,6 +19,7 @@ string GAME_SAVES_DRAWNAME[GAME_SAVES_MAX];
 float GAME_SAVES_SKILL[GAME_SAVES_MAX];
 string GAME_SAVES_MAP[GAME_SAVES_MAX];
 float GAME_SAVES_NEWG[GAME_SAVES_MAX];
+string GAME_SAVES_CAMP_FILE[GAME_SAVES_MAX];
 
 entity TEXTFIELD_TARGET;
 entity KEYBIND_TARGET;
@@ -252,6 +253,7 @@ void() menu_ini_display_constants={
       VID_RESO_NAME[itr] = strzone( sprintf( "%s x %s",ftos( res_x), ftos(res_y)) );
       VID_RESO_SIZE[itr] = res;
       con_y = 480;
+      
       //match "vid_conwidthauto" but as a one-time calculation.
       con_x = floor(con_y * res_x / (res_y * 1));
       VID_RESO_HALF[itr] = con;

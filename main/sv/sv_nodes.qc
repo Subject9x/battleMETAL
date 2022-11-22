@@ -373,7 +373,7 @@ void( vector src, vector dst ) nodegraph_debug_graph={
   
   nodegraph_debugger = spawn();
   nodegraph_debugger.classname = strzone("nodegraph_debugger");
-  setmodel(nodegraph_debugger, "q3mdl/testball.md3");
+  setmodel(nodegraph_debugger, "models/testball.md3");
   setsize(nodegraph_debugger, nodegraph_debugger.mins, nodegraph_debugger.maxs);
   
   startNodeId = nodegraph_node_by_origin(src);

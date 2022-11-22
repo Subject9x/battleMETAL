@@ -159,7 +159,9 @@ void() PlayerPostThink = {
   
   ButtonCommands();
   
-  if(self.data_type != DATA_POBS){ 
+  if(self.data_type != DATA_POBS){
+    makevectors(self.angles);
+    self.cameraOrigin = self.origin + (v_forward * self.cameraOffset_z) + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y);
     //power up sequence
     if(time > self.power_timer){
       self.power_timer = 0;
@@ -186,7 +188,7 @@ void() PlayerPostThink = {
     traceline(self.origin, self.origin + (v_forward * self.stat_rdr_rng), FALSE,self);
     self.stat_ret_dist = (self.stat_rdr_rng * trace_fraction);
     
-    //TODO notify target of lock
+    //notify target of lock
     /*if((self.targLockState & LOCK_TARG)){
       if(self.enemy != world){
         if(!(self.enemy.targLockState & LOCK_PLAYER)){
@@ -235,14 +237,14 @@ void() PlayerPostThink = {
     if (self.jump_flag < self.fall_slam){
       if( self.jump_flag < (self.fall_dist * FALL_KILL_MULTIPLIER) ){
         //player fell from great height and is killed outright...whoops
-        t_damage( self, world, world, self.legs.health, self.legs.origin, '0 0 0');
+        t_damage( self, world, world, self.legs_hp, self.legs_org, '0 0 0');
         t_damage( self, world, world, self.health, self.origin, '0 0 0');
       }
       else{
-        legDmg = self.legs.max_health * (self.fall_dmg * FALL_DAMAGE_FRACTION);
-        t_damage( self, world, world, legDmg, self.legs.origin, '0 0 0');
-        if( self.legs.health < (self.legs.max_health * 0.33) ){
-          centerTorsoDmg = self.torsoCenter.max_health * self.fall_dmg;
+        legDmg = self.legs_hpMax * (self.fall_dmg * FALL_DAMAGE_FRACTION);
+        t_damage( self, world, world, legDmg, self.legs_org, '0 0 0');
+        if( self.legs_hp < (self.legs_hpMax * 0.33) ){
+          centerTorsoDmg = self.torC_hpMax * self.fall_dmg;
           t_damage( self, world, world, centerTorsoDmg, self.origin, '0 0 0');
         }
       }
@@ -401,6 +403,7 @@ PlayerDie - Campaign
 self.th_die() 
 ============
 */
+
 void() PlayerDie={
 	if( self.deadflag ){
 		bprint("warning: PlayerDie called twice\n");
@@ -423,20 +426,13 @@ void() PlayerDie={
   self.effects = 0;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
-  self.flags = self.flags - (self.flags & FL_ONGROUND);
-  self.movetype = MOVETYPE_TOSS;
-  setsize(self, '-4 -4 -4', '4 4 4');
-  setorigin(self, self.origin);
   
   if( self.moveState != MOVE_STAND ){
     if (self.velocity_z < 10){
       self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
     }
   }
-  
-  self.angles_x = 0;
-  self.angles_z = 0;
-  self.angles_y = 0;
+  self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
   
   self.think = PlayerDieEnd;

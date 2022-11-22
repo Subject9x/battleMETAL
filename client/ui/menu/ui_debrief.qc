@@ -99,11 +99,11 @@ void(vector panelOffset) menu_debrief_header={
   }
   
   statusLen = stringwidth( MENU_DEBRIEF_data_mission_status, 0, '22 22');
-  statusOrg = Vector2(UI_ORG_x + 320 - ( statusLen /2 ), panelOffset_y + 5);
+  statusOrg = [UI_ORG_x + 320 - ( statusLen /2 ), panelOffset_y + 5];
   gui_renderHighlightString(MENU_DEBRIEF_data_mission_status, statusOrg, CLR_DEF_ARM_OK, CLR_DEF_ARM_THREEQ, MENU_DEBRIEF_status, '22 22', 1, 0);
   
   //Next Mission Button
-  MENU_DEBRIEF_BUTTON_ORG_mission = Vector2(UI_MAX_x - 138, 6);
+  MENU_DEBRIEF_BUTTON_ORG_mission = [UI_MAX_x - 138, 6];
   
   drawpic( MENU_DEBRIEF_BUTTON_ORG_mission, UI_DEF_BOX_256_BTN, '128 24', CLR_DEF_GRAY_H, 1, 0);
   
@@ -170,7 +170,7 @@ void(vector panelOffset) menu_debrief_objectives_primary={
   drawstring( objectivesLabelOrg, "Primary Objectives", '12 12', CLR_DEF_GRAY_H, 1, 0);
   
   //objective status
-  drawstring( thisOrg + Vector2(panelImageSize_x - 64, 4), "Status", '12 12', CLR_DEF_GRAY_H, 1, 0);
+  drawstring( thisOrg + [panelImageSize_x - 64, 4], "Status", '12 12', CLR_DEF_GRAY_H, 1, 0);
   
   //Objectives List
   
@@ -262,7 +262,7 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
   drawstring( objectivesLabelOrg, "Secondary Objectives", '12 12', CLR_DEF_GRAY_H, 1, 0);
   
   //objective status
-  drawstring( thisOrg + Vector2(panelImageSize_x - 64, 4), "Status", '12 12', CLR_DEF_GRAY_H, 1, 0);
+  drawstring( thisOrg + [panelImageSize_x - 64, 4], "Status", '12 12', CLR_DEF_GRAY_H, 1, 0);
   
   //Objectives List
   

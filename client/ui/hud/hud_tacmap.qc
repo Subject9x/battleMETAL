@@ -14,6 +14,7 @@ void() hud_render_tactical_map={
   local float unavailableLen;
   local vector unavailableOrg;
   local vector map_size;
+  local vector mapMins;
   
   local entity mapKey;
   local vector keyOrg;
@@ -39,7 +40,7 @@ void() hud_render_tactical_map={
   
   if( MSN_MAPPIC != "" ){
     drawpic(mapOrg, MSN_MAPPIC, mapImgSize, '1 1 1', HUD_ALPHA, 0);
-    //drawrotpic(mapOrg, MSN_MAPPIC, mapImgSize, mapOrg + (mapImgSize * 0.5), input_angles_y, '1 1 1', HUD_ALPHA, 0); -> TODO - get this working.
+    //drawrotpic(mapOrg, MSN_MAPPIC, mapImgSize, mapOrg + (mapImgSize * 0.5), input_angles_y, '1 1 1', HUD_ALPHA, 0); -> WONT FIX - get this working.
   }
   else{
     unavailableLen = stringwidth( "!- Satellite Data unavailable -!", 0 ,'16 16 0');
@@ -48,12 +49,20 @@ void() hud_render_tactical_map={
     unavailableOrg_y = unavailableOrg_y + (380 / 2) - 8;
     gui_wrapText(unavailableOrg, '210 32', "!- Satellite Data unavailable -!", '16 16 0', '1 0 0', 1);
   }
-  map_size_x = ((world.mins_x*-1) + world.maxs_x);
-  map_size_y = ((world.mins_y*-1) + world.maxs_y);
+  
+  if(ENT_SERVER_INFO.minimapMins != '0 0 0' && ENT_SERVER_INFO.minimapMaxs != '0 0 0'){
+    map_size = [(ENT_SERVER_INFO.minimapMins_x*-1) + ENT_SERVER_INFO.minimapMaxs_x, (ENT_SERVER_INFO.minimapMins_y*-1) + ENT_SERVER_INFO.minimapMaxs_y];
+    mapMins = ENT_SERVER_INFO.minimapMins;
+  }
+  else{
+    map_size = [(world.mins_x*-1) + world.maxs_x, (world.mins_y*-1) + world.maxs_y];
+    mapMins = world.mins;
+  }
   
   mapKey = mapKeyObject;
   for( mapKey = mapKeyObject; mapKey != world; mapKey = mapKey.w_slot ){
-    keyOrg = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, mapOrg, mapImgSize);
+    if( mapKey.deadflag != DEAD_NO ){continue;} //live-update only matters for HUD.
+    keyOrg = gui_mapCoordToImgCoord(mapMins, map_size, mapKey.origin, mapOrg, mapImgSize);
     switch( mapKey.data_type ){
       case DATA_MAP_DMG:
         drawpic( keyOrg - '2 2', UI_DEF_BOX_64, '4 4', CLR_DEF_RED * 1.15, 0.85, 0);
@@ -70,7 +79,7 @@ void() hud_render_tactical_map={
     if( nav.faction != CLIENT_faction && nav.faction != FACTION_ALL ){
       continue;
     }
-    navImgOfs = navOfs = gui_mapCoordToImgCoord(world.mins, map_size, nav.origin, mapOrg, mapImgSize);
+    navImgOfs = navOfs = gui_mapCoordToImgCoord(mapMins, map_size, nav.origin, mapOrg, mapImgSize);
     
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -97,12 +106,12 @@ void() hud_render_tactical_map={
       continue;
     }
     //PLAYER TAC MAP INFO
-    if( player.clientLocalId == player_localentnum ){
-      drawpic(gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
+    if( player.clientServerNum == player_localentnum ){
+      drawpic(gui_mapCoordToImgCoord(mapMins, map_size, pmove_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
       if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
       if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
       if(player.enemy == world){continue;}
-      target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
+      target_org = gui_mapCoordToImgCoord(mapMins, map_size, player.enemy.origin, mapOrg, mapImgSize);
       if( CLIENT_target_datatype == DATA_MECH ){
         pipType = HUD_RAD_PIP_MCH;
       }
@@ -117,7 +126,7 @@ void() hud_render_tactical_map={
     else{
       //FRIENDLIES TAC MAP INFO
       if( player.faction != FACTION_ALL ){
-        friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, mapOrg, mapImgSize);
+        friend_org = gui_mapCoordToImgCoord(mapMins, map_size, player.origin, mapOrg, mapImgSize);
         gui_renderTintImage2(FALSE, friend_org - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND, CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0 );
         
         nameOrg = friend_org + '0 -10';
@@ -134,7 +143,7 @@ void() hud_render_tactical_map={
         if( player.targetEntId <= 0 ){continue;}
         if( player.enemy.deadflag != DEAD_NO ){continue;}
         
-        target_org = gui_mapCoordToImgCoord(world.mins, map_size, player.enemy.origin, mapOrg, mapImgSize);
+        target_org = gui_mapCoordToImgCoord(mapMins, map_size, player.enemy.origin, mapOrg, mapImgSize);
         drawpic(target_org - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IFF_ENEMY, 1, 0);
       }
     }
@@ -144,7 +153,7 @@ void() hud_render_tactical_map={
   //arrow = gui_angleToArrow(input_angles_y - 90);
   arrowAng = anglemod( 90 - input_angles_y);
   makevectors(input_angles);
-  playerMapOrg = gui_mapCoordToImgCoord(world.mins, map_size, pmove_org, mapOrg, mapImgSize);
+  playerMapOrg = gui_mapCoordToImgCoord(mapMins, map_size, pmove_org, mapOrg, mapImgSize);
   drawrotpic(playerMapOrg, "gfx/hud/map_up.png", '12 12', '6 6', arrowAng, '0.25 1 2', 1, 0);
 };
 
@@ -180,7 +189,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) ){
     rowColor = CLR_DEF_WHITE;
-    if( playerRow.clientLocalId == player_localentnum ){
+    if( playerRow.clientServerNum == player_localentnum ){
       fontSize = '10 10 0';
     }
     else{
@@ -188,7 +197,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
     }
   }
   else{
-    if( playerRow.clientLocalId == player_localentnum ){
+    if( playerRow.clientServerNum == player_localentnum ){
       fontSize = '10 10 0';
       rowColor = CLR_DEF_GREEN;
     }
@@ -257,7 +266,7 @@ void( vector panelOfs ) hud_render_scoreboard_dm={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" || nameCheck ){
-        player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
+        player = findfloat(world, clientServerNum, SCOREBOARD[itr] + 1);
         listRowOfs_y = listOfs_y + ( playerRowItr * 12 );
         hud_render_score_row( listRowOfs, playerRowItr + 1, player );
         playerRowItr = playerRowItr + 1;
@@ -310,7 +319,7 @@ void( vector panelOfs ) hud_render_scoreboard_tdm={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(SCOREBOARD[itr], "name");
       if( nameCheck != "" || nameCheck ){
-        player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
+        player = findfloat(world, clientServerNum, SCOREBOARD[itr] + 1);
         if( player.faction == FACTION_SURVEST ){
           listRowOfs_y = listOfs_y + ( teamCount1 * 12 );
           playerRowItr = teamCount1;

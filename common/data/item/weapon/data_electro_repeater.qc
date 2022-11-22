@@ -115,19 +115,22 @@ void() te_muzzle_esr={
   
   norm = normalize(endOrg - startOrg);
   
-  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
-  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   
-  impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
-    
   trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
   
-  if(impactStyle == IMPACT_ARMOR){
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
-  }
-  else if(impactStyle == IMPACT_DIRT){
-    pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
-    pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
+    
+    impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
+    
+    if(impactStyle == IMPACT_ARMOR){
+        pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
+    }
+    else if(impactStyle == IMPACT_DIRT){
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
+      pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
+    }
   }
 };
 #endif
@@ -151,10 +154,13 @@ void() data_ini_electro_repeater_={
   self.wepFireOffset = '0 0 8'; 
   self.burstRate = 0;
   
-#ifdef CSQC  
+#ifdef CSQC
+  precache_model("models/weapons/w_esr.md3");
+  precache_sound("sound/weapons/esr_fire.ogg");
+  precache_file( "gfx/ui/wep_icons/wi_esr.png");
   self.w_name = "Electro-Static Repeater";
   self.fire_sound = "sound/weapons/esr_fire.ogg";
-  self.model = "q3mdl/weapons/w_esr.md3";
+  self.model = "models/weapons/w_esr.md3";
   self.abbrev = "ESR";
   self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage split when target is <shielded>";
   self.icon = "gfx/ui/wep_icons/wi_esr.png";
@@ -228,8 +234,8 @@ void() data_ini_attack_electro_repeater_={
     }
     else{
       HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
-      if( HIT_LOCATION.partTypeId && !(self.owner.statTargetHitParts & HIT_LOCATION.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION.partTypeId;
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }
     }
   }

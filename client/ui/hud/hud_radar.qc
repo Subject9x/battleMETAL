@@ -19,9 +19,13 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   
   RADAR_ORG = radarOrg;
   
-  map_size = '0 0';
-  map_size_x = ((world.mins_x*-1) + world.maxs_x);
-  map_size_y = ((world.mins_y*-1) + world.maxs_y);
+  map_size = '0 0';  
+  if(ENT_SERVER_INFO.minimapMins != '0 0 0' && ENT_SERVER_INFO.minimapMaxs != '0 0 0'){
+    map_size = [(ENT_SERVER_INFO.minimapMins_x*-1) + ENT_SERVER_INFO.minimapMaxs_x, (ENT_SERVER_INFO.minimapMins_y*-1) + ENT_SERVER_INFO.minimapMaxs_y];
+  }
+  else{
+    map_size = [(world.mins_x*-1) + world.maxs_x, (world.mins_y*-1) + world.maxs_y];
+  }
   
   RADAR_VSIZE = siz;
   RADAR_VORG = vorg;
@@ -99,6 +103,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
 void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   local vector hudorg;
   local float ang, entAngle, entAngleRadian, radDist;
+  local float draw;
 
   radDist = vlen(blip.origin - RADAR_ORG) / radRange * 1.5;
   
@@ -113,7 +118,6 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   
   hudorg_z = 0;
   
-  local float draw;
   draw = TRUE;
   if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
     draw = FALSE;

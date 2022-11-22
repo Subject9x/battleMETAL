@@ -773,9 +773,7 @@ START_ON 32 : starts when map starts.
 Only used for the world entity.
 
 -------- KEYS --------
-.mapFile(NOT USED) <string> found in data/map_scripts/<map_name>/<map_name>.sav
-
-.missionFile(REQUIRED) <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
+.missionFile <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
 
 .itemOverride <float> data/map_scripts/<map_name>/<map_name>.sav - if present, send this file of items instead of normal save file
 
@@ -795,7 +793,7 @@ Only used for the world entity.
 .fog_color <vector> [color] - RGB {0.001 - 1.0} colors of the fog
 .fog_alpha <float> [alpha] - {0.001 - 1.0} alpha transparency of the fog
 .fog_dist <vector> [min distance, max distance, height] - distances of the fog
-.fade <float> [fade depth] - units of fade transition from low alpha to opacity
+.fog_fade <float> [fade depth] - units of fade transition from low alpha to opacity
 
 .worldtype <float> [enum]
     0: DESERT
@@ -3237,7 +3235,7 @@ usually pair this will a killbox if player wanders outside map.
 //    battleMETAL  Misc Objects
 //===========================================================
 
-/*QUAKED doodad_rocks_desert_1 (0.431 0.788 0.753) (-74 -74 -14) (74 74 104) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+/*QUAKED doodad_rocks_1 (0.431 0.788 0.753) (-74 -74 -14) (74 74 104) ANGLE_RANDOM ? ? ? DROPTOFLOOR
 A desert rock, model #1.
 Doodad is static, BSP collision, non-interactive.
 -------- KEYS -------- 
@@ -3246,7 +3244,7 @@ Doodad is static, BSP collision, non-interactive.
 -------- SPAWNFLAGS -------- 
 ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
-/*QUAKED doodad_rocks_desert_2 (0.431 0.788 0.753) (-79 -79 -27) (79 79 120) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+/*QUAKED doodad_rocks_2 (0.431 0.788 0.753) (-79 -79 -27) (79 79 120) ANGLE_RANDOM ? ? ? DROPTOFLOOR
 A  desert rock, model #2.
 Doodad is static, BSP collision, non-interactive.
 -------- KEYS -------- 
@@ -3255,7 +3253,7 @@ Doodad is static, BSP collision, non-interactive.
 -------- SPAWNFLAGS -------- 
 ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
-/*QUAKED doodad_rocks_desert_3 (0.431 0.788 0.753) (-68 -68 -7) (68 68 72) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+/*QUAKED doodad_rocks_3 (0.431 0.788 0.753) (-68 -68 -7) (68 68 72) ANGLE_RANDOM ? ? ? DROPTOFLOOR
 A desert rock, model #3.
 Doodad is static, BSP collision, non-interactive.
 -------- KEYS -------- 
@@ -3264,7 +3262,7 @@ Doodad is static, BSP collision, non-interactive.
 -------- SPAWNFLAGS -------- 
 ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
-/*QUAKED doodad_rocks_desert_random (0.431 0.788 0.753) (-79 -79 -27) (79 79 104) ANGLE_RANDOM ? ? ? DROPTOFLOOR 
+/*QUAKED doodad_rocks_random (0.431 0.788 0.753) (-79 -79 -27) (79 79 104) ANGLE_RANDOM ? ? ? DROPTOFLOOR 
 A desert rock, model is randomized 1-3.
 Doodad is static, BSP collision, non-interactive.
 -------- KEYS -------- 

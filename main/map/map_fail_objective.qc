@@ -20,17 +20,15 @@ void() map_fail_objective_use={
   local entity thisEnt;
   
   OBJECTIVE_FAILED = TRUE;
-  for( obj = nextent(world); obj != world; obj = nextent(obj) ){
-    if( obj.classname != "map_objective" ){
-      continue;
+  obj = findchain(classname, "map_objective");
+  while( obj ){
+    if( obj.targetname == "" || obj.targetname == self.target ){
+      thisEnt = self;
+      self = obj;
+        obj.use();
+      self = thisEnt;
     }
-    if( obj.targetname == "" || obj.targetname != self.target ){
-      continue;
-    }
-    thisEnt = self;
-    self = obj;
-      obj.use();
-    self = thisEnt;
+    obj = obj.chain;
   }
   OBJECTIVE_FAILED = FALSE;
   self.think = SUB_Remove;

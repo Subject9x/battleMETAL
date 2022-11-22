@@ -67,13 +67,11 @@ void(string str) SV_ParseClientCommand={
     if( self.animId != world ){
       if( self.animId.target != "" ){
         trigTarg = find(world, targetname, self.animId.target );
-        if( trigTarg ){
-          if( trigTarg.use ){
-            notTrig = self;
-            self = trigTarg;
-              trigTarg.use();
-            self = notTrig;
-          }
+        if( trigTarg && trigTarg.use){
+          notTrig = self;
+          self = trigTarg;
+            trigTarg.use();
+          self = notTrig;
         }
       }
     }
@@ -237,6 +235,26 @@ void() ClientConnect = {
   self.attackFlag = 0;
   client_data();
   
+  //if coop, assign coop-number.
+  if( GAMETYPE == GAMEMODE_COOP ){
+    if( !COOP_PLAYER_1 ){
+      self.coopClientId = 1;
+      COOP_PLAYER_1 = self;
+    }
+    else if( !COOP_PLAYER_2 ){
+      self.coopClientId = 2;
+      COOP_PLAYER_2 = self;
+    }
+    else if( !COOP_PLAYER_3 ){
+      self.coopClientId = 3;
+      COOP_PLAYER_3 = self;
+    }
+    else if( !COOP_PLAYER_4 ){
+      self.coopClientId = 4;
+      COOP_PLAYER_4 = self;
+    }
+  }
+  
   if( world.animaticOnly ) {
     client_playTrack(self, world.sounds, TRUE);  //play desired music for animatic
     if( world.animaticOnly > 1){
@@ -256,7 +274,6 @@ void() ClientConnect = {
     ExitIntermission();
   }
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
-  ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_NEWENT;
 };
 
 /*
@@ -281,7 +298,7 @@ void() PutClientInServer = {
 	
   self.classname = "player";
   
-  //DecodeLevelParms ();  //TODO - going to reactivate these soon.
+  //DecodeLevelParms ();  //- going to reactivate these soon. - 2022...I don't we think ever are...
 	self.attack_finished = time;  
   self.deadflag = DEAD_NO;  //re-rack
   
@@ -290,7 +307,7 @@ void() PutClientInServer = {
   self.view_ofs = '0 0 1';
   
   sv_select_info_start();
-  client_sendFog(self, TRUE, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
+  client_sendFog(self, TRUE, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fog_fade);
   
   //GAME MODE BLOCK
   switch(ENT_SERVER_INFO.gameType){
@@ -367,6 +384,26 @@ void() ClientDisconnect = {
   local float clnum;
   local string response;
   
+  //if coop, assign coop-number.
+  if( GAMETYPE == GAMEMODE_COOP ){
+    switch(self.coopClientId){
+      case 1:
+        COOP_PLAYER_1 = world;
+        break;
+      
+      case 2:
+        COOP_PLAYER_2 = world;
+        break;
+      
+      case 3:
+        COOP_PLAYER_3 = world;
+        break;
+      
+      case 4:
+        COOP_PLAYER_4 = world;
+        break;
+    }
+  }
   if(gameover){
     return;
   }
@@ -460,6 +497,8 @@ void() PutClientInServer_Campaign={
     GAMEMODE_COOP
 */
 void() PutClientInServer_Coop={
+  local entity client;
+  local float itr;
   /*PutClientInServer Logic
     2) configure faction
     3) send eqipment selections
@@ -478,7 +517,19 @@ void() PutClientInServer_Coop={
     }
     self.faction = FACTION_PSC; //campaign default
     self.clientcolors = FACTION_PSC;
+
   }
+  
+  if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
+    client = findchainflags(flags, FL_CLIENT);
+    for( itr = 0; itr < 4; itr = itr + 1){
+      if( client.clientData ){
+        client.clientData.SendFlags = client.clientData.SendFlags | SENDFLAG_EXDATA;
+      }
+      client = client.chain;
+    }
+  }
+  
   client_push_mapobjects(); //refreshes map object data for everyone
 
   self.th_die = PlayerDieNetwork;
@@ -645,7 +696,7 @@ void() client_data_th={
 void() client_data={
   local entity data;
   data = spawn();
-  setmodel(data, "q3mdl/testball.md3");
+  setmodel(data, "models/testball.md3");
   setsize(data, '-1 -1 -1', '1 1 1');
   setorigin(data, self.origin);
   data.owner = self;
@@ -674,15 +725,11 @@ void() client_data={
 float( float isNew, float changeFlags ) send_client_data={
   local entity player;
   local float prevType;
-  local float sendCrit;
   
   player = self.owner;
   self.view_ofs = player.origin;
   
   prevType = self.data_type;
-  
-  sendCrit = 0;
-  
   if( player.deadflag == DEAD_NO ){
     self.data_type = player.data_type;
     self.radar_range = player.radar_range;
@@ -704,7 +751,7 @@ float( float isNew, float changeFlags ) send_client_data={
     self.shieldHitFlag = 0;
   }
   WriteByte( MSG_ENTITY, SENDTYPE_PLAYER );
-  WriteCoord( MSG_ENTITY, changeFlags );
+  WriteLong( MSG_ENTITY, changeFlags );
   //=============================================
   /*
     EVENT - per-frame update
@@ -714,8 +761,8 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteCoord( MSG_ENTITY, player.origin_y );
     WriteCoord( MSG_ENTITY, player.origin_z );
     WriteByte( MSG_ENTITY, player.moveState );
-    WriteShort( MSG_ENTITY, player.legs.angles_y);
-    WriteShort( MSG_ENTITY, player.legs.ai_dir);
+    WriteShort( MSG_ENTITY, player.legs_angl_y);
+    WriteShort( MSG_ENTITY, player.legDir);
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -733,10 +780,11 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, self.stat_client_energy );
   }
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    WriteCoord( MSG_ENTITY, player.attackFlag);
+    WriteLong( MSG_ENTITY, player.attackFlag);
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
     WriteByte( MSG_ENTITY, player.chaseActive);
+    WriteByte( MSG_ENTITY, player.headlight);
   }
   
   /*
@@ -772,10 +820,10 @@ float( float isNew, float changeFlags ) send_client_data={
     WriteByte( MSG_ENTITY, player.next_wepn7);
     WriteByte( MSG_ENTITY, player.next_wepn8);
     WriteByte( MSG_ENTITY, player.next_wepn9);
-    WriteCoord( MSG_ENTITY, player.data_speed_forward);
-    WriteCoord( MSG_ENTITY, player.data_speed_strafe);
-    WriteCoord( MSG_ENTITY, player.data_speed_backward);
-    WriteCoord( MSG_ENTITY, player.data_speed_accel);
+    WriteLong( MSG_ENTITY, player.data_speed_forward);
+    WriteLong( MSG_ENTITY, player.data_speed_strafe);
+    WriteLong( MSG_ENTITY, player.data_speed_backward);
+    WriteLong( MSG_ENTITY, player.data_speed_accel);
   }
   
   if( (changeFlags & SENDFLAG_COLORS) ){
@@ -793,17 +841,14 @@ float( float isNew, float changeFlags ) send_client_data={
   if( (changeFlags & SENDFLAG_CRIT) ){
     //placed here for just-in-time calculation
     // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
-    if( player.critBits != 0 ){
-      sendCrit = player.critBits;
-      if( (player.critBits & M_REPAIR) ){
-        player.criticalHits = player.criticalHits - (player.criticalHits & player.critBits);
-      }
-      else{
-        player.criticalHits = player.criticalHits | player.critBits;
-      }
-      player.critBits = 0;
+    WriteLong( MSG_ENTITY, player.critBits );
+    if( (player.critBits & M_REPAIR) ){
+      player.criticalHits = player.criticalHits - (player.criticalHits & player.critBits);
     }
-    WriteShort( MSG_ENTITY, sendCrit );
+    else{
+      player.criticalHits = player.criticalHits | player.critBits;
+    }
+    player.critBits = 0;
   }
   /*
     EVENT - pieces of player mech are low on health and burning
@@ -826,11 +871,15 @@ float( float isNew, float changeFlags ) send_client_data={
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
-    WriteCoord( MSG_ENTITY, player.flags );
+    WriteLong( MSG_ENTITY, player.flags );
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
-    WriteLong( MSG_ENTITY, player.targetEntId ); //->SENDFLAG_TARGET
+    WriteLong( MSG_ENTITY, player.targetEntId );
+  }
+  
+  if( (changeFlags & SENDFLAG_EXDATA) ){
+    WriteByte( MSG_ENTITY, player.nextVecChoice );
   }
   
   self.shieldHitFlag = 0;

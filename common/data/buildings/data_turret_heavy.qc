@@ -21,6 +21,7 @@ void() data_ini_heavy_turret_={
  
   self.max_health = 581;
   setsize(self, '-28 -28 -16', '28 28 28');
+  self.skin = 1;
   
 //ENERGY AND SHIELDS===================
   self.energyMax  = 600;
@@ -44,13 +45,15 @@ void() data_ini_heavy_turret_={
 //=====================================
  
 //MECH COMPONENTS====================
-  self.model = "q3mdl/buildings/turret_heavy/mdl_turret_heavy_base.obj";
+  self.hardpoint_cnt = 4;
+  weaponList = self;
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_heavy/mdl_turret_heavy_turret.obj", 1, '0 20 0', self, torsoCenter, '0 0 0'); 
+  data_ini_torso_center_( "models/buildings/turret_heavy/mdl_turret_heavy_turret.obj", 1, '0 20 0', '0 0 0'); 
+  data_ini_legs_( "models/buildings/turret_heavy/mdl_turret_heavy_base.obj", 0, '0 0 0'); 
   
   //camera location
-  data_ini_camera_( '0 28 8', self.torsoCenter );
+  self.cameraOffset = '0 28 8';
 //=====================================
  
 //HARDPOINTS==========================

@@ -98,10 +98,10 @@ void( float isNew, float entFlags ) data_nav_point={
     }
     
     self.vec_name = NAVNAMES[self.data_idx];
-    setmodel(self, "q3mdl/map/nav_point.obj");
+    precache_model("models/map/nav_point.obj");
+    setmodel(self, "models/map/nav_point.obj");
     setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
     setorigin( self, self.origin ); 
-    setorigin(self, self.origin);
     self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT);
     self.predraw = predraw_navpoint;
     self.colormod = '0 1 0';
@@ -173,7 +173,7 @@ void( float isNew, float entFlags ) data_objective={
   
   if( isNew ){
     self.effects = self.effects | (EF_NODEPTHTEST | EF_NOSHADOW);
-    setmodel(self, "q3mdl/testball.md3");
+    setmodel(self, "models/testball.md3");
     setorigin(self, self.origin);
     self.alpha = 0.01;
   }
@@ -273,7 +273,7 @@ void( float isNew, float entFlags ) data_deploy={
       self.scale = 0.01;
     }
     
-    setmodel(self, "q3mdl/testball.md3");
+    setmodel(self, "models/testball.md3");
     setorigin(self, self.origin);
     if( DEPLOY_POINTS.data_idx ){
       DEPLOY_POINTS.partNext = self;
@@ -323,14 +323,19 @@ void() hazard_rad_think={
   partclPoint_x = partclPoint_x + (self.maxs_x * rando_x);
   partclPoint_y = partclPoint_y + (self.maxs_x * rando_y);
   
-  if( random() > 0.9 ){
-    te_field_rad(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE){
+    if( random() > 0.9 && MENU_PROG_OFF){
+      te_field_rad(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
+    }
+    
+    if(MENU_PROG_OFF){
+      
+      te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 176, FALSE, 5); 
+    }
   }
-  
-  te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 176, FALSE, 5); 
-   
   if( self.isActive ){
-    if( vlen(pmove_org - self.origin) <= (self.maxs_x * 3) ){
+    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 3) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 2;
     }
@@ -344,6 +349,7 @@ void() hazard_crs_think={
   local vector adj;
   local vector rando;
   
+  
   makevectors(self.angles);  
   
   adj = self.origin;
@@ -355,14 +361,17 @@ void() hazard_crs_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  if( random() > 0.9 ){
-    te_field_mineral(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE){
+    if( random() > 0.9 && MENU_PROG_OFF){
+      te_field_mineral(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
+    }
   }
   
   //te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 244, FALSE, 15); 
    
   if( self.isActive ){
-    if( vlen(pmove_org - self.origin) <= (self.maxs_x * 4) ){
+    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 4) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 1;
     }
@@ -377,6 +386,7 @@ void() hazard_quant_think={
   local vector adj;
   local vector rando;
   
+  
   makevectors(self.angles);  
   
   adj = self.origin;
@@ -388,18 +398,22 @@ void() hazard_quant_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  if( random() > 0.9 ){
-    te_field_quantum( partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)) );
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE){
+    if( random() > 0.9 && MENU_PROG_OFF){
+      te_field_quantum( partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)) );
+    }
+    
   }
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
   
   if( self.isActive ){
-    if( vlen(pmove_org - self.origin) <= (self.maxs_x * 4) ){
+    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 4) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 4;
     }
     self.think = hazard_quant_think;
-    self.nextthink = servertime + (random() * (self.wait * 2));
+    self.nextthink = servertime + (random() * (1 + self.wait * 2));
   }
 };
 
@@ -416,17 +430,20 @@ void() hazard_quant_think={
 void(float dataIdx) hazard_ini_rad={
   switch( dataIdx ){
     case 2:
-      self.model = "q3mdl/map/rads/rad_base_md.obj";
+      self.model = "models/map/rads/rad_base_md.obj";
+      precache_model("models/map/rads/rad_base_md.obj");
       setmodel(self, self.model);
       setsize( self, '-40 -40 0', '40 40 25' );
       break;
     case 3:
-      self.model = "q3mdl/map/rads/rad_base_lg.obj";
+      self.model = "models/map/rads/rad_base_lg.obj";
+      precache_model("models/map/rads/rad_base_lg.obj");
       setmodel(self, self.model);
       setsize( self, '-48 -48 0', '48 48 30' );
       break;
     default:
-      self.model = "q3mdl/map/rads/rad_base_sm.obj";
+      self.model = "models/map/rads/rad_base_sm.obj";
+      precache_model("models/map/rads/rad_base_sm.obj");
       setmodel(self, self.model);
       setsize( self, '-25 -25 0', '25 25 20' );
       break;
@@ -443,22 +460,25 @@ void(float dataIdx) hazard_ini_rad={
 void(float dataIdx) hazard_ini_static={
   switch( dataIdx ){
     case 2:
-      self.model = "q3mdl/map/rads/min_base_md.obj";
+      self.model = "models/map/rads/min_base_md.obj";
+      precache_model("models/map/rads/min_base_md.obj");
       setmodel(self, self.model);
       setsize( self, '-30 -30 0', '30 30 40' );
       break;
     case 3:
-      self.model = "q3mdl/map/rads/min_base_lg.obj";
+      self.model = "models/map/rads/min_base_lg.obj";
+      precache_model("models/map/rads/min_base_lg.obj");
       setmodel(self, self.model);
       setsize( self, '-40 -40 0', '40 40 52' );
       break;
     default:
-      self.model = "q3mdl/map/rads/min_base_sm.obj";
+      self.model = "models/map/rads/min_base_sm.obj";
+      precache_model("models/map/rads/min_base_sm.obj");
       setmodel(self, self.model);
       setsize( self, '-20 -20 0', '20 20 25' );
       break;
   }
-  self.effects = self.effects | (EF_NOSHADOW | EF_BLUE);
+  self.effects = self.effects | EF_NOSHADOW;
   if( self.isActive ){
     self.think = hazard_crs_think;
     self.nextthink = servertime + (random() * self.wait);
@@ -469,17 +489,20 @@ void(float dataIdx) hazard_ini_static={
 void(float dataIdx) hazard_ini_quant={
   switch( dataIdx ){
     case 2:
-      self.model = "q3mdl/map/rads/qtm_base_md.obj";
+      self.model = "models/map/rads/qtm_base_md.obj";
+      precache_model("models/map/rads/qtm_base_md.obj");
       setmodel(self, self.model);
       setsize( self, '-30 -30 0', '30 30 40' );
       break;
     case 3:
-      self.model = "q3mdl/map/rads/qtm_base_lg.obj";
+      self.model = "models/map/rads/qtm_base_lg.obj";
+      precache_model("models/map/rads/qtm_base_lg.obj");
       setmodel(self, self.model);
       setsize( self, '-40 -40 0', '40 40 52' );
       break;
     default:
-      self.model = "q3mdl/map/rads/qtm_base_sm.obj";
+      self.model = "models/map/rads/qtm_base_sm.obj";
+      precache_model("models/map/rads/qtm_base_sm.obj");
       setmodel(self, self.model);
       setsize( self, '-20 -20 0', '20 20 25' );
       break;
@@ -531,10 +554,10 @@ void( float isNew, float entFlags ) data_map_damage={
   
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.spawnflags = ReadCoord();
+    self.spawnflags = rint(ceil(ReadLong()));
     self.damageType = ReadByte();
     self.alpha = ReadShort();
-    self.wait = ReadCoord();
+    self.wait = ReadLong();
   }
   if( isNew ){
     self.drawmask = MASK_ENGINE;

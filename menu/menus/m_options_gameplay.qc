@@ -292,7 +292,7 @@ void() m_gameplay_i={
   
   gameplay_fov_lbl = lbl_text(MENU_ORG + '125 63', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_USELEN);
   gameplay_fov_lbl.len = cvar("fov");
-  gameplay_fov_more = btn_img_callback(gameplay_fov_lbl.origin + Vector2(stringwidth("100", 0, gameplay_fov_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fov_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_fov_more = btn_img_callback(gameplay_fov_lbl.origin + [stringwidth("100", 0, gameplay_fov_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fov_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_fov_less = btn_img_callback(gameplay_fov_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fov_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gameplay_fov_lbl.len == 40){
@@ -304,7 +304,7 @@ void() m_gameplay_i={
   
   gameplay_datetime_lbl = lbl_text(MENU_ORG + '125 83', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
   gameplay_datetime_lbl.len = cvar("showdate");
-  gameplay_datetime_on = btn_img_callback(gameplay_datetime_lbl.origin + Vector2(stringwidth("OFF", 0, gameplay_datetime_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_date_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_datetime_on = btn_img_callback(gameplay_datetime_lbl.origin + [stringwidth("OFF", 0, gameplay_datetime_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_date_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_datetime_off = btn_img_callback(gameplay_datetime_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_date_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gameplay_datetime_lbl.len){
@@ -316,7 +316,7 @@ void() m_gameplay_i={
    
   gameplay_fps_lbl = lbl_text(MENU_ORG + '125 103', '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
   gameplay_fps_lbl.len = cvar("showfps");
-  gameplay_fps_on = btn_img_callback(gameplay_fps_lbl.origin + Vector2(stringwidth("OFF", 0, gameplay_fps_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fps_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_fps_on = btn_img_callback(gameplay_fps_lbl.origin + [stringwidth("OFF", 0, gameplay_fps_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fps_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_fps_off = btn_img_callback(gameplay_fps_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_fps_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gameplay_fps_lbl.len){
@@ -331,13 +331,13 @@ void() m_gameplay_i={
   gameplay_crosshair_lbl = lbl_text(MENU_ORG + '125 123', '14 14', strzone(sprintf("%0.0f", clean)), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_crosshair_lbl.len = cvar("crosshair");
   gameplay_crosshair_lbl.image1 = gameplay_crosshair_img( cvar("crosshair") );
-  gameplay_crosshair_nx = btn_img_callback(gameplay_crosshair_lbl.origin + Vector2(stringwidth("5", 0, gameplay_crosshair_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_crosshair_nx = btn_img_callback(gameplay_crosshair_lbl.origin + [stringwidth("5", 0, gameplay_crosshair_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_crosshair_pr = btn_img_callback(gameplay_crosshair_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   clean = cvar("cl_hud_alpha");
   gameplay_hudalpha_lbl = lbl_text(MENU_ORG + '125 143', '14 14', strzone(sprintf("%0.2f", clean)), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_hudalpha_lbl.len = cvar("cl_hud_alpha");
-  gameplay_hudalpha_up = btn_img_callback(gameplay_hudalpha_lbl.origin + Vector2(stringwidth("9.99", 0, gameplay_crosshair_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudalpha_up = btn_img_callback(gameplay_hudalpha_lbl.origin + [stringwidth("9.99", 0, gameplay_crosshair_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_hudalpha_dn = btn_img_callback(gameplay_hudalpha_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if( gameplay_hudalpha_lbl.len < 0.1 ){
@@ -354,7 +354,7 @@ void() m_gameplay_i={
   gameplay_hudcolor_lbl.color_x = cvar("crosshair_color_red");
   gameplay_hudcolor_lbl.color_y = cvar("crosshair_color_green");
   gameplay_hudcolor_lbl.color_z = cvar("crosshair_color_blue");
-  gameplay_hudcolor_nx = btn_img_callback(gameplay_hudcolor_lbl.origin + Vector2(stringwidth("PURPLE", 0, gameplay_crosshair_lbl.size), 0), '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudcolor_nx = btn_img_callback(gameplay_hudcolor_lbl.origin + [stringwidth("PURPLE", 0, gameplay_crosshair_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_hudcolor_pr = btn_img_callback(gameplay_hudcolor_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   //gameplay_hud_sway_set = lbl_text('150 263', '14 14 0', strzone(gameplay_hud_sway_mode(cvar("cl_hud_sway"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
@@ -388,17 +388,17 @@ void() m_gameplay_d={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  gui_renderString("- Gameplay -", MENU_ORG + menu_parent_center_width(40) - Vector2((stringwidth("- Particle Settings -", 0, '16 16')/2),0), CLR_DEF_WHITE, '16 16', 1, 0);
+  gui_renderString("- Gameplay -", MENU_ORG + menu_parent_center_width(40) - [(stringwidth("- Particle Settings -", 0, '16 16')/2),0], CLR_DEF_WHITE, '16 16', 1, 0);
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_LIGHT;
   
-    gui_renderString("Field of View:", gameplay_fov_less.origin - Vector2(stringwidth("Field of View:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Show FPS:", gameplay_fps_off.origin - Vector2(stringwidth("Show FPS:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Show Date/Time:", gameplay_datetime_off.origin - Vector2(stringwidth("Show Date/Time:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("Crosshair Style:", gameplay_crosshair_pr.origin - Vector2(stringwidth("Crosshair Style:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("HUD Alpha:", gameplay_hudalpha_dn.origin - Vector2(stringwidth("HUD Alpha:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-    gui_renderString("HUD Color:", gameplay_hudcolor_pr.origin - Vector2(stringwidth("HUD Color:  ", 0, '12 12'),0), CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Field of View:", gameplay_fov_less.origin - [stringwidth("Field of View:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Show FPS:", gameplay_fps_off.origin - [stringwidth("Show FPS:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Show Date/Time:", gameplay_datetime_off.origin - [stringwidth("Show Date/Time:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("Crosshair Style:", gameplay_crosshair_pr.origin - [stringwidth("Crosshair Style:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("HUD Alpha:", gameplay_hudalpha_dn.origin - [stringwidth("HUD Alpha:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+    gui_renderString("HUD Color:", gameplay_hudcolor_pr.origin - [stringwidth("HUD Color:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     //gui_renderString("HUD Sway Mode:", '74 263', CLR_DEF_WHITE, '14 14 0', 1, 0);
 
   drawfont = drawfont_prev;

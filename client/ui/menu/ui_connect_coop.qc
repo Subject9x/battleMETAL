@@ -139,7 +139,7 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
   ruleRow = leftAnchor;
   
   if( ENT_SERVER_INFO.serverFlags == 0 ){
-    drawstring( ruleRow + Vector2( 85 - stringwidth("None", 0, '12 12') / 2, -4), "None", '12 12', CLR_DEF_WHITE, 1, 0);
+    drawstring( ruleRow + [ 85 - stringwidth("None", 0, '12 12') / 2, -4], "None", '12 12', CLR_DEF_WHITE, 1, 0);
     drawfont = drawfont_prev;
     return;
   }
@@ -305,7 +305,7 @@ void( vector menuOrg ) menu_connect_draw_players_coop={
     if( SCOREBOARD[itr] > -1 ){
       nameCheck = getplayerkeyvalue(itr, "name");
       if( nameCheck != "" || nameCheck ){
-        player = findfloat(world, clientLocalId, SCOREBOARD[itr] + 1);
+        player = findfloat(world, clientServerNum, SCOREBOARD[itr] + 1);
         listRowOfs_x = menuOrg_x + 8;
         listRowOfs_y = listOfs_y + ( playerRowItr * 16 );
         menu_player_row_basic( listRowOfs, playerRowItr, player, FALSE );

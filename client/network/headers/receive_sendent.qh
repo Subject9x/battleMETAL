@@ -7,8 +7,7 @@ Overview:
   I don't even know if it's worth it to try this.
 */
 
-//globals
-float ENT_SHIELD_COOL = 2;  //prevents spamming the shield explode effect
+float dbg_time; //used for filtering debug to once every few seconds.
 
 //SendEntity
 .vector origin2;
@@ -41,13 +40,10 @@ void() predraw_dmg_zone;
   the idea here is to do some 'manual' garbage collection on the desired entity..
 */
 void( entity removeMe ) sendent_handle_remove={
-  if( removeMe != world ){
+  if( removeMe != world && !wasfreed(removeMe) ){
     removeMe.drawmask = 0;
     removeMe.alpha = 0.0;
-    removeMe.scale = 0.01;
-    removeMe.effects = removeMe.effects | EF_NODRAW;
-    removeMe.think = SUB_Remove;
-    removeMe.nextthink = time + 1 + (random() * 5);
+    remove(removeMe);
   }
 };
 
@@ -60,7 +56,6 @@ void() interpolate_tank;
 void() interpolate_mech_ai;
 void() interpolate_turret;
 
-void( float isNew ) sendent_handle_update;
 void( float isNew, float changeFlags ) sendent_handle_mech_ai;
 void( float isNew, float changeFlags ) sendent_handle_tank;
 void( float isNew, float changeFlags ) sendent_handle_spg;
@@ -70,16 +65,15 @@ void( float isNew, float changeFlags) sendent_handle_building;
 void( float isNew, float changeFlags) sendent_handle_missile;
 void( float isNew, float changeFlags) sendent_handle_player;
 void( float isNew, float changeFlags ) sendent_handle_terrain;
-void( float isNew, float changeFlags ) sendent_handle_misc;
 void( float isNew, float changeFlags ) sendent_handle_misc_bld;
+void( float isNew, float changeFlags ) sendent_handle_item;
+//void( float isNew, float changeFlags ) sendent_handle_misc;
 
-entity( float partId ) sendent_get_entity_offset;
-void() sendent_setup_weapons;
-void() sendent_set_weapon;
+entity(float weaponId) sendent_get_weapon;
+
 void() sendent_ini_interpolate;
 
 void( float prevShield ) sendevent_shield_explode;
-void( vector turretAngles ) sendevent_turret_update;
 void() sendevent_handle_weaponfire;
 
 void() sendevent_building_die;
@@ -91,3 +85,7 @@ void( float playerEntId, float playerCritFlags ) client_handle_crit;
 
 float() remove_client;
 void( float hasMoved ) sendevent_player_accuracy;
+
+vector( vector partOffset) predraw_unit_part;
+vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle;
+void(entity item) predraw_unit_weapon

@@ -30,8 +30,10 @@ void() data_ini_equip_heatsink_={
   self.equipSize = MSC1;
   
   #ifdef CSQC
+    precache_model("models/weapons/e_htsnk.md3");
+    precache_file( "gfx/ui/wep_icons/eqp_htsnk.png");
     self.w_name = "Heatsinks";
-    self.model = "q3mdl/weapons/e_htsnk.md3";
+    self.model = "models/weapons/e_htsnk.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

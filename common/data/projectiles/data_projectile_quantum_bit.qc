@@ -37,14 +37,14 @@ void() projectile_qbit_expl={
 
 void() data_projectile_ini_quantum_bit_={
   self.classname = "missile";
-  self.data_velocity = 1800;
-  self.data_lifetime = 1.5;
+  self.data_velocity = 1700; //time = distance/speed
+  self.data_lifetime = 0.87;
   
   #ifdef CSQC
     //cosmetics
-    self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
-    self.effects = self.effects | (EF_NOSHADOW | EF_DOUBLESIDED);
-    self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
+    precache_model("models/proj/mdl_proj_qrfl.md3");
+    self.model = "models/proj/mdl_proj_qrfl.md3";
+    self.data_traileff = particleeffectnum("TE_QRFL_QBIT_TRAIL");
     self.damageType = self.damageType | EFF_SHD;
     self.pcl_explode = projectile_qbit_expl;
     self.scale = 1.15;
@@ -54,7 +54,7 @@ void() data_projectile_ini_quantum_bit_={
   #ifdef SSQC
     self.touch = data_projectile_ini_quantum_bit_touch_;
     self.think = data_projectile_quantum_bit_th;
-    self.effects = self.effects | EF_LOWPRECISION;
+    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
   #endif
 };
 
@@ -83,7 +83,6 @@ void() data_projectile_quantum_bit_th={
 void() data_projectile_quantum_shatter={
   local entity thing;
   local float itr;
-  local entity hitLocation;
   
   self.damageValue = self.damageValue * 0.4;
   itr = 4;
@@ -113,9 +112,9 @@ void() data_projectile_quantum_shatter={
       t_damage_shield(thing, self, self.owner, self.damageValue * 0.67, self.origin, FALSE);
     }
     else{
-      hitLocation = t_damage(thing, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(thing, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }  
     }
   }
@@ -125,7 +124,6 @@ void() data_projectile_quantum_shatter={
 };
 
 void() data_projectile_ini_quantum_bit_touch_={
-  local entity hitLocation;
   
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
@@ -143,9 +141,9 @@ void() data_projectile_ini_quantum_bit_touch_={
     }
     else{
       self.aState = TRUE;
-      hitLocation = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }
       self.impactType = IMPACT_ARMOR;
     }

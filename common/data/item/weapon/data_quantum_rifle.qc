@@ -33,14 +33,16 @@ void() te_muzzle_qrf={
   prtclRail_end = startOrg + (v_forward * 48);
   prtclSpark_org = startOrg + (v_forward * 22);
   
-  sound7(self, CHAN_AUTO, "sound/weapons/qrfl_fire.ogg", 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
   
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( endOrg - startOrg ), 1 ) ;
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( endOrg - startOrg ), 1 ) ;
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
   
-  trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5) );
-  trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5) );
+    trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5) );
+    trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5) );
+  }
 }
 #endif
 void() data_ini_quantum_={
@@ -64,9 +66,12 @@ void() data_ini_quantum_={
   self.burstRate = 0;
 
 #ifdef CSQC
+  precache_sound("sound/weapons/qrfl_fire.ogg");
+  precache_model("models/weapons/w_qrf.md3");
+  precache_file( "gfx/ui/wep_icons/wi_qrf.png");
   self.w_name = "Quantum Rifle";
   self.fire_sound = "sound/weapons/qrfl_fire.ogg";
-  self.model = "q3mdl/weapons/w_qrf.md3";
+  self.model = "models/weapons/w_qrf.md3";
   self.abbrev = "QRF";
   self.description = "+ Single-fire projectile. + Better against <Armor> + Targets without <Shields> will cause projectile to shatter and deal additional radius damage to nearby targets.";
   self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 

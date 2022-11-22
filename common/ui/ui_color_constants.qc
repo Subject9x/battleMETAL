@@ -78,7 +78,7 @@ vector CLR_DEF_UI_DEPLOY;
 //25%
 #define CLR_DEF_ARM_ONEQ '0.75 0 0'
 //gone
-#define CLR_DEF_ARM_DED '0.5 0.5 0.5'
+#define CLR_DEF_ARM_DED '0.33 0.33 0.33'
 
 //target armor meter
 //fine

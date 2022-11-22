@@ -51,18 +51,19 @@ void() data_ini_dunerunner_={
 //MECH COMPONENTS====================
   self.hardpoint_cnt = 2;
   weaponList = self;
-  self.model = "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3";
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', self, torsoCenter, '0 0 0');
+  data_ini_torso_center_( "models/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', '0 0 0');  
+  //chassis
+  data_ini_legs_( "models/vecs/dunerunner/mdl_dunrun_chas.md3", 0, '0 0 0');
   
   //camera location
-  data_ini_camera_( '0 24 0', self.torsoCenter );
+  self.cameraOffset = '0 24 0';
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 -0.1 2', '0 0 0', EQP_ALL);
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 -0.1 2', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 5.34 3.25', '0 0 0', EQP_ALL);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 5.34 3.25', '0 0 0', EQP_ALL);
 //=====================================
 
 //HUD DATA=============================

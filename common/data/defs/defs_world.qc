@@ -18,15 +18,15 @@ entity() world_ini_serverInfo_ent={
   eServerInfo.alpha = 0.01;
   eServerInfo.scale = 0.01;
   
-  setmodel(eServerInfo, "q3mdl/testball.md3");
-  setsize(eServerInfo, VEC_HULL_MIN, VEC_HULL_MAX);
+  setmodel(eServerInfo, "models/testball.md3");
+  setsize(eServerInfo, '-1 -1 -1', '1 1 1');
   setorigin(eServerInfo, world.origin);
   
   eServerInfo.serverFlags = serverflags;
   eServerInfo.SendEntity = world_rules_sendEntity;
   eServerInfo.SendFlags = eServerInfo.SendFlags | SENDFLAG_NEWENT;
   eServerInfo.think = world_server_rules_frame;
-  eServerInfo.nextthink = time + 0.1;
+  eServerInfo.nextthink = time + 0.01;
   return eServerInfo;
 };
 
@@ -48,7 +48,7 @@ void() world_server_rules_frame={
   }
   
   if( self.serverFlags != serverflags ){
-    self.serverFlags = serverflags;
+    self.serverFlags = 0 | serverflags;
     self.SendFlags = self.SendFlags | SENDFLAG_SERVERFLAGS;
   }
   
@@ -60,7 +60,7 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
   
   //SendEnt header
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteCoord( MSG_ENTITY, changedFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_MAP_RULES );
   //==================================================
   if( (changedFlags & SENDFLAG_GAMETYPE) ){
@@ -94,6 +94,18 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
     WriteString( MSG_ENTITY, cvar_string("sv_about"));
     WriteLong( MSG_ENTITY, self.serverFlags );
     WriteByte( MSG_ENTITY, self.gameType );
+    
+    WriteCoord( MSG_ENTITY, self.minimapMins_x);
+    WriteCoord( MSG_ENTITY, self.minimapMins_y);
+    WriteCoord( MSG_ENTITY, self.minimapMins_z);
+    
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_x);
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_y);
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_z);
+    
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_x);
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_y);
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_z);
   }
   
   if( (changedFlags & SENDFLAG_RULE_LIMIT_TIME) ){
@@ -154,7 +166,7 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   if( isNew ){
     self.solid = SOLID_NOT;
     self.movetype = MOVETYPE_NONE;
-    setmodel(self, "q3mdl/testball.md3");
+    setmodel(self, "models/testball.md3");
     setsize(self, self.mins, self.maxs);
     setorigin(self, self.origin);
     self.scale = 0.01;
@@ -194,6 +206,9 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     //have to doubly make sure serverflags and gameType are sent because .ignoreSave is riding on this.
     self.serverFlags = ReadLong();
     self.gameType = ReadByte();
+    self.minimapMins = te_read_vector();
+    self.minimapMaxs = te_read_vector();
+    self.uiViewBoxOrg = te_read_vector();
   }
   
   if( (changeFlags & SENDFLAG_RULE_LIMIT_TIME) ){

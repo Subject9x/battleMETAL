@@ -8,6 +8,8 @@ Overview: ai unit
 */
 
 void() ai_turret={
+  self.effects = self.effects | EF_LOWPRECISION;
+  
   ai_unit_ini_var();
   
   initialize_data_turret_( self.nextVecChoice );
@@ -22,12 +24,6 @@ void() ai_turret={
   
   self.SendEntity = ctrl_send_turret;
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_NEWENT);
-  
-  local entity wep;
-  for(wep = self.w_slot; wep != world; wep = wep.w_slot){
-    wep.effects = wep.effects | EF_NODRAW;
-  }  
-  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
   
   self.ai_movewait = 0;
   

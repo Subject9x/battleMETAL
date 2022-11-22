@@ -9,6 +9,13 @@ Overview:
 float TINT_MIN = 0.2;
 float TINT_STEP = 0.05;
 
+#define SETUP_COLOR_PART_CT 1
+#define SETUP_COLOR_PART_LT 2
+#define SETUP_COLOR_PART_RT 3
+#define SETUP_COLOR_PART_LA 4
+#define SETUP_COLOR_PART_RA 5
+#define SETUP_COLOR_PART_LG 6
+
 float TINT_CT;
 float TINT_LT;
 float TINT_RT;
@@ -17,6 +24,8 @@ float TINT_RA;
 float TINT_LG;
 
 float SETUP_COLOR_PART_SELECTED;
+
+float SETUP_COLOR_SHOW;
 
 //Main Menu Globals
 entity setup_title;
@@ -76,26 +85,26 @@ string(float factionType) setup_set_icon={
 void(float factionType) setup_set_tint={
   local string clientColors;
   switch(factionType){
-    case 2:
+    case FACTION_SURVEST:
       clientColors = cvar_string("cl_color_srv");
       break;
       
-    case 3:
+    case FACTION_MILITAR:
       clientColors = cvar_string("cl_color_mil");
       break;
     
-    default:
+    case FACTION_PSC:
       clientColors = cvar_string("cl_color_psc");
       break;
   }
   if( strlen(clientColors) > 0 ){
     tokenizebyseparator(clientColors, " ");
-    TINT_CT = rint(stof(argv(0)));
-    TINT_LT = rint(stof(argv(1)));
-    TINT_RT = rint(stof(argv(2)));
-    TINT_LA = rint(stof(argv(3)));
-    TINT_RA = rint(stof(argv(4)));
-    TINT_LG = rint(stof(argv(5)));
+    TINT_CT = fabs(stof(argv(0)));
+    TINT_LT = fabs(stof(argv(1)));
+    TINT_RT = fabs(stof(argv(2)));
+    TINT_LA = fabs(stof(argv(3)));
+    TINT_RA = fabs(stof(argv(4)));
+    TINT_LG = fabs(stof(argv(5)));
   }
 };
 
@@ -130,6 +139,11 @@ void() setup_save_color_scheme={
 void() click_setup_accept={
   setup_save_color_scheme();
   localcmd("saveconfig\n");
+  if( clientstate() == CS_CONNECTED ){
+    //send update to client, and then eventually the server.
+    
+    localcmd("cl_cmd tint");
+  }
   menu_clear_items(M_STATE);
   if( MAIN_MISSION ) {
     m_main_f();
@@ -144,12 +158,14 @@ void() textfield_setup_name={
     cvar_set("_cl_name", self.data_text);
   }
   else{
+    freeGlobalString(self.data_text)
     cvar_set("_cl_name", "DEAD_HAND");
     cacheGlobalString(  self.data_text, str_cvar("_cl_name"))
   }
 };
 
 void() setup_color_show_grid={
+  SETUP_COLOR_SHOW = TRUE;
   
   local entity widget;
   widget = findchainfloat(menuId, M_SETUP);
@@ -162,7 +178,7 @@ void() setup_color_show_grid={
 };
 
 void() setup_color_hide_grid={
-  
+  SETUP_COLOR_SHOW = FALSE;
   local entity widget;
   widget = findchainfloat(menuId, M_SETUP);
   while(widget){
@@ -173,10 +189,10 @@ void() setup_color_hide_grid={
   }
 };
 
-void(float nextTeam) setup_team_set={
+void(float selectTeam) setup_team_set={
   setup_save_color_scheme();
   
-  setup_team_value.len = nextTeam;
+  setup_team_value.len = selectTeam;
   
   setup_set_tint( setup_team_value.len );
   
@@ -206,12 +222,12 @@ void(float nextTeam) setup_team_set={
 };
 
 void() setup_team_prev_f={
-  local float nextTeam;
-  nextTeam = setup_team_value.len - 1;
-  if( nextTeam < 1 ){
-    nextTeam = 3;
+  local float prevTeam;
+  prevTeam = setup_team_value.len - 1;
+  if( prevTeam < 1 ){
+    prevTeam = 3;
   }
-  setup_team_set(nextTeam);
+  setup_team_set(prevTeam);
 };
 
 void() setup_team_next_f={
@@ -226,33 +242,33 @@ void() setup_team_next_f={
 
 void() setup_color_pick_color={
   switch(SETUP_COLOR_PART_SELECTED){
-    case 2:
+    case SETUP_COLOR_PART_LT:
       TINT_LT = self.len;
       setup_pic_lt.color =  CLR_PLAYER_LIST[TINT_LT];
       setup_pic_lt.len = TINT_LT;
       break;
     
-    case 3:
+    case SETUP_COLOR_PART_RT:
       TINT_RT = self.len;
       setup_pic_rt.color = CLR_PLAYER_LIST[TINT_RT];
       setup_pic_rt.len = TINT_RT;
       break;
     
-    case 4:
+    case SETUP_COLOR_PART_LA:
       TINT_LA = self.len;
       setup_pic_la.color =  CLR_PLAYER_LIST[TINT_LA];
       setup_pic_la.len = TINT_LA;
       break;
    
-    case 5:
+    case SETUP_COLOR_PART_RA:
       TINT_RA = self.len;
       setup_pic_ra.color =  CLR_PLAYER_LIST[TINT_RA];
       setup_pic_ra.len = TINT_RA;
       break;
       
-    case 6:
+    case SETUP_COLOR_PART_LG:
       TINT_LG = self.len;
-      setup_pic_lg.color =  CLR_PLAYER_LIST[TINT_LG];
+      setup_pic_lg.color = CLR_PLAYER_LIST[TINT_LG];
       setup_pic_lg.len = TINT_LG;
       break;
     
@@ -265,28 +281,74 @@ void() setup_color_pick_color={
 };
 
 void() setup_color_select_ct={
-  SETUP_COLOR_PART_SELECTED = 1;
+  SETUP_COLOR_PART_SELECTED = SETUP_COLOR_PART_CT;
   setup_color_show_grid();
 };
 void() setup_color_select_lt={
-  SETUP_COLOR_PART_SELECTED = 2;
+  SETUP_COLOR_PART_SELECTED = SETUP_COLOR_PART_LT;
   setup_color_show_grid();
 };
 void() setup_color_select_rt={
-  SETUP_COLOR_PART_SELECTED = 3;
+  SETUP_COLOR_PART_SELECTED = SETUP_COLOR_PART_RT;
   setup_color_show_grid();
 };
 void() setup_color_select_la={
-  SETUP_COLOR_PART_SELECTED = 4;
+  SETUP_COLOR_PART_SELECTED = SETUP_COLOR_PART_LA;
   setup_color_show_grid();
 };
 void() setup_color_select_ra={
-  SETUP_COLOR_PART_SELECTED = 5;
+  SETUP_COLOR_PART_SELECTED = SETUP_COLOR_PART_RA;
   setup_color_show_grid();
 };
 void() setup_color_select_lg={
-  SETUP_COLOR_PART_SELECTED = 6;
+  SETUP_COLOR_PART_SELECTED = SETUP_COLOR_PART_LG;
   setup_color_show_grid();
+};
+
+void(entity elm) setup_draw_color_highlight={
+  local float drawPanel;
+  drawPanel = FALSE;
+  
+  switch(SETUP_COLOR_PART_SELECTED){
+    case SETUP_COLOR_PART_LT:
+      if( elm.len == TINT_LT ){
+        drawPanel = TRUE;
+      }
+      break;
+    
+    case SETUP_COLOR_PART_RT:
+      if( elm.len == TINT_RT ){
+        drawPanel = TRUE;
+      }
+      break;
+    
+    case SETUP_COLOR_PART_LA:
+      if( elm.len == TINT_LA ){
+        drawPanel = TRUE;
+      }
+      break;
+   
+    case SETUP_COLOR_PART_RA:
+      if( elm.len == TINT_RA ){
+        drawPanel = TRUE;
+      }
+      break;
+      
+    case SETUP_COLOR_PART_LG:
+      if( elm.len == TINT_LG ){
+        drawPanel = TRUE;
+      }
+      break;
+    
+    case SETUP_COLOR_PART_CT:
+      if( elm.len == TINT_CT ){
+        drawPanel = TRUE;
+      }
+      break;
+  }
+  if( drawPanel ){
+    drawpic(elm.origin - '4 4', "gfx/ui/box_64.png", '22 22', '1 1 0.5', 1.0 , 0);
+  }
 };
 
 // ini functions
@@ -298,11 +360,11 @@ void() m_setup_i={
   
   setup_label_playername = lbl_text(MENU_ORG + '10 45', '12 12', "Player Name : ", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
   
-  setup_txtfld_playername = inp_textfield(setup_label_playername.origin + Vector2(stringwidth("Player Name :   ", 0, '12 12'), 0), '14 14', 24, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_UPP));
+  setup_txtfld_playername = inp_textfield(setup_label_playername.origin + [stringwidth("Player Name :   ", 0, '12 12'), 0], '14 14', 24, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_UPP));
   cacheGlobalString( setup_txtfld_playername.data_text, str_cvar("_cl_name") )
   
   setup_team_label = lbl_text(MENU_ORG + '10 115', '12 12', "TDM Team Colors : ", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
-  setup_team_value = lbl_text(setup_team_label.origin + Vector2(stringwidth("TDM Team Colors : ", 0, '12 12') + 128, 0), '12 12', "", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
+  setup_team_value = lbl_text(setup_team_label.origin + [stringwidth("TDM Team Colors : ", 0, '12 12') + 128, 0], '12 12', "", CLR_DEF_TXT_NONSELECT, 0, M_SETUP, 1, 0);
   setup_team_value.len = cvar("cl_team");
   
   setup_team_icon = lbl_img(setup_team_value.origin, '96 96', setup_set_icon(setup_team_value.len), '1 1 1', 0, M_SETUP, 1, UI_FLAG_IMG_SIZE_ASPECT | UI_FLAG_CENTER_IMG );
@@ -338,21 +400,27 @@ void() m_setup_i={
 
   setup_color_part_ct_btn = btn_text_callback(MENU_ORG + '10 195', '16 16', "Center Torso", 0, M_SETUP, setup_color_select_ct, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   setup_color_part_ct_btn.fontId = FONT_NUM_XOLONIUM_BOLD;
+  setup_color_part_ct_btn.len = SETUP_COLOR_PART_CT;
   
   setup_color_part_lt_btn = btn_text_callback(MENU_ORG + '10 220', '16 16', "Left Torso", 0, M_SETUP, setup_color_select_lt, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   setup_color_part_lt_btn.fontId = FONT_NUM_XOLONIUM_BOLD;
+  setup_color_part_lt_btn.len = SETUP_COLOR_PART_LT;
   
   setup_color_part_rt_btn = btn_text_callback(MENU_ORG + '10 245', '16 16', "Right Torso", 0, M_SETUP, setup_color_select_rt, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   setup_color_part_rt_btn.fontId = FONT_NUM_XOLONIUM_BOLD;
+  setup_color_part_rt_btn.len = SETUP_COLOR_PART_RT;
   
   setup_color_part_la_btn = btn_text_callback(MENU_ORG + '10 270', '16 16', "Left Arm", 0, M_SETUP, setup_color_select_la, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   setup_color_part_la_btn.fontId = FONT_NUM_XOLONIUM_BOLD;
+  setup_color_part_la_btn.len = SETUP_COLOR_PART_LA;
   
   setup_color_part_ra_btn = btn_text_callback(MENU_ORG + '10 295', '16 16', "Right Arm", 0, M_SETUP, setup_color_select_ra, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   setup_color_part_ra_btn.fontId = FONT_NUM_XOLONIUM_BOLD;
+  setup_color_part_ra_btn.len = SETUP_COLOR_PART_RA;
   
   setup_color_part_lg_btn = btn_text_callback(MENU_ORG + '10 320', '16 16', "Legs", 0, M_SETUP, setup_color_select_lg, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   setup_color_part_lg_btn.fontId = FONT_NUM_XOLONIUM_BOLD;
+  setup_color_part_lg_btn.len = SETUP_COLOR_PART_LG;
   
   local entity colorGrid;
   local float row, col;
@@ -364,7 +432,7 @@ void() m_setup_i={
     for(col=0; col < 10; col = col + 1){
       idx = (row * 10) + col;
       if( idx < CLR_PLAYER_MAX ){
-        colorGrid = btn_img_callback(startOrg + Vector2(col * 20, row * 20), '14 14', "", 0, M_SETUP, setup_color_pick_color, CLR_PLAYER_LIST[idx], CLR_PLAYER_LIST[idx] * 1.5, 1, UI_FLAG_NOLABEL);
+        colorGrid = btn_img_callback(startOrg + [col * 20, row * 20], '14 14', "", 0, M_SETUP, setup_color_pick_color, CLR_PLAYER_LIST[idx], CLR_PLAYER_LIST[idx] * 1.5, 1, UI_FLAG_NOLABEL);
         colorGrid.len = idx;
         colorGrid.subid = 1;
         colorGrid.drawme = FALSE;
@@ -399,9 +467,13 @@ void() m_setup_d={
   
   drawfont = drawfont_prev;
   
+  
   local entity widget;
   widget = findchainfloat(menuId, M_SETUP);
   while(widget){
+    if( widget.subid == 1 && SETUP_COLOR_SHOW){
+      setup_draw_color_highlight(widget);
+    }
     widget.draw(widget);
     widget = widget.chain;
   }

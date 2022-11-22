@@ -22,6 +22,7 @@ qsrc/headers/subs.qh
 qsrc/headers/triggers.qh
 main/headers/effectinfo_api.qh
 main/controllers/headers/controllers.qh
+common/data/camp_loader.qh
 
 //Server Defs=====================
   main/extensions/ext_game.qc
@@ -44,14 +45,8 @@ main/controllers/headers/controllers.qh
   main/headers/entityFactory_player.qh
   main/headers/entityFactory_vehicles.qh
   main/models/models_h.qc
-  main/extensions/headers/ext_player.qh
   main/ai/headers/ai_api.qh
-    main/ai/headers/ai_behavior_mech_skirmish.qh
-    main/ai/headers/ai_behavior_mech_sniper.qh
-    main/ai/headers/ai_behavior_tank_skirmish.qh
-    main/ai/headers/ai_behavior_tank_sniper.qh
-    main/ai/headers/ai_behavior_tank_gev.qh
-    main/ai/headers/ai_behavior_turret.qh
+  main/ai/headers/ai_behaviors.qh
   main/map/triggers_map_h.qc
 //==========================
 
@@ -144,6 +139,7 @@ main/controllers/headers/controllers.qh
 //================================
   dp/subs.qc  
   common/data/data_system.qc
+  common/data/data_campaign.qc
 
 //Custom battleMETAL Functionality
 //AI Module---------------------
@@ -232,8 +228,10 @@ qsrc/triggers.qc
   
   main/map/map_unit_balaket_brawl.qc
   main/map/map_unit_balaket_sniper.qc
+  main/map/map_unit_warden_sniper.qc
   main/map/map_unit_matok_brawl.qc
   main/map/map_unit_matok_sniper.qc
+  main/map/map_unit_sapper_sniper.qc
   main/map/map_unit_monitor_brawl.qc
   main/map/map_unit_monitor_sniper.qc
  
@@ -245,7 +243,6 @@ qsrc/triggers.qc
  
   main/entityFactory_vehicles.qc
   //player types
-  main/extensions/ext_player.qc
   
   //models quake c
   main/models/models_leg.qc

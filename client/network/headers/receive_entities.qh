@@ -10,6 +10,7 @@ Overview:
   as well as map object events for Nav Points etc.
 */
 
+
 //Globals
 float MISSION_NAME_TIME = 5;
 float MISSION_NAME_TIME_RATE; //time calls in the render_view method must be gated against the refresh-rate
@@ -37,7 +38,6 @@ void( string name ) client_event_mission_name;
 void() client_event_mission_name_frame;
 void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) client_event_info_box;
 void(float pscTotal, float survestTotal, float militarTotal , float missonSuccessCheck, float totalLosses) client_event_debrief_active;
-
 void() receive_ent_bindData;
 
 void() client_state_events;

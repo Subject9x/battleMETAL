@@ -29,8 +29,10 @@ void() data_ini_equip_shield_emitter_={
   self.equipSize = MSC3;
   
   #ifdef CSQC  
+    precache_model("models/weapons/e_hsem.md3");
+    precache_file( "gfx/ui/wep_icons/eqp_hsem.png");
     self.w_name = "Heavy Shield Emitter";
-    self.model = "q3mdl/weapons/e_hsem.md3";  
+    self.model = "models/weapons/e_hsem.md3";  
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

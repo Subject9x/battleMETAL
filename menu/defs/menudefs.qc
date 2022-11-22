@@ -717,6 +717,6 @@ float	stringwidth(string text, float handleColors, vector size) = #468;
 #define SVFLAG_NOSAVE   512 //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
 #define SVFLAG_FPSONLY  1024 //disables third person / chase_active commands.
 
-#define QCMENU
+#define MENUQC
 #define cacheGlobalString(var, val) if(val!=""){if (var!=""){strunzone(var); var="";} var = strzone(val);}
 #define freeGlobalString(var) if (var!=""){strunzone(var); var = "";}

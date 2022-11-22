@@ -1,166 +1,29 @@
 //MODELS
 //buildings
-q3mdl/buildings/towersmall/guardtower.obj
-q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3
-q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3
-q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3
-q3mdl/buildings/power_plant/mdl_bld_h_power.md3
-q3mdl/buildings/radar/mdl_bld_h_radar.md3
-q3mdl/buildings/repair_bay/mdl_repair_bay.md3
-q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3
-q3mdl/buildings/barracks/building_barracks.obj
-q3mdl/buildings/depot/building_depot.obj
-
-q3mdl/buildings/turret_heavy/mdl_turret_heavy_base.obj
-q3mdl/buildings/turret_heavy/mdl_turret_heavy_turret.obj
-
-q3mdl/buildings/turret_light/mdl_bld_h_ltur_base.md3
-q3mdl/buildings/turret_light/mdl_bld_h_ltur.md3
-
-q3mdl/buildings/turret_missile/mdl_turret_missile_base.obj
-q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3
-
 //mech model
-q3mdl/testball.md3
-
+models/testball.md3
 //vehicles
-q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3
-q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3
-q3mdl/vecs/foslager/mdl_foslager_chas.md3
-q3mdl/vecs/foslager/mdl_foslager_tur.md3
-q3mdl/vecs/onnek/onnek.md3
-q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3
-q3mdl/vecs/trowel/mdl_trowel_chas.md3
-q3mdl/vecs/trowel/mdl_trowel_tur.md3
-
 //weapons
-q3mdl/weapons/w_esr.md3
-q3mdl/weapons/w_emp.md3
-q3mdl/weapons/w_flk.md3
-q3mdl/weapons/w_ion.md3
-q3mdl/weapons/w_atc.md3
-q3mdl/weapons/w_laser.md3
-q3mdl/weapons/w_arh.md3
-q3mdl/weapons/w_lgm.md3
-q3mdl/weapons/w_swrm.md3
-q3mdl/weapons/w_pac.md3
-q3mdl/weapons/w_qrf.md3
-q3mdl/weapons/w_mis.md3
-q3mdl/weapons/w_rpc.md3
-q3mdl/weapons/w_sfga.md3
-q3mdl/weapons/e_enbat.md3
-q3mdl/weapons/e_recap.md3
-q3mdl/weapons/e_lsar.md3
-q3mdl/weapons/e_scap.md3
-q3mdl/weapons/e_hsem.md3
-q3mdl/weapons/e_abr.md3
-q3mdl/weapons/e_htsnk.md3
-
 //weapon projectiles
-q3mdl/proj/mdl_proj_swrm.md3
-q3mdl/proj/mdl_proj_lgm.md3
-q3mdl/proj/mdl_proj_mis.md3
-q3mdl/proj/mdl_proj_marh.md3
-q3mdl/proj/mdl_proj_sfga.md3
-q3mdl/proj/mdl_proj_rpc.md3
-q3mdl/proj/mdl_proj_qrfl.md3
-q3mdl/proj/mdl_proj_emp.md3
-q3mdl/proj/mdl_proj_ion.md3
 
-q3mdl/fx/debris1/mdl_debris_1.md3
-q3mdl/fx/debris2/mdl_debris_2.md3
-q3mdl/fx/debris3/mdl_debris_3.md3
-q3mdl/fx/explosions/te_shield_explode.md3
-q3mdl/fx/explosions/te_missile_explode.md3
+models/fx/explosions/te_shield_explode.md3
+models/fx/explosions/te_missile_explode.md3
 
 //MAP OBJECTS
-q3mdl/map/nav_point.obj
+models/map/ruins/ruin_medium.obj
+models/map/ruins/ruin_large.obj
+models/map/ruins/ruin_small.obj
 
-q3mdl/map/ruins/ruin_medium.obj
-q3mdl/map/ruins/ruin_large.obj
-q3mdl/map/ruins/ruin_small.obj
-
-q3mdl/map/rads/rad_base_sm.obj
-q3mdl/map/rads/rad_base_md.obj
-q3mdl/map/rads/rad_base_lg.obj
-q3mdl/map/rads/min_base_sm.obj
-q3mdl/map/rads/min_base_md.obj
-q3mdl/map/rads/min_base_lg.obj
-q3mdl/map/rads/qtm_base_sm.obj
-q3mdl/map/rads/qtm_base_md.obj
-q3mdl/map/rads/qtm_base_lg.obj
-
-q3mdl/buildings/misc/misc_apt_sm.obj
-q3mdl/buildings/misc/misc_fact_med.obj
-q3mdl/buildings/misc/misc_lodge.obj
-q3mdl/buildings/misc/misc_off_pyramid.obj
-q3mdl/buildings/misc/misc_off_large.obj
-q3mdl/buildings/misc/misc_off_sm.obj
-q3mdl/buildings/misc/misc_fact_steam.obj
-q3mdl/buildings/misc/misc_apt_larg.obj
-
-q3mdl/map/plats/plat_small.obj
-q3mdl/map/plats/plat_medium.obj
-q3mdl/map/plats/plat_large.obj
-
-q3mdl/mechs/balaket/balaket_legs.md3
-q3mdl/mechs/matok/matok_legs.md3
-q3mdl/mechs/monitor/monitor_legs.md3
+models/map/plats/plat_small.obj
+models/map/plats/plat_medium.obj
+models/map/plats/plat_large.obj
 
 //Balaket
-q3mdl/mechs/balaket/balaket_view.md3
-q3mdl/mechs/balaket/balaket_hud.obj
-q3mdl/mechs/balaket/balaket_arm_l.md3
-q3mdl/mechs/balaket/balaket_arm_r.md3
-q3mdl/mechs/balaket/balaket_tor_r.md3
-q3mdl/mechs/balaket/balaket_tor_l.md3
-q3mdl/mechs/balaket/balaket_tor_c.md3
-q3mdl/mechs/balaket/balaket_legs.md3
-
 //Matok
-q3mdl/mechs/matok/matok_hud.md3
-q3mdl/mechs/matok/matok_hud.obj
-q3mdl/mechs/matok/matok_arm_l.md3
-q3mdl/mechs/matok/matok_arm_r.md3
-q3mdl/mechs/matok/matok_tor_r.md3
-q3mdl/mechs/matok/matok_tor_l.md3
-q3mdl/mechs/matok/matok_tor_c.md3
-q3mdl/mechs/matok/matok_legs.md3
-
 //Monitor
-q3mdl/mechs/monitor/monitor_hud.md3
-q3mdl/mechs/monitor/monitor_hud.obj
-q3mdl/mechs/monitor/monitor_arm_l.md3
-q3mdl/mechs/monitor/monitor_arm_r.md3
-q3mdl/mechs/monitor/monitor_tor_r.md3
-q3mdl/mechs/monitor/monitor_tor_l.md3
-q3mdl/mechs/monitor/monitor_tor_c.md3
-q3mdl/mechs/monitor/monitor_legs.md3
-
 //Sapper
-q3mdl/mechs/sapper/sapper_arm_l.md3
-q3mdl/mechs/sapper/sapper_arm_r.md3
-q3mdl/mechs/sapper/sapper_tor_r.md3
-q3mdl/mechs/sapper/sapper_tor_l.md3
-q3mdl/mechs/sapper/sapper_tor_c.md3
-q3mdl/mechs/sapper/sapper_legs.md3
-q3mdl/mechs/sapper/sapper_hud.obj
-
 //Warden
-//warden arms are mirrored, so one mesh only
-q3mdl/mechs/warden/warden_arm_r.md3
-q3mdl/mechs/warden/warden_tor_r.md3
-q3mdl/mechs/warden/warden_tor_l.md3
-q3mdl/mechs/warden/warden_tor_c.md3
-q3mdl/mechs/warden/warden_legs.md3
-//q3mdl/mechs/warden/warden_hud.obj
-
 //new huds
-q3mdl/mechs/balaket/balaket_view.obj
-q3mdl/mechs/matok/matok_view.obj
-q3mdl/mechs/monitor/monitor_view.obj
-q3mdl/mechs/sapper/sapper_view.obj
-q3mdl/mechs/warden/warden_view.obj
 
 //CROSSHAIRS
 gfx/hud/ret/crosshair1.png
@@ -204,6 +67,7 @@ gfx/hud/hud_icon_sprint.tga
 gfx/hud/hud_icon_shock.tga
 gfx/hud/hud_icon_rad.tga
 gfx/hud/hud_icon_quant.tga
+gfx/hud/hud_icon_radar.tga
 
 gfx/hud/hud_mech_ct.tga
 gfx/hud/hud_mech_st.tga
@@ -230,12 +94,6 @@ gfx/ui/wep_icons/misc2.tga
 gfx/ui/wep_icons/misc3.tga
 gfx/ui/wep_icons/misc4.tga
 
-
-//hangar splash images
-gfx/ui/hgr_otl.png
-gfx/ui/hgr_mtk.png
-gfx/ui/hgr_mnt.png
-
 sound/weapons/atc_reload.ogg
   
 //ui sounds
@@ -244,19 +102,6 @@ sound/misc/menu2.wav
 sound/misc/menu3.wav
 
 sound/demon/dland2.wav
-
-sound/weapons/mis_fire.ogg
-sound/weapons/atc_fire.ogg
-sound/weapons/flak_fire.ogg
-sound/weapons/qrfl_fire.ogg
-sound/weapons/emp_fire.ogg
-sound/weapons/laser_fire.ogg
-sound/weapons/pac_fire.ogg
-sound/weapons/esr_fire.ogg
-sound/weapons/rpls_fire.ogg
-sound/weapons/sfga_fire.ogg
-sound/weapons/arh_fire.ogg
-sound/weapons/rckt_fire.ogg
 
 sound/fire/debris1.ogg
 sound/mech_stomp.ogg

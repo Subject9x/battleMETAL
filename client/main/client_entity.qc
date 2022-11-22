@@ -29,7 +29,53 @@ Overview:
 //the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
-  sendent_handle_update( isnew );
+  local float entType;
+  local float entFlags;
+  
+  entType = ReadByte();
+  entFlags = ReadLong(); //expanding entFlags values -> data/common
+  
+  switch(entType){
+    case SENDTYPE_PLAYER:
+      sendent_handle_player( isnew, entFlags );
+      break;
+    case SENDTYPE_TANK:
+      sendent_handle_tank( isnew, entFlags );
+      break;
+    case SENDTYPE_SPG:
+      sendent_handle_spg( isnew, entFlags );
+      break;
+    case SENDTYPE_GEV:
+      sendent_handle_gev( isnew, entFlags );
+      break;
+    case SENDTYPE_TURRET:
+      sendent_handle_turret( isnew, entFlags );
+      break;
+    case SENDTYPE_BUILD:
+      sendent_handle_building( isnew, entFlags );
+      break;
+    case SENDTYPE_MECH_AI:
+      sendent_handle_mech_ai( isnew, entFlags );
+      break;
+    case SENDTYPE_PROJ:
+      sendent_handle_missile( isnew, entFlags );
+      break;
+    case SENDTYPE_MAP:
+      sendent_handle_map( isnew, entFlags );
+      break;
+    case SENDTYPE_TERRAIN:
+      sendent_handle_terrain( isnew, entFlags );
+      break;
+    //case SENDTYPE_MISC: //note: see main/map/map_scenery
+      //sendent_handle_misc( isnew, entFlags );
+      //break;
+    case SENDTYPE_MISC_BLD:
+      sendent_handle_misc_bld( isnew, entFlags );
+      break;
+    case SENDTYPE_ITEM:
+      sendent_handle_item( isnew, entFlags );
+      break;
+  }
 };
 
 // 
@@ -44,9 +90,6 @@ void(float isnew) CSQC_Ent_Update =
     knowing these 2 cases makes all the difference about executing this function.
 */
 void() CSQC_Ent_Remove ={
-  local entity weps;
-  local entity next;
-  local entity rem;
   
   self.entnum = 0; //clears out old reference, must have!
   
@@ -62,33 +105,6 @@ void() CSQC_Ent_Remove ={
   }
   else{  
     if( self.data_type == DATA_VEHC || self.data_type == DATA_MECH || self.data_type == DATA_BLD ){
-      weps = self.w_slot;
-      while( weps ){
-        next = weps.w_slot;
-        rem = weps;
-        weps = next;
-        if( rem.owner == self ){
-          remove(rem);
-        }
-      }
-      if( self.torsoCenter.owner == self ){
-        remove(self.torsoCenter);
-      }
-      if( self.torsoLeft.owner == self ){
-        remove(self.torsoLeft);
-      }
-      if( self.torsoRight.owner == self ){
-        remove(self.torsoRight);
-      }
-      if( self.armLeft.owner == self ){
-        remove(self.armLeft);
-      }
-      if( self.armRight.owner == self ){
-        remove( self.armRight);
-      }
-      if( self.legs.owner == self ){
-        remove(self.legs );
-      }
       if( self.effect1.owner == self ){
         remove(self.effect1 );
       }

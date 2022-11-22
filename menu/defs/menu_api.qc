@@ -303,8 +303,12 @@ void(entity btn) render_btn={
   if(btn.drawme){
     this = self;
     self = btn;
-      org = self.origin;
-      sizzle = self.size;
+      org_x = self.origin_x;
+      org_y = self.origin_y;
+      
+      sizzle_x = self.size_x;
+      sizzle_y = self.size_y;
+      
       if( (self.flags & UI_FLAG_SIZE_IMG) && self.image1 != ""){
         sizzle = draw_getimagesize(self.image1);
         sizzle = gui_scaleSize(sizzle, VIEW_SCALE);
@@ -359,8 +363,11 @@ void(entity btn) render_btn_txt={
   if(btn.drawme){
     this = self;
     self = btn;
-      org = self.origin;
-      sizzle = self.size;
+      org_x = self.origin_x;
+      org_y = self.origin_y;
+      
+      sizzle_x = self.size_x;
+      sizzle_y = self.size_y;
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         txt_len = stringwidth(self.label, 0, self.size);
         sizzle_x = txt_len * 1.25;  //magik number for width because raw stringwidth() doesn't seem to be accurate?
@@ -414,9 +421,11 @@ void(entity btn) render_chkbox={
   if(btn.drawme){
     this = self;
     self = btn;
-      org = self.origin;
+      org_x = self.origin_x;
+      org_y = self.origin_y;
       
-      sizzle = self.size;
+      sizzle_x = self.size_x;
+      sizzle_y = self.size_y;
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         sizzle = drawgetimagesize(self.image1);
         sizzle = gui_scaleSize(sizzle, VIEW_SCALE);
@@ -477,8 +486,11 @@ void(entity lbl) render_lbl_text={
   if(lbl.drawme){
     this = self;
     self = lbl;
-      org = self.origin;
-      sizzle = self.size;
+      org_x = self.origin_x;
+      org_y = self.origin_y;
+      
+      sizzle_x = self.size_x;
+      sizzle_y = self.size_y;
       if( (self.flags & UI_FLAG_LBL_USELEN) ){
         self.label = ftos(self.len);
       }
@@ -527,9 +539,11 @@ void(entity lbl) render_lbl_img={
   if(lbl.drawme){
     this = self;
     self = lbl;
-      org = self.origin;
+      org_x = self.origin_x;
+      org_y = self.origin_y;
       
-      sizzle = self.size;
+      sizzle_x = self.size_x;
+      sizzle_y = self.size_y;
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         sizzle = draw_getimagesize(self.image1);
         sizzle = gui_scaleSize(sizzle, VIEW_SCALE);
@@ -561,8 +575,12 @@ void(entity pnl) render_txt_pnl={
   if(pnl.drawme){
     this = self;
     self = pnl;
-      org = self.origin;
-      sizzle = self.size;
+      org_x = self.origin_x;
+      org_y = self.origin_y;
+      
+      sizzle_x = self.size_x;
+      sizzle_y = self.size_y;
+      
       drawfont_prev = drawfont;
       drawfont = self.fontId;
         gui_wrapText(org, sizzle, self.label, '11 11', self.color, self.alpha);
@@ -582,7 +600,8 @@ void(entity txt) render_textfield={
       drawfont_prev = drawfont;
       drawfont = self.fontId;
       
-      org = self.origin;
+      org_x = self.origin_x;
+      org_y = self.origin_y;
       
       self.label = self.data_text;
       sizzle_x = ceil(stringwidth(self.label, 0, self.size));
@@ -665,7 +684,7 @@ void(entity txt) render_bindfield={
       if( self.image1 != "" ){
         drawfont_prev = drawfont;
         drawfont = FONT_NUM_ROBOT_REGULAR;
-          labelOrg = self.origin - Vector2(stringwidth(self.image1, 0, self.size - (self.size * 0.15)), 0);
+          labelOrg = self.origin - [stringwidth(self.image1, 0, self.size - (self.size * 0.15)), 0];
           drawstring(labelOrg, self.image1, self.size - (self.size * 0.15), CLR_DEF_TXT_NONSELECT, self.alpha, 0); 
         drawfont = drawfont_prev;
       }
@@ -756,7 +775,8 @@ void() menu_scan_saves={
       
     freeGlobalString(GAME_SAVES[itr])
     freeGlobalString(GAME_SAVES_DRAWNAME[itr])
-      
+    freeGlobalString(GAME_SAVES_CAMP_FILE[itr])
+    
     fname = strcat("saves/save_", ftos(itr), ".sav");
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
@@ -779,6 +799,7 @@ void() menu_scan_saves={
           }
           if( argv(1) == CAMP_SAVE_TAG ){
             campid = argv(3);
+            
           }
           if( argv(1) == CAMP_TAG_NEWG ){
             new_gameplus = stof(argv(3));
@@ -800,6 +821,7 @@ void() menu_scan_saves={
       GAME_SAVES_SKILL[itr] = save_skill;
       cacheGlobalString( GAME_SAVES_MAP[itr], map_name)
       GAME_SAVES_NEWG[itr] = new_gameplus;
+      cacheGlobalString( GAME_SAVES_CAMP_FILE[itr], campid )
     }
     else{
       GAME_SAVES_SKILL[itr] = 0;

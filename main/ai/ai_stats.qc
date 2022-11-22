@@ -50,31 +50,67 @@ void() ai_unit_ini_var={
 */
 void(float rank) ai_pilot_ini_stats={
 
-  if( self.data_type == DATA_MECH ){
-    if( (self.legs) ){
-      self.legs.max_health = self.legs.health = self.legs.health * AI_ARMOR_MECH;
-    }
-    if( (self.torsoLeft) ){
-      self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * AI_ARMOR_MECH;
-    }
-    if( (self.torsoRight) ){
-      self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * AI_ARMOR_MECH;
-    } 
-    if( (self.armRight) ){
-      self.armRight.max_health = self.armRight.health = self.armRight.health * AI_ARMOR_MECH;
-    } 
-    if( (self.armLeft) ){
-      self.armLeft.max_health = self.armLeft.health = self.armLeft.health * AI_ARMOR_MECH;
-    }
+  local float armorMod;
+  local float shieldMod;
   
+  
+  //IMPORTANT! armor mod is only affected by GAME SKILL, not rank!
+  switch(skill){
+    default:
+      armorMod = AI_ARMOR_ROK;
+      shieldMod = AI_SHIELD_ROK;
+      break;
+    case SKILL_REG:
+      armorMod = AI_ARMOR_REG;
+      shieldMod = AI_SHIELD_REG;
+      break;
+    case SKILL_VET:
+      armorMod = AI_ARMOR_VET;
+      shieldMod = AI_SHIELD_VET;
+      break;
+    case SKILL_ELT:
+      armorMod = AI_ARMOR_ACE;
+      shieldMod = AI_SHIELD_ACE;
+      break;
+  }
+
+  if( self.data_type == DATA_MECH ){
+    if( (self.legs_hp) ){
+      self.legs_hpMax = self.legs_hp = self.legs_hp * armorMod;
+    }
+    if( (self.torL_hp) ){
+      self.torL_hpMax = self.torL_hp = self.torL_hp * armorMod;
+    }
+    if( (self.torR_hp) ){
+      self.torR_hpMax = self.torR_hp = self.torR_hp * armorMod;
+    } 
+    if( (self.armR_hp) ){
+      self.armR_hpMax = self.armR_hp = self.armR_hp * armorMod;
+    } 
+    if( (self.armL_hp) ){
+      self.armL_hpMax = self.armL_hp = self.armL_hp * armorMod;
+    }  
+  }
+  else{
+    self.max_health = self.health = self.health * armorMod;
   }
   
-  self.energyRate = self.energyRate * AI_ADJUST_ENERGY;
-  self.shieldRate = self.shieldRate * AI_ADJUST_SHIELD;
-  
-  if( self.data_type == DATA_MECH ){
-    self.shieldMax = self.shield = self.shield * AI_SHIELD_MECH;
+  if(skill < SKILL_VET){
+    self.energyRate = self.energyRate * AI_ENERGY_RATE;
+    self.shieldRate = self.shieldRate * AI_SHIELD_RATE;
   }
+  else{
+    self.energyRate = self.energyRate * AI_ENERGY_RATE_HARD;
+    self.shieldRate = self.shieldRate * AI_SHIELD_RATE_HARD;
+  }
+  
+  if(self.data_type == DATA_MECH){
+    self.shieldMax = self.shield = self.shield * shieldMod;
+  }
+  else{
+    self.shieldMax = self.shieldMax * shieldMod;
+  }
+  
  
   self.spreadDefault = ai_pilot_accuracy( rank, self.spreadDefault );
   self.accuracy = self.spreadDefault_y;
@@ -198,19 +234,6 @@ float( float rank, float damg) ai_pilot_mod_damage={
   return percent;
 };
 
-/*
-  reduce action_timer by this amount
-*/
-float(float rank) ai_pilot_action_mod={
-  local float actionTime;
-  local float slow;
-  slow = self.data_speed_forward + self.data_speed_backward + self.data_speed_strafe;
-  slow = slow - 600;
-  slow = slow * -1;
-  slow = slow / 100;
-  actionTime = rank + slow;
-  return actionTime;
-};
 
 void() ai_promote={
   self.ai_rank = skill;

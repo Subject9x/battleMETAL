@@ -53,12 +53,11 @@ void() data_projectile_ini_missile_swarm_={
  
   #ifdef CSQC
     //cosmetics
-    self.model = "q3mdl/proj/mdl_proj_lgm.md3";
-    self.effects = EF_NOSHADOW;
-    self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL"); 
+    precache_model("models/proj/mdl_proj_lgm.md3");
+    self.model = "models/proj/mdl_proj_lgm.md3";
+    self.data_traileff = particleeffectnum("TE_SWRM_TRAIL"); 
     self.pcl_explode = projectile_swarm_expl;
     self.scale = 1.5;
-    self.effects = self.effects | EF_FULLBRIGHT;
   #endif 
   
   #ifdef SSQC
@@ -66,7 +65,7 @@ void() data_projectile_ini_missile_swarm_={
     self.touch = data_projectile_missile_swarm_touch;      
     self.gravity = 0.04;
     self.movetype = MOVETYPE_TOSS;
-    self.effects = self.effects | EF_FULLBRIGHT;
+    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
     self.isActive = TRUE;
   #endif
 };
@@ -74,7 +73,6 @@ void() data_projectile_ini_missile_swarm_={
 void() data_projectile_missile_swarm_touch={
   local float debris;
   local float damage;
-  local entity hitLocation;
   
   self.touch = SUB_Null;
   self.impactType = IMPACT_SKY;
@@ -92,9 +90,9 @@ void() data_projectile_missile_swarm_touch={
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      hitLocation = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
-      if( hitLocation.partTypeId && !(self.owner.statTargetHitParts & hitLocation.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hitLocation.partTypeId;
+      HIT_LOCATION = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       } 
       te_debris_armor( self.origin, vectoangles(self.velocity) * 0.33, self.velocity, 3, 1 );
       self.impactType = IMPACT_ARMOR;

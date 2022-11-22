@@ -76,7 +76,7 @@ LIFETIME 2:
 REACTIVATE 4: reactivate after countdown
 REMOVE_FIRSTUSE 8: remove after first countdown
 */
-void() debug_particles={
+void() map_debug_particles={
 
   map_particle_ini();
 

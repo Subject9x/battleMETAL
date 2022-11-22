@@ -8,6 +8,15 @@ Overview:
   some functionality that is CSQC specific has been ported over to here.
 */
 
+
+
+//MenuSys - Spoike
+vector(vector v) vtodpp={
+  v_x = v_x * cvar("vid_width") / cvar("vid_conwidth");
+  v_y = v_y * cvar("vid_height") / cvar("vid_conheight");
+	return v;
+};
+
 void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel={
   local float len;
   len = stringwidth(str, 0, txt_sz);
@@ -163,7 +172,7 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
 	}
 	
 	if( panelImage && (panelImage != "") ){
-    panelAdjust = Vector2(targetSize_x * 0.025,  targetSize_y * -0.075);
+    panelAdjust = [targetSize_x * 0.025,  targetSize_y * -0.075];
     gui_renderPatch9_1_32(toolTipOrigin + panelAdjust, targetSize, panelColor, alph + 0.25, 0);
 	}
 	gui_wrapText( toolTipOrigin + panelAdjust, targetSize, tipMessage, fontSize, textColor, alph); 
@@ -177,20 +186,3 @@ void( vector tipOrg ) gui_renderTooltipIcon={
   drawpic( tipOrg, UI_HELP_IMG, '14 14', CLR_DEF_RET_HASLOCK, 1, 0);
 };
 
-entity(float wepBit) gui_get_weapon={
-  local entity item;
-  local entity found;
-  
-  item = findfloat(world, clientLocalId, player_localentnum);
-  item = item.w_slot;
-  while( item != world ){
-    if(item.w_group == wepBit){
-      found = item;
-    }
-    item = item.w_slot;
-  }
-  if(found){
-    return found;
-  }
-  return world;
-};

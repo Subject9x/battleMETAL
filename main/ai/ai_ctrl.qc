@@ -7,61 +7,6 @@ Overview:
   AI Controller functions
 */
 
-/*
-  DEPRECATED - release v1.0.0
-  Teleport when blocked.
-  Simple garbage-collect, place AI either
-    NEAR closest ai_node_tether
-    OR if they're on a path,
-    their last path.
-  
-  ONLY if the player is far away and obscured!
-*/
-/*float() ai_blocked_teleport={
-  local entity clients;
-  local entity node;
-  local float canPort;
-  local float isSeen;
-  isSeen = 0;
-  canPort = FALSE;
-  for(clients = nextent(find(world, classname, "player")); (clients.classname=="player"); clients = nextent(clients)){
-    if( clients.data_idx == 0 ){
-      continue;
-    }
-    if( vlen(clients.origin - self.origin) < AI_RANGE_M * 0.67){
-      tracebox(clients.origin, clients.mins, clients.maxs, self.origin, MOVE_NORMAL, clients);
-      if( trace_fraction == 1.0 ){
-        isSeen = isSeen + 1;
-      }
-    }
-  }
-  if( isSeen == 0 ){
-    node = ai_node_to_target(self);
-    if( node ){
-      self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
-      self.tether = TETHER_NODE;
-      return TRUE;
-    }
-    else{
-      if( self.patrolNode ){
-        if( self.patrolNode.partPrev ){
-          self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
-          self.tether = TETHER_NODE;
-        }
-        else{
-          self.tetherOrg = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.15,32), 24);
-          self.tether = TETHER_NODE;
-          
-        }
-        setorigin(self, self.tetherOrg);
-        cons_logAFloat("ai_blocked_teleport() - teleporting unit", 1);  //DEBUG
-        return TRUE;
-      }
-    }
-  }
-  return FALSE;
-};*/
-
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw={
   local float angleMin, angleMax;
   angleMin = anglemod(facingAngle + limitMin);
@@ -196,9 +141,6 @@ void(vector v) ai_face_origin={
 ===================================================
 */
 
-/*
-
-*/
 float() ai_check_pause={
   if( (time - self.ai_timer_breathe) >= self.ai_pauseTime_check ){
     if( (random() * 1.0) >= self.ai_pauseTime_chance ){
@@ -218,48 +160,6 @@ void() ai_face_targ_fade={
 	ChangeYaw ();
 };
 
-/*
-  rolled together all the flying code to a one-off call.
-  this should be made everytime a flyer makes an engine-based move.
-  
-  DEPRECATED - release version - Roohr
-*/
-/*void( float alt_low, float alt_max) ai_fly_update={
-  local vector delta, flydir;
-  local float dist, fdir;
-  local float fspd, sspd, bspd;
-  
-  makevectors( self.angles );
-  
-  delta = self.origin + (v_up * -10000);
-  traceline( self.origin, delta, MOVE_NOMONSTERS, self);
-  dist = vlen( trace_endpos - self.origin );
-  
-  if( dist <= alt_low ){
-    fdir = 1;
-  }
-  if( fdir == FALSE ){
-    delta = self.origin + (v_up * 10000);
-    traceline( self.origin, delta, MOVE_NOMONSTERS, self);
-    dist = vlen( trace_endpos - self.origin );
-    
-    if( dist <= alt_max ){
-      fdir = -1;
-    }
-  }
-  
-  if( fdir != 0 ){
-    fspd = (self.data_speed_forward / 2) * AI_RUN_SPD;
-    sspd = (self.data_speed_strafe / 2) * AI_RUN_SPD;
-    bspd = (self.data_speed_backward * AI_RUN_SPD) * fdir;
-    
-    flydir = self.origin + (v_up * bspd);
-    flydir = flydir + (v_right * sspd);
-    flydir = flydir + (v_forward * fspd);
-    
-    setorigin( self, flydir );
-  } 
-}*/
 
 /*
   Checks to see if Entity T is in the ANG arc of self
@@ -276,7 +176,7 @@ float(vector v, float ang_limit, float useTurret) ai_check_face_origin={
   local float dot;
   
   if( useTurret ){
-    vang = self.torsoCenter.angles;
+    vang = self.torC_angl;
   }
   else{
     vang = self.angles;
@@ -301,7 +201,7 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
   
   vang = self.angles;
   if( useTurret ){
-    vang = self.torsoCenter.angles;
+    vang = self.torC_angl;
   }
   
   makevectors ( vang );
@@ -332,7 +232,7 @@ float( entity targ ) ai_check_vis={
   local float contentBuffer;
   
   makevectors(self.angles);
-  spot1 = self.cockpit.origin + (v_forward * 10) + (v_up * 3);
+  spot1 = self.cameraOrigin + (v_forward * 10) + (v_up * 3);
   if( targ.data_type == DATA_BLD ){
     spot2 = targ.hitOffset;
   }
@@ -345,7 +245,7 @@ float( entity targ ) ai_check_vis={
   
   traceline (spot1, spot2, MOVE_NORMAL, self);
   
-  self.dphitcontentsmask = rint(contentBuffer);
+  self.dphitcontentsmask = fabs(contentBuffer);
 
   //case: los crossed content - ported q1
   if ( trace_inopen && trace_inwater ){
@@ -440,13 +340,13 @@ void() ai_setup_patrol={
   else{
     droptofloor();
   }
+  makevectors(self.angles);
   if( (self.flags & FL_TURRET) ){
-    util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
+    self.torC_org = self.origin + (v_up*self.torC_compOffset_y)+(v_right*self.torC_compOffset_x)+(v_forward*self.torC_compOffset_z);
   }
-  if( self.legs != world ){
-    util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
+  if( self.legs_hp ){
+    self.legs_org = self.origin + (v_up*self.legs_compOffset_y)+(v_right*self.legs_compOffset_x)+(v_forward*self.legs_compOffset_z);
   }
-  
   //Check for spawnflag: DEBUG_MODE
   if( (self.spawnflags & DEBUG_MODE) ){
     nodeFail = TRUE;
@@ -465,7 +365,7 @@ void() ai_setup_patrol={
         self.patrolNode = entFindTarget;
         self.tetherOrg = entFindTarget.origin;
         lastNode = entFindTarget;
-        if( cvar("developer") ){
+        if( cvar("developer") > 1){
           cons_logAVector(entFindTarget.classname, entFindTarget.origin); //debug
           cons_logAString(entFindTarget.classname, entFindTarget.targetname);
           cons_logAString("///////////////////", "////////////");
@@ -475,7 +375,7 @@ void() ai_setup_patrol={
         self.tether = TETHER_NODE;
         self.patrolNode = entFindTarget;
         self.tetherOrg = entFindTarget.origin;
-        if( cvar("developer") ){
+        if( cvar("developer") > 1 ){
           cons_logAVector(self.classname, self.origin);
           cons_logAVector(self.patrolNode.classname, self.patrolNode.origin); //debug
           cons_logAString(self.patrolNode.classname, self.patrolNode.targetname);
@@ -523,3 +423,101 @@ void() ai_setup_patrol={
   self.nextthink = self.nextthink + time;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
+
+/*
+  rolled together all the flying code to a one-off call.
+  this should be made everytime a flyer makes an engine-based move.
+  
+  DEPRECATED - release version - Roohr
+*/
+/*void( float alt_low, float alt_max) ai_fly_update={
+  local vector delta, flydir;
+  local float dist, fdir;
+  local float fspd, sspd, bspd;
+  
+  makevectors( self.angles );
+  
+  delta = self.origin + (v_up * -10000);
+  traceline( self.origin, delta, MOVE_NOMONSTERS, self);
+  dist = vlen( trace_endpos - self.origin );
+  
+  if( dist <= alt_low ){
+    fdir = 1;
+  }
+  if( fdir == FALSE ){
+    delta = self.origin + (v_up * 10000);
+    traceline( self.origin, delta, MOVE_NOMONSTERS, self);
+    dist = vlen( trace_endpos - self.origin );
+    
+    if( dist <= alt_max ){
+      fdir = -1;
+    }
+  }
+  
+  if( fdir != 0 ){
+    fspd = (self.data_speed_forward / 2) * AI_RUN_SPD;
+    sspd = (self.data_speed_strafe / 2) * AI_RUN_SPD;
+    bspd = (self.data_speed_backward * AI_RUN_SPD) * fdir;
+    
+    flydir = self.origin + (v_up * bspd);
+    flydir = flydir + (v_right * sspd);
+    flydir = flydir + (v_forward * fspd);
+    
+    setorigin( self, flydir );
+  } 
+}*/
+
+/*
+  DEPRECATED - release v1.0.0
+  Teleport when blocked.
+  Simple garbage-collect, place AI either
+    NEAR closest ai_node_tether
+    OR if they're on a path,
+    their last path.
+  
+  ONLY if the player is far away and obscured!
+*/
+/*float() ai_blocked_teleport={
+  local entity clients;
+  local entity node;
+  local float canPort;
+  local float isSeen;
+  isSeen = 0;
+  canPort = FALSE;
+  for(clients = nextent(find(world, classname, "player")); (clients.classname=="player"); clients = nextent(clients)){
+    if( clients.data_idx == 0 ){
+      continue;
+    }
+    if( vlen(clients.origin - self.origin) < AI_RANGE_M * 0.67){
+      tracebox(clients.origin, clients.mins, clients.maxs, self.origin, MOVE_NORMAL, clients);
+      if( trace_fraction == 1.0 ){
+        isSeen = isSeen + 1;
+      }
+    }
+  }
+  if( isSeen == 0 ){
+    node = ai_node_to_target(self);
+    if( node ){
+      self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
+      self.tether = TETHER_NODE;
+      return TRUE;
+    }
+    else{
+      if( self.patrolNode ){
+        if( self.patrolNode.partPrev ){
+          self.tetherOrg = util_find_random_farpoint(self.patrolNode.partPrev.origin, self.patrolNode.partPrev, max(self.patrolNode.partPrev.ai_view*0.15,32), 24);
+          self.tether = TETHER_NODE;
+        }
+        else{
+          self.tetherOrg = util_find_random_farpoint(self.patrolNode.origin, self.patrolNode, max(self.patrolNode.ai_view*0.15,32), 24);
+          self.tether = TETHER_NODE;
+          
+        }
+        setorigin(self, self.tetherOrg);
+        cons_logAFloat("ai_blocked_teleport() - teleporting unit", 1);  //DEBUG
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
+};*/

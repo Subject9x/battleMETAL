@@ -11,6 +11,16 @@ entity toolTip;
 
 entity MENU_NAV_LIST;
 
+entity UI_HARDPIONT_1;
+entity UI_HARDPIONT_2;
+entity UI_HARDPIONT_3;
+entity UI_HARDPIONT_4;
+entity UI_HARDPIONT_5;
+entity UI_HARDPIONT_6;
+entity UI_HARDPIONT_7;
+entity UI_HARDPIONT_8;
+entity UI_HARDPIONT_9;
+
 float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 
@@ -56,7 +66,6 @@ float MENU_respawn_cool_start;  //set when screen is first transitioned to, prev
 float CLIENT_MENU_menu_choice;
 float CLIENT_MENU_sel_hrpnt;
 float CLIENT_MENU_sel_list_wep;
-float CLIENT_MENU_sel_hrpnt_types;
 float CLIENT_MENU_sel_hrpnt_size;
 float CLIENT_MENU_sel_wep;
 float CLIENT_MENU_sel_wid;

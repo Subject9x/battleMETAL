@@ -22,8 +22,10 @@ void() te_muzzle_rpc={
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
-  sound7(self, CHAN_AUTO, "sound/weapons/rpls_fire.ogg", 1, ATTN_NORM, (0.65 + (random() * 0.35)) * 125, 0 );
-  pointparticles( particleeffectnum("TE_RPC_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.65 + (random() * 0.35)) * 125, 0 );
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
+    pointparticles( particleeffectnum("TE_RPC_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+  }
 }
 #endif
 void() data_ini_plasma_={
@@ -31,8 +33,8 @@ void() data_ini_plasma_={
   self.data_idx = UID_ITEM_rotary_plasma;
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.55; //0.45
-  self.reloadMax = 0.55; //0.45
+  self.reloadRate = 0.8; //0.55
+  self.reloadMax = 0.8; //0.55
   self.energyRate = 0;
   
   self.w_range = 1800;
@@ -47,9 +49,12 @@ void() data_ini_plasma_={
   self.burstRate = 1.5;
   
 #ifdef CSQC  
+  precache_sound("sound/weapons/rpls_fire.ogg");
+  precache_model("models/weapons/w_rpc.md3");
+  precache_file( "gfx/ui/wep_icons/wi_rpc.png");
   self.w_name = "Rotary Plasma Chamber";
   self.fire_sound = "sound/weapons/rpls_fire.ogg";
-  self.model = "q3mdl/weapons/w_rpc.md3";
+  self.model = "models/weapons/w_rpc.md3";
   self.abbrev = "RPC";
   self.description = "+ Will burn over time on unshielded hit. + inhibits target shield regen when burning.";
   self.icon = "gfx/ui/wep_icons/wi_rpc.png";

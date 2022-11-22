@@ -57,8 +57,8 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
       else{
         self.ai_reverse = FALSE;
         self.moveState = MOVE_NORM;
-        if( self.legs ){
-          self.legs.attack_state = TR_NORM;
+        if( self.legs_hp ){
+          self.legs_attackState = TR_NORM;
         }
         moveSpeed = walkSpeed;
         //still traveling to node
@@ -84,8 +84,8 @@ void( vector targDest, vector offsetTargDest, float turnSpeed, float walkSpeed )
           else  if( moveYaw > 15 && moveYaw < 345 ){
             self.moveState = MOVE_STAND;
             moveSpeed = 0;
-            if( self.legs ){
-              self.legs.attack_state = TR_NORM;
+            if( self.legs_hp ){
+              self.legs_attackState = TR_NORM;
             }
           }
           else{

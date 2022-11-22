@@ -9,12 +9,41 @@ Overview:
     sv/main/controllers/ctrl_building.ctrl_send_building()
 */
 
+
+/*
+  isNew == TRUE 
+  deadflag != DEAD_NO
+*/
+void() sendevent_building_new_ruins={
+  self.scale = 1;
+  self.alpha = 1;
+  self.colormod = '1 1 1' * (random() * 0.5);
+  self.cache_mins = self.mins;
+  self.cache_maxs = self.maxs;
+
+  switch(self.vec_size){
+    case 2:
+      setmodel( self, "models/map/ruins/ruin_medium.obj");
+      break;
+    case 3:
+      setmodel( self, "models/map/ruins/ruin_large.obj");
+      break;
+    default:
+      setmodel( self, "models/map/ruins/ruin_small.obj");
+      break;
+  }
+  
+  sendent_handle_remove(self.effect1);
+  sendent_handle_remove(self.effect2);
+  sendent_handle_remove(self.effect3);
+};
+
+
 /*
   EVENT - Death
 */
 void() sendevent_building_die={
-  
-  local entity key, parentKey;
+  local float zmid;
   
   if(self == CLIENT_target_ent){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
@@ -23,43 +52,26 @@ void() sendevent_building_die={
   self.solid = SOLID_NOT; //make sure to override so that particles won't trip.
   self.scale = 1; //just in case you altered scale during other deaths anim, <cough>
   self.alpha = 1; //just in case you altered alpha during other deaths anim, <cough>
-  self.colormod = '0.75 0.75 0.75';
-  makevectors(self.angles);
+  self.colormod = '1 1 1' * (random() * 0.5);
+  
   switch( self.vec_size ){
     case 2:
-      setmodel(self, "q3mdl/map/ruins/ruin_medium.obj");
+      setmodel(self, "models/map/ruins/ruin_medium.obj");
       break;
     case 3:
-      setmodel(self, "q3mdl/map/ruins/ruin_large.obj");
+      setmodel(self, "models/map/ruins/ruin_large.obj");
       break;
     default:
-      setmodel(self, "q3mdl/map/ruins/ruin_small.obj");
+      setmodel(self, "models/map/ruins/ruin_small.obj");
       break;
   }
-  setorigin(self, self.origin + (v_up * -3));
   
   sendent_handle_remove(self.effect1);
   sendent_handle_remove(self.effect2);
   sendent_handle_remove(self.effect3);
-  
-  if( (self.spawnflags & 4194304) ){
-    self.spawnflags = self.spawnflags - (self.spawnflags & 4194304);
-    key = mapKeyObject;
-    parentKey = world;
-    while( key ){
-      if( key == self ){
-        if( parentKey && parentKey != world ){
-          parentKey.w_slot = key.w_slot;
-        }
-        else{
-          mapKeyObject = key.w_slot;
-        }
-      }
-      parentKey = key;
-      key = key.w_slot;
-    }
-  }
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  self.think = SUB_Null;
+  self.nextthink = time + 0.01;
 };
 
 /*
@@ -68,19 +80,40 @@ void() sendevent_building_die={
 void( float isNew, float changeFlags) sendent_handle_building={
   local float prevShield;
   local float prevDeadflag;
+  local float prevBurn;
   local float voiceId;
+  local float mapKey;
+  local float vipKey;
+  local float muted;
   
   prevShield = self.shield;
   prevDeadflag = self.deadflag;
+  prevBurn = 0 | self.burnBits;
   
-  if( (changeFlags & SENDFLAG_ENERGY) ){
-    self.energy = ReadShort();
-  }
-  
-  if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
-    if(self.deadflag != DEAD_NO){
-      self.vec_size = ReadByte();
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    
+    self.angles_x = anglemod(ReadAngle());
+    self.angles_y = anglemod(ReadAngle());
+    self.angles_z = anglemod(ReadAngle());
+    
+    self.faction = ReadChar();
+    self.vec_size = ReadChar();
+    self.data_idx = ReadByte();
+    self.canTarget = ReadChar();
+    mapKey = ReadChar();
+    vipKey = ReadChar();
+    muted = ReadChar();
+    if( mapKey ){
+      self.spawnflags = self.spawnflags | IS_MAPKEY;
+    }
+    if( vipKey ){
+      self.spawnflags = self.spawnflags | IS_VIP;
+    }
+    if( muted ){
+      self.spawnflags = self.spawnflags | MUTE_ME;
     }
   }
   
@@ -88,34 +121,83 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-  }
-  if( (changeFlags & SENDFLAG_ANGLE) ){
+    
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = anglemod(ReadAngle());
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.spawnflags = ReadCoord();
-    self.data_idx = ReadByte();
-    setorigin(self, self.origin);
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    self.deadflag = ReadByte();
+  }
+  
+  if( (changeFlags & SENDFLAG_FACTION) ){
+    self.faction = ReadChar();
+  }
+  
+  if( (changeFlags & SENDFLAG_BURN) ){
+    self.burnBits = fabs(rint(ReadLong()));
+  }
+  
+  if( (changeFlags & SENDFLAG_ENERGY) ){
+    self.energy = ReadShort();
+  }
+  
+  if( (changeFlags & SENDFLAG_SHIELD) ){
+    self.shield = ReadByte();
+  }
+  
+  if( (changeFlags & SENDFLAG_CAMERA) ){
+    self.groundEnt = ReadByte();
+    //FIX ME
+    /*if( self.groundEnt ){
+      if( !(self.spawnflags & NO_DROP) ){
+        if( isNew ){
+          data_building_generate_foundation();
+        }
+      }
+    }*/
+  }
+  
+  if( (changeFlags & SENDFLAG_IMPACT) ){
+    self.shieldHitFlag = ReadByte();
+  }
+  
+  //rider for desired stat changes
+  if( (changeFlags & SENDFLAG_EXDATA) ){
+    if( self.data_idx == UI_BUILDING_repair_bay ){
+      self.burstRate = ReadByte();
+      self.critBits = fabs(rint(ReadLong()));
+      if(self.critBits != FALSE ){
+        self.targetEntId = ReadLong();
+        self.enemy = findfloat( world, clientServerNum, self.targetEntId );
+      }
+      else{
+        self.enemy = world;
+      }
+    }
+    if( self.data_idx == UI_BUILDING_radar ){
+      self.w_firetime = ReadByte();
+    }
+    if(  self.data_idx == UI_BUILDING_guard_tower ){
+      self.partTypeId = ReadByte();
+    }
+  }
+  
+  //EVENT - voice chatter
+  if( (changeFlags & SENDFLAG_VOICE) ){
+    if( !(changeFlags & SENDFLAG_NEWENT) ){
+      voiceId = ReadByte();
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
+    }
   }
   
   if( isNew ){
+    self.data_type = DATA_BLD;
     self.predraw = predraw_building;
-    self.drawmask = MASK_ENGINE;
-    self.scale = 1;
-    self.alpha = 1;
-    makevectors(self.angles);
+    data_sync_new_building(self.data_idx); 
     if( self.deadflag == DEAD_NO ){
-      data_sync_new_building(self.data_idx);
-      self.data_type = DATA_BLD;
-      self.flags = self.flags | FL_MONSTER; 
-      self.colormod = '1 1 1';
-      if( self.th_walk ){
-        self.th_walk();
-      }
-      if( (self.spawnflags & 4194304) ){
+      if( (self.spawnflags & IS_MAPKEY) ){
         if( lastMapKeyObject ){
           //build linked list backwards for later forward iteration.
           lastMapKeyObject.w_slot = self;
@@ -127,16 +209,13 @@ void( float isNew, float changeFlags) sendent_handle_building={
           lastMapKeyObject = self;
         }
       }
-      
-      self.canTarget = TRUE;
-      if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
-        self.canTarget = FALSE;
-      }
-      self.takedamage = DAMAGE_AIM;
     }
-    else{
-      model_misc_building_ruins_set();
+    else if( self.deadflag == DEAD_DEAD){
+      self.spawnflags = self.spawnflags - (self.spawnflags & IS_MAPKEY);
+      self.spawnflags = self.spawnflags - (self.spawnflags & IS_VIP);
+      sendevent_building_new_ruins();
     }
+    
     setorigin(self, self.origin);
     if( !(self.spawnflags & MUTE_ME)  ){
       self.ai_muted = FALSE;
@@ -145,98 +224,73 @@ void( float isNew, float changeFlags) sendent_handle_building={
     }
   }
   
-  if( (changeFlags & SENDFLAG_CAMERA) ){
-    self.groundEnt = ReadByte();
-    if( self.groundEnt ){
-      if( !(self.spawnflags & NO_DROP) ){
-        if( isNew ){
-          data_building_generate_foundation();
-        }
-      }
-    }
-  }
-  
-  if( (changeFlags & SENDFLAG_SHIELD) ){
-    self.shield = ReadByte();
-  }
-  
-  if( (changeFlags & SENDFLAG_IMPACT) ){
-    self.shieldHitFlag = ReadByte();
-  }
-  
-  //rider for desired stat changes
-  if( (changeFlags & SENDFLAG_EXDATA) ){
-    if( self.data_idx == UI_BUILDING_repair_bay ){
-      self.burstRate = ReadByte();
-      self.w_firetime = ReadByte();
-      if(self.w_firetime > FALSE ){
-        self.targetEntId = ReadCoord();
-      }
-    }
-    if( self.data_idx == UI_BUILDING_radar ){
-      self.w_firetime = ReadByte();
-    }
-    if(  self.data_idx == UI_BUILDING_guard_tower ){
-      self.partTypeId = ReadByte();
-    }
-  }
-  
-  if( (changeFlags & SENDFLAG_FACTION) ){
-    self.faction = ReadByte();
-  }
-
-  if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = ReadCoord();
-    if( self.burnBits > 0 ){
-      if( (self.burnBits & WEAPON1) && self.effect1.owner != self ){
-        self.effect1 = te_building_fire_start( self );
-        self.colormod = self.colormod * 0.85;
-      }
-      if( (self.burnBits & WEAPON2) && self.effect2.owner != self ){
-        self.effect2 = te_building_fire_start( self );
-        self.colormod = self.colormod * 0.75;
-      }
-      if( (self.burnBits & WEAPON3) && self.effect3.owner != self ){
-        self.effect3 = te_building_fire_start( self );
-        self.colormod = self.colormod * 0.67;
-      }
-    }
-  }
-  
-  //EVENT - voice chatter
-  if( (changeFlags & SENDFLAG_VOICE) ){
-    if( !(changeFlags & SENDFLAG_NEWENT) ){
-      voiceId = ReadByte();
-      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
-    }
-  }
   //HANDLE EVENT - dead
-  if(prevDeadflag == DEAD_NO && self.deadflag == DEAD_DEAD){
+  if( prevDeadflag == DEAD_NO && self.deadflag == DEAD_DYING ){
+    self.colormod = '1 1 1';
     if( self.th_die ){
       self.th_die();
     }
     else{
       data_building_death1(); 
     }
-    return;
+  }
+  else if( prevDeadflag == DEAD_DYING && self.deadflag == DEAD_DEAD ){
+    sendevent_building_die();
   }
   
-  //HANDLE EVENT - Shield explode
-  sendevent_shield_explode( prevShield );
-  
-  //Shield strike event
-  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
-    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
-      self.shieldEffectTime = time + 0.5;
-      te_shield_hit();
+  if( self.deadflag == DEAD_NO ){
+    //HANDLE EVENT - new burning fire
+    if( self.burnBits != prevBurn && self.burnBits != FALSE ){
+      if( (self.burnBits & WEAPON1) && self.effect1 != world ){
+        self.effect1 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.85;
+      }
+      if( (self.burnBits & WEAPON2) && self.effect2 != world ){
+        self.effect2 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.75;
+      }
+      if( (self.burnBits & WEAPON3) && self.effect3 != world ){
+        self.effect3 = te_building_fire_start( self );
+        self.colormod = self.colormod * 0.67;
+      }
+    }
+    //HANDLE EVENT - Shield explode
+    if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
+      if( time > self.shieldExplodeCool ){
+        te_shield_explode( self.origin, self.vec_size);
+        self.shieldExplodeCool = time + self.vec_size;
+      }
+    }
+    else{
+      //HANDLE EVENT - Shield hit
+      if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+        if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
+          self.shieldEffectTime = time + 0.5;
+          te_shield_hit();
+        }
+      }
     }
   }
 };
 
 void() predraw_building={
-  setorigin(self, self.origin);
+  local vector cacheOrg;
   
-  if(self.render_dlights){
-    self.render_dlights();
+  traceline(self.origin + [0,0, self.maxs_z], client_vis_org, FALSE, self);
+  
+  self.cl_lod_unit = TRUE;
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
+    self.cl_lod_unit = FALSE;
+  }
+  
+  if( self.cl_lod_unit ){
+    self.skin = self.faction - 1;
+    setmodel(self, self.model);
+    if(self.render_dlights){
+      if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
+        self.render_dlights();
+      }
+    }
+    addentity(self);
   }
 };

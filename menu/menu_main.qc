@@ -15,11 +15,12 @@ void() m_init={
   dynamic_precache();
   
   localcmd("disconnect;togglemenu;cd play 2;\n");
-  
+  registercvar("gamemode", "0", CF_CLIENT | CF_SERVER | CF_CLIENT_FROM_SERVER | CF_SERVER_FROM_CLIENT);
+  registercvar("saveslot", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_alpha", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_hud_color", "0", CF_CLIENT | CF_ARCHIVE);
   //registercvar("cl_hud_sway", "0", 1);
-  registercvar("cl_team", "0", CF_CLIENT);
+  registercvar("cl_team", "1", CF_CLIENT);
   registercvar("sv_serverflags", "0", CF_SERVER);
   
   registercvar("cl_net_fav1", "0", CF_CLIENT | CF_ARCHIVE);
@@ -31,10 +32,10 @@ void() m_init={
   registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   
-  registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
-  cvar_set("cl_newgameplus", "0");
-  
-  cvar_set("r_framedatasize", "16");  //FIXME - issue in engine
+  registercvar("cl_newgameplus","0", CF_CLIENT | CF_ARCHIVE);
+  registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
+  registercvar("sv_singlemap", "0", CF_SERVER_FROM_CLIENT);
+  //cvar_set("r_framedatasize", "16");  //FIXME - issue in engine
   
   
   ui_colors_set_player_list();
@@ -64,7 +65,8 @@ void() m_init={
   
   //setup textfield key filter;
   menu_ini_txtfilter();
-  RESO_CHANGE = TRUE;
+  RESO_CHANGE = FALSE;
+  gui_set_screen_size(cvar("vid_width"), cvar("vid_height"));
   
 };
 
@@ -167,14 +169,14 @@ void(float width, float height) m_draw={
   local vector bimg;
   
   VIEW_MPOS = getmousepos();
-  VIEW_ACT_x = cvar("vid_width");
-  VIEW_ACT_y = cvar("vid_height");
-  VIEW_ACT_z = cvar("vid_pixelheight");
   
   if( getkeydest() == KEY_MENU ){
     if(RESO_CHANGE){
       RESO_CHANGE = FALSE;
-      gui_set_screen_size();
+      VIEW_ACT_x = width;
+      VIEW_ACT_y = height;
+      VIEW_ACT_z = cvar("vid_pixelheight");
+      gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
     }
     if(MAIN_MISSION){
       drawfill(VIEW_ORG, VIEW_MAX, '0.1 0.1 0.1', 0.75, 0);
@@ -182,7 +184,7 @@ void(float width, float height) m_draw={
     
     
     if( clientstate() == CS_DISCONNECTED){
-      bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), Vector2(VIEW_WIDTH, VIEW_MAX_y));
+      bimg = gui_newAspectRatio(drawgetimagesize("gfx/menu/splash.tga"), [VIEW_WIDTH, VIEW_MAX_y]);
       drawpic(VIEW_ORG, "gfx/menu/splash.tga", bimg, '1 1 1', 1, 0);
     }
     if(cvar("developer")){
@@ -310,7 +312,8 @@ void() m_shutdown={
 };
 
 void(float drawmous) m_drawmouse={
-    local vector mpos, i_sz;
+  local vector mpos, i_sz;
+  
   if(drawmous){
     
     i_sz = drawgetimagesize(UI_IMG_MOUSE);

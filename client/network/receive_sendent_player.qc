@@ -14,70 +14,30 @@ Overview:
   HANDLE EVENT - player mech pieces are dying
 */
 void() sendevent_player_burn={
+  
+  if( vlen(self.origin - client_vis_org) >= PARTICLE_HAZ_DISTANCE / 2){
+    return;
+  }
+  
   if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.burnBits & M_TOR_LEFT) ){
-    te_mech_crit( self.torsoLeft.origin , '0 0 10');
+    te_mech_crit( self.torL_org , '0 0 10');
   }
   if( (self.unitModFlags & MOD_HAS_TOR_R) &&(self.burnBits & M_TOR_RIGHT) ){
-    te_mech_crit( self.torsoRight.origin , '0 0 10');
+    te_mech_crit( self.torR_org , '0 0 10');
   }
   if( (self.unitModFlags & MOD_HAS_ARM_L) &&(self.burnBits & M_ARM_LEFT) ){
     if( (self.unitModFlags & MOD_HAS_TOR_L) &&!(self.criticalHits & M_TOR_LEFT) ){
-      te_mech_crit( self.armLeft.origin , '0 0 10');
+      te_mech_crit( self.armL_org , '0 0 10');
     }
   }
   if( (self.unitModFlags & MOD_HAS_ARM_R) &&(self.burnBits & M_ARM_RIGHT) ){
     if( (self.unitModFlags & MOD_HAS_TOR_R) &&!(self.criticalHits & M_TOR_RIGHT) ){
-      te_mech_crit( self.armRight.origin , '0 0 10');
+      te_mech_crit( self.armR_org , '0 0 10');
     }
   }
   if( (self.burnBits & M_LEGS) ){
-    te_mech_crit( self.legs.origin , '0 0 10');
+    te_mech_crit( self.legs_org , '0 0 10');
   }
-};
-
-/*
-  Player weapons (usually in the arms) inherit their pitch from their parent piece.
-  therefore, the weapon offsets for CLIENT is based on the PARENT offset:
-    wep.origin = parent.origin + wep.offset 
-      where parent.origin has already been calculated.
-*/
-void(entity item) predraw_player_weapon={
-  local entity parent;
-  local vector drawAng;
-  local vector offset;
-  local vector adjPartOffset;
-  
-  parent = util_getPartFromName( item.partParentId, self);
-  
-  adjPartOffset = item.compOffset - parent.compOffset;
-  
-  offset = parent.origin;
-  drawAng = parent.angles;
-  drawAng_x = drawAng_x *-1;
-  makevectors( drawAng);
-  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
-  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
-  item.origin = offset;
-  item.angles = parent.angles;
-};
-
-/*
-  assumes you've already made a makevectors() call
-*/
-void(entity piece) player_part_predaw={
-  local vector offset;
-  if( (self.criticalHits & piece.partTypeId) ){
-    return;
-  }
-  offset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y) + (v_forward * piece.compOffset_z);
-  
-  if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
-    offset = offset - (v_forward * self.cockpit.compOffset_z);
-  }
-  
-  piece.origin = offset;
-  piece.angles_y = self.angles_y;
-  piece.angles_x = 0;
 };
 
 /*
@@ -86,11 +46,10 @@ void(entity piece) player_part_predaw={
 void() player_think={
   local vector boostLeft, boostRight, backLeft, backRight;
   local string te;
-  
   local vector laserHit;
   local vector laserOrg;
-  
   local entity theWeapon;
+  local float wepItr;
   
   makevectors(self.angles);
   if(self.chaseActive){
@@ -99,47 +58,74 @@ void() player_think={
     laserOrg = trace_endpos;
   }
   else{
-    laserOrg = self.origin + (v_up * self.cockpit.compOffset_y);
+    laserOrg = self.origin + (v_up * self.cameraOffset_y);
   }
   laserHit = laserOrg + (v_forward * 10000);
   traceline(laserOrg, laserHit, FALSE, self);
   self.laser_sight_org = trace_endpos;
   
-  sendevent_player_burn();
-  
-  if( self.legs != world ){
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
+    if( self.burnBits != 0 ){
+      sendevent_player_burn();
+    }
     if( self.moveState > MOVE_SPRINT ){
-      makevectors(self.legs.angles);
-      boostLeft = boostRight = self.origin + (v_up * (self.mins_z * 0.75));
-      boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
-      boostRight = boostRight + (v_right * self.maxs_x * 0.5);
-      
-      backLeft = backRight = self.origin + (v_forward * -32) + (v_up * (self.mins_z * 0.67));
-      backLeft = backLeft + (v_right * self.mins_x * 0.5);
-      backRight = backRight + (v_right * self.maxs_x * 0.5);
-      
-      switch(self.vec_size){
-        case 3:
+      if( vlen(self.origin2 - self.origin1) > 16 ){
+        makevectors(self.legs_angl);
+        boostLeft = boostRight = self.legs_org + (v_up * (self.mins_z * 0.75));
+        boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
+        boostRight = boostRight + (v_right * self.maxs_x * 0.5);
+        
+        backLeft = backRight = self.legs_org + (v_forward * -16) + (v_up * (self.mins_z * 0.67));
+        backLeft = backLeft + (v_right * self.mins_x * 0.5);
+        backRight = backRight + (v_right * self.maxs_x * 0.5);
+        
+        if( self.vec_size == 3 ){
           te = "TE_FIRE_3";
-          break;
-        default:
+        }
+        else{
           te = "TE_FIRE_2";
-          break;
+        }
+        
+        if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+          trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
+          trailparticles(world, particleeffectnum(te), boostRight, backRight);
+        }
       }
-      trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
-      trailparticles(world, particleeffectnum(te), boostRight, backRight);
     }
   }
   
-  if( self.clientLocalId == player_localentnum ){
-    theWeapon = self.w_slot;
-    while( theWeapon ){
-      player_weapon_reload( theWeapon );
-      theWeapon = theWeapon.w_slot;
+  if( self.clientServerNum == player_localentnum ){
+    wepItr = 0;
+    while( wepItr < self.hardpoint_cnt ){
+      theWeapon = sendent_get_weapon( bitshift(1, wepItr ) );
+      
+      if( theWeapon.data_idx ){
+        player_weapon_reload( theWeapon );
+      }
+      
+      wepItr = wepItr + 1;
+    }
+    
+    if(HUD_HEADLIGHT_ACTIVE){
+      traceline(self.origin + (v_forward * 16), self.origin + (v_forward * 512), MOVE_MISSILE, self);
+      self.unit_light_org = trace_endpos + (v_up * 32) + (v_forward * -16);
+    }
+    
+  }
+  else{
+    if(self.headlight){
+      //player networked headlighting.
+      traceline(self.origin + (v_forward * 16), self.origin + (v_forward * 512), MOVE_MISSILE, self);
+      self.unit_light_org = trace_endpos + (v_up * 32) + (v_forward * -16);
     }
   }
+  
   self.think = player_think;
   self.nextthink = time + 0.01;
+  if( time > self.legs_nextthink ){
+    self.legs_nextthink = time + 0.1;
+  }
 };
 
 void() player_predraw={
@@ -148,9 +134,12 @@ void() player_predraw={
   local vector cacheOrg;
   local float lerpDiff;
   local float lerp;
-  local vector hudAng;
-  local vector strutOrg;
-  local vector consOrg;
+  
+  //cache
+  local vector prevAngl;
+  local vector prevOrg;
+  local float prevAlph;
+  local float prevScale;
   
   if( self.data_type == DATA_MECH ){
     if (self.nextthink != self.frame1time){
@@ -170,136 +159,194 @@ void() player_predraw={
     self.lerpfrac = lerp;
     
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2-self.laser_sight_org1)*self.lerpfrac;
-  
-    if(self.clientLocalId == player_localentnum ){
+    
+    if(self.clientServerNum == player_localentnum ){
       CLIENT_lerp = self.lerpfrac;
     }
   
     self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
     
-    if(self.clientLocalId == player_localentnum){
+    if(self.clientServerNum == player_localentnum){
       cacheOrg = self.origin;
       self.origin = pmove_org;
     }
     
-    if( self.deadflag == DEAD_NO ){
-      self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
-      
-      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-        self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
-      }
-      if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-        self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
-      }
-      if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-        self.armLeft.colormod = CLR_PLAYER_LIST[self.unitColorLA];
-      }
-      if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-        self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
-      }
-      
-      self.legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
+    traceline(self.origin, client_vis_org, FALSE, self);
   
+    self.cl_lod_unit = TRUE;
+    if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+      self.cl_lod_unit = FALSE;
+    }
+    
+    if(self.cl_lod_unit){
+      self.cl_lod_weapon = TRUE;
+      if( vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
+        self.cl_lod_weapon = FALSE;
+      }
       entAng = self.angles;
       entAng_x = 0;
       makevectors( entAng );
       
-      player_part_predaw(self.torsoCenter);
-      if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
-        self.torsoCenter.angles_x = self.angles_x * -1;
+      prevAngl = self.angles;
+      prevOrg = self.origin;
+      
+      setsize(self, self.cache_mins, self.cache_maxs);
+      
+      predraw_legs();
+      self.origin = prevOrg;
+      self.angles = prevAngl;
+      
+      if( !(self.criticalHits & M_TOR_CENTER) ){
+        self.origin = prevOrg;
+        self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl); 
+        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+          self.torC_angl_x = self.angles_x * -1;
+        }
+        setmodel(self, self.torC_mdl);
+        self.alpha = 1.0;
+        self.scale = 1.0;
+        self.angles = self.torC_angl;
+        self.origin = self.torC_org;
+        addentity(self);
+        self.angles = prevAngl;
+        self.origin = prevOrg;
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-        player_part_predaw(self.torsoLeft);
-        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_L)){
-          self.torsoLeft.angles_x = self.angles_x * -1;
+        self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
+        if( !(self.criticalHits & M_TOR_LEFT) ){
+          if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
+             self.torL_angl_x = self.angles_x * -1;
+          }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLT];
+          setmodel(self, self.torL_mdl);
+          self.alpha = 1.0;
+          self.scale = 1.0;
+          self.angles = self.torL_angl;
+          self.origin = self.torL_org;
+          addentity(self);
+          self.angles = prevAngl;
+          self.origin = prevOrg;
         }
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-        player_part_predaw(self.torsoRight);
-        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_R)){
-          self.torsoRight.angles_x = self.angles_x * -1;
-        }
-      }
-      
-      player_part_predaw(self.legs);
-      
-      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-        player_part_predaw(self.armLeft);
-        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
-          self.armLeft.angles_x = self.angles_x * -1;
-        }
-      }
-      
-      if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-        player_part_predaw(self.armRight);
-      
-        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
-          self.armRight.angles_x = self.angles_x * -1;
-        }
-      }
-      if( time > self.legs.nextthink){
-        wep = self;
-        self = self.legs;
-          if(self.think){
-            self.think();
+        self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl); 
+        if( !(self.criticalHits & M_TOR_RIGHT) ){
+          if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
+             self.torR_angl_x = self.angles_x * -1;
           }
-        self = wep;
-      }
-      predraw_legs();
-      wep = self.w_slot;
-      while( wep != world ){
-        if( !(self.criticalHits & wep.partParentId) ){
-          predraw_player_weapon(wep);
-        }
-        wep = wep.w_slot;
-      }
-    }
-    
-    if(cacheOrg){
-      self.origin = cacheOrg;
-    }
-    setorigin(self, self.origin);
-    
-    if(self.clientLocalId == player_localentnum){
-      if( self.deadflag == DEAD_NO ){
-        if( CLIENT_player_state == PLAYER_POWERUP_BEGIN && cvar("chase_active") == FALSE){
-          hudAng = HUD_FIXED_ANGLE;
-          hudStruts.angles_y = HUD_FIXED_ANGLE_y;
-          hudStruts.angles_x = 0;
-          hudStruts.angles_z = 0;
-          
-          hudConsole.angles_y = HUD_FIXED_ANGLE_y;
-          hudConsole.angles_x = 33;
-          hudConsole.angles_z = 0;
-        }
-        else{
-          hudAng = input_angles;
-          hudAng_x = 0;
-          
-          hudStruts.angles_y = input_angles_y;
-          hudStruts.angles_x = 0;
-          hudStruts.angles_z = 0;
-          
-          hudConsole.angles_y = input_angles_y;
-          hudConsole.angles_x = 33;
-          hudConsole.angles_z = 0;
-        }
-        makevectors(hudAng);
-        strutOrg = getpropertyvec(VF_ORIGIN) + (v_forward * self.hud_StrutsOffset_z)  + (v_right * self.hud_StrutsOffset_x)  + (v_up * self.hud_StrutsOffset_y);
-        setorigin(hudStruts, strutOrg);
-        
-        consOrg = getpropertyvec(VF_ORIGIN) + (v_forward * 0.75) + (v_up * -1.55);
-        setorigin(hudConsole, consOrg);
-        if( cvar("chase_active") == FALSE ){
-          addentity(hudStruts);
-          addentity(hudConsole);
-					//hudStruts.drawmask = -1;
-					//hudConsole.drawmask = -1;
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRT];
+          setmodel(self, self.torR_mdl);
+          self.alpha = 1.0;
+          self.scale = 1.0;
+          self.angles = self.torR_angl;
+          self.origin = self.torR_org;
+          addentity(self);
+          self.angles = prevAngl;
+          self.origin = prevOrg;
         }
       }
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.unitModFlags & MOD_HAS_ARM_L) ){
+        self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl); 
+        if( !(self.criticalHits & M_ARM_LEFT) ){
+          if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
+            self.armL_angl_x = self.angles_x * -1;
+          }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLA];
+          setmodel(self, self.armL_mdl);
+          self.alpha = 1.0;
+          self.scale = 1.0;
+          self.angles = self.armL_angl;
+          self.origin = self.armL_org;
+          addentity(self);
+          self.angles = prevAngl;
+          self.origin = prevOrg;
+        }
+      }
+      
+      if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.unitModFlags & MOD_HAS_ARM_R) ){
+        self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl); 
+        if( !(self.criticalHits & M_ARM_RIGHT) ){
+          if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
+            self.armR_angl_x = self.angles_x * -1;
+          }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRA];
+          setmodel(self, self.armR_mdl);
+          self.alpha = 1.0;
+          self.scale = 1.0;
+          self.angles = self.armR_angl;
+          self.origin = self.armR_org;
+          addentity(self);
+          self.angles = prevAngl;
+          self.origin = prevOrg;
+        }
+      }
+      if(self.cl_lod_weapon){
+        if(self.weaponEnt1.data_idx){
+          predraw_unit_weapon(self.weaponEnt1);
+        }
+        if(self.weaponEnt2.data_idx){
+          predraw_unit_weapon(self.weaponEnt2);
+        }
+        if(self.weaponEnt3.data_idx){
+          predraw_unit_weapon(self.weaponEnt3);
+        }
+        if(self.weaponEnt4.data_idx){
+          predraw_unit_weapon(self.weaponEnt4);
+        }
+        if(self.weaponEnt5.data_idx){
+          predraw_unit_weapon(self.weaponEnt5);
+        }
+        if(self.weaponEnt6.data_idx){
+          predraw_unit_weapon(self.weaponEnt6);
+        }
+        if(self.weaponEnt7.data_idx){
+          predraw_unit_weapon(self.weaponEnt7);
+        }
+        if(self.weaponEnt8.data_idx){
+          predraw_unit_weapon(self.weaponEnt8);
+        }
+        if(self.weaponEnt9.data_idx){
+          predraw_unit_weapon(self.weaponEnt9);
+        }
+      }
+      
+      if(cacheOrg){
+        self.origin = cacheOrg;
+      }
+      self.origin = self.origin;
+      
+      if(self.clientServerNum == player_localentnum){
+        hud_model_cockpit_draw_frame();
+        if( self.deadflag == DEAD_NO ){
+          
+          //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+          if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){      
+            self.unit_light_org1 = self.unit_light_org2;
+            self.unit_light_org2 = self.unit_light_org;
+            self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+            particleDraw = vlen(self.origin - pmove_org);
+            if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+              adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
+            }
+          }
+        }
+      }
+      else{
+        if(self.headlight && MENU_PROG_OFF && self.deadflag == DEAD_NO){
+          self.unit_light_org1 = self.unit_light_org2;
+          self.unit_light_org2 = self.unit_light_org;
+          self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+          particleDraw = vlen(self.origin - pmove_org);
+          if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+            adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
+          }
+        }
+      }
     }
+    setsize(self, self.cache_mins, self.cache_maxs);  
   }
 };
 
@@ -310,160 +357,79 @@ void() player_predraw={
 */
 void( float mech_id ) sendevent_player_mech={
   local vector minSave, maxSave;
-  local entity weps;
+  local entity item;
   local entity this;
+  local float wepItr;
   
-  self.flags = self.flags | FL_CLIENT | FL_TURRET;  //read-order fix
   self.deadflag = DEAD_NO;
   self.criticalHits = rint(0);
   
   initialize_data_mech_(mech_id);
   
-  minSave = self.mins;
-  maxSave = self.maxs;
-  
-  self.torsoCenter.colormod = CLR_PLAYER_LIST[self.unitColorCT];
-  self.torsoCenter.skin = self.faction - 1;
-  setmodel(self.torsoCenter, self.torsoCenter.model);
-  self.torsoCenter.drawmask = MASK_NORMAL;
-  
-  if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-    self.torsoLeft.colormod = CLR_PLAYER_LIST[self.unitColorLT];
-    self.torsoLeft.skin = self.faction - 1;
-    setmodel(self.torsoLeft, self.torsoLeft.model);
-    self.torsoLeft.drawmask = MASK_NORMAL;
-  }
-  
-  if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)  ){
-    self.torsoRight.colormod = CLR_PLAYER_LIST[self.unitColorRT];
-    self.torsoRight.skin = self.faction - 1;
-    setmodel(self.torsoRight, self.torsoRight.model);
-    self.torsoRight.drawmask = MASK_NORMAL;
-  }
-  
-  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-    self.armLeft.colormod = CLR_PLAYER_LIST[self.unitColorLA];
-    self.armLeft.skin = self.faction - 1;
-    setmodel(self.armLeft, self.armLeft.model);
-    self.armLeft.drawmask = MASK_NORMAL;
-  }
-  
-  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-    self.armRight.colormod = CLR_PLAYER_LIST[self.unitColorRA];
-    self.armRight.skin = self.faction - 1;
-    setmodel(self.armRight, self.armRight.model);
-    self.armRight.drawmask = MASK_NORMAL;
-  }
-  
-  self.legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
-  self.legs.skin = self.faction - 1;
-  setmodel(self.legs, self.legs.model);
-  self.legs.drawmask = MASK_NORMAL;
+  self.cache_mins = self.mins;
+  self.cache_maxs = self.maxs;
   
   this = self;
-  weps = self.w_slot;
-  while( weps != world ){
-    self = weps;
-      sendent_set_weapon();
-      if(self.data_idx != 0 && !(self.unitModFlags & MOD_MODEL_NONE)){
-        initialize_data_item_(self.data_idx);
-      }
-      else{
-        self.model = "q3mdl/testball.md3";
-        self.alpha = 0.01;
-        self.scale = 0.01;
-      }
-      self.reloadValue = 100;
-      setmodel(self, self.model);
-      self.drawmask = MASK_NORMAL;
-      self.wepFireOffsetCache = self.wepFireOffset;
-    self = this;
-    weps = weps.w_slot;
+  
+  wepItr = 0;
+  while( wepItr < self.hardpoint_cnt ){
+    item = sendent_get_weapon( bitshift(1, wepItr ) );
+    
+    if( item.data_idx ){
+      item.reloadValue = 100;
+      item.wepFireOffsetCache = item.wepFireOffset;
+    }
+    
+    wepItr = wepItr + 1;
   }
+  
   if( (self.unitModFlags & MOD_MODEL_ROOT_TOR_C) ){
-    self.colormod = CLR_PLAYER_LIST[self.unitColorCT];
     self.skin = self.faction - 1;
     setmodel(self, self.model);
     self.alpha = 1.0;
     self.scale = 1.0;
   }
   self.solid = SOLID_BBOX;
-  setsize(self, minSave, maxSave);
+  setsize(self, self.cache_mins, self.cache_maxs);
   
   //hud shenanigans
-  if( self.clientLocalId == player_localentnum ){
-    CLIENT_server_ent = self;
-    HUD_VIEW_CL_ANGLES = self.angles;
-    HUD_VIEW_OFS = self.cockpit.compOffset_z;
-    hudStruts = spawn();
-    hudStruts.effects = hudStruts.effects | EF_NOSHADOW;
-    setmodel(hudStruts, self.weaponmodel);
-    setorigin(hudStruts, pmove_org);
-    hudStruts.angles_y = input_angles_y;
-    hudStruts.angles_x = 0;
-    hudStruts.angles_z = 0;
+  if( self.clientServerNum == player_localentnum){
+    //MODELS - COCKPIT
+    hud_model_cockpit_ini();
     
-    hudConsole = spawn();
-    hudConsole.effects = hudConsole.effects | EF_NOSHADOW;
-    setmodel(hudConsole, self.hud_model);
-    setorigin(hudConsole, pmove_org);
-    hudConsole.angles_y = input_angles_y;
-    hudConsole.angles_x = 45;
-    hudConsole.angles_z = 0;
-    if( cvar("chase_active") ){
-      if( (ENT_SERVER_INFO.serverFlags & SVFLAG_FPSONLY) ){
-        HUD_EXTERNAL_CAM_ACTIVE = FALSE;
-        cvar_set("chase_active", "0");
-      }
-      else{
-        HUD_EXTERNAL_CAM_ACTIVE = TRUE;
-      }
-    }
-    HUD_FIXED_ANGLE = self.angles;
+    //MODELS - PLAYER ARMOR
+    hud_model_armor_player_ini();
   }
   
   self.shieldEffectTime = 0;
   self.predraw = player_predraw;
   self.canTarget = TRUE;
+
 };
 
 /*
   HANDLE EVENT - player killed on this frame.
 */
+void() mech_ai_die_stand1;
+void() mech_ai_die_stand2;
+void() mech_ai_die_stand3;
+void() mech_ai_die_stand4;
+void() mech_ai_die_stand5;
+void() mech_ai_die_stand6;
+void() mech_ai_die_stand7;
+void() mech_ai_die_stand8;
+void() mech_ai_die_stand9;
+void() mech_ai_die_stand10;
 void() sendevent_handle_player_death={
-  local entity wep, nextWep;
   
   if(self == CLIENT_target_ent){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
   }
   
   te_missile_explode( self.origin, self.vec_size + 1, '0.9 0.75 0.45', 0.0075 ) ;
-  self.origin = '0 0 0';
-  self.criticalHits = 0;
-  self.data_type = 0;
-  self.data_idx = 0;
   
-  self.criticalHits = self.criticalHits | (M_TOR_CENTER | M_TOR_LEFT | M_TOR_RIGHT | M_ARM_LEFT | M_ARM_RIGHT);
-  
-  remove(self.torsoCenter);
-  remove(self.torsoLeft);
-  remove(self.torsoRight);
-  remove(self.armLeft);
-  remove(self.armRight);
-  remove(self.cockpit);
-  remove(self.legs);
-  
-  wep = self.w_slot;
-  while( (wep != world) ){
-    nextWep = wep;
-    nextWep = nextWep.w_slot;
-    remove(wep);
-    wep = nextWep;
-  }
-  if(self.clientLocalId == player_localentnum){
-    remove(hudConsole);
-    remove(hudStruts);
-  }
+  self.think = mech_ai_die_stand1;
+  self.nextthink = time + 0.01;
 };
 
 /*
@@ -482,32 +448,14 @@ void( float prevFac, float newFaction ) sendevent_handle_faction={
   else if( newFaction == FACTION_MILITAR ){
     TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
   }
-  if( self.data_type == DATA_MECH ){
-    self.torsoCenter.skin = self.faction - 1;
-    
-    if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-      self.torsoLeft.skin = self.faction - 1;
-    }
-    if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-      self.torsoRight.skin = self.faction - 1;
-    }
-    if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-      self.armLeft.skin = self.faction - 1;
-    }
-    if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-      self.armRight.skin = self.faction - 1;
-    }
-    
-    self.legs.skin = self.faction - 1;
-  }
 };
 
 /*
   HANDLE EVENT - player has changed factions during a team game.
 */
 void() sendevent_handle_moveChange={
-  if(self.legs!=world){
-    self.legs.nextthink = time + 0.1;
+  if(self.legs_compOffset != '0 0 0'){
+    self.legs_nextthink = time + 0.1;
   }
 };
 
@@ -515,37 +463,24 @@ void() sendevent_handle_moveChange={
   HANDLE EVENT - player mech parts destroyed
 */
 void( float criticalBits ) sendevent_player_critical={
-  local entity wep;
-  
+
   if( (self.unitModFlags & MOD_HAS_TOR_L) && (criticalBits & M_TOR_LEFT) ){
-    te_missile_explode( self.torsoLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoLeft.drawmask = 0;
+    te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
   if( (self.unitModFlags & MOD_HAS_TOR_R) && (criticalBits & M_TOR_RIGHT) ){
-    te_missile_explode( self.torsoRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.torsoRight.drawmask = 0;
+    te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
   if( (self.unitModFlags & MOD_HAS_ARM_L) && (criticalBits & M_ARM_LEFT) ){
-    te_missile_explode( self.armLeft.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armLeft.drawmask = 0;
+    te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
   if( (self.unitModFlags & MOD_HAS_ARM_R) && (criticalBits & M_ARM_RIGHT) ){
-    te_missile_explode( self.armRight.origin, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-    self.armRight.drawmask = 0;
+    te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
   }
   if( (criticalBits & M_LEGS) ){
-    te_missile_explode( self.legs.origin, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
+    te_missile_explode( self.legs_org, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
   }
-  if(self.clientLocalId != player_localentnum){
+  if(self.clientServerNum != player_localentnum){
     return;
-  }
-  wep = self.w_slot;
-  while( wep != world ){
-    if( (criticalBits & wep.partParentId) ){
-      CLIENT_weapon_state = CLIENT_weapon_state - (CLIENT_weapon_state & wep.w_group);
-      wep.drawmask = 0;
-    }
-    wep = wep.w_slot;
   }
 };
 
@@ -556,7 +491,7 @@ void( float playerEntId, float playerCritFlags ) client_handle_crit={
   local entity playerMech;
   local entity nonSelf;
   
-  playerMech = findfloat(world, clientLocalId, playerEntId);
+  playerMech = findfloat(world, clientServerNum, playerEntId);
   if( playerMech ){
     nonSelf = self;
     self = playerMech;
@@ -569,41 +504,31 @@ void( float playerEntId, float playerCritFlags ) client_handle_crit={
   HANDLE EVENT - player mech pieces are being repair
 */
 void(float repairValue) sendevent_player_repair={
-  local entity wep;
-  
   if( (repairValue & M_TOR_CENTER) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
-    self.torsoCenter.drawmask = MASK_NORMAL;
   }
   if(  (self.unitModFlags & MOD_HAS_TOR_L) && (repairValue & M_TOR_LEFT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
-    self.torsoLeft.drawmask = MASK_NORMAL;
   }
   if(  (self.unitModFlags & MOD_HAS_TOR_R) && (repairValue & M_TOR_RIGHT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
-    self.torsoRight.drawmask = MASK_NORMAL;
   }
   if(  (self.unitModFlags & MOD_HAS_ARM_L) && (repairValue & M_ARM_LEFT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
-    self.armLeft.drawmask = MASK_NORMAL;
   }
   if(  (self.unitModFlags & MOD_HAS_ARM_R) && (repairValue & M_ARM_RIGHT) ){
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
-    self.armRight.drawmask = MASK_NORMAL;
   }
   
-  if(self.clientLocalId != player_localentnum){
+  if(self.clientServerNum != player_localentnum){
     return;
   }
-  wep = self.w_slot;
-  while( wep != world ){
-    if( !(repairValue & wep.partParentId) ){
-      CLIENT_weapon_state = CLIENT_weapon_state | wep.w_group;
-      wep.drawmask = MASK_NORMAL;
-    }
-    wep = wep.w_slot;
-  }
+  //FIX ME - weapons being repaired.
 };
+
+
+//quick ref
+void() sendevent_player_target;
 
 void( float isNew, float changeFlags) sendent_handle_player={
   local entity controlPlayer;
@@ -636,7 +561,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin = te_read_vector();
     self.moveState = ReadByte();
-    self.legDir = anglemod(ReadShort());
+    self.legDir = ReadShort();
     self.ai_dir = ReadShort();
   }
   
@@ -647,7 +572,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_RADAR) ){
-    self.stat_rdr_mode = ReadByte();
+    self.stat_rdr_mode = fabs(ReadByte());
   }
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
@@ -656,10 +581,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.energy = ReadByte();
   }
   if( (changeFlags & SENDFLAG_ATTACK) ){
-    self.attackFlag = ReadCoord();
+    self.attackFlag = ReadLong();
   }
   if( (changeFlags & SENDFLAG_CAMERA) ){
-    self.chaseActive = ReadByte();
+    self.chaseActive = fabs(ReadByte());
+    self.headlight = fabs(ReadByte());
   }
   
   /*
@@ -667,8 +593,13 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.entId = self.entnum;
-    self.clientLocalId = ReadByte();
-    self.clientLocalNum = self.clientLocalId - 1;
+    //clientServerNum = player entity ID on server.
+    //clientLocalNum = this is player-entity only, local id for some reason is ServerNum-1?
+    self.clientServerNum = fabs(ReadByte());
+    self.clientLocalNum = fabs(self.clientServerNum - 1);
+    //cons_logAFloat("CS - RECEIVE - player.entnum/clientServerNum", self.clientServerNum); //debug
+    //cons_logAFloat("CS - RECEIVE - player.clientData.entnum", self.entnum); //debug
+    //cons_logAFloat("CS - LOCAL - player_localentnum", player_localentnum); //debug
   }
   
   /*
@@ -679,7 +610,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_FACTION) ){
-    self.faction = ReadByte();
+    self.faction = fabs(ReadByte());
   }
   /*
     HANDLE - Update Faction totals
@@ -692,26 +623,29 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - player info change 
   */
   if( (changeFlags & SENDFLAG_NEWUNIT) ){
-    self.data_type = ReadByte();
-    self.data_idx = ReadByte();
-    self.next_wepn1 = ReadByte();
-    self.next_wepn2 = ReadByte();
-    self.next_wepn3 = ReadByte();
-    self.next_wepn4 = ReadByte();
-    self.next_wepn5 = ReadByte();
-    self.next_wepn6 = ReadByte();
-    self.next_wepn7 = ReadByte();
-    self.next_wepn8 = ReadByte();
-    self.next_wepn9 = ReadByte();
+    self.data_type = fabs(ReadByte());
+    self.data_idx = fabs(ReadByte());
+    self.next_wepn1 = fabs(ReadByte());
+    self.next_wepn2 = fabs(ReadByte());
+    self.next_wepn3 = fabs(ReadByte());
+    self.next_wepn4 = fabs(ReadByte());
+    self.next_wepn5 = fabs(ReadByte());
+    self.next_wepn6 = fabs(ReadByte());
+    self.next_wepn7 = fabs(ReadByte());
+    self.next_wepn8 = fabs(ReadByte());
+    self.next_wepn9 = fabs(ReadByte());
     if( self.data_type == DATA_MECH ){
       if( prevType != self.data_type ){
+        if( self.clientServerNum == player_localentnum ){
+          self.classname = "UI_ITEM";
+        }
         sendevent_player_mech(self.data_idx);
       }
     }
-    cvar_set("cl_forwardspeed", ftos(ReadCoord()));
-    cvar_set("cl_sidespeed", ftos(ReadCoord()));
-    cvar_set("cl_backspeed", ftos(ReadCoord()));
-    cvar_set("cl_movespeedkey", ftos(ReadCoord()));
+    cvar_set("cl_forwardspeed", ftos(ReadLong()));
+    cvar_set("cl_sidespeed", ftos(ReadLong()));
+    cvar_set("cl_backspeed", ftos(ReadLong()));
+    cvar_set("cl_movespeedkey", ftos(ReadLong()));
   }
   
   if( (changeFlags & SENDFLAG_COLORS) ){
@@ -728,7 +662,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
   */
   newCrits = 0;
   if( (changeFlags & SENDFLAG_CRIT) ){
-    self.critBits = ReadShort();
+    self.critBits = ReadLong();
     if( self.critBits != 0 ){
       newCrits = newCrits | self.critBits;
       if( (self.critBits & M_REPAIR) ){
@@ -739,6 +673,7 @@ void( float isNew, float changeFlags) sendent_handle_player={
       else{
         self.criticalHits = self.criticalHits | self.critBits;
       }
+      self.critBits = 0;
     }
   }
   
@@ -756,11 +691,11 @@ void( float isNew, float changeFlags) sendent_handle_player={
     EVENT - DEAD
   */ 
   if( (changeFlags & SENDFLAG_DEAD) ){
-    self.deadflag = ReadByte();
+    self.deadflag = fabs(ReadByte());
     
     ENT_SERVER_INFO.missionStatus = ReadByte();
     
-    if( self.clientLocalId == player_localentnum ){
+    if( self.clientServerNum == player_localentnum ){
       CLIENT_player_deadflag = self.deadflag;
     }
     if( (self.deadflag == DEAD_DYING) && (prevDeadFlag != DEAD_DYING) ){
@@ -776,13 +711,13 @@ void( float isNew, float changeFlags) sendent_handle_player={
   }
   
   if( (changeFlags & SENDFLAG_EFLAGS) ){
-    self.flags = self.flags | ReadCoord();
+    self.flags = rint(ceil(ReadLong()));
   }
   
   if( (changeFlags & SENDFLAG_TARGET) ){
     //player has tried to acquire target
-    self.getTarget = fabs(rint(ReadLong()));
-    if( self.getTarget != 0 && self.getTarget != -0 ){
+    self.getTarget = ReadLong();
+    if( self.getTarget != 0 ){
       self.enemy = findfloat(world, entnum, self.getTarget);
     }
     else{
@@ -790,11 +725,15 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
+  if( (changeFlags & SENDFLAG_EXDATA) ){
+    self.nextVecChoice = rint(ReadByte());
+  }
+  
   self.ping = stof( getplayerkeyvalue(self.clientLocalNum, "ping") );
   
   self.netname = getplayerkeyvalue(self.clientLocalNum, "name");
   
-  controlPlayer = findfloat(world, entnum, self.clientLocalId);
+  controlPlayer = findfloat(world, entnum, self.clientServerNum);
   if( controlPlayer != world ){
     controlPlayer.sequence = servercommandframe;
     if( self.origin != controlPlayer.origin ){
@@ -805,16 +744,16 @@ void( float isNew, float changeFlags) sendent_handle_player={
   if( isNew ){
     if(self.data_type != DATA_MECH){
       self.data_type = DATA_POBS;
-      setmodel(self, "q3mdl/testball.md3");
+      setmodel(self, "models/testball.md3");
       setsize(self, '-4 -4 -4', '4 4 4');
       setorigin(self, self.origin);
       self.alpha = 0.01;
       self.scale = 0.01;
     }
     self.think = player_think;
-    self.nextthink = time + 0.01;
+    self.nextthink = servertime + 0.01;
     self.t_remove = remove_client;
-    if( controlPlayer != world && controlPlayer.entnum == self.clientLocalId ){
+    if( controlPlayer != world && controlPlayer.entnum == self.clientServerNum ){
       controlPlayer.clientData = self;
     }
   }
@@ -834,16 +773,23 @@ void( float isNew, float changeFlags) sendent_handle_player={
     }
   }
   
-  //Shield strike event
-  if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
-    if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
-      self.shieldEffectTime = time + 0.5;
-      te_shield_hit();
+
+  //HANDLE EVENT - Shield explode
+  if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
+    if( time > self.shieldExplodeCool ){
+      te_shield_explode( self.origin, self.vec_size);
+      self.shieldExplodeCool = time + self.vec_size;
     }
   }
-  
-  //Shield Explode event
-  sendevent_shield_explode( prevShield );
+  else{
+    //HANDLE EVENT - Shield hit
+    if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+      if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
+        self.shieldEffectTime = time + 0.5;
+        te_shield_hit();
+      }
+    }
+  }
   
   //if( (self.attackFlag != 0) && (prevAttackFlag != self.attackFlag) ){
   if( self.attackFlag != 0 ){
@@ -867,14 +813,16 @@ void( float isNew, float changeFlags) sendent_handle_player={
   self.kills = stof(getplayerkeyvalue(self.clientLocalNum, "frags"));
   
   //perform data binds
-  if( self.clientLocalId == player_localentnum ){
+  if( self.clientServerNum == player_localentnum ){
     if(isNew){
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;
     }
     CLIENT_stat_rdr_mode = self.stat_rdr_mode;
-    CLIENT_flags_prev = CLIENT_flags;
-    CLIENT_flags = self.flags;
+    
+    CLIENT_flags_prev = rint(CLIENT_flags);
+    CLIENT_flags = rint(self.flags);
+   
     CLIENT_player_deadflag = self.deadflag;
     CLIENT_faction = self.faction;
     CLIENT_data_type = self.data_type;
@@ -895,9 +843,48 @@ void( float isNew, float changeFlags) sendent_handle_player={
     else{
       CLIENT_energy = 0;
     }
-    CLIENT_target_ent = self.enemy;
+    
+    if( (changeFlags & SENDFLAG_TARGET) ){
+      if( self.enemy != world ){
+        CLIENT_target_ent = self.enemy;
+        sendevent_player_target();
+      }
+    }
+    
+    CLIENT_mech_self = self;
     sendevent_player_accuracy( (prevOrg != self.origin) );
   }
+};
+
+/*
+  Player target - clean up model;
+*/
+
+
+/*
+  Player acquired a new target, findthe type and config the 3D Model
+*/
+void() sendevent_player_target={
+  local entity oSelf;
+  local entity cleanUp;
+  local entity nextEnt;
+  
+  oSelf = self;
+  self = HUD_MODEL_ARMOR_GRAPH_TARGET;
+    self.data_idx = CLIENT_target_ent.data_idx;
+    self.data_type = CLIENT_target_ent.data_type;
+    self.flags = self.flags - (self.flags & FL_MONSTER) - (self.flags & FL_UNIT); //ensures that player radar and regular addentity() calls don't pick this up.
+    self.unitModFlags = 0 | CLIENT_target_ent.unitModFlags;
+    self.mins = CLIENT_target_ent.mins;
+    self.maxs = CLIENT_target_ent.maxs;
+    self.skin = 0;
+    self.solid = SOLID_NOT;
+    self.movetype = MOVETYPE_NONE;
+    self.takedamage = DAMAGE_NO;
+    self.drawmask = 0;
+    self.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
+    self.interpolate_entity = SUB_Null;
+  self = oSelf;
 };
 
 void( float hasMoved ) sendevent_player_accuracy={
@@ -931,39 +918,7 @@ void( float hasMoved ) sendevent_player_accuracy={
 };
 
 float() remove_client={
-  local entity weps;
-  local entity next;
-  local entity rem;
-
-  if( self.data_type == DATA_MECH ){
-    weps = self.w_slot;
-    while( weps.data_idx ){
-      next = weps.w_slot;
-      rem = weps;
-      weps = next;
-      if( rem ){
-        remove(rem);
-      }
-    }
-    if( self.torsoCenter ){
-      remove(self.torsoCenter);
-    }
-    if( self.torsoLeft ){
-      remove(self.torsoLeft);
-    }
-    if( self.torsoRight ){
-      remove(self.torsoRight);
-    }
-    if( self.armLeft ){
-      remove(self.armLeft);
-    }
-    if( self.armRight ){
-      remove( self.armRight);
-    }
-    if( self.legs ){
-      remove(self.legs );
-    }
-  }
+  
   remove(self);
   return TRUE;
 };

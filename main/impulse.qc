@@ -234,6 +234,19 @@ void() ImpulseCommands ={
     }
   }
 
+  if(self.impulse == IMP_HEADLIGHT){
+    if(self.headlight){
+      self.headlight = FALSE;
+    }
+    else{
+      self.headlight = TRUE;
+    }
+    if(self.clientData != world){
+      //running out of SENDFLAGS_...
+      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CAMERA;
+    }
+  }
+
 	self.impulse = 0;
 };
 
@@ -246,7 +259,7 @@ void() ButtonCommands={
   //action mapping: +sprint 
   if( (self.unitModFlags & MOD_HAS_RAMSHOCKS) ){
     if( self.button8 ){
-      if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
+      if( self.energy > 0 && !(self.legs_flags & FL_DISARMED)){
         if( self.playerState == PLAYER_ACTIVE ){
           self.ramAngle_y = self.v_angle_y;
           self.moveState = MOVE_SPRINT;
@@ -264,13 +277,15 @@ void() ButtonCommands={
   }
   
   //action mapping: +regen
-  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-    if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
-      if( self.energy >= (self.energyMax * 0.15) ){
-        if( self.shield < self.shieldMax ){
-          self.shield = self.shield + ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.5);
-          self.energy = self.energy - ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.75);
-          self.energy = bound(0, self.energy, self.energyMax);
+  if( time > self.shieldHitRegen ){
+    if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+      if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
+        if( self.energy >= (self.energyMax * 0.15) ){
+          if( self.shield < self.shieldMax ){
+            self.shield = self.shield + ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.25);
+            self.energy = self.energy - (self.shieldRate * 1.15);  //iirc, shield recharge module doesn't charge for the buff cost.
+            self.energy = bound(0, self.energy, self.energyMax);
+          }
         }
       }
     }

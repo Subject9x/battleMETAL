@@ -100,12 +100,14 @@ OFF_AFTER_USE 4: deactivate after use
 */
 void() map_nav_point={
 
+  trigger_ext_check();
+  
   self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
 
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   
@@ -113,8 +115,6 @@ void() map_nav_point={
   self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
   self.alpha = 0.01;
   self.scale = 0.01;
-  
-
   
   if( (self.spawnflags & 1) ){
     self.isActive = FALSE;
@@ -257,7 +257,7 @@ data_idx: <float>, each must be unique because this determines the 'name' of the
 */
 void() map_nav_point_remote={
   
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   setsize( self, '-10 -10 -10', '10 10 10' ); 
   setorigin( self, self.origin );
   

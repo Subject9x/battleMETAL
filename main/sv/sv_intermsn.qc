@@ -217,7 +217,14 @@ void() changelevel_touch={
 		bprint (" exited the level\n");
 	}
   
-	sv_nextmap = self.map;
+  //use sv_campaign value (coop / campaign)
+  if( (self.spawnflags & 4) ){
+    cacheGlobalString( sv_nextmap, campaign_nextMap( cvar_string("sv_campaign"), mapname, TRUE ) )
+  }
+  else{
+    sv_nextmap = self.map;
+  }
+	
   
 	SUB_UseTargets ();
 
@@ -242,8 +249,18 @@ to touch the changelevel trigger
 */
 void() changelevel_use={
   local entity client;
+  local string thisMap;
+  
   if( world.animaticOnly ){
-    if(strstrofs(self.map, "menu", 0) != -1){
+  
+    if( (self.spawnflags & 4) ){
+      thisMap =  campaign_nextMap( cvar_string("sv_campaign"), mapname, TRUE );
+    }
+    else{
+      thisMap = self.map;
+    }
+  
+    if(strstrofs(thisMap, "menu", 0) != -1){
       client = find(world, classname, "player");
       while(client != world){
         stuffcmd(client, "disconnect;togglemenu;\n");
@@ -251,7 +268,12 @@ void() changelevel_use={
       }
       return;
     }
-    sv_nextmap = self.map;
+    if( (self.spawnflags & 4) ){
+      cacheGlobalString( sv_nextmap, thisMap )
+    }
+    else{
+      sv_nextmap = self.map;
+    }
 		GotoNextMap();
 		return;
   }

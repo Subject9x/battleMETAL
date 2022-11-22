@@ -14,25 +14,6 @@ float(float v) anglemod =
 	return v;
 };
 
-
-vector(float x, float y, float z) Vector3={
-  local vector v;
-  v_x = x;
-  v_y = y;
-  v_z = z;
-  return v;
-};
-
-
-vector(float x, float y) Vector2={
-  local vector v;
-  v_x = x;
-  v_y = y;
-  v_z = 0;
-  return v;
-};
-
-
 string(float anglee) gui_angleToNav={
   anglee = anglemod(anglee);
   if(anglee >= 337.5 || anglee < 22.5){
@@ -128,25 +109,26 @@ float(float anglee) gui_angleToEnum={
   -> from Darkplaces Engine (vid_conwidthauto)
   conwidth = floor(conheight * vid.width / (vid.height * vid_pixelheight.value));
 */
-void() gui_set_screen_size={
-  
-  VIEW_WIDTH = cvar("vid_width");
-  VIEW_HEIGHT = cvar("vid_height");
+void(float screenWidth, float screenHeight) gui_set_screen_size={
+    
+  VIEW_WIDTH = screenWidth;
+  VIEW_HEIGHT = screenHeight;
   VIEW_PIXELH = cvar("vid_pixelheight");
 
   UI_ASPECT = VIEW_WIDTH / VIEW_HEIGHT;
   
   //force con_width recalc on-demand
   VIEW_MAX_y = cvar("vid_conheight");
+  
   //we enforce vid_conwidthauto, so "vid_conwidth" is automagically updated when "vid_conheight" is set.
   //VIEW_MAX_x = floor(VIEW_MAX_y * VIEW_WIDTH / (VIEW_HEIGHT * VIEW_PIXELH));
   VIEW_MAX_x = cvar("vid_conwidth");
   
   VIEW_CTR = VIEW_MAX * 0.5;
   
-  UI_ORG = VIEW_CTR - Vector2(320, VIEW_MAX_y / 2);
-  UI_MAX = Vector2(UI_ORG_x + 640, VIEW_MAX_y);
-  UI_CTR = UI_ORG + (UI_MAX * 0.5);
+  UI_ORG = VIEW_CTR - '320 240';
+  UI_MAX = [UI_ORG_x + 640, 480];
+  UI_CTR = UI_ORG + '320 240';
   
   //some stuff requires knowing percents rather than values....looking at you con_chatpos  u_u
   UI_ORG_PERCENT_x = UI_ORG_x / VIEW_MAX_x;
@@ -228,37 +210,37 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
   
   //top bar
   for(i=1; i < cols; i=i+1){
-    drawpic(org + Vector2(i*celSize, 0), RECT32_TC, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [i*celSize, 0], RECT32_TC, '16 16', colr, alpha, drawFlag);
   }
   
   //top-right corner
-  drawpic(org + Vector2(cols * celSize, 0), RECT32_TR, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [cols * celSize, 0], RECT32_TR, '16 16', colr, alpha, drawFlag);
   
   //bottom left corner
-  drawpic(org + Vector2(0, (rows-1) * celSize), RECT32_BL, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [0, (rows-1) * celSize], RECT32_BL, '16 16', colr, alpha, drawFlag);
   
   //bottoms bar
   for(i=1; i < cols; i=i+1){
-    drawpic(org + Vector2(i*celSize, (rows-1)* celSize), RECT32_BC, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [i*celSize, (rows-1)* celSize], RECT32_BC, '16 16', colr, alpha, drawFlag);
   }
   
   //bottom right corner
-  drawpic(org + Vector2(cols * celSize, (rows-1)* celSize), RECT32_BR, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [cols * celSize, (rows-1)* celSize], RECT32_BR, '16 16', colr, alpha, drawFlag);
   
   //left side
   for(i=1; i < rows-1; i=i+1){
-    drawpic(org + Vector2(0, i * celSize), RECT32_ML, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [0, i * celSize], RECT32_ML, '16 16', colr, alpha, drawFlag);
   }
   
   //right side
   for(i=1; i < rows-1; i=i+1){
-    drawpic(org + Vector2(cols * celSize, i * celSize), RECT32_MR, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [cols * celSize, i * celSize], RECT32_MR, '16 16', colr, alpha, drawFlag);
   }
   
   if(cols > 2 && rows > 2 ){
     for(i=1; i < cols; i=i+1){
       for(j=1; j < rows-1; j=j+1){
-        drawpic(org + Vector2(i * celSize, j * celSize), RECT32_MC, '16 16', colr, alpha, drawFlag);
+        drawpic(org + [i * celSize, j * celSize], RECT32_MC, '16 16', colr, alpha, drawFlag);
       }
     }
   }
@@ -292,31 +274,31 @@ void(vector org, vector siz, vector colr, float alpha, float drawFlag) gui_rende
   
   //top bar
   for(i=1; i < cols; i=i+1){
-    drawpic(org + Vector2(i*celSize, 0), BORD32_TC, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [i*celSize, 0], BORD32_TC, '16 16', colr, alpha, drawFlag);
   }
   
   //top-right corner
-  drawpic(org + Vector2(cols * celSize, 0), BORD32_TR, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [cols * celSize, 0], BORD32_TR, '16 16', colr, alpha, drawFlag);
   
   //bottom left corner
-  drawpic(org + Vector2(0, (rows-1) * celSize), BORD32_BL, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [0, (rows-1) * celSize], BORD32_BL, '16 16', colr, alpha, drawFlag);
   
   //bottoms bar
   for(i=1; i < cols; i=i+1){
-    drawpic(org + Vector2(i*celSize, (rows-1)* celSize), BORD32_BC, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [i*celSize, (rows-1)* celSize], BORD32_BC, '16 16', colr, alpha, drawFlag);
   }
   
   //bottom right corner
-  drawpic(org + Vector2(cols * celSize, (rows-1)* celSize), BORD32_BR, '16 16', colr, alpha, drawFlag);
+  drawpic(org + [cols * celSize, (rows-1)* celSize], BORD32_BR, '16 16', colr, alpha, drawFlag);
   
   //left side
   for(i=1; i < rows-1; i=i+1){
-    drawpic(org + Vector2(0, i * celSize), BORD32_ML, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [0, i * celSize], BORD32_ML, '16 16', colr, alpha, drawFlag);
   }
   
   //right side
   for(i=1; i < rows-1; i=i+1){
-    drawpic(org + Vector2(cols * celSize, i * celSize), BORD32_MR, '16 16', colr, alpha, drawFlag);
+    drawpic(org + [cols * celSize, i * celSize], BORD32_MR, '16 16', colr, alpha, drawFlag);
   }
 };
 
@@ -333,10 +315,10 @@ void( vector org, vector siz, vector fontSize, vector colr, float alpha, float d
   celSize = 20;
   cols = ceil(siz_x / celSize);
   
-  vOrg = Vector2(org_x - fontSize_x / 3, org_y - 4);
+  vOrg = [org_x - fontSize_x / 3, org_y - 4];
   
   if(cols == 1 ){
-    drawpic(vOrg, "gfx/ui/box_64.png", Vector2(celSize,celSize), colr, alpha, drawFlag);
+    drawpic(vOrg, "gfx/ui/box_64.png", [celSize,celSize], colr, alpha, drawFlag);
     return;
   }
   
@@ -345,19 +327,19 @@ void( vector org, vector siz, vector fontSize, vector colr, float alpha, float d
   }
   
   //left side
-  drawpic(vOrg, TEXT64_LF, Vector2(celSize,celSize), colr, alpha, drawFlag);
+  drawpic(vOrg, TEXT64_LF, [celSize,celSize], colr, alpha, drawFlag);
   
   if(cols == 2 ){
     //right side
-    drawpic(vOrg + Vector2(celSize, 0), TEXT64_RT, Vector2(celSize,celSize), colr, alpha, drawFlag);
+    drawpic(vOrg + [celSize, 0], TEXT64_RT, [celSize,celSize], colr, alpha, drawFlag);
     return;
   }
   
   //middles
   for(i = 1; i < cols-1; i = i + 1){
-    drawpic(vOrg + Vector2(i * celSize, 0), TEXT64_CT, Vector2(celSize,celSize), colr, alpha, drawFlag);
+    drawpic(vOrg + [i * celSize, 0], TEXT64_CT, [celSize,celSize], colr, alpha, drawFlag);
   }
-  drawpic(vOrg + Vector2(i * celSize, 0), TEXT64_RT, Vector2(celSize,celSize), colr, alpha, drawFlag);
+  drawpic(vOrg + [i * celSize, 0], TEXT64_RT, [celSize,celSize], colr, alpha, drawFlag);
 };
 
 
@@ -414,26 +396,41 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float setAl
     given target origin, meter size, current meter value
   */
   local float clampVal, perc, adj, diff;
-  local vector norg, end;
+  local vector norg;
   norg = gui_calcAxis(org, sz, ax);
   if(clr_bk_x > -1){
     drawfill(norg, sz, clr_bk, setAlpha, flg);
   }
-  end = norg;
-  
-  clampVal = min( val, 100);
-  
+
+  clampVal = min(val, 100);
+
   perc = (clampVal / 100);
   if(ax & AXIS_V){
-     adj = sz_y * perc;
-     diff = sz_y - adj;
-     norg_y = norg_y + diff;
-     sz_y = sz_y - diff;
+  adj = sz_y * perc;
+    if(vdir){
+      //set meter to go in reverse
+      norg_y = norg_y + sz_y;
+      diff = sz_y + adj;
+      sz_y = sz_y - diff;
+    }
+    else{
+      diff = sz_y - adj;
+      norg_y = norg_y + diff;
+      sz_y = sz_y - diff;
+    }
   }
   else if(ax & AXIS_H){
-     adj = sz_x * perc;
-     diff = sz_x - adj;
-     sz_x = sz_x - diff;
+    adj = sz_x * perc;
+    if(vdir){
+      //set meter to go in reverse
+      norg_x = norg_x - sz_x;
+      diff = sz_x - adj;
+      sz_x = sz_x - diff;
+    }
+    else{
+      diff = sz_x - adj;
+      sz_x = sz_x - diff;
+    }
   }
   drawfill(norg, sz, clr_fr, setAlpha, flg);
 };
@@ -505,12 +502,56 @@ vector(vector offSet, float algn, vector org) gui_calcAlignCustom={
   }
   
   if((algn & VIEW_CTX)){
-   toSender_x = org_x + offSet_x;
+    toSender_x = org_x + offSet_x;
   }
   if((algn & VIEW_CTY)){
     toSender_y = org_y + offSet_y;
   }
   
+  return toSender;
+};
+
+/*
+  When 1 item is larger than the other, and wants to be on a certain side of the parent item.
+*/
+vector(vector parentSize, vector dstSize, float algn, vector org, vector bias) gui_calcAlignBiased={
+  local vector toSender;
+  local vector diff;
+  
+  diff = '0 0';
+  
+  if( dstSize_x > parentSize_x ){
+    if( (algn & VIEW_CTX) ){
+      diff_x = (dstSize_x - parentSize_x) * 0.5;
+    }
+    else if( (algn & VIEW_RGT) ){
+      diff_x = (parentSize_x - dstSize_x) * (1.3 - bias_x);
+    }
+    else{
+      diff_x = (dstSize_x - parentSize_x) * bias_x;
+    }
+  }
+  else{
+    diff_x = parentSize_x * (1.0 - bias_x);
+  }
+  
+  if( dstSize_y > parentSize_y ){
+  
+    if( (algn & VIEW_CTY) ){
+      diff_y = (dstSize_y - parentSize_y) * 0.5;
+    }
+    else if( (algn & VIEW_BOT) ){
+      diff_y = (parentSize_y - dstSize_y) * (1.3 - bias_y);
+    }
+    else{
+      diff_y = (dstSize_y - parentSize_y) * bias_y;
+    }
+  }
+  else{
+    diff_y = parentSize_y * (1.0 - bias_y);
+  }
+  
+  toSender = gui_calcAlignCustom( diff, algn, org );
   return toSender;
 };
 
@@ -753,7 +794,7 @@ void( vector lOrg, string label, string value, vector labelColor, vector valueCo
   
   drawfont = drawfont_prev;
   
-  valueOrg = Vector2(lOrg_x + labelLen + fontSize_x, lOrg_y);
+  valueOrg = [lOrg_x + labelLen + fontSize_x, lOrg_y];
   
   drawfont_prev = drawfont;
   drawfont = fonts_y;
@@ -890,21 +931,70 @@ float(string bitFlags) gui_StringToFlag_Axis={
 
 
 void(string msg, float val) cons_logAFloat={
-  print(sprintf("%s : %s\n", msg, ftos(val)));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %0.2f \n", msg, val));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %0.2f \n", msg, val));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MN] %s : %0.2f \n", msg, val));
+  #endif
 };
 void(string msg, vector v1) cons_logAVector={
-  print(sprintf("%s : %s\n", msg, vtos(v1)));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MN] %s : %0.2f %0.2f %0.2f\n",msg, v1_x, v1_y, v1_z));
+  #endif
 };
 void(string msg, string s1) cons_logAString={
-  print(sprintf("%s : %s\n", msg, s1));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %s \n", msg, s1));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %s \n", msg, s1));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MC] %s : %s1 \n", msg, s1));
+  #endif
 };
 
 void(string msg, float val, string split, float val2) cons_log2Float={
-  print(strcat(msg,":", ftos(val), " | ", split, ":", ftos(val2),"\n"));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MC] %s : %0.2f | %s : %0.2f\n", msg, val, split, val2));
+  #endif
 };
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
-  print(strcat(msg,":", vtos(v1),"| ", split,vtos(v2),"\n"));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MC] %s : %s | %s : %s\n", msg, vtos(v1), split, vtos(v2)));
+  #endif
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
-  print(strcat(msg," : ",s1," | ", split," : ",s2,"\n"));
+  #ifdef SSQC
+    dprint(sprintf("[SV] %s : %s | %s : %s\n", msg, s1, split, s2));
+  #endif
+  #ifdef CSQC
+    dprint(sprintf("[CS] %s : %s | %s : %s", msg, s1, split, s2));
+  #endif
+  #ifdef MENUQC
+    dprint(sprintf("[MQ] %s : %s | %s : %s\n", msg, s1, split, s2));
+  #endif
+  
 };

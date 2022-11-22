@@ -25,7 +25,7 @@ void() mech_ai_die_stand1={
   
   makevectors(self.angles);
   if( !(self.criticalHits & M_ARM_RIGHT)){
-    org = self.armRight.origin;
+    org = self.armR_org;
   }
   else{
     org = self.origin;
@@ -47,7 +47,7 @@ void() mech_ai_die_stand2={
   
   makevectors(self.angles);
   if( !(self.criticalHits & M_ARM_LEFT)){
-    org = self.armLeft.origin;
+    org = self.armL_org;
   }
   else{
     org = self.origin;
@@ -68,7 +68,7 @@ void() mech_ai_die_stand3={
   
   makevectors(self.angles);
   if( !(self.criticalHits & M_ARM_LEFT)){
-    org = self.armLeft.origin;
+    org = self.armL_org;
   }
   else{
     org = self.origin;
@@ -89,7 +89,7 @@ void() mech_ai_die_stand4={
   
   makevectors(self.angles);
   if( !(self.criticalHits & M_ARM_LEFT)){
-    org = self.armLeft.origin;
+    org = self.armL_org;
   }
   else{
     org = self.origin;

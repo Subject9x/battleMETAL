@@ -15,6 +15,7 @@ void() unit_foslager_survest_zapper={
 
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_ENE;
    
   self.flags = FL_TURRET;
   
@@ -24,6 +25,7 @@ void() unit_foslager_survest_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -57,6 +59,7 @@ void() unit_foslager_militar_zapper={
 
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_ENE;
    
   self.flags = FL_TURRET;
   
@@ -66,6 +69,7 @@ void() unit_foslager_militar_zapper={
   }
   
   ai_promote();
+  trigger_ext_check();
   self.spreadDefault = ACCURACY_SKIRMISH;
   switch( self.ai_rank ){
     case 1:
@@ -97,6 +101,7 @@ void() unit_foslager_survest_gunner={
 
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_SURVEST;
+  self.subType = AI_UTYPE_DIR;
    
   self.flags = FL_TURRET;
   
@@ -106,6 +111,7 @@ void() unit_foslager_survest_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_LOWTECH;
@@ -137,6 +143,7 @@ void() unit_foslager_militar_gunner={
 
   self.nextVecChoice = UID_VEHICLE_foslager;
   self.faction = FACTION_MILITAR;
+  self.subType = AI_UTYPE_DIR;
    
   self.flags = FL_TURRET;
   
@@ -146,6 +153,7 @@ void() unit_foslager_militar_gunner={
   }
   
   ai_promote();
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.spreadDefault = ACCURACY_SKIRMISH;

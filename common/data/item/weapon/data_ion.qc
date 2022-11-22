@@ -23,8 +23,11 @@ void() te_muzzle_ion={
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
-  sound7(self, CHAN_AUTO, "sound/weapons/emp_fire.ogg", 1, ATTN_NORM, (1.0 + (random() * 0.4)) * 100, 0 );
-  pointparticles( particleeffectnum("TE_ION_MUZZLE"), startOrg, normalize( endOrg - startOrg) * 4, 1);
+  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (1.0 + (random() * 0.4)) * 100, 0 );
+  
+  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+    pointparticles( particleeffectnum("TE_ION_MUZZLE"), startOrg, normalize( endOrg - startOrg) * 4, 1);
+  }
 };
 #endif
 void() data_ini_ion_={
@@ -48,9 +51,12 @@ void() data_ini_ion_={
   self.burstRate = 1;
   
 #ifdef CSQC
+  precache_sound("sound/weapons/emp_fire.ogg");
+  precache_model("models/weapons/w_ion.md3");
+  precache_file( "gfx/ui/wep_icons/wi_ion.png");
   self.w_name = "Ion Coil";
   self.fire_sound = "sound/weapons/emp_fire.ogg";
-  self.model = "q3mdl/weapons/w_ion.md3";
+  self.model = "models/weapons/w_ion.md3";
   self.abbrev = "ION";
   self.description = "+ Anti-shield. + Armor damage greatly reduced. +3-rnd burst fire.";
   self.icon = "gfx/ui/wep_icons/wi_ion.png";

@@ -18,6 +18,8 @@ void() world_metal_ini={
   registercvar("gamemode", "1", CF_SERVER | CF_SERVER_FROM_CLIENT);
   registercvar("sv_serverflags", "0", CF_ARCHIVE | CF_SERVER | CF_SERVER_FROM_CLIENT);
   registercvar("sv_about", "Default About Message", CF_ARCHIVE | CF_SERVER | CF_SERVER_FROM_CLIENT);
+  registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
+  registercvar("sv_singlemap", "0", CF_SERVER_FROM_CLIENT);
   
   if( cvar("coop") ){
     GAMETYPE = GAMEMODE_COOP;
@@ -60,7 +62,7 @@ void() world_metal_ini={
   if(world.itemOverride){
     serverflags = serverflags | SVFLAG_ITEMOVER;
   }
-  if( world.ignoreSave || world.animaticOnly ){
+  if( world.ignoreSave || world.animaticOnly || cvar("sv_singlemap") ){
     serverflags = serverflags | SVFLAG_NOSAVE;
   }
   ENT_SERVER_INFO = world_ini_serverInfo_ent();
@@ -134,13 +136,40 @@ void() world_metal_ini={
   
   nodegraph_edgelinker = spawn();
   nodegraph_edgelinker.classname = strzone("nodegraph_edgelinker");
-  setmodel(nodegraph_edgelinker, "q3mdl/testball.md3");
+  setmodel(nodegraph_edgelinker, "models/testball.md3");
   setsize(nodegraph_edgelinker, nodegraph_edgelinker.mins, nodegraph_edgelinker.maxs);
   setorigin(nodegraph_edgelinker, world.origin);
   
   world_get_maplist();
   
   world_nodegraph_import();
+  
+  if( world.minimapMins != '0 0 0' ){
+    ENT_SERVER_INFO.minimapMins = world.minimapMins;
+  }
+  else{
+    ENT_SERVER_INFO.minimapMins = world.mins;
+  }
+  
+  if( world.minimapMaxs != '0 0 0'){
+    ENT_SERVER_INFO.minimapMaxs = world.minimapMaxs;
+  }
+  else{
+    ENT_SERVER_INFO.minimapMaxs = world.maxs;
+  }
+  
+  if( world.uiViewBoxOrg){
+    ENT_SERVER_INFO.uiViewBoxOrg = world.uiViewBoxOrg;
+  }
+  else{
+    //just auto-check
+    local entity clientViewbox;
+    clientViewbox = find(world, netname, "ui_view_box");
+    if(clientViewbox != world){
+      ENT_SERVER_INFO.uiViewBoxOrg = clientViewbox.origin;
+      remove(clientViewbox);
+    }
+  }
 };
 
 /*
@@ -150,12 +179,25 @@ void() world_ini_serverinfo={
   ENT_SERVER_INFO.gameType = GAMETYPE;
   ENT_SERVER_INFO.timeStart = time;
   ENT_SERVER_INFO.timeEnd = time + (cvar("timelimit") * 60);
-  ENT_SERVER_INFO.serverFlags = serverflags;
+  ENT_SERVER_INFO.serverFlags = 0 | serverflags;
   ENT_SERVER_INFO.worldtype = world.worldtype;
   ENT_SERVER_INFO.missionStatus = MISSION_STATUS_READY;
   ENT_SERVER_INFO.missionResult = 0;
-  ENT_SERVER_INFO.nextMap = strzone(sv_nextmap);
-  ENT_SERVER_INFO.svAbout = strzone(strcat("svabout ", cvar_string("sv_about"), "\n"));
+  
+  if( sv_nextmap != "" && strlen(sv_nextmap) > 0 ){
+    cacheGlobalString( ENT_SERVER_INFO.nextMap, sv_nextmap )
+  }
+  else{
+    ENT_SERVER_INFO.nextMap = "";
+  }
+  
+  if( cvar_string("sv_about") != "" && strlen(cvar_string("sv_about")) > 0 ){
+    cacheGlobalString( ENT_SERVER_INFO.svAbout, strcat("svabout ", cvar_string("sv_about"), "\n") )
+  }
+  else{
+    ENT_SERVER_INFO.svAbout = "";
+  }
+  
   
   ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_MISSION_STATUS;
   
@@ -214,7 +256,7 @@ void() world_get_fog={
   self.fog_density = found.fog_density;
   self.fog_alpha = found.fog_alpha;
   self.fog_dist = found.fog_dist;
-  self.fade = found.fade;
+  self.fog_fade = found.fog_fade;
 };
 
 /*
@@ -642,7 +684,7 @@ void( entity lightEnt, float fileData ) world_export_realtimelights_write={
   lightData = strcat( lightData, " ", ftos(lightEnt.rtlRadius) );
   lightData = strcat( lightData, " ", ftos(lightEnt.color_x)," ", ftos(lightEnt.color_y)," ", ftos(lightEnt.color_z) );
   lightData = strcat( lightData, " ", ftos(lightEnt.rtlStyle) );
-  lightData = strcat( lightData, " \"", lightEnt.vec_name,"\" " );
+  lightData = strcat( lightData, " \"", lightEnt.vec_name,"\"" );
   lightData = strcat( lightData, " ", ftos(lightEnt.rtlCorona) );
   lightData = strcat( lightData, " ", ftos(lightEnt.angles_x), " ", ftos(lightEnt.angles_y), " ", ftos(lightEnt.angles_z) );
   lightData = strcat( lightData, " ", ftos(lightEnt.rtlCoronaSize) );
@@ -657,6 +699,7 @@ void( entity lightEnt, float fileData ) world_export_realtimelights_write={
   
   if( cvar("developer") ){
     cons_log2Strings("[INFO]-{Writing RTLight Data} ", "-line-", "origin", vtos(lightEnt.origin)); //DEBUG
+    cons_logAString("                                 data", lightData); //DEBUG
   }
 };
 
@@ -738,7 +781,7 @@ void() world_nodegraph_export_edgelinker_th={
   if( self.count == self.wait ){
     cons_logAString("[INFO]-world_export_nodegraph()", "Write complete.");  //DEBUG
     fclose(self.data_idx);
-    strunzone(self.classname);
+    self.classname = "";
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
     
@@ -884,7 +927,7 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
       }*/
       
       if( trEdgeAngl_x > NODEGRAPH_EDGE_ANGLE_MIN && trEdgeAngl_x < NODEGRAPH_EDGE_ANGLE_MAX){
-        //cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(trEdgeAngl_x), "| seg ", ftos(edgeLenItr)));//debug
+        cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " pitch ", ftos(trEdgeAngl_x), "| seg ", ftos(edgeLenItr)));//debug
         edgeCheck = FALSE;
       }
       //holding off on this change for a second.
@@ -894,6 +937,17 @@ float( entity node, entity targNode ) world_nodegraph_export_edgelink={
       edgeSegA = edgeSegB;
     }
     self.dphitcontentsmask = rint(0);
+    if(edgeCheck){
+      //run tracebox for corners
+      tracebox(node.origin, '-32 -32 -0.5', '32 32 0.5' , targNode.origin, FALSE, node);
+      if(trace_fraction == 1.0){
+        edgeCheck = TRUE;        
+      }
+      else{
+        edgeCheck = FALSE;        
+      cons_logAString(ftos(node.data_idx), strcat("fail ", ftos(targNode.data_idx), " tracebox "));//debug
+      }
+    }
     return edgeCheck;
   }
   else{
@@ -1030,10 +1084,12 @@ void(entity node, float fileData ) world_nodegraph_export_write_node={
     }
   }
   if( edgeMax == 0 ){
-    //fputs(fileData, "NO EDGES FOUND");
+    fputs(fileData, sprintf("Node %u at (%0.2f %0.2f %0.2f) - NO EDGES FOUND\n", node.data_idx, node.origin_x, node.origin_y, node.origin_z));
   }
-  strLineData = strcat(strLineData, "\n");
-  fputs(fileData, strLineData);
+  else{
+    strLineData = strcat(strLineData, "\n");
+    fputs(fileData, strLineData);
+  }
 };
 
 /*

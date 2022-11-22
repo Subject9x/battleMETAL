@@ -33,34 +33,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     freeGlobalString(CHAT_INP_VAL)
     CHAT_INP_SEND = FALSE;
   }
-  
-  if(ISMENU_PREV != menuView){
-    //check for player bringing up menu delta
-    if( ISMENU_PREV == TRUE && menuView == FALSE ){
-      if( CLIENT_faction == FACTION_SURVEST){
-        if( PLAYER_COLOR_SRV != cvar_string("cl_color_srv") ){
-          //player changed Survest color
-          cacheGlobalString(PLAYER_COLOR_SRV, cvar_string("cl_color_srv") )
-          cl_setmech( CLIENT_MENU_sel_mech );
-        }
-      }
-      else if( CLIENT_faction == FACTION_MILITAR){
-        if( PLAYER_COLOR_MIL != cvar_string("cl_color_mil") ){
-          //player changed militar color
-          cacheGlobalString(PLAYER_COLOR_MIL, cvar_string("cl_color_mil") )
-          cl_setmech( CLIENT_MENU_sel_mech );
-        }
-      }
-      else{
-        if( PLAYER_COLOR_PSC != cvar_string("cl_color_psc") ){
-          //player changed PSC color
-          cacheGlobalString(PLAYER_COLOR_PSC, cvar_string("cl_color_psc") )
-          cl_setmech( CLIENT_MENU_sel_mech );
-        }
-      }
-    }
-    ISMENU_PREV = menuView;
-  }
+  MENU_PROG_OFF = menuView;
 
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
@@ -110,14 +83,15 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	// clear the scene information (entities, polygons, etc)
 	clearscene();
   //=====================================================
-	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
+	VIEW_VF_ORG = getpropertyvec(VF_ORIGIN);
+  
+  VIEW_FOV = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
   vf_sz = getpropertyvec(VF_SIZE);
   vf_mn = getpropertyvec(VF_MIN);
-
-	vf_sz_x = w;
-  vf_sz_y = h;
+  
   vf_sz_z = 0;
   vf_mn = '0 0 0';
+  VIEW_ACT = getpropertyvec(VF_SIZE);
 	// set up the scene parameters
   //setproperty(VF_MIN, vf_mn);   //set the left of the view
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
@@ -145,39 +119,57 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     }
   }
   
-  setproperty(VF_FOV, fovvec);
-  setproperty(VF_DRAWWORLD, 1);
+  setproperty(VF_FOV, VIEW_FOV);
+  if( MENU_ACTIVE && CLIENT_MENU_menu_choice != MENU_REBIND_ACTIVE ){
+    setproperty(VF_DRAWWORLD, FALSE);
+  }
+  else{
+    setproperty(VF_DRAWWORLD, TRUE);
+  }
   setproperty(VF_DRAWCROSSHAIR, 0);
-  setproperty(VF_DRAWENGINESBAR, 0);
-  VIEW_ORG = '0 0';
+  setproperty(VF_DRAWENGINESBAR, 0);  
   
+  VIEW_ORG = '0 0';
   VIEW_SCALE = 0.35;
   
-  gui_set_screen_size();
   
-  if(FOG_STATE){
-    //alter fog settings if needed
-    cl_particles_fogFrame();	//fog is disable for the time being (something up with depth-rendering and unit shaders)
-    /*setproperty(VF_FOG_DENSITY, FOG_DENSITY);
-    setproperty(VF_FOG_COLOR_R, FOG_RED);
-    setproperty(VF_FOG_COLOR_G, FOG_GREEN);
-    setproperty(VF_FOG_COLOR_B, FOG_BLUE);
-    setproperty(VF_FOG_ALPHA,FOG_ALPHA );
-    setproperty(VF_FOG_START, FOG_DIST_MIN);
-    setproperty(VF_FOG_END, FOG_DIST_MAX);
-    setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
-    setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);*/
+  // CSQC VIEW CULLING - has to be calculated here first, before pre-draws are called.
+  client_vis_org = pmove_org;
+  if(CLIENT_data_type == DATA_MECH){
+    makevectors(getpropertyvec(VF_CL_VIEWANGLES));
+    if(cvar("chase_active")){
+      traceline(pmove_org, pmove_org + (v_forward * cvar("chase_back") * -0.9) + (v_up * cvar("chase_up")), TRUE, CLIENT_mech_self);
+      client_vis_org = trace_endpos;
+    }
+    else{
+      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z * 1.25) + (v_up * CLIENT_mech_self.maxs_y);
+    }
   }
-
+  //=================================================
+  
+  if( [cvar("vid_conwidth"),cvar("vid_conheight")] != VIEW_MAX){
+    //detect resolution change.
+    gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
+  }
   // add any polygons we want here
   makevectors(input_angles);
   //=================================================
   
   // draw the main view
-  if( !MENU_ACTIVE || CLIENT_MENU_menu_choice >= MENU_REBIND_ACTIVE){
+  if( !MENU_ACTIVE || (MENU_ACTIVE && CLIENT_MENU_menu_choice == MENU_REBIND_ACTIVE)){
+  //alter fog settings if needed
+    cl_particles_fogFrame();
+    setproperty(VF_FOG_DENSITY, FOG_DENSITY);
+    setproperty(VF_FOG_COLOR, [FOG_RED, FOG_GREEN, FOG_BLUE]);
+    setproperty(VF_FOG_ALPHA,FOG_ALPHA );
+    setproperty(VF_FOG_START, FOG_DIST_MIN);
+    setproperty(VF_FOG_END, FOG_DIST_MAX);
+    setproperty(VF_FOG_HEIGHT, FOG_DIST_TOP);
+    setproperty(VF_FOG_FADEDEPTH, FOG_FADE_DEPTH);
     // add clientside entities (MASK_NORMAL)
     // add engine networked entities (MASK_ENGINE)
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
+    
     oldSelf = self;
     self = world;
     while( (self = nextent(self)) ){
@@ -213,7 +205,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 
 	// draw custom hud
   if(CLIENT_data_type == DATA_MECH){
-    
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
       //HUD Highlight Boxes
@@ -239,7 +230,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   }
   
   //menu system
-  if(MENU_ACTIVE){
+  if(MENU_ACTIVE || CLIENT_MENU_menu_choice == MENU_REBIND_ACTIVE){
     menu_handleFrame();
   }
   
@@ -258,6 +249,29 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     //drawstring(porg + '1 -30', strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
     //version wille eventually be only displayed as needed.
     gui_drawversion();
+    drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos([w,h])), '8 8', '0.85 0.85 0.85', 1, 0);
+  
+    
+    drawstring(VIEW_ORG + '0 40', sprintf("VIEW_VF_ORG  = %s", vtos(VIEW_VF_ORG)), '8 8', '0.85 0.85 0.85', 1, 0);
+    
+    drawstring(VIEW_ORG + '0 48', sprintf("VF_ORIGIN  = %s", vtos(getpropertyvec(VF_ORIGIN))), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 56', sprintf("PMOVE_ORG  = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    
+    if(HUD_MODEL_STRUTS){
+      drawstring(VIEW_ORG + '0 64', sprintf("HUD_MODEL_STRUTS  = %s", vtos(HUD_MODEL_STRUTS.origin)), '8 8', '0.85 0.85 0.85', 1, 0);
+    }
+  
+    local vector mpos;
+    mpos = getmousepos();
+    if(MENU_ACTIVE){
+      drawstring(VIEW_ORG + '0 40', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
+    }
+    else{
+      drawstring(VIEW_ORG + '0 72', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
+    }
+    
+    drawstring(VIEW_ORG + '0 80', sprintf("CLIENT_VIS_ORG  = %s", vtos(client_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
   }
   
 };

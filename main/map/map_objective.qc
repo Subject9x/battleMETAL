@@ -123,6 +123,7 @@ void() map_objective={
   local vector tempMin;
   local vector tempMax;
   
+  trigger_ext_check();
   //touchable
   if( (self.spawnflags & 2) ){
     self.solid = SOLID_TRIGGER;

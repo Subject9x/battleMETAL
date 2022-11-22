@@ -13,11 +13,15 @@ void() player_makeObserver={
   macro_set_collider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY)
   self.weaponmodel = "";
   
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
   self.view_ofs = '0 0 1';
   self.damageValue = 0;
+  self.data_speed_forward = 1000;
+  self.data_speed_strafe = 1000;
+  self.data_speed_backward = 1000;
+  self.data_speed_accel = 2;
   self.clientData.SendFlags =  self.clientData.SendFlags | SENDFLAG_NEWUNIT;
   self.canTarget = FALSE;
 };
@@ -39,7 +43,7 @@ float() customize_part_for_client={
     return FALSE;
   }
   makevectors(other.angles);
-  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - fabs(other.cockpit.compOffset_z * 2.5)));
+  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - fabs(other.cameraOffset_z * 2.5)));
   setorigin(self, chunkOfs);
   
   return TRUE;
@@ -53,7 +57,6 @@ void() player_makeMech={
   initialize_data_mech_( self.nextVecChoice );
   self.touch = ctrl_player_mech_touch;
   
-  droptofloor();
   
   self.currentWeaponGroup = self.w_group1;
   
@@ -79,51 +82,35 @@ void() player_makeMech={
   if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
     switch(cvar("skill")){
       case 1:
-        self.energyMax = self.energyMax * 1.5;
+        self.energyMax = self.energyMax * 1.25;
         self.energyRate = self.energyRate * 1.1;
         break;
       case 2:
-        self.energyMax = self.energyMax * 1.25;
-        self.energyRate = self.energyRate * 1.05;
+        self.energyMax = self.energyMax * 1.15;
+        self.energyRate = self.energyRate * 1.0;
         break;
       case 3:
-        self.energyMax = self.energyMax * 0.9;
-        self.energyRate = self.energyRate * 0.95;
+        self.energyMax = self.energyMax * 0.85;
+        self.energyRate = self.energyRate * 0.9;
         break;
       default:
         self.energyMax = self.energyMax * 1;
         break;
     }
   }
-  self.torsoCenter.effects = self.torsoCenter.effects | EF_NODRAW;
-  
-  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-    self.torsoLeft.effects = self.torsoLeft.effects | EF_NODRAW;
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-    self.torsoRight.effects = self.torsoRight.effects | EF_NODRAW;
-  }
-  
-  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-    self.armLeft.effects = self.armLeft.effects | EF_NODRAW;
-  }
-  
-  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-    self.armRight.effects = self.armRight.effects | EF_NODRAW;
-  }
-  
-  self.legs.effects = self.legs.effects | EF_NODRAW;
   
   self.view_ofs = '0 0 0';
-  self.view_ofs_z = self.cockpit.compOffset_y;  //set player view offset to where the cockpit ent is.
+  self.view_ofs_z = self.cameraOffset_y;  //set player view offset to where the cockpit ent is.
   self.stat_rdr_mode = TRUE; //start with active radar
   self.stat_rdr_rng = self.radar_range * 2;
   self.damageValue = 0;
   self.critBits = 0;
   self.canTarget = TRUE;
   
+  droptofloor();
+  
   self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION);
+  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION | SENDFLAG_RADAR);
 };
 
 void() player_unmakeMech={

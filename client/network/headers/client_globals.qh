@@ -91,6 +91,7 @@ float CLIENT_stat_trg_ent_id;
 float CLIENT_stat_trg_ent_id_prev;
 
 entity CLIENT_target_ent;
+entity CLIENT_mech_self;
 vector CLIENT_target_origin;
 
 float CLIENT_target_health_prev;

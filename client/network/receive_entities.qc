@@ -114,9 +114,9 @@ void() receive_ent_bindData={
       if( CLIENT_health_legs <= 0 && CLIENT_health_legs_prev > 0 ){
         hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
       }
-      if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
-        //repair event
-      }
+      //if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
+      //repair event
+      //}
     }
     if( !(CLIENT_flags_prev & FL_NOSHOOT) && (CLIENT_flags & FL_NOSHOOT) ){
       hud_event_enqueue( HUD_EVENT_WEAPONS_OFF, 1) ;
@@ -137,13 +137,13 @@ void() receive_ent_bindData={
         CLIENT_target_ent = world;
         CLIENT_stat_trg_ent_id = 0;
         CLIENT_stat_trg_dataidx = 0;
-        CLIENT_stat_trg_face = -1;
+        CLIENT_stat_trg_face = 0;
         return;
       }
       CLIENT_stat_trg_ent_id = CLIENT_target_ent.entId;
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
       
-      CLIENT_stat_trg_face = util_checkPointAngleImpl(CLIENT_target_ent.origin, pmove_org, input_angles) ;
+      CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.origin, pmove_org, input_angles) );
       
       CLIENT_target_datatype_prev = CLIENT_target_datatype;
       CLIENT_target_datatype = CLIENT_target_ent.data_type;
@@ -364,31 +364,39 @@ void() client_get_hud_highlight={
   local float fnd;
   
   hfx = spawn();
-  hfx.drawmask = MASK_ENGINE;
-  hfx.data_idx = -3;  //more hacks
-  hfx.classname = "UI_HIGHLIGHT"; //constant-in-code so no worry about zoning the value.
-  
-  hfx.drawcolor1 = te_read_vector();
-  t = ReadShort();
-  hfx.partTypeId = ReadByte();
-  hfx.partParentId = 0;
-  
-  fnd = 0;
-  while( fnd < 32 ){
-    if( UI_DATA_UIDS[fnd] == hfx.partTypeId ){
-      if( hfx.partParentId == 0 ){
-        hfx.partParentId = fnd;
+  if(hfx){
+    hfx.drawmask = MASK_ENGINE;
+    hfx.data_idx = -3;  //more hacks
+    hfx.classname = "UI_HIGHLIGHT"; //constant-in-code so no worry about zoning the value.
+    
+    hfx.drawcolor1_x = ReadLong();
+    hfx.drawcolor1_y = ReadLong();
+    hfx.drawcolor1_z = ReadLong();
+    t = ReadShort();
+    hfx.partTypeId = ReadByte();
+    hfx.partParentId = 0;
+    
+    fnd = 0;
+    while( fnd < 32 ){
+      if( UI_DATA_UIDS[fnd] == hfx.partTypeId ){
+        if( hfx.partParentId == 0 ){
+          hfx.partParentId = fnd;
+        }
       }
+      fnd = fnd + 1;
     }
-    fnd = fnd + 1;
+    hfx.drawsize_x = ReadLong();  //we still send a prospective size because some HUD elements don't have a defined size?
+    hfx.drawsize_y = ReadLong();  
+    hfx.drawsize_z = ReadLong();  
+    
+    if( hfx.partTypeId == 0 || !hfx.partTypeId ){
+      hfx.origin_x = ReadLong();
+      hfx.origin_y = ReadLong();
+      hfx.origin_z = ReadLong();
+    }
+    
+    hfx.drawme = servertime + (t / 3);
   }
-  hfx.drawsize = te_read_vector();  //we still send a prospective size because some HUD elements don't have a defined size?
-  
-  if( hfx.partTypeId == 0 || !hfx.partTypeId ){
-    hfx.origin = te_read_vector();
-  }
-  
-  hfx.drawme = time + (t / 3);
 };
 
 /*
@@ -400,8 +408,8 @@ void() client_event_boundary={
   HUD_WARN_ON = ReadByte();
   HUD_WARN_DIR = ReadAngle();
   if( HUD_WARN_ON ){
-    if( time > HUD_WARN_MARK ){
-      HUD_WARN_MARK = time + HUD_WARN_TIME;
+    if( servertime > HUD_WARN_MARK ){
+      HUD_WARN_MARK = servertime + HUD_WARN_TIME;
     }
   }
 };
@@ -409,8 +417,8 @@ void() client_event_boundary={
 void() client_event_environment={
   HUD_WARN_ENV_ON = TRUE;
   if( HUD_WARN_ENV_ON ){
-    if( time > HUD_WARN_ENV_MARK ){
-      HUD_WARN_ENV_MARK = time + HUD_WARN_ENV_TIME;
+    if( servertime > HUD_WARN_ENV_MARK ){
+      HUD_WARN_ENV_MARK = servertime + HUD_WARN_ENV_TIME;
     }
   }
 };

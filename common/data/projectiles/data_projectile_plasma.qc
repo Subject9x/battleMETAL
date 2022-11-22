@@ -49,9 +49,9 @@ void() data_projectile_ini_plasma_={
   #ifdef CSQC
     //cosmetics
     self.alpha = 0.85;
-    self.model = "q3mdl/proj/mdl_proj_rpc.md3";
-    self.effects = EF_NOSHADOW | EF_ADDITIVE;
-    self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
+    precache_model("models/proj/mdl_proj_rpc.md3");
+    self.model = "models/proj/mdl_proj_rpc.md3";
+    self.data_traileff = particleeffectnum("TE_RPC_TRAIL");
     self.predraw_projectile = predraw_plasma;
     self.pcl_explode = projectile_plasma_expl;
   #endif
@@ -59,17 +59,12 @@ void() data_projectile_ini_plasma_={
   #ifdef SSQC
     self.touch = data_projectile_plasma_touch;
     self.think = data_projectile_plasma_think_;
-    self.effects = self.effects | EF_LOWPRECISION;
+    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
   #endif
 };
 #ifdef SSQC
 void() data_projectile_plasma_burn_ini_={
-  self.movetype = MOVETYPE_FOLLOW;
-  self.aiment = self.cockpit;
-  self.punchangle = self.cockpit.angles;
-  self.view_ofs = self.origin - self.cockpit.origin;
-  self.angles = self.cockpit.angles;
-  self.v_angle = self.angles - self.cockpit.angles;
+  self.movetype = MOVETYPE_NONE;
   self.alpha = 0.75;
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
   self.impactType = IMPACT_ARMOR;
@@ -78,19 +73,35 @@ void() data_projectile_plasma_burn_ini_={
 };
 
 void() data_projectile_plasma_burn_th={
+  if( self.enemy.deadflag > DEAD_NO ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+    return;
+  }
   
+  util_getPartFromName( self.partParentId, self.enemy );
+  
+  if( T_PART_HP <= 0){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+    return;
+  }
+  
+  if( self.partParentId != M_UNIT && self.partParentId != M_LEGS){
+    makevectors(self.torC_angl);
+  }
+  else{
+    makevectors(self.angles);
+  }
+  
+  self.origin = self.enemy.origin + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z) + (v_right * T_PART_PARENT_OFFSET_x);
+  setorigin(self, self.origin);
   if( self.last_origin != self.origin ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self.last_origin = self.origin;
   }
   
-  if( self.enemy.deadflag > DEAD_NO || self.cockpit.deadflag > DEAD_NO ){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
-    return;
-  }
-
-  t_damage_shield(self.enemy, self, self.owner, self.damageValue, self.cockpit.origin, TRUE);
+  t_damage_shield(self.enemy, self, self.owner, self.damageValue, T_PART_PARENT_ORG, TRUE);
   
   if(time > self.data_lifetime){
     self.think = SUB_Remove;
@@ -107,7 +118,7 @@ void() data_projectile_plasma_burn_th={
 };
 
 void() data_projectile_plasma_touch={
-  local entity hit;
+  local float hit;
   local float damage;
   local float proc;
   
@@ -133,21 +144,28 @@ void() data_projectile_plasma_touch={
     else{
       hit = t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
       self.enemy = other;
-      self.cockpit = hit;
+      
+      util_getPartFromName(hit, other);
+      
+      self.partParentId = hit;
+      
       self.damageValue = data_projectile_plasma_burn_dmg;
       self.data_lifetime = time + data_projectile_plasma_burn_time;
       setsize(self, '-1 -1 -1', '1 1 1');
-      if( other != hit ){
+      
+      if( hit ){
         setorigin(self, self.origin);
       }
+      
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
       self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
       self.think = data_projectile_plasma_burn_ini_;
       self.nextthink = time + 0.05;
       self.impactType = IMPACT_ARMOR;
-      if( hit.partTypeId && !(self.owner.statTargetHitParts & hit.partTypeId) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit.partTypeId;
+      
+      if( hit && !(self.owner.statTargetHitParts & hit) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit;
       } 
       return;
     }

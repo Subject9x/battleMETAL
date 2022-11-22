@@ -28,7 +28,7 @@ void() sv_getTarget={
     viewOfs = trace_endpos;
   }
   else{
-    viewOfs = self.cockpit.origin;
+    viewOfs = self.cameraOrigin;
   }
   traceline(viewOfs, viewOfs + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
   
@@ -207,7 +207,7 @@ void() sv_updateTargetInfo={
   local float sweep, yaw, low, high;
   local entity blip;
   
-    //TODO - Magic numbers
+    //- Magic numbers
   self.radar_time = anglemod( self.radar_time + 6 );
 
   sweep = self.radar_time;
@@ -248,7 +248,7 @@ void() sv_updateTargetInfo={
   the sweep pattern.
 */
 /*void() radarSweepAdv={
-  //TODO - Magic numbers
+  //Magic numbers
   local float inv;
   local entity blip;
   local float dist;

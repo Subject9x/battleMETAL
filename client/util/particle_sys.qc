@@ -175,7 +175,7 @@ void() cl_particles_fogFrame={
     FOG_STATE = FALSE;
   }
   
-  newFog = strcat("fog ", ftos(FOG_DENSITY)," ");
+  /*newFog = strcat("fog ", ftos(FOG_DENSITY)," ");
   newFog = strcat(newFog, ftos(FOG_RED)," ");
   newFog = strcat(newFog, ftos(FOG_GREEN)," ");
   newFog = strcat(newFog, ftos(FOG_BLUE)," ");
@@ -184,55 +184,7 @@ void() cl_particles_fogFrame={
   newFog = strcat(newFog, ftos(FOG_DIST_MAX)," ");
   newFog = strcat(newFog, ftos(FOG_DIST_TOP)," ");
   newFog = strcat(newFog, ftos(FOG_FADE_DEPTH),"\n");
-  localcmd(newFog);
-};
-
-void() te_explode_mech_piece_predraw={
-  local float lerpDiff;
-  local float lerp;
-  
-  if (self.nextthink != self.frame1time){
-    self.frame2time = self.frame1time;
-    self.frame1time = self.nextthink;
-    self.frame2 = self.frame1;
-    self.frame1 = self.frame;
-    self.origin2 = self.origin1;
-    self.origin1 = self.origin;
-    self.angle2 = self.angle1;
-    self.angle1 = self.angles_y;
-  }
-  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
-  lerp = bound(0, self.lerpfrac, 1);
-  self.lerpfrac = lerp;
-
-  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-};
-
-void() te_explode_mech_piece_th={
-  self.think = te_explode_mech_piece_th;
-  self.nextthink = time + 0.05;
-};
-
-//maybe at some point someone can figure out MOVETYPE_BOUNCE for csqc.
-void(entity piece) te_explode_mech_piece={
-  local entity t;
-  makevectors(piece.angles);
-  t = spawn();
-  t.drawmask = MASK_NORMAL;
-  setmodel(t, piece.model);
-  setsize(t, '0 0 0', '0 0 0');
-  setorigin(t, piece.origin);
-  t.colormod = piece.colormod;
-  t.movetype = MOVETYPE_BOUNCE;
-  t.solid = SOLID_BBOX;
-  t.velocity = normalize((piece.origin + v_up * 10) - piece.origin);
-  t.velocity = t.velocity * 300;
-  t.velocity_z = 400;
-  t.avelocity = '100 100 100';
-  t.angles = piece.angles;
-  t.think = te_explode_mech_piece_th;
-  t.nextthink = time + 0.05;
-  t.predraw = te_explode_mech_piece_predraw;
+  localcmd(newFog);*/
 };
 
 void(entity item) te_weapon_fire_handler={
@@ -248,16 +200,17 @@ void(entity item) te_weapon_fire_handler={
 
   this = self;
   self = item;
-    parent = util_getPartFromName( self.partParentId, this);
-    offset = this.origin + (v_right * parent.compOffset_x) + (v_up * parent.compOffset_y) + (v_forward * parent.compOffset_z);
+    util_getPartFromName( self.partParentId, this);
+    
+    offset = this.origin + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
     
     //FPV z-offset is corrected at the parent-part origin step!
-    if(self.clientLocalId == player_localentnum && cvar("chase_active") == FALSE){
-      offset = offset + (v_forward * this.cockpit.compOffset_z);
+    if(this.clientLocalNum == player_localentnum && cvar("chase_active") == FALSE){
+      offset = offset + (v_forward * this.cameraOffset_z);
     }
-    adjPartOffset = self.compOffset - parent.compOffset;
+    adjPartOffset = self.compOffset - T_PART_PARENT_OFFSET;
     
-    view = parent.angles;
+    view = T_PART_PARENT_ANGL;
     view_x = view_x *-1;
     makevectors( view);
     offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
@@ -274,6 +227,7 @@ void( vector org, vector windVel ) te_mech_crit={
   local vector spark;
   //ideally you've makevectors before this....
   spark = org + (v_up * 10);
+  
   pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), org, normalize( spark - org) * (windVel_z/2), 0.5);
 };
 
@@ -281,17 +235,18 @@ void( vector org, float total ) te_unit_dust={
   local vector dir;
   local vector torg;
   
-  makevectors(self.angles);
-  torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
-  dir = normalize( dir - org ) * 4;
-    
-  pointparticles( self.trail_effectnum, torg , dir * 2, total);
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    makevectors(self.angles);
+    torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
+    dir = normalize( dir - org ) * 4;
+      
+    pointparticles( self.trail_effectnum, torg , dir * 2, total);
+  }
 };
 
 void() te_unit_dust_set={
-  local float dbg;
-  dbg = 1;
-  switch( dbg ){
+  switch( SV_WORLDTYPE ){
     case 1:
       self.trail_effectnum = PTC_DUST_ICE;
       break;
@@ -312,13 +267,17 @@ void() te_unit_dust_set={
 
 
 void() te_building_fire_th={
-  if( self.owner.deadflag > DEAD_NO ){
+  if( self.owner.deadflag != DEAD_NO ){
     remove(self);
     return;
   }
+    
   self.compAltOffset = te_apply_wind( self.origin );
-  pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
   
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
+  }
   
   self.think = te_building_fire_th;
   self.nextthink = time + 0.1 + random() * 0.75;
@@ -327,16 +286,18 @@ void() te_building_fire_th={
 entity( entity targetBuilding ) te_building_fire_start={
   local entity fire;
   fire = spawn();
-  setmodel(fire, "q3mdl/testball.md3");
-  fire.alpha = 0;
-  fire.origin = util_pointNearBoxEdge( targetBuilding.origin, targetBuilding.angles, targetBuilding.mins, targetBuilding.maxs );
-  fire.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(targetBuilding.vec_size)));
-  fire.think = te_building_fire_th;
-  fire.nextthink = time + 0.1;
-  fire.angles = targetBuilding.angles;
-  fire.count = targetBuilding.vec_size + (1 / 3);
-  targetBuilding.colormod = targetBuilding.colormod - '0.1 0.1 0.1';
-  fire.owner = targetBuilding;
+  if( fire ){
+    setmodel(fire, "models/testball.md3");
+    fire.alpha = 0;
+    fire.origin = util_pointNearBoxEdge( targetBuilding.origin, targetBuilding.angles, targetBuilding.mins, targetBuilding.maxs );
+    fire.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(targetBuilding.vec_size)));
+    fire.think = te_building_fire_th;
+    fire.nextthink = time + 0.1;
+    fire.angles = targetBuilding.angles;
+    fire.count = targetBuilding.vec_size + (1 / 3);
+    targetBuilding.colormod = targetBuilding.colormod - '0.1 0.1 0.1';
+    fire.owner = targetBuilding;
+  }
   return fire;
 };
 
@@ -376,7 +337,8 @@ void() te_missile_explode_th={
   self.scale = self.scale + self.pcl_count;
   self.think = te_missile_explode_th;
   if( self.alpha < 0.01 ){
-    self.think = SUB_Remove;
+    remove(self);
+    return;
   }
   self.nextthink = time + 0.01;
 };
@@ -386,87 +348,119 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
   local vector back;
   local vector launch;
 
-  explode = spawn();
-  explode.movetype = MOVETYPE_NONE;
-  explode.solid = SOLID_NOT;
-  explode.think = te_missile_explode_th;
-  explode.nextthink = time + 0.05;
-  explode.data_lifetime = 10;
-  explode.scale = explodeSize;
-  explode.alpha = 1;
-  explode.effects = explode.effects | EF_NOSHADOW;
-  explode.avelocity = randomvec() * 300;
-  explode.angles = randomvec() * 30;
-  explode.pcl_count = bloom;
-  explode.drawmask = MASK_NORMAL;
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    explode = spawn();
+    if( explode ){
+      explode.movetype = MOVETYPE_NONE;
+      explode.solid = SOLID_NOT;
+      explode.think = te_missile_explode_th;
+      explode.nextthink = time + 0.05;
+      explode.data_lifetime = 10;
+      explode.scale = explodeSize;
+      explode.alpha = 1;
+      explode.effects = explode.effects | EF_NOSHADOW;
+      explode.avelocity = randomvec() * 300;
+      explode.angles = randomvec() * 30;
+      explode.pcl_count = bloom;
+      explode.drawmask = MASK_NORMAL;
+      
+      if( explodeColor != '0 0 0' ){
+        explode.colormod = explodeColor;
+      }
+      
+      setmodel( explode, "models/fx/explosions/te_missile_explode.md3");
+      setorigin( explode, org);
+    }
   
-  if( explodeColor != '0 0 0' ){
-    explode.colormod = explodeColor;
+    te_customflash( org, explodeSize * 50, 1, explodeColor);
+    
+    
+    makevectors(vectoangles(self.velocity));
+    back = org + (v_forward * -10);
+    back = normalize(back - org);
+    
+    debris = explodeSize / 2;
+    debris = debris + (random() * debris);
+    debris = rint(ceil(debris));
+    while( debris > 0 ){
+      launch_x = (back_x * 100) + (random() * 50);
+      launch_y = (back_y * 100) + (random() * 50);
+      launch_z = (back_z + 50) + (random() * 50);
+      trailparticles(world, particleeffectnum("TE_DEBRIS_TRAIL_SMALL"), back, launch);
+      debris = debris - 1;
+    }
+    
+    if(explodeSize < 2 ){
+      pointparticles( PTC_HIT_EXPL_SML, org, back, 1);
+    }
+    if(explodeSize == 2){
+      pointparticles( PTC_HIT_EXPL_MED, org, back, 1);
+    }
+    else{
+      pointparticles( PTC_HIT_EXPL_LRG, org, back, 1);
+    }
   }
-  
-  setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
-  setorigin( explode, org);
-
-  te_customflash( org, explodeSize * 50, 1, explodeColor);
-  
-  
-  makevectors(vectoangles(self.velocity));
-  back = org + (v_forward * -10);
-  back = normalize(back - org);
-  
-  debris = explodeSize / 2;
-  debris = debris + (random() * debris);
-  debris = rint(ceil(debris));
-  while( debris > 0 ){
-    launch_x = (back_x * 100) + (random() * 50);
-    launch_y = (back_y * 100) + (random() * 50);
-    launch_z = (back_z + 50) + (random() * 50);
-    trailparticles(world, particleeffectnum("TE_DEBRIS_TRAIL_SMALL"), back, launch);
-    debris = debris - 1;
-  }
-  
-  if(explodeSize < 2 ){
-    pointparticles( PTC_HIT_EXPL_SML, org, back, 1);
-  }
-  if(explodeSize == 2){
-    pointparticles( PTC_HIT_EXPL_MED, org, back, 1);
-  }
-  else{
-    pointparticles( PTC_HIT_EXPL_LRG, org, back, 1);
-  }
-  
 };
 
 /*
   Unit's shields have been struck but still holding
 */
 void() te_shield_hit_predraw={
-  interpolate_origin();
-  self.colormod = self.compOffset;
-  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
-  self.alpha = 0.085;
-  if(self.owner.clientLocalId == player_localentnum){
-    if( self.owner.chaseActive == FALSE ){
-      self.alpha = 0.03;
-    }
-  }
-};
-
-void() te_shield_hit_th={
-  if( servertime > self.data_lifetime ){
+  local float lerpDiff;
+  local float lerp;
+  
+  if( time > self.data_lifetime || servertime > self.data_lifetime ){
     self.owner.shieldHitFlag = FALSE;
     remove(self);
     return;
   }
-  if(self.owner.clientLocalId == player_localentnum){
+  
+  self.colormod = self.compOffset;
+  if (self.nextthink != self.frame1time){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    
+    self.frame2 = self.frame1;
+    self.frame1 = self.alpha;
+    
+    self.angle2 = self.angle1;
+    self.angle1 = self.angles_y;
+    
+    self.origin2 = self.origin1;
+    self.origin1 = self.origin;
+  }
+  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  lerp = 1 - bound(0, lerpDiff, 1);
+  self.lerpfrac = lerp;
+  
+  
+  traceline(self.owner.origin, client_vis_org, FALSE, self);
+  
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    return;
+  }
+  
+  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+  self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
+	setmodel(self, self.model);
+  addentity(self);
+};
+
+void() te_shield_hit_th={
+  if(self.owner.clientServerNum == player_localentnum){
     self.origin = pmove_org;
   }
   else{
     self.origin = self.owner.origin;
   }
-
+  
+  if( self.alpha < 0.01 ){
+    remove(self);
+    return;
+  }
   self.think = te_shield_hit_th;
-  self.nextthink = servertime + 0.025;
+  self.nextthink = time + 0.025;
 };
 
 void() te_shield_hit={
@@ -476,38 +470,50 @@ void() te_shield_hit={
   local float shieldSize;
   local float sizeMod;
   
-  hitTime = 0.33;
+  traceline(self.origin, pmove_org, TRUE, self);
+  
+  if( (trace_ent == world && trace_fraction < 1.0) || trace_ent.data_type == DATA_BLD){
+    return;
+  } 
+  
+  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+    return;
+  }
+  
+  hitTime = 0.4;
   
   self.shieldEffectTime = servertime + hitTime;
   
-  sizeMod = self.shield / self.shieldMax;
-  shieldSize = max(0.8, (self.maxs_x / 64) * sizeMod);
-  
   explode = spawn();
-  explode.think = te_shield_hit_th;
-  explode.nextthink = servertime + 0.01;
-  explode.data_lifetime = servertime + hitTime;
-  explode.scale = shieldSize;
-  explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
-  explode.drawmask = MASK_NORMAL;
-  explode.predraw = te_shield_hit_predraw;
-  explode.owner = self;
-  explode.solid = SOLID_NOT;
-  setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
-  setsize(explode, explode.mins, explode.maxs);
-  setorigin( explode, self.origin);
-  explode.alpha = 0.2;
-  
-  if(self.shieldHitFlag == SHIELD_HIT_EMP){
-    flashCol = '1.0 0.4 1.0';
-    explode.colormod = '1.2 0.6 1.2';
+  if( explode ){
+    sizeMod = self.shield / self.shieldMax;
+    shieldSize = max(0.8, (self.maxs_x / 64) * sizeMod);
+    explode.data_lifetime = self.shieldEffectTime;
+    explode.scale = 1.0;
+    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
+    explode.predraw = te_shield_hit_predraw;
+    explode.owner = self;
+    explode.solid = SOLID_NOT;
+    explode.think = te_shield_hit_th;
+    explode.nextthink = time + 0.01;
+    precache_model("models/fx/explosions/te_shield.md3");
+    setmodel( explode, "models/fx/explosions/te_shield.md3");
+    setsize(explode, explode.mins, explode.maxs);
+    setorigin( explode, self.origin);
+    explode.alpha = 0.4;
+    explode.skin = 0;
+    
+    if(self.shieldHitFlag == SHIELD_HIT_EMP){
+      flashCol = '1.0 0.4 1.0';
+      explode.colormod = '1.2 0.6 1.2';
+    }
+    else {
+      //SHIELD_HIT_REG
+      explode.colormod = '0 1 0';
+      flashCol = '0.003 0.87 0.22';
+    }
+    explode.compOffset = explode.colormod;
   }
-  else {
-    //SHIELD_HIT_REG
-    explode.colormod = '0 1 0';
-    flashCol = '0.003 0.87 0.22';
-  }
-  explode.compOffset = explode.colormod;
   
   te_customflash( self.origin, self.vec_size * 50, 0.25, flashCol);
   sound7(self, CHAN_AUTO, "sound/fx_shieldhit.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 125, 0 );
@@ -540,25 +546,34 @@ void() predraw_shield_explode={
   lerp = 1 - bound(0, lerpDiff, 1);
   self.lerpfrac = lerp;
   
+  
+  traceline(self.owner.origin, client_vis_org, FALSE, self);
+  
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+    return;
+  }
+  
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
+	setmodel(self, self.model);
+  addentity(self);
 };
 
 void() te_shield_explode_th={
-  if( self.alpha < 0.01 ){
-    remove(self);
-    return;
-  }
-  self.alpha = self.alpha - 0.024;
-  self.scale = self.scale + 0.025;
+  self.alpha = self.alpha - (2.2 * frametime);
+  self.scale = self.scale + (2.25 * frametime);
   
-  if(self.owner.clientLocalId == player_localentnum){
+  if(self.owner.clientServerNum == player_localentnum){
     self.origin = pmove_org;
   }
   else{
     self.origin = self.owner.origin;
   }
   
+  if( self.alpha < 0.01 ){
+    remove(self);
+    return;
+  }
   self.think = te_shield_explode_th;
   self.nextthink = time + 0.01;
 };
@@ -567,33 +582,51 @@ void( vector org, float vecSize ) te_shield_explode={
   local entity explode;
   local vector flashCol;
   
+  traceline(self.origin, pmove_org, TRUE, self);
+  
+  if( trace_ent == world && trace_fraction < 1.0){
+    return;
+  } 
+  
+  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+    return;
+  }
+  
   explode = spawn();
-  explode.movetype = MOVETYPE_NONE;
-  explode.solid = SOLID_NOT;
-  explode.think = te_shield_explode_th;
-  explode.nextthink = time + 0.05;
-  explode.data_lifetime = 10;
-  explode.scale = 0.1 + (vecSize / 3);
-  explode.alpha = 0.6;
-  explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
-  explode.drawmask = MASK_NORMAL;
-  explode.predraw = predraw_shield_explode;
-  setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
-  setorigin( explode, org);
-  explode.owner = self;
-  
-  if(self.shieldHitFlag == SHIELD_HIT_IXP){
-    flashCol = '1.0 0.0 0.4';
-    explode.colormod = '1.2 0.2 0.6';
+  if( explode ){
+    explode.movetype = MOVETYPE_NONE;
+    explode.solid = SOLID_NOT;
+    explode.think = te_shield_explode_th;
+    explode.nextthink = time + 0.01;
+    explode.data_lifetime = 10;
+    explode.scale = 0.1 + (vecSize / 3);
+    explode.alpha = 0.6;
+    if(self.owner.clientServerNum == player_localentnum){
+    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_DOUBLESIDED;
+    }
+    else{
+    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
+    }
+    
+    explode.predraw = predraw_shield_explode;
+    precache_model("models/fx/explosions/te_shield.md3");
+    setmodel( explode, "models/fx/explosions/te_shield.md3");
+    setorigin( explode, org);
+    explode.owner = self;
+    explode.skin = 1;
+    
+    if(self.shieldHitFlag == SHIELD_HIT_IXP){
+      flashCol = '1.0 0.0 0.4';
+      explode.colormod = '1.2 0.2 0.6';
+    }
+    else {
+      //SHIELD_HIT_EXP
+      explode.colormod = '1 1 0.1';
+      flashCol = '0.003 0.87 0.22';
+    }
+    explode.compOffset = explode.colormod;
+    te_customflash( org, vecSize * 100, 2, flashCol);
   }
-  else {
-    //SHIELD_HIT_EXP
-    explode.colormod = '1 1 0.1';
-    flashCol = '0.003 0.87 0.22';
-  }
-  explode.compOffset = explode.colormod;
-  te_customflash( org, vecSize * 100, 2, flashCol);
-  
 };
 
 /*
@@ -612,62 +645,68 @@ void() particle_missile_explode_th={
 
 void( vector org, float explodeSize, vector explodeColor, float onShield  ) particle_missile_explode={
   local entity explode;
+ 
+  traceline(self.origin, pmove_org, TRUE, self);
+  
+  if( trace_ent == world && trace_fraction < 1.0){
+    return;
+  } 
+  
+  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+    return;
+  }
   
   explode = spawn();
-  explode.movetype = MOVETYPE_NONE;
-  explode.solid = SOLID_NOT;
-  explode.think = particle_missile_explode_th;
-  explode.nextthink = time + 0.05;
-  explode.pcl_lifetime = 10;
-  explode.scale = explodeSize;
-  explode.alpha = 1;
-  explode.effects = explode.effects | EF_NOSHADOW;
-  explode.avelocity = randomvec() * 300;
-  explode.drawmask = MASK_NORMAL;
-  if( onShield == TRUE ){
-    explode.scale = explodeSize / 2;
-    explode.alpha = 0.8;
-    explode.colormod = '0.1 1 0.8';
+  if( explode ){
+    explode.movetype = MOVETYPE_NONE;
+    explode.solid = SOLID_NOT;
+    explode.think = particle_missile_explode_th;
+    explode.nextthink = time + 0.05;
+    explode.pcl_lifetime = 10;
+    explode.scale = explodeSize;
+    explode.alpha = 1;
+    explode.effects = explode.effects | EF_NOSHADOW;
+    explode.avelocity = randomvec() * 300;
+    explode.drawmask = MASK_NORMAL;
+    if( onShield == TRUE ){
+      explode.scale = explodeSize / 2;
+      explode.alpha = 0.8;
+      explode.colormod = '0.1 1 0.8';
+    }
+    else{
+      explode.colormod = explodeColor;
+    }
+    
+    setmodel( explode, "models/fx/explosions/te_missile_explode.md3");
+    setorigin( explode, org);
+    
+    sound7(explode, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 110, 0 );
+    te_customflash( org, explodeSize * 50, 1.5, explodeColor); 
   }
-  else{
-    explode.colormod = explodeColor;
-  }
-  
-  setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
-  setorigin( explode, org);
-  
-  sound7(explode, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 110, 0 );
-  te_customflash( org, explodeSize * 50, 1.5, explodeColor); 
 };
-
-
-/*
-  item is exploding, use its bbox size for area
-*/
-void( vector explodeColor ) te_object_explode={
-  local vector exp;
-  
-  exp_x = crandom() * (self.maxs_x * 2);
-  exp_y = crandom() * (self.maxs_y * 2);
-  exp_z = crandom() * (self.maxs_z * 2);
-  makevectors(self.angles);
-  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
-  
-  //TODO - Replace
-  //te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
-
-};
-
 
 /*
   Wreck event, ie a vehicle death
 */
+
+void() particle_vehicle_wreck_cleanup={
+  PARTICLE_WRECK_TANK = PARTICLE_WRECK_TANK - 1;
+  
+  remove(self);
+};
+
 void() particle_vehicle_wreck_th={
   if( time < self.pcl_fadeout ){
-    pointparticles( self.pcl_effectnum, self.origin, self.pcl_velocity, self.pcl_count);
+    particleDraw = vlen(client_vis_org - self.origin);
+    if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+      pointparticles( self.pcl_effectnum, self.origin, self.pcl_velocity, self.pcl_count);
+    }
     self.think = particle_vehicle_wreck_th;
-    self.nextthink = time + (0.1 + (random() * 0.2));
+    self.nextthink = servertime + (0.1 + (random() * 0.2));
   }
+  self.pcl_fadeout = servertime + 30;
+  self.think = particle_vehicle_wreck_cleanup;
+  self.nextthink = servertime + 150 + (random() * 150);
 };
 
 void( float modelIndex, float skinNum, float lifetime, float vecSize, vector entOrg, vector entAngl ) particle_vehicle_wreck={
@@ -677,40 +716,51 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
   
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1.0, ATTN_NORM, 90 - (self.vec_size * 10), 0 );
   
+  if( PARTICLE_WRECK_TANK > PARTICLE_MAX_WRECK_TANK ){
+    PARTICLE_WRECK_TANK = PARTICLE_WRECK_TANK - 1;
+    wreck = find(world, classname, "wreck_tank");
+    remove(wreck);
+    return;
+  }
+  
   this = self;
   wreck = spawn();
-  self = wreck;
-    self.angles = entAngl;
-    makevectors(self.angles);
-    self.origin = entOrg + (v_up * (0 - vecSize * 2));
-    self.movetype = MOVETYPE_NONE;
-    self.solid = SOLID_CORPSE;
-    setmodelindex(self, modelIndex);
-    self.skin = skinNum;
-    self.colormod = '0.33 0.33 0.33';
-    self.pcl_velocity = self.origin + (v_up * 5);
-    self.pcl_velocity = normalize(self.pcl_velocity - self.origin) * 5;
-    switch( vecSize ){
-      case 2:
-        self.pcl_effectnum = particleeffectnum("TE_FIRE_2");
-        break;
-      case 3:
-        self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
-        break;
-      default:
-        self.pcl_effectnum = particleeffectnum("TE_FIRE_1");
-        break;
-    }
-    sizeAdjust = vecSize / 2;
-    sizeAdjust = sizeAdjust * lifetime;
-    sizeAdjust = sizeAdjust * random();
-    self.pcl_lifetime = time + (lifetime + sizeAdjust);
-    self.pcl_fadeout = time + ( lifetime * 0.75);
-    self.pcl_count = 1;
-    self.nextthink = time + (random() * 1);
-    self.think = particle_vehicle_wreck_th;
-    self.drawmask = MASK_NORMAL;
-  self = this;
+  if( wreck ) {
+    PARTICLE_WRECK_TANK = PARTICLE_WRECK_TANK + 1;
+    self = wreck;
+      self.classname = "wreck_tank";
+      self.angles = entAngl;
+      makevectors(self.angles);
+      self.origin = entOrg + (v_up * (0 - vecSize * 2));
+      self.movetype = MOVETYPE_NONE;
+      self.solid = SOLID_CORPSE;
+      setmodelindex(self, modelIndex);
+      self.skin = skinNum;
+      self.colormod = '0.33 0.33 0.33';
+      self.pcl_velocity = self.origin + (v_up * 5);
+      self.pcl_velocity = normalize(self.pcl_velocity - self.origin) * 5;
+      switch( vecSize ){
+        case 2:
+          self.pcl_effectnum = particleeffectnum("TE_FIRE_2");
+          break;
+        case 3:
+          self.pcl_effectnum = particleeffectnum("TE_FIRE_3");
+          break;
+        default:
+          self.pcl_effectnum = particleeffectnum("TE_FIRE_1");
+          break;
+      }
+      sizeAdjust = vecSize / 2;
+      sizeAdjust = sizeAdjust * lifetime;
+      sizeAdjust = sizeAdjust * random();
+      self.pcl_lifetime = servertime + (lifetime + sizeAdjust);
+      self.pcl_fadeout = servertime + ( lifetime * 0.75);
+      self.pcl_count = 1;
+      self.nextthink = servertime + (random() * 1);
+      self.think = particle_vehicle_wreck_th;
+      self.drawmask = MASK_NORMAL;
+    self = this;
+  }
 };
 
 void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBool) te_foot_stomp={
@@ -719,43 +769,47 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   local float effType;
   local float sizeMod;
   
-  makevectors( entAngl );
-  fx = entOrg ;
-  leftMin = entMins_x * 0.8;
-  if( leftBool ){
-     fx = fx + (v_right * leftMin);
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
+    
+    makevectors( entAngl );
+    fx = entOrg ;
+    leftMin = entMins_x * 0.8;
+    if( leftBool ){
+       fx = fx + (v_right * leftMin);
+    }
+    else{
+       fx = fx - (v_right * leftMin);
+    }
+    
+    fx = fx + (v_up * (entMins_z + 8));
+    vel = fx + (v_up * 16);
+    
+    sizeMod = self.vec_size / 10;
+    sizeMod = 1.0 - (1.0 - sizeMod) / 2;
+    sound7(self, CHAN_AUTO, "sound/mech_stomp.ogg", 1.0, ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
+    
+    switch( ENT_SERVER_INFO.worldtype ){
+      case 1:
+        effType = PTC_STOMP_ICE;
+        break;
+      case 2:
+        effType = PTC_STOMP_CITY;
+        break;
+      case 3:
+        effType = PTC_STOMP_BADLND;
+        break;
+      case 4:
+        effType = PTC_STOMP_TUNDRA;
+        break;
+      default:
+        effType = PTC_STOMP_SAND;
+        break;
+    }
+    pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
+    traceline(fx, fx + (v_up * -10), MOVE_WORLDONLY, self);
+    pointparticles( particleeffectnum("TE_FOOT_STOMP"), trace_endpos, trace_plane_normal * -1,  1);
   }
-  else{
-     fx = fx - (v_right * leftMin);
-  }
-  
-  fx = fx + (v_up * (entMins_z + 8));
-  vel = fx + (v_up * 16);
-  
-  sizeMod = self.vec_size / 10;
-  sizeMod = 1.0 - (1.0 - sizeMod) / 2;
-  sound7(self.legs, CHAN_AUTO, "sound/mech_stomp.ogg", 1.0, ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
-  
-  switch( ENT_SERVER_INFO.worldtype ){
-    case 1:
-      effType = PTC_STOMP_ICE;
-      break;
-    case 2:
-      effType = PTC_STOMP_CITY;
-      break;
-    case 3:
-      effType = PTC_STOMP_BADLND;
-      break;
-    case 4:
-      effType = PTC_STOMP_TUNDRA;
-      break;
-    default:
-      effType = PTC_STOMP_SAND;
-      break;
-  }
-  pointparticles( effType, fx, normalize(vel - fx) * 3,  entSize * 2);
-  traceline(fx, fx + (v_up * -10), MOVE_WORLDONLY, self);
-  pointparticles( particleeffectnum("TE_FOOT_STOMP"), trace_endpos, trace_plane_normal * -1,  1);
 };
 
 /*
@@ -814,73 +868,43 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
   return newpos;
 };
 
-entity(entity root, entity part, vector setAngle) te_mech_chunk_stand={
-  local entity aPiece;
-  
-  aPiece = spawn();
-  
-  aPiece.solid = SOLID_NOT;
-  aPiece.movetype = MOVETYPE_NONE;
-  aPiece.origin = part.origin;
-  aPiece.compOffset = part.compOffset;
-  aPiece.angles = setAngle;
-  aPiece.model = modelnameforindex(part.modelindex);
-  setmodelindex(aPiece, part.modelindex);
-  aPiece.skin = root.skin;
-  aPiece.colormod = '0.45 0.45 0.45';
-  
-  return aPiece;
-};
-
 /*
   burning mech legs
 */
-void( entity mechLegs ) te_mech_dead_legs={
-  local entity deadLegs;
-  
-  deadLegs = spawn();
-  deadLegs.drawmask = MASK_NORMAL;
-  setmodel(deadLegs, mechLegs.model);
-  setsize(deadLegs, deadLegs.mins, deadLegs.maxs);
-  setorigin(deadLegs, mechLegs.origin);
-  deadLegs.frame = mechLegs.frame;
-  deadLegs.solid = SOLID_NOT;
-  deadLegs.colormod = '0.45 0.45 0.45';
-  deadLegs.frame = 1;
-  deadLegs.think = te_mech_dead_legs_burn;
-  deadLegs.nextthink = time + 0.5;
-  deadLegs.data_lifetime = time + 300 + (random() * 200);
-  deadLegs.angles = mechLegs.angles;
-  deadLegs.vec_size = mechLegs.owner.vec_size;
-};
-
 void() te_mech_dead_legs_burn={
   local vector fireOrg;
   
   if( time > self.data_lifetime ){
     self.think = te_mech_dead_legs_smoke;
-    self.nextthink = time + 0.1;
-    self.data_lifetime = time + 500 + (random() * 300);
+    self.nextthink = servertime + frametime*0.1;
+    self.data_lifetime = servertime + 500 + (random() * 300);
     return;
   }
-  makevectors(self.angles);
-  fireOrg = self.origin + (v_up * self.maxs_z);
   
-  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    makevectors(self.angles);
+    fireOrg = self.origin + (v_up * self.maxs_z);
   
+    pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
+  }
   
   self.think = te_mech_dead_legs_burn;
-  self.nextthink = time + 0.25;
+  self.nextthink = servertime + frametime*0.5;
 };
 
 void() te_mech_dead_legs_smoke={
   local vector fireOrg;
-  makevectors(self.angles);
-  fireOrg = self.origin + (v_up * self.maxs_z);
-  pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
-  if( time > self.data_lifetime ){
+  
+  particleDraw = vlen(client_vis_org - self.origin);
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
+    makevectors(self.angles);
+    fireOrg = self.origin + (v_up * self.maxs_z);
+    pointparticles( particleeffectnum("TE_FIRE_3"), fireOrg , normalize(fireOrg - self.origin) * 2, self.vec_size + (random() * 4));
+  }
+  if( servertime > self.data_lifetime ){
     self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
+    self.nextthink = servertime + frametime*0.1;
     return;
   }
 
@@ -892,9 +916,17 @@ void() particle_box_ini={
   
   PTC_CUBE_TYPE = ReadByte();
   
-  PTC_CUBE_MIN = te_read_vector();
-  PTC_CUBE_MAX = te_read_vector();
-  PTC_CUBE_VEL = te_read_vector();
+  PTC_CUBE_MIN_x = ReadLong();
+  PTC_CUBE_MIN_y = ReadLong();
+  PTC_CUBE_MIN_z = ReadLong();
+  
+  PTC_CUBE_MAX_x = ReadLong();
+  PTC_CUBE_MAX_y = ReadLong();
+  PTC_CUBE_MAX_z = ReadLong();
+  
+  PTC_CUBE_VEL_x = ReadLong();
+  PTC_CUBE_VEL_y = ReadLong();
+  PTC_CUBE_VEL_z = ReadLong();
   
   PTC_CUBE_COUNT = ReadShort();
   PTC_CUBE_COLOR = ReadShort();
@@ -952,6 +984,58 @@ void() particle_box_think={
   }
 
   PTC_CUBE_UPDATE = time + 0.1;
-
 };
 
+
+//maybe at some point someone can figure out MOVETYPE_BOUNCE for csqc.
+/*
+void() te_explode_mech_piece_predraw={
+  local float lerpDiff;
+  local float lerp;
+  
+  if (self.nextthink != self.frame1time){
+    self.frame2time = self.frame1time;
+    self.frame1time = self.nextthink;
+    self.frame2 = self.frame1;
+    self.frame1 = self.frame;
+    self.origin2 = self.origin1;
+    self.origin1 = self.origin;
+    self.angle2 = self.angle1;
+    self.angle1 = self.angles_y;
+  }
+  lerpDiff = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  lerp = bound(0, self.lerpfrac, 1);
+  self.lerpfrac = lerp;
+
+  self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
+};
+
+
+void() te_explode_mech_piece_th={
+  self.think = te_explode_mech_piece_th;
+  self.nextthink = time + 0.05;
+};
+
+void(entity piece) te_explode_mech_piece={
+  local entity t;
+  makevectors(piece.angles);
+  t = spawn();
+  if( t ){
+    t.drawmask = MASK_NORMAL;
+    setmodel(t, piece.model);
+    setsize(t, '0 0 0', '0 0 0');
+    setorigin(t, piece.origin);
+    t.colormod = piece.colormod;
+    t.movetype = MOVETYPE_BOUNCE;
+    t.solid = SOLID_BBOX;
+    t.velocity = normalize((piece.origin + v_up * 10) - piece.origin);
+    t.velocity = t.velocity * 300;
+    t.velocity_z = 400;
+    t.avelocity = '100 100 100';
+    t.angles = piece.angles;
+    t.think = te_explode_mech_piece_th;
+    t.nextthink = time + 0.05;
+    t.data_lifetime = servertime + 400 + (random() * 250);
+    t.predraw = te_explode_mech_piece_predraw;
+  }
+};*/

@@ -61,14 +61,20 @@ void( vector ofs ) ui_navbutton_hangar_draw={
   drawfont = drawfont_prev;
 };
 void() ui_navbutton_hangar_click={
+  ui_data_has_items();  //hook to evaluate player item list.
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
     data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
+  }
+  if( CLIENT_MENU_menu_choice != MENU_HANGAR_ACTIVE ){
+    if( SELECT_MECH > 0){
+      menu_player_MechModel_setup('0 167 0', '1.0 1.0 1.0', 1);
+      menu_player_MechModel_color_update();
+    }
   }
   if( SELECT_MECH == 0 || CLIENT_MENU_sel_mech == 0 ){
     SELECT_MECH = CLIENT_MENU_sel_mech = UNLOCKED_MECHS[0];
   }
   CLIENT_MENU_menu_choice = MENU_HANGAR_ACTIVE;
-  cl_get_mechs_sort();
 };
 
 /*
@@ -98,10 +104,7 @@ void( vector ofs ) ui_navbutton_arming_draw={
   }
   gui_renderTintImage(arming_flt, UI_NAVBAR_ARMING_ORG, UI_DEF_BOX_256_BTN, UI_NAVBAR_ARMING_SIZE, arming_clr, 1, 0) ;
   textPos = UI_NAVBAR_ARMING_ORG;
-  if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
-  }
-  else{
-  }
+
   strWidth = stringwidth("ARMING", 0 , UI_NAVBAR_font_unselect )/2;
   textPos_x = (textPos_x + (UI_NAVBAR_ARMING_SIZE_x/2)) - strWidth;
   textPos_y = textPos_y + 6;
@@ -115,6 +118,7 @@ void() ui_navbutton_arming_click={
     if( CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE ){
       cl_setmech( SELECT_MECH );
       cl_send_infostring( INFO_FLAG_MECH );
+      menu_player_MechModel_setup('0 180 0', '0 1.1 0', 0);
     }
     CLIENT_MENU_menu_choice = MENU_ARMING_ACTIVE;
     itemUnlockCounter = 0;
@@ -123,7 +127,6 @@ void() ui_navbutton_arming_click={
         itemId = UNLOCKED_ITEMS[itemUnlockCounter];
         //UI_ARMING_DATA_item_list is used as a sort-of pointer for list-style operations
         data_get_client_item_( UI_ARMING_DATA_item_list, itemId );
-    
         //lists are stateful, so we offload the data we care about to clunky arrays.
         data_WeaponNames[itemId] = UI_ARMING_DATA_item_list.w_name;
         data_WeaponSize[itemId] = UI_ARMING_DATA_item_list.equipSize;
@@ -354,6 +357,7 @@ void() ui_navbutton_launch_click={
       
       //info string update
       cl_setmech(MECH_DATA_ID);
+      cl_set_faction_colors();
       cl_setweapon(CLIENT_weapon_state);
       cl_setspawnpoint( CLIENT_MENU_nav_pnt );
       //send to server

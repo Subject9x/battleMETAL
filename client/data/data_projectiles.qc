@@ -44,28 +44,29 @@ void( float dataID ) data_sync_new_projectile={
       data_projectile_ini_quantum_bit_();
       break;
   }
-  self.effects = self.effects | EF_NOSHADOW;
 };
 
 
 void( entity e ) data_sync_new_debris={
   
   e.effects = e.effects | EF_NOSHADOW;
-    switch( e.vec_size ){
+  switch( e.vec_size ){
     case 2:
-      e.model = "q3mdl/fx/debris2/mdl_debris_2.md3";
-      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
+      precache_model("models/fx/debris2/mdl_debris_2.md3");
+      setmodel(e, "models/fx/debris2/mdl_debris_2.md3");
+      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
       break;
     case 3:
-      e.model = "q3mdl/fx/debris3/mdl_debris_3.md3";
-      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
+      precache_model("models/fx/debris3/mdl_debris_3.md3");
+      setmodel(e, "models/fx/debris3/mdl_debris_3.md3");
+      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
       break;
     default:
-      e.model = "q3mdl/fx/debris1/mdl_debris_1.md3";
-      e.traileffectnum  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
+      precache_model("models/fx/debris1/mdl_debris_1.md3");
+      setmodel(e, "models/fx/debris1/mdl_debris_1.md3");
+      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;
   }
-  setmodel(e, e.model);
   self.angles = vectoangles(self.velocity);
   self.avelocity_x = random()*525;
   self.avelocity_y = random()*525;
@@ -74,12 +75,35 @@ void( entity e ) data_sync_new_debris={
   
 };
 void() predraw_missile={
+
   interpolate_origin();
   interpolate_angle();
+  
+  traceline(self.origin, client_vis_org, FALSE, self);
+  
+  if(trace_fraction != 1.0 ){
+    return;
+  }
+  
+  if( vlen(self.origin - client_vis_org) > PARTICLE_HAZ_DISTANCE){
+    return;
+  }
+  
+  if( self.deadflag == DEAD_DEAD){
+    return;
+  }
   
   if( self.predraw_projectile ){
     self.predraw_projectile();
   }
+  
+  setmodel(self, self.model);
+  addentity(self);
+  
+  if( self.data_postinit ){
+    self.traileffectnum = self.data_traileff;
+  }
+  
 };
 
 void() predraw_plasma={
@@ -93,22 +117,6 @@ void() predraw_plasma={
     //tScale = self.scale;
     //self.scale = tScale + ((tScale + 0.005) - tScale)*self.lerpfrac;
     //self.alpha = self.alpha + ((self.alpha - 0.005) - self.alpha)*self.lerpfrac;
-  }
-};
-
-void() predraw_marh={
-  local entity cluster;
-  cluster = self.w_slot;
-  makevectors(self.angles);
-  while( cluster != world ){
-    addentity(cluster);
-    cluster.origin = self.origin + (v_forward * cluster.compOffset_z) + (v_right * cluster.compOffset_x) + (v_up * cluster.compOffset_y);
-    if( cluster.traileffectnum != 0 && cluster.origin2 != '0 0 0' ){
-      trailparticles(cluster, cluster.traileffectnum, cluster.origin2, cluster.origin);
-    }
-    cluster.origin2 = cluster.origin;
-    cluster.scale = 0.95;
-    cluster = cluster.w_slot;
   }
 };
 

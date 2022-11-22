@@ -46,43 +46,8 @@ void() projectile_marh_expl={
     pointparticles(PTC_HIT_DIRT_EXP_SML, trace_endpos, trace_plane_normal * -1, 1);
   }
   te_missile_explode( self.origin, hitScale, hitColor, hitBloom ); 
-  
-  cluster = self.w_slot;
-  while( cluster.owner == self ){
-    cluster.traileffectnum = 0;
-    te_missile_explode( cluster.origin, hitScale, hitColor, hitBloom );
-    rem = cluster;
-    remove(rem);
-    cluster = rem.w_slot;
-  }
 };
 
-/*
-  clusters of missiles are actually CSQC ents, and the SSQC handles shotgun-style damage pattern.
-*/
-void() projectile_marh_multi={
-  local entity newMis;
-  local entity chainPtr;
-  local float misTotal;
-  
-  misTotal = 5;
-  chainPtr = self;
-  while( misTotal > 0 ){
-    newMis = spawn();
-    newMis.model = self.model;
-    setmodel(newMis, newMis.model);
-    newMis.compOffset = '0 0 0';
-    newMis.compOffset_x = crandom() * 10;
-    newMis.compOffset_y = crandom() * 10;
-    newMis.compOffset_z = crandom() * 5;
-    newMis.angles = self.angles;
-    newMis.traileffectnum = self.traileffectnum;
-    chainPtr.w_slot = newMis;
-    newMis.owner = self;
-    chainPtr = newMis;
-    misTotal = misTotal - 1;
-  }
-};
 #endif
 
 void() data_projectile_ini_missile_active_radar_={
@@ -93,20 +58,17 @@ void() data_projectile_ini_missile_active_radar_={
   
   #ifdef CSQC
     //cosmetics
-    self.model = "q3mdl/proj/mdl_proj_marh.md3";
-    self.effects = EF_NOSHADOW;
+    precache_model("models/proj/mdl_proj_marh.md3");
+    self.model = "models/proj/mdl_proj_marh.md3";
     self.modelflags = 0;
-    self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
+    self.data_traileff = particleeffectnum("TE_ARH_TRAIL");
     self.pcl_explode = projectile_marh_expl;
-    self.scale = 1.25;
-    self.predraw_projectile = predraw_marh;
-    self.effects = self.effects | EF_FULLBRIGHT;
-    projectile_marh_multi();
+    self.scale = 1.1;
   #endif
   
   #ifdef SSQC
     self.think = data_projectile_missile_activeradar_delay;
-    self.effects = self.effects | EF_FULLBRIGHT;
+    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
     self.ai_dir = 1.0;
   #endif
 };
@@ -209,7 +171,6 @@ void() data_projectile_missile_activeradar_touch={
   local float startOfs;
   local float rollDice;
   local float part;
-  local entity hit;
   
   if( other == self.owner ){
     return;
@@ -245,10 +206,12 @@ void() data_projectile_missile_activeradar_touch={
             rollDice = 5;
           }
           part = bitshift(2, rollDice);
-          hit = util_getPartFromName(part, other);
-          hit = t_damage(trace_ent, self, self.owner, self.damageValue / DAT_MARH_SHRAP_TOTAL, hit.origin, '0 0 0');
-          if( hit.partTypeId && !(self.owner.statTargetHitParts & hit.partTypeId) ){
-            self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit.partTypeId;
+          
+          util_getPartFromName(part, other);
+          
+          HIT_LOCATION = t_damage(trace_ent, self, self.owner, self.damageValue / DAT_MARH_SHRAP_TOTAL, T_PART_PARENT_ORG, '0 0 0');
+          if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+            self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
           }
           totes = totes - 1;
         }

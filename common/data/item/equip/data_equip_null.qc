@@ -23,8 +23,10 @@ void() data_ini_empty_weapon_={
   self.equipSize = MSC1;
   
   #ifdef CSQC  
+    precache_model("models/testball.md3");
+    precache_file( "gfx/ui/wep_icons/eqp_empty.png");
     self.w_name = "-EMPTY-";
-    self.model = "q3mdl/testball.md3";
+    self.model = "models/testball.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

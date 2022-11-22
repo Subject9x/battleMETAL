@@ -106,11 +106,11 @@ void() input_key_impulse_hud_chase_toggle={
   if( HUD_EXTERNAL_CAM_ACTIVE == TRUE ){
     HUD_EXTERNAL_CAM_ACTIVE = FALSE;
     localcmd("chase_active 0\n");
-    if(hudStruts != world ){
-      hudStruts.drawmask = MASK_ENGINE;
+    if(HUD_MODEL_STRUTS != world ){
+      HUD_MODEL_STRUTS.drawmask = MASK_ENGINE;
     }
-    if(hudConsole != world ){
-      hudConsole.drawmask = MASK_ENGINE;
+    if(HUD_MODEL_CONSOLE != world ){
+      HUD_MODEL_CONSOLE.drawmask = MASK_ENGINE;
     }
     ui_data_load_hud( MECH_DATA_ID );
   }
@@ -122,16 +122,25 @@ void() input_key_impulse_hud_chase_toggle={
     
     HUD_EXTERNAL_CAM_ACTIVE = TRUE;
     localcmd("chase_active 1\n");
-    if(hudStruts != world ){
-      hudStruts.drawmask = 0;
+    if(HUD_MODEL_STRUTS != world ){
+      HUD_MODEL_STRUTS.drawmask = 0;
     }
-    if(hudConsole != world ){
-      hudConsole.drawmask = 0;
+    if(HUD_MODEL_CONSOLE != world ){
+      HUD_MODEL_CONSOLE.drawmask = 0;
     }
   }
-  
 };
 
+void() input_key_impulse_headlight_toggle={
+  if(HUD_HEADLIGHT_ACTIVE){
+    HUD_HEADLIGHT_ACTIVE = FALSE;
+    hud_event_enqueue( HUD_EVENT_HEADLIGHT_OFF, 1) ;
+  }
+  else{
+    HUD_HEADLIGHT_ACTIVE = TRUE;
+    hud_event_enqueue( HUD_EVENT_HEADLIGHT_ON, 1) ;
+  }
+};
     /*else if( strstrofs(findkeysforcommand("impulse 7", 0), ftos(scanx),0) != -1 ){
       //INPUT - player wants target
       return FALSE; //we pass the event to the server for correct player aiming.

@@ -24,6 +24,13 @@ entity ENT_SERVER_INFO;
 .float endRoundTime;
 .string svAbout;
 
+.vector minimapMins;  //set by level editor!
+.vector minimapMaxs;
+.vector uiViewBoxOrg; //detect a info_notnull with netname "ui_view_box"
+
+.vector gridsize;   //Q3MAP2 directive, but saved here to remove red-herring messages.
+.vector sunAngle; //make sure this matches the q3map_sunExt angles
+
 //re-targeted SENDFLAG values
 #define SENDFLAG_GAMETYPE 1
 #define SENDFLAG_STARTTIME 2

@@ -30,8 +30,10 @@ void() data_ini_equip_recharge_capacitor_={
   self.equipSize = MSC3;
 
   #ifdef CSQC
+    precache_model("models/weapons/e_recap.md3");
+    precache_file( "gfx/ui/wep_icons/eqp_recap.png");
     self.w_name = "Recharge Capacitor";
-    self.model = "q3mdl/weapons/e_recap.md3";
+    self.model = "models/weapons/e_recap.md3";
     self.w_clipsize = -1;
     self.reloadRate = -1;
     self.reloadMax = -1;

@@ -14,12 +14,14 @@ void() unit_balaket_survest_brawler={
   self.faction = FACTION_SURVEST;
   self.nextVecChoice = UID_MECH_balaket;
   self.flags = FL_TURRET;  //enforced for a mech
+  self.subType = AI_UTYPE_SKR;
 
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
-
+  
+  trigger_ext_check();
   ai_promote();
   switch( self.ai_rank ){
     case 1:
@@ -55,12 +57,14 @@ void() unit_balaket_militar_brawler={
   self.faction = FACTION_MILITAR;
   self.nextVecChoice = UID_MECH_balaket;
   self.flags = FL_TURRET;  //enforced for a mech
+  self.subType = AI_UTYPE_SKR;
     
   if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
   
+  trigger_ext_check();
   ai_promote();
   switch( self.ai_rank ){
     case 1:
@@ -96,6 +100,7 @@ void() unit_balaket_psc_brawler={
   self.faction = FACTION_PSC;
   self.nextVecChoice = UID_MECH_balaket;
   self.flags = FL_TURRET;  //enforced for a mech
+  self.subType = AI_UTYPE_SKR;
   
   ai_promote();
   if( ai_can_spawn() == FALSE ){
@@ -103,6 +108,7 @@ void() unit_balaket_psc_brawler={
     return;
   }
   
+  trigger_ext_check();
   switch( self.ai_rank ){
     case 1:
       self.next_wepn1 = UID_ITEM_light_autocannon;

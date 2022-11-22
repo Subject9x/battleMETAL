@@ -98,6 +98,12 @@ void() hud_event_frame={
     case HUD_EVENT_REPAIRS_OFF:
       hud_event_repairs_off();
       break;
+    case HUD_EVENT_HEADLIGHT_ON:
+      hud_event_headlight_on();
+      break;
+    case HUD_EVENT_HEADLIGHT_OFF:
+      hud_event_headlight_off();
+      break;
   }
 };
 
@@ -322,4 +328,12 @@ void() hud_event_radar_passive={
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRPASSIVE, 1);
   }
   hud_render_message( HUD_TXT_ORG, HUD_TEXT_RADAR_PASSIVE, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_headlight_on={
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_HEADLIGHT_ON, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_headlight_off={
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_HEADLIGHT_OFF, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
 };

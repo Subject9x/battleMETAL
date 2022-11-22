@@ -49,8 +49,8 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
       self.spawnflags = self.spawnflags - (self.spawnflags & LIFETIME);
     }
   }
-  if( !self.wait ){
-    self.wait = defWait;
+  if( !defWait ){
+    self.wait = 0.5;
   }
   if( !self.alpha ){
     self.alpha = 1.0;
@@ -59,9 +59,13 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
   if( !self.damageValue ){
     self.damageValue = defDmg;
   }
-  self.effects = self.effects | EF_NODEPTHTEST;  
+  
+  if( (self.spawnflags & IS_MAPKEY) ){
+    self.effects = self.effects | EF_NODEPTHTEST;
+  }
+  
   self.data_type = DATA_MAP_DMG;
-  self.model = "q3mdl/testball.md3";
+  self.model = "models/testball.md3";
   setmodel( self, self.model );
   self.think = map_hazard_ping;
   self.nextthink = time + 0.1;
@@ -194,7 +198,7 @@ void() map_hazard_rad_small={
   self.data_idx = 1;
   self.damageType = 1;
   
-  map_damage_zone_ini(1, map_damage_zone_rad_think, 1, 0.5);
+  map_damage_zone_ini(1, map_damage_zone_rad_think, self.damageValue, self.count);
 
   setsize( self, '-18 -18 0', '18 18 20' );
   setorigin( self, self.origin );
@@ -225,7 +229,7 @@ void() map_hazard_rad_medium={
   self.data_idx = 2;
   self.damageType = 1;
   
-  map_damage_zone_ini(2, map_damage_zone_rad_think, 2, 0.4);
+  map_damage_zone_ini(2, map_damage_zone_rad_think, self.damageValue, self.count);
 
   setsize( self, '-40 -40 0', '40 40 25' );
   setorigin( self, self.origin );
@@ -256,12 +260,25 @@ void() map_hazard_rad_large={
   self.data_idx = 3;
   self.damageType = 1;
   
-  map_damage_zone_ini(3, map_damage_zone_rad_think, 3, 0.3);
+  map_damage_zone_ini(3, map_damage_zone_rad_think, self.damageValue, self.count);
   
   setsize( self, '-48 -48 0', '48 48 30' );
   setorigin( self, self.origin );
 };
 //=================================================================================================
+
+void() map_hazard_crys_die={
+  self.solid = SOLID_NOT;
+  self.takedamage = DAMAGE_NO;
+  
+  //TODO - crystal explode effect.
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+  self.deadflag = DEAD_DEAD;
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+};
+
 /*QUAKED map_hazard_crys_small (0.25 0.45 0.8) (-20 -20 0) (20 20 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
 
@@ -288,11 +305,18 @@ void() map_hazard_crys_small={
   self.data_idx = 1;
   self.damageType = 2;
   
-  map_damage_zone_ini(1, map_damage_zone_crs_think, 2, 0.5);
+  map_damage_zone_ini(1, map_damage_zone_crs_think, self.damageValue, self.count);
 
   setsize( self, '-20 -20 0', '20 20 25' );
   setorigin( self, self.origin );
   self.solid = SOLID_SLIDEBOX;
+  if(!self.health){
+    self.health = 100;
+  }
+  self.max_health = self.health;
+  self.takedamage = DAMAGE_AIM;
+  self.deadflag = DEAD_NO;
+  self.th_die = map_hazard_crys_die;
 };
 /*QUAKED map_hazard_crys_medium (0.25 0.45 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
@@ -320,11 +344,18 @@ void() map_hazard_crys_medium={
   self.data_idx = 2;
   self.damageType = 2;
   
-  map_damage_zone_ini(2, map_damage_zone_crs_think, 4, 0.4);
+  map_damage_zone_ini(2, map_damage_zone_crs_think, self.damageValue, self.count);
 
   setsize( self, '-30 -30 0', '30 30 40' );
   setorigin( self, self.origin );
   self.solid = SOLID_SLIDEBOX;
+  if(!self.health){
+    self.health = 100;
+  }
+  self.max_health = self.health;
+  self.takedamage = DAMAGE_AIM;
+  self.deadflag = DEAD_NO;
+  self.th_die = map_hazard_crys_die;
 };
 /*QUAKED map_hazard_crys_large (0.25 0.45 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
 Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
@@ -352,11 +383,18 @@ void() map_hazard_crys_large={
   self.data_idx = 3;
   self.damageType = 2;
   
-  map_damage_zone_ini(3, map_damage_zone_crs_think, 6, 0.2);
+  map_damage_zone_ini(3, map_damage_zone_crs_think, self.damageValue, self.count);
   
   setsize( self, '-40 -40 0', '40 40 52' );
   setorigin( self, self.origin );
   self.solid = SOLID_SLIDEBOX;
+  if(!self.health){
+    self.health = 100;
+  }
+  self.max_health = self.health;
+  self.takedamage = DAMAGE_AIM;
+  self.deadflag = DEAD_NO;
+  self.th_die = map_hazard_crys_die;
 };
 //=================================================================================================
 /*QUAKED map_hazard_quant_small (0.8 0.25 0.8) (-25 -25 0) (25 25 30) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
@@ -385,7 +423,7 @@ void() map_hazard_quant_small={
   self.data_idx = 1;
   self.damageType = 3;
   
-  map_damage_zone_ini(1, map_damage_zone_qtm_think, 3, 0.6);
+  map_damage_zone_ini(1, map_damage_zone_qtm_think, self.damageValue, self.count);
 
   setsize( self, '-25 -25 0', '25 25 30' );
   setorigin( self, self.origin );
@@ -416,7 +454,7 @@ void() map_hazard_quant_medium={
   self.data_idx = 2;
   self.damageType = 3;
   
-  map_damage_zone_ini(2, map_damage_zone_qtm_think, 4, 0.5);
+  map_damage_zone_ini(2, map_damage_zone_qtm_think, self.damageValue, self.count);
 
   setsize( self, '-35 -35 0', '35 35 45' );
   setorigin( self, self.origin );
@@ -447,7 +485,7 @@ void() map_hazard_quant_large={
   self.data_idx = 3;
   self.damageType = 3;
   
-  map_damage_zone_ini(3, map_damage_zone_qtm_think, 5, 0.3);
+  map_damage_zone_ini(3, map_damage_zone_qtm_think, self.damageValue, self.count);
   
   setsize( self, '-45 -45 0', '45 45 56' );
   setorigin( self, self.origin );

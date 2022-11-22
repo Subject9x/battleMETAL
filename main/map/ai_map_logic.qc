@@ -268,7 +268,7 @@ void() ai_node_path={
   local vector sMin, sMax;
   
   if( cvar("developer") ){
-    self.effects = self.effects | EF_NOSHADOW;
+    self.effects = self.effects | EF_NOSHADOW | EF_LOWPRECISION;
   }
   else{
     remove(self);
@@ -286,7 +286,7 @@ void() ai_node_path={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   
-  setmodel(self, "q3mdl/testball.md3");
+  setmodel(self, "models/testball.md3");
   setsize(self, sMin, sMax);
   setorigin(self, self.origin);
   
