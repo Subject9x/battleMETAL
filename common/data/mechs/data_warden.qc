@@ -65,7 +65,7 @@ void() data_ini_warden_={
   self.spreadDefault = ACCURACY_SKIRMISH;
   self.yaw_speed = 4;
   self.turret_yaw_speed = 4.75;
-  self.ai_angleLimits = '-215 215 0';
+  self.ai_angleLimits = '-180 180 0';
   if( (self.flags & FL_MONSTER) ){
     self.data_speed_accel = 0.025;
   }

@@ -1165,8 +1165,8 @@ Player can SKIP this animatic IF there's an appropriate trigger_changelevel." [
   energyRate(float) : "defined recharge rate." : "0.67"
   shieldMax(integer) : "max shield value" : 250
   shieldRate(float) : "start shield rate" : "0.0"
-  repairRate(float) : "Repair recharge rate." : "4.0"
-  repairMax(integer) : "Repair charge max." : 1250
+  reloadRate(float) : "Repair recharge rate." : "4.0"
+  reloadMax(integer) : "Repair charge max." : 1250
 ]
 
 @PointClass base(RootBuilding) size(-42.5 -42.5 -30, 42.5 42.5 30) model({ "path": ":models/editor/buildings/fueltank/fueltank.md3" }) = building_fuel_tank : "Decoration building. Does Not require power. Does not explode with damage." [
