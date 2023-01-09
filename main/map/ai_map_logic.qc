@@ -371,6 +371,12 @@ void() ai_exec_order={
     self.ai_view = 100;
   }
   self.use = ai_exec_order_use;
+  
+  if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
+    activator = find(world, classname, "player");
+    self.think = self.use;
+    self.nextthink = time + 1.0;
+  }
 };
 
 
@@ -460,7 +466,12 @@ void() ai_order_patrol={
   self.pausetime = 0;
   self.tether = TETHER_PATROL;
   
-  self.use = ai_order_exec_tether;
+  self.use = ai_order_exec_tether;  
+  if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
+    activator = find(world, classname, "player");
+    self.think = self.use;
+    self.nextthink = time + 1.0;
+  }
 };
 
 
@@ -507,7 +518,12 @@ void() ai_order_tether={
   self.pausetime = 0;
   self.tether = TETHER_NODE;
   
-  self.use = ai_order_exec_tether;
+  self.use = ai_order_exec_tether; 
+  if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
+    activator = find(world, classname, "player");
+    self.think = self.use;
+    self.nextthink = time + 1.0;
+  }
 };
 
 
@@ -524,6 +540,8 @@ void() ai_change_faction_use={
     e = findchain(group, self.group);
     while(e){
       e.faction = self.faction;
+      e.enemy = world;  //dump targets because they might be invalid.
+      e.oldenemy = world;
       if( e.data_type == DATA_BLD ){
         e.SendFlags = e.SendFlags | SENDFLAG_FACTION;
       }
@@ -613,6 +631,11 @@ void() ai_change_faction={
     return;
   }
   self.isActive = TRUE;
+  if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
+    activator = find(world, classname, "player");
+    self.think = self.use;
+    self.nextthink = time + 1.0;
+  }
 };
 
 /*QUAKED ai_change_rank (0.988 0.976 0.267) (-16 -16 -16) (16 16 16) START_OFF REMOVE_ONUSE DELAY_FIRE
@@ -648,6 +671,11 @@ void() ai_change_rank={
     return;
   }
   self.isActive = TRUE;
+  if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
+    activator = find(world, classname, "player");
+    self.think = self.use;
+    self.nextthink = time + 1.0;
+  }
 };
 
 

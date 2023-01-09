@@ -19,6 +19,7 @@ entity stemp, s;
 
 #define SPAWNFLAG_DYNAMIC_COUNT 2
 #define SPAWNFLAG_CUSTOM_MSG 4
+#define SPAWNFLAG_ON_MAPSTART 16384
 /*
   Trigger Event Harness
     each of these is like a tailored 'target' var that is fired

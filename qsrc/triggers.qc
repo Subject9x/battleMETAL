@@ -7,7 +7,7 @@ author: iD Software
 */
 
 /*
-  a poor man's interface. Entities can sign up for the even system
+  a poor man's interface. Entities can sign up for the event system
   by invoking trigger_event at the appropriate time (heh or any time really)
   and this handles the event.
   
@@ -224,6 +224,11 @@ void() trigger_multiple =
 			self.touch = multi_touch;
 		}
 	}
+  if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
+    activator = find(world, classname, "player");
+    self.think = multi_use;
+    self.nextthink = time + 0.25;
+  }
 };
 
 
@@ -702,6 +707,11 @@ void() trigger_teleport =
 		o = (self.mins + self.maxs)*0.5;
 		ambientsound (o, "ambience/hum1.wav",0.5 , ATTN_STATIC);
 	}
+  if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
+    activator = find(world, classname, "player");
+    self.think = self.use;
+    self.nextthink = time + 0.25;
+  }
 };
 
 /*
@@ -720,6 +730,10 @@ void() trigger_skill_touch =
 	cvar_set ("skill", ftos(self.aState));
 };
 
+void() trigger_auto_use = {
+	cvar_set ("skill", ftos(self.aState));
+}
+
 /*QUAKED trigger_setskill (.5 .5 .5) ?
 sets skill level to the value of "message".
 Only used on start map.
@@ -728,6 +742,10 @@ void() trigger_setskill =
 {
 	InitTrigger ();
 	self.touch = trigger_skill_touch;
+  if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
+    self.think = trigger_auto_use;
+    self.nextthink = time + 0.25;
+  }
 };
 
 void() hurt_on =

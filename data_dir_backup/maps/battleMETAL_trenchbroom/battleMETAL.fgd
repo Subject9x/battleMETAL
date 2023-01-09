@@ -388,7 +388,11 @@ the mission area if player stays inside this bounds. usually pair this will a ki
 //---------------------------------------------------------------------------------------------------------------------
 
 //TRIGGER_* ENTS ---------------------------------------------------------------------------------------------------------------------
-@BaseClass base(Target, Targetname, SkillFlagsEngine) color(0.5 0.5 0.5) = BaseTrigger []
+@BaseClass base(Target, Targetname, SkillFlagsEngine) color(0.5 0.5 0.5) = BaseTrigger [
+  spawnflags(Flags) = [
+    16384 : "On Map Start" : 0
+  ]
+]
 
 @SolidClass base(BaseTrigger, Angle) = trigger_multiple : "Variable sized repeatable trigger.  Must be targeted at one or more entities.  If 'health' is set, the trigger must be killed to activate each time.
   If 'delay' is set, the trigger waits some time after activating before firing.
@@ -407,7 +411,8 @@ the mission area if player stays inside this bounds. usually pair this will a ki
   ]
   spawnflags(Flags) = [
     2 : "No touch" : 0
-  ]  
+    16384 : "On Map Start" : 0
+  ]
 ]
 
 
@@ -646,6 +651,7 @@ firing off .trigOnAttack when the .count is reached.
     4 : "No Regular" : 0
     8 : "No Veteran" : 0
     16 : "No Elite" : 0
+    16384 : "On Map Start" : 0
   ]
 ]
 
@@ -661,6 +667,7 @@ firing off .trigOnAttack when the .count is reached.
     4 : "No Regular" : 0
     8 : "No Veteran" : 0
     16 : "No Elite" : 0
+    16384 : "On Map Start" : 0
   ]
 ]
 
@@ -671,6 +678,7 @@ firing off .trigOnAttack when the .count is reached.
     1 : "Start Off" : 0
     2 : "Remove on-use" : 0
     4 : "Delay" : 0
+    16384 : "On Map Start" : 0
   ]
 ]
 
@@ -690,6 +698,7 @@ that unit's stats using the ai_stats.qc functions. This is useful for adjusting 
     1 : "Start Off" : 0
     2 : "Remove on-use" : 0
     4 : "Delay" : 0
+    16384 : "On Map Start" : 0
   ]
 ]
 
