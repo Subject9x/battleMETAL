@@ -144,10 +144,10 @@ void() data_ini_monitor_={
     hardpnt.uiOffset = '-68 55'; //#2
     
     hardpnt = hardpnt.w_slot;
-    hardpnt.uiOffset = '73 55';//#3
+    hardpnt.uiOffset = '100 55';//#4
     
     hardpnt = hardpnt.w_slot;
-    hardpnt.uiOffset = '100 55';//#4
+    hardpnt.uiOffset = '73 55';//#3
     
     hardpnt = hardpnt.w_slot;
     hardpnt.uiOffset = '-39 -5'; //#5
