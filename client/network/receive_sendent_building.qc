@@ -115,6 +115,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     if( muted ){
       self.spawnflags = self.spawnflags | MUTE_ME;
     }
+    self.deadflag = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){

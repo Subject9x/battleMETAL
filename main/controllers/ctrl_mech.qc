@@ -526,6 +526,11 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteChar( MSG_ENTITY, self.subType );
     WriteString( MSG_ENTITY, self.netname );
+    WriteByte( MSG_ENTITY, self.deadflag );
+    
+    if( self.deadflag != DEAD_NO ){
+      WriteLong( MSG_ENTITY,   self.criticalHits );
+    }
   }
   
   if( (changedflags & SENDFLAG_SHIELD) ){

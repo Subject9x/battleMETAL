@@ -24,12 +24,13 @@ void() mech_ai_think={
   EVENT - DEATH =====================================
 */
 void() mech_corpse_remove={
-  
-  self.drawmask = 0;
-  if(self.effect1 != world ){
-    remove(self.effect1);
+  if(!wasfreed(self)){
+    self.drawmask = 0;
+    if(self.effect1 != world ){
+      remove(self.effect1);
+    }
+    remove(self);
   }
-  remove(self);
 };
 
 
@@ -342,6 +343,11 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.ai_muted = ReadByte();
     self.subType = ReadChar();
     newName = ReadString();
+    
+    self.deadflag = ReadByte();
+    if( self.deadflag != DEAD_NO ){
+      self.criticalHits = fabs(rint(ReadLong()));
+    }
   }
   
   if( isNew ){
@@ -377,8 +383,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
     self.critBits = fabs(rint(ReadLong()));
-    if( self.critBits != 0 && self.deadflag == DEAD_NO ){
-      sendevent_mech_ai_crit( self.critBits );
+    if( self.critBits != 0 ){
+      if( self.deadflag == DEAD_NO ){
+        sendevent_mech_ai_crit( self.critBits );
+      }
       self.criticalHits = self.criticalHits | self.critBits;
       self.critBits = 0;
     }

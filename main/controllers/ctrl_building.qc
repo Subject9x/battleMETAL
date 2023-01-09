@@ -136,6 +136,7 @@ float( float isNew, float changedflags ) ctrl_send_turret={
       WriteChar( MSG_ENTITY, FALSE );
     }
     WriteChar( MSG_ENTITY, self.subType );
+    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){
@@ -225,6 +226,7 @@ float( float isNew, float changedflags ) ctrl_send_building={
     else{
       WriteChar( MSG_ENTITY, FALSE );
     }
+    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){

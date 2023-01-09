@@ -42,7 +42,7 @@ void() ai_mech_sk_die={
   setorigin(self, self.origin);
   droptofloor();
   
-  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_TURRET | SENDFLAG_CRIT);
+  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_ANGLE | SENDFLAG_TURRET);
   self.think = ai_mech_sk_die2;
   self.nextthink = time + 0.1;
 };
@@ -62,6 +62,7 @@ void() ai_mech_sk_die3={
       te_vehicle_chunk( self.torL_mdl, self.torL_org, '0 0 0', self.torL_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
     }
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
   self.think = ai_mech_sk_die4;
   self.nextthink = time + 0.1;
 };
@@ -72,6 +73,7 @@ void() ai_mech_sk_die4={
       te_vehicle_chunk( self.torR_mdl, self.torR_org, '0 0 0', self.torR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
     }
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
   self.think = ai_mech_sk_die5;
   self.nextthink = time + 0.1;
 };
@@ -82,6 +84,7 @@ void() ai_mech_sk_die5={
       te_vehicle_chunk( self.armL_mdl, self.armL_org, '0 0 0', self.armL_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
     }
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
   self.think = ai_mech_sk_die6;
   self.nextthink = time + 0.1;
 };
@@ -93,6 +96,7 @@ void() ai_mech_sk_die6={
       te_vehicle_chunk( self.armR_mdl, self.armR_org, '0 0 0', self.armR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
     }
   }
+  self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
   self.think = SUB_Remove;
   self.nextthink = time + 600;
 };

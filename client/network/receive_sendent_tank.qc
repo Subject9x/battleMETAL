@@ -60,6 +60,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
     self.ai_muted = ReadByte();
     self.subType = ReadChar();
     newName = ReadString();
+    self.deadflag = ReadByte();
   }
   
   if( isNew ){

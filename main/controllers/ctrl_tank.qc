@@ -132,6 +132,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteChar( MSG_ENTITY, self.subType );
     WriteString( MSG_ENTITY, self.netname );
+    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
   if( (changedflags & SENDFLAG_SHIELD) ){
@@ -196,6 +197,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteChar( MSG_ENTITY, self.subType );
     WriteString( MSG_ENTITY, self.netname );
+    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
   if( (changedflags & SENDFLAG_SHIELD) ){
@@ -255,6 +257,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteChar( MSG_ENTITY, self.subType );
     WriteString( MSG_ENTITY, self.netname );
+    WriteByte( MSG_ENTITY, self.deadflag );
   }
   
   if( (changedflags & SENDFLAG_SHIELD) ){
