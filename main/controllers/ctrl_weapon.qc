@@ -146,7 +146,6 @@ void() ctrl_weapon_fireOffset={
   else{
     WEAPON_PARENT = FIRE_ENT;
   }
-
   
   makevectors( WEAPON_PARENT.angles );
   if( FIRE_ENT.data_type == DATA_VEHC ){
@@ -156,8 +155,7 @@ void() ctrl_weapon_fireOffset={
     FIRE_ORIGIN = FIRE_ENT.origin + (v_forward * FIRE_OFFSET_z) + (v_right * FIRE_OFFSET_x) + (v_up * FIRE_OFFSET_y);
   }
   
-  
-  FIRE_ENDPOINT = util_applySpreadToTrace( FIRE_ENT.v_angle, self.w_range, self.spreadDefault, FIRE_ENT.accuracy );//becomes 'endpoint' for shot angle
+  FIRE_ENDPOINT = util_applySpreadToTrace( FIRE_ENT.v_angle, self.w_range );//becomes 'endpoint' for shot angle
 };
 
 

@@ -447,7 +447,12 @@ void(entity targ, entity attacker) killed={
   
   thisOldSelf = self;
   self = targ;
-    self.enemy = attacker;
+    if( self.faction ){
+      if( self.faction != attacker.faction ){
+        self.enemy = attacker;  
+      }
+    }
+    
     if( targ.partTypeId != FALSE ){
       self.takedamage = DAMAGE_NO;
       self.touch = SUB_Null;

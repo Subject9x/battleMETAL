@@ -9,6 +9,21 @@ Overview:
   scope - self = unit making the target call
 */
 
+/*
+  ignore faction, players are allowed to target anyone.
+*/
+float(entity t) player_valid_target={
+  if( !t ){
+    return FALSE;
+  }
+  if( t != self ){
+    if( (t.flags & (FL_UNIT|FL_MONSTER)) && (t.deadflag == DEAD_NO) ){
+      return t.canTarget;
+    }
+  }
+  return FALSE;
+};
+
 
 /*
   This function is called when a Player goes to acquire a target.
@@ -32,7 +47,7 @@ void() sv_getTarget={
   }
   traceline(viewOfs, viewOfs + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
   
-  if( ai_valid_target(trace_ent) ){
+  if( player_valid_target(trace_ent) ){
     if( trace_ent == self.enemy ){
       //already have this target.
       return;

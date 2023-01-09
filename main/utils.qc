@@ -105,12 +105,11 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
 
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
-vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc ) util_applySpreadToTrace={
+//vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc ) util_applySpreadToTrace={
+vector( vector viewAngle, float idealRange ) util_applySpreadToTrace={
   //local vector direction; //shot dispersion disabled
   //local vector acc;
   local vector wepAim;
-  local vector src;
-  local vector adj;
   local vector targVel;
   
   targVel = '0 0 0';
@@ -119,6 +118,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   }
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
+    //AI aiming
     if( self.w_isburst ){
       wepAim = (self.owner.enemy.origin + '0 0 10') - (targVel * self.owner.ai_leading);
     }
@@ -133,14 +133,9 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
     wepAim = normalize(wepAim - self.origin);
   }
   else{
-    wepAim = normalize( self.owner.laser_sight_org - self.origin ); 
-  }
- 
-  makevectors( viewAngle );
-  
-  adj = self.compOffset + self.wepFireOffset;
-  src = self.owner.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);  
-  
+    //Player aiming
+    wepAim = normalize( self.owner.laser_sight_org - FIRE_ORIGIN ); 
+  }  
   //08-2020: shot dispersion has been disabled because I can't find a clean/lightweight
   //means of sending this information over the network
   
@@ -152,7 +147,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   //acc_y = acc_y * crandom();
   //direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
   
-  traceline (src, src + wepAim*idealRange, FALSE, self);
+  traceline (FIRE_ORIGIN, FIRE_ORIGIN + wepAim*idealRange, FALSE, self.owner);
   
   return trace_endpos;
 };

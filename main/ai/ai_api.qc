@@ -107,6 +107,9 @@ float(entity t) ai_valid_target={
     return FALSE;
   }
   if( t != self ){
+    if( t.faction == self.faction){
+      return FALSE;
+    }
     if( (t.flags & (FL_UNIT|FL_MONSTER)) && (t.deadflag == DEAD_NO) ){
       return t.canTarget;
     }
